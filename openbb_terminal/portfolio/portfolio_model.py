@@ -27,7 +27,7 @@ pd.options.mode.chained_assignment = None
 
 @log_start_end(log=logger)
 def get_rolling_beta(
-        df: pd.DataFrame, hist: pd.DataFrame, mark: pd.DataFrame, n: pd.DataFrame
+    df: pd.DataFrame, hist: pd.DataFrame, mark: pd.DataFrame, n: pd.DataFrame
 ) -> pd.DataFrame:
     """Turns a holdings portfolio into a rolling beta dataframe
 
@@ -213,13 +213,13 @@ class Portfolio:
     def __init__(self, trades: pd.DataFrame = pd.DataFrame(), rf=0):
         """Initialize Portfolio class"""
         # Allow for empty initialization
-        self.portfolio_sectors_allocation = None
-        self.portfolio_assets_allocation = None
-        self.benchmark_sectors_allocation = None
-        self.benchmark_assets_allocation = None
-        self.benchmark_trades = None
-        self.trade_value = None
-        self.last_price = None
+        self.portfolio_sectors_allocation = pd.DataFrame()
+        self.portfolio_assets_allocation = pd.DataFrame()
+        self.benchmark_sectors_allocation = pd.DataFrame()
+        self.benchmark_assets_allocation = pd.DataFrame()
+        self.benchmark_trades = pd.DataFrame()
+        self.trade_value = pd.DataFrame()
+        self.last_price = pd.DataFrame()
         self.empty = True
         self.rf = rf
 
@@ -252,12 +252,16 @@ class Portfolio:
 
             # Should be simply extended for crypto/bonds etc
             # Treat etf as stock for yfinance historical.
-            self._stock_tickers = list(set(trades[trades.Type == "STOCK"].Name.to_list()))
+            self._stock_tickers = list(
+                set(trades[trades.Type == "STOCK"].Name.to_list())
+            )
             self._etf_tickers = list(set(trades[trades.Type == "ETF"].Name.to_list()))
 
             crypto_trades = trades[trades.Type == "CRYPTO"]
-            self._crypto_tickers = [f"{crypto}-{currency}" for crypto, currency in zip(
-                crypto_trades.Name, crypto_trades.Currency)]
+            self._crypto_tickers = [
+                f"{crypto}-{currency}"
+                for crypto, currency in zip(crypto_trades.Name, crypto_trades.Currency)
+            ]
             trades.loc[(trades.Type == "CRYPTO"), "Name"] = self._crypto_tickers
 
             print(self._crypto_tickers)
@@ -289,8 +293,19 @@ class Portfolio:
         portfolio = self.trades.pivot(
             index="Date",
             columns="Name",
-            values=["Type", "Sector", "Industry", "Country", "Price", "Quantity",
-                    "Fees", "Premium", "Investment", "Side", "Currency"]
+            values=[
+                "Type",
+                "Sector",
+                "Industry",
+                "Country",
+                "Price",
+                "Quantity",
+                "Fees",
+                "Premium",
+                "Investment",
+                "Side",
+                "Currency",
+            ],
         )
         # Merge with historical close prices (and fillna)
         portfolio = pd.merge(
@@ -327,8 +342,8 @@ class Portfolio:
             portfolio[
                 pd.MultiIndex.from_product([["StockHoldings"], self._stock_tickers])
             ] = (
-                    portfolio["Quantity"][self._stock_tickers]
-                    * portfolio["Close"][self._stock_tickers]
+                portfolio["Quantity"][self._stock_tickers]
+                * portfolio["Close"][self._stock_tickers]
             )
         else:
             portfolio[pd.MultiIndex.from_product([["StockHoldings"], ["temp"]])] = 0
@@ -338,8 +353,8 @@ class Portfolio:
             portfolio[
                 pd.MultiIndex.from_product([["ETFHoldings"], self._etf_tickers])
             ] = (
-                    portfolio["Quantity"][self._etf_tickers]
-                    * portfolio["Close"][self._etf_tickers]
+                portfolio["Quantity"][self._etf_tickers]
+                * portfolio["Close"][self._etf_tickers]
             )
         else:
             portfolio[pd.MultiIndex.from_product([["ETFHoldings"], ["temp"]])] = 0
@@ -348,8 +363,8 @@ class Portfolio:
             portfolio[
                 pd.MultiIndex.from_product([["CryptoHoldings"], self._crypto_tickers])
             ] = (
-                    portfolio["Quantity"][self._crypto_tickers]
-                    * portfolio["Close"][self._crypto_tickers]
+                portfolio["Quantity"][self._crypto_tickers]
+                * portfolio["Close"][self._crypto_tickers]
             )
         else:
             portfolio[pd.MultiIndex.from_product([["CryptoHoldings"], ["temp"]])] = 0
@@ -358,27 +373,33 @@ class Portfolio:
         # the cash hold will equal the invested amount. Otherwise, the cash hold is defined as deposited cash -
         # stocks bought + stocks sold
         if "CASH" not in portfolio["Investment"]:
-            portfolio["CashHold"] = portfolio["Investment"][
-                self._stock_tickers + self._etf_tickers + self._crypto_tickers
-                ].sum(axis=1) + portfolio["Fees"].sum(axis=1) + portfolio["Premium"].sum(axis=1)
-        else:
-            portfolio["CashHold"] = portfolio["Investment"]["CASH"] - portfolio["Investment"][
-                self._stock_tickers + self._etf_tickers + self._crypto_tickers
+            portfolio["CashHold"] = (
+                portfolio["Investment"][
+                    self._stock_tickers + self._etf_tickers + self._crypto_tickers
                 ].sum(axis=1)
+                + portfolio["Fees"].sum(axis=1)
+                + portfolio["Premium"].sum(axis=1)
+            )
+        else:
+            portfolio["CashHold"] = portfolio["Investment"]["CASH"] - portfolio[
+                "Investment"
+            ][self._stock_tickers + self._etf_tickers + self._crypto_tickers].sum(
+                axis=1
+            )
 
         # Subtract Fees or Premiums from cash holdings
         portfolio["CashHold"] = (
-                portfolio["CashHold"]
-                - portfolio["Fees"].sum(axis=1)
-                - portfolio["Premium"].sum(axis=1)
+            portfolio["CashHold"]
+            - portfolio["Fees"].sum(axis=1)
+            - portfolio["Premium"].sum(axis=1)
         )
         portfolio["CashHold"] = portfolio["CashHold"].cumsum()
 
         portfolio["TotalHoldings"] = (
-                portfolio["CashHold"]
-                + portfolio["StockHoldings"].sum(axis=1)
-                + portfolio["ETFHoldings"].sum(axis=1)
-                + portfolio["CryptoHoldings"].sum(axis=1)
+            portfolio["CashHold"]
+            + portfolio["StockHoldings"].sum(axis=1)
+            + portfolio["ETFHoldings"].sum(axis=1)
+            + portfolio["CryptoHoldings"].sum(axis=1)
         )
 
         self.portfolio_value = portfolio["TotalHoldings"]
@@ -398,20 +419,33 @@ class Portfolio:
         )
 
         # Determine invested amount, relative and absolute return based on last close
-        self.last_price = portfolio['Close'].iloc[-1]
+        self.last_price = portfolio["Close"].iloc[-1]
         self.trade_value = self.trades.copy()
-        self.trade_value[["Portfolio Investment", 'Close', 'Portfolio Value',
-                          '% Portfolio Return', 'Abs Portfolio Return']] = float(0)
+        self.trade_value[
+            [
+                "Portfolio Investment",
+                "Close",
+                "Portfolio Value",
+                "% Portfolio Return",
+                "Abs Portfolio Return",
+            ]
+        ] = float(0)
 
         for index, trade in self.trades.iterrows():
-            if trade['Type'] != 'CASH':
-                self.trade_value['Close'][index] = self.last_price[trade['Name']]
-                self.trade_value["Portfolio Investment"][index] = trade['Investment']
-                self.trade_value['Portfolio Value'][index] = self.trade_value['Close'][index] * trade['Quantity']
-                self.trade_value['% Portfolio Return'][index] = (self.trade_value['Portfolio Value'][index]
-                                                           / self.trade_value['Portfolio Investment'][index]) - 1
-                self.trade_value['Abs Portfolio Return'].loc[index] = (
-                        self.trade_value['Portfolio Value'][index] - self.trade_value['Portfolio Investment'][index])
+            if trade["Type"] != "CASH":
+                self.trade_value["Close"][index] = self.last_price[trade["Name"]]
+                self.trade_value["Portfolio Investment"][index] = trade["Investment"]
+                self.trade_value["Portfolio Value"][index] = (
+                    self.trade_value["Close"][index] * trade["Quantity"]
+                )
+                self.trade_value["% Portfolio Return"][index] = (
+                    self.trade_value["Portfolio Value"][index]
+                    / self.trade_value["Portfolio Investment"][index]
+                ) - 1
+                self.trade_value["Abs Portfolio Return"].loc[index] = (
+                    self.trade_value["Portfolio Value"][index]
+                    - self.trade_value["Portfolio Investment"][index]
+                )
 
         self.portfolio = portfolio.copy()
 
@@ -465,7 +499,8 @@ class Portfolio:
                 self._historical_crypto.columns = self._crypto_tickers
 
             self._historical_crypto.columns = pd.MultiIndex.from_product(
-                [["Close"], self._crypto_tickers])
+                [["Close"], self._crypto_tickers]
+            )
 
         else:
             self._historical_crypto = pd.DataFrame()
@@ -489,58 +524,99 @@ class Portfolio:
         position due to a mismatch in trades"""
 
         if full_shares:
-            console.print("[red]Note that without the partial shares assumption, the absolute return will be incorrect "
-                          "due to the model not taking into account the remaining cash position.[/red]")
+            console.print(
+                "[red]Note that without the partial shares assumption, the absolute return will be incorrect "
+                "due to the model not taking into account the remaining cash position.[/red]"
+            )
 
-        self.benchmark_trades = self.trades[['Date', 'Type', 'Investment']].copy()
-        self.benchmark_trades['Close'] = self.benchmark[-1]
-        self.benchmark_trades[['Benchmark Quantity', 'Price', 'Benchmark Investment', 'Benchmark Value',
-                               '% Benchmark Return', 'Abs Benchmark Return']] = float(0)
+        self.benchmark_trades = self.trades[["Date", "Type", "Investment"]].copy()
+        self.benchmark_trades["Close"] = self.benchmark[-1]
+        self.benchmark_trades[
+            [
+                "Benchmark Quantity",
+                "Price",
+                "Benchmark Investment",
+                "Benchmark Value",
+                "% Benchmark Return",
+                "Abs Benchmark Return",
+            ]
+        ] = float(0)
 
         for index, trade in self.trades.iterrows():
-            if trade['Type'] != 'CASH':
-                if trade['Date'] not in self.benchmark.index:
-                    date = self.benchmark.index.searchsorted(trade['Date'])
+            if trade["Type"] != "CASH":
+                if trade["Date"] not in self.benchmark.index:
+                    date = self.benchmark.index.searchsorted(trade["Date"])
                 else:
-                    date = trade['Date']
+                    date = trade["Date"]
 
-                self.benchmark_trades['Price'][index] = self.benchmark[date]
+                self.benchmark_trades["Price"][index] = self.benchmark[date]
 
                 if not full_shares:
-                    self.benchmark_trades['Benchmark Quantity'][index] = (
-                            trade['Investment'] / self.benchmark_trades['Price'][index])
+                    self.benchmark_trades["Benchmark Quantity"][index] = (
+                        trade["Investment"] / self.benchmark_trades["Price"][index]
+                    )
                 else:
-                    self.benchmark_trades['Benchmark Quantity'][index] = np.floor(
-                        trade['Investment'] / self.benchmark_trades['Price'][index])
+                    self.benchmark_trades["Benchmark Quantity"][index] = np.floor(
+                        trade["Investment"] / self.benchmark_trades["Price"][index]
+                    )
 
-                self.benchmark_trades['Benchmark Investment'][index] = (
-                        self.benchmark_trades['Price'][index] * self.benchmark_trades['Benchmark Quantity'][index])
-                self.benchmark_trades['Benchmark Value'][index] = (
-                        self.benchmark_trades['Close'][index] * self.benchmark_trades['Benchmark Quantity'][index])
-                self.benchmark_trades['% Benchmark Return'][index] = (
-                        (self.benchmark_trades['Benchmark Value'][index]
-                         / self.benchmark_trades['Benchmark Investment'][index]) - 1)
-                self.benchmark_trades['Abs Benchmark Return'][index] = (
-                        self.benchmark_trades['Benchmark Value'][index] -
-                        self.benchmark_trades['Benchmark Investment'][index])
+                self.benchmark_trades["Benchmark Investment"][index] = (
+                    self.benchmark_trades["Price"][index]
+                    * self.benchmark_trades["Benchmark Quantity"][index]
+                )
+                self.benchmark_trades["Benchmark Value"][index] = (
+                    self.benchmark_trades["Close"][index]
+                    * self.benchmark_trades["Benchmark Quantity"][index]
+                )
+                self.benchmark_trades["% Benchmark Return"][index] = (
+                    self.benchmark_trades["Benchmark Value"][index]
+                    / self.benchmark_trades["Benchmark Investment"][index]
+                ) - 1
+                self.benchmark_trades["Abs Benchmark Return"][index] = (
+                    self.benchmark_trades["Benchmark Value"][index]
+                    - self.benchmark_trades["Benchmark Investment"][index]
+                )
 
     # pylint:disable=no-member
     @log_start_end(log=logger)
     def calculate_allocations(self):
         """Determine allocations based on assets and sectors."""
-        self.benchmark_assets_allocation = pd.DataFrame(self.benchmark_info['holdings'])
-        self.portfolio_assets_allocation = (self.trade_value[self.trade_value['Type'] != "CASH"].groupby(
-            by="Name").agg({"Portfolio Value": "sum"}).div(
-            self.trade_value['Portfolio Value'].sum())).squeeze().sort_values(ascending=False)
+        self.benchmark_assets_allocation = pd.DataFrame(self.benchmark_info["holdings"])
+        self.portfolio_assets_allocation = (
+            (
+                self.trade_value[self.trade_value["Type"] != "CASH"]
+                .groupby(by="Name")
+                .agg({"Portfolio Value": "sum"})
+                .div(self.trade_value["Portfolio Value"].sum())
+            )
+            .squeeze()
+            .sort_values(ascending=False)
+        )
 
         print(self.trade_value)
 
-        self.benchmark_sectors_allocation = pd.DataFrame.from_dict(
-            data={sector_name: allocation for sector in self.benchmark_info['sectorWeightings']
-                  for sector_name, allocation in sector.items()}, orient='index').squeeze().sort_values(ascending=False)
-        self.portfolio_sectors_allocation = (self.trade_value[self.trade_value['Type'] != "CASH"].groupby(
-            by='Sector').agg({"Portfolio Value": "sum"})).div(
-            self.trade_value['Portfolio Value'].sum()).squeeze().sort_values(ascending=False)
+        self.benchmark_sectors_allocation = (
+            pd.DataFrame.from_dict(
+                data={
+                    sector_name: allocation
+                    for sector in self.benchmark_info["sectorWeightings"]
+                    for sector_name, allocation in sector.items()
+                },
+                orient="index",
+            )
+            .squeeze()
+            .sort_values(ascending=False)
+        )
+        self.portfolio_sectors_allocation = (
+            (
+                self.trade_value[self.trade_value["Type"] != "CASH"]
+                .groupby(by="Sector")
+                .agg({"Portfolio Value": "sum"})
+            )
+            .div(self.trade_value["Portfolio Value"].sum())
+            .squeeze()
+            .sort_values(ascending=False)
+        )
 
     # pylint:disable=no-member
     @classmethod

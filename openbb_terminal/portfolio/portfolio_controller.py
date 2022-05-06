@@ -4,10 +4,8 @@ __docformat__ = "numpy"
 import argparse
 import logging
 import os
-from os import listdir
-from os.path import isfile, join
 from pathlib import Path
-from typing import Dict, List, Union
+from typing import List
 
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
@@ -20,14 +18,13 @@ from openbb_terminal.helper_funcs import (
     check_positive_float,
     parse_known_args_and_warn,
     print_rich_table,
-    valid_date,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.portfolio import portfolio_model, portfolio_view
+from openbb_terminal.portfolio import portfolio_model
+from openbb_terminal.portfolio import portfolio_view
 from openbb_terminal.portfolio.portfolio_optimization import po_controller
 from openbb_terminal.rich_config import console
-from openbb_terminal.portfolio import portfolio_view
 
 # pylint: disable=R1710,E1101,C0415,W0212
 
@@ -61,18 +58,17 @@ class PortfolioController(BaseController):
         "pa",
     ]
     distributions = ["laplace", "student_t", "logistic", "normal"]
-    aggregation_methods = ['assets', 'sectors']
+    aggregation_methods = ["assets", "sectors"]
     PATH = "/portfolio/"
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
         super().__init__(queue)
+        self.benchmark_ticker = ""
         self.file_types = ["xlsx", "csv"]
 
         self.DEFAULT_HOLDINGS_PATH = os.path.abspath(
-            os.path.join(
-                os.path.dirname(__file__), "..", "..", "portfolio", "holdings"
-            )
+            os.path.join(os.path.dirname(__file__), "..", "..", "portfolio", "holdings")
         )
 
         self.DATA_HOLDINGS_FILES = {
@@ -93,10 +89,10 @@ class PortfolioController(BaseController):
                 "Price",
                 "Quantity",
                 "Fees",
-                "Premium"
+                "Premium",
                 "Investment",
                 "Side",
-                "Currency"
+                "Currency",
             ]
         )
 
@@ -108,7 +104,7 @@ class PortfolioController(BaseController):
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             choices["load"] = {c: None for c in self.portlist}
-            choices['alloc'] = {c: None for c in self.aggregation_methods}
+            choices["alloc"] = {c: None for c in self.aggregation_methods}
             self.choices = choices
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -125,7 +121,7 @@ class PortfolioController(BaseController):
     show        show existing transactions[/cmds]
 
 [param]Loaded orderbook:[/param] {self.portfolio_name or None}
-[param]Benchmark:[/param] {self.benchmark_name or None} 
+[param]Benchmark:[/param] {self.benchmark_name or None}
 
 [info]Performance:[/info][cmds]
     alloc       show allocation on an asset or sector basis
@@ -166,9 +162,9 @@ class PortfolioController(BaseController):
             tickers = []
         else:
             tickers = (
-                    self.portfolio._stock_tickers +
-                    self.portfolio._etf_tickers +
-                    self.portfolio._crypto_tickers
+                self.portfolio._stock_tickers
+                + self.portfolio._etf_tickers
+                + self.portfolio._crypto_tickers
             )
         self.queue = self.load_class(
             po_controller.PortfolioOptimizationController, tickers, self.queue
@@ -213,8 +209,7 @@ class PortfolioController(BaseController):
             "-f",
             "--file",
             type=str,
-            choices=[f for f in listdir(self.DEFAULT_HOLDINGS_PATH)
-                     if isfile(join(self.DEFAULT_HOLDINGS_PATH, f))],
+            choices=self.DATA_HOLDINGS_FILES,
             dest="file",
             required="-h" not in other_args,
             help="The file to be loaded",
@@ -260,13 +255,15 @@ class PortfolioController(BaseController):
                 self.portfolio_name = ns_parser.file
 
             self.portfolio.add_benchmark(ns_parser.benchmark)
-            self.benchmark_name = self.portfolio.benchmark_info['longName']
+            self.benchmark_name = self.portfolio.benchmark_info["longName"]
             self.benchmark_ticker = ns_parser.benchmark
 
             self.portfolio.generate_holdings_from_trades()
 
             console.print(f"\n[bold]Portfolio:[/bold] {self.portfolio_name}")
-            console.print(f"[bold]Benchmark:[/bold] {self.benchmark_name} ({self.benchmark_ticker})")
+            console.print(
+                f"[bold]Benchmark:[/bold] {self.benchmark_name} ({self.benchmark_ticker})"
+            )
 
             console.print()
 
@@ -294,10 +291,10 @@ class PortfolioController(BaseController):
         parser.add_argument(
             "-a",
             "--agg",
-            default='assets',
+            default="assets",
             choices=self.aggregation_methods,
             dest="agg",
-            help="The type of allocation aggregation you wish to do"
+            help="The type of allocation aggregation you wish to do",
         )
 
         parser.add_argument(
@@ -305,7 +302,7 @@ class PortfolioController(BaseController):
             "--limit",
             default=10,
             dest="limit",
-            help="The amount of assets or sectors you wish to see"
+            help="The amount of assets or sectors you wish to see",
         )
 
         parser.add_argument(
@@ -314,7 +311,7 @@ class PortfolioController(BaseController):
             action="store_true",
             default=False,
             dest="tables",
-            help="Whether to also include the assets/sectors tables of both the benchmark and the portfolio."
+            help="Whether to also include the assets/sectors tables of both the benchmark and the portfolio.",
         )
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -326,12 +323,19 @@ class PortfolioController(BaseController):
         if ns_parser and ns_parser.agg:
             self.portfolio.calculate_allocations()
 
-            if ns_parser.agg == 'assets':
-                portfolio_view.display_assets_allocation(self.portfolio, ns_parser.limit, ns_parser.tables)
-            elif ns_parser.agg == 'sectors':
-                portfolio_view.display_sectors_allocation(self.portfolio, ns_parser.limit, ns_parser.tables)
+            if ns_parser.agg == "assets":
+                portfolio_view.display_assets_allocation(
+                    self.portfolio, ns_parser.limit, ns_parser.tables
+                )
+            elif ns_parser.agg == "sectors":
+                portfolio_view.display_sectors_allocation(
+                    self.portfolio, ns_parser.limit, ns_parser.tables
+                )
             else:
-                f"{ns_parser.agg} is not an available option. The options are: {', '.join(self.aggregation_methods)}"
+                console.print(
+                    f"{ns_parser.agg} is not an available option. The options "
+                    f"are: {', '.join(self.aggregation_methods)}"
+                )
 
     @log_start_end(log=logger)
     def call_perf(self, other_args: List[str]):
@@ -350,7 +354,7 @@ class PortfolioController(BaseController):
             action="store_true",
             default=False,
             dest="full_shares",
-            help="Whether to only make a trade with the benchmark when a full share can be bought (no partial shares)."
+            help="Whether to only make a trade with the benchmark when a full share can be bought (no partial shares).",
         )
 
         parser.add_argument(
@@ -359,15 +363,19 @@ class PortfolioController(BaseController):
             action="store_true",
             default=False,
             dest="show_trades",
-            help="Whether to show performance on all trades in comparison to the benchmark."
+            help="Whether to show performance on all trades in comparison to the benchmark.",
         )
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
-            self.portfolio.mimic_portfolio_trades_for_benchmark(full_shares=ns_parser.full_shares)
+            self.portfolio.mimic_portfolio_trades_for_benchmark(
+                full_shares=ns_parser.full_shares
+            )
 
-            portfolio_view.display_performance_vs_benchmark(self.portfolio, ns_parser.show_trades)
+            portfolio_view.display_performance_vs_benchmark(
+                self.portfolio, ns_parser.show_trades
+            )
 
     @log_start_end(log=logger)
     def call_al(self, other_args: List[str]):

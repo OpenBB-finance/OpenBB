@@ -1229,6 +1229,8 @@ main:
             ref: "/terminal/portfolio/show"
           - name: add
             ref: "/terminal/portfolio/add"
+          - name: alloc
+            ref: "/terminal/portfolio/alloc"
           - name: al
             ref: "/terminal/portfolio/al"
           - name: rmr
