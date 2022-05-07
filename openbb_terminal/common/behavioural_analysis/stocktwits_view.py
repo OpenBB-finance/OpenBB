@@ -48,12 +48,15 @@ def display_messages(ticker: str, limit: int = 30):
     """
     messages = stocktwits_model.get_messages(ticker, limit)
 
-    print_rich_table(
-        pd.DataFrame(messages),
-        headers=["MESSAGES"],
-        show_index=False,
-        title="Last Messages on Board",
-    )
+    if len(messages) > 0:
+        print_rich_table(
+            pd.DataFrame(messages),
+            headers=["MESSAGES"],
+            show_index=False,
+            title="Last Messages on Board",
+        )
+    else:
+        console.print("No messages found in Stocktwits stream")
 
 
 @log_start_end(log=logger)

@@ -161,7 +161,7 @@ def make_request(
     if response.status_code == 200:
         result = response.json()
 
-        if result:
+        if not result:
             console.print("No data found")
 
     elif response.status_code == 401:
@@ -532,7 +532,8 @@ def get_token_historical_price(address) -> pd.DataFrame:
 
     prices_df = pd.DataFrame(prices)
     prices_df["ts"] = prices_df["ts"].apply(lambda x: datetime.fromtimestamp(x))
-    prices_df.drop("tmp", axis=1, inplace=True)
+    if "tmp" in prices_df.columns:
+        prices_df.drop("tmp", axis=1, inplace=True)
 
     return prices_df[
         ["date", "open", "close", "high", "low", "volumeConverted", "cap", "average"]
