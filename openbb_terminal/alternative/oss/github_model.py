@@ -3,17 +3,17 @@ __docformat__ = "numpy"
 # pylint: disable=C0201,W1401
 
 import asyncio
-import aiohttp
 import logging
-from typing import Any, Dict
 import math
 from datetime import datetime
-import pandas as pd
+from typing import Any, Dict
 
+import aiohttp
+import pandas as pd
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.rich_config import console
 from openbb_terminal.helper_funcs import get_user_agent
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -41,8 +41,9 @@ async def get_github_data(url: str, **kwargs):
             },
             **kwargs,
         ) as res:
+            result = await res.json()
             if res.status == 200:
-                return res.json()
+                return result
             if res.status in (401, 403):
                 console.print(
                     "[red]Rate limit reached, please provide a GitHub API key.[/red]"
@@ -50,7 +51,7 @@ async def get_github_data(url: str, **kwargs):
             elif res.status == 404:
                 console.print("[red]Repo not found.[/red]")
             else:
-                console.print(f"[red]Error occurred {res.json()}[/red]")
+                console.print(f"[red]Error occurred {result}[/red]")
             return None
 
 
@@ -113,12 +114,13 @@ async def get_stars_history(repo: str):
             ]
         )
         if data:
-            for star in data:
-                day = star["starred_at"].split("T")[0]
-                if day in stars:
-                    stars[day] += 1
-                else:
-                    stars[day] = 1
+            for page in data:
+                for star in page:
+                    day = star["starred_at"].split("T")[0]
+                    if day in stars:
+                        stars[day] += 1
+                    else:
+                        stars[day] = 1
         sorted_keys = sorted(stars.keys())
         for i in range(1, len(sorted_keys)):
             stars[sorted_keys[i]] += stars[sorted_keys[i - 1]]
