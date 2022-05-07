@@ -4,46 +4,104 @@ interactions:
     headers:
       Accept:
       - application/vnd.github.v3.star+json
-      Accept-Encoding:
-      - gzip, deflate
       Authorization:
       - MOCK_AUTHORIZATION
-      Connection:
-      - keep-alive
     method: GET
     uri: https://api.github.com/repos/openbb-finance/openbbterminal
   response:
     body:
-      string: !!binary |
-        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
+      string: "{\n  \"id\": 323048702,\n  \"node_id\": \"MDEwOlJlcG9zaXRvcnkzMjMwNDg3MDI=\",\n
+        \ \"name\": \"OpenBBTerminal\",\n  \"full_name\": \"OpenBB-finance/OpenBBTerminal\",\n
+        \ \"private\": false,\n  \"owner\": {\n    \"login\": \"OpenBB-finance\",\n
+        \   \"id\": 80064875,\n    \"node_id\": \"MDEyOk9yZ2FuaXphdGlvbjgwMDY0ODc1\",\n
+        \   \"avatar_url\": \"https://avatars.githubusercontent.com/u/80064875?v=4\",\n
+        \   \"gravatar_id\": \"\",\n    \"url\": \"https://api.github.com/users/OpenBB-finance\",\n
+        \   \"html_url\": \"https://github.com/OpenBB-finance\",\n    \"followers_url\":
+        \"https://api.github.com/users/OpenBB-finance/followers\",\n    \"following_url\":
+        \"https://api.github.com/users/OpenBB-finance/following{/other_user}\",\n
+        \   \"gists_url\": \"https://api.github.com/users/OpenBB-finance/gists{/gist_id}\",\n
+        \   \"starred_url\": \"https://api.github.com/users/OpenBB-finance/starred{/owner}{/repo}\",\n
+        \   \"subscriptions_url\": \"https://api.github.com/users/OpenBB-finance/subscriptions\",\n
+        \   \"organizations_url\": \"https://api.github.com/users/OpenBB-finance/orgs\",\n
+        \   \"repos_url\": \"https://api.github.com/users/OpenBB-finance/repos\",\n
+        \   \"events_url\": \"https://api.github.com/users/OpenBB-finance/events{/privacy}\",\n
+        \   \"received_events_url\": \"https://api.github.com/users/OpenBB-finance/received_events\",\n
+        \   \"type\": \"Organization\",\n    \"site_admin\": false\n  },\n  \"html_url\":
+        \"https://github.com/OpenBB-finance/OpenBBTerminal\",\n  \"description\":
+        \"Investment Research for Everyone, Anywhere.\",\n  \"fork\": false,\n  \"url\":
+        \"https://api.github.com/repos/OpenBB-finance/OpenBBTerminal\",\n  \"forks_url\":
+        \"https://api.github.com/repos/OpenBB-finance/OpenBBTerminal/forks\",\n  \"keys_url\":
+        \"https://api.github.com/repos/OpenBB-finance/OpenBBTerminal/keys{/key_id}\",\n
+        \ \"collaborators_url\": \"https://api.github.com/repos/OpenBB-finance/OpenBBTerminal/collaborators{/collaborator}\",\n
+        \ \"teams_url\": \"https://api.github.com/repos/OpenBB-finance/OpenBBTerminal/teams\",\n
+        \ \"hooks_url\": \"https://api.github.com/repos/OpenBB-finance/OpenBBTerminal/hooks\",\n
+        \ \"issue_events_url\": \"https://api.github.com/repos/OpenBB-finance/OpenBBTerminal/issues/events{/number}\",\n
+        \ \"events_url\": \"https://api.github.com/repos/OpenBB-finance/OpenBBTerminal/events\",\n
+        \ \"assignees_url\": \"https://api.github.com/repos/OpenBB-finance/OpenBBTerminal/assignees{/user}\",\n
+        \ \"branches_url\": \"https://api.github.com/repos/OpenBB-finance/OpenBBTerminal/branches{/branch}\",\n
+        \ \"tags_url\": \"https://api.github.com/repos/OpenBB-finance/OpenBBTerminal/tags\",\n
+        \ \"blobs_url\": \"https://api.github.com/repos/OpenBB-finance/OpenBBTerminal/git/blobs{/sha}\",\n
+        \ \"git_tags_url\": \"https://api.github.com/repos/OpenBB-finance/OpenBBTerminal/git/tags{/sha}\",\n
+        \ \"git_refs_url\": \"https://api.github.com/repos/OpenBB-finance/OpenBBTerminal/git/refs{/sha}\",\n
+        \ \"trees_url\": \"https://api.github.com/repos/OpenBB-finance/OpenBBTerminal/git/trees{/sha}\",\n
+        \ \"statuses_url\": \"https://api.github.com/repos/OpenBB-finance/OpenBBTerminal/statuses/{sha}\",\n
+        \ \"languages_url\": \"https://api.github.com/repos/OpenBB-finance/OpenBBTerminal/languages\",\n
+        \ \"stargazers_url\": \"https://api.github.com/repos/OpenBB-finance/OpenBBTerminal/stargazers\",\n
+        \ \"contributors_url\": \"https://api.github.com/repos/OpenBB-finance/OpenBBTerminal/contributors\",\n
+        \ \"subscribers_url\": \"https://api.github.com/repos/OpenBB-finance/OpenBBTerminal/subscribers\",\n
+        \ \"subscription_url\": \"https://api.github.com/repos/OpenBB-finance/OpenBBTerminal/subscription\",\n
+        \ \"commits_url\": \"https://api.github.com/repos/OpenBB-finance/OpenBBTerminal/commits{/sha}\",\n
+        \ \"git_commits_url\": \"https://api.github.com/repos/OpenBB-finance/OpenBBTerminal/git/commits{/sha}\",\n
+        \ \"comments_url\": \"https://api.github.com/repos/OpenBB-finance/OpenBBTerminal/comments{/number}\",\n
+        \ \"issue_comment_url\": \"https://api.github.com/repos/OpenBB-finance/OpenBBTerminal/issues/comments{/number}\",\n
+        \ \"contents_url\": \"https://api.github.com/repos/OpenBB-finance/OpenBBTerminal/contents/{+path}\",\n
+        \ \"compare_url\": \"https://api.github.com/repos/OpenBB-finance/OpenBBTerminal/compare/{base}...{head}\",\n
+        \ \"merges_url\": \"https://api.github.com/repos/OpenBB-finance/OpenBBTerminal/merges\",\n
+        \ \"archive_url\": \"https://api.github.com/repos/OpenBB-finance/OpenBBTerminal/{archive_format}{/ref}\",\n
+        \ \"downloads_url\": \"https://api.github.com/repos/OpenBB-finance/OpenBBTerminal/downloads\",\n
+        \ \"issues_url\": \"https://api.github.com/repos/OpenBB-finance/OpenBBTerminal/issues{/number}\",\n
+        \ \"pulls_url\": \"https://api.github.com/repos/OpenBB-finance/OpenBBTerminal/pulls{/number}\",\n
+        \ \"milestones_url\": \"https://api.github.com/repos/OpenBB-finance/OpenBBTerminal/milestones{/number}\",\n
+        \ \"notifications_url\": \"https://api.github.com/repos/OpenBB-finance/OpenBBTerminal/notifications{?since,all,participating}\",\n
+        \ \"labels_url\": \"https://api.github.com/repos/OpenBB-finance/OpenBBTerminal/labels{/name}\",\n
+        \ \"releases_url\": \"https://api.github.com/repos/OpenBB-finance/OpenBBTerminal/releases{/id}\",\n
+        \ \"deployments_url\": \"https://api.github.com/repos/OpenBB-finance/OpenBBTerminal/deployments\",\n
+        \ \"created_at\": \"2020-12-20T10:46:38Z\",\n  \"updated_at\": \"2022-05-07T16:20:36Z\",\n
+        \ \"pushed_at\": \"2022-05-07T16:38:53Z\",\n  \"git_url\": \"git://github.com/OpenBB-finance/OpenBBTerminal.git\",\n
+        \ \"ssh_url\": \"git@github.com:OpenBB-finance/OpenBBTerminal.git\",\n  \"clone_url\":
+        \"https://github.com/OpenBB-finance/OpenBBTerminal.git\",\n  \"svn_url\":
+        \"https://github.com/OpenBB-finance/OpenBBTerminal\",\n  \"homepage\": \"https://openbb-finance.github.io/OpenBBTerminal/\",\n
+        \ \"size\": 490690,\n  \"stargazers_count\": 11878,\n  \"watchers_count\":
+        11878,\n  \"language\": \"Python\",\n  \"has_issues\": true,\n  \"has_projects\":
+        true,\n  \"has_downloads\": true,\n  \"has_wiki\": false,\n  \"has_pages\":
+        true,\n  \"forks_count\": 1272,\n  \"mirror_url\": null,\n  \"archived\":
+        false,\n  \"disabled\": false,\n  \"open_issues_count\": 55,\n  \"license\":
+        {\n    \"key\": \"mit\",\n    \"name\": \"MIT License\",\n    \"spdx_id\":
+        \"MIT\",\n    \"url\": \"https://api.github.com/licenses/mit\",\n    \"node_id\":
+        \"MDc6TGljZW5zZTEz\"\n  },\n  \"allow_forking\": true,\n  \"is_template\":
+        false,\n  \"topics\": [\n    \"artificial-intelligence\",\n    \"cryptocurrency\",\n
+        \   \"economics\",\n    \"finance\",\n    \"gamestonk-terminal\",\n    \"investment\",\n
+        \   \"investment-analysis\",\n    \"investment-research\",\n    \"machine-learning\",\n
+        \   \"python\",\n    \"quantitative-finance\",\n    \"stock-market\",\n    \"stocks\",\n
+        \   \"terminal-app\"\n  ],\n  \"visibility\": \"public\",\n  \"forks\": 1272,\n
+        \ \"open_issues\": 55,\n  \"watchers\": 11878,\n  \"default_branch\": \"main\",\n
+        \ \"permissions\": {\n    \"admin\": false,\n    \"maintain\": false,\n    \"push\":
+        false,\n    \"triage\": false,\n    \"pull\": true\n  },\n  \"temp_clone_token\":
+        \"\",\n  \"organization\": {\n    \"login\": \"OpenBB-finance\",\n    \"id\":
+        80064875,\n    \"node_id\": \"MDEyOk9yZ2FuaXphdGlvbjgwMDY0ODc1\",\n    \"avatar_url\":
+        \"https://avatars.githubusercontent.com/u/80064875?v=4\",\n    \"gravatar_id\":
+        \"\",\n    \"url\": \"https://api.github.com/users/OpenBB-finance\",\n    \"html_url\":
+        \"https://github.com/OpenBB-finance\",\n    \"followers_url\": \"https://api.github.com/users/OpenBB-finance/followers\",\n
+        \   \"following_url\": \"https://api.github.com/users/OpenBB-finance/following{/other_user}\",\n
+        \   \"gists_url\": \"https://api.github.com/users/OpenBB-finance/gists{/gist_id}\",\n
+        \   \"starred_url\": \"https://api.github.com/users/OpenBB-finance/starred{/owner}{/repo}\",\n
+        \   \"subscriptions_url\": \"https://api.github.com/users/OpenBB-finance/subscriptions\",\n
+        \   \"organizations_url\": \"https://api.github.com/users/OpenBB-finance/orgs\",\n
+        \   \"repos_url\": \"https://api.github.com/users/OpenBB-finance/repos\",\n
+        \   \"events_url\": \"https://api.github.com/users/OpenBB-finance/events{/privacy}\",\n
+        \   \"received_events_url\": \"https://api.github.com/users/OpenBB-finance/received_events\",\n
+        \   \"type\": \"Organization\",\n    \"site_admin\": false\n  },\n  \"network_count\":
+        1272,\n  \"subscribers_count\": 190\n}\n"
     headers:
       Access-Control-Allow-Origin:
       - '*'
@@ -61,11 +119,11 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Mon, 04 Apr 2022 14:14:03 GMT
-      ETag:
-      - W/"36b635e83fd685d1344aa4745e748e432ea4aba053793129f2fb0422c86c447d"
+      - Sat, 07 May 2022 16:40:18 GMT
+      Etag:
+      - W/"9db98e6e5f1f0e73dc6eec5e3045139ebcfc85b2879e7af329b9cd9a69d08c81"
       Last-Modified:
-      - Mon, 04 Apr 2022 14:12:55 GMT
+      - Sat, 07 May 2022 16:20:36 GMT
       Referrer-Policy:
       - origin-when-cross-origin, strict-origin-when-cross-origin
       Server:
@@ -86,65 +144,329 @@ interactions:
       X-GitHub-Media-Type:
       - github.v3; param=star; format=json
       X-GitHub-Request-Id:
-      - F2F8:2898:1CE0D4:1D60E8:624AFD2B
+      - 652E:2636:28ED62B:29B23B3:6276A0F2
       X-OAuth-Scopes:
       - ''
       X-RateLimit-Limit:
       - '5000'
       X-RateLimit-Remaining:
-      - '4781'
+      - '4630'
       X-RateLimit-Reset:
-      - '1649085105'
+      - '1651942760'
       X-RateLimit-Resource:
       - core
       X-RateLimit-Used:
-      - '219'
+      - '370'
       X-XSS-Protection:
       - '0'
       github-authentication-token-expiration:
-      - 2022-04-30 16:49:13 UTC
+      - 2022-06-06 04:34:24 UTC
     status:
       code: 200
       message: OK
+    url: https://api.github.com/repos/openbb-finance/openbbterminal
 - request:
     body: null
     headers:
       Accept:
       - application/vnd.github.v3.star+json
-      Accept-Encoding:
-      - gzip, deflate
       Authorization:
       - MOCK_AUTHORIZATION
-      Connection:
-      - keep-alive
     method: GET
     uri: https://api.github.com/repos/openbb-finance/openbbterminal/releases
   response:
     body:
-      string: !!binary |
-        H4sIAAAAAAAAA8WYW0/jOBTH3/kUUV532tzaFCKtRovKXqQFtDOwO7OjUeUmpvWQJlnbaYGK777H
-        jp0bDb3Q0TwAwpf/OT52zs/HX04MYw0/hmHmNDYDw5xznrHAslBG+jPC5/m0H6YLi+IsZdZ1hpPz
-        894dSVASYvXvDaYLaIhhTIwRw8zyPXs4cM9c810hjRjDnE2+gwWrkNaG8ixOUdQ2VLSyNy9HGVu/
-        T9ACv4vRFMfP2vKcL+K23Vr4dgwcRzNr6fTtvq11SQSbouOpw5nzeUqhvdg52Ls4nZFE7B5KIopX
-        9zihmIRzJQIDpIzr2f5oMDotZKA1SSM8kV3m5fgv/+9PV3H47Y+ny/Fn72ocDqrpaIk4ou31Fa06
-        rjnDNEwTjhMuT0xuaXvvlz/XtGZUqRWGKyOvHw8hz6yu9W0Jf9e0uzSO0xUIv1ha8/RvMm6Vk6sl
-        FE0kmR2uB5PXVsrnGMINS9YHDHZrRtjWj2ijo3Li2hJ/YLdrigw2leIX30vr09+oqaaCq6sEvFzL
-        BFGXzqcspCTjJE0Oii6rC1QRTukMJeQJHawLAqySk2ntkM2SEysdvIRjf5BQMXNtZZQsUfhYCyHF
-        ISZL2J7DxVsSlb/8McPis7+FI1a1MsLxBEWQzaHvDsUMy/z9rPJOLV18uJjcr8bXF/avtxM2GK/I
-        77dKxoQcNhEJUsg3cxmcthnmE0gOC8IJm4sRJIGTFMeYAlQesI6oqQWKvGloxBhNwYiiO65dVU5m
-        FCsOQQenOVbtIcWIQzCRmGC6tuv2bK/nnt04fuDagTP6Vy8gy6cxeNc11g1suxyr8BMYX2SkNEyP
-        DdTCjOXbZ0MffpU7pjO77tCZvZnbP/zS2Kx0PjmvKzRj3dex7keLWX2Y5B3ELsnjuGangCucogpH
-        cvUlkjJC/qvpaJcdx/dPh96wkuoC0sXD1bfPg6ubS6cpcxiUtN0GlKTHXWDaYTOLFPlypVuw9HLC
-        fkAS8zdgSDq8H4pqSp0AKoK0M4SkZBd6pNY++JFqW6BTiO4NnkJ6I26k4v7IkYoN0Eih3WEjBZqI
-        kQp7kEBKdMJF+bM/YJRnjYnNz3IjWoqt2YwX0acQI4epS+REC6Esi0koiW+lIce8xzgk80U9OcHJ
-        4JI4Kh1FjU7yJPp82z0bDgb+qJa9Iri+yJIhTPNEkOHUd2vd3dAYBd4osB0NAul4nkUdiBkFAzfw
-        3MboKU1XQN9J6ULr/rt/9aCVVAmhyrNmQleYKuOtSwjh/vEKQM0rx/aGA9urb0ZR0KiO3XjlXP9Z
-        V+ji1UfM86yPH3B98KHU6qgY5D5vLKZkz64FlRx8GL82FlVS7838em3NW0j22tT9mNZUOg7dNmoe
-        i3Mt8aMRr6X7fdjXNnJMCra038LDltTbyNgSOz4jX3j7o2j50FswDYW9aTly4AnPG/qv0dJxh/ZW
-        XHr2jSPoB2XWDrhUo8+C4ekPxmXFEw1N+fdrsWCoc+kUKtctjwe7vJsqpdbL3xPJjqSvlFr60zR6
-        FDemf0gCZ4QZF58uDDi5xgKF1x+N8eVvRlmbs1bdDbevUD7A1Iq+Y14f9HsnXIG1IX3KTJ7Ce0F5
-        XXPKy5z5kwPeDMpxPfFveTjNGOUz8eBQtczTlCIRgaoJbp53UMqJB9HaOIyouBlWLTQN77FocrzS
-        HH6ExwsYVDyYwO/nk68n/wOXOYXhXhcAAA==
+      string: "[\n  {\n    \"url\": \"https://api.github.com/repos/OpenBB-finance/OpenBBTerminal/releases/66200959\",\n
+        \   \"assets_url\": \"https://api.github.com/repos/OpenBB-finance/OpenBBTerminal/releases/66200959/assets\",\n
+        \   \"upload_url\": \"https://uploads.github.com/repos/OpenBB-finance/OpenBBTerminal/releases/66200959/assets{?name,label}\",\n
+        \   \"html_url\": \"https://github.com/OpenBB-finance/OpenBBTerminal/releases/tag/v1.2.1\",\n
+        \   \"id\": 66200959,\n    \"author\": {\n      \"login\": \"piiq\",\n      \"id\":
+        11668535,\n      \"node_id\": \"MDQ6VXNlcjExNjY4NTM1\",\n      \"avatar_url\":
+        \"https://avatars.githubusercontent.com/u/11668535?v=4\",\n      \"gravatar_id\":
+        \"\",\n      \"url\": \"https://api.github.com/users/piiq\",\n      \"html_url\":
+        \"https://github.com/piiq\",\n      \"followers_url\": \"https://api.github.com/users/piiq/followers\",\n
+        \     \"following_url\": \"https://api.github.com/users/piiq/following{/other_user}\",\n
+        \     \"gists_url\": \"https://api.github.com/users/piiq/gists{/gist_id}\",\n
+        \     \"starred_url\": \"https://api.github.com/users/piiq/starred{/owner}{/repo}\",\n
+        \     \"subscriptions_url\": \"https://api.github.com/users/piiq/subscriptions\",\n
+        \     \"organizations_url\": \"https://api.github.com/users/piiq/orgs\",\n
+        \     \"repos_url\": \"https://api.github.com/users/piiq/repos\",\n      \"events_url\":
+        \"https://api.github.com/users/piiq/events{/privacy}\",\n      \"received_events_url\":
+        \"https://api.github.com/users/piiq/received_events\",\n      \"type\": \"User\",\n
+        \     \"site_admin\": false\n    },\n    \"node_id\": \"RE_kwDOE0FU_s4D8iV_\",\n
+        \   \"tag_name\": \"v1.2.1\",\n    \"target_commitish\": \"main\",\n    \"name\":
+        \"OpenBB Terminal v1.2.1\",\n    \"draft\": false,\n    \"prerelease\": true,\n
+        \   \"created_at\": \"2022-05-05T22:06:59Z\",\n    \"published_at\": \"2022-05-06T08:27:12Z\",\n
+        \   \"assets\": [\n      {\n        \"url\": \"https://api.github.com/repos/OpenBB-finance/OpenBBTerminal/releases/assets/64645546\",\n
+        \       \"id\": 64645546,\n        \"node_id\": \"RA_kwDOE0FU_s4D2mmq\",\n
+        \       \"name\": \"OpenBB.Terminal.dmg\",\n        \"label\": null,\n        \"uploader\":
+        {\n          \"login\": \"piiq\",\n          \"id\": 11668535,\n          \"node_id\":
+        \"MDQ6VXNlcjExNjY4NTM1\",\n          \"avatar_url\": \"https://avatars.githubusercontent.com/u/11668535?v=4\",\n
+        \         \"gravatar_id\": \"\",\n          \"url\": \"https://api.github.com/users/piiq\",\n
+        \         \"html_url\": \"https://github.com/piiq\",\n          \"followers_url\":
+        \"https://api.github.com/users/piiq/followers\",\n          \"following_url\":
+        \"https://api.github.com/users/piiq/following{/other_user}\",\n          \"gists_url\":
+        \"https://api.github.com/users/piiq/gists{/gist_id}\",\n          \"starred_url\":
+        \"https://api.github.com/users/piiq/starred{/owner}{/repo}\",\n          \"subscriptions_url\":
+        \"https://api.github.com/users/piiq/subscriptions\",\n          \"organizations_url\":
+        \"https://api.github.com/users/piiq/orgs\",\n          \"repos_url\": \"https://api.github.com/users/piiq/repos\",\n
+        \         \"events_url\": \"https://api.github.com/users/piiq/events{/privacy}\",\n
+        \         \"received_events_url\": \"https://api.github.com/users/piiq/received_events\",\n
+        \         \"type\": \"User\",\n          \"site_admin\": false\n        },\n
+        \       \"content_type\": \"application/octet-stream\",\n        \"state\":
+        \"uploaded\",\n        \"size\": 530289904,\n        \"download_count\": 23,\n
+        \       \"created_at\": \"2022-05-06T08:13:12Z\",\n        \"updated_at\":
+        \"2022-05-06T08:16:07Z\",\n        \"browser_download_url\": \"https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v1.2.1/OpenBB.Terminal.dmg\"\n
+        \     },\n      {\n        \"url\": \"https://api.github.com/repos/OpenBB-finance/OpenBBTerminal/releases/assets/64645927\",\n
+        \       \"id\": 64645927,\n        \"node_id\": \"RA_kwDOE0FU_s4D2msn\",\n
+        \       \"name\": \"OpenBB.Terminal.Setup.exe\",\n        \"label\": null,\n
+        \       \"uploader\": {\n          \"login\": \"piiq\",\n          \"id\":
+        11668535,\n          \"node_id\": \"MDQ6VXNlcjExNjY4NTM1\",\n          \"avatar_url\":
+        \"https://avatars.githubusercontent.com/u/11668535?v=4\",\n          \"gravatar_id\":
+        \"\",\n          \"url\": \"https://api.github.com/users/piiq\",\n          \"html_url\":
+        \"https://github.com/piiq\",\n          \"followers_url\": \"https://api.github.com/users/piiq/followers\",\n
+        \         \"following_url\": \"https://api.github.com/users/piiq/following{/other_user}\",\n
+        \         \"gists_url\": \"https://api.github.com/users/piiq/gists{/gist_id}\",\n
+        \         \"starred_url\": \"https://api.github.com/users/piiq/starred{/owner}{/repo}\",\n
+        \         \"subscriptions_url\": \"https://api.github.com/users/piiq/subscriptions\",\n
+        \         \"organizations_url\": \"https://api.github.com/users/piiq/orgs\",\n
+        \         \"repos_url\": \"https://api.github.com/users/piiq/repos\",\n          \"events_url\":
+        \"https://api.github.com/users/piiq/events{/privacy}\",\n          \"received_events_url\":
+        \"https://api.github.com/users/piiq/received_events\",\n          \"type\":
+        \"User\",\n          \"site_admin\": false\n        },\n        \"content_type\":
+        \"application/x-msdownload\",\n        \"state\": \"uploaded\",\n        \"size\":
+        784603663,\n        \"download_count\": 22,\n        \"created_at\": \"2022-05-06T08:17:00Z\",\n
+        \       \"updated_at\": \"2022-05-06T08:21:17Z\",\n        \"browser_download_url\":
+        \"https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v1.2.1/OpenBB.Terminal.Setup.exe\"\n
+        \     }\n    ],\n    \"tarball_url\": \"https://api.github.com/repos/OpenBB-finance/OpenBBTerminal/tarball/v1.2.1\",\n
+        \   \"zipball_url\": \"https://api.github.com/repos/OpenBB-finance/OpenBBTerminal/zipball/v1.2.1\",\n
+        \   \"body\": \"## A big thank you and welcome to our new contributors:\\r\\n@guanquann,
+        @PzaThief, @lepla, @yodawi, @jbushago, @Deadolus, @Avani1994, @dcajasn, @alexferrari88\\r\\n\U0001F680\u2764\uFE0F\u2764\uFE0F\u2764\uFE0F\U0001F680\\r\\n\\r\\n##
+        What's changed:\\r\\n\\r\\n2022-05-06 - Stop treating loss as a small value
+        (#1770) by @piiq\\r\\n2022-05-05 - Bump project version (#1769) by @piiq\\r\\n2022-05-05
+        - Fix bugs for fetching crypto prices on chain and displaying very small numbers
+        in tables  (#1762) by @alexferrari88\\r\\n2022-05-05 - Fix bugs, remove feargeed
+        and improve help messages (#1767) by @piiq\\r\\n2022-05-05 - Fix some linting
+        errors (#1763) by @alexferrari88\\r\\n2022-05-04 - Improves PO controller
+        from UX perspective  (#1760) by @DidierRLopes\\r\\n2022-05-04 - Add Logger
+        Tests (#1707) by @colin99d\\r\\n2022-05-03 - Allow exporting from stocks/ca/hcorr
+        (#1759) by @alexferrari88 \U0001F680\\r\\n2022-05-03 - Polygon stock load
+        (#1757) by @jmaslek\\r\\n2022-05-03 - Improve OpenBB API for investment research
+        reports (#1753) by @DidierRLopes\\r\\n2022-05-03 - New portfolio optimization
+        menu (#1642) by @dcajasn \U0001F680\\r\\n2022-05-03 - Adds an additional ~50
+        global or sector indices; improves global coverage and autocomplete. (#1746)
+        by @deeleeramone\\r\\n2022-05-02 - Add Messari crypto dd commands (#1711)
+        by @jose-donato\\r\\n2022-05-02 - Adding stock price comparison via -c flag
+        (#1745) by @Avani1994 \U0001F680\\r\\n2022-04-30 - minor output formatting
+        (#1749) by @DidierRLopes\\r\\n2022-04-30 - Adding new funds to the avanza
+        fund list (#1750) by @northern-64bit\\r\\n2022-04-30 - Fixing sudo command
+        (#1748) by @Deadolus \U0001F680\\r\\n2022-04-28 - Add command to determine
+        Reddit sentiment about a ticker/company. (#1744) by @jbushago \U0001F680\\r\\n2022-04-27
+        - Try a \\\"smart\\\" load of tickers (#1722) by @jmaslek\\r\\n2022-04-27
+        - Fixing Typing (#1747) by @Chavithra\\r\\n2022-04-27 - Add crypto DD commands
+        (#1710) by @minhhoang1023\\r\\n2022-04-26 - Fix user path (#1737) by @piiq\\r\\n2022-04-25
+        - Update linux&mac anaconda install docs (#1742) by @piiq\\r\\n2022-04-25
+        - fixed spelling (#1739) by @colin99d\\r\\n2022-04-25 - updated Linux installation
+        instructions (#1736) by @deeleeramone\\r\\n2022-04-25 - fixed misspelled f-string
+        (#1738) by @yodawi \U0001F680\\r\\n2022-04-25 - Fix crypto load (#1715) by
+        @jose-donato\\r\\n2022-04-25 - [Bug] Incorrect log for reddit keys. #1733
+        fix (#1735) by @lepla \U0001F680\\r\\n2022-04-22 - Adds ross index (#1723)
+        by @jose-donato\\r\\n2022-04-21 - Default env for packaged apps (#1693) by
+        @piiq\\r\\n2022-04-21 - Add performance table on load (#1724) by @jmaslek\\r\\n2022-04-20
+        - Fx forward rates (#1721) by @jmaslek\\r\\n2022-04-19 - openbb_terminal tests:
+        coverage (61% -> 65%) (#1664) by @colin99d\\r\\n2022-04-18 - Fix ETF screener
+        #1704 (#1708) by @DidierRLopes\\r\\n2022-04-17 - Requests using style fix
+        \ (#1691) by @PzaThief \U0001F680\\r\\n2022-04-17 - drop duplicates (#1705)
+        by @LBolte29\\r\\n2022-04-16 - Tests for Coinbase broker functions (#1696)
+        by @marcelonyc\\r\\n2022-04-15 - Adding everything from Risk Metrics PR based
+        on new main branch (#1666) by @northern-64bit\\r\\n2022-04-15 - Bots plots
+        refactor.. 90% html size decrease! (#1686) by @tehcoderer\\r\\n2022-04-14
+        - Add cost to borrow of stocks. Data from IBKR (#1663) by @guanquann \U0001F680\\r\\n2022-04-14
+        - Deeleeramone indices (#1687) by @deeleeramone\\r\\n\\r\\n\\r\\nWe're proud
+        of our community contributors and staunch supporters of open-source ecosystems.\\r\\nHelp
+        us promote our community by tagging `@openbb_finance` on Twitter with a link
+        to your pull request, and join our Discord server to chat about your contribution!
+        We want to hear about your experience!\",\n    \"reactions\": {\n      \"url\":
+        \"https://api.github.com/repos/OpenBB-finance/OpenBBTerminal/releases/66200959/reactions\",\n
+        \     \"total_count\": 7,\n      \"+1\": 0,\n      \"-1\": 0,\n      \"laugh\":
+        0,\n      \"hooray\": 2,\n      \"confused\": 0,\n      \"heart\": 3,\n      \"rocket\":
+        2,\n      \"eyes\": 0\n    },\n    \"mentions_count\": 21\n  },\n  {\n    \"url\":
+        \"https://api.github.com/repos/OpenBB-finance/OpenBBTerminal/releases/64523207\",\n
+        \   \"assets_url\": \"https://api.github.com/repos/OpenBB-finance/OpenBBTerminal/releases/64523207/assets\",\n
+        \   \"upload_url\": \"https://uploads.github.com/repos/OpenBB-finance/OpenBBTerminal/releases/64523207/assets{?name,label}\",\n
+        \   \"html_url\": \"https://github.com/OpenBB-finance/OpenBBTerminal/releases/tag/v1.1.0\",\n
+        \   \"id\": 64523207,\n    \"author\": {\n      \"login\": \"piiq\",\n      \"id\":
+        11668535,\n      \"node_id\": \"MDQ6VXNlcjExNjY4NTM1\",\n      \"avatar_url\":
+        \"https://avatars.githubusercontent.com/u/11668535?v=4\",\n      \"gravatar_id\":
+        \"\",\n      \"url\": \"https://api.github.com/users/piiq\",\n      \"html_url\":
+        \"https://github.com/piiq\",\n      \"followers_url\": \"https://api.github.com/users/piiq/followers\",\n
+        \     \"following_url\": \"https://api.github.com/users/piiq/following{/other_user}\",\n
+        \     \"gists_url\": \"https://api.github.com/users/piiq/gists{/gist_id}\",\n
+        \     \"starred_url\": \"https://api.github.com/users/piiq/starred{/owner}{/repo}\",\n
+        \     \"subscriptions_url\": \"https://api.github.com/users/piiq/subscriptions\",\n
+        \     \"organizations_url\": \"https://api.github.com/users/piiq/orgs\",\n
+        \     \"repos_url\": \"https://api.github.com/users/piiq/repos\",\n      \"events_url\":
+        \"https://api.github.com/users/piiq/events{/privacy}\",\n      \"received_events_url\":
+        \"https://api.github.com/users/piiq/received_events\",\n      \"type\": \"User\",\n
+        \     \"site_admin\": false\n    },\n    \"node_id\": \"RE_kwDOE0FU_s4D2IvH\",\n
+        \   \"tag_name\": \"v1.1.0\",\n    \"target_commitish\": \"main\",\n    \"name\":
+        \"OpenBB Terminal v1.1.0\",\n    \"draft\": false,\n    \"prerelease\": true,\n
+        \   \"created_at\": \"2022-04-15T00:27:34Z\",\n    \"published_at\": \"2022-04-15T09:25:54Z\",\n
+        \   \"assets\": [\n      {\n        \"url\": \"https://api.github.com/repos/OpenBB-finance/OpenBBTerminal/releases/assets/62653717\",\n
+        \       \"id\": 62653717,\n        \"node_id\": \"RA_kwDOE0FU_s4DvAUV\",\n
+        \       \"name\": \"OpenBB.Terminal.dmg\",\n        \"label\": null,\n        \"uploader\":
+        {\n          \"login\": \"piiq\",\n          \"id\": 11668535,\n          \"node_id\":
+        \"MDQ6VXNlcjExNjY4NTM1\",\n          \"avatar_url\": \"https://avatars.githubusercontent.com/u/11668535?v=4\",\n
+        \         \"gravatar_id\": \"\",\n          \"url\": \"https://api.github.com/users/piiq\",\n
+        \         \"html_url\": \"https://github.com/piiq\",\n          \"followers_url\":
+        \"https://api.github.com/users/piiq/followers\",\n          \"following_url\":
+        \"https://api.github.com/users/piiq/following{/other_user}\",\n          \"gists_url\":
+        \"https://api.github.com/users/piiq/gists{/gist_id}\",\n          \"starred_url\":
+        \"https://api.github.com/users/piiq/starred{/owner}{/repo}\",\n          \"subscriptions_url\":
+        \"https://api.github.com/users/piiq/subscriptions\",\n          \"organizations_url\":
+        \"https://api.github.com/users/piiq/orgs\",\n          \"repos_url\": \"https://api.github.com/users/piiq/repos\",\n
+        \         \"events_url\": \"https://api.github.com/users/piiq/events{/privacy}\",\n
+        \         \"received_events_url\": \"https://api.github.com/users/piiq/received_events\",\n
+        \         \"type\": \"User\",\n          \"site_admin\": false\n        },\n
+        \       \"content_type\": \"application/octet-stream\",\n        \"state\":
+        \"uploaded\",\n        \"size\": 604663626,\n        \"download_count\": 426,\n
+        \       \"created_at\": \"2022-04-15T09:11:11Z\",\n        \"updated_at\":
+        \"2022-04-15T09:13:27Z\",\n        \"browser_download_url\": \"https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v1.1.0/OpenBB.Terminal.dmg\"\n
+        \     },\n      {\n        \"url\": \"https://api.github.com/repos/OpenBB-finance/OpenBBTerminal/releases/assets/62653918\",\n
+        \       \"id\": 62653918,\n        \"node_id\": \"RA_kwDOE0FU_s4DvAXe\",\n
+        \       \"name\": \"OpenBB.Terminal.Setup.exe\",\n        \"label\": null,\n
+        \       \"uploader\": {\n          \"login\": \"piiq\",\n          \"id\":
+        11668535,\n          \"node_id\": \"MDQ6VXNlcjExNjY4NTM1\",\n          \"avatar_url\":
+        \"https://avatars.githubusercontent.com/u/11668535?v=4\",\n          \"gravatar_id\":
+        \"\",\n          \"url\": \"https://api.github.com/users/piiq\",\n          \"html_url\":
+        \"https://github.com/piiq\",\n          \"followers_url\": \"https://api.github.com/users/piiq/followers\",\n
+        \         \"following_url\": \"https://api.github.com/users/piiq/following{/other_user}\",\n
+        \         \"gists_url\": \"https://api.github.com/users/piiq/gists{/gist_id}\",\n
+        \         \"starred_url\": \"https://api.github.com/users/piiq/starred{/owner}{/repo}\",\n
+        \         \"subscriptions_url\": \"https://api.github.com/users/piiq/subscriptions\",\n
+        \         \"organizations_url\": \"https://api.github.com/users/piiq/orgs\",\n
+        \         \"repos_url\": \"https://api.github.com/users/piiq/repos\",\n          \"events_url\":
+        \"https://api.github.com/users/piiq/events{/privacy}\",\n          \"received_events_url\":
+        \"https://api.github.com/users/piiq/received_events\",\n          \"type\":
+        \"User\",\n          \"site_admin\": false\n        },\n        \"content_type\":
+        \"application/x-msdownload\",\n        \"state\": \"uploaded\",\n        \"size\":
+        780226120,\n        \"download_count\": 739,\n        \"created_at\": \"2022-04-15T09:14:04Z\",\n
+        \       \"updated_at\": \"2022-04-15T09:16:32Z\",\n        \"browser_download_url\":
+        \"https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v1.1.0/OpenBB.Terminal.Setup.exe\"\n
+        \     }\n    ],\n    \"tarball_url\": \"https://api.github.com/repos/OpenBB-finance/OpenBBTerminal/tarball/v1.1.0\",\n
+        \   \"zipball_url\": \"https://api.github.com/repos/OpenBB-finance/OpenBBTerminal/zipball/v1.1.0\",\n
+        \   \"body\": \"## Changelog:\\r\\n\\r\\n2022-04-14 - Starts crypto tools
+        menu (#1668) by jose-donato\\r\\n2022-04-13 - Replaces coingecko deprecated
+        commands  (#1650) by jose-donato\\r\\n2022-04-12 - Adding Necessary files
+        to fix the windows installer splash screen (#1653) by andrewkenreich\\r\\n2022-04-10
+        - updated anchor command to display earnings (#1661) by jose-donato\\r\\n2022-04-10
+        - Closing in on 90% Bot Coverage (#1646) by Colin Delahunty\\r\\n2022-04-10
+        - Add a pytest.mark.linux to test_display_defi_tvl (#1665) by Artem Veremey\\r\\n2022-04-09
+        - Incorrect Env Names (#1657) by Colin Delahunty\\r\\n2022-04-08 - Update
+        similarity report (#1651) by Theodore Aptekarev\\r\\n2022-04-08 - Adds QA
+        and Pred to forex (#1652) by jose-donato\\r\\n2022-04-08 - Added fix for alphavantage
+        key and fraud command (#1660) by Colin Delahunty\\r\\n2022-04-08 - Add pytest.mark.linux
+        to test_plot_oi (#1662) by Artem Veremey\\r\\n2022-04-07 - Updating advanced
+        docker documentation to reference the new container (#1655) by Artem Veremey\\r\\n2022-04-07
+        - Fix divcal timeout (#1649) by Theodore Aptekarev\\r\\n2022-04-06 - fix #1645
+        and #1574 (#1639) by LBolte29\\r\\n2022-04-06 - Resolve dependency issues
+        (#1640) by Theodore Aptekarev\\r\\n2022-04-05 - Fixinttests (#1635) by Colin
+        Delahunty\\r\\n2022-04-05 - Fixed import bug in report and dashboard notebooks
+        (#1632) by Colin Delahunty\\r\\n2022-04-05 - Added check for valid Coinbase
+        product, including delisted checking  (#1633) by Marcelo Litovsky\\r\\n2022-04-04
+        - Update test documentation (#1630) by minhhoang1023\\r\\n2022-04-04 - New
+        Open Source menu (#1603) by jose-donato\\r\\n2022-04-04 - Fix logging for
+        users that don't rename parent folder to OpenBBTerminal (#1613) by didierlopes.eth\\r\\n2022-04-04
+        - Fix coin_map_df returns nan (#1627) by minhhoang1023\\r\\n2022-04-03 - add
+        star history (#1619) by didierlopes.eth\\r\\n2022-04-03 - Powerful stock search
+        (#1617) by didierlopes.eth\\r\\n2022-04-03 - Added helpful messages to twitter
+        model (#1622) by meatpi\\r\\n2022-04-03 - Add tests for bots/stocks (#1616)
+        by Colin Delahunty\\r\\n2022-04-02 - Shorten CI Time (#1615) by Colin Delahunty\\r\\n2022-04-02
+        - Rename Gamestonk Terminal to OpenBB Terminal in the web version (#1609)
+        by Arjun V\\r\\n2022-04-02 - Get into oanda submenu (#1611) by Szymon B\u0142aszczy\u0144ski\\r\\n2022-04-02
+        - Expanding bot tests (#1561) by Colin Delahunty\\r\\n2022-04-02 - Edit portfolio
+        `value` for add as well as  a spelling error (#1614) by jmaslek\\r\\n2022-04-01
+        - chore: updated the readme, removed the use of the slang Karen and Gan\u2026
+        (#1606) by Mabel Oza\\r\\n2022-04-01 - Update README.md (#1604) by mrawdon\\r\\n2022-03-31
+        - Logging : fix filter (#1602) by Chavithra\\r\\n2022-03-31 - Bug : fix #1597
+        (#1598) by Chavithra\\r\\n2022-03-31 - Bug : Fix #1600 (#1601) by Chavithra\\r\\n2022-03-31
+        - Add Raspberry PI installation (#1562) by Zedris\\r\\n2022-03-30 - Renaming
+        GamestonkTerminal (#1596) by Chavithra\\r\\n2022-03-30 - Fix API Keys images
+        not showing in README (#1595) by Jeroen Bouma\",\n    \"reactions\": {\n      \"url\":
+        \"https://api.github.com/repos/OpenBB-finance/OpenBBTerminal/releases/64523207/reactions\",\n
+        \     \"total_count\": 21,\n      \"+1\": 11,\n      \"-1\": 0,\n      \"laugh\":
+        0,\n      \"hooray\": 10,\n      \"confused\": 0,\n      \"heart\": 0,\n      \"rocket\":
+        0,\n      \"eyes\": 0\n    }\n  },\n  {\n    \"url\": \"https://api.github.com/repos/OpenBB-finance/OpenBBTerminal/releases/63054292\",\n
+        \   \"assets_url\": \"https://api.github.com/repos/OpenBB-finance/OpenBBTerminal/releases/63054292/assets\",\n
+        \   \"upload_url\": \"https://uploads.github.com/repos/OpenBB-finance/OpenBBTerminal/releases/63054292/assets{?name,label}\",\n
+        \   \"html_url\": \"https://github.com/OpenBB-finance/OpenBBTerminal/releases/tag/v1.0.0\",\n
+        \   \"id\": 63054292,\n    \"author\": {\n      \"login\": \"andrewkenreich\",\n
+        \     \"id\": 23067478,\n      \"node_id\": \"MDQ6VXNlcjIzMDY3NDc4\",\n      \"avatar_url\":
+        \"https://avatars.githubusercontent.com/u/23067478?v=4\",\n      \"gravatar_id\":
+        \"\",\n      \"url\": \"https://api.github.com/users/andrewkenreich\",\n      \"html_url\":
+        \"https://github.com/andrewkenreich\",\n      \"followers_url\": \"https://api.github.com/users/andrewkenreich/followers\",\n
+        \     \"following_url\": \"https://api.github.com/users/andrewkenreich/following{/other_user}\",\n
+        \     \"gists_url\": \"https://api.github.com/users/andrewkenreich/gists{/gist_id}\",\n
+        \     \"starred_url\": \"https://api.github.com/users/andrewkenreich/starred{/owner}{/repo}\",\n
+        \     \"subscriptions_url\": \"https://api.github.com/users/andrewkenreich/subscriptions\",\n
+        \     \"organizations_url\": \"https://api.github.com/users/andrewkenreich/orgs\",\n
+        \     \"repos_url\": \"https://api.github.com/users/andrewkenreich/repos\",\n
+        \     \"events_url\": \"https://api.github.com/users/andrewkenreich/events{/privacy}\",\n
+        \     \"received_events_url\": \"https://api.github.com/users/andrewkenreich/received_events\",\n
+        \     \"type\": \"User\",\n      \"site_admin\": false\n    },\n    \"node_id\":
+        \"RE_kwDOE0FU_s4DwiHU\",\n    \"tag_name\": \"v1.0.0\",\n    \"target_commitish\":
+        \"installer-fixes\",\n    \"name\": \"OpenBB Terminal v1.0.0\",\n    \"draft\":
+        false,\n    \"prerelease\": true,\n    \"created_at\": \"2022-03-29T16:20:17Z\",\n
+        \   \"published_at\": \"2022-03-29T16:22:00Z\",\n    \"assets\": [\n      {\n
+        \       \"url\": \"https://api.github.com/repos/OpenBB-finance/OpenBBTerminal/releases/assets/60956609\",\n
+        \       \"id\": 60956609,\n        \"node_id\": \"RA_kwDOE0FU_s4Doh_B\",\n
+        \       \"name\": \"OpenBB.Terminal.dmg\",\n        \"label\": null,\n        \"uploader\":
+        {\n          \"login\": \"piiq\",\n          \"id\": 11668535,\n          \"node_id\":
+        \"MDQ6VXNlcjExNjY4NTM1\",\n          \"avatar_url\": \"https://avatars.githubusercontent.com/u/11668535?v=4\",\n
+        \         \"gravatar_id\": \"\",\n          \"url\": \"https://api.github.com/users/piiq\",\n
+        \         \"html_url\": \"https://github.com/piiq\",\n          \"followers_url\":
+        \"https://api.github.com/users/piiq/followers\",\n          \"following_url\":
+        \"https://api.github.com/users/piiq/following{/other_user}\",\n          \"gists_url\":
+        \"https://api.github.com/users/piiq/gists{/gist_id}\",\n          \"starred_url\":
+        \"https://api.github.com/users/piiq/starred{/owner}{/repo}\",\n          \"subscriptions_url\":
+        \"https://api.github.com/users/piiq/subscriptions\",\n          \"organizations_url\":
+        \"https://api.github.com/users/piiq/orgs\",\n          \"repos_url\": \"https://api.github.com/users/piiq/repos\",\n
+        \         \"events_url\": \"https://api.github.com/users/piiq/events{/privacy}\",\n
+        \         \"received_events_url\": \"https://api.github.com/users/piiq/received_events\",\n
+        \         \"type\": \"User\",\n          \"site_admin\": false\n        },\n
+        \       \"content_type\": \"application/octet-stream\",\n        \"state\":
+        \"uploaded\",\n        \"size\": 602954467,\n        \"download_count\": 1344,\n
+        \       \"created_at\": \"2022-03-29T17:37:01Z\",\n        \"updated_at\":
+        \"2022-03-29T17:42:32Z\",\n        \"browser_download_url\": \"https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v1.0.0/OpenBB.Terminal.dmg\"\n
+        \     },\n      {\n        \"url\": \"https://api.github.com/repos/OpenBB-finance/OpenBBTerminal/releases/assets/61035403\",\n
+        \       \"id\": 61035403,\n        \"node_id\": \"RA_kwDOE0FU_s4Do1OL\",\n
+        \       \"name\": \"OpenBB.Terminal.Setup.exe\",\n        \"label\": null,\n
+        \       \"uploader\": {\n          \"login\": \"andrewkenreich\",\n          \"id\":
+        23067478,\n          \"node_id\": \"MDQ6VXNlcjIzMDY3NDc4\",\n          \"avatar_url\":
+        \"https://avatars.githubusercontent.com/u/23067478?v=4\",\n          \"gravatar_id\":
+        \"\",\n          \"url\": \"https://api.github.com/users/andrewkenreich\",\n
+        \         \"html_url\": \"https://github.com/andrewkenreich\",\n          \"followers_url\":
+        \"https://api.github.com/users/andrewkenreich/followers\",\n          \"following_url\":
+        \"https://api.github.com/users/andrewkenreich/following{/other_user}\",\n
+        \         \"gists_url\": \"https://api.github.com/users/andrewkenreich/gists{/gist_id}\",\n
+        \         \"starred_url\": \"https://api.github.com/users/andrewkenreich/starred{/owner}{/repo}\",\n
+        \         \"subscriptions_url\": \"https://api.github.com/users/andrewkenreich/subscriptions\",\n
+        \         \"organizations_url\": \"https://api.github.com/users/andrewkenreich/orgs\",\n
+        \         \"repos_url\": \"https://api.github.com/users/andrewkenreich/repos\",\n
+        \         \"events_url\": \"https://api.github.com/users/andrewkenreich/events{/privacy}\",\n
+        \         \"received_events_url\": \"https://api.github.com/users/andrewkenreich/received_events\",\n
+        \         \"type\": \"User\",\n          \"site_admin\": false\n        },\n
+        \       \"content_type\": \"application/x-msdownload\",\n        \"state\":
+        \"uploaded\",\n        \"size\": 671429356,\n        \"download_count\": 2129,\n
+        \       \"created_at\": \"2022-03-30T12:32:20Z\",\n        \"updated_at\":
+        \"2022-03-30T12:39:58Z\",\n        \"browser_download_url\": \"https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v1.0.0/OpenBB.Terminal.Setup.exe\"\n
+        \     }\n    ],\n    \"tarball_url\": \"https://api.github.com/repos/OpenBB-finance/OpenBBTerminal/tarball/v1.0.0\",\n
+        \   \"zipball_url\": \"https://api.github.com/repos/OpenBB-finance/OpenBBTerminal/zipball/v1.0.0\",\n
+        \   \"body\": \"Windows EXE and macOS DMG installers v1.0.0\",\n    \"reactions\":
+        {\n      \"url\": \"https://api.github.com/repos/OpenBB-finance/OpenBBTerminal/releases/63054292/reactions\",\n
+        \     \"total_count\": 17,\n      \"+1\": 4,\n      \"-1\": 0,\n      \"laugh\":
+        0,\n      \"hooray\": 0,\n      \"confused\": 0,\n      \"heart\": 0,\n      \"rocket\":
+        13,\n      \"eyes\": 0\n    }\n  }\n]\n"
     headers:
       Access-Control-Allow-Origin:
       - '*'
@@ -162,9 +484,9 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Mon, 04 Apr 2022 14:14:04 GMT
-      ETag:
-      - W/"d1c1618657212da1eecd15d60968c6723ef60f79f6a248cce72e769806048a43"
+      - Sat, 07 May 2022 16:40:18 GMT
+      Etag:
+      - W/"1860340bd94084952e93c449ce334958adda1422118daab4d6cd23c18e3b1cba"
       Referrer-Policy:
       - origin-when-cross-origin, strict-origin-when-cross-origin
       Server:
@@ -185,24 +507,25 @@ interactions:
       X-GitHub-Media-Type:
       - github.v3; param=star; format=json
       X-GitHub-Request-Id:
-      - A6C7:13CA:111C7E:118959:624AFD2C
+      - 652F:9732:99AB0C:9CAD1D:6276A0F2
       X-OAuth-Scopes:
       - ''
       X-RateLimit-Limit:
       - '5000'
       X-RateLimit-Remaining:
-      - '4780'
+      - '4629'
       X-RateLimit-Reset:
-      - '1649085105'
+      - '1651942760'
       X-RateLimit-Resource:
       - core
       X-RateLimit-Used:
-      - '220'
+      - '371'
       X-XSS-Protection:
       - '0'
       github-authentication-token-expiration:
-      - 2022-04-30 16:49:13 UTC
+      - 2022-06-06 04:34:24 UTC
     status:
       code: 200
       message: OK
+    url: https://api.github.com/repos/openbb-finance/openbbterminal/releases
 version: 1
