@@ -125,11 +125,12 @@ Ticker: [/param] {self.ticker} [cmds]
     splits        stock split and reverse split events since IPO
     web           open web browser of the company
     hq            open HQ location of the company{is_foreign_end}
+[src][Alpha Vantage / Polygon][/src]
+    income        income statements of the company
+    balance       balance sheet of the company
 [src][Alpha Vantage][/src]
     overview      overview of the company
     key           company key metrics
-    income        income statements of the company
-    balance       balance sheet of the company
     cash          cash flow of the company
     earnings      earnings dates and reported EPS
     fraud         key fraud ratios
@@ -527,7 +528,7 @@ Ticker: [/param] {self.ticker} [cmds]
             action="store",
             dest="limit",
             type=check_positive,
-            default=1,
+            default=5,
             help="Number of latest years/quarters.",
         )
         parser.add_argument(
@@ -542,7 +543,7 @@ Ticker: [/param] {self.ticker} [cmds]
             "-s",
             "--source",
             help="Source to get fundamentals from",
-            default="polygon",
+            default="av",
             choices=["polygon", "av"],
             dest="source",
         )
@@ -611,7 +612,7 @@ Ticker: [/param] {self.ticker} [cmds]
             "-s",
             "--source",
             help="Source to get fundamentals from",
-            default="polygon",
+            default="av",
             choices=["polygon", "av"],
             dest="source",
         )
