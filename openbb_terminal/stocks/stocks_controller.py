@@ -4,6 +4,8 @@ __docformat__ = "numpy"
 import argparse
 import logging
 import os
+import types
+from collections.abc import Iterable
 from datetime import datetime, timedelta
 from typing import List
 
@@ -178,7 +180,7 @@ Stock: [/param]{stock_text}
             "--country",
             default="",
             nargs=argparse.ONE_OR_MORE,
-            action=choiceCheckAfterAction(self.country),
+            action=choiceCheckAfterAction(AllowArgsWithWhiteSpace, self.country),
             dest="country",
             help="Search by country to find stocks matching the criteria.",
         )
@@ -187,7 +189,7 @@ Stock: [/param]{stock_text}
             "--sector",
             default="",
             nargs=argparse.ONE_OR_MORE,
-            action=choiceCheckAfterAction(self.sector),
+            action=choiceCheckAfterAction(AllowArgsWithWhiteSpace, self.sector),
             dest="sector",
             help="Search by sector to find stocks matching the criteria.",
         )
@@ -196,7 +198,7 @@ Stock: [/param]{stock_text}
             "--industry",
             default="",
             nargs=argparse.ONE_OR_MORE,
-            action=choiceCheckAfterAction(self.industry),
+            action=choiceCheckAfterAction(AllowArgsWithWhiteSpace, self.industry),
             dest="industry",
             help="Search by industry to find stocks matching the criteria.",
         )
@@ -676,25 +678,61 @@ Stock: [/param]{stock_text}
             )
 
 
-def choiceCheckAfterAction(choice):
+def choiceCheckAfterAction(action=None, choices=None):
     """return an action class that checks choice after action call
     for argument of argparse.ArgumentParser.add_argument function
 
     Parameters
     ----------
-    choice : Iterable
-        A container of values that should be allowed
+    action : Union[class, function]
+        Action for set args before check choices.
+        If action is class, it must implement argparse.Action methods
+        If action is function, it takes 4 args(parser, namespace, values, option_string)
+        and needs to return value to set dest
+
+    choices : Union[Iterable, function]
+        A container of values that should be allowed.
+        If choices is function, it takes 1 args(value) to check and
+        return bool that value is allowed or not
 
     Returns
     -------
     Class
-        Class extended class AllowArgsWithWhiteSpace(argparse.Action)
+        Class extended argparse.Action
     """
 
-    class ActionClass(AllowArgsWithWhiteSpace):
-        def __call__(self, parser, namespace, values, option_string=None):
-            super().__call__(parser, namespace, values, option_string)
-            if getattr(namespace, self.dest) not in choice:
-                raise ValueError(f"{getattr(namespace, self.dest)} is not in {choice}")
+    if isinstance(choices, Iterable):
+        choiceChecker = lambda x: x in choices
+    elif isinstance(choices, types.FunctionType):
+        choiceChecker = choices
+    else:
+        raise NotImplementedError("choices argument must be iterable or function")
+
+    if isinstance(action, type):
+
+        class ActionClass(action):
+            def __call__(self, parser, namespace, values, option_string=None):
+                super().__call__(parser, namespace, values, option_string)
+                if not choiceChecker(getattr(namespace, self.dest)):
+                    raise ValueError(
+                        f"{getattr(namespace, self.dest)} is not in {choices}"
+                    )
+
+    elif isinstance(action, types.FunctionType):
+
+        class ActionClass(argparse.Action):
+            def __call__(self, parser, namespace, values, option_string=None):
+                setattr(
+                    namespace,
+                    self.dest,
+                    action(parser, namespace, values, option_string),
+                )
+                if not choiceChecker(getattr(namespace, self.dest)):
+                    raise ValueError(
+                        f"{getattr(namespace, self.dest)} is not in {choices}"
+                    )
+
+    else:
+        raise NotImplementedError("action argument must be class or function")
 
     return ActionClass
