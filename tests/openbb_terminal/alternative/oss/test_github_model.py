@@ -17,35 +17,38 @@ def vcr_config():
     }
 
 
+@pytest.mark.asyncio
 @pytest.mark.vcr
 @pytest.mark.parametrize(
     "repo",
     [("openbb-finance/openbbterminal")],
 )
-def test_get_repo_summary(repo, recorder):
-    df = github_model.get_repo_summary(
+async def test_get_repo_summary(repo, recorder):
+    df = await github_model.get_repo_summary(
         repo=repo,
     )
     recorder.capture(df)
 
 
+@pytest.mark.asyncio
 @pytest.mark.vcr
 @pytest.mark.parametrize(
     "repo",
     [("openbb-finance/openbbterminal")],
 )
-def test_get_stars_history(repo, recorder):
-    df = github_model.get_stars_history(
+async def test_get_stars_history(repo, recorder):
+    df = await github_model.get_stars_history(
         repo=repo,
     )
     recorder.capture(df)
 
 
+@pytest.mark.asyncio
 @pytest.mark.vcr
 @pytest.mark.parametrize(
     "sortby,top,categories",
     [("stars", 10, "")],
 )
-def test_get_top_repos(sortby, top, categories, recorder):
-    df = github_model.get_top_repos(sortby, top, categories)
+async def test_get_top_repos(sortby, top, categories, recorder):
+    df = await github_model.get_top_repos(sortby, top, categories)
     recorder.capture(df)
