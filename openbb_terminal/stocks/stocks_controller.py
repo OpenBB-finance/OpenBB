@@ -4,8 +4,6 @@ __docformat__ = "numpy"
 import argparse
 import logging
 import os
-import types
-from collections.abc import Iterable
 from datetime import datetime, timedelta
 from typing import List
 
@@ -26,6 +24,7 @@ from openbb_terminal.helper_funcs import (
     valid_date,
 )
 from openbb_terminal.helper_classes import AllowArgsWithWhiteSpace
+from openbb_terminal.helper_funcs import choiceCheckAfterAction
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
 from openbb_terminal.rich_config import console
@@ -677,62 +676,3 @@ Stock: [/param]{stock_text}
                 "\n",
             )
 
-
-def choiceCheckAfterAction(action=None, choices=None):
-    """return an action class that checks choice after action call
-    for argument of argparse.ArgumentParser.add_argument function
-
-    Parameters
-    ----------
-    action : Union[class, function]
-        Action for set args before check choices.
-        If action is class, it must implement argparse.Action methods
-        If action is function, it takes 4 args(parser, namespace, values, option_string)
-        and needs to return value to set dest
-
-    choices : Union[Iterable, function]
-        A container of values that should be allowed.
-        If choices is function, it takes 1 args(value) to check and
-        return bool that value is allowed or not
-
-    Returns
-    -------
-    Class
-        Class extended argparse.Action
-    """
-
-    if isinstance(choices, Iterable):
-        choiceChecker = lambda x: x in choices
-    elif isinstance(choices, types.FunctionType):
-        choiceChecker = choices
-    else:
-        raise NotImplementedError("choices argument must be iterable or function")
-
-    if isinstance(action, type):
-
-        class ActionClass(action):
-            def __call__(self, parser, namespace, values, option_string=None):
-                super().__call__(parser, namespace, values, option_string)
-                if not choiceChecker(getattr(namespace, self.dest)):
-                    raise ValueError(
-                        f"{getattr(namespace, self.dest)} is not in {choices}"
-                    )
-
-    elif isinstance(action, types.FunctionType):
-
-        class ActionClass(argparse.Action):
-            def __call__(self, parser, namespace, values, option_string=None):
-                setattr(
-                    namespace,
-                    self.dest,
-                    action(parser, namespace, values, option_string),
-                )
-                if not choiceChecker(getattr(namespace, self.dest)):
-                    raise ValueError(
-                        f"{getattr(namespace, self.dest)} is not in {choices}"
-                    )
-
-    else:
-        raise NotImplementedError("action argument must be class or function")
-
-    return ActionClass
