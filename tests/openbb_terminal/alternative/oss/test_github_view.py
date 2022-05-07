@@ -17,36 +17,39 @@ def vcr_config():
     }
 
 
+@pytest.mark.asyncio
 @pytest.mark.vcr
 @pytest.mark.record_stdout
-def test_display_star_history(mocker):
+async def test_display_star_history(mocker):
     # MOCK EXPORT_DATA
     mocker.patch(target="openbb_terminal.alternative.oss.github_view.export_data")
 
     # MOCK VISUALIZE_OUTPUT
     mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
 
-    github_view.display_star_history(repo="openbb-finance/openbbterminal")
+    await github_view.display_star_history(repo="openbb-finance/openbbterminal")
 
 
+@pytest.mark.asyncio
 @pytest.mark.vcr
 @pytest.mark.record_stdout
-def test_display_top_repos(mocker):
+async def test_display_top_repos(mocker):
     # MOCK EXPORT_DATA
     mocker.patch(target="openbb_terminal.alternative.oss.github_view.export_data")
 
     # MOCK VISUALIZE_OUTPUT
     mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
 
-    github_view.display_top_repos(sortby="stars", categories="", limit=10)
+    await github_view.display_top_repos(sortby="stars", categories="", limit=10)
 
 
+@pytest.mark.asyncio
 @pytest.mark.vcr
 @pytest.mark.record_stdout
-def test_display_repo_summary(mocker):
+async def test_display_repo_summary(mocker):
     # MOCK EXPORT_DATA
     mocker.patch(target="openbb_terminal.alternative.oss.github_view.export_data")
 
-    github_view.display_repo_summary(
+    await github_view.display_repo_summary(
         repo="openbb-finance/openbbterminal",
     )
