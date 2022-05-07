@@ -1478,8 +1478,10 @@ def choice_check_after_action(action=None, choices=None):
     """
 
     if isinstance(choices, Iterable):
-        def choice_checker(value): 
+
+        def choice_checker(value):
             return value in choices
+
     elif isinstance(choices, types.FunctionType):
         choice_checker = choices
     else:
