@@ -1478,9 +1478,10 @@ def choice_check_after_action(action=None, choices=None):
     """
 
     if isinstance(choices, Iterable):
-        choiceChecker = lambda x: x in choices
+        def choice_checker(value): 
+            return value in choices
     elif isinstance(choices, types.FunctionType):
-        choiceChecker = choices
+        choice_checker = choices
     else:
         raise NotImplementedError("choices argument must be iterable or function")
 
@@ -1489,7 +1490,7 @@ def choice_check_after_action(action=None, choices=None):
         class ActionClass(action):
             def __call__(self, parser, namespace, values, option_string=None):
                 super().__call__(parser, namespace, values, option_string)
-                if not choiceChecker(getattr(namespace, self.dest)):
+                if not choice_checker(getattr(namespace, self.dest)):
                     raise ValueError(
                         f"{getattr(namespace, self.dest)} is not in {choices}"
                     )
@@ -1503,7 +1504,7 @@ def choice_check_after_action(action=None, choices=None):
                     self.dest,
                     action(parser, namespace, values, option_string),
                 )
-                if not choiceChecker(getattr(namespace, self.dest)):
+                if not choice_checker(getattr(namespace, self.dest)):
                     raise ValueError(
                         f"{getattr(namespace, self.dest)} is not in {choices}"
                     )
