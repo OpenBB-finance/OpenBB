@@ -17,6 +17,7 @@ class LineAnnotateDrawer:
     def __init__(self, ax: matplotlib.axes = None):
         self.ax = ax
 
+    # pylint: disable=import-outside-toplevel
     def draw_lines_and_annotate(self):
         """Draw lines."""
         from openbb_terminal.rich_config import console
