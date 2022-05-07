@@ -1454,7 +1454,7 @@ def camel_case_split(string: str) -> str:
     return " ".join(results).title()
 
 
-def choiceCheckAfterAction(action=None, choices=None):
+def choice_check_after_action(action=None, choices=None):
     """return an action class that checks choice after action call
     for argument of argparse.ArgumentParser.add_argument function
 

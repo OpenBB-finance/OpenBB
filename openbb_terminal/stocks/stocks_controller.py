@@ -24,7 +24,7 @@ from openbb_terminal.helper_funcs import (
     valid_date,
 )
 from openbb_terminal.helper_classes import AllowArgsWithWhiteSpace
-from openbb_terminal.helper_funcs import choiceCheckAfterAction
+from openbb_terminal.helper_funcs import choice_check_after_action
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
 from openbb_terminal.rich_config import console
@@ -179,7 +179,7 @@ Stock: [/param]{stock_text}
             "--country",
             default="",
             nargs=argparse.ONE_OR_MORE,
-            action=choiceCheckAfterAction(AllowArgsWithWhiteSpace, self.country),
+            action=choice_check_after_action(AllowArgsWithWhiteSpace, self.country),
             dest="country",
             help="Search by country to find stocks matching the criteria.",
         )
@@ -188,7 +188,7 @@ Stock: [/param]{stock_text}
             "--sector",
             default="",
             nargs=argparse.ONE_OR_MORE,
-            action=choiceCheckAfterAction(AllowArgsWithWhiteSpace, self.sector),
+            action=choice_check_after_action(AllowArgsWithWhiteSpace, self.sector),
             dest="sector",
             help="Search by sector to find stocks matching the criteria.",
         )
@@ -197,7 +197,7 @@ Stock: [/param]{stock_text}
             "--industry",
             default="",
             nargs=argparse.ONE_OR_MORE,
-            action=choiceCheckAfterAction(AllowArgsWithWhiteSpace, self.industry),
+            action=choice_check_after_action(AllowArgsWithWhiteSpace, self.industry),
             dest="industry",
             help="Search by industry to find stocks matching the criteria.",
         )
@@ -675,4 +675,3 @@ Stock: [/param]{stock_text}
                 "Predict is disabled. Check ENABLE_PREDICT flag on feature_flags.py",
                 "\n",
             )
-
