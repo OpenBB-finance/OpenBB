@@ -12,6 +12,7 @@ from matplotlib import font_manager, ticker
 
 from openbb_terminal.rich_config import console
 
+
 class LineAnnotateDrawer:
     """Line drawing class."""
 
@@ -20,7 +21,9 @@ class LineAnnotateDrawer:
 
     def draw_lines_and_annotate(self):
         """Draw lines."""
-        console.print("Click twice for annotation.\nClose window to keep using terminal.\n")
+        console.print(
+            "Click twice for annotation.\nClose window to keep using terminal.\n"
+        )
 
         while True:
             xy = plt.ginput(2)
