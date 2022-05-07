@@ -1517,3 +1517,29 @@ def choice_check_after_action(action=None, choices=None):
         raise NotImplementedError("action argument must be class or function")
 
     return ActionClass
+
+
+def is_valid_axes_count(
+    external_axes, n, custom_text=None, prefix_text=None, suffix_text=None
+):
+    if custom_text:
+        print_text = custom_text
+    elif isinstance(n, Iterable):
+        start_text = "Expected list of "
+        count_option_text = " or ".join(
+            [f"{v} axis item{'s' if n>1 else ''}" for v in n]
+        )
+        print_text = start_text + count_option_text + "."
+    else:
+        print_text = f"Expected list of {n} axis item{'s' if n>1 else ''}."
+
+    if prefix_text:
+        print_text = f"{prefix_text} {print_text}"
+    if suffix_text:
+        print_text = f"{suffix_text} {print_text}"
+
+    if len(external_axes) != n:
+        logger.error(print_text)
+        console.print(f"[red]{print_text}\n[/red]")
+        return False
+    return True

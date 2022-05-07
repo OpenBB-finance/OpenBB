@@ -10,7 +10,11 @@ import mplfinance as mpf
 import matplotlib.pyplot as plt
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import export_data, print_rich_table
+from openbb_terminal.helper_funcs import (
+    export_data,
+    print_rich_table,
+    is_valid_axes_count,
+)
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.options import chartexchange_model
 from openbb_terminal.config_terminal import theme
@@ -88,14 +92,12 @@ def display_raw(
         lambda_long_number_format_y_axis(df, "Volume", ax)
         theme.visualize_output(force_tight_layout=False)
         ax[0].legend()
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of 1 axis items.")
-            console.print("[red]Expected list of 1 axis items.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 1):
         (ax1,) = external_axes
         candle_chart_kwargs["ax"] = ax1
         mpf.plot(df, **candle_chart_kwargs)
+    else:
+        return
 
     export_data(
         export,

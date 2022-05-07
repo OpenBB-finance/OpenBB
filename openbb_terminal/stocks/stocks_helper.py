@@ -33,6 +33,7 @@ from openbb_terminal.helper_funcs import (
     get_user_timezone_or_invalid,
     print_rich_table,
     lambda_long_number_format_y_axis,
+    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
 
@@ -650,15 +651,13 @@ def display_candle(
                 ax[0].legend(lines, labels)
 
             cfg.theme.visualize_output(force_tight_layout=False)
-        else:
-            if len(external_axes) != 2:
-                logger.error("Expected list of one axis item.")
-                console.print("[red]Expected list of 2 axis items.\n[/red]")
-                return
+        elif is_valid_axes_count(external_axes, 2):
             ax1, ax2 = external_axes
             candle_chart_kwargs["ax"] = ax1
             candle_chart_kwargs["volume"] = ax2
             mpf.plot(df_stock, **candle_chart_kwargs)
+        else:
+            return
 
     else:
         fig = make_subplots(

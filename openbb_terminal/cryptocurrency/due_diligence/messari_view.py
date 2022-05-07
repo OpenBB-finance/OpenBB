@@ -36,6 +36,7 @@ from openbb_terminal.helper_funcs import (
     lambda_long_number_format,
     plot_autoscale,
     print_rich_table,
+    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
 from openbb_terminal.cryptocurrency.dataframe_helpers import prettify_paragraph
@@ -137,12 +138,10 @@ def display_messari_timeseries(
         # This plot has 1 axis
         if not external_axes:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
-        else:
-            if len(external_axes) != 1:
-                logger.error("Expected list of one axis item.")
-                console.print("[red]Expected list of one axis item./n[/red]")
-                return
+        elif is_valid_axes_count(external_axes, 1):
             (ax,) = external_axes
+        else:
+            return
 
         ax.get_yaxis().set_major_formatter(
             ticker.FuncFormatter(lambda x, _: lambda_long_number_format(x))
@@ -203,12 +202,10 @@ def display_marketcap_dominance(
         # This plot has 1 axis
         if not external_axes:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
-        else:
-            if len(external_axes) != 1:
-                logger.error("Expected list of one axis item.")
-                console.print("[red]Expected list of one axis item./n[/red]")
-                return
+        elif is_valid_axes_count(external_axes, 1):
             (ax,) = external_axes
+        else:
+            return
 
         ax.plot(df.index, df["values"])
 
@@ -311,12 +308,10 @@ def display_roadmap(
         if not df_prices.empty:
             if not external_axes:
                 _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
-            else:
-                if len(external_axes) != 1:
-                    logger.error("Expected list of one axis item.")
-                    console.print("[red]Expected list of one axis item./n[/red]")
-                    return
+            elif is_valid_axes_count(external_axes, 1):
                 (ax,) = external_axes
+            else:
+                return
 
             roadmap_dates = np.array(
                 pd.to_datetime(df["Date"], format="%Y-%m-%d", errors="coerce")
@@ -392,7 +387,7 @@ def display_tokenomics(
     export : str
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+        External axes (2 axes are expected in the list), by default None
     """
     df, circ_df = get_tokenomics(coin, coingecko_symbol)
 
@@ -407,12 +402,10 @@ def display_tokenomics(
         if not external_axes:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
             ax2 = ax.twinx()
-        else:
-            if len(external_axes) != 1:
-                logger.error("Expected list of one axis item.")
-                console.print("[red]Expected list of one axis item./n[/red]")
-                return
+        elif is_valid_axes_count(external_axes, 2):
             (ax, ax2) = external_axes
+        else:
+            return
         df_prices, _ = cryptocurrency_helpers.load_yf_data(
             symbol=coin,
             currency="USD",
