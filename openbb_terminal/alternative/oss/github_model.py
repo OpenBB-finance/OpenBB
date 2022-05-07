@@ -138,7 +138,7 @@ async def get_stars_history(repo: str):
 
 
 @log_start_end(log=logger)
-def get_top_repos(sortby: str, top: int, categories: str) -> pd.DataFrame:
+async def get_top_repos(sortby: str, top: int, categories: str) -> pd.DataFrame:
     """Get repos sorted by stars or forks. Can be filtered by categories
 
     Parameters
@@ -167,12 +167,12 @@ def get_top_repos(sortby: str, top: int, categories: str) -> pd.DataFrame:
         ]
     )
     if top <= 100:
-        df2 = search_repos(sortby=sortby, page=1, categories=categories)
+        df2 = await search_repos(sortby=sortby, page=1, categories=categories)
         df = pd.concat([df, df2], ignore_index=True)
     else:
         p = 2
         while top > 0:
-            df2 = search_repos(sortby=sortby, page=p, categories=categories)
+            df2 = await search_repos(sortby=sortby, page=p, categories=categories)
             df = pd.concat([df, df2], ignore_index=True)
             top -= 100
             p += 1
