@@ -3,22 +3,18 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Optional, List
+from typing import List, Optional
 
 from matplotlib import pyplot as plt
 from matplotlib import ticker
-from openbb_terminal.config_terminal import theme
-from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import (
-    export_data,
-    plot_autoscale,
-    print_rich_table,
-)
 from openbb_terminal.alternative.oss import github_model
+from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.cryptocurrency.dataframe_helpers import (
     lambda_long_number_format_with_type_check,
 )
+from openbb_terminal.decorators import log_start_end
+from openbb_terminal.helper_funcs import export_data, plot_autoscale, print_rich_table
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -64,7 +60,7 @@ async def display_star_history(
 
 
 @log_start_end(log=logger)
-def display_top_repos(
+async def display_top_repos(
     sortby: str,
     categories: str,
     limit: int,
@@ -86,7 +82,9 @@ def display_top_repos(
     external_axes : Optional[List[plt.Axes]], optional
     External axes (1 axis is expected in the list), by default None
     """
-    df = github_model.get_top_repos(categories=categories, sortby=sortby, top=limit)
+    df = await github_model.get_top_repos(
+        categories=categories, sortby=sortby, top=limit
+    )
     if not df.empty:
         if sortby == "forks":
             df = df.sort_values(by="forks_count")
@@ -128,7 +126,7 @@ def display_top_repos(
 
 
 @log_start_end(log=logger)
-def display_repo_summary(repo: str, export: str = "") -> None:
+async def display_repo_summary(repo: str, export: str = "") -> None:
     """Display repo summary [Source: https://api.github.com]
 
     Parameters
@@ -138,7 +136,7 @@ def display_repo_summary(repo: str, export: str = "") -> None:
     export : str
     Export dataframe data to csv,json,xlsx file
     """
-    df = github_model.get_repo_summary(repo)
+    df = await github_model.get_repo_summary(repo)
     if not df.empty:
         print_rich_table(
             df, headers=list(df.columns), show_index=False, title="Repo summary"
