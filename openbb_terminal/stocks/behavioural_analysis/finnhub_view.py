@@ -19,7 +19,6 @@ from openbb_terminal.helper_funcs import (
     plot_autoscale,
     is_valid_axes_count,
 )
-from openbb_terminal.rich_config import console
 from openbb_terminal.decorators import check_api_key
 
 logger = logging.getLogger(__name__)

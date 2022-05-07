@@ -19,7 +19,6 @@ from openbb_terminal.helper_funcs import (
     print_rich_table,
     is_valid_axes_count,
 )
-from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.due_diligence import finnhub_model
 
 logger = logging.getLogger(__name__)

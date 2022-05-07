@@ -20,8 +20,6 @@ from openbb_terminal.helper_funcs import (
     is_valid_axes_count,
 )
 
-from openbb_terminal.rich_config import console
-
 
 logger = logging.getLogger(__name__)
 
