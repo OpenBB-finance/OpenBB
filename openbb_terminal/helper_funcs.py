@@ -6,6 +6,8 @@ import logging
 from pathlib import Path
 from typing import List, Tuple, Union
 from datetime import datetime, timedelta, date as d
+import types
+from collections.abc import Iterable
 import os
 import random
 import re
@@ -1452,3 +1454,66 @@ def camel_case_split(string: str) -> str:
 
     results = ["".join(word) for word in words]
     return " ".join(results).title()
+
+
+def choice_check_after_action(action=None, choices=None):
+    """return an action class that checks choice after action call
+    for argument of argparse.ArgumentParser.add_argument function
+
+    Parameters
+    ----------
+    action : Union[class, function]
+        Action for set args before check choices.
+        If action is class, it must implement argparse.Action methods
+        If action is function, it takes 4 args(parser, namespace, values, option_string)
+        and needs to return value to set dest
+
+    choices : Union[Iterable, function]
+        A container of values that should be allowed.
+        If choices is function, it takes 1 args(value) to check and
+        return bool that value is allowed or not
+
+    Returns
+    -------
+    Class
+        Class extended argparse.Action
+    """
+
+    if isinstance(choices, Iterable):
+
+        def choice_checker(value):
+            return value in choices
+
+    elif isinstance(choices, types.FunctionType):
+        choice_checker = choices
+    else:
+        raise NotImplementedError("choices argument must be iterable or function")
+
+    if isinstance(action, type):
+
+        class ActionClass(action):
+            def __call__(self, parser, namespace, values, option_string=None):
+                super().__call__(parser, namespace, values, option_string)
+                if not choice_checker(getattr(namespace, self.dest)):
+                    raise ValueError(
+                        f"{getattr(namespace, self.dest)} is not in {choices}"
+                    )
+
+    elif isinstance(action, types.FunctionType):
+
+        class ActionClass(argparse.Action):
+            def __call__(self, parser, namespace, values, option_string=None):
+                setattr(
+                    namespace,
+                    self.dest,
+                    action(parser, namespace, values, option_string),
+                )
+                if not choice_checker(getattr(namespace, self.dest)):
+                    raise ValueError(
+                        f"{getattr(namespace, self.dest)} is not in {choices}"
+                    )
+
+    else:
+        raise NotImplementedError("action argument must be class or function")
+
+    return ActionClass
