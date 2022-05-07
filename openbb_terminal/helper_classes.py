@@ -10,8 +10,6 @@ import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib import font_manager, ticker
 
-from openbb_terminal.rich_config import console
-
 
 class LineAnnotateDrawer:
     """Line drawing class."""
@@ -21,6 +19,8 @@ class LineAnnotateDrawer:
 
     def draw_lines_and_annotate(self):
         """Draw lines."""
+        from openbb_terminal.rich_config import console
+
         console.print(
             "Click twice for annotation.\nClose window to keep using terminal.\n"
         )
@@ -359,6 +359,7 @@ class TerminalStyle:
     def visualize_output(self, force_tight_layout: bool = True):
         """Show chart in an interactive widget."""
         import openbb_terminal.feature_flags as obbff
+        from openbb_terminal.rich_config import console
 
         if obbff.USE_CMD_LOCATION_FIGURE:
             self.add_cmd_source(plt.gcf())
