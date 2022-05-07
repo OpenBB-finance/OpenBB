@@ -112,14 +112,14 @@ def display_regression(
         external_axes,
         3,
         prefix_text="If there is s_end_date",
-        suffix="when backtesting",
+        suffix_text="when backtesting",
     ):
         return
     elif not s_end_date and not is_valid_axes_count(
         external_axes,
         1,
         prefix_text="If there is no s_end_date",
-        suffix="when backtesting",
+        suffix_text="when backtesting",
     ):
         return
     else:
