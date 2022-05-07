@@ -677,6 +677,20 @@ Stock: [/param]{stock_text}
 
 
 def choiceCheckAfterAction(choice):
+    """return an action class that checks choice after action call
+    for argument of argparse.ArgumentParser.add_argument function
+
+    Parameters
+    ----------
+    choice : Iterable
+        A container of values that should be allowed
+
+    Returns
+    -------
+    Class
+        Class extended class AllowArgsWithWhiteSpace(argparse.Action)
+    """
+
     class ActionClass(AllowArgsWithWhiteSpace):
         def __call__(self, parser, namespace, values, option_string=None):
             super().__call__(parser, namespace, values, option_string)
