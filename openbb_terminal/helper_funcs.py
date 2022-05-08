@@ -6,6 +6,8 @@ import logging
 from pathlib import Path
 from typing import List, Tuple, Union
 from datetime import datetime, timedelta, date as d
+import types
+from collections.abc import Iterable
 import os
 import random
 import re
@@ -190,7 +192,9 @@ def print_rich_table(
         for idx, values in zip(df.index.tolist(), df.values.tolist()):
             row = [str(idx)] if show_index else []
             row += [
-                str(x) if not isinstance(x, float) else f"{x:{floatfmt[idx]}}"
+                str(x)
+                if not isinstance(x, float)
+                else (f"{x:{floatfmt[idx]}}" if abs(x) >= 0.001 else f"{x:.2e}")
                 for idx, x in enumerate(values)
             ]
             table.add_row(*row)
@@ -1314,49 +1318,6 @@ def get_rf() -> float:
         return 0.02
 
 
-class LineAnnotateDrawer:
-    """Line drawing class."""
-
-    def __init__(self, ax: matplotlib.axes = None):
-        self.ax = ax
-
-    def draw_lines_and_annotate(self):
-        # ymin, _ = self.ax.get_ylim()
-        # xmin, _ = self.ax.get_xlim()
-        # self.ax.plot(
-        #     [xmin, xmin],
-        #     [ymin, ymin],
-        #     lw=0,
-        #     color="white",
-        #     label="X - leave interactive mode\nClick twice for annotation",
-        # )
-        # self.ax.legend(handlelength=0, handletextpad=0, fancybox=True, loc=2)
-        # self.ax.figure.canvas.draw()
-        """Draw lines."""
-        console.print(
-            "Click twice for annotation.\nClose window to keep using terminal.\n"
-        )
-
-        while True:
-            xy = plt.ginput(2)
-            # Check whether the user has closed the window or not
-            if not plt.get_fignums():
-                console.print("")
-                return
-
-            if len(xy) == 2:
-                x = [p[0] for p in xy]
-                y = [p[1] for p in xy]
-
-                if (x[0] == x[1]) and (y[0] == y[1]):
-                    txt = input("Annotation: ")
-                    self.ax.annotate(txt, (x[0], y[1]), ha="center", va="center")
-                else:
-                    self.ax.plot(x, y)
-
-                self.ax.figure.canvas.draw()
-
-
 def system_clear():
     """Clear screen"""
     os.system("cls||clear")  # nosec
@@ -1450,3 +1411,66 @@ def camel_case_split(string: str) -> str:
 
     results = ["".join(word) for word in words]
     return " ".join(results).title()
+
+
+def choice_check_after_action(action=None, choices=None):
+    """return an action class that checks choice after action call
+    for argument of argparse.ArgumentParser.add_argument function
+
+    Parameters
+    ----------
+    action : Union[class, function]
+        Action for set args before check choices.
+        If action is class, it must implement argparse.Action methods
+        If action is function, it takes 4 args(parser, namespace, values, option_string)
+        and needs to return value to set dest
+
+    choices : Union[Iterable, function]
+        A container of values that should be allowed.
+        If choices is function, it takes 1 args(value) to check and
+        return bool that value is allowed or not
+
+    Returns
+    -------
+    Class
+        Class extended argparse.Action
+    """
+
+    if isinstance(choices, Iterable):
+
+        def choice_checker(value):
+            return value in choices
+
+    elif isinstance(choices, types.FunctionType):
+        choice_checker = choices
+    else:
+        raise NotImplementedError("choices argument must be iterable or function")
+
+    if isinstance(action, type):
+
+        class ActionClass(action):
+            def __call__(self, parser, namespace, values, option_string=None):
+                super().__call__(parser, namespace, values, option_string)
+                if not choice_checker(getattr(namespace, self.dest)):
+                    raise ValueError(
+                        f"{getattr(namespace, self.dest)} is not in {choices}"
+                    )
+
+    elif isinstance(action, types.FunctionType):
+
+        class ActionClass(argparse.Action):
+            def __call__(self, parser, namespace, values, option_string=None):
+                setattr(
+                    namespace,
+                    self.dest,
+                    action(parser, namespace, values, option_string),
+                )
+                if not choice_checker(getattr(namespace, self.dest)):
+                    raise ValueError(
+                        f"{getattr(namespace, self.dest)} is not in {choices}"
+                    )
+
+    else:
+        raise NotImplementedError("action argument must be class or function")
+
+    return ActionClass
