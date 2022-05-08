@@ -20,21 +20,6 @@ gamestonk\_terminal.economy.alphavantage\_view module
    :undoc-members:
    :show-inheritance:
 
-gamestonk\_terminal.economy.cnn\_model module
----------------------------------------------
-
-.. automodule:: openbb_terminal.economy.cnn_model
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-gamestonk\_terminal.economy.cnn\_view module
---------------------------------------------
-
-.. automodule:: openbb_terminal.economy.cnn_view
-   :members:
-   :undoc-members:
-   :show-inheritance:
 
 gamestonk\_terminal.economy.econ\_data\_helper module
 -----------------------------------------------------

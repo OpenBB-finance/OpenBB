@@ -21,7 +21,7 @@ analyzer = SentimentIntensityAnalyzer()
 @log_start_end(log=logger)
 def load_analyze_tweets(
     ticker: str,
-    count: int,
+    count: int = 100,
     start_time: Optional[str] = "",
     end_time: Optional[str] = "",
 ) -> pd.DataFrame:

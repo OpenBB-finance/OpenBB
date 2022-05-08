@@ -438,7 +438,9 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
             "--source",
             action="store",
             dest="source",
-            choices=["yf", "av", "iex"] if "-i" not in other_args else ["yf"],
+            choices=["yf", "av", "iex", "polygon"]
+            if "-i" not in other_args or "--interval" not in other_args
+            else ["yf", "polygon"],
             default="yf",
             help="Source of historical data.",
         )
@@ -543,7 +545,7 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                     self.suffix = ""
 
                 if ns_parser.source == "iex":
-                    self.start = self.stock.index[0].strftime("%Y-%m-%d")
+                    self.start = self.stock.index[0].to_pydatetime()
                 else:
                     self.start = ns_parser.start
                 self.interval = f"{ns_parser.interval}min"

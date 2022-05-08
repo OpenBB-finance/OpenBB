@@ -61,7 +61,7 @@ def display_big_mac_index(
         else:
             if len(external_axes) != 3:
                 logger.error("Expected list of 3 axis items.")
-                console.print("[red]Expected list of 3 axis items./n[/red]")
+                console.print("[red]Expected list of 3 axis items.\n[/red]")
                 return
             (ax,) = external_axes
 
