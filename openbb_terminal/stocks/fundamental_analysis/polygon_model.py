@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def get_financials(
-    ticker: str, quarterly: bool = False
+    ticker: str, financial: str, quarterly: bool = False
 ) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """Get ticker financials from polygon
 
@@ -30,9 +30,7 @@ def get_financials(
     Returns
     -------
     pd.DataFrame
-        Balance Sheets
-    pd.DataFrame
-        Income statements
+        Balance Sheets or Income Statements
     """
     # Note the filing date is over 30 years so will always get as many as allowed
     json_request = requests.get(
@@ -44,15 +42,19 @@ def get_financials(
         f"&apiKey={cfg.API_POLYGON_KEY}"
     ).json()
 
+    if financial not in ["balance", "income"]:
+        console.print("financial must be 'balance' or 'income'.\n")
+        return pd.DataFrame()
+
     if json_request["status"] == "ERROR":
         console.print(json_request["status"])
-        return pd.DataFrame(), pd.DataFrame()
+        return pd.DataFrame()
 
     all_results = json_request["results"]
 
     if len(all_results) == 0:
         console.print("No financials found.\n")
-        return pd.DataFrame(), pd.DataFrame()
+        return pd.DataFrame()
 
     balance_sheets = pd.DataFrame()
     income_statements = pd.DataFrame()
@@ -101,4 +103,4 @@ def get_financials(
             values.columns = [single_thing["filing_date"]]
             income_statements = pd.concat([income_statements, values], axis=1)
 
-    return balance_sheets, income_statements
+    return balance_sheets if financial == "balance" else income_statements

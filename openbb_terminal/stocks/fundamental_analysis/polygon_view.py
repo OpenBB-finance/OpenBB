@@ -40,14 +40,16 @@ def display_fundamentals(
         Format to export data\
     """
     if financial == "balance":
-        fundamentals = polygon_model.get_financials(ticker, quarterly)[0]
+        fundamentals = polygon_model.get_financials(ticker, financial, quarterly)
         title_str = "Balance Sheet"
     elif financial == "income":
-        fundamentals = polygon_model.get_financials(ticker, quarterly)[1]
+        fundamentals = polygon_model.get_financials(ticker, financial, quarterly)
         title_str = "Income Statement"
 
     if fundamentals.empty:
+        # The empty data frame error handling done in model
         return
+
     # Snake case to english
     fundamentals.index = fundamentals.index.to_series().apply(
         lambda x: x.replace("_", " ").title()
