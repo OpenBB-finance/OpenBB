@@ -143,9 +143,11 @@ def get_defi_vaults(
         Top 100 DeFi Vaults for given chain/protocol sorted by APY.
     """
 
-    headers={"User-Agent":get_user_agent()}
+    headers = {"User-Agent": get_user_agent()}
     params = _prepare_params(chain=chain, protocol=protocol, kind=kind)
-    response = requests.get("https://apiv2.coindix.com/search", params=params, headers=headers, verify=False)
+    response = requests.get(
+        "https://apiv2.coindix.com/search", headers=headers, params=params, verify=False
+    )
     if not 200 <= response.status_code < 300:
         raise Exception(f"Coindix api exception: {response.text}")
 
