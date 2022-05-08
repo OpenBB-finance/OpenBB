@@ -24,7 +24,7 @@ def display_fundamentals(
     quarterly: bool = False,
     export: str = "",
 ):
-    """Display tickers balance sheet
+    """Display tickers balance sheet or income statement
 
     Parameters
     ----------

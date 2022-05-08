@@ -41,6 +41,7 @@ def test_check_output(func, kwargs_dict, recorder):
     result_df = getattr(polygon_model, func)(**kwargs_dict)
     recorder.capture(result_df)
 
+
 @pytest.mark.vcr
 def test_check_bad_ticker(recorder):
     result_df = polygon_model.get_financials("THIS_IS_NOT_A_TICKER", "income", False)
