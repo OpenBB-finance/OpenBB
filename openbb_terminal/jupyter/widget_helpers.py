@@ -75,21 +75,56 @@ def html_report(title: str = "", stylesheet: str = "", body: str = "") -> str:
         os.path.join(os.path.dirname(os.path.abspath(__file__)), "widgets", "report.j2")
     ) as f:
         template = Template(f.read())
-    card = template.render(title=title, stylesheet=stylesheet, body=body)
-    return card
+    return template.render(title=title, stylesheet=stylesheet, body=body)
 
 
 def h(level: int, text: str) -> str:
-    """Wrap text into an HTML `h` tag."""
+    """Wrap text into an HTML `h` tag.
+
+    Parameters
+    ----------
+    level : int
+        HTML `h` level tag
+    text : str
+        Contents for `h` level tag
+
+    Returns
+    -------
+    str
+        HTML code as string
+    """
     return f"<h{str(level)}>{text}</h{level}>"
 
 
 def p(text: str) -> str:
-    """Wrap text into an HTML `p` tag."""
+    """Wrap text into an HTML `p` tag.
+
+    Parameters
+    ----------
+    text : str
+        Contents for HTML `p` tag
+
+    Returns
+    -------
+    str
+        HTML code as string
+    """
     return f"<p>{text}</p>"
 
 
 def row(elements: List) -> str:
+    """HTML code elements to add in a single row
+
+    Parameters
+    ----------
+    elements : List
+       List of HTML code elements to add in a row
+
+    Returns
+    -------
+    str
+        HTML code as string
+    """
     with open(
         os.path.join(os.path.dirname(os.path.abspath(__file__)), "widgets", "row.j2")
     ) as f:
@@ -97,8 +132,23 @@ def row(elements: List) -> str:
     return template.render(elements=elements)
 
 
-def kpi(thresholds, sentences, value):
-    """Add a KPI"""
+def kpi(thresholds: List[float], sentences: List[str], value: float) -> str:
+    """Add new key performance indicator to main page of report
+
+    Parameters
+    ----------
+    thresholds : List[float]
+        List of thresholds to take into account
+    sentences : List[str]
+        List of sentences to take into account. len(sentences) = len(thresholds)+1
+    value : float
+        Current value for the KPI in question
+
+    Returns
+    -------
+    str
+        HTML code as string
+    """
     if len(thresholds) == 1 and len(sentences) == 2:
         if value < thresholds[0]:
             return f'<p style="color:red">&#10060; {sentences[0]}. {value} < {thresholds[0]} </p>'
@@ -113,7 +163,21 @@ def kpi(thresholds, sentences, value):
     return ""
 
 
-def add_tab(title, htmlcode):
+def add_tab(title: str, htmlcode: str) -> str:
+    """Add new tab section for the report. By default adds an opinion editable box at the start.
+
+    Parameters
+    ----------
+    title : str
+        Title associated with this tab / section
+    htmlcode : str
+        All HTML code contain within this section
+
+    Returns
+    -------
+    str
+        HTML code as string
+    """
     return f"""<div id="{title}" class="tabcontent"></br>
         <p style="border:3px; border-style:solid;
             border-color:#000000; padding: 1em; width: 1050px;" contentEditable="true">
@@ -122,7 +186,14 @@ def add_tab(title, htmlcode):
     </div>"""
 
 
-def tab_clickable_evt():
+def tab_clickable_evt() -> str:
+    """Adds javascript code within HTML at the bottom that allows the interactivity with tabs.
+
+    Returns
+    -------
+    str
+        javascript code in HTML to process interactive tabs
+    """
     return """
         <script>
         function menu(evt, menu_name) {
@@ -150,7 +221,19 @@ def tab_clickable_evt():
         </script>"""
 
 
-def tablinks(tabs):
+def tablinks(tabs: List[str]) -> str:
+    """Adds list of tabs/sections for the reports that are able to be clicked. For every 6 tabs we push them onto a new line.
+
+    Parameters
+    ----------
+    tabs : List[str]
+        List of tabs/sections for the reports.
+
+    Returns
+    -------
+    str
+        HTML code for interactive tabs
+    """
     htmlcode = '<div class="tab">'
     for idx, tab in enumerate(tabs):
         htmlcode += f"""<button class="tablinks" onclick="menu(event, '{tab}')">{tab}</button>"""
@@ -160,7 +243,29 @@ def tablinks(tabs):
     return htmlcode
 
 
-def header(img, author, report_date, report_time, report_tz, title):
+def header(img, author, report_date, report_time, report_tz, title) -> str:
+    """Creates reports header
+
+    Parameters
+    ----------
+    img : str
+        Image for customizable report
+    author : str
+        Name of author responsible by report
+    report_date : str
+        Date when report is run
+    report_time : str
+        Time when report is run
+    report_tz : str
+        Timezone associated with datetime of report being run
+    title : str
+        Title of the report
+
+    Returns
+    -------
+    str
+        HTML code for interactive tabs
+    """
     return f"""
         <div style="display:flex; margin-bottom:1cm;">
             {img}
