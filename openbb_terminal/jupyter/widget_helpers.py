@@ -95,3 +95,80 @@ def row(elements: List) -> str:
     ) as f:
         template = Template(f.read())
     return template.render(elements=elements)
+
+
+def kpi(thresholds, sentences, value):
+    """Add a KPI"""
+    if len(thresholds) == 1 and len(sentences) == 2:
+        if value < thresholds[0]:
+            return f'<p style="color:red">&#10060; {sentences[0]}. {value} < {thresholds[0]} </p>'
+        return f'<p style="color:green">&#x2705; {sentences[1]}. {value} > {thresholds[0]} </p>'
+    if len(thresholds) == 2 and len(sentences) == 3:
+        if value < thresholds[0]:
+            return f'<p style="color:red">&#10060; {sentences[0]}. {value} < {thresholds[0]} </p>'
+        if value > thresholds[1]:
+            return f'<p style="color:green">&#x2705; {sentences[2]}. {value} > {thresholds[1]} </p>'
+        return f'<p style="color:orange">&#128993; {sentences[1]}. {thresholds[0]} < {value} < {thresholds[1]} </p>'
+    print("Error. KPI condition is not correctly set")
+    return ""
+
+
+def add_tab(title, htmlcode):
+    return f"""<div id="{title}" class="tabcontent"></br>
+        <p style="border:3px; border-style:solid;
+            border-color:#000000; padding: 1em; width: 1050px;" contentEditable="true">
+                No comment.
+        </p>{htmlcode}
+    </div>"""
+
+
+def tab_clickable_evt():
+    return """
+        <script>
+        function menu(evt, menu_name) {
+          var i, tabcontent, tablinks;
+          tabcontent = document.getElementsByClassName("tabcontent");
+          for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+          }
+          tablinks = document.getElementsByClassName("tablinks");
+          for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+            tablinks[i].style.backgroundColor = "white";
+            tablinks[i].style.color = "black";
+          }
+          document.getElementById(menu_name).style.display = "block";
+
+          evt.currentTarget.className += " active";
+          evt.currentTarget.style.backgroundColor = "black";
+          evt.currentTarget.style.color = "white";
+        }
+
+        window.onload=function(){
+            menu(event, 'SUMMARY');
+        };
+        </script>"""
+
+
+def tablinks(tabs):
+    htmlcode = '<div class="tab">'
+    for idx, tab in enumerate(tabs):
+        htmlcode += f"""<button class="tablinks" onclick="menu(event, '{tab}')">{tab}</button>"""
+        if ((idx + 1) % 5) == 0:
+            htmlcode += "</br>"
+    htmlcode += "</div>"
+    return htmlcode
+
+
+def header(img, author, report_date, report_time, report_tz, title):
+    return f"""
+        <div style="display:flex; margin-bottom:1cm;">
+            {img}
+            <div style="margin-left:2em">
+                <p><b>Analyst:</b> {author}</p>
+                <p><b>Date   :</b> {report_date}</p>
+                <p><b>Time   :</b> {report_time} {report_tz}</p>
+                <br/>
+                <p>{title}</p>
+            </div>
+        </div>"""
