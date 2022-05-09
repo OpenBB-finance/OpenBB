@@ -29,6 +29,7 @@ from openbb_terminal.stocks.fundamental_analysis import (
     finviz_view,
     market_watch_view,
     yahoo_finance_view,
+    polygon_view,
 )
 from openbb_terminal.stocks.fundamental_analysis.financial_modeling_prep import (
     fmp_controller,
@@ -124,11 +125,12 @@ Ticker: [/param] {self.ticker} [cmds]
     splits        stock split and reverse split events since IPO
     web           open web browser of the company
     hq            open HQ location of the company{is_foreign_end}
+[src][Alpha Vantage / Polygon][/src]
+    income        income statements of the company
+    balance       balance sheet of the company
 [src][Alpha Vantage][/src]
     overview      overview of the company
     key           company key metrics
-    income        income statements of the company
-    balance       balance sheet of the company
     cash          cash flow of the company
     earnings      earnings dates and reported EPS
     fraud         key fraud ratios
@@ -526,7 +528,7 @@ Ticker: [/param] {self.ticker} [cmds]
             action="store",
             dest="limit",
             type=check_positive,
-            default=1,
+            default=5,
             help="Number of latest years/quarters.",
         )
         parser.add_argument(
@@ -537,16 +539,33 @@ Ticker: [/param] {self.ticker} [cmds]
             dest="b_quarter",
             help="Quarter fundamental data flag.",
         )
+        parser.add_argument(
+            "-s",
+            "--source",
+            help="Source to get fundamentals from",
+            default="av",
+            choices=["polygon", "av"],
+            dest="source",
+        )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            av_view.display_income_statement(
-                ticker=self.ticker,
-                limit=ns_parser.limit,
-                quarterly=ns_parser.b_quarter,
-                export=ns_parser.export,
-            )
+            if ns_parser.source == "av":
+                av_view.display_income_statement(
+                    ticker=self.ticker,
+                    limit=ns_parser.limit,
+                    quarterly=ns_parser.b_quarter,
+                    export=ns_parser.export,
+                )
+            elif ns_parser.source == "polygon":
+                polygon_view.display_fundamentals(
+                    ticker=self.ticker,
+                    financial="income",
+                    limit=ns_parser.limit,
+                    quarterly=ns_parser.b_quarter,
+                    export=ns_parser.export,
+                )
 
     @log_start_end(log=logger)
     def call_balance(self, other_args: List[str]):
@@ -578,7 +597,7 @@ Ticker: [/param] {self.ticker} [cmds]
             action="store",
             dest="limit",
             type=check_positive,
-            default=1,
+            default=5,
             help="Number of latest years/quarters.",
         )
         parser.add_argument(
@@ -589,16 +608,33 @@ Ticker: [/param] {self.ticker} [cmds]
             dest="b_quarter",
             help="Quarter fundamental data flag.",
         )
+        parser.add_argument(
+            "-s",
+            "--source",
+            help="Source to get fundamentals from",
+            default="av",
+            choices=["polygon", "av"],
+            dest="source",
+        )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            av_view.display_balance_sheet(
-                ticker=self.ticker,
-                limit=ns_parser.limit,
-                quarterly=ns_parser.b_quarter,
-                export=ns_parser.export,
-            )
+            if ns_parser.source == "av":
+                av_view.display_balance_sheet(
+                    ticker=self.ticker,
+                    limit=ns_parser.limit,
+                    quarterly=ns_parser.b_quarter,
+                    export=ns_parser.export,
+                )
+            elif ns_parser.source == "polygon":
+                polygon_view.display_fundamentals(
+                    ticker=self.ticker,
+                    financial="balance",
+                    limit=ns_parser.limit,
+                    quarterly=ns_parser.b_quarter,
+                    export=ns_parser.export,
+                )
 
     @log_start_end(log=logger)
     def call_cash(self, other_args: List[str]):
