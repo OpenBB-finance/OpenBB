@@ -45,10 +45,10 @@ The process starts off by downloading the installer, see below for how to downlo
 Then follow these steps:
 
 | Installation instructions                                                                                                                                                                                                                                                                                               | Illustration                                                                                                                                |
-|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:--------------------------------------------------------------------------------------------------------------------------------------------|
+| :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------ |
 | <div style="width:300px">Double click the .exe file that got downloaded to your "Downloads" folder. You will most likely receive the error on the right stating "Windows protected your PC". This is because the installer is still in beta phase, and the team has not yet requested verification from Windows. </div> | <p align="center"><img src="../images/installation/windows/windows_protected_your_pc.png" alt="Windows protected your PC" width="500"/></p> |
 | <div style="width:300px">Click on "More info" and select "Run anyway" to start the installation process. Proceed by following the steps. Do note that if you wish to install the application to 'Program Files' that you will have to run the resulting application as Administrator.                                   | <p align="center"><img src="../images/installation/windows/run_anyway.png" alt="Run anyway" width="500"/></p>                               |
- | <div style="width:300px">By clicking on the application that appeared on your Desktop, you are able to run the Terminal. The first time this takes a bit longer to load.                                                                                                                                                | <p align="center"><img src="../images/installation/windows/run_the_terminal.png" alt="Run the terminal" width="500"/></p>                   |
+| <div style="width:300px">By clicking on the application that appeared on your Desktop, you are able to run the Terminal. The first time this takes a bit longer to load.                                                                                                                                                | <p align="center"><img src="../images/installation/windows/run_the_terminal.png" alt="Run the terminal" width="500"/></p>                   |
 
 ### macOS
 
@@ -62,16 +62,16 @@ Installation instructions:
 
 1. Open the .dmg file that got downloaded to your "Downloads" folder.
 2. Drag the folder into your "Applications" folder. This should take some time as it is extracting the
-files from the .dmg file.
+   files from the .dmg file.
 3. Open the folder and click on the "OpenBB Terminal" file, this should run the application.
 
 <img src="../images/installation/macos/mac_os_installation.png" alt="mac os installation" width=800/>
 
 | Note about "Cannot check it for malicious software" warning                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | Illustration                                                                                                                      |
-|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:----------------------------------------------------------------------------------------------------------------------------------|
+| :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------- |
 | <div style="width:300px">It is possible you will see the image displayed on the right. This is because the installer is still in beta phase, and the team has not yet requested verification from Apple. Please see below how to correct for this.</div>                                                                                                                                                                                                                                                                                                                                                                                                                                               | <p align="center"><img src="../images/installation/macos/malicious_software_warning.png" alt="software warning" width="500"/></p> |
 | <div style="width:300px">**Option 1 (via MacOS settings):** <br><br> 1) Run the file. You will most likely receive a message that macOS was not able to check whether the application contains malicious software. The reasoning for this is described above. <br> 2) Go to System Preferences > Security & Privacy > General. You should see a message at the bottom that says that the file "was blocked from use because it is not from an identified developer". Click on “Allow anyway” or "Open anyway".<br> 3) If you receive the above message multiple times on different files, keep allowing the files via Step 2 or use Option 2.<br> 4) You should now be able to launch the application. | <p align="center"><img src="../images/installation/macos/option_one_warning_fix.png" alt="option 1 warning fix" width="500"/></p> |
- | <div style="width:300px">**Option 2 (via Terminal):** <br><br> 1) Run the file. You will most likely receive a message that macOS was not able to check whether the application contains malicious software. The reasoning for this is described in the note above. <br> 2) Open the "Terminal" application. This can be done by using Command (⌘) + Space and typing "terminal". <br> 3) Within this "Terminal" application, assuming you moved the file to the Applications folder, enter the following command: `xattr -r -d com.apple.quarantine "/Applications/OpenBB Terminal"`<br> 4) You should now be able to launch the application.                                                         | <p align="center"><img src="../images/installation/macos/option_two_warning_fix.png" alt="option 2 warning fix" width="500"/></p> |
+| <div style="width:300px">**Option 2 (via Terminal):** <br><br> 1) Run the file. You will most likely receive a message that macOS was not able to check whether the application contains malicious software. The reasoning for this is described in the note above. <br> 2) Open the "Terminal" application. This can be done by using Command (⌘) + Space and typing "terminal". <br> 3) Within this "Terminal" application, assuming you moved the file to the Applications folder, enter the following command: `xattr -r -d com.apple.quarantine "/Applications/OpenBB Terminal"`<br> 4) You should now be able to launch the application.                                                         | <p align="center"><img src="../images/installation/macos/option_two_warning_fix.png" alt="option 2 warning fix" width="500"/></p> |
 
 ## Developer
 
@@ -128,10 +128,10 @@ Several features in this project utilize Machine Learning. Machine Learning Pyth
      - If you are using macOS click [Installing on MacOS](https://docs.anaconda.com/anaconda/install/mac-os/)
      - If you are using WSL or Linux click [Installing on Linux](https://docs.anaconda.com/anaconda/install/linux/)
      - If you are using Windows click [Installing on Windows](https://docs.anaconda.com/anaconda/install/windows/).
-     **ONLY REQUIRED IF NOT USING WSL**, you also need to install/update Microsoft C++ Build Tools from here: <https://visualstudio.microsoft.com/visual-cpp-build-tools/>
+       **ONLY REQUIRED IF NOT USING WSL**, you also need to install/update Microsoft C++ Build Tools from here: <https://visualstudio.microsoft.com/visual-cpp-build-tools/>
 
    - After following the steps, confirm that you have it by opening a terminal and running: `conda -V`. The output
-   should be something along the lines of: `conda 4.11.0`
+     should be something along the lines of: `conda 4.11.0`
 
 2. Install git
 
@@ -139,13 +139,13 @@ Several features in this project utilize Machine Learning. Machine Learning Pyth
    conda install -c anaconda git
    ```
 
-    **For Linux users only, run these additional commands:**
+   **For Linux users only, run these additional commands:**
 
-    ```bash
-    sudo apt update
-    sudo apt install -y cmake gcc
-    pip install cmake
-    ```
+   ```bash
+   sudo apt update
+   sudo apt install -y cmake gcc
+   pip install cmake
+   ```
 
 3. Clone the Project
 
@@ -188,16 +188,16 @@ Several features in this project utilize Machine Learning. Machine Learning Pyth
 
    - On M1 mac
 
-      ```bash
-      conda install -c conda-forge tensorflow==2.7.0
-      poetry install -E prediction
-      ```
+     ```bash
+     conda install -c conda-forge tensorflow==2.7.0
+     poetry install -E prediction
+     ```
 
    - On all other systems
 
-      ```bash
-      poetry install -E prediction
-      ```
+     ```bash
+     poetry install -E prediction
+     ```
 
    If you are having trouble with Poetry (e.g. on a Windows system), simply install requirements.txt with pip
 
@@ -256,11 +256,11 @@ ENABLE_PREDICT = os.getenv("OPENBB_ENABLE_PREDICT") or True
 poetry install -E prediction
 ```
 
-  **NOTE: For MacOS users should use this method instead of the poetry command
+\*\*NOTE: For MacOS users should use this method instead of the poetry command
 
-  ```bash
-  conda install -c conda-forge tensorflow==2.7.0
-  ```
+```bash
+conda install -c conda-forge tensorflow==2.7.0
+```
 
 - Ready to launch:
 
@@ -377,7 +377,7 @@ There are a few things that still don't work, and you can see what works and wha
    ```
 
    - After following the steps, confirm that you have it by opening a terminal and running: `conda -V`. The output
-   should be something along the lines of: `conda 4.9.2`
+     should be something along the lines of: `conda 4.9.2`
 
 3. Install git
 
@@ -446,8 +446,8 @@ There are a few things that still don't work, and you can see what works and wha
 
 12. Jupyter Lab (Optional. Early alpha). User the Terminal from Jupyter Lab
 
-   You can install Jupyter Lab extensions that help you manage settings and launch the terminal in a JL bash console
-   using the commands in the [jupyterlab/README.md](jupyterlab/README.md)
+You can install Jupyter Lab extensions that help you manage settings and launch the terminal in a JL bash console
+using the commands in the [jupyterlab/README.md](jupyterlab/README.md)
 
 **NOTE:** When you close the terminal and re-open it, the only command you need to re-call is `conda activate gst`
 before you call `python terminal.py` again.
@@ -471,30 +471,31 @@ When you have installed the terminal through Anaconda & Python, you can use the 
 API Keys directly instead of using the Terminal, for the variable name in the code one just needs to
 remove the "GT\_", this can be found in [config_terminal.py](/openbb_terminal/config_terminal.py).
 
-| Website                                                                         | Environment Variables                                                                                                                                                 |
-| :------------------------------------------------------------------------------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [Alpha Vantage](https://www.alphavantage.co)                                    | OPENBB_API_KEY_ALPHAVANTAGE                                                                                                                                           |
-| [Binance](https://binance.com)                                                  | OPENBB_API_BINANCE_KEY <br/> OPENBB_API_BINANCE_SECRET                                                                                                                |
-| [CoinMarketCap](https://coinmarketcap.com)                                      | OPENBB_API_CMC_KEY <br/>                                                                                                                                              |
-| [DEGIRO](https://www.degiro.fr)                                                 | OPENBB_DG_USERNAME <br/> OPENBB_DG_PASSWORD <br/> OPENBB_DG_TOTP_SECRET                                                                                               |
-| [FRED](https://fred.stlouisfed.org)                                             | OPENBB_API_FRED_KEY                                                                                                                                                   |
-| [Financial Modeling Prep](https://financialmodelingprep.com)                    | OPENBB_API_KEY_FINANCIALMODELINGPREP                                                                                                                                  |
-| [Finnhub](https://finnhub.io)                                                   | OPENBB_API_FINNHUB_KEY                                                                                                                                                |
-| [News](https://newsapi.org)                                                     | OPENBB_API_NEWS_TOKEN                                                                                                                                                 |
-| [Oanda](https://developer.oanda.com)                                            | OPENBB_OANDA_TOKEN <br/> OPENBB_OANDA_ACCOUNT                                                                                                                         |
-| [Polygon](https://polygon.io)                                                   | OPENBB_API_POLYGON_KEY                                                                                                                                                |
-| [Quandl](https://www.quandl.com)                                                | OPENBB_API_KEY_QUANDL                                                                                                                                                 |
-| [Reddit](https://www.reddit.com)                                                | OPENBB_API_REDDIT_CLIENT_ID <br> OPENBB_API_REDDIT_CLIENT_SECRET <br/> OPENBB_API_REDDIT_USERNAME <br/> OPENBB_API_REDDIT_USER_AGENT <br/> OPENBB_API_REDDIT_PASSWORD |
-| [SentimentInvestor](https://sentimentinvestor.com)                              | OPENBB_API_SENTIMENTINVESTOR_TOKEN <br> OPENBB_API_SENTIMENTINVESTOR_KEY                                                                                              |
-| [Tradier](https://developer.tradier.com)                                        | OPENBB_TRADIER_TOKEN                                                                                                                                                  |
-| [Twitter](https://developer.twitter.com)                                        | OPENBB_API_TWITTER_KEY <br/> OPENBB_API_TWITTER_SECRET_KEY <br/> OPENBB_API_TWITTER_BEARER_TOKEN                                                                      |
-| [Coinbase](https://docs.pro.coinbase.com/)                                      | OPENBB_API_COINBASE_KEY <br/> OPENBB_API_COINBASE_SECRET <br/> OPENBB_API_COINBASE_PASS_PHRASE                                                                        |
-| [Whale Alert](https://docs.whale-alert.io/)                                     | OPENBB_API_WHALE_ALERT_KEY                                                                                                                                            |
-| [Ethplorer](https://github.com/EverexIO/Ethplorer/wiki/Ethplorer-API)           | OPENBB_API_ETHPLORER_KEY                                                                                                                                              |
-| [Cryptopanic](https://cryptopanic.com/developers/api/)                          | OPENBB_API_CRYPTO_PANIC_KEY                                                                                                                                           |
-| [Glassnode](https://docs.glassnode.com/basic-api/api-key#how-to-get-an-api-key) | OPENBB_API_GLASSNODE_KEY                                                                                                                                              |
-| [Coinglass](https://coinglass.github.io/API-Reference/#api-key)                 | OPENBB_API_COINGLASS_KEY                                                                                                                                              |
-| [BitQuery](https://bitquery.io/pricing)                                         | OPENBB_API_BITQUERY_KEY                                                                                                                                               |
+| Website                                                                            | Environment Variables                                                                                                                                                 |
+| :--------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [Alpha Vantage](https://www.alphavantage.co)                                       | OPENBB_API_KEY_ALPHAVANTAGE                                                                                                                                           |
+| [Binance](https://binance.com)                                                     | OPENBB_API_BINANCE_KEY <br/> OPENBB_API_BINANCE_SECRET                                                                                                                |
+| [BitQuery](https://bitquery.io/pricing)                                            | OPENBB_API_BITQUERY_KEY                                                                                                                                               |
+| [Coinbase](https://docs.pro.coinbase.com/)                                         | OPENBB_API_COINBASE_KEY <br/> OPENBB_API_COINBASE_SECRET <br/> OPENBB_API_COINBASE_PASS_PHRASE                                                                        |
+| [Coinglass](https://coinglass.github.io/API-Reference/#api-key)                    | OPENBB_API_COINGLASS_KEY                                                                                                                                              |
+| [CoinMarketCap](https://coinmarketcap.com)                                         | OPENBB_API_CMC_KEY <br/>                                                                                                                                              |
+| [Cryptopanic](https://cryptopanic.com/developers/api/)                             | OPENBB_API_CRYPTO_PANIC_KEY                                                                                                                                           |
+| [DEGIRO](https://www.degiro.fr)                                                    | OPENBB_DG_USERNAME <br/> OPENBB_DG_PASSWORD <br/> OPENBB_DG_TOTP_SECRET                                                                                               |
+| [Ethplorer](https://github.com/EverexIO/Ethplorer/wiki/Ethplorer-API)              | OPENBB_API_ETHPLORER_KEY                                                                                                                                              |
+| [Financial Modeling Prep](https://financialmodelingprep.com)                       | OPENBB_API_KEY_FINANCIALMODELINGPREP                                                                                                                                  |
+| [Finnhub](https://finnhub.io)                                                      | OPENBB_API_FINNHUB_KEY                                                                                                                                                |
+| [FRED](https://fred.stlouisfed.org)                                                | OPENBB_API_FRED_KEY                                                                                                                                                   |
+| [GitHub](https://docs.github.com/en/rest/guides/getting-started-with-the-rest-api) | OPENBB_API_GITHUB_KEY                                                                                                                                                 |
+| [Glassnode](https://docs.glassnode.com/basic-api/api-key#how-to-get-an-api-key)    | OPENBB_API_GLASSNODE_KEY                                                                                                                                              |
+| [News](https://newsapi.org)                                                        | OPENBB_API_NEWS_TOKEN                                                                                                                                                 |
+| [Oanda](https://developer.oanda.com)                                               | OPENBB_OANDA_TOKEN <br/> OPENBB_OANDA_ACCOUNT                                                                                                                         |
+| [Polygon](https://polygon.io)                                                      | OPENBB_API_POLYGON_KEY                                                                                                                                                |
+| [Quandl](https://www.quandl.com)                                                   | OPENBB_API_KEY_QUANDL                                                                                                                                                 |
+| [Reddit](https://www.reddit.com)                                                   | OPENBB_API_REDDIT_CLIENT_ID <br> OPENBB_API_REDDIT_CLIENT_SECRET <br/> OPENBB_API_REDDIT_USERNAME <br/> OPENBB_API_REDDIT_USER_AGENT <br/> OPENBB_API_REDDIT_PASSWORD |
+| [SentimentInvestor](https://sentimentinvestor.com)                                 | OPENBB_API_SENTIMENTINVESTOR_TOKEN <br> OPENBB_API_SENTIMENTINVESTOR_KEY                                                                                              |
+| [Tradier](https://developer.tradier.com)                                           | OPENBB_TRADIER_TOKEN                                                                                                                                                  |
+| [Twitter](https://developer.twitter.com)                                           | OPENBB_API_TWITTER_KEY <br/> OPENBB_API_TWITTER_SECRET_KEY <br/> OPENBB_API_TWITTER_BEARER_TOKEN                                                                      |
+| [Whale Alert](https://docs.whale-alert.io/)                                        | OPENBB_API_WHALE_ALERT_KEY                                                                                                                                            |
 
 Example:
 
