@@ -37,7 +37,7 @@ def display_fundamentals(
     quarterly:bool
         Flag to get quarterly reports
     export: str
-        Format to export data\
+        Format to export data
     """
     if financial == "balance":
         fundamentals = polygon_model.get_financials(ticker, financial, quarterly)

@@ -2,7 +2,6 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Tuple
 
 import pandas as pd
 import requests
@@ -17,7 +16,7 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 def get_financials(
     ticker: str, financial: str, quarterly: bool = False
-) -> Tuple[pd.DataFrame, pd.DataFrame]:
+) -> pd.DataFrame:
     """Get ticker financials from polygon
 
     Parameters
