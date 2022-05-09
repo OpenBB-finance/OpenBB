@@ -263,12 +263,7 @@ class Portfolio:
                 for crypto, currency in zip(crypto_trades.Name, crypto_trades.Currency)
             ]
             trades.loc[(trades.Type == "CRYPTO"), "Name"] = self._crypto_tickers
-
-            print(self._crypto_tickers)
-
             self._start_date = trades.Date[0]
-
-            print(trades)
 
             # Copy pandas notation
             self.empty = False
@@ -329,8 +324,6 @@ class Portfolio:
             ).fillna(0)
         else:
             portfolio[pd.MultiIndex.from_product([["Close"], ["crypto"]])] = 0
-
-        print(portfolio)
 
         # Add cumulative Quantity held
         portfolio["Quantity"] = portfolio["Quantity"].cumsum()
@@ -492,8 +485,6 @@ class Portfolio:
                 self._crypto_tickers, start=self._start_date, progress=False
             )["Close"]
 
-            print(self._historical_crypto)
-
             if len(self._crypto_tickers) == 1:
                 self._historical_crypto = pd.DataFrame(self._historical_crypto)
                 self._historical_crypto.columns = self._crypto_tickers
@@ -592,8 +583,6 @@ class Portfolio:
             .squeeze()
             .sort_values(ascending=False)
         )
-
-        print(self.trade_value)
 
         self.benchmark_sectors_allocation = (
             pd.DataFrame.from_dict(
