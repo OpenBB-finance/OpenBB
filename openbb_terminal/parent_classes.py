@@ -545,7 +545,7 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                     self.suffix = ""
 
                 if ns_parser.source == "iex":
-                    self.start = self.stock.index[0].strftime("%Y-%m-%d")
+                    self.start = self.stock.index[0].to_pydatetime()
                 else:
                     self.start = ns_parser.start
                 self.interval = f"{ns_parser.interval}min"
