@@ -65,7 +65,7 @@ class EconomyController(BaseController):
         "rtps",
         "industry",
         "bigmac",
-        "yieldcurve",
+        "ycrv",
     ]
 
     CHOICES_MENUS = ["pred", "qa"]
@@ -175,6 +175,11 @@ class EconomyController(BaseController):
                 c: None for c in econdb_model.COUNTRY_CODES
             }
 
+            self.choices["ycrv"]["-c"] = {c: None for c in investingcom_model.COUNTRIES}
+            self.choices["ycrv"]["--countries"] = {
+                c: None for c in investingcom_model.COUNTRIES
+            }
+
             self.choices["valuation"]["-s"] = {
                 c: None for c in self.valuation_sort_cols
             }
@@ -227,7 +232,7 @@ Macro Data
     index         find and plot any (major) index on the market [src][Source: Yahoo Finance][/src]
     treasury      obtain U.S. treasury rates [src][Source: EconDB][/src]
     yield         show the U.S. Treasury yield curve [src][Source: FRED][/src]
-    yieldcurve    show sovereign yield curves [src][Source: Investing.com][/src]
+    ycrv          show sovereign yield curves [src][Source: Investing.com/FRED][/src]
     plot          plot data from the above commands together
     options       show the available options for 'plot' or show/export the data
 
@@ -971,6 +976,63 @@ Performance & Valuations
             fred_view.display_yield_curve(ns_parser.date)
 
     @log_start_end(log=logger)
+    def call_ycrv(self, other_args: List[str]):
+        """Process ycrv command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="ycrv",
+            description="Generate country yield curve. The yield curve shows the bond rates"
+            " at different maturities.",
+        )
+        parser.add_argument(
+            "-s",
+            "--source",
+            action="store",
+            dest="source",
+            type=str,
+            default="investpy",
+            help="Source for the data. If not supplied, the most recent entry from Investpy will be used.",
+        )
+        parser.add_argument(
+            "-c",
+            "--country",
+            action="store",
+            dest="country",
+            nargs="+",
+            default="united states",
+            help="Display yield curve for specific country.",
+        )
+        parser.add_argument(
+            "-d",
+            "--date",
+            type=valid_date,
+            help="Date to get data from FRED. If not supplied, the most recent entry will be used.",
+            dest="date",
+            default=None,
+        )
+        ns_parser = parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
+            raw=True,
+        )
+        if ns_parser:
+            if isinstance(ns_parser.country, list):
+                ns_parser.country = " ".join(ns_parser.country)
+
+            investingcom_model.check_correct_country(ns_parser.country)
+
+            if ns_parser.source == "FRED":
+                fred_view.display_yield_curve(ns_parser.date)
+            else:
+                investingcom_view.display_yieldcurve(
+                    country=ns_parser.country,
+                    raw=ns_parser.raw,
+                    export=ns_parser.export,
+                )
+
+    @log_start_end(log=logger)
     def call_plot(self, other_args: List[str]):
         """Process plot command"""
         parser = argparse.ArgumentParser(
@@ -1366,32 +1428,3 @@ Performance & Valuations
         )
 
         self.queue = self.load_class(QaController, self.DATASETS, self.queue)
-
-    @log_start_end(log=logger)
-    def call_yieldcurve(self, other_args: List[str]):
-        """Process yieldcurve command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="yieldcurve",
-            description="Print country yield curve. [Source: Investing.com]",
-        )
-        parser.add_argument(
-            "-c",
-            "--country",
-            action="store",
-            dest="country",
-            type=str,
-            choices=investingcom_model.countries,
-            default="united_states",
-            help="Display yield curve for specific country. (spaces: '_')",
-        )
-
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            investingcom_view.display_yieldcurve(
-                country=ns_parser.country,
-                export=ns_parser.export,
-            )
