@@ -329,7 +329,6 @@ Underlying Asset Position: [/param]{self.underlying_asset_position}
             dest="option",
             help="index of the option to remove",
             nargs="+",
-            required="-h" not in other_args,
         )
         parser.add_argument(
             "-a",
