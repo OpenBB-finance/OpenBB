@@ -118,14 +118,14 @@ class HedgeController(BaseController):
 [param]Ticker: [/param]{self.ticker or None}
 [param]Expiry: [/param]{self.expiration or None}
 [cmds]
-    pick          long, short, or none (default) / call or put / amount of position / strike price
+    pick          pick the underlying asset position
 [/cmds][param]
 Underlying Asset Position: [/param]{self.underlying_asset_position}
 [cmds]
-    list          list available strike prices for calls and puts{has_portfolio_start}
-    add           add option to the list of the options{has_portfolio_end}{has_option_start}
-    rmv           remove option from the list of the options
-    sop           selected options{has_option_end}[/cmds]
+    list          show the available strike prices for calls and puts{has_portfolio_start}
+    add           add an option to the list of options{has_portfolio_end}{has_option_start}
+    rmv           remove an option from the list of options
+    sop           show selected options and neutral portfolio weights{has_option_end}[/cmds]
         """
         console.print(text=help_text, menu="Stocks - Options - Hedge")
 
@@ -272,16 +272,7 @@ Underlying Asset Position: [/param]{self.underlying_asset_position}
                             "[red]The functionality only accepts two options. Therefore, please remove an "
                             "option with 'rmv' before continuing.[/red]\n"
                         )
-
-                    if (
-                        "Delta" in self.greeks["Option A"]
-                        and "Delta" in self.greeks["Option B"]
-                    ):
-                        hedge_view.show_calculated_hedge(
-                            self.amount, option["type"], self.greeks, sign
-                        )
-
-                    self.update_runtime_choices()
+                        return
 
                     positions = pd.DataFrame()
 
@@ -311,6 +302,15 @@ Underlying Asset Position: [/param]{self.underlying_asset_position}
                         show_index=False,
                     )
 
+                    if (
+                        "Delta" in self.greeks["Option A"]
+                        and "Delta" in self.greeks["Option B"]
+                    ):
+                        hedge_view.show_calculated_hedge(
+                            self.amount, option["type"], self.greeks, sign
+                        )
+
+                    self.update_runtime_choices()
                     console.print("")
         else:
             console.print("Please use a valid index\n")
@@ -425,7 +425,7 @@ Underlying Asset Position: [/param]{self.underlying_asset_position}
             amount_type = ns_parser.amount
 
             self.underlying_asset_position = (
-                f"{underlying_type} {side_type} @ {strike_type}"
+                f"{underlying_type} {side_type} {amount_type} @ {strike_type}"
             )
 
             if underlying_type == "Short":
@@ -489,17 +489,6 @@ Underlying Asset Position: [/param]{self.underlying_asset_position}
             if not self.options["Option A"] and not self.options["Option B"]:
                 console.print("Please add Options by using the 'add' command.\n")
             else:
-                if (
-                    "Delta" in self.greeks["Option A"]
-                    and "Delta" in self.greeks["Option B"]
-                ):
-                    hedge_view.show_calculated_hedge(
-                        self.amount,
-                        self.options["Option A"]["type"],
-                        self.greeks,
-                        self.options["Option A"]["sign"],
-                    )
-
                 positions = pd.DataFrame()
 
                 for _, value in self.options.items():
@@ -524,5 +513,16 @@ Underlying Asset Position: [/param]{self.underlying_asset_position}
                     headers=list(positions.columns),
                     show_index=False,
                 )
+
+                if (
+                    "Delta" in self.greeks["Option A"]
+                    and "Delta" in self.greeks["Option B"]
+                ):
+                    hedge_view.show_calculated_hedge(
+                        self.amount,
+                        self.options["Option A"]["type"],
+                        self.greeks,
+                        self.options["Option A"]["sign"],
+                    )
 
                 console.print("")

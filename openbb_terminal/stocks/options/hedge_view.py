@@ -82,18 +82,24 @@ def show_calculated_hedge(portfolio_option_amount, side, greeks, sign):
         portfolio_option_amount, side, greeks, sign
     )
 
-    # Show the weights that would create a neutral portfolio
-    positions = pd.DataFrame(
-        [weight_option_a, weight_option_b, weight_shares],
-        index=["Weight Option A", "Weight Option B", "Weight Shares"],
-        columns=["Positions"],
-    )
+    if sum([weight_option_a, weight_option_b, weight_shares]):
+        # Show the weights that would create a neutral portfolio
+        positions = pd.DataFrame(
+            [weight_option_a, weight_option_b, weight_shares],
+            index=["Weight Option A", "Weight Option B", "Weight Shares"],
+            columns=["Positions"],
+        )
 
-    print_rich_table(
-        positions,
-        title="Neutral Portfolio Weights",
-        headers=list(positions.columns),
-        show_index=True,
-    )
+        print_rich_table(
+            positions,
+            title="Neutral Portfolio Weights",
+            headers=list(positions.columns),
+            show_index=True,
+        )
 
-    console.print()
+        console.print()
+    else:
+        console.print(
+            "[red]Due to there being multiple solutions (Singular Matrix) the current options "
+            "combination can not be solved. Please input different options.[/red]"
+        )

@@ -80,34 +80,37 @@ def calc_hedge(portfolio_option_amount, side, greeks, sign):
         [portfolio_option_vega * portfolio_option_amount],
     ]
 
-    inv = np.linalg.inv(np.round(options_array, 2))
+    try:
+        inv = np.linalg.inv(np.round(options_array, 2))
 
-    weights = np.dot(inv, portfolio_greeks)
+        weights = np.dot(inv, portfolio_greeks)
 
-    portfolio_greeks = [
-        [portfolio_option_delta * delta_multiplier * portfolio_option_amount],
-        [portfolio_option_gamma * gamma_multiplier * portfolio_option_amount],
-        [portfolio_option_vega * vega_multiplier * portfolio_option_amount],
-    ]
-
-    options_array = np.array(
-        [
-            [option_a_delta, option_b_delta],
-            [option_a_gamma, option_b_gamma],
-            [option_a_vega, option_b_vega],
+        portfolio_greeks = [
+            [portfolio_option_delta * delta_multiplier * portfolio_option_amount],
+            [portfolio_option_gamma * gamma_multiplier * portfolio_option_amount],
+            [portfolio_option_vega * vega_multiplier * portfolio_option_amount],
         ]
-    )
 
-    if not short:
-        neutral = np.round(
-            np.dot(np.round(options_array, 2), weights) - portfolio_greeks
-        )
-    else:
-        neutral = np.round(
-            np.dot(np.round(options_array, 2), weights) + portfolio_greeks
+        options_array = np.array(
+            [
+                [option_a_delta, option_b_delta],
+                [option_a_gamma, option_b_gamma],
+                [option_a_vega, option_b_vega],
+            ]
         )
 
-    return weights[0][0], weights[1][0], neutral[0][0]
+        if not short:
+            neutral = np.round(
+                np.dot(np.round(options_array, 2), weights) - portfolio_greeks
+            )
+        else:
+            neutral = np.round(
+                np.dot(np.round(options_array, 2), weights) + portfolio_greeks
+            )
+
+        return weights[0][0], weights[1][0], neutral[0][0]
+    except np.linalg.LinAlgError:
+        return 0.0, 0.0, 0.0
 
 
 def add_hedge_option(price, implied_volatility, strike, days, side):
