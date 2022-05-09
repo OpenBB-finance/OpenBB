@@ -439,7 +439,7 @@ Underlying Asset Position: [/param]{self.underlying_asset_position}
                 self.side = "Call"
                 side = 1
 
-            self.amount = amount_type
+            self.amount = float(amount_type)
             self.strike = strike_type
 
             index = -1

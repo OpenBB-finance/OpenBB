@@ -63,7 +63,7 @@ def show_calculated_hedge(portfolio_option_amount, side, greeks, sign):
 
     Parameters
     ----------
-    portfolio_option_amount: int
+    portfolio_option_amount: float
         Number to show
     side: str
         Whether you have a Call or Put instrument
