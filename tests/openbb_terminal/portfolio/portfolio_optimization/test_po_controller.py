@@ -192,20 +192,6 @@ def test_call_func_expect_queue(expected_queue, func, queue):
     "tested_func, other_args, mocked_func, called_args, called_kwargs",
     [
         (
-            "call_add",
-            [],
-            "PortfolioOptimizationController.call_add",
-            [],
-            dict(),
-        ),
-        (
-            "call_rmv",
-            [],
-            "PortfolioOptimizationController.call_rmv",
-            [],
-            dict(),
-        ),
-        (
             "call_equal",
             [],
             "optimizer_view.display_equal_weight",
@@ -251,20 +237,6 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             "call_ef",
             [],
             "optimizer_view.display_ef",
-            [],
-            dict(),
-        ),
-        (
-            "call_add",
-            [],
-            "PortfolioOptimizationController.call_add",
-            [],
-            dict(),
-        ),
-        (
-            "call_rmv",
-            [],
-            "PortfolioOptimizationController.call_rmv",
             [],
             dict(),
         ),

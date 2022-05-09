@@ -40,7 +40,7 @@ class ApiKeyException(Exception):
 
 
 @log_start_end(log=logger)
-def make_request(params: Optional[dict] = None) -> Tuple[int, Any]:
+def make_request(params: Optional[dict] = None) -> Tuple[Optional[int], Any]:
     """Helper methods for requests [Source: https://docs.whale-alert.io/]
 
     Parameters
@@ -56,7 +56,10 @@ def make_request(params: Optional[dict] = None) -> Tuple[int, Any]:
 
     api_key = cfg.API_WHALE_ALERT_KEY or ""
     url = "https://api.whale-alert.io/v1/transactions?api_key=" + api_key
-    response = requests.get(url, params=params)
+    try:
+        response = requests.get(url, timeout=2, params=params)
+    except Exception:
+        return None, None
 
     result = {}
 
