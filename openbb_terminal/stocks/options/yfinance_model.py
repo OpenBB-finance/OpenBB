@@ -53,6 +53,7 @@ def get_option_chain(ticker: str, expiration: str) -> pd.DataFrame:
     """
     yf_ticker = yf.Ticker(ticker)
     chains = yf_ticker.option_chain(expiration)
+
     return chains
 
 
@@ -146,6 +147,7 @@ def get_price(ticker: str) -> float:
     ticker_yahoo = yf.Ticker(ticker)
     data = ticker_yahoo.history()
     last_quote = data.tail(1)["Close"].iloc[0]
+
     return last_quote
 
 

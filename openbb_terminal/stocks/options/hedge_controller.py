@@ -3,34 +3,28 @@ __docformat__ = "numpy"
 
 import argparse
 import logging
+from datetime import datetime
 from typing import Dict, List
 
+import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.economy import yfinance_model
 from openbb_terminal.helper_funcs import (
     check_non_negative,
     parse_known_args_and_warn,
+    print_rich_table,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console
-from openbb_terminal.stocks.options.hedge_model import(
-    add_hedge_option,
-    add_portfolio_option, 
-    calc_hedge,
-    rmv_hedge_option,
-)
-
+from openbb_terminal.stocks.options import hedge_view
+from openbb_terminal.stocks.options.hedge_model import add_hedge_option
 from openbb_terminal.stocks.options.yfinance_model import (
     get_option_chain,
     get_price,
 )
-from openbb_terminal.stocks.options.yfinance_view import show_greeks
-from openbb_terminal.stocks.options import op_helpers
-from datetime import datetime
 
 # pylint: disable=R0902
 
@@ -49,19 +43,18 @@ class HedgeController(BaseController):
         "sop",
     ]
 
-    underlying_asset_choices = ["long", "short", "none"]
     PATH = "/stocks/options/hedge/"
 
     def __init__(self, ticker: str, expiration: str, queue: List[str] = None):
         """Constructor"""
         super().__init__(queue)
 
+        self.underlying_asset_position: str = ""
         self.chain = get_option_chain(ticker, expiration)
         self.calls = list(
             zip(
                 self.chain.calls["strike"].tolist(),
                 self.chain.calls["impliedVolatility"].tolist(),
-                
             )
         )
         self.puts = list(
@@ -70,21 +63,30 @@ class HedgeController(BaseController):
                 self.chain.puts["impliedVolatility"].tolist(),
             )
         )
+
+        self.PICK_CHOICES = [
+            f"{strike} {position} {side}"
+            for strike in range(int(self.calls[0][0]), int(self.calls[-1][0]), 5)
+            for position in ["Long", "Short"]
+            for side in ["Call", "Put"]
+        ]
+
         self.ticker = ticker
-        self.current_price = get_price(ticker)
+        self.current_price: float = get_price(ticker)
         self.expiration = expiration
         self.implied_volatility = self.chain.calls["impliedVolatility"]
-        self.options: List[Dict[str, str]] = []
-        self.underlying = 0
-        self.side = 0
-        self.amount = 0
-        self.strike = 0
+        self.options: Dict = {"Portfolio": {}, "Option A": {}, "Option B": {}}
+        self.underlying = 0.0
+        self.side: str = ""
+        self.amount = 0.0
+        self.strike = 0.0
         self.call_index_choices = range(len(self.calls))
         self.put_index_choices = range(len(self.puts))
+        self.greeks: Dict = {"Portfolio": {}, "Option A": {}, "Option B": {}}
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
-            choices["pick"] = {c: {} for c in self.underlying_asset_choices}
+            choices: dict = {c: None for c in self.controller_choices}
+            choices["pick"] = {c: None for c in self.PICK_CHOICES}
             choices["add"] = {
                 str(c): {} for c in list(range(max(len(self.puts), len(self.calls))))
             }
@@ -92,31 +94,38 @@ class HedgeController(BaseController):
             self.choices = choices
             self.completer = NestedCompleter.from_nested_dict(choices)
 
-
     def update_runtime_choices(self):
         """Update runtime choices"""
         if self.options and session and obbff.USE_PROMPT_TOOLKIT:
-            self.choices["rmv"] = {str(c): {} for c in range(len(self.options))}
+            self.choices["rmv"] = {c: None for c in ["Option A", "Option B"]}
             self.completer = NestedCompleter.from_nested_dict(self.choices)
 
     def print_help(self):
         """Print help"""
-        has_option_start = "" if self.options else "[unvl]"
-        has_option_end = "" if self.options else "[/unvl]"
+        has_portfolio_start = "" if "Delta" in self.greeks["Portfolio"] else "[unvl]"
+        has_portfolio_end = "" if "Delta" in self.greeks["Portfolio"] else "[/unvl]"
+        has_option_start = (
+            ""
+            if "Delta" in self.greeks["Option A"] or "Delta" in self.greeks["Option B"]
+            else "[unvl]"
+        )
+        has_option_end = (
+            ""
+            if "Delta" in self.greeks["Option B"] or "Delta" in self.greeks["Option B"]
+            else "[/unvl]"
+        )
         help_text = f"""
 [param]Ticker: [/param]{self.ticker or None}
 [param]Expiry: [/param]{self.expiration or None}
 [cmds]
     pick          long, short, or none (default) / call or put / amount of position / strike price
 [/cmds][param]
-Underlying Asset Position: [/param]{('Short', 'None', 'Long')[self.underlying+1]} {self.side} {self.amount} @ {self.strike}
+Underlying Asset Position: [/param]{self.underlying_asset_position}
 [cmds]
-    list          list available strike prices for calls and puts
-
-    add           add option to the list of the options{has_option_start}
-    rmv           remove option from the list of the options{has_option_end}
-
-    sop           selected options[/cmds]
+    list          list available strike prices for calls and puts{has_portfolio_start}
+    add           add option to the list of the options{has_portfolio_end}{has_option_start}
+    rmv           remove option from the list of the options
+    sop           selected options{has_option_end}[/cmds]
         """
         console.print(text=help_text, menu="Stocks - Options - Hedge")
 
@@ -143,13 +152,21 @@ Underlying Asset Position: [/param]{('Short', 'None', 'Long')[self.underlying+1]
             description="""Lists available calls and puts.""",
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
+
         if ns_parser:
-            length = max(len(self.calls), len(self.puts)) - 1
-            console.print("#\tcall\tput")
-            for i in range(length):
-                call = self.calls[i][0] if i < len(self.calls) else ""
-                put = self.puts[i][0] if i < len(self.puts) else ""
-                console.print(f"{i}\t{call}\t{put}")
+            calls = pd.DataFrame([call[0] for call in self.calls])
+            puts = pd.DataFrame([put[0] for put in self.puts])
+
+            options = pd.concat([calls, puts], axis=1).fillna("-")
+
+            print_rich_table(
+                options,
+                title="Available Calls and Puts",
+                headers=list(["Calls", "Puts"]),
+                show_index=True,
+                index_name="Identifier",
+            )
+
             console.print("")
 
     @log_start_end(log=logger)
@@ -165,7 +182,7 @@ Underlying Asset Position: [/param]{('Short', 'None', 'Long')[self.underlying+1]
             "--put",
             dest="put",
             action="store_true",
-            help="buy a put instead of a call",
+            help="Buy a put instead of a call",
             default=False,
         )
         parser.add_argument(
@@ -173,15 +190,15 @@ Underlying Asset Position: [/param]{('Short', 'None', 'Long')[self.underlying+1]
             "--short",
             dest="short",
             action="store_true",
-            help="short the option instead of buying it",
+            help="Short the option instead of buying it",
             default=False,
         )
         parser.add_argument(
             "-i",
-            "--index",
-            dest="index",
+            "--identifier",
+            dest="identifier",
             type=check_non_negative,
-            help="list index of the option",
+            help="The identifier of the option as found in the list command",
             required="-h" not in other_args and "-k" not in other_args,
             choices=self.put_index_choices
             if "-p" in other_args
@@ -190,49 +207,113 @@ Underlying Asset Position: [/param]{('Short', 'None', 'Long')[self.underlying+1]
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-i")
         ns_parser = parse_known_args_and_warn(parser, other_args)
+
         if ns_parser:
-            opt_type = "put" if ns_parser.put else "call"
-            sign = -1 if ns_parser.short else 1
-            options_list = self.puts if ns_parser.put else self.calls
-
-            if ns_parser.index < len(options_list):
-                strike = options_list[ns_parser.index][0]
-                implied_volatility = options_list[ns_parser.index][1]
-                
-                option = {
-                    "type": opt_type,
-                    "sign": sign,
-                    "strike": strike,
-                    "implied_volatility": implied_volatility,
-                }
-
-                if opt_type == "call":
-                    side = 1
-                elif opt_type == "put":
-                    side = -1
-                self.options.append(option)
-                date_obj = datetime.strptime(self.expiration, "%Y-%m-%d")
-                days = (date_obj - datetime.now()).days + 1
-                if days == 0: 
-                    days = 0.01
-                if (len(self.options)) <= 2:
-                    add_hedge_option(self.current_price, implied_volatility, strike, days/365, side)
-
-                if (len(self.options)) == 2:
-                    calc_hedge(self.amount, self.side, sign)
-
-                self.update_runtime_choices()
-
-                console.print("#\tType\tHold\tStrike\tImplied Volatility")
-                for i, o in enumerate(self.options):
-                    asset: str = "Long" if o["sign"] == 1 else "Short"
-                    console.print(
-                        f"{i}\t{o['type']}\t{asset}\t{o['strike']}\t{o['implied_volatility']}"
-                    )
-                console.print("")
-
+            if not self.greeks["Portfolio"]:
+                console.print(
+                    "Please set the Underlying Asset Position by using the 'pick' command.\n"
+                )
             else:
-                console.print("Please use a valid index\n")
+                opt_type = "Put" if ns_parser.put else "Call"
+                sign = -1 if ns_parser.short else 1
+                options_list = self.puts if ns_parser.put else self.calls
+
+                if ns_parser.identifier < len(options_list):
+                    strike = options_list[ns_parser.identifier][0]
+                    implied_volatility = options_list[ns_parser.identifier][1]
+
+                    option = {
+                        "type": opt_type,
+                        "sign": sign,
+                        "strike": strike,
+                        "implied_volatility": implied_volatility,
+                    }
+
+                    if opt_type == "Call":
+                        side = 1
+                    else:
+                        # Implies the option type is a put
+                        side = -1
+
+                    date_obj = datetime.strptime(self.expiration, "%Y-%m-%d")
+                    days = float((date_obj - datetime.now()).days + 1)
+
+                    if days == 0.0:
+                        days = 0.01
+
+                    if "Delta" not in self.greeks["Option A"]:
+                        self.options["Option A"] = option
+                        (
+                            self.greeks["Option A"]["Delta"],
+                            self.greeks["Option A"]["Gamma"],
+                            self.greeks["Option A"]["Vega"],
+                        ) = hedge_view.add_and_show_greeks(
+                            self.current_price,
+                            implied_volatility,
+                            strike,
+                            days / 365,
+                            side,
+                        )
+                    elif "Delta" not in self.greeks["Option B"]:
+                        self.options["Option B"] = option
+                        (
+                            self.greeks["Option B"]["Delta"],
+                            self.greeks["Option B"]["Gamma"],
+                            self.greeks["Option B"]["Vega"],
+                        ) = hedge_view.add_and_show_greeks(
+                            self.current_price,
+                            implied_volatility,
+                            strike,
+                            days / 365,
+                            side,
+                        )
+                    else:
+                        console.print(
+                            "[red]The functionality only accepts two options. Therefore, please remove an "
+                            "option with 'rmv' before continuing.[/red]\n"
+                        )
+
+                    if (
+                        "Delta" in self.greeks["Option A"]
+                        and "Delta" in self.greeks["Option B"]
+                    ):
+                        hedge_view.show_calculated_hedge(
+                            self.amount, option["type"], self.greeks, sign
+                        )
+
+                    self.update_runtime_choices()
+
+                    positions = pd.DataFrame()
+
+                    for _, values in self.options.items():
+                        # Loops over options in the dictionary. If a position is empty, skips the printing.
+                        if values:
+                            option_position: str = (
+                                "Long" if values["sign"] == 1 else "Short"
+                            )
+                            positions = positions.append(
+                                [
+                                    [
+                                        values["type"],
+                                        option_position,
+                                        values["strike"],
+                                        values["implied_volatility"],
+                                    ]
+                                ]
+                            )
+
+                    positions.columns = ["Type", "Hold", "Strike", "Implied Volatility"]
+
+                    print_rich_table(
+                        positions,
+                        title="Current Option Positions",
+                        headers=list(positions.columns),
+                        show_index=False,
+                    )
+
+                    console.print("")
+        else:
+            console.print("Please use a valid index\n")
 
     @log_start_end(log=logger)
     def call_rmv(self, other_args: List[str]):
@@ -243,13 +324,12 @@ Underlying Asset Position: [/param]{('Short', 'None', 'Long')[self.underlying+1]
             description="""Remove one of the options to be shown in the hedge.""",
         )
         parser.add_argument(
-            "-i",
-            "--index",
-            dest="index",
-            type=check_non_negative,
+            "-o",
+            "--option",
+            dest="option",
             help="index of the option to remove",
-            required=bool("-h" not in other_args and len(self.options) > 0),
-            choices=range(len(self.options)),
+            nargs="+",
+            required="-h" not in other_args,
         )
         parser.add_argument(
             "-a",
@@ -260,28 +340,51 @@ Underlying Asset Position: [/param]{('Short', 'None', 'Long')[self.underlying+1]
             default=False,
         )
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-i")
+            other_args.insert(0, "-o")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            if self.options:
+            if not self.options["Option A"] and not self.options["Option B"]:
+                console.print("Please add Options by using the 'add' command.\n")
+            else:
                 if ns_parser.all:
-                    self.options = []
+                    self.options = {"Option A": {}, "Option B": {}}
                 else:
-                    if ns_parser.index < len(self.options):
-                        del self.options[ns_parser.index]
-                        
-                        rmv_hedge_option(ns_parser.index)
+                    option_name = " ".join(ns_parser.option)
+
+                    if option_name in self.options:
+                        self.options[option_name] = {}
+                        self.greeks[option_name] = {}
+
                         self.update_runtime_choices()
                     else:
-                        console.print("Please use a valid index.\n")
+                        console.print(f"{option_name} is not an option.")
 
-                console.print("#\tType\tHold\tStrike\tImplied Volatility")
+                if self.options["Option A"] or self.options["Option B"]:
+                    positions = pd.DataFrame()
 
-                for i, o in enumerate(self.options):
-                    sign = "Long" if o["sign"] == 1 else "Short"
-                    console.print(
-                        f"{i}\t{o['type']}\t{sign}\t{o['strike']}\t{o['implied_volatility']}"
+                    for _, value in self.options.items():
+                        if value:
+                            option_side: str = "Long" if value["sign"] == 1 else "Short"
+                            positions = positions.append(
+                                [
+                                    [
+                                        value["type"],
+                                        option_side,
+                                        value["strike"],
+                                        value["implied_volatility"],
+                                    ]
+                                ]
+                            )
+
+                    positions.columns = ["Type", "Hold", "Strike", "Implied Volatility"]
+
+                    print_rich_table(
+                        positions,
+                        title="Current Option Positions",
+                        headers=list(positions.columns),
+                        show_index=False,
                     )
+
                 console.print("")
         else:
             console.print(
@@ -298,95 +401,79 @@ Underlying Asset Position: [/param]{('Short', 'None', 'Long')[self.underlying+1]
             description="This function plots option hedge diagrams",
         )
         parser.add_argument(
-            "-t",
-            "--type",
-            dest="underlyingtype",
-            type=str,
-            help="Choose what you would like to do with the underlying asset",
+            "-p",
+            "--pick",
+            dest="pick",
+            nargs="+",
+            help="Choose what you would like to pick",
             required="-h" not in other_args,
-            choices=self.underlying_asset_choices,
         )
-        parser.add_argument(
-            "-s",
-            "--side",
-            dest="sidetype",
-            type=str,
-            help="Choose what you would like to do with the underlying asset",
-            required="-h" not in other_args,
-            choices=["call", "put"],
-        )
+
         parser.add_argument(
             "-a",
             "--amount",
-            help="Amount of underlying asset in position.",
-            dest="amounttype",
-            default=0,
-            type=check_non_negative,
+            dest="amount",
+            default=1000,
+            help="Choose the amount invested",
         )
-        parser.add_argument(
-            "-p",
-            "--strikeprice",
-            help="Strike price of option in position.",
-            dest="striketype",
-            default=0,
-            type=check_non_negative,
-        )
+
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-t")
+            other_args.insert(0, "-p")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            type = 0
-            if ns_parser.underlyingtype == "long":
-                self.underlying = 1
-                type = 1
-            elif ns_parser.underlyingtype == "none":
-                self.underlying = 0
-                type = 0
-            elif ns_parser.underlyingtype == "short":
+            strike_type, underlying_type, side_type = ns_parser.pick
+            amount_type = ns_parser.amount
+
+            self.underlying_asset_position = (
+                f"{underlying_type} {side_type} @ {strike_type}"
+            )
+
+            if underlying_type == "Short":
                 self.underlying = -1
-                type = -1
+            else:
+                self.underlying = 1
 
-            side = 0
-            if ns_parser.sidetype == "call":
-                self.side = "call"
-                side = 1
-            elif ns_parser.sidetype == "put":
-                self.side = "put"
+            if side_type == "Put":
+                self.side = "Put"
                 side = -1
+            else:
+                self.side = "Call"
+                side = 1
 
-            self.amount = ns_parser.amounttype
-            self.strike = ns_parser.striketype
+            self.amount = amount_type
+            self.strike = strike_type
 
             index = -1
-            strike = self.strike
-
-            
-
-            amount = self.amount
-            price = self.current_price
-            
             date_obj = datetime.strptime(self.expiration, "%Y-%m-%d")
-            days = (date_obj - datetime.now()).days + 1
-            if days == 0: 
+            days = float((date_obj - datetime.now()).days + 1)
+
+            if days == 0.0:
                 days = 0.01
 
-            if side == 1:
-                for i in range(len(self.chain.calls["strike"])):
-                    if self.chain.calls["strike"][i] == strike:
-                        index = i
-                        break
-                implied_volatility = self.chain.calls["impliedVolatility"][index]
-
-            elif side == -1:
+            if side == -1:
                 for i in range(len(self.chain.puts["strike"])):
-                    if self.chain.puts["strike"][i] == strike:
+                    if self.chain.puts["strike"][i] == self.strike:
                         index = i
                         break
-                implied_volatility = self.chain.puts["impliedVolatility"][index]
-            
-            add_portfolio_option(price, strike, type, side, days/365, implied_volatility)
-            
-        console.print("")
+                implied_volatility = self.chain.puts["impliedVolatility"].iloc[index]
+            else:
+                for i in range(len(self.chain.calls["strike"])):
+                    if self.chain.calls["strike"][i] == self.strike:
+                        index = i
+                        break
+                implied_volatility = self.chain.calls["impliedVolatility"].iloc[index]
+
+            (
+                self.greeks["Portfolio"]["Delta"],
+                self.greeks["Portfolio"]["Gamma"],
+                self.greeks["Portfolio"]["Vega"],
+            ) = add_hedge_option(
+                self.current_price,
+                implied_volatility,
+                float(self.strike),
+                days / 365,
+                side,
+            )
 
     @log_start_end(log=logger)
     def call_sop(self, other_args):
@@ -399,10 +486,43 @@ Underlying Asset Position: [/param]{('Short', 'None', 'Long')[self.underlying+1]
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            console.print("#\tType\tHold\tStrike\tImplied Volatility")
-            for i, o in enumerate(self.options):
-                sign = "Long" if o["sign"] == 1 else "Short"
-                console.print(f"{i}\t{o['type']}\t{sign}\t{o['strike']}\t{o['implied_volatility']}")
-            console.print("")
+            if not self.options["Option A"] and not self.options["Option B"]:
+                console.print("Please add Options by using the 'add' command.\n")
+            else:
+                if (
+                    "Delta" in self.greeks["Option A"]
+                    and "Delta" in self.greeks["Option B"]
+                ):
+                    hedge_view.show_calculated_hedge(
+                        self.amount,
+                        self.options["Option A"]["type"],
+                        self.greeks,
+                        self.options["Option A"]["sign"],
+                    )
 
-    
+                positions = pd.DataFrame()
+
+                for _, value in self.options.items():
+                    if value:
+                        option_side: str = "Long" if value["sign"] == 1 else "Short"
+                        positions = positions.append(
+                            [
+                                [
+                                    value["type"],
+                                    option_side,
+                                    value["strike"],
+                                    value["implied_volatility"],
+                                ]
+                            ]
+                        )
+
+                positions.columns = ["Type", "Hold", "Strike", "Implied Volatility"]
+
+                print_rich_table(
+                    positions,
+                    title="Current Option Positions",
+                    headers=list(positions.columns),
+                    show_index=False,
+                )
+
+                console.print("")
