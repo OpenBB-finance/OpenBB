@@ -82,6 +82,9 @@ class DiscoveryController(BaseController):
             choices["drdapps"]["--sort"] = {
                 c: {} for c in dappradar_model.DAPPS_COLUMNS
             }
+
+            choices = {**choices, **self.SUPPORT_CHOICES}
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):

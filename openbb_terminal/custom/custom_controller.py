@@ -55,6 +55,9 @@ class CustomDataController(BaseController):
             choices["load"] = {c: None for c in self.DATA_FILES}
             choices["plot"]["-k"] = {c: None for c in self.pandas_plot_choices}
             self.choices = choices
+
+            choices = {**choices, **self.SUPPORT_CHOICES}
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def update_runtime_choices(self):
