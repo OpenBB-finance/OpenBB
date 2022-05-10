@@ -189,7 +189,10 @@ class EconomyController(BaseController):
             self.choices["map"]["-p"] = {c: None for c in self.map_period_list}
             self.choices["map"]["--period"] = {c: None for c in self.map_period_list}
 
-            self.completer = NestedCompleter.from_nested_dict(self.choices)
+            if len(self.SUPPORT_CHOICES):
+                choices = {**self.choices, **self.SUPPORT_CHOICES}
+
+            self.completer = NestedCompleter.from_nested_dict(choices)
 
     def update_runtime_choices(self):
         if session and obbff.USE_PROMPT_TOOLKIT:
