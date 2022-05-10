@@ -29,6 +29,8 @@ from openbb_terminal.helper_funcs import (
     parse_known_args_and_warn,
     valid_date_in_past,
     set_command_location,
+    prefill_form,
+    support_message,
 )
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.rich_config import console
@@ -49,6 +51,8 @@ CRYPTO_SOURCES = {
     "yf": "YahooFinance",
 }
 
+SUPPORT_TYPE = ["bug", "suggestion", "question", "generic"]
+
 
 class BaseController(metaclass=ABCMeta):
 
@@ -64,10 +68,12 @@ class BaseController(metaclass=ABCMeta):
         "exit",
         "r",
         "reset",
+        "support",
     ]
 
     CHOICES_COMMANDS: List[str] = []
     CHOICES_MENUS: List[str] = []
+    SUPPORT_CHOICES: Dict = {}
     COMMAND_SEPARATOR = "/"
     KEYS_MENU = "keys" + COMMAND_SEPARATOR
 
@@ -99,9 +105,35 @@ class BaseController(metaclass=ABCMeta):
         self.parser = argparse.ArgumentParser(
             add_help=False, prog=self.path[-1] if self.PATH != "/" else "terminal"
         )
+
         self.parser.add_argument("cmd", choices=self.controller_choices)
 
         theme.applyMPLstyle()
+
+        # Terminal-wide support command auto-completion
+
+        # Remove common choices from list of support commands
+        self.support_commands = [
+            c for c in self.controller_choices if c not in self.CHOICES_COMMON
+        ]
+
+        support_choices: dict = {c: {} for c in self.controller_choices}
+
+        support_choices["support"] = {
+            c: None for c in (["generic"] + self.support_commands)
+        }
+
+        support_choices["support"]["--command"] = {
+            c: None for c in (["generic"] + self.support_commands)
+        }
+
+        support_choices["support"]["-c"] = {
+            c: None for c in (["generic"] + self.support_commands)
+        }
+
+        support_choices["support"]["--type"] = {c: None for c in (SUPPORT_TYPE)}
+
+        self.SUPPORT_CHOICES = support_choices
 
     def check_path(self) -> None:
         path = self.PATH
@@ -277,6 +309,70 @@ class BaseController(metaclass=ABCMeta):
             console.print("")
         else:
             console.print("No resources available.\n")
+
+    @log_start_end(log=logger)
+    def call_support(self, other_args: List[str]) -> None:
+        """Process support command"""
+
+        self.save_class()
+        console.print("")
+
+        path_split = [x for x in self.PATH.split("/") if x != ""]
+        main_menu = path_split[0] if len(path_split) else "home"
+
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="support",
+            description="Submit your support request",
+        )
+
+        parser.add_argument(
+            "-c",
+            "--command",
+            action="store",
+            dest="command",
+            required="-h" not in other_args,
+            choices=["generic"] + self.support_commands,
+            help="Command that needs support",
+        )
+
+        parser.add_argument(
+            "--msg",
+            "-m",
+            action="store",
+            type=support_message,
+            nargs="+",
+            dest="msg",
+            required=False,
+            default="",
+            help="Message to send. Enclose it with double quotes",
+        )
+
+        parser.add_argument(
+            "--type",
+            "-t",
+            action="store",
+            dest="type",
+            required=False,
+            choices=SUPPORT_TYPE,
+            default="generic",
+            help="Support ticket type",
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-c")
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+
+        if ns_parser:
+            prefill_form(
+                ticket_type=ns_parser.type,
+                menu=main_menu,
+                command=ns_parser.command,
+                message=" ".join(ns_parser.msg),
+                path=self.PATH,
+            )
 
     def menu(self, custom_path_menu_above: str = ""):
         an_input = "HELP_ME"
