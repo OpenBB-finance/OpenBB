@@ -84,8 +84,8 @@ def test_load_cg(coin, load_ta):
 def test_load_cg_invalid():
     load("ZTH", source="cg")
 
-
-def get_bitcoin(mocker):
+@pytest.fixture(name="get_bitcoin")
+def fixture_get_bitcoin(mocker):
     # pylint: disable=unused-argument
     mock_load = mocker.patch(
         base
@@ -105,17 +105,17 @@ def get_bitcoin(mocker):
 # pylint: disable=R0904
 
 
-def test_coin_api_load(mocker):
+def test_coin_api_load(get_bitcoin):
     """
     Mock load function through get_coin_market_chart_by_id.
     Mock returns a dict saved as .json
     """
-    coin, _ = get_bitcoin(mocker)
+    coin, _ = get_bitcoin
 
     assert coin == "btc-bitcoin"
 
 
-def test_coin_api_load_df_for_ta(mocker):
+def test_coin_api_load_df_for_ta(get_bitcoin, mocker):
     """
     Mock load function through get_coin_market_chart_by_id.
     Mock returns a dict saved as .json
@@ -124,7 +124,7 @@ def test_coin_api_load_df_for_ta(mocker):
         base
         + "due_diligence.pycoingecko_model.CoinGeckoAPI.get_coin_market_chart_by_id"
     )
-    _, symbol = get_bitcoin(mocker)
+    _, symbol = get_bitcoin
     coin_map_df = prepare_all_coins_df().set_index("Symbol").loc[symbol.upper()].iloc[0]
 
     with open(
@@ -156,9 +156,9 @@ def test_get_coins():
 
 
 @pytest.mark.record_stdout
-def test_coin_chart(mocker):
+def test_coin_chart(get_bitcoin):
     # pylint: disable=unused-argument
-    _, symbol = get_bitcoin(mocker)
+    _, symbol = get_bitcoin
     coin_map_df = prepare_all_coins_df().set_index("Symbol").loc[symbol.upper()].iloc[0]
 
     plot_chart(coin_map_df=coin_map_df, source="cg", currency="usd", days=30)
