@@ -17,11 +17,12 @@ Ticker:  TSLA
     splits        stock split and reverse split events since IPO
     web           open web browser of the company
     hq            open HQ location of the company
+[Alpha Vantage / Polygon]
+    income        income statements of the company
+    balance       balance sheet of the company
 [Alpha Vantage]
     overview      overview of the company
     key           company key metrics
-    income        income statements of the company
-    balance       balance sheet of the company
     cash          cash flow of the company
     earnings      earnings dates and reported EPS
     fraud         key fraud ratios

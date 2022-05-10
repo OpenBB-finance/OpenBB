@@ -1,0 +1,42 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.polygon.io/vX/reference/financials?apiKey=MOCK_API_KEY&filing_date.gte=1980-01-01&limit=100&ticker=THIS_IS_NOT_A_TICKER&timeframe=annual
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAA/6pWKkotLs0pKVayio7VUSouSSwpLVayUvL3VtJRKkotLE0tLonPTFGyUjJJtTRN
+        SjSxTDEwM0hLNkhLSktLMjNKNjQwSUsyNjWxVKoFBAAA//8+sFm6TAAAAA==
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '100'
+      Content-Type:
+      - application/json
+      Date:
+      - Sun, 08 May 2022 18:56:55 GMT
+      Server:
+      - nginx/1.19.2
+      Strict-Transport-Security:
+      - max-age=15724800; includeSubDomains
+      Vary:
+      - Accept-Encoding
+      X-Item-Count:
+      - '0'
+      X-Request-Id:
+      - 4e95ba49d060fc0fbffb62c104fb3549
+    status:
+      code: 200
+      message: OK
+version: 1
