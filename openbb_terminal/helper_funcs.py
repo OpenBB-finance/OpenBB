@@ -1495,3 +1495,10 @@ def choice_check_after_action(action=None, choices=None):
         raise NotImplementedError("action argument must be class or function")
 
     return ActionClass
+
+
+def support_message(s: str) -> str:
+    """Argparse type to check string is in valid format
+    for the support command
+    """
+    return s.replace('"', "")

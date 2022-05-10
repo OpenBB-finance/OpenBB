@@ -79,8 +79,7 @@ class QaController(CryptoBaseController):
             choices["pick"] = {c: None for c in list(data.columns)}
             choices["load"]["-r"] = {c: {} for c in c_help.INTERVALS}
 
-            if len(self.SUPPORT_CHOICES):
-                choices = {**choices, **self.SUPPORT_CHOICES}
+            choices = {**choices, **self.SUPPORT_CHOICES}
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 

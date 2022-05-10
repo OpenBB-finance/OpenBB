@@ -30,6 +30,7 @@ from openbb_terminal.helper_funcs import (
     valid_date_in_past,
     set_command_location,
     prefill_form,
+    support_message,
 )
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.rich_config import console
@@ -50,7 +51,7 @@ CRYPTO_SOURCES = {
     "yf": "YahooFinance",
 }
 
-SUPPORT_TYPE = ["bug", "suggestion", "question", "general"]
+SUPPORT_TYPE = ["bug", "suggestion", "question", "generic"]
 
 
 class BaseController(metaclass=ABCMeta):
@@ -331,29 +332,32 @@ class BaseController(metaclass=ABCMeta):
             "--command",
             action="store",
             dest="command",
-            required=True,
+            required="-h" not in other_args,
             choices=["generic"] + self.support_commands,
             help="Command that needs support",
         )
 
         parser.add_argument(
             "--msg",
+            "-m",
             action="store",
-            type=str,
+            type=support_message,
             nargs="+",
             dest="msg",
             required=False,
+            default="",
             help="Message to send. Enclose it with double quotes",
         )
 
         parser.add_argument(
             "--type",
+            "-t",
             action="store",
             dest="type",
             required=False,
             choices=SUPPORT_TYPE,
             default="generic",
-            help="Support type. Default: generic",
+            help="Support ticket type",
         )
 
         if other_args and "-" not in other_args[0][0]:
@@ -362,14 +366,11 @@ class BaseController(metaclass=ABCMeta):
         ns_parser = parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
-            prefill_msg = (
-                (" ".join(ns_parser.msg)).replace('"', "") if ns_parser.msg else ""
-            )
             prefill_form(
                 ticket_type=ns_parser.type,
                 menu=main_menu,
                 command=ns_parser.command,
-                message=prefill_msg,
+                message=" ".join(ns_parser.msg),
                 path=self.PATH,
             )
 
