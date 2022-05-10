@@ -594,9 +594,7 @@ Expiry: [/param]{self.selected_date or None}
             if self.ticker:
                 # Print possible expiry dates
                 if ns_parser.index == -1 and not ns_parser.date:
-                    console.print("\nAvailable expiry dates:")
-                    for i, d in enumerate(self.expiry_dates):
-                        console.print(f"   {(2 - len(str(i))) * ' '}{i}.  {d}")
+                    tradier_view.display_expiry_dates(self.expiry_dates)
                     console.print("")
                 elif ns_parser.date:
                     if ns_parser.date in self.expiry_dates:
