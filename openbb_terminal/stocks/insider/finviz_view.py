@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def last_insider_activity(ticker: str, num: int, export: str):
+def last_insider_activity(ticker: str, num: int = 10, export: str = ""):
     """Display insider activity for a given stock ticker. [Source: Finviz]
 
     Parameters

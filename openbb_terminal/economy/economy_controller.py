@@ -16,7 +16,6 @@ from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.economy import (
     alphavantage_view,
-    cnn_view,
     finviz_view,
     nasdaq_model,
     nasdaq_view,
@@ -63,13 +62,11 @@ class EconomyController(BaseController):
         "map",
         "rtps",
         "industry",
-        "feargreed",
         "bigmac",
     ]
 
     CHOICES_MENUS = ["pred", "qa"]
 
-    fear_greed_indicators = ["jbd", "mv", "pco", "mm", "sps", "spb", "shd", "index"]
     wsj_sortby_cols_dict = {c: None for c in ["ticker", "last", "change", "prevClose"]}
     map_period_list = ["1d", "1w", "1m", "3m", "6m", "1y"]
     map_type_list = ["sp500", "world", "full", "etf"]
@@ -229,7 +226,6 @@ Overview
     overview      show a market overview of either indices, bonds or currencies [src][Source: Wall St. Journal][/src]
     futures       display a futures and commodities overview [src][Source: Wall St. Journal / FinViz][/src]
     map           S&P500 index stocks map [src][Source: FinViz][/src]
-    feargreed     CNN Fear and Greed Index [src][Source: CNN][/src]
     bigmac        The Economist Big Mac index [src][Source: NASDAQ Datalink][/src]
 
 Macro Data
@@ -393,41 +389,6 @@ Performance & Valuations
             finviz_view.map_sp500_view(
                 period=ns_parser.s_period,
                 map_type=ns_parser.s_type,
-            )
-
-    @log_start_end(log=logger)
-    def call_feargreed(self, other_args: List[str]):
-        """Process feargreed command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            prog="feargreed",
-            description="""
-                Display CNN Fear And Greed Index from https://money.cnn.com/data/fear-and-greed/.
-            """,
-        )
-        parser.add_argument(
-            "-i",
-            "--indicator",
-            dest="indicator",
-            required=False,
-            type=str,
-            choices=self.fear_greed_indicators,
-            help="""
-                CNN Fear And Greed indicator or index. From Junk Bond Demand, Market Volatility,
-                Put and Call Options, Market Momentum Stock Price Strength, Stock Price Breadth,
-                Safe Heaven Demand, and Index.
-            """,
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-i")
-
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
-        )
-        if ns_parser:
-            cnn_view.fear_and_greed_index(
-                indicator=ns_parser.indicator,
-                export=ns_parser.export,
             )
 
     @log_start_end(log=logger)

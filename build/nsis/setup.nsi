@@ -10,7 +10,7 @@
   !define NAME "OpenBB Terminal"
   !define COMPANY "OpenBB"
   !define APPFILE "OpenBBTerminal.exe"
-  !define VERSION "1.0.0"
+  !define VERSION "1.2.0"
   !define SLUG "${NAME} v${VERSION}"
   
 ;--------------------------------
@@ -18,7 +18,7 @@
   Name "${NAME}"
   OutFile "${NAME} Setup.exe"
   InstallDir $PROFILE\OpenBB
-  RequestExecutionLevel admin
+  RequestExecutionLevel user
   
 ;--------------------------------
 ; UI

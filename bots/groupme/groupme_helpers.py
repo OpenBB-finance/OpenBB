@@ -36,7 +36,7 @@ def upload_image(image: str, local: bool) -> requests.Response:
     url = "https://image.groupme.com/pictures"
     headers = {
         "Content-Type": "image/jpeg",
-        "X-Access-Token": os.getenv("X_ACCESS_TOKEN"),
+        "X-Access-Token": os.getenv("X_ACCESS_TOKEN", "NO_TOKEN_FOUND"),
     }
     if local:
         path_string = pathlib.Path(__file__).parent.parent.resolve()

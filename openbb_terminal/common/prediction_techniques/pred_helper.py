@@ -435,7 +435,7 @@ def plot_data_predictions(
     else:
         if len(external_axes) != 1:
             logger.error("Expected list of one axis item")
-            console.print("[red]Expected list of 1 axis item./n[/red]")
+            console.print("[red]Expected list of 1 axis item.\n[/red]")
             return
         (ax,) = external_axes
 

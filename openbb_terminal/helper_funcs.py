@@ -4,8 +4,10 @@ __docformat__ = "numpy"
 import argparse
 import logging
 from pathlib import Path
-from typing import List, Union
-from datetime import datetime, timedelta
+from typing import List, Tuple, Union
+from datetime import datetime, timedelta, date as d
+import types
+from collections.abc import Iterable
 import os
 import random
 import re
@@ -27,11 +29,13 @@ from screeninfo import get_monitors
 import urllib.parse
 import webbrowser
 import airtable
+import yfinance as yf
 
 from openbb_terminal.rich_config import console
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal import config_plot as cfgPlot
 from openbb_terminal import config_terminal as cfg
+from openbb_terminal.core.config.constants import USER_HOME
 
 logger = logging.getLogger(__name__)
 
@@ -98,7 +102,7 @@ def check_path(path: str) -> str:
     if not path:
         return ""
     if path[0] == "~":
-        path = path.replace("~", os.environ["HOME"])
+        path = path.replace("~", USER_HOME.as_posix())
     # Return string of path if such relative path exists
     if os.path.isfile(path):
         return path
@@ -192,7 +196,9 @@ def print_rich_table(
         for idx, values in zip(df.index.tolist(), df.values.tolist()):
             row = [str(idx)] if show_index else []
             row += [
-                str(x) if not isinstance(x, float) else f"{x:{floatfmt[idx]}}"
+                str(x)
+                if not isinstance(x, float)
+                else (f"{x:{floatfmt[idx]}}" if abs(x) >= 0.001 else f"{x:.2e}")
                 for idx, x in enumerate(values)
             ]
             table.add_row(*row)
@@ -1200,6 +1206,52 @@ def check_file_type_saved(valid_types: List[str] = None):
     return check_filenames
 
 
+def compose_export_path(func_name: str, dir_path: str) -> Tuple[str, str]:
+    """Compose export path for data from the terminal
+
+    Creates a path to a folder and a filename based on conditions.
+
+    Parameters
+    ----------
+    func_name : str
+        Name of the command that invokes this function
+    dir_path : str
+        Path of directory from where this function is called
+
+    Returns
+    -------
+    Tuple[str, str]
+        Tuple containing the folder path and a file name
+    """
+    now = datetime.now()
+    # Resolving all symlinks and also normalizing path.
+    resolve_path = Path(dir_path).resolve()
+    # Getting the directory names from the path. Instead of using split/replace (Windows doesn't like that)
+    path_cmd = f"{resolve_path.parts[-2]}_{resolve_path.parts[-1]}"
+
+    default_filename = f"{now.strftime('%Y%m%d_%H%M%S')}_{path_cmd}_{func_name}"
+    if obbff.EXPORT_FOLDER_PATH:
+        full_path_dir = str(obbff.EXPORT_FOLDER_PATH)
+    else:
+        if obbff.PACKAGED_APPLICATION:
+            full_path_dir = os.path.join(
+                USER_HOME.as_posix(), "Desktop", "OPENBB-exports"
+            )
+
+            if not os.path.isdir(full_path_dir):
+                try:
+                    os.makedirs(full_path_dir)
+                except Exception:
+                    console.print(
+                        f"[red]Couldn't create a folder in {full_path_dir}. Exporting failed.[/red]"
+                    )
+                    full_path_dir = dir_path.replace("openbb_terminal", "exports")
+        else:
+            default_filename = f"{func_name}_{now.strftime('%Y%m%d_%H%M%S')}"
+            full_path_dir = dir_path.replace("openbb_terminal", "exports")
+    return full_path_dir, default_filename
+
+
 def export_data(
     export_type: str, dir_path: str, func_name: str, df: pd.DataFrame = pd.DataFrame()
 ) -> None:
@@ -1217,43 +1269,17 @@ def export_data(
         Dataframe of data to save
     """
     if export_type:
-        now = datetime.now()
-
-        # Resolving all symlinks and also normalizing path.
-        resolve_path = Path(dir_path).resolve()
-        # Getting the directory names from the path. Instead of using split/replace (Windows doesn't like that)
-        path_cmd = f"{resolve_path.parts[-2]}_{resolve_path.parts[-1]}"
-
-        default_filename = f"{now.strftime('%Y%m%d_%H%M%S')}_{path_cmd}_{func_name}"
-        if obbff.EXPORT_FOLDER_PATH:
-            full_path_dir = str(obbff.EXPORT_FOLDER_PATH)
-        else:
-            if obbff.PACKAGED_APPLICATION:
-                full_path_dir = os.path.join(
-                    os.environ["HOME"], "Desktop", "OPENBB-exports"
-                )
-
-                if not os.path.isdir(full_path_dir):
-                    try:
-                        os.makedirs(full_path_dir)
-                    except Exception:
-                        console.print(
-                            f"[red]Couldn't create a folder in {full_path_dir}. Exporting failed.[/red]"
-                        )
-                        return
-            else:
-                default_filename = f"{func_name}_{now.strftime('%Y%m%d_%H%M%S')}"
-                full_path_dir = dir_path.replace("openbb_terminal", "exports")
+        export_folder, export_filename = compose_export_path(func_name, dir_path)
 
         for exp_type in export_type.split(","):
 
             # In this scenario the path was provided, e.g. --export pt.csv, pt.jpg
             if "." in exp_type:
-                saved_path = os.path.join(full_path_dir, exp_type)
+                saved_path = os.path.join(export_folder, exp_type)
             # In this scenario we use the default filename
             else:
                 saved_path = os.path.join(
-                    full_path_dir, f"{default_filename}.{exp_type}"
+                    export_folder, f"{export_filename}.{exp_type}"
                 )
 
             if exp_type.endswith("csv"):
@@ -1294,49 +1320,6 @@ def get_rf() -> float:
         return round(float(latest["avg_interest_rate_amt"]) / 100, 8)
     except Exception:
         return 0.02
-
-
-class LineAnnotateDrawer:
-    """Line drawing class."""
-
-    def __init__(self, ax: matplotlib.axes = None):
-        self.ax = ax
-
-    def draw_lines_and_annotate(self):
-        # ymin, _ = self.ax.get_ylim()
-        # xmin, _ = self.ax.get_xlim()
-        # self.ax.plot(
-        #     [xmin, xmin],
-        #     [ymin, ymin],
-        #     lw=0,
-        #     color="white",
-        #     label="X - leave interactive mode\nClick twice for annotation",
-        # )
-        # self.ax.legend(handlelength=0, handletextpad=0, fancybox=True, loc=2)
-        # self.ax.figure.canvas.draw()
-        """Draw lines."""
-        console.print(
-            "Click twice for annotation.\nClose window to keep using terminal.\n"
-        )
-
-        while True:
-            xy = plt.ginput(2)
-            # Check whether the user has closed the window or not
-            if not plt.get_fignums():
-                console.print("")
-                return
-
-            if len(xy) == 2:
-                x = [p[0] for p in xy]
-                y = [p[1] for p in xy]
-
-                if (x[0] == x[1]) and (y[0] == y[1]):
-                    txt = input("Annotation: ")
-                    self.ax.annotate(txt, (x[0], y[1]), ha="center", va="center")
-                else:
-                    self.ax.plot(x, y)
-
-                self.ax.figure.canvas.draw()
 
 
 def system_clear():
@@ -1419,3 +1402,118 @@ def save_ticket(main_menu: str, menu: str, command: str, path: str, msg: str):
             "path": path,
         },
     )
+
+def get_closing_price(ticker, days):
+
+    """Get historical close price for n days in past for market asset
+
+    Parameters
+    ----------
+    ticker : str
+        Ticker to get data for
+    days : datetime
+        No. of days in past
+
+    Returns
+    ----------
+    data : pd.DataFrame
+        Historic close prices for ticker for given days
+    """
+    tick = yf.Ticker(ticker)
+    df = tick.history(
+        start=d.today() - timedelta(days=days),
+        interval="1d",
+    )["Close"]
+    df = df.to_frame().reset_index()
+    df = df.rename(columns={0: "Close"})
+    df.index.name = "index"
+    return df
+
+
+def camel_case_split(string: str) -> str:
+    """Converts a camel case string to separate words
+
+    Parameters
+    ----------
+    string : str
+        The string to be converted
+
+    Returns
+    ----------
+    new_string: str
+        The formatted string
+    """
+
+    words = [[string[0]]]
+
+    for c in string[1:]:
+        if words[-1][-1].islower() and c.isupper():
+            words.append(list(c))
+        else:
+            words[-1].append(c)
+
+    results = ["".join(word) for word in words]
+    return " ".join(results).title()
+
+
+def choice_check_after_action(action=None, choices=None):
+    """return an action class that checks choice after action call
+    for argument of argparse.ArgumentParser.add_argument function
+
+    Parameters
+    ----------
+    action : Union[class, function]
+        Action for set args before check choices.
+        If action is class, it must implement argparse.Action methods
+        If action is function, it takes 4 args(parser, namespace, values, option_string)
+        and needs to return value to set dest
+
+    choices : Union[Iterable, function]
+        A container of values that should be allowed.
+        If choices is function, it takes 1 args(value) to check and
+        return bool that value is allowed or not
+
+    Returns
+    -------
+    Class
+        Class extended argparse.Action
+    """
+
+    if isinstance(choices, Iterable):
+
+        def choice_checker(value):
+            return value in choices
+
+    elif isinstance(choices, types.FunctionType):
+        choice_checker = choices
+    else:
+        raise NotImplementedError("choices argument must be iterable or function")
+
+    if isinstance(action, type):
+
+        class ActionClass(action):
+            def __call__(self, parser, namespace, values, option_string=None):
+                super().__call__(parser, namespace, values, option_string)
+                if not choice_checker(getattr(namespace, self.dest)):
+                    raise ValueError(
+                        f"{getattr(namespace, self.dest)} is not in {choices}"
+                    )
+
+    elif isinstance(action, types.FunctionType):
+
+        class ActionClass(argparse.Action):
+            def __call__(self, parser, namespace, values, option_string=None):
+                setattr(
+                    namespace,
+                    self.dest,
+                    action(parser, namespace, values, option_string),
+                )
+                if not choice_checker(getattr(namespace, self.dest)):
+                    raise ValueError(
+                        f"{getattr(namespace, self.dest)} is not in {choices}"
+                    )
+
+    else:
+        raise NotImplementedError("action argument must be class or function")
+
+    return ActionClass

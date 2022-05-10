@@ -23,6 +23,8 @@ from openbb_terminal.helper_funcs import (
     parse_known_args_and_warn,
     valid_date,
 )
+from openbb_terminal.helper_classes import AllowArgsWithWhiteSpace
+from openbb_terminal.helper_funcs import choice_check_after_action
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
 from openbb_terminal.rich_config import console
@@ -43,6 +45,7 @@ class StocksController(StockBaseController):
         "candle",
         "news",
         "resources",
+        "codes",
     ]
     CHOICES_MENUS = [
         "ta",
@@ -115,7 +118,9 @@ Stock: [/param]{stock_text}
 {self.add_info}[cmds]
     quote       view the current price for a specific stock ticker
     candle      view a candle chart for a specific stock ticker
-    news        latest news of the company[/cmds] [src][News API][/src]
+    news        latest news of the company [src][News API][/src]
+    codes       FIGI, SIK and SIC codes codes[/cmds] [src][Polygon.io][/src]
+
 [menu]
 >   options     options menu,  \t\t\t e.g.: chains, open interest, greeks, parity
 >   disc        discover trending stocks, \t e.g.: map, sectors, high short interest
@@ -177,7 +182,8 @@ Stock: [/param]{stock_text}
             "-c",
             "--country",
             default="",
-            choices=self.country,
+            nargs=argparse.ONE_OR_MORE,
+            action=choice_check_after_action(AllowArgsWithWhiteSpace, self.country),
             dest="country",
             help="Search by country to find stocks matching the criteria.",
         )
@@ -185,7 +191,8 @@ Stock: [/param]{stock_text}
             "-s",
             "--sector",
             default="",
-            choices=self.sector,
+            nargs=argparse.ONE_OR_MORE,
+            action=choice_check_after_action(AllowArgsWithWhiteSpace, self.sector),
             dest="sector",
             help="Search by sector to find stocks matching the criteria.",
         )
@@ -193,7 +200,8 @@ Stock: [/param]{stock_text}
             "-i",
             "--industry",
             default="",
-            choices=self.industry,
+            nargs=argparse.ONE_OR_MORE,
+            action=choice_check_after_action(AllowArgsWithWhiteSpace, self.industry),
             dest="industry",
             help="Search by industry to find stocks matching the criteria.",
         )
@@ -227,6 +235,22 @@ Stock: [/param]{stock_text}
         stocks_helper.quote(
             other_args, self.ticker + "." + self.suffix if self.suffix else self.ticker
         )
+
+    @log_start_end(log=logger)
+    def call_codes(self, _):
+        """Process codes command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="codes",
+            description="Show CIK, FIGI and SCI code from polygon for loaded ticker.",
+        )
+        ns_parser = parse_known_args_and_warn(parser, _)
+        if ns_parser:
+            if not self.ticker:
+                console.print("No ticker loaded. First use `load {ticker}`\n")
+                return
+            stocks_helper.show_codes_polygon(self.ticker)
 
     @log_start_end(log=logger)
     def call_candle(self, other_args: List[str]):

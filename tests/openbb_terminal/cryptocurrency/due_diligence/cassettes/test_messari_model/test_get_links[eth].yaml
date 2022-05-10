@@ -1,0 +1,43 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      x-messari-api-key:
+      - mock_x-messari-api-key
+    method: GET
+    uri: https://data.messari.io/api/v2/assets/eth/profile?fields=profile%2Fgeneral%2Foverview%2Fofficial_links
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAA/4SQwWrzMBCEX+Vnz46l+Meh0bGXXksJhLaUosRre6lsCWkTUULevVgpxqlT6oMZ
+        NPpmtHuCwJoPAdQJ0GgXsAJVZsDUYWDdOVBQyKJYyHIhl5vlnSpKJYt8JVfL9bqU/1/gnEGlWQ8J
+        ztuaDA6ywR69NoO0R/RHwph0XdOetHk31H8EUK8n6HWHoGDbEqPTDj1kMLigoGV2QQmB3KLHQ5db
+        3wjsRRzvCjhnY8QDcXvYzfEmned7241JU2yLu0CMcy7GmF9VT6lNJOZbj+WL8WvdE1YV8e02n7yE
+        +hG+qn1GY2z89/jHor5HJis+E3BZVvrnrqqniffGNvOknbHNz+HfzsP3FQAA//8dmVmGMwIAAA==
+    headers:
+      content-encoding:
+      - gzip
+      content-length:
+      - '283'
+      content-type:
+      - application/json; charset=UTF-8
+      date:
+      - Sun, 01 May 2022 18:25:02 GMT
+      vary:
+      - Accept-Encoding,Origin
+      x-ratelimit-limit:
+      - '4000'
+      x-ratelimit-remaining:
+      - '3992'
+      x-ratelimit-reset:
+      - '1651511281'
+    status:
+      code: 200
+      message: OK
+version: 1

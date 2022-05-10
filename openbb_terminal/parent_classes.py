@@ -1,6 +1,8 @@
 """Parent Classes"""
 __docformat__ = "numpy"
 
+# pylint: disable= C0301
+
 from abc import ABCMeta, abstractmethod
 import argparse
 import re
@@ -436,7 +438,7 @@ class BaseController(metaclass=ABCMeta):
                         self.PATH,
                     )
                 console.print(
-                    f"\nThe command '{an_input}' doesn't exist on the {self.PATH} menu.",
+                    f"\nThe command '{an_input}' doesn't exist on the {self.PATH} menu.\n",
                     end="",
                 )
                 similar_cmd = difflib.get_close_matches(
@@ -463,7 +465,10 @@ class BaseController(metaclass=ABCMeta):
                     console.print(f" Replacing by '{an_input}'.")
                     self.queue.insert(0, an_input)
                 else:
-                    console.print("\n")
+                    if "load" in self.controller_choices:
+                        console.print(f"Trying `load {an_input}`")
+                        self.queue.insert(0, "load " + an_input)
+                    console.print("")
 
 
 class StockBaseController(BaseController, metaclass=ABCMeta):
@@ -528,7 +533,9 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
             "--source",
             action="store",
             dest="source",
-            choices=["yf", "av", "iex"] if "-i" not in other_args else ["yf"],
+            choices=["yf", "av", "iex", "polygon"]
+            if "-i" not in other_args or "--interval" not in other_args
+            else ["yf", "polygon"],
             default="yf",
             help="Source of historical data.",
         )
@@ -633,7 +640,7 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                     self.suffix = ""
 
                 if ns_parser.source == "iex":
-                    self.start = self.stock.index[0].strftime("%Y-%m-%d")
+                    self.start = self.stock.index[0].to_pydatetime()
                 else:
                     self.start = ns_parser.start
                 self.interval = f"{ns_parser.interval}min"
@@ -748,7 +755,11 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
                 interval=ns_parser.interval,
                 vs=ns_parser.vs,
             )
-            if self.symbol:
+            if (
+                self.symbol
+                and self.current_df is not None
+                and not self.current_df.empty
+            ):
                 self.current_interval = ns_parser.interval
                 first_price = self.current_df["Close"].iloc[0]
                 last_price = self.current_df["Close"].iloc[-1]
@@ -756,10 +767,11 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
                 interval_change = calc_change(last_price, second_last_price)
                 since_start_change = calc_change(last_price, first_price)
                 if isinstance(self.current_currency, str) and self.PATH == "/crypto/":
-                    col = "green" if interval_change > 0 else "red"
+                    col1 = "green" if interval_change > 0 else "red"
+                    col2 = "green" if since_start_change > 0 else "red"
                     self.price_str = f"""Current Price: {round(last_price,2)} {self.current_currency.upper()}
-Performance in interval ({self.current_interval}): [{col}]{round(interval_change,2)}%[/{col}]
-Performance since {ns_parser.start.strftime('%Y-%m-%d')}: [{col}]{round(since_start_change,2)}%[/{col}]"""  # noqa
+Performance in interval ({self.current_interval}): [{col1}]{round(interval_change,2)}%[/{col1}]
+Performance since {ns_parser.start.strftime('%Y-%m-%d')}: [{col2}]{round(since_start_change,2)}%[/{col2}]"""  # noqa
 
                     console.print(
                         f"""
@@ -772,3 +784,7 @@ Loaded {self.coin} against {self.current_currency} from {CRYPTO_SOURCES[self.sou
                     console.print(
                         f"{delta} Days of {self.coin} vs {self.current_currency} loaded with {res} resolution.\n"
                     )
+            else:
+                console.print(
+                    f"\n[red]Could not find [bold]{ns_parser.coin}[/bold] in [bold]{CRYPTO_SOURCES[ns_parser.source]}[/bold]. Make sure you search for symbol (e.g., btc) or try another source[/red]\n"  # noqa: E501
+                )

@@ -28,7 +28,7 @@ class ReportController(BaseController):
     reports_folder = os.path.dirname(os.path.abspath(__file__))
 
     report_names = [
-        notebooks.strip(".ipynb")
+        notebooks[:-6]
         for notebooks in os.listdir(reports_folder)
         if notebooks.endswith(".ipynb")
     ]
