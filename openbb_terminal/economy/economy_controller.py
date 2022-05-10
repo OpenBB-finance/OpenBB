@@ -189,13 +189,6 @@ class EconomyController(BaseController):
             self.choices["map"]["-p"] = {c: None for c in self.map_period_list}
             self.choices["map"]["--period"] = {c: None for c in self.map_period_list}
 
-            self.choices["feargreed"]["-i"] = {
-                c: None for c in self.fear_greed_indicators
-            }
-            self.choices["feargreed"]["--indicator"] = {
-                c: None for c in self.fear_greed_indicators
-            }
-
             if len(self.SUPPORT_CHOICES):
                 choices = {**self.choices, **self.SUPPORT_CHOICES}
 
