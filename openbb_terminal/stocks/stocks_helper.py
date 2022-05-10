@@ -70,7 +70,7 @@ market_coverage_suffix = {
     "Ireland": ["IR"],
     "Israel": ["TA"],
     "Italy": ["MI"],
-    "Japan": ["T"],
+    "Japan": ["T", "S"],
     "Latvia": ["RG"],
     "Lithuania": ["VS"],
     "Malaysia": ["KL"],
@@ -211,7 +211,7 @@ def search(
             exchange_suffix[x] = k
 
     df["exchange"] = [
-        exchange_suffix[ticker.split(".")[1]] if "." in ticker else "USA"
+        exchange_suffix.get(ticker.split(".")[1]) if "." in ticker else "USA"
         for ticker in list(df.index)
     ]
 
