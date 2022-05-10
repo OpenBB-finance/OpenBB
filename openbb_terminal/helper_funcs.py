@@ -13,6 +13,9 @@ import random
 import re
 import sys
 from difflib import SequenceMatcher
+import webbrowser
+import urllib.parse
+
 import pytz
 import pandas as pd
 from rich.table import Table
@@ -26,15 +29,11 @@ from pandas.plotting import register_matplotlib_converters
 import pandas.io.formats.format
 import requests
 from screeninfo import get_monitors
-import urllib.parse
-import webbrowser
-import airtable
 import yfinance as yf
 
 from openbb_terminal.rich_config import console
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal import config_plot as cfgPlot
-from openbb_terminal import config_terminal as cfg
 from openbb_terminal.core.config.constants import USER_HOME
 
 logger = logging.getLogger(__name__)
@@ -1366,42 +1365,21 @@ def handle_error_code(requests_obj, error_code_map):
 
 def prefill_form(ticket_type, menu, path, command, message):
     """Pre-fille Google Form and open it in the browser"""
-    form_id = "1FAIpQLSfGKY-2Bg3LRq-i8KNM3V5CJhfnFYZyiVZbi9Jd1xYyZjYBBw"
+    form_id = "1FAIpQLSe0-HKitlJMtTO9C2VR7uXVtTzmQgiyE1plf3nEkYCRx6WGRg"
     form_url = f"https://docs.google.com/forms/d/e/{form_id}/viewform?"
 
     params = {
-        "entry.1154257639": ticket_type,
-        "entry.1046820826": menu,
-        "entry.836111721": path,
-        "entry.147742513": command,
-        "entry.680969218": message,
+        "entry.2091304642": ticket_type,
+        "entry.2098699567": menu,
+        "entry.1862722780": path,
+        "entry.1248966702": command,
+        "entry.110036167": message,
     }
 
     url_params = urllib.parse.urlencode(params)
 
     webbrowser.open(form_url + url_params)
 
-
-def save_ticket(main_menu: str, menu: str, command: str, path: str, msg: str):
-    """Save Ticket to Airtable"""
-
-    BASE_ID = "appvu8Njcrw5vrkWa"
-    TABLE_ID = "tblSZzXOwoLlh2OVs"
-    at = airtable.Airtable(BASE_ID, api_key=cfg.API_AIRTABLE_KEY)
-
-    at.get(TABLE_ID)
-
-    at.create(
-        TABLE_ID,
-        {
-            "timestamp": datetime.utcnow().strftime("%Y-%m-%d %H:%M"),
-            "main_menu": main_menu,
-            "menu": menu,
-            "command": command,
-            "message": msg,
-            "path": path,
-        },
-    )
 
 def get_closing_price(ticker, days):
 

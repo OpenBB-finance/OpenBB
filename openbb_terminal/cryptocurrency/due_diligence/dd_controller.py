@@ -156,10 +156,10 @@ class DueDiligenceController(CryptoBaseController):
             choices["news"]["-f"] = {c: None for c in cryptopanic_model.FILTERS}
             choices["news"]["-r"] = {c: None for c in cryptopanic_model.REGIONS}
             choices["news"]["-s"] = {c: None for c in cryptopanic_model.SORT_FILTERS}
-            
+
             if len(self.SUPPORT_CHOICES):
                 choices = {**choices, **self.SUPPORT_CHOICES}
-            
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
