@@ -13,6 +13,7 @@ def vcr_config():
     }
 
 
+@pytest.mark.skip(reason="`subplots` not mocked => calling displays the plot")
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_display_btc_rainbow(mocker):
