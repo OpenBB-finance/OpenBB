@@ -544,6 +544,20 @@ class TechnicalAnalysisController(StockBaseController):
             default=0,
             help="offset",
         )
+        parser.add_argument(
+            "--start",
+            dest="start",
+            type=valid_date,
+            help="Starting date to select",
+            required="--end" in other_args,
+        )
+        parser.add_argument(
+            "--end",
+            dest="end",
+            type=valid_date,
+            help="Ending date to select",
+            required="--start" in other_args,
+        )
 
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
@@ -551,13 +565,21 @@ class TechnicalAnalysisController(StockBaseController):
         if ns_parser:
             # Daily
             if self.interval == "1440min":
-                console.print("VWAP should be used with intraday data. \n")
-                return
+                if not ns_parser.start:
+                    console.print(
+                        "If no date conditions, VWAP should be used with intraday data. \n"
+                    )
+                    return
+                interval_text = "Daily"
+            else:
+                interval_text = self.interval
 
             overlap_view.view_vwap(
                 s_ticker=self.ticker,
-                s_interval=self.interval,
+                s_interval=interval_text,
                 ohlc=self.stock,
+                start=ns_parser.start,
+                end=ns_parser.end,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
             )
