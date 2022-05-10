@@ -20,7 +20,7 @@ from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.portfolio.portfolio_optimization import po_controller
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.comparison_analysis import ca_controller
-from openbb_terminal.stocks.options import syncretism_view
+from openbb_terminal.stocks.options.screen import syncretism_view
 
 # pylint: disable=E1121
 
@@ -37,7 +37,9 @@ class ScreenerController(BaseController):
         "po",
     ]
 
-    presets_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
+    presets_path = os.path.join(
+        os.path.abspath(os.path.dirname(__file__)), "..", "presets/"
+    )
     preset_choices = [
         f.split(".")[0] for f in os.listdir(presets_path) if f.endswith(".ini")
     ]

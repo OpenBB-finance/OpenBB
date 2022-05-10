@@ -104,10 +104,10 @@ def get_y_values(
     option_change = 0
     change = price - base
     for option in options:
-        if option["type"] == "call":
+        if option["type"] == "Call":
             abs_change = price - option["strike"] if price > option["strike"] else 0
             option_change += option["sign"] * abs_change
-        elif option["type"] == "put":
+        elif option["type"] == "Put":
             abs_change = option["strike"] - price if price < option["strike"] else 0
             option_change += option["sign"] * abs_change
     return (change * underlying) + option_change

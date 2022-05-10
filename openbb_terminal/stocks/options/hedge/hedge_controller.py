@@ -19,12 +19,13 @@ from openbb_terminal.helper_funcs import (
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console
-from openbb_terminal.stocks.options import hedge_view
-from openbb_terminal.stocks.options.hedge_model import add_hedge_option
+from openbb_terminal.stocks.options.hedge import hedge_view
+from openbb_terminal.stocks.options.hedge.hedge_model import add_hedge_option
 from openbb_terminal.stocks.options.yfinance_model import (
     get_option_chain,
     get_price,
 )
+from openbb_terminal.stocks.options.yfinance_view import plot_payoff
 
 # pylint: disable=R0902
 
@@ -41,6 +42,7 @@ class HedgeController(BaseController):
         "rmv",
         "pick",
         "sop",
+        "plot",
     ]
 
     PATH = "/stocks/options/hedge/"
@@ -55,12 +57,14 @@ class HedgeController(BaseController):
             zip(
                 self.chain.calls["strike"].tolist(),
                 self.chain.calls["impliedVolatility"].tolist(),
+                self.chain.calls["lastPrice"].tolist(),
             )
         )
         self.puts = list(
             zip(
                 self.chain.puts["strike"].tolist(),
                 self.chain.puts["impliedVolatility"].tolist(),
+                self.chain.puts["lastPrice"].tolist(),
             )
         )
 
@@ -125,7 +129,8 @@ Underlying Asset Position: [/param]{self.underlying_asset_position}
     list          show the available strike prices for calls and puts{has_portfolio_start}
     add           add an option to the list of options{has_portfolio_end}{has_option_start}
     rmv           remove an option from the list of options
-    sop           show selected options and neutral portfolio weights{has_option_end}[/cmds]
+    sop           show selected options and neutral portfolio weights
+    plot          show the option payoff diagram[/cmds]{has_option_end}
         """
         console.print(text=help_text, menu="Stocks - Options - Hedge")
 
@@ -221,13 +226,17 @@ Underlying Asset Position: [/param]{self.underlying_asset_position}
                 if ns_parser.identifier < len(options_list):
                     strike = options_list[ns_parser.identifier][0]
                     implied_volatility = options_list[ns_parser.identifier][1]
+                    cost = options_list[ns_parser.identifier][2]
 
                     option = {
                         "type": opt_type,
                         "sign": sign,
                         "strike": strike,
                         "implied_volatility": implied_volatility,
+                        "cost": cost,
                     }
+
+                    print(cost)
 
                     if opt_type == "Call":
                         side = 1
@@ -525,3 +534,22 @@ Underlying Asset Position: [/param]{self.underlying_asset_position}
                     )
 
                 console.print("")
+
+    @log_start_end(log=logger)
+    def call_plot(self, other_args):
+        """Process plot command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="plot",
+            description="This function plots option payoff diagrams",
+        )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            plot_payoff(
+                self.current_price,
+                [self.options["Option A"], self.options["Option B"]],
+                self.underlying,
+                self.ticker,
+                self.expiration,
+            )

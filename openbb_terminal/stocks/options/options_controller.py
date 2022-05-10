@@ -29,23 +29,22 @@ from openbb_terminal.stocks.options import (
     calculator_view,
     chartexchange_view,
     fdscanner_view,
-    payoff_controller,
-    pricing_controller,
-    hedge_controller,
-    screener_controller,
-    syncretism_view,
     tradier_model,
     tradier_view,
     yfinance_model,
     yfinance_view,
 )
 
+from openbb_terminal.stocks.options.pricing import pricing_controller
+from openbb_terminal.stocks.options.hedge import hedge_controller
+from openbb_terminal.stocks.options.screen import screener_controller, syncretism_view
+
+
 # pylint: disable=R1710,C0302,R0916
 
 # TODO: HELP WANTED! This controller requires some MVC style refactoring
 #       - At the moment there's too much logic in the controller to implement an
 #         API wrapper. Please refactor functions like 'call_exp'
-#       - The separate controllers and related models/views should be moved to subfolders
 
 
 logger = logging.getLogger(__name__)
@@ -76,7 +75,6 @@ class OptionsController(BaseController):
         "greeks",
     ]
     CHOICES_MENUS = [
-        "payoff",
         "pricing",
         "screen",
         "hedge",
@@ -202,7 +200,6 @@ Expiry: [/param]{self.selected_date or None}
     greeks        shows the greeks for a given option [src][Yfinance][/src]
 {has_ticker_start}
 >   screen        screens tickers based on preset [src][Syncretism.io][/src]
->   payoff        shows payoff diagram for a selection of options [src][Yfinance][/src]
 >   pricing       shows options pricing and risk neutral valuation [src][Yfinance][/src]
 >   hedge         shows portfolio weights in order to neutralise delta [src][Yfinance][/src]
 {has_ticker_end}"""
@@ -1362,23 +1359,6 @@ Expiry: [/param]{self.selected_date or None}
                     console.print("No expiry loaded. First use `exp {expiry date}`\n")
             else:
                 console.print("No ticker loaded. First use `load <ticker>`\n")
-
-    @log_start_end(log=logger)
-    def call_payoff(self, _):
-        """Process payoff command"""
-        if self.ticker:
-            if self.selected_date:
-                self.queue = self.load_class(
-                    payoff_controller.PayoffController,
-                    self.ticker,
-                    self.selected_date,
-                    self.queue,
-                )
-            else:
-                console.print("No expiry loaded. First use `exp {expiry date}`\n")
-
-        else:
-            console.print("No ticker loaded. First use `load <ticker>`\n")
 
     @log_start_end(log=logger)
     def call_pricing(self, _):

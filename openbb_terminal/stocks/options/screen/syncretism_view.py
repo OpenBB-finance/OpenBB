@@ -17,7 +17,7 @@ from openbb_terminal.helper_funcs import (
     print_rich_table,
 )
 from openbb_terminal.rich_config import console
-from openbb_terminal.stocks.options import syncretism_model
+from openbb_terminal.stocks.options.screen import syncretism_model
 
 logger = logging.getLogger(__name__)
 
