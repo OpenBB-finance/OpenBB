@@ -115,7 +115,7 @@ class HedgeController(BaseController):
         )
         has_option_end = (
             ""
-            if "Delta" in self.greeks["Option B"] or "Delta" in self.greeks["Option B"]
+            if "Delta" in self.greeks["Option A"] or "Delta" in self.greeks["Option B"]
             else "[/unvl]"
         )
         help_text = f"""
