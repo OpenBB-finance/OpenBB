@@ -85,6 +85,9 @@ class QaController(StockBaseController):
             choices: dict = {c: {} for c in self.controller_choices}
             choices["pick"] = {c: {} for c in self.options}
             choices["pick"]["-c"] = {c: {} for c in self.options}
+
+            choices = {**choices, **self.SUPPORT_CHOICES}
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
