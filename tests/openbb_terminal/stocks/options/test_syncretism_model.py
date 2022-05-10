@@ -6,7 +6,7 @@ import pytest
 import requests
 
 # IMPORTATION INTERNAL
-from openbb_terminal.stocks.options import syncretism_model
+from openbb_terminal.stocks.options.screen import syncretism_model
 
 
 @pytest.fixture(scope="module")
