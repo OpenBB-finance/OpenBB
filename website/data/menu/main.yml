@@ -972,8 +972,6 @@ main:
             ref: "/terminal/economy/futures"
           - name: map
             ref: "/terminal/economy/map"
-          - name: feargreed
-            ref: "/terminal/economy/feargreed"
           - name: bigmac
             ref: "/terminal/economy/bigmac"
           - name: macro
@@ -1553,8 +1551,6 @@ main:
                 ref: "/bots/discord/econ/indices"
               - name: "Overview"
                 ref: "/bots/discord/econ/overview"
-              - name: "Fear & Greed"
-                ref: "/bots/discord/econ/feargreed"
               - name: "Consumer Price Index"
                 ref: "/bots/discord/econ/cpi"
               - name: "Currencies"
