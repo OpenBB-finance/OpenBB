@@ -173,8 +173,8 @@ class PortfolioOptimizationController(BaseController):
                 choices[fn]["-p"] = {c: None for c in self.period_choices}
                 choices[fn]["--period"] = {c: None for c in self.period_choices}
 
-            if len(self.REPORT_CHOICES):
-                choices = {**choices, **self.REPORT_CHOICES}
+            if len(self.SUPPORT_CHOICES):
+                choices = {**choices, **self.SUPPORT_CHOICES}
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 

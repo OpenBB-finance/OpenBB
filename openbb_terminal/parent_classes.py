@@ -27,7 +27,7 @@ from openbb_terminal.helper_funcs import (
     parse_known_args_and_warn,
     valid_date_in_past,
     set_command_location,
-    save_ticket,
+    prefill_form,
 )
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.rich_config import console
@@ -48,7 +48,7 @@ CRYPTO_SOURCES = {
     "yf": "YahooFinance",
 }
 
-REPORT_CATEGORIES = ["bug", "suggestion", "question", "general"]
+SUPPORT_TYPE = ["bug", "suggestion", "question", "general"]
 
 
 class BaseController(metaclass=ABCMeta):
@@ -65,12 +65,12 @@ class BaseController(metaclass=ABCMeta):
         "exit",
         "r",
         "reset",
-        "report",
+        "support",
     ]
 
     CHOICES_COMMANDS: List[str] = []
     CHOICES_MENUS: List[str] = []
-    REPORT_CHOICES: Dict = {}
+    SUPPORT_CHOICES: Dict = {}
     COMMAND_SEPARATOR = "/"
     KEYS_MENU = "keys" + COMMAND_SEPARATOR
 
@@ -107,26 +107,30 @@ class BaseController(metaclass=ABCMeta):
 
         theme.applyMPLstyle()
 
-        # Terminal-wide report command auto-completion
+        # Terminal-wide support command auto-completion
 
-        # Remove common choices from list of report commands
-        self.report_commands = [
+        # Remove common choices from list of support commands
+        self.support_commands = [
             c for c in self.controller_choices if c not in self.CHOICES_COMMON
         ]
 
-        report_choices: dict = {c: {} for c in self.controller_choices}
+        support_choices: dict = {c: {} for c in self.controller_choices}
 
-        report_choices["report"]["--command"] = {
-            c: None for c in (["General"] + self.report_commands)
+        support_choices["support"] = {
+            c: None for c in (["generic"] + self.support_commands)
         }
 
-        report_choices["report"]["--menu"] = {
-            c: None for c in (["General"] + self.CHOICES_MENUS)
+        support_choices["support"]["--command"] = {
+            c: None for c in (["generic"] + self.support_commands)
         }
 
-        report_choices["report"]["--category"] = {c: None for c in (REPORT_CATEGORIES)}
+        support_choices["support"]["-c"] = {
+            c: None for c in (["generic"] + self.support_commands)
+        }
 
-        self.REPORT_CHOICES = report_choices
+        support_choices["support"]["--type"] = {c: None for c in (SUPPORT_TYPE)}
+
+        self.SUPPORT_CHOICES = support_choices
 
     def check_path(self) -> None:
         path = self.PATH
@@ -304,31 +308,20 @@ class BaseController(metaclass=ABCMeta):
             console.print("No resources available.\n")
 
     @log_start_end(log=logger)
-    def call_report(self, other_args: List[str]) -> None:
-        """Process report command"""
+    def call_support(self, other_args: List[str]) -> None:
+        """Process support command"""
 
         self.save_class()
         console.print("")
 
         path_split = [x for x in self.PATH.split("/") if x != ""]
-        main_menu = path_split[0]
-        main_menu = "home" if main_menu == "" else main_menu
-        report_sub_menu = path_split[-1]
+        main_menu = path_split[0] if len(path_split) else "home"
 
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="report",
-            description="Report to us",
-        )
-        parser.add_argument(
-            "--menu",
-            action="store",
-            dest="menu",
-            required=False,
-            choices=["General"] + self.CHOICES_MENUS,
-            default=report_sub_menu,
-            help="Menu to report. Default: current menu",
+            prog="support",
+            description="Submit your support request",
         )
 
         parser.add_argument(
@@ -337,8 +330,8 @@ class BaseController(metaclass=ABCMeta):
             action="store",
             dest="command",
             required=True,
-            choices=["General"] + list(self.REPORT_CHOICES),
-            help="Command to report.",
+            choices=["generic"] + self.support_commands,
+            help="Command that needs support",
         )
 
         parser.add_argument(
@@ -347,34 +340,36 @@ class BaseController(metaclass=ABCMeta):
             type=str,
             nargs="+",
             dest="msg",
-            required=True,
+            required=False,
             help="Message to send. Enclose it with double quotes",
         )
 
         parser.add_argument(
-            "--category",
+            "--type",
             action="store",
-            dest="category",
-            required=True,
-            choices=REPORT_CATEGORIES,
-            default=report_sub_menu,
-            help="Menu to report. Default: current menu",
+            dest="type",
+            required=False,
+            choices=SUPPORT_TYPE,
+            default="generic",
+            help="Support type. Default: generic",
         )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-c")
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
-
-            menu = "home" if ns_parser.menu == "" else ns_parser.menu
-
-            save_ticket(
-                main_menu=main_menu,
-                menu=menu,
+            prefill_msg = (
+                (" ".join(ns_parser.msg)).replace('"', "") if ns_parser.msg else ""
+            )
+            prefill_form(
+                ticket_type=ns_parser.type,
+                menu=main_menu,
                 command=ns_parser.command,
-                msg=(" ".join(ns_parser.msg)).replace('"', ""),
+                message=prefill_msg,
                 path=self.PATH,
             )
-            console.print("Ticket submitted successfully.")
 
     def menu(self, custom_path_menu_above: str = ""):
         an_input = "HELP_ME"

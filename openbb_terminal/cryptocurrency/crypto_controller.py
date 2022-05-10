@@ -96,8 +96,8 @@ class CryptoController(CryptoBaseController):
             choices["headlines"] = {c: {} for c in finbrain_crypto_view.COINS}
             # choices["prt"]["--vs"] = {c: {} for c in coingecko_coin_ids} # list is huge. makes typing buggy
 
-            if len(self.REPORT_CHOICES):
-                choices = {**choices, **self.REPORT_CHOICES}
+            if len(self.SUPPORT_CHOICES):
+                choices = {**choices, **self.SUPPORT_CHOICES}
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 

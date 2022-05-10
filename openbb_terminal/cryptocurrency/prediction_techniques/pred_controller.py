@@ -84,8 +84,8 @@ class PredictionTechniquesController(CryptoBaseController):
             choices["arima"]["-i"] = {c: {} for c in arima_model.ICS}
             choices["mc"]["--dist"] = {c: {} for c in mc_model.DISTRIBUTIONS}
 
-            if len(self.REPORT_CHOICES):
-                choices = {**choices, **self.REPORT_CHOICES}
+            if len(self.SUPPORT_CHOICES):
+                choices = {**choices, **self.SUPPORT_CHOICES}
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 

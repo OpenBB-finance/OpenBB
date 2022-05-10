@@ -129,8 +129,8 @@ class OnchainController(BaseController):
             choices["ttcp"]["-s"] = {c: None for c in bitquery_model.TTCP_FILTERS}
             choices["baas"]["-s"] = {c: None for c in bitquery_model.BAAS_FILTERS}
 
-            if len(self.REPORT_CHOICES):
-                choices = {**choices, **self.REPORT_CHOICES}
+            if len(self.SUPPORT_CHOICES):
+                choices = {**choices, **self.SUPPORT_CHOICES}
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 

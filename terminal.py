@@ -84,8 +84,8 @@ class TerminalController(BaseController):
             choices: dict = {c: None for c in self.controller_choices}
             choices["tz"] = {c.replace("/", "-"): None for c in self.all_timezones}
 
-            if len(self.REPORT_CHOICES):
-                choices = {**choices, **self.REPORT_CHOICES}
+            if len(self.SUPPORT_CHOICES):
+                choices = {**choices, **self.SUPPORT_CHOICES}
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 

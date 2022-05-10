@@ -199,8 +199,8 @@ class EconomyController(BaseController):
                 c: None for c in self.fear_greed_indicators
             }
 
-            if len(self.REPORT_CHOICES):
-                choices = {**self.choices, **self.REPORT_CHOICES}
+            if len(self.SUPPORT_CHOICES):
+                choices = {**self.choices, **self.SUPPORT_CHOICES}
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 

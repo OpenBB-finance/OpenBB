@@ -24,7 +24,9 @@ from pandas.plotting import register_matplotlib_converters
 import pandas.io.formats.format
 import requests
 from screeninfo import get_monitors
-from airtable import airtable
+import urllib.parse
+import webbrowser
+import airtable
 
 from openbb_terminal.rich_config import console
 from openbb_terminal import feature_flags as obbff
@@ -1377,6 +1379,24 @@ def handle_error_code(requests_obj, error_code_map):
     for error_code, error_msg in error_code_map.items():
         if requests_obj.status_code == error_code:
             console.print(error_msg)
+
+
+def prefill_form(ticket_type, menu, path, command, message):
+    """Pre-fille Google Form and open it in the browser"""
+    form_id = "1FAIpQLSfGKY-2Bg3LRq-i8KNM3V5CJhfnFYZyiVZbi9Jd1xYyZjYBBw"
+    form_url = f"https://docs.google.com/forms/d/e/{form_id}/viewform?"
+
+    params = {
+        "entry.1154257639": ticket_type,
+        "entry.1046820826": menu,
+        "entry.836111721": path,
+        "entry.147742513": command,
+        "entry.680969218": message,
+    }
+
+    url_params = urllib.parse.urlencode(params)
+
+    webbrowser.open(form_url + url_params)
 
 
 def save_ticket(main_menu: str, menu: str, command: str, path: str, msg: str):
