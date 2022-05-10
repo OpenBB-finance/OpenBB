@@ -78,9 +78,12 @@ def show_calculated_hedge(portfolio_option_amount, side, greeks, sign):
     A table with the neutral portfolio weights.
     """
     # Calculate hedge position
-    weight_option_a, weight_option_b, weight_shares = hedge_model.calc_hedge(
-        portfolio_option_amount, side, greeks, sign
-    )
+    (
+        weight_option_a,
+        weight_option_b,
+        weight_shares,
+        is_singular,
+    ) = hedge_model.calc_hedge(portfolio_option_amount, side, greeks, sign)
 
     if sum([weight_option_a, weight_option_b, weight_shares]):
         # Show the weights that would create a neutral portfolio
@@ -98,6 +101,12 @@ def show_calculated_hedge(portfolio_option_amount, side, greeks, sign):
         )
 
         console.print()
+        if is_singular:
+            console.print(
+                "[red]Warning\n[/red]"
+                "The selected combination of options yields multiple solutions.\n"
+                "This is the first feasible solution, possibly not the best one."
+            )
     else:
         console.print(
             "[red]Due to there being multiple solutions (Singular Matrix) the current options "

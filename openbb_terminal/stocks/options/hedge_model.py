@@ -30,6 +30,7 @@ def calc_hedge(portfolio_option_amount, side, greeks, sign):
     option A weight: float
     option B weight: float
     portfolio weight: float
+    is_singular: boolean
     """
     # Shortnames for delta, gamma and vega of portfolio
     portfolio_option_delta = greeks["Portfolio"]["Delta"]
@@ -80,37 +81,42 @@ def calc_hedge(portfolio_option_amount, side, greeks, sign):
         [portfolio_option_vega * portfolio_option_amount],
     ]
 
+    singular = False
     try:
         inv = np.linalg.inv(np.round(options_array, 2))
+    except np.linalg.LinAlgError:
+        options_array = np.round(options_array, 2)
+        a = options_array.shape[0]
+        i = np.eye(a, a)
+        inv = np.linalg.lstsq(options_array, i)[0]
+        singular = True
 
-        weights = np.dot(inv, portfolio_greeks)
+    weights = np.dot(inv, portfolio_greeks)
 
-        portfolio_greeks = [
-            [portfolio_option_delta * delta_multiplier * portfolio_option_amount],
-            [portfolio_option_gamma * gamma_multiplier * portfolio_option_amount],
-            [portfolio_option_vega * vega_multiplier * portfolio_option_amount],
+    portfolio_greeks = [
+        [portfolio_option_delta * delta_multiplier * portfolio_option_amount],
+        [portfolio_option_gamma * gamma_multiplier * portfolio_option_amount],
+        [portfolio_option_vega * vega_multiplier * portfolio_option_amount],
+    ]
+
+    options_array = np.array(
+        [
+            [option_a_delta, option_b_delta],
+            [option_a_gamma, option_b_gamma],
+            [option_a_vega, option_b_vega],
         ]
+    )
 
-        options_array = np.array(
-            [
-                [option_a_delta, option_b_delta],
-                [option_a_gamma, option_b_gamma],
-                [option_a_vega, option_b_vega],
-            ]
+    if not short:
+        neutral = np.round(
+            np.dot(np.round(options_array, 2), weights) - portfolio_greeks
+        )
+    else:
+        neutral = np.round(
+            np.dot(np.round(options_array, 2), weights) + portfolio_greeks
         )
 
-        if not short:
-            neutral = np.round(
-                np.dot(np.round(options_array, 2), weights) - portfolio_greeks
-            )
-        else:
-            neutral = np.round(
-                np.dot(np.round(options_array, 2), weights) + portfolio_greeks
-            )
-
-        return weights[0][0], weights[1][0], neutral[0][0]
-    except np.linalg.LinAlgError:
-        return 0.0, 0.0, 0.0
+    return weights[0][0], weights[1][0], neutral[0][0], singular
 
 
 def add_hedge_option(price, implied_volatility, strike, days, side):
