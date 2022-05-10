@@ -422,20 +422,11 @@ class PortfolioOptimizationController(BaseController):
 
     def update_runtime_choices(self):
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
-            choices["property"]["-p"] = {c: None for c in self.yf_info_choices}
-            choices["property"]["--property"] = {c: None for c in self.yf_info_choices}
-            for fn in ["maxsharpe", "minvol", "maxquadutil", "effret", "effrisk", "ef"]:
-                choices[fn]["-p"] = {c: None for c in self.period_choices}
-                choices[fn]["--period"] = {c: None for c in self.period_choices}
-
-            choices = {**choices, **self.SUPPORT_CHOICES}
-
-            self.completer = NestedCompleter.from_nested_dict(choices)
-
             if self.portfolios:
                 self.choices["show"] = {c: None for c in list(self.portfolios.keys())}
                 self.choices["plot"] = {c: None for c in list(self.portfolios.keys())}
+
+                self.choices = {**self.choices, **self.SUPPORT_CHOICES}
                 self.completer = NestedCompleter.from_nested_dict(self.choices)
 
     def print_help(self):
