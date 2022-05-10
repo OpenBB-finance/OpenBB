@@ -596,6 +596,13 @@ class Portfolio:
             .squeeze()
             .sort_values(ascending=False)
         )
+
+        # Prettify allocations of benchmark to align with Portfolio Excel
+        prettified = []
+        for sector in self.benchmark_sectors_allocation.index:
+            prettified.append(sector.replace("_", " ").title())
+        self.benchmark_sectors_allocation.index = prettified
+
         self.portfolio_sectors_allocation = (
             (
                 self.trade_value[self.trade_value["Type"] != "CASH"]
