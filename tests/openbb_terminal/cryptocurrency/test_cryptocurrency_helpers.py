@@ -84,6 +84,7 @@ def test_load_cg(coin, load_ta):
 def test_load_cg_invalid():
     load("ZTH", source="cg")
 
+
 @pytest.fixture(name="get_bitcoin")
 def fixture_get_bitcoin(mocker):
     # pylint: disable=unused-argument
