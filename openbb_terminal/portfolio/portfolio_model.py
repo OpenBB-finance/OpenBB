@@ -210,7 +210,7 @@ class Portfolio:
     """
 
     @log_start_end(log=logger)
-    def __init__(self, trades: pd.DataFrame = pd.DataFrame(), rf=0):
+    def __init__(self, trades: pd.DataFrame = pd.DataFrame(), rf=None):
         """Initialize Portfolio class"""
         # Allow for empty initialization
         self.portfolio_sectors_allocation = pd.DataFrame()
