@@ -152,7 +152,7 @@ def view_vwap(
 
     ohlc.index = ohlc.index.tz_localize(None)
 
-    if start:
+    if start and end:
         start_date = start.date()
         end_date = end.date()
     else:
