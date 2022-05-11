@@ -17,7 +17,7 @@ main:
           - name: news
             ref: "/terminal/stocks/news"
           - name: codes
-            ref: "terminal/stocks/codes"
+            ref: "/terminal/stocks/codes"
           - name: discovery
             ref: "/terminal/stocks/discovery"
             sub:
@@ -582,7 +582,7 @@ main:
               - name: trend
                 ref: "/terminal/common/behavioural_analysis/trend"
               - name: jcdr
-                ref: "terminal/common/behavioural_analysis/jcdr"
+                ref: "/terminal/common/behavioural_analysis/jcdr"
               - name: jctr
                 ref: "/terminal/common/behavioural_analysis/jctr"
           - name: quantitative analysis
