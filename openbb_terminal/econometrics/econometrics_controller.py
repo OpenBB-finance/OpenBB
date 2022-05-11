@@ -189,7 +189,7 @@ class EconometricsController(BaseController):
 
             self.choices = choices
 
-            choices = {**choices, **self.SUPPORT_CHOICES}
+            choices["support"] = self.SUPPORT_CHOICES
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 

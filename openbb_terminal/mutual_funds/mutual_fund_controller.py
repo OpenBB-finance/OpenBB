@@ -85,7 +85,7 @@ class FundController(BaseController):
             choices["search"]["-s"] = {c: None for c in self.search_cols}
             choices["search"]["--sortby"] = {c: None for c in self.search_cols}
 
-            choices = {**choices, **self.SUPPORT_CHOICES}
+            choices["support"] = self.SUPPORT_CHOICES
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
