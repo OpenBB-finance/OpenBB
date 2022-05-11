@@ -1,0 +1,52 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: GET
+    uri: https://newsapi.org/v2/everything?q=keyword&apiKey=VALIDKEY
+  response:
+    body:
+      string: '{"status":"error","code":"apiKeyInvalid","message":"Your API key is
+        invalid or incorrect. Check your key, or go to https://newsapi.org to create
+        a free API key."}'
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 6f936e7cbce5206d-IND
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '162'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sat, 09 Apr 2022 13:01:28 GMT
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Expires:
+      - '-1'
+      NEL:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Pragma:
+      - no-cache
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=JWyNKjKgL0Z6LbbsmyBEJh3kYmQ0SkPLuhma1pKGR%2BWtZFm5CEiTYD5IdbVbUWi7h5HAuJqGdKUOpHreHZxuHsQdrfFKVrR9nQEibVW4rYzqjamU04%2F%2FClDPGFg4"}],"group":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      X-Cached-Result:
+      - 'false'
+    status:
+      code: 401
+      message: Unauthorized
+version: 1

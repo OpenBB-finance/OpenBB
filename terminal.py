@@ -15,7 +15,7 @@ import dotenv
 
 from prompt_toolkit.completion import NestedCompleter
 
-from openbb_terminal.core.config.constants import REPO_DIR
+from openbb_terminal.core.config.constants import REPO_DIR, ENV_FILE, USER_HOME
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.helper_funcs import (
     check_path,
@@ -44,7 +44,7 @@ from openbb_terminal.terminal_helper import (
 
 logger = logging.getLogger(__name__)
 
-env_file = ".env"
+env_file = str(ENV_FILE)
 
 
 class TerminalController(BaseController):
@@ -83,6 +83,9 @@ class TerminalController(BaseController):
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: None for c in self.controller_choices}
             choices["tz"] = {c.replace("/", "-"): None for c in self.all_timezones}
+
+            choices = {**choices, **self.SUPPORT_CHOICES}
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
         self.queue: List[str] = list()
@@ -96,6 +99,9 @@ class TerminalController(BaseController):
         """Print help"""
         console.print(  # nosec
             text=f"""
+[info]Get API keys from data providers to access more features.[/info]
+    For more instructions use: 'keys'
+
 [info]Multiple jobs queue (where each '/' denotes a new command).[/info]
     E.g. '/stocks $ disc/ugs -n 3/../load tsla/candle'
 
@@ -118,6 +124,7 @@ class TerminalController(BaseController):
     exit            exit the terminal
     reset / r       reset the terminal and reload configs from the current location
     resources       only available on main contexts (not sub-menus)
+    support         pre-populate support ticket for our team to evaluate
 
     about           about us
     update          update terminal automatically
@@ -300,10 +307,7 @@ class TerminalController(BaseController):
                 else:
                     # If the path selected does not start from the user root, give relative location from terminal root
                     if export_path[0] == "~":
-                        # TODO: Consider changing
-                        #       `os.environ["HOME"]` to `os.path.expanduser("~")`
-                        #       for cross platform support
-                        export_path = export_path.replace("~", os.environ["HOME"])
+                        export_path = export_path.replace("~", os.path.expanduser("~"))
                     elif export_path[0] != "/":
                         export_path = os.path.join(base_path, export_path)
 
@@ -435,7 +439,7 @@ class TerminalController(BaseController):
                         export_path = self.queue[0].split(" ")[1]
                         # If the path selected does not start from the user root, give relative location from root
                         if export_path[0] == "~":
-                            export_path = export_path.replace("~", os.environ["HOME"])
+                            export_path = export_path.replace("~", USER_HOME.as_posix())
                         elif export_path[0] != "/":
                             export_path = os.path.join(
                                 os.path.dirname(os.path.abspath(__file__)), export_path
@@ -481,7 +485,7 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
     if export_path:
         # If the path selected does not start from the user root, give relative location from terminal root
         if export_path[0] == "~":
-            export_path = export_path.replace("~", os.environ["HOME"])
+            export_path = export_path.replace("~", USER_HOME.as_posix())
         elif export_path[0] != "/":
             export_path = os.path.join(
                 os.path.dirname(os.path.abspath(__file__)), export_path
@@ -775,7 +779,7 @@ def main(
         if fails:
             console.print("\n[red]Failures:[/red]\n")
             for key, value in fails.items():
-                file_name = key[key.rfind("OpenBBTerminal") :].replace(  # noqa: E203
+                file_name = key[key.rfind(REPO_DIR.name) :].replace(  # noqa: E203
                     "\\", "/"
                 )
                 logger.error("%s: %s failed", file_name, value)

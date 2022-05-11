@@ -16,6 +16,8 @@ main:
             ref: "/terminal/stocks/quote"
           - name: news
             ref: "/terminal/stocks/news"
+          - name: codes
+            ref: "terminal/stocks/codes"
           - name: discovery
             ref: "/terminal/stocks/discovery"
             sub:
@@ -433,7 +435,7 @@ main:
               - name: vsurf
                 ref: "/terminal/stocks/options/vsurf"
               - name: portfolio optimization
-                ref: "/terminal/portfolio/portfolio_optimization"
+                ref: "/terminal/portfolio/po"
               - name: parity
                 ref: "/terminal/stocks/options/parity"
               - name: binom
@@ -553,6 +555,8 @@ main:
                 ref: "/terminal/common/behavioural_analysis/spac"
               - name: getdd
                 ref: "/terminal/common/behavioural_analysis/getdd"
+              - name: reddit_sent
+                ref: "/terminal/common/behavioural_analysis/reddit_sent"
               - name: bullbear
                 ref: "/terminal/common/behavioural_analysis/bullbear"
               - name: messages
@@ -794,10 +798,32 @@ main:
                 ref: "/terminal/cryptocurrency/due_diligence/trades"
               - name: stats
                 ref: "/terminal/cryptocurrency/due_diligence/stats"
-              - name: stats
+              - name: mcapdom
                 ref: "/terminal/cryptocurrency/due_diligence/mcapdom"
               - name: nonzero
                 ref: "/terminal/cryptocurrency/due_diligence/nonzero"
+              - name: mt
+                ref: "/terminal/cryptocurrency/due_diligence/mt"
+              - name: rm
+                ref: "/terminal/cryptocurrency/due_diligence/rm"
+              - name: tk
+                ref: "/terminal/cryptocurrency/due_diligence/tk"
+              - name: pi
+                ref: "/terminal/cryptocurrency/due_diligence/pi"
+              - name: team
+                ref: "/terminal/cryptocurrency/due_diligence/team"
+              - name: inv
+                ref: "/terminal/cryptocurrency/due_diligence/inv"
+              - name: gov
+                ref: "/terminal/cryptocurrency/due_diligence/gov"
+              - name: fr
+                ref: "/terminal/cryptocurrency/due_diligence/fr"
+              - name: links
+                ref: "/terminal/cryptocurrency/due_diligence/links"
+              - name: news
+                ref: "/terminal/cryptocurrency/due_diligence/news"
+              - name: gh
+                ref: "/terminal/cryptocurrency/due_diligence/gh"
           - name: onchain
             ref: "/terminal/cryptocurrency/onchain"
             sub:
@@ -959,8 +985,6 @@ main:
             ref: "/terminal/economy/futures"
           - name: map
             ref: "/terminal/economy/map"
-          - name: feargreed
-            ref: "/terminal/economy/feargreed"
           - name: bigmac
             ref: "/terminal/economy/bigmac"
           - name: macro
@@ -1143,34 +1167,71 @@ main:
                   - name: holdings
                     ref: "/terminal/portfolio/brokers/robinhood/holdings"
           - name: portfolio optimization
-            ref: "/terminal/portfolio/portfolio_optimization"
+            ref: "/terminal/portfolio/po"
             sub:
               - name: select
-                ref: "/terminal/portfolio/portfolio_optimization/select"
+                ref: "/terminal/portfolio/po/select"
+              - name: file
+                ref: "/terminal/portfolio/po/file"
+              - name: params
+                ref: "/terminal/portfolio/po/params"
+                sub:
+                  - name: arg
+                    ref: "/terminal/portfolio/po/params/arg"
+                  - name: clear
+                    ref: "/terminal/portfolio/po/params/clear"
+                  - name: file
+                    ref: "/terminal/portfolio/po/params/file"
+                  - name: save
+                    ref: "/terminal/portfolio/po/params/save"
+                  - name: set
+                    ref: "/terminal/portfolio/po/params/set"
+              - name: load
+                ref: "/terminal/portfolio/po/load"
               - name: add
-                ref: "/terminal/portfolio/portfolio_optimization/add"
+                ref: "/terminal/portfolio/po/add"
               - name: rmv
-                ref: "/terminal/portfolio/portfolio_optimization/rmv"
+                ref: "/terminal/portfolio/po/rmv"
+              - name: show
+                ref: "/terminal/portfolio/po/show"
+              - name: rpf
+                ref: "/terminal/portfolio/po/rpf"
+              - name: plot
+                ref: "/terminal/portfolio/po/plot"
               - name: equal
-                ref: "/terminal/portfolio/portfolio_optimization/equal"
+                ref: "/terminal/portfolio/po/equal"
               - name: mktcap
-                ref: "/terminal/portfolio/portfolio_optimization/mktcap"
+                ref: "/terminal/portfolio/po/mktcap"
               - name: dividend
-                ref: "/terminal/portfolio/portfolio_optimization/dividend"
+                ref: "/terminal/portfolio/po/dividend"
               - name: property
-                ref: "/terminal/portfolio/portfolio_optimization/property"
-              - name: maxhsarpe
-                ref: "/terminal/portfolio/portfolio_optimization/maxsharpe"
-              - name: minvol
-                ref: "/terminal/portfolio/portfolio_optimization/minvol"
-              - name: maxquadutil
-                ref: "/terminal/portfolio/portfolio_optimization/maxquadutil"
-              - name: effret
-                ref: "/terminal/portfolio/portfolio_optimization/effret"
-              - name: effrisk
-                ref: "/terminal/portfolio/portfolio_optimization/effrisk"
+                ref: "/terminal/portfolio/po/property"
+              - name: maxsharpe
+                ref: "/terminal/portfolio/po/maxsharpe"
+              - name: minrisk
+                ref: "/terminal/portfolio/po/minrisk"
+              - name: maxutil
+                ref: "/terminal/portfolio/po/maxutil"
+              - name: maxret
+                ref: "/terminal/portfolio/po/maxret"
+              - name: maxdiv
+                ref: "/terminal/portfolio/po/maxdiv"
+              - name: maxdecorr
+                ref: "/terminal/portfolio/po/maxdecorr"
+              - name: blacklitterman
+                ref: "/terminal/portfolio/po/blacklitterman"
               - name: ef
-                ref: "/terminal/portfolio/portfolio_optimization/ef"
+                ref: "/terminal/portfolio/po/ef"
+              - name: riskparity
+                ref: "/terminal/portfolio/po/riskparity"
+              - name: relriskparity
+                ref: "/terminal/portfolio/po/relriskparity"
+              - name: hrp
+                ref: "/terminal/portfolio/po/hrp"
+              - name: herc
+                ref: "/terminal/portfolio/po/herc"
+              - name: nco
+                ref: "/terminal/portfolio/po/nco"
           - name: load
             ref: "/terminal/portfolio/load"
           - name: save
@@ -1200,6 +1261,8 @@ main:
             ref: "/terminal/forex/select"
           - name: load
             ref: "/terminal/forex/load"
+          - name: fwd
+            ref: "/terminal/forex/fwd"
           - name: candle
             ref: "/terminal/forex/candle"
           - name: from
@@ -1229,6 +1292,8 @@ main:
           - name: os
             ref: "/terminal/alternative/oss"
             sub:
+              - name: rossidx
+                ref: "/terminal/alternative/oss/rossidx"
               - name: tr
                 ref: "/terminal/alternative/oss/tr"
               - name: sh
@@ -1499,8 +1564,6 @@ main:
                 ref: "/bots/discord/econ/indices"
               - name: "Overview"
                 ref: "/bots/discord/econ/overview"
-              - name: "Fear & Greed"
-                ref: "/bots/discord/econ/feargreed"
               - name: "Consumer Price Index"
                 ref: "/bots/discord/econ/cpi"
               - name: "Currencies"

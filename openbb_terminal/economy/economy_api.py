@@ -6,7 +6,6 @@ from openbb_terminal.helper_classes import ModelsNamespace as _models
 # pylint: disable=unused-import
 
 # Context menus
-from .cnn_view import fear_and_greed_index as feargreed
 from .wsj_view import display_overview as overview
 from .wsj_view import display_indices as indices
 from .wsj_view import display_futures as futures

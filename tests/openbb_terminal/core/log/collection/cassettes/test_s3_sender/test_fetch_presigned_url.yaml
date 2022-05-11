@@ -1,0 +1,45 @@
+interactions:
+- request:
+    body: '{"object_key": "gst-app/logs/MOCK_OBJECT_KEY"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '46'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-requests/2.27.1
+    method: PUT
+    uri: https://gst.openbb.app/logging
+  response:
+    body:
+      string: '{"url": "https://gst-logging.s3.amazonaws.com/", "fields": {"key":
+        "gst-app/logs/MOCK_OBJECT_KEY", "x-amz-algorithm": "AWS4-HMAC-SHA256", "x-amz-credential":
+        "ASIAWJBK4EZQMTEBW2WN/20220503/us-east-2/s3/aws4_request", "x-amz-date": "20220503T215729Z",
+        "x-amz-security-token": "IQoJb3JpZ2luX2VjEJ7//////////wEaCXVzLWVhc3QtMiJGMEQCIGmU7C0zpaILkcHWPqd6vRMs7xy3rv489xd+uL7HMRhdAiBe+OIdNrOUxFxIxVQtkUGphO5wTX7pJ6lI2dIF2CjfTCqcAghnEAAaDDQzMTczNDEzODQ2NCIMMqpXsS4vwbSlg8EGKvkBd06m3Bwq072qUtVLztwvi4aNweRy59C9IpCKYOOp2TQFl29EBuvLG467HdXlIzTOMJhIu12xx8ngpMl5d7OR4zevsOPcGv8LSm3/6o4DnJN8v2cUlAMKNv6Bk2M11e+jbJHtb6wJDhZfz2nR6oQaZnh2uYoB4im9nObJDTvkArx/jdocA9Qi2n1x4RiH6J4AC6n+0S2jcAX7M71gj1rRLXT3IPboA2XU+XAetfKhri2moXntqXe2avFM0WRM8SFkmf1d5g23F7cSsy623atqKx8CUV4H+D4nnb4dz0EH1TnmPMBS4583SPMoFdzIIVdaLBg6K1GTUjmdMMnKxpMGOpsBTZzmyUy+Idvv7NeC29GXwiZizXVwb+CmQk1IC6oNX6ghwF5BihS/10OWfH2dpRrRJCimyy05bnhLHYlKsulDHnJ8UVad/ohjaoz6hpDk6XI8iexfF8LyXn7qmGl6ncuw8wIsLDBlD2otd58vWoEld8g5REkYlSWJ8jN8ejomYZMwEW4iD9EI7D+0GRARG7PowV2/EcuiFl+BzGA=",
+        "policy": "eyJleHBpcmF0aW9uIjogIjIwMjItMDUtMDNUMjI6MDI6MjlaIiwgImNvbmRpdGlvbnMiOiBbeyJidWNrZXQiOiAiZ3N0LWxvZ2dpbmcifSwgeyJrZXkiOiAiZ3N0LWFwcC9sb2dzL01PQ0tfT0JKRUNUX0tFWSJ9LCB7IngtYW16LWFsZ29yaXRobSI6ICJBV1M0LUhNQUMtU0hBMjU2In0sIHsieC1hbXotY3JlZGVudGlhbCI6ICJBU0lBV0pCSzRFWlFNVEVCVzJXTi8yMDIyMDUwMy91cy1lYXN0LTIvczMvYXdzNF9yZXF1ZXN0In0sIHsieC1hbXotZGF0ZSI6ICIyMDIyMDUwM1QyMTU3MjlaIn0sIHsieC1hbXotc2VjdXJpdHktdG9rZW4iOiAiSVFvSmIzSnBaMmx1WDJWakVKNy8vLy8vLy8vLy93RWFDWFZ6TFdWaGMzUXRNaUpHTUVRQ0lHbVU3QzB6cGFJTGtjSFdQcWQ2dlJNczd4eTNydjQ4OXhkK3VMN0hNUmhkQWlCZStPSWROck9VeEZ4SXhWUXRrVUdwaE81d1RYN3BKNmxJMmRJRjJDamZUQ3FjQWdobkVBQWFERFF6TVRjek5ERXpPRFEyTkNJTU1xcFhzUzR2d2JTbGc4RUdLdmtCZDA2bTNCd3EwNzJxVXRWTHp0d3ZpNGFOd2VSeTU5QzlJcENLWU9PcDJUUUZsMjlFQnV2TEc0NjdIZFhsSXpUT01KaEl1MTJ4eDhuZ3BNbDVkN09SNHpldnNPUGNHdjhMU20zLzZvNERuSk44djJjVWxBTUtOdjZCazJNMTFlK2piSkh0YjZ3SkRoWmZ6Mm5SNm9RYVpuaDJ1WW9CNGltOW5PYkpEVHZrQXJ4L2pkb2NBOVFpMm4xeDRSaUg2SjRBQzZuKzBTMmpjQVg3TTcxZ2oxclJMWFQzSVBib0EyWFUrWEFldGZLaHJpMm1vWG50cVhlMmF2Rk0wV1JNOFNGa21mMWQ1ZzIzRjdjU3N5NjIzYXRxS3g4Q1VWNEgrRDRubmI0ZHowRUgxVG5tUE1CUzQ1ODNTUE1vRmR6SUlWZGFMQmc2SzFHVFVqbWRNTW5LeHBNR09wc0JUWnpteVV5K0lkdnY3TmVDMjlHWHdpWml6WFZ3YitDbVFrMUlDNm9OWDZnaHdGNUJpaFMvMTBPV2ZIMmRwUnJSSkNpbXl5MDVibmhMSFlsS3N1bERIbko4VVZhZC9vaGphb3o2aHBEazZYSThpZXhmRjhMeVhuN3FtR2w2bmN1dzh3SXNMREJsRDJvdGQ1OHZXb0VsZDhnNVJFa1lsU1dKOGpOOGVqb21ZWk13RVc0aUQ5RUk3RCswR1JBUkc3UG93VjIvRWN1aUZsK0J6R0E9In1dfQ==",
+        "x-amz-signature": "8ce6f27a0ca0e673cc12cbe512c3e21cb4156e2693a8b5194acb1d855cfa524a"}}'
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '2532'
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 03 May 2022 21:57:29 GMT
+      X-Amzn-Trace-Id:
+      - Root=1-6271a549-1ec446d37f7c3f607c1153a4;Sampled=0
+      x-amz-apigw-id:
+      - RkbDeEMgCYcFu0Q=
+      x-amzn-RequestId:
+      - 02208106-c09e-4d62-82cf-a3ee313b084b
+    status:
+      code: 200
+      message: OK
+version: 1

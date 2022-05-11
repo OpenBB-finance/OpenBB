@@ -36,11 +36,12 @@ def get_bullbear(ticker: str) -> Tuple[int, int, int, int]:
         f"https://api.stocktwits.com/api/2/streams/symbol/{ticker}.json"
     )
     if result.status_code == 200:
-        watchlist_count = result.json()["symbol"]["watchlist_count"]
+        result_json = result.json()
+        watchlist_count = result_json["symbol"]["watchlist_count"]
         n_cases = 0
         n_bull = 0
         n_bear = 0
-        for message in result.json()["messages"]:
+        for message in result_json["messages"]:
             if message["entities"]["sentiment"]:
                 n_cases += 1
                 n_bull += message["entities"]["sentiment"]["basic"] == "Bullish"
@@ -69,13 +70,10 @@ def get_messages(ticker: str, limit: int = 30) -> List[str]:
     result = requests.get(
         f"https://api.stocktwits.com/api/2/streams/symbol/{ticker}.json"
     )
-    messages = []
     if result.status_code == 200:
-        for idx, message in enumerate(result.json()["messages"]):
-            messages.append(message["body"])
-            if idx > limit - 1:
-                break
-    return messages
+        return [message["body"] for message in result.json()["messages"][:limit]]
+
+    return []
 
 
 @log_start_end(log=logger)
@@ -116,11 +114,6 @@ def get_stalker(user: str, limit: int = 30) -> List[Dict]:
     """
     result = requests.get(f"https://api.stocktwits.com/api/2/streams/user/{user}.json")
     if result.status_code == 200:
-        messages = []
-        for idx, message in enumerate(result.json()["messages"]):
-            messages.append(message)
-            if idx > limit - 1:
-                break
-        return messages
+        return list(result.json()["messages"][:limit])
 
     return []

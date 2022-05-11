@@ -170,7 +170,7 @@ def bootup():
 
 def welcome_message():
     # Print first welcome message and help
-    console.print("\nWelcome to OpenBB Terminal 1.0\n")
+    console.print(f"\nWelcome to OpenBB Terminal v{obbff.VERSION}\n")
 
     # The commit has was commented out because the terminal was crashing due to git import for multiple users
     # ({str(git.Repo('.').head.commit)[:7]})
@@ -182,7 +182,7 @@ def welcome_message():
         except Exception as e:
             logger.exception("Exception: %s", str(e))
             console.print(e)
-        console.print("")
+    console.print("")
 
 
 def reset(queue: List[str] = None):

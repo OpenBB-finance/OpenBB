@@ -1,20 +1,13 @@
 # IMPORTATION STANDARD
 import os
-import json
 from distutils.util import strtobool
+import pkg_resources
 
 # IMPORTATION THIRDPARTY
 from dotenv import load_dotenv
 
 # IMPORTATION INTERNAL
-from openbb_terminal.core.config.constants import DEFAULT_FILE, ENV_FILE
-
-if DEFAULT_FILE.is_file():
-    with open(DEFAULT_FILE) as f:
-        default_dict = json.load(f)
-
-    for key, value in default_dict.items():
-        os.environ[key] = value
+from openbb_terminal.core.config.constants import ENV_FILE
 
 if ENV_FILE.is_file():
     load_dotenv(dotenv_path=ENV_FILE, override=True)
@@ -77,7 +70,7 @@ ENABLE_RICH_PANEL = strtobool(os.getenv("OPENBB_ENABLE_RICH_PANEL", "True"))
 ENABLE_CHECK_API = strtobool(os.getenv("OPENBB_ENABLE_CHECK_API", "True"))
 
 # Send logs to data lake
-LOG_COLLECTION = strtobool(os.getenv("OPENBB_LOG_COLLECTION", "True"))
+LOG_COLLECTION = bool(strtobool(os.getenv("OPENBB_LOG_COLLECTION", "True")))
 
 # Provide export folder path. If empty that means default.
 EXPORT_FOLDER_PATH = str(os.getenv("OPENBB_EXPORT_FOLDER_PATH", ""))
@@ -86,3 +79,9 @@ EXPORT_FOLDER_PATH = str(os.getenv("OPENBB_EXPORT_FOLDER_PATH", ""))
 PACKAGED_APPLICATION = strtobool(os.getenv("OPENBB_PACKAGED_APPLICATION", "False"))
 
 LOGGING_COMMIT_HASH = str(os.getenv("OPENBB_LOGGING_COMMIT_HASH", "REPLACE_ME"))
+
+try:
+    version = pkg_resources.get_distribution("OpenBBTerminal").version
+except Exception:
+    version = "REPLACE_ME"
+VERSION = str(os.getenv("OPENBB_VERSION", version))

@@ -1,6 +1,8 @@
 """Parent Classes"""
 __docformat__ = "numpy"
 
+# pylint: disable= C0301
+
 from abc import ABCMeta, abstractmethod
 import argparse
 import re
@@ -27,6 +29,8 @@ from openbb_terminal.helper_funcs import (
     parse_known_args_and_warn,
     valid_date_in_past,
     set_command_location,
+    prefill_form,
+    support_message,
 )
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.rich_config import console
@@ -47,6 +51,8 @@ CRYPTO_SOURCES = {
     "yf": "YahooFinance",
 }
 
+SUPPORT_TYPE = ["bug", "suggestion", "question", "generic"]
+
 
 class BaseController(metaclass=ABCMeta):
 
@@ -62,10 +68,12 @@ class BaseController(metaclass=ABCMeta):
         "exit",
         "r",
         "reset",
+        "support",
     ]
 
     CHOICES_COMMANDS: List[str] = []
     CHOICES_MENUS: List[str] = []
+    SUPPORT_CHOICES: Dict = {}
     COMMAND_SEPARATOR = "/"
     KEYS_MENU = "keys" + COMMAND_SEPARATOR
 
@@ -97,9 +105,35 @@ class BaseController(metaclass=ABCMeta):
         self.parser = argparse.ArgumentParser(
             add_help=False, prog=self.path[-1] if self.PATH != "/" else "terminal"
         )
+
         self.parser.add_argument("cmd", choices=self.controller_choices)
 
         theme.applyMPLstyle()
+
+        # Terminal-wide support command auto-completion
+
+        # Remove common choices from list of support commands
+        self.support_commands = [
+            c for c in self.controller_choices if c not in self.CHOICES_COMMON
+        ]
+
+        support_choices: dict = {c: {} for c in self.controller_choices}
+
+        support_choices["support"] = {
+            c: None for c in (["generic"] + self.support_commands)
+        }
+
+        support_choices["support"]["--command"] = {
+            c: None for c in (["generic"] + self.support_commands)
+        }
+
+        support_choices["support"]["-c"] = {
+            c: None for c in (["generic"] + self.support_commands)
+        }
+
+        support_choices["support"]["--type"] = {c: None for c in (SUPPORT_TYPE)}
+
+        self.SUPPORT_CHOICES = support_choices
 
     def check_path(self) -> None:
         path = self.PATH
@@ -276,6 +310,70 @@ class BaseController(metaclass=ABCMeta):
         else:
             console.print("No resources available.\n")
 
+    @log_start_end(log=logger)
+    def call_support(self, other_args: List[str]) -> None:
+        """Process support command"""
+
+        self.save_class()
+        console.print("")
+
+        path_split = [x for x in self.PATH.split("/") if x != ""]
+        main_menu = path_split[0] if len(path_split) else "home"
+
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="support",
+            description="Submit your support request",
+        )
+
+        parser.add_argument(
+            "-c",
+            "--command",
+            action="store",
+            dest="command",
+            required="-h" not in other_args,
+            choices=["generic"] + self.support_commands,
+            help="Command that needs support",
+        )
+
+        parser.add_argument(
+            "--msg",
+            "-m",
+            action="store",
+            type=support_message,
+            nargs="+",
+            dest="msg",
+            required=False,
+            default="",
+            help="Message to send. Enclose it with double quotes",
+        )
+
+        parser.add_argument(
+            "--type",
+            "-t",
+            action="store",
+            dest="type",
+            required=False,
+            choices=SUPPORT_TYPE,
+            default="generic",
+            help="Support ticket type",
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-c")
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+
+        if ns_parser:
+            prefill_form(
+                ticket_type=ns_parser.type,
+                menu=main_menu,
+                command=ns_parser.command,
+                message=" ".join(ns_parser.msg),
+                path=self.PATH,
+            )
+
     def menu(self, custom_path_menu_above: str = ""):
         an_input = "HELP_ME"
 
@@ -341,7 +439,7 @@ class BaseController(metaclass=ABCMeta):
                         self.PATH,
                     )
                 console.print(
-                    f"\nThe command '{an_input}' doesn't exist on the {self.PATH} menu.",
+                    f"\nThe command '{an_input}' doesn't exist on the {self.PATH} menu.\n",
                     end="",
                 )
                 similar_cmd = difflib.get_close_matches(
@@ -368,7 +466,10 @@ class BaseController(metaclass=ABCMeta):
                     console.print(f" Replacing by '{an_input}'.")
                     self.queue.insert(0, an_input)
                 else:
-                    console.print("\n")
+                    if "load" in self.controller_choices:
+                        console.print(f"Trying `load {an_input}`")
+                        self.queue.insert(0, "load " + an_input)
+                    console.print("")
 
 
 class StockBaseController(BaseController, metaclass=ABCMeta):
@@ -433,7 +534,9 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
             "--source",
             action="store",
             dest="source",
-            choices=["yf", "av", "iex"] if "-i" not in other_args else ["yf"],
+            choices=["yf", "av", "iex", "polygon"]
+            if "-i" not in other_args or "--interval" not in other_args
+            else ["yf", "polygon"],
             default="yf",
             help="Source of historical data.",
         )
@@ -529,6 +632,8 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                     ns_parser.ticker
                 )
                 console.print(self.add_info)
+                if ns_parser.interval == 1440 and ns_parser.filepath is None:
+                    stocks_helper.show_quick_performance(self.stock, ns_parser.ticker)
                 if "." in ns_parser.ticker:
                     self.ticker, self.suffix = ns_parser.ticker.upper().split(".")
                 else:
@@ -536,7 +641,7 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                     self.suffix = ""
 
                 if ns_parser.source == "iex":
-                    self.start = self.stock.index[0].strftime("%Y-%m-%d")
+                    self.start = self.stock.index[0].to_pydatetime()
                 else:
                     self.start = ns_parser.start
                 self.interval = f"{ns_parser.interval}min"
@@ -651,7 +756,11 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
                 interval=ns_parser.interval,
                 vs=ns_parser.vs,
             )
-            if self.symbol:
+            if (
+                self.symbol
+                and self.current_df is not None
+                and not self.current_df.empty
+            ):
                 self.current_interval = ns_parser.interval
                 first_price = self.current_df["Close"].iloc[0]
                 last_price = self.current_df["Close"].iloc[-1]
@@ -659,10 +768,11 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
                 interval_change = calc_change(last_price, second_last_price)
                 since_start_change = calc_change(last_price, first_price)
                 if isinstance(self.current_currency, str) and self.PATH == "/crypto/":
-                    col = "green" if interval_change > 0 else "red"
+                    col1 = "green" if interval_change > 0 else "red"
+                    col2 = "green" if since_start_change > 0 else "red"
                     self.price_str = f"""Current Price: {round(last_price,2)} {self.current_currency.upper()}
-Performance in interval ({self.current_interval}): [{col}]{round(interval_change,2)}%[/{col}]
-Performance since {ns_parser.start.strftime('%Y-%m-%d')}: [{col}]{round(since_start_change,2)}%[/{col}]"""  # noqa
+Performance in interval ({self.current_interval}): [{col1}]{round(interval_change,2)}%[/{col1}]
+Performance since {ns_parser.start.strftime('%Y-%m-%d')}: [{col2}]{round(since_start_change,2)}%[/{col2}]"""  # noqa
 
                     console.print(
                         f"""
@@ -675,3 +785,7 @@ Loaded {self.coin} against {self.current_currency} from {CRYPTO_SOURCES[self.sou
                     console.print(
                         f"{delta} Days of {self.coin} vs {self.current_currency} loaded with {res} resolution.\n"
                     )
+            else:
+                console.print(
+                    f"\n[red]Could not find [bold]{ns_parser.coin}[/bold] in [bold]{CRYPTO_SOURCES[ns_parser.source]}[/bold]. Make sure you search for symbol (e.g., btc) or try another source[/red]\n"  # noqa: E501
+                )

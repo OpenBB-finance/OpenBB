@@ -31,7 +31,7 @@ LUNA_CIR_SUPPLY_CHANGE = "lunaSupplyChallengeStats"
 @check_api_key(["API_SMARTSTAKE_KEY", "API_SMARTSTAKE_TOKEN"])
 def display_luna_circ_supply_change(
     days: int,
-    export: str,
+    export: str = "",
     supply_type: str = LUNA_CIR_SUPPLY_CHANGE,
     limit: int = 5,
     external_axes: Optional[List[plt.Axes]] = None,
@@ -67,7 +67,7 @@ def display_luna_circ_supply_change(
     else:
         if len(external_axes) != 1:
             logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of one axis item./n[/red]")
+            console.print("[red]Expected list of one axis item.\n[/red]")
             return
         (ax,) = external_axes
 

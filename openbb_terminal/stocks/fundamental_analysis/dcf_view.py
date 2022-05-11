@@ -36,7 +36,7 @@ class CreateExcelFA:
         no_filter: bool = False,
     ):
         """
-        Creates a detialed DCF for a given company
+        Creates a detailed DCF for a given company
 
         Parameters
         ----------
@@ -551,7 +551,8 @@ class CreateExcelFA:
         dcf_model.set_cell(
             self.ws[2],
             "B14",
-            f"=financials!{dcf_static.letters[self.info['len_data']]}{self.title_to_row('Total Long-Term Liabilities')}",
+            f"=financials!{dcf_static.letters[self.info['len_data']]}"
+            + f"{self.title_to_row('Total Long-Term Liabilities')}",
             num_form="[$$-409]#,##0.00;[RED]-[$$-409]#,##0.00",
         )
         dcf_model.set_cell(self.ws[2], "A15", "Firm value without debt")
@@ -560,20 +561,24 @@ class CreateExcelFA:
             "B15",
             (
                 f"=max(B13-B14,"
-                f"Financials!{dcf_static.letters[self.info['len_data']]}{self.title_to_row('Total Assets')}"
-                f"-Financials!{dcf_static.letters[self.info['len_data']]}{self.title_to_row('Total Liabilities')})"
+                f"Financials!{dcf_static.letters[self.info['len_data']]}"
+                + f"{self.title_to_row('Total Assets')}"
+                f"-Financials!{dcf_static.letters[self.info['len_data']]}"
+                + f"{self.title_to_row('Total Liabilities')})"
             ),
             num_form="[$$-409]#,##0.00;[RED]-[$$-409]#,##0.00",
         )
         dcf_model.set_cell(
             self.ws[2],
             "C15",
-            (
+            *(
                 f"=if((B13-B14)>"
-                f"(Financials!{dcf_static.letters[self.info['len_data']]}{self.title_to_row('Total Assets')}"
-                f"-Financials!{dcf_static.letters[self.info['len_data']]}{self.title_to_row('Total Liabilities')}),"
+                f"(Financials!{dcf_static.letters[self.info['len_data']]}"
+                + f"{self.title_to_row('Total Assets')}"
+                f"-Financials!{dcf_static.letters[self.info['len_data']]}"
+                + f"{self.title_to_row('Total Liabilities')}),"
                 '"","Note: Total assets minus total liabilities exceeds projected firm value without debt.'
-                ' Value shown is total assets minus total liabilities.")'
+                + ' Value shown is total assets minus total liabilities.")',
             ),
             font=dcf_static.red,
         )

@@ -377,6 +377,11 @@ def rewrite_expected(request: SubRequest) -> bool:
     return request.config.getoption("--rewrite-expected")
 
 
+@pytest.fixture(autouse=True)
+def mock_matplotlib(mocker):
+    mocker.patch("matplotlib.pyplot.show")
+
+
 @pytest.fixture
 def default_csv_path(request: SubRequest) -> str:
     return build_path_by_extension(request=request, extension="csv", create_folder=True)

@@ -80,7 +80,9 @@ def macd(
 
 
 @log_start_end(log=logger)
-def rsi(values: pd.Series, length: int, scalar: float, drift: int) -> pd.DataFrame:
+def rsi(
+    values: pd.Series, length: int = 14, scalar: float = 100, drift: int = 1
+) -> pd.DataFrame:
     """Relative strength index
 
     Parameters

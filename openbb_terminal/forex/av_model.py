@@ -76,18 +76,19 @@ def get_quote(to_symbol: str, from_symbol: str) -> Dict:
     )
 
     response = requests.get(url)
+    response_json = response.json()
     result = {}
 
     # If the returned data was unsuccessful
-    if "Error Message" in response.json():
-        console.print(response.json()["Error Message"])
-        logger.error(response.json()["Error Message"])
+    if "Error Message" in response_json:
+        console.print(response_json["Error Message"])
+        logger.error(response_json["Error Message"])
     else:
         # check if json is empty
-        if not response.json():
+        if not response_json:
             console.print("No data found.\n")
         else:
-            result = response.json()
+            result = response_json
 
     return result
 
@@ -128,6 +129,7 @@ def get_historical(
         url += f"&interval={interval}min"
 
     r = requests.get(url)
+    response_json = r.json()
 
     if r.status_code != 200:
         return pd.DataFrame()
@@ -135,18 +137,18 @@ def get_historical(
     df = pd.DataFrame()
 
     # If the returned data was unsuccessful
-    if "Error Message" in r.json():
-        console.print(r.json()["Error Message"])
-    elif "Note" in r.json():
-        console.print(r.json()["Note"])
+    if "Error Message" in response_json:
+        console.print(response_json["Error Message"])
+    elif "Note" in response_json:
+        console.print(response_json["Note"])
     else:
         # check if json is empty
-        if not r.json():
+        if not response_json:
             console.print("No data found.\n")
         else:
-            key = list(r.json().keys())[1]
+            key = list(response_json.keys())[1]
 
-            df = pd.DataFrame.from_dict(r.json()[key], orient="index")
+            df = pd.DataFrame.from_dict(response_json[key], orient="index")
 
             if start_date and resolution != "i":
                 df = df[df.index > start_date]

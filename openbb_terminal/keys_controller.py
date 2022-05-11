@@ -1,6 +1,8 @@
 """Keys Controller Module"""
 __docformat__ = "numpy"
 
+# pylint: disable=too-many-lines
+
 import argparse
 import logging
 import os
@@ -29,13 +31,11 @@ from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console
 
-# pylint: disable=too-many-lines,no-member,too-many-public-methods,C0302
 
 logger = logging.getLogger(__name__)
-# pylint:disable=import-outside-toplevel
 
 
-class KeysController(BaseController):
+class KeysController(BaseController):  # pylint: disable=too-many-public-methods
     """Keys Controller class"""
 
     CHOICES_COMMANDS: List[str] = [
@@ -81,6 +81,10 @@ class KeysController(BaseController):
 
             if session and obbff.USE_PROMPT_TOOLKIT:
                 choices: dict = {c: {} for c in self.controller_choices}
+
+                if len(self.SUPPORT_CHOICES):
+                    choices = {**choices, **self.SUPPORT_CHOICES}
+
                 self.completer = NestedCompleter.from_nested_dict(choices)
 
     def check_github_key(self, show_output: bool = False) -> None:
@@ -107,7 +111,7 @@ class KeysController(BaseController):
             df = TimeSeries(
                 key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas"
             ).get_intraday(symbol="AAPL")
-            if df[0].empty:
+            if df[0].empty:  # pylint: disable=no-member
                 logger.warning("Alpha Vantage key defined, test failed")
                 self.key_dict["ALPHA_VANTAGE"] = "defined, test failed"
             else:
@@ -355,7 +359,7 @@ class KeysController(BaseController):
                 logger.info("Reddit key defined, test passed")
                 self.key_dict["REDDIT"] = "defined, test passed"
             except (Exception, ResponseException):
-                logger.warning("Reddit key defined, test passed")
+                logger.warning("Reddit key defined, test failed")
                 self.key_dict["REDDIT"] = "defined, test failed"
 
         if show_output:
@@ -538,7 +542,7 @@ class KeysController(BaseController):
     def check_walert_key(self, show_output: bool = False) -> None:
         """Check Walert key"""
         self.cfg_dict["WHALE_ALERT"] = "wa"
-        if "REPLACE_ME" == cfg.API_WHALE_ALERT_KEY:
+        if cfg.API_WHALE_ALERT_KEY == "REPLACE_ME":
             logger.info("Walert key not defined")
             self.key_dict["WHALE_ALERT"] = "not defined"
         else:
@@ -546,14 +550,14 @@ class KeysController(BaseController):
                 "https://api.whale-alert.io/v1/transactions?api_key="
                 + cfg.API_WHALE_ALERT_KEY
             )
-            response = requests.get(url)
-
-            if not 200 <= response.status_code < 300:
-                logger.warning("Walert key defined, test failed")
-                self.key_dict["WHALE_ALERT"] = "defined, test unsuccessful"
             try:
-                logger.info("Walert key defined, test passed")
-                self.key_dict["WHALE_ALERT"] = "defined, test passed"
+                response = requests.get(url, timeout=2)
+                if not 200 <= response.status_code < 300:
+                    logger.warning("Walert key defined, test failed")
+                    self.key_dict["WHALE_ALERT"] = "defined, test unsuccessful"
+                else:
+                    logger.info("Walert key defined, test passed")
+                    self.key_dict["WHALE_ALERT"] = "defined, test passed"
             except Exception:
                 logger.exception("Walert key defined, test failed")
                 self.key_dict["WHALE_ALERT"] = "defined, test unsuccessful"
@@ -564,7 +568,7 @@ class KeysController(BaseController):
     def check_glassnode_key(self, show_output: bool = False) -> None:
         """Check glassnode key"""
         self.cfg_dict["GLASSNODE"] = "glassnode"
-        if "REPLACE_ME" == cfg.API_GLASSNODE_KEY:
+        if cfg.API_GLASSNODE_KEY == "REPLACE_ME":
             logger.info("Glassnode key not defined")
             self.key_dict["GLASSNODE"] = "not defined"
         else:
@@ -592,7 +596,7 @@ class KeysController(BaseController):
     def check_coinglass_key(self, show_output: bool = False) -> None:
         """Check coinglass key"""
         self.cfg_dict["COINGLASS"] = "coinglass"
-        if "REPLACE_ME" == cfg.API_COINGLASS_KEY:
+        if cfg.API_COINGLASS_KEY == "REPLACE_ME":
             logger.info("Coinglass key not defined")
             self.key_dict["COINGLASS"] = "not defined"
         else:
@@ -615,7 +619,7 @@ class KeysController(BaseController):
     def check_cpanic_key(self, show_output: bool = False) -> None:
         """Check cpanic key"""
         self.cfg_dict["CRYPTO_PANIC"] = "cpanic"
-        if "REPLACE_ME" == cfg.API_CRYPTO_PANIC_KEY:
+        if cfg.API_CRYPTO_PANIC_KEY == "REPLACE_ME":
             logger.info("cpanic key not defined")
             self.key_dict["CRYPTO_PANIC"] = "not defined"
         else:
@@ -638,7 +642,7 @@ class KeysController(BaseController):
     def check_ethplorer_key(self, show_output: bool = False) -> None:
         """Check ethplorer key"""
         self.cfg_dict["ETHPLORER"] = "ethplorer"
-        if "REPLACE_ME" == cfg.API_ETHPLORER_KEY:
+        if cfg.API_ETHPLORER_KEY == "REPLACE_ME":
             logger.info("ethplorer key not defined")
             self.key_dict["ETHPLORER"] = "not defined"
         else:

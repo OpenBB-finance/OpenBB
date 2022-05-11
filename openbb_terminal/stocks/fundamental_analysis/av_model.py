@@ -35,24 +35,25 @@ def get_overview(ticker: str) -> pd.DataFrame:
     # Request OVERVIEW data from Alpha Vantage API
     s_req = f"https://www.alphavantage.co/query?function=OVERVIEW&symbol={ticker}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
     result = requests.get(s_req, stream=True)
+    result_json = result.json()
 
     df_fa = pd.DataFrame()
 
     # If the returned data was unsuccessful
-    if "Error Message" in result.json():
-        console.print(result.json()["Error Message"])
+    if "Error Message" in result_json:
+        console.print(result_json["Error Message"])
     else:
         # check if json is empty
-        if not result.json():
+        if not result_json:
             console.print("No data found")
         # Parse json data to dataframe
-        elif "Note" in result.json():
-            console.print(result.json()["Note"], "\n")
+        elif "Note" in result_json:
+            console.print(result_json["Note"], "\n")
         else:
-            df_fa = pd.json_normalize(result.json())
+            df_fa = pd.json_normalize(result_json)
 
             # Keep json data sorting in dataframe
-            df_fa = df_fa[list(result.json().keys())].T
+            df_fa = df_fa[list(result_json.keys())].T
             df_fa.iloc[5:] = df_fa.iloc[5:].applymap(
                 lambda x: lambda_long_number_format(x)
             )
@@ -99,18 +100,19 @@ def get_key_metrics(ticker: str) -> pd.DataFrame:
     # Request OVERVIEW data
     s_req = f"https://www.alphavantage.co/query?function=OVERVIEW&symbol={ticker}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
     result = requests.get(s_req, stream=True)
+    result_json = result.json()
 
     # If the returned data was unsuccessful
-    if "Error Message" in result.json():
-        console.print(result.json()["Error Message"])
+    if "Error Message" in result_json:
+        console.print(result_json["Error Message"])
     else:
         # check if json is empty
-        if not result.json() or len(result.json()) < 2:
+        if not result_json or len(result_json) < 2:
             console.print("No data found")
             return pd.DataFrame()
 
-        df_fa = pd.json_normalize(result.json())
-        df_fa = df_fa[list(result.json().keys())].T
+        df_fa = pd.json_normalize(result_json)
+        df_fa = df_fa[list(result_json.keys())].T
         df_fa = df_fa.applymap(lambda x: lambda_long_number_format(x))
         clean_df_index(df_fa)
         df_fa = df_fa.rename(
@@ -167,16 +169,17 @@ def get_income_statements(
         f"&apikey={cfg.API_KEY_ALPHAVANTAGE}"
     )
     r = requests.get(url)
+    response_json = r.json()
 
     # If the returned data was unsuccessful
-    if "Error Message" in r.json():
-        console.print(r.json()["Error Message"])
+    if "Error Message" in response_json:
+        console.print(response_json["Error Message"])
     else:
         # check if json is empty
-        if not r.json():
+        if not response_json:
             console.print("No data found")
         else:
-            statements = r.json()
+            statements = response_json
             df_fa = pd.DataFrame()
 
             if quarterly:
@@ -219,16 +222,17 @@ def get_balance_sheet(
     """
     url = f"https://www.alphavantage.co/query?function=BALANCE_SHEET&symbol={ticker}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
     r = requests.get(url)
+    response_json = r.json()
 
     # If the returned data was unsuccessful
-    if "Error Message" in r.json():
-        console.print(r.json()["Error Message"])
+    if "Error Message" in response_json:
+        console.print(response_json["Error Message"])
     else:
         # check if json is empty
-        if not r.json():
+        if not response_json:
             console.print("No data found")
         else:
-            statements = r.json()
+            statements = response_json
             df_fa = pd.DataFrame()
 
             if quarterly:
@@ -269,16 +273,17 @@ def get_cash_flow(ticker: str, number: int, quarterly: bool = False) -> pd.DataF
     """
     url = f"https://www.alphavantage.co/query?function=CASH_FLOW&symbol={ticker}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
     r = requests.get(url)
+    response_json = r.json()
 
     # If the returned data was unsuccessful
-    if "Error Message" in r.json():
-        console.print(r.json()["Error Message"])
+    if "Error Message" in response_json:
+        console.print(response_json["Error Message"])
     else:
         # check if json is empty
-        if not r.json():
+        if not response_json:
             console.print("No data found")
         else:
-            statements = r.json()
+            statements = response_json
             df_fa = pd.DataFrame()
 
             if quarterly:
@@ -321,18 +326,19 @@ def get_earnings(ticker: str, quarterly: bool = False) -> pd.DataFrame:
         f"symbol={ticker}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
     )
     result = requests.get(s_req, stream=True)
+    result_json = result.json()
     df_fa = pd.DataFrame()
 
     # If the returned data was unsuccessful
-    if "Error Message" in result.json():
-        console.print(result.json()["Error Message"])
+    if "Error Message" in result_json:
+        console.print(result_json["Error Message"])
     else:
         # check if json is empty
-        if not result.json() or len(result.json()) < 2:
+        if not result_json or len(result_json) < 2:
             console.print("No data found")
         else:
 
-            df_fa = pd.json_normalize(result.json())
+            df_fa = pd.json_normalize(result_json)
 
             if quarterly:
                 df_fa = pd.DataFrame(df_fa["quarterlyEarnings"][0])

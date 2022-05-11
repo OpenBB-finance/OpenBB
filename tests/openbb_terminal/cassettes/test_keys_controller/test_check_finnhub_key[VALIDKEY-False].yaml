@@ -1,0 +1,54 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: GET
+    uri: https://finnhub.io/api/v1/quote?symbol=AAPL&token=VALIDKEY
+  response:
+    body:
+      string: '{"error":"Invalid API key"}'
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - Origin
+      Access-Control-Allow-Methods:
+      - POST, GET, OPTIONS, PUT, DELETE
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Expose-Headers:
+      - Content-Length
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 6f938a4399192007-IND
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '27'
+      Content-Type:
+      - application/json
+      Date:
+      - Sat, 09 Apr 2022 13:20:28 GMT
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      NEL:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=3Oba96QOoCTwrmFycLSecOPGDHicLfG7qtbbsIi7B9JBzrlkb%2BTig174cFtyr8glPX4gXSWs4uKI5AEQ0TQKLH%2FUnika8n5OqhviMcua1GDMCuz%2B6iuY5ZZ764aQ"}],"group":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      alt-svc:
+      - h3=":443"; ma=86400, h3-29=":443"; ma=86400
+    status:
+      code: 401
+      message: Unauthorized
+version: 1

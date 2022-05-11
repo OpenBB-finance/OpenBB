@@ -121,11 +121,12 @@ def get_short_interest_volume(ticker: str) -> Tuple[pd.DataFrame, List]:
     """
     link = f"https://stockgridapp.herokuapp.com/get_dark_pool_individual_data?ticker={ticker}"
     response = requests.get(link)
+    response_json = response.json()
 
-    df = pd.DataFrame(response.json()["individual_short_volume_table"]["data"])
+    df = pd.DataFrame(response_json["individual_short_volume_table"]["data"])
     df["date"] = pd.to_datetime(df["date"])
 
-    return df, response.json()["prices"]["prices"]
+    return df, response_json["prices"]["prices"]
 
 
 @log_start_end(log=logger)

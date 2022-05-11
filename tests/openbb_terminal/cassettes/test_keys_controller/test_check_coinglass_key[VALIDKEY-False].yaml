@@ -1,0 +1,56 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+      coinglassSecret:
+      - VALIDKEY
+    method: GET
+    uri: https://open-api.coinglass.com/api/pro/v1/futures/openInterest/chart?&symbol=BTC&interval=0
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA6tWSs5PSVWyUjI2MDAwVNJRyi1OB/KKU5OLUksUMvPKEnMyU4DCxaXJyanFxUpW
+        aYk5xam1AA0yV003AAAA
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - rt,obe,DNT,X-Mx-ReqToken,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type
+      Access-Control-Allow-Methods:
+      - GET,POST,OPTIONS,DELETE
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '1728000'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Sat, 09 Apr 2022 13:56:15 GMT
+      Server:
+      - nginx
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-RateLimit-Burst-Capacity:
+      - '20'
+      X-RateLimit-Remaining:
+      - '19'
+      X-RateLimit-Replenish-Rate:
+      - '3'
+    status:
+      code: 200
+      message: OK
+version: 1
