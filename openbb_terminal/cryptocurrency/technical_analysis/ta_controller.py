@@ -16,6 +16,7 @@ from openbb_terminal.common.technical_analysis import (
     momentum_view,
     overlap_view,
     trend_indicators_view,
+    volatility_model,
     volatility_view,
     volume_view,
 )
@@ -53,6 +54,7 @@ class TechnicalAnalysisController(CryptoBaseController):
         "aroon",
         "bbands",
         "donchian",
+        "kc",
         "ad",
         "obv",
         "fib",
@@ -882,6 +884,75 @@ class TechnicalAnalysisController(CryptoBaseController):
                 ohlc=self.stock,
                 upper_length=ns_parser.n_length_upper,
                 lower_length=ns_parser.n_length_lower,
+                export=ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
+    def call_kc(self, other_args: List[str]):
+        """Process kc command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="kc",
+            description="""
+                 Keltner Channels are volatility-based bands that are placed
+                 on either side of an asset's price and can aid in determining
+                 the direction of a trend.The Keltner channel uses the average
+                 true range (ATR) or volatility, with breaks above or below the top
+                 and bottom barriers signaling a continuation.
+            """,
+        )
+        parser.add_argument(
+            "-l",
+            "--length",
+            action="store",
+            dest="n_length",
+            type=check_positive,
+            default=20,
+            help="Window length",
+        )
+        parser.add_argument(
+            "-s",
+            "--scalar",
+            action="store",
+            dest="n_scalar",
+            type=check_positive,
+            default=2,
+            help="scalar",
+        )
+        parser.add_argument(
+            "-m",
+            "--mamode",
+            action="store",
+            dest="s_mamode",
+            default="ema",
+            choices=volatility_model.MAMODES,
+            help="mamode",
+        )
+        parser.add_argument(
+            "-o",
+            "--offset",
+            action="store",
+            dest="n_offset",
+            type=int,
+            default=0,
+            help="offset",
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if ns_parser:
+            volatility_view.view_kc(
+                s_ticker=self.coin,
+                ohlc=self.stock,
+                length=ns_parser.n_length,
+                scalar=ns_parser.n_scalar,
+                mamode=ns_parser.s_mamode,
+                offset=ns_parser.n_offset,
                 export=ns_parser.export,
             )
 
