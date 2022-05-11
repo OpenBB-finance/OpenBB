@@ -186,27 +186,29 @@ def check_if_open(bursa, exchange):
     except Exception:
         lunchbreak_end = None
         lunchbreak_start = None
+
     if localDatetime.weekday() >= 5:
-        return False
-    if localDatetime.hour > market_open.hour and localDatetime.hour < market_close.hour:
+        result = False
+    elif localDatetime.hour > market_open.hour and localDatetime.hour < market_close.hour:
         if lunchbreak_start is not None and lunchbreak_end is not None:
             if (
                 localDatetime.hour > lunchbreak_start.hour
                 and localDatetime.hour < lunchbreak_end.hour
             ):
-                return False
-            if (
+                result = False
+            elif (
                 localDatetime.hour > lunchbreak_start.hour
                 and localDatetime.hour == lunchbreak_end.hour
                 and localDatetime.minute < lunchbreak_end.minute
             ):
-                return False
-            if (
+                result = False
+            elif (
                 localDatetime.hour == lunchbreak_start.hour
                 and localDatetime.minute >= lunchbreak_start.minute
             ):
-                return False
-        return True
+                result = False
+        else:
+            result = True
     elif (
         localDatetime.hour > market_open.hour
         and localDatetime.hour == market_close.hour
@@ -217,19 +219,20 @@ def check_if_open(bursa, exchange):
                 localDatetime.hour > lunchbreak_start.hour
                 and localDatetime.hour < lunchbreak_end.hour
             ):
-                return False
-            if (
+                result = False
+            elif (
                 localDatetime.hour > lunchbreak_start.hour
                 and localDatetime.hour == lunchbreak_end.hour
                 and localDatetime.minute < lunchbreak_end.minute
             ):
-                return False
-            if (
+                result = False
+            elif (
                 localDatetime.hour == lunchbreak_start.hour
                 and localDatetime.minute >= lunchbreak_start.minute
             ):
-                return False
-        return True
+                result = False
+        else:
+            result = True
     elif (
         localDatetime.hour == market_open.hour
         and localDatetime.minute >= market_open.minute
@@ -239,17 +242,21 @@ def check_if_open(bursa, exchange):
                 localDatetime.hour > lunchbreak_start.hour
                 and localDatetime.hour < lunchbreak_end.hour
             ):
-                return False
-            if (
+                result = False
+            elif (
                 localDatetime.hour > lunchbreak_start.hour
                 and localDatetime.hour == lunchbreak_end.hour
                 and localDatetime.minute < lunchbreak_end.minute
             ):
-                return False
-            if (
+                result = False
+            elif (
                 localDatetime.hour == lunchbreak_start.hour
                 and localDatetime.minute >= lunchbreak_start.minute
             ):
-                return False
-        return True
-    return False
+                result = False
+        else:
+            result = True
+    else:
+        result = False
+
+    return result
