@@ -896,7 +896,7 @@ def load_ta_data(
 
         symbol_binance = coin_map_df["Binance"]
 
-        pair = symbol_binance + currency.upper()
+        pair = symbol_binance.upper() + currency.upper()
 
         if check_valid_binance_str(pair):
             # console.print(f"{symbol_binance} loaded vs {currency.upper()}")
