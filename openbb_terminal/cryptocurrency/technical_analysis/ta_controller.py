@@ -8,6 +8,8 @@ from datetime import datetime
 from typing import List
 
 import pandas as pd
+from prompt_toolkit.completion import NestedCompleter
+
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.common.technical_analysis import (
     custom_indicators_view,
@@ -29,7 +31,6 @@ from openbb_terminal.helper_funcs import (
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import CryptoBaseController
 from openbb_terminal.rich_config import console
-from prompt_toolkit.completion import NestedCompleter
 
 logger = logging.getLogger(__name__)
 
