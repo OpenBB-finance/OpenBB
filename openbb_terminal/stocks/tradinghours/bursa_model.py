@@ -189,7 +189,9 @@ def check_if_open(bursa, exchange):
 
     if localDatetime.weekday() >= 5:
         result = False
-    elif localDatetime.hour > market_open.hour and localDatetime.hour < market_close.hour:
+    elif (
+        localDatetime.hour > market_open.hour and localDatetime.hour < market_close.hour
+    ):
         if lunchbreak_start is not None and lunchbreak_end is not None:
             if (
                 localDatetime.hour > lunchbreak_start.hour
