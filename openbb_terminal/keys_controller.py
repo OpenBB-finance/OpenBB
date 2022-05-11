@@ -58,7 +58,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         "bitquery",
         "si",
         "cb",
-        "wa",
+        "walert",
         "glassnode",
         "coinglass",
         "cpanic",
@@ -541,7 +541,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
 
     def check_walert_key(self, show_output: bool = False) -> None:
         """Check Walert key"""
-        self.cfg_dict["WHALE_ALERT"] = "wa"
+        self.cfg_dict["WHALE_ALERT"] = "walert"
         if cfg.API_WHALE_ALERT_KEY == "REPLACE_ME":
             logger.info("Walert key not defined")
             self.key_dict["WHALE_ALERT"] = "not defined"
