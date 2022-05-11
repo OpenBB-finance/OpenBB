@@ -83,7 +83,7 @@ class TerminalController(BaseController):
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             choices["tz"] = {c: None for c in self.all_timezones}
-            choices = {**self.SUPPORT_CHOICES, **choices}
+            choices["support"] = self.SUPPORT_CHOICES
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
