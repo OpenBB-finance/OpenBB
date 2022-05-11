@@ -50,9 +50,9 @@ class TradingHoursController(BaseController):
         all_short_names = list(short_names) + list(short_names_index)
         self.all_exchange_short_names = sorted(list(all_short_names))
 
-        self.exchange = "NYQ"
-        self.symbol = "AAPL"
-        self.symbol_name = self.equities[self.symbol]["short_name"]
+        self.exchange = None
+        self.symbol = None
+        self.symbol_name = None
         self.symbol_market_open = False
         self.source = "yf"
         self.data = pd.DataFrame()
@@ -60,9 +60,6 @@ class TradingHoursController(BaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
-            choices["symbol"] = {c: None for c in self.equity_tickers}
-            choices["symbol"]["-n"] = {c: None for c in self.equity_tickers}
-            choices["symbol"]["--name"] = {c: None for c in self.equity_tickers}
             choices["exchange"] = {c: None for c in self.all_exchange_short_names}
             choices["exchange"]["-n"] = {c: None for c in self.all_exchange_short_names}
             choices["exchange"]["--name"] = {
@@ -71,18 +68,25 @@ class TradingHoursController(BaseController):
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
+        if self.symbol is not None:
+            if self.symbol_market_open:
+                exchange_opened = "OPENED"
+            else:
+                exchange_opened = "CLOSED"
+        else:
+            exchange_opened = ""
+
         help_text = f"""[cmds]
-    symbol      select the symbol
+    symbol       select the symbol[/cmds]
 
-Name:          {None or self.symbol_name}
-[param]Symbol:        [/param]{None or self.symbol}
-Market open:   {None or self.symbol_market_open}
-
+[param]Symbol name:[/param] {self.symbol_name or ""}
+[param]Symbol:[/param] {self.symbol or ""}
+[param]Exchange open:[/param] {exchange_opened}
 [cmds]
-open            show open markets
-closed          show closed markets
-all             show all markets
-exchange        show one exchange[/cmds]
+    open         show open markets
+    closed       show closed markets
+    all          show all markets
+    exchange     show one exchange[/cmds]
 """
         console.print(text=help_text, menu="Trading Hours")
 
@@ -99,7 +103,7 @@ exchange        show one exchange[/cmds]
             "-n",
             "--name",
             help="Symbol",
-            type=str,
+            type=str.upper,
             dest="symbol",
         )
 
@@ -125,7 +129,7 @@ exchange        show one exchange[/cmds]
             console.print(
                 f"\nSelected symbol\nSymbol:        {self.symbol}\n"
                 f"Name:          {self.symbol_name}\n"
-                f"Market open:   {self.symbol_market_open}\n\n"
+                f"Market open:   {self.symbol_market_open}\n"
             )
 
     @log_start_end(log=logger)
@@ -141,7 +145,7 @@ exchange        show one exchange[/cmds]
             "-n",
             "--name",
             help="Exchange short name",
-            type=str,
+            type=str.upper,
             dest="exchange",
         )
 
