@@ -436,7 +436,7 @@ class CryptoController(CryptoBaseController):
                 self.queue = self.load_class(
                     TechnicalAnalysisController,
                     stock=self.current_df,
-                    coin=self.coin,
+                    coin=self.symbol,
                     start=self.current_df.index[0],
                     interval="",
                     queue=self.queue,
