@@ -93,6 +93,9 @@ class StocksController(StockBaseController):
             choices["search"]["-e"] = {
                 c: None for c in stocks_helper.market_coverage_suffix
             }
+
+            choices = {**choices, **self.SUPPORT_CHOICES}
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):

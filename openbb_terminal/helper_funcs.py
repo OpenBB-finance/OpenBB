@@ -13,6 +13,9 @@ import random
 import re
 import sys
 from difflib import SequenceMatcher
+import webbrowser
+import urllib.parse
+
 import pytz
 import pandas as pd
 from rich.table import Table
@@ -1360,6 +1363,24 @@ def handle_error_code(requests_obj, error_code_map):
             console.print(error_msg)
 
 
+def prefill_form(ticket_type, menu, path, command, message):
+    """Pre-fille Google Form and open it in the browser"""
+    form_id = "1FAIpQLSe0-HKitlJMtTO9C2VR7uXVtTzmQgiyE1plf3nEkYCRx6WGRg"
+    form_url = f"https://docs.google.com/forms/d/e/{form_id}/viewform?"
+
+    params = {
+        "entry.2091304642": ticket_type,
+        "entry.2098699567": menu,
+        "entry.1862722780": path,
+        "entry.1248966702": command,
+        "entry.110036167": message,
+    }
+
+    url_params = urllib.parse.urlencode(params)
+
+    webbrowser.open(form_url + url_params)
+
+
 def get_closing_price(ticker, days):
 
     """Get historical close price for n days in past for market asset
@@ -1474,3 +1495,10 @@ def choice_check_after_action(action=None, choices=None):
         raise NotImplementedError("action argument must be class or function")
 
     return ActionClass
+
+
+def support_message(s: str) -> str:
+    """Argparse type to check string is in valid format
+    for the support command
+    """
+    return s.replace('"', "")
