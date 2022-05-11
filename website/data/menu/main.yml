@@ -466,19 +466,19 @@ main:
                     ref: "/terminal/stocks/options/pricing/show"
                   - name: rnval
                     ref: "/terminal/stocks/options/pricing/rnval"
-              - name: "Trading Hours"
-                ref: "/tradinghours"
-                sub:
-                  - name: "Symbol"
-                    ref: "/terminal/stocks/tradinghours/symbol"
-                  - name: "Open"
-                    ref: "/terminal/stocks/tradinghours/open"
-                  - name: "Closed"stocks/
-                    ref: "/terminal/stocks/tradinghours/closed"
-                  - name: "All"stocks/
-                    ref: "/terminal/stocks/tradinghours/all"
-                  - name: "Exchange"stocks/
-                    ref: "/terminal/stocks/tradinghours/exchange"
+          - name: trading hours
+            ref: "/terminal/stocks/tradinghours"
+            sub:
+              - name: all
+                ref: "/terminal/stocks/tradinghours/all"
+              - name: closed
+                ref: "/terminal/stocks/tradinghours/closed"
+              - name: exchange
+                ref: "/terminal/stocks/tradinghours/exchange"
+              - name: open
+                ref: "/terminal/stocks/tradinghours/open"
+              - name: symbol
+                ref: "/terminal/stocks/tradinghours/symbol"
           - name: technical analysis
             ref: "/terminal/common/technical_analysis"
             sub:
