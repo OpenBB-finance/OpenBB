@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 import logging
 import os
 from typing import List, Optional
+from datetime import datetime
 
 import matplotlib.pyplot as plt
 import mplfinance as mpf
@@ -118,6 +119,8 @@ def view_ma(
 def view_vwap(
     s_ticker: str,
     ohlc: pd.DataFrame,
+    start: datetime = None,
+    end: datetime = None,
     offset: int = 0,
     s_interval: str = "",
     export: str = "",
@@ -133,6 +136,10 @@ def view_vwap(
         Dataframe of prices
     offset : int
         Offset variable
+    start: datetime
+        Start date to get data from with
+    end: datetime
+        End date to get data from with
     s_interval : str
         Interval of data
     export : str
@@ -142,8 +149,23 @@ def view_vwap(
     """
 
     ohlc.index = ohlc.index.tz_localize(None)
-    ohlc["Day"] = [idx.date() for idx in ohlc.index]
-    day_df = ohlc[ohlc.Day == ohlc.Day[-1]]
+
+    if start and end:
+        start_date = start.date()
+        end_date = end.date()
+    else:
+        start_date = end_date = ohlc.index[-1].date()
+        console.print(
+            f"No Specified date range. load most recent trading data: {start_date.strftime('%Y-%m-%d')}"
+        )
+
+    day_df = ohlc[(start_date <= ohlc.index.date) & (ohlc.index.date <= end_date)]
+    if len(day_df) == 0:
+        console.print(
+            f"[red]No data found between {start_date.strftime('%Y-%m-%d')} and {end_date.strftime('%Y-%m-%d')}\n[/red]"
+        )
+        return
+
     df_vwap = overlap_model.vwap(day_df, offset)
 
     candle_chart_kwargs = {
