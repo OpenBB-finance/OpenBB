@@ -182,13 +182,6 @@ def welcome_message():
         except Exception as e:
             logger.exception("Exception: %s", str(e))
             console.print(e)
-        console.print("")
-    console.print(
-        "[info]Get API keys from data providers to access more features.[/info]"
-    )
-    console.print(
-        "[info]Use the [/info][cmd]keys[/cmd][info] command for instructions[/info]"
-    )
     console.print("")
 
 

@@ -1,0 +1,24 @@
+                                                                           2021-10-29 2020-10-30
+Income Tax Expense Benefit                                                   14.527 B    9.680 B
+Net Income Loss Attributable To Parent                                       94.680 B   57.411 B
+Net Income Loss                                                              94.680 B   57.411 B
+Costs And Expenses                                                          256.610 B  207.424 B
+Nonoperating Income Loss                                                        258 M      803 M
+Net Income Loss Attributable To Noncontrolling Interest                             0          0
+Participating Securities Distributed And Undistributed Earnings Loss Basic          0          0
+Interest Expense Operating                                                    2.645 B    2.873 B
+Income Tax Expense Benefit Deferred                                          -4.774 B     -215 M
+Preferred Stock Dividends And Other Adjustments                                     0          0
+Income Loss From Continuing Operations After Tax                             94.680 B   57.411 B
+Basic Earnings Per Share                                                        5.670      3.310
+Revenues                                                                    365.817 B  274.515 B
+Cost Of Revenue                                                             212.981 B  169.559 B
+Diluted Earnings Per Share                                                      5.610      3.280
+Operating Income Loss                                                       108.949 B   66.288 B
+Net Income Loss Available To Common Stockholders Basic                       94.680 B   57.411 B
+Benefits Costs Expenses                                                     256.610 B  207.424 B
+Income Loss From Continuing Operations Before Tax                           109.207 B   67.091 B
+Operating Expenses                                                           43.887 B   38.668 B
+Gross Profit                                                                152.836 B  104.956 B
+Income Loss Before Equity Method Investments                                        -          -
+

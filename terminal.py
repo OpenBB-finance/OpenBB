@@ -83,6 +83,9 @@ class TerminalController(BaseController):
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: None for c in self.controller_choices}
             choices["tz"] = {c.replace("/", "-"): None for c in self.all_timezones}
+
+            choices = {**choices, **self.SUPPORT_CHOICES}
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
         self.queue: List[str] = list()
@@ -96,6 +99,9 @@ class TerminalController(BaseController):
         """Print help"""
         console.print(  # nosec
             text=f"""
+[info]Get API keys from data providers to access more features.[/info]
+    For more instructions use: 'keys'
+
 [info]Multiple jobs queue (where each '/' denotes a new command).[/info]
     E.g. '/stocks $ disc/ugs -n 3/../load tsla/candle'
 
@@ -118,6 +124,7 @@ class TerminalController(BaseController):
     exit            exit the terminal
     reset / r       reset the terminal and reload configs from the current location
     resources       only available on main contexts (not sub-menus)
+    support         pre-populate support ticket for our team to evaluate
 
     about           about us
     update          update terminal automatically
