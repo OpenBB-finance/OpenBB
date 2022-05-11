@@ -62,7 +62,7 @@ def display_yieldcurve(
     export : str
         Export dataframe data to csv,json,xlsx file
     """
-    country = country.replace("_", " ")
+
     df = investingcom_model.get_yieldcurve(country)
     df = df.replace(float("NaN"), "")
 
@@ -79,16 +79,16 @@ def display_yieldcurve(
             return
         (ax,) = external_axes
 
-    df.drop(columns=df.columns[0], axis=1, inplace=True)
-
     tenors = []
-    for t in df["name"]:
+    for i, row in df.iterrows():
+        t = row["Tenor"][-3:].strip()
+        df.at[i, "Tenor"] = t
         if t[-1] == "M":
-            tenors.append(int(t[-t[::-1].find(" ") : -1]) / 12)
+            tenors.append(int(t[:-1]) / 12)
         elif t[-1] == "Y":
-            tenors.append(int(t[-t[::-1].find(" ") : -1]))
+            tenors.append(int(t[:-1]))
 
-    ax.plot(tenors, df["last"], "-o")
+    ax.plot(tenors, df["Current"], "-o")
     ax.set_xlabel("Maturity")
     ax.set_ylabel("Rate (%)")
     theme.style_primary_axis(ax)
@@ -102,6 +102,7 @@ def display_yieldcurve(
             headers=list(df.columns),
             show_index=False,
             title=f"{country.title()} Yield Curve",
+            floatfmt=".3f",
         )
         console.print("")
 

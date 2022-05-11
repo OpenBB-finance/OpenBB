@@ -145,6 +145,7 @@ class EconomyController(BaseController):
         "country": "Country (U.S. listed stocks only)",
         "capitalization": "Capitalization",
     }
+    ycrv_sources = ["FRED", "investpy"]
     PATH = "/economy/"
     FILE_PATH = os.path.join(os.path.dirname(__file__), "README.md")
 
@@ -993,9 +994,10 @@ Performance & Valuations
             "--source",
             action="store",
             dest="source",
+            choices=self.ycrv_sources,
             type=str,
             default="investpy",
-            help="Source for the data. If not supplied, the most recent entry from Investpy will be used.",
+            help="Source for the data. If not supplied, the most recent entry from investpy will be used.",
         )
         parser.add_argument(
             "-c",
@@ -1028,7 +1030,7 @@ Performance & Valuations
 
             if ns_parser.source == "FRED":
                 fred_view.display_yield_curve(ns_parser.date)
-            else:
+            elif ns_parser.source == "investpy":
                 investingcom_view.display_yieldcurve(
                     country=ns_parser.country,
                     raw=ns_parser.raw,

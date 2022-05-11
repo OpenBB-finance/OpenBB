@@ -37,5 +37,17 @@ def get_yieldcurve(country) -> pd.DataFrame:
     """
 
     data = investpy.bonds.get_bonds_overview(country)
-
+    data.drop(columns=data.columns[0], axis=1, inplace=True)
+    data.rename(
+        columns={
+            "name": "Tenor",
+            "last": "Current",
+            "last_close": "Previous",
+            "high": "High",
+            "low": "Low",
+            "change": "Change",
+            "change_percentage": "% Change",
+        },
+        inplace=True,
+    )
     return data
