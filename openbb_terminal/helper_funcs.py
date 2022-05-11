@@ -1522,7 +1522,7 @@ def is_valid_axes_count(
         return False
     return True
 
-  
+
 def support_message(s: str) -> str:
     """Argparse type to check string is in valid format
     for the support command
