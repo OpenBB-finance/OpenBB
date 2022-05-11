@@ -469,15 +469,15 @@ main:
               - name: "Trading Hours"
                 ref: "/tradinghours"
                 sub:
-                  - name: Symbol
+                  - name: symbol
                     ref: "/terminal/stocks/tradinghours/symbol"
-                  - name: Open
+                  - name: open
                     ref: "/terminal/stocks/tradinghours/open"
-                  - name: Closed
+                  - name: closed
                     ref: "/terminal/stocks/tradinghours/closed"
-                  - name: All
+                  - name: all
                     ref: "/terminal/stocks/tradinghours/all"
-                  - name: Exchange
+                  - name: exchange
                     ref: "/terminal/stocks/tradinghours/exchange"
           - name: technical analysis
             ref: "/terminal/common/technical_analysis"
