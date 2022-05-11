@@ -17,6 +17,7 @@ Company:
     codes       FIGI, SIK and SIC codes codes [Polygon.io]
 
 
+>   th          trading hours, 			 check open markets
 >   options     options menu,  			 e.g.: chains, open interest, greeks, parity
 >   disc        discover trending stocks, 	 e.g.: map, sectors, high short interest
 >   sia         sector and industry analysis, 	 e.g.: companies per sector, quick ratio per industry and country
