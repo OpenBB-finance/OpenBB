@@ -58,7 +58,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         "bitquery",
         "si",
         "cb",
-        "wa",
+        "walert",
         "glassnode",
         "coinglass",
         "cpanic",
@@ -541,7 +541,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
 
     def check_walert_key(self, show_output: bool = False) -> None:
         """Check Walert key"""
-        self.cfg_dict["WHALE_ALERT"] = "wa"
+        self.cfg_dict["WHALE_ALERT"] = "walert"
         if cfg.API_WHALE_ALERT_KEY == "REPLACE_ME":
             logger.info("Walert key not defined")
             self.key_dict["WHALE_ALERT"] = "not defined"
@@ -1081,6 +1081,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="client_id",
             help="Client ID",
+            required="-h" not in other_args,
         )
         parser.add_argument(
             "-s",
@@ -1088,6 +1089,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="client_secret",
             help="Client Secret",
+            required="-h" not in other_args,
         )
         parser.add_argument(
             "-u",
@@ -1095,6 +1097,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="username",
             help="Username",
+            required="-h" not in other_args,
         )
         parser.add_argument(
             "-p",
@@ -1102,6 +1105,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="password",
             help="Password",
+            required="-h" not in other_args,
         )
         parser.add_argument(
             "-a",
@@ -1109,6 +1113,8 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="user_agent",
             help="User agent",
+            required="-h" not in other_args,
+            nargs="+",
         )
         if not other_args:
             console.print("For your API Key, visit: https://www.reddit.com\n")
@@ -1141,11 +1147,14 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             )
             cfg.API_REDDIT_USERNAME = ns_parser.username
 
-            os.environ["OPENBB_API_REDDIT_USER_AGENT"] = ns_parser.user_agent
-            dotenv.set_key(
-                self.env_file, "OPENBB_API_REDDIT_USER_AGENT", ns_parser.user_agent
-            )
-            cfg.API_REDDIT_USER_AGENT = ns_parser.user_agent
+            slash_components = "".join([f"/{val}" for val in self.queue])
+            useragent = " ".join(ns_parser.user_agent) + " " + slash_components
+            useragent = useragent.replace('"', "")
+            self.queue = []
+
+            os.environ["OPENBB_API_REDDIT_USER_AGENT"] = useragent
+            dotenv.set_key(self.env_file, "OPENBB_API_REDDIT_USER_AGENT", useragent)
+            cfg.API_REDDIT_USER_AGENT = useragent
 
             self.check_reddit_key(show_output=True)
 
@@ -1164,6 +1173,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="key",
             help="Key",
+            required="-h" not in other_args,
         )
         parser.add_argument(
             "-s",
@@ -1171,6 +1181,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="secret_key",
             help="Secret key",
+            required="-h" not in other_args,
         )
         parser.add_argument(
             "-t",
@@ -1178,6 +1189,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="bearer_token",
             help="Bearer token",
+            required="-h" not in other_args,
         )
         if not other_args:
             console.print("For your API Key, visit: https://developer.twitter.com\n")
