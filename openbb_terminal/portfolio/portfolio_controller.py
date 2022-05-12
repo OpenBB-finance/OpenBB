@@ -28,7 +28,7 @@ from openbb_terminal.portfolio.portfolio_optimization import po_controller
 from openbb_terminal.rich_config import console
 from openbb_terminal.common.quantitative_analysis import qa_view
 
-# pylint: disable=R1710,E1101,C0415,W0212
+# pylint: disable=R1710,E1101,C0415,W0212,too-many-function-args
 
 logger = logging.getLogger(__name__)
 
@@ -61,7 +61,7 @@ class PortfolioController(BaseController):
         "pa",
     ]
     distributions = ["laplace", "student_t", "logistic", "normal"]
-    aggregation_methods = ["assets", "sectors"]
+    aggregation_methods = ["assets", "sectors", "countries", "regions"]
     PATH = "/portfolio/"
 
     def __init__(self, queue: List[str] = None):
@@ -106,7 +106,7 @@ class PortfolioController(BaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
-            choices["load"] = {c: None for c in self.portlist}
+            choices["load"] = {c: None for c in self.DATA_HOLDINGS_FILES}
             choices["bench"] = {c: None for c in portfolio_helper.BENCHMARK_LIST}
             choices["alloc"] = {c: None for c in self.aggregation_methods}
             self.choices = choices
@@ -362,15 +362,37 @@ class PortfolioController(BaseController):
 
         if ns_parser and ns_parser.agg:
             if self.portfolio_name and self.benchmark_name:
-                self.portfolio.calculate_allocations()
+                self.portfolio.calculate_allocations(self.benchmark_ticker)
 
                 if ns_parser.agg == "assets":
                     portfolio_view.display_assets_allocation(
                         self.portfolio, ns_parser.limit, ns_parser.tables
                     )
                 elif ns_parser.agg == "sectors":
-                    portfolio_view.display_sectors_allocation(
-                        self.portfolio, ns_parser.limit, ns_parser.tables
+                    portfolio_view.display_category_allocation(
+                        ns_parser.agg,
+                        self.portfolio.portfolio_sectors_allocation,
+                        self.portfolio.benchmark_sectors_allocation,
+                        ns_parser.limit,
+                        ns_parser.tables,
+                    )
+                elif ns_parser.agg == "countries":
+                    portfolio_view.display_category_allocation(
+                        ns_parser.agg,
+                        self.portfolio.portfolio_country_allocation,
+                        self.portfolio.benchmark_country_allocation,
+                        self.portfolio,
+                        ns_parser.limit,
+                        ns_parser.tables,
+                    )
+                elif ns_parser.agg == "regions":
+                    portfolio_view.display_category_allocation(
+                        ns_parser.agg,
+                        self.portfolio.portfolio_regional_allocation,
+                        self.portfolio.benchmark_regional_allocation,
+                        self.portfolio,
+                        ns_parser.limit,
+                        ns_parser.tables,
                     )
                 else:
                     console.print(

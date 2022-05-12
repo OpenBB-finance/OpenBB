@@ -132,12 +132,14 @@ def display_assets_allocation(
 
 
 @log_start_end(log=logger)
-def display_sectors_allocation(
-    portfolio=portfolio_model.Portfolio,
+def display_category_allocation(
+    category: str,
+    portfolio_allocation,
+    benchmark_allocation,
     limit: int = 10,
     include_separate_tables: bool = False,
 ):
-    """Display portfolio asset allocation compared to the benchmark
+    """Display portfolio sector, country or region allocation compared to the benchmark
 
     Parameters
     ----------
@@ -148,15 +150,15 @@ def display_sectors_allocation(
     include_separate_tables: bool
         Whether to include separate asset allocation tables
     """
-    benchmark_allocation = portfolio.benchmark_sectors_allocation.iloc[:limit]
-    portfolio_allocation = portfolio.portfolio_sectors_allocation.iloc[:limit]
+    benchmark_allocation = portfolio_allocation.iloc[:limit]
+    portfolio_allocation = benchmark_allocation.iloc[:limit]
 
     combined = pd.DataFrame()
 
-    for sector, allocation in portfolio_allocation.items():
-        if sector in benchmark_allocation.index:
+    for category_name, allocation in portfolio_allocation.items():
+        if category_name in benchmark_allocation.index:
             benchmark_allocation_value = float(
-                benchmark_allocation[benchmark_allocation.index == sector]
+                benchmark_allocation[benchmark_allocation.index == category_name]
             )
         else:
             benchmark_allocation_value = 0.0
@@ -164,7 +166,7 @@ def display_sectors_allocation(
         combined = combined.append(
             [
                 [
-                    sector,
+                    category_name,
                     allocation,
                     benchmark_allocation_value,
                     allocation - benchmark_allocation_value,
@@ -172,7 +174,7 @@ def display_sectors_allocation(
             ]
         )
 
-    combined.columns = ["Sector", "Portfolio", "Benchmark", "Difference"]
+    combined.columns = [category.upper(), "Portfolio", "Benchmark", "Difference"]
 
     if len(combined) < limit:
         console.print(
@@ -183,7 +185,8 @@ def display_sectors_allocation(
     print_rich_table(
         combined,
         headers=list(combined.columns),
-        title=f"Portfolio vs. Benchmark - Top {len(combined) if len(combined) < limit else limit} Sector Allocation",
+        title=f"Portfolio vs. Benchmark - Top {len(combined) if len(combined) < limit else limit} "
+        f"{category.upper()} Allocation",
         floatfmt=[".2f", ".2%", ".2%", ".2%"],
         show_index=False,
     )
@@ -195,7 +198,7 @@ def display_sectors_allocation(
             pd.DataFrame(portfolio_allocation),
             headers=list(["Allocation"]),
             title=f"Portfolio - Top {len(portfolio_allocation) if len(portfolio_allocation) < limit else limit} "
-            f"Sector Allocation",
+            f"{category.upper()} Allocation",
             floatfmt=[".2%"],
             show_index=True,
         )
@@ -206,7 +209,7 @@ def display_sectors_allocation(
             pd.DataFrame(benchmark_allocation),
             headers=list(["Allocation"]),
             title=f"Benchmark - Top {len(benchmark_allocation) if len(benchmark_allocation) < limit else limit} "
-            f"Sector Allocation",
+            f"{category.upper()} Allocation",
             floatfmt=[".2%"],
             show_index=True,
         )

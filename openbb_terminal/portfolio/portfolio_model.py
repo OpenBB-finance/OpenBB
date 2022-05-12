@@ -12,9 +12,7 @@ from pycoingecko import CoinGeckoAPI
 from statsmodels.regression.rolling import RollingOLS
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.portfolio import (
-    portfolio_helper,
-)
+from openbb_terminal.portfolio import portfolio_helper, allocation_model
 from openbb_terminal.rich_config import console
 
 # pylint: disable=E1136,W0201,R0902
@@ -570,48 +568,37 @@ class Portfolio:
 
     # pylint:disable=no-member
     @log_start_end(log=logger)
-    def calculate_allocations(self):
-        """Determine allocations based on assets and sectors."""
-        self.benchmark_assets_allocation = pd.DataFrame(self.benchmark_info["holdings"])
-        self.portfolio_assets_allocation = (
-            (
-                self.trade_value[self.trade_value["Type"] != "CASH"]
-                .groupby(by="Name")
-                .agg({"Portfolio Value": "sum"})
-                .div(self.trade_value["Portfolio Value"].sum())
-            )
-            .squeeze()
-            .sort_values(ascending=False)
+    def calculate_allocations(self, benchmark_ticker: str):
+        """Determine allocations based on assets, sectors, countries and regional."""
+        # Determine asset allocation
+        (
+            self.benchmark_assets_allocation,
+            self.portfolio_assets_allocation,
+        ) = allocation_model.obtain_assets_allocation(
+            self.benchmark_info, self.trade_value
         )
 
-        self.benchmark_sectors_allocation = (
-            pd.DataFrame.from_dict(
-                data={
-                    sector_name: allocation
-                    for sector in self.benchmark_info["sectorWeightings"]
-                    for sector_name, allocation in sector.items()
-                },
-                orient="index",
-            )
-            .squeeze()
-            .sort_values(ascending=False)
+        # Determine sector allocation
+        (
+            self.benchmark_sectors_allocation,
+            self.portfolio_sectors_allocation,
+        ) = allocation_model.obtain_sector_allocation(
+            self.benchmark_info, self.trade_value
         )
 
-        # Prettify allocations of benchmark to align with Portfolio Excel
-        prettified = []
-        for sector in self.benchmark_sectors_allocation.index:
-            prettified.append(sector.replace("_", " ").title())
-        self.benchmark_sectors_allocation.index = prettified
+        # Determine regional and country allocations
+        (
+            self.benchmark_regional_allocation,
+            self.benchmark_country_allocation,
+        ) = allocation_model.obtain_benchmark_regional_and_country_allocation(
+            benchmark_ticker
+        )
 
-        self.portfolio_sectors_allocation = (
-            (
-                self.trade_value[self.trade_value["Type"] != "CASH"]
-                .groupby(by="Sector")
-                .agg({"Portfolio Value": "sum"})
-            )
-            .div(self.trade_value["Portfolio Value"].sum())
-            .squeeze()
-            .sort_values(ascending=False)
+        (
+            self.portfolio_regional_allocation,
+            self.portfolio_country_allocation,
+        ) = allocation_model.obtain_portfolio_regional_and_country_allocation(
+            benchmark_ticker
         )
 
     # pylint:disable=no-member
