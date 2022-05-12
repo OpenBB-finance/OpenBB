@@ -83,7 +83,7 @@ class DiscoveryController(BaseController):
                 c: {} for c in dappradar_model.DAPPS_COLUMNS
             }
 
-            choices = {**choices, **self.SUPPORT_CHOICES}
+            choices["support"] = self.SUPPORT_CHOICES
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 

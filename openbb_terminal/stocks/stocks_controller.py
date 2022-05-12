@@ -64,6 +64,7 @@ class StocksController(StockBaseController):
         "dd",
         "ca",
         "options",
+        "th",
     ]
 
     PATH = "/stocks/"
@@ -94,7 +95,7 @@ class StocksController(StockBaseController):
                 c: None for c in stocks_helper.market_coverage_suffix
             }
 
-            choices = {**choices, **self.SUPPORT_CHOICES}
+            choices["support"] = self.SUPPORT_CHOICES
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -121,6 +122,7 @@ Stock: [/param]{stock_text}
     codes       FIGI, SIK and SIC codes codes[/cmds] [src][Polygon.io][/src]
 
 [menu]
+>   th          trading hours, \t\t\t check open markets
 >   options     options menu,  \t\t\t e.g.: chains, open interest, greeks, parity
 >   disc        discover trending stocks, \t e.g.: map, sectors, high short interest
 >   sia         sector and industry analysis, \t e.g.: companies per sector, quick ratio per industry and country
@@ -513,6 +515,15 @@ Stock: [/param]{stock_text}
         )
 
         self.queue = self.load_class(OptionsController, self.ticker, self.queue)
+
+    @log_start_end(log=logger)
+    def call_th(self, _):
+        """Process th command"""
+        from openbb_terminal.stocks.tradinghours.tradinghours_controller import (
+            TradingHoursController,
+        )
+
+        self.queue = self.load_class(TradingHoursController, self.queue)
 
     @log_start_end(log=logger)
     def call_res(self, _):

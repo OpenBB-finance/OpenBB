@@ -129,7 +129,7 @@ def display_messari_timeseries(
         External axes (1 axis is expected in the list), by default None
     """
 
-    df, title, _ = get_messari_timeseries(
+    df, title = get_messari_timeseries(
         coin=coin, timeseries_id=timeseries_id, start=start, end=end, interval=interval
     )
 
@@ -148,7 +148,7 @@ def display_messari_timeseries(
             ticker.FuncFormatter(lambda x, _: lambda_long_number_format(x))
         )
 
-        ax.plot(df.index, df["values"])
+        ax.plot(df.index, df[df.columns[0]])
 
         ax.set_title(f"{coin}'s {title}")
         ax.set_ylabel(title)
