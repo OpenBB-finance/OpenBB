@@ -66,7 +66,8 @@ class TerminalController(BaseController):
         "portfolio",
         "forex",
         "etf",
-        "jupyter",
+        "reports",
+        "dashboards",
         "funds",
         "alternative",
         "econometrics",
@@ -145,8 +146,10 @@ class TerminalController(BaseController):
 >   funds
 >   alternative
 >   econometrics
+
 >   portfolio
->   jupyter[/menu]
+>   dashboards
+>   reports[/menu]
     """,
             menu="Home",
         )
@@ -209,12 +212,28 @@ class TerminalController(BaseController):
 
         self.queue = self.load_class(ForexController, self.queue)
 
-    def call_jupyter(self, _):
-        """Process jupyter command"""
+    def call_reports(self, _):
+        """Process reports command"""
         if not obbff.PACKAGED_APPLICATION:
-            from openbb_terminal.jupyter.jupyter_controller import JupyterController
+            from openbb_terminal.reports.reports_controller import (
+                ReportController,
+            )
 
-            self.queue = self.load_class(JupyterController, self.queue)
+            self.queue = self.load_class(ReportController, self.queue)
+        else:
+            console.print("This feature is coming soon.")
+            console.print(
+                "Use the source code and an Anaconda environment if you are familiar with Python."
+            )
+
+    def call_dashboards(self, _):
+        """Process dashboards command"""
+        if not obbff.PACKAGED_APPLICATION:
+            from openbb_terminal.dashboards.dashboards_controller import (
+                DashboardsController,
+            )
+
+            self.queue = self.load_class(DashboardsController, self.queue)
         else:
             console.print("This feature is coming soon.")
             console.print(
