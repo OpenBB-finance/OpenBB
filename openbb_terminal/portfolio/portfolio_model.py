@@ -507,6 +507,8 @@ class Portfolio:
 
         self.benchmark_info = yf.Ticker(benchmark).info
 
+        self.benchmark_ticker = benchmark
+
     def mimic_portfolio_trades_for_benchmark(self, full_shares: bool = False):
         """Mimic trades from the orderbook as good as possible based on chosen benchmark. The assumption is that the
         benchmark is always tradable and allows for partial shares. This eliminates the need to keep track of a cash
@@ -568,7 +570,7 @@ class Portfolio:
 
     # pylint:disable=no-member
     @log_start_end(log=logger)
-    def calculate_allocations(self, benchmark_ticker: str):
+    def calculate_allocations(self):
         """Determine allocations based on assets, sectors, countries and regional."""
         # Determine asset allocation
         (
@@ -591,14 +593,14 @@ class Portfolio:
             self.benchmark_regional_allocation,
             self.benchmark_country_allocation,
         ) = allocation_model.obtain_benchmark_regional_and_country_allocation(
-            benchmark_ticker
+            self.benchmark_ticker
         )
 
         (
             self.portfolio_regional_allocation,
             self.portfolio_country_allocation,
         ) = allocation_model.obtain_portfolio_regional_and_country_allocation(
-            benchmark_ticker
+            self.trade_value
         )
 
     # pylint:disable=no-member

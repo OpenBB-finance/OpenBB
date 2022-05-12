@@ -67,7 +67,6 @@ class PortfolioController(BaseController):
     def __init__(self, queue: List[str] = None):
         """Constructor"""
         super().__init__(queue)
-        self.benchmark_ticker = ""
         self.file_types = ["xlsx", "csv"]
 
         self.DEFAULT_HOLDINGS_PATH = os.path.abspath(
@@ -309,10 +308,9 @@ class PortfolioController(BaseController):
 
             self.portfolio.add_benchmark(benchmark_ticker)
             self.benchmark_name = self.portfolio.benchmark_info["longName"]
-            self.benchmark_ticker = benchmark_ticker
 
             console.print(
-                f"[bold]\nBenchmark:[/bold] {self.benchmark_name} ({self.benchmark_ticker})"
+                f"[bold]\nBenchmark:[/bold] {self.benchmark_name} ({benchmark_ticker})"
             )
 
             console.print()
@@ -341,6 +339,7 @@ class PortfolioController(BaseController):
             "-l",
             "--limit",
             default=10,
+            type=int,
             dest="limit",
             help="The amount of assets or sectors you wish to see",
         )
@@ -362,11 +361,14 @@ class PortfolioController(BaseController):
 
         if ns_parser and ns_parser.agg:
             if self.portfolio_name and self.benchmark_name:
-                self.portfolio.calculate_allocations(self.benchmark_ticker)
+                self.portfolio.calculate_allocations(self.portfolio.benchmark_ticker)
 
                 if ns_parser.agg == "assets":
                     portfolio_view.display_assets_allocation(
-                        self.portfolio, ns_parser.limit, ns_parser.tables
+                        self.portfolio.portfolio_assets_allocation,
+                        self.portfolio.benchmark_assets_allocation,
+                        ns_parser.limit,
+                        ns_parser.tables,
                     )
                 elif ns_parser.agg == "sectors":
                     portfolio_view.display_category_allocation(
@@ -381,7 +383,6 @@ class PortfolioController(BaseController):
                         ns_parser.agg,
                         self.portfolio.portfolio_country_allocation,
                         self.portfolio.benchmark_country_allocation,
-                        self.portfolio,
                         ns_parser.limit,
                         ns_parser.tables,
                     )
@@ -390,7 +391,6 @@ class PortfolioController(BaseController):
                         ns_parser.agg,
                         self.portfolio.portfolio_regional_allocation,
                         self.portfolio.benchmark_regional_allocation,
-                        self.portfolio,
                         ns_parser.limit,
                         ns_parser.tables,
                     )

@@ -154,16 +154,22 @@ def obtain_benchmark_regional_and_country_allocation(
             row[1]: float(row[2].strip("%")) / 100
             for _, row in df_list[regional_list].dropna(axis="columns").iterrows()
         }
+        benchmark_regional_allocation = pd.DataFrame.from_dict(
+            benchmark_regional_allocation, orient="index"
+        ).squeeze()
     else:
-        benchmark_regional_allocation = {}
+        benchmark_regional_allocation = pd.DataFrame()
 
     if country_list:
         benchmark_country_allocation = {
             row[1]: float(row[2].strip("%")) / 100
             for _, row in df_list[country_list].dropna(axis="columns").iterrows()
         }
+        benchmark_country_allocation = pd.DataFrame.from_dict(
+            benchmark_country_allocation, orient="index"
+        ).squeeze()
     else:
-        benchmark_country_allocation = {}
+        benchmark_country_allocation = pd.DataFrame()
 
     return benchmark_regional_allocation, benchmark_country_allocation
 

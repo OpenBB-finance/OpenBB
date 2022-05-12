@@ -55,7 +55,8 @@ In order to load a CSV do the following:
 
 @log_start_end(log=logger)
 def display_assets_allocation(
-    portfolio=portfolio_model.Portfolio,
+    portfolio_allocation,
+    benchmark_allocation,
     limit: int = 10,
     include_separate_tables: bool = False,
 ):
@@ -70,8 +71,8 @@ def display_assets_allocation(
     include_separate_tables: bool
         Whether to include separate asset allocation tables
     """
-    benchmark_allocation = portfolio.benchmark_assets_allocation.iloc[:limit]
-    portfolio_allocation = portfolio.portfolio_assets_allocation.iloc[:limit]
+    benchmark_allocation = benchmark_allocation.iloc[:limit]
+    portfolio_allocation = portfolio_allocation.iloc[:limit]
 
     combined = pd.DataFrame()
 
@@ -83,7 +84,7 @@ def display_assets_allocation(
                 ]
             )
         else:
-            benchmark_allocation_value = 0
+            benchmark_allocation_value = 0.0
 
         combined = combined.append(
             [
@@ -150,8 +151,8 @@ def display_category_allocation(
     include_separate_tables: bool
         Whether to include separate asset allocation tables
     """
-    benchmark_allocation = portfolio_allocation.iloc[:limit]
-    portfolio_allocation = benchmark_allocation.iloc[:limit]
+    benchmark_allocation = benchmark_allocation.iloc[:limit]
+    portfolio_allocation = portfolio_allocation.iloc[:limit]
 
     combined = pd.DataFrame()
 
@@ -174,19 +175,19 @@ def display_category_allocation(
             ]
         )
 
-    combined.columns = [category.upper(), "Portfolio", "Benchmark", "Difference"]
+    combined.columns = [category.capitalize(), "Portfolio", "Benchmark", "Difference"]
 
     if len(combined) < limit:
         console.print(
             f"Less than the limit {limit} are shown because the portfolio only has "
-            f"{len(combined)} sectors.\n"
+            f"{len(combined)} {category}.\n"
         )
 
     print_rich_table(
         combined,
         headers=list(combined.columns),
         title=f"Portfolio vs. Benchmark - Top {len(combined) if len(combined) < limit else limit} "
-        f"{category.upper()} Allocation",
+        f"{category.capitalize()} Allocation",
         floatfmt=[".2f", ".2%", ".2%", ".2%"],
         show_index=False,
     )
@@ -198,7 +199,7 @@ def display_category_allocation(
             pd.DataFrame(portfolio_allocation),
             headers=list(["Allocation"]),
             title=f"Portfolio - Top {len(portfolio_allocation) if len(portfolio_allocation) < limit else limit} "
-            f"{category.upper()} Allocation",
+            f"{category.capitalize()} Allocation",
             floatfmt=[".2%"],
             show_index=True,
         )
@@ -209,7 +210,7 @@ def display_category_allocation(
             pd.DataFrame(benchmark_allocation),
             headers=list(["Allocation"]),
             title=f"Benchmark - Top {len(benchmark_allocation) if len(benchmark_allocation) < limit else limit} "
-            f"{category.upper()} Allocation",
+            f"{category.capitalize()} Allocation",
             floatfmt=[".2%"],
             show_index=True,
         )
