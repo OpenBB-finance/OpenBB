@@ -326,17 +326,18 @@ def display_performance_vs_benchmark(
 
 @log_start_end(log=logger)
 def display_returns_vs_bench(
-    portfolio: portfolio_model.Portfolio,
+    portfolio_returns,
+    benchmark_returns,
     external_axes: Optional[plt.Axes] = None,
 ):
     """Display portfolio returns vs benchmark
 
     Parameters
     ----------
-    portfolio: Portfolio
-        Custom portfolio object with trade list
-    benchmark: str
-        Symbol for benchmark.  Defaults to SPY
+    portfolio_returns
+        Returns of the portfolio
+    benchmark_returns
+        Returns of the benchmark
     external_axes: plt.Axes
         Optional axes to display plot on
     """
@@ -345,8 +346,8 @@ def display_returns_vs_bench(
     else:
         ax = external_axes
 
-    cumulative_returns = (1 + portfolio.returns).cumprod()
-    benchmark_c_returns = (1 + portfolio.benchmark_returns).cumprod()
+    cumulative_returns = (1 + portfolio_returns).cumprod()
+    benchmark_c_returns = (1 + benchmark_returns).cumprod()
 
     ax.plot(cumulative_returns.index, cumulative_returns, label="Portfolio")
     ax.plot(benchmark_c_returns.index, benchmark_c_returns, label="Benchmark")

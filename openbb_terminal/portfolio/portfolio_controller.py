@@ -361,7 +361,8 @@ class PortfolioController(BaseController):
 
         if ns_parser and ns_parser.agg:
             if self.portfolio_name and self.benchmark_name:
-                self.portfolio.calculate_allocations()
+                if self.portfolio.portfolio_assets_allocation.empty:
+                    self.portfolio.calculate_allocations()
 
                 if ns_parser.agg == "assets":
                     portfolio_view.display_assets_allocation(
@@ -778,19 +779,13 @@ class PortfolioController(BaseController):
             prog="rmr",
             description="Graph of portfolio returns versus market returns",
         )
-        parser.add_argument(
-            "-m",
-            "--market",
-            type=str,
-            dest="market",
-            default="SPY",
-            help="Choose a ticker to be the market asset",
-        )
+
         ns_parser = parse_known_args_and_warn(parser, other_args)
+
         if ns_parser:
             if self.portfolio_name and self.benchmark_name:
                 portfolio_view.display_returns_vs_bench(
-                    self.portfolio, ns_parser.market
+                    self.portfolio.returns, self.portfolio.benchmark_returns
                 )
             else:
                 console.print(
