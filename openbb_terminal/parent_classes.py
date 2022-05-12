@@ -119,19 +119,15 @@ class BaseController(metaclass=ABCMeta):
 
         support_choices: dict = {c: {} for c in self.controller_choices}
 
-        support_choices["support"] = {
+        support_choices = {c: None for c in (["generic"] + self.support_commands)}
+
+        support_choices["--command"] = {
             c: None for c in (["generic"] + self.support_commands)
         }
 
-        support_choices["support"]["--command"] = {
-            c: None for c in (["generic"] + self.support_commands)
-        }
+        support_choices["-c"] = {c: None for c in (["generic"] + self.support_commands)}
 
-        support_choices["support"]["-c"] = {
-            c: None for c in (["generic"] + self.support_commands)
-        }
-
-        support_choices["support"]["--type"] = {c: None for c in (SUPPORT_TYPE)}
+        support_choices["--type"] = {c: None for c in (SUPPORT_TYPE)}
 
         self.SUPPORT_CHOICES = support_choices
 
