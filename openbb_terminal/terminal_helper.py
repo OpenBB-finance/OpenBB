@@ -162,8 +162,7 @@ def bootup():
 
 def welcome_message():
     # Print first welcome message and help
-    version = f" v{obbff.VERSION}" if obbff.VERSION != "REPLACE_ME" else ""
-    console.print(f"\nWelcome to OpenBB Terminal{version}")
+    console.print(f"\nWelcome to OpenBB Terminal v{obbff.VERSION}")
 
     # The commit has was commented out because the terminal was crashing due to git import for multiple users
     # ({str(git.Repo('.').head.commit)[:7]})
