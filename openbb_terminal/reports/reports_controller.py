@@ -79,7 +79,7 @@ class ReportController(BaseController):
             + f"{args if args != '<>' else ''}\n"
         )
     CHOICES_MENUS = report_names + ids_reports
-    PATH = "/jupyter/reports/"
+    PATH = "/reports/"
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
@@ -97,7 +97,7 @@ class ReportController(BaseController):
         help_text = f"""[info]
 Select one of the following reports:[/info][cmds]
 {self.reports_opts}[/cmds]"""
-        console.print(text=help_text, menu="Jupyter - Reports")
+        console.print(text=help_text, menu="Reports - WORK IN PROGRESS")
 
     @log_start_end(log=logger)
     def switch(self, an_input: str):
@@ -182,7 +182,7 @@ Select one of the following reports:[/info][cmds]
                 console.print("")
 
             notebook_template = os.path.join(
-                "openbb_terminal", "jupyter", "reports", report_to_run
+                "openbb_terminal", "reports", report_to_run
             )
             args_to_output = f"_{'_'.join(other_args)}" if "_".join(other_args) else ""
             report_output_name = (
@@ -192,7 +192,6 @@ Select one of the following reports:[/info][cmds]
             )
             notebook_output = os.path.join(
                 "openbb_terminal",
-                "jupyter",
                 "reports",
                 "stored",
                 report_output_name,
@@ -215,6 +214,7 @@ Select one of the following reports:[/info][cmds]
                 report_output_path = os.path.join(
                     os.path.abspath(os.path.join(".")), notebook_output + ".html"
                 )
+                print(report_output_path)
                 webbrowser.open(f"file://{report_output_path}")
 
             console.print("")

@@ -10,6 +10,6 @@ from .etf import etf_api as etf
 from .forex import forex_api as forex
 from .mutual_funds import mutual_fund_api as funds
 from .portfolio import portfolio_api as portfolio
-from .jupyter import widget_helpers as widgets
+from .reports import widget_helpers as widgets
 
 from .config_terminal import theme
