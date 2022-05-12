@@ -55,12 +55,15 @@ class ConsoleAndPanel:
         if kwargs and "text" in list(kwargs) and "menu" in list(kwargs):
             if not os.getenv("TEST_MODE"):
                 if obbff.ENABLE_RICH_PANEL:
+                    version = (
+                        f" v{obbff.VERSION}" if obbff.VERSION != "REPLACE_ME" else ""
+                    )
                     self.console.print(
                         panel.Panel(
                             kwargs["text"],
                             title=kwargs["menu"],
                             subtitle_align="right",
-                            subtitle="OpenBB Terminal (https://openbb.co)",
+                            subtitle=f"OpenBB Terminal{version} (https://openbb.co)",
                         )
                     )
                 else:
