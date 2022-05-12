@@ -370,6 +370,7 @@ class TerminalStyle:
             plt.tight_layout(pad=self.tight_layout_padding)
         if obbff.USE_ION:
             plt.ion()
+        plt.pause(0.5)
         plt.show()
         console.print()
 
