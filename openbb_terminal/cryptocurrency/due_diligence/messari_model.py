@@ -90,7 +90,7 @@ def get_marketcap_dominance(
         market dominance percentage over time
     """
 
-    df, _, _ = get_messari_timeseries(
+    df, _ = get_messari_timeseries(
         coin=coin, end=end, start=start, interval=interval, timeseries_id="mcap.dom"
     )
     return df
@@ -99,7 +99,7 @@ def get_marketcap_dominance(
 @log_start_end(log=logger)
 def get_messari_timeseries(
     coin: str, timeseries_id: str, interval: str, start: str, end: str
-) -> Tuple[pd.DataFrame, str, str]:
+) -> Tuple[pd.DataFrame, str]:
     """Returns messari timeseries
     [Source: https://messari.io/]
 
@@ -120,6 +120,8 @@ def get_messari_timeseries(
     -------
     pd.DataFrame
         messari timeserie over time
+    str
+        timeserie title
     """
 
     url = base_url + f"assets/{coin}/metrics/{timeseries_id}/time-series"
@@ -136,17 +138,11 @@ def get_messari_timeseries(
 
     df = pd.DataFrame()
     title = ""
-    y_axis = ""
 
     if r.status_code == 200:
         data = r.json()["data"]
         title = data["schema"]["name"]
-
-        df = pd.DataFrame(data["values"], columns=["timestamp", "values"])
-        schema_values = data["schema"]["values_schema"]
-        for key in schema_values.keys():
-            if key != "timestamp":
-                y_axis = schema_values[key]
+        df = pd.DataFrame(data["values"], columns=data["parameters"]["columns"])
 
         if df.empty:
             console.print(f"No data found for {coin}.\n")
@@ -160,8 +156,7 @@ def get_messari_timeseries(
             console.print("[red]Invalid API Key[/red]\n")
     else:
         console.print(r.text)
-
-    return df, title, y_axis
+    return df, title
 
 
 @log_start_end(log=logger)
@@ -296,7 +291,7 @@ def get_tokenomics(
         cg_df = get_coin_tokenomics(coingecko_symbol)
         df = pd.concat([df, cg_df], ignore_index=True, sort=False)
         df.fillna("-", inplace=True)
-        circ_df, _, _ = get_messari_timeseries(
+        circ_df, _ = get_messari_timeseries(
             coin=symbol,
             timeseries_id="sply.circ",
             interval="1d",

@@ -77,7 +77,7 @@ class ScreenerController(BaseController):
                 c: None for c in financedatabase_model.get_etfs_categories()
             }
 
-            choices = {**choices, **self.SUPPORT_CHOICES}
+            choices["support"] = self.SUPPORT_CHOICES
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
