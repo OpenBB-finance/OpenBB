@@ -33,7 +33,7 @@ class DashboardsController(BaseController):
         "shortdata",
         "crypto",
     ]
-    PATH = "/jupyter/dashboards/"
+    PATH = "/dashboards/"
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
@@ -56,7 +56,7 @@ class DashboardsController(BaseController):
    shortdata     finra shortdata analysis
    crypto        cryptocurrency exchange rates against USD[/cmds]
         """
-        console.print(text=help_text, menu="Jupyter - Dashboards")
+        console.print(text=help_text, menu="Dashboards")
 
     @log_start_end(log=logger)
     def call_stocks(self, other_args: List[str]):
