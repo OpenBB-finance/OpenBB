@@ -6,10 +6,8 @@ from contextlib import contextmanager
 import hashlib
 import logging
 import os
-import random
 import subprocess  # nosec
 import sys
-from datetime import datetime
 from typing import List
 
 # IMPORTATION THIRDPARTY
@@ -33,31 +31,23 @@ logger = logging.getLogger(__name__)
 
 def print_goodbye():
     """Prints a goodbye message when quitting the terminal"""
-    goodbye_msg = [
-        "An informed ape, is a strong ape. ",
-        "Remember that stonks only go up. ",
-        "Diamond hands. ",
-        "Apes together strong. ",
-        "This is our way. ",
-        "Keep the spacesuit ape, we haven't reached the moon yet. ",
-        "I am not a cat. I'm an ape. ",
-        "We like the terminal. ",
-    ]
+    # LEGACY GOODBYE MESSAGES - You'll live in our hearts forever.
+    # "An informed ape, is a strong ape."
+    # "Remember that stonks only go up."
+    # "Diamond hands."
+    # "Apes together strong."
+    # "This is our way."
+    # "Keep the spacesuit ape, we haven't reached the moon yet."
+    # "I am not a cat. I'm an ape."
+    # "We like the terminal."
+    # "...when offered a flight to the moon, nobody asks about what seat."
 
-    goodbye_hr = datetime.now().hour
-    if goodbye_hr < 5:
-        goodbye_msg_time = "Go get some rest soldier!"
-    elif goodbye_hr < 11:
-        goodbye_msg_time = "Rise and shine baby!"
-    elif goodbye_hr < 17:
-        goodbye_msg_time = "Enjoy your day!"
-    elif goodbye_hr < 23:
-        goodbye_msg_time = "Tomorrow's another day!"
-    else:
-        goodbye_msg_time = "Go get some rest soldier!"
-
-    console.print(  # nosec
-        goodbye_msg[random.randint(0, len(goodbye_msg) - 1)] + goodbye_msg_time + "\n"
+    console.print(
+        "OpenBB Terminal is the result of a strong community building an "
+        "[param]investment research platform for everyone.[/param]\n\n"
+        "Join us on [cmds]https://discord.gg/Up2QGbMKHY[/cmds], "
+        "show your appreciation on [cmds]https://twitter.com/openbb_finance,[/cmds]\n"
+        "or even request a feature on [cmds]https://openbb.co/request-a-feature[/cmds]\n"
     )
 
     logger.info("END")
@@ -111,9 +101,11 @@ def about_us():
     console.print(
         "\n[green]Thanks for using OpenBB Terminal. This is our way![/green]\n"
         + "\n"
+        + "[cyan]Website: [/cyan]https://openbb.co\n"
+        + "[cyan]Documentation: [/cyan]https://openbb-finance.github.io/OpenBBTerminal/\n"
+        + "\n"
         + "[cyan]Join our community on discord: [/cyan]https://discord.gg/Up2QGbMKHY\n"
         + "[cyan]Follow our twitter for updates: [/cyan]https://twitter.com/openbb_finance\n"
-        + "[cyan]Access our landing page: [/cyan]https://openbb-finance.github.io/OpenBBTerminal/\n"
         + "\n"
         + "[yellow]Partnerships:[/yellow]\n"
         + "[cyan]FinBrain: [/cyan]https://finbrain.tech\n"
@@ -170,7 +162,7 @@ def bootup():
 
 def welcome_message():
     # Print first welcome message and help
-    console.print(f"\nWelcome to OpenBB Terminal v{obbff.VERSION}\n")
+    console.print(f"\nWelcome to OpenBB Terminal v{obbff.VERSION}")
 
     # The commit has was commented out because the terminal was crashing due to git import for multiple users
     # ({str(git.Repo('.').head.commit)[:7]})

@@ -99,7 +99,8 @@ class TerminalController(BaseController):
         console.print(  # nosec
             text=f"""
 [info]Get API keys from data providers to access more features.[/info]
-    For more instructions use: 'keys'
+    For more instructions use: 'keys'.
+    To see all features follow: https://openbb-finance.github.io/OpenBBTerminal/
 
 [info]Multiple jobs queue (where each '/' denotes a new command).[/info]
     E.g. '/stocks $ disc/ugs -n 3/../load tsla/candle'
