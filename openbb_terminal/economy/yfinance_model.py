@@ -259,6 +259,7 @@ INDICES = {
     "us-dx-y": {"name": "US Dollar Index", "ticker": "DX-Y.NYB"},
 }
 
+
 @log_start_end(log=logger)
 def get_index(
     index: str,
