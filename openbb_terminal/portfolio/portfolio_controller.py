@@ -361,7 +361,7 @@ class PortfolioController(BaseController):
 
         if ns_parser and ns_parser.agg:
             if self.portfolio_name and self.benchmark_name:
-                self.portfolio.calculate_allocations(self.portfolio.benchmark_ticker)
+                self.portfolio.calculate_allocations()
 
                 if ns_parser.agg == "assets":
                     portfolio_view.display_assets_allocation(
