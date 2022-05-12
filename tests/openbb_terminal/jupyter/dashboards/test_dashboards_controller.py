@@ -2,7 +2,7 @@ import os
 
 import pytest
 
-from openbb_terminal.jupyter.dashboards import dashboards_controller
+from openbb_terminal.dashboards import dashboards_controller
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -28,7 +28,7 @@ def test_menu_with_queue(expected, mocker, queue):
 
 @pytest.mark.vcr(record_mode="none")
 def test_menu_without_queue_completion(mocker):
-    path_controller = "openbb_terminal.jupyter.dashboards.dashboards_controller"
+    path_controller = "openbb_terminal.dashboards.dashboards_controller"
 
     # ENABLE AUTO-COMPLETION : HELPER_FUNCS.MENU
     mocker.patch(
