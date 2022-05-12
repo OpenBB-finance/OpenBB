@@ -74,17 +74,16 @@ class TerminalController(BaseController):
 
     PATH = "/"
 
-    all_timezones = pytz.all_timezones
+    all_timezones = [tz.replace("/", "-") for tz in pytz.all_timezones]
 
     def __init__(self, jobs_cmds: List[str] = None):
         """Constructor"""
         super().__init__(jobs_cmds)
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: None for c in self.controller_choices}
-            choices["tz"] = {c.replace("/", "-"): None for c in self.all_timezones}
-
-            choices = {**choices, **self.SUPPORT_CHOICES}
+            choices: dict = {c: {} for c in self.controller_choices}
+            choices["tz"] = {c: None for c in self.all_timezones}
+            choices["support"] = self.SUPPORT_CHOICES
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -247,7 +246,6 @@ class TerminalController(BaseController):
 
     def call_tz(self, other_args: List[str]):
         """Process tz command"""
-
         tz_parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -255,29 +253,21 @@ class TerminalController(BaseController):
                    Setting a different timezone
                """,
         )
-
         tz_parser.add_argument(
-            "-tz",
+            "-t",
             dest="timezone",
             help="Choose timezone",
             required="-h" not in other_args,
+            choices=self.all_timezones,
         )
 
-        if other_args and "-tz" not in other_args[0] and "-h" not in other_args[0]:
-            other_args.insert(0, "-tz")
+        if other_args and "-t" not in other_args[0]:
+            other_args.insert(0, "-t")
 
         tz_ns_parser = parse_known_args_and_warn(tz_parser, other_args)
         if tz_ns_parser:
             if tz_ns_parser.timezone:
                 replace_user_timezone(tz_ns_parser.timezone.replace("-", "/"))
-
-    def call_tradinghours(self, _):
-        """Process tradinghours command"""
-        from openbb_terminal.tradinghours.tradinghours_controller import (
-            TradingHoursController,
-        )
-
-        self.queue = self.load_class(TradingHoursController, self.queue)
 
     def call_export(self, other_args: List[str]):
         """Process export command"""
