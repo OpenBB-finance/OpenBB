@@ -60,7 +60,7 @@ class ConsoleAndPanel:
                             kwargs["text"],
                             title=kwargs["menu"],
                             subtitle_align="right",
-                            subtitle="OpenBB Terminal",
+                            subtitle="OpenBB Terminal (https://openbb.co)",
                         )
                     )
                 else:
