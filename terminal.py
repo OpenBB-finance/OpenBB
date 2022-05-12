@@ -146,7 +146,6 @@ class TerminalController(BaseController):
 >   funds
 >   alternative
 >   econometrics
-
 >   portfolio
 >   dashboards
 >   reports[/menu]
