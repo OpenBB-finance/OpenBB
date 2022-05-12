@@ -65,7 +65,7 @@ class ConsoleAndPanel:
         dr = r2 - r1
         dg = g2 - g1
         db = b2 - b1
-        size = len(text)+5
+        size = len(text) + 5
         for index in range(size):
             blend = index / size
             color = f"#{int(r1 + dr * blend):02X}{int(g1 + dg * blend):02X}{int(b1 + db * blend):02X}"
@@ -77,9 +77,10 @@ class ConsoleAndPanel:
             if not os.getenv("TEST_MODE"):
                 if obbff.ENABLE_RICH_PANEL:
                     version = self.blend_text(
-                            f"OpenBB Terminal v{obbff.VERSION}",
-                            Color.parse("#00AAFF").triplet,
-                            Color.parse("#E4003A").triplet)
+                        f"OpenBB Terminal v{obbff.VERSION}",
+                        Color.parse("#00AAFF").triplet,
+                        Color.parse("#E4003A").triplet,
+                    )
                     link = " (https://openbb.co)"
                     link_text = Text(link)
                     link_text.stylize("#FCED00", 0, len(link))
@@ -89,11 +90,10 @@ class ConsoleAndPanel:
                             kwargs["text"],
                             title=kwargs["menu"],
                             subtitle_align="right",
-                            subtitle=version
+                            subtitle=version,
                         )
                     )
 
-                    
                 else:
                     self.console.print(kwargs["text"])
             else:
