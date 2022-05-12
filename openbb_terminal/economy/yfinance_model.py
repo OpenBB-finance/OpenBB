@@ -52,14 +52,8 @@ INDICES = {
     "nl-aex": {"name": "Euronext Dutch 25 Index (EUR)", "ticker": "^AEX"},
     "nl-amx": {"name": "Euronext Dutch Mid Cap Index (EUR)", "ticker": "^AMX"},
     "at-atx": {"name": "Wiener Börse Austrian 20 Index (EUR)", "ticker": "^ATX"},
-    "at-bat20p": {
-        "name": "CME Austria 20 Price Return Index (EUR)",
-        "ticker": "^BAT20P",
-    },
-    "at-bat20n": {
-        "name": "CME Austria 20 Net Total Return Index (EUR)",
-        "ticker": "^BAT20N",
-    },
+    "at-bat20p": {"name": "CME Austria 20 Price Return Index (EUR)", "ticker": "^BAT20P"},
+    "at-bat20n": {"name": "CME Austria 20 Net Total Return Index (EUR)", "ticker": "^BAT20N"},
     "ch-stoxx": {"name": "Zurich STXE 600 PR Index (EUR)", "ticker": "^STOXX"},
     "ch-stoxx50e": {"name": "Zurich ESTX 50 PR Index (EUR)", "ticker": "^STOXX50E"},
     "ch-ssip": {"name": "Swiss All Shares Index (CHF)", "ticker": "SSIP.SW"},
