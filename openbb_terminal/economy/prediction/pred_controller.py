@@ -81,7 +81,7 @@ class PredictionTechniquesController(BaseController):
             choices["pick"] = {c: {} for c in self.options}
             choices["pick"]["-c"] = {c: {} for c in self.options}
 
-            choices = {**choices, **self.SUPPORT_CHOICES}
+            choices["support"] = self.SUPPORT_CHOICES
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 

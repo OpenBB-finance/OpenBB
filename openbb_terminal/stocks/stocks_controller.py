@@ -95,7 +95,7 @@ class StocksController(StockBaseController):
                 c: None for c in stocks_helper.market_coverage_suffix
             }
 
-            choices = {**choices, **self.SUPPORT_CHOICES}
+            choices["support"] = self.SUPPORT_CHOICES
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
