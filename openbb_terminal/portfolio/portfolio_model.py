@@ -277,7 +277,7 @@ class Portfolio:
             self.empty = False
 
             # Adjust date of trades
-            trades["Date"] = pd.to_datetime(trades["Date"]).dt.date
+            trades["Date"] = pd.DatetimeIndex(trades["Date"])
 
         self.trades = trades
         self.portfolio = pd.DataFrame()
