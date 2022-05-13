@@ -9,7 +9,7 @@ Portfolio:
 
 Loaded orderbook: None
 Benchmark: None
-Risk Free Rate: None
+Risk Free Rate: 0.00%
 
 Performance:
     alloc       show allocation on an asset or sector basis

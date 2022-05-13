@@ -259,7 +259,7 @@ class PortfolioController(BaseController):
             self.portfolio.add_rf(ns_parser.risk_free_rate)
 
             console.print(f"\n[bold]Portfolio:[/bold] {self.portfolio_name}")
-            console.print(f"[bold]Risk Free Rate:[/bold] {self.portfolio.rf:.2%}")
+            console.print(f"[bold]Risk Free Rate:[/bold] {self.portfolio.rf}")
 
             console.print()
 
