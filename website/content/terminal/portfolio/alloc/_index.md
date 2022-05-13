@@ -43,7 +43,6 @@ Portfolio vs. Benchmark - Top 10 Assets Allocation
 └────────┴───────────┴───────────┴────────────┘
 
 2022 May 12, 06:23 (🦋) /portfolio/ $ alloc sectors
-Less than the limit 10 are shown because the portfolio only has 4 sectors.
 
       Portfolio vs. Benchmark - Top 4 Sectors Allocation       
 ┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━┓
@@ -59,7 +58,6 @@ Less than the limit 10 are shown because the portfolio only has 4 sectors.
 └────────────────────────┴───────────┴───────────┴────────────┘
 
 2022 May 12, 06:23 (🦋) /portfolio/ $ alloc countries
-Less than the limit 10 are shown because the portfolio only has 5 countries.
 
  Portfolio vs. Benchmark - Top 5 Countries Allocation 
 ┏━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━┓
@@ -77,7 +75,6 @@ Less than the limit 10 are shown because the portfolio only has 5 countries.
 └───────────────┴───────────┴───────────┴────────────┘
 
 2022 May 12, 06:23 (🦋) /portfolio/ $ alloc regions
-Less than the limit 10 are shown because the portfolio only has 3 regions.
 
   Portfolio vs. Benchmark - Top 3 Regions Allocation  
 ┏━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━┓

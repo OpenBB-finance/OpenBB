@@ -27,7 +27,7 @@ pd.options.mode.chained_assignment = None
 def get_rolling_beta(
     df: pd.DataFrame, hist: pd.DataFrame, mark: pd.DataFrame, n: pd.DataFrame
 ) -> pd.DataFrame:
-    """Turns a holdings portfolio into a rolling beta dataframe
+    """Turns the holdings of a portfolio into a rolling beta dataframe
 
     Parameters
     ----------
@@ -43,7 +43,7 @@ def get_rolling_beta(
     Returns
     ----------
     final : pd.DataFrame
-        Dataframe with rolling beta
+        A Dataframe with rolling beta
     """
     df = df["Holding"]
     uniques = df.columns.tolist()
@@ -166,6 +166,7 @@ def calculate_drawdown(input_series: pd.Series, is_returns: bool = False) -> pd.
         Flag to indicate inputs are returns
 
     Returns
+    ----------
     pd.Series
         Drawdown series
     -------
@@ -208,15 +209,24 @@ class Portfolio:
     """
 
     @log_start_end(log=logger)
-    def __init__(self, trades: pd.DataFrame = pd.DataFrame(), rf=None):
+    def __init__(self, trades: pd.DataFrame = pd.DataFrame(), rf=0.0):
         """Initialize Portfolio class"""
         # Allow for empty initialization
+        self.benchmark_ticker: str = ""
+        self.benchmark_info = None
+        self.benchmark: pd.DataFrame = pd.DataFrame()
+        self._historical_crypto: pd.DataFrame = pd.DataFrame()
+        self._historical_prices: pd.DataFrame = pd.DataFrame()
+        self.returns = None
+        self.portfolio_value = None
+        self.ItemizedHoldings = None
+        self.benchmark_returns = None
         self.portfolio_sectors_allocation = pd.DataFrame()
         self.portfolio_assets_allocation = pd.DataFrame()
         self.benchmark_sectors_allocation = pd.DataFrame()
         self.benchmark_assets_allocation = pd.DataFrame()
         self.benchmark_trades = pd.DataFrame()
-        self.trade_value = pd.DataFrame()
+        self.portfolio_trades = pd.DataFrame()
         self.last_price = pd.DataFrame()
         self.empty = True
         self.rf = rf
@@ -411,8 +421,8 @@ class Portfolio:
 
         # Determine invested amount, relative and absolute return based on last close
         self.last_price = portfolio["Close"].iloc[-1]
-        self.trade_value = self.trades.copy()
-        self.trade_value[
+        self.portfolio_trades = self.trades.copy()
+        self.portfolio_trades[
             [
                 "Portfolio Investment",
                 "Close",
@@ -424,18 +434,20 @@ class Portfolio:
 
         for index, trade in self.trades.iterrows():
             if trade["Type"] != "CASH":
-                self.trade_value["Close"][index] = self.last_price[trade["Name"]]
-                self.trade_value["Portfolio Investment"][index] = trade["Investment"]
-                self.trade_value["Portfolio Value"][index] = (
-                    self.trade_value["Close"][index] * trade["Quantity"]
+                self.portfolio_trades["Close"][index] = self.last_price[trade["Name"]]
+                self.portfolio_trades["Portfolio Investment"][index] = trade[
+                    "Investment"
+                ]
+                self.portfolio_trades["Portfolio Value"][index] = (
+                    self.portfolio_trades["Close"][index] * trade["Quantity"]
                 )
-                self.trade_value["% Portfolio Return"][index] = (
-                    self.trade_value["Portfolio Value"][index]
-                    / self.trade_value["Portfolio Investment"][index]
+                self.portfolio_trades["% Portfolio Return"][index] = (
+                    self.portfolio_trades["Portfolio Value"][index]
+                    / self.portfolio_trades["Portfolio Investment"][index]
                 ) - 1
-                self.trade_value["Abs Portfolio Return"].loc[index] = (
-                    self.trade_value["Portfolio Value"][index]
-                    - self.trade_value["Portfolio Investment"][index]
+                self.portfolio_trades["Abs Portfolio Return"].loc[index] = (
+                    self.portfolio_trades["Portfolio Value"][index]
+                    - self.portfolio_trades["Portfolio Investment"][index]
                 )
 
         self.portfolio = portfolio.copy()
@@ -577,7 +589,7 @@ class Portfolio:
             self.benchmark_assets_allocation,
             self.portfolio_assets_allocation,
         ) = allocation_model.obtain_assets_allocation(
-            self.benchmark_info, self.trade_value
+            self.benchmark_info, self.portfolio_trades
         )
 
         # Determine sector allocation
@@ -585,7 +597,7 @@ class Portfolio:
             self.benchmark_sectors_allocation,
             self.portfolio_sectors_allocation,
         ) = allocation_model.obtain_sector_allocation(
-            self.benchmark_info, self.trade_value
+            self.benchmark_info, self.portfolio_trades
         )
 
         # Determine regional and country allocations
@@ -600,7 +612,7 @@ class Portfolio:
             self.portfolio_regional_allocation,
             self.portfolio_country_allocation,
         ) = allocation_model.obtain_portfolio_regional_and_country_allocation(
-            self.trade_value
+            self.portfolio_trades
         )
 
     # pylint:disable=no-member

@@ -129,7 +129,7 @@ class PortfolioController(BaseController):
 
 [param]Loaded orderbook:[/param] {self.portfolio_name or None}
 [param]Benchmark:[/param] {self.benchmark_name or None}
-[param]Risk Free Rate:[/param] {self.portfolio.rf}
+[param]Risk Free Rate:[/param] {self.portfolio.rf:.2%}
 
 [info]Performance:[/info][cmds]
     alloc       show allocation on an asset or sector basis
@@ -259,7 +259,7 @@ class PortfolioController(BaseController):
             self.portfolio.add_rf(ns_parser.risk_free_rate)
 
             console.print(f"\n[bold]Portfolio:[/bold] {self.portfolio_name}")
-            console.print(f"[bold]Risk Free Rate:[/bold] {self.portfolio.rf}")
+            console.print(f"[bold]Risk Free Rate:[/bold] {self.portfolio.rf:.2%}")
 
             console.print()
 
@@ -444,7 +444,9 @@ class PortfolioController(BaseController):
                 )
 
                 portfolio_view.display_performance_vs_benchmark(
-                    self.portfolio, ns_parser.show_trades
+                    self.portfolio.portfolio_trades,
+                    self.portfolio.benchmark_trades,
+                    ns_parser.show_trades,
                 )
             else:
                 console.print(
@@ -846,7 +848,8 @@ class PortfolioController(BaseController):
         if ns_parser:
             if self.portfolio_name and self.benchmark_name:
                 portfolio_view.display_rolling_stats(
-                    self.portfolio,
+                    self.portfolio.benchmark_returns,
+                    self.portfolio.returns,
                     length=ns_parser.length,
                     risk_free_rate=ns_parser.rf,
                 )

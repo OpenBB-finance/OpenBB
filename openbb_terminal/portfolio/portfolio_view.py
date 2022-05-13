@@ -55,8 +55,8 @@ In order to load a CSV do the following:
 
 @log_start_end(log=logger)
 def display_assets_allocation(
-    portfolio_allocation,
-    benchmark_allocation,
+    portfolio_allocation: pd.DataFrame,
+    benchmark_allocation: pd.DataFrame,
     limit: int = 10,
     include_separate_tables: bool = False,
 ):
@@ -64,8 +64,10 @@ def display_assets_allocation(
 
     Parameters
     ----------
-    portfolio: Portfolio
-        Custom portfolio object with trade list
+    portfolio_allocation: pd.DataFrame
+        The asset allocation of the portfolio
+    benchmark_allocation: pd.DataFrame
+        The asset allocation of the benchmark
     limit: int
         The amount of assets you wish to show, by default this is set to 10.
     include_separate_tables: bool
@@ -84,7 +86,7 @@ def display_assets_allocation(
                 ]
             )
         else:
-            benchmark_allocation_value = 0.0
+            benchmark_allocation_value = 0
 
         combined = combined.append(
             [
@@ -100,7 +102,7 @@ def display_assets_allocation(
     combined.columns = ["Symbol", "Portfolio", "Benchmark", "Difference"]
 
     print_rich_table(
-        combined,
+        combined.replace(0, "-"),
         headers=list(combined.columns),
         title=f"Portfolio vs. Benchmark - Top {len(combined) if len(combined) < limit else limit} Assets Allocation",
         floatfmt=[".2f", ".2%", ".2%", ".2%"],
@@ -135,8 +137,8 @@ def display_assets_allocation(
 @log_start_end(log=logger)
 def display_category_allocation(
     category: str,
-    portfolio_allocation,
-    benchmark_allocation,
+    portfolio_allocation: pd.DataFrame,
+    benchmark_allocation: pd.DataFrame,
     limit: int = 10,
     include_separate_tables: bool = False,
 ):
@@ -144,8 +146,12 @@ def display_category_allocation(
 
     Parameters
     ----------
-    portfolio: Portfolio
-        Custom portfolio object with trade list
+    category: str
+        Whether you want to show sectors, countries or regions
+    portfolio_allocation: pd.DataFrame
+        The allocation to the set category of the portfolio
+    benchmark_allocation: pd.DataFrame
+        The allocation to the set category of the benchmark
     limit: int
         The amount of assets you wish to show, by default this is set to 10.
     include_separate_tables: bool
@@ -162,7 +168,7 @@ def display_category_allocation(
                 benchmark_allocation[benchmark_allocation.index == category_name]
             )
         else:
-            benchmark_allocation_value = 0.0
+            benchmark_allocation_value = 0
 
         combined = combined.append(
             [
@@ -177,14 +183,8 @@ def display_category_allocation(
 
     combined.columns = [category.capitalize(), "Portfolio", "Benchmark", "Difference"]
 
-    if len(combined) < limit:
-        console.print(
-            f"Less than the limit {limit} are shown because the portfolio only has "
-            f"{len(combined)} {category}.\n"
-        )
-
     print_rich_table(
-        combined,
+        combined.replace(0, "-"),
         headers=list(combined.columns),
         title=f"Portfolio vs. Benchmark - Top {len(combined) if len(combined) < limit else limit} "
         f"{category.capitalize()} Allocation",
@@ -220,21 +220,21 @@ def display_category_allocation(
 
 @log_start_end(log=logger)
 def display_performance_vs_benchmark(
-    portfolio=portfolio_model.Portfolio, show_all_trades: bool = False
+    portfolio_trades: pd.DataFrame,
+    benchmark_trades: pd.DataFrame,
+    show_all_trades: bool = False,
 ):
     """Display portfolio performance vs the benchmark
 
     Parameters
     ----------
-    portfolio: Portfolio
-        Custom portfolio object with trade list
+    portfolio_trades: pd.DataFrame
+        Object containing trades made within the portfolio.
+    benchmark_trades: pd.DataFrame
+        Object containing trades made within the benchmark.
     show_all_trades: bool
         Whether to also show all trades made and their performance (default is False)
     """
-    # Obtain trades
-    portfolio_trades = portfolio.trade_value
-    benchmark_trades = portfolio.benchmark_trades
-
     # Calculate total value and return
     total_investment_difference = (
         portfolio_trades["Portfolio Investment"].sum()
@@ -273,9 +273,9 @@ def display_performance_vs_benchmark(
                 total_value_difference,
             ],
             "Total % Return": [
-                total_portfolio_return,
-                total_benchmark_return,
-                total_portfolio_return - total_benchmark_return,
+                f"{total_portfolio_return:.2%}",
+                f"{total_benchmark_return:.2%}",
+                f"{total_portfolio_return - total_benchmark_return:.2%}",
             ],
             "Total Abs Return": [
                 portfolio_trades["Portfolio Value"].sum()
@@ -290,7 +290,7 @@ def display_performance_vs_benchmark(
     )
 
     print_rich_table(
-        totals,
+        totals.replace(0, "-"),
         title="Portfolio vs. Benchmark - Totals",
         headers=list(totals.columns),
         show_index=True,
@@ -313,6 +313,8 @@ def display_performance_vs_benchmark(
         combined["Alpha"] = (
             combined["% Portfolio Return"] - combined["% Benchmark Return"]
         )
+
+        combined["Date"] = pd.to_datetime(combined["Date"]).dt.date
 
         print_rich_table(
             combined,
@@ -413,7 +415,8 @@ def display_allocation(
 
 @log_start_end(log=logger)
 def display_rolling_stats(
-    portfolio: portfolio_model.Portfolio,
+    benchmark_returns: pd.Series,
+    portfolio_returns: pd.Series,
     length: int = 60,
     risk_free_rate: float = 0,
     external_axes: Optional[List[plt.Axes]] = None,
@@ -423,12 +426,12 @@ def display_rolling_stats(
 
     Parameters
     ----------
-    portfolio: Portfolio
-        Custom portfolio object with trade list
+    portfolio_returns
+        Returns of the portfolio
+    benchmark_returns
+        Returns of the benchmark
     length: int
         Length of rolling window
-    benchmark: str
-        Symbol for benchmark.  Defaults to SPY
     risk_free_rate: float
         Value to use for risk free rate in sharpe/other calculations
     external_axes: Optional[List[plt.Axes]]
@@ -444,13 +447,14 @@ def display_rolling_stats(
             console.print("[red]4 axes expected.\n[/red]")
             return
         ax = external_axes
-    rolling_volatility = portfolio.returns.rolling(length).std()
-    rolling_volatility_bench = portfolio.benchmark_returns.rolling(length).std()
 
-    rolling_sharpe = portfolio.returns.rolling(length).apply(
+    rolling_volatility = portfolio_returns.rolling(length).std()
+    rolling_volatility_bench = benchmark_returns.rolling(length).std()
+
+    rolling_sharpe = portfolio_returns.rolling(length).apply(
         lambda x: (x.mean() - risk_free_rate) / x.std()
     )
-    rolling_sharpe_bench = portfolio.benchmark_returns.rolling(length).apply(
+    rolling_sharpe_bench = benchmark_returns.rolling(length).apply(
         lambda x: (x.mean() - risk_free_rate) / x.std()
     )
 
@@ -464,9 +468,7 @@ def display_rolling_stats(
 
     # Rolling beta is defined as Cov(Port,Bench)/var(Bench)
     covs = (
-        pd.DataFrame(
-            {"Portfolio": portfolio.returns, "Benchmark": portfolio.benchmark_returns}
-        )
+        pd.DataFrame({"Portfolio": portfolio_returns, "Benchmark": benchmark_returns})
         .dropna(axis=0)
         .rolling(length)
         .cov()
@@ -477,8 +479,8 @@ def display_rolling_stats(
     rolling_beta.plot(ax=ax[3])
     ax[3].set_title("Rolling Beta to Benchmark")
 
-    c_returns = (1 + portfolio.returns).cumprod()
-    bench_c_rets = (1 + portfolio.benchmark_returns).cumprod()
+    c_returns = (1 + portfolio_returns).cumprod()
+    bench_c_rets = (1 + benchmark_returns).cumprod()
 
     ax[0].plot(c_returns.index, c_returns)
     ax[0].plot(bench_c_rets.index, bench_c_rets)
@@ -489,7 +491,7 @@ def display_rolling_stats(
         for a in ax[0], ax[1], ax[2]:
             a.legend(["Portfolio", "Benchmark"], loc="upper left")
         for a in ax[0], ax[1], ax[2], ax[3]:
-            a.set_xlim(portfolio.returns.index[0], portfolio.returns.index[-1])
+            a.set_xlim(portfolio_returns.index[0], portfolio_returns.index[-1])
             a.set_xlabel([])
             a.grid("on")
             theme.style_primary_axis(a)
@@ -506,7 +508,7 @@ def display_rolling_stats(
 
 @log_start_end(log=logger)
 def display_drawdown(
-    holdings: pd.DataFrame,
+    holdings: pd.Series,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
