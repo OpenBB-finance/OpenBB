@@ -270,6 +270,7 @@ class PortfolioController(BaseController):
             logger.warning("No portfolio loaded")
             console.print("[red]No portfolio loaded.[/red]\n")
             return
+
         print_rich_table(self.portfolio.trades, show_index=False)
         console.print()
 

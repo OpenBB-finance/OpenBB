@@ -276,6 +276,9 @@ class Portfolio:
             # Copy pandas notation
             self.empty = False
 
+            # Adjust date of trades
+            trades["Date"] = pd.to_datetime(trades["Date"]).dt.date
+
         self.trades = trades
         self.portfolio = pd.DataFrame()
 

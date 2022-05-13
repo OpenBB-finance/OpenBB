@@ -1,10 +1,21 @@
 ```
-usage: show
+usage: load [-f {}] [-n NAME] [-r RISK_FREE_RATE] [-h]
 ```
 
-Shows the active portfolio
+Load your portfolio
 
-Example:s
+```
+optional arguments:
+  -f {}, --file {}
+                        The file to be loaded (default: None)
+  -n NAME, --name NAME  The name that you wish to give to your portfolio (default: None)
+  -r RISK_FREE_RATE, --risk_free_rate RISK_FREE_RATE
+                        Set the risk free rate. (default: 0)
+  -h, --help            show this help message (default: False)
+
+```
+
+Example:
 ```
 2022 May 13, 05:00 (🦋) /portfolio/ $ load Public_Equity_Orderbook.xlsx
 
