@@ -52,6 +52,14 @@ INDICES = {
     "nl-aex": {"name": "Euronext Dutch 25 Index (EUR)", "ticker": "^AEX"},
     "nl-amx": {"name": "Euronext Dutch Mid Cap Index (EUR)", "ticker": "^AMX"},
     "at-atx": {"name": "Wiener Börse Austrian 20 Index (EUR)", "ticker": "^ATX"},
+    "at-bat20p": {
+        "name": "CME Austria 20 Price Return Index (EUR)",
+        "ticker": "^BAT20P",
+    },
+    "at-bat20n": {
+        "name": "CME Austria 20 Net Total Return Index (EUR)",
+        "ticker": "^BAT20N",
+    },
     "ch-stoxx": {"name": "Zurich STXE 600 PR Index (EUR)", "ticker": "^STOXX"},
     "ch-stoxx50e": {"name": "Zurich ESTX 50 PR Index (EUR)", "ticker": "^STOXX50E"},
     "ch-ssip": {"name": "Swiss All Shares Index (CHF)", "ticker": "SSIP.SW"},
@@ -139,12 +147,14 @@ INDICES = {
     "cn-szse-comp": {"name": "SZSE Component Index (CNY)", "ticker": "399001.SZ"},
     "cn-szse-a": {"name": "SZSE A-Shares Index (CNY)", "ticker": "399107.SZ"},
     "tw-twii": {"name": "TSEC Weighted Index (TWD)", "ticker": "^TWII"},
-    "tw-tpai": {"name": "TSEC Paper and Pulb Subindex (TWD)", "ticker": "^TPAI"},
+    "tw-tpai": {"name": "TSEC Paper and Pulp Subindex (TWD)", "ticker": "^TPAI"},
     "hk-hsi": {"name": "Hang Seng Index (HKD)", "ticker": "^HSI"},
     "hk-hko": {"name": "NYSE ARCA Hong Kong Options Index (USD)", "ticker": "^HKO"},
     "id-jkse": {"name": "Jakarta Composite Index (IDR)", "ticker": "^JKSE"},
-    "my-klci": {"name": "FTSE Bursa Malaysia KLCI (MYR)", "ticker": "^KLSE"},
+    "my-klci": {"name": "FTSE Kuala Lumpur Composite Index (MYR)", "ticker": "^KLSE"},
+    "ph-psei": {"name": "Philippine Stock Exchange Index (PHP)", "ticker": "PSEI.PS"},
     "sg-sti": {"name": "STI Singapore Index (SGD)", "ticker": "^STI"},
+    "th-set": {"name": "Thailand SET Index (THB)", "ticker": "^SET.BK"},
     "sp-materials": {"name": "S&P 500 Materials Sector Index", "ticker": "^SP500-15"},
     "sp-industrials": {
         "name": "S&P 500 Industrials Sector Index",
@@ -221,6 +231,8 @@ INDICES = {
     "phlx-uty": {"name": "PHLX Utility Sector Index", "ticker": "^UTY"},
     "w5000": {"name": "Wilshire 5000", "ticker": "^W5000"},
     "w5000flt": {"name": "Wilshire 5000 Float Adjusted Index", "ticker": "^W5000FLT"},
+    "w5klcg": {"name": "Wilshire US Large Cap Growth Index", "ticker": "^W5KLCG"},
+    "w5klcv": {"name": "Wilshire US Large Cap Value Index", "ticker": "^W5KLCV"},
     "reit-wgreit": {"name": "Wilshire Global REIT Index", "ticker": "^WGREIT"},
     "reit-wgresi": {
         "name": "Wilshire Global Real Estate Sector Index",
@@ -234,7 +246,7 @@ INDICES = {
     "cboe-bxm": {"name": "CBOE Buy-Write Monthly Index", "ticker": "^BXM"},
     "cboe-vix": {"name": "CBOE Volatility Index", "ticker": "^VIX"},
     "cboe-vin": {"name": "CBOE Near-Term VIX Index", "ticker": "^VIN"},
-    "cobe-vvix": {"name": "CBOE VIX Volatility Index", "ticker": "^VVIX"},
+    "cboe-vvix": {"name": "CBOE VIX Volatility Index", "ticker": "^VVIX"},
     "cboe-shortvol": {"name": "CBOE Short VIX Futures Index", "ticker": "^SHORTVOL"},
     "cboe-skew": {"name": "CBOE Skew Index", "ticker": "^SKEW"},
     "cboe-vxn": {"name": "CBOE NASDAQ 100 Volatility Index", "ticker": "^VXN"},
@@ -243,6 +255,7 @@ INDICES = {
     "cboe-tnx": {"name": "CBOE Interest Rate 10 Year T-Note", "ticker": "^TNX"},
     "cboe-tyx": {"name": "CBOE 30 year Treasury Yields", "ticker": "^TYX"},
     "cboe-irx": {"name": "CBOE 13 Week Treasury Bill", "ticker": "^IRX"},
+    "us-move": {"name": "ICE BofAML Move Index", "ticker": "^MOVE"},
     "us-dx-y": {"name": "US Dollar Index", "ticker": "DX-Y.NYB"},
 }
 
