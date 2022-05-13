@@ -431,6 +431,8 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 s_ticker="MOCK_TICKER",
                 ohlc=MOCK_STOCK_DF,
                 s_interval="MOCK_INTERVAL",
+                start=None,
+                end=None,
                 offset=2,
                 export="csv",
             ),

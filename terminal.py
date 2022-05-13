@@ -66,7 +66,8 @@ class TerminalController(BaseController):
         "portfolio",
         "forex",
         "etf",
-        "jupyter",
+        "reports",
+        "dashboards",
         "funds",
         "alternative",
         "econometrics",
@@ -74,17 +75,16 @@ class TerminalController(BaseController):
 
     PATH = "/"
 
-    all_timezones = pytz.all_timezones
+    all_timezones = [tz.replace("/", "-") for tz in pytz.all_timezones]
 
     def __init__(self, jobs_cmds: List[str] = None):
         """Constructor"""
         super().__init__(jobs_cmds)
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: None for c in self.controller_choices}
-            choices["tz"] = {c.replace("/", "-"): None for c in self.all_timezones}
-
-            choices = {**choices, **self.SUPPORT_CHOICES}
+            choices: dict = {c: {} for c in self.controller_choices}
+            choices["tz"] = {c: None for c in self.all_timezones}
+            choices["support"] = self.SUPPORT_CHOICES
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -100,7 +100,8 @@ class TerminalController(BaseController):
         console.print(  # nosec
             text=f"""
 [info]Get API keys from data providers to access more features.[/info]
-    For more instructions use: 'keys'
+    For more instructions use: 'keys'.
+    To see all features follow: https://openbb-finance.github.io/OpenBBTerminal/
 
 [info]Multiple jobs queue (where each '/' denotes a new command).[/info]
     E.g. '/stocks $ disc/ugs -n 3/../load tsla/candle'
@@ -136,18 +137,22 @@ class TerminalController(BaseController):
 
 [param]Export Folder:[/param] {obbff.EXPORT_FOLDER_PATH if obbff.EXPORT_FOLDER_PATH else 'DEFAULT (folder: exports/)'}
 [param]Timezone:     [/param] {get_user_timezone_or_invalid()}
-[menu]
->   stocks
->   crypto
->   etf
->   economy
->   forex
->   funds
->   alternative
->   econometrics
->   portfolio
->   jupyter[/menu]
-    """,
+[menu][info]
+Asset classes:[/info]
+>   stocks              access historical pricing data, options, sector and industry, and overall due diligence
+>   crypto              dive into onchain data, tokenomics, circulation supply, nfts and more
+>   etf                 exchange traded funds. Historical pricing, compare holdings and screening
+>   economy             global macroeconomic data, e.g. futures, yield, treasury
+>   forex               foreign exchanges, quotes, forward rates for currency pairs and oanda integration
+>   funds               mutual funds search, overview, holdings and sector weights
+>   alternative         alternative datasets, such as COVID and open source metrics
+
+[info]Others:[/info]
+>   econometrics        statistical and quantitative methods for relationships between datasets
+>   portfolio           perform portfolio optimization and look at portfolio performance and attribution
+>   dashboards          interactive dashboards using voila and jupyter notebooks
+>   reports             customizable research reports through jupyter notebooks[/menu]
+""",
             menu="Home",
         )
 
@@ -209,12 +214,28 @@ class TerminalController(BaseController):
 
         self.queue = self.load_class(ForexController, self.queue)
 
-    def call_jupyter(self, _):
-        """Process jupyter command"""
+    def call_reports(self, _):
+        """Process reports command"""
         if not obbff.PACKAGED_APPLICATION:
-            from openbb_terminal.jupyter.jupyter_controller import JupyterController
+            from openbb_terminal.reports.reports_controller import (
+                ReportController,
+            )
 
-            self.queue = self.load_class(JupyterController, self.queue)
+            self.queue = self.load_class(ReportController, self.queue)
+        else:
+            console.print("This feature is coming soon.")
+            console.print(
+                "Use the source code and an Anaconda environment if you are familiar with Python."
+            )
+
+    def call_dashboards(self, _):
+        """Process dashboards command"""
+        if not obbff.PACKAGED_APPLICATION:
+            from openbb_terminal.dashboards.dashboards_controller import (
+                DashboardsController,
+            )
+
+            self.queue = self.load_class(DashboardsController, self.queue)
         else:
             console.print("This feature is coming soon.")
             console.print(
@@ -247,7 +268,6 @@ class TerminalController(BaseController):
 
     def call_tz(self, other_args: List[str]):
         """Process tz command"""
-
         tz_parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -255,16 +275,16 @@ class TerminalController(BaseController):
                    Setting a different timezone
                """,
         )
-
         tz_parser.add_argument(
-            "-tz",
+            "-t",
             dest="timezone",
             help="Choose timezone",
             required="-h" not in other_args,
+            choices=self.all_timezones,
         )
 
-        if other_args and "-tz" not in other_args[0] and "-h" not in other_args[0]:
-            other_args.insert(0, "-tz")
+        if other_args and "-t" not in other_args[0]:
+            other_args.insert(0, "-t")
 
         tz_ns_parser = parse_known_args_and_warn(tz_parser, other_args)
         if tz_ns_parser:

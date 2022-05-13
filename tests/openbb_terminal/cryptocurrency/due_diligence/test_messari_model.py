@@ -122,7 +122,7 @@ def test_get_links(coin, recorder):
     ],
 )
 def test_get_messari_timeseries(coin, interval, start, end, timeseries_id, recorder):
-    df, _, _ = messari_model.get_messari_timeseries(
+    df, _ = messari_model.get_messari_timeseries(
         coin=coin, interval=interval, start=start, end=end, timeseries_id=timeseries_id
     )
     recorder.capture(df)
