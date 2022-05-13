@@ -141,7 +141,7 @@ class TerminalController(BaseController):
 Asset classes:[/info]
 >   stocks              access historical pricing data, options, sector and industry, and overall due diligence
 >   crypto              dive into onchain data, tokenomics, circulation supply, nfts and more
->   etf                 exchange traded funds. Historical pricing, compare holdings and screening 
+>   etf                 exchange traded funds. Historical pricing, compare holdings and screening
 >   economy             global macroeconomic data, e.g. futures, yield, treasury
 >   forex               foreign exchanges, quotes, forward rates for currency pairs and oanda integration
 >   funds               mutual funds search, overview, holdings and sector weights
@@ -152,7 +152,7 @@ Asset classes:[/info]
 >   portfolio           perform portfolio optimization and look at portfolio performance and attribution
 >   dashboards          interactive dashboards using voila and jupyter notebooks
 >   reports             customizable research reports through jupyter notebooks[/menu]
-    """,
+""",
             menu="Home",
         )
 
