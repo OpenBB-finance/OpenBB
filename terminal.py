@@ -146,6 +146,7 @@ Asset classes:[/info]
 >   forex               foreign exchanges, quotes, forward rates for currency pairs and oanda integration
 >   funds               mutual funds search, overview, holdings and sector weights
 >   alternative         alternative datasets, such as COVID and open source metrics
+
 [info]Others:[/info]
 >   econometrics        statistical and quantitative methods for relationships between datasets
 >   portfolio           perform portfolio optimization and look at portfolio performance and attribution
