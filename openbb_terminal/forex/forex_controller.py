@@ -61,24 +61,24 @@ class ForexController(BaseController):
         has_symbols_start = "" if self.from_symbol and self.to_symbol else "[dim]"
         has_symbols_end = "" if self.from_symbol and self.to_symbol else "[/dim]"
         help_text = f"""[cmds]
-    from      select the "from" currency in a forex pair
-    to        select the "to" currency in a forex pair[/cmds]
+    from             select the "from" currency in a forex pair
+    to               select the "to" currency in a forex pair[/cmds]
 
 [param]From:   [/param]{None or self.from_symbol}
 [param]To:     [/param]{None or self.to_symbol}
 [param]Source: [/param]{None or FOREX_SOURCES[self.source]}[cmds]{has_symbols_start}
 [cmds]
-    quote         get last quote [src][AlphaVantage][/src]
-    load          get historical data
-    candle        show candle plot for loaded pair
-    fwd           get forward rates for loaded pair[src][FXEmpire][/src][/cmds]
+    quote            get last quote [src][AlphaVantage][/src]
+    load             get historical data
+    candle           show candle plot for loaded pair
+    fwd              get forward rates for loaded pair [src][FXEmpire][/src][/cmds]
 [menu]
->   ta          technical analysis for loaded coin,     e.g.: ema, macd, rsi, adx, bbands, obv
->   qa          quantitative analysis,                  e.g.: decompose, cusum, residuals analysis
->   pred        prediction techniques                   e.g.: regression, arima, rnn, lstm, conv1d, monte carlo
+>   ta               technical analysis,                   e.g.: ema, macd, rsi, adx, bbands, obv
+>   qa               quantitative analysis,                e.g.: decompose, cusum, residuals analysis
+>   pred             prediction techniques                 e.g.: regression, arima, rnn, lstm, conv1d, monte carlo
 [/menu]{has_symbols_end}
 [info]Forex brokerages:[/info][menu]
->   oanda         Oanda menu[/menu][/cmds]
+>   oanda             Oanda menu[/menu][/cmds]
  """
         console.print(text=help_text, menu="Forex")
 
