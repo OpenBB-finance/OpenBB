@@ -537,7 +537,7 @@ def plot_plot(
 def plot_payoff(
     current_price: float,
     options: List[Dict[Any, Any]],
-    underlying: int,
+    underlying: float,
     ticker: str,
     expiration: str,
     external_axes: Optional[List[plt.Axes]] = None,

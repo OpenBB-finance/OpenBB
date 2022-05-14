@@ -5,7 +5,7 @@ from plotly.subplots import make_subplots
 
 from bots import imps
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.stocks.options import syncretism_model
+from openbb_terminal.stocks.options.screen import syncretism_model
 
 logger = logging.getLogger(__name__)
 

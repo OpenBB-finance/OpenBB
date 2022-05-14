@@ -15,10 +15,7 @@ from openbb_terminal.portfolio import (
     portfolio_model,
 )
 
-from openbb_terminal.helper_funcs import (
-    plot_autoscale,
-    export_data,
-)
+from openbb_terminal.helper_funcs import plot_autoscale, export_data, print_rich_table
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
 
@@ -57,19 +54,292 @@ In order to load a CSV do the following:
 
 
 @log_start_end(log=logger)
+def display_assets_allocation(
+    portfolio_allocation: pd.DataFrame,
+    benchmark_allocation: pd.DataFrame,
+    limit: int = 10,
+    include_separate_tables: bool = False,
+):
+    """Display portfolio asset allocation compared to the benchmark
+
+    Parameters
+    ----------
+    portfolio_allocation: pd.DataFrame
+        The asset allocation of the portfolio
+    benchmark_allocation: pd.DataFrame
+        The asset allocation of the benchmark
+    limit: int
+        The amount of assets you wish to show, by default this is set to 10.
+    include_separate_tables: bool
+        Whether to include separate asset allocation tables
+    """
+    benchmark_allocation = benchmark_allocation.iloc[:limit]
+    portfolio_allocation = portfolio_allocation.iloc[:limit]
+
+    combined = pd.DataFrame()
+
+    for ticker, allocation in portfolio_allocation.items():
+        if ticker in benchmark_allocation["symbol"].values:
+            benchmark_allocation_value = float(
+                benchmark_allocation[benchmark_allocation["symbol"] == ticker][
+                    "holdingPercent"
+                ]
+            )
+        else:
+            benchmark_allocation_value = 0
+
+        combined = combined.append(
+            [
+                [
+                    ticker,
+                    allocation,
+                    benchmark_allocation_value,
+                    allocation - benchmark_allocation_value,
+                ]
+            ]
+        )
+
+    combined.columns = ["Symbol", "Portfolio", "Benchmark", "Difference"]
+
+    print_rich_table(
+        combined.replace(0, "-"),
+        headers=list(combined.columns),
+        title=f"Portfolio vs. Benchmark - Top {len(combined) if len(combined) < limit else limit} Assets Allocation",
+        floatfmt=[".2f", ".2%", ".2%", ".2%"],
+        show_index=False,
+    )
+
+    console.print()
+
+    if include_separate_tables:
+        print_rich_table(
+            pd.DataFrame(portfolio_allocation),
+            headers=list(["Allocation"]),
+            title=f"Portfolio - Top {len(portfolio_allocation) if len(benchmark_allocation) < limit else limit} "
+            f"Assets Allocation",
+            floatfmt=[".2%"],
+            show_index=True,
+        )
+
+        console.print()
+        print_rich_table(
+            benchmark_allocation,
+            headers=list(["Symbol", "Name", "Allocation"]),
+            title=f"Benchmark - Top {len(benchmark_allocation) if len(benchmark_allocation) < limit else limit} "
+            f"Assets Allocation",
+            floatfmt=[".2f", ".2f", ".2%"],
+            show_index=False,
+        )
+
+        console.print()
+
+
+@log_start_end(log=logger)
+def display_category_allocation(
+    category: str,
+    portfolio_allocation: pd.DataFrame,
+    benchmark_allocation: pd.DataFrame,
+    limit: int = 10,
+    include_separate_tables: bool = False,
+):
+    """Display portfolio sector, country or region allocation compared to the benchmark
+
+    Parameters
+    ----------
+    category: str
+        Whether you want to show sectors, countries or regions
+    portfolio_allocation: pd.DataFrame
+        The allocation to the set category of the portfolio
+    benchmark_allocation: pd.DataFrame
+        The allocation to the set category of the benchmark
+    limit: int
+        The amount of assets you wish to show, by default this is set to 10.
+    include_separate_tables: bool
+        Whether to include separate asset allocation tables
+    """
+    benchmark_allocation = benchmark_allocation.iloc[:limit]
+    portfolio_allocation = portfolio_allocation.iloc[:limit]
+
+    combined = pd.DataFrame()
+
+    for category_name, allocation in portfolio_allocation.items():
+        if category_name in benchmark_allocation.index:
+            benchmark_allocation_value = float(
+                benchmark_allocation[benchmark_allocation.index == category_name]
+            )
+        else:
+            benchmark_allocation_value = 0
+
+        combined = combined.append(
+            [
+                [
+                    category_name,
+                    allocation,
+                    benchmark_allocation_value,
+                    allocation - benchmark_allocation_value,
+                ]
+            ]
+        )
+
+    combined.columns = [category.capitalize(), "Portfolio", "Benchmark", "Difference"]
+
+    print_rich_table(
+        combined.replace(0, "-"),
+        headers=list(combined.columns),
+        title=f"Portfolio vs. Benchmark - Top {len(combined) if len(combined) < limit else limit} "
+        f"{category.capitalize()} Allocation",
+        floatfmt=[".2f", ".2%", ".2%", ".2%"],
+        show_index=False,
+    )
+
+    console.print()
+
+    if include_separate_tables:
+        print_rich_table(
+            pd.DataFrame(portfolio_allocation),
+            headers=list(["Allocation"]),
+            title=f"Portfolio - Top {len(portfolio_allocation) if len(portfolio_allocation) < limit else limit} "
+            f"{category.capitalize()} Allocation",
+            floatfmt=[".2%"],
+            show_index=True,
+        )
+
+        console.print()
+
+        print_rich_table(
+            pd.DataFrame(benchmark_allocation),
+            headers=list(["Allocation"]),
+            title=f"Benchmark - Top {len(benchmark_allocation) if len(benchmark_allocation) < limit else limit} "
+            f"{category.capitalize()} Allocation",
+            floatfmt=[".2%"],
+            show_index=True,
+        )
+
+        console.print()
+
+
+@log_start_end(log=logger)
+def display_performance_vs_benchmark(
+    portfolio_trades: pd.DataFrame,
+    benchmark_trades: pd.DataFrame,
+    show_all_trades: bool = False,
+):
+    """Display portfolio performance vs the benchmark
+
+    Parameters
+    ----------
+    portfolio_trades: pd.DataFrame
+        Object containing trades made within the portfolio.
+    benchmark_trades: pd.DataFrame
+        Object containing trades made within the benchmark.
+    show_all_trades: bool
+        Whether to also show all trades made and their performance (default is False)
+    """
+    # Calculate total value and return
+    total_investment_difference = (
+        portfolio_trades["Portfolio Investment"].sum()
+        - benchmark_trades["Benchmark Investment"].sum()
+    )
+    total_value_difference = (
+        portfolio_trades["Portfolio Value"].sum()
+        - benchmark_trades["Benchmark Value"].sum()
+    )
+    total_portfolio_return = (
+        portfolio_trades["Portfolio Value"].sum()
+        / portfolio_trades["Portfolio Investment"].sum()
+    ) - 1
+    total_benchmark_return = (
+        benchmark_trades["Benchmark Value"].sum()
+        / benchmark_trades["Benchmark Investment"].sum()
+    ) - 1
+    total_abs_return_difference = (
+        portfolio_trades["Portfolio Value"].sum()
+        - portfolio_trades["Portfolio Investment"].sum()
+    ) - (
+        benchmark_trades["Benchmark Value"].sum()
+        - benchmark_trades["Benchmark Investment"].sum()
+    )
+
+    totals = pd.DataFrame.from_dict(
+        {
+            "Total Investment": [
+                portfolio_trades["Portfolio Investment"].sum(),
+                benchmark_trades["Benchmark Investment"].sum(),
+                total_investment_difference,
+            ],
+            "Total Value": [
+                portfolio_trades["Portfolio Value"].sum(),
+                benchmark_trades["Benchmark Value"].sum(),
+                total_value_difference,
+            ],
+            "Total % Return": [
+                f"{total_portfolio_return:.2%}",
+                f"{total_benchmark_return:.2%}",
+                f"{total_portfolio_return - total_benchmark_return:.2%}",
+            ],
+            "Total Abs Return": [
+                portfolio_trades["Portfolio Value"].sum()
+                - portfolio_trades["Portfolio Investment"].sum(),
+                benchmark_trades["Benchmark Value"].sum()
+                - benchmark_trades["Benchmark Investment"].sum(),
+                total_abs_return_difference,
+            ],
+        },
+        orient="index",
+        columns=["Portfolio", "Benchmark", "Difference"],
+    )
+
+    print_rich_table(
+        totals.replace(0, "-"),
+        title="Portfolio vs. Benchmark - Totals",
+        headers=list(totals.columns),
+        show_index=True,
+    )
+    console.print()
+
+    if show_all_trades:
+        # Combine DataFrames
+        combined = pd.concat(
+            [
+                portfolio_trades[
+                    ["Date", "Name", "Portfolio Value", "% Portfolio Return"]
+                ],
+                benchmark_trades[["Benchmark Value", "% Benchmark Return"]],
+            ],
+            axis=1,
+        )
+
+        # Calculate alpha
+        combined["Alpha"] = (
+            combined["% Portfolio Return"] - combined["% Benchmark Return"]
+        )
+
+        combined["Date"] = pd.to_datetime(combined["Date"]).dt.date
+
+        print_rich_table(
+            combined,
+            title="Portfolio vs. Benchmark - Individual Trades",
+            headers=list(combined.columns),
+            show_index=False,
+            floatfmt=[".2f", ".2f", ".2f", ".2%", ".2f", ".2%", ".2%"],
+        )
+        console.print()
+
+
+@log_start_end(log=logger)
 def display_returns_vs_bench(
-    portfolio: portfolio_model.Portfolio,
-    benchmark: str = "SPY",
+    portfolio_returns,
+    benchmark_returns,
     external_axes: Optional[plt.Axes] = None,
 ):
     """Display portfolio returns vs benchmark
 
     Parameters
     ----------
-    portfolio: Portfolio
-        Custom portfolio object with trade list
-    benchmark: str
-        Symbol for benchmark.  Defaults to SPY
+    portfolio_returns
+        Returns of the portfolio
+    benchmark_returns
+        Returns of the benchmark
     external_axes: plt.Axes
         Optional axes to display plot on
     """
@@ -78,17 +348,15 @@ def display_returns_vs_bench(
     else:
         ax = external_axes
 
-    portfolio.generate_holdings_from_trades()
-    portfolio.add_benchmark(benchmark)
-
-    cumulative_returns = (1 + portfolio.returns).cumprod()
-    benchmark_c_returns = (1 + portfolio.benchmark_returns).cumprod()
+    cumulative_returns = (1 + portfolio_returns).cumprod()
+    benchmark_c_returns = (1 + benchmark_returns).cumprod()
 
     ax.plot(cumulative_returns.index, cumulative_returns, label="Portfolio")
     ax.plot(benchmark_c_returns.index, benchmark_c_returns, label="Benchmark")
     ax.set_ylabel("Cumulative Returns")
     ax.legend(loc="upper left")
     theme.style_primary_axis(ax)
+
     if not external_axes:
         theme.visualize_output()
 
@@ -110,7 +378,6 @@ def display_allocation(
     external_axes: plt.Axes
         Optional axes to display plot on
     """
-    portfolio.generate_holdings_from_trades()
     all_holdings = pd.concat(
         [
             portfolio.portfolio["StockHoldings"],
@@ -148,9 +415,9 @@ def display_allocation(
 
 @log_start_end(log=logger)
 def display_rolling_stats(
-    portfolio: portfolio_model.Portfolio,
+    benchmark_returns: pd.Series,
+    portfolio_returns: pd.Series,
     length: int = 60,
-    benchmark: str = "SPY",
     risk_free_rate: float = 0,
     external_axes: Optional[List[plt.Axes]] = None,
     export: str = "",
@@ -159,12 +426,12 @@ def display_rolling_stats(
 
     Parameters
     ----------
-    portfolio: Portfolio
-        Custom portfolio object with trade list
+    portfolio_returns
+        Returns of the portfolio
+    benchmark_returns
+        Returns of the benchmark
     length: int
         Length of rolling window
-    benchmark: str
-        Symbol for benchmark.  Defaults to SPY
     risk_free_rate: float
         Value to use for risk free rate in sharpe/other calculations
     external_axes: Optional[List[plt.Axes]]
@@ -172,9 +439,6 @@ def display_rolling_stats(
     export: str
         Export to file
     """
-    portfolio.generate_holdings_from_trades()
-    portfolio.add_benchmark(benchmark)
-    portfolio.add_rf(risk_free_rate)
     if external_axes is None:
         _, ax = plt.subplots(4, 1, figsize=(8, 8), dpi=PLOT_DPI, sharex=True)
     else:
@@ -183,13 +447,14 @@ def display_rolling_stats(
             console.print("[red]4 axes expected.\n[/red]")
             return
         ax = external_axes
-    rolling_volatility = portfolio.returns.rolling(length).std()
-    rolling_volatility_bench = portfolio.benchmark_returns.rolling(length).std()
 
-    rolling_sharpe = portfolio.returns.rolling(length).apply(
+    rolling_volatility = portfolio_returns.rolling(length).std()
+    rolling_volatility_bench = benchmark_returns.rolling(length).std()
+
+    rolling_sharpe = portfolio_returns.rolling(length).apply(
         lambda x: (x.mean() - risk_free_rate) / x.std()
     )
-    rolling_sharpe_bench = portfolio.benchmark_returns.rolling(length).apply(
+    rolling_sharpe_bench = benchmark_returns.rolling(length).apply(
         lambda x: (x.mean() - risk_free_rate) / x.std()
     )
 
@@ -203,9 +468,7 @@ def display_rolling_stats(
 
     # Rolling beta is defined as Cov(Port,Bench)/var(Bench)
     covs = (
-        pd.DataFrame(
-            {"Portfolio": portfolio.returns, "Benchmark": portfolio.benchmark_returns}
-        )
+        pd.DataFrame({"Portfolio": portfolio_returns, "Benchmark": benchmark_returns})
         .dropna(axis=0)
         .rolling(length)
         .cov()
@@ -216,8 +479,8 @@ def display_rolling_stats(
     rolling_beta.plot(ax=ax[3])
     ax[3].set_title("Rolling Beta to Benchmark")
 
-    c_returns = (1 + portfolio.returns).cumprod()
-    bench_c_rets = (1 + portfolio.benchmark_returns).cumprod()
+    c_returns = (1 + portfolio_returns).cumprod()
+    bench_c_rets = (1 + benchmark_returns).cumprod()
 
     ax[0].plot(c_returns.index, c_returns)
     ax[0].plot(bench_c_rets.index, bench_c_rets)
@@ -228,7 +491,7 @@ def display_rolling_stats(
         for a in ax[0], ax[1], ax[2]:
             a.legend(["Portfolio", "Benchmark"], loc="upper left")
         for a in ax[0], ax[1], ax[2], ax[3]:
-            a.set_xlim(portfolio.returns.index[0], portfolio.returns.index[-1])
+            a.set_xlim(portfolio_returns.index[0], portfolio_returns.index[-1])
             a.set_xlabel([])
             a.grid("on")
             theme.style_primary_axis(a)
@@ -245,7 +508,7 @@ def display_rolling_stats(
 
 @log_start_end(log=logger)
 def display_drawdown(
-    holdings: pd.DataFrame,
+    holdings: pd.Series,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):

@@ -4,13 +4,16 @@
 
 Portfolio:
     load        load data into the portfolio
-    save        save your portfolio for future use
     show        show existing transactions
-    add         add a security to your portfolio
-    init        initialize empty portfolio
-    build       build portfolio from list of tickers and weights
+    bench       define the benchmark
 
-Loaded: None
+Loaded orderbook: None
+Benchmark: None
+Risk Free Rate: 0.00%
+
+Performance:
+    alloc       show allocation on an asset or sector basis
+    perf        show (total) performance of the portfolio versus benchmark
 
 Graphs:
     rolling     display rolling metrics of portfolio and benchmark
@@ -24,3 +27,4 @@ Risk Metrics:
     sh          display sharpe ratio
     so          display sortino ratio
     om          display omega ratio
+        

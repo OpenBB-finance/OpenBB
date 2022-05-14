@@ -6,7 +6,7 @@ import pandas as pd
 import pytest
 
 # IMPORTATION INTERNAL
-from openbb_terminal.stocks.options import screener_controller
+from openbb_terminal.stocks.options.screen import screener_controller
 
 # pylint: disable=E1101
 # pylint: disable=W0603
@@ -24,7 +24,7 @@ PRICES = pd.DataFrame(data={"Price": [11.0, 12.0], "Chance": [0.2, 0.8]})
     ],
 )
 def test_menu_with_queue(expected, mocker, queue):
-    path_controller = "openbb_terminal.stocks.options.screener_controller"
+    path_controller = "openbb_terminal.stocks.options.screen.screener_controller"
 
     # MOCK SWITCH
     mocker.patch(
@@ -38,7 +38,7 @@ def test_menu_with_queue(expected, mocker, queue):
 
 @pytest.mark.vcr(record_mode="none")
 def test_menu_without_queue_completion(mocker):
-    path_controller = "openbb_terminal.stocks.options.screener_controller"
+    path_controller = "openbb_terminal.stocks.options.screen.screener_controller"
 
     # ENABLE AUTO-COMPLETION : HELPER_FUNCS.MENU
     mocker.patch(
@@ -78,7 +78,7 @@ def test_menu_without_queue_completion(mocker):
     ["help", "homee help", "home help", "mock"],
 )
 def test_menu_without_queue_sys_exit(mock_input, mocker):
-    path_controller = "openbb_terminal.stocks.options.screener_controller"
+    path_controller = "openbb_terminal.stocks.options.screen.screener_controller"
 
     # DISABLE AUTO-COMPLETION
     mocker.patch.object(
@@ -265,7 +265,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
 def test_call_func_test(
     tested_func, mocked_func, other_args, called_args, called_kwargs, mocker
 ):
-    path_controller = "openbb_terminal.stocks.options.screener_controller"
+    path_controller = "openbb_terminal.stocks.options.screen.screener_controller"
 
     if mocked_func:
         mock = mocker.Mock()
