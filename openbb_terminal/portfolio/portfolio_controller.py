@@ -100,6 +100,7 @@ class PortfolioController(BaseController):
 
         self.portfolio_name = ""
         self.benchmark_name = ""
+        self.original_benchmark_name = ""
         self.portlist: List[str] = os.listdir(self.DEFAULT_HOLDINGS_PATH)
         self.portfolio = portfolio_model.Portfolio()
 
@@ -156,6 +157,15 @@ class PortfolioController(BaseController):
         # [info]Reports:[/info]
         #    ar          annual report for performance of a given portfolio
         console.print(text=help_text, menu="Portfolio")
+
+    def custom_reset(self):
+        """Class specific component of reset command"""
+        objects_to_reload = ["portfolio"]
+        if self.portfolio_name:
+            objects_to_reload.append(f"load {self.portfolio_name}")
+        if self.original_benchmark_name:
+            objects_to_reload.append(f'bench "{self.original_benchmark_name}"')
+        return objects_to_reload
 
     @log_start_end(log=logger)
     def call_bro(self, _):
@@ -288,21 +298,23 @@ class PortfolioController(BaseController):
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
 
-        if ns_parser and ns_parser.benchmark:
+        if ns_parser:
+
             chosen_benchmark = " ".join(ns_parser.benchmark)
 
             if chosen_benchmark in portfolio_helper.BENCHMARK_LIST:
                 benchmark_ticker = portfolio_helper.BENCHMARK_LIST[chosen_benchmark]
+                self.original_benchmark_name = chosen_benchmark
             else:
                 benchmark_ticker = chosen_benchmark
 
             self.portfolio.add_benchmark(benchmark_ticker)
+
             self.benchmark_name = self.portfolio.benchmark_info["longName"]
 
             console.print(
                 f"[bold]\nBenchmark:[/bold] {self.benchmark_name} ({benchmark_ticker})"
             )
-
             console.print()
 
     @log_start_end(log=logger)
