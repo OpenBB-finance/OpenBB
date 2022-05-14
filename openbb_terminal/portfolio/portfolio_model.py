@@ -339,7 +339,7 @@ class Portfolio:
         # Add cumulative Quantity held
         portfolio["Quantity"] = portfolio["Quantity"].cumsum()
 
-        # Add holdings for each 'type'.  Will check for tickers matching type.
+        # Add holdings for each 'type'. Will check for tickers matching type.
 
         if self._stock_tickers:
             # Find end of day holdings for each stock

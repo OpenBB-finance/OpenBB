@@ -45,7 +45,7 @@ class PortfolioController(BaseController):
         "alloc",
         "perf",
         "ar",
-        "rmr",
+        "cr",
         "al",
         "dd",
         "rolling",
@@ -116,37 +116,40 @@ class PortfolioController(BaseController):
 
     def print_help(self):
         """Print help"""
-        # NOTE: See comment at `call_pa` definition
-        # >   pa          portfolio analysis, \t\t analyse portfolios
+        port = bool(self.portfolio_name)
+        port_bench = bool(self.portfolio_name) and bool(self.benchmark_name)
+
         help_text = f"""[menu]
 >   bro         brokers holdings, \t\t supports: robinhood, ally, degiro, coinbase
->   po          portfolio optimization, \t optimal portfolio weights from pyportfolioopt[/menu]
+>   po          portfolio optimization, \t optimal your portfolio weights efficiently[/menu]
 
-[info]Portfolio:[/info][cmds]
-    load        load data into the portfolio
-    show        show existing transactions
-    bench       define the benchmark[/cmds]
+    [cmds]bench       define the benchmark[/cmds]
 
-[param]Loaded orderbook:[/param] {self.portfolio_name or None}
-[param]Benchmark:[/param] {self.benchmark_name or None}
-[param]Risk Free Rate:[/param] {self.portfolio.rf:.2%}
+[param]Benchmark:[/param] {self.benchmark_name or ""}
 
-[info]Performance:[/info][cmds]
+    [cmds]load        load data into the portfolio[/cmds]
+
+[param]Loaded orderbook:[/param] {self.portfolio_name or ""}
+[param]Risk Free Rate:  [/param] {self.portfolio.rf:.2%}
+
+    {("[unvl]", "[cmds]")[port]}show        show existing transactions{("[/unvl]", "[/cmds]")[port]}
+
+[info]Performance:[/info]{("[unvl]", "[cmds]")[port_bench]}
     alloc       show allocation on an asset or sector basis
-    perf        show (total) performance of the portfolio versus benchmark
+    perf        show (total) performance of the portfolio versus benchmark{("[/unvl]", "[/cmds]")[port_bench]}
 
-[info]Graphs:[/info][cmds]
-    rolling     display rolling metrics of portfolio and benchmark
-    rmr         graph your returns versus the market's returns
-    dd          display portfolio drawdown
-    al          display allocation to given assets over period[/cmds]
+[info]Graphs:[/info]{("[unvl]", "[cmds]")[port_bench]}
+    rolling     rolling metrics of portfolio and benchmark
+    cr          cumulative returns
+    dd          portfolio drawdown
+    al          allocation to given assets over period{("[/unvl]", "[/cmds]")[port_bench]}
 
-[info]Risk Metrics:[/info][cmds]
+[info]Risk Metrics:[/info]{("[unvl]", "[cmds]")[port]}
     var         display value at risk
     es          display expected shortfall
     sh          display sharpe ratio
     so          display sortino ratio
-    om          display omega ratio[/cmds]
+    om          display omega ratio{("[/unvl]", "[/cmds]")[port]}
         """
         # TODO: Clean up the reports inputs
         # TODO: Edit the allocation to allow the different asset classes
@@ -812,13 +815,13 @@ class PortfolioController(BaseController):
                     )
 
     @log_start_end(log=logger)
-    def call_rmr(self, other_args: List[str]):
-        """Process rmr command"""
+    def call_cr(self, other_args: List[str]):
+        """Process cr command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="rmr",
-            description="Graph of portfolio returns versus market returns",
+            prog="cr",
+            description="Graph of cumulative returns against benchmark",
         )
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
