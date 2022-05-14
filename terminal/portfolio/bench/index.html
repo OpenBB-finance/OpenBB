@@ -9,13 +9,14 @@
 
 
 
-    <meta name="description" content="usage: add [-h] Adds an item to your portfolio
-optional arguments: -h, --help show this help message (default: False) 2022 Feb 14, 10:31 (✨) /portfolio/ $ add Type (stock, cash): stock Action: (buy, sell, deposit, withdraw): buy Name (ticker or cash [if depositing cash]): TSLA Purchase date (YYYY-MM-DD): 2022-02-08 Quantity: 10 Price per share: 900 Fees: 0 TSLA successfully added 2022 Feb 14, 10:31 (✨) /portfolio/ $ show ┌──────┬───────┬──────────┬─────────────────────┬────────┬──────┬─────────┬──────┬────────┐ │ Name │ Type │ Quantity │ Date │ Price │ Fees │ Premium │ Side │ Value │ ├──────┼───────┼──────────┼─────────────────────┼────────┼──────┼─────────┼──────┼────────┤ │ SPY │ etf │ 1.">
+    <meta name="description" content="usage: bench [-b BENCHMARK [BENCHMARK ...]] [-h] Load in a benchmark from a selected list or set your own based on the ticker.
+optional arguments: -b BENCHMARK [BENCHMARK ...], --benchmark BENCHMARK [BENCHMARK ...] Set the benchmark for the portfolio. By default, this is SPDR S&amp;P 500 ETF Trust (SPY). (default: SPY) -h, --help show this help message (default: False) Example:
+2022 May 10, 09:53 (🦋) /portfolio/ $ bench Vanguard FTSE Developed Markets ETF (VEA) Benchmark: Vanguard Developed Markets Index Fund (VEA) 2022 May 10, 09:53 (🦋) /portfolio/ $">
 
 
 
     <title>
-      Add | OpenBB Terminal
+      Bench | OpenBB Terminal
     </title>
 
     <link rel="icon" href="/OpenBBTerminal/favicon/favicon-32x32.png" type="image/x-icon">
@@ -36,7 +37,7 @@ optional arguments: -h, --help show this help message (default: False) 2022 Feb 
 <link rel="preload" href="/OpenBBTerminal/custom.css" as="style">
 <link rel="stylesheet" href="/OpenBBTerminal/custom.css" media="all">
 
-<link rel="alternate" type="application/rss+xml" href="https://openbb-finance.github.io/OpenBBTerminal/terminal/portfolio/add/index.xml" title="OpenBB Terminal" />
+<link rel="alternate" type="application/rss+xml" href="https://openbb-finance.github.io/OpenBBTerminal/terminal/portfolio/bench/index.xml" title="OpenBB Terminal" />
 
 
 <!-- Made with Geekdoc theme https://github.com/thegeeklab/hugo-geekdoc -->
@@ -19266,37 +19267,6 @@ optional arguments: -h, --help show this help message (default: False) 2022 Feb 
             
             <span class="flex">
                 
-                <a href="/OpenBBTerminal/terminal/portfolio/save/"
-                    class="gdoc-nav__entry ">
-                    save
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
                 <a href="/OpenBBTerminal/terminal/portfolio/show/"
                     class="gdoc-nav__entry ">
                     show
@@ -19328,9 +19298,71 @@ optional arguments: -h, --help show this help message (default: False) 2022 Feb 
             
             <span class="flex">
                 
-                <a href="/OpenBBTerminal/terminal/portfolio/add/"
+                <a href="/OpenBBTerminal/terminal/portfolio/bench/"
                     class="gdoc-nav__entry is-active">
-                    add
+                    bench
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/OpenBBTerminal/terminal/portfolio/alloc/"
+                    class="gdoc-nav__entry ">
+                    alloc
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/OpenBBTerminal/terminal/portfolio/perf/"
+                    class="gdoc-nav__entry ">
+                    perf
                 </a>
             </span>
             
@@ -19424,68 +19456,6 @@ optional arguments: -h, --help show this help message (default: False) 2022 Feb 
                 <a href="/OpenBBTerminal/terminal/portfolio/dd/"
                     class="gdoc-nav__entry ">
                     dd
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/OpenBBTerminal/terminal/portfolio/build/"
-                    class="gdoc-nav__entry ">
-                    build
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/OpenBBTerminal/terminal/portfolio/init/"
-                    class="gdoc-nav__entry ">
-                    init
                 </a>
             </span>
             
@@ -25427,7 +25397,7 @@ optional arguments: -h, --help show this help message (default: False) 2022 Feb 
         
     
     
-        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/' href='/OpenBBTerminal/'><span itemprop='name'>OpenBB Terminal</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/terminal/' href='/OpenBBTerminal/terminal/'><span itemprop='name'>Terminal</span></a><meta itemprop='position' content='3' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/terminal/portfolio/' href='/OpenBBTerminal/terminal/portfolio/'><span itemprop='name'>Portfolio</span></a><meta itemprop='position' content='4' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>Add</span><meta itemprop='position' content='5' /></li>
+        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/' href='/OpenBBTerminal/'><span itemprop='name'>OpenBB Terminal</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/terminal/' href='/OpenBBTerminal/terminal/'><span itemprop='name'>Terminal</span></a><meta itemprop='position' content='3' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/terminal/portfolio/' href='/OpenBBTerminal/terminal/portfolio/'><span itemprop='name'>Portfolio</span></a><meta itemprop='position' content='4' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>Bench</span><meta itemprop='position' content='5' /></li>
     
 
     
@@ -25443,7 +25413,7 @@ optional arguments: -h, --help show this help message (default: False) 2022 Feb 
     <div>
         <span class="editpage">
             <svg class="icon gdoc_code" style="color: #C7C7C7;"><use xlink:href="#gdoc_code"></use></svg>
-            <a href="https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/website//content/terminal/portfolio/add/_index.md" style="color: #C7C7C7;">
+            <a href="https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/website//content/terminal/portfolio/bench/_index.md" style="color: #C7C7C7;">
                 Edit this page
             </a>
         </span>
@@ -25452,42 +25422,19 @@ optional arguments: -h, --help show this help message (default: False) 2022 Feb 
 </div>
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
-        <h1>Add</h1>
-        <pre><code>usage: add [-h]
-</code></pre><p>Adds an item to your portfolio</p>
+        <h1>Bench</h1>
+        <pre><code>usage: bench [-b BENCHMARK [BENCHMARK ...]] [-h]
+</code></pre><p>Load in a benchmark from a selected list or set your own based on the ticker.</p>
 <pre><code>optional arguments:
-  -h, --help  show this help message (default: False)
-</code></pre><pre><code>2022 Feb 14, 10:31 (✨) /portfolio/ $ add
+  -b BENCHMARK [BENCHMARK ...], --benchmark BENCHMARK [BENCHMARK ...]
+                        Set the benchmark for the portfolio. By default, this is SPDR S&amp;P 500 ETF Trust (SPY). (default: SPY)
+  -h, --help            show this help message (default: False)
+</code></pre><p>Example:</p>
+<pre><code>2022 May 10, 09:53 (🦋) /portfolio/ $ bench Vanguard FTSE Developed Markets ETF (VEA)
 
-Type (stock, cash):
-stock
-Action: (buy, sell, deposit, withdraw):
-buy
-Name (ticker or cash [if depositing cash]):
-TSLA
-Purchase date (YYYY-MM-DD):
-2022-02-08
-Quantity:
-10
-Price per share:
-900
-Fees:
-0
-TSLA successfully added
+Benchmark: Vanguard Developed Markets Index Fund (VEA)
 
-2022 Feb 14, 10:31 (✨) /portfolio/ $ show
-┌──────┬───────┬──────────┬─────────────────────┬────────┬──────┬─────────┬──────┬────────┐
-│ Name │ Type  │ Quantity │ Date                │ Price  │ Fees │ Premium │ Side │ Value  │
-├──────┼───────┼──────────┼─────────────────────┼────────┼──────┼─────────┼──────┼────────┤
-│ SPY  │ etf   │ 1.00     │ 2019-10-21 00:00:00 │ 200.00 │ nan  │ nan     │ 1    │ 200.00 │
-├──────┼───────┼──────────┼─────────────────────┼────────┼──────┼─────────┼──────┼────────┤
-│ CASH │ cash  │ 1.00     │ 2019-10-21 00:00:00 │ 200.00 │ nan  │ nan     │ 1    │ 200.00 │
-├──────┼───────┼──────────┼─────────────────────┼────────┼──────┼─────────┼──────┼────────┤
-│ CASH │ cash  │ 0.00     │ 2021-06-21 00:00:00 │ 200.00 │ nan  │ nan     │ 0    │ 0.00   │
-├──────┼───────┼──────────┼─────────────────────┼────────┼──────┼─────────┼──────┼────────┤
-│ TSLA │ stock │ 10.00    │ 2022-02-08          │ 900.00 │ 0.00 │         │ buy  │ 9000   │
-└──────┴───────┴──────────┴─────────────────────┴────────┴──────┴─────────┴──────┴────────┘
-</code></pre>
+2022 May 10, 09:53 (🦋) /portfolio/ $</code></pre>
     </article>
  
 
@@ -37137,25 +37084,6 @@ TSLA successfully added
             
 
             
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
                 
                 
             
@@ -40745,7 +40673,7 @@ TSLA successfully added
         </span>
         <span class="gdoc-page__nav">
             
-                <a class="gdoc-page__nav--next flex align-center" href="/OpenBBTerminal/terminal/portfolio/al/" title="al">al </a>
+                <a class="gdoc-page__nav--next flex align-center" href="/OpenBBTerminal/terminal/portfolio/alloc/" title="alloc">alloc </a>
             
         </span>
     
