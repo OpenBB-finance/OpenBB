@@ -1,30 +1,32 @@
 
 >   bro         brokers holdings, 		 supports: robinhood, ally, degiro, coinbase
->   po          portfolio optimization, 	 optimal portfolio weights from pyportfolioopt
+>   po          portfolio optimization, 	 optimal your portfolio weights efficiently
 
-Portfolio:
     load        load data into the portfolio
-    show        show existing transactions
-    bench       define the benchmark
 
-Loaded orderbook: None
-Benchmark: None
-Risk Free Rate: 0.00%
+Loaded orderbook: 
+Risk Free Rate:   0.00%
 
-Performance:
+    [unvl]show        show existing transactions[/unvl]
+
+    [unvl]bench       define the benchmark[/unvl]
+
+Benchmark: 
+
+Performance:[unvl]
     alloc       show allocation on an asset or sector basis
-    perf        show (total) performance of the portfolio versus benchmark
+    perf        show (total) performance of the portfolio versus benchmark[/unvl]
 
-Graphs:
-    rolling     display rolling metrics of portfolio and benchmark
-    rmr         graph your returns versus the market's returns
-    dd          display portfolio drawdown
-    al          display allocation to given assets over period
+Graphs:[unvl]
+    rolling     rolling metrics of portfolio and benchmark
+    cr          cumulative returns
+    dd          portfolio drawdown
+    al          allocation to given assets over period[/unvl]
 
-Risk Metrics:
+Risk Metrics:[unvl]
     var         display value at risk
     es          display expected shortfall
     sh          display sharpe ratio
     so          display sortino ratio
-    om          display omega ratio
+    om          display omega ratio[/unvl]
         
