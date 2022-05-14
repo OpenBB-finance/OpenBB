@@ -442,6 +442,19 @@ main:
                 ref: "/terminal/stocks/options/binom"
               - name: greeks
                 ref: "/terminal/stocks/options/greeks"
+              - name: hedge
+                ref: "/terminal/stocks/options/hedge"
+                sub:
+                  - name: add
+                    ref: "/terminal/stocks/options/hedge/add"
+                  - name: sop
+                    ref: "/terminal/stocks/options/hedge/sop"
+                  - name: pick
+                    ref: "/terminal/stocks/options/hedge/pick"
+                  - name: list
+                    ref: "/terminal/stocks/options/hedge/list"
+                  - name: rmv
+                    ref: "/terminal/stocks/options/hedge/rmv"
               - name: payoff
                 ref: "/terminal/stocks/options/payoff"
                 sub:
