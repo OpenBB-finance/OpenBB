@@ -1,5 +1,5 @@
 ```
-usage: rmr [-m MARKET] [-h]
+usage: cr [-m MARKET] [-h]
 ```
 
 A graph of portfolio returns versus a chosen benchmark or market.

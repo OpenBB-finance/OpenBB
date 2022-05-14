@@ -1257,8 +1257,8 @@ main:
             ref: "/terminal/portfolio/perf"
           - name: al
             ref: "/terminal/portfolio/al"
-          - name: rmr
-            ref: "/terminal/portfolio/rmr"
+          - name: cr
+            ref: "/terminal/portfolio/cr"
           - name: dd
             ref: "/terminal/portfolio/dd"
           - name: rolling

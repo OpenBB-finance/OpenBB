@@ -479,6 +479,14 @@ class PortfolioController(BaseController):
             prog="al",
             description="Display allocation",
         )
+        parser.add_argument(
+            "-s",
+            "--sum",
+            action="store_true",
+            default=False,
+            dest="sum_assets",
+            help="Sum all assets value over time",
+        )
 
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
@@ -486,7 +494,9 @@ class PortfolioController(BaseController):
 
         if ns_parser:
             if self.portfolio_name and self.benchmark_name:
-                portfolio_view.display_allocation(self.portfolio, ns_parser.export)
+                portfolio_view.display_allocation(
+                    self.portfolio, ns_parser.sum_assets, ns_parser.export
+                )
             else:
                 if not self.portfolio_name:
                     if not self.benchmark_name:
@@ -772,9 +782,20 @@ class PortfolioController(BaseController):
                     ns_parser.end,
                 )
             else:
-                console.print(
-                    "[red]Please first define the portfolio using 'load'[/red]\n"
-                )
+                if not self.portfolio_name:
+                    if not self.benchmark_name:
+                        console.print(
+                            "[red]Please first define the portfolio (via 'load') "
+                            "and the benchmark (via 'bench').[/red]\n"
+                        )
+                    else:
+                        console.print(
+                            "[red]Please first define the portfolio (via 'load')[/red]\n"
+                        )
+                else:
+                    console.print(
+                        "[red]Please first define the benchmark (via 'bench')[/red]\n"
+                    )
 
     @log_start_end(log=logger)
     def call_cr(self, other_args: List[str]):
@@ -794,20 +815,9 @@ class PortfolioController(BaseController):
                     self.portfolio.returns, self.portfolio.benchmark_returns
                 )
             else:
-                if not self.portfolio_name:
-                    if not self.benchmark_name:
-                        console.print(
-                            "[red]Please first define the portfolio (via 'load') "
-                            "and the benchmark (via 'bench').[/red]\n"
-                        )
-                    else:
-                        console.print(
-                            "[red]Please first define the portfolio (via 'load')[/red]\n"
-                        )
-                else:
-                    console.print(
-                        "[red]Please first define the benchmark (via 'bench')[/red]\n"
-                    )
+                console.print(
+                    "[red]Please first define the portfolio using 'load'[/red]\n"
+                )
 
     @log_start_end(log=logger)
     def call_dd(self, other_args: List[str]):

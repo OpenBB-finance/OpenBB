@@ -364,6 +364,7 @@ def display_returns_vs_bench(
 @log_start_end(log=logger)
 def display_allocation(
     portfolio: portfolio_model.Portfolio,
+    sum_assets: bool = False,
     export: str = "",
     external_axes: Optional[plt.Axes] = None,
 ):
@@ -373,6 +374,8 @@ def display_allocation(
     ----------
     portfolio: Portfolio
         Portfolio object with trades loaded
+    sum_assets: bool
+        Sum assets over time
     export: str
         Format to export plot
     external_axes: plt.Axes
@@ -392,8 +395,18 @@ def display_allocation(
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     else:
         ax = external_axes
-    all_holdings.plot(ax=ax)
-    ax.set_title("Individual Asset Holdings")
+
+    if sum_assets:
+        ax.stackplot(
+            all_holdings.index,
+            [all_holdings[col] for col in all_holdings.columns],
+            labels=all_holdings.columns,
+        )
+        ax.set_title("Asset Holdings")
+    else:
+        all_holdings.plot(ax=ax)
+        ax.set_title("Individual Asset Holdings")
+
     if len(all_holdings.columns) > 10:
         legend_columns = round(len(all_holdings.columns) / 5)
     elif len(all_holdings.columns) > 40:
