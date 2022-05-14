@@ -182,18 +182,6 @@ class PortfolioController(BaseController):
             self.queue,
         )
 
-    # BUG: The commands in pa menu throw errors. First one says that it's related to
-    #      string formatting and the second one has something to do with None being used
-    #      instead of [] in the queue (assumption) what throws errors on the logger.
-    # TODO: This submenu is disabled until the bug is fixed.
-    # def call_pa(self, _):
-    #     """Process pa command"""
-    #     from openbb_terminal.portfolio.portfolio_analysis import pa_controller
-    #
-    #     self.queue = self.queue = self.load_class(
-    #         pa_controller.PortfolioAnalysisController, self.queue
-    #     )
-
     @log_start_end(log=logger)
     def call_load(self, other_args: List[str]):
         """Process load command"""
@@ -212,7 +200,6 @@ class PortfolioController(BaseController):
             required="-h" not in other_args,
             help="The file to be loaded",
         )
-
         parser.add_argument(
             "-n",
             "--name",
@@ -220,10 +207,9 @@ class PortfolioController(BaseController):
             dest="name",
             help="The name that you wish to give to your portfolio",
         )
-
         parser.add_argument(
             "-r",
-            "--risk_free_rate",
+            "--rfr",
             type=str,
             default=0,
             dest="risk_free_rate",
@@ -335,16 +321,6 @@ class PortfolioController(BaseController):
             dest="agg",
             help="The type of allocation aggregation you wish to do",
         )
-
-        parser.add_argument(
-            "-l",
-            "--limit",
-            default=10,
-            type=int,
-            dest="limit",
-            help="The amount of assets or sectors you wish to see",
-        )
-
         parser.add_argument(
             "-t",
             "--tables",
@@ -353,12 +329,11 @@ class PortfolioController(BaseController):
             dest="tables",
             help="Whether to also include the assets/sectors tables of both the benchmark and the portfolio.",
         )
-
         if other_args:
             if "-a" not in other_args and "-h" not in other_args:
                 other_args.insert(0, "-a")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args, limit=10)
 
         if ns_parser and ns_parser.agg:
             if self.portfolio_name and self.benchmark_name:
@@ -402,10 +377,20 @@ class PortfolioController(BaseController):
                         f"are: {', '.join(self.aggregation_methods)}"
                     )
             else:
-                console.print(
-                    "[red]Please first define the portfolio (via 'load') "
-                    "and the benchmark (via 'bench').[/red]\n"
-                )
+                if not self.portfolio_name:
+                    if not self.benchmark_name:
+                        console.print(
+                            "[red]Please first define the portfolio (via 'load') "
+                            "and the benchmark (via 'bench').[/red]\n"
+                        )
+                    else:
+                        console.print(
+                            "[red]Please first define the portfolio (via 'load')[/red]\n"
+                        )
+                else:
+                    console.print(
+                        "[red]Please first define the benchmark (via 'bench')[/red]\n"
+                    )
 
     @log_start_end(log=logger)
     def call_perf(self, other_args: List[str]):
@@ -450,10 +435,20 @@ class PortfolioController(BaseController):
                     ns_parser.show_trades,
                 )
             else:
-                console.print(
-                    "[red]Please first define the portfolio (via 'load') "
-                    "and the benchmark (via 'bench').[/red]\n"
-                )
+                if not self.portfolio_name:
+                    if not self.benchmark_name:
+                        console.print(
+                            "[red]Please first define the portfolio (via 'load') "
+                            "and the benchmark (via 'bench').[/red]\n"
+                        )
+                    else:
+                        console.print(
+                            "[red]Please first define the portfolio (via 'load')[/red]\n"
+                        )
+                else:
+                    console.print(
+                        "[red]Please first define the benchmark (via 'bench')[/red]\n"
+                    )
 
     @log_start_end(log=logger)
     def call_al(self, other_args: List[str]):
@@ -464,44 +459,29 @@ class PortfolioController(BaseController):
             prog="al",
             description="Display allocation",
         )
+
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
+
         if ns_parser:
             if self.portfolio_name and self.benchmark_name:
                 portfolio_view.display_allocation(self.portfolio, ns_parser.export)
             else:
-                console.print(
-                    "[red]Please first define the portfolio (via 'load') "
-                    "and the benchmark (via 'bench').[/red]\n"
-                )
-
-    # def call_ar(self, other_args: List[str]):
-    #     """Process ar command"""
-    #     parser = argparse.ArgumentParser(
-    #         add_help=False,
-    #         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-    #         prog="ar",
-    #         description="Create an annual report based on given portfolio",
-    #     )
-    #     parser.add_argument(
-    #         "-m",
-    #         "--market",
-    #         type=str,
-    #         dest="market",
-    #         default="SPY",
-    #         help="Choose a ticker to be the market asset",
-    #     )
-    #     ns_parser = parse_known_args_and_warn(parser, other_args)
-    #     if ns_parser:
-    #         if not self.portfolio.empty:
-    #             self.portfolio.generate_holdings_from_trades()
-    #             self.portfolio.add_benchmark(ns_parser.market)
-    #             portfolio_view.Report(
-    #                 val, hist, ns_parser.market, 365
-    #             ).generate_report()
-    #         else:
-    #             console.print("Please add items to the portfolio\n")
+                if not self.portfolio_name:
+                    if not self.benchmark_name:
+                        console.print(
+                            "[red]Please first define the portfolio (via 'load') "
+                            "and the benchmark (via 'bench').[/red]\n"
+                        )
+                    else:
+                        console.print(
+                            "[red]Please first define the portfolio (via 'load')[/red]\n"
+                        )
+                else:
+                    console.print(
+                        "[red]Please first define the benchmark (via 'bench')[/red]\n"
+                    )
 
     @log_start_end(log=logger)
     def call_var(self, other_args: List[str]):
@@ -553,7 +533,9 @@ class PortfolioController(BaseController):
                 Percentile used for VaR calculations, for example input 99.9 equals a 99.9 Percent VaR
             """,
         )
+
         ns_parser = parse_known_args_and_warn(parser, other_args)
+
         if ns_parser:
             if self.portfolio_name and self.benchmark_name:
                 if ns_parser.adjusted and ns_parser.student_t:
@@ -571,10 +553,20 @@ class PortfolioController(BaseController):
                         True,
                     )
             else:
-                console.print(
-                    "[red]Please first define the portfolio (via 'load') "
-                    "and the benchmark (via 'bench').[/red]\n"
-                )
+                if not self.portfolio_name:
+                    if not self.benchmark_name:
+                        console.print(
+                            "[red]Please first define the portfolio (via 'load') "
+                            "and the benchmark (via 'bench').[/red]\n"
+                        )
+                    else:
+                        console.print(
+                            "[red]Please first define the portfolio (via 'load')[/red]\n"
+                        )
+                else:
+                    console.print(
+                        "[red]Please first define the benchmark (via 'bench')[/red]\n"
+                    )
 
     @log_start_end(log=logger)
     def call_es(self, other_args: List[str]):
@@ -616,7 +608,9 @@ class PortfolioController(BaseController):
                 Percentile used for ES calculations, for example input 99.9 equals a 99.9 Percent Expected Shortfall
             """,
         )
+
         ns_parser = parse_known_args_and_warn(parser, other_args)
+
         if ns_parser:
             if self.portfolio_name and self.benchmark_name:
                 qa_view.display_es(
@@ -628,10 +622,20 @@ class PortfolioController(BaseController):
                     True,
                 )
             else:
-                console.print(
-                    "[red]Please first define the portfolio (via 'load') "
-                    "and the benchmark (via 'bench').[/red]\n"
-                )
+                if not self.portfolio_name:
+                    if not self.benchmark_name:
+                        console.print(
+                            "[red]Please first define the portfolio (via 'load') "
+                            "and the benchmark (via 'bench').[/red]\n"
+                        )
+                    else:
+                        console.print(
+                            "[red]Please first define the portfolio (via 'load')[/red]\n"
+                        )
+                else:
+                    console.print(
+                        "[red]Please first define the benchmark (via 'bench')[/red]\n"
+                    )
 
     @log_start_end(log=logger)
     def call_sh(self, other_args: List[str]):
@@ -662,16 +666,28 @@ class PortfolioController(BaseController):
             default=252,
             help="Rolling window length",
         )
+
         ns_parser = parse_known_args_and_warn(parser, other_args)
+
         if ns_parser:
             if self.portfolio_name and self.benchmark_name:
                 data = self.portfolio.portfolio_value[1:]
                 qa_view.display_sharpe(data, ns_parser.rfr, ns_parser.window)
             else:
-                console.print(
-                    "[red]Please first define the portfolio (via 'load') "
-                    "and the benchmark (via 'bench').[/red]\n"
-                )
+                if not self.portfolio_name:
+                    if not self.benchmark_name:
+                        console.print(
+                            "[red]Please first define the portfolio (via 'load') "
+                            "and the benchmark (via 'bench').[/red]\n"
+                        )
+                    else:
+                        console.print(
+                            "[red]Please first define the portfolio (via 'load')[/red]\n"
+                        )
+                else:
+                    console.print(
+                        "[red]Please first define the benchmark (via 'bench')[/red]\n"
+                    )
 
     @log_start_end(log=logger)
     def call_so(self, other_args: List[str]):
@@ -712,6 +728,7 @@ class PortfolioController(BaseController):
         )
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
+
         if ns_parser:
             if self.portfolio_name and self.benchmark_name:
                 data = self.portfolio.returns[1:]
@@ -719,10 +736,20 @@ class PortfolioController(BaseController):
                     data, ns_parser.target_return, ns_parser.window, ns_parser.adjusted
                 )
             else:
-                console.print(
-                    "[red]Please first define the portfolio (via 'load') "
-                    "and the benchmark (via 'bench').[/red]\n"
-                )
+                if not self.portfolio_name:
+                    if not self.benchmark_name:
+                        console.print(
+                            "[red]Please first define the portfolio (via 'load') "
+                            "and the benchmark (via 'bench').[/red]\n"
+                        )
+                    else:
+                        console.print(
+                            "[red]Please first define the portfolio (via 'load')[/red]\n"
+                        )
+                else:
+                    console.print(
+                        "[red]Please first define the benchmark (via 'bench')[/red]\n"
+                    )
 
     @log_start_end(log=logger)
     def call_om(self, other_args: List[str]):
@@ -759,6 +786,7 @@ class PortfolioController(BaseController):
         )
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
+
         if ns_parser:
             if self.portfolio_name and self.benchmark_name:
                 data = self.portfolio.returns[1:]
@@ -768,10 +796,20 @@ class PortfolioController(BaseController):
                     ns_parser.end,
                 )
             else:
-                console.print(
-                    "[red]Please first define the portfolio (via 'load') "
-                    "and the benchmark (via 'bench').[/red]\n"
-                )
+                if not self.portfolio_name:
+                    if not self.benchmark_name:
+                        console.print(
+                            "[red]Please first define the portfolio (via 'load') "
+                            "and the benchmark (via 'bench').[/red]\n"
+                        )
+                    else:
+                        console.print(
+                            "[red]Please first define the portfolio (via 'load')[/red]\n"
+                        )
+                else:
+                    console.print(
+                        "[red]Please first define the benchmark (via 'bench')[/red]\n"
+                    )
 
     @log_start_end(log=logger)
     def call_rmr(self, other_args: List[str]):
@@ -791,10 +829,20 @@ class PortfolioController(BaseController):
                     self.portfolio.returns, self.portfolio.benchmark_returns
                 )
             else:
-                console.print(
-                    "[red]Please first define the portfolio (via 'load') "
-                    "and the benchmark (via 'bench').[/red]\n"
-                )
+                if not self.portfolio_name:
+                    if not self.benchmark_name:
+                        console.print(
+                            "[red]Please first define the portfolio (via 'load') "
+                            "and the benchmark (via 'bench').[/red]\n"
+                        )
+                    else:
+                        console.print(
+                            "[red]Please first define the portfolio (via 'load')[/red]\n"
+                        )
+                else:
+                    console.print(
+                        "[red]Please first define the benchmark (via 'bench')[/red]\n"
+                    )
 
     @log_start_end(log=logger)
     def call_dd(self, other_args: List[str]):
@@ -805,17 +853,29 @@ class PortfolioController(BaseController):
             prog="dd",
             description="Show portfolio drawdown",
         )
+
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
+
         if ns_parser:
             if self.portfolio_name and self.benchmark_name:
                 portfolio_view.display_drawdown(self.portfolio.portfolio_value)
             else:
-                console.print(
-                    "[red]Please first define the portfolio (via 'load') "
-                    "and the benchmark (via 'bench').[/red]\n"
-                )
+                if not self.portfolio_name:
+                    if not self.benchmark_name:
+                        console.print(
+                            "[red]Please first define the portfolio (via 'load') "
+                            "and the benchmark (via 'bench').[/red]\n"
+                        )
+                    else:
+                        console.print(
+                            "[red]Please first define the portfolio (via 'load')[/red]\n"
+                        )
+                else:
+                    console.print(
+                        "[red]Please first define the benchmark (via 'bench')[/red]\n"
+                    )
 
     @log_start_end(log=logger)
     def call_rolling(self, other_args: List[str]):
@@ -826,7 +886,6 @@ class PortfolioController(BaseController):
             prog="rolling",
             description="Show rolling portfolio metrics vs benchmark",
         )
-
         parser.add_argument(
             "-l",
             "--length",
@@ -837,9 +896,9 @@ class PortfolioController(BaseController):
         )
         parser.add_argument(
             "-r",
-            "--rf",
+            "--rfr",
             type=check_positive_float,
-            dest="rf",
+            dest="risk_free_rate",
             default=self.portfolio.rf,
             help="Set risk free rate for calculations.",
         )
@@ -852,10 +911,20 @@ class PortfolioController(BaseController):
                     self.portfolio.benchmark_returns,
                     self.portfolio.returns,
                     length=ns_parser.length,
-                    risk_free_rate=ns_parser.rf,
+                    risk_free_rate=ns_parser.risk_free_rate,
                 )
             else:
-                console.print(
-                    "[red]Please first define the portfolio (via 'load') "
-                    "and the benchmark (via 'bench').[/red]\n"
-                )
+                if not self.portfolio_name:
+                    if not self.benchmark_name:
+                        console.print(
+                            "[red]Please first define the portfolio (via 'load') "
+                            "and the benchmark (via 'bench').[/red]\n"
+                        )
+                    else:
+                        console.print(
+                            "[red]Please first define the portfolio (via 'load')[/red]\n"
+                        )
+                else:
+                    console.print(
+                        "[red]Please first define the benchmark (via 'bench')[/red]\n"
+                    )
