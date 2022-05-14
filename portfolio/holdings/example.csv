@@ -1,0 +1,6 @@
+Date,Name,Type,Sector,Industry,Country,Price,Quantity,Fees,Premium,Investment,Side,Currency
+2021/3/24,CASH,CASH,CASH,CASH,CASH,2000,1,0,0,2000,Deposit,USD
+2021/3/24,aapl,stock,Technology,Communication Services,United States,120.7,300,0,0,0,Buy,USD
+2021/3/26,msft,stock,Technology,Communication Services,United States,232.8,200,0,0,0,Buy,USD
+2021/5/21,btc,crypto,Digital Assets,Digital Assets,United States,37430,1,0,0,0,Buy,USD
+2021/7/2,aapl,stock,Technology,Communication Services,United States,139.8,300,0,0,0,Buy,USD
