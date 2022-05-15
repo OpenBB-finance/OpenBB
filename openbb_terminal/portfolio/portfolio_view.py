@@ -518,6 +518,8 @@ def display_rolling_volatility(
     rolling_volatility_bench.plot(ax=ax)
     ax.set_title(f"Rolling Volatility using {period} window")
     ax.set_xlabel("Date")
+    ax.legend(["Portfolio", "Benchmark"], loc="upper left")
+    ax.set_xlim(portfolio_returns.index[0], portfolio_returns.index[-1])
 
     if external_axes is None:
         theme.visualize_output()
@@ -526,6 +528,69 @@ def display_rolling_volatility(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "rvol",
+        rolling_volatility.to_frame().join(rolling_volatility_bench),
+    )
+
+
+@log_start_end(log=logger)
+def display_rolling_sharpe(
+    benchmark_returns: pd.Series,
+    portfolio_returns: pd.Series,
+    period: str = "1y",
+    risk_free_rate: float = 0,
+    export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
+):
+    """Display rolling sharpe
+
+    Parameters
+    ----------
+    portfolio_returns : pd.Series
+        Returns of the portfolio
+    benchmark_returns : pd.Series
+        Returns of the benchmark
+    period: str
+        Period for window to consider
+    risk_free_rate: float
+        Value to use for risk free rate in sharpe/other calculations
+    export: str
+        Export to file
+    external_axes: Optional[List[plt.Axes]]
+        Optional axes to display plot on
+    """
+    if external_axes is None:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    else:
+        if len(external_axes) != 1:
+            logger.error("Expected list of one axis items.")
+            console.print("[red]1 axes expected.\n[/red]")
+            return
+        ax = external_axes
+
+    length = portfolio_helper.PERIODS_DAYS[period]
+
+    rolling_sharpe = portfolio_returns.rolling(length).apply(
+        lambda x: (x.mean() - risk_free_rate) / x.std()
+    )
+    rolling_sharpe_bench = benchmark_returns.rolling(length).apply(
+        lambda x: (x.mean() - risk_free_rate) / x.std()
+    )
+
+    rolling_sharpe.plot(ax=ax)
+    rolling_sharpe_bench.plot(ax=ax)
+    ax.set_title(f"Rolling Sharpe using {period} window")
+    ax.set_xlabel("Date")
+    ax.legend(["Portfolio", "Benchmark"], loc="upper left")
+    ax.set_xlim(portfolio_returns.index[0], portfolio_returns.index[-1])
+
+    if external_axes is None:
+        theme.visualize_output()
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "rsharpe",
+        rolling_sharpe.to_frame().join(rolling_sharpe_bench),
     )
 
 

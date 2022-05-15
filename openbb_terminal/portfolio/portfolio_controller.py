@@ -13,6 +13,7 @@ from prompt_toolkit.completion import NestedCompleter
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
+    EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_FIGURES_ALLOWED,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive_float,
@@ -48,7 +49,6 @@ class PortfolioController(BaseController):
         "cr",
         "al",
         "dd",
-        "rolling",
         "var",
         "es",
         "sh",
@@ -59,6 +59,9 @@ class PortfolioController(BaseController):
         "kurt",
         "skew",
         "rvol",
+        "rsharpe",
+        "rsort",
+        "rbeta",
     ]
     CHOICES_MENUS = [
         "bro",
@@ -140,18 +143,18 @@ class PortfolioController(BaseController):
 
 [param]Benchmark:[/param] {self.benchmark_name or ""}
 
-[info]Performance:[/info]{("[unvl]", "[cmds]")[port_bench]}
-    alloc       show allocation on an asset or sector basis
-    perf        show (total) performance of the portfolio versus benchmark{("[/unvl]", "[/cmds]")[port_bench]}
-
 [info]Graphs:[/info]{("[unvl]", "[cmds]")[port_bench]}
-    rolling     rolling metrics of portfolio and benchmark
     al          allocation to given assets over period
     cr          cumulative returns
     dd          portfolio drawdown
-    rvol        rolling volatility{("[/unvl]", "[/cmds]")[port_bench]}
+    rvol        rolling volatility
+    rsharpe     rolling sharpe
+    rsort       rolling sortino
+    rbeta       rolling beta{("[/unvl]", "[/cmds]")[port_bench]}
 
 [info]Metrics:[/info]{("[unvl]", "[cmds]")[port_bench]}
+    alloc       show allocation on an asset or sector basis
+    perf        show (total) performance of the portfolio versus benchmark
     stats       stats such as mean, percentiles, standard deviation
     rsquare     R-square score
     skew        skewness
@@ -898,7 +901,7 @@ class PortfolioController(BaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
+            parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
             if self.portfolio_name and self.benchmark_name:
@@ -906,6 +909,62 @@ class PortfolioController(BaseController):
                     self.portfolio.benchmark_returns,
                     self.portfolio.returns,
                     period=ns_parser.period,
+                    export=ns_parser.export,
+                )
+            else:
+                if not self.portfolio_name:
+                    if not self.benchmark_name:
+                        console.print(
+                            "[red]Please first define the portfolio (via 'load') "
+                            "and the benchmark (via 'bench').[/red]\n"
+                        )
+                    else:
+                        console.print(
+                            "[red]Please first define the portfolio (via 'load')[/red]\n"
+                        )
+                else:
+                    console.print(
+                        "[red]Please first define the benchmark (via 'bench')[/red]\n"
+                    )
+
+    @log_start_end(log=logger)
+    def call_rsharpe(self, other_args: List[str]):
+        """Process rolling sharpe command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="rsharpe",
+            description="Show rolling sharpe portfolio vs benchmark",
+        )
+        parser.add_argument(
+            "-p",
+            "--period",
+            type=str,
+            dest="period",
+            default="1y",
+            choices=list(portfolio_helper.PERIODS_DAYS.keys()),
+            help="Period to apply rolling window",
+        )
+        parser.add_argument(
+            "-r",
+            "--rfr",
+            type=check_positive_float,
+            dest="risk_free_rate",
+            default=self.portfolio.rf,
+            help="Set risk free rate for calculations.",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-p")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if ns_parser:
+            if self.portfolio_name and self.benchmark_name:
+                portfolio_view.display_rolling_sharpe(
+                    self.portfolio.benchmark_returns,
+                    self.portfolio.returns,
+                    period=ns_parser.period,
+                    risk_free_rate=ns_parser.risk_free_rate,
                     export=ns_parser.export,
                 )
             else:
