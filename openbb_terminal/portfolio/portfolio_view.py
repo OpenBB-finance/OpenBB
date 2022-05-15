@@ -643,6 +643,37 @@ def display_kurtosis(
     console.print()
 
 
+@log_start_end(log=logger)
+def display_stats(
+    portfolio: portfolio_model.Portfolio,
+    period: str = "all",
+    export: str = "",
+):
+    """Display stats
+
+    Parameters
+    ----------
+    portfolio: Portfolio
+        Portfolio object with trades loaded
+    period : str
+        Period to consider. Choices are: mtd, qtd, ytd, 3m, 6m, 1y, 3y, 5y, 10y, all
+    export : str
+        Export data format
+    """
+    console.print()
+    print_rich_table(
+        portfolio.get_stats(period),
+        title=f"Stats for Portfolio and Benchmark in period {period}",
+        show_index=True,
+    )
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "stats",
+    )
+    console.print()
+
+
 #
 # @log_start_end(log=logger)
 # def plot_overall_return(

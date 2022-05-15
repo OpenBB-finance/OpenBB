@@ -691,10 +691,10 @@ class Portfolio:
             vals.append(
                 round(
                     r2_score(
+                        portfolio_helper.filter_df_by_period(self.returns, period),
                         portfolio_helper.filter_df_by_period(
-                            self.portfolio_value, period
+                            self.benchmark_returns, period
                         ),
-                        portfolio_helper.filter_df_by_period(self.benchmark, period),
                     ),
                     3,
                 )
@@ -716,15 +716,15 @@ class Portfolio:
                 [
                     round(
                         scipy.stats.skew(
-                            portfolio_helper.filter_df_by_period(
-                                self.portfolio_value, period
-                            )
+                            portfolio_helper.filter_df_by_period(self.returns, period)
                         ),
                         3,
                     ),
                     round(
                         scipy.stats.skew(
-                            portfolio_helper.filter_df_by_period(self.benchmark, period)
+                            portfolio_helper.filter_df_by_period(
+                                self.benchmark_returns, period
+                            )
                         ),
                         3,
                     ),
@@ -749,15 +749,15 @@ class Portfolio:
                 [
                     round(
                         scipy.stats.kurtosis(
-                            portfolio_helper.filter_df_by_period(
-                                self.portfolio_value, period
-                            )
+                            portfolio_helper.filter_df_by_period(self.returns, period)
                         ),
                         3,
                     ),
                     round(
                         scipy.stats.skew(
-                            portfolio_helper.filter_df_by_period(self.benchmark, period)
+                            portfolio_helper.filter_df_by_period(
+                                self.benchmark_returns, period
+                            )
                         ),
                         3,
                     ),
@@ -766,3 +766,27 @@ class Portfolio:
         return pd.DataFrame(
             vals, index=portfolio_helper.PERIODS, columns=["Portfolio", "Benchmark"]
         )
+
+    @log_start_end(log=logger)
+    def get_stats(self, period: str = "all") -> pd.DataFrame:
+        """Class method that retrieves stats for portfolio and benchmark selected based on a certain period
+
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame with overall stats for portfolio and benchmark for a certain periods
+        period : str
+            Period to consider. Choices are: mtd, qtd, ytd, 3m, 6m, 1y, 3y, 5y, 10y, all
+        """
+        df = (
+            portfolio_helper.filter_df_by_period(self.returns, period)
+            .describe()
+            .to_frame()
+            .join(
+                portfolio_helper.filter_df_by_period(
+                    self.benchmark_returns, period
+                ).describe()
+            )
+        )
+        df.columns = ["Portfolio", "Benchmark"]
+        return df
