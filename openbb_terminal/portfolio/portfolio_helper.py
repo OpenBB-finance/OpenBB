@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import yfinance as yf
 import pandas as pd
-from datetime import datetime
+from datetime import datetime, timedelta
 
 BENCHMARK_LIST = {
     "SPDR S&P 500 ETF Trust (SPY)": "SPY",
@@ -209,15 +209,15 @@ def filter_df_by_period(df: pd.DataFrame, period: str = "all") -> pd.DataFrame:
     if period == "ytd":
         return df[df.index.strftime("%Y") == datetime.now().strftime("%Y")]
     if period == "3m":
-        return df[-21 * 3 :]
+        return df[df.index >= datetime.now() - timedelta(days=21 * 3)]
     if period == "6m":
-        return df[-21 * 6 :]
+        return df[df.index >= datetime.now() - timedelta(days=21 * 6)]
     if period == "1y":
-        return df[-21 * 12 * 1 :]
+        return df[df.index >= datetime.now() - timedelta(days=21 * 12 * 1)]
     if period == "3y":
-        return df[-21 * 12 * 3 :]
+        return df[df.index >= datetime.now() - timedelta(days=21 * 12 * 3)]
     if period == "5y":
-        return df[-21 * 12 * 5 :]
+        return df[df.index >= datetime.now() - timedelta(days=21 * 12 * 5)]
     if period == "10y":
-        return df[-21 * 12 * 10 :]
+        return df[df.index >= datetime.now() - timedelta(days=21 * 12 * 10)]
     return df

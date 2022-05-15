@@ -12,6 +12,7 @@ from matplotlib import pyplot as plt
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.portfolio import (
+    portfolio_helper,
     portfolio_model,
 )
 
@@ -222,6 +223,7 @@ def display_category_allocation(
 def display_performance_vs_benchmark(
     portfolio_trades: pd.DataFrame,
     benchmark_trades: pd.DataFrame,
+    period: str,
     show_all_trades: bool = False,
 ):
     """Display portfolio performance vs the benchmark
@@ -232,9 +234,18 @@ def display_performance_vs_benchmark(
         Object containing trades made within the portfolio.
     benchmark_trades: pd.DataFrame
         Object containing trades made within the benchmark.
+    period : str
+        Period to consider performance. From: mtd, qtd, ytd, 3m, 6m, 1y, 3y, 5y, 10y, all
     show_all_trades: bool
         Whether to also show all trades made and their performance (default is False)
     """
+
+    portfolio_trades.index = pd.to_datetime(portfolio_trades["Date"].values)
+    portfolio_trades = portfolio_helper.filter_df_by_period(portfolio_trades, period)
+
+    benchmark_trades.index = pd.to_datetime(benchmark_trades["Date"].values)
+    benchmark_trades = portfolio_helper.filter_df_by_period(benchmark_trades, period)
+
     # Calculate total value and return
     total_investment_difference = (
         portfolio_trades["Portfolio Investment"].sum()
@@ -291,7 +302,7 @@ def display_performance_vs_benchmark(
 
     print_rich_table(
         totals.replace(0, "-"),
-        title="Portfolio vs. Benchmark - Totals",
+        title=f"Portfolio vs. Benchmark - Totals in period: {period}",
         headers=list(totals.columns),
         show_index=True,
     )
@@ -318,7 +329,7 @@ def display_performance_vs_benchmark(
 
         print_rich_table(
             combined,
-            title="Portfolio vs. Benchmark - Individual Trades",
+            title=f"Portfolio vs. Benchmark - Individual Trades in period: {period}",
             headers=list(combined.columns),
             show_index=False,
             floatfmt=[".2f", ".2f", ".2f", ".2%", ".2f", ".2%", ".2%"],
