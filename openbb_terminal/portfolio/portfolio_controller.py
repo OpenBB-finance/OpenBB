@@ -375,7 +375,9 @@ class PortfolioController(BaseController):
 
         if ns_parser:
             console.print()
-            if self.portfolio_name and self.benchmark_name:
+            if check_portfolio_benchmark_defined(
+                self.portfolio_name, self.benchmark_name
+            ):
                 if self.portfolio.portfolio_assets_allocation.empty:
                     self.portfolio.calculate_allocations()
 
@@ -414,21 +416,6 @@ class PortfolioController(BaseController):
                     console.print(
                         f"{ns_parser.agg} is not an available option. The options "
                         f"are: {', '.join(self.aggregation_methods)}"
-                    )
-            else:
-                if not self.portfolio_name:
-                    if not self.benchmark_name:
-                        console.print(
-                            "[red]Please first define the portfolio (via 'load') "
-                            "and the benchmark (via 'bench').[/red]\n"
-                        )
-                    else:
-                        console.print(
-                            "[red]Please first define the portfolio (via 'load')[/red]\n"
-                        )
-                else:
-                    console.print(
-                        "[red]Please first define the benchmark (via 'bench')[/red]\n"
                     )
 
     @log_start_end(log=logger)
@@ -473,7 +460,9 @@ class PortfolioController(BaseController):
         ns_parser = parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
-            if self.portfolio_name and self.benchmark_name:
+            if check_portfolio_benchmark_defined(
+                self.portfolio_name, self.benchmark_name
+            ):
                 self.portfolio.mimic_portfolio_trades_for_benchmark(
                     full_shares=ns_parser.full_shares
                 )
@@ -484,21 +473,6 @@ class PortfolioController(BaseController):
                     ns_parser.period,
                     ns_parser.show_trades,
                 )
-            else:
-                if not self.portfolio_name:
-                    if not self.benchmark_name:
-                        console.print(
-                            "[red]Please first define the portfolio (via 'load') "
-                            "and the benchmark (via 'bench').[/red]\n"
-                        )
-                    else:
-                        console.print(
-                            "[red]Please first define the portfolio (via 'load')[/red]\n"
-                        )
-                else:
-                    console.print(
-                        "[red]Please first define the benchmark (via 'bench')[/red]\n"
-                    )
 
     @log_start_end(log=logger)
     def call_hold(self, other_args: List[str]):
@@ -523,25 +497,12 @@ class PortfolioController(BaseController):
         )
 
         if ns_parser:
-            if self.portfolio_name and self.benchmark_name:
+            if check_portfolio_benchmark_defined(
+                self.portfolio_name, self.benchmark_name
+            ):
                 portfolio_view.display_holdings(
                     self.portfolio, ns_parser.sum_assets, ns_parser.export
                 )
-            else:
-                if not self.portfolio_name:
-                    if not self.benchmark_name:
-                        console.print(
-                            "[red]Please first define the portfolio (via 'load') "
-                            "and the benchmark (via 'bench').[/red]\n"
-                        )
-                    else:
-                        console.print(
-                            "[red]Please first define the portfolio (via 'load')[/red]\n"
-                        )
-                else:
-                    console.print(
-                        "[red]Please first define the benchmark (via 'bench')[/red]\n"
-                    )
 
     @log_start_end(log=logger)
     def call_var(self, other_args: List[str]):
@@ -708,9 +669,7 @@ class PortfolioController(BaseController):
                    End of the omega ratio threshold
                """,
         )
-
         ns_parser = parse_known_args_and_warn(parser, other_args)
-
         if ns_parser:
             if self.portfolio_name:
                 data = self.portfolio.returns[1:]
@@ -721,18 +680,8 @@ class PortfolioController(BaseController):
                 )
             else:
                 if not self.portfolio_name:
-                    if not self.benchmark_name:
-                        console.print(
-                            "[red]Please first define the portfolio (via 'load') "
-                            "and the benchmark (via 'bench').[/red]\n"
-                        )
-                    else:
-                        console.print(
-                            "[red]Please first define the portfolio (via 'load')[/red]\n"
-                        )
-                else:
                     console.print(
-                        "[red]Please first define the benchmark (via 'bench')[/red]\n"
+                        "[red]Please first define the portfolio (via 'load')[/red]\n"
                     )
 
     @log_start_end(log=logger)
@@ -760,16 +709,14 @@ class PortfolioController(BaseController):
         )
 
         if ns_parser:
-            if self.portfolio_name and self.benchmark_name:
+            if check_portfolio_benchmark_defined(
+                self.portfolio_name, self.benchmark_name
+            ):
                 portfolio_view.display_returns_vs_bench(
                     self.portfolio.returns,
                     self.portfolio.benchmark_returns,
                     ns_parser.period,
                     ns_parser.export,
-                )
-            else:
-                console.print(
-                    "[red]Please first define the portfolio using 'load'[/red]\n"
                 )
 
     @log_start_end(log=logger)
@@ -781,29 +728,14 @@ class PortfolioController(BaseController):
             prog="maxdd",
             description="Show portfolio maximum drawdown",
         )
-
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
-
         if ns_parser:
-            if self.portfolio_name and self.benchmark_name:
+            if check_portfolio_benchmark_defined(
+                self.portfolio_name, self.benchmark_name
+            ):
                 portfolio_view.display_maximum_drawdown(self.portfolio.portfolio_value)
-            else:
-                if not self.portfolio_name:
-                    if not self.benchmark_name:
-                        console.print(
-                            "[red]Please first define the portfolio (via 'load') "
-                            "and the benchmark (via 'bench').[/red]\n"
-                        )
-                    else:
-                        console.print(
-                            "[red]Please first define the portfolio (via 'load')[/red]\n"
-                        )
-                else:
-                    console.print(
-                        "[red]Please first define the benchmark (via 'bench')[/red]\n"
-                    )
 
     @log_start_end(log=logger)
     def call_rvol(self, other_args: List[str]):
@@ -829,28 +761,15 @@ class PortfolioController(BaseController):
             parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            if self.portfolio_name and self.benchmark_name:
+            if check_portfolio_benchmark_defined(
+                self.portfolio_name, self.benchmark_name
+            ):
                 portfolio_view.display_rolling_volatility(
                     self.portfolio.benchmark_returns,
                     self.portfolio.returns,
                     period=ns_parser.period,
                     export=ns_parser.export,
                 )
-            else:
-                if not self.portfolio_name:
-                    if not self.benchmark_name:
-                        console.print(
-                            "[red]Please first define the portfolio (via 'load') "
-                            "and the benchmark (via 'bench').[/red]\n"
-                        )
-                    else:
-                        console.print(
-                            "[red]Please first define the portfolio (via 'load')[/red]\n"
-                        )
-                else:
-                    console.print(
-                        "[red]Please first define the benchmark (via 'bench')[/red]\n"
-                    )
 
     @log_start_end(log=logger)
     def call_rsharpe(self, other_args: List[str]):
@@ -884,7 +803,9 @@ class PortfolioController(BaseController):
             parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            if self.portfolio_name and self.benchmark_name:
+            if check_portfolio_benchmark_defined(
+                self.portfolio_name, self.benchmark_name
+            ):
                 portfolio_view.display_rolling_sharpe(
                     self.portfolio.benchmark_returns,
                     self.portfolio.returns,
@@ -892,21 +813,6 @@ class PortfolioController(BaseController):
                     risk_free_rate=ns_parser.risk_free_rate,
                     export=ns_parser.export,
                 )
-            else:
-                if not self.portfolio_name:
-                    if not self.benchmark_name:
-                        console.print(
-                            "[red]Please first define the portfolio (via 'load') "
-                            "and the benchmark (via 'bench').[/red]\n"
-                        )
-                    else:
-                        console.print(
-                            "[red]Please first define the portfolio (via 'load')[/red]\n"
-                        )
-                else:
-                    console.print(
-                        "[red]Please first define the benchmark (via 'bench')[/red]\n"
-                    )
 
     @log_start_end(log=logger)
     def call_rsort(self, other_args: List[str]):
@@ -940,7 +846,9 @@ class PortfolioController(BaseController):
             parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            if self.portfolio_name and self.benchmark_name:
+            if check_portfolio_benchmark_defined(
+                self.portfolio_name, self.benchmark_name
+            ):
                 portfolio_view.display_rolling_sortino(
                     self.portfolio.benchmark_returns,
                     self.portfolio.returns,
@@ -948,21 +856,6 @@ class PortfolioController(BaseController):
                     risk_free_rate=ns_parser.risk_free_rate,
                     export=ns_parser.export,
                 )
-            else:
-                if not self.portfolio_name:
-                    if not self.benchmark_name:
-                        console.print(
-                            "[red]Please first define the portfolio (via 'load') "
-                            "and the benchmark (via 'bench').[/red]\n"
-                        )
-                    else:
-                        console.print(
-                            "[red]Please first define the portfolio (via 'load')[/red]\n"
-                        )
-                else:
-                    console.print(
-                        "[red]Please first define the benchmark (via 'bench')[/red]\n"
-                    )
 
     @log_start_end(log=logger)
     def call_rbeta(self, other_args: List[str]):
@@ -988,28 +881,15 @@ class PortfolioController(BaseController):
             parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            if self.portfolio_name and self.benchmark_name:
+            if check_portfolio_benchmark_defined(
+                self.portfolio_name, self.benchmark_name
+            ):
                 portfolio_view.display_rolling_beta(
                     self.portfolio.benchmark_returns,
                     self.portfolio.returns,
                     period=ns_parser.period,
                     export=ns_parser.export,
                 )
-            else:
-                if not self.portfolio_name:
-                    if not self.benchmark_name:
-                        console.print(
-                            "[red]Please first define the portfolio (via 'load') "
-                            "and the benchmark (via 'bench').[/red]\n"
-                        )
-                    else:
-                        console.print(
-                            "[red]Please first define the portfolio (via 'load')[/red]\n"
-                        )
-                else:
-                    console.print(
-                        "[red]Please first define the benchmark (via 'bench')[/red]\n"
-                    )
 
     @log_start_end(log=logger)
     def call_rsquare(self, other_args: List[str]):
@@ -1024,23 +904,10 @@ class PortfolioController(BaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            if self.portfolio_name and self.benchmark_name:
+            if check_portfolio_benchmark_defined(
+                self.portfolio_name, self.benchmark_name
+            ):
                 portfolio_view.display_rsquare(self.portfolio, ns_parser.export)
-            else:
-                if not self.portfolio_name:
-                    if not self.benchmark_name:
-                        console.print(
-                            "[red]Please first define the portfolio (via 'load') "
-                            "and the benchmark (via 'bench').[/red]\n"
-                        )
-                    else:
-                        console.print(
-                            "[red]Please first define the portfolio (via 'load')[/red]\n"
-                        )
-                else:
-                    console.print(
-                        "[red]Please first define the benchmark (via 'bench')[/red]\n"
-                    )
 
     @log_start_end(log=logger)
     def call_skew(self, other_args: List[str]):
@@ -1055,23 +922,10 @@ class PortfolioController(BaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            if self.portfolio_name and self.benchmark_name:
+            if check_portfolio_benchmark_defined(
+                self.portfolio_name, self.benchmark_name
+            ):
                 portfolio_view.display_skewness(self.portfolio, ns_parser.export)
-            else:
-                if not self.portfolio_name:
-                    if not self.benchmark_name:
-                        console.print(
-                            "[red]Please first define the portfolio (via 'load') "
-                            "and the benchmark (via 'bench').[/red]\n"
-                        )
-                    else:
-                        console.print(
-                            "[red]Please first define the portfolio (via 'load')[/red]\n"
-                        )
-                else:
-                    console.print(
-                        "[red]Please first define the benchmark (via 'bench')[/red]\n"
-                    )
 
     @log_start_end(log=logger)
     def call_kurt(self, other_args: List[str]):
@@ -1086,23 +940,10 @@ class PortfolioController(BaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            if self.portfolio_name and self.benchmark_name:
+            if check_portfolio_benchmark_defined(
+                self.portfolio_name, self.benchmark_name
+            ):
                 portfolio_view.display_kurtosis(self.portfolio, ns_parser.export)
-            else:
-                if not self.portfolio_name:
-                    if not self.benchmark_name:
-                        console.print(
-                            "[red]Please first define the portfolio (via 'load') "
-                            "and the benchmark (via 'bench').[/red]\n"
-                        )
-                    else:
-                        console.print(
-                            "[red]Please first define the portfolio (via 'load')[/red]\n"
-                        )
-                else:
-                    console.print(
-                        "[red]Please first define the benchmark (via 'bench')[/red]\n"
-                    )
 
     @log_start_end(log=logger)
     def call_stats(self, other_args: List[str]):
@@ -1129,25 +970,12 @@ class PortfolioController(BaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            if self.portfolio_name and self.benchmark_name:
+            if check_portfolio_benchmark_defined(
+                self.portfolio_name, self.benchmark_name
+            ):
                 portfolio_view.display_stats(
                     self.portfolio, ns_parser.period, ns_parser.export
                 )
-            else:
-                if not self.portfolio_name:
-                    if not self.benchmark_name:
-                        console.print(
-                            "[red]Please first define the portfolio (via 'load') "
-                            "and the benchmark (via 'bench').[/red]\n"
-                        )
-                    else:
-                        console.print(
-                            "[red]Please first define the portfolio (via 'load')[/red]\n"
-                        )
-                else:
-                    console.print(
-                        "[red]Please first define the benchmark (via 'bench')[/red]\n"
-                    )
 
     @log_start_end(log=logger)
     def call_vol(self, other_args: List[str]):
@@ -1162,23 +990,10 @@ class PortfolioController(BaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            if self.portfolio_name and self.benchmark_name:
+            if check_portfolio_benchmark_defined(
+                self.portfolio_name, self.benchmark_name
+            ):
                 portfolio_view.display_volatility(self.portfolio, ns_parser.export)
-            else:
-                if not self.portfolio_name:
-                    if not self.benchmark_name:
-                        console.print(
-                            "[red]Please first define the portfolio (via 'load') "
-                            "and the benchmark (via 'bench').[/red]\n"
-                        )
-                    else:
-                        console.print(
-                            "[red]Please first define the portfolio (via 'load')[/red]\n"
-                        )
-                else:
-                    console.print(
-                        "[red]Please first define the benchmark (via 'bench')[/red]\n"
-                    )
 
     @log_start_end(log=logger)
     def call_sharper(self, other_args: List[str]):
@@ -1203,25 +1018,12 @@ class PortfolioController(BaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            if self.portfolio_name and self.benchmark_name:
+            if check_portfolio_benchmark_defined(
+                self.portfolio_name, self.benchmark_name
+            ):
                 portfolio_view.display_sharpe_ratio(
                     self.portfolio, ns_parser.risk_free_rate, ns_parser.export
                 )
-            else:
-                if not self.portfolio_name:
-                    if not self.benchmark_name:
-                        console.print(
-                            "[red]Please first define the portfolio (via 'load') "
-                            "and the benchmark (via 'bench').[/red]\n"
-                        )
-                    else:
-                        console.print(
-                            "[red]Please first define the portfolio (via 'load')[/red]\n"
-                        )
-                else:
-                    console.print(
-                        "[red]Please first define the benchmark (via 'bench')[/red]\n"
-                    )
 
     @log_start_end(log=logger)
     def call_sortr(self, other_args: List[str]):
@@ -1246,25 +1048,12 @@ class PortfolioController(BaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            if self.portfolio_name and self.benchmark_name:
+            if check_portfolio_benchmark_defined(
+                self.portfolio_name, self.benchmark_name
+            ):
                 portfolio_view.display_sortino_ratio(
                     self.portfolio, ns_parser.risk_free_rate, ns_parser.export
                 )
-            else:
-                if not self.portfolio_name:
-                    if not self.benchmark_name:
-                        console.print(
-                            "[red]Please first define the portfolio (via 'load') "
-                            "and the benchmark (via 'bench').[/red]\n"
-                        )
-                    else:
-                        console.print(
-                            "[red]Please first define the portfolio (via 'load')[/red]\n"
-                        )
-                else:
-                    console.print(
-                        "[red]Please first define the benchmark (via 'bench')[/red]\n"
-                    )
 
     @log_start_end(log=logger)
     def call_maxddr(self, other_args: List[str]):
@@ -1279,22 +1068,39 @@ class PortfolioController(BaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            if self.portfolio_name and self.benchmark_name:
+            if check_portfolio_benchmark_defined(
+                self.portfolio_name, self.benchmark_name
+            ):
                 portfolio_view.display_maximum_drawdown_ratio(
                     self.portfolio, ns_parser.export
                 )
-            else:
-                if not self.portfolio_name:
-                    if not self.benchmark_name:
-                        console.print(
-                            "[red]Please first define the portfolio (via 'load') "
-                            "and the benchmark (via 'bench').[/red]\n"
-                        )
-                    else:
-                        console.print(
-                            "[red]Please first define the portfolio (via 'load')[/red]\n"
-                        )
-                else:
-                    console.print(
-                        "[red]Please first define the benchmark (via 'bench')[/red]\n"
-                    )
+
+
+def check_portfolio_benchmark_defined(portfolio_name: str, benchmark_name: str) -> bool:
+    """Check that portfolio and benchmark have been defined
+
+    Parameters
+    ----------
+    portfolio_name: str
+        Portfolio name, will be empty if not defined
+    benchmark_name: str
+        Benchmark name, will be empty if not defined
+
+    Returns
+    -------
+    bool
+        If both portfolio and benchmark have been defined
+    """
+    if portfolio_name and benchmark_name:
+        return True
+    if not portfolio_name:
+        if not benchmark_name:
+            console.print(
+                "[red]Please first define the portfolio (via 'load') "
+                "and the benchmark (via 'bench').[/red]\n"
+            )
+        else:
+            console.print("[red]Please first define the portfolio (via 'load')[/red]\n")
+    else:
+        console.print("[red]Please first define the benchmark (via 'bench')[/red]\n")
+    return False
