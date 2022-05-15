@@ -13,20 +13,29 @@ Risk Free Rate:   0.00%
 
 Benchmark: 
 
-Performance:[unvl]
-    alloc       show allocation on an asset or sector basis
-    perf        show (total) performance of the portfolio versus benchmark[/unvl]
-
 Graphs:[unvl]
-    rolling     rolling metrics of portfolio and benchmark
-    cr          cumulative returns
-    dd          portfolio drawdown
-    al          allocation to given assets over period[/unvl]
+    hold        holdings of assets over period
+    return      cumulative returns and EOY returns
+    maxdd       maximum drawdown
+    rvol        rolling volatility
+    rsharpe     rolling sharpe
+    rsort       rolling sortino
+    rbeta       rolling beta[/unvl]
+
+Metrics:[unvl]
+    alloc       allocation on an asset, sector, countries or regions basis
+    perf        performance of the portfolio versus benchmark
+    stats       stats such as mean, percentiles, standard deviation
+    rsquare     R-square score between portfolio and benchmark
+    skew        skewness
+    kurt        kurtosis
+    vol         volatility
+    sharper     sharpe ratio
+    sortr       sortino ratio
+    maxddr      maximum drawdown ratio[/unvl]
 
 Risk Metrics:[unvl]
     var         display value at risk
     es          display expected shortfall
-    sh          display sharpe ratio
-    so          display sortino ratio
     om          display omega ratio[/unvl]
         
