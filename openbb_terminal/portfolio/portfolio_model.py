@@ -790,3 +790,147 @@ class Portfolio:
         )
         df.columns = ["Portfolio", "Benchmark"]
         return df
+
+    @log_start_end(log=logger)
+    def get_volatility(self) -> pd.DataFrame:
+        """Class method that retrieves volatility for portfolio and benchmark selected
+
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame with volatility for portfolio and benchmark for different periods
+        """
+        vals = list()
+        for period in portfolio_helper.PERIODS:
+            vals.append(
+                [
+                    round(
+                        portfolio_helper.filter_df_by_period(
+                            self.returns, period
+                        ).std(),
+                        3,
+                    ),
+                    round(
+                        portfolio_helper.filter_df_by_period(
+                            self.benchmark_returns, period
+                        ).std(),
+                        3,
+                    ),
+                ]
+            )
+        return pd.DataFrame(
+            vals, index=portfolio_helper.PERIODS, columns=["Portfolio", "Benchmark"]
+        )
+
+    @log_start_end(log=logger)
+    def get_sharpe_ratio(self, risk_free_rate: float) -> pd.DataFrame:
+        """Class method that retrieves sharpe ratio for portfolio and benchmark selected
+
+        Parameters
+        ----------
+        risk_free_rate: float
+            Risk free rate value
+
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame with sharpe ratio for portfolio and benchmark for different periods
+        """
+        vals = list()
+        for period in portfolio_helper.PERIODS:
+            port_period = portfolio_helper.filter_df_by_period(self.returns, period)
+            bench_period = portfolio_helper.filter_df_by_period(
+                self.benchmark_returns, period
+            )
+            vals.append(
+                [
+                    round(
+                        portfolio_helper.sharpe_ratio(
+                            port_period, len(port_period), risk_free_rate
+                        ),
+                        3,
+                    ),
+                    round(
+                        portfolio_helper.sharpe_ratio(
+                            bench_period, len(bench_period), risk_free_rate
+                        ),
+                        3,
+                    ),
+                ]
+            )
+        return pd.DataFrame(
+            vals, index=portfolio_helper.PERIODS, columns=["Portfolio", "Benchmark"]
+        )
+
+    @log_start_end(log=logger)
+    def get_sortino_ratio(self, risk_free_rate: float) -> pd.DataFrame:
+        """Class method that retrieves sortino ratio for portfolio and benchmark selected
+
+        Parameters
+        ----------
+        risk_free_rate: float
+            Risk free rate value
+
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame with sortino ratio for portfolio and benchmark for different periods
+        """
+        vals = list()
+        for period in portfolio_helper.PERIODS:
+            port_period = portfolio_helper.filter_df_by_period(self.returns, period)
+            bench_period = portfolio_helper.filter_df_by_period(
+                self.benchmark_returns, period
+            )
+            vals.append(
+                [
+                    round(
+                        portfolio_helper.sortino_ratio(
+                            port_period, len(port_period), risk_free_rate
+                        ),
+                        3,
+                    ),
+                    round(
+                        portfolio_helper.sortino_ratio(
+                            bench_period, len(bench_period), risk_free_rate
+                        ),
+                        3,
+                    ),
+                ]
+            )
+        return pd.DataFrame(
+            vals, index=portfolio_helper.PERIODS, columns=["Portfolio", "Benchmark"]
+        )
+
+    @log_start_end(log=logger)
+    def get_maximum_drawdown_ratio(self) -> pd.DataFrame:
+        """Class method that retrieves maximum drawdown ratio for portfolio and benchmark selected
+
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame with maximum drawdown for portfolio and benchmark for different periods
+        """
+        vals = list()
+        for period in portfolio_helper.PERIODS:
+            vals.append(
+                [
+                    round(
+                        portfolio_helper.get_maximum_drawdown(
+                            portfolio_helper.filter_df_by_period(self.returns, period)
+                        ),
+                        3,
+                    ),
+                    round(
+                        portfolio_helper.get_maximum_drawdown(
+                            portfolio_helper.filter_df_by_period(
+                                self.benchmark_returns, period
+                            )
+                        ),
+                        3,
+                    ),
+                ]
+            )
+        return pd.DataFrame(
+            vals, index=portfolio_helper.PERIODS, columns=["Portfolio", "Benchmark"]
+        )

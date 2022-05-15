@@ -29,7 +29,7 @@ from openbb_terminal.portfolio.portfolio_optimization import po_controller
 from openbb_terminal.rich_config import console
 from openbb_terminal.common.quantitative_analysis import qa_view
 
-# pylint: disable=R1710,E1101,C0415,W0212,too-many-function-args
+# pylint: disable=R1710,E1101,C0415,W0212,too-many-function-args,C0302
 
 logger = logging.getLogger(__name__)
 
@@ -62,6 +62,10 @@ class PortfolioController(BaseController):
         "rsharpe",
         "rsort",
         "rbeta",
+        "vol",
+        "sharper",
+        "sortr",
+        "maxddr",
     ]
     CHOICES_MENUS = [
         "bro",
@@ -157,8 +161,12 @@ class PortfolioController(BaseController):
     perf        performance of the portfolio versus benchmark
     stats       stats such as mean, percentiles, standard deviation
     rsquare     R-square score between portfolio and benchmark
-    skew        skewness of returns
-    kurt        kurtosis of returns{("[/unvl]", "[/cmds]")[port_bench]}
+    skew        skewness
+    kurt        kurtosis
+    vol         volatility
+    sharper     sharpe ratio
+    sortr       sortino ratio
+    maxddr      maximum drawdown ratio{("[/unvl]", "[/cmds]")[port_bench]}
 
 [info]Risk Metrics:[/info]{("[unvl]", "[cmds]")[port]}
     var         display value at risk
@@ -243,10 +251,8 @@ class PortfolioController(BaseController):
             dest="risk_free_rate",
             help="Set the risk free rate.",
         )
-
-        if other_args:
-            if other_args and "-" not in other_args[0][0]:
-                other_args.insert(0, "-f")
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-f")
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
 
@@ -1220,6 +1226,156 @@ class PortfolioController(BaseController):
             if self.portfolio_name and self.benchmark_name:
                 portfolio_view.display_stats(
                     self.portfolio, ns_parser.period, ns_parser.export
+                )
+            else:
+                if not self.portfolio_name:
+                    if not self.benchmark_name:
+                        console.print(
+                            "[red]Please first define the portfolio (via 'load') "
+                            "and the benchmark (via 'bench').[/red]\n"
+                        )
+                    else:
+                        console.print(
+                            "[red]Please first define the portfolio (via 'load')[/red]\n"
+                        )
+                else:
+                    console.print(
+                        "[red]Please first define the benchmark (via 'bench')[/red]\n"
+                    )
+
+    @log_start_end(log=logger)
+    def call_vol(self, other_args: List[str]):
+        """Process vol command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="vol",
+            description="Compute volatility",
+        )
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            if self.portfolio_name and self.benchmark_name:
+                portfolio_view.display_volatility(self.portfolio, ns_parser.export)
+            else:
+                if not self.portfolio_name:
+                    if not self.benchmark_name:
+                        console.print(
+                            "[red]Please first define the portfolio (via 'load') "
+                            "and the benchmark (via 'bench').[/red]\n"
+                        )
+                    else:
+                        console.print(
+                            "[red]Please first define the portfolio (via 'load')[/red]\n"
+                        )
+                else:
+                    console.print(
+                        "[red]Please first define the benchmark (via 'bench')[/red]\n"
+                    )
+
+    @log_start_end(log=logger)
+    def call_sharper(self, other_args: List[str]):
+        """Process sharper command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="sharper",
+            description="Compute sharpe ratio",
+        )
+        parser.add_argument(
+            "-r",
+            "--rfr",
+            type=check_positive_float,
+            dest="risk_free_rate",
+            default=self.portfolio.rf,
+            help="Set risk free rate for calculations.",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-r")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            if self.portfolio_name and self.benchmark_name:
+                portfolio_view.display_sharpe_ratio(
+                    self.portfolio, ns_parser.risk_free_rate, ns_parser.export
+                )
+            else:
+                if not self.portfolio_name:
+                    if not self.benchmark_name:
+                        console.print(
+                            "[red]Please first define the portfolio (via 'load') "
+                            "and the benchmark (via 'bench').[/red]\n"
+                        )
+                    else:
+                        console.print(
+                            "[red]Please first define the portfolio (via 'load')[/red]\n"
+                        )
+                else:
+                    console.print(
+                        "[red]Please first define the benchmark (via 'bench')[/red]\n"
+                    )
+
+    @log_start_end(log=logger)
+    def call_sortr(self, other_args: List[str]):
+        """Process sortr command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="sortr",
+            description="Compute sortino ratio",
+        )
+        parser.add_argument(
+            "-r",
+            "--rfr",
+            type=check_positive_float,
+            dest="risk_free_rate",
+            default=self.portfolio.rf,
+            help="Set risk free rate for calculations.",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-r")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            if self.portfolio_name and self.benchmark_name:
+                portfolio_view.display_sortino_ratio(
+                    self.portfolio, ns_parser.risk_free_rate, ns_parser.export
+                )
+            else:
+                if not self.portfolio_name:
+                    if not self.benchmark_name:
+                        console.print(
+                            "[red]Please first define the portfolio (via 'load') "
+                            "and the benchmark (via 'bench').[/red]\n"
+                        )
+                    else:
+                        console.print(
+                            "[red]Please first define the portfolio (via 'load')[/red]\n"
+                        )
+                else:
+                    console.print(
+                        "[red]Please first define the benchmark (via 'bench')[/red]\n"
+                    )
+
+    @log_start_end(log=logger)
+    def call_maxddr(self, other_args: List[str]):
+        """Process maxddr command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="maxddr",
+            description="Compute maximum drawdown ratio",
+        )
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            if self.portfolio_name and self.benchmark_name:
+                portfolio_view.display_maximum_drawdown_ratio(
+                    self.portfolio, ns_parser.export
                 )
             else:
                 if not self.portfolio_name:

@@ -21,7 +21,7 @@ from openbb_terminal.helper_funcs import plot_autoscale, export_data, print_rich
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
 
-# pylint: disable=too-many-lines
+# pylint: disable=C0302
 
 # from reportlab.lib.pagesizes import letter
 # from reportlab.pdfgen import canvas
@@ -889,6 +889,124 @@ def display_stats(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "stats",
+    )
+    console.print()
+
+
+@log_start_end(log=logger)
+def display_volatility(
+    portfolio: portfolio_model.Portfolio,
+    export: str = "",
+):
+    """Display volatility for multiple periods
+
+    Parameters
+    ----------
+    portfolio: Portfolio
+        Portfolio object with trades loaded
+    export : str
+        Export data format
+    """
+    console.print()
+    print_rich_table(
+        portfolio.get_volatility(),
+        title="Volatility for Portfolio and Benchmark",
+        show_index=True,
+    )
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "vol",
+    )
+    console.print()
+
+
+@log_start_end(log=logger)
+def display_sharpe_ratio(
+    portfolio: portfolio_model.Portfolio,
+    risk_free_rate: float,
+    export: str = "",
+):
+    """Display sharpe ratio for multiple periods
+
+    Parameters
+    ----------
+    portfolio: Portfolio
+        Portfolio object with trades loaded
+    risk_free_rate: float
+        Risk free rate value
+    export : str
+        Export data format
+    """
+    console.print()
+    print_rich_table(
+        portfolio.get_sharpe_ratio(risk_free_rate),
+        title="Sharpe ratio for Portfolio and Benchmark",
+        show_index=True,
+    )
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "sharper",
+    )
+    console.print()
+
+
+@log_start_end(log=logger)
+def display_sortino_ratio(
+    portfolio: portfolio_model.Portfolio,
+    risk_free_rate: float,
+    export: str = "",
+):
+    """Display sortino ratio for multiple periods
+
+    Parameters
+    ----------
+    portfolio: Portfolio
+        Portfolio object with trades loaded
+    risk_free_rate: float
+        Risk free rate value
+    export : str
+        Export data format
+    """
+    console.print()
+    print_rich_table(
+        portfolio.get_sortino_ratio(risk_free_rate),
+        title="Sortino ratio for Portfolio and Benchmark",
+        show_index=True,
+    )
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "sortr",
+    )
+    console.print()
+
+
+@log_start_end(log=logger)
+def display_maximum_drawdown_ratio(
+    portfolio: portfolio_model.Portfolio,
+    export: str = "",
+):
+    """Display maximum drawdown for multiple periods
+
+    Parameters
+    ----------
+    portfolio: Portfolio
+        Portfolio object with trades loaded
+    export : str
+        Export data format
+    """
+    console.print()
+    print_rich_table(
+        portfolio.get_maximum_drawdown_ratio(),
+        title="Maximum drawdown for Portfolio and Benchmark",
+        show_index=True,
+    )
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "maxddr",
     )
     console.print()
 

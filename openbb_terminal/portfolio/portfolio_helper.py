@@ -3,7 +3,10 @@ __docformat__ = "numpy"
 
 from datetime import datetime, timedelta
 import yfinance as yf
+import numpy as np
 import pandas as pd
+
+# pylint: disable=too-many-return-statements
 
 BENCHMARK_LIST = {
     "SPDR S&P 500 ETF Trust (SPY)": "SPY",
@@ -227,3 +230,67 @@ def filter_df_by_period(df: pd.DataFrame, period: str = "all") -> pd.DataFrame:
     if period == "10y":
         return df[df.index >= datetime.now() - timedelta(days=21 * 12 * 10)]
     return df
+
+
+def sharpe_ratio(return_series: pd.Series, N: int, risk_free_rate: float) -> float:
+    """Get sharpe ratio
+
+    Parameters
+    ----------
+    return_series : pd.Series
+        Returns of the portfolio
+    N : int
+        Number of days window to consider
+    risk_free_rate: float
+        Value to use for risk free rate
+
+    Returns
+    -------
+    float
+        Sharpe ratio
+    """
+    mean = return_series.mean() * N - risk_free_rate
+    sigma = return_series.std() * np.sqrt(N)
+
+    return mean / sigma
+
+
+def sortino_ratio(return_series: pd.Series, N: int, risk_free_rate: float) -> float:
+    """Get sortino ratio
+
+    Parameters
+    ----------
+    return_series : pd.Series
+        Returns of the portfolio
+    N : int
+        Number of days window to consider
+    risk_free_rate: float
+        Value to use for risk free rate
+
+    Returns
+    -------
+    float
+        Sortino ratio
+    """
+    mean = return_series.mean() * N - risk_free_rate
+    std_neg = return_series[return_series < 0].std() * np.sqrt(N)
+    return mean / std_neg
+
+
+def get_maximum_drawdown(return_series: pd.Series) -> float:
+    """Get maximum drawdown
+
+    Parameters
+    ----------
+    return_series : pd.Series
+        Returns of the portfolio
+
+    Returns
+    -------
+    float
+        maximum drawdown
+    """
+    comp_ret = (return_series + 1).cumprod()
+    peak = comp_ret.expanding(min_periods=1).max()
+    dd = (comp_ret / peak) - 1
+    return dd.min()
