@@ -657,57 +657,38 @@ def display_rolling_sortino(
 
 
 @log_start_end(log=logger)
-def display_rolling_stats(
+def display_rolling_beta(
     benchmark_returns: pd.Series,
     portfolio_returns: pd.Series,
-    length: int = 60,
-    risk_free_rate: float = 0,
-    external_axes: Optional[List[plt.Axes]] = None,
+    period: str = "1y",
     export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Display portfolio returns vs benchmark
+    """Display rolling beta
 
     Parameters
     ----------
-    portfolio_returns
+    portfolio_returns : pd.Series
         Returns of the portfolio
-    benchmark_returns
+    benchmark_returns : pd.Series
         Returns of the benchmark
-    length: int
-        Length of rolling window
-    risk_free_rate: float
-        Value to use for risk free rate in sharpe/other calculations
-    external_axes: Optional[List[plt.Axes]]
-        Optional axes to display plot on
+    period: str
+        Period for window to consider
     export: str
         Export to file
+    external_axes: Optional[List[plt.Axes]]
+        Optional axes to display plot on
     """
     if external_axes is None:
-        _, ax = plt.subplots(4, 1, figsize=(8, 8), dpi=PLOT_DPI, sharex=True)
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     else:
-        if len(external_axes) != 4:
-            logger.error("Expected list of four axis items.")
-            console.print("[red]4 axes expected.\n[/red]")
+        if len(external_axes) != 1:
+            logger.error("Expected list of one axis items.")
+            console.print("[red]1 axes expected.\n[/red]")
             return
         ax = external_axes
 
-    rolling_volatility = portfolio_returns.rolling(length).std()
-    rolling_volatility_bench = benchmark_returns.rolling(length).std()
-
-    rolling_sharpe = portfolio_returns.rolling(length).apply(
-        lambda x: (x.mean() - risk_free_rate) / x.std()
-    )
-    rolling_sharpe_bench = benchmark_returns.rolling(length).apply(
-        lambda x: (x.mean() - risk_free_rate) / x.std()
-    )
-
-    rolling_volatility.plot(ax=ax[1])
-    rolling_volatility_bench.plot(ax=ax[1])
-    ax[1].set_title("Rolling Volatility")
-
-    rolling_sharpe.plot(ax=ax[2])
-    rolling_sharpe_bench.plot(ax=ax[2])
-    ax[2].set_title("Rolling Sharpe Ratio")
+    length = portfolio_helper.PERIODS_DAYS[period]
 
     # Rolling beta is defined as Cov(Port,Bench)/var(Bench)
     covs = (
@@ -719,43 +700,31 @@ def display_rolling_stats(
         .dropna()
     )
     rolling_beta = covs["Portfolio"]["Benchmark"] / covs["Benchmark"]["Benchmark"]
-    rolling_beta.plot(ax=ax[3])
-    ax[3].set_title("Rolling Beta to Benchmark")
+    rolling_beta.plot(ax=ax)
 
-    c_returns = (1 + portfolio_returns).cumprod()
-    bench_c_rets = (1 + benchmark_returns).cumprod()
-
-    ax[0].plot(c_returns.index, c_returns)
-    ax[0].plot(bench_c_rets.index, bench_c_rets)
-    ax[0].set_title("Cumulative Returns")
+    ax.set_title(f"Rolling Beta using {period} window")
+    ax.set_xlabel("Date")
+    ax.legend(["Portfolio", "Benchmark"], loc="upper left")
+    ax.set_xlim(rolling_beta.index[0], rolling_beta.index[-1])
 
     if external_axes is None:
-
-        for a in ax[0], ax[1], ax[2]:
-            a.legend(["Portfolio", "Benchmark"], loc="upper left")
-        for a in ax[0], ax[1], ax[2], ax[3]:
-            a.set_xlim(portfolio_returns.index[0], portfolio_returns.index[-1])
-            a.set_xlabel([])
-            a.grid("on")
-            theme.style_primary_axis(a)
-
-        ax[3].set_xlabel("Date")
-
         theme.visualize_output()
+
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "rolling",
+        "rbeta",
+        rolling_beta,
     )
 
 
 @log_start_end(log=logger)
-def display_drawdown(
+def display_maximum_drawdown(
     holdings: pd.Series,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Display drawdown curve
+    """Display maximum drawdown curve
 
     Parameters
     ----------

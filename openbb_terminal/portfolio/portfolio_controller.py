@@ -863,7 +863,7 @@ class PortfolioController(BaseController):
 
         if ns_parser:
             if self.portfolio_name and self.benchmark_name:
-                portfolio_view.display_drawdown(self.portfolio.portfolio_value)
+                portfolio_view.display_maximum_drawdown(self.portfolio.portfolio_value)
             else:
                 if not self.portfolio_name:
                     if not self.benchmark_name:
@@ -1040,13 +1040,13 @@ class PortfolioController(BaseController):
                     )
 
     @log_start_end(log=logger)
-    def call_rolling(self, other_args: List[str]):
-        """Process rolling command"""
+    def call_rbeta(self, other_args: List[str]):
+        """Process rolling beta command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="rolling",
-            description="Show rolling portfolio metrics vs benchmark",
+            prog="rbeta",
+            description="Show rolling beta portfolio vs benchmark",
         )
         parser.add_argument(
             "-p",
@@ -1057,24 +1057,17 @@ class PortfolioController(BaseController):
             choices=list(portfolio_helper.PERIODS_DAYS.keys()),
             help="Period to apply rolling window",
         )
-        parser.add_argument(
-            "-r",
-            "--rfr",
-            type=check_positive_float,
-            dest="risk_free_rate",
-            default=self.portfolio.rf,
-            help="Set risk free rate for calculations.",
-        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-p")
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
+            parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
             if self.portfolio_name and self.benchmark_name:
-                portfolio_view.display_rolling_volatility(
+                portfolio_view.display_rolling_beta(
                     self.portfolio.benchmark_returns,
                     self.portfolio.returns,
                     period=ns_parser.period,
-                    risk_free_rate=ns_parser.risk_free_rate,
                     export=ns_parser.export,
                 )
             else:
