@@ -592,7 +592,7 @@ def display_skewness(
     portfolio: portfolio_model.Portfolio,
     export: str = "",
 ):
-    """Display R-square
+    """Display skewness
 
     Parameters
     ----------
@@ -611,6 +611,34 @@ def display_skewness(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "skew",
+    )
+    console.print()
+
+
+@log_start_end(log=logger)
+def display_kurtosis(
+    portfolio: portfolio_model.Portfolio,
+    export: str = "",
+):
+    """Display kurtosis
+
+    Parameters
+    ----------
+    portfolio: Portfolio
+        Portfolio object with trades loaded
+    export : str
+        Export data format
+    """
+    console.print()
+    print_rich_table(
+        portfolio.get_kurtosis(),
+        title="Kurtosis for Portfolio and Benchmark",
+        show_index=True,
+    )
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "kurt",
     )
     console.print()
 

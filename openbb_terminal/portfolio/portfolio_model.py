@@ -733,3 +733,36 @@ class Portfolio:
         return pd.DataFrame(
             vals, index=portfolio_helper.PERIODS, columns=["Portfolio", "Benchmark"]
         )
+
+    @log_start_end(log=logger)
+    def get_kurtosis(self) -> pd.DataFrame:
+        """Class method that retrieves kurtosis for portfolio and benchmark selected
+
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame with kurtosis for portfolio and benchmark for different periods
+        """
+        vals = list()
+        for period in portfolio_helper.PERIODS:
+            vals.append(
+                [
+                    round(
+                        scipy.stats.kurtosis(
+                            portfolio_helper.filter_df_by_period(
+                                self.portfolio_value, period
+                            )
+                        ),
+                        3,
+                    ),
+                    round(
+                        scipy.stats.skew(
+                            portfolio_helper.filter_df_by_period(self.benchmark, period)
+                        ),
+                        3,
+                    ),
+                ]
+            )
+        return pd.DataFrame(
+            vals, index=portfolio_helper.PERIODS, columns=["Portfolio", "Benchmark"]
+        )

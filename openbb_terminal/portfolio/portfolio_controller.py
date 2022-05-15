@@ -948,7 +948,7 @@ class PortfolioController(BaseController):
 
     @log_start_end(log=logger)
     def call_skew(self, other_args: List[str]):
-        """Process rsquare command"""
+        """Process skew command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -961,6 +961,37 @@ class PortfolioController(BaseController):
         if ns_parser:
             if self.portfolio_name and self.benchmark_name:
                 portfolio_view.display_skewness(self.portfolio, ns_parser.export)
+            else:
+                if not self.portfolio_name:
+                    if not self.benchmark_name:
+                        console.print(
+                            "[red]Please first define the portfolio (via 'load') "
+                            "and the benchmark (via 'bench').[/red]\n"
+                        )
+                    else:
+                        console.print(
+                            "[red]Please first define the portfolio (via 'load')[/red]\n"
+                        )
+                else:
+                    console.print(
+                        "[red]Please first define the benchmark (via 'bench')[/red]\n"
+                    )
+
+    @log_start_end(log=logger)
+    def call_kurt(self, other_args: List[str]):
+        """Process kurt command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="kurt",
+            description="Compute kurtosis of data",
+        )
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            if self.portfolio_name and self.benchmark_name:
+                portfolio_view.display_kurtosis(self.portfolio, ns_parser.export)
             else:
                 if not self.portfolio_name:
                     if not self.benchmark_name:
