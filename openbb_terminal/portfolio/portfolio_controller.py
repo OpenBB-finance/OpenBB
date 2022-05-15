@@ -171,8 +171,6 @@ class PortfolioController(BaseController):
 [info]Risk Metrics:[/info]{("[unvl]", "[cmds]")[port]}
     var         display value at risk
     es          display expected shortfall
-    sh          display sharpe ratio
-    so          display sortino ratio
     om          display omega ratio{("[/unvl]", "[/cmds]")[port]}
         """
         # TODO: Clean up the reports inputs
@@ -671,98 +669,6 @@ class PortfolioController(BaseController):
                     ns_parser.distributions,
                     ns_parser.percentile / 100,
                     True,
-                )
-            else:
-                console.print(
-                    "[red]Please first define the portfolio using 'load'[/red]\n"
-                )
-
-    @log_start_end(log=logger)
-    def call_sh(self, other_args: List[str]):
-        """Process sh command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="sh",
-            description="""
-                        Provides the sharpe ratio of the selected portfolio.
-                    """,
-        )
-        parser.add_argument(
-            "-r",
-            "--rfr",
-            action="store",
-            dest="rfr",
-            type=float,
-            default=0,
-            help="Risk free return",
-        )
-        parser.add_argument(
-            "-w",
-            "--window",
-            action="store",
-            dest="window",
-            type=int,
-            default=252,
-            help="Rolling window length",
-        )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-
-        if ns_parser:
-            if self.portfolio_name:
-                data = self.portfolio.portfolio_value[1:]
-                qa_view.display_sharpe(data, ns_parser.rfr, ns_parser.window)
-            else:
-                console.print(
-                    "[red]Please first define the portfolio using 'load'[/red]\n"
-                )
-
-    @log_start_end(log=logger)
-    def call_so(self, other_args: List[str]):
-        """Process so command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="so",
-            description="""
-                    Provides the sortino ratio of the selected portfolio.
-                """,
-        )
-        parser.add_argument(
-            "-t",
-            "--target",
-            action="store",
-            dest="target_return",
-            type=float,
-            default=0,
-            help="Target return",
-        )
-        parser.add_argument(
-            "-a",
-            "--adjusted",
-            action="store_true",
-            default=False,
-            dest="adjusted",
-            help="If one should adjust the sortino ratio inorder to make it comparable to the sharpe ratio",
-        )
-        parser.add_argument(
-            "-w",
-            "--window",
-            action="store",
-            dest="window",
-            type=int,
-            default=252,
-            help="Rolling window length",
-        )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-
-        if ns_parser:
-            if self.portfolio_name:
-                data = self.portfolio.returns[1:]
-                qa_view.display_sortino(
-                    data, ns_parser.target_return, ns_parser.window, ns_parser.adjusted
                 )
             else:
                 console.print(
