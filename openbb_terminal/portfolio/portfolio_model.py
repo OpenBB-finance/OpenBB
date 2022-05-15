@@ -5,6 +5,7 @@ import logging
 from datetime import timedelta, datetime
 
 import numpy as np
+import scipy
 import pandas as pd
 import statsmodels.api as sm
 import yfinance as yf
@@ -677,7 +678,7 @@ class Portfolio:
         return cls(trades)
 
     @log_start_end(log=logger)
-    def get_r2_score(self):
+    def get_r2_score(self) -> pd.DataFrame:
         """Class method that retrieves R2 Score for portfolio and benchmark selected
 
         Returns
@@ -699,3 +700,36 @@ class Portfolio:
                 )
             )
         return pd.DataFrame(vals, index=portfolio_helper.PERIODS, columns=["R2 Score"])
+
+    @log_start_end(log=logger)
+    def get_skewness(self) -> pd.DataFrame:
+        """Class method that retrieves skewness for portfolio and benchmark selected
+
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame with skewness for portfolio and benchmark for different periods
+        """
+        vals = list()
+        for period in portfolio_helper.PERIODS:
+            vals.append(
+                [
+                    round(
+                        scipy.stats.skew(
+                            portfolio_helper.filter_df_by_period(
+                                self.portfolio_value, period
+                            )
+                        ),
+                        3,
+                    ),
+                    round(
+                        scipy.stats.skew(
+                            portfolio_helper.filter_df_by_period(self.benchmark, period)
+                        ),
+                        3,
+                    ),
+                ]
+            )
+        return pd.DataFrame(
+            vals, index=portfolio_helper.PERIODS, columns=["Portfolio", "Benchmark"]
+        )

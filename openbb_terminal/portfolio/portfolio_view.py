@@ -587,6 +587,34 @@ def display_rsquare(
     console.print()
 
 
+@log_start_end(log=logger)
+def display_skewness(
+    portfolio: portfolio_model.Portfolio,
+    export: str = "",
+):
+    """Display R-square
+
+    Parameters
+    ----------
+    portfolio: Portfolio
+        Portfolio object with trades loaded
+    export : str
+        Export data format
+    """
+    console.print()
+    print_rich_table(
+        portfolio.get_skewness(),
+        title="Skewness for Portfolio and Benchmark",
+        show_index=True,
+    )
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "skew",
+    )
+    console.print()
+
+
 #
 # @log_start_end(log=logger)
 # def plot_overall_return(
