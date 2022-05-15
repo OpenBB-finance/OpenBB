@@ -157,8 +157,8 @@ class PortfolioController(BaseController):
     perf        performance of the portfolio versus benchmark
     stats       stats such as mean, percentiles, standard deviation
     rsquare     R-square score between portfolio and benchmark
-    skew        skewness
-    kurt        kurtosis{("[/unvl]", "[/cmds]")[port_bench]}
+    skew        skewness of returns
+    kurt        kurtosis of returns{("[/unvl]", "[/cmds]")[port_bench]}
 
 [info]Risk Metrics:[/info]{("[unvl]", "[cmds]")[port]}
     var         display value at risk

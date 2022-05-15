@@ -302,7 +302,7 @@ def display_performance_vs_benchmark(
         orient="index",
         columns=["Portfolio", "Benchmark", "Difference"],
     )
-
+    console.print()
     print_rich_table(
         totals.replace(0, "-"),
         title=f"Portfolio vs. Benchmark - Totals in period: {period}",
