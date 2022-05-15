@@ -8,6 +8,7 @@ import os
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
+from datetime import datetime
 
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
@@ -365,6 +366,34 @@ def display_returns_vs_bench(
     ax.plot(cumulative_returns.index, cumulative_returns, label="Portfolio")
     ax.plot(benchmark_c_returns.index, benchmark_c_returns, label="Benchmark")
     ax.set_ylabel("Cumulative Returns")
+
+    ax2 = ax.twinx()
+
+    creturns_year_idx = list()
+    creturns_year_val = list()
+    breturns_year_idx = list()
+    breturns_year_val = list()
+
+    for year in set(cumulative_returns.index.year):
+        creturns_year = cumulative_returns[cumulative_returns.index.year == year]
+        creturns_year_idx.append(datetime.strptime(f"{year}-04-15", "%Y-%m-%d"))
+        creturns_year_val.append(
+            100 * (creturns_year.values[-1] - creturns_year.values[0])
+        )
+
+        breturns_year = benchmark_c_returns[benchmark_c_returns.index.year == year]
+        breturns_year_idx.append(datetime.strptime(f"{year}-08-15", "%Y-%m-%d"))
+        breturns_year_val.append(
+            100 * (breturns_year.values[-1] - breturns_year.values[0])
+        )
+
+    ax2.bar(
+        creturns_year_idx, creturns_year_val, width=100, label="Portfolio", alpha=0.3
+    )
+    ax2.bar(
+        breturns_year_idx, breturns_year_val, width=100, label="Benchmark", alpha=0.3
+    )
+
     ax.legend(loc="upper left")
     theme.style_primary_axis(ax)
 
