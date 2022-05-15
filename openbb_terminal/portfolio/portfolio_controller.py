@@ -46,8 +46,8 @@ class PortfolioController(BaseController):
         "alloc",
         "perf",
         "ar",
-        "cr",
-        "al",
+        "return",
+        "hold",
         "maxdd",
         "var",
         "es",
@@ -144,8 +144,8 @@ class PortfolioController(BaseController):
 [param]Benchmark:[/param] {self.benchmark_name or ""}
 
 [info]Graphs:[/info]{("[unvl]", "[cmds]")[port_bench]}
-    al          allocation to given assets over period
-    cr          cumulative returns
+    hold        holdings of assets over period
+    return      cumulative returns and EOY returns
     maxdd       maximum drawdown
     rvol        rolling volatility
     rsharpe     rolling sharpe
@@ -153,10 +153,10 @@ class PortfolioController(BaseController):
     rbeta       rolling beta{("[/unvl]", "[/cmds]")[port_bench]}
 
 [info]Metrics:[/info]{("[unvl]", "[cmds]")[port_bench]}
-    alloc       show allocation on an asset or sector basis
-    perf        show (total) performance of the portfolio versus benchmark
+    alloc       allocation on an asset, sector, countries or regions basis
+    perf        performance of the portfolio versus benchmark
     stats       stats such as mean, percentiles, standard deviation
-    rsquare     R-square score
+    rsquare     R-square score between portfolio and benchmark
     skew        skewness
     kurt        kurtosis{("[/unvl]", "[/cmds]")[port_bench]}
 
@@ -245,7 +245,7 @@ class PortfolioController(BaseController):
         )
 
         if other_args:
-            if "-f" not in other_args and "-h" not in other_args:
+            if other_args and "-" not in other_args[0][0]:
                 other_args.insert(0, "-f")
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -307,8 +307,7 @@ class PortfolioController(BaseController):
             required="-h" not in other_args,
             help="Set the benchmark for the portfolio. By default, this is SPDR S&P 500 ETF Trust (SPY).",
         )
-
-        if "-b" not in other_args and "-h" not in other_args:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-b")
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -365,12 +364,13 @@ class PortfolioController(BaseController):
             help="Whether to also include the assets/sectors tables of both the benchmark and the portfolio.",
         )
         if other_args:
-            if "-a" not in other_args and "-h" not in other_args:
+            if other_args and "-" not in other_args[0][0]:
                 other_args.insert(0, "-a")
 
         ns_parser = parse_known_args_and_warn(parser, other_args, limit=10)
 
-        if ns_parser and ns_parser.agg:
+        if ns_parser:
+            console.print()
             if self.portfolio_name and self.benchmark_name:
                 if self.portfolio.portfolio_assets_allocation.empty:
                     self.portfolio.calculate_allocations()
@@ -497,13 +497,13 @@ class PortfolioController(BaseController):
                     )
 
     @log_start_end(log=logger)
-    def call_al(self, other_args: List[str]):
-        """Process al command"""
+    def call_hold(self, other_args: List[str]):
+        """Process hold command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="al",
-            description="Display allocation",
+            prog="hold",
+            description="Display holdings of assets",
         )
         parser.add_argument(
             "-s",
@@ -520,7 +520,7 @@ class PortfolioController(BaseController):
 
         if ns_parser:
             if self.portfolio_name and self.benchmark_name:
-                portfolio_view.display_allocation(
+                portfolio_view.display_holdings(
                     self.portfolio, ns_parser.sum_assets, ns_parser.export
                 )
             else:
@@ -824,12 +824,12 @@ class PortfolioController(BaseController):
                     )
 
     @log_start_end(log=logger)
-    def call_cr(self, other_args: List[str]):
-        """Process cr command"""
+    def call_return(self, other_args: List[str]):
+        """Process return command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="cr",
+            prog="return",
             description="Graph of cumulative returns against benchmark",
         )
         parser.add_argument(

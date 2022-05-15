@@ -380,10 +380,10 @@ def display_returns_vs_bench(
 
     ax.plot(cumulative_returns.index, cumulative_returns, label="Portfolio")
     ax.plot(benchmark_c_returns.index, benchmark_c_returns, label="Benchmark")
-    ax.set_ylabel("Cumulative Returns")
 
     if period in ["3y", "5y", "10y", "all"]:
         ax2 = ax.twinx()
+        ax2.set_ylabel("Cumulative Returns [%]")
 
         creturns_year_idx = list()
         creturns_year_val = list()
@@ -433,13 +433,13 @@ def display_returns_vs_bench(
 
 
 @log_start_end(log=logger)
-def display_allocation(
+def display_holdings(
     portfolio: portfolio_model.Portfolio,
     sum_assets: bool = False,
     export: str = "",
     external_axes: Optional[plt.Axes] = None,
 ):
-    """Display allocation of assets vs time
+    """Display holdings of assets vs time
 
     Parameters
     ----------
