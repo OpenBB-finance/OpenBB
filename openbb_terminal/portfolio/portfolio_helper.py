@@ -2,6 +2,8 @@
 __docformat__ = "numpy"
 
 import yfinance as yf
+import pandas as pd
+from datetime import datetime
 
 BENCHMARK_LIST = {
     "SPDR S&P 500 ETF Trust (SPY)": "SPY",
@@ -106,6 +108,8 @@ BENCHMARK_LIST = {
     "iShares Russell 2000 Value ETF (IWN)": "IWN",
 }
 
+PERIODS = ["mtd", "qtd", "ytd", "3m", "6m", "1y", "3y", "5y", "10y", "all"]
+
 
 def is_ticker(ticker: str) -> bool:
     """Determine whether a string is a valid ticker
@@ -163,3 +167,57 @@ def clean_name(name: str) -> str:
         A cleaned value
     """
     return name.replace("beta_", "").upper()
+
+
+def filter_df_by_period(df: pd.DataFrame, period: str = "all") -> pd.DataFrame:
+    """Filter dataframe by selected period
+
+    Parameters
+    ----------
+    df: pd.DataFrame
+        Dataframe to be filtered in terms of time
+    period : str
+        Period in which to filter dataframe.
+        Possible choices are: mtd, qtd, ytd, 3m, 6m, 1y, 3y, 5y, 10y, all
+
+    Returns
+    ----------
+    str
+        A cleaned value
+    """
+    if period == "mtd":
+        return df[df.index.strftime("%Y-%m") == datetime.now().strftime("%Y-%m")]
+    if period == "qtd":
+        if datetime.now().month < 4:
+            return df[
+                df.index.strftime("%Y-%m") < f"{datetime.now().strftime('%Y')}-04"
+            ]
+        elif datetime.now().month < 7:
+            return df[
+                (df.index.strftime("%Y-%m") >= f"{datetime.now().strftime('%Y')}-04")
+                & (df.index.strftime("%Y-%m") < f"{datetime.now().strftime('%Y')}-07")
+            ]
+        elif datetime.now().month < 10:
+            return df[
+                (df.index.strftime("%Y-%m") >= f"{datetime.now().strftime('%Y')}-07")
+                & (df.index.strftime("%Y-%m") < f"{datetime.now().strftime('%Y')}-10")
+            ]
+        else:
+            return df[
+                df.index.strftime("%Y-%m") >= f"{datetime.now().strftime('%Y')}-10"
+            ]
+    if period == "ytd":
+        return df[df.index.strftime("%Y") == datetime.now().strftime("%Y")]
+    if period == "3m":
+        return df[-21 * 3 :]
+    if period == "6m":
+        return df[-21 * 6 :]
+    if period == "1y":
+        return df[-21 * 12 * 1 :]
+    if period == "3y":
+        return df[-21 * 12 * 3 :]
+    if period == "5y":
+        return df[-21 * 12 * 5 :]
+    if period == "10y":
+        return df[-21 * 12 * 10 :]
+    return df

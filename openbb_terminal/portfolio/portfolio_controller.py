@@ -14,6 +14,7 @@ from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_FIGURES_ALLOWED,
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
     check_positive_float,
     parse_known_args_and_warn,
@@ -54,6 +55,10 @@ class PortfolioController(BaseController):
         "sh",
         "so",
         "om",
+        "stats",
+        "rsquare",
+        "kurt",
+        "skew",
     ]
     CHOICES_MENUS = [
         "bro",
@@ -144,6 +149,12 @@ class PortfolioController(BaseController):
     cr          cumulative returns
     dd          portfolio drawdown
     al          allocation to given assets over period{("[/unvl]", "[/cmds]")[port_bench]}
+
+[info]Metrics:[/info]{("[unvl]", "[cmds]")[port_bench]}
+    stats       stats such as mean, percentiles, standard deviation
+    rsquare     R-square score
+    skew        skewness
+    kurt        kurtosis{("[/unvl]", "[/cmds]")[port_bench]}
 
 [info]Risk Metrics:[/info]{("[unvl]", "[cmds]")[port]}
     var         display value at risk
@@ -888,6 +899,37 @@ class PortfolioController(BaseController):
                     length=ns_parser.length,
                     risk_free_rate=ns_parser.risk_free_rate,
                 )
+            else:
+                if not self.portfolio_name:
+                    if not self.benchmark_name:
+                        console.print(
+                            "[red]Please first define the portfolio (via 'load') "
+                            "and the benchmark (via 'bench').[/red]\n"
+                        )
+                    else:
+                        console.print(
+                            "[red]Please first define the portfolio (via 'load')[/red]\n"
+                        )
+                else:
+                    console.print(
+                        "[red]Please first define the benchmark (via 'bench')[/red]\n"
+                    )
+
+    @log_start_end(log=logger)
+    def call_rsquare(self, other_args: List[str]):
+        """Process rsquare command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="rsquare",
+            description="R-square score",
+        )
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            if self.portfolio_name and self.benchmark_name:
+                portfolio_view.display_rsquare(self.portfolio, ns_parser.export)
             else:
                 if not self.portfolio_name:
                     if not self.benchmark_name:

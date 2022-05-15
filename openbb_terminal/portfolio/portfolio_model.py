@@ -8,6 +8,7 @@ import numpy as np
 import pandas as pd
 import statsmodels.api as sm
 import yfinance as yf
+from sklearn.metrics import r2_score
 from pycoingecko import CoinGeckoAPI
 from statsmodels.regression.rolling import RollingOLS
 
@@ -209,7 +210,7 @@ class Portfolio:
     """
 
     @log_start_end(log=logger)
-    def __init__(self, trades: pd.DataFrame = pd.DataFrame(), rf=0.0):
+    def __init__(self, trades: pd.DataFrame = pd.DataFrame(), rf: float = 0.0):
         """Initialize Portfolio class"""
         # Allow for empty initialization
         self.benchmark_ticker: str = ""
@@ -524,6 +525,7 @@ class Portfolio:
 
         self.benchmark_ticker = benchmark
 
+    @log_start_end(log=logger)
     def mimic_portfolio_trades_for_benchmark(self, full_shares: bool = False):
         """Mimic trades from the orderbook as good as possible based on chosen benchmark. The assumption is that the
         benchmark is always tradable and allows for partial shares. This eliminates the need to keep track of a cash
@@ -673,3 +675,27 @@ class Portfolio:
 
         # Build the portfolio object
         return cls(trades)
+
+    @log_start_end(log=logger)
+    def get_r2_score(self):
+        """Class method that retrieves R2 Score for portfolio and benchmark selected
+
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame with R2 Score between portfolio and benchmark for different periods
+        """
+        vals = list()
+        for period in portfolio_helper.PERIODS:
+            vals.append(
+                round(
+                    r2_score(
+                        portfolio_helper.filter_df_by_period(
+                            self.portfolio_value, period
+                        ),
+                        portfolio_helper.filter_df_by_period(self.benchmark, period),
+                    ),
+                    3,
+                )
+            )
+        return pd.DataFrame(vals, index=portfolio_helper.PERIODS, columns=["R2 Score"])
