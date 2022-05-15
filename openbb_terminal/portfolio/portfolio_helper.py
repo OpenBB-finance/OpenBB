@@ -1,9 +1,9 @@
 """Portfolio Helper"""
 __docformat__ = "numpy"
 
+from datetime import datetime, timedelta
 import yfinance as yf
 import pandas as pd
-from datetime import datetime, timedelta
 
 BENCHMARK_LIST = {
     "SPDR S&P 500 ETF Trust (SPY)": "SPY",
@@ -110,6 +110,15 @@ BENCHMARK_LIST = {
 
 PERIODS = ["mtd", "qtd", "ytd", "3m", "6m", "1y", "3y", "5y", "10y", "all"]
 
+PERIODS_DAYS = {
+    "3m": 3 * 21,
+    "6m": 6 * 21,
+    "1y": 12 * 21,
+    "3y": 3 * 12 * 21,
+    "5y": 5 * 12 * 21,
+    "10y": 10 * 12 * 21,
+}
+
 
 def is_ticker(ticker: str) -> bool:
     """Determine whether a string is a valid ticker
@@ -192,20 +201,17 @@ def filter_df_by_period(df: pd.DataFrame, period: str = "all") -> pd.DataFrame:
             return df[
                 df.index.strftime("%Y-%m") < f"{datetime.now().strftime('%Y')}-04"
             ]
-        elif datetime.now().month < 7:
+        if datetime.now().month < 7:
             return df[
                 (df.index.strftime("%Y-%m") >= f"{datetime.now().strftime('%Y')}-04")
                 & (df.index.strftime("%Y-%m") < f"{datetime.now().strftime('%Y')}-07")
             ]
-        elif datetime.now().month < 10:
+        if datetime.now().month < 10:
             return df[
                 (df.index.strftime("%Y-%m") >= f"{datetime.now().strftime('%Y')}-07")
                 & (df.index.strftime("%Y-%m") < f"{datetime.now().strftime('%Y')}-10")
             ]
-        else:
-            return df[
-                df.index.strftime("%Y-%m") >= f"{datetime.now().strftime('%Y')}-10"
-            ]
+        return df[df.index.strftime("%Y-%m") >= f"{datetime.now().strftime('%Y')}-10"]
     if period == "ytd":
         return df[df.index.strftime("%Y") == datetime.now().strftime("%Y")]
     if period == "3m":

@@ -5,10 +5,10 @@ import logging
 from typing import List, Optional
 import os
 
+from datetime import datetime
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
-from datetime import datetime
 
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
@@ -20,6 +20,8 @@ from openbb_terminal.portfolio import (
 from openbb_terminal.helper_funcs import plot_autoscale, export_data, print_rich_table
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
+
+# pylint: disable=too-many-lines
 
 # from reportlab.lib.pagesizes import letter
 # from reportlab.pdfgen import canvas
@@ -340,18 +342,21 @@ def display_performance_vs_benchmark(
 
 @log_start_end(log=logger)
 def display_returns_vs_bench(
-    portfolio_returns,
-    benchmark_returns,
+    portfolio_returns: pd.Series,
+    benchmark_returns: pd.Series,
+    export: str = "",
     external_axes: Optional[plt.Axes] = None,
 ):
     """Display portfolio returns vs benchmark
 
     Parameters
     ----------
-    portfolio_returns
+    portfolio_returns : pd.Series
         Returns of the portfolio
-    benchmark_returns
+    benchmark_returns : pd.Series
         Returns of the benchmark
+    export : str
+        Export certain type of data
     external_axes: plt.Axes
         Optional axes to display plot on
     """
@@ -399,6 +404,12 @@ def display_returns_vs_bench(
 
     if not external_axes:
         theme.visualize_output()
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "cr",
+    )
 
 
 @log_start_end(log=logger)
@@ -462,7 +473,59 @@ def display_allocation(
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "rolling",
+        "al",
+    )
+
+
+@log_start_end(log=logger)
+def display_rolling_volatility(
+    benchmark_returns: pd.Series,
+    portfolio_returns: pd.Series,
+    period: str = "1y",
+    export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
+):
+    """Display rolling volatility
+
+    Parameters
+    ----------
+    portfolio_returns : pd.Series
+        Returns of the portfolio
+    benchmark_returns : pd.Series
+        Returns of the benchmark
+    period: str
+        Period for window to consider
+    export: str
+        Export to file
+    external_axes: Optional[List[plt.Axes]]
+        Optional axes to display plot on
+    """
+    if external_axes is None:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    else:
+        if len(external_axes) != 1:
+            logger.error("Expected list of one axis items.")
+            console.print("[red]1 axes expected.\n[/red]")
+            return
+        ax = external_axes
+
+    length = portfolio_helper.PERIODS_DAYS[period]
+
+    rolling_volatility = portfolio_returns.rolling(length).std()
+    rolling_volatility_bench = benchmark_returns.rolling(length).std()
+
+    rolling_volatility.plot(ax=ax)
+    rolling_volatility_bench.plot(ax=ax)
+    ax.set_title(f"Rolling Volatility using {period} window")
+    ax.set_xlabel("Date")
+
+    if external_axes is None:
+        theme.visualize_output()
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "rvol",
     )
 
 

@@ -15,7 +15,6 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_FIGURES_ALLOWED,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
-    check_positive,
     check_positive_float,
     parse_known_args_and_warn,
     print_rich_table,
@@ -59,6 +58,7 @@ class PortfolioController(BaseController):
         "rsquare",
         "kurt",
         "skew",
+        "rvol",
     ]
     CHOICES_MENUS = [
         "bro",
@@ -146,9 +146,10 @@ class PortfolioController(BaseController):
 
 [info]Graphs:[/info]{("[unvl]", "[cmds]")[port_bench]}
     rolling     rolling metrics of portfolio and benchmark
+    al          allocation to given assets over period
     cr          cumulative returns
     dd          portfolio drawdown
-    al          allocation to given assets over period{("[/unvl]", "[/cmds]")[port_bench]}
+    rvol        rolling volatility{("[/unvl]", "[/cmds]")[port_bench]}
 
 [info]Metrics:[/info]{("[unvl]", "[cmds]")[port_bench]}
     stats       stats such as mean, percentiles, standard deviation
@@ -829,7 +830,9 @@ class PortfolioController(BaseController):
             description="Graph of cumulative returns against benchmark",
         )
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
+        )
 
         if ns_parser:
             if self.portfolio_name and self.benchmark_name:
@@ -875,6 +878,53 @@ class PortfolioController(BaseController):
                     )
 
     @log_start_end(log=logger)
+    def call_rvol(self, other_args: List[str]):
+        """Process rolling volatility command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="rvol",
+            description="Show rolling volatility portfolio vs benchmark",
+        )
+        parser.add_argument(
+            "-p",
+            "--period",
+            type=str,
+            dest="period",
+            default="1y",
+            choices=list(portfolio_helper.PERIODS_DAYS.keys()),
+            help="Period to apply rolling window",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-p")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
+        )
+        if ns_parser:
+            if self.portfolio_name and self.benchmark_name:
+                portfolio_view.display_rolling_volatility(
+                    self.portfolio.benchmark_returns,
+                    self.portfolio.returns,
+                    period=ns_parser.period,
+                    export=ns_parser.export,
+                )
+            else:
+                if not self.portfolio_name:
+                    if not self.benchmark_name:
+                        console.print(
+                            "[red]Please first define the portfolio (via 'load') "
+                            "and the benchmark (via 'bench').[/red]\n"
+                        )
+                    else:
+                        console.print(
+                            "[red]Please first define the portfolio (via 'load')[/red]\n"
+                        )
+                else:
+                    console.print(
+                        "[red]Please first define the benchmark (via 'bench')[/red]\n"
+                    )
+
+    @log_start_end(log=logger)
     def call_rolling(self, other_args: List[str]):
         """Process rolling command"""
         parser = argparse.ArgumentParser(
@@ -884,12 +934,13 @@ class PortfolioController(BaseController):
             description="Show rolling portfolio metrics vs benchmark",
         )
         parser.add_argument(
-            "-l",
-            "--length",
-            type=check_positive,
-            dest="length",
-            default=60,
-            help="Length of rolling window",
+            "-p",
+            "--period",
+            type=str,
+            dest="period",
+            default="1y",
+            choices=list(portfolio_helper.PERIODS_DAYS.keys()),
+            help="Period to apply rolling window",
         )
         parser.add_argument(
             "-r",
@@ -904,11 +955,12 @@ class PortfolioController(BaseController):
         )
         if ns_parser:
             if self.portfolio_name and self.benchmark_name:
-                portfolio_view.display_rolling_stats(
+                portfolio_view.display_rolling_volatility(
                     self.portfolio.benchmark_returns,
                     self.portfolio.returns,
-                    length=ns_parser.length,
+                    period=ns_parser.period,
                     risk_free_rate=ns_parser.risk_free_rate,
+                    export=ns_parser.export,
                 )
             else:
                 if not self.portfolio_name:
