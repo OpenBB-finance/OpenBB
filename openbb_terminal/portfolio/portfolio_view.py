@@ -344,6 +344,7 @@ def display_performance_vs_benchmark(
 def display_returns_vs_bench(
     portfolio_returns: pd.Series,
     benchmark_returns: pd.Series,
+    period: str = "all",
     export: str = "",
     external_axes: Optional[plt.Axes] = None,
 ):
@@ -355,6 +356,8 @@ def display_returns_vs_bench(
         Returns of the portfolio
     benchmark_returns : pd.Series
         Returns of the benchmark
+    period : str
+        Period to compare cumulative returns and benchmark
     export : str
         Export certain type of data
     external_axes: plt.Axes
@@ -365,39 +368,55 @@ def display_returns_vs_bench(
     else:
         ax = external_axes
 
-    cumulative_returns = (1 + portfolio_returns).cumprod()
-    benchmark_c_returns = (1 + benchmark_returns).cumprod()
+    portfolio_returns = portfolio_helper.filter_df_by_period(portfolio_returns, period)
+    benchmark_returns = portfolio_helper.filter_df_by_period(benchmark_returns, period)
+
+    cumulative_returns = (
+        1 + portfolio_returns.shift(periods=1, fill_value=0)
+    ).cumprod()
+    benchmark_c_returns = (
+        1 + benchmark_returns.shift(periods=1, fill_value=0)
+    ).cumprod()
 
     ax.plot(cumulative_returns.index, cumulative_returns, label="Portfolio")
     ax.plot(benchmark_c_returns.index, benchmark_c_returns, label="Benchmark")
     ax.set_ylabel("Cumulative Returns")
 
-    ax2 = ax.twinx()
+    if period in ["3y", "5y", "10y", "all"]:
+        ax2 = ax.twinx()
 
-    creturns_year_idx = list()
-    creturns_year_val = list()
-    breturns_year_idx = list()
-    breturns_year_val = list()
+        creturns_year_idx = list()
+        creturns_year_val = list()
+        breturns_year_idx = list()
+        breturns_year_val = list()
 
-    for year in set(cumulative_returns.index.year):
-        creturns_year = cumulative_returns[cumulative_returns.index.year == year]
-        creturns_year_idx.append(datetime.strptime(f"{year}-04-15", "%Y-%m-%d"))
-        creturns_year_val.append(
-            100 * (creturns_year.values[-1] - creturns_year.values[0])
+        for year in set(cumulative_returns.index.year):
+            creturns_year = cumulative_returns[cumulative_returns.index.year == year]
+            creturns_year_idx.append(datetime.strptime(f"{year}-04-15", "%Y-%m-%d"))
+            creturns_year_val.append(
+                100 * (creturns_year.values[-1] - creturns_year.values[0])
+            )
+
+            breturns_year = benchmark_c_returns[benchmark_c_returns.index.year == year]
+            breturns_year_idx.append(datetime.strptime(f"{year}-08-15", "%Y-%m-%d"))
+            breturns_year_val.append(
+                100 * (breturns_year.values[-1] - breturns_year.values[0])
+            )
+
+        ax2.bar(
+            creturns_year_idx,
+            creturns_year_val,
+            width=100,
+            label="Portfolio",
+            alpha=0.3,
         )
-
-        breturns_year = benchmark_c_returns[benchmark_c_returns.index.year == year]
-        breturns_year_idx.append(datetime.strptime(f"{year}-08-15", "%Y-%m-%d"))
-        breturns_year_val.append(
-            100 * (breturns_year.values[-1] - breturns_year.values[0])
+        ax2.bar(
+            breturns_year_idx,
+            breturns_year_val,
+            width=100,
+            label="Benchmark",
+            alpha=0.3,
         )
-
-    ax2.bar(
-        creturns_year_idx, creturns_year_val, width=100, label="Portfolio", alpha=0.3
-    )
-    ax2.bar(
-        breturns_year_idx, breturns_year_val, width=100, label="Benchmark", alpha=0.3
-    )
 
     ax.legend(loc="upper left")
     theme.style_primary_axis(ax)
@@ -409,6 +428,7 @@ def display_returns_vs_bench(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "cr",
+        cumulative_returns.to_frame().join(benchmark_c_returns),
     )
 
 

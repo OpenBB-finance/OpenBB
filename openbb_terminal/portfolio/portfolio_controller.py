@@ -832,15 +832,28 @@ class PortfolioController(BaseController):
             prog="cr",
             description="Graph of cumulative returns against benchmark",
         )
-
+        parser.add_argument(
+            "-p",
+            "--period",
+            type=str,
+            dest="period",
+            default="all",
+            choices=list(portfolio_helper.PERIODS_DAYS.keys()),
+            help="Period to select start of cumulative returns",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-p")
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
+            parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
 
         if ns_parser:
             if self.portfolio_name and self.benchmark_name:
                 portfolio_view.display_returns_vs_bench(
-                    self.portfolio.returns, self.portfolio.benchmark_returns
+                    self.portfolio.returns,
+                    self.portfolio.benchmark_returns,
+                    ns_parser.period,
+                    ns_parser.export,
                 )
             else:
                 console.print(
