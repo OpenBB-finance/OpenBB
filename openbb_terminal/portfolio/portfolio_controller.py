@@ -128,6 +128,10 @@ class PortfolioController(BaseController):
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
+        # To speed development - DELETE ME
+        self.call_load(["Public_Equity_Orderbook.xlsx"])
+        self.call_bench(["SPDR", "S&P", "500", "ETF", "Trust", "(SPY)"])
+
     def print_help(self):
         """Print help"""
         port = bool(self.portfolio_name)

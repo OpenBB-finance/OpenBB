@@ -1,7 +1,8 @@
 """Portfolio Helper"""
 __docformat__ = "numpy"
 
-from datetime import datetime, timedelta
+from dateutil.relativedelta import relativedelta
+from datetime import datetime
 import yfinance as yf
 import pandas as pd
 
@@ -217,17 +218,17 @@ def filter_df_by_period(df: pd.DataFrame, period: str = "all") -> pd.DataFrame:
     if period == "ytd":
         return df[df.index.strftime("%Y") == datetime.now().strftime("%Y")]
     if period == "3m":
-        return df[df.index >= datetime.now() - timedelta(days=21 * 3)]
+        return df[df.index >= (datetime.now() - relativedelta(months=3))]
     if period == "6m":
-        return df[df.index >= datetime.now() - timedelta(days=21 * 6)]
+        return df[df.index >= (datetime.now() - relativedelta(months=6))]
     if period == "1y":
-        return df[df.index >= datetime.now() - timedelta(days=21 * 12 * 1)]
+        return df[df.index >= (datetime.now() - relativedelta(years=1))]
     if period == "3y":
-        return df[df.index >= datetime.now() - timedelta(days=21 * 12 * 3)]
+        return df[df.index >= (datetime.now() - relativedelta(years=3))]
     if period == "5y":
-        return df[df.index >= datetime.now() - timedelta(days=21 * 12 * 5)]
+        return df[df.index >= (datetime.now() - relativedelta(years=5))]
     if period == "10y":
-        return df[df.index >= datetime.now() - timedelta(days=21 * 12 * 10)]
+        return df[df.index >= (datetime.now() - relativedelta(years=10))]
     return df
 
 
