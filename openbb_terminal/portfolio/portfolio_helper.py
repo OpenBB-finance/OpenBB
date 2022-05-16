@@ -3,7 +3,6 @@ __docformat__ = "numpy"
 
 from datetime import datetime, timedelta
 import yfinance as yf
-import numpy as np
 import pandas as pd
 
 # pylint: disable=too-many-return-statements
@@ -232,15 +231,13 @@ def filter_df_by_period(df: pd.DataFrame, period: str = "all") -> pd.DataFrame:
     return df
 
 
-def sharpe_ratio(return_series: pd.Series, N: int, risk_free_rate: float) -> float:
+def sharpe_ratio(return_series: pd.Series, risk_free_rate: float) -> float:
     """Get sharpe ratio
 
     Parameters
     ----------
     return_series : pd.Series
         Returns of the portfolio
-    N : int
-        Number of days window to consider
     risk_free_rate: float
         Value to use for risk free rate
 
@@ -249,21 +246,19 @@ def sharpe_ratio(return_series: pd.Series, N: int, risk_free_rate: float) -> flo
     float
         Sharpe ratio
     """
-    mean = return_series.mean() * N - risk_free_rate
-    sigma = return_series.std() * np.sqrt(N)
+    mean = return_series.mean() - risk_free_rate
+    sigma = return_series.std()
 
     return mean / sigma
 
 
-def sortino_ratio(return_series: pd.Series, N: int, risk_free_rate: float) -> float:
+def sortino_ratio(return_series: pd.Series, risk_free_rate: float) -> float:
     """Get sortino ratio
 
     Parameters
     ----------
     return_series : pd.Series
         Returns of the portfolio
-    N : int
-        Number of days window to consider
     risk_free_rate: float
         Value to use for risk free rate
 
@@ -272,8 +267,8 @@ def sortino_ratio(return_series: pd.Series, N: int, risk_free_rate: float) -> fl
     float
         Sortino ratio
     """
-    mean = return_series.mean() * N - risk_free_rate
-    std_neg = return_series[return_series < 0].std() * np.sqrt(N)
+    mean = return_series.mean() - risk_free_rate
+    std_neg = return_series[return_series < 0].std()
     return mean / std_neg
 
 

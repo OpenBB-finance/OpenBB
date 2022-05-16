@@ -838,21 +838,21 @@ class Portfolio:
         """
         vals = list()
         for period in portfolio_helper.PERIODS:
-            port_period = portfolio_helper.filter_df_by_period(self.returns, period)
-            bench_period = portfolio_helper.filter_df_by_period(
-                self.benchmark_returns, period
-            )
             vals.append(
                 [
                     round(
                         portfolio_helper.sharpe_ratio(
-                            port_period, len(port_period), risk_free_rate
+                            portfolio_helper.filter_df_by_period(self.returns, period),
+                            risk_free_rate,
                         ),
                         3,
                     ),
                     round(
                         portfolio_helper.sharpe_ratio(
-                            bench_period, len(bench_period), risk_free_rate
+                            portfolio_helper.filter_df_by_period(
+                                self.benchmark_returns, period
+                            ),
+                            risk_free_rate,
                         ),
                         3,
                     ),
@@ -878,21 +878,21 @@ class Portfolio:
         """
         vals = list()
         for period in portfolio_helper.PERIODS:
-            port_period = portfolio_helper.filter_df_by_period(self.returns, period)
-            bench_period = portfolio_helper.filter_df_by_period(
-                self.benchmark_returns, period
-            )
             vals.append(
                 [
                     round(
                         portfolio_helper.sortino_ratio(
-                            port_period, len(port_period), risk_free_rate
+                            portfolio_helper.filter_df_by_period(self.returns, period),
+                            risk_free_rate,
                         ),
                         3,
                     ),
                     round(
                         portfolio_helper.sortino_ratio(
-                            bench_period, len(bench_period), risk_free_rate
+                            portfolio_helper.filter_df_by_period(
+                                self.benchmark_returns, period
+                            ),
+                            risk_free_rate,
                         ),
                         3,
                     ),
