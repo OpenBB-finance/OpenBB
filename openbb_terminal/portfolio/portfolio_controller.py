@@ -56,25 +56,28 @@ class PortfolioController(BaseController):
         "so",
         "om",
         "stats",
-        "rsquare",
-        "kurt",
-        "skew",
         "rvol",
         "rsharpe",
         "rsort",
         "rbeta",
-        "vol",
-        "sharper",
-        "sortr",
-        "maxddr",
+        "metric",
     ]
     CHOICES_MENUS = [
         "bro",
         "po",
         "pa",
     ]
-    distributions = ["laplace", "student_t", "logistic", "normal"]
-    aggregation_methods = ["assets", "sectors", "countries", "regions"]
+    VALID_DISTRIBUTIONS = ["laplace", "student_t", "logistic", "normal"]
+    AGGREGATION_METRICS = ["assets", "sectors", "countries", "regions"]
+    VALID_METRICS = [
+        "volatility",
+        "sharpe",
+        "sortino",
+        "maxdrawdown",
+        "rsquare",
+        "skew",
+        "kurtosis",
+    ]
     PATH = "/portfolio/"
 
     def __init__(self, queue: List[str] = None):
@@ -121,7 +124,8 @@ class PortfolioController(BaseController):
             choices: dict = {c: {} for c in self.controller_choices}
             choices["load"] = {c: None for c in self.DATA_HOLDINGS_FILES}
             choices["bench"] = {c: None for c in portfolio_helper.BENCHMARK_LIST}
-            choices["alloc"] = {c: None for c in self.aggregation_methods}
+            choices["alloc"] = {c: None for c in self.AGGREGATION_METRICS}
+            choices["metric"] = {c: None for c in self.VALID_METRICS}
             self.choices = choices
 
             choices["support"] = self.SUPPORT_CHOICES
@@ -160,19 +164,16 @@ class PortfolioController(BaseController):
     rvol        rolling volatility
     rsharpe     rolling sharpe
     rsort       rolling sortino
-    rbeta       rolling beta{("[/unvl]", "[/cmds]")[port_bench]}
+    rbeta       rolling beta
+    distr       distribution of returns{("[/unvl]", "[/cmds]")[port_bench]}
 
 [info]Metrics:[/info]{("[unvl]", "[cmds]")[port_bench]}
     alloc       allocation on an asset, sector, countries or regions basis
+    summary     all portfolio vs benchmark metrics for a certain period of choice
+    metric      portfolio vs benchmark metric for all different periods
+
     perf        performance of the portfolio versus benchmark
-    stats       stats such as mean, percentiles, standard deviation
-    rsquare     R-square score between portfolio and benchmark
-    skew        skewness
-    kurt        kurtosis
-    vol         volatility
-    sharper     sharpe ratio
-    sortr       sortino ratio
-    maxddr      maximum drawdown ratio{("[/unvl]", "[/cmds]")[port_bench]}
+    stats       stats such as mean, percentiles, standard deviation{("[/unvl]", "[/cmds]")[port_bench]}
 
 [info]Risk Metrics:[/info]{("[unvl]", "[cmds]")[port]}
     var         display value at risk
@@ -361,7 +362,7 @@ class PortfolioController(BaseController):
             "-a",
             "--agg",
             default="assets",
-            choices=self.aggregation_methods,
+            choices=self.AGGREGATION_METRICS,
             dest="agg",
             help="The type of allocation aggregation you wish to do",
         )
@@ -421,7 +422,7 @@ class PortfolioController(BaseController):
                 else:
                     console.print(
                         f"{ns_parser.agg} is not an available option. The options "
-                        f"are: {', '.join(self.aggregation_methods)}"
+                        f"are: {', '.join(self.AGGREGATION_METRICS)}"
                     )
 
     @log_start_end(log=logger)
@@ -651,7 +652,7 @@ class PortfolioController(BaseController):
             "--distributions",
             dest="distributions",
             type=str,
-            choices=self.distributions,
+            choices=self.VALID_DISTRIBUTIONS,
             default="normal",
             help="Distribution used for the calculations",
         )
@@ -940,14 +941,33 @@ class PortfolioController(BaseController):
                 )
 
     @log_start_end(log=logger)
-    def call_rsquare(self, other_args: List[str]):
-        """Process rsquare command"""
+    def call_metric(self, other_args: List[str]):
+        """Process metric command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="rsquare",
-            description="R-square score",
+            prog="metric",
+            description="Display metric of choice for different periods",
         )
+        parser.add_argument(
+            "-m",
+            "--metric",
+            type=str,
+            dest="metric",
+            default="-h" not in other_args,
+            choices=self.VALID_METRICS,
+            help="Period to apply rolling window",
+        )
+        parser.add_argument(
+            "-r",
+            "--rfr",
+            type=check_positive_float,
+            dest="risk_free_rate",
+            default=self.portfolio.rf,
+            help="Set risk free rate for calculations.",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-m")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
@@ -955,43 +975,26 @@ class PortfolioController(BaseController):
             if check_portfolio_benchmark_defined(
                 self.portfolio_name, self.benchmark_name
             ):
-                portfolio_view.display_rsquare(self.portfolio, ns_parser.export)
-
-    @log_start_end(log=logger)
-    def call_skew(self, other_args: List[str]):
-        """Process skew command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="skew",
-            description="Compute skewness of data",
-        )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            if check_portfolio_benchmark_defined(
-                self.portfolio_name, self.benchmark_name
-            ):
-                portfolio_view.display_skewness(self.portfolio, ns_parser.export)
-
-    @log_start_end(log=logger)
-    def call_kurt(self, other_args: List[str]):
-        """Process kurt command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="kurt",
-            description="Compute kurtosis of data",
-        )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            if check_portfolio_benchmark_defined(
-                self.portfolio_name, self.benchmark_name
-            ):
-                portfolio_view.display_kurtosis(self.portfolio, ns_parser.export)
+                if ns_parser.metric == "skew":
+                    portfolio_view.display_skewness(self.portfolio, ns_parser.export)
+                elif ns_parser.metric == "kurtosis":
+                    portfolio_view.display_kurtosis(self.portfolio, ns_parser.export)
+                elif ns_parser.metric == "volatility":
+                    portfolio_view.display_volatility(self.portfolio, ns_parser.export)
+                elif ns_parser.metric == "sharpe":
+                    portfolio_view.display_sharpe_ratio(
+                        self.portfolio, ns_parser.risk_free_rate, ns_parser.export
+                    )
+                elif ns_parser.metric == "sortino":
+                    portfolio_view.display_sortino_ratio(
+                        self.portfolio, ns_parser.risk_free_rate, ns_parser.export
+                    )
+                elif ns_parser.metric == "maxdrawdown":
+                    portfolio_view.display_maximum_drawdown_ratio(
+                        self.portfolio, ns_parser.export
+                    )
+                elif ns_parser.metric == "rsquare":
+                    portfolio_view.display_rsquare(self.portfolio, ns_parser.export)
 
     @log_start_end(log=logger)
     def call_stats(self, other_args: List[str]):
@@ -1023,104 +1026,6 @@ class PortfolioController(BaseController):
             ):
                 portfolio_view.display_stats(
                     self.portfolio, ns_parser.period, ns_parser.export
-                )
-
-    @log_start_end(log=logger)
-    def call_vol(self, other_args: List[str]):
-        """Process vol command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="vol",
-            description="Compute volatility",
-        )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            if check_portfolio_benchmark_defined(
-                self.portfolio_name, self.benchmark_name
-            ):
-                portfolio_view.display_volatility(self.portfolio, ns_parser.export)
-
-    @log_start_end(log=logger)
-    def call_sharper(self, other_args: List[str]):
-        """Process sharper command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="sharper",
-            description="Compute sharpe ratio",
-        )
-        parser.add_argument(
-            "-r",
-            "--rfr",
-            type=check_positive_float,
-            dest="risk_free_rate",
-            default=self.portfolio.rf,
-            help="Set risk free rate for calculations.",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-r")
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            if check_portfolio_benchmark_defined(
-                self.portfolio_name, self.benchmark_name
-            ):
-                portfolio_view.display_sharpe_ratio(
-                    self.portfolio, ns_parser.risk_free_rate, ns_parser.export
-                )
-
-    @log_start_end(log=logger)
-    def call_sortr(self, other_args: List[str]):
-        """Process sortr command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="sortr",
-            description="Compute sortino ratio",
-        )
-        parser.add_argument(
-            "-r",
-            "--rfr",
-            type=check_positive_float,
-            dest="risk_free_rate",
-            default=self.portfolio.rf,
-            help="Set risk free rate for calculations.",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-r")
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            if check_portfolio_benchmark_defined(
-                self.portfolio_name, self.benchmark_name
-            ):
-                portfolio_view.display_sortino_ratio(
-                    self.portfolio, ns_parser.risk_free_rate, ns_parser.export
-                )
-
-    @log_start_end(log=logger)
-    def call_maxddr(self, other_args: List[str]):
-        """Process maxddr command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="maxddr",
-            description="Compute maximum drawdown ratio",
-        )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            if check_portfolio_benchmark_defined(
-                self.portfolio_name, self.benchmark_name
-            ):
-                portfolio_view.display_maximum_drawdown_ratio(
-                    self.portfolio, ns_parser.export
                 )
 
 

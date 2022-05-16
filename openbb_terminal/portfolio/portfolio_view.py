@@ -302,14 +302,12 @@ def display_performance_vs_benchmark(
         orient="index",
         columns=["Portfolio", "Benchmark", "Difference"],
     )
-    console.print()
     print_rich_table(
         totals.replace(0, "-"),
         title=f"Portfolio vs. Benchmark - Totals in period: {period}",
         headers=list(totals.columns),
         show_index=True,
     )
-    console.print()
 
     if show_all_trades:
         # Combine DataFrames
@@ -902,7 +900,6 @@ def display_rsquare(
     export : str
         Export data format
     """
-    console.print()
     print_rich_table(
         portfolio.get_r2_score(),
         title="R-Square Score between Portfolio and Benchmark",
@@ -914,7 +911,6 @@ def display_rsquare(
         os.path.dirname(os.path.abspath(__file__)),
         "rsquare",
     )
-    console.print()
 
 
 @log_start_end(log=logger)
@@ -931,7 +927,6 @@ def display_skewness(
     export : str
         Export data format
     """
-    console.print()
     print_rich_table(
         portfolio.get_skewness(),
         title="Skewness for Portfolio and Benchmark",
@@ -942,7 +937,6 @@ def display_skewness(
         os.path.dirname(os.path.abspath(__file__)),
         "skew",
     )
-    console.print()
 
 
 @log_start_end(log=logger)
@@ -959,7 +953,6 @@ def display_kurtosis(
     export : str
         Export data format
     """
-    console.print()
     print_rich_table(
         portfolio.get_kurtosis(),
         title="Kurtosis for Portfolio and Benchmark",
@@ -970,7 +963,6 @@ def display_kurtosis(
         os.path.dirname(os.path.abspath(__file__)),
         "kurt",
     )
-    console.print()
 
 
 @log_start_end(log=logger)
@@ -990,7 +982,6 @@ def display_stats(
     export : str
         Export data format
     """
-    console.print()
     print_rich_table(
         portfolio.get_stats(period),
         title=f"Stats for Portfolio and Benchmark in period {period}",
@@ -1001,7 +992,6 @@ def display_stats(
         os.path.dirname(os.path.abspath(__file__)),
         "stats",
     )
-    console.print()
 
 
 @log_start_end(log=logger)
@@ -1018,7 +1008,6 @@ def display_volatility(
     export : str
         Export data format
     """
-    console.print()
     print_rich_table(
         portfolio.get_volatility(),
         title="Volatility for Portfolio and Benchmark",
@@ -1029,7 +1018,6 @@ def display_volatility(
         os.path.dirname(os.path.abspath(__file__)),
         "vol",
     )
-    console.print()
 
 
 @log_start_end(log=logger)
@@ -1049,7 +1037,6 @@ def display_sharpe_ratio(
     export : str
         Export data format
     """
-    console.print()
     print_rich_table(
         portfolio.get_sharpe_ratio(risk_free_rate),
         title="Sharpe ratio for Portfolio and Benchmark",
@@ -1060,7 +1047,6 @@ def display_sharpe_ratio(
         os.path.dirname(os.path.abspath(__file__)),
         "sharper",
     )
-    console.print()
 
 
 @log_start_end(log=logger)
@@ -1080,7 +1066,6 @@ def display_sortino_ratio(
     export : str
         Export data format
     """
-    console.print()
     print_rich_table(
         portfolio.get_sortino_ratio(risk_free_rate),
         title="Sortino ratio for Portfolio and Benchmark",
@@ -1091,7 +1076,6 @@ def display_sortino_ratio(
         os.path.dirname(os.path.abspath(__file__)),
         "sortr",
     )
-    console.print()
 
 
 @log_start_end(log=logger)
@@ -1108,7 +1092,6 @@ def display_maximum_drawdown_ratio(
     export : str
         Export data format
     """
-    console.print()
     print_rich_table(
         portfolio.get_maximum_drawdown_ratio(),
         title="Maximum drawdown for Portfolio and Benchmark",
@@ -1119,7 +1102,6 @@ def display_maximum_drawdown_ratio(
         os.path.dirname(os.path.abspath(__file__)),
         "maxddr",
     )
-    console.print()
 
 
 #
