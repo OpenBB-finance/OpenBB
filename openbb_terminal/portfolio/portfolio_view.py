@@ -436,6 +436,8 @@ def display_returns_vs_bench(
 def display_holdings(
     portfolio: portfolio_model.Portfolio,
     sum_assets: bool = False,
+    raw: bool = False,
+    limit: int = 10,
     export: str = "",
     external_axes: Optional[plt.Axes] = None,
 ):
@@ -447,6 +449,10 @@ def display_holdings(
         Portfolio object with trades loaded
     sum_assets: bool
         Sum assets over time
+    raw : bool
+        To display raw data
+    limit : int
+        Number of past market days to display holdings
     export: str
         Format to export plot
     external_axes: plt.Axes
@@ -462,38 +468,53 @@ def display_holdings(
     )
     all_holdings = all_holdings.drop(columns=["temp"])
 
-    if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    else:
-        ax = external_axes
+    if raw:
+        all_holdings["Total Value"] = all_holdings.sum(axis=1)
+        # No need to account for time since this is daily data
+        all_holdings.index = all_holdings.index.date
 
-    if sum_assets:
-        ax.stackplot(
-            all_holdings.index,
-            [all_holdings[col] for col in all_holdings.columns],
-            labels=all_holdings.columns,
+        print_rich_table(
+            all_holdings.tail(limit),
+            title="Holdings of assets over time",
+            headers=all_holdings.columns,
+            show_index=True,
         )
-        ax.set_title("Asset Holdings")
-    else:
-        all_holdings.plot(ax=ax)
-        ax.set_title("Individual Asset Holdings")
+        console.print()
 
-    if len(all_holdings.columns) > 10:
-        legend_columns = round(len(all_holdings.columns) / 5)
-    elif len(all_holdings.columns) > 40:
-        legend_columns = round(len(all_holdings.columns) / 10)
     else:
-        legend_columns = 1
-    ax.legend(loc="upper left", ncol=legend_columns)
-    ax.set_ylabel("Holdings ($)")
-    theme.style_primary_axis(ax)
-    if external_axes is None:
-        theme.visualize_output()
+        if external_axes is None:
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        else:
+            ax = external_axes
+
+        if sum_assets:
+            ax.stackplot(
+                all_holdings.index,
+                [all_holdings[col] for col in all_holdings.columns],
+                labels=all_holdings.columns,
+            )
+            ax.set_title("Asset Holdings")
+        else:
+            all_holdings.plot(ax=ax)
+            ax.set_title("Individual Asset Holdings")
+
+        if len(all_holdings.columns) > 10:
+            legend_columns = round(len(all_holdings.columns) / 5)
+        elif len(all_holdings.columns) > 40:
+            legend_columns = round(len(all_holdings.columns) / 10)
+        else:
+            legend_columns = 1
+        ax.legend(loc="upper left", ncol=legend_columns)
+        ax.set_ylabel("Holdings ($)")
+        theme.style_primary_axis(ax)
+        if external_axes is None:
+            theme.visualize_output()
 
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "al",
+        "hold",
+        all_holdings,
     )
 
 

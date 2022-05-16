@@ -48,6 +48,7 @@ class PortfolioController(BaseController):
         "ar",
         "return",
         "hold",
+        "phold",
         "maxdd",
         "var",
         "es",
@@ -149,6 +150,7 @@ class PortfolioController(BaseController):
 
 [info]Graphs:[/info]{("[unvl]", "[cmds]")[port_bench]}
     hold        holdings of assets over period
+    phold       portfolio holdings of assets (in %) over period
     return      cumulative returns and EOY returns
     maxdd       maximum drawdown
     rvol        rolling volatility
@@ -493,7 +495,11 @@ class PortfolioController(BaseController):
         )
 
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
+            parser,
+            other_args,
+            export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+            raw=True,
+            limit=10,
         )
 
         if ns_parser:
@@ -501,7 +507,11 @@ class PortfolioController(BaseController):
                 self.portfolio_name, self.benchmark_name
             ):
                 portfolio_view.display_holdings(
-                    self.portfolio, ns_parser.sum_assets, ns_parser.export
+                    self.portfolio,
+                    ns_parser.sum_assets,
+                    ns_parser.raw,
+                    ns_parser.limit,
+                    ns_parser.export,
                 )
 
     @log_start_end(log=logger)
