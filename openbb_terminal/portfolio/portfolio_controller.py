@@ -47,8 +47,8 @@ class PortfolioController(BaseController):
         "perf",
         "ar",
         "return",
-        "hold",
-        "phold",
+        "holdv",
+        "holdp",
         "maxdd",
         "var",
         "es",
@@ -149,8 +149,8 @@ class PortfolioController(BaseController):
 [param]Benchmark:[/param] {self.benchmark_name or ""}
 
 [info]Graphs:[/info]{("[unvl]", "[cmds]")[port_bench]}
-    hold        holdings of assets over period
-    phold       portfolio holdings of assets (in %) over period
+    holdv       holdings of assets (absolute value)
+    holdp       portfolio holdings of assets (in percentage)
     return      cumulative returns and EOY returns
     maxdd       maximum drawdown
     rvol        rolling volatility
@@ -477,13 +477,13 @@ class PortfolioController(BaseController):
                 )
 
     @log_start_end(log=logger)
-    def call_hold(self, other_args: List[str]):
-        """Process hold command"""
+    def call_holdv(self, other_args: List[str]):
+        """Process holdv command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="hold",
-            description="Display holdings of assets",
+            prog="holdv",
+            description="Display holdings of assets (absolute value)",
         )
         parser.add_argument(
             "-s",
@@ -493,7 +493,6 @@ class PortfolioController(BaseController):
             dest="sum_assets",
             help="Sum all assets value over time",
         )
-
         ns_parser = parse_known_args_and_warn(
             parser,
             other_args,
@@ -501,12 +500,47 @@ class PortfolioController(BaseController):
             raw=True,
             limit=10,
         )
-
         if ns_parser:
             if check_portfolio_benchmark_defined(
                 self.portfolio_name, self.benchmark_name
             ):
-                portfolio_view.display_holdings(
+                portfolio_view.display_holdings_value(
+                    self.portfolio,
+                    ns_parser.sum_assets,
+                    ns_parser.raw,
+                    ns_parser.limit,
+                    ns_parser.export,
+                )
+
+    @log_start_end(log=logger)
+    def call_holdp(self, other_args: List[str]):
+        """Process holdp command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="holdp",
+            description="Display holdings of assets (in percentage)",
+        )
+        parser.add_argument(
+            "-s",
+            "--sum",
+            action="store_true",
+            default=False,
+            dest="sum_assets",
+            help="Sum all assets percentage over time",
+        )
+        ns_parser = parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+            raw=True,
+            limit=10,
+        )
+        if ns_parser:
+            if check_portfolio_benchmark_defined(
+                self.portfolio_name, self.benchmark_name
+            ):
+                portfolio_view.display_holdings_percentage(
                     self.portfolio,
                     ns_parser.sum_assets,
                     ns_parser.raw,

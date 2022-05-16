@@ -433,7 +433,7 @@ def display_returns_vs_bench(
 
 
 @log_start_end(log=logger)
-def display_holdings(
+def display_holdings_value(
     portfolio: portfolio_model.Portfolio,
     sum_assets: bool = False,
     raw: bool = False,
@@ -441,7 +441,7 @@ def display_holdings(
     export: str = "",
     external_axes: Optional[plt.Axes] = None,
 ):
-    """Display holdings of assets vs time
+    """Display holdings of assets (absolute value)
 
     Parameters
     ----------
@@ -475,11 +475,10 @@ def display_holdings(
 
         print_rich_table(
             all_holdings.tail(limit),
-            title="Holdings of assets over time",
+            title="Holdings of assets (absolute value)",
             headers=all_holdings.columns,
             show_index=True,
         )
-        console.print()
 
     else:
         if external_axes is None:
@@ -493,10 +492,10 @@ def display_holdings(
                 [all_holdings[col] for col in all_holdings.columns],
                 labels=all_holdings.columns,
             )
-            ax.set_title("Asset Holdings")
+            ax.set_title("Asset Holdings (value)")
         else:
             all_holdings.plot(ax=ax)
-            ax.set_title("Individual Asset Holdings")
+            ax.set_title("Individual Asset Holdings (value)")
 
         if len(all_holdings.columns) > 10:
             legend_columns = round(len(all_holdings.columns) / 5)
@@ -513,7 +512,98 @@ def display_holdings(
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "hold",
+        "holdv",
+        all_holdings,
+    )
+
+
+@log_start_end(log=logger)
+def display_holdings_percentage(
+    portfolio: portfolio_model.Portfolio,
+    sum_assets: bool = False,
+    raw: bool = False,
+    limit: int = 10,
+    export: str = "",
+    external_axes: Optional[plt.Axes] = None,
+):
+    """Display holdings of assets (in percentage)
+
+    Parameters
+    ----------
+    portfolio: Portfolio
+        Portfolio object with trades loaded
+    sum_assets: bool
+        Sum assets over time
+    raw : bool
+        To display raw data
+    limit : int
+        Number of past market days to display holdings
+    export: str
+        Format to export plot
+    external_axes: plt.Axes
+        Optional axes to display plot on
+    """
+    all_holdings = pd.concat(
+        [
+            portfolio.portfolio["StockHoldings"],
+            portfolio.portfolio["ETFHoldings"],
+            portfolio.portfolio["CryptoHoldings"],
+        ],
+        axis=1,
+    )
+    all_holdings = all_holdings.drop(columns=["temp"])
+
+    all_holdings = all_holdings.divide(all_holdings.sum(axis=1), axis=0) * 100
+
+    # order it a bit more in terms of magnitude
+    all_holdings = all_holdings[all_holdings.sum().sort_values(ascending=False).index]
+
+    if raw:
+        # No need to account for time since this is daily data
+        all_holdings.index = all_holdings.index.date
+
+        all_holdings.columns = [f"{col} [%]" for col in all_holdings.columns]
+
+        print_rich_table(
+            all_holdings.tail(limit),
+            title="Holdings of assets (in percentage)",
+            headers=all_holdings.columns,
+            show_index=True,
+        )
+
+    else:
+        if external_axes is None:
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        else:
+            ax = external_axes
+
+        if sum_assets:
+            ax.stackplot(
+                all_holdings.index,
+                all_holdings.values.T,
+                labels=all_holdings.columns,
+            )
+            ax.set_title("Asset Holdings (percentage)")
+        else:
+            all_holdings.plot(ax=ax)
+            ax.set_title("Individual Asset Holdings (percentage)")
+
+        if len(all_holdings.columns) > 10:
+            legend_columns = round(len(all_holdings.columns) / 5)
+        elif len(all_holdings.columns) > 40:
+            legend_columns = round(len(all_holdings.columns) / 10)
+        else:
+            legend_columns = 1
+        ax.legend(loc="upper left", ncol=legend_columns)
+        ax.set_ylabel("Portfolio holdings (%)")
+        theme.style_primary_axis(ax)
+        if external_axes is None:
+            theme.visualize_output()
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "holdp",
         all_holdings,
     )
 
