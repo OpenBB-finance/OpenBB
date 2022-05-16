@@ -23,6 +23,6 @@ Expiry: None
     greeks        shows the greeks for a given option [Yfinance]
 [dim]
 >   screen        screens tickers based on preset [Syncretism.io]
->   payoff        shows payoff diagram for a selection of options [Yfinance]
 >   pricing       shows options pricing and risk neutral valuation [Yfinance]
+>   hedge         shows portfolio weights in order to neutralise delta [Yfinance]
 [/dim]

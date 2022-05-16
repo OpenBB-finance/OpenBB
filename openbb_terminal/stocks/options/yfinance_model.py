@@ -53,6 +53,7 @@ def get_option_chain(ticker: str, expiration: str) -> pd.DataFrame:
     """
     yf_ticker = yf.Ticker(ticker)
     chains = yf_ticker.option_chain(expiration)
+
     return chains
 
 
@@ -103,10 +104,10 @@ def get_y_values(
     option_change = 0
     change = price - base
     for option in options:
-        if option["type"] == "call":
+        if option["type"] == "Call":
             abs_change = price - option["strike"] if price > option["strike"] else 0
             option_change += option["sign"] * abs_change
-        elif option["type"] == "put":
+        elif option["type"] == "Put":
             abs_change = option["strike"] - price if price < option["strike"] else 0
             option_change += option["sign"] * abs_change
     return (change * underlying) + option_change
@@ -146,6 +147,7 @@ def get_price(ticker: str) -> float:
     ticker_yahoo = yf.Ticker(ticker)
     data = ticker_yahoo.history()
     last_quote = data.tail(1)["Close"].iloc[0]
+
     return last_quote
 
 
