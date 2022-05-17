@@ -26,6 +26,8 @@ from openbb_terminal.economy import (
     fred_model,
     yfinance_model,
     yfinance_view,
+    investingcom_model,
+    investingcom_view,
     plot_view,
 )
 from openbb_terminal.helper_funcs import (
@@ -63,6 +65,7 @@ class EconomyController(BaseController):
         "rtps",
         "industry",
         "bigmac",
+        "ycrv",
     ]
 
     CHOICES_MENUS = ["pred", "qa"]
@@ -142,6 +145,7 @@ class EconomyController(BaseController):
         "country": "Country (U.S. listed stocks only)",
         "capitalization": "Capitalization",
     }
+    ycrv_sources = ["FRED", "investpy"]
     PATH = "/economy/"
     FILE_PATH = os.path.join(os.path.dirname(__file__), "README.md")
 
@@ -170,6 +174,11 @@ class EconomyController(BaseController):
             self.choices["macro"]["-c"] = {c: None for c in econdb_model.COUNTRY_CODES}
             self.choices["macro"]["--countries"] = {
                 c: None for c in econdb_model.COUNTRY_CODES
+            }
+
+            self.choices["ycrv"]["-c"] = {c: None for c in investingcom_model.COUNTRIES}
+            self.choices["ycrv"]["--countries"] = {
+                c: None for c in investingcom_model.COUNTRIES
             }
 
             self.choices["valuation"]["-s"] = {
@@ -226,6 +235,7 @@ class EconomyController(BaseController):
     index         find and plot any (major) index on the market [src][Source: Yahoo Finance][/src]
     treasury      obtain U.S. treasury rates [src][Source: EconDB][/src]
     yield         show the U.S. Treasury yield curve [src][Source: FRED][/src]
+    ycrv          show sovereign yield curves [src][Source: Investing.com/FRED][/src]
     plot          plot data from the above commands together
     options       show the available options for 'plot' or show/export the data
 
@@ -967,6 +977,64 @@ class EconomyController(BaseController):
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             fred_view.display_yield_curve(ns_parser.date)
+
+    @log_start_end(log=logger)
+    def call_ycrv(self, other_args: List[str]):
+        """Process ycrv command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="ycrv",
+            description="Generate country yield curve. The yield curve shows the bond rates"
+            " at different maturities.",
+        )
+        parser.add_argument(
+            "-s",
+            "--source",
+            action="store",
+            dest="source",
+            choices=self.ycrv_sources,
+            type=str,
+            default="investpy",
+            help="Source for the data. If not supplied, the most recent entry from investpy will be used.",
+        )
+        parser.add_argument(
+            "-c",
+            "--country",
+            action="store",
+            dest="country",
+            nargs="+",
+            default="united states",
+            help="Display yield curve for specific country.",
+        )
+        parser.add_argument(
+            "-d",
+            "--date",
+            type=valid_date,
+            help="Date to get data from FRED. If not supplied, the most recent entry will be used.",
+            dest="date",
+            default=None,
+        )
+        ns_parser = parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
+            raw=True,
+        )
+        if ns_parser:
+            if isinstance(ns_parser.country, list):
+                ns_parser.country = " ".join(ns_parser.country)
+
+            investingcom_model.check_correct_country(ns_parser.country)
+
+            if ns_parser.source == "FRED":
+                fred_view.display_yield_curve(ns_parser.date)
+            elif ns_parser.source == "investpy":
+                investingcom_view.display_yieldcurve(
+                    country=ns_parser.country,
+                    raw=ns_parser.raw,
+                    export=ns_parser.export,
+                )
 
     @log_start_end(log=logger)
     def call_plot(self, other_args: List[str]):
