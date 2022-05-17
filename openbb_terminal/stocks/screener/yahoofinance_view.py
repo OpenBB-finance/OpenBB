@@ -18,7 +18,11 @@ from sklearn.preprocessing import MinMaxScaler
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import export_data, plot_autoscale
+from openbb_terminal.helper_funcs import (
+    export_data,
+    plot_autoscale,
+    is_valid_axes_count,
+)
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.screener import finviz_model
 
@@ -117,13 +121,10 @@ def historical(
         # This plot has 1 axis
         if not external_axes:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        else:
-            if len(external_axes) != 1:
-                logger.error("Expected list of one axis item.")
-                console.print("[red]Expected list of one axis item.\n[/red]")
-                # Return empty list to be compatible with the other return statement
-                return []
+        elif is_valid_axes_count(external_axes, 1):
             (ax,) = external_axes
+        else:
+            return []
 
         # This puts everything on 0-1 scale for visualizing
         if normalize:

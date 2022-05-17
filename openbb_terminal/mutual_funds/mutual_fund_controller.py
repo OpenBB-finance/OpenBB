@@ -76,6 +76,7 @@ class FundController(BaseController):
         self.data = pd.DataFrame()
         self.fund_name = ""
         self.fund_symbol = ""
+        self.TRY_RELOAD = True
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}

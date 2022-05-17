@@ -14,7 +14,6 @@ openbb = 'terminal:terminal'
 [tool.poetry.dependencies]
 python = "^3.8,<3.10"
 iso8601 = "^0.1.14"
-FundamentalAnalysis = "^0.2.6"
 requests = "^2.25.1"
 alpha-vantage = "^2.3.1"
 finviz = "^1.3.4"
@@ -102,6 +101,7 @@ Jinja2 = "3.0.3"  # Remove pinned version when Voila supports 3.1
 click = "8.0.1"  # Remove pinned version when Black supports 8.1
 kaleido = {version = "<=0.2.1", optional = true, extras = ["bots"]}
 Riskfolio-Lib = "^3.1.1"
+fundamentalanalysis = "^0.2.14"
 
 
 [tool.poetry.dev-dependencies]

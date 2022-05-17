@@ -30,7 +30,7 @@ from openbb_terminal.forex.oanda.oanda_model import (
     pending_orders_request,
     positionbook_plot_data_request,
 )
-from openbb_terminal.helper_funcs import plot_autoscale
+from openbb_terminal.helper_funcs import plot_autoscale, is_valid_axes_count
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -357,16 +357,7 @@ def show_candles(
         "warn_too_much_data": 10000,
     }
     # This plot has 2 axes
-    if external_axes is not None:
-        if len(external_axes) != 2:
-            logger.error("Expected list of 2 axis items")
-            console.print("[red]Expected list of 2 axis items.\n[/red]")
-            return
-        ax, volume = external_axes
-        candle_chart_kwargs["ax"] = ax
-        candle_chart_kwargs["volume"] = volume
-        mpf.plot(df_candles, **candle_chart_kwargs)
-    else:
+    if not external_axes:
         candle_chart_kwargs["returnfig"] = True
         candle_chart_kwargs["figratio"] = (10, 7)
         candle_chart_kwargs["figscale"] = 1.10
@@ -390,6 +381,13 @@ def show_candles(
         else:
             logger.error("Data not found")
             console.print("[red]Data not found[/red]\n")
+    elif is_valid_axes_count(external_axes, 2):
+        ax, volume = external_axes
+        candle_chart_kwargs["ax"] = ax
+        candle_chart_kwargs["volume"] = volume
+        mpf.plot(df_candles, **candle_chart_kwargs)
+    else:
+        return
 
 
 @log_start_end(log=logger)
@@ -514,7 +512,7 @@ def book_plot(
     book_type : str
         Order book type
     external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis are expected in the list), by default None
+        External axes (1 axis is expected in the list), by default None
     """
     df = df.apply(pd.to_numeric)
     df["shortCountPercent"] = df["shortCountPercent"] * -1
@@ -525,12 +523,10 @@ def book_plot(
     # This plot has 1 axis
     if not external_axes:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of one axis item.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
+    else:
+        return
 
     ax.set_xlim(-axis_origin, +axis_origin)
 
