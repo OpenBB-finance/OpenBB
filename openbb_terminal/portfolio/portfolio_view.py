@@ -811,13 +811,13 @@ def display_distribution_returns(
         else:
             ax = external_axes
 
-        ax[0].set_title("Portfolio daily returns distribution")
+        ax[0].set_title("Portfolio distribution")
         sns.kdeplot(portfolio_returns.values, ax=ax[0])
         ax[0].set_ylabel("Density")
         ax[0].set_xlabel("Daily return [%]")
         theme.style_primary_axis(ax[0])
 
-        ax[1].set_title("Benchmark daily returns distribution")
+        ax[1].set_title("Benchmark distribution")
         sns.kdeplot(benchmark_returns.values, ax=ax[1])
         ax[1].set_ylabel("Density")
         ax[1].set_xlabel("Daily return [%]")
