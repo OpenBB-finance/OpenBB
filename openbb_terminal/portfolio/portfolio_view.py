@@ -383,7 +383,7 @@ def display_cumulative_returns(
         last_cumulative_returns.index = last_cumulative_returns.index.date
         print_rich_table(
             last_cumulative_returns.tail(limit),
-            title="Cumulative and Benchmark returns",
+            title="Cumulative Portfolio and Benchmark returns",
             headers=["Portfolio [%]", "Benchmark [%]"],
             show_index=True,
         )
@@ -476,8 +476,6 @@ def display_yearly_returns(
                 ),
             }
         )
-
-        # NEED TO PROCESS IT STILL HERE!!
         print_rich_table(
             yreturns.sort_index(),
             title="Yearly Portfolio and Benchmark returns",
@@ -516,6 +514,76 @@ def display_yearly_returns(
         os.path.dirname(os.path.abspath(__file__)),
         "yreturn",
         cumulative_returns.to_frame().join(benchmark_c_returns),
+    )
+
+
+@log_start_end(log=logger)
+def display_daily_returns(
+    portfolio_returns: pd.Series,
+    benchmark_returns: pd.Series,
+    period: str = "all",
+    raw: bool = False,
+    limit: int = 10,
+    export: str = "",
+    external_axes: Optional[plt.Axes] = None,
+):
+    """Display daily returns
+
+    Parameters
+    ----------
+    portfolio_returns : pd.Series
+        Returns of the portfolio
+    benchmark_returns : pd.Series
+        Returns of the benchmark
+    period : str
+        Period to compare cumulative returns and benchmark
+    raw : False
+        Display raw data from cumulative return
+    limit : int
+        Last daily returns to display
+    export : str
+        Export certain type of data
+    external_axes: plt.Axes
+        Optional axes to display plot on
+    """
+    portfolio_returns = portfolio_helper.filter_df_by_period(portfolio_returns, period)
+    benchmark_returns = portfolio_helper.filter_df_by_period(benchmark_returns, period)
+
+    if raw:
+        last_returns = portfolio_returns.to_frame()
+        last_returns = last_returns.join(benchmark_returns)
+        last_returns.index = last_returns.index.date
+        print_rich_table(
+            last_returns.tail(limit),
+            title="Portfolio and Benchmark daily returns",
+            headers=["Portfolio [%]", "Benchmark [%]"],
+            show_index=True,
+        )
+    else:
+        if external_axes is None:
+            _, ax = plt.subplots(
+                2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI, sharex=True
+            )
+        else:
+            ax = external_axes
+
+        ax[0].set_title("Portfolio Returns")
+        ax[0].plot(portfolio_returns.index, portfolio_returns, label="Portfolio")
+        ax[0].set_ylabel("Returns [%]")
+        theme.style_primary_axis(ax[0])
+        ax[1].set_title("Benchmark Returns")
+        ax[1].plot(benchmark_returns.index, benchmark_returns, label="Benchmark")
+        ax[1].set_ylabel("Returns [%]")
+        theme.style_primary_axis(ax[1])
+
+        if not external_axes:
+            theme.visualize_output()
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "dreturn",
+        portfolio_returns.to_frame().join(benchmark_returns),
     )
 
 
@@ -971,7 +1039,7 @@ def display_maximum_drawdown(
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "dd",
+        "maxdd",
     )
 
 
