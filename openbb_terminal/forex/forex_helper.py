@@ -12,7 +12,7 @@ import mplfinance as mpf
 from openbb_terminal.forex import av_model
 from openbb_terminal.rich_config import console
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import plot_autoscale
+from openbb_terminal.helper_funcs import plot_autoscale, is_valid_axes_count
 from openbb_terminal.config_terminal import theme
 
 
@@ -160,7 +160,7 @@ def display_candle(
     from_symbol : str
         From forex symbol
     external_axes: Optional[List[plt.Axes]]
-        External axes (1 axis are expected in the list), by default None
+        External axes (1 axis is expected in the list), by default None
     """
     candle_chart_kwargs = {
         "type": "candle",
@@ -177,7 +177,7 @@ def display_candle(
         },
         "warn_too_much_data": 20000,
     }
-    # This plot has 2 axes
+    # This plot has 1 axis
     if not external_axes:
         candle_chart_kwargs["returnfig"] = True
         candle_chart_kwargs["figratio"] = (10, 7)
@@ -192,11 +192,9 @@ def display_candle(
         )
         theme.visualize_output(force_tight_layout=False)
         ax[0].legend()
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of 1 axis items.")
-            console.print("[red]Expected list of 1 axis items.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 1):
         (ax1,) = external_axes
         candle_chart_kwargs["ax"] = ax1
         mpf.plot(data, **candle_chart_kwargs)
+    else:
+        return

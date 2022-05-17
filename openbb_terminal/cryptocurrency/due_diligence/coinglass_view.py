@@ -17,6 +17,7 @@ from openbb_terminal.helper_funcs import (
     export_data,
     lambda_long_number_format,
     plot_autoscale,
+    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
 
@@ -59,17 +60,16 @@ def plot_data(
     external_axes: Optional[List[plt.Axes]] = None,
 ):
 
-    # This plot has 2 axis
+    # This plot has 2 axes
     if not external_axes:
-        _, (ax1, ax2) = plt.subplots(
+        _, axes = plt.subplots(
             2, 1, sharex=True, figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI
         )
+        (ax1, ax2) = axes
+    elif is_valid_axes_count(external_axes, 2):
+        (ax1, ax2) = external_axes
     else:
-        if len(external_axes) != 2:
-            logger.error("Expected list of two axis items.")
-            console.print("[red]Expected list of two axis items.\n[/red]")
-            return
-        ax1, ax2 = external_axes
+        return
 
     df_price = df[["price"]].copy()
     df_without_price = df.drop("price", axis=1)

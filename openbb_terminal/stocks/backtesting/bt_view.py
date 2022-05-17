@@ -15,7 +15,11 @@ from pandas.plotting import register_matplotlib_converters
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import export_data, plot_autoscale
+from openbb_terminal.helper_funcs import (
+    export_data,
+    plot_autoscale,
+    is_valid_axes_count,
+)
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.backtesting import bt_model
 
@@ -140,12 +144,10 @@ def display_simple_ema(
     # This plot has 1 axis
     if not external_axes:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of one axis item.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
+    else:
+        return
 
     res = bt_model.ema_strategy(ticker, df_stock, ema_length, spy_bt, no_bench)
     res.plot(title=f"Equity for EMA({ema_length})", ax=ax)
@@ -195,17 +197,15 @@ def display_ema_cross(
     export : str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
-        External axes (3 axes are expected in the list), by default None
+        External axes (1 axis is expected in the list), by default None
     """
     # This plot has 1 axis
     if not external_axes:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of one axis item.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
+    else:
+        return
 
     res = bt_model.ema_cross_strategy(
         ticker, df_stock, short_ema, long_ema, spy_bt, no_bench, shortable
@@ -259,17 +259,15 @@ def display_rsi_strategy(
     export : str
         Format to export backtest results
     external_axes : Optional[List[plt.Axes]], optional
-        External axes (3 axes are expected in the list), by default None
+        External axes (1 axis is expected in the list), by default None
     """
     # This plot has 1 axis
     if not external_axes:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of one axis item.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
+    else:
+        return
 
     res = bt_model.rsi_strategy(
         ticker, df_stock, periods, low_rsi, high_rsi, spy_bt, no_bench, shortable

@@ -15,7 +15,12 @@ from openbb_terminal.portfolio import (
     portfolio_model,
 )
 
-from openbb_terminal.helper_funcs import plot_autoscale, export_data, print_rich_table
+from openbb_terminal.helper_funcs import (
+    export_data,
+    is_valid_axes_count,
+    plot_autoscale,
+    print_rich_table,
+)
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
 
@@ -441,12 +446,10 @@ def display_rolling_stats(
     """
     if external_axes is None:
         _, ax = plt.subplots(4, 1, figsize=(8, 8), dpi=PLOT_DPI, sharex=True)
-    else:
-        if len(external_axes) != 4:
-            logger.error("Expected list of four axis items.")
-            console.print("[red]4 axes expected.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 4):
         ax = external_axes
+    else:
+        return
 
     rolling_volatility = portfolio_returns.rolling(length).std()
     rolling_volatility_bench = benchmark_returns.rolling(length).std()
