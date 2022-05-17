@@ -7,9 +7,11 @@ import os
 
 from datetime import datetime
 import numpy as np
+import scipy
 import pandas as pd
 from matplotlib import pyplot as plt
 import seaborn as sns
+from sklearn.metrics import r2_score
 
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
@@ -1498,6 +1500,77 @@ def display_maximum_drawdown_ratio(
     )
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "metric_maxdrawdown", df
+    )
+
+
+@log_start_end(log=logger)
+def display_summary_portfolio_benchmark(
+    portfolio_returns: pd.Series,
+    benchmark_returns: pd.Series,
+    period: str = "all",
+    risk_free_rate: float = 0,
+    export: str = "",
+):
+    """Display yearly returns
+
+    Parameters
+    ----------
+    portfolio_returns : pd.Series
+        Returns of the portfolio
+    benchmark_returns : pd.Series
+        Returns of the benchmark
+    period : str
+        Period to compare cumulative returns and benchmark
+    risk_free_rate : float
+        Risk free rate for calculations
+    export : str
+        Export certain type of data
+    """
+    portfolio_returns = portfolio_helper.filter_df_by_period(portfolio_returns, period)
+    benchmark_returns = portfolio_helper.filter_df_by_period(benchmark_returns, period)
+
+    metrics = {}
+    metrics["Volatility"] = [portfolio_returns.std(), benchmark_returns.std()]
+    metrics["Skew"] = [
+        scipy.stats.skew(portfolio_returns),
+        scipy.stats.skew(benchmark_returns),
+    ]
+    metrics["Kurtosis"] = [
+        scipy.stats.kurtosis(portfolio_returns),
+        scipy.stats.kurtosis(benchmark_returns),
+    ]
+    metrics["Maximum Drawdowwn"] = [
+        portfolio_helper.get_maximum_drawdown(portfolio_returns),
+        portfolio_helper.get_maximum_drawdown(benchmark_returns),
+    ]
+    metrics["Sharpe ratio"] = [
+        portfolio_helper.sharpe_ratio(portfolio_returns, risk_free_rate),
+        portfolio_helper.sharpe_ratio(benchmark_returns, risk_free_rate),
+    ]
+    metrics["Sortino ratio"] = [
+        portfolio_helper.sortino_ratio(portfolio_returns, risk_free_rate),
+        portfolio_helper.sortino_ratio(benchmark_returns, risk_free_rate),
+    ]
+    metrics["R2 Score"] = [
+        r2_score(portfolio_returns, benchmark_returns),
+        r2_score(portfolio_returns, benchmark_returns),
+    ]
+
+    summary = pd.DataFrame(
+        metrics.values(), index=metrics.keys(), columns=["Portfolio", "Benchmark"]
+    )
+
+    print_rich_table(
+        summary,
+        title=f"Summary of Portfolio vs Benchmark for {period} period",
+        show_index=True,
+        headers=summary.columns,
+    )
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "summary",
+        summary,
     )
 
 

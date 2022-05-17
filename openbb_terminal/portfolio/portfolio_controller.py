@@ -45,7 +45,6 @@ class PortfolioController(BaseController):
         "bench",
         "alloc",
         "perf",
-        "ar",
         "cret",
         "yret",
         "mret",
@@ -64,6 +63,7 @@ class PortfolioController(BaseController):
         "rsort",
         "rbeta",
         "metric",
+        "summary",
     ]
     CHOICES_MENUS = [
         "bro",
@@ -134,10 +134,6 @@ class PortfolioController(BaseController):
             choices["support"] = self.SUPPORT_CHOICES
 
             self.completer = NestedCompleter.from_nested_dict(choices)
-
-        # To speed development - DELETE ME
-        self.call_load(["Public_Equity_Orderbook.xlsx"])
-        self.call_bench(["SPDR", "S&P", "500", "ETF", "Trust", "(SPY)"])
 
     def print_help(self):
         """Print help"""
@@ -1163,6 +1159,52 @@ class PortfolioController(BaseController):
                     self.portfolio.benchmark_returns,
                     ns_parser.period,
                     ns_parser.raw,
+                    ns_parser.export,
+                )
+
+    @log_start_end(log=logger)
+    def call_summary(self, other_args: List[str]):
+        """Process summary command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="summary",
+            description="Display summary of portfolio vs benchmark",
+        )
+        parser.add_argument(
+            "-p",
+            "--period",
+            type=str,
+            choices=portfolio_helper.PERIODS,
+            dest="period",
+            default="all",
+            help="The file to be loaded",
+        )
+        parser.add_argument(
+            "-r",
+            "--rfr",
+            type=check_positive_float,
+            dest="risk_free_rate",
+            default=self.portfolio.rf,
+            help="Set risk free rate for calculations.",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-p")
+
+        ns_parser = parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
+        )
+        if ns_parser:
+            if check_portfolio_benchmark_defined(
+                self.portfolio_name, self.benchmark_name
+            ):
+                portfolio_view.display_summary_portfolio_benchmark(
+                    self.portfolio.returns,
+                    self.portfolio.benchmark_returns,
+                    ns_parser.period,
+                    ns_parser.risk_free_rate,
                     ns_parser.export,
                 )
 
