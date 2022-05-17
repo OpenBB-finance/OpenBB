@@ -1498,8 +1498,8 @@ def choice_check_after_action(action=None, choices=None):
 
 
 def is_valid_axes_count(
-    axes: Optional[List[plt.Axes]],
-    n: Union[int, Iterable],
+    axes: List[plt.Axes],
+    n: int,
     custom_text: Optional[str] = None,
     prefix_text: Optional[str] = None,
     suffix_text: Optional[str] = None,
@@ -1510,10 +1510,10 @@ def is_valid_axes_count(
     Parameters
     ----------
 
-    axes: Optional[List[plt.Axes]]
-        External axes (2 axes are expected in the list), by default None
-    n: Union[int,Iterable]
-        number or numbers of expected axes list length
+    axes: List[plt.Axes]
+        External axes (2 axes are expected in the list)
+    n: int
+        number of expected axes
     custom_text: Optional[str] = None
         custom text to log
     prefix_text: Optional[str] = None
@@ -1522,20 +1522,11 @@ def is_valid_axes_count(
         suffix text to add after text to log
     """
 
-    if isinstance(n, Iterable):
-        if any([v == len(axes) for v in n]):
-            return True
-    elif len(axes) == n:
+    if len(axes) == n:
         return True
 
     if custom_text:
         print_text = custom_text
-    elif isinstance(n, Iterable):
-        start_text = "Expected list of "
-        count_option_text = " or ".join(
-            [f"{v} axis item{'s' if n>1 else ''}" for v in n]
-        )
-        print_text = start_text + count_option_text + "."
     else:
         print_text = f"Expected list of {n} axis item{'s' if n>1 else ''}."
 
