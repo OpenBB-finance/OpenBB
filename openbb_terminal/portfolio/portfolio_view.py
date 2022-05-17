@@ -430,43 +430,40 @@ def display_yearly_returns(
     portfolio_returns = portfolio_helper.filter_df_by_period(portfolio_returns, period)
     benchmark_returns = portfolio_helper.filter_df_by_period(benchmark_returns, period)
 
-    cumulative_returns = (
-        1 + portfolio_returns.shift(periods=1, fill_value=0)
-    ).cumprod() - 1
-    benchmark_c_returns = (
-        1 + benchmark_returns.shift(periods=1, fill_value=0)
-    ).cumprod() - 1
-
     creturns_year_idx = list()
     creturns_year_val = list()
     breturns_year_idx = list()
     breturns_year_val = list()
 
-    for year in sorted(set(cumulative_returns.index.year)):
-        creturns_year = cumulative_returns[cumulative_returns.index.year == year]
-        creturns_year_idx.append(datetime.strptime(f"{year}-04-15", "%Y-%m-%d"))
-        creturns_year_val.append(
-            100 * (creturns_year.values[-1] - creturns_year.values[0])
+    for year in sorted(set(portfolio_returns.index.year)):
+        creturns_year = portfolio_returns[portfolio_returns.index.year == year]
+        cumulative_returns = 100 * (
+            (1 + creturns_year.shift(periods=1, fill_value=0)).cumprod() - 1
         )
 
-        breturns_year = benchmark_c_returns[benchmark_c_returns.index.year == year]
-        breturns_year_idx.append(datetime.strptime(f"{year}-08-15", "%Y-%m-%d"))
-        breturns_year_val.append(
-            100 * (breturns_year.values[-1] - breturns_year.values[0])
+        creturns_year_idx.append(datetime.strptime(f"{year}-04-15", "%Y-%m-%d"))
+        creturns_year_val.append(cumulative_returns.values[-1])
+
+        breturns_year = benchmark_returns[benchmark_returns.index.year == year]
+        benchmark_c_returns = 100 * (
+            (1 + breturns_year.shift(periods=1, fill_value=0)).cumprod() - 1
         )
+
+        breturns_year_idx.append(datetime.strptime(f"{year}-08-15", "%Y-%m-%d"))
+        breturns_year_val.append(benchmark_c_returns.values[-1])
 
     if raw:
         yreturns = pd.DataFrame(
             {
                 "Portfolio [%]": pd.Series(
-                    creturns_year_val, index=list(set(cumulative_returns.index.year))
+                    creturns_year_val, index=list(set(portfolio_returns.index.year))
                 ),
                 "Benchmark [%]": pd.Series(
-                    breturns_year_val, index=list(set(cumulative_returns.index.year))
+                    breturns_year_val, index=list(set(portfolio_returns.index.year))
                 ),
                 "Difference [%]": pd.Series(
                     np.array(creturns_year_val) - np.array(breturns_year_val),
-                    index=list(set(cumulative_returns.index.year)),
+                    index=list(set(portfolio_returns.index.year)),
                 ),
             }
         )
@@ -498,6 +495,7 @@ def display_yearly_returns(
 
         ax.legend(loc="upper left")
         ax.set_ylabel("Yearly Returns [%]")
+        ax.set_title(f"Yearly Returns [%] in period {period}")
         theme.style_primary_axis(ax)
 
         if not external_axes:
@@ -543,44 +541,41 @@ def display_monthly_returns(
     portfolio_returns = portfolio_helper.filter_df_by_period(portfolio_returns, period)
     benchmark_returns = portfolio_helper.filter_df_by_period(benchmark_returns, period)
 
-    cumulative_returns = 100 * (
-        (1 + portfolio_returns.shift(periods=1, fill_value=0)).cumprod() - 1
-    )
-    benchmark_c_returns = 100 * (
-        (1 + benchmark_returns.shift(periods=1, fill_value=0)).cumprod() - 1
-    )
-
     creturns_month_val = list()
     breturns_month_val = list()
 
-    for year in sorted(list(set(cumulative_returns.index.year))):
-        creturns_year = cumulative_returns[cumulative_returns.index.year == year]
+    for year in sorted(list(set(portfolio_returns.index.year))):
+        creturns_year = portfolio_returns[portfolio_returns.index.year == year]
         creturns_val = list()
         for i in range(1, 13):
             creturns_year_month = creturns_year[creturns_year.index.month == i]
+            creturns_year_month_val = 100 * (
+                (1 + creturns_year_month.shift(periods=1, fill_value=0)).cumprod() - 1
+            )
+
             if creturns_year_month.empty:
                 creturns_val.append(0)
             else:
-                creturns_val.append(
-                    (creturns_year_month.values[-1] - creturns_year_month.values[0])
-                )
+                creturns_val.append(creturns_year_month_val.values[-1])
         creturns_month_val.append(creturns_val)
 
-        breturns_year = benchmark_c_returns[benchmark_c_returns.index.year == year]
+        breturns_year = benchmark_returns[benchmark_returns.index.year == year]
         breturns_val = list()
         for i in range(1, 13):
             breturns_year_month = breturns_year[breturns_year.index.month == i]
+            breturns_year_month_val = 100 * (
+                (1 + breturns_year_month.shift(periods=1, fill_value=0)).cumprod() - 1
+            )
+
             if breturns_year_month.empty:
                 breturns_val.append(0)
             else:
-                breturns_val.append(
-                    (breturns_year_month.values[-1] - breturns_year_month.values[0])
-                )
+                breturns_val.append(breturns_year_month_val.values[-1])
         breturns_month_val.append(breturns_val)
 
     monthly_returns = pd.DataFrame(
         creturns_month_val,
-        index=sorted(list(set(cumulative_returns.index.year))),
+        index=sorted(list(set(portfolio_returns.index.year))),
         columns=[
             "Jan",
             "Feb",
@@ -598,7 +593,7 @@ def display_monthly_returns(
     )
     bench_monthly_returns = pd.DataFrame(
         breturns_month_val,
-        index=sorted(list(set(benchmark_c_returns.index.year))),
+        index=sorted(list(set(benchmark_returns.index.year))),
         columns=[
             "Jan",
             "Feb",
@@ -640,7 +635,7 @@ def display_monthly_returns(
         else:
             ax = external_axes
 
-        ax[0].set_title("Portfolio monthly returns")
+        ax[0].set_title(f"Portfolio in period {period}")
         sns.heatmap(
             monthly_returns,
             cmap="bwr_r",
@@ -654,7 +649,7 @@ def display_monthly_returns(
         )
         theme.style_primary_axis(ax[0])
 
-        ax[1].set_title("Benchmark monthly returns")
+        ax[1].set_title(f"Benchmark in period {period}")
         sns.heatmap(
             bench_monthly_returns,
             cmap="bwr_r",
@@ -728,11 +723,11 @@ def display_daily_returns(
         else:
             ax = external_axes
 
-        ax[0].set_title("Portfolio Returns")
+        ax[0].set_title(f"Portfolio in period {period}")
         ax[0].plot(portfolio_returns.index, portfolio_returns, label="Portfolio")
         ax[0].set_ylabel("Returns [%]")
         theme.style_primary_axis(ax[0])
-        ax[1].set_title("Benchmark Returns")
+        ax[1].set_title(f"Benchmark in period {period}")
         ax[1].plot(benchmark_returns.index, benchmark_returns, label="Benchmark")
         ax[1].set_ylabel("Returns [%]")
         theme.style_primary_axis(ax[1])
