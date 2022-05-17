@@ -9,6 +9,7 @@ from datetime import datetime
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
+import seaborn as sns
 
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
@@ -584,6 +585,79 @@ def display_daily_returns(
         os.path.dirname(os.path.abspath(__file__)),
         "dreturn",
         portfolio_returns.to_frame().join(benchmark_returns),
+    )
+
+
+@log_start_end(log=logger)
+def display_distribution_returns(
+    portfolio_returns: pd.Series,
+    benchmark_returns: pd.Series,
+    period: str = "all",
+    raw: bool = False,
+    export: str = "",
+    external_axes: Optional[plt.Axes] = None,
+):
+    """Display daily returns
+
+    Parameters
+    ----------
+    portfolio_returns : pd.Series
+        Returns of the portfolio
+    benchmark_returns : pd.Series
+        Returns of the benchmark
+    period : str
+        Period to compare cumulative returns and benchmark
+    raw : False
+        Display raw data from cumulative return
+    export : str
+        Export certain type of data
+    external_axes: plt.Axes
+        Optional axes to display plot on
+    """
+    portfolio_returns = portfolio_helper.filter_df_by_period(portfolio_returns, period)
+    benchmark_returns = portfolio_helper.filter_df_by_period(benchmark_returns, period)
+
+    stats = portfolio_returns.describe().to_frame().join(benchmark_returns.describe())
+
+    if raw:
+        print_rich_table(
+            stats,
+            title=f"Stats for Portfolio and Benchmark in period {period}",
+            show_index=True,
+            headers=["Portfolio", "Benchmark"],
+        )
+
+    else:
+        if external_axes is None:
+            _, ax = plt.subplots(
+                1,
+                2,
+                figsize=plot_autoscale(),
+                dpi=PLOT_DPI,
+            )
+        else:
+            ax = external_axes
+
+        ax[0].set_title("Portfolio daily returns distribution")
+        sns.kdeplot(portfolio_returns.values, ax=ax[0])
+        ax[0].set_ylabel("Density")
+        ax[0].set_xlabel("Daily return [%]")
+        theme.style_primary_axis(ax[0])
+
+        ax[1].set_title("Benchmark daily returns distribution")
+        sns.kdeplot(benchmark_returns.values, ax=ax[1])
+        ax[1].set_ylabel("Density")
+        ax[1].set_xlabel("Daily return [%]")
+        theme.style_primary_axis(ax[1])
+
+        if not external_axes:
+            theme.visualize_output()
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "distr",
+        stats,
     )
 
 
@@ -1165,15 +1239,14 @@ def display_volatility(
     export : str
         Export data format
     """
+    df = portfolio.get_volatility()
     print_rich_table(
-        portfolio.get_volatility(),
+        df,
         title="Volatility for Portfolio and Benchmark",
         show_index=True,
     )
     export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "vol",
+        export, os.path.dirname(os.path.abspath(__file__)), "metric_volatility", df
     )
 
 
@@ -1194,15 +1267,17 @@ def display_sharpe_ratio(
     export : str
         Export data format
     """
+    df = portfolio.get_sharpe_ratio(risk_free_rate)
     print_rich_table(
-        portfolio.get_sharpe_ratio(risk_free_rate),
+        df,
         title="Sharpe ratio for Portfolio and Benchmark",
         show_index=True,
     )
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "sharper",
+        "metric_sharpe",
+        df,
     )
 
 
@@ -1223,15 +1298,17 @@ def display_sortino_ratio(
     export : str
         Export data format
     """
+    df = portfolio.get_sortino_ratio(risk_free_rate)
     print_rich_table(
-        portfolio.get_sortino_ratio(risk_free_rate),
+        df,
         title="Sortino ratio for Portfolio and Benchmark",
         show_index=True,
     )
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "sortr",
+        "metric_sortino",
+        df,
     )
 
 
@@ -1249,15 +1326,14 @@ def display_maximum_drawdown_ratio(
     export : str
         Export data format
     """
+    df = portfolio.get_maximum_drawdown_ratio()
     print_rich_table(
-        portfolio.get_maximum_drawdown_ratio(),
+        df,
         title="Maximum drawdown for Portfolio and Benchmark",
         show_index=True,
     )
     export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "maxddr",
+        export, os.path.dirname(os.path.abspath(__file__)), "metric_maxdrawdown", df
     )
 
 

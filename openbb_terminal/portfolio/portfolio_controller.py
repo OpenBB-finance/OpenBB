@@ -50,6 +50,7 @@ class PortfolioController(BaseController):
         "yreturn",
         "mreturn",
         "dreturn",
+        "distr",
         "holdv",
         "holdp",
         "maxdd",
@@ -58,7 +59,6 @@ class PortfolioController(BaseController):
         "sh",
         "so",
         "om",
-        "stats",
         "rvol",
         "rsharpe",
         "rsort",
@@ -166,6 +166,7 @@ class PortfolioController(BaseController):
     yreturn     yearly returns
     mreturn     monthly returns
     dreturn     daily returns
+    distr       distribution of daily returns
     maxdd       maximum drawdown
     rvol        rolling volatility
     rsharpe     rolling sharpe
@@ -177,8 +178,7 @@ class PortfolioController(BaseController):
     summary     all portfolio vs benchmark metrics for a certain period of choice
     metric      portfolio vs benchmark metric for all different periods
 
-    perf        performance of the portfolio versus benchmark
-    stats       stats such as mean, percentiles, standard deviation{("[/unvl]", "[/cmds]")[port_bench]}
+    perf        performance of the portfolio versus benchmark{("[/unvl]", "[/cmds]")[port_bench]}
 
 [info]Risk Metrics:[/info]{("[unvl]", "[cmds]")[port]}
     var         display value at risk
@@ -1090,13 +1090,13 @@ class PortfolioController(BaseController):
                     portfolio_view.display_rsquare(self.portfolio, ns_parser.export)
 
     @log_start_end(log=logger)
-    def call_stats(self, other_args: List[str]):
-        """Process stats command"""
+    def call_distr(self, other_args: List[str]):
+        """Process distr command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="stats",
-            description="Compute stats of data",
+            prog="distr",
+            description="Compute distribution of daily returns",
         )
         parser.add_argument(
             "-p",
@@ -1111,14 +1111,21 @@ class PortfolioController(BaseController):
             other_args.insert(0, "-p")
 
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser,
+            other_args,
+            raw=True,
+            export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
         )
         if ns_parser:
             if check_portfolio_benchmark_defined(
                 self.portfolio_name, self.benchmark_name
             ):
-                portfolio_view.display_stats(
-                    self.portfolio, ns_parser.period, ns_parser.export
+                portfolio_view.display_distribution_returns(
+                    self.portfolio.returns,
+                    self.portfolio.benchmark_returns,
+                    ns_parser.period,
+                    ns_parser.raw,
+                    ns_parser.export,
                 )
 
 
