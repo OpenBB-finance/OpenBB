@@ -450,8 +450,6 @@ def display_rolling_stats(
         ax = external_axes
     else:
         return
-    rolling_volatility = portfolio.returns.rolling(length).std()
-    rolling_volatility_bench = portfolio.benchmark_returns.rolling(length).std()
 
     rolling_volatility = portfolio_returns.rolling(length).std()
     rolling_volatility_bench = benchmark_returns.rolling(length).std()
