@@ -163,7 +163,7 @@ class BaseController(metaclass=ABCMeta):
 
     @abstractmethod
     def print_help(self) -> None:
-        raise NotImplementedError("Must override print_help")
+        raise NotImplementedError("Must override print_help.")
 
     def contains_keys(self, string_to_check: str) -> bool:
         if self.KEYS_MENU in string_to_check or self.KEYS_MENU in self.PATH:
