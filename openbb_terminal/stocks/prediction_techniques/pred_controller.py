@@ -22,6 +22,8 @@ from openbb_terminal.common.prediction_techniques import (
     neural_networks_view,
     pred_helper,
     regression_view,
+    expo_view,
+    expo_model
 )
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
@@ -54,6 +56,7 @@ class PredictionTechniquesController(BaseController):
         "lstm",
         "conv1d",
         "mc",
+        "expo",
     ]
 
     PATH = "/stocks/pred/"
@@ -119,6 +122,7 @@ class PredictionTechniquesController(BaseController):
     lstm        Long-Short Term Memory
     conv1d      1D Convolutional Neural Network
     mc          Monte-Carlo simulations[/cmds]
+    expo        Probablistic Exponential Smoothing
         """
         console.print(text=help_text, menu="Stocks - Prediction Techniques")
 
@@ -712,5 +716,40 @@ class PredictionTechniquesController(BaseController):
                 n_future=ns_parser.n_days,
                 n_sims=ns_parser.n_sims,
                 use_log=ns_parser.dist == "lognormal",
+                export=ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
+    def call_expo(self, other_args: List[str]):
+        """Process expo command"""
+        parser = argparse.ArgumentParser(
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            add_help=False,
+            prog="expo",
+            description="""
+                Perform Probablistic Exponential Smoothing forecasting
+            """,
+        )
+        parser.add_argument(
+            "-d",
+            "--days",
+            help="Days to predict",
+            dest="n_days",
+            type=check_positive,
+            default=5,
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
+        )
+
+        if ns_parser:
+            if self.target != "AdjClose":
+                console.print("Expo Prediction designed for AdjClose prices\n")
+
+            expo_view.display_expo_forecast(
+                #data=self.stock[self.target],
+                data=self.stock,
+                n_predict=ns_parser.n_days,
                 export=ns_parser.export,
             )
