@@ -1234,6 +1234,13 @@ def display_rolling_beta(
 
     ax.set_title(f"Rolling Beta using {period} window")
     ax.set_xlabel("Date")
+    ax.hlines(
+        [1],
+        xmin=rolling_beta.index[0],
+        xmax=rolling_beta.index[-1],
+        ls="--",
+        color="red",
+    )
     ax.legend(["Portfolio", "Benchmark"], loc="upper left")
     ax.set_xlim(rolling_beta.index[0], rolling_beta.index[-1])
 
