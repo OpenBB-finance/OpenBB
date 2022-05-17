@@ -296,10 +296,7 @@ class PortfolioController(BaseController):
             console.print("[red]No portfolio loaded.[/red]\n")
             return
 
-        # No need to account for time since this is daily data
-        self.portfolio.index = self.portfolio.index.date
         print_rich_table(self.portfolio.trades, show_index=False)
-        console.print()
 
     @log_start_end(log=logger)
     def call_bench(self, other_args: List[str]):
