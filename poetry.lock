@@ -41,18 +41,6 @@ python-versions = ">=3.6"
 frozenlist = ">=1.1.0"
 
 [[package]]
-name = "airtable"
-version = "0.4.8"
-description = "Python client library for AirTable"
-category = "main"
-optional = false
-python-versions = "*"
-
-[package.dependencies]
-requests = ">=2.20.0"
-six = "*"
-
-[[package]]
 name = "alabaster"
 version = "0.7.12"
 description = "A configurable sidebar-enabled Sphinx theme"
@@ -1075,7 +1063,7 @@ python-versions = ">=3.7"
 
 [[package]]
 name = "fundamentalanalysis"
-version = "0.2.12"
+version = "0.2.14"
 description = "Fully-fledged Fundamental Analysis package capable of collecting 20 years of Company Profiles,    Financial Statements, Ratios and Stock Data of 20.000+ companies."
 category = "main"
 optional = false
@@ -4577,7 +4565,7 @@ prediction = ["tensorflow"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8,<3.10"
-content-hash = "216c0f3a8e2c667cd9b6f3294d5896a068713f420469b7315ab97c567de2e958"
+content-hash = "00f97c4c48a0181981e02ef5002d7f4f97ee8d81c02d4b6ede9918dc29b849fd"
 
 [metadata.files]
 absl-py = [
@@ -4661,10 +4649,6 @@ aiohttp = [
 aiosignal = [
     {file = "aiosignal-1.2.0-py3-none-any.whl", hash = "sha256:26e62109036cd181df6e6ad646f91f0dcfd05fe16d0cb924138ff2ab75d64e3a"},
     {file = "aiosignal-1.2.0.tar.gz", hash = "sha256:78ed67db6c7b7ced4f98e495e572106d5c432a93e1ddd1bf475e1dc05f5b7df2"},
-]
-airtable = [
-    {file = "airtable-0.4.8-py2.py3-none-any.whl", hash = "sha256:d653e1b3b92297e3f0cc4226215d43d7fa99c72f38918e9371e445abf0baa70c"},
-    {file = "airtable-0.4.8.tar.gz", hash = "sha256:fb667e55da3af1341e0f2946014cc29e7d0613e69f3ee20528051c4075aee75c"},
 ]
 alabaster = [
     {file = "alabaster-0.7.12-py2.py3-none-any.whl", hash = "sha256:446438bdcca0e05bd45ea2de1668c1d9b032e1a9154c2c259092d77031ddd359"},
@@ -5345,8 +5329,8 @@ frozenlist = [
     {file = "frozenlist-1.3.0.tar.gz", hash = "sha256:ce6f2ba0edb7b0c1d8976565298ad2deba6f8064d2bebb6ffce2ca896eb35b0b"},
 ]
 fundamentalanalysis = [
-    {file = "FundamentalAnalysis-0.2.12-py3-none-any.whl", hash = "sha256:25e6b00d40daa58866b9e01a459f260fda347bf5e2ff61d7cc77f6f8b712e011"},
-    {file = "FundamentalAnalysis-0.2.12.tar.gz", hash = "sha256:360576a7e75cc576860a0de086cdd33522433932b90326830945b27c519051d3"},
+    {file = "fundamentalanalysis-0.2.14-py3-none-any.whl", hash = "sha256:eda7920cb3b2f76b197cfe0a47e3936e6b4e65273a3852039cd3e5edd1bb06cc"},
+    {file = "fundamentalanalysis-0.2.14.tar.gz", hash = "sha256:bc3ee7948f7de817e195b2ac6d34dc6ba9c5f4780c9d29b7768c2790e67ab4a4"},
 ]
 future = [
     {file = "future-0.18.2.tar.gz", hash = "sha256:b1bead90b70cf6ec3f0710ae53a525360fa360d306a86583adc6bf83a4db537d"},

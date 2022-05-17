@@ -20,6 +20,7 @@ from openbb_terminal.helper_funcs import (
     export_data,
     plot_autoscale,
     print_rich_table,
+    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.fundamental_analysis import yahoo_finance_model
@@ -236,12 +237,10 @@ def display_dividends(
         # This plot has 1 axis
         if not external_axes:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        else:
-            if len(external_axes) != 1:
-                logger.error("Expected list of one axis item.")
-                console.print("[red]Expected list of one axis item.\n[/red]")
-                return
+        elif is_valid_axes_count(external_axes, 1):
             (ax,) = external_axes
+        else:
+            return
 
         ax.plot(
             div_history.index,
@@ -303,12 +302,10 @@ def display_splits(
     # This plot has 1 axis
     if not external_axes:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of one axis item.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
+    else:
+        return
 
     # Get all stock data since IPO
     df_data = yf.download(ticker, progress=False, threads=False)
@@ -385,12 +382,10 @@ def display_mktcap(
     # This plot has 1 axis
     if not external_axes:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of one axis item.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
+    else:
+        return
 
     ax.stackplot(df_mktcap.index, df_mktcap.values / 1e9, colors=[theme.up_color])
     ax.set_ylabel(f"Market Cap in Billion ({currency})")

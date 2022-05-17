@@ -17,7 +17,7 @@ main:
           - name: news
             ref: "/terminal/stocks/news"
           - name: codes
-            ref: "terminal/stocks/codes"
+            ref: "/terminal/stocks/codes"
           - name: discovery
             ref: "/terminal/stocks/discovery"
             sub:
@@ -442,6 +442,19 @@ main:
                 ref: "/terminal/stocks/options/binom"
               - name: greeks
                 ref: "/terminal/stocks/options/greeks"
+              - name: hedge
+                ref: "/terminal/stocks/options/hedge"
+                sub:
+                  - name: add
+                    ref: "/terminal/stocks/options/hedge/add"
+                  - name: sop
+                    ref: "/terminal/stocks/options/hedge/sop"
+                  - name: pick
+                    ref: "/terminal/stocks/options/hedge/pick"
+                  - name: list
+                    ref: "/terminal/stocks/options/hedge/list"
+                  - name: rmv
+                    ref: "/terminal/stocks/options/hedge/rmv"
               - name: payoff
                 ref: "/terminal/stocks/options/payoff"
                 sub:
@@ -466,6 +479,19 @@ main:
                     ref: "/terminal/stocks/options/pricing/show"
                   - name: rnval
                     ref: "/terminal/stocks/options/pricing/rnval"
+          - name: trading hours
+            ref: "/terminal/stocks/tradinghours"
+            sub:
+              - name: all
+                ref: "/terminal/stocks/tradinghours/all"
+              - name: closed
+                ref: "/terminal/stocks/tradinghours/closed"
+              - name: exchange
+                ref: "/terminal/stocks/tradinghours/exchange"
+              - name: open
+                ref: "/terminal/stocks/tradinghours/open"
+              - name: symbol
+                ref: "/terminal/stocks/tradinghours/symbol"
           - name: technical analysis
             ref: "/terminal/common/technical_analysis"
             sub:
@@ -569,7 +595,7 @@ main:
               - name: trend
                 ref: "/terminal/common/behavioural_analysis/trend"
               - name: jcdr
-                ref: "terminal/common/behavioural_analysis/jcdr"
+                ref: "/terminal/common/behavioural_analysis/jcdr"
               - name: jctr
                 ref: "/terminal/common/behavioural_analysis/jctr"
           - name: quantitative analysis
@@ -1223,22 +1249,20 @@ main:
                 ref: "/terminal/portfolio/po/nco"
           - name: load
             ref: "/terminal/portfolio/load"
-          - name: save
-            ref: "/terminal/portfolio/save"
           - name: show
             ref: "/terminal/portfolio/show"
-          - name: add
-            ref: "/terminal/portfolio/add"
+          - name: bench
+            ref: "/terminal/portfolio/bench"
+          - name: alloc
+            ref: "/terminal/portfolio/alloc"
+          - name: perf
+            ref: "/terminal/portfolio/perf"
           - name: al
             ref: "/terminal/portfolio/al"
           - name: rmr
             ref: "/terminal/portfolio/rmr"
           - name: dd
             ref: "/terminal/portfolio/dd"
-          - name: build
-            ref: "/terminal/portfolio/build"
-          - name: init
-            ref: "/terminal/portfolio/init"
           - name: rolling
             ref: "/terminal/portfolio/rolling"
           - name: var

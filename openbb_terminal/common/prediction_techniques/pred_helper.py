@@ -26,6 +26,7 @@ from openbb_terminal.helper_funcs import (
     valid_date,
     plot_autoscale,
     print_rich_table,
+    is_valid_axes_count,
 )
 from openbb_terminal import config_neural_network_models as cfg
 from openbb_terminal.config_terminal import theme
@@ -432,12 +433,10 @@ def plot_data_predictions(
             figsize=plot_autoscale(),
             dpi=PLOT_DPI,
         )
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item")
-            console.print("[red]Expected list of 1 axis item.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
+    else:
+        return
 
     ax.plot(
         data.index,

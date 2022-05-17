@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 
-import FundamentalAnalysis as fa
+import fundamentalanalysis as fa
 import pandas as pd
 
 from openbb_terminal import config_terminal as cfg

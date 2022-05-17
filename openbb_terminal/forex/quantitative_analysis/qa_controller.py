@@ -79,7 +79,7 @@ class QaController(CryptoBaseController):
             choices: dict = {c: {} for c in self.controller_choices}
             choices["pick"] = {c: None for c in list(data.columns)}
 
-            choices = {**choices, **self.SUPPORT_CHOICES}
+            choices["support"] = self.SUPPORT_CHOICES
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
