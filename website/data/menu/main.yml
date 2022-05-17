@@ -442,6 +442,19 @@ main:
                 ref: "/terminal/stocks/options/binom"
               - name: greeks
                 ref: "/terminal/stocks/options/greeks"
+              - name: hedge
+                ref: "/terminal/stocks/options/hedge"
+                sub:
+                  - name: add
+                    ref: "/terminal/stocks/options/hedge/add"
+                  - name: sop
+                    ref: "/terminal/stocks/options/hedge/sop"
+                  - name: pick
+                    ref: "/terminal/stocks/options/hedge/pick"
+                  - name: list
+                    ref: "/terminal/stocks/options/hedge/list"
+                  - name: rmv
+                    ref: "/terminal/stocks/options/hedge/rmv"
               - name: payoff
                 ref: "/terminal/stocks/options/payoff"
                 sub:
@@ -1234,22 +1247,20 @@ main:
                 ref: "/terminal/portfolio/po/nco"
           - name: load
             ref: "/terminal/portfolio/load"
-          - name: save
-            ref: "/terminal/portfolio/save"
           - name: show
             ref: "/terminal/portfolio/show"
-          - name: add
-            ref: "/terminal/portfolio/add"
+          - name: bench
+            ref: "/terminal/portfolio/bench"
+          - name: alloc
+            ref: "/terminal/portfolio/alloc"
+          - name: perf
+            ref: "/terminal/portfolio/perf"
           - name: al
             ref: "/terminal/portfolio/al"
           - name: rmr
             ref: "/terminal/portfolio/rmr"
           - name: dd
             ref: "/terminal/portfolio/dd"
-          - name: build
-            ref: "/terminal/portfolio/build"
-          - name: init
-            ref: "/terminal/portfolio/init"
           - name: rolling
             ref: "/terminal/portfolio/rolling"
           - name: var

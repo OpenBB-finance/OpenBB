@@ -29,22 +29,22 @@ from openbb_terminal.stocks.options import (
     calculator_view,
     chartexchange_view,
     fdscanner_view,
-    payoff_controller,
-    pricing_controller,
-    screener_controller,
-    syncretism_view,
     tradier_model,
     tradier_view,
     yfinance_model,
     yfinance_view,
 )
 
+from openbb_terminal.stocks.options.pricing import pricing_controller
+from openbb_terminal.stocks.options.hedge import hedge_controller
+from openbb_terminal.stocks.options.screen import screener_controller, syncretism_view
+
+
 # pylint: disable=R1710,C0302,R0916
 
 # TODO: HELP WANTED! This controller requires some MVC style refactoring
 #       - At the moment there's too much logic in the controller to implement an
 #         API wrapper. Please refactor functions like 'call_exp'
-#       - The separate controllers and related models/views should be moved to subfolders
 
 
 logger = logging.getLogger(__name__)
@@ -75,9 +75,9 @@ class OptionsController(BaseController):
         "greeks",
     ]
     CHOICES_MENUS = [
-        "payoff",
         "pricing",
         "screen",
+        "hedge",
     ]
 
     PRESET_PATH = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
@@ -200,8 +200,8 @@ Expiry: [/param]{self.selected_date or None}
     greeks        shows the greeks for a given option [src][Yfinance][/src]
 {has_ticker_start}
 >   screen        screens tickers based on preset [src][Syncretism.io][/src]
->   payoff        shows payoff diagram for a selection of options [src][Yfinance][/src]
 >   pricing       shows options pricing and risk neutral valuation [src][Yfinance][/src]
+>   hedge         shows portfolio weights in order to neutralise delta [src][Yfinance][/src]
 {has_ticker_end}"""
         console.print(text=help_text, menu="Stocks - Options")
 
@@ -594,9 +594,7 @@ Expiry: [/param]{self.selected_date or None}
             if self.ticker:
                 # Print possible expiry dates
                 if ns_parser.index == -1 and not ns_parser.date:
-                    console.print("\nAvailable expiry dates:")
-                    for i, d in enumerate(self.expiry_dates):
-                        console.print(f"   {(2 - len(str(i))) * ' '}{i}.  {d}")
+                    tradier_view.display_expiry_dates(self.expiry_dates)
                     console.print("")
                 elif ns_parser.date:
                     if ns_parser.date in self.expiry_dates:
@@ -1361,23 +1359,6 @@ Expiry: [/param]{self.selected_date or None}
                 console.print("No ticker loaded. First use `load <ticker>`\n")
 
     @log_start_end(log=logger)
-    def call_payoff(self, _):
-        """Process payoff command"""
-        if self.ticker:
-            if self.selected_date:
-                self.queue = self.load_class(
-                    payoff_controller.PayoffController,
-                    self.ticker,
-                    self.selected_date,
-                    self.queue,
-                )
-            else:
-                console.print("No expiry loaded. First use `exp {expiry date}`\n")
-
-        else:
-            console.print("No ticker loaded. First use `load <ticker>`\n")
-
-    @log_start_end(log=logger)
     def call_pricing(self, _):
         """Process pricing command"""
         if self.ticker:
@@ -1387,6 +1368,23 @@ Expiry: [/param]{self.selected_date or None}
                     self.ticker,
                     self.selected_date,
                     self.prices,
+                    self.queue,
+                )
+            else:
+                console.print("No expiry loaded. First use `exp {expiry date}`\n")
+
+        else:
+            console.print("No ticker loaded. First use `load <ticker>`\n")
+
+    @log_start_end(log=logger)
+    def call_hedge(self, _):
+        """Process hedge command"""
+        if self.ticker:
+            if self.selected_date:
+                self.queue = self.load_class(
+                    hedge_controller.HedgeController,
+                    self.ticker,
+                    self.selected_date,
                     self.queue,
                 )
             else:

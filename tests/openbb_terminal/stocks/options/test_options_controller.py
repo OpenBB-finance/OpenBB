@@ -832,17 +832,6 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
             dict(),
         ),
         (
-            "call_payoff",
-            [],
-            "payoff_controller.PayoffController",
-            [
-                "MOCK_TICKER",
-                "2022-01-07",
-                [],
-            ],
-            dict(),
-        ),
-        (
             "call_pricing",
             [],
             "pricing_controller.PricingController",
@@ -921,7 +910,6 @@ def test_call_func_test(
         "call_plot",
         "call_parity",
         "call_binom",
-        "call_payoff",
         "call_pricing",
     ],
 )
@@ -950,7 +938,6 @@ def test_call_func_no_ticker(func, mocker):
         "call_plot",
         "call_parity",
         "call_binom",
-        "call_payoff",
         "call_pricing",
     ],
 )
