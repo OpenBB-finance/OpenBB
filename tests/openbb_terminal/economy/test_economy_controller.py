@@ -438,11 +438,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             ],
             "investingcom_view.display_yieldcurve",
             [],
-            dict(
-                country="portugal",
-                export="csv",
-                raw=False
-            ),
+            dict(country="portugal", export="csv", raw=False),
         ),
     ],
 )
