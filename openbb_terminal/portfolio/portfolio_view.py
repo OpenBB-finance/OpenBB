@@ -339,10 +339,12 @@ def display_performance_vs_benchmark(
 
 
 @log_start_end(log=logger)
-def display_returns_vs_bench(
+def display_cumulative_returns(
     portfolio_returns: pd.Series,
     benchmark_returns: pd.Series,
     period: str = "all",
+    raw: bool = False,
+    limit: int = 10,
     export: str = "",
     external_axes: Optional[plt.Axes] = None,
 ):
@@ -356,76 +358,163 @@ def display_returns_vs_bench(
         Returns of the benchmark
     period : str
         Period to compare cumulative returns and benchmark
+    raw : False
+        Display raw data from cumulative return
+    limit : int
+        Last cumulative returns to display
     export : str
         Export certain type of data
     external_axes: plt.Axes
         Optional axes to display plot on
     """
-    if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    else:
-        ax = external_axes
+    portfolio_returns = portfolio_helper.filter_df_by_period(portfolio_returns, period)
+    benchmark_returns = portfolio_helper.filter_df_by_period(benchmark_returns, period)
 
+    cumulative_returns = 100 * (
+        (1 + portfolio_returns.shift(periods=1, fill_value=0)).cumprod() - 1
+    )
+    benchmark_c_returns = 100 * (
+        (1 + benchmark_returns.shift(periods=1, fill_value=0)).cumprod() - 1
+    )
+
+    if raw:
+        last_cumulative_returns = cumulative_returns.to_frame()
+        last_cumulative_returns = last_cumulative_returns.join(benchmark_c_returns)
+        last_cumulative_returns.index = last_cumulative_returns.index.date
+        print_rich_table(
+            last_cumulative_returns.tail(limit),
+            title="Cumulative and Benchmark returns",
+            headers=["Portfolio [%]", "Benchmark [%]"],
+            show_index=True,
+        )
+    else:
+        if external_axes is None:
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        else:
+            ax = external_axes
+
+        ax.plot(cumulative_returns.index, cumulative_returns, label="Portfolio")
+        ax.plot(benchmark_c_returns.index, benchmark_c_returns, label="Benchmark")
+
+        ax.legend(loc="upper left")
+        ax.set_ylabel("Cumulative Returns [%]")
+        theme.style_primary_axis(ax)
+
+        if not external_axes:
+            theme.visualize_output()
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "creturn",
+        cumulative_returns.to_frame().join(benchmark_c_returns),
+    )
+
+
+@log_start_end(log=logger)
+def display_yearly_returns(
+    portfolio_returns: pd.Series,
+    benchmark_returns: pd.Series,
+    period: str = "all",
+    raw: bool = False,
+    export: str = "",
+    external_axes: Optional[plt.Axes] = None,
+):
+    """Display yearly returns
+
+    Parameters
+    ----------
+    portfolio_returns : pd.Series
+        Returns of the portfolio
+    benchmark_returns : pd.Series
+        Returns of the benchmark
+    period : str
+        Period to compare cumulative returns and benchmark
+    raw : False
+        Display raw data from cumulative return
+    export : str
+        Export certain type of data
+    external_axes: plt.Axes
+        Optional axes to display plot on
+    """
     portfolio_returns = portfolio_helper.filter_df_by_period(portfolio_returns, period)
     benchmark_returns = portfolio_helper.filter_df_by_period(benchmark_returns, period)
 
     cumulative_returns = (
         1 + portfolio_returns.shift(periods=1, fill_value=0)
-    ).cumprod()
+    ).cumprod() - 1
     benchmark_c_returns = (
         1 + benchmark_returns.shift(periods=1, fill_value=0)
-    ).cumprod()
+    ).cumprod() - 1
 
-    ax.plot(cumulative_returns.index, cumulative_returns, label="Portfolio")
-    ax.plot(benchmark_c_returns.index, benchmark_c_returns, label="Benchmark")
+    creturns_year_idx = list()
+    creturns_year_val = list()
+    breturns_year_idx = list()
+    breturns_year_val = list()
 
-    if period in ["3y", "5y", "10y", "all"]:
-        ax2 = ax.twinx()
-        ax2.set_ylabel("Cumulative Returns [%]")
+    for year in set(cumulative_returns.index.year):
+        creturns_year = cumulative_returns[cumulative_returns.index.year == year]
+        creturns_year_idx.append(datetime.strptime(f"{year}-04-15", "%Y-%m-%d"))
+        creturns_year_val.append(
+            100 * (creturns_year.values[-1] - creturns_year.values[0])
+        )
 
-        creturns_year_idx = list()
-        creturns_year_val = list()
-        breturns_year_idx = list()
-        breturns_year_val = list()
+        breturns_year = benchmark_c_returns[benchmark_c_returns.index.year == year]
+        breturns_year_idx.append(datetime.strptime(f"{year}-08-15", "%Y-%m-%d"))
+        breturns_year_val.append(
+            100 * (breturns_year.values[-1] - breturns_year.values[0])
+        )
 
-        for year in set(cumulative_returns.index.year):
-            creturns_year = cumulative_returns[cumulative_returns.index.year == year]
-            creturns_year_idx.append(datetime.strptime(f"{year}-04-15", "%Y-%m-%d"))
-            creturns_year_val.append(
-                100 * (creturns_year.values[-1] - creturns_year.values[0])
-            )
+    if raw:
+        yreturns = pd.DataFrame(
+            {
+                "Portfolio [%]": pd.Series(
+                    creturns_year_val, index=list(set(cumulative_returns.index.year))
+                ),
+                "Benchmark [%]": pd.Series(
+                    breturns_year_val, index=list(set(cumulative_returns.index.year))
+                ),
+            }
+        )
 
-            breturns_year = benchmark_c_returns[benchmark_c_returns.index.year == year]
-            breturns_year_idx.append(datetime.strptime(f"{year}-08-15", "%Y-%m-%d"))
-            breturns_year_val.append(
-                100 * (breturns_year.values[-1] - breturns_year.values[0])
-            )
+        # NEED TO PROCESS IT STILL HERE!!
+        print_rich_table(
+            yreturns.sort_index(),
+            title="Yearly Portfolio and Benchmark returns",
+            headers=["Portfolio [%]", "Benchmark [%]"],
+            show_index=True,
+        )
 
-        ax2.bar(
+    else:
+        if external_axes is None:
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        else:
+            ax = external_axes
+
+        ax.bar(
             creturns_year_idx,
             creturns_year_val,
             width=100,
             label="Portfolio",
-            alpha=0.3,
         )
-        ax2.bar(
+        ax.bar(
             breturns_year_idx,
             breturns_year_val,
             width=100,
             label="Benchmark",
-            alpha=0.3,
         )
 
-    ax.legend(loc="upper left")
-    theme.style_primary_axis(ax)
+        ax.legend(loc="upper left")
+        ax.set_ylabel("Yearly Returns [%]")
+        theme.style_primary_axis(ax)
 
-    if not external_axes:
-        theme.visualize_output()
+        if not external_axes:
+            theme.visualize_output()
 
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "cr",
+        "yreturn",
         cumulative_returns.to_frame().join(benchmark_c_returns),
     )
 

@@ -1,8 +1,8 @@
 """Portfolio Helper"""
 __docformat__ = "numpy"
 
-from dateutil.relativedelta import relativedelta
 from datetime import datetime
+from dateutil.relativedelta import relativedelta
 import yfinance as yf
 import pandas as pd
 
