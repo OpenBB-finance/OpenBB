@@ -455,7 +455,7 @@ def display_yearly_returns(
     breturns_year_idx = list()
     breturns_year_val = list()
 
-    for year in set(cumulative_returns.index.year):
+    for year in sorted(set(cumulative_returns.index.year)):
         creturns_year = cumulative_returns[cumulative_returns.index.year == year]
         creturns_year_idx.append(datetime.strptime(f"{year}-04-15", "%Y-%m-%d"))
         creturns_year_val.append(
@@ -477,12 +477,16 @@ def display_yearly_returns(
                 "Benchmark [%]": pd.Series(
                     breturns_year_val, index=list(set(cumulative_returns.index.year))
                 ),
+                "Difference [%]": pd.Series(
+                    np.array(creturns_year_val) - np.array(breturns_year_val),
+                    index=list(set(cumulative_returns.index.year)),
+                ),
             }
         )
         print_rich_table(
             yreturns.sort_index(),
             title="Yearly Portfolio and Benchmark returns",
-            headers=["Portfolio [%]", "Benchmark [%]"],
+            headers=["Portfolio [%]", "Benchmark [%]", "Difference [%]"],
             show_index=True,
         )
 
