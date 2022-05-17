@@ -189,10 +189,9 @@ class EconomyController(BaseController):
             self.choices["map"]["-p"] = {c: None for c in self.map_period_list}
             self.choices["map"]["--period"] = {c: None for c in self.map_period_list}
 
-            if len(self.SUPPORT_CHOICES):
-                choices = {**self.choices, **self.SUPPORT_CHOICES}
+            self.choices["support"] = self.SUPPORT_CHOICES
 
-            self.completer = NestedCompleter.from_nested_dict(choices)
+            self.completer = NestedCompleter.from_nested_dict(self.choices)
 
     def update_runtime_choices(self):
         if session and obbff.USE_PROMPT_TOOLKIT:
@@ -215,13 +214,13 @@ class EconomyController(BaseController):
     def print_help(self):
         """Print help"""
         help_text = """[cmds]
-Overview
+[info]Overview[/info]
     overview      show a market overview of either indices, bonds or currencies [src][Source: Wall St. Journal][/src]
     futures       display a futures and commodities overview [src][Source: Wall St. Journal / FinViz][/src]
     map           S&P500 index stocks map [src][Source: FinViz][/src]
     bigmac        The Economist Big Mac index [src][Source: NASDAQ Datalink][/src]
 
-Macro Data
+[info]Macro Data[/info]
     macro         collect macro data for a country or countries [src][Source: EconDB][/src]
     fred          collect macro data from FRED based on a series ID [src][Source: FRED][/src]
     index         find and plot any (major) index on the market [src][Source: Yahoo Finance][/src]
@@ -230,7 +229,7 @@ Macro Data
     plot          plot data from the above commands together
     options       show the available options for 'plot' or show/export the data
 
-Performance & Valuations
+[info]Performance & Valuations[/info]
     rtps          real-time performance sectors [src][Source: Alpha Vantage][/src]
     valuation     valuation of sectors, industry, country [src][Source: FinViz][/src]
     performance   performance of sectors, industry, country [src][Source: FinViz][/src]

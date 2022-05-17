@@ -79,7 +79,7 @@ class QaController(BaseController):
             choices["load"] = {c: None for c in self.DATA_FILES}
             self.choices = choices
 
-            choices = {**choices, **self.SUPPORT_CHOICES}
+            choices["support"] = self.SUPPORT_CHOICES
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
