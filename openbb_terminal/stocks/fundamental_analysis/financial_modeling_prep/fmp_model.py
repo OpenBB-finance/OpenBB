@@ -6,7 +6,7 @@ from typing import Optional
 from datetime import datetime
 from requests.exceptions import HTTPError
 
-import FundamentalAnalysis as fa  # Financial Modeling Prep
+import fundamentalanalysis as fa  # Financial Modeling Prep
 import numpy as np
 import pandas as pd
 import valinvest
