@@ -431,7 +431,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             ),
         ),
         (
-            "call_yieldcurve",
+            "call_ycrv",
             [
                 "--country=portugal",
                 "--export=csv",
@@ -441,6 +441,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             dict(
                 country="portugal",
                 export="csv",
+                raw=False
             ),
         ),
     ],
