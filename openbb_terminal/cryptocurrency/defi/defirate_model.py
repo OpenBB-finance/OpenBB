@@ -67,7 +67,7 @@ def get_funding_rates(current: bool = True) -> pd.DataFrame:
     headers.insert(0, "Symbol")
     for i in table.find_all("td"):
         items.append(i.text.strip())
-    fundings = [items[i : i + 5] for i in range(0, len(items), 5)]
+    fundings = [items[i : i + 5] for i in range(0, len(items), 5)]  # noqa: E203
     return pd.DataFrame(columns=headers, data=fundings)
 
 
@@ -91,13 +91,13 @@ def get_lending_rates(current: bool = True) -> pd.DataFrame:
     url = "https://defirate.com/loans/?exchange_table_type=lend"
     table = _scrape_defirate(url, current)
     items = []
-    first_row = table.find("thead").text.strip().split("\n")
+    first_row = table.find("thead").text.strip().split()
 
     headers = [r for r in first_row if r not in ["Lend", ""]]
     headers.insert(0, "Symbol")
     for i in table.find_all("td"):
         items.append(i.text.strip())
-    lendings = [items[i : i + 12] for i in range(0, len(items), 12)]
+    lendings = [items[i : i + 12] for i in range(0, len(items), 12)]  # noqa: E203
     return pd.DataFrame(columns=headers, data=lendings)
 
 
@@ -122,11 +122,11 @@ def get_borrow_rates(current: bool = True) -> pd.DataFrame:
     url = "https://defirate.com/loans/?exchange_table_type=borrow"
     table = _scrape_defirate(url, current)
     items = []
-    first_row = table.find("thead").text.strip().split("\n")
+    first_row = table.find("thead").text.strip().split()
 
     headers = [r for r in first_row if r not in ["Borrow", ""]]
     headers.insert(0, "Symbol")
     for i in table.find_all("td"):
         items.append(i.text.strip())
-    borrowings = [items[i : i + 12] for i in range(0, len(items), 12)]
+    borrowings = [items[i : i + 12] for i in range(0, len(items), 12)]  # noqa: E203
     return pd.DataFrame(columns=headers, data=borrowings)

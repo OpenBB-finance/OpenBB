@@ -3,7 +3,6 @@ Overview
     overview      show a market overview of either indices, bonds or currencies [Source: Wall St. Journal]
     futures       display a futures and commodities overview [Source: Wall St. Journal / FinViz]
     map           S&P500 index stocks map [Source: FinViz]
-    feargreed     CNN Fear and Greed Index [Source: CNN]
     bigmac        The Economist Big Mac index [Source: NASDAQ Datalink]
 
 Macro Data

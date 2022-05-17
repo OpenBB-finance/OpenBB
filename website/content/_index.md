@@ -5,7 +5,7 @@ geekdocNav: true
 geekdocAnchor: false
 resources:
   - name: GST
-    src: "/terminal/gst_logo_lockup_rGreen_with_letters.png"
+    src: "/gst_logo_lockup_rGreen_with_letters.png"
     title:
 ---
 

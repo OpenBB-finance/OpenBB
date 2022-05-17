@@ -32,13 +32,19 @@ PAPERMILL_NOTEBOOK_REPORT_PORT = (
 # USE IN LOG LINES + FOR FOLDER NAME INSIDE S3 BUCKET
 LOGGING_APP_NAME = os.getenv("OPENBB_LOGGING_APP_NAME") or "gst"
 # AWS KEYS
-LOGGING_AWS_ACCESS_KEY_ID = os.getenv("OPENBB_LOGGING_AWS_ACCESS_KEY_ID") or "REPLACE_ME"
-LOGGING_AWS_SECRET_ACCESS_KEY = os.getenv("OPENBB_LOGGING_AWS_SECRET_ACCESS_KEY") or "REPLACE_ME"
+LOGGING_AWS_ACCESS_KEY_ID = (
+    os.getenv("OPENBB_LOGGING_AWS_ACCESS_KEY_ID") or "REPLACE_ME"
+)
+LOGGING_AWS_SECRET_ACCESS_KEY = (
+    os.getenv("OPENBB_LOGGING_AWS_SECRET_ACCESS_KEY") or "REPLACE_ME"
+)
 # D | H | M | S
 LOGGING_FREQUENCY = os.getenv("OPENBB_LOGGING_FREQUENCY") or "H"
 # stdout,stderr,noop,file
 LOGGING_HANDLERS = os.getenv("OPENBB_LOGGING_HANDLERS") or "file"
-LOGGING_ROLLING_CLOCK = strtobool(os.getenv("OPENBB_LOGGING_ROLLING_CLOCK") or "False")
+LOGGING_ROLLING_CLOCK = bool(
+    strtobool(os.getenv("OPENBB_LOGGING_ROLLING_CLOCK", "False"))
+)
 # CRITICAL = 50
 # FATAL = CRITICAL
 # ERROR = 40
@@ -158,3 +164,6 @@ API_MESSARI_KEY = os.getenv("OPENBB_API_MESSARI_KEY") or "REPLACE_ME"
 
 # https://docs.github.com/en/rest/guides/getting-started-with-the-rest-api
 API_GITHUB_KEY = os.getenv("OPENBB_API_GITHUB_KEY") or "REPLACE_ME"
+
+# https://academy.santiment.net/products-and-plans/create-an-api-key/
+API_SANTIMENT_KEY = os.getenv("OPENBB_API_SANTIMENT_KEY") or "REPLACE_ME"

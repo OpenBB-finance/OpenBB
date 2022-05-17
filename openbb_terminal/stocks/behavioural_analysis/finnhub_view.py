@@ -17,8 +17,8 @@ from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.helper_funcs import (
     export_data,
     plot_autoscale,
+    is_valid_axes_count,
 )
-from openbb_terminal.rich_config import console
 from openbb_terminal.decorators import check_api_key
 
 logger = logging.getLogger(__name__)
@@ -40,7 +40,7 @@ def display_stock_price_headlines_sentiment(
     export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+        External axes (2 axes are expected in the list), by default None
     """
     start = datetime.now() - timedelta(days=30)
     articles = finnhub_model.get_company_news(
@@ -63,9 +63,9 @@ def display_stock_price_headlines_sentiment(
 
         if not df_stock.empty:
 
-            # This plot has 1 axis
+            # This plot has 2 axes
             if external_axes is None:
-                _, ax = plt.subplots(
+                _, axes = plt.subplots(
                     figsize=plot_autoscale(),
                     dpi=PLOT_DPI,
                     nrows=2,
@@ -73,26 +73,25 @@ def display_stock_price_headlines_sentiment(
                     sharex=True,
                     gridspec_kw={"height_ratios": [2, 1]},
                 )
+                (ax1, ax2) = axes
+            elif is_valid_axes_count(external_axes, 2):
+                (ax1, ax2) = external_axes
             else:
-                if len(external_axes) != 1:
-                    logger.error("Expected list of one axis item.")
-                    console.print("[red]Expected list of one axis item./n[/red]")
-                    return
-                (ax,) = external_axes
+                return
 
-            ax[0].set_title(f"Headlines sentiment and {ticker} price")
+            ax1.set_title(f"Headlines sentiment and {ticker} price")
             for uniquedate in np.unique(df_stock.index.date):
-                ax[0].plot(
+                ax1.plot(
                     df_stock[df_stock.index.date == uniquedate].index,
                     df_stock[df_stock.index.date == uniquedate]["Adj Close"].values,
                     c="#FCED00",
                 )
 
-            ax[0].set_ylabel("Stock Price")
-            theme.style_primary_axis(ax[0])
-            theme.style_primary_axis(ax[1])
+            ax1.set_ylabel("Stock Price")
+            theme.style_primary_axis(ax1)
+            theme.style_primary_axis(ax2)
 
-            ax[1].plot(
+            ax2.plot(
                 sentiment.index,
                 pd.Series(sentiment_data)
                 .rolling(window=5, min_periods=1)
@@ -100,7 +99,7 @@ def display_stock_price_headlines_sentiment(
                 .values,
                 c="#FCED00",
             )
-            ax[1].bar(
+            ax2.bar(
                 sentiment[sentiment.values >= 0].index,
                 [
                     item
@@ -110,7 +109,7 @@ def display_stock_price_headlines_sentiment(
                 color=theme.up_color,
                 width=0.01,
             )
-            ax[1].bar(
+            ax2.bar(
                 sentiment[sentiment.values < 0].index,
                 [
                     item
@@ -120,8 +119,8 @@ def display_stock_price_headlines_sentiment(
                 color=theme.down_color,
                 width=0.01,
             )
-            ax[1].yaxis.set_label_position("right")
-            ax[1].set_ylabel("Headline Sentiment")
+            ax2.yaxis.set_label_position("right")
+            ax2.set_ylabel("Headline Sentiment")
 
             if external_axes is None:
                 theme.visualize_output()

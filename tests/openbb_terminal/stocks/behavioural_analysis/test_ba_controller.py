@@ -325,13 +325,14 @@ def test_call_func_expect_queue(expected_queue, queue, func):
         ),
         (
             "call_sentiment",
-            ["--limit=20", "--days=2", "--export=csv"],
+            ["--limit=20", "--days=2", "--compare", "--export=csv"],
             "twitter_view.display_sentiment",
             [],
             dict(
                 ticker="MOCK_TICKER",
                 n_tweets=20,
                 n_days_past=2,
+                compare=True,
                 export="csv",
             ),
         ),
@@ -381,11 +382,12 @@ def test_call_func_expect_queue(expected_queue, queue, func):
         ),
         (
             "call_headlines",
-            ["--export=csv"],
+            ["--export=csv", "--raw"],
             "finbrain_view.display_sentiment_analysis",
             [],
             dict(
                 ticker="MOCK_TICKER",
+                raw=True,
                 export="csv",
             ),
         ),

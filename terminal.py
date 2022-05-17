@@ -15,7 +15,7 @@ import dotenv
 
 from prompt_toolkit.completion import NestedCompleter
 
-from openbb_terminal.core.config.constants import REPO_DIR, ENV_FILE
+from openbb_terminal.core.config.constants import REPO_DIR, ENV_FILE, USER_HOME
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.helper_funcs import (
     check_path,
@@ -66,7 +66,8 @@ class TerminalController(BaseController):
         "portfolio",
         "forex",
         "etf",
-        "jupyter",
+        "reports",
+        "dashboards",
         "funds",
         "alternative",
         "econometrics",
@@ -74,15 +75,17 @@ class TerminalController(BaseController):
 
     PATH = "/"
 
-    all_timezones = pytz.all_timezones
+    all_timezones = [tz.replace("/", "-") for tz in pytz.all_timezones]
 
     def __init__(self, jobs_cmds: List[str] = None):
         """Constructor"""
         super().__init__(jobs_cmds)
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: None for c in self.controller_choices}
-            choices["tz"] = {c.replace("/", "-"): None for c in self.all_timezones}
+            choices: dict = {c: {} for c in self.controller_choices}
+            choices["tz"] = {c: None for c in self.all_timezones}
+            choices["support"] = self.SUPPORT_CHOICES
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
         self.queue: List[str] = list()
@@ -96,6 +99,10 @@ class TerminalController(BaseController):
         """Print help"""
         console.print(  # nosec
             text=f"""
+[info]Get API keys from data providers to access more features.[/info]
+    For more instructions use: 'keys'.
+    To see all features follow: https://openbb-finance.github.io/OpenBBTerminal/
+
 [info]Multiple jobs queue (where each '/' denotes a new command).[/info]
     E.g. '/stocks $ disc/ugs -n 3/../load tsla/candle'
 
@@ -118,6 +125,7 @@ class TerminalController(BaseController):
     exit            exit the terminal
     reset / r       reset the terminal and reload configs from the current location
     resources       only available on main contexts (not sub-menus)
+    support         pre-populate support ticket for our team to evaluate
 
     about           about us
     update          update terminal automatically
@@ -129,18 +137,22 @@ class TerminalController(BaseController):
 
 [param]Export Folder:[/param] {obbff.EXPORT_FOLDER_PATH if obbff.EXPORT_FOLDER_PATH else 'DEFAULT (folder: exports/)'}
 [param]Timezone:     [/param] {get_user_timezone_or_invalid()}
-[menu]
->   stocks
->   crypto
->   etf
->   economy
->   forex
->   funds
->   alternative
->   econometrics
->   portfolio
->   jupyter[/menu]
-    """,
+[menu][info]
+Asset classes:[/info]
+>   stocks              access historical pricing data, options, sector and industry, and overall due diligence
+>   crypto              dive into onchain data, tokenomics, circulation supply, nfts and more
+>   etf                 exchange traded funds. Historical pricing, compare holdings and screening
+>   economy             global macroeconomic data, e.g. futures, yield, treasury
+>   forex               foreign exchanges, quotes, forward rates for currency pairs and oanda integration
+>   funds               mutual funds search, overview, holdings and sector weights
+>   alternative         alternative datasets, such as COVID and open source metrics
+
+[info]Others:[/info]
+>   econometrics        statistical and quantitative methods for relationships between datasets
+>   portfolio           perform portfolio optimization and look at portfolio performance and attribution
+>   dashboards          interactive dashboards using voila and jupyter notebooks
+>   reports             customizable research reports through jupyter notebooks[/menu]
+""",
             menu="Home",
         )
 
@@ -202,12 +214,28 @@ class TerminalController(BaseController):
 
         self.queue = self.load_class(ForexController, self.queue)
 
-    def call_jupyter(self, _):
-        """Process jupyter command"""
+    def call_reports(self, _):
+        """Process reports command"""
         if not obbff.PACKAGED_APPLICATION:
-            from openbb_terminal.jupyter.jupyter_controller import JupyterController
+            from openbb_terminal.reports.reports_controller import (
+                ReportController,
+            )
 
-            self.queue = self.load_class(JupyterController, self.queue)
+            self.queue = self.load_class(ReportController, self.queue)
+        else:
+            console.print("This feature is coming soon.")
+            console.print(
+                "Use the source code and an Anaconda environment if you are familiar with Python."
+            )
+
+    def call_dashboards(self, _):
+        """Process dashboards command"""
+        if not obbff.PACKAGED_APPLICATION:
+            from openbb_terminal.dashboards.dashboards_controller import (
+                DashboardsController,
+            )
+
+            self.queue = self.load_class(DashboardsController, self.queue)
         else:
             console.print("This feature is coming soon.")
             console.print(
@@ -240,7 +268,6 @@ class TerminalController(BaseController):
 
     def call_tz(self, other_args: List[str]):
         """Process tz command"""
-
         tz_parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -248,16 +275,16 @@ class TerminalController(BaseController):
                    Setting a different timezone
                """,
         )
-
         tz_parser.add_argument(
-            "-tz",
+            "-t",
             dest="timezone",
             help="Choose timezone",
             required="-h" not in other_args,
+            choices=self.all_timezones,
         )
 
-        if other_args and "-tz" not in other_args[0] and "-h" not in other_args[0]:
-            other_args.insert(0, "-tz")
+        if other_args and "-t" not in other_args[0]:
+            other_args.insert(0, "-t")
 
         tz_ns_parser = parse_known_args_and_warn(tz_parser, other_args)
         if tz_ns_parser:
@@ -292,10 +319,7 @@ class TerminalController(BaseController):
                 else:
                     # If the path selected does not start from the user root, give relative location from terminal root
                     if export_path[0] == "~":
-                        # TODO: Consider changing
-                        #       `os.environ["HOME"]` to `os.path.expanduser("~")`
-                        #       for cross platform support
-                        export_path = export_path.replace("~", os.environ["HOME"])
+                        export_path = export_path.replace("~", os.path.expanduser("~"))
                     elif export_path[0] != "/":
                         export_path = os.path.join(base_path, export_path)
 
@@ -427,7 +451,7 @@ class TerminalController(BaseController):
                         export_path = self.queue[0].split(" ")[1]
                         # If the path selected does not start from the user root, give relative location from root
                         if export_path[0] == "~":
-                            export_path = export_path.replace("~", os.environ["HOME"])
+                            export_path = export_path.replace("~", USER_HOME.as_posix())
                         elif export_path[0] != "/":
                             export_path = os.path.join(
                                 os.path.dirname(os.path.abspath(__file__)), export_path
@@ -473,7 +497,7 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
     if export_path:
         # If the path selected does not start from the user root, give relative location from terminal root
         if export_path[0] == "~":
-            export_path = export_path.replace("~", os.environ["HOME"])
+            export_path = export_path.replace("~", USER_HOME.as_posix())
         elif export_path[0] != "/":
             export_path = os.path.join(
                 os.path.dirname(os.path.abspath(__file__)), export_path

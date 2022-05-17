@@ -16,7 +16,6 @@ from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.economy import (
     alphavantage_view,
-    cnn_view,
     finviz_view,
     nasdaq_model,
     nasdaq_view,
@@ -65,14 +64,12 @@ class EconomyController(BaseController):
         "map",
         "rtps",
         "industry",
-        "feargreed",
         "bigmac",
-        "yieldcurve",
+        "ycrv",
     ]
 
     CHOICES_MENUS = ["pred", "qa"]
 
-    fear_greed_indicators = ["jbd", "mv", "pco", "mm", "sps", "spb", "shd", "index"]
     wsj_sortby_cols_dict = {c: None for c in ["ticker", "last", "change", "prevClose"]}
     map_period_list = ["1d", "1w", "1m", "3m", "6m", "1y"]
     map_type_list = ["sp500", "world", "full", "etf"]
@@ -148,6 +145,7 @@ class EconomyController(BaseController):
         "country": "Country (U.S. listed stocks only)",
         "capitalization": "Capitalization",
     }
+    ycrv_sources = ["FRED", "investpy"]
     PATH = "/economy/"
     FILE_PATH = os.path.join(os.path.dirname(__file__), "README.md")
 
@@ -178,6 +176,11 @@ class EconomyController(BaseController):
                 c: None for c in econdb_model.COUNTRY_CODES
             }
 
+            self.choices["ycrv"]["-c"] = {c: None for c in investingcom_model.COUNTRIES}
+            self.choices["ycrv"]["--countries"] = {
+                c: None for c in investingcom_model.COUNTRIES
+            }
+
             self.choices["valuation"]["-s"] = {
                 c: None for c in self.valuation_sort_cols
             }
@@ -195,12 +198,7 @@ class EconomyController(BaseController):
             self.choices["map"]["-p"] = {c: None for c in self.map_period_list}
             self.choices["map"]["--period"] = {c: None for c in self.map_period_list}
 
-            self.choices["feargreed"]["-i"] = {
-                c: None for c in self.fear_greed_indicators
-            }
-            self.choices["feargreed"]["--indicator"] = {
-                c: None for c in self.fear_greed_indicators
-            }
+            self.choices["support"] = self.SUPPORT_CHOICES
 
             self.completer = NestedCompleter.from_nested_dict(self.choices)
 
@@ -225,24 +223,23 @@ class EconomyController(BaseController):
     def print_help(self):
         """Print help"""
         help_text = """[cmds]
-Overview
+[info]Overview[/info]
     overview      show a market overview of either indices, bonds or currencies [src][Source: Wall St. Journal][/src]
     futures       display a futures and commodities overview [src][Source: Wall St. Journal / FinViz][/src]
     map           S&P500 index stocks map [src][Source: FinViz][/src]
-    feargreed     CNN Fear and Greed Index [src][Source: CNN][/src]
     bigmac        The Economist Big Mac index [src][Source: NASDAQ Datalink][/src]
 
-Macro Data
+[info]Macro Data[/info]
     macro         collect macro data for a country or countries [src][Source: EconDB][/src]
     fred          collect macro data from FRED based on a series ID [src][Source: FRED][/src]
     index         find and plot any (major) index on the market [src][Source: Yahoo Finance][/src]
     treasury      obtain U.S. treasury rates [src][Source: EconDB][/src]
     yield         show the U.S. Treasury yield curve [src][Source: FRED][/src]
-    yieldcurve    show sovereign yield curves [src][Source: Investing.com][/src]
+    ycrv          show sovereign yield curves [src][Source: Investing.com/FRED][/src]
     plot          plot data from the above commands together
     options       show the available options for 'plot' or show/export the data
 
-Performance & Valuations
+[info]Performance & Valuations[/info]
     rtps          real-time performance sectors [src][Source: Alpha Vantage][/src]
     valuation     valuation of sectors, industry, country [src][Source: FinViz][/src]
     performance   performance of sectors, industry, country [src][Source: FinViz][/src]
@@ -394,41 +391,6 @@ Performance & Valuations
             finviz_view.map_sp500_view(
                 period=ns_parser.s_period,
                 map_type=ns_parser.s_type,
-            )
-
-    @log_start_end(log=logger)
-    def call_feargreed(self, other_args: List[str]):
-        """Process feargreed command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            prog="feargreed",
-            description="""
-                Display CNN Fear And Greed Index from https://money.cnn.com/data/fear-and-greed/.
-            """,
-        )
-        parser.add_argument(
-            "-i",
-            "--indicator",
-            dest="indicator",
-            required=False,
-            type=str,
-            choices=self.fear_greed_indicators,
-            help="""
-                CNN Fear And Greed indicator or index. From Junk Bond Demand, Market Volatility,
-                Put and Call Options, Market Momentum Stock Price Strength, Stock Price Breadth,
-                Safe Heaven Demand, and Index.
-            """,
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-i")
-
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
-        )
-        if ns_parser:
-            cnn_view.fear_and_greed_index(
-                indicator=ns_parser.indicator,
-                export=ns_parser.export,
             )
 
     @log_start_end(log=logger)
@@ -1017,6 +979,64 @@ Performance & Valuations
             fred_view.display_yield_curve(ns_parser.date)
 
     @log_start_end(log=logger)
+    def call_ycrv(self, other_args: List[str]):
+        """Process ycrv command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="ycrv",
+            description="Generate country yield curve. The yield curve shows the bond rates"
+            " at different maturities.",
+        )
+        parser.add_argument(
+            "-s",
+            "--source",
+            action="store",
+            dest="source",
+            choices=self.ycrv_sources,
+            type=str,
+            default="investpy",
+            help="Source for the data. If not supplied, the most recent entry from investpy will be used.",
+        )
+        parser.add_argument(
+            "-c",
+            "--country",
+            action="store",
+            dest="country",
+            nargs="+",
+            default="united states",
+            help="Display yield curve for specific country.",
+        )
+        parser.add_argument(
+            "-d",
+            "--date",
+            type=valid_date,
+            help="Date to get data from FRED. If not supplied, the most recent entry will be used.",
+            dest="date",
+            default=None,
+        )
+        ns_parser = parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
+            raw=True,
+        )
+        if ns_parser:
+            if isinstance(ns_parser.country, list):
+                ns_parser.country = " ".join(ns_parser.country)
+
+            investingcom_model.check_correct_country(ns_parser.country)
+
+            if ns_parser.source == "FRED":
+                fred_view.display_yield_curve(ns_parser.date)
+            elif ns_parser.source == "investpy":
+                investingcom_view.display_yieldcurve(
+                    country=ns_parser.country,
+                    raw=ns_parser.raw,
+                    export=ns_parser.export,
+                )
+
+    @log_start_end(log=logger)
     def call_plot(self, other_args: List[str]):
         """Process plot command"""
         parser = argparse.ArgumentParser(
@@ -1412,32 +1432,3 @@ Performance & Valuations
         )
 
         self.queue = self.load_class(QaController, self.DATASETS, self.queue)
-
-    @log_start_end(log=logger)
-    def call_yieldcurve(self, other_args: List[str]):
-        """Process yieldcurve command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="yieldcurve",
-            description="Print country yield curve. [Source: Investing.com]",
-        )
-        parser.add_argument(
-            "-c",
-            "--country",
-            action="store",
-            dest="country",
-            type=str,
-            choices=investingcom_model.countries,
-            default="united_states",
-            help="Display yield curve for specific country. (spaces: '_')",
-        )
-
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            investingcom_view.display_yieldcurve(
-                country=ns_parser.country,
-                export=ns_parser.export,
-            )

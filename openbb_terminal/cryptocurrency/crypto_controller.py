@@ -95,6 +95,9 @@ class CryptoController(CryptoBaseController):
             choices["find"]["-k"] = {c: {} for c in FIND_KEYS}
             choices["headlines"] = {c: {} for c in finbrain_crypto_view.COINS}
             # choices["prt"]["--vs"] = {c: {} for c in coingecko_coin_ids} # list is huge. makes typing buggy
+
+            choices["support"] = self.SUPPORT_CHOICES
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
@@ -213,7 +216,7 @@ class CryptoController(CryptoBaseController):
                 parser.add_argument(
                     "-d",
                     "--days",
-                    default=30,
+                    default=365,
                     dest="days",
                     help="Number of days to get data for",
                     type=check_positive,
@@ -433,7 +436,7 @@ class CryptoController(CryptoBaseController):
                 self.queue = self.load_class(
                     TechnicalAnalysisController,
                     stock=self.current_df,
-                    coin=self.coin,
+                    coin=self.symbol,
                     start=self.current_df.index[0],
                     interval="",
                     queue=self.queue,

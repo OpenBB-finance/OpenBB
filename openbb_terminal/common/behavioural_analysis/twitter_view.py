@@ -15,14 +15,19 @@ import openbb_terminal.config_plot as cfg_plot
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.common.behavioural_analysis import twitter_model
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import export_data, plot_autoscale
+from openbb_terminal.helper_funcs import (
+    export_data,
+    plot_autoscale,
+    get_closing_price,
+    is_valid_axes_count,
+)
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_inference(ticker: str, num: int, export: str = ""):
+def display_inference(ticker: str, num: int = 100, export: str = ""):
     """Infer sentiment from past n tweets
 
     Parameters
@@ -72,8 +77,9 @@ def display_inference(ticker: str, num: int, export: str = ""):
 @log_start_end(log=logger)
 def display_sentiment(
     ticker: str,
-    n_tweets: int,
-    n_days_past: int,
+    n_tweets: int = 15,
+    n_days_past: int = 6,
+    compare: bool = False,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -87,6 +93,8 @@ def display_sentiment(
         Number of tweets to get per hour
     n_days_past: int
         Number of days to extract tweets for
+    compare: bool
+        Show corresponding change in stock price
     export: str
         Format to export tweet dataframe
     """
@@ -152,18 +160,30 @@ def display_sentiment(
     df_tweets = df_tweets.sort_values(by="date")
     df_tweets["cumulative_compound"] = df_tweets["sentiment"].cumsum()
 
-    # This plot has 2 axis
-    if external_axes is None:
-        _, axes = plt.subplots(
-            2, 1, sharex=True, figsize=plot_autoscale(), dpi=cfg_plot.PLOT_DPI
-        )
-        ax1, ax2 = axes
-    else:
-        if len(external_axes) != 2:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of one axis item./n[/red]")
+    ax1, ax2, ax3 = None, None, None
+
+    if compare:
+        # This plot has 3 axes
+        if external_axes is None:
+            _, axes = plt.subplots(
+                3, 1, sharex=False, figsize=plot_autoscale(), dpi=cfg_plot.PLOT_DPI
+            )
+            ax1, ax2, ax3 = axes
+        elif is_valid_axes_count(external_axes, 3):
+            (ax1, ax2, ax3) = external_axes
+        else:
             return
-        (ax1, ax2) = external_axes
+    else:
+        # This plot has 2 axes
+        if external_axes is None:
+            _, axes = plt.subplots(
+                2, 1, sharex=True, figsize=plot_autoscale(), dpi=cfg_plot.PLOT_DPI
+            )
+            ax1, ax2 = axes
+        elif is_valid_axes_count(external_axes, 2):
+            (ax1, ax2) = external_axes
+        else:
+            return
 
     ax1.plot(
         pd.to_datetime(df_tweets["created_at"]),
@@ -198,6 +218,21 @@ def display_sentiment(
 
     ax2.set_ylabel("VADER Polarity Scores")
     theme.style_primary_axis(ax2)
+
+    if compare:
+        # get stock end price for each corresponding day if compare == True
+        closing_price_df = get_closing_price(ticker, n_days_past)
+        if ax3:
+            ax3.plot(
+                closing_price_df["Date"],
+                closing_price_df["Close"],
+                label=pd.to_datetime(closing_price_df["Date"])
+                .iloc[0]
+                .strftime("%Y-%m-%d"),
+            )
+
+            ax3.set_ylabel("Stock Price")
+            theme.style_primary_axis(ax3)
 
     if external_axes is None:
         theme.visualize_output()

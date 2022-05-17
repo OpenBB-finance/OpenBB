@@ -3,7 +3,7 @@ import logging
 import os
 import re
 import uuid
-from typing import Dict, List
+from typing import Any, Dict, List
 
 import disnake
 import financedatabase as fd
@@ -191,7 +191,7 @@ def quote(ticker):
     return quote_data
 
 
-def autocrop_image(image: Image, border=0) -> Image:
+def autocrop_image(image: Any, border=0) -> Any:
     """Crop empty space from PIL image
 
     Parameters
@@ -525,13 +525,13 @@ def image_border(
         img = Image.open(filename)
 
     im_bg = Image.open(imps.IMG_BG)
-    im_bg = im_bg.resize((4200, 2600), resample=Image.Resampling.LANCZOS)
+    im_bg = im_bg.resize((4200, 2600), resample=Image.Resampling.LANCZOS)  # type: ignore
 
     w = img.width + 520
     h = img.height
 
     # Paste fig onto background img and autocrop background
-    img = img.resize((w, h), resample=Image.Resampling.LANCZOS)
+    img = img.resize((w, h), resample=Image.Resampling.LANCZOS)  # type: ignore
     x1 = int(0.5 * im_bg.size[0]) - int(0.5 * img.size[0])
     y1 = int(0.5 * im_bg.size[1]) - int(0.5 * img.size[1])
     x2 = int(0.5 * im_bg.size[0]) + int(0.5 * img.size[0])
@@ -544,7 +544,7 @@ def image_border(
     im_bgbytes.seek(0)
     image = Image.open(im_bgbytes)
     image = imps.autocrop_image(image, 0)
-    image = image.resize((1800, 1200), resample=Image.Resampling.LANCZOS)
+    image = image.resize((1800, 1200), resample=Image.Resampling.LANCZOS)  # type: ignore
     image.save(filesave, "PNG")
     image.close()
     return imagefile

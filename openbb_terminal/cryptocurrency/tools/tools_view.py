@@ -58,7 +58,7 @@ def display_il(
     proportion: int,
     initial_pool_value: int,
     narrative: bool,
-    export: str,
+    export: str = "",
 ):
     """Displays Impermanent Loss in a custom liquidity pool
 
