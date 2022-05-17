@@ -46,10 +46,10 @@ class PortfolioController(BaseController):
         "alloc",
         "perf",
         "ar",
-        "creturn",
-        "yreturn",
-        "mreturn",
-        "dreturn",
+        "cret",
+        "yret",
+        "mret",
+        "dret",
         "distr",
         "holdv",
         "holdp",
@@ -162,10 +162,10 @@ class PortfolioController(BaseController):
 [info]Graphs:[/info]{("[unvl]", "[cmds]")[port_bench]}
     holdv       holdings of assets (absolute value)
     holdp       portfolio holdings of assets (in percentage)
-    return      cumulative returns
-    yreturn     yearly returns
-    mreturn     monthly returns
-    dreturn     daily returns
+    cret        cumulative returns
+    yret        yearly returns
+    mret        monthly returns
+    dret        daily returns
     distr       distribution of daily returns
     maxdd       maximum drawdown
     rvol        rolling volatility
@@ -177,7 +177,6 @@ class PortfolioController(BaseController):
     alloc       allocation on an asset, sector, countries or regions basis
     summary     all portfolio vs benchmark metrics for a certain period of choice
     metric      portfolio vs benchmark metric for all different periods
-
     perf        performance of the portfolio versus benchmark{("[/unvl]", "[/cmds]")[port_bench]}
 
 [info]Risk Metrics:[/info]{("[unvl]", "[cmds]")[port]}
@@ -741,12 +740,12 @@ class PortfolioController(BaseController):
                     )
 
     @log_start_end(log=logger)
-    def call_creturn(self, other_args: List[str]):
-        """Process creturn command"""
+    def call_cret(self, other_args: List[str]):
+        """Process cret command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="creturn",
+            prog="cret",
             description="Graph of cumulative returns against benchmark",
         )
         parser.add_argument(
@@ -782,12 +781,12 @@ class PortfolioController(BaseController):
                 )
 
     @log_start_end(log=logger)
-    def call_yreturn(self, other_args: List[str]):
-        """Process yreturn command"""
+    def call_yret(self, other_args: List[str]):
+        """Process yret command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="yreturn",
+            prog="yret",
             description="End of the year returns",
         )
         parser.add_argument(
@@ -821,12 +820,51 @@ class PortfolioController(BaseController):
                 )
 
     @log_start_end(log=logger)
-    def call_dreturn(self, other_args: List[str]):
-        """Process dreturn command"""
+    def call_mret(self, other_args: List[str]):
+        """Process mret command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="dreturn",
+            prog="mret",
+            description="Monthly returns",
+        )
+        parser.add_argument(
+            "-p",
+            "--period",
+            type=str,
+            dest="period",
+            default="all",
+            choices=["3y", "5y", "10y", "all"],
+            help="Period to select start end of the year returns",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-p")
+        ns_parser = parse_known_args_and_warn(
+            parser,
+            other_args,
+            raw=True,
+            export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
+        )
+
+        if ns_parser:
+            if check_portfolio_benchmark_defined(
+                self.portfolio_name, self.benchmark_name
+            ):
+                portfolio_view.display_monthly_returns(
+                    self.portfolio.returns,
+                    self.portfolio.benchmark_returns,
+                    ns_parser.period,
+                    ns_parser.raw,
+                    ns_parser.export,
+                )
+
+    @log_start_end(log=logger)
+    def call_dret(self, other_args: List[str]):
+        """Process dret command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="dret",
             description="Daily returns",
         )
         parser.add_argument(
