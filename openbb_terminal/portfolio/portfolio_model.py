@@ -802,24 +802,26 @@ class Portfolio:
         """
         vals = list()
         for period in portfolio_helper.PERIODS:
+            port_rets = portfolio_helper.filter_df_by_period(self.returns, period)
+            bench_rets = portfolio_helper.filter_df_by_period(
+                self.benchmark_returns, period
+            )
             vals.append(
                 [
                     round(
-                        portfolio_helper.filter_df_by_period(
-                            self.returns, period
-                        ).std(),
+                        100 * port_rets.std() * (len(port_rets) ** 0.5),
                         3,
                     ),
                     round(
-                        portfolio_helper.filter_df_by_period(
-                            self.benchmark_returns, period
-                        ).std(),
+                        100 * bench_rets.std() * (len(bench_rets) ** 0.5),
                         3,
                     ),
                 ]
             )
         return pd.DataFrame(
-            vals, index=portfolio_helper.PERIODS, columns=["Portfolio", "Benchmark"]
+            vals,
+            index=portfolio_helper.PERIODS,
+            columns=["Portfolio [%]", "Benchmark [%]"],
         )
 
     @log_start_end(log=logger)

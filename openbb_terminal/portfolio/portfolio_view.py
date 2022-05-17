@@ -116,8 +116,6 @@ def display_assets_allocation(
         show_index=False,
     )
 
-    console.print()
-
     if include_separate_tables:
         print_rich_table(
             pd.DataFrame(portfolio_allocation),
@@ -127,8 +125,6 @@ def display_assets_allocation(
             floatfmt=[".2%"],
             show_index=True,
         )
-
-        console.print()
         print_rich_table(
             benchmark_allocation,
             headers=list(["Symbol", "Name", "Allocation"]),
@@ -137,8 +133,6 @@ def display_assets_allocation(
             floatfmt=[".2f", ".2f", ".2%"],
             show_index=False,
         )
-
-        console.print()
 
 
 @log_start_end(log=logger)
@@ -199,8 +193,6 @@ def display_category_allocation(
         show_index=False,
     )
 
-    console.print()
-
     if include_separate_tables:
         print_rich_table(
             pd.DataFrame(portfolio_allocation),
@@ -210,9 +202,6 @@ def display_category_allocation(
             floatfmt=[".2%"],
             show_index=True,
         )
-
-        console.print()
-
         print_rich_table(
             pd.DataFrame(benchmark_allocation),
             headers=list(["Allocation"]),
@@ -221,8 +210,6 @@ def display_category_allocation(
             floatfmt=[".2%"],
             show_index=True,
         )
-
-        console.print()
 
 
 @log_start_end(log=logger)
@@ -1342,6 +1329,7 @@ def display_skewness(
         portfolio.get_skewness(),
         title="Skewness for Portfolio and Benchmark",
         show_index=True,
+        floatfmt=".3f",
     )
     export_data(
         export,
@@ -1368,6 +1356,7 @@ def display_kurtosis(
         portfolio.get_kurtosis(),
         title="Kurtosis for Portfolio and Benchmark",
         show_index=True,
+        floatfmt=".3f",
     )
     export_data(
         export,
@@ -1397,6 +1386,7 @@ def display_stats(
         portfolio.get_stats(period),
         title=f"Stats for Portfolio and Benchmark in period {period}",
         show_index=True,
+        floatfmt=".3f",
     )
     export_data(
         export,
@@ -1424,6 +1414,7 @@ def display_volatility(
         df,
         title="Volatility for Portfolio and Benchmark",
         show_index=True,
+        floatfmt=".3f",
     )
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "metric_volatility", df
@@ -1452,6 +1443,7 @@ def display_sharpe_ratio(
         df,
         title="Sharpe ratio for Portfolio and Benchmark",
         show_index=True,
+        floatfmt=".3f",
     )
     export_data(
         export,
@@ -1483,6 +1475,7 @@ def display_sortino_ratio(
         df,
         title="Sortino ratio for Portfolio and Benchmark",
         show_index=True,
+        floatfmt=".3f",
     )
     export_data(
         export,
@@ -1511,6 +1504,7 @@ def display_maximum_drawdown_ratio(
         df,
         title="Maximum drawdown for Portfolio and Benchmark",
         show_index=True,
+        floatfmt=".3f",
     )
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "metric_maxdrawdown", df
