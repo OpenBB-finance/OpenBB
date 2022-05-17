@@ -1010,6 +1010,8 @@ main:
             ref: "/terminal/economy/treasury"
           - name: yield
             ref: "/terminal/economy/yield"
+          - name: ycrv
+            ref: "/terminal/economy/ycrv"            
           - name: plot
             ref: "/terminal/economy/plot"
           - name: rtps
