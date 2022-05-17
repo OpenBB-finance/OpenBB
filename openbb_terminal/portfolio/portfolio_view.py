@@ -1519,7 +1519,7 @@ def display_summary_portfolio_benchmark(
     risk_free_rate: float = 0,
     export: str = "",
 ):
-    """Display yearly returns
+    """Display summary portfolio and benchmark returns
 
     Parameters
     ----------
