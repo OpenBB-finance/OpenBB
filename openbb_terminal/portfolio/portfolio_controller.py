@@ -830,6 +830,14 @@ class PortfolioController(BaseController):
             choices=["3y", "5y", "10y", "all"],
             help="Period to select start end of the year returns",
         )
+        parser.add_argument(
+            "-s",
+            "--show",
+            action="store_true",
+            default=False,
+            dest="show_vals",
+            help="Show monthly returns on heatmap",
+        )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
         ns_parser = parse_known_args_and_warn(
@@ -848,6 +856,7 @@ class PortfolioController(BaseController):
                     self.portfolio.benchmark_returns,
                     ns_parser.period,
                     ns_parser.raw,
+                    ns_parser.show_vals,
                     ns_parser.export,
                 )
 

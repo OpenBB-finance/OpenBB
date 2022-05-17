@@ -530,6 +530,7 @@ def display_monthly_returns(
     benchmark_returns: pd.Series,
     period: str = "all",
     raw: bool = False,
+    show_vals: bool = False,
     export: str = "",
     external_axes: Optional[plt.Axes] = None,
 ):
@@ -545,6 +546,8 @@ def display_monthly_returns(
         Period to compare cumulative returns and benchmark
     raw : False
         Display raw data from cumulative return
+    show_vals : False
+        Show values on heatmap
     export : str
         Export certain type of data
     external_axes: plt.Axes
@@ -657,7 +660,7 @@ def display_monthly_returns(
             vmax=max(monthly_returns.max().max(), bench_monthly_returns.max().max()),
             vmin=min(monthly_returns.min().min(), bench_monthly_returns.min().min()),
             center=0,
-            annot=True,
+            annot=show_vals,
             fmt=".1f",
             mask=monthly_returns.applymap(lambda x: x == 0),
             ax=ax[0],
@@ -671,7 +674,7 @@ def display_monthly_returns(
             vmax=max(monthly_returns.max().max(), bench_monthly_returns.max().max()),
             vmin=min(monthly_returns.min().min(), bench_monthly_returns.min().min()),
             center=0,
-            annot=True,
+            annot=show_vals,
             fmt=".1f",
             mask=bench_monthly_returns.applymap(lambda x: x == 0),
             ax=ax[1],
