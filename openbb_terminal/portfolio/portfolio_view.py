@@ -22,7 +22,6 @@ from openbb_terminal.portfolio import (
 
 from openbb_terminal.helper_funcs import (
     export_data,
-    is_valid_axes_count,
     plot_autoscale,
     print_rich_table,
 )
