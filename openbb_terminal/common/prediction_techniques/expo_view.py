@@ -1,4 +1,4 @@
-"""Monte Carlo View"""
+"""Probablistic Exponential Smoothing View"""
 __docformat__ = "numpy"
 
 import logging
@@ -53,9 +53,9 @@ def display_expo_forecast(
         External axes (2 axis is expected in the list), by default None
     """
     ticker_series, predicted_values, _ = expo_model.get_expo_data(data, n_predict)
-    
+
     ticker_series.plot(label="Actual AdjClose")
-    predicted_values.plot(label="Probabilistic Forecast", low_quantile=0.05, high_quantile=0.95)
+    predicted_values.plot(label="Probabilistic Forecast", low_quantile=0.1, high_quantile=0.9)
     plt.legend()
     plt.show()
 

@@ -22,8 +22,7 @@ from openbb_terminal.common.prediction_techniques import (
     neural_networks_view,
     pred_helper,
     regression_view,
-    expo_view,
-    expo_model
+    expo_view
 )
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
