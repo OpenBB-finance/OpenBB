@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import argparse
 import logging
 from pathlib import Path
-from typing import List, Tuple, Union
+from typing import List, Tuple, Union, Optional
 from datetime import datetime, timedelta, date as d
 import types
 from collections.abc import Iterable
@@ -1495,6 +1495,49 @@ def choice_check_after_action(action=None, choices=None):
         raise NotImplementedError("action argument must be class or function")
 
     return ActionClass
+
+
+def is_valid_axes_count(
+    axes: List[plt.Axes],
+    n: int,
+    custom_text: Optional[str] = None,
+    prefix_text: Optional[str] = None,
+    suffix_text: Optional[str] = None,
+):
+    """Check if axes list length is equal to n
+    and log text if check result is false
+
+    Parameters
+    ----------
+
+    axes: List[plt.Axes]
+        External axes (2 axes are expected in the list)
+    n: int
+        number of expected axes
+    custom_text: Optional[str] = None
+        custom text to log
+    prefix_text: Optional[str] = None
+        prefix text to add before text to log
+    suffix_text: Optional[str] = None
+        suffix text to add after text to log
+    """
+
+    if len(axes) == n:
+        return True
+
+    if custom_text:
+        print_text = custom_text
+    else:
+        print_text = f"Expected list of {n} axis item{'s' if n>1 else ''}."
+
+    if prefix_text:
+        print_text = f"{prefix_text} {print_text}"
+    if suffix_text:
+        print_text = f"{suffix_text} {print_text}"
+
+    logger.error(print_text)
+    console.print(f"[red]{print_text}\n[/red]")
+    return False
 
 
 def support_message(s: str) -> str:

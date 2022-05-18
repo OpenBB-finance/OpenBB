@@ -76,7 +76,7 @@ class BaseController(metaclass=ABCMeta):
     SUPPORT_CHOICES: Dict = {}
     COMMAND_SEPARATOR = "/"
     KEYS_MENU = "keys" + COMMAND_SEPARATOR
-
+    TRY_RELOAD = False
     PATH: str = ""
     FILE_PATH: str = ""
 
@@ -163,7 +163,7 @@ class BaseController(metaclass=ABCMeta):
 
     @abstractmethod
     def print_help(self) -> None:
-        raise NotImplementedError("Must override print_help")
+        raise NotImplementedError("Must override print_help.")
 
     def contains_keys(self, string_to_check: str) -> bool:
         if self.KEYS_MENU in string_to_check or self.KEYS_MENU in self.PATH:
@@ -462,7 +462,7 @@ class BaseController(metaclass=ABCMeta):
                     console.print(f" Replacing by '{an_input}'.")
                     self.queue.insert(0, an_input)
                 else:
-                    if "load" in self.controller_choices:
+                    if self.TRY_RELOAD:
                         console.print(f"Trying `load {an_input}`")
                         self.queue.insert(0, "load " + an_input)
                     console.print("")
@@ -480,6 +480,7 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
         self.start = ""
         self.suffix = ""  # To hold suffix for Yahoo Finance
         self.add_info = stocks_helper.additional_info_about_ticker("")
+        self.TRY_RELOAD = True
 
     def call_load(self, other_args: List[str]):
         """Process load command"""
@@ -670,6 +671,7 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
         self.price_str = ""
         self.resolution = "1D"
         self.coin = ""
+        self.TRY_RELOAD = True
 
     def call_load(self, other_args):
         """Process load command"""

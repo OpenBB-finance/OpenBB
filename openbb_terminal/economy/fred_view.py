@@ -21,6 +21,7 @@ from openbb_terminal.helper_funcs import (
     export_data,
     plot_autoscale,
     print_rich_table,
+    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
 
@@ -107,7 +108,7 @@ def display_fred_series(
     limit: int
         Number of raw data rows to show
     external_axes : Optional[List[plt.Axes]], optional
-        External axes (3 axes are expected in the list), by default None
+        External axes (1 axis is expected in the list), by default None
     """
     series_ids = list(d_series.keys())
     data = fred_model.get_aggregated_series_data(d_series, start_date, end_date)
@@ -120,13 +121,10 @@ def display_fred_series(
         # To do so, think in scientific notation.  Divide the data by whatever the E would be
         if external_axes is None:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-
-        else:
-            if len(external_axes) != 3:
-                logger.error("Expected list of 3 axis items")
-                console.print("[red]Expected list of 3 axis items.\n[/red]")
-                return
+        elif is_valid_axes_count(external_axes, 1):
             (ax,) = external_axes
+        else:
+            return
 
         if len(series_ids) == 1:
             s_id = series_ids[0]
@@ -200,13 +198,10 @@ def display_yield_curve(date: datetime, external_axes: Optional[List[plt.Axes]] 
         return
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of 3 axis items")
-            console.print("[red]Expected list of 3 axis items.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
+    else:
+        return
 
     ax.plot(rates.Maturity, rates.Rate, "-o")
     ax.set_xlabel("Maturity")
