@@ -19,7 +19,8 @@ evaluate an entire sector or industry (<a href="https://openbb-finance.github.io
 and show the historical prices, correlations and sentiment between similar companies (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/comparison_analysis/hcorr/" target="_blank">correlation</a>).
 
 <h2>How to use</h2>
-The stocks menu is called upon by typing `stocks` which opens the following menu:
+
+The Stocks menu is called upon by typing `stocks` which opens the following menu:
 
 ![Stocks Menu](images/initial_stocks_menu.png)
 
