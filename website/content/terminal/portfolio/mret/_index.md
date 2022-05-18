@@ -13,3 +13,5 @@ optional arguments:
   --export EXPORT       Export figure into png, jpg, pdf, svg (default: )
   --raw                 Flag to display raw data (default: False)
 ```
+
+<img width="1650" alt="Screenshot 2022-05-18 at 01 01 35" src="https://user-images.githubusercontent.com/25267873/168931204-a593cf6a-6103-4ab5-9b79-67c143550999.png">
