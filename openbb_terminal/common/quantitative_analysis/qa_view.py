@@ -34,6 +34,7 @@ from openbb_terminal.helper_funcs import (
     print_rich_table,
     reindex_dates,
     lambda_long_number_format,
+    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
 
@@ -109,12 +110,10 @@ def display_hist(
             figsize=plot_autoscale(),
             dpi=PLOT_DPI,
         )
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of 1 axis items.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
+    else:
+        return
 
     sns.histplot(
         data,
@@ -182,12 +181,10 @@ def display_cdf(
             figsize=plot_autoscale(),
             dpi=PLOT_DPI,
         )
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of 1 axis items.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
+    else:
+        return
 
     cdf.plot(ax=ax)
     ax.set_title(
@@ -288,12 +285,10 @@ def display_bw(
             figsize=plot_autoscale(),
             dpi=PLOT_DPI,
         )
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of 1 axis items.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
+    else:
+        return
 
     theme.style_primary_axis(ax)
     color = theme.get_colors()[0]
@@ -389,12 +384,10 @@ def display_acf(
             dpi=PLOT_DPI,
         )
         (ax1, ax2), (ax3, ax4) = axes
-    else:
-        if len(external_axes) != 4:
-            logger.error("Expected list of four axis items.")
-            console.print("[red]Expected list of 4 axis items.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 4):
         (ax1, ax2, ax3, ax4) = external_axes
+    else:
+        return
 
     # Diff Auto-correlation function for original time series
     sm.graphics.tsa.plot_acf(np.diff(np.diff(df.values)), lags=lags, ax=ax1)
@@ -466,12 +459,10 @@ def display_qqplot(
             figsize=plot_autoscale(),
             dpi=PLOT_DPI,
         )
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of 1 axis items.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
+    else:
+        return
 
     qqplot(
         data,
@@ -553,12 +544,10 @@ def display_cusum(
             dpi=PLOT_DPI,
         )
         (ax1, ax2) = axes
-    else:
-        if len(external_axes) != 2:
-            logger.error("Expected list of two axis items.")
-            console.print("[red]Expected list of 2 axis items.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 2):
         (ax1, ax2) = external_axes
+    else:
+        return
 
     target_series_indexes = range(df[target].size)
     ax1.plot(target_series_indexes, target_series)
@@ -704,12 +693,10 @@ def display_seasonal(
             dpi=PLOT_DPI,
         )
         (ax1, ax2, ax3, ax4) = axes
-    else:
-        if len(external_axes) != 4:
-            logger.error("Expected list of four axis items.")
-            console.print("[red]Expected list of 4 axis items.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 4):
         (ax1, ax2, ax3, ax4) = external_axes
+    else:
+        return
 
     colors = iter(theme.get_colors())
 
@@ -929,12 +916,10 @@ def display_line(
             figsize=plot_autoscale(),
             dpi=PLOT_DPI,
         )
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of 1 axis items.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
+    else:
+        return
 
     if log_y:
         ax.semilogy(data.index, data.values)

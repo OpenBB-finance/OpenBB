@@ -17,6 +17,7 @@ from openbb_terminal.helper_funcs import (
     get_next_stock_market_days,
     print_rich_table,
     plot_autoscale,
+    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.insider import businessinsider_model
@@ -85,12 +86,10 @@ def insider_activity(
             # This plot has 1 axis
             if not external_axes:
                 _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-            else:
-                if len(external_axes) != 1:
-                    logger.error("Expected list of one axis item.")
-                    console.print("[red]Expected list of one axis item.\n[/red]")
-                    return
+            elif is_valid_axes_count(external_axes, 1):
                 (ax,) = external_axes
+            else:
+                return
 
             if interval == "1440min":
                 ax.plot(stock.index, stock["Adj Close"].values, lw=3)

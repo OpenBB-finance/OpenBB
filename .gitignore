@@ -21,6 +21,7 @@ openbb_terminal/config_terminal.py
 openbb_terminal/feature_flags.py
 openbb_terminal/reports/stored/*
 openbb_terminal/dashboards/.ipynb_checkpoints
+openbb_terminal/custom_reports/*/.ipynb_checkpoints
 openbb_terminal/reports/.ipynb_checkpoints
 openbb_terminal/reports/widgets/.ipynb_checkpoints
 !openbb_terminal/reports/stored/.gitkeep
@@ -32,6 +33,7 @@ openbb_terminal/portfolio/portfolios/*
 *.http
 bots/interactive/*.html
 .coverage.*
+!openbb_terminal/custom_reports/*/.ipynb
 
 # pyinstaller artifacts
 *.pyo

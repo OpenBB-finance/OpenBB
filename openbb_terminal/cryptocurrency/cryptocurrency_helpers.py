@@ -20,6 +20,7 @@ from openbb_terminal.helper_funcs import (
     plot_autoscale,
     export_data,
     print_rich_table,
+    is_valid_axes_count,
 )
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.cryptocurrency.due_diligence import (
@@ -1304,12 +1305,7 @@ def plot_candles(
         theme.visualize_output(force_tight_layout=False)
     else:
         nr_external_axes = 2 if volume else 1
-
-        if len(external_axes) != nr_external_axes:
-            logger.error("Expected list of %s axis items.", str(nr_external_axes))
-            console.print(
-                f"[red]Expected list of {nr_external_axes} axis items.\n[/red]"
-            )
+        if not is_valid_axes_count(external_axes, nr_external_axes):
             return
 
         if volume:
@@ -1346,12 +1342,10 @@ def plot_order_book(
     # This plot has 1 axis
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of one axis item.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
+    else:
+        return
 
     ax.plot(bids[:, 0], bids[:, 2], color=theme.up_color, label="bids")
     ax.fill_between(bids[:, 0], bids[:, 2], color=theme.up_color, alpha=0.4)
