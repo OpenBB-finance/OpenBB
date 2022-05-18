@@ -6,6 +6,7 @@ The library includes both python code and html/css/js elements that can be found
 """
 import os
 from typing import List
+import base64
 from jinja2 import Template
 
 
@@ -96,20 +97,22 @@ def h(level: int, text: str) -> str:
     return f"<h{str(level)}>{text}</h{level}>"
 
 
-def p(text: str) -> str:
+def p(text: str, style: str = "") -> str:
     """Wrap text into an HTML `p` tag.
 
     Parameters
     ----------
     text : str
         Contents for HTML `p` tag
+    style: str
+        Div style
 
     Returns
     -------
     str
         HTML code as string
     """
-    return f"<p>{text}</p>"
+    return f'<p style="{style}">{text}</p>'
 
 
 def row(elements: List) -> str:
@@ -163,7 +166,7 @@ def kpi(thresholds: List[float], sentences: List[str], value: float) -> str:
     return ""
 
 
-def add_tab(title: str, htmlcode: str) -> str:
+def add_tab(title: str, htmlcode: str, comment_cell: bool = True) -> str:
     """Add new tab section for the report. By default adds an opinion editable box at the start.
 
     Parameters
@@ -172,18 +175,22 @@ def add_tab(title: str, htmlcode: str) -> str:
         Title associated with this tab / section
     htmlcode : str
         All HTML code contain within this section
+    comment_cell : bool
+        Comment cell
 
     Returns
     -------
     str
         HTML code as string
     """
-    return f"""<div id="{title}" class="tabcontent"></br>
-        <p style="border:3px; border-style:solid;
+    html_text = f'<div id="{title}" class="tabcontent"></br>'
+    if comment_cell:
+        html_text += """<p style="border:3px; border-style:solid;
             border-color:#000000; padding: 1em; width: 1050px;" contentEditable="true">
                 No comment.
-        </p>{htmlcode}
-    </div>"""
+        </p>"""
+    html_text += f"{htmlcode}</div>"
+    return html_text
 
 
 def tab_clickable_evt() -> str:
@@ -277,3 +284,26 @@ def header(img, author, report_date, report_time, report_tz, title) -> str:
                 <p>{title}</p>
             </div>
         </div>"""
+
+
+def add_external_fig(figloc: str, style: str = "") -> str:
+    """Add external figure to HTML
+
+    Parameters
+    ----------
+    figloc : str
+        Relative figure location
+    style: str
+        Div style
+
+    Returns
+    -------
+    str
+        HTML code for figure
+    """
+    try:
+        with open(figloc, "rb") as image_file:
+            img = base64.b64encode(image_file.read()).decode()
+            return f'<img src="data:image/{figloc.split(".")[1]};base64,{img}"style="{style}">'
+    except Exception:
+        return ""

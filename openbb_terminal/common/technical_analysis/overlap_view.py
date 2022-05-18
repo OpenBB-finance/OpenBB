@@ -20,6 +20,7 @@ from openbb_terminal.helper_funcs import (
     plot_autoscale,
     reindex_dates,
     lambda_long_number_format_y_axis,
+    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
 
@@ -85,12 +86,10 @@ def view_ma(
     # This plot has 1 axis
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of one axis item.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
+    else:
+        return
 
     ax.plot(plot_data.index, plot_data.iloc[:, 1].values)
     ax.set_xlim([plot_data.index[0], plot_data.index[-1]])
@@ -202,11 +201,7 @@ def view_vwap(
         )
         lambda_long_number_format_y_axis(day_df, "Volume", ax)
         theme.visualize_output(force_tight_layout=False)
-    else:
-        if len(external_axes) != 3:
-            logger.error("Expected list of three axis items.")
-            console.print("[red]Expected list of 3 axis items.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 3):
         (ax1, ax2, ax3) = external_axes
         candle_chart_kwargs["ax"] = ax1
         candle_chart_kwargs["volume"] = ax2
@@ -214,6 +209,8 @@ def view_vwap(
             df_vwap, width=theme.line_width, ax=ax3
         )
         mpf.plot(day_df, **candle_chart_kwargs)
+    else:
+        return
 
     export_data(
         export,

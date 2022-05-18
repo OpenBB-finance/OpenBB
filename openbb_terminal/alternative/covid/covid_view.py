@@ -16,6 +16,7 @@ from openbb_terminal.helper_funcs import (
     export_data,
     plot_autoscale,
     print_rich_table,
+    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
 
@@ -43,7 +44,7 @@ def display_covid_ov(
     export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
-        External axes (2 axis is expected in the list), by default None
+        External axes (2 axes are expected in the list), by default None
     """
     cases = covid_model.get_global_cases(country) / 1_000
     deaths = covid_model.get_global_deaths(country)
@@ -54,12 +55,10 @@ def display_covid_ov(
     if external_axes is None:
         _, ax1 = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
         ax2 = ax1.twinx()
-    else:
-        if len(external_axes) != 2:
-            logger.error("Expected list of two axis items.")
-            console.print("[red]Expected list of 2 axis item.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 2):
         ax1, ax2 = external_axes
+    else:
+        return
 
     ax1.plot(cases.index, cases, color=theme.up_color, alpha=0.2)
     ax1.plot(cases.index, cases.rolling(7).mean(), color=theme.up_color)
@@ -137,15 +136,13 @@ def display_covid_stat(
         console.print("Invalid stat selected.\n")
         return
 
-    # This plot has 1 axes
+    # This plot has 1 axis
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of 1 axis item.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
+    else:
+        return
 
     if stat == "cases":
         ax.set_ylabel(stat.title() + " (1k)")

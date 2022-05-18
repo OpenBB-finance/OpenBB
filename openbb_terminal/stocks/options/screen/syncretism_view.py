@@ -15,6 +15,7 @@ from openbb_terminal.helper_funcs import (
     export_data,
     plot_autoscale,
     print_rich_table,
+    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.options.screen import syncretism_model
@@ -150,12 +151,10 @@ def view_historical_greeks(
 
     if not external_axes:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of one axis item.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
+    else:
+        return
 
     im1 = ax.plot(df.index, df[greek], label=greek.title(), color=theme.up_color)
     ax.set_ylabel(greek)
