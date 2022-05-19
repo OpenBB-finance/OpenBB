@@ -19,6 +19,7 @@ from openbb_terminal.helper_funcs import (
     export_data,
     print_rich_table,
     plot_autoscale,
+    is_valid_axes_count,
 )
 
 
@@ -57,7 +58,7 @@ def display_historical(
         Number of results display on the terminal
         Default: 10
     external_axes : Optional[List[plt.Axes]], optional
-        External axes (2 axis is expected in the list), by default None
+        External axes (2 axes are expected in the list), by default None
     Returns
     -------
     """
@@ -77,16 +78,14 @@ def display_historical(
     if df.empty:
         return
 
-    # This plot has 2 axis
+    # This plot has 2 axes
     if external_axes is None:
         _, ax1 = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
         ax2 = ax1.twinx()
-    else:
-        if len(external_axes) != 2:
-            logger.error("Expected list of two axis items.")
-            console.print("[red]Expected list of 2 axis item.[/red]\n")
-            return
+    elif is_valid_axes_count(external_axes, 2):
         (ax1, ax2) = external_axes
+    else:
+        return
 
     ax1.plot(df.index, df["RHI"], color=theme.get_colors()[0])
 

@@ -12,6 +12,7 @@ from openbb_terminal.helper_funcs import (
     plot_autoscale,
     lambda_long_number_format,
     print_rich_table,
+    is_valid_axes_count,
 )
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
@@ -63,12 +64,10 @@ def display_rossindex(
         if show_chart:
             if external_axes is None:
                 _, ax1 = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+            elif is_valid_axes_count(external_axes, 2):
+                (ax1, _) = external_axes
             else:
-                if len(external_axes) != 2:
-                    logger.error("Expected list of two axis items.")
-                    console.print("[red]Expected list of 2 axis item.\n[/red]")
-                    return
-                ax1, _ = external_axes
+                return
             for _, row in df[::-1].iterrows():
                 ax1.barh(
                     y=row["GitHub"],
@@ -90,12 +89,10 @@ def display_rossindex(
         if show_growth:
             if external_axes is None:
                 fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+            elif is_valid_axes_count(external_axes, 2):
+                (ax, _) = external_axes
             else:
-                if len(external_axes) != 2:
-                    logger.error("Expected list of two axis items.")
-                    console.print("[red]Expected list of 2 axis item.\n[/red]")
-                    return
-                ax, _ = external_axes
+                return
             for _, row in df[::-1].iterrows():
                 ax.barh(
                     y=row["GitHub"],

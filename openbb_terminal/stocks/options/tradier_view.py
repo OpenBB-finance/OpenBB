@@ -22,6 +22,7 @@ from openbb_terminal.helper_funcs import (
     plot_autoscale,
     print_rich_table,
     lambda_long_number_format_y_axis,
+    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.options import op_helpers, tradier_model
@@ -271,12 +272,10 @@ def plot_oi(
     max_pain = op_helpers.calculate_max_pain(df_opt)
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of one axis item.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
+    else:
+        return
 
     if not calls_only:
         ax.plot(put_oi.index, put_oi.values, "-o", label="Puts")
@@ -673,15 +672,13 @@ def display_historical(
         )
         lambda_long_number_format_y_axis(df_hist, "volume", ax)
         theme.visualize_output(force_tight_layout=False)
-    else:
-        if len(external_axes) != 2:
-            logger.error("Expected list of two axis item.")
-            console.print("[red]Expected list of 2 axis items.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 2):
         (ax1, ax2) = external_axes
         candle_chart_kwargs["ax"] = ax1
         candle_chart_kwargs["volume"] = ax2
         mpf.plot(df_hist, **candle_chart_kwargs)
+    else:
+        return
 
     console.print()
 

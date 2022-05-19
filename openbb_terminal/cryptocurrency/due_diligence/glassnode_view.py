@@ -22,8 +22,11 @@ from openbb_terminal.cryptocurrency.due_diligence.glassnode_model import (
     get_non_zero_addresses,
 )
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import export_data, plot_autoscale
-from openbb_terminal.rich_config import console
+from openbb_terminal.helper_funcs import (
+    export_data,
+    plot_autoscale,
+    is_valid_axes_count,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -57,12 +60,10 @@ def display_btc_rainbow(
     # This plot has 1 axis
     if not external_axes:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of one axis item.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
+    else:
+        return
 
     d0 = datetime.strptime("2012-01-01", "%Y-%m-%d")
     x = range((df_data.index[0] - d0).days, (df_data.index[-1] - d0).days + 1)
@@ -176,12 +177,10 @@ def display_active_addresses(
     # This plot has 1 axis
     if not external_axes:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of one axis item.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
+    else:
+        return
 
     ax.plot(df_addresses.index, df_addresses["v"] / 1_000, linewidth=1.5)
 
@@ -239,12 +238,10 @@ def display_non_zero_addresses(
     # This plot has 1 axis
     if not external_axes:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of one axis item.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
+    else:
+        return
 
     ax.plot(df_addresses.index, df_addresses["v"] / 1_000, linewidth=1.5)
 
@@ -307,12 +304,10 @@ def display_exchange_net_position_change(
     # This plot has 1 axis
     if not external_axes:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of one axis item.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
+    else:
+        return
 
     ax.fill_between(
         df_addresses[df_addresses["v"] < 0].index,
@@ -378,7 +373,7 @@ def display_exchange_balances(
     export : str
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+        External axes (2 axes are expected in the list), by default None
     """
 
     df_balance = get_exchange_balances(asset, exchange, interval, since, until)
@@ -386,17 +381,15 @@ def display_exchange_balances(
     if df_balance.empty:
         return
 
-    # This plot has 2 axis
+    # This plot has 2 axes
     if not external_axes:
         _, ax1 = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
         ax2 = ax1.twinx()
 
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of one axis item.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 2):
         (ax1, ax2) = external_axes
+    else:
+        return
 
     if percentage:
         ax1.plot(df_balance.index, df_balance["percentage"] * 100)
@@ -452,7 +445,7 @@ def display_hashrate(
     export : str
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+        External axes (2 axes are expected in the list), by default None
     """
 
     df = get_hashrate(asset, interval, since, until)
@@ -460,17 +453,15 @@ def display_hashrate(
     if df.empty:
         return
 
-    # This plot has 2 axis
+    # This plot has 2 axes
     if not external_axes:
         _, ax1 = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
         ax2 = ax1.twinx()
 
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of one axis item.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 2):
         (ax1, ax2) = external_axes
+    else:
+        return
 
     ax1.plot(
         df.index, df["hashrate"] / 1_000_000_000_000, color=theme.down_color, lw=0.8

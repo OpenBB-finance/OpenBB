@@ -18,6 +18,7 @@ from openbb_terminal.helper_funcs import (
     lambda_long_number_format,
     print_rich_table,
     plot_autoscale,
+    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.dark_pool_shorts import quandl_model
@@ -47,20 +48,18 @@ def plot_short_interest(
     df_short_interest: pd.DataFrame
         Short interest dataframe
     external_axes : Optional[List[plt.Axes]], optional
-        External axes (2 axis is expected in the list), by default None
+        External axes (2 axes are expected in the list), by default None
 
     """
 
-    # This plot has 2 axis
+    # This plot has 2 axes
     if not external_axes:
         _, ax1 = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
         ax2 = ax1.twinx()
-    else:
-        if len(external_axes) != 2:
-            logger.error("Expected list of two axis items.")
-            console.print("[red]Expected list of two axis items.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 2):
         (ax1, ax2) = external_axes
+    else:
+        return
 
     ax1.bar(
         df_short_interest.index,
