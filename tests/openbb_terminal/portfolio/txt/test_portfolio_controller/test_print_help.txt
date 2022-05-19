@@ -1,30 +1,40 @@
 
 >   bro         brokers holdings, 		 supports: robinhood, ally, degiro, coinbase
->   po          portfolio optimization, 	 optimal portfolio weights from pyportfolioopt
+>   po          portfolio optimization, 	 optimal your portfolio weights efficiently
 
-Portfolio:
     load        load data into the portfolio
-    show        show existing transactions
-    bench       define the benchmark
 
-Loaded orderbook: None
-Benchmark: None
-Risk Free Rate: 0.00%
+Loaded orderbook: 
+Risk Free Rate:   0.00%
 
-Performance:
-    alloc       show allocation on an asset or sector basis
-    perf        show (total) performance of the portfolio versus benchmark
+    [unvl]show        show existing transactions[/unvl]
 
-Graphs:
-    rolling     display rolling metrics of portfolio and benchmark
-    rmr         graph your returns versus the market's returns
-    dd          display portfolio drawdown
-    al          display allocation to given assets over period
+    [unvl]bench       define the benchmark[/unvl]
 
-Risk Metrics:
+Benchmark: 
+
+Graphs:[unvl]
+    holdv       holdings of assets (absolute value)
+    holdp       portfolio holdings of assets (in percentage)
+    cret        cumulative returns
+    yret        yearly returns
+    mret        monthly returns
+    dret        daily returns
+    distr       distribution of daily returns
+    maxdd       maximum drawdown
+    rvol        rolling volatility
+    rsharpe     rolling sharpe
+    rsort       rolling sortino
+    rbeta       rolling beta[/unvl]
+
+Metrics:[unvl]
+    alloc       allocation on an asset, sector, countries or regions basis
+    summary     all portfolio vs benchmark metrics for a certain period of choice
+    metric      portfolio vs benchmark metric for all different periods
+    perf        performance of the portfolio versus benchmark[/unvl]
+
+Risk Metrics:[unvl]
     var         display value at risk
     es          display expected shortfall
-    sh          display sharpe ratio
-    so          display sortino ratio
-    om          display omega ratio
+    om          display omega ratio[/unvl]
         

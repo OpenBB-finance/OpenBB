@@ -1,7 +1,12 @@
 """Portfolio Helper"""
 __docformat__ = "numpy"
 
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
 import yfinance as yf
+import pandas as pd
+
+# pylint: disable=too-many-return-statements
 
 BENCHMARK_LIST = {
     "SPDR S&P 500 ETF Trust (SPY)": "SPY",
@@ -106,6 +111,17 @@ BENCHMARK_LIST = {
     "iShares Russell 2000 Value ETF (IWN)": "IWN",
 }
 
+PERIODS = ["mtd", "qtd", "ytd", "3m", "6m", "1y", "3y", "5y", "10y", "all"]
+
+PERIODS_DAYS = {
+    "3m": 3 * 21,
+    "6m": 6 * 21,
+    "1y": 12 * 21,
+    "3y": 3 * 12 * 21,
+    "5y": 5 * 12 * 21,
+    "10y": 10 * 12 * 21,
+}
+
 
 def is_ticker(ticker: str) -> bool:
     """Determine whether a string is a valid ticker
@@ -163,3 +179,114 @@ def clean_name(name: str) -> str:
         A cleaned value
     """
     return name.replace("beta_", "").upper()
+
+
+def filter_df_by_period(df: pd.DataFrame, period: str = "all") -> pd.DataFrame:
+    """Filter dataframe by selected period
+
+    Parameters
+    ----------
+    df: pd.DataFrame
+        Dataframe to be filtered in terms of time
+    period : str
+        Period in which to filter dataframe.
+        Possible choices are: mtd, qtd, ytd, 3m, 6m, 1y, 3y, 5y, 10y, all
+
+    Returns
+    ----------
+    str
+        A cleaned value
+    """
+    if period == "mtd":
+        return df[df.index.strftime("%Y-%m") == datetime.now().strftime("%Y-%m")]
+    if period == "qtd":
+        if datetime.now().month < 4:
+            return df[
+                df.index.strftime("%Y-%m") < f"{datetime.now().strftime('%Y')}-04"
+            ]
+        if datetime.now().month < 7:
+            return df[
+                (df.index.strftime("%Y-%m") >= f"{datetime.now().strftime('%Y')}-04")
+                & (df.index.strftime("%Y-%m") < f"{datetime.now().strftime('%Y')}-07")
+            ]
+        if datetime.now().month < 10:
+            return df[
+                (df.index.strftime("%Y-%m") >= f"{datetime.now().strftime('%Y')}-07")
+                & (df.index.strftime("%Y-%m") < f"{datetime.now().strftime('%Y')}-10")
+            ]
+        return df[df.index.strftime("%Y-%m") >= f"{datetime.now().strftime('%Y')}-10"]
+    if period == "ytd":
+        return df[df.index.strftime("%Y") == datetime.now().strftime("%Y")]
+    if period == "3m":
+        return df[df.index >= (datetime.now() - relativedelta(months=3))]
+    if period == "6m":
+        return df[df.index >= (datetime.now() - relativedelta(months=6))]
+    if period == "1y":
+        return df[df.index >= (datetime.now() - relativedelta(years=1))]
+    if period == "3y":
+        return df[df.index >= (datetime.now() - relativedelta(years=3))]
+    if period == "5y":
+        return df[df.index >= (datetime.now() - relativedelta(years=5))]
+    if period == "10y":
+        return df[df.index >= (datetime.now() - relativedelta(years=10))]
+    return df
+
+
+def sharpe_ratio(return_series: pd.Series, risk_free_rate: float) -> float:
+    """Get sharpe ratio
+
+    Parameters
+    ----------
+    return_series : pd.Series
+        Returns of the portfolio
+    risk_free_rate: float
+        Value to use for risk free rate
+
+    Returns
+    -------
+    float
+        Sharpe ratio
+    """
+    mean = return_series.mean() - risk_free_rate
+    sigma = return_series.std()
+
+    return mean / sigma
+
+
+def sortino_ratio(return_series: pd.Series, risk_free_rate: float) -> float:
+    """Get sortino ratio
+
+    Parameters
+    ----------
+    return_series : pd.Series
+        Returns of the portfolio
+    risk_free_rate: float
+        Value to use for risk free rate
+
+    Returns
+    -------
+    float
+        Sortino ratio
+    """
+    mean = return_series.mean() - risk_free_rate
+    std_neg = return_series[return_series < 0].std()
+    return mean / std_neg
+
+
+def get_maximum_drawdown(return_series: pd.Series) -> float:
+    """Get maximum drawdown
+
+    Parameters
+    ----------
+    return_series : pd.Series
+        Returns of the portfolio
+
+    Returns
+    -------
+    float
+        maximum drawdown
+    """
+    comp_ret = (return_series + 1).cumprod()
+    peak = comp_ret.expanding(min_periods=1).max()
+    dd = (comp_ret / peak) - 1
+    return dd.min()
