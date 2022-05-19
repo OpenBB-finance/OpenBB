@@ -24,7 +24,6 @@ from openbb_terminal.parent_classes import StockBaseController
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.dark_pool_shorts import (
     finra_view,
-    nyse_view,
     quandl_view,
     sec_view,
     shortinterest_view,
@@ -51,7 +50,7 @@ class DarkPoolShortsController(StockBaseController):
         "dpotc",
         "ftd",
         "spos",
-        "volexch",
+        # "volexch",
     ]
     PATH = "/stocks/dps/"
 
@@ -103,10 +102,11 @@ class DarkPoolShortsController(StockBaseController):
 [src][Stockgrid][/src]
     spos           net short vs position
 [src][Quandl/Stockgrid][/src]
-    psi            price vs short interest volume
-[src][NYSE][/src]
-    volexch        short volume for ARCA,Amex,Chicago,NYSE and national exchanges[/cmds]
+    psi            price vs short interest volume[/cmds]
 {has_ticker_end}"""
+        # Commented out from docstring 5/19:
+        # [src][NYSE][/src]
+        #     volexch        short volume for ARCA,Amex,Chicago,NYSE and national exchanges
         console.print(text=help_text, menu="Stocks - Dark Pool and Short data")
 
     @log_start_end(log=logger)
@@ -515,59 +515,60 @@ class DarkPoolShortsController(StockBaseController):
             else:
                 console.print("No ticker loaded.\n")
 
-    @log_start_end(log=logger)
-    def call_volexch(self, other_args: List[str]):
-        """Process volexch command"""
-        parser = argparse.ArgumentParser(
-            prog="volexch",
-            add_help=False,
-            description="Displays short volume based on exchange.",
-        )
-        parser.add_argument(
-            "-r",
-            "--raw",
-            help="Display raw data",
-            dest="raw",
-            action="store_true",
-            default=False,
-        )
-        parser.add_argument(
-            "-s",
-            "--sort",
-            help="Column to sort by",
-            dest="sort",
-            type=str,
-            default="",
-            choices=["", "NetShort", "Date", "TotalVolume", "PctShort"],
-        )
-        parser.add_argument(
-            "-a",
-            "--asc",
-            help="Sort in ascending order",
-            dest="asc",
-            action="store_true",
-            default=False,
-        )
-        parser.add_argument(
-            "-p",
-            "--plotly",
-            help="Display plot using interactive plotly.",
-            dest="plotly",
-            action="store_false",
-            default=True,
-        )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-        if ns_parser:
-            if self.ticker:
-                nyse_view.display_short_by_exchange(
-                    ticker=self.ticker,
-                    raw=ns_parser.raw,
-                    sort=ns_parser.sort,
-                    asc=ns_parser.asc,
-                    mpl=ns_parser.plotly,
-                    export=ns_parser.export,
-                )
-            else:
-                console.print("No ticker loaded.  Use `load ticker` first.")
+    # TODO: Load back in once data is properly stored
+    # @log_start_end(log=logger)
+    # def call_volexch(self, other_args: List[str]):
+    #     """Process volexch command"""
+    #     parser = argparse.ArgumentParser(
+    #         prog="volexch",
+    #         add_help=False,
+    #         description="Displays short volume based on exchange.",
+    #     )
+    #     parser.add_argument(
+    #         "-r",
+    #         "--raw",
+    #         help="Display raw data",
+    #         dest="raw",
+    #         action="store_true",
+    #         default=False,
+    #     )
+    #     parser.add_argument(
+    #         "-s",
+    #         "--sort",
+    #         help="Column to sort by",
+    #         dest="sort",
+    #         type=str,
+    #         default="",
+    #         choices=["", "NetShort", "Date", "TotalVolume", "PctShort"],
+    #     )
+    #     parser.add_argument(
+    #         "-a",
+    #         "--asc",
+    #         help="Sort in ascending order",
+    #         dest="asc",
+    #         action="store_true",
+    #         default=False,
+    #     )
+    #     parser.add_argument(
+    #         "-p",
+    #         "--plotly",
+    #         help="Display plot using interactive plotly.",
+    #         dest="plotly",
+    #         action="store_false",
+    #         default=True,
+    #     )
+    #     ns_parser = parse_known_args_and_warn(
+    #         parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
+    #     )
+    #     if ns_parser:
+    #         if self.ticker:
+    #             nyse_view.display_short_by_exchange(
+    #                 ticker=self.ticker,
+    #                 raw=ns_parser.raw,
+    #                 sort=ns_parser.sort,
+    #                 asc=ns_parser.asc,
+    #                 mpl=ns_parser.plotly,
+    #                 export=ns_parser.export,
+    #             )
+    #         else:
+    #             console.print("No ticker loaded.  Use `load ticker` first.")
