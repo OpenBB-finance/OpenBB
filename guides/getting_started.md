@@ -51,6 +51,7 @@ or visit our <a href="https://openbb.co/contact" target="_blank">contact page</a
 
 <h3>Installation for Windows</h3>
 The process starts off by downloading the installer, see below for how to download the most recent release:
+
 - Go to <a href="https://github.com/OpenBB-finance/OpenBBTerminal/releases" target="_blank">the following link</a>
 - Click on the 'Latest' release and scroll down
 - Click on the ".exe" file, this downloads the installation program
@@ -85,24 +86,22 @@ Installation instructions:
 
 <h2>Structure of the OpenBB Terminal</h2>
 The OpenBB Terminal is based off the <a href="https://en.wikipedia.org/wiki/Command-line_interface" target="_blank">Command Line Interface (CLI)</a>
-which is installed by default on every computer. By opening the application you have installed via "_Accessing the OpenBB Terminal_",
+which is installed by default on every computer. By opening the application you have installed via "Accessing the OpenBB Terminal",
 you are greeted with the following interface:
 
 <img src="images/main_menu.png" alt="Main Menu" width="800"/>
 
-The OpenBB Terminal is centered around keyboard input. To navigate and perform analysis you will have to type in the name of the command followed by an `ENTER` (⏎). If you wish to
-see information about the OpenBB Terminal you can do so by typing `about` and then press `ENTER` (⏎). As you are typing, you will notice that you receive suggestions,
-by using the `DOWN` (⌄) arrow and pressing `ENTER` (⏎) you can select the command and execute it.
+The OpenBB Terminal is centered around keyboard input. To navigate and perform analysis you will have to type in the name of the command followed by an `ENTER` (⏎). If you wish to see information about the OpenBB Terminal you can do so by typing `about` and then press `ENTER` (⏎). As you are typing, you will notice that you receive suggestions, by using the `DOWN` (⌄) arrow and pressing `ENTER` (⏎) you can select the command and execute it.
 
 Throughout the entire terminal, the same set of colors are used which all share the same representation. This is structured as follows:
-- <span style="color:#00AAFF">**Light Blue**</span>: represents commands.
-- <span style="color:#005CA9">**Dark Blue**</span>: represents menus, also recognizable by the `>` in front.
-- <span style="color:#EF7D00">**Orange**</span>: represents titles and headers.
-- <span style="color:#FCED00">**Yellow**</span>: represents descriptions of a parameter or variable.
-- **White**: represents text, usually in combination with a description that is in Yellow.
+- <b><span style="color:#00AAFF">Light Blue</span></b>: represents commands.
+- <b><span style="color:#005CA9">Dark Blue</span></b>: represents menus, also recognizable by the `>` in front.
+- <b><span style="color:#EF7D00">Orange</span></b>: represents titles and headers.
+- <b><span style="color:#FCED00">Yellow</span></b>: represents descriptions of a parameter or variable.
+- <b>White</b>: represents text, usually in combination with a description that is in Yellow.
 
 <h3>Explanation of Menus</h3>
-Menus, depicted in <span style="color:#005CA9">**Dark Blue**</span>, take you to a new section of the terminal referred
+Menus, depicted in <b><span style="color:#005CA9">Dark Blue</span></b>, take you to a new section of the terminal referred
 to as a menu. For example, if you wish to view information about stocks, you can do so by typing `stocks` and pressing `ENTER` (⏎).
 This opens a new menu as depicted below.
 
@@ -114,8 +113,9 @@ the `stocks` menu, the terminal will remember your selection when you visit the 
 See <a href="//" target="_blank">Introduction to Stocks</a> for more information.
 
 <h3>Explanation of Commands</h3>
-Commands, depicted in <span style="color:#00AAFF">**Light Blue**</span>, execute an action or task. For example,
+Commands, depicted in <b><span style="color:#00AAFF">Light Blue</span></b>, execute an action or task. For example,
 the commands that you are able to use from any menu in the terminal (see "Explanation of Menus") are as follows:
+
 - `cls`: clears the screen, by executing this command you are left with an empty screen.
 - `help`, `h` or `?`: displays the menu that you are currently on. 
 - `quit`, `q` or `..`: allows for navigation through the menu. E.g. if you type `stocks` press `ENTER` (⏎) and then
@@ -123,8 +123,8 @@ use `q` and press `ENTER` (⏎) you return to where you started. Validate this b
 - `support`: allows you to submit bugs, questions and suggestions.
 
 Continuing with the example mentioned at `quit`, revisit the `stocks` menu and look at the commands. At the top you 
-will see a command named <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/load/" target="_blank">load</a>. To understand what this command can do, you can use `load -h` followed by `ENTER` (⏎).
-The `-h` stands for `help` and every command will have this feature. This will return the following:
+will see a command named <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/load/" target="_blank">load</a>. To understand what this command can do, you can use `load -h` followed by `ENTER` (⏎). The `-h` stands for `help` and every command will have this feature. This will return the following:
+
 ```
 2022 May 19, 05:27 (🦋) /stocks/ $ load -h
 usage: load [-t TICKER] [-s START] [-e END] [-i {1,5,15,30,60}] [--source {yf,av,iex,polygon}] [-p] [-f FILEPATH] [-m] [-w] [-r {ytd,1y,2y,5y,6m}] [-h]
@@ -154,6 +154,7 @@ optional arguments:
 This shows you all **arguments** the command has. These are additional options you can provide to the command. Each
 default value is also displayed which is used when you do not select this option. For example, if I would use the <a href="https://www.investopedia.com/ask/answers/12/what-is-a-stock-ticker.asp" target="_blank">stock ticker</a>
 of Amazon (AMZN, which can also be found with `search amazon`), I can use `load AMZN` which will return the following:
+
 ```
 2022 May 19, 05:27 (🦋) /stocks/ $ load AMZN
 
@@ -196,8 +197,7 @@ Company:  Amazon.com, Inc.
 └─────────┴─────────┴─────────┴──────────┴──────────┴─────────────────┴──────────────────┴────────────┘
 ```
 
-We can check that this period has changed by looking into the <a href="https://www.investopedia.com/trading/candlestick-charting-what-is-it/" target="_blank">candle chart</a>
-with `candle`. This, again shares the same `-h` argument. This results in the following which indeed depicts our
+We can check that this period has changed by looking into the <a href="https://www.investopedia.com/trading/candlestick-charting-what-is-it/" target="_blank">candle chart</a> with `candle`. This, again shares the same `-h` argument. This results in the following which indeed depicts our
 selected period.
 
 ```
@@ -207,29 +207,18 @@ selected period.
 
 As mentioned in the "Explanation of Menus", some information also transfers over to other menus and this includes the
 loaded market data from <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/load/" target="_blank">load</a>.
-So, if you would visit the `ta` menu (which stands for <a href="https://www.investopedia.com/terms/t/technicalanalysis.asp" target="_blank">Technical Analysis</a>)
-you will see that, by running any command, the selected period above is depicted again. Return to the Stocks menu
-again by using `q` and use it again to return to the home screen which can be shown with `?`.
-
+So, if you would visit the `ta` menu (which stands for <a href="https://www.investopedia.com/terms/t/technicalanalysis.asp" target="_blank">Technical Analysis</a>) you will see that, by running any command, the selected period above is depicted again. Return to the Stocks menu again by using `q` and use it again to return to the home screen which can be shown with `?`.
 
 <h2>Accessing other sources of data via API keys</h2>
-Within this menu you can define your, often free, API key from various platforms like Alpha Vantage, FRED, IEX,
-Twitter, DeGiro, Binance and Coinglass. API keys are in essence a set of random characters that is unique
-to you. For example, an API key could look like the following `a215egade08a8d47cfd49c849658a2be`.
+Within this menu you can define your, often free, API key from various platforms like Alpha Vantage, FRED, IEX, Twitter, DeGiro, Binance and Coinglass. API keys are in essence a set of random characters that is unique to you.<br></br>
 
 You can access this menu from the homepage with `keys` which will open the menu as shown below:
 
 <img src="images/api_keys.png" alt="API Keys" width="800"/>
 
-Within this menu you are able to set your API keys to access the commands that require that key. You can do so by
-typing the command followed by the API key, for example: `fred a215egade08a8d47cfd49c849658a2be`. When you press
-`ENTER` (⏎) the terminal will test whether this API key works. If it does, you receive the message
-`defined, test passed` and if it does not, you receive the message `defined, test failed`.
+Within this menu you are able to set your API keys to access the commands that require that key. You can do so by typing the command followed by the API key, for example: `fred a215egade08a8d47cfd49c849658a2be`. When you press `ENTER` (⏎) the terminal will test whether this API key works. If it does, you receive the message `defined, test passed` and if it does not, you receive the message `defined, test failed`.
 
-To figure out where you can obtain the API key, you can enter the command (e.g. `av`) and press `ENTER` (⏎) or use
-the table below. **We recommend that you gradually obtain and set keys whenever you wish to use features that require an
-API key. For example, if you are interested in viewing recent news about a company, you should set the API key from the
-'News API'.**
+To figure out where you can obtain the API key, you can enter the command (e.g. `av`) and press `ENTER` (⏎) or use the table below. **We recommend that you gradually obtain and set keys whenever you wish to use features that require an API key. For example, if you are interested in viewing recent news about a company, you should set the API key from the 'News API'.**
 
 | Command    | Name                                     | URL                                                                                |
 |:-----------|:-----------------------------------------|:-----------------------------------------------------------------------------------|
@@ -260,11 +249,10 @@ API key. For example, if you are interested in viewing recent news about a compa
 | github     | GitHub                                   | https://docs.github.com/en/rest/guides/getting-started-with-the-rest-api           |
 
 <h2>Available menus</h2>
-There is a large collection of (sub) menus available. Here, the asset class and other menus are described. To find a 
-detailed description and explanation of its usage for each menu, click on the corresponding link to visit the
-introduction page.
+There is a large collection of (sub) menus available. Here, the asset class and other menus are described. To find a  detailed description and explanation of its usage for each menu, click on the corresponding link to visit the introduction page.
 
 The asset class menus are as follows:
+   
 - <a href="//" target="_blank">Introduction to Stocks</a>: access historical pricing data, options, sector and 
 industry analysis, and overall due diligence.
 - <a href="//" target="_blank">Introduction to Crypto</a>: dive into onchain data, tokenomics, circulation supply,
@@ -277,6 +265,7 @@ pairs and Oanda integration.
 sector weights.
 
 The other menus are as follows:
+   
 - <a href="//" target="_blank">Introduction to Economy</a>: explore global macroeconomic data including 
 interest and inflation rates, GDP and its components, futures, yield curves and treasury rates.
 - <a href="//" target="_blank">Introduction to Alternative</a>: explore alternative datasets such as COVID and
@@ -298,7 +287,7 @@ pretty tables.
 <h2>Obtaining support and/or giving feedback</h2>
 Being an open source platform that wishes to tailor to the needs of any type of investor, we highly encourage anyone 
 to share with us their experience and/or how we can further improve the OpenBB Terminal. This can be anything
-from a very small bug to a new feature to the implementation of a highly advanced Machine Learning model.
+from a very small bug to a new feature to the implementation of a highly advanced Machine Learning model. <br></br>
 
 You are able to directly send us information about a bug or question/suggestion from inside the terminal by using
 the `support` command which is available everywhere in the terminal. Here you can select which command you want to
@@ -309,6 +298,7 @@ question) and message in the form although this can also be set directly from in
 <img src="images/support_command.png" alt="Support Command" width="800"/>
 
 Alternatively, you can contact us via the following routes:
+   
 - If you notice that a feature is missing inside the terminal, please fill in the <a href="https://openbb.co/request-a-feature" target="_blank">Request a Feature form</a>.
 - If you wish to report a bug, have a question/suggestion or anything else, please fill in the <a href="https://docs.google.com/forms/d/e/1FAIpQLSe0-HKitlJMtTO9C2VR7uXVtTzmQgiyE1plf3nEkYCRx6WGRg/viewform" target="_blank">Support form</a>.
 - If you wish to speak to us directly, please contact us via <a href="https://discord.gg/Xp7PrCUj" target="_blank">Discord</a>.
