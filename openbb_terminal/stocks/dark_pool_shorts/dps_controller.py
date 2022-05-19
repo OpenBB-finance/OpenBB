@@ -24,7 +24,6 @@ from openbb_terminal.parent_classes import StockBaseController
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.dark_pool_shorts import (
     finra_view,
-    nyse_view,
     quandl_view,
     sec_view,
     shortinterest_view,
