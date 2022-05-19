@@ -5,24 +5,30 @@ import logging
 from typing import List, Optional
 import os
 
+from datetime import datetime
 import numpy as np
+import scipy
 import pandas as pd
 from matplotlib import pyplot as plt
+import seaborn as sns
+from sklearn.metrics import r2_score
 
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.portfolio import (
+    portfolio_helper,
     portfolio_model,
 )
 
 from openbb_terminal.helper_funcs import (
     export_data,
-    is_valid_axes_count,
     plot_autoscale,
     print_rich_table,
 )
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
+
+# pylint: disable=C0302
 
 # from reportlab.lib.pagesizes import letter
 # from reportlab.pdfgen import canvas
@@ -114,8 +120,6 @@ def display_assets_allocation(
         show_index=False,
     )
 
-    console.print()
-
     if include_separate_tables:
         print_rich_table(
             pd.DataFrame(portfolio_allocation),
@@ -125,8 +129,6 @@ def display_assets_allocation(
             floatfmt=[".2%"],
             show_index=True,
         )
-
-        console.print()
         print_rich_table(
             benchmark_allocation,
             headers=list(["Symbol", "Name", "Allocation"]),
@@ -135,8 +137,6 @@ def display_assets_allocation(
             floatfmt=[".2f", ".2f", ".2%"],
             show_index=False,
         )
-
-        console.print()
 
 
 @log_start_end(log=logger)
@@ -197,8 +197,6 @@ def display_category_allocation(
         show_index=False,
     )
 
-    console.print()
-
     if include_separate_tables:
         print_rich_table(
             pd.DataFrame(portfolio_allocation),
@@ -208,9 +206,6 @@ def display_category_allocation(
             floatfmt=[".2%"],
             show_index=True,
         )
-
-        console.print()
-
         print_rich_table(
             pd.DataFrame(benchmark_allocation),
             headers=list(["Allocation"]),
@@ -220,13 +215,12 @@ def display_category_allocation(
             show_index=True,
         )
 
-        console.print()
-
 
 @log_start_end(log=logger)
 def display_performance_vs_benchmark(
     portfolio_trades: pd.DataFrame,
     benchmark_trades: pd.DataFrame,
+    period: str,
     show_all_trades: bool = False,
 ):
     """Display portfolio performance vs the benchmark
@@ -237,9 +231,18 @@ def display_performance_vs_benchmark(
         Object containing trades made within the portfolio.
     benchmark_trades: pd.DataFrame
         Object containing trades made within the benchmark.
+    period : str
+        Period to consider performance. From: mtd, qtd, ytd, 3m, 6m, 1y, 3y, 5y, 10y, all
     show_all_trades: bool
         Whether to also show all trades made and their performance (default is False)
     """
+
+    portfolio_trades.index = pd.to_datetime(portfolio_trades["Date"].values)
+    portfolio_trades = portfolio_helper.filter_df_by_period(portfolio_trades, period)
+
+    benchmark_trades.index = pd.to_datetime(benchmark_trades["Date"].values)
+    benchmark_trades = portfolio_helper.filter_df_by_period(benchmark_trades, period)
+
     # Calculate total value and return
     total_investment_difference = (
         portfolio_trades["Portfolio Investment"].sum()
@@ -293,14 +296,12 @@ def display_performance_vs_benchmark(
         orient="index",
         columns=["Portfolio", "Benchmark", "Difference"],
     )
-
     print_rich_table(
         totals.replace(0, "-"),
-        title="Portfolio vs. Benchmark - Totals",
+        title=f"Portfolio vs. Benchmark - Totals in period: {period}",
         headers=list(totals.columns),
         show_index=True,
     )
-    console.print()
 
     if show_all_trades:
         # Combine DataFrames
@@ -323,7 +324,7 @@ def display_performance_vs_benchmark(
 
         print_rich_table(
             combined,
-            title="Portfolio vs. Benchmark - Individual Trades",
+            title=f"Portfolio vs. Benchmark - Individual Trades in period: {period}",
             headers=list(combined.columns),
             show_index=False,
             floatfmt=[".2f", ".2f", ".2f", ".2%", ".2f", ".2%", ".2%"],
@@ -332,52 +333,514 @@ def display_performance_vs_benchmark(
 
 
 @log_start_end(log=logger)
-def display_returns_vs_bench(
-    portfolio_returns,
-    benchmark_returns,
+def display_cumulative_returns(
+    portfolio_returns: pd.Series,
+    benchmark_returns: pd.Series,
+    period: str = "all",
+    raw: bool = False,
+    limit: int = 10,
+    export: str = "",
     external_axes: Optional[plt.Axes] = None,
 ):
     """Display portfolio returns vs benchmark
 
     Parameters
     ----------
-    portfolio_returns
+    portfolio_returns : pd.Series
         Returns of the portfolio
-    benchmark_returns
+    benchmark_returns : pd.Series
         Returns of the benchmark
+    period : str
+        Period to compare cumulative returns and benchmark
+    raw : False
+        Display raw data from cumulative return
+    limit : int
+        Last cumulative returns to display
+    export : str
+        Export certain type of data
     external_axes: plt.Axes
         Optional axes to display plot on
     """
-    if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    portfolio_returns = portfolio_helper.filter_df_by_period(portfolio_returns, period)
+    benchmark_returns = portfolio_helper.filter_df_by_period(benchmark_returns, period)
+
+    cumulative_returns = 100 * (
+        (1 + portfolio_returns.shift(periods=1, fill_value=0)).cumprod() - 1
+    )
+    benchmark_c_returns = 100 * (
+        (1 + benchmark_returns.shift(periods=1, fill_value=0)).cumprod() - 1
+    )
+
+    if raw:
+        last_cumulative_returns = cumulative_returns.to_frame()
+        last_cumulative_returns = last_cumulative_returns.join(benchmark_c_returns)
+        last_cumulative_returns.index = last_cumulative_returns.index.date
+        print_rich_table(
+            last_cumulative_returns.tail(limit),
+            title="Cumulative Portfolio and Benchmark returns",
+            headers=["Portfolio [%]", "Benchmark [%]"],
+            show_index=True,
+        )
     else:
-        ax = external_axes
+        if external_axes is None:
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        else:
+            ax = external_axes
 
-    cumulative_returns = (1 + portfolio_returns).cumprod()
-    benchmark_c_returns = (1 + benchmark_returns).cumprod()
+        ax.plot(cumulative_returns.index, cumulative_returns, label="Portfolio")
+        ax.plot(benchmark_c_returns.index, benchmark_c_returns, label="Benchmark")
 
-    ax.plot(cumulative_returns.index, cumulative_returns, label="Portfolio")
-    ax.plot(benchmark_c_returns.index, benchmark_c_returns, label="Benchmark")
-    ax.set_ylabel("Cumulative Returns")
-    ax.legend(loc="upper left")
-    theme.style_primary_axis(ax)
+        ax.legend(loc="upper left")
+        ax.set_ylabel("Cumulative Returns [%]")
+        theme.style_primary_axis(ax)
 
-    if not external_axes:
-        theme.visualize_output()
+        if not external_axes:
+            theme.visualize_output()
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "cret",
+        cumulative_returns.to_frame().join(benchmark_c_returns),
+    )
 
 
 @log_start_end(log=logger)
-def display_allocation(
-    portfolio: portfolio_model.Portfolio,
+def display_yearly_returns(
+    portfolio_returns: pd.Series,
+    benchmark_returns: pd.Series,
+    period: str = "all",
+    raw: bool = False,
     export: str = "",
     external_axes: Optional[plt.Axes] = None,
 ):
-    """Display allocation of assets vs time
+    """Display yearly returns
+
+    Parameters
+    ----------
+    portfolio_returns : pd.Series
+        Returns of the portfolio
+    benchmark_returns : pd.Series
+        Returns of the benchmark
+    period : str
+        Period to compare cumulative returns and benchmark
+    raw : False
+        Display raw data from cumulative return
+    export : str
+        Export certain type of data
+    external_axes: plt.Axes
+        Optional axes to display plot on
+    """
+    portfolio_returns = portfolio_helper.filter_df_by_period(portfolio_returns, period)
+    benchmark_returns = portfolio_helper.filter_df_by_period(benchmark_returns, period)
+
+    creturns_year_idx = list()
+    creturns_year_val = list()
+    breturns_year_idx = list()
+    breturns_year_val = list()
+
+    for year in sorted(set(portfolio_returns.index.year)):
+        creturns_year = portfolio_returns[portfolio_returns.index.year == year]
+        cumulative_returns = 100 * (
+            (1 + creturns_year.shift(periods=1, fill_value=0)).cumprod() - 1
+        )
+
+        creturns_year_idx.append(datetime.strptime(f"{year}-04-15", "%Y-%m-%d"))
+        creturns_year_val.append(cumulative_returns.values[-1])
+
+        breturns_year = benchmark_returns[benchmark_returns.index.year == year]
+        benchmark_c_returns = 100 * (
+            (1 + breturns_year.shift(periods=1, fill_value=0)).cumprod() - 1
+        )
+
+        breturns_year_idx.append(datetime.strptime(f"{year}-08-15", "%Y-%m-%d"))
+        breturns_year_val.append(benchmark_c_returns.values[-1])
+
+    if raw:
+        yreturns = pd.DataFrame(
+            {
+                "Portfolio [%]": pd.Series(
+                    creturns_year_val, index=list(set(portfolio_returns.index.year))
+                ),
+                "Benchmark [%]": pd.Series(
+                    breturns_year_val, index=list(set(portfolio_returns.index.year))
+                ),
+                "Difference [%]": pd.Series(
+                    np.array(creturns_year_val) - np.array(breturns_year_val),
+                    index=list(set(portfolio_returns.index.year)),
+                ),
+            }
+        )
+        print_rich_table(
+            yreturns.sort_index(),
+            title="Yearly Portfolio and Benchmark returns",
+            headers=["Portfolio [%]", "Benchmark [%]", "Difference [%]"],
+            show_index=True,
+        )
+
+    else:
+        if external_axes is None:
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        else:
+            ax = external_axes
+
+        ax.bar(
+            creturns_year_idx,
+            creturns_year_val,
+            width=100,
+            label="Portfolio",
+        )
+        ax.bar(
+            breturns_year_idx,
+            breturns_year_val,
+            width=100,
+            label="Benchmark",
+        )
+
+        ax.legend(loc="upper left")
+        ax.set_ylabel("Yearly Returns [%]")
+        ax.set_title(f"Yearly Returns [%] in period {period}")
+        theme.style_primary_axis(ax)
+
+        if not external_axes:
+            theme.visualize_output()
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "yret",
+        cumulative_returns.to_frame().join(benchmark_c_returns),
+    )
+
+
+@log_start_end(log=logger)
+def display_monthly_returns(
+    portfolio_returns: pd.Series,
+    benchmark_returns: pd.Series,
+    period: str = "all",
+    raw: bool = False,
+    show_vals: bool = False,
+    export: str = "",
+    external_axes: Optional[plt.Axes] = None,
+):
+    """Display monthly returns
+
+    Parameters
+    ----------
+    portfolio_returns : pd.Series
+        Returns of the portfolio
+    benchmark_returns : pd.Series
+        Returns of the benchmark
+    period : str
+        Period to compare cumulative returns and benchmark
+    raw : False
+        Display raw data from cumulative return
+    show_vals : False
+        Show values on heatmap
+    export : str
+        Export certain type of data
+    external_axes: plt.Axes
+        Optional axes to display plot on
+    """
+    portfolio_returns = portfolio_helper.filter_df_by_period(portfolio_returns, period)
+    benchmark_returns = portfolio_helper.filter_df_by_period(benchmark_returns, period)
+
+    creturns_month_val = list()
+    breturns_month_val = list()
+
+    for year in sorted(list(set(portfolio_returns.index.year))):
+        creturns_year = portfolio_returns[portfolio_returns.index.year == year]
+        creturns_val = list()
+        for i in range(1, 13):
+            creturns_year_month = creturns_year[creturns_year.index.month == i]
+            creturns_year_month_val = 100 * (
+                (1 + creturns_year_month.shift(periods=1, fill_value=0)).cumprod() - 1
+            )
+
+            if creturns_year_month.empty:
+                creturns_val.append(0)
+            else:
+                creturns_val.append(creturns_year_month_val.values[-1])
+        creturns_month_val.append(creturns_val)
+
+        breturns_year = benchmark_returns[benchmark_returns.index.year == year]
+        breturns_val = list()
+        for i in range(1, 13):
+            breturns_year_month = breturns_year[breturns_year.index.month == i]
+            breturns_year_month_val = 100 * (
+                (1 + breturns_year_month.shift(periods=1, fill_value=0)).cumprod() - 1
+            )
+
+            if breturns_year_month.empty:
+                breturns_val.append(0)
+            else:
+                breturns_val.append(breturns_year_month_val.values[-1])
+        breturns_month_val.append(breturns_val)
+
+    monthly_returns = pd.DataFrame(
+        creturns_month_val,
+        index=sorted(list(set(portfolio_returns.index.year))),
+        columns=[
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sep",
+            "Oct",
+            "Nov",
+            "Dec",
+        ],
+    )
+    bench_monthly_returns = pd.DataFrame(
+        breturns_month_val,
+        index=sorted(list(set(benchmark_returns.index.year))),
+        columns=[
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sep",
+            "Oct",
+            "Nov",
+            "Dec",
+        ],
+    )
+
+    if raw:
+        print_rich_table(
+            monthly_returns,
+            title="Portfolio monthly returns",
+            headers=monthly_returns.columns,
+            show_index=True,
+        )
+        print_rich_table(
+            bench_monthly_returns,
+            title="Benchmark monthly returns",
+            headers=bench_monthly_returns.columns,
+            show_index=True,
+        )
+
+    else:
+        if external_axes is None:
+            _, ax = plt.subplots(
+                2,
+                1,
+                figsize=plot_autoscale(),
+                dpi=PLOT_DPI,
+            )
+        else:
+            ax = external_axes
+
+        ax[0].set_title(f"Portfolio in period {period}")
+        sns.heatmap(
+            monthly_returns,
+            cmap="bwr_r",
+            vmax=max(monthly_returns.max().max(), bench_monthly_returns.max().max()),
+            vmin=min(monthly_returns.min().min(), bench_monthly_returns.min().min()),
+            center=0,
+            annot=show_vals,
+            fmt=".1f",
+            mask=monthly_returns.applymap(lambda x: x == 0),
+            ax=ax[0],
+        )
+        theme.style_primary_axis(ax[0])
+
+        ax[1].set_title(f"Benchmark in period {period}")
+        sns.heatmap(
+            bench_monthly_returns,
+            cmap="bwr_r",
+            vmax=max(monthly_returns.max().max(), bench_monthly_returns.max().max()),
+            vmin=min(monthly_returns.min().min(), bench_monthly_returns.min().min()),
+            center=0,
+            annot=show_vals,
+            fmt=".1f",
+            mask=bench_monthly_returns.applymap(lambda x: x == 0),
+            ax=ax[1],
+        )
+        theme.style_primary_axis(ax[1])
+
+        if not external_axes:
+            theme.visualize_output()
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "mret",
+    )
+
+
+@log_start_end(log=logger)
+def display_daily_returns(
+    portfolio_returns: pd.Series,
+    benchmark_returns: pd.Series,
+    period: str = "all",
+    raw: bool = False,
+    limit: int = 10,
+    export: str = "",
+    external_axes: Optional[plt.Axes] = None,
+):
+    """Display daily returns
+
+    Parameters
+    ----------
+    portfolio_returns : pd.Series
+        Returns of the portfolio
+    benchmark_returns : pd.Series
+        Returns of the benchmark
+    period : str
+        Period to compare cumulative returns and benchmark
+    raw : False
+        Display raw data from cumulative return
+    limit : int
+        Last daily returns to display
+    export : str
+        Export certain type of data
+    external_axes: plt.Axes
+        Optional axes to display plot on
+    """
+    portfolio_returns = portfolio_helper.filter_df_by_period(portfolio_returns, period)
+    benchmark_returns = portfolio_helper.filter_df_by_period(benchmark_returns, period)
+
+    if raw:
+        last_returns = portfolio_returns.to_frame()
+        last_returns = last_returns.join(benchmark_returns)
+        last_returns.index = last_returns.index.date
+        print_rich_table(
+            last_returns.tail(limit),
+            title="Portfolio and Benchmark daily returns",
+            headers=["Portfolio [%]", "Benchmark [%]"],
+            show_index=True,
+        )
+    else:
+        if external_axes is None:
+            _, ax = plt.subplots(
+                2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI, sharex=True
+            )
+        else:
+            ax = external_axes
+
+        ax[0].set_title(f"Portfolio in period {period}")
+        ax[0].plot(portfolio_returns.index, portfolio_returns, label="Portfolio")
+        ax[0].set_ylabel("Returns [%]")
+        theme.style_primary_axis(ax[0])
+        ax[1].set_title(f"Benchmark in period {period}")
+        ax[1].plot(benchmark_returns.index, benchmark_returns, label="Benchmark")
+        ax[1].set_ylabel("Returns [%]")
+        theme.style_primary_axis(ax[1])
+
+        if not external_axes:
+            theme.visualize_output()
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "dret",
+        portfolio_returns.to_frame().join(benchmark_returns),
+    )
+
+
+@log_start_end(log=logger)
+def display_distribution_returns(
+    portfolio_returns: pd.Series,
+    benchmark_returns: pd.Series,
+    period: str = "all",
+    raw: bool = False,
+    export: str = "",
+    external_axes: Optional[plt.Axes] = None,
+):
+    """Display daily returns
+
+    Parameters
+    ----------
+    portfolio_returns : pd.Series
+        Returns of the portfolio
+    benchmark_returns : pd.Series
+        Returns of the benchmark
+    period : str
+        Period to compare cumulative returns and benchmark
+    raw : False
+        Display raw data from cumulative return
+    export : str
+        Export certain type of data
+    external_axes: plt.Axes
+        Optional axes to display plot on
+    """
+    portfolio_returns = portfolio_helper.filter_df_by_period(portfolio_returns, period)
+    benchmark_returns = portfolio_helper.filter_df_by_period(benchmark_returns, period)
+
+    stats = portfolio_returns.describe().to_frame().join(benchmark_returns.describe())
+
+    if raw:
+        print_rich_table(
+            stats,
+            title=f"Stats for Portfolio and Benchmark in period {period}",
+            show_index=True,
+            headers=["Portfolio", "Benchmark"],
+        )
+
+    else:
+        if external_axes is None:
+            _, ax = plt.subplots(
+                1,
+                2,
+                figsize=plot_autoscale(),
+                dpi=PLOT_DPI,
+            )
+        else:
+            ax = external_axes
+
+        ax[0].set_title("Portfolio distribution")
+        sns.kdeplot(portfolio_returns.values, ax=ax[0])
+        ax[0].set_ylabel("Density")
+        ax[0].set_xlabel("Daily return [%]")
+        theme.style_primary_axis(ax[0])
+
+        ax[1].set_title("Benchmark distribution")
+        sns.kdeplot(benchmark_returns.values, ax=ax[1])
+        ax[1].set_ylabel("Density")
+        ax[1].set_xlabel("Daily return [%]")
+        theme.style_primary_axis(ax[1])
+
+        if not external_axes:
+            theme.visualize_output()
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "distr",
+        stats,
+    )
+
+
+@log_start_end(log=logger)
+def display_holdings_value(
+    portfolio: portfolio_model.Portfolio,
+    sum_assets: bool = False,
+    raw: bool = False,
+    limit: int = 10,
+    export: str = "",
+    external_axes: Optional[plt.Axes] = None,
+):
+    """Display holdings of assets (absolute value)
 
     Parameters
     ----------
     portfolio: Portfolio
         Portfolio object with trades loaded
+    sum_assets: bool
+        Sum assets over time
+    raw : bool
+        To display raw data
+    limit : int
+        Number of past market days to display holdings
     export: str
         Format to export plot
     external_axes: plt.Axes
@@ -393,66 +856,237 @@ def display_allocation(
     )
     all_holdings = all_holdings.drop(columns=["temp"])
 
+    if raw:
+        all_holdings["Total Value"] = all_holdings.sum(axis=1)
+        # No need to account for time since this is daily data
+        all_holdings.index = all_holdings.index.date
+
+        print_rich_table(
+            all_holdings.tail(limit),
+            title="Holdings of assets (absolute value)",
+            headers=all_holdings.columns,
+            show_index=True,
+        )
+
+    else:
+        if external_axes is None:
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        else:
+            ax = external_axes
+
+        if sum_assets:
+            ax.stackplot(
+                all_holdings.index,
+                [all_holdings[col] for col in all_holdings.columns],
+                labels=all_holdings.columns,
+            )
+            ax.set_title("Asset Holdings (value)")
+        else:
+            all_holdings.plot(ax=ax)
+            ax.set_title("Individual Asset Holdings (value)")
+
+        if len(all_holdings.columns) > 10:
+            legend_columns = round(len(all_holdings.columns) / 5)
+        elif len(all_holdings.columns) > 40:
+            legend_columns = round(len(all_holdings.columns) / 10)
+        else:
+            legend_columns = 1
+        ax.legend(loc="upper left", ncol=legend_columns)
+        ax.set_ylabel("Holdings ($)")
+        theme.style_primary_axis(ax)
+        if external_axes is None:
+            theme.visualize_output()
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "holdv",
+        all_holdings,
+    )
+
+
+@log_start_end(log=logger)
+def display_holdings_percentage(
+    portfolio: portfolio_model.Portfolio,
+    sum_assets: bool = False,
+    raw: bool = False,
+    limit: int = 10,
+    export: str = "",
+    external_axes: Optional[plt.Axes] = None,
+):
+    """Display holdings of assets (in percentage)
+
+    Parameters
+    ----------
+    portfolio: Portfolio
+        Portfolio object with trades loaded
+    sum_assets: bool
+        Sum assets over time
+    raw : bool
+        To display raw data
+    limit : int
+        Number of past market days to display holdings
+    export: str
+        Format to export plot
+    external_axes: plt.Axes
+        Optional axes to display plot on
+    """
+    all_holdings = pd.concat(
+        [
+            portfolio.portfolio["StockHoldings"],
+            portfolio.portfolio["ETFHoldings"],
+            portfolio.portfolio["CryptoHoldings"],
+        ],
+        axis=1,
+    )
+    all_holdings = all_holdings.drop(columns=["temp"])
+
+    all_holdings = all_holdings.divide(all_holdings.sum(axis=1), axis=0) * 100
+
+    # order it a bit more in terms of magnitude
+    all_holdings = all_holdings[all_holdings.sum().sort_values(ascending=False).index]
+
+    if raw:
+        # No need to account for time since this is daily data
+        all_holdings.index = all_holdings.index.date
+
+        all_holdings.columns = [f"{col} [%]" for col in all_holdings.columns]
+
+        print_rich_table(
+            all_holdings.tail(limit),
+            title="Holdings of assets (in percentage)",
+            headers=all_holdings.columns,
+            show_index=True,
+        )
+
+    else:
+        if external_axes is None:
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        else:
+            ax = external_axes
+
+        if sum_assets:
+            ax.stackplot(
+                all_holdings.index,
+                all_holdings.values.T,
+                labels=all_holdings.columns,
+            )
+            ax.set_title("Asset Holdings (percentage)")
+        else:
+            all_holdings.plot(ax=ax)
+            ax.set_title("Individual Asset Holdings (percentage)")
+
+        if len(all_holdings.columns) > 10:
+            legend_columns = round(len(all_holdings.columns) / 5)
+        elif len(all_holdings.columns) > 40:
+            legend_columns = round(len(all_holdings.columns) / 10)
+        else:
+            legend_columns = 1
+        ax.legend(loc="upper left", ncol=legend_columns)
+        ax.set_ylabel("Portfolio holdings (%)")
+        theme.style_primary_axis(ax)
+        if external_axes is None:
+            theme.visualize_output()
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "holdp",
+        all_holdings,
+    )
+
+
+@log_start_end(log=logger)
+def display_rolling_volatility(
+    benchmark_returns: pd.Series,
+    portfolio_returns: pd.Series,
+    period: str = "1y",
+    export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
+):
+    """Display rolling volatility
+
+    Parameters
+    ----------
+    portfolio_returns : pd.Series
+        Returns of the portfolio
+    benchmark_returns : pd.Series
+        Returns of the benchmark
+    period: str
+        Period for window to consider
+    export: str
+        Export to file
+    external_axes: Optional[List[plt.Axes]]
+        Optional axes to display plot on
+    """
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     else:
+        if len(external_axes) != 1:
+            logger.error("Expected list of one axis items.")
+            console.print("[red]1 axes expected.\n[/red]")
+            return
         ax = external_axes
-    all_holdings.plot(ax=ax)
-    ax.set_title("Individual Asset Holdings")
-    if len(all_holdings.columns) > 10:
-        legend_columns = round(len(all_holdings.columns) / 5)
-    elif len(all_holdings.columns) > 40:
-        legend_columns = round(len(all_holdings.columns) / 10)
-    else:
-        legend_columns = 1
-    ax.legend(loc="upper left", ncol=legend_columns)
-    ax.set_ylabel("Holdings ($)")
-    theme.style_primary_axis(ax)
+
+    length = portfolio_helper.PERIODS_DAYS[period]
+
+    rolling_volatility = portfolio_returns.rolling(length).std()
+    rolling_volatility_bench = benchmark_returns.rolling(length).std()
+
+    rolling_volatility.plot(ax=ax)
+    rolling_volatility_bench.plot(ax=ax)
+    ax.set_title(f"Rolling Volatility using {period} window")
+    ax.set_xlabel("Date")
+    ax.legend(["Portfolio", "Benchmark"], loc="upper left")
+    ax.set_xlim(rolling_volatility.index[0], rolling_volatility.index[-1])
+
     if external_axes is None:
         theme.visualize_output()
 
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "rolling",
+        "rvol",
+        rolling_volatility.to_frame().join(rolling_volatility_bench),
     )
 
 
 @log_start_end(log=logger)
-def display_rolling_stats(
+def display_rolling_sharpe(
     benchmark_returns: pd.Series,
     portfolio_returns: pd.Series,
-    length: int = 60,
+    period: str = "1y",
     risk_free_rate: float = 0,
-    external_axes: Optional[List[plt.Axes]] = None,
     export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Display portfolio returns vs benchmark
+    """Display rolling sharpe
 
     Parameters
     ----------
-    portfolio_returns
+    portfolio_returns : pd.Series
         Returns of the portfolio
-    benchmark_returns
+    benchmark_returns : pd.Series
         Returns of the benchmark
-    length: int
-        Length of rolling window
+    period: str
+        Period for window to consider
     risk_free_rate: float
         Value to use for risk free rate in sharpe/other calculations
-    external_axes: Optional[List[plt.Axes]]
-        Optional axes to display plot on
     export: str
         Export to file
+    external_axes: Optional[List[plt.Axes]]
+        Optional axes to display plot on
     """
     if external_axes is None:
-        _, ax = plt.subplots(4, 1, figsize=(8, 8), dpi=PLOT_DPI, sharex=True)
-    elif is_valid_axes_count(external_axes, 4):
-        ax = external_axes
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     else:
-        return
+        if len(external_axes) != 1:
+            logger.error("Expected list of one axis items.")
+            console.print("[red]1 axes expected.\n[/red]")
+            return
+        ax = external_axes
 
-    rolling_volatility = portfolio_returns.rolling(length).std()
-    rolling_volatility_bench = benchmark_returns.rolling(length).std()
+    length = portfolio_helper.PERIODS_DAYS[period]
 
     rolling_sharpe = portfolio_returns.rolling(length).apply(
         lambda x: (x.mean() - risk_free_rate) / x.std()
@@ -461,13 +1095,119 @@ def display_rolling_stats(
         lambda x: (x.mean() - risk_free_rate) / x.std()
     )
 
-    rolling_volatility.plot(ax=ax[1])
-    rolling_volatility_bench.plot(ax=ax[1])
-    ax[1].set_title("Rolling Volatility")
+    rolling_sharpe.plot(ax=ax)
+    rolling_sharpe_bench.plot(ax=ax)
+    ax.set_title(f"Rolling Sharpe using {period} window")
+    ax.set_xlabel("Date")
+    ax.legend(["Portfolio", "Benchmark"], loc="upper left")
+    ax.set_xlim(rolling_sharpe.index[0], rolling_sharpe.index[-1])
 
-    rolling_sharpe.plot(ax=ax[2])
-    rolling_sharpe_bench.plot(ax=ax[2])
-    ax[2].set_title("Rolling Sharpe Ratio")
+    if external_axes is None:
+        theme.visualize_output()
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "rsharpe",
+        rolling_sharpe.to_frame().join(rolling_sharpe_bench),
+    )
+
+
+@log_start_end(log=logger)
+def display_rolling_sortino(
+    benchmark_returns: pd.Series,
+    portfolio_returns: pd.Series,
+    period: str = "1y",
+    risk_free_rate: float = 0,
+    export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
+):
+    """Display rolling sortino
+
+    Parameters
+    ----------
+    portfolio_returns : pd.Series
+        Returns of the portfolio
+    benchmark_returns : pd.Series
+        Returns of the benchmark
+    period: str
+        Period for window to consider
+    risk_free_rate: float
+        Value to use for risk free rate in sharpe/other calculations
+    export: str
+        Export to file
+    external_axes: Optional[List[plt.Axes]]
+        Optional axes to display plot on
+    """
+    if external_axes is None:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    else:
+        if len(external_axes) != 1:
+            logger.error("Expected list of one axis items.")
+            console.print("[red]1 axes expected.\n[/red]")
+            return
+        ax = external_axes
+
+    length = portfolio_helper.PERIODS_DAYS[period]
+
+    rolling_sortino = portfolio_returns.rolling(length).apply(
+        lambda x: (x.mean() - risk_free_rate) / x[x < 0].std()
+    )
+    rolling_sortino_bench = benchmark_returns.rolling(length).apply(
+        lambda x: (x.mean() - risk_free_rate) / x[x < 0].std()
+    )
+
+    rolling_sortino.plot(ax=ax)
+    rolling_sortino_bench.plot(ax=ax)
+    ax.set_title(f"Rolling Sortino using {period} window")
+    ax.set_xlabel("Date")
+    ax.legend(["Portfolio", "Benchmark"], loc="upper left")
+    ax.set_xlim(rolling_sortino.index[0], rolling_sortino.index[-1])
+
+    if external_axes is None:
+        theme.visualize_output()
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "rsortino",
+        rolling_sortino.to_frame().join(rolling_sortino_bench),
+    )
+
+
+@log_start_end(log=logger)
+def display_rolling_beta(
+    benchmark_returns: pd.Series,
+    portfolio_returns: pd.Series,
+    period: str = "1y",
+    export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
+):
+    """Display rolling beta
+
+    Parameters
+    ----------
+    portfolio_returns : pd.Series
+        Returns of the portfolio
+    benchmark_returns : pd.Series
+        Returns of the benchmark
+    period: str
+        Period for window to consider
+    export: str
+        Export to file
+    external_axes: Optional[List[plt.Axes]]
+        Optional axes to display plot on
+    """
+    if external_axes is None:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    else:
+        if len(external_axes) != 1:
+            logger.error("Expected list of one axis items.")
+            console.print("[red]1 axes expected.\n[/red]")
+            return
+        ax = external_axes
+
+    length = portfolio_helper.PERIODS_DAYS[period]
 
     # Rolling beta is defined as Cov(Port,Bench)/var(Bench)
     covs = (
@@ -479,43 +1219,38 @@ def display_rolling_stats(
         .dropna()
     )
     rolling_beta = covs["Portfolio"]["Benchmark"] / covs["Benchmark"]["Benchmark"]
-    rolling_beta.plot(ax=ax[3])
-    ax[3].set_title("Rolling Beta to Benchmark")
+    rolling_beta.plot(ax=ax)
 
-    c_returns = (1 + portfolio_returns).cumprod()
-    bench_c_rets = (1 + benchmark_returns).cumprod()
-
-    ax[0].plot(c_returns.index, c_returns)
-    ax[0].plot(bench_c_rets.index, bench_c_rets)
-    ax[0].set_title("Cumulative Returns")
+    ax.set_title(f"Rolling Beta using {period} window")
+    ax.set_xlabel("Date")
+    ax.hlines(
+        [1],
+        xmin=rolling_beta.index[0],
+        xmax=rolling_beta.index[-1],
+        ls="--",
+        color="red",
+    )
+    ax.legend(["Portfolio", "Benchmark"], loc="upper left")
+    ax.set_xlim(rolling_beta.index[0], rolling_beta.index[-1])
 
     if external_axes is None:
-
-        for a in ax[0], ax[1], ax[2]:
-            a.legend(["Portfolio", "Benchmark"], loc="upper left")
-        for a in ax[0], ax[1], ax[2], ax[3]:
-            a.set_xlim(portfolio_returns.index[0], portfolio_returns.index[-1])
-            a.set_xlabel([])
-            a.grid("on")
-            theme.style_primary_axis(a)
-
-        ax[3].set_xlabel("Date")
-
         theme.visualize_output()
+
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "rolling",
+        "rbeta",
+        rolling_beta,
     )
 
 
 @log_start_end(log=logger)
-def display_drawdown(
+def display_maximum_drawdown(
     holdings: pd.Series,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Display drawdown curve
+    """Display maximum drawdown curve
 
     Parameters
     ----------
@@ -544,7 +1279,305 @@ def display_drawdown(
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "dd",
+        "maxdd",
+    )
+
+
+@log_start_end(log=logger)
+def display_rsquare(
+    portfolio: portfolio_model.Portfolio,
+    export: str = "",
+):
+    """Display R-square
+
+    Parameters
+    ----------
+    portfolio: Portfolio
+        Portfolio object with trades loaded
+    export : str
+        Export data format
+    """
+    print_rich_table(
+        portfolio.get_r2_score(),
+        title="R-Square Score between Portfolio and Benchmark",
+        headers=["R-Square Score"],
+        show_index=True,
+    )
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "rsquare",
+    )
+
+
+@log_start_end(log=logger)
+def display_skewness(
+    portfolio: portfolio_model.Portfolio,
+    export: str = "",
+):
+    """Display skewness
+
+    Parameters
+    ----------
+    portfolio: Portfolio
+        Portfolio object with trades loaded
+    export : str
+        Export data format
+    """
+    print_rich_table(
+        portfolio.get_skewness(),
+        title="Skewness for Portfolio and Benchmark",
+        show_index=True,
+        floatfmt=".3f",
+    )
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "skew",
+    )
+
+
+@log_start_end(log=logger)
+def display_kurtosis(
+    portfolio: portfolio_model.Portfolio,
+    export: str = "",
+):
+    """Display kurtosis
+
+    Parameters
+    ----------
+    portfolio: Portfolio
+        Portfolio object with trades loaded
+    export : str
+        Export data format
+    """
+    print_rich_table(
+        portfolio.get_kurtosis(),
+        title="Kurtosis for Portfolio and Benchmark",
+        show_index=True,
+        floatfmt=".3f",
+    )
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "kurt",
+    )
+
+
+@log_start_end(log=logger)
+def display_stats(
+    portfolio: portfolio_model.Portfolio,
+    period: str = "all",
+    export: str = "",
+):
+    """Display stats
+
+    Parameters
+    ----------
+    portfolio: Portfolio
+        Portfolio object with trades loaded
+    period : str
+        Period to consider. Choices are: mtd, qtd, ytd, 3m, 6m, 1y, 3y, 5y, 10y, all
+    export : str
+        Export data format
+    """
+    print_rich_table(
+        portfolio.get_stats(period),
+        title=f"Stats for Portfolio and Benchmark in period {period}",
+        show_index=True,
+        floatfmt=".3f",
+    )
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "stats",
+    )
+
+
+@log_start_end(log=logger)
+def display_volatility(
+    portfolio: portfolio_model.Portfolio,
+    export: str = "",
+):
+    """Display volatility for multiple periods
+
+    Parameters
+    ----------
+    portfolio: Portfolio
+        Portfolio object with trades loaded
+    export : str
+        Export data format
+    """
+    df = portfolio.get_volatility()
+    print_rich_table(
+        df,
+        title="Volatility for Portfolio and Benchmark",
+        show_index=True,
+        floatfmt=".3f",
+    )
+    export_data(
+        export, os.path.dirname(os.path.abspath(__file__)), "metric_volatility", df
+    )
+
+
+@log_start_end(log=logger)
+def display_sharpe_ratio(
+    portfolio: portfolio_model.Portfolio,
+    risk_free_rate: float,
+    export: str = "",
+):
+    """Display sharpe ratio for multiple periods
+
+    Parameters
+    ----------
+    portfolio: Portfolio
+        Portfolio object with trades loaded
+    risk_free_rate: float
+        Risk free rate value
+    export : str
+        Export data format
+    """
+    df = portfolio.get_sharpe_ratio(risk_free_rate)
+    print_rich_table(
+        df,
+        title="Sharpe ratio for Portfolio and Benchmark",
+        show_index=True,
+        floatfmt=".3f",
+    )
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "metric_sharpe",
+        df,
+    )
+
+
+@log_start_end(log=logger)
+def display_sortino_ratio(
+    portfolio: portfolio_model.Portfolio,
+    risk_free_rate: float,
+    export: str = "",
+):
+    """Display sortino ratio for multiple periods
+
+    Parameters
+    ----------
+    portfolio: Portfolio
+        Portfolio object with trades loaded
+    risk_free_rate: float
+        Risk free rate value
+    export : str
+        Export data format
+    """
+    df = portfolio.get_sortino_ratio(risk_free_rate)
+    print_rich_table(
+        df,
+        title="Sortino ratio for Portfolio and Benchmark",
+        show_index=True,
+        floatfmt=".3f",
+    )
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "metric_sortino",
+        df,
+    )
+
+
+@log_start_end(log=logger)
+def display_maximum_drawdown_ratio(
+    portfolio: portfolio_model.Portfolio,
+    export: str = "",
+):
+    """Display maximum drawdown for multiple periods
+
+    Parameters
+    ----------
+    portfolio: Portfolio
+        Portfolio object with trades loaded
+    export : str
+        Export data format
+    """
+    df = portfolio.get_maximum_drawdown_ratio()
+    print_rich_table(
+        df,
+        title="Maximum drawdown for Portfolio and Benchmark",
+        show_index=True,
+        floatfmt=".3f",
+    )
+    export_data(
+        export, os.path.dirname(os.path.abspath(__file__)), "metric_maxdrawdown", df
+    )
+
+
+@log_start_end(log=logger)
+def display_summary_portfolio_benchmark(
+    portfolio_returns: pd.Series,
+    benchmark_returns: pd.Series,
+    period: str = "all",
+    risk_free_rate: float = 0,
+    export: str = "",
+):
+    """Display summary portfolio and benchmark returns
+
+    Parameters
+    ----------
+    portfolio_returns : pd.Series
+        Returns of the portfolio
+    benchmark_returns : pd.Series
+        Returns of the benchmark
+    period : str
+        Period to compare cumulative returns and benchmark
+    risk_free_rate : float
+        Risk free rate for calculations
+    export : str
+        Export certain type of data
+    """
+    portfolio_returns = portfolio_helper.filter_df_by_period(portfolio_returns, period)
+    benchmark_returns = portfolio_helper.filter_df_by_period(benchmark_returns, period)
+
+    metrics = {}
+    metrics["Volatility"] = [portfolio_returns.std(), benchmark_returns.std()]
+    metrics["Skew"] = [
+        scipy.stats.skew(portfolio_returns),
+        scipy.stats.skew(benchmark_returns),
+    ]
+    metrics["Kurtosis"] = [
+        scipy.stats.kurtosis(portfolio_returns),
+        scipy.stats.kurtosis(benchmark_returns),
+    ]
+    metrics["Maximum Drawdowwn"] = [
+        portfolio_helper.get_maximum_drawdown(portfolio_returns),
+        portfolio_helper.get_maximum_drawdown(benchmark_returns),
+    ]
+    metrics["Sharpe ratio"] = [
+        portfolio_helper.sharpe_ratio(portfolio_returns, risk_free_rate),
+        portfolio_helper.sharpe_ratio(benchmark_returns, risk_free_rate),
+    ]
+    metrics["Sortino ratio"] = [
+        portfolio_helper.sortino_ratio(portfolio_returns, risk_free_rate),
+        portfolio_helper.sortino_ratio(benchmark_returns, risk_free_rate),
+    ]
+    metrics["R2 Score"] = [
+        r2_score(portfolio_returns, benchmark_returns),
+        r2_score(portfolio_returns, benchmark_returns),
+    ]
+
+    summary = pd.DataFrame(
+        metrics.values(), index=metrics.keys(), columns=["Portfolio", "Benchmark"]
+    )
+
+    print_rich_table(
+        summary,
+        title=f"Summary of Portfolio vs Benchmark for {period} period",
+        show_index=True,
+        headers=summary.columns,
+    )
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "summary",
+        summary,
     )
 
 

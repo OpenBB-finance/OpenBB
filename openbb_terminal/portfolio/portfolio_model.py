@@ -5,9 +5,11 @@ import logging
 from datetime import timedelta, datetime
 
 import numpy as np
+import scipy
 import pandas as pd
 import statsmodels.api as sm
 import yfinance as yf
+from sklearn.metrics import r2_score
 from pycoingecko import CoinGeckoAPI
 from statsmodels.regression.rolling import RollingOLS
 
@@ -209,7 +211,7 @@ class Portfolio:
     """
 
     @log_start_end(log=logger)
-    def __init__(self, trades: pd.DataFrame = pd.DataFrame(), rf=0.0):
+    def __init__(self, trades: pd.DataFrame = pd.DataFrame(), rf: float = 0.0):
         """Initialize Portfolio class"""
         # Allow for empty initialization
         self.benchmark_ticker: str = ""
@@ -339,7 +341,7 @@ class Portfolio:
         # Add cumulative Quantity held
         portfolio["Quantity"] = portfolio["Quantity"].cumsum()
 
-        # Add holdings for each 'type'.  Will check for tickers matching type.
+        # Add holdings for each 'type'. Will check for tickers matching type.
 
         if self._stock_tickers:
             # Find end of day holdings for each stock
@@ -524,6 +526,7 @@ class Portfolio:
 
         self.benchmark_ticker = benchmark
 
+    @log_start_end(log=logger)
     def mimic_portfolio_trades_for_benchmark(self, full_shares: bool = False):
         """Mimic trades from the orderbook as good as possible based on chosen benchmark. The assumption is that the
         benchmark is always tradable and allows for partial shares. This eliminates the need to keep track of a cash
@@ -673,3 +676,263 @@ class Portfolio:
 
         # Build the portfolio object
         return cls(trades)
+
+    @log_start_end(log=logger)
+    def get_r2_score(self) -> pd.DataFrame:
+        """Class method that retrieves R2 Score for portfolio and benchmark selected
+
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame with R2 Score between portfolio and benchmark for different periods
+        """
+        vals = list()
+        for period in portfolio_helper.PERIODS:
+            vals.append(
+                round(
+                    r2_score(
+                        portfolio_helper.filter_df_by_period(self.returns, period),
+                        portfolio_helper.filter_df_by_period(
+                            self.benchmark_returns, period
+                        ),
+                    ),
+                    3,
+                )
+            )
+        return pd.DataFrame(vals, index=portfolio_helper.PERIODS, columns=["R2 Score"])
+
+    @log_start_end(log=logger)
+    def get_skewness(self) -> pd.DataFrame:
+        """Class method that retrieves skewness for portfolio and benchmark selected
+
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame with skewness for portfolio and benchmark for different periods
+        """
+        vals = list()
+        for period in portfolio_helper.PERIODS:
+            vals.append(
+                [
+                    round(
+                        scipy.stats.skew(
+                            portfolio_helper.filter_df_by_period(self.returns, period)
+                        ),
+                        3,
+                    ),
+                    round(
+                        scipy.stats.skew(
+                            portfolio_helper.filter_df_by_period(
+                                self.benchmark_returns, period
+                            )
+                        ),
+                        3,
+                    ),
+                ]
+            )
+        return pd.DataFrame(
+            vals, index=portfolio_helper.PERIODS, columns=["Portfolio", "Benchmark"]
+        )
+
+    @log_start_end(log=logger)
+    def get_kurtosis(self) -> pd.DataFrame:
+        """Class method that retrieves kurtosis for portfolio and benchmark selected
+
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame with kurtosis for portfolio and benchmark for different periods
+        """
+        vals = list()
+        for period in portfolio_helper.PERIODS:
+            vals.append(
+                [
+                    round(
+                        scipy.stats.kurtosis(
+                            portfolio_helper.filter_df_by_period(self.returns, period)
+                        ),
+                        3,
+                    ),
+                    round(
+                        scipy.stats.skew(
+                            portfolio_helper.filter_df_by_period(
+                                self.benchmark_returns, period
+                            )
+                        ),
+                        3,
+                    ),
+                ]
+            )
+        return pd.DataFrame(
+            vals, index=portfolio_helper.PERIODS, columns=["Portfolio", "Benchmark"]
+        )
+
+    @log_start_end(log=logger)
+    def get_stats(self, period: str = "all") -> pd.DataFrame:
+        """Class method that retrieves stats for portfolio and benchmark selected based on a certain period
+
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame with overall stats for portfolio and benchmark for a certain periods
+        period : str
+            Period to consider. Choices are: mtd, qtd, ytd, 3m, 6m, 1y, 3y, 5y, 10y, all
+        """
+        df = (
+            portfolio_helper.filter_df_by_period(self.returns, period)
+            .describe()
+            .to_frame()
+            .join(
+                portfolio_helper.filter_df_by_period(
+                    self.benchmark_returns, period
+                ).describe()
+            )
+        )
+        df.columns = ["Portfolio", "Benchmark"]
+        return df
+
+    @log_start_end(log=logger)
+    def get_volatility(self) -> pd.DataFrame:
+        """Class method that retrieves volatility for portfolio and benchmark selected
+
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame with volatility for portfolio and benchmark for different periods
+        """
+        vals = list()
+        for period in portfolio_helper.PERIODS:
+            port_rets = portfolio_helper.filter_df_by_period(self.returns, period)
+            bench_rets = portfolio_helper.filter_df_by_period(
+                self.benchmark_returns, period
+            )
+            vals.append(
+                [
+                    round(
+                        100 * port_rets.std() * (len(port_rets) ** 0.5),
+                        3,
+                    ),
+                    round(
+                        100 * bench_rets.std() * (len(bench_rets) ** 0.5),
+                        3,
+                    ),
+                ]
+            )
+        return pd.DataFrame(
+            vals,
+            index=portfolio_helper.PERIODS,
+            columns=["Portfolio [%]", "Benchmark [%]"],
+        )
+
+    @log_start_end(log=logger)
+    def get_sharpe_ratio(self, risk_free_rate: float) -> pd.DataFrame:
+        """Class method that retrieves sharpe ratio for portfolio and benchmark selected
+
+        Parameters
+        ----------
+        risk_free_rate: float
+            Risk free rate value
+
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame with sharpe ratio for portfolio and benchmark for different periods
+        """
+        vals = list()
+        for period in portfolio_helper.PERIODS:
+            vals.append(
+                [
+                    round(
+                        portfolio_helper.sharpe_ratio(
+                            portfolio_helper.filter_df_by_period(self.returns, period),
+                            risk_free_rate,
+                        ),
+                        3,
+                    ),
+                    round(
+                        portfolio_helper.sharpe_ratio(
+                            portfolio_helper.filter_df_by_period(
+                                self.benchmark_returns, period
+                            ),
+                            risk_free_rate,
+                        ),
+                        3,
+                    ),
+                ]
+            )
+        return pd.DataFrame(
+            vals, index=portfolio_helper.PERIODS, columns=["Portfolio", "Benchmark"]
+        )
+
+    @log_start_end(log=logger)
+    def get_sortino_ratio(self, risk_free_rate: float) -> pd.DataFrame:
+        """Class method that retrieves sortino ratio for portfolio and benchmark selected
+
+        Parameters
+        ----------
+        risk_free_rate: float
+            Risk free rate value
+
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame with sortino ratio for portfolio and benchmark for different periods
+        """
+        vals = list()
+        for period in portfolio_helper.PERIODS:
+            vals.append(
+                [
+                    round(
+                        portfolio_helper.sortino_ratio(
+                            portfolio_helper.filter_df_by_period(self.returns, period),
+                            risk_free_rate,
+                        ),
+                        3,
+                    ),
+                    round(
+                        portfolio_helper.sortino_ratio(
+                            portfolio_helper.filter_df_by_period(
+                                self.benchmark_returns, period
+                            ),
+                            risk_free_rate,
+                        ),
+                        3,
+                    ),
+                ]
+            )
+        return pd.DataFrame(
+            vals, index=portfolio_helper.PERIODS, columns=["Portfolio", "Benchmark"]
+        )
+
+    @log_start_end(log=logger)
+    def get_maximum_drawdown_ratio(self) -> pd.DataFrame:
+        """Class method that retrieves maximum drawdown ratio for portfolio and benchmark selected
+
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame with maximum drawdown for portfolio and benchmark for different periods
+        """
+        vals = list()
+        for period in portfolio_helper.PERIODS:
+            vals.append(
+                [
+                    round(
+                        portfolio_helper.get_maximum_drawdown(
+                            portfolio_helper.filter_df_by_period(self.returns, period)
+                        ),
+                        3,
+                    ),
+                    round(
+                        portfolio_helper.get_maximum_drawdown(
+                            portfolio_helper.filter_df_by_period(
+                                self.benchmark_returns, period
+                            )
+                        ),
+                        3,
+                    ),
+                ]
+            )
+        return pd.DataFrame(
+            vals, index=portfolio_helper.PERIODS, columns=["Portfolio", "Benchmark"]
+        )
