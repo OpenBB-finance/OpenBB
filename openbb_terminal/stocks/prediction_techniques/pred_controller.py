@@ -22,7 +22,8 @@ from openbb_terminal.common.prediction_techniques import (
     neural_networks_view,
     pred_helper,
     regression_view,
-    expo_view
+    expo_view,
+    expo_model
 )
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
@@ -92,6 +93,10 @@ class PredictionTechniquesController(BaseController):
             choices["ets"]["-s"] = {c: {} for c in ets_model.SEASONS}
             choices["arima"]["-i"] = {c: {} for c in arima_model.ICS}
             choices["mc"]["--dist"] = {c: {} for c in mc_model.DISTRIBUTIONS}
+            choices["expo"]["-t"] = {c: {} for c in expo_model.TRENDS}
+            choices["expo"]["-s"] = {c: {} for c in expo_model.SEASONS}
+            choices["expo"]["-p"] = {c: {} for c in expo_model.PERIODS}
+            choices["expo"]["-dp"] = {c: {} for c in expo_model.DAMPED}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
@@ -726,17 +731,65 @@ class PredictionTechniquesController(BaseController):
             add_help=False,
             prog="expo",
             description="""
-                Perform Probablistic Exponential Smoothing forecasting
+                Perform Probablistic Exponential Smoothing forecast
+                Trend: N: None, A: Additive, M: Multiplicative
+                Seasonality: N: None, A: Additive, M: Multiplicative
+                Damped: T: True, F: False
             """,
         )
         parser.add_argument(
             "-d",
             "--days",
-            help="Days to predict",
+            action="store",
             dest="n_days",
             type=check_positive,
             default=5,
+            help="prediction days.",
         )
+        parser.add_argument(
+            "-t",
+            "--trend",
+            action="store",
+            dest="trend",
+            choices=expo_model.TRENDS,
+            default="A",
+            help="Trend: N: None, A: Additive[DEFAULT], M: Multiplicative.",
+        )
+        parser.add_argument(
+            "-s",
+            "--seasonal",
+            action="store",
+            dest="seasonal",
+            choices=expo_model.SEASONS,
+            default="A",
+            help="Seasonality: N: None, A: Additive[DEFAULT], M: Multiplicative.",
+        )
+        parser.add_argument(
+            "-p",
+            "--periods",
+            action="store",
+            dest="seasonal_periods",
+            type=check_positive,
+            default=5,
+            help="Seasonal periods: 4: Quarters, 5: Business Days [DEFAULT], 7: Weekly",
+        )
+        parser.add_argument(
+            "-dp",
+            "--damped",
+            action="store",
+            dest="damped",
+            default="F",
+            help="Seasonal periods: 4: Quarters, 5: Business Days [DEFAULT], 7: Weekly",
+        )
+        # parser.add_argument(
+        #     "-e",
+        #     "--end",
+        #     action="store",
+        #     type=valid_date,
+        #     dest="s_end_date",
+        #     default=None,
+        #     help="The end date (format YYYY-MM-DD) to select - Backtesting",
+        # )
 
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
@@ -747,8 +800,37 @@ class PredictionTechniquesController(BaseController):
                 console.print("Expo Prediction designed for AdjClose prices\n")
 
             expo_view.display_expo_forecast(
-                #data=self.stock[self.target],
                 data=self.stock,
+                ticker_name=self.ticker,
                 n_predict=ns_parser.n_days,
+                trend=ns_parser.trend,
+                seasonal=ns_parser.seasonal,
+                seasonal_periods=ns_parser.seasonal_periods,
+                damped = ns_parser.damped,
+                #s_end_date=ns_parser.s_end_date, #TODO 
                 export=ns_parser.export,
             )
+
+        
+        # ns_parser = parse_known_args_and_warn(
+        #     parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
+        # )
+        # if ns_parser:
+
+        #     if ns_parser.s_end_date:
+
+        #         if ns_parser.s_end_date < self.stock.index[0]:
+        #             console.print(
+        #                 "Backtesting not allowed, since End Date is older than Start Date of historical data\n"
+        #             )
+
+        #         if (
+        #             ns_parser.s_end_date
+        #             < get_next_stock_market_days(
+        #                 last_stock_day=self.stock.index[0],
+        #                 n_next_days=5 + ns_parser.n_days,
+        #             )[-1]
+        #         ):
+        #             console.print(
+        #                 "Backtesting not allowed, since End Date is too close to Start Date to train model\n"
+        #             )
