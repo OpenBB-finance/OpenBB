@@ -36,7 +36,6 @@ from openbb_terminal.config_terminal import theme
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.cryptocurrency import cryptocurrency_helpers
-from openbb_terminal.cryptocurrency.pycoingecko_helpers import calc_change
 
 logger = logging.getLogger(__name__)
 
@@ -663,10 +662,10 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
         super().__init__(queue)
 
         self.symbol = ""
+        self.coin_ids = None
         self.current_df = pd.DataFrame()
         self.current_currency = ""
         self.source = ""
-        self.coin_map_df = pd.DataFrame()
         self.current_interval = ""
         self.price_str = ""
         self.resolution = "1D"
@@ -680,25 +679,17 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="load",
             description="Load crypto currency to perform analysis on."
-            "Available data sources are CoinGecko, CoinPaprika, Binance, Coinbase"
-            "By default main source used for analysis is CoinGecko (cg). To change it use --source flag",
+            "Main source used for analysis is CoinPaprika (cp).",
         )
         parser.add_argument(
             "-c",
             "--coin",
-            help="Coin to get",
+            help="Coin to get. Must be coin symbol (e.g., btc, eth)",
             dest="coin",
             type=str,
             required="-h" not in other_args,
         )
-        parser.add_argument(
-            "--source",
-            help="Source of data",
-            dest="source",
-            choices=("cp", "cg", "bin", "cb", "yf"),
-            default="cp",
-            required=False,
-        )
+
         parser.add_argument(
             "-s",
             "--start",
@@ -713,14 +704,7 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
             dest="vs",
             default="usd",
             type=str,
-        )
-        parser.add_argument(
-            "-i",
-            "--interval",
-            help="Interval to get data (Only available on binance/coinbase)",
-            dest="interval",
-            default="1day",
-            type=str,
+            choices=["usd", "btc"],
         )
 
         if other_args and "-" not in other_args[0][0]:
@@ -729,61 +713,18 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
         ns_parser = parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
-            delta = (datetime.now() - ns_parser.start).days
-            source = ns_parser.source
-            for arg in ["--source", source]:
-                if arg in other_args:
-                    other_args.remove(arg)
-
-            res = ns_parser.resolution if delta < 90 else "1D"
-            self.resolution = res
-
-            # TODO: protections in case None is returned
-            (
-                self.coin,
-                self.source,
-                self.symbol,
-                self.coin_map_df,
-                self.current_df,
-                self.current_currency,
-            ) = cryptocurrency_helpers.load(
-                coin=ns_parser.coin,
-                source=ns_parser.source,
-                should_load_ta_data=True,
-                days=delta,
-                interval=ns_parser.interval,
+            (self.coin_ids, self.current_df) = cryptocurrency_helpers.load(
+                symbol_search=ns_parser.coin,
+                start=ns_parser.start,
                 vs=ns_parser.vs,
             )
-            if (
-                self.symbol
-                and self.current_df is not None
-                and not self.current_df.empty
-            ):
-                self.current_interval = ns_parser.interval
-                first_price = self.current_df["Close"].iloc[0]
-                last_price = self.current_df["Close"].iloc[-1]
-                second_last_price = self.current_df["Close"].iloc[-2]
-                interval_change = calc_change(last_price, second_last_price)
-                since_start_change = calc_change(last_price, first_price)
-                if isinstance(self.current_currency, str) and self.PATH == "/crypto/":
-                    col1 = "green" if interval_change > 0 else "red"
-                    col2 = "green" if since_start_change > 0 else "red"
-                    self.price_str = f"""Current Price: {round(last_price,2)} {self.current_currency.upper()}
-Performance in interval ({self.current_interval}): [{col1}]{round(interval_change,2)}%[/{col1}]
-Performance since {ns_parser.start.strftime('%Y-%m-%d')}: [{col2}]{round(since_start_change,2)}%[/{col2}]"""  # noqa
-
-                    console.print(
-                        f"""
-Loaded {self.coin} against {self.current_currency} from {CRYPTO_SOURCES[self.source]} source
-
-{self.price_str}
-"""
-                    )  # noqa
-                else:
-                    console.print(
-                        f"{delta} Days of {self.coin} vs {self.current_currency} loaded with {res} resolution.\n"
-                    )
+            if self.current_df is not None and not self.current_df.empty:
+                self.current_currency = ns_parser.vs
+                self.symbol = ns_parser.coin
+                cryptocurrency_helpers.show_quick_performance(
+                    self.current_df, self.symbol, self.current_currency, self.coin_ids
+                )
             else:
                 console.print(
-                    f"\n[red]Could not find [bold]{ns_parser.coin}[/bold] in [bold]{CRYPTO_SOURCES[ns_parser.source]}[/bold]. Make sure you search for symbol (e.g., btc) or try another source[/red]\n"  # noqa: E501
+                    f"\n[red]Could not find [bold]{ns_parser.symbol}[/bold] in [bold]CoinPaprika[/bold]. Make sure you search for symbol (e.g., btc) and not full name (e.g., bitcoin)[/red]\n"  # noqa: E501
                 )

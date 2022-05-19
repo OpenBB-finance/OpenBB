@@ -7,10 +7,8 @@ import logging
 import os
 from typing import List
 
-from binance.client import Client
 from prompt_toolkit.completion import NestedCompleter
 
-import openbb_terminal.config_terminal as cfg
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.cryptocurrency.cryptocurrency_helpers import (
     FIND_KEYS,
@@ -19,9 +17,7 @@ from openbb_terminal.cryptocurrency.cryptocurrency_helpers import (
     plot_chart,
 )
 from openbb_terminal.cryptocurrency.due_diligence import (
-    binance_model,
     binance_view,
-    coinbase_model,
     coinpaprika_view,
     finbrain_crypto_view,
     pycoingecko_model,
@@ -57,7 +53,7 @@ class CryptoController(CryptoBaseController):
 
     CHOICES_COMMANDS = [
         "headlines",
-        "chart",
+        "candle",
         "load",
         "find",
         "prt",
@@ -113,7 +109,7 @@ class CryptoController(CryptoBaseController):
 [param]Source: [/param]{source_txt}
 [cmds]
     headlines   crypto sentiment from 15+ major news headlines [src][Finbrain][/src]{has_ticker_start}
-    chart       view a candle chart for a specific cryptocurrency
+    candle      view a candle chart for a specific cryptocurrency
     prt         potential returns tool - check how much upside if ETH reaches BTC market cap{has_ticker_end}
 [/cmds][menu]
 >   disc        discover trending cryptocurrencies,     e.g.: top gainers, losers, top sentiment
@@ -193,234 +189,26 @@ class CryptoController(CryptoBaseController):
                     )
 
     @log_start_end(log=logger)
-    def call_chart(self, other_args):
-        """Process chart command"""
-        if self.coin:
+    def call_candle(self, other_args):
+        """Process candle command"""
+        if self.symbol:
             parser = argparse.ArgumentParser(
                 add_help=False,
                 formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-                prog="chart",
+                prog="candle",
                 description="""Display chart for loaded coin. You can specify currency vs which you want
                 to show chart and also number of days to get data for.""",
             )
-
-            if self.source == "cp":
-                parser.add_argument(
-                    "--vs",
-                    default="usd",
-                    dest="vs",
-                    help="Currency to display vs coin",
-                    choices=["usd", "btc", "BTC", "USD"],
-                    type=str,
-                )
-                parser.add_argument(
-                    "-d",
-                    "--days",
-                    default=365,
-                    dest="days",
-                    help="Number of days to get data for",
-                    type=check_positive,
-                )
-
-            if self.source == "cg":
-                parser.add_argument(
-                    "--vs", default="usd", dest="vs", help="Currency to display vs coin"
-                )
-                parser.add_argument(
-                    "-d",
-                    "--days",
-                    default=30,
-                    dest="days",
-                    help="Number of days to get data for",
-                )
-
-            if self.source == "bin":
-                client = Client(cfg.API_BINANCE_KEY, cfg.API_BINANCE_SECRET)
-                interval_map = {
-                    "1day": client.KLINE_INTERVAL_1DAY,
-                    "3day": client.KLINE_INTERVAL_3DAY,
-                    "1hour": client.KLINE_INTERVAL_1HOUR,
-                    "2hour": client.KLINE_INTERVAL_2HOUR,
-                    "4hour": client.KLINE_INTERVAL_4HOUR,
-                    "6hour": client.KLINE_INTERVAL_6HOUR,
-                    "8hour": client.KLINE_INTERVAL_8HOUR,
-                    "12hour": client.KLINE_INTERVAL_12HOUR,
-                    "1week": client.KLINE_INTERVAL_1WEEK,
-                    "1min": client.KLINE_INTERVAL_1MINUTE,
-                    "3min": client.KLINE_INTERVAL_3MINUTE,
-                    "5min": client.KLINE_INTERVAL_5MINUTE,
-                    "15min": client.KLINE_INTERVAL_15MINUTE,
-                    "30min": client.KLINE_INTERVAL_30MINUTE,
-                    "1month": client.KLINE_INTERVAL_1MONTH,
-                }
-
-                _, quotes = binance_model.show_available_pairs_for_given_symbol(
-                    self.coin
-                )
-
-                parser.add_argument(
-                    "--vs",
-                    help="Quote currency (what to view coin vs)",
-                    dest="vs",
-                    type=str,
-                    default="USDT",
-                    choices=quotes,
-                )
-                parser.add_argument(
-                    "-i",
-                    "--interval",
-                    help="Interval to get data",
-                    choices=list(interval_map.keys()),
-                    dest="interval",
-                    default="1day",
-                    type=str,
-                )
-                parser.add_argument(
-                    "-l",
-                    "--limit",
-                    dest="limit",
-                    default=100,
-                    help="Number to get",
-                    type=check_positive,
-                )
-
-            if self.source == "cb":
-                interval_map = {
-                    "1min": 60,
-                    "5min": 300,
-                    "15min": 900,
-                    "1hour": 3600,
-                    "6hour": 21600,
-                    "24hour": 86400,
-                    "1day": 86400,
-                }
-
-                _, quotes = coinbase_model.show_available_pairs_for_given_symbol(
-                    self.coin
-                )
-                if len(quotes) < 0:
-                    console.print(
-                        f"Couldn't find any quoted coins for provided symbol {self.coin}"
-                    )
-                    return
-                parser.add_argument(
-                    "--vs",
-                    help="Quote currency (what to view coin vs)",
-                    dest="vs",
-                    type=str,
-                    default="USDT" if "USDT" in quotes else quotes[0],
-                    choices=quotes,
-                )
-                parser.add_argument(
-                    "-i",
-                    "--interval",
-                    help="Interval to get data",
-                    choices=list(interval_map.keys()),
-                    dest="interval",
-                    default="1day",
-                    type=str,
-                )
-                parser.add_argument(
-                    "-l",
-                    "--limit",
-                    dest="limit",
-                    default=100,
-                    help="Number to get",
-                    type=check_positive,
-                )
-
-            if self.source == "yf":
-
-                interval_map = {
-                    "1min": "1m",
-                    "2min": "2m",
-                    "5min": "5m",
-                    "15min": "15m",
-                    "30min": "30m",
-                    "60min": "60m",
-                    "90min": "90m",
-                    "1hour": "1h",
-                    "1day": "1d",
-                    "5day": "5d",
-                    "1week": "1wk",
-                    "1month": "1mo",
-                    "3month": "3mo",
-                }
-
-                parser.add_argument(
-                    "--vs",
-                    default="USD",
-                    dest="vs",
-                    help="Currency to display vs coin",
-                    choices=[
-                        "CAD",
-                        "CNY",
-                        "ETH",
-                        "EUR",
-                        "GBP",
-                        "INR",
-                        "JPY",
-                        "KRW",
-                        "RUB",
-                        "USD",
-                        "AUD",
-                        "BTC",
-                    ],
-                    type=str,
-                )
-
-                parser.add_argument(
-                    "-i",
-                    "--interval",
-                    help="Interval to get data",
-                    choices=list(interval_map.keys()),
-                    dest="interval",
-                    default="1day",
-                    type=str,
-                )
-
-                parser.add_argument(
-                    "-l",
-                    "--limit",
-                    dest="limit",
-                    default=100,
-                    help="Number to get",
-                    type=check_positive,
-                )
-
-                parser.add_argument(
-                    "-d",
-                    "--days",
-                    default=30,
-                    dest="days",
-                    help="Number of days to get data for",
-                )
 
             ns_parser = parse_known_args_and_warn(
                 parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
             )
 
             if ns_parser:
-                if self.source in ["bin", "cb"]:
-                    limit = ns_parser.limit
-                    interval = ns_parser.interval
-                    days = 0
-                elif self.source == "yf":
-                    limit = ns_parser.limit
-                    interval = interval_map[ns_parser.interval]
-                    days = ns_parser.days
-                else:
-                    limit = 0
-                    interval = "1day"
-                    days = ns_parser.days
-
                 plot_chart(
-                    coin_map_df=self.coin_map_df,
-                    limit=limit,
-                    interval=interval,
-                    days=days,
-                    currency=ns_parser.vs,
-                    source=self.source,
+                    symbol=self.symbol,
+                    currency=self.current_currency,
+                    prices_df=self.current_df,
                 )
 
     @log_start_end(log=logger)
