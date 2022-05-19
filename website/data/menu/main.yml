@@ -121,8 +121,6 @@ main:
                 ref: "/terminal/stocks/dark_pool_shorts/spos"
               - name: psi
                 ref: "/terminal/stocks/dark_pool_shorts/psi"
-              - name: volexch
-                ref: "/terminal/stocks/dark_pool_shorts/volexch"
           - name: screener
             ref: "/terminal/stocks/screener"
             sub:
