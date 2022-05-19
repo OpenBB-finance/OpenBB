@@ -407,7 +407,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
         #         mpl=True,
         #         export="csv",
         #     ),
-        #),
+        # ),
     ],
 )
 def test_call_func(tested_func, mocked_func, other_args, called_with, mocker):
@@ -445,7 +445,7 @@ def test_call_func(tested_func, mocked_func, other_args, called_with, mocker):
         "call_dpotc",
         "call_ftd",
         "call_spos",
-#        "call_volexch",
+        #        "call_volexch",
     ],
 )
 def test_call_func_no_parser(func, mocker):
@@ -473,7 +473,7 @@ def test_call_func_no_parser(func, mocker):
         "call_ftd",
         "call_spos",
         "call_psi",
-#        "call_volexch",
+        #        "call_volexch",
     ],
 )
 def test_call_func_no_ticker(func, mocker):
