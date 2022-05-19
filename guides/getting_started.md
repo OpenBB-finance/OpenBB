@@ -4,10 +4,10 @@ keywords: "getting started, beginner guide, how to use openbb, openbb keys, open
 date: "YEAR-MONTH-DAY"
 type: our story
 status: publish
-excerpt: "This page guides you into how to use the OpenBB terminal, developed by OpenBB."
+excerpt: "This page guides you how to use the OpenBB terminal, developed by OpenBB."
 ---
 <h1>Getting Started with the OpenBB Terminal</h1>
-Within this getting start guide you can find a general description of the terminal, information about how to access the
+Within this getting started guide you can find a general description of the terminal, information about how to access the
 application, what menus are and how you can use them to navigate the terminal, what commands and arguments are and how
 they work, what the terminal-wide commands are and how they can be used, how to define your API keys used to collect
 data from different sources, what menus exist within the terminal and how you can obtain more information about each
