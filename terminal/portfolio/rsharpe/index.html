@@ -9,13 +9,13 @@
 
 
 
-    <meta name="description" content="usage: rmr [-m MARKET] [-h] A graph of portfolio returns versus a chosen benchmark or market.
-optional arguments: -m MARKET, --market MARKET Choose a ticker to be the market asset (default: SPY) -h, --help show this help message (default: False) ">
+    <meta name="description" content="usage: rsharpe [-p {3m,6m,1y,3y,5y,10y}] [-r RISK_FREE_RATE] [-h] [--export EXPORT] Show rolling sharpe portfolio vs benchmark
+optional arguments: -p {3m,6m,1y,3y,5y,10y}, --period {3m,6m,1y,3y,5y,10y} Period to apply rolling window (default: 1y) -r RISK_FREE_RATE, --rfr RISK_FREE_RATE Set risk free rate for calculations. (default: 0.0) -h, --help show this help message (default: False) --export EXPORT Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg (default: ) ">
 
 
 
     <title>
-      Rmr | OpenBB Terminal
+      Rsharpe | OpenBB Terminal
     </title>
 
     <link rel="icon" href="/OpenBBTerminal/favicon/favicon-32x32.png" type="image/x-icon">
@@ -36,7 +36,7 @@ optional arguments: -m MARKET, --market MARKET Choose a ticker to be the market 
 <link rel="preload" href="/OpenBBTerminal/custom.css" as="style">
 <link rel="stylesheet" href="/OpenBBTerminal/custom.css" media="all">
 
-<link rel="alternate" type="application/rss+xml" href="https://openbb-finance.github.io/OpenBBTerminal/terminal/portfolio/rmr/index.xml" title="OpenBB Terminal" />
+<link rel="alternate" type="application/rss+xml" href="https://openbb-finance.github.io/OpenBBTerminal/terminal/portfolio/rsharpe/index.xml" title="OpenBB Terminal" />
 
 
 <!-- Made with Geekdoc theme https://github.com/thegeeklab/hugo-geekdoc -->
@@ -15809,6 +15809,37 @@ optional arguments: -m MARKET, --market MARKET Choose a ticker to be the market 
             
             <span class="flex">
                 
+                <a href="/OpenBBTerminal/terminal/economy/ycrv/"
+                    class="gdoc-nav__entry ">
+                    ycrv
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
                 <a href="/OpenBBTerminal/terminal/economy/plot/"
                     class="gdoc-nav__entry ">
                     plot
@@ -19530,9 +19561,443 @@ optional arguments: -m MARKET, --market MARKET Choose a ticker to be the market 
             
             <span class="flex">
                 
+                <a href="/OpenBBTerminal/terminal/portfolio/holdv/"
+                    class="gdoc-nav__entry ">
+                    holdv
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/OpenBBTerminal/terminal/portfolio/holdp/"
+                    class="gdoc-nav__entry ">
+                    holdp
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/OpenBBTerminal/terminal/portfolio/cret/"
+                    class="gdoc-nav__entry ">
+                    cret
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/OpenBBTerminal/terminal/portfolio/yret/"
+                    class="gdoc-nav__entry ">
+                    yret
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/OpenBBTerminal/terminal/portfolio/mret/"
+                    class="gdoc-nav__entry ">
+                    mret
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/OpenBBTerminal/terminal/portfolio/dret/"
+                    class="gdoc-nav__entry ">
+                    dret
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/OpenBBTerminal/terminal/portfolio/distr/"
+                    class="gdoc-nav__entry ">
+                    distr
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/OpenBBTerminal/terminal/portfolio/maxdd/"
+                    class="gdoc-nav__entry ">
+                    maxdd
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/OpenBBTerminal/terminal/portfolio/rvol/"
+                    class="gdoc-nav__entry ">
+                    rvol
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/OpenBBTerminal/terminal/portfolio/rsharpe/"
+                    class="gdoc-nav__entry is-active">
+                    rsharpe
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/OpenBBTerminal/terminal/portfolio/rsort/"
+                    class="gdoc-nav__entry ">
+                    rsort
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/OpenBBTerminal/terminal/portfolio/rbeta/"
+                    class="gdoc-nav__entry ">
+                    rbeta
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
                 <a href="/OpenBBTerminal/terminal/portfolio/alloc/"
                     class="gdoc-nav__entry ">
                     alloc
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/OpenBBTerminal/terminal/portfolio/summary/"
+                    class="gdoc-nav__entry ">
+                    summary
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/OpenBBTerminal/terminal/portfolio/metric/"
+                    class="gdoc-nav__entry ">
+                    metric
                 </a>
             </span>
             
@@ -19592,133 +20057,71 @@ optional arguments: -m MARKET, --market MARKET Choose a ticker to be the market 
             
             <span class="flex">
                 
-                <a href="/OpenBBTerminal/terminal/portfolio/al/"
-                    class="gdoc-nav__entry ">
-                    al
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/OpenBBTerminal/terminal/portfolio/rmr/"
-                    class="gdoc-nav__entry is-active">
-                    rmr
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/OpenBBTerminal/terminal/portfolio/dd/"
-                    class="gdoc-nav__entry ">
-                    dd
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/OpenBBTerminal/terminal/portfolio/rolling/"
-                    class="gdoc-nav__entry ">
-                    rolling
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
                 <a href="/OpenBBTerminal/terminal/portfolio/var/"
                     class="gdoc-nav__entry ">
                     var
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/OpenBBTerminal/terminal/portfolio/es/"
+                    class="gdoc-nav__entry ">
+                    es
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/OpenBBTerminal/terminal/portfolio/om/"
+                    class="gdoc-nav__entry ">
+                    om
                 </a>
             </span>
             
@@ -25598,7 +26001,7 @@ optional arguments: -m MARKET, --market MARKET Choose a ticker to be the market 
         
     
     
-        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/' href='/OpenBBTerminal/'><span itemprop='name'>OpenBB Terminal</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/terminal/' href='/OpenBBTerminal/terminal/'><span itemprop='name'>Terminal</span></a><meta itemprop='position' content='3' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/terminal/portfolio/' href='/OpenBBTerminal/terminal/portfolio/'><span itemprop='name'>Portfolio</span></a><meta itemprop='position' content='4' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>Rmr</span><meta itemprop='position' content='5' /></li>
+        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/' href='/OpenBBTerminal/'><span itemprop='name'>OpenBB Terminal</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/terminal/' href='/OpenBBTerminal/terminal/'><span itemprop='name'>Terminal</span></a><meta itemprop='position' content='3' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/terminal/portfolio/' href='/OpenBBTerminal/terminal/portfolio/'><span itemprop='name'>Portfolio</span></a><meta itemprop='position' content='4' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>Rsharpe</span><meta itemprop='position' content='5' /></li>
     
 
     
@@ -25614,7 +26017,7 @@ optional arguments: -m MARKET, --market MARKET Choose a ticker to be the market 
     <div>
         <span class="editpage">
             <svg class="icon gdoc_code" style="color: #C7C7C7;"><use xlink:href="#gdoc_code"></use></svg>
-            <a href="https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/website//content/terminal/portfolio/rmr/_index.md" style="color: #C7C7C7;">
+            <a href="https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/website//content/terminal/portfolio/rsharpe/_index.md" style="color: #C7C7C7;">
                 Edit this page
             </a>
         </span>
@@ -25623,14 +26026,17 @@ optional arguments: -m MARKET, --market MARKET Choose a ticker to be the market 
 </div>
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
-        <h1>Rmr</h1>
-        <pre><code>usage: rmr [-m MARKET] [-h]
-</code></pre><p>A graph of portfolio returns versus a chosen benchmark or market.</p>
+        <h1>Rsharpe</h1>
+        <pre><code>usage: rsharpe [-p {3m,6m,1y,3y,5y,10y}] [-r RISK_FREE_RATE] [-h] [--export EXPORT]
+</code></pre><p>Show rolling sharpe portfolio vs benchmark</p>
 <pre><code>optional arguments:
-  -m MARKET, --market MARKET
-                        Choose a ticker to be the market asset (default: SPY)
+  -p {3m,6m,1y,3y,5y,10y}, --period {3m,6m,1y,3y,5y,10y}
+                        Period to apply rolling window (default: 1y)
+  -r RISK_FREE_RATE, --rfr RISK_FREE_RATE
+                        Set risk free rate for calculations. (default: 0.0)
   -h, --help            show this help message (default: False)
-</code></pre><p><img src="https://user-images.githubusercontent.com/46355364/153898950-e9f75d3a-f9eb-447c-8153-e1a286d047c6.png" alt="rmr"  /></p>
+  --export EXPORT       Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg (default: )
+</code></pre><img width="1426" alt="Screenshot 2022-05-18 at 01 03 07" src="https://user-images.githubusercontent.com/25267873/168931347-7f20a9a9-971b-4bf3-94d4-bd33f83c082d.png">
 
     </article>
  
@@ -35265,6 +35671,25 @@ optional arguments: -m MARKET, --market MARKET Choose a ticker to be the market 
 
         
         
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
             
     
     
@@ -36749,9 +37174,28 @@ optional arguments: -m MARKET, --market MARKET Choose a ticker to be the market 
         
         
             
+    
     
+
     
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
 
+            
+        
+
+        
+        
     
         
         
@@ -36790,6 +37234,10 @@ optional arguments: -m MARKET, --market MARKET Choose a ticker to be the market 
 
         
         
+            
+    
+    
+
     
         
         
@@ -36805,14 +37253,67 @@ optional arguments: -m MARKET, --market MARKET Choose a ticker to be the market 
             
 
             
+        
+
+        
         
+    
+        
+        
 
         
         
+            
             
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
     
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
     
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
 
+            
+        
+
+        
+        
     
         
         
@@ -36830,7 +37331,10 @@ optional arguments: -m MARKET, --market MARKET Choose a ticker to be the market 
             
         
 
+        
         
+    
+
         
     
         
@@ -36909,8 +37413,24 @@ optional arguments: -m MARKET, --market MARKET Choose a ticker to be the market 
         
         
     
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
 
         
+        
     
         
         
@@ -37252,6 +37772,9 @@ optional arguments: -m MARKET, --market MARKET Choose a ticker to be the market 
         
 
         
+        
+    
+
         
     
         
@@ -37349,7 +37872,23 @@ optional arguments: -m MARKET, --market MARKET Choose a ticker to be the market 
         
         
     
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
 
+        
         
     
         
@@ -37500,6 +38039,120 @@ optional arguments: -m MARKET, --market MARKET Choose a ticker to be the market 
             
                 
                 
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
             
 
             
@@ -40986,12 +41639,12 @@ optional arguments: -m MARKET, --market MARKET Choose a ticker to be the market 
     
         <span class="gdoc-page__nav">
             
-                <a class="gdoc-page__nav--prev flex align-center" href="/OpenBBTerminal/terminal/portfolio/al/" title="al"> al</a>
+                <a class="gdoc-page__nav--prev flex align-center" href="/OpenBBTerminal/terminal/portfolio/rvol/" title="rvol"> rvol</a>
             
         </span>
         <span class="gdoc-page__nav">
             
-                <a class="gdoc-page__nav--next flex align-center" href="/OpenBBTerminal/terminal/portfolio/dd/" title="dd">dd </a>
+                <a class="gdoc-page__nav--next flex align-center" href="/OpenBBTerminal/terminal/portfolio/rsort/" title="rsort">rsort </a>
             
         </span>
     
