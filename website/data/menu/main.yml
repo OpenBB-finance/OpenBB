@@ -1253,20 +1253,44 @@ main:
             ref: "/terminal/portfolio/show"
           - name: bench
             ref: "/terminal/portfolio/bench"
+          - name: holdv
+            ref: "/terminal/portfolio/holdv"
+          - name: holdp
+            ref: "/terminal/portfolio/holdp"
+          - name: cret
+            ref: "/terminal/portfolio/cret"
+          - name: yret
+            ref: "/terminal/portfolio/yret"
+          - name: mret
+            ref: "/terminal/portfolio/mret"
+          - name: dret
+            ref: "/terminal/portfolio/dret"
+          - name: distr
+            ref: "/terminal/portfolio/distr"
+          - name: maxdd
+            ref: "/terminal/portfolio/maxdd"
+          - name: rvol
+            ref: "/terminal/portfolio/rvol"
+          - name: rsharpe
+            ref: "/terminal/portfolio/rsharpe"
+          - name: rsort
+            ref: "/terminal/portfolio/rsort"
+          - name: rbeta
+            ref: "/terminal/portfolio/rbeta"
           - name: alloc
             ref: "/terminal/portfolio/alloc"
+          - name: summary
+            ref: "/terminal/portfolio/summary"
+          - name: metric
+            ref: "/terminal/portfolio/metric"
           - name: perf
             ref: "/terminal/portfolio/perf"
-          - name: al
-            ref: "/terminal/portfolio/al"
-          - name: rmr
-            ref: "/terminal/portfolio/rmr"
-          - name: dd
-            ref: "/terminal/portfolio/dd"
-          - name: rolling
-            ref: "/terminal/portfolio/rolling"
           - name: var
             ref: "/terminal/portfolio/var"
+          - name: es
+            ref: "/terminal/portfolio/es"
+          - name: om
+            ref: "/terminal/portfolio/om"
       - name: forex
         ref: "/terminal/forex"
         sub:

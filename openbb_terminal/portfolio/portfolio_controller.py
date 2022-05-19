@@ -13,8 +13,9 @@ from prompt_toolkit.completion import NestedCompleter
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
+    EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_FIGURES_ALLOWED,
-    check_positive,
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive_float,
     parse_known_args_and_warn,
     print_rich_table,
@@ -28,7 +29,7 @@ from openbb_terminal.portfolio.portfolio_optimization import po_controller
 from openbb_terminal.rich_config import console
 from openbb_terminal.common.quantitative_analysis import qa_view
 
-# pylint: disable=R1710,E1101,C0415,W0212,too-many-function-args
+# pylint: disable=R1710,E1101,C0415,W0212,too-many-function-args,C0302
 
 logger = logging.getLogger(__name__)
 
@@ -44,24 +45,42 @@ class PortfolioController(BaseController):
         "bench",
         "alloc",
         "perf",
-        "ar",
-        "rmr",
-        "al",
-        "dd",
-        "rolling",
+        "cret",
+        "yret",
+        "mret",
+        "dret",
+        "distr",
+        "holdv",
+        "holdp",
+        "maxdd",
         "var",
         "es",
         "sh",
         "so",
         "om",
+        "rvol",
+        "rsharpe",
+        "rsort",
+        "rbeta",
+        "metric",
+        "summary",
     ]
     CHOICES_MENUS = [
         "bro",
         "po",
         "pa",
     ]
-    distributions = ["laplace", "student_t", "logistic", "normal"]
-    aggregation_methods = ["assets", "sectors", "countries", "regions"]
+    VALID_DISTRIBUTIONS = ["laplace", "student_t", "logistic", "normal"]
+    AGGREGATION_METRICS = ["assets", "sectors", "countries", "regions"]
+    VALID_METRICS = [
+        "volatility",
+        "sharpe",
+        "sortino",
+        "maxdrawdown",
+        "rsquare",
+        "skew",
+        "kurtosis",
+    ]
     PATH = "/portfolio/"
 
     def __init__(self, queue: List[str] = None):
@@ -100,6 +119,7 @@ class PortfolioController(BaseController):
 
         self.portfolio_name = ""
         self.benchmark_name = ""
+        self.original_benchmark_name = ""
         self.portlist: List[str] = os.listdir(self.DEFAULT_HOLDINGS_PATH)
         self.portfolio = portfolio_model.Portfolio()
 
@@ -107,7 +127,8 @@ class PortfolioController(BaseController):
             choices: dict = {c: {} for c in self.controller_choices}
             choices["load"] = {c: None for c in self.DATA_HOLDINGS_FILES}
             choices["bench"] = {c: None for c in portfolio_helper.BENCHMARK_LIST}
-            choices["alloc"] = {c: None for c in self.aggregation_methods}
+            choices["alloc"] = {c: None for c in self.AGGREGATION_METRICS}
+            choices["metric"] = {c: None for c in self.VALID_METRICS}
             self.choices = choices
 
             choices["support"] = self.SUPPORT_CHOICES
@@ -116,43 +137,63 @@ class PortfolioController(BaseController):
 
     def print_help(self):
         """Print help"""
-        # NOTE: See comment at `call_pa` definition
-        # >   pa          portfolio analysis, \t\t analyse portfolios
+        port = bool(self.portfolio_name)
+        port_bench = bool(self.portfolio_name) and bool(self.benchmark_name)
+
         help_text = f"""[menu]
 >   bro         brokers holdings, \t\t supports: robinhood, ally, degiro, coinbase
->   po          portfolio optimization, \t optimal portfolio weights from pyportfolioopt[/menu]
+>   po          portfolio optimization, \t optimal your portfolio weights efficiently[/menu]
 
-[info]Portfolio:[/info][cmds]
-    load        load data into the portfolio
-    show        show existing transactions
-    bench       define the benchmark[/cmds]
+    [cmds]load        load data into the portfolio[/cmds]
 
-[param]Loaded orderbook:[/param] {self.portfolio_name or None}
-[param]Benchmark:[/param] {self.benchmark_name or None}
-[param]Risk Free Rate:[/param] {self.portfolio.rf:.2%}
+[param]Loaded orderbook:[/param] {self.portfolio_name or ""}
+[param]Risk Free Rate:  [/param] {self.portfolio.rf:.2%}
 
-[info]Performance:[/info][cmds]
-    alloc       show allocation on an asset or sector basis
-    perf        show (total) performance of the portfolio versus benchmark
+    {("[unvl]", "[cmds]")[port]}show        show existing transactions{("[/unvl]", "[/cmds]")[port]}
 
-[info]Graphs:[/info][cmds]
-    rolling     display rolling metrics of portfolio and benchmark
-    rmr         graph your returns versus the market's returns
-    dd          display portfolio drawdown
-    al          display allocation to given assets over period[/cmds]
+    {("[unvl]", "[cmds]")[port]}bench       define the benchmark{("[/unvl]", "[/cmds]")[port]}
 
-[info]Risk Metrics:[/info][cmds]
+[param]Benchmark:[/param] {self.benchmark_name or ""}
+
+[info]Graphs:[/info]{("[unvl]", "[cmds]")[port_bench]}
+    holdv       holdings of assets (absolute value)
+    holdp       portfolio holdings of assets (in percentage)
+    cret        cumulative returns
+    yret        yearly returns
+    mret        monthly returns
+    dret        daily returns
+    distr       distribution of daily returns
+    maxdd       maximum drawdown
+    rvol        rolling volatility
+    rsharpe     rolling sharpe
+    rsort       rolling sortino
+    rbeta       rolling beta{("[/unvl]", "[/cmds]")[port_bench]}
+
+[info]Metrics:[/info]{("[unvl]", "[cmds]")[port_bench]}
+    alloc       allocation on an asset, sector, countries or regions basis
+    summary     all portfolio vs benchmark metrics for a certain period of choice
+    metric      portfolio vs benchmark metric for all different periods
+    perf        performance of the portfolio versus benchmark{("[/unvl]", "[/cmds]")[port_bench]}
+
+[info]Risk Metrics:[/info]{("[unvl]", "[cmds]")[port]}
     var         display value at risk
     es          display expected shortfall
-    sh          display sharpe ratio
-    so          display sortino ratio
-    om          display omega ratio[/cmds]
+    om          display omega ratio{("[/unvl]", "[/cmds]")[port]}
         """
         # TODO: Clean up the reports inputs
         # TODO: Edit the allocation to allow the different asset classes
         # [info]Reports:[/info]
         #    ar          annual report for performance of a given portfolio
         console.print(text=help_text, menu="Portfolio")
+
+    def custom_reset(self):
+        """Class specific component of reset command"""
+        objects_to_reload = ["portfolio"]
+        if self.portfolio_name:
+            objects_to_reload.append(f"load {self.portfolio_name}")
+        if self.original_benchmark_name:
+            objects_to_reload.append(f'bench "{self.original_benchmark_name}"')
+        return objects_to_reload
 
     @log_start_end(log=logger)
     def call_bro(self, _):
@@ -182,18 +223,6 @@ class PortfolioController(BaseController):
             self.queue,
         )
 
-    # BUG: The commands in pa menu throw errors. First one says that it's related to
-    #      string formatting and the second one has something to do with None being used
-    #      instead of [] in the queue (assumption) what throws errors on the logger.
-    # TODO: This submenu is disabled until the bug is fixed.
-    # def call_pa(self, _):
-    #     """Process pa command"""
-    #     from openbb_terminal.portfolio.portfolio_analysis import pa_controller
-    #
-    #     self.queue = self.queue = self.load_class(
-    #         pa_controller.PortfolioAnalysisController, self.queue
-    #     )
-
     @log_start_end(log=logger)
     def call_load(self, other_args: List[str]):
         """Process load command"""
@@ -212,7 +241,6 @@ class PortfolioController(BaseController):
             required="-h" not in other_args,
             help="The file to be loaded",
         )
-
         parser.add_argument(
             "-n",
             "--name",
@@ -220,19 +248,16 @@ class PortfolioController(BaseController):
             dest="name",
             help="The name that you wish to give to your portfolio",
         )
-
         parser.add_argument(
             "-r",
-            "--risk_free_rate",
+            "--rfr",
             type=str,
             default=0,
             dest="risk_free_rate",
             help="Set the risk free rate.",
         )
-
-        if other_args:
-            if "-f" not in other_args and "-h" not in other_args:
-                other_args.insert(0, "-f")
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-f")
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
 
@@ -272,7 +297,6 @@ class PortfolioController(BaseController):
             return
 
         print_rich_table(self.portfolio.trades, show_index=False)
-        console.print()
 
     @log_start_end(log=logger)
     def call_bench(self, other_args: List[str]):
@@ -293,27 +317,33 @@ class PortfolioController(BaseController):
             required="-h" not in other_args,
             help="Set the benchmark for the portfolio. By default, this is SPDR S&P 500 ETF Trust (SPY).",
         )
-
-        if "-b" not in other_args and "-h" not in other_args:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-b")
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
 
-        if ns_parser and ns_parser.benchmark:
-            chosen_benchmark = " ".join(ns_parser.benchmark)
+        if ns_parser:
+            # needs to be checked since we want to use the start date of the portfolio when comparing with benchmark
+            if self.portfolio_name:
+                chosen_benchmark = " ".join(ns_parser.benchmark)
 
-            if chosen_benchmark in portfolio_helper.BENCHMARK_LIST:
-                benchmark_ticker = portfolio_helper.BENCHMARK_LIST[chosen_benchmark]
+                if chosen_benchmark in portfolio_helper.BENCHMARK_LIST:
+                    benchmark_ticker = portfolio_helper.BENCHMARK_LIST[chosen_benchmark]
+                    self.original_benchmark_name = chosen_benchmark
+                else:
+                    benchmark_ticker = chosen_benchmark
+
+                self.portfolio.add_benchmark(benchmark_ticker)
+
+                self.benchmark_name = self.portfolio.benchmark_info["longName"]
+
+                console.print(
+                    f"[bold]\nBenchmark:[/bold] {self.benchmark_name} ({benchmark_ticker})"
+                )
             else:
-                benchmark_ticker = chosen_benchmark
-
-            self.portfolio.add_benchmark(benchmark_ticker)
-            self.benchmark_name = self.portfolio.benchmark_info["longName"]
-
-            console.print(
-                f"[bold]\nBenchmark:[/bold] {self.benchmark_name} ({benchmark_ticker})"
-            )
-
+                console.print(
+                    "[red]Please first define the portfolio using 'load'[/red]\n"
+                )
             console.print()
 
     @log_start_end(log=logger)
@@ -331,20 +361,10 @@ class PortfolioController(BaseController):
             "-a",
             "--agg",
             default="assets",
-            choices=self.aggregation_methods,
+            choices=self.AGGREGATION_METRICS,
             dest="agg",
             help="The type of allocation aggregation you wish to do",
         )
-
-        parser.add_argument(
-            "-l",
-            "--limit",
-            default=10,
-            type=int,
-            dest="limit",
-            help="The amount of assets or sectors you wish to see",
-        )
-
         parser.add_argument(
             "-t",
             "--tables",
@@ -353,15 +373,17 @@ class PortfolioController(BaseController):
             dest="tables",
             help="Whether to also include the assets/sectors tables of both the benchmark and the portfolio.",
         )
-
         if other_args:
-            if "-a" not in other_args and "-h" not in other_args:
+            if other_args and "-" not in other_args[0][0]:
                 other_args.insert(0, "-a")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args, limit=10)
 
-        if ns_parser and ns_parser.agg:
-            if self.portfolio_name and self.benchmark_name:
+        if ns_parser:
+            console.print()
+            if check_portfolio_benchmark_defined(
+                self.portfolio_name, self.benchmark_name
+            ):
                 if self.portfolio.portfolio_assets_allocation.empty:
                     self.portfolio.calculate_allocations()
 
@@ -399,13 +421,8 @@ class PortfolioController(BaseController):
                 else:
                     console.print(
                         f"{ns_parser.agg} is not an available option. The options "
-                        f"are: {', '.join(self.aggregation_methods)}"
+                        f"are: {', '.join(self.AGGREGATION_METRICS)}"
                     )
-            else:
-                console.print(
-                    "[red]Please first define the portfolio (via 'load') "
-                    "and the benchmark (via 'bench').[/red]\n"
-                )
 
     @log_start_end(log=logger)
     def call_perf(self, other_args: List[str]):
@@ -426,7 +443,6 @@ class PortfolioController(BaseController):
             dest="full_shares",
             help="Whether to only make a trade with the benchmark when a full share can be bought (no partial shares).",
         )
-
         parser.add_argument(
             "-t",
             "--show_trades",
@@ -435,11 +451,24 @@ class PortfolioController(BaseController):
             dest="show_trades",
             help="Whether to show performance on all trades in comparison to the benchmark.",
         )
+        parser.add_argument(
+            "-p",
+            "--period",
+            type=str,
+            choices=portfolio_helper.PERIODS,
+            dest="period",
+            default="all",
+            help="The file to be loaded",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-p")
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
-            if self.portfolio_name and self.benchmark_name:
+            if check_portfolio_benchmark_defined(
+                self.portfolio_name, self.benchmark_name
+            ):
                 self.portfolio.mimic_portfolio_trades_for_benchmark(
                     full_shares=ns_parser.full_shares
                 )
@@ -447,61 +476,81 @@ class PortfolioController(BaseController):
                 portfolio_view.display_performance_vs_benchmark(
                     self.portfolio.portfolio_trades,
                     self.portfolio.benchmark_trades,
+                    ns_parser.period,
                     ns_parser.show_trades,
-                )
-            else:
-                console.print(
-                    "[red]Please first define the portfolio (via 'load') "
-                    "and the benchmark (via 'bench').[/red]\n"
                 )
 
     @log_start_end(log=logger)
-    def call_al(self, other_args: List[str]):
-        """Process al command"""
+    def call_holdv(self, other_args: List[str]):
+        """Process holdv command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="al",
-            description="Display allocation",
+            prog="holdv",
+            description="Display holdings of assets (absolute value)",
+        )
+        parser.add_argument(
+            "-s",
+            "--sum",
+            action="store_true",
+            default=False,
+            dest="sum_assets",
+            help="Sum all assets value over time",
         )
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
+            parser,
+            other_args,
+            export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+            raw=True,
+            limit=10,
         )
         if ns_parser:
-            if self.portfolio_name and self.benchmark_name:
-                portfolio_view.display_allocation(self.portfolio, ns_parser.export)
-            else:
-                console.print(
-                    "[red]Please first define the portfolio (via 'load') "
-                    "and the benchmark (via 'bench').[/red]\n"
+            if check_portfolio_benchmark_defined(
+                self.portfolio_name, self.benchmark_name
+            ):
+                portfolio_view.display_holdings_value(
+                    self.portfolio,
+                    ns_parser.sum_assets,
+                    ns_parser.raw,
+                    ns_parser.limit,
+                    ns_parser.export,
                 )
 
-    # def call_ar(self, other_args: List[str]):
-    #     """Process ar command"""
-    #     parser = argparse.ArgumentParser(
-    #         add_help=False,
-    #         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-    #         prog="ar",
-    #         description="Create an annual report based on given portfolio",
-    #     )
-    #     parser.add_argument(
-    #         "-m",
-    #         "--market",
-    #         type=str,
-    #         dest="market",
-    #         default="SPY",
-    #         help="Choose a ticker to be the market asset",
-    #     )
-    #     ns_parser = parse_known_args_and_warn(parser, other_args)
-    #     if ns_parser:
-    #         if not self.portfolio.empty:
-    #             self.portfolio.generate_holdings_from_trades()
-    #             self.portfolio.add_benchmark(ns_parser.market)
-    #             portfolio_view.Report(
-    #                 val, hist, ns_parser.market, 365
-    #             ).generate_report()
-    #         else:
-    #             console.print("Please add items to the portfolio\n")
+    @log_start_end(log=logger)
+    def call_holdp(self, other_args: List[str]):
+        """Process holdp command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="holdp",
+            description="Display holdings of assets (in percentage)",
+        )
+        parser.add_argument(
+            "-s",
+            "--sum",
+            action="store_true",
+            default=False,
+            dest="sum_assets",
+            help="Sum all assets percentage over time",
+        )
+        ns_parser = parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+            raw=True,
+            limit=10,
+        )
+        if ns_parser:
+            if check_portfolio_benchmark_defined(
+                self.portfolio_name, self.benchmark_name
+            ):
+                portfolio_view.display_holdings_percentage(
+                    self.portfolio,
+                    ns_parser.sum_assets,
+                    ns_parser.raw,
+                    ns_parser.limit,
+                    ns_parser.export,
+                )
 
     @log_start_end(log=logger)
     def call_var(self, other_args: List[str]):
@@ -553,9 +602,11 @@ class PortfolioController(BaseController):
                 Percentile used for VaR calculations, for example input 99.9 equals a 99.9 Percent VaR
             """,
         )
+
         ns_parser = parse_known_args_and_warn(parser, other_args)
+
         if ns_parser:
-            if self.portfolio_name and self.benchmark_name:
+            if self.portfolio_name:
                 if ns_parser.adjusted and ns_parser.student_t:
                     console.print(
                         "Select either the adjusted or the student_t parameter.\n"
@@ -572,8 +623,7 @@ class PortfolioController(BaseController):
                     )
             else:
                 console.print(
-                    "[red]Please first define the portfolio (via 'load') "
-                    "and the benchmark (via 'bench').[/red]\n"
+                    "[red]Please first define the portfolio using 'load'[/red]\n"
                 )
 
     @log_start_end(log=logger)
@@ -601,7 +651,7 @@ class PortfolioController(BaseController):
             "--distributions",
             dest="distributions",
             type=str,
-            choices=self.distributions,
+            choices=self.VALID_DISTRIBUTIONS,
             default="normal",
             help="Distribution used for the calculations",
         )
@@ -616,9 +666,11 @@ class PortfolioController(BaseController):
                 Percentile used for ES calculations, for example input 99.9 equals a 99.9 Percent Expected Shortfall
             """,
         )
+
         ns_parser = parse_known_args_and_warn(parser, other_args)
+
         if ns_parser:
-            if self.portfolio_name and self.benchmark_name:
+            if self.portfolio_name:
                 qa_view.display_es(
                     self.portfolio.returns,
                     "Portfolio",
@@ -629,99 +681,7 @@ class PortfolioController(BaseController):
                 )
             else:
                 console.print(
-                    "[red]Please first define the portfolio (via 'load') "
-                    "and the benchmark (via 'bench').[/red]\n"
-                )
-
-    @log_start_end(log=logger)
-    def call_sh(self, other_args: List[str]):
-        """Process sh command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="sh",
-            description="""
-                        Provides the sharpe ratio of the selected portfolio.
-                    """,
-        )
-        parser.add_argument(
-            "-r",
-            "--rfr",
-            action="store",
-            dest="rfr",
-            type=float,
-            default=0,
-            help="Risk free return",
-        )
-        parser.add_argument(
-            "-w",
-            "--window",
-            action="store",
-            dest="window",
-            type=int,
-            default=252,
-            help="Rolling window length",
-        )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            if self.portfolio_name and self.benchmark_name:
-                data = self.portfolio.portfolio_value[1:]
-                qa_view.display_sharpe(data, ns_parser.rfr, ns_parser.window)
-            else:
-                console.print(
-                    "[red]Please first define the portfolio (via 'load') "
-                    "and the benchmark (via 'bench').[/red]\n"
-                )
-
-    @log_start_end(log=logger)
-    def call_so(self, other_args: List[str]):
-        """Process so command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="so",
-            description="""
-                    Provides the sortino ratio of the selected portfolio.
-                """,
-        )
-        parser.add_argument(
-            "-t",
-            "--target",
-            action="store",
-            dest="target_return",
-            type=float,
-            default=0,
-            help="Target return",
-        )
-        parser.add_argument(
-            "-a",
-            "--adjusted",
-            action="store_true",
-            default=False,
-            dest="adjusted",
-            help="If one should adjust the sortino ratio inorder to make it comparable to the sharpe ratio",
-        )
-        parser.add_argument(
-            "-w",
-            "--window",
-            action="store",
-            dest="window",
-            type=int,
-            default=252,
-            help="Rolling window length",
-        )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            if self.portfolio_name and self.benchmark_name:
-                data = self.portfolio.returns[1:]
-                qa_view.display_sortino(
-                    data, ns_parser.target_return, ns_parser.window, ns_parser.adjusted
-                )
-            else:
-                console.print(
-                    "[red]Please first define the portfolio (via 'load') "
-                    "and the benchmark (via 'bench').[/red]\n"
+                    "[red]Please first define the portfolio using 'load'[/red]\n"
                 )
 
     @log_start_end(log=logger)
@@ -757,10 +717,9 @@ class PortfolioController(BaseController):
                    End of the omega ratio threshold
                """,
         )
-
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            if self.portfolio_name and self.benchmark_name:
+            if self.portfolio_name:
                 data = self.portfolio.returns[1:]
                 qa_view.display_omega(
                     data,
@@ -768,94 +727,519 @@ class PortfolioController(BaseController):
                     ns_parser.end,
                 )
             else:
-                console.print(
-                    "[red]Please first define the portfolio (via 'load') "
-                    "and the benchmark (via 'bench').[/red]\n"
-                )
+                if not self.portfolio_name:
+                    console.print(
+                        "[red]Please first define the portfolio (via 'load')[/red]\n"
+                    )
 
     @log_start_end(log=logger)
-    def call_rmr(self, other_args: List[str]):
-        """Process rmr command"""
+    def call_cret(self, other_args: List[str]):
+        """Process cret command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="rmr",
-            description="Graph of portfolio returns versus market returns",
+            prog="cret",
+            description="Graph of cumulative returns against benchmark",
+        )
+        parser.add_argument(
+            "-p",
+            "--period",
+            type=str,
+            dest="period",
+            default="all",
+            choices=list(portfolio_helper.PERIODS_DAYS.keys()),
+            help="Period to select start of cumulative returns",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-p")
+        ns_parser = parse_known_args_and_warn(
+            parser,
+            other_args,
+            raw=True,
+            limit=10,
+            export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
         )
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-
         if ns_parser:
-            if self.portfolio_name and self.benchmark_name:
-                portfolio_view.display_returns_vs_bench(
-                    self.portfolio.returns, self.portfolio.benchmark_returns
-                )
-            else:
-                console.print(
-                    "[red]Please first define the portfolio (via 'load') "
-                    "and the benchmark (via 'bench').[/red]\n"
+            if check_portfolio_benchmark_defined(
+                self.portfolio_name, self.benchmark_name
+            ):
+                portfolio_view.display_cumulative_returns(
+                    self.portfolio.returns,
+                    self.portfolio.benchmark_returns,
+                    ns_parser.period,
+                    ns_parser.raw,
+                    ns_parser.limit,
+                    ns_parser.export,
                 )
 
     @log_start_end(log=logger)
-    def call_dd(self, other_args: List[str]):
-        """Process dd command"""
+    def call_yret(self, other_args: List[str]):
+        """Process yret command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="dd",
-            description="Show portfolio drawdown",
+            prog="yret",
+            description="End of the year returns",
+        )
+        parser.add_argument(
+            "-p",
+            "--period",
+            type=str,
+            dest="period",
+            default="all",
+            choices=["3y", "5y", "10y", "all"],
+            help="Period to select start end of the year returns",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-p")
+        ns_parser = parse_known_args_and_warn(
+            parser,
+            other_args,
+            raw=True,
+            export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+        )
+
+        if ns_parser:
+            if check_portfolio_benchmark_defined(
+                self.portfolio_name, self.benchmark_name
+            ):
+                portfolio_view.display_yearly_returns(
+                    self.portfolio.returns,
+                    self.portfolio.benchmark_returns,
+                    ns_parser.period,
+                    ns_parser.raw,
+                    ns_parser.export,
+                )
+
+    @log_start_end(log=logger)
+    def call_mret(self, other_args: List[str]):
+        """Process mret command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="mret",
+            description="Monthly returns",
+        )
+        parser.add_argument(
+            "-p",
+            "--period",
+            type=str,
+            dest="period",
+            default="all",
+            choices=["3y", "5y", "10y", "all"],
+            help="Period to select start end of the year returns",
+        )
+        parser.add_argument(
+            "-s",
+            "--show",
+            action="store_true",
+            default=False,
+            dest="show_vals",
+            help="Show monthly returns on heatmap",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-p")
+        ns_parser = parse_known_args_and_warn(
+            parser,
+            other_args,
+            raw=True,
+            export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
+        )
+
+        if ns_parser:
+            if check_portfolio_benchmark_defined(
+                self.portfolio_name, self.benchmark_name
+            ):
+                portfolio_view.display_monthly_returns(
+                    self.portfolio.returns,
+                    self.portfolio.benchmark_returns,
+                    ns_parser.period,
+                    ns_parser.raw,
+                    ns_parser.show_vals,
+                    ns_parser.export,
+                )
+
+    @log_start_end(log=logger)
+    def call_dret(self, other_args: List[str]):
+        """Process dret command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="dret",
+            description="Daily returns",
+        )
+        parser.add_argument(
+            "-p",
+            "--period",
+            type=str,
+            dest="period",
+            default="all",
+            choices=["3y", "5y", "10y", "all"],
+            help="Period to select start end of the year returns",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-p")
+        ns_parser = parse_known_args_and_warn(
+            parser,
+            other_args,
+            raw=True,
+            limit=10,
+            export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+        )
+
+        if ns_parser:
+            if check_portfolio_benchmark_defined(
+                self.portfolio_name, self.benchmark_name
+            ):
+                portfolio_view.display_daily_returns(
+                    self.portfolio.returns,
+                    self.portfolio.benchmark_returns,
+                    ns_parser.period,
+                    ns_parser.raw,
+                    ns_parser.limit,
+                    ns_parser.export,
+                )
+
+    @log_start_end(log=logger)
+    def call_maxdd(self, other_args: List[str]):
+        """Process maxdd command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="maxdd",
+            description="Show portfolio maximum drawdown",
         )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
         if ns_parser:
-            if self.portfolio_name and self.benchmark_name:
-                portfolio_view.display_drawdown(self.portfolio.portfolio_value)
-            else:
-                console.print(
-                    "[red]Please first define the portfolio (via 'load') "
-                    "and the benchmark (via 'bench').[/red]\n"
-                )
+            if check_portfolio_benchmark_defined(
+                self.portfolio_name, self.benchmark_name
+            ):
+                portfolio_view.display_maximum_drawdown(self.portfolio.portfolio_value)
 
     @log_start_end(log=logger)
-    def call_rolling(self, other_args: List[str]):
-        """Process rolling command"""
+    def call_rvol(self, other_args: List[str]):
+        """Process rolling volatility command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="rolling",
-            description="Show rolling portfolio metrics vs benchmark",
+            prog="rvol",
+            description="Show rolling volatility portfolio vs benchmark",
         )
-
         parser.add_argument(
-            "-l",
-            "--length",
-            type=check_positive,
-            dest="length",
-            default=60,
-            help="Length of rolling window",
+            "-p",
+            "--period",
+            type=str,
+            dest="period",
+            default="1y",
+            choices=list(portfolio_helper.PERIODS_DAYS.keys()),
+            help="Period to apply rolling window",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-p")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if ns_parser:
+            if check_portfolio_benchmark_defined(
+                self.portfolio_name, self.benchmark_name
+            ):
+                portfolio_view.display_rolling_volatility(
+                    self.portfolio.benchmark_returns,
+                    self.portfolio.returns,
+                    period=ns_parser.period,
+                    export=ns_parser.export,
+                )
+
+    @log_start_end(log=logger)
+    def call_rsharpe(self, other_args: List[str]):
+        """Process rolling sharpe command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="rsharpe",
+            description="Show rolling sharpe portfolio vs benchmark",
+        )
+        parser.add_argument(
+            "-p",
+            "--period",
+            type=str,
+            dest="period",
+            default="1y",
+            choices=list(portfolio_helper.PERIODS_DAYS.keys()),
+            help="Period to apply rolling window",
         )
         parser.add_argument(
             "-r",
-            "--rf",
+            "--rfr",
             type=check_positive_float,
-            dest="rf",
+            dest="risk_free_rate",
             default=self.portfolio.rf,
             help="Set risk free rate for calculations.",
         )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-p")
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
+            parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            if self.portfolio_name and self.benchmark_name:
-                portfolio_view.display_rolling_stats(
+            if check_portfolio_benchmark_defined(
+                self.portfolio_name, self.benchmark_name
+            ):
+                portfolio_view.display_rolling_sharpe(
                     self.portfolio.benchmark_returns,
                     self.portfolio.returns,
-                    length=ns_parser.length,
-                    risk_free_rate=ns_parser.rf,
+                    period=ns_parser.period,
+                    risk_free_rate=ns_parser.risk_free_rate,
+                    export=ns_parser.export,
                 )
-            else:
-                console.print(
-                    "[red]Please first define the portfolio (via 'load') "
-                    "and the benchmark (via 'bench').[/red]\n"
+
+    @log_start_end(log=logger)
+    def call_rsort(self, other_args: List[str]):
+        """Process rolling sortino command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="rsort",
+            description="Show rolling sortino portfolio vs benchmark",
+        )
+        parser.add_argument(
+            "-p",
+            "--period",
+            type=str,
+            dest="period",
+            default="1y",
+            choices=list(portfolio_helper.PERIODS_DAYS.keys()),
+            help="Period to apply rolling window",
+        )
+        parser.add_argument(
+            "-r",
+            "--rfr",
+            type=check_positive_float,
+            dest="risk_free_rate",
+            default=self.portfolio.rf,
+            help="Set risk free rate for calculations.",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-p")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if ns_parser:
+            if check_portfolio_benchmark_defined(
+                self.portfolio_name, self.benchmark_name
+            ):
+                portfolio_view.display_rolling_sortino(
+                    self.portfolio.benchmark_returns,
+                    self.portfolio.returns,
+                    period=ns_parser.period,
+                    risk_free_rate=ns_parser.risk_free_rate,
+                    export=ns_parser.export,
                 )
+
+    @log_start_end(log=logger)
+    def call_rbeta(self, other_args: List[str]):
+        """Process rolling beta command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="rbeta",
+            description="Show rolling beta portfolio vs benchmark",
+        )
+        parser.add_argument(
+            "-p",
+            "--period",
+            type=str,
+            dest="period",
+            default="1y",
+            choices=list(portfolio_helper.PERIODS_DAYS.keys()),
+            help="Period to apply rolling window",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-p")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if ns_parser:
+            if check_portfolio_benchmark_defined(
+                self.portfolio_name, self.benchmark_name
+            ):
+                portfolio_view.display_rolling_beta(
+                    self.portfolio.benchmark_returns,
+                    self.portfolio.returns,
+                    period=ns_parser.period,
+                    export=ns_parser.export,
+                )
+
+    @log_start_end(log=logger)
+    def call_metric(self, other_args: List[str]):
+        """Process metric command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="metric",
+            description="Display metric of choice for different periods",
+        )
+        parser.add_argument(
+            "-m",
+            "--metric",
+            type=str,
+            dest="metric",
+            default="-h" not in other_args,
+            choices=self.VALID_METRICS,
+            help="Period to apply rolling window",
+        )
+        parser.add_argument(
+            "-r",
+            "--rfr",
+            type=check_positive_float,
+            dest="risk_free_rate",
+            default=self.portfolio.rf,
+            help="Set risk free rate for calculations.",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-m")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            if check_portfolio_benchmark_defined(
+                self.portfolio_name, self.benchmark_name
+            ):
+                if ns_parser.metric == "skew":
+                    portfolio_view.display_skewness(self.portfolio, ns_parser.export)
+                elif ns_parser.metric == "kurtosis":
+                    portfolio_view.display_kurtosis(self.portfolio, ns_parser.export)
+                elif ns_parser.metric == "volatility":
+                    portfolio_view.display_volatility(self.portfolio, ns_parser.export)
+                elif ns_parser.metric == "sharpe":
+                    portfolio_view.display_sharpe_ratio(
+                        self.portfolio, ns_parser.risk_free_rate, ns_parser.export
+                    )
+                elif ns_parser.metric == "sortino":
+                    portfolio_view.display_sortino_ratio(
+                        self.portfolio, ns_parser.risk_free_rate, ns_parser.export
+                    )
+                elif ns_parser.metric == "maxdrawdown":
+                    portfolio_view.display_maximum_drawdown_ratio(
+                        self.portfolio, ns_parser.export
+                    )
+                elif ns_parser.metric == "rsquare":
+                    portfolio_view.display_rsquare(self.portfolio, ns_parser.export)
+
+    @log_start_end(log=logger)
+    def call_distr(self, other_args: List[str]):
+        """Process distr command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="distr",
+            description="Compute distribution of daily returns",
+        )
+        parser.add_argument(
+            "-p",
+            "--period",
+            type=str,
+            choices=portfolio_helper.PERIODS,
+            dest="period",
+            default="all",
+            help="The file to be loaded",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-p")
+
+        ns_parser = parse_known_args_and_warn(
+            parser,
+            other_args,
+            raw=True,
+            export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+        )
+        if ns_parser:
+            if check_portfolio_benchmark_defined(
+                self.portfolio_name, self.benchmark_name
+            ):
+                portfolio_view.display_distribution_returns(
+                    self.portfolio.returns,
+                    self.portfolio.benchmark_returns,
+                    ns_parser.period,
+                    ns_parser.raw,
+                    ns_parser.export,
+                )
+
+    @log_start_end(log=logger)
+    def call_summary(self, other_args: List[str]):
+        """Process summary command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="summary",
+            description="Display summary of portfolio vs benchmark",
+        )
+        parser.add_argument(
+            "-p",
+            "--period",
+            type=str,
+            choices=portfolio_helper.PERIODS,
+            dest="period",
+            default="all",
+            help="The file to be loaded",
+        )
+        parser.add_argument(
+            "-r",
+            "--rfr",
+            type=check_positive_float,
+            dest="risk_free_rate",
+            default=self.portfolio.rf,
+            help="Set risk free rate for calculations.",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-p")
+
+        ns_parser = parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
+        )
+        if ns_parser:
+            if check_portfolio_benchmark_defined(
+                self.portfolio_name, self.benchmark_name
+            ):
+                portfolio_view.display_summary_portfolio_benchmark(
+                    self.portfolio.returns,
+                    self.portfolio.benchmark_returns,
+                    ns_parser.period,
+                    ns_parser.risk_free_rate,
+                    ns_parser.export,
+                )
+
+
+def check_portfolio_benchmark_defined(portfolio_name: str, benchmark_name: str) -> bool:
+    """Check that portfolio and benchmark have been defined
+
+    Parameters
+    ----------
+    portfolio_name: str
+        Portfolio name, will be empty if not defined
+    benchmark_name: str
+        Benchmark name, will be empty if not defined
+
+    Returns
+    -------
+    bool
+        If both portfolio and benchmark have been defined
+    """
+    if portfolio_name and benchmark_name:
+        return True
+    if not portfolio_name:
+        if not benchmark_name:
+            console.print(
+                "[red]Please first define the portfolio (via 'load') "
+                "and the benchmark (via 'bench').[/red]\n"
+            )
+        else:
+            console.print("[red]Please first define the portfolio (via 'load')[/red]\n")
+    else:
+        console.print("[red]Please first define the benchmark (via 'bench')[/red]\n")
+    return False
