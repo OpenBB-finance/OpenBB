@@ -190,6 +190,7 @@ def check_for_updates() -> None:
             "[yellow]Unable to check for updates... "
             + "Check your internet connection and try again...[/yellow]"
         )
+    console.print("")
 
 
 def welcome_message():
