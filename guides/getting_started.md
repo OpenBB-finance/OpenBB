@@ -23,7 +23,7 @@ is to make investment research effective, powerful and accessible to everyone.
 Python is one of the most used programming languages due to its simplified syntax and shallow learning curve.
 On top of this, it is highly used in data science and academia world (particularly on finance, economics
 or business related degrees). This is very important, as it is the first time in history that users - regardless
-of their background - can so easily add features to an investment research platform.
+of their background - can so easily add features to an investment research platform.<br></br>
 
 The OpenBB Terminal provides a modern Python-based integrated environment for investment research, that allows an
 average joe retail trader to leverage state-of-the-art Data Science and Machine Learning technologies.  As a modern
@@ -34,7 +34,7 @@ and numerous third-party APIs).
 <h3>Why Open Source?</h3>
 An open source product allows for higher quality, greater reproducibility, lower costs, more transparency,
 and faster go-to-market due to the strong community created. In addition, users can adapt the platform to their
-needs or even build proprietary features on top of our infrastructure - which ultimately can result in a marketplace.
+needs or even build proprietary features on top of our infrastructure - which ultimately can result in a marketplace.<br></br>
 
 The OpenBB Terminal empowers individuals, regardless of whether they want to invest on the stock market in Japan,
 invest real estate in Portugal or invest in the cryptomarket, to contribute and share their passion, dreams and desires
