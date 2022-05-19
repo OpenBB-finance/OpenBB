@@ -94,6 +94,8 @@ def ema_strategy(
     bt.backtest.Result
         Backtest results
     """
+    df_stock.index = pd.to_datetime(df_stock.index.date)
+
     ticker = ticker.lower()
     ema = pd.DataFrame()
     start_date = df_stock.index[0]
