@@ -120,8 +120,8 @@ class PredictionTechniquesController(BaseController):
     rnn         Recurrent Neural Network
     lstm        Long-Short Term Memory
     conv1d      1D Convolutional Neural Network
-    mc          Monte-Carlo simulations[/cmds]
-    expo        Probablistic Exponential Smoothing
+    mc          Monte-Carlo simulations
+    expo        Probablistic Exponential Smoothing[/cmds]
         """
         console.print(text=help_text, menu="Stocks - Prediction Techniques")
 
