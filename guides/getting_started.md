@@ -1,6 +1,6 @@
 ---
 title: Getting started with the OpenBB Terminal
-keywords: "getting started, beginner guide, how to use openbb, openbb keys"
+keywords: "getting started, beginner guide, how to use openbb, openbb keys, openbb terminal, openbb"
 date: "YEAR-MONTH-DAY"
 type: our story
 status: publish
