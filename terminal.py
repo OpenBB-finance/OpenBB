@@ -32,6 +32,7 @@ from openbb_terminal.rich_config import console
 from openbb_terminal.terminal_helper import (
     about_us,
     bootup,
+    check_for_updates,
     is_reset,
     print_goodbye,
     reset,
@@ -519,6 +520,7 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
     if not jobs_cmds:
         welcome_message()
         t_controller.print_help()
+        check_for_updates()
 
     env_files = [f for f in os.listdir() if f.endswith(".env")]
     if env_files:
