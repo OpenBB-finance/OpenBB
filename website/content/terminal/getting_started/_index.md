@@ -62,9 +62,9 @@ When the file is downloaded, you can follow the following steps:
 
 | Installation instructions                                                                                                                                                                                                                                                               | Illustration                                                               |
 |:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:---------------------------------------------------------------------------|
-| Double click the .exe file that got downloaded to your "Downloads" folder. You will most likely receive the error on the right stating "Windows protected your PC". This is because the installer is still in beta phase, and the team has not yet requested verification from Windows. | ![windows_protected_your_pc](images/windows/windows_protected_your_pc.png) |
-| Click on "More info" and select "Run anyway" to start the installation process. Proceed by following the steps. Do note that if you wish to install the application to 'Program Files' that you will have to run the resulting application as Administrator.                            | ![run_anyway](images/windows/run_anyway.png)                               |
-| By clicking on the application that appeared on your Desktop, you are able to run the Terminal. The first time this takes a bit longer to load.                                                                                                                                         | ![run_the_terminal](images/windows/run_the_terminal.png)                   |
+| Double click the .exe file that got downloaded to your "Downloads" folder. You will most likely receive the error on the right stating "Windows protected your PC". This is because the installer is still in beta phase, and the team has not yet requested verification from Windows. | ![windows_protected_your_pc](https://user-images.githubusercontent.com/46355364/169502271-69ad8075-165f-4b1a-8ab8-254d643a5dae.png)|
+| Click on "More info" and select "Run anyway" to start the installation process. Proceed by following the steps. Do note that if you wish to install the application to 'Program Files' that you will have to run the resulting application as Administrator.                            | ![run_anyway](https://user-images.githubusercontent.com/46355364/169502143-ba88de53-7757-48f2-9ec4-748d4917044b.png)|
+| By clicking on the application that appeared on your Desktop, you are able to run the Terminal. The first time this takes a bit longer to load.                                                                                                                                         | ![run_the_terminal](https://user-images.githubusercontent.com/46355364/169502187-f4e42333-a947-464b-9320-a8f63c7ce089.png)|
 
 ### Installation for macOS
 
@@ -81,11 +81,11 @@ Installation instructions:
    files from the .dmg file.
 3. Open the folder and click on the "OpenBB Terminal" file, this should run the application.
 
-<img src="images/macos/mac_os_installation.png" alt="mac os installation" width=800/>
+<img width="800" alt="mac_os_installation" src="https://user-images.githubusercontent.com/46355364/169502594-5cafd088-01bc-49fb-9c70-a9105798e9f9.png">
 
 | Note about "Cannot check it for malicious software" warning                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | Illustration                                                                                                                                                                                                               |
 |:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Run the file. You will most likely receive a message that macOS was not able to check whether the application contains malicious software. This is because the installer is still in beta phase, and the team has not yet requested verification from Apple. See below how to correct for this. <br></br> Go to `System Preferences > Security & Privacy > General`. You should see a message at the bottom that says that the file "was blocked from use because it is not from an identified developer". Click on “Allow anyway” or "Open anyway". <br></br> You should now be able to launch the application.                        | <p align="center"><img src="images/macos/malicious_software_warning.png" alt="software warning" width="500"/></p> <p align="center"><img src="images/macos/option_one_warning_fix.png" alt="warning fix" width="500"/></p> |
+| Run the file. You will most likely receive a message that macOS was not able to check whether the application contains malicious software. This is because the installer is still in beta phase, and the team has not yet requested verification from Apple. See below how to correct for this. <br></br> Go to `System Preferences > Security & Privacy > General`. You should see a message at the bottom that says that the file "was blocked from use because it is not from an identified developer". Click on “Allow anyway” or "Open anyway". <br></br> You should now be able to launch the application.                        | <p align="center"><img width="500" alt="malicious_software_warning" src="https://user-images.githubusercontent.com/46355364/169502740-2345e2d6-1230-427d-afbc-58f9a30c4803.png"></p><p align="center"><img width="500" alt="warning_fix" src="https://user-images.githubusercontent.com/46355364/169502720-e28c78c5-7684-45a9-aafc-cf497de38c09.png"></p>|
 
 ## Structure of the OpenBB Terminal
 
@@ -93,7 +93,7 @@ The OpenBB Terminal is based off the <a href="https://en.wikipedia.org/wiki/Comm
 which is installed by default on every computer. By opening the application you have installed via "Accessing the OpenBB Terminal",
 you are greeted with the following interface:
 
-<img src="images/main_menu.png" alt="Main Menu" width="800"/>
+<img src="https://user-images.githubusercontent.com/46355364/169503071-ffb2d88d-0786-4568-94c0-ad55c8f8f3e7.png" alt="Main Menu" width="800"/>
 
 The OpenBB Terminal is centered around keyboard input. To navigate and perform analysis you will have to type in the name of the command followed by an `ENTER` (⏎). If you wish to see information about the OpenBB Terminal you can do so by typing `about` and then press `ENTER` (⏎). As you are typing, you will notice that you receive suggestions, by using the `DOWN` (⌄) arrow and pressing `ENTER` (⏎) you can select the command and execute it.
 
@@ -110,7 +110,7 @@ Menus, depicted in <b><span style="color:#005CA9">Dark Blue</span></b>, take you
 to as a menu. For example, if you wish to view information about stocks, you can do so by typing `stocks` and pressing `ENTER` (⏎).
 This opens a new menu as depicted below.
 
-<img src="images/stocks_menu.png" alt="Stocks Menu" width="800"/>
+<img src="https://user-images.githubusercontent.com/46355364/169503240-922357c8-5e2b-41f0-aca2-c1fc849dcd1c.png" alt="Stocks Menu" width="800"/>
 
 Depending on the menu you are in, you are presented with a new set of commands (see "Explanation of Commands")
 and menus you can select. There are interactions in place between each menu. For example, when selecting a company within
@@ -209,7 +209,7 @@ selected period.
 ```
 2022 May 19, 05:44 (🦋) /stocks/ $ candle
 ```
-<img src="images/amazon_candle_chart.png" alt="Amazon Candle Chart" width="800"/>
+<img src="https://user-images.githubusercontent.com/46355364/169503345-a9409637-dc7a-4193-9c87-38b1b6ee1a08.png" alt="Amazon Candle Chart" width="800"/>
 
 As mentioned in the "Explanation of Menus", some information also transfers over to other menus and this includes the
 loaded market data from <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/load/" target="_blank">load</a>.
@@ -221,7 +221,7 @@ Within this menu you can define your, often free, API key from various platforms
 
 You can access this menu from the homepage with `keys` which will open the menu as shown below:
 
-<img src="images/api_keys.png" alt="API Keys" width="800"/>
+<img src="https://user-images.githubusercontent.com/46355364/169503417-a1d2859d-9b66-42df-8555-81fc0186a136.png" width="800"/>
 
 Within this menu you are able to set your API keys to access the commands that require that key. You can do so by typing the command followed by the API key, for example: `fred a215egade08a8d47cfd49c849658a2be`. When you press `ENTER` (⏎) the terminal will test whether this API key works. If it does, you receive the message `defined, test passed` and if it does not, you receive the message `defined, test failed`.
 
@@ -304,7 +304,7 @@ report a bug, ask a question or make a suggestion on. When you press `ENTER` (�
 which is automatically filled with your input. You are only required to include the type (e.g. bug, suggestion or
 question) and message in the form although this can also be set directly from inside the terminal (see `support -h`).
 
-<img src="images/support_command.png" alt="Support Command" width="800"/>
+<img src="https://user-images.githubusercontent.com/46355364/169503483-c93c83fa-e9e9-4345-b816-8fcfe02b6785.png" alt="Support Command" width="800"/>
 
 Alternatively, you can contact us via the following routes:
    
