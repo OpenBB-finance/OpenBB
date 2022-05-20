@@ -17,6 +17,7 @@ from openbb_terminal.helper_funcs import (
     export_data,
     plot_autoscale,
     print_rich_table,
+    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
 
@@ -42,7 +43,7 @@ def display_big_mac_index(
     export : str, optional
         Format data, by default ""
     external_axes : Optional[List[plt.Axes]], optional
-        External axes (3 axes are expected in the list), by default None
+        External axes (1 axis is expected in the list), by default None
     """
     df_cols = ["Date"]
     df_cols.extend(country_codes)
@@ -57,13 +58,10 @@ def display_big_mac_index(
     if not big_mac.empty:
         if external_axes is None:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-
-        else:
-            if len(external_axes) != 3:
-                logger.error("Expected list of 3 axis items.")
-                console.print("[red]Expected list of 3 axis items.\n[/red]")
-                return
+        elif is_valid_axes_count(external_axes, 1):
             (ax,) = external_axes
+        else:
+            return
 
         big_mac.plot(ax=ax, marker="o")
         ax.legend()

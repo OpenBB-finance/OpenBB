@@ -19,7 +19,12 @@ from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.decorators import check_api_key
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import export_data, plot_autoscale, print_rich_table
+from openbb_terminal.helper_funcs import (
+    export_data,
+    plot_autoscale,
+    print_rich_table,
+    is_valid_axes_count,
+)
 from openbb_terminal.rich_config import console
 
 # pylint: disable=R0913
@@ -406,12 +411,10 @@ def display_reddit_sent(
     if graphic:
         if not external_axes:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        else:
-            if len(external_axes) != 1:
-                logger.error("Expected list of one axis item.")
-                console.print("[red]Expected list of one axis item.\n[/red]")
-                return
+        elif is_valid_axes_count(external_axes, 1):
             (ax,) = external_axes
+        else:
+            return
 
         sns.boxplot(x=polarity_scores, ax=ax)
         ax.set_title(f"Sentiment Score of {ticker}")

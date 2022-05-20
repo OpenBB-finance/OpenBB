@@ -21,6 +21,7 @@ from openbb_terminal.helper_funcs import (
     export_data,
     plot_autoscale,
     print_rich_table,
+    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
 
@@ -69,14 +70,13 @@ def display_crypto_heatmap(
             else:
                 colors.append(cmapred(-round(val * 100)))
 
-        # This plot has 2 axes
+        # This plot has 1 axis
         if external_axes is None:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        else:
-            if len(external_axes) != 1:
-                console.print("[red]Expected list of 1 axis item.\n[/red]")
-                return
+        elif is_valid_axes_count(external_axes, 1):
             (ax,) = external_axes
+        else:
+            return
 
         category_str = f"[{category}]" if category else ""
         df_copy = df

@@ -80,6 +80,7 @@ class ETFController(BaseController):
         self.etf_name = ""
         self.etf_data = ""
         self.etf_holdings: List = list()
+        self.TRY_RELOAD = True
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
