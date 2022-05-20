@@ -801,7 +801,7 @@ class PredictionTechniquesController(BaseController):
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
-
+        
         if ns_parser:
             if self.target != "AdjClose":
                 console.print("Expo Prediction designed for AdjClose prices\n")
@@ -818,27 +818,3 @@ class PredictionTechniquesController(BaseController):
                 forcast_horizon = ns_parser.forcast_horizon,
                 export=ns_parser.export,
             )
-
-        
-        # ns_parser = parse_known_args_and_warn(
-        #     parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
-        # )
-        # if ns_parser:
-
-        #     if ns_parser.s_end_date:
-
-        #         if ns_parser.s_end_date < self.stock.index[0]:
-        #             console.print(
-        #                 "Backtesting not allowed, since End Date is older than Start Date of historical data\n"
-        #             )
-
-        #         if (
-        #             ns_parser.s_end_date
-        #             < get_next_stock_market_days(
-        #                 last_stock_day=self.stock.index[0],
-        #                 n_next_days=5 + ns_parser.n_days,
-        #             )[-1]
-        #         ):
-        #             console.print(
-        #                 "Backtesting not allowed, since End Date is too close to Start Date to train model\n"
-        #             )

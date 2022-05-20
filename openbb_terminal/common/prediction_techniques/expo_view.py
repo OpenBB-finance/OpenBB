@@ -3,12 +3,10 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import List, Optional, Union
+from typing import List, Union
 
 import matplotlib.pyplot as plt
-import numpy as np
 import pandas as pd
-import seaborn as sns
 
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.common.prediction_techniques import expo_model
@@ -16,13 +14,11 @@ from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
-    get_next_stock_market_days,
     plot_autoscale,
 )
 from openbb_terminal.rich_config import console
 from openbb_terminal.common.prediction_techniques.pred_helper import (
     print_pretty_prediction,
-    plot_data_predictions,
 )
 
 logger = logging.getLogger(__name__)

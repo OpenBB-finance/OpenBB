@@ -3,7 +3,6 @@ __docformat__ = "numpy"
 
 import logging
 from typing import Any, Tuple, Union, List
-from matplotlib import ticker
 
 import numpy as np
 import pandas as pd
