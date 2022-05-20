@@ -85,5 +85,8 @@ def display_expo_forecast(
 
     if not external_axes:
         theme.visualize_output()
+
+    numeric_forcastic = predicted_values.quantile_df()['AdjClose_0.5'].tail(n_predict)
+    print_pretty_prediction(numeric_forcastic, data['AdjClose'].iloc[-1])
     
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "expo")
