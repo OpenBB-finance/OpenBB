@@ -1,4 +1,4 @@
-"""Exponential Probablistic Model"""
+""" Probablistic Probablistic Smoothing Model"""
 __docformat__ = "numpy"
 
 import logging
