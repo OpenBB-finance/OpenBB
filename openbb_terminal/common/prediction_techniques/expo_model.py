@@ -31,7 +31,7 @@ def get_expo_data(
     damped: str = "F",
     n_predict: int = 30,
     start_window: float = 0.65,
-    forcast_horizon: int = 1,
+    forcast_horizon: int = 3,
 ) -> Tuple[List[float], List[float], Any, Any]:
 
     """Performs Probabalistic Exponential Smoothing forecasting
