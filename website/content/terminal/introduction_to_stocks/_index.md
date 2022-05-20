@@ -1,24 +1,19 @@
 ---
 title: Introduction to Stocks
 keywords: "stocks, fundamental analysis, technical analysis, analyst, equity, research"
-date: "YEAR-MONTH-DAY"
-type: our story
-status: publish
 excerpt: "The Introduction to Stocks explains how to use the 
 menu and provides a brief description of its sub-menus"
+geekdocCollapseSection: true
 ---
-<h1>Introduction to Stocks</h1>
 The Stocks menu enables you to perform an evaluation of a particular company, a sector or a market as whole by 
-performing various techniques including fundamental, technical and behavioural analysis.
-
-It does so by handing you tools to (among other things) evaluate company news (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/news/" target="_blank">news</a>),
+performing various techniques including fundamental, technical and behavioural analysis. It does so by handing you tools to (among other things) evaluate company news (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/news/" target="_blank">news</a>),
 display historic quarterly results (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/fundamental_analysis/income/" target="_blank">income</a>),
 determine future cash flows (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/fundamental_analysis/dcf/" target="_blank">dcf</a>),
 show analyst recommendations (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/due_diligence/pt/" target="_blank">pt</a>),
 evaluate an entire sector or industry (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/sia/" target="_blank">sia</a>),
 and show the historical prices, correlations and sentiment between similar companies (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/comparison_analysis/hcorr/" target="_blank">correlation</a>).
 
-<h2>How to use</h2>
+## How to use
 
 The Stocks menu is called upon by typing `stocks` which opens the following menu:
 
@@ -86,45 +81,45 @@ Company:  Meta Platforms, Inc.
 To then view the stock chart, you can call <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/candle/" target="_blank">candle</a>
 which shows a candle chart for the defined period:
 
-![Candle Chart Facebook](images/candle_chart_facebook.png)
+<img src="images/candle_chart_facebook.png" alt="Candle Chart Facebook" width="800"/>
 
 By calling `?` or `help` the stocks menu re-appears. Here you can see that multiple menus have turned blue. Because of loading 
 a stock ticker, these menus can now be used in combination with the chosen stock.
 
-![Stocks Menu with Ticker](images/with_ticker_stocks_menu.png)
+<img src="images/with_ticker_stocks_menu.png" alt="Stocks Menu with Ticker" width="800"/>
 
-<h2>Sub-menus available</h2>
+## Sub-menus available
+
 The Stock menu has an extensive list of available sub-menus ranging from fundamental analysis to sector analysis to 
 advanced prediction techniques. To find more information about each menu, click on one of the following:
 
-- <a href="//" target="_blank">Introduction to Trading Hours</a>: discover exchanges that are currently open or
+- <a href="trading_hours" target="_blank">Introduction to Trading Hours</a>: discover exchanges that are currently open or
 closed for a specified ticker. Also find relevant information about each exchange.
-- <a href="//" target="_blank">Introduction to Options</a>: look into available options, option spreads,
+- <a href="options" target="_blank">Introduction to Options</a>: look into available options, option spreads,
 open interest and binomial valuation models.
-- <a href="//" target="_blank">Introduction to Stock Discovery</a>: discover trending stocks based on return metrics, revenue and earnings growth, 
+- <a href="stock_discovery" target="_blank">Introduction to Stock Discovery</a>: discover trending stocks based on return metrics, revenue and earnings growth, 
 penny stocks and based on upcoming earnings release dates.
-- <a href="//" target="_blank">Introduction to Sector & Industry Analysis</a>: analyse companies that reside in the same industry, sector and/or country and
+- <a href="sector_industry_analysis" target="_blank">Introduction to Sector & Industry Analysis</a>: analyse companies that reside in the same industry, sector and/or country and
 share a similar market cap to determine potential under- and out performance of each company.
-- <a href="//" target="_blank">Introduction to Dark Pools</a>: discover companies that have enormous shorting pressure, obtain information about dark pool positions and
+- <a href="dark_pools" target="_blank">Introduction to Dark Pools</a>: discover companies that have enormous shorting pressure, obtain information about dark pool positions and
 find out about shares that failed to deliver.
-- <a href="//" target="_blank">Introduction to Stock Screener</a>: provides the ability to screen companies that share a similar characteristic,
+- <a href="stock_screener" target="_blank">Introduction to Stock Screener</a>: provides the ability to screen companies that share a similar characteristic,
 for example unusual volumes, overbought or that include analyst upgrades, and be able to compare valuations and performance.
-- <a href="//" target="_blank">Introduction to Insider Trading</a>: explains what large insiders, e.g. a CEO of a company, is buying the chosen company and insider trading activity for the chosen company.
-- <a href="//" target="_blank">Introduction to Government</a>: gives insights in what the House of Congress is trading and the corporate lobbying that is performed.
-- <a href="//" target="_blank">Introduction to Behavioural Analysis</a>: gives the abilities to discover how different social media platforms view the chosen company and what is written about them.
-- <a href="//" target="_blank">Introduction to Comparison Analysis</a>: have the ability to compare companies based on, among other things, correlation, financial statements, sentiment, valuations and performance.
-- <a href="//" target="_blank">Introduction to Fundamental Analysis</a>: look into the fundamentals of a chosen company including financial statements, SEC filings, investing scores, discounted cash flow analysis (DCF),
+- <a href="insider_trading" target="_blank">Introduction to Insider Trading</a>: explains what large insiders, e.g. a CEO of a company, is buying the chosen company and insider trading activity for the chosen company.
+- <a href="government" target="_blank">Introduction to Government</a>: gives insights in what the House of Congress is trading and the corporate lobbying that is performed.
+- <a href="behavioural_analysis" target="_blank">Introduction to Behavioural Analysis</a>: gives the abilities to discover how different social media platforms view the chosen company and what is written about them.
+- <a href="comparison_analysis" target="_blank">Introduction to Comparison Analysis</a>: have the ability to compare companies based on, among other things, correlation, financial statements, sentiment, valuations and performance.
+- <a href="fundamental_analysis" target="_blank">Introduction to Fundamental Analysis</a>: look into the fundamentals of a chosen company including financial statements, SEC filings, investing scores, discounted cash flow analysis (DCF),
 sustainability scores and key ratios.
-- <a href="//" target="_blank">Introduction to Fundamental Analysis</a>: look into the fundamentals of a chosen company including financial statements, SEC filings, investing scores, discounted cash flow analysis (DCF),
-sustainability scores and key ratios.
-- <a href="//" target="_blank">Introduction to Due Diligence</a>: explore analyst recommendations, ratings over time, price targets and quarterly and yearly earnings estimates.
-- <a href="//" target="_blank">Introduction to Backtesting</a>: explore back testing strategies based on technical indicators.
-- <a href="//" target="_blank">Introduction to Technical Analysis</a>: analysis the chosen company's historical data extensively with moving averages and momentum, trend, volatility and volume indicators.
-- <a href="//" target="_blank">Introduction to Quantitative Analysis</a>: delve deeper in the historical data with quantitative methods including cumulative distribution function (CDF), (conditional) Value at Risk and rolling ratios.
-- <a href="//" target="_blank">Introduction to Prediction Techniques</a>: apply advanced AI and Machine Learning models to form prediction of future stock prices including Recurrent Neural Network (RNN),
+- <a href="due_diligence" target="_blank">Introduction to Due Diligence</a>: explore analyst recommendations, ratings over time, price targets and quarterly and yearly earnings estimates.
+- <a href="strategy_backtesting" target="_blank">Introduction to Strategy Backtesting</a>: explore back testing strategies based on technical indicators.
+- <a href="technical_analysis" target="_blank">Introduction to Technical Analysis</a>: analysis the chosen company's historical data extensively with moving averages and momentum, trend, volatility and volume indicators.
+- <a href="quantitative_analysis" target="_blank">Introduction to Quantitative Analysis</a>: delve deeper in the historical data with quantitative methods including cumulative distribution function (CDF), (conditional) Value at Risk and rolling ratios.
+- <a href="prediction_techniques" target="_blank">Introduction to Prediction Techniques</a>: apply advanced AI and Machine Learning models to form prediction of future stock prices including Recurrent Neural Network (RNN),
 Autoregressive Integrated Moving Average (ARIMA) and Monte Carlo forecasting.
 
-<h2>Examples</h2>
+## Examples
+
 If we want to a look at the historical data and fundamentals of Microsoft, we can do the following, starting from the `stocks` menu:
 
 First, load in the ticker of Microsoft, this is `MSFT` and can be found with the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/search/" target="_blank">search</a> command:
@@ -193,7 +188,7 @@ the company's historical data from 2021-01-01 until the current date. We are als
 
 ![Candle Chart Microsoft with Moving Average](images/candle_chart_microsoft_with_ma.png)
 
-Now we can go ahead and enter the Fundamental Analysis menu by typing `fa`. Please see <a href="//" target="_blank">Introduction to Fundamental Analysis</a> for a more detailed guide on this menu. This will open the following:
+Now we can go ahead and enter the Fundamental Analysis menu by typing `fa`. Please see <a href="fundamental_analysis" target="_blank">Introduction to Fundamental Analysis</a> for a more detailed guide on this menu. This will open the following:
 
 ![Fundamental Analysis Menu](images/fundamental_analysis_menu.png)
 
