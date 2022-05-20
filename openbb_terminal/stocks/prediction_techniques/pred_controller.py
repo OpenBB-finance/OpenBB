@@ -753,7 +753,7 @@ class PredictionTechniquesController(BaseController):
             dest="trend",
             choices=expo_model.TRENDS,
             default="A",
-            help="Trend: N: None, A: Additive[DEFAULT], M: Multiplicative.",
+            help="Trend: N: None, A: Additive, M: Multiplicative.",
         )
         parser.add_argument(
             "-s",
@@ -762,7 +762,7 @@ class PredictionTechniquesController(BaseController):
             dest="seasonal",
             choices=expo_model.SEASONS,
             default="A",
-            help="Seasonality: N: None, A: Additive[DEFAULT], M: Multiplicative.",
+            help="Seasonality: N: None, A: Additive, M: Multiplicative.",
         )
         parser.add_argument(
             "-p",
@@ -771,7 +771,7 @@ class PredictionTechniquesController(BaseController):
             dest="seasonal_periods",
             type=check_positive,
             default=5,
-            help="Seasonal periods: 4: Quarters, 5: Business Days [DEFAULT], 7: Weekly",
+            help="Seasonal periods: 4: Quarters, 5: Business Days, 7: Weekly",
         )
         parser.add_argument(
             "-dp",
@@ -787,7 +787,7 @@ class PredictionTechniquesController(BaseController):
             action="store",
             dest="start_window",
             default=0.65,
-            help="Start point for rolling training and forcast window. 0.0-1.0 : 0.65[DEFAULT]",
+            help="Start point for rolling training and forcast window. 0.0-1.0",
         )
         parser.add_argument(
             "-fh",
