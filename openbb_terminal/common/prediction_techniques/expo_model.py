@@ -17,10 +17,11 @@ from openbb_terminal.decorators import log_start_end
 
 TRENDS = ["N", "A", "M"]
 SEASONS = ["N", "A", "M"]
-PERIODS = [4,5,7]
+PERIODS = [4, 5, 7]
 DAMPED = ["T", "F"]
 
 logger = logging.getLogger(__name__)
+
 
 @log_start_end(log=logger)
 def get_expo_data(
@@ -28,16 +29,16 @@ def get_expo_data(
     trend: str = "A",
     seasonal: str = "A",
     seasonal_periods: int = None,
-    damped: str = "F", 
-    n_predict: int=30,
-    start_window: float=0.65,
-    forcast_horizon: int=1
+    damped: str = "F",
+    n_predict: int = 30,
+    start_window: float = 0.65,
+    forcast_horizon: int = 1,
 ) -> Tuple[List[float], List[float], Any, Any]:
 
     """Performs Probabalistic Exponential Smoothing forecasting
-    This is a wrapper around statsmodels Holt-Winters' Exponential Smoothing; 
+    This is a wrapper around statsmodels Holt-Winters' Exponential Smoothing;
     we refer to this link for the original and more complete documentation of the parameters.
-    
+
     https://unit8co.github.io/darts/generated_api/darts.models.forecasting.exponential_smoothing.html?highlight=exponential
 
     Parameters
@@ -67,45 +68,57 @@ def get_expo_data(
     """
 
     filler = MissingValuesFiller()
-    data['date'] = data.index # add temp column since we need to use index col for date
-    ticker_series = TimeSeries.from_dataframe(data, time_col='date', value_cols=['AdjClose'], freq='B', fill_missing_dates=True)
-    
+    data["date"] = data.index  # add temp column since we need to use index col for date
+    ticker_series = TimeSeries.from_dataframe(
+        data,
+        time_col="date",
+        value_cols=["AdjClose"],
+        freq="B",
+        fill_missing_dates=True,
+    )
+
     ticker_series = filler.transform(ticker_series)
     ticker_series = ticker_series.astype(np.float32)
     train, val = ticker_series.split_before(0.85)
-    
 
     if trend == "M":
         trend = ModelMode.MULTIPLICATIVE
     elif trend == "N":
         trend = ModelMode.NONE
-    else: # Default
-        trend = ModelMode.ADDITIVE 
+    else:  # Default
+        trend = ModelMode.ADDITIVE
 
     if seasonal == "M":
         seasonal = SeasonalityMode.MULTIPLICATIVE
     elif seasonal == "N":
         seasonal = SeasonalityMode.NONE
-    else: # Default
+    else:  # Default
         seasonal = SeasonalityMode.ADDITIVE
-    
-    if damped == "T": 
-        damped = True
-    else:
-        damped = False
 
-    model_es = ExponentialSmoothing(trend=trend, 
-                                seasonal=seasonal, 
-                                seasonal_periods=seasonal_periods, 
-                                damped=damped)
-    
-    historical_fcast_es = model_es.historical_forecasts(
-        ticker_series, start=start_window, forecast_horizon=forcast_horizon, verbose=True
+    damped = True if damped == "T" else False
+
+    # Model Init
+    model_es = ExponentialSmoothing(
+        trend=trend, seasonal=seasonal, seasonal_periods=seasonal_periods, damped=damped
     )
 
-    # Show forcast over validation # and then +10 afterwards sampled 10 times per point
+    # Training model based on historical backtesting
+    historical_fcast_es = model_es.historical_forecasts(
+        ticker_series,
+        start=start_window,
+        forecast_horizon=forcast_horizon,
+        verbose=True,
+    )
+
+    # Show forcast over validation # and then +n_predict afterwards sampled 10 times per point
     probabilistic_forecast = model_es.predict(n_predict, num_samples=10)
     precision = mape(val, probabilistic_forecast)
-    print("model {} obtains MAPE: {:.2f}%".format(model_es,precision))
-    
-    return ticker_series, historical_fcast_es, probabilistic_forecast, precision, model_es
+    print("model {} obtains MAPE: {:.2f}%".format(model_es, precision))
+
+    return (
+        ticker_series,
+        historical_fcast_es,
+        probabilistic_forecast,
+        precision,
+        model_es,
+    )
