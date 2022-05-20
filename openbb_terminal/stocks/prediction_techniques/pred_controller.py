@@ -779,17 +779,24 @@ class PredictionTechniquesController(BaseController):
             action="store",
             dest="damped",
             default="F",
-            help="Seasonal periods: 4: Quarters, 5: Business Days [DEFAULT], 7: Weekly",
+            help="Dampening",
         )
-        # parser.add_argument(
-        #     "-e",
-        #     "--end",
-        #     action="store",
-        #     type=valid_date,
-        #     dest="s_end_date",
-        #     default=None,
-        #     help="The end date (format YYYY-MM-DD) to select - Backtesting",
-        # )
+        parser.add_argument(
+            "-sw",
+            "--startwindow",
+            action="store",
+            dest="start_window",
+            default=0.65,
+            help="Start point for rolling training and forcast window. 0.0-1.0 : 0.65[DEFAULT]",
+        )
+        parser.add_argument(
+            "-fh",
+            "--forcasthorizon",
+            action="store",
+            dest="forcast_horizon",
+            default=3,
+            help="Days/Points to forcast when training and performing historical back-testing",
+        )
 
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
@@ -807,7 +814,8 @@ class PredictionTechniquesController(BaseController):
                 seasonal=ns_parser.seasonal,
                 seasonal_periods=ns_parser.seasonal_periods,
                 damped = ns_parser.damped,
-                #s_end_date=ns_parser.s_end_date, #TODO 
+                start_window = ns_parser.start_window,
+                forcast_horizon = ns_parser.forcast_horizon,
                 export=ns_parser.export,
             )
 

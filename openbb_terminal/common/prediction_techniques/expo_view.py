@@ -32,11 +32,13 @@ logger = logging.getLogger(__name__)
 def display_expo_forecast(
     data: Union[pd.DataFrame, pd.Series],
     ticker_name: str,
-    n_predict: int,
     trend: str,
     seasonal: str,
     seasonal_periods: int,
     damped: str,
+    n_predict: int,
+    start_window: float,
+    forcast_horizon: int,
     export: str = "",
 ):
     """Display Probalistic Exponential Smoothing forecasting
@@ -52,7 +54,14 @@ def display_expo_forecast(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axis is expected in the list), by default None
     """
-    ticker_series, predicted_values, precision, _ = expo_model.get_expo_data(data, trend, seasonal, seasonal_periods, damped, n_predict)
+    ticker_series, historical_fcast_es, predicted_values, precision, _ = expo_model.get_expo_data(data, 
+                                                                                                trend, 
+                                                                                                seasonal, 
+                                                                                                seasonal_periods, 
+                                                                                                damped, 
+                                                                                                n_predict,
+                                                                                                start_window,
+                                                                                                forcast_horizon)
     
     # Plotting with Matplotlib 
     external_axes = None
@@ -67,8 +76,9 @@ def display_expo_forecast(
 
     #ax = fig.get_axes()[0] # fig gives list of axes (only one for this case)
     ticker_series.plot(label="Actual AdjClose", figure=fig)
+    historical_fcast_es.plot(label="Backtest 3-Days ahead forecast (Exp. Smoothing)", figure=fig)
     predicted_values.plot(label="Probabilistic Forecast", low_quantile=0.1, high_quantile=0.9, figure=fig)
-    ax.set_title(f"PES for ${ticker_name} for next [{n_predict}] days MAP={round(precision,2)}%")
+    ax.set_title(f"PES for ${ticker_name} for next [{n_predict}] days (Model MAPE={round(precision,2)}%)")
     ax.set_ylabel("Adj. Closing")
     ax.set_xlabel("Date")
     theme.style_primary_axis(ax)

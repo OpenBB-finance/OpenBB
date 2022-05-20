@@ -27,9 +27,11 @@ def get_expo_data(
     data: Union[pd.Series, pd.DataFrame],
     trend: str = "A",
     seasonal: str = "A",
-    seasonal_periods: int = 7,
+    seasonal_periods: int = None,
     damped: str = "F", 
-    n_predict: int=5,
+    n_predict: int=30,
+    start_window: float=0.65,
+    forcast_horizon: int=1
 ) -> Tuple[List[float], List[float], Any, Any]:
 
     """Performs Probabalistic Exponential Smoothing forecasting
@@ -87,27 +89,23 @@ def get_expo_data(
     else: # Default
         seasonal = SeasonalityMode.ADDITIVE
     
-    if damped == "T":
+    if damped == "T": 
         damped = True
     else:
         damped = False
 
-    # print(f"Prediction days {n_predict}")
-    # print(f"Trend {trend}")
-    # print(f"Seasonal {seasonal}")
-    # print(f"Seasonal_periods {seasonal_periods}")
-    # print(f"damped {damped} with type {type(damped)}")
-    model = ExponentialSmoothing(trend=trend, 
+    model_es = ExponentialSmoothing(trend=trend, 
                                 seasonal=seasonal, 
                                 seasonal_periods=seasonal_periods, 
                                 damped=damped)
     
-    model.fit(train)
-    #model.backtest(ticker_series, val)
+    historical_fcast_es = model_es.historical_forecasts(
+        ticker_series, start=start_window, forecast_horizon=forcast_horizon, verbose=True
+    )
 
     # Show forcast over validation # and then +10 afterwards sampled 10 times per point
-    probabilistic_forecast = model.predict(len(val) + n_predict, num_samples=10)
+    probabilistic_forecast = model_es.predict(n_predict, num_samples=10)
     precision = mape(val, probabilistic_forecast)
-    #print("model {} obtains MAPE: {:.2f}%".format(model, mape(val, probabilistic_forecast)))
-
-    return ticker_series, probabilistic_forecast, precision,  model
+    print("model {} obtains MAPE: {:.2f}%".format(model_es,precision))
+    
+    return ticker_series, historical_fcast_es, probabilistic_forecast, precision, model_es
