@@ -17,7 +17,7 @@ and show the historical prices, correlations and sentiment between similar compa
 
 The Stocks menu is called upon by typing `stocks` which opens the following menu:
 
-![Stocks Menu](images/initial_stocks_menu.png)
+![Stocks Menu](https://user-images.githubusercontent.com/46355364/169503852-e8ebe577-6e49-438a-b14a-606c9fb9a6de.png)
 
 You have the ability to <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/search/" target="_blank">search</a> a stock based on 
 a search criteria, country, sector or industry. An example:
@@ -81,12 +81,12 @@ Company:  Meta Platforms, Inc.
 To then view the stock chart, you can call <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/candle/" target="_blank">candle</a>
 which shows a candle chart for the defined period:
 
-<img src="images/candle_chart_facebook.png" alt="Candle Chart Facebook" width="800"/>
+<img src="https://user-images.githubusercontent.com/46355364/169503942-f3f05bbe-77f1-443e-945e-cafbe442bce8.png" alt="Candle Chart Facebook" width="800"/>
 
 By calling `?` or `help` the stocks menu re-appears. Here you can see that multiple menus have turned blue. Because of loading 
 a stock ticker, these menus can now be used in combination with the chosen stock.
 
-<img src="images/with_ticker_stocks_menu.png" alt="Stocks Menu with Ticker" width="800"/>
+<img src="https://user-images.githubusercontent.com/46355364/169503960-62a59aa2-1dbd-46f1-9ea0-095817d7da5d.png" alt="Stocks Menu with Ticker" width="800"/>
 
 ## Sub-menus available
 
@@ -186,11 +186,12 @@ the company's historical data from 2021-01-01 until the current date. We are als
 2022 May 18, 05:44 (🦋) /stocks/ $ candle --ma 20,30
 ```
 
-![Candle Chart Microsoft with Moving Average](images/candle_chart_microsoft_with_ma.png)
+![Candle Chart Microsoft with Moving Average](https://user-images.githubusercontent.com/46355364/169504138-ca51c824-c2d1-428f-90b4-77b7b021718e.png)
+
 
 Now we can go ahead and enter the Fundamental Analysis menu by typing `fa`. Please see <a href="fundamental_analysis" target="_blank">Introduction to Fundamental Analysis</a> for a more detailed guide on this menu. This will open the following:
 
-![Fundamental Analysis Menu](images/fundamental_analysis_menu.png)
+![Fundamental Analysis Menu](https://user-images.githubusercontent.com/46355364/169504216-17484f7d-9cc5-4a56-9c62-d79cde79e91d.png)
 
 Within this menu, I am now able to present the quarterly income statements over the last 3 years (or any other period) by using <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/fundamental_analysis/income/" target="_blank">income</a>.
 
