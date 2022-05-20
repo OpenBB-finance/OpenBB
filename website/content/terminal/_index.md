@@ -10,7 +10,7 @@ is to make investment research effective, powerful and accessible to everyone.
 <a href="getting_started" style="color: white">Getting Started page</a>
 <span style="color:#00AAFF">that explains how the terminal works. To get an understanding
 of each menu (e.g. <a href="introduction_to_stocks" style="color: white">stocks</a>
-or e.g. <a href="introduction_to_economy" style="color: white">economy</a>) 
+or <a href="introduction_to_economy" style="color: white">economy</a>) 
 visit the related Introduction page.</span></b></center>
 
 ---
