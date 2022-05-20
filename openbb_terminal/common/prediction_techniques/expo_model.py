@@ -108,4 +108,7 @@ def get_expo_data(
     precision = mape(val, probabilistic_forecast)
     print("model {} obtains MAPE: {:.2f}%".format(model_es,precision))
     
+    numeric_forcastic = probabilistic_forecast.quantile_df()['AdjClose_0.5'].tail(n_predict)
+    print(numeric_forcastic)
+    
     return ticker_series, historical_fcast_es, probabilistic_forecast, precision, model_es
