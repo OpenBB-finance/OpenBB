@@ -93,7 +93,7 @@ class BehaviouralAnalysisController(StockBaseController):
         help_text = f"""[cmds]
     load             load a specific stock ticker for analysis
 
-[param]Ticker: [/param]{self.ticker.upper() or None}
+[param]Ticker: [/param]{self.ticker.upper() or ""}
 {has_ticker_start}
 [src][Finbrain][/src]
     headlines        sentiment from 15+ major news headlines
