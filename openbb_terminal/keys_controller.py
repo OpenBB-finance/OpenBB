@@ -13,9 +13,9 @@ import praw
 import pyEX
 import quandl
 import requests
+from prawcore.exceptions import ResponseException
 from alpha_vantage.timeseries import TimeSeries
 from coinmarketcapapi import CoinMarketCapAPI, CoinMarketCapAPIError
-from prawcore.exceptions import ResponseException
 from prompt_toolkit.completion import NestedCompleter
 from pyEX.common.exception import PyEXception
 
@@ -30,7 +30,7 @@ from openbb_terminal.helper_funcs import parse_known_args_and_warn
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console
-
+from openbb_terminal.terminal_helper import suppress_stdout
 
 logger = logging.getLogger(__name__)
 
@@ -346,15 +346,16 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         else:
 
             try:
-                praw_api = praw.Reddit(
-                    client_id=cfg.API_REDDIT_CLIENT_ID,
-                    client_secret=cfg.API_REDDIT_CLIENT_SECRET,
-                    username=cfg.API_REDDIT_USERNAME,
-                    user_agent=cfg.API_REDDIT_USER_AGENT,
-                    password=cfg.API_REDDIT_PASSWORD,
-                )
+                with suppress_stdout():
+                    praw_api = praw.Reddit(
+                        client_id=cfg.API_REDDIT_CLIENT_ID,
+                        client_secret=cfg.API_REDDIT_CLIENT_SECRET,
+                        username=cfg.API_REDDIT_USERNAME,
+                        user_agent=cfg.API_REDDIT_USER_AGENT,
+                        password=cfg.API_REDDIT_PASSWORD,
+                    )
 
-                praw_api.user.me()
+                    praw_api.user.me()
                 logger.info("Reddit key defined, test passed")
                 self.key_dict["REDDIT"] = "defined, test passed"
             except (Exception, ResponseException):
