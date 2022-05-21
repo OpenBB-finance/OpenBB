@@ -57,11 +57,11 @@ class BacktestingController(BaseController):
         help_text = f"""
 [param]Ticker: [/param]{self.ticker.upper()}[cmds]
 
-    whatif      what if you had bought X shares on day Y
+    whatif           what if you had bought X shares on day Y
 
-    ema         buy when price exceeds EMA(l)
-    ema_cross   buy when EMA(short) > EMA(long)
-    rsi         buy when RSI < low and sell when RSI > high[/cmds]
+    ema              buy when price exceeds EMA(l)
+    ema_cross        buy when EMA(short) > EMA(long)
+    rsi              buy when RSI < low and sell when RSI > high[/cmds]
         """
         console.print(text=help_text, menu="Stocks - Backtesting")
 

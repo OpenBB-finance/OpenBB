@@ -122,15 +122,15 @@ class HedgeController(BaseController):
 [param]Ticker: [/param]{self.ticker or None}
 [param]Expiry: [/param]{self.expiration or None}
 [cmds]
-    pick          pick the underlying asset position
+    pick             pick the underlying asset position
 [/cmds][param]
 Underlying Asset Position: [/param]{self.underlying_asset_position}
 [cmds]
-    list          show the available strike prices for calls and puts{has_portfolio_start}
-    add           add an option to the list of options{has_portfolio_end}{has_option_start}
-    rmv           remove an option from the list of options
-    sop           show selected options and neutral portfolio weights
-    plot          show the option payoff diagram[/cmds]{has_option_end}
+    list             show the available strike prices for calls and puts{has_portfolio_start}
+    add              add an option to the list of options{has_portfolio_end}{has_option_start}
+    rmv              remove an option from the list of options
+    sop              show selected options and neutral portfolio weights
+    plot             show the option payoff diagram[/cmds]{has_option_end}
         """
         console.print(text=help_text, menu="Stocks - Options - Hedge")
 

@@ -273,15 +273,15 @@ class SectorIndustryAnalysisController(BaseController):
         has_no_tickers = "[unvl]" if len(self.tickers) == 0 else "[menu]"
         has_no_tickers_ = "[unvl/]" if len(self.tickers) == 0 else "[/menu]"
         help_text = f"""[cmds]
-    load          load a specific ticker and all it's corresponding parameters
+    load             load a specific ticker and all it's corresponding parameters
 
-    clear         clear all or one of industry, sector, country and market cap parameters
-    industry      see existing industries, or set industry if arg specified
-    sector        see existing sectors, or set sector if arg specified
-    country       see existing countries, or set country if arg specified
-    mktcap        set mktcap between nano, micro, small, mid, large or mega
-    exchange      revert exclude international exchanges flag
-    period        set period between annual, quarterly or trailing [src][StockAnalysis][/src]
+    clear            clear all or one of industry, sector, country and market cap parameters
+    industry         see existing industries, or set industry if arg specified
+    sector           see existing sectors, or set sector if arg specified
+    country          see existing countries, or set country if arg specified
+    mktcap           set mktcap between nano, micro, small, mid, large or mega
+    exchange         revert exclude international exchanges flag
+    period           set period between annual, quarterly or trailing [src][StockAnalysis][/src]
 [/cmds]
 [param]Industry          : [/param]{self.industry}
 [param]Sector            : [/param]{self.sector}
@@ -291,21 +291,21 @@ class SectorIndustryAnalysisController(BaseController):
 [param]Period            : [/param]{self.period}
 
 [info]Statistics[/info]{c}[cmds]
-    cps           companies per Sector based on Country{c_}{m} and Market Cap{m_}{c}
-    cpic          companies per Industry based on Country{c_}{m} and Market Cap{m_}{s}
-    cpis          companies per Industry based on Sector{s_}{m} and Market Cap{m_}{s}
-    cpcs          companies per Country based on Sector{s_}{m} and Market Cap{m_}{i}
-    cpci          companies per Country based on Industry{i_}{m} and Market Cap{m_}[/cmds]
+    cps              companies per Sector based on Country{c_}{m} and Market Cap{m_}{c}
+    cpic             companies per Industry based on Country{c_}{m} and Market Cap{m_}{s}
+    cpis             companies per Industry based on Sector{s_}{m} and Market Cap{m_}{s}
+    cpcs             companies per Country based on Sector{s_}{m} and Market Cap{m_}{i}
+    cpci             companies per Country based on Industry{i_}{m} and Market Cap{m_}[/cmds]
 
 [info]Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}[/info] [src][Yahoo Finance][/src] [cmds]
-    sama          see all metrics available
-    metric        visualize financial metric across filters selected[/cmds]
+    sama             see all metrics available
+    metric           visualize financial metric across filters selected[/cmds]
 [info]Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}[/info] [src][StockAnalysis][/src] [cmds]
-    satma         see all metrics available over time
-    vis           visualize financial metric across filters selected[/cmds]
+    satma            see all metrics available over time
+    vis              visualize financial metric across filters selected[/cmds]
 {has_no_tickers}
 [param]Returned tickers: [/param]{', '.join(self.tickers)}
->   ca            take these to comparison analysis menu
+>   ca               take these to comparison analysis menu
 {has_no_tickers_}"""
         console.print(text=help_text, menu="Stocks - Sector and Industry Analysis")
 

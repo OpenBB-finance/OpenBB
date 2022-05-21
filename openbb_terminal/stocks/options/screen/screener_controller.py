@@ -63,16 +63,16 @@ class ScreenerController(BaseController):
         has_screen_tickers_start = "" if self.screen_tickers else "[unvl]"
         has_screen_tickers_end = "" if self.screen_tickers else "[/unvl]"
         help_text = f"""[cmds]
-    view          view available presets (or one in particular)
-    set           set one of the available presets
+    view             view available presets (or one in particular)
+    set              set one of the available presets
 [/cmds]
 [param]PRESET: [/param]{self.preset}[cmds]
 
-    scr            screen data from this preset[/cmds]
+    scr              screen data from this preset[/cmds]
 {has_screen_tickers_start}
 [param]Last screened tickers: [/param]{', '.join(self.screen_tickers)}[menu]
->   ca             take these to comparison analysis menu
->   po             take these to portoflio optimization menu{has_screen_tickers_end}
+>   ca               take these to comparison analysis menu
+>   po               take these to portoflio optimization menu{has_screen_tickers_end}
         """
         console.print(text=help_text, menu="Stocks - Options - Screener")
 

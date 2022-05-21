@@ -176,32 +176,32 @@ class OptionsController(BaseController):
         has_ticker_start = "" if self.ticker and self.selected_date else "[dim]"
         has_ticker_end = "" if self.ticker and self.selected_date else "[/dim]"
         help_text = f"""[cmds]
-    unu           show unusual options activity [src][Fdscanner.com][/src]
-    calc          basic call/put PnL calculator
+    unu              show unusual options activity [src][Fdscanner.com][/src]
+    calc             basic call/put PnL calculator
 
-    load          load new ticker
-    exp           see and set expiration dates[/cmds]
+    load             load new ticker
+    exp              see and set expiration dates[/cmds]
 [param]
 Ticker: [/param]{self.ticker or None}[param]
 Expiry: [/param]{self.selected_date or None}
 [menu]
-    pcr           display put call ratio for ticker [src][AlphaQuery.com][/src]
-    info          display option information (volatility, IV rank etc) [src][Barchart.com][/src]
-    chains        display option chains with greeks [src][Tradier][/src]
-    oi            plot open interest [src][Tradier/YFinance][/src]
-    vol           plot volume [src][Tradier/YFinance][/src]
-    voi           plot volume and open interest [src][Tradier/YFinance][/src]
-    hist          plot option history [src][Tradier][/src]
-    vsurf         show 3D volatility surface [src][Yfinance][/src]
-    grhist        plot option greek history [src][Syncretism.io][/src]
-    plot          plot variables provided by the user [src][Yfinance][/src]
-    parity        shows whether options are above or below expected price [src][Yfinance][/src]
-    binom         shows the value of an option using binomial options pricing [src][Yfinance][/src]
-    greeks        shows the greeks for a given option [src][Yfinance][/src]
+    pcr              display put call ratio for ticker [src][AlphaQuery.com][/src]
+    info             display option information (volatility, IV rank etc) [src][Barchart.com][/src]
+    chains           display option chains with greeks [src][Tradier][/src]
+    oi               plot open interest [src][Tradier/YFinance][/src]
+    vol              plot volume [src][Tradier/YFinance][/src]
+    voi              plot volume and open interest [src][Tradier/YFinance][/src]
+    hist             plot option history [src][Tradier][/src]
+    vsurf            show 3D volatility surface [src][Yfinance][/src]
+    grhist           plot option greek history [src][Syncretism.io][/src]
+    plot             plot variables provided by the user [src][Yfinance][/src]
+    parity           shows whether options are above or below expected price [src][Yfinance][/src]
+    binom            shows the value of an option using binomial options pricing [src][Yfinance][/src]
+    greeks           shows the greeks for a given option [src][Yfinance][/src]
 {has_ticker_start}
->   screen        screens tickers based on preset [src][Syncretism.io][/src]
->   pricing       shows options pricing and risk neutral valuation [src][Yfinance][/src]
->   hedge         shows portfolio weights in order to neutralise delta [src][Yfinance][/src]
+>   screen           screens tickers based on preset [src][Syncretism.io][/src]
+>   pricing          shows options pricing and risk neutral valuation [src][Yfinance][/src]
+>   hedge            shows portfolio weights in order to neutralise delta [src][Yfinance][/src]
 {has_ticker_end}"""
         console.print(text=help_text, menu="Stocks - Options")
 

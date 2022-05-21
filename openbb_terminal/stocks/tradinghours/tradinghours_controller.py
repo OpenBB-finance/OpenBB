@@ -77,16 +77,16 @@ class TradingHoursController(BaseController):
             exchange_opened = ""
 
         help_text = f"""[cmds]
-    symbol       select the symbol[/cmds]
+    symbol           select the symbol[/cmds]
 
 [param]Symbol name:[/param] {self.symbol_name or ""}
 [param]Symbol:[/param] {self.symbol or ""}
 [param]Exchange open:[/param] {exchange_opened}
 [cmds]
-    open         show open markets
-    closed       show closed markets
-    all          show all markets
-    exchange     show one exchange[/cmds]
+    open             show open markets
+    closed           show closed markets
+    all              show all markets
+    exchange         show one exchange[/cmds]
 """
         console.print(text=help_text, menu="Trading Hours")
 
