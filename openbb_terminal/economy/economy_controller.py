@@ -55,7 +55,6 @@ class EconomyController(BaseController):
         "fred",
         "index",
         "treasury",
-        "yield",
         "plot",
         "options",
         "valuation",
@@ -234,7 +233,6 @@ class EconomyController(BaseController):
     fred             collect macro data from FRED based on a series ID [src][Source: FRED][/src]
     index            find and plot any (major) index on the market [src][Source: Yahoo Finance][/src]
     treasury         obtain U.S. treasury rates [src][Source: EconDB][/src]
-    yield            show the U.S. Treasury yield curve [src][Source: FRED][/src]
     ycrv             show sovereign yield curves [src][Source: Investing.com/FRED][/src]
     plot             plot data from the above commands together
     options          show the available options for 'plot' or show/export the data
@@ -956,28 +954,6 @@ class EconomyController(BaseController):
                     )
 
             self.update_runtime_choices()
-
-    @log_start_end(log=logger)
-    def call_yield(self, other_args: List[str]):
-        """Process treasury command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="yield",
-            description="Generate the US yield curve for a specific date.  The yield curve shows the bond rates"
-            " at different maturities.",
-        )
-        parser.add_argument(
-            "-d",
-            "--date",
-            type=valid_date,
-            help="Date to get the curve for. If not supplied, the most recent entry from FRED will be used.",
-            dest="date",
-            default=None,
-        )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            fred_view.display_yield_curve(ns_parser.date)
 
     @log_start_end(log=logger)
     def call_ycrv(self, other_args: List[str]):

@@ -217,7 +217,7 @@ class DueDiligenceController(CryptoBaseController):
 [src]CryptoPanic[/src]
     news             loaded coin's most recent news[/cmds]
 """
-        console.print(text=help_text, menu="Stocks - Due Diligence")
+        console.print(text=help_text, menu="Crypto - Due Diligence")
 
     def custom_reset(self):
         """Class specific component of reset command"""

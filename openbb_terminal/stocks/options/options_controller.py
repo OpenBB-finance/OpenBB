@@ -173,18 +173,20 @@ class OptionsController(BaseController):
 
     def print_help(self):
         """Print help."""
-        has_ticker_start = "" if self.ticker and self.selected_date else "[dim]"
-        has_ticker_end = "" if self.ticker and self.selected_date else "[/dim]"
+        has_ticker_start = "[cmds]" if self.ticker and self.selected_date else "[dim]"
+        has_ticker_end = "[/cmds]" if self.ticker and self.selected_date else "[/dim]"
         help_text = f"""[cmds]
     unu              show unusual options activity [src][Fdscanner.com][/src]
-    calc             basic call/put PnL calculator
-
-    load             load new ticker
-    exp              see and set expiration dates[/cmds]
-[param]
-Ticker: [/param]{self.ticker or None}[param]
-Expiry: [/param]{self.selected_date or None}
+    calc             basic call/put PnL calculator[/cmds]
 [menu]
+>   screen           screens tickers based on preset [src][Syncretism.io][/src]
+[/menu][cmds]
+    load             load new ticker[/cmds]{('[dim]', '[cmds]')[bool(self.ticker)]}
+    exp              see and set expiration dates{('[/dim]', '[/cmds]')[bool(self.ticker)]}
+[param]
+Ticker: [/param]{self.ticker or ""}[param]
+Expiry: [/param]{self.selected_date or ""}
+{has_ticker_start}
     pcr              display put call ratio for ticker [src][AlphaQuery.com][/src]
     info             display option information (volatility, IV rank etc) [src][Barchart.com][/src]
     chains           display option chains with greeks [src][Tradier][/src]
@@ -198,8 +200,7 @@ Expiry: [/param]{self.selected_date or None}
     parity           shows whether options are above or below expected price [src][Yfinance][/src]
     binom            shows the value of an option using binomial options pricing [src][Yfinance][/src]
     greeks           shows the greeks for a given option [src][Yfinance][/src]
-{has_ticker_start}
->   screen           screens tickers based on preset [src][Syncretism.io][/src]
+
 >   pricing          shows options pricing and risk neutral valuation [src][Yfinance][/src]
 >   hedge            shows portfolio weights in order to neutralise delta [src][Yfinance][/src]
 {has_ticker_end}"""
@@ -768,8 +769,8 @@ Expiry: [/param]{self.selected_date or None}
             dest="to_display",
             default=tradier_model.default_columns,
             type=tradier_view.check_valid_option_chains_headers,
-            help="columns to look at.  Columns can be:  {bid, ask, strike, bidsize, asksize, volume, open_interest, "
-            "delta, gamma, theta, vega, ask_iv, bid_iv, mid_iv} ",
+            help="Columns to look at.  Columns can be: bid, ask, strike, bidsize, asksize, volume, open_interest, "
+            "delta, gamma, theta, vega, ask_iv, bid_iv, mid_iv. E.g. 'bid,ask,strike' ",
         )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED

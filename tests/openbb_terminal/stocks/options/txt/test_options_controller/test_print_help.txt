@@ -2,12 +2,14 @@
     unu              show unusual options activity [Fdscanner.com]
     calc             basic call/put PnL calculator
 
-    load             load new ticker
-    exp              see and set expiration dates
+>   screen           screens tickers based on preset [Syncretism.io]
 
-Ticker: None
-Expiry: None
+    load             load new ticker[dim]
+    exp              see and set expiration dates[/dim]
 
+Ticker: 
+Expiry: 
+[dim]
     pcr              display put call ratio for ticker [AlphaQuery.com]
     info             display option information (volatility, IV rank etc) [Barchart.com]
     chains           display option chains with greeks [Tradier]
@@ -21,8 +23,7 @@ Expiry: None
     parity           shows whether options are above or below expected price [Yfinance]
     binom            shows the value of an option using binomial options pricing [Yfinance]
     greeks           shows the greeks for a given option [Yfinance]
-[dim]
->   screen           screens tickers based on preset [Syncretism.io]
+
 >   pricing          shows options pricing and risk neutral valuation [Yfinance]
 >   hedge            shows portfolio weights in order to neutralise delta [Yfinance]
 [/dim]

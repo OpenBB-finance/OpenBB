@@ -19,6 +19,7 @@ from openpyxl import Workbook
 from scipy.stats import binom
 
 from openbb_terminal.config_terminal import theme
+from openbb_terminal.config_plot import PLOT_DPI
 import openbb_terminal.config_plot as cfp
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
@@ -984,7 +985,7 @@ def display_vol_surface(
         Z = data.lastPrice
         label = "Last Price"
     if external_axes is None:
-        fig = plt.figure()
+        fig = plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
         ax = plt.axes(projection="3d")
     else:
         ax = external_axes[0]
