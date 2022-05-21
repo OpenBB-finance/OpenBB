@@ -738,8 +738,8 @@ class PredictionTechniquesController(BaseController):
             """,
         )
         parser.add_argument(
-            "-d",
-            "--days",
+            "-n",
+            "--n_days",
             action="store",
             dest="n_days",
             type=check_positive,
@@ -774,7 +774,7 @@ class PredictionTechniquesController(BaseController):
             help="Seasonal periods: 4: Quarters, 5: Business Days, 7: Weekly",
         )
         parser.add_argument(
-            "-dp",
+            "-d",
             "--damped",
             action="store",
             dest="damped",
@@ -782,15 +782,15 @@ class PredictionTechniquesController(BaseController):
             help="Dampening",
         )
         parser.add_argument(
-            "-sw",
-            "--startwindow",
+            "-w",
+            "--window",
             action="store",
             dest="start_window",
             default=0.65,
             help="Start point for rolling training and forcast window. 0.0-1.0",
         )
         parser.add_argument(
-            "-fh",
+            "-f",
             "--forcasthorizon",
             action="store",
             dest="forcast_horizon",

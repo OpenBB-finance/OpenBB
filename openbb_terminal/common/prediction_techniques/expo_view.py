@@ -23,7 +23,6 @@ from openbb_terminal.common.prediction_techniques.pred_helper import (
 
 logger = logging.getLogger(__name__)
 
-
 @log_start_end(log=logger)
 def display_expo_forecast(
     data: Union[pd.DataFrame, pd.Series],
@@ -37,14 +36,29 @@ def display_expo_forecast(
     forcast_horizon: int,
     export: str = "",
 ):
-    """Display Probalistic Exponential Smoothing forecasting
+    """Display Probalistic Exponential Smoothing forecast
 
     Parameters
     ----------
     data : Union[pd.Series, np.array]
         Data to forecast
-    n_predict : int
+    trend: str
+        Trend component.  One of [N, A, M]
+        Defaults to ADDITIVE.
+    seasonal: str
+        Seasonal component.  One of [N, A, M]
+        Defaults to ADDITIVE.
+    seasonal_periods: int
+        Number of seasonal periods in a year
+        If not set, inferred from frequency of the series.
+    damped: str
+        Dampen the function
+    n_predict: int
         Number of days to forecast
+    start_window: float 
+        Size of sliding window from start of timeseries and onwards
+    forcast_horizon: int
+        Number of days to forcast when backtesting and retraining historical
     export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional

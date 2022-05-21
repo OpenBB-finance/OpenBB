@@ -13,6 +13,8 @@ from darts.utils.utils import ModelMode, SeasonalityMode
 from darts.metrics import mape
 
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.rich_config import console
+
 
 TRENDS = ["N", "A", "M"]
 SEASONS = ["N", "A", "M"]
@@ -53,8 +55,14 @@ def get_expo_data(
     seasonal_periods: int
         Number of seasonal periods in a year
         If not set, inferred from frequency of the series.
+    damped: str
+        Dampen the function
     n_predict: int
         Number of days to forecast
+    start_window: float 
+        Size of sliding window from start of timeseries and onwards
+    forcast_horizon: int
+        Number of days to forcast when backtesting and retraining historical
 
     Returns
     -------
@@ -111,8 +119,8 @@ def get_expo_data(
 
     # Show forcast over validation # and then +n_predict afterwards sampled 10 times per point
     probabilistic_forecast = model_es.predict(n_predict, num_samples=10)
-    precision = mape(val, probabilistic_forecast)
-    print("model {} obtains MAPE: {:.2f}%".format(model_es, precision))
+    precision = mape(val, probabilistic_forecast) # mape = mean average precision error
+    console.print(f"model {model_es} obtains MAPE: {precision:.2f}% \n") # TODO
 
     return (
         ticker_series,
