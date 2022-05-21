@@ -198,7 +198,6 @@ Several features in this project utilize Machine Learning. Machine Learning Pyth
      ```bash
      brew install cmake 
      brew install gcc
-     conda install -c conda-forge tensorflow==2.7.0
      conda install -c apple tensorflow-deps
      conda install -c apple tensorflow-deps==2.8.0 
      python -m pip install tensorflow-metal
