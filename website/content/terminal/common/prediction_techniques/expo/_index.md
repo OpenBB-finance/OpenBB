@@ -2,11 +2,8 @@
 usage: ets [-n N_DAYS] [-t TREND] [-s SEASONAL] [-p SEASONAL_PERIODS] [-e S_END_DATE] [-d DAMPED][-w START_WINDOW][-f FORECAST_HORIZON][-h]
 ```
 
- """Performs Probabalistic Exponential Smoothing forecasting
-    This is a wrapper around statsmodels Holt-Winters' Exponential Smoothing;
-    we refer to this link for the original and more complete documentation of the parameters.
-
-    https://unit8co.github.io/darts/generated_api/darts.models.forecasting.exponential_smoothing.html
+Performs Probabalistic Exponential Smoothing forecasting. This is a wrapper around statsmodels Holt-Winters' Exponential Smoothing;
+https://unit8co.github.io/darts/generated_api/darts.models.forecasting.exponential_smoothing.html
 
 
 ```
@@ -30,4 +27,4 @@ optional arguments:
   --export EXPORT       Export figure into png, jpg, pdf, svg (default: )
 ```
 
-![ETS]# TODO
+![EXPO](https://user-images.githubusercontent.com/105685594/169634909-30864d44-e607-4e6f-8d59-ac49dafa2e2c.png)
