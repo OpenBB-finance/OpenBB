@@ -131,8 +131,8 @@ Stock: [/param]{stock_text}
 >   ins              insider trading,         \t\t e.g.: latest penny stock buys, top officer purchases
 >   gov              government menu, \t\t\t e.g.: house trading, contracts, corporate lobbying
 >   ba               behavioural analysis,    \t\t from: reddit, stocktwits, twitter, google
->   ca               comparison analysis,     \t\t e.g.: get similar, historical, correlation, financials{has_ticker_start}
->   fa               fundamental analysis,    \t\t e.g.: income, balance, cash, earnings
+>   ca               comparison analysis,     \t\t e.g.: get similar, historical, correlation, financials
+{has_ticker_start}>   fa               fundamental analysis,    \t\t e.g.: income, balance, cash, earnings
 >   res              research web page,       \t\t e.g.: macroaxis, yahoo finance, fool
 >   dd               in-depth due-diligence,  \t\t e.g.: news, analyst, shorts, insider, sec
 >   bt               strategy backtester,      \t\t e.g.: simple ema, ema cross, rsi strategies
