@@ -102,6 +102,8 @@ click = "8.0.1"  # Remove pinned version when Black supports 8.1
 kaleido = {version = "<=0.2.1", optional = true, extras = ["bots"]}
 Riskfolio-Lib = "^3.1.1"
 fundamentalanalysis = "^0.2.14"
+torch = {version = "^1.11.0", extras = ["prediction"]}
+darts = {version = "^0.19.0", extras = ["prediction"]}
 
 
 [tool.poetry.dev-dependencies]
