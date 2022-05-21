@@ -58,7 +58,6 @@ def display_search_results(
         show_index=False,
         title="CoinPaprika Results",
     )
-    console.print("")
 
     export_data(
         export,

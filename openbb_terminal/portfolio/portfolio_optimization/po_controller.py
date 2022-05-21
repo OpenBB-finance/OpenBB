@@ -425,6 +425,8 @@ class PortfolioOptimizationController(BaseController):
             if self.portfolios:
                 self.choices["show"] = {c: None for c in list(self.portfolios.keys())}
                 self.choices["plot"] = {c: None for c in list(self.portfolios.keys())}
+
+                self.choices = {**self.choices, **self.SUPPORT_CHOICES}
                 self.completer = NestedCompleter.from_nested_dict(self.choices)
 
     def print_help(self):
@@ -432,48 +434,48 @@ class PortfolioOptimizationController(BaseController):
         has_tickers_start = ("[unvl]", "[cmds]")[bool(self.tickers)]
         has_tickers_end = ("[/unvl]", "[/cmds]")[bool(self.tickers)]
         help_text = f"""[cmds]
-    load            load tickers and categories from .xlsx or .csv file[/cmds]
+    load             load tickers and categories from .xlsx or .csv file[/cmds]
 
 [param]Portfolio loaded: [/param]{('None', self.current_portfolio)[bool(self.current_portfolio)]}
 
 [param]Tickers   : [/param]{('None', ', '.join(self.tickers))[bool(self.tickers)]}
 [param]Categories: [/param]{('None', ', '.join(self.categories.keys()))[bool(self.categories.keys())]}[cmds]
 
-    file            select portfolio parameter file[/cmds][menu]
->   params          specify and show portfolio risk parameters[/menu]
+    file             select portfolio parameter file[/cmds][menu]
+>   params           specify and show portfolio risk parameters[/menu]
 
 [param]Parameter file: [/param] {self.current_file}
 
 [info]Mean Risk Optimization:[/info]{has_tickers_start}
-    maxsharpe       maximal Sharpe ratio portfolio (a.k.a the tangency portfolio)
-    minrisk         minimum risk portfolio
-    maxutil         maximal risk averse utility function, given some risk aversion parameter
-    maxret          maximal return portfolio
-    maxdiv          maximum diversification portfolio
-    maxdecorr       maximum decorrelation portfolio
-    blacklitterman  black litterman portfolio
-    ef              show the efficient frontier{has_tickers_end}
+    maxsharpe        maximal Sharpe ratio portfolio (a.k.a the tangency portfolio)
+    minrisk          minimum risk portfolio
+    maxutil          maximal risk averse utility function, given some risk aversion parameter
+    maxret           maximal return portfolio
+    maxdiv           maximum diversification portfolio
+    maxdecorr        maximum decorrelation portfolio
+    blacklitterman   black litterman portfolio
+    ef               show the efficient frontier{has_tickers_end}
 
 [info]Risk Parity Optimization:[/info]{has_tickers_start}
-    riskparity      risk parity portfolio using risk budgeting approach
-    relriskparity   relaxed risk parity using least squares approach{has_tickers_end}
+    riskparity       risk parity portfolio using risk budgeting approach
+    relriskparity    relaxed risk parity using least squares approach{has_tickers_end}
 
 [info]Hierarchical Clustering Models:[/info]{has_tickers_start}
-    hrp             hierarchical risk parity
-    herc            hierarchical equal risk contribution
-    nco	            nested clustering optimization{has_tickers_end}
+    hrp              hierarchical risk parity
+    herc             hierarchical equal risk contribution
+    nco	             nested clustering optimization{has_tickers_end}
 
 [info]Other Optimization Techniques:[/info]{has_tickers_start}
-    equal           equally weighted
-    mktcap          weighted according to market cap (property marketCap)
-    dividend        weighted according to dividend yield (property dividendYield)
-    property        weight according to selected info property{has_tickers_end}
+    equal            equally weighted
+    mktcap           weighted according to market cap (property marketCap)
+    dividend         weighted according to dividend yield (property dividendYield)
+    property         weight according to selected info property{has_tickers_end}
 
 [param]Optimized portfolios: [/param]{('None', ', '.join(self.portfolios.keys()))[bool(self.portfolios.keys())]}[cmds]
 {('[unvl]','[cmds]')[bool(self.portfolios.keys())]}
-    rpf             remove portfolios from the list of saved portfolios
-    show            show selected portfolios and categories from the list of saved portfolios
-    plot            plot selected charts from the list of saved portfolios
+    rpf              remove portfolios from the list of saved portfolios
+    show             show selected portfolios and categories from the list of saved portfolios
+    plot             plot selected charts from the list of saved portfolios
 {('[/unvl]','[/cmds]')[bool(self.portfolios.keys())]}"""
         console.print(text=help_text, menu="Portfolio - Portfolio Optimization")
 
@@ -2044,6 +2046,8 @@ class PortfolioOptimizationController(BaseController):
             if "historic_period_sa" in vars(ns_parser):
                 table = False
 
+            console.print("Optimization can take time. Please be patient...")
+
             weights = optimizer_view.display_max_sharpe(
                 stocks=self.tickers,
                 period=ns_parser.historic_period,
@@ -2396,6 +2400,8 @@ class PortfolioOptimizationController(BaseController):
             table = True
             if "historic_period_sa" in vars(ns_parser):
                 table = False
+
+            console.print("Optimization can take time. Please be patient...")
 
             weights = optimizer_view.display_min_risk(
                 stocks=self.tickers,
@@ -2762,6 +2768,8 @@ class PortfolioOptimizationController(BaseController):
             if "historic_period_sa" in vars(ns_parser):
                 table = False
 
+            console.print("Optimization can take time. Please be patient...")
+
             weights = optimizer_view.display_max_util(
                 stocks=self.tickers,
                 period=ns_parser.historic_period,
@@ -3119,6 +3127,8 @@ class PortfolioOptimizationController(BaseController):
             if "historic_period_sa" in vars(ns_parser):
                 table = False
 
+            console.print("Optimization can take time. Please be patient...")
+
             weights = optimizer_view.display_max_ret(
                 stocks=self.tickers,
                 period=ns_parser.historic_period,
@@ -3403,6 +3413,8 @@ class PortfolioOptimizationController(BaseController):
             if "historic_period_sa" in vars(ns_parser):
                 table = False
 
+            console.print("Optimization can take time. Please be patient...")
+
             weights = optimizer_view.display_max_div(
                 stocks=self.tickers,
                 period=ns_parser.historic_period,
@@ -3674,6 +3686,8 @@ class PortfolioOptimizationController(BaseController):
             table = True
             if "historic_period_sa" in vars(ns_parser):
                 table = False
+
+            console.print("Optimization can take time. Please be patient...")
 
             weights = optimizer_view.display_max_decorr(
                 stocks=self.tickers,
@@ -4042,6 +4056,8 @@ class PortfolioOptimizationController(BaseController):
             table = True
             if "historic_period_sa" in vars(ns_parser):
                 table = False
+
+            console.print("Optimization can take time. Please be patient...")
 
             weights = optimizer_view.display_black_litterman(
                 stocks=self.tickers,
@@ -4603,6 +4619,8 @@ class PortfolioOptimizationController(BaseController):
             if "historic_period_sa" in vars(ns_parser):
                 table = False
 
+            console.print("Optimization can take time. Please be patient...")
+
             weights = optimizer_view.display_risk_parity(
                 stocks=self.tickers,
                 period=ns_parser.historic_period,
@@ -4888,6 +4906,8 @@ class PortfolioOptimizationController(BaseController):
             table = True
             if "historic_period_sa" in vars(ns_parser):
                 table = False
+
+            console.print("Optimization can take time. Please be patient...")
 
             weights = optimizer_view.display_rel_risk_parity(
                 stocks=self.tickers,
@@ -5319,6 +5339,8 @@ class PortfolioOptimizationController(BaseController):
             table = True
             if "historic_period_sa" in vars(ns_parser):
                 table = False
+
+            console.print("Optimization can take time. Please be patient...")
 
             weights = optimizer_view.display_hrp(
                 stocks=self.tickers,
@@ -5769,6 +5791,8 @@ class PortfolioOptimizationController(BaseController):
             if "historic_period_sa" in vars(ns_parser):
                 table = False
 
+            console.print("Optimization can take time. Please be patient...")
+
             weights = optimizer_view.display_herc(
                 stocks=self.tickers,
                 period=ns_parser.historic_period,
@@ -6193,6 +6217,8 @@ class PortfolioOptimizationController(BaseController):
             table = True
             if "historic_period_sa" in vars(ns_parser):
                 table = False
+
+            console.print("Optimization can take time. Please be patient...")
 
             weights = optimizer_view.display_nco(
                 stocks=self.tickers,

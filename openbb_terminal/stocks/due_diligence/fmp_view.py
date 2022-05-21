@@ -6,7 +6,6 @@ import os
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
-from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.due_diligence import fmp_model
 
 logger = logging.getLogger(__name__)
@@ -45,7 +44,6 @@ def rating(ticker: str, num: int, export: str):
             show_index=True,
             title="Rating",
         )
-    console.print("")
 
     export_data(
         export,

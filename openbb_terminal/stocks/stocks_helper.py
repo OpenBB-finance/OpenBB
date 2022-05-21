@@ -33,6 +33,7 @@ from openbb_terminal.helper_funcs import (
     get_user_timezone_or_invalid,
     print_rich_table,
     lambda_long_number_format_y_axis,
+    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
 
@@ -70,7 +71,7 @@ market_coverage_suffix = {
     "Ireland": ["IR"],
     "Israel": ["TA"],
     "Italy": ["MI"],
-    "Japan": ["T"],
+    "Japan": ["T", "S"],
     "Latvia": ["RG"],
     "Lithuania": ["VS"],
     "Malaysia": ["KL"],
@@ -211,7 +212,7 @@ def search(
             exchange_suffix[x] = k
 
     df["exchange"] = [
-        exchange_suffix[ticker.split(".")[1]] if "." in ticker else "USA"
+        exchange_suffix.get(ticker.split(".")[1]) if "." in ticker else "USA"
         for ticker in list(df.index)
     ]
 
@@ -235,7 +236,7 @@ def search(
         headers=["Name", "Country", "Sector", "Industry", "Exchange"],
         title=title,
     )
-    console.print()
+
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "search", df)
 
 
@@ -650,15 +651,13 @@ def display_candle(
                 ax[0].legend(lines, labels)
 
             cfg.theme.visualize_output(force_tight_layout=False)
-        else:
-            if len(external_axes) != 2:
-                logger.error("Expected list of one axis item.")
-                console.print("[red]Expected list of 2 axis items.\n[/red]")
-                return
+        elif is_valid_axes_count(external_axes, 2):
             ax1, ax2 = external_axes
             candle_chart_kwargs["ax"] = ax1
             candle_chart_kwargs["volume"] = ax2
             mpf.plot(df_stock, **candle_chart_kwargs)
+        else:
+            return
 
     else:
         fig = make_subplots(
@@ -924,7 +923,6 @@ def quote(other_args: List[str], s_ticker: str):
         logger.exception("Invalid stock ticker")
         console.print(f"Invalid stock ticker: {ns_parser.s_ticker}")
 
-    console.print("")
     return
 
 
@@ -1269,7 +1267,6 @@ def show_quick_performance(stock_df: pd.DataFrame, ticker: str):
     print_rich_table(
         df, show_index=False, headers=df.columns, title=f"{ticker.upper()} Performance"
     )
-    console.print()
 
 
 def show_codes_polygon(ticker: str):
@@ -1299,4 +1296,3 @@ def show_codes_polygon(ticker: str):
     print_rich_table(
         df, show_index=False, headers=["", ""], title=f"{ticker.upper()} Codes"
     )
-    console.print()

@@ -80,6 +80,9 @@ class PredictionTechniquesController(BaseController):
             choices["mc"]["--dist"] = {c: {} for c in mc_model.DISTRIBUTIONS}
             choices["pick"] = {c: {} for c in self.options}
             choices["pick"]["-c"] = {c: {} for c in self.options}
+
+            choices["support"] = self.SUPPORT_CHOICES
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):

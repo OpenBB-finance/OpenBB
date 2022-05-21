@@ -76,6 +76,7 @@ class FundController(BaseController):
         self.data = pd.DataFrame()
         self.fund_name = ""
         self.fund_symbol = ""
+        self.TRY_RELOAD = True
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
@@ -84,6 +85,9 @@ class FundController(BaseController):
             choices["search"]["--by"] = {c: None for c in self.search_by_choices}
             choices["search"]["-s"] = {c: None for c in self.search_cols}
             choices["search"]["--sortby"] = {c: None for c in self.search_cols}
+
+            choices["support"] = self.SUPPORT_CHOICES
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
@@ -105,23 +109,23 @@ class FundController(BaseController):
             fund_string = ""
         help_text = f"""
 [src][Investing.com][/src][cmds]
-    country       set a country for filtering[/cmds]
+    country          set a country for filtering[/cmds]
 
 [param]Current Country: [/param]{self.country.title()}
 
 [src][Investing.com][/src][cmds]
-    overview      overview of top funds by country
-    search        search for Mutual Funds
-    load          load historical fund data[/cmds]
+    overview         overview of top funds by country
+    search           search for Mutual Funds
+    load             load historical fund data[/cmds]
 
 [param]Current Fund: [/param]{fund_string}
 {has_fund_start}
 [src][Investing.com][/src][cmds]
-    info          get fund information
-    plot          plot loaded historical fund data{has_fund_end}{has_fund_usa_start}
+    info             get fund information
+    plot             plot loaded historical fund data{has_fund_end}{has_fund_usa_start}
 [src][YFinance][/src]
-    sector        sector weightings
-    equity        equity holdings[/cmds]{has_fund_usa_end}
+    sector           sector weightings
+    equity           equity holdings[/cmds]{has_fund_usa_end}
     """
         if self.fund_symbol != "" and self.country == "sweden":
             help_text += """

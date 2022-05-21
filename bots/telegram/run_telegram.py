@@ -139,7 +139,6 @@ def send_cmds(message):
         "/econ_glbonds\n"
         "/econ_indices\n"
         "/econ_overview\n"
-        "/econ_feargreed\n"
         "/econ_currencies\n"
         "/econ_valuation <GROUP>\n"
         "/econ_performance <GROUP>\n"

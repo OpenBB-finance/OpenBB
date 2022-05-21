@@ -37,7 +37,6 @@ def view_overview(symbol: str, export: str = ""):
         title="ETF Overview Information",
         show_index=True,
     )
-    console.print("")
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "overview", data)
 
@@ -63,7 +62,6 @@ def view_holdings(symbol: str, num_to_show: int, export: str):
         title="ETF Holdings",
         show_index=True,
     )
-    console.print("")
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "holdings", data)
 
@@ -93,7 +91,7 @@ def view_comparisons(symbols: List[str], export: str):
     print_rich_table(
         data, headers=list(data.columns), title="ETF Comparisons", show_index=True
     )
-    console.print("")
+
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "overview", data)
 
 
@@ -118,7 +116,6 @@ def display_etf_by_name(name: str, limit: int, export: str):
         show_index=False,
         title="ETF Search Result",
     )
-    console.print("")
 
     export_data(
         export,

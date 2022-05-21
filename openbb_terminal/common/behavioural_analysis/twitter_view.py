@@ -15,7 +15,12 @@ import openbb_terminal.config_plot as cfg_plot
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.common.behavioural_analysis import twitter_model
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import export_data, plot_autoscale, get_closing_price
+from openbb_terminal.helper_funcs import (
+    export_data,
+    plot_autoscale,
+    get_closing_price,
+    is_valid_axes_count,
+)
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -158,31 +163,27 @@ def display_sentiment(
     ax1, ax2, ax3 = None, None, None
 
     if compare:
-        # This plot has 3 axis
+        # This plot has 3 axes
         if external_axes is None:
             _, axes = plt.subplots(
                 3, 1, sharex=False, figsize=plot_autoscale(), dpi=cfg_plot.PLOT_DPI
             )
             ax1, ax2, ax3 = axes
-        else:
-            if len(external_axes) != 3:
-                logger.error("Expected list of three axis item.")
-                console.print("[red]Expected list of three axis item./n[/red]")
-                return
+        elif is_valid_axes_count(external_axes, 3):
             (ax1, ax2, ax3) = external_axes
+        else:
+            return
     else:
-        # This plot has 2 axis
+        # This plot has 2 axes
         if external_axes is None:
             _, axes = plt.subplots(
                 2, 1, sharex=True, figsize=plot_autoscale(), dpi=cfg_plot.PLOT_DPI
             )
             ax1, ax2 = axes
-        else:
-            if len(external_axes) != 2:
-                logger.error("Expected list of one axis item.")
-                console.print("[red]Expected list of one axis item.\n[/red]")
-                return
+        elif is_valid_axes_count(external_axes, 2):
             (ax1, ax2) = external_axes
+        else:
+            return
 
     ax1.plot(
         pd.to_datetime(df_tweets["created_at"]),

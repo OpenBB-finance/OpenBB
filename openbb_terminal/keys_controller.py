@@ -58,7 +58,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         "bitquery",
         "si",
         "cb",
-        "wa",
+        "walert",
         "glassnode",
         "coinglass",
         "cpanic",
@@ -81,6 +81,9 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
 
             if session and obbff.USE_PROMPT_TOOLKIT:
                 choices: dict = {c: {} for c in self.controller_choices}
+
+                choices["support"] = self.SUPPORT_CHOICES
+
                 self.completer = NestedCompleter.from_nested_dict(choices)
 
     def check_github_key(self, show_output: bool = False) -> None:
@@ -537,8 +540,8 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
 
     def check_walert_key(self, show_output: bool = False) -> None:
         """Check Walert key"""
-        self.cfg_dict["WHALE_ALERT"] = "wa"
-        if "REPLACE_ME" == cfg.API_WHALE_ALERT_KEY:
+        self.cfg_dict["WHALE_ALERT"] = "walert"
+        if cfg.API_WHALE_ALERT_KEY == "REPLACE_ME":
             logger.info("Walert key not defined")
             self.key_dict["WHALE_ALERT"] = "not defined"
         else:
@@ -546,14 +549,14 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
                 "https://api.whale-alert.io/v1/transactions?api_key="
                 + cfg.API_WHALE_ALERT_KEY
             )
-            response = requests.get(url)
-
-            if not 200 <= response.status_code < 300:
-                logger.warning("Walert key defined, test failed")
-                self.key_dict["WHALE_ALERT"] = "defined, test unsuccessful"
             try:
-                logger.info("Walert key defined, test passed")
-                self.key_dict["WHALE_ALERT"] = "defined, test passed"
+                response = requests.get(url, timeout=2)
+                if not 200 <= response.status_code < 300:
+                    logger.warning("Walert key defined, test failed")
+                    self.key_dict["WHALE_ALERT"] = "defined, test unsuccessful"
+                else:
+                    logger.info("Walert key defined, test passed")
+                    self.key_dict["WHALE_ALERT"] = "defined, test passed"
             except Exception:
                 logger.exception("Walert key defined, test failed")
                 self.key_dict["WHALE_ALERT"] = "defined, test unsuccessful"
@@ -564,7 +567,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
     def check_glassnode_key(self, show_output: bool = False) -> None:
         """Check glassnode key"""
         self.cfg_dict["GLASSNODE"] = "glassnode"
-        if "REPLACE_ME" == cfg.API_GLASSNODE_KEY:
+        if cfg.API_GLASSNODE_KEY == "REPLACE_ME":
             logger.info("Glassnode key not defined")
             self.key_dict["GLASSNODE"] = "not defined"
         else:
@@ -592,7 +595,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
     def check_coinglass_key(self, show_output: bool = False) -> None:
         """Check coinglass key"""
         self.cfg_dict["COINGLASS"] = "coinglass"
-        if "REPLACE_ME" == cfg.API_COINGLASS_KEY:
+        if cfg.API_COINGLASS_KEY == "REPLACE_ME":
             logger.info("Coinglass key not defined")
             self.key_dict["COINGLASS"] = "not defined"
         else:
@@ -615,7 +618,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
     def check_cpanic_key(self, show_output: bool = False) -> None:
         """Check cpanic key"""
         self.cfg_dict["CRYPTO_PANIC"] = "cpanic"
-        if "REPLACE_ME" == cfg.API_CRYPTO_PANIC_KEY:
+        if cfg.API_CRYPTO_PANIC_KEY == "REPLACE_ME":
             logger.info("cpanic key not defined")
             self.key_dict["CRYPTO_PANIC"] = "not defined"
         else:
@@ -638,7 +641,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
     def check_ethplorer_key(self, show_output: bool = False) -> None:
         """Check ethplorer key"""
         self.cfg_dict["ETHPLORER"] = "ethplorer"
-        if "REPLACE_ME" == cfg.API_ETHPLORER_KEY:
+        if cfg.API_ETHPLORER_KEY == "REPLACE_ME":
             logger.info("ethplorer key not defined")
             self.key_dict["ETHPLORER"] = "not defined"
         else:
@@ -1077,6 +1080,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="client_id",
             help="Client ID",
+            required="-h" not in other_args,
         )
         parser.add_argument(
             "-s",
@@ -1084,6 +1088,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="client_secret",
             help="Client Secret",
+            required="-h" not in other_args,
         )
         parser.add_argument(
             "-u",
@@ -1091,6 +1096,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="username",
             help="Username",
+            required="-h" not in other_args,
         )
         parser.add_argument(
             "-p",
@@ -1098,6 +1104,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="password",
             help="Password",
+            required="-h" not in other_args,
         )
         parser.add_argument(
             "-a",
@@ -1105,6 +1112,8 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="user_agent",
             help="User agent",
+            required="-h" not in other_args,
+            nargs="+",
         )
         if not other_args:
             console.print("For your API Key, visit: https://www.reddit.com\n")
@@ -1137,11 +1146,14 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             )
             cfg.API_REDDIT_USERNAME = ns_parser.username
 
-            os.environ["OPENBB_API_REDDIT_USER_AGENT"] = ns_parser.user_agent
-            dotenv.set_key(
-                self.env_file, "OPENBB_API_REDDIT_USER_AGENT", ns_parser.user_agent
-            )
-            cfg.API_REDDIT_USER_AGENT = ns_parser.user_agent
+            slash_components = "".join([f"/{val}" for val in self.queue])
+            useragent = " ".join(ns_parser.user_agent) + " " + slash_components
+            useragent = useragent.replace('"', "")
+            self.queue = []
+
+            os.environ["OPENBB_API_REDDIT_USER_AGENT"] = useragent
+            dotenv.set_key(self.env_file, "OPENBB_API_REDDIT_USER_AGENT", useragent)
+            cfg.API_REDDIT_USER_AGENT = useragent
 
             self.check_reddit_key(show_output=True)
 
@@ -1160,6 +1172,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="key",
             help="Key",
+            required="-h" not in other_args,
         )
         parser.add_argument(
             "-s",
@@ -1167,6 +1180,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="secret_key",
             help="Secret key",
+            required="-h" not in other_args,
         )
         parser.add_argument(
             "-t",
@@ -1174,6 +1188,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="bearer_token",
             help="Bearer token",
+            required="-h" not in other_args,
         )
         if not other_args:
             console.print("For your API Key, visit: https://developer.twitter.com\n")

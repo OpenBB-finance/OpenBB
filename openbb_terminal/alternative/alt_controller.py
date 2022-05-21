@@ -29,13 +29,15 @@ class AlternativeDataController(BaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
+            choices["support"] = self.SUPPORT_CHOICES
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
         """Print help"""
         help_text = """[menu]
->   covid     COVID menu,                    e.g.: cases, deaths, rates
->   oss       Open Source menu,              e.g.: star history, repos information[/menu]
+>   covid            COVID menu,                    e.g.: cases, deaths, rates
+>   oss              Open Source menu,              e.g.: star history, repos information[/menu]
         """
         console.print(text=help_text, menu="Alternative")
 

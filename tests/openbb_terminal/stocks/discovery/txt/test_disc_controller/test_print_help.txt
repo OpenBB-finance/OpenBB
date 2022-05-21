@@ -1,28 +1,28 @@
 
 [Finnhub]
-    pipo           past IPOs dates
-    fipo           future IPOs dates
+    pipo             past IPOs dates
+    fipo             future IPOs dates
 [Yahoo Finance]
-    gainers        show latest top gainers
-    losers         show latest top losers
-    ugs            undervalued stocks with revenue and earnings growth in excess of 25%
-    gtech          tech stocks with revenue and earnings growth more than 25%
-    active         most active stocks by intraday trade volume
-    ulc            potentially undervalued large cap stocks
-    asc            small cap stocks with earnings growth rates better than 25%
+    gainers          show latest top gainers
+    losers           show latest top losers
+    ugs              undervalued stocks with revenue and earnings growth in excess of 25%
+    gtech            tech stocks with revenue and earnings growth more than 25%
+    active           most active stocks by intraday trade volume
+    ulc              potentially undervalued large cap stocks
+    asc              small cap stocks with earnings growth rates better than 25%
 [Fidelity]
-    ford           orders by Fidelity Customers
+    ford             orders by Fidelity Customers
 [Cathiesark.com]
-    arkord         orders by ARK Investment Management LLC
+    arkord           orders by ARK Investment Management LLC
 [Seeking Alpha]
-    upcoming       upcoming earnings release dates
-    trending       trending news
-    cnews          customized news (buybacks, ipos, spacs, healthcare, politics)
+    upcoming         upcoming earnings release dates
+    trending         trending news
+    cnews            customized news (buybacks, ipos, spacs, healthcare, politics)
 [Shortinterest.com]
-    lowfloat       low float stocks under 10M shares float
+    lowfloat         low float stocks under 10M shares float
 [Pennystockflow.com]
-    hotpenny       today's hot penny stocks
+    hotpenny         today's hot penny stocks
 [NASDAQ Data Link (Formerly Quandl)]
-    rtat           top 10 retail traded stocks per day
-    divcal         dividend calendar for selected date
+    rtat             top 10 retail traded stocks per day
+    divcal           dividend calendar for selected date
 

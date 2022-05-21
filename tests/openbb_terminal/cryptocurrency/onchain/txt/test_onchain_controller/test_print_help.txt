@@ -20,13 +20,13 @@ Ethereum address:
 Address type: 
 
 [Ethplorer] Ethereum:
-    address         load ethereum address of token, account or transaction
-    top             top ERC20 tokens[unvl]
-    balance         check ethereum balance
-    hist            ethereum balance history (transactions)[unvl][unvl]
-    info            ERC20 token info
-    holders         top ERC20 token holders
-    th              ERC20 token history
-    prices          ERC20 token historical prices[unvl][unvl]
-    tx              ethereum blockchain transaction info[unvl]
+    address          load ethereum address of token, account or transaction
+    top              top ERC20 tokens[unvl]
+    balance          check ethereum balance
+    hist             ethereum balance history (transactions)[unvl][unvl]
+    info             ERC20 token info
+    holders          top ERC20 token holders
+    th               ERC20 token history
+    prices           ERC20 token historical prices[unvl][unvl]
+    tx               ethereum blockchain transaction info[unvl]
     

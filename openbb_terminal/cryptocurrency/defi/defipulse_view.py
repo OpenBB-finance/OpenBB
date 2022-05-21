@@ -7,7 +7,6 @@ import os
 from openbb_terminal.cryptocurrency.defi import defipulse_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
-from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -40,7 +39,6 @@ def display_defipulse(top: int, sortby: str, descend: bool, export: str = "") ->
         show_index=False,
         title="DeFi Pulse Crypto Protocols",
     )
-    console.print("")
 
     export_data(
         export,

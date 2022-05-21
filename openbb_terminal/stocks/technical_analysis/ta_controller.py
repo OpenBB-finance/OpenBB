@@ -117,38 +117,38 @@ class TechnicalAnalysisController(StockBaseController):
         help_text = f"""
 [param]Stock: [/param]{stock_str}[cmds]
 
-    tv          open interactive chart on [src][TradingView][/src]
-    view        view historical data and trendlines [src][Finviz][/src]
-    summary     technical summary report [src][FinBrain][/src]
-    recom       recommendation based on Technical Indicators [src][Tradingview][/src]
+    tv               open interactive chart on [src][TradingView][/src]
+    view             view historical data and trendlines [src][Finviz][/src]
+    summary          technical summary report [src][FinBrain][/src]
+    recom            recommendation based on Technical Indicators [src][Tradingview][/src]
 
 [info]Overlap:[/info]
-    ema         exponential moving average
-    sma         simple moving average
-    wma         weighted moving average
-    hma         hull moving average
-    zlma        zero lag moving average
-    vwap        volume weighted average price
+    ema              exponential moving average
+    sma              simple moving average
+    wma              weighted moving average
+    hma              hull moving average
+    zlma             zero lag moving average
+    vwap             volume weighted average price
 [info]Momentum:[/info]
-    cci         commodity channel index
-    macd        moving average convergence/divergence
-    rsi         relative strength index
-    stoch       stochastic oscillator
-    fisher      fisher transform
-    cg          centre of gravity
+    cci              commodity channel index
+    macd             moving average convergence/divergence
+    rsi              relative strength index
+    stoch            stochastic oscillator
+    fisher           fisher transform
+    cg               centre of gravity
 [info]Trend:[/info]
-    adx         average directional movement index
-    aroon       aroon indicator
+    adx              average directional movement index
+    aroon            aroon indicator
 [info]Volatility:[/info]
-    bbands      bollinger bands
-    donchian    donchian channels
-    kc          keltner channels
+    bbands           bollinger bands
+    donchian         donchian channels
+    kc               keltner channels
 [info]Volume:[/info]
-    ad          accumulation/distribution line
-    adosc       chaikin oscillator
-    obv         on balance volume
+    ad               accumulation/distribution line
+    adosc            chaikin oscillator
+    obv              on balance volume
 [info]Custom:[/info]
-    fib         fibonacci retracement[/cmds]
+    fib              fibonacci retracement[/cmds]
 """
         console.print(text=help_text, menu="Stocks - Technical Analysis")
 
@@ -544,6 +544,20 @@ class TechnicalAnalysisController(StockBaseController):
             default=0,
             help="offset",
         )
+        parser.add_argument(
+            "--start",
+            dest="start",
+            type=valid_date,
+            help="Starting date to select",
+            required="--end" in other_args,
+        )
+        parser.add_argument(
+            "--end",
+            dest="end",
+            type=valid_date,
+            help="Ending date to select",
+            required="--start" in other_args,
+        )
 
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
@@ -551,13 +565,21 @@ class TechnicalAnalysisController(StockBaseController):
         if ns_parser:
             # Daily
             if self.interval == "1440min":
-                console.print("VWAP should be used with intraday data. \n")
-                return
+                if not ns_parser.start:
+                    console.print(
+                        "If no date conditions, VWAP should be used with intraday data. \n"
+                    )
+                    return
+                interval_text = "Daily"
+            else:
+                interval_text = self.interval
 
             overlap_view.view_vwap(
                 s_ticker=self.ticker,
-                s_interval=self.interval,
+                s_interval=interval_text,
                 ohlc=self.stock,
+                start=ns_parser.start,
+                end=ns_parser.end,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
             )
