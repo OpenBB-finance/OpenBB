@@ -149,21 +149,20 @@ def estimates(ticker: str, export: str):
         show_index=True,
         title="Annual Earnings Estimates",
     )
-    console.print("")
+
     print_rich_table(
         df_quarter_earnings,
         headers=list(df_quarter_earnings.columns),
         show_index=True,
         title="Quarterly Earnings Estimates",
     )
-    console.print("")
+
     print_rich_table(
         df_quarter_revenues,
         headers=list(df_quarter_revenues.columns),
         show_index=True,
         title="Quarterly Revenue Estimates",
     )
-    console.print("")
 
     export_data(
         export,

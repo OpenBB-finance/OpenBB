@@ -172,8 +172,6 @@ Underlying Asset Position: [/param]{self.underlying_asset_position}
                 index_name="Identifier",
             )
 
-            console.print("")
-
     @log_start_end(log=logger)
     def call_add(self, other_args: List[str]):
         """Process add command"""
@@ -320,7 +318,6 @@ Underlying Asset Position: [/param]{self.underlying_asset_position}
                         )
 
                     self.update_runtime_choices()
-                    console.print("")
         else:
             console.print("Please use a valid index\n")
 
@@ -393,7 +390,6 @@ Underlying Asset Position: [/param]{self.underlying_asset_position}
                         show_index=False,
                     )
 
-                console.print("")
         else:
             console.print(
                 "No options have been selected, removing them is not possible\n"
@@ -532,8 +528,6 @@ Underlying Asset Position: [/param]{self.underlying_asset_position}
                         self.greeks,
                         self.options["Option A"]["sign"],
                     )
-
-                console.print("")
 
     @log_start_end(log=logger)
     def call_plot(self, other_args):

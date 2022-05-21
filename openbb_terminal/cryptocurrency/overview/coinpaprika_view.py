@@ -92,7 +92,6 @@ def display_global_market(export: str) -> None:
     print_rich_table(
         df, headers=list(df.columns), show_index=False, title="Global Crypto Statistics"
     )
-    console.print("")
 
     export_data(
         export,
@@ -145,7 +144,6 @@ def display_all_coins_market_info(
         show_index=False,
         title="Basic Market Information",
     )
-    console.print("")
 
     export_data(
         export,
@@ -247,7 +245,6 @@ def display_all_exchanges(
     print_rich_table(
         df.head(top), headers=list(df.columns), show_index=False, title="List Exchanges"
     )
-    console.print("")
 
     export_data(
         export,
@@ -300,7 +297,6 @@ def display_exchange_markets(
         show_index=False,
         title="Exchange Markets",
     )
-    console.print("")
 
     export_data(
         export,
@@ -325,7 +321,6 @@ def display_all_platforms(export: str) -> None:
     print_rich_table(
         df, headers=list(df.columns), show_index=False, title="Smart Contract Platforms"
     )
-    console.print("")
 
     export_data(
         export,
@@ -369,7 +364,6 @@ def display_contracts(
         show_index=False,
         title="Contract Addresses",
     )
-    console.print("")
 
     export_data(
         export,

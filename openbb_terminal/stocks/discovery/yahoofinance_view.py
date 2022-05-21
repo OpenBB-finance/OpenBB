@@ -37,7 +37,6 @@ def display_gainers(num_stocks: int, export: str) -> None:
             show_index=False,
             title="Gainers",
         )
-    console.print("")
 
     export_data(
         export,
@@ -72,7 +71,6 @@ def display_losers(num_stocks: int, export: str) -> None:
             show_index=False,
             title="Display Losers",
         )
-    console.print("")
 
     export_data(
         export,
@@ -107,7 +105,6 @@ def display_ugs(num_stocks: int, export: str) -> None:
             show_index=False,
             title="Undervalued Growth Stocks",
         )
-    console.print("")
 
     export_data(
         export,
@@ -142,7 +139,6 @@ def display_gtech(num_stocks: int, export: str) -> None:
             show_index=False,
             title="Growth Tech Stocks",
         )
-    console.print("")
 
     export_data(
         export,
@@ -177,7 +173,6 @@ def display_active(num_stocks: int, export: str) -> None:
             show_index=False,
             title="Most Active Stocks",
         )
-    console.print("")
 
     export_data(
         export,
@@ -212,7 +207,6 @@ def display_ulc(num_stocks: int, export: str) -> None:
             show_index=False,
             title="Undervalued Large Cap Stocks",
         )
-    console.print("")
 
     export_data(
         export,
@@ -247,7 +241,6 @@ def display_asc(num_stocks: int, export: str) -> None:
             show_index=False,
             title="High Growth Small Caps",
         )
-    console.print("")
 
     export_data(
         export,

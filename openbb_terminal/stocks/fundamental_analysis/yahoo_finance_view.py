@@ -84,7 +84,6 @@ def display_info(ticker: str, export: str = ""):
         console.print("Business Summary:")
         console.print(summary)
 
-    console.print("")
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "info", df_info)
 
 
@@ -119,7 +118,6 @@ def display_shareholders(ticker: str, export: str = ""):
             show_index=False,
             title=f"{ticker.upper()} {title}",
         )
-        console.print()
 
     export_data(
         export,
@@ -168,7 +166,7 @@ def display_sustainability(ticker: str, export: str = ""):
             title=f"{ticker.upper()} Sustainability",
             show_index=True,
         )
-        console.print("")
+
     else:
         logger.error("Invalid data")
         console.print("[red]Invalid data[/red]\n")
@@ -199,7 +197,6 @@ def display_calendar_earnings(ticker: str, export: str = ""):
         headers=list(df_calendar.columns),
         title=f"{ticker.upper()} Calendar Earnings",
     )
-    console.print("")
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "cal", df_calendar)
 
@@ -273,7 +270,7 @@ def display_dividends(
             title=f"{ticker.upper()} Historical Dividends",
             show_index=True,
         )
-    console.print()
+
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "divs", div_history)
 
 
@@ -350,7 +347,7 @@ def display_splits(
         title=f"{ticker.upper()} splits and reverse splits",
         show_index=True,
     )
-    console.print()
+
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "splits", df_splits)
 
 

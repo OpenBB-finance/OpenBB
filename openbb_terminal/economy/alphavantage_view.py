@@ -191,7 +191,6 @@ def display_gdp_capita(
             show_index=False,
             title="US GDP Per Capita",
         )
-        console.print("")
 
 
 @log_start_end(log=logger)
@@ -248,7 +247,6 @@ def display_inflation(
             show_index=False,
             title="US Inflation",
         )
-        console.print("")
 
 
 @log_start_end(log=logger)
@@ -307,7 +305,6 @@ def display_cpi(
         print_rich_table(
             cpi.head(20), headers=["Date", "CPI"], show_index=False, title="US CPI"
         )
-        console.print("")
 
 
 @log_start_end(log=logger)
@@ -371,7 +368,6 @@ def display_treasury_yield(
             title="Historical Treasurey Yield",
             show_index=False,
         )
-        console.print("")
 
 
 @log_start_end(log=logger)
@@ -432,5 +428,3 @@ def display_unemployment(
             title="US Unemployment",
             show_index=False,
         )
-
-    console.print("")

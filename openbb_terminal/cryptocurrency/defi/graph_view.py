@@ -10,7 +10,6 @@ from openbb_terminal.cryptocurrency.dataframe_helpers import (
 from openbb_terminal.cryptocurrency.defi import graph_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
-from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -55,7 +54,6 @@ def display_uni_tokens(
         show_index=False,
         title="UniSwarp DEX Trade-able Tokens",
     )
-    console.print("")
 
     export_data(
         export,
@@ -86,7 +84,6 @@ def display_uni_stats(export: str = "") -> None:
         show_index=False,
         title="Uniswap DEX Base Statistics",
     )
-    console.print("")
 
     export_data(
         export,
@@ -150,7 +147,6 @@ def display_recently_added(
         show_index=False,
         title="Latest Added Pairs on Uniswap DEX",
     )
-    console.print("")
 
     export_data(
         export,
@@ -190,7 +186,6 @@ def display_uni_pools(
     print_rich_table(
         df.head(top), headers=list(df.columns), show_index=False, title="Uniswap Pools"
     )
-    console.print("")
 
     export_data(
         export,
