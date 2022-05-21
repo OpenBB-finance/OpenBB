@@ -118,7 +118,7 @@ def get_expo_data(
     )
 
     # Show forecast over validation # and then +n_predict afterwards sampled 10 times per point
-    probabilistic_forecast = model_es.predict(n_predict, num_samples=10)
+    probabilistic_forecast = model_es.predict(n_predict, num_samples=500)
     precision = mape(val, probabilistic_forecast) # mape = mean average precision error
     console.print(f"model {model_es} obtains MAPE: {precision:.2f}% \n") # TODO
 

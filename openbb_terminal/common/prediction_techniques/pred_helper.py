@@ -557,7 +557,6 @@ def lambda_price_prediction_color(val: float, last_val: float) -> str:
 
 def print_pretty_prediction(df_pred: pd.DataFrame, last_price: float):
     """Print predictions"""
-    console.print("")
     if rich_config.USE_COLOR:
         df_pred = pd.DataFrame(df_pred)
         df_pred.columns = ["pred"]
