@@ -769,8 +769,8 @@ Expiry: [/param]{self.selected_date or ""}
             dest="to_display",
             default=tradier_model.default_columns,
             type=tradier_view.check_valid_option_chains_headers,
-            help="columns to look at.  Columns can be:  {bid, ask, strike, bidsize, asksize, volume, open_interest, "
-            "delta, gamma, theta, vega, ask_iv, bid_iv, mid_iv} ",
+            help="Columns to look at.  Columns can be: bid, ask, strike, bidsize, asksize, volume, open_interest, "
+            "delta, gamma, theta, vega, ask_iv, bid_iv, mid_iv. E.g. 'bid,ask,strike' ",
         )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
