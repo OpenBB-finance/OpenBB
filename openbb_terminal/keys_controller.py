@@ -65,6 +65,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         "ethplorer",
         "smartstake",
         "github",
+        "mesari",
     ]
     PATH = "/keys/"
     key_dict: Dict = {}
@@ -693,6 +694,31 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         if show_output:
             console.print(self.key_dict["SMARTSTAKE"] + "\n")
 
+    def check_messari_key(self, show_output: bool = False) -> None:
+        """Check Messari key"""
+        self.cfg_dict["MESSARI"] = "messari"
+        if (
+            cfg.API_MESSARI_KEY == "REPLACE_ME"  # pragma: allowlist secret
+        ):  # pragma: allowlist secret
+            logger.info("Messari key not defined")
+            self.key_dict["MESSARI"] = "not defined"
+        else:
+
+            url = "https://data.messari.io/api/v2/assets/bitcoin/profile"
+            headers = {"x-messari-api-key": cfg.API_MESSARI_KEY}
+            params = {"fields": "profile/general/overview/official_links"}
+            r = requests.get(url, headers=headers, params=params)
+
+            if r.status_code == 200:
+                logger.info("FMessari key defined, test passed")
+                self.key_dict["MESSARI"] = "defined, test passed"
+            else:
+                logger.warning("Messari key defined, test failed")
+                self.key_dict["MESSARI"] = "defined, test failed"
+
+        if show_output:
+            console.print(self.key_dict["MESSARI"] + "\n")
+
     def check_keys_status(self) -> None:
         """Check keys status"""
         self.check_av_key()
@@ -721,6 +747,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         self.check_ethplorer_key()
         self.check_smartstake_key()
         self.check_github_key()
+        self.check_messari_key()
 
     def print_help(self):
         """Print help"""
@@ -1697,3 +1724,32 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             cfg.API_SMARTSTAKE_KEY = ns_parser.key
 
             self.check_smartstake_key(show_output=True)
+
+    @log_start_end(log=logger)
+    def call_messari(self, other_args: List[str]):
+        """Process messari command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="messari",
+            description="Set Messari API key.",
+        )
+        parser.add_argument(
+            "-k",
+            "--key",
+            type=str,
+            dest="key",
+            help="key",
+        )
+        if not other_args:
+            console.print("For your API Key, visit: https://messari.io/api/docs\n")
+            return
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-k")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            os.environ["OPENBB_API_MESSARI_KEY"] = ns_parser.key
+            dotenv.set_key(self.env_file, "OPENBB_API_MESSARI_KEY", ns_parser.key)
+            cfg.API_MESSARI_KEY = ns_parser.key
+            self.check_messari_key(show_output=True)
