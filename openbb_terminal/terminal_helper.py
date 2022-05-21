@@ -11,6 +11,7 @@ import sys
 from typing import List
 
 # IMPORTATION THIRDPARTY
+import requests
 import matplotlib.pyplot as plt
 
 # IMPORTATION INTERNAL
@@ -160,12 +161,44 @@ def bootup():
         console.print(e, "\n")
 
 
-def welcome_message():
-    # Print first welcome message and help
-    console.print(f"\nWelcome to OpenBB Terminal v{obbff.VERSION}")
+def check_for_updates() -> None:
+    """Check if the latest version is running.
 
+    Checks github for the latest release version and compares it to obbff.VERSION.
+    """
     # The commit has was commented out because the terminal was crashing due to git import for multiple users
     # ({str(git.Repo('.').head.commit)[:7]})
+    try:
+        r = requests.get(
+            "https://api.github.com/repos/openbb-finance/openbbterminal/releases/latest",
+            timeout=1,
+        )
+    except Exception:
+        r = None
+
+    if r is not None and r.status_code == 200:
+        release = r.json()["html_url"].split("/")[-1].replace("v", "")
+        if obbff.VERSION == release:
+            console.print("[green]You are using the latest version[/green]")
+        else:
+            console.print("[red]You are not using the latest version[/red]")
+            console.print(
+                "[yellow]Check for updates at https://openbb.co/products/terminal#get-started[/yellow]"
+            )
+    else:
+        console.print(
+            "[yellow]Unable to check for updates... "
+            + "Check your internet connection and try again...[/yellow]"
+        )
+    console.print("")
+
+
+def welcome_message():
+    """Print the welcome message
+
+    Prints first welcome message, help and a notification if updates are available.
+    """
+    console.print(f"\nWelcome to OpenBB Terminal v{obbff.VERSION}")
 
     if obbff.ENABLE_THOUGHTS_DAY:
         console.print("-------------------")
