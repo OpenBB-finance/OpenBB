@@ -110,23 +110,23 @@ class PredictionTechniquesController(BaseController):
             stock_info = f"{s_intraday} {self.ticker}"
 
         help_text = f"""[cmds]
-    load        load new ticker
-    pick        pick new target variable[/cmds]
+    load             load new ticker
+    pick             pick new target variable[/cmds]
 
 [param]Stock: [/param]{stock_info}
 [param]Target Column: [/param]{self.target}
 
 [info]Models:[/info][cmds]
-    ets         exponential smoothing (e.g. Holt-Winters)
-    knn         k-Nearest Neighbors
-    regression  polynomial regression
-    arima       autoregressive integrated moving average
-    mlp         MultiLayer Perceptron
-    rnn         Recurrent Neural Network
-    lstm        Long-Short Term Memory
-    conv1d      1D Convolutional Neural Network
-    mc          Monte-Carlo simulations
-    expo        Probablistic Exponential Smoothing[/cmds]
+    ets              exponential smoothing (e.g. Holt-Winters)
+    knn              k-Nearest Neighbors
+    regression       polynomial regression
+    arima            autoregressive integrated moving average
+    mlp              MultiLayer Perceptron
+    rnn              Recurrent Neural Network
+    lstm             Long-Short Term Memory
+    conv1d           1D Convolutional Neural Network
+    mc               Monte-Carlo simulations
+    expo             Probablistic Exponential Smoothing[/cmds]
         """
         console.print(text=help_text, menu="Stocks - Prediction Techniques")
 

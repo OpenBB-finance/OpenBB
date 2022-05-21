@@ -113,7 +113,7 @@ def display_last_government(
             show_index=False,
             title="Representative Trading",
         )
-    console.print("")
+
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "lasttrades", df_gov
     )
@@ -220,8 +220,6 @@ def display_government_buys(
 
     if not external_axes:
         theme.visualize_output()
-
-    console.print("")
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "topbuys", df_gov)
 
@@ -337,7 +335,6 @@ def display_government_sells(
     if not external_axes:
         theme.visualize_output()
 
-    console.print("")
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "topsells", df_gov)
 
 
@@ -412,7 +409,6 @@ def display_last_contracts(
         if not external_axes:
             theme.visualize_output()
 
-    console.print("")
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "lastcontracts", df)
 
 
@@ -544,7 +540,6 @@ def display_government_trading(
         plot_government(df_gov, ticker, gov_type, external_axes)
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "gtrades", df_gov)
-    console.print("")
 
 
 @log_start_end(log=logger)
@@ -616,7 +611,6 @@ def display_contracts(
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "contracts", df_contracts
     )
-    console.print("")
 
 
 @log_start_end(log=logger)
@@ -718,7 +712,6 @@ def display_qtr_contracts(
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "qtrcontracts", df_contracts
     )
-    console.print("")
 
 
 @log_start_end(log=logger)
@@ -797,7 +790,6 @@ def display_hist_contracts(
             theme.visualize_output()
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "histcont")
-    console.print("")
 
 
 @log_start_end(log=logger)
@@ -861,7 +853,6 @@ def display_top_lobbying(
         if not external_axes:
             theme.visualize_output()
 
-    console.print("")
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "lobbying", df_lobbying
     )

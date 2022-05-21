@@ -240,7 +240,6 @@ def screener(
             show_index=False,
             title="Finviz Screener",
         )
-        console.print("")
 
         export_data(
             export,

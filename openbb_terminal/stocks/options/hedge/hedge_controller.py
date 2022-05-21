@@ -122,15 +122,15 @@ class HedgeController(BaseController):
 [param]Ticker: [/param]{self.ticker or None}
 [param]Expiry: [/param]{self.expiration or None}
 [cmds]
-    pick          pick the underlying asset position
+    pick             pick the underlying asset position
 [/cmds][param]
 Underlying Asset Position: [/param]{self.underlying_asset_position}
 [cmds]
-    list          show the available strike prices for calls and puts{has_portfolio_start}
-    add           add an option to the list of options{has_portfolio_end}{has_option_start}
-    rmv           remove an option from the list of options
-    sop           show selected options and neutral portfolio weights
-    plot          show the option payoff diagram[/cmds]{has_option_end}
+    list             show the available strike prices for calls and puts{has_portfolio_start}
+    add              add an option to the list of options{has_portfolio_end}{has_option_start}
+    rmv              remove an option from the list of options
+    sop              show selected options and neutral portfolio weights
+    plot             show the option payoff diagram[/cmds]{has_option_end}
         """
         console.print(text=help_text, menu="Stocks - Options - Hedge")
 
@@ -171,8 +171,6 @@ Underlying Asset Position: [/param]{self.underlying_asset_position}
                 show_index=True,
                 index_name="Identifier",
             )
-
-            console.print("")
 
     @log_start_end(log=logger)
     def call_add(self, other_args: List[str]):
@@ -320,7 +318,6 @@ Underlying Asset Position: [/param]{self.underlying_asset_position}
                         )
 
                     self.update_runtime_choices()
-                    console.print("")
         else:
             console.print("Please use a valid index\n")
 
@@ -393,7 +390,6 @@ Underlying Asset Position: [/param]{self.underlying_asset_position}
                         show_index=False,
                     )
 
-                console.print("")
         else:
             console.print(
                 "No options have been selected, removing them is not possible\n"
@@ -532,8 +528,6 @@ Underlying Asset Position: [/param]{self.underlying_asset_position}
                         self.greeks,
                         self.options["Option A"]["sign"],
                     )
-
-                console.print("")
 
     @log_start_end(log=logger)
     def call_plot(self, other_args):

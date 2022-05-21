@@ -23,7 +23,6 @@ from openbb_terminal.helper_funcs import (
     print_rich_table,
     is_valid_axes_count,
 )
-from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -49,7 +48,6 @@ def display_account_staking_info(
         print_rich_table(
             df.head(top), headers=list(df.columns), show_index=False, title=report
         )
-    console.print("")
 
     export_data(
         export,
@@ -94,7 +92,6 @@ def display_validators(
         floatfmt=".2f",
         show_index=False,
     )
-    console.print("")
 
     export_data(
         export,
@@ -139,7 +136,6 @@ def display_gov_proposals(
         floatfmt=".2f",
         show_index=False,
     )
-    console.print("")
 
     export_data(
         export,

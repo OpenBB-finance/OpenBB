@@ -75,7 +75,6 @@ def notes(series_term: str, num: int) -> pd.DataFrame:
         show_index=False,
         headers=["Series ID", "Title", "Description"],
     )
-    console.print("")
 
 
 @log_start_end(log=logger)
@@ -168,7 +167,6 @@ def display_fred_series(
                 show_index=True,
                 index_name="Date",
             )
-            console.print("")
 
         export_data(
             export,

@@ -1,32 +1,32 @@
 
 Ticker:  TSLA 
 
-    data          fundamental and technical data of company [FinViz]
-    mgmt          management team of the company [Business Insider]
-    analysis      analyse SEC filings with the help of machine learning [Eclect.us]
-    score         investing score from Warren Buffett, Joseph Piotroski and Benjamin Graham [FMP]
-    warnings      company warnings according to Sean Seah book [Market Watch]
-    dcf           advanced Excel customizable discounted cash flow [Stockanalysis]
+    data             fundamental and technical data of company [FinViz]
+    mgmt             management team of the company [Business Insider]
+    analysis         analyse SEC filings with the help of machine learning [Eclect.us]
+    score            investing score from Warren Buffett, Joseph Piotroski and Benjamin Graham [FMP]
+    warnings         company warnings according to Sean Seah book [Market Watch]
+    dcf              advanced Excel customizable discounted cash flow [Stockanalysis]
 [Yahoo Finance]
-    info          information scope of the company
-    mktcap        estimated market cap
-    shrs          shareholders (insiders, institutions and mutual funds)
-    sust          sustainability values (environment, social and governance)
-    cal           calendar earnings and estimates of the company
-    divs          show historical dividends for company
-    splits        stock split and reverse split events since IPO
-    web           open web browser of the company
-    hq            open HQ location of the company
+    info             information scope of the company
+    mktcap           estimated market cap
+    shrs             shareholders (insiders, institutions and mutual funds)
+    sust             sustainability values (environment, social and governance)
+    cal              calendar earnings and estimates of the company
+    divs             show historical dividends for company
+    splits           stock split and reverse split events since IPO
+    web              open web browser of the company
+    hq               open HQ location of the company
 [Alpha Vantage / Polygon]
-    income        income statements of the company
-    balance       balance sheet of the company
+    income           income statements of the company
+    balance          balance sheet of the company
 [Alpha Vantage]
-    overview      overview of the company
-    key           company key metrics
-    cash          cash flow of the company
-    earnings      earnings dates and reported EPS
-    fraud         key fraud ratios
-    dupont        detailed breakdown for return on equity
+    overview         overview of the company
+    key              company key metrics
+    cash             cash flow of the company
+    earnings         earnings dates and reported EPS
+    fraud            key fraud ratios
+    dupont           detailed breakdown for return on equity
 Other Sources:
->   fmp           profile,quote,enterprise,dcf,income,ratios,growth from FMP
+>   fmp              profile,quote,enterprise,dcf,income,ratios,growth from FMP
         

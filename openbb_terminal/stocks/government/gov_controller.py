@@ -73,21 +73,21 @@ class GovController(StockBaseController):
 [src][QuiverQuant][/src]
 
 [info]Explore:[/info][cmds]
-    lasttrades           last trades
-    topbuys              show most purchased stocks
-    topsells             show most sold stocks
-    lastcontracts        show last government contracts given out
-    qtrcontracts         quarterly government contracts analysis
-    toplobbying          top corporate lobbying tickers
+    lasttrades       last trades
+    topbuys          show most purchased stocks
+    topsells         show most sold stocks
+    lastcontracts    show last government contracts given out
+    qtrcontracts     quarterly government contracts analysis
+    toplobbying      top corporate lobbying tickers
 
-    load                 load a specific ticker for analysis[/cmds]
+    load             load a specific ticker for analysis[/cmds]
 
 [param]Ticker: [/param]{self.ticker or None}{has_ticker_start}[cmds]
 
-    gtrades              show government trades for ticker
-    contracts            show government contracts for ticker
-    histcont             show historical quarterly government contracts for ticker
-    lobbying             corporate lobbying details for ticker[/cmds]{has_ticker_end}
+    gtrades          show government trades for ticker
+    contracts        show government contracts for ticker
+    histcont         show historical quarterly government contracts for ticker
+    lobbying         corporate lobbying details for ticker[/cmds]{has_ticker_end}
             """
         console.print(text=help_text, menu="Stocks - Screener")
 

@@ -142,14 +142,14 @@ class ParametersController(BaseController):
 
 [param]Loaded file:[/param] {self.current_file} [cmds]
 
-    file          load portfolio risk parameters
-    save          save portfolio risk parameters to specified file[/cmds]
+    file             load portfolio risk parameters
+    save             save portfolio risk parameters to specified file[/cmds]
 
 [param]Model of interest:[/param] {self.current_model} [cmds]
 
-    clear         clear model of interest from filtered parameters
-    set           set model of interest to filter parameters
-    arg           set a different value for an argument[/cmds]
+    clear            clear model of interest from filtered parameters
+    set              set model of interest to filter parameters
+    arg              set a different value for an argument[/cmds]
 """
         if self.current_model:
             max_len = max(len(k) for k in self.params.keys())

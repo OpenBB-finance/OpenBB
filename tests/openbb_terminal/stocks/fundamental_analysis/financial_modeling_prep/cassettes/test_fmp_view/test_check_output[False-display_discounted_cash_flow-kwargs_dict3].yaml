@@ -10,8 +10,8 @@ interactions:
     uri: https://financialmodelingprep.com/api/v3/discounted-cash-flow/PM?apikey=MOCK_API_KEY&limit=0&period=annual
   response:
     body:
-      string: "[ {\n  \"symbol\" : \"PM\",\n  \"date\" : \"2022-03-06\",\n  \"dcf\"
-        : \"Infinity\",\n  \"Stock Price\" : 99.8\n} ]"
+      string: "[ {\n  \"symbol\" : \"PM\",\n  \"date\" : \"2022-05-21\",\n  \"dcf\"
+        : 104.03760436737315,\n  \"Stock Price\" : 101.15\n} ]"
     headers:
       Access-Control-Allow-Headers:
       - origin, content-type, accept, Authorization, authorization
@@ -26,7 +26,7 @@ interactions:
       Content-Type:
       - application/json;charset=UTF-8
       Date:
-      - Sun, 06 Mar 2022 13:05:20 GMT
+      - Sat, 21 May 2022 15:08:08 GMT
       Server:
       - nginx/1.14.0 (Ubuntu)
       Transfer-Encoding:
@@ -48,16 +48,17 @@ interactions:
   response:
     body:
       string: "[ {\n  \"symbol\" : \"PM\",\n  \"historicalDCF\" : [ {\n    \"date\"
-        : \"2020-12-31\",\n    \"Stock Price\" : 79.650002,\n    \"DCF\" : 84.32566031727681\n
-        \ }, {\n    \"date\" : \"2019-12-31\",\n    \"Stock Price\" : 84.330002,\n
-        \   \"DCF\" : 88.74222064951769\n  }, {\n    \"date\" : \"2018-12-31\",\n
-        \   \"Stock Price\" : 74.480003,\n    \"DCF\" : 78.71987438263666\n  }, {\n
-        \   \"date\" : \"2017-12-31\",\n    \"Stock Price\" : 107.940002,\n    \"DCF\"
-        : 113.38265663917525\n  }, {\n    \"date\" : \"2016-12-31\",\n    \"Stock
-        Price\" : 95.959999,\n    \"DCF\" : 98.6930744352031\n  }, {\n    \"date\"
-        : \"2015-12-31\",\n    \"Stock Price\" : 90.010002,\n    \"DCF\" : 92.21594131568754\n
-        \ }, {\n    \"date\" : \"2014-12-31\",\n    \"Stock Price\" : 80.239998,\n
-        \   \"DCF\" : 81.31407207407408\n  }, {\n    \"date\" : \"2013-12-31\",\n
+        : \"2021-12-31\",\n    \"Stock Price\" : 103.519997,\n    \"DCF\" : 106.40760136737315\n
+        \ }, {\n    \"date\" : \"2020-12-31\",\n    \"Stock Price\" : 79.650002,\n
+        \   \"DCF\" : 84.32566031727681\n  }, {\n    \"date\" : \"2019-12-31\",\n
+        \   \"Stock Price\" : 84.330002,\n    \"DCF\" : 88.74222064951769\n  }, {\n
+        \   \"date\" : \"2018-12-31\",\n    \"Stock Price\" : 74.480003,\n    \"DCF\"
+        : 78.71987438263666\n  }, {\n    \"date\" : \"2017-12-31\",\n    \"Stock Price\"
+        : 107.940002,\n    \"DCF\" : 113.38265663917525\n  }, {\n    \"date\" : \"2016-12-31\",\n
+        \   \"Stock Price\" : 95.959999,\n    \"DCF\" : 98.6930744352031\n  }, {\n
+        \   \"date\" : \"2015-12-31\",\n    \"Stock Price\" : 90.010002,\n    \"DCF\"
+        : 92.21594131568754\n  }, {\n    \"date\" : \"2014-12-31\",\n    \"Stock Price\"
+        : 80.239998,\n    \"DCF\" : 81.31407207407408\n  }, {\n    \"date\" : \"2013-12-31\",\n
         \   \"Stock Price\" : 79.089996,\n    \"DCF\" : 80.41798613563502\n  }, {\n
         \   \"date\" : \"2012-12-31\",\n    \"Stock Price\" : 87.650002,\n    \"DCF\"
         : 89.4130043640662\n  }, {\n    \"date\" : \"2011-12-31\",\n    \"Stock Price\"
@@ -80,7 +81,7 @@ interactions:
       Content-Type:
       - application/json;charset=UTF-8
       Date:
-      - Sun, 06 Mar 2022 13:05:20 GMT
+      - Sat, 21 May 2022 15:08:08 GMT
       Server:
       - nginx/1.14.0 (Ubuntu)
       Transfer-Encoding:

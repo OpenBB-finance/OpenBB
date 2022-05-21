@@ -662,7 +662,6 @@ def show_parity(
         "parity",
         show,
     )
-    console.print()
 
 
 @log_start_end(log=logger)
@@ -729,7 +728,6 @@ def risk_neutral_vals(
         show_index=False,
         title="Risk Neutral Values",
     )
-    console.print()
 
 
 @log_start_end(log=logger)
@@ -1091,5 +1089,5 @@ def show_greeks(
         columns += ["Rho", "Phi", "Charm", "Vanna", "Vomma"]
     df = pd.DataFrame(strikes, columns=columns)
     print_rich_table(df, headers=list(df.columns), show_index=False, title="Greeks")
-    console.print()
+
     return None

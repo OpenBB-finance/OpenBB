@@ -39,7 +39,6 @@ def display_management(ticker: str, export: str = ""):
             index_name="Name",
         )
 
-        console.print()
         export_data(
             export, os.path.dirname(os.path.abspath(__file__)), "mgmt", df_management
         )
