@@ -46,8 +46,9 @@ def print_goodbye():
     console.print(
         "OpenBB Terminal is the result of a strong community building an "
         "[param]investment research platform for everyone.[/param]\n\n"
-        "Join us on [cmds]https://discord.gg/Up2QGbMKHY[/cmds], "
-        "show your appreciation on [cmds]https://twitter.com/openbb_finance,[/cmds]\n"
+        "Join us on [cmds]https://openbb.co/discord[/cmds], "
+        "show your appreciation on [cmds]https://twitter.com/openbb_finance[/cmds],\n"
+        "ask support on [cmds]https://openbb.co/support[/cmds], "
         "or even request a feature on [cmds]https://openbb.co/request-a-feature[/cmds]\n"
     )
 
@@ -103,9 +104,9 @@ def about_us():
         "\n[green]Thanks for using OpenBB Terminal. This is our way![/green]\n"
         + "\n"
         + "[cyan]Website: [/cyan]https://openbb.co\n"
-        + "[cyan]Documentation: [/cyan]https://openbb-finance.github.io/OpenBBTerminal/\n"
+        + "[cyan]Documentation: [/cyan]https://openbb.co/docs\n"
         + "\n"
-        + "[cyan]Join our community on discord: [/cyan]https://discord.gg/Up2QGbMKHY\n"
+        + "[cyan]Join our community on discord: [/cyan]https://openbb.co/discord\n"
         + "[cyan]Follow our twitter for updates: [/cyan]https://twitter.com/openbb_finance\n"
         + "\n"
         + "[yellow]Partnerships:[/yellow]\n"
