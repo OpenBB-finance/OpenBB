@@ -208,7 +208,7 @@ def display_bars_financials(
 
             labels = ax.get_xticks().tolist()
             ax.set_xticks(labels)
-            ax.set_xticklabels([f"{label}{unit}" for label in labels])
+            ax.set_xticklabels([f"{label:.2f}{unit}" for label in labels])
 
             theme.style_primary_axis(ax)
 
