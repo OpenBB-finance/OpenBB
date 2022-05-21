@@ -11,15 +11,15 @@ interactions:
   response:
     body:
       string: "[ {\n  \"symbol\" : \"PM\",\n  \"name\" : \"Philip Morris International
-        Inc.\",\n  \"price\" : 99.80000000,\n  \"changesPercentage\" : -2.61514470,\n
-        \ \"change\" : -2.68000030,\n  \"dayLow\" : 99.25000000,\n  \"dayHigh\" :
-        101.06170000,\n  \"yearHigh\" : 112.48000000,\n  \"yearLow\" : 85.64000000,\n
-        \ \"marketCap\" : 154673037312.00000000,\n  \"priceAvg50\" : 101.78640000,\n
-        \ \"priceAvg200\" : 98.53845000,\n  \"volume\" : 6489064,\n  \"avgVolume\"
-        : 6175341,\n  \"exchange\" : \"NYSE\",\n  \"open\" : 101.04000000,\n  \"previousClose\"
-        : 102.48000000,\n  \"eps\" : 5.83000000,\n  \"pe\" : 17.11835500,\n  \"earningsAnnouncement\"
-        : \"2022-04-21T12:30:00.000+0000\",\n  \"sharesOutstanding\" : 1549830033,\n
-        \ \"timestamp\" : 1646571914\n} ]"
+        Inc.\",\n  \"price\" : 101.15000000,\n  \"changesPercentage\" : 0.64676800,\n
+        \ \"change\" : 0.65000200,\n  \"dayLow\" : 99.65000000,\n  \"dayHigh\" : 101.74000000,\n
+        \ \"yearHigh\" : 112.48000000,\n  \"yearLow\" : 85.64000000,\n  \"marketCap\"
+        : 156793618432.00000000,\n  \"priceAvg50\" : 98.67640000,\n  \"priceAvg200\"
+        : 98.46685000,\n  \"volume\" : 5077019,\n  \"avgVolume\" : 6351306,\n  \"exchange\"
+        : \"NYSE\",\n  \"open\" : 100.68000000,\n  \"previousClose\" : 100.50000000,\n
+        \ \"eps\" : 5.78000000,\n  \"pe\" : 17.50000000,\n  \"earningsAnnouncement\"
+        : \"2022-07-21T12:30:00.000+0000\",\n  \"sharesOutstanding\" : 1550109920,\n
+        \ \"timestamp\" : 1653145681\n} ]"
     headers:
       Access-Control-Allow-Headers:
       - origin, content-type, accept, Authorization, authorization
@@ -34,7 +34,7 @@ interactions:
       Content-Type:
       - application/json;charset=UTF-8
       Date:
-      - Sun, 06 Mar 2022 13:05:14 GMT
+      - Sat, 21 May 2022 15:08:01 GMT
       Server:
       - nginx/1.14.0 (Ubuntu)
       Transfer-Encoding:

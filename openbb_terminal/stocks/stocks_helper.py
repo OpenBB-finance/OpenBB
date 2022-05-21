@@ -236,7 +236,7 @@ def search(
         headers=["Name", "Country", "Sector", "Industry", "Exchange"],
         title=title,
     )
-    console.print()
+
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "search", df)
 
 
@@ -923,7 +923,6 @@ def quote(other_args: List[str], s_ticker: str):
         logger.exception("Invalid stock ticker")
         console.print(f"Invalid stock ticker: {ns_parser.s_ticker}")
 
-    console.print("")
     return
 
 
@@ -1268,7 +1267,6 @@ def show_quick_performance(stock_df: pd.DataFrame, ticker: str):
     print_rich_table(
         df, show_index=False, headers=df.columns, title=f"{ticker.upper()} Performance"
     )
-    console.print()
 
 
 def show_codes_polygon(ticker: str):
@@ -1298,4 +1296,3 @@ def show_codes_polygon(ticker: str):
     print_rich_table(
         df, show_index=False, headers=["", ""], title=f"{ticker.upper()} Codes"
     )
-    console.print()

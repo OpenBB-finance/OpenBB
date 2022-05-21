@@ -91,7 +91,6 @@ def display_covid_ov(
             index_name="Date",
             title=f"[bold]{country} COVID Numbers[/bold]",
         )
-        console.print("")
 
     if export:
         export_data(export, os.path.dirname(os.path.abspath(__file__)), "ov", ov)
@@ -172,7 +171,6 @@ def display_covid_stat(
             index_name="Date",
             title=f"[bold]{country} COVID {stat}[/bold]",
         )
-        console.print("")
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), stat, data)
 
@@ -209,7 +207,6 @@ def display_country_slopes(
         index_name="Country",
         title=f"[bold]{('Highest','Lowest')[ascend]} Sloping Cases[/bold] (Cases/Day)",
     )
-    console.print("")
 
     export_data(
         export,

@@ -82,7 +82,6 @@ def print_and_record_reddit_post(
     print_rich_table(
         df, headers=list(df.columns), show_index=False, title="Reddit Submission"
     )
-    console.print("\n")
 
 
 @log_start_end(log=logger)
@@ -166,12 +165,11 @@ def display_popular_tickers(
             popular_tickers_df,
             headers=list(popular_tickers_df.columns),
             show_index=False,
-            title=f"\nThe following TOP {n_top} tickers have been mentioned:",
+            title=f"The following TOP {n_top} tickers have been mentioned",
         )
     else:
         console.print("No tickers found")
 
-    console.print("")
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),

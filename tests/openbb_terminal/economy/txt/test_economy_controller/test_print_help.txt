@@ -1,25 +1,26 @@
 
 Overview
-    overview      show a market overview of either indices, bonds or currencies [Source: Wall St. Journal]
-    futures       display a futures and commodities overview [Source: Wall St. Journal / FinViz]
-    map           S&P500 index stocks map [Source: FinViz]
-    bigmac        The Economist Big Mac index [Source: NASDAQ Datalink]
+    overview         show a market overview of either indices, bonds or currencies [Source: Wall St. Journal]
+    futures          display a futures and commodities overview [Source: Wall St. Journal / FinViz]
+    map              S&P500 index stocks map [Source: FinViz]
+    bigmac           The Economist Big Mac index [Source: NASDAQ Datalink]
 
 Macro Data
-    macro         collect macro data for a country or countries [Source: EconDB]
-    fred          collect macro data from FRED based on a series ID [Source: FRED]
-    index         find and plot any (major) index on the market [Source: Yahoo Finance]
-    treasury      obtain U.S. treasury rates [Source: EconDB]
-    yield         show the U.S. Treasury yield curve [Source: FRED]
-    ycrv          show sovereign yield curves [Source: Investing.com/FRED]
-    plot          plot data from the above commands together
-    options       show the available options for 'plot' or show/export the data
+    macro            collect macro data for a country or countries [Source: EconDB]
+    fred             collect macro data from FRED based on a series ID [Source: FRED]
+    index            find and plot any (major) index on the market [Source: Yahoo Finance]
+    treasury         obtain U.S. treasury rates [Source: EconDB]
+    yield            show the U.S. Treasury yield curve [Source: FRED]
+    ycrv             show sovereign yield curves [Source: Investing.com/FRED]
+    plot             plot data from the above commands together
+    options          show the available options for 'plot' or show/export the data
 
 Performance & Valuations
-    rtps          real-time performance sectors [Source: Alpha Vantage]
-    valuation     valuation of sectors, industry, country [Source: FinViz]
-    performance   performance of sectors, industry, country [Source: FinViz]
-    spectrum      spectrum of sectors, industry, country [Source: FinViz]
+    rtps             real-time performance sectors [Source: Alpha Vantage]
+    valuation        valuation of sectors, industry, country [Source: FinViz]
+    performance      performance of sectors, industry, country [Source: FinViz]
+    spectrum         spectrum of sectors, industry, country [Source: FinViz]
 
->   pred          Open the prediction menu to analyse stored data
->   qa            Open quantitative analysis menu with stored data
+>   pred             Open the prediction menu to analyse stored data
+>   qa               Open quantitative analysis menu with stored data
+

@@ -6,7 +6,6 @@ import os
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
-from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.options import barchart_model
 
 logger = logging.getLogger(__name__)
@@ -29,5 +28,5 @@ def print_options_data(ticker: str, export: str):
     print_rich_table(
         data, show_index=False, headers=["Info", "Value"], title="Options Information"
     )
-    console.print()
+
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "info", data)

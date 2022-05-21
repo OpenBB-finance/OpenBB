@@ -165,57 +165,57 @@ class DueDiligenceController(CryptoBaseController):
         """Print help"""
         source_txt = CRYPTO_SOURCES.get(self.source, "?") if self.source != "" else ""
         help_text = f"""[cmds]
-    load        load a specific cryptocurrency for analysis
+    load             load a specific cryptocurrency for analysis
 
 [param]Coin: [/param]{self.coin}
 [param]Source: [/param]{source_txt}
 
 [src]CoinGecko[/src]
-   info            basic information about loaded coin
-   market          market stats about loaded coin
-   ath             all time high related stats for loaded coin
-   atl             all time low related stats for loaded coin
-   web             found websites for loaded coin e.g forum, homepage
-   social          social portals urls for loaded coin, e.g reddit, twitter
-   score           different kind of scores for loaded coin, e.g developer score, sentiment score
-   dev             github, bitbucket coin development statistics
-   bc              links to blockchain explorers for loaded coin
+    info             basic information about loaded coin
+    market           market stats about loaded coin
+    ath              all time high related stats for loaded coin
+    atl              all time low related stats for loaded coin
+    web              found websites for loaded coin e.g forum, homepage
+    social           social portals urls for loaded coin, e.g reddit, twitter
+    score            different kind of scores for loaded coin, e.g developer score, sentiment score
+    dev              github, bitbucket coin development statistics
+    bc               links to blockchain explorers for loaded coin
 [src]Glassnode[/src]
-   active          active addresses
-   nonzero         addresses with non-zero balances
-   change          30d change of supply held on exchange wallets
-   eb              total balance held on exchanges (in percentage and units)
+    active           active addresses
+    nonzero          addresses with non-zero balances
+    change           30d change of supply held on exchange wallets
+    eb               total balance held on exchanges (in percentage and units)
 [src]Coinglass[/src]
-   oi              open interest per exchange
+    oi               open interest per exchange
 [src]CoinPaprika[/src]
-   basic           basic information about loaded coin
-   ps              price and supply related metrics for loaded coin
-   mkt             all markets for loaded coin
-   ex              all exchanges where loaded coin is listed
-   twitter         tweets for loaded coin
-   events          events related to loaded coin
+    basic            basic information about loaded coin
+    ps               price and supply related metrics for loaded coin
+    mkt              all markets for loaded coin
+    ex               all exchanges where loaded coin is listed
+    twitter          tweets for loaded coin
+    events           events related to loaded coin
 [src]Binance[/src]
-   binbook         order book
-   balance         coin balance
+    binbook          order book
+    balance          coin balance
 [src]Coinbase[/src]
-   cbbook          order book
-   trades          last trades
-   stats           coin stats
+    cbbook           order book
+    trades           last trades
+    stats            coin stats
 [src]Messari[/src]
-   mcapdom         market cap dominance
-   mt              messari timeseries e.g. twitter followers, circ supply, etc
-   rm              roadmap
-   tk              tokenomics e.g. circulating/max/total supply, emission type, etc
-   pi              project information e.g. technology details, public repos, audits, vulns
-   team            contributors (individuals and organizations)
-   inv             investors (individuals and organizations)
-   gov             governance details
-   fr              fundraising details e.g. treasury accounts, sales rounds, allocation
-   links           links e.g. whitepaper, github, twitter, youtube, reddit, telegram
+    mcapdom          market cap dominance
+    mt               messari timeseries e.g. twitter followers, circ supply, etc
+    rm               roadmap
+    tk               tokenomics e.g. circulating/max/total supply, emission type, etc
+    pi               project information e.g. technology details, public repos, audits, vulns
+    team             contributors (individuals and organizations)
+    inv              investors (individuals and organizations)
+    gov              governance details
+    fr               fundraising details e.g. treasury accounts, sales rounds, allocation
+    links            links e.g. whitepaper, github, twitter, youtube, reddit, telegram
 [src]Santiment[/src]
-   gh              github activity over time
+    gh               github activity over time
 [src]CryptoPanic[/src]
-   news            loaded coin's most recent news[/cmds]
+    news             loaded coin's most recent news[/cmds]
 """
         console.print(text=help_text, menu="Stocks - Due Diligence")
 

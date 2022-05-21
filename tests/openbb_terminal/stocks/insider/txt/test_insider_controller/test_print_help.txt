@@ -1,41 +1,41 @@
 
-    view          view available presets
-    set           set one of the available presets
+    view             view available presets
+    set              set one of the available presets
 
 PRESET: whales
 
-    filter        filter insiders based on preset [Open Insider]
+    filter           filter insiders based on preset [Open Insider]
 
 
-    load          load a specific stock ticker for analysis
+    load             load a specific stock ticker for analysis
 [unvl]
 Ticker: 
 
-    stats         insider stats of the company [Open Insider]
-    act           insider activity over time [Business Insider]
-    lins          last insider trading of the company [Finviz]
+    stats            insider stats of the company [Open Insider]
+    act              insider activity over time [Business Insider]
+    lins             last insider trading of the company [Finviz]
 [/unvl]
 
 Latest Insiders [Open Insider]
-    lcb           latest cluster boys
-    lpsb          latest penny stock buys
-    lit           latest insider trading (all filings)
-    lip           latest insider purchases
-    blip          big latest insider purchases ($25k+)
-    blop          big latest officer purchases ($25k+)
-    blcp          big latest CEO/CFO purchases ($25k+)
-    lis           latest insider sales
-    blis          big latest insider sales ($100k+)
-    blos          big latest officer sales ($100k+)
-    blcs          big latest CEO/CFO sales ($100k+)
+    lcb              latest cluster boys
+    lpsb             latest penny stock buys
+    lit              latest insider trading (all filings)
+    lip              latest insider purchases
+    blip             big latest insider purchases ($25k+)
+    blop             big latest officer purchases ($25k+)
+    blcp             big latest CEO/CFO purchases ($25k+)
+    lis              latest insider sales
+    blis             big latest insider sales ($100k+)
+    blos             big latest officer sales ($100k+)
+    blcs             big latest CEO/CFO sales ($100k+)
 Top Insiders [Open Insider]
-    topt          top officer purchases today
-    toppw         top officer purchases past week
-    toppm         top officer purchases past month
-    tipt          top insider purchases today
-    tippw         top insider purchases past week
-    tippm         top insider purchases past month
-    tist          top insider sales today
-    tispw         top insider sales past week
-    tispm         top insider sales past month
+    topt             top officer purchases today
+    toppw            top officer purchases past week
+    toppm            top officer purchases past month
+    tipt             top insider purchases today
+    tippw            top insider purchases past week
+    tippm            top insider purchases past month
+    tist             top insider sales today
+    tispw            top insider sales past week
+    tispm            top insider sales past month
 

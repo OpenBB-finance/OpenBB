@@ -20,7 +20,6 @@ from openbb_terminal.helper_funcs import (
     is_intraday,
     is_valid_axes_count,
 )
-from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -123,7 +122,6 @@ def fibonacci_retracement(
             show_index=False,
             title="Fibonacci retracement levels",
         )
-        console.print("")
 
     export_data(
         export,
