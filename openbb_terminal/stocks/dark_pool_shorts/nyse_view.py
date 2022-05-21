@@ -114,7 +114,6 @@ def display_short_by_exchange(
             title="Short Data",
             headers=list(volume_by_exchange.columns),
         )
-    console.print("")
 
     if export:
         export_data(

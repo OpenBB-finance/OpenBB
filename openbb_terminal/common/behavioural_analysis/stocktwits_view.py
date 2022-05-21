@@ -69,7 +69,6 @@ def display_trending():
         show_index=False,
         title="Trending Stocks",
     )
-    console.print("")
 
 
 @log_start_end(log=logger)

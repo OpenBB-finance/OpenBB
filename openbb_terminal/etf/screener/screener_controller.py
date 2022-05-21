@@ -84,14 +84,14 @@ class ScreenerController(BaseController):
     def print_help(self):
         """Print help"""
         help_text = f"""[cmds]
-    view        view available presets
-    set         set one of the available presets[/cmds]
+    view             view available presets
+    set              set one of the available presets[/cmds]
 
 [param]PRESET: [/param]{self.preset}[cmds]
 
-    screen      screen ETF using preset selected [src][StockAnalysis][/src]
+    screen           screen ETF using preset selected [src][StockAnalysis][/src]
 
-    sbc         screen by category [src][FinanceDatabase][/src][/cmds]
+    sbc              screen by category [src][FinanceDatabase][/src][/cmds]
 """
         console.print(text=help_text, menu="ETF - Screener")
 

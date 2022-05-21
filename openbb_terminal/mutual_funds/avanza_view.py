@@ -78,7 +78,6 @@ def display_allocation(fund_name: str, focus: str):
         print_rich_table(
             country_data, title=f"{fund_name}'s Country Weighting", headers=header
         )
-    console.print("")
 
 
 @log_start_end(log=logger)

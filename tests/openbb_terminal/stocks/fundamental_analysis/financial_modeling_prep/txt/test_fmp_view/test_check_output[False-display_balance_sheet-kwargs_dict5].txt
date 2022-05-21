@@ -1,5 +1,6 @@
 Fiscal Date Ending                                          2017                 2018                 2019                 2020                 2021
 Reported currency                                            USD                  USD                  USD                  USD                  USD
+Cik                                                      1.413 M              1.413 M              1.413 M              1.413 M              1.413 M
 Filling date                                          2018-02-13           2019-02-07           2020-02-07           2021-02-09           2022-02-11
 Accepted date                                2018-02-13 08:07:16  2019-02-07 15:09:20  2020-02-07 06:47:13  2021-02-09 16:20:37  2022-02-11 08:29:22
 Calendar year                                            2.017 K              2.018 K              2.019 K              2.020 K              2.021 K
@@ -19,7 +20,7 @@ Long term investments                                    1.074 B              1.
 Tax assets                                               1.007 B                977 M              1.153 B              1.410 B                895 M
 Other non current assets                                 1.924 B              1.445 B              1.971 B              2.767 B              2.549 B
 Total non current assets                                21.374 B             20.359 B             22.361 B             23.323 B             23.573 B
-Other assets                                                   0                    0                    0                    0                    0
+Other assets                                                   0                    0                    0                    0             16.665 B
 Total assets                                            42.968 B             39.801 B             42.875 B             44.815 B             41.290 B
 Account payables                                         2.242 B              2.068 B              2.299 B              2.780 B              3.331 B
 Short term debt                                          3.005 B              4.784 B              4.389 B              3.368 B              3.023 B
@@ -48,7 +49,6 @@ Total liabilities and total equity                      42.968 B             39.
 Total investments                                              0                    0                    0                    0                    0
 Total debt                                              34.339 B             31.759 B             31.045 B             31.536 B             27.806 B
 Net debt                                                25.892 B             25.166 B             24.184 B             24.256 B             23.310 B
-
                                                                                                            Final link
 Fiscal Date Ending                                                                                                   
 2017                https://www.sec.gov/Archives/edgar/data/1413329/000141332918000007/pm123117form10kwrapinclfsm.htm

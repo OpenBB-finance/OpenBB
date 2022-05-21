@@ -228,7 +228,7 @@ def display_queries(ticker: str, num: int = 5, export: str = ""):
         headers=list(df_related_queries.columns),
         title=f"Top {ticker}'s related queries",
     )
-    console.print("")
+
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "queries", df)
 
 
@@ -254,5 +254,5 @@ def display_rise(ticker: str, num: int, export: str = ""):
         headers=list(df_related_queries.columns),
         title=f"Top rising {ticker}'s related queries",
     )
-    console.print("")
+
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "rise", df)

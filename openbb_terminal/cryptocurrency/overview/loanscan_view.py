@@ -108,7 +108,6 @@ def display_crypto_rates(
             show_index=True,
             title=f"Crypto {rate_type.capitalize()} Interest Rates",
         )
-        console.print("")
 
         export_data(
             export,

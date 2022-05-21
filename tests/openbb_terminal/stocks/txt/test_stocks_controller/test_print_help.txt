@@ -1,6 +1,6 @@
 
-    search      search a specific stock ticker for analysis
-    load        load a specific stock ticker and additional info for analysis
+    search           search a specific stock ticker for analysis
+    load             load a specific stock ticker and additional info for analysis
 
 Stock: Daily 
 
@@ -11,27 +11,27 @@ Market:
 Currency: 
 Company: 
 
-    quote       view the current price for a specific stock ticker
-    candle      view a candle chart for a specific stock ticker
-    news        latest news of the company [News API]
-    codes       FIGI, SIK and SIC codes codes [Polygon.io]
+    quote            view the current price for a specific stock ticker
+    candle           view a candle chart for a specific stock ticker
+    news             latest news of the company [News API]
+    codes            FIGI, SIK and SIC codes codes [Polygon.io]
 
 
->   th          trading hours, 			 check open markets
->   options     options menu,  			 e.g.: chains, open interest, greeks, parity
->   disc        discover trending stocks, 	 e.g.: map, sectors, high short interest
->   sia         sector and industry analysis, 	 e.g.: companies per sector, quick ratio per industry and country
->   dps         dark pool and short data, 	 e.g.: darkpool, short interest, ftd
->   scr         screener stocks, 		 e.g.: overview/performance, using preset filters
->   ins         insider trading,         	 e.g.: latest penny stock buys, top officer purchases
->   gov         government menu, 		 e.g.: house trading, contracts, corporate lobbying
->   ba          behavioural analysis,    	 from: reddit, stocktwits, twitter, google
->   ca          comparison analysis,     	 e.g.: get similar, historical, correlation, financials[unvl]
->   fa          fundamental analysis,    	 e.g.: income, balance, cash, earnings
->   res         research web page,       	 e.g.: macroaxis, yahoo finance, fool
->   dd          in-depth due-diligence,  	 e.g.: news, analyst, shorts, insider, sec
->   bt          strategy backtester,      	 e.g.: simple ema, ema cross, rsi strategies
->   ta          technical analysis,      	 e.g.: ema, macd, rsi, adx, bbands, obv
->   qa          quantitative analysis,   	 e.g.: decompose, cusum, residuals analysis
->   pred        prediction techniques,   	 e.g.: regression, arima, rnn, lstm
+>   th               trading hours, 			 check open markets
+>   options          options menu,  			 e.g.: chains, open interest, greeks, parity
+>   disc             discover trending stocks, 	 e.g.: map, sectors, high short interest
+>   sia              sector and industry analysis, 	 e.g.: companies per sector, quick ratio per industry and country
+>   dps              dark pool and short data, 	 e.g.: darkpool, short interest, ftd
+>   scr              screener stocks, 		 e.g.: overview/performance, using preset filters
+>   ins              insider trading,         	 e.g.: latest penny stock buys, top officer purchases
+>   gov              government menu, 		 e.g.: house trading, contracts, corporate lobbying
+>   ba               behavioural analysis,    	 from: reddit, stocktwits, twitter, google
+>   ca               comparison analysis,     	 e.g.: get similar, historical, correlation, financials[unvl]
+>   fa               fundamental analysis,    	 e.g.: income, balance, cash, earnings
+>   res              research web page,       	 e.g.: macroaxis, yahoo finance, fool
+>   dd               in-depth due-diligence,  	 e.g.: news, analyst, shorts, insider, sec
+>   bt               strategy backtester,      	 e.g.: simple ema, ema cross, rsi strategies
+>   ta               technical analysis,      	 e.g.: ema, macd, rsi, adx, bbands, obv
+>   qa               quantitative analysis,   	 e.g.: decompose, cusum, residuals analysis
+>   pred             prediction techniques,   	 e.g.: regression, arima, rnn, lstm
 [/unvl]

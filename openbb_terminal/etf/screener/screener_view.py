@@ -7,7 +7,6 @@ import os
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.etf.screener import screener_model
 from openbb_terminal.helper_funcs import export_data, print_rich_table
-from openbb_terminal.rich_config import console
 
 # pylint:disable=no-member
 
@@ -45,7 +44,6 @@ def view_screener(
         show_index=True,
         title="Display Screener Output",
     )
-    console.print("")
 
     export_data(
         export,

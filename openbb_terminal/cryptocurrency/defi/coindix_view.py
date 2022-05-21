@@ -12,7 +12,6 @@ from openbb_terminal.helper_funcs import (
     lambda_long_number_format,
     print_rich_table,
 )
-from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -87,7 +86,6 @@ def display_defi_vaults(
         show_index=False,
         title="Top DeFi Vaults",
     )
-    console.print("")
 
     export_data(
         export,

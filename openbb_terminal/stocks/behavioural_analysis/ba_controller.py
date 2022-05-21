@@ -91,42 +91,42 @@ class BehaviouralAnalysisController(StockBaseController):
         has_ticker_start = "" if self.ticker else "[unvl]"
         has_ticker_end = "" if self.ticker else "[/unvl]"
         help_text = f"""[cmds]
-    load           load a specific stock ticker for analysis
+    load             load a specific stock ticker for analysis
 
 [param]Ticker: [/param]{self.ticker.upper() or None}
 {has_ticker_start}
 [src][Finbrain][/src]
-    headlines     sentiment from 15+ major news headlines
+    headlines        sentiment from 15+ major news headlines
 [src][Finnhub][/src]
-    snews         stock price displayed over sentiment of news headlines{has_ticker_end}
+    snews            stock price displayed over sentiment of news headlines{has_ticker_end}
 [src][Reddit][/src]
-    wsb           show what WSB gang is up to in subreddit wallstreetbets
-    watchlist     show other users watchlist
-    popular       show popular tickers
-    spac_c        show other users spacs announcements from subreddit SPACs community
-    spac          show other users spacs announcements from other subs{has_ticker_start}
-    getdd         gets due diligence from another user's post
-    reddit_sent   searches reddit for ticker and finds reddit sentiment{has_ticker_end}
+    wsb              show what WSB gang is up to in subreddit wallstreetbets
+    watchlist        show other users watchlist
+    popular          show popular tickers
+    spac_c           show other users spacs announcements from subreddit SPACs community
+    spac             show other users spacs announcements from other subs{has_ticker_start}
+    getdd            gets due diligence from another user's post
+    reddit_sent      searches reddit for ticker and finds reddit sentiment{has_ticker_end}
 [src][Stocktwits][/src]
-    trending      trending stocks
-    stalker       stalk stocktwits user's last messages{has_ticker_start}
-    bullbear      estimate quick sentiment from last 30 messages on board
-    messages      output up to the 30 last messages on the board
+    trending         trending stocks
+    stalker          stalk stocktwits user's last messages{has_ticker_start}
+    bullbear         estimate quick sentiment from last 30 messages on board
+    messages         output up to the 30 last messages on the board
 [src][Twitter][/src]
-    infer         infer about stock's sentiment from latest tweets
-    sentiment     in-depth sentiment prediction from tweets over time
+    infer            infer about stock's sentiment from latest tweets
+    sentiment        in-depth sentiment prediction from tweets over time
 [src][Google][/src]
-    mentions      interest over time based on stock's mentions
-    regions       regions that show highest interest in stock
-    interest      interest over time of sentences versus stock price
-    queries       top related queries with this stock
-    rise          top rising related queries with stock{has_ticker_end}
+    mentions         interest over time based on stock's mentions
+    regions          regions that show highest interest in stock
+    interest         interest over time of sentences versus stock price
+    queries          top related queries with this stock
+    rise             top rising related queries with stock{has_ticker_end}
 [src][SentimentInvestor][/src]
-    trend         most talked about tickers within the last hour{has_ticker_start}
-    hist          plot historical RHI and AHI data by hour{has_ticker_end}
+    trend            most talked about tickers within the last hour{has_ticker_start}
+    hist             plot historical RHI and AHI data by hour{has_ticker_end}
 [src][Jim Cramer][/src]
-    jcdr          Jim Cramer's daily recommendations{has_ticker_start}
-    jctr          Jim Cramer's recommendations by ticker{has_ticker_end}[/cmds]
+    jcdr             Jim Cramer's daily recommendations{has_ticker_start}
+    jctr             Jim Cramer's recommendations by ticker{has_ticker_end}[/cmds]
         """
         console.print(text=help_text, menu="Stocks - Behavioural Analysis")
 

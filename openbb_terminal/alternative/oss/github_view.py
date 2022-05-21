@@ -20,7 +20,6 @@ from openbb_terminal.alternative.oss import github_model
 from openbb_terminal.cryptocurrency.dataframe_helpers import (
     lambda_long_number_format_with_type_check,
 )
-from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -140,7 +139,6 @@ def display_repo_summary(repo: str, export: str = "") -> None:
         print_rich_table(
             df, headers=list(df.columns), show_index=False, title="Repo summary"
         )
-        console.print("")
 
         export_data(
             export,

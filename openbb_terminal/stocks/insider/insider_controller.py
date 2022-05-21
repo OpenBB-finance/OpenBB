@@ -106,45 +106,45 @@ class InsiderController(StockBaseController):
         has_ticker_end = "[/unvl]" if not self.ticker else ""
 
         help_text = f"""[cmds]
-    view          view available presets
-    set           set one of the available presets[/cmds]
+    view             view available presets
+    set              set one of the available presets[/cmds]
 
 [param]PRESET: [/param]{self.preset}[cmds]
 
-    filter        filter insiders based on preset [src][Open Insider][/src]
+    filter           filter insiders based on preset [src][Open Insider][/src]
 
 
-    load          load a specific stock ticker for analysis[/cmds]
+    load             load a specific stock ticker for analysis[/cmds]
 {has_ticker_start}
 [param]Ticker: [/param]{self.ticker}
 
-    stats         insider stats of the company [src][Open Insider][/src]
-    act           insider activity over time [src][Business Insider][/src]
-    lins          last insider trading of the company [src][Finviz][/src]
+    stats            insider stats of the company [src][Open Insider][/src]
+    act              insider activity over time [src][Business Insider][/src]
+    lins             last insider trading of the company [src][Finviz][/src]
 {has_ticker_end}
 
 [info]Latest Insiders[/info] [src][Open Insider][/src][cmds]
-    lcb           latest cluster boys
-    lpsb          latest penny stock buys
-    lit           latest insider trading (all filings)
-    lip           latest insider purchases
-    blip          big latest insider purchases ($25k+)
-    blop          big latest officer purchases ($25k+)
-    blcp          big latest CEO/CFO purchases ($25k+)
-    lis           latest insider sales
-    blis          big latest insider sales ($100k+)
-    blos          big latest officer sales ($100k+)
-    blcs          big latest CEO/CFO sales ($100k+)
+    lcb              latest cluster boys
+    lpsb             latest penny stock buys
+    lit              latest insider trading (all filings)
+    lip              latest insider purchases
+    blip             big latest insider purchases ($25k+)
+    blop             big latest officer purchases ($25k+)
+    blcp             big latest CEO/CFO purchases ($25k+)
+    lis              latest insider sales
+    blis             big latest insider sales ($100k+)
+    blos             big latest officer sales ($100k+)
+    blcs             big latest CEO/CFO sales ($100k+)
 [info]Top Insiders [src][Open Insider][/src][/info]
-    topt          top officer purchases today
-    toppw         top officer purchases past week
-    toppm         top officer purchases past month
-    tipt          top insider purchases today
-    tippw         top insider purchases past week
-    tippm         top insider purchases past month
-    tist          top insider sales today
-    tispw         top insider sales past week
-    tispm         top insider sales past month[/cmds]
+    topt             top officer purchases today
+    toppw            top officer purchases past week
+    toppm            top officer purchases past month
+    tipt             top insider purchases today
+    tippw            top insider purchases past week
+    tippm            top insider purchases past month
+    tist             top insider sales today
+    tispw            top insider sales past week
+    tispm            top insider sales past month[/cmds]
 """
         console.print(text=help_text, menu="Stocks - Insider Trading")
 
