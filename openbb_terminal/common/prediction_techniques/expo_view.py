@@ -33,7 +33,7 @@ def display_expo_forecast(
     damped: str,
     n_predict: int,
     start_window: float,
-    forcast_horizon: int,
+    forecast_horizon: int,
     export: str = "",
 ):
     """Display Probalistic Exponential Smoothing forecast
@@ -57,8 +57,8 @@ def display_expo_forecast(
         Number of days to forecast
     start_window: float 
         Size of sliding window from start of timeseries and onwards
-    forcast_horizon: int
-        Number of days to forcast when backtesting and retraining historical
+    forecast_horizon: int
+        Number of days to forecast when backtesting and retraining historical
     export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
@@ -78,7 +78,7 @@ def display_expo_forecast(
         damped,
         n_predict,
         start_window,
-        forcast_horizon,
+        forecast_horizon,
     )
 
     # Plotting with Matplotlib
@@ -110,7 +110,7 @@ def display_expo_forecast(
     if not external_axes:
         theme.visualize_output()
 
-    numeric_forcastic = predicted_values.quantile_df()["AdjClose_0.5"].tail(n_predict)
-    print_pretty_prediction(numeric_forcastic, data["AdjClose"].iloc[-1])
+    numeric_forecast = predicted_values.quantile_df()["AdjClose_0.5"].tail(n_predict)
+    print_pretty_prediction(numeric_forecast, data["AdjClose"].iloc[-1])
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "expo")

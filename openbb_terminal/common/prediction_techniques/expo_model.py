@@ -33,7 +33,7 @@ def get_expo_data(
     damped: str = "F",
     n_predict: int = 30,
     start_window: float = 0.65,
-    forcast_horizon: int = 3,
+    forecast_horizon: int = 3,
 ) -> Tuple[List[float], List[float], Any, Any]:
 
     """Performs Probabalistic Exponential Smoothing forecasting
@@ -61,8 +61,8 @@ def get_expo_data(
         Number of days to forecast
     start_window: float 
         Size of sliding window from start of timeseries and onwards
-    forcast_horizon: int
-        Number of days to forcast when backtesting and retraining historical
+    forecast_horizon: int
+        Number of days to forecast when backtesting and retraining historical
 
     Returns
     -------
@@ -113,11 +113,11 @@ def get_expo_data(
     historical_fcast_es = model_es.historical_forecasts(
         ticker_series,
         start=start_window,
-        forecast_horizon=forcast_horizon,
+        forecast_horizon=forecast_horizon,
         verbose=True,
     )
 
-    # Show forcast over validation # and then +n_predict afterwards sampled 10 times per point
+    # Show forecast over validation # and then +n_predict afterwards sampled 10 times per point
     probabilistic_forecast = model_es.predict(n_predict, num_samples=10)
     precision = mape(val, probabilistic_forecast) # mape = mean average precision error
     console.print(f"model {model_es} obtains MAPE: {precision:.2f}% \n") # TODO

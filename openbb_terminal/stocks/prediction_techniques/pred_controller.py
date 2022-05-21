@@ -787,15 +787,15 @@ class PredictionTechniquesController(BaseController):
             action="store",
             dest="start_window",
             default=0.65,
-            help="Start point for rolling training and forcast window. 0.0-1.0",
+            help="Start point for rolling training and forecast window. 0.0-1.0",
         )
         parser.add_argument(
             "-f",
-            "--forcasthorizon",
+            "--forecasthorizon",
             action="store",
-            dest="forcast_horizon",
+            dest="forecast_horizon",
             default=3,
-            help="Days/Points to forcast when training and performing historical back-testing",
+            help="Days/Points to forecast when training and performing historical back-testing",
         )
 
         ns_parser = parse_known_args_and_warn(
@@ -815,6 +815,6 @@ class PredictionTechniquesController(BaseController):
                 seasonal_periods=ns_parser.seasonal_periods,
                 damped = ns_parser.damped,
                 start_window = ns_parser.start_window,
-                forcast_horizon = ns_parser.forcast_horizon,
+                forecast_horizon = ns_parser.forecast_horizon,
                 export=ns_parser.export,
             )
