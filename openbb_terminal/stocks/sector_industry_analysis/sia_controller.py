@@ -173,7 +173,7 @@ class SectorIndustryAnalysisController(BaseController):
         self.country = "United States"
         self.sector = "Financial Services"
         self.industry = "Financial Data & Stock Exchanges"
-        self.mktcap = "Large"
+        self.mktcap = ""
         self.exclude_exchanges = True
         self.period = "Annual"
 
@@ -219,8 +219,14 @@ class SectorIndustryAnalysisController(BaseController):
                         self.industry = similar_cmd[0]
             if "price" in data:
                 mktcap = data["price"]["marketCap"]
-                if mktcap < 2_000_000_000:
+                if mktcap < 50_000_000:
+                    self.mktcap = "Nano"
+                elif mktcap < 300_000_000:
+                    self.mktcap = "Micro"
+                elif mktcap < 2_000_000_000:
                     self.mktcap = "Small"
+                elif mktcap > 200_000_000_000:
+                    self.mktcap = "Mega"
                 elif mktcap > 10_000_000_000:
                     self.mktcap = "Large"
                 else:
