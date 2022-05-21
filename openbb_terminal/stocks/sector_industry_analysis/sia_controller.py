@@ -173,7 +173,7 @@ class SectorIndustryAnalysisController(BaseController):
         self.country = "United States"
         self.sector = "Financial Services"
         self.industry = "Financial Data & Stock Exchanges"
-        self.mktcap = ""
+        self.mktcap = "Large"
         self.exclude_exchanges = True
         self.period = "Annual"
 
