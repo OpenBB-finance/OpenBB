@@ -26,10 +26,8 @@ from openbb_terminal.helper_classes import AllowArgsWithWhiteSpace
 from openbb_terminal.helper_funcs import choice_check_after_action
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, translate
 from openbb_terminal.stocks import stocks_helper
-
-import i18n
 
 # pylint: disable=R1710,import-outside-toplevel,R0913,R1702,no-member
 
@@ -109,39 +107,36 @@ class StocksController(StockBaseController):
             )
         else:
             stock_text = f"{s_intraday} {self.ticker}"
-        has_ticker_start = "" if self.ticker else "[unvl]"
-        has_ticker_end = "" if self.ticker else "[/unvl]"
-        help_text = f"""[cmds]
-    search           {i18n.t('stocks/search')}
-    load             {i18n.t('stocks/load')}[/cmds][param]
-
-Stock: [/param]{stock_text}
-{self.add_info}[cmds]
-    quote            {i18n.t('stocks/quote')}
-    candle           {i18n.t('stocks/candle')}
-    news             {i18n.t('stocks/news')} [src][News API][/src]
-    codes            FIGI, SIK and SIC codes codes[/cmds] [src][Polygon.io][/src]
-
-[menu]
->   th               trading hours, \t\t\t check open markets
->   options          {i18n.t('stocks/options')}
->   disc             {i18n.t('stocks/disc')}
->   sia              {i18n.t('stocks/sia')}
->   dps              {i18n.t('stocks/dps')}
->   scr              {i18n.t('stocks/scr')}
->   ins              {i18n.t('stocks/ins')}
->   gov              {i18n.t('stocks/gov')}
->   ba               {i18n.t('stocks/ba')}
->   ca               {i18n.t('stocks/ca')}{has_ticker_start}
->   fa               {i18n.t('stocks/fa')}
->   res              {i18n.t('stocks/res')}
->   dd               {i18n.t('stocks/dd')}
->   bt               {i18n.t('stocks/bt')}
->   ta               {i18n.t('stocks/ta')}
->   qa               {i18n.t('stocks/qa')}
->   pred             {i18n.t('stocks/pred')}
-{has_ticker_end}"""
-        console.print(text=help_text, menu="Stocks")
+        console.init_menu("stocks/")
+        console.add_cmd_translation("search")
+        console.add_cmd_translation("load")
+        console.add_raw("\n")
+        console.add_param_translation("Stock", stock_text)
+        console.add_raw(self.add_info)
+        console.add_raw("\n")
+        console.add_cmd_translation("quote")
+        console.add_cmd_translation("candle")
+        console.add_cmd_translation("news", "News API")
+        console.add_cmd_translation("codes", "Polygon")
+        console.add_raw("\n")
+        console.add_menu_translation("th")
+        console.add_menu_translation("options")
+        console.add_menu_translation("disc")
+        console.add_menu_translation("sia")
+        console.add_menu_translation("dps")
+        console.add_menu_translation("scr")
+        console.add_menu_translation("ins")
+        console.add_menu_translation("gov")
+        console.add_menu_translation("ba")
+        console.add_menu_translation("ca")
+        console.add_menu_translation("fa", self.ticker)
+        console.add_menu_translation("res", self.ticker)
+        console.add_menu_translation("dd", self.ticker)
+        console.add_menu_translation("bt", self.ticker)
+        console.add_menu_translation("ta", self.ticker)
+        console.add_menu_translation("qa", self.ticker)
+        console.add_menu_translation("pred", self.ticker)
+        console.print(text=console.menu_text, menu="Stocks")
 
     def custom_reset(self):
         """Class specific component of reset command"""
@@ -161,7 +156,7 @@ Stock: [/param]{stock_text}
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="search",
-            description=f"{i18n.t('stocks/search_')}.",
+            description=translate("stocks/search_"),
         )
         parser.add_argument(
             "-q",
@@ -170,7 +165,7 @@ Stock: [/param]{stock_text}
             dest="query",
             type=str.lower,
             default="",
-            help=f"{i18n.t('stocks/search_query')}.",
+            help=translate("stocks/search_query"),
         )
         parser.add_argument(
             "-c",
@@ -179,7 +174,7 @@ Stock: [/param]{stock_text}
             nargs=argparse.ONE_OR_MORE,
             action=choice_check_after_action(AllowArgsWithWhiteSpace, self.country),
             dest="country",
-            help=f"{i18n.t('stocks/search_country')}.",
+            help=translate("stocks/search_country"),
         )
         parser.add_argument(
             "-s",
@@ -188,7 +183,7 @@ Stock: [/param]{stock_text}
             nargs=argparse.ONE_OR_MORE,
             action=choice_check_after_action(AllowArgsWithWhiteSpace, self.sector),
             dest="sector",
-            help=f"{i18n.t('stocks/search_sector')}.",
+            help=translate("stocks/search_sector"),
         )
         parser.add_argument(
             "-i",
@@ -197,7 +192,7 @@ Stock: [/param]{stock_text}
             nargs=argparse.ONE_OR_MORE,
             action=choice_check_after_action(AllowArgsWithWhiteSpace, self.industry),
             dest="industry",
-            help=f"{i18n.t('stocks/search_industry')}.",
+            help=translate("stocks/search_industry"),
         )
         parser.add_argument(
             "-e",
@@ -205,7 +200,7 @@ Stock: [/param]{stock_text}
             default="",
             choices=list(stocks_helper.market_coverage_suffix.keys()),
             dest="exchange_country",
-            help=f"{i18n.t('stocks/search_exchange')}.",
+            help=translate("stocks/search_exchange"),
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-q")
@@ -234,7 +229,7 @@ Stock: [/param]{stock_text}
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="quote",
-            description=f"{i18n.t('stocks/quote_')}.",
+            description=translate("stocks/quote_"),
         )
         if self.ticker:
             parser.add_argument(
@@ -243,7 +238,7 @@ Stock: [/param]{stock_text}
                 action="store",
                 dest="s_ticker",
                 default=ticker,
-                help=f"{i18n.t('stocks/quote_ticker')}.",
+                help=translate("stocks/quote_ticker"),
             )
         else:
             parser.add_argument(
@@ -252,14 +247,14 @@ Stock: [/param]{stock_text}
                 action="store",
                 dest="s_ticker",
                 required="-h" not in other_args,
-                help=f"{i18n.t('stocks/quote_ticker')}.",
+                help=translate("stocks/quote_ticker"),
             )
         # For the case where a user uses: 'quote BB'
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            stocks_helper.quote(ticker)
+            stocks_helper.quote(ns_parser.s_ticker)
 
     @log_start_end(log=logger)
     def call_codes(self, _):
@@ -284,7 +279,7 @@ Stock: [/param]{stock_text}
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="candle",
-            description=f"{i18n.t('stocks/candle_')}.",
+            description=translate("stocks/candle_"),
         )
         parser.add_argument(
             "-p",
@@ -292,7 +287,7 @@ Stock: [/param]{stock_text}
             dest="plotly",
             action="store_false",
             default=True,
-            help=f"{i18n.t('stocks/candle_plotly')}.",
+            help=translate("stocks/candle_plotly"),
         )
         parser.add_argument(
             "--sort",
@@ -309,7 +304,7 @@ Stock: [/param]{stock_text}
             default="",
             type=str,
             dest="sort",
-            help=f"{i18n.t('stocks/candle_sort')}.",
+            help=translate("stocks/candle_sort"),
         )
         parser.add_argument(
             "-d",
@@ -317,28 +312,28 @@ Stock: [/param]{stock_text}
             action="store_false",
             dest="descending",
             default=True,
-            help=f"{i18n.t('stocks/candle_descending')}.",
+            help=translate("stocks/candle_descending"),
         )
         parser.add_argument(
             "--raw",
             action="store_true",
             dest="raw",
             default=False,
-            help=f"{i18n.t('stocks/candle_raw')}.",
+            help=translate("stocks/candle_raw"),
         )
         parser.add_argument(
             "-t",
             "--trend",
             action="store_true",
             default=False,
-            help=f"{i18n.t('stocks/candle_trend')}.",
+            help=translate("stocks/candle_trend"),
             dest="trendlines",
         )
         parser.add_argument(
             "--ma",
             dest="mov_avg",
             type=str,
-            help=f"{i18n.t('stocks/candle_mov_avg')}.",
+            help=translate("stocks/candle_mov_avg"),
             default=None,
         )
         ns_parser = parse_known_args_and_warn(
@@ -401,7 +396,7 @@ Stock: [/param]{stock_text}
         parser = argparse.ArgumentParser(
             add_help=False,
             prog="news",
-            description=f"{i18n.t('stocks/news_')}.",
+            description=translate("stocks/news_"),
         )
         parser.add_argument(
             "-d",
@@ -410,7 +405,7 @@ Stock: [/param]{stock_text}
             dest="n_start_date",
             type=valid_date,
             default=datetime.now() - timedelta(days=7),
-            help=f"{i18n.t('stocks/news_date')}.",
+            help=translate("stocks/news_date"),
         )
         parser.add_argument(
             "-o",
@@ -418,7 +413,7 @@ Stock: [/param]{stock_text}
             action="store_false",
             dest="n_oldest",
             default=True,
-            help=f"{i18n.t('stocks/news_date')}.",
+            help=translate("stocks/news_date"),
         )
         parser.add_argument(
             "-s",
@@ -426,7 +421,7 @@ Stock: [/param]{stock_text}
             dest="sources",
             default=[],
             nargs="+",
-            help=f"{i18n.t('stocks/news_sources')}.",
+            help=translate("stocks/news_sources"),
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")

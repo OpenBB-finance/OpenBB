@@ -7,8 +7,11 @@ from rich import panel
 from rich.console import Console, Theme
 from rich.text import Text
 from rich.color import Color
+import i18n
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal import feature_flags as obbff
+
+# pylint: disable=no-member
 
 
 # https://rich.readthedocs.io/en/stable/appendix/colors.html#appendix-colors
@@ -34,6 +37,10 @@ RICH_TAGS = [
 USE_COLOR = True
 
 
+def translate(key: str):
+    return i18n.t(key)
+
+
 def no_panel(renderable, *args, **kwargs):  # pylint: disable=unused-argument
     return renderable
 
@@ -43,6 +50,44 @@ class ConsoleAndPanel:
 
     def __init__(self):
         self.console = Console(theme=CUSTOM_THEME, highlight=False, soft_wrap=True)
+        self.menu_text = ""
+        self.menu_path = ""
+
+    def init_menu(self, path: str = ""):
+        self.menu_text = ""
+        self.menu_path = path
+
+    def add_raw(self, raw: str):
+        self.menu_text += raw
+
+    def add_raw_translation(self, raw: str):
+        self.menu_text += f"{i18n.t(self.menu_path + raw)}"
+
+    def add_info_translation(self, info: str):
+        self.menu_text += f"[info]{i18n.t(self.menu_path + info)}:[/info]\n"
+
+    def add_param_translation(self, param: str, value: str):
+        self.menu_text += f"[param]{i18n.t(self.menu_path + param)}:[/param] {value}\n"
+
+    def add_cmd_translation(self, key: str, source: str = "", cond: bool = True):
+        if source:
+            source = f" [src][{source}][/src]"
+        spacing = (22 - (len(key) + 4)) * " "
+        if cond:
+            self.menu_text += f"[cmds]    {key}{spacing}{i18n.t(self.menu_path + key)}{source}[/cmds]\n"
+        else:
+            self.menu_text += f"[unvl]    {key}{spacing}{i18n.t(self.menu_path + key)}{source}[/unvl]\n"
+
+    def add_menu_translation(self, key: str, cond: bool = True):
+        spacing = (22 - (len(key) + 4)) * " "
+        if cond:
+            self.menu_text += (
+                f"[menu]>   {key}{spacing}{i18n.t(self.menu_path + key)}[/menu]\n"
+            )
+        else:
+            self.menu_text += (
+                f"[unvl]>   {key}{spacing}{i18n.t(self.menu_path + key)}[/unvl]\n"
+            )
 
     def capture(self):
         return self.console.capture()

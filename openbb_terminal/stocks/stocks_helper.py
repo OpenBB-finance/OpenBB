@@ -816,46 +816,7 @@ def quote(s_ticker: str):
     s_ticker : str
         Ticker
     """
-
     ticker = yf.Ticker(s_ticker)
-
-    quote_df = pd.DataFrame(
-        [
-            {
-                "Symbol": ticker.info["symbol"],
-                "Name": ticker.info["shortName"],
-                "Price": ticker.info["regularMarketPrice"],
-                "Open": ticker.info["regularMarketOpen"],
-                "High": ticker.info["dayHigh"],
-                "Low": ticker.info["dayLow"],
-                "Previous Close": ticker.info["previousClose"],
-                "Volume": ticker.info["volume"],
-                "52 Week High": ticker.info["fiftyTwoWeekHigh"],
-                "52 Week Low": ticker.info["fiftyTwoWeekLow"],
-            }
-        ]
-    )
-
-    try:
-        # For the case where a user uses: 'quote BB'
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-t")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-    except SystemExit:
-        console.print("")
-        return
-
-    ticker = yf.Ticker(ns_parser.s_ticker)
-
-    # If price only option, return immediate market price for ticker.
-    if ns_parser.price_only:
-        console.print(
-            f"Price of {ns_parser.s_ticker} {ticker.info['regularMarketPrice']} \n"
-        )
-        return
 
     try:
         quote_df = pd.DataFrame(
@@ -901,9 +862,7 @@ def quote(s_ticker: str):
 
     except KeyError:
         logger.exception("Invalid stock ticker")
-        console.print(f"Invalid stock ticker: {ns_parser.s_ticker}")
-
-    return
+        console.print(f"Invalid stock ticker: {s_ticker}")
 
 
 def load_ticker(

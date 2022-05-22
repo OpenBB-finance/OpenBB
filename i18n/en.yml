@@ -1,29 +1,32 @@
 en:
-  home_info: >
+  home: >
+    [info]Get API keys from data providers to access more features.[/info]
+        For more instructions use: 'keys'.
+        To see all features follow: https://openbb-finance.github.io/OpenBBTerminal/
+
     [info]Multiple jobs queue (where each '/' denotes a new command).[/info]
         E.g. '/stocks $ disc/ugs -n 3/../load tsla/candle'
 
     [info]If you want to jump from crypto/ta to stocks you can use an absolute path that starts with a slash (/).[/info]
         E.g. '/crypto/ta $ /stocks'
 
-    [info]The previous logic also holds for when launching the terminal.[/info]
-        E.g. '$ python terminal.py /stocks/disc/ugs -n 3/../load tsla/candle'
-
     [info]You can run a standalone .openbb routine file with:[/info]
-        E.g. '$ python terminal.py routines/example.openbb'
+        E.g. '/ $ exe routines/example.openbb'
 
     [info]You can run a .openbb routine file with variable inputs:[/info]
-        E.g. '$ python terminal.py routines/example_with_inputs.gst --input pltr,tsla,nio'
+        E.g. '/ $ exe routines/example_with_inputs.openbb --input pltr,tsla,nio'
+
 
     [info]The main commands you should be aware when navigating through the terminal are:[/info]
   cls: clear the screen
-  help: help menu
-  quit: quit this menu and go one menu above
+  help: help menu ('h' or '?' also works)
+  quit: quit this menu and go one menu above ('q' or '..' also works)
   exit: exit the terminal
-  reset: reset the terminal and reload configs from the current location
+  reset: reset the terminal and reload configs from the current location ('r' also works)
   resources: only available on main contexts (not sub-menus)
-  about: about us
-  update: update terminal automatically
+  support: pre-populate support ticket for our team to evaluate
+  about: amore information about OpenBB
+  update: update terminal automatically (when using GitHub)
   tz: set different timezone
   export: select export folder to output data
   exe: execute automated routine script
@@ -31,6 +34,18 @@ en:
   keys: set API keys and check their validity
   export_folder: Export Folder
   timezone: Timezone
+  others: Others
+  stocks: access historical pricing data, options, sector and industry, and overall due diligence
+  crypto: dive into onchain data, tokenomics, circulation supply, nfts and more
+  etf: exchange traded funds. Historical pricing, compare holdings and screening
+  economy: global macroeconomic data, e.g. futures, yield, treasury
+  forex: foreign exchanges, quotes, forward rates for currency pairs and oanda integration
+  funds: mutual funds search, overview, holdings and sector weights
+  alternative: alternative datasets, such as COVID and open source metrics
+  econometrics: statistical and quantitative methods for relationships between datasets
+  portfolio: perform portfolio optimization and look at portfolio performance and attribution
+  dashboards: interactive dashboards using voila and jupyter notebooks
+  reports: customizable research reports through jupyter notebooks
   stocks/search: search a specific stock ticker for analysis
   stocks/search_: Show companies matching the search query
   stocks/search_query: The search term used to find company tickers
@@ -51,10 +66,12 @@ en:
   stocks/candle_trend: Flag to add high and low trends to candle
   stocks/candle_mov_avg: Add moving average in number of days to plot and separate by a comma
   stocks/news: latest news of the company
+  stocks/codes: FIGI, SIK and SIC codes codes
   stocks/news_: Prints latest news about company, including date, title and web link. [News API]
   stocks/news_date: The starting date (format YYYY-MM-DD) to search articles from
   stocks/news_oldest: Show oldest articles first
   stocks/news_sources: Show news only from the sources specified (e.g bbc yahoo.com)
+  stocks/th: trading hours,                check open markets
   stocks/options: options menu,                 chains, open interest, greeks, parity
   stocks/disc: discover trending stocks,     map, sectors, high short interest
   stocks/sia: sector and industry analysis, companies per sector, quick ratio per industry and country

@@ -40,7 +40,6 @@ from openbb_terminal.terminal_helper import (
     update_terminal,
     welcome_message,
 )
-import i18n
 
 # pylint: disable=too-many-public-methods,import-outside-toplevel,too-many-branches,no-member
 
@@ -99,66 +98,46 @@ class TerminalController(BaseController):
 
     def print_help(self):
         """Print help"""
-        export_folder = (
+        console.init_menu("")
+        console.add_raw_translation("home")
+        console.add_cmd_translation("cls")
+        console.add_cmd_translation("help")
+        console.add_cmd_translation("quit")
+        console.add_cmd_translation("exit")
+        console.add_cmd_translation("reset")
+        console.add_cmd_translation("resources")
+        console.add_cmd_translation("support")
+        console.add_raw("\n")
+        console.add_cmd_translation("about")
+        console.add_cmd_translation("update")
+        console.add_cmd_translation("tz")
+        console.add_cmd_translation("export")
+        console.add_cmd_translation("exe")
+        console.add_menu_translation("settings")
+        console.add_menu_translation("keys")
+        console.add_raw("\n")
+        console.add_param_translation(
+            "export_folder",
             obbff.EXPORT_FOLDER_PATH
             if obbff.EXPORT_FOLDER_PATH
-            else "DEFAULT (folder: exports/)"
+            else "DEFAULT (folder: exports/)",
         )
-        console.print(  # nosec
-            text=f"""
-[info]Get API keys from data providers to access more features.[/info]
-    For more instructions use: 'keys'.
-    To see all features follow: https://openbb-finance.github.io/OpenBBTerminal/
-
-[info]Multiple jobs queue (where each '/' denotes a new command).[/info]
-    E.g. '/stocks $ disc/ugs -n 3/../load tsla/candle'
-
-[info]If you want to jump from crypto/ta to stocks you can use an absolute path that starts with a slash (/).[/info]
-    E.g. '/crypto/ta $ /stocks'
-
-[info]You can run a standalone .openbb routine file with:[/info]
-    E.g. '/ $ exe routines/example.openbb'
-
-[info]You can run a .openbb routine file with variable inputs:[/info]
-    E.g. '/ $ exe routines/example_with_inputs.openbb --input pltr,tsla,nio'
-
-
-[info]The main commands you should be aware when navigating through the terminal are:[/info][cmds]
-    cls              {i18n.t('cls')}
-    help / h / ?     {i18n.t('help')}
-    quit / q / ..    {i18n.t('quit')}
-    exit             {i18n.t('exit')}
-    reset / r        {i18n.t('reset')}
-    resources        {i18n.t('resources')}
-    support          pre-populate support ticket for our team to evaluate
-
-    about            more information about OpenBB
-    update           update terminal automatically (when using GitHub)
-    tz               {i18n.t('tz')}
-    export           {i18n.t('export')}
-    exe              {i18n.t('exe')}[/cmds][menu]
->   settings         {i18n.t('settings')}
->   keys             {i18n.t('keys')}[/menu]
-
-[param]{i18n.t('export_folder')}:[/param] {obbff.EXPORT_FOLDER_PATH if obbff.EXPORT_FOLDER_PATH else 'DEFAULT (folder: exports/)'}
-[param]{i18n.t('timezone')}:[/param] {get_user_timezone_or_invalid()}
-[menu]
->   stocks           access historical pricing data, options, sector and industry, and overall due diligence
->   crypto           dive into onchain data, tokenomics, circulation supply, nfts and more
->   etf              exchange traded funds. Historical pricing, compare holdings and screening
->   economy          global macroeconomic data, e.g. futures, yield, treasury
->   forex            foreign exchanges, quotes, forward rates for currency pairs and oanda integration
->   funds            mutual funds search, overview, holdings and sector weights
->   alternative      alternative datasets, such as COVID and open source metrics
-
-[info]Others:[/info]
->   econometrics     statistical and quantitative methods for relationships between datasets
->   portfolio        perform portfolio optimization and look at portfolio performance and attribution
->   dashboards       interactive dashboards using voila and jupyter notebooks
->   reports          customizable research reports through jupyter notebooks[/menu]
-""",
-            menu="Home",
-        )
+        console.add_param_translation("timezone", get_user_timezone_or_invalid())
+        console.add_raw("\n")
+        console.add_menu_translation("stocks")
+        console.add_menu_translation("crypto")
+        console.add_menu_translation("etf")
+        console.add_menu_translation("economy")
+        console.add_menu_translation("forex")
+        console.add_menu_translation("funds")
+        console.add_menu_translation("alternative")
+        console.add_raw("\n")
+        console.add_info_translation("others")
+        console.add_menu_translation("econometrics")
+        console.add_menu_translation("portfolio")
+        console.add_menu_translation("dashboards")
+        console.add_menu_translation("reports")
+        console.print(text=console.menu_text, menu="Home")
 
     def call_update(self, _):
         """Process update command"""
