@@ -49,12 +49,12 @@ class DashboardsController(BaseController):
     def print_help(self):
         """Print help"""
         help_text = """[cmds]
-   stocks        historic stock information
-   correlation   stock correlations
-   vsurf         options volatility surface
-   chains        options chain analysis
-   shortdata     finra shortdata analysis
-   crypto        cryptocurrency exchange rates against USD[/cmds]
+    stocks           historic stock information
+    correlation      stock correlations
+    vsurf            options volatility surface
+    chains           options chain analysis
+    shortdata        finra shortdata analysis
+    crypto           cryptocurrency exchange rates against USD[/cmds]
         """
         console.print(text=help_text, menu="Dashboards")
 

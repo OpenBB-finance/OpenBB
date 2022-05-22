@@ -68,7 +68,6 @@ def dark_pool_short_positions(num: int, sort_field: str, ascending: bool, export
         show_index=False,
         title=f"Data for: {dp_date}",
     )
-    console.print("")
 
     export_data(
         export,
@@ -112,7 +111,6 @@ def short_interest_days_to_cover(num: int, sort_field: str, export: str):
         show_index=False,
         title=f"Data for: {dp_date}",
     )
-    console.print("")
 
     export_data(
         export,

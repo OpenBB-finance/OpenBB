@@ -8,7 +8,6 @@ import os
 from openbb_terminal.cryptocurrency.defi import substack_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
-from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -35,7 +34,6 @@ def display_newsletters(top: int = 10, export: str = "") -> None:
         show_index=False,
         title="Substack Newsletters",
     )
-    console.print("")
 
     export_data(
         export,

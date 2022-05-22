@@ -54,11 +54,11 @@ class PricingController(BaseController):
 [param]Ticker: [/param]{self.ticker or None}
 [param]Expiry: [/param]{self.selected_date or None}
 [cmds]
-    add           add an expected price to the list
-    rmv           remove an expected price from the list
+    add              add an expected price to the list
+    rmv              remove an expected price from the list
 
-    show          show the listed of expected prices
-    rnval         risk neutral valuation for an option[/cmds]
+    show             show the listed of expected prices
+    rnval            risk neutral valuation for an option[/cmds]
         """
         console.print(text=help_text, menu="Stocks - Options - Pricing")
 

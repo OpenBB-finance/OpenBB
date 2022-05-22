@@ -11,7 +11,6 @@ from openbb_terminal.cryptocurrency.dataframe_helpers import (
 from openbb_terminal.cryptocurrency.onchain import bitquery_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
-from openbb_terminal.rich_config import console
 from openbb_terminal.decorators import check_api_key
 
 logger = logging.getLogger(__name__)
@@ -73,7 +72,6 @@ def display_dex_trades(
             show_index=False,
             title="Trades on Decentralized Exchanges",
         )
-        console.print("")
 
         export_data(
             export,
@@ -139,7 +137,6 @@ def display_daily_volume_for_given_pair(
         show_index=False,
         title="Daily Volume for Pair",
     )
-    console.print("")
 
     export_data(
         export,
@@ -200,7 +197,6 @@ def display_dex_volume_for_token(
             show_index=False,
             title="Token Volume on Exchanges",
         )
-        console.print("")
 
         export_data(
             export,
@@ -261,7 +257,6 @@ def display_ethereum_unique_senders(
             show_index=False,
             title="Unique Ethereum Addresses",
         )
-        console.print("")
 
         export_data(
             export,
@@ -317,7 +312,6 @@ def display_most_traded_pairs(
             show_index=False,
             title="Most Traded Crypto Pairs",
         )
-        console.print("")
 
         export_data(
             export,
@@ -373,7 +367,6 @@ def display_spread_for_crypto_pair(
             show_index=False,
             title="Average Spread for Given Crypto",
         )
-        console.print("")
 
         export_data(
             export,

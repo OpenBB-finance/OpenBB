@@ -108,35 +108,35 @@ class FundamentalAnalysisController(StockBaseController):
         is_foreign_end = "" if not self.suffix else "[/unvl]"
         help_text = f"""[param]
 Ticker: [/param] {self.ticker} [cmds]
-
-[cmds]    data          fundamental and technical data of company [src][FinViz][/src]
-    mgmt          management team of the company [src][Business Insider][/src]
-    analysis      analyse SEC filings with the help of machine learning [src][Eclect.us][/src]
-    score         investing score from Warren Buffett, Joseph Piotroski and Benjamin Graham [src][FMP][/src]
-    warnings      company warnings according to Sean Seah book [src][Market Watch][/src]
-    dcf           advanced Excel customizable discounted cash flow [src][Stockanalysis][/src][/cmds]
+[cmds]
+    data             fundamental and technical data of company [src][FinViz][/src]
+    mgmt             management team of the company [src][Business Insider][/src]
+    analysis         analyse SEC filings with the help of machine learning [src][Eclect.us][/src]
+    score            investing score from Warren Buffett, Joseph Piotroski and Benjamin Graham [src][FMP][/src]
+    warnings         company warnings according to Sean Seah book [src][Market Watch][/src]
+    dcf              advanced Excel customizable discounted cash flow [src][Stockanalysis][/src][/cmds]
 [src][Yahoo Finance][/src]
-    info          information scope of the company
-    mktcap        estimated market cap{is_foreign_start}
-    shrs          shareholders (insiders, institutions and mutual funds)
-    sust          sustainability values (environment, social and governance)
-    cal           calendar earnings and estimates of the company
-    divs          show historical dividends for company
-    splits        stock split and reverse split events since IPO
-    web           open web browser of the company
-    hq            open HQ location of the company{is_foreign_end}
+    info             information scope of the company
+    mktcap           estimated market cap{is_foreign_start}
+    shrs             shareholders (insiders, institutions and mutual funds)
+    sust             sustainability values (environment, social and governance)
+    cal              calendar earnings and estimates of the company
+    divs             show historical dividends for company
+    splits           stock split and reverse split events since IPO
+    web              open web browser of the company
+    hq               open HQ location of the company{is_foreign_end}
 [src][Alpha Vantage / Polygon][/src]
-    income        income statements of the company
-    balance       balance sheet of the company
+    income           income statements of the company
+    balance          balance sheet of the company
 [src][Alpha Vantage][/src]
-    overview      overview of the company
-    key           company key metrics
-    cash          cash flow of the company
-    earnings      earnings dates and reported EPS
-    fraud         key fraud ratios
-    dupont        detailed breakdown for return on equity[/cmds]
+    overview         overview of the company
+    key              company key metrics
+    cash             cash flow of the company
+    earnings         earnings dates and reported EPS
+    fraud            key fraud ratios
+    dupont           detailed breakdown for return on equity[/cmds]
 [info]Other Sources:[/info][menu]
->   fmp           profile,quote,enterprise,dcf,income,ratios,growth from FMP[/menu]
+>   fmp              profile,quote,enterprise,dcf,income,ratios,growth from FMP[/menu]
         """
         console.print(text=help_text, menu="Stocks - Fundamental Analysis")
 

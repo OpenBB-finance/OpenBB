@@ -24,4 +24,3 @@ Comprehensive Income Net Of Tax          -1.905 B    -1.018 B     -890 M    1.12
 Ebit                                     -1.459 B      -255 M      -67 M    1.761 B    6.589 B
 Ebitda                                  177.003 M      -189 M      276 M    2.160 B    7.055 B
 Net Income                               -1.962 B      -976 M     -862 M      721 M    5.519 B
-

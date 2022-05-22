@@ -720,7 +720,6 @@ def find(source: str, coin: str, key: str, top: int, export: str) -> None:
     print_rich_table(
         df, headers=list(df.columns), show_index=False, title="Similar Coins"
     )
-    console.print("")
 
     export_data(
         export,

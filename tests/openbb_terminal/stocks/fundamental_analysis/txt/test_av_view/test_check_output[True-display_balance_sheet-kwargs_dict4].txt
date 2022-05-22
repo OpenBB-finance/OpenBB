@@ -1,39 +1,38 @@
-fiscalDateEnding                            2020-12-31 2021-03-31 2021-06-30 2021-09-30 2021-12-31
+fiscalDateEnding                            2021-03-31 2021-06-30 2021-09-30 2021-12-31 2022-03-31
 Reported Currency                                  USD        USD        USD        USD        USD
-Total Assets                                  52.148 B   52.972 B   55.146 B   57.834 B   62.131 B
-Total Current Assets                          26.717 B   24.705 B   24.693 B   25.002 B   27.100 B
-Cash And Cash Equivalents At Carrying Value   19.384 B   17.141 B   16.229 B   16.065 B   17.576 B
-Cash And Short Term Investments               19.384 B   17.141 B   16.229 B   16.095 B   17.707 B
-Inventory                                      4.101 B    4.132 B    4.733 B    5.199 B    5.757 B
-Current Net Receivables                        1.895 B    1.900 B    2.140 B    1.973 B    1.924 B
-Total Non Current Assets                      18.134 B   17.884 B   19.781 B   21.886 B   25.281 B
-Property Plant Equipment                      12.747 B   13.868 B   15.665 B   17.298 B   18.884 B
-Accumulated Depreciation Amortization Ppe      5.117 B    5.389 B    5.824 B    6.232 B    6.731 B
-Intangible Assets                                520 M      505 M      486 M      470 M      457 M
-Intangible Assets Excluding Goodwill             313 M      299 M      283 M      269 M      257 M
-Goodwill                                         207 M      206 M      203 M      201 M      200 M
-Investments                                       None       None       None       30 M      131 M
-Long Term Investments                             None    1.331 B    1.311 B    1.260 B       None
-Short Term Investments                            None       None       None       30 M      131 M
-Other Current Assets                           1.346 B    1.542 B    1.602 B    1.746 B    1.723 B
-Other Non Currrent Assets                      1.536 B    1.587 B    1.626 B    1.854 B    2.138 B
-Total Liabilities                             28.418 B   28.507 B   28.896 B   29.340 B   30.548 B
-Total Current Liabilities                     14.248 B   14.877 B   16.371 B   18.051 B   19.705 B
-Current Accounts Payable                       6.051 B    6.648 B    7.558 B    8.260 B   10.025 B
-Deferred Revenue                               4.668 B    4.886 B    5.141 B    5.386 B    5.881 B
-Current Debt                                   1.758 B    1.415 B    1.082 B    1.207 B    1.088 B
-Short Term Debt                                1.384 B    1.011 B      634 M      698 M      587 M
-Total Non Current Liabilities                  6.962 B    6.941 B    7.054 B    7.479 B    8.260 B
-Capital Lease Obligations                      1.094 B    1.034 B      993 M      999 M      991 M
-Long Term Debt                                 8.462 B    8.019 B    6.878 B    5.439 B    4.254 B
-Current Long Term Debt                         2.132 B    1.415 B    1.082 B    1.716 B    1.088 B
+Total Assets                                  52.972 B   55.146 B   57.834 B   62.131 B   66.038 B
+Total Current Assets                          24.705 B   24.693 B   25.002 B   27.100 B   29.050 B
+Cash And Cash Equivalents At Carrying Value   17.141 B   16.229 B   16.065 B   17.576 B   17.505 B
+Cash And Short Term Investments               17.141 B   16.229 B   16.095 B   17.707 B   18.013 B
+Inventory                                      4.132 B    4.733 B    5.199 B    5.757 B    6.691 B
+Current Net Receivables                        1.900 B    2.140 B    1.973 B    1.924 B    2.321 B
+Total Non Current Assets                      17.884 B   19.781 B   21.886 B   25.281 B   25.534 B
+Property Plant Equipment                      13.868 B   15.665 B   17.298 B   18.884 B   20.027 B
+Accumulated Depreciation Amortization Ppe      5.389 B    5.824 B    6.232 B    6.731 B    7.266 B
+Intangible Assets                                505 M      486 M      470 M      457 M      454 M
+Intangible Assets Excluding Goodwill             299 M      283 M      269 M      257 M      254 M
+Goodwill                                         206 M      203 M      201 M      200 M      200 M
+Investments                                       None       None       30 M      131 M   18.521 B
+Long Term Investments                          1.331 B    1.311 B    1.260 B       None       None
+Short Term Investments                            None       None       30 M      131 M      508 M
+Other Current Assets                           1.542 B    1.602 B    1.746 B    1.723 B    2.035 B
+Other Non Currrent Assets                      1.587 B    1.626 B    1.854 B    2.138 B    2.634 B
+Total Liabilities                             28.507 B   28.896 B   29.340 B   30.548 B   30.632 B
+Total Current Liabilities                     14.877 B   16.371 B   18.051 B   19.705 B   21.455 B
+Current Accounts Payable                       6.648 B    7.558 B    8.260 B   10.025 B   11.171 B
+Deferred Revenue                               4.886 B    5.141 B    5.386 B    5.881 B    3.782 B
+Current Debt                                   1.415 B    1.082 B    1.207 B    1.088 B    1.168 B
+Short Term Debt                                1.011 B      634 M      698 M      587 M      677 M
+Total Non Current Liabilities                  6.941 B    7.054 B    7.479 B    8.260 B    8.738 B
+Capital Lease Obligations                      1.034 B      993 M      999 M      991 M      900 M
+Long Term Debt                                 8.019 B    6.878 B    5.439 B    4.254 B    2.253 B
+Current Long Term Debt                         1.415 B    1.082 B    1.716 B    1.088 B    1.168 B
 Long Term Debt Noncurrent                         None       None       None       None       None
-Short Long Term Debt Total                     9.846 B    9.030 B    7.512 B    6.137 B    4.841 B
-Other Current Liabilities                        264 M      273 M      292 M      301 M      294 M
-Other Non Current Liabilities                  3.330 B    3.283 B    3.336 B    3.486 B    3.546 B
-Total Shareholder Equity                      22.225 B   23.017 B   24.804 B   27.053 B   30.189 B
+Short Long Term Debt Total                     9.030 B    7.512 B    6.137 B    4.841 B    2.930 B
+Other Current Liabilities                        273 M      292 M      301 M      310 M      309 M
+Other Non Current Liabilities                  3.283 B    3.336 B    3.486 B    3.546 B    3.839 B
+Total Shareholder Equity                      23.017 B   24.804 B   27.053 B   30.189 B   34.085 B
 Treasury Stock                                    None       None       None       None       None
-Retained Earnings                             -5.399 B   -4.750 B   -3.608 B   -1.990 B      331 M
+Retained Earnings                             -4.750 B   -3.608 B   -1.990 B      331 M    3.649 B
 Common Stock                                       1 M        1 M        1 M        1 M        1 M
-Common Stock Shares Outstanding                  960 M      963 M      984 M    1.004 B    1.033 B
-
+Common Stock Shares Outstanding                  963 M      984 M    1.004 B    1.033 B    1.036 B

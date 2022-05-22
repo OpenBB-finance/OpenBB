@@ -96,29 +96,29 @@ class ETFController(BaseController):
         has_etfs_start = "[unvl]" if len(self.etf_holdings) == 0 else ""
         has_etfs_end = "[/unvl]" if len(self.etf_holdings) == 0 else ""
         help_text = f"""[cmds]
-    ln            lookup by name [src][FinanceDatabase/StockAnalysis.com][/src]
-    ld            lookup by description [src][FinanceDatabase][/src]
-    load          load ETF data [src][Yfinance][/src][/cmds]
+    ln               lookup by name [src][FinanceDatabase/StockAnalysis.com][/src]
+    ld               lookup by description [src][FinanceDatabase][/src]
+    load             load ETF data [src][Yfinance][/src][/cmds]
 
 [param]Symbol: [/param]{self.etf_name}{has_etfs_start}
 [param]Major holdings: [/param]{', '.join(self.etf_holdings)}
 [menu]
->   ca            comparison analysis,          e.g.: get similar, historical, correlation, financials{has_etfs_end}
->   disc          discover ETFs,                e.g.: gainers/decliners/active
->   scr           screener ETFs,                e.g.: overview/performance, using preset filters[/menu]
+>   ca               comparison analysis,          e.g.: get similar, historical, correlation, financials{has_etfs_end}
+>   disc             discover ETFs,                e.g.: gainers/decliners/active
+>   scr              screener ETFs,                e.g.: overview/performance, using preset filters[/menu]
 {has_ticker_start}[cmds]
-    overview      get overview [src][StockAnalysis][/src]
-    holdings      top company holdings [src][StockAnalysis][/src]
-    weights       sector weights allocation [src][Yfinance][/src]
-    summary       summary description of the ETF [src][Yfinance][/src]
-    candle        view a candle chart for ETF
-    news          latest news of the company [src][News API][/src]
+    overview         get overview [src][StockAnalysis][/src]
+    holdings         top company holdings [src][StockAnalysis][/src]
+    weights          sector weights allocation [src][Yfinance][/src]
+    summary          summary description of the ETF [src][Yfinance][/src]
+    candle           view a candle chart for ETF
+    news             latest news of the company [src][News API][/src]
 
-    pir           create (multiple) passive investor excel report(s) [src][PassiveInvestor][/src]
-    compare       compare multiple different ETFs [src][StockAnalysis][/src][/cmds]
+    pir              create (multiple) passive investor excel report(s) [src][PassiveInvestor][/src]
+    compare          compare multiple different ETFs [src][StockAnalysis][/src][/cmds]
 [menu]
->   ta            technical analysis,           e.g.: ema, macd, rsi, adx, bbands, obv
->   pred          prediction techniques,        e.g.: regression, arima, rnn, lstm[/menu]
+>   ta               technical analysis,           e.g.: ema, macd, rsi, adx, bbands, obv
+>   pred             prediction techniques,        e.g.: regression, arima, rnn, lstm[/menu]
 {has_ticker_end}"""
         console.print(text=help_text, menu="ETF")
 

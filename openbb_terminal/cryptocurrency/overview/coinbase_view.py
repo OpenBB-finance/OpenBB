@@ -12,7 +12,6 @@ from openbb_terminal.helper_funcs import (
     lambda_long_number_format,
     print_rich_table,
 )
-from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -53,7 +52,6 @@ def display_trading_pairs(top: int, sortby: str, descend: bool, export: str) -> 
         show_index=False,
         title="Available Pairs for Trading",
     )
-    console.print("")
 
     export_data(
         export,

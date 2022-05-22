@@ -69,7 +69,6 @@ def display_whales_transactions(
         show_index=False,
         title="Large Value Transactions",
     )
-    console.print("")
 
     export_data(
         export,

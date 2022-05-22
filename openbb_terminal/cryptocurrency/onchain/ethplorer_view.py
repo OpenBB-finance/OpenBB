@@ -57,7 +57,6 @@ def display_address_info(
         show_index=False,
         title="Blockchain Token Information",
     )
-    console.print("")
 
     export_data(
         export,
@@ -103,7 +102,6 @@ def display_top_tokens(
         show_index=False,
         title="Top ERC20 Tokens",
     )
-    console.print("")
 
     export_data(
         export,
@@ -149,7 +147,6 @@ def display_top_token_holders(
         show_index=False,
         title="ERC20 Token Holder Info",
     )
-    console.print("")
 
     export_data(
         export,
@@ -199,7 +196,6 @@ def display_address_history(
         show_index=False,
         title="Historical Transactions Information",
     )
-    console.print("")
 
     export_data(
         export,
@@ -243,7 +239,6 @@ def display_token_info(
     print_rich_table(
         df, headers=list(df.columns), show_index=False, title="ERC20 Token Information"
     )
-    console.print("")
 
     export_data(
         export,
@@ -277,7 +272,6 @@ def display_tx_info(
         show_index=False,
         title="Information About Transactions",
     )
-    console.print("")
 
     export_data(
         export,
@@ -337,7 +331,6 @@ def display_token_history(
         show_index=False,
         title="Token History Information",
     )
-    console.print("")
 
     export_data(
         export,
@@ -391,7 +384,6 @@ def display_token_historical_prices(
         show_index=False,
         title="Historical Token Prices",
     )
-    console.print("")
 
     export_data(
         export,

@@ -70,7 +70,7 @@ def display_summary(df: pd.DataFrame, export: str):
         show_index=True,
         title="[bold]Summary Statistics[/bold]",
     )
-    console.print("")
+
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
@@ -785,7 +785,6 @@ def display_normality(df: pd.DataFrame, target: str, export: str = ""):
         floatfmt=".4f",
         title="[bold]Normality Statistics[/bold]",
     )
-    console.print("")
 
     export_data(
         export,
@@ -823,7 +822,7 @@ def display_unitroot(
         title="[bold]Unit Root Calculation[/bold]",
         floatfmt=".4f",
     )
-    console.print("")
+
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
@@ -874,8 +873,6 @@ def display_raw(
         show_index=True,
         floatfmt=".3f",
     )
-
-    console.print("")
 
 
 @log_start_end(log=logger)
@@ -1047,7 +1044,6 @@ def display_var(
         title=f"[bold]{ticker}{str_title}Value at Risk[/bold]",
         floatfmt=".4f",
     )
-    console.print("")
 
 
 def display_es(
@@ -1109,7 +1105,6 @@ def display_es(
         title=f"[bold]{ticker}{str_title}Expected Shortfall[/bold]",
         floatfmt=".4f",
     )
-    console.print("")
 
 
 def display_sharpe(data: pd.DataFrame, rfr: float, window: float):

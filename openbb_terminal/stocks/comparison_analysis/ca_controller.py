@@ -121,25 +121,25 @@ class ComparisonAnalysisController(BaseController):
 [param]Similar Companies: [/param]{', '.join(self.similar) if self.similar else ''}
 
 [src][Yahoo Finance][/src]
-    historical    historical price data comparison
-    hcorr         historical price correlation
-    volume        historical volume data comparison
+    historical       historical price data comparison
+    hcorr            historical price correlation
+    volume           historical volume data comparison
 [src][Market Watch][/src]
-    income        income financials comparison
-    balance       balance financials comparison
-    cashflow      cashflow comparison
+    income           income financials comparison
+    balance          balance financials comparison
+    cashflow         cashflow comparison
 [src][Finbrain][/src]
-    sentiment     sentiment analysis comparison
-    scorr         sentiment correlation
+    sentiment        sentiment analysis comparison
+    scorr            sentiment correlation
 [src][Finviz][/src]
-    overview      brief overview comparison
-    valuation     brief valuation comparison
-    financial     brief financial comparison
-    ownership     brief ownership comparison
-    performance   brief performance comparison
-    technical     brief technical comparison
-
-[menu]>   po            portfolio optimization for selected tickers[/menu]{has_similar_end}
+    overview         brief overview comparison
+    valuation        brief valuation comparison
+    financial        brief financial comparison
+    ownership        brief ownership comparison
+    performance      brief performance comparison
+    technical        brief technical comparison
+[menu]
+>   po               portfolio optimization for selected tickers[/menu]{has_similar_end}
         """
         console.print(text=help_text, menu="Stocks - Comparison Analysis")
 

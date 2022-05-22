@@ -1,12 +1,9 @@
-
-             X           Trading Date         Ticker                       Insider                                   Title               Price            Quantity               Owned        Delta Own                   Value
-0  [red][/red]  [red]2021-07-27[/red]  [red]PM[/red]     [red]King Martin G.[/red]             [red]CEO, PMI America[/red]  [red]$100.18[/red]  [red]-21,725[/red]  [red]128,484[/red]  [red]-14%[/red]  [red]-$2,176,482[/red]
-1  [red][/red]  [red]2021-05-25[/red]  [red]PM[/red]     [red]Azinovic Drago[/red]    [red]Pres Mid East, Africa, DF[/red]   [red]$98.04[/red]  [red]-15,000[/red]  [red]120,396[/red]  [red]-11%[/red]  [red]-$1,470,600[/red]
-2  [red][/red]  [red]2021-05-25[/red]  [red]PM[/red]         [red]Riley Paul[/red]    [red]Pres East Asia, Australia[/red]   [red]$98.04[/red]  [red]-10,984[/red]   [red]38,854[/red]  [red]-22%[/red]  [red]-$1,076,871[/red]
-3  [red][/red]  [red]2021-05-24[/red]  [red]PM[/red]  [red]De Wilde Frederic[/red]  [red]Pres, European Union Region[/red]   [red]$97.76[/red]  [red]-10,000[/red]  [red]186,628[/red]   [red]-5%[/red]    [red]-$977,600[/red]
-4  [red][/red]  [red]2021-05-10[/red]  [red]PM[/red]    [red]Masseroli Mario[/red]  [red]Pres, Latin America, Canada[/red]   [red]$98.31[/red]   [red]-1,734[/red]   [red]14,710[/red]  [red]-11%[/red]    [red]-$170,470[/red]
+             X           Trading Date         Ticker                          Insider                                      Title               Price            Quantity               Owned        Delta Own                   Value
+0  [red][/red]  [red]2022-02-22[/red]  [red]PM[/red]     [red]De Wilde Frederic[/red]     [red]Pres, European Union Region[/red]  [red]$108.49[/red]  [red]-29,941[/red]  [red]178,160[/red]  [red]-14%[/red]  [red]-$3,248,338[/red]
+1  [red][/red]  [red]2022-02-18[/red]  [red]PM[/red]          [red]Barth Werner[/red]  [red]Pr.Combusibles, GlobalComb.Mkt[/red]  [red]$111.70[/red]  [red]-12,000[/red]   [red]75,178[/red]  [red]-14%[/red]  [red]-$1,340,400[/red]
+2  [red][/red]  [red]2022-02-17[/red]  [red]PM[/red]          [red]Olczak Jacek[/red]                             [red]CEO[/red]  [red]$111.31[/red]  [red]-40,000[/red]  [red]326,907[/red]  [red]-11%[/red]  [red]-$4,452,308[/red]
+3  [red][/red]  [red]2022-02-17[/red]  [red]PM[/red]  [red]Calantzopoulos Andre[/red]                       [red]Exec. COB[/red]  [red]$110.69[/red]  [red]-75,000[/red]  [red]935,380[/red]   [red]-7%[/red]  [red]-$8,301,750[/red]
+4  [red][/red]  [red]2021-07-27[/red]  [red]PM[/red]        [red]King Martin G.[/red]                [red]CEO, PMI America[/red]  [red]$100.18[/red]  [red]-21,725[/red]  [red]128,484[/red]  [red]-14%[/red]  [red]-$2,176,482[/red]
 
 M: Multiple transactions in filing; earliest reported transaction date & weighted average transaction price
-
 [red]S - Sale: Sale of securities on an exchange or to another person[/red]
-

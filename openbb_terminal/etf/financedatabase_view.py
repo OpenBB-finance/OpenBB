@@ -48,7 +48,6 @@ def display_etf_by_name(
         headers=["Name", "Family", "Category", "Total Assets [M]"],
         title="ETFs by Total Assets",
     )
-    console.print("")
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "ln_fd", data)
 
@@ -87,7 +86,6 @@ def display_etf_by_description(
         headers=["Name", "Family", "Category", "Total Assets [M]"],
         title="ETFs by Total Assets",
     )
-    console.print("")
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "ld", data)
 
@@ -126,7 +124,6 @@ def display_etf_by_category(
         headers=["Name", "Family", "Category", "Total Assets [M]"],
         title="ETFs by Category and Total Assets",
     )
-    console.print("")
 
     export_data(
         export,

@@ -20,7 +20,6 @@ from openbb_terminal.helper_funcs import (
     plot_autoscale,
     is_valid_axes_count,
 )
-from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.dark_pool_shorts import quandl_model
 
 logger = logging.getLogger(__name__)
@@ -148,8 +147,6 @@ def short_interest(ticker: str, nyse: bool, days: int, raw: bool, export: str):
             show_index=True,
             title="Short Interest of Stock",
         )
-
-    console.print("")
 
     export_data(
         export,

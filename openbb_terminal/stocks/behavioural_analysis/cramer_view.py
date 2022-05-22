@@ -43,9 +43,9 @@ def display_cramer_daily(inverse: bool = True, export: str = ""):
         return
     date = recs.Date[0]
     recs = recs.drop(columns=["Date"])
-    console.print()
+
     print_rich_table(recs, title=f"Jim Cramer Recommendations for {date}")
-    console.print()
+
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "cramer", recs)
 
 
@@ -107,5 +107,5 @@ def display_cramer_ticker(
     if raw:
         df["Date"] = df["Date"].apply(lambda x: x.strftime("%Y-%m-%d"))
         print_rich_table(df, title=f"Jim Cramer Recommendations for {ticker}")
-        console.print()
+
     export_data(export, os.path.dirname(os.path.abspath(__file__)), df, "jctr")

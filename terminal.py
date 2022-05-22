@@ -110,49 +110,46 @@ class TerminalController(BaseController):
 [info]If you want to jump from crypto/ta to stocks you can use an absolute path that starts with a slash (/).[/info]
     E.g. '/crypto/ta $ /stocks'
 
-[info]The previous logic also holds for when launching the terminal.[/info]
-    E.g. '$ python terminal.py /stocks/disc/ugs -n 3/../load tsla/candle'
-
 [info]You can run a standalone .openbb routine file with:[/info]
-    E.g. '$ python terminal.py routines/example.openbb'
+    E.g. '/ $ exe routines/example.openbb'
 
 [info]You can run a .openbb routine file with variable inputs:[/info]
-    E.g. '$ python terminal.py routines/example_with_inputs.gst --input pltr,tsla,nio'
+    E.g. '/ $ exe routines/example_with_inputs.openbb --input pltr,tsla,nio'
+
 
 [info]The main commands you should be aware when navigating through the terminal are:[/info][cmds]
-    cls             clear the screen
-    help / h / ?    help menu
-    quit / q / ..   quit this menu and go one menu above
-    exit            exit the terminal
-    reset / r       reset the terminal and reload configs from the current location
-    resources       only available on main contexts (not sub-menus)
-    support         pre-populate support ticket for our team to evaluate
+    cls              clear the screen
+    help / h / ?     help menu
+    quit / q / ..    quit this menu and go one menu above
+    exit             exit the terminal
+    reset / r        reset the terminal and reload configs from the current location
+    resources        only available on main contexts (not sub-menus)
+    support          pre-populate support ticket for our team to evaluate
 
-    about           about us
-    update          update terminal automatically
-    tz              set different timezone
-    export          select export folder to output data
-    exe             execute automated routine script[/cmds][menu]
->   settings        set feature flags and style charts
->   keys            set API keys and check their validity[/menu]
+    about            more information about OpenBB
+    update           update terminal automatically (when using GitHub)
+    tz               set different timezone
+    export           select export folder to output data
+    exe              execute automated routine script[/cmds][menu]
+>   settings         set feature flags and style charts
+>   keys             set API keys and check their validity[/menu]
 
 [param]Export Folder:[/param] {obbff.EXPORT_FOLDER_PATH if obbff.EXPORT_FOLDER_PATH else 'DEFAULT (folder: exports/)'}
 [param]Timezone:     [/param] {get_user_timezone_or_invalid()}
-[menu][info]
-Asset classes:[/info]
->   stocks              access historical pricing data, options, sector and industry, and overall due diligence
->   crypto              dive into onchain data, tokenomics, circulation supply, nfts and more
->   etf                 exchange traded funds. Historical pricing, compare holdings and screening
->   economy             global macroeconomic data, e.g. futures, yield, treasury
->   forex               foreign exchanges, quotes, forward rates for currency pairs and oanda integration
->   funds               mutual funds search, overview, holdings and sector weights
->   alternative         alternative datasets, such as COVID and open source metrics
+[menu]
+>   stocks           access historical pricing data, options, sector and industry, and overall due diligence
+>   crypto           dive into onchain data, tokenomics, circulation supply, nfts and more
+>   etf              exchange traded funds. Historical pricing, compare holdings and screening
+>   economy          global macroeconomic data, e.g. futures, yield, treasury
+>   forex            foreign exchanges, quotes, forward rates for currency pairs and oanda integration
+>   funds            mutual funds search, overview, holdings and sector weights
+>   alternative      alternative datasets, such as COVID and open source metrics
 
 [info]Others:[/info]
->   econometrics        statistical and quantitative methods for relationships between datasets
->   portfolio           perform portfolio optimization and look at portfolio performance and attribution
->   dashboards          interactive dashboards using voila and jupyter notebooks
->   reports             customizable research reports through jupyter notebooks[/menu]
+>   econometrics     statistical and quantitative methods for relationships between datasets
+>   portfolio        perform portfolio optimization and look at portfolio performance and attribution
+>   dashboards       interactive dashboards using voila and jupyter notebooks
+>   reports          customizable research reports through jupyter notebooks[/menu]
 """,
             menu="Home",
         )
