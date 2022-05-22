@@ -2225,6 +2225,8 @@ def display_ef(
 
     ax.plot(X1, Y1, color="b")
 
+    print(port.risk)
+
     if plot_tickers:
         ticker_plot = pd.DataFrame(columns=["ticker", "var"])
         for ticker in port.cov.columns:
