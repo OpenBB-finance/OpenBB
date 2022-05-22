@@ -117,3 +117,18 @@ en:
   stocks/options/screen/_screened_tickers: Last screened tickers
   stocks/options/screen/ca: take these to comparison analysis menu
   stocks/options/screen/po: take these to portoflio optimization menu
+  stocks/options/pricing/_ticker: Ticker
+  stocks/options/pricing/_expiry: Expiry
+  stocks/options/pricing/add: add an expected price to the list
+  stocks/options/pricing/rmv: remove an expected price from the list
+  stocks/options/pricing/show: show the listed of expected prices
+  stocks/options/pricing/rnval: risk neutral valuation for an option
+  stocks/options/hedge/_ticker: Ticker
+  stocks/options/hedge/_expiry: Expiry
+  stocks/options/hedge/pick: pick the underlying asset position
+  stocks/options/hedge/_underlying: Underlying Asset Position
+  stocks/options/hedge/list: show the available strike prices for calls and puts
+  stocks/options/hedge/add: add an option to the list of options
+  stocks/options/hedge/rmv: remove an option from the list of options
+  stocks/options/hedge/sop: show selected options and neutral portfolio weights
+  stocks/options/hedge/plot: show the option payoff diagram
