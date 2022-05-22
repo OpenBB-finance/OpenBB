@@ -554,6 +554,7 @@ def plot_payoff(
     ax.set_title(f"Option Payoff Diagram for {ticker} on {expiration}")
     ax.set_ylabel("Profit")
     ax.set_xlabel("Underlying Asset Price at Expiration")
+    ax.legend()
     ax.xaxis.set_major_formatter("${x:.2f}")
     ax.yaxis.set_major_formatter("${x:.2f}")
     theme.style_primary_axis(ax)
