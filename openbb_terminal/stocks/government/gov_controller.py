@@ -89,7 +89,7 @@ class GovController(StockBaseController):
     histcont         show historical quarterly government contracts for ticker
     lobbying         corporate lobbying details for ticker[/cmds]{has_ticker_end}
             """
-        console.print(text=help_text, menu="Stocks - Screener")
+        console.print(text=help_text, menu="Stocks - Government")
 
     def custom_reset(self):
         """Class specific component of reset command"""
