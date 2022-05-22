@@ -1,0 +1,225 @@
+.body {
+  background-color: #ffffff;
+  color: #000000;
+  font-weight: 400;
+  text-decoration: none;
+  vertical-align: baseline;
+  font-size: 12pt;
+  font-family: "Consolas", Arial, Helvetica, sans-serif;
+  font-style: normal;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  margin-left: 50px;
+  margin-left: 50px;
+  padding: 0;
+}
+
+.title {
+  padding-top: 0pt;
+  color: #000000;
+  font-size: 42pt;
+  font-weight: 800;
+  padding-bottom: 0pt;
+  line-height: 1.15;
+  page-break-after: avoid;
+  text-align: center;
+}
+
+.subtitle {
+  padding-top: 0pt;
+  color: #666666;
+  font-size: 33pt;
+  padding-bottom: 10pt;
+  line-height: 1.15;
+  page-break-after: avoid;
+  font-style: italic;
+  text-align: center;
+}
+
+li {
+  color: #000000;
+  font-size: 13pt;
+}
+
+p {
+  margin: 0;
+  color: #000000;
+  font-size: 13pt;
+}
+
+h1 {
+  padding-top: 10pt;
+  color: #000000;
+  font-size: 28pt;
+  padding-bottom: 0pt;
+  line-height: 1.15;
+  page-break-after: avoid;
+  text-align: left;
+}
+
+h2 {
+  padding-top: 10pt;
+  color: #000000;
+  font-weight: 700;
+  font-size: 21pt;
+  padding-bottom: 0pt;
+  line-height: 1.15;
+  page-break-after: avoid;
+  text-align: left;
+}
+
+h3 {
+  padding-top: 8pt;
+  color: #666666;
+  font-weight: 700;
+  font-size: 14pt;
+  padding-bottom: 0pt;
+  line-height: 1.15;
+  page-break-after: avoid;
+  text-align: left;
+}
+
+h4 {
+  padding-top: 8pt;
+  -webkit-text-decoration-skip: none;
+  color: #666666;
+  text-decoration: underline;
+  font-size: 13pt;
+  padding-bottom: 0pt;
+  line-height: 1.15;
+  page-break-after: avoid;
+  text-decoration-skip-ink: none;
+  text-align: left;
+}
+
+h5 {
+  padding-top: 8pt;
+  color: #666666;
+  font-size: 13pt;
+  padding-bottom: 0pt;
+  line-height: 1.15;
+  page-break-after: avoid;
+  text-align: left;
+}
+
+h6 {
+  padding-top: 8pt;
+  color: #666666;
+  font-size: 13pt;
+  padding-bottom: 0pt;
+  line-height: 1.15;
+  page-break-after: avoid;
+  font-style: italic;
+  text-align: left;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  border-width: 0;
+  border-top-color: #ffffff;
+  border-bottom-color: #ffffff;
+  border-left-color: #ffffff;
+  border-right-color: #ffffff;
+  color: black;
+  table-layout: fixed;
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 15pt;
+  margin-bottom: 30pt;
+  padding: 3pt;
+}
+
+table thead {
+  color: black;
+  text-align: center;
+}
+
+table thead tr th {
+  border-top: 0;
+  border-bottom: 0;
+  border-left: 1;
+  border-left-color: #000000;
+  border-right: 1;
+  border-right-color: #000000;
+  padding-right: 5pt;
+  padding-left: 5pt;
+  font-weight: 600;
+}
+
+table thead tr th:first-child {
+  border-left: 0;
+}
+
+table thead tr th:last-child {
+  border-right: 0;
+}
+
+table tbody {
+  color: black;
+}
+
+table tbody tr td {
+  border: 1;
+  border-color: #000000;
+  padding-left: 7pt;
+  padding-right: 7pt;
+}
+
+table tbody tr th {
+  border: 1;
+  border-color: #000000;
+  font-weight: 200;
+  text-align: right;
+  padding-left: 7pt;
+  padding-right: 7pt;
+}
+
+table tbody tr th:first-child {
+  border-left: 0;
+}
+
+table tbody tr th:last-child {
+  border-right: 0;
+}
+
+table tbody tr:last-child th {
+  border-bottom: 0;
+}
+
+table tbody tr td:first-child {
+  border-left: 0;
+}
+
+table tbody tr td:last-child {
+  border-right: 0;
+}
+
+table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+tbody tr:nth-child(even) {
+  background-color: rgb(216, 216, 216);
+}
+
+@media print {
+  table {
+    -webkit-print-color-adjust: exact;
+  }
+}
+
+.hcontainer {
+  margin: 10pt;
+  width: 1000px;
+  display: flex;
+}
+
+.item {
+  display: inline-block;
+  zoom: 1;
+  padding-left: 10pt;
+  padding-right: 10pt;
+  vertical-align: top;
+  flex: 1;
+}

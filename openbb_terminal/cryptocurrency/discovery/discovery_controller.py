@@ -82,25 +82,28 @@ class DiscoveryController(BaseController):
             choices["drdapps"]["--sort"] = {
                 c: {} for c in dappradar_model.DAPPS_COLUMNS
             }
+
+            choices["support"] = self.SUPPORT_CHOICES
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
         """Print help"""
         help_text = """[cmds]
 [src][CoinGecko][/src]
-    cgtop             top coins (with or without category)
-    cgtrending        trending coins
-    cggainers         top gainers - coins which price gained the most in given period
-    cglosers          top losers - coins which price dropped the most in given period
+    cgtop            top coins (with or without category)
+    cgtrending       trending coins
+    cggainers        top gainers - coins which price gained the most in given period
+    cglosers         top losers - coins which price dropped the most in given period
 [src][CoinPaprika][/src]
-    cpsearch          search for coins
+    cpsearch         search for coins
 [src][CoinMarketCap][/src]
-    cmctop            top coins
+    cmctop           top coins
 [src][DappRadar][/src]
-    drnft             top non fungible tokens
-    drgames           top blockchain games
-    drdapps           top decentralized apps
-    drdex             top decentralized exchanges
+    drnft            top non fungible tokens
+    drgames          top blockchain games
+    drdapps          top decentralized apps
+    drdex            top decentralized exchanges
 [/cmds]
 """
         console.print(text=help_text, menu="Cryptocurrency - Discovery")

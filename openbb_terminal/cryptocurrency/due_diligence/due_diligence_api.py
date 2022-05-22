@@ -33,6 +33,8 @@ from .coinpaprika_view import display_markets as mkt
 from .coinpaprika_view import display_exchanges as ex
 from .coinpaprika_view import display_events as events
 from .coinpaprika_view import display_twitter as twitter
+from .santiment_view import display_github_activity as gh
+from .cryptopanic_view import display_news as news
 
 # Models
 models = _models(os.path.abspath(os.path.dirname(__file__)))

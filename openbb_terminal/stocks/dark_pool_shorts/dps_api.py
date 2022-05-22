@@ -6,12 +6,12 @@ from openbb_terminal.helper_classes import ModelsNamespace as _models
 # pylint: disable=unused-import
 
 # Menu commands
-from .ibkr_view import display_cost_to_borrow as call_ctb
-from .yahoofinance_view import display_most_shorted as call_shorted
-from .shortinterest_view import high_short_interest as call_hsi
-from .finra_view import darkpool_otc as call_prom
-from .stockgrid_view import dark_pool_short_positions as call_pos
-from .stockgrid_view import short_interest_days_to_cover as call_sidtc
+from .ibkr_view import display_cost_to_borrow as ctb
+from .yahoofinance_view import display_most_shorted as shorted
+from .shortinterest_view import high_short_interest as hsi
+from .finra_view import darkpool_otc as prom
+from .stockgrid_view import dark_pool_short_positions as pos
+from .stockgrid_view import short_interest_days_to_cover as sidtc
 from .finra_view import darkpool_ats_otc as dpotc
 from .sec_view import fails_to_deliver as ftd
 from .stockgrid_view import net_short_position as spos

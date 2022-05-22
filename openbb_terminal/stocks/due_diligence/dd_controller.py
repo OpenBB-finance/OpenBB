@@ -78,21 +78,21 @@ class DueDiligenceController(StockBaseController):
 [param]Ticker: [/param]{self.ticker}[cmds]
 
 [src][Finviz][/src]
-    analyst       analyst prices and ratings of the company
+    analyst          analyst prices and ratings of the company
 [src][FMP][/src]
-    rating        rating over time (daily)
+    rating           rating over time (daily)
 [src][Finnhub][/src]
-    rot           number of analysts ratings over time (monthly)
+    rot              number of analysts ratings over time (monthly)
 [src][Business Insider][/src]
-    pt            price targets over time
-    est           quarter and year analysts earnings estimates
+    pt               price targets over time
+    est              quarter and year analysts earnings estimates
 [src][Market Watch][/src]
-    sec           SEC filings
+    sec              SEC filings
 [src][Csimarket][/src]
-    supplier      list of suppliers
-    customer      list of customers
+    supplier         list of suppliers
+    customer         list of customers
 [src][Cathiesark.com][/src]
-    arktrades     get ARK trades for ticker[/cmds]
+    arktrades        get ARK trades for ticker[/cmds]
         """
         console.print(text=help_text, menu="Stocks - Due Diligence")
 

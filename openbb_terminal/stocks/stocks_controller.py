@@ -22,6 +22,8 @@ from openbb_terminal.helper_funcs import (
     parse_known_args_and_warn,
     valid_date,
 )
+from openbb_terminal.helper_classes import AllowArgsWithWhiteSpace
+from openbb_terminal.helper_funcs import choice_check_after_action
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
 from openbb_terminal.rich_config import console
@@ -44,6 +46,7 @@ class StocksController(StockBaseController):
         "candle",
         "news",
         "resources",
+        "codes",
     ]
     CHOICES_MENUS = [
         "ta",
@@ -62,6 +65,7 @@ class StocksController(StockBaseController):
         "dd",
         "ca",
         "options",
+        "th",
     ]
 
     PATH = "/stocks/"
@@ -91,6 +95,9 @@ class StocksController(StockBaseController):
             choices["search"]["-e"] = {
                 c: None for c in stocks_helper.market_coverage_suffix
             }
+
+            choices["support"] = self.SUPPORT_CHOICES
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
@@ -105,31 +112,34 @@ class StocksController(StockBaseController):
         has_ticker_start = "" if self.ticker else "[unvl]"
         has_ticker_end = "" if self.ticker else "[/unvl]"
         help_text = f"""[cmds]
-    search      {i18n.t('stocks/search')}
-    load        {i18n.t('stocks/load')}[/cmds][param]
+    search           {i18n.t('stocks/search')}
+    load             {i18n.t('stocks/load')}[/cmds][param]
 
 Stock: [/param]{stock_text}
 {self.add_info}[cmds]
-    quote       {i18n.t('stocks/quote')}
-    candle      {i18n.t('stocks/candle')}
-    news        {i18n.t('stocks/news')}[/cmds] [src][News API][/src]
+    quote            {i18n.t('stocks/quote')}
+    candle           {i18n.t('stocks/candle')}
+    news             {i18n.t('stocks/news')} [src][News API][/src]
+    codes            FIGI, SIK and SIC codes codes[/cmds] [src][Polygon.io][/src]
+
 [menu]
->   options     {i18n.t('stocks/options')}
->   disc        {i18n.t('stocks/disc')}
->   sia         {i18n.t('stocks/sia')}
->   dps         {i18n.t('stocks/dps')}
->   scr         {i18n.t('stocks/scr')}
->   ins         {i18n.t('stocks/ins')}
->   gov         {i18n.t('stocks/gov')}
->   ba          {i18n.t('stocks/ba')}
->   ca          {i18n.t('stocks/ca')}{has_ticker_start}
->   fa          {i18n.t('stocks/fa')}
->   res         {i18n.t('stocks/res')}
->   dd          {i18n.t('stocks/dd')}
->   bt          {i18n.t('stocks/bt')}
->   ta          {i18n.t('stocks/ta')}
->   qa          {i18n.t('stocks/qa')}
->   pred        {i18n.t('stocks/pred')}
+>   th               trading hours, \t\t\t check open markets
+>   options          {i18n.t('stocks/options')}
+>   disc             {i18n.t('stocks/disc')}
+>   sia              {i18n.t('stocks/sia')}
+>   dps              {i18n.t('stocks/dps')}
+>   scr              {i18n.t('stocks/scr')}
+>   ins              {i18n.t('stocks/ins')}
+>   gov              {i18n.t('stocks/gov')}
+>   ba               {i18n.t('stocks/ba')}
+>   ca               {i18n.t('stocks/ca')}{has_ticker_start}
+>   fa               {i18n.t('stocks/fa')}
+>   res              {i18n.t('stocks/res')}
+>   dd               {i18n.t('stocks/dd')}
+>   bt               {i18n.t('stocks/bt')}
+>   ta               {i18n.t('stocks/ta')}
+>   qa               {i18n.t('stocks/qa')}
+>   pred             {i18n.t('stocks/pred')}
 {has_ticker_end}"""
         console.print(text=help_text, menu="Stocks")
 
@@ -166,7 +176,8 @@ Stock: [/param]{stock_text}
             "-c",
             "--country",
             default="",
-            choices=self.country,
+            nargs=argparse.ONE_OR_MORE,
+            action=choice_check_after_action(AllowArgsWithWhiteSpace, self.country),
             dest="country",
             help=f"{i18n.t('stocks/search_country')}.",
         )
@@ -174,7 +185,8 @@ Stock: [/param]{stock_text}
             "-s",
             "--sector",
             default="",
-            choices=self.sector,
+            nargs=argparse.ONE_OR_MORE,
+            action=choice_check_after_action(AllowArgsWithWhiteSpace, self.sector),
             dest="sector",
             help=f"{i18n.t('stocks/search_sector')}.",
         )
@@ -182,7 +194,8 @@ Stock: [/param]{stock_text}
             "-i",
             "--industry",
             default="",
-            choices=self.industry,
+            nargs=argparse.ONE_OR_MORE,
+            action=choice_check_after_action(AllowArgsWithWhiteSpace, self.industry),
             dest="industry",
             help=f"{i18n.t('stocks/search_industry')}.",
         )
@@ -247,6 +260,22 @@ Stock: [/param]{stock_text}
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             stocks_helper.quote(ticker)
+
+    @log_start_end(log=logger)
+    def call_codes(self, _):
+        """Process codes command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="codes",
+            description="Show CIK, FIGI and SCI code from polygon for loaded ticker.",
+        )
+        ns_parser = parse_known_args_and_warn(parser, _)
+        if ns_parser:
+            if not self.ticker:
+                console.print("No ticker loaded. First use `load {ticker}`\n")
+                return
+            stocks_helper.show_codes_polygon(self.ticker)
 
     @log_start_end(log=logger)
     def call_candle(self, other_args: List[str]):
@@ -491,6 +520,15 @@ Stock: [/param]{stock_text}
         )
 
         self.queue = self.load_class(OptionsController, self.ticker, self.queue)
+
+    @log_start_end(log=logger)
+    def call_th(self, _):
+        """Process th command"""
+        from openbb_terminal.stocks.tradinghours.tradinghours_controller import (
+            TradingHoursController,
+        )
+
+        self.queue = self.load_class(TradingHoursController, self.queue)
 
     @log_start_end(log=logger)
     def call_res(self, _):

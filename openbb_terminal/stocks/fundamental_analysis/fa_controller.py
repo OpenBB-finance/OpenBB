@@ -29,6 +29,7 @@ from openbb_terminal.stocks.fundamental_analysis import (
     finviz_view,
     market_watch_view,
     yahoo_finance_view,
+    polygon_view,
 )
 from openbb_terminal.stocks.fundamental_analysis.financial_modeling_prep import (
     fmp_controller,
@@ -107,34 +108,35 @@ class FundamentalAnalysisController(StockBaseController):
         is_foreign_end = "" if not self.suffix else "[/unvl]"
         help_text = f"""[param]
 Ticker: [/param] {self.ticker} [cmds]
-
-[cmds]    data          fundamental and technical data of company [src][FinViz][/src]
-    mgmt          management team of the company [src][Business Insider][/src]
-    analysis      analyse SEC filings with the help of machine learning [src][Eclect.us][/src]
-    score         investing score from Warren Buffett, Joseph Piotroski and Benjamin Graham [src][FMP][/src]
-    warnings      company warnings according to Sean Seah book [src][Market Watch][/src]
-    dcf           advanced Excel customizable discounted cash flow [src][Stockanalysis][/src][/cmds]
+[cmds]
+    data             fundamental and technical data of company [src][FinViz][/src]
+    mgmt             management team of the company [src][Business Insider][/src]
+    analysis         analyse SEC filings with the help of machine learning [src][Eclect.us][/src]
+    score            investing score from Warren Buffett, Joseph Piotroski and Benjamin Graham [src][FMP][/src]
+    warnings         company warnings according to Sean Seah book [src][Market Watch][/src]
+    dcf              advanced Excel customizable discounted cash flow [src][Stockanalysis][/src][/cmds]
 [src][Yahoo Finance][/src]
-    info          information scope of the company
-    mktcap        estimated market cap{is_foreign_start}
-    shrs          shareholders (insiders, institutions and mutual funds)
-    sust          sustainability values (environment, social and governance)
-    cal           calendar earnings and estimates of the company
-    divs          show historical dividends for company
-    splits        stock split and reverse split events since IPO
-    web           open web browser of the company
-    hq            open HQ location of the company{is_foreign_end}
+    info             information scope of the company
+    mktcap           estimated market cap{is_foreign_start}
+    shrs             shareholders (insiders, institutions and mutual funds)
+    sust             sustainability values (environment, social and governance)
+    cal              calendar earnings and estimates of the company
+    divs             show historical dividends for company
+    splits           stock split and reverse split events since IPO
+    web              open web browser of the company
+    hq               open HQ location of the company{is_foreign_end}
+[src][Alpha Vantage / Polygon][/src]
+    income           income statements of the company
+    balance          balance sheet of the company
 [src][Alpha Vantage][/src]
-    overview      overview of the company
-    key           company key metrics
-    income        income statements of the company
-    balance       balance sheet of the company
-    cash          cash flow of the company
-    earnings      earnings dates and reported EPS
-    fraud         key fraud ratios
-    dupont        detailed breakdown for return on equity[/cmds]
+    overview         overview of the company
+    key              company key metrics
+    cash             cash flow of the company
+    earnings         earnings dates and reported EPS
+    fraud            key fraud ratios
+    dupont           detailed breakdown for return on equity[/cmds]
 [info]Other Sources:[/info][menu]
->   fmp           profile,quote,enterprise,dcf,income,ratios,growth from FMP[/menu]
+>   fmp              profile,quote,enterprise,dcf,income,ratios,growth from FMP[/menu]
         """
         console.print(text=help_text, menu="Stocks - Fundamental Analysis")
 
@@ -526,7 +528,7 @@ Ticker: [/param] {self.ticker} [cmds]
             action="store",
             dest="limit",
             type=check_positive,
-            default=1,
+            default=5,
             help="Number of latest years/quarters.",
         )
         parser.add_argument(
@@ -537,16 +539,33 @@ Ticker: [/param] {self.ticker} [cmds]
             dest="b_quarter",
             help="Quarter fundamental data flag.",
         )
+        parser.add_argument(
+            "-s",
+            "--source",
+            help="Source to get fundamentals from",
+            default="av",
+            choices=["polygon", "av"],
+            dest="source",
+        )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            av_view.display_income_statement(
-                ticker=self.ticker,
-                limit=ns_parser.limit,
-                quarterly=ns_parser.b_quarter,
-                export=ns_parser.export,
-            )
+            if ns_parser.source == "av":
+                av_view.display_income_statement(
+                    ticker=self.ticker,
+                    limit=ns_parser.limit,
+                    quarterly=ns_parser.b_quarter,
+                    export=ns_parser.export,
+                )
+            elif ns_parser.source == "polygon":
+                polygon_view.display_fundamentals(
+                    ticker=self.ticker,
+                    financial="income",
+                    limit=ns_parser.limit,
+                    quarterly=ns_parser.b_quarter,
+                    export=ns_parser.export,
+                )
 
     @log_start_end(log=logger)
     def call_balance(self, other_args: List[str]):
@@ -578,7 +597,7 @@ Ticker: [/param] {self.ticker} [cmds]
             action="store",
             dest="limit",
             type=check_positive,
-            default=1,
+            default=5,
             help="Number of latest years/quarters.",
         )
         parser.add_argument(
@@ -589,16 +608,33 @@ Ticker: [/param] {self.ticker} [cmds]
             dest="b_quarter",
             help="Quarter fundamental data flag.",
         )
+        parser.add_argument(
+            "-s",
+            "--source",
+            help="Source to get fundamentals from",
+            default="av",
+            choices=["polygon", "av"],
+            dest="source",
+        )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            av_view.display_balance_sheet(
-                ticker=self.ticker,
-                limit=ns_parser.limit,
-                quarterly=ns_parser.b_quarter,
-                export=ns_parser.export,
-            )
+            if ns_parser.source == "av":
+                av_view.display_balance_sheet(
+                    ticker=self.ticker,
+                    limit=ns_parser.limit,
+                    quarterly=ns_parser.b_quarter,
+                    export=ns_parser.export,
+                )
+            elif ns_parser.source == "polygon":
+                polygon_view.display_fundamentals(
+                    ticker=self.ticker,
+                    financial="balance",
+                    limit=ns_parser.limit,
+                    quarterly=ns_parser.b_quarter,
+                    export=ns_parser.export,
+                )
 
     @log_start_end(log=logger)
     def call_cash(self, other_args: List[str]):

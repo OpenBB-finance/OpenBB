@@ -55,6 +55,7 @@ class BehaviouralAnalysisController(StockBaseController):
         "stalker",
         "infer",
         "sentiment",
+        "reddit_sent",
         "mentions",
         "regions",
         "queries",
@@ -90,41 +91,42 @@ class BehaviouralAnalysisController(StockBaseController):
         has_ticker_start = "" if self.ticker else "[unvl]"
         has_ticker_end = "" if self.ticker else "[/unvl]"
         help_text = f"""[cmds]
-    load           load a specific stock ticker for analysis
+    load             load a specific stock ticker for analysis
 
-[param]Ticker: [/param]{self.ticker.upper() or None}
+[param]Ticker: [/param]{self.ticker.upper() or ""}
 {has_ticker_start}
 [src][Finbrain][/src]
-    headlines     sentiment from 15+ major news headlines
+    headlines        sentiment from 15+ major news headlines
 [src][Finnhub][/src]
-    snews         stock price displayed over sentiment of news headlines{has_ticker_end}
+    snews            stock price displayed over sentiment of news headlines{has_ticker_end}
 [src][Reddit][/src]
-    wsb           show what WSB gang is up to in subreddit wallstreetbets
-    watchlist     show other users watchlist
-    popular       show popular tickers
-    spac_c        show other users spacs announcements from subreddit SPACs community
-    spac          show other users spacs announcements from other subs{has_ticker_start}
-    getdd         gets due diligence from another user's post{has_ticker_end}
+    wsb              show what WSB gang is up to in subreddit wallstreetbets
+    watchlist        show other users watchlist
+    popular          show popular tickers
+    spac_c           show other users spacs announcements from subreddit SPACs community
+    spac             show other users spacs announcements from other subs{has_ticker_start}
+    getdd            gets due diligence from another user's post
+    reddit_sent      searches reddit for ticker and finds reddit sentiment{has_ticker_end}
 [src][Stocktwits][/src]
-    trending      trending stocks
-    stalker       stalk stocktwits user's last messages{has_ticker_start}
-    bullbear      estimate quick sentiment from last 30 messages on board
-    messages      output up to the 30 last messages on the board
+    trending         trending stocks
+    stalker          stalk stocktwits user's last messages{has_ticker_start}
+    bullbear         estimate quick sentiment from last 30 messages on board
+    messages         output up to the 30 last messages on the board
 [src][Twitter][/src]
-    infer         infer about stock's sentiment from latest tweets
-    sentiment     in-depth sentiment prediction from tweets over time
+    infer            infer about stock's sentiment from latest tweets
+    sentiment        in-depth sentiment prediction from tweets over time
 [src][Google][/src]
-    mentions      interest over time based on stock's mentions
-    regions       regions that show highest interest in stock
-    interest      interest over time of sentences versus stock price
-    queries       top related queries with this stock
-    rise          top rising related queries with stock{has_ticker_end}
+    mentions         interest over time based on stock's mentions
+    regions          regions that show highest interest in stock
+    interest         interest over time of sentences versus stock price
+    queries          top related queries with this stock
+    rise             top rising related queries with stock{has_ticker_end}
 [src][SentimentInvestor][/src]
-    trend         most talked about tickers within the last hour{has_ticker_start}
-    hist          plot historical RHI and AHI data by hour{has_ticker_end}
+    trend            most talked about tickers within the last hour{has_ticker_start}
+    hist             plot historical RHI and AHI data by hour{has_ticker_end}
 [src][Jim Cramer][/src]
-    jcdr          Jim Cramer's daily recommendations{has_ticker_start}
-    jctr          Jim Cramer's recommendations by ticker{has_ticker_end}[/cmds]
+    jcdr             Jim Cramer's daily recommendations{has_ticker_start}
+    jctr             Jim Cramer's recommendations by ticker{has_ticker_end}[/cmds]
         """
         console.print(text=help_text, menu="Stocks - Behavioural Analysis")
 
@@ -165,7 +167,7 @@ class BehaviouralAnalysisController(StockBaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="snews",
-            description="""Display stock price and headlines sentiment using VADER model over time. [Source: Finnhub]""",
+            description="Display stock price and headlines sentiment using VADER model over time. [Source: Finnhub]",
         )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
@@ -363,6 +365,104 @@ class BehaviouralAnalysisController(StockBaseController):
                     limit=ns_parser.limit,
                     n_days=ns_parser.days,
                     show_all_flairs=ns_parser.all,
+                )
+            else:
+                console.print("No ticker loaded. Please load using 'load <ticker>'\n")
+
+    @log_start_end(log=logger)
+    def call_reddit_sent(self, other_args: List[str]):
+        """Process reddit_sent command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="reddit_sent",
+            description="""
+                Determine general Reddit sentiment about a ticker. [Source: Reddit]
+            """,
+        )
+        parser.add_argument(
+            "-s",
+            "--sort",
+            action="store",
+            dest="sort",
+            choices=["relevance", "hot", "top", "new", "comments"],
+            default="relevance",
+            help="search sorting type",
+        )
+        parser.add_argument(
+            "-c",
+            "--company",
+            action="store",
+            dest="company",
+            default=None,
+            help="explicit name of company to search for, will override ticker symbol",
+        )
+        parser.add_argument(
+            "--subreddits",
+            action="store",
+            dest="subreddits",
+            default="all",
+            help="comma-separated list of subreddits to search",
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            action="store",
+            dest="limit",
+            default=10,
+            type=check_positive,
+            help="how many posts to gather from each subreddit",
+        )
+        parser.add_argument(
+            "-t",
+            "--time",
+            action="store",
+            dest="time",
+            default="week",
+            choices=["hour", "day", "week", "month", "year", "all"],
+            help="time period to get posts from -- all, year, month, week, or day; defaults to week",
+        )
+        parser.add_argument(
+            "-f",
+            "--full_search",
+            action="store_true",
+            dest="full_search",
+            default=False,
+            help="enable comprehensive search",
+        )
+        parser.add_argument(
+            "-g",
+            "--graphic",
+            action="store_true",
+            dest="graphic",
+            default=True,
+            help="display graphic",
+        )
+        parser.add_argument(
+            "-d",
+            "--display",
+            action="store_true",
+            dest="display",
+            default=False,
+            help="Print table of sentiment values",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if ns_parser:
+            ticker = ns_parser.company if ns_parser.company else self.ticker
+            if self.ticker:
+                reddit_view.display_reddit_sent(
+                    ticker=ticker,
+                    sort=ns_parser.sort,
+                    limit=ns_parser.limit,
+                    graphic=ns_parser.graphic,
+                    time_frame=ns_parser.time,
+                    full_search=ns_parser.full_search,
+                    subreddits=ns_parser.subreddits,
+                    export=ns_parser.export,
+                    display=ns_parser.display,
                 )
             else:
                 console.print("No ticker loaded. Please load using 'load <ticker>'\n")
@@ -717,6 +817,13 @@ class BehaviouralAnalysisController(StockBaseController):
             default=6,
             help="number of days in the past to extract tweets.",
         )
+        parser.add_argument(
+            "-c",
+            "--compare",
+            action="store_true",
+            dest="compare",
+            help="show corresponding change in stock price",
+        )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
@@ -728,6 +835,7 @@ class BehaviouralAnalysisController(StockBaseController):
                     ticker=self.ticker,
                     n_tweets=ns_parser.limit,
                     n_days_past=ns_parser.n_days_past,
+                    compare=ns_parser.compare,
                     export=ns_parser.export,
                 )
             else:
@@ -748,12 +856,12 @@ class BehaviouralAnalysisController(StockBaseController):
                         [Source:  https://finbrain.tech]""",
         )
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, raw=True
         )
         if ns_parser:
             if self.ticker:
                 finbrain_view.display_sentiment_analysis(
-                    ticker=self.ticker, export=ns_parser.export
+                    ticker=self.ticker, raw=ns_parser.raw, export=ns_parser.export
                 )
             else:
                 console.print("No ticker loaded. Please load using 'load <ticker>'\n")

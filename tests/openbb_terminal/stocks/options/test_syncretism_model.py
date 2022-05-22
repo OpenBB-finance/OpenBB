@@ -6,7 +6,7 @@ import pytest
 import requests
 
 # IMPORTATION INTERNAL
-from openbb_terminal.stocks.options import syncretism_model
+from openbb_terminal.stocks.options.screen import syncretism_model
 
 
 @pytest.fixture(scope="module")
@@ -56,7 +56,9 @@ def test_get_historical_greeks_invalid_status(mocker):
 
 @pytest.mark.vcr
 def test_get_screener_output(recorder):
-    presets_path = os.path.join(os.path.dirname(syncretism_model.__file__), "presets/")
+    presets_path = os.path.join(
+        os.path.dirname(syncretism_model.__file__), "..", "presets/"
+    )
     result_tuple = syncretism_model.get_screener_output(
         preset="high_IV",
         presets_path=presets_path,
@@ -70,7 +72,9 @@ def test_get_screener_output_invalid_status(mocker):
     mock_response.status_code = 400
     mocker.patch(target="requests.get", new=mocker.Mock(return_value=mock_response))
 
-    presets_path = os.path.join(os.path.dirname(syncretism_model.__file__), "presets/")
+    presets_path = os.path.join(
+        os.path.dirname(syncretism_model.__file__), "..", "presets/"
+    )
     result_tuple = syncretism_model.get_screener_output(
         preset="high_IV",
         presets_path=presets_path,

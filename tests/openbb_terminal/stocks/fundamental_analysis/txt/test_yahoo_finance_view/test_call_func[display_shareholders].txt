@@ -1,31 +1,28 @@
 
                                                     
-0   0.20%   Percentage of Shares Held by All Insider
-1  75.81%  Percentage of Shares Held by Institutions
-2  75.96%   Percentage of Float Held by Institutions
-3    2402      Number of Institutions Holding Shares
-
+0   0.15%   Percentage of Shares Held by All Insider
+1  76.29%  Percentage of Shares Held by Institutions
+2  76.40%   Percentage of Float Held by Institutions
+3    2425      Number of Institutions Holding Shares
                               Holder     Shares Date Reported   Stake     Value
-0         Vanguard Group, Inc. (The)  126.627 M    2021-12-30  8.17 %  12.030 B
-1                     Blackrock Inc.   94.109 M    2021-12-30  6.07 %   8.940 B
-2            Capital World Investors   80.333 M    2021-12-30  5.18 %   7.632 B
-3    Capital International Investors   74.223 M    2021-12-30  4.79 %   7.051 B
-4  Capital Research Global Investors   57.454 M    2021-12-30  3.71 %   5.458 B
-5           State Street Corporation   56.505 M    2021-12-30  3.65 %   5.368 B
-6                     Morgan Stanley   46.748 M    2021-12-30  3.02 %   4.441 B
-7      Geode Capital Management, LLC   27.333 M    2021-12-30  1.76 %   2.597 B
-8   Wellington Management Group, LLP   24.537 M    2021-12-30  1.58 %   2.331 B
-9          JP Morgan Chase & Company   23.415 M    2021-12-30  1.51 %   2.224 B
-
+0         Vanguard Group, Inc. (The)  128.605 M    2022-03-30  8.30 %  12.081 B
+1                     Blackrock Inc.   96.512 M    2022-03-30  6.23 %   9.066 B
+2            Capital World Investors   80.338 M    2022-03-30  5.18 %   7.547 B
+3    Capital International Investors   75.781 M    2022-03-30  4.89 %   7.119 B
+4  Capital Research Global Investors   65.872 M    2022-03-30  4.25 %   6.188 B
+5           State Street Corporation   58.934 M    2022-03-30  3.80 %   5.536 B
+6                     Morgan Stanley   49.675 M    2022-03-30  3.20 %   4.666 B
+7                   GQG Partners LLC   29.967 M    2022-03-30  1.93 %   2.815 B
+8      Geode Capital Management, LLC   28.199 M    2022-03-30  1.82 %   2.649 B
+9          JP Morgan Chase & Company   25.222 M    2022-03-30  1.63 %   2.369 B
                                    Holder    Shares Date Reported   Stake    Value
 0  Vanguard Total Stock Market Index Fund  44.242 M    2021-12-30  2.85 %  4.203 B
 1                  American Balanced Fund  39.832 M    2021-12-30  2.57 %  3.784 B
 2                 Vanguard 500 Index Fund  32.970 M    2021-12-30  2.13 %  3.132 B
-3              Income Fund of America Inc  32.519 M    2021-10-30  2.10 %  3.074 B
+3              Income Fund of America Inc  31.599 M    2022-01-30  2.04 %  3.250 B
 4           Investment Company Of America  28.959 M    2021-12-30  1.87 %  2.751 B
-5            Capital Income Builder, Inc.  28.081 M    2021-10-30  1.81 %  2.655 B
+5            Capital Income Builder, Inc.  26.562 M    2022-01-30  1.71 %  2.732 B
 6               Fundamental Investors Inc  25.695 M    2021-12-30  1.66 %  2.441 B
-7                  SPDR S&P 500 ETF Trust  17.537 M    2021-12-30  1.13 %  1.666 B
-8    Capital World Growth and Income Fund  15.946 M    2021-11-29  1.03 %  1.370 B
-9                 Fidelity 500 Index Fund  15.208 M    2021-11-29  0.98 %  1.307 B
-
+7                  SPDR S&P 500 ETF Trust  16.660 M    2022-02-27  1.07 %  1.684 B
+8                 Fidelity 500 Index Fund  15.943 M    2022-02-27  1.03 %  1.611 B
+9    Capital World Growth and Income Fund  14.947 M    2022-02-27  0.96 %  1.511 B

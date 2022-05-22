@@ -62,7 +62,7 @@ def display_sector(fund: str, min_pct_to_display: float = 5, export: str = ""):
         headers=["Weight (%)"],
         title=f"[bold]{fund.upper()} Sector Weightings[/bold] ",
     )
-    console.print("\n")
+
     main_holdings = df_weight[df_weight.Weight > min_pct_to_display].to_dict()[
         df_weight.columns[0]
     ]
@@ -123,4 +123,3 @@ def display_equity(fund: str):
         headers=["Holding"],
         title=f"[bold]{fund.upper()} Equity Holdings[/bold] ",
     )
-    console.print("\n")

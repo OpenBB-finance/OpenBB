@@ -127,7 +127,7 @@ go up.
 Recommended if you adopted a strategy of buying high and selling low.
 
 We are interested in your view on what sort of [features](https://github.com/OpenBB-finance/OpenBBTerminal/issues)
-would make you buy even higher and selling even lower.
+would make you buy even higher and sell even lower.
 
 Also, if somehow you're sitting in several mils due to this terminal, don't forget to report a
 [bug](https://github.com/OpenBB-finance/OpenBBTerminal/issues) so that the team can fix, and keep the old ways.
@@ -136,7 +136,7 @@ Also, if somehow you're sitting in several mils due to this terminal, don't forg
 
 Welcome to the club, and feel free to support the developers behind this amazing open-source project.
 
-If you're interested in contributing fork us! Grab an issue or enhancement and put in a PR request with the fix.
+If you're interested in contributing, fork us! Grab an issue or enhancement and put in a PR request with the fix.
 
 ## License
 
@@ -149,7 +149,7 @@ Distributed under the MIT License. See
 clients and I do not provide personalized investment advice for fees or commissions." DFV
 
 Trading in financial instruments involves high risks including the risk of losing some, or all, of your investment
-amount, and may not be suitable for all investors. Before deciding to trade in financial instrument you should be fully
+amount, and may not be suitable for all investors. Before deciding to trade in a financial instrument you should be fully
 informed of the risks and costs associated with trading the financial markets, carefully consider your investment
 objectives, level of experience, and risk appetite, and seek professional advice where needed. The data contained in GST
 is not necessarily accurate. GST and any provider of the data contained in this website will not accept liability for

@@ -38,15 +38,18 @@ class DiscoveryController(BaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
+
+            choices["support"] = self.SUPPORT_CHOICES
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
         """Print help"""
         help_text = """
 [src][Wall Street Journal][/src][cmds]
-    gainers     top gainers
-    decliners   top decliners
-    active      most active[/cmds]
+    gainers          top gainers
+    decliners        top decliners
+    active           most active[/cmds]
 """
         console.print(text=help_text, menu="ETF - Discovery")
 

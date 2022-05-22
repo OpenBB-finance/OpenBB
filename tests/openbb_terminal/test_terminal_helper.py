@@ -40,7 +40,7 @@ class TestMainHelper(unittest.TestCase):
     def test_about_us(self):
         terminal_helper.about_us()
 
-    @check_print(assert_in="Welcome to OpenBB Terminal 1.0")
+    @check_print(assert_in="Welcome to OpenBB Terminal")
     def test_welcome_message(self):
         terminal_helper.welcome_message()
 

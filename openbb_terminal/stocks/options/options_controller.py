@@ -29,22 +29,22 @@ from openbb_terminal.stocks.options import (
     calculator_view,
     chartexchange_view,
     fdscanner_view,
-    payoff_controller,
-    pricing_controller,
-    screener_controller,
-    syncretism_view,
     tradier_model,
     tradier_view,
     yfinance_model,
     yfinance_view,
 )
 
+from openbb_terminal.stocks.options.pricing import pricing_controller
+from openbb_terminal.stocks.options.hedge import hedge_controller
+from openbb_terminal.stocks.options.screen import screener_controller, syncretism_view
+
+
 # pylint: disable=R1710,C0302,R0916
 
 # TODO: HELP WANTED! This controller requires some MVC style refactoring
 #       - At the moment there's too much logic in the controller to implement an
 #         API wrapper. Please refactor functions like 'call_exp'
-#       - The separate controllers and related models/views should be moved to subfolders
 
 
 logger = logging.getLogger(__name__)
@@ -75,9 +75,9 @@ class OptionsController(BaseController):
         "greeks",
     ]
     CHOICES_MENUS = [
-        "payoff",
         "pricing",
         "screen",
+        "hedge",
     ]
 
     PRESET_PATH = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
@@ -173,35 +173,36 @@ class OptionsController(BaseController):
 
     def print_help(self):
         """Print help."""
-        has_ticker_start = "" if self.ticker and self.selected_date else "[dim]"
-        has_ticker_end = "" if self.ticker and self.selected_date else "[/dim]"
+        has_ticker_start = "[cmds]" if self.ticker and self.selected_date else "[dim]"
+        has_ticker_end = "[/cmds]" if self.ticker and self.selected_date else "[/dim]"
         help_text = f"""[cmds]
-    unu           show unusual options activity [src][Fdscanner.com][/src]
-    calc          basic call/put PnL calculator
-
-    load          load new ticker
-    exp           see and set expiration dates[/cmds]
-[param]
-Ticker: [/param]{self.ticker or None}[param]
-Expiry: [/param]{self.selected_date or None}
+    unu              show unusual options activity [src][Fdscanner.com][/src]
+    calc             basic call/put PnL calculator[/cmds]
 [menu]
-    pcr           display put call ratio for ticker [src][AlphaQuery.com][/src]
-    info          display option information (volatility, IV rank etc) [src][Barchart.com][/src]
-    chains        display option chains with greeks [src][Tradier][/src]
-    oi            plot open interest [src][Tradier/YFinance][/src]
-    vol           plot volume [src][Tradier/YFinance][/src]
-    voi           plot volume and open interest [src][Tradier/YFinance][/src]
-    hist          plot option history [src][Tradier][/src]
-    vsurf         show 3D volatility surface [src][Yfinance][/src]
-    grhist        plot option greek history [src][Syncretism.io][/src]
-    plot          plot variables provided by the user [src][Yfinance][/src]
-    parity        shows whether options are above or below expected price [src][Yfinance][/src]
-    binom         shows the value of an option using binomial options pricing [src][Yfinance][/src]
-    greeks        shows the greeks for a given option [src][Yfinance][/src]
+>   screen           screens tickers based on preset [src][Syncretism.io][/src]
+[/menu][cmds]
+    load             load new ticker[/cmds]{('[dim]', '[cmds]')[bool(self.ticker)]}
+    exp              see and set expiration dates{('[/dim]', '[/cmds]')[bool(self.ticker)]}
+[param]
+Ticker: [/param]{self.ticker or ""}[param]
+Expiry: [/param]{self.selected_date or ""}
 {has_ticker_start}
->   screen        screens tickers based on preset [src][Syncretism.io][/src]
->   payoff        shows payoff diagram for a selection of options [src][Yfinance][/src]
->   pricing       shows options pricing and risk neutral valuation [src][Yfinance][/src]
+    pcr              display put call ratio for ticker [src][AlphaQuery.com][/src]
+    info             display option information (volatility, IV rank etc) [src][Barchart.com][/src]
+    chains           display option chains with greeks [src][Tradier][/src]
+    oi               plot open interest [src][Tradier/YFinance][/src]
+    vol              plot volume [src][Tradier/YFinance][/src]
+    voi              plot volume and open interest [src][Tradier/YFinance][/src]
+    hist             plot option history [src][Tradier][/src]
+    vsurf            show 3D volatility surface [src][Yfinance][/src]
+    grhist           plot option greek history [src][Syncretism.io][/src]
+    plot             plot variables provided by the user [src][Yfinance][/src]
+    parity           shows whether options are above or below expected price [src][Yfinance][/src]
+    binom            shows the value of an option using binomial options pricing [src][Yfinance][/src]
+    greeks           shows the greeks for a given option [src][Yfinance][/src]
+
+>   pricing          shows options pricing and risk neutral valuation [src][Yfinance][/src]
+>   hedge            shows portfolio weights in order to neutralise delta [src][Yfinance][/src]
 {has_ticker_end}"""
         console.print(text=help_text, menu="Stocks - Options")
 
@@ -594,9 +595,7 @@ Expiry: [/param]{self.selected_date or None}
             if self.ticker:
                 # Print possible expiry dates
                 if ns_parser.index == -1 and not ns_parser.date:
-                    console.print("\nAvailable expiry dates:")
-                    for i, d in enumerate(self.expiry_dates):
-                        console.print(f"   {(2 - len(str(i))) * ' '}{i}.  {d}")
+                    tradier_view.display_expiry_dates(self.expiry_dates)
                     console.print("")
                 elif ns_parser.date:
                     if ns_parser.date in self.expiry_dates:
@@ -770,8 +769,8 @@ Expiry: [/param]{self.selected_date or None}
             dest="to_display",
             default=tradier_model.default_columns,
             type=tradier_view.check_valid_option_chains_headers,
-            help="columns to look at.  Columns can be:  {bid, ask, strike, bidsize, asksize, volume, open_interest, "
-            "delta, gamma, theta, vega, ask_iv, bid_iv, mid_iv} ",
+            help="Columns to look at.  Columns can be: bid, ask, strike, bidsize, asksize, volume, open_interest, "
+            "delta, gamma, theta, vega, ask_iv, bid_iv, mid_iv. E.g. 'bid,ask,strike' ",
         )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -1361,23 +1360,6 @@ Expiry: [/param]{self.selected_date or None}
                 console.print("No ticker loaded. First use `load <ticker>`\n")
 
     @log_start_end(log=logger)
-    def call_payoff(self, _):
-        """Process payoff command"""
-        if self.ticker:
-            if self.selected_date:
-                self.queue = self.load_class(
-                    payoff_controller.PayoffController,
-                    self.ticker,
-                    self.selected_date,
-                    self.queue,
-                )
-            else:
-                console.print("No expiry loaded. First use `exp {expiry date}`\n")
-
-        else:
-            console.print("No ticker loaded. First use `load <ticker>`\n")
-
-    @log_start_end(log=logger)
     def call_pricing(self, _):
         """Process pricing command"""
         if self.ticker:
@@ -1387,6 +1369,23 @@ Expiry: [/param]{self.selected_date or None}
                     self.ticker,
                     self.selected_date,
                     self.prices,
+                    self.queue,
+                )
+            else:
+                console.print("No expiry loaded. First use `exp {expiry date}`\n")
+
+        else:
+            console.print("No ticker loaded. First use `load <ticker>`\n")
+
+    @log_start_end(log=logger)
+    def call_hedge(self, _):
+        """Process hedge command"""
+        if self.ticker:
+            if self.selected_date:
+                self.queue = self.load_class(
+                    hedge_controller.HedgeController,
+                    self.ticker,
+                    self.selected_date,
                     self.queue,
                 )
             else:

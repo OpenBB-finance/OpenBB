@@ -55,7 +55,6 @@ def display_cmc_top_coins(
     print_rich_table(
         df.iloc[:top, :], headers=list(df.columns), show_index=False, title="Top Coins"
     )
-    console.print("")
 
     export_data(
         export,

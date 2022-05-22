@@ -78,6 +78,9 @@ class TechnicalAnalysisController(StockBaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
+
+            choices["support"] = self.SUPPORT_CHOICES
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
@@ -88,24 +91,24 @@ class TechnicalAnalysisController(StockBaseController):
 [param]Source: [/param]{FOREX_SOURCES[self.source]}
 
 [info]Overlap:[/info]
-    ema         exponential moving average
-    sma         simple moving average
-    zlma        zero lag moving average
+    ema              exponential moving average
+    sma              simple moving average
+    zlma             zero lag moving average
 [info]Momentum:[/info]
-    cci         commodity channel index
-    macd        moving average convergence/divergence
-    rsi         relative strength index
-    stoch       stochastic oscillator
-    fisher      fisher transform
-    cg          centre of gravity
+    cci              commodity channel index
+    macd             moving average convergence/divergence
+    rsi              relative strength index
+    stoch            stochastic oscillator
+    fisher           fisher transform
+    cg               centre of gravity
 [info]Trend:[/info]
-    adx         average directional movement index
-    aroon       aroon indicator
+    adx              average directional movement index
+    aroon            aroon indicator
 [info]Volatility:[/info]
-    bbands      bollinger bands
-    donchian    donchian channels
+    bbands           bollinger bands
+    donchian         donchian channels
 [info]Custom:[/info]
-    fib         fibonacci retracement[/cmds]
+    fib              fibonacci retracement[/cmds]
 """
         console.print(text=help_text, menu="Forex - Technical Analysis")
 

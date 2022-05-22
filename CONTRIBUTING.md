@@ -285,7 +285,6 @@ def display_most_shorted(num_stocks: int, export: str):
             show_index=False,
             title="Most shorted stocks"
         )
-    console.print("")
 
     export_data(
         export,

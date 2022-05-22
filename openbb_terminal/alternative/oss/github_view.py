@@ -14,12 +14,12 @@ from openbb_terminal.helper_funcs import (
     export_data,
     plot_autoscale,
     print_rich_table,
+    is_valid_axes_count,
 )
 from openbb_terminal.alternative.oss import github_model
 from openbb_terminal.cryptocurrency.dataframe_helpers import (
     lambda_long_number_format_with_type_check,
 )
-from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -43,12 +43,10 @@ def display_star_history(
     if not df.empty:
         if external_axes is None:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        else:
-            if len(external_axes) != 1:
-                logger.error("Expected list of one axis item.")
-                console.print("[red]Expected list of one axis item./n[/red]")
-                return
+        elif is_valid_axes_count(external_axes, 1):
             (ax,) = external_axes
+        else:
+            return
         ax.plot(df["Date"], df["Stars"])
 
         ax.set_xlabel("Date")
@@ -94,12 +92,10 @@ def display_top_repos(
             df = df.sort_values(by="stargazers_count")
         if external_axes is None:
             _, ax = plt.subplots(figsize=(14, 8), dpi=PLOT_DPI)
+        elif is_valid_axes_count(external_axes, 1):
+            (ax,) = external_axes
         else:
-            if len(external_axes) != 1:
-                logger.error("Expected list of one axis item.")
-                console.print("[red]Expected list of one axis item./n[/red]")
-                return
-            (ax, _) = external_axes
+            return
         for _, row in df.iterrows():
             ax.barh(
                 y=row["full_name"],
@@ -143,7 +139,6 @@ def display_repo_summary(repo: str, export: str = "") -> None:
         print_rich_table(
             df, headers=list(df.columns), show_index=False, title="Repo summary"
         )
-        console.print("")
 
         export_data(
             export,

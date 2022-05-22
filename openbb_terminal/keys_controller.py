@@ -13,9 +13,9 @@ import praw
 import pyEX
 import quandl
 import requests
+from prawcore.exceptions import ResponseException
 from alpha_vantage.timeseries import TimeSeries
 from coinmarketcapapi import CoinMarketCapAPI, CoinMarketCapAPIError
-from prawcore.exceptions import ResponseException
 from prompt_toolkit.completion import NestedCompleter
 from pyEX.common.exception import PyEXception
 
@@ -30,7 +30,7 @@ from openbb_terminal.helper_funcs import parse_known_args_and_warn
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console
-
+from openbb_terminal.terminal_helper import suppress_stdout
 
 logger = logging.getLogger(__name__)
 
@@ -58,13 +58,14 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         "bitquery",
         "si",
         "cb",
-        "wa",
+        "walert",
         "glassnode",
         "coinglass",
         "cpanic",
         "ethplorer",
         "smartstake",
         "github",
+        "mesari",
     ]
     PATH = "/keys/"
     key_dict: Dict = {}
@@ -81,6 +82,9 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
 
             if session and obbff.USE_PROMPT_TOOLKIT:
                 choices: dict = {c: {} for c in self.controller_choices}
+
+                choices["support"] = self.SUPPORT_CHOICES
+
                 self.completer = NestedCompleter.from_nested_dict(choices)
 
     def check_github_key(self, show_output: bool = False) -> None:
@@ -343,15 +347,16 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         else:
 
             try:
-                praw_api = praw.Reddit(
-                    client_id=cfg.API_REDDIT_CLIENT_ID,
-                    client_secret=cfg.API_REDDIT_CLIENT_SECRET,
-                    username=cfg.API_REDDIT_USERNAME,
-                    user_agent=cfg.API_REDDIT_USER_AGENT,
-                    password=cfg.API_REDDIT_PASSWORD,
-                )
+                with suppress_stdout():
+                    praw_api = praw.Reddit(
+                        client_id=cfg.API_REDDIT_CLIENT_ID,
+                        client_secret=cfg.API_REDDIT_CLIENT_SECRET,
+                        username=cfg.API_REDDIT_USERNAME,
+                        user_agent=cfg.API_REDDIT_USER_AGENT,
+                        password=cfg.API_REDDIT_PASSWORD,
+                    )
 
-                praw_api.user.me()
+                    praw_api.user.me()
                 logger.info("Reddit key defined, test passed")
                 self.key_dict["REDDIT"] = "defined, test passed"
             except (Exception, ResponseException):
@@ -537,8 +542,8 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
 
     def check_walert_key(self, show_output: bool = False) -> None:
         """Check Walert key"""
-        self.cfg_dict["WHALE_ALERT"] = "wa"
-        if "REPLACE_ME" == cfg.API_WHALE_ALERT_KEY:
+        self.cfg_dict["WHALE_ALERT"] = "walert"
+        if cfg.API_WHALE_ALERT_KEY == "REPLACE_ME":
             logger.info("Walert key not defined")
             self.key_dict["WHALE_ALERT"] = "not defined"
         else:
@@ -546,14 +551,14 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
                 "https://api.whale-alert.io/v1/transactions?api_key="
                 + cfg.API_WHALE_ALERT_KEY
             )
-            response = requests.get(url)
-
-            if not 200 <= response.status_code < 300:
-                logger.warning("Walert key defined, test failed")
-                self.key_dict["WHALE_ALERT"] = "defined, test unsuccessful"
             try:
-                logger.info("Walert key defined, test passed")
-                self.key_dict["WHALE_ALERT"] = "defined, test passed"
+                response = requests.get(url, timeout=2)
+                if not 200 <= response.status_code < 300:
+                    logger.warning("Walert key defined, test failed")
+                    self.key_dict["WHALE_ALERT"] = "defined, test unsuccessful"
+                else:
+                    logger.info("Walert key defined, test passed")
+                    self.key_dict["WHALE_ALERT"] = "defined, test passed"
             except Exception:
                 logger.exception("Walert key defined, test failed")
                 self.key_dict["WHALE_ALERT"] = "defined, test unsuccessful"
@@ -564,7 +569,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
     def check_glassnode_key(self, show_output: bool = False) -> None:
         """Check glassnode key"""
         self.cfg_dict["GLASSNODE"] = "glassnode"
-        if "REPLACE_ME" == cfg.API_GLASSNODE_KEY:
+        if cfg.API_GLASSNODE_KEY == "REPLACE_ME":
             logger.info("Glassnode key not defined")
             self.key_dict["GLASSNODE"] = "not defined"
         else:
@@ -592,7 +597,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
     def check_coinglass_key(self, show_output: bool = False) -> None:
         """Check coinglass key"""
         self.cfg_dict["COINGLASS"] = "coinglass"
-        if "REPLACE_ME" == cfg.API_COINGLASS_KEY:
+        if cfg.API_COINGLASS_KEY == "REPLACE_ME":
             logger.info("Coinglass key not defined")
             self.key_dict["COINGLASS"] = "not defined"
         else:
@@ -615,7 +620,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
     def check_cpanic_key(self, show_output: bool = False) -> None:
         """Check cpanic key"""
         self.cfg_dict["CRYPTO_PANIC"] = "cpanic"
-        if "REPLACE_ME" == cfg.API_CRYPTO_PANIC_KEY:
+        if cfg.API_CRYPTO_PANIC_KEY == "REPLACE_ME":
             logger.info("cpanic key not defined")
             self.key_dict["CRYPTO_PANIC"] = "not defined"
         else:
@@ -638,7 +643,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
     def check_ethplorer_key(self, show_output: bool = False) -> None:
         """Check ethplorer key"""
         self.cfg_dict["ETHPLORER"] = "ethplorer"
-        if "REPLACE_ME" == cfg.API_ETHPLORER_KEY:
+        if cfg.API_ETHPLORER_KEY == "REPLACE_ME":
             logger.info("ethplorer key not defined")
             self.key_dict["ETHPLORER"] = "not defined"
         else:
@@ -689,6 +694,31 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         if show_output:
             console.print(self.key_dict["SMARTSTAKE"] + "\n")
 
+    def check_messari_key(self, show_output: bool = False) -> None:
+        """Check Messari key"""
+        self.cfg_dict["MESSARI"] = "messari"
+        if (
+            cfg.API_MESSARI_KEY == "REPLACE_ME"  # pragma: allowlist secret
+        ):  # pragma: allowlist secret
+            logger.info("Messari key not defined")
+            self.key_dict["MESSARI"] = "not defined"
+        else:
+
+            url = "https://data.messari.io/api/v2/assets/bitcoin/profile"
+            headers = {"x-messari-api-key": cfg.API_MESSARI_KEY}
+            params = {"fields": "profile/general/overview/official_links"}
+            r = requests.get(url, headers=headers, params=params)
+
+            if r.status_code == 200:
+                logger.info("FMessari key defined, test passed")
+                self.key_dict["MESSARI"] = "defined, test passed"
+            else:
+                logger.warning("Messari key defined, test failed")
+                self.key_dict["MESSARI"] = "defined, test failed"
+
+        if show_output:
+            console.print(self.key_dict["MESSARI"] + "\n")
+
     def check_keys_status(self) -> None:
         """Check keys status"""
         self.check_av_key()
@@ -717,6 +747,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         self.check_ethplorer_key()
         self.check_smartstake_key()
         self.check_github_key()
+        self.check_messari_key()
 
     def print_help(self):
         """Print help"""
@@ -1077,6 +1108,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="client_id",
             help="Client ID",
+            required="-h" not in other_args,
         )
         parser.add_argument(
             "-s",
@@ -1084,6 +1116,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="client_secret",
             help="Client Secret",
+            required="-h" not in other_args,
         )
         parser.add_argument(
             "-u",
@@ -1091,6 +1124,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="username",
             help="Username",
+            required="-h" not in other_args,
         )
         parser.add_argument(
             "-p",
@@ -1098,6 +1132,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="password",
             help="Password",
+            required="-h" not in other_args,
         )
         parser.add_argument(
             "-a",
@@ -1105,6 +1140,8 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="user_agent",
             help="User agent",
+            required="-h" not in other_args,
+            nargs="+",
         )
         if not other_args:
             console.print("For your API Key, visit: https://www.reddit.com\n")
@@ -1137,11 +1174,14 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             )
             cfg.API_REDDIT_USERNAME = ns_parser.username
 
-            os.environ["OPENBB_API_REDDIT_USER_AGENT"] = ns_parser.user_agent
-            dotenv.set_key(
-                self.env_file, "OPENBB_API_REDDIT_USER_AGENT", ns_parser.user_agent
-            )
-            cfg.API_REDDIT_USER_AGENT = ns_parser.user_agent
+            slash_components = "".join([f"/{val}" for val in self.queue])
+            useragent = " ".join(ns_parser.user_agent) + " " + slash_components
+            useragent = useragent.replace('"', "")
+            self.queue = []
+
+            os.environ["OPENBB_API_REDDIT_USER_AGENT"] = useragent
+            dotenv.set_key(self.env_file, "OPENBB_API_REDDIT_USER_AGENT", useragent)
+            cfg.API_REDDIT_USER_AGENT = useragent
 
             self.check_reddit_key(show_output=True)
 
@@ -1160,6 +1200,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="key",
             help="Key",
+            required="-h" not in other_args,
         )
         parser.add_argument(
             "-s",
@@ -1167,6 +1208,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="secret_key",
             help="Secret key",
+            required="-h" not in other_args,
         )
         parser.add_argument(
             "-t",
@@ -1174,6 +1216,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="bearer_token",
             help="Bearer token",
+            required="-h" not in other_args,
         )
         if not other_args:
             console.print("For your API Key, visit: https://developer.twitter.com\n")
@@ -1681,3 +1724,32 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             cfg.API_SMARTSTAKE_KEY = ns_parser.key
 
             self.check_smartstake_key(show_output=True)
+
+    @log_start_end(log=logger)
+    def call_messari(self, other_args: List[str]):
+        """Process messari command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="messari",
+            description="Set Messari API key.",
+        )
+        parser.add_argument(
+            "-k",
+            "--key",
+            type=str,
+            dest="key",
+            help="key",
+        )
+        if not other_args:
+            console.print("For your API Key, visit: https://messari.io/api/docs\n")
+            return
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-k")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            os.environ["OPENBB_API_MESSARI_KEY"] = ns_parser.key
+            dotenv.set_key(self.env_file, "OPENBB_API_MESSARI_KEY", ns_parser.key)
+            cfg.API_MESSARI_KEY = ns_parser.key
+            self.check_messari_key(show_output=True)

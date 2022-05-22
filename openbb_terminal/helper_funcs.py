@@ -4,13 +4,18 @@ __docformat__ = "numpy"
 import argparse
 import logging
 from pathlib import Path
-from typing import List, Tuple, Union
-from datetime import datetime, timedelta
+from typing import List, Tuple, Union, Optional
+from datetime import datetime, timedelta, date as d
+import types
+from collections.abc import Iterable
 import os
 import random
 import re
 import sys
 from difflib import SequenceMatcher
+import webbrowser
+import urllib.parse
+
 import pytz
 import pandas as pd
 from rich.table import Table
@@ -24,6 +29,7 @@ from pandas.plotting import register_matplotlib_converters
 import pandas.io.formats.format
 import requests
 from screeninfo import get_monitors
+import yfinance as yf
 
 from openbb_terminal.rich_config import console
 from openbb_terminal import feature_flags as obbff
@@ -189,11 +195,15 @@ def print_rich_table(
         for idx, values in zip(df.index.tolist(), df.values.tolist()):
             row = [str(idx)] if show_index else []
             row += [
-                str(x) if not isinstance(x, float) else f"{x:{floatfmt[idx]}}"
+                str(x)
+                if not isinstance(x, float)
+                else (f"{x:{floatfmt[idx]}}" if abs(x) >= 0.001 else f"{x:.2e}")
                 for idx, x in enumerate(values)
             ]
             table.add_row(*row)
+        console.print()
         console.print(table)
+        console.print()
     else:
         console.print(df.to_string(col_space=0))
 
@@ -1313,49 +1323,6 @@ def get_rf() -> float:
         return 0.02
 
 
-class LineAnnotateDrawer:
-    """Line drawing class."""
-
-    def __init__(self, ax: matplotlib.axes = None):
-        self.ax = ax
-
-    def draw_lines_and_annotate(self):
-        # ymin, _ = self.ax.get_ylim()
-        # xmin, _ = self.ax.get_xlim()
-        # self.ax.plot(
-        #     [xmin, xmin],
-        #     [ymin, ymin],
-        #     lw=0,
-        #     color="white",
-        #     label="X - leave interactive mode\nClick twice for annotation",
-        # )
-        # self.ax.legend(handlelength=0, handletextpad=0, fancybox=True, loc=2)
-        # self.ax.figure.canvas.draw()
-        """Draw lines."""
-        console.print(
-            "Click twice for annotation.\nClose window to keep using terminal.\n"
-        )
-
-        while True:
-            xy = plt.ginput(2)
-            # Check whether the user has closed the window or not
-            if not plt.get_fignums():
-                console.print("")
-                return
-
-            if len(xy) == 2:
-                x = [p[0] for p in xy]
-                y = [p[1] for p in xy]
-
-                if (x[0] == x[1]) and (y[0] == y[1]):
-                    txt = input("Annotation: ")
-                    self.ax.annotate(txt, (x[0], y[1]), ha="center", va="center")
-                else:
-                    self.ax.plot(x, y)
-
-                self.ax.figure.canvas.draw()
-
-
 def system_clear():
     """Clear screen"""
     os.system("cls||clear")  # nosec
@@ -1398,6 +1365,51 @@ def handle_error_code(requests_obj, error_code_map):
             console.print(error_msg)
 
 
+def prefill_form(ticket_type, menu, path, command, message):
+    """Pre-fille Google Form and open it in the browser"""
+    form_id = "1FAIpQLSe0-HKitlJMtTO9C2VR7uXVtTzmQgiyE1plf3nEkYCRx6WGRg"
+    form_url = f"https://docs.google.com/forms/d/e/{form_id}/viewform?"
+
+    params = {
+        "entry.2091304642": ticket_type,
+        "entry.2098699567": menu,
+        "entry.1862722780": path,
+        "entry.1248966702": command,
+        "entry.110036167": message,
+    }
+
+    url_params = urllib.parse.urlencode(params)
+
+    webbrowser.open(form_url + url_params)
+
+
+def get_closing_price(ticker, days):
+
+    """Get historical close price for n days in past for market asset
+
+    Parameters
+    ----------
+    ticker : str
+        Ticker to get data for
+    days : datetime
+        No. of days in past
+
+    Returns
+    ----------
+    data : pd.DataFrame
+        Historic close prices for ticker for given days
+    """
+    tick = yf.Ticker(ticker)
+    df = tick.history(
+        start=d.today() - timedelta(days=days),
+        interval="1d",
+    )["Close"]
+    df = df.to_frame().reset_index()
+    df = df.rename(columns={0: "Close"})
+    df.index.name = "index"
+    return df
+
+
 def camel_case_split(string: str) -> str:
     """Converts a camel case string to separate words
 
@@ -1422,3 +1434,116 @@ def camel_case_split(string: str) -> str:
 
     results = ["".join(word) for word in words]
     return " ".join(results).title()
+
+
+def choice_check_after_action(action=None, choices=None):
+    """return an action class that checks choice after action call
+    for argument of argparse.ArgumentParser.add_argument function
+
+    Parameters
+    ----------
+    action : Union[class, function]
+        Action for set args before check choices.
+        If action is class, it must implement argparse.Action methods
+        If action is function, it takes 4 args(parser, namespace, values, option_string)
+        and needs to return value to set dest
+
+    choices : Union[Iterable, function]
+        A container of values that should be allowed.
+        If choices is function, it takes 1 args(value) to check and
+        return bool that value is allowed or not
+
+    Returns
+    -------
+    Class
+        Class extended argparse.Action
+    """
+
+    if isinstance(choices, Iterable):
+
+        def choice_checker(value):
+            return value in choices
+
+    elif isinstance(choices, types.FunctionType):
+        choice_checker = choices
+    else:
+        raise NotImplementedError("choices argument must be iterable or function")
+
+    if isinstance(action, type):
+
+        class ActionClass(action):
+            def __call__(self, parser, namespace, values, option_string=None):
+                super().__call__(parser, namespace, values, option_string)
+                if not choice_checker(getattr(namespace, self.dest)):
+                    raise ValueError(
+                        f"{getattr(namespace, self.dest)} is not in {choices}"
+                    )
+
+    elif isinstance(action, types.FunctionType):
+
+        class ActionClass(argparse.Action):
+            def __call__(self, parser, namespace, values, option_string=None):
+                setattr(
+                    namespace,
+                    self.dest,
+                    action(parser, namespace, values, option_string),
+                )
+                if not choice_checker(getattr(namespace, self.dest)):
+                    raise ValueError(
+                        f"{getattr(namespace, self.dest)} is not in {choices}"
+                    )
+
+    else:
+        raise NotImplementedError("action argument must be class or function")
+
+    return ActionClass
+
+
+def is_valid_axes_count(
+    axes: List[plt.Axes],
+    n: int,
+    custom_text: Optional[str] = None,
+    prefix_text: Optional[str] = None,
+    suffix_text: Optional[str] = None,
+):
+    """Check if axes list length is equal to n
+    and log text if check result is false
+
+    Parameters
+    ----------
+
+    axes: List[plt.Axes]
+        External axes (2 axes are expected in the list)
+    n: int
+        number of expected axes
+    custom_text: Optional[str] = None
+        custom text to log
+    prefix_text: Optional[str] = None
+        prefix text to add before text to log
+    suffix_text: Optional[str] = None
+        suffix text to add after text to log
+    """
+
+    if len(axes) == n:
+        return True
+
+    if custom_text:
+        print_text = custom_text
+    else:
+        print_text = f"Expected list of {n} axis item{'s' if n>1 else ''}."
+
+    if prefix_text:
+        print_text = f"{prefix_text} {print_text}"
+    if suffix_text:
+        print_text = f"{suffix_text} {print_text}"
+
+    logger.error(print_text)
+    console.print(f"[red]{print_text}\n[/red]")
+    return False
+
+
+def support_message(s: str) -> str:
+    """Argparse type to check string is in valid format
+    for the support command
+    """
+    return s.replace('"', "")

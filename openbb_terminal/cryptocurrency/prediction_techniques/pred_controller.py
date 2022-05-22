@@ -83,6 +83,9 @@ class PredictionTechniquesController(CryptoBaseController):
             choices["ets"]["-s"] = {c: {} for c in ets_model.SEASONS}
             choices["arima"]["-i"] = {c: {} for c in arima_model.ICS}
             choices["mc"]["--dist"] = {c: {} for c in mc_model.DISTRIBUTIONS}
+
+            choices["support"] = self.SUPPORT_CHOICES
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
@@ -682,6 +685,7 @@ class PredictionTechniquesController(CryptoBaseController):
             help="Number of simulations to perform",
             dest="n_sims",
             default=100,
+            type=check_positive,
         )
         parser.add_argument(
             "--dist",

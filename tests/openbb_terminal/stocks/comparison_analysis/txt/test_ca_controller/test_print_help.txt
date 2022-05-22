@@ -15,23 +15,23 @@ Ticker to get similar companies from:
 Similar Companies: 
 
 [Yahoo Finance]
-    historical    historical price data comparison
-    hcorr         historical price correlation
-    volume        historical volume data comparison
+    historical       historical price data comparison
+    hcorr            historical price correlation
+    volume           historical volume data comparison
 [Market Watch]
-    income        income financials comparison
-    balance       balance financials comparison
-    cashflow      cashflow comparison
+    income           income financials comparison
+    balance          balance financials comparison
+    cashflow         cashflow comparison
 [Finbrain]
-    sentiment     sentiment analysis comparison
-    scorr         sentiment correlation
+    sentiment        sentiment analysis comparison
+    scorr            sentiment correlation
 [Finviz]
-    overview      brief overview comparison
-    valuation     brief valuation comparison
-    financial     brief financial comparison
-    ownership     brief ownership comparison
-    performance   brief performance comparison
-    technical     brief technical comparison
+    overview         brief overview comparison
+    valuation        brief valuation comparison
+    financial        brief financial comparison
+    ownership        brief ownership comparison
+    performance      brief performance comparison
+    technical        brief technical comparison
 
->   po            portfolio optimization for selected tickers[/unvl]
+>   po               portfolio optimization for selected tickers[/unvl]
         

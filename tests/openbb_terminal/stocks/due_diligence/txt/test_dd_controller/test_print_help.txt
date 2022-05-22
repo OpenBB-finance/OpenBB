@@ -2,19 +2,19 @@
 Ticker: 
 
 [Finviz]
-    analyst       analyst prices and ratings of the company
+    analyst          analyst prices and ratings of the company
 [FMP]
-    rating        rating over time (daily)
+    rating           rating over time (daily)
 [Finnhub]
-    rot           number of analysts ratings over time (monthly)
+    rot              number of analysts ratings over time (monthly)
 [Business Insider]
-    pt            price targets over time
-    est           quarter and year analysts earnings estimates
+    pt               price targets over time
+    est              quarter and year analysts earnings estimates
 [Market Watch]
-    sec           SEC filings
+    sec              SEC filings
 [Csimarket]
-    supplier      list of suppliers
-    customer      list of customers
+    supplier         list of suppliers
+    customer         list of customers
 [Cathiesark.com]
-    arktrades     get ARK trades for ticker
+    arktrades        get ARK trades for ticker
         

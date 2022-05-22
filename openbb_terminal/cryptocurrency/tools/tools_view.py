@@ -41,7 +41,6 @@ def display_apy(apr: float, compounding_times: int, narrative: bool, export: str
             show_index=False,
             title="APR/APY Calculator",
         )
-        console.print("")
 
     export_data(
         export,
@@ -58,7 +57,7 @@ def display_il(
     proportion: int,
     initial_pool_value: int,
     narrative: bool,
-    export: str,
+    export: str = "",
 ):
     """Displays Impermanent Loss in a custom liquidity pool
 
@@ -95,7 +94,7 @@ def display_il(
             show_index=False,
             title="Impermanent Loss Calculator",
         )
-        console.print("")
+
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),

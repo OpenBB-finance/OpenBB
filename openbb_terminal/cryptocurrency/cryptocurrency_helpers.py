@@ -15,12 +15,12 @@ from binance.client import Client
 import matplotlib.pyplot as plt
 import yfinance as yf
 import mplfinance as mpf
-from pycoingecko import CoinGeckoAPI
 
 from openbb_terminal.helper_funcs import (
     plot_autoscale,
     export_data,
     print_rich_table,
+    is_valid_axes_count,
 )
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.cryptocurrency.due_diligence import (
@@ -102,41 +102,6 @@ YF_CURRENCY = [
     "AUD",
     "BTC",
 ]
-
-
-def load_cg_coin_data(
-    coin: str, currency: str = "USD", days: int = 365, sampling: str = "1D"
-) -> pd.DataFrame:
-    """Load cryptocurrency data from CoinGecko
-    Timestamps from CoinGecko are not uniform, so the sampling is included to provide ohlc bars.
-    Note that for days > 90, daily data is returned as prices only.  Less than 90 days returns hourly data
-    which can be consolidated into OHLC
-
-    Parameters
-    ----------
-    coin : str
-        Cryptocurrency to load
-    currency : str, optional
-        Conversion unit, by default "USD"
-    days : int, optional
-        Number of days to get, by default 365
-    sampling : str, optional
-        Time period to resample in the format in the format #U where U can be H (hour) or D(day), by default "1D"
-
-    Returns
-    -------
-    pd.DataFrame
-        DataFrame of OHLC
-    """
-    prices = CoinGeckoAPI().get_coin_market_chart_by_id(coin, currency, days)
-    df = pd.DataFrame(data=prices["prices"], columns=["time", "price"])
-    df["time"] = pd.to_datetime(df.time, unit="ms")
-    df = df.set_index("time")
-    if days > 90:
-        sampling = "1D"
-    df = df.resample(sampling).ohlc()
-    df.columns = ["Open", "High", "Low", "Close"]
-    return df
 
 
 def _load_coin_map(file_name: str) -> pd.DataFrame:
@@ -755,7 +720,6 @@ def find(source: str, coin: str, key: str, top: int, export: str) -> None:
     print_rich_table(
         df, headers=list(df.columns), show_index=False, title="Similar Coins"
     )
-    console.print("")
 
     export_data(
         export,
@@ -932,7 +896,7 @@ def load_ta_data(
 
         symbol_binance = coin_map_df["Binance"]
 
-        pair = symbol_binance + currency.upper()
+        pair = symbol_binance.upper() + currency.upper()
 
         if check_valid_binance_str(pair):
             # console.print(f"{symbol_binance} loaded vs {currency.upper()}")
@@ -1058,6 +1022,25 @@ def load_ta_data(
         return df_coin[::-1], currency
 
     return pd.DataFrame(), currency
+
+
+def load_yf_data(symbol: str, currency: str, interval: str, days: int):
+    df_coin = yf.download(
+        f"{symbol.upper()}-{currency.upper()}",
+        end=datetime.now(),
+        start=datetime.now() - timedelta(days=days),
+        progress=False,
+        interval=interval,
+    ).sort_index(ascending=False)
+
+    df_coin.index.names = ["date"]
+    if df_coin.empty:
+        console.print(
+            f"Could not download data for {symbol}-{currency} from Yahoo Finance"
+        )
+        return pd.DataFrame(), currency
+
+    return df_coin[::-1], currency
 
 
 def plot_chart(
@@ -1321,12 +1304,7 @@ def plot_candles(
         theme.visualize_output(force_tight_layout=False)
     else:
         nr_external_axes = 2 if volume else 1
-
-        if len(external_axes) != nr_external_axes:
-            logger.error("Expected list of %s axis items.", str(nr_external_axes))
-            console.print(
-                f"[red]Expected list of {nr_external_axes} axis items./n[/red]"
-            )
+        if not is_valid_axes_count(external_axes, nr_external_axes):
             return
 
         if volume:
@@ -1363,12 +1341,10 @@ def plot_order_book(
     # This plot has 1 axis
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of one axis item./n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
+    else:
+        return
 
     ax.plot(bids[:, 0], bids[:, 2], color=theme.up_color, label="bids")
     ax.fill_between(bids[:, 0], bids[:, 2], color=theme.up_color, alpha=0.4)

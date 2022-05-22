@@ -112,40 +112,40 @@ class QaController(StockBaseController):
         else:
             stock_str = f"{s_intraday} {self.ticker}"
         help_text = f"""[cmds]
-   load        load new ticker
-   pick        pick target column for analysis[/cmds]
+   load              load new ticker
+   pick              pick target column for analysis[/cmds]
 
 [param]Stock: [/param]{stock_str}
 [param]Target Column: [/param]{self.target}
 [cmds]
 [info]Statistics:[/info]
-    summary     brief summary statistics of loaded stock.
-    normality   normality statistics and tests
-    unitroot    unit root test for stationarity (ADF, KPSS)
+    summary          brief summary statistics of loaded stock.
+    normality        normality statistics and tests
+    unitroot         unit root test for stationarity (ADF, KPSS)
 [info]Plots:[/info]
-    line        line plot of selected target
-    hist        histogram with density plot
-    cdf         cumulative distribution function
-    bw          box and whisker plot
-    acf         (partial) auto-correlation function differentials of prices
-    qqplot      residuals against standard normal curve
+    line             line plot of selected target
+    hist             histogram with density plot
+    cdf              cumulative distribution function
+    bw               box and whisker plot
+    acf              (partial) auto-correlation function differentials of prices
+    qqplot           residuals against standard normal curve
 [info]Rolling Metrics:[/info]
-    rolling     rolling mean and std deviation of prices
-    spread      rolling variance and std deviation of prices
-    quantile    rolling median and quantile of prices
-    skew        rolling skewness of distribution of prices
-    kurtosis    rolling kurtosis of distribution of prices
+    rolling          rolling mean and std deviation of prices
+    spread           rolling variance and std deviation of prices
+    quantile         rolling median and quantile of prices
+    skew             rolling skewness of distribution of prices
+    kurtosis         rolling kurtosis of distribution of prices
 [info]Risk:[/info]
-    var         display value at risk
-    es          display expected shortfall
-    sh          display sharpe ratio
-    so          display sortino ratio
-    om          display omega ratio
+    var              display value at risk
+    es               display expected shortfall
+    sh               display sharpe ratio
+    so               display sortino ratio
+    om               display omega ratio
 [info]Other:[/info]
-    raw         print raw data
-    decompose   decomposition in cyclic-trend, season, and residuals of prices
-    cusum       detects abrupt changes using cumulative sum algorithm of prices
-    capm        capital asset pricing model[/cmds]
+    raw              print raw data
+    decompose        decomposition in cyclic-trend, season, and residuals of prices
+    cusum            detects abrupt changes using cumulative sum algorithm of prices
+    capm             capital asset pricing model[/cmds]
         """
         console.print(text=help_text, menu="Stocks - Quantitative Analysis")
 

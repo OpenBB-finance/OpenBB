@@ -16,13 +16,14 @@ import pandas_market_calendars as mcal
 import plotly.graph_objects as go
 import pyEX
 import pytz
+import requests
+
 import yfinance as yf
 from alpha_vantage.timeseries import TimeSeries
 from numpy.core.fromnumeric import transpose
 from plotly.subplots import make_subplots
 from scipy import stats
 
-from openbb_terminal.config_terminal import theme
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.helper_funcs import (
     export_data,
@@ -30,6 +31,7 @@ from openbb_terminal.helper_funcs import (
     get_user_timezone_or_invalid,
     print_rich_table,
     lambda_long_number_format_y_axis,
+    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
 
@@ -67,7 +69,7 @@ market_coverage_suffix = {
     "Ireland": ["IR"],
     "Israel": ["TA"],
     "Italy": ["MI"],
-    "Japan": ["T"],
+    "Japan": ["T", "S"],
     "Latvia": ["RG"],
     "Lithuania": ["VS"],
     "Malaysia": ["KL"],
@@ -208,7 +210,7 @@ def search(
             exchange_suffix[x] = k
 
     df["exchange"] = [
-        exchange_suffix[ticker.split(".")[1]] if "." in ticker else "USA"
+        exchange_suffix.get(ticker.split(".")[1]) if "." in ticker else "USA"
         for ticker in list(df.index)
     ]
 
@@ -232,10 +234,11 @@ def search(
         headers=["Name", "Country", "Sector", "Industry", "Exchange"],
         title=title,
     )
-    console.print()
+
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "search", df)
 
 
+# pylint:disable=too-many-return-statements
 def load(
     ticker: str,
     start: datetime = (datetime.now() - timedelta(days=1100)),
@@ -310,7 +313,7 @@ def load(
                     symbol=ticker, outputsize="full"
                 )
             except Exception as e:
-                console.print(e)
+                console.print(e, "")
                 return pd.DataFrame()
 
             df_stock_candidate.columns = [
@@ -367,7 +370,6 @@ def load(
 
         # IEX Cloud Source
         elif source == "iex":
-
             df_stock_candidate = pd.DataFrame()
 
             try:
@@ -378,11 +380,13 @@ def load(
                 # Check that loading a stock was not successful
                 if df_stock_candidate.empty:
                     console.print("No data found.\n")
+                    return df_stock_candidate
+
             except Exception as e:
                 if "The API key provided is not valid" in str(e):
                     console.print("[red]Invalid API Key[/red]\n")
                 else:
-                    console.print(e)
+                    console.print(e, "\n")
 
                 return df_stock_candidate
 
@@ -401,42 +405,135 @@ def load(
             )
 
             df_stock_candidate.sort_index(ascending=True, inplace=True)
+
+        # Polygon source
+        elif source == "polygon":
+
+            request_url = (
+                f"https://api.polygon.io/v2/aggs/ticker/"
+                f"{ticker.upper()}/range/1/day/{start.strftime('%Y-%m-%d')}/{end.strftime('%Y-%m-%d')}?adjusted=true"
+                f"&sort=desc&limit=49999&apiKey={cfg.API_POLYGON_KEY}"
+            )
+            r = requests.get(request_url)
+            if r.status_code != 200:
+                console.print("[red]Error in polygon request[/red]")
+                return pd.DataFrame()
+
+            r_json = r.json()
+            if "results" not in r_json.keys():
+                console.print("[red]No results found in polygon reply.[/red]")
+                return pd.DataFrame()
+
+            df_stock_candidate = pd.DataFrame(r_json["results"])
+
+            df_stock_candidate = df_stock_candidate.rename(
+                columns={
+                    "o": "Open",
+                    "c": "Adj Close",
+                    "h": "High",
+                    "l": "Low",
+                    "t": "date",
+                    "v": "Volume",
+                    "n": "Transactions",
+                }
+            )
+            df_stock_candidate["date"] = pd.to_datetime(
+                df_stock_candidate.date, unit="ms"
+            )
+            # TODO: Clean up Close vs Adj Close throughout
+            df_stock_candidate["Close"] = df_stock_candidate["Adj Close"]
+            df_stock_candidate = df_stock_candidate.sort_values(by="date")
+            df_stock_candidate = df_stock_candidate.set_index("date")
+
         s_start = df_stock_candidate.index[0]
         s_interval = f"{interval}min"
         int_string = "Daily" if interval == 1440 else "Intraday"
 
     else:
 
-        s_int = str(interval) + "m"
-        s_interval = s_int + "in"
-        d_granularity = {"1m": 6, "5m": 59, "15m": 59, "30m": 59, "60m": 729}
+        if source == "yf":
+            s_int = str(interval) + "m"
+            s_interval = s_int + "in"
+            d_granularity = {"1m": 6, "5m": 59, "15m": 59, "30m": 59, "60m": 729}
 
-        s_start_dt = datetime.utcnow() - timedelta(days=d_granularity[s_int])
-        s_date_start = s_start_dt.strftime("%Y-%m-%d")
+            s_start_dt = datetime.utcnow() - timedelta(days=d_granularity[s_int])
+            s_date_start = s_start_dt.strftime("%Y-%m-%d")
 
-        df_stock_candidate = yf.download(
-            ticker,
-            start=s_date_start if s_start_dt > start else start.strftime("%Y-%m-%d"),
-            progress=False,
-            interval=s_int,
-            prepost=prepost,
-        )
+            df_stock_candidate = yf.download(
+                ticker,
+                start=s_date_start
+                if s_start_dt > start
+                else start.strftime("%Y-%m-%d"),
+                progress=False,
+                interval=s_int,
+                prepost=prepost,
+            )
 
-        # Check that loading a stock was not successful
-        if df_stock_candidate.empty:
-            console.print("")
-            return pd.DataFrame()
+            # Check that loading a stock was not successful
+            if df_stock_candidate.empty:
+                console.print()
+                return pd.DataFrame()
 
-        df_stock_candidate.index = df_stock_candidate.index.tz_localize(None)
+            df_stock_candidate.index = df_stock_candidate.index.tz_localize(None)
 
-        if s_start_dt > start:
-            s_start = pytz.utc.localize(s_start_dt)
-        else:
-            s_start = start
+            if s_start_dt > start:
+                s_start = pytz.utc.localize(s_start_dt)
+            else:
+                s_start = start
 
-        df_stock_candidate.index.name = "date"
+            df_stock_candidate.index.name = "date"
 
+        elif source == "polygon":
+            request_url = (
+                f"https://api.polygon.io/v2/aggs/ticker/"
+                f"{ticker.upper()}/range/{interval}/minute/{start.strftime('%Y-%m-%d')}/{end.strftime('%Y-%m-%d')}"
+                f"?adjusted=true&sort=desc&limit=49999&apiKey={cfg.API_POLYGON_KEY}"
+            )
+            r = requests.get(request_url)
+            if r.status_code != 200:
+                console.print("[red]Error in polygon request[/red]")
+                return pd.DataFrame()
+
+            r_json = r.json()
+            if "results" not in r_json.keys():
+                console.print("[red]No results found in polygon reply.[/red]")
+                return pd.DataFrame()
+
+            df_stock_candidate = pd.DataFrame(r_json["results"])
+
+            df_stock_candidate = df_stock_candidate.rename(
+                columns={
+                    "o": "Open",
+                    "c": "Close",
+                    "h": "High",
+                    "l": "Low",
+                    "t": "date",
+                    "v": "Volume",
+                    "n": "Transactions",
+                }
+            )
+            df_stock_candidate["date"] = pd.to_datetime(
+                df_stock_candidate.date, unit="ms"
+            )
+            df_stock_candidate["Adj Close"] = df_stock_candidate.Close
+            df_stock_candidate = df_stock_candidate.sort_values(by="date")
+
+            df_stock_candidate = df_stock_candidate.set_index("date")
+            # Check that loading a stock was not successful
+            if df_stock_candidate.empty:
+                console.print()
+                return pd.DataFrame()
+
+            df_stock_candidate.index = df_stock_candidate.index.tz_localize(None)
+            s_start_dt = df_stock_candidate.index[0]
+
+            if s_start_dt > start:
+                s_start = pytz.utc.localize(s_start_dt)
+            else:
+                s_start = start
+            s_interval = f"{interval}min"
         int_string = "Intraday"
+
     s_intraday = (f"Intraday {s_interval}", int_string)[interval == 1440]
 
     console.print(
@@ -492,7 +589,7 @@ def display_candle(
                 ap0.append(
                     mpf.make_addplot(
                         df_stock["OC_High_trend"],
-                        color=theme.up_color,
+                        color=cfg.theme.up_color,
                         secondary_y=False,
                     ),
                 )
@@ -501,17 +598,17 @@ def display_candle(
                 ap0.append(
                     mpf.make_addplot(
                         df_stock["OC_Low_trend"],
-                        color=theme.down_color,
+                        color=cfg.theme.down_color,
                         secondary_y=False,
                     ),
                 )
 
         candle_chart_kwargs = {
             "type": "candle",
-            "style": theme.mpf_style,
+            "style": cfg.theme.mpf_style,
             "volume": True,
             "addplot": ap0,
-            "xrotation": theme.xticks_rotation,
+            "xrotation": cfg.theme.xticks_rotation,
             "scale_padding": {"left": 0.3, "right": 1, "top": 0.8, "bottom": 0.8},
             "update_width_config": {
                 "candle_linewidth": 0.6,
@@ -545,22 +642,20 @@ def display_candle(
                 colors = []
 
                 for i, _ in enumerate(ma):
-                    colors.append(theme.get_colors()[i])
+                    colors.append(cfg.theme.get_colors()[i])
 
                 lines = [Line2D([0], [0], color=c) for c in colors]
                 labels = ["MA " + str(label) for label in ma]
                 ax[0].legend(lines, labels)
 
-            theme.visualize_output(force_tight_layout=False)
-        else:
-            if len(external_axes) != 2:
-                logger.error("Expected list of one axis item.")
-                console.print("[red]Expected list of 2 axis items./n[/red]")
-                return
+            cfg.theme.visualize_output(force_tight_layout=False)
+        elif is_valid_axes_count(external_axes, 2):
             ax1, ax2 = external_axes
             candle_chart_kwargs["ax"] = ax1
             candle_chart_kwargs["volume"] = ax2
             mpf.plot(df_stock, **candle_chart_kwargs)
+        else:
+            return
 
     else:
         fig = make_subplots(
@@ -741,30 +836,74 @@ def quote(s_ticker: str):
         ]
     )
 
-    quote_df["Change"] = quote_df["Price"] - quote_df["Previous Close"]
-    quote_df["Change %"] = quote_df.apply(
-        lambda x: f'{((x["Change"] / x["Previous Close"]) * 100):.2f}%',
-        axis="columns",
-    )
-    for c in [
-        "Price",
-        "Open",
-        "High",
-        "Low",
-        "Previous Close",
-        "52 Week High",
-        "52 Week Low",
-        "Change",
-    ]:
-        quote_df[c] = quote_df[c].apply(lambda x: f"{x:.2f}")
-    quote_df["Volume"] = quote_df["Volume"].apply(lambda x: f"{x:,}")
+    try:
+        # For the case where a user uses: 'quote BB'
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-t")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-    quote_df = quote_df.set_index("Symbol")
+    except SystemExit:
+        console.print("")
+        return
 
-    quote_data = transpose(quote_df)
+    ticker = yf.Ticker(ns_parser.s_ticker)
 
-    print_rich_table(quote_data, title="Ticker Quote", show_index=True)
-    console.print()
+    # If price only option, return immediate market price for ticker.
+    if ns_parser.price_only:
+        console.print(
+            f"Price of {ns_parser.s_ticker} {ticker.info['regularMarketPrice']} \n"
+        )
+        return
+
+    try:
+        quote_df = pd.DataFrame(
+            [
+                {
+                    "Symbol": ticker.info["symbol"],
+                    "Name": ticker.info["shortName"],
+                    "Price": ticker.info["regularMarketPrice"],
+                    "Open": ticker.info["regularMarketOpen"],
+                    "High": ticker.info["dayHigh"],
+                    "Low": ticker.info["dayLow"],
+                    "Previous Close": ticker.info["previousClose"],
+                    "Volume": ticker.info["volume"],
+                    "52 Week High": ticker.info["fiftyTwoWeekHigh"],
+                    "52 Week Low": ticker.info["fiftyTwoWeekLow"],
+                }
+            ]
+        )
+
+        quote_df["Change"] = quote_df["Price"] - quote_df["Previous Close"]
+        quote_df["Change %"] = quote_df.apply(
+            lambda x: f'{((x["Change"] / x["Previous Close"]) * 100):.2f}%',
+            axis="columns",
+        )
+        for c in [
+            "Price",
+            "Open",
+            "High",
+            "Low",
+            "Previous Close",
+            "52 Week High",
+            "52 Week Low",
+            "Change",
+        ]:
+            quote_df[c] = quote_df[c].apply(lambda x: f"{x:.2f}")
+        quote_df["Volume"] = quote_df["Volume"].apply(lambda x: f"{x:,}")
+
+        quote_df = quote_df.set_index("Symbol")
+
+        quote_data = transpose(quote_df)
+
+        print_rich_table(quote_data, title="Ticker Quote", show_index=True)
+
+    except KeyError:
+        logger.exception("Invalid stock ticker")
+        console.print(f"Invalid stock ticker: {ns_parser.s_ticker}")
+
+    return
 
 
 def load_ticker(
@@ -1108,4 +1247,32 @@ def show_quick_performance(stock_df: pd.DataFrame, ticker: str):
     print_rich_table(
         df, show_index=False, headers=df.columns, title=f"{ticker.upper()} Performance"
     )
-    console.print()
+
+
+def show_codes_polygon(ticker: str):
+    """Show FIGI, SIC and SIK codes for ticker
+
+    Parameters
+    ----------
+    ticker: str
+        Stock ticker
+    """
+    link = f"https://api.polygon.io/v3/reference/tickers/{ticker.upper()}?apiKey={cfg.API_POLYGON_KEY}"
+    r = requests.get(link)
+    if r.status_code != 200:
+        console.print("[red]Error in polygon request[/red]\n")
+        return
+    r_json = r.json()
+    if "results" not in r_json.keys():
+        console.print("[red]Results not found in polygon request[/red]")
+        return
+    r_json = r_json["results"]
+    cols = ["cik", "composite_figi", "share_class_figi", "sic_code"]
+    vals = []
+    for col in cols:
+        vals.append(r_json[col])
+    df = pd.DataFrame({"codes": [c.upper() for c in cols], "vals": vals})
+    df.codes = df.codes.apply(lambda x: x.replace("_", " "))
+    print_rich_table(
+        df, show_index=False, headers=["", ""], title=f"{ticker.upper()} Codes"
+    )

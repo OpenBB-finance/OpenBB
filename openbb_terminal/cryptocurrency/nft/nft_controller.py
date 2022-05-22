@@ -31,6 +31,9 @@ class NFTController(BaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
+
+            choices["support"] = self.SUPPORT_CHOICES
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
@@ -38,12 +41,12 @@ class NFTController(BaseController):
 
         help_text = """[cmds]
 [src][Nftcalendar.io][/src]
-    today       today's NFT drops
-    upcoming    upcoming NFT drops
-    ongoing     Ongoing NFT drops
-    newest      Recently NFTs added
+    today            today's NFT drops
+    upcoming         upcoming NFT drops
+    ongoing          Ongoing NFT drops
+    newest           Recently NFTs added
 [src][Opensea.io][/src]
-    stats       check open sea collection stats[/cmds]
+    stats            check open sea collection stats[/cmds]
 """
         console.print(text=help_text, menu="Cryptocurrency - Non Fungible Token")
 

@@ -9,21 +9,21 @@ Operating cycle                           355.568  342.615  366.149  413.681  36
 Days of payables outstanding               78.444   70.164   79.819  106.040  121.218
 Cash conversion cycle                     277.124  272.452  286.330  307.640  241.902
 Gross profit margin                         0.637    0.637    0.647    0.667    0.681
-Operating profit margin                     0.400    0.383    0.350    0.403    0.409
+Operating profit margin                     0.400    0.384    0.353    0.407    0.413
 Pretax profit margin                        0.368    0.360    0.331    0.382    0.389
 Net profit margin                           0.210    0.267    0.241    0.281    0.290
 Effective tax rate                          0.407    0.229    0.232    0.217    0.218
 Return on assets                            0.140    0.199    0.168    0.180    0.221
 Return on equity                           -0.499   -0.635   -0.621   -0.641   -0.901
-Return on capital employed                  0.426    0.501    0.434    0.459    0.584
+Return on capital employed                  0.426    0.503    0.438    0.463    0.589
 Net income per EBT                          0.570    0.741    0.728    0.736    0.745
-Ebt per ebit                                0.921    0.941    0.945    0.947    0.951
-Ebit per revenue                            0.400    0.383    0.350    0.403    0.409
+Ebt per ebit                                0.921    0.938    0.937    0.939    0.943
+Ebit per revenue                            0.400    0.384    0.353    0.407    0.413
 Debt ratio                                  1.238    1.270    1.224    1.237    1.199
 Debt equity ratio                          -4.402   -4.057   -4.533   -4.412   -4.898
 Long term debt to capitalization            1.628    1.858    1.768    1.806    1.689
 Total debt to capitalization                1.543    1.646    1.595    1.663    1.571
-Interest coverage                          10.495   13.258   13.118   15.894   17.449
+Interest coverage                          10.495   13.306   13.230   16.027   17.605
 Cash flow to debt ratio                     0.260    0.298    0.325    0.311    0.430
 Company equity multiplier                  -3.555   -3.195   -3.703   -3.566   -4.086
 Receivables turnover                        7.691    8.312    8.019    7.629    7.971
@@ -31,6 +31,9 @@ Payables turnover                           4.653    5.202    4.573    3.442    
 Inventory turnover                          1.185    1.222    1.138    0.998    1.150
 Fixed asset turnover                        3.954    4.114    4.495    4.508    5.092
 Asset turnover                              0.669    0.744    0.695    0.640    0.761
+Operating cash flow per share               5.742    6.095    6.489    6.302    7.686
+Free cash flow per share                    4.745    5.172    5.941    5.915    7.206
+Cash per share                              5.443    4.240    4.412    4.676    2.888
 Payout ratio                                1.080    0.870    0.997    0.914    0.832
 Operating cash flow sales ratio             0.310    0.320    0.339    0.342    0.381
 Free cash flow operating cash flow ratio    0.826    0.848    0.916    0.939    0.937
@@ -38,6 +41,16 @@ Cash flow coverage ratios                   0.260    0.298    0.325    0.311    
 Short term coverage ratios                  2.966    1.981    2.299    2.913    3.959
 Capital expenditure coverage ratio         -5.757   -6.600  -11.843  -16.299  -15.999
 Dividend paid and capex coverage ratio      1.792    1.739    1.599    1.451    1.752
-Price to free cash flows ratio             22.749   14.401   14.195   13.465        0
-Enterprise value multiple                  15.708   11.556   13.821   12.211    1.669
-
+Dividend payout ratio                       1.080    0.870    0.997    0.914    0.832
+Price book value ratio                    -13.861   -9.296  -11.327   -9.868  -15.949
+Price to book ratio                       -13.861   -9.296  -11.327   -9.868  -15.949
+Price to sales ratio                        5.827    3.909    4.400    4.322    5.132
+Price earnings ratio                       27.759   14.640   18.251   15.394   17.695
+Price to free cash flows ratio             22.749   14.401   14.195   13.465   14.367
+Price to operating cash flows ratio        18.797   12.219   12.996   12.639   13.469
+Price cash flow ratio                      18.797   12.219   12.996   12.639   13.469
+Price earnings to growth ratio             -2.073    0.473   -1.973    1.290    1.323
+Price sales ratio                           5.827    3.909    4.400    4.322    5.132
+Dividend yield                              0.039    0.059    0.055    0.059    0.047
+Enterprise value multiple                  15.708   11.556   13.821   12.211   13.651
+Price fair value                          -13.861   -9.296  -11.327   -9.868  -15.949

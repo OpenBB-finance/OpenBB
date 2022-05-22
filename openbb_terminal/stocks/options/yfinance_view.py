@@ -19,6 +19,7 @@ from openpyxl import Workbook
 from scipy.stats import binom
 
 from openbb_terminal.config_terminal import theme
+from openbb_terminal.config_plot import PLOT_DPI
 import openbb_terminal.config_plot as cfp
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
@@ -27,6 +28,7 @@ from openbb_terminal.helper_funcs import (
     get_rf,
     plot_autoscale,
     print_rich_table,
+    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.options import op_helpers, yfinance_model
@@ -111,12 +113,10 @@ def plot_oi(
     max_pain = op_helpers.calculate_max_pain(df_opt)
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of one axis item./n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
+    else:
+        return
 
     if not calls_only:
         put_oi.plot(
@@ -205,12 +205,10 @@ def plot_vol(
     put_v = puts.set_index("strike")["volume"] / 1000
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of one axis item./n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
+    else:
+        return
 
     if not calls_only:
         put_v.plot(
@@ -346,12 +344,10 @@ def plot_volume_open_interest(
     # Initialize the matplotlib figure
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of one axis item./n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
+    else:
+        return
 
     # make x axis symmetric
     axis_origin = max(abs(max(df_puts["oi+v"])), abs(max(df_calls["oi+v"])))
@@ -450,7 +446,7 @@ def plot_plot(
     x: str,
     y: str,
     custom: str,
-    export: str,
+    export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Generate a graph custom graph based on user input
@@ -500,12 +496,10 @@ def plot_plot(
 
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of one axis item./n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
+    else:
+        return
 
     x_data = values[x]
     y_data = values[y]
@@ -537,7 +531,7 @@ def plot_plot(
 def plot_payoff(
     current_price: float,
     options: List[Dict[Any, Any]],
-    underlying: int,
+    underlying: float,
     ticker: str,
     expiration: str,
     external_axes: Optional[List[plt.Axes]] = None,
@@ -547,12 +541,10 @@ def plot_payoff(
 
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of one axis item./n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
+    else:
+        return
 
     if ya:
         ax.plot(x, yb, label="Payoff Before Premium")
@@ -562,6 +554,7 @@ def plot_payoff(
     ax.set_title(f"Option Payoff Diagram for {ticker} on {expiration}")
     ax.set_ylabel("Profit")
     ax.set_xlabel("Underlying Asset Price at Expiration")
+    ax.legend()
     ax.xaxis.set_major_formatter("${x:.2f}")
     ax.yaxis.set_major_formatter("${x:.2f}")
     theme.style_primary_axis(ax)
@@ -671,7 +664,6 @@ def show_parity(
         "parity",
         show,
     )
-    console.print()
 
 
 @log_start_end(log=logger)
@@ -738,7 +730,6 @@ def risk_neutral_vals(
         show_index=False,
         title="Risk Neutral Values",
     )
-    console.print()
 
 
 @log_start_end(log=logger)
@@ -769,12 +760,10 @@ def plot_expected_prices(
     probs = [100 * binom.pmf(r, len(up_moves), p) for r in up_moves]
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of one axis item./n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
+    else:
+        return
 
     ax.set_title(f"Probabilities for ending prices of {ticker} on {expiration}")
     ax.xaxis.set_major_formatter("${x:1.2f}")
@@ -997,7 +986,7 @@ def display_vol_surface(
         Z = data.lastPrice
         label = "Last Price"
     if external_axes is None:
-        fig = plt.figure()
+        fig = plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
         ax = plt.axes(projection="3d")
     else:
         ax = external_axes[0]
@@ -1102,5 +1091,5 @@ def show_greeks(
         columns += ["Rho", "Phi", "Charm", "Vanna", "Vomma"]
     df = pd.DataFrame(strikes, columns=columns)
     print_rich_table(df, headers=list(df.columns), show_index=False, title="Greeks")
-    console.print()
+
     return None

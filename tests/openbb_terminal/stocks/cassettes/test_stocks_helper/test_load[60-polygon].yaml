@@ -1,0 +1,57 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: GET
+    uri: https://api.polygon.io/v2/aggs/ticker/GME/range/60/minute/2021-12-01/2021-12-02?adjusted=true&apiKey=MOCK_API_KEY2&limit=49999&sort=desc
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAA/2RWX2/bRw78LvssEMs/Sy71ejjcw+FwH6AoCkVWkbRGgthSiiLIdy8kL7ms66f1
+        2pghZ8jZ3/d2/XT+/fLSju0///t3O7Svt8vLn//6cvt8bcepfmgvl9fb8/V1XZEf2unpt9vr9fLU
+        jteX2yX/ox1/+t6+tSP3fmjf/mhHnAjj0L7k6Zynj3l6ztO1HVF5ytT++Dm0z+2IPw4PUHMNUIKu
+        wguXoAcwgQTy23FBc8Um2dg0Fjj2OXfJRp121RroAb1L1o1rc25c0YVLzEN0I9NAzbpxC2K4wBl4
+        uC+GDiSFYdBmsC4UtaMNkeDoYK5zcXTgmRy6VZ9vBOYgWAhQSwsdLZpAwsGbgDUJGIwXQc8OJsrC
+        N/DSgM5iq5J7wVcMfAaZ6Cm/L3gGCwMEPCVCGFLcVSnuKveZPgweUnxw4u2wbCNUsw3UYDGHIpP2
+        4rTZlMWhzMPH4rAJ3UwWh1SvO2YfFEIxdNsMw4rT6GaxAzyJMXdLYIjt9ZKwWjaFwX1Pooci1ODi
+        NeLMiZ2IZRMULayQ8BnGbmDkpBaBRi8+UxavpFxiYaj9A/m+hB/X1fMaqkAVLdayxHDiBhXoJO/L
+        lXeIZR7Zi8yRBPNeVuCZpr6ac+ixR7og364SdRRlh2bAWIkvNpeMAcv02uFlC5qANnLnUi/F2Pne
+        fQb2PnI1KUveQ+1Z8wZm91Iyec4zlcAdnJOWk+zvtMUCWSM8IRFJigw4dMlg/s4ujaktkDW5ZW7D
+        ZJLtdKKeT8N9h99wzWvE0lDPhOql6llDnFg5pozZUWgPBuGMCBzgmVFRPGxJYOooBDXDERGjCxae
+        e/EUeN7repu8R0yc1zE2xB/P3ruR5lkjHHlQZjgxbT8dxHGtnyMIjySQ5YATDBxB8XYfLFaD3GnO
+        tNdZIgGdwKat184ZbM25I9ypHxwCSyfv9aVgqzE+BlG+FKIj8s8HdLToYkCsqDOMpZIb+NDVhNND
+        veT4W4zzzOd0dqYYUjfoQmvyfcKKWB+RAtQ7YDjh8kiwYNAa46ocGyvc47Vzh868PjbuvxgFxVou
+        99RoQtkGrQFOFDljU3bpZhTyGOiKAw9t1keAG2BZAa3hna/CyOH3CTx9KyKB+nhePubl874M6FET
+        nDihtUA7a0IPTmxNaE3o+58DWmqUM/34+dBer6fr7bUd2///2+5fqF9vl9frL5+e2rE9nbqrXM4n
+        edIPH/rJ6IOdzuYn+/U8zvPcDu0cH7s//goAAP//YRjZryALAAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '950'
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 03 May 2022 01:56:32 GMT
+      Server:
+      - nginx/1.19.2
+      Strict-Transport-Security:
+      - max-age=15724800; includeSubDomains
+      Vary:
+      - Accept-Encoding
+      X-Request-Id:
+      - da0964eca4d6bb0a72b7ac79a7fc5c8c
+    status:
+      code: 200
+      message: OK
+version: 1
