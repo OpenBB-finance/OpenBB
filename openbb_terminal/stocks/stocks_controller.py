@@ -124,21 +124,21 @@ Stock: [/param]{stock_text}
 [menu]
 >   th               trading hours, \t\t\t check open markets
 >   options          options menu,  \t\t\t e.g.: chains, open interest, greeks, parity
->   disc             discover trending stocks, \t e.g.: map, sectors, high short interest
+>   disc             discover trending stocks, \t\t e.g.: map, sectors, high short interest
 >   sia              sector and industry analysis, \t e.g.: companies per sector, quick ratio per industry and country
->   dps              dark pool and short data, \t e.g.: darkpool, short interest, ftd
->   scr              screener stocks, \t\t e.g.: overview/performance, using preset filters
->   ins              insider trading,         \t e.g.: latest penny stock buys, top officer purchases
->   gov              government menu, \t\t e.g.: house trading, contracts, corporate lobbying
->   ba               behavioural analysis,    \t from: reddit, stocktwits, twitter, google
->   ca               comparison analysis,     \t e.g.: get similar, historical, correlation, financials{has_ticker_start}
->   fa               fundamental analysis,    \t e.g.: income, balance, cash, earnings
->   res              research web page,       \t e.g.: macroaxis, yahoo finance, fool
->   dd               in-depth due-diligence,  \t e.g.: news, analyst, shorts, insider, sec
->   bt               strategy backtester,      \t e.g.: simple ema, ema cross, rsi strategies
->   ta               technical analysis,      \t e.g.: ema, macd, rsi, adx, bbands, obv
->   qa               quantitative analysis,   \t e.g.: decompose, cusum, residuals analysis
->   pred             prediction techniques,   \t e.g.: regression, arima, rnn, lstm
+>   dps              dark pool and short data, \t\t e.g.: darkpool, short interest, ftd
+>   scr              screener stocks, \t\t\t e.g.: overview/performance, using preset filters
+>   ins              insider trading,         \t\t e.g.: latest penny stock buys, top officer purchases
+>   gov              government menu, \t\t\t e.g.: house trading, contracts, corporate lobbying
+>   ba               behavioural analysis,    \t\t from: reddit, stocktwits, twitter, google
+>   ca               comparison analysis,     \t\t e.g.: get similar, historical, correlation, financials
+{has_ticker_start}>   fa               fundamental analysis,    \t\t e.g.: income, balance, cash, earnings
+>   res              research web page,       \t\t e.g.: macroaxis, yahoo finance, fool
+>   dd               in-depth due-diligence,  \t\t e.g.: news, analyst, shorts, insider, sec
+>   bt               strategy backtester,      \t\t e.g.: simple ema, ema cross, rsi strategies
+>   ta               technical analysis,      \t\t e.g.: ema, macd, rsi, adx, bbands, obv
+>   qa               quantitative analysis,   \t\t e.g.: decompose, cusum, residuals analysis
+>   pred             prediction techniques,   \t\t e.g.: regression, arima, rnn, lstm
 {has_ticker_end}"""
         console.print(text=help_text, menu="Stocks")
 
