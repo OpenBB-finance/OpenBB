@@ -132,3 +132,29 @@ en:
   stocks/options/hedge/rmv: remove an option from the list of options
   stocks/options/hedge/sop: show selected options and neutral portfolio weights
   stocks/options/hedge/plot: show the option payoff diagram
+  stocks/th/symbol: select the symbol
+  stocks/th/_symbol_name: Symbol name
+  stocks/th/_symbol: Symbol
+  stocks/th/_exchange: Exchange open
+  stocks/th/open: show open markets
+  stocks/th/closed: show closed markets
+  stocks/th/all: show all markets
+  stocks/th/exchange: show one exchange
+  stocks/disc/pipo: past IPOs dates
+  stocks/disc/fipo: future IPOs dates
+  stocks/disc/gainers: show latest top gainers
+  stocks/disc/losers: show latest top losers
+  stocks/disc/ugs: undervalued stocks with revenue and earnings growth in excess of 25%
+  stocks/disc/gtech: tech stocks with revenue and earnings growth more than 25%
+  stocks/disc/active: most active stocks by intraday trade volumest
+  stocks/disc/ulc: potentially undervalued large cap stocks
+  stocks/disc/asc: small cap stocks with earnings growth rates better than 25%
+  stocks/disc/ford: orders by Fidelity Customers
+  stocks/disc/arkord: orders by ARK Investment Management LLC
+  stocks/disc/upcoming: upcoming earnings release dates
+  stocks/disc/trending: trending news
+  stocks/disc/cnews: customized news (buybacks, ipos, spacs, healthcare, politics)
+  stocks/disc/lowfloat: low float stocks under 10M shares float
+  stocks/disc/hotpenny: today's hot penny stocks
+  stocks/disc/rtat: top 10 retail traded stocks per day
+  stocks/disc/divcal: dividend calendar for selected date
