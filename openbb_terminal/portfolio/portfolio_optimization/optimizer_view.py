@@ -2225,17 +2225,20 @@ def display_ef(
 
     ax.plot(X1, Y1, color="b")
 
-    print(port.risk)
-
     if plot_tickers:
         ticker_plot = pd.DataFrame(columns=["ticker", "var"])
         for ticker in port.cov.columns:
+            weight_df = pd.DataFrame({"weights": 1}, index=[ticker])
+            risk = rp.Sharpe_Risk(
+                weight_df,
+                cov=port.cov[ticker][ticker],
+                returns=stock_returns.loc[:, [ticker]],
+                rm=risk_choices[risk_measure],
+                rf=risk_free_rate,
+                alpha=alpha,
+            )
             ticker_plot = ticker_plot.append(
-                {
-                    "ticker": ticker,
-                    "var": port.cov[ticker][ticker] ** 0.5
-                    * math.sqrt(time_factor[freq.upper()]),
-                },
+                {"ticker": ticker, "var": risk},
                 ignore_index=True,
             )
         ticker_plot = ticker_plot.set_index("ticker")
