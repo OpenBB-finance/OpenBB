@@ -403,7 +403,21 @@ def df_values(
     return values.tolist()
 
 
-def replace_df(name, row):
+def replace_df(name: str, row: pd.Series) -> pd.Series:
+    """Replaces text in pandas row based on color functions
+
+    Return
+    ----------
+    name : str
+        The name of the row
+    row : pd.Series
+        The original row
+
+    Parameters
+    ----------
+    new_row : pd.Series
+        The new formatted row
+    """
     for i, item in enumerate(row):
         if name == "Mscore":
             row[i] = color_mscore(item)
@@ -416,7 +430,18 @@ def replace_df(name, row):
 
 
 def color_mscore(value: str) -> str:
-    """Adds color to mscore dataframe values"""
+    """Adds color to mscore dataframe values
+
+    Parameters
+    ----------
+    value : str
+        The string value
+
+    Returns
+    ----------
+    new_value : str
+        The string formatted with rich color
+    """
     value_float = float(value)
     if value_float <= -2.22:
         return f"[green]{value_float:.2f}[/green]"
@@ -426,7 +451,17 @@ def color_mscore(value: str) -> str:
 
 
 def color_zscore_mckee(value: str) -> str:
-    """Adds color to mckee or zscore dataframe values"""
+    """Adds color to mckee or zscore dataframe values
+    Parameters
+    ----------
+    value : str
+        The string value
+
+    Returns
+    ----------
+    new_value : str
+        The string formatted with rich color
+    """
     value_float = float(value)
     if value_float < 0.5:
         return f"[red]{value_float:.2f}[/red]"
@@ -547,12 +582,8 @@ def get_fraud_ratios(ticker: str, detail: bool = False) -> pd.DataFrame:
     if not detail:
         details = ["DSRI", "GMI", "AQI", "SGI", "DEPI", "SGAI", "LVGI", "TATA"]
         fraud_years = fraud_years.drop(details)
-    df_color = fraud_years.copy()
-    for column in df_color:
-        df_color[column] = df_color[column].astype(str)
-    df_color = df_color.apply(lambda x: replace_df(x.name, x), axis=1)
 
-    return fraud_years, df_color
+    return fraud_years
 
 
 @log_start_end(log=logger)

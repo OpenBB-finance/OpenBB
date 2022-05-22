@@ -237,17 +237,21 @@ def display_fraud(
     detail : bool
         Whether to show the details for the mscore
     """
-    try:
-        df, df_color = av_model.get_fraud_ratios(ticker, detail=detail)
-        df_show = df_color if color else df
-    except ValueError:
-        console.print(
-            "[red]AlphaVantage API limit reached, please wait one minute[/red]\n"
-        )
+    df = av_model.get_fraud_ratios(ticker, detail=detail)
+
+    if df.empty:
+        console.print("")
         return
+
+    df_color = df.copy()
+    if color:
+        for column in df_color:
+            df_color[column] = df_color[column].astype(str)
+        df_color = df_color.apply(lambda x: av_model.replace_df(x.name, x), axis=1)
+
     print_rich_table(
-        df_show,
-        headers=list(df_show.columns),
+        df_color,
+        headers=list(df_color.columns),
         show_index=True,
         title="Fraud Risk Statistics",
     )
