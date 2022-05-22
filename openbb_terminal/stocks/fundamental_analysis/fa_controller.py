@@ -789,14 +789,6 @@ Ticker: [/param] {self.ticker} [cmds]
             default=False,
             help="Shows the details for calculating the mscore",
         )
-        parser.add_argument(
-            "-c",
-            "--color",
-            action="store_false",
-            dest="color",
-            default=True,
-            help="Whether to show green for good, yellow for moderate, and red for bad",
-        )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
@@ -804,7 +796,6 @@ Ticker: [/param] {self.ticker} [cmds]
             av_view.display_fraud(
                 ticker=self.ticker,
                 export=ns_parser.exp,
-                color=ns_parser.color,
                 detail=ns_parser.detail,
             )
 
