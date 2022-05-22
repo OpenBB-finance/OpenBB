@@ -28,7 +28,7 @@ from openbb_terminal.helper_funcs import (
 from openbb_terminal.loggers import setup_logging
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.terminal_helper import (
     about_us,
     bootup,
@@ -98,46 +98,46 @@ class TerminalController(BaseController):
 
     def print_help(self):
         """Print help"""
-        console.init_menu("")
-        console.add_raw_translation("home")
-        console.add_cmd_translation("cls")
-        console.add_cmd_translation("help")
-        console.add_cmd_translation("quit")
-        console.add_cmd_translation("exit")
-        console.add_cmd_translation("reset")
-        console.add_cmd_translation("resources")
-        console.add_cmd_translation("support")
-        console.add_raw("\n")
-        console.add_cmd_translation("about")
-        console.add_cmd_translation("update")
-        console.add_cmd_translation("tz")
-        console.add_cmd_translation("export")
-        console.add_cmd_translation("exe")
-        console.add_menu_translation("settings")
-        console.add_menu_translation("keys")
-        console.add_raw("\n")
-        console.add_param_translation(
-            "export_folder",
+        mt = MenuText("")
+        mt.add_raw_translation("home")
+        mt.add_cmd_translation("cls")
+        mt.add_cmd_translation("help")
+        mt.add_cmd_translation("quit")
+        mt.add_cmd_translation("exit")
+        mt.add_cmd_translation("reset")
+        mt.add_cmd_translation("resources")
+        mt.add_cmd_translation("support")
+        mt.add_raw("\n")
+        mt.add_cmd_translation("about")
+        mt.add_cmd_translation("update")
+        mt.add_cmd_translation("tz")
+        mt.add_cmd_translation("export")
+        mt.add_cmd_translation("exe")
+        mt.add_menu_translation("settings")
+        mt.add_menu_translation("keys")
+        mt.add_raw("\n")
+        mt.add_param_translation(
+            "_export_folder",
             obbff.EXPORT_FOLDER_PATH
             if obbff.EXPORT_FOLDER_PATH
             else "DEFAULT (folder: exports/)",
         )
-        console.add_param_translation("timezone", get_user_timezone_or_invalid())
-        console.add_raw("\n")
-        console.add_menu_translation("stocks")
-        console.add_menu_translation("crypto")
-        console.add_menu_translation("etf")
-        console.add_menu_translation("economy")
-        console.add_menu_translation("forex")
-        console.add_menu_translation("funds")
-        console.add_menu_translation("alternative")
-        console.add_raw("\n")
-        console.add_info_translation("others")
-        console.add_menu_translation("econometrics")
-        console.add_menu_translation("portfolio")
-        console.add_menu_translation("dashboards")
-        console.add_menu_translation("reports")
-        console.print(text=console.menu_text, menu="Home")
+        mt.add_param_translation("_timezone", get_user_timezone_or_invalid())
+        mt.add_raw("\n")
+        mt.add_menu_translation("stocks")
+        mt.add_menu_translation("crypto")
+        mt.add_menu_translation("etf")
+        mt.add_menu_translation("economy")
+        mt.add_menu_translation("forex")
+        mt.add_menu_translation("funds")
+        mt.add_menu_translation("alternative")
+        mt.add_raw("\n")
+        mt.add_info_translation("others")
+        mt.add_menu_translation("econometrics")
+        mt.add_menu_translation("portfolio")
+        mt.add_menu_translation("dashboards")
+        mt.add_menu_translation("reports")
+        console.print(text=mt.menu_text, menu="Home")
 
     def call_update(self, _):
         """Process update command"""

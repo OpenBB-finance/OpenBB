@@ -26,7 +26,7 @@ from openbb_terminal.helper_classes import AllowArgsWithWhiteSpace
 from openbb_terminal.helper_funcs import choice_check_after_action
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
-from openbb_terminal.rich_config import console, translate
+from openbb_terminal.rich_config import console, translate, MenuText
 from openbb_terminal.stocks import stocks_helper
 
 # pylint: disable=R1710,import-outside-toplevel,R0913,R1702,no-member
@@ -107,36 +107,36 @@ class StocksController(StockBaseController):
             )
         else:
             stock_text = f"{s_intraday} {self.ticker}"
-        console.init_menu("stocks/")
-        console.add_cmd_translation("search")
-        console.add_cmd_translation("load")
-        console.add_raw("\n")
-        console.add_param_translation("Stock", stock_text)
-        console.add_raw(self.add_info)
-        console.add_raw("\n")
-        console.add_cmd_translation("quote")
-        console.add_cmd_translation("candle")
-        console.add_cmd_translation("news", "News API")
-        console.add_cmd_translation("codes", "Polygon")
-        console.add_raw("\n")
-        console.add_menu_translation("th")
-        console.add_menu_translation("options")
-        console.add_menu_translation("disc")
-        console.add_menu_translation("sia")
-        console.add_menu_translation("dps")
-        console.add_menu_translation("scr")
-        console.add_menu_translation("ins")
-        console.add_menu_translation("gov")
-        console.add_menu_translation("ba")
-        console.add_menu_translation("ca")
-        console.add_menu_translation("fa", self.ticker)
-        console.add_menu_translation("res", self.ticker)
-        console.add_menu_translation("dd", self.ticker)
-        console.add_menu_translation("bt", self.ticker)
-        console.add_menu_translation("ta", self.ticker)
-        console.add_menu_translation("qa", self.ticker)
-        console.add_menu_translation("pred", self.ticker)
-        console.print(text=console.menu_text, menu="Stocks")
+        mt = MenuText("stocks/")
+        mt.add_cmd_translation("search")
+        mt.add_cmd_translation("load")
+        mt.add_raw("\n")
+        mt.add_param_translation("Stock", stock_text)
+        mt.add_raw(self.add_info)
+        mt.add_raw("\n")
+        mt.add_cmd_translation("quote")
+        mt.add_cmd_translation("candle")
+        mt.add_cmd_translation("news", "News API")
+        mt.add_cmd_translation("codes", "Polygon")
+        mt.add_raw("\n")
+        mt.add_menu_translation("th")
+        mt.add_menu_translation("options")
+        mt.add_menu_translation("disc")
+        mt.add_menu_translation("sia")
+        mt.add_menu_translation("dps")
+        mt.add_menu_translation("scr")
+        mt.add_menu_translation("ins")
+        mt.add_menu_translation("gov")
+        mt.add_menu_translation("ba")
+        mt.add_menu_translation("ca")
+        mt.add_menu_translation("fa", self.ticker)
+        mt.add_menu_translation("res", self.ticker)
+        mt.add_menu_translation("dd", self.ticker)
+        mt.add_menu_translation("bt", self.ticker)
+        mt.add_menu_translation("ta", self.ticker)
+        mt.add_menu_translation("qa", self.ticker)
+        mt.add_menu_translation("pred", self.ticker)
+        console.print(text=mt.menu_text, menu="Stocks")
 
     def custom_reset(self):
         """Class specific component of reset command"""

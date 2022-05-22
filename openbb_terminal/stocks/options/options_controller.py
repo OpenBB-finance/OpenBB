@@ -22,7 +22,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import MenuText, console
 from openbb_terminal.stocks.options import (
     alphaquery_view,
     barchart_view,
@@ -173,38 +173,43 @@ class OptionsController(BaseController):
 
     def print_help(self):
         """Print help."""
-        has_ticker_start = "[cmds]" if self.ticker and self.selected_date else "[dim]"
-        has_ticker_end = "[/cmds]" if self.ticker and self.selected_date else "[/dim]"
-        help_text = f"""[cmds]
-    unu              show unusual options activity [src][Fdscanner.com][/src]
-    calc             basic call/put PnL calculator[/cmds]
-[menu]
->   screen           screens tickers based on preset [src][Syncretism.io][/src]
-[/menu][cmds]
-    load             load new ticker[/cmds]{('[dim]', '[cmds]')[bool(self.ticker)]}
-    exp              see and set expiration dates{('[/dim]', '[/cmds]')[bool(self.ticker)]}
-[param]
-Ticker: [/param]{self.ticker or ""}[param]
-Expiry: [/param]{self.selected_date or ""}
-{has_ticker_start}
-    pcr              display put call ratio for ticker [src][AlphaQuery.com][/src]
-    info             display option information (volatility, IV rank etc) [src][Barchart.com][/src]
-    chains           display option chains with greeks [src][Tradier][/src]
-    oi               plot open interest [src][Tradier/YFinance][/src]
-    vol              plot volume [src][Tradier/YFinance][/src]
-    voi              plot volume and open interest [src][Tradier/YFinance][/src]
-    hist             plot option history [src][Tradier][/src]
-    vsurf            show 3D volatility surface [src][Yfinance][/src]
-    grhist           plot option greek history [src][Syncretism.io][/src]
-    plot             plot variables provided by the user [src][Yfinance][/src]
-    parity           shows whether options are above or below expected price [src][Yfinance][/src]
-    binom            shows the value of an option using binomial options pricing [src][Yfinance][/src]
-    greeks           shows the greeks for a given option [src][Yfinance][/src]
-
->   pricing          shows options pricing and risk neutral valuation [src][Yfinance][/src]
->   hedge            shows portfolio weights in order to neutralise delta [src][Yfinance][/src]
-{has_ticker_end}"""
-        console.print(text=help_text, menu="Stocks - Options")
+        mt = MenuText("stocks/options/")
+        mt.add_cmd_translation("unu", "Fdscanner")
+        mt.add_cmd_translation("calc")
+        mt.add_raw("\n")
+        mt.add_menu_translation("screen")
+        mt.add_raw("\n")
+        mt.add_cmd_translation("load")
+        mt.add_cmd_translation("exp", "", self.ticker)
+        mt.add_raw("\n")
+        mt.add_param_translation("_ticker", self.ticker or "")
+        mt.add_param_translation("_expiry", self.selected_date or "")
+        mt.add_raw("\n")
+        mt.add_cmd_translation("pcr", "AlphaQuery", self.ticker and self.selected_date)
+        mt.add_cmd_translation("info", "Barchart", self.ticker and self.selected_date)
+        mt.add_cmd_translation("chains", "Tradier", self.ticker and self.selected_date)
+        mt.add_cmd_translation(
+            "oi", "Tradier/YFinance", self.ticker and self.selected_date
+        )
+        mt.add_cmd_translation(
+            "vol", "Tradier/YFinance", self.ticker and self.selected_date
+        )
+        mt.add_cmd_translation(
+            "voi", "Tradier/YFinance", self.ticker and self.selected_date
+        )
+        mt.add_cmd_translation("hist", "Tradier", self.ticker and self.selected_date)
+        mt.add_cmd_translation("vsurf", "Yfinance", self.ticker and self.selected_date)
+        mt.add_cmd_translation(
+            "grhist", "Syncretism", self.ticker and self.selected_date
+        )
+        mt.add_cmd_translation("plot", "Yfinance", self.ticker and self.selected_date)
+        mt.add_cmd_translation("parity", "Yfinance", self.ticker and self.selected_date)
+        mt.add_cmd_translation("binom", "Yfinance", self.ticker and self.selected_date)
+        mt.add_cmd_translation("greeks", "Yfinance", self.ticker and self.selected_date)
+        mt.add_raw("\n")
+        mt.add_menu_translation("pricing", self.ticker and self.selected_date)
+        mt.add_menu_translation("hedge", self.ticker and self.selected_date)
+        console.print(text=mt.menu_text, menu="Stocks - Options")
 
     def custom_reset(self):
         """Class specific component of reset command"""

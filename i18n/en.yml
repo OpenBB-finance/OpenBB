@@ -32,8 +32,8 @@ en:
   exe: execute automated routine script
   settings: set feature flags and style charts
   keys: set API keys and check their validity
-  export_folder: Export Folder
-  timezone: Timezone
+  _export_folder: Export Folder
+  _timezone: Timezone
   others: Others
   stocks: access historical pricing data, options, sector and industry, and overall due diligence
   crypto: dive into onchain data, tokenomics, circulation supply, nfts and more
@@ -88,3 +88,32 @@ en:
   stocks/ta: technical analysis,           ema, macd, rsi, adx, bbands, obv
   stocks/qa: quantitative analysis,        decompose, cusum, residuals analysis
   stocks/pred: prediction techniques,        regression, arima, rnn, lstm
+  stocks/options/unu: show unusual options activity
+  stocks/options/calc: basic call/put PnL calculator
+  stocks/options/screen: screens tickers based on preset
+  stocks/options/load: load new ticker
+  stocks/options/exp: see and set expiration dates
+  stocks/options/_ticker: Ticker
+  stocks/options/_expiry: Expiry
+  stocks/options/pcr: display put call ratio for ticker
+  stocks/options/info: display option information (volatility, IV rank etc)
+  stocks/options/chains: display option chains with greeks
+  stocks/options/oi: plot open interest
+  stocks/options/vol: plot volume
+  stocks/options/voi: plot volume and open interest
+  stocks/options/hist: plot option history
+  stocks/options/vsurf: show 3D volatility surface
+  stocks/options/grhist: plot option greek history
+  stocks/options/plot: plot variables provided by the user
+  stocks/options/parity: shows whether options are above or below expected price
+  stocks/options/binom: shows the value of an option using binomial options pricing
+  stocks/options/greeks: shows the greeks for a given option
+  stocks/options/pricing: shows options pricing and risk neutral valuation
+  stocks/options/hedge: shows portfolio weights in order to neutralise delta
+  stocks/options/screen/view: view available presets (or one in particular)
+  stocks/options/screen/set: set one of the available presets
+  stocks/options/screen/_preset: Preset
+  stocks/options/screen/scr: screen data from this preset
+  stocks/options/screen/_screened_tickers: Last screened tickers
+  stocks/options/screen/ca: take these to comparison analysis menu
+  stocks/options/screen/po: take these to portoflio optimization menu
