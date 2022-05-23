@@ -437,3 +437,30 @@ en:
   stocks/pred/lstm: Long-Short Term Memory
   stocks/pred/conv1d: 1D Convolutional Neural Network
   stocks/pred/mc: Monte-Carlo simulations
+  crypto/load: load a specific cryptocurrency for analysis
+  crypto/find: find coins
+  crypto/_coin: Coin
+  crypto/_source: Source
+  crypto/headlines: crypto sentiment from 15+ major news headlines
+  crypto/chart: view a candle chart for a specific cryptocurrency
+  crypto/prt: potential returns tool - check how much upside if ETH reaches BTC market cap
+  crypto/disc: discover trending cryptocurrencies,     top gainers, losers, top sentiment
+  crypto/ov: overview of the cryptocurrencies,       market cap, DeFi, latest news, top exchanges, stables
+  crypto/onchain: information on different blockchains,   eth gas fees, whale alerts, DEXes info
+  crypto/defi: decentralized finance information,      dpi, llama, tvl, lending, borrow, funding
+  crypto/tools: explore different tools                 apytoapr, il
+  crypto/nft: non-fungible tokens,                    today drops
+  crypto/dd: due-diligence for loaded coin,          coin information, social media, market stats
+  crypto/ta: technical analysis for loaded coin,     ema, macd, rsi, adx, bbands, obv
+  crypto/pred: prediction techniques,                  regression, arima, rnn, lstm, conv1d, monte carlo
+  crypto/qa: quantitative analysis                   decompose, cusum, residuals analysis
+  crypto/disc/cgtop: top coins (with or without category)
+  crypto/disc/cgtrending: trending coins
+  crypto/disc/cggainers: top gainers - coins which price gained the most in given period
+  crypto/disc/cglosers: top losers - coins which price dropped the most in given period
+  crypto/disc/cpsearch: search for coins
+  crypto/disc/cmctop: top coins
+  crypto/disc/drnft: top non fungible tokens
+  crypto/disc/drgames: top blockchain games
+  crypto/disc/drdapps: top decentralized apps
+  crypto/disc/drdex: top decentralized exchanges
