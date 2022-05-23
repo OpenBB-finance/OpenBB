@@ -105,6 +105,7 @@ Riskfolio-Lib = "^3.1.1"
 llvmlite = {version = "^0.38.1", extras = ["prediction"]}
 torch = {version = "^1.11.0", extras = ["prediction"]}
 u8darts = {extras = ["prediction"], version = "^0.19.0"}
+fundamentalanalysis = {version = "^0.2.14", extras = ["prediction"]}
 
 
 [tool.poetry.dev-dependencies]
