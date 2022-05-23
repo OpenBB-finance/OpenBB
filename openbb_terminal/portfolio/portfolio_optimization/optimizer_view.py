@@ -2237,6 +2237,10 @@ def display_ef(
                 rf=risk_free_rate,
                 alpha=alpha,
             )
+
+            if risk_choices[risk_measure] not in ["MDD", "ADD", "CDaR", "EDaR", "UCI"]:
+                risk = risk * time_factor[freq.upper()] ** 0.5
+
             ticker_plot = ticker_plot.append(
                 {"ticker": ticker, "var": risk},
                 ignore_index=True,
@@ -2249,7 +2253,6 @@ def display_ef(
         ax.scatter(ticker_plot["var"], ticker_plot["ret"])
         for row in ticker_plot.iterrows():
             ax.annotate(row[0], (row[1]["var"], row[1]["ret"]))
-
     ax.set_title(f"Efficient Frontier simulating {n_portfolios} portfolios")
     ax.legend(loc="best", scatterpoints=1)
     theme.style_primary_axis(ax)
