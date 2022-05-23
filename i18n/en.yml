@@ -239,3 +239,16 @@ en:
   stocks/ins/tist: top insider sales today
   stocks/ins/tispw: top insider sales past week
   stocks/ins/tispm: top insider sales past month
+  stocks/gov/_explore: Explore
+  stocks/gov/lasttrades: last trades
+  stocks/gov/topbuys: show most purchased stocks
+  stocks/gov/topsells: show most sold stocks
+  stocks/gov/lastcontracts: show last government contracts given out
+  stocks/gov/qtrcontracts: quarterly government contracts analysis
+  stocks/gov/toplobbying: top corporate lobbying tickers
+  stocks/gov/load: load a specific ticker for analysis
+  stocks/gov/_ticker: Ticker
+  stocks/gov/gtrades: show government trades
+  stocks/gov/contracts: show government contracts
+  stocks/gov/histcont: historical quarterly government contracts
+  stocks/gov/lobbying: corporate lobbying details

@@ -102,7 +102,7 @@ class InsiderController(StockBaseController):
 
     def print_help(self):
         """Print help"""
-        mt = MenuText("stocks/ins/")
+        mt = MenuText("stocks/ins/", 80)
         mt.add_cmd_translation("view")
         mt.add_cmd_translation("set")
         mt.add_raw("\n")

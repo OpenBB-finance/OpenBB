@@ -107,7 +107,7 @@ class StocksController(StockBaseController):
             )
         else:
             stock_text = f"{s_intraday} {self.ticker}"
-        mt = MenuText("stocks/")
+        mt = MenuText("stocks/", 80)
         mt.add_cmd_translation("search")
         mt.add_cmd_translation("load")
         mt.add_raw("\n")

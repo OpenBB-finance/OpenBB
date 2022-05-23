@@ -48,9 +48,10 @@ def no_panel(renderable, *args, **kwargs):  # pylint: disable=unused-argument
 class MenuText:
     """Create menu text with rich colors to be displayed by terminal"""
 
-    def __init__(self, path: str = ""):
+    def __init__(self, path: str = "", col_src: int = 100):
         self.menu_text = ""
         self.menu_path = path
+        self.col_src = col_src
 
     def add_raw(self, raw: str):
         self.menu_text += raw
@@ -69,17 +70,15 @@ class MenuText:
             space = ""
         self.menu_text += f"[param]{par}{space}:[/param] {value}\n"
 
-    def add_cmd_translation(
-        self, key: str, source: str = "", cond: bool = True, col_src: int = 100
-    ):
+    def add_cmd_translation(self, key: str, source: str = "", cond: bool = True):
         spacing = (23 - (len(key) + 4)) * " "
         if cond:
             cmd = f"[cmds]    {key}{spacing}{i18n.t(self.menu_path + key)}[/cmds]"
         else:
             cmd = f"[unvl]    {key}{spacing}{i18n.t(self.menu_path + key)}[/unvl]"
         if source:
-            if col_src > len(cmd):
-                space = (col_src - len(cmd)) * " "
+            if self.col_src > len(cmd):
+                space = (self.col_src - len(cmd)) * " "
             else:
                 space = " "
             cmd += f"{space}[src][{source}][/src]"
@@ -87,7 +86,7 @@ class MenuText:
         self.menu_text += cmd + "\n"
 
     def add_menu_translation(self, key: str, cond: bool = True):
-        spacing = (22 - (len(key) + 4)) * " "
+        spacing = (23 - (len(key) + 4)) * " "
         if cond:
             self.menu_text += (
                 f"[menu]>   {key}{spacing}{i18n.t(self.menu_path + key)}[/menu]\n"
