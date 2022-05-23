@@ -61,13 +61,18 @@ class MenuText:
     def add_info_translation(self, info: str):
         self.menu_text += f"[info]{i18n.t(self.menu_path + info)}:[/info]\n"
 
-    def add_param_translation(self, param: str, value: str):
-        self.menu_text += f"[param]{i18n.t(self.menu_path + param)}:[/param] {value}\n"
+    def add_param_translation(self, param: str, value: str, spacing: int = 0):
+        par = i18n.t(self.menu_path + param)
+        if spacing > len(par):
+            space = (spacing - len(par)) * " "
+        else:
+            space = ""
+        self.menu_text += f"[param]{par}{space}:[/param] {value}\n"
 
     def add_cmd_translation(self, key: str, source: str = "", cond: bool = True):
         if source:
             source = f" [src][{source}][/src]"
-        spacing = (22 - (len(key) + 4)) * " "
+        spacing = (23 - (len(key) + 4)) * " "
         if cond:
             self.menu_text += f"[cmds]    {key}{spacing}{i18n.t(self.menu_path + key)}{source}[/cmds]\n"
         else:

@@ -158,3 +158,43 @@ en:
   stocks/disc/hotpenny: today's hot penny stocks
   stocks/disc/rtat: top 10 retail traded stocks per day
   stocks/disc/divcal: dividend calendar for selected date
+  stocks/sia/load: load a specific ticker and all it's corresponding parameters
+  stocks/sia/clear: clear all or one of industry, sector, country and market cap parameters
+  stocks/sia/industry: see existing industries, or set industry if arg specified
+  stocks/sia/sector: see existing sectors, or set sector if arg specified
+  stocks/sia/country: see existing countries, or set country if arg specified
+  stocks/sia/mktcap: set mktcap between nano, micro, small, mid, large or mega
+  stocks/sia/exchange: revert exclude international exchanges flag
+  stocks/sia/period: set period between annual, quarterly or trailing
+  stocks/sia/_industry: Industry
+  stocks/sia/_sector: Sector
+  stocks/sia/_country: Country
+  stocks/sia/_mktcap: Market Cap
+  stocks/sia/_exclude_exchanges: Exclude Exchanges
+  stocks/sia/_period: Period
+  stocks/sia/statistics: Statistics
+  stocks/sia/cps: companies per Sector based on Country (and Market Cap)
+  stocks/sia/cpic: companies per Industry based on Country (and Market Cap)
+  stocks/sia/cpis: companies per Industry based on Sector (and Market Cap)
+  stocks/sia/cpcs: companies per Country based on Sector (and Market Cap)
+  stocks/sia/cpci: companies per Country based on Industry (and Market Cap)
+  stocks/sia/financials: Financials
+  stocks/sia/financials_loaded: Financials - loaded data (fast mode)
+  stocks/sia/sama: see all metrics available
+  stocks/sia/metric: visualize financial metric across filters selected
+  stocks/sia/satma: see all metrics available over time
+  stocks/sia/vis: visualize financial metric across filters selected
+  stocks/sia/_returned_tickers: Returned tickers
+  stocks/sia/ca: take these to comparison analysis menu
+  stocks/dps/load: load a specific stock ticker for analysis
+  stocks/dps/shorted: show most shorted stocks
+  stocks/dps/ctb: stocks with highest cost to borrow
+  stocks/dps/hsi: show top high short interest stocks of over 20% ratio
+  stocks/dps/prom: promising tickers based on dark pool shares regression
+  stocks/dps/pos: dark pool short position
+  stocks/dps/sidtc: short interest and days to cover
+  stocks/dps/_ticker: Ticker
+  stocks/dps/dpotc: dark pools (ATS) vs OTC data
+  stocks/dps/ftd: fails-to-deliver data
+  stocks/dps/spos: net short vs position
+  stocks/dps/psi: price vs short interest volume

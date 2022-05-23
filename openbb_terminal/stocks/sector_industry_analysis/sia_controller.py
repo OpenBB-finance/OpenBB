@@ -19,7 +19,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.stocks.comparison_analysis import ca_controller
 from openbb_terminal.stocks.sector_industry_analysis import (
@@ -268,52 +268,44 @@ class SectorIndustryAnalysisController(BaseController):
 
     def print_help(self):
         """Print help"""
-        s = "[unvl]" if not self.sector else ""
-        i = "[unvl]" if not self.industry else ""
-        c = "[unvl]" if not self.country else ""
-        m = "[unvl]" if not self.mktcap else ""
-        s_ = "[/unvl]" if not self.sector else ""
-        i_ = "[/unvl]" if not self.industry else ""
-        c_ = "[/unvl]" if not self.country else ""
-        m_ = "[/unvl]" if not self.mktcap else ""
-        has_no_tickers = "[unvl]" if len(self.tickers) == 0 else "[menu]"
-        has_no_tickers_ = "[unvl/]" if len(self.tickers) == 0 else "[/menu]"
-        help_text = f"""[cmds]
-    load             load a specific ticker and all it's corresponding parameters
-
-    clear            clear all or one of industry, sector, country and market cap parameters
-    industry         see existing industries, or set industry if arg specified
-    sector           see existing sectors, or set sector if arg specified
-    country          see existing countries, or set country if arg specified
-    mktcap           set mktcap between nano, micro, small, mid, large or mega
-    exchange         revert exclude international exchanges flag
-    period           set period between annual, quarterly or trailing [src][StockAnalysis][/src]
-[/cmds]
-[param]Industry          : [/param]{self.industry}
-[param]Sector            : [/param]{self.sector}
-[param]Country           : [/param]{self.country}
-[param]Market Cap        : [/param]{self.mktcap}
-[param]Exclude Exchanges : [/param]{self.exclude_exchanges}
-[param]Period            : [/param]{self.period}
-
-[info]Statistics[/info]{c}[cmds]
-    cps              companies per Sector based on Country{c_}{m} and Market Cap{m_}{c}
-    cpic             companies per Industry based on Country{c_}{m} and Market Cap{m_}{s}
-    cpis             companies per Industry based on Sector{s_}{m} and Market Cap{m_}{s}
-    cpcs             companies per Country based on Sector{s_}{m} and Market Cap{m_}{i}
-    cpci             companies per Country based on Industry{i_}{m} and Market Cap{m_}[/cmds]
-
-[info]Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}[/info] [src][Yahoo Finance][/src] [cmds]
-    sama             see all metrics available
-    metric           visualize financial metric across filters selected[/cmds]
-[info]Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}[/info] [src][StockAnalysis][/src] [cmds]
-    satma            see all metrics available over time
-    vis              visualize financial metric across filters selected[/cmds]
-{has_no_tickers}
-[param]Returned tickers: [/param]{', '.join(self.tickers)}
->   ca               take these to comparison analysis menu
-{has_no_tickers_}"""
-        console.print(text=help_text, menu="Stocks - Sector and Industry Analysis")
+        mt = MenuText("stocks/sia/")
+        mt.add_cmd_translation("load")
+        mt.add_raw("\n")
+        mt.add_cmd_translation("clear")
+        mt.add_cmd_translation("industry")
+        mt.add_cmd_translation("sector")
+        mt.add_cmd_translation("country")
+        mt.add_cmd_translation("mktcap")
+        mt.add_cmd_translation("exchange")
+        mt.add_cmd_translation("period", "StockAnalysis")
+        mt.add_raw("\n")
+        mt.add_param_translation("_industry", self.industry, 18)
+        mt.add_param_translation("_sector", self.sector, 18)
+        mt.add_param_translation("_country", self.country, 18)
+        mt.add_param_translation("_mktcap", self.mktcap, 18)
+        mt.add_param_translation("_exclude_exchanges", self.exclude_exchanges, 18)
+        mt.add_param_translation("_period", self.period, 18)
+        mt.add_raw("\n")
+        mt.add_info_translation("statistics")
+        mt.add_cmd_translation("cps", "", self.country)
+        mt.add_cmd_translation("cpic", "", self.country)
+        mt.add_cmd_translation("cpis", "", self.sector)
+        mt.add_cmd_translation("cpcs", "", self.sector)
+        mt.add_cmd_translation("cpci", "", self.industry)
+        mt.add_raw("\n")
+        if self.stocks_data:
+            mt.add_info_translation("financials")
+        else:
+            mt.add_info_translation("financials_loaded")
+        mt.add_cmd_translation("sama", "Yahoo Finance")
+        mt.add_cmd_translation("metric", "Yahoo Finance")
+        mt.add_cmd_translation("satma", "StockAnalysis")
+        mt.add_cmd_translation("vis", "StockAnalysis")
+        mt.add_raw("\n")
+        mt.add_param_translation("_returned_tickers", ", ".join(self.tickers))
+        mt.add_menu_translation("ca", self.tickers)
+        mt.add_raw("\n")
+        console.print(text=mt.menu_text, menu="Stocks - Sector and Industry Analysis")
 
     def custom_reset(self):
         """Class specific component of reset command"""
