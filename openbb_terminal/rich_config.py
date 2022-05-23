@@ -69,14 +69,22 @@ class MenuText:
             space = ""
         self.menu_text += f"[param]{par}{space}:[/param] {value}\n"
 
-    def add_cmd_translation(self, key: str, source: str = "", cond: bool = True):
-        if source:
-            source = f" [src][{source}][/src]"
+    def add_cmd_translation(
+        self, key: str, source: str = "", cond: bool = True, col_src: int = 100
+    ):
         spacing = (23 - (len(key) + 4)) * " "
         if cond:
-            self.menu_text += f"[cmds]    {key}{spacing}{i18n.t(self.menu_path + key)}{source}[/cmds]\n"
+            cmd = f"[cmds]    {key}{spacing}{i18n.t(self.menu_path + key)}[/cmds]"
         else:
-            self.menu_text += f"[unvl]    {key}{spacing}{i18n.t(self.menu_path + key)}{source}[/unvl]\n"
+            cmd = f"[unvl]    {key}{spacing}{i18n.t(self.menu_path + key)}[/unvl]"
+        if source:
+            if col_src > len(cmd):
+                space = (col_src - len(cmd)) * " "
+            else:
+                space = " "
+            cmd += f"{space}[src][{source}][/src]"
+
+        self.menu_text += cmd + "\n"
 
     def add_menu_translation(self, key: str, cond: bool = True):
         spacing = (22 - (len(key) + 4)) * " "
