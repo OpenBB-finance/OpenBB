@@ -2225,6 +2225,7 @@ def display_ef(
 
     ax.plot(X1, Y1, color="b")
 
+    plot_tickers = True
     if plot_tickers:
         ticker_plot = pd.DataFrame(columns=["ticker", "var"])
         for ticker in port.cov.columns:
@@ -2238,7 +2239,7 @@ def display_ef(
                 alpha=alpha,
             )
             ticker_plot = ticker_plot.append(
-                {"ticker": ticker, "var": risk},
+                {"ticker": ticker, "var": risk * time_factor[freq.upper()] ** 0.5},
                 ignore_index=True,
             )
         ticker_plot = ticker_plot.set_index("ticker")
