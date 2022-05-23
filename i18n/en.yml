@@ -360,3 +360,8 @@ en:
   stocks/dd/supplier: list of suppliers
   stocks/dd/customer: list of customers
   stocks/dd/arktrades: get ARK trades for ticker
+  stocks/bt/_ticker: Ticker
+  stocks/bt/whatif: what if you had bought X shares on day Y
+  stocks/bt/ema: buy when price exceeds EMA(l)
+  stocks/bt/ema_cross: buy when EMA(short) > EMA(long)
+  stocks/bt/rsi: buy when RSI < low and sell when RSI > high
