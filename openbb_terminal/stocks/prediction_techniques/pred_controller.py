@@ -23,7 +23,7 @@ from openbb_terminal.common.prediction_techniques import (
     pred_helper,
     regression_view,
     expo_view,
-    expo_model
+    expo_model,
 )
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
@@ -96,7 +96,7 @@ class PredictionTechniquesController(BaseController):
             choices["expo"]["-t"] = {c: {} for c in expo_model.TRENDS}
             choices["expo"]["-s"] = {c: {} for c in expo_model.SEASONS}
             choices["expo"]["-p"] = {c: {} for c in expo_model.PERIODS}
-            choices["expo"]["-dp"] = {c: {} for c in expo_model.DAMPED}
+            choices["expo"]["-dp"] = {c: {} for c in expo_model.DAMPEN}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
@@ -126,7 +126,7 @@ class PredictionTechniquesController(BaseController):
     lstm             Long-Short Term Memory
     conv1d           1D Convolutional Neural Network
     mc               Monte-Carlo simulations
-    expo             Probablistic Exponential Smoothing[/cmds]
+    expo             Probabilistic Exponential Smoothing[/cmds]
         """
         console.print(text=help_text, menu="Stocks - Prediction Techniques")
 
@@ -731,10 +731,10 @@ class PredictionTechniquesController(BaseController):
             add_help=False,
             prog="expo",
             description="""
-                Perform Probablistic Exponential Smoothing forecast
+                Perform Probabilistic Exponential Smoothing forecast
                 Trend: N: None, A: Additive, M: Multiplicative
                 Seasonality: N: None, A: Additive, M: Multiplicative
-                Damped: T: True, F: False
+                Dampen: T: True, F: False
             """,
         )
         parser.add_argument(
@@ -775,9 +775,9 @@ class PredictionTechniquesController(BaseController):
         )
         parser.add_argument(
             "-d",
-            "--damped",
+            "--dampen",
             action="store",
-            dest="damped",
+            dest="dampen",
             default="F",
             help="Dampening",
         )
@@ -801,7 +801,7 @@ class PredictionTechniquesController(BaseController):
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
-        
+
         if ns_parser:
             if self.target != "AdjClose":
                 console.print("Expo Prediction designed for AdjClose prices\n")
@@ -813,8 +813,8 @@ class PredictionTechniquesController(BaseController):
                 trend=ns_parser.trend,
                 seasonal=ns_parser.seasonal,
                 seasonal_periods=ns_parser.seasonal_periods,
-                damped = ns_parser.damped,
-                start_window = ns_parser.start_window,
-                forecast_horizon = ns_parser.forecast_horizon,
+                dampen=ns_parser.dampen,
+                start_window=ns_parser.start_window,
+                forecast_horizon=ns_parser.forecast_horizon,
                 export=ns_parser.export,
             )

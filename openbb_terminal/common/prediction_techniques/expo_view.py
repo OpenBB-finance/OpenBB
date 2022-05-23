@@ -1,9 +1,9 @@
-"""Probablistic Exponential Smoothing View"""
+"""Probabilistic Exponential Smoothing View"""
 __docformat__ = "numpy"
 
 import logging
 import os
-from typing import List, Union
+from typing import Union
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -22,6 +22,8 @@ from openbb_terminal.common.prediction_techniques.pred_helper import (
 )
 
 logger = logging.getLogger(__name__)
+# pylint: disable=too-many-arguments
+
 
 @log_start_end(log=logger)
 def display_expo_forecast(
@@ -30,13 +32,13 @@ def display_expo_forecast(
     trend: str,
     seasonal: str,
     seasonal_periods: int,
-    damped: str,
+    dampen: str,
     n_predict: int,
     start_window: float,
     forecast_horizon: int,
     export: str = "",
 ):
-    """Display Probalistic Exponential Smoothing forecast
+    """Display Probabilistic Exponential Smoothing forecast
 
     Parameters
     ----------
@@ -51,11 +53,11 @@ def display_expo_forecast(
     seasonal_periods: int
         Number of seasonal periods in a year
         If not set, inferred from frequency of the series.
-    damped: str
+    dampen: str
         Dampen the function
     n_predict: int
         Number of days to forecast
-    start_window: float 
+    start_window: float
         Size of sliding window from start of timeseries and onwards
     forecast_horizon: int
         Number of days to forecast when backtesting and retraining historical
@@ -75,7 +77,7 @@ def display_expo_forecast(
         trend,
         seasonal,
         seasonal_periods,
-        damped,
+        dampen,
         n_predict,
         start_window,
         forecast_horizon,
@@ -90,12 +92,12 @@ def display_expo_forecast(
             logger.error("Expected list of one axis item.")
             console.print("[red]Expected list of one axis item.\n[/red]")
             return
-        (ax,) = external_axes
+        ax = external_axes
 
     # ax = fig.get_axes()[0] # fig gives list of axes (only one for this case)
     ticker_series.plot(label="Actual AdjClose", figure=fig)
     historical_fcast_es.plot(
-        label="Backtest 3-Days ahead forecast (Exp. Smoothing)", figure=fig
+        label="Back-test 3-Days ahead forecast (Exp. Smoothing)", figure=fig
     )
     predicted_values.plot(
         label="Probabilistic Forecast", low_quantile=0.1, high_quantile=0.9, figure=fig

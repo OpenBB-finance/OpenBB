@@ -1,8 +1,8 @@
-""" Probablistic Exponential Smoothing Model"""
+"""Probabilistic Exponential Smoothing Model"""
 __docformat__ = "numpy"
 
 import logging
-from typing import Any, Tuple, Union, List
+from typing import Any, Tuple, Union
 
 import numpy as np
 import pandas as pd
@@ -19,7 +19,7 @@ from openbb_terminal.rich_config import console
 TRENDS = ["N", "A", "M"]
 SEASONS = ["N", "A", "M"]
 PERIODS = [4, 5, 7]
-DAMPED = ["T", "F"]
+DAMPEN = ["T", "F"]
 
 logger = logging.getLogger(__name__)
 
@@ -30,13 +30,13 @@ def get_expo_data(
     trend: str = "A",
     seasonal: str = "A",
     seasonal_periods: int = None,
-    damped: str = "F",
+    dampen: str = "F",
     n_predict: int = 30,
     start_window: float = 0.65,
     forecast_horizon: int = 3,
-) -> Tuple[List[float], List[float], Any, Any]:
+) -> Tuple[Any, Any, Any, Any, Any]:
 
-    """Performs Probabalistic Exponential Smoothing forecasting
+    """Performs Probabilistic Exponential Smoothing forecasting
     This is a wrapper around statsmodels Holt-Winters' Exponential Smoothing;
     we refer to this link for the original and more complete documentation of the parameters.
 
@@ -55,11 +55,11 @@ def get_expo_data(
     seasonal_periods: int
         Number of seasonal periods in a year
         If not set, inferred from frequency of the series.
-    damped: str
+    dampen: str
         Dampen the function
     n_predict: int
         Number of days to forecast
-    start_window: float 
+    start_window: float
         Size of sliding window from start of timeseries and onwards
     forecast_horizon: int
         Number of days to forecast when backtesting and retraining historical
@@ -86,7 +86,7 @@ def get_expo_data(
 
     ticker_series = filler.transform(ticker_series)
     ticker_series = ticker_series.astype(np.float32)
-    train, val = ticker_series.split_before(0.85)
+    _, val = ticker_series.split_before(0.85)
 
     if trend == "M":
         trend = ModelMode.MULTIPLICATIVE
@@ -102,7 +102,9 @@ def get_expo_data(
     else:  # Default
         seasonal = SeasonalityMode.ADDITIVE
 
-    damped = True if damped == "T" else False
+    damped = True
+    if dampen == "F":
+        damped = False
 
     # Model Init
     model_es = ExponentialSmoothing(
@@ -119,8 +121,8 @@ def get_expo_data(
 
     # Show forecast over validation # and then +n_predict afterwards sampled 10 times per point
     probabilistic_forecast = model_es.predict(n_predict, num_samples=500)
-    precision = mape(val, probabilistic_forecast) # mape = mean average precision error
-    console.print(f"model {model_es} obtains MAPE: {precision:.2f}% \n") # TODO
+    precision = mape(val, probabilistic_forecast)  # mape = mean average precision error
+    console.print(f"model {model_es} obtains MAPE: {precision:.2f}% \n")  # TODO
 
     return (
         ticker_series,

@@ -193,15 +193,16 @@ Several features in this project utilize Machine Learning. Machine Learning Pyth
      conda install -c conda-forge -c pytorch u8darts-torch
      poetry install -E prediction
      ```
+
    - On M1 mac (make sure you are using miniconda3 or miniforge3)
 
      ```bash
-     brew install cmake 
+     brew install cmake
      brew install gcc
      conda install -c apple tensorflow-deps
-     conda install -c apple tensorflow-deps==2.8.0 
+     conda install -c apple tensorflow-deps==2.8.0
      python -m pip install tensorflow-metal
-     conda update pip  
+     conda update pip
      conda update -c defaults numpy
      export GRPC_PYTHON_BUILD_SYSTEM_OPENSSL=1
      export GRPC_PYTHON_BUILD_SYSTEM_ZLIB=1
