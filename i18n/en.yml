@@ -537,3 +537,10 @@ en:
   crypto/defi/sreturn: terra blockchain staking returns history
   crypto/defi/lcsc: Luna circulating supply changes
   crypto/defi/anchor: anchor earnings data
+  crypto/tools/aprtoapy: convert apr to apy
+  crypto/tools/li: calculate impermanent loss
+  crypto/nft/today: today's NFT drops
+  crypto/nft/upcoming: upcoming NFT drops
+  crypto/nft/ongoing: Ongoing NFT drops
+  crypto/nft/newest: Recently NFTs added
+  crypto/nft/stats: check open sea collection stats
