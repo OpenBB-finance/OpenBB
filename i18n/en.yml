@@ -464,3 +464,51 @@ en:
   crypto/disc/drgames: top blockchain games
   crypto/disc/drdapps: top decentralized apps
   crypto/disc/drdex: top decentralized exchanges
+  crypto/ov/cgglobal: global crypto market info
+  crypto/ov/cgdefi: global DeFi market info
+  crypto/ov/cgstables: stablecoins
+  crypto/ov/cgexchanges: top crypto exchanges
+  crypto/ov/cgexrates: coin exchange rates
+  crypto/ov/cgindexes: crypto indexes
+  crypto/ov/cgderivatives: crypto derivatives
+  crypto/ov/cgcategories: crypto categories
+  crypto/ov/cghold: ethereum, bitcoin holdings overview statistics
+  crypto/ov/hm: crypto heatmap
+  crypto/ov/cpglobal: global crypto market info
+  crypto/ov/cpinfo: basic info about all coins available
+  crypto/ov/cpmarkets: market related info about all coins available
+  crypto/ov/cpexchanges: list all exchanges
+  crypto/ov/cpexmarkets: all available markets on given exchange
+  crypto/ov/cpplatforms: list blockchain platforms eg. ethereum, solana, kusama, terra
+  crypto/ov/cpcontracts: all smart contracts for given platform
+  crypto/ov/cbpairs: info about available trading pairs
+  crypto/ov/news: recent crypto news
+  crypto/ov/wf: overall withdrawal fees
+  crypto/ov/ewf: overall exchange withdrawal fees
+  crypto/ov/wfpe: crypto withdrawal fees per exchange
+  crypto/ov/altindex: altcoin season index (75% of top 50 coins perform better than BTC)
+  crypto/ov/btcrb: display bitcoin rainbow price chart (logarithmic regression)
+  crypto/ov/ch: lists major crypto-related hacks
+  crypto/ov/cr: crypto supply or borrow interest rates
+  crypto/onchain/hr: check blockchain hashrate over time (BTC or ETH)
+  crypto/onchain/btccp: displays BTC circulating supply
+  crypto/onchain/btcct: displays BTC confirmed transactions
+  crypto/onchain/gwei: check current eth gas fees
+  crypto/onchain/whales: check crypto wales transactions
+  crypto/onchain/lt: last trades by dex or month
+  crypto/onchain/dvcp: daily volume for crypto pair
+  crypto/onchain/tv: token volume on DEXes
+  crypto/onchain/ueat: unique ethereum addresses which made a transaction
+  crypto/onchain/ttcp: top traded crypto pairs on given decentralized exchange
+  crypto/onchain/baas: bid, ask prices, average spread for given crypto pair
+  crypto/onchain/_address: Ethereum address
+  crypto/onchain/_type: Address type
+  crypto/onchain/address: load ethereum address of token, account or transaction
+  crypto/onchain/top: top ERC20 tokens
+  crypto/onchain/balance: check ethereum balance
+  crypto/onchain/hist: ethereum balance history (transactions)
+  crypto/onchain/info: ERC20 token info
+  crypto/onchain/holders: top ERC20 token holders
+  crypto/onchain/th: ERC20 token history
+  crypto/onchain/prices: ERC20 token historical prices
+  crypto/onchain/tx: ethereum blockchain transaction info

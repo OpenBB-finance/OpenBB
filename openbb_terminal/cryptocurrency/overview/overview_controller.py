@@ -50,7 +50,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 
 logger = logging.getLogger(__name__)
 
@@ -149,43 +149,34 @@ class OverviewController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = """[cmds]
-[src][CoinGecko][/src]
-    cgglobal         global crypto market info
-    cgdefi           global DeFi market info
-    cgstables        stablecoins
-    cgexchanges      top crypto exchanges
-    cgexrates        coin exchange rates
-    cgindexes        crypto indexes
-    cgderivatives    crypto derivatives
-    cgcategories     crypto categories
-    cghold           ethereum, bitcoin holdings overview statistics
-    hm               crypto heatmap
-[src][CoinPaprika][/src]
-    cpglobal         global crypto market info
-    cpinfo           basic info about all coins available
-    cpmarkets        market related info about all coins available
-    cpexchanges      list all exchanges
-    cpexmarkets      all available markets on given exchange
-    cpplatforms      list blockchain platforms eg. ethereum, solana, kusama, terra
-    cpcontracts      all smart contracts for given platform
-[src][Coinbase][/src]
-    cbpairs          info about available trading pairs
-[src][CryptoPanic][/src]
-    news             recent crypto news
-[src][WithdrawalFees][/src]
-    wf               overall withdrawal fees
-    ewf              overall exchange withdrawal fees
-    wfpe             crypto withdrawal fees per exchange
-[src][BlockchainCenter][/src]
-    altindex         display altcoin season index (if 75% of top 50 coins perform better than BTC)
-    btcrb            display bitcoin rainbow price chart (logarithmic regression)
-[src][Rekt][/src]
-    ch               lists major crypto-related hacks
-[src][LoanScan][/src]
-    cr               crypto supply or borrow interest rates
-"""
-        console.print(text=help_text, menu="Cryptocurrency - Overview")
+        mt = MenuText("crypto/ov/", 105)
+        mt.add_cmd_translation("cgglobal", "CoinGecko")
+        mt.add_cmd_translation("cgdefi", "CoinGecko")
+        mt.add_cmd_translation("cgstables", "CoinGecko")
+        mt.add_cmd_translation("cgexchanges", "CoinGecko")
+        mt.add_cmd_translation("cgexrates", "CoinGecko")
+        mt.add_cmd_translation("cgindexes", "CoinGecko")
+        mt.add_cmd_translation("cgderivatives", "CoinGecko")
+        mt.add_cmd_translation("cgcategories", "CoinGecko")
+        mt.add_cmd_translation("cghold", "CoinGecko")
+        mt.add_cmd_translation("hm", "CoinGecko")
+        mt.add_cmd_translation("cpglobal", "CoinPaprika")
+        mt.add_cmd_translation("cpinfo", "CoinPaprika")
+        mt.add_cmd_translation("cpmarkets", "CoinPaprika")
+        mt.add_cmd_translation("cpexchanges", "CoinPaprika")
+        mt.add_cmd_translation("cpexmarkets", "CoinPaprika")
+        mt.add_cmd_translation("cpplatforms", "CoinPaprika")
+        mt.add_cmd_translation("cpcontracts", "CoinPaprika")
+        mt.add_cmd_translation("cbpairs", "Coinbase")
+        mt.add_cmd_translation("news", "CryptoPanic")
+        mt.add_cmd_translation("wf", "WithdrawalFees")
+        mt.add_cmd_translation("ewf", "WithdrawalFees")
+        mt.add_cmd_translation("wfpe", "WithdrawalFees")
+        mt.add_cmd_translation("altindex", "BlockchainCenter")
+        mt.add_cmd_translation("btcrb", "BlockchainCenter")
+        mt.add_cmd_translation("ch", "Rekt")
+        mt.add_cmd_translation("cr", "LoanScan")
+        console.print(text=mt.menu_text, menu="Cryptocurrency - Overview")
 
     @log_start_end(log=logger)
     def call_hm(self, other_args):
