@@ -110,22 +110,22 @@ class ScreenerController(BaseController):
         has_tickers_start = "[unvl]" if not self.screen_tickers else ""
         has_tickers_end = "[/unvl]" if not self.screen_tickers else ""
         help_text = f"""[cmds]
-    view          view available presets (defaults and customs)
-    set           set one of the available presets[/cmds]
+    view             view available presets (defaults and customs)
+    set              set one of the available presets[/cmds]
 
 [param]PRESET: [/param]{self.preset}[cmds]
 
-    historical     view historical price
-    overview       overview (e.g. Sector, Industry, Market Cap, Volume)
-    valuation      valuation (e.g. P/E, PEG, P/S, P/B, EPS this Y)
-    financial      financial (e.g. Dividend, ROA, ROE, ROI, Earnings)
-    ownership      ownership (e.g. Float, Insider Own, Short Ratio)
-    performance    performance (e.g. Perf Week, Perf YTD, Volatility M)
-    technical      technical (e.g. Beta, SMA50, 52W Low, RSI, Change)[/cmds]
+    historical        view historical price
+    overview          overview (e.g. Sector, Industry, Market Cap, Volume)
+    valuation         valuation (e.g. P/E, PEG, P/S, P/B, EPS this Y)
+    financial         financial (e.g. Dividend, ROA, ROE, ROI, Earnings)
+    ownership         ownership (e.g. Float, Insider Own, Short Ratio)
+    performance       performance (e.g. Perf Week, Perf YTD, Volatility M)
+    technical         technical (e.g. Beta, SMA50, 52W Low, RSI, Change)[/cmds]
     {has_tickers_start}
 [param]Last screened tickers: [/param]{', '.join(self.screen_tickers)}
->   ca             take these to comparison analysis menu
->   po             take these to portfolio optimization menu{has_tickers_end}
+>   ca                take these to comparison analysis menu
+>   po                take these to portfolio optimization menu{has_tickers_end}
         """
         console.print(text=help_text, menu="Stocks - Screener")
 

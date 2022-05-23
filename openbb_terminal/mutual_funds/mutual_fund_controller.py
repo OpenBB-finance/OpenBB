@@ -109,23 +109,23 @@ class FundController(BaseController):
             fund_string = ""
         help_text = f"""
 [src][Investing.com][/src][cmds]
-    country       set a country for filtering[/cmds]
+    country          set a country for filtering[/cmds]
 
 [param]Current Country: [/param]{self.country.title()}
 
 [src][Investing.com][/src][cmds]
-    overview      overview of top funds by country
-    search        search for Mutual Funds
-    load          load historical fund data[/cmds]
+    overview         overview of top funds by country
+    search           search for Mutual Funds
+    load             load historical fund data[/cmds]
 
 [param]Current Fund: [/param]{fund_string}
 {has_fund_start}
 [src][Investing.com][/src][cmds]
-    info          get fund information
-    plot          plot loaded historical fund data{has_fund_end}{has_fund_usa_start}
+    info             get fund information
+    plot             plot loaded historical fund data{has_fund_end}{has_fund_usa_start}
 [src][YFinance][/src]
-    sector        sector weightings
-    equity        equity holdings[/cmds]{has_fund_usa_end}
+    sector           sector weightings
+    equity           equity holdings[/cmds]{has_fund_usa_end}
     """
         if self.fund_symbol != "" and self.country == "sweden":
             help_text += """

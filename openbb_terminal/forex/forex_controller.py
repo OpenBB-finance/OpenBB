@@ -78,7 +78,7 @@ class ForexController(BaseController):
 >   pred             prediction techniques                 e.g.: regression, arima, rnn, lstm, conv1d, monte carlo
 [/menu]{has_symbols_end}
 [info]Forex brokerages:[/info][menu]
->   oanda             Oanda menu[/menu][/cmds]
+>   oanda            Oanda menu[/menu][/cmds]
  """
         console.print(text=help_text, menu="Forex")
 

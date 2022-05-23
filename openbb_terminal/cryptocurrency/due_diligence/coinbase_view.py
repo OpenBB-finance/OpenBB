@@ -13,7 +13,6 @@ from openbb_terminal.cryptocurrency.cryptocurrency_helpers import plot_order_boo
 from openbb_terminal.cryptocurrency.due_diligence import coinbase_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
-from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -74,7 +73,6 @@ def display_trades(
         headers=list(df.columns),
         show_index=False,
     )
-    console.print("")
 
     export_data(
         export,

@@ -3,22 +3,22 @@ Currency Pair Loaded:  MOCK_TICKER (from 2021-12-01)
 Source: YahooFinance
 
 Overlap:
-    ema         exponential moving average
-    sma         simple moving average
-    zlma        zero lag moving average
+    ema              exponential moving average
+    sma              simple moving average
+    zlma             zero lag moving average
 Momentum:
-    cci         commodity channel index
-    macd        moving average convergence/divergence
-    rsi         relative strength index
-    stoch       stochastic oscillator
-    fisher      fisher transform
-    cg          centre of gravity
+    cci              commodity channel index
+    macd             moving average convergence/divergence
+    rsi              relative strength index
+    stoch            stochastic oscillator
+    fisher           fisher transform
+    cg               centre of gravity
 Trend:
-    adx         average directional movement index
-    aroon       aroon indicator
+    adx              average directional movement index
+    aroon            aroon indicator
 Volatility:
-    bbands      bollinger bands
-    donchian    donchian channels
+    bbands           bollinger bands
+    donchian         donchian channels
 Custom:
-    fib         fibonacci retracement
+    fib              fibonacci retracement
 

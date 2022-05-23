@@ -38,7 +38,6 @@ def display_exchange(symbol: str):
         show_index=True,
         title=f"[bold]{exchange_name}[/bold]",
     )
-    console.print("")
 
 
 @log_start_end(log=logger)
@@ -59,7 +58,6 @@ def display_open():
         show_index=True,
         title="[bold]Open markets[/bold]",
     )
-    console.print("")
 
 
 @log_start_end(log=logger)
@@ -80,7 +78,6 @@ def display_closed():
         show_index=True,
         title="[bold]Closed markets[/bold]",
     )
-    console.print("")
 
 
 @log_start_end(log=logger)
@@ -101,4 +98,3 @@ def display_all():
         show_index=True,
         title="[bold]World markets[/bold]",
     )
-    console.print("")

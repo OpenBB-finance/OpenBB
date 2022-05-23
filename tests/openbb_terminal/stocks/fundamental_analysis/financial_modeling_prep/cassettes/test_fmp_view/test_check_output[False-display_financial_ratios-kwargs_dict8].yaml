@@ -11,457 +11,477 @@ interactions:
   response:
     body:
       string: "[ {\n  \"symbol\" : \"PM\",\n  \"date\" : \"2021-12-31\",\n  \"period\"
-        : \"FY\",\n  \"currentRatio\" : 0.9201246429498832,\n  \"quickRatio\" : 0.4381199688392625,\n
-        \ \"cashRatio\" : 0.2334977927810958,\n  \"daysOfSalesOutstanding\" : 45.79207132622194,\n
-        \ \"daysOfInventoryOutstanding\" : 317.3280159521436,\n  \"operatingCycle\"
-        : 363.12008727836553,\n  \"daysOfPayablesOutstanding\" : 121.21784646061815,\n
-        \ \"cashConversionCycle\" : 241.90224081774738,\n  \"grossProfitMargin\" :
-        0.6806241044419679,\n  \"operatingProfitMargin\" : 0.40948893488298044,\n
-        \ \"pretaxProfitMargin\" : 0.38949211908931697,\n  \"netProfitMargin\" : 0.29004935519821684,\n
-        \ \"effectiveTaxRate\" : 0.2183616742969261,\n  \"returnOnAssets\" : 0.22061031726810365,\n
-        \ \"returnOnEquity\" : -0.9013457352068078,\n  \"returnOnCapitalEmployed\"
-        : 0.5836169729975039,\n  \"netIncomePerEBT\" : 0.7446860693263571,\n  \"ebtPerEbit\"
-        : 0.9511664074650078,\n  \"ebitPerRevenue\" : 0.40948893488298044,\n  \"debtRatio\"
-        : 1.198789053039477,\n  \"debtEquityRatio\" : -4.897882446071641,\n  \"longTermDebtToCapitalization\"
-        : 1.6885603324930163,\n  \"totalDebtToCapitalization\" : 1.5709604519774012,\n
-        \ \"interestCoverage\" : 17.44911804613297,\n  \"cashFlowToDebtRatio\" : 0.4303747392649069,\n
-        \ \"companyEquityMultiplier\" : -4.085691668315852,\n  \"receivablesTurnover\"
-        : 7.970812182741117,\n  \"payablesTurnover\" : 3.01110777544281,\n  \"inventoryTurnover\"
-        : 1.150229357798165,\n  \"fixedAssetTurnover\" : 5.091601815823606,\n  \"assetTurnover\"
-        : 0.7605957859045773,\n  \"operatingCashFlowPerShare\" : null,\n  \"freeCashFlowPerShare\"
-        : null,\n  \"cashPerShare\" : null,\n  \"payoutRatio\" : 0.8321440333735866,\n
-        \ \"operatingCashFlowSalesRatio\" : 0.3810539722974049,\n  \"freeCashFlowOperatingCashFlowRatio\"
-        : 0.9374947773042533,\n  \"cashFlowCoverageRatios\" : 0.4303747392649069,\n
-        \ \"shortTermCoverageRatios\" : 3.958650347337082,\n  \"capitalExpenditureCoverageRatio\"
-        : -15.998663101604278,\n  \"dividendPaidAndCapexCoverageRatio\" : 1.7516100702576112,\n
-        \ \"dividendPayoutRatio\" : null,\n  \"priceBookValueRatio\" : null,\n  \"priceToBookRatio\"
-        : null,\n  \"priceToSalesRatio\" : null,\n  \"priceEarningsRatio\" : null,\n
-        \ \"priceToFreeCashFlowsRatio\" : 0.0,\n  \"priceToOperatingCashFlowsRatio\"
-        : null,\n  \"priceCashFlowRatio\" : null,\n  \"priceEarningsToGrowthRatio\"
-        : null,\n  \"priceSalesRatio\" : null,\n  \"dividendYield\" : null,\n  \"enterpriseValueMultiple\"
-        : 1.6689339156583376,\n  \"priceFairValue\" : null\n}, {\n  \"symbol\" : \"PM\",\n
-        \ \"date\" : \"2020-12-31\",\n  \"period\" : \"FY\",\n  \"currentRatio\" :
-        1.0956920723935764,\n  \"quickRatio\" : 0.562885546775427,\n  \"cashRatio\"
-        : 0.3711445322457303,\n  \"daysOfSalesOutstanding\" : 47.841534815640905,\n
-        \ \"daysOfInventoryOutstanding\" : 365.8391681471418,\n  \"operatingCycle\"
-        : 413.6807029627827,\n  \"daysOfPayablesOutstanding\" : 106.04033859337443,\n
-        \ \"cashConversionCycle\" : 307.64036436940825,\n  \"grossProfitMargin\" :
-        0.666515647870635,\n  \"operatingProfitMargin\" : 0.40325503589600614,\n  \"pretaxProfitMargin\"
-        : 0.38171743221579424,\n  \"netProfitMargin\" : 0.28075555865337704,\n  \"effectiveTaxRate\"
-        : 0.2170181685383,\n  \"returnOnAssets\" : 0.17976124065603036,\n  \"returnOnEquity\"
-        : -0.6410440041378213,\n  \"returnOnCapitalEmployed\" : 0.45916666666666667,\n
-        \ \"netIncomePerEBT\" : 0.7355062539943394,\n  \"ebtPerEbit\" : 0.9465906144672025,\n
-        \ \"ebitPerRevenue\" : 0.40325503589600614,\n  \"debtRatio\" : 1.2372196809104095,\n
-        \ \"debtEquityRatio\" : -4.412031511100501,\n  \"longTermDebtToCapitalization\"
-        : 1.805525286840587,\n  \"totalDebtToCapitalization\" : 1.6625019769096947,\n
-        \ \"interestCoverage\" : 15.89423076923077,\n  \"cashFlowToDebtRatio\" : 0.31113647894469815,\n
-        \ \"companyEquityMultiplier\" : -3.5660857802180312,\n  \"receivablesTurnover\"
-        : 7.6293538952406275,\n  \"payablesTurnover\" : 3.442086330935252,\n  \"inventoryTurnover\"
-        : 0.9977061828797831,\n  \"fixedAssetTurnover\" : 4.508091123330715,\n  \"assetTurnover\"
-        : 0.6402766930715162,\n  \"operatingCashFlowPerShare\" : 6.3018625561978165,\n
-        \ \"freeCashFlowPerShare\" : 5.9152215799614645,\n  \"cashPerShare\" : 4.675658317276814,\n
-        \ \"payoutRatio\" : 0.9141012909632572,\n  \"operatingCashFlowSalesRatio\"
-        : 0.3419530215376037,\n  \"freeCashFlowOperatingCashFlowRatio\" : 0.9386465552384835,\n
-        \ \"cashFlowCoverageRatios\" : 0.31113647894469815,\n  \"shortTermCoverageRatios\"
-        : 2.9133016627078385,\n  \"capitalExpenditureCoverageRatio\" : -16.299003322259136,\n
-        \ \"dividendPaidAndCapexCoverageRatio\" : 1.451049985211476,\n  \"dividendPayoutRatio\"
-        : 0.9141012909632572,\n  \"priceBookValueRatio\" : -9.868310106946765,\n  \"priceToBookRatio\"
-        : -9.868310106946765,\n  \"priceToSalesRatio\" : 4.321985541019028,\n  \"priceEarningsRatio\"
-        : 15.39412277979146,\n  \"priceToFreeCashFlowsRatio\" : 13.465260924429968,\n
-        \ \"priceToOperatingCashFlowsRatio\" : 12.639120782103547,\n  \"priceCashFlowRatio\"
-        : 12.639120782103547,\n  \"priceEarningsToGrowthRatio\" : 1.3186310464091793,\n
-        \ \"priceSalesRatio\" : 4.321985541019028,\n  \"dividendYield\" : 0.05937988828848618,\n
-        \ \"enterpriseValueMultiple\" : 12.211419297809258,\n  \"priceFairValue\"
-        : -9.868310106946765\n}, {\n  \"symbol\" : \"PM\",\n  \"date\" : \"2019-12-31\",\n
-        \ \"period\" : \"FY\",\n  \"currentRatio\" : 1.0892582169595921,\n  \"quickRatio\"
-        : 0.5616736579408486,\n  \"cashRatio\" : 0.3643073328731482,\n  \"daysOfSalesOutstanding\"
-        : 45.51937594363362,\n  \"daysOfInventoryOutstanding\" : 320.62922096452013,\n
-        \ \"operatingCycle\" : 366.14859690815376,\n  \"daysOfPayablesOutstanding\"
-        : 79.81879577665748,\n  \"cashConversionCycle\" : 286.3298011314963,\n  \"grossProfitMargin\"
-        : 0.6472739473242745,\n  \"operatingProfitMargin\" : 0.35034390202986077,\n
-        \ \"pretaxProfitMargin\" : 0.3312195940278477,\n  \"netProfitMargin\" : 0.24106693507800706,\n
-        \ \"effectiveTaxRate\" : 0.23227309562398704,\n  \"returnOnAssets\" : 0.1675801749271137,\n
-        \ \"returnOnEquity\" : -0.6206271054677378,\n  \"returnOnCapitalEmployed\"
-        : 0.43432326761500706,\n  \"netIncomePerEBT\" : 0.7278160453808752,\n  \"ebtPerEbit\"
-        : 0.9454127561769776,\n  \"ebitPerRevenue\" : 0.35034390202986077,\n  \"debtRatio\"
-        : 1.2238833819241983,\n  \"debtEquityRatio\" : -4.5326077567590914,\n  \"longTermDebtToCapitalization\"
-        : 1.7677564825253664,\n  \"totalDebtToCapitalization\" : 1.5946681734127799,\n
-        \ \"interestCoverage\" : 13.118090452261306,\n  \"cashFlowToDebtRatio\" :
-        0.3250120792398132,\n  \"companyEquityMultiplier\" : -3.70346376436037,\n
-        \ \"receivablesTurnover\" : 8.018563357546409,\n  \"payablesTurnover\" : 4.572857764245324,\n
-        \ \"inventoryTurnover\" : 1.1383865728207905,\n  \"fixedAssetTurnover\" :
-        4.4947971648318505,\n  \"assetTurnover\" : 0.6951603498542274,\n  \"operatingCashFlowPerShare\"
-        : 6.488745980707395,\n  \"freeCashFlowPerShare\" : 5.940836012861737,\n  \"cashPerShare\"
-        : 4.412218649517685,\n  \"payoutRatio\" : 0.9966597077244259,\n  \"operatingCashFlowSalesRatio\"
-        : 0.338533803053179,\n  \"freeCashFlowOperatingCashFlowRatio\" : 0.9155599603567889,\n
-        \ \"cashFlowCoverageRatios\" : 0.3250120792398132,\n  \"shortTermCoverageRatios\"
-        : 2.2989291410344044,\n  \"capitalExpenditureCoverageRatio\" : -11.842723004694836,\n
-        \ \"dividendPaidAndCapexCoverageRatio\" : 1.5993025836107149,\n  \"dividendPayoutRatio\"
-        : 0.9966597077244259,\n  \"priceBookValueRatio\" : -11.327040952751142,\n
-        \ \"priceToBookRatio\" : -11.327040952751142,\n  \"priceToSalesRatio\" : 4.3997031742996136,\n
-        \ \"priceEarningsRatio\" : 18.250960766875433,\n  \"priceToFreeCashFlowsRatio\"
-        : 14.194972192032905,\n  \"priceToOperatingCashFlowsRatio\" : 12.99634817740337,\n
-        \ \"priceCashFlowRatio\" : 12.99634817740337,\n  \"priceEarningsToGrowthRatio\"
-        : -2.018080059936398,\n  \"priceSalesRatio\" : 4.3997031742996136,\n  \"dividendYield\"
-        : 0.05460861597671683,\n  \"enterpriseValueMultiple\" : 13.820711257341165,\n
-        \ \"priceFairValue\" : -11.327040952751142\n}, {\n  \"symbol\" : \"PM\",\n
-        \ \"date\" : \"2018-12-31\",\n  \"period\" : \"FY\",\n  \"currentRatio\" :
-        1.130940608457914,\n  \"quickRatio\" : 0.5908324123087663,\n  \"cashRatio\"
-        : 0.383514629748124,\n  \"daysOfSalesOutstanding\" : 43.910886075949364,\n
-        \ \"daysOfInventoryOutstanding\" : 298.70422011526307,\n  \"operatingCycle\"
-        : 342.6151061912124,\n  \"daysOfPayablesOutstanding\" : 70.16359918200409,\n
-        \ \"cashConversionCycle\" : 272.45150700920834,\n  \"grossProfitMargin\" :
-        0.6368607594936709,\n  \"operatingProfitMargin\" : 0.3826497890295359,\n  \"pretaxProfitMargin\"
-        : 0.36020253164556965,\n  \"netProfitMargin\" : 0.2670379746835443,\n  \"effectiveTaxRate\"
-        : 0.2291256676974979,\n  \"returnOnAssets\" : 0.19876385015451872,\n  \"returnOnEquity\"
-        : -0.6349626775824705,\n  \"returnOnCapitalEmployed\" : 0.5013710747456878,\n
-        \ \"netIncomePerEBT\" : 0.7413550745009839,\n  \"ebtPerEbit\" : 0.9413373323923783,\n
-        \ \"ebitPerRevenue\" : 0.3826497890295359,\n  \"debtRatio\" : 1.2698173412728324,\n
-        \ \"debtEquityRatio\" : -4.056505337507023,\n  \"longTermDebtToCapitalization\"
-        : 1.8582942959492974,\n  \"totalDebtToCapitalization\" : 1.6455440414507772,\n
-        \ \"interestCoverage\" : 13.258479532163742,\n  \"cashFlowToDebtRatio\" :
-        0.29843508926603485,\n  \"companyEquityMultiplier\" : -3.1945581507344087,\n
-        \ \"receivablesTurnover\" : 8.312289562289562,\n  \"payablesTurnover\" : 5.202127659574468,\n
-        \ \"inventoryTurnover\" : 1.2219445706497047,\n  \"fixedAssetTurnover\" :
-        4.114011942785724,\n  \"assetTurnover\" : 0.744328031958996,\n  \"operatingCashFlowPerShare\"
-        : 6.095176848874598,\n  \"freeCashFlowPerShare\" : 5.171704180064308,\n  \"cashPerShare\"
-        : 4.239871382636656,\n  \"payoutRatio\" : 0.8703071672354948,\n  \"operatingCashFlowSalesRatio\"
-        : 0.3199324894514768,\n  \"freeCashFlowOperatingCashFlowRatio\" : 0.8484912428782444,\n
-        \ \"cashFlowCoverageRatios\" : 0.29843508926603485,\n  \"shortTermCoverageRatios\"
-        : 1.9811872909698998,\n  \"capitalExpenditureCoverageRatio\" : -6.600278551532034,\n
-        \ \"dividendPaidAndCapexCoverageRatio\" : 1.739401725087172,\n  \"dividendPayoutRatio\"
-        : 0.8703071672354948,\n  \"priceBookValueRatio\" : -9.29580260574685,\n  \"priceToBookRatio\"
-        : -9.29580260574685,\n  \"priceToSalesRatio\" : 3.9094145034599155,\n  \"priceEarningsRatio\"
-        : 14.639919689672606,\n  \"priceToFreeCashFlowsRatio\" : 14.401443007336484,\n
-        \ \"priceToOperatingCashFlowsRatio\" : 12.219498276535134,\n  \"priceCashFlowRatio\"
-        : 12.219498276535134,\n  \"priceEarningsToGrowthRatio\" : 0.47779486538306054,\n
-        \ \"priceSalesRatio\" : 3.9094145034599155,\n  \"dividendYield\" : 0.05944753698679324,\n
-        \ \"enterpriseValueMultiple\" : 11.555934808606557,\n  \"priceFairValue\"
-        : -9.29580260574685\n}, {\n  \"symbol\" : \"PM\",\n  \"date\" : \"2017-12-31\",\n
-        \ \"period\" : \"FY\",\n  \"currentRatio\" : 1.3528379902267886,\n  \"quickRatio\"
-        : 0.7633755168525247,\n  \"cashRatio\" : 0.5291943365493046,\n  \"daysOfSalesOutstanding\"
-        : 47.45964936691248,\n  \"daysOfInventoryOutstanding\" : 308.10870398773005,\n
-        \ \"operatingCycle\" : 355.5683533546425,\n  \"daysOfPayablesOutstanding\"
-        : 78.44421012269939,\n  \"cashConversionCycle\" : 277.1241432319431,\n  \"grossProfitMargin\"
-        : 0.6371225824405176,\n  \"operatingProfitMargin\" : 0.40013218310839016,\n
-        \ \"pretaxProfitMargin\" : 0.36833866703770696,\n  \"netProfitMargin\" : 0.20992764714067066,\n
-        \ \"effectiveTaxRate\" : 0.4067428463499858,\n  \"returnOnAssets\" : 0.14045336064047664,\n
-        \ \"returnOnEquity\" : -0.49933807711401623,\n  \"returnOnCapitalEmployed\"
-        : 0.4259423831741095,\n  \"netIncomePerEBT\" : 0.5699310605345169,\n  \"ebtPerEbit\"
-        : 0.9205424671824741,\n  \"ebitPerRevenue\" : 0.40013218310839016,\n  \"debtRatio\"
-        : 1.2380841556507167,\n  \"debtEquityRatio\" : -4.401621711070661,\n  \"longTermDebtToCapitalization\"
-        : 1.6279093931837074,\n  \"totalDebtToCapitalization\" : 1.5431177818721071,\n
-        \ \"interestCoverage\" : 10.495437956204379,\n  \"cashFlowToDebtRatio\" :
-        0.2595299804886572,\n  \"companyEquityMultiplier\" : -3.555187820618898,\n
-        \ \"receivablesTurnover\" : 7.690743713215623,\n  \"payablesTurnover\" : 4.652988403211419,\n
-        \ \"inventoryTurnover\" : 1.1846468317056553,\n  \"fixedAssetTurnover\" :
-        3.953789024893412,\n  \"assetTurnover\" : 0.6690560417054552,\n  \"operatingCashFlowPerShare\"
-        : 5.742268041237113,\n  \"freeCashFlowPerShare\" : 4.744845360824742,\n  \"cashPerShare\"
-        : 5.442654639175258,\n  \"payoutRatio\" : 1.0803645401822701,\n  \"operatingCashFlowSalesRatio\"
-        : 0.31000417420342286,\n  \"freeCashFlowOperatingCashFlowRatio\" : 0.8263016157989228,\n
-        \ \"cashFlowCoverageRatios\" : 0.2595299804886572,\n  \"shortTermCoverageRatios\"
-        : 2.9657237936772045,\n  \"capitalExpenditureCoverageRatio\" : -5.757105943152455,\n
-        \ \"dividendPaidAndCapexCoverageRatio\" : 1.7924376508447304,\n  \"dividendPayoutRatio\"
-        : 1.0803645401822701,\n  \"priceBookValueRatio\" : -13.860903781565447,\n
-        \ \"priceToBookRatio\" : -13.860903781565447,\n  \"priceToSalesRatio\" : 5.82728826714902,\n
-        \ \"priceEarningsRatio\" : 27.758555609610607,\n  \"priceToFreeCashFlowsRatio\"
-        : 22.748897759913092,\n  \"priceToOperatingCashFlowsRatio\" : 18.797450976660684,\n
-        \ \"priceCashFlowRatio\" : 18.797450976660684,\n  \"priceEarningsToGrowthRatio\"
-        : -2.102533082175667,\n  \"priceSalesRatio\" : 5.82728826714902,\n  \"dividendYield\"
-        : 0.03892005604961033,\n  \"enterpriseValueMultiple\" : 15.708185097376756,\n
-        \ \"priceFairValue\" : -13.860903781565447\n}, {\n  \"symbol\" : \"PM\",\n
-        \ \"date\" : \"2016-12-31\",\n  \"period\" : \"FY\",\n  \"currentRatio\" :
-        1.0692900953421995,\n  \"quickRatio\" : 0.4699095160017004,\n  \"cashRatio\"
-        : 0.25742393878666425,\n  \"daysOfSalesOutstanding\" : 47.85965898444819,\n
-        \ \"daysOfInventoryOutstanding\" : 350.4637418805239,\n  \"operatingCycle\"
-        : 398.3234008649721,\n  \"daysOfPayablesOutstanding\" : 64.7524225322117,\n
-        \ \"cashConversionCycle\" : 333.5709783327604,\n  \"grossProfitMargin\" :
-        0.6480794453813004,\n  \"operatingProfitMargin\" : 0.4052838673412029,\n  \"pretaxProfitMargin\"
-        : 0.37189432265317596,\n  \"netProfitMargin\" : 0.2610830054337643,\n  \"effectiveTaxRate\"
-        : 0.2789197904070939,\n  \"returnOnAssets\" : 0.18905864155653848,\n  \"returnOnEquity\"
-        : -0.5491015132408575,\n  \"returnOnCapitalEmployed\" : 0.5305631868131868,\n
-        \ \"netIncomePerEBT\" : 0.7020354695687223,\n  \"ebtPerEbit\" : 0.9176144244105409,\n
-        \ \"ebitPerRevenue\" : 0.4052838673412029,\n  \"debtRatio\" : 1.2957857317304822,\n
-        \ \"debtEquityRatio\" : -3.7634773013871374,\n  \"longTermDebtToCapitalization\"
-        : 1.9639140013674694,\n  \"totalDebtToCapitalization\" : 1.774650467061481,\n
-        \ \"interestCoverage\" : 10.116931711880262,\n  \"cashFlowToDebtRatio\" :
-        0.27787525372415456,\n  \"companyEquityMultiplier\" : -2.9043978562421184,\n
-        \ \"receivablesTurnover\" : 7.6264647042012,\n  \"payablesTurnover\" : 5.636854741896759,\n
-        \ \"inventoryTurnover\" : 1.041477209714983,\n  \"fixedAssetTurnover\" : 4.400560686015831,\n
-        \ \"assetTurnover\" : 0.7241323166264145,\n  \"operatingCashFlowPerShare\"
-        : 5.2076079948420375,\n  \"freeCashFlowPerShare\" : 4.451966473243069,\n  \"cashPerShare\"
-        : 2.733075435203095,\n  \"payoutRatio\" : 0.9154585904980623,\n  \"operatingCashFlowSalesRatio\"
-        : 0.3026794079070639,\n  \"freeCashFlowOperatingCashFlowRatio\" : 0.8548966200321901,\n
-        \ \"cashFlowCoverageRatios\" : 0.27787525372415456,\n  \"shortTermCoverageRatios\"
-        : 2.511504975124378,\n  \"capitalExpenditureCoverageRatio\" : -6.8916382252559725,\n
-        \ \"dividendPaidAndCapexCoverageRatio\" : 1.5514790626200539,\n  \"dividendPayoutRatio\"
-        : 0.9154585904980621,\n  \"priceBookValueRatio\" : -11.730293068174653,\n
-        \ \"priceToBookRatio\" : -11.730293068174653,\n  \"priceToSalesRatio\" : 5.577438952557617,\n
-        \ \"priceEarningsRatio\" : 21.362703954212716,\n  \"priceToFreeCashFlowsRatio\"
-        : 21.554519688486604,\n  \"priceToOperatingCashFlowsRatio\" : 18.426886028104494,\n
-        \ \"priceCashFlowRatio\" : 18.426886028104494,\n  \"priceEarningsToGrowthRatio\"
-        : 15.737191912936568,\n  \"priceSalesRatio\" : 5.577438952557617,\n  \"dividendYield\"
-        : 0.04285312348381508,\n  \"enterpriseValueMultiple\" : 15.039573780982073,\n
-        \ \"priceFairValue\" : -11.730293068174653\n}, {\n  \"symbol\" : \"PM\",\n
-        \ \"date\" : \"2015-12-31\",\n  \"period\" : \"FY\",\n  \"currentRatio\" :
-        1.0271675549200572,\n  \"quickRatio\" : 0.402638762511374,\n  \"cashRatio\"
-        : 0.2220850123488886,\n  \"daysOfSalesOutstanding\" : 37.84317384489064,\n
-        \ \"daysOfInventoryOutstanding\" : 330.23438334223175,\n  \"operatingCycle\"
-        : 368.0775571871224,\n  \"daysOfPayablesOutstanding\" : 50.2386545648692,\n
-        \ \"cashConversionCycle\" : 317.8389026222532,\n  \"grossProfitMargin\" :
-        0.6504814510711353,\n  \"operatingProfitMargin\" : 0.3990072404269613,\n  \"pretaxProfitMargin\"
-        : 0.3588489960438904,\n  \"netProfitMargin\" : 0.256512652086288,\n  \"effectiveTaxRate\"
-        : 0.2795631825273011,\n  \"returnOnAssets\" : 0.20240899988220049,\n  \"returnOnEquity\"
-        : -0.5189519782543038,\n  \"returnOnCapitalEmployed\" : 0.5757135164243403,\n
-        \ \"netIncomePerEBT\" : 0.7148205928237129,\n  \"ebtPerEbit\" : 0.8993545973248527,\n
-        \ \"ebitPerRevenue\" : 0.3990072404269613,\n  \"debtRatio\" : 1.3379667805395217,\n
-        \ \"debtEquityRatio\" : -3.4303835699184537,\n  \"longTermDebtToCapitalization\"
-        : 2.1031151091121107,\n  \"totalDebtToCapitalization\" : 1.8692570228406407,\n
-        \ \"interestCoverage\" : 9.44434628975265,\n  \"cashFlowToDebtRatio\" : 0.27615870786516855,\n
-        \ \"companyEquityMultiplier\" : -2.5638779824826337,\n  \"receivablesTurnover\"
-        : 9.645068394528439,\n  \"payablesTurnover\" : 7.265321955003879,\n  \"inventoryTurnover\"
-        : 1.105275581258114,\n  \"fixedAssetTurnover\" : 4.683446949833945,\n  \"assetTurnover\"
-        : 0.7890799858640594,\n  \"operatingCashFlowPerShare\" : 5.077469335054874,\n
-        \ \"freeCashFlowPerShare\" : 4.457714654615881,\n  \"cashPerShare\" : 2.2059393156875404,\n
-        \ \"payoutRatio\" : 0.9093554488578496,\n  \"operatingCashFlowSalesRatio\"
-        : 0.29353586623871014,\n  \"freeCashFlowOperatingCashFlowRatio\" : 0.8779402415766052,\n
-        \ \"cashFlowCoverageRatios\" : 0.27615870786516855,\n  \"shortTermCoverageRatios\"
-        : 2.434984520123839,\n  \"capitalExpenditureCoverageRatio\" : -8.192708333333334,\n
-        \ \"dividendPaidAndCapexCoverageRatio\" : 1.4867674858223063,\n  \"dividendPayoutRatio\"
-        : 0.9093554488578495,\n  \"priceBookValueRatio\" : -10.527445869676834,\n
-        \ \"priceToBookRatio\" : -10.527445869676834,\n  \"priceToSalesRatio\" : 5.203608759349108,\n
-        \ \"priceEarningsRatio\" : 20.285973097337408,\n  \"priceToFreeCashFlowsRatio\"
-        : 20.191961346560465,\n  \"priceToOperatingCashFlowsRatio\" : 17.72733542250477,\n
-        \ \"priceCashFlowRatio\" : 17.72733542250477,\n  \"priceEarningsToGrowthRatio\"
-        : -2.8400362336272384,\n  \"priceSalesRatio\" : 5.203608759349108,\n  \"dividendYield\"
-        : 0.044826809366971164,\n  \"enterpriseValueMultiple\" : 14.369572210884948,\n
-        \ \"priceFairValue\" : -10.527445869676834\n}, {\n  \"symbol\" : \"PM\",\n
-        \ \"date\" : \"2014-12-31\",\n  \"period\" : \"FY\",\n  \"currentRatio\" :
-        1.024616199047115,\n  \"quickRatio\" : 0.3762572789835892,\n  \"cashRatio\"
-        : 0.11130227633668607,\n  \"daysOfSalesOutstanding\" : 49.09665065340814,\n
-        \ \"daysOfInventoryOutstanding\" : 300.5059409735531,\n  \"operatingCycle\"
-        : 349.6025916269612,\n  \"daysOfPayablesOutstanding\" : 43.43905711000383,\n
-        \ \"cashConversionCycle\" : 306.1635345169574,\n  \"grossProfitMargin\" :
-        0.6494104209359358,\n  \"operatingProfitMargin\" : 0.41109282090906035,\n
-        \ \"pretaxProfitMargin\" : 0.35777874827829476,\n  \"netProfitMargin\" : 0.25172170524406223,\n
-        \ \"effectiveTaxRate\" : 0.2907981220657277,\n  \"returnOnAssets\" : 0.21294796373660727,\n
-        \ \"returnOnEquity\" : -0.5933169688811466,\n  \"returnOnCapitalEmployed\"
-        : 0.6095641344956414,\n  \"netIncomePerEBT\" : 0.7035680751173709,\n  \"ebtPerEbit\"
-        : 0.8703113508212798,\n  \"ebitPerRevenue\" : 0.41109282090906035,\n  \"debtRatio\"
-        : 1.3183846306874698,\n  \"debtEquityRatio\" : -3.6732916303745347,\n  \"longTermDebtToCapitalization\"
-        : 1.8831468531468532,\n  \"totalDebtToCapitalization\" : 1.750564602401046,\n
-        \ \"interestCoverage\" : 10.45897435897436,\n  \"cashFlowToDebtRatio\" : 0.26273977253437447,\n
-        \ \"companyEquityMultiplier\" : -2.7862063504632197,\n  \"receivablesTurnover\"
-        : 7.434315684315684,\n  \"payablesTurnover\" : 8.402576489533011,\n  \"inventoryTurnover\"
-        : 1.2146182495344506,\n  \"fixedAssetTurnover\" : 4.903146104430901,\n  \"assetTurnover\"
-        : 0.8459658396566914,\n  \"operatingCashFlowPerShare\" : 4.941890166028097,\n
-        \ \"freeCashFlowPerShare\" : 4.205619412515964,\n  \"cashPerShare\" : 1.0740740740740742,\n
-        \ \"payoutRatio\" : 0.805418390497798,\n  \"operatingCashFlowSalesRatio\"
-        : 0.25998589041556086,\n  \"freeCashFlowOperatingCashFlowRatio\" : 0.8510143429383641,\n
-        \ \"cashFlowCoverageRatios\" : 0.26273977253437447,\n  \"shortTermCoverageRatios\"
-        : 3.0637371338083925,\n  \"capitalExpenditureCoverageRatio\" : -6.712055507372073,\n
-        \ \"dividendPaidAndCapexCoverageRatio\" : 1.5852109791069233,\n  \"dividendPayoutRatio\"
-        : 0.805418390497798,\n  \"priceBookValueRatio\" : -9.9497851665215,\n  \"priceToBookRatio\"
-        : -9.9497851665215,\n  \"priceToSalesRatio\" : 4.2213134299056,\n  \"priceEarningsRatio\"
-        : 16.769763361537436,\n  \"priceToFreeCashFlowsRatio\" : 19.07923426480413,\n
-        \ \"priceToOperatingCashFlowsRatio\" : 16.23670201162941,\n  \"priceCashFlowRatio\"
-        : 16.23670201162941,\n  \"priceEarningsToGrowthRatio\" : -1.7641791056337381,\n
-        \ \"priceSalesRatio\" : 4.2213134299056,\n  \"dividendYield\" : 0.048028011673979756,\n
-        \ \"enterpriseValueMultiple\" : 12.129720678946953,\n  \"priceFairValue\"
-        : -9.9497851665215\n}, {\n  \"symbol\" : \"PM\",\n  \"date\" : \"2013-12-31\",\n
-        \ \"period\" : \"FY\",\n  \"currentRatio\" : 0.9874604476737373,\n  \"quickRatio\"
-        : 0.3519864057189734,\n  \"cashRatio\" : 0.12621586780733624,\n  \"daysOfSalesOutstanding\"
-        : 45.05061344780088,\n  \"daysOfInventoryOutstanding\" : 345.2247838616715,\n
-        \ \"operatingCycle\" : 390.27539730947234,\n  \"daysOfPayablesOutstanding\"
-        : 44.66954851104707,\n  \"cashConversionCycle\" : 345.60584879842526,\n  \"grossProfitMargin\"
-        : 0.6665278534132043,\n  \"operatingProfitMargin\" : 0.44283563442995805,\n
-        \ \"pretaxProfitMargin\" : 0.4017682672902585,\n  \"netProfitMargin\" : 0.274722106544511,\n
-        \ \"effectiveTaxRate\" : 0.29261680752671027,\n  \"returnOnAssets\" : 0.2246908404946552,\n
-        \ \"returnOnEquity\" : -1.1043007983517898,\n  \"returnOnCapitalEmployed\"
-        : 0.6551037816320728,\n  \"netIncomePerEBT\" : 0.6837824908308084,\n  \"ebtPerEbit\"
-        : 0.9072627314814815,\n  \"ebitPerRevenue\" : 0.44283563442995805,\n  \"debtRatio\"
-        : 1.164378536994341,\n  \"debtEquityRatio\" : -5.72263713623487,\n  \"longTermDebtToCapitalization\"
-        : 1.4777019130220828,\n  \"totalDebtToCapitalization\" : 1.3900160707111289,\n
-        \ \"interestCoverage\" : 12.521739130434783,\n  \"cashFlowToDebtRatio\" :
-        0.36617530168364765,\n  \"companyEquityMultiplier\" : -4.914756631470513,\n
-        \ \"receivablesTurnover\" : 8.101998442771865,\n  \"payablesTurnover\" : 8.171114599686028,\n
-        \ \"inventoryTurnover\" : 1.0572821450335161,\n  \"fixedAssetTurnover\" :
-        4.621317542561066,\n  \"assetTurnover\" : 0.8178840913854538,\n  \"operatingCashFlowPerShare\"
-        : 6.24845869297164,\n  \"freeCashFlowPerShare\" : 5.508631319358816,\n  \"cashPerShare\"
-        : 1.3279901356350186,\n  \"payoutRatio\" : 0.6669776119402985,\n  \"operatingCashFlowSalesRatio\"
-        : 0.32466284396322515,\n  \"freeCashFlowOperatingCashFlowRatio\" : 0.8815984213122842,\n
-        \ \"cashFlowCoverageRatios\" : 0.36617530168364765,\n  \"shortTermCoverageRatios\"
-        : 2.7729138166894667,\n  \"capitalExpenditureCoverageRatio\" : -8.445833333333333,\n
-        \ \"dividendPaidAndCapexCoverageRatio\" : 2.2422566371681416,\n  \"dividendPayoutRatio\"
-        : 0.6669776119402985,\n  \"priceBookValueRatio\" : -16.518667719804274,\n
-        \ \"priceToBookRatio\" : -16.518667719804274,\n  \"priceToSalesRatio\" : 4.109426706986578,\n
-        \ \"priceEarningsRatio\" : 14.958485717350747,\n  \"priceToFreeCashFlowsRatio\"
-        : 14.357467656631226,\n  \"priceToOperatingCashFlowsRatio\" : 12.657520820128267,\n
-        \ \"priceCashFlowRatio\" : 12.657520820128267,\n  \"priceEarningsToGrowthRatio\"
-        : 8.59281901763372,\n  \"priceSalesRatio\" : 4.109426706986578,\n  \"dividendYield\"
-        : 0.04458857831890386,\n  \"enterpriseValueMultiple\" : 10.807193192242833,\n
-        \ \"priceFairValue\" : -16.518667719804274\n}, {\n  \"symbol\" : \"PM\",\n
-        \ \"date\" : \"2012-12-31\",\n  \"period\" : \"FY\",\n  \"currentRatio\" :
-        0.9749647390691114,\n  \"quickRatio\" : 0.38622472966619653,\n  \"cashRatio\"
-        : 0.17530559473436766,\n  \"daysOfSalesOutstanding\" : 41.74984861522771,\n
-        \ \"daysOfInventoryOutstanding\" : 314.8929914200328,\n  \"operatingCycle\"
-        : 356.6428400352605,\n  \"daysOfPayablesOutstanding\" : 38.811819145859445,\n
-        \ \"cashConversionCycle\" : 317.8310208894011,\n  \"grossProfitMargin\" :
-        0.6694075278069924,\n  \"operatingProfitMargin\" : 0.4439238932976384,\n  \"pretaxProfitMargin\"
-        : 0.41390190266755905,\n  \"netProfitMargin\" : 0.2804602097077477,\n  \"effectiveTaxRate\"
-        : 0.29514129514129517,\n  \"returnOnAssets\" : 0.23360764534112025,\n  \"returnOnEquity\"
-        : -2.5316455696202533,\n  \"returnOnCapitalEmployed\" : 0.6743972111939576,\n
-        \ \"netIncomePerEBT\" : 0.6776006776006775,\n  \"ebtPerEbit\" : 0.9323713116519492,\n
-        \ \"ebitPerRevenue\" : 0.4439238932976384,\n  \"debtRatio\" : 1.0837271037961242,\n
-        \ \"debtEquityRatio\" : -11.744533947065593,\n  \"longTermDebtToCapitalization\"
-        : 1.245428228482666,\n  \"totalDebtToCapitalization\" : 1.1795176367298457,\n
-        \ \"interestCoverage\" : 13.832174776564052,\n  \"cashFlowToDebtRatio\" :
-        0.412496168834012,\n  \"companyEquityMultiplier\" : -10.83716915995397,\n
-        \ \"receivablesTurnover\" : 8.742546670381723,\n  \"payablesTurnover\" : 9.404351767905712,\n
-        \ \"inventoryTurnover\" : 1.1591239244608336,\n  \"fixedAssetTurnover\" :
-        4.721896162528217,\n  \"assetTurnover\" : 0.8329439872577648,\n  \"operatingCashFlowPerShare\"
-        : 5.567966903073286,\n  \"freeCashFlowPerShare\" : 4.943853427895981,\n  \"cashPerShare\"
-        : 1.7630023640661938,\n  \"payoutRatio\" : 0.6140909090909091,\n  \"operatingCashFlowSalesRatio\"
-        : 0.3002517767791695,\n  \"freeCashFlowOperatingCashFlowRatio\" : 0.8879099883239571,\n
-        \ \"cashFlowCoverageRatios\" : 0.412496168834012,\n  \"shortTermCoverageRatios\"
-        : 1.8117307692307691,\n  \"capitalExpenditureCoverageRatio\" : -8.921401515151516,\n
-        \ \"dividendPaidAndCapexCoverageRatio\" : 2.1667433302667893,\n  \"dividendPayoutRatio\"
-        : 0.614090909090909,\n  \"priceBookValueRatio\" : -42.6650757721519,\n  \"priceToBookRatio\"
-        : -42.6650757721519,\n  \"priceToSalesRatio\" : 4.726513158810594,\n  \"priceEarningsRatio\"
-        : 16.852704929999998,\n  \"priceToFreeCashFlowsRatio\" : 17.729085879737,\n
-        \ \"priceToOperatingCashFlowsRatio\" : 15.741832436471713,\n  \"priceCashFlowRatio\"
-        : 15.741832436471713,\n  \"priceEarningsToGrowthRatio\" : 2.8202191022777057,\n
-        \ \"priceSalesRatio\" : 4.726513158810594,\n  \"dividendYield\" : 0.03643871483192871,\n
-        \ \"enterpriseValueMultiple\" : 11.566914526344751,\n  \"priceFairValue\"
-        : -42.6650757721519\n}, {\n  \"symbol\" : \"PM\",\n  \"date\" : \"2011-12-31\",\n
-        \ \"period\" : \"FY\",\n  \"currentRatio\" : 1.0043936731107206,\n  \"quickRatio\"
-        : 0.38873867784236854,\n  \"cashRatio\" : 0.17236717588211437,\n  \"daysOfSalesOutstanding\"
-        : 37.571630703926424,\n  \"daysOfInventoryOutstanding\" : 277.5613410751077,\n
-        \ \"operatingCycle\" : 315.1329717790341,\n  \"daysOfPayablesOutstanding\"
-        : 35.242086533058625,\n  \"cashConversionCycle\" : 279.8908852459755,\n  \"grossProfitMargin\"
-        : 0.6566228253529279,\n  \"operatingProfitMargin\" : 0.43222818921439365,\n
-        \ \"pretaxProfitMargin\" : 0.40299707367270154,\n  \"netProfitMargin\" : 0.27626459143968873,\n
-        \ \"effectiveTaxRate\" : 0.29149377593361,\n  \"returnOnAssets\" : 0.24208183047790802,\n
-        \ \"returnOnEquity\" : 37.51528384279476,\n  \"returnOnCapitalEmployed\" :
-        0.6495119358268097,\n  \"netIncomePerEBT\" : 0.6855250558570061,\n  \"ebtPerEbit\"
-        : 0.9323711033405253,\n  \"ebitPerRevenue\" : 0.43222818921439365,\n  \"debtRatio\"
-        : 0.9503212353471596,\n  \"debtEquityRatio\" : 147.2707423580786,\n  \"longTermDebtToCapitalization\"
-        : 0.9847911270505413,\n  \"totalDebtToCapitalization\" : 0.9878022797485885,\n
-        \ \"interestCoverage\" : 14.390792291220556,\n  \"cashFlowToDebtRatio\" :
-        0.5677541116203828,\n  \"companyEquityMultiplier\" : 154.96943231441048,\n
-        \ \"receivablesTurnover\" : 9.714776632302405,\n  \"payablesTurnover\" : 10.35693501454898,\n
-        \ \"inventoryTurnover\" : 1.315024630541872,\n  \"fixedAssetTurnover\" : 4.97552,\n
-        \ \"assetTurnover\" : 0.8762680342651037,\n  \"operatingCashFlowPerShare\"
-        : 5.978989210675753,\n  \"freeCashFlowPerShare\" : 5.46961953435548,\n  \"cashPerShare\"
-        : 1.4480408858603067,\n  \"payoutRatio\" : 0.5573274356885113,\n  \"operatingCashFlowSalesRatio\"
-        : 0.3385857156638904,\n  \"freeCashFlowOperatingCashFlowRatio\" : 0.9148067242853073,\n
-        \ \"cashFlowCoverageRatios\" : 0.5677541116203828,\n  \"shortTermCoverageRatios\"
-        : 2.8326607479149852,\n  \"capitalExpenditureCoverageRatio\" : -11.738015607580826,\n
-        \ \"dividendPaidAndCapexCoverageRatio\" : 2.705988177846312,\n  \"dividendPayoutRatio\"
-        : 0.5573274356885112,\n  \"priceBookValueRatio\" : 575.9777446375547,\n  \"priceToBookRatio\"
-        : 575.9777446375547,\n  \"priceToSalesRatio\" : 4.241531450686561,\n  \"priceEarningsRatio\"
-        : 15.35314905389361,\n  \"priceToFreeCashFlowsRatio\" : 13.69382304007475,\n
-        \ \"priceToOperatingCashFlowsRatio\" : 12.52720139823345,\n  \"priceCashFlowRatio\"
-        : 12.52720139823345,\n  \"priceEarningsToGrowthRatio\" : 0.636154629202183,\n
-        \ \"priceSalesRatio\" : 4.241531450686561,\n  \"dividendYield\" : 0.03630052920948951,\n
-        \ \"enterpriseValueMultiple\" : 10.436377356714416,\n  \"priceFairValue\"
-        : 575.9777446375547\n}, {\n  \"symbol\" : \"PM\",\n  \"date\" : \"2010-12-31\",\n
-        \ \"period\" : \"FY\",\n  \"currentRatio\" : 1.0743517650734145,\n  \"quickRatio\"
-        : 0.36800999687597624,\n  \"cashRatio\" : 0.13300531084036238,\n  \"daysOfSalesOutstanding\"
-        : 40.366252572772716,\n  \"daysOfInventoryOutstanding\" : 312.5404097601153,\n
-        \ \"operatingCycle\" : 352.90666233288806,\n  \"daysOfPayablesOutstanding\"
-        : 31.378050036034182,\n  \"cashConversionCycle\" : 321.5286122968539,\n  \"grossProfitMargin\"
-        : 0.6430094089973537,\n  \"operatingProfitMargin\" : 0.41337106733313733,\n
-        \ \"pretaxProfitMargin\" : 0.379447221405469,\n  \"netProfitMargin\" : 0.26679653043222584,\n
-        \ \"effectiveTaxRate\" : 0.2737311119721038,\n  \"returnOnAssets\" : 0.20710413694721827,\n
-        \ \"returnOnEquity\" : 2.0704506560182545,\n  \"returnOnCapitalEmployed\"
-        : 0.5055740357817136,\n  \"netIncomePerEBT\" : 0.7031189461449051,\n  \"ebtPerEbit\"
-        : 0.9179336712012092,\n  \"ebitPerRevenue\" : 0.41337106733313733,\n  \"debtRatio\"
-        : 0.8538944365192582,\n  \"debtEquityRatio\" : 8.53650884198517,\n  \"longTermDebtToCapitalization\"
-        : 0.7922493481867742,\n  \"totalDebtToCapitalization\" : 0.8247700919632147,\n
-        \ \"interestCoverage\" : 11.547227926078028,\n  \"cashFlowToDebtRatio\" :
-        0.5718700763543813,\n  \"companyEquityMultiplier\" : 9.997147746719909,\n
-        \ \"receivablesTurnover\" : 9.042206713193751,\n  \"payablesTurnover\" : 11.632335329341318,\n
-        \ \"inventoryTurnover\" : 1.167848984008657,\n  \"fixedAssetTurnover\" : 4.186490229266041,\n
-        \ \"assetTurnover\" : 0.7762624821683309,\n  \"operatingCashFlowPerShare\"
-        : 5.131593257205003,\n  \"freeCashFlowPerShare\" : 4.7438825448613375,\n  \"cashPerShare\"
-        : 0.9260467645459489,\n  \"payoutRatio\" : 0.6093125774900124,\n  \"operatingCashFlowSalesRatio\"
-        : 0.34684651573066744,\n  \"freeCashFlowOperatingCashFlowRatio\" : 0.9244463282822931,\n
-        \ \"cashFlowCoverageRatios\" : 0.5718700763543813,\n  \"shortTermCoverageRatios\"
-        : 3.01309067688378,\n  \"capitalExpenditureCoverageRatio\" : -13.23562412342216,\n
-        \ \"dividendPaidAndCapexCoverageRatio\" : 2.54366576819407,\n  \"dividendPayoutRatio\"
-        : 0.6093125774900123,\n  \"priceBookValueRatio\" : 29.68836175755847,\n  \"priceToBookRatio\"
-        : 29.68836175755847,\n  \"priceToSalesRatio\" : 3.8256173302705085,\n  \"priceEarningsRatio\"
-        : 14.339082011571842,\n  \"priceToFreeCashFlowsRatio\" : 11.931155011691885,\n
-        \ \"priceToOperatingCashFlowsRatio\" : 11.029712442725442,\n  \"priceCashFlowRatio\"
-        : 11.029712442725442,\n  \"priceEarningsToGrowthRatio\" : 0.6853237726118894,\n
-        \ \"priceSalesRatio\" : 3.8256173302705085,\n  \"dividendYield\" : 0.04249313707797253,\n
-        \ \"enterpriseValueMultiple\" : 9.91463567025269,\n  \"priceFairValue\" :
-        29.68836175755847\n}, {\n  \"symbol\" : \"PM\",\n  \"date\" : \"2009-12-31\",\n
-        \ \"period\" : \"FY\",\n  \"currentRatio\" : 1.3134728931830382,\n  \"quickRatio\"
-        : 0.41492216854535696,\n  \"cashRatio\" : 0.1377706208624083,\n  \"daysOfSalesOutstanding\"
-        : 45.167565408428196,\n  \"daysOfInventoryOutstanding\" : 372.4844823764132,\n
-        \ \"operatingCycle\" : 417.6520477848414,\n  \"daysOfPayablesOutstanding\"
-        : 27.105963201064068,\n  \"cashConversionCycle\" : 390.5460845837773,\n  \"grossProfitMargin\"
-        : 0.6396245256640704,\n  \"operatingProfitMargin\" : 0.40219692430597165,\n
-        \ \"pretaxProfitMargin\" : 0.36920311563810665,\n  \"netProfitMargin\" : 0.25332534451767524,\n
-        \ \"effectiveTaxRate\" : 0.2911392405063291,\n  \"returnOnAssets\" : 0.18354943273905996,\n
-        \ \"returnOnEquity\" : 1.109517144856543,\n  \"returnOnCapitalEmployed\" :
-        0.43077778728501753,\n  \"netIncomePerEBT\" : 0.6861408633560532,\n  \"ebtPerEbit\"
-        : 0.917966034362896,\n  \"ebitPerRevenue\" : 0.40219692430597165,\n  \"debtRatio\"
-        : 0.8221521185459597,\n  \"debtEquityRatio\" : 4.969734079776067,\n  \"longTermDebtToCapitalization\"
-        : 0.7051784609036518,\n  \"totalDebtToCapitalization\" : 0.7295097482491009,\n
-        \ \"interestCoverage\" : 12.633626097867001,\n  \"cashFlowToDebtRatio\" :
-        0.51141670991178,\n  \"companyEquityMultiplier\" : 6.044786564030791,\n  \"receivablesTurnover\"
-        : 8.081020012911555,\n  \"payablesTurnover\" : 13.465671641791046,\n  \"inventoryTurnover\"
-        : 0.9799065928098186,\n  \"fixedAssetTurnover\" : 3.9178403755868545,\n  \"assetTurnover\"
-        : 0.7245600833526279,\n  \"operatingCashFlowPerShare\" : 4.057642820380854,\n
-        \ \"freeCashFlowPerShare\" : 3.689655172413793,\n  \"cashPerShare\" : 0.7925887802367473,\n
-        \ \"payoutRatio\" : 0.6822768842636392,\n  \"operatingCashFlowSalesRatio\"
-        : 0.31491911324146193,\n  \"freeCashFlowOperatingCashFlowRatio\" : 0.9093099949264333,\n
-        \ \"cashFlowCoverageRatios\" : 0.51141670991178,\n  \"shortTermCoverageRatios\"
-        : 4.520642201834862,\n  \"capitalExpenditureCoverageRatio\" : -11.026573426573426,\n
-        \ \"dividendPaidAndCapexCoverageRatio\" : 2.1827242524916945,\n  \"dividendPayoutRatio\"
-        : 0.6822768842636392,\n  \"priceBookValueRatio\" : 15.469896101119664,\n  \"priceToBookRatio\"
-        : 15.469896101119664,\n  \"priceToSalesRatio\" : 3.5320921155981626,\n  \"priceEarningsRatio\"
-        : 13.942908564175339,\n  \"priceToFreeCashFlowsRatio\" : 12.334485439252337,\n
-        \ \"priceToOperatingCashFlowsRatio\" : 11.215870892186707,\n  \"priceCashFlowRatio\"
-        : 11.215870892186707,\n  \"priceEarningsToGrowthRatio\" : -5.80373568983798,\n
-        \ \"priceSalesRatio\" : 3.5320921155981626,\n  \"dividendYield\" : 0.04893361246136758,\n
-        \ \"enterpriseValueMultiple\" : 9.576142105588318,\n  \"priceFairValue\" :
-        15.469896101119664\n}, {\n  \"symbol\" : \"PM\",\n  \"date\" : \"2008-12-31\",\n
-        \ \"period\" : \"FY\",\n  \"currentRatio\" : 1.4726932176656151,\n  \"quickRatio\"
-        : 0.4316837539432177,\n  \"cashRatio\" : 0.15092665615141956,\n  \"daysOfSalesOutstanding\"
-        : 40.440381248784284,\n  \"daysOfInventoryOutstanding\" : 378.147512864494,\n
-        \ \"operatingCycle\" : 418.58789411327825,\n  \"daysOfPayablesOutstanding\"
-        : 39.63818610634648,\n  \"cashConversionCycle\" : 378.94970800693176,\n  \"grossProfitMargin\"
-        : 0.6371134020618556,\n  \"operatingProfitMargin\" : 0.40194514685858784,\n
-        \ \"pretaxProfitMargin\" : 0.386578486675744,\n  \"netProfitMargin\" : 0.26804123711340205,\n
-        \ \"effectiveTaxRate\" : 0.28046694173291736,\n  \"returnOnAssets\" : 0.20896518257915808,\n
-        \ \"returnOnEquity\" : 0.9186666666666666,\n  \"returnOnCapitalEmployed\"
-        : 0.4526020676362362,\n  \"netIncomePerEBT\" : 0.6933682197846432,\n  \"ebtPerEbit\"
-        : 0.9617692605497483,\n  \"ebitPerRevenue\" : 0.40194514685858784,\n  \"debtRatio\"
-        : 0.7725342715030935,\n  \"debtEquityRatio\" : 3.3962666666666665,\n  \"longTermDebtToCapitalization\"
-        : 0.6026911055782169,\n  \"totalDebtToCapitalization\" : 0.614613843070757,\n
-        \ \"interestCoverage\" : 19.568181818181817,\n  \"cashFlowToDebtRatio\" :
-        0.6634060697266115,\n  \"companyEquityMultiplier\" : 4.3962666666666665,\n
-        \ \"receivablesTurnover\" : 9.02563202247191,\n  \"payablesTurnover\" : 9.208292201382033,\n
-        \ \"inventoryTurnover\" : 0.9652317880794702,\n  \"fixedAssetTurnover\" :
-        4.049306868304978,\n  \"assetTurnover\" : 0.7796008734683975,\n  \"operatingCashFlowPerShare\"
-        : 3.8370406189555126,\n  \"freeCashFlowPerShare\" : 3.3056092843326885,\n
-        \ \"cashPerShare\" : 0.7403288201160542,\n  \"payoutRatio\" : 0.7371552975326561,\n
-        \ \"operatingCashFlowSalesRatio\" : 0.30869480645788755,\n  \"freeCashFlowOperatingCashFlowRatio\"
-        : 0.8614996849401386,\n  \"cashFlowCoverageRatios\" : 0.6634060697266115,\n
+        : \"FY\",\n  \"currentRatio\" : 0.920124642949883165,\n  \"quickRatio\" :
+        0.438119968839262519,\n  \"cashRatio\" : 0.233497792781095809,\n  \"daysOfSalesOutstanding\"
+        : 45.7920713262219365,\n  \"daysOfInventoryOutstanding\" : 317.328015952143573,\n
+        \ \"operatingCycle\" : 363.120087278365531,\n  \"daysOfPayablesOutstanding\"
+        : 121.217846460618148,\n  \"cashConversionCycle\" : 241.902240817747384,\n
+        \ \"grossProfitMargin\" : 0.680624104441967859,\n  \"operatingProfitMargin\"
+        : 0.413150772170036595,\n  \"pretaxProfitMargin\" : 0.389492119089316968,\n
+        \ \"netProfitMargin\" : 0.290049355198216841,\n  \"effectiveTaxRate\" : 0.2183616742969261,\n
+        \ \"returnOnAssets\" : 0.220610317268103651,\n  \"returnOnEquity\" : -0.90134573520680783,\n
+        \ \"returnOnCapitalEmployed\" : 0.588835942818243696,\n  \"netIncomePerEBT\"
+        : 0.744686069326357059,\n  \"ebtPerEbit\" : 0.942736030828516425,\n  \"ebitPerRevenue\"
+        : 0.413150772170036595,\n  \"debtRatio\" : 1.19878905303947692,\n  \"debtEquityRatio\"
+        : -4.89788244607164103,\n  \"longTermDebtToCapitalization\" : 1.68856033249301629,\n
+        \ \"totalDebtToCapitalization\" : 1.5709604519774012,\n  \"interestCoverage\"
+        : 17.6051560379918577,\n  \"cashFlowToDebtRatio\" : 0.43037473926490688,\n
+        \ \"companyEquityMultiplier\" : -4.08569166831585218,\n  \"receivablesTurnover\"
+        : 7.97081218274111691,\n  \"payablesTurnover\" : 3.01110777544280994,\n  \"inventoryTurnover\"
+        : 1.15022935779816504,\n  \"fixedAssetTurnover\" : 5.09160181582360583,\n
+        \ \"assetTurnover\" : 0.760595785904577326,\n  \"operatingCashFlowPerShare\"
+        : 7.68593448940269752,\n  \"freeCashFlowPerShare\" : 7.20552344251766197,\n
+        \ \"cashPerShare\" : 2.88760436737315329,\n  \"payoutRatio\" : 0.832144033373586556,\n
+        \ \"operatingCashFlowSalesRatio\" : 0.381053972297404897,\n  \"freeCashFlowOperatingCashFlowRatio\"
+        : 0.937494777304253346,\n  \"cashFlowCoverageRatios\" : 0.43037473926490688,\n
+        \ \"shortTermCoverageRatios\" : 3.95865034733708221,\n  \"capitalExpenditureCoverageRatio\"
+        : -15.9986631016042775,\n  \"dividendPaidAndCapexCoverageRatio\" : 1.75161007025761117,\n
+        \ \"dividendPayoutRatio\" : 0.832144033373586445,\n  \"priceBookValueRatio\"
+        : -15.9490040895507637,\n  \"priceToBookRatio\" : -15.9490040895507637,\n
+        \ \"priceToSalesRatio\" : 5.1323240034707851,\n  \"priceEarningsRatio\" :
+        17.6946575177297198,\n  \"priceToFreeCashFlowsRatio\" : 14.3667559790533907,\n
+        \ \"priceToOperatingCashFlowsRatio\" : 13.4687586971672104,\n  \"priceCashFlowRatio\"
+        : 13.4687586971672104,\n  \"priceEarningsToGrowthRatio\" : 1.32257556058669024,\n
+        \ \"priceSalesRatio\" : 5.1323240034707851,\n  \"dividendYield\" : 0.0470279818945234518,\n
+        \ \"enterpriseValueMultiple\" : 13.6508054257491676,\n  \"priceFairValue\"
+        : -15.9490040895507637\n}, {\n  \"symbol\" : \"PM\",\n  \"date\" : \"2020-12-31\",\n
+        \ \"period\" : \"FY\",\n  \"currentRatio\" : 1.09569207239357636,\n  \"quickRatio\"
+        : 0.562885546775427015,\n  \"cashRatio\" : 0.371144532245730296,\n  \"daysOfSalesOutstanding\"
+        : 47.8415348156409053,\n  \"daysOfInventoryOutstanding\" : 365.839168147141777,\n
+        \ \"operatingCycle\" : 413.680702962782675,\n  \"daysOfPayablesOutstanding\"
+        : 106.040338593374429,\n  \"cashConversionCycle\" : 307.640364369408246,\n
+        \ \"grossProfitMargin\" : 0.666515647870634997,\n  \"operatingProfitMargin\"
+        : 0.406635533561023221,\n  \"pretaxProfitMargin\" : 0.381717432215794239,\n
+        \ \"netProfitMargin\" : 0.280755558653377035,\n  \"effectiveTaxRate\" : 0.217018168538299999,\n
+        \ \"returnOnAssets\" : 0.179761240656030358,\n  \"returnOnEquity\" : -0.641044004137821255,\n
+        \ \"returnOnCapitalEmployed\" : 0.463015873015872992,\n  \"netIncomePerEBT\"
+        : 0.735506253994339443,\n  \"ebtPerEbit\" : 0.938721288995543413,\n  \"ebitPerRevenue\"
+        : 0.406635533561023221,\n  \"debtRatio\" : 1.23721968091040946,\n  \"debtEquityRatio\"
+        : -4.41203151110050129,\n  \"longTermDebtToCapitalization\" : 1.80552528684058711,\n
+        \ \"totalDebtToCapitalization\" : 1.6625019769096947,\n  \"interestCoverage\"
+        : 16.0274725274725292,\n  \"cashFlowToDebtRatio\" : 0.311136478944698147,\n
+        \ \"companyEquityMultiplier\" : -3.56608578021803124,\n  \"receivablesTurnover\"
+        : 7.62935389524062746,\n  \"payablesTurnover\" : 3.44208633093525185,\n  \"inventoryTurnover\"
+        : 0.997706182879783077,\n  \"fixedAssetTurnover\" : 4.50809112333071482,\n
+        \ \"assetTurnover\" : 0.640276693071516245,\n  \"operatingCashFlowPerShare\"
+        : 6.30186255619781655,\n  \"freeCashFlowPerShare\" : 5.91522157996146447,\n
+        \ \"cashPerShare\" : 4.67565831727681402,\n  \"payoutRatio\" : 0.914101290963257207,\n
+        \ \"operatingCashFlowSalesRatio\" : 0.341953021537603707,\n  \"freeCashFlowOperatingCashFlowRatio\"
+        : 0.938646555238483504,\n  \"cashFlowCoverageRatios\" : 0.311136478944698147,\n
+        \ \"shortTermCoverageRatios\" : 2.91330166270783852,\n  \"capitalExpenditureCoverageRatio\"
+        : -16.2990033222591357,\n  \"dividendPaidAndCapexCoverageRatio\" : 1.45104998521147599,\n
+        \ \"dividendPayoutRatio\" : 0.914101290963257207,\n  \"priceBookValueRatio\"
+        : -9.86831010694676536,\n  \"priceToBookRatio\" : -9.86831010694676536,\n
+        \ \"priceToSalesRatio\" : 4.32198554101902843,\n  \"priceEarningsRatio\" :
+        15.3941227797914593,\n  \"priceToFreeCashFlowsRatio\" : 13.4652609244299679,\n
+        \ \"priceToOperatingCashFlowsRatio\" : 12.6391207821035465,\n  \"priceCashFlowRatio\"
+        : 12.6391207821035465,\n  \"priceEarningsToGrowthRatio\" : 1.2903073820879758,\n
+        \ \"priceSalesRatio\" : 4.32198554101902843,\n  \"dividendYield\" : 0.0593798882884861781,\n
+        \ \"enterpriseValueMultiple\" : 12.2114192978092575,\n  \"priceFairValue\"
+        : -9.86831010694676536\n}, {\n  \"symbol\" : \"PM\",\n  \"date\" : \"2019-12-31\",\n
+        \ \"period\" : \"FY\",\n  \"currentRatio\" : 1.08925821695959213,\n  \"quickRatio\"
+        : 0.561673657940848559,\n  \"cashRatio\" : 0.364307332873148204,\n  \"daysOfSalesOutstanding\"
+        : 45.5193759436336194,\n  \"daysOfInventoryOutstanding\" : 320.62922096452013,\n
+        \ \"operatingCycle\" : 366.148596908153763,\n  \"daysOfPayablesOutstanding\"
+        : 79.8187957766574812,\n  \"cashConversionCycle\" : 286.329801131496311,\n
+        \ \"grossProfitMargin\" : 0.647273947324274457,\n  \"operatingProfitMargin\"
+        : 0.353329978191578575,\n  \"pretaxProfitMargin\" : 0.331219594027847675,\n
+        \ \"netProfitMargin\" : 0.241066935078007055,\n  \"effectiveTaxRate\" : 0.232273095623987041,\n
+        \ \"returnOnAssets\" : 0.16758017492711369,\n  \"returnOnEquity\" : -0.620627105467737805,\n
+        \ \"returnOnCapitalEmployed\" : 0.438025122701938274,\n  \"netIncomePerEBT\"
+        : 0.727816045380875187,\n  \"ebtPerEbit\" : 0.93742284683315924,\n  \"ebitPerRevenue\"
+        : 0.353329978191578575,\n  \"debtRatio\" : 1.22388338192419832,\n  \"debtEquityRatio\"
+        : -4.53260775675909144,\n  \"longTermDebtToCapitalization\" : 1.76775648252536643,\n
+        \ \"totalDebtToCapitalization\" : 1.59466817341277989,\n  \"interestCoverage\"
+        : 13.2298994974874375,\n  \"cashFlowToDebtRatio\" : 0.325012079239813179,\n
+        \ \"companyEquityMultiplier\" : -3.70346376436036984,\n  \"receivablesTurnover\"
+        : 8.01856335754640881,\n  \"payablesTurnover\" : 4.57285776424532386,\n  \"inventoryTurnover\"
+        : 1.13838657282079048,\n  \"fixedAssetTurnover\" : 4.49479716483185054,\n
+        \ \"assetTurnover\" : 0.695160349854227366,\n  \"operatingCashFlowPerShare\"
+        : 6.48874598070739506,\n  \"freeCashFlowPerShare\" : 5.94083601286173657,\n
+        \ \"cashPerShare\" : 4.41221864951768517,\n  \"payoutRatio\" : 0.996659707724425914,\n
+        \ \"operatingCashFlowSalesRatio\" : 0.338533803053178983,\n  \"freeCashFlowOperatingCashFlowRatio\"
+        : 0.915559960356788882,\n  \"cashFlowCoverageRatios\" : 0.325012079239813179,\n
+        \ \"shortTermCoverageRatios\" : 2.29892914103440438,\n  \"capitalExpenditureCoverageRatio\"
+        : -11.842723004694836,\n  \"dividendPaidAndCapexCoverageRatio\" : 1.59930258361071487,\n
+        \ \"dividendPayoutRatio\" : 0.996659707724425914,\n  \"priceBookValueRatio\"
+        : -11.3270409527511422,\n  \"priceToBookRatio\" : -11.3270409527511422,\n
+        \ \"priceToSalesRatio\" : 4.39970317429961355,\n  \"priceEarningsRatio\" :
+        18.2509607668754334,\n  \"priceToFreeCashFlowsRatio\" : 14.1949721920329051,\n
+        \ \"priceToOperatingCashFlowsRatio\" : 12.9963481774033696,\n  \"priceCashFlowRatio\"
+        : 12.9963481774033696,\n  \"priceEarningsToGrowthRatio\" : -1.97265703607930343,\n
+        \ \"priceSalesRatio\" : 4.39970317429961355,\n  \"dividendYield\" : 0.0546086159767168317,\n
+        \ \"enterpriseValueMultiple\" : 13.8207112573411646,\n  \"priceFairValue\"
+        : -11.3270409527511422\n}, {\n  \"symbol\" : \"PM\",\n  \"date\" : \"2018-12-31\",\n
+        \ \"period\" : \"FY\",\n  \"currentRatio\" : 1.13094060845791411,\n  \"quickRatio\"
+        : 0.590832412308766264,\n  \"cashRatio\" : 0.383514629748124003,\n  \"daysOfSalesOutstanding\"
+        : 43.9108860759493638,\n  \"daysOfInventoryOutstanding\" : 298.70422011526307,\n
+        \ \"operatingCycle\" : 342.615106191212419,\n  \"daysOfPayablesOutstanding\"
+        : 70.1635991820040914,\n  \"cashConversionCycle\" : 272.451507009208342,\n
+        \ \"grossProfitMargin\" : 0.636860759493670936,\n  \"operatingProfitMargin\"
+        : 0.38403375527426159,\n  \"pretaxProfitMargin\" : 0.360202531645569646,\n
+        \ \"netProfitMargin\" : 0.267037974683544288,\n  \"effectiveTaxRate\" : 0.229125667697497898,\n
+        \ \"returnOnAssets\" : 0.198763850154518723,\n  \"returnOnEquity\" : -0.634962677582470492,\n
+        \ \"returnOnCapitalEmployed\" : 0.503184431667403786,\n  \"netIncomePerEBT\"
+        : 0.741355074500983924,\n  \"ebtPerEbit\" : 0.937944976707392075,\n  \"ebitPerRevenue\"
+        : 0.38403375527426159,\n  \"debtRatio\" : 1.26981734127283241,\n  \"debtEquityRatio\"
+        : -4.0565053375070228,\n  \"longTermDebtToCapitalization\" : 1.8582942959492974,\n
+        \ \"totalDebtToCapitalization\" : 1.64554404145077715,\n  \"interestCoverage\"
+        : 13.3064327485380112,\n  \"cashFlowToDebtRatio\" : 0.298435089266034848,\n
+        \ \"companyEquityMultiplier\" : -3.19455815073440874,\n  \"receivablesTurnover\"
+        : 8.31228956228956228,\n  \"payablesTurnover\" : 5.20212765957446788,\n  \"inventoryTurnover\"
+        : 1.22194457064970474,\n  \"fixedAssetTurnover\" : 4.1140119427857238,\n  \"assetTurnover\"
+        : 0.744328031958995995,\n  \"operatingCashFlowPerShare\" : 6.09517684887459765,\n
+        \ \"freeCashFlowPerShare\" : 5.17170418006430843,\n  \"cashPerShare\" : 4.23987138263665564,\n
+        \ \"payoutRatio\" : 0.870307167235494838,\n  \"operatingCashFlowSalesRatio\"
+        : 0.319932489451476787,\n  \"freeCashFlowOperatingCashFlowRatio\" : 0.8484912428782444,\n
+        \ \"cashFlowCoverageRatios\" : 0.298435089266034848,\n  \"shortTermCoverageRatios\"
+        : 1.98118729096989976,\n  \"capitalExpenditureCoverageRatio\" : -6.60027855153203369,\n
+        \ \"dividendPaidAndCapexCoverageRatio\" : 1.73940172508717206,\n  \"dividendPayoutRatio\"
+        : 0.870307167235494838,\n  \"priceBookValueRatio\" : -9.29580260574685013,\n
+        \ \"priceToBookRatio\" : -9.29580260574685013,\n  \"priceToSalesRatio\" :
+        3.90941450345991548,\n  \"priceEarningsRatio\" : 14.639919689672606,\n  \"priceToFreeCashFlowsRatio\"
+        : 14.4014430073364839,\n  \"priceToOperatingCashFlowsRatio\" : 12.2194982765351341,\n
+        \ \"priceCashFlowRatio\" : 12.2194982765351341,\n  \"priceEarningsToGrowthRatio\"
+        : 0.47335740329941417,\n  \"priceSalesRatio\" : 3.90941450345991548,\n  \"dividendYield\"
+        : 0.0594475369867932396,\n  \"enterpriseValueMultiple\" : 11.5559348086065565,\n
+        \ \"priceFairValue\" : -9.29580260574685013\n}, {\n  \"symbol\" : \"PM\",\n
+        \ \"date\" : \"2017-12-31\",\n  \"period\" : \"FY\",\n  \"currentRatio\" :
+        1.35283799022678863,\n  \"quickRatio\" : 0.763375516852524694,\n  \"cashRatio\"
+        : 0.529194336549304589,\n  \"daysOfSalesOutstanding\" : 47.4596493669124797,\n
+        \ \"daysOfInventoryOutstanding\" : 308.108703987730053,\n  \"operatingCycle\"
+        : 355.568353354642511,\n  \"daysOfPayablesOutstanding\" : 78.4442101226993884,\n
+        \ \"cashConversionCycle\" : 277.124143231943094,\n  \"grossProfitMargin\"
+        : 0.63712258244051756,\n  \"operatingProfitMargin\" : 0.40013218310839016,\n
+        \ \"pretaxProfitMargin\" : 0.368338667037706957,\n  \"netProfitMargin\" :
+        0.209927647140670665,\n  \"effectiveTaxRate\" : 0.406742846349985809,\n  \"returnOnAssets\"
+        : 0.140453360640476643,\n  \"returnOnEquity\" : -0.499338077114016232,\n  \"returnOnCapitalEmployed\"
+        : 0.425942383174109485,\n  \"netIncomePerEBT\" : 0.56993106053451692,\n  \"ebtPerEbit\"
+        : 0.920542467182474122,\n  \"ebitPerRevenue\" : 0.40013218310839016,\n  \"debtRatio\"
+        : 1.23808415565071672,\n  \"debtEquityRatio\" : -4.40162171107066058,\n  \"longTermDebtToCapitalization\"
+        : 1.62790939318370742,\n  \"totalDebtToCapitalization\" : 1.54311778187210713,\n
+        \ \"interestCoverage\" : 10.4954379562043787,\n  \"cashFlowToDebtRatio\" :
+        0.259529980488657219,\n  \"companyEquityMultiplier\" : -3.55518782061889782,\n
+        \ \"receivablesTurnover\" : 7.69074371321562289,\n  \"payablesTurnover\" :
+        4.6529884032114186,\n  \"inventoryTurnover\" : 1.18464683170565532,\n  \"fixedAssetTurnover\"
+        : 3.95378902489341222,\n  \"assetTurnover\" : 0.669056041705455184,\n  \"operatingCashFlowPerShare\"
+        : 5.74226804123711343,\n  \"freeCashFlowPerShare\" : 4.74484536082474229,\n
+        \ \"cashPerShare\" : 5.44265463917525771,\n  \"payoutRatio\" : 1.08036454018227013,\n
+        \ \"operatingCashFlowSalesRatio\" : 0.310004174203422855,\n  \"freeCashFlowOperatingCashFlowRatio\"
+        : 0.826301615798922806,\n  \"cashFlowCoverageRatios\" : 0.259529980488657219,\n
+        \ \"shortTermCoverageRatios\" : 2.96572379367720451,\n  \"capitalExpenditureCoverageRatio\"
+        : -5.75710594315245494,\n  \"dividendPaidAndCapexCoverageRatio\" : 1.79243765084473039,\n
+        \ \"dividendPayoutRatio\" : 1.08036454018227013,\n  \"priceBookValueRatio\"
+        : -13.8609037815654474,\n  \"priceToBookRatio\" : -13.8609037815654474,\n
+        \ \"priceToSalesRatio\" : 5.8272882671490196,\n  \"priceEarningsRatio\" :
+        27.7585556096106068,\n  \"priceToFreeCashFlowsRatio\" : 22.7488977599130919,\n
+        \ \"priceToOperatingCashFlowsRatio\" : 18.7974509766606843,\n  \"priceCashFlowRatio\"
+        : 18.7974509766606843,\n  \"priceEarningsToGrowthRatio\" : -2.07263881885092349,\n
+        \ \"priceSalesRatio\" : 5.8272882671490196,\n  \"dividendYield\" : 0.0389200560496103312,\n
+        \ \"enterpriseValueMultiple\" : 15.7081850973767558,\n  \"priceFairValue\"
+        : -13.8609037815654474\n}, {\n  \"symbol\" : \"PM\",\n  \"date\" : \"2016-12-31\",\n
+        \ \"period\" : \"FY\",\n  \"currentRatio\" : 1.06929009534219954,\n  \"quickRatio\"
+        : 0.469909516001700389,\n  \"cashRatio\" : 0.257423938786664253,\n  \"daysOfSalesOutstanding\"
+        : 47.8596589844481883,\n  \"daysOfInventoryOutstanding\" : 350.463741880523912,\n
+        \ \"operatingCycle\" : 398.323400864972086,\n  \"daysOfPayablesOutstanding\"
+        : 64.7524225322116962,\n  \"cashConversionCycle\" : 333.570978332760376,\n
+        \ \"grossProfitMargin\" : 0.648079445381300356,\n  \"operatingProfitMargin\"
+        : 0.405283867341202919,\n  \"pretaxProfitMargin\" : 0.371894322653175957,\n
+        \ \"netProfitMargin\" : 0.261083005433764281,\n  \"effectiveTaxRate\" : 0.278919790407093915,\n
+        \ \"returnOnAssets\" : 0.189058641556538481,\n  \"returnOnEquity\" : -0.549101513240857542,\n
+        \ \"returnOnCapitalEmployed\" : 0.530563186813186816,\n  \"netIncomePerEBT\"
+        : 0.702035469568722315,\n  \"ebtPerEbit\" : 0.917614424410540863,\n  \"ebitPerRevenue\"
+        : 0.405283867341202919,\n  \"debtRatio\" : 1.29578573173048217,\n  \"debtEquityRatio\"
+        : -3.76347730138713743,\n  \"longTermDebtToCapitalization\" : 1.96391400136746941,\n
+        \ \"totalDebtToCapitalization\" : 1.77465046706148111,\n  \"interestCoverage\"
+        : 10.1169317118802624,\n  \"cashFlowToDebtRatio\" : 0.277875253724154558,\n
+        \ \"companyEquityMultiplier\" : -2.90439785624211844,\n  \"receivablesTurnover\"
+        : 7.62646470420119993,\n  \"payablesTurnover\" : 5.63685474189675872,\n  \"inventoryTurnover\"
+        : 1.04147720971498292,\n  \"fixedAssetTurnover\" : 4.40056068601583128,\n
+        \ \"assetTurnover\" : 0.724132316626414529,\n  \"operatingCashFlowPerShare\"
+        : 5.20760799484203751,\n  \"freeCashFlowPerShare\" : 4.45196647324306927,\n
+        \ \"cashPerShare\" : 2.73307543520309482,\n  \"payoutRatio\" : 0.91545859049806233,\n
+        \ \"operatingCashFlowSalesRatio\" : 0.30267940790706388,\n  \"freeCashFlowOperatingCashFlowRatio\"
+        : 0.854896620032190135,\n  \"cashFlowCoverageRatios\" : 0.277875253724154558,\n
+        \ \"shortTermCoverageRatios\" : 2.51150497512437809,\n  \"capitalExpenditureCoverageRatio\"
+        : -6.89163822525597247,\n  \"dividendPaidAndCapexCoverageRatio\" : 1.55147906262005386,\n
+        \ \"dividendPayoutRatio\" : 0.915458590498062108,\n  \"priceBookValueRatio\"
+        : -11.7302930681746531,\n  \"priceToBookRatio\" : -11.7302930681746531,\n
+        \ \"priceToSalesRatio\" : 5.57743895255761668,\n  \"priceEarningsRatio\" :
+        21.3627039542127157,\n  \"priceToFreeCashFlowsRatio\" : 21.5545196884866037,\n
+        \ \"priceToOperatingCashFlowsRatio\" : 18.4268860281044944,\n  \"priceCashFlowRatio\"
+        : 18.4268860281044944,\n  \"priceEarningsToGrowthRatio\" : 15.7371919129365683,\n
+        \ \"priceSalesRatio\" : 5.57743895255761668,\n  \"dividendYield\" : 0.0428531234838150782,\n
+        \ \"enterpriseValueMultiple\" : 15.0395737809820726,\n  \"priceFairValue\"
+        : -11.7302930681746531\n}, {\n  \"symbol\" : \"PM\",\n  \"date\" : \"2015-12-31\",\n
+        \ \"period\" : \"FY\",\n  \"currentRatio\" : 1.02716755492005718,\n  \"quickRatio\"
+        : 0.402638762511373982,\n  \"cashRatio\" : 0.222085012348888611,\n  \"daysOfSalesOutstanding\"
+        : 37.843173844890643,\n  \"daysOfInventoryOutstanding\" : 330.234383342231752,\n
+        \ \"operatingCycle\" : 368.077557187122409,\n  \"daysOfPayablesOutstanding\"
+        : 50.2386545648692007,\n  \"cashConversionCycle\" : 317.838902622253215,\n
+        \ \"grossProfitMargin\" : 0.650481451071135308,\n  \"operatingProfitMargin\"
+        : 0.396469358811674277,\n  \"pretaxProfitMargin\" : 0.358848996043890422,\n
+        \ \"netProfitMargin\" : 0.256512652086287984,\n  \"effectiveTaxRate\" : 0.279563182527301113,\n
+        \ \"returnOnAssets\" : 0.202408999882200485,\n  \"returnOnEquity\" : -0.518951978254303836,\n
+        \ \"returnOnCapitalEmployed\" : 0.572051696284329614,\n  \"netIncomePerEBT\"
+        : 0.714820592823712908,\n  \"ebtPerEbit\" : 0.905111550409488874,\n  \"ebitPerRevenue\"
+        : 0.396469358811674277,\n  \"debtRatio\" : 1.33796678053952167,\n  \"debtEquityRatio\"
+        : -3.43038356991845372,\n  \"longTermDebtToCapitalization\" : 2.10311510911211075,\n
+        \ \"totalDebtToCapitalization\" : 1.86925702284064066,\n  \"interestCoverage\"
+        : 9.38427561837455748,\n  \"cashFlowToDebtRatio\" : 0.276158707865168551,\n
+        \ \"companyEquityMultiplier\" : -2.56387798248263366,\n  \"receivablesTurnover\"
+        : 9.64506839452843856,\n  \"payablesTurnover\" : 7.26532195500387878,\n  \"inventoryTurnover\"
+        : 1.10527558125811409,\n  \"fixedAssetTurnover\" : 4.68344694983394483,\n
+        \ \"assetTurnover\" : 0.789079985864059363,\n  \"operatingCashFlowPerShare\"
+        : 5.0774693350548743,\n  \"freeCashFlowPerShare\" : 4.45771465461588079,\n
+        \ \"cashPerShare\" : 2.20593931568754043,\n  \"payoutRatio\" : 0.90935544885784958,\n
+        \ \"operatingCashFlowSalesRatio\" : 0.293535866238710141,\n  \"freeCashFlowOperatingCashFlowRatio\"
+        : 0.877940241576605218,\n  \"cashFlowCoverageRatios\" : 0.276158707865168551,\n
+        \ \"shortTermCoverageRatios\" : 2.43498452012383915,\n  \"capitalExpenditureCoverageRatio\"
+        : -8.19270833333333393,\n  \"dividendPaidAndCapexCoverageRatio\" : 1.48676748582230633,\n
+        \ \"dividendPayoutRatio\" : 0.909355448857849469,\n  \"priceBookValueRatio\"
+        : -10.5274458696768338,\n  \"priceToBookRatio\" : -10.5274458696768338,\n
+        \ \"priceToSalesRatio\" : 5.20360875934910805,\n  \"priceEarningsRatio\" :
+        20.2859730973374077,\n  \"priceToFreeCashFlowsRatio\" : 20.1919613465604648,\n
+        \ \"priceToOperatingCashFlowsRatio\" : 17.727335422504769,\n  \"priceCashFlowRatio\"
+        : 17.727335422504769,\n  \"priceEarningsToGrowthRatio\" : -2.84003623362723845,\n
+        \ \"priceSalesRatio\" : 5.20360875934910805,\n  \"dividendYield\" : 0.044826809366971164,\n
+        \ \"enterpriseValueMultiple\" : 14.3695722108849484,\n  \"priceFairValue\"
+        : -10.5274458696768338\n}, {\n  \"symbol\" : \"PM\",\n  \"date\" : \"2014-12-31\",\n
+        \ \"period\" : \"FY\",\n  \"currentRatio\" : 1.02461619904711498,\n  \"quickRatio\"
+        : 0.376257278983589183,\n  \"cashRatio\" : 0.111302276336686073,\n  \"daysOfSalesOutstanding\"
+        : 49.0966506534081404,\n  \"daysOfInventoryOutstanding\" : 300.505940973553095,\n
+        \ \"operatingCycle\" : 349.602591626961214,\n  \"daysOfPayablesOutstanding\"
+        : 43.4390571100038301,\n  \"cashConversionCycle\" : 306.163534516957384,\n
+        \ \"grossProfitMargin\" : 0.649410420935935817,\n  \"operatingProfitMargin\"
+        : 0.393119897873484059,\n  \"pretaxProfitMargin\" : 0.357778748278294756,\n
+        \ \"netProfitMargin\" : 0.251721705244062233,\n  \"effectiveTaxRate\" : 0.290798122065727693,\n
+        \ \"returnOnAssets\" : 0.212947963736607265,\n  \"returnOnEquity\" : -0.5933169688811466,\n
+        \ \"returnOnCapitalEmployed\" : 0.582914072229140712,\n  \"netIncomePerEBT\"
+        : 0.70356807511737085,\n  \"ebtPerEbit\" : 0.910100837463681422,\n  \"ebitPerRevenue\"
+        : 0.393119897873484059,\n  \"debtRatio\" : 1.31838463068746981,\n  \"debtEquityRatio\"
+        : -3.67329163037453466,\n  \"longTermDebtToCapitalization\" : 1.88314685314685315,\n
+        \ \"totalDebtToCapitalization\" : 1.75056460240104594,\n  \"interestCoverage\"
+        : 10.0017094017094017,\n  \"cashFlowToDebtRatio\" : 0.262739772534374472,\n
+        \ \"companyEquityMultiplier\" : -2.78620635046321974,\n  \"receivablesTurnover\"
+        : 7.4343156843156839,\n  \"payablesTurnover\" : 8.40257648953301128,\n  \"inventoryTurnover\"
+        : 1.21461824953445063,\n  \"fixedAssetTurnover\" : 4.90314610443090082,\n
+        \ \"assetTurnover\" : 0.845965839656691365,\n  \"operatingCashFlowPerShare\"
+        : 4.94189016602809694,\n  \"freeCashFlowPerShare\" : 4.20561941251596405,\n
+        \ \"cashPerShare\" : 1.07407407407407418,\n  \"payoutRatio\" : 0.805418390497797954,\n
+        \ \"operatingCashFlowSalesRatio\" : 0.259985890415560861,\n  \"freeCashFlowOperatingCashFlowRatio\"
+        : 0.851014342938364088,\n  \"cashFlowCoverageRatios\" : 0.262739772534374472,\n
+        \ \"shortTermCoverageRatios\" : 3.06373713380839252,\n  \"capitalExpenditureCoverageRatio\"
+        : -6.71205550737207268,\n  \"dividendPaidAndCapexCoverageRatio\" : 1.58521097910692332,\n
+        \ \"dividendPayoutRatio\" : 0.805418390497797954,\n  \"priceBookValueRatio\"
+        : -9.94978516652149914,\n  \"priceToBookRatio\" : -9.94978516652149914,\n
+        \ \"priceToSalesRatio\" : 4.22131342990560032,\n  \"priceEarningsRatio\" :
+        16.7697633615374357,\n  \"priceToFreeCashFlowsRatio\" : 19.0792342648041284,\n
+        \ \"priceToOperatingCashFlowsRatio\" : 16.2367020116294114,\n  \"priceCashFlowRatio\"
+        : 16.2367020116294114,\n  \"priceEarningsToGrowthRatio\" : -1.76417910563373814,\n
+        \ \"priceSalesRatio\" : 4.22131342990560032,\n  \"dividendYield\" : 0.0480280116739797563,\n
+        \ \"enterpriseValueMultiple\" : 12.1297206789469527,\n  \"priceFairValue\"
+        : -9.94978516652149914\n}, {\n  \"symbol\" : \"PM\",\n  \"date\" : \"2013-12-31\",\n
+        \ \"period\" : \"FY\",\n  \"currentRatio\" : 0.987460447673737307,\n  \"quickRatio\"
+        : 0.351986405718973383,\n  \"cashRatio\" : 0.126215867807336235,\n  \"daysOfSalesOutstanding\"
+        : 45.0506134478008775,\n  \"daysOfInventoryOutstanding\" : 345.224783861671483,\n
+        \ \"operatingCycle\" : 390.275397309472339,\n  \"daysOfPayablesOutstanding\"
+        : 44.6695485110470685,\n  \"cashConversionCycle\" : 345.605848798425257,\n
+        \ \"grossProfitMargin\" : 0.666527853413204308,\n  \"operatingProfitMargin\"
+        : 0.43293718166383699,\n  \"pretaxProfitMargin\" : 0.401768267290258496,\n
+        \ \"netProfitMargin\" : 0.274722106544511013,\n  \"effectiveTaxRate\" : 0.292616807526710265,\n
+        \ \"returnOnAssets\" : 0.224690840494655208,\n  \"returnOnEquity\" : -1.10430079835178985,\n
+        \ \"returnOnCapitalEmployed\" : 0.640460619846460077,\n  \"netIncomePerEBT\"
+        : 0.683782490830808443,\n  \"ebtPerEbit\" : 0.928005919348871666,\n  \"ebitPerRevenue\"
+        : 0.43293718166383699,\n  \"debtRatio\" : 1.16437853699434091,\n  \"debtEquityRatio\"
+        : -5.72263713623487025,\n  \"longTermDebtToCapitalization\" : 1.47770191302208276,\n
+        \ \"totalDebtToCapitalization\" : 1.39001607071112887,\n  \"interestCoverage\"
+        : 12.241847826086957,\n  \"cashFlowToDebtRatio\" : 0.366175301683647647,\n
+        \ \"companyEquityMultiplier\" : -4.91475663147051289,\n  \"receivablesTurnover\"
+        : 8.10199844277186543,\n  \"payablesTurnover\" : 8.17111459968602816,\n  \"inventoryTurnover\"
+        : 1.05728214503351614,\n  \"fixedAssetTurnover\" : 4.62131754256106575,\n
+        \ \"assetTurnover\" : 0.817884091385453815,\n  \"operatingCashFlowPerShare\"
+        : 6.24845869297164036,\n  \"freeCashFlowPerShare\" : 5.50863131935881611,\n
+        \ \"cashPerShare\" : 1.32799013563501855,\n  \"payoutRatio\" : 0.666977611940298476,\n
+        \ \"operatingCashFlowSalesRatio\" : 0.324662843963225145,\n  \"freeCashFlowOperatingCashFlowRatio\"
+        : 0.881598421312284164,\n  \"cashFlowCoverageRatios\" : 0.366175301683647647,\n
+        \ \"shortTermCoverageRatios\" : 2.77291381668946668,\n  \"capitalExpenditureCoverageRatio\"
+        : -8.44583333333333286,\n  \"dividendPaidAndCapexCoverageRatio\" : 2.24225663716814161,\n
+        \ \"dividendPayoutRatio\" : 0.666977611940298476,\n  \"priceBookValueRatio\"
+        : -16.5186677198042737,\n  \"priceToBookRatio\" : -16.5186677198042737,\n
+        \ \"priceToSalesRatio\" : 4.10942670698657775,\n  \"priceEarningsRatio\" :
+        14.9584857173507473,\n  \"priceToFreeCashFlowsRatio\" : 14.3574676566312256,\n
+        \ \"priceToOperatingCashFlowsRatio\" : 12.6575208201282674,\n  \"priceCashFlowRatio\"
+        : 12.6575208201282674,\n  \"priceEarningsToGrowthRatio\" : 8.59281901763372069,\n
+        \ \"priceSalesRatio\" : 4.10942670698657775,\n  \"dividendYield\" : 0.0445885783189038584,\n
+        \ \"enterpriseValueMultiple\" : 10.807193192242833,\n  \"priceFairValue\"
+        : -16.5186677198042737\n}, {\n  \"symbol\" : \"PM\",\n  \"date\" : \"2012-12-31\",\n
+        \ \"period\" : \"FY\",\n  \"currentRatio\" : 0.974964739069111408,\n  \"quickRatio\"
+        : 0.386224729666196531,\n  \"cashRatio\" : 0.175305594734367659,\n  \"daysOfSalesOutstanding\"
+        : 41.7498486152277124,\n  \"daysOfInventoryOutstanding\" : 314.892991420032786,\n
+        \ \"operatingCycle\" : 356.642840035260519,\n  \"daysOfPayablesOutstanding\"
+        : 38.8118191458594453,\n  \"cashConversionCycle\" : 317.831020889401088,\n
+        \ \"grossProfitMargin\" : 0.66940752780699242,\n  \"operatingProfitMargin\"
+        : 0.441278643592440345,\n  \"pretaxProfitMargin\" : 0.413901902667559052,\n
+        \ \"netProfitMargin\" : 0.28046020970774771,\n  \"effectiveTaxRate\" : 0.295141295141295168,\n
+        \ \"returnOnAssets\" : 0.233607645341120246,\n  \"returnOnEquity\" : -2.53164556962025333,\n
+        \ \"returnOnCapitalEmployed\" : 0.670378619153674804,\n  \"netIncomePerEBT\"
+        : 0.677600677600677548,\n  \"ebtPerEbit\" : 0.937960421782464304,\n  \"ebitPerRevenue\"
+        : 0.441278643592440345,\n  \"debtRatio\" : 1.08372710379612425,\n  \"debtEquityRatio\"
+        : -11.7445339470655927,\n  \"longTermDebtToCapitalization\" : 1.2454282284826661,\n
+        \ \"totalDebtToCapitalization\" : 1.17951763672984566,\n  \"interestCoverage\"
+        : 13.7497517378351546,\n  \"cashFlowToDebtRatio\" : 0.412496168834012022,\n
+        \ \"companyEquityMultiplier\" : -10.8371691599539695,\n  \"receivablesTurnover\"
+        : 8.74254667038172251,\n  \"payablesTurnover\" : 9.40435176790571248,\n  \"inventoryTurnover\"
+        : 1.15912392446083357,\n  \"fixedAssetTurnover\" : 4.72189616252821676,\n
+        \ \"assetTurnover\" : 0.832943987257764751,\n  \"operatingCashFlowPerShare\"
+        : 5.56796690307328568,\n  \"freeCashFlowPerShare\" : 4.9438534278959807,\n
+        \ \"cashPerShare\" : 1.76300236406619382,\n  \"payoutRatio\" : 0.614090909090909132,\n
+        \ \"operatingCashFlowSalesRatio\" : 0.300251776779169477,\n  \"freeCashFlowOperatingCashFlowRatio\"
+        : 0.887909988323957067,\n  \"cashFlowCoverageRatios\" : 0.412496168834012022,\n
+        \ \"shortTermCoverageRatios\" : 1.81173076923076914,\n  \"capitalExpenditureCoverageRatio\"
+        : -8.92140151515151558,\n  \"dividendPaidAndCapexCoverageRatio\" : 2.16674333026678934,\n
+        \ \"dividendPayoutRatio\" : 0.614090909090909021,\n  \"priceBookValueRatio\"
+        : -42.6650757721519014,\n  \"priceToBookRatio\" : -42.6650757721519014,\n
+        \ \"priceToSalesRatio\" : 4.72651315881059375,\n  \"priceEarningsRatio\" :
+        16.852704929999998,\n  \"priceToFreeCashFlowsRatio\" : 17.7290858797369992,\n
+        \ \"priceToOperatingCashFlowsRatio\" : 15.7418324364717126,\n  \"priceCashFlowRatio\"
+        : 15.7418324364717126,\n  \"priceEarningsToGrowthRatio\" : 4.3615815383557317,\n
+        \ \"priceSalesRatio\" : 4.72651315881059375,\n  \"dividendYield\" : 0.0364387148319287105,\n
+        \ \"enterpriseValueMultiple\" : 11.5669145263447515,\n  \"priceFairValue\"
+        : -42.6650757721519014\n}, {\n  \"symbol\" : \"PM\",\n  \"date\" : \"2011-12-31\",\n
+        \ \"period\" : \"FY\",\n  \"currentRatio\" : 1.00439367311072059,\n  \"quickRatio\"
+        : 0.388738677842368541,\n  \"cashRatio\" : 0.172367175882114365,\n  \"daysOfSalesOutstanding\"
+        : 37.5716307039264237,\n  \"daysOfInventoryOutstanding\" : 277.561341075107691,\n
+        \ \"operatingCycle\" : 315.132971779034108,\n  \"daysOfPayablesOutstanding\"
+        : 35.2420865330586253,\n  \"cashConversionCycle\" : 279.890885245975483,\n
+        \ \"grossProfitMargin\" : 0.65662282535292793,\n  \"operatingProfitMargin\"
+        : 0.428723027944817814,\n  \"pretaxProfitMargin\" : 0.402997073672701545,\n
+        \ \"netProfitMargin\" : 0.276264591439688734,\n  \"effectiveTaxRate\" : 0.291493775933609978,\n
+        \ \"returnOnAssets\" : 0.242081830477908017,\n  \"returnOnEquity\" : 37.5152838427947586,\n
+        \ \"returnOnCapitalEmployed\" : 0.644244708611191652,\n  \"netIncomePerEBT\"
+        : 0.685525055857006071,\n  \"ebtPerEbit\" : 0.939993999399939995,\n  \"ebitPerRevenue\"
+        : 0.428723027944817814,\n  \"debtRatio\" : 0.950321235347159621,\n  \"debtEquityRatio\"
+        : 147.270742358078593,\n  \"longTermDebtToCapitalization\" : 0.984791127050541282,\n
+        \ \"totalDebtToCapitalization\" : 0.987802279748588474,\n  \"interestCoverage\"
+        : 14.2740899357601716,\n  \"cashFlowToDebtRatio\" : 0.567754111620382806,\n
+        \ \"companyEquityMultiplier\" : 154.969432314410483,\n  \"receivablesTurnover\"
+        : 9.71477663230240474,\n  \"payablesTurnover\" : 10.3569350145489807,\n  \"inventoryTurnover\"
+        : 1.31502463054187202,\n  \"fixedAssetTurnover\" : 4.97552000000000039,\n
+        \ \"assetTurnover\" : 0.87626803426510369,\n  \"operatingCashFlowPerShare\"
+        : 6.10055457013389812,\n  \"freeCashFlowPerShare\" : 5.58082834262795213,\n
+        \ \"cashPerShare\" : 1.47748258655536535,\n  \"payoutRatio\" : 0.557327435688511286,\n
+        \ \"operatingCashFlowSalesRatio\" : 0.338585715663890396,\n  \"freeCashFlowOperatingCashFlowRatio\"
+        : 0.914806724285307293,\n  \"cashFlowCoverageRatios\" : 0.567754111620382806,\n
+        \ \"shortTermCoverageRatios\" : 2.83266074791498523,\n  \"capitalExpenditureCoverageRatio\"
+        : -11.7380156075808255,\n  \"dividendPaidAndCapexCoverageRatio\" : 2.70598817784631196,\n
+        \ \"dividendPayoutRatio\" : 0.557327435688511286,\n  \"priceBookValueRatio\"
+        : 564.500273079551675,\n  \"priceToBookRatio\" : 564.500273079551675,\n  \"priceToSalesRatio\"
+        : 4.15701072563968665,\n  \"priceEarningsRatio\" : 15.0472078378788652,\n
+        \ \"priceToFreeCashFlowsRatio\" : 13.4209471070616004,\n  \"priceToOperatingCashFlowsRatio\"
+        : 12.2775726598173929,\n  \"priceCashFlowRatio\" : 12.2775726598173929,\n
+        \ \"priceEarningsToGrowthRatio\" : 0.564449107950838691,\n  \"priceSalesRatio\"
+        : 4.15701072563968665,\n  \"dividendYield\" : 0.0370385949136378193,\n  \"enterpriseValueMultiple\"
+        : 10.2509041376908723,\n  \"priceFairValue\" : 564.500273079551675\n}, {\n
+        \ \"symbol\" : \"PM\",\n  \"date\" : \"2010-12-31\",\n  \"period\" : \"FY\",\n
+        \ \"currentRatio\" : 1.07435176507341446,\n  \"quickRatio\" : 0.368009996875976242,\n
+        \ \"cashRatio\" : 0.133005310840362378,\n  \"daysOfSalesOutstanding\" : 40.3662525727727157,\n
+        \ \"daysOfInventoryOutstanding\" : 312.540409760115324,\n  \"operatingCycle\"
+        : 352.906662332888061,\n  \"daysOfPayablesOutstanding\" : 31.3780500360341819,\n
+        \ \"cashConversionCycle\" : 321.528612296853908,\n  \"grossProfitMargin\"
+        : 0.643009408997353704,\n  \"operatingProfitMargin\" : 0.411643634225227872,\n
+        \ \"pretaxProfitMargin\" : 0.379447221405468993,\n  \"netProfitMargin\" :
+        0.266796530432225842,\n  \"effectiveTaxRate\" : 0.273731111972103813,\n  \"returnOnAssets\"
+        : 0.20710413694721827,\n  \"returnOnEquity\" : 2.07045065601825451,\n  \"returnOnCapitalEmployed\"
+        : 0.503461296412838211,\n  \"netIncomePerEBT\" : 0.70311894614490511,\n  \"ebtPerEbit\"
+        : 0.921785714285714319,\n  \"ebitPerRevenue\" : 0.411643634225227872,\n  \"debtRatio\"
+        : 0.853894436519258226,\n  \"debtEquityRatio\" : 8.53650884198516913,\n  \"longTermDebtToCapitalization\"
+        : 0.792249348186774172,\n  \"totalDebtToCapitalization\" : 0.824770091963214713,\n
+        \ \"interestCoverage\" : 11.4989733059548254,\n  \"cashFlowToDebtRatio\" :
+        0.571870076354381252,\n  \"companyEquityMultiplier\" : 9.99714774671990902,\n
+        \ \"receivablesTurnover\" : 9.04220671319375136,\n  \"payablesTurnover\" :
+        11.6323353293413181,\n  \"inventoryTurnover\" : 1.167848984008657,\n  \"fixedAssetTurnover\"
+        : 4.18649022926604086,\n  \"assetTurnover\" : 0.776262482168330936,\n  \"operatingCashFlowPerShare\"
+        : 5.1315932572050027,\n  \"freeCashFlowPerShare\" : 4.74388254486133754,\n
+        \ \"cashPerShare\" : 0.926046764545948919,\n  \"payoutRatio\" : 0.609312577490012441,\n
+        \ \"operatingCashFlowSalesRatio\" : 0.346846515730667437,\n  \"freeCashFlowOperatingCashFlowRatio\"
+        : 0.924446328282293117,\n  \"cashFlowCoverageRatios\" : 0.571870076354381252,\n
+        \ \"shortTermCoverageRatios\" : 3.01309067688378018,\n  \"capitalExpenditureCoverageRatio\"
+        : -13.2356241234221592,\n  \"dividendPaidAndCapexCoverageRatio\" : 2.54366576819406998,\n
+        \ \"dividendPayoutRatio\" : 0.60931257749001233,\n  \"priceBookValueRatio\"
+        : 29.6883617575584715,\n  \"priceToBookRatio\" : 29.6883617575584715,\n  \"priceToSalesRatio\"
+        : 3.82561733027050854,\n  \"priceEarningsRatio\" : 14.3390820115718416,\n
+        \ \"priceToFreeCashFlowsRatio\" : 11.9311550116918852,\n  \"priceToOperatingCashFlowsRatio\"
+        : 11.029712442725442,\n  \"priceCashFlowRatio\" : 11.029712442725442,\n  \"priceEarningsToGrowthRatio\"
+        : 0.68532377261188937,\n  \"priceSalesRatio\" : 3.82561733027050854,\n  \"dividendYield\"
+        : 0.0424931370779725315,\n  \"enterpriseValueMultiple\" : 9.91463567025268944,\n
+        \ \"priceFairValue\" : 29.6883617575584715\n}, {\n  \"symbol\" : \"PM\",\n
+        \ \"date\" : \"2009-12-31\",\n  \"period\" : \"FY\",\n  \"currentRatio\" :
+        1.31347289318303817,\n  \"quickRatio\" : 0.414922168545356962,\n  \"cashRatio\"
+        : 0.137770620862408294,\n  \"daysOfSalesOutstanding\" : 45.1675654084281959,\n
+        \ \"daysOfInventoryOutstanding\" : 372.484482376413212,\n  \"operatingCycle\"
+        : 417.652047784841386,\n  \"daysOfPayablesOutstanding\" : 27.1059632010640676,\n
+        \ \"cashConversionCycle\" : 390.546084583777315,\n  \"grossProfitMargin\"
+        : 0.639624525664070354,\n  \"operatingProfitMargin\" : 0.401038546035550225,\n
+        \ \"pretaxProfitMargin\" : 0.369203115638106649,\n  \"netProfitMargin\" :
+        0.253325344517675244,\n  \"effectiveTaxRate\" : 0.291139240506329111,\n  \"returnOnAssets\"
+        : 0.183549432739059964,\n  \"returnOnEquity\" : 1.10951714485654307,\n  \"returnOnCapitalEmployed\"
+        : 0.429537092495935635,\n  \"netIncomePerEBT\" : 0.686140863356053177,\n  \"ebtPerEbit\"
+        : 0.920617529880478069,\n  \"ebitPerRevenue\" : 0.401038546035550225,\n  \"debtRatio\"
+        : 0.822152118545959709,\n  \"debtEquityRatio\" : 4.9697340797760674,\n  \"longTermDebtToCapitalization\"
+        : 0.705178460903651771,\n  \"totalDebtToCapitalization\" : 0.729509748249100864,\n
+        \ \"interestCoverage\" : 12.5972396486825602,\n  \"cashFlowToDebtRatio\" :
+        0.51141670991178001,\n  \"companyEquityMultiplier\" : 6.04478656403079118,\n
+        \ \"receivablesTurnover\" : 8.08102001291155503,\n  \"payablesTurnover\" :
+        13.4656716417910456,\n  \"inventoryTurnover\" : 0.979906592809818622,\n  \"fixedAssetTurnover\"
+        : 3.9178403755868545,\n  \"assetTurnover\" : 0.724560083352627893,\n  \"operatingCashFlowPerShare\"
+        : 4.05764282038085433,\n  \"freeCashFlowPerShare\" : 3.68965517241379315,\n
+        \ \"cashPerShare\" : 0.792588780236747281,\n  \"payoutRatio\" : 0.682276884263639194,\n
+        \ \"operatingCashFlowSalesRatio\" : 0.314919113241461934,\n  \"freeCashFlowOperatingCashFlowRatio\"
+        : 0.909309994926433274,\n  \"cashFlowCoverageRatios\" : 0.51141670991178001,\n
+        \ \"shortTermCoverageRatios\" : 4.52064220183486221,\n  \"capitalExpenditureCoverageRatio\"
+        : -11.0265734265734263,\n  \"dividendPaidAndCapexCoverageRatio\" : 2.18272425249169455,\n
+        \ \"dividendPayoutRatio\" : 0.682276884263639194,\n  \"priceBookValueRatio\"
+        : 15.4698961011196641,\n  \"priceToBookRatio\" : 15.4698961011196641,\n  \"priceToSalesRatio\"
+        : 3.53209211559816261,\n  \"priceEarningsRatio\" : 13.9429085641753385,\n
+        \ \"priceToFreeCashFlowsRatio\" : 12.3344854392523366,\n  \"priceToOperatingCashFlowsRatio\"
+        : 11.2158708921867074,\n  \"priceCashFlowRatio\" : 11.2158708921867074,\n
+        \ \"priceEarningsToGrowthRatio\" : -5.80373568983798016,\n  \"priceSalesRatio\"
+        : 3.53209211559816261,\n  \"dividendYield\" : 0.0489336124613675774,\n  \"enterpriseValueMultiple\"
+        : 9.57614210558831758,\n  \"priceFairValue\" : 15.4698961011196641\n}, {\n
+        \ \"symbol\" : \"PM\",\n  \"date\" : \"2008-12-31\",\n  \"period\" : \"FY\",\n
+        \ \"currentRatio\" : 1.47269321766561512,\n  \"quickRatio\" : 0.431683753943217674,\n
+        \ \"cashRatio\" : 0.150926656151419564,\n  \"daysOfSalesOutstanding\" : 40.4403812487842842,\n
+        \ \"daysOfInventoryOutstanding\" : 378.14751286449399,\n  \"operatingCycle\"
+        : 418.587894113278253,\n  \"daysOfPayablesOutstanding\" : 39.6381861063464811,\n
+        \ \"cashConversionCycle\" : 378.949708006931758,\n  \"grossProfitMargin\"
+        : 0.637113402061855627,\n  \"operatingProfitMargin\" : 0.398677300136160262,\n
+        \ \"pretaxProfitMargin\" : 0.386578486675744015,\n  \"netProfitMargin\" :
+        0.268041237113402053,\n  \"effectiveTaxRate\" : 0.280466941732917363,\n  \"returnOnAssets\"
+        : 0.208965182579158082,\n  \"returnOnEquity\" : 0.918666666666666631,\n  \"returnOnCapitalEmployed\"
+        : 0.44892237602943752,\n  \"netIncomePerEBT\" : 0.693368219784643247,\n  \"ebtPerEbit\"
+        : 0.969652615144418473,\n  \"ebitPerRevenue\" : 0.398677300136160262,\n  \"debtRatio\"
+        : 0.772534271503093506,\n  \"debtEquityRatio\" : 3.39626666666666654,\n  \"longTermDebtToCapitalization\"
+        : 0.602691105578216924,\n  \"totalDebtToCapitalization\" : 0.614613843070756949,\n
+        \ \"interestCoverage\" : 19.4090909090909101,\n  \"cashFlowToDebtRatio\" :
+        0.663406069726611536,\n  \"companyEquityMultiplier\" : 4.39626666666666654,\n
+        \ \"receivablesTurnover\" : 9.02563202247191043,\n  \"payablesTurnover\" :
+        9.20829220138203297,\n  \"inventoryTurnover\" : 0.965231788079470188,\n  \"fixedAssetTurnover\"
+        : 4.04930686830497777,\n  \"assetTurnover\" : 0.779600873468397459,\n  \"operatingCashFlowPerShare\"
+        : 3.83704061895551263,\n  \"freeCashFlowPerShare\" : 3.30560928433268852,\n
+        \ \"cashPerShare\" : 0.740328820116054165,\n  \"payoutRatio\" : 0.737155297532656073,\n
+        \ \"operatingCashFlowSalesRatio\" : 0.308694806457887549,\n  \"freeCashFlowOperatingCashFlowRatio\"
+        : 0.861499684940138621,\n  \"cashFlowCoverageRatios\" : 0.663406069726611536,\n
         \ \"shortTermCoverageRatios\" : 13.587328767123287,\n  \"capitalExpenditureCoverageRatio\"
-        : -7.220200181983621,\n  \"dividendPaidAndCapexCoverageRatio\" : 1.993718592964824,\n
-        \ \"dividendPayoutRatio\" : 0.7371552975326561,\n  \"priceBookValueRatio\"
-        : 10.2434938848,\n  \"priceToBookRatio\" : 10.2434938848,\n  \"priceToSalesRatio\"
-        : 2.988764992647345,\n  \"priceEarningsRatio\" : 11.15039247256894,\n  \"priceToFreeCashFlowsRatio\"
-        : 11.238473396138092,\n  \"priceToOperatingCashFlowsRatio\" : 9.681941289981097,\n
-        \ \"priceCashFlowRatio\" : 9.681941289981097,\n  \"priceEarningsToGrowthRatio\"
-        : 0.695687530353758,\n  \"priceSalesRatio\" : 2.988764992647345,\n  \"dividendYield\"
-        : 0.06611025570141413,\n  \"enterpriseValueMultiple\" : 7.89863348746266,\n
-        \ \"priceFairValue\" : 10.2434938848\n} ]"
+        : -7.22020018198362123,\n  \"dividendPaidAndCapexCoverageRatio\" : 1.99371859296482401,\n
+        \ \"dividendPayoutRatio\" : 0.737155297532656073,\n  \"priceBookValueRatio\"
+        : 10.2434938847999994,\n  \"priceToBookRatio\" : 10.2434938847999994,\n  \"priceToSalesRatio\"
+        : 2.98876499264734496,\n  \"priceEarningsRatio\" : 11.1503924725689405,\n
+        \ \"priceToFreeCashFlowsRatio\" : 11.238473396138092,\n  \"priceToOperatingCashFlowsRatio\"
+        : 9.68194128998109704,\n  \"priceCashFlowRatio\" : 9.68194128998109704,\n
+        \ \"priceEarningsToGrowthRatio\" : 0.695687530353757966,\n  \"priceSalesRatio\"
+        : 2.98876499264734496,\n  \"dividendYield\" : 0.0661102557014141279,\n  \"enterpriseValueMultiple\"
+        : 7.89863348746265981,\n  \"priceFairValue\" : 10.2434938847999994\n} ]"
     headers:
       Access-Control-Allow-Headers:
       - origin, content-type, accept, Authorization, authorization
@@ -476,7 +496,7 @@ interactions:
       Content-Type:
       - application/json;charset=UTF-8
       Date:
-      - Sun, 06 Mar 2022 13:05:23 GMT
+      - Sat, 21 May 2022 15:08:11 GMT
       Server:
       - nginx/1.14.0 (Ubuntu)
       Transfer-Encoding:

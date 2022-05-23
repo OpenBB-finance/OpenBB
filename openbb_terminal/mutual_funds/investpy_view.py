@@ -68,7 +68,6 @@ def display_search(
         show_index=False,
         title=f"[bold]Mutual Funds with {by} matching {value}[/bold]",
     )
-    console.print("\n")
 
 
 @log_start_end(log=logger)
@@ -122,7 +121,6 @@ def display_fund_info(fund_name: str, country: str = "united states"):
         show_index=False,
         headers=["Info", "Value"],
     )
-    console.print("\n")
 
 
 @log_start_end(log=logger)

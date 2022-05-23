@@ -87,8 +87,6 @@ def display_performance(
         title="Group Performance Data",
     )
 
-    console.print("")
-
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
@@ -137,8 +135,6 @@ def display_valuation(
         headers=list(df_group.columns),
         title="Group Valuation Data",
     )
-
-    console.print()
 
     export_data(
         export,
@@ -211,4 +207,3 @@ def display_future(
         future_type.lower(),
         df,
     )
-    console.print("")

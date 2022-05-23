@@ -44,7 +44,7 @@ def display_overview(ticker: str):
         show_index=True,
     )
 
-    console.print(f"\nCompany Description:\n\n{df_fa.loc['Description'][0]}")
+    console.print(f"Company Description:\n\n{df_fa.loc['Description'][0]}")
     console.print("")
 
 
@@ -66,8 +66,6 @@ def display_key(ticker: str):
     print_rich_table(
         df_key, headers=[""], title=f"{ticker} Key Metrics", show_index=True
     )
-
-    console.print("")
 
 
 @log_start_end(log=logger)
@@ -104,7 +102,6 @@ def display_income_statement(
         show_index=True,
     )
 
-    console.print("")
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "income", df_income)
 
 
@@ -142,7 +139,6 @@ def display_balance_sheet(
         show_index=True,
     )
 
-    console.print("")
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "balance", df_balance
     )
@@ -182,7 +178,6 @@ def display_cash_flow(
         show_index=True,
     )
 
-    console.print("")
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "cash", df_cash)
 
 
@@ -215,7 +210,7 @@ def display_earnings(
         show_index=False,
         title=f"{ticker} Earnings",
     )
-    console.print("")
+
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "earnings", df_fa)
 
 
@@ -303,5 +298,4 @@ def display_dupont(
     if not external_axes:
         theme.visualize_output()
 
-    console.print("")
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "dupont", df)

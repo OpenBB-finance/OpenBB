@@ -101,7 +101,6 @@ def display_balance(coin: str, currency: str, export: str) -> None:
     print_rich_table(
         df, headers=df.columns, show_index=True, title="Account Holdings for Assets"
     )
-    console.print("")
 
     export_data(
         export,

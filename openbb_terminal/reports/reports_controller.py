@@ -74,7 +74,7 @@ class ReportController(BaseController):
 
         args = f"<{'> <'.join(l_params)}>"
         reports_opts += (
-            f"   {k}. {report_to_run}"
+            f"    {k}. {report_to_run}"
             + f"{(max_len_name-len(report_to_run))*' '} "
             + f"{args if args != '<>' else ''}\n"
         )

@@ -55,7 +55,6 @@ class EconomyController(BaseController):
         "fred",
         "index",
         "treasury",
-        "yield",
         "plot",
         "options",
         "valuation",
@@ -224,29 +223,29 @@ class EconomyController(BaseController):
         """Print help"""
         help_text = """[cmds]
 [info]Overview[/info]
-    overview      show a market overview of either indices, bonds or currencies [src][Source: Wall St. Journal][/src]
-    futures       display a futures and commodities overview [src][Source: Wall St. Journal / FinViz][/src]
-    map           S&P500 index stocks map [src][Source: FinViz][/src]
-    bigmac        The Economist Big Mac index [src][Source: NASDAQ Datalink][/src]
+    overview         show a market overview of either indices, bonds or currencies [src][Source: Wall St. Journal][/src]
+    futures          display a futures and commodities overview [src][Source: Wall St. Journal / FinViz][/src]
+    map              S&P500 index stocks map [src][Source: FinViz][/src]
+    bigmac           The Economist Big Mac index [src][Source: NASDAQ Datalink][/src]
 
 [info]Macro Data[/info]
-    macro         collect macro data for a country or countries [src][Source: EconDB][/src]
-    fred          collect macro data from FRED based on a series ID [src][Source: FRED][/src]
-    index         find and plot any (major) index on the market [src][Source: Yahoo Finance][/src]
-    treasury      obtain U.S. treasury rates [src][Source: EconDB][/src]
-    yield         show the U.S. Treasury yield curve [src][Source: FRED][/src]
-    ycrv          show sovereign yield curves [src][Source: Investing.com/FRED][/src]
-    plot          plot data from the above commands together
-    options       show the available options for 'plot' or show/export the data
+    macro            collect macro data for a country or countries [src][Source: EconDB][/src]
+    fred             collect macro data from FRED based on a series ID [src][Source: FRED][/src]
+    index            find and plot any (major) index on the market [src][Source: Yahoo Finance][/src]
+    treasury         obtain U.S. treasury rates [src][Source: EconDB][/src]
+    ycrv             show sovereign yield curves [src][Source: Investing.com/FRED][/src]
+    plot             plot data from the above commands together
+    options          show the available options for 'plot' or show/export the data
 
 [info]Performance & Valuations[/info]
-    rtps          real-time performance sectors [src][Source: Alpha Vantage][/src]
-    valuation     valuation of sectors, industry, country [src][Source: FinViz][/src]
-    performance   performance of sectors, industry, country [src][Source: FinViz][/src]
-    spectrum      spectrum of sectors, industry, country [src][Source: FinViz][/src][/cmds]
+    rtps             real-time performance sectors [src][Source: Alpha Vantage][/src]
+    valuation        valuation of sectors, industry, country [src][Source: FinViz][/src]
+    performance      performance of sectors, industry, country [src][Source: FinViz][/src]
+    spectrum         spectrum of sectors, industry, country [src][Source: FinViz][/src][/cmds]
 [menu]
->   pred          Open the prediction menu to analyse stored data
->   qa            Open quantitative analysis menu with stored data[/menu]"""
+>   pred             Open the prediction menu to analyse stored data
+>   qa               Open quantitative analysis menu with stored data[/menu]
+"""
         console.print(text=help_text, menu="Economy")
 
     @log_start_end(log=logger)
@@ -955,28 +954,6 @@ class EconomyController(BaseController):
                     )
 
             self.update_runtime_choices()
-
-    @log_start_end(log=logger)
-    def call_yield(self, other_args: List[str]):
-        """Process treasury command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="yield",
-            description="Generate the US yield curve for a specific date.  The yield curve shows the bond rates"
-            " at different maturities.",
-        )
-        parser.add_argument(
-            "-d",
-            "--date",
-            type=valid_date,
-            help="Date to get the curve for. If not supplied, the most recent entry from FRED will be used.",
-            dest="date",
-            default=None,
-        )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            fred_view.display_yield_curve(ns_parser.date)
 
     @log_start_end(log=logger)
     def call_ycrv(self, other_args: List[str]):

@@ -44,7 +44,7 @@ def display_holdings(export: str = ""):
     print_rich_table(
         holdings, headers=list(holdings.columns), title="Robinhood Holdings"
     )
-    console.print("")
+
     export_data(
         export,
         os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
