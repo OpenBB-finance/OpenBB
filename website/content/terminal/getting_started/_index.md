@@ -296,7 +296,7 @@ pretty tables.
 
 Being an open source platform that wishes to tailor to the needs of any type of investor, we highly encourage anyone 
 to share with us their experience and/or how we can further improve the OpenBB Terminal. This can be anything
-from a very small bug to a new feature to the implementation of a highly advanced Machine Learning model. <br></br>
+from a very small bug to a new feature to the implementation of a highly advanced Machine Learning model.
 
 You are able to directly send us information about a bug or question/suggestion from inside the terminal by using
 the `support` command which is available everywhere in the terminal. Here you can select which command you want to
