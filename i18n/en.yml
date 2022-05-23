@@ -330,3 +330,22 @@ en:
   stocks/fa/dupont: detailed breakdown for return on equity
   stocks/fa/sources: Other sources
   stocks/fa/fmp: profile,quote,enterprise,dcf,income,ratios,growth from FMP
+  stocks/res/_ticker: Ticker
+  stocks/res/macroaxis: www.macroaxis.com
+  stocks/res/yahoo: www.finance.yahoo.com
+  stocks/res/finviz: www.finviz.com
+  stocks/res/marketwatch: www.marketwatch.com
+  stocks/res/fool: www.fool.com
+  stocks/res/businessinsider: www.markets.businessinsider.com
+  stocks/res/fmp: www.financialmodelingprep.com
+  stocks/res/fidelity: www.eresearch.fidelity.com
+  stocks/res/tradingview: www.tradingview.com
+  stocks/res/marketchameleon: www.marketchameleon.com
+  stocks/res/stockrow: www.stockrow.com
+  stocks/res/barchart: www.barchart.com
+  stocks/res/grufity: www.grufity.com
+  stocks/res/fintel: www.fintel.com
+  stocks/res/zacks: www.zacks.com
+  stocks/res/macrotrends: www.macrotrends.net
+  stocks/res/newsfilter: www.newsfilter.io
+  stocks/res/stockanalysis: www.stockanalysis.com
