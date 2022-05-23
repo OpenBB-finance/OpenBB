@@ -365,3 +365,75 @@ en:
   stocks/bt/ema: buy when price exceeds EMA(l)
   stocks/bt/ema_cross: buy when EMA(short) > EMA(long)
   stocks/bt/rsi: buy when RSI < low and sell when RSI > high
+  stocks/ta/_ticker: Ticker
+  stocks/ta/tv: open interactive chart on
+  stocks/ta/view: view historical data and trendlines
+  stocks/ta/summary: technical summary report
+  stocks/ta/recom: recommendation based on technical indicators
+  stocks/ta/ema: exponential moving average
+  stocks/ta/sma: simple moving average
+  stocks/ta/wma: weighted moving average
+  stocks/ta/hma: hull moving average
+  stocks/ta/zlma: zero lag moving average
+  stocks/ta/vwap: volume weighted average price
+  stocks/ta/cci: commodity channel index
+  stocks/ta/macd: moving average convergence/divergence
+  stocks/ta/rsi: relative strength index
+  stocks/ta/stoch: stochastic oscillator
+  stocks/ta/fisher: fisher transform
+  stocks/ta/cg: centre of gravity
+  stocks/ta/adx: average directional movement index
+  stocks/ta/aroon: aroon indicator
+  stocks/ta/bbands: bollinger bands
+  stocks/ta/donchian: donchian channels
+  stocks/ta/kc: keltner channels
+  stocks/ta/ad: accumulation/distribution line
+  stocks/ta/adosc: chaikin oscillator
+  stocks/ta/obv: on balance volume
+  stocks/ta/fib: fibonacci retracement
+  stocks/qa/load: load new ticker
+  stocks/qa/pick: pick target column for analysis
+  stocks/qa/_ticker: Ticker
+  stocks/qa/_target: Target Column
+  stocks/qa/statistics: Statistics
+  stocks/qa/summary: brief summary statistics of loaded stock
+  stocks/qa/normality: normality statistics and tests
+  stocks/qa/unitroot: unit root test for stationarity (ADF, KPSS)
+  stocks/qa/plots: Plots
+  stocks/qa/line: line plot of selected target
+  stocks/qa/hist: histogram with density plot
+  stocks/qa/cdf: cumulative distribution function
+  stocks/qa/bw: box and whisker plot
+  stocks/qa/acf: (partial) auto-correlation function differentials of prices
+  stocks/qa/qqplot: residuals against standard normal curve
+  stocks/qa/rolling_metrics: Rolling Metrics
+  stocks/qa/rolling: rolling mean and std deviation of prices
+  stocks/qa/spread: rolling variance and std deviation of prices
+  stocks/qa/quantile: rolling median and quantile of prices
+  stocks/qa/skew: rolling skewness of distribution of prices
+  stocks/qa/kurtosis: rolling kurtosis of distribution of prices
+  stocks/qa/risk: Risk
+  stocks/qa/var: display value at risk
+  stocks/qa/es: display expected shortfall
+  stocks/qa/sh: display sharpe ratio
+  stocks/qa/so: display sortino ratio
+  stocks/qa/om: display omega ratio
+  stocks/qa/other: Other
+  stocks/qa/raw: print raw data
+  stocks/qa/decompose: decomposition in cyclic-trend, season, and residuals of prices
+  stocks/qa/cusum: detects abrupt changes using cumulative sum algorithm of prices
+  stocks/qa/capm: capital asset pricing model
+  stocks/pred/load: load new ticker
+  stocks/pred/pick: pick target column for analysis
+  stocks/pred/_ticker: Ticker
+  stocks/pred/_target: Target Column
+  stocks/pred/models: Models
+  stocks/pred/ets: exponential smoothing (e.g. Holt-Winters)
+  stocks/pred/knn: k-Nearest Neighbors
+  stocks/pred/regression: polynomial regression
+  stocks/pred/arima: autoregressive integrated moving average
+  stocks/pred/mlp: MultiLayer Perceptron
+  stocks/pred/rnn: Recurrent Neural Network
+  stocks/pred/lstm: Long-Short Term Memory
+  stocks/pred/conv1d: 1D Convolutional Neural Network
+  stocks/pred/mc: Monte-Carlo simulations

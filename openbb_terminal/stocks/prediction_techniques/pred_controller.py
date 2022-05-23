@@ -33,7 +33,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.stocks import stocks_helper
 
 logger = logging.getLogger(__name__)
@@ -102,25 +102,24 @@ class PredictionTechniquesController(BaseController):
         else:
             stock_info = f"{s_intraday} {self.ticker}"
 
-        help_text = f"""[cmds]
-    load             load new ticker
-    pick             pick new target variable[/cmds]
-
-[param]Stock: [/param]{stock_info}
-[param]Target Column: [/param]{self.target}
-
-[info]Models:[/info][cmds]
-    ets              exponential smoothing (e.g. Holt-Winters)
-    knn              k-Nearest Neighbors
-    regression       polynomial regression
-    arima            autoregressive integrated moving average
-    mlp              MultiLayer Perceptron
-    rnn              Recurrent Neural Network
-    lstm             Long-Short Term Memory
-    conv1d           1D Convolutional Neural Network
-    mc               Monte-Carlo simulations[/cmds]
-        """
-        console.print(text=help_text, menu="Stocks - Prediction Techniques")
+        mt = MenuText("stocks/pred/")
+        mt.add_cmd_translation("load")
+        mt.add_cmd_translation("pick")
+        mt.add_raw("\n")
+        mt.add_param_translation("_ticker", stock_info)
+        mt.add_param_translation("_target", self.target)
+        mt.add_raw("\n")
+        mt.add_info_translation("models")
+        mt.add_cmd_translation("ets")
+        mt.add_cmd_translation("knn")
+        mt.add_cmd_translation("regression")
+        mt.add_cmd_translation("arima")
+        mt.add_cmd_translation("mlp")
+        mt.add_cmd_translation("rnn")
+        mt.add_cmd_translation("lstm")
+        mt.add_cmd_translation("conv1d")
+        mt.add_cmd_translation("mc")
+        console.print(text=mt.menu_text, menu="Stocks - Prediction Techniques")
 
     def custom_reset(self):
         """Class specific component of reset command"""

@@ -34,7 +34,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.stocks.technical_analysis import (
     finbrain_view,
@@ -114,43 +114,42 @@ class TechnicalAnalysisController(StockBaseController):
         else:
             stock_str = f"{s_intraday} {self.ticker}"
 
-        help_text = f"""
-[param]Stock: [/param]{stock_str}[cmds]
-
-    tv               open interactive chart on [src][TradingView][/src]
-    view             view historical data and trendlines [src][Finviz][/src]
-    summary          technical summary report [src][FinBrain][/src]
-    recom            recommendation based on Technical Indicators [src][Tradingview][/src]
-
-[info]Overlap:[/info]
-    ema              exponential moving average
-    sma              simple moving average
-    wma              weighted moving average
-    hma              hull moving average
-    zlma             zero lag moving average
-    vwap             volume weighted average price
-[info]Momentum:[/info]
-    cci              commodity channel index
-    macd             moving average convergence/divergence
-    rsi              relative strength index
-    stoch            stochastic oscillator
-    fisher           fisher transform
-    cg               centre of gravity
-[info]Trend:[/info]
-    adx              average directional movement index
-    aroon            aroon indicator
-[info]Volatility:[/info]
-    bbands           bollinger bands
-    donchian         donchian channels
-    kc               keltner channels
-[info]Volume:[/info]
-    ad               accumulation/distribution line
-    adosc            chaikin oscillator
-    obv              on balance volume
-[info]Custom:[/info]
-    fib              fibonacci retracement[/cmds]
-"""
-        console.print(text=help_text, menu="Stocks - Technical Analysis")
+        mt = MenuText("stocks/ta/", 90)
+        mt.add_param_translation("_ticker", stock_str)
+        mt.add_raw("\n")
+        mt.add_cmd_translation("tv", "TradingView")
+        mt.add_cmd_translation("view", "Finviz")
+        mt.add_cmd_translation("summary", "FinBrain")
+        mt.add_cmd_translation("recom", "TradingView")
+        mt.add_raw("\n")
+        mt.add_info_translation("overlap")
+        mt.add_cmd_translation("ema")
+        mt.add_cmd_translation("sma")
+        mt.add_cmd_translation("wma")
+        mt.add_cmd_translation("hma")
+        mt.add_cmd_translation("zlma")
+        mt.add_cmd_translation("vwap")
+        mt.add_info_translation("momentum")
+        mt.add_cmd_translation("cci")
+        mt.add_cmd_translation("macd")
+        mt.add_cmd_translation("rsi")
+        mt.add_cmd_translation("stoch")
+        mt.add_cmd_translation("fisher")
+        mt.add_cmd_translation("cg")
+        mt.add_info_translation("trend")
+        mt.add_cmd_translation("adx")
+        mt.add_cmd_translation("aroon")
+        mt.add_info_translation("volatility")
+        mt.add_cmd_translation("bbands")
+        mt.add_cmd_translation("donchian")
+        mt.add_cmd_translation("kc")
+        mt.add_info_translation("volume")
+        mt.add_cmd_translation("ad")
+        mt.add_cmd_translation("adosc")
+        mt.add_cmd_translation("obv")
+        mt.add_info_translation("custom")
+        mt.add_cmd_translation("fib")
+        console.print(text=mt.menu_text, menu="Stocks - Technical Analysis")
 
     def custom_reset(self):
         """Class specific component of reset command"""
