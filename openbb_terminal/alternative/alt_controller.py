@@ -36,8 +36,8 @@ class AlternativeDataController(BaseController):
     def print_help(self):
         """Print help"""
         help_text = """[menu]
->   covid     COVID menu,                    e.g.: cases, deaths, rates
->   oss       Open Source menu,              e.g.: star history, repos information[/menu]
+>   covid            COVID menu,                    e.g.: cases, deaths, rates
+>   oss              Open Source menu,              e.g.: star history, repos information[/menu]
         """
         console.print(text=help_text, menu="Alternative")
 

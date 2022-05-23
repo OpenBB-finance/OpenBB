@@ -141,44 +141,44 @@ class PortfolioController(BaseController):
         port_bench = bool(self.portfolio_name) and bool(self.benchmark_name)
 
         help_text = f"""[menu]
->   bro         brokers holdings, \t\t supports: robinhood, ally, degiro, coinbase
->   po          portfolio optimization, \t optimal your portfolio weights efficiently[/menu]
-
-    [cmds]load        load data into the portfolio[/cmds]
+>   bro              brokers holdings, \t\t supports: robinhood, ally, degiro, coinbase
+>   po               portfolio optimization, \t optimal your portfolio weights efficiently[/menu]
+[cmds]
+    load             load data into the portfolio[/cmds]
 
 [param]Loaded orderbook:[/param] {self.portfolio_name or ""}
 [param]Risk Free Rate:  [/param] {self.portfolio.rf:.2%}
-
-    {("[unvl]", "[cmds]")[port]}show        show existing transactions{("[/unvl]", "[/cmds]")[port]}
-
-    {("[unvl]", "[cmds]")[port]}bench       define the benchmark{("[/unvl]", "[/cmds]")[port]}
+{("[unvl]", "[cmds]")[port]}
+    show             show existing transactions{("[/unvl]", "[/cmds]")[port]}
+{("[unvl]", "[cmds]")[port]}
+    bench            define the benchmark{("[/unvl]", "[/cmds]")[port]}
 
 [param]Benchmark:[/param] {self.benchmark_name or ""}
 
 [info]Graphs:[/info]{("[unvl]", "[cmds]")[port_bench]}
-    holdv       holdings of assets (absolute value)
-    holdp       portfolio holdings of assets (in percentage)
-    cret        cumulative returns
-    yret        yearly returns
-    mret        monthly returns
-    dret        daily returns
-    distr       distribution of daily returns
-    maxdd       maximum drawdown
-    rvol        rolling volatility
-    rsharpe     rolling sharpe
-    rsort       rolling sortino
-    rbeta       rolling beta{("[/unvl]", "[/cmds]")[port_bench]}
-
+    holdv            holdings of assets (absolute value)
+    holdp            portfolio holdings of assets (in percentage)
+    cret             cumulative returns
+    yret             yearly returns
+    mret             monthly returns
+    dret             daily returns
+    distr            distribution of daily returns
+    maxdd            maximum drawdown
+    rvol             rolling volatility
+    rsharpe          rolling sharpe
+    rsort            rolling sortino
+    rbeta            rolling beta
+{("[/unvl]", "[/cmds]")[port_bench]}
 [info]Metrics:[/info]{("[unvl]", "[cmds]")[port_bench]}
-    alloc       allocation on an asset, sector, countries or regions basis
-    summary     all portfolio vs benchmark metrics for a certain period of choice
-    metric      portfolio vs benchmark metric for all different periods
-    perf        performance of the portfolio versus benchmark{("[/unvl]", "[/cmds]")[port_bench]}
+    alloc            allocation on an asset, sector, countries or regions basis
+    summary          all portfolio vs benchmark metrics for a certain period of choice
+    metric           portfolio vs benchmark metric for all different periods
+    perf             performance of the portfolio versus benchmark{("[/unvl]", "[/cmds]")[port_bench]}
 
 [info]Risk Metrics:[/info]{("[unvl]", "[cmds]")[port]}
-    var         display value at risk
-    es          display expected shortfall
-    om          display omega ratio{("[/unvl]", "[/cmds]")[port]}
+    var              display value at risk
+    es               display expected shortfall
+    om               display omega ratio{("[/unvl]", "[/cmds]")[port]}
         """
         # TODO: Clean up the reports inputs
         # TODO: Edit the allocation to allow the different asset classes

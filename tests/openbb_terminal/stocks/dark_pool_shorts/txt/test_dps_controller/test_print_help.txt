@@ -1,26 +1,26 @@
 
-    load           load a specific stock ticker for analysis
+    load             load a specific stock ticker for analysis
 
 [Yahoo Finance]
-    shorted        show most shorted stocks
+    shorted          show most shorted stocks
 [Interactive Broker]
-    ctb            stocks with highest cost to borrow
+    ctb              stocks with highest cost to borrow
 [Shortinterest.com]
-    hsi            show top high short interest stocks of over 20% ratio
+    hsi              show top high short interest stocks of over 20% ratio
 [FINRA]
-    prom           promising tickers based on dark pool shares regression
+    prom             promising tickers based on dark pool shares regression
 [Stockgrid]
-    pos            dark pool short position
-    sidtc          short interest and days to cover
+    pos              dark pool short position
+    sidtc            short interest and days to cover
 
 Ticker: TSLA
 
 [FINRA]
-    dpotc          dark pools (ATS) vs OTC data
+    dpotc            dark pools (ATS) vs OTC data
 [SEC]
-    ftd            fails-to-deliver data
+    ftd              fails-to-deliver data
 [Stockgrid]
-    spos           net short vs position
+    spos             net short vs position
 [Quandl/Stockgrid]
-    psi            price vs short interest volume
+    psi              price vs short interest volume
 

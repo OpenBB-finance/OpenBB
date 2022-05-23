@@ -220,37 +220,37 @@ class EconometricsController(BaseController):
     def print_help(self):
         """Print help"""
         help_text = f"""[cmds]
-    load          load in custom data sets
-    export        export a dataset
-    remove        remove a dataset
-    options       show available column-dataset options[/cmds]
+    load             load in custom data sets
+    export           export a dataset
+    remove           remove a dataset
+    options          show available column-dataset options[/cmds]
 
 [param]Loaded files:[/param] {", ".join(self.files) or None}[cmds]
 
 [info]Exploration[/info]
-    show          show a portion of a loaded dataset
-    plot          plot data from a dataset
-    type          change types of the columns or display their types
-    desc          show descriptive statistics of a dataset
-    index         set (multi) index based on columns
-    clean         clean a dataset by filling or dropping NaNs
-    modify        combine columns of datasets and delete or rename columns
+    show             show a portion of a loaded dataset
+    plot             plot data from a dataset
+    type             change types of the columns or display their types
+    desc             show descriptive statistics of a dataset
+    index            set (multi) index based on columns
+    clean            clean a dataset by filling or dropping NaNs
+    modify           combine columns of datasets and delete or rename columns
 
 [info]Timeseries[/info]
-    ols           fit a (multi) linear regression model
-    norm          perform normality tests on a column of a dataset
-    root          perform unitroot tests (ADF & KPSS) on a column of a dataset
+    ols              fit a (multi) linear regression model
+    norm             perform normality tests on a column of a dataset
+    root             perform unitroot tests (ADF & KPSS) on a column of a dataset
 
 [info]Panel Data[/info]
-    panel         estimate model based on various regression techniques
-    compare       compare results of all estimated models
+    panel            estimate model based on various regression techniques
+    compare          compare results of all estimated models
 
 [info]Tests[/info]
-    dwat          Durbin-Watson autocorrelation test on the residuals of the regression
-    bgod          Breusch-Godfrey autocorrelation tests with lags on the residuals of the regression
-    bpag          Breusch-Pagan heteroscedasticity test on the residuals of the regression
-    granger       Granger causality tests on two columns
-    coint         co-integration test on a multitude of columns[/cmds]
+    dwat             Durbin-Watson autocorrelation test on the residuals of the regression
+    bgod             Breusch-Godfrey autocorrelation tests with lags on the residuals of the regression
+    bpag             Breusch-Pagan heteroscedasticity test on the residuals of the regression
+    granger          Granger causality tests on two columns
+    coint            co-integration test on a multitude of columns[/cmds]
         """
         console.print(text=help_text, menu="Econometrics")
 

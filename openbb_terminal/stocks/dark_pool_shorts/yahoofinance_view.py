@@ -33,7 +33,6 @@ def display_most_shorted(num_stocks: int, export: str):
         print_rich_table(
             df, headers=list(df.columns), show_index=False, title="Most Shorted Stocks"
         )
-    console.print("")
 
     export_data(
         export,

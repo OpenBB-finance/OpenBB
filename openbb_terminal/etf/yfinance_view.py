@@ -64,7 +64,6 @@ def display_etf_weightings(
             show_index=True,
             title="Sector Weightings Allocation",
         )
-        console.print("")
 
     else:
         main_holdings = holdings[holdings.values > min_pct_to_display].to_dict()[

@@ -166,15 +166,15 @@ class OnchainController(BaseController):
 [param]Address type: [/param]{self.address_type if self.address_type else ''}
 
 [src][Ethplorer][/src] [info]Ethereum:[/info]
-    address         load ethereum address of token, account or transaction
-    top             top ERC20 tokens{has_account_start}
-    balance         check ethereum balance
-    hist            ethereum balance history (transactions){has_account_end}{has_token_start}
-    info            ERC20 token info
-    holders         top ERC20 token holders
-    th              ERC20 token history
-    prices          ERC20 token historical prices{has_token_end}{has_tx_start}
-    tx              ethereum blockchain transaction info{has_tx_end}
+    address          load ethereum address of token, account or transaction
+    top              top ERC20 tokens{has_account_start}
+    balance          check ethereum balance
+    hist             ethereum balance history (transactions){has_account_end}{has_token_start}
+    info             ERC20 token info
+    holders          top ERC20 token holders
+    th               ERC20 token history
+    prices           ERC20 token historical prices{has_token_end}{has_tx_start}
+    tx               ethereum blockchain transaction info{has_tx_end}
     """
         console.print(text=help_text, menu="Cryptocurrency - Onchain")
 

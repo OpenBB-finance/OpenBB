@@ -66,7 +66,25 @@ def get_watchlists(
         username=cfg.API_REDDIT_USERNAME,
         user_agent=cfg.API_REDDIT_USER_AGENT,
         password=cfg.API_REDDIT_PASSWORD,
+        check_for_updates=False,
+        comment_kind="t1",
+        message_kind="t4",
+        redditor_kind="t2",
+        submission_kind="t3",
+        subreddit_kind="t5",
+        trophy_kind="t6",
+        oauth_url="https://oauth.reddit.com",
+        reddit_url="https://www.reddit.com",
+        short_url="https://redd.it",
+        ratelimit_seconds=5,
+        timeout=16,
     )
+    try:
+        praw_api.user.me()
+    except (Exception, ResponseException):
+        console.print("[red]Wrong Reddit API keys[/red]\n")
+        return [], {}, 0
+
     psaw_api = PushshiftAPI()
     submissions = psaw_api.search_submissions(
         subreddit=l_sub_reddits,
@@ -149,7 +167,24 @@ def get_popular_tickers(
         username=cfg.API_REDDIT_USERNAME,
         user_agent=cfg.API_REDDIT_USER_AGENT,
         password=cfg.API_REDDIT_PASSWORD,
+        check_for_updates=False,
+        comment_kind="t1",
+        message_kind="t4",
+        redditor_kind="t2",
+        submission_kind="t3",
+        subreddit_kind="t5",
+        trophy_kind="t6",
+        oauth_url="https://oauth.reddit.com",
+        reddit_url="https://www.reddit.com",
+        short_url="https://redd.it",
+        ratelimit_seconds=5,
+        timeout=16,
     )
+    try:
+        praw_api.user.me()
+    except (Exception, ResponseException):
+        console.print("[red]Wrong Reddit API keys[/red]\n")
+        return pd.DataFrame()
 
     psaw_api = PushshiftAPI()
 
@@ -284,7 +319,24 @@ def get_spac_community(
         username=cfg.API_REDDIT_USERNAME,
         user_agent=cfg.API_REDDIT_USER_AGENT,
         password=cfg.API_REDDIT_PASSWORD,
+        check_for_updates=False,
+        comment_kind="t1",
+        message_kind="t4",
+        redditor_kind="t2",
+        submission_kind="t3",
+        subreddit_kind="t5",
+        trophy_kind="t6",
+        oauth_url="https://oauth.reddit.com",
+        reddit_url="https://www.reddit.com",
+        short_url="https://redd.it",
+        ratelimit_seconds=5,
+        timeout=16,
     )
+    try:
+        praw_api.user.me()
+    except (Exception, ResponseException):
+        console.print("[red]Wrong Reddit API keys[/red]\n")
+        return [], {}
 
     d_watchlist_tickers: Dict = {}
     l_watchlist_author = []
@@ -365,7 +417,24 @@ def get_spac(
         username=cfg.API_REDDIT_USERNAME,
         user_agent=cfg.API_REDDIT_USER_AGENT,
         password=cfg.API_REDDIT_PASSWORD,
+        check_for_updates=False,
+        comment_kind="t1",
+        message_kind="t4",
+        redditor_kind="t2",
+        submission_kind="t3",
+        subreddit_kind="t5",
+        trophy_kind="t6",
+        oauth_url="https://oauth.reddit.com",
+        reddit_url="https://www.reddit.com",
+        short_url="https://redd.it",
+        ratelimit_seconds=5,
+        timeout=16,
     )
+    try:
+        praw_api.user.me()
+    except (Exception, ResponseException):
+        console.print("[red]Wrong Reddit API keys[/red]\n")
+        return [], {}, 0
 
     d_watchlist_tickers: Dict = {}
     l_watchlist_author = []
@@ -444,13 +513,31 @@ def get_wsb_community(
     List[praw.models.reddit.submission.Submission]
         List of reddit submissions
     """
+    # See https://github.com/praw-dev/praw/issues/1016 regarding praw arguments
     praw_api = praw.Reddit(
         client_id=cfg.API_REDDIT_CLIENT_ID,
         client_secret=cfg.API_REDDIT_CLIENT_SECRET,
         username=cfg.API_REDDIT_USERNAME,
         user_agent=cfg.API_REDDIT_USER_AGENT,
         password=cfg.API_REDDIT_PASSWORD,
+        check_for_updates=False,
+        comment_kind="t1",
+        message_kind="t4",
+        redditor_kind="t2",
+        submission_kind="t3",
+        subreddit_kind="t5",
+        trophy_kind="t6",
+        oauth_url="https://oauth.reddit.com",
+        reddit_url="https://www.reddit.com",
+        short_url="https://redd.it",
+        ratelimit_seconds=5,
+        timeout=16,
     )
+    try:
+        praw_api.user.me()
+    except (Exception, ResponseException):
+        console.print("[red]Wrong Reddit API keys[/red]\n")
+        return []
 
     if new:
         submissions = praw_api.subreddit("wallstreetbets").new(limit=limit)
@@ -458,6 +545,8 @@ def get_wsb_community(
         submissions = praw_api.subreddit("wallstreetbets").hot(limit=limit)
 
     subs = []
+
+    console.print(submissions)
 
     try:
         for submission in submissions:
@@ -505,7 +594,24 @@ def get_due_dilligence(
         username=cfg.API_REDDIT_USERNAME,
         user_agent=cfg.API_REDDIT_USER_AGENT,
         password=cfg.API_REDDIT_PASSWORD,
+        check_for_updates=False,
+        comment_kind="t1",
+        message_kind="t4",
+        redditor_kind="t2",
+        submission_kind="t3",
+        subreddit_kind="t5",
+        trophy_kind="t6",
+        oauth_url="https://oauth.reddit.com",
+        reddit_url="https://www.reddit.com",
+        short_url="https://redd.it",
+        ratelimit_seconds=5,
+        timeout=16,
     )
+    try:
+        praw_api.user.me()
+    except (Exception, ResponseException):
+        console.print("[red]Wrong Reddit API keys[/red]\n")
+        return []
 
     psaw_api = PushshiftAPI()
 
@@ -608,7 +714,25 @@ def get_posts_about(
         username=cfg.API_REDDIT_USERNAME,
         user_agent=cfg.API_REDDIT_USER_AGENT,
         password=cfg.API_REDDIT_PASSWORD,
+        check_for_updates=False,
+        comment_kind="t1",
+        message_kind="t4",
+        redditor_kind="t2",
+        submission_kind="t3",
+        subreddit_kind="t5",
+        trophy_kind="t6",
+        oauth_url="https://oauth.reddit.com",
+        reddit_url="https://www.reddit.com",
+        short_url="https://redd.it",
+        ratelimit_seconds=5,
+        timeout=16,
     )
+    try:
+        praw_api.user.me()
+    except (Exception, ResponseException):
+        console.print("[red]Wrong Reddit API keys[/red]\n")
+        return []
+
     subreddits_l = subreddits.split(",")
 
     posts = []

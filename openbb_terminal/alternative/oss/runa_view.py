@@ -122,7 +122,6 @@ def display_rossindex(
             show_index=False,
             title="ROSS Index - the fastest-growing open-source startups",
         )
-        console.print("")
 
         export_data(
             export,

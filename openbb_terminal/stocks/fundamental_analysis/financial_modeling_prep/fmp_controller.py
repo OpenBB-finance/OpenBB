@@ -64,16 +64,16 @@ class FinancialModelingPrepController(BaseController):
         help_text = f"""
 [param]Ticker: [/param]{self.ticker}[cmds]
 
-    profile       profile of the company
-    quote         quote of the company
-    enterprise    enterprise value of the company over time
-    dcf           discounted cash flow of the company over time
-    income        income statements of the company
-    balance       balance sheet of the company
-    cash          cash flow statement of the company
-    metrics       key metrics of the company
-    ratios        financial ratios of the company
-    growth        financial statement growth of the company[/cmds]
+    profile          profile of the company
+    quote            quote of the company
+    enterprise       enterprise value of the company over time
+    dcf              discounted cash flow of the company over time
+    income           income statements of the company
+    balance          balance sheet of the company
+    cash             cash flow statement of the company
+    metrics          key metrics of the company
+    ratios           financial ratios of the company
+    growth           financial statement growth of the company[/cmds]
         """
         console.print(
             text=help_text,

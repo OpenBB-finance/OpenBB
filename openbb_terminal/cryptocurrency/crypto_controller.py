@@ -106,26 +106,26 @@ class CryptoController(CryptoBaseController):
         has_ticker_start = "" if self.coin else "[unvl]"
         has_ticker_end = "" if self.coin else "[/unvl]"
         help_text = f"""[cmds]
-    load        load a specific cryptocurrency for analysis
-    find        find coins[/cmds]
+    load             load a specific cryptocurrency for analysis
+    find             find coins[/cmds]
 
 [param]Coin: [/param]{self.coin}
 [param]Source: [/param]{source_txt}
 [cmds]
-    headlines   crypto sentiment from 15+ major news headlines [src][Finbrain][/src]{has_ticker_start}
-    chart       view a candle chart for a specific cryptocurrency
-    prt         potential returns tool - check how much upside if ETH reaches BTC market cap{has_ticker_end}
+    headlines        crypto sentiment from 15+ major news headlines [src][Finbrain][/src]{has_ticker_start}
+    chart            view a candle chart for a specific cryptocurrency
+    prt              potential returns tool - check how much upside if ETH reaches BTC market cap{has_ticker_end}
 [/cmds][menu]
->   disc        discover trending cryptocurrencies,     e.g.: top gainers, losers, top sentiment
->   ov          overview of the cryptocurrencies,       e.g.: market cap, DeFi, latest news, top exchanges, stables
->   onchain     information on different blockchains,   e.g.: eth gas fees, whale alerts, DEXes info
->   defi        decentralized finance information,      e.g.: dpi, llama, tvl, lending, borrow, funding
->   tools       explore different tools                 e.g.: apytoapr, il
->   nft         non-fungible tokens,                    e.g.: today drops{has_ticker_start}
->   dd          due-diligence for loaded coin,          e.g.: coin information, social media, market stats
->   ta          technical analysis for loaded coin,     e.g.: ema, macd, rsi, adx, bbands, obv
->   pred        prediction techniques,                  e.g.: regression, arima, rnn, lstm, conv1d, monte carlo
->   qa          quantitative analysis                   e.g.: decompose, cusum, residuals analysis[/menu]
+>   disc             discover trending cryptocurrencies,     e.g.: top gainers, losers, top sentiment
+>   ov               overview of the cryptocurrencies,       e.g.: market cap, DeFi, latest news, top exchanges, stables
+>   onchain          information on different blockchains,   e.g.: eth gas fees, whale alerts, DEXes info
+>   defi             decentralized finance information,      e.g.: dpi, llama, tvl, lending, borrow, funding
+>   tools            explore different tools                 e.g.: apytoapr, il
+>   nft              non-fungible tokens,                    e.g.: today drops{has_ticker_start}
+>   dd               due-diligence for loaded coin,          e.g.: coin information, social media, market stats
+>   ta               technical analysis for loaded coin,     e.g.: ema, macd, rsi, adx, bbands, obv
+>   pred             prediction techniques,                  e.g.: regression, arima, rnn, lstm, conv1d, monte carlo
+>   qa               quantitative analysis                   e.g.: decompose, cusum, residuals analysis[/menu]
 {has_ticker_end}
 """
         console.print(text=help_text, menu="Cryptocurrency")

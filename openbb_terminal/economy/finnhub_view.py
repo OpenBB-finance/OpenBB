@@ -76,7 +76,6 @@ def economy_calendar_events(country: str, num: int, impact: str, export: str):
         show_index=False,
         title="Economy Calendar",
     )
-    console.print("")
 
     export_data(
         export,

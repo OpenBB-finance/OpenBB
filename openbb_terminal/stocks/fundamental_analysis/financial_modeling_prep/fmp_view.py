@@ -82,7 +82,6 @@ def display_quote(ticker: str):
         console.print("[red]Data not found[/red]\n")
     else:
         print_rich_table(quote, headers=[""], title=f"{ticker} Quote", show_index=True)
-        console.print()
 
 
 @log_start_end(log=logger)
@@ -114,7 +113,7 @@ def display_enterprise(
             title=f"{ticker} Enterprise",
             show_index=True,
         )
-        console.print()
+
         export_data(
             export, os.path.dirname(os.path.abspath(__file__)), "enterprise", df_fa
         )
@@ -146,7 +145,7 @@ def display_discounted_cash_flow(
         print_rich_table(
             dcf, headers=[""], title="Discounted Cash Flow", show_index=True
         )
-        console.print()
+
         export_data(export, os.path.dirname(os.path.abspath(__file__)), "dcf", dcf)
 
 
@@ -180,7 +179,7 @@ def display_income_statement(
         )
 
         pd.set_option("display.max_colwidth", None)
-        console.print()
+
         console.print(income.loc["Final link"].to_frame().to_string())
         console.print()
         console.print(income.loc["Link"].to_frame().to_string())
@@ -223,7 +222,7 @@ def display_balance_sheet(
         )
 
         pd.set_option("display.max_colwidth", None)
-        console.print()
+
         console.print(balance.loc["Final link"].to_frame().to_string())
         console.print()
         console.print(balance.loc["Link"].to_frame().to_string())
@@ -266,7 +265,7 @@ def display_cash_flow(
         )
 
         pd.set_option("display.max_colwidth", None)
-        console.print()
+
         console.print(cash.loc["Final link"].to_frame().to_string())
         console.print()
         console.print(cash.loc["Link"].to_frame().to_string())
@@ -305,7 +304,7 @@ def display_key_metrics(
             title=f"{ticker.upper()} Key Metrics",
             show_index=True,
         )
-        console.print()
+
         export_data(
             export, os.path.dirname(os.path.abspath(__file__)), "metrics", key_metrics
         )
@@ -342,7 +341,7 @@ def display_financial_ratios(
             title=f"{ticker.upper()} Ratios",
             show_index=True,
         )
-        console.print()
+
         export_data(
             export, os.path.dirname(os.path.abspath(__file__)), "grratiosowth", ratios
         )
@@ -379,7 +378,7 @@ def display_financial_statement_growth(
             title=f"{ticker.upper()} Growth",
             show_index=True,
         )
-        console.print()
+
         export_data(
             export, os.path.dirname(os.path.abspath(__file__)), "growth", growth
         )

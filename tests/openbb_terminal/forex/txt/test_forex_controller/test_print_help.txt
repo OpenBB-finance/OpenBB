@@ -16,5 +16,5 @@ Source: YahooFinance[dim]
 >   pred             prediction techniques                 e.g.: regression, arima, rnn, lstm, conv1d, monte carlo
 [/dim]
 Forex brokerages:
->   oanda             Oanda menu
+>   oanda            Oanda menu
  
