@@ -349,3 +349,14 @@ en:
   stocks/res/macrotrends: www.macrotrends.net
   stocks/res/newsfilter: www.newsfilter.io
   stocks/res/stockanalysis: www.stockanalysis.com
+  stocks/dd/load: load a specific stock ticker for analysis
+  stocks/dd/_ticker: Ticker
+  stocks/dd/analyst: analyst prices and ratings of the company
+  stocks/dd/rating: rating over time (daily)
+  stocks/dd/rot: number of analysts ratings over time (monthly)
+  stocks/dd/pt: price targets over time
+  stocks/dd/est: quarter and year analysts earnings estimates
+  stocks/dd/sec: SEC filings
+  stocks/dd/supplier: list of suppliers
+  stocks/dd/customer: list of customers
+  stocks/dd/arktrades: get ARK trades for ticker
