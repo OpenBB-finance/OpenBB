@@ -370,26 +370,32 @@ en:
   stocks/ta/view: view historical data and trendlines
   stocks/ta/summary: technical summary report
   stocks/ta/recom: recommendation based on technical indicators
+  stocks/ta/overlap: Overlap
   stocks/ta/ema: exponential moving average
   stocks/ta/sma: simple moving average
   stocks/ta/wma: weighted moving average
   stocks/ta/hma: hull moving average
   stocks/ta/zlma: zero lag moving average
   stocks/ta/vwap: volume weighted average price
+  stocks/ta/momentum: Momentum
   stocks/ta/cci: commodity channel index
   stocks/ta/macd: moving average convergence/divergence
   stocks/ta/rsi: relative strength index
   stocks/ta/stoch: stochastic oscillator
   stocks/ta/fisher: fisher transform
   stocks/ta/cg: centre of gravity
+  stocks/ta/trend: Trend
   stocks/ta/adx: average directional movement index
   stocks/ta/aroon: aroon indicator
+  stocks/ta/volatility: Volatility
   stocks/ta/bbands: bollinger bands
   stocks/ta/donchian: donchian channels
   stocks/ta/kc: keltner channels
+  stocks/ta/volume: Volume
   stocks/ta/ad: accumulation/distribution line
   stocks/ta/adosc: chaikin oscillator
   stocks/ta/obv: on balance volume
+  stocks/ta/custom: Custom
   stocks/ta/fib: fibonacci retracement
   stocks/qa/load: load new ticker
   stocks/qa/pick: pick target column for analysis
@@ -584,3 +590,32 @@ en:
   crypto/dd/links: links e.g. whitepaper, github, twitter, youtube, reddit, telegram
   crypto/dd/gh: github activity over time
   crypto/dd/news: loaded coin's most recent news
+  crypto/ta/_ticker: Coin loaded
+  crypto/ta/tv: open interactive chart on
+  crypto/ta/overlap: Overlap
+  crypto/ta/ema: exponential moving average
+  crypto/ta/sma: simple moving average
+  crypto/ta/wma: weighted moving average
+  crypto/ta/hma: hull moving average
+  crypto/ta/zlma: zero lag moving average
+  crypto/ta/vwap: volume weighted average price
+  crypto/ta/momentum: Momentum
+  crypto/ta/cci: commodity channel index
+  crypto/ta/macd: moving average convergence/divergence
+  crypto/ta/rsi: relative strength index
+  crypto/ta/stoch: stochastic oscillator
+  crypto/ta/fisher: fisher transform
+  crypto/ta/cg: centre of gravity
+  crypto/ta/trend: Trend
+  crypto/ta/adx: average directional movement index
+  crypto/ta/aroon: aroon indicator
+  crypto/ta/volatility: Volatility
+  crypto/ta/bbands: bollinger bands
+  crypto/ta/donchian: donchian channels
+  crypto/ta/kc: keltner channels
+  crypto/ta/volume: Volume
+  crypto/ta/ad: accumulation/distribution line
+  crypto/ta/adosc: chaikin oscillator
+  crypto/ta/obv: on balance volume
+  crypto/ta/custom: Custom
+  crypto/ta/fib: fibonacci retracement
