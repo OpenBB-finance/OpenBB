@@ -544,3 +544,43 @@ en:
   crypto/nft/ongoing: Ongoing NFT drops
   crypto/nft/newest: Recently NFTs added
   crypto/nft/stats: check open sea collection stats
+  crypto/dd/load: load a specific cryptocurrency for analysis
+  crypto/dd/_coin: Coin
+  crypto/dd/_source: Source
+  crypto/dd/info: basic information about loaded coin
+  crypto/dd/market: market stats about loaded coin
+  crypto/dd/ath: all time high related stats for loaded coin
+  crypto/dd/atl: all time low related stats for loaded coin
+  crypto/dd/web: found websites for loaded coin e.g forum, homepage
+  crypto/dd/social: social portals urls for loaded coin, e.g reddit, twitter
+  crypto/dd/score: different kind of scores for loaded coin, e.g developer score, sentiment score
+  crypto/dd/dev: github, bitbucket coin development statistics
+  crypto/dd/bc: links to blockchain explorers for loaded coin
+  crypto/dd/active: active addresses
+  crypto/dd/nonzero: addresses with non-zero balances
+  crypto/dd/change: 30d change of supply held on exchange wallets
+  crypto/dd/eb: total balance held on exchanges (in percentage and units)
+  crypto/dd/oi: open interest per exchange
+  crypto/dd/basic: basic information about loaded coin
+  crypto/dd/ps: price and supply related metrics for loaded coin
+  crypto/dd/mkt: all markets for loaded coin
+  crypto/dd/ex: all exchanges where loaded coin is listed
+  crypto/dd/twitter: tweets for loaded coin
+  crypto/dd/events: events related to loaded coin
+  crypto/dd/binbook: order book
+  crypto/dd/balance: coin balance
+  crypto/dd/cbbook: order book
+  crypto/dd/trades: last trades
+  crypto/dd/stats: coin stats
+  crypto/dd/mcapdom: market cap dominance
+  crypto/dd/mt: messari timeseries e.g. twitter followers, circ supply, etc
+  crypto/dd/rm: roadmap
+  crypto/dd/tk: tokenomics e.g. circulating/max/total supply, emission type, etc
+  crypto/dd/pi: project information e.g. technology details, public repos, audits, vulns
+  crypto/dd/team: contributors (individuals and organizations)
+  crypto/dd/inv: investors (individuals and organizations)
+  crypto/dd/gov: governance details
+  crypto/dd/fr: fundraising details e.g. treasury accounts, sales rounds, allocation
+  crypto/dd/links: links e.g. whitepaper, github, twitter, youtube, reddit, telegram
+  crypto/dd/gh: github activity over time
+  crypto/dd/news: loaded coin's most recent news
