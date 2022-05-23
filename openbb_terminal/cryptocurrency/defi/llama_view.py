@@ -23,7 +23,6 @@ from openbb_terminal.helper_funcs import (
     print_rich_table,
     is_valid_axes_count,
 )
-from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -150,7 +149,6 @@ def display_defi_protocols(
     )
 
     print_rich_table(df.head(top), headers=list(df.columns), show_index=False)
-    console.print("")
 
     export_data(
         export,

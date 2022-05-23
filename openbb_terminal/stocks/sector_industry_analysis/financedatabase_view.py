@@ -208,7 +208,7 @@ def display_bars_financials(
 
             labels = ax.get_xticks().tolist()
             ax.set_xticks(labels)
-            ax.set_xticklabels([f"{label}{unit}" for label in labels])
+            ax.set_xticklabels([f"{label:.2f}{unit}" for label in labels])
 
             theme.style_primary_axis(ax)
 
@@ -363,7 +363,6 @@ def display_companies_per_sector_in_country(
             )
         else:
             console.print("No sector found. No pie chart will be depicted.")
-    console.print("")
 
     export_data(
         export,
@@ -664,7 +663,6 @@ def display_companies_per_industry_in_sector(
             )
         else:
             console.print("No industry found. No pie chart will be depicted.")
-    console.print("")
 
     export_data(
         export,

@@ -79,30 +79,30 @@ class DarkPoolShortsController(StockBaseController):
         has_ticker_start = "" if self.ticker else "[unvl]"
         has_ticker_end = "" if self.ticker else "[/unvl]"
         help_text = f"""[cmds]
-    load           load a specific stock ticker for analysis
+    load             load a specific stock ticker for analysis
 
 [src][Yahoo Finance][/src]
-    shorted        show most shorted stocks
+    shorted          show most shorted stocks
 [src][Interactive Broker][/src]
-    ctb            stocks with highest cost to borrow
+    ctb              stocks with highest cost to borrow
 [src][Shortinterest.com][/src]
-    hsi            show top high short interest stocks of over 20% ratio
+    hsi              show top high short interest stocks of over 20% ratio
 [src][FINRA][/src]
-    prom           promising tickers based on dark pool shares regression
+    prom             promising tickers based on dark pool shares regression
 [src][Stockgrid][/src]
-    pos            dark pool short position
-    sidtc          short interest and days to cover
+    pos              dark pool short position
+    sidtc            short interest and days to cover
 {has_ticker_start}
 [param]Ticker: [/param]{self.ticker or None}
 
 [src][FINRA][/src]
-    dpotc          dark pools (ATS) vs OTC data
+    dpotc            dark pools (ATS) vs OTC data
 [src][SEC][/src]
-    ftd            fails-to-deliver data
+    ftd              fails-to-deliver data
 [src][Stockgrid][/src]
-    spos           net short vs position
+    spos             net short vs position
 [src][Quandl/Stockgrid][/src]
-    psi            price vs short interest volume[/cmds]
+    psi              price vs short interest volume[/cmds]
 {has_ticker_end}"""
         # Commented out from docstring 5/19:
         # [src][NYSE][/src]

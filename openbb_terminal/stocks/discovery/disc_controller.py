@@ -135,31 +135,31 @@ class DiscoveryController(BaseController):
         """Print help"""
         help_text = """[cmds]
 [src][Finnhub][/src]
-    pipo           past IPOs dates
-    fipo           future IPOs dates
+    pipo             past IPOs dates
+    fipo             future IPOs dates
 [src][Yahoo Finance][/src]
-    gainers        show latest top gainers
-    losers         show latest top losers
-    ugs            undervalued stocks with revenue and earnings growth in excess of 25%
-    gtech          tech stocks with revenue and earnings growth more than 25%
-    active         most active stocks by intraday trade volume
-    ulc            potentially undervalued large cap stocks
-    asc            small cap stocks with earnings growth rates better than 25%
+    gainers          show latest top gainers
+    losers           show latest top losers
+    ugs              undervalued stocks with revenue and earnings growth in excess of 25%
+    gtech            tech stocks with revenue and earnings growth more than 25%
+    active           most active stocks by intraday trade volume
+    ulc              potentially undervalued large cap stocks
+    asc              small cap stocks with earnings growth rates better than 25%
 [src][Fidelity][/src]
-    ford           orders by Fidelity Customers
+    ford             orders by Fidelity Customers
 [src][Cathiesark.com][/src]
-    arkord         orders by ARK Investment Management LLC
+    arkord           orders by ARK Investment Management LLC
 [src][Seeking Alpha][/src]
-    upcoming       upcoming earnings release dates
-    trending       trending news
-    cnews          customized news (buybacks, ipos, spacs, healthcare, politics)
+    upcoming         upcoming earnings release dates
+    trending         trending news
+    cnews            customized news (buybacks, ipos, spacs, healthcare, politics)
 [src][Shortinterest.com][/src]
-    lowfloat       low float stocks under 10M shares float
+    lowfloat         low float stocks under 10M shares float
 [src][Pennystockflow.com][/src]
-    hotpenny       today's hot penny stocks
+    hotpenny         today's hot penny stocks
 [src][NASDAQ Data Link (Formerly Quandl)][/src]
-    rtat           top 10 retail traded stocks per day
-    divcal         dividend calendar for selected date[/cmds]
+    rtat             top 10 retail traded stocks per day
+    divcal           dividend calendar for selected date[/cmds]
 """
         console.print(text=help_text, menu="Stocks - Discovery")
 

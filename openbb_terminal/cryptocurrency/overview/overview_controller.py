@@ -151,39 +151,39 @@ class OverviewController(BaseController):
         """Print help"""
         help_text = """[cmds]
 [src][CoinGecko][/src]
-    cgglobal          global crypto market info
-    cgdefi            global DeFi market info
-    cgstables         stablecoins
-    cgexchanges       top crypto exchanges
-    cgexrates         coin exchange rates
-    cgindexes         crypto indexes
-    cgderivatives     crypto derivatives
-    cgcategories      crypto categories
-    cghold            ethereum, bitcoin holdings overview statistics
-    hm                crypto heatmap
+    cgglobal         global crypto market info
+    cgdefi           global DeFi market info
+    cgstables        stablecoins
+    cgexchanges      top crypto exchanges
+    cgexrates        coin exchange rates
+    cgindexes        crypto indexes
+    cgderivatives    crypto derivatives
+    cgcategories     crypto categories
+    cghold           ethereum, bitcoin holdings overview statistics
+    hm               crypto heatmap
 [src][CoinPaprika][/src]
-    cpglobal          global crypto market info
-    cpinfo            basic info about all coins available
-    cpmarkets         market related info about all coins available
-    cpexchanges       list all exchanges
-    cpexmarkets       all available markets on given exchange
-    cpplatforms       list blockchain platforms eg. ethereum, solana, kusama, terra
-    cpcontracts       all smart contracts for given platform
+    cpglobal         global crypto market info
+    cpinfo           basic info about all coins available
+    cpmarkets        market related info about all coins available
+    cpexchanges      list all exchanges
+    cpexmarkets      all available markets on given exchange
+    cpplatforms      list blockchain platforms eg. ethereum, solana, kusama, terra
+    cpcontracts      all smart contracts for given platform
 [src][Coinbase][/src]
-    cbpairs           info about available trading pairs
+    cbpairs          info about available trading pairs
 [src][CryptoPanic][/src]
-    news              recent crypto news
+    news             recent crypto news
 [src][WithdrawalFees][/src]
-    wf                overall withdrawal fees
-    ewf               overall exchange withdrawal fees
-    wfpe              crypto withdrawal fees per exchange
+    wf               overall withdrawal fees
+    ewf              overall exchange withdrawal fees
+    wfpe             crypto withdrawal fees per exchange
 [src][BlockchainCenter][/src]
-    altindex          display altcoin season index (if 75% of top 50 coins perform better than BTC)
-    btcrb             display bitcoin rainbow price chart (logarithmic regression)
+    altindex         display altcoin season index (if 75% of top 50 coins perform better than BTC)
+    btcrb            display bitcoin rainbow price chart (logarithmic regression)
 [src][Rekt][/src]
-    ch                lists major crypto-related hacks
+    ch               lists major crypto-related hacks
 [src][LoanScan][/src]
-    cr                crypto supply or borrow interest rates
+    cr               crypto supply or borrow interest rates
 """
         console.print(text=help_text, menu="Cryptocurrency - Overview")
 

@@ -85,7 +85,6 @@ def ark_orders_view(
         show_index=False,
         title="Orders by ARK Investment Management LLC",
     )
-    console.print("")
 
     export_data(
         export,

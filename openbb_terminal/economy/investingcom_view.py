@@ -104,7 +104,6 @@ def display_yieldcurve(
             title=f"{country.title()} Yield Curve",
             floatfmt=".3f",
         )
-        console.print("")
 
     export_data(
         export,

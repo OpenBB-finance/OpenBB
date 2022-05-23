@@ -117,38 +117,38 @@ class TechnicalAnalysisController(StockBaseController):
         help_text = f"""
 [param]Stock: [/param]{stock_str}[cmds]
 
-    tv          open interactive chart on [src][TradingView][/src]
-    view        view historical data and trendlines [src][Finviz][/src]
-    summary     technical summary report [src][FinBrain][/src]
-    recom       recommendation based on Technical Indicators [src][Tradingview][/src]
+    tv               open interactive chart on [src][TradingView][/src]
+    view             view historical data and trendlines [src][Finviz][/src]
+    summary          technical summary report [src][FinBrain][/src]
+    recom            recommendation based on Technical Indicators [src][Tradingview][/src]
 
 [info]Overlap:[/info]
-    ema         exponential moving average
-    sma         simple moving average
-    wma         weighted moving average
-    hma         hull moving average
-    zlma        zero lag moving average
-    vwap        volume weighted average price
+    ema              exponential moving average
+    sma              simple moving average
+    wma              weighted moving average
+    hma              hull moving average
+    zlma             zero lag moving average
+    vwap             volume weighted average price
 [info]Momentum:[/info]
-    cci         commodity channel index
-    macd        moving average convergence/divergence
-    rsi         relative strength index
-    stoch       stochastic oscillator
-    fisher      fisher transform
-    cg          centre of gravity
+    cci              commodity channel index
+    macd             moving average convergence/divergence
+    rsi              relative strength index
+    stoch            stochastic oscillator
+    fisher           fisher transform
+    cg               centre of gravity
 [info]Trend:[/info]
-    adx         average directional movement index
-    aroon       aroon indicator
+    adx              average directional movement index
+    aroon            aroon indicator
 [info]Volatility:[/info]
-    bbands      bollinger bands
-    donchian    donchian channels
-    kc          keltner channels
+    bbands           bollinger bands
+    donchian         donchian channels
+    kc               keltner channels
 [info]Volume:[/info]
-    ad          accumulation/distribution line
-    adosc       chaikin oscillator
-    obv         on balance volume
+    ad               accumulation/distribution line
+    adosc            chaikin oscillator
+    obv              on balance volume
 [info]Custom:[/info]
-    fib         fibonacci retracement[/cmds]
+    fib              fibonacci retracement[/cmds]
 """
         console.print(text=help_text, menu="Stocks - Technical Analysis")
 

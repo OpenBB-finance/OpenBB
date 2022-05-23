@@ -34,7 +34,6 @@ def display_gwei_fees(export: str) -> None:
             show_index=False,
             title="Current GWEI Fees",
         )
-        console.print("")
 
         export_data(
             export,

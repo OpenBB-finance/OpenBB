@@ -9,7 +9,6 @@ from openbb_terminal.helper_funcs import (
     lambda_long_number_format,
     print_rich_table,
 )
-from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.fundamental_analysis import polygon_model
 
 logger = logging.getLogger(__name__)
@@ -65,4 +64,3 @@ def display_fundamentals(
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), financial, fundamentals
     )
-    console.print()

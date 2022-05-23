@@ -15,7 +15,6 @@ from openbb_terminal.helper_funcs import (
     print_rich_table,
     is_valid_axes_count,
 )
-from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.options import chartexchange_model
 from openbb_terminal.config_terminal import theme
 
@@ -111,5 +110,3 @@ def display_raw(
         show_index=True,
         title=f"{ticker.upper()} raw data",
     )
-
-    console.print()

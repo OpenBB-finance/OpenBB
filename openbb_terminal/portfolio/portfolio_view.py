@@ -329,7 +329,6 @@ def display_performance_vs_benchmark(
             show_index=False,
             floatfmt=[".2f", ".2f", ".2f", ".2%", ".2f", ".2%", ".2%"],
         )
-        console.print()
 
 
 @log_start_end(log=logger)

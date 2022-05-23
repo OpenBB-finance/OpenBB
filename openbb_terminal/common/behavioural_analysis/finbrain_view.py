@@ -137,7 +137,6 @@ def display_sentiment_analysis(
                 show_index=True,
             )
 
-    console.print("")
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "headlines", sentiment
     )

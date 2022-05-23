@@ -52,8 +52,6 @@ def add_and_show_greeks(price, implied_volatility, strike, days, side):
     # Show table
     print_rich_table(positions, show_index=True, headers=list(positions.columns))
 
-    console.print()
-
     return delta, gamma, vega
 
 
@@ -100,7 +98,6 @@ def show_calculated_hedge(portfolio_option_amount, side, greeks, sign):
             show_index=True,
         )
 
-        console.print()
         if is_singular:
             console.print(
                 "[red]Warning\n[/red]"

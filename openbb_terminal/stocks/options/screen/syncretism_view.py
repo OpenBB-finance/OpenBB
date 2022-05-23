@@ -96,7 +96,6 @@ def view_screener_output(
     print_rich_table(
         df_res, headers=list(df_res.columns), show_index=False, title="Screener Output"
     )
-    console.print("")
 
     return list(set(df_res["S"].values.tolist()))
 

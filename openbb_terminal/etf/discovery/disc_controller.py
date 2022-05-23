@@ -47,9 +47,9 @@ class DiscoveryController(BaseController):
         """Print help"""
         help_text = """
 [src][Wall Street Journal][/src][cmds]
-    gainers     top gainers
-    decliners   top decliners
-    active      most active[/cmds]
+    gainers          top gainers
+    decliners        top decliners
+    active           most active[/cmds]
 """
         console.print(text=help_text, menu="ETF - Discovery")
 

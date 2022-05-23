@@ -1,46 +1,43 @@
-                                   2022     2023     2024     2025
-YEARLY ESTIMATES                                                  
-Revenue                          75,854   93,809  116,659  122,942
-Dividend                           0.00     0.00     0.00     0.00
-Dividend Yield (in %)                 -        -        -        -
-EPS                                9.16    12.12    14.70    19.69
-P/E Ratio                        105.78    87.71    77.90    63.50
-EBIT                             10,583   15,806   20,277   24,557
-EBITDA                           16,503   22,009   28,597   36,733
-Net Profit                       10,227   14,083   17,381   20,803
-Net Profit Adjusted              10,510   14,255   17,381   21,181
-Pre-Tax Profit                    8,921   12,420   15,211   17,881
-Net Profit (Adjusted)             7,978   10,877   15,353   20,649
-EPS (Non-GAAP) ex. SOE             9.16    12.12    14.70    19.69
-EPS (GAAP)                         7.58    10.56    13.34    17.09
-Gross Income                     19,064   24,957   30,570   35,617
-Cash Flow from Investing         -6,767   -6,527   -7,838   -8,093
-Cash Flow from Operations        13,683   16,594   20,155   22,221
-Cash Flow from Financing            226      400        0        0
-Cash Flow per Share               12.23    16.70    21.06    25.72
-Free Cash Flow                    7,424    8,864   11,634   12,858
-Free Cash Flow per Share              -        -    13.85    16.20
-Book Value per Share              37.92    49.29    60.58    78.42
-Net Debt                        -16,189  -26,072  -34,494  -50,273
-Research & Development Exp.       3,100    3,546    3,529    3,964
-Capital Expenditure               6,595    6,701    7,088    7,160
-Selling, General & Admin. Exp.    5,095    5,903    5,936    6,425
-Shareholder’s Equity             40,775   52,339   67,421   79,481
-Total Assets                     76,319   90,201  101,688  109,156
-
+                                   2022     2023     2024     2025     2026
+YEARLY ESTIMATES                                                           
+Revenue                          86,858  116,788  144,064  157,528  107,570
+Dividend                           0.00     0.00     0.00     0.00        -
+Dividend Yield (in %)                 -        -        -        -        -
+EPS                               12.18    16.12    19.31    22.26    21.48
+P/E Ratio                         54.45    41.16    34.35    29.81    30.88
+EBIT                             15,028   20,720   26,817   30,862   34,452
+EBITDA                           20,090   27,820   36,613   44,035   37,930
+Net Profit                       13,547   17,991   22,787   26,481   27,655
+Net Profit Adjusted              13,652   18,108   22,798   26,481   27,655
+Pre-Tax Profit                   15,053   21,033   27,015   30,830   34,348
+Net Profit (Adjusted)            12,942   15,757   21,519   26,608        -
+EPS (Non-GAAP) ex. SOE            12.18    16.12    19.31    22.26    21.48
+EPS (GAAP)                        10.99    14.29    17.97    21.92    21.60
+Gross Income                     23,228   31,483   39,080   42,425   45,155
+Cash Flow from Investing         -8,023   -7,735   -8,582   -7,782        -
+Cash Flow from Operations        16,970   22,870   28,024   29,611   31,029
+Cash Flow from Financing           -910      450      150        -        -
+Cash Flow per Share               15.90    18.43    22.76    27.40        -
+Free Cash Flow                   10,793   13,025   16,064   18,913   24,121
+Free Cash Flow per Share           8.46    13.29    16.34    25.60        -
+Book Value per Share              40.96    56.09    73.54    94.75        -
+Net Debt                        -20,327  -31,529  -44,816  -64,531        -
+Research & Development Exp.       3,764    4,577    4,710    4,510    5,016
+Capital Expenditure               7,557    7,377    8,031    7,712    2,000
+Selling, General & Admin. Exp.    5,342    6,809    7,023    6,906    5,686
+Shareholder’s Equity             44,873   63,057   85,777   96,491        -
+Total Assets                     79,406  101,864  129,230  129,102        -
                            Previous Quarter  Current Quarter     Next Quarter     Current Year        Next Year
 QUARTER EARNINGS ESTIMATES                                                                                     
-Date                        ending 12/31/21  ending 03/31/22  ending 06/30/22  ending 12/31/22  ending 12/31/23
-No. of Analysts                          29               17               16               35               25
-Average Estimate                  2.129 USD        2.018 USD        2.272 USD        9.160 USD       12.118 USD
-Year Ago                          0.800 USD        0.930 USD        1.450 USD                -        9.160 USD
-Publish Date                      1/27/2022         5/4/2022        7/27/2022                -                -
-
+Date                        ending 03/31/22  ending 06/30/22  ending 09/30/22  ending 12/31/22  ending 12/31/23
+No. of Analysts                          31               27               26               38               37
+Average Estimate                  2.258 USD        2.198 USD        3.175 USD       12.183 USD       16.115 USD
+Year Ago                          0.930 USD        1.450 USD        1.860 USD        6.780 USD       12.183 USD
+Publish Date                      4/20/2022        7/27/2022       10/26/2022                -                -
                            Previous Quarter  Current Quarter     Next Quarter     Current Year        Next Year
 QUARTER REVENUES ESTIMATES                                                                                     
-Date                        ending 12/31/21  ending 03/31/22  ending 06/30/22  ending 12/31/22  ending 12/31/23
-No. of Analysts                          15                9                8               21               14
-Average Estimate                 16,233 USD       17,482 USD       19,541 USD       75,854 USD       93,809 USD
-Year Ago                         10,744 USD       10,389 USD       11,958 USD                -       75,854 USD
-Publish Date                      1/27/2022         5/4/2022        7/27/2022                -                -
-
+Date                        ending 03/31/22  ending 06/30/22  ending 09/30/22  ending 12/31/22  ending 12/31/23
+No. of Analysts                          16               14               13               27               26
+Average Estimate                 17,869 USD       18,200 USD       22,867 USD       86,858 USD      116,788 USD
+Year Ago                         10,389 USD       11,958 USD       13,757 USD       53,823 USD       86,858 USD
+Publish Date                      4/20/2022        7/27/2022       10/26/2022                -                -
