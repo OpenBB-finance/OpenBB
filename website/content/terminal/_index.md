@@ -222,7 +222,7 @@ Within this menu you can define your, often free, API key from various platforms
 
 You can access this menu from the homepage with `keys` which will open the menu as shown below:
 
-<a target="_blank" href="https://user-images.githubusercontent.com/46355364/169503417-a1d2859d-9b66-42df-8555-81fc0186a136.png"><img src="https://user-images.githubusercontent.com/46355364/169503417-a1d2859d-9b66-42df-8555-81fc0186a136.png" width="800"/></a>
+<a target="_blank" href="https://user-images.githubusercontent.com/46355364/169802651-6e752a4c-9cfd-4ce1-a99c-978eee5a0aca.png"><img src="https://user-images.githubusercontent.com/46355364/169802651-6e752a4c-9cfd-4ce1-a99c-978eee5a0aca.png" width="800"/></a>
 
 Within this menu you are able to set your API keys to access the commands that require that key. You can do so by typing the command followed by the API key, for example: `fred a215egade08a8d47cfd49c849658a2be`. When you press `ENTER` (⏎) the terminal will test whether this API key works. If it does, you receive the message `defined, test passed` and if it does not, you receive the message `defined, test failed`.
 
