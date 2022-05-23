@@ -1769,6 +1769,22 @@ optional = true
 python-versions = "*"
 
 [[package]]
+name = "lightgbm"
+version = "3.3.2"
+description = "LightGBM Python Package"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+numpy = "*"
+scikit-learn = "!=0.22.0"
+scipy = "*"
+
+[package.extras]
+dask = ["dask[array] (>=2.0.0)", "dask[dataframe] (>=2.0.0)", "dask[distributed] (>=2.0.0)", "pandas"]
+
+[[package]]
 name = "linearmodels"
 version = "4.26"
 description = "Linear Panel, Instrumental Variable, Asset Pricing, and System Regression models for Python"
@@ -2139,6 +2155,19 @@ developer = ["pre-commit (>=2.18)", "mypy (>=0.942)"]
 doc = ["sphinx (>=4.5)", "pydata-sphinx-theme (>=0.8.1)", "sphinx-gallery (>=0.10)", "numpydoc (>=1.2)", "pillow (>=9.1)", "nb2plots (>=0.6)", "texext (>=0.6.6)"]
 extra = ["lxml (>=4.6)", "pygraphviz (>=1.9)", "pydot (>=1.4.2)", "sympy (>=1.10)"]
 test = ["pytest (>=7.1)", "pytest-cov (>=3.0)", "codecov (>=2.1)"]
+
+[[package]]
+name = "nfoursid"
+version = "1.0.0"
+description = "Implementation of N4SID, Kalman filtering and state-space models"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+matplotlib = ">=3.3"
+numpy = ">=1.19"
+pandas = ">=1.1"
 
 [[package]]
 name = "nodeenv"
@@ -3840,6 +3869,24 @@ anyio = ">=3.0.0,<4"
 full = ["itsdangerous", "jinja2", "python-multipart", "pyyaml", "requests"]
 
 [[package]]
+name = "statsforecast"
+version = "0.5.5"
+description = "Time series forecasting suite using statistical models"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+numba = "*"
+numpy = "*"
+pandas = "*"
+scipy = "*"
+statsmodels = "*"
+
+[package.extras]
+ray = ["ray"]
+
+[[package]]
 name = "statsmodels"
 version = "0.13.2"
 description = "Statistical computations and models for Python"
@@ -4093,6 +4140,17 @@ optional = false
 python-versions = ">=3.5"
 
 [[package]]
+name = "torch"
+version = "1.11.0"
+description = "Tensors and Dynamic neural networks in Python with strong GPU acceleration"
+category = "main"
+optional = false
+python-versions = ">=3.7.0"
+
+[package.dependencies]
+typing-extensions = "*"
+
+[[package]]
 name = "tornado"
 version = "6.1"
 description = "Tornado is a Python web framework and asynchronous networking library, originally developed at FriendFeed."
@@ -4272,6 +4330,37 @@ tzdata = {version = "*", markers = "platform_system == \"Windows\""}
 [package.extras]
 devenv = ["black", "pyroma", "pytest-cov", "zest.releaser"]
 test = ["pytest-mock (>=3.3)", "pytest (>=4.3)"]
+
+[[package]]
+name = "u8darts"
+version = "0.19.0"
+description = "A python library for easy manipulation and forecasting of time series."
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+holidays = ">=0.11.1"
+ipython = ">=7.0.0"
+joblib = ">=0.16.0"
+lightgbm = ">=2.2.3"
+matplotlib = ">=3.3.0"
+nfoursid = ">=1.0.0"
+numpy = ">=1.19.0"
+pandas = ">=1.0.5"
+requests = ">=2.22.0"
+scikit-learn = ">=1.0.1"
+scipy = ">=1.3.2"
+statsforecast = ">=0.5.2"
+statsmodels = ">=0.13.0"
+tqdm = ">=4.60.0"
+xarray = ">=0.17.0"
+
+[package.extras]
+all = ["holidays (>=0.11.1)", "ipython (>=7.0.0)", "joblib (>=0.16.0)", "lightgbm (>=2.2.3)", "matplotlib (>=3.3.0)", "nfoursid (>=1.0.0)", "numpy (>=1.19.0)", "pandas (>=1.0.5)", "requests (>=2.22.0)", "scikit-learn (>=1.0.1)", "scipy (>=1.3.2)", "statsforecast (>=0.5.2)", "statsmodels (>=0.13.0)", "tqdm (>=4.60.0)", "xarray (>=0.17.0)", "pmdarima (>=1.8.0)", "tbats (>=1.1.0)", "pytorch-lightning (>=1.5.0)", "torch (>=1.8.0)", "prophet (>=1.0.0)", "pystan (>=2.19.1.1,<3.0.0.0)"]
+pmdarima = ["pmdarima (>=1.8.0)", "tbats (>=1.1.0)"]
+prophet = ["prophet (>=1.0.0)", "pystan (>=2.19.1.1,<3.0.0.0)"]
+torch = ["pytorch-lightning (>=1.5.0)", "torch (>=1.8.0)"]
 
 [[package]]
 name = "ujson"
@@ -4517,6 +4606,27 @@ python-versions = ">=3.7.0"
 h11 = ">=0.9.0,<1"
 
 [[package]]
+name = "xarray"
+version = "2022.3.0"
+description = "N-D labeled arrays and datasets in Python"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[package.dependencies]
+numpy = ">=1.18"
+packaging = ">=20.0"
+pandas = ">=1.1"
+
+[package.extras]
+accel = ["scipy", "bottleneck", "numbagg"]
+complete = ["netcdf4", "h5netcdf", "scipy", "pydap", "zarr", "fsspec", "cftime", "rasterio", "cfgrib", "pooch", "bottleneck", "numbagg", "dask", "matplotlib", "seaborn", "nc-time-axis"]
+docs = ["netcdf4", "h5netcdf", "scipy", "pydap", "zarr", "fsspec", "cftime", "rasterio", "cfgrib", "pooch", "bottleneck", "numbagg", "dask", "matplotlib", "seaborn", "nc-time-axis", "sphinx-autosummary-accessors", "sphinx-rtd-theme", "ipython", "ipykernel", "jupyter-client", "nbsphinx", "scanpydoc"]
+io = ["netcdf4", "h5netcdf", "scipy", "pydap", "zarr", "fsspec", "cftime", "rasterio", "cfgrib", "pooch"]
+parallel = ["dask"]
+viz = ["matplotlib", "seaborn", "nc-time-axis"]
+
+[[package]]
 name = "xlsxwriter"
 version = "3.0.3"
 description = "A Python module for creating Excel XLSX files."
@@ -4585,7 +4695,7 @@ prediction = ["tensorflow"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8,<3.10"
-content-hash = "2e701e62858e05479fbdbda668e1839fad0fff2fab8217dcc1f0a107197db876"
+content-hash = "1100b407c484a889ceb07b0ae28b03358633fa7f1f2c788c6a86586a6585eef9"
 
 [metadata.files]
 absl-py = [
@@ -5711,6 +5821,13 @@ libclang = [
     {file = "libclang-11.1.0-py2.py3-none-manylinux2014_aarch64.whl", hash = "sha256:39d07c8965a3c963fb2686496339b6dbacf42acbd32e4bc7361373a45e98cebe"},
     {file = "libclang-11.1.0-py2.py3-none-win_amd64.whl", hash = "sha256:8cb0082a30b9e1e615d7f4211b0c428b607a9bd1e43ddc6c0cabdd9ea5b244bf"},
 ]
+lightgbm = [
+    {file = "lightgbm-3.3.2-py3-none-macosx_10_14_x86_64.macosx_10_15_x86_64.macosx_11_0_x86_64.whl", hash = "sha256:2e94bd1b3ab29d173102c9c1d80db2e27ad7e43b8ff5a74c5cb7984b37d19f45"},
+    {file = "lightgbm-3.3.2-py3-none-manylinux1_x86_64.whl", hash = "sha256:f4cba3b4f29336ad7e801cb32d9b948ea4cc5300dda650b78bcdfe36b3e2c4b2"},
+    {file = "lightgbm-3.3.2-py3-none-manylinux2014_aarch64.whl", hash = "sha256:8e788c56853316fc5d35db726d81bd002c721038c856853952287f68082e0158"},
+    {file = "lightgbm-3.3.2-py3-none-win_amd64.whl", hash = "sha256:e4f1529cad416066964f9af0efad208787861e9f2181b7f9ee7fc9bacc082d4f"},
+    {file = "lightgbm-3.3.2.tar.gz", hash = "sha256:5d25d16e77c844c297ece2044df57651139bc3c8ad8c4108916374267ac68b64"},
+]
 linearmodels = [
     {file = "linearmodels-4.26-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:9511653d58a213ad611680b826e7dcdfc03131b5db722390aa9fb50b0395b3af"},
     {file = "linearmodels-4.26-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:52ac13bfa5765155a03f3bbc9bd68f8f9991ed58a75a53951a8767df87906b2c"},
@@ -6064,6 +6181,10 @@ nest-asyncio = [
 networkx = [
     {file = "networkx-2.8-py3-none-any.whl", hash = "sha256:1a1e8fe052cc1b4e0339b998f6795099562a264a13a5af7a32cad45ab9d4e126"},
     {file = "networkx-2.8.tar.gz", hash = "sha256:4a52cf66aed221955420e11b3e2e05ca44196b4829aab9576d4d439212b0a14f"},
+]
+nfoursid = [
+    {file = "nfoursid-1.0.0-py3-none-any.whl", hash = "sha256:5714b25a978b4505b818ec79e1e69aa3c41664f4687e176ae49ae125771eabf0"},
+    {file = "nfoursid-1.0.0.tar.gz", hash = "sha256:9dc20edeaf0203ebbff9ef6ccad6ff125d9ab73d6c1ab48934fdb24b37f5f097"},
 ]
 nodeenv = [
     {file = "nodeenv-1.6.0-py2.py3-none-any.whl", hash = "sha256:621e6b7076565ddcacd2db0294c0381e01fd28945ab36bcf00f41c5daf63bef7"},
@@ -7274,6 +7395,10 @@ starlette = [
     {file = "starlette-0.17.1-py3-none-any.whl", hash = "sha256:26a18cbda5e6b651c964c12c88b36d9898481cd428ed6e063f5f29c418f73050"},
     {file = "starlette-0.17.1.tar.gz", hash = "sha256:57eab3cc975a28af62f6faec94d355a410634940f10b30d68d31cb5ec1b44ae8"},
 ]
+statsforecast = [
+    {file = "statsforecast-0.5.5-py3-none-any.whl", hash = "sha256:f04affa6fcae9d9fae0be74f19bef043c18d80483060971c72975c9bfcdbd63d"},
+    {file = "statsforecast-0.5.5.tar.gz", hash = "sha256:6a81ae36568f12aa64f862bdff5518da43e1a1fc14ced9b5d6917259fa9a362f"},
+]
 statsmodels = [
     {file = "statsmodels-0.13.2-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:3e7ca5b7e678c0bb7a24f5c735d58ac104a50eb61b17c484cce0e221a095560f"},
     {file = "statsmodels-0.13.2-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:066a75d5585378b2df972f81a90b9a3da5e567b7d4833300c1597438c1a35e29"},
@@ -7400,6 +7525,27 @@ toolz = [
     {file = "toolz-0.11.2-py3-none-any.whl", hash = "sha256:a5700ce83414c64514d82d60bcda8aabfde092d1c1a8663f9200c07fdcc6da8f"},
     {file = "toolz-0.11.2.tar.gz", hash = "sha256:6b312d5e15138552f1bda8a4e66c30e236c831b612b2bf0005f8a1df10a4bc33"},
 ]
+torch = [
+    {file = "torch-1.11.0-cp310-cp310-manylinux1_x86_64.whl", hash = "sha256:62052b50fffc29ca7afc0c04ef8206b6f1ca9d10629cb543077e12967e8d0398"},
+    {file = "torch-1.11.0-cp310-cp310-manylinux2014_aarch64.whl", hash = "sha256:866bfba29ac98dec35d893d8e17eaec149d0ac7a53be7baae5c98069897db667"},
+    {file = "torch-1.11.0-cp310-cp310-win_amd64.whl", hash = "sha256:951640fb8db308a59d9b510e7d1ad910aff92913323bbe4bc75435347ddd346d"},
+    {file = "torch-1.11.0-cp310-none-macosx_10_9_x86_64.whl", hash = "sha256:5d77b5ece78fdafa5c7f42995ff9474399d22571cd6b2de21a5d666306a2ff8c"},
+    {file = "torch-1.11.0-cp310-none-macosx_11_0_arm64.whl", hash = "sha256:b5a38682769b544c875ecc34bcb81fbad5c922139b61319aacffcfd8a32f528c"},
+    {file = "torch-1.11.0-cp37-cp37m-manylinux1_x86_64.whl", hash = "sha256:f82d77695a60626f2b7382d85bc566de8a6b3e50d32080755abc040db802e419"},
+    {file = "torch-1.11.0-cp37-cp37m-manylinux2014_aarch64.whl", hash = "sha256:b96654d42566080a134e784705f33f8536b3b95b5dcde357ed7879b1692a5f78"},
+    {file = "torch-1.11.0-cp37-cp37m-win_amd64.whl", hash = "sha256:8ee7c2e8d7f7020d5bfbc1bb91b9591044c26bbd0cee5e4f694cfd7ed8649260"},
+    {file = "torch-1.11.0-cp37-none-macosx_10_9_x86_64.whl", hash = "sha256:6860b1d1bf0bb0b67a6bd47f85a0e4c825b518eea13b5d6101999dbbcbd5bc0c"},
+    {file = "torch-1.11.0-cp38-cp38-manylinux1_x86_64.whl", hash = "sha256:4322aa29f50da7f404db06cdf30896ea67b09f673af4a985afc7162bc897864d"},
+    {file = "torch-1.11.0-cp38-cp38-manylinux2014_aarch64.whl", hash = "sha256:e4d2e0ddd652f30e94cff750220324ec45705d4ecc69658f773b3cb1c7a28dd0"},
+    {file = "torch-1.11.0-cp38-cp38-win_amd64.whl", hash = "sha256:34ce5ea4d8d85da32cdbadb50d4585106901e9f8a3527991daa70c13a09de1f7"},
+    {file = "torch-1.11.0-cp38-none-macosx_10_9_x86_64.whl", hash = "sha256:0ccc85cd06227a3edf809e2c795fd5762c3d4e8a38b5c9f744c6e7cf841361bb"},
+    {file = "torch-1.11.0-cp38-none-macosx_11_0_arm64.whl", hash = "sha256:c1554e49d74f1b2c3e7202d77056ba2dd7465437585bac64062b580f714a44e9"},
+    {file = "torch-1.11.0-cp39-cp39-manylinux1_x86_64.whl", hash = "sha256:58c7814502b1c129a650d7092033bbb0bbd64faf1a7941631aaa1aeaddc37570"},
+    {file = "torch-1.11.0-cp39-cp39-manylinux2014_aarch64.whl", hash = "sha256:831cf588f01dda9409e75576741d2823453990dee2983d670f2584b37a01adf7"},
+    {file = "torch-1.11.0-cp39-cp39-win_amd64.whl", hash = "sha256:44a1d02fd20f827f0f36dc26fdcfc45e793806a6ad52769a22260655a77a4369"},
+    {file = "torch-1.11.0-cp39-none-macosx_10_9_x86_64.whl", hash = "sha256:50fd9bf85c578c871c28f1cb0ace9dfc6024401c7f399b174fb0f370899f4454"},
+    {file = "torch-1.11.0-cp39-none-macosx_11_0_arm64.whl", hash = "sha256:0e48af66ad755f0f9c5f2664028a414f57c49d6adc37e77e06fe0004da4edb61"},
+]
 tornado = [
     {file = "tornado-6.1-cp35-cp35m-macosx_10_9_x86_64.whl", hash = "sha256:d371e811d6b156d82aa5f9a4e08b58debf97c302a35714f6f45e35139c332e32"},
     {file = "tornado-6.1-cp35-cp35m-manylinux1_i686.whl", hash = "sha256:0d321a39c36e5f2c4ff12b4ed58d41390460f798422c4504e09eb5678e09998c"},
@@ -7506,6 +7652,10 @@ tzdata = [
 tzlocal = [
     {file = "tzlocal-4.2-py3-none-any.whl", hash = "sha256:89885494684c929d9191c57aa27502afc87a579be5cdd3225c77c463ea043745"},
     {file = "tzlocal-4.2.tar.gz", hash = "sha256:ee5842fa3a795f023514ac2d801c4a81d1743bbe642e3940143326b3a00addd7"},
+]
+u8darts = [
+    {file = "u8darts-0.19.0-py3-none-any.whl", hash = "sha256:8b9073afa0bf36ec4036ca176fbe5426772475455e6cba46be1f63cb2197f953"},
+    {file = "u8darts-0.19.0.tar.gz", hash = "sha256:9cb55ab1ed8d634d93348ae046beadea4bdd12f2b2e49f1d1829841994d200ca"},
 ]
 ujson = [
     {file = "ujson-5.2.0-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:754e9da96a24535ae5ab2a52e1d1dfc65a6a717c14063855b83f327fdf2173ea"},
@@ -7741,6 +7891,10 @@ wrapt = [
 wsproto = [
     {file = "wsproto-1.1.0-py3-none-any.whl", hash = "sha256:2218cb57952d90b9fca325c0dcfb08c3bda93e8fd8070b0a17f048e2e47a521b"},
     {file = "wsproto-1.1.0.tar.gz", hash = "sha256:a2e56bfd5c7cd83c1369d83b5feccd6d37798b74872866e62616e0ecf111bda8"},
+]
+xarray = [
+    {file = "xarray-2022.3.0-py3-none-any.whl", hash = "sha256:560f36eaabe7a989d5583d37ec753dd737357aa6a6453e55c80bb4f92291a69e"},
+    {file = "xarray-2022.3.0.tar.gz", hash = "sha256:398344bf7d170477aaceff70210e11ebd69af6b156fe13978054d25c48729440"},
 ]
 xlsxwriter = [
     {file = "XlsxWriter-3.0.3-py3-none-any.whl", hash = "sha256:df0aefe5137478d206847eccf9f114715e42aaea077e6a48d0e8a2152e983010"},

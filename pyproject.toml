@@ -102,6 +102,9 @@ Jinja2 = "3.0.3"  # Remove pinned version when Voila supports 3.1
 click = "8.0.1"  # Remove pinned version when Black supports 8.1
 kaleido = {version = "<=0.2.1", optional = true, extras = ["bots"]}
 Riskfolio-Lib = "^3.1.1"
+llvmlite = {version = "^0.38.1", extras = ["prediction"]}
+torch = {version = "^1.11.0", extras = ["prediction"]}
+u8darts = {extras = ["prediction"], version = "^0.19.0"}
 
 
 [tool.poetry.dev-dependencies]
