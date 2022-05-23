@@ -31,7 +31,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 
 # pylint:disable=R0904,C0302
 
@@ -88,47 +88,37 @@ class BehaviouralAnalysisController(StockBaseController):
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
-        has_ticker_start = "" if self.ticker else "[unvl]"
-        has_ticker_end = "" if self.ticker else "[/unvl]"
-        help_text = f"""[cmds]
-    load             load a specific stock ticker for analysis
-
-[param]Ticker: [/param]{self.ticker.upper() or ""}
-{has_ticker_start}
-[src][Finbrain][/src]
-    headlines        sentiment from 15+ major news headlines
-[src][Finnhub][/src]
-    snews            stock price displayed over sentiment of news headlines{has_ticker_end}
-[src][Reddit][/src]
-    wsb              show what WSB gang is up to in subreddit wallstreetbets
-    watchlist        show other users watchlist
-    popular          show popular tickers
-    spac_c           show other users spacs announcements from subreddit SPACs community
-    spac             show other users spacs announcements from other subs{has_ticker_start}
-    getdd            gets due diligence from another user's post
-    reddit_sent      searches reddit for ticker and finds reddit sentiment{has_ticker_end}
-[src][Stocktwits][/src]
-    trending         trending stocks
-    stalker          stalk stocktwits user's last messages{has_ticker_start}
-    bullbear         estimate quick sentiment from last 30 messages on board
-    messages         output up to the 30 last messages on the board
-[src][Twitter][/src]
-    infer            infer about stock's sentiment from latest tweets
-    sentiment        in-depth sentiment prediction from tweets over time
-[src][Google][/src]
-    mentions         interest over time based on stock's mentions
-    regions          regions that show highest interest in stock
-    interest         interest over time of sentences versus stock price
-    queries          top related queries with this stock
-    rise             top rising related queries with stock{has_ticker_end}
-[src][SentimentInvestor][/src]
-    trend            most talked about tickers within the last hour{has_ticker_start}
-    hist             plot historical RHI and AHI data by hour{has_ticker_end}
-[src][Jim Cramer][/src]
-    jcdr             Jim Cramer's daily recommendations{has_ticker_start}
-    jctr             Jim Cramer's recommendations by ticker{has_ticker_end}[/cmds]
-        """
-        console.print(text=help_text, menu="Stocks - Behavioural Analysis")
+        """Print help"""
+        mt = MenuText("stocks/ba/")
+        mt.add_cmd_translation("load")
+        mt.add_raw("\n")
+        mt.add_param_translation("_ticker", self.ticker.upper())
+        mt.add_raw("\n")
+        mt.add_cmd_translation("headlines", "FinBrain", self.ticker)
+        mt.add_cmd_translation("snews", "Finnhub", self.ticker)
+        mt.add_cmd_translation("wsb", "Reddit")
+        mt.add_cmd_translation("watchlist", "Reddit")
+        mt.add_cmd_translation("popular", "Reddit")
+        mt.add_cmd_translation("spac_c", "Reddit")
+        mt.add_cmd_translation("spac", "Reddit")
+        mt.add_cmd_translation("getdd", "Reddit", self.ticker)
+        mt.add_cmd_translation("reddit_sent", "Reddit", self.ticker)
+        mt.add_cmd_translation("trending", "Stocktwits")
+        mt.add_cmd_translation("stalker", "Stocktwits")
+        mt.add_cmd_translation("bullbear", "Stocktwits", self.ticker)
+        mt.add_cmd_translation("messages", "Stocktwits", self.ticker)
+        mt.add_cmd_translation("infer", "Twitter", self.ticker)
+        mt.add_cmd_translation("sentiment", "Twitter", self.ticker)
+        mt.add_cmd_translation("mentions", "Google", self.ticker)
+        mt.add_cmd_translation("regions", "Google", self.ticker)
+        mt.add_cmd_translation("interest", "Google", self.ticker)
+        mt.add_cmd_translation("queries", "Google", self.ticker)
+        mt.add_cmd_translation("rise", "Google", self.ticker)
+        mt.add_cmd_translation("trend", "SentimentInvestor")
+        mt.add_cmd_translation("hist", "SentimentInvestor", self.ticker)
+        mt.add_cmd_translation("jdcr", "Jim Cramer")
+        mt.add_cmd_translation("jctr", "Jim Cramer", self.ticker)
+        console.print(text=mt.menu_text, menu="Stocks - Behavioural Analysis")
 
     def custom_reset(self):
         """Class specific component of reset command"""

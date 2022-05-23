@@ -252,3 +252,54 @@ en:
   stocks/gov/contracts: show government contracts
   stocks/gov/histcont: historical quarterly government contracts
   stocks/gov/lobbying: corporate lobbying details
+  stocks/ca/ticker: set ticker to get similar companies from
+  stocks/ca/_ticker: Ticker to get similar companies from
+  stocks/ca/tsne: run TSNE on all SP500 stocks and returns closest tickers
+  stocks/ca/getpoly: get similar stocks
+  stocks/ca/getfinnhub: get similar stocks
+  stocks/ca/getfinviz: get similar stocks
+  stocks/ca/set: reset and set similar companies
+  stocks/ca/add: add more similar companies
+  stocks/ca/rmv: remove similar companies individually or all
+  stocks/ca/_similar: Similar Companies
+  stocks/ca/historical: historical price data comparison
+  stocks/ca/hcorr: historical price correlation
+  stocks/ca/volume: historical volume data comparison
+  stocks/ca/income: income financials comparison
+  stocks/ca/balance: balance financials comparison
+  stocks/ca/cashflow: cashflow comparison
+  stocks/ca/sentiment: sentiment analysis comparison
+  stocks/ca/scorr: sentiment correlation
+  stocks/ca/overview: brief overview comparison
+  stocks/ca/valuation: brief valuation comparison
+  stocks/ca/financial: brief financial comparison
+  stocks/ca/ownership: brief ownership comparison
+  stocks/ca/performance: brief performance comparison
+  stocks/ca/technical: brief technical comparison
+  stocks/ca/po: portfolio optimization for selected tickers
+  stocks/ba/load: load a specific stock ticker for analysis
+  stocks/ba/_ticker: Ticker
+  stocks/ba/headlines: sentiment from 15+ major news headlines
+  stocks/ba/snews: stock price displayed over sentiment of news headlines
+  stocks/ba/wsb: show what WSB gang is up to in subreddit wallstreetbets
+  stocks/ba/watchlist: show other users watchlist
+  stocks/ba/popular: show popular tickers
+  stocks/ba/spac_c: show other users spacs announcements from subreddit SPACs
+  stocks/ba/spac: show other users spacs announcements from other subs
+  stocks/ba/getdd: gets due diligence from another user's post
+  stocks/ba/reddit_sent: searches reddit for ticker and finds reddit sentiment
+  stocks/ba/trending: trending stocks
+  stocks/ba/stalker: stalk stocktwits user's last messages
+  stocks/ba/bullbear: estimate quick sentiment from last 30 messages on board
+  stocks/ba/messages: output up to the 30 last messages on the board
+  stocks/ba/infer: infer about stock's sentiment from latest tweets
+  stocks/ba/sentiment: in-depth sentiment prediction from tweets over time
+  stocks/ba/mentions: interest over time based on stock's mentions
+  stocks/ba/regions: regions that show highest interest in stock
+  stocks/ba/interest: interest over time of sentences versus stock price
+  stocks/ba/queries: top related queries with this stock
+  stocks/ba/rise: top rising related queries with stock
+  stocks/ba/trend: most talked about tickers within the last hour
+  stocks/ba/hist: plot historical RHI and AHI data by hour
+  stocks/ba/jcdr: Jim Cramer's daily recommendations
+  stocks/ba/jctr: Jim Cramer's recommendations by ticker
