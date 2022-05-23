@@ -737,8 +737,8 @@ code {
   h3,
   p,
   tr,
-  li
-   {
+  li,
+  svg {
     color: white;
   }
   .gdoc-brand__title,
