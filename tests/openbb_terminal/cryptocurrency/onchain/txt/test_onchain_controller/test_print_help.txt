@@ -1,32 +1,26 @@
-
-[Glassnode]
-    hr               check blockchain hashrate over time (BTC or ETH)
-[Blockchain]
-    btccp            displays BTC circulating supply
-    btcct            displays BTC confirmed transactions
-[Eth Gas Station]
-    gwei             check current eth gas fees
-[Whale Alert]
-    whales           check crypto wales transactions
-[BitQuery]
-    lt               last trades by dex or month
-    dvcp             daily volume for crypto pair
-    tv               token volume on DEXes
-    ueat             unique ethereum addresses which made a transaction
-    ttcp             top traded crypto pairs on given decentralized exchange
-    baas             bid, ask prices, average spread for given crypto pair
+    hr                 check blockchain hashrate over time (BTC or ETH)                [Glassnode]
+    btccp              displays BTC circulating supply                                 [Blockchain]
+    btcct              displays BTC confirmed transactions                             [Blockchain]
+    gwei               check current eth gas fees                                      [ETH Gas Stations]
+    whales             check crypto wales transactions                                 [Whale Alert]
+    lt                 last trades by dex or month                                     [BitQuery]
+    dvcp               daily volume for crypto pair                                    [BitQuery]
+    tv                 token volume on DEXes                                           [BitQuery]
+    ueat               unique ethereum addresses which made a transaction              [BitQuery]
+    ttcp               top traded crypto pairs on given decentralized exchange         [BitQuery]
+    baas               bid, ask prices, average spread for given crypto pair           [BitQuery]
 
 Ethereum address: 
 Address type: 
 
-[Ethplorer] Ethereum:
-    address          load ethereum address of token, account or transaction
-    top              top ERC20 tokens[unvl]
-    balance          check ethereum balance
-    hist             ethereum balance history (transactions)[unvl][unvl]
-    info             ERC20 token info
-    holders          top ERC20 token holders
-    th               ERC20 token history
-    prices           ERC20 token historical prices[unvl][unvl]
-    tx               ethereum blockchain transaction info[unvl]
-    
+Ethereum:
+    address            load ethereum address of token, account or transaction          [Ethplorer]
+    top                top ERC20 tokens                                                [Ethplorer]
+[unvl]    balance            check ethereum balance[/unvl]                                          [Ethplorer]
+[unvl]    hist               ethereum balance history (transactions)[/unvl]                         [Ethplorer]
+[unvl]    info               ERC20 token info[/unvl]                                                [Ethplorer]
+[unvl]    holders            top ERC20 token holders[/unvl]                                         [Ethplorer]
+[unvl]    th                 ERC20 token history[/unvl]                                             [Ethplorer]
+[unvl]    prices             ERC20 token historical prices[/unvl]                                   [Ethplorer]
+[unvl]    tx                 ethereum blockchain transaction info[/unvl]                            [Ethplorer]
+
