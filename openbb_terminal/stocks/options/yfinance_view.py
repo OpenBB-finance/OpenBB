@@ -1010,8 +1010,8 @@ def display_vol_surface(
 @log_start_end(log=logger)
 def show_greeks(
     ticker: str,
-    div_cont: float,
     expire: str,
+    div_cont: float = 0,
     rf: float = None,
     opt_type: int = 1,
     mini: float = None,
@@ -1087,9 +1087,25 @@ def show_greeks(
         "Vega",
         "Theta",
     ]
+    column_formatting = [
+        ".1f",
+        ".4f",
+        ".6f",
+        ".6f",
+        ".6f",
+        ".6f",
+    ]
     if show_all:
-        columns += ["Rho", "Phi", "Charm", "Vanna", "Vomma"]
+        additional_columns = ["Rho", "Phi", "Charm", "Vanna", "Vomma"]
+        columns += additional_columns
+        column_formatting += [".6f"] * len(additional_columns)
     df = pd.DataFrame(strikes, columns=columns)
-    print_rich_table(df, headers=list(df.columns), show_index=False, title="Greeks")
+    print_rich_table(
+        df,
+        headers=list(df.columns),
+        show_index=False,
+        title="Greeks",
+        floatfmt=column_formatting,
+    )
 
     return None

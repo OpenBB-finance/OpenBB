@@ -159,8 +159,8 @@ def print_rich_table(
         Title for index column
     headers: List[str]
         Titles for columns
-    floatfmt: str
-        String to
+    floatfmt: Union[str, List[str]]
+        Float number formatting specs as string or list of strings. Defaults to ".2f"
     """
 
     if obbff.USE_TABULATE_DF:
@@ -197,7 +197,11 @@ def print_rich_table(
             row += [
                 str(x)
                 if not isinstance(x, float)
-                else (f"{x:{floatfmt[idx]}}" if abs(x) >= 0.001 else f"{x:.2e}")
+                else (
+                    f"{x:{floatfmt[idx]}}"
+                    if isinstance(floatfmt, list)
+                    else (f"{x:.2e}" if 0 < abs(x) <= 0.0001 else f"{x:floatfmt}")
+                )
                 for idx, x in enumerate(values)
             ]
             table.add_row(*row)
