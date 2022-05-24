@@ -1367,15 +1367,14 @@ def handle_error_code(requests_obj, error_code_map):
 
 def prefill_form(ticket_type, menu, path, command, message):
     """Pre-fille Google Form and open it in the browser"""
-    form_id = "1FAIpQLSe0-HKitlJMtTO9C2VR7uXVtTzmQgiyE1plf3nEkYCRx6WGRg"
-    form_url = f"https://docs.google.com/forms/d/e/{form_id}/viewform?"
+    form_url = "https://openbb.co/support?"
 
     params = {
-        "entry.2091304642": ticket_type,
-        "entry.2098699567": menu,
-        "entry.1862722780": path,
-        "entry.1248966702": command,
-        "entry.110036167": message,
+        "type": ticket_type,
+        "menu": menu,
+        "path": path,
+        "command": command,
+        "message": message,
     }
 
     url_params = urllib.parse.urlencode(params)
