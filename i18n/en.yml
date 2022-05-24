@@ -1,0 +1,1078 @@
+en:
+  _home_: >
+    [info]Get API keys from data providers to access more features.[/info]
+        For more instructions use: 'keys'.
+        To see all features follow: https://openbb-finance.github.io/OpenBBTerminal/
+
+    [info]Multiple jobs queue (where each '/' denotes a new command).[/info]
+        E.g. '/stocks $ disc/ugs -n 3/../load tsla/candle'
+
+    [info]If you want to jump from crypto/ta to stocks you can use an absolute path that starts with a slash (/).[/info]
+        E.g. '/crypto/ta $ /stocks'
+
+    [info]You can run a standalone .openbb routine file with:[/info]
+        E.g. '/ $ exe routines/example.openbb'
+
+    [info]You can run a .openbb routine file with variable inputs:[/info]
+        E.g. '/ $ exe routines/example_with_inputs.openbb --input pltr,tsla,nio'
+
+
+    [info]The main commands you should be aware when navigating through the terminal are:[/info]
+  cls: clear the screen
+  help: help menu ('h' or '?' also works)
+  quit: quit this menu and go one menu above ('q' or '..' also works)
+  exit: exit the terminal
+  reset: reset the terminal and reload configs from the current location ('r' also works)
+  resources: only available on main contexts (not sub-menus)
+  support: pre-populate support ticket for our team to evaluate
+  about: amore information about OpenBB
+  update: update terminal automatically (when using GitHub)
+  tz: set different timezone
+  export: select export folder to output data
+  exe: execute automated routine script
+  settings: set feature flags and style charts
+  keys: set API keys and check their validity
+  keys/_keys_: Set API keys through environment variables
+  defined, test passed: defined, test passed
+  defined, test failed: defined, test failed
+  not defined: not defined
+  defined, not tested: defined, not tested
+  defined, test unsuccessful: defined, test unsuccessful
+  settings/_feature_flags_: Feature flags through environment variables
+  settings/logcollection: allow logs to be sent to help OpenBB team
+  settings/tab: use tabulate to print dataframes
+  settings/cls: clear console after each command
+  settings/color: use coloring features
+  settings/promptkit: enable prompt toolkit (autocomplete and history)
+  settings/predict: prediction features
+  settings/thoughts: thoughts of the day
+  settings/reporthtml: open report as HTML otherwise notebook
+  settings/exithelp: automatically print help when quitting menu
+  settings/rcontext: remember contexts loaded params during session
+  settings/rich: colorful rich terminal
+  settings/richpanel: colorful rich terminal panel
+  settings/ion: interactive matplotlib mode
+  settings/watermark: watermark in figures
+  settings/cmdloc: command location displayed in figures
+  settings/autoscaling: plot autoscaling
+  settings/dt: add date and time to command line
+  settings/flair: console flair
+  settings/_flair: Flair
+  settings/lang: terminal language
+  settings/_language: Language
+  settings/dpi: dots per inch
+  settings/backend: plotting backend (None, tkAgg, MacOSX, Qt5Agg)
+  settings/height: select plot height
+  settings/width: select plot width
+  settings/pheight: select plot percentage height
+  settings/pwidth: select plot percentage width
+  settings/monitor: which monitor to display (primary 0, secondary 1)
+  settings/_dpi: Plot dots per inch
+  settings/_backend: Backend
+  settings/_plot_height: Plot height
+  settings/_plot_width: Plot width
+  settings/_plot_height_pct: Plot height [%]
+  settings/_plot_width_pct: Plot width [%]
+  settings/_monitor: Monitor
+  _export_folder: Export Folder
+  _timezone: Timezone
+  _others_: Others
+  stocks: access historical pricing data, options, sector and industry, and overall due diligence
+  crypto: dive into onchain data, tokenomics, circulation supply, nfts and more
+  etf: exchange traded funds. Historical pricing, compare holdings and screening
+  economy: global macroeconomic data, e.g. futures, yield, treasury
+  forex: foreign exchanges, quotes, forward rates for currency pairs and oanda integration
+  funds: mutual funds search, overview, holdings and sector weights
+  alternative: alternative datasets, such as COVID and open source metrics
+  econometrics: statistical and quantitative methods for relationships between datasets
+  portfolio: perform portfolio optimization and look at portfolio performance and attribution
+  dashboards: interactive dashboards using voila and jupyter notebooks
+  reports: customizable research reports through jupyter notebooks
+  stocks/search: search a specific stock ticker for analysis
+  stocks/SEARCH: Show companies matching the search query
+  stocks/SEARCH_query: The search term used to find company tickers
+  stocks/SEARCH_country: Search by country to find stocks matching the criteria
+  stocks/SEARCH_sector: Search by sector to find stocks matching the criteria
+  stocks/SEARCH_industry: Search by industry to find stocks matching the criteria
+  stocks/SEARCH_exchange: Search by a specific exchange country to find stocks matching the criteria
+  stocks/load: load a specific stock ticker and additional info for analysis
+  stocks/_ticker: Stock
+  stocks/quote: view the current price for a specific stock ticker
+  stocks/QUOTE: Current quote for stock ticker
+  stocks/QUOTE_ticker: Stock ticker
+  stocks/candle: view a candle chart for a specific stock ticker
+  stocks/CANDLE: Shows historic data for a stock
+  stocks/CANDLE_plotly: Flag to show interactive plotly chart
+  stocks/CANDLE_sort: Choose a column to sort by
+  stocks/CANDLE_descending: Sort selected column descending
+  stocks/CANDLE_raw: Shows raw data instead of chart
+  stocks/CANDLE_trend: Flag to add high and low trends to candle
+  stocks/CANDLE_mov_avg: Add moving average in number of days to plot and separate by a comma
+  stocks/news: latest news of the company
+  stocks/codes: FIGI, SIK and SIC codes codes
+  stocks/NEWS: Prints latest news about company, including date, title and web link. [News API]
+  stocks/NEWS_date: The starting date (format YYYY-MM-DD) to search articles from
+  stocks/NEWS_oldest: Show oldest articles first
+  stocks/NEWS_sources: Show news only from the sources specified (e.g bbc yahoo.com)
+  stocks/th: trading hours,                check open markets
+  stocks/options: options menu,                 chains, open interest, greeks, parity
+  stocks/disc: discover trending stocks,     map, sectors, high short interest
+  stocks/sia: sector and industry analysis, companies per sector, quick ratio per industry and country
+  stocks/dps: dark pool and short data,     darkpool, short interest, ftd
+  stocks/scr: screener stocks,              overview/performance, using preset filters
+  stocks/ins: insider trading,              latest penny stock buys, top officer purchases
+  stocks/gov: government menu,              house trading, contracts, corporate lobbying
+  stocks/ba: behavioural analysis,         from reddit, stocktwits, twitter, google
+  stocks/ca: comparison analysis,          get similar, historical, correlation, financials
+  stocks/fa: fundamental analysis,         income, balance, cash, earnings
+  stocks/res: research web page,            macroaxis, yahoo finance, fool
+  stocks/dd: in-depth due-diligence,       news, analyst, shorts, insider, sec
+  stocks/bt: strategy backtester,          simple ema, ema cross, rsi strategies
+  stocks/ta: technical analysis,           ema, macd, rsi, adx, bbands, obv
+  stocks/qa: quantitative analysis,        decompose, cusum, residuals analysis
+  stocks/pred: prediction techniques,        regression, arima, rnn, lstm
+  stocks/options/unu: show unusual options activity
+  stocks/options/calc: basic call/put PnL calculator
+  stocks/options/screen: screens tickers based on preset
+  stocks/options/load: load new ticker
+  stocks/options/exp: see and set expiration dates
+  stocks/options/_ticker: Ticker
+  stocks/options/_expiry: Expiry
+  stocks/options/pcr: display put call ratio for ticker
+  stocks/options/info: display option information (volatility, IV rank etc)
+  stocks/options/chains: display option chains with greeks
+  stocks/options/oi: plot open interest
+  stocks/options/vol: plot volume
+  stocks/options/voi: plot volume and open interest
+  stocks/options/hist: plot option history
+  stocks/options/vsurf: show 3D volatility surface
+  stocks/options/grhist: plot option greek history
+  stocks/options/plot: plot variables provided by the user
+  stocks/options/parity: shows whether options are above or below expected price
+  stocks/options/binom: shows the value of an option using binomial options pricing
+  stocks/options/greeks: shows the greeks for a given option
+  stocks/options/pricing: shows options pricing and risk neutral valuation
+  stocks/options/hedge: shows portfolio weights in order to neutralise delta
+  stocks/options/screen/view: view available presets (or one in particular)
+  stocks/options/screen/set: set one of the available presets
+  stocks/options/screen/_preset: Preset
+  stocks/options/screen/scr: screen data from this preset
+  stocks/options/screen/_screened_tickers: Last screened tickers
+  stocks/options/screen/ca: take these to comparison analysis menu
+  stocks/options/screen/po: take these to portoflio optimization menu
+  stocks/options/pricing/_ticker: Ticker
+  stocks/options/pricing/_expiry: Expiry
+  stocks/options/pricing/add: add an expected price to the list
+  stocks/options/pricing/rmv: remove an expected price from the list
+  stocks/options/pricing/show: show the listed of expected prices
+  stocks/options/pricing/rnval: risk neutral valuation for an option
+  stocks/options/hedge/_ticker: Ticker
+  stocks/options/hedge/_expiry: Expiry
+  stocks/options/hedge/pick: pick the underlying asset position
+  stocks/options/hedge/_underlying: Underlying Asset Position
+  stocks/options/hedge/list: show the available strike prices for calls and puts
+  stocks/options/hedge/add: add an option to the list of options
+  stocks/options/hedge/rmv: remove an option from the list of options
+  stocks/options/hedge/sop: show selected options and neutral portfolio weights
+  stocks/options/hedge/plot: show the option payoff diagram
+  stocks/th/symbol: select the symbol
+  stocks/th/_symbol_name: Symbol name
+  stocks/th/_symbol: Symbol
+  stocks/th/_exchange: Exchange open
+  stocks/th/open: show open markets
+  stocks/th/closed: show closed markets
+  stocks/th/all: show all markets
+  stocks/th/exchange: show one exchange
+  stocks/disc/pipo: past IPOs dates
+  stocks/disc/fipo: future IPOs dates
+  stocks/disc/gainers: show latest top gainers
+  stocks/disc/losers: show latest top losers
+  stocks/disc/ugs: undervalued stocks with revenue and earnings growth above 25%
+  stocks/disc/gtech: tech stocks with revenue and earnings growth more than 25%
+  stocks/disc/active: most active stocks by intraday trade volumest
+  stocks/disc/ulc: potentially undervalued large cap stocks
+  stocks/disc/asc: small cap stocks with earnings growth rates better than 25%
+  stocks/disc/ford: orders by Fidelity Customers
+  stocks/disc/arkord: orders by ARK Investment Management LLC
+  stocks/disc/upcoming: upcoming earnings release dates
+  stocks/disc/trending: trending news
+  stocks/disc/cnews: customized news (buybacks, ipos, spacs, healthcare, politics)
+  stocks/disc/lowfloat: low float stocks under 10M shares float
+  stocks/disc/hotpenny: today's hot penny stocks
+  stocks/disc/rtat: top 10 retail traded stocks per day
+  stocks/disc/divcal: dividend calendar for selected date
+  stocks/sia/load: load a specific ticker and all it's corresponding parameters
+  stocks/sia/clear: clear all or one of industry, sector, country and market cap parameters
+  stocks/sia/industry: see existing industries, or set industry if arg specified
+  stocks/sia/sector: see existing sectors, or set sector if arg specified
+  stocks/sia/country: see existing countries, or set country if arg specified
+  stocks/sia/mktcap: set mktcap between nano, micro, small, mid, large or mega
+  stocks/sia/exchange: revert exclude international exchanges flag
+  stocks/sia/period: set period between annual, quarterly or trailing
+  stocks/sia/_industry: Industry
+  stocks/sia/_sector: Sector
+  stocks/sia/_country: Country
+  stocks/sia/_mktcap: Market Cap
+  stocks/sia/_exclude_exchanges: Exclude Exchanges
+  stocks/sia/_period: Period
+  stocks/sia/_statistics_: Statistics
+  stocks/sia/cps: companies per Sector based on Country (and Market Cap)
+  stocks/sia/cpic: companies per Industry based on Country (and Market Cap)
+  stocks/sia/cpis: companies per Industry based on Sector (and Market Cap)
+  stocks/sia/cpcs: companies per Country based on Sector (and Market Cap)
+  stocks/sia/cpci: companies per Country based on Industry (and Market Cap)
+  stocks/sia/_financials_: Financials
+  stocks/sia/_financials_loaded_: Financials - loaded data (fast mode)
+  stocks/sia/sama: see all metrics available
+  stocks/sia/metric: visualize financial metric across filters selected
+  stocks/sia/satma: see all metrics available over time
+  stocks/sia/vis: visualize financial metric across filters selected
+  stocks/sia/_returned_tickers: Returned tickers
+  stocks/sia/ca: take these to comparison analysis menu
+  stocks/dps/load: load a specific stock ticker for analysis
+  stocks/dps/shorted: show most shorted stocks
+  stocks/dps/ctb: stocks with highest cost to borrow
+  stocks/dps/hsi: show top high short interest stocks of over 20% ratio
+  stocks/dps/prom: promising tickers based on dark pool shares regression
+  stocks/dps/pos: dark pool short position
+  stocks/dps/sidtc: short interest and days to cover
+  stocks/dps/_ticker: Ticker
+  stocks/dps/dpotc: dark pools (ATS) vs OTC data
+  stocks/dps/ftd: fails-to-deliver data
+  stocks/dps/spos: net short vs position
+  stocks/dps/psi: price vs short interest volume
+  stocks/scr/view: view available presets (defaults and customs)
+  stocks/scr/set: set one of the available presets
+  stocks/scr/_preset: Preset
+  stocks/scr/historical: view historical price
+  stocks/scr/overview: overview (e.g. Sector, Industry, Market Cap, Volume)
+  stocks/scr/valuation: valuation (e.g. P/E, PEG, P/S, P/B, EPS this Y)
+  stocks/scr/financial: financial (e.g. Dividend, ROA, ROE, ROI, Earnings)
+  stocks/scr/ownership: ownership (e.g. Float, Insider Own, Short Ratio)
+  stocks/scr/performance: performance (e.g. Perf Week, Perf YTD, Volatility M)
+  stocks/scr/technical: technical (e.g. Beta, SMA50, 52W Low, RSI, Change)
+  stocks/scr/_screened_tickers: Last screened tickers
+  stocks/scr/ca: take these to comparison analysis menu
+  stocks/scr/po: take these to portfolio optimization menu
+  stocks/ins/view: view available presets
+  stocks/ins/set: set one of the available presets
+  stocks/ins/_preset: Preset
+  stocks/ins/filter: filter insiders based on preset
+  stocks/ins/load: load a specific stock ticker for analysis
+  stocks/ins/stats: insider stats of the company
+  stocks/ins/act: insider activity over time
+  stocks/ins/lins: last insider trading of the company
+  stocks/ins/lcb: latest cluster boys
+  stocks/ins/lpsb: latest penny stock buys
+  stocks/ins/lit: latest insider trading (all filings)
+  stocks/ins/lip: latest insider purchases
+  stocks/ins/blip: big latest insider purchases ($25k+)
+  stocks/ins/blop: big latest officer purchases ($25k+)
+  stocks/ins/bclp: big latest CEO/CFO purchases ($25k+)
+  stocks/ins/lis: latest insider sales
+  stocks/ins/blis: big latest insider sales ($100k+)
+  stocks/ins/blos: big latest officer sales ($100k+)
+  stocks/ins/blcs: big latest CEO/CFO sales ($100k+)
+  stocks/ins/topt: top officer purchases today
+  stocks/ins/toppw: top officer purchases past week
+  stocks/ins/toppm: top officer purchases past month
+  stocks/ins/tipt: top insider purchases today
+  stocks/ins/tippw: top insider purchases past week
+  stocks/ins/tippm: top insider purchases past month
+  stocks/ins/tist: top insider sales today
+  stocks/ins/tispw: top insider sales past week
+  stocks/ins/tispm: top insider sales past month
+  stocks/gov/_explore: Explore
+  stocks/gov/lasttrades: last trades
+  stocks/gov/topbuys: show most purchased stocks
+  stocks/gov/topsells: show most sold stocks
+  stocks/gov/lastcontracts: show last government contracts given out
+  stocks/gov/qtrcontracts: quarterly government contracts analysis
+  stocks/gov/toplobbying: top corporate lobbying tickers
+  stocks/gov/load: load a specific ticker for analysis
+  stocks/gov/_ticker: Ticker
+  stocks/gov/gtrades: show government trades
+  stocks/gov/contracts: show government contracts
+  stocks/gov/histcont: historical quarterly government contracts
+  stocks/gov/lobbying: corporate lobbying details
+  stocks/ca/ticker: set ticker to get similar companies from
+  stocks/ca/_ticker: Ticker to get similar companies from
+  stocks/ca/tsne: run TSNE on all SP500 stocks and returns closest tickers
+  stocks/ca/getpoly: get similar stocks
+  stocks/ca/getfinnhub: get similar stocks
+  stocks/ca/getfinviz: get similar stocks
+  stocks/ca/set: reset and set similar companies
+  stocks/ca/add: add more similar companies
+  stocks/ca/rmv: remove similar companies individually or all
+  stocks/ca/_similar: Similar Companies
+  stocks/ca/historical: historical price data comparison
+  stocks/ca/hcorr: historical price correlation
+  stocks/ca/volume: historical volume data comparison
+  stocks/ca/income: income financials comparison
+  stocks/ca/balance: balance financials comparison
+  stocks/ca/cashflow: cashflow comparison
+  stocks/ca/sentiment: sentiment analysis comparison
+  stocks/ca/scorr: sentiment correlation
+  stocks/ca/overview: brief overview comparison
+  stocks/ca/valuation: brief valuation comparison
+  stocks/ca/financial: brief financial comparison
+  stocks/ca/ownership: brief ownership comparison
+  stocks/ca/performance: brief performance comparison
+  stocks/ca/technical: brief technical comparison
+  stocks/ca/po: portfolio optimization for selected tickers
+  stocks/ba/load: load a specific stock ticker for analysis
+  stocks/ba/_ticker: Ticker
+  stocks/ba/headlines: sentiment from 15+ major news headlines
+  stocks/ba/snews: stock price displayed over sentiment of news headlines
+  stocks/ba/wsb: show what WSB gang is up to in subreddit wallstreetbets
+  stocks/ba/watchlist: show other users watchlist
+  stocks/ba/popular: show popular tickers
+  stocks/ba/spac_c: show other users spacs announcements from subreddit SPACs
+  stocks/ba/spac: show other users spacs announcements from other subs
+  stocks/ba/getdd: gets due diligence from another user's post
+  stocks/ba/reddit_sent: searches reddit for ticker and finds reddit sentiment
+  stocks/ba/trending: trending stocks
+  stocks/ba/stalker: stalk stocktwits user's last messages
+  stocks/ba/bullbear: estimate quick sentiment from last 30 messages on board
+  stocks/ba/messages: output up to the 30 last messages on the board
+  stocks/ba/infer: infer about stock's sentiment from latest tweets
+  stocks/ba/sentiment: in-depth sentiment prediction from tweets over time
+  stocks/ba/mentions: interest over time based on stock's mentions
+  stocks/ba/regions: regions that show highest interest in stock
+  stocks/ba/interest: interest over time of sentences versus stock price
+  stocks/ba/queries: top related queries with this stock
+  stocks/ba/rise: top rising related queries with stock
+  stocks/ba/trend: most talked about tickers within the last hour
+  stocks/ba/hist: plot historical RHI and AHI data by hour
+  stocks/ba/jcdr: Jim Cramer's daily recommendations
+  stocks/ba/jctr: Jim Cramer's recommendations by ticker
+  stocks/fa/load: load a specific stock ticker for analysis
+  stocks/fa/_ticker: Ticker
+  stocks/fa/data: fundamental and technical data of company
+  stocks/fa/mgmt: management team of the company
+  stocks/fa/analysis: analyse SEC filings with the help of machine learning
+  stocks/fa/score: investing score from Warren Buffett and co
+  stocks/fa/warnings: company warnings according to Sean Seah book
+  stocks/fa/dcf: advanced Excel customizable discounted cash flow
+  stocks/fa/info: information scope of the company
+  stocks/fa/mktcap: estimated market cap
+  stocks/fa/shrs: shareholders (insiders, institutions and mutual funds)
+  stocks/fa/sust: sustainability values (environment, social and governance)
+  stocks/fa/cal: calendar earnings and estimates of the company
+  stocks/fa/divs: show historical dividends for company
+  stocks/fa/splits: stock split and reverse split events since IPO
+  stocks/fa/web: open web browser of the company
+  stocks/fa/hq: open HQ location of the company
+  stocks/fa/income: income statements of the company
+  stocks/fa/balance: balance sheet of the company
+  stocks/fa/overview: overview of the company
+  stocks/fa/key: company key metrics
+  stocks/fa/cash: cash flow of the company
+  stocks/fa/earnings: earnings dates and reported EPS
+  stocks/fa/fraud: key fraud ratios
+  stocks/fa/dupont: detailed breakdown for return on equity
+  stocks/fa/_sources_: Other sources
+  stocks/fa/fmp: profile,quote,enterprise,dcf,income,ratios,growth from FMP
+  stocks/res/_ticker: Ticker
+  stocks/res/macroaxis: www.macroaxis.com
+  stocks/res/yahoo: www.finance.yahoo.com
+  stocks/res/finviz: www.finviz.com
+  stocks/res/marketwatch: www.marketwatch.com
+  stocks/res/fool: www.fool.com
+  stocks/res/businessinsider: www.markets.businessinsider.com
+  stocks/res/fmp: www.financialmodelingprep.com
+  stocks/res/fidelity: www.eresearch.fidelity.com
+  stocks/res/tradingview: www.tradingview.com
+  stocks/res/marketchameleon: www.marketchameleon.com
+  stocks/res/stockrow: www.stockrow.com
+  stocks/res/barchart: www.barchart.com
+  stocks/res/grufity: www.grufity.com
+  stocks/res/fintel: www.fintel.com
+  stocks/res/zacks: www.zacks.com
+  stocks/res/macrotrends: www.macrotrends.net
+  stocks/res/newsfilter: www.newsfilter.io
+  stocks/res/stockanalysis: www.stockanalysis.com
+  stocks/dd/load: load a specific stock ticker for analysis
+  stocks/dd/_ticker: Ticker
+  stocks/dd/analyst: analyst prices and ratings of the company
+  stocks/dd/rating: rating over time (daily)
+  stocks/dd/rot: number of analysts ratings over time (monthly)
+  stocks/dd/pt: price targets over time
+  stocks/dd/est: quarter and year analysts earnings estimates
+  stocks/dd/sec: SEC filings
+  stocks/dd/supplier: list of suppliers
+  stocks/dd/customer: list of customers
+  stocks/dd/arktrades: get ARK trades for ticker
+  stocks/bt/_ticker: Ticker
+  stocks/bt/whatif: what if you had bought X shares on day Y
+  stocks/bt/ema: buy when price exceeds EMA(l)
+  stocks/bt/ema_cross: buy when EMA(short) > EMA(long)
+  stocks/bt/rsi: buy when RSI < low and sell when RSI > high
+  stocks/ta/_ticker: Ticker
+  stocks/ta/tv: open interactive chart on
+  stocks/ta/view: view historical data and trendlines
+  stocks/ta/summary: technical summary report
+  stocks/ta/recom: recommendation based on technical indicators
+  stocks/ta/_overlap_: Overlap
+  stocks/ta/ema: exponential moving average
+  stocks/ta/sma: simple moving average
+  stocks/ta/wma: weighted moving average
+  stocks/ta/hma: hull moving average
+  stocks/ta/zlma: zero lag moving average
+  stocks/ta/vwap: volume weighted average price
+  stocks/ta/_momentum_: Momentum
+  stocks/ta/cci: commodity channel index
+  stocks/ta/macd: moving average convergence/divergence
+  stocks/ta/rsi: relative strength index
+  stocks/ta/stoch: stochastic oscillator
+  stocks/ta/fisher: fisher transform
+  stocks/ta/cg: centre of gravity
+  stocks/ta/_trend_: Trend
+  stocks/ta/adx: average directional movement index
+  stocks/ta/aroon: aroon indicator
+  stocks/ta/_volatility_: Volatility
+  stocks/ta/bbands: bollinger bands
+  stocks/ta/donchian: donchian channels
+  stocks/ta/kc: keltner channels
+  stocks/ta/_volume_: Volume
+  stocks/ta/ad: accumulation/distribution line
+  stocks/ta/adosc: chaikin oscillator
+  stocks/ta/obv: on balance volume
+  stocks/ta/_custom_: Custom
+  stocks/ta/fib: fibonacci retracement
+  stocks/qa/load: load new ticker
+  stocks/qa/pick: pick target column for analysis
+  stocks/qa/_ticker: Ticker
+  stocks/qa/_target: Target Column
+  stocks/qa/_statistics_: Statistics
+  stocks/qa/summary: brief summary statistics of loaded stock
+  stocks/qa/normality: normality statistics and tests
+  stocks/qa/unitroot: unit root test for stationarity (ADF, KPSS)
+  stocks/qa/_plots_: Plots
+  stocks/qa/line: line plot of selected target
+  stocks/qa/hist: histogram with density plot
+  stocks/qa/cdf: cumulative distribution function
+  stocks/qa/bw: box and whisker plot
+  stocks/qa/acf: (partial) auto-correlation function differentials of prices
+  stocks/qa/qqplot: residuals against standard normal curve
+  stocks/qa/_rolling_metrics_: Rolling Metrics
+  stocks/qa/rolling: rolling mean and std deviation of prices
+  stocks/qa/spread: rolling variance and std deviation of prices
+  stocks/qa/quantile: rolling median and quantile of prices
+  stocks/qa/skew: rolling skewness of distribution of prices
+  stocks/qa/kurtosis: rolling kurtosis of distribution of prices
+  stocks/qa/_risk_: Risk
+  stocks/qa/var: display value at risk
+  stocks/qa/es: display expected shortfall
+  stocks/qa/sh: display sharpe ratio
+  stocks/qa/so: display sortino ratio
+  stocks/qa/om: display omega ratio
+  stocks/qa/_other_: Other
+  stocks/qa/raw: print raw data
+  stocks/qa/decompose: decomposition in cyclic-trend, season, and residuals of prices
+  stocks/qa/cusum: detects abrupt changes using cumulative sum algorithm of prices
+  stocks/qa/capm: capital asset pricing model
+  stocks/pred/load: load new ticker
+  stocks/pred/pick: pick target column for analysis
+  stocks/pred/_ticker: Ticker
+  stocks/pred/_target: Target Column
+  stocks/pred/_models_: Models
+  stocks/pred/ets: exponential smoothing (e.g. Holt-Winters)
+  stocks/pred/knn: k-Nearest Neighbors
+  stocks/pred/regression: polynomial regression
+  stocks/pred/arima: autoregressive integrated moving average
+  stocks/pred/mlp: MultiLayer Perceptron
+  stocks/pred/rnn: Recurrent Neural Network
+  stocks/pred/lstm: Long-Short Term Memory
+  stocks/pred/conv1d: 1D Convolutional Neural Network
+  stocks/pred/mc: Monte-Carlo simulations
+  crypto/load: load a specific cryptocurrency for analysis
+  crypto/find: find coins
+  crypto/_coin: Coin
+  crypto/_source: Source
+  crypto/headlines: crypto sentiment from 15+ major news headlines
+  crypto/chart: view a candle chart for a specific cryptocurrency
+  crypto/prt: potential returns tool - check how much upside if ETH reaches BTC market cap
+  crypto/disc: discover trending cryptocurrencies,     top gainers, losers, top sentiment
+  crypto/ov: overview of the cryptocurrencies,       market cap, DeFi, latest news, top exchanges, stables
+  crypto/onchain: information on different blockchains,   eth gas fees, whale alerts, DEXes info
+  crypto/defi: decentralized finance information,      dpi, llama, tvl, lending, borrow, funding
+  crypto/tools: explore different tools                 apytoapr, il
+  crypto/nft: non-fungible tokens,                    today drops
+  crypto/dd: due-diligence for loaded coin,          coin information, social media, market stats
+  crypto/ta: technical analysis for loaded coin,     ema, macd, rsi, adx, bbands, obv
+  crypto/pred: prediction techniques,                  regression, arima, rnn, lstm, conv1d, monte carlo
+  crypto/qa: quantitative analysis                   decompose, cusum, residuals analysis
+  crypto/disc/cgtop: top coins (with or without category)
+  crypto/disc/cgtrending: trending coins
+  crypto/disc/cggainers: top gainers - coins which price gained the most in given period
+  crypto/disc/cglosers: top losers - coins which price dropped the most in given period
+  crypto/disc/cpsearch: search for coins
+  crypto/disc/cmctop: top coins
+  crypto/disc/drnft: top non fungible tokens
+  crypto/disc/drgames: top blockchain games
+  crypto/disc/drdapps: top decentralized apps
+  crypto/disc/drdex: top decentralized exchanges
+  crypto/ov/cgglobal: global crypto market info
+  crypto/ov/cgdefi: global DeFi market info
+  crypto/ov/cgstables: stablecoins
+  crypto/ov/cgexchanges: top crypto exchanges
+  crypto/ov/cgexrates: coin exchange rates
+  crypto/ov/cgindexes: crypto indexes
+  crypto/ov/cgderivatives: crypto derivatives
+  crypto/ov/cgcategories: crypto categories
+  crypto/ov/cghold: ethereum, bitcoin holdings overview statistics
+  crypto/ov/hm: crypto heatmap
+  crypto/ov/cpglobal: global crypto market info
+  crypto/ov/cpinfo: basic info about all coins available
+  crypto/ov/cpmarkets: market related info about all coins available
+  crypto/ov/cpexchanges: list all exchanges
+  crypto/ov/cpexmarkets: all available markets on given exchange
+  crypto/ov/cpplatforms: list blockchain platforms eg. ethereum, solana, kusama, terra
+  crypto/ov/cpcontracts: all smart contracts for given platform
+  crypto/ov/cbpairs: info about available trading pairs
+  crypto/ov/news: recent crypto news
+  crypto/ov/wf: overall withdrawal fees
+  crypto/ov/ewf: overall exchange withdrawal fees
+  crypto/ov/wfpe: crypto withdrawal fees per exchange
+  crypto/ov/altindex: altcoin season index (75% of top 50 coins perform better than BTC)
+  crypto/ov/btcrb: display bitcoin rainbow price chart (logarithmic regression)
+  crypto/ov/ch: lists major crypto-related hacks
+  crypto/ov/cr: crypto supply or borrow interest rates
+  crypto/onchain/hr: check blockchain hashrate over time (BTC or ETH)
+  crypto/onchain/btccp: displays BTC circulating supply
+  crypto/onchain/btcct: displays BTC confirmed transactions
+  crypto/onchain/gwei: check current eth gas fees
+  crypto/onchain/whales: check crypto wales transactions
+  crypto/onchain/lt: last trades by dex or month
+  crypto/onchain/dvcp: daily volume for crypto pair
+  crypto/onchain/tv: token volume on DEXes
+  crypto/onchain/ueat: unique ethereum addresses which made a transaction
+  crypto/onchain/ttcp: top traded crypto pairs on given decentralized exchange
+  crypto/onchain/baas: bid, ask prices, average spread for given crypto pair
+  crypto/onchain/_address: Ethereum address
+  crypto/onchain/_type: Address type
+  crypto/onchain/_ethereum_: Ethereum
+  crypto/onchain/address: load ethereum address of token, account or transaction
+  crypto/onchain/top: top ERC20 tokens
+  crypto/onchain/balance: check ethereum balance
+  crypto/onchain/hist: ethereum balance history (transactions)
+  crypto/onchain/info: ERC20 token info
+  crypto/onchain/holders: top ERC20 token holders
+  crypto/onchain/th: ERC20 token history
+  crypto/onchain/prices: ERC20 token historical prices
+  crypto/onchain/tx: ethereum blockchain transaction info
+  crypto/defi/newsletter: recent DeFi related newsletters
+  crypto/defi/dpi: DeFi protocols listed on DefiPulse
+  crypto/defi/funding: funding rates - current or last 30 days average
+  crypto/defi/borrow: DeFi borrow rates - current or last 30 days average
+  crypto/defi/lending: DeFi ending rates - current or last 30 days average
+  crypto/defi/vaults: top DeFi Vaults on different blockchains
+  crypto/defi/tokens: tokens trade-able on Uniswap
+  crypto/defi/stats: base statistics about Uniswap
+  crypto/defi/pairs: recently added pairs on Uniswap
+  crypto/defi/pools: pools by volume on Uniswap
+  crypto/defi/swaps: recent swaps done on Uniswap
+  crypto/defi/ldapps: lists dApps
+  crypto/defi/gdapps: top DeFi dApps grouped by chain
+  crypto/defi/stvl: historical values of the total sum of TVLs from all dApps
+  crypto/defi/dtvl: historical total value locked (TVL) by dApp
+  crypto/defi/aterra: 30-day history of specified asset in terra address
+  crypto/defi/ayr: 30-day history of anchor yield reserve
+  crypto/defi/sinfo: staking info for provided terra account address
+  crypto/defi/validators: information about terra blockchain validators
+  crypto/defi/govp: terra blockchain governance proposals list
+  crypto/defi/gacc: terra blockchain account growth history
+  crypto/defi/sratio: terra blockchain staking ratio history
+  crypto/defi/sreturn: terra blockchain staking returns history
+  crypto/defi/lcsc: Luna circulating supply changes
+  crypto/defi/anchor: anchor earnings data
+  crypto/tools/aprtoapy: convert apr to apy
+  crypto/tools/li: calculate impermanent loss
+  crypto/nft/today: today's NFT drops
+  crypto/nft/upcoming: upcoming NFT drops
+  crypto/nft/ongoing: Ongoing NFT drops
+  crypto/nft/newest: Recently NFTs added
+  crypto/nft/stats: check open sea collection stats
+  crypto/dd/_overview_: Overview
+  crypto/dd/_market_: Market
+  crypto/dd/_metrics_: Metrics
+  crypto/dd/_contributors_: Contributors and Investors
+  crypto/dd/_tokenomics_: Tokenomics
+  crypto/dd/_roadmap_: Roadmap and News
+  crypto/dd/_activity_: Activity and Community
+  crypto/dd/load: load a specific cryptocurrency for analysis
+  crypto/dd/_coin: Coin
+  crypto/dd/_source: Source
+  crypto/dd/info: basic information about loaded coin
+  crypto/dd/market: market stats about loaded coin
+  crypto/dd/ath: all time high related stats for loaded coin
+  crypto/dd/atl: all time low related stats for loaded coin
+  crypto/dd/web: found websites for loaded coin e.g forum, homepage
+  crypto/dd/social: social portals urls for loaded coin, e.g reddit, twitter
+  crypto/dd/score: different kind of scores for loaded coin, e.g developer score, sentiment score
+  crypto/dd/dev: github, bitbucket coin development statistics
+  crypto/dd/bc: links to blockchain explorers for loaded coin
+  crypto/dd/active: active addresses
+  crypto/dd/nonzero: addresses with non-zero balances
+  crypto/dd/change: 30d change of supply held on exchange wallets
+  crypto/dd/eb: total balance held on exchanges (in percentage and units)
+  crypto/dd/oi: open interest per exchange
+  crypto/dd/basic: basic information about loaded coin
+  crypto/dd/ps: price and supply related metrics for loaded coin
+  crypto/dd/mkt: all markets for loaded coin
+  crypto/dd/ex: all exchanges where loaded coin is listed
+  crypto/dd/twitter: tweets for loaded coin
+  crypto/dd/events: events related to loaded coin
+  crypto/dd/binbook: order book
+  crypto/dd/balance: coin balance
+  crypto/dd/cbbook: order book
+  crypto/dd/trades: last trades
+  crypto/dd/stats: coin stats
+  crypto/dd/mcapdom: market cap dominance
+  crypto/dd/mt: messari timeseries e.g. twitter followers, circ supply, etc
+  crypto/dd/rm: roadmap
+  crypto/dd/tk: tokenomics e.g. circulating/max/total supply, emission type, etc
+  crypto/dd/pi: project information e.g. technology details, public repos, audits, vulns
+  crypto/dd/team: contributors (individuals and organizations)
+  crypto/dd/inv: investors (individuals and organizations)
+  crypto/dd/gov: governance details
+  crypto/dd/fr: fundraising details e.g. treasury accounts, sales rounds, allocation
+  crypto/dd/links: links e.g. whitepaper, github, twitter, youtube, reddit, telegram
+  crypto/dd/gh: github activity over time
+  crypto/dd/news: loaded coin's most recent news
+  crypto/ta/_ticker: Coin loaded
+  crypto/ta/tv: open interactive chart on
+  crypto/ta/_overlap_: Overlap
+  crypto/ta/ema: exponential moving average
+  crypto/ta/sma: simple moving average
+  crypto/ta/wma: weighted moving average
+  crypto/ta/hma: hull moving average
+  crypto/ta/zlma: zero lag moving average
+  crypto/ta/vwap: volume weighted average price
+  crypto/ta/_momentum_: Momentum
+  crypto/ta/cci: commodity channel index
+  crypto/ta/macd: moving average convergence/divergence
+  crypto/ta/rsi: relative strength index
+  crypto/ta/stoch: stochastic oscillator
+  crypto/ta/fisher: fisher transform
+  crypto/ta/cg: centre of gravity
+  crypto/ta/_trend_: Trend
+  crypto/ta/adx: average directional movement index
+  crypto/ta/aroon: aroon indicator
+  crypto/ta/_volatility_: Volatility
+  crypto/ta/bbands: bollinger bands
+  crypto/ta/donchian: donchian channels
+  crypto/ta/kc: keltner channels
+  crypto/ta/_volume_: Volume
+  crypto/ta/ad: accumulation/distribution line
+  crypto/ta/adosc: chaikin oscillator
+  crypto/ta/obv: on balance volume
+  crypto/ta/_custom_: Custom
+  crypto/ta/fib: fibonacci retracement
+  crypto/pred/load: load new ticker
+  crypto/pred/pick: pick target column for analysis
+  crypto/pred/_ticker: Coin loaded
+  crypto/pred/_target: Target column
+  crypto/pred/_models_: Models
+  crypto/pred/ets: exponential smoothing (e.g. Holt-Winters)
+  crypto/pred/knn: k-Nearest Neighbors
+  crypto/pred/regression: polynomial regression
+  crypto/pred/arima: autoregressive integrated moving average
+  crypto/pred/mlp: MultiLayer Perceptron
+  crypto/pred/rnn: Recurrent Neural Network
+  crypto/pred/lstm: Long-Short Term Memory
+  crypto/pred/conv1d: 1D Convolutional Neural Network
+  crypto/pred/mc: Monte-Carlo simulations
+  crypto/qa/load: load new ticker
+  crypto/qa/pick: pick target column for analysis
+  crypto/qa/_ticker: Ticker
+  crypto/qa/_target: Target Column
+  crypto/qa/_statistics_: Statistics
+  crypto/qa/summary: brief summary statistics of loaded stock
+  crypto/qa/normality: normality statistics and tests
+  crypto/qa/unitroot: unit root test for stationarity (ADF, KPSS)
+  crypto/qa/_plots_: Plots
+  crypto/qa/line: line plot of selected target
+  crypto/qa/hist: histogram with density plot
+  crypto/qa/cdf: cumulative distribution function
+  crypto/qa/bw: box and whisker plot
+  crypto/qa/acf: (partial) auto-correlation function differentials of prices
+  crypto/qa/qqplot: residuals against standard normal curve
+  crypto/qa/_rolling_metrics_: Rolling Metrics
+  crypto/qa/rolling: rolling mean and std deviation of prices
+  crypto/qa/spread: rolling variance and std deviation of prices
+  crypto/qa/quantile: rolling median and quantile of prices
+  crypto/qa/skew: rolling skewness of distribution of prices
+  crypto/qa/kurtosis: rolling kurtosis of distribution of prices
+  crypto/qa/_other_: Other
+  crypto/qa/raw: print raw data
+  crypto/qa/decompose: decomposition in cyclic-trend, season, and residuals of prices
+  crypto/qa/cusum: detects abrupt changes using cumulative sum algorithm of prices
+  etf/ln: lookup by name
+  etf/ld: lookup by description
+  etf/load: load ETF data
+  etf/_symbol: Symbol
+  etf/_major_holdings: Major holdings
+  etf/ca: comparison analysis,          get similar, historical, correlation, financials
+  etf/disc: discover ETFs,                gainers/decliners/active
+  etf/scr: screener ETFs,                overview/performance, using preset filters
+  etf/overview: get overview
+  etf/holdings: top company holdings
+  etf/weights: sector weights allocation
+  etf/summary: summary description of the ETF
+  etf/candle: view a candle chart for ETF
+  etf/news: latest news of the company
+  etf/pir: create (multiple) passive investor excel report(s)
+  etf/compare: compare multiple different ETFs
+  etf/ta: technical analysis,           ema, macd, rsi, adx, bbands, obv
+  etf/pred: prediction techniques,        regression, arima, rnn, lstm
+  etf/disc/gainers: top gainers
+  etf/disc/decliners: top decliners
+  etf/disc/active: most active
+  etf/scr/view: view available presets
+  etf/scr/set: set one of the available presets
+  etf/scr/_preset: Preset
+  etf/scr/screen: screen ETF using preset selected
+  etf/scr/sbc: screen by category
+  etf/ta/_ticker: ETF
+  etf/ta/_overlap_: Overlap
+  etf/ta/ema: exponential moving average
+  etf/ta/sma: simple moving average
+  etf/ta/wma: weighted moving average
+  etf/ta/hma: hull moving average
+  etf/ta/zlma: zero lag moving average
+  etf/ta/vwap: volume weighted average price
+  etf/ta/_momentum_: Momentum
+  etf/ta/cci: commodity channel index
+  etf/ta/macd: moving average convergence/divergence
+  etf/ta/rsi: relative strength index
+  etf/ta/stoch: stochastic oscillator
+  etf/ta/fisher: fisher transform
+  etf/ta/cg: centre of gravity
+  etf/ta/_trend_: Trend
+  etf/ta/adx: average directional movement index
+  etf/ta/aroon: aroon indicator
+  etf/ta/_volatility_: Volatility
+  etf/ta/bbands: bollinger bands
+  etf/ta/donchian: donchian channels
+  etf/ta/kc: keltner channels
+  etf/ta/_volume_: Volume
+  etf/ta/ad: accumulation/distribution line
+  etf/ta/adosc: chaikin oscillator
+  etf/ta/obv: on balance volume
+  etf/ta/_custom_: Custom
+  etf/ta/fib: fibonacci retracement
+  etf/pred/load: load new ticker
+  etf/pred/pick: pick target column for analysis
+  etf/pred/_ticker: Ticker loaded
+  etf/pred/_target: Target column
+  etf/pred/_models_: Models
+  etf/pred/ets: exponential smoothing (e.g. Holt-Winters)
+  etf/pred/knn: k-Nearest Neighbors
+  etf/pred/regression: polynomial regression
+  etf/pred/arima: autoregressive integrated moving average
+  etf/pred/mlp: MultiLayer Perceptron
+  etf/pred/rnn: Recurrent Neural Network
+  etf/pred/lstm: Long-Short Term Memory
+  etf/pred/conv1d: 1D Convolutional Neural Network
+  etf/pred/mc: Monte-Carlo simulations
+  economy/overview: show a market overview of either indices, bonds or currencies
+  economy/futures: display a futures and commodities overview
+  economy/map: S&P500 index stocks map
+  economy/bigmac: The Economist Big Mac index
+  economy/macro: collect macro data for a country or countries
+  economy/fred: collect macro data from FRED based on a series ID
+  economy/index: find and plot any (major) index on the market
+  economy/treasury: obtain U.S. treasury rates
+  economy/ycrv: show sovereign yield curves
+  economy/plot: plot data from the above commands together
+  economy/options: show the available options for 'plot' or show/export the data
+  economy/rtps: real-time performance sectors
+  economy/valuation: valuation of sectors, industry, country
+  economy/performance: performance of sectors, industry, country
+  economy/spectrum: spectrum of sectors, industry, country
+  economy/pred: Open the prediction menu to analyse stored data
+  economy/qa: Open quantitative analysis menu with stored data
+  economy/qa/pick: pick new series from stored economy data
+  economy/qa/_series: Selected series
+  economy/qa/_statistics_: Statistics
+  economy/qa/summary: brief summary statistics of loaded stock
+  economy/qa/normality: normality statistics and tests
+  economy/qa/unitroot: unit root test for stationarity (ADF, KPSS)
+  economy/qa/_plots_: Plots
+  economy/qa/line: line plot of selected target
+  economy/qa/hist: histogram with density plot
+  economy/qa/cdf: cumulative distribution function
+  economy/qa/bw: box and whisker plot
+  economy/qa/acf: (partial) auto-correlation function differentials of prices
+  economy/qa/qqplot: residuals against standard normal curve
+  economy/qa/_rolling_metrics_: Rolling Metrics
+  economy/qa/rolling: rolling mean and std deviation of prices
+  economy/qa/spread: rolling variance and std deviation of prices
+  economy/qa/quantile: rolling median and quantile of prices
+  economy/qa/skew: rolling skewness of distribution of prices
+  economy/qa/kurtosis: rolling kurtosis of distribution of prices
+  economy/qa/_other_: Other
+  economy/qa/raw: print raw data
+  economy/qa/decompose: decomposition in cyclic-trend, season, and residuals of prices
+  economy/qa/cusum: detects abrupt changes using cumulative sum algorithm of prices
+  economy/pred/pick: pick new series from stored economy data
+  economy/pred/_series: Selected series
+  economy/pred/_models_: Models
+  economy/pred/ets: exponential smoothing (e.g. Holt-Winters)
+  economy/pred/knn: k-Nearest Neighbors
+  economy/pred/regression: polynomial regression
+  economy/pred/arima: autoregressive integrated moving average
+  economy/pred/mlp: MultiLayer Perceptron
+  economy/pred/rnn: Recurrent Neural Network
+  economy/pred/lstm: Long-Short Term Memory
+  economy/pred/conv1d: 1D Convolutional Neural Network
+  economy/pred/mc: Monte-Carlo simulations
+  forex/from: select the 'from' currency in a forex pair
+  forex/to: select the 'to' currency in a forex pair
+  forex/_from: From
+  forex/_to: To
+  forex/_source: Source
+  forex/quote: get last quote
+  forex/load: get historical data
+  forex/candle: show candle plot for loaded pair
+  forex/fwd: get forward rates for loaded pair
+  forex/ta: technical analysis,          ema, macd, rsi, adx, bbands, obv
+  forex/qa: quantitative analysis,       decompose, cusum, residuals analysis
+  forex/pred: prediction techniques        regression, arima, rnn, lstm, conv1d, monte carlo
+  forex/forex: Forex brokerages
+  forex/oanda: Oanda menu
+  forex/ta/_currency: Currency pair loaded
+  forex/ta/_source: Source
+  forex/ta/_overlap_: Overlap
+  forex/ta/ema: exponential moving average
+  forex/ta/sma: simple moving average
+  forex/ta/zlma: zero lag moving average
+  forex/ta/_momentum_: Momentum
+  forex/ta/cci: commodity channel index
+  forex/ta/macd: moving average convergence/divergence
+  forex/ta/rsi: relative strength index
+  forex/ta/stoch: stochastic oscillator
+  forex/ta/fisher: fisher transform
+  forex/ta/cg: centre of gravity
+  forex/ta/_trend_: Trend
+  forex/ta/adx: average directional movement index
+  forex/ta/aroon: aroon indicator
+  forex/ta/_volatility_: Volatility
+  forex/ta/bbands: bollinger bands
+  forex/ta/donchian: donchian channels
+  forex/ta/_custom_: Custom
+  forex/ta/fib: fibonacci retracement
+  forex/qa/pick: pick target column for analysis
+  forex/qa/_pair: Pair
+  forex/qa/_target: Target
+  forex/qa/_statistics_: Statistics
+  forex/qa/summary: brief summary statistics of loaded stock
+  forex/qa/normality: normality statistics and tests
+  forex/qa/unitroot: unit root test for stationarity (ADF, KPSS)
+  forex/qa/_plots_: Plots
+  forex/qa/line: line plot of selected target
+  forex/qa/hist: histogram with density plot
+  forex/qa/cdf: cumulative distribution function
+  forex/qa/bw: box and whisker plot
+  forex/qa/acf: (partial) auto-correlation function differentials of prices
+  forex/qa/qqplot: residuals against standard normal curve
+  forex/qa/_rolling_metrics_: Rolling Metrics
+  forex/qa/rolling: rolling mean and std deviation of prices
+  forex/qa/spread: rolling variance and std deviation of prices
+  forex/qa/quantile: rolling median and quantile of prices
+  forex/qa/skew: rolling skewness of distribution of prices
+  forex/qa/kurtosis: rolling kurtosis of distribution of prices
+  forex/qa/_other_: Other
+  forex/qa/raw: print raw data
+  forex/qa/decompose: decomposition in cyclic-trend, season, and residuals of prices
+  forex/qa/cusum: detects abrupt changes using cumulative sum algorithm of prices
+  forex/pred/pick: pick new target variable
+  forex/pred/_pair: Pair loaded
+  forex/pred/_target: Target column
+  forex/pred/_models_: Models
+  forex/pred/ets: exponential smoothing (e.g. Holt-Winters)
+  forex/pred/knn: k-Nearest Neighbors
+  forex/pred/regression: polynomial regression
+  forex/pred/arima: autoregressive integrated moving average
+  forex/pred/mlp: MultiLayer Perceptron
+  forex/pred/rnn: Recurrent Neural Network
+  forex/pred/lstm: Long-Short Term Memory
+  forex/pred/conv1d: 1D Convolutional Neural Network
+  forex/pred/mc: Monte-Carlo simulations
+  forex/oanda/summary: shows account summary
+  forex/oanda/calendar: show calendar
+  forex/oanda/list: list order history
+  forex/oanda/pending: get information on pending orders
+  forex/oanda/cancel: cancel a pending order by ID -i order ID
+  forex/oanda/positions: get open positions
+  forex/oanda/trades: list open trades
+  forex/oanda/closetrade: close a trade by id
+  forex/oanda/from: select the "from" currency in a forex pair
+  forex/oanda/to: select the "to" currency in a forex pair
+  forex/oanda/_loaded: Loaded instrument
+  forex/oanda/_from: From
+  forex/oanda/_to: To
+  forex/oanda/_source: Source
+  forex/oanda/candles: show candles
+  forex/oanda/price: shows price for selected instrument
+  forex/oanda/order: place limit order -u NUMBER of units -p price
+  forex/oanda/orderbook: print orderbook
+  forex/oanda/positionbook: print positionbook
+  funds/country: set a country for filtering
+  funds/_country: Current Country
+  funds/overview: overview of top funds by country
+  funds/search: search for Mutual Funds
+  funds/load: load historical fund data
+  funds/_fund: Current Fund
+  funds/info: get fund information
+  funds/plot: plot loaded historical fund data
+  funds/sector: sector weightings
+  funds/equity: equity holdings
+  funds/al_swe: display fund allocation (sector, country, holdings)
+  funds/info_swe: get fund information
+  alternative/covid: COVID menu,                 cases, deaths, rates
+  alternative/oss: Open Source menu,           star history, repos information
+  alternative/covid/slopes: get countries with highest slope in cases
+  alternative/covid/country: select country for data
+  alternative/covid/_country: Country
+  alternative/covid/ov: get overview (cases and deaths) for selected country
+  alternative/covid/deaths: get deaths for selected country
+  alternative/covid/cases: get cases for selected country
+  alternative/covid/rates: get death/cases rate for selected country
+  alternative/oss/rossidx: the fastest-growing open-source startups
+  alternative/oss/rs: repo summary
+  alternative/oss/sh: repo star history
+  alternative/oss/tr: top starred repos
+  econometrics/load: load in custom data sets
+  econometrics/export: export a dataset
+  econometrics/remove: remove a dataset
+  econometrics/options: show available column-dataset options
+  econometrics/_loaded: Loaded files
+  econometrics/_exploration_: Exploration
+  econometrics/show: show a portion of a loaded dataset
+  econometrics/plot: plot data from a dataset
+  econometrics/type: change types of the columns or display their types
+  econometrics/desc: show descriptive statistics of a dataset
+  econometrics/index: set (multi) index based on columns
+  econometrics/clean: clean a dataset by filling or dropping NaNs
+  econometrics/modify: combine columns of datasets and delete or rename columns
+  econometrics/_timeseries_: Timeseries
+  econometrics/ols: fit a (multi) linear regression model
+  econometrics/norm: perform normality tests on a column of a dataset
+  econometrics/root: perform unitroot tests (ADF & KPSS) on a column of a dataset
+  econometrics/_panel_: Panel Data
+  econometrics/panel: estimate model based on various regression techniques
+  econometrics/compare: compare results of all estimated models
+  econometrics/_tests_: Tests
+  econometrics/dwat: Durbin-Watson autocorrelation test on the residuals of the regression
+  econometrics/bgod: Breusch-Godfrey autocorrelation tests with lags on the residuals of the regression
+  econometrics/bpag: Breusch-Pagan heteroscedasticity test on the residuals of the regression
+  econometrics/granger: Granger causality tests on two columns
+  econometrics/coint: co-integration test on a multitude of columns
+  portfolio/bro: brokers holdings,   supports robinhood, ally, degiro, coinbase
+  portfolio/po: portfolio optimization,  optimal your portfolio weights efficiently
+  portfolio/load: load data into the portfolio
+  portfolio/_loaded: Loaded orderbook
+  portfolio/_riskfreerate: Risk Free Rate
+  portfolio/show: show existing transactions
+  portfolio/bench: define the benchmark
+  portfolio/_benchmark: Benchmark
+  portfolio/_graphs_: Graphs
+  portfolio/holdv: holdings of assets (absolute value)
+  portfolio/holdp: portfolio holdings of assets (in percentage)
+  portfolio/cret: cumulative returns
+  portfolio/yret: yearly returns
+  portfolio/mret: monthly returns
+  portfolio/dret: daily returns
+  portfolio/distr: distribution of daily returns
+  portfolio/maxdd: maximum drawdown
+  portfolio/rvol: rolling volatility
+  portfolio/rsharpe: rolling sharpe
+  portfolio/rsort: rolling sortino
+  portfolio/rbeta: rolling beta
+  portfolio/_metrics_: Metrics
+  portfolio/alloc: allocation on an asset, sector, countries or regions basis
+  portfolio/summary: all portfolio vs benchmark metrics for a certain period of choice
+  portfolio/metric: portfolio vs benchmark metric for all different periods
+  portfolio/perf: performance of the portfolio versus benchmark
+  portfolio/_risk_: Risk Metrics
+  portfolio/var: display value at risk
+  portfolio/es: display expected shortfall
+  portfolio/om: display omega ratio
+  portfolio/bro/ally: Ally Invest Menu
+  portfolio/bro/degiro: Degiro Menu
+  portfolio/bro/rh: Robinhood Menu
+  portfolio/bro/cb: Coinbase Pro Menu
+  portfolio/bro/ally/holdings: show account holdings
+  portfolio/bro/ally/history: show history of your account
+  portfolio/bro/ally/balances: show balance details of account
+  portfolio/bro/ally/_info_: Stock Information
+  portfolio/bro/ally/quote: get stock quote
+  portfolio/bro/ally/movers: get ranked lists of movers
+  portfolio/bro/degiro/login: connect to degiro's api
+  portfolio/bro/degiro/logout: disconnect from degiro's api
+  portfolio/bro/degiro/hold: view holdings
+  portfolio/bro/degiro/lookup: view search for a product by name
+  portfolio/bro/degiro/create: create an order
+  portfolio/bro/degiro/update: update an order
+  portfolio/bro/degiro/cancel: cancel an order using the id
+  portfolio/bro/degiro/pending: view pending orders
+  portfolio/bro/degiro/companynews: view news about a company with it's isin
+  portfolio/bro/degiro/lastnews: view latest news
+  portfolio/bro/degiro/topnews: view top news preview
+  portfolio/bro/rh/login: login to robinhood
+  portfolio/bro/rh/holdings: show account holdings in stocks
+  portfolio/bro/rh/history: show equity history of your account
+  portfolio/bro/cb/account: show balance of your account
+  portfolio/bro/cb/history: show history of your account
+  portfolio/bro/cb/deposits: show all your deposits or internal transfers
+  portfolio/bro/cb/orders: show all your orders
+  portfolio/po/load: load tickers and categories from .xlsx or .csv file
+  portfolio/po/_loaded: Portfolio loaded
+  portfolio/po/_tickers: Tickers
+  portfolio/po/_categories: Categories
+  portfolio/po/file: select portfolio parameter file
+  portfolio/po/params: specify and show portfolio risk parameters
+  portfolio/po/_parameter: Parameter file
+  portfolio/po/_mean_risk_optimization_: Mean Risk Optimization
+  portfolio/po/maxsharpe: maximal Sharpe ratio portfolio (a.k.a the tangency portfolio)
+  portfolio/po/minrisk: minimum risk portfolio
+  portfolio/po/maxutil: maximal risk averse utility function, given some risk aversion parameter
+  portfolio/po/maxret: maximal return portfolio
+  portfolio/po/maxdiv: maximum diversification portfolio
+  portfolio/po/maxdecorr: maximum decorrelation portfolio
+  portfolio/po/blacklitterman: black litterman portfolio
+  portfolio/po/ef: show the efficient frontier
+  portfolio/po/_risk_parity_optimization_: Risk Parity Optimization
+  portfolio/po/riskparity: risk parity portfolio using risk budgeting approach
+  portfolio/po/relriskparity: relaxed risk parity using least squares approach
+  portfolio/po/_hierarchical_clustering_models_: Hierarchical Clustering Models
+  portfolio/po/hrp: hierarchical risk parity
+  portfolio/po/herc: hierarchical equal risk contribution
+  portfolio/po/nco: nested clustering optimization
+  portfolio/po/_other_optimization_techniques_: Other Optimization Techniques
+  portfolio/po/equal: equally weighted
+  portfolio/po/mktcap: weighted according to market cap (property marketCap)
+  portfolio/po/dividend: weighted according to dividend yield (property dividendYield)
+  portfolio/po/property: weight according to selected info property
+  portfolio/po/_optimized_portfolio: Optimized portfolio
+  portfolio/po/rpf: remove portfolios from the list of saved portfolios
+  portfolio/po/show: show selected portfolios and categories from the list of saved portfolios
+  portfolio/po/plot: plot selected charts from the list of saved portfolios
+  portfolio/po/params/_loaded: Loaded file
+  portfolio/po/params/file: load portfolio risk parameters
+  portfolio/po/params/save: save portfolio risk parameters to specified file
+  portfolio/po/params/_model: Model of interest
+  portfolio/po/params/clear: clear model of interest from filtered parameters
+  portfolio/po/params/set: set model of interest to filter parameters
+  portfolio/po/params/arg: set a different value for an argument
+  portfolio/po/params/_parameters_: Parameters
+  dashboards/stocks: historic stock information
+  dashboards/correlation: stock correlations
+  dashboards/vsurf: options volatility surface
+  dashboards/chains: options chain analysis
+  dashboards/shortdata: finra shortdata analysis
+  dashboards/crypto: cryptocurrency exchange rates against USD
+  reports/_reports_: Select one of the following report

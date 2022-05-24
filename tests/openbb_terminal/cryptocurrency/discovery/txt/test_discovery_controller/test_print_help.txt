@@ -1,17 +1,11 @@
-
-[CoinGecko]
-    cgtop            top coins (with or without category)
-    cgtrending       trending coins
-    cggainers        top gainers - coins which price gained the most in given period
-    cglosers         top losers - coins which price dropped the most in given period
-[CoinPaprika]
-    cpsearch         search for coins
-[CoinMarketCap]
-    cmctop           top coins
-[DappRadar]
-    drnft            top non fungible tokens
-    drgames          top blockchain games
-    drdapps          top decentralized apps
-    drdex            top decentralized exchanges
-
+    cgtop              top coins (with or without category)                            [CoinGecko]
+    cgtrending         trending coins                                                  [CoinGecko]
+    cggainers          top gainers - coins which price gained the most in given period [CoinGecko]
+    cglosers           top losers - coins which price dropped the most in given period [CoinGecko]
+    cpsearch           search for coins                                                [CoinPaprika]
+    cmctop             top coins                                                       [CoinMarketCap]
+    drnft              top non fungible tokens                                         [DappRadar]
+    drgames            top blockchain games                                            [DappRadar]
+    drdapps            top decentralized apps                                          [DappRadar]
+    drdex              top decentralized exchanges                                     [DappRadar]
 

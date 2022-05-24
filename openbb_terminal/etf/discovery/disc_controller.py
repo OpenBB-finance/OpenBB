@@ -17,7 +17,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 
 logger = logging.getLogger(__name__)
 
@@ -45,13 +45,11 @@ class DiscoveryController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = """
-[src][Wall Street Journal][/src][cmds]
-    gainers          top gainers
-    decliners        top decliners
-    active           most active[/cmds]
-"""
-        console.print(text=help_text, menu="ETF - Discovery")
+        mt = MenuText("etf/disc/", 60)
+        mt.add_cmd("gainers", "Wall Street Journal")
+        mt.add_cmd("decliners", "Wall Street Journal")
+        mt.add_cmd("active", "Wall Street Journal")
+        console.print(text=mt.menu_text, menu="ETF - Discovery")
 
     @log_start_end(log=logger)
     def call_gainers(self, other_args):

@@ -1,26 +1,16 @@
+    load               load a specific stock ticker for analysis
 
-    load             load a specific stock ticker for analysis
-
-[Yahoo Finance]
-    shorted          show most shorted stocks
-[Interactive Broker]
-    ctb              stocks with highest cost to borrow
-[Shortinterest.com]
-    hsi              show top high short interest stocks of over 20% ratio
-[FINRA]
-    prom             promising tickers based on dark pool shares regression
-[Stockgrid]
-    pos              dark pool short position
-    sidtc            short interest and days to cover
+    shorted            show most shorted stocks                                        [Yahoo Finance]
+    ctb                stocks with highest cost to borrow                              [Interactive Broker]
+    hsi                show top high short interest stocks of over 20% ratio           [Shortinterest]
+    prom               promising tickers based on dark pool shares regression          [FINRA]
+    pos                dark pool short position                                        [Stockgrid]
+    sidtc              short interest and days to cover                                [Stockgrid]
 
 Ticker: TSLA
 
-[FINRA]
-    dpotc            dark pools (ATS) vs OTC data
-[SEC]
-    ftd              fails-to-deliver data
-[Stockgrid]
-    spos             net short vs position
-[Quandl/Stockgrid]
-    psi              price vs short interest volume
+    dpotc              dark pools (ATS) vs OTC data                                    [FINRA]
+    ftd                fails-to-deliver data                                           [SEC]
+    spos               net short vs position                                           [Stockgrid]
+    psi                price vs short interest volume                                  [Quandl/Stockgrid]
 

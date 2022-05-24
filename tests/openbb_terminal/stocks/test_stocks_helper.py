@@ -27,7 +27,7 @@ def vcr_config():
 
 @pytest.mark.vcr
 def test_quote():
-    stocks_helper.quote(["GME"], "GME")
+    stocks_helper.quote("GME")
 
 
 @pytest.mark.default_cassette("test_search")

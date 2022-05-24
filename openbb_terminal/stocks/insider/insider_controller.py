@@ -19,7 +19,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.stocks.insider import (
     businessinsider_view,
     finviz_view,
@@ -102,51 +102,43 @@ class InsiderController(StockBaseController):
 
     def print_help(self):
         """Print help"""
-        has_ticker_start = "[unvl]" if not self.ticker else ""
-        has_ticker_end = "[/unvl]" if not self.ticker else ""
-
-        help_text = f"""[cmds]
-    view             view available presets
-    set              set one of the available presets[/cmds]
-
-[param]PRESET: [/param]{self.preset}[cmds]
-
-    filter           filter insiders based on preset [src][Open Insider][/src]
-
-
-    load             load a specific stock ticker for analysis[/cmds]
-{has_ticker_start}
-[param]Ticker: [/param]{self.ticker}
-
-    stats            insider stats of the company [src][Open Insider][/src]
-    act              insider activity over time [src][Business Insider][/src]
-    lins             last insider trading of the company [src][Finviz][/src]
-{has_ticker_end}
-
-[info]Latest Insiders[/info] [src][Open Insider][/src][cmds]
-    lcb              latest cluster boys
-    lpsb             latest penny stock buys
-    lit              latest insider trading (all filings)
-    lip              latest insider purchases
-    blip             big latest insider purchases ($25k+)
-    blop             big latest officer purchases ($25k+)
-    blcp             big latest CEO/CFO purchases ($25k+)
-    lis              latest insider sales
-    blis             big latest insider sales ($100k+)
-    blos             big latest officer sales ($100k+)
-    blcs             big latest CEO/CFO sales ($100k+)
-[info]Top Insiders [src][Open Insider][/src][/info]
-    topt             top officer purchases today
-    toppw            top officer purchases past week
-    toppm            top officer purchases past month
-    tipt             top insider purchases today
-    tippw            top insider purchases past week
-    tippm            top insider purchases past month
-    tist             top insider sales today
-    tispw            top insider sales past week
-    tispm            top insider sales past month[/cmds]
-"""
-        console.print(text=help_text, menu="Stocks - Insider Trading")
+        mt = MenuText("stocks/ins/", 80)
+        mt.add_cmd("view")
+        mt.add_cmd("set")
+        mt.add_raw("\n")
+        mt.add_param("_preset", self.preset)
+        mt.add_raw("\n")
+        mt.add_cmd("filter", "Open Insider")
+        mt.add_raw("\n\n")
+        mt.add_param("_ticker", self.ticker)
+        mt.add_raw("\n")
+        mt.add_cmd("stats", "Open Insider", self.ticker)
+        mt.add_cmd("act", "Business Insider", self.ticker)
+        mt.add_cmd("lins", "Finviz", self.ticker)
+        mt.add_raw("\n")
+        mt.add_info("_last_insiders")
+        mt.add_cmd("lcb", "Open Insider")
+        mt.add_cmd("lpsb", "Open Insider")
+        mt.add_cmd("lit", "Open Insider")
+        mt.add_cmd("lip", "Open Insider")
+        mt.add_cmd("blip", "Open Insider")
+        mt.add_cmd("blop", "Open Insider")
+        mt.add_cmd("bclp", "Open Insider")
+        mt.add_cmd("lis", "Open Insider")
+        mt.add_cmd("blis", "Open Insider")
+        mt.add_cmd("blos", "Open Insider")
+        mt.add_cmd("blcs", "Open Insider")
+        mt.add_info("_top_insiders")
+        mt.add_cmd("topt", "Open Insider")
+        mt.add_cmd("toppw", "Open Insider")
+        mt.add_cmd("toppm", "Open Insider")
+        mt.add_cmd("tipt", "Open Insider")
+        mt.add_cmd("tippw", "Open Insider")
+        mt.add_cmd("tippm", "Open Insider")
+        mt.add_cmd("tist", "Open Insider")
+        mt.add_cmd("tispw", "Open Insider")
+        mt.add_cmd("tispm", "Open Insider")
+        console.print(text=mt.menu_text, menu="Stocks - Insider Trading")
 
     def custom_reset(self):
         """Class specific component of reset command"""

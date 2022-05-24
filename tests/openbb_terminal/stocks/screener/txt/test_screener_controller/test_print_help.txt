@@ -1,18 +1,18 @@
+    view               view available presets (defaults and customs)
+    set                set one of the available presets
 
-    view             view available presets (defaults and customs)
-    set              set one of the available presets
+Preset: top_gainers
 
-PRESET: top_gainers
+    historical         view historical price
+    overview           overview (e.g. Sector, Industry, Market Cap, Volume)
+    valuation          valuation (e.g. P/E, PEG, P/S, P/B, EPS this Y)
+    financial          financial (e.g. Dividend, ROA, ROE, ROI, Earnings)
+    ownership          ownership (e.g. Float, Insider Own, Short Ratio)
+    performance        performance (e.g. Perf Week, Perf YTD, Volatility M)
+    technical          technical (e.g. Beta, SMA50, 52W Low, RSI, Change)
 
-    historical        view historical price
-    overview          overview (e.g. Sector, Industry, Market Cap, Volume)
-    valuation         valuation (e.g. P/E, PEG, P/S, P/B, EPS this Y)
-    financial         financial (e.g. Dividend, ROA, ROE, ROI, Earnings)
-    ownership         ownership (e.g. Float, Insider Own, Short Ratio)
-    performance       performance (e.g. Perf Week, Perf YTD, Volatility M)
-    technical         technical (e.g. Beta, SMA50, 52W Low, RSI, Change)
-    [unvl]
 Last screened tickers: 
->   ca                take these to comparison analysis menu
->   po                take these to portfolio optimization menu[/unvl]
-        
+
+[unvl]>   ca                 take these to comparison analysis menu[/unvl]
+[unvl]>   po                 take these to portfolio optimization menu[/unvl]
+

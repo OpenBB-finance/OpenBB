@@ -1,7 +1,6 @@
 """Main helper"""
 __docformat__ = "numpy"
 
-import argparse
 import logging
 import os
 from datetime import datetime, timedelta, date
@@ -28,7 +27,6 @@ from scipy import stats
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.helper_funcs import (
     export_data,
-    parse_known_args_and_warn,
     plot_autoscale,
     get_user_timezone_or_invalid,
     print_rich_table,
@@ -810,72 +808,15 @@ def display_candle(
         fig.show(config=dict({"scrollZoom": True}))
 
 
-def quote(other_args: List[str], s_ticker: str):
+def quote(s_ticker: str):
     """Ticker quote
 
     Parameters
     ----------
-    other_args : List[str]
-        Argparse arguments
     s_ticker : str
         Ticker
     """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="quote",
-        description="Current quote for stock ticker",
-    )
-
-    if s_ticker:
-        parser.add_argument(
-            "-t",
-            "--ticker",
-            action="store",
-            dest="s_ticker",
-            default=s_ticker,
-            help="Stock ticker",
-        )
-    else:
-        parser.add_argument(
-            "-t",
-            "--ticker",
-            action="store",
-            dest="s_ticker",
-            required="-h" not in other_args,
-            help="Stock ticker",
-        )
-
-    # Price only option.
-    parser.add_argument(
-        "-p",
-        "--price",
-        action="store_true",
-        dest="price_only",
-        default=False,
-        help="Price only",
-    )
-
-    try:
-        # For the case where a user uses: 'quote BB'
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-t")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-    except SystemExit:
-        console.print("")
-        return
-
-    ticker = yf.Ticker(ns_parser.s_ticker)
-
-    # If price only option, return immediate market price for ticker.
-    if ns_parser.price_only:
-        console.print(
-            f"Price of {ns_parser.s_ticker} {ticker.info['regularMarketPrice']} \n"
-        )
-        return
+    ticker = yf.Ticker(s_ticker)
 
     try:
         quote_df = pd.DataFrame(
@@ -921,9 +862,7 @@ def quote(other_args: List[str], s_ticker: str):
 
     except KeyError:
         logger.exception("Invalid stock ticker")
-        console.print(f"Invalid stock ticker: {ns_parser.s_ticker}")
-
-    return
+        console.print(f"Invalid stock ticker: {s_ticker}")
 
 
 def load_ticker(

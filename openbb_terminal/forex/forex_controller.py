@@ -21,7 +21,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.decorators import check_api_key
 
 # pylint: disable=R1710,import-outside-toplevel
@@ -58,29 +58,26 @@ class ForexController(BaseController):
 
     def print_help(self):
         """Print help."""
-        has_symbols_start = "" if self.from_symbol and self.to_symbol else "[dim]"
-        has_symbols_end = "" if self.from_symbol and self.to_symbol else "[/dim]"
-        help_text = f"""[cmds]
-    from             select the "from" currency in a forex pair
-    to               select the "to" currency in a forex pair[/cmds]
-
-[param]From:   [/param]{None or self.from_symbol}
-[param]To:     [/param]{None or self.to_symbol}
-[param]Source: [/param]{None or FOREX_SOURCES[self.source]}[cmds]{has_symbols_start}
-[cmds]
-    quote            get last quote [src][AlphaVantage][/src]
-    load             get historical data
-    candle           show candle plot for loaded pair
-    fwd              get forward rates for loaded pair [src][FXEmpire][/src][/cmds]
-[menu]
->   ta               technical analysis,                   e.g.: ema, macd, rsi, adx, bbands, obv
->   qa               quantitative analysis,                e.g.: decompose, cusum, residuals analysis
->   pred             prediction techniques                 e.g.: regression, arima, rnn, lstm, conv1d, monte carlo
-[/menu]{has_symbols_end}
-[info]Forex brokerages:[/info][menu]
->   oanda            Oanda menu[/menu][/cmds]
- """
-        console.print(text=help_text, menu="Forex")
+        mt = MenuText("forex/", 80)
+        mt.add_cmd("from")
+        mt.add_cmd("to")
+        mt.add_raw("\n")
+        mt.add_param("_from", self.from_symbol)
+        mt.add_param("_to", self.to_symbol)
+        mt.add_param("_source", FOREX_SOURCES[self.source])
+        mt.add_raw("\n")
+        mt.add_cmd("quote", "AlphaVantage", self.from_symbol and self.to_symbol)
+        mt.add_cmd("load", "", self.from_symbol and self.to_symbol)
+        mt.add_cmd("candle", "", self.from_symbol and self.to_symbol)
+        mt.add_cmd("fwd", "FXEmpire", self.from_symbol and self.to_symbol)
+        mt.add_raw("\n")
+        mt.add_menu("ta", self.from_symbol and self.to_symbol)
+        mt.add_menu("qa", self.from_symbol and self.to_symbol)
+        mt.add_menu("pred", self.from_symbol and self.to_symbol)
+        mt.add_raw("\n")
+        mt.add_info("forex")
+        mt.add_menu("oanda")
+        console.print(text=mt.menu_text, menu="Forex")
 
     def custom_reset(self):
         """Class specific component of reset command"""
