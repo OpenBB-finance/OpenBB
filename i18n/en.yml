@@ -96,6 +96,7 @@ en:
   stocks/SEARCH_industry: Search by industry to find stocks matching the criteria
   stocks/SEARCH_exchange: Search by a specific exchange country to find stocks matching the criteria
   stocks/load: load a specific stock ticker and additional info for analysis
+  stocks/_ticker: Stock
   stocks/quote: view the current price for a specific stock ticker
   stocks/QUOTE: Current quote for stock ticker
   stocks/QUOTE_ticker: Stock ticker

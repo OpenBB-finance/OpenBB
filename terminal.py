@@ -121,8 +121,9 @@ class TerminalController(BaseController):
             obbff.EXPORT_FOLDER_PATH
             if obbff.EXPORT_FOLDER_PATH
             else "DEFAULT (folder: exports/)",
+            14,
         )
-        mt.add_param("_timezone", get_user_timezone_or_invalid())
+        mt.add_param("_timezone", get_user_timezone_or_invalid(), 14)
         mt.add_raw("\n")
         mt.add_menu("stocks")
         mt.add_menu("crypto")

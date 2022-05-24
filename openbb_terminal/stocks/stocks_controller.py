@@ -111,7 +111,7 @@ class StocksController(StockBaseController):
         mt.add_cmd("search")
         mt.add_cmd("load")
         mt.add_raw("\n")
-        mt.add_param("Stock", stock_text)
+        mt.add_param("_ticker", stock_text)
         mt.add_raw(self.add_info)
         mt.add_raw("\n")
         mt.add_cmd("quote")
