@@ -32,7 +32,7 @@ from openbb_terminal.portfolio.portfolio_optimization.parameters import (
     params_controller,
     params_view,
 )
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 
 logger = logging.getLogger(__name__)
 
@@ -431,53 +431,55 @@ class PortfolioOptimizationController(BaseController):
 
     def print_help(self):
         """Print help"""
-        has_tickers_start = ("[unvl]", "[cmds]")[bool(self.tickers)]
-        has_tickers_end = ("[/unvl]", "[/cmds]")[bool(self.tickers)]
-        help_text = f"""[cmds]
-    load             load tickers and categories from .xlsx or .csv file[/cmds]
+        mt = MenuText("portfolio/po/")
+        mt.add_cmd_translation("load")
+        mt.add_raw("\n")
+        mt.add_param_translation("_loaded", self.current_portfolio or "")
+        mt.add_raw("\n")
+        mt.add_param_translation("_tickers", ", ".join(self.tickers))
+        mt.add_param_translation("_categories", ", ".join(self.categories.keys()))
+        mt.add_raw("\n")
+        mt.add_cmd_translation("file")
+        mt.add_menu_translation("params")
+        mt.add_raw("\n")
+        mt.add_param_translation("_parameter", self.current_file)
+        mt.add_raw("\n")
+        mt.add_info_translation("_mean_risk_optimization_")
+        mt.add_cmd_translation("maxsharpe", "", self.tickers)
+        mt.add_cmd_translation("minrisk", "", self.tickers)
+        mt.add_cmd_translation("maxutil", "", self.tickers)
+        mt.add_cmd_translation("maxret", "", self.tickers)
+        mt.add_cmd_translation("maxdiv", "", self.tickers)
+        mt.add_cmd_translation("maxdecorr", "", self.tickers)
+        mt.add_cmd_translation("blacklitterman", "", self.tickers)
+        mt.add_cmd_translation("ef", "", self.tickers)
 
-[param]Portfolio loaded: [/param]{('None', self.current_portfolio)[bool(self.current_portfolio)]}
+        mt.add_info_translation("_risk_parity_optimization_")
+        mt.add_cmd_translation("riskparity", "", self.tickers)
+        mt.add_cmd_translation("relriskparity", "", self.tickers)
 
-[param]Tickers   : [/param]{('None', ', '.join(self.tickers))[bool(self.tickers)]}
-[param]Categories: [/param]{('None', ', '.join(self.categories.keys()))[bool(self.categories.keys())]}[cmds]
+        mt.add_info_translation("_hierarchical_clustering_models_")
+        mt.add_cmd_translation("hrp", "", self.tickers)
+        mt.add_cmd_translation("herc", "", self.tickers)
+        mt.add_cmd_translation("nco", "", self.tickers)
 
-    file             select portfolio parameter file[/cmds][menu]
->   params           specify and show portfolio risk parameters[/menu]
+        mt.add_info_translation("_other_optimization_techniques_")
+        mt.add_cmd_translation("equal", "", self.tickers)
+        mt.add_cmd_translation("mktcap", "", self.tickers)
+        mt.add_cmd_translation("dividend", "", self.tickers)
+        mt.add_cmd_translation("property", "", self.tickers)
 
-[param]Parameter file: [/param] {self.current_file}
+        mt.add_raw("\n")
+        mt.add_param_translation(
+            "_optimized_portfolio", ", ".join(self.portfolios.keys())
+        )
+        mt.add_raw("\n")
 
-[info]Mean Risk Optimization:[/info]{has_tickers_start}
-    maxsharpe        maximal Sharpe ratio portfolio (a.k.a the tangency portfolio)
-    minrisk          minimum risk portfolio
-    maxutil          maximal risk averse utility function, given some risk aversion parameter
-    maxret           maximal return portfolio
-    maxdiv           maximum diversification portfolio
-    maxdecorr        maximum decorrelation portfolio
-    blacklitterman   black litterman portfolio
-    ef               show the efficient frontier{has_tickers_end}
+        mt.add_cmd_translation("rpf", "", bool(self.portfolios.keys()))
+        mt.add_cmd_translation("show", "", bool(self.portfolios.keys()))
+        mt.add_cmd_translation("plot", "", bool(self.portfolios.keys()))
 
-[info]Risk Parity Optimization:[/info]{has_tickers_start}
-    riskparity       risk parity portfolio using risk budgeting approach
-    relriskparity    relaxed risk parity using least squares approach{has_tickers_end}
-
-[info]Hierarchical Clustering Models:[/info]{has_tickers_start}
-    hrp              hierarchical risk parity
-    herc             hierarchical equal risk contribution
-    nco	             nested clustering optimization{has_tickers_end}
-
-[info]Other Optimization Techniques:[/info]{has_tickers_start}
-    equal            equally weighted
-    mktcap           weighted according to market cap (property marketCap)
-    dividend         weighted according to dividend yield (property dividendYield)
-    property         weight according to selected info property{has_tickers_end}
-
-[param]Optimized portfolios: [/param]{('None', ', '.join(self.portfolios.keys()))[bool(self.portfolios.keys())]}[cmds]
-{('[unvl]','[cmds]')[bool(self.portfolios.keys())]}
-    rpf              remove portfolios from the list of saved portfolios
-    show             show selected portfolios and categories from the list of saved portfolios
-    plot             plot selected charts from the list of saved portfolios
-{('[/unvl]','[/cmds]')[bool(self.portfolios.keys())]}"""
-        console.print(text=help_text, menu="Portfolio - Portfolio Optimization")
+        console.print(text=mt.menu_text, menu="Portfolio - Portfolio Optimization")
 
     def custom_reset(self):
         """Class specific component of reset command"""

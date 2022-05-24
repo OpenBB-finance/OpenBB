@@ -986,3 +986,43 @@ en:
   portfolio/bro/cb/history: show history of your account
   portfolio/bro/cb/deposits: show all your deposits or internal transfers
   portfolio/bro/cb/orders: show all your orders
+  portfolio/po/load: load tickers and categories from .xlsx or .csv file
+  portfolio/po/_loaded: Portfolio loaded
+  portfolio/po/_tickers: Tickers
+  portfolio/po/_categories: Categories
+  portfolio/po/file: select portfolio parameter file
+  portfolio/po/params: specify and show portfolio risk parameters
+  portfolio/po/_parameter: Parameter file
+  portfolio/po/_mean_risk_optimization_: Mean Risk Optimization
+  portfolio/po/maxsharpe: maximal Sharpe ratio portfolio (a.k.a the tangency portfolio)
+  portfolio/po/minrisk: minimum risk portfolio
+  portfolio/po/maxutil: maximal risk averse utility function, given some risk aversion parameter
+  portfolio/po/maxret: maximal return portfolio
+  portfolio/po/maxdiv: maximum diversification portfolio
+  portfolio/po/maxdecorr: maximum decorrelation portfolio
+  portfolio/po/blacklitterman: black litterman portfolio
+  portfolio/po/ef: show the efficient frontier
+  portfolio/po/_risk_parity_optimization_: Risk Parity Optimization
+  portfolio/po/riskparity: risk parity portfolio using risk budgeting approach
+  portfolio/po/relriskparity: relaxed risk parity using least squares approach
+  portfolio/po/_hierarchical_clustering_models_: Hierarchical Clustering Models
+  portfolio/po/hrp: hierarchical risk parity
+  portfolio/po/herc: hierarchical equal risk contribution
+  portfolio/po/nco: nested clustering optimization
+  portfolio/po/_other_optimization_techniques_: Other Optimization Techniques
+  portfolio/po/equal: equally weighted
+  portfolio/po/mktcap: weighted according to market cap (property marketCap)
+  portfolio/po/dividend: weighted according to dividend yield (property dividendYield)
+  portfolio/po/property: weight according to selected info property
+  portfolio/po/_optimized_portfolio: Optimized portfolio
+  portfolio/po/rpf: remove portfolios from the list of saved portfolios
+  portfolio/po/show: show selected portfolios and categories from the list of saved portfolios
+  portfolio/po/plot: plot selected charts from the list of saved portfolios
+  portfolio/po/params/_loaded: Loaded file
+  portfolio/po/params/file: load portfolio risk parameters
+  portfolio/po/params/save: save portfolio risk parameters to specified file
+  portfolio/po/params/_model: Model of interest
+  portfolio/po/params/clear: clear model of interest from filtered parameters
+  portfolio/po/params/set: set model of interest to filter parameters
+  portfolio/po/params/arg: set a different value for an argument
+  portfolio/po/params/_parameters_: Parameters
