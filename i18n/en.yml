@@ -659,3 +659,71 @@ en:
   crypto/qa/decompose: decomposition in cyclic-trend, season, and residuals of prices
   crypto/qa/cusum: detects abrupt changes using cumulative sum algorithm of prices
   crypto/qa/capm: capital asset pricing model
+  etf/ln: lookup by name
+  etf/ld: lookup by description
+  etf/load: load ETF data
+  etf/_symbol: Symbol
+  etf/_major_holdings: Major holdings
+  etf/ca: comparison analysis,          get similar, historical, correlation, financials
+  etf/disc: discover ETFs,                gainers/decliners/active
+  etf/scr: screener ETFs,                overview/performance, using preset filters
+  etf/overview: get overview
+  etf/holdings: top company holdings
+  etf/weights: sector weights allocation
+  etf/summary: summary description of the ETF
+  etf/candle: view a candle chart for ETF
+  etf/news: latest news of the company
+  etf/pir: create (multiple) passive investor excel report(s)
+  etf/compare: compare multiple different ETFs
+  etf/ta: technical analysis,           ema, macd, rsi, adx, bbands, obv
+  etf/pred: prediction techniques,        regression, arima, rnn, lstm
+  etf/disc/gainers: top gainers
+  etf/disc/decliners: top decliners
+  etf/disc/active: most active
+  etf/scr/view: view available presets
+  etf/scr/set: set one of the available presets
+  etf/scr/_preset: Preset
+  etf/scr/screen: screen ETF using preset selected
+  etf/scr/sbc: screen by category
+  etf/ta/_ticker: ETF
+  etf/ta/overlap: Overlap
+  etf/ta/ema: exponential moving average
+  etf/ta/sma: simple moving average
+  etf/ta/wma: weighted moving average
+  etf/ta/hma: hull moving average
+  etf/ta/zlma: zero lag moving average
+  etf/ta/vwap: volume weighted average price
+  etf/ta/momentum: Momentum
+  etf/ta/cci: commodity channel index
+  etf/ta/macd: moving average convergence/divergence
+  etf/ta/rsi: relative strength index
+  etf/ta/stoch: stochastic oscillator
+  etf/ta/fisher: fisher transform
+  etf/ta/cg: centre of gravity
+  etf/ta/trend: Trend
+  etf/ta/adx: average directional movement index
+  etf/ta/aroon: aroon indicator
+  etf/ta/volatility: Volatility
+  etf/ta/bbands: bollinger bands
+  etf/ta/donchian: donchian channels
+  etf/ta/kc: keltner channels
+  etf/ta/volume: Volume
+  etf/ta/ad: accumulation/distribution line
+  etf/ta/adosc: chaikin oscillator
+  etf/ta/obv: on balance volume
+  etf/ta/custom: Custom
+  etf/ta/fib: fibonacci retracement
+  etf/pred/load: load new ticker
+  etf/pred/pick: pick target column for analysis
+  etf/pred/_ticker: Ticker loaded
+  etf/pred/_target: Target column
+  etf/pred/models: Models
+  etf/pred/ets: exponential smoothing (e.g. Holt-Winters)
+  etf/pred/knn: k-Nearest Neighbors
+  etf/pred/regression: polynomial regression
+  etf/pred/arima: autoregressive integrated moving average
+  etf/pred/mlp: MultiLayer Perceptron
+  etf/pred/rnn: Recurrent Neural Network
+  etf/pred/lstm: Long-Short Term Memory
+  etf/pred/conv1d: 1D Convolutional Neural Network
+  etf/pred/mc: Monte-Carlo simulations
