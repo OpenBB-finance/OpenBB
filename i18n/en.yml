@@ -658,7 +658,6 @@ en:
   crypto/qa/raw: print raw data
   crypto/qa/decompose: decomposition in cyclic-trend, season, and residuals of prices
   crypto/qa/cusum: detects abrupt changes using cumulative sum algorithm of prices
-  crypto/qa/capm: capital asset pricing model
   etf/ln: lookup by name
   etf/ld: lookup by description
   etf/load: load ETF data
@@ -727,3 +726,55 @@ en:
   etf/pred/lstm: Long-Short Term Memory
   etf/pred/conv1d: 1D Convolutional Neural Network
   etf/pred/mc: Monte-Carlo simulations
+  economy/overview: show a market overview of either indices, bonds or currencies
+  economy/futures: display a futures and commodities overview
+  economy/map: S&P500 index stocks map
+  economy/bigmac: The Economist Big Mac index
+  economy/macro: collect macro data for a country or countries
+  economy/fred: collect macro data from FRED based on a series ID
+  economy/index: find and plot any (major) index on the market
+  economy/treasury: obtain U.S. treasury rates
+  economy/ycrv: show sovereign yield curves
+  economy/plot: plot data from the above commands together
+  economy/options: show the available options for 'plot' or show/export the data
+  economy/rtps: real-time performance sectors
+  economy/valuation: valuation of sectors, industry, country
+  economy/performance: performance of sectors, industry, country
+  economy/spectrum: spectrum of sectors, industry, country
+  economy/pred: Open the prediction menu to analyse stored data
+  economy/qa: Open quantitative analysis menu with stored data
+  economy/qa/pick: pick new series from stored economy data
+  economy/qa/_series: Selected series
+  economy/qa/statistics: Statistics
+  economy/qa/summary: brief summary statistics of loaded stock
+  economy/qa/normality: normality statistics and tests
+  economy/qa/unitroot: unit root test for stationarity (ADF, KPSS)
+  economy/qa/plots: Plots
+  economy/qa/line: line plot of selected target
+  economy/qa/hist: histogram with density plot
+  economy/qa/cdf: cumulative distribution function
+  economy/qa/bw: box and whisker plot
+  economy/qa/acf: (partial) auto-correlation function differentials of prices
+  economy/qa/qqplot: residuals against standard normal curve
+  economy/qa/rolling_metrics: Rolling Metrics
+  economy/qa/rolling: rolling mean and std deviation of prices
+  economy/qa/spread: rolling variance and std deviation of prices
+  economy/qa/quantile: rolling median and quantile of prices
+  economy/qa/skew: rolling skewness of distribution of prices
+  economy/qa/kurtosis: rolling kurtosis of distribution of prices
+  economy/qa/other: Other
+  economy/qa/raw: print raw data
+  economy/qa/decompose: decomposition in cyclic-trend, season, and residuals of prices
+  economy/qa/cusum: detects abrupt changes using cumulative sum algorithm of prices
+  economy/pred/pick: pick new series from stored economy data
+  economy/pred/_series: Selected series
+  economy/pred/models: Models
+  economy/pred/ets: exponential smoothing (e.g. Holt-Winters)
+  economy/pred/knn: k-Nearest Neighbors
+  economy/pred/regression: polynomial regression
+  economy/pred/arima: autoregressive integrated moving average
+  economy/pred/mlp: MultiLayer Perceptron
+  economy/pred/rnn: Recurrent Neural Network
+  economy/pred/lstm: Long-Short Term Memory
+  economy/pred/conv1d: 1D Convolutional Neural Network
+  economy/pred/mc: Monte-Carlo simulations

@@ -113,7 +113,6 @@ class QaController(CryptoBaseController):
         mt.add_cmd_translation("raw")
         mt.add_cmd_translation("decompose")
         mt.add_cmd_translation("cusum")
-        mt.add_cmd_translation("capm")
         console.print(text=mt.menu_text, menu="Cryptocurrency - Quantitative Analysis")
 
     def custom_reset(self):

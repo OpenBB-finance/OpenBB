@@ -30,7 +30,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 
 logger = logging.getLogger(__name__)
 
@@ -87,23 +87,22 @@ class PredictionTechniquesController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_string = f"""[cmds]
-    pick        pick new series from stored economy data[/cmds]
-
-[param]Selected Series[/param]: {self.current_id}
-
-[info]Models:[/info][cmds]
-    ets         exponential smoothing (e.g. Holt-Winters)
-    knn         k-Nearest Neighbors
-    regression  polynomial regression
-    arima       autoregressive integrated moving average
-    mlp         MultiLayer Perceptron
-    rnn         Recurrent Neural Network
-    lstm        Long-Short Term Memory
-    conv1d      1D Convolutional Neural Network
-    mc          Monte-Carlo simulations[/cmds]
-        """
-        console.print(help_string)
+        mt = MenuText("economy/pred/")
+        mt.add_cmd_translation("pick")
+        mt.add_raw("\n")
+        mt.add_param_translation("_series", self.current_id)
+        mt.add_raw("\n")
+        mt.add_info_translation("models")
+        mt.add_cmd_translation("ets")
+        mt.add_cmd_translation("knn")
+        mt.add_cmd_translation("regression")
+        mt.add_cmd_translation("arima")
+        mt.add_cmd_translation("mlp")
+        mt.add_cmd_translation("rnn")
+        mt.add_cmd_translation("lstm")
+        mt.add_cmd_translation("conv1d")
+        mt.add_cmd_translation("mc")
+        console.print(text=mt.menu_text, menu="Economy - Prediction Techniques")
 
     def custom_reset(self):
         """Class specific component of reset command"""
