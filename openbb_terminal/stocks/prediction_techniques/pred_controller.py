@@ -770,8 +770,8 @@ class PredictionTechniquesController(BaseController):
             action="store",
             dest="seasonal_periods",
             type=check_positive,
-            default=5,
-            help="Seasonal periods: 4: Quarters, 5: Business Days, 7: Weekly",
+            default=7,
+            help="Seasonal periods: 4: Quarterly, 7: Daily",
         )
         parser.add_argument(
             "-d",
