@@ -55,13 +55,13 @@ class BacktestingController(BaseController):
     def print_help(self):
         """Print help"""
         mt = MenuText("stocks/bt/")
-        mt.add_param_translation("_ticker", self.ticker.upper())
+        mt.add_param("_ticker", self.ticker.upper())
         mt.add_raw("\n")
-        mt.add_cmd_translation("whatif")
+        mt.add_cmd("whatif")
         mt.add_raw("\n")
-        mt.add_cmd_translation("ema")
-        mt.add_cmd_translation("ema_cross")
-        mt.add_cmd_translation("rsi")
+        mt.add_cmd("ema")
+        mt.add_cmd("ema_cross")
+        mt.add_cmd("rsi")
         console.print(text=mt.menu_text, menu="Stocks - Backtesting")
 
     def custom_reset(self):

@@ -36,8 +36,8 @@ class AlternativeDataController(BaseController):
     def print_help(self):
         """Print help"""
         mt = MenuText("alternative/")
-        mt.add_menu_translation("covid")
-        mt.add_menu_translation("oss")
+        mt.add_menu("covid")
+        mt.add_menu("oss")
         console.print(text=mt.menu_text, menu="Alternative")
 
     @log_start_end(log=logger)

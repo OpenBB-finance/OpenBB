@@ -70,7 +70,7 @@ class SettingsController(BaseController):
     def print_help(self):
         """Print help"""
         mt = MenuText("settings/")
-        mt.add_info_translation("_feature_flags_")
+        mt.add_info("_feature_flags_")
         mt.add_raw("\n")
         mt.add_setting("logcollection", obbff.LOG_COLLECTION)
         mt.add_setting("tab", obbff.USE_TABULATE_DF)
@@ -90,35 +90,31 @@ class SettingsController(BaseController):
         mt.add_setting("autoscaling", obbff.USE_PLOT_AUTOSCALING)
         mt.add_setting("dt", obbff.USE_DATETIME)
         mt.add_raw("\n")
-        mt.add_cmd_translation("flair")
+        mt.add_cmd("flair")
         mt.add_raw("\n")
-        mt.add_param_translation("_flair", get_flair())
+        mt.add_param("_flair", get_flair())
         mt.add_raw("\n")
-        mt.add_cmd_translation("lang")
+        mt.add_cmd("lang")
         mt.add_raw("\n")
-        mt.add_param_translation("_language", obbff.USE_LANGUAGE)
+        mt.add_param("_language", obbff.USE_LANGUAGE)
         mt.add_raw("\n")
-        mt.add_cmd_translation("dpi")
-        mt.add_cmd_translation("backend")
-        mt.add_cmd_translation("height", "", not obbff.USE_PLOT_AUTOSCALING)
-        mt.add_cmd_translation("width", "", not obbff.USE_PLOT_AUTOSCALING)
-        mt.add_cmd_translation("pheight", "", obbff.USE_PLOT_AUTOSCALING)
-        mt.add_cmd_translation("pwidth", "", obbff.USE_PLOT_AUTOSCALING)
-        mt.add_cmd_translation("monitor")
+        mt.add_cmd("dpi")
+        mt.add_cmd("backend")
+        mt.add_cmd("height", "", not obbff.USE_PLOT_AUTOSCALING)
+        mt.add_cmd("width", "", not obbff.USE_PLOT_AUTOSCALING)
+        mt.add_cmd("pheight", "", obbff.USE_PLOT_AUTOSCALING)
+        mt.add_cmd("pwidth", "", obbff.USE_PLOT_AUTOSCALING)
+        mt.add_cmd("monitor")
         mt.add_raw("\n")
-        mt.add_param_translation("_dpi", cfg_plot.PLOT_DPI, 19)
-        mt.add_param_translation("_backend", cfg_plot.BACKEND, 19)
+        mt.add_param("_dpi", cfg_plot.PLOT_DPI, 19)
+        mt.add_param("_backend", cfg_plot.BACKEND, 19)
         if obbff.USE_PLOT_AUTOSCALING:
-            mt.add_param_translation(
-                "_plot_height_pct", cfg_plot.PLOT_HEIGHT_PERCENTAGE, 19
-            )
-            mt.add_param_translation(
-                "_plot_width_pct", cfg_plot.PLOT_WIDTH_PERCENTAGE, 19
-            )
+            mt.add_param("_plot_height_pct", cfg_plot.PLOT_HEIGHT_PERCENTAGE, 19)
+            mt.add_param("_plot_width_pct", cfg_plot.PLOT_WIDTH_PERCENTAGE, 19)
         else:
-            mt.add_param_translation("_plot_height", cfg_plot.PLOT_HEIGHT, 19)
-            mt.add_param_translation("_plot_width", cfg_plot.PLOT_WIDTH, 19)
-        mt.add_param_translation("_monitor", cfg_plot.MONITOR, 19)
+            mt.add_param("_plot_height", cfg_plot.PLOT_HEIGHT, 19)
+            mt.add_param("_plot_width", cfg_plot.PLOT_WIDTH, 19)
+        mt.add_param("_monitor", cfg_plot.MONITOR, 19)
 
         console.print(text=mt.menu_text, menu="Settings")
 

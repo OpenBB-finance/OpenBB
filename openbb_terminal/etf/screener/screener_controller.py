@@ -84,14 +84,14 @@ class ScreenerController(BaseController):
     def print_help(self):
         """Print help"""
         mt = MenuText("etf/scr/", 70)
-        mt.add_cmd_translation("view")
-        mt.add_cmd_translation("set")
+        mt.add_cmd("view")
+        mt.add_cmd("set")
         mt.add_raw("\n")
-        mt.add_param_translation("_preset", self.preset)
+        mt.add_param("_preset", self.preset)
         mt.add_raw("\n")
-        mt.add_cmd_translation("screen", "StockAnalysis")
+        mt.add_cmd("screen", "StockAnalysis")
         mt.add_raw("\n")
-        mt.add_cmd_translation("sbc", "FinanceDatabase")
+        mt.add_cmd("sbc", "FinanceDatabase")
         console.print(text=mt.menu_text, menu="ETF - Screener")
 
     @log_start_end(log=logger)

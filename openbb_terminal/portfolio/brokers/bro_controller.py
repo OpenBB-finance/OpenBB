@@ -44,10 +44,10 @@ class BrokersController(BaseController):
     def print_help(self):
         """Print help"""
         mt = MenuText("portfolio/bro/")
-        mt.add_menu_translation("ally")
-        mt.add_menu_translation("degiro")
-        mt.add_menu_translation("rh")
-        mt.add_menu_translation("cb")
+        mt.add_menu("ally")
+        mt.add_menu("degiro")
+        mt.add_menu("rh")
+        mt.add_menu("cb")
         console.print(text=mt.menu_text, menu="Portfolio - Brokers")
 
     @log_start_end(log=logger)

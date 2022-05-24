@@ -50,15 +50,15 @@ class CovidController(BaseController):
     def print_help(self):
         """Print help"""
         mt = MenuText("alternative/covid/")
-        mt.add_cmd_translation("slopes")
-        mt.add_cmd_translation("country")
+        mt.add_cmd("slopes")
+        mt.add_cmd("country")
         mt.add_raw("\n")
-        mt.add_param_translation("_country", self.country)
+        mt.add_param("_country", self.country)
         mt.add_raw("\n")
-        mt.add_cmd_translation("ov")
-        mt.add_cmd_translation("deaths")
-        mt.add_cmd_translation("cases")
-        mt.add_cmd_translation("rates")
+        mt.add_cmd("ov")
+        mt.add_cmd("deaths")
+        mt.add_cmd("cases")
+        mt.add_cmd("rates")
         console.print(text=mt.menu_text, menu="Alternative - COVID")
 
     def custom_reset(self):

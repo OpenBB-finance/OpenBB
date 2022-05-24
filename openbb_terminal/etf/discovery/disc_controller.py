@@ -46,9 +46,9 @@ class DiscoveryController(BaseController):
     def print_help(self):
         """Print help"""
         mt = MenuText("etf/disc/", 60)
-        mt.add_cmd_translation("gainers", "Wall Street Journal")
-        mt.add_cmd_translation("decliners", "Wall Street Journal")
-        mt.add_cmd_translation("active", "Wall Street Journal")
+        mt.add_cmd("gainers", "Wall Street Journal")
+        mt.add_cmd("decliners", "Wall Street Journal")
+        mt.add_cmd("active", "Wall Street Journal")
         console.print(text=mt.menu_text, menu="ETF - Discovery")
 
     @log_start_end(log=logger)

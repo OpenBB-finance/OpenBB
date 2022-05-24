@@ -100,24 +100,24 @@ class FundController(BaseController):
         else:
             fund_string = ""
         mt = MenuText("funds/")
-        mt.add_cmd_translation("country", "Investing.com")
+        mt.add_cmd("country", "Investing.com")
         mt.add_raw("\n")
-        mt.add_param_translation("_country", self.country.title())
+        mt.add_param("_country", self.country.title())
         mt.add_raw("\n")
-        mt.add_cmd_translation("overview", "Investing.com")
-        mt.add_cmd_translation("search", "Investing.com")
-        mt.add_cmd_translation("load", "Investing.com")
+        mt.add_cmd("overview", "Investing.com")
+        mt.add_cmd("search", "Investing.com")
+        mt.add_cmd("load", "Investing.com")
         mt.add_raw("\n")
-        mt.add_param_translation("_fund", fund_string)
+        mt.add_param("_fund", fund_string)
         mt.add_raw("\n")
-        mt.add_cmd_translation("info", "Investing.com", self.fund_symbol)
-        mt.add_cmd_translation("plot", "Investing.com", self.fund_symbol)
+        mt.add_cmd("info", "Investing.com", self.fund_symbol)
+        mt.add_cmd("plot", "Investing.com", self.fund_symbol)
         if self.country == "united states":
-            mt.add_cmd_translation("sector", "Yahoo Finance", self.fund_symbol)
-            mt.add_cmd_translation("equity", "Yahoo Finance", self.fund_symbol)
+            mt.add_cmd("sector", "Yahoo Finance", self.fund_symbol)
+            mt.add_cmd("equity", "Yahoo Finance", self.fund_symbol)
         if self.country == "sweden":
-            mt.add_cmd_translation("al_swe", "Avanza", self.fund_symbol)
-            mt.add_cmd_translation("info_swe", "Avanza", self.fund_symbol)
+            mt.add_cmd("al_swe", "Avanza", self.fund_symbol)
+            mt.add_cmd("info_swe", "Avanza", self.fund_symbol)
         console.print(text=mt.menu_text, menu="Mutual Funds")
 
     def custom_reset(self):

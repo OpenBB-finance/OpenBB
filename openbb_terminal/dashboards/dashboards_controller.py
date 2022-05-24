@@ -49,12 +49,12 @@ class DashboardsController(BaseController):
     def print_help(self):
         """Print help"""
         mt = MenuText("dashboards/")
-        mt.add_cmd_translation("stocks")
-        mt.add_cmd_translation("correlation")
-        mt.add_cmd_translation("vsurf")
-        mt.add_cmd_translation("chains")
-        mt.add_cmd_translation("shortdata")
-        mt.add_cmd_translation("crypto")
+        mt.add_cmd("stocks")
+        mt.add_cmd("correlation")
+        mt.add_cmd("vsurf")
+        mt.add_cmd("chains")
+        mt.add_cmd("shortdata")
+        mt.add_cmd("crypto")
         console.print(text=mt.menu_text, menu="Dashboards")
 
     @log_start_end(log=logger)

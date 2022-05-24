@@ -51,14 +51,14 @@ class PricingController(BaseController):
     def print_help(self):
         """Print help"""
         mt = MenuText("stocks/options/pricing/")
-        mt.add_param_translation("_ticker", self.ticker or "")
-        mt.add_param_translation("_expiry", self.selected_date or "")
+        mt.add_param("_ticker", self.ticker or "")
+        mt.add_param("_expiry", self.selected_date or "")
         mt.add_raw("\n")
-        mt.add_cmd_translation("add")
-        mt.add_cmd_translation("rmv")
+        mt.add_cmd("add")
+        mt.add_cmd("rmv")
         mt.add_raw("\n")
-        mt.add_cmd_translation("show")
-        mt.add_cmd_translation("rnval")
+        mt.add_cmd("show")
+        mt.add_cmd("rnval")
         console.print(text=mt.menu_text, menu="Stocks - Options - Pricing")
 
     def custom_reset(self):

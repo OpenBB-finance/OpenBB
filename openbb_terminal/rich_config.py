@@ -48,34 +48,87 @@ def no_panel(renderable, *args, **kwargs):  # pylint: disable=unused-argument
 class MenuText:
     """Create menu text with rich colors to be displayed by terminal"""
 
-    def __init__(self, path: str = "", col_src: int = 100):
+    def __init__(self, path: str = "", column_sources: int = 100):
+        """Initialize menu help
+
+        Parameters
+        ----------
+        path : str
+            path to the menu that is being created
+        column_sources : int
+            column width from which to start displaying sources
+        """
         self.menu_text = ""
         self.menu_path = path
-        self.col_src = col_src
+        self.col_src = column_sources
 
-    def add_raw(self, raw: str):
-        self.menu_text += raw
+    def add_raw(self, raw_text: str):
+        """Append raw text (no translation) to a menu
 
-    def add_raw_translation(self, raw: str):
-        self.menu_text += f"{i18n.t(self.menu_path + raw)}"
+        Parameters
+        ----------
+        raw_text : str
+            raw text to be appended to the menu
+        """
+        self.menu_text += raw_text
 
-    def add_info_translation(self, info: str):
-        self.menu_text += f"[info]{i18n.t(self.menu_path + info)}:[/info]\n"
+    def add_custom(self, key: str):
+        """Append custom text (after translation from key) to a menu
 
-    def add_param_translation(self, param: str, value: str, spacing: int = 0):
-        par = i18n.t(self.menu_path + param)
-        if spacing > len(par):
-            space = (spacing - len(par)) * " "
+        Parameters
+        ----------
+        key : str
+            key to get translated text and add to the menu
+        """
+        self.menu_text += f"{i18n.t(self.menu_path + key)}"
+
+    def add_info(self, key_info: str):
+        """Append info text (after translation from key) to a menu
+
+        Parameters
+        ----------
+        key_info : str
+            key to get translated text and add to the menu as info
+        """
+        self.menu_text += f"[info]{i18n.t(self.menu_path + key_info)}:[/info]\n"
+
+    def add_param(self, key_param: str, value: str, col_align: int = 0):
+        """Append info text (after translation from key) to a menu
+
+        Parameters
+        ----------
+        key_param : str
+            key to get translated text and add to the menu as parameter
+        value : str
+            value to display in front of the parameter
+        col_align : int
+            column alignment for the value. This allows for a better UX experience.
+        """
+        parameter_translated = i18n.t(self.menu_path + key_param)
+        if col_align > len(parameter_translated):
+            space = (col_align - len(parameter_translated)) * " "
         else:
             space = ""
-        self.menu_text += f"[param]{par}{space}:[/param] {value}\n"
+        self.menu_text += f"[param]{parameter_translated}{space}:[/param] {value}\n"
 
-    def add_cmd_translation(self, key: str, source: str = "", cond: bool = True):
-        spacing = (23 - (len(key) + 4)) * " "
-        if cond:
-            cmd = f"[cmds]    {key}{spacing}{i18n.t(self.menu_path + key)}[/cmds]"
+    def add_cmd(self, key_command: str, source: str = "", condition: bool = True):
+        """Append command text (after translation from key) to a menu
+
+        Parameters
+        ----------
+        key_command : str
+            key command to be executed by user. It is also used as a key to get description of command.
+        source : str
+            source associated with the command
+        condition : bool
+            condition in which command is available to user. I.e. displays command and description.
+            If condition is false, the command line is greyed out.
+        """
+        spacing = (23 - (len(key_command) + 4)) * " "
+        if condition:
+            cmd = f"[cmds]    {key_command}{spacing}{i18n.t(self.menu_path + key_command)}[/cmds]"
         else:
-            cmd = f"[unvl]    {key}{spacing}{i18n.t(self.menu_path + key)}[/unvl]"
+            cmd = f"[unvl]    {key_command}{spacing}{i18n.t(self.menu_path + key_command)}[/unvl]"
         if source:
             if self.col_src > len(cmd):
                 space = (self.col_src - len(cmd)) * " "
@@ -85,25 +138,38 @@ class MenuText:
 
         self.menu_text += cmd + "\n"
 
-    def add_menu_translation(self, key: str, cond: bool = True):
-        spacing = (23 - (len(key) + 4)) * " "
-        if cond:
-            self.menu_text += (
-                f"[menu]>   {key}{spacing}{i18n.t(self.menu_path + key)}[/menu]\n"
-            )
-        else:
-            self.menu_text += (
-                f"[unvl]>   {key}{spacing}{i18n.t(self.menu_path + key)}[/unvl]\n"
-            )
+    def add_menu(self, key_menu: str, condition: bool = True):
+        """Append menu text (after translation from key) to a menu
 
-    def add_setting(self, key: str, cond: bool = True):
-        spacing = (23 - (len(key) + 4)) * " "
-        if cond:
-            cmd = f"[green]    {key}{spacing}{i18n.t(self.menu_path + key)}[/green]"
+        Parameters
+        ----------
+        key_menu : str
+            key menu to be executed by user. It is also used as a key to get description of menu.
+        condition : bool
+            condition in which menu is available to user. I.e. displays menu and description.
+            If condition is false, the menu line is greyed out.
+        """
+        spacing = (23 - (len(key_menu) + 4)) * " "
+        if condition:
+            self.menu_text += f"[menu]>   {key_menu}{spacing}{i18n.t(self.menu_path + key_menu)}[/menu]\n"
         else:
-            cmd = f"[red]    {key}{spacing}{i18n.t(self.menu_path + key)}[/red]"
+            self.menu_text += f"[unvl]>   {key_menu}{spacing}{i18n.t(self.menu_path + key_menu)}[/unvl]\n"
 
-        self.menu_text += cmd + "\n"
+    def add_setting(self, key_setting: str, status: bool = True):
+        """Append menu text (after translation from key) to a menu
+
+        Parameters
+        ----------
+        key_setting : str
+            key setting to be set by user. It is also used as a key to get description of the setting.
+        status : bool
+            status of the current setting. If true the line will be green, otherwise red.
+        """
+        spacing = (23 - (len(key_setting) + 4)) * " "
+        if status:
+            self.menu_text += f"[green]    {key_setting}{spacing}{i18n.t(self.menu_path + key_setting)}[/green]\n"
+        else:
+            self.menu_text += f"[red]    {key_setting}{spacing}{i18n.t(self.menu_path + key_setting)}[/red]\n"
 
 
 class ConsoleAndPanel:
@@ -113,42 +179,6 @@ class ConsoleAndPanel:
         self.console = Console(theme=CUSTOM_THEME, highlight=False, soft_wrap=True)
         self.menu_text = ""
         self.menu_path = ""
-
-    def init_menu(self, path: str = ""):
-        self.menu_text = ""
-        self.menu_path = path
-
-    def add_raw(self, raw: str):
-        self.menu_text += raw
-
-    def add_raw_translation(self, raw: str):
-        self.menu_text += f"{i18n.t(self.menu_path + raw)}"
-
-    def add_info_translation(self, info: str):
-        self.menu_text += f"[info]{i18n.t(self.menu_path + info)}:[/info]\n"
-
-    def add_param_translation(self, param: str, value: str):
-        self.menu_text += f"[param]{i18n.t(self.menu_path + param)}:[/param] {value}\n"
-
-    def add_cmd_translation(self, key: str, source: str = "", cond: bool = True):
-        if source:
-            source = f" [src][{source}][/src]"
-        spacing = (22 - (len(key) + 4)) * " "
-        if cond:
-            self.menu_text += f"[cmds]    {key}{spacing}{i18n.t(self.menu_path + key)}{source}[/cmds]\n"
-        else:
-            self.menu_text += f"[unvl]    {key}{spacing}{i18n.t(self.menu_path + key)}{source}[/unvl]\n"
-
-    def add_menu_translation(self, key: str, cond: bool = True):
-        spacing = (22 - (len(key) + 4)) * " "
-        if cond:
-            self.menu_text += (
-                f"[menu]>   {key}{spacing}{i18n.t(self.menu_path + key)}[/menu]\n"
-            )
-        else:
-            self.menu_text += (
-                f"[unvl]>   {key}{spacing}{i18n.t(self.menu_path + key)}[/unvl]\n"
-            )
 
     def capture(self):
         return self.console.capture()

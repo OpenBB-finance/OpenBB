@@ -58,10 +58,10 @@ class CoinbaseController(BaseController):
     def print_help(self):
         """Print help"""
         mt = MenuText("portfolio/bro/cb/")
-        mt.add_cmd_translation("account")
-        mt.add_cmd_translation("history")
-        mt.add_cmd_translation("deposits")
-        mt.add_cmd_translation("orders")
+        mt.add_cmd("account")
+        mt.add_cmd("history")
+        mt.add_cmd("deposits")
+        mt.add_cmd("orders")
         console.print(text=mt.menu_text, menu="Portfolio - Brokers - Coinbase")
 
     @log_start_end(log=logger)

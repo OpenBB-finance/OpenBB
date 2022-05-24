@@ -95,7 +95,7 @@ class ReportController(BaseController):
     def print_help(self):
         """Print help."""
         mt = MenuText("reports/")
-        mt.add_info_translation("_reports_")
+        mt.add_info("_reports_")
         mt.add_raw(f"[cmds]{self.reports_opts}[/cmds]")
         console.print(text=mt.menu_text, menu="Reports - WORK IN PROGRESS")
 

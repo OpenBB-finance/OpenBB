@@ -138,19 +138,19 @@ class ParametersController(BaseController):
     def print_help(self):
         """Print help"""
         mt = MenuText("portfolio/po/params/")
-        mt.add_param_translation("_loaded", self.current_file)
+        mt.add_param("_loaded", self.current_file)
         mt.add_raw("\n")
-        mt.add_cmd_translation("file")
-        mt.add_cmd_translation("save")
+        mt.add_cmd("file")
+        mt.add_cmd("save")
         mt.add_raw("\n")
-        mt.add_param_translation("_model", self.current_model or "")
+        mt.add_param("_model", self.current_model or "")
         mt.add_raw("\n")
-        mt.add_cmd_translation("clear")
-        mt.add_cmd_translation("set")
-        mt.add_cmd_translation("arg")
+        mt.add_cmd("clear")
+        mt.add_cmd("set")
+        mt.add_cmd("arg")
         mt.add_raw("\n")
         if self.current_file:
-            mt.add_info_translation("_parameters_")
+            mt.add_info("_parameters_")
             if self.current_model:
                 max_len = max(len(k) for k in self.params.keys())
                 for k, v in self.params.items():

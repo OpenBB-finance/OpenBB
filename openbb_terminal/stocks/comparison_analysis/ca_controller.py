@@ -99,65 +99,39 @@ class ComparisonAnalysisController(BaseController):
     def print_help(self):
         """Print help"""
         mt = MenuText("stocks/ca/", 80)
-        mt.add_cmd_translation("ticker")
+        mt.add_cmd("ticker")
         mt.add_raw("\n")
-        mt.add_param_translation("_ticker", self.ticker)
+        mt.add_param("_ticker", self.ticker)
         mt.add_raw("\n")
-        mt.add_cmd_translation("tsne", "", self.ticker)
-        mt.add_cmd_translation("getpoly", "Polygon", self.ticker)
-        mt.add_cmd_translation("getfinnhub", "Finnhub", self.ticker)
-        mt.add_cmd_translation("getfinviz", "Finviz", self.ticker)
+        mt.add_cmd("tsne", "", self.ticker)
+        mt.add_cmd("getpoly", "Polygon", self.ticker)
+        mt.add_cmd("getfinnhub", "Finnhub", self.ticker)
+        mt.add_cmd("getfinviz", "Finviz", self.ticker)
         mt.add_raw("\n")
-        mt.add_cmd_translation("set")
-        mt.add_cmd_translation("add")
-        mt.add_cmd_translation("rmv")
+        mt.add_cmd("set")
+        mt.add_cmd("add")
+        mt.add_cmd("rmv")
         mt.add_raw("\n")
-        mt.add_param_translation("_similar", ", ".join(self.similar))
+        mt.add_param("_similar", ", ".join(self.similar))
         mt.add_raw("\n")
-        mt.add_cmd_translation(
+        mt.add_cmd(
             "historical", "Yahoo Finance", self.similar and len(self.similar) > 1
         )
-        mt.add_cmd_translation(
-            "hcorr", "Yahoo Finance", self.similar and len(self.similar) > 1
-        )
-        mt.add_cmd_translation(
-            "volume", "Yahoo Finance", self.similar and len(self.similar) > 1
-        )
-        mt.add_cmd_translation(
-            "income", "Market Watch", self.similar and len(self.similar) > 1
-        )
-        mt.add_cmd_translation(
-            "balance", "Market Watch", self.similar and len(self.similar) > 1
-        )
-        mt.add_cmd_translation(
-            "cashflow", "Market Watch", self.similar and len(self.similar) > 1
-        )
-        mt.add_cmd_translation(
-            "sentiment", "FinBrain", self.similar and len(self.similar) > 1
-        )
-        mt.add_cmd_translation(
-            "scorr", "FinBrain", self.similar and len(self.similar) > 1
-        )
-        mt.add_cmd_translation(
-            "overview", "Finviz", self.similar and len(self.similar) > 1
-        )
-        mt.add_cmd_translation(
-            "valuation", "Finviz", self.similar and len(self.similar) > 1
-        )
-        mt.add_cmd_translation(
-            "financial", "Finviz", self.similar and len(self.similar) > 1
-        )
-        mt.add_cmd_translation(
-            "ownership", "Finviz", self.similar and len(self.similar) > 1
-        )
-        mt.add_cmd_translation(
-            "performance", "Finviz", self.similar and len(self.similar) > 1
-        )
-        mt.add_cmd_translation(
-            "technical", "Finviz", self.similar and len(self.similar) > 1
-        )
+        mt.add_cmd("hcorr", "Yahoo Finance", self.similar and len(self.similar) > 1)
+        mt.add_cmd("volume", "Yahoo Finance", self.similar and len(self.similar) > 1)
+        mt.add_cmd("income", "Market Watch", self.similar and len(self.similar) > 1)
+        mt.add_cmd("balance", "Market Watch", self.similar and len(self.similar) > 1)
+        mt.add_cmd("cashflow", "Market Watch", self.similar and len(self.similar) > 1)
+        mt.add_cmd("sentiment", "FinBrain", self.similar and len(self.similar) > 1)
+        mt.add_cmd("scorr", "FinBrain", self.similar and len(self.similar) > 1)
+        mt.add_cmd("overview", "Finviz", self.similar and len(self.similar) > 1)
+        mt.add_cmd("valuation", "Finviz", self.similar and len(self.similar) > 1)
+        mt.add_cmd("financial", "Finviz", self.similar and len(self.similar) > 1)
+        mt.add_cmd("ownership", "Finviz", self.similar and len(self.similar) > 1)
+        mt.add_cmd("performance", "Finviz", self.similar and len(self.similar) > 1)
+        mt.add_cmd("technical", "Finviz", self.similar and len(self.similar) > 1)
         mt.add_raw("\n")
-        mt.add_menu_translation("po", self.similar and len(self.similar) > 1)
+        mt.add_menu("po", self.similar and len(self.similar) > 1)
         console.print(text=mt.menu_text, menu="Stocks - Comparison Analysis")
 
     def custom_reset(self):

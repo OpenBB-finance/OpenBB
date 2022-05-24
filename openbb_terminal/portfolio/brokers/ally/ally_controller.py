@@ -48,13 +48,13 @@ class AllyController(BaseController):
     def print_help(self):
         """Print help"""
         mt = MenuText("portfolio/bro/ally/")
-        mt.add_cmd_translation("holdings")
-        mt.add_cmd_translation("history")
-        mt.add_cmd_translation("balances")
+        mt.add_cmd("holdings")
+        mt.add_cmd("history")
+        mt.add_cmd("balances")
         mt.add_raw("\n")
-        mt.add_info_translation("_info_")
-        mt.add_cmd_translation("quote")
-        mt.add_cmd_translation("movers")
+        mt.add_info("_info_")
+        mt.add_cmd("quote")
+        mt.add_cmd("movers")
         console.print(text=mt.menu_text, menu="Portfolio - Brokers - Ally")
 
     @log_start_end(log=logger)

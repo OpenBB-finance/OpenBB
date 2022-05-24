@@ -48,8 +48,8 @@ class ToolsController(BaseController):
     def print_help(self):
         """Print help"""
         mt = MenuText("crypto/tools/")
-        mt.add_cmd_translation("aprtoapy")
-        mt.add_cmd_translation("il")
+        mt.add_cmd("aprtoapy")
+        mt.add_cmd("il")
         console.print(text=mt.menu_text, menu="Cryptocurrency - Tools")
 
     @log_start_end(log=logger)

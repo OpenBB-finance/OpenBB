@@ -96,23 +96,21 @@ class PredictionTechniquesController(BaseController):
     def print_help(self):
         """Print help"""
         mt = MenuText("forex/pred/")
-        mt.add_cmd_translation("pick")
+        mt.add_cmd("pick")
         mt.add_raw("\n")
-        mt.add_param_translation(
-            "_pair", f"{self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
-        )
-        mt.add_param_translation("_target", self.target)
+        mt.add_param("_pair", f"{self.ticker} (from {self.start.strftime('%Y-%m-%d')})")
+        mt.add_param("_target", self.target)
         mt.add_raw("\n")
-        mt.add_info_translation("_models_")
-        mt.add_cmd_translation("ets")
-        mt.add_cmd_translation("knn")
-        mt.add_cmd_translation("regression")
-        mt.add_cmd_translation("arima")
-        mt.add_cmd_translation("mlp")
-        mt.add_cmd_translation("rnn")
-        mt.add_cmd_translation("lstm")
-        mt.add_cmd_translation("conv1d")
-        mt.add_cmd_translation("mc")
+        mt.add_info("_models_")
+        mt.add_cmd("ets")
+        mt.add_cmd("knn")
+        mt.add_cmd("regression")
+        mt.add_cmd("arima")
+        mt.add_cmd("mlp")
+        mt.add_cmd("rnn")
+        mt.add_cmd("lstm")
+        mt.add_cmd("conv1d")
+        mt.add_cmd("mc")
         console.print(text=mt.menu_text, menu="Forex - Prediction Techniques")
 
     def custom_reset(self):

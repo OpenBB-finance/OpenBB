@@ -174,41 +174,33 @@ class OptionsController(BaseController):
     def print_help(self):
         """Print help."""
         mt = MenuText("stocks/options/")
-        mt.add_cmd_translation("unu", "Fdscanner")
-        mt.add_cmd_translation("calc")
+        mt.add_cmd("unu", "Fdscanner")
+        mt.add_cmd("calc")
         mt.add_raw("\n")
-        mt.add_menu_translation("screen")
+        mt.add_menu("screen")
         mt.add_raw("\n")
-        mt.add_cmd_translation("load")
-        mt.add_cmd_translation("exp", "", self.ticker)
+        mt.add_cmd("load")
+        mt.add_cmd("exp", "", self.ticker)
         mt.add_raw("\n")
-        mt.add_param_translation("_ticker", self.ticker or "")
-        mt.add_param_translation("_expiry", self.selected_date or "")
+        mt.add_param("_ticker", self.ticker or "")
+        mt.add_param("_expiry", self.selected_date or "")
         mt.add_raw("\n")
-        mt.add_cmd_translation("pcr", "AlphaQuery", self.ticker and self.selected_date)
-        mt.add_cmd_translation("info", "Barchart", self.ticker and self.selected_date)
-        mt.add_cmd_translation("chains", "Tradier", self.ticker and self.selected_date)
-        mt.add_cmd_translation(
-            "oi", "Tradier/YFinance", self.ticker and self.selected_date
-        )
-        mt.add_cmd_translation(
-            "vol", "Tradier/YFinance", self.ticker and self.selected_date
-        )
-        mt.add_cmd_translation(
-            "voi", "Tradier/YFinance", self.ticker and self.selected_date
-        )
-        mt.add_cmd_translation("hist", "Tradier", self.ticker and self.selected_date)
-        mt.add_cmd_translation("vsurf", "Yfinance", self.ticker and self.selected_date)
-        mt.add_cmd_translation(
-            "grhist", "Syncretism", self.ticker and self.selected_date
-        )
-        mt.add_cmd_translation("plot", "Yfinance", self.ticker and self.selected_date)
-        mt.add_cmd_translation("parity", "Yfinance", self.ticker and self.selected_date)
-        mt.add_cmd_translation("binom", "Yfinance", self.ticker and self.selected_date)
-        mt.add_cmd_translation("greeks", "Yfinance", self.ticker and self.selected_date)
+        mt.add_cmd("pcr", "AlphaQuery", self.ticker and self.selected_date)
+        mt.add_cmd("info", "Barchart", self.ticker and self.selected_date)
+        mt.add_cmd("chains", "Tradier", self.ticker and self.selected_date)
+        mt.add_cmd("oi", "Tradier/YFinance", self.ticker and self.selected_date)
+        mt.add_cmd("vol", "Tradier/YFinance", self.ticker and self.selected_date)
+        mt.add_cmd("voi", "Tradier/YFinance", self.ticker and self.selected_date)
+        mt.add_cmd("hist", "Tradier", self.ticker and self.selected_date)
+        mt.add_cmd("vsurf", "Yfinance", self.ticker and self.selected_date)
+        mt.add_cmd("grhist", "Syncretism", self.ticker and self.selected_date)
+        mt.add_cmd("plot", "Yfinance", self.ticker and self.selected_date)
+        mt.add_cmd("parity", "Yfinance", self.ticker and self.selected_date)
+        mt.add_cmd("binom", "Yfinance", self.ticker and self.selected_date)
+        mt.add_cmd("greeks", "Yfinance", self.ticker and self.selected_date)
         mt.add_raw("\n")
-        mt.add_menu_translation("pricing", self.ticker and self.selected_date)
-        mt.add_menu_translation("hedge", self.ticker and self.selected_date)
+        mt.add_menu("pricing", self.ticker and self.selected_date)
+        mt.add_menu("hedge", self.ticker and self.selected_date)
         console.print(text=mt.menu_text, menu="Stocks - Options")
 
     def custom_reset(self):

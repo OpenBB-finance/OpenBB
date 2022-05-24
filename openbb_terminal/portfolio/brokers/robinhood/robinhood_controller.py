@@ -47,10 +47,10 @@ class RobinhoodController(BaseController):
     def print_help(self):
         """Print help"""
         mt = MenuText("portfolio/bro/rh/")
-        mt.add_cmd_translation("login")
+        mt.add_cmd("login")
         mt.add_raw("\n")
-        mt.add_cmd_translation("holdings")
-        mt.add_cmd_translation("history")
+        mt.add_cmd("holdings")
+        mt.add_cmd("history")
         console.print(text=mt.menu_text, menu="Portfolio - Brokers - Robinhood")
 
     @log_start_end(log=logger)

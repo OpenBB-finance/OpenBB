@@ -753,7 +753,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         """Print help"""
         self.check_keys_status()
         mt = MenuText("keys/")
-        mt.add_info_translation("_keys_")
+        mt.add_info("_keys_")
         mt.add_raw("\n")
         for k, v in self.key_dict.items():
             cmd_name = self.cfg_dict[k]

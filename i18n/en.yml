@@ -1,5 +1,5 @@
 en:
-  home: >
+  _home_: >
     [info]Get API keys from data providers to access more features.[/info]
         For more instructions use: 'keys'.
         To see all features follow: https://openbb-finance.github.io/OpenBBTerminal/
