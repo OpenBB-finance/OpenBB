@@ -1,7 +1,7 @@
     search             search a specific stock ticker for analysis
     load               load a specific stock ticker and additional info for analysis
 
-stocks/Stock: Daily 
+Stock: Daily 
 
 Datetime: 
 Timezone: 
