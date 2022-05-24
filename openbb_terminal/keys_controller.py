@@ -18,7 +18,6 @@ from alpha_vantage.timeseries import TimeSeries
 from coinmarketcapapi import CoinMarketCapAPI, CoinMarketCapAPIError
 from prompt_toolkit.completion import NestedCompleter
 from pyEX.common.exception import PyEXception
-import i18n
 
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal import feature_flags as obbff
@@ -30,7 +29,7 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import parse_known_args_and_warn
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import console, MenuText, translate
 from openbb_terminal.terminal_helper import suppress_stdout
 
 logger = logging.getLogger(__name__)
@@ -769,7 +768,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
                 c = "grey30"
             mt.add_raw(
                 f"   [cmds]{cmd_name}[/cmds] {(20 - len(cmd_name)) * ' '}"
-                f" [{c}] {k} {(25 - len(k)) * ' '} {i18n.t(v)} [/{c}]\n"
+                f" [{c}] {k} {(25 - len(k)) * ' '} {translate(v)} [/{c}]\n"
             )
 
         console.print(text=mt.menu_text, menu="Keys")
