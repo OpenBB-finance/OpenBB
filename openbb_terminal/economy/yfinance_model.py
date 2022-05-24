@@ -52,9 +52,20 @@ INDICES = {
     "nl-aex": {"name": "Euronext Dutch 25 Index (EUR)", "ticker": "^AEX"},
     "nl-amx": {"name": "Euronext Dutch Mid Cap Index (EUR)", "ticker": "^AMX"},
     "at-atx": {"name": "Wiener Börse Austrian 20 Index (EUR)", "ticker": "^ATX"},
-    "at-bat20p": {"name": "CME Austria 20 Price Return Index (EUR)", "ticker": "^BAT20P"},
-    "at-bat20n": {"name": "CME Austria 20 Net Total Return Index (EUR)", "ticker": "^BAT20N"},
+    "at-bat20p": {
+        "name": "CME Austria 20 Price Return Index (EUR)",
+        "ticker": "^BAT20P",
+    },
+    "at-bat20n": {
+        "name": "CME Austria 20 Net Total Return Index (EUR)",
+        "ticker": "^BAT20N",
+    },
     "ch-stoxx": {"name": "Zurich STXE 600 PR Index (EUR)", "ticker": "^STOXX"},
+    "ch-sxmp": {"name": "STOXX Europe 600 Media PR Index (EUR)", "ticker": "SXMP.Z"},
+    "ch-sxdp": {
+        "name": "STOXX Europe 600 Health Care PR Index (EUR)",
+        "ticker": "SXDP.Z",
+    },
     "ch-stoxx50e": {"name": "Zurich ESTX 50 PR Index (EUR)", "ticker": "^STOXX50E"},
     "ch-ssip": {"name": "Swiss All Shares Index (CHF)", "ticker": "SSIP.SW"},
     "ch-airlines": {"name": "STXE TM Airlines Index (EUR)", "ticker": "U0A.Z"},
@@ -135,7 +146,11 @@ INDICES = {
         "ticker": "^FDSFTPRJPY",
     },
     "jp-nkdh": {"name": "Nikkei Average USD Hedge Index (JPY)", "ticker": "^NKDH.OS"},
-    "jp-nkeh": {"name": "Nikkei Average EUR Hedghe Index (JPY)", "ticker": "^NKEH.OS"},
+    "jp-nkeh": {"name": "Nikkei Average EUR Hedge Index (JPY)", "ticker": "^NKEH.OS"},
+    "jp-ndiv": {
+        "name": "Nikkei Average Double Inverse Index (JPY)",
+        "ticker": "^NDIV.OS",
+    },
     "cn-sse-comp": {"name": "SSE Composite Index (CNY)", "ticker": "000001.SS"},
     "cn-sse-a": {"name": "SSE A Share Index (CNY)", "ticker": "000002.SS"},
     "cn-szse-comp": {"name": "SZSE Component Index (CNY)", "ticker": "399001.SZ"},
@@ -189,12 +204,17 @@ INDICES = {
     "reit-fnar": {"name": "FTSE Nareit All Equity REITs Index", "ticker": "^FNAR"},
     "nq-q50": {"name": "NASDAQ Q50 Index", "ticker": "^NXTQ"},
     "nq-ixch": {"name": "NASDAQ Health Care Index", "ticker": "^IXCH"},
+    "nq-nbi": {"name": "NASDAQ Biotech Index", "ticker": "^NBI"},
     "nq-tech": {"name": "NASDAQ 100 Technology Sector Index", "ticker": "^NDXT"},
     "nq-ex-tech": {"name": "NASDAQ 100 Ex-Tech Total Return Index", "ticker": "^NXTR"},
     "nq-ixtc": {"name": "NASDAQ Telecommunications Index", "ticker": "^IXTC"},
     "nq-inds": {"name": "NASDAQ Industrial Index", "ticker": "^INDS"},
     "nq-ixco": {"name": "NASDAQ Computer Index", "ticker": "^INCO"},
     "nq-bank": {"name": "NASDAQ Bank Index", "ticker": "^BANK"},
+    "nq-bkx": {"name": "KBW NASDAQ Bank Index", "ticker": "^BKX"},
+    "nq-krx": {"name": "KBW NASDAQ Regional Bank Index", "ticker": "^KRX"},
+    "nq-kix": {"name": "KBW NASDAQ Insurance Index", "ticker": "^KIX"},
+    "nq-ksx": {"name": "KBW NASDAQ Capital Markets Index", "ticker": "^KSX"},
     "nq-tran": {"name": "NASDAQ Transportation Index", "ticker": "^TRAN"},
     "ice-auto": {"name": "ICE FactSet Global NextGen Auto Index", "ticker": "^ICEFSNA"},
     "ice-comm": {
@@ -252,6 +272,7 @@ INDICES = {
     "us-move": {"name": "ICE BofAML Move Index", "ticker": "^MOVE"},
     "us-dx-y": {"name": "US Dollar Index", "ticker": "DX-Y.NYB"},
 }
+
 
 @log_start_end(log=logger)
 def get_index(
