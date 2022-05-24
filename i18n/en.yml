@@ -619,3 +619,43 @@ en:
   crypto/ta/obv: on balance volume
   crypto/ta/custom: Custom
   crypto/ta/fib: fibonacci retracement
+  crypto/pred/load: load new ticker
+  crypto/pred/pick: pick target column for analysis
+  crypto/pred/_ticker: Coin loaded
+  crypto/pred/_target: Target column
+  crypto/pred/models: Models
+  crypto/pred/ets: exponential smoothing (e.g. Holt-Winters)
+  crypto/pred/knn: k-Nearest Neighbors
+  crypto/pred/regression: polynomial regression
+  crypto/pred/arima: autoregressive integrated moving average
+  crypto/pred/mlp: MultiLayer Perceptron
+  crypto/pred/rnn: Recurrent Neural Network
+  crypto/pred/lstm: Long-Short Term Memory
+  crypto/pred/conv1d: 1D Convolutional Neural Network
+  crypto/pred/mc: Monte-Carlo simulations
+  crypto/qa/load: load new ticker
+  crypto/qa/pick: pick target column for analysis
+  crypto/qa/_ticker: Ticker
+  crypto/qa/_target: Target Column
+  crypto/qa/statistics: Statistics
+  crypto/qa/summary: brief summary statistics of loaded stock
+  crypto/qa/normality: normality statistics and tests
+  crypto/qa/unitroot: unit root test for stationarity (ADF, KPSS)
+  crypto/qa/plots: Plots
+  crypto/qa/line: line plot of selected target
+  crypto/qa/hist: histogram with density plot
+  crypto/qa/cdf: cumulative distribution function
+  crypto/qa/bw: box and whisker plot
+  crypto/qa/acf: (partial) auto-correlation function differentials of prices
+  crypto/qa/qqplot: residuals against standard normal curve
+  crypto/qa/rolling_metrics: Rolling Metrics
+  crypto/qa/rolling: rolling mean and std deviation of prices
+  crypto/qa/spread: rolling variance and std deviation of prices
+  crypto/qa/quantile: rolling median and quantile of prices
+  crypto/qa/skew: rolling skewness of distribution of prices
+  crypto/qa/kurtosis: rolling kurtosis of distribution of prices
+  crypto/qa/other: Other
+  crypto/qa/raw: print raw data
+  crypto/qa/decompose: decomposition in cyclic-trend, season, and residuals of prices
+  crypto/qa/cusum: detects abrupt changes using cumulative sum algorithm of prices
+  crypto/qa/capm: capital asset pricing model
