@@ -89,30 +89,30 @@ en:
   dashboards: interactive dashboards using voila and jupyter notebooks
   reports: customizable research reports through jupyter notebooks
   stocks/search: search a specific stock ticker for analysis
-  stocks/search_: Show companies matching the search query
-  stocks/search_query: The search term used to find company tickers
-  stocks/search_country: Search by country to find stocks matching the criteria
-  stocks/search_sector: Search by sector to find stocks matching the criteria
-  stocks/search_industry: Search by industry to find stocks matching the criteria
-  stocks/search_exchange: Search by a specific exchange country to find stocks matching the criteria
+  stocks/SEARCH: Show companies matching the search query
+  stocks/SEARCH_query: The search term used to find company tickers
+  stocks/SEARCH_country: Search by country to find stocks matching the criteria
+  stocks/SEARCH_sector: Search by sector to find stocks matching the criteria
+  stocks/SEARCH_industry: Search by industry to find stocks matching the criteria
+  stocks/SEARCH_exchange: Search by a specific exchange country to find stocks matching the criteria
   stocks/load: load a specific stock ticker and additional info for analysis
   stocks/quote: view the current price for a specific stock ticker
-  stocks/quote_: Current quote for stock ticker
-  stocks/quote_ticker: Stock ticker
+  stocks/QUOTE: Current quote for stock ticker
+  stocks/QUOTE_ticker: Stock ticker
   stocks/candle: view a candle chart for a specific stock ticker
-  stocks/candle_: Shows historic data for a stock
-  stocks/candle_plotly: Flag to show interactive plotly chart
-  stocks/candle_sort: Choose a column to sort by
-  stocks/candle_descending: Sort selected column descending
-  stocks/candle_raw: Shows raw data instead of chart
-  stocks/candle_trend: Flag to add high and low trends to candle
-  stocks/candle_mov_avg: Add moving average in number of days to plot and separate by a comma
+  stocks/CANDLE: Shows historic data for a stock
+  stocks/CANDLE_plotly: Flag to show interactive plotly chart
+  stocks/CANDLE_sort: Choose a column to sort by
+  stocks/CANDLE_descending: Sort selected column descending
+  stocks/CANDLE_raw: Shows raw data instead of chart
+  stocks/CANDLE_trend: Flag to add high and low trends to candle
+  stocks/CANDLE_mov_avg: Add moving average in number of days to plot and separate by a comma
   stocks/news: latest news of the company
   stocks/codes: FIGI, SIK and SIC codes codes
-  stocks/news_: Prints latest news about company, including date, title and web link. [News API]
-  stocks/news_date: The starting date (format YYYY-MM-DD) to search articles from
-  stocks/news_oldest: Show oldest articles first
-  stocks/news_sources: Show news only from the sources specified (e.g bbc yahoo.com)
+  stocks/NEWS: Prints latest news about company, including date, title and web link. [News API]
+  stocks/NEWS_date: The starting date (format YYYY-MM-DD) to search articles from
+  stocks/NEWS_oldest: Show oldest articles first
+  stocks/NEWS_sources: Show news only from the sources specified (e.g bbc yahoo.com)
   stocks/th: trading hours,                check open markets
   stocks/options: options menu,                 chains, open interest, greeks, parity
   stocks/disc: discover trending stocks,     map, sectors, high short interest

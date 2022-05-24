@@ -156,7 +156,7 @@ class StocksController(StockBaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="search",
-            description=translate("stocks/search_"),
+            description=translate("stocks/SEARCH"),
         )
         parser.add_argument(
             "-q",
@@ -165,7 +165,7 @@ class StocksController(StockBaseController):
             dest="query",
             type=str.lower,
             default="",
-            help=translate("stocks/search_query"),
+            help=translate("stocks/SEARCH_query"),
         )
         parser.add_argument(
             "-c",
@@ -174,7 +174,7 @@ class StocksController(StockBaseController):
             nargs=argparse.ONE_OR_MORE,
             action=choice_check_after_action(AllowArgsWithWhiteSpace, self.country),
             dest="country",
-            help=translate("stocks/search_country"),
+            help=translate("stocks/SEARCH_country"),
         )
         parser.add_argument(
             "-s",
@@ -183,7 +183,7 @@ class StocksController(StockBaseController):
             nargs=argparse.ONE_OR_MORE,
             action=choice_check_after_action(AllowArgsWithWhiteSpace, self.sector),
             dest="sector",
-            help=translate("stocks/search_sector"),
+            help=translate("stocks/SEARCH_sector"),
         )
         parser.add_argument(
             "-i",
@@ -192,7 +192,7 @@ class StocksController(StockBaseController):
             nargs=argparse.ONE_OR_MORE,
             action=choice_check_after_action(AllowArgsWithWhiteSpace, self.industry),
             dest="industry",
-            help=translate("stocks/search_industry"),
+            help=translate("stocks/SEARCH_industry"),
         )
         parser.add_argument(
             "-e",
@@ -200,7 +200,7 @@ class StocksController(StockBaseController):
             default="",
             choices=list(stocks_helper.market_coverage_suffix.keys()),
             dest="exchange_country",
-            help=translate("stocks/search_exchange"),
+            help=translate("stocks/SEARCH_exchange"),
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-q")
@@ -229,7 +229,7 @@ class StocksController(StockBaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="quote",
-            description=translate("stocks/quote_"),
+            description=translate("stocks/QUOTE"),
         )
         if self.ticker:
             parser.add_argument(
@@ -238,7 +238,7 @@ class StocksController(StockBaseController):
                 action="store",
                 dest="s_ticker",
                 default=ticker,
-                help=translate("stocks/quote_ticker"),
+                help=translate("stocks/QUOTE_ticker"),
             )
         else:
             parser.add_argument(
@@ -247,7 +247,7 @@ class StocksController(StockBaseController):
                 action="store",
                 dest="s_ticker",
                 required="-h" not in other_args,
-                help=translate("stocks/quote_ticker"),
+                help=translate("stocks/QUOTE_ticker"),
             )
         # For the case where a user uses: 'quote BB'
         if other_args and "-" not in other_args[0][0]:
@@ -279,7 +279,7 @@ class StocksController(StockBaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="candle",
-            description=translate("stocks/candle_"),
+            description=translate("stocks/CANDLE"),
         )
         parser.add_argument(
             "-p",
@@ -287,7 +287,7 @@ class StocksController(StockBaseController):
             dest="plotly",
             action="store_false",
             default=True,
-            help=translate("stocks/candle_plotly"),
+            help=translate("stocks/CANDLE_plotly"),
         )
         parser.add_argument(
             "--sort",
@@ -304,7 +304,7 @@ class StocksController(StockBaseController):
             default="",
             type=str,
             dest="sort",
-            help=translate("stocks/candle_sort"),
+            help=translate("stocks/CANDLE_sort"),
         )
         parser.add_argument(
             "-d",
@@ -312,28 +312,28 @@ class StocksController(StockBaseController):
             action="store_false",
             dest="descending",
             default=True,
-            help=translate("stocks/candle_descending"),
+            help=translate("stocks/CANDLE_descending"),
         )
         parser.add_argument(
             "--raw",
             action="store_true",
             dest="raw",
             default=False,
-            help=translate("stocks/candle_raw"),
+            help=translate("stocks/CANDLE_raw"),
         )
         parser.add_argument(
             "-t",
             "--trend",
             action="store_true",
             default=False,
-            help=translate("stocks/candle_trend"),
+            help=translate("stocks/CANDLE_trend"),
             dest="trendlines",
         )
         parser.add_argument(
             "--ma",
             dest="mov_avg",
             type=str,
-            help=translate("stocks/candle_mov_avg"),
+            help=translate("stocks/CANDLE_mov_avg"),
             default=None,
         )
         ns_parser = parse_known_args_and_warn(
@@ -396,7 +396,7 @@ class StocksController(StockBaseController):
         parser = argparse.ArgumentParser(
             add_help=False,
             prog="news",
-            description=translate("stocks/news_"),
+            description=translate("stocks/NEWS"),
         )
         parser.add_argument(
             "-d",
@@ -405,7 +405,7 @@ class StocksController(StockBaseController):
             dest="n_start_date",
             type=valid_date,
             default=datetime.now() - timedelta(days=7),
-            help=translate("stocks/news_date"),
+            help=translate("stocks/NEWS_date"),
         )
         parser.add_argument(
             "-o",
@@ -413,7 +413,7 @@ class StocksController(StockBaseController):
             action="store_false",
             dest="n_oldest",
             default=True,
-            help=translate("stocks/news_date"),
+            help=translate("stocks/NEWS_oldest"),
         )
         parser.add_argument(
             "-s",
@@ -421,7 +421,7 @@ class StocksController(StockBaseController):
             dest="sources",
             default=[],
             nargs="+",
-            help=translate("stocks/news_sources"),
+            help=translate("stocks/NEWS_sources"),
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
