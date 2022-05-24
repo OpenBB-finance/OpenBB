@@ -22,7 +22,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import CryptoBaseController
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 
 logger = logging.getLogger(__name__)
 
@@ -85,38 +85,34 @@ class QaController(CryptoBaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = f"""[cmds]
-   pick              pick target column for analysis[/cmds]
-
-[param]Pair: [/param]{self.ticker}
-[param]Target Column: [/param]{self.target}
-[cmds]
-[info]Statistics:[/info]
-    summary          brief summary statistics of loaded pair.
-    normality        normality statistics and tests
-    unitroot         unit root test for stationarity (ADF, KPSS)
-[info]Plots:[/info]
-    line             line plot of selected target
-    hist             histogram with density plot
-    cdf              cumulative distribution function
-    bw               box and whisker plot
-    acf              (partial) auto-correlation function differentials of prices
-    qqplot           residuals against standard normal curve
-[info]Rolling Metrics:[/info]
-    rolling          rolling mean and std deviation of prices
-    spread           rolling variance and std deviation of prices
-    quantile         rolling median and quantile of prices
-    skew             rolling skewness of distribution of prices
-    kurtosis         rolling kurtosis of distribution of prices
-[info]Risk:[/info]
-    var              display value at risk
-    es               display expected shortfall
-[info]Other:[/info]
-    raw              print raw data
-    decompose        decomposition in cyclic-trend, season, and residuals of prices
-    cusum            detects abrupt changes using cumulative sum algorithm of prices[/cmds]
-        """
-        console.print(text=help_text, menu="Forex - Quantitative Analysis")
+        mt = MenuText("forex/qa/")
+        mt.add_cmd_translation("pick")
+        mt.add_raw("\n")
+        mt.add_param_translation("_pair", self.ticker)
+        mt.add_param_translation("_target", self.target)
+        mt.add_raw("\n")
+        mt.add_info_translation("statistics")
+        mt.add_cmd_translation("summary")
+        mt.add_cmd_translation("normality")
+        mt.add_cmd_translation("unitroot")
+        mt.add_info_translation("plots")
+        mt.add_cmd_translation("line")
+        mt.add_cmd_translation("hist")
+        mt.add_cmd_translation("cdf")
+        mt.add_cmd_translation("bw")
+        mt.add_cmd_translation("acf")
+        mt.add_cmd_translation("qqplot")
+        mt.add_info_translation("rolling_metrics")
+        mt.add_cmd_translation("rolling")
+        mt.add_cmd_translation("spread")
+        mt.add_cmd_translation("quantile")
+        mt.add_cmd_translation("skew")
+        mt.add_cmd_translation("kurtosis")
+        mt.add_info_translation("other")
+        mt.add_cmd_translation("raw")
+        mt.add_cmd_translation("decompose")
+        mt.add_cmd_translation("cusum")
+        console.print(text=mt.menu_text, menu="Forex - Quantitative Analysis")
 
     def custom_reset(self):
         """Class specific component of reset command"""

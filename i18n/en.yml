@@ -778,3 +778,94 @@ en:
   economy/pred/lstm: Long-Short Term Memory
   economy/pred/conv1d: 1D Convolutional Neural Network
   economy/pred/mc: Monte-Carlo simulations
+  forex/from: select the 'from' currency in a forex pair
+  forex/to: select the 'to' currency in a forex pair
+  forex/_from: From
+  forex/_to: To
+  forex/_source: Source
+  forex/quote: get last quote
+  forex/load: get historical data
+  forex/candle: show candle plot for loaded pair
+  forex/fwd: get forward rates for loaded pair
+  forex/ta: technical analysis,          ema, macd, rsi, adx, bbands, obv
+  forex/qa: quantitative analysis,       decompose, cusum, residuals analysis
+  forex/pred: prediction techniques        regression, arima, rnn, lstm, conv1d, monte carlo
+  forex/forex: Forex brokerages
+  forex/oanda: Oanda menu
+  forex/ta/_currency: Currency pair loaded
+  forex/ta/_source: Source
+  forex/ta/overlap: Overlap
+  forex/ta/ema: exponential moving average
+  forex/ta/sma: simple moving average
+  forex/ta/zlma: zero lag moving average
+  forex/ta/momentum: Momentum
+  forex/ta/cci: commodity channel index
+  forex/ta/macd: moving average convergence/divergence
+  forex/ta/rsi: relative strength index
+  forex/ta/stoch: stochastic oscillator
+  forex/ta/fisher: fisher transform
+  forex/ta/cg: centre of gravity
+  forex/ta/trend: Trend
+  forex/ta/adx: average directional movement index
+  forex/ta/aroon: aroon indicator
+  forex/ta/volatility: Volatility
+  forex/ta/bbands: bollinger bands
+  forex/ta/donchian: donchian channels
+  forex/ta/custom: Custom
+  forex/ta/fib: fibonacci retracement
+  forex/qa/pick: pick target column for analysis
+  forex/qa/_pair: Pair
+  forex/qa/_target: Target
+  forex/qa/statistics: Statistics
+  forex/qa/summary: brief summary statistics of loaded stock
+  forex/qa/normality: normality statistics and tests
+  forex/qa/unitroot: unit root test for stationarity (ADF, KPSS)
+  forex/qa/plots: Plots
+  forex/qa/line: line plot of selected target
+  forex/qa/hist: histogram with density plot
+  forex/qa/cdf: cumulative distribution function
+  forex/qa/bw: box and whisker plot
+  forex/qa/acf: (partial) auto-correlation function differentials of prices
+  forex/qa/qqplot: residuals against standard normal curve
+  forex/qa/rolling_metrics: Rolling Metrics
+  forex/qa/rolling: rolling mean and std deviation of prices
+  forex/qa/spread: rolling variance and std deviation of prices
+  forex/qa/quantile: rolling median and quantile of prices
+  forex/qa/skew: rolling skewness of distribution of prices
+  forex/qa/kurtosis: rolling kurtosis of distribution of prices
+  forex/qa/other: Other
+  forex/qa/raw: print raw data
+  forex/qa/decompose: decomposition in cyclic-trend, season, and residuals of prices
+  forex/qa/cusum: detects abrupt changes using cumulative sum algorithm of prices
+  forex/pred/pick: pick new target variable
+  forex/pred/_pair: Pair loaded
+  forex/pred/_target: Target column
+  forex/pred/models: Models
+  forex/pred/ets: exponential smoothing (e.g. Holt-Winters)
+  forex/pred/knn: k-Nearest Neighbors
+  forex/pred/regression: polynomial regression
+  forex/pred/arima: autoregressive integrated moving average
+  forex/pred/mlp: MultiLayer Perceptron
+  forex/pred/rnn: Recurrent Neural Network
+  forex/pred/lstm: Long-Short Term Memory
+  forex/pred/conv1d: 1D Convolutional Neural Network
+  forex/pred/mc: Monte-Carlo simulations
+  forex/oanda/summary: shows account summary
+  forex/oanda/calendar: show calendar
+  forex/oanda/list: list order history
+  forex/oanda/pending: get information on pending orders
+  forex/oanda/cancel: cancel a pending order by ID -i order ID
+  forex/oanda/positions: get open positions
+  forex/oanda/trades: list open trades
+  forex/oanda/closetrade: close a trade by id
+  forex/oanda/from: select the "from" currency in a forex pair
+  forex/oanda/to: select the "to" currency in a forex pair
+  forex/oanda/_loaded: Loaded instrument
+  forex/oanda/_from: From
+  forex/oanda/_to: To
+  forex/oanda/_source: Source
+  forex/oanda/candles: show candles
+  forex/oanda/price: shows price for selected instrument
+  forex/oanda/order: place limit order -u NUMBER of units -p price
+  forex/oanda/orderbook: print orderbook
+  forex/oanda/positionbook: print positionbook
