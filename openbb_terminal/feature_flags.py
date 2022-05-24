@@ -9,6 +9,14 @@ from dotenv import load_dotenv
 # IMPORTATION INTERNAL
 from openbb_terminal.core.config.constants import ENV_FILE
 
+import i18n
+
+# pylint: disable=no-member
+
+i18n.load_path.append("i18n")
+i18n.set("locale", "en")
+i18n.set("filename_format", "{locale}.{format}")
+
 if ENV_FILE.is_file():
     load_dotenv(dotenv_path=ENV_FILE, override=True)
 
@@ -77,6 +85,9 @@ EXPORT_FOLDER_PATH = str(os.getenv("OPENBB_EXPORT_FOLDER_PATH", ""))
 
 # Set a flag if the application is running from a packaged bundle
 PACKAGED_APPLICATION = strtobool(os.getenv("OPENBB_PACKAGED_APPLICATION", "False"))
+
+# Select language to be used
+USE_LANGUAGE = str(os.getenv("OPENBB_USE_LANGUAGE", "en"))
 
 LOGGING_COMMIT_HASH = str(os.getenv("OPENBB_LOGGING_COMMIT_HASH", "REPLACE_ME"))
 

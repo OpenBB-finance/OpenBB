@@ -14,7 +14,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 
 logger = logging.getLogger(__name__)
 
@@ -38,17 +38,13 @@ class NFTController(BaseController):
 
     def print_help(self):
         """Print help"""
-
-        help_text = """[cmds]
-[src][Nftcalendar.io][/src]
-    today            today's NFT drops
-    upcoming         upcoming NFT drops
-    ongoing          Ongoing NFT drops
-    newest           Recently NFTs added
-[src][Opensea.io][/src]
-    stats            check open sea collection stats[/cmds]
-"""
-        console.print(text=help_text, menu="Cryptocurrency - Non Fungible Token")
+        mt = MenuText("crypto/nft/", 70)
+        mt.add_cmd("today", "Nftcalendar")
+        mt.add_cmd("upcoming", "Nftcalendar")
+        mt.add_cmd("ongoing", "Nftcalendar")
+        mt.add_cmd("newest", "Nftcalendar")
+        mt.add_cmd("stats", "Opensea")
+        console.print(text=mt.menu_text, menu="Cryptocurrency - Non Fungible Token")
 
     @log_start_end(log=logger)
     def call_stats(self, other_args: List[str]):

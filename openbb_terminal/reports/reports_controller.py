@@ -17,7 +17,7 @@ from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 
 logger = logging.getLogger(__name__)
 
@@ -94,10 +94,10 @@ class ReportController(BaseController):
 
     def print_help(self):
         """Print help."""
-        help_text = f"""[info]
-Select one of the following reports:[/info][cmds]
-{self.reports_opts}[/cmds]"""
-        console.print(text=help_text, menu="Reports - WORK IN PROGRESS")
+        mt = MenuText("reports/")
+        mt.add_info("_reports_")
+        mt.add_raw(f"[cmds]{self.reports_opts}[/cmds]")
+        console.print(text=mt.menu_text, menu="Reports - WORK IN PROGRESS")
 
     @log_start_end(log=logger)
     def switch(self, an_input: str):

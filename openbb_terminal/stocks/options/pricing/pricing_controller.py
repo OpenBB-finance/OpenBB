@@ -13,7 +13,7 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import parse_known_args_and_warn, print_rich_table
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.stocks.options import yfinance_view
 
 logger = logging.getLogger(__name__)
@@ -50,17 +50,16 @@ class PricingController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = f"""
-[param]Ticker: [/param]{self.ticker or None}
-[param]Expiry: [/param]{self.selected_date or None}
-[cmds]
-    add              add an expected price to the list
-    rmv              remove an expected price from the list
-
-    show             show the listed of expected prices
-    rnval            risk neutral valuation for an option[/cmds]
-        """
-        console.print(text=help_text, menu="Stocks - Options - Pricing")
+        mt = MenuText("stocks/options/pricing/")
+        mt.add_param("_ticker", self.ticker or "")
+        mt.add_param("_expiry", self.selected_date or "")
+        mt.add_raw("\n")
+        mt.add_cmd("add")
+        mt.add_cmd("rmv")
+        mt.add_raw("\n")
+        mt.add_cmd("show")
+        mt.add_cmd("rnval")
+        console.print(text=mt.menu_text, menu="Stocks - Options - Pricing")
 
     def custom_reset(self):
         """Class specific component of reset command"""

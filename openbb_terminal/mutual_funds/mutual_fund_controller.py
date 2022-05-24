@@ -30,7 +30,7 @@ from openbb_terminal.mutual_funds import (
     avanza_view,
 )
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 
 logger = logging.getLogger(__name__)
 
@@ -92,14 +92,6 @@ class FundController(BaseController):
 
     def print_help(self):
         """Print help"""
-        has_fund_start = "" if self.fund_symbol else "[unvl]"
-        has_fund_end = "" if self.fund_symbol else "[/unvl]"
-        has_fund_usa_start = (
-            "" if self.fund_symbol and self.country == "united states" else "[unvl]"
-        )
-        has_fund_usa_end = (
-            "" if self.fund_symbol and self.country == "united states" else "[/unvl]"
-        )
         if self.fund_name:
             if self.fund_symbol:
                 fund_string = f"{self.fund_name} ({self.fund_symbol})"
@@ -107,33 +99,26 @@ class FundController(BaseController):
                 fund_string = f"{self.fund_name}"
         else:
             fund_string = ""
-        help_text = f"""
-[src][Investing.com][/src][cmds]
-    country          set a country for filtering[/cmds]
-
-[param]Current Country: [/param]{self.country.title()}
-
-[src][Investing.com][/src][cmds]
-    overview         overview of top funds by country
-    search           search for Mutual Funds
-    load             load historical fund data[/cmds]
-
-[param]Current Fund: [/param]{fund_string}
-{has_fund_start}
-[src][Investing.com][/src][cmds]
-    info             get fund information
-    plot             plot loaded historical fund data{has_fund_end}{has_fund_usa_start}
-[src][YFinance][/src]
-    sector           sector weightings
-    equity           equity holdings[/cmds]{has_fund_usa_end}
-    """
-        if self.fund_symbol != "" and self.country == "sweden":
-            help_text += """
-[src][Avanza][/src]
-    al_swe        display fund allocation (sector, country, holdings)
-    info_swe      get fund information
-    """
-        console.print(text=help_text, menu="Mutual Funds")
+        mt = MenuText("funds/")
+        mt.add_cmd("country", "Investing.com")
+        mt.add_raw("\n")
+        mt.add_param("_country", self.country.title())
+        mt.add_raw("\n")
+        mt.add_cmd("overview", "Investing.com")
+        mt.add_cmd("search", "Investing.com")
+        mt.add_cmd("load", "Investing.com")
+        mt.add_raw("\n")
+        mt.add_param("_fund", fund_string)
+        mt.add_raw("\n")
+        mt.add_cmd("info", "Investing.com", self.fund_symbol)
+        mt.add_cmd("plot", "Investing.com", self.fund_symbol)
+        if self.country == "united states":
+            mt.add_cmd("sector", "Yahoo Finance", self.fund_symbol)
+            mt.add_cmd("equity", "Yahoo Finance", self.fund_symbol)
+        if self.country == "sweden":
+            mt.add_cmd("al_swe", "Avanza", self.fund_symbol)
+            mt.add_cmd("info_swe", "Avanza", self.fund_symbol)
+        console.print(text=mt.menu_text, menu="Mutual Funds")
 
     def custom_reset(self):
         """Class specific component of reset command"""

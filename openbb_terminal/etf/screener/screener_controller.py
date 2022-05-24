@@ -21,7 +21,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 
 logger = logging.getLogger(__name__)
 
@@ -83,17 +83,16 @@ class ScreenerController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = f"""[cmds]
-    view             view available presets
-    set              set one of the available presets[/cmds]
-
-[param]PRESET: [/param]{self.preset}[cmds]
-
-    screen           screen ETF using preset selected [src][StockAnalysis][/src]
-
-    sbc              screen by category [src][FinanceDatabase][/src][/cmds]
-"""
-        console.print(text=help_text, menu="ETF - Screener")
+        mt = MenuText("etf/scr/", 70)
+        mt.add_cmd("view")
+        mt.add_cmd("set")
+        mt.add_raw("\n")
+        mt.add_param("_preset", self.preset)
+        mt.add_raw("\n")
+        mt.add_cmd("screen", "StockAnalysis")
+        mt.add_raw("\n")
+        mt.add_cmd("sbc", "FinanceDatabase")
+        console.print(text=mt.menu_text, menu="ETF - Screener")
 
     @log_start_end(log=logger)
     def call_view(self, other_args: List[str]):

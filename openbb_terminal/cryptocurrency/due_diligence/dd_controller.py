@@ -39,7 +39,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import CryptoBaseController
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 
 logger = logging.getLogger(__name__)
 
@@ -163,61 +163,66 @@ class DueDiligenceController(CryptoBaseController):
 
     def print_help(self):
         """Print help"""
-        source_txt = CRYPTO_SOURCES.get(self.source, "?") if self.source != "" else ""
-        help_text = f"""[cmds]
-    load             load a specific cryptocurrency for analysis
+        mt = MenuText("crypto/dd/", 120)
+        mt.add_cmd("load")
+        mt.add_raw("\n")
+        mt.add_param("_coin", self.coin)
+        mt.add_param(
+            "_source", CRYPTO_SOURCES.get(self.source, "?") if self.source != "" else ""
+        )
+        mt.add_raw("\n")
 
-[param]Coin: [/param]{self.coin}
-[param]Source: [/param]{source_txt}
+        mt.add_info("_overview_")
+        mt.add_cmd("info", "CoinGecko")
+        mt.add_cmd("basic", "CoinPaprika")
+        mt.add_cmd("ath", "CoinGecko")
+        mt.add_cmd("atl", "CoinGecko")
+        mt.add_cmd("web", "CoinGecko")
+        mt.add_cmd("pi", "Messari")
+        mt.add_cmd("gov", "Messari")
+        mt.add_cmd("stats", "Coinbase")
+        mt.add_cmd("bc", "CoinGecko")
 
-[src]CoinGecko[/src]
-    info             basic information about loaded coin
-    market           market stats about loaded coin
-    ath              all time high related stats for loaded coin
-    atl              all time low related stats for loaded coin
-    web              found websites for loaded coin e.g forum, homepage
-    social           social portals urls for loaded coin, e.g reddit, twitter
-    score            different kind of scores for loaded coin, e.g developer score, sentiment score
-    dev              github, bitbucket coin development statistics
-    bc               links to blockchain explorers for loaded coin
-[src]Glassnode[/src]
-    active           active addresses
-    nonzero          addresses with non-zero balances
-    change           30d change of supply held on exchange wallets
-    eb               total balance held on exchanges (in percentage and units)
-[src]Coinglass[/src]
-    oi               open interest per exchange
-[src]CoinPaprika[/src]
-    basic            basic information about loaded coin
-    ps               price and supply related metrics for loaded coin
-    mkt              all markets for loaded coin
-    ex               all exchanges where loaded coin is listed
-    twitter          tweets for loaded coin
-    events           events related to loaded coin
-[src]Binance[/src]
-    binbook          order book
-    balance          coin balance
-[src]Coinbase[/src]
-    cbbook           order book
-    trades           last trades
-    stats            coin stats
-[src]Messari[/src]
-    mcapdom          market cap dominance
-    mt               messari timeseries e.g. twitter followers, circ supply, etc
-    rm               roadmap
-    tk               tokenomics e.g. circulating/max/total supply, emission type, etc
-    pi               project information e.g. technology details, public repos, audits, vulns
-    team             contributors (individuals and organizations)
-    inv              investors (individuals and organizations)
-    gov              governance details
-    fr               fundraising details e.g. treasury accounts, sales rounds, allocation
-    links            links e.g. whitepaper, github, twitter, youtube, reddit, telegram
-[src]Santiment[/src]
-    gh               github activity over time
-[src]CryptoPanic[/src]
-    news             loaded coin's most recent news[/cmds]
-"""
-        console.print(text=help_text, menu="Crypto - Due Diligence")
+        mt.add_info("_market_")
+        mt.add_cmd("market", "CoinGecko")
+        mt.add_cmd("mkt", "CoinPaprika")
+        mt.add_cmd("binbook", "Binance")
+        mt.add_cmd("balance", "Binance")
+        mt.add_cmd("cbbook", "Coinbase")
+        mt.add_cmd("trades", "Coinbase")
+        mt.add_cmd("ex", "CoinPaprika")
+        mt.add_cmd("oi", "Coinglass")
+        mt.add_cmd("eb", "Glassnode")
+
+        mt.add_info("_metrics_")
+        mt.add_cmd("mcapdom", "Messari")
+        mt.add_cmd("active", "Glassnode")
+        mt.add_cmd("nonzero", "Glassnode")
+        mt.add_cmd("change", "Glassnode")
+        mt.add_cmd("ps", "CoinPaprika")
+        mt.add_cmd("mt", "Messari")
+
+        mt.add_info("_contributors_")
+        mt.add_cmd("team", "Messari")
+        mt.add_cmd("inv", "Messari")
+
+        mt.add_info("_tokenomics_")
+        mt.add_cmd("tk", "Messari")
+        mt.add_cmd("fr", "Messari")
+
+        mt.add_info("_roadmap_")
+        mt.add_cmd("rm", "Messari")
+        mt.add_cmd("events", "CoinPaprika")
+        mt.add_cmd("news", "CryptoPanic")
+
+        mt.add_info("_activity_")
+        mt.add_cmd("links", "Messari")
+        mt.add_cmd("social", "CoinGecko")
+        mt.add_cmd("twitter", "CoinPaprika")
+        mt.add_cmd("score", "CoinGecko")
+        mt.add_cmd("dev", "CoinGecko")
+        mt.add_cmd("gh", "Santiment")
+        console.print(text=mt.menu_text, menu="Crypto - Due Diligence")
 
     def custom_reset(self):
         """Class specific component of reset command"""

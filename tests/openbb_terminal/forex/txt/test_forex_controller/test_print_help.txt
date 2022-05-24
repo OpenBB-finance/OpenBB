@@ -1,20 +1,19 @@
+    from               select the 'from' currency in a forex pair
+    to                 select the 'to' currency in a forex pair
 
-    from             select the "from" currency in a forex pair
-    to               select the "to" currency in a forex pair
+From: USD
+To: 
+Source: YahooFinance
 
-From:   USD
-To:     
-Source: YahooFinance[dim]
+[unvl]    quote              get last quote[/unvl]                              [AlphaVantage]
+[unvl]    load               get historical data[/unvl]
+[unvl]    candle             show candle plot for loaded pair[/unvl]
+[unvl]    fwd                get forward rates for loaded pair[/unvl]           [FXEmpire]
 
-    quote            get last quote [AlphaVantage]
-    load             get historical data
-    candle           show candle plot for loaded pair
-    fwd              get forward rates for loaded pair [FXEmpire]
+[unvl]>   ta                 technical analysis,          ema, macd, rsi, adx, bbands, obv[/unvl]
+[unvl]>   qa                 quantitative analysis,       decompose, cusum, residuals analysis[/unvl]
+[unvl]>   pred               prediction techniques        regression, arima, rnn, lstm, conv1d, monte carlo[/unvl]
 
->   ta               technical analysis,                   e.g.: ema, macd, rsi, adx, bbands, obv
->   qa               quantitative analysis,                e.g.: decompose, cusum, residuals analysis
->   pred             prediction techniques                 e.g.: regression, arima, rnn, lstm, conv1d, monte carlo
-[/dim]
 Forex brokerages:
->   oanda            Oanda menu
- 
+>   oanda              Oanda menu
+

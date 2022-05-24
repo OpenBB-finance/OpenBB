@@ -23,7 +23,7 @@ from openbb_terminal.helper_funcs import (
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.portfolio.portfolio_optimization import po_controller
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.stocks.comparison_analysis import ca_controller
 from openbb_terminal.stocks.screener import (
     finviz_model,
@@ -107,27 +107,25 @@ class ScreenerController(BaseController):
 
     def print_help(self):
         """Print help"""
-        has_tickers_start = "[unvl]" if not self.screen_tickers else ""
-        has_tickers_end = "[/unvl]" if not self.screen_tickers else ""
-        help_text = f"""[cmds]
-    view             view available presets (defaults and customs)
-    set              set one of the available presets[/cmds]
-
-[param]PRESET: [/param]{self.preset}[cmds]
-
-    historical        view historical price
-    overview          overview (e.g. Sector, Industry, Market Cap, Volume)
-    valuation         valuation (e.g. P/E, PEG, P/S, P/B, EPS this Y)
-    financial         financial (e.g. Dividend, ROA, ROE, ROI, Earnings)
-    ownership         ownership (e.g. Float, Insider Own, Short Ratio)
-    performance       performance (e.g. Perf Week, Perf YTD, Volatility M)
-    technical         technical (e.g. Beta, SMA50, 52W Low, RSI, Change)[/cmds]
-    {has_tickers_start}
-[param]Last screened tickers: [/param]{', '.join(self.screen_tickers)}
->   ca                take these to comparison analysis menu
->   po                take these to portfolio optimization menu{has_tickers_end}
-        """
-        console.print(text=help_text, menu="Stocks - Screener")
+        mt = MenuText("stocks/scr/")
+        mt.add_cmd("view")
+        mt.add_cmd("set")
+        mt.add_raw("\n")
+        mt.add_param("_preset", self.preset)
+        mt.add_raw("\n")
+        mt.add_cmd("historical")
+        mt.add_cmd("overview")
+        mt.add_cmd("valuation")
+        mt.add_cmd("financial")
+        mt.add_cmd("ownership")
+        mt.add_cmd("performance")
+        mt.add_cmd("technical")
+        mt.add_raw("\n")
+        mt.add_param("_screened_tickers", ", ".join(self.screen_tickers))
+        mt.add_raw("\n")
+        mt.add_menu("ca", self.screen_tickers)
+        mt.add_menu("po", self.screen_tickers)
+        console.print(text=mt.menu_text, menu="Stocks - Screener")
 
     @log_start_end(log=logger)
     def call_view(self, other_args: List[str]):

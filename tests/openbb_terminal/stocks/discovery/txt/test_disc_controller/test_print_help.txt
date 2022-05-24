@@ -1,28 +1,19 @@
-
-[Finnhub]
-    pipo             past IPOs dates
-    fipo             future IPOs dates
-[Yahoo Finance]
-    gainers          show latest top gainers
-    losers           show latest top losers
-    ugs              undervalued stocks with revenue and earnings growth in excess of 25%
-    gtech            tech stocks with revenue and earnings growth more than 25%
-    active           most active stocks by intraday trade volume
-    ulc              potentially undervalued large cap stocks
-    asc              small cap stocks with earnings growth rates better than 25%
-[Fidelity]
-    ford             orders by Fidelity Customers
-[Cathiesark.com]
-    arkord           orders by ARK Investment Management LLC
-[Seeking Alpha]
-    upcoming         upcoming earnings release dates
-    trending         trending news
-    cnews            customized news (buybacks, ipos, spacs, healthcare, politics)
-[Shortinterest.com]
-    lowfloat         low float stocks under 10M shares float
-[Pennystockflow.com]
-    hotpenny         today's hot penny stocks
-[NASDAQ Data Link (Formerly Quandl)]
-    rtat             top 10 retail traded stocks per day
-    divcal           dividend calendar for selected date
+    pipo               past IPOs dates                                                 [Finnhub]
+    fipo               future IPOs dates                                               [Finnhub]
+    gainers            show latest top gainers                                         [Yahoo Finance]
+    losers             show latest top losers                                          [Yahoo Finance]
+    ugs                undervalued stocks with revenue and earnings growth above 25%   [Yahoo Finance]
+    gtech              tech stocks with revenue and earnings growth more than 25%      [Yahoo Finance]
+    active             most active stocks by intraday trade volumest                   [Yahoo Finance]
+    ulc                potentially undervalued large cap stocks                        [Yahoo Finance]
+    asc                small cap stocks with earnings growth rates better than 25%     [Yahoo Finance]
+    ford               orders by Fidelity Customers                                    [Fidelity]
+    arkord             orders by ARK Investment Management LLC                         [Cathiesark]
+    upcoming           upcoming earnings release dates                                 [Seeking Alpha]
+    trending           trending news                                                   [Seeking Alpha]
+    cnews              customized news (buybacks, ipos, spacs, healthcare, politics)   [Seeking Alpha]
+    lowfloat           low float stocks under 10M shares float                         [Fidelity]
+    hotpenny           today's hot penny stocks                                        [Shortinterest]
+    rtat               top 10 retail traded stocks per day                             [NASDAQ Data Link]
+    divcal             dividend calendar for selected date                             [NASDAQ Data Link]
 
