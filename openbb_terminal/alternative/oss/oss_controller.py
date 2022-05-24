@@ -20,7 +20,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 
 logger = logging.getLogger(__name__)
 
@@ -44,15 +44,12 @@ class OSSController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = """[cmds]
-[src][Runa][/src]
-        rossidx     the fastest-growing open-source startups
-[src][GitHub][/src]
-        rs          repo summary
-        sh          repo star history
-        tr          top starred repos[/cmds]
-        """
-        console.print(text=help_text, menu="Alternative - Open Source")
+        mt = MenuText("alternative/oss/", 80)
+        mt.add_cmd_translation("rossidx", "Runa")
+        mt.add_cmd_translation("rs", "GitHub")
+        mt.add_cmd_translation("sh", "GitHub")
+        mt.add_cmd_translation("tr", "GitHub")
+        console.print(text=mt.menu_text, menu="Alternative - Open Source")
 
     @log_start_end(log=logger)
     def call_sh(self, other_args: List[str]):

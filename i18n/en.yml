@@ -869,3 +869,28 @@ en:
   forex/oanda/order: place limit order -u NUMBER of units -p price
   forex/oanda/orderbook: print orderbook
   forex/oanda/positionbook: print positionbook
+  funds/country: set a country for filtering
+  funds/_country: Current Country
+  funds/overview: overview of top funds by country
+  funds/search: search for Mutual Funds
+  funds/load: load historical fund data
+  funds/_fund: Current Fund
+  funds/info: get fund information
+  funds/plot: plot loaded historical fund data
+  funds/sector: sector weightings
+  funds/equity: equity holdings
+  funds/al_swe: display fund allocation (sector, country, holdings)
+  funds/info_swe: get fund information
+  alternative/covid: COVID menu,                 cases, deaths, rates
+  alternative/oss: Open Source menu,           star history, repos information
+  alternative/covid/slopes: get countries with highest slope in cases
+  alternative/covid/country: select country for data
+  alternative/covid/_country: Country
+  alternative/covid/ov: get overview (cases and deaths) for selected country
+  alternative/covid/deaths: get deaths for selected country
+  alternative/covid/cases: get cases for selected country
+  alternative/covid/rates: get death/cases rate for selected country
+  alternative/oss/rossidx: the fastest-growing open-source startups
+  alternative/oss/rs: repo summary
+  alternative/oss/sh: repo star history
+  alternative/oss/tr: top starred repos
