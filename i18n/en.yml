@@ -902,3 +902,87 @@ en:
   alternative/oss/rs: repo summary
   alternative/oss/sh: repo star history
   alternative/oss/tr: top starred repos
+  econometrics/load: load in custom data sets
+  econometrics/export: export a dataset
+  econometrics/remove: remove a dataset
+  econometrics/options: show available column-dataset options
+  econometrics/_loaded: Loaded files
+  econometrics/_exploration_: Exploration
+  econometrics/show: show a portion of a loaded dataset
+  econometrics/plot: plot data from a dataset
+  econometrics/type: change types of the columns or display their types
+  econometrics/desc: show descriptive statistics of a dataset
+  econometrics/index: set (multi) index based on columns
+  econometrics/clean: clean a dataset by filling or dropping NaNs
+  econometrics/modify: combine columns of datasets and delete or rename columns
+  econometrics/_timeseries_: Timeseries
+  econometrics/ols: fit a (multi) linear regression model
+  econometrics/norm: perform normality tests on a column of a dataset
+  econometrics/root: perform unitroot tests (ADF & KPSS) on a column of a dataset
+  econometrics/_panel_: Panel Data
+  econometrics/panel: estimate model based on various regression techniques
+  econometrics/compare: compare results of all estimated models
+  econometrics/_tests_: Tests
+  econometrics/dwat: Durbin-Watson autocorrelation test on the residuals of the regression
+  econometrics/bgod: Breusch-Godfrey autocorrelation tests with lags on the residuals of the regression
+  econometrics/bpag: Breusch-Pagan heteroscedasticity test on the residuals of the regression
+  econometrics/granger: Granger causality tests on two columns
+  econometrics/coint: co-integration test on a multitude of columns
+  portfolio/bro: brokers holdings,   supports robinhood, ally, degiro, coinbase
+  portfolio/po: portfolio optimization,  optimal your portfolio weights efficiently
+  portfolio/load: load data into the portfolio
+  portfolio/_loaded: Loaded orderbook
+  portfolio/_riskfreerate: Risk Free Rate
+  portfolio/show: show existing transactions
+  portfolio/bench: define the benchmark
+  portfolio/_benchmark: Benchmark
+  portfolio/_graphs_: Graphs
+  portfolio/holdv: holdings of assets (absolute value)
+  portfolio/holdp: portfolio holdings of assets (in percentage)
+  portfolio/cret: cumulative returns
+  portfolio/yret: yearly returns
+  portfolio/mret: monthly returns
+  portfolio/dret: daily returns
+  portfolio/distr: distribution of daily returns
+  portfolio/maxdd: maximum drawdown
+  portfolio/rvol: rolling volatility
+  portfolio/rsharpe: rolling sharpe
+  portfolio/rsort: rolling sortino
+  portfolio/rbeta: rolling beta
+  portfolio/_metrics_: Metrics
+  portfolio/alloc: allocation on an asset, sector, countries or regions basis
+  portfolio/summary: all portfolio vs benchmark metrics for a certain period of choice
+  portfolio/metric: portfolio vs benchmark metric for all different periods
+  portfolio/perf: performance of the portfolio versus benchmark
+  portfolio/_risk_: Risk Metrics
+  portfolio/var: display value at risk
+  portfolio/es: display expected shortfall
+  portfolio/om: display omega ratio
+  portfolio/bro/ally: Ally Invest Menu
+  portfolio/bro/degiro: Degiro Menu
+  portfolio/bro/rh: Robinhood Menu
+  portfolio/bro/cb: Coinbase Pro Menu
+  portfolio/bro/ally/holdings: show account holdings
+  portfolio/bro/ally/history: show history of your account
+  portfolio/bro/ally/balances: show balance details of account
+  portfolio/bro/ally/_info_: Stock Information
+  portfolio/bro/ally/quote: get stock quote
+  portfolio/bro/ally/movers: get ranked lists of movers
+  portfolio/bro/degiro/login: connect to degiro's api
+  portfolio/bro/degiro/logout: disconnect from degiro's api
+  portfolio/bro/degiro/hold: view holdings
+  portfolio/bro/degiro/lookup: view search for a product by name
+  portfolio/bro/degiro/create: create an order
+  portfolio/bro/degiro/update: update an order
+  portfolio/bro/degiro/cancel: cancel an order using the id
+  portfolio/bro/degiro/pending: view pending orders
+  portfolio/bro/degiro/companynews: view news about a company with it's isin
+  portfolio/bro/degiro/lastnews: view latest news
+  portfolio/bro/degiro/topnews: view top news preview
+  portfolio/bro/rh/login: login to robinhood
+  portfolio/bro/rh/holdings: show account holdings in stocks
+  portfolio/bro/rh/history: show equity history of your account
+  portfolio/bro/cb/account: show balance of your account
+  portfolio/bro/cb/history: show history of your account
+  portfolio/bro/cb/deposits: show all your deposits or internal transfers
+  portfolio/bro/cb/orders: show all your orders

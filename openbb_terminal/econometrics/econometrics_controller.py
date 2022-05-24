@@ -30,7 +30,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.econometrics import econometrics_model, econometrics_view
 
 logger = logging.getLogger(__name__)
@@ -219,40 +219,41 @@ class EconometricsController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = f"""[cmds]
-    load             load in custom data sets
-    export           export a dataset
-    remove           remove a dataset
-    options          show available column-dataset options[/cmds]
+        mt = MenuText("econometrics/")
+        mt.add_cmd_translation("load")
+        mt.add_cmd_translation("export")
+        mt.add_cmd_translation("remove")
+        mt.add_cmd_translation("options")
+        mt.add_raw("\n")
+        mt.add_param_translation("_loaded", ", ".join(self.files))
+        mt.add_raw("\n")
 
-[param]Loaded files:[/param] {", ".join(self.files) or None}[cmds]
+        mt.add_info_translation("_exploration_")
+        mt.add_cmd_translation("show")
+        mt.add_cmd_translation("plot")
+        mt.add_cmd_translation("type")
+        mt.add_cmd_translation("desc")
+        mt.add_cmd_translation("index")
+        mt.add_cmd_translation("clean")
+        mt.add_cmd_translation("modify")
 
-[info]Exploration[/info]
-    show             show a portion of a loaded dataset
-    plot             plot data from a dataset
-    type             change types of the columns or display their types
-    desc             show descriptive statistics of a dataset
-    index            set (multi) index based on columns
-    clean            clean a dataset by filling or dropping NaNs
-    modify           combine columns of datasets and delete or rename columns
+        mt.add_info_translation("_timeseries_")
+        mt.add_cmd_translation("ols")
+        mt.add_cmd_translation("norm")
+        mt.add_cmd_translation("root")
 
-[info]Timeseries[/info]
-    ols              fit a (multi) linear regression model
-    norm             perform normality tests on a column of a dataset
-    root             perform unitroot tests (ADF & KPSS) on a column of a dataset
+        mt.add_info_translation("_panel_")
+        mt.add_cmd_translation("panel")
+        mt.add_cmd_translation("compare")
 
-[info]Panel Data[/info]
-    panel            estimate model based on various regression techniques
-    compare          compare results of all estimated models
+        mt.add_info_translation("_tests_")
+        mt.add_cmd_translation("dwat")
+        mt.add_cmd_translation("bgod")
+        mt.add_cmd_translation("bpag")
+        mt.add_cmd_translation("granger")
+        mt.add_cmd_translation("coint")
 
-[info]Tests[/info]
-    dwat             Durbin-Watson autocorrelation test on the residuals of the regression
-    bgod             Breusch-Godfrey autocorrelation tests with lags on the residuals of the regression
-    bpag             Breusch-Pagan heteroscedasticity test on the residuals of the regression
-    granger          Granger causality tests on two columns
-    coint            co-integration test on a multitude of columns[/cmds]
-        """
-        console.print(text=help_text, menu="Econometrics")
+        console.print(text=mt.menu_text, menu="Econometrics")
 
     def call_load(self, other_args: List[str]):
         """Process load"""
