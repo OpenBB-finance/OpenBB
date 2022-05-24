@@ -29,7 +29,7 @@ def get_expo_data(
     data: Union[pd.Series, pd.DataFrame],
     trend: str = "A",
     seasonal: str = "A",
-    seasonal_periods: int = None,
+    seasonal_periods: int = 7,
     dampen: str = "F",
     n_predict: int = 30,
     start_window: float = 0.65,
@@ -53,7 +53,7 @@ def get_expo_data(
         Seasonal component.  One of [N, A, M]
         Defaults to ADDITIVE.
     seasonal_periods: int
-        Number of seasonal periods in a year
+        Number of seasonal periods in a year (7 for daily data)
         If not set, inferred from frequency of the series.
     dampen: str
         Dampen the function
@@ -108,19 +108,23 @@ def get_expo_data(
 
     # Model Init
     model_es = ExponentialSmoothing(
-        trend=trend, seasonal=seasonal, seasonal_periods=seasonal_periods, damped=damped
+        trend=trend,
+        seasonal=seasonal,
+        seasonal_periods=int(seasonal_periods),
+        damped=damped,
+        random_state=42,
     )
 
     # Training model based on historical backtesting
     historical_fcast_es = model_es.historical_forecasts(
         ticker_series,
-        start=start_window,
-        forecast_horizon=forecast_horizon,
+        start=float(start_window),
+        forecast_horizon=int(forecast_horizon),
         verbose=True,
     )
 
     # Show forecast over validation # and then +n_predict afterwards sampled 10 times per point
-    probabilistic_forecast = model_es.predict(n_predict, num_samples=500)
+    probabilistic_forecast = model_es.predict(int(n_predict), num_samples=500)
     precision = mape(val, probabilistic_forecast)  # mape = mean average precision error
     console.print(f"model {model_es} obtains MAPE: {precision:.2f}% \n")  # TODO
 
