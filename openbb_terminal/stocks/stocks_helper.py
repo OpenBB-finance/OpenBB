@@ -5,6 +5,7 @@ import logging
 import os
 from datetime import datetime, timedelta, date
 from typing import List, Union, Optional, Iterable
+import warnings
 
 import financedatabase as fd
 import matplotlib.pyplot as plt
@@ -1064,6 +1065,7 @@ def additional_info_about_ticker(ticker: str) -> str:
             extra_info += "\n[param]Currency: [/param]USD"
             extra_info += "\n[param]Market:   [/param]"
             calendar = mcal.get_calendar("NYSE")
+            warnings.filterwarnings("ignore")
             sch = calendar.schedule(
                 start_date=(datetime.now() - timedelta(days=3)).strftime("%Y-%m-%d"),
                 end_date=(datetime.now() + timedelta(days=3)).strftime("%Y-%m-%d"),

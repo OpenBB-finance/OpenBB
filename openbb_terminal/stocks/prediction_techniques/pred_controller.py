@@ -22,6 +22,8 @@ from openbb_terminal.common.prediction_techniques import (
     neural_networks_view,
     pred_helper,
     regression_view,
+    expo_view,
+    expo_model,
 )
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
@@ -54,6 +56,7 @@ class PredictionTechniquesController(BaseController):
         "lstm",
         "conv1d",
         "mc",
+        "expo",
     ]
 
     PATH = "/stocks/pred/"
@@ -90,6 +93,10 @@ class PredictionTechniquesController(BaseController):
             choices["ets"]["-s"] = {c: {} for c in ets_model.SEASONS}
             choices["arima"]["-i"] = {c: {} for c in arima_model.ICS}
             choices["mc"]["--dist"] = {c: {} for c in mc_model.DISTRIBUTIONS}
+            choices["expo"]["-t"] = {c: {} for c in expo_model.TRENDS}
+            choices["expo"]["-s"] = {c: {} for c in expo_model.SEASONS}
+            choices["expo"]["-p"] = {c: {} for c in expo_model.PERIODS}
+            choices["expo"]["-dp"] = {c: {} for c in expo_model.DAMPEN}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
@@ -119,6 +126,7 @@ class PredictionTechniquesController(BaseController):
         mt.add_cmd("lstm")
         mt.add_cmd("conv1d")
         mt.add_cmd("mc")
+        mt.add_cmd("expo")
         console.print(text=mt.menu_text, menu="Stocks - Prediction Techniques")
 
     def custom_reset(self):
@@ -711,5 +719,101 @@ class PredictionTechniquesController(BaseController):
                 n_future=ns_parser.n_days,
                 n_sims=ns_parser.n_sims,
                 use_log=ns_parser.dist == "lognormal",
+                export=ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
+    def call_expo(self, other_args: List[str]):
+        """Process expo command"""
+        parser = argparse.ArgumentParser(
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            add_help=False,
+            prog="expo",
+            description="""
+                Perform Probabilistic Exponential Smoothing forecast
+                Trend: N: None, A: Additive, M: Multiplicative
+                Seasonality: N: None, A: Additive, M: Multiplicative
+                Dampen: T: True, F: False
+            """,
+        )
+        parser.add_argument(
+            "-n",
+            "--n_days",
+            action="store",
+            dest="n_days",
+            type=check_positive,
+            default=5,
+            help="prediction days.",
+        )
+        parser.add_argument(
+            "-t",
+            "--trend",
+            action="store",
+            dest="trend",
+            choices=expo_model.TRENDS,
+            default="A",
+            help="Trend: N: None, A: Additive, M: Multiplicative.",
+        )
+        parser.add_argument(
+            "-s",
+            "--seasonal",
+            action="store",
+            dest="seasonal",
+            choices=expo_model.SEASONS,
+            default="A",
+            help="Seasonality: N: None, A: Additive, M: Multiplicative.",
+        )
+        parser.add_argument(
+            "-p",
+            "--periods",
+            action="store",
+            dest="seasonal_periods",
+            type=check_positive,
+            default=7,
+            help="Seasonal periods: 4: Quarterly, 7: Daily",
+        )
+        parser.add_argument(
+            "-d",
+            "--dampen",
+            action="store",
+            dest="dampen",
+            default="F",
+            help="Dampening",
+        )
+        parser.add_argument(
+            "-w",
+            "--window",
+            action="store",
+            dest="start_window",
+            default=0.65,
+            help="Start point for rolling training and forecast window. 0.0-1.0",
+        )
+        parser.add_argument(
+            "-f",
+            "--forecasthorizon",
+            action="store",
+            dest="forecast_horizon",
+            default=3,
+            help="Days/Points to forecast when training and performing historical back-testing",
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
+        )
+
+        if ns_parser:
+            if self.target != "AdjClose":
+                console.print("Expo Prediction designed for AdjClose prices\n")
+
+            expo_view.display_expo_forecast(
+                data=self.stock,
+                ticker_name=self.ticker,
+                n_predict=ns_parser.n_days,
+                trend=ns_parser.trend,
+                seasonal=ns_parser.seasonal,
+                seasonal_periods=ns_parser.seasonal_periods,
+                dampen=ns_parser.dampen,
+                start_window=ns_parser.start_window,
+                forecast_horizon=ns_parser.forecast_horizon,
                 export=ns_parser.export,
             )
