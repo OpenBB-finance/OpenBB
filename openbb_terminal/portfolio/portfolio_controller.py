@@ -26,7 +26,7 @@ from openbb_terminal.portfolio import portfolio_model
 from openbb_terminal.portfolio import portfolio_view
 from openbb_terminal.portfolio import portfolio_helper
 from openbb_terminal.portfolio.portfolio_optimization import po_controller
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.common.quantitative_analysis import qa_view
 
 # pylint: disable=R1710,E1101,C0415,W0212,too-many-function-args,C0302
@@ -137,6 +137,50 @@ class PortfolioController(BaseController):
 
     def print_help(self):
         """Print help"""
+        mt = MenuText("portfolio/")
+        mt.add_menu("bro")
+        mt.add_menu("po")
+        mt.add_raw("\n")
+
+        mt.add_cmd("load")
+        mt.add_raw("\n")
+        mt.add_param("_loaded", self.portfolio_name)
+        mt.add_param("_riskfreerate", self.portfolio_name)
+        mt.add_raw("\n")
+        mt.add_cmd("show")
+        mt.add_raw("\n")
+        mt.add_cmd("bench")
+        mt.add_raw("\n")
+        mt.add_param("_benchmark", self.benchmark_name)
+        mt.add_raw("\n")
+
+        mt.add_info("_graphs_")
+        mt.add_cmd("holdv", self.portfolio_name and self.benchmark_name)
+        mt.add_cmd("holdp", self.portfolio_name and self.benchmark_name)
+        mt.add_cmd("cret", self.portfolio_name and self.benchmark_name)
+        mt.add_cmd("yret", self.portfolio_name and self.benchmark_name)
+        mt.add_cmd("mret", self.portfolio_name and self.benchmark_name)
+        mt.add_cmd("dret", self.portfolio_name and self.benchmark_name)
+        mt.add_cmd("distr", self.portfolio_name and self.benchmark_name)
+        mt.add_cmd("maxdd", self.portfolio_name and self.benchmark_name)
+        mt.add_cmd("rvol", self.portfolio_name and self.benchmark_name)
+        mt.add_cmd("rsharpe", self.portfolio_name and self.benchmark_name)
+        mt.add_cmd("rsort", self.portfolio_name and self.benchmark_name)
+        mt.add_cmd("rbeta", self.portfolio_name and self.benchmark_name)
+
+        mt.add_info("_metrics_")
+        mt.add_cmd("alloc", self.portfolio_name and self.benchmark_name)
+        mt.add_cmd("summary", self.portfolio_name and self.benchmark_name)
+        mt.add_cmd("metric", self.portfolio_name and self.benchmark_name)
+        mt.add_cmd("perf", self.portfolio_name and self.benchmark_name)
+
+        mt.add_info("_risk_")
+        mt.add_cmd("var", self.portfolio_name and self.benchmark_name)
+        mt.add_cmd("es", self.portfolio_name and self.benchmark_name)
+        mt.add_cmd("os", self.portfolio_name and self.benchmark_name)
+
+        console.print(text=mt.menu_text, menu="Portfolio")
+
         port = bool(self.portfolio_name)
         port_bench = bool(self.portfolio_name) and bool(self.benchmark_name)
 

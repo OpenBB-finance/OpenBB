@@ -1,37 +1,32 @@
-
-    ticker        set ticker to get similar companies from
+    ticker             set ticker to get similar companies from
 
 Ticker to get similar companies from: 
-[unvl]
-    tsne          run TSNE on all SP500 stocks and returns closest tickers
-    getpoly       get similar stocks from polygon API
-    getfinnhub    get similar stocks from finnhub API
-    getfinviz     get similar stocks from finviz API[/unvl]
 
-    set           reset and set similar companies
-    add           add more similar companies
-    rmv           remove similar companies individually or all
-[unvl]
+[unvl]    tsne               run TSNE on all SP500 stocks and returns closest tickers[/unvl]
+[unvl]    getpoly            get similar stocks[/unvl]                          [Polygon]
+[unvl]    getfinnhub         get similar stocks[/unvl]                          [Finnhub]
+[unvl]    getfinviz          get similar stocks[/unvl]                          [Finviz]
+
+    set                reset and set similar companies
+    add                add more similar companies
+    rmv                remove similar companies individually or all
+
 Similar Companies: 
 
-[Yahoo Finance]
-    historical       historical price data comparison
-    hcorr            historical price correlation
-    volume           historical volume data comparison
-[Market Watch]
-    income           income financials comparison
-    balance          balance financials comparison
-    cashflow         cashflow comparison
-[Finbrain]
-    sentiment        sentiment analysis comparison
-    scorr            sentiment correlation
-[Finviz]
-    overview         brief overview comparison
-    valuation        brief valuation comparison
-    financial        brief financial comparison
-    ownership        brief ownership comparison
-    performance      brief performance comparison
-    technical        brief technical comparison
+[unvl]    historical         historical price data comparison[/unvl]            [Yahoo Finance]
+[unvl]    hcorr              historical price correlation[/unvl]                [Yahoo Finance]
+[unvl]    volume             historical volume data comparison[/unvl]           [Yahoo Finance]
+[unvl]    income             income financials comparison[/unvl]                [Market Watch]
+[unvl]    balance            balance financials comparison[/unvl]               [Market Watch]
+[unvl]    cashflow           cashflow comparison[/unvl]                         [Market Watch]
+[unvl]    sentiment          sentiment analysis comparison[/unvl]               [FinBrain]
+[unvl]    scorr              sentiment correlation[/unvl]                       [FinBrain]
+[unvl]    overview           brief overview comparison[/unvl]                   [Finviz]
+[unvl]    valuation          brief valuation comparison[/unvl]                  [Finviz]
+[unvl]    financial          brief financial comparison[/unvl]                  [Finviz]
+[unvl]    ownership          brief ownership comparison[/unvl]                  [Finviz]
+[unvl]    performance        brief performance comparison[/unvl]                [Finviz]
+[unvl]    technical          brief technical comparison[/unvl]                  [Finviz]
 
->   po               portfolio optimization for selected tickers[/unvl]
-        
+[unvl]>   po                 portfolio optimization for selected tickers[/unvl]
+

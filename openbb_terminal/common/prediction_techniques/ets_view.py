@@ -43,7 +43,7 @@ def display_exponential_smoothing(
     n_predict: int,
     trend: str = "N",
     seasonal: str = "N",
-    seasonal_periods: int = 5,
+    seasonal_periods: int = 7,
     s_end_date: str = "",
     export: str = "",
     time_res: str = "",

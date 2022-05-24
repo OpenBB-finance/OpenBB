@@ -37,7 +37,7 @@ def display_sector(fund: str, min_pct_to_display: float = 5, export: str = ""):
     sector_weights = yfinance_model.get_information(fund)
     if "sectorWeightings" not in sector_weights.keys():
         console.print(
-            f"Sector Weights are not found f for {fund}. Either the symbol is incorrect or there is an issue "
+            f"Sector Weights are not found for {fund}. Either the symbol is incorrect or there is an issue "
             "in pulling from yahoo.\n"
         )
         return

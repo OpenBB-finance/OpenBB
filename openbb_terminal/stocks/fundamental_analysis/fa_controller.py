@@ -19,7 +19,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.stocks.fundamental_analysis import (
     av_view,
@@ -104,45 +104,44 @@ class FundamentalAnalysisController(StockBaseController):
 
     def print_help(self):
         """Print help."""
-        is_foreign_start = "" if not self.suffix else "[unvl]"
-        is_foreign_end = "" if not self.suffix else "[/unvl]"
-        help_text = f"""[param]
-Ticker: [/param] {self.ticker} [cmds]
-[cmds]
-    data             fundamental and technical data of company [src][FinViz][/src]
-    mgmt             management team of the company [src][Business Insider][/src]
-    analysis         analyse SEC filings with the help of machine learning [src][Eclect.us][/src]
-    score            investing score from Warren Buffett, Joseph Piotroski and Benjamin Graham [src][FMP][/src]
-    warnings         company warnings according to Sean Seah book [src][Market Watch][/src]
-    dcf              advanced Excel customizable discounted cash flow [src][Stockanalysis][/src][/cmds]
-[src][Yahoo Finance][/src]
-    info             information scope of the company
-    mktcap           estimated market cap{is_foreign_start}
-    shrs             shareholders (insiders, institutions and mutual funds)
-    sust             sustainability values (environment, social and governance)
-    cal              calendar earnings and estimates of the company
-    divs             show historical dividends for company
-    splits           stock split and reverse split events since IPO
-    web              open web browser of the company
-    hq               open HQ location of the company{is_foreign_end}
-[src][Alpha Vantage / Polygon][/src]
-    income           income statements of the company
-    balance          balance sheet of the company
-[src][Alpha Vantage][/src]
-    overview         overview of the company
-    key              company key metrics
-    cash             cash flow of the company
-    earnings         earnings dates and reported EPS
-    fraud            key fraud ratios
-    dupont           detailed breakdown for return on equity[/cmds]
-[info]Other Sources:[/info][menu]
->   fmp              profile,quote,enterprise,dcf,income,ratios,growth from FMP[/menu]
-        """
-        console.print(text=help_text, menu="Stocks - Fundamental Analysis")
+        mt = MenuText("stocks/fa/")
+        mt.add_cmd("load")
+        mt.add_raw("\n")
+        mt.add_param("_ticker", self.ticker.upper())
+        mt.add_raw("\n")
+        mt.add_cmd("data", "Finviz")
+        mt.add_cmd("mgmt", "Business Insider")
+        mt.add_cmd("analysis", "Elect")
+        mt.add_cmd("score", "FMP")
+        mt.add_cmd("warnings", "Market Watch")
+        mt.add_cmd("dcf", "Stockanalysis")
+        mt.add_cmd("info", "Yahoo Finance")
+        mt.add_cmd("mktcap", "Yahoo Finance")
+        mt.add_cmd("shrs", "Yahoo Finance", not self.suffix)
+        mt.add_cmd("sust", "Yahoo Finance", not self.suffix)
+        mt.add_cmd("cal", "Yahoo Finance", not self.suffix)
+        mt.add_cmd("divs", "Yahoo Finance", not self.suffix)
+        mt.add_cmd("splits", "Yahoo Finance", not self.suffix)
+        mt.add_cmd("web", "Yahoo Finance", not self.suffix)
+        mt.add_cmd("hq", "Yahoo Finance", not self.suffix)
+        mt.add_cmd("income", "Alpha Vantage / Polygon")
+        mt.add_cmd("balance", "Alpha Vantage / Polygon")
+        mt.add_cmd("overview", "Alpha Vantage")
+        mt.add_cmd("key", "Alpha Vantage")
+        mt.add_cmd("cash", "Alpha Vantage")
+        mt.add_cmd("earnings", "Alpha Vantage")
+        mt.add_cmd("fraud", "Alpha Vantage")
+        mt.add_cmd("dupont", "Alpha Vantage")
+        mt.add_raw("\n")
+        mt.add_info("_sources_")
+        mt.add_menu("fmp")
+        console.print(text=mt.menu_text, menu="Stocks - Fundamental Analysis")
 
     def custom_reset(self):
         """Class specific component of reset command"""
         if self.ticker:
+            if self.suffix:
+                return ["stocks", f"load {self.ticker}.{self.suffix}", "fa"]
             return ["stocks", f"load {self.ticker}", "fa"]
         return []
 

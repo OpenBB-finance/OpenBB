@@ -27,7 +27,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 
 logger = logging.getLogger(__name__)
 
@@ -89,24 +89,18 @@ class DiscoveryController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = """[cmds]
-[src][CoinGecko][/src]
-    cgtop            top coins (with or without category)
-    cgtrending       trending coins
-    cggainers        top gainers - coins which price gained the most in given period
-    cglosers         top losers - coins which price dropped the most in given period
-[src][CoinPaprika][/src]
-    cpsearch         search for coins
-[src][CoinMarketCap][/src]
-    cmctop           top coins
-[src][DappRadar][/src]
-    drnft            top non fungible tokens
-    drgames          top blockchain games
-    drdapps          top decentralized apps
-    drdex            top decentralized exchanges
-[/cmds]
-"""
-        console.print(text=help_text, menu="Cryptocurrency - Discovery")
+        mt = MenuText("crypto/disc/")
+        mt.add_cmd("cgtop", "CoinGecko")
+        mt.add_cmd("cgtrending", "CoinGecko")
+        mt.add_cmd("cggainers", "CoinGecko")
+        mt.add_cmd("cglosers", "CoinGecko")
+        mt.add_cmd("cpsearch", "CoinPaprika")
+        mt.add_cmd("cmctop", "CoinMarketCap")
+        mt.add_cmd("drnft", "DappRadar")
+        mt.add_cmd("drgames", "DappRadar")
+        mt.add_cmd("drdapps", "DappRadar")
+        mt.add_cmd("drdex", "DappRadar")
+        console.print(text=mt.menu_text, menu="Cryptocurrency - Discovery")
 
     @log_start_end(log=logger)
     def call_cgtop(self, other_args):

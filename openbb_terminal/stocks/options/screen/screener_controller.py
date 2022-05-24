@@ -18,7 +18,7 @@ from openbb_terminal.helper_funcs import (
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.portfolio.portfolio_optimization import po_controller
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.stocks.comparison_analysis import ca_controller
 from openbb_terminal.stocks.options.screen import syncretism_view
 
@@ -60,21 +60,19 @@ class ScreenerController(BaseController):
 
     def print_help(self):
         """Print help"""
-        has_screen_tickers_start = "" if self.screen_tickers else "[unvl]"
-        has_screen_tickers_end = "" if self.screen_tickers else "[/unvl]"
-        help_text = f"""[cmds]
-    view             view available presets (or one in particular)
-    set              set one of the available presets
-[/cmds]
-[param]PRESET: [/param]{self.preset}[cmds]
-
-    scr              screen data from this preset[/cmds]
-{has_screen_tickers_start}
-[param]Last screened tickers: [/param]{', '.join(self.screen_tickers)}[menu]
->   ca               take these to comparison analysis menu
->   po               take these to portoflio optimization menu{has_screen_tickers_end}
-        """
-        console.print(text=help_text, menu="Stocks - Options - Screener")
+        mt = MenuText("stocks/options/screen/")
+        mt.add_cmd("view")
+        mt.add_cmd("set")
+        mt.add_raw("\n")
+        mt.add_param("_preset", self.preset)
+        mt.add_raw("\n")
+        mt.add_cmd("scr")
+        mt.add_raw("\n")
+        mt.add_param("_screened_tickers", ", ".join(self.screen_tickers))
+        mt.add_raw("\n")
+        mt.add_menu("ca")
+        mt.add_menu("po")
+        console.print(text=mt.menu_text, menu="Stocks - Options - Screener")
 
     @log_start_end(log=logger)
     def call_view(self, other_args: List[str]):

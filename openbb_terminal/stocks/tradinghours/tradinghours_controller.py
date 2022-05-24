@@ -17,7 +17,7 @@ from openbb_terminal.helper_funcs import (
     get_user_timezone_or_invalid,
     parse_known_args_and_warn,
 )
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.stocks.tradinghours import bursa_view
 from openbb_terminal.stocks.tradinghours.bursa_model import get_open
@@ -76,19 +76,18 @@ class TradingHoursController(BaseController):
         else:
             exchange_opened = ""
 
-        help_text = f"""[cmds]
-    symbol           select the symbol[/cmds]
-
-[param]Symbol name:[/param] {self.symbol_name or ""}
-[param]Symbol:[/param] {self.symbol or ""}
-[param]Exchange open:[/param] {exchange_opened}
-[cmds]
-    open             show open markets
-    closed           show closed markets
-    all              show all markets
-    exchange         show one exchange[/cmds]
-"""
-        console.print(text=help_text, menu="Trading Hours")
+        mt = MenuText("stocks/th/")
+        mt.add_cmd("symbol")
+        mt.add_raw("\n")
+        mt.add_param("_symbol_name", self.symbol_name or "")
+        mt.add_param("_symbol", self.symbol_name or "")
+        mt.add_param("_exchange", exchange_opened)
+        mt.add_raw("\n")
+        mt.add_cmd("open")
+        mt.add_cmd("closed")
+        mt.add_cmd("all")
+        mt.add_cmd("exchange")
+        console.print(text=mt.menu_text, menu="Stocks - Trading Hours")
 
     @log_start_end(log=logger)
     def call_symbol(self, other_args: List[str]):
