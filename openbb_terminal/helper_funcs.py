@@ -936,7 +936,7 @@ def parse_known_args_and_warn(
             dest="limit",
             default=limit,
             help="Number of entries to show in data.",
-            type=int,
+            type=check_positive,
         )
 
     if obbff.USE_CLEAR_AFTER_CMD:

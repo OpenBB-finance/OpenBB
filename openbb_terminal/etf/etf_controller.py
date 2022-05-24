@@ -36,7 +36,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.stocks.comparison_analysis import ca_controller
 
@@ -91,36 +91,31 @@ class ETFController(BaseController):
 
     def print_help(self):
         """Print help"""
-        has_ticker_start = "" if self.etf_name else "[unvl]"
-        has_ticker_end = "" if self.etf_name else "[/unvl]"
-        has_etfs_start = "[unvl]" if len(self.etf_holdings) == 0 else ""
-        has_etfs_end = "[/unvl]" if len(self.etf_holdings) == 0 else ""
-        help_text = f"""[cmds]
-    ln               lookup by name [src][FinanceDatabase/StockAnalysis.com][/src]
-    ld               lookup by description [src][FinanceDatabase][/src]
-    load             load ETF data [src][Yfinance][/src][/cmds]
-
-[param]Symbol: [/param]{self.etf_name}{has_etfs_start}
-[param]Major holdings: [/param]{', '.join(self.etf_holdings)}
-[menu]
->   ca               comparison analysis,          e.g.: get similar, historical, correlation, financials{has_etfs_end}
->   disc             discover ETFs,                e.g.: gainers/decliners/active
->   scr              screener ETFs,                e.g.: overview/performance, using preset filters[/menu]
-{has_ticker_start}[cmds]
-    overview         get overview [src][StockAnalysis][/src]
-    holdings         top company holdings [src][StockAnalysis][/src]
-    weights          sector weights allocation [src][Yfinance][/src]
-    summary          summary description of the ETF [src][Yfinance][/src]
-    candle           view a candle chart for ETF
-    news             latest news of the company [src][News API][/src]
-
-    pir              create (multiple) passive investor excel report(s) [src][PassiveInvestor][/src]
-    compare          compare multiple different ETFs [src][StockAnalysis][/src][/cmds]
-[menu]
->   ta               technical analysis,           e.g.: ema, macd, rsi, adx, bbands, obv
->   pred             prediction techniques,        e.g.: regression, arima, rnn, lstm[/menu]
-{has_ticker_end}"""
-        console.print(text=help_text, menu="ETF")
+        mt = MenuText("etf/")
+        mt.add_cmd("ln", "FinanceDatabase / StockAnalysis")
+        mt.add_cmd("ld", "FinanceDatabase")
+        mt.add_cmd("load", "Yahoo Finance")
+        mt.add_raw("\n")
+        mt.add_param("_symbol", self.etf_name)
+        mt.add_param("_major_holdings", ", ".join(self.etf_holdings))
+        mt.add_raw("\n")
+        mt.add_menu("ca", len(self.etf_holdings))
+        mt.add_menu("disc")
+        mt.add_menu("scr")
+        mt.add_raw("\n")
+        mt.add_cmd("overview", "StockAnalysis", self.etf_name)
+        mt.add_cmd("holdings", "StockAnalysis", self.etf_name)
+        mt.add_cmd("weights", "Yahoo Finance", self.etf_name)
+        mt.add_cmd("summary", "Yahoo Finance", self.etf_name)
+        mt.add_cmd("news", "News API", self.etf_name)
+        mt.add_cmd("candle", "", self.etf_name)
+        mt.add_raw("\n")
+        mt.add_cmd("pir", "PassiveInvestor", self.etf_name)
+        mt.add_cmd("compare", "StockAnalysis", self.etf_name)
+        mt.add_raw("\n")
+        mt.add_menu("ta", self.etf_name)
+        mt.add_menu("pred", self.etf_name)
+        console.print(text=mt.menu_text, menu="ETF")
 
     def custom_reset(self):
         """Class specific component of reset command"""

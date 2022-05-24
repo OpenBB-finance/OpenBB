@@ -1,16 +1,15 @@
+    login              connect to degiro's api
+    logout             disconnect from degiro's api
 
-[cmds]   login        connect to degiro's api
-   logout       disconnect from degiro's api
+    hold               view holdings
+    lookup             view search for a product by name
 
-   hold         view holdings
-   lookup       view search for a product by name
+    create             create an order
+    update             update an order
+    cancel             cancel an order using the id
+    pending            view pending orders
 
-   create       create an order
-   update       update an order
-   cancel       cancel an order using the id
-   pending      view pending orders
-
-   companynews  view news about a company with it's isin
-   lastnews     view latest news
-   topnews      view top news preview[/cmds]
+    companynews        view news about a company with it's isin
+    lastnews           view latest news
+    topnews            view top news preview
 

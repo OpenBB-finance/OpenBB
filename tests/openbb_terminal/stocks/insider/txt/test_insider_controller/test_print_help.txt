@@ -1,41 +1,37 @@
+    view               view available presets
+    set                set one of the available presets
 
-    view             view available presets
-    set              set one of the available presets
+Preset: whales
 
-PRESET: whales
-
-    filter           filter insiders based on preset [Open Insider]
+    filter             filter insiders based on preset             [Open Insider]
 
 
-    load             load a specific stock ticker for analysis
-[unvl]
-Ticker: 
+stocks/ins/_ticker: 
 
-    stats            insider stats of the company [Open Insider]
-    act              insider activity over time [Business Insider]
-    lins             last insider trading of the company [Finviz]
-[/unvl]
+[unvl]    stats              insider stats of the company[/unvl]                [Open Insider]
+[unvl]    act                insider activity over time[/unvl]                  [Business Insider]
+[unvl]    lins               last insider trading of the company[/unvl]         [Finviz]
 
-Latest Insiders [Open Insider]
-    lcb              latest cluster boys
-    lpsb             latest penny stock buys
-    lit              latest insider trading (all filings)
-    lip              latest insider purchases
-    blip             big latest insider purchases ($25k+)
-    blop             big latest officer purchases ($25k+)
-    blcp             big latest CEO/CFO purchases ($25k+)
-    lis              latest insider sales
-    blis             big latest insider sales ($100k+)
-    blos             big latest officer sales ($100k+)
-    blcs             big latest CEO/CFO sales ($100k+)
-Top Insiders [Open Insider]
-    topt             top officer purchases today
-    toppw            top officer purchases past week
-    toppm            top officer purchases past month
-    tipt             top insider purchases today
-    tippw            top insider purchases past week
-    tippm            top insider purchases past month
-    tist             top insider sales today
-    tispw            top insider sales past week
-    tispm            top insider sales past month
+stocks/ins/_last_insiders:
+    lcb                latest cluster boys                         [Open Insider]
+    lpsb               latest penny stock buys                     [Open Insider]
+    lit                latest insider trading (all filings)        [Open Insider]
+    lip                latest insider purchases                    [Open Insider]
+    blip               big latest insider purchases ($25k+)        [Open Insider]
+    blop               big latest officer purchases ($25k+)        [Open Insider]
+    bclp               big latest CEO/CFO purchases ($25k+)        [Open Insider]
+    lis                latest insider sales                        [Open Insider]
+    blis               big latest insider sales ($100k+)           [Open Insider]
+    blos               big latest officer sales ($100k+)           [Open Insider]
+    blcs               big latest CEO/CFO sales ($100k+)           [Open Insider]
+stocks/ins/_top_insiders:
+    topt               top officer purchases today                 [Open Insider]
+    toppw              top officer purchases past week             [Open Insider]
+    toppm              top officer purchases past month            [Open Insider]
+    tipt               top insider purchases today                 [Open Insider]
+    tippw              top insider purchases past week             [Open Insider]
+    tippm              top insider purchases past month            [Open Insider]
+    tist               top insider sales today                     [Open Insider]
+    tispw              top insider sales past week                 [Open Insider]
+    tispm              top insider sales past month                [Open Insider]
 

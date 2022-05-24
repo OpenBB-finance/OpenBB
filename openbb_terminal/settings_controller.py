@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 # IMPORTATION STANDARD
+import os
 import argparse
 import logging
 from typing import List
@@ -17,7 +18,7 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import get_flair, parse_known_args_and_warn
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 
 # pylint: disable=too-many-lines,no-member,too-many-public-methods,C0302
 # pylint:disable=import-outside-toplevel
@@ -54,6 +55,7 @@ class SettingsController(BaseController):
         "pheight",
         "pwidth",
         "monitor",
+        "lang",
     ]
     PATH = "/settings/"
 
@@ -67,81 +69,54 @@ class SettingsController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = "\n[info]Feature flags through environment variables:[/info]\n\n"
-        color = "green" if obbff.LOG_COLLECTION else "red"
-        help_text += f"   [{color}]logcollection    allow logs to be sent[/{color}]\n\n"
-        color = "green" if obbff.USE_TABULATE_DF else "red"
-        help_text += (
-            f"   [{color}]tab              use tabulate to print dataframes[/{color}]\n"
-        )
-        color = "green" if obbff.USE_CLEAR_AFTER_CMD else "red"
-        help_text += (
-            f"   [{color}]cls              clear console after each command[/{color}]\n"
-        )
-        color = "green" if obbff.USE_COLOR else "red"
-        help_text += f"   [{color}]color            use coloring features[/{color}]\n"
-        color = "green" if obbff.USE_PROMPT_TOOLKIT else "red"
-        help_text += f"   [{color}]promptkit        enable prompt toolkit (autocomplete and history)[/{color}]\n"
-        color = "green" if obbff.ENABLE_PREDICT else "red"
-        help_text += f"   [{color}]predict          prediction features[/{color}]\n"
-        color = "green" if obbff.ENABLE_THOUGHTS_DAY else "red"
-        help_text += f"   [{color}]thoughts         thoughts of the day[/{color}]\n"
-        color = "green" if obbff.OPEN_REPORT_AS_HTML else "red"
-        help_text += f"   [{color}]reporthtml       open report as HTML otherwise notebook[/{color}]\n"
-        color = "green" if obbff.ENABLE_EXIT_AUTO_HELP else "red"
-        help_text += f"   [{color}]exithelp         automatically print help when quitting menu[/{color}]\n"
-        color = "green" if obbff.REMEMBER_CONTEXTS else "red"
-        help_text += f"   [{color}]rcontext         remember contexts loaded params during session[/{color}]\n"
-        color = "green" if obbff.ENABLE_RICH else "red"
-        help_text += f"   [{color}]rich             colorful rich terminal[/{color}]\n"
-        color = "green" if obbff.ENABLE_RICH_PANEL else "red"
-        help_text += (
-            f"   [{color}]richpanel        colorful rich terminal panel[/{color}]\n"
-        )
-        color = "green" if obbff.USE_ION else "red"
-        help_text += (
-            f"   [{color}]ion              interactive matplotlib mode[/{color}]\n"
-        )
-        color = "green" if obbff.USE_WATERMARK else "red"
-        help_text += f"   [{color}]watermark        watermark in figures[/{color}]\n"
-        color = "green" if obbff.USE_CMD_LOCATION_FIGURE else "red"
-        help_text += f"   [{color}]cmdloc           command location displayed in figures[/{color}]\n"
-        color = "green" if obbff.USE_PLOT_AUTOSCALING else "red"
-        help_text += f"   [{color}]autoscaling      plot autoscaling[/{color}]\n\n"
-        color = "green" if obbff.USE_DATETIME else "red"
-        help_text += f"   [{color}]dt               add date and time to command line[/{color}]\n"
-        help_text += "[cmds]   flair            console flair[/cmds]\n\n"
-        help_text += f"[param]USE_FLAIR:[/param]  {get_flair()}\n\n[cmds]"
-        help_text += "   dpi              dots per inch\n"
-        help_text += (
-            "   backend          plotting backend (None, tkAgg, MacOSX, Qt5Agg)\n"
-        )
-        help_text += "[unvl]" if obbff.USE_PLOT_AUTOSCALING else ""
-        help_text += "   height           select plot height\n"
-        help_text += "   width            select plot width\n"
-        help_text += "[/unvl]" if obbff.USE_PLOT_AUTOSCALING else ""
-        help_text += "[unvl]" if not obbff.USE_PLOT_AUTOSCALING else ""
-        help_text += "   pheight          select plot percentage height\n"
-        help_text += "   pwidth           select plot percentage width\n"
-        help_text += (
-            "   monitor          which monitor to display (primary: 0, secondary: 1)\n"
-        )
-        help_text += "[/unvl]" if not obbff.USE_PLOT_AUTOSCALING else ""
-        help_text += "[/cmds]\n"
-        help_text += f"[param]PLOT_DPI:[/param]                 {cfg_plot.PLOT_DPI}\n"
-        help_text += f"[param]BACKEND:[/param]                  {cfg_plot.BACKEND}\n"
-        help_text += (
-            f"[param]PLOT_HEIGHT:[/param]              {cfg_plot.PLOT_HEIGHT}\n"
-        )
-        help_text += f"[param]PLOT_WIDTH:[/param]               {cfg_plot.PLOT_WIDTH}\n"
-        help_text += f"[param]PLOT_HEIGHT_PERCENTAGE:[/param]   {cfg_plot.PLOT_HEIGHT_PERCENTAGE}%\n"
-        help_text += f"[param]PLOT_WIDTH_PERCENTAGE:[/param]    {cfg_plot.PLOT_WIDTH_PERCENTAGE}%\n"
-        help_text += f"[param]MONITOR:[/param]                  {cfg_plot.MONITOR}\n"
+        mt = MenuText("settings/")
+        mt.add_info("_feature_flags_")
+        mt.add_raw("\n")
+        mt.add_setting("logcollection", obbff.LOG_COLLECTION)
+        mt.add_setting("tab", obbff.USE_TABULATE_DF)
+        mt.add_setting("cls", obbff.USE_CLEAR_AFTER_CMD)
+        mt.add_setting("color", obbff.USE_COLOR)
+        mt.add_setting("promptkit", obbff.USE_PROMPT_TOOLKIT)
+        mt.add_setting("predict", obbff.ENABLE_PREDICT)
+        mt.add_setting("thoughts", obbff.ENABLE_THOUGHTS_DAY)
+        mt.add_setting("reporthtml", obbff.OPEN_REPORT_AS_HTML)
+        mt.add_setting("exithelp", obbff.ENABLE_EXIT_AUTO_HELP)
+        mt.add_setting("rcontext", obbff.REMEMBER_CONTEXTS)
+        mt.add_setting("rich", obbff.ENABLE_RICH)
+        mt.add_setting("richpanel", obbff.ENABLE_RICH_PANEL)
+        mt.add_setting("ion", obbff.USE_ION)
+        mt.add_setting("watermark", obbff.USE_WATERMARK)
+        mt.add_setting("cmdloc", obbff.USE_CMD_LOCATION_FIGURE)
+        mt.add_setting("autoscaling", obbff.USE_PLOT_AUTOSCALING)
+        mt.add_setting("dt", obbff.USE_DATETIME)
+        mt.add_raw("\n")
+        mt.add_cmd("flair")
+        mt.add_raw("\n")
+        mt.add_param("_flair", get_flair())
+        mt.add_raw("\n")
+        mt.add_cmd("lang")
+        mt.add_raw("\n")
+        mt.add_param("_language", obbff.USE_LANGUAGE)
+        mt.add_raw("\n")
+        mt.add_cmd("dpi")
+        mt.add_cmd("backend")
+        mt.add_cmd("height", "", not obbff.USE_PLOT_AUTOSCALING)
+        mt.add_cmd("width", "", not obbff.USE_PLOT_AUTOSCALING)
+        mt.add_cmd("pheight", "", obbff.USE_PLOT_AUTOSCALING)
+        mt.add_cmd("pwidth", "", obbff.USE_PLOT_AUTOSCALING)
+        mt.add_cmd("monitor")
+        mt.add_raw("\n")
+        mt.add_param("_dpi", cfg_plot.PLOT_DPI, 19)
+        mt.add_param("_backend", cfg_plot.BACKEND, 19)
+        if obbff.USE_PLOT_AUTOSCALING:
+            mt.add_param("_plot_height_pct", cfg_plot.PLOT_HEIGHT_PERCENTAGE, 19)
+            mt.add_param("_plot_width_pct", cfg_plot.PLOT_WIDTH_PERCENTAGE, 19)
+        else:
+            mt.add_param("_plot_height", cfg_plot.PLOT_HEIGHT, 19)
+            mt.add_param("_plot_width", cfg_plot.PLOT_WIDTH, 19)
+        mt.add_param("_monitor", cfg_plot.MONITOR, 19)
 
-        # color = "green" if obbff.USE_FLAIR else "red"
-        # help_text += f"   [{color}]cls        clear console after each command[/{color}]\n"
-
-        console.print(text=help_text, menu="Settings")
+        console.print(text=mt.menu_text, menu="Settings")
 
     @log_start_end(log=logger)
     def call_logcollection(self, _):
@@ -475,4 +450,39 @@ class SettingsController(BaseController):
                 cfg_plot.BACKEND = None  # type: ignore
             else:
                 cfg_plot.BACKEND = ns_parser.value
+            console.print("")
+
+    @log_start_end(log=logger)
+    def call_lang(self, other_args: List[str]):
+        """Process lang command"""
+        languages_i18n = os.path.join(
+            os.path.dirname(os.path.abspath(os.path.dirname(__file__))), "i18n"
+        )
+        languages_available = [
+            lang.strip(".yml")
+            for lang in os.listdir(languages_i18n)
+            if lang.endswith(".yml")
+        ]
+
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="lang",
+            description="Choose language for terminal",
+        )
+        parser.add_argument(
+            "-v",
+            "--value",
+            type=str,
+            dest="value",
+            help="Language",
+            choices=languages_available,
+            required=True,
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-v")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            set_key(obbff.ENV_FILE, "OPENBB_USE_LANGUAGE", str(ns_parser.value))
+            obbff.USE_LANGUAGE = ns_parser.value
             console.print("")

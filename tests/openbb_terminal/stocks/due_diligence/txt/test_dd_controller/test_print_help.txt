@@ -1,20 +1,14 @@
+    load               load a specific stock ticker for analysis
 
 Ticker: 
 
-[Finviz]
-    analyst          analyst prices and ratings of the company
-[FMP]
-    rating           rating over time (daily)
-[Finnhub]
-    rot              number of analysts ratings over time (monthly)
-[Business Insider]
-    pt               price targets over time
-    est              quarter and year analysts earnings estimates
-[Market Watch]
-    sec              SEC filings
-[Csimarket]
-    supplier         list of suppliers
-    customer         list of customers
-[Cathiesark.com]
-    arktrades        get ARK trades for ticker
-        
+    analyst            analyst prices and ratings of the company             [Finviz]
+    rating             rating over time (daily)                              [FMP]
+    rot                number of analysts ratings over time (monthly)        [Finnhub]
+    pt                 price targets over time                               [Business Insider]
+    est                quarter and year analysts earnings estimates          [Business Insider]
+    sec                SEC filings                                           [Market Watch]
+    supplier           list of suppliers                                     [Csimarket]
+    customer           list of customers                                     [Csimarket]
+    arktrades          get ARK trades for ticker                             [Cathiesark]
+

@@ -21,7 +21,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.stocks.discovery import (
     ark_view,
     fidelity_view,
@@ -133,35 +133,26 @@ class DiscoveryController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = """[cmds]
-[src][Finnhub][/src]
-    pipo             past IPOs dates
-    fipo             future IPOs dates
-[src][Yahoo Finance][/src]
-    gainers          show latest top gainers
-    losers           show latest top losers
-    ugs              undervalued stocks with revenue and earnings growth in excess of 25%
-    gtech            tech stocks with revenue and earnings growth more than 25%
-    active           most active stocks by intraday trade volume
-    ulc              potentially undervalued large cap stocks
-    asc              small cap stocks with earnings growth rates better than 25%
-[src][Fidelity][/src]
-    ford             orders by Fidelity Customers
-[src][Cathiesark.com][/src]
-    arkord           orders by ARK Investment Management LLC
-[src][Seeking Alpha][/src]
-    upcoming         upcoming earnings release dates
-    trending         trending news
-    cnews            customized news (buybacks, ipos, spacs, healthcare, politics)
-[src][Shortinterest.com][/src]
-    lowfloat         low float stocks under 10M shares float
-[src][Pennystockflow.com][/src]
-    hotpenny         today's hot penny stocks
-[src][NASDAQ Data Link (Formerly Quandl)][/src]
-    rtat             top 10 retail traded stocks per day
-    divcal           dividend calendar for selected date[/cmds]
-"""
-        console.print(text=help_text, menu="Stocks - Discovery")
+        mt = MenuText("stocks/disc/")
+        mt.add_cmd("pipo", "Finnhub")
+        mt.add_cmd("fipo", "Finnhub")
+        mt.add_cmd("gainers", "Yahoo Finance")
+        mt.add_cmd("losers", "Yahoo Finance")
+        mt.add_cmd("ugs", "Yahoo Finance")
+        mt.add_cmd("gtech", "Yahoo Finance")
+        mt.add_cmd("active", "Yahoo Finance")
+        mt.add_cmd("ulc", "Yahoo Finance")
+        mt.add_cmd("asc", "Yahoo Finance")
+        mt.add_cmd("ford", "Fidelity")
+        mt.add_cmd("arkord", "Cathiesark")
+        mt.add_cmd("upcoming", "Seeking Alpha")
+        mt.add_cmd("trending", "Seeking Alpha")
+        mt.add_cmd("cnews", "Seeking Alpha")
+        mt.add_cmd("lowfloat", "Fidelity")
+        mt.add_cmd("hotpenny", "Shortinterest")
+        mt.add_cmd("rtat", "NASDAQ Data Link")
+        mt.add_cmd("divcal", "NASDAQ Data Link")
+        console.print(text=mt.menu_text, menu="Stocks - Discovery")
 
     # TODO Add flag for adding last price to the following table
     @log_start_end(log=logger)

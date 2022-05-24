@@ -18,7 +18,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.stocks.options.hedge import hedge_view
 from openbb_terminal.stocks.options.hedge.hedge_model import add_hedge_option
 from openbb_terminal.stocks.options.yfinance_model import (
@@ -106,33 +106,32 @@ class HedgeController(BaseController):
 
     def print_help(self):
         """Print help"""
-        has_portfolio_start = "" if "Delta" in self.greeks["Portfolio"] else "[unvl]"
-        has_portfolio_end = "" if "Delta" in self.greeks["Portfolio"] else "[/unvl]"
-        has_option_start = (
-            ""
-            if "Delta" in self.greeks["Option A"] or "Delta" in self.greeks["Option B"]
-            else "[unvl]"
+        mt = MenuText("stocks/options/hedge/")
+        mt.add_param("_ticker", self.ticker or "")
+        mt.add_param("_expiry", self.expiration or "")
+        mt.add_raw("\n")
+        mt.add_cmd("pick")
+        mt.add_raw("\n")
+        mt.add_param("_underlying", self.underlying_asset_position)
+        mt.add_raw("\n")
+        mt.add_cmd("list")
+        mt.add_cmd("add", "", "Delta" in self.greeks["Portfolio"])
+        mt.add_cmd(
+            "rmv",
+            "",
+            "Delta" in self.greeks["Option A"] or "Delta" in self.greeks["Option B"],
         )
-        has_option_end = (
-            ""
-            if "Delta" in self.greeks["Option A"] or "Delta" in self.greeks["Option B"]
-            else "[/unvl]"
+        mt.add_cmd(
+            "sop",
+            "",
+            "Delta" in self.greeks["Option A"] or "Delta" in self.greeks["Option B"],
         )
-        help_text = f"""
-[param]Ticker: [/param]{self.ticker or None}
-[param]Expiry: [/param]{self.expiration or None}
-[cmds]
-    pick             pick the underlying asset position
-[/cmds][param]
-Underlying Asset Position: [/param]{self.underlying_asset_position}
-[cmds]
-    list             show the available strike prices for calls and puts{has_portfolio_start}
-    add              add an option to the list of options{has_portfolio_end}{has_option_start}
-    rmv              remove an option from the list of options
-    sop              show selected options and neutral portfolio weights
-    plot             show the option payoff diagram[/cmds]{has_option_end}
-        """
-        console.print(text=help_text, menu="Stocks - Options - Hedge")
+        mt.add_cmd(
+            "plot",
+            "",
+            "Delta" in self.greeks["Option A"] or "Delta" in self.greeks["Option B"],
+        )
+        console.print(text=mt.menu_text, menu="Stocks - Options - Hedge")
 
     def custom_reset(self):
         """Class specific component of reset command"""

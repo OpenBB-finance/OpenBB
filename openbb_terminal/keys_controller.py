@@ -29,7 +29,7 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import parse_known_args_and_warn
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText, translate
 from openbb_terminal.terminal_helper import suppress_stdout
 
 logger = logging.getLogger(__name__)
@@ -752,7 +752,9 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
     def print_help(self):
         """Print help"""
         self.check_keys_status()
-        help_text = "\n[info]Set API keys through environment variables:[/info]\n"
+        mt = MenuText("keys/")
+        mt.add_info("_keys_")
+        mt.add_raw("\n")
         for k, v in self.key_dict.items():
             cmd_name = self.cfg_dict[k]
             c = "red"
@@ -764,10 +766,12 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
                 c = "yellow"
             elif v == "not defined":
                 c = "grey30"
-            help_text += f"   [cmds]{cmd_name}[/cmds] {(20 - len(cmd_name)) * ' '}"
-            help_text += f" [{c}] {k} {(25 - len(k)) * ' '} {v} [/{c}]\n"
+            mt.add_raw(
+                f"   [cmds]{cmd_name}[/cmds] {(20 - len(cmd_name)) * ' '}"
+                f" [{c}] {k} {(25 - len(k)) * ' '} {translate(v)} [/{c}]\n"
+            )
 
-        console.print(text=help_text, menu="Keys")
+        console.print(text=mt.menu_text, menu="Keys")
 
     @log_start_end(log=logger)
     def call_github(self, other_args: List[str]):
