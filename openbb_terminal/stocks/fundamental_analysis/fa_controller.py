@@ -133,7 +133,7 @@ class FundamentalAnalysisController(StockBaseController):
         mt.add_cmd_translation("fraud", "Alpha Vantage")
         mt.add_cmd_translation("dupont", "Alpha Vantage")
         mt.add_raw("\n")
-        mt.add_info_translation("sources")
+        mt.add_info_translation("_sources_")
         mt.add_menu_translation("fmp")
         console.print(text=mt.menu_text, menu="Stocks - Fundamental Analysis")
 

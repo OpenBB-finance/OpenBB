@@ -132,7 +132,7 @@ class TerminalController(BaseController):
         mt.add_menu_translation("funds")
         mt.add_menu_translation("alternative")
         mt.add_raw("\n")
-        mt.add_info_translation("others")
+        mt.add_info_translation("_others_")
         mt.add_menu_translation("econometrics")
         mt.add_menu_translation("portfolio")
         mt.add_menu_translation("dashboards")

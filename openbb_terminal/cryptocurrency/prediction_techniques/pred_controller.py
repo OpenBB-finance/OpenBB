@@ -97,7 +97,7 @@ class PredictionTechniquesController(CryptoBaseController):
         mt.add_param_translation("_ticker", self.coin)
         mt.add_param_translation("_target", self.target)
         mt.add_raw("\n")
-        mt.add_info_translation("models")
+        mt.add_info_translation("_models_")
         mt.add_cmd_translation("ets")
         mt.add_cmd_translation("knn")
         mt.add_cmd_translation("regression")

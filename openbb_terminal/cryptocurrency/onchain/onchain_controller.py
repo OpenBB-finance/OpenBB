@@ -151,7 +151,7 @@ class OnchainController(BaseController):
         mt.add_param_translation("_address", self.address or "")
         mt.add_param_translation("_type", self.address_type or "")
         mt.add_raw("\n")
-        mt.add_info_translation("Ethereum")
+        mt.add_info_translation("_ethereum_")
         mt.add_cmd_translation("address", "Ethplorer")
         mt.add_cmd_translation("top", "Ethplorer")
         mt.add_cmd_translation("balance", "Ethplorer", self.address_type == "account")

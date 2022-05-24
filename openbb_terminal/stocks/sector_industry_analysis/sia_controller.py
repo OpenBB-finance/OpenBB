@@ -286,7 +286,7 @@ class SectorIndustryAnalysisController(BaseController):
         mt.add_param_translation("_exclude_exchanges", self.exclude_exchanges, 18)
         mt.add_param_translation("_period", self.period, 18)
         mt.add_raw("\n")
-        mt.add_info_translation("statistics")
+        mt.add_info_translation("_statistics_")
         mt.add_cmd_translation("cps", "", self.country)
         mt.add_cmd_translation("cpic", "", self.country)
         mt.add_cmd_translation("cpis", "", self.sector)
@@ -294,9 +294,9 @@ class SectorIndustryAnalysisController(BaseController):
         mt.add_cmd_translation("cpci", "", self.industry)
         mt.add_raw("\n")
         if self.stocks_data:
-            mt.add_info_translation("financials")
+            mt.add_info_translation("_financials_")
         else:
-            mt.add_info_translation("financials_loaded")
+            mt.add_info_translation("_financials_loaded_")
         mt.add_cmd_translation("sama", "Yahoo Finance")
         mt.add_cmd_translation("metric", "Yahoo Finance")
         mt.add_cmd_translation("satma", "StockAnalysis")
