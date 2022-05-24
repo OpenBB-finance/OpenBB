@@ -32,6 +32,48 @@ en:
   exe: execute automated routine script
   settings: set feature flags and style charts
   keys: set API keys and check their validity
+  keys/_keys_: Set API keys through environment variables
+  defined, test passed: defined, test passed
+  defined, test failed: defined, test failed
+  not defined: not defined
+  defined, not tested: defined, not tested
+  defined, test unsuccessful: defined, test unsuccessful
+  settings/_feature_flags_: Feature flags through environment variables
+  settings/logcollection: allow logs to be sent to help OpenBB team
+  settings/tab: use tabulate to print dataframes
+  settings/cls: clear console after each command
+  settings/color: use coloring features
+  settings/promptkit: enable prompt toolkit (autocomplete and history)
+  settings/predict: prediction features
+  settings/thoughts: thoughts of the day
+  settings/reporthtml: open report as HTML otherwise notebook
+  settings/exithelp: automatically print help when quitting menu
+  settings/rcontext: remember contexts loaded params during session
+  settings/rich: colorful rich terminal
+  settings/richpanel: colorful rich terminal panel
+  settings/ion: interactive matplotlib mode
+  settings/watermark: watermark in figures
+  settings/cmdloc: command location displayed in figures
+  settings/autoscaling: plot autoscaling
+  settings/dt: add date and time to command line
+  settings/flair: console flair
+  settings/_flair: Flair
+  settings/lang: terminal language
+  settings/_language: Language
+  settings/dpi: dots per inch
+  settings/backend: plotting backend (None, tkAgg, MacOSX, Qt5Agg)
+  settings/height: select plot height
+  settings/width: select plot width
+  settings/pheight: select plot percentage height
+  settings/pwidth: select plot percentage width
+  settings/monitor: which monitor to display (primary 0, secondary 1)
+  settings/_dpi: Plot dots per inch
+  settings/_backend: Backend
+  settings/_plot_height: Plot height
+  settings/_plot_width: Plot width
+  settings/_plot_height_pct: Plot height [%]
+  settings/_plot_width_pct: Plot width [%]
+  settings/_monitor: Monitor
   _export_folder: Export Folder
   _timezone: Timezone
   _others_: Others
@@ -1026,3 +1068,10 @@ en:
   portfolio/po/params/set: set model of interest to filter parameters
   portfolio/po/params/arg: set a different value for an argument
   portfolio/po/params/_parameters_: Parameters
+  dashboards/stocks: historic stock information
+  dashboards/correlation: stock correlations
+  dashboards/vsurf: options volatility surface
+  dashboards/chains: options chain analysis
+  dashboards/shortdata: finra shortdata analysis
+  dashboards/crypto: cryptocurrency exchange rates against USD
+  reports/_reports_: Select one of the following report

@@ -96,6 +96,15 @@ class MenuText:
                 f"[unvl]>   {key}{spacing}{i18n.t(self.menu_path + key)}[/unvl]\n"
             )
 
+    def add_setting(self, key: str, cond: bool = True):
+        spacing = (23 - (len(key) + 4)) * " "
+        if cond:
+            cmd = f"[green]    {key}{spacing}{i18n.t(self.menu_path + key)}[/green]"
+        else:
+            cmd = f"[red]    {key}{spacing}{i18n.t(self.menu_path + key)}[/red]"
+
+        self.menu_text += cmd + "\n"
+
 
 class ConsoleAndPanel:
     """Create a rich console to wrap the console print with a Panel"""
