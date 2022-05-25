@@ -9,9 +9,9 @@ geekdocCollapseSection: true
 ---
 This set of features is for checking the operating status of markets globally. To access the Trading Hours features,
 enter `th` from the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/introduction_to_stocks/" target="_blank">Stocks</a> menu.
-Alternatively, a user can access the submenu with absolute path navigation from anywhere in the Terminal: `/stocks/th`<br>
+Alternatively, a user can access the submenu with absolute path navigation from anywhere in the Terminal: `/stocks/th`
 
-![Trading Hours](images/trading_hours1.png)
+<a target="_blank" href="https://user-images.githubusercontent.com/46355364/170244188-17ffac5f-3345-4c40-be44-fb5128ad9612.png"><img alt="Trading Hours" src="https://user-images.githubusercontent.com/46355364/170244188-17ffac5f-3345-4c40-be44-fb5128ad9612.png"></a>
 
 ## How to use
 
@@ -102,7 +102,8 @@ introduction compact.
 ````
 Lastly, <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/tradinghours/exchange/" target="_blank">exchange</a>
 shows the status of a single venue.
-![Trading Hours Autocomplete](images/trading_hours2.png)
+
+<a target="_blank" href="https://user-images.githubusercontent.com/46355364/170244354-f5ab043d-0290-46ec-ba86-87cc2dc0e47a.png"><img alt="Trading Hours Autocomplete" src="https://user-images.githubusercontent.com/46355364/170244354-f5ab043d-0290-46ec-ba86-87cc2dc0e47a.png"></a>
 
 ## Examples
 Below an example is given for a symbol and whether that market is open. By calling <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/tradinghours/exchange/" target="_blank">exchange</a>
