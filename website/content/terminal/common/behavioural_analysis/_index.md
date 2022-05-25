@@ -12,7 +12,7 @@ The complexity of the tools range from message board scrapers to deep learning a
 Sentiment is particularly useful for momentum trading strategies, discovery, and general fundamental research.
 Navigate into the menu from the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/" target="_blank">Stocks</a> menu by entering, `ba`; or, using absolute paths from anywhere in the Terminal: `/stocks/ba`
 
-![The Behavioural Analysis submenu](images/behavioural_analysis1.png)
+<a target="_blank" href="https://user-images.githubusercontent.com/46355364/170242317-ae66ed0b-f2e8-4304-9231-ea833d01e0e2.png"><img alt="The Behavioural Analysis submenu" src="https://user-images.githubusercontent.com/46355364/170242317-ae66ed0b-f2e8-4304-9231-ea833d01e0e2.png"></a>
 
 ## How to use
 
@@ -32,7 +32,8 @@ Company:  GameStop Corporation
 
 (🦋) /stocks/ba/ $ ?
 ````
-![The Behavioural Analysis Menu with a loaded ticker](images/behavioural_analysis2.png)
+
+<a target="_blank" href="https://user-images.githubusercontent.com/46355364/170242757-3e29f690-7d29-4fe2-9e14-889c43e3142e.png"><img alt="The Behavioural Analysis Menu with a loaded ticker" "src=https://user-images.githubusercontent.com/46355364/170242757-3e29f690-7d29-4fe2-9e14-889c43e3142e.png"></a>
 
 Some data sources will require a valid API key, which can be obtained for free and then set using the Keys menu.
 To use all the features in this menu, obtain free API keys from these providers:
@@ -53,7 +54,7 @@ command returns the following:
 ````
 (🦋) /stocks/ba/ $ headlines
 ````
-![headlines](images/ba_headlines.png)<br>
+<a target="_blank" href="https://user-images.githubusercontent.com/46355364/170242932-8dd6fa4c-ed7b-43c1-a0df-7a04e7cebebb.png"><img alt="headlines" src="https://user-images.githubusercontent.com/46355364/170242757-3e29f690-7d29-4fe2-9e14-889c43e3142e.png"></a>
 
 Alternatively, running the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/common/behavioural_analysis/snews/" target="_blank">snews</a>
 command returns the following:
@@ -61,7 +62,8 @@ command returns the following:
 ````
 (🦋) /stocks/ba/ $ snews
 ````
-![snews](images/ba_snews.png)<br>
+
+<a target="_blank" href="https://user-images.githubusercontent.com/46355364/170243359-9d1302f0-3394-4e05-8360-0e59a1cb6e54.png"><img alt="headlines" src="https://user-images.githubusercontent.com/46355364/170243359-9d1302f0-3394-4e05-8360-0e59a1cb6e54.png"></a>
 
 The Reddit functions will return popular tickers and posts, or measure sentiment for a particular stock. An example
 would be by looking at the threads that pop up on <a href="https://www.reddit.com/r/wallstreetbets/" target="_blank">/r/wallstreetbets</a>,
@@ -154,7 +156,7 @@ Of the last 100 tweets, 19.00 % had a higher negative sentiment
 The <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/common/behavioural_analysis/sentiment/" target="_blank">sentiment</a>
 command returns the following:
 
-![Twitter Sentiment](images/ba_sentiment.png)
+<a target="_blank" href="https://user-images.githubusercontent.com/46355364/170243539-1ea3fc6a-d7ec-4991-a6bb-ed5879753328.png"><img alt="sentiment" src="https://user-images.githubusercontent.com/46355364/170243539-1ea3fc6a-d7ec-4991-a6bb-ed5879753328.png"></a>
 
 More advanced techniques can also be applied by using tools from <a href="https://sentimentinvestor.com" target="_blank">Sentiment Investor</a>
 that analyzes millions of messages to show the most talked about stocks by hour. This has the ability to show the
@@ -191,7 +193,8 @@ Most trending stocks at 2022-05-23 00:00
 
 (🦋) /stocks/ba/ $ hist -s 2022-05-01
 ````
-![Historical sentiment data for GME](images/ba_hist.png)
+
+<a target="_blank" href="https://user-images.githubusercontent.com/46355364/170243719-fccf414b-3a89-4776-88de-e30f4eb34f89.png"><img alt="hist" src="https://user-images.githubusercontent.com/46355364/170243719-fccf414b-3a89-4776-88de-e30f4eb34f89.png"></a>
 
 Inspired by the Twitter user, <a href="https://twitter.com/CramerTracker" target="_blank">@cramertracker</a>, the final
 two features follow (CNBC Talking Head) Jim Cramer stock recommendations as satire that rings true.
@@ -232,4 +235,4 @@ two features follow (CNBC Talking Head) Jim Cramer stock recommendations as sati
 │ SoFi Technologies      │ SOFI   │ 7.75   │ 7.30      │ -6.16      │ Buy            │
 └────────────────────────┴────────┴────────┴───────────┴────────────┴────────────────┘
 ````
-![Jim Cramer historical recommendations for $DKNG](images/ba_jctr.png)
+<a target="_blank" href="https://user-images.githubusercontent.com/46355364/170243863-f95dc515-c0d7-4ede-964d-f6ba41aec743.png"><img alt="Jim Cramer historical recommendations for $DKNG" src="https://user-images.githubusercontent.com/46355364/170243863-f95dc515-c0d7-4ede-964d-f6ba41aec743.png"></a>
