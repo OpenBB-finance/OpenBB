@@ -487,6 +487,7 @@ en:
   stocks/pred/conv1d: 1D Convolutional Neural Network
   stocks/pred/mc: Monte-Carlo simulations
   stocks/pred/expo: Probabilistic Exponential Smoothing
+  stocks/pred/theta: Theta Method
   crypto/load: load a specific cryptocurrency for analysis
   crypto/find: find coins
   crypto/_coin: Coin
