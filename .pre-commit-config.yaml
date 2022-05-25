@@ -8,7 +8,7 @@ repos:
         pass_filenames: false
         args:
           [
-            "--ignore-files=settings_controller.py,keys_controller.py,degiro_controller.py,",
+            "--ignore-files=settings_controller.py,featflags_controller.py,keys_controller.py,degiro_controller.py,",
             "--ignore-commands=login,al_swe,info_swe,goodness,resources,yf,yolo",
           ]
         entry: python custom_pre_commit/check_doc.py
