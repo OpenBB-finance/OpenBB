@@ -6,6 +6,7 @@ import os
 import argparse
 import logging
 from typing import List
+import pytz
 
 # IMPORTATION THIRDPARTY
 from dotenv import set_key
@@ -15,7 +16,13 @@ from prompt_toolkit.completion import NestedCompleter
 from openbb_terminal import config_plot as cfg_plot
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import get_flair, parse_known_args_and_warn
+from openbb_terminal.helper_funcs import (
+    get_flair,
+    parse_known_args_and_warn,
+    get_user_timezone_or_invalid,
+    replace_user_timezone,
+    set_export_folder,
+)
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console, MenuText
@@ -30,24 +37,8 @@ class SettingsController(BaseController):
     """Settings Controller class"""
 
     CHOICES_COMMANDS: List[str] = [
-        "logcollection",
-        "tab",
-        "cls",
-        "color",
-        "flair",
         "dt",
-        "ion",
-        "watermark",
-        "cmdloc",
-        "promptkit",
-        "predict",
         "autoscaling",
-        "thoughts",
-        "reporthtml",
-        "exithelp",
-        "rcontext",
-        "rich",
-        "richpanel",
         "dpi",
         "backend",
         "height",
@@ -56,41 +47,39 @@ class SettingsController(BaseController):
         "pwidth",
         "monitor",
         "lang",
+        "tz",
+        "export",
     ]
     PATH = "/settings/"
 
-    def __init__(self, queue: List[str] = None):
+    all_timezones = [tz.replace("/", "_") for tz in pytz.all_timezones]
+
+    languages_i18n = os.path.join(
+        os.path.dirname(os.path.abspath(os.path.dirname(__file__))), "i18n"
+    )
+    languages_available = [
+        lang.strip(".yml")
+        for lang in os.listdir(languages_i18n)
+        if lang.endswith(".yml")
+    ]
+
+    def __init__(self, queue: List[str] = None, env_file: str = ".env"):
         """Constructor"""
         super().__init__(queue)
+        self.env_file = env_file
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
+            choices["tz"] = {c: None for c in self.all_timezones}
+            choices["lang"] = {c: None for c in self.languages_available}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
         """Print help"""
         mt = MenuText("settings/")
-        mt.add_info("_feature_flags_")
+        mt.add_info("_info_")
         mt.add_raw("\n")
-        mt.add_setting("logcollection", obbff.LOG_COLLECTION)
-        mt.add_setting("tab", obbff.USE_TABULATE_DF)
-        mt.add_setting("cls", obbff.USE_CLEAR_AFTER_CMD)
-        mt.add_setting("color", obbff.USE_COLOR)
-        mt.add_setting("promptkit", obbff.USE_PROMPT_TOOLKIT)
-        mt.add_setting("predict", obbff.ENABLE_PREDICT)
-        mt.add_setting("thoughts", obbff.ENABLE_THOUGHTS_DAY)
-        mt.add_setting("reporthtml", obbff.OPEN_REPORT_AS_HTML)
-        mt.add_setting("exithelp", obbff.ENABLE_EXIT_AUTO_HELP)
-        mt.add_setting("rcontext", obbff.REMEMBER_CONTEXTS)
-        mt.add_setting("rich", obbff.ENABLE_RICH)
-        mt.add_setting("richpanel", obbff.ENABLE_RICH_PANEL)
-        mt.add_setting("ion", obbff.USE_ION)
-        mt.add_setting("watermark", obbff.USE_WATERMARK)
-        mt.add_setting("cmdloc", obbff.USE_CMD_LOCATION_FIGURE)
-        mt.add_setting("autoscaling", obbff.USE_PLOT_AUTOSCALING)
         mt.add_setting("dt", obbff.USE_DATETIME)
-        mt.add_raw("\n")
-        mt.add_cmd("flair")
         mt.add_raw("\n")
         mt.add_param("_flair", get_flair())
         mt.add_raw("\n")
@@ -98,168 +87,52 @@ class SettingsController(BaseController):
         mt.add_raw("\n")
         mt.add_param("_language", obbff.USE_LANGUAGE)
         mt.add_raw("\n")
+        mt.add_cmd("export")
+        mt.add_raw("\n")
+        mt.add_param(
+            "_export_folder",
+            obbff.EXPORT_FOLDER_PATH
+            if obbff.EXPORT_FOLDER_PATH
+            else "DEFAULT (folder: exports/)",
+        )
+        mt.add_raw("\n")
+        mt.add_cmd("tz")
+        mt.add_raw("\n")
+        mt.add_param("_timezone", get_user_timezone_or_invalid())
+        mt.add_raw("\n")
+        mt.add_setting("autoscaling", obbff.USE_PLOT_AUTOSCALING)
+        if obbff.USE_PLOT_AUTOSCALING:
+            mt.add_cmd("pheight")
+            mt.add_cmd("pwidth")
+            mt.add_raw("\n")
+            mt.add_param("_plot_height_pct", cfg_plot.PLOT_HEIGHT_PERCENTAGE, 16)
+            mt.add_param("_plot_width_pct", cfg_plot.PLOT_WIDTH_PERCENTAGE, 16)
+        else:
+            mt.add_cmd("height")
+            mt.add_cmd("width")
+            mt.add_raw("\n")
+            mt.add_param("_plot_height", cfg_plot.PLOT_HEIGHT, 12)
+            mt.add_param("_plot_width", cfg_plot.PLOT_WIDTH, 12)
+        mt.add_raw("\n")
         mt.add_cmd("dpi")
+        mt.add_raw("\n")
+        mt.add_param("_dpi", cfg_plot.PLOT_DPI)
+        mt.add_raw("\n")
         mt.add_cmd("backend")
-        mt.add_cmd("height", "", not obbff.USE_PLOT_AUTOSCALING)
-        mt.add_cmd("width", "", not obbff.USE_PLOT_AUTOSCALING)
-        mt.add_cmd("pheight", "", obbff.USE_PLOT_AUTOSCALING)
-        mt.add_cmd("pwidth", "", obbff.USE_PLOT_AUTOSCALING)
+        mt.add_raw("\n")
+        mt.add_param("_backend", cfg_plot.BACKEND)
+        mt.add_raw("\n")
         mt.add_cmd("monitor")
         mt.add_raw("\n")
-        mt.add_param("_dpi", cfg_plot.PLOT_DPI, 19)
-        mt.add_param("_backend", cfg_plot.BACKEND, 19)
-        if obbff.USE_PLOT_AUTOSCALING:
-            mt.add_param("_plot_height_pct", cfg_plot.PLOT_HEIGHT_PERCENTAGE, 19)
-            mt.add_param("_plot_width_pct", cfg_plot.PLOT_WIDTH_PERCENTAGE, 19)
-        else:
-            mt.add_param("_plot_height", cfg_plot.PLOT_HEIGHT, 19)
-            mt.add_param("_plot_width", cfg_plot.PLOT_WIDTH, 19)
-        mt.add_param("_monitor", cfg_plot.MONITOR, 19)
+        mt.add_param("_monitor", cfg_plot.MONITOR)
 
         console.print(text=mt.menu_text, menu="Settings")
-
-    @log_start_end(log=logger)
-    def call_logcollection(self, _):
-        """Process logcollection command"""
-        obbff.LOG_COLLECTION = not obbff.LOG_COLLECTION
-        set_key(obbff.ENV_FILE, "OPENBB_LOG_COLLECTION", str(obbff.LOG_COLLECTION))
-        console.print("")
-
-    @log_start_end(log=logger)
-    def call_tab(self, _):
-        """Process tab command"""
-        obbff.USE_TABULATE_DF = not obbff.USE_TABULATE_DF
-        set_key(obbff.ENV_FILE, "OPENBB_USE_TABULATE_DF", str(obbff.USE_TABULATE_DF))
-        console.print("")
-
-    @log_start_end(log=logger)
-    def call_cls(self, _):
-        """Process cls command"""
-        obbff.USE_CLEAR_AFTER_CMD = not obbff.USE_CLEAR_AFTER_CMD
-        set_key(
-            obbff.ENV_FILE,
-            "OPENBB_USE_CLEAR_AFTER_CMD",
-            str(obbff.USE_CLEAR_AFTER_CMD),
-        )
-        console.print("")
-
-    @log_start_end(log=logger)
-    def call_color(self, _):
-        """Process color command"""
-        obbff.USE_COLOR = not obbff.USE_COLOR
-        set_key(obbff.ENV_FILE, "OPENBB_USE_COLOR", str(obbff.USE_COLOR))
-        console.print("")
-
-    @log_start_end(log=logger)
-    def call_promptkit(self, _):
-        """Process promptkit command"""
-        obbff.USE_PROMPT_TOOLKIT = not obbff.USE_PROMPT_TOOLKIT
-        set_key(
-            obbff.ENV_FILE,
-            "OPENBB_USE_PROMPT_TOOLKIT",
-            str(obbff.USE_PROMPT_TOOLKIT),
-        )
-        console.print("")
-
-    @log_start_end(log=logger)
-    def call_predict(self, _):
-        """Process predict command"""
-        obbff.ENABLE_PREDICT = not obbff.ENABLE_PREDICT
-        set_key(obbff.ENV_FILE, "OPENBB_ENABLE_PREDICT", str(obbff.ENABLE_PREDICT))
-        console.print("")
-
-    @log_start_end(log=logger)
-    def call_thoughts(self, _):
-        """Process thoughts command"""
-        obbff.ENABLE_THOUGHTS_DAY = not obbff.ENABLE_THOUGHTS_DAY
-        set_key(
-            obbff.ENV_FILE,
-            "OPENBB_ENABLE_THOUGHTS_DAY",
-            str(obbff.ENABLE_THOUGHTS_DAY),
-        )
-        console.print("")
-
-    @log_start_end(log=logger)
-    def call_reporthtml(self, _):
-        """Process reporthtml command"""
-        obbff.OPEN_REPORT_AS_HTML = not obbff.OPEN_REPORT_AS_HTML
-        set_key(
-            obbff.ENV_FILE,
-            "OPENBB_OPEN_REPORT_AS_HTML",
-            str(obbff.OPEN_REPORT_AS_HTML),
-        )
-        console.print("")
-
-    @log_start_end(log=logger)
-    def call_exithelp(self, _):
-        """Process exithelp command"""
-        obbff.ENABLE_EXIT_AUTO_HELP = not obbff.ENABLE_EXIT_AUTO_HELP
-        set_key(
-            obbff.ENV_FILE,
-            "OPENBB_ENABLE_EXIT_AUTO_HELP",
-            str(obbff.ENABLE_EXIT_AUTO_HELP),
-        )
-        console.print("")
-
-    @log_start_end(log=logger)
-    def call_rcontext(self, _):
-        """Process rcontext command"""
-        obbff.REMEMBER_CONTEXTS = not obbff.REMEMBER_CONTEXTS
-        set_key(
-            obbff.ENV_FILE,
-            "OPENBB_REMEMBER_CONTEXTS",
-            str(obbff.REMEMBER_CONTEXTS),
-        )
-        console.print("")
 
     @log_start_end(log=logger)
     def call_dt(self, _):
         """Process dt command"""
         obbff.USE_DATETIME = not obbff.USE_DATETIME
         set_key(obbff.ENV_FILE, "OPENBB_USE_DATETIME", str(obbff.USE_DATETIME))
-        console.print("")
-
-    @log_start_end(log=logger)
-    def call_rich(self, _):
-        """Process rich command"""
-        obbff.ENABLE_RICH = not obbff.ENABLE_RICH
-        set_key(obbff.ENV_FILE, "OPENBB_ENABLE_RICH", str(obbff.ENABLE_RICH))
-        console.print("")
-
-    @log_start_end(log=logger)
-    def call_richpanel(self, _):
-        """Process richpanel command"""
-        obbff.ENABLE_RICH_PANEL = not obbff.ENABLE_RICH_PANEL
-        set_key(
-            obbff.ENV_FILE,
-            "OPENBB_ENABLE_RICH_PANEL",
-            str(obbff.ENABLE_RICH_PANEL),
-        )
-        console.print("")
-
-    @log_start_end(log=logger)
-    def call_ion(self, _):
-        """Process ion command"""
-        obbff.USE_ION = not obbff.USE_ION
-        set_key(obbff.ENV_FILE, "OPENBB_USE_ION", str(obbff.USE_ION))
-        console.print("")
-
-    @log_start_end(log=logger)
-    def call_watermark(self, _):
-        """Process watermark command"""
-        obbff.USE_WATERMARK = not obbff.USE_WATERMARK
-        set_key(obbff.ENV_FILE, "OPENBB_USE_WATERMARK", str(obbff.USE_WATERMARK))
-        console.print("")
-
-    @log_start_end(log=logger)
-    def call_cmdloc(self, _):
-        """Process cmdloc command"""
-        obbff.USE_CMD_LOCATION_FIGURE = not obbff.USE_CMD_LOCATION_FIGURE
-        set_key(
-            obbff.ENV_FILE,
-            "OPENBB_USE_CMD_LOCATION_FIGURE",
-            str(obbff.USE_CMD_LOCATION_FIGURE),
-        )
         console.print("")
 
     @log_start_end(log=logger)
@@ -455,15 +328,6 @@ class SettingsController(BaseController):
     @log_start_end(log=logger)
     def call_lang(self, other_args: List[str]):
         """Process lang command"""
-        languages_i18n = os.path.join(
-            os.path.dirname(os.path.abspath(os.path.dirname(__file__))), "i18n"
-        )
-        languages_available = [
-            lang.strip(".yml")
-            for lang in os.listdir(languages_i18n)
-            if lang.endswith(".yml")
-        ]
-
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -476,13 +340,134 @@ class SettingsController(BaseController):
             type=str,
             dest="value",
             help="Language",
-            choices=languages_available,
-            required=True,
+            choices=self.languages_available,
+            default="",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-v")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            set_key(obbff.ENV_FILE, "OPENBB_USE_LANGUAGE", str(ns_parser.value))
-            obbff.USE_LANGUAGE = ns_parser.value
+            if ns_parser.value:
+                set_key(obbff.ENV_FILE, "OPENBB_USE_LANGUAGE", str(ns_parser.value))
+                obbff.USE_LANGUAGE = ns_parser.value
+            else:
+                console.print(
+                    f"Languages available: {', '.join(self.languages_available)}"
+                )
             console.print("")
+
+    def call_tz(self, other_args: List[str]):
+        """Process tz command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="""
+                   Setting a different timezone
+               """,
+        )
+        parser.add_argument(
+            "-t",
+            dest="timezone",
+            help="Choose timezone",
+            required="-h" not in other_args,
+            choices=self.all_timezones,
+        )
+
+        if other_args and "-t" not in other_args[0]:
+            other_args.insert(0, "-t")
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            if ns_parser.timezone:
+                replace_user_timezone(ns_parser.timezone.replace("_", "/", 1))
+
+    def call_export(self, other_args: List[str]):
+        """Process export command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="export",
+            description="Select folder where to export data",
+        )
+        parser.add_argument(
+            "-f",
+            "--folder",
+            type=str,
+            dest="folder",
+            help="Folder where to export data. 'default' redirects to OpenBB Terminal 'exports'",
+            default="default",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-f")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+
+        if ns_parser:
+            if other_args or self.queue:
+                if other_args:
+                    export_path = ""
+                else:
+                    # Re-add the initial slash for an absolute directory provided
+                    export_path = "/"
+
+                export_path += "/".join([ns_parser.folder] + self.queue)
+                self.queue = []
+
+                base_path = os.path.dirname(os.path.abspath(__file__))
+                default_path = os.path.join(base_path, "exports")
+
+                success_export = False
+                while not success_export:
+                    if export_path.upper() == "DEFAULT":
+                        console.print(
+                            f"Export data to be saved in the default folder: '{default_path}'"
+                        )
+                        set_export_folder(self.env_file, path_folder="")
+                        success_export = True
+                    else:
+                        # If the path selected does not start from the user root, give relative location from root
+                        if export_path[0] == "~":
+                            export_path = export_path.replace(
+                                "~", os.path.expanduser("~")
+                            )
+                        elif export_path[0] != "/":
+                            export_path = os.path.join(base_path, export_path)
+
+                        # Check if the directory exists
+                        if os.path.isdir(export_path):
+                            console.print(
+                                f"Export data to be saved in the selected folder: '{export_path}'"
+                            )
+                            set_export_folder(self.env_file, path_folder=export_path)
+                            success_export = True
+                        else:
+                            console.print(
+                                "[red]The path selected to export data does not exist![/red]\n"
+                            )
+                            user_opt = "None"
+                            while user_opt not in ("Y", "N"):
+                                user_opt = input(
+                                    f"Do you wish to create folder: `{export_path}` ? [Y/N]\n"
+                                ).upper()
+
+                            if user_opt == "Y":
+                                os.makedirs(export_path)
+                                console.print(
+                                    f"[green]Folder '{export_path}' successfully created.[/green]"
+                                )
+                                set_export_folder(
+                                    self.env_file, path_folder=export_path
+                                )
+                            else:
+                                # Do not update export_folder path since we will keep the same as before
+                                path_display = (
+                                    obbff.EXPORT_FOLDER_PATH
+                                    if obbff.EXPORT_FOLDER_PATH
+                                    else "DEFAULT (folder: exports/)"
+                                )
+                                console.print(
+                                    "[yellow]Export data to keep being saved in"
+                                    + f"the selected folder: {path_display}[/yellow]"
+                                )
+                            success_export = True
+
+        console.print()

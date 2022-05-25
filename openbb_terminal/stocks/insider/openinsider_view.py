@@ -309,7 +309,7 @@ def print_insider_filter(
     if not links:
         l_chars = [list(chars) for chars in df_insider_orig["X"].values]
         l_uchars = np.unique(list(itertools.chain(*l_chars)))
-        console.print("")
+
         for char in l_uchars:
             console.print(d_notes[char])
 
@@ -318,3 +318,5 @@ def print_insider_filter(
 
         for tradetype in l_utradetype:
             console.print(d_trade_types[tradetype])
+
+    console.print("")

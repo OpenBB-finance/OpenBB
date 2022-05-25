@@ -30,33 +30,36 @@ en:
   tz: set different timezone
   export: select export folder to output data
   exe: execute automated routine script
-  settings: set feature flags and style charts
+  settings: tune settings (export folder, timezone, language, plot size)
+  featflags: enable and disable feature flags
   keys: set API keys and check their validity
+  _configure_: Configure your own terminal
+  _main_menu_: Main menu
   keys/_keys_: Set API keys through environment variables
   defined, test passed: defined, test passed
   defined, test failed: defined, test failed
   not defined: not defined
   defined, not tested: defined, not tested
   defined, test unsuccessful: defined, test unsuccessful
-  settings/_feature_flags_: Feature flags through environment variables
-  settings/logcollection: allow logs to be sent to help OpenBB team
-  settings/tab: use tabulate to print dataframes
-  settings/cls: clear console after each command
-  settings/color: use coloring features
-  settings/promptkit: enable prompt toolkit (autocomplete and history)
-  settings/predict: prediction features
-  settings/thoughts: thoughts of the day
-  settings/reporthtml: open report as HTML otherwise notebook
-  settings/exithelp: automatically print help when quitting menu
-  settings/rcontext: remember contexts loaded params during session
-  settings/rich: colorful rich terminal
-  settings/richpanel: colorful rich terminal panel
-  settings/ion: interactive matplotlib mode
-  settings/watermark: watermark in figures
-  settings/cmdloc: command location displayed in figures
+  featflags/_info_: Feature flags through environment variables
+  featflags/logcollection: allow logs to be sent to help OpenBB team
+  featflags/tab: use tabulate to print dataframes
+  featflags/cls: clear console after each command
+  featflags/color: use coloring features
+  featflags/promptkit: enable prompt toolkit (autocomplete and history)
+  featflags/predict: prediction features
+  featflags/thoughts: thoughts of the day
+  featflags/reporthtml: open report as HTML otherwise notebook
+  featflags/exithelp: automatically print help when quitting menu
+  featflags/rcontext: remember contexts loaded params during session
+  featflags/rich: colorful rich terminal
+  featflags/richpanel: colorful rich terminal panel
+  featflags/ion: interactive matplotlib mode
+  featflags/watermark: watermark in figures
+  featflags/cmdloc: command location displayed in figures
+  settings/_info_: Settings through environment variables
   settings/autoscaling: plot autoscaling
-  settings/dt: add date and time to command line
-  settings/flair: console flair
+  settings/dt: add or remove datetime from flair
   settings/_flair: Flair
   settings/lang: terminal language
   settings/_language: Language
@@ -74,8 +77,8 @@ en:
   settings/_plot_height_pct: Plot height [%]
   settings/_plot_width_pct: Plot width [%]
   settings/_monitor: Monitor
-  _export_folder: Export Folder
-  _timezone: Timezone
+  settings/_export_folder: Export Folder
+  settings/_timezone: Timezone
   _others_: Others
   stocks: access historical pricing data, options, sector and industry, and overall due diligence
   crypto: dive into onchain data, tokenomics, circulation supply, nfts and more
@@ -282,6 +285,9 @@ en:
   stocks/ins/tist: top insider sales today
   stocks/ins/tispw: top insider sales past week
   stocks/ins/tispm: top insider sales past month
+  stocks/ins/_ticker: Ticker
+  stocks/ins/_last_insiders: Last Insiders
+  stocks/ins/_top_insiders: Top Insiders
   stocks/gov/_explore: Explore
   stocks/gov/lasttrades: last trades
   stocks/gov/topbuys: show most purchased stocks

@@ -10,7 +10,6 @@ import platform
 import sys
 from typing import List
 from pathlib import Path
-import pytz
 import dotenv
 
 from prompt_toolkit.completion import NestedCompleter
@@ -20,10 +19,7 @@ from openbb_terminal import feature_flags as obbff
 from openbb_terminal.helper_funcs import (
     check_path,
     get_flair,
-    get_user_timezone_or_invalid,
     parse_known_args_and_warn,
-    replace_user_timezone,
-    set_export_folder,
 )
 from openbb_terminal.loggers import setup_logging
 from openbb_terminal.menu import session
@@ -56,9 +52,8 @@ class TerminalController(BaseController):
         "about",
         "keys",
         "settings",
-        "tz",
+        "featflags",
         "exe",
-        "export",
     ]
     CHOICES_MENUS = [
         "stocks",
@@ -76,15 +71,12 @@ class TerminalController(BaseController):
 
     PATH = "/"
 
-    all_timezones = [tz.replace("/", "-") for tz in pytz.all_timezones]
-
     def __init__(self, jobs_cmds: List[str] = None):
         """Constructor"""
         super().__init__(jobs_cmds)
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
-            choices["tz"] = {c: None for c in self.all_timezones}
             choices["support"] = self.SUPPORT_CHOICES
 
             self.completer = NestedCompleter.from_nested_dict(choices)
@@ -105,26 +97,20 @@ class TerminalController(BaseController):
         mt.add_cmd("quit")
         mt.add_cmd("exit")
         mt.add_cmd("reset")
+        mt.add_raw("\n")
         mt.add_cmd("resources")
+        mt.add_cmd("update")
+        mt.add_cmd("about")
         mt.add_cmd("support")
         mt.add_raw("\n")
-        mt.add_cmd("about")
-        mt.add_cmd("update")
-        mt.add_cmd("tz")
-        mt.add_cmd("export")
-        mt.add_cmd("exe")
-        mt.add_menu("settings")
+        mt.add_info("_configure_")
         mt.add_menu("keys")
+        mt.add_menu("featflags")
+        mt.add_menu("settings")
         mt.add_raw("\n")
-        mt.add_param(
-            "_export_folder",
-            obbff.EXPORT_FOLDER_PATH
-            if obbff.EXPORT_FOLDER_PATH
-            else "DEFAULT (folder: exports/)",
-            14,
-        )
-        mt.add_param("_timezone", get_user_timezone_or_invalid(), 14)
+        mt.add_cmd("exe")
         mt.add_raw("\n")
+        mt.add_info("_main_menu_")
         mt.add_menu("stocks")
         mt.add_menu("crypto")
         mt.add_menu("etf")
@@ -155,6 +141,12 @@ class TerminalController(BaseController):
         from openbb_terminal.settings_controller import SettingsController
 
         self.queue = self.load_class(SettingsController, self.queue)
+
+    def call_featflags(self, _):
+        """Process feature flags command"""
+        from openbb_terminal.featflags_controller import FeatureFlagsController
+
+        self.queue = self.load_class(FeatureFlagsController, self.queue)
 
     def call_about(self, _):
         """Process about command"""
@@ -249,101 +241,6 @@ class TerminalController(BaseController):
         )
 
         self.queue = self.load_class(PortfolioController, self.queue)
-
-    def call_tz(self, other_args: List[str]):
-        """Process tz command"""
-        tz_parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            description="""
-                   Setting a different timezone
-               """,
-        )
-        tz_parser.add_argument(
-            "-t",
-            dest="timezone",
-            help="Choose timezone",
-            required="-h" not in other_args,
-            choices=self.all_timezones,
-        )
-
-        if other_args and "-t" not in other_args[0]:
-            other_args.insert(0, "-t")
-
-        tz_ns_parser = parse_known_args_and_warn(tz_parser, other_args)
-        if tz_ns_parser:
-            if tz_ns_parser.timezone:
-                replace_user_timezone(tz_ns_parser.timezone.replace("-", "/"))
-
-    def call_export(self, other_args: List[str]):
-        """Process export command"""
-        if other_args or self.queue:
-            if other_args:
-                export_path = ""
-            else:
-                # Re-add the initial slash for an absolute directory provided
-                export_path = "/"
-
-            other_args += self.queue
-            self.queue = []
-
-            export_path += "/".join(other_args)
-
-            base_path = os.path.dirname(os.path.abspath(__file__))
-            default_path = os.path.join(base_path, "exports")
-
-            success_export = False
-            while not success_export:
-                if export_path.upper() == "DEFAULT":
-                    console.print(
-                        f"Export data to be saved in the default folder: '{default_path}'"
-                    )
-                    set_export_folder(env_file, path_folder="")
-                    success_export = True
-                else:
-                    # If the path selected does not start from the user root, give relative location from terminal root
-                    if export_path[0] == "~":
-                        export_path = export_path.replace("~", os.path.expanduser("~"))
-                    elif export_path[0] != "/":
-                        export_path = os.path.join(base_path, export_path)
-
-                    # Check if the directory exists
-                    if os.path.isdir(export_path):
-                        console.print(
-                            f"Export data to be saved in the selected folder: '{export_path}'"
-                        )
-                        set_export_folder(env_file, path_folder=export_path)
-                        success_export = True
-                    else:
-                        console.print(
-                            "[red]The path selected to export data does not exist![/red]\n"
-                        )
-                        user_opt = "None"
-                        while user_opt not in ("Y", "N"):
-                            user_opt = input(
-                                f"Do you wish to create folder: `{export_path}` ? [Y/N]\n"
-                            ).upper()
-
-                        if user_opt == "Y":
-                            os.makedirs(export_path)
-                            console.print(
-                                f"[green]Folder '{export_path}' successfully created.[/green]"
-                            )
-                            set_export_folder(env_file, path_folder=export_path)
-                        else:
-                            # Do not update export_folder path since we will keep the same as before
-                            path_display = (
-                                obbff.EXPORT_FOLDER_PATH
-                                if obbff.EXPORT_FOLDER_PATH
-                                else "DEFAULT (folder: exports/)"
-                            )
-                            console.print(
-                                "[yellow]Export data to keep being saved in"
-                                + f"the selected folder: {path_display}[/yellow]"
-                            )
-                        success_export = True
-
-        console.print()
 
     def call_exe(self, other_args: List[str]):
         """Process exe command"""
