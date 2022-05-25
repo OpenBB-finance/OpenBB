@@ -662,6 +662,8 @@ main:
                   ref: "/terminal/common/prediction_techniques/mc"
                 - name: expo
                   ref: "/terminal/common/prediction_techniques/expo"
+                - name: theta
+                  ref: "/terminal/common/prediction_techniques/theta"
         - name: Cryptocurrency
           ref: "/terminal/cryptocurrency"
           sub:

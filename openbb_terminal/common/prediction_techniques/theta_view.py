@@ -29,10 +29,8 @@ logger = logging.getLogger(__name__)
 def display_theta_forecast(
     data: Union[pd.DataFrame, pd.Series],
     ticker_name: str,
-    trend: str,
     seasonal: str,
     seasonal_periods: int,
-    normalization: str,
     n_predict: int,
     start_window: float,
     forecast_horizon: int,
@@ -44,17 +42,12 @@ def display_theta_forecast(
     ----------
     data : Union[pd.Series, np.array]
         Data to forecast
-    trend: str
-        Trend component.  One of [L, E]
-        Defaults to LINEAR.
     seasonal: str
         Seasonal component.  One of [N, A, M]
         Defaults to MULTIPLICATIVE.
     seasonal_periods: int
         Number of seasonal periods in a year
         If not set, inferred from frequency of the series.
-    Normalization: str
-        Normalize Data
     n_predict: int
         Number of days to forecast
     start_window: float
@@ -71,13 +64,12 @@ def display_theta_forecast(
         historical_fcast_es,
         predicted_values,
         precision,
+        best_theta,
         _model,
     ) = theta_model.get_theta_data(
         data,
-        trend,
         seasonal,
         seasonal_periods,
-        normalization,
         n_predict,
         start_window,
         forecast_horizon,
@@ -99,11 +91,9 @@ def display_theta_forecast(
     historical_fcast_es.plot(
         label="Back-test 3-Days ahead forecast (Exp. Smoothing)", figure=fig
     )
-    predicted_values.plot(
-        label="Theta Forecast", low_quantile=0.1, high_quantile=0.9, figure=fig
-    )
+    predicted_values.plot(label="Theta Forecast", figure=fig)
     ax.set_title(
-        f"Theta for ${ticker_name} for next [{n_predict}] days (Model MAPE={round(precision,2)}%)"
+        f"Theta {best_theta:.2f} for ${ticker_name} for next [{n_predict}] days (Model MAPE={round(precision,2)}%)"
     )
     ax.set_ylabel("Adj. Closing")
     ax.set_xlabel("Date")
@@ -112,7 +102,8 @@ def display_theta_forecast(
     if not external_axes:
         theme.visualize_output()
 
-    numeric_forecast = predicted_values.quantile_df()["AdjClose_0.5"].tail(n_predict)
+    numeric_forecast = predicted_values.pd_dataframe()["AdjClose"].tail(n_predict)
+
     print_pretty_prediction(numeric_forecast, data["AdjClose"].iloc[-1])
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "expo")

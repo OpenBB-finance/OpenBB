@@ -100,10 +100,8 @@ class PredictionTechniquesController(BaseController):
             choices["expo"]["-s"] = {c: {} for c in expo_model.SEASONS}
             choices["expo"]["-p"] = {c: {} for c in expo_model.PERIODS}
             choices["expo"]["-dp"] = {c: {} for c in expo_model.DAMPEN}
-            choices["theta"]["-t"] = {c: {} for c in theta_model.TRENDS}
             choices["theta"]["-p"] = {c: {} for c in theta_model.PERIODS}
             choices["theta"]["-s"] = {c: {} for c in theta_model.SEASONS}
-            choices["theta"]["-e"] = {c: {} for c in theta_model.NORMALIZATION}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
@@ -832,12 +830,9 @@ class PredictionTechniquesController(BaseController):
         parser = argparse.ArgumentParser(
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             add_help=False,
-            prog="expo",
+            prog="theta",
             description="""
                 Perform Theta forecast
-                Trend: L: Linear, E: Exponential
-                Seasonality: N: None, A: Additive, M: Multiplicative
-                Normalize: T: True, F: False
             """,
         )
         parser.add_argument(
@@ -848,15 +843,6 @@ class PredictionTechniquesController(BaseController):
             type=check_positive,
             default=5,
             help="prediction days.",
-        )
-        parser.add_argument(
-            "-t",
-            "--trend",
-            action="store",
-            dest="trend",
-            choices=theta_model.TRENDS,
-            default="L",
-            help="Trend: L: Linear, E: Exponential.",
         )
         parser.add_argument(
             "-s",
@@ -875,14 +861,6 @@ class PredictionTechniquesController(BaseController):
             type=check_positive,
             default=7,
             help="Seasonal periods: 4: Quarterly, 7: Daily",
-        )
-        parser.add_argument(
-            "-o",
-            "--normalize",
-            action="store",
-            dest="normalization",
-            default="T",
-            help="If True, the data is normalized so that the mean is 1",
         )
         parser.add_argument(
             "-w",
@@ -913,10 +891,8 @@ class PredictionTechniquesController(BaseController):
                 data=self.stock,
                 ticker_name=self.ticker,
                 n_predict=ns_parser.n_days,
-                trend=ns_parser.trend,
                 seasonal=ns_parser.seasonal,
                 seasonal_periods=ns_parser.seasonal_periods,
-                normalization=ns_parser.normalization,
                 start_window=ns_parser.start_window,
                 forecast_horizon=ns_parser.forecast_horizon,
                 export=ns_parser.export,

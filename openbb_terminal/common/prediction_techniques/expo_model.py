@@ -34,7 +34,7 @@ def get_expo_data(
     n_predict: int = 30,
     start_window: float = 0.65,
     forecast_horizon: int = 3,
-) -> Tuple[Any, Any, Any, Any, Any]:
+) -> Tuple[Any, Any, Any, float, Any]:
 
     """Performs Probabilistic Exponential Smoothing forecasting
     This is a wrapper around statsmodels Holt-Winters' Exponential Smoothing;
@@ -66,12 +66,16 @@ def get_expo_data(
 
     Returns
     -------
-    List[float]
+    Any
         Adjusted Data series
-    List[float]
+    Any
         List of predicted values
     Any
         Fit Prob. Expo model object.
+    float
+        Mean average precision error
+    Any
+        Exponential model
     """
 
     filler = MissingValuesFiller()
@@ -86,7 +90,6 @@ def get_expo_data(
 
     ticker_series = filler.transform(ticker_series)
     ticker_series = ticker_series.astype(np.float32)
-    _, val = ticker_series.split_before(0.85)
 
     if trend == "M":
         trend = ModelMode.MULTIPLICATIVE
@@ -125,8 +128,10 @@ def get_expo_data(
 
     # Show forecast over validation # and then +n_predict afterwards sampled 10 times per point
     probabilistic_forecast = model_es.predict(int(n_predict), num_samples=500)
-    precision = mape(val, probabilistic_forecast)  # mape = mean average precision error
-    console.print(f"model {model_es} obtains MAPE: {precision:.2f}% \n")  # TODO
+    precision = mape(
+        actual_series=ticker_series, pred_series=historical_fcast_es
+    )  # mape = mean average precision error
+    console.print(f"model {model_es} obtains MAPE: {precision:.2f}% \n")
 
     return (
         ticker_series,
