@@ -33,7 +33,7 @@ Company:  GameStop Corporation
 (🦋) /stocks/ba/ $ ?
 ````
 
-<a target="_blank" href="https://user-images.githubusercontent.com/46355364/170242757-3e29f690-7d29-4fe2-9e14-889c43e3142e.png"><img alt="The Behavioural Analysis Menu with a loaded ticker" "src=https://user-images.githubusercontent.com/46355364/170242757-3e29f690-7d29-4fe2-9e14-889c43e3142e.png"></a>
+<a target="_blank" href="https://user-images.githubusercontent.com/46355364/170242757-3e29f690-7d29-4fe2-9e14-889c43e3142e.png"><img alt="The Behavioural Analysis Menu with a loaded ticker" src="https://user-images.githubusercontent.com/46355364/170242757-3e29f690-7d29-4fe2-9e14-889c43e3142e.png"></a>
 
 Some data sources will require a valid API key, which can be obtained for free and then set using the Keys menu.
 To use all the features in this menu, obtain free API keys from these providers:
@@ -54,7 +54,7 @@ command returns the following:
 ````
 (🦋) /stocks/ba/ $ headlines
 ````
-<a target="_blank" href="https://user-images.githubusercontent.com/46355364/170242932-8dd6fa4c-ed7b-43c1-a0df-7a04e7cebebb.png"><img alt="headlines" src="https://user-images.githubusercontent.com/46355364/170242757-3e29f690-7d29-4fe2-9e14-889c43e3142e.png"></a>
+<a target="_blank" href="https://user-images.githubusercontent.com/46355364/170244924-ffe6cd15-8d17-4690-bf44-d2b496dbc310.png"><img alt="headlines" src="https://user-images.githubusercontent.com/46355364/170244924-ffe6cd15-8d17-4690-bf44-d2b496dbc310.png"></a>
 
 Alternatively, running the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/common/behavioural_analysis/snews/" target="_blank">snews</a>
 command returns the following:
