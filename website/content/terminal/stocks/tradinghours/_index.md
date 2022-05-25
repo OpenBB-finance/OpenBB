@@ -8,7 +8,7 @@ excerpt: "An Introduction to the Trading Hours menu, within the Stocks menu. Thi
 geekdocCollapseSection: true
 ---
 This set of features is for checking the operating status of markets globally. To access the Trading Hours features,
-enter `th` from the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/introduction_to_stocks/" target="_blank">Stocks</a> menu.
+enter `th` from the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/" target="_blank">Stocks</a> menu.
 Alternatively, a user can access the submenu with absolute path navigation from anywhere in the Terminal: `/stocks/th`
 
 <a target="_blank" href="https://user-images.githubusercontent.com/46355364/170244188-17ffac5f-3345-4c40-be44-fb5128ad9612.png"><img alt="Trading Hours" src="https://user-images.githubusercontent.com/46355364/170244188-17ffac5f-3345-4c40-be44-fb5128ad9612.png"></a>
