@@ -23,7 +23,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import CryptoBaseController
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 
 logger = logging.getLogger(__name__)
 
@@ -85,39 +85,35 @@ class QaController(CryptoBaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = f"""[cmds]
-   load        load new coin
-   pick        pick target column for analysis[/cmds]
-
-[param]Coin: [/param]{self.coin}
-[param]Target Column: [/param]{self.target}
-[cmds]
-[info]Statistics:[/info]
-    summary     brief summary statistics of loaded coin.
-    normality   normality statistics and tests
-    unitroot    unit root test for stationarity (ADF, KPSS)
-[info]Plots:[/info]
-    line        line plot of selected target
-    hist        histogram with density plot
-    cdf         cumulative distribution function
-    bw          box and whisker plot
-    acf         (partial) auto-correlation function differentials of prices
-    qqplot      residuals against standard normal curve
-[info]Rolling Metrics:[/info]
-    rolling     rolling mean and std deviation of prices
-    spread      rolling variance and std deviation of prices
-    quantile    rolling median and quantile of prices
-    skew        rolling skewness of distribution of prices
-    kurtosis    rolling kurtosis of distribution of prices
-[info]Risk:[/info]
-    var         display value at risk
-    es          display expected shortfall
-[info]Other:[/info]
-    raw         print raw data
-    decompose   decomposition in cyclic-trend, season, and residuals of prices
-    cusum       detects abrupt changes using cumulative sum algorithm of prices[/cmds]
-        """
-        console.print(text=help_text, menu="Crypto - Quantitative Analysis")
+        mt = MenuText("crypto/qa/")
+        mt.add_cmd("load")
+        mt.add_cmd("pick")
+        mt.add_raw("\n")
+        mt.add_param("_ticker", self.coin)
+        mt.add_param("_target", self.target)
+        mt.add_raw("\n")
+        mt.add_info("_statistics_")
+        mt.add_cmd("summary")
+        mt.add_cmd("normality")
+        mt.add_cmd("unitroot")
+        mt.add_info("_plots_")
+        mt.add_cmd("line")
+        mt.add_cmd("hist")
+        mt.add_cmd("cdf")
+        mt.add_cmd("bw")
+        mt.add_cmd("acf")
+        mt.add_cmd("qqplot")
+        mt.add_info("_rolling_metrics_")
+        mt.add_cmd("rolling")
+        mt.add_cmd("spread")
+        mt.add_cmd("quantile")
+        mt.add_cmd("skew")
+        mt.add_cmd("kurtosis")
+        mt.add_info("_other_")
+        mt.add_cmd("raw")
+        mt.add_cmd("decompose")
+        mt.add_cmd("cusum")
+        console.print(text=mt.menu_text, menu="Cryptocurrency - Quantitative Analysis")
 
     def custom_reset(self):
         """Class specific component of reset command"""

@@ -18,7 +18,6 @@ from openbb_terminal.decorators import log_start_end
 
 from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
-    check_positive,
     export_data,
     parse_known_args_and_warn,
     valid_date,
@@ -27,10 +26,10 @@ from openbb_terminal.helper_classes import AllowArgsWithWhiteSpace
 from openbb_terminal.helper_funcs import choice_check_after_action
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, translate, MenuText
 from openbb_terminal.stocks import stocks_helper
 
-# pylint: disable=R1710,import-outside-toplevel,R0913,R1702
+# pylint: disable=R1710,import-outside-toplevel,R0913,R1702,no-member
 
 logger = logging.getLogger(__name__)
 
@@ -108,39 +107,36 @@ class StocksController(StockBaseController):
             )
         else:
             stock_text = f"{s_intraday} {self.ticker}"
-        has_ticker_start = "" if self.ticker else "[unvl]"
-        has_ticker_end = "" if self.ticker else "[/unvl]"
-        help_text = f"""[cmds]
-    search           search a specific stock ticker for analysis
-    load             load a specific stock ticker and additional info for analysis[/cmds][param]
-
-Stock: [/param]{stock_text}
-{self.add_info}[cmds]
-    quote            view the current price for a specific stock ticker
-    candle           view a candle chart for a specific stock ticker
-    news             latest news of the company [src][News API][/src]
-    codes            FIGI, SIK and SIC codes codes[/cmds] [src][Polygon.io][/src]
-
-[menu]
->   th               trading hours, \t\t\t check open markets
->   options          options menu,  \t\t\t e.g.: chains, open interest, greeks, parity
->   disc             discover trending stocks, \t\t e.g.: map, sectors, high short interest
->   sia              sector and industry analysis, \t e.g.: companies per sector, quick ratio per industry and country
->   dps              dark pool and short data, \t\t e.g.: darkpool, short interest, ftd
->   scr              screener stocks, \t\t\t e.g.: overview/performance, using preset filters
->   ins              insider trading,         \t\t e.g.: latest penny stock buys, top officer purchases
->   gov              government menu, \t\t\t e.g.: house trading, contracts, corporate lobbying
->   ba               behavioural analysis,    \t\t from: reddit, stocktwits, twitter, google
->   ca               comparison analysis,     \t\t e.g.: get similar, historical, correlation, financials
-{has_ticker_start}>   fa               fundamental analysis,    \t\t e.g.: income, balance, cash, earnings
->   res              research web page,       \t\t e.g.: macroaxis, yahoo finance, fool
->   dd               in-depth due-diligence,  \t\t e.g.: news, analyst, shorts, insider, sec
->   bt               strategy backtester,      \t\t e.g.: simple ema, ema cross, rsi strategies
->   ta               technical analysis,      \t\t e.g.: ema, macd, rsi, adx, bbands, obv
->   qa               quantitative analysis,   \t\t e.g.: decompose, cusum, residuals analysis
->   pred             prediction techniques,   \t\t e.g.: regression, arima, rnn, lstm
-{has_ticker_end}"""
-        console.print(text=help_text, menu="Stocks")
+        mt = MenuText("stocks/", 80)
+        mt.add_cmd("search")
+        mt.add_cmd("load")
+        mt.add_raw("\n")
+        mt.add_param("_ticker", stock_text)
+        mt.add_raw(self.add_info)
+        mt.add_raw("\n")
+        mt.add_cmd("quote")
+        mt.add_cmd("candle")
+        mt.add_cmd("news", "News API")
+        mt.add_cmd("codes", "Polygon")
+        mt.add_raw("\n")
+        mt.add_menu("th")
+        mt.add_menu("options")
+        mt.add_menu("disc")
+        mt.add_menu("sia")
+        mt.add_menu("dps")
+        mt.add_menu("scr")
+        mt.add_menu("ins")
+        mt.add_menu("gov")
+        mt.add_menu("ba")
+        mt.add_menu("ca")
+        mt.add_menu("fa", self.ticker)
+        mt.add_menu("res", self.ticker)
+        mt.add_menu("dd", self.ticker)
+        mt.add_menu("bt", self.ticker)
+        mt.add_menu("ta", self.ticker)
+        mt.add_menu("qa", self.ticker)
+        mt.add_menu("pred", self.ticker)
+        console.print(text=mt.menu_text, menu="Stocks")
 
     def custom_reset(self):
         """Class specific component of reset command"""
@@ -160,7 +156,7 @@ Stock: [/param]{stock_text}
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="search",
-            description="Show companies matching the search query.",
+            description=translate("stocks/SEARCH"),
         )
         parser.add_argument(
             "-q",
@@ -169,15 +165,7 @@ Stock: [/param]{stock_text}
             dest="query",
             type=str.lower,
             default="",
-            help="The search term used to find company tickers.",
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            default=0,
-            type=int,
-            dest="limit",
-            help="Enter the number of Equities you wish to see in the table window.",
+            help=translate("stocks/SEARCH_query"),
         )
         parser.add_argument(
             "-c",
@@ -186,7 +174,7 @@ Stock: [/param]{stock_text}
             nargs=argparse.ONE_OR_MORE,
             action=choice_check_after_action(AllowArgsWithWhiteSpace, self.country),
             dest="country",
-            help="Search by country to find stocks matching the criteria.",
+            help=translate("stocks/SEARCH_country"),
         )
         parser.add_argument(
             "-s",
@@ -195,7 +183,7 @@ Stock: [/param]{stock_text}
             nargs=argparse.ONE_OR_MORE,
             action=choice_check_after_action(AllowArgsWithWhiteSpace, self.sector),
             dest="sector",
-            help="Search by sector to find stocks matching the criteria.",
+            help=translate("stocks/SEARCH_sector"),
         )
         parser.add_argument(
             "-i",
@@ -204,7 +192,7 @@ Stock: [/param]{stock_text}
             nargs=argparse.ONE_OR_MORE,
             action=choice_check_after_action(AllowArgsWithWhiteSpace, self.industry),
             dest="industry",
-            help="Search by industry to find stocks matching the criteria.",
+            help=translate("stocks/SEARCH_industry"),
         )
         parser.add_argument(
             "-e",
@@ -212,12 +200,15 @@ Stock: [/param]{stock_text}
             default="",
             choices=list(stocks_helper.market_coverage_suffix.keys()),
             dest="exchange_country",
-            help="Search by a specific exchange country to find stocks matching the criteria.",
+            help=translate("stocks/SEARCH_exchange"),
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-q")
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser,
+            other_args,
+            EXPORT_ONLY_RAW_DATA_ALLOWED,
+            limit=10,
         )
         if ns_parser:
             stocks_helper.search(
@@ -233,9 +224,37 @@ Stock: [/param]{stock_text}
     @log_start_end(log=logger)
     def call_quote(self, other_args: List[str]):
         """Process quote command"""
-        stocks_helper.quote(
-            other_args, self.ticker + "." + self.suffix if self.suffix else self.ticker
+        ticker = self.ticker + "." + self.suffix if self.suffix else self.ticker
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="quote",
+            description=translate("stocks/QUOTE"),
         )
+        if self.ticker:
+            parser.add_argument(
+                "-t",
+                "--ticker",
+                action="store",
+                dest="s_ticker",
+                default=ticker,
+                help=translate("stocks/QUOTE_ticker"),
+            )
+        else:
+            parser.add_argument(
+                "-t",
+                "--ticker",
+                action="store",
+                dest="s_ticker",
+                required="-h" not in other_args,
+                help=translate("stocks/QUOTE_ticker"),
+            )
+        # For the case where a user uses: 'quote BB'
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-t")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            stocks_helper.quote(ns_parser.s_ticker)
 
     @log_start_end(log=logger)
     def call_codes(self, _):
@@ -260,7 +279,7 @@ Stock: [/param]{stock_text}
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="candle",
-            description="Shows historic data for a stock",
+            description=translate("stocks/CANDLE"),
         )
         parser.add_argument(
             "-p",
@@ -268,7 +287,7 @@ Stock: [/param]{stock_text}
             dest="plotly",
             action="store_false",
             default=True,
-            help="Flag to show interactive plotly chart.",
+            help=translate("stocks/CANDLE_plotly"),
         )
         parser.add_argument(
             "--sort",
@@ -285,7 +304,7 @@ Stock: [/param]{stock_text}
             default="",
             type=str,
             dest="sort",
-            help="Choose a column to sort by",
+            help=translate("stocks/CANDLE_sort"),
         )
         parser.add_argument(
             "-d",
@@ -293,41 +312,35 @@ Stock: [/param]{stock_text}
             action="store_false",
             dest="descending",
             default=True,
-            help="Sort selected column descending",
+            help=translate("stocks/CANDLE_descending"),
         )
         parser.add_argument(
             "--raw",
             action="store_true",
             dest="raw",
             default=False,
-            help="Shows raw data instead of chart",
-        )
-        parser.add_argument(
-            "-n",
-            "--num",
-            type=check_positive,
-            help="Number to show if raw selected",
-            dest="num",
-            default=20,
+            help=translate("stocks/CANDLE_raw"),
         )
         parser.add_argument(
             "-t",
             "--trend",
             action="store_true",
             default=False,
-            help="Flag to add high and low trends to candle.",
+            help=translate("stocks/CANDLE_trend"),
             dest="trendlines",
         )
         parser.add_argument(
             "--ma",
             dest="mov_avg",
             type=str,
-            help="Add moving average in number of days to plot and separate by a comma. Example: 20,30,50",
+            help=translate("stocks/CANDLE_mov_avg"),
             default=None,
         )
-
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser,
+            other_args,
+            EXPORT_ONLY_RAW_DATA_ALLOWED,
+            limit=20,
         )
         if ns_parser:
             if self.ticker:
@@ -345,13 +358,11 @@ Stock: [/param]{stock_text}
                         df=self.stock,
                         sort=ns_parser.sort,
                         des=ns_parser.descending,
-                        num=ns_parser.num,
+                        num=ns_parser.limit,
                     )
 
                 else:
-
                     data = stocks_helper.process_candle(self.stock)
-
                     mov_avgs = []
 
                     if ns_parser.mov_avg:
@@ -382,22 +393,10 @@ Stock: [/param]{stock_text}
         if not self.ticker:
             console.print("Use 'load <ticker>' prior to this command!", "\n")
             return
-
         parser = argparse.ArgumentParser(
             add_help=False,
             prog="news",
-            description="""
-                Prints latest news about company, including date, title and web link. [Source: News API]
-            """,
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            action="store",
-            dest="limit",
-            type=check_positive,
-            default=5,
-            help="Limit of latest news being printed.",
+            description=translate("stocks/NEWS"),
         )
         parser.add_argument(
             "-d",
@@ -406,7 +405,7 @@ Stock: [/param]{stock_text}
             dest="n_start_date",
             type=valid_date,
             default=datetime.now() - timedelta(days=7),
-            help="The starting date (format YYYY-MM-DD) to search articles from",
+            help=translate("stocks/NEWS_date"),
         )
         parser.add_argument(
             "-o",
@@ -414,18 +413,19 @@ Stock: [/param]{stock_text}
             action="store_false",
             dest="n_oldest",
             default=True,
-            help="Show oldest articles first",
+            help=translate("stocks/NEWS_oldest"),
         )
         parser.add_argument(
             "-s",
             "--sources",
+            dest="sources",
             default=[],
             nargs="+",
-            help="Show news only from the sources specified (e.g bbc yahoo.com)",
+            help=translate("stocks/NEWS_sources"),
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args, limit=5)
         if ns_parser:
             sources = ns_parser.sources
             for idx, source in enumerate(sources):

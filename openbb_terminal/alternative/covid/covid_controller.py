@@ -20,7 +20,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 
 logger = logging.getLogger(__name__)
 
@@ -49,18 +49,17 @@ class CovidController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = f"""[cmds]
-        slopes      get countries with highest slope in cases
-        country     select country for data[/cmds]
-
-[param]Country: [/param]{self.country}[cmds]
-
-        ov          get overview (cases and deaths) for selected country
-        deaths      get deaths for selected country
-        cases       get cases for selected country
-        rates       get death/cases rate for selected country[/cmds]
-        """
-        console.print(text=help_text, menu="Alternative - COVID")
+        mt = MenuText("alternative/covid/")
+        mt.add_cmd("slopes")
+        mt.add_cmd("country")
+        mt.add_raw("\n")
+        mt.add_param("_country", self.country)
+        mt.add_raw("\n")
+        mt.add_cmd("ov")
+        mt.add_cmd("deaths")
+        mt.add_cmd("cases")
+        mt.add_cmd("rates")
+        console.print(text=mt.menu_text, menu="Alternative - COVID")
 
     def custom_reset(self):
         """Class specific component of reset command"""

@@ -19,7 +19,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 
 logger = logging.getLogger(__name__)
 
@@ -75,35 +75,30 @@ class OandaController(BaseController):
 
     def print_help(self):
         """Print help."""
-        has_instrument_start = "[unvl]" if not self.instrument else ""
-        has_instrument_end = "[/unvl]" if not self.instrument else ""
-
-        help_text = f"""[cmds]
-    summary       shows account summary
-    calendar      show calendar
-    list          list order history
-    pending       get information on pending orders
-    cancel        cancel a pending order by ID -i order ID
-    positions     get open positions
-    trades        list open trades
-    closetrade    close a trade by id
-
-    from          select the "from" currency in a forex pair
-    to            select the "to" currency in a forex pair[/cmds]
-
-[param]Loaded instrument: [/param]{self.instrument if self.instrument else ""}[cmds]
-[param]From:   [/param]{None or self.from_symbol}
-[param]To:     [/param]{None or self.to_symbol}
-[param]Source: [/param]{None or FOREX_SOURCES[self.source]}[cmds]
-
-    {has_instrument_start}
-    candles       show candles
-    price         shows price for selected instrument
-    order         place limit order -u # of units -p price
-    orderbook     print orderbook
-    positionbook  print positionbook[/cmds]{has_instrument_end}
-    """
-        console.print(text=help_text, menu="Forex - Oanda")
+        mt = MenuText("forex/oanda/")
+        mt.add_cmd("summary")
+        mt.add_cmd("calendar")
+        mt.add_cmd("list")
+        mt.add_cmd("pending")
+        mt.add_cmd("cancel")
+        mt.add_cmd("positions")
+        mt.add_cmd("trades")
+        mt.add_cmd("closetrade")
+        mt.add_raw("\n")
+        mt.add_cmd("from")
+        mt.add_cmd("to")
+        mt.add_raw("\n")
+        mt.add_param("_loaded", self.instrument or "")
+        mt.add_param("_from", self.from_symbol)
+        mt.add_param("_to", self.to_symbol)
+        mt.add_param("_source", FOREX_SOURCES[self.source])
+        mt.add_raw("\n")
+        mt.add_cmd("candles", "", self.instrument)
+        mt.add_cmd("price", "", self.instrument)
+        mt.add_cmd("order", "", self.instrument)
+        mt.add_cmd("orderbook", "", self.instrument)
+        mt.add_cmd("positionbook", "", self.instrument)
+        console.print(text=mt.menu_text, menu="Forex - Oanda")
 
     @log_start_end(log=logger)
     def call_to(self, other_args: List[str]):

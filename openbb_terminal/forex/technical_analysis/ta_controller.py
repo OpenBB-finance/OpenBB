@@ -30,7 +30,7 @@ from openbb_terminal.helper_funcs import (
 from openbb_terminal.forex.forex_helper import FOREX_SOURCES
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 
 logger = logging.getLogger(__name__)
 
@@ -85,32 +85,32 @@ class TechnicalAnalysisController(StockBaseController):
 
     def print_help(self):
         """Print help"""
-        currency_str = f" {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
-        help_text = f"""[cmds]
-[param]Currency Pair Loaded: [/param]{currency_str}
-[param]Source: [/param]{FOREX_SOURCES[self.source]}
-
-[info]Overlap:[/info]
-    ema              exponential moving average
-    sma              simple moving average
-    zlma             zero lag moving average
-[info]Momentum:[/info]
-    cci              commodity channel index
-    macd             moving average convergence/divergence
-    rsi              relative strength index
-    stoch            stochastic oscillator
-    fisher           fisher transform
-    cg               centre of gravity
-[info]Trend:[/info]
-    adx              average directional movement index
-    aroon            aroon indicator
-[info]Volatility:[/info]
-    bbands           bollinger bands
-    donchian         donchian channels
-[info]Custom:[/info]
-    fib              fibonacci retracement[/cmds]
-"""
-        console.print(text=help_text, menu="Forex - Technical Analysis")
+        mt = MenuText("forex/ta/")
+        mt.add_param(
+            "_currency", f"{self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
+        )
+        mt.add_param("_source", FOREX_SOURCES[self.source])
+        mt.add_raw("\n")
+        mt.add_info("_overlap_")
+        mt.add_cmd("ema")
+        mt.add_cmd("sma")
+        mt.add_cmd("zlma")
+        mt.add_info("_momentum_")
+        mt.add_cmd("cci")
+        mt.add_cmd("macd")
+        mt.add_cmd("rsi")
+        mt.add_cmd("stoch")
+        mt.add_cmd("fisher")
+        mt.add_cmd("cg")
+        mt.add_info("_trend_")
+        mt.add_cmd("adx")
+        mt.add_cmd("aroon")
+        mt.add_info("_volatility_")
+        mt.add_cmd("bbands")
+        mt.add_cmd("donchian")
+        mt.add_info("_custom_")
+        mt.add_cmd("fib")
+        console.print(text=mt.menu_text, menu="Forex - Technical Analysis")
 
     def custom_reset(self):
         """Class specific component of reset command"""
