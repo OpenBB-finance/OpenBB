@@ -31,7 +31,6 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_FIGURES_ALLOWED,
     check_positive,
-    check_valid_frac,
     get_next_stock_market_days,
     parse_known_args_and_warn,
     valid_date,
@@ -792,7 +791,6 @@ class PredictionTechniquesController(BaseController):
             "--window",
             action="store",
             dest="start_window",
-            type=check_valid_frac,
             default=0.65,
             help="Start point for rolling training and forecast window. 0.0-1.0",
         )
@@ -801,7 +799,6 @@ class PredictionTechniquesController(BaseController):
             "--forecasthorizon",
             action="store",
             dest="forecast_horizon",
-            type=check_positive,
             default=3,
             help="Days/Points to forecast when training and performing historical back-testing",
         )
@@ -870,7 +867,6 @@ class PredictionTechniquesController(BaseController):
             "--window",
             action="store",
             dest="start_window",
-            type=check_valid_frac,
             default=0.65,
             help="Start point for rolling training and forecast window. 0.0-1.0",
         )
@@ -879,7 +875,6 @@ class PredictionTechniquesController(BaseController):
             "--forecasthorizon",
             action="store",
             dest="forecast_horizon",
-            type=check_positive,
             default=3,
             help="Days/Points to forecast when training and performing historical back-testing",
         )

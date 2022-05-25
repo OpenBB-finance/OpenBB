@@ -1550,10 +1550,3 @@ def support_message(s: str) -> str:
     for the support command
     """
     return s.replace('"', "")
-
-
-def check_valid_frac(num) -> float:
-    """Argparse type checker for valid float between 0 and 1"""
-    if (num < 0) or (num > 1):
-        raise argparse.ArgumentTypeError(f"{num} is an invalid percentage")
-    return num
