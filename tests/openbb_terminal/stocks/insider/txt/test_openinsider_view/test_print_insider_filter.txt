@@ -4,6 +4,6 @@
 2  [red][/red]  [red]2022-02-17[/red]  [red]PM[/red]          [red]Olczak Jacek[/red]                             [red]CEO[/red]  [red]$111.31[/red]  [red]-40,000[/red]  [red]326,907[/red]  [red]-11%[/red]  [red]-$4,452,308[/red]
 3  [red][/red]  [red]2022-02-17[/red]  [red]PM[/red]  [red]Calantzopoulos Andre[/red]                       [red]Exec. COB[/red]  [red]$110.69[/red]  [red]-75,000[/red]  [red]935,380[/red]   [red]-7%[/red]  [red]-$8,301,750[/red]
 4  [red][/red]  [red]2021-07-27[/red]  [red]PM[/red]        [red]King Martin G.[/red]                [red]CEO, PMI America[/red]  [red]$100.18[/red]  [red]-21,725[/red]  [red]128,484[/red]  [red]-14%[/red]  [red]-$2,176,482[/red]
-
 M: Multiple transactions in filing; earliest reported transaction date & weighted average transaction price
 [red]S - Sale: Sale of securities on an exchange or to another person[/red]
+
