@@ -14,6 +14,8 @@ from typing import Union, List, Dict, Any
 from datetime import datetime, timedelta
 
 from prompt_toolkit.completion import NestedCompleter
+from prompt_toolkit.key_binding import KeyBindings
+from openbb_terminal import rich_config
 from rich.markdown import Markdown
 import pandas as pd
 import numpy as np
@@ -40,6 +42,9 @@ from openbb_terminal.cryptocurrency.pycoingecko_helpers import calc_change
 
 logger = logging.getLogger(__name__)
 
+CONTROLLER_CHOICES = []
+BOTTOM_HINT_BAR_MESSAGE = ""
+PATH_TO_GET_HELP = ""
 
 controllers: Dict[str, Any] = {}
 
@@ -80,6 +85,9 @@ class BaseController(metaclass=ABCMeta):
     PATH: str = ""
     FILE_PATH: str = ""
 
+    # We start with a `KeyBindings` for our extra key bindings.
+    bindings = KeyBindings()
+
     def __init__(self, queue: List[str] = None) -> None:
         """
         This is the base class for any controller in the codebase.
@@ -99,6 +107,15 @@ class BaseController(metaclass=ABCMeta):
             self.controller_choices = controller_choices + self.CHOICES_COMMON
         else:
             self.controller_choices = self.CHOICES_COMMON
+
+        global PATH_TO_GET_HELP
+        PATH_TO_GET_HELP = self.PATH
+
+        global CONTROLLER_CHOICES
+        CONTROLLER_CHOICES = self.controller_choices
+
+        global BOTTOM_HINT_BAR_MESSAGE
+        BOTTOM_HINT_BAR_MESSAGE = ""
 
         self.completer: Union[None, NestedCompleter] = None
 
@@ -370,10 +387,33 @@ class BaseController(metaclass=ABCMeta):
                 path=self.PATH,
             )
 
+    @bindings.add(" ")
+    def _(event):
+        """When space is pressed, we check the command and add the helper"""
+        b = event.app.current_buffer
+        w = b.document.get_word_before_cursor()
+        b.insert_text(" ")
+
+        global BOTTOM_HINT_BAR_MESSAGE
+        if w in CONTROLLER_CHOICES:
+            key_for_translation = PATH_TO_GET_HELP[1:] + w + "_"
+
+            BOTTOM_HINT_BAR_MESSAGE = ""
+            for param in rich_config.get_parameter_for_path_cmd(key_for_translation):
+                BOTTOM_HINT_BAR_MESSAGE += f"{param}\n"
+            # BOTTOM_HINT_BAR_MESSAGE = translate(key_for_translation[1:]) + "\n\n" + "ADD OPTIONS TO THE USER HERE!"
+
+    # Add a bottom toolbar that displays parameters when user is
+    def bottom_toolbar(self):
+        return BOTTOM_HINT_BAR_MESSAGE
+
     def menu(self, custom_path_menu_above: str = ""):
         an_input = "HELP_ME"
 
         while True:
+            global BOTTOM_HINT_BAR_MESSAGE
+            BOTTOM_HINT_BAR_MESSAGE = ""
+
             # There is a command in the queue
             if self.queue and len(self.queue) > 0:
                 # If the command is quitting the menu we want to return in here
@@ -415,6 +455,10 @@ class BaseController(metaclass=ABCMeta):
                             f"{get_flair()} {self.PATH} $ ",
                             completer=self.completer,
                             search_ignore_case=True,
+                            complete_in_thread=True,
+                            complete_while_typing=True,
+                            bottom_toolbar=self.bottom_toolbar,
+                            key_bindings=self.bindings,
                         )
                     # Get input from user without auto-completion
                     else:

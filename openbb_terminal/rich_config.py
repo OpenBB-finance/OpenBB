@@ -3,11 +3,13 @@ __docformat__ = "numpy"
 
 import os
 from typing import Tuple
+
 from rich import panel
 from rich.console import Console, Theme
 from rich.text import Text
 from rich.color import Color
 import i18n
+import yaml
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal import feature_flags as obbff
 
@@ -35,6 +37,19 @@ RICH_TAGS = [
 ]
 
 USE_COLOR = True
+
+
+stream = open("i18n/en.yml", "r")
+data = yaml.safe_load(stream)
+
+
+def get_parameter_for_path_cmd(path_cmd: str):
+    all_keys = list(data["en"].keys())
+    parameters = list()
+    for key in all_keys:
+        if key.startswith(path_cmd):
+            parameters.append("    --" + key.split("_")[-1] + ": " + translate(key))
+    return parameters
 
 
 def translate(key: str):

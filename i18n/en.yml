@@ -104,13 +104,13 @@ en:
   stocks/QUOTE: Current quote for stock ticker
   stocks/QUOTE_ticker: Stock ticker
   stocks/candle: view a candle chart for a specific stock ticker
-  stocks/CANDLE: Shows historic data for a stock
-  stocks/CANDLE_plotly: Flag to show interactive plotly chart
-  stocks/CANDLE_sort: Choose a column to sort by
-  stocks/CANDLE_descending: Sort selected column descending
-  stocks/CANDLE_raw: Shows raw data instead of chart
-  stocks/CANDLE_trend: Flag to add high and low trends to candle
-  stocks/CANDLE_mov_avg: Add moving average in number of days to plot and separate by a comma
+  stocks/candle: Shows historic data for a stock
+  stocks/candle_plotly: Flag to show interactive plotly chart
+  stocks/candle_sort: Choose a column to sort by
+  stocks/candle_descending: Sort selected column descending
+  stocks/candle_raw: Shows raw data instead of chart
+  stocks/candle_trend: Flag to add high and low trends to candle
+  stocks/candle_mov_avg: Add moving average in number of days to plot and separate by a comma
   stocks/news: latest news of the company
   stocks/codes: FIGI, SIK and SIC codes codes
   stocks/NEWS: Prints latest news about company, including date, title and web link. [News API]
