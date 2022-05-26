@@ -419,11 +419,10 @@ class BaseController(metaclass=ABCMeta):
                                 completer=self.completer,
                                 search_ignore_case=True,
                                 bottom_toolbar=HTML(
-                                    '<style bg="ansiblack" fg="ansiwhite">[h]</style> help menu         '
-                                    '<style bg="ansiblack" fg="ansiwhite">[q]</style> return to previous menu        '
-                                    '<style bg="ansiblack" fg="ansiwhite">[e]</style> exit terminal                '
-                                    '               For more information: <style bg="#0000EE">'
-                                    f"https://openbb-finance.github.io/OpenBBTerminal/terminal{self.PATH}</style>"
+                                    '<style bg="ansiblack" fg="ansiwhite">[h]</style> help menu    '
+                                    '<style bg="ansiblack" fg="ansiwhite">[q]</style> return to previous menu    '
+                                    '<style bg="ansiblack" fg="ansiwhite">[e]</style> exit terminal        '
+                                    f'<style bg="#0000EE">https://openbb-finance.github.io/OpenBBTerminal/terminal{self.PATH}</style>'
                                 ),
                                 style=Style.from_dict(
                                     {
