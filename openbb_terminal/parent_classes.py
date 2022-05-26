@@ -420,9 +420,9 @@ class BaseController(metaclass=ABCMeta):
                                 search_ignore_case=True,
                                 bottom_toolbar=HTML(
                                     '<style bg="ansiblack" fg="ansiwhite">[h]</style> help menu         '
-                                    '<style bg="ansiblack" fg="ansiwhite">[q]</style> one menu above        '
+                                    '<style bg="ansiblack" fg="ansiwhite">[q]</style> return to previous menu        '
                                     '<style bg="ansiblack" fg="ansiwhite">[e]</style> exit terminal                '
-                                    "leverage advanced navigation (e.g. $ /stocks/disc/ugs -n 3 or $ disc/ugs -n 3)"
+                                    "leverage advanced navigation (e.g. /stocks/disc/ugs -n 3 or disc/ugs -n 3)"
                                 ),
                                 style=Style.from_dict(
                                     {
