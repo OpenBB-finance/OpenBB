@@ -1,7 +1,7 @@
     search             search a specific stock ticker for analysis
     load               load a specific stock ticker and additional info for analysis
 
-Stock: Daily 
+Stock: 
 
 Datetime: 
 Timezone: 
@@ -10,10 +10,10 @@ Market:
 Currency: 
 Company: 
 
-    quote              view the current price for a specific stock ticker
-    candle             view a candle chart for a specific stock ticker
-    news               latest news of the company                  [News API]
-    codes              FIGI, SIK and SIC codes codes               [Polygon]
+[unvl]    quote              view the current price for a specific stock ticker[/unvl]
+[unvl]    candle             view a candle chart for a specific stock ticker[/unvl]
+[unvl]    news               latest news of the company[/unvl]                  [News API]
+[unvl]    codes              FIGI, SIK and SIC codes codes[/unvl]               [Polygon]
 
 >   th                 trading hours,                check open markets
 >   options            options menu,                 chains, open interest, greeks, parity
