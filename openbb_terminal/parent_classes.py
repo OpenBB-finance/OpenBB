@@ -422,7 +422,8 @@ class BaseController(metaclass=ABCMeta):
                                     '<style bg="ansiblack" fg="ansiwhite">[h]</style> help menu         '
                                     '<style bg="ansiblack" fg="ansiwhite">[q]</style> return to previous menu        '
                                     '<style bg="ansiblack" fg="ansiwhite">[e]</style> exit terminal                '
-                                    "leverage advanced navigation (e.g. /stocks/disc/ugs -n 3 or disc/ugs -n 3)"
+                                    '               For more information: <style bg="#0000EE">'
+                                    f"https://openbb-finance.github.io/OpenBBTerminal/terminal{self.PATH}</style>"
                                 ),
                                 style=Style.from_dict(
                                     {
