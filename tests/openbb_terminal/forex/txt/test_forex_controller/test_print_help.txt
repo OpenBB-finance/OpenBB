@@ -1,9 +1,5 @@
-    from               select the 'from' currency in a forex pair
-    to                 select the 'to' currency in a forex pair
-
-From: USD
-To: 
-Source: YahooFinance
+Ticker: 
+Source: Polygon
 
 [unvl]    quote              get last quote[/unvl]                              [AlphaVantage]
 [unvl]    load               get historical data[/unvl]
