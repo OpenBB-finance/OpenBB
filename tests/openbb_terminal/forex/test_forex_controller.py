@@ -37,7 +37,7 @@ def vcr_config():
             ("period1", "MOCK_PERIOD_1"),
             ("period2", "MOCK_PERIOD_2"),
             ("date", "MOCK_DATE"),
-            ("apiKey","MOCK_API_KEY")
+            ("apiKey", "MOCK_API_KEY"),
         ],
     }
 
