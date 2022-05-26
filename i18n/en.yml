@@ -57,6 +57,7 @@ en:
   featflags/ion: interactive matplotlib mode
   featflags/watermark: watermark in figures
   featflags/cmdloc: command location displayed in figures
+  featflags/tbhint: displays usage hints in a bottom toolbar
   settings/_info_: Settings through environment variables
   settings/autoscaling: plot autoscaling
   settings/dt: add or remove datetime from flair

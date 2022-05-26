@@ -86,6 +86,9 @@ EXPORT_FOLDER_PATH = str(os.getenv("OPENBB_EXPORT_FOLDER_PATH", ""))
 # Set a flag if the application is running from a packaged bundle
 PACKAGED_APPLICATION = strtobool(os.getenv("OPENBB_PACKAGED_APPLICATION", "False"))
 
+# Toolbar hint
+TOOLBAR_HINT = strtobool(os.getenv("OPENBB_TOOLBAR_HINT", "True"))
+
 # Select language to be used
 USE_LANGUAGE = str(os.getenv("OPENBB_USE_LANGUAGE", "en"))
 

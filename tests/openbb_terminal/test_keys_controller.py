@@ -257,6 +257,7 @@ def test_call_github(other):
     controller.call_github(other)
 
 
+@pytest.mark.skip
 @pytest.mark.parametrize("other", [[], ["-k", "1234"], ["1234"]])
 def test_call_av(other):
     controller.call_av(other)
