@@ -423,7 +423,7 @@ class BaseController(metaclass=ABCMeta):
                                     '<style bg="ansiblack" fg="ansiwhite">[q]</style> return to previous menu    '
                                     '<style bg="ansiblack" fg="ansiwhite">[e]</style> exit terminal        '
                                     '<style bg="#0000EE">'
-                                    f'https://openbb-finance.github.io/OpenBBTerminal/terminal{self.PATH}</style>'
+                                    f"https://openbb-finance.github.io/OpenBBTerminal/terminal{self.PATH}</style>"
                                 ),
                                 style=Style.from_dict(
                                     {
