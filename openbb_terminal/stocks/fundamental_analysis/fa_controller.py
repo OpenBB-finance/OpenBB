@@ -766,7 +766,7 @@ class FundamentalAnalysisController(StockBaseController):
                 " higher probability of default. One of the criticisms that Zmijewski made was that"
                 " other bankruptcy scoring models oversampled distressed firms and favored situations"
                 " with more complete data.[Source: YCharts]"
-                "McKee-score:\n------------------------------------------------\n"
+                "\n\nMcKee-score:\n------------------------------------------------\n"
                 "The McKee Score is a bankruptcy model used to predict a firm's bankruptcy in one year"
                 "It looks at a company's size, profitability, and liquidity to determine the probability."
                 "This model is 80% accurate in predicting bankruptcy."
@@ -780,11 +780,23 @@ class FundamentalAnalysisController(StockBaseController):
             default=False,
             help="Shows an explanation for the metrics",
         )
+        parser.add_argument(
+            "-d",
+            "--detail",
+            action="store_true",
+            dest="detail",
+            default=False,
+            help="Shows the details for calculating the mscore",
+        )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            av_view.display_fraud(self.ticker, ns_parser.exp)
+            av_view.display_fraud(
+                ticker=self.ticker,
+                export=ns_parser.exp,
+                detail=ns_parser.detail,
+            )
 
     @log_start_end(log=logger)
     def call_dupont(self, other_args: List[str]):
