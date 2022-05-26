@@ -14,6 +14,8 @@ from typing import Union, List, Dict, Any
 from datetime import datetime, timedelta
 
 from prompt_toolkit.completion import NestedCompleter
+from prompt_toolkit.styles import Style
+from prompt_toolkit.formatted_text import HTML
 from rich.markdown import Markdown
 import pandas as pd
 import numpy as np
@@ -411,11 +413,29 @@ class BaseController(metaclass=ABCMeta):
                 try:
                     # Get input from user using auto-completion
                     if session and obbff.USE_PROMPT_TOOLKIT:
-                        an_input = session.prompt(
-                            f"{get_flair()} {self.PATH} $ ",
-                            completer=self.completer,
-                            search_ignore_case=True,
-                        )
+                        if bool(obbff.TOOLBAR_HINT):
+                            an_input = session.prompt(
+                                f"{get_flair()} {self.PATH} $ ",
+                                completer=self.completer,
+                                search_ignore_case=True,
+                                bottom_toolbar=HTML(
+                                    '<style bg="ansiblack" fg="ansiwhite">[h]</style> help menu         '
+                                    '<style bg="ansiblack" fg="ansiwhite">[q]</style> one menu above        '
+                                    '<style bg="ansiblack" fg="ansiwhite">[e]</style> exit terminal                '
+                                    "leverage advanced navigation (e.g. $ /stocks/disc/ugs -n 3 or $ disc/ugs -n 3)"
+                                ),
+                                style=Style.from_dict(
+                                    {
+                                        "bottom-toolbar": "#ffffff bg:#333333",
+                                    }
+                                ),
+                            )
+                        else:
+                            an_input = session.prompt(
+                                f"{get_flair()} {self.PATH} $ ",
+                                completer=self.completer,
+                                search_ignore_case=True,
+                            )
                     # Get input from user without auto-completion
                     else:
                         an_input = input(f"{get_flair()} {self.PATH} $ ")
