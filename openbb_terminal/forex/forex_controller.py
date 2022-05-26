@@ -21,7 +21,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import console, MenuText, translate
 from openbb_terminal.decorators import check_api_key
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.forex.forex_helper import parse_forex_symbol
@@ -200,10 +200,30 @@ class ForexController(BaseController):
             prog="candle",
             description="Show candle for loaded fx data",
         )
+        parser.add_argument(
+            "--ma",
+            dest="mov_avg",
+            type=str,
+            help=translate("stocks/CANDLE_mov_avg"),
+            default=None,
+        )
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
+            mov_avgs = []
             if not self.data.empty:
-                forex_helper.display_candle(self.data, self.to_symbol, self.from_symbol)
+                if ns_parser.mov_avg:
+                    mov_list = (num for num in ns_parser.mov_avg.split(","))
+
+                    for num in mov_list:
+                        try:
+                            mov_avgs.append(int(num))
+                        except ValueError:
+                            console.print(
+                                f"{num} is not a valid moving average, must be integer"
+                            )
+                forex_helper.display_candle(
+                    self.data, self.to_symbol, self.from_symbol, mov_avgs
+                )
             else:
                 logger.error(
                     "No forex historical data loaded.  Load first using <load>."

@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import List, Optional, Dict
+from typing import List, Optional, Dict, Iterable
 import os
 import argparse
 import logging
@@ -8,6 +8,7 @@ import re
 import yfinance as yf
 import pandas as pd
 import matplotlib.pyplot as plt
+from matplotlib.lines import Line2D
 import mplfinance as mpf
 
 from openbb_terminal.forex import av_model, polygon_model
@@ -164,6 +165,7 @@ def display_candle(
     data: pd.DataFrame,
     to_symbol: str,
     from_symbol: str,
+    ma: Optional[Iterable[int]] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Show candle plot for fx data.
@@ -182,7 +184,6 @@ def display_candle(
     candle_chart_kwargs = {
         "type": "candle",
         "style": theme.mpf_style,
-        "mav": (20, 50),
         "volume": False,
         "xrotation": theme.xticks_rotation,
         "scale_padding": {"left": 0.3, "right": 1, "top": 0.8, "bottom": 0.8},
@@ -194,6 +195,8 @@ def display_candle(
         },
         "warn_too_much_data": 20000,
     }
+    if ma:
+        candle_chart_kwargs["mav"] = ma
     # This plot has 1 axis
     if not external_axes:
         candle_chart_kwargs["returnfig"] = True
@@ -207,8 +210,18 @@ def display_candle(
             y=0.965,
             horizontalalignment="left",
         )
+        if ma:
+            # Manually construct the chart legend
+            colors = []
+
+            for i, _ in enumerate(ma):
+                colors.append(theme.get_colors()[i])
+
+            lines = [Line2D([0], [0], color=c) for c in colors]
+            labels = ["MA " + str(label) for label in ma]
+            ax[0].legend(lines, labels)
         theme.visualize_output(force_tight_layout=False)
-        ax[0].legend()
+
     elif is_valid_axes_count(external_axes, 1):
         (ax1,) = external_axes
         candle_chart_kwargs["ax"] = ax1
