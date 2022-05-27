@@ -55,7 +55,7 @@ def load(
         file = data_files[file]
 
     if not Path(file).exists():
-        console.print(f"[red]Can not find the file {file}[/red]\n")
+        console.print(f"[red]Cannot find the file {file}[/red]\n")
         return pd.DataFrame()
 
     file_type = Path(file).suffix
@@ -97,7 +97,6 @@ def get_options(
         columns = datasets[dataset_name].columns
         option_tables[dataset_name] = pd.DataFrame(
             {
-                "dataset": [dataset_name] * len(columns),
                 "column": columns,
                 "option": [f"{column}-{dataset_name}" for column in columns],
             }
@@ -107,7 +106,6 @@ def get_options(
             columns = data_values.columns
             option_tables[dataset] = pd.DataFrame(
                 {
-                    "dataset": [dataset] * len(columns),
                     "column": columns,
                     "option": [f"{column}-{dataset}" for column in columns],
                 }

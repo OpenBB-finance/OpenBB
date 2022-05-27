@@ -952,9 +952,10 @@ en:
   alternative/oss/rs: repo summary
   alternative/oss/sh: repo star history
   alternative/oss/tr: top starred repos
-  econometrics/load: load in custom data sets
-  econometrics/export: export a dataset
-  econometrics/remove: remove a dataset
+  econometrics/_data_loc: Looking for data in
+  econometrics/load: load a dataset (either previous exported or from custom imports)
+  econometrics/export: export a processed dataset
+  econometrics/remove: remove one of the loaded datasets
   econometrics/options: show available column-dataset options
   econometrics/_loaded: Loaded files
   econometrics/_exploration_: Exploration

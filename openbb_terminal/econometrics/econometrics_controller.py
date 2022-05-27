@@ -161,7 +161,7 @@ class EconometricsController(BaseController):
             filepath.name: filepath
             for file_type in self.file_types
             for filepath in chain(
-                Path("exports").rglob(f"*.{file_type}"),
+                Path(obbff.EXPORT_FOLDER_PATH).rglob(f"*.{file_type}"),
                 Path("custom_imports").rglob(f"*.{file_type}"),
             )
             if filepath.is_file()
@@ -215,45 +215,59 @@ class EconometricsController(BaseController):
             for feature in ["export", "options", "show", "desc", "clear", "index"]:
                 self.choices[feature] = {c: None for c in self.files}
 
+            self.choices["remove"] = {c: None for c in list(self.datasets.keys())}
+
             self.completer = NestedCompleter.from_nested_dict(self.choices)
 
     def print_help(self):
         """Print help"""
         mt = MenuText("econometrics/")
+        mt.add_param(
+            "_data_loc",
+            f"\n\t{obbff.EXPORT_FOLDER_PATH}\n\t{Path('custom_imports').resolve()}",
+        )
+        mt.add_raw("\n")
         mt.add_cmd("load")
-        mt.add_cmd("export")
-        mt.add_cmd("remove")
-        mt.add_cmd("options")
+        mt.add_cmd("remove", "", self.files)
         mt.add_raw("\n")
         mt.add_param("_loaded", ", ".join(self.files))
         mt.add_raw("\n")
+        mt.add_cmd("options", "", self.files)
+        mt.add_raw("\n")
 
         mt.add_info("_exploration_")
-        mt.add_cmd("show")
-        mt.add_cmd("plot")
-        mt.add_cmd("type")
-        mt.add_cmd("desc")
-        mt.add_cmd("index")
-        mt.add_cmd("clean")
-        mt.add_cmd("modify")
-
+        mt.add_cmd("show", "", self.files)
+        mt.add_cmd("plot", "", self.files)
+        mt.add_cmd("type", "", self.files)
+        mt.add_cmd("desc", "", self.files)
+        mt.add_cmd("index", "", self.files)
+        mt.add_cmd("clean", "", self.files)
+        mt.add_cmd("modify", "", self.files)
+        mt.add_cmd("export", "", self.files)
         mt.add_info("_timeseries_")
-        mt.add_cmd("ols")
-        mt.add_cmd("norm")
-        mt.add_cmd("root")
+        mt.add_cmd("ols", "", self.files)
+        mt.add_cmd("norm", "", self.files)
+        mt.add_cmd("root", "", self.files)
 
         mt.add_info("_panel_")
-        mt.add_cmd("panel")
-        mt.add_cmd("compare")
+        mt.add_cmd("panel", "", self.files)
+        mt.add_cmd("compare", "", self.files)
 
         mt.add_info("_tests_")
-        mt.add_cmd("dwat")
-        mt.add_cmd("bgod")
-        mt.add_cmd("bpag")
-        mt.add_cmd("granger")
-        mt.add_cmd("coint")
+        mt.add_cmd("dwat", "", self.files)
+        mt.add_cmd("bgod", "", self.files)
+        mt.add_cmd("bpag", "", self.files)
+        mt.add_cmd("granger", "", self.files)
+        mt.add_cmd("coint", "", self.files)
 
         console.print(text=mt.menu_text, menu="Econometrics")
+
+    def custom_reset(self):
+        """Class specific component of reset command"""
+        if self.files:
+            load_files = [f"load {file}" for file in self.files]
+            return ["econometrics"] + load_files
+        return []
 
     def call_load(self, other_args: List[str]):
         """Process load"""
@@ -266,13 +280,18 @@ class EconometricsController(BaseController):
         parser.add_argument(
             "-f",
             "--file",
-            help="File to load in and the alias you wish to give to the dataset",
-            nargs="+",
+            help="File to load data in (can be custom import, may have been exported before or can be from Statsmodels)",
+            type=str,
+        )
+        parser.add_argument(
+            "-a",
+            "--alias",
+            help="Alias name to give to the dataset",
             type=str,
         )
 
         parser.add_argument(
-            "-ex",
+            "-e",
             "--examples",
             help="Use this argument to show examples of Statsmodels to load in. "
             "See: https://www.statsmodels.org/devel/datasets/index.html",
@@ -283,9 +302,10 @@ class EconometricsController(BaseController):
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-f")
-        ns_parser = parse_known_args_and_warn(parser, other_args, NO_EXPORT)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
+            # show examples from statsmodels
             if ns_parser.examples:
                 df = pd.DataFrame.from_dict(self.DATA_EXAMPLES, orient="index")
                 print_rich_table(
@@ -295,13 +315,35 @@ class EconometricsController(BaseController):
                     index_name="file name",
                     title="Examples from Statsmodels",
                 )
-            elif ns_parser.file and len(ns_parser.file) == 1:
-                console.print(
-                    f"Please provide an alias to the dataset (format: <file> <alias>). For example: "
-                    f"'load {ns_parser.file[0] if len(ns_parser.file) > 0 else 'TSLA.xlsx'} dataset'"
-                )
-            elif ns_parser.file:
-                file, alias = ns_parser.file
+                return
+
+            if ns_parser.file:
+                if ns_parser.file not in list(self.DATA_EXAMPLES.keys()) + list(
+                    (self.DATA_FILES.keys())
+                ):
+
+                    file = ""
+                    # Try to see if the user is just missing the extension
+                    for file_ext in list(self.DATA_FILES.keys()):
+                        if file_ext.startswith(ns_parser.file):
+                            # found the correct file
+                            file = file_ext
+
+                    if not file:
+                        console.print(
+                            "[red]The file/dataset selected does not exist.[/red]\n"
+                        )
+                        return
+                else:
+                    file = ns_parser.file
+
+                if ns_parser.alias:
+                    alias = ns_parser.alias
+                else:
+                    if "." in ns_parser.file:
+                        alias = ".".join(ns_parser.file.split(".")[:-1])
+                    else:
+                        alias = ns_parser.file
 
                 data = econometrics_model.load(
                     file, self.file_types, self.DATA_FILES, self.DATA_EXAMPLES
@@ -393,7 +435,7 @@ class EconometricsController(BaseController):
                 del self.datasets[ns_parser.name]
                 self.files.remove(ns_parser.name)
             else:
-                console.print(f"{ns_parser.name} is not a loaded dataset.")
+                console.print(f"[red]'{ns_parser.name}' is not a loaded dataset.[/red]")
 
             self.update_runtime_choices()
 
@@ -428,8 +470,6 @@ class EconometricsController(BaseController):
             econometrics_view.show_options(
                 self.datasets, ns_parser.name, ns_parser.export
             )
-
-        console.print()
 
     def call_plot(self, other_args: List[str]):
         """Process plot command"""
@@ -543,8 +583,6 @@ class EconometricsController(BaseController):
                     df.head(ns_parser.limit),
                 )
 
-                console.print()
-
     def call_desc(self, other_args: List[str]):
         """Process desc command"""
         parser = argparse.ArgumentParser(
@@ -584,8 +622,6 @@ class EconometricsController(BaseController):
                     f"{ns_parser.name}_desc",
                     df,
                 )
-
-        console.print()
 
     def call_type(self, other_args: List[str]):
         """Process type"""
@@ -648,8 +684,6 @@ class EconometricsController(BaseController):
                         index_name="column",
                         title=str(dataset_name),
                     )
-
-            console.print()
 
     def call_index(self, other_args: List[str]):
         """Process index"""
@@ -734,8 +768,6 @@ class EconometricsController(BaseController):
 
             self.update_runtime_choices()
 
-        return console.print()
-
     def call_clean(self, other_args: List[str]):
         """Process clean"""
         parser = argparse.ArgumentParser(
@@ -788,8 +820,6 @@ class EconometricsController(BaseController):
                     ns_parser.drop,
                     ns_parser.limit,
                 )
-
-            console.print()
 
     def call_modify(self, other_args: List[str]):
         """Process modify"""
