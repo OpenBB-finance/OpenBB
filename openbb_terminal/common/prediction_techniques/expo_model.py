@@ -79,17 +79,8 @@ def get_expo_data(
     """
 
     filler = MissingValuesFiller()
-    data["date"] = data.index  # add temp column since we need to use index col for date
-    ticker_series = TimeSeries.from_dataframe(
-        data,
-        time_col="date",
-        value_cols=["AdjClose"],
-        freq="B",
-        fill_missing_dates=True,
-    )
-
-    ticker_series = filler.transform(ticker_series)
-    ticker_series = ticker_series.astype(np.float32)
+    ticker_series = TimeSeries.from_values(data["Close"].values)
+    ticker_series = filler.transform(ticker_series).astype(np.float32)
 
     if trend == "M":
         trend = ModelMode.MULTIPLICATIVE
@@ -120,11 +111,13 @@ def get_expo_data(
 
     # Training model based on historical backtesting
     historical_fcast_es = model_es.historical_forecasts(
-        ticker_series,
+        ticker_series,  # backtest on entire ts and then forcase past it
         start=float(start_window),
         forecast_horizon=int(forecast_horizon),
         verbose=True,
     )
+
+    model_es.fit(ticker_series)
 
     # Show forecast over validation # and then +n_predict afterwards sampled 10 times per point
     probabilistic_forecast = model_es.predict(int(n_predict), num_samples=500)

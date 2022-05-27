@@ -15,7 +15,6 @@ from darts.metrics import mape
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
 
-
 SEASONS = ["N", "A", "M"]
 PERIODS = [4, 5, 7]
 
@@ -69,19 +68,10 @@ def get_theta_data(
     Any
         Theta Model
     """
-
     filler = MissingValuesFiller()
-    data["date"] = data.index  # add temp column since we need to use index col for date
-    ticker_series = TimeSeries.from_dataframe(
-        data,
-        time_col="date",
-        value_cols=["AdjClose"],
-        freq="B",
-        fill_missing_dates=True,
-    )
 
-    ticker_series = filler.transform(ticker_series)
-    ticker_series = ticker_series.astype(np.float32)
+    ticker_series = TimeSeries.from_values(data["Close"].values)
+    ticker_series = filler.transform(ticker_series).astype(np.float32)
     train, val = ticker_series.split_before(0.85)
 
     if seasonal == "A":
@@ -112,7 +102,6 @@ def get_theta_data(
         season_mode=seasonal,
         seasonality_period=seasonal_periods,
     )
-    best_theta_model.fit(train)
 
     console.print(f"Best theta: {best_theta}")
     # Training model based on historical backtesting
@@ -122,6 +111,8 @@ def get_theta_data(
         forecast_horizon=int(forecast_horizon),
         verbose=True,
     )
+
+    best_theta_model.fit(ticker_series)
 
     # Show forecast over validation # and then +n_predict afterwards sampled 10 times per point
     prediction = best_theta_model.predict(int(n_predict))
