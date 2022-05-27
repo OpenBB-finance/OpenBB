@@ -118,19 +118,7 @@ class EconometricsController(BaseController):
             "wage_panel": "Veila and M. Verbeek (1998): Whose Wages Do Unions Raise?",
         }
 
-        self.DATES = {
-            "Y": "%Y",
-            "m": "%m",
-            "d": "%d",
-            "m-d": "%m-%d",
-            "Y-m": "%Y-%m",
-            "Y-d": "%Y-%d",
-            "Y-m-d": "%Y-%m-%d",
-            "Y-d-m": "%Y-%d-%m",
-            "default": None,
-        }
-
-        self.DATA_TYPES: List[str] = ["int", "float", "str", "bool", "date", "category"]
+        self.DATA_TYPES: List[str] = ["int", "float", "str", "bool", "category", "date"]
 
         for regression in [
             "OLS",
@@ -207,6 +195,7 @@ class EconometricsController(BaseController):
                 "general",
                 "type",
                 "plot",
+                "desc",
                 "norm",
                 "root",
                 "granger",
@@ -214,7 +203,7 @@ class EconometricsController(BaseController):
                 "regressions",
             ]:
                 self.choices[feature] = dataset_columns
-            for feature in ["export", "show", "desc", "clear", "index"]:
+            for feature in ["export", "show", "clear", "index"]:
                 self.choices[feature] = {c: None for c in self.files}
 
             self.choices["remove"] = {c: None for c in list(self.datasets.keys())}
@@ -442,6 +431,7 @@ class EconometricsController(BaseController):
             help="The name of the dataset you want to remove",
             dest="name",
             type=str,
+            choices=list(self.datasets.keys()),
         )
 
         if other_args and "-" not in other_args[0][0]:
@@ -502,7 +492,7 @@ class EconometricsController(BaseController):
                     correct_dataset_cols.append(dataset_col)
                 else:
                     console.print(
-                        f"[red]The dataset.column 'dataset_col' doesn't exist.[/red]"
+                        f"[red]The dataset.column '{dataset_col}' doesn't exist.[/red]"
                     )
 
             data: Dict = {}
@@ -601,14 +591,14 @@ class EconometricsController(BaseController):
             prog="desc",
             description="Show the descriptive statistics of the dataset",
         )
-
         parser.add_argument(
             "-n",
             "--name",
             type=str,
-            choices=self.files,
+            choices=self.list_dataset_cols,
             dest="name",
-            help="The name of the database you want to show the descriptive statistics for",
+            help="The name of the dataset.column you want to show the descriptive statistics",
+            required=True,
         )
 
         if other_args and "-" not in other_args[0][0]:
@@ -617,21 +607,23 @@ class EconometricsController(BaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
-        if ns_parser and ns_parser.name:
-            if ns_parser.name in self.datasets and self.datasets[ns_parser.name].empty:
-                console.print(f"[red]No data available for {ns_parser.name}.[/red]\n")
-            else:
-                df = self.datasets[ns_parser.name].describe()
-                print_rich_table(
-                    df, headers=list(df.columns), show_index=True, title=ns_parser.name
-                )
+        if ns_parser:
+            dataset, col = ns_parser.name.split(".")
 
-                export_data(
-                    ns_parser.export,
-                    os.path.dirname(os.path.abspath(__file__)),
-                    f"{ns_parser.name}_desc",
-                    df,
-                )
+            df = self.datasets[dataset][col].describe()
+            print_rich_table(
+                df.to_frame(),
+                headers=[col],
+                show_index=True,
+                title=f"Statistics for dataset: '{dataset}",
+            )
+
+            export_data(
+                ns_parser.export,
+                os.path.dirname(os.path.abspath(__file__)),
+                f"{dataset}_{col}_desc",
+                df,
+            )
 
     def call_type(self, other_args: List[str]):
         """Process type"""
@@ -645,21 +637,22 @@ class EconometricsController(BaseController):
             "-n",
             "--name",
             type=str,
-            nargs=2,
             dest="name",
-            help="The first argument is the column and name of the dataset (format: <column-dataset>). The second "
-            f"argument is the preferred type. This can be: {', '.join(self.DATA_TYPES)}",
+            help="Provide dataset.column series to change type.",
+            choices=self.list_dataset_cols,
+            required=True,
         )
-
         parser.add_argument(
-            "-d",
-            "--dateformat",
+            "-f",
+            "--format",
             type=str,
-            choices=self.DATES.keys(),
-            dest="dateformat",
-            default="default",
-            help="Set the format of the date. This can be: 'Y', 'M', 'D', 'm-d', 'Y-m', 'Y-d',"
-            "'Y-m-d', 'Y-d-m'",
+            choices=self.DATA_TYPES,
+            dest="format",
+            required=True,
+            help=(
+                "Set the format for the dataset.column defined. This can be: "
+                "date, int, float, str, bool or category"
+            ),
         )
 
         if other_args and "-" not in other_args[0][0]:
@@ -668,32 +661,19 @@ class EconometricsController(BaseController):
 
         if ns_parser:
             if ns_parser.name:
-                column, dataset = ns_parser.name[0].split("-")
-                data_type = ns_parser.name[1]
+                dataset, column = ns_parser.name.split(".")
+                data_type = ns_parser.format
 
-                if data_type not in self.DATA_TYPES:
-                    console.print(
-                        f"{data_type} is not an option. Please choose between: {', '.join(self.DATA_TYPES)}"
+                if data_type == "date":
+                    self.datasets[dataset][column] = pd.to_datetime(
+                        self.datasets[dataset][column].values,
                     )
                 else:
-                    if data_type == "date":
-                        self.datasets[dataset][column] = pd.to_datetime(
-                            self.datasets[dataset][column],
-                            format=self.DATES[ns_parser.dateformat],
-                        )
-                    else:
-                        self.datasets[dataset][column] = self.datasets[dataset][
-                            column
-                        ].astype(data_type)
-            else:
-                for dataset_name, data in self.datasets.items():
-                    print_rich_table(
-                        pd.DataFrame(data.dtypes),
-                        headers=list(["dtype"]),
-                        show_index=True,
-                        index_name="column",
-                        title=str(dataset_name),
-                    )
+                    self.datasets[dataset][column] = self.datasets[dataset][
+                        column
+                    ].astype(data_type)
+
+        console.print()
 
     def call_index(self, other_args: List[str]):
         """Process index"""
