@@ -837,8 +837,7 @@ en:
   economy/pred/lstm: Long-Short Term Memory
   economy/pred/conv1d: 1D Convolutional Neural Network
   economy/pred/mc: Monte-Carlo simulations
-  forex/from: select the 'from' currency in a forex pair
-  forex/to: select the 'to' currency in a forex pair
+  forex/_ticker: Ticker
   forex/_from: From
   forex/_to: To
   forex/_source: Source
