@@ -203,26 +203,29 @@ class ReportController(BaseController):
 
             d_report_params["report_name"] = notebook_output
 
-            pm.execute_notebook(
+            result = pm.execute_notebook(
                 notebook_template + ".ipynb",
                 notebook_output + ".ipynb",
                 parameters=d_report_params,
                 kernel_name="python3",
             )
 
-            if obbff.OPEN_REPORT_AS_HTML:
-                report_output_path = os.path.join(
-                    os.path.abspath(os.path.join(".")), notebook_output + ".html"
-                )
-                print(report_output_path)
-                webbrowser.open(f"file://{report_output_path}")
+            if not result["metadata"]["papermill"]["exception"]:
+                if obbff.OPEN_REPORT_AS_HTML:
+                    report_output_path = os.path.join(
+                        os.path.abspath(os.path.join(".")), notebook_output + ".html"
+                    )
+                    print(report_output_path)
+                    webbrowser.open(f"file://{report_output_path}")
 
-            console.print("")
-            console.print(
-                "Exported: ",
-                os.path.join(
-                    os.path.abspath(os.path.join(".")), notebook_output + ".html"
-                ),
-                "\n",
-            )
+                console.print("")
+                console.print(
+                    "Exported: ",
+                    os.path.join(
+                        os.path.abspath(os.path.join(".")), notebook_output + ".html"
+                    ),
+                    "\n",
+                )
+            else:
+                console.print("[red]\nParameter provided is not valid.\n[/red]")
         return self.queue
