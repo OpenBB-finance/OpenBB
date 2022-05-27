@@ -153,7 +153,7 @@ class EconomyController(BaseController):
         super().__init__(queue)
 
         self.current_series: Dict = dict()
-        self.fred_query: pd.Series = pd.Series()
+        self.fred_query: pd.Series = pd.Series(dtype=float)
         self.DATASETS: Dict[Any, pd.DataFrame] = dict()
         self.UNITS: Dict[Any, Dict[Any, Any]] = dict()
         self.FRED_TITLES: Dict = dict()

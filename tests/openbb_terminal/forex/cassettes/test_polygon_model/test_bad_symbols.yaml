@@ -1,0 +1,43 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - Mozilla/5.0 (Windows NT 6.1; WOW64; rv:84.0) Gecko/20100101 Firefox/84.0
+    method: GET
+    uri: https://api.polygon.io/v2/aggs/ticker/C:GCUYGCYUFGDCUTYFCYUF/range/1/day/2000-01-01/2022-05-26?adjusted=true&apiKey=MOCK_API_KEY&limit=50000&sort=desc
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAA/0TKsc6CMBSG4Xv5ZgYCPzR07R8YHFxkYDK1/QbUaOg5ZzDGezdMbm/ePG/omm4s
+        8Ah+CvMyhWUep/8wn5ZxT1TYjOUVnvZQ+LpCodhd5TdivpooM7wWYwXRqCbwOB6w880oel4zPNq2
+        HugSO5eHi0tN6ms2zvGvY0qxJz7fAAAA//9XhUdxkQAAAA==
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '148'
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 26 May 2022 18:39:50 GMT
+      Server:
+      - nginx/1.19.2
+      Strict-Transport-Security:
+      - max-age=15724800; includeSubDomains
+      Vary:
+      - Accept-Encoding
+      X-Request-Id:
+      - 3309e7ce57d9b7c2c60e277e45ecca6e
+    status:
+      code: 200
+      message: OK
+version: 1
