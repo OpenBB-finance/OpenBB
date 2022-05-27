@@ -25,7 +25,7 @@ def get_forward_rates(to_cur: str, from_cur: str):
 
     """
     r = requests.get(
-        f"https://www.fxempire.com/currencies/{to_cur}-{from_cur}/forward-rates",
+        f"https://www.fxempire.com/currencies/{from_cur}-{to_cur}/forward-rates",
         headers={"User-Agent": get_user_agent()},
     )
     if r.status_code == 200:

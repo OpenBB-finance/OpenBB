@@ -405,7 +405,7 @@ def inter_chart(fig: go.Figure, filename: str, **data) -> str:
     if data["callback"]:
         res = re.search('<div id="([^"]*)"', plot_div)
         if res is not None:
-            res = res.groups()[0]
+            # res = res.groups()[0]  # noqa
             div_id = res
 
         js_callback = f"""

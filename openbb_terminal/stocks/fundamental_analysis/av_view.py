@@ -216,7 +216,13 @@ def display_earnings(
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
-def display_fraud(ticker: str, export: str = "", help_text: bool = False):
+def display_fraud(
+    ticker: str,
+    export: str = "",
+    help_text: bool = False,
+    color: bool = True,
+    detail: bool = False,
+):
     """Fraud indicators for given ticker
     Parameters
     ----------
@@ -226,18 +232,31 @@ def display_fraud(ticker: str, export: str = "", help_text: bool = False):
         Whether to export the dupont breakdown
     help_text : bool
         Whether to show help text
+    color : bool
+        Whether to show color in the dataframe
+    detail : bool
+        Whether to show the details for the mscore
     """
-    df = av_model.get_fraud_ratios(ticker)
-    if df.empty:
-        console.print(
-            "[red]AlphaVantage API limit reached, please wait one minute[/red]\n"
-        )
-    else:
-        print_rich_table(
-            df, headers=list(df.columns), show_index=True, title="Fraud Risk Statistics"
-        )
+    df = av_model.get_fraud_ratios(ticker, detail=detail)
 
-        help_message = """
+    if df.empty:
+        console.print("")
+        return
+
+    df_color = df.copy()
+    if color:
+        for column in df_color:
+            df_color[column] = df_color[column].astype(str)
+        df_color = df_color.apply(lambda x: av_model.replace_df(x.name, x), axis=1)
+
+    print_rich_table(
+        df_color,
+        headers=list(df_color.columns),
+        show_index=True,
+        title="Fraud Risk Statistics",
+    )
+
+    help_message = """
 MSCORE:
 An mscore above -1.78 indicates a high risk of fraud, and one above  -2.22 indicates a medium risk of fraud.
 
@@ -251,6 +270,7 @@ A mckee less than 0.5 indicates a high risk of fraud.
     if help_text:
         console.print(help_message)
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "dupont", df)
+    return
 
 
 @log_start_end(log=logger)
