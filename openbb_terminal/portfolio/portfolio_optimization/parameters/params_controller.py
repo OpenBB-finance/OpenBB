@@ -23,7 +23,7 @@ from openbb_terminal.portfolio.portfolio_optimization.parameters.params_view imp
     DEFAULT_PARAMETERS,
     MODEL_PARAMS,
 )
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 
 logger = logging.getLogger(__name__)
 
@@ -137,37 +137,36 @@ class ParametersController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = f"""
-[info]Portfolio Risk Parameters (.ini or .xlsx)[/info]
-
-[param]Loaded file:[/param] {self.current_file} [cmds]
-
-    file             load portfolio risk parameters
-    save             save portfolio risk parameters to specified file[/cmds]
-
-[param]Model of interest:[/param] {self.current_model} [cmds]
-
-    clear            clear model of interest from filtered parameters
-    set              set model of interest to filter parameters
-    arg              set a different value for an argument[/cmds]
-"""
-        if self.current_model:
-            max_len = max(len(k) for k in self.params.keys())
-            help_text += "\n[info]Parameters:[/info]\n"
-            for k, v in self.params.items():
-                all_params = DEFAULT_PARAMETERS + MODEL_PARAMS[self.current_model]
-                if k in all_params:
-                    help_text += (
+        mt = MenuText("portfolio/po/params/")
+        mt.add_param("_loaded", self.current_file)
+        mt.add_raw("\n")
+        mt.add_cmd("file")
+        mt.add_cmd("save")
+        mt.add_raw("\n")
+        mt.add_param("_model", self.current_model or "")
+        mt.add_raw("\n")
+        mt.add_cmd("clear")
+        mt.add_cmd("set")
+        mt.add_cmd("arg")
+        mt.add_raw("\n")
+        if self.current_file:
+            mt.add_info("_parameters_")
+            if self.current_model:
+                max_len = max(len(k) for k in self.params.keys())
+                for k, v in self.params.items():
+                    all_params = DEFAULT_PARAMETERS + MODEL_PARAMS[self.current_model]
+                    if k in all_params:
+                        mt.add_raw(
+                            f"    [param]{k}{' ' * (max_len - len(k))} :[/param] {v}\n"
+                        )
+            else:
+                max_len = max(len(k) for k in self.params.keys())
+                for k, v in self.params.items():
+                    mt.add_raw(
                         f"    [param]{k}{' ' * (max_len - len(k))} :[/param] {v}\n"
                     )
-        else:
-            max_len = max(len(k) for k in self.params.keys())
-            help_text += "\n[info]Parameters:[/info]\n"
-            for k, v in self.params.items():
-                help_text += f"    [param]{k}{' ' * (max_len - len(k))} :[/param] {v}\n"
-
         console.print(
-            text=help_text, menu="Portfolio - Portfolio Optimization - Parameters"
+            text=mt.menu_text, menu="Portfolio - Portfolio Optimization - Parameters"
         )
 
     def custom_reset(self):

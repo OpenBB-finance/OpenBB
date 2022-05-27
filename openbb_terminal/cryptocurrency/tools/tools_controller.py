@@ -22,7 +22,7 @@ from openbb_terminal.helper_funcs import (
 from openbb_terminal.cryptocurrency.tools import tools_view
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 
 logger = logging.getLogger(__name__)
 
@@ -47,12 +47,10 @@ class ToolsController(BaseController):
 
     def print_help(self):
         """Print help"""
-
-        help_text = """[cmds]
-    aprtoapy         convert apr to apy
-    il               calculate impermanent loss[/cmds]
-"""
-        console.print(text=help_text, menu="Cryptocurrency - Tools")
+        mt = MenuText("crypto/tools/")
+        mt.add_cmd("aprtoapy")
+        mt.add_cmd("il")
+        console.print(text=mt.menu_text, menu="Cryptocurrency - Tools")
 
     @log_start_end(log=logger)
     def call_il(self, other_args: List[str]):

@@ -10,7 +10,7 @@ from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 
 logger = logging.getLogger(__name__)
 # pylint:disable=import-outside-toplevel
@@ -35,11 +35,10 @@ class AlternativeDataController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = """[menu]
->   covid            COVID menu,                    e.g.: cases, deaths, rates
->   oss              Open Source menu,              e.g.: star history, repos information[/menu]
-        """
-        console.print(text=help_text, menu="Alternative")
+        mt = MenuText("alternative/")
+        mt.add_menu("covid")
+        mt.add_menu("oss")
+        console.print(text=mt.menu_text, menu="Alternative")
 
     @log_start_end(log=logger)
     def call_covid(self, _):

@@ -1,25 +1,24 @@
+    ln                 lookup by name                                                  [FinanceDatabase / StockAnalysis]
+    ld                 lookup by description                                           [FinanceDatabase]
+    load               load ETF data                                                   [Yahoo Finance]
 
-    ln               lookup by name [FinanceDatabase/StockAnalysis.com]
-    ld               lookup by description [FinanceDatabase]
-    load             load ETF data [Yfinance]
-
-Symbol: [unvl]
+Symbol: 
 Major holdings: 
 
->   ca               comparison analysis,          e.g.: get similar, historical, correlation, financials[/unvl]
->   disc             discover ETFs,                e.g.: gainers/decliners/active
->   scr              screener ETFs,                e.g.: overview/performance, using preset filters
-[unvl]
-    overview         get overview [StockAnalysis]
-    holdings         top company holdings [StockAnalysis]
-    weights          sector weights allocation [Yfinance]
-    summary          summary description of the ETF [Yfinance]
-    candle           view a candle chart for ETF
-    news             latest news of the company [News API]
+[unvl]>   ca                 comparison analysis,          get similar, historical, correlation, financials[/unvl]
+>   disc               discover ETFs,                gainers/decliners/active
+>   scr                screener ETFs,                overview/performance, using preset filters
 
-    pir              create (multiple) passive investor excel report(s) [PassiveInvestor]
-    compare          compare multiple different ETFs [StockAnalysis]
+[unvl]    overview           get overview[/unvl]                                                    [StockAnalysis]
+[unvl]    holdings           top company holdings[/unvl]                                            [StockAnalysis]
+[unvl]    weights            sector weights allocation[/unvl]                                       [Yahoo Finance]
+[unvl]    summary            summary description of the ETF[/unvl]                                  [Yahoo Finance]
+[unvl]    news               latest news of the company[/unvl]                                      [News API]
+[unvl]    candle             view a candle chart for ETF[/unvl]
 
->   ta               technical analysis,           e.g.: ema, macd, rsi, adx, bbands, obv
->   pred             prediction techniques,        e.g.: regression, arima, rnn, lstm
-[/unvl]
+[unvl]    pir                create (multiple) passive investor excel report(s)[/unvl]              [PassiveInvestor]
+[unvl]    compare            compare multiple different ETFs[/unvl]                                 [StockAnalysis]
+
+[unvl]>   ta                 technical analysis,           ema, macd, rsi, adx, bbands, obv[/unvl]
+[unvl]>   pred               prediction techniques,        regression, arima, rnn, lstm[/unvl]
+

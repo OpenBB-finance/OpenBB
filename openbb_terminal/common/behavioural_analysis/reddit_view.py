@@ -103,32 +103,31 @@ def display_watchlist(num: int):
         Maximum number of submissions to look at
     """
     subs, d_watchlist_tickers, n_flair_posts_found = reddit_model.get_watchlists(num)
-    for sub in subs:
-        print_and_record_reddit_post({}, sub)
-    if n_flair_posts_found > 0:
-        lt_watchlist_sorted = sorted(
-            d_watchlist_tickers.items(), key=lambda item: item[1], reverse=True
-        )
-        s_watchlist_tickers = ""
-        n_tickers = 0
-        for t_ticker in lt_watchlist_sorted:
-            try:
-                # If try doesn't trigger exception, it means that this stock exists on finviz
-                # thus we can print it.
-                finviz.get_stock(t_ticker[0])
-                if int(t_ticker[1]) > 1:
-                    s_watchlist_tickers += f"{t_ticker[1]} {t_ticker[0]}, "
-                n_tickers += 1
-            except Exception:
-                # console.print(e, "\n")
-                pass
-        if n_tickers:
-            console.print(
-                "The following stock tickers have been mentioned more than once across the previous watchlists:"
+    if subs:
+        for sub in subs:
+            print_and_record_reddit_post({}, sub)
+        if n_flair_posts_found > 0:
+            lt_watchlist_sorted = sorted(
+                d_watchlist_tickers.items(), key=lambda item: item[1], reverse=True
             )
-            console.print(s_watchlist_tickers[:-2] + "\n")
-
-    console.print("")
+            s_watchlist_tickers = ""
+            n_tickers = 0
+            for t_ticker in lt_watchlist_sorted:
+                try:
+                    # If try doesn't trigger exception, it means that this stock exists on finviz
+                    # thus we can print it.
+                    finviz.get_stock(t_ticker[0])
+                    if int(t_ticker[1]) > 1:
+                        s_watchlist_tickers += f"{t_ticker[1]} {t_ticker[0]}, "
+                    n_tickers += 1
+                except Exception:
+                    # console.print(e, "\n")
+                    pass
+            if n_tickers:
+                console.print(
+                    "The following stock tickers have been mentioned more than once across the previous watchlists:"
+                )
+                console.print(s_watchlist_tickers[:-2] + "\n")
 
 
 @log_start_end(log=logger)
@@ -199,33 +198,34 @@ def display_spac_community(limit: int = 10, popular: bool = False):
         Search by popular instead of new
     """
     subs, d_watchlist_tickers = reddit_model.get_spac_community(limit, popular)
-    for sub in subs:
-        print_and_record_reddit_post({}, sub)
+    if subs:
+        for sub in subs:
+            print_and_record_reddit_post({}, sub)
 
-    if d_watchlist_tickers:
-        lt_watchlist_sorted = sorted(
-            d_watchlist_tickers.items(), key=lambda item: item[1], reverse=True
-        )
-        s_watchlist_tickers = ""
-        n_tickers = 0
-        for t_ticker in lt_watchlist_sorted:
-            try:
-                # If try doesn't trigger exception, it means that this stock exists on finviz
-                # thus we can print it.
-                finviz.get_stock(t_ticker[0])
-                if int(t_ticker[1]) > 1:
-                    s_watchlist_tickers += f"{t_ticker[1]} {t_ticker[0]}, "
-                n_tickers += 1
-            except Exception:
-                # console.print(e, "\n")
-                pass
-
-        if n_tickers:
-            console.print(
-                "The following stock tickers have been mentioned more than once across the previous SPACs:"
+        if d_watchlist_tickers:
+            lt_watchlist_sorted = sorted(
+                d_watchlist_tickers.items(), key=lambda item: item[1], reverse=True
             )
-            console.print(s_watchlist_tickers[:-2])
-    console.print("")
+            s_watchlist_tickers = ""
+            n_tickers = 0
+            for t_ticker in lt_watchlist_sorted:
+                try:
+                    # If try doesn't trigger exception, it means that this stock exists on finviz
+                    # thus we can print it.
+                    finviz.get_stock(t_ticker[0])
+                    if int(t_ticker[1]) > 1:
+                        s_watchlist_tickers += f"{t_ticker[1]} {t_ticker[0]}, "
+                    n_tickers += 1
+                except Exception:
+                    # console.print(e, "\n")
+                    pass
+
+            if n_tickers:
+                console.print(
+                    "The following stock tickers have been mentioned more than once across the previous SPACs:"
+                )
+                console.print(s_watchlist_tickers[:-2])
+        console.print("")
 
 
 @log_start_end(log=logger)
@@ -248,31 +248,32 @@ def display_spac(limit: int = 5):
     """
     warnings.filterwarnings("ignore")  # To avoid printing the warning
     subs, d_watchlist_tickers, n_flair_posts_found = reddit_model.get_spac(limit)
-    for sub in subs:
-        print_and_record_reddit_post({}, sub)
+    if subs:
+        for sub in subs:
+            print_and_record_reddit_post({}, sub)
 
-    if n_flair_posts_found > 0:
-        lt_watchlist_sorted = sorted(
-            d_watchlist_tickers.items(), key=lambda item: item[1], reverse=True
-        )
-        s_watchlist_tickers = ""
-        n_tickers = 0
-        for t_ticker in lt_watchlist_sorted:
-            try:
-                # If try doesn't trigger exception, it means that this stock exists on finviz
-                # thus we can print it.
-                finviz.get_stock(t_ticker[0])
-                if int(t_ticker[1]) > 1:
-                    s_watchlist_tickers += f"{t_ticker[1]} {t_ticker[0]}, "
-                n_tickers += 1
-            except Exception:
-                pass
-        if n_tickers:
-            console.print(
-                "The following stock tickers have been mentioned more than once across the previous SPACs:"
+        if n_flair_posts_found > 0:
+            lt_watchlist_sorted = sorted(
+                d_watchlist_tickers.items(), key=lambda item: item[1], reverse=True
             )
-            console.print(s_watchlist_tickers[:-2])
-    console.print("")
+            s_watchlist_tickers = ""
+            n_tickers = 0
+            for t_ticker in lt_watchlist_sorted:
+                try:
+                    # If try doesn't trigger exception, it means that this stock exists on finviz
+                    # thus we can print it.
+                    finviz.get_stock(t_ticker[0])
+                    if int(t_ticker[1]) > 1:
+                        s_watchlist_tickers += f"{t_ticker[1]} {t_ticker[0]}, "
+                    n_tickers += 1
+                except Exception:
+                    pass
+            if n_tickers:
+                console.print(
+                    "The following stock tickers have been mentioned more than once across the previous SPACs:"
+                )
+                console.print(s_watchlist_tickers[:-2])
+        console.print("")
 
 
 @log_start_end(log=logger)
@@ -296,9 +297,9 @@ def display_wsb_community(limit: int = 10, new: bool = False):
         Flag to sort by new instead of hot, by default False
     """
     subs = reddit_model.get_wsb_community(limit, new)
-
-    for sub in subs:
-        print_and_record_reddit_post({}, sub)
+    if subs:
+        for sub in subs:
+            print_and_record_reddit_post({}, sub)
 
 
 @log_start_end(log=logger)
@@ -328,10 +329,11 @@ def display_due_diligence(
         Search through all flairs (apart from Yolo and Meme)
     """
     subs = reddit_model.get_due_dilligence(ticker, limit, n_days, show_all_flairs)
-    for sub in subs:
-        print_and_record_reddit_post({}, sub)
-    if not subs:
-        console.print(f"No DD posts found for {ticker}\n")
+    if subs:
+        for sub in subs:
+            print_and_record_reddit_post({}, sub)
+        if not subs:
+            console.print(f"No DD posts found for {ticker}\n")
 
 
 @log_start_end(log=logger)

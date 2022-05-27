@@ -22,7 +22,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import MenuText, console
 from openbb_terminal.stocks.options import (
     alphaquery_view,
     barchart_view,
@@ -173,37 +173,35 @@ class OptionsController(BaseController):
 
     def print_help(self):
         """Print help."""
-        has_ticker_start = "" if self.ticker and self.selected_date else "[dim]"
-        has_ticker_end = "" if self.ticker and self.selected_date else "[/dim]"
-        help_text = f"""[cmds]
-    unu              show unusual options activity [src][Fdscanner.com][/src]
-    calc             basic call/put PnL calculator
-
-    load             load new ticker
-    exp              see and set expiration dates[/cmds]
-[param]
-Ticker: [/param]{self.ticker or None}[param]
-Expiry: [/param]{self.selected_date or None}
-[menu]
-    pcr              display put call ratio for ticker [src][AlphaQuery.com][/src]
-    info             display option information (volatility, IV rank etc) [src][Barchart.com][/src]
-    chains           display option chains with greeks [src][Tradier][/src]
-    oi               plot open interest [src][Tradier/YFinance][/src]
-    vol              plot volume [src][Tradier/YFinance][/src]
-    voi              plot volume and open interest [src][Tradier/YFinance][/src]
-    hist             plot option history [src][Tradier][/src]
-    vsurf            show 3D volatility surface [src][Yfinance][/src]
-    grhist           plot option greek history [src][Syncretism.io][/src]
-    plot             plot variables provided by the user [src][Yfinance][/src]
-    parity           shows whether options are above or below expected price [src][Yfinance][/src]
-    binom            shows the value of an option using binomial options pricing [src][Yfinance][/src]
-    greeks           shows the greeks for a given option [src][Yfinance][/src]
-{has_ticker_start}
->   screen           screens tickers based on preset [src][Syncretism.io][/src]
->   pricing          shows options pricing and risk neutral valuation [src][Yfinance][/src]
->   hedge            shows portfolio weights in order to neutralise delta [src][Yfinance][/src]
-{has_ticker_end}"""
-        console.print(text=help_text, menu="Stocks - Options")
+        mt = MenuText("stocks/options/")
+        mt.add_cmd("unu", "Fdscanner")
+        mt.add_cmd("calc")
+        mt.add_raw("\n")
+        mt.add_menu("screen")
+        mt.add_raw("\n")
+        mt.add_cmd("load")
+        mt.add_cmd("exp", "", self.ticker)
+        mt.add_raw("\n")
+        mt.add_param("_ticker", self.ticker or "")
+        mt.add_param("_expiry", self.selected_date or "")
+        mt.add_raw("\n")
+        mt.add_cmd("pcr", "AlphaQuery", self.ticker and self.selected_date)
+        mt.add_cmd("info", "Barchart", self.ticker and self.selected_date)
+        mt.add_cmd("chains", "Tradier", self.ticker and self.selected_date)
+        mt.add_cmd("oi", "Tradier/YFinance", self.ticker and self.selected_date)
+        mt.add_cmd("vol", "Tradier/YFinance", self.ticker and self.selected_date)
+        mt.add_cmd("voi", "Tradier/YFinance", self.ticker and self.selected_date)
+        mt.add_cmd("hist", "Tradier", self.ticker and self.selected_date)
+        mt.add_cmd("vsurf", "Yfinance", self.ticker and self.selected_date)
+        mt.add_cmd("grhist", "Syncretism", self.ticker and self.selected_date)
+        mt.add_cmd("plot", "Yfinance", self.ticker and self.selected_date)
+        mt.add_cmd("parity", "Yfinance", self.ticker and self.selected_date)
+        mt.add_cmd("binom", "Yfinance", self.ticker and self.selected_date)
+        mt.add_cmd("greeks", "Yfinance", self.ticker and self.selected_date)
+        mt.add_raw("\n")
+        mt.add_menu("pricing", self.ticker and self.selected_date)
+        mt.add_menu("hedge", self.ticker and self.selected_date)
+        console.print(text=mt.menu_text, menu="Stocks - Options")
 
     def custom_reset(self):
         """Class specific component of reset command"""
@@ -768,8 +766,8 @@ Expiry: [/param]{self.selected_date or None}
             dest="to_display",
             default=tradier_model.default_columns,
             type=tradier_view.check_valid_option_chains_headers,
-            help="columns to look at.  Columns can be:  {bid, ask, strike, bidsize, asksize, volume, open_interest, "
-            "delta, gamma, theta, vega, ask_iv, bid_iv, mid_iv} ",
+            help="Columns to look at.  Columns can be: bid, ask, strike, bidsize, asksize, volume, open_interest, "
+            "delta, gamma, theta, vega, ask_iv, bid_iv, mid_iv. E.g. 'bid,ask,strike' ",
         )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED

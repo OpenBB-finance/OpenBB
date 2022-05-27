@@ -20,7 +20,7 @@ from openbb_terminal.portfolio.brokers.robinhood import (
     robinhood_model,
     robinhood_view,
 )
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 
 logger = logging.getLogger(__name__)
 
@@ -46,13 +46,12 @@ class RobinhoodController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = """[cmds]
-    login       login to robinhood
-
-    holdings    show account holdings in stocks
-    history     show equity history of your account
-[/cmds]"""
-        console.print(text=help_text, menu="Portfolio - Brokers - Robinhood")
+        mt = MenuText("portfolio/bro/rh/")
+        mt.add_cmd("login")
+        mt.add_raw("\n")
+        mt.add_cmd("holdings")
+        mt.add_cmd("history")
+        console.print(text=mt.menu_text, menu="Portfolio - Brokers - Robinhood")
 
     @log_start_end(log=logger)
     @check_api_key(["RH_USERNAME", "RH_PASSWORD"])

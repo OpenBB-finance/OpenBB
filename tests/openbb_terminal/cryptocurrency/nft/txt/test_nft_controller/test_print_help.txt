@@ -1,9 +1,6 @@
-
-[Nftcalendar.io]
-    today            today's NFT drops
-    upcoming         upcoming NFT drops
-    ongoing          Ongoing NFT drops
-    newest           Recently NFTs added
-[Opensea.io]
-    stats            check open sea collection stats
+    today              today's NFT drops                 [Nftcalendar]
+    upcoming           upcoming NFT drops                [Nftcalendar]
+    ongoing            Ongoing NFT drops                 [Nftcalendar]
+    newest             Recently NFTs added               [Nftcalendar]
+    stats              check open sea collection stats   [Opensea]
 
