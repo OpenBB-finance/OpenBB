@@ -98,7 +98,7 @@ def get_options(
         option_tables[dataset_name] = pd.DataFrame(
             {
                 "column": columns,
-                "option": [f"{column}-{dataset_name}" for column in columns],
+                "option": [f"{dataset_name}.{column}" for column in columns],
             }
         )
     else:
@@ -107,7 +107,7 @@ def get_options(
             option_tables[dataset] = pd.DataFrame(
                 {
                     "column": columns,
-                    "option": [f"{column}-{dataset}" for column in columns],
+                    "option": [f"{dataset}.{column}" for column in columns],
                 }
             )
 

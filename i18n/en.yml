@@ -957,7 +957,7 @@ en:
   econometrics/export: export a processed dataset
   econometrics/remove: remove one of the loaded datasets
   econometrics/options: show available column-dataset options
-  econometrics/_loaded: Loaded files
+  econometrics/_loaded: Loaded files and data columns
   econometrics/_exploration_: Exploration
   econometrics/show: show a portion of a loaded dataset
   econometrics/plot: plot data from a dataset

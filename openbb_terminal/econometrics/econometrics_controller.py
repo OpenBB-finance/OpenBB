@@ -43,7 +43,6 @@ class EconometricsController(BaseController):
         "load",
         "export",
         "remove",
-        "options",
         "plot",
         "show",
         "type",
@@ -76,6 +75,8 @@ class EconometricsController(BaseController):
         "hexbin",
     ]
     PATH = "/econometrics/"
+
+    loaded_dataset_cols = "\n"
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
@@ -172,7 +173,7 @@ class EconometricsController(BaseController):
             choices["load"] = {c: None for c in self.DATA_FILES.keys()}
             choices["show"] = {c: None for c in self.files}
 
-            for feature in ["export", "options", "show", "desc", "clear", "index"]:
+            for feature in ["export", "show", "desc", "clear", "index"]:
                 choices[feature] = {c: None for c in self.files}
 
             for feature in [
@@ -196,7 +197,7 @@ class EconometricsController(BaseController):
     def update_runtime_choices(self):
         if session and obbff.USE_PROMPT_TOOLKIT:
             dataset_columns = {
-                f"{column}-{dataset}": {column: None, dataset: None}
+                f"{dataset}.{column}": {column: None, dataset: None}
                 for dataset, dataframe in self.datasets.items()
                 for column in dataframe.columns
             }
@@ -212,7 +213,7 @@ class EconometricsController(BaseController):
                 "regressions",
             ]:
                 self.choices[feature] = dataset_columns
-            for feature in ["export", "options", "show", "desc", "clear", "index"]:
+            for feature in ["export", "show", "desc", "clear", "index"]:
                 self.choices[feature] = {c: None for c in self.files}
 
             self.choices["remove"] = {c: None for c in list(self.datasets.keys())}
@@ -230,10 +231,7 @@ class EconometricsController(BaseController):
         mt.add_cmd("load")
         mt.add_cmd("remove", "", self.files)
         mt.add_raw("\n")
-        mt.add_param("_loaded", ", ".join(self.files))
-        mt.add_raw("\n")
-        mt.add_cmd("options", "", self.files)
-        mt.add_raw("\n")
+        mt.add_param("_loaded", self.loaded_dataset_cols)
 
         mt.add_info("_exploration_")
         mt.add_cmd("show", "", self.files)
@@ -328,6 +326,7 @@ class EconometricsController(BaseController):
                         if file_ext.startswith(ns_parser.file):
                             # found the correct file
                             file = file_ext
+                            break
 
                     if not file:
                         console.print(
@@ -345,6 +344,13 @@ class EconometricsController(BaseController):
                     else:
                         alias = ns_parser.file
 
+                # check if this dataset has been added already
+                if alias in self.files:
+                    console.print(
+                        "[red]The file/dataset selected has already been loaded.[/red]\n"
+                    )
+                    return
+
                 data = econometrics_model.load(
                     file, self.file_types, self.DATA_FILES, self.DATA_EXAMPLES
                 )
@@ -358,6 +364,15 @@ class EconometricsController(BaseController):
                     self.datasets[alias] = data
 
                     self.update_runtime_choices()
+
+                    # Process new datasets to be updated
+                    maxfile = max([len(file) for file in self.files])
+                    self.loaded_dataset_cols = "\n"
+                    for dataset, data in self.datasets.items():
+                        self.loaded_dataset_cols += (
+                            f"  {dataset} {(maxfile - len(dataset)) * ' '}: "
+                            f"{', '.join(data.columns)}\n"
+                        )
 
                     console.print()
 
@@ -429,47 +444,23 @@ class EconometricsController(BaseController):
         ns_parser = parse_known_args_and_warn(parser, other_args, NO_EXPORT)
 
         if not ns_parser.name:
-            console.print("Please enter a valid dataset.")
-        else:
-            if ns_parser.name in self.datasets:
-                del self.datasets[ns_parser.name]
-                self.files.remove(ns_parser.name)
-            else:
-                console.print(f"[red]'{ns_parser.name}' is not a loaded dataset.[/red]")
+            console.print("Please enter a valid dataset.\n")
+            return
 
-            self.update_runtime_choices()
+        if ns_parser.name not in self.datasets:
+            console.print(f"[red]'{ns_parser.name}' is not a loaded dataset.[/red]\n")
+            return
 
-        console.print()
+        del self.datasets[ns_parser.name]
+        self.files.remove(ns_parser.name)
 
-    def call_options(self, other_args: List[str]):
-        """Process options command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="options",
-            description="Show the column-dataset combination that can be entered within the functions.",
-        )
+        self.update_runtime_choices()
 
-        parser.add_argument(
-            "-n",
-            "--name",
-            type=str,
-            choices=self.files,
-            dest="name",
-            help="The dataset you would like to show the options for",
-            default=None,
-        )
-
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-n")
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-
-        if ns_parser:
-            econometrics_view.show_options(
-                self.datasets, ns_parser.name, ns_parser.export
-            )
+        # Process new datasets to be updated
+        maxfile = max([len(file) for file in self.files])
+        self.loaded_dataset_cols = "\n"
+        for dataset, data in self.datasets.items():
+            self.loaded_dataset_cols += f"\t{dataset} {(maxfile - len(dataset)) * ' '}: {', '.join(data.columns)}\n"
 
     def call_plot(self, other_args: List[str]):
         """Process plot command"""

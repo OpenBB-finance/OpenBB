@@ -53,12 +53,11 @@ def show_options(
         option_tables = econometrics_model.get_options(datasets, dataset_name)
 
         for dataset, data_values in option_tables.items():
-            print(data_values)
             print_rich_table(
                 data_values,
                 headers=list(data_values.columns),
                 show_index=False,
-                title=f"Options for {dataset}",
+                title=f"Options for dataset: '{dataset}'",
             )
 
             export_data(
