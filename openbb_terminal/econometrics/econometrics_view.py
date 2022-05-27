@@ -69,10 +69,8 @@ def show_options(
 
 
 @log_start_end(log=logger)
-def get_plot(
-    data: pd.DataFrame,
-    dataset: str,
-    column: str,
+def display_plot(
+    data: Dict[str, pd.DataFrame],
     export: str = "",
     external_axes: Optional[List[plt.axes]] = None,
 ):
@@ -80,43 +78,46 @@ def get_plot(
 
     Parameters
     ----------
-    data: pd.DataFrame
-        Dataframe of custom data
-    dataset: str
-        Dataset name
-    column: str
-        Column for y data
+    data: Dict[str: pd.DataFrame]
+        Dictionary with key being dataset.column and dataframes being values
     export: str
         Format to export image
     external_axes:Optional[List[plt.axes]]
         External axes to plot on
     """
-    if isinstance(data.index, pd.MultiIndex):
-        console.print(
-            "The index appears to be a multi-index. "
-            "Therefore, it is not possible to plot the data."
-        )
-    else:
+
+    for dataset_col in data:
+        if isinstance(data[dataset_col].index, pd.MultiIndex):
+            console.print(
+                "The index appears to be a multi-index. "
+                "Therefore, it is not possible to plot the data."
+            )
+            del data[dataset_col]
+
+    # Check that there's at least a valid dataframe
+    if data:
         if external_axes is None:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
         else:
             ax = external_axes[0]
 
-        if isinstance(data, pd.Series):
-            ax.plot(data)
-        elif isinstance(data, pd.DataFrame):
-            ax.plot(data[column])
+        for dataset_col in data:
+            if isinstance(data[dataset_col], pd.Series):
+                ax.plot(data[dataset_col].index, data[dataset_col].values)
+            elif isinstance(data[dataset_col], pd.DataFrame):
+                ax.plot(data[dataset_col])
 
-        ax.set_title(f"{column} data from dataset {dataset}")
-        theme.style_primary_axis(ax)
+            theme.style_primary_axis(ax)
 
-        if external_axes is None:
-            theme.visualize_output()
+            if external_axes is None:
+                theme.visualize_output()
+
+        ax.legend(list(data.keys()))
 
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        f"{column}_{dataset}_plot",
+        "plot",
     )
 
 

@@ -1232,7 +1232,11 @@ def compose_export_path(func_name: str, dir_path: str) -> Tuple[str, str]:
     # Resolving all symlinks and also normalizing path.
     resolve_path = Path(dir_path).resolve()
     # Getting the directory names from the path. Instead of using split/replace (Windows doesn't like that)
-    path_cmd = f"{resolve_path.parts[-2]}_{resolve_path.parts[-1]}"
+    # check if this is done in a main context to avoid saving with openbb_terminal
+    if resolve_path.parts[-2] == "openbb_terminal":
+        path_cmd = f"{resolve_path.parts[-1]}"
+    else:
+        path_cmd = f"{resolve_path.parts[-2]}_{resolve_path.parts[-1]}"
 
     default_filename = f"{now.strftime('%Y%m%d_%H%M%S')}_{path_cmd}_{func_name}"
     if obbff.EXPORT_FOLDER_PATH:

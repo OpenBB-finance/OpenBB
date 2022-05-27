@@ -77,6 +77,7 @@ class EconometricsController(BaseController):
     PATH = "/econometrics/"
 
     loaded_dataset_cols = "\n"
+    list_dataset_cols = list()
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
@@ -366,6 +367,7 @@ class EconometricsController(BaseController):
                     self.update_runtime_choices()
 
                     # Process new datasets to be updated
+                    self.list_dataset_cols = list()
                     maxfile = max([len(file) for file in self.files])
                     self.loaded_dataset_cols = "\n"
                     for dataset, data in self.datasets.items():
@@ -373,6 +375,9 @@ class EconometricsController(BaseController):
                             f"  {dataset} {(maxfile - len(dataset)) * ' '}: "
                             f"{', '.join(data.columns)}\n"
                         )
+
+                        for col in data.columns:
+                            self.list_dataset_cols.append(f"{dataset}.{col}")
 
                     console.print()
 
@@ -457,10 +462,14 @@ class EconometricsController(BaseController):
         self.update_runtime_choices()
 
         # Process new datasets to be updated
+        self.list_dataset_cols = list()
         maxfile = max([len(file) for file in self.files])
         self.loaded_dataset_cols = "\n"
         for dataset, data in self.datasets.items():
             self.loaded_dataset_cols += f"\t{dataset} {(maxfile - len(dataset)) * ' '}: {', '.join(data.columns)}\n"
+
+            for col in data.columns:
+                self.list_dataset_cols.append(f"{dataset}.{col}")
 
     def call_plot(self, other_args: List[str]):
         """Process plot command"""
@@ -476,7 +485,7 @@ class EconometricsController(BaseController):
             help="Column to plot along the index",
             dest="column",
             type=str,
-            choices=self.choices["plot"],
+            nargs="+",
         )
 
         if other_args and "-" not in other_args[0][0]:
@@ -486,13 +495,23 @@ class EconometricsController(BaseController):
         )
 
         if ns_parser and ns_parser.column:
-            column, dataset = self.choices["plot"][ns_parser.column].keys()
-            data = self.datasets[dataset]
+            correct_dataset_cols = list()
+            for dataset_col in ns_parser.column:
+                # check if the dataset.column provided is valid
+                if dataset_col in self.list_dataset_cols:
+                    correct_dataset_cols.append(dataset_col)
+                else:
+                    console.print(
+                        f"[red]The dataset.column 'dataset_col' doesn't exist.[/red]"
+                    )
 
-            econometrics_view.get_plot(
+            data: Dict = {}
+            for datasetcol in correct_dataset_cols:
+                dataset, col = datasetcol.split(".")
+                data[datasetcol] = self.datasets[dataset][col]
+
+            econometrics_view.display_plot(
                 data,
-                dataset,
-                column,
                 ns_parser.export,
             )
 
