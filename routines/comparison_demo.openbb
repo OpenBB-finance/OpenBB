@@ -12,11 +12,13 @@ getfinnhub
 getfinviz
 getpoly
 
-# Show the historical prices
-historical -n
+# Remove and add a ticker
+rmv JCP
+add SHOP
 
-# Show a correlation matrix
+# Show a correlation matrix with different periods.
 hcorr
+hcorr -s 2022-01-01
 
 
 # Compare valuations
