@@ -73,7 +73,7 @@ def get_theta_data(
     ticker_series = TimeSeries.from_dataframe(
         data,
         time_col="date",
-        value_cols=["AdjClose"],
+        value_cols=["Close"],
         freq="B",
         fill_missing_dates=True,
     )

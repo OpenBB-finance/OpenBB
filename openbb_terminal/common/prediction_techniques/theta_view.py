@@ -104,23 +104,23 @@ def display_theta_forecast(
         ax = external_axes
 
     # ax = fig.get_axes()[0] # fig gives list of axes (only one for this case)
-    ticker_series.plot(label="Actual AdjClose", figure=fig)
+    ticker_series.plot(label="Actual Close", figure=fig)
     historical_fcast_theta.plot(
         label=f"Back-test {forecast_horizon}-Steps ahead forecast",
         figure=fig,
     )
     predicted_values.plot(label="Theta Forecast", figure=fig)
     ax.set_title(
-        f"Theta {best_theta:.2f} for ${ticker_name} for next [{n_predict}] days (Model MAPE={round(precision,2)}%)"
+        f"Theta {best_theta:.2f} for ${ticker_name} for next [{n_predict}] days (MAPE={round(precision,2)}%)"
     )
-    ax.set_ylabel("Adj. Closing")
+    ax.set_ylabel("Closing")
     ax.set_xlabel("Date")
     theme.style_primary_axis(ax)
 
     if not external_axes:
         theme.visualize_output()
 
-    numeric_forecast = predicted_values.pd_dataframe()["AdjClose"].tail(n_predict)
-    print_pretty_prediction(numeric_forecast, data["AdjClose"].iloc[-1])
+    numeric_forecast = predicted_values.pd_dataframe()["Close"].tail(n_predict)
+    print_pretty_prediction(numeric_forecast, data["Close"].iloc[-1])
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "expo")

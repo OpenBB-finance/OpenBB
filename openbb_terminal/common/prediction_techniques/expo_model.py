@@ -34,7 +34,7 @@ def get_expo_data(
     n_predict: int = 30,
     start_window: float = 0.65,
     forecast_horizon: int = 3,
-) -> Tuple[Any, Any, Any, Any, Any]:
+) -> Tuple[Any, Any, Any, float, Any]:
 
     """Performs Probabilistic Exponential Smoothing forecasting
     This is a wrapper around statsmodels Holt-Winters' Exponential Smoothing;
@@ -69,7 +69,11 @@ def get_expo_data(
     List[float]
         Adjusted Data series
     List[float]
-        List of predicted values
+        List of historical fcast values
+    List[float]
+        List of predicted fcast values
+    float
+        precision
     Any
         Fit Prob. Expo model object.
     """
@@ -78,7 +82,7 @@ def get_expo_data(
     ticker_series = TimeSeries.from_dataframe(
         data,
         time_col="date",
-        value_cols=["AdjClose"],
+        value_cols=["Close"],
         freq="B",
         fill_missing_dates=True,
     )
