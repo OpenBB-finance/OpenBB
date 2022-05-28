@@ -633,22 +633,20 @@ class StocksController(StockBaseController):
     def call_qa(self, _):
         """Process qa command"""
         if self.ticker:
-            if self.interval == "1440min":
-                from openbb_terminal.stocks.quantitative_analysis import (
-                    qa_controller,
-                )
+            from openbb_terminal.stocks.quantitative_analysis import (
+                qa_controller,
+            )
 
-                self.queue = self.load_class(
-                    qa_controller.QaController,
-                    self.ticker,
-                    self.start,
-                    self.interval,
-                    self.stock,
-                    self.queue,
-                )
-            # TODO: This menu should work regardless of data being daily or not!
-            else:
-                console.print("Load daily data to use this menu!", "\n")
+            self.queue = self.load_class(
+                qa_controller.QaController,
+                self.ticker,
+                self.start,
+                self.interval,
+                self.stock,
+                self.queue,
+            )
+        # TODO: This menu should work regardless of data being daily or not!
+        # James: 5/27 I think it does now
         else:
             console.print("Use 'load <ticker>' prior to this command!", "\n")
 
