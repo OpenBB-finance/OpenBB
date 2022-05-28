@@ -5,6 +5,7 @@ date: "2022-05-27"
 type: guides
 status: publish
 excerpt: "An Introduction to the Comparison Analysis submenu, within the Stocks Menu; a brief overview of the features."
+geekdocCollapseSection: true
 ---
 <h1>Introduction to the Comparison Analysis Menu</h1>
 
