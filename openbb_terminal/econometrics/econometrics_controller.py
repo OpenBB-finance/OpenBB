@@ -1033,16 +1033,15 @@ class EconometricsController(BaseController):
             prog="norm",
             description="Test whether the used data is normally distributed.",
         )
-
         parser.add_argument(
-            "-c",
-            "--column",
+            "-v",
+            "--value",
             type=str,
             choices=self.choices["norm"],
             dest="column",
-            help="The column and name of the database you want to test normality for",
+            help="The dataset.column you want to test normality for",
+            required="-h" not in other_args,
         )
-
         parser.add_argument(
             "-p",
             "--plot",
@@ -1053,7 +1052,7 @@ class EconometricsController(BaseController):
         )
 
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-c")
+            other_args.insert(0, "-v")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )

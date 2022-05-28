@@ -150,7 +150,7 @@ def display_norm(
     if data.dtype not in [int, float]:
         console.print(
             f"The column type must be numeric. The {column}-{dataset} type is {data.dtype}. "
-            f"Consider using the command 'type' to change this."
+            f"Consider using the command 'type' to change this.\n"
         )
     else:
         results = econometrics_model.get_normality(data)
@@ -159,7 +159,7 @@ def display_norm(
             results,
             headers=list(results.columns),
             show_index=True,
-            title=f"Normality Test [Column: {column} | Dataset: {dataset}]",
+            title=f"Normality test from dataset '{dataset}' of '{column}'",
         )
 
         if plot:
@@ -170,7 +170,7 @@ def display_norm(
 
             ax.hist(data, bins=100)
 
-            ax.set_title(f"Histogram of {column} data from dataset {dataset}")
+            ax.set_title(f"Histogram from dataset '{dataset}' of '{column}'")
 
             theme.style_primary_axis(ax)
 
@@ -217,7 +217,7 @@ def display_root(
     if df.dtype not in [int, float]:
         console.print(
             f"The column type must be numeric. The {column_name}-{dataset_name} "
-            f"type is {df.dtype}. Consider using the command 'type' to change this."
+            f"type is {df.dtype}. Consider using the command 'type' to change this.\n"
         )
     else:
         results = econometrics_model.get_root(df, fuller_reg, kpss_reg)
@@ -226,18 +226,15 @@ def display_root(
             results,
             headers=list(results.columns),
             show_index=True,
-            title=f"Unitroot Test [Column: {column_name} | Dataset: {dataset_name}]",
+            title=f"Unitroot from dataset '{dataset_name} of '{column_name}'",
         )
 
-        if export:
-            export_data(
-                export,
-                os.path.dirname(os.path.abspath(__file__)),
-                f"{column_name}_{dataset_name}_root",
-                results,
-            )
-        else:
-            console.print()
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            f"{dataset_name}_{column_name}_root",
+            results,
+        )
 
 
 @log_start_end(log=logger)

@@ -1572,7 +1572,7 @@ def check_list_values_from_valid_values_list(valid_values: List[str]):
     """
 
     # Define the function with default arguments
-    def check_list_values_from_valid_values_list(given_values: str) -> int:
+    def check_list_values_from_valid_values_list(given_values: str) -> List[str]:
         """
         Checks if argparse argument is an str with format: value1,value2,value3 and that
         the values value1, value2 and value3 are valid.
