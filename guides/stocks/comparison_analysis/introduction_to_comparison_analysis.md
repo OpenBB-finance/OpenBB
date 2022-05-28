@@ -5,7 +5,10 @@ date: "2022-05-27"
 type: guides
 status: publish
 excerpt: "An Introduction to the Comparison Analysis submenu, within the Stocks Menu; a brief overview of the features."
+<<<<<<< HEAD
 geekdocCollapseSection: true
+=======
+>>>>>>> Uploading Introduction To Comparison Analysis Guide and Routine files
 ---
 <h1>Introduction to the Comparison Analysis Menu</h1>
 
@@ -22,7 +25,11 @@ To use all features in this menu, the following <a href="https://openbb-finance.
   - <a href="https://finnhub.io/" target="_blank">Finnhub</a> `getfinnhub`
   - <a href="https://polygon.io/" target="_blank">Polygon</a> `getpoly`
 
+<<<<<<< HEAD
 It is not necessary to load a ticker from the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/" target="_blank">`stocks`</a> menu to use these features. Enter Comparison Analysis submenu by typing `ca` and pressing `enter`.
+=======
+It is not necessary to load a ticker from the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/" target="_blank">`stocks`</a> menu to use these features. Enter Comparison Analysis submenu by tpying `ca` and pressing `enter`.
+>>>>>>> Uploading Introduction To Comparison Analysis Guide and Routine files
 
 ![Comparison Analysis Menu](comparison_analysis1.png)
 
