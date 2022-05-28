@@ -25,6 +25,17 @@ logger = logging.getLogger(__name__)
 # pylint: disable=too-many-arguments
 
 
+def dt_format(x):
+    """Convert any Timestamp to YYYY-MM-DD
+    Args:
+        x: Pandas Timestamp of any length
+    Returns:
+        x: formatted string
+    """
+    x = x.strftime("%Y-%m-%d")
+    return x
+
+
 @log_start_end(log=logger)
 def display_theta_forecast(
     data: Union[pd.DataFrame, pd.Series],
@@ -59,6 +70,12 @@ def display_theta_forecast(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axis is expected in the list), by default None
     """
+
+    # add temp column since we need to use index col for date
+    data["date"] = data.index
+    # reformat the date column to remove any hour/min/sec
+    data["date"] = data["date"].apply(dt_format)
+
     (
         ticker_series,
         historical_fcast_theta,
@@ -94,16 +111,16 @@ def display_theta_forecast(
     )
     predicted_values.plot(label="Theta Forecast", figure=fig)
     ax.set_title(
-        f"Theta({best_theta:.2f}) for ${ticker_name} for next [{n_predict}] steps (MAPE={round(precision,2)}%)"
+        f"Theta {best_theta:.2f} for ${ticker_name} for next [{n_predict}] days (Model MAPE={round(precision,2)}%)"
     )
-    ax.set_ylabel("Closing")
-    ax.set_xlabel("Steps")
+    ax.set_ylabel("Adj. Closing")
+    ax.set_xlabel("Date")
     theme.style_primary_axis(ax)
 
     if not external_axes:
         theme.visualize_output()
 
-    numeric_forecast = predicted_values.pd_dataframe()["0"].tail(n_predict)
-    print_pretty_prediction(numeric_forecast, data["Close"].iloc[-1])
+    numeric_forecast = predicted_values.pd_dataframe()["AdjClose"].tail(n_predict)
+    print_pretty_prediction(numeric_forecast, data["AdjClose"].iloc[-1])
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "expo")

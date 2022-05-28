@@ -25,6 +25,17 @@ logger = logging.getLogger(__name__)
 # pylint: disable=too-many-arguments
 
 
+def dt_format(x):
+    """Convert any Timestamp to YYYY-MM-DD
+    Args:
+        x: Pandas Timestamp of any length
+    Returns:
+        x: formatted string
+    """
+    x = x.strftime("%Y-%m-%d")
+    return x
+
+
 @log_start_end(log=logger)
 def display_expo_forecast(
     data: Union[pd.DataFrame, pd.Series],
@@ -66,12 +77,17 @@ def display_expo_forecast(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axis is expected in the list), by default None
     """
+    # add temp column since we need to use index col for date
+    data["date"] = data.index
+    # reformat the date column to remove any hour/min/sec
+    data["date"] = data["date"].apply(dt_format)
+
     (
         ticker_series,
         historical_fcast_es,
         predicted_values,
         precision,
-        _model,
+        _,
     ) = expo_model.get_expo_data(
         data,
         trend,
@@ -95,25 +111,24 @@ def display_expo_forecast(
         ax = external_axes
 
     # ax = fig.get_axes()[0] # fig gives list of axes (only one for this case)
-    ticker_series.plot(label="Actual Close", figure=fig)
+    ticker_series.plot(label="Actual AdjClose", figure=fig)
     historical_fcast_es.plot(
-        label=f"Back-test {forecast_horizon}-Steps ahead forecast",
-        figure=fig,
+        label="Back-test 3-Days ahead forecast (Exp. Smoothing)", figure=fig
     )
     predicted_values.plot(
         label="Probabilistic Forecast", low_quantile=0.1, high_quantile=0.9, figure=fig
     )
     ax.set_title(
-        f"PExpoS for ${ticker_name} for next [{n_predict}] Steps (MAPE={round(precision,2)}%)"
+        f"PES for ${ticker_name} for next [{n_predict}] days (Model MAPE={round(precision,2)}%)"
     )
-    ax.set_ylabel("Closing")
-    ax.set_xlabel("Steps")
+    ax.set_ylabel("Adj. Closing")
+    ax.set_xlabel("Date")
     theme.style_primary_axis(ax)
 
     if not external_axes:
         theme.visualize_output()
 
-    numeric_forecast = predicted_values.quantile_df()["0_0.5"].tail(n_predict)
-    print_pretty_prediction(numeric_forecast, data["Close"].iloc[-1])
+    numeric_forecast = predicted_values.quantile_df()["AdjClose_0.5"].tail(n_predict)
+    print_pretty_prediction(numeric_forecast, data["AdjClose"].iloc[-1])
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "expo")

@@ -34,7 +34,7 @@ def get_expo_data(
     n_predict: int = 30,
     start_window: float = 0.65,
     forecast_horizon: int = 3,
-) -> Tuple[Any, Any, Any, float, Any]:
+) -> Tuple[Any, Any, Any, Any, Any]:
 
     """Performs Probabilistic Exponential Smoothing forecasting
     This is a wrapper around statsmodels Holt-Winters' Exponential Smoothing;
@@ -66,20 +66,23 @@ def get_expo_data(
 
     Returns
     -------
-    Any
+    List[float]
         Adjusted Data series
-    Any
+    List[float]
         List of predicted values
     Any
         Fit Prob. Expo model object.
-    float
-        Mean average precision error
-    Any
-        Exponential model
     """
 
     filler = MissingValuesFiller()
-    ticker_series = TimeSeries.from_values(data["Close"].values)
+    ticker_series = TimeSeries.from_dataframe(
+        data,
+        time_col="date",
+        value_cols=["AdjClose"],
+        freq="B",
+        fill_missing_dates=True,
+    )
+
     ticker_series = filler.transform(ticker_series).astype(np.float32)
 
     if trend == "M":
@@ -111,20 +114,17 @@ def get_expo_data(
 
     # Training model based on historical backtesting
     historical_fcast_es = model_es.historical_forecasts(
-        ticker_series,  # backtest on entire ts and then forcase past it
+        ticker_series,  # backtest on entire ts
         start=float(start_window),
         forecast_horizon=int(forecast_horizon),
         verbose=True,
     )
 
+    # we have the historical fcast, now lets train on entire set and predict.
     model_es.fit(ticker_series)
-
-    # Show forecast over validation # and then +n_predict afterwards sampled 10 times per point
     probabilistic_forecast = model_es.predict(int(n_predict), num_samples=500)
-    precision = mape(
-        actual_series=ticker_series, pred_series=historical_fcast_es
-    )  # mape = mean average precision error
-    console.print(f"model {model_es} obtains MAPE: {precision:.2f}% \n")
+    precision = mape(actual_series=ticker_series, pred_series=historical_fcast_es)
+    console.print(f"model {model_es} obtains MAPE: {precision:.2f}% \n")  # TODO
 
     return (
         ticker_series,

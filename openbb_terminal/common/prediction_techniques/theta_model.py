@@ -70,7 +70,13 @@ def get_theta_data(
     """
     filler = MissingValuesFiller()
 
-    ticker_series = TimeSeries.from_values(data["Close"].values)
+    ticker_series = TimeSeries.from_dataframe(
+        data,
+        time_col="date",
+        value_cols=["AdjClose"],
+        freq="B",
+        fill_missing_dates=True,
+    )
     ticker_series = filler.transform(ticker_series).astype(np.float32)
     train, val = ticker_series.split_before(0.85)
 
@@ -112,9 +118,8 @@ def get_theta_data(
         verbose=True,
     )
 
+    # fit model on entire series for final prediction
     best_theta_model.fit(ticker_series)
-
-    # Show forecast over validation # and then +n_predict afterwards sampled 10 times per point
     prediction = best_theta_model.predict(int(n_predict))
     precision = mape(
         actual_series=ticker_series, pred_series=historical_fcast_theta
