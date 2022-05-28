@@ -974,9 +974,9 @@ en:
   econometrics/panel: estimate model based on various regression techniques
   econometrics/compare: compare results of all estimated models
   econometrics/_tests_: Tests
-  econometrics/dwat: Durbin-Watson autocorrelation test on the residuals of the regression
-  econometrics/bgod: Breusch-Godfrey autocorrelation tests with lags on the residuals of the regression
-  econometrics/bpag: Breusch-Pagan heteroscedasticity test on the residuals of the regression
+  econometrics/dwat: Durbin-Watson autocorrelation test on the residuals of the regression (needs 'ols')
+  econometrics/bgod: Breusch-Godfrey autocorrelation tests with lags on the residuals of the regression (needs 'ols')
+  econometrics/bpag: Breusch-Pagan heteroscedasticity test on the residuals of the regression (needs 'ols')
   econometrics/granger: Granger causality tests on two columns
   econometrics/coint: co-integration test on a multitude of columns
   portfolio/bro: brokers holdings,   supports robinhood, ally, degiro, coinbase

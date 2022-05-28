@@ -19,6 +19,8 @@ import openbb_terminal.econometrics.regression_view
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
+    check_positive,
+    check_positive_float,
     parse_known_args_and_warn,
     NO_EXPORT,
     EXPORT_ONLY_FIGURES_ALLOWED,
@@ -28,7 +30,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.helper_funcs import (
     print_rich_table,
-    check_list_values_from_valid_values_list,
+    check_list_values,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
@@ -36,6 +38,8 @@ from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.econometrics import econometrics_model, econometrics_view
 
 logger = logging.getLogger(__name__)
+
+# pylint: disable=R0902
 
 
 class EconometricsController(BaseController):
@@ -174,7 +178,7 @@ class EconometricsController(BaseController):
                 "norm",
                 "root",
                 "granger",
-                "cointegration",
+                "coint",
                 "regressions",
             ]:
                 choices[feature] = dict()
@@ -200,8 +204,7 @@ class EconometricsController(BaseController):
                 "desc",
                 "norm",
                 "root",
-                "granger",
-                "cointegration",
+                "coint",
                 "regressions",
                 "ols",
                 "panel",
@@ -209,6 +212,16 @@ class EconometricsController(BaseController):
                 self.choices[feature] = dataset_columns
             for feature in ["export", "show", "clean", "index", "remove"]:
                 self.choices[feature] = {c: None for c in self.files}
+
+            pairs_timeseries = list()
+            for dataset_col in list(dataset_columns.keys()):
+                pairs_timeseries += [
+                    f"{dataset_col},{dataset_col2}"
+                    for dataset_col2 in list(dataset_columns.keys())
+                    if dataset_col != dataset_col2
+                ]
+
+            self.choices["granger"] = {c: None for c in pairs_timeseries}
 
             self.completer = NestedCompleter.from_nested_dict(self.choices)
 
@@ -236,17 +249,17 @@ class EconometricsController(BaseController):
         mt.add_cmd("export", "", self.files)
         mt.add_info("_timeseries_")
         mt.add_cmd("ols", "", self.files)
-        mt.add_cmd("norm", "", self.files)
-        mt.add_cmd("root", "", self.files)
 
         mt.add_info("_panel_")
         mt.add_cmd("panel", "", self.files)
         mt.add_cmd("compare", "", self.files)
 
         mt.add_info("_tests_")
-        mt.add_cmd("dwat", "", self.files)
-        mt.add_cmd("bgod", "", self.files)
-        mt.add_cmd("bpag", "", self.files)
+        mt.add_cmd("norm", "", self.files)
+        mt.add_cmd("root", "", self.files)
+        mt.add_cmd("dwat", "", self.files and self.regression["OLS"]["model"])
+        mt.add_cmd("bgod", "", self.files and self.regression["OLS"]["model"])
+        mt.add_cmd("bpag", "", self.files and self.regression["OLS"]["model"])
         mt.add_cmd("granger", "", self.files)
         mt.add_cmd("coint", "", self.files)
 
@@ -309,10 +322,10 @@ class EconometricsController(BaseController):
                 return
 
             if ns_parser.file:
-                if ns_parser.file not in list(self.DATA_EXAMPLES.keys()) + list(
-                    (self.DATA_FILES.keys())
-                ):
-
+                possible_data = list(self.DATA_EXAMPLES.keys()) + list(
+                    self.DATA_FILES.keys()
+                )
+                if ns_parser.file not in possible_data:
                     file = ""
                     # Try to see if the user is just missing the extension
                     for file_ext in list(self.DATA_FILES.keys()):
@@ -360,7 +373,7 @@ class EconometricsController(BaseController):
 
                     # Process new datasets to be updated
                     self.list_dataset_cols = list()
-                    maxfile = max([len(file) for file in self.files])
+                    maxfile = max(len(file) for file in self.files)
                     self.loaded_dataset_cols = "\n"
                     for dataset, data in self.datasets.items():
                         self.loaded_dataset_cols += (
@@ -458,7 +471,7 @@ class EconometricsController(BaseController):
 
         # Process new datasets to be updated
         self.list_dataset_cols = list()
-        maxfile = max([len(file) for file in self.files])
+        maxfile = max(len(file) for file in self.files)
         self.loaded_dataset_cols = "\n"
         for dataset, data in self.datasets.items():
             self.loaded_dataset_cols += f"\t{dataset} {(maxfile - len(dataset)) * ' '}: {', '.join(data.columns)}\n"
@@ -480,7 +493,7 @@ class EconometricsController(BaseController):
             "--values",
             help="Dataset.column values to be displayed in a plot",
             dest="values",
-            type=check_list_values_from_valid_values_list(self.choices["plot"]),
+            type=check_list_values(self.choices["plot"]),
         )
 
         if other_args and "-" not in other_args[0][0]:
@@ -1000,7 +1013,7 @@ class EconometricsController(BaseController):
         parser.add_argument(
             "-i",
             "--independent",
-            type=check_list_values_from_valid_values_list(self.choices["regressions"]),
+            type=check_list_values(self.choices["regressions"]),
             dest="independent",
             help=(
                 "The independent variables on the regression you would like to perform. "
@@ -1178,7 +1191,7 @@ class EconometricsController(BaseController):
         parser.add_argument(
             "-i",
             "--independent",
-            type=check_list_values_from_valid_values_list(self.choices["regressions"]),
+            type=check_list_values(self.choices["regressions"]),
             dest="independent",
             help=(
                 "The independent variables on the regression you would like to perform. "
@@ -1295,9 +1308,11 @@ class EconometricsController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="dwat",
-            description="Show autocorrelation tests from Durbin-Watson",
+            description=(
+                "Show autocorrelation tests from Durbin-Watson. "
+                "Needs OLS to be run in advance with independent and dependent variables"
+            ),
         )
-
         parser.add_argument(
             "-p",
             "--plot",
@@ -1306,28 +1321,24 @@ class EconometricsController(BaseController):
             action="store_true",
             default=False,
         )
-
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
             if not self.regression["OLS"]["model"]:
                 console.print(
-                    "Please perform an OLS regression before estimating the Durbin-Watson statistic."
+                    "Please perform an OLS regression before estimating the Durbin-Watson statistic.\n"
                 )
             else:
                 dependent_variable = self.regression["OLS"]["data"][
                     self.regression["OLS"]["dependent"]
                 ]
-
                 openbb_terminal.econometrics.regression_view.display_dwat(
                     dependent_variable,
                     self.regression["OLS"]["model"].resid,
                     ns_parser.plot,
                     ns_parser.export,
                 )
-
-                console.print()
 
     @log_start_end(log=logger)
     def call_bgod(self, other_args):
@@ -1336,18 +1347,19 @@ class EconometricsController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="bgod",
-            description="Show Breusch-Godfrey autocorrelation test results.",
+            description=(
+                "Show Breusch-Godfrey autocorrelation test results."
+                "Needs OLS to be run in advance with independent and dependent variables"
+            ),
         )
-
         parser.add_argument(
             "-l",
             "--lags",
-            type=int,
+            type=check_positive,
             dest="lags",
             help="The lags for the Breusch-Godfrey test",
             default=3,
         )
-
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
 
@@ -1358,14 +1370,12 @@ class EconometricsController(BaseController):
         if ns_parser:
             if not self.regression["OLS"]["model"]:
                 console.print(
-                    "Please perform an OLS regression before estimating the Breusch-Godfrey statistic."
+                    "Please perform an OLS regression before estimating the Breusch-Godfrey statistic.\n"
                 )
             else:
                 openbb_terminal.econometrics.regression_view.display_bgod(
                     self.regression["OLS"]["model"], ns_parser.lags, ns_parser.export
                 )
-
-        console.print()
 
     @log_start_end(log=logger)
     def call_bpag(self, other_args):
@@ -1374,7 +1384,10 @@ class EconometricsController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="bpag",
-            description="Show Breusch-Pagan heteroscedasticity test results.",
+            description=(
+                "Show Breusch-Pagan heteroscedasticity test results."
+                "Needs OLS to be run in advance with independent and dependent variables"
+            ),
         )
 
         ns_parser = parse_known_args_and_warn(
@@ -1384,14 +1397,12 @@ class EconometricsController(BaseController):
         if ns_parser:
             if not self.regression["OLS"]["model"]:
                 console.print(
-                    "Please perform an OLS regression before estimating the Breusch-Pagan statistic."
+                    "Please perform an OLS regression before estimating the Breusch-Pagan statistic.\n"
                 )
             else:
                 openbb_terminal.econometrics.regression_view.display_bpag(
                     self.regression["OLS"]["model"], ns_parser.export
                 )
-
-        console.print()
 
     @log_start_end(log=logger)
     def call_granger(self, other_args: List[str]):
@@ -1402,17 +1413,15 @@ class EconometricsController(BaseController):
             prog="granger",
             description="Show Granger causality between two timeseries",
         )
-
         parser.add_argument(
-            "-ts",
+            "-t",
             "--timeseries",
             choices=self.choices["granger"],
             help="Requires two time series, the first time series is assumed to be Granger-caused "
             "by the second time series.",
-            nargs=2,
+            type=str,
             dest="ts",
         )
-
         parser.add_argument(
             "-l",
             "--lags",
@@ -1421,41 +1430,35 @@ class EconometricsController(BaseController):
             dest="lags",
             default=3,
         )
-
         parser.add_argument(
-            "-cl",
+            "-c",
             "--confidence",
             help="Set the confidence level",
-            type=int,
+            type=check_positive_float,
             dest="confidence",
             default=0.05,
         )
 
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-ts")
+            other_args.insert(0, "-t")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
 
         if ns_parser and ns_parser.ts:
-            if len(ns_parser.ts) == 2:
-                column_y, dataset_y = self.choices["granger"][ns_parser.ts[0]].keys()
-                column_x, dataset_x = self.choices["granger"][ns_parser.ts[1]].keys()
 
-                econometrics_view.display_granger(
-                    self.datasets[dataset_y][column_y],
-                    self.datasets[dataset_x][column_x],
-                    ns_parser.lags,
-                    ns_parser.confidence,
-                    ns_parser.export,
-                )
-            else:
-                console.print(
-                    "Please provide two time series for this function, "
-                    "for example: granger adj_close-aapl adj_close-tsla"
-                )
+            datasetcol_y, datasetcol_x = ns_parser.ts.split(",")
 
-        console.print()
+            dataset_y, column_y = datasetcol_y.split(".")
+            dataset_x, column_x = datasetcol_x.split(".")
+
+            econometrics_view.display_granger(
+                self.datasets[dataset_y][column_y].rename(datasetcol_y),
+                self.datasets[dataset_x][column_x].rename(datasetcol_x),
+                ns_parser.lags,
+                ns_parser.confidence,
+                ns_parser.export,
+            )
 
     @log_start_end(log=logger)
     def call_coint(self, other_args: List[str]):
@@ -1466,16 +1469,14 @@ class EconometricsController(BaseController):
             prog="coint",
             description="Show co-integration between two timeseries",
         )
-
         parser.add_argument(
-            "-ts",
+            "-t",
             "--time_series",
-            help="The time series you wish to test co-integration on. Can hold multiple timeseries.",
-            choices=self.choices["cointegration"],
+            help="The time series you wish to test co-integration on. E.g. historical.open,historical2.close.",
             dest="ts",
-            nargs="+",
+            type=check_list_values(self.choices["coint"]),
+            required="-h" not in other_args,
         )
-
         parser.add_argument(
             "-p",
             "--plot",
@@ -1484,7 +1485,6 @@ class EconometricsController(BaseController):
             action="store_true",
             default=False,
         )
-
         parser.add_argument(
             "-s",
             "--significant",
@@ -1493,23 +1493,31 @@ class EconometricsController(BaseController):
             type=float,
             default=0,
         )
-
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-ts")
+            other_args.insert(0, "-t")
 
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
 
-        if ns_parser and ns_parser.ts:
+        if ns_parser:
 
-            datasets = {}
-            for stock in ns_parser.ts:
-                column, dataset = self.choices["cointegration"][stock].keys()
-                datasets[stock] = self.datasets[dataset][column]
+            if ns_parser.ts:
 
-            econometrics_view.display_cointegration_test(
-                datasets, ns_parser.significant, ns_parser.plot, ns_parser.export
-            )
+                if len(ns_parser.ts) > 2:
+                    datasets = {}
+                    for stock in ns_parser.ts:
+                        column, dataset = self.choices["coint"][stock].keys()
+                        datasets[stock] = self.datasets[dataset][column]
 
-        console.print()
+                    econometrics_view.display_cointegration_test(
+                        datasets,
+                        ns_parser.significant,
+                        ns_parser.plot,
+                        ns_parser.export,
+                    )
+
+                else:
+                    console.print(
+                        "[red]More than one dataset.column must be provided.\n[/red]"
+                    )

@@ -298,24 +298,21 @@ def display_granger(
         if result_ftest > confidence_level:
             console.print(
                 f"As the p-value of the F-test is {result_ftest}, we can not reject the null hypothesis at "
-                f"the {confidence_level} confidence level."
+                f"the {confidence_level} confidence level.\n"
             )
         else:
             console.print(
                 f"As the p-value of the F-test is {result_ftest}, we can reject the null hypothesis at "
                 f"the {confidence_level} confidence level and find the Series '{time_series_x.name}' "
-                f"to Granger-cause the Series '{time_series_y.name}'"
+                f"to Granger-cause the Series '{time_series_y.name}'\n"
             )
 
-        if export:
-            export_data(
-                export,
-                os.path.dirname(os.path.abspath(__file__)),
-                f"{time_series_y.name}_{time_series_x.name}_granger",
-                granger_df,
-            )
-        else:
-            console.print()
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            f'{time_series_y.name.replace(".","-")}_{time_series_x.name.replace(".","-")}_granger',
+            granger_df,
+        )
 
 
 @log_start_end(log=logger)
@@ -427,12 +424,9 @@ def display_cointegration_test(
             if external_axes is None:
                 theme.visualize_output()
 
-        if export:
-            export_data(
-                export,
-                os.path.dirname(os.path.abspath(__file__)),
-                "results_cointegration",
-                df,
-            )
-        else:
-            console.print()
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "coint",
+            df,
+        )

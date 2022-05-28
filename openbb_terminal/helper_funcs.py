@@ -1556,7 +1556,7 @@ def support_message(s: str) -> str:
     return s.replace('"', "")
 
 
-def check_list_values_from_valid_values_list(valid_values: List[str]):
+def check_list_values(valid_values: List[str]):
     """
     Get valid values to test arguments given by user
 
