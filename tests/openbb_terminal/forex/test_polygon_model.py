@@ -19,11 +19,15 @@ def vcr_config():
     [("EURUSD"), ("USDEUR")],
 )
 def test_get_historical(fx_pair, recorder):
-    result = polygon_model.get_historical(fx_pair)
+    result = polygon_model.get_historical(
+        fx_pair, from_date="2022-01-01", to_date="2022-02-01"
+    )
     recorder.capture(result)
 
 
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_bad_symbols():
-    polygon_model.get_historical("GCUYGCYUFGDCUTYFCYUF")
+    polygon_model.get_historical(
+        "GCUYGCYUFGDCUTYFCYUF", from_date="2022-01-01", to_date="2022-02-01"
+    )
