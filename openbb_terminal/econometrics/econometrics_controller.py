@@ -28,6 +28,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.helper_funcs import (
     print_rich_table,
+    check_list_values_from_valid_values_list,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
@@ -473,33 +474,22 @@ class EconometricsController(BaseController):
             description="Plot data based on the index",
         )
         parser.add_argument(
-            "-c",
-            "--column",
-            help="Column to plot along the index",
-            dest="column",
-            type=str,
-            nargs="+",
+            "-v",
+            "--values",
+            help="Dataset.column values to be displayed in a plot",
+            dest="values",
+            type=check_list_values_from_valid_values_list(self.choices["plot"]),
         )
 
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-c")
+            other_args.insert(0, "-v")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
 
-        if ns_parser and ns_parser.column:
-            correct_dataset_cols = list()
-            for dataset_col in ns_parser.column:
-                # check if the dataset.column provided is valid
-                if dataset_col in self.list_dataset_cols:
-                    correct_dataset_cols.append(dataset_col)
-                else:
-                    console.print(
-                        f"[red]The dataset.column '{dataset_col}' doesn't exist.[/red]"
-                    )
-
+        if ns_parser and ns_parser.values:
             data: Dict = {}
-            for datasetcol in correct_dataset_cols:
+            for datasetcol in ns_parser.values:
                 dataset, col = datasetcol.split(".")
                 data[datasetcol] = self.datasets[dataset][col]
 
@@ -995,40 +985,44 @@ class EconometricsController(BaseController):
             prog="ols",
             description="Performs an OLS regression on timeseries data.",
         )
-
         parser.add_argument(
-            "-r",
-            "--regression",
-            nargs="+",
+            "-d",
+            "--dependent",
             type=str,
             choices=self.choices["regressions"],
-            dest="regression",
-            help="The regression you would like to perform",
+            dest="dependent",
+            help="The dependent variable on the regression you would like to perform",
+            required="-h" not in other_args,
+        )
+        parser.add_argument(
+            "-i",
+            "--independent",
+            type=check_list_values_from_valid_values_list(self.choices["regressions"]),
+            dest="independent",
+            help=(
+                "The independent variables on the regression you would like to perform. "
+                "E.g. historical.high,historical.low"
+            ),
+            required="-h" not in other_args,
         )
 
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-r")
+            other_args.insert(0, "-d")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
-        if ns_parser and ns_parser.regression:
-            if len(ns_parser.regression) < 2:
-                console.print(
-                    "Please provide both dependent and independent variables."
-                )
-            else:
-                (
-                    self.regression["OLS"]["data"],
-                    self.regression["OLS"]["dependent"],
-                    self.regression["OLS"]["independent"],
-                    self.regression["OLS"]["model"],
-                ) = openbb_terminal.econometrics.regression_model.get_ols(
-                    ns_parser.regression,
-                    self.datasets,
-                    self.choices["regressions"],
-                    export=ns_parser.export,
-                )
+        if ns_parser:
+            (
+                self.regression["OLS"]["data"],
+                self.regression["OLS"]["dependent"],
+                self.regression["OLS"]["independent"],
+                self.regression["OLS"]["model"],
+            ) = openbb_terminal.econometrics.regression_model.get_ols(
+                [ns_parser.dependent] + ns_parser.independent,
+                self.datasets,
+                self.choices["regressions"],
+                export=ns_parser.export,
+            )
 
     @log_start_end(log=logger)
     def call_norm(self, other_args: List[str]):
