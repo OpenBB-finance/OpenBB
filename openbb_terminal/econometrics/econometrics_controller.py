@@ -17,6 +17,7 @@ from prompt_toolkit.completion import NestedCompleter
 import openbb_terminal.econometrics.regression_model
 import openbb_terminal.econometrics.regression_view
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     parse_known_args_and_warn,
     NO_EXPORT,
@@ -77,7 +78,7 @@ class EconometricsController(BaseController):
     PATH = "/econometrics/"
 
     loaded_dataset_cols = "\n"
-    list_dataset_cols = list()
+    list_dataset_cols: List = list()
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
@@ -203,10 +204,8 @@ class EconometricsController(BaseController):
                 "regressions",
             ]:
                 self.choices[feature] = dataset_columns
-            for feature in ["export", "show", "clear", "index"]:
+            for feature in ["export", "show", "clean", "index", "remove"]:
                 self.choices[feature] = {c: None for c in self.files}
-
-            self.choices["remove"] = {c: None for c in list(self.datasets.keys())}
 
             self.completer = NestedCompleter.from_nested_dict(self.choices)
 
@@ -257,6 +256,7 @@ class EconometricsController(BaseController):
             return ["econometrics"] + load_files
         return []
 
+    @log_start_end(log=logger)
     def call_load(self, other_args: List[str]):
         """Process load"""
         parser = argparse.ArgumentParser(
@@ -370,6 +370,8 @@ class EconometricsController(BaseController):
 
                     console.print()
 
+    # TODO: JER HELP ME
+    @log_start_end(log=logger)
     def call_export(self, other_args: List[str]):
         """Process export command"""
         parser = argparse.ArgumentParser(
@@ -416,6 +418,7 @@ class EconometricsController(BaseController):
 
         console.print()
 
+    @log_start_end(log=logger)
     def call_remove(self, other_args: List[str]):
         """Process clear"""
         parser = argparse.ArgumentParser(
@@ -424,7 +427,6 @@ class EconometricsController(BaseController):
             prog="remove",
             description="Remove a dataset from the loaded dataset list",
         )
-
         parser.add_argument(
             "-n",
             "--name",
@@ -461,6 +463,7 @@ class EconometricsController(BaseController):
             for col in data.columns:
                 self.list_dataset_cols.append(f"{dataset}.{col}")
 
+    @log_start_end(log=logger)
     def call_plot(self, other_args: List[str]):
         """Process plot command"""
         parser = argparse.ArgumentParser(
@@ -505,6 +508,7 @@ class EconometricsController(BaseController):
                 ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_show(self, other_args: List[str]):
         """Process show command"""
         parser = argparse.ArgumentParser(
@@ -583,6 +587,7 @@ class EconometricsController(BaseController):
                     df.head(ns_parser.limit),
                 )
 
+    @log_start_end(log=logger)
     def call_desc(self, other_args: List[str]):
         """Process desc command"""
         parser = argparse.ArgumentParser(
@@ -600,7 +605,6 @@ class EconometricsController(BaseController):
             help="The name of the dataset.column you want to show the descriptive statistics",
             required=True,
         )
-
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
         ns_parser = parse_known_args_and_warn(
@@ -625,6 +629,7 @@ class EconometricsController(BaseController):
                 df,
             )
 
+    @log_start_end(log=logger)
     def call_type(self, other_args: List[str]):
         """Process type"""
         parser = argparse.ArgumentParser(
@@ -673,8 +678,11 @@ class EconometricsController(BaseController):
                         column
                     ].astype(data_type)
 
+            console.print(f"Update '{ns_parser.name}' dataset with type '{data_type}'")
         console.print()
 
+    # TODO: JER HELP ME
+    @log_start_end(log=logger)
     def call_index(self, other_args: List[str]):
         """Process index"""
         parser = argparse.ArgumentParser(
@@ -692,7 +700,6 @@ class EconometricsController(BaseController):
             help="The first argument is the name of the database, further arguments are "
             "the columns you wish to set as index",
         )
-
         parser.add_argument(
             "-a",
             "--adjustment",
@@ -702,7 +709,6 @@ class EconometricsController(BaseController):
             action="store_true",
             default=False,
         )
-
         parser.add_argument(
             "-d",
             "--drop",
@@ -711,7 +717,6 @@ class EconometricsController(BaseController):
             action="store_true",
             default=False,
         )
-
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
         ns_parser = parse_known_args_and_warn(parser, other_args, NO_EXPORT)
@@ -758,6 +763,7 @@ class EconometricsController(BaseController):
 
             self.update_runtime_choices()
 
+    @log_start_end(log=logger)
     def call_clean(self, other_args: List[str]):
         """Process clean"""
         parser = argparse.ArgumentParser(
@@ -766,15 +772,14 @@ class EconometricsController(BaseController):
             prog="clean",
             description="Clean a dataset by filling and dropping NaN values.",
         )
-
         parser.add_argument(
             "-n",
             "--name",
             help="The name of the dataset you want to clean up",
             dest="name",
             type=str,
+            choices=list(self.datasets.keys()),
         )
-
         parser.add_argument(
             "-f",
             "--fill",
@@ -785,7 +790,6 @@ class EconometricsController(BaseController):
             choices=["rfill", "cfill", "rbfill", "cbfill", "rffill", "bffill"],
             default="",
         )
-
         parser.add_argument(
             "-d",
             "--drop",
@@ -795,22 +799,21 @@ class EconometricsController(BaseController):
             choices=["rdrop", "cdrop"],
             default="",
         )
-
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
         ns_parser = parse_known_args_and_warn(parser, other_args, NO_EXPORT, limit=5)
-
         if ns_parser:
-            if not ns_parser.name or ns_parser.name not in self.datasets:
-                console.print("Please enter a valid dataset.")
-            else:
-                self.datasets[ns_parser.name] = econometrics_model.clean(
-                    self.datasets[ns_parser.name],
-                    ns_parser.fill,
-                    ns_parser.drop,
-                    ns_parser.limit,
-                )
+            self.datasets[ns_parser.name] = econometrics_model.clean(
+                self.datasets[ns_parser.name],
+                ns_parser.fill,
+                ns_parser.drop,
+                ns_parser.limit,
+            )
+            console.print(f"Successfully cleaned '{ns_parser.name}' dataset")
+        console.print()
 
+    # TODO: JER HELP ME
+    @log_start_end(log=logger)
     def call_modify(self, other_args: List[str]):
         """Process modify"""
         parser = argparse.ArgumentParser(
@@ -983,6 +986,7 @@ class EconometricsController(BaseController):
 
         console.print()
 
+    @log_start_end(log=logger)
     def call_ols(self, other_args: List[str]):
         """Process ols command"""
         parser = argparse.ArgumentParser(
@@ -1026,6 +1030,7 @@ class EconometricsController(BaseController):
                     export=ns_parser.export,
                 )
 
+    @log_start_end(log=logger)
     def call_norm(self, other_args: List[str]):
         """Process normality command"""
         parser = argparse.ArgumentParser(
@@ -1084,6 +1089,7 @@ class EconometricsController(BaseController):
                 data, dataset, column, ns_parser.plot, ns_parser.export
             )
 
+    @log_start_end(log=logger)
     def call_root(self, other_args: List[str]):
         """Process unit root command"""
         parser = argparse.ArgumentParser(
@@ -1154,6 +1160,7 @@ class EconometricsController(BaseController):
                     ns_parser.export,
                 )
 
+    @log_start_end(log=logger)
     def call_panel(self, other_args: List[str]):
         """Process panel command"""
         parser = argparse.ArgumentParser(
@@ -1262,6 +1269,7 @@ class EconometricsController(BaseController):
                     ns_parser.time_effects,
                 )
 
+    @log_start_end(log=logger)
     def call_compare(self, other_args: List[str]):
         """Process compare command"""
         parser = argparse.ArgumentParser(
@@ -1280,6 +1288,7 @@ class EconometricsController(BaseController):
                 self.regression, ns_parser.export
             )
 
+    @log_start_end(log=logger)
     def call_dwat(self, other_args: List[str]):
         """Process unitroot command"""
         parser = argparse.ArgumentParser(
@@ -1320,6 +1329,7 @@ class EconometricsController(BaseController):
 
                 console.print()
 
+    @log_start_end(log=logger)
     def call_bgod(self, other_args):
         """Process bgod command"""
         parser = argparse.ArgumentParser(
@@ -1357,6 +1367,7 @@ class EconometricsController(BaseController):
 
         console.print()
 
+    @log_start_end(log=logger)
     def call_bpag(self, other_args):
         """Process bpag command"""
         parser = argparse.ArgumentParser(
@@ -1382,6 +1393,7 @@ class EconometricsController(BaseController):
 
         console.print()
 
+    @log_start_end(log=logger)
     def call_granger(self, other_args: List[str]):
         """Process granger command"""
         parser = argparse.ArgumentParser(
@@ -1445,6 +1457,7 @@ class EconometricsController(BaseController):
 
         console.print()
 
+    @log_start_end(log=logger)
     def call_coint(self, other_args: List[str]):
         """Process coint command"""
         parser = argparse.ArgumentParser(
