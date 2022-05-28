@@ -203,6 +203,8 @@ class EconometricsController(BaseController):
                 "granger",
                 "cointegration",
                 "regressions",
+                "ols",
+                "panel",
             ]:
                 self.choices[feature] = dataset_columns
             for feature in ["export", "show", "clean", "index", "remove"]:
@@ -726,10 +728,11 @@ class EconometricsController(BaseController):
 
             for column in columns:
                 if column not in dataset.columns:
-                    return console.print(
-                        f"The column '{column}' is not available in the dataset {name}."
-                        f"Please choose one of the following: {', '.join(dataset.columns)}"
+                    console.print(
+                        f"[red]The column '{column}' is not available in the dataset {name}."
+                        f"Please choose one of the following: {', '.join(dataset.columns)}[/red]"
                     )
+                    return
 
             if ns_parser.adjustment:
                 if len(columns) > 1 and dataset[columns[0]].isnull().any():
@@ -745,7 +748,7 @@ class EconometricsController(BaseController):
                     null_values = dataset[dataset[columns[-1]].isnull()]
                     console.print(
                         f"The time index '{columns[-1]}' contains {len(null_values)} "
-                        f"NaTs which are removed from the dataset. Remove the -a argument to disable this."
+                        "NaNs which are removed from the dataset. Remove the -a argument to disable this."
                     )
                 dataset = dataset[dataset[columns[-1]].notnull()]
 
@@ -1062,8 +1065,8 @@ class EconometricsController(BaseController):
 
             if isinstance(self.datasets[dataset][column].index, pd.MultiIndex):
                 return console.print(
-                    f"The column {column} from the dataset {dataset} is a MultiIndex. To test for normality in a "
-                    f"timeseries, make sure to set a singular time index."
+                    f"The column '{column}' from the dataset '{dataset}' is a MultiIndex. To test for normality in a "
+                    "timeseries, make sure to set a singular time index.\n"
                 )
 
             if dataset in self.datasets:
@@ -1091,20 +1094,20 @@ class EconometricsController(BaseController):
             prog="root",
             description="Show unit root tests of a column of a dataset",
         )
-
         parser.add_argument(
-            "-c",
-            "--column",
+            "-v",
+            "--value",
             type=str,
             choices=self.choices["root"],
             dest="column",
             help="The column and name of the database you want test unit root for",
+            required="-h" not in other_args,
         )
 
         parser.add_argument(
             "-r",
             "--fuller_reg",
-            help="Type of regression. Can be ‘c’,’ct’,’ctt’,’nc’. c - Constant and t - trend order",
+            help="Type of regression. Can be 'c','ct','ctt','nc'. c - Constant and t - trend order",
             choices=["c", "ct", "ctt", "nc"],
             default="c",
             type=str,
@@ -1113,7 +1116,7 @@ class EconometricsController(BaseController):
         parser.add_argument(
             "-k",
             "--kps_reg",
-            help="Type of regression. Can be ‘c’,’ct'. c - Constant and t - trend order",
+            help="Type of regression. Can be 'c', 'ct'. c - Constant and t - trend order",
             choices=["c", "ct"],
             type=str,
             dest="kpss_reg",
@@ -1121,7 +1124,7 @@ class EconometricsController(BaseController):
         )
 
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-c")
+            other_args.insert(0, "-v")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
@@ -1131,8 +1134,8 @@ class EconometricsController(BaseController):
 
             if isinstance(self.datasets[dataset][column].index, pd.MultiIndex):
                 console.print(
-                    f"The column {column} from the dataset {dataset} is a MultiIndex. To test for unitroot in a "
-                    f"timeseries, make sure to set a singular time index."
+                    f"The column '{column}' from the dataset '{dataset}' is a MultiIndex. To test for unitroot in a "
+                    "timeseries, make sure to set a singular time index.\n"
                 )
             else:
                 if isinstance(self.datasets[dataset], pd.Series):
@@ -1163,21 +1166,29 @@ class EconometricsController(BaseController):
             description="Performs regression analysis on Panel Data. There are a multitude of options to select "
             "from to fit the needs of restrictions of the dataset.",
         )
-
+        parser.add_argument(
+            "-d",
+            "--dependent",
+            type=str,
+            choices=self.choices["regressions"],
+            dest="dependent",
+            help="The dependent variable on the regression you would like to perform",
+            required="-h" not in other_args,
+        )
+        parser.add_argument(
+            "-i",
+            "--independent",
+            type=check_list_values_from_valid_values_list(self.choices["regressions"]),
+            dest="independent",
+            help=(
+                "The independent variables on the regression you would like to perform. "
+                "E.g. historical.high,historical.low"
+            ),
+            required="-h" not in other_args,
+        )
         parser.add_argument(
             "-r",
             "--regression",
-            nargs="+",
-            type=str,
-            choices=self.choices["regressions"],
-            dest="regression",
-            help="The regression you would like to perform, first variable is the dependent variable, "
-            "consecutive variables the independent variables.",
-        )
-
-        parser.add_argument(
-            "-t",
-            "--type",
             type=str,
             choices=[
                 "pols",
@@ -1196,9 +1207,8 @@ class EconometricsController(BaseController):
             "re (Random Effects), bols (Between OLS), fe (Fixed Effects) or fdols (First Difference OLS)",
             default="pols",
         )
-
         parser.add_argument(
-            "-ee",
+            "-e",
             "--entity_effects",
             dest="entity_effects",
             help="Using this command creates entity effects, which is equivalent to including dummies for each entity. "
@@ -1206,9 +1216,8 @@ class EconometricsController(BaseController):
             action="store_true",
             default=False,
         )
-
         parser.add_argument(
-            "-te",
+            "-t",
             "--time_effects",
             dest="time_effects",
             help="Using this command creates time effects, which is equivalent to including dummies for each time. "
@@ -1216,51 +1225,51 @@ class EconometricsController(BaseController):
             action="store_true",
             default=False,
         )
-
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-r")
+            other_args.insert(0, "-d")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
-        if ns_parser and ns_parser.regression:
-            if len(ns_parser.regression) < 2:
-                return console.print(
-                    "Please provide both dependent and independent variables."
-                )
-            for variable in ns_parser.regression:
-                column, dataset = self.choices["regressions"][variable].keys()
-                if not isinstance(self.datasets[dataset][column].index, pd.MultiIndex):
-                    return console.print(
-                        f"The column {column} from the dataset {dataset} is not a MultiIndex. Make sure you set "
-                        f"the index correctly with the index command where the first level is the entity "
-                        f"(e.g. Tesla Inc.) and the second level the date (e.g. 2021-03-31)"
+        if ns_parser:
+            regression_vars = [ns_parser.dependent] + ns_parser.independent
+
+            if regression_vars and len(regression_vars) > 1:
+                for variable in regression_vars:
+                    column, dataset = self.choices["regressions"][variable].keys()
+                    if not isinstance(
+                        self.datasets[dataset][column].index, pd.MultiIndex
+                    ):
+                        return console.print(
+                            f"The column '{column}' from the dataset '{dataset}' is not a MultiIndex. Make sure you set "
+                            "the index correctly with the index command where the first level is the entity "
+                            "(e.g. Tesla Inc.) and the second level the date (e.g. 2021-03-31)\n"
+                        )
+
+                # Ensure that OLS is always ran to be able to perform tests
+                regression_types = ["OLS", ns_parser.type.upper()]
+
+                for regression in regression_types:
+                    regression_name = regression
+                    if regression == "FE":
+                        if ns_parser.entity_effects:
+                            regression_name = regression_name + "_EE"
+                        if ns_parser.time_effects:
+                            regression_name = regression_name + "_IE"
+
+                    (
+                        self.regression[regression_name]["data"],
+                        self.regression[regression_name]["dependent"],
+                        self.regression[regression_name]["independent"],
+                        self.regression[regression_name]["model"],
+                    ) = openbb_terminal.econometrics.regression_view.display_panel(
+                        regression,
+                        regression_vars,
+                        self.datasets,
+                        self.choices["regressions"],
+                        ns_parser.entity_effects,
+                        ns_parser.time_effects,
                     )
-
-            # Ensure that OLS is always ran to be able to perform tests
-            regression_types = ["OLS", ns_parser.type.upper()]
-
-            for regression in regression_types:
-                regression_name = regression
-                if regression == "FE":
-                    if ns_parser.entity_effects:
-                        regression_name = regression_name + "_EE"
-                    if ns_parser.time_effects:
-                        regression_name = regression_name + "_IE"
-
-                (
-                    self.regression[regression_name]["data"],
-                    self.regression[regression_name]["dependent"],
-                    self.regression[regression_name]["independent"],
-                    self.regression[regression_name]["model"],
-                ) = openbb_terminal.econometrics.regression_view.display_panel(
-                    regression,
-                    ns_parser.regression,
-                    self.datasets,
-                    self.choices["regressions"],
-                    ns_parser.entity_effects,
-                    ns_parser.time_effects,
-                )
 
     @log_start_end(log=logger)
     def call_compare(self, other_args: List[str]):
@@ -1271,11 +1280,9 @@ class EconometricsController(BaseController):
             prog="compare",
             description="Compare results between all activated Panel regression models",
         )
-
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
         if ns_parser:
             openbb_terminal.econometrics.regression_model.get_comparison(
                 self.regression, ns_parser.export
