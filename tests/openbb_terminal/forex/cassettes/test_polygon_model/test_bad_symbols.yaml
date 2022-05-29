@@ -9,15 +9,15 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - Mozilla/5.0 (Windows NT 6.1; WOW64; rv:84.0) Gecko/20100101 Firefox/84.0
+      - Mozilla/5.0 (Windows NT 10.0; WOW64; rv:86.0) Gecko/20100101 Firefox/86.0
     method: GET
-    uri: https://api.polygon.io/v2/aggs/ticker/C:GCUYGCYUFGDCUTYFCYUF/range/1/day/2000-01-01/2022-05-26?adjusted=true&apiKey=MOCK_API_KEY&limit=50000&sort=desc
+    uri: https://api.polygon.io/v2/aggs/ticker/C:GCUYGCYUFGDCUTYFCYUF/range/1/day/2000-01-01/2022-05-27?adjusted=true&apiKey=MOCK_API_KEY&limit=50000&sort=desc
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAA/0TKsc6CMBSG4Xv5ZgYCPzR07R8YHFxkYDK1/QbUaOg5ZzDGezdMbm/ePG/omm4s
-        8Ah+CvMyhWUep/8wn5ZxT1TYjOUVnvZQ+LpCodhd5TdivpooM7wWYwXRqCbwOB6w880oel4zPNq2
-        HugSO5eHi0tN6ms2zvGvY0qxJz7fAAAA//9XhUdxkQAAAA==
+        H4sIAAAAAAAA/0TKsQ6CMBCH8Xf5zwwExKZda2BwcJGhk6nckaBGQ+9uMMZ3N0xuX778PtBlunNB
+        QAxDHNMQ09gPhzieU78lKqzG5R1f9lSEukJhsYfKf2S6mSgTghbjCqJZTRBwOmLjq7HoZSEE1Puu
+        6TK77Hdt4z25uW7dldrs3ZRp9vj+AgAA//8R+PTJkQAAAA==
     headers:
       Connection:
       - keep-alive
@@ -28,7 +28,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 26 May 2022 18:39:50 GMT
+      - Fri, 27 May 2022 22:23:17 GMT
       Server:
       - nginx/1.19.2
       Strict-Transport-Security:
@@ -36,7 +36,7 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Request-Id:
-      - 3309e7ce57d9b7c2c60e277e45ecca6e
+      - 06525ae7a943299d7f037bd3a97cadf9
     status:
       code: 200
       message: OK
