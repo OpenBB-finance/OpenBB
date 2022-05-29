@@ -1,5 +1,5 @@
 ,RE,FE
 const,0.14530,0.16091
-lwage_wage_panel,0.19126,0.18194
-hisp_wage_panel,-0.00687,-0.00737
-black_wage_panel,-0.17866,-0.18008
+wage_panel.lwage,0.19126,0.18194
+wage_panel.hisp,-0.00687,-0.00737
+wage_panel.black,-0.17866,-0.18008

@@ -1,2 +1,3 @@
+The following args couldn't be interpreted: ['dataset']
 
-The column cancer from the dataset dataset is not a MultiIndex. Make sure you set the index correctly with the index command where the first level is the entity (e.g. Tesla Inc.) and the second level the date (e.g. 2021-03-31)
+

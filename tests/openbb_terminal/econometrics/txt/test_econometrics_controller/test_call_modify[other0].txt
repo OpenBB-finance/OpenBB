@@ -1,3 +1,4 @@
+The following args couldn't be interpreted: ['dataset']
 
-Not able to find the dataset cancer. Please choose one of the following: dataset
+Not able to find the column dataset. Please choose one of the following: cancer, population
 

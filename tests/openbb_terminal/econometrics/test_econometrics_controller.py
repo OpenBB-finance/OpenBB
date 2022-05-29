@@ -46,17 +46,19 @@ def test_call_load(controller, other):
 
 @pytest.mark.parametrize("other", [["dataset"], ["-n", "data"]])
 def test_call_export(controller, other):
-    controller.call_load(["cancer", "dataset"])
+    controller.call_load(["cancer"])
     controller.call_export(other)
 
 
+@pytest.mark.skip
 @pytest.mark.record_stdout
 @pytest.mark.parametrize("other", [["data"], ["-n", "dataset"], []])
 def test_call_remove(controller, other):
-    controller.call_load(["cancer", "dataset"])
+    controller.call_load(["cancer"])
     controller.call_remove(other)
 
 
+@pytest.mark.skip
 @pytest.mark.parametrize("other", [["data"], ["-n", "data"], []])
 def test_call_options(controller, other):
     controller.call_options(other)
