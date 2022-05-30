@@ -199,6 +199,7 @@ macs is recommended.
    - On all other systems
 
      ```bash
+     conda install -c pytorch u8darts-torch
      poetry install -E prediction
      ```
 
