@@ -20,7 +20,7 @@ pos -l 25 -a
 # Get the Cost-to-Borrow List
 ctb
 
-# Get the days-to-cover list and sort
+# Get the days-to-cover list and sort 
 sidtc -s si
 sidtc
 
@@ -34,7 +34,4 @@ spos
 psi
 
 # Export the Cost-to-Borrow list as a spreadsheet to examine.
-ctb
-
-# Return to home
-/
+ctb -n 6000 --export xlsx
