@@ -2,7 +2,7 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Any, Tuple, Union
+from typing import Any, Tuple, Union, List
 
 import numpy as np
 import pandas as pd
@@ -34,7 +34,7 @@ def get_expo_data(
     n_predict: int = 30,
     start_window: float = 0.65,
     forecast_horizon: int = 3,
-) -> Tuple[Any, Any, Any, float, Any]:
+) -> Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], float, Any]:
 
     """Performs Probabilistic Exponential Smoothing forecasting
     This is a wrapper around statsmodels Holt-Winters' Exponential Smoothing;
