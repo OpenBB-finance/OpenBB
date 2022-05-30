@@ -953,7 +953,7 @@ en:
   alternative/oss/sh: repo star history
   alternative/oss/tr: top starred repos
   econometrics/_data_loc: Looking for data in
-  econometrics/load: load a dataset (either previous exported or from custom imports)
+  econometrics/load: load a dataset (also works with StatsModels datasets)
   econometrics/export: export a processed dataset
   econometrics/remove: remove one of the loaded datasets
   econometrics/options: show available column-dataset options
@@ -966,17 +966,17 @@ en:
   econometrics/index: set (multi) index based on columns
   econometrics/clean: clean a dataset by filling or dropping NaNs
   econometrics/modify: combine columns of datasets and delete or rename columns
-  econometrics/_timeseries_: Timeseries
+  econometrics/_regression_: Regression
+  econometrics/_regression_tests_: Regression Tests
   econometrics/ols: fit a (multi) linear regression model
   econometrics/norm: perform normality tests on a column of a dataset
   econometrics/root: perform unitroot tests (ADF & KPSS) on a column of a dataset
-  econometrics/_panel_: Panel Data
   econometrics/panel: estimate model based on various regression techniques
   econometrics/compare: compare results of all estimated models
   econometrics/_tests_: Tests
-  econometrics/dwat: Durbin-Watson autocorrelation test on the residuals of the regression (needs 'ols')
-  econometrics/bgod: Breusch-Godfrey autocorrelation tests with lags on the residuals of the regression (needs 'ols')
-  econometrics/bpag: Breusch-Pagan heteroscedasticity test on the residuals of the regression (needs 'ols')
+  econometrics/dwat: Durbin-Watson autocorrelation test on the residuals of the regression
+  econometrics/bgod: Breusch-Godfrey autocorrelation tests with lags on the residuals of the regression
+  econometrics/bpag: Breusch-Pagan heteroscedasticity test on the residuals of the regression
   econometrics/granger: Granger causality tests on two columns
   econometrics/coint: co-integration test on a multitude of columns
   portfolio/bro: brokers holdings,   supports robinhood, ally, degiro, coinbase

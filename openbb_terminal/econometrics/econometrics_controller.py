@@ -247,21 +247,19 @@ class EconometricsController(BaseController):
         mt.add_cmd("clean", "", self.files)
         mt.add_cmd("modify", "", self.files)
         mt.add_cmd("export", "", self.files)
-        mt.add_info("_timeseries_")
-        mt.add_cmd("ols", "", self.files)
-
-        mt.add_info("_panel_")
-        mt.add_cmd("panel", "", self.files)
-        mt.add_cmd("compare", "", self.files)
-
         mt.add_info("_tests_")
         mt.add_cmd("norm", "", self.files)
         mt.add_cmd("root", "", self.files)
+        mt.add_cmd("granger", "", self.files)
+        mt.add_cmd("coint", "", self.files)
+        mt.add_info("_regression_")
+        mt.add_cmd("ols", "", self.files)
+        mt.add_cmd("panel", "", self.files)
+        mt.add_cmd("compare", "", self.files)
+        mt.add_info("_regression_tests_")
         mt.add_cmd("dwat", "", self.files and self.regression["OLS"]["model"])
         mt.add_cmd("bgod", "", self.files and self.regression["OLS"]["model"])
         mt.add_cmd("bpag", "", self.files and self.regression["OLS"]["model"])
-        mt.add_cmd("granger", "", self.files)
-        mt.add_cmd("coint", "", self.files)
 
         console.print(text=mt.menu_text, menu="Econometrics")
 
@@ -279,7 +277,7 @@ class EconometricsController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="load",
-            description="Load custom data set into a dataframe",
+            description="Load custom dataset (from previous export, custom imports or StatsModels).",
         )
         parser.add_argument(
             "-f",
@@ -686,7 +684,6 @@ class EconometricsController(BaseController):
             console.print(f"Update '{ns_parser.name}' dataset with type '{data_type}'")
         console.print()
 
-    # TODO: JER HELP ME
     @log_start_end(log=logger)
     def call_index(self, other_args: List[str]):
         """Process index"""
@@ -701,9 +698,15 @@ class EconometricsController(BaseController):
             "--name",
             type=str,
             dest="name",
-            nargs="+",
-            help="The first argument is the name of the database, further arguments are "
-            "the columns you wish to set as index",
+            choices=list(self.datasets.keys()),
+            help="Name of dataset to select index from",
+        )
+        parser.add_argument(
+            "-i",
+            "--index",
+            type=str,
+            dest="index",
+            help="Columns from the dataset the user wishes to set as default",
         )
         parser.add_argument(
             "-a",
@@ -727,8 +730,21 @@ class EconometricsController(BaseController):
         ns_parser = parse_known_args_and_warn(parser, other_args, NO_EXPORT)
 
         if ns_parser and ns_parser.name:
-            name = ns_parser.name[0]
-            columns = ns_parser.name[1:]
+            name = ns_parser.name
+            index = ns_parser.index
+
+            if "," in index:
+                values_found = [val.strip() for val in index.split(",")]
+            else:
+                values_found = [index]
+
+            columns = list()
+            for value in values_found:
+                # check if the value is valid
+                if value in self.datasets[name].columns:
+                    columns.append(value)
+                else:
+                    console.print(f"[red]'{value}' is not valid.[/red]")
 
             dataset = self.datasets[name]
 
@@ -766,6 +782,9 @@ class EconometricsController(BaseController):
                 dataset = dataset[dataset[columns[-1]].notnull()]
 
             self.datasets[name] = dataset.set_index(columns, drop=ns_parser.drop)
+            console.print(
+                f"Successfully updated '{name}' index to be '{', '.join(columns)}'\n"
+            )
 
             self.update_runtime_choices()
 
