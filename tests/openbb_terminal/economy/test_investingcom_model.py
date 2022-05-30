@@ -8,7 +8,7 @@ import pytest
 from openbb_terminal.economy import investingcom_model
 
 
-# @pytest.mark.vcr
+@pytest.mark.vcr
 @pytest.mark.parametrize(
     "country",
     [
