@@ -41,6 +41,7 @@ class FeatureFlagsController(BaseController):
         "rcontext",
         "rich",
         "richpanel",
+        "tbhint",
     ]
     PATH = "/featflags/"
 
@@ -72,6 +73,7 @@ class FeatureFlagsController(BaseController):
         mt.add_setting("ion", obbff.USE_ION)
         mt.add_setting("watermark", obbff.USE_WATERMARK)
         mt.add_setting("cmdloc", obbff.USE_CMD_LOCATION_FIGURE)
+        mt.add_setting("tbhint", obbff.TOOLBAR_HINT)
 
         console.print(text=mt.menu_text, menu="Feature Flags")
 
@@ -216,5 +218,18 @@ class FeatureFlagsController(BaseController):
             obbff.ENV_FILE,
             "OPENBB_USE_CMD_LOCATION_FIGURE",
             str(obbff.USE_CMD_LOCATION_FIGURE),
+        )
+        console.print("")
+
+    @log_start_end(log=logger)
+    def call_tbhint(self, _):
+        """Process tbhint command"""
+        if obbff.TOOLBAR_HINT:
+            console.print("Will take effect when running terminal next.")
+        obbff.TOOLBAR_HINT = not obbff.TOOLBAR_HINT
+        set_key(
+            obbff.ENV_FILE,
+            "OPENBB_TOOLBAR_HINT",
+            str(obbff.TOOLBAR_HINT),
         )
         console.print("")
