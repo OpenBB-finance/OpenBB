@@ -9,12 +9,15 @@
 
 
 
-    <meta name="description" content="    Add     Balance     Cashflow     Financial     Getfinnhub     Getfinviz     Getpoly     Hcorr     Historical     Income     Overview     Ownership     Performance     Scorr     Sentiment     Technical     Tsne     Valuation     Volume     ">
+    <meta name="description" content="The Comparison Analysis menu provides the user with tools for:
+ searching and populating a list of companies that are similar to the loaded ticker. building a correlation matrix. comparing the price and volume history of multiple companies. comparing financial statements, technical performance, and ownership statistics of otherwise similar companies. comparing sentiment of similar companies. building a list of companies to use features from the Portfolio Optimization menu.  To use all features in this menu, the following API keys (free) must be obtained by the user:">
 
+
+    <meta name="keywords" content="Comparison,,analysis,,ca,,menu,,submenu,,stocks,,compare,,correlation,,similar,,historical,,hcorr,,volume,,income,,balance,,cashflow,,sentiment,,scorr,,overview,,valuation,,financial,,ownership,,performance,,technical,,tsne,,getpoly,,getfunnhub,,getfinviz,,set,,add,,rmv,,Polygon,,Finnhub,,Finviz,,Yahoo,,yFinance,,FinBrain,,market,,watch">
 
 
     <title>
-      Comparison Analysis | OpenBB Terminal
+      Introduction to Comparison Analysis | OpenBB Terminal
     </title>
 
     <link rel="icon" href="/OpenBBTerminal/favicon/favicon-32x32.png" type="image/x-icon">
@@ -3891,7 +3894,25 @@
     <li style="margin-top: 15px; text-transform: capitalize;">
         
         
-            <span class="flex">fundamental_analysis/web&#34;</span>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/OpenBBTerminal/terminal/stocks/fundamental_analysis/web/"
+                    class="gdoc-nav__entry ">
+                    web
+                </a>
+            </span>
+            
         
 
         
@@ -25969,7 +25990,7 @@
         
     
     
-        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/' href='/OpenBBTerminal/'><span itemprop='name'>OpenBB Terminal</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/terminal/' href='/OpenBBTerminal/terminal/'><span itemprop='name'>Getting started with the OpenBB Terminal</span></a><meta itemprop='position' content='3' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/terminal/stocks/' href='/OpenBBTerminal/terminal/stocks/'><span itemprop='name'>Introduction to Stocks</span></a><meta itemprop='position' content='4' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>Comparison Analysis</span><meta itemprop='position' content='5' /></li>
+        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/' href='/OpenBBTerminal/'><span itemprop='name'>OpenBB Terminal</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/terminal/' href='/OpenBBTerminal/terminal/'><span itemprop='name'>Getting started with the OpenBB Terminal</span></a><meta itemprop='position' content='3' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/terminal/stocks/' href='/OpenBBTerminal/terminal/stocks/'><span itemprop='name'>Introduction to Stocks</span></a><meta itemprop='position' content='4' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>Introduction to Comparison Analysis</span><meta itemprop='position' content='5' /></li>
     
 
     
@@ -25994,271 +26015,83 @@
 </div>
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
-        <h1>Comparison Analysis</h1>
-        
+        <h1>Introduction to Comparison Analysis</h1>
+        <p>The Comparison Analysis menu provides the user with tools for:</p>
+<ul>
+<li>searching and populating a list of companies that are similar to the loaded ticker.</li>
+<li>building a correlation matrix.</li>
+<li>comparing the price and volume history of multiple companies.</li>
+<li>comparing financial statements, technical performance, and ownership statistics of otherwise similar companies.</li>
+<li>comparing sentiment of similar companies.</li>
+<li>building a list of companies to use features from the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/portfolio/po/" target="_blank">Portfolio Optimization menu</a>.</li>
+</ul>
+<p>To use all features in this menu, the following <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/#accessing-other-sources-of-data-via-api-keys" target="_blank">API keys (free)</a> must be obtained by the user:</p>
+<ul>
+<li><a href="https://finnhub.io/" target="_blank">Finnhub</a> <code>getfinnhub</code></li>
+<li><a href="https://polygon.io/" target="_blank">Polygon</a> <code>getpoly</code></li>
+</ul>
+<p>It is not necessary to load a ticker from the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/" target="_blank">stocks</a> menu to use these features. Enter the Comparison Analysis submenu by typing <code>ca</code> and pressing <code>ENTER</code> (⏎).</p>
+<p><a target="_blank" href="https://user-images.githubusercontent.com/46355364/171148283-2cbb5942-dc56-4276-a30c-7cbc045627a1.png"><img alt="Comparison Analysis Menu" src="https://user-images.githubusercontent.com/46355364/171148283-2cbb5942-dc56-4276-a30c-7cbc045627a1.png"></a></p>
+<div class="gdoc-page__anchorwrap">
+    <h2 id="how-to-use">
+        How to use
+        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/comparison_analysis/#how-to-use" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor How to use" href="#how-to-use">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h2>
+</div><p>To add a primary ticker, or to swap it for another, enter <code>ticker AMZN</code>. The three commands: <code>getfinnhub</code>, <code>getpoly</code>
+and <code>getfinviz</code> all provide a similar function. Sources may return different results.</p>
+<pre><code>(🦋) /stocks/ca/ $ getfinviz
+[Finviz] Similar Companies: WMT, BIG, BJ, COST, DG, DLTR, OLLI, PSMT, TGT, TUEM 
 
+(🦋) /stocks/ca/ $ getpoly
+[Polygon] Similar Companies: WMT, AMZN, COST, EBAY, DLTR, KSS, JCP, TGT, M, DG
 
-  <div class="gdoc-toc gdoc-toc__level--1">
-    
-  <ul>
-    
-      
-      
-      <li>
-      
-        <span>
-          <a href="/OpenBBTerminal/terminal/stocks/comparison_analysis/add/" class="gdoc-toc__entry">Add</a>
-        </span>
-      
+(🦋) /stocks/ca/ $ getfinnhub
+[Finnhub] Similar Companies: WMT, COST, BJ, PSMT
+</code></pre><p>Using any of these commands will automatically populate the list of similar companies for analysis. Furthermore, <code>add</code> &amp; <code>rmv</code> allows the user to make modifications, or create a list from scratch.</p>
+<p><a target="_blank" href="https://user-images.githubusercontent.com/46355364/171148589-08cc106f-4e1d-4d94-92b5-09190f1798d4.png"><img alt="Get similar companies for analysis" src="https://user-images.githubusercontent.com/46355364/171148589-08cc106f-4e1d-4d94-92b5-09190f1798d4.png"></a></p>
+<p>To show a correlation matrix, use the <code>hcorr</code> command. The start dates can be modified, which changes the results, to show correlation over different periods. For example, obtain a one year correlation matrix with <code>hcorr</code>:</p>
+<p><a target="_blank" href="https://user-images.githubusercontent.com/46355364/171148882-a0f1c57a-6761-4fbc-a03f-e5213a52c7f0.png"><img alt="One year correlation matrix" src="https://user-images.githubusercontent.com/46355364/171148882-a0f1c57a-6761-4fbc-a03f-e5213a52c7f0.png"></a></p>
+<p>Or, by adjusting the date, it is possible to define a correlation matrix with a different time horizon, e.g <code>hcorr -s 2022-01-01</code>:</p>
+<p><a target="_blank" href="https://user-images.githubusercontent.com/46355364/171149853-1a84e9af-7099-4a72-b687-01f2e32d0485.png"><img alt="YTD correlation matrix" src="https://user-images.githubusercontent.com/46355364/171149853-1a84e9af-7099-4a72-b687-01f2e32d0485.png"></a></p>
+<p>The list of similar companies can be compared by a number of fundamental metrics.</p>
+<p><code>valuation</code> displays earnings and valuation multiples.
+<a target="_blank" href="https://user-images.githubusercontent.com/46355364/171150439-31cbe514-e676-4814-8b4b-a6087e2d417a.png"><img alt="Valuation" src="https://user-images.githubusercontent.com/46355364/171150439-31cbe514-e676-4814-8b4b-a6087e2d417a.png"></a></p>
+<p><code>performance</code> compares technical performance of similar companies:
+<a target="_blank" href="https://user-images.githubusercontent.com/46355364/171150577-9333c3a2-a60e-47e9-86e9-206187744b2a.png"><img alt="Performance" src="https://user-images.githubusercontent.com/46355364/171150577-9333c3a2-a60e-47e9-86e9-206187744b2a.png"></a></p>
+<p><code>sentiment</code> is a chart from  <a href="https://finbrain.tech" target="_blank">Finbrain</a> that shows sentiment over the last ten days.
+<a target="_blank" href="https://user-images.githubusercontent.com/46355364/171150795-cdff5c5e-c0c8-4ca3-ba60-3f148ba80a22.png"><img alt="Performance" src="https://user-images.githubusercontent.com/46355364/171150795-cdff5c5e-c0c8-4ca3-ba60-3f148ba80a22.png"></a></p>
+<p>This list of similar companies can be imported directly to the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/portfolio/po/" target="_blank">Portfolio Optimization</a> menu by using the command, <code>po</code>.
+<a target="_blank" href="https://user-images.githubusercontent.com/46355364/171150890-e96722cd-6f18-41a3-b720-bbb3ecaeb4c8.png"><img alt="PO Menu" src="https://user-images.githubusercontent.com/46355364/171150890-e96722cd-6f18-41a3-b720-bbb3ecaeb4c8.png"></a></p>
+<div class="gdoc-page__anchorwrap">
+    <h2 id="examples">
+        Examples
+        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/comparison_analysis/#examples" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Examples" href="#examples">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h2>
+</div><p>The correlation matrix can also be used in other ways, like measuring sectors or asset classes. The chart below is a daily, price-normalized, comparison of S&amp;P, NASDAQ, and BTC futures.</p>
+<pre><code>(🦋) /stocks/ca/ $ add es=f
+[Custom] Similar Companies: ES=F, NQ=F, BTC=F 
 
-      
-      
-      </li>
-      
-      
-      
-      <li>
-      
-        <span>
-          <a href="/OpenBBTerminal/terminal/stocks/comparison_analysis/balance/" class="gdoc-toc__entry">Balance</a>
-        </span>
-      
+(🦋) /stocks/ca/ $ historical -n
+</code></pre><p><a target="_blank" href="https://user-images.githubusercontent.com/46355364/171151014-ce034108-7efd-456c-b37a-f41fb6b8aa91.png"><img alt="Historical" src="https://user-images.githubusercontent.com/46355364/171151014-ce034108-7efd-456c-b37a-f41fb6b8aa91.png"></a></p>
+<p>This is a chart of the NASDAQ 100 Index, and three different futures contracts that are trading against it.</p>
+<pre><code>(🦋) /stocks/ca/ $ set ^NDX,NQH23.CME,NQZ22.CME,NQ=F
+[Custom] Similar Companies: ^NDX, NQH23.CME, NQZ22.CME, NQ=F 
 
-      
-      
-      </li>
-      
-      
-      
-      <li>
-      
-        <span>
-          <a href="/OpenBBTerminal/terminal/stocks/comparison_analysis/cashflow/" class="gdoc-toc__entry">Cashflow</a>
-        </span>
-      
-
-      
-      
-      </li>
-      
-      
-      
-      <li>
-      
-        <span>
-          <a href="/OpenBBTerminal/terminal/stocks/comparison_analysis/financial/" class="gdoc-toc__entry">Financial</a>
-        </span>
-      
-
-      
-      
-      </li>
-      
-      
-      
-      <li>
-      
-        <span>
-          <a href="/OpenBBTerminal/terminal/stocks/comparison_analysis/getfinnhub/" class="gdoc-toc__entry">Getfinnhub</a>
-        </span>
-      
-
-      
-      
-      </li>
-      
-      
-      
-      <li>
-      
-        <span>
-          <a href="/OpenBBTerminal/terminal/stocks/comparison_analysis/getfinviz/" class="gdoc-toc__entry">Getfinviz</a>
-        </span>
-      
-
-      
-      
-      </li>
-      
-      
-      
-      <li>
-      
-        <span>
-          <a href="/OpenBBTerminal/terminal/stocks/comparison_analysis/getpoly/" class="gdoc-toc__entry">Getpoly</a>
-        </span>
-      
-
-      
-      
-      </li>
-      
-      
-      
-      <li>
-      
-        <span>
-          <a href="/OpenBBTerminal/terminal/stocks/comparison_analysis/hcorr/" class="gdoc-toc__entry">Hcorr</a>
-        </span>
-      
-
-      
-      
-      </li>
-      
-      
-      
-      <li>
-      
-        <span>
-          <a href="/OpenBBTerminal/terminal/stocks/comparison_analysis/historical/" class="gdoc-toc__entry">Historical</a>
-        </span>
-      
-
-      
-      
-      </li>
-      
-      
-      
-      <li>
-      
-        <span>
-          <a href="/OpenBBTerminal/terminal/stocks/comparison_analysis/income/" class="gdoc-toc__entry">Income</a>
-        </span>
-      
-
-      
-      
-      </li>
-      
-      
-      
-      <li>
-      
-        <span>
-          <a href="/OpenBBTerminal/terminal/stocks/comparison_analysis/overview/" class="gdoc-toc__entry">Overview</a>
-        </span>
-      
-
-      
-      
-      </li>
-      
-      
-      
-      <li>
-      
-        <span>
-          <a href="/OpenBBTerminal/terminal/stocks/comparison_analysis/ownership/" class="gdoc-toc__entry">Ownership</a>
-        </span>
-      
-
-      
-      
-      </li>
-      
-      
-      
-      <li>
-      
-        <span>
-          <a href="/OpenBBTerminal/terminal/stocks/comparison_analysis/performance/" class="gdoc-toc__entry">Performance</a>
-        </span>
-      
-
-      
-      
-      </li>
-      
-      
-      
-      <li>
-      
-        <span>
-          <a href="/OpenBBTerminal/terminal/stocks/comparison_analysis/scorr/" class="gdoc-toc__entry">Scorr</a>
-        </span>
-      
-
-      
-      
-      </li>
-      
-      
-      
-      <li>
-      
-        <span>
-          <a href="/OpenBBTerminal/terminal/stocks/comparison_analysis/sentiment/" class="gdoc-toc__entry">Sentiment</a>
-        </span>
-      
-
-      
-      
-      </li>
-      
-      
-      
-      <li>
-      
-        <span>
-          <a href="/OpenBBTerminal/terminal/stocks/comparison_analysis/technical/" class="gdoc-toc__entry">Technical</a>
-        </span>
-      
-
-      
-      
-      </li>
-      
-      
-      
-      <li>
-      
-        <span>
-          <a href="/OpenBBTerminal/terminal/stocks/comparison_analysis/tsne/" class="gdoc-toc__entry">Tsne</a>
-        </span>
-      
-
-      
-      
-      </li>
-      
-      
-      
-      <li>
-      
-        <span>
-          <a href="/OpenBBTerminal/terminal/stocks/comparison_analysis/valuation/" class="gdoc-toc__entry">Valuation</a>
-        </span>
-      
-
-      
-      
-      </li>
-      
-      
-      
-      <li>
-      
-        <span>
-          <a href="/OpenBBTerminal/terminal/stocks/comparison_analysis/volume/" class="gdoc-toc__entry">Volume</a>
-        </span>
-      
-
-      
-      
-      </li>
-      
-      
-    
-  </ul>
-
-  </div>
-
-
-
-
-
+(🦋) /stocks/ca/ $ historical
+</code></pre><p><a target="_blank" href="https://user-images.githubusercontent.com/46355364/171151179-3aa6c72c-0590-4926-9b47-f1741c87813a.png"><img alt="Historical NASDAQ 100" src="https://user-images.githubusercontent.com/46355364/171151179-3aa6c72c-0590-4926-9b47-f1741c87813a.png"></a></p>
+<p>Compare financial statements of the ten largest US banks.</p>
+<pre><code>(🦋) /stocks/ca/ $ set C,USB,WFC,JPM,TD,GS,PNC,TFC,BAC,COF
+[Custom] Similar Companies: C, USB, WFC, JPM, TD, COF, PNC, TFC, BAC, GS 
+(🦋) /stocks/ca/ $ cashflow
+</code></pre><p><a target="_blank" href="https://user-images.githubusercontent.com/46355364/171151317-5077646d-7488-46ae-9899-515d49f0f114.png"><img alt="Cashflow comparison of the ten largest US banks" src="https://user-images.githubusercontent.com/46355364/171151317-5077646d-7488-46ae-9899-515d49f0f114.png"></a></p>
+<p>Compare the income statements.</p>
+<pre><code>(🦋) /stocks/ca/ $ income
+</code></pre><p><a target="_blank" href="https://user-images.githubusercontent.com/46355364/171151496-ea1d07ab-de45-4cf0-aa3e-5119101ef861.png"><img alt="Income statements of the ten largest US banks" src="https://user-images.githubusercontent.com/46355364/171151496-ea1d07ab-de45-4cf0-aa3e-5119101ef861.png"></a></p>
+<p>To run a demonstration of the commands presented here, in the OpenBB Terminal, run this command from the home menu: <code>exe routines/comparison_demo.openbb</code></p>
 
     </article>
  
@@ -28555,6 +28388,16 @@
         
 
         
+        
+            
+            
+            
+
+            
+
+            
+
+            
         
 
         
