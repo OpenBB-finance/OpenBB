@@ -5,6 +5,7 @@ date: "05-30-2022"
 type: guides
 status: publish
 excerpt: "The Introduction to Dark Pools & Short Short Data menu, within the Stocks menu, explains how to use the menu and provides a brief explanation of the features."
+geekdocCollapseSection: true
 ---
 
 <h1>An Introduction to the Dark Pools & Short Data Menu</h1>
@@ -129,4 +130,4 @@ The data from `dpotc`, statistics for individual NMS tickers, shows weekly OTC a
 ````
 ![Weekly ATS and OTC Volume and Average Lot Size](dps_dpotc.png)<br>
 
-Back to <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/" target="_blank">Stocks</a>.
+Run a live demo of these features by entering `exe routines/darkpool_demo.openbb` into the Terminal from the home screen. Back to <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/" target="_blank">Stocks</a>.

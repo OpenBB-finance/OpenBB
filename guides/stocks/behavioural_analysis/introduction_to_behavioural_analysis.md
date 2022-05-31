@@ -12,7 +12,7 @@ The Behavioural Analysis submenu offers the user tools for guaging the overall p
 
 ![The Behavioural Analysis submenu](images/behavioural_analysis1.png)<br>
 
-The commands with blue text here do not require a ticker, faded commands will turn blue when there is a ticker loaded.
+The commands with blue text here do not require a ticker, faded commands will turn blue when there is a ticker loaded. In order
 
 ````
 (🦋) /stocks/ba/ $ load gme
