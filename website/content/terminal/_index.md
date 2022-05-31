@@ -50,7 +50,7 @@ and portfolio managers.
 The OpenBB Terminal can be directly installed on your computer via our installation program. Within this section, you 
 are guided through the installation process and how to launch the program. If you are a developer, please have a 
 look <a href="https://github.com/OpenBB-finance/OpenBBTerminal" target="_blank">here</a>. If you struggle with the
-installation process, please don't hesitate to reach us on <a href="https://discord.gg/Xp7PrCUj" target="_blank">Discord</a>
+installation process, please don't hesitate to reach us on <a href="https://openbb.co/discord" target="_blank">Discord</a>
 or visit our <a href="https://openbb.co/contact" target="_blank">contact page</a>.
 
 ### Installation for Windows
@@ -136,7 +136,7 @@ will see a command named <a href="stocks/load" target="_blank">load</a>. To unde
 2022 May 19, 05:27 (🦋) /stocks/ $ load -h
 usage: load [-t TICKER] [-s START] [-e END] [-i {1,5,15,30,60}] [--source {yf,av,iex,polygon}] [-p] [-f FILEPATH] [-m] [-w] [-r {ytd,1y,2y,5y,6m}] [-h]
 
-Load stock ticker to perform analysis on. When the data source is syf', an Indian ticker can be loaded by using '.NS' at the end, e.g. 'SBIN.NS'. See available market in https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html.
+Load stock ticker to perform analysis on. When the data source is yf (Yahoo Finance), an Indian ticker can be loaded by using '.NS'at the end, e.g. 'SBIN.NS'. See available market in https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html.
 
 optional arguments:
   -t TICKER, --ticker TICKER
@@ -310,5 +310,5 @@ question) and message in the form although this can also be set directly from in
 Alternatively, you can contact us via the following routes:
    
 - If you notice that a feature is missing inside the terminal, please fill in the <a href="https://openbb.co/request-a-feature" target="_blank">Request a Feature form</a>.
-- If you wish to report a bug, have a question/suggestion or anything else, please fill in the <a href="https://docs.google.com/forms/d/e/1FAIpQLSe0-HKitlJMtTO9C2VR7uXVtTzmQgiyE1plf3nEkYCRx6WGRg/viewform" target="_blank">Support form</a>.
-- If you wish to speak to us directly, please contact us via <a href="https://discord.gg/Xp7PrCUj" target="_blank">Discord</a>.
+- If you wish to report a bug, have a question/suggestion or anything else, please fill in the <a href="https://openbb.co/support" target="_blank">Support form</a>.
+- If you wish to speak to us directly, please contact us via <a href="https://openbb.co/discord" target="_blank">Discord</a>.

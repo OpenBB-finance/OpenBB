@@ -243,7 +243,8 @@ main:
                   ref: "/terminal/stocks/fundamental_analysis/cal"
                 - name: splits
                   ref: "/terminal/stocks/fundamental_analysis/splits"
-                - name: fundamental_analysis/web"
+                - name: web
+                  ref: "/terminal/stocks/fundamental_analysis/web"
                 - name: hq
                   ref: "/terminal/stocks/fundamental_analysis/hq"
                 - name: divs
