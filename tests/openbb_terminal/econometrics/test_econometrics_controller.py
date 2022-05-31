@@ -24,11 +24,6 @@ def test_update_runtime_choices(controller):
     assert controller.choices
 
 
-@pytest.mark.record_stdout
-def test_print_help(controller):
-    controller.print_help()
-
-
 @pytest.mark.parametrize(
     "other",
     [
