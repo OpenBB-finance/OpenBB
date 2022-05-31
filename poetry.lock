@@ -1079,7 +1079,7 @@ python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
 
 [[package]]
 name = "gast"
-version = "0.5.3"
+version = "0.4.0"
 description = "Python AST that abstracts the underlying Python version"
 category = "main"
 optional = true
@@ -1713,7 +1713,7 @@ python-versions = "*"
 
 [[package]]
 name = "keras"
-version = "2.8.0"
+version = "2.7.0"
 description = "Deep learning for humans."
 category = "main"
 optional = true
@@ -1773,7 +1773,7 @@ name = "lightgbm"
 version = "3.3.2"
 description = "LightGBM Python Package"
 category = "main"
-optional = false
+optional = true
 python-versions = "*"
 
 [package.dependencies]
@@ -1810,7 +1810,7 @@ name = "llvmlite"
 version = "0.38.1"
 description = "lightweight wrapper around basic LLVM functionality"
 category = "main"
-optional = false
+optional = true
 python-versions = ">=3.7,<3.11"
 
 [[package]]
@@ -2161,7 +2161,7 @@ name = "nfoursid"
 version = "1.0.0"
 description = "Implementation of N4SID, Kalman filtering and state-space models"
 category = "main"
-optional = false
+optional = true
 python-versions = ">=3.7"
 
 [package.dependencies]
@@ -2226,7 +2226,7 @@ name = "numba"
 version = "0.55.2"
 description = "compiling Python code using LLVM"
 category = "main"
-optional = false
+optional = true
 python-versions = ">=3.7,<3.11"
 
 [package.dependencies]
@@ -3883,7 +3883,7 @@ name = "statsforecast"
 version = "0.5.5"
 description = "Time series forecasting suite using statistical models"
 category = "main"
-optional = false
+optional = true
 python-versions = ">=3.6"
 
 [package.dependencies]
@@ -3966,7 +3966,7 @@ doc = ["reno", "sphinx", "tornado (>=4.5)"]
 
 [[package]]
 name = "tensorboard"
-version = "2.8.0"
+version = "2.9.0"
 description = "TensorBoard lets you watch Tensors Flow"
 category = "main"
 optional = true
@@ -3979,11 +3979,11 @@ google-auth-oauthlib = ">=0.4.1,<0.5"
 grpcio = ">=1.24.3"
 markdown = ">=2.6.8"
 numpy = ">=1.12.0"
-protobuf = ">=3.6.0"
+protobuf = ">=3.9.2"
 requests = ">=2.21.0,<3"
 tensorboard-data-server = ">=0.6.0,<0.7.0"
 tensorboard-plugin-wit = ">=1.6.0"
-werkzeug = ">=0.11.15"
+werkzeug = ">=1.0.1"
 
 [[package]]
 name = "tensorboard-data-server"
@@ -4003,7 +4003,7 @@ python-versions = "*"
 
 [[package]]
 name = "tensorflow"
-version = "2.8.2"
+version = "2.7.1"
 description = "TensorFlow is an open source machine learning framework for everyone."
 category = "main"
 optional = true
@@ -4012,28 +4012,28 @@ python-versions = "*"
 [package.dependencies]
 absl-py = ">=0.4.0"
 astunparse = ">=1.6.0"
-flatbuffers = ">=1.12"
-gast = ">=0.2.1"
+flatbuffers = ">=1.12,<3.0"
+gast = ">=0.2.1,<0.5.0"
 google-pasta = ">=0.1.1"
 grpcio = ">=1.24.3,<2.0"
 h5py = ">=2.9.0"
-keras = ">=2.8.0rc0,<2.9"
+keras = ">=2.7.0rc0,<2.8"
 keras-preprocessing = ">=1.1.1"
 libclang = ">=9.0.1"
-numpy = ">=1.20"
+numpy = ">=1.14.5"
 opt-einsum = ">=2.3.2"
 protobuf = ">=3.9.2,<3.20"
 six = ">=1.12.0"
-tensorboard = ">=2.8,<2.9"
-tensorflow-estimator = ">=2.8,<2.9"
-tensorflow-io-gcs-filesystem = ">=0.23.1"
+tensorboard = ">=2.6,<3.0"
+tensorflow-estimator = ">=2.7.0rc0,<2.8"
+tensorflow-io-gcs-filesystem = ">=0.21.0"
 termcolor = ">=1.1.0"
 typing-extensions = ">=3.6.6"
 wrapt = ">=1.11.0"
 
 [[package]]
 name = "tensorflow-estimator"
-version = "2.8.0"
+version = "2.7.0"
 description = "TensorFlow Estimator."
 category = "main"
 optional = true
@@ -4148,17 +4148,6 @@ description = "List processing tools and functional utilities"
 category = "main"
 optional = false
 python-versions = ">=3.5"
-
-[[package]]
-name = "torch"
-version = "1.11.0"
-description = "Tensors and Dynamic neural networks in Python with strong GPU acceleration"
-category = "main"
-optional = false
-python-versions = ">=3.7.0"
-
-[package.dependencies]
-typing-extensions = "*"
 
 [[package]]
 name = "tornado"
@@ -4346,7 +4335,7 @@ name = "u8darts"
 version = "0.19.0"
 description = "A python library for easy manipulation and forecasting of time series."
 category = "main"
-optional = false
+optional = true
 python-versions = ">=3.7"
 
 [package.dependencies]
@@ -4620,7 +4609,7 @@ name = "xarray"
 version = "2022.3.0"
 description = "N-D labeled arrays and datasets in Python"
 category = "main"
-optional = false
+optional = true
 python-versions = ">=3.8"
 
 [package.dependencies]
@@ -4700,12 +4689,12 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 bots = ["boto3", "pyimgur", "fastapi", "uvicorn", "disnake", "PyNaCl", "pyTelegramBotAPI", "slack-bolt", "undetected-chromedriver", "natsort", "kaleido"]
 installer = ["pyinstaller"]
 jupyterlab = ["jupyterlab-code-formatter", "jupyterlab-lsp", "jedi-language-server"]
-prediction = ["tensorflow"]
+prediction = ["tensorflow", "u8darts"]
 
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8,<3.10"
-content-hash = "473642b7aa1227ffb6454dbcc2e2a97329d85c0d6bba8d1e85bf406aec68df37"
+content-hash = "c014828c7d0f70c42b9cbdb097ae97b8b783b9c48f8a0656711c60f28d426f75"
 
 [metadata.files]
 absl-py = [
@@ -5482,8 +5471,8 @@ future = [
     {file = "future-0.18.2.tar.gz", hash = "sha256:b1bead90b70cf6ec3f0710ae53a525360fa360d306a86583adc6bf83a4db537d"},
 ]
 gast = [
-    {file = "gast-0.5.3-py3-none-any.whl", hash = "sha256:211aac1e58c167b25d3504998f2db694454a24bb1fb1225bce99420166f21d6a"},
-    {file = "gast-0.5.3.tar.gz", hash = "sha256:cfbea25820e653af9c7d1807f659ce0a0a9c64f2439421a7bba4f0983f532dea"},
+    {file = "gast-0.4.0-py3-none-any.whl", hash = "sha256:b7adcdd5adbebf1adf17378da5ba3f543684dbec47b1cda1f3997e573cd542c4"},
+    {file = "gast-0.4.0.tar.gz", hash = "sha256:40feb7b8b8434785585ab224d1568b857edb18297e5a3047f1ba012bc83b42c1"},
 ]
 gitdb = [
     {file = "gitdb-4.0.9-py3-none-any.whl", hash = "sha256:8033ad4e853066ba6ca92050b9df2f89301b8fc8bf7e9324d412a63f8bf1a8fd"},
@@ -5740,7 +5729,7 @@ kaleido = [
     {file = "kaleido-0.2.1-py2.py3-none-win_amd64.whl", hash = "sha256:4670985f28913c2d063c5734d125ecc28e40810141bdb0a46f15b76c1d45f23c"},
 ]
 keras = [
-    {file = "keras-2.8.0-py2.py3-none-any.whl", hash = "sha256:744d39dc6577dcd80ff4a4d41549e92b77d6a17e0edd58a431d30656e29bc94e"},
+    {file = "keras-2.7.0-py2.py3-none-any.whl", hash = "sha256:0c33ae1f728064ca0d35dfba999e9c316f03623bf5688c82fb83cc74a80ea248"},
 ]
 keras-preprocessing = [
     {file = "Keras_Preprocessing-1.1.2-py2.py3-none-any.whl", hash = "sha256:7b82029b130ff61cc99b55f3bd27427df4838576838c5b2f65940e4fcec99a7b"},
@@ -7467,7 +7456,7 @@ tenacity = [
     {file = "tenacity-8.0.1.tar.gz", hash = "sha256:43242a20e3e73291a28bcbcacfd6e000b02d3857a9a9fff56b297a27afdc932f"},
 ]
 tensorboard = [
-    {file = "tensorboard-2.8.0-py3-none-any.whl", hash = "sha256:65a338e4424e9079f2604923bdbe301792adce2ace1be68da6b3ddf005170def"},
+    {file = "tensorboard-2.9.0-py3-none-any.whl", hash = "sha256:bd78211076dca5efa27260afacfaa96cd05c7db12a6c09cc76a1d6b2987ca621"},
 ]
 tensorboard-data-server = [
     {file = "tensorboard_data_server-0.6.1-py3-none-any.whl", hash = "sha256:809fe9887682d35c1f7d1f54f0f40f98bb1f771b14265b453ca051e2ce58fca7"},
@@ -7478,21 +7467,18 @@ tensorboard-plugin-wit = [
     {file = "tensorboard_plugin_wit-1.8.1-py3-none-any.whl", hash = "sha256:ff26bdd583d155aa951ee3b152b3d0cffae8005dc697f72b44a8e8c2a77a8cbe"},
 ]
 tensorflow = [
-    {file = "tensorflow-2.8.2-cp310-cp310-macosx_10_14_x86_64.whl", hash = "sha256:c1a29ad21cfa8fd6cdc3b1dcd3bfa61a038c7d5c9692477cb77312e47b1b705e"},
-    {file = "tensorflow-2.8.2-cp310-cp310-manylinux2010_x86_64.whl", hash = "sha256:d5a326824748f1511de23de2a8dd52518d6a1ac7a6701d0e47cd8282697f0046"},
-    {file = "tensorflow-2.8.2-cp310-cp310-win_amd64.whl", hash = "sha256:bf2669735e1286b1718a08548cffbf692c96a8125b63f2120026b27907f0a906"},
-    {file = "tensorflow-2.8.2-cp37-cp37m-macosx_10_14_x86_64.whl", hash = "sha256:8eadbc917d06f694816a61b7ad737d5c3df47144d8eec5b5acebbc91ac131dd3"},
-    {file = "tensorflow-2.8.2-cp37-cp37m-manylinux2010_x86_64.whl", hash = "sha256:ca2cb5102af8b8e1fc3419ac2fa035025ac9ed3d739735d6a5b35ed5e476efa0"},
-    {file = "tensorflow-2.8.2-cp37-cp37m-win_amd64.whl", hash = "sha256:89422c60b7808b85da51e1cb1220bc21b8a081a320f032412545805d1520942a"},
-    {file = "tensorflow-2.8.2-cp38-cp38-macosx_10_14_x86_64.whl", hash = "sha256:9b78daf9125af66075665d7ed5c779d986edc06a349eb688e1dd699f85b410fe"},
-    {file = "tensorflow-2.8.2-cp38-cp38-manylinux2010_x86_64.whl", hash = "sha256:45a14010c5c8ee59472c21e9e7967237457afe340c56e2cf61158b52cd3fee35"},
-    {file = "tensorflow-2.8.2-cp38-cp38-win_amd64.whl", hash = "sha256:92c542f2888679ea3906d337473dbcf95da5e6d73dea06baa700571bd05e6c95"},
-    {file = "tensorflow-2.8.2-cp39-cp39-macosx_10_14_x86_64.whl", hash = "sha256:5b69d71c31473e16b37a3cf7ac38d5accfeef4f402837ba6b21059b22b937df5"},
-    {file = "tensorflow-2.8.2-cp39-cp39-manylinux2010_x86_64.whl", hash = "sha256:cacfbfa5e7f92bb63673dbe5823477cf57f2698934d085db0fe17f3559b433ac"},
-    {file = "tensorflow-2.8.2-cp39-cp39-win_amd64.whl", hash = "sha256:dbf55056404ae777d9cbf10feb3b529c151db3c3595006b893fca71d82288dbf"},
+    {file = "tensorflow-2.7.1-cp37-cp37m-macosx_10_11_x86_64.whl", hash = "sha256:34b58fc1f0921dd679e9a03ffccfaee409c4df5c39a128c939555643e28bf94e"},
+    {file = "tensorflow-2.7.1-cp37-cp37m-manylinux2010_x86_64.whl", hash = "sha256:258a1ec62cd78b265c2f2ecc054dcdbfb4bc0ef8bd45cbeb6056cd0534b3b995"},
+    {file = "tensorflow-2.7.1-cp37-cp37m-win_amd64.whl", hash = "sha256:d1fb85258f013e0beb39cf3e69d362ee25d4cb5e94d0b0fa53019ede4ce5ae5d"},
+    {file = "tensorflow-2.7.1-cp38-cp38-macosx_10_11_x86_64.whl", hash = "sha256:3360fed07fd5f76a6627375ede5b9b23059e67fb4cab74f3192349bb548546e6"},
+    {file = "tensorflow-2.7.1-cp38-cp38-manylinux2010_x86_64.whl", hash = "sha256:54c2aca9bb3c14a61ac56d8debe347f1b19fb5fd52d0d7372765952e53da45f6"},
+    {file = "tensorflow-2.7.1-cp38-cp38-win_amd64.whl", hash = "sha256:eb377e7da49a1a1b82be7ac5b93619fd2481b21fb3769d39f25971b431d6a024"},
+    {file = "tensorflow-2.7.1-cp39-cp39-macosx_10_11_x86_64.whl", hash = "sha256:634d4924f5f0c4e7a68d7549ce840e7c8c06f7dd8c7ec96a983eab15a707b331"},
+    {file = "tensorflow-2.7.1-cp39-cp39-manylinux2010_x86_64.whl", hash = "sha256:0ed3ac84cda24bed5d24af5e6aeeb595b472fdc530efb9871bc79f830a0cb5f5"},
+    {file = "tensorflow-2.7.1-cp39-cp39-win_amd64.whl", hash = "sha256:ed0843aa4978ca1f166167d3d638d80ff560eabceeb7bf0b77822df4b5d2f7aa"},
 ]
 tensorflow-estimator = [
-    {file = "tensorflow_estimator-2.8.0-py2.py3-none-any.whl", hash = "sha256:bee8e0520c60ae7eaf6ca8cb46c5a9f4b45725531380db8fbe38fcb48478b6bb"},
+    {file = "tensorflow_estimator-2.7.0-py2.py3-none-any.whl", hash = "sha256:325b5a224864379242b7b76c6987ca544239be82579d33e68ec7c2bda57abc9d"},
 ]
 tensorflow-io-gcs-filesystem = [
     {file = "tensorflow_io_gcs_filesystem-0.26.0-cp310-cp310-macosx_10_14_x86_64.whl", hash = "sha256:4222a9d0c0ddeca2fd2bfd70f5ed149346f5ba12ffe65d817d8e18393341d8e2"},
@@ -7550,27 +7536,6 @@ tomli = [
 toolz = [
     {file = "toolz-0.11.2-py3-none-any.whl", hash = "sha256:a5700ce83414c64514d82d60bcda8aabfde092d1c1a8663f9200c07fdcc6da8f"},
     {file = "toolz-0.11.2.tar.gz", hash = "sha256:6b312d5e15138552f1bda8a4e66c30e236c831b612b2bf0005f8a1df10a4bc33"},
-]
-torch = [
-    {file = "torch-1.11.0-cp310-cp310-manylinux1_x86_64.whl", hash = "sha256:62052b50fffc29ca7afc0c04ef8206b6f1ca9d10629cb543077e12967e8d0398"},
-    {file = "torch-1.11.0-cp310-cp310-manylinux2014_aarch64.whl", hash = "sha256:866bfba29ac98dec35d893d8e17eaec149d0ac7a53be7baae5c98069897db667"},
-    {file = "torch-1.11.0-cp310-cp310-win_amd64.whl", hash = "sha256:951640fb8db308a59d9b510e7d1ad910aff92913323bbe4bc75435347ddd346d"},
-    {file = "torch-1.11.0-cp310-none-macosx_10_9_x86_64.whl", hash = "sha256:5d77b5ece78fdafa5c7f42995ff9474399d22571cd6b2de21a5d666306a2ff8c"},
-    {file = "torch-1.11.0-cp310-none-macosx_11_0_arm64.whl", hash = "sha256:b5a38682769b544c875ecc34bcb81fbad5c922139b61319aacffcfd8a32f528c"},
-    {file = "torch-1.11.0-cp37-cp37m-manylinux1_x86_64.whl", hash = "sha256:f82d77695a60626f2b7382d85bc566de8a6b3e50d32080755abc040db802e419"},
-    {file = "torch-1.11.0-cp37-cp37m-manylinux2014_aarch64.whl", hash = "sha256:b96654d42566080a134e784705f33f8536b3b95b5dcde357ed7879b1692a5f78"},
-    {file = "torch-1.11.0-cp37-cp37m-win_amd64.whl", hash = "sha256:8ee7c2e8d7f7020d5bfbc1bb91b9591044c26bbd0cee5e4f694cfd7ed8649260"},
-    {file = "torch-1.11.0-cp37-none-macosx_10_9_x86_64.whl", hash = "sha256:6860b1d1bf0bb0b67a6bd47f85a0e4c825b518eea13b5d6101999dbbcbd5bc0c"},
-    {file = "torch-1.11.0-cp38-cp38-manylinux1_x86_64.whl", hash = "sha256:4322aa29f50da7f404db06cdf30896ea67b09f673af4a985afc7162bc897864d"},
-    {file = "torch-1.11.0-cp38-cp38-manylinux2014_aarch64.whl", hash = "sha256:e4d2e0ddd652f30e94cff750220324ec45705d4ecc69658f773b3cb1c7a28dd0"},
-    {file = "torch-1.11.0-cp38-cp38-win_amd64.whl", hash = "sha256:34ce5ea4d8d85da32cdbadb50d4585106901e9f8a3527991daa70c13a09de1f7"},
-    {file = "torch-1.11.0-cp38-none-macosx_10_9_x86_64.whl", hash = "sha256:0ccc85cd06227a3edf809e2c795fd5762c3d4e8a38b5c9f744c6e7cf841361bb"},
-    {file = "torch-1.11.0-cp38-none-macosx_11_0_arm64.whl", hash = "sha256:c1554e49d74f1b2c3e7202d77056ba2dd7465437585bac64062b580f714a44e9"},
-    {file = "torch-1.11.0-cp39-cp39-manylinux1_x86_64.whl", hash = "sha256:58c7814502b1c129a650d7092033bbb0bbd64faf1a7941631aaa1aeaddc37570"},
-    {file = "torch-1.11.0-cp39-cp39-manylinux2014_aarch64.whl", hash = "sha256:831cf588f01dda9409e75576741d2823453990dee2983d670f2584b37a01adf7"},
-    {file = "torch-1.11.0-cp39-cp39-win_amd64.whl", hash = "sha256:44a1d02fd20f827f0f36dc26fdcfc45e793806a6ad52769a22260655a77a4369"},
-    {file = "torch-1.11.0-cp39-none-macosx_10_9_x86_64.whl", hash = "sha256:50fd9bf85c578c871c28f1cb0ace9dfc6024401c7f399b174fb0f370899f4454"},
-    {file = "torch-1.11.0-cp39-none-macosx_11_0_arm64.whl", hash = "sha256:0e48af66ad755f0f9c5f2664028a414f57c49d6adc37e77e06fe0004da4edb61"},
 ]
 tornado = [
     {file = "tornado-6.1-cp35-cp35m-macosx_10_9_x86_64.whl", hash = "sha256:d371e811d6b156d82aa5f9a4e08b58debf97c302a35714f6f45e35139c332e32"},
