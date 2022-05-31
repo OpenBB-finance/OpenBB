@@ -1,9 +1,8 @@
-       Symbol        Name Market Cap Rank
-0   astroswap   AstroSwap             688
-1  wonderland  Wonderland             173
-2      fantom      Fantom              29
-3   looksrare   LooksRare             100
-4       ronin       Ronin             164
-5  terra-luna       Terra               9
-6   enjincoin  Enjin Coin              69
-
+       Symbol        Name  Market Cap Rank
+0   astroswap   AstroSwap              688
+1  wonderland  Wonderland              173
+2      fantom      Fantom               29
+3   looksrare   LooksRare              100
+4       ronin       Ronin              164
+5  terra-luna       Terra                9
+6   enjincoin  Enjin Coin               69
