@@ -97,7 +97,7 @@ def show_indices(
                 else:
                     ax.plot(indices_data.index, indices_data[index], label=label)
 
-        ax.set_title("Indices")
+        ax.set_title(label)
         if returns:
             ax.set_ylabel("Performance (%)")
         ax.legend(
@@ -105,7 +105,7 @@ def show_indices(
             loc="upper right",
             mode="expand",
             borderaxespad=0,
-            prop={"size": 9},
+            prop={"size": 14},
             ncol=2,
         )
 
