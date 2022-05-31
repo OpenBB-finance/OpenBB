@@ -310,5 +310,5 @@ question) and message in the form although this can also be set directly from in
 Alternatively, you can contact us via the following routes:
    
 - If you notice that a feature is missing inside the terminal, please fill in the <a href="https://openbb.co/request-a-feature" target="_blank">Request a Feature form</a>.
-- If you wish to report a bug, have a question/suggestion or anything else, please fill in the <a href="https://docs.google.com/forms/d/e/1FAIpQLSe0-HKitlJMtTO9C2VR7uXVtTzmQgiyE1plf3nEkYCRx6WGRg/viewform" target="_blank">Support form</a>.
-- If you wish to speak to us directly, please contact us via <a href="https://discord.gg/Xp7PrCUj" target="_blank">Discord</a>.
+- If you wish to report a bug, have a question/suggestion or anything else, please fill in the <a href="https://openbb.co/support" target="_blank">Support form</a>.
+- If you wish to speak to us directly, please contact us via <a href="https://openbb.co/discord" target="_blank">Discord</a>.

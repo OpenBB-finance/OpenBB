@@ -8,7 +8,7 @@ excerpt: "Introducing the Discovery menu, within the Stocks menu. This guide wil
 out of this set of features." 
 geekdocCollapseSection: true
 ---
-The set of features within the Stocks Discovery submenu provides tools for discovering trade setups, for following trends, and for staying up with current events. Enter the menu from the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/" target="_blank">stocks</a> menu by typing, `disc`, and pressing, `ENTER`.
+The set of features within the Stocks Discovery submenu provides tools for discovering trade setups, for following trends, and for staying up with current events. Enter the menu from the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/" target="_blank">stocks</a> menu by typing, `disc`, and pressing, `ENTER` (⏎).
 Absolute path jumping is possible from anywhere, to anywhere. For example, jumping from the Portfolio Optimization submenu to the Stocks Discovery submenu:
 
 ![Absolute path jumping to the Stocks Discovery submenu](discovery1.png)
