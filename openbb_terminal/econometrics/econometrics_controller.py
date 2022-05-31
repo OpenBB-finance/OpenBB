@@ -203,7 +203,6 @@ class EconometricsController(BaseController):
             for feature in [
                 "general",
                 "plot",
-                "desc",
                 "norm",
                 "root",
                 "coint",
@@ -225,6 +224,9 @@ class EconometricsController(BaseController):
                 self.choices[feature] = {c: None for c in self.files}
 
             self.choices["type"] = {
+                c: None for c in self.files + list(dataset_columns.keys())
+            }
+            self.choices["desc"] = {
                 c: None for c in self.files + list(dataset_columns.keys())
             }
 
@@ -620,10 +622,10 @@ class EconometricsController(BaseController):
             "-n",
             "--name",
             type=str,
-            choices=self.list_dataset_cols,
+            choices=self.choices["desc"],
             dest="name",
             help="The name of the dataset.column you want to show the descriptive statistics",
-            required=True,
+            required="-h" not in other_args,
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
@@ -632,22 +634,38 @@ class EconometricsController(BaseController):
         )
 
         if ns_parser:
-            dataset, col = ns_parser.name.split(".")
+            if "." in ns_parser.name:
+                dataset, col = ns_parser.name.split(".")
 
-            df = self.datasets[dataset][col].describe()
-            print_rich_table(
-                df.to_frame(),
-                headers=[col],
-                show_index=True,
-                title=f"Statistics for dataset: '{dataset}",
-            )
+                df = self.datasets[dataset][col].describe()
+                print_rich_table(
+                    df.to_frame(),
+                    headers=[col],
+                    show_index=True,
+                    title=f"Statistics for dataset: '{dataset}'",
+                )
 
-            export_data(
-                ns_parser.export,
-                os.path.dirname(os.path.abspath(__file__)),
-                f"{dataset}_{col}_desc",
-                df,
-            )
+                export_data(
+                    ns_parser.export,
+                    os.path.dirname(os.path.abspath(__file__)),
+                    f"{dataset}_{col}_desc",
+                    df,
+                )
+            else:
+                df = self.datasets[ns_parser.name].describe()
+                print_rich_table(
+                    df,
+                    headers=self.datasets[ns_parser.name].columns,
+                    show_index=True,
+                    title=f"Statistics for dataset: '{ns_parser.name}'",
+                )
+
+                export_data(
+                    ns_parser.export,
+                    os.path.dirname(os.path.abspath(__file__)),
+                    f"{ns_parser.name}_desc",
+                    df,
+                )
 
     @log_start_end(log=logger)
     def call_type(self, other_args: List[str]):

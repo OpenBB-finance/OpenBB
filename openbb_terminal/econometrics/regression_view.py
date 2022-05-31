@@ -74,12 +74,12 @@ def display_panel(
         results_as_html = model.summary.tables[1].as_html()
         df = pd.read_html(results_as_html, header=0, index_col=0)[0]
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        f"{dependent}_{regression_type}_regression",
-        df,
-    )
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            f"{dependent}_{regression_type}_regression",
+            df,
+        )
 
     return regression_df, dependent, independent, model
 
