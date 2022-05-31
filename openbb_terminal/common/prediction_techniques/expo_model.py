@@ -2,7 +2,7 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Any, Tuple, Union
+from typing import Any, Tuple, Union, List
 
 import numpy as np
 import pandas as pd
@@ -34,7 +34,7 @@ def get_expo_data(
     n_predict: int = 30,
     start_window: float = 0.65,
     forecast_horizon: int = 3,
-) -> Tuple[Any, Any, Any, Any, Any]:
+) -> Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], float, Any]:
 
     """Performs Probabilistic Exponential Smoothing forecasting
     This is a wrapper around statsmodels Holt-Winters' Exponential Smoothing;
@@ -69,24 +69,25 @@ def get_expo_data(
     List[float]
         Adjusted Data series
     List[float]
-        List of predicted values
+        List of historical fcast values
+    List[float]
+        List of predicted fcast values
+    float
+        precision
     Any
         Fit Prob. Expo model object.
     """
 
     filler = MissingValuesFiller()
-    data["date"] = data.index  # add temp column since we need to use index col for date
     ticker_series = TimeSeries.from_dataframe(
         data,
         time_col="date",
-        value_cols=["AdjClose"],
+        value_cols=["Close"],
         freq="B",
         fill_missing_dates=True,
     )
 
-    ticker_series = filler.transform(ticker_series)
-    ticker_series = ticker_series.astype(np.float32)
-    _, val = ticker_series.split_before(0.85)
+    ticker_series = filler.transform(ticker_series).astype(np.float32)
 
     if trend == "M":
         trend = ModelMode.MULTIPLICATIVE
@@ -117,15 +118,16 @@ def get_expo_data(
 
     # Training model based on historical backtesting
     historical_fcast_es = model_es.historical_forecasts(
-        ticker_series,
+        ticker_series,  # backtest on entire ts
         start=float(start_window),
         forecast_horizon=int(forecast_horizon),
         verbose=True,
     )
 
-    # Show forecast over validation # and then +n_predict afterwards sampled 10 times per point
+    # we have the historical fcast, now lets train on entire set and predict.
+    model_es.fit(ticker_series)
     probabilistic_forecast = model_es.predict(int(n_predict), num_samples=500)
-    precision = mape(val, probabilistic_forecast)  # mape = mean average precision error
+    precision = mape(actual_series=ticker_series, pred_series=historical_fcast_es)
     console.print(f"model {model_es} obtains MAPE: {precision:.2f}% \n")  # TODO
 
     return (
