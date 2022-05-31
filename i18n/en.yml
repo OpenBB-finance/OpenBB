@@ -966,6 +966,10 @@ en:
   econometrics/index: set (multi) index based on columns
   econometrics/clean: clean a dataset by filling or dropping NaNs
   econometrics/modify: combine columns of datasets and delete or rename columns
+  econometrics/add: Add columns to dataset with option to use formulas
+  econometrics/delete: Delete columns from dataset
+  econometrics/combine: Combine columns from different datasets
+  econometrics/rename: Rename column from dataset
   econometrics/_regression_: Regression
   econometrics/_regression_tests_: Regression Tests
   econometrics/ols: fit a (multi) linear regression model

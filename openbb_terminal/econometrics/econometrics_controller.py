@@ -55,7 +55,10 @@ class EconometricsController(BaseController):
         "desc",
         "index",
         "clean",
-        "modify",
+        "add",
+        "delete",
+        "combine",
+        "rename",
         "ols",
         "norm",
         "root",
@@ -208,9 +211,18 @@ class EconometricsController(BaseController):
                 "regressions",
                 "ols",
                 "panel",
+                "delete",
             ]:
                 self.choices[feature] = dataset_columns
-            for feature in ["export", "show", "clean", "index", "remove"]:
+            for feature in [
+                "export",
+                "show",
+                "clean",
+                "index",
+                "remove",
+                "combine",
+                "rename",
+            ]:
                 self.choices[feature] = {c: None for c in self.files}
 
             pairs_timeseries = list()
@@ -245,7 +257,10 @@ class EconometricsController(BaseController):
         mt.add_cmd("desc", "", self.files)
         mt.add_cmd("index", "", self.files)
         mt.add_cmd("clean", "", self.files)
-        mt.add_cmd("modify", "", self.files)
+        mt.add_cmd("add", "", self.files)
+        mt.add_cmd("delete", "", self.files)
+        mt.add_cmd("combine", "", self.files)
+        mt.add_cmd("rename", "", self.files)
         mt.add_cmd("export", "", self.files)
         mt.add_info("_tests_")
         mt.add_cmd("norm", "", self.files)
@@ -384,7 +399,6 @@ class EconometricsController(BaseController):
 
                     console.print()
 
-    # TODO: JER HELP ME
     @log_start_end(log=logger)
     def call_export(self, other_args: List[str]):
         """Process export command"""
@@ -837,175 +851,265 @@ class EconometricsController(BaseController):
             console.print(f"Successfully cleaned '{ns_parser.name}' dataset")
         console.print()
 
-    # TODO: JER HELP ME
     @log_start_end(log=logger)
-    def call_modify(self, other_args: List[str]):
-        """Process modify"""
+    def call_add(self, other_args: List[str]):
+        """Process add"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="modify",
-            description="Modify a dataset by adding, removing or renaming columns. This also has the "
-            "possibility to combine DataFrames together.",
+            prog="add",
+            description="Add columns to your dataframe with the option to use formulas. E.g."
+            "   newdatasetcol = basedatasetcol sign criteriaordatasetcol"
+            "   thesis.high_revenue = thesis.revenue > 1000"
+            "   dataset.debt_ratio = dataset.debt div dataset2.assets",
         )
-
         parser.add_argument(
-            "-a",
-            "--add",
-            help="Add columns to your dataframe with the option to use formulas. Use format: "
-            "<column>-<dataset> <column-dataset> <sign> <criteria or column-dataset>. "
-            "Two examples: high_revenue-thesis revenue-thesis > 1000 or debt_ratio-dataset "
-            "debt-dataset div assets-dataset2",
-            dest="add",
-            nargs=4,
+            "-n",
+            "--newdatasetcol",
+            help="New dataset column to be added with format: dataset.column",
+            dest="newdatasetcol",
+            type=str,
+            required="-h" not in other_args,
+        )
+        parser.add_argument(
+            "-b",
+            "--basedatasetcol",
+            help="Base dataset column to be used as base with format: dataset.column",
+            dest="basedatasetcol",
+            type=str,
+            required="-h" not in other_args,
+        )
+        parser.add_argument(
+            "-s",
+            "--sign",
+            help="Sign to be applied to the base dataset column",
+            dest="sign",
+            choices=list(self.signs.keys()) + [">", "<", ">=", "<=", "=="],
+            required="-h" not in other_args,
             type=str,
         )
-
-        parser.add_argument(
-            "-d",
-            "--delete",
-            help="The columns you want to delete from a dataset. Use format: <column-dataset>.",
-            dest="delete",
-            nargs="+",
-            type=str,
-        )
-
         parser.add_argument(
             "-c",
-            "--combine",
-            help="The columns you want to add to a dataset, the first argument is the dataset that you wish "
-            "to place these columns in. Use format: <dataset> <column-dataset2> <column-<dataset3>",
-            dest="combine",
-            nargs="+",
+            "--criteriaordatasetcol",
+            help="Either dataset column to be applied on top of base dataset or criteria",
+            dest="criteriaordatasetcol",
+            required="-h" not in other_args,
             type=str,
         )
-
-        parser.add_argument(
-            "-r",
-            "--rename",
-            help="The columns you want to rename from a dataset. "
-            "Use format: dataset OLD_COLUMN NEW_COLUMN",
-            dest="rename",
-            nargs=3,
-            type=str,
-        )
-
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-n")
         ns_parser = parse_known_args_and_warn(parser, other_args, NO_EXPORT)
 
         if ns_parser:
-            if ns_parser.add:
-                new_column, dataset = ns_parser.add[0].split("-")
-                existing_column, dataset2 = ns_parser.add[1].split("-")
+            dataset, new_column = ns_parser.newdatasetcol.split(".")
+            dataset2, existing_column = ns_parser.basedatasetcol.split(".")
 
-                for sign, operator in self.signs.items():
-                    if sign == ns_parser.add[2]:
-                        ns_parser.add[2] = operator
+            for sign, operator in self.signs.items():
+                if sign == ns_parser.sign:
+                    ns_parser.sign = operator
 
-                if dataset not in self.datasets:
+            if dataset not in self.datasets:
+                console.print(
+                    f"Not able to find the dataset {dataset}. Please choose one of "
+                    f"the following: {', '.join(self.datasets)}"
+                )
+            elif dataset2 not in self.datasets:
+                console.print(
+                    f"Not able to find the dataset {dataset2}. Please choose one of "
+                    f"the following: {', '.join(self.datasets)}"
+                )
+            elif existing_column not in self.datasets[dataset2]:
+                console.print(
+                    f"Not able to find the column {existing_column}. Please choose one of "
+                    f"the following: {', '.join(self.datasets[dataset2].columns)}"
+                )
+            elif len(ns_parser.criteriaordatasetcol.split(".")) > 1:
+                dataset3, existing_column2 = ns_parser.criteriaordatasetcol.split(".")
+
+                if dataset3 not in self.datasets:
                     console.print(
-                        f"Not able to find the dataset {dataset}. Please choose one of "
+                        f"Not able to find the dataset {dataset3}. Please choose one of "
                         f"the following: {', '.join(self.datasets)}"
                     )
-                elif dataset2 not in self.datasets:
-                    console.print(
-                        f"Not able to find the dataset {dataset2}. Please choose one of "
-                        f"the following: {', '.join(self.datasets)}"
-                    )
-                elif existing_column not in self.datasets[dataset2]:
-                    console.print(
-                        f"Not able to find the column {existing_column}. Please choose one of "
-                        f"the following: {', '.join(self.datasets[dataset2].columns)}"
-                    )
-                elif len(ns_parser.add[3].split("-")) > 1:
-                    existing_column2, dataset3 = ns_parser.add[3].split("-")
 
-                    if dataset3 not in self.datasets:
-                        console.print(
-                            f"Not able to find the dataset {dataset3}. Please choose one of "
-                            f"the following: {', '.join(self.datasets)}"
-                        )
-
-                    elif existing_column2 not in self.datasets[dataset3]:
-                        console.print(
-                            f"Not able to find the column {existing_column2}. Please choose one of "
-                            f"the following: {', '.join(self.datasets[dataset3].columns)}"
-                        )
-                    else:
-                        pd.eval(
-                            f"{new_column} = self.datasets[dataset2][existing_column] "
-                            f"{ns_parser.add[2]} self.datasets[dataset3][existing_column2]",
-                            target=self.datasets[dataset],
-                            inplace=True,
-                        )
+                elif existing_column2 not in self.datasets[dataset3]:
+                    console.print(
+                        f"Not able to find the column {existing_column2}. Please choose one of "
+                        f"the following: {', '.join(self.datasets[dataset3].columns)}"
+                    )
                 else:
                     pd.eval(
                         f"{new_column} = self.datasets[dataset2][existing_column] "
-                        f"{ns_parser.add[2]} {ns_parser.add[3]}",
+                        f"{ns_parser.sign} self.datasets[dataset3][existing_column2]",
                         target=self.datasets[dataset],
                         inplace=True,
                     )
+            else:
+                pd.eval(
+                    f"{new_column} = self.datasets[dataset2][existing_column] "
+                    f"{ns_parser.sign} {ns_parser.criteriaordatasetcol}",
+                    target=self.datasets[dataset],
+                    inplace=True,
+                )
 
-            if ns_parser.delete:
-                for option in ns_parser.delete:
-                    column, dataset = option.split("-")
+            self.update_runtime_choices()
+        console.print()
 
-                    if dataset not in self.datasets:
-                        console.print(
-                            f"Not able to find the dataset {dataset}. Please choose one of "
-                            f"the following: {', '.join(self.datasets)}"
-                        )
-                    elif column not in self.datasets[dataset]:
-                        console.print(
-                            f"Not able to find the column {column}. Please choose one of "
-                            f"the following: {', '.join(self.datasets[dataset].columns)}"
-                        )
-                    else:
-                        del self.datasets[dataset][column]
+    @log_start_end(log=logger)
+    def call_delete(self, other_args: List[str]):
+        """Process add"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="delete",
+            description="The column you want to delete from a dataset.",
+        )
+        parser.add_argument(
+            "-d",
+            "--delete",
+            help="The columns you want to delete from a dataset. Use format: <dataset.column> or"
+            " multiple with <dataset.column>,<datasetb.column2>",
+            dest="delete",
+            type=check_list_values(self.choices["delete"]),
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-d")
+        ns_parser = parse_known_args_and_warn(parser, other_args, NO_EXPORT)
 
-            if ns_parser.combine:
-                if ns_parser.combine[0] not in self.datasets:
-                    console.print(
-                        f"Not able to find the dataset {ns_parser.combine[0]}. Please choose one of "
-                        f"the following: {', '.join(self.datasets)}"
-                    )
-                else:
-                    data = self.datasets[ns_parser.combine[0]]
-
-                    for option in ns_parser.combine[1:]:
-                        column, dataset = self.choices["general"][option].keys()
-
-                        if dataset not in self.datasets:
-                            console.print(
-                                f"Not able to find the dataset {dataset}. Please choose one of "
-                                f"the following: {', '.join(self.datasets)}"
-                            )
-                        elif column not in self.datasets[dataset]:
-                            console.print(
-                                f"Not able to find the column {column}. Please choose one of "
-                                f"the following: {', '.join(self.datasets[dataset].columns)}"
-                            )
-                        else:
-                            data[f"{column}_{dataset}"] = self.datasets[dataset][column]
-
-            if ns_parser.rename:
-                dataset = ns_parser.rename[0]
-                column_old = ns_parser.rename[1]
-                column_new = ns_parser.rename[2]
+        if ns_parser:
+            for option in ns_parser.delete:
+                dataset, column = option.split(".")
 
                 if dataset not in self.datasets:
                     console.print(
                         f"Not able to find the dataset {dataset}. Please choose one of "
                         f"the following: {', '.join(self.datasets)}"
                     )
-                elif column_old not in self.datasets[dataset]:
+                elif column not in self.datasets[dataset]:
                     console.print(
-                        f"Not able to find the column {column_old}. Please choose one of "
+                        f"Not able to find the column {column}. Please choose one of "
                         f"the following: {', '.join(self.datasets[dataset].columns)}"
                     )
                 else:
-                    self.datasets[dataset] = self.datasets[dataset].rename(
-                        columns={column_old: column_new}
+                    del self.datasets[dataset][column]
+
+            self.update_runtime_choices()
+        console.print()
+
+    @log_start_end(log=logger)
+    def call_combine(self, other_args: List[str]):
+        """Process combine"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="combine",
+            description="The columns you want to add to a dataset. The first argument is the dataset to add columns in"
+            "and the remaining could be: <datasetX.column2>,<datasetY.column3>",
+        )
+        parser.add_argument(
+            "-d",
+            "--dataset",
+            help="Dataset to add columns to",
+            dest="dataset",
+            choices=self.choices["combine"],
+        )
+        parser.add_argument(
+            "-c",
+            "--columns",
+            help="The columns we want to add <dataset.column>,<datasetb.column2>",
+            dest="columns",
+            type=check_list_values(self.choices["delete"]),
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-d")
+        ns_parser = parse_known_args_and_warn(parser, other_args, NO_EXPORT)
+
+        if ns_parser:
+            if ns_parser.dataset not in self.datasets:
+                console.print(
+                    f"Not able to find the dataset {ns_parser.dataset}. Please choose one of "
+                    f"the following: {', '.join(self.datasets)}"
+                )
+                return
+
+            data = self.datasets[ns_parser.dataset]
+
+            for option in ns_parser.columns:
+                dataset, column = option.split(".")
+
+                if dataset not in self.datasets:
+                    console.print(
+                        f"Not able to find the dataset {dataset}. Please choose one of "
+                        f"the following: {', '.join(self.datasets)}"
                     )
+                elif column not in self.datasets[dataset]:
+                    console.print(
+                        f"Not able to find the column {column}. Please choose one of "
+                        f"the following: {', '.join(self.datasets[dataset].columns)}"
+                    )
+                else:
+                    data[f"{dataset}_{column}"] = self.datasets[dataset][column]
+
+            self.update_runtime_choices()
+
+        console.print()
+
+    @log_start_end(log=logger)
+    def call_rename(self, other_args: List[str]):
+        """Process rename"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="rename",
+            description="The column you want to rename from a dataset.",
+        )
+        parser.add_argument(
+            "-d",
+            "--dataset",
+            help="Dataset that will get a column renamed",
+            dest="dataset",
+            choices=self.choices["rename"],
+            type=str,
+        )
+        parser.add_argument(
+            "-o",
+            "--oldcol",
+            help="Old column from dataset to be renamed",
+            dest="oldcol",
+            type=str,
+            required="-h" not in other_args,
+        )
+        parser.add_argument(
+            "-n",
+            "--newcol",
+            help="New column from dataset to be renamed",
+            dest="newcol",
+            type=str,
+            required="-h" not in other_args,
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-d")
+        ns_parser = parse_known_args_and_warn(parser, other_args, NO_EXPORT)
+
+        if ns_parser:
+            dataset = ns_parser.dataset
+            column_old = ns_parser.oldcol
+            column_new = ns_parser.newcol
+
+            if dataset not in self.datasets:
+                console.print(
+                    f"Not able to find the dataset {dataset}. Please choose one of "
+                    f"the following: {', '.join(self.datasets)}"
+                )
+            elif column_old not in self.datasets[dataset]:
+                console.print(
+                    f"Not able to find the column {column_old}. Please choose one of "
+                    f"the following: {', '.join(self.datasets[dataset].columns)}"
+                )
+            else:
+                self.datasets[dataset] = self.datasets[dataset].rename(
+                    columns={column_old: column_new}
+                )
 
             self.update_runtime_choices()
 
