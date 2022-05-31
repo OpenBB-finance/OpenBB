@@ -1406,6 +1406,7 @@ class EconometricsController(BaseController):
                         ns_parser.entity_effects,
                         ns_parser.time_effects,
                     )
+                    console.print()
 
     @log_start_end(log=logger)
     def call_compare(self, other_args: List[str]):
@@ -1423,6 +1424,7 @@ class EconometricsController(BaseController):
             openbb_terminal.econometrics.regression_model.get_comparison(
                 self.regression, ns_parser.export
             )
+            console.print()
 
     @log_start_end(log=logger)
     def call_dwat(self, other_args: List[str]):
