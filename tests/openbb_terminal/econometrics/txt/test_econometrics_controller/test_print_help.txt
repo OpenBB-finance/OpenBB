@@ -1,5 +1,5 @@
 Looking for data in: 
-	/Users/didierlopes/Documents/OpenBBTerminal/openbb_terminal/asd
+	
 	/Users/didierlopes/Documents/OpenBBTerminal/custom_imports
 
     load               load a dataset (also works with StatsModels datasets)
