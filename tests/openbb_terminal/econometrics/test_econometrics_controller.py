@@ -124,28 +124,6 @@ def test_call_index(controller):
 
 @pytest.mark.record_stdout
 @pytest.mark.parametrize("other", [["data"], ["-n", "dataset"], []])
-def test_call_clean(controller, other):
-    controller.call_load(["cancer", "dataset"])
-    controller.call_clean(other)
-
-
-@pytest.mark.record_stdout
-@pytest.mark.parametrize(
-    "other",
-    [
-        ["-a", "dataset-cancer", "dataset-cancer", "div", "dataset-new"],
-        ["-a", "dataset-ancer", "dataset-cancer", "div", "dataset-new"],
-        ["-d", "dataset-cancer"],
-        ["-r", "cancer", "new"],
-    ],
-)
-def test_call_modify(controller, other):
-    controller.call_load(["cancer", "dataset"])
-    controller.call_modify(other)
-
-
-@pytest.mark.record_stdout
-@pytest.mark.parametrize("other", [["data"], ["-n", "dataset"], []])
 def test_call_ols(controller, other):
     controller.call_load(["cancer", "dataset"])
     controller.call_ols(other)
