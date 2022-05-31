@@ -398,18 +398,11 @@ dev = ["pip-tools (==6.5.1)", "pytest (==7.1.1)", "flake8 (==4.0.1)", "tox (==3.
 
 [[package]]
 name = "boto3"
-version = "1.23.10"
 description = "The AWS SDK for Python"
-category = "main"
-optional = true
-python-versions = ">= 3.6"
 
 [package.dependencies]
 botocore = ">=1.26.10,<1.27.0"
 jmespath = ">=0.7.1,<2.0.0"
-s3transfer = ">=0.5.0,<0.6.0"
-
-[package.extras]
 crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
