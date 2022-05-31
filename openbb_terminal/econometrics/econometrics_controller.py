@@ -740,6 +740,7 @@ class EconometricsController(BaseController):
             dest="name",
             choices=list(self.datasets.keys()),
             help="Name of dataset to select index from",
+            required="-h" not in other_args,
         )
         parser.add_argument(
             "-i",
@@ -747,6 +748,7 @@ class EconometricsController(BaseController):
             type=str,
             dest="index",
             help="Columns from the dataset the user wishes to set as default",
+            default="",
         )
         parser.add_argument(
             "-a",
@@ -769,64 +771,74 @@ class EconometricsController(BaseController):
             other_args.insert(0, "-n")
         ns_parser = parse_known_args_and_warn(parser, other_args, NO_EXPORT)
 
-        if ns_parser and ns_parser.name:
+        if ns_parser:
             name = ns_parser.name
             index = ns_parser.index
 
-            if "," in index:
-                values_found = [val.strip() for val in index.split(",")]
+            if index:
+                if "," in index:
+                    values_found = [val.strip() for val in index.split(",")]
+                else:
+                    values_found = [index]
+
+                columns = list()
+                for value in values_found:
+                    # check if the value is valid
+                    if value in self.datasets[name].columns:
+                        columns.append(value)
+                    else:
+                        console.print(f"[red]'{value}' is not valid.[/red]")
+
+                dataset = self.datasets[name]
+
+                if not pd.Index(np.arange(0, len(dataset))).equals(dataset.index):
+                    console.print(
+                        "As an index has been set, resetting the current index."
+                    )
+                    if dataset.index.name in dataset.columns:
+                        dataset = dataset.reset_index(drop=True)
+                    else:
+                        dataset = dataset.reset_index(drop=False)
+
+                for column in columns:
+                    if column not in dataset.columns:
+                        console.print(
+                            f"[red]The column '{column}' is not available in the dataset {name}."
+                            f"Please choose one of the following: {', '.join(dataset.columns)}[/red]"
+                        )
+                        return
+
+                if ns_parser.adjustment:
+                    if len(columns) > 1 and dataset[columns[0]].isnull().any():
+                        null_values = dataset[dataset[columns[0]].isnull()]
+                        console.print(
+                            f"The column '{columns[0]}' contains {len(null_values)} NaN values. As multiple columns are "
+                            f"provided, it is assumed this column represents entities (i), the NaN values are "
+                            f"forward filled. Remove the -a argument to disable this."
+                        )
+                        dataset[columns[0]] = dataset[columns[0]].fillna(method="ffill")
+                    if dataset[columns[-1]].isnull().any():
+                        # This checks whether NaT (missing values) exists within the DataFrame
+                        null_values = dataset[dataset[columns[-1]].isnull()]
+                        console.print(
+                            f"The time index '{columns[-1]}' contains {len(null_values)} "
+                            "NaNs which are removed from the dataset. Remove the -a argument to disable this."
+                        )
+                    dataset = dataset[dataset[columns[-1]].notnull()]
+
+                self.datasets[name] = dataset.set_index(columns, drop=ns_parser.drop)
+                console.print(
+                    f"Successfully updated '{name}' index to be '{', '.join(columns)}'\n"
+                )
+
+                self.update_runtime_choices()
             else:
-                values_found = [index]
-
-            columns = list()
-            for value in values_found:
-                # check if the value is valid
-                if value in self.datasets[name].columns:
-                    columns.append(value)
-                else:
-                    console.print(f"[red]'{value}' is not valid.[/red]")
-
-            dataset = self.datasets[name]
-
-            if not pd.Index(np.arange(0, len(dataset))).equals(dataset.index):
-                console.print("As an index has been set, resetting the current index.")
-                if dataset.index.name in dataset.columns:
-                    dataset = dataset.reset_index(drop=True)
-                else:
-                    dataset = dataset.reset_index(drop=False)
-
-            for column in columns:
-                if column not in dataset.columns:
-                    console.print(
-                        f"[red]The column '{column}' is not available in the dataset {name}."
-                        f"Please choose one of the following: {', '.join(dataset.columns)}[/red]"
-                    )
-                    return
-
-            if ns_parser.adjustment:
-                if len(columns) > 1 and dataset[columns[0]].isnull().any():
-                    null_values = dataset[dataset[columns[0]].isnull()]
-                    console.print(
-                        f"The column '{columns[0]}' contains {len(null_values)} NaN values. As multiple columns are "
-                        f"provided, it is assumed this column represents entities (i), the NaN values are "
-                        f"forward filled. Remove the -a argument to disable this."
-                    )
-                    dataset[columns[0]] = dataset[columns[0]].fillna(method="ffill")
-                if dataset[columns[-1]].isnull().any():
-                    # This checks whether NaT (missing values) exists within the DataFrame
-                    null_values = dataset[dataset[columns[-1]].isnull()]
-                    console.print(
-                        f"The time index '{columns[-1]}' contains {len(null_values)} "
-                        "NaNs which are removed from the dataset. Remove the -a argument to disable this."
-                    )
-                dataset = dataset[dataset[columns[-1]].notnull()]
-
-            self.datasets[name] = dataset.set_index(columns, drop=ns_parser.drop)
-            console.print(
-                f"Successfully updated '{name}' index to be '{', '.join(columns)}'\n"
-            )
-
-            self.update_runtime_choices()
+                print_rich_table(
+                    self.datasets[name].head(3),
+                    headers=list(self.datasets[name].columns),
+                    show_index=True,
+                    title=f"Dataset '{name}'",
+                )
 
     @log_start_end(log=logger)
     def call_clean(self, other_args: List[str]):
