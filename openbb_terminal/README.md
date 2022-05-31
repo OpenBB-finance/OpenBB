@@ -118,8 +118,10 @@ These steps are common in all operating systems (Windows with or without WSL, Ma
 This project supports Python 3.8 and 3.9. By default, the newly created virtual environment will use Python 3.8.13
 
 Our current recommendation is to use this project with Anaconda's Python distribution - either full
-[**Anaconda3 Latest**](https://www.anaconda.com/products/distribution) or [**Miniconda3 Latest**](https://docs.conda.io/en/latest/miniconda.html).
-Several features in this project utilize Machine Learning. Machine Learning Python dependencies are optional. For MacOS systems, Miniconda3 is recommended.
+[**Anaconda3 Latest**](https://www.anaconda.com/products/distribution) or
+[**Miniconda3 Latest**](https://docs.conda.io/en/latest/miniconda.html) (recommended).
+Several features in this project utilize Machine Learning. Machine Learning Python dependencies are optional. For MacOS systems, the "Miniconda3 MacOSX 64-bit" version that works on both Intel and M1
+macs is recommended.
 
 1. [Install Anaconda](https://docs.anaconda.com/anaconda/install/index.html) (It's on the AUR as anaconda or miniconda3!)
 
@@ -186,41 +188,19 @@ Several features in this project utilize Machine Learning. Machine Learning Pyth
 
    To enable the `prediction` menu install additional dependencies after installing main dependencies:
 
-   - On Intel mac
+   - On Intel and M1 macs
 
      ```bash
-     conda install -c conda-forge tensorflow==2.7.0
-     conda install -c conda-forge -c pytorch u8darts-torch
+     conda install -c conda-forge tensorflow==2.7.1
+     conda install -c pytorch u8darts-torch
      poetry install -E prediction
-     ```
-
-   - On M1 mac (make sure you are using miniconda3 or miniforge3)
-
-     ```bash
-     brew install cmake
-     brew install gcc
-     conda install -c apple tensorflow-deps
-     conda install -c apple tensorflow-deps==2.8.0
-     python -m pip install tensorflow-metal
-     conda update pip
-     conda update -c defaults numpy
-     export GRPC_PYTHON_BUILD_SYSTEM_OPENSSL=1
-     export GRPC_PYTHON_BUILD_SYSTEM_ZLIB=1
-     wget https://raw.githubusercontent.com/Homebrew/homebrew-core/fb8323f2b170bd4ae97e1bac9bf3e2983af3fdb0/Formula/libomp.rb
-     brew unlink libomp
-     brew install libomp.rb
-     pip3 install -r requirements.txt
-     conda install -c conda-forge tensorflow==2.8.0
-     conda install -c conda-forge -c pytorch u8darts-torch
-     python3 -c "import tensorflow as tf; print(tf.reduce_sum(tf.random.normal([1000, 1000])))"
      ```
 
    - On all other systems
 
      ```bash
+     conda install -c pytorch u8darts-torch
      poetry install -E prediction
-     conda install -c conda-forge -c pytorch u8darts-torch
-
      ```
 
    If you are having trouble with Poetry (e.g. on a Windows system), simply install requirements.txt with pip
