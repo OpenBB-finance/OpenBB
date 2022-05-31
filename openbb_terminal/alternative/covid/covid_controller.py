@@ -38,7 +38,7 @@ class CovidController(BaseController):
         super().__init__(queue)
 
         self.country = "US"
-        self.COUNTRY_LIST = pd.read_csv(country_file, sep="\n", index_col=None)[
+        self.COUNTRY_LIST = pd.read_csv(country_file, sep="|", index_col=None)[
             "Countries"
         ].to_list()
 
