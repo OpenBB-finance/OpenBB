@@ -18,7 +18,7 @@ These are questions the templates make easier to answer.
 The portfolio optimization menu can be reached by visiting the `portfolio` menu and typing `po` (or alternatively,
 typing `/portfolio/po` from any location). This opens the following menu:
 
-![](po_menu.png)
+<a target="_blank" href="https://user-images.githubusercontent.com/46355364/171144243-dbdc09e8-609e-4dc3-abb8-8148405e7308.png"><img alt="portfolio optimiation menu" src="https://user-images.githubusercontent.com/46355364/171144243-dbdc09e8-609e-4dc3-abb8-8148405e7308.png"></a>
 
 This menu requires the usage of the Excel templates to work properly. As there is a lot of complexity involved around
 these techniques, these templates allow the user to understand what values for each parameter are actually used and
@@ -41,7 +41,7 @@ The OpenBB Terminal does, however, allow the user to run any model despite the `
 you are interested in running multiple models, consider removing the value for `technique`. Do note that this makes it
 more difficult to understand which values are used for which model.
 
-![img.png](img.png)
+<a target="_blank" href="https://user-images.githubusercontent.com/46355364/171144692-dd812efd-1e95-4a71-a93f-7ae8a480fe5d.png"><img alt="OpenBB Parameters Template" src="https://user-images.githubusercontent.com/46355364/171144692-dd812efd-1e95-4a71-a93f-7ae8a480fe5d.png"></a>
 
 Once you have defined the parameters, save the template and load it inside the terminal by using the  <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/portfolio/po/file/" target="_blank">file</a>
 command. If done correctly, the parameters file should show automatically after typing `file` and pressing SPACE. Then, by using the DOWN KEY (⌄)
@@ -74,7 +74,7 @@ based on asset class, sector, industry, country and currency. By using the dropd
 are able to apply the proper categorization. This is based on the same methodology as found in other areas of the
 terminal.
 
-![img_3.png](img_3.png)
+<a target="_blank" href="https://user-images.githubusercontent.com/46355364/171145061-cd618153-801c-4771-ba57-7ee0ab8c57e8.png"><img alt="OpenBB Portfolio Template" src="https://user-images.githubusercontent.com/46355364/171145061-cd618153-801c-4771-ba57-7ee0ab8c57e8.png"></a>
 
 You can load in the portfolio template by using the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/portfolio/po/load/" target="_blank">load</a> command:
 
@@ -89,7 +89,7 @@ Current Categories: ASSET_CLASS, SECTOR, INDUSTRY, COUNTRY, CURRENT_INVESTED_AMO
 
 ### Performing optimization
 Based on the parameters and allocation the user has set, the optimization process begins. What optimization
-technique is ideal depends entirely on the user's risk profile and objectives. As an illustration, the
+technique is ideal depends entirely on the user's risk profile and objectives. As an illustration,
 <a href="https://www.investopedia.com/terms/r/risk-parity.asp" target="_blank">Risk Parity</a>
 is presented below via the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/portfolio/po/riskparity/" target="_blank">riskparity</a>
 command:
@@ -295,7 +295,7 @@ To demonstrate the capabilities of the Portfolio Optimization menu, the entire <
 is used and optimized and analysed in a variety of ways. Starting by loading in the dataset, which is visible when
 you type `load` as it resides in the same directory as the earlier mentioned template:
 
-![img_4.png](img_4.png)
+<a target="_blank" href="https://user-images.githubusercontent.com/46355364/171145309-8419bc2e-12bd-49d5-8c19-e0f80097d898.png"><img alt="Load S&P 500 File within OpenBB Terminal" src="https://user-images.githubusercontent.com/46355364/171145309-8419bc2e-12bd-49d5-8c19-e0f80097d898.png"></a>
 
 It is possible to load the parameters template here but this is not necessary as each parameter has a default
 value set regardless. However, because the Excel file provides a more structured way of presenting the choices, the
@@ -395,16 +395,16 @@ command. This gives the ability to visually depict allocations, e.g. below the s
 ````
 2022 May 31, 03:39 (🦋) /portfolio/po/ $ plot HRP_0 -ct SECTOR -pi
 ````
-![img_5.png](img_5.png)
+
+<a target="_blank" href="https://user-images.githubusercontent.com/46355364/171145554-327ab405-dfb1-449e-a837-44ee03d2564f.png"><img alt="Sectors Pie Chart" src="https://user-images.githubusercontent.com/46355364/171145554-327ab405-dfb1-449e-a837-44ee03d2564f.png"></a>
 
 Further analysis can be done by looking at the portfolio's returns <a href="https://www.investopedia.com/terms/h/histogram.asp" target="_blank">histogram</a>
 which also includes a variety of risk measures as well as the portfolio's drawdowns.
 ````
 2022 May 31, 03:39 (🦋) /portfolio/po/ $ plot HRP_0 -ct SECTOR -hi -dd
 ````
-
-![](../../../../../../../Desktop/Figure_1.png)
-![](../../../../../../../Desktop/Figure_2.png)
+<a target="_blank" href="https://user-images.githubusercontent.com/46355364/171145848-5a3f5333-6b7f-4d7a-a96e-0859adb1ce78.png"><img alt="Portfokio Returns Histogram" src="https://user-images.githubusercontent.com/46355364/171145848-5a3f5333-6b7f-4d7a-a96e-0859adb1ce78.png"></a>
+<a target="_blank" href="https://user-images.githubusercontent.com/46355364/171145983-2d2c1c2e-67d2-4839-b43a-51bd22332de8.png"><img alt="Portfolio Drawdowns" src="https://user-images.githubusercontent.com/46355364/171145983-2d2c1c2e-67d2-4839-b43a-51bd22332de8.png"></a>
 
 Next to that, to delve deeper in the underlying conclusions the HRP method has drawn. Here, a closer look can be given
 to the assets cluster map, which links certain categories to each other. The linkage process is done per asset basis but
@@ -413,5 +413,5 @@ logically makes sense.
 ````
 2022 May 31, 03:45 (🦋) /portfolio/po/ $ plot HRP_0 -ct SECTOR -rc -he
 ````
-![](../../../../../../../Desktop/Figure_5.png)
-![](../../../../../../../Desktop/Figure_3.png)
+<a target="_blank" href="https://user-images.githubusercontent.com/46355364/171146147-1b30a5f7-c488-4fe1-93e0-8266945ca4e7.png"><img alt="Heatmap with Linkage Method" src="https://user-images.githubusercontent.com/46355364/171146147-1b30a5f7-c488-4fe1-93e0-8266945ca4e7.png"></a>
+<a target="_blank" href="https://user-images.githubusercontent.com/46355364/171146286-84d268e5-ac77-4d50-bddb-9a0859ac896b.png"><img alt="Risk Contributions" src="https://user-images.githubusercontent.com/46355364/171146286-84d268e5-ac77-4d50-bddb-9a0859ac896b.png"></a>
