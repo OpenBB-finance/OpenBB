@@ -16,7 +16,7 @@ optional arguments:
 
 Example:
 ```
-2022 Feb 28, 04:10 (✨) /econometrics/ $ load ThesisData.xlsx thesis
+2022 Feb 28, 04:10 (✨) /econometrics/ $ load ThesisData.xlsx -a thesis
 
 2022 Feb 28, 04:10 (✨) /econometrics/ $ show thesis
                                                                     thesis
@@ -44,7 +44,7 @@ Example:
 │ 9 │ AAR Corp │ 2018Q2  │ 942.70         │ 1524.70 │ 177.20 │ 9.10      │ 18.10  │ 333.30              │ 473.50  │ 936.30 │ 2.20             │
 └───┴──────────┴─────────┴────────────────┴─────────┴────────┴───────────┴────────┴─────────────────────┴─────────┴────────┴──────────────────┘
 
-2022 Feb 28, 04:10 (✨) /econometrics/ $ type quarter-thesis date
+2022 Feb 28, 04:10 (✨) /econometrics/ $ type thesis.quarter date
 
 2022 Feb 28, 04:10 (✨) /econometrics/ $ show thesis
                                                                           thesis
@@ -72,7 +72,7 @@ Example:
 │ 9 │ AAR Corp │ 2018-04-01 00:00:00 │ 942.70         │ 1524.70 │ 177.20 │ 9.10      │ 18.10  │ 333.30              │ 473.50  │ 936.30 │ 2.20             │
 └───┴──────────┴─────────────────────┴────────────────┴─────────┴────────┴───────────┴────────┴─────────────────────┴─────────┴────────┴──────────────────┘
 
-2022 Feb 28, 04:11 (✨) /econometrics/ $ index thesis company quarter -d
+2022 Feb 28, 04:11 (✨) /econometrics/ $ index thesis company,quarter -d
 
 2022 Feb 28, 04:11 (✨) /econometrics/ $ show thesis
                                                                                 thesis
