@@ -1357,8 +1357,6 @@ main:
             ref: "/terminal/econometrics/show"
           - name: remove
             ref: "/terminal/econometrics/remove"
-          - name: options
-            ref: "/terminal/econometrics/options"
           - name: show
             ref: "/terminal/econometrics/show"
           - name: plot
