@@ -95,7 +95,7 @@ As a modern Python-based environment, OpenBBTerminal opens access to numerous Py
 
 If you wish to install the Terminal, there are currently four options:
 
-- [Using the Installer](openbb_terminal/README.md#User) (recommended if you just want to use the terminal)
+- [Using the Installer](https://openbb-finance.github.io/OpenBBTerminal/terminal/#accessing-the-openbb-terminal) (recommended if you just want to use the terminal)
 - [Using Python](openbb_terminal/README.md#anaconda--python) (recommended if you want to develop new features)
 - [Using Docker](openbb_terminal/README.md#Docker-Installation) (alternative option to the installer if preferred)
 - [Using Docker Web UI](openbb_terminal/README.md#web-ui---docker) (if you want to deploy the web UI for users to access
