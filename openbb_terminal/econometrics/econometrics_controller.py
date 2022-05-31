@@ -202,7 +202,6 @@ class EconometricsController(BaseController):
 
             for feature in [
                 "general",
-                "type",
                 "plot",
                 "desc",
                 "norm",
@@ -224,6 +223,10 @@ class EconometricsController(BaseController):
                 "rename",
             ]:
                 self.choices[feature] = {c: None for c in self.files}
+
+            self.choices["type"] = {
+                c: None for c in self.files + list(dataset_columns.keys())
+            }
 
             pairs_timeseries = list()
             for dataset_col in list(dataset_columns.keys()):
@@ -660,9 +663,8 @@ class EconometricsController(BaseController):
             "--name",
             type=str,
             dest="name",
-            help="Provide dataset.column series to change type.",
-            choices=self.list_dataset_cols,
-            required=True,
+            help="Provide dataset.column series to change type or dataset to see types.",
+            choices=self.choices["type"],
         )
         parser.add_argument(
             "-f",
@@ -670,7 +672,6 @@ class EconometricsController(BaseController):
             type=str,
             choices=self.DATA_TYPES,
             dest="format",
-            required=True,
             help=(
                 "Set the format for the dataset.column defined. This can be: "
                 "date, int, float, str, bool or category"
@@ -683,19 +684,44 @@ class EconometricsController(BaseController):
 
         if ns_parser:
             if ns_parser.name:
-                dataset, column = ns_parser.name.split(".")
-                data_type = ns_parser.format
+                if "." in ns_parser.name:
+                    dataset, column = ns_parser.name.split(".")
+                    if ns_parser.format:
+                        if ns_parser.format == "date":
+                            self.datasets[dataset][column] = pd.to_datetime(
+                                self.datasets[dataset][column].values,
+                            )
+                        else:
+                            self.datasets[dataset][column] = self.datasets[dataset][
+                                column
+                            ].astype(ns_parser.format)
 
-                if data_type == "date":
-                    self.datasets[dataset][column] = pd.to_datetime(
-                        self.datasets[dataset][column].values,
-                    )
+                        console.print(
+                            f"Update '{ns_parser.name}' with type '{ns_parser.format}'"
+                        )
+                    else:
+                        console.print(
+                            f"The type of '{ns_parser.name}' is '{self.datasets[dataset][column].dtypes}'"
+                        )
+
                 else:
-                    self.datasets[dataset][column] = self.datasets[dataset][
-                        column
-                    ].astype(data_type)
+                    print_rich_table(
+                        pd.DataFrame(self.datasets[ns_parser.name].dtypes),
+                        headers=list(["dtype"]),
+                        show_index=True,
+                        index_name="column",
+                        title=str(ns_parser.name),
+                    )
+            else:
+                for dataset_name, data in self.datasets.items():
+                    print_rich_table(
+                        pd.DataFrame(data.dtypes),
+                        headers=list(["dtype"]),
+                        show_index=True,
+                        index_name="column",
+                        title=str(dataset_name),
+                    )
 
-            console.print(f"Update '{ns_parser.name}' dataset with type '{data_type}'")
         console.print()
 
     @log_start_end(log=logger)
