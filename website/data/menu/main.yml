@@ -1294,16 +1294,14 @@ main:
         - name: forex
           ref: "/terminal/forex"
           sub:
-            - name: select
-              ref: "/terminal/forex/select"
             - name: load
               ref: "/terminal/forex/load"
+            - name: quote
+              ref: "/terminal/forex/quote"
             - name: fwd
               ref: "/terminal/forex/fwd"
             - name: candle
               ref: "/terminal/forex/candle"
-            - name: from
-              ref: "/terminal/forex/from"
             - name: oanda
               ref: "/terminal/forex/oanda"
               sub:

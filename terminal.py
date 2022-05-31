@@ -13,6 +13,8 @@ from pathlib import Path
 import dotenv
 
 from prompt_toolkit.completion import NestedCompleter
+from prompt_toolkit.styles import Style
+from prompt_toolkit.formatted_text import HTML
 
 from openbb_terminal.core.config.constants import REPO_DIR, ENV_FILE, USER_HOME
 from openbb_terminal import feature_flags as obbff
@@ -439,11 +441,27 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
             # Get input from user using auto-completion
             if session and obbff.USE_PROMPT_TOOLKIT:
                 try:
-                    an_input = session.prompt(
-                        f"{get_flair()} / $ ",
-                        completer=t_controller.completer,
-                        search_ignore_case=True,
-                    )
+                    if obbff.TOOLBAR_HINT:
+                        an_input = session.prompt(
+                            f"{get_flair()} / $ ",
+                            completer=t_controller.completer,
+                            search_ignore_case=True,
+                            bottom_toolbar=HTML(
+                                "Execute routine scripts to automate your research workflow. "
+                                "E.g.: $ exe routines/example.openbb"
+                            ),
+                            style=Style.from_dict(
+                                {
+                                    "bottom-toolbar": "#ffffff bg:#333333",
+                                }
+                            ),
+                        )
+                    else:
+                        an_input = session.prompt(
+                            f"{get_flair()} / $ ",
+                            completer=t_controller.completer,
+                            search_ignore_case=True,
+                        )
                 except KeyboardInterrupt:
                     print_goodbye()
                     break

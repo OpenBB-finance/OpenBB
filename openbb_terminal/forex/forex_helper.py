@@ -1,15 +1,17 @@
 from datetime import datetime
-from typing import List, Optional, Dict
+from typing import List, Optional, Dict, Iterable
 import os
 import argparse
 import logging
+import re
 
 import yfinance as yf
 import pandas as pd
 import matplotlib.pyplot as plt
+from matplotlib.lines import Line2D
 import mplfinance as mpf
 
-from openbb_terminal.forex import av_model
+from openbb_terminal.forex import av_model, polygon_model
 from openbb_terminal.rich_config import console
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import plot_autoscale, is_valid_axes_count
@@ -20,6 +22,7 @@ FOREX_SOURCES: Dict = {
     "yf": "YahooFinance",
     "av": "AlphaAdvantage",
     "oanda": "Oanda",
+    "polygon": "Polygon",
 }
 
 SOURCES_INTERVALS: Dict = {
@@ -72,33 +75,48 @@ def load(
     start_date: str,
     source: str = "yf",
 ):
-    interval_map = INTERVAL_MAPS[source]
+    if source in ["yf", "av"]:
+        interval_map = INTERVAL_MAPS[source]
 
-    if interval not in interval_map.keys():
-        console.print(
-            f"Interval not supported by {FOREX_SOURCES[source]}. Need to be one of the following options",
-            interval_map.keys(),
-        )
-        return pd.DataFrame()
+        if interval not in interval_map.keys():
+            console.print(
+                f"Interval not supported by {FOREX_SOURCES[source]}. Need to be one of the following options",
+                interval_map.keys(),
+            )
+            return pd.DataFrame()
 
-    if source == "av":
+        if source == "av":
 
-        df = av_model.get_historical(
-            to_symbol=to_symbol,
-            from_symbol=from_symbol,
-            resolution=resolution,
-            interval=interval_map[interval],
-            start_date=start_date,
-        )
+            df = av_model.get_historical(
+                to_symbol=to_symbol,
+                from_symbol=from_symbol,
+                resolution=resolution,
+                interval=interval_map[interval],
+                start_date=start_date,
+            )
 
-    if source == "yf":
+        if source == "yf":
 
-        df = yf.download(
-            f"{from_symbol}{to_symbol}=X",
-            end=datetime.now(),
-            start=datetime.strptime(start_date, "%Y-%m-%d"),
-            interval=interval_map[interval],
-            progress=False,
+            df = yf.download(
+                f"{from_symbol}{to_symbol}=X",
+                end=datetime.now(),
+                start=datetime.strptime(start_date, "%Y-%m-%d"),
+                interval=interval_map[interval],
+                progress=False,
+            )
+
+    if source == "polygon":
+        # Interval for polygon gets broken into mulltiplier and timeframe
+        temp = re.split(r"(\d+)", interval)
+        multiplier = int(temp[1])
+        timeframe = temp[2]
+        if timeframe == "min":
+            timeframe = "minute"
+        df = polygon_model.get_historical(
+            f"{from_symbol}{to_symbol}",
+            multiplier=multiplier,
+            timespan=timeframe,
+            from_date=start_date,
         )
 
     return df
@@ -147,6 +165,7 @@ def display_candle(
     data: pd.DataFrame,
     to_symbol: str,
     from_symbol: str,
+    ma: Optional[Iterable[int]] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Show candle plot for fx data.
@@ -165,7 +184,6 @@ def display_candle(
     candle_chart_kwargs = {
         "type": "candle",
         "style": theme.mpf_style,
-        "mav": (20, 50),
         "volume": False,
         "xrotation": theme.xticks_rotation,
         "scale_padding": {"left": 0.3, "right": 1, "top": 0.8, "bottom": 0.8},
@@ -177,6 +195,8 @@ def display_candle(
         },
         "warn_too_much_data": 20000,
     }
+    if ma:
+        candle_chart_kwargs["mav"] = ma
     # This plot has 1 axis
     if not external_axes:
         candle_chart_kwargs["returnfig"] = True
@@ -190,11 +210,33 @@ def display_candle(
             y=0.965,
             horizontalalignment="left",
         )
+        if ma:
+            # Manually construct the chart legend
+            colors = []
+
+            for i, _ in enumerate(ma):
+                colors.append(theme.get_colors()[i])
+
+            lines = [Line2D([0], [0], color=c) for c in colors]
+            labels = ["MA " + str(label) for label in ma]
+            ax[0].legend(lines, labels)
         theme.visualize_output(force_tight_layout=False)
-        ax[0].legend()
+
     elif is_valid_axes_count(external_axes, 1):
         (ax1,) = external_axes
         candle_chart_kwargs["ax"] = ax1
         mpf.plot(data, **candle_chart_kwargs)
     else:
         return
+
+
+@log_start_end(log=logger)
+def parse_forex_symbol(input_symbol):
+    """Parses potential forex symbols"""
+    for potential_split in ["-", "/"]:
+        if potential_split in input_symbol:
+            symbol = input_symbol.replace(potential_split, "")
+            return symbol
+    if len(input_symbol) != 6:
+        raise argparse.ArgumentTypeError("Input symbol should be 6 characters.\n ")
+    return input_symbol.upper()

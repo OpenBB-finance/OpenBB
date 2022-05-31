@@ -100,13 +100,16 @@ class StocksController(StockBaseController):
 
     def print_help(self):
         """Print help"""
-        s_intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
-        if self.ticker and self.start:
-            stock_text = (
-                f"{s_intraday} {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
-            )
-        else:
-            stock_text = f"{s_intraday} {self.ticker}"
+        stock_text = ""
+        if self.ticker:
+            s_intraday = (f"Intraday {self.interval}", "Daily")[
+                self.interval == "1440min"
+            ]
+            if self.start:
+                stock_text = f"{s_intraday} {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
+            else:
+                stock_text = f"{s_intraday} {self.ticker}"
+
         mt = MenuText("stocks/", 80)
         mt.add_cmd("search")
         mt.add_cmd("load")
@@ -114,10 +117,10 @@ class StocksController(StockBaseController):
         mt.add_param("_ticker", stock_text)
         mt.add_raw(self.add_info)
         mt.add_raw("\n")
-        mt.add_cmd("quote")
-        mt.add_cmd("candle")
-        mt.add_cmd("news", "News API")
-        mt.add_cmd("codes", "Polygon")
+        mt.add_cmd("quote", "", self.ticker)
+        mt.add_cmd("candle", "", self.ticker)
+        mt.add_cmd("news", "News API", self.ticker)
+        mt.add_cmd("codes", "Polygon", self.ticker)
         mt.add_raw("\n")
         mt.add_menu("th")
         mt.add_menu("options")
@@ -630,22 +633,20 @@ class StocksController(StockBaseController):
     def call_qa(self, _):
         """Process qa command"""
         if self.ticker:
-            if self.interval == "1440min":
-                from openbb_terminal.stocks.quantitative_analysis import (
-                    qa_controller,
-                )
+            from openbb_terminal.stocks.quantitative_analysis import (
+                qa_controller,
+            )
 
-                self.queue = self.load_class(
-                    qa_controller.QaController,
-                    self.ticker,
-                    self.start,
-                    self.interval,
-                    self.stock,
-                    self.queue,
-                )
-            # TODO: This menu should work regardless of data being daily or not!
-            else:
-                console.print("Load daily data to use this menu!", "\n")
+            self.queue = self.load_class(
+                qa_controller.QaController,
+                self.ticker,
+                self.start,
+                self.interval,
+                self.stock,
+                self.queue,
+            )
+        # TODO: This menu should work regardless of data being daily or not!
+        # James: 5/27 I think it does now
         else:
             console.print("Use 'load <ticker>' prior to this command!", "\n")
 
