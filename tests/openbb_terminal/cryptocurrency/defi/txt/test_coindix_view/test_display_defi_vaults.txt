@@ -1,102 +1,21 @@
-                    Name      Chain     Protocol              APY (%)   TVL ($)          Risk
-0               OXD-USDC     Fantom        Beefy  96919190453190.22 %   7.935 M           Low
-1            2SHARES-FTM     Fantom        Beefy      9214798066.78 %   1.674 M           Low
-2               2OMB-FTM     Fantom        Beefy      3415403904.82 %   2.823 M           Low
-3                    OXD     Fantom        Beefy         1358796.72 %   2.270 M           Low
-4               BNB-NETT      Metis        Beefy           42577.74 %   1.027 M           Low
-5             mUSDC-NETT      Metis        Beefy           36359.61 %   1.294 M           Low
-6            STATIC-BUSD        BSC        Beefy           10815.16 %   4.170 M           Low
-7             METIS-NETT      Metis        Beefy            5736.59 %   2.878 M           Low
-8            CHARGE-BUSD        BSC        Beefy            1928.72 %   2.826 M           Low
-9               PTP-AVAX  Avalanche        Beefy            1479.78 %   1.142 M           Low
-10             CAKE-BUSD        BSC       Alpaca            1323.87 %   2.005 M         Least
-11             LOOT-AVAX  Avalanche     Pangolin             764.73 %   1.245 M        Medium
-12            STARS-USDC     Solana        Tulip             738.42 %   1.320 M  Non Eligible
-13            SCREAM-FTM     Fantom        Beefy             708.34 %   3.453 M           Low
-14             CAKE-USDT        BSC       Alpaca             639.76 %   1.060 M         Least
-15             FTM-BEETS     Fantom        Beefy             636.38 %   3.510 M           Low
-16            TSHARE-FTM     Fantom        Beefy             612.79 %  20.591 M           Low
-17             MAGIC-ETH   Arbitrum        Beefy              523.9 %   2.616 M           Low
-18             CAVE-USDC     Solana        Tulip             477.38 %   1.360 M  Non Eligible
-19             GEIST-FTM     Fantom        Beefy             471.06 %   2.544 M           Low
-20            WETH-LOOKS   Ethereum      Uniswap             431.99 %  12.942 M         Least
-21              VVS-USDT     Cronos        Beefy             428.23 %   1.348 M           Low
-22              MIM-UNIV  Avalanche   Trader Joe              424.0 %   1.623 M           Low
-23            WETH-LOOMI   Ethereum      Uniswap             389.18 %   1.306 M         Least
-24              VVS-USDC     Cronos        Beefy             367.98 %   1.019 M           Low
-25           mUSDT-METIS      Metis        Beefy             365.78 %   2.201 M           Low
-26              ETH-USDT        BSC       Alpaca              360.7 %  13.180 M         Least
-27              USDC-SNX   Ethereum      Uniswap             357.83 %   3.582 M         Least
-28             DIFX-BUSD        BSC  PancakeSwap             344.08 %   1.864 M         Least
-29              AOG-BUSD        BSC  PancakeSwap             340.24 %   1.949 M         Least
-30           mUSDC-METIS      Metis        Beefy             339.67 %   3.566 M           Low
-31        BRIBE-USDC-NEW   Ethereum     Balancer             319.15 %   4.007 M         Least
-32              PRL-BUSD        BSC  PancakeSwap             295.97 %   1.399 M         Least
-33                TSHARE     Fantom        Tarot              288.0 %   6.028 M  Non Eligible
-34            BLINU-WBNB        BSC  PancakeSwap             282.71 %   1.522 M         Least
-35            VADER-WETH   Ethereum      Uniswap              280.9 %   1.458 M         Least
-36              MBS-USDC     Solana        Tulip             280.02 %   1.150 M  Non Eligible
-37              QI-MATIC    Polygon        Beefy             274.08 %   2.630 M           Low
-38              MIM-AVAX  Avalanche        Beefy             256.08 %   4.667 M           Low
-39           ALPACA-BUSD        BSC       Alpaca             252.79 %   7.803 M         Least
-40           ATOM-HUAHUA    Osmosis      Osmosis             251.62 %   7.269 M  Non Eligible
-41           MOONEY-WETH   Ethereum      Uniswap              249.1 %   1.506 M         Least
-42         CLNY-USDC-NEW   Ethereum     Balancer             240.38 %   7.660 M         Least
-43              FXS-WETH   Ethereum      Uniswap             231.94 %   3.175 M         Least
-44         SYNR-USDC-NEW   Ethereum     Balancer             229.41 %  38.469 M         Least
-45            STARS-OSMO    Osmosis      Osmosis             227.73 %  28.843 M  Non Eligible
-46              UST-3Crv   Ethereum        Curve              225.4 %  56.908 M         Least
-47            WETH-METIS      Metis        Beefy             224.65 %   3.884 M           Low
-48                   ust   Ethereum       Convex             224.47 %  16.800 M        Medium
-49             USDC-WFTM     Fantom     Autofarm             221.21 %   1.820 M        Medium
-50            BCOIN-WBNB        BSC  PancakeSwap             220.37 %   2.062 M         Least
-51              SAMO-RAY     Solana        Tulip             219.84 %   3.230 M  Non Eligible
-52             BTCB-USDT        BSC       Alpaca             213.28 %  16.596 M         Least
-53              GENE-RAY     Solana        Tulip             209.87 %   2.020 M  Non Eligible
-54              VVS-WCRO     Cronos     Autofarm             200.38 %   1.057 M        Medium
-55            UNIV-DAI.e  Avalanche   Trader Joe              200.0 %   2.021 M           Low
-56             ITAM-WBNB        BSC  PancakeSwap             198.77 %   1.201 M         Least
-57               FTM-ICE     Fantom   SpookySwap             198.71 %   2.134 M  Non Eligible
-58  SATOSHISWAP-USDC-NEW   Ethereum     Balancer             198.54 %   8.394 M         Least
-59            ATOM-STARS    Osmosis      Osmosis             196.49 %  24.649 M  Non Eligible
-60              TOMB-FTM     Fantom        Beefy             194.48 %  37.394 M           Low
-61               VVS-CRO     Cronos        Beefy              193.9 %   2.680 M           Low
-62              WBNB-DPT        BSC  PancakeSwap             192.46 %   1.061 M         Least
-63       GENART-WETH-NEW   Ethereum     Balancer             192.44 %   1.150 M         Least
-64           HUAHUA-OSMO    Osmosis      Osmosis             191.37 %   9.557 M  Non Eligible
-65               WBNB-GM        BSC  PancakeSwap             185.23 %   1.121 M         Least
-66          BANANA-MATIC    Polygon        Beefy             181.86 %   1.063 M           Low
-67              VVS-USDT     Cronos          VVS             179.86 %  10.904 M  Non Eligible
-68           WMATIC-WETH    Polygon      Uniswap             176.94 %   9.839 M         Least
-69              MIM-AVAX  Avalanche   Trader Joe              174.0 %  24.916 M           Low
-70              USDC-OXD     Fantom   SpookySwap              174.0 %  29.745 M  Non Eligible
-71             vBNT-USDC   Ethereum      Uniswap             171.12 %   3.016 M         Least
-72              VVS-USDC     Cronos          VVS             169.36 %  11.936 M  Non Eligible
-73                  CAKE        BSC       Alpaca             168.27 %   8.012 M         Least
-74              USDC-MIM     Fantom   SpookySwap              160.0 %   3.021 M  Non Eligible
-75             RACA-BUSD        BSC  PancakeSwap              158.1 %  11.612 M         Least
-76              AVAX-TUS  Avalanche   Trader Joe              156.0 %   3.216 M           Low
-77              GME-DUSD  Defichain    DefiChain             155.93 %   6.018 M  Non Eligible
-78             PLTR-DUSD  Defichain    DefiChain             152.97 %   3.233 M  Non Eligible
-79          WBNB-ETERNAL        BSC  PancakeSwap             152.79 %   1.537 M         Least
-80             BABA-DUSD  Defichain    DefiChain             152.76 %   4.124 M  Non Eligible
-81              MIM-USDC   Ethereum      Uniswap             151.47 %  30.371 M         Least
-82            ERTHA-WBNB        BSC  PancakeSwap             148.55 %   1.116 M         Least
-83             TSLA-DUSD  Defichain    DefiChain              146.9 %  14.057 M  Non Eligible
-84             ARKK-DUSD  Defichain    DefiChain             145.65 %   2.866 M  Non Eligible
-85             FTM-SPELL     Fantom   SpookySwap             143.95 %   3.807 M  Non Eligible
-86            WMOVR-USDC  Moonriver     Autofarm             143.58 %   1.361 M        Medium
-87             FINA-BUSD        BSC  PancakeSwap             143.51 %   2.226 M         Least
-88              QQQ-DUSD  Defichain    DefiChain             143.23 %   6.289 M  Non Eligible
-89            MIM-USDC.e  Avalanche   Trader Joe              143.0 %   9.522 M           Low
-90              SLV-DUSD  Defichain    DefiChain             142.77 %   2.187 M  Non Eligible
-91             THOR-AVAX  Avalanche   Trader Joe              142.0 %  14.055 M           Low
-92            GOOGL-DUSD  Defichain    DefiChain             140.62 %   3.196 M  Non Eligible
-93             AAPL-DUSD  Defichain    DefiChain             140.23 %   5.069 M  Non Eligible
-94           STRONG-WETH   Ethereum      Uniswap             140.16 %   5.069 M         Least
-95             BTCB-BUSD        BSC       Alpaca             140.16 %  10.021 M         Least
-96              SPY-DUSD  Defichain    DefiChain             139.37 %  10.606 M  Non Eligible
-97              CAKE-BNB        BSC       Alpaca             139.29 %  11.676 M         Least
-98             URTH-DUSD  Defichain    DefiChain             139.03 %   1.082 M  Non Eligible
-99                  ACSI        BSC     ACryptoS              138.0 %   2.500 M        Medium
-
+                    Name      Chain  Protocol    APY (%)   TVL ($)
+0             ESHARE-BNB  BNB Chain     Beefy  3042.51 %   1.593 M
+1   ust-wormholeUST-3Crv   Ethereum    Convex  1494.14 %   2.600 M
+2              GRAPE-MIM  Avalanche     Beefy   1253.2 %   1.109 M
+3             BSHARE-FTM     Fantom     Beefy  1158.81 %   1.649 M
+4             BASED-TOMB     Fantom     Beefy    527.6 %   1.136 M
+5                EMP-ETH  BNB Chain     Beefy   364.53 %   1.259 M
+6            BADGER-WBTC   Ethereum  Balancer   340.47 %  15.241 M
+7                BSW-BNB  BNB Chain    Alpaca   280.86 %   1.873 M
+8              WBTC-OSMO    Osmosis   Osmosis    231.2 %   4.730 M
+9             ROWAN-OSMO    Osmosis   Osmosis   228.72 %   1.834 M
+10             CAKE-BUSD  BNB Chain    Alpaca   204.62 %   4.480 M
+11              DAI-OSMO    Osmosis   Osmosis   167.25 %   4.372 M
+12             USDC-OSMO    Osmosis   Osmosis    140.3 %  25.314 M
+13               VVS-CRO     Cronos     Beefy   133.66 %   1.012 M
+14             ZERO-WETH   Ethereum   Uniswap   131.96 %   1.560 M
+15                   PTP  Avalanche    Vector   128.75 %   1.504 M
+16             CAKE-USDT  BNB Chain    Alpaca   121.38 %   1.027 M
+17              VVS-WCRO     Cronos       VVS   120.19 %  47.140 M
+18             WETH-OSMO    Osmosis   Osmosis   119.09 %   9.242 M
+19              VVS-USDT     Cronos       VVS   117.23 %   3.730 M
