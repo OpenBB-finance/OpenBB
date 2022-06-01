@@ -57,7 +57,7 @@ Below you can find examples of the dataset from Vella and M. Verbeek (1998), “
 │ occupation │ int64    │
 └────────────┴──────────┘
 
-2022 Feb 25, 08:09 (✨) /econometrics/ $ index wp nr, year
+2022 Feb 25, 08:09 (✨) /econometrics/ $ index wp -i nr,year
 
 2022 Feb 25, 08:10 (✨) /econometrics/ $ type wp.year -f category
 
@@ -91,7 +91,7 @@ Below you can find examples of the dataset from Vella and M. Verbeek (1998), “
 **Pooled OLS Estimation:**
 
 ```
-2022 Feb 25, 08:51 (✨) /econometrics/ $ panel wp.lwage wp.black wp.hisp wp.exper wp.expersq wp.married wp.educ wp.union wp.year
+(✨) /econometrics/ $ panel -d wp.lwage -i wp.black,wp.hisp,wp.exper,wp.expersq,wp.married,wp.educ,wp.union,wp.year
 
                           PooledOLS Estimation Summary
 ================================================================================
@@ -137,7 +137,7 @@ year_wp.1987     0.1738     0.0494     3.5165     0.0004      0.0769      0.2707
 **Between OLS Estimation:**
 
 ```
-2022 Feb 25, 08:51 (✨) /econometrics/ $ panel wp.lwage wp.black wp.hisp wp.exper wp.married wp.educ wp.union -t bols
+(✨) /econometrics/ $ panel -d wp.lwage -i wp.black,wp.hisp,wp.exper,wp.married,wp.educ,wp.union -r bols
 
                          BetweenOLS Estimation Summary
 ================================================================================
@@ -175,7 +175,7 @@ union_wp       0.2587     0.0460     5.6214     0.0000      0.1683      0.3491
 **Random Effects Estimation:**
 
 ```
-2022 Feb 25, 08:53 (✨) /econometrics/ $ panel wp.lwage wp.black wp.hisp wp.exper wp.expersq wp.married wp.educ wp.union wp.year -t re
+(✨) /econometrics/ $ panel -d wp.lwage -i wp.black,wp.hisp,wp.exper,wp.expersq,wp.married,wp.educ,wp.union,wp.year -r re
 
                         RandomEffects Estimation Summary
 ================================================================================
@@ -220,7 +220,7 @@ year_wp.1987     0.1348     0.0817     1.6504     0.0989     -0.0253      0.2950
 
 **Fixed Effects Estimation (no effects):**
 ```
-2022 Feb 25, 08:51 (✨) /econometrics/ $ panel wp.lwage wp.expersq wp.union  wp.married wp.year -t fe
+(✨) /econometrics/ $ panel -d wp.lwage -i wp.expersq,wp.union,wp.married,wp.year -r fe
 
                           PanelOLS Estimation Summary
 ================================================================================
@@ -261,10 +261,8 @@ year_wp.1987     0.5952     0.0396     15.026     0.0000      0.5176      0.6729
 
 **Fixed Effects Estimation (entity effects):**
 
-
-
 ```
-2022 Feb 25, 08:51 (✨) /econometrics/ $ panel wp.lwage wp.expersq wp.married wp.union wp.year -t fe -ee
+(✨) /econometrics/ $ panel -d wp.lwage -i wp.expersq,wp.married,wp.union,wp.year -r fe -e
 
                           PanelOLS Estimation Summary
 ================================================================================
@@ -311,7 +309,7 @@ Included effects: Entity
 
 **Fixed Effects Estimation (time effects):**
 ```
-2022 Feb 25, 08:52 (✨) /econometrics/ $ panel wp.lwage wp.expersq wp.married wp.union -t fe -te
+(✨) /econometrics/ $ panel -d wp.lwage -i wp.expersq,wp.married,wp.union -r fe -t
 
                           PanelOLS Estimation Summary
 ================================================================================
@@ -351,7 +349,7 @@ Included effects: Time
 
 **Fixed Effects Estimation (entity and time effects):**
 ```
-2022 Feb 25, 08:52 (✨) /econometrics/ $ panel wp.lwage wp.expersq wp.married wp.union  -t fe -te -ee
+(✨) /econometrics/ $ panel -d wp.lwage -i wp.expersq,wp.married,wp.union  -r fe -t -e
 
                           PanelOLS Estimation Summary
 ================================================================================
@@ -392,7 +390,7 @@ Included effects: Entity, Time
 **First Difference OLS Estimation:**
 
 ```
-2022 Feb 25, 08:52 (✨) /econometrics/ $ panel wp.lwage wp.exper wp.expersq wp.married wp.union -t fdols
+(✨) /econometrics/ $ panel -d wp.lwage -i wp.exper,wp.expersq,wp.married,wp.union -r fdols
 
                      FirstDifferenceOLS Estimation Summary
 ================================================================================

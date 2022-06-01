@@ -2,9 +2,8 @@
 usage: bgod [-l LAGS] [-h] [--export {csv,json,xlsx}]
 ```
 
-Show Breusch-Pagan heteroscedasticity test results.
+Show Breusch-Godfrey autocorrelation test results. Needs OLS to be run in advance with independent and dependent variables
 
-In statistics, heteroskedasticity (or heteroscedasticity) happens when the standard deviations of a predicted variable, monitored over different values of an independent variable or as related to prior time periods, are non-constant. With heteroskedasticity, the tell-tale sign upon visual inspection of the residual errors is that they will tend to fan out over time. [Source: Investopedia]
 ```
 optional arguments:
   -l LAGS, --lags LAGS  The lags for the Breusch-Godfrey test (default: 3)
@@ -15,49 +14,59 @@ optional arguments:
 
 Example:
 ```
-2022 Feb 24, 06:00 (✨) /econometrics/ $ ols adj_close-msft adj_close-aapl adj_close-googl adj_close-tsla
-                            OLS Regression Results                            
+2022 Jun 01, 06:29 (🦋) /econometrics/ $ load longley -a ll
+
+2022 Jun 01, 06:29 (🦋) /econometrics/ $ ols -d ll.totemp -i ll.gnpdefl,ll.gnp,ll.unemp,ll.armed,ll.pop,ll.year
+                                 OLS Regression Results                                
+=======================================================================================
+Dep. Variable:              ll.totemp   R-squared (uncentered):                   1.000
+Model:                            OLS   Adj. R-squared (uncentered):              1.000
+Method:                 Least Squares   F-statistic:                          5.052e+04
+Date:                Wed, 01 Jun 2022   Prob (F-statistic):                    8.20e-22
+Time:                        12:29:44   Log-Likelihood:                         -117.56
+No. Observations:                  16   AIC:                                      247.1
+Df Residuals:                      10   BIC:                                      251.8
+Df Model:                           6                                                  
+Covariance Type:            nonrobust                                                  
 ==============================================================================
-Dep. Variable:         adj_close_msft   R-squared:                       0.977
-Model:                            OLS   Adj. R-squared:                  0.977
-Method:                 Least Squares   F-statistic:                 1.068e+04
-Date:                Thu, 24 Feb 2022   Prob (F-statistic):               0.00
-Time:                        12:01:09   Log-Likelihood:                -2830.6
-No. Observations:                 759   AIC:                             5669.
-Df Residuals:                     755   BIC:                             5688.
-Df Model:                           3                                         
-Covariance Type:            nonrobust                                         
-===================================================================================
-                      coef    std err          t      P>|t|      [0.025      0.975]
------------------------------------------------------------------------------------
-Intercept          27.7984      2.166     12.832      0.000      23.546      32.051
-adj_close_aapl      0.8662      0.034     25.503      0.000       0.800       0.933
-adj_close_googl     0.0508      0.002     30.374      0.000       0.048       0.054
-adj_close_tsla     -0.0007      0.004     -0.181      0.856      -0.009       0.007
+                 coef    std err          t      P>|t|      [0.025      0.975]
+------------------------------------------------------------------------------
+ll.gnpdefl   -52.9936    129.545     -0.409      0.691    -341.638     235.650
+ll.gnp         0.0711      0.030      2.356      0.040       0.004       0.138
+ll.unemp      -0.4235      0.418     -1.014      0.335      -1.354       0.507
+ll.armed      -0.5726      0.279     -2.052      0.067      -1.194       0.049
+ll.pop        -0.4142      0.321     -1.289      0.226      -1.130       0.302
+ll.year       48.4179     17.689      2.737      0.021       9.003      87.832
 ==============================================================================
-Omnibus:                       41.445   Durbin-Watson:                   0.044
-Prob(Omnibus):                  0.000   Jarque-Bera (JB):               47.398
-Skew:                           0.612   Prob(JB):                     5.10e-11
-Kurtosis:                       2.995   Cond. No.                     1.16e+04
+Omnibus:                        1.443   Durbin-Watson:                   1.277
+Prob(Omnibus):                  0.486   Jarque-Bera (JB):                0.605
+Skew:                           0.476   Prob(JB):                        0.739
+Kurtosis:                       3.031   Cond. No.                     4.56e+05
 ==============================================================================
 
 Notes:
-[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
-[2] The condition number is large, 1.16e+04. This might indicate that there are
+[1] R² is computed without centering (uncentered) since the model does not contain a constant.
+[2] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+[3] The condition number is large, 4.56e+05. This might indicate that there are
 strong multicollinearity or other numerical problems.
 
-2022 Feb 24, 06:01 (✨) /econometrics/ $ bgod
+Warnings:
+kurtosistest only valid for n>=20 ... continuing anyway, n=16
+
+2022 Jun 01, 06:29 (🦋) /econometrics/ $ bgod
+
 Breusch-Godfrey autocorrelation test [Lags: 3]
 ┏━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┓
 ┃          ┃ Breusch-Godfrey ┃
 ┡━━━━━━━━━━╇━━━━━━━━━━━━━━━━━┩
-│ LM-stat  │ 723.75          │
+│ LM-stat  │ 10.35           │
 ├──────────┼─────────────────┤
-│ p-value  │ 0.00            │
+│ p-value  │ 0.02            │
 ├──────────┼─────────────────┤
-│ f-stat   │ 5147.20         │
+│ f-stat   │ 0.10            │
 ├──────────┼─────────────────┤
-│ fp-value │ 0.00            │
+│ fp-value │ 0.96            │
 └──────────┴─────────────────┘
-The result 0.0 indicates no existence of autocorrelation.
+
+The result 0.02 indicates no existence of autocorrelation.
 ```

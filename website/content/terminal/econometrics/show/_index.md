@@ -21,11 +21,12 @@ optional arguments:
 
 Example:
 ```
-2022 Mar 04, 05:57 (✨) /econometrics/ $ show
 2022 Mar 04, 05:57 (✨) /econometrics/ $ load longley -a ll
-2022 Mar 04, 05:57 (✨) /econometrics/ $ index ll year -d
+
+2022 Mar 04, 05:57 (✨) /econometrics/ $ index ll -i year -d
 
 2022 Mar 04, 05:57 (✨) /econometrics/ $ show ll -s unemp
+
                     Dataset ll | Showing 10 of 16 rows                     
 ┏━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━┓
 ┃        ┃ totemp   ┃ gnpdefl ┃ gnp       ┃ unemp   ┃ armed   ┃ pop       ┃
