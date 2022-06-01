@@ -42,11 +42,11 @@ set ^NDX,NQH23.CME,NQZ22.CME,NQ=F
 historical -s 2022-01-01
 
 # Show the price-normalized history of S&P, NASDAQ, and Bitcoin futures
-set ES=F,NQ=F,BTC=F 
+set ES=F,NQ=F,BTC=F
 historical -n
 
 # Compare financial statements of the ten largest US Banks
-set C,USB,WFC,JPM,TD,GS,PNC,TFC,BAC,COF 
+set C,USB,WFC,JPM,TD,GS,PNC,TFC,BAC,COF
 cashflow
 income
 
