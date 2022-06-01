@@ -69,6 +69,7 @@ class TerminalController(BaseController):
         "funds",
         "alternative",
         "econometrics",
+        "forecasting",
     ]
 
     PATH = "/"
@@ -123,6 +124,7 @@ class TerminalController(BaseController):
         mt.add_raw("\n")
         mt.add_info("_others_")
         mt.add_menu("econometrics")
+        mt.add_menu("forecasting")
         mt.add_menu("portfolio")
         mt.add_menu("dashboards")
         mt.add_menu("reports")
@@ -235,6 +237,14 @@ class TerminalController(BaseController):
         )
 
         self.queue = EconometricsController(self.queue).menu()
+
+    def call_forecasting(self, _):
+        """Process forecasting command"""
+        from openbb_terminal.forecasting.forecasting_controller import (
+            ForecastingController,
+        )
+
+        self.queue = ForecastingController(self.queue).menu()
 
     def call_portfolio(self, _):
         """Process portfolio command"""

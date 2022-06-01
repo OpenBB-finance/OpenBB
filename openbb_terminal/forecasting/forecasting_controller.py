@@ -35,15 +35,20 @@ from openbb_terminal.helper_funcs import (
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console, MenuText
-from openbb_terminal.econometrics import econometrics_model, econometrics_view
+from openbb_terminal.forecasting import (
+    forecasting_controller,
+    forecasting_model,
+    forecasting_view,
+)
+from openbb_terminal.forecasting import expo_model, expo_view
 
 logger = logging.getLogger(__name__)
 
 # pylint: disable=R0902
 
 
-class EconometricsController(BaseController):
-    """Econometrics class"""
+class ForecastingController(BaseController):
+    """Forecasting class"""
 
     CHOICES_COMMANDS: List[str] = [
         "load",
@@ -59,18 +64,9 @@ class EconometricsController(BaseController):
         "delete",
         "combine",
         "rename",
-        "ols",
-        "norm",
-        "root",
-        "panel",
-        "compare",
-        "dwat",
-        "bgod",
-        "bpag",
-        "granger",
-        "coint",
+        "expo",
     ]
-    CHOICES_MENUS: List[str] = ["qa", "pred"]
+    # CHOICES_MENUS: List[str] = ["qa", "pred"]
     pandas_plot_choices = [
         "line",
         "scatter",
@@ -83,7 +79,7 @@ class EconometricsController(BaseController):
         "pie",
         "hexbin",
     ]
-    PATH = "/econometrics/"
+    PATH = "/forecasting/"
 
     loaded_dataset_cols = "\n"
     list_dataset_cols: List = list()
@@ -95,57 +91,57 @@ class EconometricsController(BaseController):
         self.datasets: Dict[str, pd.DataFrame] = dict()
         self.regression: Dict[Any[Dict, Any], Any] = dict()
 
-        self.DATA_EXAMPLES: Dict[str, str] = {
-            "anes96": "American National Election Survey 1996",
-            "cancer": "Breast Cancer Data",
-            "ccard": "Bill Greene’s credit scoring data.",
-            "cancer_china": "Smoking and lung cancer in eight cities in China.",
-            "co2": "Mauna Loa Weekly Atmospheric CO2 Data",
-            "committee": "First 100 days of the US House of Representatives 1995",
-            "copper": "World Copper Market 1951-1975 Dataset",
-            "cpunish": "US Capital Punishment dataset.",
-            "danish_data": "Danish Money Demand Data",
-            "elnino": "El Nino - Sea Surface Temperatures",
-            "engel": "Engel (1857) food expenditure data",
-            "fair": "Affairs dataset",
-            "fertility": "World Bank Fertility Data",
-            "grunfeld": "Grunfeld (1950) Investment Data",
-            "heart": "Transplant Survival Data",
-            "interest_inflation": "(West) German interest and inflation rate 1972-1998",
-            "longley": "Longley dataset",
-            "macrodata": "United States Macroeconomic data",
-            "modechoice": "Travel Mode Choice",
-            "nile": "Nile River flows at Ashwan 1871-1970",
-            "randhie": "RAND Health Insurance Experiment Data",
-            "scotland": "Taxation Powers Vote for the Scottish Parliament 1997",
-            "spector": "Spector and Mazzeo (1980) - Program Effectiveness Data",
-            "stackloss": "Stack loss data",
-            "star98": "Star98 Educational Dataset",
-            "statecrim": "Statewide Crime Data 2009",
-            "strikes": "U.S. Strike Duration Data",
-            "sunspots": "Yearly sunspots data 1700-2008",
-            "wage_panel": "Veila and M. Verbeek (1998): Whose Wages Do Unions Raise?",
-        }
+        # self.DATA_EXAMPLES: Dict[str, str] = {
+        #     "anes96": "American National Election Survey 1996",
+        #     "cancer": "Breast Cancer Data",
+        #     "ccard": "Bill Greene’s credit scoring data.",
+        #     "cancer_china": "Smoking and lung cancer in eight cities in China.",
+        #     "co2": "Mauna Loa Weekly Atmospheric CO2 Data",
+        #     "committee": "First 100 days of the US House of Representatives 1995",
+        #     "copper": "World Copper Market 1951-1975 Dataset",
+        #     "cpunish": "US Capital Punishment dataset.",
+        #     "danish_data": "Danish Money Demand Data",
+        #     "elnino": "El Nino - Sea Surface Temperatures",
+        #     "engel": "Engel (1857) food expenditure data",
+        #     "fair": "Affairs dataset",
+        #     "fertility": "World Bank Fertility Data",
+        #     "grunfeld": "Grunfeld (1950) Investment Data",
+        #     "heart": "Transplant Survival Data",
+        #     "interest_inflation": "(West) German interest and inflation rate 1972-1998",
+        #     "longley": "Longley dataset",
+        #     "macrodata": "United States Macroeconomic data",
+        #     "modechoice": "Travel Mode Choice",
+        #     "nile": "Nile River flows at Ashwan 1871-1970",
+        #     "randhie": "RAND Health Insurance Experiment Data",
+        #     "scotland": "Taxation Powers Vote for the Scottish Parliament 1997",
+        #     "spector": "Spector and Mazzeo (1980) - Program Effectiveness Data",
+        #     "stackloss": "Stack loss data",
+        #     "star98": "Star98 Educational Dataset",
+        #     "statecrim": "Statewide Crime Data 2009",
+        #     "strikes": "U.S. Strike Duration Data",
+        #     "sunspots": "Yearly sunspots data 1700-2008",
+        #     "wage_panel": "Veila and M. Verbeek (1998): Whose Wages Do Unions Raise?",
+        # }
 
         self.DATA_TYPES: List[str] = ["int", "float", "str", "bool", "category", "date"]
 
-        for regression in [
-            "OLS",
-            "POLS",
-            "BOLS",
-            "RE",
-            "FE",
-            "FE_EE",
-            "FE_IE",
-            "FE_EE_IE",
-            "FDOLS",
-        ]:
-            self.regression[regression] = {
-                "data": {},
-                "independent": {},
-                "dependent": {},
-                "model": {},
-            }
+        # for regression in [
+        #     "OLS",
+        #     "POLS",
+        #     "BOLS",
+        #     "RE",
+        #     "FE",
+        #     "FE_EE",
+        #     "FE_IE",
+        #     "FE_EE_IE",
+        #     "FDOLS",
+        # ]:
+        #     self.regression[regression] = {
+        #         "data": {},
+        #         "independent": {},
+        #         "dependent": {},
+        #         "model": {},
+        #     }
 
         self.signs: Dict[Any, Any] = {
             "div": "/",
@@ -174,6 +170,7 @@ class EconometricsController(BaseController):
             for feature in ["export", "show", "desc", "clear", "index"]:
                 choices[feature] = {c: None for c in self.files}
 
+            # TODO what is this?
             for feature in [
                 "general",
                 "type",
@@ -267,27 +264,16 @@ class EconometricsController(BaseController):
         mt.add_cmd("combine", "", self.files)
         mt.add_cmd("rename", "", self.files)
         mt.add_cmd("export", "", self.files)
-        mt.add_info("_tests_")
-        mt.add_cmd("norm", "", self.files)
-        mt.add_cmd("root", "", self.files)
-        mt.add_cmd("granger", "", self.files)
-        mt.add_cmd("coint", "", self.files)
-        mt.add_info("_regression_")
-        mt.add_cmd("ols", "", self.files)
-        mt.add_cmd("panel", "", self.files)
-        mt.add_cmd("compare", "", self.files)
-        mt.add_info("_regression_tests_")
-        mt.add_cmd("dwat", "", self.files and self.regression["OLS"]["model"])
-        mt.add_cmd("bgod", "", self.files and self.regression["OLS"]["model"])
-        mt.add_cmd("bpag", "", self.files and self.regression["OLS"]["model"])
+        mt.add_info("_timeseries_forecasting_")
+        mt.add_cmd("expo", "", self.files)
 
-        console.print(text=mt.menu_text, menu="Econometrics")
+        console.print(text=mt.menu_text, menu="Forecasting")
 
     def custom_reset(self):
         """Class specific component of reset command"""
         if self.files:
             load_files = [f"load {file}" for file in self.files]
-            return ["econometrics"] + load_files
+            return ["forecasting"] + load_files
         return []
 
     @log_start_end(log=logger)
@@ -297,12 +283,12 @@ class EconometricsController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="load",
-            description="Load custom dataset (from previous export, custom imports or StatsModels).",
+            description="Load custom dataset (from previous export, custom imports).",
         )
         parser.add_argument(
             "-f",
             "--file",
-            help="File to load data in (can be custom import or may have been exported before",
+            help="File to load data in (can be custom import, may have been exported before.)",
             type=str,
         )
         parser.add_argument(
@@ -312,15 +298,15 @@ class EconometricsController(BaseController):
             type=str,
         )
 
-        parser.add_argument(
-            "-e",
-            "--examples",
-            help="Use this argument to show examples of Statsmodels to load in. "
-            "See: https://www.statsmodels.org/devel/datasets/index.html",
-            action="store_true",
-            default=False,
-            dest="examples",
-        )
+        # parser.add_argument(
+        #     "-e",
+        #     "--examples",
+        #     help="Use this argument to show examples of Statsmodels to load in. "
+        #     "See: https://www.statsmodels.org/devel/datasets/index.html",
+        #     action="store_true",
+        #     default=False,
+        #     dest="examples",
+        # )
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-f")
@@ -328,37 +314,37 @@ class EconometricsController(BaseController):
 
         if ns_parser:
             # show examples from statsmodels
-            if ns_parser.examples:
-                df = pd.DataFrame.from_dict(self.DATA_EXAMPLES, orient="index")
-                print_rich_table(
-                    df,
-                    headers=list(["description"]),
-                    show_index=True,
-                    index_name="file name",
-                    title="Examples from Statsmodels",
-                )
-                return
+            # if ns_parser.examples:
+            #     df = pd.DataFrame.from_dict(self.DATA_EXAMPLES, orient="index")
+            #     print_rich_table(
+            #         df,
+            #         headers=list(["description"]),
+            #         show_index=True,
+            #         index_name="file name",
+            #         title="Examples from Statsmodels",
+            #     )
+            #     return
 
             if ns_parser.file:
-                possible_data = list(self.DATA_EXAMPLES.keys()) + list(
-                    self.DATA_FILES.keys()
-                )
-                if ns_parser.file not in possible_data:
-                    file = ""
-                    # Try to see if the user is just missing the extension
-                    for file_ext in list(self.DATA_FILES.keys()):
-                        if file_ext.startswith(ns_parser.file):
-                            # found the correct file
-                            file = file_ext
-                            break
+                # possible_data = list(self.DATA_EXAMPLES.keys()) + list(
+                #     self.DATA_FILES.keys()
+                # )
+                # if ns_parser.file not in possible_data:
+                #     file = ""
+                #     # Try to see if the user is just missing the extension
+                #     for file_ext in list(self.DATA_FILES.keys()):
+                #         if file_ext.startswith(ns_parser.file):
+                #             # found the correct file
+                #             file = file_ext
+                #             break
 
-                    if not file:
-                        console.print(
-                            "[red]The file/dataset selected does not exist.[/red]\n"
-                        )
-                        return
-                else:
-                    file = ns_parser.file
+                #     if not file:
+                #         console.print(
+                #             "[red]The file/dataset selected does not exist.[/red]\n"
+                #         )
+                #         return
+                # else:
+                file = ns_parser.file
 
                 if ns_parser.alias:
                     alias = ns_parser.alias
@@ -375,9 +361,7 @@ class EconometricsController(BaseController):
                     )
                     return
 
-                data = econometrics_model.load(
-                    file, self.file_types, self.DATA_FILES, self.DATA_EXAMPLES
-                )
+                data = forecasting_model.load(file, self.file_types, self.DATA_FILES)
 
                 if not data.empty:
                     data.columns = data.columns.map(
@@ -524,8 +508,8 @@ class EconometricsController(BaseController):
             for datasetcol in ns_parser.values:
                 dataset, col = datasetcol.split(".")
                 data[datasetcol] = self.datasets[dataset][col]
-
-            econometrics_view.display_plot(
+            # TODO - Display plot with multiple different simulatenous series
+            forecasting_view.display_plot(
                 data,
                 ns_parser.export,
             )
@@ -549,24 +533,6 @@ class EconometricsController(BaseController):
             help="The name of the database you want to show data for",
         )
 
-        parser.add_argument(
-            "-s",
-            "--sortcol",
-            help="Sort based on a column in the DataFrame",
-            nargs="+",
-            type=str,
-            dest="sortcol",
-            default="",
-        )
-        parser.add_argument(
-            "-a",
-            "--ascend",
-            help="Use this argument to sort in a descending order",
-            action="store_true",
-            default=False,
-            dest="ascend",
-        )
-
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
         ns_parser = parse_known_args_and_warn(
@@ -586,14 +552,6 @@ class EconometricsController(BaseController):
                     return console.print(
                         f"[red]No data available for {ns_parser.name}.[/red]\n"
                     )
-                if ns_parser.sortcol:
-                    sort_column = " ".join(ns_parser.sortcol)
-                    if sort_column not in self.datasets[name].columns:
-                        console.print(
-                            f"[red]{sort_column} not a valid column. Showing without sorting.\n[/red]"
-                        )
-                    else:
-                        df = df.sort_values(by=sort_column, ascending=ns_parser.ascend)
 
                 print_rich_table(
                     df.head(ns_parser.limit),
@@ -898,7 +856,7 @@ class EconometricsController(BaseController):
             other_args.insert(0, "-n")
         ns_parser = parse_known_args_and_warn(parser, other_args, NO_EXPORT, limit=5)
         if ns_parser:
-            self.datasets[ns_parser.name] = econometrics_model.clean(
+            self.datasets[ns_parser.name] = forecasting_model.clean(
                 self.datasets[ns_parser.name],
                 ns_parser.fill,
                 ns_parser.drop,
@@ -1171,560 +1129,98 @@ class EconometricsController(BaseController):
 
         console.print()
 
+    # EXPO Models
     @log_start_end(log=logger)
-    def call_ols(self, other_args: List[str]):
-        """Process ols command"""
+    def call_expo(self, other_args: List[str]):
+        """Process expo command"""
         parser = argparse.ArgumentParser(
-            add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="ols",
-            description="Performs an OLS regression on timeseries data.",
-        )
-        parser.add_argument(
-            "-d",
-            "--dependent",
-            type=str,
-            dest="dependent",
-            help="The dependent variable on the regression you would like to perform",
-            required="-h" not in other_args,
-        )
-        parser.add_argument(
-            "-i",
-            "--independent",
-            type=check_list_values(self.choices["regressions"]),
-            dest="independent",
-            help=(
-                "The independent variables on the regression you would like to perform. "
-                "E.g. historical.high,historical.low"
-            ),
-            required="-h" not in other_args,
-        )
-
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-d")
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            if "," in ns_parser.dependent:
-                console.print(
-                    "It appears you have selected multiple variables for the dependent variable. "
-                    "The model only accepts one.\nDid you intend to include these variables as independent "
-                    f"variables? Use -i {ns_parser.dependent} in this case.\n"
-                )
-            elif ns_parser.dependent in self.choices["regressions"]:
-                (
-                    self.regression["OLS"]["data"],
-                    self.regression["OLS"]["dependent"],
-                    self.regression["OLS"]["independent"],
-                    self.regression["OLS"]["model"],
-                ) = openbb_terminal.econometrics.regression_model.get_ols(
-                    [ns_parser.dependent] + ns_parser.independent,
-                    self.datasets,
-                    self.choices["regressions"],
-                    export=ns_parser.export,
-                )
-            else:
-                console.print(
-                    f"{ns_parser.dependent} not in {','.join(self.choices['regressions'])}\n"
-                    f"Please choose a valid dataset and column combination.\n"
-                )
-
-    @log_start_end(log=logger)
-    def call_norm(self, other_args: List[str]):
-        """Process normality command"""
-        parser = argparse.ArgumentParser(
             add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="norm",
-            description="Test whether the used data is normally distributed.",
+            prog="expo",
+            description="""
+                Perform Probabilistic Exponential Smoothing forecast
+                Trend: N: None, A: Additive, M: Multiplicative
+                Seasonality: N: None, A: Additive, M: Multiplicative
+                Dampen: T: True, F: False
+            """,
         )
         parser.add_argument(
-            "-v",
-            "--value",
-            type=str,
-            choices=self.choices["norm"],
-            dest="column",
-            help="The dataset.column you want to test normality for",
-            required="-h" not in other_args,
-        )
-        parser.add_argument(
-            "-p",
-            "--plot",
-            dest="plot",
-            help="Whether you wish to plot a histogram to visually depict normality",
-            action="store_true",
-            default=False,
-        )
-
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-v")
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-
-        if ns_parser and ns_parser.column:
-            column, dataset = self.choices["norm"][ns_parser.column].keys()
-
-            if isinstance(self.datasets[dataset][column].index, pd.MultiIndex):
-                return console.print(
-                    f"The column '{column}' from the dataset '{dataset}' is a MultiIndex. To test for normality in a "
-                    "timeseries, make sure to set a singular time index.\n"
-                )
-
-            if dataset in self.datasets:
-                if isinstance(self.datasets[dataset], pd.Series):
-                    data = self.datasets[dataset]
-                elif isinstance(self.datasets[dataset], pd.DataFrame):
-                    data = self.datasets[dataset][column]
-                else:
-                    return console.print(
-                        f"The type of {dataset} ({type(dataset)} is not an option."
-                    )
-            else:
-                return console.print(f"Can not find {dataset}. Did you load the data?")
-
-            return econometrics_view.display_norm(
-                data, dataset, column, ns_parser.plot, ns_parser.export
-            )
-
-    @log_start_end(log=logger)
-    def call_root(self, other_args: List[str]):
-        """Process unit root command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="root",
-            description="Show unit root tests of a column of a dataset",
-        )
-        parser.add_argument(
-            "-v",
-            "--value",
-            type=str,
-            choices=self.choices["root"],
-            dest="column",
-            help="The column and name of the database you want test unit root for",
-            required="-h" not in other_args,
-        )
-
-        parser.add_argument(
-            "-r",
-            "--fuller_reg",
-            help="Type of regression. Can be 'c','ct','ctt','nc'. c - Constant and t - trend order",
-            choices=["c", "ct", "ctt", "nc"],
-            default="c",
-            type=str,
-            dest="fuller_reg",
-        )
-        parser.add_argument(
-            "-k",
-            "--kps_reg",
-            help="Type of regression. Can be 'c', 'ct'. c - Constant and t - trend order",
-            choices=["c", "ct"],
-            type=str,
-            dest="kpss_reg",
-            default="c",
-        )
-
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-v")
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-
-        if ns_parser and ns_parser.column:
-            column, dataset = self.choices["root"][ns_parser.column].keys()
-
-            if isinstance(self.datasets[dataset][column].index, pd.MultiIndex):
-                console.print(
-                    f"The column '{column}' from the dataset '{dataset}' is a MultiIndex. To test for unitroot in a "
-                    "timeseries, make sure to set a singular time index.\n"
-                )
-            else:
-                if isinstance(self.datasets[dataset], pd.Series):
-                    data = self.datasets[dataset]
-                elif isinstance(self.datasets[dataset], pd.DataFrame):
-                    data = self.datasets[dataset][column]
-                else:
-                    return console.print(
-                        "Can not select data due to the data not being a DataFrame or Series."
-                    )
-
-                econometrics_view.display_root(
-                    data,
-                    dataset,
-                    column,
-                    ns_parser.fuller_reg,
-                    ns_parser.kpss_reg,
-                    ns_parser.export,
-                )
-
-    @log_start_end(log=logger)
-    def call_panel(self, other_args: List[str]):
-        """Process panel command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="panel",
-            description="Performs regression analysis on Panel Data. There are a multitude of options to select "
-            "from to fit the needs of restrictions of the dataset.",
-        )
-        parser.add_argument(
-            "-d",
-            "--dependent",
-            type=str,
-            dest="dependent",
-            help="The dependent variable on the regression you would like to perform",
-            required="-h" not in other_args,
-        )
-        parser.add_argument(
-            "-i",
-            "--independent",
-            type=check_list_values(self.choices["regressions"]),
-            dest="independent",
-            help=(
-                "The independent variables on the regression you would like to perform. "
-                "E.g. wage_panel.married,wage_panel.union"
-            ),
-            required="-h" not in other_args,
-        )
-        parser.add_argument(
-            "-r",
-            "--regression",
-            type=str,
-            choices=[
-                "pols",
-                "re",
-                "bols",
-                "fe",
-                "fdols",
-                "POLS",
-                "RE",
-                "BOLS",
-                "FE",
-                "FDOLS",
-            ],
-            dest="type",
-            help="The type of regression you wish to perform. This can be either pols (Pooled OLS), "
-            "re (Random Effects), bols (Between OLS), fe (Fixed Effects) or fdols (First Difference OLS)",
-            default="pols",
-        )
-        parser.add_argument(
-            "-e",
-            "--entity_effects",
-            dest="entity_effects",
-            help="Using this command creates entity effects, which is equivalent to including dummies for each entity. "
-            "This is only used within Fixed Effects estimations (when type is set to 'fe')",
-            action="store_true",
-            default=False,
-        )
-        parser.add_argument(
-            "-t",
-            "--time_effects",
-            dest="time_effects",
-            help="Using this command creates time effects, which is equivalent to including dummies for each time. "
-            "This is only used within Fixed Effects estimations (when type is set to 'fe')",
-            action="store_true",
-            default=False,
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-d")
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-
-        if ns_parser:
-            if "," in ns_parser.dependent:
-                console.print(
-                    "It appears you have selected multiple variables for the dependent variable. "
-                    "The model only accepts one.\nDid you intend to include these variables as independent "
-                    f"variables? Use -i {ns_parser.dependent} in this case.\n"
-                )
-            elif ns_parser.dependent in self.choices["regressions"]:
-                regression_vars = [ns_parser.dependent] + ns_parser.independent
-
-                if regression_vars and len(regression_vars) > 1:
-                    for variable in regression_vars:
-                        column, dataset = self.choices["regressions"][variable].keys()
-                        if not isinstance(
-                            self.datasets[dataset][column].index, pd.MultiIndex
-                        ):
-                            other_column = (
-                                self.datasets[dataset].drop(column, axis=1).columns[0]
-                            )
-                            return console.print(
-                                f"The column '{column}' from the dataset '{dataset}' is not a MultiIndex. Make sure "
-                                f"you set the index correctly with the index (e.g. index {dataset} -i {column},"
-                                f"{other_column}) command where the first level is the entity (e.g. Tesla Inc.) and "
-                                f"the second level the date (e.g. 2021-03-31)\n"
-                            )
-
-                    # Ensure that OLS is always ran to be able to perform tests
-                    regression_types = ["OLS", ns_parser.type.upper()]
-
-                    for regression in regression_types:
-                        regression_name = regression
-                        if regression == "FE":
-                            if ns_parser.entity_effects:
-                                regression_name = regression_name + "_EE"
-                            if ns_parser.time_effects:
-                                regression_name = regression_name + "_IE"
-
-                        (
-                            self.regression[regression_name]["data"],
-                            self.regression[regression_name]["dependent"],
-                            self.regression[regression_name]["independent"],
-                            self.regression[regression_name]["model"],
-                        ) = openbb_terminal.econometrics.regression_view.display_panel(
-                            regression,
-                            regression_vars,
-                            self.datasets,
-                            self.choices["regressions"],
-                            ns_parser.entity_effects,
-                            ns_parser.time_effects,
-                        )
-                        console.print()
-            else:
-                console.print(
-                    f"{ns_parser.dependent} not in {','.join(self.choices['regressions'])}\n"
-                    f"Please choose a valid dataset and column combination.\n"
-                )
-
-    @log_start_end(log=logger)
-    def call_compare(self, other_args: List[str]):
-        """Process compare command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="compare",
-            description="Compare results between all activated Panel regression models",
-        )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            openbb_terminal.econometrics.regression_model.get_comparison(
-                self.regression, ns_parser.export
-            )
-            console.print()
-
-    @log_start_end(log=logger)
-    def call_dwat(self, other_args: List[str]):
-        """Process unitroot command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="dwat",
-            description=(
-                "Show autocorrelation tests from Durbin-Watson. "
-                "Needs OLS to be run in advance with independent and dependent variables"
-            ),
-        )
-        parser.add_argument(
-            "-p",
-            "--plot",
-            help="Plot the residuals",
-            dest="plot",
-            action="store_true",
-            default=False,
-        )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            if not self.regression["OLS"]["model"]:
-                console.print(
-                    "Please perform an OLS regression before estimating the Durbin-Watson statistic.\n"
-                )
-            else:
-                dependent_variable = self.regression["OLS"]["data"][
-                    self.regression["OLS"]["dependent"]
-                ]
-                openbb_terminal.econometrics.regression_view.display_dwat(
-                    dependent_variable,
-                    self.regression["OLS"]["model"].resid,
-                    ns_parser.plot,
-                    ns_parser.export,
-                )
-
-    @log_start_end(log=logger)
-    def call_bgod(self, other_args):
-        """Process bgod command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="bgod",
-            description=(
-                "Show Breusch-Godfrey autocorrelation test results."
-                "Needs OLS to be run in advance with independent and dependent variables"
-            ),
-        )
-        parser.add_argument(
-            "-l",
-            "--lags",
+            "-n",
+            "--n_days",
+            action="store",
+            dest="n_days",
             type=check_positive,
-            dest="lags",
-            help="The lags for the Breusch-Godfrey test",
-            default=3,
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-l")
-
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-
-        if ns_parser:
-            if not self.regression["OLS"]["model"]:
-                console.print(
-                    "Please perform an OLS regression before estimating the Breusch-Godfrey statistic.\n"
-                )
-            else:
-                openbb_terminal.econometrics.regression_view.display_bgod(
-                    self.regression["OLS"]["model"], ns_parser.lags, ns_parser.export
-                )
-
-    @log_start_end(log=logger)
-    def call_bpag(self, other_args):
-        """Process bpag command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="bpag",
-            description=(
-                "Show Breusch-Pagan heteroscedasticity test results."
-                "Needs OLS to be run in advance with independent and dependent variables"
-            ),
-        )
-
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-
-        if ns_parser:
-            if not self.regression["OLS"]["model"]:
-                console.print(
-                    "Please perform an OLS regression before estimating the Breusch-Pagan statistic.\n"
-                )
-            else:
-                openbb_terminal.econometrics.regression_view.display_bpag(
-                    self.regression["OLS"]["model"], ns_parser.export
-                )
-
-    @log_start_end(log=logger)
-    def call_granger(self, other_args: List[str]):
-        """Process granger command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="granger",
-            description="Show Granger causality between two timeseries",
+            default=5,
+            help="prediction days.",
         )
         parser.add_argument(
             "-t",
-            "--timeseries",
-            choices=self.choices["granger"],
-            help="Requires two time series, the first time series is assumed to be Granger-caused "
-            "by the second time series.",
-            type=str,
-            dest="ts",
-        )
-        parser.add_argument(
-            "-l",
-            "--lags",
-            help="How many lags should be included",
-            type=int,
-            dest="lags",
-            default=3,
-        )
-        parser.add_argument(
-            "-c",
-            "--confidence",
-            help="Set the confidence level",
-            type=check_positive_float,
-            dest="confidence",
-            default=0.05,
-        )
-
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-t")
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-
-        if ns_parser and ns_parser.ts:
-
-            datasetcol_y, datasetcol_x = ns_parser.ts.split(",")
-
-            dataset_y, column_y = datasetcol_y.split(".")
-            dataset_x, column_x = datasetcol_x.split(".")
-
-            econometrics_view.display_granger(
-                self.datasets[dataset_y][column_y].rename(datasetcol_y),
-                self.datasets[dataset_x][column_x].rename(datasetcol_x),
-                ns_parser.lags,
-                ns_parser.confidence,
-                ns_parser.export,
-            )
-
-    @log_start_end(log=logger)
-    def call_coint(self, other_args: List[str]):
-        """Process coint command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="coint",
-            description="Show co-integration between two timeseries",
-        )
-        parser.add_argument(
-            "-t",
-            "--time_series",
-            help="The time series you wish to test co-integration on. E.g. historical.open,historical2.close.",
-            dest="ts",
-            type=check_list_values(self.choices["coint"]),
-            required="-h" not in other_args,
-        )
-        parser.add_argument(
-            "-p",
-            "--plot",
-            help="Plot Z-Values",
-            dest="plot",
-            action="store_true",
-            default=False,
+            "--trend",
+            action="store",
+            dest="trend",
+            choices=expo_model.TRENDS,
+            default="A",
+            help="Trend: N: None, A: Additive, M: Multiplicative.",
         )
         parser.add_argument(
             "-s",
-            "--significant",
-            help="Show only companies that have p-values lower than this percentage",
-            dest="significant",
-            type=float,
-            default=0,
+            "--seasonal",
+            action="store",
+            dest="seasonal",
+            choices=expo_model.SEASONS,
+            default="A",
+            help="Seasonality: N: None, A: Additive, M: Multiplicative.",
         )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-t")
+        parser.add_argument(
+            "-p",
+            "--periods",
+            action="store",
+            dest="seasonal_periods",
+            type=check_positive,
+            default=7,
+            help="Seasonal periods: 4: Quarterly, 7: Daily",
+        )
+        parser.add_argument(
+            "-d",
+            "--dampen",
+            action="store",
+            dest="dampen",
+            default="F",
+            help="Dampening",
+        )
+        parser.add_argument(
+            "-w",
+            "--window",
+            action="store",
+            dest="start_window",
+            default=0.65,
+            help="Start point for rolling training and forecast window. 0.0-1.0",
+        )
+        parser.add_argument(
+            "-f",
+            "--forecasthorizon",
+            action="store",
+            dest="forecast_horizon",
+            default=3,
+            help="Days/Points to forecast when training and performing historical back-testing",
+        )
 
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+            parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
-
+        print(self.datasets)
+        # print(self.files)
+        # TODO Convert this to multi series
         if ns_parser:
-
-            if ns_parser.ts:
-
-                if len(ns_parser.ts) > 2:
-                    datasets = {}
-                    for stock in ns_parser.ts:
-                        column, dataset = self.choices["coint"][stock].keys()
-                        datasets[stock] = self.datasets[dataset][column]
-
-                    econometrics_view.display_cointegration_test(
-                        datasets,
-                        ns_parser.significant,
-                        ns_parser.plot,
-                        ns_parser.export,
-                    )
-
-                else:
-                    console.print(
-                        "[red]More than one dataset.column must be provided.\n[/red]"
-                    )
+            expo_view.display_expo_forecast(
+                data=self.datasets,
+                ticker_name=self.files,
+                n_predict=ns_parser.n_days,
+                trend=ns_parser.trend,
+                seasonal=ns_parser.seasonal,
+                seasonal_periods=ns_parser.seasonal_periods,
+                dampen=ns_parser.dampen,
+                start_window=ns_parser.start_window,
+                forecast_horizon=ns_parser.forecast_horizon,
+                export=ns_parser.export,
+            )
