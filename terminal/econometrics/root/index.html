@@ -3892,25 +3892,7 @@ In probability theory and statistics, a unit root is a feature of some stochasti
     <li style="margin-top: 15px; text-transform: capitalize;">
         
         
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/OpenBBTerminal/terminal/stocks/fundamental_analysis/web/"
-                    class="gdoc-nav__entry ">
-                    web
-                </a>
-            </span>
-            
+            <span class="flex">fundamental_analysis/web&#34;</span>
         
 
         
@@ -21194,37 +21176,6 @@ In probability theory and statistics, a unit root is a feature of some stochasti
             
             <span class="flex">
                 
-                <a href="/OpenBBTerminal/terminal/econometrics/options/"
-                    class="gdoc-nav__entry ">
-                    options
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
                 <a href="/OpenBBTerminal/terminal/econometrics/show/"
                     class="gdoc-nav__entry ">
                     show
@@ -21411,9 +21362,102 @@ In probability theory and statistics, a unit root is a feature of some stochasti
             
             <span class="flex">
                 
-                <a href="/OpenBBTerminal/terminal/econometrics/modify/"
+                <a href="/OpenBBTerminal/terminal/econometrics/add/"
                     class="gdoc-nav__entry ">
-                    modify
+                    add
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/OpenBBTerminal/terminal/econometrics/delete/"
+                    class="gdoc-nav__entry ">
+                    delete
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/OpenBBTerminal/terminal/econometrics/combine/"
+                    class="gdoc-nav__entry ">
+                    combine
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/OpenBBTerminal/terminal/econometrics/rename/"
+                    class="gdoc-nav__entry ">
+                    rename
                 </a>
             </span>
             
@@ -26028,37 +26072,24 @@ In probability theory and statistics, a unit root is a feature of some stochasti
    --export {csv,json,xlsx}
                         Export raw data into csv, json, xlsx (default: )
 </code></pre><p>Example:</p>
-<pre><code>2022 Feb 24, 05:37 (✨) /econometrics/ $ root return-msft
-Unitroot Test [Column: return | Dataset: msft]
-┏━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━┓
-┃                ┃ ADF      ┃ KPSS ┃
-┡━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━┩
-│ Test Statistic │ -22.31   │ 0.09 │
-├────────────────┼──────────┼──────┤
-│ P-Value        │ 0.00     │ 0.10 │
-├────────────────┼──────────┼──────┤
-│ NLags          │ 1.00     │ 5    │
-├────────────────┼──────────┼──────┤
-│ Nobs           │ 757.00   │      │
-├────────────────┼──────────┼──────┤
-│ ICBest         │ -3902.73 │      │
-└────────────────┴──────────┴──────┘
+<pre><code>2022 Jun 01, 06:47 (🦋) /econometrics/ $ load fair
 
-2022 Feb 24, 05:38 (✨) /econometrics/ $ root adj_close-aapl
-Unitroot Test [Column: adj_close | Dataset: aapl]
-┏━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┓
-┃                ┃ ADF     ┃ KPSS ┃
-┡━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━┩
-│ Test Statistic │ -0.46   │ 4.20 │
-├────────────────┼─────────┼──────┤
-│ P-Value        │ 0.90    │ 0.01 │
-├────────────────┼─────────┼──────┤
-│ NLags          │ 1.00    │ 17   │
-├────────────────┼─────────┼──────┤
-│ Nobs           │ 757.00  │      │
-├────────────────┼─────────┼──────┤
-│ ICBest         │ 3214.33 │      │
-└────────────────┴─────────┴──────┘
+2022 Jun 01, 06:47 (🦋) /econometrics/ $ root fair.yrs_married
+
+Unitroot from dataset 'fair of 'yrs_married'
+┏━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┓
+┃                ┃ ADF      ┃ KPSS  ┃
+┡━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━┩
+│ Test Statistic │ -8.08    │ 7.01  │
+├────────────────┼──────────┼───────┤
+│ P-Value        │ 0.00     │ 0.01  │
+├────────────────┼──────────┼───────┤
+│ NLags          │ 34.00    │ 26.00 │
+├────────────────┼──────────┼───────┤
+│ Nobs           │ 6331.00  │ 0.00  │
+├────────────────┼──────────┼───────┤
+│ ICBest         │ 42958.72 │ 0.00  │
+└────────────────┴──────────┴───────┘
 </code></pre>
     </article>
  
@@ -28356,16 +28387,6 @@ Unitroot Test [Column: adj_close | Dataset: aapl]
 
         
         
-            
-            
-            
-
-            
-
-            
-
-            
-        
 
         
         
@@ -38778,9 +38799,47 @@ Unitroot Test [Column: adj_close | Dataset: aapl]
         
         
             
+    
+    
+
     
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
     
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
 
+        
+        
     
         
         

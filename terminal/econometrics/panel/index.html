@@ -3892,25 +3892,7 @@ Panel data includes observations on multiple entities – individuals, firms, co
     <li style="margin-top: 15px; text-transform: capitalize;">
         
         
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/OpenBBTerminal/terminal/stocks/fundamental_analysis/web/"
-                    class="gdoc-nav__entry ">
-                    web
-                </a>
-            </span>
-            
+            <span class="flex">fundamental_analysis/web&#34;</span>
         
 
         
@@ -21194,37 +21176,6 @@ Panel data includes observations on multiple entities – individuals, firms, co
             
             <span class="flex">
                 
-                <a href="/OpenBBTerminal/terminal/econometrics/options/"
-                    class="gdoc-nav__entry ">
-                    options
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
                 <a href="/OpenBBTerminal/terminal/econometrics/show/"
                     class="gdoc-nav__entry ">
                     show
@@ -21411,9 +21362,102 @@ Panel data includes observations on multiple entities – individuals, firms, co
             
             <span class="flex">
                 
-                <a href="/OpenBBTerminal/terminal/econometrics/modify/"
+                <a href="/OpenBBTerminal/terminal/econometrics/add/"
                     class="gdoc-nav__entry ">
-                    modify
+                    add
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/OpenBBTerminal/terminal/econometrics/delete/"
+                    class="gdoc-nav__entry ">
+                    delete
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/OpenBBTerminal/terminal/econometrics/combine/"
+                    class="gdoc-nav__entry ">
+                    combine
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/OpenBBTerminal/terminal/econometrics/rename/"
+                    class="gdoc-nav__entry ">
+                    rename
                 </a>
             </span>
             
@@ -26030,7 +26074,7 @@ Panel data includes observations on multiple entities – individuals, firms, co
   --export {csv,json,xlsx}
                         Export raw data into csv, json, xlsx (default: )
 </code></pre><p>Below you can find examples of the dataset from Vella and M. Verbeek (1998), “Whose Wages Do Unions Raise? A Dynamic Model of Unionism and Wage Rate Determination for Young Men,” Journal of Applied Econometrics 13, 163-183. This is a well-known dataset also used within Chapter 14 of Introduction to Econometrics by Jeffrey Wooldridge. For these regressions, <a class="gdoc-markdown__link" href="https://bashtage.github.io/linearmodels/panel/examples/examples.html">LinearModels</a> is used.</p>
-<pre><code>2022 Feb 25, 08:07 (✨) /econometrics/ $ load wage_panel wp
+<pre><code>2022 Feb 25, 08:07 (✨) /econometrics/ $ load wage_panel -a wp
 
 2022 Feb 25, 08:08 (✨) /econometrics/ $ type
            wp
@@ -26062,9 +26106,9 @@ Panel data includes observations on multiple entities – individuals, firms, co
 │ occupation │ int64    │
 └────────────┴──────────┘
 
-2022 Feb 25, 08:09 (✨) /econometrics/ $ index wp nr year
+2022 Feb 25, 08:09 (✨) /econometrics/ $ index wp -i nr,year
 
-2022 Feb 25, 08:10 (✨) /econometrics/ $ type year-wp category
+2022 Feb 25, 08:10 (✨) /econometrics/ $ type wp.year -f category
 
 2022 Feb 25, 08:10 (✨) /econometrics/ $ show wp
                                                             wp
@@ -26092,7 +26136,7 @@ Panel data includes observations on multiple entities – individuals, firms, co
 │ (17, 1981) │ 17.00 │ 1981.00 │ 0.00  │ 5.00  │ 0.00 │ 2804.00 │ 0.00    │ 13.00 │ 0.00  │ 1.52  │ 25.00   │ 2.00       │
 └────────────┴───────┴─────────┴───────┴───────┴──────┴─────────┴─────────┴───────┴───────┴───────┴─────────┴────────────┘
 </code></pre><p><strong>Pooled OLS Estimation:</strong></p>
-<pre><code>2022 Feb 25, 08:51 (✨) /econometrics/ $ panel lwage-wp black-wp hisp-wp exper-wp expersq-wp married-wp educ-wp union-wp year-wp
+<pre><code>(✨) /econometrics/ $ panel -d wp.lwage -i wp.black,wp.hisp,wp.exper,wp.expersq,wp.married,wp.educ,wp.union,wp.year
 
                           PooledOLS Estimation Summary
 ================================================================================
@@ -26134,7 +26178,7 @@ year_wp.1986     0.1420     0.0464     3.0580     0.0022      0.0509      0.2330
 year_wp.1987     0.1738     0.0494     3.5165     0.0004      0.0769      0.2707
 ================================================================================
 </code></pre><p><strong>Between OLS Estimation:</strong></p>
-<pre><code>2022 Feb 25, 08:51 (✨) /econometrics/ $ panel lwage-wp black-wp hisp-wp exper-wp married-wp educ-wp union-wp -t bols
+<pre><code>(✨) /econometrics/ $ panel -d wp.lwage -i wp.black,wp.hisp,wp.exper,wp.married,wp.educ,wp.union -r bols
 
                          BetweenOLS Estimation Summary
 ================================================================================
@@ -26168,7 +26212,7 @@ educ_wp        0.0913     0.0107     8.5159     0.0000      0.0702      0.1123
 union_wp       0.2587     0.0460     5.6214     0.0000      0.1683      0.3491
 ==============================================================================
 </code></pre><p><strong>Random Effects Estimation:</strong></p>
-<pre><code>2022 Feb 25, 08:53 (✨) /econometrics/ $ panel lwage-wp black-wp hisp-wp exper-wp expersq-wp married-wp educ-wp union-wp year-wp -t re
+<pre><code>(✨) /econometrics/ $ panel -d wp.lwage -i wp.black,wp.hisp,wp.exper,wp.expersq,wp.married,wp.educ,wp.union,wp.year -r re
 
                         RandomEffects Estimation Summary
 ================================================================================
@@ -26210,7 +26254,7 @@ year_wp.1986     0.0918     0.0716     1.2834     0.1994     -0.0485      0.2321
 year_wp.1987     0.1348     0.0817     1.6504     0.0989     -0.0253      0.2950
 ================================================================================
 </code></pre><p><strong>Fixed Effects Estimation (no effects):</strong></p>
-<pre><code>2022 Feb 25, 08:51 (✨) /econometrics/ $ panel lwage-wp expersq-wp union-wp married-wp  year-wp -t fe
+<pre><code>(✨) /econometrics/ $ panel -d wp.lwage -i wp.expersq,wp.union,wp.married,wp.year -r fe
 
                           PanelOLS Estimation Summary
 ================================================================================
@@ -26248,7 +26292,7 @@ year_wp.1986     0.5039     0.0365     13.806     0.0000      0.4323      0.5754
 year_wp.1987     0.5952     0.0396     15.026     0.0000      0.5176      0.6729
 ================================================================================
 </code></pre><p><strong>Fixed Effects Estimation (entity effects):</strong></p>
-<pre><code>2022 Feb 25, 08:51 (✨) /econometrics/ $ panel lwage-wp expersq-wp union-wp married-wp  year-wp -t fe -ee
+<pre><code>(✨) /econometrics/ $ panel -d wp.lwage -i wp.expersq,wp.married,wp.union,wp.year -r fe -e
 
                           PanelOLS Estimation Summary
 ================================================================================
@@ -26292,7 +26336,7 @@ Distribution: F(544,3805)
 
 Included effects: Entity
 </code></pre><p><strong>Fixed Effects Estimation (time effects):</strong></p>
-<pre><code>2022 Feb 25, 08:52 (✨) /econometrics/ $ panel lwage-wp expersq-wp union-wp married-wp  -t fe -te
+<pre><code>(✨) /econometrics/ $ panel -d wp.lwage -i wp.expersq,wp.married,wp.union -r fe -t
 
                           PanelOLS Estimation Summary
 ================================================================================
@@ -26329,7 +26373,7 @@ Distribution: F(7,4349)
 
 Included effects: Time
 </code></pre><p><strong>Fixed Effects Estimation (entity and time effects):</strong></p>
-<pre><code>2022 Feb 25, 08:52 (✨) /econometrics/ $ panel lwage-wp expersq-wp union-wp married-wp  -t fe -te -ee
+<pre><code>(✨) /econometrics/ $ panel -d wp.lwage -i wp.expersq,wp.married,wp.union  -r fe -t -e
 
                           PanelOLS Estimation Summary
 ================================================================================
@@ -26366,7 +26410,7 @@ Distribution: F(551,3805)
 
 Included effects: Entity, Time
 </code></pre><p><strong>First Difference OLS Estimation:</strong></p>
-<pre><code>2022 Feb 25, 08:52 (✨) /econometrics/ $ panel lwage-wp exper-wp expersq-wp union-wp married-wp -t fdols
+<pre><code>(✨) /econometrics/ $ panel -d wp.lwage -i wp.exper,wp.expersq,wp.married,wp.union -r fdols
 
                      FirstDifferenceOLS Estimation Summary
 ================================================================================
@@ -28693,16 +28737,6 @@ married_wp     0.0381     0.0229     1.6633     0.0963     -0.0068      0.0831
 
         
         
-            
-            
-            
-
-            
-
-            
-
-            
-        
 
         
         
@@ -39115,9 +39149,47 @@ married_wp     0.0381     0.0229     1.6633     0.0963     -0.0068      0.0831
         
         
             
+    
+    
+
     
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
     
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
 
+        
+        
     
         
         

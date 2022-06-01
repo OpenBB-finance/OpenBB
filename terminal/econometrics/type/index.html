@@ -9,8 +9,9 @@
 
 
 
-    <meta name="description" content="usage: type [-n NAME NAME] [-d {Y,m,d,m-d,Y-m,Y-d,Y-m-d,Y-d-m,default}] [-h] Show the type of the columns of the dataset and/or change the type of the column
-optional arguments: -n NAME NAME, --name NAME NAME The first argument is the column and name of the dataset (format: &lt;column-dataset&gt;). The second argument is the preferred type. This can be: int, float, str, bool, date, category (default: None) -d {Y,m,d,m-d,Y-m,Y-d,Y-m-d,Y-d-m,default}, --dateformat {Y,m,d,m-d,Y-m,Y-d,Y-m-d,Y-d-m,default} Set the format of the date.">
+    <meta name="description" content="usage: type -n {} -f {int,float,str,bool,category,date} [-h] Show the type of the columns of the dataset and/or change the type of the column
+optional arguments: -n {}, --name {} Provide dataset.column series to change type. (default: None) -f {int,float,str,bool,category,date}, --format {int,float,str,bool,category,date} Set the format for the dataset.column defined. This can be: date, int, float, str, bool or category (default: None) -h, --help show this help message (default: False) Example:
+2022 Feb 28, 15:53 (✨) /econometrics/ $ load wage_panel -a wp 2022 Feb 28, 15:53 (✨) /econometrics/ $ type wp ┏━━━━━━━━━━━━┳━━━━━━━━━┓ ┃ column ┃ dtype ┃ ┡━━━━━━━━━━━━╇━━━━━━━━━┩ │ nr │ int64 │ ├────────────┼─────────┤ │ year │ int64 │ ├────────────┼─────────┤ │ black │ int64 │ ├────────────┼─────────┤ │ exper │ int64 │ ├────────────┼─────────┤ │ hisp │ int64 │ ├────────────┼─────────┤ │ hours │ int64 │ ├────────────┼─────────┤ │ married │ int64 │ ├────────────┼─────────┤ │ educ │ int64 │ ├────────────┼─────────┤ │ union │ int64 │ ├────────────┼─────────┤ │ lwage │ float64 │ ├────────────┼─────────┤ │ expersq │ int64 │ ├────────────┼─────────┤ │ occupation │ int64 │ └────────────┴─────────┘ 2022 Feb 28, 15:54 (✨) /econometrics/ $ type wp.">
 
 
 
@@ -3892,25 +3893,7 @@ optional arguments: -n NAME NAME, --name NAME NAME The first argument is the col
     <li style="margin-top: 15px; text-transform: capitalize;">
         
         
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/OpenBBTerminal/terminal/stocks/fundamental_analysis/web/"
-                    class="gdoc-nav__entry ">
-                    web
-                </a>
-            </span>
-            
+            <span class="flex">fundamental_analysis/web&#34;</span>
         
 
         
@@ -21194,37 +21177,6 @@ optional arguments: -n NAME NAME, --name NAME NAME The first argument is the col
             
             <span class="flex">
                 
-                <a href="/OpenBBTerminal/terminal/econometrics/options/"
-                    class="gdoc-nav__entry ">
-                    options
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
                 <a href="/OpenBBTerminal/terminal/econometrics/show/"
                     class="gdoc-nav__entry ">
                     show
@@ -21411,9 +21363,102 @@ optional arguments: -n NAME NAME, --name NAME NAME The first argument is the col
             
             <span class="flex">
                 
-                <a href="/OpenBBTerminal/terminal/econometrics/modify/"
+                <a href="/OpenBBTerminal/terminal/econometrics/add/"
                     class="gdoc-nav__entry ">
-                    modify
+                    add
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/OpenBBTerminal/terminal/econometrics/delete/"
+                    class="gdoc-nav__entry ">
+                    delete
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/OpenBBTerminal/terminal/econometrics/combine/"
+                    class="gdoc-nav__entry ">
+                    combine
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/OpenBBTerminal/terminal/econometrics/rename/"
+                    class="gdoc-nav__entry ">
+                    rename
                 </a>
             </span>
             
@@ -26014,17 +26059,16 @@ optional arguments: -n NAME NAME, --name NAME NAME The first argument is the col
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Type</h1>
-        <pre><code>usage: type [-n NAME NAME] [-d {Y,m,d,m-d,Y-m,Y-d,Y-m-d,Y-d-m,default}] [-h]
+        <pre><code>usage: type -n {} -f {int,float,str,bool,category,date} [-h]
 </code></pre><p>Show the type of the columns of the dataset and/or change the type of the column</p>
 <pre><code>optional arguments:
-  -n NAME NAME, --name NAME NAME
-                        The first argument is the column and name of the dataset (format: &lt;column-dataset&gt;). The second argument is the preferred type. This can be: int, float, str, bool, date, category (default: None)
-  -d {Y,m,d,m-d,Y-m,Y-d,Y-m-d,Y-d-m,default}, --dateformat {Y,m,d,m-d,Y-m,Y-d,Y-m-d,Y-d-m,default}
-                        Set the format of the date. This can be: 'Y', 'M', 'D', 'm-d', 'Y-m', 'Y-d','Y-m-d', 'Y-d-m' (default: default)
+  -n {}, --name {}
+                        Provide dataset.column series to change type. (default: None)
+  -f {int,float,str,bool,category,date}, --format {int,float,str,bool,category,date}
+                        Set the format for the dataset.column defined. This can be: date, int, float, str, bool or category (default: None)
   -h, --help            show this help message (default: False)
-
 </code></pre><p>Example:</p>
-<pre><code>2022 Feb 28, 15:53 (✨) /econometrics/ $ load wage_panel wp
+<pre><code>2022 Feb 28, 15:53 (✨) /econometrics/ $ load wage_panel -a wp
 
 2022 Feb 28, 15:53 (✨) /econometrics/ $ type
            wp           
@@ -26055,7 +26099,8 @@ optional arguments: -n NAME NAME, --name NAME NAME The first argument is the col
 ├────────────┼─────────┤
 │ occupation │ int64   │
 └────────────┴─────────┘
-</code></pre><pre><code>2022 Feb 28, 15:54 (✨) /econometrics/ $ type year-wp category
+</code></pre><pre><code>2022 Feb 28, 15:54 (✨) /econometrics/ $ type wp.year -f category
+Update 'wp.year' dataset with type 'category'
 
 2022 Feb 28, 15:55 (✨) /econometrics/ $ type
            wp            
@@ -28383,17 +28428,7 @@ optional arguments: -n NAME NAME, --name NAME NAME The first argument is the col
 
         
         
-            
-            
-            
-
-            
-
-            
 
-            
-        
-
         
         
     
@@ -38807,26 +38842,7 @@ optional arguments: -n NAME NAME, --name NAME NAME The first argument is the col
             
     
     
-
-    
-        
-        
 
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
     
         
         
@@ -38957,6 +38973,63 @@ optional arguments: -n NAME NAME, --name NAME NAME The first argument is the col
             
                 
                 
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
             
 
             

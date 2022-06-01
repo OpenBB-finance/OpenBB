@@ -3892,25 +3892,7 @@ The Granger causality test is a statistical hypothesis test for determining whet
     <li style="margin-top: 15px; text-transform: capitalize;">
         
         
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/OpenBBTerminal/terminal/stocks/fundamental_analysis/web/"
-                    class="gdoc-nav__entry ">
-                    web
-                </a>
-            </span>
-            
+            <span class="flex">fundamental_analysis/web&#34;</span>
         
 
         
@@ -21194,37 +21176,6 @@ The Granger causality test is a statistical hypothesis test for determining whet
             
             <span class="flex">
                 
-                <a href="/OpenBBTerminal/terminal/econometrics/options/"
-                    class="gdoc-nav__entry ">
-                    options
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
                 <a href="/OpenBBTerminal/terminal/econometrics/show/"
                     class="gdoc-nav__entry ">
                     show
@@ -21411,9 +21362,102 @@ The Granger causality test is a statistical hypothesis test for determining whet
             
             <span class="flex">
                 
-                <a href="/OpenBBTerminal/terminal/econometrics/modify/"
+                <a href="/OpenBBTerminal/terminal/econometrics/add/"
                     class="gdoc-nav__entry ">
-                    modify
+                    add
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/OpenBBTerminal/terminal/econometrics/delete/"
+                    class="gdoc-nav__entry ">
+                    delete
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/OpenBBTerminal/terminal/econometrics/combine/"
+                    class="gdoc-nav__entry ">
+                    combine
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/OpenBBTerminal/terminal/econometrics/rename/"
+                    class="gdoc-nav__entry ">
+                    rename
                 </a>
             </span>
             
@@ -26027,20 +26071,24 @@ The Granger causality test is a statistical hypothesis test for determining whet
   --export {csv,json,xlsx,png,jpg,pdf,svg}
                         Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg (default: )
 </code></pre><p>Example:</p>
-<pre><code>2022 Feb 24, 05:54 (✨) /econometrics/ $ granger adj_close-msft adj_close-aapl
-Granger Causality Test [Y: adj_close | X: adj_close | Lags: 3]
-┏━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━┳━━━━━━━━┳━━━━━━┓
-┃              ┃ F-test ┃ P-value ┃ Count  ┃ Lags ┃
-┡━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━╇━━━━━━━━╇━━━━━━┩
-│ ssr_ftest    │ 2.13   │ 0.09    │ 749.00 │ 3.00 │
-├──────────────┼────────┼─────────┼────────┼──────┤
-│ ssr_chi2test │ 6.46   │ 0.09    │ -      │ 3    │
-├──────────────┼────────┼─────────┼────────┼──────┤
-│ lrtest       │ 6.43   │ 0.09    │ -      │ 3    │
-├──────────────┼────────┼─────────┼────────┼──────┤
-│ params_ftest │ 2.13   │ 0.09    │ 749.00 │ 3.00 │
-└──────────────┴────────┴─────────┴────────┴──────┘
-As the p-value of the F-test is 0.095, we can not reject the null hypothesis at the 0.05 confidence level.
+<pre><code>2022 Jun 01, 06:35 (🦋) /econometrics/ $ load strikes
+
+2022 Jun 01, 06:36 (🦋) /econometrics/ $ granger strikes.duration,strikes.iprod
+
+Granger Causality Test [Y: strikes.duration | X: strikes.iprod | Lags: 3]
+┏━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━┳━━━━━━━┳━━━━━━┓
+┃              ┃ F-test ┃ P-value ┃ Count ┃ Lags ┃
+┡━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━╇━━━━━━━╇━━━━━━┩
+│ ssr_ftest    │ 0.81   │ 0.49    │ 52.00 │ 3.00 │
+├──────────────┼────────┼─────────┼───────┼──────┤
+│ ssr_chi2test │ 2.75   │ 0.43    │ -     │ 3    │
+├──────────────┼────────┼─────────┼───────┼──────┤
+│ lrtest       │ 2.69   │ 0.44    │ -     │ 3    │
+├──────────────┼────────┼─────────┼───────┼──────┤
+│ params_ftest │ 0.81   │ 0.49    │ 52.00 │ 3.00 │
+└──────────────┴────────┴─────────┴───────┴──────┘
+
+As the p-value of the F-test is 0.495, we can not reject the null hypothesis at the 0.05 confidence level.
 </code></pre>
     </article>
  
@@ -28338,16 +28386,6 @@ As the p-value of the F-test is 0.095, we can not reject the null hypothesis at 
 
         
         
-            
-            
-            
-
-            
-
-            
-
-            
-        
 
         
         
@@ -38760,9 +38798,47 @@ As the p-value of the F-test is 0.095, we can not reject the null hypothesis at 
         
         
             
+    
+    
+
     
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
     
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
 
+        
+        
     
         
         

@@ -3892,25 +3892,7 @@ The load function also has the ability to load in custom datasets from Statsmode
     <li style="margin-top: 15px; text-transform: capitalize;">
         
         
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/OpenBBTerminal/terminal/stocks/fundamental_analysis/web/"
-                    class="gdoc-nav__entry ">
-                    web
-                </a>
-            </span>
-            
+            <span class="flex">fundamental_analysis/web&#34;</span>
         
 
         
@@ -21194,37 +21176,6 @@ The load function also has the ability to load in custom datasets from Statsmode
             
             <span class="flex">
                 
-                <a href="/OpenBBTerminal/terminal/econometrics/options/"
-                    class="gdoc-nav__entry ">
-                    options
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
                 <a href="/OpenBBTerminal/terminal/econometrics/show/"
                     class="gdoc-nav__entry ">
                     show
@@ -21411,9 +21362,102 @@ The load function also has the ability to load in custom datasets from Statsmode
             
             <span class="flex">
                 
-                <a href="/OpenBBTerminal/terminal/econometrics/modify/"
+                <a href="/OpenBBTerminal/terminal/econometrics/add/"
                     class="gdoc-nav__entry ">
-                    modify
+                    add
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/OpenBBTerminal/terminal/econometrics/delete/"
+                    class="gdoc-nav__entry ">
+                    delete
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/OpenBBTerminal/terminal/econometrics/combine/"
+                    class="gdoc-nav__entry ">
+                    combine
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/OpenBBTerminal/terminal/econometrics/rename/"
+                    class="gdoc-nav__entry ">
+                    rename
                 </a>
             </span>
             
@@ -26026,7 +26070,7 @@ illustrative for different regression techniques and statistical tests. See the 
   -h, --help            show this help message (default: False)
 
 </code></pre><p>Example:</p>
-<pre><code>2022 Feb 28, 04:19 (✨) /econometrics/ $ load MSFT_20220221_140503.xlsx msft
+<pre><code>2022 Feb 28, 04:19 (✨) /econometrics/ $ load MSFT_20220221_140503.xlsx -a msft
 
 2022 Feb 28, 04:20 (✨) /econometrics/ $ show msft
                                          msft
@@ -26053,7 +26097,7 @@ illustrative for different regression techniques and statistical tests. See the 
 ├───┼─────────────────────┼────────┼────────┼────────┼────────┼───────────┼──────────┤
 │ 9 │ 2019-03-04 00:00:00 │ 113.02 │ 113.25 │ 110.80 │ 112.26 │ 108.79    │ 26608000 │
 └───┴─────────────────────┴────────┴────────┴────────┴────────┴───────────┴──────────┘
-</code></pre><pre><code>2022 Feb 28, 04:16 (✨) /econometrics/ $ load --ex
+</code></pre><pre><code>2022 Feb 28, 04:16 (✨) /econometrics/ $ load -e
                             Examples from Statsmodels
 ┏━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃ file name          ┃ description                                               ┃
@@ -26117,9 +26161,9 @@ illustrative for different regression techniques and statistical tests. See the 
 │ wage_panel         │ Veila and M. Verbeek (1998): Whose Wages Do Unions Raise? │
 └────────────────────┴───────────────────────────────────────────────────────────┘
 
-2022 Feb 28, 04:17 (✨) /econometrics/ $ load grunfeld gf
+2022 Feb 28, 04:17 (✨) /econometrics/ $ load grunfeld -a gf
 
-2022 Feb 28, 04:20 (✨) /econometrics/ $ desc gf
+2022 Feb 28, 04:20 (✨) /econometrics/ $ desc -a gf
                        gf
 ┏━━━━━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━┓
 ┃       ┃ invest  ┃ value   ┃ capital ┃ year    ┃
@@ -28437,16 +28481,6 @@ illustrative for different regression techniques and statistical tests. See the 
 
         
         
-            
-            
-            
-
-            
-
-            
-
-            
-        
 
         
         
@@ -38897,6 +38931,44 @@ illustrative for different regression techniques and statistical tests. See the 
             
                 
                 
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
             
 
             

@@ -11,7 +11,7 @@
 
     <meta name="description" content="usage: plot [-c {OPTIONS}] [-h] [--export {png,jpg,pdf,svg}] Plot data based on the index. This functionality does not work for Panel Data unless creating a subset of the data that has only a singular index.
 optional arguments: -c {OPTIONS} --column {OPTIONS} Column to plot along the index (default: None) -h, --help show this help message (default: False) --export {png,jpg,pdf,svg} Export figure into png, jpg, pdf, svg (default: ) Example:
-2022 Feb 28, 04:37 (✨) /econometrics/ $ load macrodata us_macro 2022 Feb 28, 04:38 (✨) /econometrics/ $ index us_macro year -d 2022 Feb 28, 04:38 (✨) /econometrics/ $ show us_macro us_macro ┏━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━━━┓ ┃ ┃ quarter ┃ realgdp ┃ realcons ┃ realinv ┃ realgovt ┃ realdpi ┃ cpi ┃ m1 ┃ tbilrate ┃ unemp ┃ pop ┃ infl ┃ realint ┃ ┡━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━━━┩ │ 1959.">
+2022 Jun 01, 06:45 (🦋) /econometrics/ $ load macrodata -a us_macro 2022 Jun 01, 06:45 (🦋) /econometrics/ $ index us_macro -i year -d Successfully updated &#39;us_macro&#39; index to be &#39;year&#39; 2022 Jun 01, 06:46 (🦋) /econometrics/ $ show us_macro Dataset us_macro | Showing 10 of 203 rows ┏━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━━━┓ ┃ ┃ quarter ┃ realgdp ┃ realcons ┃ realinv ┃ realgovt ┃ realdpi ┃ cpi ┃ m1 ┃ tbilrate ┃ unemp ┃ pop ┃ infl ┃ realint ┃ ┡━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━━━┩ │ 1959.">
 
 
 
@@ -3893,25 +3893,7 @@ optional arguments: -c {OPTIONS} --column {OPTIONS} Column to plot along the ind
     <li style="margin-top: 15px; text-transform: capitalize;">
         
         
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/OpenBBTerminal/terminal/stocks/fundamental_analysis/web/"
-                    class="gdoc-nav__entry ">
-                    web
-                </a>
-            </span>
-            
+            <span class="flex">fundamental_analysis/web&#34;</span>
         
 
         
@@ -21195,37 +21177,6 @@ optional arguments: -c {OPTIONS} --column {OPTIONS} Column to plot along the ind
             
             <span class="flex">
                 
-                <a href="/OpenBBTerminal/terminal/econometrics/options/"
-                    class="gdoc-nav__entry ">
-                    options
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
                 <a href="/OpenBBTerminal/terminal/econometrics/show/"
                     class="gdoc-nav__entry ">
                     show
@@ -21412,9 +21363,102 @@ optional arguments: -c {OPTIONS} --column {OPTIONS} Column to plot along the ind
             
             <span class="flex">
                 
-                <a href="/OpenBBTerminal/terminal/econometrics/modify/"
+                <a href="/OpenBBTerminal/terminal/econometrics/add/"
                     class="gdoc-nav__entry ">
-                    modify
+                    add
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/OpenBBTerminal/terminal/econometrics/delete/"
+                    class="gdoc-nav__entry ">
+                    delete
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/OpenBBTerminal/terminal/econometrics/combine/"
+                    class="gdoc-nav__entry ">
+                    combine
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/OpenBBTerminal/terminal/econometrics/rename/"
+                    class="gdoc-nav__entry ">
+                    rename
                 </a>
             </span>
             
@@ -26029,12 +26073,14 @@ creating a subset of the data that has only a singular index.</p>
                         Export figure into png, jpg, pdf, svg (default: )
 
 </code></pre><p>Example:</p>
-<pre><code>2022 Feb 28, 04:37 (✨) /econometrics/ $ load macrodata us_macro
+<pre><code>2022 Jun 01, 06:45 (🦋) /econometrics/ $ load macrodata -a us_macro
 
-2022 Feb 28, 04:38 (✨) /econometrics/ $ index us_macro year -d
+2022 Jun 01, 06:45 (🦋) /econometrics/ $ index us_macro -i year -d
+Successfully updated 'us_macro' index to be 'year'
 
-2022 Feb 28, 04:38 (✨) /econometrics/ $ show us_macro
-                                                               us_macro
+2022 Jun 01, 06:46 (🦋) /econometrics/ $ show us_macro
+
+                                               Dataset us_macro | Showing 10 of 203 rows                                               
 ┏━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━━━┓
 ┃        ┃ quarter ┃ realgdp ┃ realcons ┃ realinv ┃ realgovt ┃ realdpi ┃ cpi   ┃ m1     ┃ tbilrate ┃ unemp ┃ pop    ┃ infl  ┃ realint ┃
 ┡━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━━━┩
@@ -26059,7 +26105,7 @@ creating a subset of the data that has only a singular index.</p>
 │ 1961.0 │ 2.00    │ 2872.01 │ 1814.30  │ 286.25  │ 480.33   │ 2014.40 │ 29.92 │ 142.90 │ 2.29     │ 7.00  │ 183.69 │ 1.47  │ 0.81    │
 └────────┴─────────┴─────────┴──────────┴─────────┴──────────┴─────────┴───────┴────────┴──────────┴───────┴────────┴───────┴─────────┘
 
-2022 Feb 28, 04:38 (✨) /econometrics/ $ plot unemp-us_macro
+2022 Jun 01, 06:44 (🦋) /econometrics/ $ plot us_macro.unemp
 </code></pre><p><img src="https://user-images.githubusercontent.com/46355364/156058283-3888c6a8-a9a7-41c6-a091-b94b7946679b.png" alt="unemp_data_us"  /></p>
 
     </article>
@@ -28358,17 +28404,7 @@ creating a subset of the data that has only a singular index.</p>
 
         
         
-            
-            
-            
-
-            
-
-            
 
-            
-        
-
         
         
     
@@ -38782,26 +38818,7 @@ creating a subset of the data that has only a singular index.</p>
             
     
     
-
-    
-        
-        
 
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
     
         
         
@@ -38913,6 +38930,63 @@ creating a subset of the data that has only a singular index.</p>
             
                 
                 
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
             
 
             
