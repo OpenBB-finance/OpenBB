@@ -1184,7 +1184,6 @@ class EconometricsController(BaseController):
             "-d",
             "--dependent",
             type=str,
-            choices=self.choices["regressions"],
             dest="dependent",
             help="The dependent variable on the regression you would like to perform",
             required="-h" not in other_args,
@@ -1207,17 +1206,29 @@ class EconometricsController(BaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            (
-                self.regression["OLS"]["data"],
-                self.regression["OLS"]["dependent"],
-                self.regression["OLS"]["independent"],
-                self.regression["OLS"]["model"],
-            ) = openbb_terminal.econometrics.regression_model.get_ols(
-                [ns_parser.dependent] + ns_parser.independent,
-                self.datasets,
-                self.choices["regressions"],
-                export=ns_parser.export,
-            )
+            if "," in ns_parser.dependent:
+                console.print(
+                    "It appears you have selected multiple variables for the dependent variable. "
+                    "The model only accepts one.\nDid you intend to include these variables as independent "
+                    f"variables? Use -i {ns_parser.dependent} in this case.\n"
+                )
+            elif ns_parser.dependent in self.choices["regressions"]:
+                (
+                    self.regression["OLS"]["data"],
+                    self.regression["OLS"]["dependent"],
+                    self.regression["OLS"]["independent"],
+                    self.regression["OLS"]["model"],
+                ) = openbb_terminal.econometrics.regression_model.get_ols(
+                    [ns_parser.dependent] + ns_parser.independent,
+                    self.datasets,
+                    self.choices["regressions"],
+                    export=ns_parser.export,
+                )
+            else:
+                console.print(
+                    f"{ns_parser.dependent} not in {','.join(self.choices['regressions'])}\n"
+                    f"Please choose a valid dataset and column combination.\n"
+                )
 
     @log_start_end(log=logger)
     def call_norm(self, other_args: List[str]):
@@ -1362,7 +1373,6 @@ class EconometricsController(BaseController):
             "-d",
             "--dependent",
             type=str,
-            choices=self.choices["regressions"],
             dest="dependent",
             help="The dependent variable on the regression you would like to perform",
             required="-h" not in other_args,
@@ -1374,7 +1384,7 @@ class EconometricsController(BaseController):
             dest="independent",
             help=(
                 "The independent variables on the regression you would like to perform. "
-                "E.g. historical.high,historical.low"
+                "E.g. wage_panel.married,wage_panel.union"
             ),
             required="-h" not in other_args,
         )
@@ -1424,45 +1434,61 @@ class EconometricsController(BaseController):
         )
 
         if ns_parser:
-            regression_vars = [ns_parser.dependent] + ns_parser.independent
+            if "," in ns_parser.dependent:
+                console.print(
+                    "It appears you have selected multiple variables for the dependent variable. "
+                    "The model only accepts one.\nDid you intend to include these variables as independent "
+                    f"variables? Use -i {ns_parser.dependent} in this case.\n"
+                )
+            elif ns_parser.dependent in self.choices["regressions"]:
+                regression_vars = [ns_parser.dependent] + ns_parser.independent
 
-            if regression_vars and len(regression_vars) > 1:
-                for variable in regression_vars:
-                    column, dataset = self.choices["regressions"][variable].keys()
-                    if not isinstance(
-                        self.datasets[dataset][column].index, pd.MultiIndex
-                    ):
-                        return console.print(
-                            f"The column '{column}' from the dataset '{dataset}' is not a MultiIndex. Make sure you set "
-                            "the index correctly with the index command where the first level is the entity "
-                            "(e.g. Tesla Inc.) and the second level the date (e.g. 2021-03-31)\n"
+                if regression_vars and len(regression_vars) > 1:
+                    for variable in regression_vars:
+                        column, dataset = self.choices["regressions"][variable].keys()
+                        if not isinstance(
+                            self.datasets[dataset][column].index, pd.MultiIndex
+                        ):
+                            other_column = (
+                                self.datasets[dataset].drop(column, axis=1).columns[0]
+                            )
+                            return console.print(
+                                f"The column '{column}' from the dataset '{dataset}' is not a MultiIndex. Make sure "
+                                f"you set the index correctly with the index (e.g. index {dataset} -i {column},"
+                                f"{other_column}) command where the first level is the entity (e.g. Tesla Inc.) and "
+                                f"the second level the date (e.g. 2021-03-31)\n"
+                            )
+
+                    # Ensure that OLS is always ran to be able to perform tests
+                    regression_types = ["OLS", ns_parser.type.upper()]
+
+                    for regression in regression_types:
+                        regression_name = regression
+                        if regression == "FE":
+                            if ns_parser.entity_effects:
+                                regression_name = regression_name + "_EE"
+                            if ns_parser.time_effects:
+                                regression_name = regression_name + "_IE"
+
+                        (
+                            self.regression[regression_name]["data"],
+                            self.regression[regression_name]["dependent"],
+                            self.regression[regression_name]["independent"],
+                            self.regression[regression_name]["model"],
+                        ) = openbb_terminal.econometrics.regression_view.display_panel(
+                            regression,
+                            regression_vars,
+                            self.datasets,
+                            self.choices["regressions"],
+                            ns_parser.entity_effects,
+                            ns_parser.time_effects,
                         )
-
-                # Ensure that OLS is always ran to be able to perform tests
-                regression_types = ["OLS", ns_parser.type.upper()]
-
-                for regression in regression_types:
-                    regression_name = regression
-                    if regression == "FE":
-                        if ns_parser.entity_effects:
-                            regression_name = regression_name + "_EE"
-                        if ns_parser.time_effects:
-                            regression_name = regression_name + "_IE"
-
-                    (
-                        self.regression[regression_name]["data"],
-                        self.regression[regression_name]["dependent"],
-                        self.regression[regression_name]["independent"],
-                        self.regression[regression_name]["model"],
-                    ) = openbb_terminal.econometrics.regression_view.display_panel(
-                        regression,
-                        regression_vars,
-                        self.datasets,
-                        self.choices["regressions"],
-                        ns_parser.entity_effects,
-                        ns_parser.time_effects,
-                    )
-                    console.print()
+                        console.print()
+            else:
+                console.print(
+                    f"{ns_parser.dependent} not in {','.join(self.choices['regressions'])}\n"
+                    f"Please choose a valid dataset and column combination.\n"
+                )
 
     @log_start_end(log=logger)
     def call_compare(self, other_args: List[str]):
