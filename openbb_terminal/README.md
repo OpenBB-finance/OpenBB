@@ -4,7 +4,6 @@
 <details open="open">
   <summary><h2 style="display: inline-block">Table of Contents</h2></summary>
     <ol>
-      <li><a href="#user">General Installation Process</a></li>
       <li><a href="#Anaconda---Python">Anaconda & Python Installation</a></li>
       <li><a href="#Docker-Installation">Docker Installation</a></li>
       <li><a href="#web-ui---docker">Docker Web UI Installation</a></li>
@@ -26,56 +25,7 @@ First step in all options is to star the project
 
 <img width="1272" alt="Github starts" src="https://user-images.githubusercontent.com/25267873/115989986-e20cfe80-a5b8-11eb-8182-d6d87d092252.png">
 
-If you want to install the terminal using Python ignore the User section and jump to <a href="#Anaconda & Python">
-Anaconda & Python</a> section.
-
-## User
-
-If you are interested in running the terminal via the installer, these steps will guide you through the installation
-process and explain to you what each message means.
-
-### Windows
-
-The process starts off by downloading the installer, see below for how to download the most recent release:
-
-- Go to [the following link](https://github.com/OpenBB-finance/OpenBBTerminal/releases)
-- Click on the most recent release
-- Click on the ".exe" file:
-
-Then follow these steps:
-
-| Installation instructions                                                                                                                                                                                                                                                                                               | Illustration                                                                                                                                |
-| :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------ |
-| <div style="width:300px">Double click the .exe file that got downloaded to your "Downloads" folder. You will most likely receive the error on the right stating "Windows protected your PC". This is because the installer is still in beta phase, and the team has not yet requested verification from Windows. </div> | <p align="center"><img src="../images/installation/windows/windows_protected_your_pc.png" alt="Windows protected your PC" width="500"/></p> |
-| <div style="width:300px">Click on "More info" and select "Run anyway" to start the installation process. Proceed by following the steps. Do note that if you wish to install the application to 'Program Files' that you will have to run the resulting application as Administrator.                                   | <p align="center"><img src="../images/installation/windows/run_anyway.png" alt="Run anyway" width="500"/></p>                               |
-| <div style="width:300px">By clicking on the application that appeared on your Desktop, you are able to run the Terminal. The first time this takes a bit longer to load.                                                                                                                                                | <p align="center"><img src="../images/installation/windows/run_the_terminal.png" alt="Run the terminal" width="500"/></p>                   |
-
-### macOS
-
-The process starts off by downloading the installer, see below for how to download the most recent release:
-
-- Go to [the following link](https://github.com/OpenBB-finance/OpenBBTerminal/releases)
-- Click on the most recent release
-- Click on the ".dmg" file:
-
-Installation instructions:
-
-1. Open the .dmg file that got downloaded to your "Downloads" folder.
-2. Drag the folder into your "Applications" folder. This should take some time as it is extracting the
-   files from the .dmg file.
-3. Open the folder and click on the "OpenBB Terminal" file, this should run the application.
-
-<img src="../images/installation/macos/mac_os_installation.png" alt="mac os installation" width=800/>
-
-| Note about "Cannot check it for malicious software" warning                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | Illustration                                                                                                                      |
-| :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------- |
-| <div style="width:300px">It is possible you will see the image displayed on the right. This is because the installer is still in beta phase, and the team has not yet requested verification from Apple. Please see below how to correct for this.</div>                                                                                                                                                                                                                                                                                                                                                                                                                                               | <p align="center"><img src="../images/installation/macos/malicious_software_warning.png" alt="software warning" width="500"/></p> |
-| <div style="width:300px">**Option 1 (via MacOS settings):** <br><br> 1) Run the file. You will most likely receive a message that macOS was not able to check whether the application contains malicious software. The reasoning for this is described above. <br> 2) Go to System Preferences > Security & Privacy > General. You should see a message at the bottom that says that the file "was blocked from use because it is not from an identified developer". Click on “Allow anyway” or "Open anyway".<br> 3) If you receive the above message multiple times on different files, keep allowing the files via Step 2 or use Option 2.<br> 4) You should now be able to launch the application. | <p align="center"><img src="../images/installation/macos/option_one_warning_fix.png" alt="option 1 warning fix" width="500"/></p> |
-| <div style="width:300px">**Option 2 (via Terminal):** <br><br> 1) Run the file. You will most likely receive a message that macOS was not able to check whether the application contains malicious software. The reasoning for this is described in the note above. <br> 2) Open the "Terminal" application. This can be done by using Command (⌘) + Space and typing "terminal". <br> 3) Within this "Terminal" application, assuming you moved the file to the Applications folder, enter the following command: `xattr -r -d com.apple.quarantine "/Applications/OpenBB Terminal"`<br> 4) You should now be able to launch the application.                                                         | <p align="center"><img src="../images/installation/macos/option_two_warning_fix.png" alt="option 2 warning fix" width="500"/></p> |
-
-## Developer
-
-### Anaconda & Python
+## Anaconda & Python
 
 This installation type supports both Windows and Unix systems (Linux + MacOS). However, on Windows it can become messy
 so it is easier to use Windows Subsystem Linux (WSL) on this operating system. WSL emulates a Linux machine inside your
@@ -84,7 +34,7 @@ Windows system.
 If you are using macOS or other Linux operating systems you can jump the next section
 <a href="#installing-the-terminal">Installing the terminal</a>.
 
-#### Installing WSL (Only for Windows users)
+### Installing WSL (Only for Windows users)
 
 If you are using Windows you first you need to install WSL. The process is simple and a tutorial can be found [here](https://www.sitepoint.com/wsl2/).
 Once you reach the section **Update Linux** on that tutorial, you should have a linux machine installed and can proceed
@@ -111,7 +61,7 @@ Although we **extremely** recommend using WSL to run the terminal on windows, if
 you can try install the terminal directly on Windows without WSL. If you'd like to see a video recording of the
 installation on Windows without WSL, @JohnnyDankseed has made one available [here](https://www.youtube.com/watch?v=-DJJ-cfquDA).
 
-#### Installing the terminal
+### Installing the terminal
 
 These steps are common in all operating systems (Windows with or without WSL, MacOS or Linux).
 
@@ -234,7 +184,7 @@ before you call `python terminal.py` again.
 <a href="https://github.com/OpenBB-finance/OpenBBTerminal/blob/master/TROUBLESHOOT.md">
 <strong>troubleshoot page</strong></a>. You can also reach for help on our [discord](https://discord.gg/Up2QGbMKHY).
 
-### Advanced User Install - Machine Learning
+## Advanced User Install - Machine Learning
 
 If you are an advanced user and use other Python distributions, we have several requirements.txt documents that you can
 pick from to download project dependencies.
@@ -272,7 +222,7 @@ conda install -c conda-forge tensorflow==2.7.0
   python terminal.py
   ```
 
-### Update Terminal
+## Update Terminal
 
 The terminal is constantly being updated with new features and bug fixes, hence, for your terminal to be update,
 you can run:
@@ -299,7 +249,7 @@ If you `stashed` your changes previously, you can un-stash them with:
 git stash pop
 ```
 
-### Docker Installation
+## Docker Installation
 
 1. Make sure docker desktop is installed. Install links can be found [here](https://www.docker.com/products/docker-desktop).
    To confirm that your docker desktop is downloaded and running, open a command prompt or terminal and enter
@@ -346,7 +296,7 @@ git stash pop
    environment keys and how to configure your X-server to show plots, hop over to the
    [Advanced Docker Setup](/DOCKER_ADVANCED.md).
 
-### Web UI - Docker
+## Web UI - Docker
 
 1. Ensure Docker is installed.
 2. Navigate to the location of the Dockerfile in the repo (`cd openbb_terminal_web`)
@@ -361,7 +311,7 @@ Set the API keys [as explained here](https://github.com/OpenBB-finance/OpenBBTer
 Once you've put the API keys in that file, re-run the launch script, and it will use your API keys.
 There are a few things that still don't work, and you can see what works and what doesn't [here](https://github.com/CoconutMacaroon/OpenBBTerminal/blob/main/openbb_terminal_web/README.md#todo).
 
-### Local Installation of GST on Raspberry Pi
+## Local Installation of GST on Raspberry Pi
 
 1. Running raspbian lite(headless) or desktop (both 64bit) we should first start off with an update/upgrade.
 
@@ -459,21 +409,11 @@ before you call `python terminal.py` again.
 ### API Keys
 
 The project is build around several different API calls, whether it is to access historical data or financials.
-The table below shows the ones where a key is necessary.
+The table below shows the ones where a key is necessary. The easiest way is of updating the keys is by using the
+terminal, see [this guide](https://openbb-finance.github.io/OpenBBTerminal/terminal/#accessing-other-sources-of-data-via-api-keys).
 
-The easiest way is of updating the keys is by using the terminal. You are able to directly set these variables from
-within the "keys" menu. This menu can be found on the first menu you see when opening the terminal.
-
-<img src="../images/installation/api_keys_part_1.png" alt="API Keys 1" width="800"/>
-
-Then, by typing the command on the left-hand side, followed by your API Key, you can set the key and use the commands
-attached to it.
-
-<img src="../images/installation/api_keys_part_2.png" alt="API Keys 2" width="800"/>
-
-When you have installed the terminal through Anaconda & Python, you can use the environment variable to set your
-API Keys directly instead of using the Terminal, for the variable name in the code one just needs to
-remove the "GT\_", this can be found in [config_terminal.py](/openbb_terminal/config_terminal.py).
+You can also use the environment variable to set your API Keys directly instead of using the Terminal, for the variable
+name in the code one just needs to remove the "GT\_", this can be found in [config_terminal.py](/openbb_terminal/config_terminal.py).
 
 | Website                                                                            | Environment Variables                                                                                                                                                 |
 | :--------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
