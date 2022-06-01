@@ -7,6 +7,7 @@ import difflib
 import logging
 import os
 import platform
+import random
 import sys
 from typing import List
 from pathlib import Path
@@ -72,6 +73,7 @@ class TerminalController(BaseController):
     ]
 
     PATH = "/"
+    ROUTINE_CHOICES = {f"routines/{file}": None for file in os.listdir("routines") if file.endswith(".openbb")}
 
     def __init__(self, jobs_cmds: List[str] = None):
         """Constructor"""
@@ -80,6 +82,7 @@ class TerminalController(BaseController):
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             choices["support"] = self.SUPPORT_CHOICES
+            choices["exe"] = self.ROUTINE_CHOICES
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -283,9 +286,10 @@ class TerminalController(BaseController):
         parser_exe.add_argument(
             "-p",
             "--path",
-            help="The path or .gst file to run.",
+            help="The path or .openbb file to run.",
             dest="path",
             default="",
+            choices=self.ROUTINE_CHOICES,
             type=check_path,
             required="-h" not in args,
         )
@@ -295,7 +299,6 @@ class TerminalController(BaseController):
             help="Select multiple inputs to be replaced in the routine and separated by commas. E.g. GME,AMC,BTC-USD",
             dest="routine_args",
             type=lambda s: [str(item) for item in s.split(",")],
-            default=None,
         )
         if args and "-" not in args[0][0]:
             args.insert(0, "-p")
@@ -313,7 +316,6 @@ class TerminalController(BaseController):
                     ]
                     if ns_parser_exe.routine_args:
                         lines = list()
-                        idx = 0
                         for rawline in raw_lines:
                             templine = rawline
                             for i, arg in enumerate(ns_parser_exe.routine_args):
@@ -442,13 +444,14 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
             if session and obbff.USE_PROMPT_TOOLKIT:
                 try:
                     if obbff.TOOLBAR_HINT:
+                        random_routine = [file for file in os.listdir("routines") if file.endswith(".openbb")]
                         an_input = session.prompt(
                             f"{get_flair()} / $ ",
                             completer=t_controller.completer,
                             search_ignore_case=True,
                             bottom_toolbar=HTML(
                                 "Execute routine scripts to automate your research workflow. "
-                                "E.g.: $ exe routines/example.openbb"
+                                f"E.g.: $ exe routines/{random_routine[random.randint(0, len(random_routine) - 1)]}"
                             ),
                             style=Style.from_dict(
                                 {

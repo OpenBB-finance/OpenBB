@@ -13,11 +13,6 @@ shorted
 # Show the stocks with the highest short interest on https://highshortinterest.com
 hsi
 
-# Get the top five NMS and OTCE symbols with increasing dark pool volume from https://otctransparency.finra.org/otctransparency/AtsIssueData
-prom -n 50 -l 5 -t T1
-prom -n 50 -l 5 -t T2
-prom -n 50 -l 5 -t OTCE
-
 # Show the top 25 largest Dark Pool positions from https://stockgrid.io
 pos -l 25
 pos -l 25 -a
@@ -38,11 +33,8 @@ spos
 # Price vs. Short Interest
 psi
 
-# Get two years of FTD data
-ftd -s 2020-05-30
-
-# Bar graph of Dark Pool and OTC volume
-dpotc
-
 # Export the Cost-to-Borrow list as a spreadsheet to examine.
-ctb -n 6000 --export xlsx
+ctb
+
+# Return to home
+/
