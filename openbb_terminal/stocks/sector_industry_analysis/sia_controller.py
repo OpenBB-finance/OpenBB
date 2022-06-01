@@ -384,9 +384,14 @@ class SectorIndustryAnalysisController(BaseController):
 
                 if "price" in data:
                     mktcap = data["price"]["marketCap"]
-
-                    if mktcap < 2_000_000_000:
+                    if mktcap < 50_000_000:
+                        self.mktcap = "Nano"
+                    elif mktcap < 300_000_000:
+                        self.mktcap = "Micro"
+                    elif mktcap < 2_000_000_000:
                         self.mktcap = "Small"
+                    elif mktcap > 200_000_000_000:
+                        self.mktcap = "Mega"
                     elif mktcap > 10_000_000_000:
                         self.mktcap = "Large"
                     else:

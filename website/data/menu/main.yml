@@ -3,1415 +3,1418 @@ main:
   - name: terminal
     ref: "/terminal"
     sub:
-        - name: stocks
-          ref: "/terminal/stocks"
-          sub:
-            - name: search
-              ref: "/terminal/stocks/search"
-            - name: load
-              ref: "/terminal/stocks/load"
-            - name: candle
-              ref: "/terminal/stocks/candle"
-            - name: quote
-              ref: "/terminal/stocks/quote"
-            - name: news
-              ref: "/terminal/stocks/news"
-            - name: codes
-              ref: "/terminal/stocks/codes"
-            - name: discovery
-              ref: "/terminal/stocks/discovery"
-              sub:
-                - name: pipo
-                  ref: "/terminal/stocks/discovery/pipo"
-                - name: fipo
-                  ref: "/terminal/stocks/discovery/fipo"
-                - name: gainers
-                  ref: "/terminal/stocks/discovery/gainers"
-                - name: losers
-                  ref: "/terminal/stocks/discovery/losers"
-                - name: ugs
-                  ref: "/terminal/stocks/discovery/ugs"
-                - name: gtech
-                  ref: "/terminal/stocks/discovery/gtech"
-                - name: active
-                  ref: "/terminal/stocks/discovery/active"
-                - name: ulc
-                  ref: "/terminal/stocks/discovery/ulc"
-                - name: asc
-                  ref: "/terminal/stocks/discovery/asc"
-                - name: ford
-                  ref: "/terminal/stocks/discovery/ford"
-                - name: arkord
-                  ref: "/terminal/stocks/discovery/arkord"
-                - name: upcoming
-                  ref: "/terminal/stocks/discovery/upcoming"
-                - name: cnews
-                  ref: "/terminal/stocks/discovery/cnews"
-                - name: trending
-                  ref: "/terminal/stocks/discovery/trending"
-                - name: lowfloat
-                  ref: "/terminal/stocks/discovery/lowfloat"
-                - name: hotpenny
-                  ref: "/terminal/stocks/discovery/hotpenny"
-                - name: fds
-                  ref: "/terminal/stocks/discovery/fds"
-                - name: rtat
-                  ref: "/terminal/stocks/discovery/rtat"
-                - name: divcal
-                  ref: "/terminal/stocks/discovery/divcal"
-                - name: cramer
-                  ref: "/terminal/stocks/discovery/cramer"
-            - name: Sector and Industry Analysis (SIA)
-              ref: "/terminal/stocks/sia"
-              sub:
-                - name: load
-                  ref: "/terminal/stocks/sia/load"
-                - name: clear
-                  ref: "/terminal/stocks/sia/clear"
-                - name: industry
-                  ref: "/terminal/stocks/sia/industry"
-                - name: sector
-                  ref: "/terminal/stocks/sia/sector"
-                - name: country
-                  ref: "/terminal/stocks/sia/country"
-                - name: mktcap
-                  ref: "/terminal/stocks/sia/mktcap"
-                - name: exchange
-                  ref: "/terminal/stocks/sia/exchange"
-                - name: cps
-                  ref: "/terminal/stocks/sia/cps"
-                - name: cpic
-                  ref: "/terminal/stocks/sia/cpic"
-                - name: cpis
-                  ref: "/terminal/stocks/sia/cpis"
-                - name: cpcs
-                  ref: "/terminal/stocks/sia/cpcs"
-                - name: cpci
-                  ref: "/terminal/stocks/sia/cpci"
-                - name: sama
-                  ref: "/terminal/stocks/sia/sama"
-                - name: satma
-                  ref: "/terminal/stocks/sia/satma"
-                - name: metric
-                  ref: "/terminal/stocks/sia/metric"
-                - name: vis
-                  ref: "/terminal/stocks/sia/vis"
-                - name: period
-                  ref: "/terminal/stocks/sia/period"
-            - name: dark pool shorts
-              ref: "/terminal/stocks/dark_pool_shorts"
-              sub:
-                - name: shorted
-                  ref: "/terminal/stocks/dark_pool_shorts/shorted"
-                - name: ctb
-                  ref: "/terminal/stocks/dark_pool_shorts/ctb"
-                - name: hsi
-                  ref: "/terminal/stocks/dark_pool_shorts/hsi"
-                - name: prom
-                  ref: "/terminal/stocks/dark_pool_shorts/prom"
-                - name: pos
-                  ref: "/terminal/stocks/dark_pool_shorts/pos"
-                - name: sidtc
-                  ref: "/terminal/stocks/dark_pool_shorts/sidtc"
-                - name: dpotc
-                  ref: "/terminal/stocks/dark_pool_shorts/dpotc"
-                - name: ftd
-                  ref: "/terminal/stocks/dark_pool_shorts/ftd"
-                - name: spos
-                  ref: "/terminal/stocks/dark_pool_shorts/spos"
-                - name: psi
-                  ref: "/terminal/stocks/dark_pool_shorts/psi"
-            - name: screener
-              ref: "/terminal/stocks/screener"
-              sub:
-                - name: view
-                  ref: "/terminal/stocks/screener/view"
-                - name: set
-                  ref: "/terminal/stocks/screener/set"
-                - name: historical
-                  ref: "/terminal/stocks/screener/historical"
-                - name: overview
-                  ref: "/terminal/stocks/screener/overview"
-                - name: valuation
-                  ref: "/terminal/stocks/screener/valuation"
-                - name: financial
-                  ref: "/terminal/stocks/screener/financial"
-                - name: ownership
-                  ref: "/terminal/stocks/screener/ownership"
-                - name: performance
-                  ref: "/terminal/stocks/screener/performance"
-                - name: technical
-                  ref: "/terminal/stocks/screener/technical"
-            - name: insider trading
-              ref: "/terminal/stocks/insider"
-              sub:
-                - name: load
-                  ref: "/terminal/stocks/insider/load"
-                - name: view
-                  ref: "/terminal/stocks/insider/view"
-                - name: set
-                  ref: "/terminal/stocks/insider/set"
-                - name: filter
-                  ref: "/terminal/stocks/insider/filter"
-                - name: lcb
-                  ref: "/terminal/stocks/insider/lcb"
-                - name: lpsb
-                  ref: "/terminal/stocks/insider/lpsb"
-                - name: lit
-                  ref: "/terminal/stocks/insider/lit"
-                - name: lip
-                  ref: "/terminal/stocks/insider/lip"
-                - name: blip
-                  ref: "/terminal/stocks/insider/blip"
-                - name: blop
-                  ref: "/terminal/stocks/insider/blop"
-                - name: blcp
-                  ref: "/terminal/stocks/insider/blcp"
-                - name: lis
-                  ref: "/terminal/stocks/insider/lis"
-                - name: blis
-                  ref: "/terminal/stocks/insider/blis"
-                - name: blos
-                  ref: "/terminal/stocks/insider/blos"
-                - name: blcs
-                  ref: "/terminal/stocks/insider/blcs"
-                - name: topt
-                  ref: "/terminal/stocks/insider/topt"
-                - name: toppw
-                  ref: "/terminal/stocks/insider/toppw"
-                - name: toppm
-                  ref: "/terminal/stocks/insider/toppm"
-                - name: tipt
-                  ref: "/terminal/stocks/insider/tipt"
-                - name: tippw
-                  ref: "/terminal/stocks/insider/tippw"
-                - name: tippm
-                  ref: "/terminal/stocks/insider/tippm"
-                - name: tist
-                  ref: "/terminal/stocks/insider/tist"
-                - name: tispw
-                  ref: "/terminal/stocks/insider/tispw"
-                - name: tispm
-                  ref: "/terminal/stocks/insider/tispm"
-                - name: lins
-                  ref: "/terminal/stocks/insider/lins"
-                - name: act
-                  ref: "/terminal/stocks/insider/act"
-            - name: government
-              ref: "/terminal/stocks/government"
-              sub:
-                - name: contracts
-                  ref: "/terminal/stocks/government/contracts"
-                - name: gtrades
-                  ref: "/terminal/stocks/government/gtrades"
-                - name: histcont
-                  ref: "/terminal/stocks/government/histcont"
-                - name: lastcontracts
-                  ref: "/terminal/stocks/government/lastcontracts"
-                - name: lasttrades
-                  ref: "/terminal/stocks/government/lasttrades"
-                - name: lobbying
-                  ref: "/terminal/stocks/government/lobbying"
-                - name: qtrcontracts
-                  ref: "/terminal/stocks/government/qtrcontracts"
-                - name: topbuys
-                  ref: "/terminal/stocks/government/topbuys"
-                - name: toplobbying
-                  ref: "/terminal/stocks/government/toplobbying"
-                - name: topsells
-                  ref: "/terminal/stocks/government/topsells"
-            - name: fundamental analysis
-              ref: "/terminal/stocks/fundamental_analysis"
-              sub:
-                - name: mgmt
-                  ref: "/terminal/stocks/fundamental_analysis/mgmt"
-                - name: analysis
-                  ref: "/terminal/stocks/fundamental_analysis/analysis"
-                - name: score
-                  ref: "/terminal/stocks/fundamental_analysis/score"
-                - name: warnings
-                  ref: "/terminal/stocks/fundamental_analysis/warnings"
-                - name: dcf
-                  ref: "/terminal/stocks/fundamental_analysis/dcf"
-                - name: info
-                  ref: "/terminal/stocks/fundamental_analysis/info"
-                - name: shrs
-                  ref: "/terminal/stocks/fundamental_analysis/shrs"
-                - name: sust
-                  ref: "/terminal/stocks/fundamental_analysis/sust"
-                - name: cal
-                  ref: "/terminal/stocks/fundamental_analysis/cal"
-                - name: splits
-                  ref: "/terminal/stocks/fundamental_analysis/splits"
-                - name: web
-                  ref: "/terminal/stocks/fundamental_analysis/web"
-                - name: hq
-                  ref: "/terminal/stocks/fundamental_analysis/hq"
-                - name: divs
-                  ref: "/terminal/stocks/fundamental_analysis/divs"
-                - name: mktcap
-                  ref: "/terminal/stocks/fundamental_analysis/mktcap"
-                - name: overview
-                  ref: "/terminal/stocks/fundamental_analysis/overview"
-                - name: key
-                  ref: "/terminal/stocks/fundamental_analysis/key"
-                - name: income
-                  ref: "/terminal/stocks/fundamental_analysis/income"
-                - name: balance
-                  ref: "/terminal/stocks/fundamental_analysis/balance"
-                - name: cash
-                  ref: "/terminal/stocks/fundamental_analysis/cash"
-                - name: earnings
-                  ref: "/terminal/stocks/fundamental_analysis/earnings"
-                - name: fraud
-                  ref: "/terminal/stocks/fundamental_analysis/fraud"
-                - name: dupont
-                  ref: "/terminal/stocks/fundamental_analysis/dupont"
-                - name: financial modeling prep
-                  ref: "/terminal/stocks/fundamental_analysis/fmp"
-                  sub:
-                    - name: profile
-                      ref: "/terminal/stocks/fundamental_analysis/fmp/profile"
-                    - name: quote
-                      ref: "/terminal/stocks/fundamental_analysis/fmp/quote"
-                    - name: enterprise
-                      ref: "/terminal/stocks/fundamental_analysis/fmp/enterprise"
-                    - name: dcf
-                      ref: "/terminal/stocks/fundamental_analysis/fmp/dcf"
-                    - name: income
-                      ref: "/terminal/stocks/fundamental_analysis/fmp/income"
-                    - name: balance
-                      ref: "/terminal/stocks/fundamental_analysis/fmp/balance"
-                    - name: cash
-                      ref: "/terminal/stocks/fundamental_analysis/fmp/cash"
-                    - name: metrics
-                      ref: "/terminal/stocks/fundamental_analysis/fmp/metrics"
-                    - name: ratios
-                      ref: "/terminal/stocks/fundamental_analysis/fmp/ratios"
-                    - name: growth
-                      ref: "/terminal/stocks/fundamental_analysis/fmp/growth"
-            - name: research
-              ref: "/terminal/stocks/research"
-              sub:
-                - name: macroaxis
-                  ref: "/terminal/stocks/research/macroaxis"
-                - name: yahoo
-                  ref: "/terminal/stocks/research/yahoo"
-                - name: finviz
-                  ref: "/terminal/stocks/research/finviz"
-                - name: marketwatch
-                  ref: "/terminal/stocks/research/marketwatch"
-                - name: fool
-                  ref: "/terminal/stocks/research/fool"
-                - name: businessinsider
-                  ref: "/terminal/stocks/research/businessinsider"
-                - name: fmp
-                  ref: "/terminal/stocks/research/fmp"
-                - name: fidelity
-                  ref: "/terminal/stocks/research/fidelity"
-                - name: tradingview
-                  ref: "/terminal/stocks/research/tradingview"
-                - name: marketchameleon
-                  ref: "/terminal/stocks/research/marketchameleon"
-                - name: stockrow
-                  ref: "/terminal/stocks/research/stockrow"
-                - name: barchart
-                  ref: "/terminal/stocks/research/barchart"
-                - name: grufity
-                  ref: "/terminal/stocks/research/grufity"
-                - name: fintel
-                  ref: "/terminal/stocks/research/fintel"
-                - name: zacks
-                  ref: "/terminal/stocks/research/zacks"
-                - name: macrotrends
-                  ref: "/terminal/stocks/research/macrotrends"
-                - name: newsfilter
-                  ref: "/terminal/stocks/research/newsfilter"
-                - name: stockanalysis
-                  ref: "/terminal/stocks/research/stockanalysis"
-            - name: due diligence
-              ref: "/terminal/stocks/due_diligence"
-              sub:
-                - name: analyst
-                  ref: "/terminal/stocks/due_diligence/analyst"
-                - name: rating
-                  ref: "/terminal/stocks/due_diligence/rating"
-                - name: rot
-                  ref: "/terminal/stocks/due_diligence/rot"
-                - name: pt
-                  ref: "/terminal/stocks/due_diligence/pt"
-                - name: est
-                  ref: "/terminal/stocks/due_diligence/est"
-                - name: sec
-                  ref: "/terminal/stocks/due_diligence/sec"
-                - name: supplier
-                  ref: "/terminal/stocks/due_diligence/supplier"
-                - name: customer
-                  ref: "/terminal/stocks/due_diligence/customer"
-                - name: arktrades
-                  ref: "/terminal/stocks/due_diligence/arktrades"
-            - name: comparison analysis
-              ref: "/terminal/stocks/comparison_analysis"
-              sub:
-                - name: add
-                  ref: "/terminal/stocks/comparison_analysis/add"
-                - name: tsne
-                  ref: "/terminal/stocks/comparison_analysis/tsne"
-                - name: getpoly
-                  ref: "/terminal/stocks/comparison_analysis/getpoly"
-                - name: getfinnhub
-                  ref: "/terminal/stocks/comparison_analysis/getfinnhub"
-                - name: getfinviz
-                  ref: "/terminal/stocks/comparison_analysis/getfinviz"
-                - name: historical
-                  ref: "/terminal/stocks/comparison_analysis/historical"
-                - name: hcorr
-                  ref: "/terminal/stocks/comparison_analysis/hcorr"
-                - name: volume
-                  ref: "/terminal/stocks/comparison_analysis/volume"
-                - name: income
-                  ref: "/terminal/stocks/comparison_analysis/income"
-                - name: balance
-                  ref: "/terminal/stocks/comparison_analysis/balance"
-                - name: cashflow
-                  ref: "/terminal/stocks/comparison_analysis/cashflow"
-                - name: sentiment
-                  ref: "/terminal/stocks/comparison_analysis/sentiment"
-                - name: scorr
-                  ref: "/terminal/stocks/comparison_analysis/scorr"
-                - name: overview
-                  ref: "/terminal/stocks/comparison_analysis/overview"
-                - name: valuation
-                  ref: "/terminal/stocks/comparison_analysis/valuation"
-                - name: financial
-                  ref: "/terminal/stocks/comparison_analysis/financial"
-                - name: ownership
-                  ref: "/terminal/stocks/comparison_analysis/ownership"
-                - name: performance
-                  ref: "/terminal/stocks/comparison_analysis/performance"
-                - name: technical
-                  ref: "/terminal/stocks/comparison_analysis/technical"
-            - name: backtesting
-              ref: "/terminal/stocks/backtesting"
-              sub:
-                - name: whatif
-                  ref: "/terminal/stocks/backtesting/whatif"
-                - name: ema
-                  ref: "/terminal/stocks/backtesting/ema"
-                - name: ema_cross
-                  ref: "/terminal/stocks/backtesting/ema_cross"
-                - name: rsi
-                  ref: "/terminal/stocks/backtesting/rsi"
-            - name: options
-              ref: "/terminal/stocks/options"
-              sub:
-                - name: scr
-                  ref: "/terminal/stocks/options/scr"
-                - name: unu
-                  ref: "/terminal/stocks/options/unu"
-                - name: calc
-                  ref: "/terminal/stocks/options/calc"
-                - name: load
-                  ref: "/terminal/stocks/options/load"
-                - name: exp
-                  ref: "/terminal/stocks/options/exp"
-                - name: pcr
-                  ref: "/terminal/stocks/options/pcr"
-                - name: info
-                  ref: "/terminal/stocks/options/info"
-                - name: chains
-                  ref: "/terminal/stocks/options/chains"
-                - name: oi
-                  ref: "/terminal/stocks/options/oi"
-                - name: vol
-                  ref: "/terminal/stocks/options/vol"
-                - name: voi
-                  ref: "/terminal/stocks/options/voi"
-                - name: hist
-                  ref: "/terminal/stocks/options/hist"
-                - name: grhist
-                  ref: "/terminal/stocks/options/grhist"
-                - name: vsurf
-                  ref: "/terminal/stocks/options/vsurf"
-                - name: portfolio optimization
-                  ref: "/terminal/portfolio/po"
-                - name: parity
-                  ref: "/terminal/stocks/options/parity"
-                - name: binom
-                  ref: "/terminal/stocks/options/binom"
-                - name: greeks
-                  ref: "/terminal/stocks/options/greeks"
-                - name: hedge
-                  ref: "/terminal/stocks/options/hedge"
-                  sub:
-                    - name: add
-                      ref: "/terminal/stocks/options/hedge/add"
-                    - name: sop
-                      ref: "/terminal/stocks/options/hedge/sop"
-                    - name: pick
-                      ref: "/terminal/stocks/options/hedge/pick"
-                    - name: list
-                      ref: "/terminal/stocks/options/hedge/list"
-                    - name: rmv
-                      ref: "/terminal/stocks/options/hedge/rmv"
-                - name: payoff
-                  ref: "/terminal/stocks/options/payoff"
-                  sub:
-                    - name: add
-                      ref: "/terminal/stocks/options/payoff/add"
-                    - name: sop
-                      ref: "/terminal/stocks/options/payoff/sop"
-                    - name: pick
-                      ref: "/terminal/stocks/options/payoff/pick"
-                    - name: plot
-                      ref: "/terminal/stocks/options/payoff/plot"
-                    - name: rmv
-                      ref: "/terminal/stocks/options/payoff/rmv"
-                - name: pricing
-                  ref: "/terminal/stocks/options/pricing"
-                  sub:
-                    - name: add
-                      ref: "/terminal/stocks/options/pricing/add"
-                    - name: rmv
-                      ref: "/terminal/stocks/options/pricing/rmv"
-                    - name: show
-                      ref: "/terminal/stocks/options/pricing/show"
-                    - name: rnval
-                      ref: "/terminal/stocks/options/pricing/rnval"
-            - name: trading hours
-              ref: "/terminal/stocks/tradinghours"
-              sub:
-                - name: all
-                  ref: "/terminal/stocks/tradinghours/all"
-                - name: closed
-                  ref: "/terminal/stocks/tradinghours/closed"
-                - name: exchange
-                  ref: "/terminal/stocks/tradinghours/exchange"
-                - name: open
-                  ref: "/terminal/stocks/tradinghours/open"
-                - name: symbol
-                  ref: "/terminal/stocks/tradinghours/symbol"
-            - name: technical analysis
-              ref: "/terminal/common/technical_analysis"
-              sub:
-                - name: view
-                  ref: "/terminal/common/technical_analysis/view"
-                - name: tv
-                  ref: "/terminal/common/technical_analysis/tv"
-                - name: summary
-                  ref: "/terminal/common/technical_analysis/summary"
-                - name: recom
-                  ref: "/terminal/common/technical_analysis/recom"
-                - name: ema
-                  ref: "/terminal/common/technical_analysis/ema"
-                - name: sma
-                  ref: "/terminal/common/technical_analysis/sma"
-                - name: wma
-                  ref: "/terminal/common/technical_analysis/wma"
-                - name: hma
-                  ref: "/terminal/common/technical_analysis/hma"
-                - name: zlma
-                  ref: "/terminal/common/technical_analysis/zlma"
-                - name: vwap
-                  ref: "/terminal/common/technical_analysis/vwap"
-                - name: cci
-                  ref: "/terminal/common/technical_analysis/cci"
-                - name: macd
-                  ref: "/terminal/common/technical_analysis/macd"
-                - name: rsi
-                  ref: "/terminal/common/technical_analysis/rsi"
-                - name: stoch
-                  ref: "/terminal/common/technical_analysis/stoch"
-                - name: fisher
-                  ref: "/terminal/common/technical_analysis/fisher"
-                - name: cg
-                  ref: "/terminal/common/technical_analysis/cg"
-                - name: adx
-                  ref: "/terminal/common/technical_analysis/adx"
-                - name: aroon
-                  ref: "/terminal/common/technical_analysis/aroon"
-                - name: bbands
-                  ref: "/terminal/common/technical_analysis/bbands"
-                - name: donchian
-                  ref: "/terminal/common/technical_analysis/donchian"
-                - name: kc
-                  ref: "/terminal/common/technical_analysis/kc"
-                - name: ad
-                  ref: "/terminal/common/technical_analysis/ad"
-                - name: adosc
-                  ref: "/terminal/common/technical_analysis/adosc"
-                - name: obv
-                  ref: "/terminal/common/technical_analysis/obv"
-                - name: fib
-                  ref: "/terminal/common/technical_analysis/fib"
-            - name: behavioural analysis
-              ref: "/terminal/common/behavioural_analysis"
-              sub:
-                - name: headlines
-                  ref: "/terminal/common/behavioural_analysis/headlines"
-                - name: stats
-                  ref: "/terminal/common/behavioural_analysis/stats"
-                - name: snews
-                  ref: "/terminal/stocks/behavioural_analysis/snews"
-                - name: interest
-                  ref: "/terminal/stocks/behavioural_analysis/interest"
-                - name: wsb
-                  ref: "/terminal/common/behavioural_analysis/wsb"
-                - name: watchlist
-                  ref: "/terminal/common/behavioural_analysis/watchlist"
-                - name: popular
-                  ref: "/terminal/common/behavioural_analysis/popular"
-                - name: spac_c
-                  ref: "/terminal/common/behavioural_analysis/spac_c"
-                - name: spac
-                  ref: "/terminal/common/behavioural_analysis/spac"
-                - name: getdd
-                  ref: "/terminal/common/behavioural_analysis/getdd"
-                - name: reddit_sent
-                  ref: "/terminal/common/behavioural_analysis/reddit_sent"
-                - name: bullbear
-                  ref: "/terminal/common/behavioural_analysis/bullbear"
-                - name: messages
-                  ref: "/terminal/common/behavioural_analysis/messages"
-                - name: trending
-                  ref: "/terminal/common/behavioural_analysis/trending"
-                - name: stalker
-                  ref: "/terminal/common/behavioural_analysis/stalker"
-                - name: infer
-                  ref: "/terminal/common/behavioural_analysis/infer"
-                - name: sentiment
-                  ref: "/terminal/common/behavioural_analysis/sentiment"
-                - name: mentions
-                  ref: "/terminal/common/behavioural_analysis/mentions"
-                - name: regions
-                  ref: "/terminal/common/behavioural_analysis/regions"
-                - name: queries
-                  ref: "/terminal/common/behavioural_analysis/queries"
-                - name: rise
-                  ref: "/terminal/common/behavioural_analysis/rise"
-                - name: hist
-                  ref: "/terminal/common/behavioural_analysis/hist"
-                - name: trend
-                  ref: "/terminal/common/behavioural_analysis/trend"
-                - name: jcdr
-                  ref: "/terminal/common/behavioural_analysis/jcdr"
-                - name: jctr
-                  ref: "/terminal/common/behavioural_analysis/jctr"
-            - name: quantitative analysis
-              ref: "/terminal/common/quantitative_analysis"
-              sub:
-                - name: load
-                  ref: "/terminal/common/quantitative_analysis/load"
-                - name: pick
-                  ref: "/terminal/common/quantitative_analysis/pick"
-                - name: summary
-                  ref: "/terminal/common/quantitative_analysis/summary"
-                - name: normality
-                  ref: "/terminal/common/quantitative_analysis/normality"
-                - name: unitroot
-                  ref: "/terminal/common/quantitative_analysis/unitroot"
-                - name: hist
-                  ref: "/terminal/common/quantitative_analysis/hist"
-                - name: cdf
-                  ref: "/terminal/common/quantitative_analysis/cdf"
-                - name: bw
-                  ref: "/terminal/common/quantitative_analysis/bw"
-                - name: acf
-                  ref: "/terminal/common/quantitative_analysis/acf"
-                - name: qqplot
-                  ref: "/terminal/common/quantitative_analysis/qqplot"
-                - name: rolling
-                  ref: "/terminal/common/quantitative_analysis/rolling"
-                - name: spread
-                  ref: "/terminal/common/quantitative_analysis/spread"
-                - name: quantile
-                  ref: "/terminal/common/quantitative_analysis/quantile"
-                - name: skew
-                  ref: "/terminal/common/quantitative_analysis/skew"
-                - name: kurtosis
-                  ref: "/terminal/common/quantitative_analysis/kurtosis"
-                - name: decompose
-                  ref: "/terminal/common/quantitative_analysis/decompose"
-                - name: cusum
-                  ref: "/terminal/common/quantitative_analysis/cusum"
-                - name: capm
-                  ref: "/terminal/common/quantitative_analysis/capm"
-                - name: line
-                  ref: "/terminal/common/quantitative_analysis/line"
-                - name: raw
-                  ref: "/terminal/common/quantitative_analysis/raw"
-            - name: prediction techniques
-              ref: "/terminal/common/prediction_techniques"
-              sub:
-                - name: ets
-                  ref: "/terminal/common/prediction_techniques/ets"
-                - name: knn
-                  ref: "/terminal/common/prediction_techniques/knn"
-                - name: regression
-                  ref: "/terminal/common/prediction_techniques/regression"
-                - name: arima
-                  ref: "/terminal/common/prediction_techniques/arima"
-                - name: mlp
-                  ref: "/terminal/common/prediction_techniques/mlp"
-                - name: rnn
-                  ref: "/terminal/common/prediction_techniques/rnn"
-                - name: lstm
-                  ref: "/terminal/common/prediction_techniques/lstm"
-                - name: conv1d
-                  ref: "/terminal/common/prediction_techniques/conv1d"
-                - name: mc
-                  ref: "/terminal/common/prediction_techniques/mc"
-                - name: expo
-                  ref: "/terminal/common/prediction_techniques/expo"
-        - name: Cryptocurrency
-          ref: "/terminal/cryptocurrency"
-          sub:
-            - name: load
-              ref: "/terminal/cryptocurrency/load"
-            - name: chart
-              ref: "/terminal/cryptocurrency/chart"
-            - name: find
-              ref: "/terminal/cryptocurrency/find"
-            - name: headlines
-              ref: "/terminal/cryptocurrency/headlines"
-            - name: prt
-              ref: "/terminal/cryptocurrency/prt"
-            - name: discovery
-              ref: "/terminal/cryptocurrency/discovery"
-              sub:
-                - name: cgtrending
-                  ref: "/terminal/cryptocurrency/discovery/cgtrending"
-                - name: drnft
-                  ref: "/terminal/cryptocurrency/discovery/drnft"
-                - name: drdex
-                  ref: "/terminal/cryptocurrency/discovery/drdex"
-                - name: drdapps
-                  ref: "/terminal/cryptocurrency/discovery/drdapps"
-                - name: drgames
-                  ref: "/terminal/cryptocurrency/discovery/drgames"
-                - name: cggainers
-                  ref: "/terminal/cryptocurrency/discovery/cggainers"
-                - name: cglosers
-                  ref: "/terminal/cryptocurrency/discovery/cglosers"
-                - name: cgtop
-                  ref: "/terminal/cryptocurrency/discovery/cgtop"
-                - name: cpsearch
-                  ref: "/terminal/cryptocurrency/discovery/cpsearch"
-                - name: cmctop
-                  ref: "/terminal/cryptocurrency/discovery/cmctop"
-            - name: tools
-              ref: "/terminal/cryptocurrency/tools"
-              sub:
-                - name: aprtoapy
-                  ref: "/terminal/cryptocurrency/tools/aprtoapy"
-                - name: il
-                  ref: "/terminal/cryptocurrency/tools/il"
-            - name: overview
-              ref: "/terminal/cryptocurrency/overview"
-              sub:
-                - name: hm
-                  ref: "/terminal/cryptocurrency/overview/hm"
-                - name: ch
-                  ref: "/terminal/cryptocurrency/overview/ch"
-                - name: btcrb
-                  ref: "/terminal/cryptocurrency/overview/btcrb"
-                - name: cgglobal
-                  ref: "/terminal/cryptocurrency/overview/cgglobal"
-                - name: cgnews
-                  ref: "/terminal/cryptocurrency/overview/cgnews"
-                - name: cgdefi
-                  ref: "/terminal/cryptocurrency/overview/cgdefi"
-                - name: cgstables
-                  ref: "/terminal/cryptocurrency/overview/cgstables"
-                - name: cgexchanges
-                  ref: "/terminal/cryptocurrency/overview/cgexchanges"
-                - name: cgexrates
-                  ref: "/terminal/cryptocurrency/overview/cgexrates"
-                - name: cr
-                  ref: "/terminal/cryptocurrency/overview/cr"
-                - name: cgindexes
-                  ref: "/terminal/cryptocurrency/overview/cgindexes"
-                - name: cgderivatives
-                  ref: "/terminal/cryptocurrency/overview/cgderivatives"
-                - name: cgcategories
-                  ref: "/terminal/cryptocurrency/overview/cgcategories"
-                - name: cghold
-                  ref: "/terminal/cryptocurrency/overview/cghold"
-                - name: cpglobal
-                  ref: "/terminal/cryptocurrency/overview/cpglobal"
-                - name: cpinfo
-                  ref: "/terminal/cryptocurrency/overview/cpinfo"
-                - name: cpmarkets
-                  ref: "/terminal/cryptocurrency/overview/cpmarkets"
-                - name: cpexchanges
-                  ref: "/terminal/cryptocurrency/overview/cpexchanges"
-                - name: cpexmarkets
-                  ref: "/terminal/cryptocurrency/overview/cpexmarkets"
-                - name: cpplatforms
-                  ref: "/terminal/cryptocurrency/overview/cpplatforms"
-                - name: cpcontracts
-                  ref: "/terminal/cryptocurrency/overview/cpcontracts"
-                - name: cbpairs
-                  ref: "/terminal/cryptocurrency/overview/cbpairs"
-                - name: news
-                  ref: "/terminal/cryptocurrency/overview/news"
-                - name: wf
-                  ref: "/terminal/cryptocurrency/overview/wf"
-                - name: ewf
-                  ref: "/terminal/cryptocurrency/overview/ewf"
-                - name: wfpe
-                  ref: "/terminal/cryptocurrency/overview/wfpe"
-                - name: altindex
-                  ref: "/terminal/cryptocurrency/overview/altindex"
-            - name: due diligence
-              ref: "/terminal/cryptocurrency/due_diligence"
-              sub:
-                - name: active
-                  ref: "/terminal/cryptocurrency/due_diligence/active"
-                - name: change
-                  ref: "/terminal/cryptocurrency/due_diligence/change"
-                - name: eb
-                  ref: "/terminal/cryptocurrency/due_diligence/eb"
-                - name: oi
-                  ref: "/terminal/cryptocurrency/due_diligence/oi"
-                - name: info
-                  ref: "/terminal/cryptocurrency/due_diligence/info"
-                - name: market
-                  ref: "/terminal/cryptocurrency/due_diligence/market"
-                - name: ath
-                  ref: "/terminal/cryptocurrency/due_diligence/ath"
-                - name: atl
-                  ref: "/terminal/cryptocurrency/due_diligence/atl"
-                - name: web
-                  ref: "/terminal/cryptocurrency/due_diligence/web"
-                - name: social
-                  ref: "/terminal/cryptocurrency/due_diligence/social"
-                - name: score
-                  ref: "/terminal/cryptocurrency/due_diligence/score"
-                - name: dev
-                  ref: "/terminal/cryptocurrency/due_diligence/dev"
-                - name: bc
-                  ref: "/terminal/cryptocurrency/due_diligence/bc"
-                - name: basic
-                  ref: "/terminal/cryptocurrency/due_diligence/basic"
-                - name: ps
-                  ref: "/terminal/cryptocurrency/due_diligence/ps"
-                - name: mkt
-                  ref: "/terminal/cryptocurrency/due_diligence/mkt"
-                - name: ex
-                  ref: "/terminal/cryptocurrency/due_diligence/ex"
-                - name: twitter
-                  ref: "/terminal/cryptocurrency/due_diligence/twitter"
-                - name: events
-                  ref: "/terminal/cryptocurrency/due_diligence/events"
-                - name: cbbook
-                  ref: "/terminal/cryptocurrency/due_diligence/cbbook"
-                - name: balance
-                  ref: "/terminal/cryptocurrency/due_diligence/balance"
-                - name: trades
-                  ref: "/terminal/cryptocurrency/due_diligence/trades"
-                - name: stats
-                  ref: "/terminal/cryptocurrency/due_diligence/stats"
-                - name: mcapdom
-                  ref: "/terminal/cryptocurrency/due_diligence/mcapdom"
-                - name: nonzero
-                  ref: "/terminal/cryptocurrency/due_diligence/nonzero"
-                - name: mt
-                  ref: "/terminal/cryptocurrency/due_diligence/mt"
-                - name: rm
-                  ref: "/terminal/cryptocurrency/due_diligence/rm"
-                - name: tk
-                  ref: "/terminal/cryptocurrency/due_diligence/tk"
-                - name: pi
-                  ref: "/terminal/cryptocurrency/due_diligence/pi"
-                - name: team
-                  ref: "/terminal/cryptocurrency/due_diligence/team"
-                - name: inv
-                  ref: "/terminal/cryptocurrency/due_diligence/inv"
-                - name: gov
-                  ref: "/terminal/cryptocurrency/due_diligence/gov"
-                - name: fr
-                  ref: "/terminal/cryptocurrency/due_diligence/fr"
-                - name: links
-                  ref: "/terminal/cryptocurrency/due_diligence/links"
-                - name: news
-                  ref: "/terminal/cryptocurrency/due_diligence/news"
-                - name: gh
-                  ref: "/terminal/cryptocurrency/due_diligence/gh"
-            - name: onchain
-              ref: "/terminal/cryptocurrency/onchain"
-              sub:
-                - name: btccp
-                  ref: "/terminal/cryptocurrency/onchain/btccp"
-                - name: btcct
-                  ref: "/terminal/cryptocurrency/onchain/btcct"
-                - name: gwei
-                  ref: "/terminal/cryptocurrency/onchain/gwei"
-                - name: hr
-                  ref: "/terminal/cryptocurrency/onchain/hr"
-                - name: address
-                  ref: "/terminal/cryptocurrency/onchain/address"
-                - name: balance
-                  ref: "/terminal/cryptocurrency/onchain/balance"
-                - name: hist
-                  ref: "/terminal/cryptocurrency/onchain/hist"
-                - name: holders
-                  ref: "/terminal/cryptocurrency/onchain/holders"
-                - name: info
-                  ref: "/terminal/cryptocurrency/onchain/info"
-                - name: ttcp
-                  ref: "/terminal/cryptocurrency/onchain/ttcp"
-                - name: prices
-                  ref: "/terminal/cryptocurrency/onchain/prices"
-                - name: ueat
-                  ref: "/terminal/cryptocurrency/onchain/ueat"
-                - name: baas
-                  ref: "/terminal/cryptocurrency/onchain/baas"
-                - name: th
-                  ref: "/terminal/cryptocurrency/onchain/th"
-                - name: top
-                  ref: "/terminal/cryptocurrency/onchain/top"
-                - name: lt
-                  ref: "/terminal/cryptocurrency/onchain/lt"
-                - name: tx
-                  ref: "/terminal/cryptocurrency/onchain/tx"
-                - name: dvcp
-                  ref: "/terminal/cryptocurrency/onchain/dvcp"
-                - name: tv
-                  ref: "/terminal/cryptocurrency/onchain/tv"
-                - name: whales
-                  ref: "/terminal/cryptocurrency/onchain/whales"
-            - name: nft
-              ref: "/terminal/cryptocurrency/nft"
-              sub:
-                - name: today
-                  ref: "/terminal/cryptocurrency/nft/today"
-                - name: upcoming
-                  ref: "/terminal/cryptocurrency/nft/upcoming"
-                - name: ongoing
-                  ref: "/terminal/cryptocurrency/nft/ongoing"
-                - name: newest
-                  ref: "/terminal/cryptocurrency/nft/newest"
-            - name: technical analysis
-              ref: "/terminal/cryptocurrency/technical_analysis"
-              sub:
-                - name: ema
-                  ref: "/terminal/common/technical_analysis/ema"
-                - name: sma
-                  ref: "/terminal/common/technical_analysis/sma"
-                - name: wma
-                  ref: "/terminal/common/technical_analysis/wma"
-                - name: hma
-                  ref: "/terminal/common/technical_analysis/hma"
-                - name: zlma
-                  ref: "/terminal/common/technical_analysis/zlma"
-                - name: vwap
-                  ref: "/terminal/common/technical_analysis/vwap"
-                - name: cci
-                  ref: "/terminal/common/technical_analysis/cci"
-                - name: macd
-                  ref: "/terminal/common/technical_analysis/macd"
-                - name: rsi
-                  ref: "/terminal/common/technical_analysis/rsi"
-                - name: stoch
-                  ref: "/terminal/common/technical_analysis/stoch"
-                - name: fisher
-                  ref: "/terminal/common/technical_analysis/fisher"
-                - name: cg
-                  ref: "/terminal/common/technical_analysis/cg"
-                - name: adx
-                  ref: "/terminal/common/technical_analysis/adx"
-                - name: aroon
-                  ref: "/terminal/common/technical_analysis/aroon"
-                - name: bbands
-                  ref: "/terminal/common/technical_analysis/bbands"
-                - name: donchian
-                  ref: "/terminal/common/technical_analysis/donchian"
-                - name: kc
-                  ref: "/terminal/common/technical_analysis/kc"
-                - name: ad
-                  ref: "/terminal/common/technical_analysis/ad"
-                - name: adosc
-                  ref: "/terminal/common/technical_analysis/adosc"
-                - name: obv
-                  ref: "/terminal/common/technical_analysis/obv"
-                - name: fib
-                  ref: "/terminal/common/technical_analysis/fib"
-            - name: defi
-              ref: "/terminal/cryptocurrency/defi"
-              sub:
-                - name: anchor
-                  ref: "/terminal/cryptocurrency/defi/anchor"
-                - name: ldapps
-                  ref: "/terminal/cryptocurrency/defi/ldapps"
-                - name: gdapps
-                  ref: "/terminal/cryptocurrency/defi/gdapps"
-                - name: dtvl
-                  ref: "/terminal/cryptocurrency/defi/dtvl"
-                - name: stvl
-                  ref: "/terminal/cryptocurrency/defi/stvl"
-                - name: ayr
-                  ref: "/terminal/cryptocurrency/defi/ayr"
-                - name: aterra
-                  ref: "/terminal/cryptocurrency/defi/aterra"
-                - name: newsletter
-                  ref: "/terminal/cryptocurrency/defi/newsletter"
-                - name: dpi
-                  ref: "/terminal/cryptocurrency/defi/dpi"
-                - name: funding
-                  ref: "/terminal/cryptocurrency/defi/funding"
-                - name: borrow
-                  ref: "/terminal/cryptocurrency/defi/borrow"
-                - name: lending
-                  ref: "/terminal/cryptocurrency/defi/lending"
-                - name: vaults
-                  ref: "/terminal/cryptocurrency/defi/vaults"
-                - name: tokens
-                  ref: "/terminal/cryptocurrency/defi/tokens"
-                - name: stats
-                  ref: "/terminal/cryptocurrency/defi/stats"
-                - name: pairs
-                  ref: "/terminal/cryptocurrency/defi/pairs"
-                - name: pools
-                  ref: "/terminal/cryptocurrency/defi/pools"
-                - name: swaps
-                  ref: "/terminal/cryptocurrency/defi/swaps"
-                - name: sinfo
-                  ref: "/terminal/cryptocurrency/defi/sinfo"
-                - name: govp
-                  ref: "/terminal/cryptocurrency/defi/govp"
-                - name: gacc
-                  ref: "/terminal/cryptocurrency/defi/gacc"
-                - name: validators
-                  ref: "/terminal/cryptocurrency/defi/validators"
-                - name: sratio
-                  ref: "/terminal/cryptocurrency/defi/sratio"
-                - name: sreturn
-                  ref: "/terminal/cryptocurrency/defi/sreturn"
-                - name: lcsc
-                  ref: "/terminal/cryptocurrency/defi/lcsc"
-        - name: economy
-          ref: "/terminal/economy"
-          sub:
-            - name: overview
-              ref: "/terminal/economy/overview"
-            - name: futures
-              ref: "/terminal/economy/futures"
-            - name: map
-              ref: "/terminal/economy/map"
-            - name: bigmac
-              ref: "/terminal/economy/bigmac"
-            - name: macro
-              ref: "/terminal/economy/macro"
-            - name: fred
-              ref: "/terminal/economy/fred"
-            - name: index
-              ref: "/terminal/economy/index"
-            - name: treasury
-              ref: "/terminal/economy/treasury"
-            - name: yield
-              ref: "/terminal/economy/yield"
-            - name: ycrv
-              ref: "/terminal/economy/ycrv"
-            - name: plot
-              ref: "/terminal/economy/plot"
-            - name: rtps
-              ref: "/terminal/economy/rtps"
-            - name: valuation
-              ref: "/terminal/economy/valuation"
-            - name: performance
-              ref: "/terminal/economy/performance"
-            - name: spectrum
-              ref: "/terminal/economy/spectrum"
-            - name: prediction techniques
-              ref: "/terminal/common/prediction_techniques"
-              sub:
-                - name: ets
-                  ref: "/terminal/common/prediction_techniques/ets"
-                - name: knn
-                  ref: "/terminal/common/prediction_techniques/knn"
-                - name: regression
-                  ref: "/terminal/common/prediction_techniques/regression"
-                - name: arima
-                  ref: "/terminal/common/prediction_techniques/arima"
-                - name: mlp
-                  ref: "/terminal/common/prediction_techniques/mlp"
-                - name: rnn
-                  ref: "/terminal/common/prediction_techniques/rnn"
-                - name: lstm
-                  ref: "/terminal/common/prediction_techniques/lstm"
-                - name: conv1d
-                  ref: "/terminal/common/prediction_techniques/conv1d"
-                - name: mc
-                  ref: "/terminal/common/prediction_techniques/mc"
-            - name: quantitative analysis
-              ref: "/terminal/common/quantitative_analysis"
-              sub:
-                - name: pick
-                  ref: "/terminal/common/quantitative_analysis/pick"
-                - name: summary
-                  ref: "/terminal/common/quantitative_analysis/summary"
-                - name: normality
-                  ref: "/terminal/common/quantitative_analysis/normality"
-                - name: unitroot
-                  ref: "/terminal/common/quantitative_analysis/unitroot"
-                - name: hist
-                  ref: "/terminal/common/quantitative_analysis/hist"
-                - name: cdf
-                  ref: "/terminal/common/quantitative_analysis/cdf"
-                - name: bw
-                  ref: "/terminal/common/quantitative_analysis/bw"
-                - name: acf
-                  ref: "/terminal/common/quantitative_analysis/acf"
-                - name: qqplot
-                  ref: "/terminal/common/quantitative_analysis/qqplot"
-                - name: rolling
-                  ref: "/terminal/common/quantitative_analysis/rolling"
-                - name: spread
-                  ref: "/terminal/common/quantitative_analysis/spread"
-                - name: quantile
-                  ref: "/terminal/common/quantitative_analysis/quantile"
-                - name: skew
-                  ref: "/terminal/common/quantitative_analysis/skew"
-                - name: kurtosis
-                  ref: "/terminal/common/quantitative_analysis/kurtosis"
-                - name: decompose
-                  ref: "/terminal/common/quantitative_analysis/decompose"
-                - name: cusum
-                  ref: "/terminal/common/quantitative_analysis/cusum"
-                - name: line
-                  ref: "/terminal/common/quantitative_analysis/line"
-                - name: raw
-                  ref: "/terminal/common/quantitative_analysis/raw"
-        - name: etf
-          ref: "/terminal/etf"
-          sub:
-            - name: ln
-              ref: "/terminal/etf/ln"
-            - name: ld
-              ref: "/terminal/etf/ld"
-            - name: overview
-              ref: "/terminal/etf/overview"
-            - name: holdings
-              ref: "/terminal/etf/holdings"
-            - name: weights
-              ref: "/terminal/etf/weights"
-            - name: summary
-              ref: "/terminal/etf/summary"
-            - name: candle
-              ref: "/terminal/etf/candle"
-            - name: news
-              ref: "/terminal/etf/news"
-            - name: disc
-              ref: "/terminal/etf/disc"
-              sub:
-                - name: gainers
-                  ref: "/terminal/etf/disc/gainers"
-                - name: decliners
-                  ref: "/terminal/etf/disc/decliners"
-                - name: active
-                  ref: "/terminal/etf/disc/active"
-            - name: scr
-              ref: "/terminal/etf/scr"
-              sub:
-                - name: view
-                  ref: "/terminal/etf/scr/view"
-                - name: set
-                  ref: "/terminal/etf/scr/set"
-                - name: screen
-                  ref: "/terminal/etf/scr/screen"
-                - name: sbc
-                  ref: "/terminal/etf/scr/sbc"
-            - name: pir
-              ref: "/terminal/etf/pir"
-            - name: compare
-              ref: "/terminal/etf/compare"
-        - name: funds
-          ref: "/terminal/funds"
-          sub:
-            - name: search
-              ref: "/terminal/funds/search"
-            - name: country
-              ref: "/terminal/funds/country"
-            - name: info
-              ref: "/terminal/funds/info"
-            - name: load
-              ref: "/terminal/funds/load"
-            - name: overview
-              ref: "/terminal/funds/overview"
-            - name: plot
-              ref: "/terminal/funds/plot"
-            - name: sector
-              ref: "/terminal/funds/sector"
-            - name: equity
-              ref: "/terminal/funds/equity"
-        - name: portfolio
-          ref: "/terminal/portfolio"
-          sub:
-            - name: brokers
-              ref: "/terminal/portfolio/brokers"
-              sub:
-                - name: ally
-                  ref: "/terminal/portfolio/brokers/ally"
-                  sub:
-                    - name: balances
-                      ref: "/terminal/portfolio/brokers/ally/balances"
-                    - name: history
-                      ref: "/terminal/portfolio/brokers/ally/history"
-                    - name: holdings
-                      ref: "/terminal/portfolio/brokers/ally/holdings"
-                    - name: movers
-                      ref: "/terminal/portfolio/brokers/ally/movers"
-                    - name: quote
-                      ref: "/terminal/portfolio/brokers/ally/quote"
-                - name: coinbase
-                  ref: "/terminal/portfolio/brokers/coinbase"
-                  sub:
-                    - name: account
-                      ref: "/terminal/portfolio/brokers/coinbase/account"
-                    - name: deposits
-                      ref: "/terminal/portfolio/brokers/coinbase/deposits"
-                    - name: history
-                      ref: "/terminal/portfolio/brokers/coinbase/history"
-                    - name: orders
-                      ref: "/terminal/portfolio/brokers/coinbase/orders"
-                - name: robinhood
-                  ref: "/terminal/portfolio/brokers/robinhood"
-                  sub:
-                    - name: history
-                      ref: "/terminal/portfolio/brokers/robinhood/history"
-                    - name: holdings
-                      ref: "/terminal/portfolio/brokers/robinhood/holdings"
-            - name: portfolio optimization
-              ref: "/terminal/portfolio/po"
-              sub:
-                - name: select
-                  ref: "/terminal/portfolio/po/select"
-                - name: file
-                  ref: "/terminal/portfolio/po/file"
-                - name: params
-                  ref: "/terminal/portfolio/po/params"
-                  sub:
-                    - name: arg
-                      ref: "/terminal/portfolio/po/params/arg"
-                    - name: clear
-                      ref: "/terminal/portfolio/po/params/clear"
-                    - name: file
-                      ref: "/terminal/portfolio/po/params/file"
-                    - name: save
-                      ref: "/terminal/portfolio/po/params/save"
-                    - name: set
-                      ref: "/terminal/portfolio/po/params/set"
-                - name: load
-                  ref: "/terminal/portfolio/po/load"
-                - name: add
-                  ref: "/terminal/portfolio/po/add"
-                - name: rmv
-                  ref: "/terminal/portfolio/po/rmv"
-                - name: show
-                  ref: "/terminal/portfolio/po/show"
-                - name: rpf
-                  ref: "/terminal/portfolio/po/rpf"
-                - name: plot
-                  ref: "/terminal/portfolio/po/plot"
-                - name: equal
-                  ref: "/terminal/portfolio/po/equal"
-                - name: mktcap
-                  ref: "/terminal/portfolio/po/mktcap"
-                - name: dividend
-                  ref: "/terminal/portfolio/po/dividend"
-                - name: property
-                  ref: "/terminal/portfolio/po/property"
-                - name: maxsharpe
-                  ref: "/terminal/portfolio/po/maxsharpe"
-                - name: minrisk
-                  ref: "/terminal/portfolio/po/minrisk"
-                - name: maxutil
-                  ref: "/terminal/portfolio/po/maxutil"
-                - name: maxret
-                  ref: "/terminal/portfolio/po/maxret"
-                - name: maxdiv
-                  ref: "/terminal/portfolio/po/maxdiv"
-                - name: maxdecorr
-                  ref: "/terminal/portfolio/po/maxdecorr"
-                - name: blacklitterman
-                  ref: "/terminal/portfolio/po/blacklitterman"
-                - name: ef
-                  ref: "/terminal/portfolio/po/ef"
-                - name: riskparity
-                  ref: "/terminal/portfolio/po/riskparity"
-                - name: relriskparity
-                  ref: "/terminal/portfolio/po/relriskparity"
-                - name: hrp
-                  ref: "/terminal/portfolio/po/hrp"
-                - name: herc
-                  ref: "/terminal/portfolio/po/herc"
-                - name: nco
-                  ref: "/terminal/portfolio/po/nco"
-            - name: load
-              ref: "/terminal/portfolio/load"
-            - name: show
-              ref: "/terminal/portfolio/show"
-            - name: bench
-              ref: "/terminal/portfolio/bench"
-            - name: holdv
-              ref: "/terminal/portfolio/holdv"
-            - name: holdp
-              ref: "/terminal/portfolio/holdp"
-            - name: cret
-              ref: "/terminal/portfolio/cret"
-            - name: yret
-              ref: "/terminal/portfolio/yret"
-            - name: mret
-              ref: "/terminal/portfolio/mret"
-            - name: dret
-              ref: "/terminal/portfolio/dret"
-            - name: distr
-              ref: "/terminal/portfolio/distr"
-            - name: maxdd
-              ref: "/terminal/portfolio/maxdd"
-            - name: rvol
-              ref: "/terminal/portfolio/rvol"
-            - name: rsharpe
-              ref: "/terminal/portfolio/rsharpe"
-            - name: rsort
-              ref: "/terminal/portfolio/rsort"
-            - name: rbeta
-              ref: "/terminal/portfolio/rbeta"
-            - name: alloc
-              ref: "/terminal/portfolio/alloc"
-            - name: summary
-              ref: "/terminal/portfolio/summary"
-            - name: metric
-              ref: "/terminal/portfolio/metric"
-            - name: perf
-              ref: "/terminal/portfolio/perf"
-            - name: var
-              ref: "/terminal/portfolio/var"
-            - name: es
-              ref: "/terminal/portfolio/es"
-            - name: om
-              ref: "/terminal/portfolio/om"
-        - name: forex
-          ref: "/terminal/forex"
-          sub:
-            - name: load
-              ref: "/terminal/forex/load"
-            - name: quote
-              ref: "/terminal/forex/quote"
-            - name: fwd
-              ref: "/terminal/forex/fwd"
-            - name: candle
-              ref: "/terminal/forex/candle"
-            - name: oanda
-              ref: "/terminal/forex/oanda"
-              sub:
-                - name: calendar
-                  ref: "/terminal/forex/oanda/calendar"
-                - name: cancel
-                  ref: "/terminal/forex/oanda/cancel"
-                - name: candles
-                  ref: "/terminal/forex/oanda/candles"
-                - name: closetrade
-                  ref: "/terminal/forex/oanda/closetrade"
-                - name: orderbook
-                  ref: "/terminal/forex/oanda/orderbook"
-                - name: pending
-                  ref: "/terminal/forex/oanda/pending"
-                - name: positionbook
-                  ref: "/terminal/forex/oanda/positionbook"
-                - name: positions
-                  ref: "/terminal/forex/oanda/positions"
-        - name: alternative
-          ref: "/terminal/alternative"
-          sub:
-            - name: os
-              ref: "/terminal/alternative/oss"
-              sub:
-                - name: rossidx
-                  ref: "/terminal/alternative/oss/rossidx"
-                - name: tr
-                  ref: "/terminal/alternative/oss/tr"
-                - name: sh
-                  ref: "/terminal/alternative/oss/sh"
-                - name: rs
-                  ref: "/terminal/alternative/oss/rs"
-            - name: covid
-              ref: "/terminal/alternative/covid"
-              sub:
-                - name: slopes
-                  ref: "/terminal/alternative/covid/slopes"
-                - name: ov
-                  ref: "/terminal/alternative/covid/ov"
-                - name: deaths
-                  ref: "/terminal/alternative/covid/deaths"
-                - name: cases
-                  ref: "/terminal/alternative/covid/cases"
-                - name: rates
-                  ref: "/terminal/alternative/covid/rates"
-        - name: econometrics
-          ref: "/terminal/econometrics"
-          sub:
-            - name: load
-              ref: "/terminal/econometrics/load"
-            - name: export
-              ref: "/terminal/econometrics/show"
-            - name: remove
-              ref: "/terminal/econometrics/remove"
-            - name: options
-              ref: "/terminal/econometrics/options"
-            - name: show
-              ref: "/terminal/econometrics/show"
-            - name: plot
-              ref: "/terminal/econometrics/plot"
-            - name: type
-              ref: "/terminal/econometrics/type"
-            - name: desc
-              ref: "/terminal/econometrics/desc"
-            - name: index
-              ref: "/terminal/econometrics/index"
-            - name: clean
-              ref: "/terminal/econometrics/clean"
-            - name: modify
-              ref: "/terminal/econometrics/modify"
-            - name: ols
-              ref: "/terminal/econometrics/ols"
-            - name: norm
-              ref: "/terminal/econometrics/norm"
-            - name: root
-              ref: "/terminal/econometrics/root"
-            - name: panel
-              ref: "/terminal/econometrics/panel"
-            - name: compare
-              ref: "/terminal/econometrics/compare"
-            - name: dwat
-              ref: "/terminal/econometrics/dwat"
-            - name: bgod
-              ref: "/terminal/econometrics/bgod"
-            - name: bpag
-              ref: "/terminal/econometrics/bpag"
-            - name: granger
-              ref: "/terminal/econometrics/granger"
-            - name: coint
-              ref: "/terminal/econometrics/coint"
-        - name: jupyter
-          ref: "/terminal/jupyter"
-          sub:
-            - name: "dashboards"
-              ref: "/terminal/jupyter/dashboards"
-              sub:
-                - name: "stocks"
-                  ref: "/terminal/jupyter/dashboards/stocks"
-                - name: "correlation"
-                  ref: "/terminal/jupyter/dashboards/correlations"
-                - name: "vsurf"
-                  ref: "/terminal/jupyter/dashboards/vsurf"
-                - name: "chains"
-                  ref: "/terminal/jupyter/dashboards/chains"
-                - name: "shortdata"
-                  ref: "/terminal/jupyter/dashboards/shortdata"
-            - name: "reports"
-              ref: "/terminal/jupyter/reports"
+      - name: stocks
+        ref: "/terminal/stocks"
+        sub:
+          - name: search
+            ref: "/terminal/stocks/search"
+          - name: load
+            ref: "/terminal/stocks/load"
+          - name: candle
+            ref: "/terminal/stocks/candle"
+          - name: quote
+            ref: "/terminal/stocks/quote"
+          - name: news
+            ref: "/terminal/stocks/news"
+          - name: codes
+            ref: "/terminal/stocks/codes"
+          - name: discovery
+            ref: "/terminal/stocks/discovery"
+            sub:
+              - name: pipo
+                ref: "/terminal/stocks/discovery/pipo"
+              - name: fipo
+                ref: "/terminal/stocks/discovery/fipo"
+              - name: gainers
+                ref: "/terminal/stocks/discovery/gainers"
+              - name: losers
+                ref: "/terminal/stocks/discovery/losers"
+              - name: ugs
+                ref: "/terminal/stocks/discovery/ugs"
+              - name: gtech
+                ref: "/terminal/stocks/discovery/gtech"
+              - name: active
+                ref: "/terminal/stocks/discovery/active"
+              - name: ulc
+                ref: "/terminal/stocks/discovery/ulc"
+              - name: asc
+                ref: "/terminal/stocks/discovery/asc"
+              - name: ford
+                ref: "/terminal/stocks/discovery/ford"
+              - name: arkord
+                ref: "/terminal/stocks/discovery/arkord"
+              - name: upcoming
+                ref: "/terminal/stocks/discovery/upcoming"
+              - name: cnews
+                ref: "/terminal/stocks/discovery/cnews"
+              - name: trending
+                ref: "/terminal/stocks/discovery/trending"
+              - name: lowfloat
+                ref: "/terminal/stocks/discovery/lowfloat"
+              - name: hotpenny
+                ref: "/terminal/stocks/discovery/hotpenny"
+              - name: fds
+                ref: "/terminal/stocks/discovery/fds"
+              - name: rtat
+                ref: "/terminal/stocks/discovery/rtat"
+              - name: divcal
+                ref: "/terminal/stocks/discovery/divcal"
+              - name: cramer
+                ref: "/terminal/stocks/discovery/cramer"
+          - name: Sector and Industry Analysis (SIA)
+            ref: "/terminal/stocks/sia"
+            sub:
+              - name: load
+                ref: "/terminal/stocks/sia/load"
+              - name: clear
+                ref: "/terminal/stocks/sia/clear"
+              - name: industry
+                ref: "/terminal/stocks/sia/industry"
+              - name: sector
+                ref: "/terminal/stocks/sia/sector"
+              - name: country
+                ref: "/terminal/stocks/sia/country"
+              - name: mktcap
+                ref: "/terminal/stocks/sia/mktcap"
+              - name: exchange
+                ref: "/terminal/stocks/sia/exchange"
+              - name: cps
+                ref: "/terminal/stocks/sia/cps"
+              - name: cpic
+                ref: "/terminal/stocks/sia/cpic"
+              - name: cpis
+                ref: "/terminal/stocks/sia/cpis"
+              - name: cpcs
+                ref: "/terminal/stocks/sia/cpcs"
+              - name: cpci
+                ref: "/terminal/stocks/sia/cpci"
+              - name: sama
+                ref: "/terminal/stocks/sia/sama"
+              - name: satma
+                ref: "/terminal/stocks/sia/satma"
+              - name: metric
+                ref: "/terminal/stocks/sia/metric"
+              - name: vis
+                ref: "/terminal/stocks/sia/vis"
+              - name: period
+                ref: "/terminal/stocks/sia/period"
+          - name: dark pool shorts
+            ref: "/terminal/stocks/dark_pool_shorts"
+            sub:
+              - name: shorted
+                ref: "/terminal/stocks/dark_pool_shorts/shorted"
+              - name: ctb
+                ref: "/terminal/stocks/dark_pool_shorts/ctb"
+              - name: hsi
+                ref: "/terminal/stocks/dark_pool_shorts/hsi"
+              - name: prom
+                ref: "/terminal/stocks/dark_pool_shorts/prom"
+              - name: pos
+                ref: "/terminal/stocks/dark_pool_shorts/pos"
+              - name: sidtc
+                ref: "/terminal/stocks/dark_pool_shorts/sidtc"
+              - name: dpotc
+                ref: "/terminal/stocks/dark_pool_shorts/dpotc"
+              - name: ftd
+                ref: "/terminal/stocks/dark_pool_shorts/ftd"
+              - name: spos
+                ref: "/terminal/stocks/dark_pool_shorts/spos"
+              - name: psi
+                ref: "/terminal/stocks/dark_pool_shorts/psi"
+          - name: screener
+            ref: "/terminal/stocks/screener"
+            sub:
+              - name: view
+                ref: "/terminal/stocks/screener/view"
+              - name: set
+                ref: "/terminal/stocks/screener/set"
+              - name: historical
+                ref: "/terminal/stocks/screener/historical"
+              - name: overview
+                ref: "/terminal/stocks/screener/overview"
+              - name: valuation
+                ref: "/terminal/stocks/screener/valuation"
+              - name: financial
+                ref: "/terminal/stocks/screener/financial"
+              - name: ownership
+                ref: "/terminal/stocks/screener/ownership"
+              - name: performance
+                ref: "/terminal/stocks/screener/performance"
+              - name: technical
+                ref: "/terminal/stocks/screener/technical"
+          - name: insider trading
+            ref: "/terminal/stocks/insider"
+            sub:
+              - name: load
+                ref: "/terminal/stocks/insider/load"
+              - name: view
+                ref: "/terminal/stocks/insider/view"
+              - name: set
+                ref: "/terminal/stocks/insider/set"
+              - name: filter
+                ref: "/terminal/stocks/insider/filter"
+              - name: lcb
+                ref: "/terminal/stocks/insider/lcb"
+              - name: lpsb
+                ref: "/terminal/stocks/insider/lpsb"
+              - name: lit
+                ref: "/terminal/stocks/insider/lit"
+              - name: lip
+                ref: "/terminal/stocks/insider/lip"
+              - name: blip
+                ref: "/terminal/stocks/insider/blip"
+              - name: blop
+                ref: "/terminal/stocks/insider/blop"
+              - name: blcp
+                ref: "/terminal/stocks/insider/blcp"
+              - name: lis
+                ref: "/terminal/stocks/insider/lis"
+              - name: blis
+                ref: "/terminal/stocks/insider/blis"
+              - name: blos
+                ref: "/terminal/stocks/insider/blos"
+              - name: blcs
+                ref: "/terminal/stocks/insider/blcs"
+              - name: topt
+                ref: "/terminal/stocks/insider/topt"
+              - name: toppw
+                ref: "/terminal/stocks/insider/toppw"
+              - name: toppm
+                ref: "/terminal/stocks/insider/toppm"
+              - name: tipt
+                ref: "/terminal/stocks/insider/tipt"
+              - name: tippw
+                ref: "/terminal/stocks/insider/tippw"
+              - name: tippm
+                ref: "/terminal/stocks/insider/tippm"
+              - name: tist
+                ref: "/terminal/stocks/insider/tist"
+              - name: tispw
+                ref: "/terminal/stocks/insider/tispw"
+              - name: tispm
+                ref: "/terminal/stocks/insider/tispm"
+              - name: lins
+                ref: "/terminal/stocks/insider/lins"
+              - name: act
+                ref: "/terminal/stocks/insider/act"
+          - name: government
+            ref: "/terminal/stocks/government"
+            sub:
+              - name: contracts
+                ref: "/terminal/stocks/government/contracts"
+              - name: gtrades
+                ref: "/terminal/stocks/government/gtrades"
+              - name: histcont
+                ref: "/terminal/stocks/government/histcont"
+              - name: lastcontracts
+                ref: "/terminal/stocks/government/lastcontracts"
+              - name: lasttrades
+                ref: "/terminal/stocks/government/lasttrades"
+              - name: lobbying
+                ref: "/terminal/stocks/government/lobbying"
+              - name: qtrcontracts
+                ref: "/terminal/stocks/government/qtrcontracts"
+              - name: topbuys
+                ref: "/terminal/stocks/government/topbuys"
+              - name: toplobbying
+                ref: "/terminal/stocks/government/toplobbying"
+              - name: topsells
+                ref: "/terminal/stocks/government/topsells"
+          - name: fundamental analysis
+            ref: "/terminal/stocks/fundamental_analysis"
+            sub:
+              - name: mgmt
+                ref: "/terminal/stocks/fundamental_analysis/mgmt"
+              - name: analysis
+                ref: "/terminal/stocks/fundamental_analysis/analysis"
+              - name: score
+                ref: "/terminal/stocks/fundamental_analysis/score"
+              - name: warnings
+                ref: "/terminal/stocks/fundamental_analysis/warnings"
+              - name: dcf
+                ref: "/terminal/stocks/fundamental_analysis/dcf"
+              - name: info
+                ref: "/terminal/stocks/fundamental_analysis/info"
+              - name: shrs
+                ref: "/terminal/stocks/fundamental_analysis/shrs"
+              - name: sust
+                ref: "/terminal/stocks/fundamental_analysis/sust"
+              - name: cal
+                ref: "/terminal/stocks/fundamental_analysis/cal"
+              - name: splits
+                ref: "/terminal/stocks/fundamental_analysis/splits"
+              - name: fundamental_analysis/web"
+              - name: hq
+                ref: "/terminal/stocks/fundamental_analysis/hq"
+              - name: divs
+                ref: "/terminal/stocks/fundamental_analysis/divs"
+              - name: mktcap
+                ref: "/terminal/stocks/fundamental_analysis/mktcap"
+              - name: overview
+                ref: "/terminal/stocks/fundamental_analysis/overview"
+              - name: key
+                ref: "/terminal/stocks/fundamental_analysis/key"
+              - name: income
+                ref: "/terminal/stocks/fundamental_analysis/income"
+              - name: balance
+                ref: "/terminal/stocks/fundamental_analysis/balance"
+              - name: cash
+                ref: "/terminal/stocks/fundamental_analysis/cash"
+              - name: earnings
+                ref: "/terminal/stocks/fundamental_analysis/earnings"
+              - name: fraud
+                ref: "/terminal/stocks/fundamental_analysis/fraud"
+              - name: dupont
+                ref: "/terminal/stocks/fundamental_analysis/dupont"
+              - name: financial modeling prep
+                ref: "/terminal/stocks/fundamental_analysis/fmp"
+                sub:
+                  - name: profile
+                    ref: "/terminal/stocks/fundamental_analysis/fmp/profile"
+                  - name: quote
+                    ref: "/terminal/stocks/fundamental_analysis/fmp/quote"
+                  - name: enterprise
+                    ref: "/terminal/stocks/fundamental_analysis/fmp/enterprise"
+                  - name: dcf
+                    ref: "/terminal/stocks/fundamental_analysis/fmp/dcf"
+                  - name: income
+                    ref: "/terminal/stocks/fundamental_analysis/fmp/income"
+                  - name: balance
+                    ref: "/terminal/stocks/fundamental_analysis/fmp/balance"
+                  - name: cash
+                    ref: "/terminal/stocks/fundamental_analysis/fmp/cash"
+                  - name: metrics
+                    ref: "/terminal/stocks/fundamental_analysis/fmp/metrics"
+                  - name: ratios
+                    ref: "/terminal/stocks/fundamental_analysis/fmp/ratios"
+                  - name: growth
+                    ref: "/terminal/stocks/fundamental_analysis/fmp/growth"
+          - name: research
+            ref: "/terminal/stocks/research"
+            sub:
+              - name: macroaxis
+                ref: "/terminal/stocks/research/macroaxis"
+              - name: yahoo
+                ref: "/terminal/stocks/research/yahoo"
+              - name: finviz
+                ref: "/terminal/stocks/research/finviz"
+              - name: marketwatch
+                ref: "/terminal/stocks/research/marketwatch"
+              - name: fool
+                ref: "/terminal/stocks/research/fool"
+              - name: businessinsider
+                ref: "/terminal/stocks/research/businessinsider"
+              - name: fmp
+                ref: "/terminal/stocks/research/fmp"
+              - name: fidelity
+                ref: "/terminal/stocks/research/fidelity"
+              - name: tradingview
+                ref: "/terminal/stocks/research/tradingview"
+              - name: marketchameleon
+                ref: "/terminal/stocks/research/marketchameleon"
+              - name: stockrow
+                ref: "/terminal/stocks/research/stockrow"
+              - name: barchart
+                ref: "/terminal/stocks/research/barchart"
+              - name: grufity
+                ref: "/terminal/stocks/research/grufity"
+              - name: fintel
+                ref: "/terminal/stocks/research/fintel"
+              - name: zacks
+                ref: "/terminal/stocks/research/zacks"
+              - name: macrotrends
+                ref: "/terminal/stocks/research/macrotrends"
+              - name: newsfilter
+                ref: "/terminal/stocks/research/newsfilter"
+              - name: stockanalysis
+                ref: "/terminal/stocks/research/stockanalysis"
+          - name: due diligence
+            ref: "/terminal/stocks/due_diligence"
+            sub:
+              - name: analyst
+                ref: "/terminal/stocks/due_diligence/analyst"
+              - name: rating
+                ref: "/terminal/stocks/due_diligence/rating"
+              - name: rot
+                ref: "/terminal/stocks/due_diligence/rot"
+              - name: pt
+                ref: "/terminal/stocks/due_diligence/pt"
+              - name: est
+                ref: "/terminal/stocks/due_diligence/est"
+              - name: sec
+                ref: "/terminal/stocks/due_diligence/sec"
+              - name: supplier
+                ref: "/terminal/stocks/due_diligence/supplier"
+              - name: customer
+                ref: "/terminal/stocks/due_diligence/customer"
+              - name: arktrades
+                ref: "/terminal/stocks/due_diligence/arktrades"
+          - name: comparison analysis
+            ref: "/terminal/stocks/comparison_analysis"
+            sub:
+              - name: add
+                ref: "/terminal/stocks/comparison_analysis/add"
+              - name: tsne
+                ref: "/terminal/stocks/comparison_analysis/tsne"
+              - name: getpoly
+                ref: "/terminal/stocks/comparison_analysis/getpoly"
+              - name: getfinnhub
+                ref: "/terminal/stocks/comparison_analysis/getfinnhub"
+              - name: getfinviz
+                ref: "/terminal/stocks/comparison_analysis/getfinviz"
+              - name: historical
+                ref: "/terminal/stocks/comparison_analysis/historical"
+              - name: hcorr
+                ref: "/terminal/stocks/comparison_analysis/hcorr"
+              - name: volume
+                ref: "/terminal/stocks/comparison_analysis/volume"
+              - name: income
+                ref: "/terminal/stocks/comparison_analysis/income"
+              - name: balance
+                ref: "/terminal/stocks/comparison_analysis/balance"
+              - name: cashflow
+                ref: "/terminal/stocks/comparison_analysis/cashflow"
+              - name: sentiment
+                ref: "/terminal/stocks/comparison_analysis/sentiment"
+              - name: scorr
+                ref: "/terminal/stocks/comparison_analysis/scorr"
+              - name: overview
+                ref: "/terminal/stocks/comparison_analysis/overview"
+              - name: valuation
+                ref: "/terminal/stocks/comparison_analysis/valuation"
+              - name: financial
+                ref: "/terminal/stocks/comparison_analysis/financial"
+              - name: ownership
+                ref: "/terminal/stocks/comparison_analysis/ownership"
+              - name: performance
+                ref: "/terminal/stocks/comparison_analysis/performance"
+              - name: technical
+                ref: "/terminal/stocks/comparison_analysis/technical"
+          - name: backtesting
+            ref: "/terminal/stocks/backtesting"
+            sub:
+              - name: whatif
+                ref: "/terminal/stocks/backtesting/whatif"
+              - name: ema
+                ref: "/terminal/stocks/backtesting/ema"
+              - name: ema_cross
+                ref: "/terminal/stocks/backtesting/ema_cross"
+              - name: rsi
+                ref: "/terminal/stocks/backtesting/rsi"
+          - name: options
+            ref: "/terminal/stocks/options"
+            sub:
+              - name: scr
+                ref: "/terminal/stocks/options/scr"
+              - name: unu
+                ref: "/terminal/stocks/options/unu"
+              - name: calc
+                ref: "/terminal/stocks/options/calc"
+              - name: load
+                ref: "/terminal/stocks/options/load"
+              - name: exp
+                ref: "/terminal/stocks/options/exp"
+              - name: pcr
+                ref: "/terminal/stocks/options/pcr"
+              - name: info
+                ref: "/terminal/stocks/options/info"
+              - name: chains
+                ref: "/terminal/stocks/options/chains"
+              - name: oi
+                ref: "/terminal/stocks/options/oi"
+              - name: vol
+                ref: "/terminal/stocks/options/vol"
+              - name: voi
+                ref: "/terminal/stocks/options/voi"
+              - name: hist
+                ref: "/terminal/stocks/options/hist"
+              - name: grhist
+                ref: "/terminal/stocks/options/grhist"
+              - name: vsurf
+                ref: "/terminal/stocks/options/vsurf"
+              - name: portfolio optimization
+                ref: "/terminal/portfolio/po"
+              - name: parity
+                ref: "/terminal/stocks/options/parity"
+              - name: binom
+                ref: "/terminal/stocks/options/binom"
+              - name: greeks
+                ref: "/terminal/stocks/options/greeks"
+              - name: hedge
+                ref: "/terminal/stocks/options/hedge"
+                sub:
+                  - name: add
+                    ref: "/terminal/stocks/options/hedge/add"
+                  - name: sop
+                    ref: "/terminal/stocks/options/hedge/sop"
+                  - name: pick
+                    ref: "/terminal/stocks/options/hedge/pick"
+                  - name: list
+                    ref: "/terminal/stocks/options/hedge/list"
+                  - name: rmv
+                    ref: "/terminal/stocks/options/hedge/rmv"
+              - name: payoff
+                ref: "/terminal/stocks/options/payoff"
+                sub:
+                  - name: add
+                    ref: "/terminal/stocks/options/payoff/add"
+                  - name: sop
+                    ref: "/terminal/stocks/options/payoff/sop"
+                  - name: pick
+                    ref: "/terminal/stocks/options/payoff/pick"
+                  - name: plot
+                    ref: "/terminal/stocks/options/payoff/plot"
+                  - name: rmv
+                    ref: "/terminal/stocks/options/payoff/rmv"
+              - name: pricing
+                ref: "/terminal/stocks/options/pricing"
+                sub:
+                  - name: add
+                    ref: "/terminal/stocks/options/pricing/add"
+                  - name: rmv
+                    ref: "/terminal/stocks/options/pricing/rmv"
+                  - name: show
+                    ref: "/terminal/stocks/options/pricing/show"
+                  - name: rnval
+                    ref: "/terminal/stocks/options/pricing/rnval"
+          - name: trading hours
+            ref: "/terminal/stocks/tradinghours"
+            sub:
+              - name: all
+                ref: "/terminal/stocks/tradinghours/all"
+              - name: closed
+                ref: "/terminal/stocks/tradinghours/closed"
+              - name: exchange
+                ref: "/terminal/stocks/tradinghours/exchange"
+              - name: open
+                ref: "/terminal/stocks/tradinghours/open"
+              - name: symbol
+                ref: "/terminal/stocks/tradinghours/symbol"
+          - name: technical analysis
+            ref: "/terminal/common/technical_analysis"
+            sub:
+              - name: view
+                ref: "/terminal/common/technical_analysis/view"
+              - name: tv
+                ref: "/terminal/common/technical_analysis/tv"
+              - name: summary
+                ref: "/terminal/common/technical_analysis/summary"
+              - name: recom
+                ref: "/terminal/common/technical_analysis/recom"
+              - name: ema
+                ref: "/terminal/common/technical_analysis/ema"
+              - name: sma
+                ref: "/terminal/common/technical_analysis/sma"
+              - name: wma
+                ref: "/terminal/common/technical_analysis/wma"
+              - name: hma
+                ref: "/terminal/common/technical_analysis/hma"
+              - name: zlma
+                ref: "/terminal/common/technical_analysis/zlma"
+              - name: vwap
+                ref: "/terminal/common/technical_analysis/vwap"
+              - name: cci
+                ref: "/terminal/common/technical_analysis/cci"
+              - name: macd
+                ref: "/terminal/common/technical_analysis/macd"
+              - name: rsi
+                ref: "/terminal/common/technical_analysis/rsi"
+              - name: stoch
+                ref: "/terminal/common/technical_analysis/stoch"
+              - name: fisher
+                ref: "/terminal/common/technical_analysis/fisher"
+              - name: cg
+                ref: "/terminal/common/technical_analysis/cg"
+              - name: adx
+                ref: "/terminal/common/technical_analysis/adx"
+              - name: aroon
+                ref: "/terminal/common/technical_analysis/aroon"
+              - name: bbands
+                ref: "/terminal/common/technical_analysis/bbands"
+              - name: donchian
+                ref: "/terminal/common/technical_analysis/donchian"
+              - name: kc
+                ref: "/terminal/common/technical_analysis/kc"
+              - name: ad
+                ref: "/terminal/common/technical_analysis/ad"
+              - name: adosc
+                ref: "/terminal/common/technical_analysis/adosc"
+              - name: obv
+                ref: "/terminal/common/technical_analysis/obv"
+              - name: fib
+                ref: "/terminal/common/technical_analysis/fib"
+          - name: behavioural analysis
+            ref: "/terminal/common/behavioural_analysis"
+            sub:
+              - name: headlines
+                ref: "/terminal/common/behavioural_analysis/headlines"
+              - name: stats
+                ref: "/terminal/common/behavioural_analysis/stats"
+              - name: snews
+                ref: "/terminal/stocks/behavioural_analysis/snews"
+              - name: interest
+                ref: "/terminal/stocks/behavioural_analysis/interest"
+              - name: wsb
+                ref: "/terminal/common/behavioural_analysis/wsb"
+              - name: watchlist
+                ref: "/terminal/common/behavioural_analysis/watchlist"
+              - name: popular
+                ref: "/terminal/common/behavioural_analysis/popular"
+              - name: spac_c
+                ref: "/terminal/common/behavioural_analysis/spac_c"
+              - name: spac
+                ref: "/terminal/common/behavioural_analysis/spac"
+              - name: getdd
+                ref: "/terminal/common/behavioural_analysis/getdd"
+              - name: reddit_sent
+                ref: "/terminal/common/behavioural_analysis/reddit_sent"
+              - name: bullbear
+                ref: "/terminal/common/behavioural_analysis/bullbear"
+              - name: messages
+                ref: "/terminal/common/behavioural_analysis/messages"
+              - name: trending
+                ref: "/terminal/common/behavioural_analysis/trending"
+              - name: stalker
+                ref: "/terminal/common/behavioural_analysis/stalker"
+              - name: infer
+                ref: "/terminal/common/behavioural_analysis/infer"
+              - name: sentiment
+                ref: "/terminal/common/behavioural_analysis/sentiment"
+              - name: mentions
+                ref: "/terminal/common/behavioural_analysis/mentions"
+              - name: regions
+                ref: "/terminal/common/behavioural_analysis/regions"
+              - name: queries
+                ref: "/terminal/common/behavioural_analysis/queries"
+              - name: rise
+                ref: "/terminal/common/behavioural_analysis/rise"
+              - name: hist
+                ref: "/terminal/common/behavioural_analysis/hist"
+              - name: trend
+                ref: "/terminal/common/behavioural_analysis/trend"
+              - name: jcdr
+                ref: "/terminal/common/behavioural_analysis/jcdr"
+              - name: jctr
+                ref: "/terminal/common/behavioural_analysis/jctr"
+          - name: quantitative analysis
+            ref: "/terminal/common/quantitative_analysis"
+            sub:
+              - name: load
+                ref: "/terminal/common/quantitative_analysis/load"
+              - name: pick
+                ref: "/terminal/common/quantitative_analysis/pick"
+              - name: summary
+                ref: "/terminal/common/quantitative_analysis/summary"
+              - name: normality
+                ref: "/terminal/common/quantitative_analysis/normality"
+              - name: unitroot
+                ref: "/terminal/common/quantitative_analysis/unitroot"
+              - name: hist
+                ref: "/terminal/common/quantitative_analysis/hist"
+              - name: cdf
+                ref: "/terminal/common/quantitative_analysis/cdf"
+              - name: bw
+                ref: "/terminal/common/quantitative_analysis/bw"
+              - name: acf
+                ref: "/terminal/common/quantitative_analysis/acf"
+              - name: qqplot
+                ref: "/terminal/common/quantitative_analysis/qqplot"
+              - name: rolling
+                ref: "/terminal/common/quantitative_analysis/rolling"
+              - name: spread
+                ref: "/terminal/common/quantitative_analysis/spread"
+              - name: quantile
+                ref: "/terminal/common/quantitative_analysis/quantile"
+              - name: skew
+                ref: "/terminal/common/quantitative_analysis/skew"
+              - name: kurtosis
+                ref: "/terminal/common/quantitative_analysis/kurtosis"
+              - name: decompose
+                ref: "/terminal/common/quantitative_analysis/decompose"
+              - name: cusum
+                ref: "/terminal/common/quantitative_analysis/cusum"
+              - name: capm
+                ref: "/terminal/common/quantitative_analysis/capm"
+              - name: line
+                ref: "/terminal/common/quantitative_analysis/line"
+              - name: raw
+                ref: "/terminal/common/quantitative_analysis/raw"
+          - name: prediction techniques
+            ref: "/terminal/common/prediction_techniques"
+            sub:
+              - name: ets
+                ref: "/terminal/common/prediction_techniques/ets"
+              - name: knn
+                ref: "/terminal/common/prediction_techniques/knn"
+              - name: regression
+                ref: "/terminal/common/prediction_techniques/regression"
+              - name: arima
+                ref: "/terminal/common/prediction_techniques/arima"
+              - name: mlp
+                ref: "/terminal/common/prediction_techniques/mlp"
+              - name: rnn
+                ref: "/terminal/common/prediction_techniques/rnn"
+              - name: lstm
+                ref: "/terminal/common/prediction_techniques/lstm"
+              - name: conv1d
+                ref: "/terminal/common/prediction_techniques/conv1d"
+              - name: mc
+                ref: "/terminal/common/prediction_techniques/mc"
+              - name: expo
+                ref: "/terminal/common/prediction_techniques/expo"
+      - name: Cryptocurrency
+        ref: "/terminal/cryptocurrency"
+        sub:
+          - name: load
+            ref: "/terminal/cryptocurrency/load"
+          - name: chart
+            ref: "/terminal/cryptocurrency/chart"
+          - name: find
+            ref: "/terminal/cryptocurrency/find"
+          - name: headlines
+            ref: "/terminal/cryptocurrency/headlines"
+          - name: prt
+            ref: "/terminal/cryptocurrency/prt"
+          - name: discovery
+            ref: "/terminal/cryptocurrency/discovery"
+            sub:
+              - name: cgtrending
+                ref: "/terminal/cryptocurrency/discovery/cgtrending"
+              - name: drnft
+                ref: "/terminal/cryptocurrency/discovery/drnft"
+              - name: drdex
+                ref: "/terminal/cryptocurrency/discovery/drdex"
+              - name: drdapps
+                ref: "/terminal/cryptocurrency/discovery/drdapps"
+              - name: drgames
+                ref: "/terminal/cryptocurrency/discovery/drgames"
+              - name: cggainers
+                ref: "/terminal/cryptocurrency/discovery/cggainers"
+              - name: cglosers
+                ref: "/terminal/cryptocurrency/discovery/cglosers"
+              - name: cgtop
+                ref: "/terminal/cryptocurrency/discovery/cgtop"
+              - name: cpsearch
+                ref: "/terminal/cryptocurrency/discovery/cpsearch"
+              - name: cmctop
+                ref: "/terminal/cryptocurrency/discovery/cmctop"
+          - name: tools
+            ref: "/terminal/cryptocurrency/tools"
+            sub:
+              - name: aprtoapy
+                ref: "/terminal/cryptocurrency/tools/aprtoapy"
+              - name: il
+                ref: "/terminal/cryptocurrency/tools/il"
+          - name: overview
+            ref: "/terminal/cryptocurrency/overview"
+            sub:
+              - name: hm
+                ref: "/terminal/cryptocurrency/overview/hm"
+              - name: ch
+                ref: "/terminal/cryptocurrency/overview/ch"
+              - name: btcrb
+                ref: "/terminal/cryptocurrency/overview/btcrb"
+              - name: cgglobal
+                ref: "/terminal/cryptocurrency/overview/cgglobal"
+              - name: cgnews
+                ref: "/terminal/cryptocurrency/overview/cgnews"
+              - name: cgdefi
+                ref: "/terminal/cryptocurrency/overview/cgdefi"
+              - name: cgstables
+                ref: "/terminal/cryptocurrency/overview/cgstables"
+              - name: cgexchanges
+                ref: "/terminal/cryptocurrency/overview/cgexchanges"
+              - name: cgexrates
+                ref: "/terminal/cryptocurrency/overview/cgexrates"
+              - name: cr
+                ref: "/terminal/cryptocurrency/overview/cr"
+              - name: cgindexes
+                ref: "/terminal/cryptocurrency/overview/cgindexes"
+              - name: cgderivatives
+                ref: "/terminal/cryptocurrency/overview/cgderivatives"
+              - name: cgcategories
+                ref: "/terminal/cryptocurrency/overview/cgcategories"
+              - name: cghold
+                ref: "/terminal/cryptocurrency/overview/cghold"
+              - name: cpglobal
+                ref: "/terminal/cryptocurrency/overview/cpglobal"
+              - name: cpinfo
+                ref: "/terminal/cryptocurrency/overview/cpinfo"
+              - name: cpmarkets
+                ref: "/terminal/cryptocurrency/overview/cpmarkets"
+              - name: cpexchanges
+                ref: "/terminal/cryptocurrency/overview/cpexchanges"
+              - name: cpexmarkets
+                ref: "/terminal/cryptocurrency/overview/cpexmarkets"
+              - name: cpplatforms
+                ref: "/terminal/cryptocurrency/overview/cpplatforms"
+              - name: cpcontracts
+                ref: "/terminal/cryptocurrency/overview/cpcontracts"
+              - name: cbpairs
+                ref: "/terminal/cryptocurrency/overview/cbpairs"
+              - name: news
+                ref: "/terminal/cryptocurrency/overview/news"
+              - name: wf
+                ref: "/terminal/cryptocurrency/overview/wf"
+              - name: ewf
+                ref: "/terminal/cryptocurrency/overview/ewf"
+              - name: wfpe
+                ref: "/terminal/cryptocurrency/overview/wfpe"
+              - name: altindex
+                ref: "/terminal/cryptocurrency/overview/altindex"
+          - name: due diligence
+            ref: "/terminal/cryptocurrency/due_diligence"
+            sub:
+              - name: active
+                ref: "/terminal/cryptocurrency/due_diligence/active"
+              - name: change
+                ref: "/terminal/cryptocurrency/due_diligence/change"
+              - name: eb
+                ref: "/terminal/cryptocurrency/due_diligence/eb"
+              - name: oi
+                ref: "/terminal/cryptocurrency/due_diligence/oi"
+              - name: info
+                ref: "/terminal/cryptocurrency/due_diligence/info"
+              - name: market
+                ref: "/terminal/cryptocurrency/due_diligence/market"
+              - name: ath
+                ref: "/terminal/cryptocurrency/due_diligence/ath"
+              - name: atl
+                ref: "/terminal/cryptocurrency/due_diligence/atl"
+              - name: web
+                ref: "/terminal/cryptocurrency/due_diligence/web"
+              - name: social
+                ref: "/terminal/cryptocurrency/due_diligence/social"
+              - name: score
+                ref: "/terminal/cryptocurrency/due_diligence/score"
+              - name: dev
+                ref: "/terminal/cryptocurrency/due_diligence/dev"
+              - name: bc
+                ref: "/terminal/cryptocurrency/due_diligence/bc"
+              - name: basic
+                ref: "/terminal/cryptocurrency/due_diligence/basic"
+              - name: ps
+                ref: "/terminal/cryptocurrency/due_diligence/ps"
+              - name: mkt
+                ref: "/terminal/cryptocurrency/due_diligence/mkt"
+              - name: ex
+                ref: "/terminal/cryptocurrency/due_diligence/ex"
+              - name: twitter
+                ref: "/terminal/cryptocurrency/due_diligence/twitter"
+              - name: events
+                ref: "/terminal/cryptocurrency/due_diligence/events"
+              - name: cbbook
+                ref: "/terminal/cryptocurrency/due_diligence/cbbook"
+              - name: balance
+                ref: "/terminal/cryptocurrency/due_diligence/balance"
+              - name: trades
+                ref: "/terminal/cryptocurrency/due_diligence/trades"
+              - name: stats
+                ref: "/terminal/cryptocurrency/due_diligence/stats"
+              - name: mcapdom
+                ref: "/terminal/cryptocurrency/due_diligence/mcapdom"
+              - name: nonzero
+                ref: "/terminal/cryptocurrency/due_diligence/nonzero"
+              - name: mt
+                ref: "/terminal/cryptocurrency/due_diligence/mt"
+              - name: rm
+                ref: "/terminal/cryptocurrency/due_diligence/rm"
+              - name: tk
+                ref: "/terminal/cryptocurrency/due_diligence/tk"
+              - name: pi
+                ref: "/terminal/cryptocurrency/due_diligence/pi"
+              - name: team
+                ref: "/terminal/cryptocurrency/due_diligence/team"
+              - name: inv
+                ref: "/terminal/cryptocurrency/due_diligence/inv"
+              - name: gov
+                ref: "/terminal/cryptocurrency/due_diligence/gov"
+              - name: fr
+                ref: "/terminal/cryptocurrency/due_diligence/fr"
+              - name: links
+                ref: "/terminal/cryptocurrency/due_diligence/links"
+              - name: news
+                ref: "/terminal/cryptocurrency/due_diligence/news"
+              - name: gh
+                ref: "/terminal/cryptocurrency/due_diligence/gh"
+          - name: onchain
+            ref: "/terminal/cryptocurrency/onchain"
+            sub:
+              - name: btccp
+                ref: "/terminal/cryptocurrency/onchain/btccp"
+              - name: btcct
+                ref: "/terminal/cryptocurrency/onchain/btcct"
+              - name: gwei
+                ref: "/terminal/cryptocurrency/onchain/gwei"
+              - name: hr
+                ref: "/terminal/cryptocurrency/onchain/hr"
+              - name: address
+                ref: "/terminal/cryptocurrency/onchain/address"
+              - name: balance
+                ref: "/terminal/cryptocurrency/onchain/balance"
+              - name: hist
+                ref: "/terminal/cryptocurrency/onchain/hist"
+              - name: holders
+                ref: "/terminal/cryptocurrency/onchain/holders"
+              - name: info
+                ref: "/terminal/cryptocurrency/onchain/info"
+              - name: ttcp
+                ref: "/terminal/cryptocurrency/onchain/ttcp"
+              - name: prices
+                ref: "/terminal/cryptocurrency/onchain/prices"
+              - name: ueat
+                ref: "/terminal/cryptocurrency/onchain/ueat"
+              - name: baas
+                ref: "/terminal/cryptocurrency/onchain/baas"
+              - name: th
+                ref: "/terminal/cryptocurrency/onchain/th"
+              - name: top
+                ref: "/terminal/cryptocurrency/onchain/top"
+              - name: lt
+                ref: "/terminal/cryptocurrency/onchain/lt"
+              - name: tx
+                ref: "/terminal/cryptocurrency/onchain/tx"
+              - name: dvcp
+                ref: "/terminal/cryptocurrency/onchain/dvcp"
+              - name: tv
+                ref: "/terminal/cryptocurrency/onchain/tv"
+              - name: whales
+                ref: "/terminal/cryptocurrency/onchain/whales"
+          - name: nft
+            ref: "/terminal/cryptocurrency/nft"
+            sub:
+              - name: today
+                ref: "/terminal/cryptocurrency/nft/today"
+              - name: upcoming
+                ref: "/terminal/cryptocurrency/nft/upcoming"
+              - name: ongoing
+                ref: "/terminal/cryptocurrency/nft/ongoing"
+              - name: newest
+                ref: "/terminal/cryptocurrency/nft/newest"
+          - name: technical analysis
+            ref: "/terminal/cryptocurrency/technical_analysis"
+            sub:
+              - name: ema
+                ref: "/terminal/common/technical_analysis/ema"
+              - name: sma
+                ref: "/terminal/common/technical_analysis/sma"
+              - name: wma
+                ref: "/terminal/common/technical_analysis/wma"
+              - name: hma
+                ref: "/terminal/common/technical_analysis/hma"
+              - name: zlma
+                ref: "/terminal/common/technical_analysis/zlma"
+              - name: vwap
+                ref: "/terminal/common/technical_analysis/vwap"
+              - name: cci
+                ref: "/terminal/common/technical_analysis/cci"
+              - name: macd
+                ref: "/terminal/common/technical_analysis/macd"
+              - name: rsi
+                ref: "/terminal/common/technical_analysis/rsi"
+              - name: stoch
+                ref: "/terminal/common/technical_analysis/stoch"
+              - name: fisher
+                ref: "/terminal/common/technical_analysis/fisher"
+              - name: cg
+                ref: "/terminal/common/technical_analysis/cg"
+              - name: adx
+                ref: "/terminal/common/technical_analysis/adx"
+              - name: aroon
+                ref: "/terminal/common/technical_analysis/aroon"
+              - name: bbands
+                ref: "/terminal/common/technical_analysis/bbands"
+              - name: donchian
+                ref: "/terminal/common/technical_analysis/donchian"
+              - name: kc
+                ref: "/terminal/common/technical_analysis/kc"
+              - name: ad
+                ref: "/terminal/common/technical_analysis/ad"
+              - name: adosc
+                ref: "/terminal/common/technical_analysis/adosc"
+              - name: obv
+                ref: "/terminal/common/technical_analysis/obv"
+              - name: fib
+                ref: "/terminal/common/technical_analysis/fib"
+          - name: defi
+            ref: "/terminal/cryptocurrency/defi"
+            sub:
+              - name: anchor
+                ref: "/terminal/cryptocurrency/defi/anchor"
+              - name: ldapps
+                ref: "/terminal/cryptocurrency/defi/ldapps"
+              - name: gdapps
+                ref: "/terminal/cryptocurrency/defi/gdapps"
+              - name: dtvl
+                ref: "/terminal/cryptocurrency/defi/dtvl"
+              - name: stvl
+                ref: "/terminal/cryptocurrency/defi/stvl"
+              - name: ayr
+                ref: "/terminal/cryptocurrency/defi/ayr"
+              - name: aterra
+                ref: "/terminal/cryptocurrency/defi/aterra"
+              - name: newsletter
+                ref: "/terminal/cryptocurrency/defi/newsletter"
+              - name: dpi
+                ref: "/terminal/cryptocurrency/defi/dpi"
+              - name: funding
+                ref: "/terminal/cryptocurrency/defi/funding"
+              - name: borrow
+                ref: "/terminal/cryptocurrency/defi/borrow"
+              - name: lending
+                ref: "/terminal/cryptocurrency/defi/lending"
+              - name: vaults
+                ref: "/terminal/cryptocurrency/defi/vaults"
+              - name: tokens
+                ref: "/terminal/cryptocurrency/defi/tokens"
+              - name: stats
+                ref: "/terminal/cryptocurrency/defi/stats"
+              - name: pairs
+                ref: "/terminal/cryptocurrency/defi/pairs"
+              - name: pools
+                ref: "/terminal/cryptocurrency/defi/pools"
+              - name: swaps
+                ref: "/terminal/cryptocurrency/defi/swaps"
+              - name: sinfo
+                ref: "/terminal/cryptocurrency/defi/sinfo"
+              - name: govp
+                ref: "/terminal/cryptocurrency/defi/govp"
+              - name: gacc
+                ref: "/terminal/cryptocurrency/defi/gacc"
+              - name: validators
+                ref: "/terminal/cryptocurrency/defi/validators"
+              - name: sratio
+                ref: "/terminal/cryptocurrency/defi/sratio"
+              - name: sreturn
+                ref: "/terminal/cryptocurrency/defi/sreturn"
+              - name: lcsc
+                ref: "/terminal/cryptocurrency/defi/lcsc"
+      - name: economy
+        ref: "/terminal/economy"
+        sub:
+          - name: overview
+            ref: "/terminal/economy/overview"
+          - name: futures
+            ref: "/terminal/economy/futures"
+          - name: map
+            ref: "/terminal/economy/map"
+          - name: bigmac
+            ref: "/terminal/economy/bigmac"
+          - name: macro
+            ref: "/terminal/economy/macro"
+          - name: fred
+            ref: "/terminal/economy/fred"
+          - name: index
+            ref: "/terminal/economy/index"
+          - name: treasury
+            ref: "/terminal/economy/treasury"
+          - name: yield
+            ref: "/terminal/economy/yield"
+          - name: ycrv
+            ref: "/terminal/economy/ycrv"
+          - name: plot
+            ref: "/terminal/economy/plot"
+          - name: rtps
+            ref: "/terminal/economy/rtps"
+          - name: valuation
+            ref: "/terminal/economy/valuation"
+          - name: performance
+            ref: "/terminal/economy/performance"
+          - name: spectrum
+            ref: "/terminal/economy/spectrum"
+          - name: prediction techniques
+            ref: "/terminal/common/prediction_techniques"
+            sub:
+              - name: ets
+                ref: "/terminal/common/prediction_techniques/ets"
+              - name: knn
+                ref: "/terminal/common/prediction_techniques/knn"
+              - name: regression
+                ref: "/terminal/common/prediction_techniques/regression"
+              - name: arima
+                ref: "/terminal/common/prediction_techniques/arima"
+              - name: mlp
+                ref: "/terminal/common/prediction_techniques/mlp"
+              - name: rnn
+                ref: "/terminal/common/prediction_techniques/rnn"
+              - name: lstm
+                ref: "/terminal/common/prediction_techniques/lstm"
+              - name: conv1d
+                ref: "/terminal/common/prediction_techniques/conv1d"
+              - name: mc
+                ref: "/terminal/common/prediction_techniques/mc"
+          - name: quantitative analysis
+            ref: "/terminal/common/quantitative_analysis"
+            sub:
+              - name: pick
+                ref: "/terminal/common/quantitative_analysis/pick"
+              - name: summary
+                ref: "/terminal/common/quantitative_analysis/summary"
+              - name: normality
+                ref: "/terminal/common/quantitative_analysis/normality"
+              - name: unitroot
+                ref: "/terminal/common/quantitative_analysis/unitroot"
+              - name: hist
+                ref: "/terminal/common/quantitative_analysis/hist"
+              - name: cdf
+                ref: "/terminal/common/quantitative_analysis/cdf"
+              - name: bw
+                ref: "/terminal/common/quantitative_analysis/bw"
+              - name: acf
+                ref: "/terminal/common/quantitative_analysis/acf"
+              - name: qqplot
+                ref: "/terminal/common/quantitative_analysis/qqplot"
+              - name: rolling
+                ref: "/terminal/common/quantitative_analysis/rolling"
+              - name: spread
+                ref: "/terminal/common/quantitative_analysis/spread"
+              - name: quantile
+                ref: "/terminal/common/quantitative_analysis/quantile"
+              - name: skew
+                ref: "/terminal/common/quantitative_analysis/skew"
+              - name: kurtosis
+                ref: "/terminal/common/quantitative_analysis/kurtosis"
+              - name: decompose
+                ref: "/terminal/common/quantitative_analysis/decompose"
+              - name: cusum
+                ref: "/terminal/common/quantitative_analysis/cusum"
+              - name: line
+                ref: "/terminal/common/quantitative_analysis/line"
+              - name: raw
+                ref: "/terminal/common/quantitative_analysis/raw"
+      - name: etf
+        ref: "/terminal/etf"
+        sub:
+          - name: ln
+            ref: "/terminal/etf/ln"
+          - name: ld
+            ref: "/terminal/etf/ld"
+          - name: overview
+            ref: "/terminal/etf/overview"
+          - name: holdings
+            ref: "/terminal/etf/holdings"
+          - name: weights
+            ref: "/terminal/etf/weights"
+          - name: summary
+            ref: "/terminal/etf/summary"
+          - name: candle
+            ref: "/terminal/etf/candle"
+          - name: news
+            ref: "/terminal/etf/news"
+          - name: disc
+            ref: "/terminal/etf/disc"
+            sub:
+              - name: gainers
+                ref: "/terminal/etf/disc/gainers"
+              - name: decliners
+                ref: "/terminal/etf/disc/decliners"
+              - name: active
+                ref: "/terminal/etf/disc/active"
+          - name: scr
+            ref: "/terminal/etf/scr"
+            sub:
+              - name: view
+                ref: "/terminal/etf/scr/view"
+              - name: set
+                ref: "/terminal/etf/scr/set"
+              - name: screen
+                ref: "/terminal/etf/scr/screen"
+              - name: sbc
+                ref: "/terminal/etf/scr/sbc"
+          - name: pir
+            ref: "/terminal/etf/pir"
+          - name: compare
+            ref: "/terminal/etf/compare"
+      - name: funds
+        ref: "/terminal/funds"
+        sub:
+          - name: search
+            ref: "/terminal/funds/search"
+          - name: country
+            ref: "/terminal/funds/country"
+          - name: info
+            ref: "/terminal/funds/info"
+          - name: load
+            ref: "/terminal/funds/load"
+          - name: overview
+            ref: "/terminal/funds/overview"
+          - name: plot
+            ref: "/terminal/funds/plot"
+          - name: sector
+            ref: "/terminal/funds/sector"
+          - name: equity
+            ref: "/terminal/funds/equity"
+      - name: portfolio
+        ref: "/terminal/portfolio"
+        sub:
+          - name: brokers
+            ref: "/terminal/portfolio/brokers"
+            sub:
+              - name: ally
+                ref: "/terminal/portfolio/brokers/ally"
+                sub:
+                  - name: balances
+                    ref: "/terminal/portfolio/brokers/ally/balances"
+                  - name: history
+                    ref: "/terminal/portfolio/brokers/ally/history"
+                  - name: holdings
+                    ref: "/terminal/portfolio/brokers/ally/holdings"
+                  - name: movers
+                    ref: "/terminal/portfolio/brokers/ally/movers"
+                  - name: quote
+                    ref: "/terminal/portfolio/brokers/ally/quote"
+              - name: coinbase
+                ref: "/terminal/portfolio/brokers/coinbase"
+                sub:
+                  - name: account
+                    ref: "/terminal/portfolio/brokers/coinbase/account"
+                  - name: deposits
+                    ref: "/terminal/portfolio/brokers/coinbase/deposits"
+                  - name: history
+                    ref: "/terminal/portfolio/brokers/coinbase/history"
+                  - name: orders
+                    ref: "/terminal/portfolio/brokers/coinbase/orders"
+              - name: robinhood
+                ref: "/terminal/portfolio/brokers/robinhood"
+                sub:
+                  - name: history
+                    ref: "/terminal/portfolio/brokers/robinhood/history"
+                  - name: holdings
+                    ref: "/terminal/portfolio/brokers/robinhood/holdings"
+          - name: portfolio optimization
+            ref: "/terminal/portfolio/po"
+            sub:
+              - name: select
+                ref: "/terminal/portfolio/po/select"
+              - name: file
+                ref: "/terminal/portfolio/po/file"
+              - name: params
+                ref: "/terminal/portfolio/po/params"
+                sub:
+                  - name: arg
+                    ref: "/terminal/portfolio/po/params/arg"
+                  - name: clear
+                    ref: "/terminal/portfolio/po/params/clear"
+                  - name: file
+                    ref: "/terminal/portfolio/po/params/file"
+                  - name: save
+                    ref: "/terminal/portfolio/po/params/save"
+                  - name: set
+                    ref: "/terminal/portfolio/po/params/set"
+              - name: load
+                ref: "/terminal/portfolio/po/load"
+              - name: add
+                ref: "/terminal/portfolio/po/add"
+              - name: rmv
+                ref: "/terminal/portfolio/po/rmv"
+              - name: show
+                ref: "/terminal/portfolio/po/show"
+              - name: rpf
+                ref: "/terminal/portfolio/po/rpf"
+              - name: plot
+                ref: "/terminal/portfolio/po/plot"
+              - name: equal
+                ref: "/terminal/portfolio/po/equal"
+              - name: mktcap
+                ref: "/terminal/portfolio/po/mktcap"
+              - name: dividend
+                ref: "/terminal/portfolio/po/dividend"
+              - name: property
+                ref: "/terminal/portfolio/po/property"
+              - name: maxsharpe
+                ref: "/terminal/portfolio/po/maxsharpe"
+              - name: minrisk
+                ref: "/terminal/portfolio/po/minrisk"
+              - name: maxutil
+                ref: "/terminal/portfolio/po/maxutil"
+              - name: maxret
+                ref: "/terminal/portfolio/po/maxret"
+              - name: maxdiv
+                ref: "/terminal/portfolio/po/maxdiv"
+              - name: maxdecorr
+                ref: "/terminal/portfolio/po/maxdecorr"
+              - name: blacklitterman
+                ref: "/terminal/portfolio/po/blacklitterman"
+              - name: ef
+                ref: "/terminal/portfolio/po/ef"
+              - name: riskparity
+                ref: "/terminal/portfolio/po/riskparity"
+              - name: relriskparity
+                ref: "/terminal/portfolio/po/relriskparity"
+              - name: hrp
+                ref: "/terminal/portfolio/po/hrp"
+              - name: herc
+                ref: "/terminal/portfolio/po/herc"
+              - name: nco
+                ref: "/terminal/portfolio/po/nco"
+          - name: load
+            ref: "/terminal/portfolio/load"
+          - name: show
+            ref: "/terminal/portfolio/show"
+          - name: bench
+            ref: "/terminal/portfolio/bench"
+          - name: holdv
+            ref: "/terminal/portfolio/holdv"
+          - name: holdp
+            ref: "/terminal/portfolio/holdp"
+          - name: cret
+            ref: "/terminal/portfolio/cret"
+          - name: yret
+            ref: "/terminal/portfolio/yret"
+          - name: mret
+            ref: "/terminal/portfolio/mret"
+          - name: dret
+            ref: "/terminal/portfolio/dret"
+          - name: distr
+            ref: "/terminal/portfolio/distr"
+          - name: maxdd
+            ref: "/terminal/portfolio/maxdd"
+          - name: rvol
+            ref: "/terminal/portfolio/rvol"
+          - name: rsharpe
+            ref: "/terminal/portfolio/rsharpe"
+          - name: rsort
+            ref: "/terminal/portfolio/rsort"
+          - name: rbeta
+            ref: "/terminal/portfolio/rbeta"
+          - name: alloc
+            ref: "/terminal/portfolio/alloc"
+          - name: summary
+            ref: "/terminal/portfolio/summary"
+          - name: metric
+            ref: "/terminal/portfolio/metric"
+          - name: perf
+            ref: "/terminal/portfolio/perf"
+          - name: var
+            ref: "/terminal/portfolio/var"
+          - name: es
+            ref: "/terminal/portfolio/es"
+          - name: om
+            ref: "/terminal/portfolio/om"
+      - name: forex
+        ref: "/terminal/forex"
+        sub:
+          - name: load
+            ref: "/terminal/forex/load"
+          - name: quote
+            ref: "/terminal/forex/quote"
+          - name: fwd
+            ref: "/terminal/forex/fwd"
+          - name: candle
+            ref: "/terminal/forex/candle"
+          - name: oanda
+            ref: "/terminal/forex/oanda"
+            sub:
+              - name: calendar
+                ref: "/terminal/forex/oanda/calendar"
+              - name: cancel
+                ref: "/terminal/forex/oanda/cancel"
+              - name: candles
+                ref: "/terminal/forex/oanda/candles"
+              - name: closetrade
+                ref: "/terminal/forex/oanda/closetrade"
+              - name: orderbook
+                ref: "/terminal/forex/oanda/orderbook"
+              - name: pending
+                ref: "/terminal/forex/oanda/pending"
+              - name: positionbook
+                ref: "/terminal/forex/oanda/positionbook"
+              - name: positions
+                ref: "/terminal/forex/oanda/positions"
+      - name: alternative
+        ref: "/terminal/alternative"
+        sub:
+          - name: os
+            ref: "/terminal/alternative/oss"
+            sub:
+              - name: rossidx
+                ref: "/terminal/alternative/oss/rossidx"
+              - name: tr
+                ref: "/terminal/alternative/oss/tr"
+              - name: sh
+                ref: "/terminal/alternative/oss/sh"
+              - name: rs
+                ref: "/terminal/alternative/oss/rs"
+          - name: covid
+            ref: "/terminal/alternative/covid"
+            sub:
+              - name: slopes
+                ref: "/terminal/alternative/covid/slopes"
+              - name: ov
+                ref: "/terminal/alternative/covid/ov"
+              - name: deaths
+                ref: "/terminal/alternative/covid/deaths"
+              - name: cases
+                ref: "/terminal/alternative/covid/cases"
+              - name: rates
+                ref: "/terminal/alternative/covid/rates"
+      - name: econometrics
+        ref: "/terminal/econometrics"
+        sub:
+          - name: load
+            ref: "/terminal/econometrics/load"
+          - name: export
+            ref: "/terminal/econometrics/show"
+          - name: remove
+            ref: "/terminal/econometrics/remove"
+          - name: show
+            ref: "/terminal/econometrics/show"
+          - name: plot
+            ref: "/terminal/econometrics/plot"
+          - name: type
+            ref: "/terminal/econometrics/type"
+          - name: desc
+            ref: "/terminal/econometrics/desc"
+          - name: index
+            ref: "/terminal/econometrics/index"
+          - name: clean
+            ref: "/terminal/econometrics/clean"
+          - name: add
+            ref: "/terminal/econometrics/add"
+          - name: delete
+            ref: "/terminal/econometrics/delete"
+          - name: combine
+            ref: "/terminal/econometrics/combine"
+          - name: rename
+            ref: "/terminal/econometrics/rename"
+          - name: ols
+            ref: "/terminal/econometrics/ols"
+          - name: norm
+            ref: "/terminal/econometrics/norm"
+          - name: root
+            ref: "/terminal/econometrics/root"
+          - name: panel
+            ref: "/terminal/econometrics/panel"
+          - name: compare
+            ref: "/terminal/econometrics/compare"
+          - name: dwat
+            ref: "/terminal/econometrics/dwat"
+          - name: bgod
+            ref: "/terminal/econometrics/bgod"
+          - name: bpag
+            ref: "/terminal/econometrics/bpag"
+          - name: granger
+            ref: "/terminal/econometrics/granger"
+          - name: coint
+            ref: "/terminal/econometrics/coint"
+      - name: jupyter
+        ref: "/terminal/jupyter"
+        sub:
+          - name: "dashboards"
+            ref: "/terminal/jupyter/dashboards"
+            sub:
+              - name: "stocks"
+                ref: "/terminal/jupyter/dashboards/stocks"
+              - name: "correlation"
+                ref: "/terminal/jupyter/dashboards/correlations"
+              - name: "vsurf"
+                ref: "/terminal/jupyter/dashboards/vsurf"
+              - name: "chains"
+                ref: "/terminal/jupyter/dashboards/chains"
+              - name: "shortdata"
+                ref: "/terminal/jupyter/dashboards/shortdata"
+          - name: "reports"
+            ref: "/terminal/jupyter/reports"
   - name: "GST python API"
     ref: "/api"
   - name: "bots"
