@@ -13,6 +13,7 @@ import pandas as pd
 import numpy as np
 from binance.client import Client
 import matplotlib.pyplot as plt
+from openbb_terminal import cryptocurrency
 import yfinance as yf
 import mplfinance as mpf
 from pycoingecko import CoinGeckoAPI
@@ -283,44 +284,48 @@ def load(
     vs: str,
     start: datetime = (datetime.now() - timedelta(days=366)),
 ):
-    paprika_coins = get_list_of_coins()
-    paprika_coins_dict = dict(zip(paprika_coins.id, paprika_coins.symbol))
-    coinpaprika_id, symbol = coinpaprika_model.validate_coin(
-        symbol_search.upper(), paprika_coins_dict
-    )
-    if symbol:
+    
+    coingecko_id = get_coingecko_id(symbol_search)
+    if coingecko_id:
         console.print(
-            f"\nLoading Daily {symbol.upper()} crypto "
+            f"\nLoading Daily {symbol_search.upper()} crypto "
             f"with starting period {start.strftime('%Y-%m-%d')} for analysis.",
         )
-    coingecko_id = get_coingecko_id(symbol)
+    else:
+        console.print("Coin not found\n")
+        return None
     delta = (datetime.now() - start).days
-    df_prices = pd.DataFrame()
-    coin_ids = {"cg": coingecko_id, "cp": coinpaprika_id}
-    df_prices = coinpaprika_model.get_ohlc_historical(coinpaprika_id, vs, delta)
-    df_prices.drop(["time_close"], axis=1, inplace=True)
 
-    df_prices.columns = [
-        "date",
+    df = pycoingecko_model.get_coin_market_chart(coingecko_id, vs, delta)
+    df = df["price"].resample("1D").ohlc().ffill()
+    df.columns = [
         "Open",
         "High",
         "Low",
         "Close",
-        "Volume",
-        "Market Cap",
     ]
-    df_prices = df_prices.set_index(pd.to_datetime(df_prices["date"])).drop(
-        "date", axis=1
-    )
-    return coin_ids, df_prices
+    df.index.name = "date"
+    df_coin = yf.download(
+        f"{symbol_search}-{vs}",
+        end=datetime.now(),
+        start=datetime.now() - timedelta(days=delta),
+        progress=False,
+        interval="1d",
+    ).sort_index(ascending=False)
+
+    if not df_coin.empty:
+        #console.print(f"Could not download data for {symbol_search}-{vs} from Yahoo Finance")
+        df = pd.merge(df, df_coin[::-1][["Volume"]], left_index=True, right_index=True)
+
+    return df
 
 
 def show_quick_performance(
-    crypto_df: pd.DataFrame, symbol: str, current_currency: str, coin_ids: Any
+    crypto_df: pd.DataFrame, symbol: str, current_currency: str
 ):
     """Show quick performance stats of crypto prices. Daily prices expected"""
     closes = crypto_df["Close"]
-    volumes = crypto_df["Volume"]
+    volumes = crypto_df["Volume"] if 'Volume' in crypto_df else pd.DataFrame()
 
     perfs = {
         "1D": 100 * closes.pct_change(2)[-1],
@@ -350,13 +355,15 @@ def show_quick_performance(
         df["Volume (7D avg)"] = lambda_long_number_format(np.mean(volumes[-9:-2]), 2)
 
     df.insert(0, f"Price ({current_currency.upper()})", closes[-1])
-    df.insert(
-        len(df.columns),
-        f"Market Cap ({current_currency.upper()})",
-        lambda_long_number_format(int(crypto_df["Market Cap"][-1])),
-    )
+    #df.insert(
+    #    len(df.columns),
+    #    f"Market Cap ({current_currency.upper()})",
+    #    lambda_long_number_format(int(crypto_df["Market Cap"][-1])),
+    #)
 
-    coin_data_cg = pycoingecko_model.get_coin_tokenomics(coin_ids["cg"])
+    coingecko_id = get_coingecko_id(symbol)
+
+    coin_data_cg = pycoingecko_model.get_coin_tokenomics(coingecko_id)
     if not coin_data_cg.empty:
         df.insert(
             len(df.columns),

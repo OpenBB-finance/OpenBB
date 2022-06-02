@@ -99,13 +99,13 @@ class CryptoController(CryptoBaseController):
     def print_help(self):
         """Print help"""
         source_txt = CRYPTO_SOURCES.get(self.source, "?") if self.source != "" else ""
-        has_ticker_start = "" if self.coin else "[unvl]"
-        has_ticker_end = "" if self.coin else "[/unvl]"
+        has_ticker_start = "" if self.symbol else "[unvl]"
+        has_ticker_end = "" if self.symbol else "[/unvl]"
         help_text = f"""[cmds]
     load        load a specific cryptocurrency for analysis
     find        find coins[/cmds]
 
-[param]Coin: [/param]{self.coin}
+[param]Coin: [/param]{self.symbol}
 [param]Source: [/param]{source_txt}
 [cmds]
     headlines   crypto sentiment from 15+ major news headlines [src][Finbrain][/src]{has_ticker_start}
@@ -129,7 +129,7 @@ class CryptoController(CryptoBaseController):
     @log_start_end(log=logger)
     def call_prt(self, other_args):
         """Process prt command"""
-        if self.coin:
+        if self.symbol:
             parser = argparse.ArgumentParser(
                 add_help=False,
                 formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -219,7 +219,7 @@ class CryptoController(CryptoBaseController):
         )
 
         # TODO: Play with this to get correct usage
-        if self.coin:
+        if self.symbol:
             if self.current_currency != "" and not self.current_df.empty:
                 self.queue = self.load_class(
                     TechnicalAnalysisController,
@@ -302,14 +302,14 @@ class CryptoController(CryptoBaseController):
     @log_start_end(log=logger)
     def call_dd(self, _):
         """Process dd command"""
-        if self.coin:
+        if self.symbol:
             from openbb_terminal.cryptocurrency.due_diligence.dd_controller import (
                 DueDiligenceController,
             )
 
             self.queue = self.load_class(
                 DueDiligenceController,
-                self.coin,
+                self.symbol,
                 self.source,
                 self.symbol,
                 self.coin_map_df,
@@ -321,7 +321,7 @@ class CryptoController(CryptoBaseController):
     @log_start_end(log=logger)
     def call_qa(self, _):
         """Process pred command"""
-        if self.coin:
+        if self.symbol:
             from openbb_terminal.cryptocurrency.quantitative_analysis import (
                 qa_controller,
             )
@@ -331,7 +331,7 @@ class CryptoController(CryptoBaseController):
             else:
                 self.queue = self.load_class(
                     qa_controller.QaController,
-                    self.coin,
+                    self.symbol,
                     self.current_df,
                     self.queue,
                 )
@@ -340,7 +340,7 @@ class CryptoController(CryptoBaseController):
     def call_pred(self, _):
         """Process pred command"""
         if obbff.ENABLE_PREDICT:
-            if self.coin:
+            if self.symbol:
                 try:
                     from openbb_terminal.cryptocurrency.prediction_techniques import (
                         pred_controller,
@@ -351,7 +351,7 @@ class CryptoController(CryptoBaseController):
                     else:
                         self.queue = self.load_class(
                             pred_controller.PredictionTechniquesController,
-                            self.coin,
+                            self.symbol,
                             self.current_df,
                             self.queue,
                         )

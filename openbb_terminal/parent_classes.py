@@ -662,14 +662,12 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
         super().__init__(queue)
 
         self.symbol = ""
-        self.coin_ids = None
         self.current_df = pd.DataFrame()
         self.current_currency = ""
         self.source = ""
         self.current_interval = ""
         self.price_str = ""
         self.resolution = "1D"
-        self.coin = ""
         self.TRY_RELOAD = True
 
     def call_load(self, other_args):
@@ -704,7 +702,7 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
             dest="vs",
             default="usd",
             type=str,
-            choices=["usd", "btc"],
+            choices=["usd", "eur"],
         )
 
         if other_args and "-" not in other_args[0][0]:
@@ -713,7 +711,7 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
         ns_parser = parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
-            (self.coin_ids, self.current_df) = cryptocurrency_helpers.load(
+            (self.current_df) = cryptocurrency_helpers.load(
                 symbol_search=ns_parser.coin,
                 start=ns_parser.start,
                 vs=ns_parser.vs,
@@ -722,7 +720,7 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
                 self.current_currency = ns_parser.vs
                 self.symbol = ns_parser.coin
                 cryptocurrency_helpers.show_quick_performance(
-                    self.current_df, self.symbol, self.current_currency, self.coin_ids
+                    self.current_df, self.symbol, self.current_currency
                 )
             else:
                 console.print(
