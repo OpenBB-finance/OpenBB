@@ -1098,4 +1098,5 @@ en:
   forecasting/_exploration_: Exploration
   forecasting/show: show a portion of a loaded dataset
   forecasting/_tsforecasting_: TimeSeries Forecasting
-  forecasting/expo: Probablistic Exponential Smoothing Model (fit and backtest)
+  forecasting/expo: Probablistic Exponential Smoothing Model
+  forecasting/theta: Theta Model

@@ -1,4 +1,4 @@
-"""Probabilistic Exponential Smoothing View"""
+"""Theta View"""
 __docformat__ = "numpy"
 
 import logging
@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 from openbb_terminal.config_terminal import theme
-from openbb_terminal.forecasting import expo_model
+from openbb_terminal.forecasting import theta_model
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
@@ -39,36 +39,29 @@ def dt_format(x):
 
 
 @log_start_end(log=logger)
-def display_expo_forecast(
+def display_theta_forecast(
     data: Union[pd.DataFrame, pd.Series],
     ticker_name: str,
-    target_col: str,
-    trend: str,
     seasonal: str,
     seasonal_periods: int,
-    dampen: str,
     n_predict: int,
+    target_col: str,
     start_window: float,
     forecast_horizon: int,
     export: str = "",
 ):
-    """Display Probabilistic Exponential Smoothing forecast
+    """Display Theta forecast
 
     Parameters
     ----------
     data : Union[pd.Series, np.array]
         Data to forecast
-    trend: str
-        Trend component.  One of [N, A, M]
-        Defaults to ADDITIVE.
     seasonal: str
         Seasonal component.  One of [N, A, M]
-        Defaults to ADDITIVE.
+        Defaults to MULTIPLICATIVE.
     seasonal_periods: int
         Number of seasonal periods in a year
         If not set, inferred from frequency of the series.
-    dampen: str
-        Dampen the function
     n_predict: int
         Number of days to forecast
     start_window: float
@@ -86,16 +79,15 @@ def display_expo_forecast(
 
     (
         ticker_series,
-        historical_fcast_es,
+        historical_fcast_theta,
         predicted_values,
         precision,
-        _,
-    ) = expo_model.get_expo_data(
+        best_theta,
+        _model,
+    ) = theta_model.get_theta_data(
         data,
-        trend,
         seasonal,
         seasonal_periods,
-        dampen,
         n_predict,
         target_col,
         start_window,
@@ -114,15 +106,14 @@ def display_expo_forecast(
         ax = external_axes
 
     # ax = fig.get_axes()[0] # fig gives list of axes (only one for this case)
-    ticker_series.plot(label=target_col, figure=fig)
-    historical_fcast_es.plot(
-        label="Back-test 3-Days ahead forecast (Exp. Smoothing)", figure=fig
+    ticker_series.plot(label="Actual Close", figure=fig)
+    historical_fcast_theta.plot(
+        label=f"Back-test {forecast_horizon}-Steps ahead forecast",
+        figure=fig,
     )
-    predicted_values.plot(
-        label="Probabilistic Forecast", low_quantile=0.1, high_quantile=0.9, figure=fig
-    )
+    predicted_values.plot(label="Theta Forecast", figure=fig)
     ax.set_title(
-        f"PES for ${ticker_name} for next [{n_predict}] days (MAPE={round(precision,2)}%)"
+        f"Theta {best_theta:.2f} for ${ticker_name} for next [{n_predict}] days (MAPE={round(precision,2)}%)"
     )
     ax.set_ylabel(target_col)
     ax.set_xlabel("Date")
@@ -131,9 +122,7 @@ def display_expo_forecast(
     if not external_axes:
         theme.visualize_output()
 
-    numeric_forecast = predicted_values.quantile_df()[f"{target_col}_0.5"].tail(
-        n_predict
-    )
+    numeric_forecast = predicted_values.pd_dataframe()[target_col].tail(n_predict)
     print_pretty_prediction(numeric_forecast, data[target_col].iloc[-1])
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "expo")

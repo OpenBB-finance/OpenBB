@@ -37,7 +37,7 @@ from openbb_terminal.forecasting import (
     forecasting_model,
     forecasting_view,
 )
-from openbb_terminal.forecasting import expo_model, expo_view
+from openbb_terminal.forecasting import expo_model, expo_view, theta_model, theta_view
 
 logger = logging.getLogger(__name__)
 
@@ -47,10 +47,7 @@ logger = logging.getLogger(__name__)
 class ForecastingController(BaseController):
     """Forecasting class"""
 
-    CHOICES_COMMANDS: List[str] = [
-        "load",
-        "expo",
-    ]
+    CHOICES_COMMANDS: List[str] = ["load", "expo", "theta"]
     # CHOICES_MENUS: List[str] = ["qa", "pred"]
     pandas_plot_choices = [
         "line",
@@ -155,6 +152,7 @@ class ForecastingController(BaseController):
         mt.add_cmd("plot", "", self.files)
         mt.add_info("_tsforecasting_")
         mt.add_cmd("expo", "", self.files)
+        mt.add_cmd("theta", "", self.files)
 
         console.print(text=mt.menu_text, menu="Forecasting")
 
@@ -236,6 +234,14 @@ class ForecastingController(BaseController):
 
                     console.print()
 
+    """
+    TODO:
+    - target series and supplimental series
+    - Timeseries frequency
+    - past covariates aka. pick columns
+    - create your own time series
+    """
+
     # EXPO Model
     @log_start_end(log=logger)
     def call_expo(self, other_args: List[str]):
@@ -271,6 +277,13 @@ class ForecastingController(BaseController):
         )
         parser.add_argument(
             "-t",
+            "--target_col",
+            action="store",
+            dest="target_col",
+            default="close",
+            help="target column.",
+        )
+        parser.add_argument(
             "--trend",
             action="store",
             dest="trend",
@@ -313,7 +326,6 @@ class ForecastingController(BaseController):
             help="Start point for rolling training and forecast window. 0.0-1.0",
         )
         parser.add_argument(
-            "-x",
             "--forecasthorizon",
             action="store",
             dest="forecast_horizon",
@@ -326,15 +338,122 @@ class ForecastingController(BaseController):
         )
         # TODO Convert this to multi series
         if ns_parser:
-            expo_view.display_expo_forecast(
-                data=self.datasets[ns_parser.file_name],
-                ticker_name=ns_parser.file_name,
-                n_predict=ns_parser.n_days,
-                trend=ns_parser.trend,
-                seasonal=ns_parser.seasonal,
-                seasonal_periods=ns_parser.seasonal_periods,
-                dampen=ns_parser.dampen,
-                start_window=ns_parser.start_window,
-                forecast_horizon=ns_parser.forecast_horizon,
-                export=ns_parser.export,
-            )
+            if ns_parser.file_name == "":
+                console.print("[red]Failed to input a target series.\n[/red]")
+            else:
+                # must check that target col is within target series
+                if ns_parser.target_col in self.datasets[ns_parser.file_name].columns:
+                    expo_view.display_expo_forecast(
+                        data=self.datasets[ns_parser.file_name],
+                        ticker_name=ns_parser.file_name,
+                        n_predict=ns_parser.n_days,
+                        target_col=ns_parser.target_col,
+                        trend=ns_parser.trend,
+                        seasonal=ns_parser.seasonal,
+                        seasonal_periods=ns_parser.seasonal_periods,
+                        dampen=ns_parser.dampen,
+                        start_window=ns_parser.start_window,
+                        forecast_horizon=ns_parser.forecast_horizon,
+                        export=ns_parser.export,
+                    )
+                else:
+                    console.print(
+                        f"[red]The target column {ns_parser.target_col} does not exist in dataframe.\n[/red]"
+                    )
+
+    @log_start_end(log=logger)
+    def call_theta(self, other_args: List[str]):
+        """Process theta command"""
+        parser = argparse.ArgumentParser(
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            add_help=False,
+            prog="theta",
+            description="""
+                Perform Theta forecast
+            """,
+        )
+        parser.add_argument(
+            "-f",
+            "--file",
+            action="store",
+            dest="file_name",
+            # type=check_exists,  # TODO Check if loaded OR autocomplete
+            default="",
+            help="loaded file",
+        )
+        parser.add_argument(
+            "-n",
+            "--n_days",
+            action="store",
+            dest="n_days",
+            type=check_positive,
+            default=5,
+            help="prediction days.",
+        )
+        parser.add_argument(
+            "-t",
+            "--target_col",
+            action="store",
+            dest="target_col",
+            default="close",
+            help="target column.",
+        )
+        parser.add_argument(
+            "-s",
+            "--seasonal",
+            action="store",
+            dest="seasonal",
+            choices=theta_model.SEASONS,
+            default="M",
+            help="Seasonality: N: None, A: Additive, M: Multiplicative.",
+        )
+        parser.add_argument(
+            "-p",
+            "--periods",
+            action="store",
+            dest="seasonal_periods",
+            type=check_positive,
+            default=7,
+            help="Seasonal periods: 4: Quarterly, 7: Daily",
+        )
+        parser.add_argument(
+            "-w",
+            "--window",
+            action="store",
+            dest="start_window",
+            default=0.65,
+            help="Start point for rolling training and forecast window. 0.0-1.0",
+        )
+        parser.add_argument(
+            "--forecasthorizon",
+            action="store",
+            dest="forecast_horizon",
+            default=3,
+            help="Days/Points to forecast when training and performing historical back-testing",
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
+        )
+
+        if ns_parser:
+            if ns_parser.file_name == "":
+                console.print("[red]Failed to input a target series.\n[/red]")
+            else:
+                # must check that target col is within target series
+                if ns_parser.target_col in self.datasets[ns_parser.file_name].columns:
+                    theta_view.display_theta_forecast(
+                        data=self.datasets[ns_parser.file_name],
+                        ticker_name=ns_parser.file_name,
+                        n_predict=ns_parser.n_days,
+                        target_col=ns_parser.target_col,
+                        seasonal=ns_parser.seasonal,
+                        seasonal_periods=ns_parser.seasonal_periods,
+                        start_window=ns_parser.start_window,
+                        forecast_horizon=ns_parser.forecast_horizon,
+                        export=ns_parser.export,
+                    )
+                else:
+                    console.print(
+                        f"[red]The target column {ns_parser.target_col} does not exist in dataframe.\n[/red]"
+                    )

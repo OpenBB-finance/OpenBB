@@ -32,6 +32,7 @@ def get_expo_data(
     seasonal_periods: int = 7,
     dampen: str = "F",
     n_predict: int = 30,
+    target_col: str = "close",
     start_window: float = 0.65,
     forecast_horizon: int = 3,
 ) -> Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], float, Any]:
@@ -81,7 +82,7 @@ def get_expo_data(
     ticker_series = TimeSeries.from_dataframe(
         data,
         time_col="date",
-        value_cols=["close"],
+        value_cols=[target_col],
         freq="B",
         fill_missing_dates=True,
     )

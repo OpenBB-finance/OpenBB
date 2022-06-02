@@ -32,6 +32,8 @@ def dt_format(x):
     Returns:
         x: formatted string
     """
+    # convert string to pandas datetime
+    x = pd.to_datetime(x)
     x = x.strftime("%Y-%m-%d")
     return x
 
