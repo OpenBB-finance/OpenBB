@@ -50,6 +50,7 @@ optional arguments:
                         Seed used to generate random portfolios (default: 123)
   -t, --tangency        Adds the optimal line with the risk-free asset
                         (default: False)
+  --no-plot  		Whether to plot the tickers (default: True)
   -h, --help            show this help message (default: False)
 ```
 
