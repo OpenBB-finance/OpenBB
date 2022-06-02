@@ -38,7 +38,6 @@ please refer to the <a href="api">OpenBB Python API</a> or the
 
 {{< toc >}}
 
-
 {{< columns >}}
 
 ### Why Python?

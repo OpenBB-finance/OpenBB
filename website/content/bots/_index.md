@@ -6,6 +6,9 @@ The purpose of the Financial Chatting bots are to remove the need of you and you
 migrating to any chatting tool to use the terminal capabilities. Instead, our OpenBB Terminal Bot will seamlessly
 integrate with your already existing conversations/chats/servers.
 
+Platforms:
+{{< toc-tree >}}
+
 {{< columns >}}
 
 ### Discord, Telegram, Slack and GroupMe integration
