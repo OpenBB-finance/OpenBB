@@ -40,7 +40,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 
 logger = logging.getLogger(__name__)
 
@@ -135,48 +135,33 @@ class OnchainController(BaseController):
 
     def print_help(self):
         """Print help"""
-        has_account_start = "[unvl]" if self.address_type != "account" else ""
-        has_account_end = "[unvl]" if self.address_type != "account" else ""
-
-        has_token_start = "[unvl]" if self.address_type != "token" else ""
-        has_token_end = "[unvl]" if self.address_type != "token" else ""
-
-        has_tx_start = "[unvl]" if self.address_type != "tx" else ""
-        has_tx_end = "[unvl]" if self.address_type != "tx" else ""
-
-        help_text = f"""[cmds]
-[src][Glassnode][/src]
-    hr               check blockchain hashrate over time (BTC or ETH)
-[src][Blockchain][/src]
-    btccp            displays BTC circulating supply
-    btcct            displays BTC confirmed transactions
-[src][Eth Gas Station][/src]
-    gwei             check current eth gas fees
-[src][Whale Alert][/src]
-    whales           check crypto wales transactions
-[src][BitQuery][/src]
-    lt               last trades by dex or month
-    dvcp             daily volume for crypto pair
-    tv               token volume on DEXes
-    ueat             unique ethereum addresses which made a transaction
-    ttcp             top traded crypto pairs on given decentralized exchange
-    baas             bid, ask prices, average spread for given crypto pair
-
-[param]Ethereum address: [/param]{self.address}
-[param]Address type: [/param]{self.address_type if self.address_type else ''}
-
-[src][Ethplorer][/src] [info]Ethereum:[/info]
-    address          load ethereum address of token, account or transaction
-    top              top ERC20 tokens{has_account_start}
-    balance          check ethereum balance
-    hist             ethereum balance history (transactions){has_account_end}{has_token_start}
-    info             ERC20 token info
-    holders          top ERC20 token holders
-    th               ERC20 token history
-    prices           ERC20 token historical prices{has_token_end}{has_tx_start}
-    tx               ethereum blockchain transaction info{has_tx_end}
-    """
-        console.print(text=help_text, menu="Cryptocurrency - Onchain")
+        mt = MenuText("crypto/onchain/")
+        mt.add_cmd("hr", "Glassnode")
+        mt.add_cmd("btccp", "Blockchain")
+        mt.add_cmd("btcct", "Blockchain")
+        mt.add_cmd("gwei", "ETH Gas Stations")
+        mt.add_cmd("whales", "Whale Alert")
+        mt.add_cmd("lt", "BitQuery")
+        mt.add_cmd("dvcp", "BitQuery")
+        mt.add_cmd("tv", "BitQuery")
+        mt.add_cmd("ueat", "BitQuery")
+        mt.add_cmd("ttcp", "BitQuery")
+        mt.add_cmd("baas", "BitQuery")
+        mt.add_raw("\n")
+        mt.add_param("_address", self.address or "")
+        mt.add_param("_type", self.address_type or "")
+        mt.add_raw("\n")
+        mt.add_info("_ethereum_")
+        mt.add_cmd("address", "Ethplorer")
+        mt.add_cmd("top", "Ethplorer")
+        mt.add_cmd("balance", "Ethplorer", self.address_type == "account")
+        mt.add_cmd("hist", "Ethplorer", self.address_type == "account")
+        mt.add_cmd("info", "Ethplorer", self.address_type == "token")
+        mt.add_cmd("holders", "Ethplorer", self.address_type == "token")
+        mt.add_cmd("th", "Ethplorer", self.address_type == "token")
+        mt.add_cmd("prices", "Ethplorer", self.address_type == "token")
+        mt.add_cmd("tx", "Ethplorer", self.address_type == "tx")
+        console.print(text=mt.menu_text, menu="Cryptocurrency - Onchain")
 
     @log_start_end(log=logger)
     def call_btcct(self, other_args: List[str]):

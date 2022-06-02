@@ -18,7 +18,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.decorators import log_start_end
 
 # This code below aims to fix an issue with the fnn module, used by bt module
@@ -54,16 +54,15 @@ class BacktestingController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = f"""
-[param]Ticker: [/param]{self.ticker.upper()}[cmds]
-
-    whatif           what if you had bought X shares on day Y
-
-    ema              buy when price exceeds EMA(l)
-    ema_cross        buy when EMA(short) > EMA(long)
-    rsi              buy when RSI < low and sell when RSI > high[/cmds]
-        """
-        console.print(text=help_text, menu="Stocks - Backtesting")
+        mt = MenuText("stocks/bt/")
+        mt.add_param("_ticker", self.ticker.upper())
+        mt.add_raw("\n")
+        mt.add_cmd("whatif")
+        mt.add_raw("\n")
+        mt.add_cmd("ema")
+        mt.add_cmd("ema_cross")
+        mt.add_cmd("rsi")
+        console.print(text=mt.menu_text, menu="Stocks - Backtesting")
 
     def custom_reset(self):
         """Class specific component of reset command"""

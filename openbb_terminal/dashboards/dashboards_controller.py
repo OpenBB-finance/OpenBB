@@ -14,7 +14,7 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import parse_known_args_and_warn
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 
 # pylint: disable=consider-using-with
 
@@ -48,15 +48,14 @@ class DashboardsController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = """[cmds]
-    stocks           historic stock information
-    correlation      stock correlations
-    vsurf            options volatility surface
-    chains           options chain analysis
-    shortdata        finra shortdata analysis
-    crypto           cryptocurrency exchange rates against USD[/cmds]
-        """
-        console.print(text=help_text, menu="Dashboards")
+        mt = MenuText("dashboards/")
+        mt.add_cmd("stocks")
+        mt.add_cmd("correlation")
+        mt.add_cmd("vsurf")
+        mt.add_cmd("chains")
+        mt.add_cmd("shortdata")
+        mt.add_cmd("crypto")
+        console.print(text=mt.menu_text, menu="Dashboards")
 
     @log_start_end(log=logger)
     def call_stocks(self, other_args: List[str]):

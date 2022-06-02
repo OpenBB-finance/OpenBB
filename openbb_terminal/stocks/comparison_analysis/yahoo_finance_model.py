@@ -119,9 +119,10 @@ def get_sp500_comps_tsne(
             "Adj Close"
         ].to_frame()
         df_ticker.columns = [ticker]
-        close_vals = close_vals.join(df_ticker, how="inner")
+        df_ticker.index = df_ticker.index.astype(str)
+        close_vals = close_vals.join(df_ticker)
 
-    close_vals = close_vals.dropna(how="all").fillna(method="bfill")
+    close_vals = close_vals.fillna(method="bfill")
     rets = close_vals.pct_change()[1:].T
 
     model = TSNE(learning_rate=lr)

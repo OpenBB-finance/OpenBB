@@ -1,20 +1,17 @@
-
-[QuiverQuant]
-
 Explore:
-    lasttrades       last trades
-    topbuys          show most purchased stocks
-    topsells         show most sold stocks
-    lastcontracts    show last government contracts given out
-    qtrcontracts     quarterly government contracts analysis
-    toplobbying      top corporate lobbying tickers
+    lasttrades         last trades                                 [QuiverQuant]
+    topbuys            show most purchased stocks                  [QuiverQuant]
+    topsells           show most sold stocks                       [QuiverQuant]
+    lastcontracts      show last government contracts given out    [QuiverQuant]
+    qtrcontracts       quarterly government contracts analysis     [QuiverQuant]
+    toplobbying        top corporate lobbying tickers              [QuiverQuant]
 
-    load             load a specific ticker for analysis
+    load               load a specific ticker for analysis
 
-Ticker: None[unvl]
+Ticker: 
 
-    gtrades          show government trades for ticker
-    contracts        show government contracts for ticker
-    histcont         show historical quarterly government contracts for ticker
-    lobbying         corporate lobbying details for ticker[/unvl]
-            
+[unvl]    gtrades            show government trades[/unvl]                      [QuiverQuant]
+[unvl]    contracts          show government contracts[/unvl]                   [QuiverQuant]
+[unvl]    histcont           historical quarterly government contracts[/unvl]   [QuiverQuant]
+[unvl]    lobbying           corporate lobbying details[/unvl]                  [QuiverQuant]
+

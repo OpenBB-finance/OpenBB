@@ -21,7 +21,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.stocks.dark_pool_shorts import (
     finra_view,
     quandl_view,
@@ -76,38 +76,23 @@ class DarkPoolShortsController(StockBaseController):
 
     def print_help(self):
         """Print help"""
-        has_ticker_start = "" if self.ticker else "[unvl]"
-        has_ticker_end = "" if self.ticker else "[/unvl]"
-        help_text = f"""[cmds]
-    load             load a specific stock ticker for analysis
-
-[src][Yahoo Finance][/src]
-    shorted          show most shorted stocks
-[src][Interactive Broker][/src]
-    ctb              stocks with highest cost to borrow
-[src][Shortinterest.com][/src]
-    hsi              show top high short interest stocks of over 20% ratio
-[src][FINRA][/src]
-    prom             promising tickers based on dark pool shares regression
-[src][Stockgrid][/src]
-    pos              dark pool short position
-    sidtc            short interest and days to cover
-{has_ticker_start}
-[param]Ticker: [/param]{self.ticker or None}
-
-[src][FINRA][/src]
-    dpotc            dark pools (ATS) vs OTC data
-[src][SEC][/src]
-    ftd              fails-to-deliver data
-[src][Stockgrid][/src]
-    spos             net short vs position
-[src][Quandl/Stockgrid][/src]
-    psi              price vs short interest volume[/cmds]
-{has_ticker_end}"""
-        # Commented out from docstring 5/19:
-        # [src][NYSE][/src]
-        #     volexch        short volume for ARCA,Amex,Chicago,NYSE and national exchanges
-        console.print(text=help_text, menu="Stocks - Dark Pool and Short data")
+        mt = MenuText("stocks/dps/")
+        mt.add_cmd("load")
+        mt.add_raw("\n")
+        mt.add_cmd("shorted", "Yahoo Finance")
+        mt.add_cmd("ctb", "Interactive Broker")
+        mt.add_cmd("hsi", "Shortinterest")
+        mt.add_cmd("prom", "FINRA")
+        mt.add_cmd("pos", "Stockgrid")
+        mt.add_cmd("sidtc", "Stockgrid")
+        mt.add_raw("\n")
+        mt.add_param("_ticker", self.ticker or "")
+        mt.add_raw("\n")
+        mt.add_cmd("dpotc", "FINRA", self.ticker)
+        mt.add_cmd("ftd", "SEC", self.ticker)
+        mt.add_cmd("spos", "Stockgrid", self.ticker)
+        mt.add_cmd("psi", "Quandl/Stockgrid", self.ticker)
+        console.print(text=mt.menu_text, menu="Stocks - Dark Pool and Short data")
 
     @log_start_end(log=logger)
     def call_shorted(self, other_args: List[str]):

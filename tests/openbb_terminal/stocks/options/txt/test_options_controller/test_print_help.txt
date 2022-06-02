@@ -1,29 +1,28 @@
+    unu                show unusual options activity                                   [Fdscanner]
+    calc               basic call/put PnL calculator
 
-    unu              show unusual options activity [Fdscanner.com]
-    calc             basic call/put PnL calculator
+>   screen             screens tickers based on preset
 
->   screen           screens tickers based on preset [Syncretism.io]
-
-    load             load new ticker[dim]
-    exp              see and set expiration dates[/dim]
+    load               load new ticker
+[unvl]    exp                see and set expiration dates[/unvl]
 
 Ticker: 
 Expiry: 
-[dim]
-    pcr              display put call ratio for ticker [AlphaQuery.com]
-    info             display option information (volatility, IV rank etc) [Barchart.com]
-    chains           display option chains with greeks [Tradier]
-    oi               plot open interest [Tradier/YFinance]
-    vol              plot volume [Tradier/YFinance]
-    voi              plot volume and open interest [Tradier/YFinance]
-    hist             plot option history [Tradier]
-    vsurf            show 3D volatility surface [Yfinance]
-    grhist           plot option greek history [Syncretism.io]
-    plot             plot variables provided by the user [Yfinance]
-    parity           shows whether options are above or below expected price [Yfinance]
-    binom            shows the value of an option using binomial options pricing [Yfinance]
-    greeks           shows the greeks for a given option [Yfinance]
 
->   pricing          shows options pricing and risk neutral valuation [Yfinance]
->   hedge            shows portfolio weights in order to neutralise delta [Yfinance]
-[/dim]
+[unvl]    pcr                display put call ratio for ticker[/unvl]                               [AlphaQuery]
+[unvl]    info               display option information (volatility, IV rank etc)[/unvl]            [Barchart]
+[unvl]    chains             display option chains with greeks[/unvl]                               [Tradier]
+[unvl]    oi                 plot open interest[/unvl]                                              [Tradier/YFinance]
+[unvl]    vol                plot volume[/unvl]                                                     [Tradier/YFinance]
+[unvl]    voi                plot volume and open interest[/unvl]                                   [Tradier/YFinance]
+[unvl]    hist               plot option history[/unvl]                                             [Tradier]
+[unvl]    vsurf              show 3D volatility surface[/unvl]                                      [Yfinance]
+[unvl]    grhist             plot option greek history[/unvl]                                       [Syncretism]
+[unvl]    plot               plot variables provided by the user[/unvl]                             [Yfinance]
+[unvl]    parity             shows whether options are above or below expected price[/unvl]         [Yfinance]
+[unvl]    binom              shows the value of an option using binomial options pricing[/unvl]     [Yfinance]
+[unvl]    greeks             shows the greeks for a given option[/unvl]                             [Yfinance]
+
+[unvl]>   pricing            shows options pricing and risk neutral valuation[/unvl]
+[unvl]>   hedge              shows portfolio weights in order to neutralise delta[/unvl]
+

@@ -6,6 +6,7 @@ type: our story
 status: publish
 excerpt: "The Introduction to ENTER_MENU_NAME_HERE within the ENTER_TOP_LEVEL_MENU_NAME_HERE explains how to use the 
 ENTER_MENU_NAME_HERE and provides a brief description of its sub-menus"
+geekdocCollapseSection: true
 ---
 
 **Important Rules**
@@ -20,6 +21,7 @@ Each page should always take the following rules in mind:
 
 - Every link should open a new page (`_blank`). So use: `<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/options/exp/" target="_blank">exp</a>`
 - Some methods to format images:
+  - Include a link tot the image as well, e.g: `<a target="_blank" href="https://user-images.githubusercontent.com/46355364/170244924-ffe6cd15-8d17-4690-bf44-d2b496dbc310.png"><img alt="headlines" src="https://user-images.githubusercontent.com/46355364/170244924-ffe6cd15-8d17-4690-bf44-d2b496dbc310.png"></a>`
   - Side by side: `<img src="image1.png" width="425"/> <img src="image2.png" width="425"/>`
   - Text and image:
     ```
@@ -36,8 +38,6 @@ Each page should always take the following rules in mind:
     ```
   - No formatting in particular: `![image](link/to/image)`
 _____
-
-<h1>Introduction to ENTER_MENU_NAME_HERE</h1>
 The purpose of the menu, providing very factual information with a neutral view. E.g. "The options menu is used to 
 gain insights in different metrics involved around option contracts based on the selected ticker."
 

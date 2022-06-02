@@ -35,5 +35,9 @@ from openbb_terminal.common.prediction_techniques.mc_view import (
     display_mc_forecast as mc,
 )
 
+from openbb_terminal.common.prediction_techniques.expo_view import (
+    display_expo_forecast as expo,
+)
+
 # Models
 models = _models(os.path.abspath(os.path.dirname(prediction_techniques.__file__)))

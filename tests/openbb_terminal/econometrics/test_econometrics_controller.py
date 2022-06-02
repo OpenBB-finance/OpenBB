@@ -24,11 +24,6 @@ def test_update_runtime_choices(controller):
     assert controller.choices
 
 
-@pytest.mark.record_stdout
-def test_print_help(controller):
-    controller.print_help()
-
-
 @pytest.mark.parametrize(
     "other",
     [
@@ -46,17 +41,19 @@ def test_call_load(controller, other):
 
 @pytest.mark.parametrize("other", [["dataset"], ["-n", "data"]])
 def test_call_export(controller, other):
-    controller.call_load(["cancer", "dataset"])
+    controller.call_load(["cancer"])
     controller.call_export(other)
 
 
+@pytest.mark.skip
 @pytest.mark.record_stdout
 @pytest.mark.parametrize("other", [["data"], ["-n", "dataset"], []])
 def test_call_remove(controller, other):
-    controller.call_load(["cancer", "dataset"])
+    controller.call_load(["cancer"])
     controller.call_remove(other)
 
 
+@pytest.mark.skip
 @pytest.mark.parametrize("other", [["data"], ["-n", "data"], []])
 def test_call_options(controller, other):
     controller.call_options(other)
@@ -118,28 +115,6 @@ def test_call_index(controller):
     controller.call_index(["dataset", "cancer", "-a"])
     controller.call_index(["dataset", "cancer", "-d"])
     controller.call_index(["dataset", "cancer", "oogabooga", "-d"])
-
-
-@pytest.mark.record_stdout
-@pytest.mark.parametrize("other", [["data"], ["-n", "dataset"], []])
-def test_call_clean(controller, other):
-    controller.call_load(["cancer", "dataset"])
-    controller.call_clean(other)
-
-
-@pytest.mark.record_stdout
-@pytest.mark.parametrize(
-    "other",
-    [
-        ["-a", "dataset-cancer", "dataset-cancer", "div", "dataset-new"],
-        ["-a", "dataset-ancer", "dataset-cancer", "div", "dataset-new"],
-        ["-d", "dataset-cancer"],
-        ["-r", "cancer", "new"],
-    ],
-)
-def test_call_modify(controller, other):
-    controller.call_load(["cancer", "dataset"])
-    controller.call_modify(other)
 
 
 @pytest.mark.record_stdout

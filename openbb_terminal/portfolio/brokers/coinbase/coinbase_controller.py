@@ -18,7 +18,7 @@ from openbb_terminal.helper_funcs import (
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.portfolio.brokers.coinbase import coinbase_view
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 
 logger = logging.getLogger(__name__)
 
@@ -57,13 +57,12 @@ class CoinbaseController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = """[cmds]
-    account     show balance of your account
-    history     show history of your account
-    deposits    show all your deposits or internal transfers
-    orders      show all your orders
-[/cmds]"""
-        console.print(text=help_text, menu="Portfolio - Brokers - Coinbase")
+        mt = MenuText("portfolio/bro/cb/")
+        mt.add_cmd("account")
+        mt.add_cmd("history")
+        mt.add_cmd("deposits")
+        mt.add_cmd("orders")
+        console.print(text=mt.menu_text, menu="Portfolio - Brokers - Coinbase")
 
     @log_start_end(log=logger)
     def call_account(self, other_args):

@@ -37,6 +37,7 @@ def vcr_config():
             ("period1", "MOCK_PERIOD_1"),
             ("period2", "MOCK_PERIOD_2"),
             ("date", "MOCK_DATE"),
+            ("apiKey", "MOCK_API_KEY"),
         ],
     }
 
@@ -232,8 +233,6 @@ def test_call_func_expect_queue(expected_queue, func, queue):
 @pytest.mark.parametrize(
     "tested_func, other_args, mocked_func, called_args, called_kwargs",
     [
-        ("call_to", ["GBP"], None, [], dict()),
-        ("call_from", ["EUR"], None, [], dict()),
         (
             "call_ta",
             None,
@@ -278,8 +277,10 @@ def test_call_func(
 
         controller = forex_controller.ForexController(queue=None)
         controller.data = NON_EMPTY_DF
+        controller.fx_pair = "MOCK_TICKER"
         controller.to_symbol = "MOCK_TICKER"
         controller.from_symbol = "MOCK_TICKER"
+        controller.source = "yf"
         controller.interval = ""
 
         getattr(controller, tested_func)(other_args)
@@ -303,8 +304,6 @@ def test_call_func(
 @pytest.mark.parametrize(
     "func",
     [
-        "call_from",
-        "call_to",
         "call_load",
         "call_candle",
     ],
@@ -349,18 +348,15 @@ def test_call_func_no_ticker(func, mocker):
 
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.parametrize(
-    "from_symbol, to_symbol, expected",
+    "fx_pair, expected",
     [
-        (None, None, []),
-        ("MOCK_FROM", None, []),
-        (None, "MOCK_TO", []),
-        ("MOCK_FROM", "MOCK_TO", ["forex", "from MOCK_FROM", "to MOCK_TO"]),
+        (None, []),
+        ("MOCK_FX_PAIR", ["forex", "load MOCK_FX_PAIR"]),
     ],
 )
-def test_custom_reset(from_symbol, to_symbol, expected):
+def test_custom_reset(fx_pair, expected):
     controller = forex_controller.ForexController(queue=None)
-    controller.from_symbol = from_symbol
-    controller.to_symbol = to_symbol
+    controller.fx_pair = fx_pair
 
     result = controller.custom_reset()
 

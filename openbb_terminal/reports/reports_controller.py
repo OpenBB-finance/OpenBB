@@ -17,7 +17,7 @@ from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 
 logger = logging.getLogger(__name__)
 
@@ -94,10 +94,10 @@ class ReportController(BaseController):
 
     def print_help(self):
         """Print help."""
-        help_text = f"""[info]
-Select one of the following reports:[/info][cmds]
-{self.reports_opts}[/cmds]"""
-        console.print(text=help_text, menu="Reports - WORK IN PROGRESS")
+        mt = MenuText("reports/")
+        mt.add_info("_reports_")
+        mt.add_raw(f"[cmds]{self.reports_opts}[/cmds]")
+        console.print(text=mt.menu_text, menu="Reports - WORK IN PROGRESS")
 
     @log_start_end(log=logger)
     def switch(self, an_input: str):
@@ -203,26 +203,29 @@ Select one of the following reports:[/info][cmds]
 
             d_report_params["report_name"] = notebook_output
 
-            pm.execute_notebook(
+            result = pm.execute_notebook(
                 notebook_template + ".ipynb",
                 notebook_output + ".ipynb",
                 parameters=d_report_params,
                 kernel_name="python3",
             )
 
-            if obbff.OPEN_REPORT_AS_HTML:
-                report_output_path = os.path.join(
-                    os.path.abspath(os.path.join(".")), notebook_output + ".html"
-                )
-                print(report_output_path)
-                webbrowser.open(f"file://{report_output_path}")
+            if not result["metadata"]["papermill"]["exception"]:
+                if obbff.OPEN_REPORT_AS_HTML:
+                    report_output_path = os.path.join(
+                        os.path.abspath(os.path.join(".")), notebook_output + ".html"
+                    )
+                    print(report_output_path)
+                    webbrowser.open(f"file://{report_output_path}")
 
-            console.print("")
-            console.print(
-                "Exported: ",
-                os.path.join(
-                    os.path.abspath(os.path.join(".")), notebook_output + ".html"
-                ),
-                "\n",
-            )
+                console.print("")
+                console.print(
+                    "Exported: ",
+                    os.path.join(
+                        os.path.abspath(os.path.join(".")), notebook_output + ".html"
+                    ),
+                    "\n",
+                )
+            else:
+                console.print("[red]\nParameter provided is not valid.\n[/red]")
         return self.queue

@@ -1,53 +1,50 @@
-
-    load             load a specific cryptocurrency for analysis
+    load               load a specific cryptocurrency for analysis
 
 Coin: None
 Source: ?
 
-CoinGecko
-    info             basic information about loaded coin
-    market           market stats about loaded coin
-    ath              all time high related stats for loaded coin
-    atl              all time low related stats for loaded coin
-    web              found websites for loaded coin e.g forum, homepage
-    social           social portals urls for loaded coin, e.g reddit, twitter
-    score            different kind of scores for loaded coin, e.g developer score, sentiment score
-    dev              github, bitbucket coin development statistics
-    bc               links to blockchain explorers for loaded coin
-Glassnode
-    active           active addresses
-    nonzero          addresses with non-zero balances
-    change           30d change of supply held on exchange wallets
-    eb               total balance held on exchanges (in percentage and units)
-Coinglass
-    oi               open interest per exchange
-CoinPaprika
-    basic            basic information about loaded coin
-    ps               price and supply related metrics for loaded coin
-    mkt              all markets for loaded coin
-    ex               all exchanges where loaded coin is listed
-    twitter          tweets for loaded coin
-    events           events related to loaded coin
-Binance
-    binbook          order book
-    balance          coin balance
-Coinbase
-    cbbook           order book
-    trades           last trades
-    stats            coin stats
-Messari
-    mcapdom          market cap dominance
-    mt               messari timeseries e.g. twitter followers, circ supply, etc
-    rm               roadmap
-    tk               tokenomics e.g. circulating/max/total supply, emission type, etc
-    pi               project information e.g. technology details, public repos, audits, vulns
-    team             contributors (individuals and organizations)
-    inv              investors (individuals and organizations)
-    gov              governance details
-    fr               fundraising details e.g. treasury accounts, sales rounds, allocation
-    links            links e.g. whitepaper, github, twitter, youtube, reddit, telegram
-Santiment
-    gh               github activity over time
-CryptoPanic
-    news             loaded coin's most recent news
+Overview:
+    info               basic information about loaded coin                                                 [CoinGecko]
+    basic              basic information about loaded coin                                                 [CoinPaprika]
+    ath                all time high related stats for loaded coin                                         [CoinGecko]
+    atl                all time low related stats for loaded coin                                          [CoinGecko]
+    web                found websites for loaded coin e.g forum, homepage                                  [CoinGecko]
+    pi                 project information e.g. technology details, public repos, audits, vulns            [Messari]
+    gov                governance details                                                                  [Messari]
+    stats              coin stats                                                                          [Coinbase]
+    bc                 links to blockchain explorers for loaded coin                                       [CoinGecko]
+Market:
+    market             market stats about loaded coin                                                      [CoinGecko]
+    mkt                all markets for loaded coin                                                         [CoinPaprika]
+    binbook            order book                                                                          [Binance]
+    balance            coin balance                                                                        [Binance]
+    cbbook             order book                                                                          [Coinbase]
+    trades             last trades                                                                         [Coinbase]
+    ex                 all exchanges where loaded coin is listed                                           [CoinPaprika]
+    oi                 open interest per exchange                                                          [Coinglass]
+    eb                 total balance held on exchanges (in percentage and units)                           [Glassnode]
+Metrics:
+    mcapdom            market cap dominance                                                                [Messari]
+    active             active addresses                                                                    [Glassnode]
+    nonzero            addresses with non-zero balances                                                    [Glassnode]
+    change             30d change of supply held on exchange wallets                                       [Glassnode]
+    ps                 price and supply related metrics for loaded coin                                    [CoinPaprika]
+    mt                 messari timeseries e.g. twitter followers, circ supply, etc                         [Messari]
+Contributors and Investors:
+    team               contributors (individuals and organizations)                                        [Messari]
+    inv                investors (individuals and organizations)                                           [Messari]
+Tokenomics:
+    tk                 tokenomics e.g. circulating/max/total supply, emission type, etc                    [Messari]
+    fr                 fundraising details e.g. treasury accounts, sales rounds, allocation                [Messari]
+Roadmap and News:
+    rm                 roadmap                                                                             [Messari]
+    events             events related to loaded coin                                                       [CoinPaprika]
+    news               loaded coin's most recent news                                                      [CryptoPanic]
+Activity and Community:
+    links              links e.g. whitepaper, github, twitter, youtube, reddit, telegram                   [Messari]
+    social             social portals urls for loaded coin, e.g reddit, twitter                            [CoinGecko]
+    twitter            tweets for loaded coin                                                              [CoinPaprika]
+    score              different kind of scores for loaded coin, e.g developer score, sentiment score      [CoinGecko]
+    dev                github, bitbucket coin development statistics                                       [CoinGecko]
+    gh                 github activity over time                                                           [Santiment]
 

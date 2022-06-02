@@ -1,2 +1,2 @@
-,const,lwage_wage_panel,hisp_wage_panel,black_wage_panel
+,const,wage_panel.lwage,wage_panel.hisp,wage_panel.black
 parameter,0.14530,0.19126,-0.00687,-0.17866
