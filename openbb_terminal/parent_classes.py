@@ -692,7 +692,7 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
             "-s",
             "--start",
             type=valid_date_in_past,
-            default=(datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
+            default=(datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d"),
             dest="start",
             help="The starting date (format YYYY-MM-DD) of the crypto",
         )
@@ -716,7 +716,7 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
                 start=ns_parser.start,
                 vs=ns_parser.vs,
             )
-            if self.current_df is not None and not self.current_df.empty:
+            if not self.current_df.empty:
                 self.current_interval = "1day"
                 self.current_currency = ns_parser.vs
                 self.symbol = ns_parser.coin
@@ -725,5 +725,5 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
                 )
             else:
                 console.print(
-                    f"\n[red]Could not find [bold]{ns_parser.symbol}[/bold] in [bold]CoinGecko[/bold]. Make sure you search for symbol (e.g., btc) and not full name (e.g., bitcoin)[/red]\n"  # noqa: E501
+                    f"\n[red]Could not find [bold]{ns_parser.coin}[/bold] in [bold]CoinGecko[/bold]. Make sure you search for symbol (e.g., btc) and not full name (e.g., bitcoin)[/red]\n"  # noqa: E501
                 )

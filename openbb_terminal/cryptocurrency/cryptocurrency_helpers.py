@@ -13,7 +13,6 @@ import pandas as pd
 import numpy as np
 from binance.client import Client
 import matplotlib.pyplot as plt
-from openbb_terminal import cryptocurrency
 import yfinance as yf
 import mplfinance as mpf
 from pycoingecko import CoinGeckoAPI
@@ -299,18 +298,11 @@ def load(
             f"with starting period {start.strftime('%Y-%m-%d')} for analysis.",
         )
     else:
-        console.print("Coin not found\n")
-        return None
+        return pd.DataFrame()
     delta = (datetime.now() - start).days
 
-    df = pycoingecko_model.get_coin_market_chart(coingecko_id, vs, delta)
-    df = df["price"].resample("1D").ohlc().ffill()
-    df.columns = [
-        "Open",
-        "High",
-        "Low",
-        "Close",
-    ]
+    df = pycoingecko_model.get_ohlc(coingecko_id, vs, delta)
+
     df_coin = yf.download(
         f"{symbol_search}-{vs}",
         end=datetime.now(),
