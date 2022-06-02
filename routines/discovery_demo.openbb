@@ -1,0 +1,16 @@
+# Enter the discovery menu
+stocks/disc
+
+# Show a dividend calendar
+divcal -l 25
+
+# Show Ark trades
+arkord
+# Show upcoming earnings
+upcoming
+
+# See news from Alpha Vantage
+cnews -t issuance
+
+# Return to home
+/
