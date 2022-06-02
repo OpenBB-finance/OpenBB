@@ -77,12 +77,11 @@ def get_expo_data(
     Any
         Fit Prob. Expo model object.
     """
-
     filler = MissingValuesFiller()
     ticker_series = TimeSeries.from_dataframe(
         data,
         time_col="date",
-        value_cols=["Close"],
+        value_cols=["close"],
         freq="B",
         fill_missing_dates=True,
     )

@@ -1089,22 +1089,13 @@ en:
   dashboards/shortdata: finra shortdata analysis
   dashboards/crypto: cryptocurrency exchange rates against USD
   reports/_reports_: Select one of the following report
-  forcasting/_data_loc: Looking for data in
-  forcasting/load: load a dataset (also works with StatsModels datasets)
-  forcasting/export: export a processed dataset
-  forcasting/remove: remove one of the loaded datasets
-  forcasting/options: show available column-dataset options
-  forcasting/_loaded: Loaded files and data columns
-  forcasting/_exploration_: Exploration
-  forcasting/show: show a portion of a loaded dataset
-  forcasting/plot: plot data from a dataset
-  forcasting/type: change types of the columns or display their types
-  forcasting/desc: show descriptive statistics of a dataset
-  forcasting/index: set (multi) index based on columns
-  forcasting/clean: clean a dataset by filling or dropping NaNs
-  forcasting/modify: combine columns of datasets and delete or rename columns
-  forcasting/add: Add columns to dataset with option to use formulas
-  forcasting/delete: Delete columns from dataset
-  forcasting/combine: Combine columns from different datasets
-  forcasting/rename: Rename column from dataset
+  forecasting/_data_loc: Looking for data in
+  forecasting/load: load a dataset from csv
+  forecasting/export: export a processed dataset
+  forecasting/remove: remove one of the loaded datasets
+  forecasting/options: show available column-dataset options
+  forecasting/_loaded: Loaded files and data columns
+  forecasting/_exploration_: Exploration
+  forecasting/show: show a portion of a loaded dataset
+  forecasting/_tsforecasting_: TimeSeries Forecasting
   forecasting/expo: Probablistic Exponential Smoothing Model (fit and backtest)

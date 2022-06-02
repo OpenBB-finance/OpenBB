@@ -20,7 +20,7 @@ from openbb_terminal.helper_funcs import (
     print_rich_table,
 )
 from openbb_terminal.rich_config import console
-from openbb_terminal.econometrics import econometrics_model
+from openbb_terminal.forecasting import forecasting_model
 from openbb_terminal.config_terminal import theme
 
 logger = logging.getLogger(__name__)
@@ -50,7 +50,7 @@ def show_options(
             "Please load in a dataset by using the 'load' command before using this feature."
         )
     else:
-        option_tables = econometrics_model.get_options(datasets, dataset_name)
+        option_tables = forecasting_model.get_options(datasets, dataset_name)
 
         for dataset, data_values in option_tables.items():
             print_rich_table(
@@ -153,7 +153,7 @@ def display_norm(
             f"Consider using the command 'type' to change this.\n"
         )
     else:
-        results = econometrics_model.get_normality(data)
+        results = forecasting_model.get_normality(data)
 
         print_rich_table(
             results,
@@ -220,7 +220,7 @@ def display_root(
             f"type is {df.dtype}. Consider using the command 'type' to change this.\n"
         )
     else:
-        results = econometrics_model.get_root(df, fuller_reg, kpss_reg)
+        results = forecasting_model.get_root(df, fuller_reg, kpss_reg)
 
         print_rich_table(
             results,
@@ -271,7 +271,7 @@ def display_granger(
             f"Consider using the command 'type' to change this."
         )
     else:
-        granger = econometrics_model.get_granger_causality(
+        granger = forecasting_model.get_granger_causality(
             time_series_y, time_series_x, lags
         )
 
@@ -379,7 +379,7 @@ def display_cointegration_test(
                 z,
                 adfstat,
                 pvalue,
-            ) = econometrics_model.get_engle_granger_two_step_cointegration_test(
+            ) = forecasting_model.get_engle_granger_two_step_cointegration_test(
                 datasets[x], datasets[y]
             )
             result[f"{x}/{y}"] = [c, gamma, alpha, adfstat, pvalue]

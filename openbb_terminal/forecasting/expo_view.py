@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 from openbb_terminal.config_terminal import theme
-from openbb_terminal.common.prediction_techniques import expo_model
+from openbb_terminal.forecasting import expo_model
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
@@ -32,6 +32,8 @@ def dt_format(x):
     Returns:
         x: formatted string
     """
+    # convert string to pandas datetime
+    x = pd.to_datetime(x)
     x = x.strftime("%Y-%m-%d")
     return x
 
@@ -77,8 +79,7 @@ def display_expo_forecast(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axis is expected in the list), by default None
     """
-    # add temp column since we need to use index col for date
-    data["date"] = data.index
+
     # reformat the date column to remove any hour/min/sec
     data["date"] = data["date"].apply(dt_format)
 
@@ -128,7 +129,7 @@ def display_expo_forecast(
     if not external_axes:
         theme.visualize_output()
 
-    numeric_forecast = predicted_values.quantile_df()["Close_0.5"].tail(n_predict)
-    print_pretty_prediction(numeric_forecast, data["Close"].iloc[-1])
+    numeric_forecast = predicted_values.quantile_df()["close_0.5"].tail(n_predict)
+    print_pretty_prediction(numeric_forecast, data["close"].iloc[-1])
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "expo")
