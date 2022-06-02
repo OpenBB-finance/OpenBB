@@ -551,9 +551,9 @@ main:
               - name: stats
                 ref: "/terminal/common/behavioural_analysis/stats"
               - name: snews
-                ref: "/terminal/common/behavioural_analysis/snews"
+                ref: "/terminal/stocks/behavioural_analysis/snews"
               - name: interest
-                ref: "/terminal/common/behavioural_analysis/interest"
+                ref: "/terminal/stocks/behavioural_analysis/interest"
               - name: wsb
                 ref: "/terminal/common/behavioural_analysis/wsb"
               - name: watchlist
@@ -1082,7 +1082,7 @@ main:
                 ref: "/terminal/common/quantitative_analysis/line"
               - name: raw
                 ref: "/terminal/common/quantitative_analysis/raw"
-      - name: ETFs
+      - name: etf
         ref: "/terminal/etf"
         sub:
           - name: ln
@@ -1415,7 +1415,7 @@ main:
                 ref: "/terminal/jupyter/dashboards/shortdata"
           - name: "reports"
             ref: "/terminal/jupyter/reports"
-  - name: "OpenBB Python API"
+  - name: "GST python API"
     ref: "/api"
   - name: "OpenBB Bots"
     ref: "/bots"
