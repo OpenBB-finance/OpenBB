@@ -1,0 +1,53 @@
+# Select location folder to export data to (if doesn't exist, will be created by default)
+# export didier_analysis_on_$ARGV[0]
+
+# Go into the stocks context
+stocks
+
+# Load a ticker that's given as a first argument of the routine
+load WMT
+
+# Go into the Comparison Analysis Menu
+ca
+
+# Get similar companies
+getfinnhub
+getfinviz
+getpoly
+
+# Remove and add a ticker
+rmv JCP
+add SHOP
+
+# Show a correlation matrix with different periods.
+hcorr
+hcorr -s 2022-01-01
+
+# Compare valuations
+valuation
+
+# Compare performance
+performance
+
+# Sentiment of companaies over the last ten days
+sentiment
+
+# Chart the NASDAQ 100 Index with futures contracts
+..
+..
+stocks
+ca
+set ^NDX,NQH23.CME,NQZ22.CME,NQ=F
+historical -s 2022-01-01
+
+# Show the price-normalized history of S&P, NASDAQ, and Bitcoin futures
+set ES=F,NQ=F,BTC=F
+historical -n
+
+# Compare financial statements of the ten largest US Banks
+set C,USB,WFC,JPM,TD,GS,PNC,TFC,BAC,COF
+cashflow
+income
+
+# Take the list of similar companies to the Portfolio Optimization Menu
+po

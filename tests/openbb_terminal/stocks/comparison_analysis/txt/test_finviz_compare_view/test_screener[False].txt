@@ -1,4 +1,3 @@
-  Ticker                 Company             Sector            Industry Country    Market Cap     P/E   Price  Change      Volume
-0     GM  General Motors Company  Consumer Cyclical  Auto Manufacturers     USA  6.129000e+10    5.94   39.83 -0.0606  25864901.0
-1   TSLA             Tesla, Inc.  Consumer Cyclical  Auto Manufacturers     USA  8.080100e+11  163.47  804.58 -0.0402  23933335.0
-
+  Ticker                 Company             Sector            Industry Country      Market Cap     P/E   Price  Change      Volume
+0     GM  General Motors Company  Consumer Cyclical  Auto Manufacturers     USA   61290000000.0    5.94   39.83 -0.0606  25864901.0
+1   TSLA             Tesla, Inc.  Consumer Cyclical  Auto Manufacturers     USA  808010000000.0  163.47  804.58 -0.0402  23933335.0

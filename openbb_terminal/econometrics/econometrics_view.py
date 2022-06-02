@@ -57,7 +57,7 @@ def show_options(
                 data_values,
                 headers=list(data_values.columns),
                 show_index=False,
-                title=f"Options for {dataset}",
+                title=f"Options for dataset: '{dataset}'",
             )
 
             export_data(
@@ -69,10 +69,8 @@ def show_options(
 
 
 @log_start_end(log=logger)
-def get_plot(
-    data: pd.DataFrame,
-    dataset: str,
-    column: str,
+def display_plot(
+    data: Dict[str, pd.DataFrame],
     export: str = "",
     external_axes: Optional[List[plt.axes]] = None,
 ):
@@ -80,43 +78,46 @@ def get_plot(
 
     Parameters
     ----------
-    data: pd.DataFrame
-        Dataframe of custom data
-    dataset: str
-        Dataset name
-    column: str
-        Column for y data
+    data: Dict[str: pd.DataFrame]
+        Dictionary with key being dataset.column and dataframes being values
     export: str
         Format to export image
     external_axes:Optional[List[plt.axes]]
         External axes to plot on
     """
-    if isinstance(data.index, pd.MultiIndex):
-        console.print(
-            "The index appears to be a multi-index. "
-            "Therefore, it is not possible to plot the data."
-        )
-    else:
+
+    for dataset_col in data:
+        if isinstance(data[dataset_col].index, pd.MultiIndex):
+            console.print(
+                "The index appears to be a multi-index. "
+                "Therefore, it is not possible to plot the data."
+            )
+            del data[dataset_col]
+
+    # Check that there's at least a valid dataframe
+    if data:
         if external_axes is None:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
         else:
             ax = external_axes[0]
 
-        if isinstance(data, pd.Series):
-            ax.plot(data)
-        elif isinstance(data, pd.DataFrame):
-            ax.plot(data[column])
+        for dataset_col in data:
+            if isinstance(data[dataset_col], pd.Series):
+                ax.plot(data[dataset_col].index, data[dataset_col].values)
+            elif isinstance(data[dataset_col], pd.DataFrame):
+                ax.plot(data[dataset_col])
 
-        ax.set_title(f"{column} data from dataset {dataset}")
-        theme.style_primary_axis(ax)
+            theme.style_primary_axis(ax)
 
-        if external_axes is None:
-            theme.visualize_output()
+            if external_axes is None:
+                theme.visualize_output()
+
+        ax.legend(list(data.keys()))
 
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        f"{column}_{dataset}_plot",
+        "plot",
     )
 
 
@@ -149,7 +150,7 @@ def display_norm(
     if data.dtype not in [int, float]:
         console.print(
             f"The column type must be numeric. The {column}-{dataset} type is {data.dtype}. "
-            f"Consider using the command 'type' to change this."
+            f"Consider using the command 'type' to change this.\n"
         )
     else:
         results = econometrics_model.get_normality(data)
@@ -158,7 +159,7 @@ def display_norm(
             results,
             headers=list(results.columns),
             show_index=True,
-            title=f"Normality Test [Column: {column} | Dataset: {dataset}]",
+            title=f"Normality test from dataset '{dataset}' of '{column}'",
         )
 
         if plot:
@@ -169,7 +170,7 @@ def display_norm(
 
             ax.hist(data, bins=100)
 
-            ax.set_title(f"Histogram of {column} data from dataset {dataset}")
+            ax.set_title(f"Histogram from dataset '{dataset}' of '{column}'")
 
             theme.style_primary_axis(ax)
 
@@ -216,7 +217,7 @@ def display_root(
     if df.dtype not in [int, float]:
         console.print(
             f"The column type must be numeric. The {column_name}-{dataset_name} "
-            f"type is {df.dtype}. Consider using the command 'type' to change this."
+            f"type is {df.dtype}. Consider using the command 'type' to change this.\n"
         )
     else:
         results = econometrics_model.get_root(df, fuller_reg, kpss_reg)
@@ -225,18 +226,15 @@ def display_root(
             results,
             headers=list(results.columns),
             show_index=True,
-            title=f"Unitroot Test [Column: {column_name} | Dataset: {dataset_name}]",
+            title=f"Unitroot from dataset '{dataset_name} of '{column_name}'",
         )
 
-        if export:
-            export_data(
-                export,
-                os.path.dirname(os.path.abspath(__file__)),
-                f"{column_name}_{dataset_name}_root",
-                results,
-            )
-        else:
-            console.print()
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            f"{dataset_name}_{column_name}_root",
+            results,
+        )
 
 
 @log_start_end(log=logger)
@@ -300,24 +298,21 @@ def display_granger(
         if result_ftest > confidence_level:
             console.print(
                 f"As the p-value of the F-test is {result_ftest}, we can not reject the null hypothesis at "
-                f"the {confidence_level} confidence level."
+                f"the {confidence_level} confidence level.\n"
             )
         else:
             console.print(
                 f"As the p-value of the F-test is {result_ftest}, we can reject the null hypothesis at "
                 f"the {confidence_level} confidence level and find the Series '{time_series_x.name}' "
-                f"to Granger-cause the Series '{time_series_y.name}'"
+                f"to Granger-cause the Series '{time_series_y.name}'\n"
             )
 
-        if export:
-            export_data(
-                export,
-                os.path.dirname(os.path.abspath(__file__)),
-                f"{time_series_y.name}_{time_series_x.name}_granger",
-                granger_df,
-            )
-        else:
-            console.print()
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            f'{time_series_y.name.replace(".","-")}_{time_series_x.name.replace(".","-")}_granger',
+            granger_df,
+        )
 
 
 @log_start_end(log=logger)
@@ -429,12 +424,9 @@ def display_cointegration_test(
             if external_axes is None:
                 theme.visualize_output()
 
-        if export:
-            export_data(
-                export,
-                os.path.dirname(os.path.abspath(__file__)),
-                "results_cointegration",
-                df,
-            )
-        else:
-            console.print()
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "coint",
+            df,
+        )

@@ -106,6 +106,7 @@ def fixture_get_bitcoin(mocker):
 # pylint: disable=R0904
 
 
+@pytest.mark.vcr
 def test_coin_api_load(get_bitcoin):
     """
     Mock load function through get_coin_market_chart_by_id.
@@ -116,6 +117,7 @@ def test_coin_api_load(get_bitcoin):
     assert coin == "btc-bitcoin"
 
 
+@pytest.mark.vcr
 def test_coin_api_load_df_for_ta(get_bitcoin, mocker):
     """
     Mock load function through get_coin_market_chart_by_id.
@@ -156,6 +158,7 @@ def test_get_coins():
         assert test in bitcoin_list
 
 
+@pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_coin_chart(get_bitcoin):
     # pylint: disable=unused-argument
