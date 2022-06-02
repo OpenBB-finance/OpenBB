@@ -9,12 +9,15 @@
 
 
 
-    <meta name="description" content="GST python API Python environment setup Understanding the API functions Usage examples External matplotlib axes support  GST python API    The GST python API was created to enable usage of the terminal functionality in python scripts and IPython Notebooks (Jupyter). The API wraps the functionality of the terminal in a way that the python commands follow the same convention as the terminal.">
+    <meta name="description" content="The OpenBB Python API was created to enable usage of the terminal functionality in python scripts and IPython Notebooks (Jupyter). The API wraps the functionality of the terminal in a way that the Python commands follow the same convention as the terminal.
+For example stocks/load aapl becomes openbb.stocks.load(&quot;aapl&quot;).
+
+Table of Contents    Python environment setup Understanding the API functions Usage examples External matplotlib axes support      Python environment setup    Import the GST API into your python script or notebook with">
 
 
 
     <title>
-      API | OpenBB Terminal
+      OpenBB Python API | OpenBB Documentation
     </title>
 
     <link rel="icon" href="/OpenBBTerminal/favicon/favicon-32x32.png" type="image/x-icon">
@@ -35,7 +38,7 @@
 <link rel="preload" href="/OpenBBTerminal/custom.css" as="style">
 <link rel="stylesheet" href="/OpenBBTerminal/custom.css" media="all">
 
-<link rel="alternate" type="application/rss+xml" href="https://openbb-finance.github.io/OpenBBTerminal/api/index.xml" title="OpenBB Terminal" />
+<link rel="alternate" type="application/rss+xml" href="https://openbb-finance.github.io/OpenBBTerminal/api/index.xml" title="OpenBB Documentation" />
 
 
 <!-- Made with Geekdoc theme https://github.com/thegeeklab/hugo-geekdoc -->
@@ -75,7 +78,7 @@
     <a class="gdoc-header__link" href="https://openbb-finance.github.io/OpenBBTerminal">
       <span class="gdoc-brand flex align-center">
         <img class="gdoc-brand__img" src="/OpenBBTerminal/gst_logo_green.png" alt="">
-        <span class="gdoc-brand__title">OpenBB Terminal</span>
+        <span class="gdoc-brand__title">OpenBB Documentation</span>
       </span>
     </a>
 
@@ -149,14 +152,14 @@
             
 
             
-            <input type="checkbox" id="navtree-d063f845" class="gdoc-nav__toggle" >
-            <label for="navtree-d063f845" class="flex justify-between">
+            <input type="checkbox" id="navtree-1ad5fc12" class="gdoc-nav__toggle" checked>
+            <label for="navtree-1ad5fc12" class="flex justify-between">
             
             <span class="flex">
                 
-                <a href="/OpenBBTerminal/terminal/"
+                <a href="/OpenBBTerminal/"
                     class="gdoc-nav__entry ">
-                    terminal
+                    OpenBB Terminal
                 </a>
             </span>
             
@@ -16936,7 +16939,7 @@
                 
                 <a href="/OpenBBTerminal/terminal/etf/"
                     class="gdoc-nav__entry ">
-                    etf
+                    ETFs
                 </a>
             </span>
             
@@ -22089,7 +22092,7 @@
                 
                 <a href="/OpenBBTerminal/api/"
                     class="gdoc-nav__entry is-active">
-                    GST python API
+                    OpenBB Python API
                 </a>
             </span>
             
@@ -22123,7 +22126,7 @@
                 
                 <a href="/OpenBBTerminal/bots/"
                     class="gdoc-nav__entry ">
-                    bots
+                    OpenBB Bots
                 </a>
             </span>
             
@@ -26019,7 +26022,7 @@
         
     
     
-        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/' href='/OpenBBTerminal/'><span itemprop='name'>OpenBB Terminal</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>API</span><meta itemprop='position' content='3' /></li>
+        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/' href='/OpenBBTerminal/'><span itemprop='name'>Getting Started</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>OpenBB Python API</span><meta itemprop='position' content='3' /></li>
     
 
     
@@ -26040,42 +26043,24 @@
 </div>
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
-        <h1>API</h1>
-        
-
-
-  <div class="gdoc-toc gdoc-toc__level--1">
-    
-  <ul>
-    
-  </ul>
-
-  </div>
-
-
-
-
-
-<img width="1356" alt="image" src="https://user-images.githubusercontent.com/11668535/157916097-f9c5af6f-b97f-476d-943e-49eea4283bed.png">
-<ul>
-<li><a class="gdoc-markdown__link" href="#gst-python-api">GST python API</a></li>
-<li><a class="gdoc-markdown__link" href="#python-environment-setup">Python environment setup</a></li>
-<li><a class="gdoc-markdown__link" href="#understanding-the-api-functions">Understanding the API functions</a></li>
-<li><a class="gdoc-markdown__link" href="#usage-examples">Usage examples</a></li>
-<li><a class="gdoc-markdown__link" href="#external-matplotlib-axes-support">External matplotlib axes support</a></li>
-</ul>
-<div class="gdoc-page__anchorwrap">
-    <h2 id="gst-python-api">
-        GST python API
-        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/api/#gst-python-api" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor GST python API" href="#gst-python-api">
-            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
-        </a>
-    </h2>
-</div><p>The GST python API was created to enable usage of the terminal functionality in python
-scripts and IPython Notebooks (Jupyter).
-The API wraps the functionality of the terminal in a way that the python commands follow
-the same convention as the terminal.</p>
+        <h1>OpenBB Python API</h1>
+        <p>The OpenBB Python API was created to enable usage of the terminal functionality in python
+scripts and IPython Notebooks (Jupyter). The API wraps the functionality of the terminal in a way that the Python
+commands follow the same convention as the terminal.</p>
 <p>For example <code>stocks/load aapl</code> becomes <code>openbb.stocks.load(&quot;aapl&quot;)</code>.</p>
+<p><a target="_blank" href="https://user-images.githubusercontent.com/11668535/157916097-f9c5af6f-b97f-476d-943e-49eea4283bed.png"><img width="500" alt="image" src="https://user-images.githubusercontent.com/11668535/157916097-f9c5af6f-b97f-476d-943e-49eea4283bed.png"></a></p>
+
+
+
+  <h2>Table of Contents</h2>
+  <div class="gdoc-toc gdoc-toc__level--1"><nav id="TableOfContents"><ul>
+        <li><a href="#python-environment-setup">Python environment setup</a></li>
+        <li><a href="#understanding-the-api-functions">Understanding the API functions</a></li>
+        <li><a href="#usage-examples">Usage examples</a></li>
+        <li><a href="#external-matplotlib-axes-support">External matplotlib axes support</a></li>
+      </ul></nav><hr></div>
+
+
 <hr>
 <div class="gdoc-page__anchorwrap">
     <h2 id="python-environment-setup">
@@ -41802,7 +41787,7 @@ GST to appear in another chart that you are creating in a notebook.</p>
         </span>
         <span class="gdoc-page__nav">
             
-                <a class="gdoc-page__nav--next flex align-center" href="/OpenBBTerminal/bots/" title="bots">bots </a>
+                <a class="gdoc-page__nav--next flex align-center" href="/OpenBBTerminal/bots/" title="OpenBB Bots">OpenBB Bots </a>
             
         </span>
     
