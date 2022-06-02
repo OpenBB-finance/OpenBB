@@ -1,6 +1,3 @@
-# Select location folder to export data to (if doesn't exist, will be created by default)
-# export didier_analysis_on_$ARGV[0]
-
 # Go into the stocks context
 stocks
 
@@ -15,13 +12,11 @@ getfinnhub
 getfinviz
 getpoly
 
-# Remove and add a ticker
-rmv JCP
-add SHOP
+# Show the historical prices
+historical -n
 
-# Show a correlation matrix with different periods.
+# Show a correlation matrix
 hcorr
-hcorr -s 2022-01-01
 
 
 # Compare valuations
