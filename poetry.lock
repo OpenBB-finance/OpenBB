@@ -4022,7 +4022,7 @@ keras-preprocessing = ">=1.1.1"
 libclang = ">=9.0.1"
 numpy = ">=1.14.5"
 opt-einsum = ">=2.3.2"
-protobuf = ">=3.9.2,<3.20"
+protobuf = ">=3.9.2"
 six = ">=1.12.0"
 tensorboard = ">=2.6,<3.0"
 tensorflow-estimator = ">=2.7.0rc0,<2.8"
@@ -4694,7 +4694,7 @@ prediction = ["tensorflow", "u8darts"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8,<3.10"
-content-hash = "98adc6c55311e39d7f20cf97f15318ae8bf870d51fc300a2b8ff130f1d003996"
+content-hash = "ff20907030af94d754a19cc978c5299e4a0a0d97acb3ce0aa0124baa6a4b7aec"
 
 [metadata.files]
 absl-py = [
