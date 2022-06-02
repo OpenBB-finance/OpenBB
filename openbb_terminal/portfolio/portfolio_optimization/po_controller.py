@@ -4346,6 +4346,13 @@ class PortfolioOptimizationController(BaseController):
             default=self.params["tangency"] if "tangency" in self.params else False,
             help="Adds the optimal line with the risk-free asset",
         )
+        parser.add_argument(
+            "--no_plot",
+            action="store_false",
+            dest="plot_tickers",
+            default=True,
+            help="Whether or not to plot the tickers for the assets provided",
+        )
         ns_parser = parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
@@ -4373,6 +4380,7 @@ class PortfolioOptimizationController(BaseController):
                 n_portfolios=ns_parser.amount_portfolios,
                 seed=ns_parser.random_seed,
                 tangency=ns_parser.tangency,
+                plot_tickers=ns_parser.plot_tickers,
             )
 
     @log_start_end(log=logger)

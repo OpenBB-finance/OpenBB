@@ -1,0 +1,26 @@
+# Go to the Portfolio Optimization (po) menu
+portfolio/po
+
+# Load in an allocation sheet with all S&P 500 tickers
+load SP_500_Portfolio.xlsx
+
+# Load in a parameters file
+file OpenBB_Parameters_Template_v1.0.0.xlsx
+
+# Apply the Hierarchical Risk Parity (hrp) technique
+hrp
+
+# Show HRP results based on sector
+show HRP_0 -ct SECTOR
+
+# Plot the sector distribution
+plot HRP_0 -ct SECTOR -pi
+
+# Show a histogram of returns and drawdowns
+plot HRP_0 -ct SECTOR -hi -dd
+
+# Show assets clustermap and risk contribution
+plot HRP_0 -ct SECTOR -rc -he
+
+# Return to home
+/
