@@ -952,11 +952,12 @@ en:
   alternative/oss/rs: repo summary
   alternative/oss/sh: repo star history
   alternative/oss/tr: top starred repos
-  econometrics/load: load in custom data sets
-  econometrics/export: export a dataset
-  econometrics/remove: remove a dataset
+  econometrics/_data_loc: Looking for data in
+  econometrics/load: load a dataset (also works with StatsModels datasets)
+  econometrics/export: export a processed dataset
+  econometrics/remove: remove one of the loaded datasets
   econometrics/options: show available column-dataset options
-  econometrics/_loaded: Loaded files
+  econometrics/_loaded: Loaded files and data columns
   econometrics/_exploration_: Exploration
   econometrics/show: show a portion of a loaded dataset
   econometrics/plot: plot data from a dataset
@@ -965,11 +966,15 @@ en:
   econometrics/index: set (multi) index based on columns
   econometrics/clean: clean a dataset by filling or dropping NaNs
   econometrics/modify: combine columns of datasets and delete or rename columns
-  econometrics/_timeseries_: Timeseries
+  econometrics/add: Add columns to dataset with option to use formulas
+  econometrics/delete: Delete columns from dataset
+  econometrics/combine: Combine columns from different datasets
+  econometrics/rename: Rename column from dataset
+  econometrics/_regression_: Regression
+  econometrics/_regression_tests_: Regression Tests
   econometrics/ols: fit a (multi) linear regression model
   econometrics/norm: perform normality tests on a column of a dataset
   econometrics/root: perform unitroot tests (ADF & KPSS) on a column of a dataset
-  econometrics/_panel_: Panel Data
   econometrics/panel: estimate model based on various regression techniques
   econometrics/compare: compare results of all estimated models
   econometrics/_tests_: Tests

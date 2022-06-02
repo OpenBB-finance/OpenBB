@@ -1,101 +1,21 @@
-,name,chain,protocol,apy,tvl,risk,link
-0,OXD-USDC,Fantom,Beefy,757005050715.656,7816829,Low,https://apiv2.coindix.com/vault/44976/redirect
-1,2SHARES-FTM,Fantom,Beefy,85341610.11546831,1657287,Low,https://apiv2.coindix.com/vault/40977/redirect
-2,2OMB-FTM,Fantom,Beefy,23505009.88015369,2833889,Low,https://apiv2.coindix.com/vault/40976/redirect
-3,OXD,Fantom,Beefy,12386.52220814,2526862,Low,https://apiv2.coindix.com/vault/47133/redirect
-4,BNB-NETT,Metis,Beefy,398.58650279,1012802,Low,https://apiv2.coindix.com/vault/43213/redirect
-5,mUSDC-NETT,Metis,Beefy,315.76751515,1295355,Low,https://apiv2.coindix.com/vault/43212/redirect
-6,STATIC-BUSD,BSC,Beefy,107.62726098,4181131,Low,https://apiv2.coindix.com/vault/16058/redirect
-7,METIS-NETT,Metis,Beefy,51.78772243,2881712,Low,https://apiv2.coindix.com/vault/43211/redirect
-8,CHARGE-BUSD,BSC,Beefy,19.31297321,2827933,Low,https://apiv2.coindix.com/vault/16059/redirect
-9,PTP-AVAX,Avalanche,Beefy,15.11508951,1150861,Low,https://apiv2.coindix.com/vault/31360/redirect
-10,CAKE-BUSD,BSC,Alpaca,13.23865322,2004596,Least,https://apiv2.coindix.com/vault/35035/redirect
-11,LOOT-AVAX,Avalanche,Pangolin,7.64731265,1245079,Medium,https://apiv2.coindix.com/vault/45565/redirect
-12,STARS-USDC,Solana,Tulip,7.3842,1320000,Non Eligible,https://apiv2.coindix.com/vault/11725/redirect
-13,SCREAM-FTM,Fantom,Beefy,7.03211273,3431182,Low,https://apiv2.coindix.com/vault/16806/redirect
-14,TSHARE-FTM,Fantom,Beefy,6.43424282,20918167,Low,https://apiv2.coindix.com/vault/16790/redirect
-15,CAKE-USDT,BSC,Alpaca,6.3976392,1060413,Least,https://apiv2.coindix.com/vault/35019/redirect
-16,FTM-BEETS,Fantom,Beefy,5.63784614,3501862,Low,https://apiv2.coindix.com/vault/16762/redirect
-17,MAGIC-ETH,Arbitrum,Beefy,5.19332979,2613598,Low,https://apiv2.coindix.com/vault/29232/redirect
-18,CAVE-USDC,Solana,Tulip,4.7738,1360000,Non Eligible,https://apiv2.coindix.com/vault/11721/redirect
-19,GEIST-FTM,Fantom,Beefy,4.71453724,2538232,Low,https://apiv2.coindix.com/vault/16771/redirect
-20,WETH-LOOKS,Ethereum,Uniswap,4.31986001,12942351,Least,https://apiv2.coindix.com/vault/39735/redirect
-21,VVS-USDT,Cronos,Beefy,4.27851037,1344438,Low,https://apiv2.coindix.com/vault/16705/redirect
-22,MIM-UNIV,Avalanche,Trader Joe,4.24,1622740,Low,https://apiv2.coindix.com/vault/46777/redirect
-23,WETH-LOOMI,Ethereum,Uniswap,3.89179972,1306006,Least,https://apiv2.coindix.com/vault/43964/redirect
-24,VVS-USDC,Cronos,Beefy,3.67505993,1019056,Low,https://apiv2.coindix.com/vault/16708/redirect
-25,ETH-USDT,BSC,Alpaca,3.60704036,13180171,Least,https://apiv2.coindix.com/vault/35004/redirect
-26,mUSDT-METIS,Metis,Beefy,3.59497277,2173005,Low,https://apiv2.coindix.com/vault/43216/redirect
-27,USDC-SNX,Ethereum,Uniswap,3.57828918,3581558,Least,https://apiv2.coindix.com/vault/40986/redirect
-28,DIFX-BUSD,BSC,PancakeSwap,3.44082497,1863623,Least,https://apiv2.coindix.com/vault/47570/redirect
-29,AOG-BUSD,BSC,PancakeSwap,3.40242382,1949068,Least,https://apiv2.coindix.com/vault/35901/redirect
-30,mUSDC-METIS,Metis,Beefy,3.34349236,3521356,Low,https://apiv2.coindix.com/vault/43217/redirect
-31,BRIBE-USDC-NEW,Ethereum,Balancer,3.1915,4006971,Least,https://apiv2.coindix.com/vault/46410/redirect
-32,PRL-BUSD,BSC,PancakeSwap,2.95974638,1398972,Least,https://apiv2.coindix.com/vault/35103/redirect
-33,TSHARE,Fantom,Tarot,2.88,6027732,Non Eligible,https://apiv2.coindix.com/vault/36397/redirect
-34,BLINU-WBNB,BSC,PancakeSwap,2.82709901,1522144,Least,https://apiv2.coindix.com/vault/47746/redirect
-35,VADER-WETH,Ethereum,Uniswap,2.80895396,1457866,Least,https://apiv2.coindix.com/vault/35285/redirect
-36,MBS-USDC,Solana,Tulip,2.8002,1150000,Non Eligible,https://apiv2.coindix.com/vault/33708/redirect
-37,QI-MATIC,Polygon,Beefy,2.74088429,2619261,Low,https://apiv2.coindix.com/vault/16970/redirect
-38,MIM-AVAX,Avalanche,Beefy,2.56602241,4665780,Low,https://apiv2.coindix.com/vault/16003/redirect
-39,ALPACA-BUSD,BSC,Alpaca,2.52787508,7803125,Least,https://apiv2.coindix.com/vault/34991/redirect
-40,ATOM-HUAHUA,Osmosis,Osmosis,2.5162,7269132,Non Eligible,https://apiv2.coindix.com/vault/41202/redirect
-41,MOONEY-WETH,Ethereum,Uniswap,2.49104198,1506339,Least,https://apiv2.coindix.com/vault/40636/redirect
-42,CLNY-USDC-NEW,Ethereum,Balancer,2.4038,7660023,Least,https://apiv2.coindix.com/vault/45221/redirect
-43,FXS-WETH,Ethereum,Uniswap,2.31937065,3174848,Least,https://apiv2.coindix.com/vault/23160/redirect
-44,SYNR-USDC-NEW,Ethereum,Balancer,2.2941,38468788,Least,https://apiv2.coindix.com/vault/43578/redirect
-45,STARS-OSMO,Osmosis,Osmosis,2.2773,28843045,Non Eligible,https://apiv2.coindix.com/vault/41200/redirect
-46,UST-3Crv,Ethereum,Curve,2.2541,56908335,Least,https://apiv2.coindix.com/vault/17209/redirect
-47,WETH-METIS,Metis,Beefy,2.2466271,3786910,Low,https://apiv2.coindix.com/vault/43215/redirect
-48,ust,Ethereum,Convex,2.244723,16500000,Medium,https://apiv2.coindix.com/vault/17473/redirect
-49,USDC-WFTM,Fantom,Autofarm,2.21201267,1818594,Medium,https://apiv2.coindix.com/vault/15035/redirect
-50,BCOIN-WBNB,BSC,PancakeSwap,2.20365983,2062143,Least,https://apiv2.coindix.com/vault/13937/redirect
-51,SAMO-RAY,Solana,Tulip,2.1984,3230000,Non Eligible,https://apiv2.coindix.com/vault/11755/redirect
-52,BTCB-USDT,BSC,Alpaca,2.13275276,16595586,Least,https://apiv2.coindix.com/vault/35003/redirect
-53,GENE-RAY,Solana,Tulip,2.0987,2020000,Non Eligible,https://apiv2.coindix.com/vault/11718/redirect
-54,TOMB-FTM,Fantom,Beefy,2.04507127,37506092,Low,https://apiv2.coindix.com/vault/16791/redirect
-55,VVS-WCRO,Cronos,Autofarm,2.00383619,1056082,Medium,https://apiv2.coindix.com/vault/15219/redirect
-56,UNIV-DAI.e,Avalanche,Trader Joe,2.0,2020980,Low,https://apiv2.coindix.com/vault/47708/redirect
-57,ITAM-WBNB,BSC,PancakeSwap,1.98769722,1200626,Least,https://apiv2.coindix.com/vault/19791/redirect
-58,SATOSHISWAP-USDC-NEW,Ethereum,Balancer,1.9854,8394462,Least,https://apiv2.coindix.com/vault/43933/redirect
-59,ATOM-STARS,Osmosis,Osmosis,1.9649,24648729,Non Eligible,https://apiv2.coindix.com/vault/41205/redirect
-60,VVS-CRO,Cronos,Beefy,1.93573712,2677711,Low,https://apiv2.coindix.com/vault/16709/redirect
-61,WBNB-DPT,BSC,PancakeSwap,1.92457525,1061128,Least,https://apiv2.coindix.com/vault/32607/redirect
-62,GENART-WETH-NEW,Ethereum,Balancer,1.9244,1150289,Least,https://apiv2.coindix.com/vault/44885/redirect
-63,HUAHUA-OSMO,Osmosis,Osmosis,1.9137,9557467,Non Eligible,https://apiv2.coindix.com/vault/41201/redirect
-64,WBNB-GM,BSC,PancakeSwap,1.85226613,1120888,Least,https://apiv2.coindix.com/vault/13833/redirect
-65,BANANA-MATIC,Polygon,Beefy,1.82150612,1060655,Low,https://apiv2.coindix.com/vault/16958/redirect
-66,VVS-USDT,Cronos,VVS,1.7923,10905191,Non Eligible,https://apiv2.coindix.com/vault/40922/redirect
-67,WMATIC-WETH,Polygon,Uniswap,1.76941385,9838729,Least,https://apiv2.coindix.com/vault/44326/redirect
-68,USDC-OXD,Fantom,SpookySwap,1.74,29744826,Non Eligible,https://apiv2.coindix.com/vault/44883/redirect
-69,MIM-AVAX,Avalanche,Trader Joe,1.74,24916020,Low,https://apiv2.coindix.com/vault/15257/redirect
-70,vBNT-USDC,Ethereum,Uniswap,1.71115107,3016257,Least,https://apiv2.coindix.com/vault/43709/redirect
-71,VVS-USDC,Cronos,VVS,1.6885,11932385,Non Eligible,https://apiv2.coindix.com/vault/40920/redirect
-72,CAKE,BSC,Alpaca,1.68273626,8011856,Least,https://apiv2.coindix.com/vault/34992/redirect
-73,USDC-MIM,Fantom,SpookySwap,1.6,3020831,Non Eligible,https://apiv2.coindix.com/vault/40327/redirect
-74,RACA-BUSD,BSC,PancakeSwap,1.58096499,11612295,Least,https://apiv2.coindix.com/vault/13634/redirect
-75,AVAX-TUS,Avalanche,Trader Joe,1.56,3216118,Low,https://apiv2.coindix.com/vault/15306/redirect
-76,GME-DUSD,Defichain,DefiChain,1.55932258,6018219,Non Eligible,https://apiv2.coindix.com/vault/38128/redirect
-77,PLTR-DUSD,Defichain,DefiChain,1.52967792,3233397,Non Eligible,https://apiv2.coindix.com/vault/38131/redirect
-78,WBNB-ETERNAL,BSC,PancakeSwap,1.5279252,1537497,Least,https://apiv2.coindix.com/vault/13636/redirect
-79,BABA-DUSD,Defichain,DefiChain,1.52764812,4124059,Non Eligible,https://apiv2.coindix.com/vault/38130/redirect
-80,MIM-USDC,Ethereum,Uniswap,1.51470184,30371433,Least,https://apiv2.coindix.com/vault/23120/redirect
-81,ERTHA-WBNB,BSC,PancakeSwap,1.48545945,1115922,Least,https://apiv2.coindix.com/vault/37945/redirect
-82,TSLA-DUSD,Defichain,DefiChain,1.4689824,14056887,Non Eligible,https://apiv2.coindix.com/vault/38127/redirect
-83,ARKK-DUSD,Defichain,DefiChain,1.45652682,2866407,Non Eligible,https://apiv2.coindix.com/vault/38137/redirect
-84,WMOVR-USDC,Moonriver,Autofarm,1.43558714,1359837,Medium,https://apiv2.coindix.com/vault/15100/redirect
-85,FINA-BUSD,BSC,PancakeSwap,1.43510029,2226462,Least,https://apiv2.coindix.com/vault/13714/redirect
-86,QQQ-DUSD,Defichain,DefiChain,1.43227563,6289444,Non Eligible,https://apiv2.coindix.com/vault/38134/redirect
-87,MIM-USDC.e,Avalanche,Trader Joe,1.43,9521572,Low,https://apiv2.coindix.com/vault/32723/redirect
-88,SLV-DUSD,Defichain,DefiChain,1.42766897,2186673,Non Eligible,https://apiv2.coindix.com/vault/38141/redirect
-89,THOR-AVAX,Avalanche,Trader Joe,1.42,14054640,Low,https://apiv2.coindix.com/vault/15360/redirect
-90,GOOGL-DUSD,Defichain,DefiChain,1.40619873,3196352,Non Eligible,https://apiv2.coindix.com/vault/38129/redirect
-91,AAPL-DUSD,Defichain,DefiChain,1.40226923,5069484,Non Eligible,https://apiv2.coindix.com/vault/38132/redirect
-92,STRONG-WETH,Ethereum,Uniswap,1.40161647,5069328,Least,https://apiv2.coindix.com/vault/23238/redirect
-93,BTCB-BUSD,BSC,Alpaca,1.40155595,10020731,Least,https://apiv2.coindix.com/vault/35036/redirect
-94,SPY-DUSD,Defichain,DefiChain,1.39372557,10605928,Non Eligible,https://apiv2.coindix.com/vault/38133/redirect
-95,CAKE-BNB,BSC,Alpaca,1.392868,11676001,Least,https://apiv2.coindix.com/vault/35023/redirect
-96,URTH-DUSD,Defichain,DefiChain,1.39031128,1082134,Non Eligible,https://apiv2.coindix.com/vault/38139/redirect
-97,ACSI,BSC,ACryptoS,1.39,2490000,Medium,https://apiv2.coindix.com/vault/17300/redirect
-98,FTM-SPELL,Fantom,SpiritSwap,1.36,1095182,Non Eligible,https://apiv2.coindix.com/vault/42092/redirect
-99,TLT-DUSD,Defichain,DefiChain,1.35363177,2000623,Non Eligible,https://apiv2.coindix.com/vault/38140/redirect
+,name,chain,protocol,apy,tvl,link
+0,ESHARE-BNB,BNB Chain,Beefy,30.42511882,1592553,https://api.coindix.com/vault/96613/redirect
+1,ust-wormholeUST-3Crv,Ethereum,Convex,14.9414,2600000,https://api.coindix.com/vault/77959/redirect
+2,GRAPE-MIM,Avalanche,Beefy,12.53196591,1109040,https://api.coindix.com/vault/50508/redirect
+3,BSHARE-FTM,Fantom,Beefy,11.58813773,1648934,https://api.coindix.com/vault/75836/redirect
+4,BASED-TOMB,Fantom,Beefy,5.27602349,1135801,https://api.coindix.com/vault/75835/redirect
+5,EMP-ETH,BNB Chain,Beefy,3.64525182,1258560,https://api.coindix.com/vault/96612/redirect
+6,BADGER-WBTC,Ethereum,Balancer,3.4047,15240604,https://api.coindix.com/vault/103379/redirect
+7,BSW-BNB,BNB Chain,Alpaca,2.80859948,1873050,https://api.coindix.com/vault/120475/redirect
+8,WBTC-OSMO,Osmosis,Osmosis,2.312,4730492,https://api.coindix.com/vault/143897/redirect
+9,ROWAN-OSMO,Osmosis,Osmosis,2.2872,1834223,https://api.coindix.com/vault/59324/redirect
+10,CAKE-BUSD,BNB Chain,Alpaca,2.04617026,4480007,https://api.coindix.com/vault/35035/redirect
+11,DAI-OSMO,Osmosis,Osmosis,1.6725,4371544,https://api.coindix.com/vault/135902/redirect
+12,USDC-OSMO,Osmosis,Osmosis,1.403,25314311,https://api.coindix.com/vault/134578/redirect
+13,VVS-CRO,Cronos,Beefy,1.3365707,1011871,https://api.coindix.com/vault/16709/redirect
+14,ZERO-WETH,Ethereum,Uniswap,1.31960048,1559733,https://api.coindix.com/vault/29984/redirect
+15,PTP,Avalanche,Vector,1.28748507,1503929,https://api.coindix.com/vault/105317/redirect
+16,CAKE-USDT,BNB Chain,Alpaca,1.2138105,1027282,https://api.coindix.com/vault/35019/redirect
+17,VVS-WCRO,Cronos,VVS,1.20189809,47140000,https://api.coindix.com/vault/40917/redirect
+18,WETH-OSMO,Osmosis,Osmosis,1.1909,9242039,https://api.coindix.com/vault/135903/redirect
+19,VVS-USDT,Cronos,VVS,1.17227941,3730000,https://api.coindix.com/vault/40922/redirect

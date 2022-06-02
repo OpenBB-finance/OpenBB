@@ -21,11 +21,12 @@ optional arguments:
 
 Example:
 ```
-2022 Mar 04, 05:57 (✨) /econometrics/ $ show
-2022 Mar 04, 05:57 (✨) /econometrics/ $ load longley ll
-2022 Mar 04, 05:57 (✨) /econometrics/ $ index ll year -d
+2022 Mar 04, 05:57 (✨) /econometrics/ $ load longley -a ll
+
+2022 Mar 04, 05:57 (✨) /econometrics/ $ index ll -i year -d
 
 2022 Mar 04, 05:57 (✨) /econometrics/ $ show ll -s unemp
+
                     Dataset ll | Showing 10 of 16 rows                     
 ┏━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━┓
 ┃        ┃ totemp   ┃ gnpdefl ┃ gnp       ┃ unemp   ┃ armed   ┃ pop       ┃
@@ -51,7 +52,7 @@ Example:
 │ 1955.0 │ 66019.00 │ 101.20  │ 397469.00 │ 2904.00 │ 3048.00 │ 117388.00 │
 └────────┴──────────┴─────────┴───────────┴─────────┴─────────┴───────────┘
 
-2022 Mar 04, 05:57 (✨) /econometrics/ $ load wage_panel wp
+2022 Mar 04, 05:57 (✨) /econometrics/ $ load wage_panel -a wp
 
 2022 Mar 04, 05:58 (✨) /econometrics/ $ show
                     Dataset ll | Showing 10 of 16 rows                     

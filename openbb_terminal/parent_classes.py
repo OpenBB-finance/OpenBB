@@ -421,8 +421,9 @@ class BaseController(metaclass=ABCMeta):
                                 bottom_toolbar=HTML(
                                     '<style bg="ansiblack" fg="ansiwhite">[h]</style> help menu    '
                                     '<style bg="ansiblack" fg="ansiwhite">[q]</style> return to previous menu    '
-                                    '<style bg="ansiblack" fg="ansiwhite">[e]</style> exit terminal        '
-                                    '<style bg="#0000EE">'
+                                    '<style bg="ansiblack" fg="ansiwhite">[e]</style> exit terminal    '
+                                    '<style bg="ansiblack" fg="ansiwhite">[cmd -h]</style>'
+                                    ' see usage and available options         <style bg="#0000EE">'
                                     f"https://openbb-finance.github.io/OpenBBTerminal/terminal{self.PATH}</style>"
                                 ),
                                 style=Style.from_dict(

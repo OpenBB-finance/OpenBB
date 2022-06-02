@@ -108,7 +108,7 @@ u8darts = {version = "^0.19.0", optional = true, extras = ["pytorch"]}
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"
-pylint = "^2.7.2"
+pylint = "^2.13.7"
 flake8 = "^3.9.0"
 mypy = "^0.930"
 mock = "^4.0.3"

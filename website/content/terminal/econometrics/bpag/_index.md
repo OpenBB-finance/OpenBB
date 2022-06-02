@@ -2,9 +2,9 @@
 usage: dwat [-h] [--export {csv,json,xlsx}]
 ```
 
-Show autocorrelation tests from Durbin-Watson
+Show Breusch-Pagan heteroscedasticity test results. Needs OLS to be run in advance with independent and dependent variables
 
-The Durbin Watson (DW) statistic is a test for autocorrelation in the residuals from a statistical model or regression analysis. The Durbin-Watson statistic will always have a value ranging between 0 and 4. A value of 2.0 indicates there is no autocorrelation detected in the sample. Values from 0 to less than 2 point to positive autocorrelation and values from 2 to 4 means negative autocorrelation. [Source: Investopedia]
+In statistics, heteroskedasticity (or heteroscedasticity) happens when the standard deviations of a predicted variable, monitored over different values of an independent variable or as related to prior time periods, are non-constant. With heteroskedasticity, the tell-tale sign upon visual inspection of the residual errors is that they will tend to fan out over time. [Source: Investopedia]
 
 ```
 optional arguments:
@@ -16,34 +16,59 @@ optional arguments:
 
 Example:
 ```
-2022 Feb 24, 05:44 (✨) /econometrics/ $ ols return-msft adj_close-aapl
-                            OLS Regression Results                            
+2022 Jun 01, 06:29 (🦋) /econometrics/ $ load longley -a ll
+
+2022 Jun 01, 06:29 (🦋) /econometrics/ $ ols -d ll.totemp -i ll.gnpdefl,ll.gnp,ll.unemp,ll.armed,ll.pop,ll.year
+                                 OLS Regression Results                                
+=======================================================================================
+Dep. Variable:              ll.totemp   R-squared (uncentered):                   1.000
+Model:                            OLS   Adj. R-squared (uncentered):              1.000
+Method:                 Least Squares   F-statistic:                          5.052e+04
+Date:                Wed, 01 Jun 2022   Prob (F-statistic):                    8.20e-22
+Time:                        12:29:44   Log-Likelihood:                         -117.56
+No. Observations:                  16   AIC:                                      247.1
+Df Residuals:                      10   BIC:                                      251.8
+Df Model:                           6                                                  
+Covariance Type:            nonrobust                                                  
 ==============================================================================
-Dep. Variable:            return_msft   R-squared:                       0.000
-Model:                            OLS   Adj. R-squared:                 -0.001
-Method:                 Least Squares   F-statistic:                    0.3005
-Date:                Thu, 24 Feb 2022   Prob (F-statistic):              0.584
-Time:                        11:45:00   Log-Likelihood:                 2010.0
-No. Observations:                 759   AIC:                            -4016.
-Df Residuals:                     757   BIC:                            -4007.
-Df Model:                           1                                         
-Covariance Type:            nonrobust                                         
-==================================================================================
-                     coef    std err          t      P>|t|      [0.025      0.975]
-----------------------------------------------------------------------------------
-Intercept          0.0023      0.002      1.392      0.164      -0.001       0.006
-adj_close_aapl  -8.34e-06   1.52e-05     -0.548      0.584   -3.82e-05    2.15e-05
+                 coef    std err          t      P>|t|      [0.025      0.975]
+------------------------------------------------------------------------------
+ll.gnpdefl   -52.9936    129.545     -0.409      0.691    -341.638     235.650
+ll.gnp         0.0711      0.030      2.356      0.040       0.004       0.138
+ll.unemp      -0.4235      0.418     -1.014      0.335      -1.354       0.507
+ll.armed      -0.5726      0.279     -2.052      0.067      -1.194       0.049
+ll.pop        -0.4142      0.321     -1.289      0.226      -1.130       0.302
+ll.year       48.4179     17.689      2.737      0.021       9.003      87.832
 ==============================================================================
-Omnibus:                       75.797   Durbin-Watson:                   2.141
-Prob(Omnibus):                  0.000   Jarque-Bera (JB):              339.963
-Skew:                          -0.329   Prob(JB):                     1.51e-74
-Kurtosis:                       6.212   Cond. No.                         290.
+Omnibus:                        1.443   Durbin-Watson:                   1.277
+Prob(Omnibus):                  0.486   Jarque-Bera (JB):                0.605
+Skew:                           0.476   Prob(JB):                        0.739
+Kurtosis:                       3.031   Cond. No.                     4.56e+05
 ==============================================================================
 
 Notes:
-[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+[1] R² is computed without centering (uncentered) since the model does not contain a constant.
+[2] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+[3] The condition number is large, 4.56e+05. This might indicate that there are
+strong multicollinearity or other numerical problems.
 
-2022 Feb 24, 05:45 (✨) /econometrics/ $ dwat
-The result 2.14 is within the range 1.5 and 2.5 which therefore indicates autocorrelation not to be problematic.
+Warnings:
+kurtosistest only valid for n>=20 ... continuing anyway, n=16
 
+2022 Jun 01, 06:30 (🦋) /econometrics/ $ bpag
+
+Breusch-Pagan heteroscedasticity test
+┏━━━━━━━━━━┳━━━━━━━━━━━━━━━┓
+┃          ┃ Breusch-Pagan ┃
+┡━━━━━━━━━━╇━━━━━━━━━━━━━━━┩
+│ lm-stat  │ 7.90          │
+├──────────┼───────────────┤
+│ p-value  │ 0.16          │
+├──────────┼───────────────┤
+│ f-stat   │ 1.63          │
+├──────────┼───────────────┤
+│ fp-value │ 0.24          │
+└──────────┴───────────────┘
+
+The result 0.16 indicates the existence of heteroscedasticity. Consider taking the log or a rate for the dependent variable.
 ```
