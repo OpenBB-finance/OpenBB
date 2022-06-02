@@ -2020,6 +2020,7 @@ def display_ef(
     n_portfolios: int = 100,
     seed: int = 123,
     tangency: bool = False,
+    plot_tickers: bool = True,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """
@@ -2090,6 +2091,8 @@ def display_ef(
         Adds the optimal line with the risk-free asset.
     external_axes: Optional[List[plt.Axes]]
         Optional axes to plot data on
+    plot_tickers: bool
+        Whether to plot the tickers for the assets
     """
     stock_prices = yahoo_finance_model.process_stocks(stocks, period, start, end)
     stock_returns = yahoo_finance_model.process_returns(
@@ -2222,6 +2225,35 @@ def display_ef(
 
     ax.plot(X1, Y1, color="b")
 
+    plot_tickers = True
+    if plot_tickers:
+        ticker_plot = pd.DataFrame(columns=["ticker", "var"])
+        for ticker in port.cov.columns:
+            weight_df = pd.DataFrame({"weights": 1}, index=[ticker])
+            risk = rp.Sharpe_Risk(
+                weight_df,
+                cov=port.cov[ticker][ticker],
+                returns=stock_returns.loc[:, [ticker]],
+                rm=risk_choices[risk_measure],
+                rf=risk_free_rate,
+                alpha=alpha,
+            )
+
+            if risk_choices[risk_measure] not in ["MDD", "ADD", "CDaR", "EDaR", "UCI"]:
+                risk = risk * time_factor[freq.upper()] ** 0.5
+
+            ticker_plot = ticker_plot.append(
+                {"ticker": ticker, "var": risk * time_factor[freq.upper()] ** 0.5},
+                ignore_index=True,
+            )
+        ticker_plot = ticker_plot.set_index("ticker")
+        ticker_plot = ticker_plot.merge(
+            port.mu.T * time_factor[freq.upper()], right_index=True, left_index=True
+        )
+        ticker_plot = ticker_plot.rename(columns={0: "ret"})
+        ax.scatter(ticker_plot["var"], ticker_plot["ret"])
+        for row in ticker_plot.iterrows():
+            ax.annotate(row[0], (row[1]["var"], row[1]["ret"]))
     ax.set_title(f"Efficient Frontier simulating {n_portfolios} portfolios")
     ax.legend(loc="best", scatterpoints=1)
     theme.style_primary_axis(ax)
