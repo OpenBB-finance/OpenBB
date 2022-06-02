@@ -27,12 +27,12 @@ is to make investment research effective, powerful and accessible to everyone.
 
 ---
 <center><b><span style="color:white">If you are interested in the <span style="color:orange">OpenBB Terminal</span>,
-please continue reading this page and the related pages on each menu (e.g. <a href="terminal/stocks">stocks</a>
-or <a href="terminal/economy">economy</a>)</span></b></center>
+please continue reading this page and the related pages on each menu (e.g. <a href="terminal/stocks">Stocks</a>
+or <a href="terminal/economy">Economy</a>)</span></b></center>
 
 <center><b><span style="color:white">If you are interested in one of our other products,
-please refer to the <a href="api">Python API</a> page or the
-<a href="bots">Financial Chatting bots</a>.</span></b></center>
+please refer to the <a href="api">OpenBB Python API</a> or the
+<a href="bots">OpenBB Bots</a> pages.</span></b></center>
 
 ---
 
