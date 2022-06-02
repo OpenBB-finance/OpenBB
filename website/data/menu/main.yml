@@ -551,9 +551,9 @@ main:
               - name: stats
                 ref: "/terminal/common/behavioural_analysis/stats"
               - name: snews
-                ref: "/terminal/stocks/behavioural_analysis/snews"
+                ref: "/terminal/common/behavioural_analysis/snews"
               - name: interest
-                ref: "/terminal/stocks/behavioural_analysis/interest"
+                ref: "/terminal/common/behavioural_analysis/interest"
               - name: wsb
                 ref: "/terminal/common/behavioural_analysis/wsb"
               - name: watchlist
