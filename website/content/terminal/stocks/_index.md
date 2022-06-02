@@ -93,29 +93,29 @@ a stock ticker, these menus can now be used in combination with the chosen stock
 The Stock menu has an extensive list of available sub-menus ranging from fundamental analysis to sector analysis to 
 advanced prediction techniques. To find more information about each menu, click on one of the following:
 
-- <a href="trading_hours" target="_blank">Introduction to Trading Hours</a>: discover exchanges that are currently open or
+- <a href="tradinghours" target="_blank">Introduction to Trading Hours</a>: discover exchanges that are currently open or
 closed for a specified ticker. Also find relevant information about each exchange.
 - <a href="options" target="_blank">Introduction to Options</a>: look into available options, option spreads,
 open interest and binomial valuation models.
-- <a href="stock_discovery" target="_blank">Introduction to Stock Discovery</a>: discover trending stocks based on return metrics, revenue and earnings growth, 
+- <a href="discovery" target="_blank">Introduction to Stock Discovery</a>: discover trending stocks based on return metrics, revenue and earnings growth, 
 penny stocks and based on upcoming earnings release dates.
-- <a href="sector_industry_analysis" target="_blank">Introduction to Sector & Industry Analysis</a>: analyse companies that reside in the same industry, sector and/or country and
+- <a href="sia" target="_blank">Introduction to Sector & Industry Analysis</a>: analyse companies that reside in the same industry, sector and/or country and
 share a similar market cap to determine potential under- and out performance of each company.
-- <a href="dark_pools" target="_blank">Introduction to Dark Pools</a>: discover companies that have enormous shorting pressure, obtain information about dark pool positions and
+- <a href="dark_pool_shorts" target="_blank">Introduction to Dark Pools</a>: discover companies that have enormous shorting pressure, obtain information about dark pool positions and
 find out about shares that failed to deliver.
-- <a href="stock_screener" target="_blank">Introduction to Stock Screener</a>: provides the ability to screen companies that share a similar characteristic,
+- <a href="screener" target="_blank">Introduction to Stock Screener</a>: provides the ability to screen companies that share a similar characteristic,
 for example unusual volumes, overbought or that include analyst upgrades, and be able to compare valuations and performance.
-- <a href="insider_trading" target="_blank">Introduction to Insider Trading</a>: explains what large insiders, e.g. a CEO of a company, is buying the chosen company and insider trading activity for the chosen company.
+- <a href="insider" target="_blank">Introduction to Insider Trading</a>: explains what large insiders, e.g. a CEO of a company, is buying the chosen company and insider trading activity for the chosen company.
 - <a href="government" target="_blank">Introduction to Government</a>: gives insights in what the House of Congress is trading and the corporate lobbying that is performed.
-- <a href="behavioural_analysis" target="_blank">Introduction to Behavioural Analysis</a>: gives the abilities to discover how different social media platforms view the chosen company and what is written about them.
+- <a href="/OpenBBTerminal/terminal/common/behavioural_analysis" target="_blank">Introduction to Behavioural Analysis</a>: gives the abilities to discover how different social media platforms view the chosen company and what is written about them.
 - <a href="comparison_analysis" target="_blank">Introduction to Comparison Analysis</a>: have the ability to compare companies based on, among other things, correlation, financial statements, sentiment, valuations and performance.
 - <a href="fundamental_analysis" target="_blank">Introduction to Fundamental Analysis</a>: look into the fundamentals of a chosen company including financial statements, SEC filings, investing scores, discounted cash flow analysis (DCF),
 sustainability scores and key ratios.
 - <a href="due_diligence" target="_blank">Introduction to Due Diligence</a>: explore analyst recommendations, ratings over time, price targets and quarterly and yearly earnings estimates.
-- <a href="strategy_backtesting" target="_blank">Introduction to Strategy Backtesting</a>: explore back testing strategies based on technical indicators.
-- <a href="technical_analysis" target="_blank">Introduction to Technical Analysis</a>: analysis the chosen company's historical data extensively with moving averages and momentum, trend, volatility and volume indicators.
-- <a href="quantitative_analysis" target="_blank">Introduction to Quantitative Analysis</a>: delve deeper in the historical data with quantitative methods including cumulative distribution function (CDF), (conditional) Value at Risk and rolling ratios.
-- <a href="prediction_techniques" target="_blank">Introduction to Prediction Techniques</a>: apply advanced AI and Machine Learning models to form prediction of future stock prices including Recurrent Neural Network (RNN),
+- <a href="backtesting" target="_blank">Introduction to Strategy Backtesting</a>: explore back testing strategies based on technical indicators.
+- <a href="/OpenBBTerminal/terminal/common/technical_analysis" target="_blank">Introduction to Technical Analysis</a>: analysis the chosen company's historical data extensively with moving averages and momentum, trend, volatility and volume indicators.
+- <a href="/OpenBBTerminal/terminal/common/quantitative_analysis" target="_blank">Introduction to Quantitative Analysis</a>: delve deeper in the historical data with quantitative methods including cumulative distribution function (CDF), (conditional) Value at Risk and rolling ratios.
+- <a href="/OpenBBTerminal/terminal/common/prediction_techniques" target="_blank">Introduction to Prediction Techniques</a>: apply advanced AI and Machine Learning models to form prediction of future stock prices including Recurrent Neural Network (RNN),
 Autoregressive Integrated Moving Average (ARIMA) and Monte Carlo forecasting.
 
 ## Examples

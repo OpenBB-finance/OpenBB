@@ -5,12 +5,14 @@
 stocks
 
 # Load a ticker that's given as a first argument of the routine
+
 load WMT
 
 # Go into the Comparison Analysis Menu
 ca
 
 # Get similar companies
+
 getfinnhub
 getfinviz
 getpoly
@@ -22,6 +24,7 @@ add SHOP
 # Show a correlation matrix with different periods.
 hcorr
 hcorr -s 2022-01-01
+
 
 # Compare valuations
 valuation
@@ -48,6 +51,3 @@ historical -n
 set C,USB,WFC,JPM,TD,GS,PNC,TFC,BAC,COF 
 cashflow
 income
-
-# Take the list of similar companies to the Portfolio Optimization Menu
-po

@@ -1,7 +1,7 @@
 ---
 main:
-  - name: terminal
-    ref: "/terminal"
+  - name: OpenBB Terminal
+    ref: "/"
     sub:
       - name: stocks
         ref: "/terminal/stocks"
@@ -1417,7 +1417,7 @@ main:
             ref: "/terminal/jupyter/reports"
   - name: "GST python API"
     ref: "/api"
-  - name: "bots"
+  - name: "OpenBB Bots"
     ref: "/bots"
     sub:
       - name: "Discord"

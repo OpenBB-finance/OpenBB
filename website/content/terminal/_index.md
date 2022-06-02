@@ -1,24 +1,24 @@
 ---
-title: Getting started with the OpenBB Terminal
-keywords: "getting started, beginner guide, how to use openbb, openbb keys, openbb terminal, openbb"
-excerpt: "This page guides you how to use the OpenBB terminal, developed by OpenBB."
-geekdocCollapseSection: true
+title: OpenBB Terminal
 ---
-## Introduction
-
 OpenBB is a leading open source investment analysis company. We represent millions of investors who want to leverage
 state-of-the-art data science and machine learning technologies to make sense of raw unrefined data. Our mission
 is to make investment research effective, powerful and accessible to everyone.
 
----
-<center><b><span style="color:#00AAFF">If you are new to the terminal, please continue reading this </span>
-<span style="color: white">Getting Started page</span>
-<span style="color:#00AAFF">that explains how the terminal works. To get an understanding
-of each menu (e.g. <a href="stocks" style="color: white">stocks</a>
-or <a href="economy" style="color: white">economy</a>) 
-visit the related introduction page.</span></b></center>
+**All our products are Free and Open-Source (FOSS).**
 
----
+<!-- markdownlint-capture -->
+<!-- markdownlint-disable MD033 -->
+
+[![Stargazers][stars-shield]][stars-url]
+[![Forks][forks-shield]][forks-url]
+[![Contributors][contributors-shield]][contributors-url]
+[![MIT License][license-shield]][license-url]
+[![Twitter][twitter-shield]][twitter-url]
+
+<!-- markdownlint-restore -->
+
+{{< columns >}}
 
 ### Why Python?
 
@@ -27,11 +27,7 @@ On top of this, it is highly used in data science and academia world (particular
 or business related degrees). This is very important, as it is the first time in history that users - regardless
 of their background - can so easily add features to an investment research platform.
 
-The OpenBB Terminal provides a modern Python-based integrated environment for investment research, that allows an
-average joe retail trader to leverage state-of-the-art Data Science and Machine Learning technologies.  As a modern
-Python-based environment, the OpenBB Terminal opens access to numerous Python data libraries in Data Science (Pandas,
-Numpy, Scipy, Jupyter), Machine Learning (Pytorch, Tensorflow, Sklearn, Flair), and Data Acquisition (Beautiful Soup,
-and numerous third-party APIs).
+<--->
 
 ### Why Open Source?
 
@@ -39,6 +35,8 @@ An open source product allows for higher quality, greater reproducibility, lower
 and faster go-to-market due to the strong community created. In addition, users can adapt the platform to their
 needs or even build proprietary features on top of our infrastructure - which ultimately can result in a marketplace.
 
+<--->
+=======
 The OpenBB Terminal empowers individuals, regardless of whether they want to invest on the stock market in Japan,
 invest real estate in Portugal or invest in the cryptomarket, to contribute and share their passion, dreams and desires
 about the OpenBB Terminal. This brings together contributors that are not only software engineers but also financial
@@ -222,93 +220,53 @@ Within this menu you can define your, often free, API key from various platforms
 
 You can access this menu from the homepage with `keys` which will open the menu as shown below:
 
-<a target="_blank" href="https://user-images.githubusercontent.com/46355364/169802651-6e752a4c-9cfd-4ce1-a99c-978eee5a0aca.png"><img src="https://user-images.githubusercontent.com/46355364/169802651-6e752a4c-9cfd-4ce1-a99c-978eee5a0aca.png" width="800"/></a>
 
-Within this menu you are able to set your API keys to access the commands that require that key. You can do so by typing the command followed by the API key, for example: `fred a215egade08a8d47cfd49c849658a2be`. When you press `ENTER` (⏎) the terminal will test whether this API key works. If it does, you receive the message `defined, test passed` and if it does not, you receive the message `defined, test failed`.
+### Importing and Exporting data
 
-To figure out where you can obtain the API key, you can enter the command (e.g. `av`) and press `ENTER` (⏎) or use the table below. **We recommend that you gradually obtain and set keys whenever you wish to use features that require an API key. For example, if you are interested in viewing recent news about a company, you should set the API key from the 'News API'.**
+The terminal allows for users to import their own proprietary datasets to use on our econometrics menu. In addition, users are allowed to export any type of data to any type of format whether that is raw data in Excel or an image in PNG. This is also ideal for finance content creation.
 
-| Command    | Name                                     | URL                                                                                |
-|:-----------|:-----------------------------------------|:-----------------------------------------------------------------------------------|
-| av         | AlphaVantage                             | https://www.alphavantage.co/support/#api-key                                       |
-| fmp        | Financial Modelling Prep                 | https://site.financialmodelingprep.com/developer/docs/                             |
-| quandl     | Quandl                                   | https://www.quandl.com                                                             |
-| polygon    | Polygon                                  | https://polygon.io                                                                 |
-| fred       | Federal Reserve Economic Database (FRED) | https://fred.stlouisfed.org                                                        |
-| news       | News API                                 | https://newsapi.org/                                                               |
-| tradier    | Tradier                                  | https://developer.tradier.com                                                      |
-| cmc        | CoinMarketCap                            | https://coinmarketcap.com/                                                         |
-| finnhub    | Finnhub                                  | https://finnhub.io/                                                                |
-| iex        | IEX Cloud                                | https://iexcloud.io/                                                               |
-| reddit     | Reddit                                   | https://www.reddit.com/wiki/api                                                    |
-| twitter    | Twitter                                  | https://developer.twitter.com                                                      |
-| rh         | Robinhood                                | https://robinhood.com/us/en/                                                       |
-| degiro     | DeGiro                                   | https://www.degiro.com/                                                            |
-| oanda      | Oanda                                    | https://developer.oanda.com                                                        |
-| binance    | Binance                                  | https://binance.com                                                                |
-| bitquery   | Bitquery                                 | https://bitquery.io/                                                               |
-| si         | Sentiment Investor                       | https://sentimentinvestor.com                                                      |
-| cb         | Coinbase                                 | https://help.coinbase.com/en/exchange/managing-my-account/how-to-create-an-api-key |
-| walert     | Whale Alert                              | https://docs.whale-alert.io/                                                       |
-| glassnode  | Glassnode                                | https://docs.glassnode.com/basic-api/api-key#how-to-get-an-api-key/                |
-| coinglass  | Coinglass                                | https://coinglass.github.io/API-Reference/#api-key                                 |
-| ethplorer  | Ethplorer                                | https://github.com/EverexIO/Ethplorer/wiki/Ethplorer-API                           |
-| smartstake | Smartstake                               | https://www.smartstake.io                                                          |
-| github     | GitHub                                   | https://docs.github.com/en/rest/guides/getting-started-with-the-rest-api           |
+{{< /columns >}}
 
-## Available menus
+{{< columns >}}
 
-There is a large collection of (sub) menus available. Here, the asset class and other menus are described. To find a  detailed description and explanation of its usage for each menu, click on the corresponding link to visit the introduction page.
+### Automatic notebook reports
 
-The asset class menus are as follows:
-   
-- <a href="stocks" target="_blank">Introduction to Stocks</a>: access historical pricing data, options, sector and 
-industry analysis, and overall due diligence.
-- <a href="cryptocurrency" target="_blank">Introduction to Crypto</a>: dive into onchain data, tokenomics, circulation supply,
-nfts and more.
-- <a href="etf" target="_blank">Introduction to ETF</a>: explore exchange traded funds, historical pricing, holdings
-and screeners.
-- <a href="forex" target="_blank">Introduction to Forex</a>: see foreign exchanges, quotes, forward rates for currency
-pairs and Oanda integration.
-- <a href="funds" target="_blank">Introduction to Funds</a>: discover mutual funds, general overviews, holdings and
-sector weights.
+Create notebook templates (through papermill) which can be run on different tickers. This level of automation allows speeding up the development of your investment thesis and reduce human error.
 
-The other menus are as follows:
-   
-- <a href="economy" target="_blank">Introduction to Economy</a>: explore global macroeconomic data including 
-interest and inflation rates, GDP and its components, futures, yield curves and treasury rates.
-- <a href="alternative" target="_blank">Introduction to Alternative</a>: explore alternative datasets such as COVID and
-open source metrics.
-- <a href="econometrics" target="_blank">Introduction to Econometrics</a>: perform (advanced) regression techniques and
-statistical tests on custom datasets to understand relationships for both time series and panel data.
-- <a href="portfolio" target="_blank">Introduction to Portfolio</a>: understand how your portfolio evolved over time, what
-assets contributed the most to this performance, compare this to a benchmark and make adjustments via various portfolio
-optimization techniques.
-- <a href="jupyter" target="_blank">Introduction to Dashboards</a>: see interactive dashboards using voila and
-jupyter notebooks.
-- <a href="reports" target="_blank">Introduction to Reports</a>: create customizable research reports through
-jupyter notebooks.
+<--->
 
-To adjust the lay-out and settings of the OpenBB Terminal you can access the `settings` menu. This menu allows you to
-tweak how the terminal behaves. For example, you are able to define the coloring, interactive graphs and whether to use
-pretty tables.
+### OpenBB API and Customizable notebook reports
 
-## Obtaining support and/or giving feedback
+Use our OpenBB Terminal environment to access raw data through a Jupyter Notebook and play with it accordingly. Or just create customizable notebook reports for your colleagues and friends doing research on a particular asset or a macroeconomic event impact on said asset. The possibilities are endless.
 
-Being an open source platform that wishes to tailor to the needs of any type of investor, we highly encourage anyone 
-to share with us their experience and/or how we can further improve the OpenBB Terminal. This can be anything
-from a very small bug to a new feature to the implementation of a highly advanced Machine Learning model.
+<--->
 
-You are able to directly send us information about a bug or question/suggestion from inside the terminal by using
-the `support` command which is available everywhere in the terminal. Here you can select which command you want to
-report a bug, ask a question or make a suggestion on. When you press `ENTER` (⏎), you are taken to the Support form
-which is automatically filled with your input. You are only required to include the type (e.g. bug, suggestion or
-question) and message in the form although this can also be set directly from inside the terminal (see `support -h`).
+### Advanced user and routines
 
-<a target="_blank" href="https://user-images.githubusercontent.com/46355364/169503483-c93c83fa-e9e9-4345-b816-8fcfe02b6785.png"><img src="https://user-images.githubusercontent.com/46355364/169503483-c93c83fa-e9e9-4345-b816-8fcfe02b6785.png" alt="Support Command" width="800"/></a>
+Navigate through 750+ terminal features using fast shortcuts and leverage auto-complete functionality. Jump from looking into your portfolio to comparing the financials of those companies in a few seconds. Leverage our routines implementation to run analysis while you drink your coffee or tea.
+
+{{< /columns >}}
+
+[contributors-shield]: https://img.shields.io/github/contributors/OpenBB-finance/OpenBBTerminal.svg?style=for-the-badge
+[contributors-url]: https://github.com/OpenBB-finance/OpenBBTerminal/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/OpenBB-finance/OpenBBTerminal.svg?style=for-the-badge
+[forks-url]: https://github.com/OpenBB-finance/OpenBBTerminal/network/members
+[stars-shield]: https://img.shields.io/github/stars/OpenBB-finance/OpenBBTerminal.svg?style=for-the-badge
+[stars-url]: https://github.com/OpenBB-finance/OpenBBTerminal/stargazers
+[issues-shield]: https://img.shields.io/github/issues/OpenBB-finance/OpenBBTerminal.svg?style=for-the-badge&color=blue
+[issues-url]: https://github.com/OpenBB-finance/OpenBBTerminal/issues
+[bugs-open-shield]: https://img.shields.io/github/issues/OpenBB-finance/OpenBBTerminal/bug.svg?style=for-the-badge&color=yellow
+[bugs-open-url]: https://github.com/OpenBB-finance/OpenBBTerminal/issues?q=is%3Aissue+label%3Abug+is%3Aopen
+[bugs-closed-shield]: https://img.shields.io/github/issues-closed/OpenBB-finance/OpenBBTerminal/bug.svg?style=for-the-badge&color=success
+[bugs-closed-url]: https://github.com/OpenBB-finance/OpenBBTerminal/issues?q=is%3Aissue+label%3Abug+is%3Aclosed
+[license-shield]: https://img.shields.io/github/license/OpenBB-finance/OpenBBTerminal.svg?style=for-the-badge
+[license-url]: https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/LICENSE.txt
+[twitter-shield]: https://img.shields.io/twitter/follow/openbb_finance?style=for-the-badge&color=blue
+[twitter-url]: https://twitter.com/openbb_finance
 
 Alternatively, you can contact us via the following routes:
    
 - If you notice that a feature is missing inside the terminal, please fill in the <a href="https://openbb.co/request-a-feature" target="_blank">Request a Feature form</a>.
 - If you wish to report a bug, have a question/suggestion or anything else, please fill in the <a href="https://openbb.co/support" target="_blank">Support form</a>.
 - If you wish to speak to us directly, please contact us via <a href="https://openbb.co/discord" target="_blank">Discord</a>.
+
