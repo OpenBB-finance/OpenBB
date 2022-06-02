@@ -1,68 +1,62 @@
 ---
-title: Introduction to ENTER_MENU_NAME_HERE
-keywords: "ENTER_KEY_WORD_HERE, ENTER_KEY_WORD_HERE, ENTER_KEY_WORD_HERE, ENTER_KEY_WORD_HERE"
-date: "YEAR-MONTH-DAY"
-type: our story
+title: Introduction to the Due Diligence Menu
+keywords: "dd, due, diligence, dilligence, research, company, ticker, analyst, rating, rot, pt, est, sec, supplier, customer, arktrades, ratings, analysts, filings, form, forms, customers, suppliers"
+date: "2022-06-01"
+type: guides
 status: publish
-excerpt: "The Introduction to ENTER_MENU_NAME_HERE within the ENTER_TOP_LEVEL_MENU_NAME_HERE explains how to use the 
-ENTER_MENU_NAME_HERE and provides a brief description of its sub-menus"
+excerpt: "This guide introduces the Due Diligence menu within the Stocks menu, explains the features briefly, then provides examples."
+geekdocCollapseSection: true
 ---
 
-**Important Rules**
+<h1>Introduction to the Due Dilligence Menu</h1>
 
-Each page should always take the following rules in mind:
-- We take a neutral position for everything we show. We don’t say things like ‘This is a good way to’ or ‘This is the gold standard’ or anything similar. These guides are not meant for any form of financial advice, conclusions or perceptions of the market. That is what we can use any social media platform for and write on your own account.
-- The page is formal. We don’t include any type of jokes, memes or sarcasm/rhetoric comments. 
-- We do not explain any financial term but refer to a different source, e.g. Investopedia.
-- The purpose of the guide is not to educate the user about how to invest but to explain how to navigate a menu.
+The Due Diligence submenu, located within the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/" target="_blank">`Stocks`</a> menu, is primarily for supplementing fundamental analysis with information such as:
 
-**General Formatting**
+  - Analyst ratings and price targets over time
+  - Earnings estimates
+  - SEC filings
+  - Business-to-business customers and suppliers
+  - What kind of trades, if any, ARK is involved in with the loaded ticker.
 
-- Every link should open a new page (`_blank`). So use: `<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/options/exp/" target="_blank">exp</a>`
-- Some methods to format images:
-  - Side by side: `<img src="image1.png" width="425"/> <img src="image2.png" width="425"/>`
-  - Text and image:
-    ```
-    <table border="0">
-     <tr>
-        <td><b style="font-size:30px">TEXT TITLE</b></td>
-        <td><b style="font-size:30px">IMAGE TITLE</b></td>
-     </tr>
-     <tr>
-        <td>TEXT</td>
-        <td>IMAGE</td>
-     </tr>
-    </table>
-    ```
-  - No formatting in particular: `![image](link/to/image)`
-_____
+To use all features in this menu, two (free) API keys must be obtained. Refer to the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/#accessing-other-sources-of-data-via-api-keys" target="_blank">Getting Started Guide</a> for instructions on storing API keys in the Terminal.
 
-<h1>Introduction to ENTER_MENU_NAME_HERE</h1>
-The purpose of the menu, providing very factual information with a neutral view. E.g. "The options menu is used to 
-gain insights in different metrics involved around option contracts based on the selected ticker."
+  - rating: FMP - <a href="https://site.financialmodelingprep.com/developer/docs/" target="_blank">Financial Modeling Prep</a>
+  - rot: <a href="https://finnhub.io/" target="_blank">Finnhub</a>
 
-<h2>How to use</h2>
-Explain in detail how to use the menu. Sticking with the Options menu, you would want to understand how to <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/options/load/" target="_blank">load</a> a 
-ticker, the fact you need to set an expiration date with <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/options/exp/" target="_blank">exp</a> and then how to use parameters, giving a few examples. <br></br>
+Entering the submenu requires having a ticker <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/#explanation-of-commands" target="_blank">loaded</a> from the `Stocks` menu. With a stock selected, type `dd` into the command line and press `enter`.
 
-Make sure that you link to the Hugo documentation for each command you mention here so people can view in more detail 
-how the command works exactly. Make use of HTML here so the guides page on the website doesn't close down.
+![The Due Diligence submenu](dd1.png)<br>
 
-<h2>Sub-menus available</h2>
-Provide a brief description of each menu available and include a link to that menu. E.g, the option menu could 
-have the following:
+<h2>How to use the Due Diligence Menu</h2>
 
-- <a href="//" target="_blank">Introduction to Hedge</a>: provides the capabilities to determine how to delta, gamma and vega hedge a position.
-- <a href="//" target="_blank">Introduction to Pricing</a>: shows options pricing and risk neutral valuation.
+With the same company, as loaded above, `sec -l 20` prints a table of the last twenty SEC filings from the company, and provides a link to a hosted document on <a href="https://marketwatch.com" target="_blank">MarketWatch</a>.
 
-It could be that these menus are so small that it makes sense to include this on the main page as well instead of 
-creating another sub-menu.
+![Printing the last twenty SEC filings of CF Industries](dd_sec1.png)<br>
+
+`pt` displays a chart of historical adjusted closing prices and price targets. `pt --raw` prints a table, `pt --export xlsx` exports a spreadsheet, while `pt -l [n]` limits the number of price targets to return to `n`.
+
+![Historical price targets for CF Industries](dd_pt1.png)<br>
+
+A new ticker can be loaded directly from the Due Diligence submenu; for example, `load tsla`
 
 <h2>Examples</h2>
-Within the Hugo documentation we sometimes already provide examples of how to use a command, e.g. <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/econometrics/panel/" target="_blank">panel</a> 
-adding one or two examples with more detail here helps explain how one can use some commands. E.g. using some command 
-in the Options menu requires you to load a ticker and set an expiration date. It can be helpful to guide the user 
-through these steps. What commands you show is completely up to you. <br></br>
 
-Make sure to include links to the relevant educational pages, e.g. if you mention 'Delta', use the following 
-instead: "*The following command calculates the <a href="https://www.investopedia.com/terms/d/delta.asp" target="_blank">delta</a> of the option.*"
+With $TSLA loaded, `arktrades -l 20`, shows the last twenty trades across all ARK funds.
+
+![Last twenty Tesla trades across all ARK funds](dd_arktrades1.png)<br>
+
+Export the history of $HOOD trades for further analysis. `arktrades --export xlsx`
+
+![Robinhood trades across all ARK funds, exported](dd_arktrades2.png)<br>
+
+`est` displays futures earnings estimates.
+
+![Hood quarterly earnings estimates](dd_est2.png)
+
+![Hood annual earnings estimates](dd_est1.png)<br>
+
+`analyst`
+
+![Analyst coverage of Hood](dd_analyst.png)<br>
+
+Always do your own Due Diligence! To run a demo in the OpenBB Terminal of the features discussed here, launch the routine from the Main Menu by entering: `exe routines/dd_demo.openbb` in the command line and hitting `enter`. Click <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/" target="_blank">here</a> to go back to `Stocks`.
