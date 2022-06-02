@@ -1,7 +1,26 @@
+# This script requires you to use arguments. This can be done with the following:
+# exe routines/example_with_inputs.openbb -i TSLA,AAPL,MSFT
+
+# Go to the stocks menu
 stocks
+
+# Load a ticker, given the argument used. E.g. -i TSLA
 load $ARGV[0]
+
+# Enter the Technical Analysis (ta) menu
 ta
+
+# Show the fibonacci retracement levels
 fib
+
+# Enter the comparison analysis (ca) menu
 ../ca
+
+# Set two extra tickers based on the arguments used. E.g. -i TSLA,AAPL,MSFT
 set $ARGV[1],$ARGV[2]
+
+# Plot the historical prices
 historical
+
+# Return to home
+/
