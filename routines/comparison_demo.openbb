@@ -1,27 +1,20 @@
-# Select location folder to export data to (if doesn't exist, will be created by default)
-# export didier_analysis_on_$ARGV[0]
-
 # Go into the stocks context
 stocks
 
 # Load a ticker that's given as a first argument of the routine
-load WMT
+load USB
 
 # Go into the Comparison Analysis Menu
 ca
 
 # Get similar companies
-getfinnhub
-getfinviz
-getpoly
+set C,USB,WFC,JPM,TD,GS,PNC,TFC,BAC,COF
 
-# Remove and add a ticker
-rmv JCP
-add SHOP
+# Show the historical prices
+historical -n
 
-# Show a correlation matrix with different periods.
+# Show a correlation matrix
 hcorr
-hcorr -s 2022-01-01
 
 # Compare valuations
 valuation
@@ -47,7 +40,6 @@ historical -n
 # Compare financial statements of the ten largest US Banks
 set C,USB,WFC,JPM,TD,GS,PNC,TFC,BAC,COF 
 cashflow
-income
 
 # Take the list of similar companies to the Portfolio Optimization Menu
 po
