@@ -1,5 +1,5 @@
 ---
-title: OpenBB API
+title: OpenBB Python API
 geekdocCollapseSection: true
 ---
 

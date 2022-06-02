@@ -1,7 +1,7 @@
 ---
+title: OpenBB Bots
 geekdocCollapseSection: true
 ---
-
 The purpose of the Financial Chatting bots are to remove the need of you and your group of friends /colleagues
 migrating to any chatting tool to use the terminal capabilities. Instead, our OpenBB Terminal Bot will seamlessly
 integrate with your already existing conversations/chats/servers.
