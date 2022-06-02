@@ -717,6 +717,7 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
                 vs=ns_parser.vs,
             )
             if self.current_df is not None and not self.current_df.empty:
+                self.current_interval = "1day"
                 self.current_currency = ns_parser.vs
                 self.symbol = ns_parser.coin
                 cryptocurrency_helpers.show_quick_performance(
@@ -724,5 +725,5 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
                 )
             else:
                 console.print(
-                    f"\n[red]Could not find [bold]{ns_parser.symbol}[/bold] in [bold]CoinPaprika[/bold]. Make sure you search for symbol (e.g., btc) and not full name (e.g., bitcoin)[/red]\n"  # noqa: E501
+                    f"\n[red]Could not find [bold]{ns_parser.symbol}[/bold] in [bold]CoinGecko[/bold]. Make sure you search for symbol (e.g., btc) and not full name (e.g., bitcoin)[/red]\n"  # noqa: E501
                 )

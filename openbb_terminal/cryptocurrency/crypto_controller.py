@@ -6,6 +6,7 @@ import argparse
 import logging
 import os
 from typing import List
+from openbb_terminal.cryptocurrency import cryptocurrency_helpers
 
 from prompt_toolkit.completion import NestedCompleter
 
@@ -170,14 +171,15 @@ class CryptoController(CryptoBaseController):
 
             if ns_parser:
                 if ns_parser.vs:
-                    coin_found = pycoingecko_model.check_coin(ns_parser.vs)
+                    current_coin_id = cryptocurrency_helpers.get_coingecko_id(self.symbol)
+                    coin_found = cryptocurrency_helpers.get_coingecko_id(ns_parser.vs)
                     if not coin_found:
                         console.print(
                             f"VS Coin '{ns_parser.vs}' not found in CoinGecko\n"
                         )
                         return
                     pycoingecko_view.display_coin_potential_returns(
-                        self.coin_map_df["CoinGecko"],
+                        current_coin_id,
                         coin_found,
                         ns_parser.top,
                         ns_parser.price,
@@ -311,8 +313,6 @@ class CryptoController(CryptoBaseController):
                 DueDiligenceController,
                 self.symbol,
                 self.source,
-                self.symbol,
-                self.coin_map_df,
                 queue=self.queue,
             )
         else:

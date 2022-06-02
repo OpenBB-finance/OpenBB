@@ -8,6 +8,7 @@ from datetime import datetime, timedelta
 from typing import List
 
 import pandas as pd
+from openbb_terminal.cryptocurrency import cryptocurrency_helpers
 from prompt_toolkit.completion import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
@@ -45,6 +46,12 @@ logger = logging.getLogger(__name__)
 
 FILTERS_VS_USD_BTC = ["usd", "btc"]
 
+def check_cg_id(symbol: str):
+    cg_id = cryptocurrency_helpers.get_coingecko_id(symbol)
+    if not cg_id:
+        print(f'\n{symbol} not found on CoinGecko')
+        return ""
+    return symbol
 
 class DueDiligenceController(CryptoBaseController):
     """Due Diligence Controller class"""
@@ -94,10 +101,8 @@ class DueDiligenceController(CryptoBaseController):
 
     def __init__(
         self,
-        coin=None,
-        source=None,
         symbol=None,
-        coin_map_df: pd.DataFrame = None,
+        source=None,
         queue: List[str] = None,
     ):
         """Constructor"""
@@ -106,10 +111,8 @@ class DueDiligenceController(CryptoBaseController):
         for _, value in self.SPECIFIC_CHOICES.items():
             self.controller_choices.extend(value)
 
-        self.coin = coin
         self.source = source
         self.symbol = symbol
-        self.coin_map_df = coin_map_df
         self.messari_timeseries = []
         df_mt = messari_model.get_available_timeseries()
         if not df_mt.empty:
@@ -163,12 +166,11 @@ class DueDiligenceController(CryptoBaseController):
 
     def print_help(self):
         """Print help"""
-        source_txt = CRYPTO_SOURCES.get(self.source, "?") if self.source != "" else ""
+        #source_txt = CRYPTO_SOURCES.get(self.source, "?") if self.source != "" else ""
         help_text = f"""[cmds]
     load        load a specific cryptocurrency for analysis
 
-[param]Coin: [/param]{self.coin}
-[param]Source: [/param]{source_txt}
+[param]Coin: [/param]{self.symbol}
 
 [src]CoinGecko[/src]
    info            basic information about loaded coin
@@ -221,10 +223,8 @@ class DueDiligenceController(CryptoBaseController):
 
     def custom_reset(self):
         """Class specific component of reset command"""
-        if self.coin:
-            if self.source == "cp":
+        if self.symbol:
                 return ["crypto", f"load {self.symbol}", "dd"]
-            return ["crypto", f"load {self.symbol} --source {self.source}", "dd"]
         return []
 
     @log_start_end(log=logger)
@@ -554,16 +554,12 @@ class DueDiligenceController(CryptoBaseController):
         )
 
         if ns_parser:
-
-            if isinstance(self.coin_map_df["CoinGecko"], str):
-                coin_map_df = self.coin_map_df["CoinGecko"]
-            else:
-                coin_map_df = self.coin_map_df["CoinGecko"].coin["id"]
-
-            pycoingecko_view.display_info(
-                symbol=coin_map_df,
-                export=ns_parser.export,
-            )
+            cg_id = check_cg_id(self.symbol)
+            if cg_id:
+                pycoingecko_view.display_info(
+                    symbol=cg_id,
+                    export=ns_parser.export,
+                )
 
     @log_start_end(log=logger)
     def call_market(self, other_args):
@@ -580,12 +576,9 @@ class DueDiligenceController(CryptoBaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            if isinstance(self.coin_map_df["CoinGecko"], str):
-                coin_map_df = self.coin_map_df["CoinGecko"]
-            else:
-                coin_map_df = self.coin_map_df["CoinGecko"].coin["id"]
-
-            pycoingecko_view.display_market(coin_map_df, ns_parser.export)
+            cg_id = check_cg_id(self.symbol)
+            if cg_id:
+                pycoingecko_view.display_market(cg_id, ns_parser.export)
 
     @log_start_end(log=logger)
     def call_web(self, other_args):
@@ -603,16 +596,12 @@ class DueDiligenceController(CryptoBaseController):
         )
 
         if ns_parser:
-
-            if isinstance(self.coin_map_df["CoinGecko"], str):
-                coin_map_df = self.coin_map_df["CoinGecko"]
-            else:
-                coin_map_df = self.coin_map_df["CoinGecko"].coin["id"]
-
-            pycoingecko_view.display_web(
-                coin_map_df,
-                export=ns_parser.export,
-            )
+            cg_id = check_cg_id(self.symbol)
+            if cg_id:
+                pycoingecko_view.display_web(
+                    cg_id,
+                    export=ns_parser.export,
+                )
 
     @log_start_end(log=logger)
     def call_social(self, other_args):
@@ -629,12 +618,9 @@ class DueDiligenceController(CryptoBaseController):
         )
 
         if ns_parser:
-            if isinstance(self.coin_map_df["CoinGecko"], str):
-                coin_map_df = self.coin_map_df["CoinGecko"]
-            else:
-                coin_map_df = self.coin_map_df["CoinGecko"].coin["id"]
-
-            pycoingecko_view.display_social(coin_map_df, export=ns_parser.export)
+            cg_id = check_cg_id(self.symbol)
+            if cg_id:
+                pycoingecko_view.display_social(cg_id, export=ns_parser.export)
 
     @log_start_end(log=logger)
     def call_dev(self, other_args):
@@ -654,12 +640,9 @@ class DueDiligenceController(CryptoBaseController):
         )
 
         if ns_parser:
-            if isinstance(self.coin_map_df["CoinGecko"], str):
-                coin_map_df = self.coin_map_df["CoinGecko"]
-            else:
-                coin_map_df = self.coin_map_df["CoinGecko"].coin["id"]
-
-            pycoingecko_view.display_dev(coin_map_df, ns_parser.export)
+            cg_id = check_cg_id(self.symbol)
+            if cg_id:
+                pycoingecko_view.display_dev(cg_id, ns_parser.export)
 
     @log_start_end(log=logger)
     def call_ath(self, other_args):
@@ -684,13 +667,9 @@ class DueDiligenceController(CryptoBaseController):
         )
 
         if ns_parser:
-
-            if isinstance(self.coin_map_df["CoinGecko"], str):
-                coin_map_df = self.coin_map_df["CoinGecko"]
-            else:
-                coin_map_df = self.coin_map_df["CoinGecko"].coin["id"]
-
-            pycoingecko_view.display_ath(coin_map_df, ns_parser.vs, ns_parser.export)
+            cg_id = check_cg_id(self.symbol)
+            if cg_id:
+                pycoingecko_view.display_ath(cg_id, ns_parser.vs, ns_parser.export)
 
     @log_start_end(log=logger)
     def call_atl(self, other_args):
@@ -714,12 +693,9 @@ class DueDiligenceController(CryptoBaseController):
         )
 
         if ns_parser:
-            if isinstance(self.coin_map_df["CoinGecko"], str):
-                coin_map_df = self.coin_map_df["CoinGecko"]
-            else:
-                coin_map_df = self.coin_map_df["CoinGecko"].coin["id"]
-
-            pycoingecko_view.display_atl(coin_map_df, ns_parser.vs, ns_parser.export)
+            cg_id = check_cg_id(self.symbol)
+            if cg_id:
+                pycoingecko_view.display_atl(cg_id, ns_parser.vs, ns_parser.export)
 
     @log_start_end(log=logger)
     def call_score(self, other_args):
@@ -740,12 +716,9 @@ class DueDiligenceController(CryptoBaseController):
         )
 
         if ns_parser:
-            if isinstance(self.coin_map_df["CoinGecko"], str):
-                coin_map_df = self.coin_map_df["CoinGecko"]
-            else:
-                coin_map_df = self.coin_map_df["CoinGecko"].coin["id"]
-
-            pycoingecko_view.display_score(coin_map_df, ns_parser.export)
+            cg_id = check_cg_id(self.symbol)
+            if cg_id:
+                pycoingecko_view.display_score(cg_id, ns_parser.export)
 
     @log_start_end(log=logger)
     def call_bc(self, other_args):
@@ -764,12 +737,9 @@ class DueDiligenceController(CryptoBaseController):
         )
 
         if ns_parser:
-            if isinstance(self.coin_map_df["CoinGecko"], str):
-                coin_map_df = self.coin_map_df["CoinGecko"]
-            else:
-                coin_map_df = self.coin_map_df["CoinGecko"].coin["id"]
-
-            pycoingecko_view.display_bc(coin_map_df, ns_parser.export)
+            cg_id = check_cg_id(self.symbol)
+            if cg_id:
+                pycoingecko_view.display_bc(cg_id, ns_parser.export)
 
     @log_start_end(log=logger)
     def call_binbook(self, other_args):
@@ -782,7 +752,7 @@ class DueDiligenceController(CryptoBaseController):
         )
 
         limit_list = [5, 10, 20, 50, 100, 500, 1000, 5000]
-        coin = self.coin_map_df["Binance"]
+        coin = self.symbol.upper()
         _, quotes = binance_model.show_available_pairs_for_given_symbol(coin)
         parser.add_argument(
             "-l",
@@ -817,7 +787,7 @@ class DueDiligenceController(CryptoBaseController):
     @log_start_end(log=logger)
     def call_cbbook(self, other_args):
         """Process cbbook command"""
-        coin = self.coin_map_df["Coinbase"]
+        coin = self.symbol.upper()
         parser = argparse.ArgumentParser(
             prog="cbbook",
             add_help=False,
@@ -851,7 +821,7 @@ class DueDiligenceController(CryptoBaseController):
     @log_start_end(log=logger)
     def call_balance(self, other_args):
         """Process balance command"""
-        coin = self.coin_map_df["Binance"]
+        coin = self.symbol.upper()
         _, quotes = binance_model.show_available_pairs_for_given_symbol(coin)
 
         parser = argparse.ArgumentParser(
@@ -888,11 +858,11 @@ class DueDiligenceController(CryptoBaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="Show last trades on Coinbase",
         )
-        coin = self.coin_map_df["Coinbase"]
+        coin = self.symbol.upper()
         _, quotes = coinbase_model.show_available_pairs_for_given_symbol(coin)
         if len(quotes) < 0:
             console.print(
-                f"Couldn't find any quoted coins for provided symbol {self.coin}"
+                f"Couldn't find any quoted coins for provided symbol {self.symbol}"
             )
 
         parser.add_argument(
@@ -940,7 +910,7 @@ class DueDiligenceController(CryptoBaseController):
     @log_start_end(log=logger)
     def call_stats(self, other_args):
         """Process stats command"""
-        coin = self.coin_map_df["Binance"]
+        coin = self.symbol.upper()
         _, quotes = coinbase_model.show_available_pairs_for_given_symbol(coin)
 
         parser = argparse.ArgumentParser(
@@ -989,11 +959,13 @@ class DueDiligenceController(CryptoBaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            coinpaprika_view.display_price_supply(
-                self.coin_map_df["CoinPaprika"],
-                ns_parser.vs,
-                ns_parser.export,
-            )
+            cp_id = cryptocurrency_helpers.get_coinpaprika_id(self.symbol)
+            if cp_id:
+                coinpaprika_view.display_price_supply(
+                    cp_id,
+                    ns_parser.vs,
+                    ns_parser.export,
+                )
 
     @log_start_end(log=logger)
     def call_basic(self, other_args):
@@ -1010,10 +982,12 @@ class DueDiligenceController(CryptoBaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            coinpaprika_view.display_basic(
-                self.coin_map_df["CoinPaprika"],
-                ns_parser.export,
-            )
+            cp_id = cryptocurrency_helpers.get_coinpaprika_id(self.symbol)
+            if cp_id:
+                coinpaprika_view.display_basic(
+                    cp_id,
+                    ns_parser.export,
+                )
 
     @log_start_end(log=logger)
     def call_mkt(self, other_args):
@@ -1080,15 +1054,17 @@ class DueDiligenceController(CryptoBaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            coinpaprika_view.display_markets(
-                coin_id=self.coin_map_df["CoinPaprika"],
-                currency=ns_parser.vs,
-                top=ns_parser.limit,
-                sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
-                links=ns_parser.urls,
-                export=ns_parser.export,
-            )
+            cp_id = cryptocurrency_helpers.get_coinpaprika_id(self.symbol)
+            if cp_id:
+                coinpaprika_view.display_markets(
+                    coin_id=cp_id,
+                    currency=ns_parser.vs,
+                    top=ns_parser.limit,
+                    sortby=ns_parser.sortby,
+                    descend=ns_parser.descend,
+                    links=ns_parser.urls,
+                    export=ns_parser.export,
+                )
 
     @log_start_end(log=logger)
     def call_ex(self, other_args):
@@ -1136,13 +1112,15 @@ class DueDiligenceController(CryptoBaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            coinpaprika_view.display_exchanges(
-                coin_id=self.coin_map_df["CoinPaprika"],
-                top=ns_parser.limit,
-                sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
-                export=ns_parser.export,
-            )
+            cp_id = cryptocurrency_helpers.get_coinpaprika_id(self.symbol)
+            if cp_id:
+                coinpaprika_view.display_exchanges(
+                    coin_id=cp_id,
+                    top=ns_parser.limit,
+                    sortby=ns_parser.sortby,
+                    descend=ns_parser.descend,
+                    export=ns_parser.export,
+                )
 
     @log_start_end(log=logger)
     def call_events(self, other_args):
@@ -1201,14 +1179,16 @@ class DueDiligenceController(CryptoBaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            coinpaprika_view.display_events(
-                coin_id=self.coin_map_df["CoinPaprika"],
-                top=ns_parser.limit,
-                sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
-                links=ns_parser.urls,
-                export=ns_parser.export,
-            )
+            cp_id = cryptocurrency_helpers.get_coinpaprika_id(self.symbol)
+            if cp_id:
+                coinpaprika_view.display_events(
+                    coin_id=cp_id,
+                    top=ns_parser.limit,
+                    sortby=ns_parser.sortby,
+                    descend=ns_parser.descend,
+                    links=ns_parser.urls,
+                    export=ns_parser.export,
+                )
 
     @log_start_end(log=logger)
     def call_twitter(self, other_args):
@@ -1257,13 +1237,15 @@ class DueDiligenceController(CryptoBaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            coinpaprika_view.display_twitter(
-                coin_id=self.coin_map_df["CoinPaprika"],
-                top=ns_parser.limit,
-                sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
-                export=ns_parser.export,
-            )
+            cp_id = cryptocurrency_helpers.get_coinpaprika_id(self.symbol)
+            if cp_id:
+                coinpaprika_view.display_twitter(
+                    coin_id=cp_id,
+                    top=ns_parser.limit,
+                    sortby=ns_parser.sortby,
+                    descend=ns_parser.descend,
+                    export=ns_parser.export,
+                )
 
     @log_start_end(log=logger)
     def call_mcapdom(self, other_args: List[str]):
@@ -1461,11 +1443,13 @@ class DueDiligenceController(CryptoBaseController):
         )
 
         if ns_parser:
-            messari_view.display_tokenomics(
-                coin=self.symbol.upper(),
-                coingecko_symbol=self.coin_map_df["CoinGecko"],
-                export=ns_parser.export,
-            )
+            cg_id = check_cg_id(self.symbol)
+            if cg_id:
+                messari_view.display_tokenomics(
+                    coin=self.symbol.upper(),
+                    coingecko_symbol=cg_id,
+                    export=ns_parser.export,
+                )
 
     @log_start_end(log=logger)
     def call_pi(self, other_args: List[str]):
@@ -1780,7 +1764,7 @@ class DueDiligenceController(CryptoBaseController):
             cryptopanic_view.display_news(
                 top=ns_parser.limit,
                 source=self.source,
-                currency=self.coin,
+                currency=self.symbol,
                 export=ns_parser.export,
                 descend=ns_parser.descend,
                 post_kind=ns_parser.kind,

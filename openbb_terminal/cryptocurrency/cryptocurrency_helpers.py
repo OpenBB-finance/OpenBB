@@ -278,6 +278,13 @@ def get_coingecko_id(symbol: str):
             return coin["id"]
     return None
 
+def get_coinpaprika_id(symbol: str):
+    paprika_coins = get_list_of_coins()
+    paprika_coins_dict = dict(zip(paprika_coins.id, paprika_coins.symbol))
+    coinpaprika_id, _ = coinpaprika_model.validate_coin(
+        symbol.upper(), paprika_coins_dict
+    )
+    return coinpaprika_id
 
 def load(
     symbol_search: str,
@@ -304,7 +311,6 @@ def load(
         "Low",
         "Close",
     ]
-    df.index.name = "date"
     df_coin = yf.download(
         f"{symbol_search}-{vs}",
         end=datetime.now(),
@@ -316,7 +322,7 @@ def load(
     if not df_coin.empty:
         #console.print(f"Could not download data for {symbol_search}-{vs} from Yahoo Finance")
         df = pd.merge(df, df_coin[::-1][["Volume"]], left_index=True, right_index=True)
-
+    df.index.name = 'date'
     return df
 
 
