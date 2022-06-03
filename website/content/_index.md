@@ -3,8 +3,6 @@ title: Getting Started
 keywords: "getting started, openbb, bots, api, beginner guide, how to use openbb, openbb keys, openbb terminal, openbb"
 excerpt: "This page guides you how to use the OpenBB terminal, developed by OpenBB."
 geekdocCollapseSection: true
-aliases:
-   - /terminal/_index.md
 ---
 ## Introduction
 
@@ -294,38 +292,37 @@ To figure out where you can obtain the API key, you can enter the command (e.g. 
 | smartstake | Smartstake                               | https://www.smartstake.io                                                          |
 | github     | GitHub                                   | https://docs.github.com/en/rest/guides/getting-started-with-the-rest-api           |
 
-## Available menus
+## Available menus within the OpenBB Terminal
 
 There is a large collection of (sub) menus available. Here, the asset class and other menus are described. To find a  detailed description and explanation of its usage for each menu, click on the corresponding link to visit the introduction page.
 
 The asset class menus are as follows:
    
-- <a href="stocks" target="_blank">Introduction to Stocks</a>: access historical pricing data, options, sector and 
+- <a href="terminal/stocks" target="_blank">Introduction to Stocks</a>: access historical pricing data, options, sector and 
 industry analysis, and overall due diligence.
-- <a href="cryptocurrency" target="_blank">Introduction to Crypto</a>: dive into onchain data, tokenomics, circulation supply,
+- <a href="terminal/cryptocurrency" target="_blank">Introduction to Crypto</a>: dive into onchain data, tokenomics, circulation supply,
 nfts and more.
-- <a href="etf" target="_blank">Introduction to ETF</a>: explore exchange traded funds, historical pricing, holdings
+- <a href="terminal/etf" target="_blank">Introduction to ETF</a>: explore exchange traded funds, historical pricing, holdings
 and screeners.
-- <a href="forex" target="_blank">Introduction to Forex</a>: see foreign exchanges, quotes, forward rates for currency
+- <a href="terminal/forex" target="_blank">Introduction to Forex</a>: see foreign exchanges, quotes, forward rates for currency
 pairs and Oanda integration.
-- <a href="funds" target="_blank">Introduction to Funds</a>: discover mutual funds, general overviews, holdings and
+- <a href="terminal/funds" target="_blank">Introduction to Funds</a>: discover mutual funds, general overviews, holdings and
 sector weights.
 
 The other menus are as follows:
    
-- <a href="economy" target="_blank">Introduction to Economy</a>: explore global macroeconomic data including 
+- <a href="terminal/economy" target="_blank">Introduction to Economy</a>: explore global macroeconomic data including 
 interest and inflation rates, GDP and its components, futures, yield curves and treasury rates.
-- <a href="alternative" target="_blank">Introduction to Alternative</a>: explore alternative datasets such as COVID and
+- <a href="terminal/alternative" target="_blank">Introduction to Alternative</a>: explore alternative datasets such as COVID and
 open source metrics.
-- <a href="econometrics" target="_blank">Introduction to Econometrics</a>: perform (advanced) regression techniques and
+- <a href="terminal/econometrics" target="_blank">Introduction to Econometrics</a>: perform (advanced) regression techniques and
 statistical tests on custom datasets to understand relationships for both time series and panel data.
-- <a href="portfolio" target="_blank">Introduction to Portfolio</a>: understand how your portfolio evolved over time, what
+- <a href="terminal/portfolio" target="_blank">Introduction to Portfolio</a>: understand how your portfolio evolved over time, what
 assets contributed the most to this performance, compare this to a benchmark and make adjustments via various portfolio
 optimization techniques.
-- <a href="jupyter" target="_blank">Introduction to Dashboards</a>: see interactive dashboards using voila and
+- <a href="terminal/jupyter" target="_blank">Introduction to Dashboards</a>: see interactive dashboards using voila and
 jupyter notebooks.
-- <a href="reports" target="_blank">Introduction to Reports</a>: create customizable research reports through
-jupyter notebooks.
+- Introduction to Reports <b>(Work in Progress)</b>: create customizable research reports through jupyter notebooks.
 
 To adjust the lay-out and settings of the OpenBB Terminal you can access the `settings` menu. This menu allows you to
 tweak how the terminal behaves. For example, you are able to define the coloring, interactive graphs and whether to use
@@ -364,6 +361,6 @@ Alternatively, you can contact us via the following routes:
 [bugs-closed-shield]: https://img.shields.io/github/issues-closed/OpenBB-finance/OpenBBTerminal/bug.svg?style=for-the-badge&color=success
 [bugs-closed-url]: https://github.com/OpenBB-finance/OpenBBTerminal/issues?q=is%3Aissue+label%3Abug+is%3Aclosed
 [license-shield]: https://img.shields.io/github/license/OpenBB-finance/OpenBBTerminal.svg?style=for-the-badge
-[license-url]: https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/LICENSE.txt
+[license-url]: https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/LICENSE
 [twitter-shield]: https://img.shields.io/twitter/follow/openbb_finance?style=for-the-badge&color=blue
 [twitter-url]: https://twitter.com/openbb_finance

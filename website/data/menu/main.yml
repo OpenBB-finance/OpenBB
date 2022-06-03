@@ -892,7 +892,7 @@ main:
               - name: newest
                 ref: "/terminal/cryptocurrency/nft/newest"
           - name: technical analysis
-            ref: "/terminal/cryptocurrency/technical_analysis"
+            ref: "/terminal/common/technical_analysis"
             sub:
               - name: ema
                 ref: "/terminal/common/technical_analysis/ema"
@@ -1125,6 +1125,82 @@ main:
             ref: "/terminal/etf/pir"
           - name: compare
             ref: "/terminal/etf/compare"
+          - name: technical analysis
+            ref: "/terminal/common/technical_analysis"
+            sub:
+              - name: view
+                ref: "/terminal/common/technical_analysis/view"
+              - name: tv
+                ref: "/terminal/common/technical_analysis/tv"
+              - name: summary
+                ref: "/terminal/common/technical_analysis/summary"
+              - name: recom
+                ref: "/terminal/common/technical_analysis/recom"
+              - name: ema
+                ref: "/terminal/common/technical_analysis/ema"
+              - name: sma
+                ref: "/terminal/common/technical_analysis/sma"
+              - name: wma
+                ref: "/terminal/common/technical_analysis/wma"
+              - name: hma
+                ref: "/terminal/common/technical_analysis/hma"
+              - name: zlma
+                ref: "/terminal/common/technical_analysis/zlma"
+              - name: vwap
+                ref: "/terminal/common/technical_analysis/vwap"
+              - name: cci
+                ref: "/terminal/common/technical_analysis/cci"
+              - name: macd
+                ref: "/terminal/common/technical_analysis/macd"
+              - name: rsi
+                ref: "/terminal/common/technical_analysis/rsi"
+              - name: stoch
+                ref: "/terminal/common/technical_analysis/stoch"
+              - name: fisher
+                ref: "/terminal/common/technical_analysis/fisher"
+              - name: cg
+                ref: "/terminal/common/technical_analysis/cg"
+              - name: adx
+                ref: "/terminal/common/technical_analysis/adx"
+              - name: aroon
+                ref: "/terminal/common/technical_analysis/aroon"
+              - name: bbands
+                ref: "/terminal/common/technical_analysis/bbands"
+              - name: donchian
+                ref: "/terminal/common/technical_analysis/donchian"
+              - name: kc
+                ref: "/terminal/common/technical_analysis/kc"
+              - name: ad
+                ref: "/terminal/common/technical_analysis/ad"
+              - name: adosc
+                ref: "/terminal/common/technical_analysis/adosc"
+              - name: obv
+                ref: "/terminal/common/technical_analysis/obv"
+              - name: fib
+                ref: "/terminal/common/technical_analysis/fib"
+          - name: prediction techniques
+            ref: "/terminal/common/prediction_techniques"
+            sub:
+              - name: ets
+                ref: "/terminal/common/prediction_techniques/ets"
+              - name: knn
+                ref: "/terminal/common/prediction_techniques/knn"
+              - name: regression
+                ref: "/terminal/common/prediction_techniques/regression"
+              - name: arima
+                ref: "/terminal/common/prediction_techniques/arima"
+              - name: mlp
+                ref: "/terminal/common/prediction_techniques/mlp"
+              - name: rnn
+                ref: "/terminal/common/prediction_techniques/rnn"
+              - name: lstm
+                ref: "/terminal/common/prediction_techniques/lstm"
+              - name: conv1d
+                ref: "/terminal/common/prediction_techniques/conv1d"
+              - name: mc
+                ref: "/terminal/common/prediction_techniques/mc"
+              - name: expo
+                ref: "/terminal/common/prediction_techniques/expo"
       - name: funds
         ref: "/terminal/funds"
         sub:
@@ -1415,6 +1491,181 @@ main:
                 ref: "/terminal/jupyter/dashboards/shortdata"
           - name: "reports"
             ref: "/terminal/jupyter/reports"
+      - name: common
+        ref: "/terminal/common"
+        sub:
+          - name: technical analysis
+            ref: "/terminal/common/technical_analysis"
+            sub:
+              - name: view
+                ref: "/terminal/common/technical_analysis/view"
+              - name: tv
+                ref: "/terminal/common/technical_analysis/tv"
+              - name: summary
+                ref: "/terminal/common/technical_analysis/summary"
+              - name: recom
+                ref: "/terminal/common/technical_analysis/recom"
+              - name: ema
+                ref: "/terminal/common/technical_analysis/ema"
+              - name: sma
+                ref: "/terminal/common/technical_analysis/sma"
+              - name: wma
+                ref: "/terminal/common/technical_analysis/wma"
+              - name: hma
+                ref: "/terminal/common/technical_analysis/hma"
+              - name: zlma
+                ref: "/terminal/common/technical_analysis/zlma"
+              - name: vwap
+                ref: "/terminal/common/technical_analysis/vwap"
+              - name: cci
+                ref: "/terminal/common/technical_analysis/cci"
+              - name: macd
+                ref: "/terminal/common/technical_analysis/macd"
+              - name: rsi
+                ref: "/terminal/common/technical_analysis/rsi"
+              - name: stoch
+                ref: "/terminal/common/technical_analysis/stoch"
+              - name: fisher
+                ref: "/terminal/common/technical_analysis/fisher"
+              - name: cg
+                ref: "/terminal/common/technical_analysis/cg"
+              - name: adx
+                ref: "/terminal/common/technical_analysis/adx"
+              - name: aroon
+                ref: "/terminal/common/technical_analysis/aroon"
+              - name: bbands
+                ref: "/terminal/common/technical_analysis/bbands"
+              - name: donchian
+                ref: "/terminal/common/technical_analysis/donchian"
+              - name: kc
+                ref: "/terminal/common/technical_analysis/kc"
+              - name: ad
+                ref: "/terminal/common/technical_analysis/ad"
+              - name: adosc
+                ref: "/terminal/common/technical_analysis/adosc"
+              - name: obv
+                ref: "/terminal/common/technical_analysis/obv"
+              - name: fib
+                ref: "/terminal/common/technical_analysis/fib"
+          - name: behavioural analysis
+            ref: "/terminal/common/behavioural_analysis"
+            sub:
+              - name: headlines
+                ref: "/terminal/common/behavioural_analysis/headlines"
+              - name: stats
+                ref: "/terminal/common/behavioural_analysis/stats"
+              - name: snews
+                ref: "/terminal/common/behavioural_analysis/snews"
+              - name: interest
+                ref: "/terminal/common/behavioural_analysis/interest"
+              - name: wsb
+                ref: "/terminal/common/behavioural_analysis/wsb"
+              - name: watchlist
+                ref: "/terminal/common/behavioural_analysis/watchlist"
+              - name: popular
+                ref: "/terminal/common/behavioural_analysis/popular"
+              - name: spac_c
+                ref: "/terminal/common/behavioural_analysis/spac_c"
+              - name: spac
+                ref: "/terminal/common/behavioural_analysis/spac"
+              - name: getdd
+                ref: "/terminal/common/behavioural_analysis/getdd"
+              - name: reddit_sent
+                ref: "/terminal/common/behavioural_analysis/reddit_sent"
+              - name: bullbear
+                ref: "/terminal/common/behavioural_analysis/bullbear"
+              - name: messages
+                ref: "/terminal/common/behavioural_analysis/messages"
+              - name: trending
+                ref: "/terminal/common/behavioural_analysis/trending"
+              - name: stalker
+                ref: "/terminal/common/behavioural_analysis/stalker"
+              - name: infer
+                ref: "/terminal/common/behavioural_analysis/infer"
+              - name: sentiment
+                ref: "/terminal/common/behavioural_analysis/sentiment"
+              - name: mentions
+                ref: "/terminal/common/behavioural_analysis/mentions"
+              - name: regions
+                ref: "/terminal/common/behavioural_analysis/regions"
+              - name: queries
+                ref: "/terminal/common/behavioural_analysis/queries"
+              - name: rise
+                ref: "/terminal/common/behavioural_analysis/rise"
+              - name: hist
+                ref: "/terminal/common/behavioural_analysis/hist"
+              - name: trend
+                ref: "/terminal/common/behavioural_analysis/trend"
+              - name: jcdr
+                ref: "/terminal/common/behavioural_analysis/jcdr"
+              - name: jctr
+                ref: "/terminal/common/behavioural_analysis/jctr"
+          - name: quantitative analysis
+            ref: "/terminal/common/quantitative_analysis"
+            sub:
+              - name: load
+                ref: "/terminal/common/quantitative_analysis/load"
+              - name: pick
+                ref: "/terminal/common/quantitative_analysis/pick"
+              - name: summary
+                ref: "/terminal/common/quantitative_analysis/summary"
+              - name: normality
+                ref: "/terminal/common/quantitative_analysis/normality"
+              - name: unitroot
+                ref: "/terminal/common/quantitative_analysis/unitroot"
+              - name: hist
+                ref: "/terminal/common/quantitative_analysis/hist"
+              - name: cdf
+                ref: "/terminal/common/quantitative_analysis/cdf"
+              - name: bw
+                ref: "/terminal/common/quantitative_analysis/bw"
+              - name: acf
+                ref: "/terminal/common/quantitative_analysis/acf"
+              - name: qqplot
+                ref: "/terminal/common/quantitative_analysis/qqplot"
+              - name: rolling
+                ref: "/terminal/common/quantitative_analysis/rolling"
+              - name: spread
+                ref: "/terminal/common/quantitative_analysis/spread"
+              - name: quantile
+                ref: "/terminal/common/quantitative_analysis/quantile"
+              - name: skew
+                ref: "/terminal/common/quantitative_analysis/skew"
+              - name: kurtosis
+                ref: "/terminal/common/quantitative_analysis/kurtosis"
+              - name: decompose
+                ref: "/terminal/common/quantitative_analysis/decompose"
+              - name: cusum
+                ref: "/terminal/common/quantitative_analysis/cusum"
+              - name: capm
+                ref: "/terminal/common/quantitative_analysis/capm"
+              - name: line
+                ref: "/terminal/common/quantitative_analysis/line"
+              - name: raw
+                ref: "/terminal/common/quantitative_analysis/raw"
+          - name: prediction techniques
+            ref: "/terminal/common/prediction_techniques"
+            sub:
+              - name: ets
+                ref: "/terminal/common/prediction_techniques/ets"
+              - name: knn
+                ref: "/terminal/common/prediction_techniques/knn"
+              - name: regression
+                ref: "/terminal/common/prediction_techniques/regression"
+              - name: arima
+                ref: "/terminal/common/prediction_techniques/arima"
+              - name: mlp
+                ref: "/terminal/common/prediction_techniques/mlp"
+              - name: rnn
+                ref: "/terminal/common/prediction_techniques/rnn"
+              - name: lstm
+                ref: "/terminal/common/prediction_techniques/lstm"
+              - name: conv1d
+                ref: "/terminal/common/prediction_techniques/conv1d"
+              - name: mc
+                ref: "/terminal/common/prediction_techniques/mc"
+              - name: expo
+                ref: "/terminal/common/prediction_techniques/expo"
   - name: "OpenBB Python API"
     ref: "/api"
   - name: "OpenBB Bots"
