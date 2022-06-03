@@ -24,7 +24,7 @@ enableGitInfo = true
 
   # (Optional, default static/brand.svg) Set the path to a logo for the Geekdoc
   # relative to your 'static/' folder.
-  geekdocLogo = "gst_logo_green.png"
+  geekdocLogo = "openbb_logo.png"
 
   # (Optional, default false) Render menu from data file im 'data/menu/main.yaml'.
   geekdocMenuBundle = true
