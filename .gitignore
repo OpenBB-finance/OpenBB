@@ -61,3 +61,6 @@ styles/user
 
 # the file containing the API keys for the web version
 openbb_terminal_web/setenv
+
+# dart models
+darts_logs/

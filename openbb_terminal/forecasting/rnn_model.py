@@ -28,7 +28,7 @@ def get_rnn_data(
     data: Union[pd.Series, pd.DataFrame],
     n_predict: int = 5,
     target_col: str = "close",
-    start_window: float = 0.65,
+    start_window: float = 0.85,
     forecast_horizon: int = 3,
 ) -> Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], float, Any]:
 
@@ -80,7 +80,7 @@ def get_rnn_data(
         )
     ).astype(np.float32)
 
-    scaled_train, scaled_val = scaled_ticker_series.split_before(0.85)
+    scaled_train, scaled_val = scaled_ticker_series.split_before(float(start_window))
 
     # Early Stopping
     my_stopper = EarlyStopping(
@@ -103,15 +103,15 @@ def get_rnn_data(
         random_state=42,
         training_length=20,
         input_chunk_length=14,
-        # pl_trainer_kwargs=pl_trainer_kwargs,
+        pl_trainer_kwargs=pl_trainer_kwargs,
         force_reset=True,
         save_checkpoints=True,  # TODO - where to save?
     )
 
-    # fit model on entire series for final prediction
+    # fit model on train series for historical forecasting
     rnn_model.fit(series=scaled_train, val_series=scaled_val)
 
-    # Showing historical backtesting
+    # Showing historical backtesting without retraining model (too slow)
     scaled_historical_fcast = rnn_model.historical_forecasts(
         scaled_ticker_series,
         start=float(start_window),
@@ -121,7 +121,7 @@ def get_rnn_data(
     )
 
     # fit model on entire series for final prediction
-    rnn_model.fit(scaled_ticker_series)
+    rnn_model.fit(series=scaled_ticker_series, val_series=scaled_val)
     scaled_prediction = rnn_model.predict(int(n_predict))
     precision = mape(
         actual_series=scaled_ticker_series, pred_series=scaled_historical_fcast
@@ -129,9 +129,10 @@ def get_rnn_data(
     console.print(f"RNN model obtains MAPE: {precision:.2f}% \n")
 
     # scale back
-    (ticker_series, historical_fcast, prediction) = scaler.inverse_transform(
-        [scaled_ticker_series, scaled_historical_fcast, scaled_prediction]
-    )
+    ticker_series = scaler.inverse_transform(scaled_ticker_series)
+    historical_fcast = scaler.inverse_transform(scaled_historical_fcast)
+    prediction = scaler.inverse_transform(scaled_prediction)
+
     return (
         ticker_series,
         historical_fcast,
