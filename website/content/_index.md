@@ -2,9 +2,9 @@
 title: Getting Started
 keywords: "getting started, openbb, bots, api, beginner guide, how to use openbb, openbb keys, openbb terminal, openbb"
 excerpt: "This page guides you how to use the OpenBB terminal, developed by OpenBB."
+description: "The OpenBB Documentation provides guidance on how to use the OpenBB Terminal, a free, custom built
+financial terminal that will help you make more informed decisions, faster."
 geekdocCollapseSection: true
-aliases:
-   - /terminal/_index.md
 ---
 ## Introduction
 
@@ -96,35 +96,77 @@ or visit our <a href="https://openbb.co/contact" target="_blank">contact page</a
 The process starts off by downloading the installer, see below for how to download the most recent release:
 
 1. Go to <a href="https://github.com/OpenBB-finance/OpenBBTerminal/releases" target="_blank">the following link</a>
-2. Click on the 'Latest' release and scroll down
-3. Click on the ".exe" file, this downloads the installation program
+2. Click on the `Latest` release and scroll down
+3. Click on the `.exe` file, this downloads the installation program
 
-When the file is downloaded, you can follow the following steps:
+When the file is downloaded, use the following steps to run the OpenBB Terminal:
 
-| Installation instructions                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | Illustration                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
-|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Double click the .exe file that got downloaded to your "Downloads" folder. You will most likely receive the error on the right stating "Windows protected your PC". This is because the installer is still in beta phase, and the team has not yet requested verification from Windows. <br></br> Click on "More info" and select "Run anyway" to start the installation process. Proceed by following the steps. Do note that if you wish to install the application to 'Program Files' that you will have to run the resulting application as Administrator. <br></br> By clicking on the application that appeared on your Desktop, you are able to run the Terminal. The first time this takes a bit longer to load. | <p align="center"><a target="_blank" href="https://user-images.githubusercontent.com/46355364/169502271-69ad8075-165f-4b1a-8ab8-254d643a5dae.png"><img width="500" alt="windows_protected_your_pc" src="https://user-images.githubusercontent.com/46355364/169502271-69ad8075-165f-4b1a-8ab8-254d643a5dae.png"></a></p><p align="center"><a target="_blank" href="https://user-images.githubusercontent.com/46355364/169502143-ba88de53-7757-48f2-9ec4-748d4917044b.png"><img width="500" alt="run_anyway" src="https://user-images.githubusercontent.com/46355364/169502143-ba88de53-7757-48f2-9ec4-748d4917044b.png"></a></p><p align="center"><a target="_blank" href="https://user-images.githubusercontent.com/46355364/169502187-f4e42333-a947-464b-9320-a8f63c7ce089.png"><img width="500" alt="run_the_terminal" src="https://user-images.githubusercontent.com/46355364/169502187-f4e42333-a947-464b-9320-a8f63c7ce089.png"></a></p> |
+{{< columns >}}
+
+**Step 1: Double-click the `.exe` file that got downloaded to your `Downloads` folder**
+
+You will most likely receive the error below stating "Windows protected your PC". This is because the installer is
+still in beta phase, and the team has not yet requested verification from Windows.
+
+<p align="center"><a target="_blank" href="https://user-images.githubusercontent.com/46355364/169502271-69ad8075-165f-4b1a-8ab8-254d643a5dae.png"><img width="500" alt="windows_protected_your_pc" src="https://user-images.githubusercontent.com/46355364/169502271-69ad8075-165f-4b1a-8ab8-254d643a5dae.png"></a></p>
+
+<--->
+
+**Step 2: Click on `More info` and select `Run anyway` to start the installation process**
+
+Proceed by following the steps. Do note that if you wish to install the application to "Program Files" that you will have to run the resulting application as Administrator.
+
+<p align="center"><a target="_blank" href="https://user-images.githubusercontent.com/46355364/169502143-ba88de53-7757-48f2-9ec4-748d4917044b.png"><img width="500" alt="run_anyway" src="https://user-images.githubusercontent.com/46355364/169502143-ba88de53-7757-48f2-9ec4-748d4917044b.png"></a></p>
+
+<--->
+
+**Step 3: Double-click on the application that appeared on your Desktop, you are now able to run the OpenBB Terminal**
+
+The first time this takes a bit longer to load, this can take up to a few minutes. 
+
+<p align="center"><a target="_blank" href="https://user-images.githubusercontent.com/46355364/169502187-f4e42333-a947-464b-9320-a8f63c7ce089.png"><img width="500" alt="run_the_terminal" src="https://user-images.githubusercontent.com/46355364/169502187-f4e42333-a947-464b-9320-a8f63c7ce089.png"></a></p>
+
+{{< /columns >}}
 
 ### Installation for macOS
 
 The process starts off by downloading the installer, see below for how to download the most recent release:
 
 1. Go to <a href="https://github.com/OpenBB-finance/OpenBBTerminal/releases" target="_blank">the following link</a>
-2. Click on the 'Latest' release and scroll down
-3. Click on the ".dmg" file, this downloads the installation program
+2. Click on the `Latest` release and scroll down
+3. Click on the `.dmg` file, this downloads the installation program
 
-Installation instructions:
+When the file is downloaded, use the following steps to run the OpenBB Terminal:
 
-1. Open the .dmg file that got downloaded to your "Downloads" folder.
-2. Drag the folder into your "Applications" folder. This should take some time as it is extracting the
-   files from the .dmg file.
-3. Open the folder and click on the "OpenBB Terminal" file, this should run the application.
+{{< columns >}}
 
-<a target="_blank" href="https://user-images.githubusercontent.com/46355364/169502594-5cafd088-01bc-49fb-9c70-a9105798e9f9.png"><img width="800" alt="mac_os_installation" src="https://user-images.githubusercontent.com/46355364/169502594-5cafd088-01bc-49fb-9c70-a9105798e9f9.png"></a>
+**Step 1: Open the downloaded file and move the folder inside your `Applications` folder**
 
-| Note about "Cannot check it for malicious software" warning                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | Illustration                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Run the file. You will most likely receive a message that macOS was not able to check whether the application contains malicious software. This is because the installer is still in beta phase, and the team has not yet requested verification from Apple. See below how to correct for this. <br></br> Go to `System Preferences > Security & Privacy > General`. You should see a message at the bottom that says that the file "was blocked from use because it is not from an identified developer". Click on “Allow anyway” or "Open anyway". <br></br> You should now be able to launch the application. | <p align="center"><a target="_blank" href="https://user-images.githubusercontent.com/46355364/169502740-2345e2d6-1230-427d-afbc-58f9a30c4803.png"><img width="500" alt="malicious_software_warning" src="https://user-images.githubusercontent.com/46355364/169502740-2345e2d6-1230-427d-afbc-58f9a30c4803.png"></p></a><p align="center"><a target="_blank" href="https://user-images.githubusercontent.com/46355364/169502720-e28c78c5-7684-45a9-aafc-cf497de38c09.png"><img width="500" alt="warning_fix" src="https://user-images.githubusercontent.com/46355364/169502720-e28c78c5-7684-45a9-aafc-cf497de38c09.png"></p></a> |
+Open the .dmg file that got downloaded to your "Downloads" folder and drag the folder into your "Applications" folder.
+Note that this should take some time as it is extracting the files from the .dmg file.
+
+You can find the `Applications` folder on the left side of the Finder application (`⌥ + ⌘ + SPACEBAR`). Alternatively,
+search for the Finder with `⌘ + SPACEBAR`.
+
+<p align="center"><a target="_blank" href="https://user-images.githubusercontent.com/46355364/169502594-5cafd088-01bc-49fb-9c70-a9105798e9f9.png"><img width="800" alt="mac_os_installation" src="https://user-images.githubusercontent.com/46355364/169502594-5cafd088-01bc-49fb-9c70-a9105798e9f9.png"></a></p>
+
+<--->
+
+**Step 2: Open the folder and click on the `OpenBB Terminal` file, this should run the application.**
+
+You will most likely receive a message that macOS was not able to check whether the application contains malicious software. This is because the installer is still in beta phase, and the team has not yet requested verification from Apple. See below how to correct for this.
+
+<p align="center"><a target="_blank" href="https://user-images.githubusercontent.com/46355364/169502740-2345e2d6-1230-427d-afbc-58f9a30c4803.png"><img width="300" alt="malicious_software_warning" src="https://user-images.githubusercontent.com/46355364/169502740-2345e2d6-1230-427d-afbc-58f9a30c4803.png"></a></p>
+
+<--->
+
+**Step 3: Allow the application to be run by going into your settings**
+
+Go to `System Preferences > Security & Privacy > General`. You should see a message at the bottom that says that the file "was blocked from use because it is not from an identified developer". Click on `Allow anyway` or `Open anyway`.
+
+<p align="center"><a target="_blank" href="https://user-images.githubusercontent.com/46355364/169502720-e28c78c5-7684-45a9-aafc-cf497de38c09.png"><img width="500" alt="warning_fix" src="https://user-images.githubusercontent.com/46355364/169502720-e28c78c5-7684-45a9-aafc-cf497de38c09.png"></a></p>
+
+{{< /columns >}}
 
 ## Structure of the OpenBB Terminal
 
@@ -151,15 +193,15 @@ This opens a new menu as depicted below.
 
 <a target="_blank" href="https://user-images.githubusercontent.com/46355364/169503240-922357c8-5e2b-41f0-aca2-c1fc849dcd1c.png"><img src="https://user-images.githubusercontent.com/46355364/169503240-922357c8-5e2b-41f0-aca2-c1fc849dcd1c.png" alt="Stocks Menu" width="800"/></a>
 
-Depending on the menu you are in, you are presented with a new set of commands (see "Explanation of Commands")
+Depending on the menu you are in, you are presented with a new set of commands (see <a href="#explanation-of-commands">Explanation of Commands</a>)
 and menus you can select. There are interactions in place between each menu. For example, when selecting a company within
 the `stocks` menu, the terminal will remember your selection when you visit the `fa` or `options` menu.
-See <a href="stocks" target="_blank">Introduction to Stocks</a> for more information.
+See <a href="terminal/stocks" target="_blank">Introduction to Stocks</a> for more information.
 
 ### Explanation of Commands
 
 Commands, depicted in <b><span style="color:#00AAFF">Light Blue</span></b>, execute an action or task. For example,
-the commands that you are able to use from any menu in the terminal (see "Explanation of Menus") are as follows:
+the commands that you are able to use from any menu in the terminal (see <a href="#explanation-of-menus">Explanation of Menus</a>) are as follows:
 
 - `cls`: clears the screen, by executing this command you are left with an empty screen.
 - `help`, `h` or `?`: displays the menu that you are currently on. 
@@ -168,7 +210,7 @@ use `q` and press `ENTER` (⏎) you return to where you started. Validate this b
 - `support`: allows you to submit bugs, questions and suggestions.
 
 Continuing with the example mentioned at `quit`, revisit the `stocks` menu and look at the commands. At the top you 
-will see a command named <a href="stocks/load" target="_blank">load</a>. To understand what this command can do, you can use `load -h` followed by `ENTER` (⏎). The `-h` stands for `help` and every command will have this feature. This will return the following:
+will see a command named <a href="terminal/stocks/load" target="_blank">load</a>. To understand what this command can do, you can use `load -h` followed by `ENTER` (⏎). The `-h` stands for `help` and every command will have this feature. This will return the following:
 
 ```
 2022 May 19, 05:27 (🦋) /stocks/ $ load -h
@@ -250,8 +292,8 @@ selected period.
 ```
 <a target="_blank" href="https://user-images.githubusercontent.com/46355364/169503345-a9409637-dc7a-4193-9c87-38b1b6ee1a08.png"><img src="https://user-images.githubusercontent.com/46355364/169503345-a9409637-dc7a-4193-9c87-38b1b6ee1a08.png" alt="Amazon Candle Chart" width="800"/></a>
 
-As mentioned in the "Explanation of Menus", some information also transfers over to other menus and this includes the
-loaded market data from <a href="stocks/load" target="_blank">load</a>.
+As mentioned in the <a href="#explanation-of-menus">Explanation of Menus</a>, some information also transfers over to other menus and this includes the
+loaded market data from <a href="terminal/stocks/load" target="_blank">load</a>.
 So, if you would visit the `ta` menu (which stands for <a href="https://www.investopedia.com/terms/t/technicalanalysis.asp" target="_blank">Technical Analysis</a>) you will see that, by running any command, the selected period above is depicted again. Return to the Stocks menu again by using `q` and use it again to return to the home screen which can be shown with `?`.
 
 ## Accessing other sources of data via API keys
@@ -294,38 +336,37 @@ To figure out where you can obtain the API key, you can enter the command (e.g. 
 | smartstake | Smartstake                               | https://www.smartstake.io                                                          |
 | github     | GitHub                                   | https://docs.github.com/en/rest/guides/getting-started-with-the-rest-api           |
 
-## Available menus
+## Available menus within the OpenBB Terminal
 
-There is a large collection of (sub) menus available. Here, the asset class and other menus are described. To find a  detailed description and explanation of its usage for each menu, click on the corresponding link to visit the introduction page.
+There is a large collection of (sub) menus available. Here, the asset class and other menus are described. To find a detailed description and explanation of its usage for each menu, click on the corresponding link to visit the introduction page.
 
 The asset class menus are as follows:
    
-- <a href="stocks" target="_blank">Introduction to Stocks</a>: access historical pricing data, options, sector and 
+- <a href="terminal/stocks" target="_blank">Introduction to Stocks</a>: access historical pricing data, options, sector and 
 industry analysis, and overall due diligence.
-- <a href="cryptocurrency" target="_blank">Introduction to Crypto</a>: dive into onchain data, tokenomics, circulation supply,
+- <a href="terminal/cryptocurrency" target="_blank">Introduction to Crypto</a>: dive into onchain data, tokenomics, circulation supply,
 nfts and more.
-- <a href="etf" target="_blank">Introduction to ETF</a>: explore exchange traded funds, historical pricing, holdings
+- <a href="terminal/etf" target="_blank">Introduction to ETF</a>: explore exchange traded funds, historical pricing, holdings
 and screeners.
-- <a href="forex" target="_blank">Introduction to Forex</a>: see foreign exchanges, quotes, forward rates for currency
+- <a href="terminal/forex" target="_blank">Introduction to Forex</a>: see foreign exchanges, quotes, forward rates for currency
 pairs and Oanda integration.
-- <a href="funds" target="_blank">Introduction to Funds</a>: discover mutual funds, general overviews, holdings and
+- <a href="terminal/funds" target="_blank">Introduction to Funds</a>: discover mutual funds, general overviews, holdings and
 sector weights.
 
 The other menus are as follows:
    
-- <a href="economy" target="_blank">Introduction to Economy</a>: explore global macroeconomic data including 
+- <a href="terminal/economy" target="_blank">Introduction to Economy</a>: explore global macroeconomic data including 
 interest and inflation rates, GDP and its components, futures, yield curves and treasury rates.
-- <a href="alternative" target="_blank">Introduction to Alternative</a>: explore alternative datasets such as COVID and
+- <a href="terminal/alternative" target="_blank">Introduction to Alternative</a>: explore alternative datasets such as COVID and
 open source metrics.
-- <a href="econometrics" target="_blank">Introduction to Econometrics</a>: perform (advanced) regression techniques and
+- <a href="terminal/econometrics" target="_blank">Introduction to Econometrics</a>: perform (advanced) regression techniques and
 statistical tests on custom datasets to understand relationships for both time series and panel data.
-- <a href="portfolio" target="_blank">Introduction to Portfolio</a>: understand how your portfolio evolved over time, what
+- <a href="terminal/portfolio" target="_blank">Introduction to Portfolio</a>: understand how your portfolio evolved over time, what
 assets contributed the most to this performance, compare this to a benchmark and make adjustments via various portfolio
 optimization techniques.
-- <a href="jupyter" target="_blank">Introduction to Dashboards</a>: see interactive dashboards using voila and
+- <a href="terminal/jupyter" target="_blank">Introduction to Dashboards</a>: see interactive dashboards using voila and
 jupyter notebooks.
-- <a href="reports" target="_blank">Introduction to Reports</a>: create customizable research reports through
-jupyter notebooks.
+- Introduction to Reports <b>(Work in Progress)</b>: create customizable research reports through jupyter notebooks.
 
 To adjust the lay-out and settings of the OpenBB Terminal you can access the `settings` menu. This menu allows you to
 tweak how the terminal behaves. For example, you are able to define the coloring, interactive graphs and whether to use
@@ -364,6 +405,6 @@ Alternatively, you can contact us via the following routes:
 [bugs-closed-shield]: https://img.shields.io/github/issues-closed/OpenBB-finance/OpenBBTerminal/bug.svg?style=for-the-badge&color=success
 [bugs-closed-url]: https://github.com/OpenBB-finance/OpenBBTerminal/issues?q=is%3Aissue+label%3Abug+is%3Aclosed
 [license-shield]: https://img.shields.io/github/license/OpenBB-finance/OpenBBTerminal.svg?style=for-the-badge
-[license-url]: https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/LICENSE.txt
+[license-url]: https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/LICENSE
 [twitter-shield]: https://img.shields.io/twitter/follow/openbb_finance?style=for-the-badge&color=blue
 [twitter-url]: https://twitter.com/openbb_finance
