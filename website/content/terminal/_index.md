@@ -76,6 +76,6 @@ Navigate through 750+ terminal features using fast shortcuts and leverage auto-c
 [bugs-closed-shield]: https://img.shields.io/github/issues-closed/OpenBB-finance/OpenBBTerminal/bug.svg?style=for-the-badge&color=success
 [bugs-closed-url]: https://github.com/OpenBB-finance/OpenBBTerminal/issues?q=is%3Aissue+label%3Abug+is%3Aclosed
 [license-shield]: https://img.shields.io/github/license/OpenBB-finance/OpenBBTerminal.svg?style=for-the-badge
-[license-url]: https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/LICENSE.txt
+[license-url]: https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/LICENSE
 [twitter-shield]: https://img.shields.io/twitter/follow/openbb_finance?style=for-the-badge&color=blue
 [twitter-url]: https://twitter.com/openbb_finance
