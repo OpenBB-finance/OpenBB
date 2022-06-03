@@ -2,6 +2,8 @@
 title: Getting Started
 keywords: "getting started, openbb, bots, api, beginner guide, how to use openbb, openbb keys, openbb terminal, openbb"
 excerpt: "This page guides you how to use the OpenBB terminal, developed by OpenBB."
+description: "The OpenBB Documentation provides guidance on how to use the OpenBB Terminal, a free, custom built
+financial terminal that will help you make more informed decisions, faster."
 geekdocCollapseSection: true
 ---
 ## Introduction
