@@ -166,7 +166,7 @@ use `q` and press `ENTER` (⏎) you return to where you started. Validate this b
 - `support`: allows you to submit bugs, questions and suggestions.
 
 Continuing with the example mentioned at `quit`, revisit the `stocks` menu and look at the commands. At the top you 
-will see a command named <a href="stocks/load" target="_blank">load</a>. To understand what this command can do, you can use `load -h` followed by `ENTER` (⏎). The `-h` stands for `help` and every command will have this feature. This will return the following:
+will see a command named <a href="terminal/stocks/load" target="_blank">load</a>. To understand what this command can do, you can use `load -h` followed by `ENTER` (⏎). The `-h` stands for `help` and every command will have this feature. This will return the following:
 
 ```
 2022 May 19, 05:27 (🦋) /stocks/ $ load -h
@@ -249,7 +249,7 @@ selected period.
 <a target="_blank" href="https://user-images.githubusercontent.com/46355364/169503345-a9409637-dc7a-4193-9c87-38b1b6ee1a08.png"><img src="https://user-images.githubusercontent.com/46355364/169503345-a9409637-dc7a-4193-9c87-38b1b6ee1a08.png" alt="Amazon Candle Chart" width="800"/></a>
 
 As mentioned in the "Explanation of Menus", some information also transfers over to other menus and this includes the
-loaded market data from <a href="stocks/load" target="_blank">load</a>.
+loaded market data from <a href="terminal/stocks/load" target="_blank">load</a>.
 So, if you would visit the `ta` menu (which stands for <a href="https://www.investopedia.com/terms/t/technicalanalysis.asp" target="_blank">Technical Analysis</a>) you will see that, by running any command, the selected period above is depicted again. Return to the Stocks menu again by using `q` and use it again to return to the home screen which can be shown with `?`.
 
 ## Accessing other sources of data via API keys
