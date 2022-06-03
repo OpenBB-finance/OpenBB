@@ -660,8 +660,6 @@ main:
                 ref: "/terminal/common/prediction_techniques/conv1d"
               - name: mc
                 ref: "/terminal/common/prediction_techniques/mc"
-              - name: expo
-                ref: "/terminal/common/prediction_techniques/expo"
       - name: Cryptocurrency
         ref: "/terminal/cryptocurrency"
         sub:
