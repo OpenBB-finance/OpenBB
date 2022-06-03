@@ -114,7 +114,6 @@ def get_theta_data(
         seasonality_period=seasonal_periods,
     )
 
-    console.print(f"Best theta: {best_theta}")
     # Training model based on historical backtesting
     historical_fcast_theta = best_theta_model.historical_forecasts(
         ticker_series,

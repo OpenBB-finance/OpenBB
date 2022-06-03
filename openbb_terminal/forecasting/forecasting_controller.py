@@ -99,22 +99,6 @@ class ForecastingController(BaseController):
             choices["load"] = {c: None for c in self.DATA_FILES.keys()}
             choices["show"] = {c: None for c in self.files}
 
-            # for feature in ["export", "show", "desc", "clear", "index"]:
-            #     choices[feature] = {c: None for c in self.files}
-
-            # # TODO what is this?
-            # for feature in [
-            #     "general",
-            #     "type",
-            #     "plot",
-            #     "norm",
-            #     "root",
-            #     "granger",
-            #     "coint",
-            #     "regressions",
-            # ]:
-            #     choices[feature] = dict()
-
             self.choices = choices
 
             # To link to the support HTML
@@ -125,9 +109,8 @@ class ForecastingController(BaseController):
     def update_runtime_choices(self):
         if session and obbff.USE_PROMPT_TOOLKIT:
 
-            # Autocomplete for the user to use a particular stock
+            # Autocomplete for the user to use a particular dataset
             for feature in [
-                "export",
                 "show",
             ]:  # "expo"]:
                 self.choices[feature] = {c: None for c in self.files}
