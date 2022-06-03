@@ -67,6 +67,8 @@ def get_rnn_data(
     # TODO Check if torch GPU AVAILABLE
     # TODO add in covariates
     # todo add in all possible parameters for training
+    # Export model / save
+    # load trained model
 
     scaled_ticker_series = scaler.fit_transform(
         filler.transform(
@@ -110,6 +112,7 @@ def get_rnn_data(
 
     # fit model on train series for historical forecasting
     rnn_model.fit(series=scaled_train, val_series=scaled_val)
+    best_model = RNNModel.load_from_checkpoint(model_name="rnn_model", best=True)
 
     # Showing historical backtesting without retraining model (too slow)
     scaled_historical_fcast = rnn_model.historical_forecasts(
@@ -120,8 +123,6 @@ def get_rnn_data(
         verbose=True,
     )
 
-    # Show we retrain a new model before predicting??
-    best_model = RNNModel.load_from_checkpoint(model_name="rnn_model", best=True)
     # Predict N timesteps in the future
     scaled_prediction = best_model.predict(
         series=scaled_ticker_series, n=int(n_predict)
