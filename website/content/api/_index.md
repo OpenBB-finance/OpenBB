@@ -1,26 +1,17 @@
 ---
+title: OpenBB Python API
 geekdocCollapseSection: true
 ---
 
-{{< toc-tree >}}
-
-<img width="1356" alt="image" src="https://user-images.githubusercontent.com/11668535/157916097-f9c5af6f-b97f-476d-943e-49eea4283bed.png">
-
-
-- [GST python API](#gst-python-api)
-- [Python environment setup](#python-environment-setup)
-- [Understanding the API functions](#understanding-the-api-functions)
-- [Usage examples](#usage-examples)
-- [External matplotlib axes support](#external-matplotlib-axes-support)
-
-## GST python API
-
-The GST python API was created to enable usage of the terminal functionality in python
-scripts and IPython Notebooks (Jupyter).
-The API wraps the functionality of the terminal in a way that the python commands follow
-the same convention as the terminal.
+The OpenBB Python API was created to enable usage of the terminal functionality in python
+scripts and IPython Notebooks (Jupyter). The API wraps the functionality of the terminal in a way that the Python
+commands follow the same convention as the terminal.
 
 For example `stocks/load aapl` becomes `openbb.stocks.load("aapl")`.
+
+<a target="_blank" href="https://user-images.githubusercontent.com/11668535/157916097-f9c5af6f-b97f-476d-943e-49eea4283bed.png"><img width="500" alt="image" src="https://user-images.githubusercontent.com/11668535/157916097-f9c5af6f-b97f-476d-943e-49eea4283bed.png"></a>
+
+{{< toc >}}
 
 ---
 
