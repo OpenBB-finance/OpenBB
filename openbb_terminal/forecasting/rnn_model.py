@@ -120,6 +120,7 @@ def get_rnn_data(
         verbose=True,
     )
 
+    # Show we retrain a new model before predicting??
     best_model = RNNModel.load_from_checkpoint(model_name="rnn_model", best=True)
     # Predict N timesteps in the future
     scaled_prediction = best_model.predict(

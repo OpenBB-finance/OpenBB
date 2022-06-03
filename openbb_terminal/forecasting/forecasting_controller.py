@@ -532,6 +532,7 @@ class ForecastingController(BaseController):
                 export=ns_parser.export,
             )
 
+    # TODO add in all the hyperparameters ZzZzzzzZzzzZzzzzzz
     @log_start_end(log=logger)
     def call_rnn(self, other_args: List[str]):
         """Process RNN command"""
