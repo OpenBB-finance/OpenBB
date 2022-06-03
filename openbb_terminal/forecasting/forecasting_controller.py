@@ -47,7 +47,7 @@ logger = logging.getLogger(__name__)
 class ForecastingController(BaseController):
     """Forecasting class"""
 
-    CHOICES_COMMANDS: List[str] = ["load", "expo", "theta"]
+    CHOICES_COMMANDS: List[str] = ["load", "show", "expo", "theta"]
     # CHOICES_MENUS: List[str] = ["qa", "pred"]
     pandas_plot_choices = [
         "line",
@@ -143,13 +143,10 @@ class ForecastingController(BaseController):
         )
         mt.add_raw("\n")
         mt.add_cmd("load")
-        mt.add_cmd("remove", "", self.files)
         mt.add_raw("\n")
         mt.add_param("_loaded", self.loaded_dataset_cols)
-
         mt.add_info("_exploration_")
         mt.add_cmd("show", "", self.files)
-        mt.add_cmd("plot", "", self.files)
         mt.add_info("_tsforecasting_")
         mt.add_cmd("expo", "", self.files)
         mt.add_cmd("theta", "", self.files)
@@ -234,6 +231,84 @@ class ForecastingController(BaseController):
 
                     console.print()
 
+    # Show selected dataframe on console
+    @log_start_end(log=logger)
+    def call_show(self, other_args: List[str]):
+        """Process show command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="show",
+            description="Show a portion of the DataFrame",
+        )
+        parser.add_argument(
+            "-n",
+            "--name",
+            type=str,
+            choices=self.files,
+            dest="name",
+            help="The name of the database you want to show data for",
+        )
+        parser.add_argument(
+            "-s",
+            "--sortcol",
+            help="Sort based on a column in the DataFrame",
+            nargs="+",
+            type=str,
+            dest="sortcol",
+            default="",
+        )
+        parser.add_argument(
+            "-a",
+            "--ascend",
+            help="Use this argument to sort in a descending order",
+            action="store_true",
+            default=False,
+            dest="ascend",
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-n")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED, limit=10
+        )
+
+        if ns_parser:
+            if not ns_parser.name:
+                dataset_names = list(self.datasets.keys())
+            else:
+                dataset_names = [ns_parser.name]
+
+            for name in dataset_names:
+                df = self.datasets[name]
+
+                if name in self.datasets and self.datasets[name].empty:
+                    return console.print(
+                        f"[red]No data available for {ns_parser.name}.[/red]\n"
+                    )
+                if ns_parser.sortcol:
+                    sort_column = " ".join(ns_parser.sortcol)
+                    if sort_column not in self.datasets[name].columns:
+                        console.print(
+                            f"[red]{sort_column} not a valid column. Showing without sorting.\n[/red]"
+                        )
+                    else:
+                        df = df.sort_values(by=sort_column, ascending=ns_parser.ascend)
+
+                print_rich_table(
+                    df.head(ns_parser.limit),
+                    headers=list(df.columns),
+                    show_index=True,
+                    title=f"Dataset {name} | Showing {ns_parser.limit} of {len(df)} rows",
+                )
+
+                export_data(
+                    ns_parser.export,
+                    os.path.dirname(os.path.abspath(__file__)),
+                    f"{ns_parser.name}_show",
+                    df.head(ns_parser.limit),
+                )
+
     """
     TODO:
     - target series and supplimental series
@@ -258,16 +333,13 @@ class ForecastingController(BaseController):
             """,
         )
         parser.add_argument(
-            "-f",
-            "--file",
-            action="store",
-            dest="file_name",
-            # type=check_exists,  # TODO Check if loaded OR autocomplete
-            default="",
-            help="loaded file",
+            "--td",
+            type=str,
+            choices=self.files,
+            dest="target_dataset",
+            help="Dataset name",
         )
         parser.add_argument(
-            "-n",
             "--n_days",
             action="store",
             dest="n_days",
@@ -276,8 +348,7 @@ class ForecastingController(BaseController):
             help="prediction days.",
         )
         parser.add_argument(
-            "-t",
-            "--target_col",
+            "--tc",
             action="store",
             dest="target_col",
             default="close",
@@ -338,28 +409,36 @@ class ForecastingController(BaseController):
         )
         # TODO Convert this to multi series
         if ns_parser:
-            if ns_parser.file_name == "":
-                console.print("[red]Failed to input a target series.\n[/red]")
-            else:
-                # must check that target col is within target series
-                if ns_parser.target_col in self.datasets[ns_parser.file_name].columns:
-                    expo_view.display_expo_forecast(
-                        data=self.datasets[ns_parser.file_name],
-                        ticker_name=ns_parser.file_name,
-                        n_predict=ns_parser.n_days,
-                        target_col=ns_parser.target_col,
-                        trend=ns_parser.trend,
-                        seasonal=ns_parser.seasonal,
-                        seasonal_periods=ns_parser.seasonal_periods,
-                        dampen=ns_parser.dampen,
-                        start_window=ns_parser.start_window,
-                        forecast_horizon=ns_parser.forecast_horizon,
-                        export=ns_parser.export,
-                    )
-                else:
-                    console.print(
-                        f"[red]The target column {ns_parser.target_col} does not exist in dataframe.\n[/red]"
-                    )
+
+            # check proper file name is provided
+            if not ns_parser.target_dataset:
+                console.print("[red]Please enter valid dataset.\n[/red]")
+                return
+
+            # must check that target col is within target series
+            if (
+                ns_parser.target_col
+                not in self.datasets[ns_parser.target_dataset].columns
+            ):
+                console.print(ns_parser.target_col)
+                console.print(
+                    f"[red]The target column {ns_parser.target_col} does not exist in dataframe.\n[/red]"
+                )
+                return
+
+            expo_view.display_expo_forecast(
+                data=self.datasets[ns_parser.target_dataset],
+                ticker_name=ns_parser.target_dataset,
+                n_predict=ns_parser.n_days,
+                target_col=ns_parser.target_col,
+                trend=ns_parser.trend,
+                seasonal=ns_parser.seasonal,
+                seasonal_periods=ns_parser.seasonal_periods,
+                dampen=ns_parser.dampen,
+                start_window=ns_parser.start_window,
+                forecast_horizon=ns_parser.forecast_horizon,
+                export=ns_parser.export,
+            )
 
     @log_start_end(log=logger)
     def call_theta(self, other_args: List[str]):
@@ -373,13 +452,11 @@ class ForecastingController(BaseController):
             """,
         )
         parser.add_argument(
-            "-f",
-            "--file",
-            action="store",
-            dest="file_name",
-            # type=check_exists,  # TODO Check if loaded OR autocomplete
-            default="",
-            help="loaded file",
+            "--td",
+            type=str,
+            choices=self.files,
+            dest="target_dataset",
+            help="Dataset name",
         )
         parser.add_argument(
             "-n",
@@ -391,8 +468,7 @@ class ForecastingController(BaseController):
             help="prediction days.",
         )
         parser.add_argument(
-            "-t",
-            "--target_col",
+            "--tc",
             action="store",
             dest="target_col",
             default="close",
@@ -437,23 +513,29 @@ class ForecastingController(BaseController):
         )
 
         if ns_parser:
-            if ns_parser.file_name == "":
-                console.print("[red]Failed to input a target series.\n[/red]")
-            else:
-                # must check that target col is within target series
-                if ns_parser.target_col in self.datasets[ns_parser.file_name].columns:
-                    theta_view.display_theta_forecast(
-                        data=self.datasets[ns_parser.file_name],
-                        ticker_name=ns_parser.file_name,
-                        n_predict=ns_parser.n_days,
-                        target_col=ns_parser.target_col,
-                        seasonal=ns_parser.seasonal,
-                        seasonal_periods=ns_parser.seasonal_periods,
-                        start_window=ns_parser.start_window,
-                        forecast_horizon=ns_parser.forecast_horizon,
-                        export=ns_parser.export,
-                    )
-                else:
-                    console.print(
-                        f"[red]The target column {ns_parser.target_col} does not exist in dataframe.\n[/red]"
-                    )
+            # check proper file name is provided
+            if not ns_parser.target_dataset:
+                console.print("[red]Please enter valid dataset.\n[/red]")
+                return
+
+            # must check that target col is within target series
+            if (
+                ns_parser.target_col
+                not in self.datasets[ns_parser.target_dataset].columns
+            ):
+                console.print(
+                    f"[red]The target column {ns_parser.target_col} does not exist in dataframe.\n[/red]"
+                )
+                return
+
+            theta_view.display_theta_forecast(
+                data=self.datasets[ns_parser.target_dataset],
+                ticker_name=ns_parser.target_dataset,
+                n_predict=ns_parser.n_days,
+                target_col=ns_parser.target_col,
+                seasonal=ns_parser.seasonal,
+                seasonal_periods=ns_parser.seasonal_periods,
+                start_window=ns_parser.start_window,
+                forecast_horizon=ns_parser.forecast_horizon,
+                export=ns_parser.export,
+            )

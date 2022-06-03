@@ -1091,9 +1091,6 @@ en:
   reports/_reports_: Select one of the following report
   forecasting/_data_loc: Looking for data in
   forecasting/load: load a dataset from csv
-  forecasting/export: export a processed dataset
-  forecasting/remove: remove one of the loaded datasets
-  forecasting/options: show available column-dataset options
   forecasting/_loaded: Loaded files and data columns
   forecasting/_exploration_: Exploration
   forecasting/show: show a portion of a loaded dataset
