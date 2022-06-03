@@ -101,7 +101,7 @@ When the file is downloaded, use the following steps to run the OpenBB Terminal:
 
 {{< columns >}}
 
-**Step 1: Double-click the .exe file that got downloaded to your "Downloads" folder**
+**Step 1: Double-click the `.exe` file that got downloaded to your `Downloads` folder**
 
 You will most likely receive the error below stating "Windows protected your PC". This is because the installer is
 still in beta phase, and the team has not yet requested verification from Windows.
@@ -110,9 +110,9 @@ still in beta phase, and the team has not yet requested verification from Window
 
 <--->
 
-**Step 2: Click on "More info" and select "Run anyway" to start the installation process**
+**Step 2: Click on `More info` and select `Run anyway` to start the installation process**
 
-Proceed by following the steps. Do note that if you wish to install the application to 'Program Files' that you will have to run the resulting application as Administrator.
+Proceed by following the steps. Do note that if you wish to install the application to "Program Files" that you will have to run the resulting application as Administrator.
 
 <p align="center"><a target="_blank" href="https://user-images.githubusercontent.com/46355364/169502143-ba88de53-7757-48f2-9ec4-748d4917044b.png"><img width="500" alt="run_anyway" src="https://user-images.githubusercontent.com/46355364/169502143-ba88de53-7757-48f2-9ec4-748d4917044b.png"></a></p>
 
@@ -140,7 +140,7 @@ When the file is downloaded, use the following steps to run the OpenBB Terminal:
 
 **Step 1: Open the downloaded file and move the folder inside your `Applications` folder**
 
-Open the .dmg file that got downloaded to your "Downloads" folder and rag the folder into your "Applications" folder.
+Open the .dmg file that got downloaded to your "Downloads" folder and drag the folder into your "Applications" folder.
 Note that this should take some time as it is extracting the files from the .dmg file.
 
 You can find the `Applications` folder on the left side of the Finder application (`⌥ + ⌘ + SPACEBAR`). Alternatively,
@@ -160,7 +160,7 @@ You will most likely receive a message that macOS was not able to check whether 
 
 **Step 3: Allow the application to be run by going into your settings**
 
-Go to `System Preferences > Security & Privacy > General`. You should see a message at the bottom that says that the file _was blocked from use because it is not from an identified developer_. Click on `Allow anyway` or `Open anyway`.
+Go to `System Preferences > Security & Privacy > General`. You should see a message at the bottom that says that the file "was blocked from use because it is not from an identified developer". Click on `Allow anyway` or `Open anyway`.
 
 <p align="center"><a target="_blank" href="https://user-images.githubusercontent.com/46355364/169502720-e28c78c5-7684-45a9-aafc-cf497de38c09.png"><img width="500" alt="warning_fix" src="https://user-images.githubusercontent.com/46355364/169502720-e28c78c5-7684-45a9-aafc-cf497de38c09.png"></a></p>
 
@@ -191,7 +191,7 @@ This opens a new menu as depicted below.
 
 <a target="_blank" href="https://user-images.githubusercontent.com/46355364/169503240-922357c8-5e2b-41f0-aca2-c1fc849dcd1c.png"><img src="https://user-images.githubusercontent.com/46355364/169503240-922357c8-5e2b-41f0-aca2-c1fc849dcd1c.png" alt="Stocks Menu" width="800"/></a>
 
-Depending on the menu you are in, you are presented with a new set of commands (see "Explanation of Commands")
+Depending on the menu you are in, you are presented with a new set of commands (see <a href="#explanation-of-commands">Explanation of Commands</a>)
 and menus you can select. There are interactions in place between each menu. For example, when selecting a company within
 the `stocks` menu, the terminal will remember your selection when you visit the `fa` or `options` menu.
 See <a href="terminal/stocks" target="_blank">Introduction to Stocks</a> for more information.
@@ -199,7 +199,7 @@ See <a href="terminal/stocks" target="_blank">Introduction to Stocks</a> for mor
 ### Explanation of Commands
 
 Commands, depicted in <b><span style="color:#00AAFF">Light Blue</span></b>, execute an action or task. For example,
-the commands that you are able to use from any menu in the terminal (see "Explanation of Menus") are as follows:
+the commands that you are able to use from any menu in the terminal (see <a href="#explanation-of-menus">Explanation of Menus</a>) are as follows:
 
 - `cls`: clears the screen, by executing this command you are left with an empty screen.
 - `help`, `h` or `?`: displays the menu that you are currently on. 
@@ -290,7 +290,7 @@ selected period.
 ```
 <a target="_blank" href="https://user-images.githubusercontent.com/46355364/169503345-a9409637-dc7a-4193-9c87-38b1b6ee1a08.png"><img src="https://user-images.githubusercontent.com/46355364/169503345-a9409637-dc7a-4193-9c87-38b1b6ee1a08.png" alt="Amazon Candle Chart" width="800"/></a>
 
-As mentioned in the "Explanation of Menus", some information also transfers over to other menus and this includes the
+As mentioned in the <a href="#explanation-of-menus">Explanation of Menus</a>, some information also transfers over to other menus and this includes the
 loaded market data from <a href="terminal/stocks/load" target="_blank">load</a>.
 So, if you would visit the `ta` menu (which stands for <a href="https://www.investopedia.com/terms/t/technicalanalysis.asp" target="_blank">Technical Analysis</a>) you will see that, by running any command, the selected period above is depicted again. Return to the Stocks menu again by using `q` and use it again to return to the home screen which can be shown with `?`.
 
@@ -336,7 +336,7 @@ To figure out where you can obtain the API key, you can enter the command (e.g. 
 
 ## Available menus within the OpenBB Terminal
 
-There is a large collection of (sub) menus available. Here, the asset class and other menus are described. To find a  detailed description and explanation of its usage for each menu, click on the corresponding link to visit the introduction page.
+There is a large collection of (sub) menus available. Here, the asset class and other menus are described. To find a detailed description and explanation of its usage for each menu, click on the corresponding link to visit the introduction page.
 
 The asset class menus are as follows:
    
