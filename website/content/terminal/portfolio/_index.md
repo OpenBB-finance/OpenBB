@@ -2,28 +2,11 @@
 geekdocCollapseSection: true
 ---
 
+A **Portfolio** is a collection of financial assets such as stocks, bonds, commodities, cash, and cash equivalents, as well as closed-end funds and exchange-traded funds (ETFs). Stocks, bonds, and cash are commonly seen to be the foundation of a portfolio. This isn't always the case, but it doesn't have to be. Real estate, art, and private investments are all examples of assets that can be found in a portfolio.
+
+**Portfolio Attribution** is a complex way for evaluating a portfolio or fund manager's performance. It aims to objectively assess components of an active fund manager's investment selections and decisions—and to discover sources of excess returns, especially when contrasted to an index or other benchmark. It is also known as "return attribution" or "performance attribution." This can be a useful technique for portfolio managers and investment firms to evaluate strategies. For investors, attribution analysis is a useful tool for evaluating fund or money manager performance.
+
+**Portfolio optimization** is usually referred to as Modern Portfolio Theory (MPT). This is started by the famous paper from Harry Markowitz that shows “that the performance of an individual stock is not as important as the performance and composition of an investor's entire portfolio.” The biggest criticism of the MPT that if two portfolios have equal variance and equal return, the MPT is indifferent what portfolio you choose even though the downside risk of one portfolio could be much higher than that of the other, meaning significant losses can be sporadic (but large) for one portfolio while frequent (but of smaller size) for the other while having the same variance. This is where Post-Modern Portfolio Theory (PMPT) makes proper adjustments for. The main difference: “The differences in risk, as defined by the standard deviation of returns, between the PMPT and the MPT is the key factor in portfolio construction. The MPT assumes symmetrical risk whereas the PMPT assumes asymmetrical risk. Downside risk is measured by target semi-deviation, termed downside deviation, and captures what investors fear most: having negative returns.” This goes deeper into the concept of Utility and Risk Aversion where the perceived negative impact of -10% is larger than the perceived positive impact of 10%.
+
+**Available commands**
 {{< toc-tree >}}
-
-```text
-(✨) / $ portfolio
-
-What do you want to do?
-
->   bro         brokers holdings,                supports: robinhood, ally, degiro, coinbase
->   po          portfolio optimization,          optimal portfolio weights from pyportfolioopt
->   pa          portfolio analysis,              analyse portfolios
-
-Portfolio:
-    load        load data into the portfolio
-    save        save your portfolio for future use
-    show        show existing transactions
-    add         add a security to your portfolio
-    rmv         remove a security from your portfolio
-
-Reports:
-    ar          annual report for performance of a given portfolio
-
-Graphs:
-    rmr         graph your returns versus the market's returns
-    al          displays the allocation of the portfolio
-```

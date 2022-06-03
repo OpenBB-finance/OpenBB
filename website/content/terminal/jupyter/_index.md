@@ -2,6 +2,7 @@
 geekdocCollapseSection: true
 ---
 
-{{< toc-tree >}}
+Create notebook templates (through papermill) which can be run on different tickers. This level of automation allows speeding up the development of your investment thesis and reduce human error.
 
-Jupyter
+**Available commands**
+{{< toc-tree >}}

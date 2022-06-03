@@ -7,5 +7,6 @@ The menu allows the user to load in his/her own dataset(s), modify the data by (
 indices, apply statistical tests (e.g. Breusch-Godfrey autocorrelation tests) as well as OLS regressions and Panel 
 regressions (e.g. Random Effects and Fixed Effects)
 
+**Available commands**
 {{< toc-tree >}}
 
