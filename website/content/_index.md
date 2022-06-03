@@ -94,31 +94,33 @@ or visit our <a href="https://openbb.co/contact" target="_blank">contact page</a
 The process starts off by downloading the installer, see below for how to download the most recent release:
 
 1. Go to <a href="https://github.com/OpenBB-finance/OpenBBTerminal/releases" target="_blank">the following link</a>
-2. Click on the 'Latest' release and scroll down
-3. Click on the ".exe" file, this downloads the installation program
+2. Click on the `Latest` release and scroll down
+3. Click on the `.exe` file, this downloads the installation program
 
-When the file is downloaded, you can follow the following steps:
+When the file is downloaded, use the following steps to run the OpenBB Terminal:
 
 {{< columns >}}
 
-#### Installation
-Double click the .exe file that got downloaded to your "Downloads" folder. You will most likely receive the error on
-the right stating "Windows protected your PC". This is because the installer is still in beta phase, and the team has
-not yet requested verification from Windows.
+**Step 1: Double-click the .exe file that got downloaded to your "Downloads" folder**
+
+You will most likely receive the error below stating "Windows protected your PC". This is because the installer is
+still in beta phase, and the team has not yet requested verification from Windows.
 
 <p align="center"><a target="_blank" href="https://user-images.githubusercontent.com/46355364/169502271-69ad8075-165f-4b1a-8ab8-254d643a5dae.png"><img width="500" alt="windows_protected_your_pc" src="https://user-images.githubusercontent.com/46355364/169502271-69ad8075-165f-4b1a-8ab8-254d643a5dae.png"></a></p>
 
 <--->
 
-#### Installation 2
-Click on "More info" and select "Run anyway" to start the installation process. Proceed by following the steps. Do note that if you wish to install the application to 'Program Files' that you will have to run the resulting application as Administrator.
+**Step 2: Click on "More info" and select "Run anyway" to start the installation process**
+
+Proceed by following the steps. Do note that if you wish to install the application to 'Program Files' that you will have to run the resulting application as Administrator.
 
 <p align="center"><a target="_blank" href="https://user-images.githubusercontent.com/46355364/169502143-ba88de53-7757-48f2-9ec4-748d4917044b.png"><img width="500" alt="run_anyway" src="https://user-images.githubusercontent.com/46355364/169502143-ba88de53-7757-48f2-9ec4-748d4917044b.png"></a></p>
 
 <--->
 
-#### Installation 3
-By clicking on the application that appeared on your Desktop, you are able to run the Terminal. The first time this takes a bit longer to load. 
+**Step 3: Double-click on the application that appeared on your Desktop, you are now able to run the OpenBB Terminal**
+
+The first time this takes a bit longer to load, this can take up to a few minutes. 
 
 <p align="center"><a target="_blank" href="https://user-images.githubusercontent.com/46355364/169502187-f4e42333-a947-464b-9320-a8f63c7ce089.png"><img width="500" alt="run_the_terminal" src="https://user-images.githubusercontent.com/46355364/169502187-f4e42333-a947-464b-9320-a8f63c7ce089.png"></a></p>
 
@@ -129,21 +131,40 @@ By clicking on the application that appeared on your Desktop, you are able to ru
 The process starts off by downloading the installer, see below for how to download the most recent release:
 
 1. Go to <a href="https://github.com/OpenBB-finance/OpenBBTerminal/releases" target="_blank">the following link</a>
-2. Click on the 'Latest' release and scroll down
-3. Click on the ".dmg" file, this downloads the installation program
+2. Click on the `Latest` release and scroll down
+3. Click on the `.dmg` file, this downloads the installation program
 
-Installation instructions:
+When the file is downloaded, use the following steps to run the OpenBB Terminal:
 
-1. Open the .dmg file that got downloaded to your "Downloads" folder.
-2. Drag the folder into your "Applications" folder. This should take some time as it is extracting the
-   files from the .dmg file.
-3. Open the folder and click on the "OpenBB Terminal" file, this should run the application.
+{{< columns >}}
 
-<a target="_blank" href="https://user-images.githubusercontent.com/46355364/169502594-5cafd088-01bc-49fb-9c70-a9105798e9f9.png"><img width="800" alt="mac_os_installation" src="https://user-images.githubusercontent.com/46355364/169502594-5cafd088-01bc-49fb-9c70-a9105798e9f9.png"></a>
+**Step 1: Open the downloaded file and move the folder inside your `Applications` folder**
 
-| Note about "Cannot check it for malicious software" warning                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | Illustration                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Run the file. You will most likely receive a message that macOS was not able to check whether the application contains malicious software. This is because the installer is still in beta phase, and the team has not yet requested verification from Apple. See below how to correct for this. <br></br> Go to `System Preferences > Security & Privacy > General`. You should see a message at the bottom that says that the file "was blocked from use because it is not from an identified developer". Click on “Allow anyway” or "Open anyway". <br></br> You should now be able to launch the application. | <p align="center"><a target="_blank" href="https://user-images.githubusercontent.com/46355364/169502740-2345e2d6-1230-427d-afbc-58f9a30c4803.png"><img width="500" alt="malicious_software_warning" src="https://user-images.githubusercontent.com/46355364/169502740-2345e2d6-1230-427d-afbc-58f9a30c4803.png"></p></a><p align="center"><a target="_blank" href="https://user-images.githubusercontent.com/46355364/169502720-e28c78c5-7684-45a9-aafc-cf497de38c09.png"><img width="500" alt="warning_fix" src="https://user-images.githubusercontent.com/46355364/169502720-e28c78c5-7684-45a9-aafc-cf497de38c09.png"></p></a> |
+Open the .dmg file that got downloaded to your "Downloads" folder and rag the folder into your "Applications" folder.
+Note that this should take some time as it is extracting the files from the .dmg file.
+
+You can find the `Applications` folder on the left side of the Finder application (`⌥ + ⌘ + SPACEBAR`). Alternatively,
+search for the Finder with `⌘ + SPACEBAR`.
+
+<p align="center"><a target="_blank" href="https://user-images.githubusercontent.com/46355364/169502594-5cafd088-01bc-49fb-9c70-a9105798e9f9.png"><img width="800" alt="mac_os_installation" src="https://user-images.githubusercontent.com/46355364/169502594-5cafd088-01bc-49fb-9c70-a9105798e9f9.png"></a></p>
+
+<--->
+
+**Step 2: Open the folder and click on the `OpenBB Terminal` file, this should run the application.**
+
+You will most likely receive a message that macOS was not able to check whether the application contains malicious software. This is because the installer is still in beta phase, and the team has not yet requested verification from Apple. See below how to correct for this.
+
+<p align="center"><a target="_blank" href="https://user-images.githubusercontent.com/46355364/169502740-2345e2d6-1230-427d-afbc-58f9a30c4803.png"><img width="300" alt="malicious_software_warning" src="https://user-images.githubusercontent.com/46355364/169502740-2345e2d6-1230-427d-afbc-58f9a30c4803.png"></a></p>
+
+<--->
+
+**Step 3: Allow the application to be run by going into your settings**
+
+Go to `System Preferences > Security & Privacy > General`. You should see a message at the bottom that says that the file _was blocked from use because it is not from an identified developer_. Click on `Allow anyway` or `Open anyway`.
+
+<p align="center"><a target="_blank" href="https://user-images.githubusercontent.com/46355364/169502720-e28c78c5-7684-45a9-aafc-cf497de38c09.png"><img width="500" alt="warning_fix" src="https://user-images.githubusercontent.com/46355364/169502720-e28c78c5-7684-45a9-aafc-cf497de38c09.png"></a></p>
+
+{{< /columns >}}
 
 ## Structure of the OpenBB Terminal
 
