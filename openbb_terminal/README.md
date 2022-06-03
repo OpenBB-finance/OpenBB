@@ -175,7 +175,7 @@ macs is recommended.
 10. Jupyter Lab (Optional. Early alpha). User the Terminal from Jupyter Lab
 
     You can install Jupyter Lab extensions that help you manage settings and launch the terminal in a JL bash console
-    using the commands in the [jupyterlab/README.md](jupyterlab/README.md)
+    using the commands in the [jupyterlab/README.md](../jupyterlab/README.md)
 
 **NOTE:** When you close the terminal and re-open it, the only command you need to re-call is `conda activate gst`
 before you call `python terminal.py` again.
