@@ -82,7 +82,6 @@ def display_rnn_forecast(
         start_window,
         forecast_horizon,
     )
-
     # Plotting with Matplotlib
     external_axes = None
     if not external_axes:

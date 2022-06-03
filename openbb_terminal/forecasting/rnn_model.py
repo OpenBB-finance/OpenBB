@@ -15,6 +15,7 @@ from darts import TimeSeries
 from darts.models import RNNModel
 from darts.dataprocessing.transformers import MissingValuesFiller, Scaler
 from darts.metrics import mape
+from pytorch_lightning.callbacks.early_stopping import EarlyStopping
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
@@ -64,7 +65,6 @@ def get_rnn_data(
 
     # TODO add proper doc string
     # TODO Check if torch GPU AVAILABLE
-    # TODO Add in early stopping
     # TODO add in covariates
     # todo add in all possible parameters for training
 
@@ -80,26 +80,36 @@ def get_rnn_data(
         )
     ).astype(np.float32)
 
-    scaled_train, scaled_val = scaled_ticker_series.split_before(start_window)
+    scaled_train, scaled_val = scaled_ticker_series.split_before(0.85)
+
+    # Early Stopping
+    my_stopper = EarlyStopping(
+        monitor="val_loss",
+        patience=5,
+        min_delta=0,
+        mode="min",
+    )
+    pl_trainer_kwargs = {"callbacks": [my_stopper], "accelerator": "cpu"}
 
     rnn_model = RNNModel(
         model="LSTM",
         hidden_dim=20,
         dropout=0,
         batch_size=16,
-        n_epochs=150,
+        n_epochs=50,
         optimizer_kwargs={"lr": 1e-3},
         model_name="rnn_model",
         log_tensorboard=True,  # TODO Not sure..
         random_state=42,
         training_length=20,
         input_chunk_length=14,
+        # pl_trainer_kwargs=pl_trainer_kwargs,
         force_reset=True,
         save_checkpoints=True,  # TODO - where to save?
     )
 
     # fit model on entire series for final prediction
-    rnn_model.fit(scaled_train)
+    rnn_model.fit(series=scaled_train, val_series=scaled_val)
 
     # Showing historical backtesting
     scaled_historical_fcast = rnn_model.historical_forecasts(
@@ -122,7 +132,6 @@ def get_rnn_data(
     (ticker_series, historical_fcast, prediction) = scaler.inverse_transform(
         [scaled_ticker_series, scaled_historical_fcast, scaled_prediction]
     )
-
     return (
         ticker_series,
         historical_fcast,
