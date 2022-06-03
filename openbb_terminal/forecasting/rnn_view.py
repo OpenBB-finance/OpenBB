@@ -1,4 +1,4 @@
-"""Theta View"""
+"""RNN View"""
 __docformat__ = "numpy"
 
 import logging

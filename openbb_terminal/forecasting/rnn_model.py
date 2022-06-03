@@ -1,4 +1,4 @@
-"""Theta Model"""
+"""RNN Model"""
 __docformat__ = "numpy"
 
 import logging
@@ -120,9 +120,12 @@ def get_rnn_data(
         verbose=True,
     )
 
-    # fit model on entire series for final prediction
-    rnn_model.fit(series=scaled_ticker_series, val_series=scaled_val)
-    scaled_prediction = rnn_model.predict(int(n_predict))
+    best_model = RNNModel.load_from_checkpoint(model_name="rnn_model", best=True)
+    # Predict N timesteps in the future
+    scaled_prediction = best_model.predict(
+        series=scaled_ticker_series, n=int(n_predict)
+    )
+
     precision = mape(
         actual_series=scaled_ticker_series, pred_series=scaled_historical_fcast
     )  # mape = mean average precision error
