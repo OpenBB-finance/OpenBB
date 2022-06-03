@@ -1095,5 +1095,6 @@ en:
   forecasting/_exploration_: Exploration
   forecasting/show: show a portion of a loaded dataset
   forecasting/_tsforecasting_: TimeSeries Forecasting
-  forecasting/expo: Probablistic Exponential Smoothing Model
-  forecasting/theta: Theta Model
+  forecasting/expo: Probablistic Exponential Smoothing
+  forecasting/theta: Theta Method
+  forecasting/rnn: Recurrent Neural Network (Vanilla RNN, LSTM, GRU)

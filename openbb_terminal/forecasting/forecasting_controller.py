@@ -36,8 +36,16 @@ from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.forecasting import (
     forecasting_model,
     forecasting_view,
+    rnn_view,
 )
-from openbb_terminal.forecasting import expo_model, expo_view, theta_model, theta_view
+from openbb_terminal.forecasting import (
+    expo_model,
+    expo_view,
+    theta_model,
+    theta_view,
+    rnn_model,  # keep so that I can use RNN.LSTM / RNN.GRU (like theta model)
+    rnn_view,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -47,7 +55,7 @@ logger = logging.getLogger(__name__)
 class ForecastingController(BaseController):
     """Forecasting class"""
 
-    CHOICES_COMMANDS: List[str] = ["load", "show", "expo", "theta"]
+    CHOICES_COMMANDS: List[str] = ["load", "show", "expo", "theta", "rnn"]
     # CHOICES_MENUS: List[str] = ["qa", "pred"]
     pandas_plot_choices = [
         "line",
@@ -133,6 +141,7 @@ class ForecastingController(BaseController):
         mt.add_info("_tsforecasting_")
         mt.add_cmd("expo", "", self.files)
         mt.add_cmd("theta", "", self.files)
+        mt.add_cmd("rnn", "", self.files)
 
         console.print(text=mt.menu_text, menu="Forecasting")
 
@@ -518,6 +527,86 @@ class ForecastingController(BaseController):
                 target_col=ns_parser.target_col,
                 seasonal=ns_parser.seasonal,
                 seasonal_periods=ns_parser.seasonal_periods,
+                start_window=ns_parser.start_window,
+                forecast_horizon=ns_parser.forecast_horizon,
+                export=ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
+    def call_rnn(self, other_args: List[str]):
+        """Process RNN command"""
+        parser = argparse.ArgumentParser(
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            add_help=False,
+            prog="rnn",
+            description="""
+                Perform RNN forecast (Vanilla RNN, LSTM, GRU)
+            """,
+        )
+        parser.add_argument(
+            "--td",
+            type=str,
+            choices=self.files,
+            dest="target_dataset",
+            help="Dataset name",
+        )
+        parser.add_argument(
+            "-n",
+            "--n_days",
+            action="store",
+            dest="n_days",
+            type=check_positive,
+            default=5,
+            help="prediction days.",
+        )
+        parser.add_argument(
+            "--tc",
+            action="store",
+            dest="target_col",
+            default="close",
+            help="target column.",
+        )
+        parser.add_argument(
+            "-w",
+            "--window",
+            action="store",
+            dest="start_window",
+            default=0.65,
+            help="Start point for rolling training and forecast window. 0.0-1.0",
+        )
+        parser.add_argument(
+            "--forecasthorizon",
+            action="store",
+            dest="forecast_horizon",
+            default=3,
+            help="Days/Points to forecast when training and performing historical back-testing",
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
+        )
+
+        if ns_parser:
+            # check proper file name is provided
+            if not ns_parser.target_dataset:
+                console.print("[red]Please enter valid dataset.\n[/red]")
+                return
+
+            # must check that target col is within target series
+            if (
+                ns_parser.target_col
+                not in self.datasets[ns_parser.target_dataset].columns
+            ):
+                console.print(
+                    f"[red]The target column {ns_parser.target_col} does not exist in dataframe.\n[/red]"
+                )
+                return
+            print(ns_parser)
+            rnn_view.display_rnn_forecast(
+                data=self.datasets[ns_parser.target_dataset],
+                ticker_name=ns_parser.target_dataset,
+                n_predict=ns_parser.n_days,
+                target_col=ns_parser.target_col,
                 start_window=ns_parser.start_window,
                 forecast_horizon=ns_parser.forecast_horizon,
                 export=ns_parser.export,

@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 from openbb_terminal.config_terminal import theme
-from openbb_terminal.forecasting import theta_model
+from openbb_terminal.forecasting import rnn_model
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
@@ -39,29 +39,21 @@ def dt_format(x):
 
 
 @log_start_end(log=logger)
-def display_theta_forecast(
+def display_rnn_forecast(
     data: Union[pd.DataFrame, pd.Series],
     ticker_name: str,
-    seasonal: str,
-    seasonal_periods: int,
     n_predict: int,
     target_col: str,
     start_window: float,
     forecast_horizon: int,
     export: str = "",
 ):
-    """Display Theta forecast
+    """Display RNN forecast
 
     Parameters
     ----------
     data : Union[pd.Series, np.array]
         Data to forecast
-    seasonal: str
-        Seasonal component.  One of [N, A, M]
-        Defaults to MULTIPLICATIVE.
-    seasonal_periods: int
-        Number of seasonal periods in a year
-        If not set, inferred from frequency of the series.
     n_predict: int
         Number of days to forecast
     start_window: float
@@ -79,15 +71,12 @@ def display_theta_forecast(
 
     (
         ticker_series,
-        historical_fcast_theta,
+        historical_fcast,
         predicted_values,
         precision,
-        best_theta,
         _model,
-    ) = theta_model.get_theta_data(
+    ) = rnn_model.get_rnn_data(
         data,
-        seasonal,
-        seasonal_periods,
         n_predict,
         target_col,
         start_window,
@@ -106,14 +95,14 @@ def display_theta_forecast(
         ax = external_axes
 
     # ax = fig.get_axes()[0] # fig gives list of axes (only one for this case)
-    ticker_series.plot(label=f"{target_col}", figure=fig)
-    historical_fcast_theta.plot(
+    ticker_series.plot(label=target_col, figure=fig)
+    historical_fcast.plot(
         label=f"Backtest {forecast_horizon}-Steps ahead forecast",
         figure=fig,
     )
-    predicted_values.plot(label="Theta Forecast", figure=fig)
+    predicted_values.plot(label="RNN Forecast", figure=fig)
     ax.set_title(
-        f"Theta {best_theta:.2f} for ${ticker_name} for next [{n_predict}] days (MAPE={round(precision,2)}%)"
+        f"RNN for ${ticker_name} for next [{n_predict}] days (MAPE={precision:.2f}%)"
     )
     ax.set_ylabel(target_col)
     ax.set_xlabel("Date")

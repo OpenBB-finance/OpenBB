@@ -74,7 +74,6 @@ def get_theta_data(
         Theta Model
     """
     filler = MissingValuesFiller()
-
     ticker_series = TimeSeries.from_dataframe(
         data,
         time_col="date",

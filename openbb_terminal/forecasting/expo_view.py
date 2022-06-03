@@ -116,7 +116,7 @@ def display_expo_forecast(
     # ax = fig.get_axes()[0] # fig gives list of axes (only one for this case)
     ticker_series.plot(label=target_col, figure=fig)
     historical_fcast_es.plot(
-        label="Back-test 3-Days ahead forecast (Exp. Smoothing)", figure=fig
+        label=f"{forecast_horizon}-Steps ahead forecast", figure=fig
     )
     predicted_values.plot(
         label="Probabilistic Forecast", low_quantile=0.1, high_quantile=0.9, figure=fig
