@@ -493,7 +493,6 @@ en:
   stocks/pred/lstm: Long-Short Term Memory
   stocks/pred/conv1d: 1D Convolutional Neural Network
   stocks/pred/mc: Monte-Carlo simulations
-  stocks/pred/expo: Probabilistic Exponential Smoothing
   crypto/load: load a specific cryptocurrency for analysis
   crypto/find: find coins
   crypto/_coin: Coin
