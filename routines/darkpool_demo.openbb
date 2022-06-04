@@ -20,7 +20,7 @@ pos -l 25 -a
 # Get the Cost-to-Borrow List
 ctb
 
-# Get the days-to-cover list and sort
+# Get the days-to-cover list and sort 
 sidtc -s si
 sidtc
 

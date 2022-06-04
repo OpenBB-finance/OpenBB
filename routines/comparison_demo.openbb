@@ -45,4 +45,12 @@ historical -n
 # Compare financial statements of the ten largest US Banks
 set C,USB,WFC,JPM,TD,GS,PNC,TFC,BAC,COF 
 cashflow
+
+# Show the price-normalized history of S&P, NASDAQ, and Bitcoin futures
+set ES=F,NQ=F,BTC=F 
+historical -n
+
+# Compare financial statements of the ten largest US Banks
+set C,USB,WFC,JPM,TD,GS,PNC,TFC,BAC,COF 
+cashflow
 income
