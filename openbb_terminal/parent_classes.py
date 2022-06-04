@@ -484,7 +484,7 @@ class BaseController(metaclass=ABCMeta):
                     console.print(f" Replacing by '{an_input}'.")
                     self.queue.insert(0, an_input)
                 else:
-                    if self.TRY_RELOAD:
+                    if self.TRY_RELOAD and obbff.RETRY_WITH_LOAD:
                         console.print(f"Trying `load {an_input}`")
                         self.queue.insert(0, "load " + an_input)
                     console.print("")

@@ -20,6 +20,9 @@ i18n.set("filename_format", "{locale}.{format}")
 if ENV_FILE.is_file():
     load_dotenv(dotenv_path=ENV_FILE, override=True)
 
+# Retry unknown commands with `load`
+RETRY_WITH_LOAD = strtobool(os.getenv("OPENBB_RETRY_WITH_LOAD", "False"))
+
 # Use tabulate to print dataframes
 USE_TABULATE_DF = strtobool(os.getenv("OPENBB_USE_TABULATE_DF", "True"))
 
