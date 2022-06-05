@@ -33,6 +33,7 @@
   </a>
 
   <h3 align="center">OpenBB Terminal 🚀</h3>
+  <h4 align="center">Documentation can be found at: https://openbb-finance.github.io/OpenBBTerminal/ </h4>
   <p align="center">Click on the GIF below for a DEMO of the terminal.</p>
 
 <p align="center">
