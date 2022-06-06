@@ -106,7 +106,6 @@ def display_sentiment_compare(
                 headers=list(df_sentiment.columns),
                 title="Ticker Sentiment",
             )
-            console.print("")
 
         export_data(
             export,
@@ -189,5 +188,3 @@ def display_sentiment_correlation(
             "scorr",
             corrs,
         )
-
-    console.print("")

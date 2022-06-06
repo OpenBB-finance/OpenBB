@@ -33,10 +33,10 @@ def display_forward_rates(to_cur: str, from_cur: str, export: str = ""):
         index_name="Expirations",
         show_index=True,
         headers=forward_rates.columns,
-        title=f"Forward rates for {to_cur}/{from_cur}",
+        title=f"Forward rates for {from_cur}/{to_cur}",
         floatfmt=".4f",
     )
-    console.print()
+
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),

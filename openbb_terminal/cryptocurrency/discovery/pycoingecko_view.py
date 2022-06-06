@@ -79,7 +79,6 @@ def display_coins(
             headers=list(df.columns),
             show_index=False,
         )
-        console.print("")
 
         export_data(
             export,
@@ -123,7 +122,6 @@ def display_gainers(
             headers=list(df.columns),
             show_index=False,
         )
-        console.print("")
 
         export_data(
             export,
@@ -167,7 +165,6 @@ def display_losers(
             headers=list(df.columns),
             show_index=False,
         )
-        console.print()
 
         export_data(
             export,
@@ -198,7 +195,6 @@ def display_trending(export: str = "") -> None:
             show_index=False,
             title="Trending coins on CoinGecko",
         )
-        console.print("")
 
         export_data(
             export,

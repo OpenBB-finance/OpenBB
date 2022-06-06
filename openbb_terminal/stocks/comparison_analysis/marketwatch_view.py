@@ -12,7 +12,6 @@ from openbb_terminal.helper_funcs import (
     patch_pandas_text_adjustment,
     print_rich_table,
 )
-from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.comparison_analysis import marketwatch_model
 from openbb_terminal import rich_config
 
@@ -65,7 +64,6 @@ def display_income_comparison(
         show_index=True,
         title="Income Data",
     )
-    console.print("")
 
 
 @log_start_end(log=logger)
@@ -114,7 +112,6 @@ def display_balance_comparison(
         show_index=True,
         title="Company Comparison",
     )
-    console.print("")
 
 
 @log_start_end(log=logger)
@@ -166,4 +163,3 @@ def display_cashflow_comparison(
         show_index=True,
         title="Cashflow Comparison",
     )
-    console.print("")

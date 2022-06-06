@@ -10,8 +10,388 @@ interactions:
     uri: https://financialmodelingprep.com/api/v3/financial-growth/PM?apikey=MOCK_API_KEY&limit=0&period=annual
   response:
     body:
-      string: '{"Error Message":"Too Many Requests contact us at info@financialmodelingprep.com
-        if you need to increase your limit rate per millisecond","X-Rate-Limit-Retry-After-Seconds":0,"X-Rate-Limit-Retry-After-Milliseconds":333}'
+      string: "[ {\n  \"symbol\" : \"PM\",\n  \"date\" : \"2021-12-31\",\n  \"period\"
+        : \"FY\",\n  \"revenueGrowth\" : 0.0944796821635185,\n  \"grossProfitGrowth\"
+        : 0.11764705882352941,\n  \"ebitgrowth\" : 0.11201576962632842,\n  \"operatingIncomeGrowth\"
+        : 0.11201576962632842,\n  \"netIncomeGrowth\" : 0.1307100297914598,\n  \"epsgrowth\"
+        : 0.13378938825907555,\n  \"epsdilutedGrowth\" : 0.13378938825907555,\n  \"weightedAverageSharesGrowth\"
+        : 0.0,\n  \"weightedAverageSharesDilutedGrowth\" : -0.0006418485237483953,\n
+        \ \"dividendsperShareGrowth\" : 0.02933188484519272,\n  \"operatingCashFlowGrowth\"
+        : 0.21962902568283735,\n  \"freeCashFlowGrowth\" : 0.21813246471226927,\n
+        \ \"tenYRevenueGrowthPerShare\" : 0.11946237331821162,\n  \"fiveYRevenueGrowthPerShare\"
+        : 0.17234321923908533,\n  \"threeYRevenueGrowthPerShare\" : 0.05872268698053437,\n
+        \ \"tenYOperatingCFGrowthPerShare\" : 0.2598747213950424,\n  \"fiveYOperatingCFGrowthPerShare\"
+        : 0.4759049638558355,\n  \"threeYOperatingCFGrowthPerShare\" : 0.2609862978498835,\n
+        \ \"tenYNetIncomeGrowthPerShare\" : 0.1753201445669083,\n  \"fiveYNetIncomeGrowthPerShare\"
+        : 0.30241106366291065,\n  \"threeYNetIncomeGrowthPerShare\" : 0.14995566850122186,\n
+        \ \"tenYShareholdersEquityGrowthPerShare\" : -49.91848611173093,\n  \"fiveYShareholdersEquityGrowthPerShare\"
+        : -0.20656873607456386,\n  \"threeYShareholdersEquityGrowthPerShare\" : -0.18990138650277086,\n
+        \ \"tenYDividendperShareGrowthPerShare\" : 0.754867216247641,\n  \"fiveYDividendperShareGrowthPerShare\"
+        : 0.1838805237899306,\n  \"threeYDividendperShareGrowthPerShare\" : 0.09952989497614019,\n
+        \ \"receivablesGrowth\" : 0.047593725073118855,\n  \"inventoryGrowth\" : -0.09081430507767699,\n
+        \ \"assetGrowth\" : -0.07865669976570344,\n  \"bookValueperShareGrowth\" :
+        -0.1958303493276035,\n  \"debtGrowth\" : -0.11827752409944191,\n  \"rdexpenseGrowth\"
+        : 0.0,\n  \"sgaexpensesGrowth\" : 0.18556701030927836\n}, {\n  \"symbol\"
+        : \"PM\",\n  \"date\" : \"2020-12-31\",\n  \"period\" : \"FY\",\n  \"revenueGrowth\"
+        : -0.03727562489515182,\n  \"grossProfitGrowth\" : -0.008656437901720921,\n
+        \ \"ebitgrowth\" : 0.1079669547051562,\n  \"operatingIncomeGrowth\" : 0.1079669547051562,\n
+        \ \"netIncomeGrowth\" : 0.12122477383437717,\n  \"epsgrowth\" : 0.11930585683297175,\n
+        \ \"epsdilutedGrowth\" : 0.11930585683297175,\n  \"weightedAverageSharesGrowth\"
+        : 0.0012861736334405145,\n  \"weightedAverageSharesDilutedGrowth\" : 0.0012853470437017994,\n
+        \ \"dividendsperShareGrowth\" : 0.027027060963290685,\n  \"operatingCashFlowGrowth\"
+        : -0.02755203171456888,\n  \"freeCashFlowGrowth\" : -0.0030309590820523924,\n
+        \ \"tenYRevenueGrowthPerShare\" : 0.24562579066907103,\n  \"fiveYRevenueGrowthPerShare\"
+        : 0.06540896314510537,\n  \"threeYRevenueGrowthPerShare\" : -0.005083663243748409,\n
+        \ \"tenYOperatingCFGrowthPerShare\" : 0.22805184283647184,\n  \"fiveYOperatingCFGrowthPerShare\"
+        : 0.2411424157088897,\n  \"threeYOperatingCFGrowthPerShare\" : 0.09745182756048151,\n
+        \ \"tenYNetIncomeGrowthPerShare\" : 0.3107980233693023,\n  \"fiveYNetIncomeGrowthPerShare\"
+        : 0.16610033154036707,\n  \"threeYNetIncomeGrowthPerShare\" : 0.33059316266331223,\n
+        \ \"tenYShareholdersEquityGrowthPerShare\" : -5.233629220263199,\n  \"fiveYShareholdersEquityGrowthPerShare\"
+        : -0.055992927178570434,\n  \"threeYShareholdersEquityGrowthPerShare\" : 0.036459005897681855,\n
+        \ \"tenYDividendperShareGrowthPerShare\" : 0.9664819168673823,\n  \"fiveYDividendperShareGrowthPerShare\"
+        : 0.17218610147719984,\n  \"threeYDividendperShareGrowthPerShare\" : 0.12582085259130543,\n
+        \ \"receivablesGrowth\" : 0.011837503362927092,\n  \"inventoryGrowth\" : 0.03854899837574445,\n
+        \ \"assetGrowth\" : 0.04524781341107872,\n  \"bookValueperShareGrowth\" :
+        0.08412001538496539,\n  \"debtGrowth\" : 0.01581575132871638,\n  \"rdexpenseGrowth\"
+        : 0.0,\n  \"sgaexpensesGrowth\" : -0.9889571948998178\n}, {\n  \"symbol\"
+        : \"PM\",\n  \"date\" : \"2019-12-31\",\n  \"period\" : \"FY\",\n  \"revenueGrowth\"
+        : 0.0060759493670886075,\n  \"grossProfitGrowth\" : 0.022526103779085174,\n
+        \ \"ebitgrowth\" : -0.07436055199085875,\n  \"operatingIncomeGrowth\" : -0.07436055199085875,\n
+        \ \"netIncomeGrowth\" : -0.09177095183921123,\n  \"epsgrowth\" : -0.09251968503937003,\n
+        \ \"epsdilutedGrowth\" : -0.09251968503937003,\n  \"weightedAverageSharesGrowth\"
+        : 0.0,\n  \"weightedAverageSharesDilutedGrowth\" : 0.0006430868167202572,\n
+        \ \"dividendsperShareGrowth\" : 0.04008714596949895,\n  \"operatingCashFlowGrowth\"
+        : 0.06457058451150031,\n  \"freeCashFlowGrowth\" : 0.14871922407361352,\n
+        \ \"tenYRevenueGrowthPerShare\" : 0.48759235462635275,\n  \"fiveYRevenueGrowthPerShare\"
+        : 0.008359566912884156,\n  \"threeYRevenueGrowthPerShare\" : 0.1140465126367103,\n
+        \ \"tenYOperatingCFGrowthPerShare\" : 0.5991417352250721,\n  \"fiveYOperatingCFGrowthPerShare\"
+        : 0.3130089424716089,\n  \"threeYOperatingCFGrowthPerShare\" : 0.24601275424999003,\n
+        \ \"tenYNetIncomeGrowthPerShare\" : 0.41560778396663484,\n  \"fiveYNetIncomeGrowthPerShare\"
+        : -0.034321851520154094,\n  \"threeYNetIncomeGrowthPerShare\" : 0.028637531920117542,\n
+        \ \"tenYShareholdersEquityGrowthPerShare\" : -3.530732371928293,\n  \"fiveYShareholdersEquityGrowthPerShare\"
+        : -0.07681564836100432,\n  \"threeYShareholdersEquityGrowthPerShare\" : -0.08991015639255055,\n
+        \ \"tenYDividendperShareGrowthPerShare\" : 1.0678983456156923,\n  \"fiveYDividendperShareGrowthPerShare\"
+        : 0.19497209472077406,\n  \"threeYDividendperShareGrowthPerShare\" : 0.11987761386357257,\n
+        \ \"receivablesGrowth\" : 0.04292929292929293,\n  \"inventoryGrowth\" : 0.048955020445252156,\n
+        \ \"assetGrowth\" : 0.07723424034571996,\n  \"bookValueperShareGrowth\" :
+        -0.07079219841078649,\n  \"debtGrowth\" : -0.02248181617809125,\n  \"rdexpenseGrowth\"
+        : 0.0,\n  \"sgaexpensesGrowth\" : 0.1792186870720902\n}, {\n  \"symbol\" :
+        \"PM\",\n  \"date\" : \"2018-12-31\",\n  \"period\" : \"FY\",\n  \"revenueGrowth\"
+        : 0.030506470015305414,\n  \"grossProfitGrowth\" : 0.03008298755186722,\n
+        \ \"ebitgrowth\" : -0.010953664261497001,\n  \"operatingIncomeGrowth\" : -0.010953664261497001,\n
+        \ \"netIncomeGrowth\" : 0.3108533554266777,\n  \"epsgrowth\" : 0.309278350515464,\n
+        \ \"epsdilutedGrowth\" : 0.309278350515464,\n  \"weightedAverageSharesGrowth\"
+        : 0.0019329896907216496,\n  \"weightedAverageSharesDilutedGrowth\" : 0.00128783000643915,\n
+        \ \"dividendsperShareGrowth\" : 0.05394433156451575,\n  \"operatingCashFlowGrowth\"
+        : 0.06350987432675045,\n  \"freeCashFlowGrowth\" : 0.09206952743074416,\n
+        \ \"tenYRevenueGrowthPerShare\" : 0.5327131796521376,\n  \"fiveYRevenueGrowthPerShare\"
+        : -0.010108372190229087,\n  \"threeYRevenueGrowthPerShare\" : 0.10139177869403491,\n
+        \ \"tenYOperatingCFGrowthPerShare\" : 0.588509858030582,\n  \"fiveYOperatingCFGrowthPerShare\"
+        : -0.02453114465963525,\n  \"threeYOperatingCFGrowthPerShare\" : 0.20043597443188194,\n
+        \ \"tenYNetIncomeGrowthPerShare\" : 0.5269763252581914,\n  \"fiveYNetIncomeGrowthPerShare\"
+        : -0.03779619786917493,\n  \"threeYNetIncomeGrowthPerShare\" : 0.14658449602175996,\n
+        \ \"tenYShareholdersEquityGrowthPerShare\" : -3.20923575562701,\n  \"fiveYShareholdersEquityGrowthPerShare\"
+        : 0.6734250128145357,\n  \"threeYShareholdersEquityGrowthPerShare\" : -0.06290194139966071,\n
+        \ \"tenYDividendperShareGrowthPerShare\" : 0.8027930403800023,\n  \"fiveYDividendperShareGrowthPerShare\"
+        : 0.2555336946012187,\n  \"threeYDividendperShareGrowthPerShare\" : 0.09734945337620583,\n
+        \ \"receivablesGrowth\" : -0.04654895666131621,\n  \"inventoryGrowth\" : -0.0002271178741766977,\n
+        \ \"assetGrowth\" : -0.07370601377769503,\n  \"bookValueperShareGrowth\" :
+        0.028873352974634836,\n  \"debtGrowth\" : -0.07513323043769475,\n  \"rdexpenseGrowth\"
+        : 0.0,\n  \"sgaexpensesGrowth\" : 0.10765799256505576\n}, {\n  \"symbol\"
+        : \"PM\",\n  \"date\" : \"2017-12-31\",\n  \"period\" : \"FY\",\n  \"revenueGrowth\"
+        : 0.07730934982199737,\n  \"grossProfitGrowth\" : 0.05909564010639528,\n  \"ebitgrowth\"
+        : 0.06361534905224225,\n  \"operatingIncomeGrowth\" : 0.06361534905224225,\n
+        \ \"netIncomeGrowth\" : -0.13377350366011195,\n  \"epsgrowth\" : -0.13392857142857154,\n
+        \ \"epsdilutedGrowth\" : -0.13392857142857154,\n  \"weightedAverageSharesGrowth\"
+        : 0.0006447453255963894,\n  \"weightedAverageSharesDilutedGrowth\" : 0.0012894906511927789,\n
+        \ \"dividendsperShareGrowth\" : 0.021605357333359332,\n  \"operatingCashFlowGrowth\"
+        : 0.10337996780983039,\n  \"freeCashFlowGrowth\" : 0.0664735698769008,\n  \"tenYRevenueGrowthPerShare\"
+        : 0.7070459924590964,\n  \"fiveYRevenueGrowthPerShare\" : -0.001139451742345833,\n
+        \ \"threeYRevenueGrowthPerShare\" : -0.025520719512613175,\n  \"tenYOperatingCFGrowthPerShare\"
+        : 1.1586160591589147,\n  \"fiveYOperatingCFGrowthPerShare\" : 0.0313042697986622,\n
+        \ \"threeYOperatingCFGrowthPerShare\" : 0.16195784372364902,\n  \"tenYNetIncomeGrowthPerShare\"
+        : 0.35575895774667177,\n  \"fiveYNetIncomeGrowthPerShare\" : -0.252341553420806,\n
+        \ \"threeYNetIncomeGrowthPerShare\" : -0.1873162374229693,\n  \"tenYShareholdersEquityGrowthPerShare\"
+        : -2.062350935171568,\n  \"fiveYShareholdersEquityGrowthPerShare\" : 2.7906305980330512,\n
+        \ \"threeYShareholdersEquityGrowthPerShare\" : -0.034363512877006064,\n  \"tenYDividendperShareGrowthPerShare\"
+        : 0.34548261880814685,\n  \"fiveYDividendperShareGrowthPerShare\" : 0.31534869169076746,\n
+        \ \"threeYDividendperShareGrowthPerShare\" : 0.09011009660144009,\n  \"receivablesGrowth\"
+        : 0.06830523006573307,\n  \"inventoryGrowth\" : -0.023400243983586557,\n  \"assetGrowth\"
+        : 0.16599278174269355,\n  \"bookValueperShareGrowth\" : -0.048060164811949795,\n
+        \ \"debtGrowth\" : 0.18137406681116042,\n  \"rdexpenseGrowth\" : 0.0,\n  \"sgaexpensesGrowth\"
+        : 0.04996096799375488\n}, {\n  \"symbol\" : \"PM\",\n  \"date\" : \"2016-12-31\",\n
+        \ \"period\" : \"FY\",\n  \"revenueGrowth\" : -0.004068074942151228,\n  \"grossProfitGrowth\"
+        : -0.007745711171036777,\n  \"ebitgrowth\" : 0.018073990398192602,\n  \"operatingIncomeGrowth\"
+        : 0.018073990398192602,\n  \"netIncomeGrowth\" : 0.013676705950822057,\n  \"epsgrowth\"
+        : 0.013574660633484276,\n  \"epsdilutedGrowth\" : 0.013574660633484276,\n
+        \ \"weightedAverageSharesGrowth\" : 0.0012911555842479018,\n  \"weightedAverageSharesDilutedGrowth\"
+        : 0.0012911555842479018,\n  \"dividendsperShareGrowth\" : 0.019164100580270755,\n
+        \ \"operatingCashFlowGrowth\" : 0.02695486331849968,\n  \"freeCashFlowGrowth\"
+        : 0.0,\n  \"tenYRevenueGrowthPerShare\" : -0.24801508637790468,\n  \"fiveYRevenueGrowthPerShare\"
+        : -0.04510696616234643,\n  \"threeYRevenueGrowthPerShare\" : -0.10604615882495715,\n
+        \ \"tenYOperatingCFGrowthPerShare\" : 0.761461740582955,\n  \"fiveYOperatingCFGrowthPerShare\"
+        : -0.14637137739303294,\n  \"threeYOperatingCFGrowthPerShare\" : -0.16657719115601535,\n
+        \ \"tenYNetIncomeGrowthPerShare\" : 0.5416383057308692,\n  \"fiveYNetIncomeGrowthPerShare\"
+        : -0.09758126496451196,\n  \"threeYNetIncomeGrowthPerShare\" : -0.15042819630089385,\n
+        \ \"tenYShareholdersEquityGrowthPerShare\" : -2.2094550911270034,\n  \"fiveYShareholdersEquityGrowthPerShare\"
+        : -62.654346552605865,\n  \"threeYShareholdersEquityGrowthPerShare\" : 0.708578101606085,\n
+        \ \"tenYDividendperShareGrowthPerShare\" : 2.1201031881204515,\n  \"fiveYDividendperShareGrowthPerShare\"
+        : 0.4823009425223275,\n  \"threeYDividendperShareGrowthPerShare\" : 0.1660778293273457,\n
+        \ \"receivablesGrowth\" : 0.2595392368610511,\n  \"inventoryGrowth\" : 0.06420394193319957,\n
+        \ \"assetGrowth\" : 0.08525739191895394,\n  \"bookValueperShareGrowth\" :
+        -0.04321663072956352,\n  \"debtGrowth\" : 0.020610955056179776,\n  \"rdexpenseGrowth\"
+        : 0.0,\n  \"sgaexpensesGrowth\" : -0.037710336538461536\n}, {\n  \"symbol\"
+        : \"PM\",\n  \"date\" : \"2015-12-31\",\n  \"period\" : \"FY\",\n  \"revenueGrowth\"
+        : -0.09987570127994087,\n  \"grossProfitGrowth\" : -0.0983911851430345,\n
+        \ \"ebitgrowth\" : -0.09220646043411383,\n  \"operatingIncomeGrowth\" : -0.09220646043411383,\n
+        \ \"netIncomeGrowth\" : -0.08274389430134793,\n  \"epsgrowth\" : -0.0714285714285714,\n
+        \ \"epsdilutedGrowth\" : -0.0714285714285714,\n  \"weightedAverageSharesGrowth\"
+        : -0.010855683269476373,\n  \"weightedAverageSharesDilutedGrowth\" : -0.010855683269476373,\n
+        \ \"dividendsperShareGrowth\" : 0.04699132401212418,\n  \"operatingCashFlowGrowth\"
+        : 0.01628117327820132,\n  \"freeCashFlowGrowth\" : 0.04843607652596417,\n
+        \ \"tenYRevenueGrowthPerShare\" : -0.1943544186982809,\n  \"fiveYRevenueGrowthPerShare\"
+        : 0.1691527232809855,\n  \"threeYRevenueGrowthPerShare\" : -0.06722891210790738,\n
+        \ \"tenYOperatingCFGrowthPerShare\" : 1.0763808148679896,\n  \"fiveYOperatingCFGrowthPerShare\"
+        : -0.010547196443158432,\n  \"threeYOperatingCFGrowthPerShare\" : -0.08809275927047576,\n
+        \ \"tenYNetIncomeGrowthPerShare\" : 0.665327472874131,\n  \"fiveYNetIncomeGrowthPerShare\"
+        : 0.12408682847881188,\n  \"threeYNetIncomeGrowthPerShare\" : -0.14687511004166914,\n
+        \ \"tenYShareholdersEquityGrowthPerShare\" : -2.7497520634939883,\n  \"fiveYShareholdersEquityGrowthPerShare\"
+        : -5.484743114911005,\n  \"threeYShareholdersEquityGrowthPerShare\" : 3.161868416536598,\n
+        \ \"tenYDividendperShareGrowthPerShare\" : 0.10788665935174306,\n  \"fiveYDividendperShareGrowthPerShare\"
+        : 0.6776192060195931,\n  \"threeYDividendperShareGrowthPerShare\" : 0.26332071645277216,\n
+        \ \"receivablesGrowth\" : -0.3061938061938062,\n  \"inventoryGrowth\" : -0.013850093109869645,\n
+        \ \"assetGrowth\" : -0.03498451132520533,\n  \"bookValueperShareGrowth\" :
+        0.06020671064542961,\n  \"debtGrowth\" : -0.03310134102868783,\n  \"rdexpenseGrowth\"
+        : 0.0,\n  \"sgaexpensesGrowth\" : -0.04927867447507499\n}, {\n  \"symbol\"
+        : \"PM\",\n  \"date\" : \"2014-12-31\",\n  \"period\" : \"FY\",\n  \"revenueGrowth\"
+        : -0.04644905019700804,\n  \"grossProfitGrowth\" : -0.07093766520882396,\n
+        \ \"ebitgrowth\" : -0.13414724380318166,\n  \"operatingIncomeGrowth\" : -0.13414724380318166,\n
+        \ \"netIncomeGrowth\" : -0.12628264925373134,\n  \"epsgrowth\" : -0.09505703422053233,\n
+        \ \"epsdilutedGrowth\" : -0.09505703422053233,\n  \"weightedAverageSharesGrowth\"
+        : -0.0345252774352651,\n  \"weightedAverageSharesDilutedGrowth\" : -0.0345252774352651,\n
+        \ \"dividendsperShareGrowth\" : 0.09279912297153681,\n  \"operatingCashFlowGrowth\"
+        : -0.2364084854464726,\n  \"freeCashFlowGrowth\" : -0.26289871292669276,\n
+        \ \"tenYRevenueGrowthPerShare\" : 0.15453698071347285,\n  \"fiveYRevenueGrowthPerShare\"
+        : 0.47525982143517587,\n  \"threeYRevenueGrowthPerShare\" : 0.05497611089738517,\n
+        \ \"tenYOperatingCFGrowthPerShare\" : 1.1646119344935166,\n  \"fiveYOperatingCFGrowthPerShare\"
+        : 0.21792143487983162,\n  \"threeYOperatingCFGrowthPerShare\" : -0.18992771735510763,\n
+        \ \"tenYNetIncomeGrowthPerShare\" : 1.4411518349839754,\n  \"fiveYNetIncomeGrowthPerShare\"
+        : 0.46592090355887256,\n  \"threeYNetIncomeGrowthPerShare\" : -0.03874620977327403,\n
+        \ \"tenYShareholdersEquityGrowthPerShare\" : -2.558935938887227,\n  \"fiveYShareholdersEquityGrowthPerShare\"
+        : -3.7413077002825075,\n  \"threeYShareholdersEquityGrowthPerShare\" : -61.77983721470438,\n
+        \ \"tenYDividendperShareGrowthPerShare\" : 0.0,\n  \"fiveYDividendperShareGrowthPerShare\"
+        : 0.7304992767206774,\n  \"threeYDividendperShareGrowthPerShare\" : 0.389150131516264,\n
+        \ \"receivablesGrowth\" : 0.03919024137036076,\n  \"inventoryGrowth\" : -0.12736136502132847,\n
+        \ \"assetGrowth\" : -0.07810207503667994,\n  \"bookValueperShareGrowth\" :
+        0.6843435165697536,\n  \"debtGrowth\" : 0.06420261579593901,\n  \"rdexpenseGrowth\"
+        : 0.0,\n  \"sgaexpensesGrowth\" : 0.016110304789550074\n}, {\n  \"symbol\"
+        : \"PM\",\n  \"date\" : \"2013-12-31\",\n  \"period\" : \"FY\",\n  \"revenueGrowth\"
+        : -0.005099276540140868,\n  \"grossProfitGrowth\" : -0.009379165873167016,\n
+        \ \"ebitgrowth\" : -0.02390582117579084,\n  \"operatingIncomeGrowth\" : -0.02390582117579084,\n
+        \ \"netIncomeGrowth\" : -0.025454545454545455,\n  \"epsgrowth\" : 0.017408123791102487,\n
+        \ \"epsdilutedGrowth\" : 0.017408123791102487,\n  \"weightedAverageSharesGrowth\"
+        : -0.041371158392434985,\n  \"weightedAverageSharesDilutedGrowth\" : -0.041371158392434985,\n
+        \ \"dividendsperShareGrowth\" : 0.10415539112919045,\n  \"operatingCashFlowGrowth\"
+        : 0.07578813289459718,\n  \"freeCashFlowGrowth\" : 0.06814106395696354,\n
+        \ \"tenYRevenueGrowthPerShare\" : 0.1689740033035091,\n  \"fiveYRevenueGrowthPerShare\"
+        : 0.5483646255736204,\n  \"threeYRevenueGrowthPerShare\" : 0.3008446190302338,\n
+        \ \"tenYOperatingCFGrowthPerShare\" : 1.736905881068356,\n  \"fiveYOperatingCFGrowthPerShare\"
+        : 0.6284577916906556,\n  \"threeYOperatingCFGrowthPerShare\" : 0.21764496517694676,\n
+        \ \"tenYNetIncomeGrowthPerShare\" : 1.6975204150478094,\n  \"fiveYNetIncomeGrowthPerShare\"
+        : 0.5869572764903476,\n  \"threeYNetIncomeGrowthPerShare\" : 0.33948808647592355,\n
+        \ \"tenYShareholdersEquityGrowthPerShare\" : -1.9255451299281718,\n  \"fiveYShareholdersEquityGrowthPerShare\"
+        : -2.3201880805589807,\n  \"threeYShareholdersEquityGrowthPerShare\" : -3.5114026825952056,\n
+        \ \"tenYDividendperShareGrowthPerShare\" : 0.0,\n  \"fiveYDividendperShareGrowthPerShare\"
+        : 0.4358778646339742,\n  \"threeYDividendperShareGrowthPerShare\" : 0.46625656214168004,\n
+        \ \"receivablesGrowth\" : 0.07355809417665088,\n  \"inventoryGrowth\" : 0.10023466309084814,\n
+        \ \"assetGrowth\" : 0.01322006902044067,\n  \"bookValueperShareGrowth\" :
+        1.3305967004323462,\n  \"debtGrowth\" : 0.2118744253251018,\n  \"rdexpenseGrowth\"
+        : 0.0,\n  \"sgaexpensesGrowth\" : -0.012611063341931785\n}, {\n  \"symbol\"
+        : \"PM\",\n  \"date\" : \"2012-12-31\",\n  \"period\" : \"FY\",\n  \"revenueGrowth\"
+        : 0.009004083995240698,\n  \"grossProfitGrowth\" : 0.02864978696312258,\n
+        \ \"ebitgrowth\" : 0.03855385538553855,\n  \"operatingIncomeGrowth\" : 0.03855385538553855,\n
+        \ \"netIncomeGrowth\" : 0.024327784891165175,\n  \"epsgrowth\" : 0.0386389771274419,\n
+        \ \"epsdilutedGrowth\" : 0.0386389771274419,\n  \"weightedAverageSharesGrowth\"
+        : -0.019646848450322343,\n  \"weightedAverageSharesDilutedGrowth\" : -0.019646848450322343,\n
+        \ \"dividendsperShareGrowth\" : 0.15127387408928147,\n  \"operatingCashFlowGrowth\"
+        : -0.10523316554278658,\n  \"freeCashFlowGrowth\" : -0.13154069767441862,\n
+        \ \"tenYRevenueGrowthPerShare\" : 0.12635579433410032,\n  \"fiveYRevenueGrowthPerShare\"
+        : 0.7089933078613964,\n  \"threeYRevenueGrowthPerShare\" : 0.4392500853415147,\n
+        \ \"tenYOperatingCFGrowthPerShare\" : 1.438841658624757,\n  \"fiveYOperatingCFGrowthPerShare\"
+        : 1.0930933017278535,\n  \"threeYOperatingCFGrowthPerShare\" : 0.3722171096742002,\n
+        \ \"tenYNetIncomeGrowthPerShare\" : 1.653463579999108,\n  \"fiveYNetIncomeGrowthPerShare\"
+        : 0.8133399869281971,\n  \"threeYNetIncomeGrowthPerShare\" : 0.5934149089003253,\n
+        \ \"tenYShareholdersEquityGrowthPerShare\" : -1.3971279671667238,\n  \"fiveYShareholdersEquityGrowthPerShare\"
+        : -1.2802570463402103,\n  \"threeYShareholdersEquityGrowthPerShare\" : -1.6983288583165004,\n
+        \ \"tenYDividendperShareGrowthPerShare\" : 0.0,\n  \"fiveYDividendperShareGrowthPerShare\"
+        : 0.022909459147782966,\n  \"threeYDividendperShareGrowthPerShare\" : 0.4341708367002292,\n
+        \ \"receivablesGrowth\" : 0.12121212121212122,\n  \"inventoryGrowth\" : 0.1020935960591133,\n
+        \ \"assetGrowth\" : 0.061485572587917044,\n  \"bookValueperShareGrowth\" :
+        -16.483236094376814,\n  \"debtGrowth\" : 0.2315448908061472,\n  \"rdexpenseGrowth\"
+        : 0.0,\n  \"sgaexpensesGrowth\" : 0.0\n}, {\n  \"symbol\" : \"PM\",\n  \"date\"
+        : \"2011-12-31\",\n  \"period\" : \"FY\",\n  \"revenueGrowth\" : 0.1429359012055278,\n
+        \ \"grossProfitGrowth\" : 0.1671334667047728,\n  \"ebitgrowth\" : 0.19035714285714286,\n
+        \ \"operatingIncomeGrowth\" : 0.19035714285714286,\n  \"netIncomeGrowth\"
+        : 0.1834963493594159,\n  \"epsgrowth\" : 0.26658218829516545,\n  \"epsdilutedGrowth\"
+        : 0.2698132653061226,\n  \"weightedAverageSharesGrowth\" : -0.06149610331702012,\n
+        \ \"weightedAverageSharesDilutedGrowth\" : -0.06302461129207383,\n  \"dividendsperShareGrowth\"
+        : 0.15345623831942803,\n  \"operatingCashFlowGrowth\" : 0.11571473985376708,\n
+        \ \"freeCashFlowGrowth\" : 0.10408069692801467,\n  \"tenYRevenueGrowthPerShare\"
+        : 0.09437262966210588,\n  \"fiveYRevenueGrowthPerShare\" : -0.2124930364190464,\n
+        \ \"threeYRevenueGrowthPerShare\" : 0.4495513691289788,\n  \"tenYOperatingCFGrowthPerShare\"
+        : 1.6721219585813276,\n  \"fiveYOperatingCFGrowthPerShare\" : 1.0634989197099334,\n
+        \ \"threeYOperatingCFGrowthPerShare\" : 0.5899113863940644,\n  \"tenYNetIncomeGrowthPerShare\"
+        : 1.5395497628240233,\n  \"fiveYNetIncomeGrowthPerShare\" : 0.7083403146215084,\n
+        \ \"threeYNetIncomeGrowthPerShare\" : 0.49402278946292677,\n  \"tenYShareholdersEquityGrowthPerShare\"
+        : -0.9743511004581948,\n  \"fiveYShareholdersEquityGrowthPerShare\" : -0.9803832956027675,\n
+        \ \"threeYShareholdersEquityGrowthPerShare\" : -0.9634146727592053,\n  \"tenYDividendperShareGrowthPerShare\"
+        : 0.0,\n  \"fiveYDividendperShareGrowthPerShare\" : 1.1049053526277806,\n
+        \ \"threeYDividendperShareGrowthPerShare\" : 0.1295583073181165,\n  \"receivablesGrowth\"
+        : 0.06380857427716849,\n  \"inventoryGrowth\" : -0.023686425393771793,\n  \"assetGrowth\"
+        : 0.012496433666191156,\n  \"bookValueperShareGrowth\" : -0.930403485435763,\n
+        \ \"debtGrowth\" : 0.1238031753726821,\n  \"rdexpenseGrowth\" : 0.0,\n  \"sgaexpensesGrowth\"
+        : 0.0\n}, {\n  \"symbol\" : \"PM\",\n  \"date\" : \"2010-12-31\",\n  \"period\"
+        : \"FY\",\n  \"revenueGrowth\" : 0.08679848212502496,\n  \"grossProfitGrowth\"
+        : 0.09254980328483108,\n  \"ebitgrowth\" : 0.11553784860557768,\n  \"operatingIncomeGrowth\"
+        : 0.11553784860557768,\n  \"netIncomeGrowth\" : 0.1445916114790287,\n  \"epsgrowth\"
+        : 0.20923076923076928,\n  \"epsdilutedGrowth\" : 0.20987654320987645,\n  \"weightedAverageSharesGrowth\"
+        : -0.05352547606793618,\n  \"weightedAverageSharesDilutedGrowth\" : -0.055384615384615386,\n
+        \ \"dividendsperShareGrowth\" : 0.07999343500282076,\n  \"operatingCashFlowGrowth\"
+        : 0.19698122780314561,\n  \"freeCashFlowGrowth\" : 0.21690612358766914,\n
+        \ \"tenYRevenueGrowthPerShare\" : -0.1013730723851038,\n  \"fiveYRevenueGrowthPerShare\"
+        : -0.310915019689779,\n  \"threeYRevenueGrowthPerShare\" : 0.3634656236361232,\n
+        \ \"tenYOperatingCFGrowthPerShare\" : 1.2477043467843945,\n  \"fiveYOperatingCFGrowthPerShare\"
+        : 1.0985142569750743,\n  \"threeYOperatingCFGrowthPerShare\" : 0.9290530387167133,\n
+        \ \"tenYNetIncomeGrowthPerShare\" : 1.0138442754983739,\n  \"fiveYNetIncomeGrowthPerShare\"
+        : 0.4814936272563227,\n  \"threeYNetIncomeGrowthPerShare\" : 0.3762330788082169,\n
+        \ \"tenYShareholdersEquityGrowthPerShare\" : -0.6314628727832121,\n  \"fiveYShareholdersEquityGrowthPerShare\"
+        : -0.6098434138454082,\n  \"threeYShareholdersEquityGrowthPerShare\" : -0.7399197858630748,\n
+        \ \"tenYDividendperShareGrowthPerShare\" : 0.0,\n  \"fiveYDividendperShareGrowthPerShare\"
+        : -0.3396077874070286,\n  \"threeYDividendperShareGrowthPerShare\" : -0.22970438931550818,\n
+        \ \"receivablesGrowth\" : -0.028728211749515817,\n  \"inventoryGrowth\" :
+        -0.09666558053654828,\n  \"assetGrowth\" : 0.014413058578374624,\n  \"bookValueperShareGrowth\"
+        : -0.3519466454788954,\n  \"debtGrowth\" : 0.07044628956927868,\n  \"rdexpenseGrowth\"
+        : 0.0,\n  \"sgaexpensesGrowth\" : 0.0\n}, {\n  \"symbol\" : \"PM\",\n  \"date\"
+        : \"2009-12-31\",\n  \"period\" : \"FY\",\n  \"revenueGrowth\" : -0.026064967905076834,\n
+        \ \"grossProfitGrowth\" : -0.022226292971850765,\n  \"ebitgrowth\" : -0.02029664324746292,\n
+        \ \"operatingIncomeGrowth\" : -0.02029664324746292,\n  \"netIncomeGrowth\"
+        : -0.0795355587808418,\n  \"epsgrowth\" : -0.024024024024024045,\n  \"epsdilutedGrowth\"
+        : -0.024096385542168565,\n  \"weightedAverageSharesGrowth\" : -0.06044487427466151,\n
+        \ \"weightedAverageSharesDilutedGrowth\" : -0.061597690086621755,\n  \"dividendsperShareGrowth\"
+        : -0.0932523969962195,\n  \"operatingCashFlowGrowth\" : -0.006427221172022685,\n
+        \ \"freeCashFlowGrowth\" : 0.04871269748390872,\n  \"tenYRevenueGrowthPerShare\"
+        : -0.21740091884946372,\n  \"fiveYRevenueGrowthPerShare\" : -0.21740091884946372,\n
+        \ \"threeYRevenueGrowthPerShare\" : -0.4368442618229678,\n  \"tenYOperatingCFGrowthPerShare\"
+        : 0.777300138171139,\n  \"fiveYOperatingCFGrowthPerShare\" : 0.777300138171139,\n
+        \ \"threeYOperatingCFGrowthPerShare\" : 0.37248859594102224,\n  \"tenYNetIncomeGrowthPerShare\"
+        : 0.6652684527913458,\n  \"fiveYNetIncomeGrowthPerShare\" : 0.6652684527913458,\n
+        \ \"threeYNetIncomeGrowthPerShare\" : 0.1202163762317156,\n  \"tenYShareholdersEquityGrowthPerShare\"
+        : -0.4313166892112951,\n  \"fiveYShareholdersEquityGrowthPerShare\" : -0.4313166892112951,\n
+        \ \"threeYShareholdersEquityGrowthPerShare\" : -0.5650615580914549,\n  \"tenYDividendperShareGrowthPerShare\"
+        : 0.0,\n  \"fiveYDividendperShareGrowthPerShare\" : 0.0,\n  \"threeYDividendperShareGrowthPerShare\"
+        : 0.6897028428542601,\n  \"receivablesGrowth\" : 0.0877808988764045,\n  \"inventoryGrowth\"
+        : -0.047288907284768214,\n  \"assetGrowth\" : 0.047919446803348295,\n  \"bookValueperShareGrowth\"
+        : -0.18883595814033285,\n  \"debtGrowth\" : 0.2888554468689909,\n  \"rdexpenseGrowth\"
+        : 0.0,\n  \"sgaexpensesGrowth\" : 0.0\n}, {\n  \"symbol\" : \"PM\",\n  \"date\"
+        : \"2008-12-31\",\n  \"period\" : \"FY\",\n  \"revenueGrowth\" : 0.12751118519168347,\n
+        \ \"grossProfitGrowth\" : 0.1633044466543543,\n  \"ebitgrowth\" : 0.15496449904203763,\n
+        \ \"operatingIncomeGrowth\" : 0.15496449904203763,\n  \"netIncomeGrowth\"
+        : 0.1433786923332227,\n  \"epsgrowth\" : 0.1602787456445993,\n  \"epsdilutedGrowth\"
+        : 0.1649122807017543,\n  \"weightedAverageSharesGrowth\" : -0.015706806282722512,\n
+        \ \"weightedAverageSharesDilutedGrowth\" : -0.017958412098298678,\n  \"dividendsperShareGrowth\"
+        : -0.21340733653347171,\n  \"operatingCashFlowGrowth\" : 0.41975308641975306,\n
+        \ \"freeCashFlowGrowth\" : 0.5133938454726589,\n  \"tenYRevenueGrowthPerShare\"
+        : -0.24502666620245153,\n  \"fiveYRevenueGrowthPerShare\" : -0.24502666620245153,\n
+        \ \"threeYRevenueGrowthPerShare\" : -0.4210714492660149,\n  \"tenYOperatingCFGrowthPerShare\"
+        : 0.6806735151710108,\n  \"fiveYOperatingCFGrowthPerShare\" : 0.6806735151710108,\n
+        \ \"threeYOperatingCFGrowthPerShare\" : 0.5691197723368069,\n  \"tenYNetIncomeGrowthPerShare\"
+        : 0.6998065764023211,\n  \"fiveYNetIncomeGrowthPerShare\" : 0.6998065764023211,\n
+        \ \"threeYNetIncomeGrowthPerShare\" : 0.2504703770529748,\n  \"tenYShareholdersEquityGrowthPerShare\"
+        : -0.2989293392678665,\n  \"fiveYShareholdersEquityGrowthPerShare\" : -0.2989293392678665,\n
+        \ \"threeYShareholdersEquityGrowthPerShare\" : -0.25780249683366674,\n  \"tenYDividendperShareGrowthPerShare\"
+        : 0.0,\n  \"fiveYDividendperShareGrowthPerShare\" : 0.0,\n  \"threeYDividendperShareGrowthPerShare\"
+        : -0.3256359477701522,\n  \"receivablesGrowth\" : -0.1855876465541893,\n  \"inventoryGrowth\"
+        : 0.03557651093013288,\n  \"assetGrowth\" : 0.028992291608151546,\n  \"bookValueperShareGrowth\"
+        : 0.0,\n  \"debtGrowth\" : 0.8964642460757888,\n  \"rdexpenseGrowth\" : 0.0,\n
+        \ \"sgaexpensesGrowth\" : 0.0\n}, {\n  \"symbol\" : \"PM\",\n  \"date\" :
+        \"2007-12-31\",\n  \"period\" : \"FY\",\n  \"revenueGrowth\" : -0.5276004973062578,\n
+        \ \"grossProfitGrowth\" : 0.11367771537061941,\n  \"ebitgrowth\" : 0.06034894837476099,\n
+        \ \"operatingIncomeGrowth\" : 0.06034894837476099,\n  \"netIncomeGrowth\"
+        : -0.019524894240156198,\n  \"epsgrowth\" : -0.015013324776190065,\n  \"epsdilutedGrowth\"
+        : -0.021877343418864704,\n  \"weightedAverageSharesGrowth\" : -0.003941109199982837,\n
+        \ \"weightedAverageSharesDilutedGrowth\" : 0.003170210820007767,\n  \"dividendsperShareGrowth\"
+        : 1.3690489106728898,\n  \"operatingCashFlowGrowth\" : -0.10375240538806928,\n
+        \ \"freeCashFlowGrowth\" : -0.15570093457943926,\n  \"tenYRevenueGrowthPerShare\"
+        : -0.3409243973321336,\n  \"fiveYRevenueGrowthPerShare\" : -0.3409243973321336,\n
+        \ \"threeYRevenueGrowthPerShare\" : -0.3409243973321336,\n  \"tenYOperatingCFGrowthPerShare\"
+        : 0.16518535347253147,\n  \"fiveYOperatingCFGrowthPerShare\" : 0.16518535347253147,\n
+        \ \"threeYOperatingCFGrowthPerShare\" : 0.16518535347253147,\n  \"tenYNetIncomeGrowthPerShare\"
+        : 0.4633017520857093,\n  \"fiveYNetIncomeGrowthPerShare\" : 0.4633017520857093,\n
+        \ \"threeYNetIncomeGrowthPerShare\" : 0.4633017520857093,\n  \"tenYShareholdersEquityGrowthPerShare\"
+        : 0.4170133181402376,\n  \"fiveYShareholdersEquityGrowthPerShare\" : 0.4170133181402376,\n
+        \ \"threeYShareholdersEquityGrowthPerShare\" : 0.4170133181402376,\n  \"tenYDividendperShareGrowthPerShare\"
+        : 0.0,\n  \"fiveYDividendperShareGrowthPerShare\" : 0.0,\n  \"threeYDividendperShareGrowthPerShare\"
+        : 0.0,\n  \"receivablesGrowth\" : 0.6189814814814815,\n  \"inventoryGrowth\"
+        : 0.3190106007067138,\n  \"assetGrowth\" : 0.22676110260336907,\n  \"bookValueperShareGrowth\"
+        : 0.0,\n  \"debtGrowth\" : 1.263819095477387,\n  \"rdexpenseGrowth\" : 0.0,\n
+        \ \"sgaexpensesGrowth\" : 0.0\n}, {\n  \"symbol\" : \"PM\",\n  \"date\" :
+        \"2006-12-31\",\n  \"period\" : \"FY\",\n  \"revenueGrowth\" : 0.06562444797738916,\n
+        \ \"grossProfitGrowth\" : 0.022073091849935316,\n  \"ebitgrowth\" : 0.08183581124757595,\n
+        \ \"operatingIncomeGrowth\" : 0.08183581124757595,\n  \"netIncomeGrowth\"
+        : 0.09359430604982207,\n  \"epsgrowth\" : 0.09359418250058639,\n  \"epsdilutedGrowth\"
+        : 0.09359418250058639,\n  \"weightedAverageSharesGrowth\" : 0.0,\n  \"weightedAverageSharesDilutedGrowth\"
+        : 0.0,\n  \"dividendsperShareGrowth\" : -0.6381150741994273,\n  \"operatingCashFlowGrowth\"
+        : 0.20899573478092284,\n  \"freeCashFlowGrowth\" : 0.20985979194934418,\n
+        \ \"tenYRevenueGrowthPerShare\" : 0.3896672413990754,\n  \"fiveYRevenueGrowthPerShare\"
+        : 0.3896672413990754,\n  \"threeYRevenueGrowthPerShare\" : 0.3896672413990754,\n
+        \ \"tenYOperatingCFGrowthPerShare\" : 0.29494710806873037,\n  \"fiveYOperatingCFGrowthPerShare\"
+        : 0.29494710806873037,\n  \"threeYOperatingCFGrowthPerShare\" : 0.29494710806873037,\n
+        \ \"tenYNetIncomeGrowthPerShare\" : 0.48655963983772965,\n  \"fiveYNetIncomeGrowthPerShare\"
+        : 0.48655963983772965,\n  \"threeYNetIncomeGrowthPerShare\" : 0.48655963983772965,\n
+        \ \"tenYShareholdersEquityGrowthPerShare\" : 0.30750298431492157,\n  \"fiveYShareholdersEquityGrowthPerShare\"
+        : 0.30750298431492157,\n  \"threeYShareholdersEquityGrowthPerShare\" : 0.30750298431492157,\n
+        \ \"tenYDividendperShareGrowthPerShare\" : 0.0,\n  \"fiveYDividendperShareGrowthPerShare\"
+        : 0.0,\n  \"threeYDividendperShareGrowthPerShare\" : 0.0,\n  \"receivablesGrowth\"
+        : 0.1380400421496312,\n  \"inventoryGrowth\" : 0.3053505535055351,\n  \"assetGrowth\"
+        : 0.12902528636265398,\n  \"bookValueperShareGrowth\" : 0.0,\n  \"debtGrowth\"
+        : -0.4324709716846608,\n  \"rdexpenseGrowth\" : 0.0,\n  \"sgaexpensesGrowth\"
+        : 0.0\n}, {\n  \"symbol\" : \"PM\",\n  \"date\" : \"2005-12-31\",\n  \"period\"
+        : \"FY\",\n  \"revenueGrowth\" : 0.3563748539938303,\n  \"grossProfitGrowth\"
+        : 0.29264214046822745,\n  \"ebitgrowth\" : 0.24838605551969012,\n  \"operatingIncomeGrowth\"
+        : 0.24838605551969012,\n  \"netIncomeGrowth\" : 0.4138364779874214,\n  \"epsgrowth\"
+        : 0.3593750000000001,\n  \"epsdilutedGrowth\" : 0.36634615384615393,\n  \"weightedAverageSharesGrowth\"
+        : 0.04009518392504931,\n  \"weightedAverageSharesDilutedGrowth\" : 0.03499167468105986,\n
+        \ \"dividendsperShareGrowth\" : 0.0,\n  \"operatingCashFlowGrowth\" : 0.11403887688984882,\n
+        \ \"freeCashFlowGrowth\" : 0.09347181008902077,\n  \"tenYRevenueGrowthPerShare\"
+        : 0.3040872363962149,\n  \"fiveYRevenueGrowthPerShare\" : 0.3040872363962149,\n
+        \ \"threeYRevenueGrowthPerShare\" : 0.3040872363962149,\n  \"tenYOperatingCFGrowthPerShare\"
+        : 0.0710931981107299,\n  \"fiveYOperatingCFGrowthPerShare\" : 0.0710931981107299,\n
+        \ \"threeYOperatingCFGrowthPerShare\" : 0.0710931981107299,\n  \"tenYNetIncomeGrowthPerShare\"
+        : 0.35933374160234954,\n  \"fiveYNetIncomeGrowthPerShare\" : 0.35933374160234954,\n
+        \ \"threeYNetIncomeGrowthPerShare\" : 0.35933374160234954,\n  \"tenYShareholdersEquityGrowthPerShare\"
+        : -0.05541226190972898,\n  \"fiveYShareholdersEquityGrowthPerShare\" : -0.05541226190972898,\n
+        \ \"threeYShareholdersEquityGrowthPerShare\" : -0.05541226190972898,\n  \"tenYDividendperShareGrowthPerShare\"
+        : 0.0,\n  \"fiveYDividendperShareGrowthPerShare\" : 0.0,\n  \"threeYDividendperShareGrowthPerShare\"
+        : 0.0,\n  \"receivablesGrowth\" : 0.0,\n  \"inventoryGrowth\" : 0.26813289658399625,\n
+        \ \"assetGrowth\" : 0.312251843448667,\n  \"bookValueperShareGrowth\" : 0.0,\n
+        \ \"debtGrowth\" : 0.0,\n  \"rdexpenseGrowth\" : 0.0,\n  \"sgaexpensesGrowth\"
+        : 0.0\n}, {\n  \"symbol\" : \"PM\",\n  \"date\" : \"2003-12-31\",\n  \"period\"
+        : \"FY\",\n  \"revenueGrowth\" : 0.0,\n  \"grossProfitGrowth\" : 0.0,\n  \"ebitgrowth\"
+        : 0.0,\n  \"operatingIncomeGrowth\" : 0.0,\n  \"netIncomeGrowth\" : 0.0,\n
+        \ \"epsgrowth\" : 0.0,\n  \"epsdilutedGrowth\" : 0.0,\n  \"weightedAverageSharesGrowth\"
+        : 0.0,\n  \"weightedAverageSharesDilutedGrowth\" : 0.0,\n  \"dividendsperShareGrowth\"
+        : 0.0,\n  \"operatingCashFlowGrowth\" : 0.0,\n  \"freeCashFlowGrowth\" : 0.0,\n
+        \ \"tenYRevenueGrowthPerShare\" : 0.0,\n  \"fiveYRevenueGrowthPerShare\" :
+        0.0,\n  \"threeYRevenueGrowthPerShare\" : 0.0,\n  \"tenYOperatingCFGrowthPerShare\"
+        : 0.0,\n  \"fiveYOperatingCFGrowthPerShare\" : 0.0,\n  \"threeYOperatingCFGrowthPerShare\"
+        : 0.0,\n  \"tenYNetIncomeGrowthPerShare\" : 0.0,\n  \"fiveYNetIncomeGrowthPerShare\"
+        : 0.0,\n  \"threeYNetIncomeGrowthPerShare\" : 0.0,\n  \"tenYShareholdersEquityGrowthPerShare\"
+        : 0.0,\n  \"fiveYShareholdersEquityGrowthPerShare\" : 0.0,\n  \"threeYShareholdersEquityGrowthPerShare\"
+        : 0.0,\n  \"tenYDividendperShareGrowthPerShare\" : 0.0,\n  \"fiveYDividendperShareGrowthPerShare\"
+        : 0.0,\n  \"threeYDividendperShareGrowthPerShare\" : 0.0,\n  \"receivablesGrowth\"
+        : 0.0,\n  \"inventoryGrowth\" : 0.0,\n  \"assetGrowth\" : 0.0,\n  \"bookValueperShareGrowth\"
+        : 0.0,\n  \"debtGrowth\" : 0.0,\n  \"rdexpenseGrowth\" : 0.0,\n  \"sgaexpensesGrowth\"
+        : 0.0\n} ]"
     headers:
       Access-Control-Allow-Headers:
       - origin, content-type, accept, Authorization, authorization
@@ -23,21 +403,17 @@ interactions:
       - '3600'
       Connection:
       - close
-      Content-Length:
-      - '219'
       Content-Type:
       - application/json;charset=UTF-8
       Date:
-      - Sun, 06 Mar 2022 13:05:23 GMT
-      Retry-After:
-      - '100'
+      - Sat, 21 May 2022 15:08:11 GMT
       Server:
       - nginx/1.14.0 (Ubuntu)
-      X-Rate-Limit-Retry-After-Milliseconds:
-      - '333'
-      X-Rate-Limit-Retry-After-Seconds:
-      - '0'
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
     status:
-      code: 429
+      code: 200
       message: ''
 version: 1

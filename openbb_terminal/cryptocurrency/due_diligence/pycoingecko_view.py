@@ -9,7 +9,6 @@ import openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model as gecko
 from openbb_terminal.cryptocurrency.dataframe_helpers import wrap_text_in_df
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
-from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -52,7 +51,6 @@ def display_coin_potential_returns(
     print_rich_table(
         df, headers=list(df.columns), show_index=False, title="Potential Coin Returns"
     )
-    console.print("")
 
     export_data(
         export,
@@ -81,7 +79,6 @@ def display_info(symbol: str, export: str) -> None:
     print_rich_table(
         df, headers=list(df.columns), show_index=False, title="Basic Coin Information"
     )
-    console.print("")
 
     export_data(
         export,
@@ -110,7 +107,6 @@ def display_web(symbol: str, export: str) -> None:
     print_rich_table(
         df, headers=list(df.columns), show_index=False, title="Websites for Loaded Coin"
     )
-    console.print("")
 
     export_data(
         export,
@@ -140,7 +136,6 @@ def display_social(symbol: str, export: str) -> None:
         show_index=False,
         title="Social Media for Loaded Coin",
     )
-    console.print("")
 
     export_data(
         export,
@@ -171,7 +166,6 @@ def display_dev(symbol: str, export: str) -> None:
         show_index=False,
         title="Developers Data for Loaded Coin",
     )
-    console.print("")
 
     export_data(
         export,
@@ -200,7 +194,6 @@ def display_ath(symbol: str, currency: str, export: str) -> None:
     df = coin.get_all_time_high(currency=currency)
 
     print_rich_table(df, headers=list(df.columns), show_index=False, title="Coin Highs")
-    console.print("")
 
     export_data(
         export,
@@ -229,7 +222,6 @@ def display_atl(symbol: str, currency: str, export: str) -> None:
     df = coin.get_all_time_low(currency=currency)
 
     print_rich_table(df, headers=list(df.columns), show_index=False, title="Coin Lows")
-    console.print("")
 
     export_data(
         export,
@@ -260,7 +252,6 @@ def display_score(symbol: str, export: str) -> None:
         show_index=False,
         title="Different Scores for Loaded Coin",
     )
-    console.print("")
 
     export_data(
         export,
@@ -288,7 +279,6 @@ def display_bc(symbol: str, export: str) -> None:
     print_rich_table(
         df, headers=list(df.columns), show_index=False, title="Blockchain URLs"
     )
-    console.print("")
 
     export_data(
         export,
@@ -316,7 +306,6 @@ def display_market(symbol: str, export: str) -> None:
     print_rich_table(
         df, headers=list(df.columns), show_index=False, title="Market Data"
     )
-    console.print("")
 
     export_data(
         export,

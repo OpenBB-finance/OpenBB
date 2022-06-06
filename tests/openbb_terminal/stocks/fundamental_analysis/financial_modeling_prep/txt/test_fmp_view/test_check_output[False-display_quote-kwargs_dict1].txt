@@ -1,24 +1,23 @@
                                                       0
 Symbol                                               PM
 Name                   Philip Morris International Inc.
-Price                                              99.8
-Changes percentage                            -2.615145
-Change                                            -2.68
-Day low                                           99.25
-Day high                                       101.0617
+Price                                            101.15
+Changes percentage                             0.646768
+Change                                         0.650002
+Day low                                           99.65
+Day high                                         101.74
 Year high                                        112.48
 Year low                                          85.64
-Market cap                                    154.673 B
-Price avg50                                    101.7864
-Price avg200                                   98.53845
-Volume                                          6.489 M
-Avg volume                                      6175341
+Market cap                                    156.794 B
+Price avg50                                     98.6764
+Price avg200                                   98.46685
+Volume                                          5.077 M
+Avg volume                                      6351306
 Exchange                                           NYSE
-Open                                             101.04
-Previous close                                   102.48
-Eps                                                5.83
-Pe                                            17.118355
-Earnings announcement               2022-04-21 12:30:00
+Open                                             100.68
+Previous close                                    100.5
+Eps                                                5.78
+Pe                                                 17.5
+Earnings announcement               2022-07-21 12:30:00
 Shares outstanding                              1.550 B
-Timestamp                                    1646571919
-
+Timestamp                                    1653145687

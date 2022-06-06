@@ -19,6 +19,7 @@ from openpyxl import Workbook
 from scipy.stats import binom
 
 from openbb_terminal.config_terminal import theme
+from openbb_terminal.config_plot import PLOT_DPI
 import openbb_terminal.config_plot as cfp
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
@@ -553,6 +554,7 @@ def plot_payoff(
     ax.set_title(f"Option Payoff Diagram for {ticker} on {expiration}")
     ax.set_ylabel("Profit")
     ax.set_xlabel("Underlying Asset Price at Expiration")
+    ax.legend()
     ax.xaxis.set_major_formatter("${x:.2f}")
     ax.yaxis.set_major_formatter("${x:.2f}")
     theme.style_primary_axis(ax)
@@ -662,7 +664,6 @@ def show_parity(
         "parity",
         show,
     )
-    console.print()
 
 
 @log_start_end(log=logger)
@@ -729,7 +730,6 @@ def risk_neutral_vals(
         show_index=False,
         title="Risk Neutral Values",
     )
-    console.print()
 
 
 @log_start_end(log=logger)
@@ -986,7 +986,7 @@ def display_vol_surface(
         Z = data.lastPrice
         label = "Last Price"
     if external_axes is None:
-        fig = plt.figure()
+        fig = plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
         ax = plt.axes(projection="3d")
     else:
         ax = external_axes[0]
@@ -1010,8 +1010,8 @@ def display_vol_surface(
 @log_start_end(log=logger)
 def show_greeks(
     ticker: str,
-    div_cont: float,
     expire: str,
+    div_cont: float = 0,
     rf: float = None,
     opt_type: int = 1,
     mini: float = None,
@@ -1087,9 +1087,25 @@ def show_greeks(
         "Vega",
         "Theta",
     ]
+    column_formatting = [
+        ".1f",
+        ".4f",
+        ".6f",
+        ".6f",
+        ".6f",
+        ".6f",
+    ]
     if show_all:
-        columns += ["Rho", "Phi", "Charm", "Vanna", "Vomma"]
+        additional_columns = ["Rho", "Phi", "Charm", "Vanna", "Vomma"]
+        columns += additional_columns
+        column_formatting += [".6f"] * len(additional_columns)
     df = pd.DataFrame(strikes, columns=columns)
-    print_rich_table(df, headers=list(df.columns), show_index=False, title="Greeks")
-    console.print()
+    print_rich_table(
+        df,
+        headers=list(df.columns),
+        show_index=False,
+        title="Greeks",
+        floatfmt=column_formatting,
+    )
+
     return None

@@ -21,7 +21,6 @@ from openbb_terminal.cryptocurrency.due_diligence import (
     binance_view,
     coinpaprika_view,
     finbrain_crypto_view,
-    pycoingecko_model,
     pycoingecko_view,
 )
 from openbb_terminal.decorators import log_start_end
@@ -33,7 +32,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import CryptoBaseController
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 
 # pylint: disable=import-outside-toplevel
 
@@ -97,33 +96,30 @@ class CryptoController(CryptoBaseController):
 
     def print_help(self):
         """Print help"""
-        source_txt = "CoinGecko (Price), YahooFinance (Volume)" if self.symbol else ""
-        has_ticker_start = "" if self.symbol else "[unvl]"
-        has_ticker_end = "" if self.symbol else "[/unvl]"
-        help_text = f"""[cmds]
-    load        load a specific cryptocurrency for analysis
-    find        find coins[/cmds]
-
-[param]Coin: [/param]{self.symbol.upper()}
-[param]Source: [/param]{source_txt}
-[cmds]
-    headlines   crypto sentiment from 15+ major news headlines [src][Finbrain][/src]{has_ticker_start}
-    candle      view a candle chart for a specific cryptocurrency
-    prt         potential returns tool - check how much upside if ETH reaches BTC market cap{has_ticker_end}
-[/cmds][menu]
->   disc        discover trending cryptocurrencies,     e.g.: top gainers, losers, top sentiment
->   ov          overview of the cryptocurrencies,       e.g.: market cap, DeFi, latest news, top exchanges, stables
->   onchain     information on different blockchains,   e.g.: eth gas fees, whale alerts, DEXes info
->   defi        decentralized finance information,      e.g.: dpi, llama, tvl, lending, borrow, funding
->   tools       explore different tools                 e.g.: apytoapr, il
->   nft         non-fungible tokens,                    e.g.: today drops{has_ticker_start}
->   dd          due-diligence for loaded coin,          e.g.: coin information, social media, market stats
->   ta          technical analysis for loaded coin,     e.g.: ema, macd, rsi, adx, bbands, obv
->   pred        prediction techniques,                  e.g.: regression, arima, rnn, lstm, conv1d, monte carlo
->   qa          quantitative analysis                   e.g.: decompose, cusum, residuals analysis[/menu]
-{has_ticker_end}
-"""
-        console.print(text=help_text, menu="Cryptocurrency")
+        mt = MenuText("crypto/")
+        mt.add_cmd("load")
+        mt.add_cmd("find")
+        mt.add_raw("\n")
+        mt.add_param("_symbol", self.symbol.upper())
+        mt.add_param(
+            "_source", "CoinGecko (Price), YahooFinance (Volume)" if self.symbol else ""
+        )
+        mt.add_raw("\n")
+        mt.add_cmd("headlines", "FinBrain")
+        mt.add_cmd("chart", "", self.symbol)
+        mt.add_cmd("prt", "", self.symbol)
+        mt.add_raw("\n")
+        mt.add_menu("disc")
+        mt.add_menu("ov")
+        mt.add_menu("onchain")
+        mt.add_menu("defi")
+        mt.add_menu("tools")
+        mt.add_menu("nft")
+        mt.add_menu("dd", self.symbol)
+        mt.add_menu("ta", self.symbol)
+        mt.add_menu("pred", self.symbol)
+        mt.add_menu("qa", self.symbol)
+        console.print(text=mt.menu_text, menu="Cryptocurrency")
 
     @log_start_end(log=logger)
     def call_prt(self, other_args):
@@ -298,7 +294,7 @@ class CryptoController(CryptoBaseController):
 
         if ns_parser:
             finbrain_crypto_view.display_crypto_sentiment_analysis(
-                coin=ns_parser.coin, export=ns_parser.export
+                coin=ns_parser.symbol, export=ns_parser.export
             )
 
     @log_start_end(log=logger)
@@ -468,14 +464,14 @@ class CryptoController(CryptoBaseController):
         # TODO: merge find + display_all_coins
         if ns_parser:
             find(
-                coin=ns_parser.coin,
+                coin=ns_parser.symbol,
                 source=ns_parser.source,
                 key=ns_parser.key,
                 top=ns_parser.limit,
                 export=ns_parser.export,
             )
             display_all_coins(
-                coin=ns_parser.coin,
+                coin=ns_parser.symbol,
                 source=ns_parser.source,
                 top=ns_parser.limit,
                 skip=ns_parser.skip,

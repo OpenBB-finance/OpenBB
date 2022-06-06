@@ -557,7 +557,6 @@ def lambda_price_prediction_color(val: float, last_val: float) -> str:
 
 def print_pretty_prediction(df_pred: pd.DataFrame, last_price: float):
     """Print predictions"""
-    console.print("")
     if rich_config.USE_COLOR:
         df_pred = pd.DataFrame(df_pred)
         df_pred.columns = ["pred"]
@@ -570,7 +569,7 @@ def print_pretty_prediction(df_pred: pd.DataFrame, last_price: float):
             index_name="Datetime",
             headers=["Prediction"],
             floatfmt=".2f",
-            title=f"Actual price: [yellow]{last_price:.2f} $[/yellow]\n",
+            title=f"Actual price: [yellow]{last_price:.2f} $[/yellow]",
         )
 
     else:
@@ -579,7 +578,7 @@ def print_pretty_prediction(df_pred: pd.DataFrame, last_price: float):
         print_rich_table(
             df_pred,
             show_index=True,
-            title=f"Actual price: [yellow]{last_price:.2f} $[/yellow]\n",
+            title=f"Actual price: [yellow]{last_price:.2f} $[/yellow]",
             index_name="Datetime",
             headers=["Prediction"],
             floatfmt=".2f",

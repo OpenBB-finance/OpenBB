@@ -10,41 +10,40 @@ Sector                                                 MANUFACTURING
 Industry                       MOTOR VEHICLES & PASSENGER CAR BODIES
 Address                        3500 DEER CREEK RD, PALO ALTO, CA, US
 Fiscal year end                                             December
-Latest quarter                                            2021-12-31
-Market capitalization                                      887.752 B
-EBITDA                                                       9.333 B
-PE ratio                                                      172.47
-PEG ratio                                                      2.393
-Book value                                                     29.23
+Latest quarter                                            2022-03-31
+Market capitalization                                      734.966 B
+EBITDA                                                      12.702 B
+PE ratio                                                       95.87
+PEG ratio                                                      1.654
+Book value                                                      32.9
 Dividend per share                                                 0
 Dividend yield                                                     0
-EPS                                                            4.922
-Revenue per share TTM                                          54.59
-Profit margin                                                  0.102
-Operating margin TTM                                           0.121
-Return on assets TTM                                          0.0714
-Return on equity TTM                                           21.08
-Revenue TTM                                                 53.823 B
+EPS                                                              7.4
+Revenue per share TTM                                          61.93
+Profit margin                                                  0.135
+Operating margin TTM                                           0.155
+Return on assets TTM                                           0.101
+Return on equity TTM                                           0.283
+Revenue TTM                                                 62.190 B
 Gross profit TTM                                            13.606 B
-Diluted EPS TTM                                                4.901
-Quarterly earnings growth YOY                                   7.54
-Quarterly revenue growth YOY                                   0.649
-Analyst target price                                           959.3
-Trailing PE                                                   171.05
-Forward PE                                                     81.97
-Price to sales ratio TTM                                        16.1
-Price to book ratio                                            27.73
-EV to revenue                                                  15.39
-EV to EBITDA                                                   86.04
-Beta                                                           2.049
+Diluted EPS TTM                                                  7.4
+Quarterly earnings growth YOY                                   6.32
+Quarterly revenue growth YOY                                   0.805
+Analyst target price                                          961.82
+Trailing PE                                                    95.87
+Forward PE                                                     59.52
+Price to sales ratio TTM                                       11.82
+Price to book ratio                                            21.57
+EV to revenue                                                  11.65
+EV to EBITDA                                                   55.98
+Beta                                                           2.119
 52 week high                                                 1243.49
-52 week low                                                   546.98
-50 day moving average                                         942.27
-200 day moving average                                        843.35
-Shares outstanding                                           1.034 B
+52 week low                                                   571.22
+50 day moving average                                         925.93
+200 day moving average                                        913.61
+Shares outstanding                                           1.036 B
 Dividend date                                                   None
 Ex dividend date                                                None
-
 Company Description:
 
 Tesla, Inc. is an American electric vehicle and clean energy company based in Palo Alto, California. Tesla's current products include electric cars, battery energy storage from home to grid-scale, solar panels and solar roof tiles, as well as other related products and services. In 2020, Tesla had the highest sales in the plug-in and battery electric passenger car segments, capturing 16% of the plug-in market (which includes plug-in hybrids) and 23% of the battery-electric (purely electric) market. Through its subsidiary Tesla Energy, the company develops and is a major installer of solar photovoltaic energy generation systems in the United States. Tesla Energy is also one of the largest global suppliers of battery energy storage systems, with 3 GWh of battery storage supplied in 2020.

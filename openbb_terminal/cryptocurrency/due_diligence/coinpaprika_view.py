@@ -123,7 +123,6 @@ def display_twitter(
         show_index=False,
         title="Twitter Timeline",
     )
-    console.print("")
 
     export_data(
         export,
@@ -178,7 +177,6 @@ def display_events(
     print_rich_table(
         df.head(top), headers=list(df.columns), show_index=False, title="All Events"
     )
-    console.print("")
 
     export_data(
         export,
@@ -223,7 +221,6 @@ def display_exchanges(
     print_rich_table(
         df.head(top), headers=list(df.columns), show_index=False, title="All Exchanges"
     )
-    console.print("")
 
     export_data(
         export,
@@ -284,7 +281,6 @@ def display_markets(
     print_rich_table(
         df.head(top), headers=list(df.columns), show_index=False, title="All Markets"
     )
-    console.print("")
 
     export_data(
         export,
@@ -324,7 +320,6 @@ def display_price_supply(
     print_rich_table(
         df, headers=list(df.columns), show_index=False, title="Coin Information"
     )
-    console.print("")
 
     export_data(
         export,

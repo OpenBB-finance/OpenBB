@@ -17,6 +17,7 @@ from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_intraday,
     plot_autoscale,
     is_valid_axes_count,
 )
@@ -140,6 +141,14 @@ def display_simple_ema(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (3 axes are expected in the list), by default None
     """
+    # TODO: Help Wanted!
+    # Implement support for backtesting on intraday data
+    if is_intraday(df_stock):
+        console.print("Backtesting on intraday data is not yet supported.")
+        console.print("Submit a feature request to let us know that you need it here:")
+        console.print("https://openbb.co/request-a-feature")
+        console.print("")
+        return
 
     # This plot has 1 axis
     if not external_axes:
@@ -162,6 +171,8 @@ def display_simple_ema(
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "simple_ema", res.stats
     )
+
+    return
 
 
 @log_start_end(log=logger)
@@ -199,6 +210,15 @@ def display_ema_cross(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
+    # TODO: Help Wanted!
+    # Implement support for backtesting on intraday data
+    if is_intraday(df_stock):
+        console.print("Backtesting on intraday data is not yet supported.")
+        console.print("Submit a feature request to let us know that you need it here:")
+        console.print("https://openbb.co/request-a-feature")
+        console.print("")
+        return
+
     # This plot has 1 axis
     if not external_axes:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -220,6 +240,7 @@ def display_ema_cross(
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "ema_cross", res.stats
     )
+    return
 
 
 # pylint:disable=too-many-arguments
@@ -261,6 +282,15 @@ def display_rsi_strategy(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
+    # TODO: Help Wanted!
+    # Implement support for backtesting on intraday data
+    if is_intraday(df_stock):
+        console.print("Backtesting on intraday data is not yet supported.")
+        console.print("Submit a feature request to let us know that you need it here:")
+        console.print("https://openbb.co/request-a-feature")
+        console.print("")
+        return
+
     # This plot has 1 axis
     if not external_axes:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -283,3 +313,4 @@ def display_rsi_strategy(
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "rsi_corss", res.stats
     )
+    return

@@ -75,7 +75,6 @@ def notes(series_term: str, num: int) -> pd.DataFrame:
         show_index=False,
         headers=["Series ID", "Title", "Description"],
     )
-    console.print("")
 
 
 @log_start_end(log=logger)
@@ -130,7 +129,9 @@ def display_fred_series(
             s_id = series_ids[0]
             sub_dict: Dict = d_series[s_id]
             title = f"{sub_dict['title']} ({sub_dict['units']})"
-            ax.plot(data.index, data, label="\n".join(textwrap.wrap(title, 80)))
+            ax.plot(
+                data.index, data.iloc[:, 0], label="\n".join(textwrap.wrap(title, 80))
+            )
         else:
             for s_id, sub_dict in d_series.items():
                 data_to_plot = data[s_id].dropna()
@@ -168,7 +169,6 @@ def display_fred_series(
                 show_index=True,
                 index_name="Date",
             )
-            console.print("")
 
         export_data(
             export,

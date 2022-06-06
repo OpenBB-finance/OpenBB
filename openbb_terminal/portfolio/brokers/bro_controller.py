@@ -15,7 +15,7 @@ from openbb_terminal.portfolio.brokers.ally import ally_controller
 from openbb_terminal.portfolio.brokers.coinbase import coinbase_controller
 from openbb_terminal.portfolio.brokers.degiro import degiro_controller
 from openbb_terminal.portfolio.brokers.robinhood import robinhood_controller
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 
 logger = logging.getLogger(__name__)
 
@@ -43,13 +43,12 @@ class BrokersController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = """[menu]
->   ally         Ally Invest Menu
->   degiro       Degiro Menu
->   rh           Robinhood Menu
->   cb           Coinbase Pro Menu[/menu]
-    """
-        console.print(text=help_text, menu="Portfolio - Brokers")
+        mt = MenuText("portfolio/bro/")
+        mt.add_menu("ally")
+        mt.add_menu("degiro")
+        mt.add_menu("rh")
+        mt.add_menu("cb")
+        console.print(text=mt.menu_text, menu="Portfolio - Brokers")
 
     @log_start_end(log=logger)
     def call_degiro(self, _):

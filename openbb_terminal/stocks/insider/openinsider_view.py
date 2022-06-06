@@ -213,7 +213,6 @@ def print_insider_data(type_insider: str, limit: int = 10, export: str = ""):
 
         for char in l_uchars:
             console.print(d_notes[char])
-    console.print("")
 
 
 @log_start_end(log=logger)
@@ -293,7 +292,6 @@ def print_insider_filter(
         # needs to be done because table is too large :(
         df_insider = df_insider.drop(columns=["Filing Date"])
 
-    console.print("")
     print_rich_table(
         df_insider,
         headers=[x.title() for x in df_insider.columns],
@@ -311,13 +309,13 @@ def print_insider_filter(
     if not links:
         l_chars = [list(chars) for chars in df_insider_orig["X"].values]
         l_uchars = np.unique(list(itertools.chain(*l_chars)))
-        console.print("")
+
         for char in l_uchars:
             console.print(d_notes[char])
 
         l_tradetype = df_insider_orig["Trade Type"].values
         l_utradetype = np.unique(l_tradetype)
-        console.print("")
+
         for tradetype in l_utradetype:
             console.print(d_trade_types[tradetype])
 

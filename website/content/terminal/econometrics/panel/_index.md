@@ -25,7 +25,7 @@ optional arguments:
 Below you can find examples of the dataset from Vella and M. Verbeek (1998), “Whose Wages Do Unions Raise? A Dynamic Model of Unionism and Wage Rate Determination for Young Men,” Journal of Applied Econometrics 13, 163-183. This is a well-known dataset also used within Chapter 14 of Introduction to Econometrics by Jeffrey Wooldridge. For these regressions, [LinearModels](https://bashtage.github.io/linearmodels/panel/examples/examples.html) is used.
 
 ```
-2022 Feb 25, 08:07 (✨) /econometrics/ $ load wage_panel wp
+2022 Feb 25, 08:07 (✨) /econometrics/ $ load wage_panel -a wp
 
 2022 Feb 25, 08:08 (✨) /econometrics/ $ type
            wp
@@ -57,9 +57,9 @@ Below you can find examples of the dataset from Vella and M. Verbeek (1998), “
 │ occupation │ int64    │
 └────────────┴──────────┘
 
-2022 Feb 25, 08:09 (✨) /econometrics/ $ index wp nr year
+2022 Feb 25, 08:09 (✨) /econometrics/ $ index wp -i nr,year
 
-2022 Feb 25, 08:10 (✨) /econometrics/ $ type year-wp category
+2022 Feb 25, 08:10 (✨) /econometrics/ $ type wp.year -f category
 
 2022 Feb 25, 08:10 (✨) /econometrics/ $ show wp
                                                             wp
@@ -91,7 +91,7 @@ Below you can find examples of the dataset from Vella and M. Verbeek (1998), “
 **Pooled OLS Estimation:**
 
 ```
-2022 Feb 25, 08:51 (✨) /econometrics/ $ panel lwage-wp black-wp hisp-wp exper-wp expersq-wp married-wp educ-wp union-wp year-wp
+(✨) /econometrics/ $ panel -d wp.lwage -i wp.black,wp.hisp,wp.exper,wp.expersq,wp.married,wp.educ,wp.union,wp.year
 
                           PooledOLS Estimation Summary
 ================================================================================
@@ -137,7 +137,7 @@ year_wp.1987     0.1738     0.0494     3.5165     0.0004      0.0769      0.2707
 **Between OLS Estimation:**
 
 ```
-2022 Feb 25, 08:51 (✨) /econometrics/ $ panel lwage-wp black-wp hisp-wp exper-wp married-wp educ-wp union-wp -t bols
+(✨) /econometrics/ $ panel -d wp.lwage -i wp.black,wp.hisp,wp.exper,wp.married,wp.educ,wp.union -r bols
 
                          BetweenOLS Estimation Summary
 ================================================================================
@@ -175,7 +175,7 @@ union_wp       0.2587     0.0460     5.6214     0.0000      0.1683      0.3491
 **Random Effects Estimation:**
 
 ```
-2022 Feb 25, 08:53 (✨) /econometrics/ $ panel lwage-wp black-wp hisp-wp exper-wp expersq-wp married-wp educ-wp union-wp year-wp -t re
+(✨) /econometrics/ $ panel -d wp.lwage -i wp.black,wp.hisp,wp.exper,wp.expersq,wp.married,wp.educ,wp.union,wp.year -r re
 
                         RandomEffects Estimation Summary
 ================================================================================
@@ -219,9 +219,8 @@ year_wp.1987     0.1348     0.0817     1.6504     0.0989     -0.0253      0.2950
 ```
 
 **Fixed Effects Estimation (no effects):**
-
 ```
-2022 Feb 25, 08:51 (✨) /econometrics/ $ panel lwage-wp expersq-wp union-wp married-wp  year-wp -t fe
+(✨) /econometrics/ $ panel -d wp.lwage -i wp.expersq,wp.union,wp.married,wp.year -r fe
 
                           PanelOLS Estimation Summary
 ================================================================================
@@ -263,7 +262,7 @@ year_wp.1987     0.5952     0.0396     15.026     0.0000      0.5176      0.6729
 **Fixed Effects Estimation (entity effects):**
 
 ```
-2022 Feb 25, 08:51 (✨) /econometrics/ $ panel lwage-wp expersq-wp union-wp married-wp  year-wp -t fe -ee
+(✨) /econometrics/ $ panel -d wp.lwage -i wp.expersq,wp.married,wp.union,wp.year -r fe -e
 
                           PanelOLS Estimation Summary
 ================================================================================
@@ -309,9 +308,8 @@ Included effects: Entity
 ```
 
 **Fixed Effects Estimation (time effects):**
-
 ```
-2022 Feb 25, 08:52 (✨) /econometrics/ $ panel lwage-wp expersq-wp union-wp married-wp  -t fe -te
+(✨) /econometrics/ $ panel -d wp.lwage -i wp.expersq,wp.married,wp.union -r fe -t
 
                           PanelOLS Estimation Summary
 ================================================================================
@@ -350,9 +348,8 @@ Included effects: Time
 ```
 
 **Fixed Effects Estimation (entity and time effects):**
-
 ```
-2022 Feb 25, 08:52 (✨) /econometrics/ $ panel lwage-wp expersq-wp union-wp married-wp  -t fe -te -ee
+(✨) /econometrics/ $ panel -d wp.lwage -i wp.expersq,wp.married,wp.union  -r fe -t -e
 
                           PanelOLS Estimation Summary
 ================================================================================
@@ -393,7 +390,7 @@ Included effects: Entity, Time
 **First Difference OLS Estimation:**
 
 ```
-2022 Feb 25, 08:52 (✨) /econometrics/ $ panel lwage-wp exper-wp expersq-wp union-wp married-wp -t fdols
+(✨) /econometrics/ $ panel -d wp.lwage -i wp.exper,wp.expersq,wp.married,wp.union -r fdols
 
                      FirstDifferenceOLS Estimation Summary
 ================================================================================

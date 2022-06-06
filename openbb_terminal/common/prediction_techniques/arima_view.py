@@ -307,11 +307,10 @@ def display_arima(
                 title="ARIMA Model",
             )
 
-        console.print("")
         print_prediction_kpis(df_pred["Real"].values, df_pred["Prediction"].values)
 
     else:
         # Print prediction data
         print_pretty_prediction(df_pred, values.values[-1])
+
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "arima")
-    console.print("")

@@ -78,7 +78,6 @@ def display_big_mac_index(
                 title="Big Mac Index",
                 show_index=True,
             )
-            console.print("")
 
         export_data(
             export, os.path.dirname(os.path.abspath(__file__)), "bigmac", big_mac
