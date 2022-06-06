@@ -104,6 +104,19 @@ def display_enterprise(
     """
     df_fa = fmp_model.get_enterprise(ticker, number, quarterly)
     df_fa = df_fa[df_fa.columns[::-1]]
+
+    # Re-order the returned columns so they are in a more logical ordering
+    df_fa = df_fa.reindex(
+        [
+            "Symbol",
+            "Stock price",
+            "Number of shares",
+            "Market capitalization",
+            "Add total debt",
+            "Minus cash and cash equivalents",
+            "Enterprise value",
+        ]
+    )
     if df_fa.empty:
         console.print("[red]No data available[/red]\n")
     else:
