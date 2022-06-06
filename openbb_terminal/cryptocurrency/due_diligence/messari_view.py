@@ -207,7 +207,7 @@ def display_marketcap_dominance(
         else:
             return
 
-        ax.plot(df.index, df["values"])
+        ax.plot(df.index, df["marketcap_dominance"])
 
         ax.set_title(f"{coin}'s Market Cap Dominance over time")
         ax.set_ylabel(f"{coin} Percentage share")
