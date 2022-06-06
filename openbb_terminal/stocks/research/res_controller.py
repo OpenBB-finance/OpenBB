@@ -12,7 +12,7 @@ from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 
 logger = logging.getLogger(__name__)
 
@@ -58,29 +58,28 @@ class ResearchController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = f"""
-[param]Ticker: [/param]{self.ticker}
-[cmds]
-    macroaxis        www.macroaxis.com
-    yahoo            www.finance.yahoo.com
-    finviz           www.finviz.com
-    marketwatch      www.marketwatch.com
-    fool             www.fool.com
-    businessinsider  www.markets.businessinsider.com
-    fmp              www.financialmodelingprep.com
-    fidelity         www.eresearch.fidelity.com
-    tradingview      www.tradingview.com
-    marketchameleon  www.marketchameleon.com
-    stockrow         www.stockrow.com
-    barchart         www.barchart.com
-    grufity          www.grufity.com
-    fintel           www.fintel.com
-    zacks            www.zacks.com
-    macrotrends      www.macrotrends.net
-    newsfilter       www.newsfilter.io
-    stockanalysis    www.stockanalysis.com[/cmds]
-"""
-        console.print(text=help_text, menu="Stocks - Research")
+        mt = MenuText("stocks/res/", 50)
+        mt.add_param("_ticker", self.ticker.upper())
+        mt.add_raw("\n")
+        mt.add_cmd("macroaxis")
+        mt.add_cmd("yahoo")
+        mt.add_cmd("finviz")
+        mt.add_cmd("marketwatch")
+        mt.add_cmd("fool")
+        mt.add_cmd("businessinsider")
+        mt.add_cmd("fmp")
+        mt.add_cmd("fidelity")
+        mt.add_cmd("tradingview")
+        mt.add_cmd("marketchameleon")
+        mt.add_cmd("stockrow")
+        mt.add_cmd("barchart")
+        mt.add_cmd("grufity")
+        mt.add_cmd("fintel")
+        mt.add_cmd("zacks")
+        mt.add_cmd("macrotrends")
+        mt.add_cmd("newsfilter")
+        mt.add_cmd("stockanalysis")
+        console.print(text=mt.menu_text, menu="Stocks - Research")
 
     def custom_reset(self):
         """Class specific component of reset command"""

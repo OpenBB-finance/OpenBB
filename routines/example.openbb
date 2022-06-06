@@ -1,10 +1,27 @@
-export example
+# Go to the stocks menu
 stocks
+
+# Load Palantir Technologies (PLTR)
 load pltr
+
+# Enter the Due Dilligence (dd) menu
 dd
+
+# Show price targets, both the chart and the table
 pt
-rot
+pt --raw
+
+# Enter the Insider menu
 ../ins
+
+# Show open insider filtered data for Palantir Technologies
 stats
+
+# Enter the Technical Analysis (ta) menu
 ../ta
+
+# Show the fibonacci retracement levels
 fib
+
+# Return to home
+/

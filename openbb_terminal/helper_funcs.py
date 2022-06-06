@@ -159,8 +159,8 @@ def print_rich_table(
         Title for index column
     headers: List[str]
         Titles for columns
-    floatfmt: str
-        String to
+    floatfmt: Union[str, List[str]]
+        Float number formatting specs as string or list of strings. Defaults to ".2f"
     """
 
     if obbff.USE_TABULATE_DF:
@@ -197,7 +197,11 @@ def print_rich_table(
             row += [
                 str(x)
                 if not isinstance(x, float)
-                else (f"{x:{floatfmt[idx]}}" if abs(x) >= 0.001 else f"{x:.2e}")
+                else (
+                    f"{x:{floatfmt[idx]}}"
+                    if isinstance(floatfmt, list)
+                    else (f"{x:.2e}" if 0 < abs(x) <= 0.0001 else f"{x:floatfmt}")
+                )
                 for idx, x in enumerate(values)
             ]
             table.add_row(*row)
@@ -608,7 +612,7 @@ def lambda_long_number_format(num, round_decimal=3) -> str:
         return f"{num_str} {' KMBTP'[magnitude]}".strip()
     if isinstance(num, int):
         num = str(num)
-    if num.lstrip("-").isdigit():
+    if isinstance(num, str) and num.lstrip("-").isdigit():
         num = int(num)
         num /= 1.0
         magnitude = 0
@@ -936,7 +940,7 @@ def parse_known_args_and_warn(
             dest="limit",
             default=limit,
             help="Number of entries to show in data.",
-            type=int,
+            type=check_positive,
         )
 
     if obbff.USE_CLEAR_AFTER_CMD:
@@ -1228,7 +1232,11 @@ def compose_export_path(func_name: str, dir_path: str) -> Tuple[str, str]:
     # Resolving all symlinks and also normalizing path.
     resolve_path = Path(dir_path).resolve()
     # Getting the directory names from the path. Instead of using split/replace (Windows doesn't like that)
-    path_cmd = f"{resolve_path.parts[-2]}_{resolve_path.parts[-1]}"
+    # check if this is done in a main context to avoid saving with openbb_terminal
+    if resolve_path.parts[-2] == "openbb_terminal":
+        path_cmd = f"{resolve_path.parts[-1]}"
+    else:
+        path_cmd = f"{resolve_path.parts[-2]}_{resolve_path.parts[-1]}"
 
     default_filename = f"{now.strftime('%Y%m%d_%H%M%S')}_{path_cmd}_{func_name}"
     if obbff.EXPORT_FOLDER_PATH:
@@ -1367,15 +1375,14 @@ def handle_error_code(requests_obj, error_code_map):
 
 def prefill_form(ticket_type, menu, path, command, message):
     """Pre-fille Google Form and open it in the browser"""
-    form_id = "1FAIpQLSe0-HKitlJMtTO9C2VR7uXVtTzmQgiyE1plf3nEkYCRx6WGRg"
-    form_url = f"https://docs.google.com/forms/d/e/{form_id}/viewform?"
+    form_url = "https://openbb.co/support?"
 
     params = {
-        "entry.2091304642": ticket_type,
-        "entry.2098699567": menu,
-        "entry.1862722780": path,
-        "entry.1248966702": command,
-        "entry.110036167": message,
+        "type": ticket_type,
+        "menu": menu,
+        "path": path,
+        "command": command,
+        "message": message,
     }
 
     url_params = urllib.parse.urlencode(params)
@@ -1547,3 +1554,58 @@ def support_message(s: str) -> str:
     for the support command
     """
     return s.replace('"', "")
+
+
+def check_list_values(valid_values: List[str]):
+    """
+    Get valid values to test arguments given by user
+
+    Parameters
+    ----------
+    valid_values: List[str]
+        List of valid values to be checked
+
+    Returns
+    -------
+    check_list_values_from_valid_values_list:
+        Function that ensures that the valid values go through and notifies user when value is not valid.
+    """
+
+    # Define the function with default arguments
+    def check_list_values_from_valid_values_list(given_values: str) -> List[str]:
+        """
+        Checks if argparse argument is an str with format: value1,value2,value3 and that
+        the values value1, value2 and value3 are valid.
+
+        Parameters
+        ----------
+        given_values: str
+            values provided by the user
+
+        Raises
+        -------
+        argparse.ArgumentTypeError
+            Input number not between min and max values
+        """
+        success_values = list()
+
+        if "," in given_values:
+            values_found = [val.strip() for val in given_values.split(",")]
+        else:
+            values_found = [given_values]
+
+        for value in values_found:
+            # check if the value is valid
+            if value in valid_values:
+                success_values.append(value)
+            else:
+                console.print(f"[red]'{value}' is not valid.[/red]")
+
+        if not success_values:
+            log_and_raise(
+                argparse.ArgumentTypeError("No correct arguments have been found")
+            )
+        return success_values
+
+    # Return function handle to checking function
+    return check_list_values_from_valid_values_list

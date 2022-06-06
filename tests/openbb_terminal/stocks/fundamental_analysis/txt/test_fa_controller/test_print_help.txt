@@ -1,32 +1,31 @@
+    load               load a specific stock ticker for analysis
 
-Ticker:  TSLA 
+Ticker: TSLA
 
-    data             fundamental and technical data of company [FinViz]
-    mgmt             management team of the company [Business Insider]
-    analysis         analyse SEC filings with the help of machine learning [Eclect.us]
-    score            investing score from Warren Buffett, Joseph Piotroski and Benjamin Graham [FMP]
-    warnings         company warnings according to Sean Seah book [Market Watch]
-    dcf              advanced Excel customizable discounted cash flow [Stockanalysis]
-[Yahoo Finance]
-    info             information scope of the company
-    mktcap           estimated market cap
-    shrs             shareholders (insiders, institutions and mutual funds)
-    sust             sustainability values (environment, social and governance)
-    cal              calendar earnings and estimates of the company
-    divs             show historical dividends for company
-    splits           stock split and reverse split events since IPO
-    web              open web browser of the company
-    hq               open HQ location of the company
-[Alpha Vantage / Polygon]
-    income           income statements of the company
-    balance          balance sheet of the company
-[Alpha Vantage]
-    overview         overview of the company
-    key              company key metrics
-    cash             cash flow of the company
-    earnings         earnings dates and reported EPS
-    fraud            key fraud ratios
-    dupont           detailed breakdown for return on equity
-Other Sources:
->   fmp              profile,quote,enterprise,dcf,income,ratios,growth from FMP
-        
+    data               fundamental and technical data of company                       [Finviz]
+    mgmt               management team of the company                                  [Business Insider]
+    analysis           analyse SEC filings with the help of machine learning           [Elect]
+    score              investing score from Warren Buffett and co                      [FMP]
+    warnings           company warnings according to Sean Seah book                    [Market Watch]
+    dcf                advanced Excel customizable discounted cash flow                [Stockanalysis]
+    info               information scope of the company                                [Yahoo Finance]
+    mktcap             estimated market cap                                            [Yahoo Finance]
+    shrs               shareholders (insiders, institutions and mutual funds)          [Yahoo Finance]
+    sust               sustainability values (environment, social and governance)      [Yahoo Finance]
+    cal                calendar earnings and estimates of the company                  [Yahoo Finance]
+    divs               show historical dividends for company                           [Yahoo Finance]
+    splits             stock split and reverse split events since IPO                  [Yahoo Finance]
+    web                open web browser of the company                                 [Yahoo Finance]
+    hq                 open HQ location of the company                                 [Yahoo Finance]
+    income             income statements of the company                                [Alpha Vantage / Polygon]
+    balance            balance sheet of the company                                    [Alpha Vantage / Polygon]
+    overview           overview of the company                                         [Alpha Vantage]
+    key                company key metrics                                             [Alpha Vantage]
+    cash               cash flow of the company                                        [Alpha Vantage]
+    earnings           earnings dates and reported EPS                                 [Alpha Vantage]
+    fraud              key fraud ratios                                                [Alpha Vantage]
+    dupont             detailed breakdown for return on equity                         [Alpha Vantage]
+
+Other sources:
+>   fmp                profile,quote,enterprise,dcf,income,ratios,growth from FMP
+

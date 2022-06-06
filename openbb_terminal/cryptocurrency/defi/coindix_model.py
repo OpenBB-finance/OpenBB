@@ -4,15 +4,19 @@ __docformat__ = "numpy"
 import logging
 from typing import Optional
 
+import urllib3
 import pandas as pd
 import requests
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import get_user_agent
 
+
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
 logger = logging.getLogger(__name__)
 
-VAULTS_FILTERS = ["name", "chain", "protocol", "apy", "tvl", "risk", "link"]
+VAULTS_FILTERS = ["name", "chain", "protocol", "apy", "tvl", "link"]
 CHAINS = [
     "ethereum",
     "polygon",
@@ -32,6 +36,9 @@ CHAINS = [
     "defichain",
     "solana",
     "optimism",
+    "kusama",
+    "metis",
+    "osmosis",
 ]
 PROTOCOLS = [
     "aave",
@@ -62,6 +69,8 @@ PROTOCOLS = [
     "uniswap",
     "venus",
     "yearn",
+    "osmosis",
+    "tulip",
 ]
 VAULT_KINDS = [
     "lp",
@@ -69,22 +78,6 @@ VAULT_KINDS = [
     "noimploss",
     "stable",
 ]
-
-
-def _lambda_risk_mapper(risk_level: int) -> str:
-    """Helper methods
-    Parameters
-    ----------
-    risk_level: int
-        number from range 0-4 represents risk factor for given vault
-    Returns
-    -------
-    string:
-        text representation of risk
-    """
-
-    mappings = {0: "Non Eligible", 1: "Least", 2: "Low", 3: "Medium", 4: "High"}
-    return mappings.get(risk_level, "Non Eligible")
 
 
 @log_start_end(log=logger)
@@ -155,9 +148,7 @@ def get_defi_vaults(
         data = response.json()["data"]
         if len(data) == 0:
             return pd.DataFrame()
-        df = pd.DataFrame(data)[VAULTS_FILTERS].fillna("NA")
-        df["risk"] = df["risk"].apply(lambda x: _lambda_risk_mapper(x))
-        return df
+        return pd.DataFrame(data)[VAULTS_FILTERS].fillna("NA")
     except Exception as e:
         logger.exception(e)
         raise ValueError(f"Invalid Response: {response.text}") from e

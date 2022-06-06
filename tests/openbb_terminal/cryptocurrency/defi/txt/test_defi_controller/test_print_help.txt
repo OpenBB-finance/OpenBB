@@ -1,33 +1,26 @@
-
-    newsletter       Recent DeFi related newsletters [Substack]
-    dpi              DeFi protocols listed on DefiPulse [Defipulse]
-    funding          Funding rates - current or last 30 days average [Defirate]
-    borrow           DeFi borrow rates - current or last 30 days average [Defirate]
-    lending          DeFi ending rates - current or last 30 days average [Defirate]
-    vaults           Top DeFi Vaults on different blockchains [Coindix]
-[The Graph] Uniswap
-    tokens           Tokens trade-able on Uniswap
-    stats            Base statistics about Uniswap
-    pairs            Recently added pairs on Uniswap
-    pools            Pools by volume on Uniswap
-    swaps            Recent swaps done on Uniswap
-[Defi Llama]
-    ldapps           Lists dApps
-    gdapps           Displays top DeFi dApps grouped by chain
-    stvl             Displays historical values of the total sum of TVLs from all dApps
-    dtvl             Displays historical total value locked (TVL) by dApp
-[Terra Engineer]
-    aterra           Displays 30-day history of specified asset in terra address
-    ayr              Displays 30-day history of anchor yield reserve
-[Terra FCD]
-    sinfo            Displays staking info for provided terra account address
-    validators       Displays information about terra blockchain validators
-    govp             Displays terra blockchain governance proposals list
-    gacc             Displays terra blockchain account growth history
-    sratio           Displays terra blockchain staking ratio history
-    sreturn          Displays terra blockchain staking returns history
-[Smartstake]
-    lcsc             Displays Luna circulating supply changes
-[CryptoSaurio]
-    anchor           Display anchor earnings data
+    newsletter         recent DeFi related newsletters                                 [Substack]
+    dpi                DeFi protocols listed on DefiPulse                              [Defipulse]
+    funding            funding rates - current or last 30 days average                 [Defirate]
+    borrow             DeFi borrow rates - current or last 30 days average             [Defirate]
+    lending            DeFi ending rates - current or last 30 days average             [Defirate]
+    vaults             top DeFi Vaults on different blockchains                        [Coindix]
+    tokens             tokens trade-able on Uniswap                                    [The Graph]
+    stats              base statistics about Uniswap                                   [The Graph]
+    pairs              recently added pairs on Uniswap                                 [The Graph]
+    pools              pools by volume on Uniswap                                      [The Graph]
+    swaps              recent swaps done on Uniswap                                    [The Graph]
+    ldapps             lists dApps                                                     [Defi Llama]
+    gdapps             top DeFi dApps grouped by chain                                 [Defi Llama]
+    stvl               historical values of the total sum of TVLs from all dApps       [Defi Llama]
+    dtvl               historical total value locked (TVL) by dApp                     [Defi Llama]
+    aterra             30-day history of specified asset in terra address              [Terra Engineer]
+    ayr                30-day history of anchor yield reserve                          [Terra Engineer]
+    sinfo              staking info for provided terra account address                 [Terra FCD]
+    validators         information about terra blockchain validators                   [Terra FCD]
+    govp               terra blockchain governance proposals list                      [Terra FCD]
+    gacc               terra blockchain account growth history                         [Terra FCD]
+    sratio             terra blockchain staking ratio history                          [Terra FCD]
+    sreturn            terra blockchain staking returns history                        [Terra FCD]
+    lcsc               Luna circulating supply changes                                 [Smartstake]
+    anchor             anchor earnings data                                            [CryptoSaurio]
 

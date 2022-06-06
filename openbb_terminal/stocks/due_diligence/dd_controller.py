@@ -18,7 +18,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.stocks.due_diligence import (
     ark_view,
@@ -74,27 +74,21 @@ class DueDiligenceController(StockBaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = f"""
-[param]Ticker: [/param]{self.ticker}[cmds]
-
-[src][Finviz][/src]
-    analyst          analyst prices and ratings of the company
-[src][FMP][/src]
-    rating           rating over time (daily)
-[src][Finnhub][/src]
-    rot              number of analysts ratings over time (monthly)
-[src][Business Insider][/src]
-    pt               price targets over time
-    est              quarter and year analysts earnings estimates
-[src][Market Watch][/src]
-    sec              SEC filings
-[src][Csimarket][/src]
-    supplier         list of suppliers
-    customer         list of customers
-[src][Cathiesark.com][/src]
-    arktrades        get ARK trades for ticker[/cmds]
-        """
-        console.print(text=help_text, menu="Stocks - Due Diligence")
+        mt = MenuText("stocks/dd/", 90)
+        mt.add_cmd("load")
+        mt.add_raw("\n")
+        mt.add_param("_ticker", self.ticker.upper())
+        mt.add_raw("\n")
+        mt.add_cmd("analyst", "Finviz")
+        mt.add_cmd("rating", "FMP")
+        mt.add_cmd("rot", "Finnhub")
+        mt.add_cmd("pt", "Business Insider")
+        mt.add_cmd("est", "Business Insider")
+        mt.add_cmd("sec", "Market Watch")
+        mt.add_cmd("supplier", "Csimarket")
+        mt.add_cmd("customer", "Csimarket")
+        mt.add_cmd("arktrades", "Cathiesark")
+        console.print(text=mt.menu_text, menu="Stocks - Due Diligence")
 
     def custom_reset(self) -> List[str]:
         """Class specific component of reset command"""
