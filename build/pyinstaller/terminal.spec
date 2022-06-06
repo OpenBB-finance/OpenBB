@@ -54,6 +54,9 @@ added_files = [
 hidden_imports = [
     "sklearn.utils._cython_blas",
     "sklearn.utils._typedefs",
+    "sklearn.utils._heap",
+    "sklearn.utils._sorting",
+    "sklearn.utils._vector_sentinel",
     "sklearn.neighbors.quad_tree",
     "sklearn.tree._utils",
     "sklearn.neighbors._partition_nodes",
