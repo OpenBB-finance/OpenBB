@@ -326,8 +326,6 @@ def test_call_func(
         )
 
         controller = crypto_controller.CryptoController(queue=None)
-        controller.coin_map_df = COIN_MAP_DF
-        controller.coin = CURRENT_COIN
         controller.symbol = SYMBOL
         controller.source = "bin"
         getattr(controller, tested_func)(other_args)
@@ -338,8 +336,6 @@ def test_call_func(
             mock.assert_called_once()
     else:
         controller = crypto_controller.CryptoController(queue=None)
-        controller.coin_map_df = COIN_MAP_DF
-        controller.coin = CURRENT_COIN
         controller.symbol = SYMBOL
         controller.source = "bin"
         getattr(controller, tested_func)(other_args)
@@ -350,7 +346,7 @@ def test_call_func(
     "tested_func",
     [
         "call_prt",
-        "call_chart",
+        "call_candle",
         "call_ta",
         "call_dd",
         "call_pred",
@@ -358,5 +354,5 @@ def test_call_func(
 )
 def test_call_func_no_current_coin(tested_func):
     controller = crypto_controller.CryptoController(queue=None)
-    controller.current_coin = None
+    controller.symbol = None
     getattr(controller, tested_func)([])

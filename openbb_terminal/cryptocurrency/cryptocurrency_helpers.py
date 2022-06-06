@@ -290,7 +290,7 @@ def get_coinpaprika_id(symbol: str):
 def load(
     symbol_search: str,
     vs: str,
-    start: datetime = (datetime.now() - timedelta(days=366)),
+    start: datetime = (datetime.now() - timedelta(days=365)),
 ):
     coingecko_id = get_coingecko_id(symbol_search)
     if not coingecko_id:

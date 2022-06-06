@@ -703,7 +703,7 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="load",
             description="Load crypto currency to perform analysis on."
-            "Main source used for analysis is CoinPaprika (cp).",
+            "CoinGecko is used as source for price and YahooFinance for volume.",
         )
         parser.add_argument(
             "-c",
