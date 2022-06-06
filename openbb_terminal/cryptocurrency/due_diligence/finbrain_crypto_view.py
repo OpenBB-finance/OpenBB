@@ -92,7 +92,7 @@ def display_crypto_sentiment_analysis(
                 )
         ax.axhline(y=0, linestyle="--")
         ax.set_xlabel("Time")
-        ax.set_ylabel("Sentiment")
+        ax.set_ylabel("Finbrain's Sentiment Score")
         start_date = sentiment.index[-1].strftime("%Y/%m/%d")
         ax.set_title(f"FinBrain's Sentiment Analysis for {coin}-USD since {start_date}")
         ax.set_ylim([-1.1, 1.1])
