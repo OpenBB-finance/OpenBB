@@ -46,12 +46,14 @@ logger = logging.getLogger(__name__)
 
 FILTERS_VS_USD_BTC = ["usd", "btc"]
 
+
 def check_cg_id(symbol: str):
     cg_id = cryptocurrency_helpers.get_coingecko_id(symbol)
     if not cg_id:
-        print(f'\n{symbol} not found on CoinGecko')
+        print(f"\n{symbol} not found on CoinGecko")
         return ""
     return symbol
+
 
 class DueDiligenceController(CryptoBaseController):
     """Due Diligence Controller class"""
@@ -166,7 +168,7 @@ class DueDiligenceController(CryptoBaseController):
 
     def print_help(self):
         """Print help"""
-        #source_txt = CRYPTO_SOURCES.get(self.source, "?") if self.source != "" else ""
+        # source_txt = CRYPTO_SOURCES.get(self.source, "?") if self.source != "" else ""
         help_text = f"""[cmds]
     load        load a specific cryptocurrency for analysis
 
@@ -224,7 +226,7 @@ class DueDiligenceController(CryptoBaseController):
     def custom_reset(self):
         """Class specific component of reset command"""
         if self.symbol:
-                return ["crypto", f"load {self.symbol}", "dd"]
+            return ["crypto", f"load {self.symbol}", "dd"]
         return []
 
     @log_start_end(log=logger)

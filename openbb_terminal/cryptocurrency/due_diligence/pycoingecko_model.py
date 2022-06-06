@@ -779,6 +779,7 @@ class Coin:
         df["currency"] = vs_currency
         return df
 
+
 @log_start_end(log=logger)
 def get_ohlc(symbol: str, vs_currency: str = "usd", days: int = 90) -> pd.DataFrame:
     """Get Open, High, Low, Close prices for given coin. [Source: CoinGecko]

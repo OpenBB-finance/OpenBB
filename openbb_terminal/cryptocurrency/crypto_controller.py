@@ -87,8 +87,6 @@ class CryptoController(CryptoBaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
-            choices["load"]["--source"] = {c: {} for c in CRYPTO_SOURCES.keys()}
-            choices["find"]["--source"] = {c: {} for c in CRYPTO_SOURCES.keys()}
             choices["find"]["-k"] = {c: {} for c in FIND_KEYS}
             choices["headlines"] = {c: {} for c in finbrain_crypto_view.COINS}
             # choices["prt"]["--vs"] = {c: {} for c in coingecko_coin_ids} # list is huge. makes typing buggy
@@ -99,14 +97,14 @@ class CryptoController(CryptoBaseController):
 
     def print_help(self):
         """Print help"""
-        source_txt = CRYPTO_SOURCES.get(self.source, "?") if self.source != "" else ""
+        source_txt = "CoinGecko (Price), YahooFinance (Volume)" if self.symbol else ""
         has_ticker_start = "" if self.symbol else "[unvl]"
         has_ticker_end = "" if self.symbol else "[/unvl]"
         help_text = f"""[cmds]
     load        load a specific cryptocurrency for analysis
     find        find coins[/cmds]
 
-[param]Coin: [/param]{self.symbol}
+[param]Coin: [/param]{self.symbol.upper()}
 [param]Source: [/param]{source_txt}
 [cmds]
     headlines   crypto sentiment from 15+ major news headlines [src][Finbrain][/src]{has_ticker_start}
@@ -171,7 +169,9 @@ class CryptoController(CryptoBaseController):
 
             if ns_parser:
                 if ns_parser.vs:
-                    current_coin_id = cryptocurrency_helpers.get_coingecko_id(self.symbol)
+                    current_coin_id = cryptocurrency_helpers.get_coingecko_id(
+                        self.symbol
+                    )
                     coin_found = cryptocurrency_helpers.get_coingecko_id(ns_parser.vs)
                     if not coin_found:
                         console.print(

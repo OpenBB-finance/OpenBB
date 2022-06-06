@@ -277,6 +277,7 @@ def get_coingecko_id(symbol: str):
             return coin["id"]
     return None
 
+
 def get_coinpaprika_id(symbol: str):
     paprika_coins = get_list_of_coins()
     paprika_coins_dict = dict(zip(paprika_coins.id, paprika_coins.symbol))
@@ -285,20 +286,16 @@ def get_coinpaprika_id(symbol: str):
     )
     return coinpaprika_id
 
+
 def load(
     symbol_search: str,
     vs: str,
     start: datetime = (datetime.now() - timedelta(days=366)),
 ):
-    
     coingecko_id = get_coingecko_id(symbol_search)
-    if coingecko_id:
-        console.print(
-            f"\nLoading Daily {symbol_search.upper()} crypto "
-            f"with starting period {start.strftime('%Y-%m-%d')} for analysis.",
-        )
-    else:
+    if not coingecko_id:
         return pd.DataFrame()
+
     delta = (datetime.now() - start).days
 
     df = pycoingecko_model.get_ohlc(coingecko_id, vs, delta)
@@ -312,18 +309,20 @@ def load(
     ).sort_index(ascending=False)
 
     if not df_coin.empty:
-        #console.print(f"Could not download data for {symbol_search}-{vs} from Yahoo Finance")
         df = pd.merge(df, df_coin[::-1][["Volume"]], left_index=True, right_index=True)
-    df.index.name = 'date'
+    df.index.name = "date"
+    if not df.empty:
+        console.print(
+            f"\nLoading Daily {symbol_search.upper()} crypto "
+            f"with starting period {start.strftime('%Y-%m-%d')} for analysis.",
+        )
     return df
 
 
-def show_quick_performance(
-    crypto_df: pd.DataFrame, symbol: str, current_currency: str
-):
+def show_quick_performance(crypto_df: pd.DataFrame, symbol: str, current_currency: str):
     """Show quick performance stats of crypto prices. Daily prices expected"""
     closes = crypto_df["Close"]
-    volumes = crypto_df["Volume"] if 'Volume' in crypto_df else pd.DataFrame()
+    volumes = crypto_df["Volume"] if "Volume" in crypto_df else pd.DataFrame()
 
     perfs = {
         "1D": 100 * closes.pct_change(2)[-1],
@@ -353,11 +352,11 @@ def show_quick_performance(
         df["Volume (7D avg)"] = lambda_long_number_format(np.mean(volumes[-9:-2]), 2)
 
     df.insert(0, f"Price ({current_currency.upper()})", closes[-1])
-    #df.insert(
+    # df.insert(
     #    len(df.columns),
     #    f"Market Cap ({current_currency.upper()})",
     #    lambda_long_number_format(int(crypto_df["Market Cap"][-1])),
-    #)
+    # )
 
     coingecko_id = get_coingecko_id(symbol)
 
