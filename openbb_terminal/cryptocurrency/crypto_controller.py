@@ -6,10 +6,9 @@ import argparse
 import logging
 import os
 from typing import List
-from openbb_terminal.cryptocurrency import cryptocurrency_helpers
-
 from prompt_toolkit.completion import NestedCompleter
 
+from openbb_terminal.cryptocurrency import cryptocurrency_helpers
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.cryptocurrency.cryptocurrency_helpers import (
     FIND_KEYS,

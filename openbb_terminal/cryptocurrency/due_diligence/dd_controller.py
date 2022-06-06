@@ -6,10 +6,9 @@ import argparse
 import logging
 from datetime import datetime, timedelta
 from typing import List
-
-from openbb_terminal.cryptocurrency import cryptocurrency_helpers
 from prompt_toolkit.completion import NestedCompleter
 
+from openbb_terminal.cryptocurrency import cryptocurrency_helpers
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.cryptocurrency.crypto_controller import CRYPTO_SOURCES
 from openbb_terminal.cryptocurrency.overview import cryptopanic_model

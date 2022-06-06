@@ -1157,9 +1157,7 @@ def load_yf_data(symbol: str, currency: str, interval: str, days: int):
     return df_coin[::-1], currency
 
 
-def plot_chart(
-    symbol: str, prices_df: pd.DataFrame, currency: str, **kwargs: Any
-) -> None:
+def plot_chart(symbol: str, prices_df: pd.DataFrame, currency: str) -> None:
     """Load data for Technical Analysis
 
     Parameters
