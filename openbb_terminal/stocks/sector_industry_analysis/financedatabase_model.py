@@ -140,6 +140,7 @@ def filter_stocks(
                         industry=industry,
                         exclude_exchanges=exclude_exchanges,
                     )
+                    print(data.keys())
                 else:  # no industry
                     data = fd.select_equities(
                         country=country,

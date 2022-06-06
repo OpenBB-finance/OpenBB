@@ -1,5 +1,6 @@
 """CoinGecko model"""
 __docformat__ = "numpy"
+# pylint:disable=unsupported-assignment-operation
 
 import logging
 from typing import Any, Dict, List, Optional, Tuple, Union
