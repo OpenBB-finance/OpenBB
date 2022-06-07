@@ -188,7 +188,7 @@ def display_correlation(
     export : str, optional
         Format to export correlation prices, by default ""
     display_full_matrix : bool, optional
-        Optionally display all values in the matrix, rather than masking off half. by default False
+        Optionally display all values in the matrix, rather than masking off half, by default False
 
     """
     df_similar = yahoo_finance_model.get_historical(similar_tickers, start, candle_type)
