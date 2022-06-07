@@ -85,7 +85,9 @@ class CryptoController(CryptoBaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
-            choices["load"]["-d"] = {c: {} for c in ["1", "7", "14", "30", "90", "180", "365"]}
+            choices["load"]["-d"] = {
+                c: {} for c in ["1", "7", "14", "30", "90", "180", "365"]
+            }
             choices["load"]["--vs"] = {c: {} for c in ["usd", "eur"]}
             choices["find"]["-k"] = {c: {} for c in FIND_KEYS}
             choices["headlines"] = {c: {} for c in finbrain_crypto_view.COINS}
