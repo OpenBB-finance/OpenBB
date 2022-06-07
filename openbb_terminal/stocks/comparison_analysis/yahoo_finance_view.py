@@ -200,9 +200,6 @@ def display_correlation(
 
     df_similar = df_similar.dropna(axis=1, how="all")
 
-    mask = np.zeros((df_similar.shape[1], df_similar.shape[1]), dtype=bool)
-    mask[np.triu_indices(len(mask))] = True
-
     # This plot has 1 axis
     if not external_axes:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -211,8 +208,10 @@ def display_correlation(
     else:
         return
 
+    correlations = df_similar.corr()
+    console.print("Correlations: %s" % correlations)
     sns.heatmap(
-        df_similar.corr(),
+        correlations,
         cbar_kws={"ticks": [-1.0, -0.5, 0.0, 0.5, 1.0]},
         cmap="RdYlGn",
         linewidths=1,
@@ -220,7 +219,6 @@ def display_correlation(
         annot_kws={"fontsize": 10},
         vmin=-1,
         vmax=1,
-        mask=mask,
         ax=ax,
     )
     ax.set_title(f"Correlation Heatmap of similar companies from {start}")
