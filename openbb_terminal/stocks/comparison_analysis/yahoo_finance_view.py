@@ -203,7 +203,6 @@ def display_correlation(
 
     df_similar = df_similar.dropna(axis=1, how="all")
 
-
     mask = None
     if not display_full_matrix:
         mask = np.zeros((df_similar.shape[1], df_similar.shape[1]), dtype=bool)
