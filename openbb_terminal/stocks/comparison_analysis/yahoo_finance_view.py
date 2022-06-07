@@ -169,6 +169,7 @@ def display_correlation(
     candle_type: str = "a",
     external_axes: Optional[List[plt.Axes]] = None,
     export: str = "",
+    display_full_matrix: bool = False
 ):
     """
     Correlation heatmap based on historical price comparison
@@ -186,6 +187,8 @@ def display_correlation(
         External axes (1 axis is expected in the list), by default None
     export : str, optional
         Format to export correlation prices, by default ""
+    display_full_matrix: bool, optional
+        Optionally display all values in the matrix, rather than masking off half. by default False
 
     """
     df_similar = yahoo_finance_model.get_historical(similar_tickers, start, candle_type)
@@ -199,6 +202,12 @@ def display_correlation(
         df_similar = df_similar.fillna(method="bfill")
 
     df_similar = df_similar.dropna(axis=1, how="all")
+
+
+    mask = None
+    if not display_full_matrix:
+        mask = np.zeros((df_similar.shape[1], df_similar.shape[1]), dtype=bool)
+        mask[np.triu_indices(len(mask))] = True
 
     # This plot has 1 axis
     if not external_axes:
@@ -221,6 +230,7 @@ def display_correlation(
         annot_kws={"fontsize": 10},
         vmin=-1,
         vmax=1,
+        mask=mask,
         ax=ax,
     )
     ax.set_title(f"Correlation Heatmap of similar companies from {start}")
