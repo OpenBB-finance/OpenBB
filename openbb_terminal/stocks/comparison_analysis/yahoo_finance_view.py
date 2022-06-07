@@ -208,8 +208,10 @@ def display_correlation(
     else:
         return
 
+    # Print correlations to command line as well
     correlations = df_similar.corr()
     console.print("Correlations: %s" % correlations)
+
     sns.heatmap(
         correlations,
         cbar_kws={"ticks": [-1.0, -0.5, 0.0, 0.5, 1.0]},
