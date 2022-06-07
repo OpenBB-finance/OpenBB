@@ -29,7 +29,6 @@ from openbb_terminal.helper_funcs import (
     get_flair,
     valid_date,
     parse_known_args_and_warn,
-    valid_date_in_past,
     set_command_location,
     prefill_form,
     support_message,
@@ -715,12 +714,12 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
         )
 
         parser.add_argument(
-            "-s",
-            "--start",
-            type=valid_date_in_past,
-            default=(datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d"),
-            dest="start",
-            help="The starting date (format YYYY-MM-DD) of the crypto",
+            "-d",
+            "--days",
+            default="365",
+            dest="days",
+            help="Data up to number of days ago",
+            choices=["1", "7", "14", "30", "90", "180", "365"],
         )
         parser.add_argument(
             "--vs",
@@ -738,14 +737,14 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
 
         if ns_parser:
             (self.current_df) = cryptocurrency_helpers.load(
-                symbol_search=ns_parser.coin,
-                start=ns_parser.start,
+                symbol_search=ns_parser.coin.lower(),
+                days=int(ns_parser.days),
                 vs=ns_parser.vs,
             )
             if not self.current_df.empty:
                 self.current_interval = "1day"
                 self.current_currency = ns_parser.vs
-                self.symbol = ns_parser.coin
+                self.symbol = ns_parser.coin.lower()
                 cryptocurrency_helpers.show_quick_performance(
                     self.current_df, self.symbol, self.current_currency
                 )
