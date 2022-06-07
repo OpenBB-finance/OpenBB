@@ -49,6 +49,20 @@ def get_management(ticker: str) -> pd.DataFrame:
         if next_table:
             found_h2s[next_h2.text] = next_table
 
+    # Business Insider changed management display convention from 'Management' to
+    # 'Ticker Management'. These next few lines simply find 'Ticker Management'
+    # header key and copy it to a 'Management' key as to not alter the rest of
+    # the function
+    ticker_management_to_be_deleted = ""
+    management_data_available = False
+    for key in found_h2s:
+        if "Management" in key:
+            ticker_management_to_be_deleted = key
+            management_data_available = True
+    if management_data_available:
+        found_h2s["Management"] = found_h2s[ticker_management_to_be_deleted]
+        del found_h2s[ticker_management_to_be_deleted]
+
     if found_h2s.get("Management") is None:
         console.print(f"No management information in Business Insider for {ticker}")
         console.print("")
@@ -70,7 +84,7 @@ def get_management(ticker: str) -> pd.DataFrame:
         l_names.append(s_name.text.strip())
 
     df_management = pd.DataFrame(
-        {"Name": l_names[-len(l_titles) :], "Title": l_titles},
+        {"Name": l_names[-len(l_titles) :], "Title": l_titles},  # noqa: E203
         columns=["Name", "Title"],
     )
 
