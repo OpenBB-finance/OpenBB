@@ -223,7 +223,7 @@ def display_correlation(
     if raw:
         print_rich_table(
             correlations,
-            headers=[x.title() for x in correlations.columns],
+            headers=[x.title().upper() for x in correlations.columns],
             show_index=True,
         )
 
