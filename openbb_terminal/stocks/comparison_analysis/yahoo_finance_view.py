@@ -20,6 +20,7 @@ from openbb_terminal.helper_funcs import (
     export_data,
     plot_autoscale,
     is_valid_axes_count,
+    print_rich_table,
 )
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.comparison_analysis import yahoo_finance_model
@@ -170,6 +171,7 @@ def display_correlation(
     external_axes: Optional[List[plt.Axes]] = None,
     export: str = "",
     display_full_matrix: bool = False,
+    raw: bool = False,
 ):
     """
     Correlation heatmap based on historical price comparison
@@ -217,18 +219,13 @@ def display_correlation(
         return
 
     # Print correlations to command line as well
-    # We change some display settings for this, so we get the current
-    # value and then restore them when we are done.
     correlations = df_similar.corr()
-    large_repr = pd.get_option("display.large_repr")
-    max_columns = pd.get_option("display.max_columns", 0)
-    pd.set_option("display.large_repr", "truncate")
-    pd.set_option("display.max_columns", 0)
-    console.print("Correlations: %s" % correlations.to_string())
-
-    # Restore the previous values
-    pd.set_option("display.large_repr", large_repr)
-    pd.set_option("display.max_columns", max_columns)
+    if raw:
+        print_rich_table(
+            correlations,
+            headers=[x.title() for x in correlations.columns],
+            show_index=True,
+        )
 
     sns.heatmap(
         correlations,

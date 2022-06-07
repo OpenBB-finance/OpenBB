@@ -586,7 +586,7 @@ class ComparisonAnalysisController(BaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, raw=True,
         )
         if ns_parser:
             if self.similar and len(self.similar) > 1:
@@ -596,6 +596,7 @@ class ComparisonAnalysisController(BaseController):
                     candle_type=ns_parser.type_candle,
                     export=ns_parser.export,
                     display_full_matrix=ns_parser.display_full_matrix,
+                    raw=ns_parser.raw,
                 )
             else:
                 console.print("Please make sure there are similar tickers selected. \n")
