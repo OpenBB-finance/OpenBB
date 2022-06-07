@@ -187,7 +187,7 @@ def display_correlation(
         External axes (1 axis is expected in the list), by default None
     export : str, optional
         Format to export correlation prices, by default ""
-    display_full_matrix: bool, optional
+    display_full_matrix : bool, optional
         Optionally display all values in the matrix, rather than masking off half. by default False
 
     """
