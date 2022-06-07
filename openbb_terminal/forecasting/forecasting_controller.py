@@ -533,6 +533,7 @@ class ForecastingController(BaseController):
             )
 
     # TODO add in all the hyperparameters ZzZzzzzZzzzZzzzzzz
+    # TODO Add in Inference menu so that people can bring in their own models
     @log_start_end(log=logger)
     def call_rnn(self, other_args: List[str]):
         """Process RNN command"""
@@ -582,6 +583,105 @@ class ForecastingController(BaseController):
             default=3,
             help="Days/Points to forecast when training and performing historical back-testing",
         )
+        # RNN Hyperparameters
+        parser.add_argument(
+            "--model_type",
+            type=str,
+            action="store",
+            dest="model_type",
+            default="LSTM",
+            help='Either a string specifying the RNN module type ("RNN", "LSTM" or "GRU")',
+        )
+        parser.add_argument(
+            "--hidden_dim",
+            action="store",
+            dest="hidden_dim",
+            default=20,
+            type=check_positive,
+            help="Size for feature maps for each hidden RNN layer (h_n)",
+        )
+        parser.add_argument(
+            "--dropout",
+            action="store",
+            dest="dropout",
+            default=0,
+            type=check_positive_float,
+            help="Fraction of neurons afected by Dropout.",
+        )
+        parser.add_argument(
+            "--batch_size",
+            action="store",
+            dest="batch_size",
+            default=32,
+            type=check_positive,
+            help="Number of time series (input and output sequences) used in each training pass",
+        )
+        parser.add_argument(
+            "--n_epochs",
+            action="store",
+            dest="n_epochs",
+            default=100,
+            type=check_positive,
+            help="Number of epochs over which to train the model.",
+        )
+        parser.add_argument(
+            "--n_epochs",
+            action="store",
+            dest="n_epochs",
+            default=100,
+            type=check_positive,
+            help="Number of epochs over which to train the model.",
+        )
+        parser.add_argument(
+            "--learning_rate",
+            action="store",
+            dest="learning_rate",
+            default=1e-3,
+            type=check_positive_float,
+            help="Learning rate during training.",
+        )
+        parser.add_argument(
+            "--model_save_name",
+            type=str,
+            action="store",
+            dest="model_save_name",
+            default="rnn_model",
+            help="Name of the model to save.",
+        )
+        parser.add_argument(
+            "--training_length",
+            action="store",
+            dest="training_length",
+            default=20,
+            type=check_positive,
+            help="""The length of both input (target and covariates) and output (target) time series used during training.
+            Generally speaking, training_length should have a higher value than input_chunk_length because otherwise
+            during training the RNN is never run for as many iterations as it will during training.""",
+        )
+        parser.add_argument(
+            "--input_chunk_size",
+            action="store",
+            dest="input_chunk_size",
+            default=14,
+            type=check_positive,
+            help="Number of past time steps that are fed to the forecasting module at prediction time.",
+        )
+        parser.add_argument(
+            "--force_reset",
+            action="store",
+            dest="force_reset",
+            default=True,
+            type=bool,
+            help="If set to True, any previously-existing model with the same name will be reset (all checkpoints will be discarded).",
+        )
+        parser.add_argument(
+            "--save_checkpoints",
+            action="store",
+            dest="save_checkpoints",
+            default=True,
+            type=bool,
+            help="Whether or not to automatically save the untrained model and checkpoints from training.",
+        )
 
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
@@ -602,7 +702,7 @@ class ForecastingController(BaseController):
                     f"[red]The target column {ns_parser.target_col} does not exist in dataframe.\n[/red]"
                 )
                 return
-            print(ns_parser)
+
             rnn_view.display_rnn_forecast(
                 data=self.datasets[ns_parser.target_dataset],
                 ticker_name=ns_parser.target_dataset,
@@ -610,5 +710,16 @@ class ForecastingController(BaseController):
                 target_col=ns_parser.target_col,
                 start_window=ns_parser.start_window,
                 forecast_horizon=ns_parser.forecast_horizon,
+                model_type=ns_parser.model_type,
+                hidden_dim=ns_parser.hidden_dim,
+                dropout=ns_parser.dropout,
+                batch_size=ns_parser.batch_size,
+                n_epochs=ns_parser.n_epochs,
+                learning_rate=ns_parser.learning_rate,
+                model_save_name=ns_parser.model_save_name,
+                training_length=ns_parser.training_length,
+                input_chunk_size=ns_parser.input_chunk_size,
+                force_reset=ns_parser.force_reset,
+                save_checkpoints=ns_parser.save_checkpoints,
                 export=ns_parser.export,
             )

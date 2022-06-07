@@ -101,7 +101,6 @@ def get_rnn_data(
         n_epochs=50,
         optimizer_kwargs={"lr": 1e-3},
         model_name="rnn_model",
-        log_tensorboard=True,  # TODO Not sure..
         random_state=42,
         training_length=20,
         input_chunk_length=14,
