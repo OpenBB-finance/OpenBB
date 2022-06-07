@@ -224,7 +224,7 @@ def display_correlation(
     max_columns = pd.get_option("display.max_columns", 0)
     pd.set_option("display.large_repr", "truncate")
     pd.set_option("display.max_columns", 0)
-    console.print("Correlations: %s" % correlations.to_string())
+    console.print("Correlations: " + correlations.to_string())
 
     # Restore the previous values
     pd.set_option("display.large_repr", large_repr)
