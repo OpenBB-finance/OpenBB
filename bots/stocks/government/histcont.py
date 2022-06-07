@@ -1,19 +1,22 @@
+import io
+import logging
+
 import numpy as np
 from matplotlib import pyplot as plt
 
-import bots.config_discordbot as cfg
-from bots.config_discordbot import logger
-from bots.helpers import image_border
-from gamestonk_terminal.config_plot import PLOT_DPI
-from gamestonk_terminal.helper_funcs import plot_autoscale
-from gamestonk_terminal.stocks.government import quiverquant_model
+from bots import imps
+from openbb_terminal.decorators import log_start_end
+from openbb_terminal.stocks.government import quiverquant_model
+
+logger = logging.getLogger(__name__)
 
 
+@log_start_end(log=logger)
 def histcont_command(ticker=""):
     """Displays historical quarterly-contracts [quiverquant.com]"""
     # Debug user input
-    if cfg.DEBUG:
-        logger.debug("gov-histcont %s", ticker)
+    if imps.DEBUG:
+        logger.debug("gov histcont %s", ticker)
 
     if ticker == "":
         raise Exception("A ticker is required")
@@ -37,7 +40,7 @@ def histcont_command(ticker=""):
         f"{quarter[0]}" if quarter[1] == 1 else "" for quarter in zip(year, qtr)
     ]
 
-    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    fig, ax = plt.subplots(figsize=imps.bot_plot_scale(), dpi=imps.BOT_PLOT_DPI)
 
     ax.plot(np.arange(0, len(amounts)), amounts / 1000, "-*", lw=2, ms=15)
 
@@ -49,11 +52,15 @@ def histcont_command(ticker=""):
     ax.set_xlabel("Date")
     ax.set_ylabel("Amount ($1k)")
     fig.tight_layout()
-
-    plt.savefig("gov_histcont.png")
     imagefile = "gov_histcont.png"
 
-    imagefile = image_border(imagefile)
+    dataBytesIO = io.BytesIO()
+    plt.savefig(dataBytesIO)
+    dataBytesIO.seek(0)
+    plt.close("all")
+
+    imagefile = imps.image_border(imagefile, base64=dataBytesIO)
+
     return {
         "title": "Stocks: Historical Quarterly Government Contract ",
         "imagefile": imagefile,

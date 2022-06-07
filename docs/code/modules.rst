@@ -1,7 +1,7 @@
-gamestonk_terminal
+openbb_terminal
 ==================
 
 .. toctree::
    :maxdepth: 4
 
-   gamestonk_terminal
+   openbb_terminal

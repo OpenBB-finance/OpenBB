@@ -7,7 +7,7 @@ Submodules
 gamestonk\_terminal.portfolio.brokers.coinbase.coinbase\_controller module
 --------------------------------------------------------------------------
 
-.. automodule:: gamestonk_terminal.portfolio.brokers.coinbase.coinbase_controller
+.. automodule:: openbb_terminal.portfolio.brokers.coinbase.coinbase_controller
    :members:
    :undoc-members:
    :show-inheritance:
@@ -15,7 +15,7 @@ gamestonk\_terminal.portfolio.brokers.coinbase.coinbase\_controller module
 gamestonk\_terminal.portfolio.brokers.coinbase.coinbase\_model module
 ---------------------------------------------------------------------
 
-.. automodule:: gamestonk_terminal.portfolio.brokers.coinbase.coinbase_model
+.. automodule:: openbb_terminal.portfolio.brokers.coinbase.coinbase_model
    :members:
    :undoc-members:
    :show-inheritance:
@@ -23,7 +23,7 @@ gamestonk\_terminal.portfolio.brokers.coinbase.coinbase\_model module
 gamestonk\_terminal.portfolio.brokers.coinbase.coinbase\_view module
 --------------------------------------------------------------------
 
-.. automodule:: gamestonk_terminal.portfolio.brokers.coinbase.coinbase_view
+.. automodule:: openbb_terminal.portfolio.brokers.coinbase.coinbase_view
    :members:
    :undoc-members:
    :show-inheritance:
@@ -31,7 +31,7 @@ gamestonk\_terminal.portfolio.brokers.coinbase.coinbase\_view module
 Module contents
 ---------------
 
-.. automodule:: gamestonk_terminal.portfolio.brokers.coinbase
+.. automodule:: openbb_terminal.portfolio.brokers.coinbase
    :members:
    :undoc-members:
    :show-inheritance:

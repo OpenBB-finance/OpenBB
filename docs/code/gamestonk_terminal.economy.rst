@@ -7,7 +7,7 @@ Submodules
 gamestonk\_terminal.economy.alphavantage\_model module
 ------------------------------------------------------
 
-.. automodule:: gamestonk_terminal.economy.alphavantage_model
+.. automodule:: openbb_terminal.economy.alphavantage_model
    :members:
    :undoc-members:
    :show-inheritance:
@@ -15,31 +15,16 @@ gamestonk\_terminal.economy.alphavantage\_model module
 gamestonk\_terminal.economy.alphavantage\_view module
 -----------------------------------------------------
 
-.. automodule:: gamestonk_terminal.economy.alphavantage_view
+.. automodule:: openbb_terminal.economy.alphavantage_view
    :members:
    :undoc-members:
    :show-inheritance:
 
-gamestonk\_terminal.economy.cnn\_model module
----------------------------------------------
-
-.. automodule:: gamestonk_terminal.economy.cnn_model
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-gamestonk\_terminal.economy.cnn\_view module
---------------------------------------------
-
-.. automodule:: gamestonk_terminal.economy.cnn_view
-   :members:
-   :undoc-members:
-   :show-inheritance:
 
 gamestonk\_terminal.economy.econ\_data\_helper module
 -----------------------------------------------------
 
-.. automodule:: gamestonk_terminal.economy.econ_data_helper
+.. automodule:: openbb_terminal.economy.econ_data_helper
    :members:
    :undoc-members:
    :show-inheritance:
@@ -47,7 +32,7 @@ gamestonk\_terminal.economy.econ\_data\_helper module
 gamestonk\_terminal.economy.economy\_controller module
 ------------------------------------------------------
 
-.. automodule:: gamestonk_terminal.economy.economy_controller
+.. automodule:: openbb_terminal.economy.economy_controller
    :members:
    :undoc-members:
    :show-inheritance:
@@ -55,7 +40,7 @@ gamestonk\_terminal.economy.economy\_controller module
 gamestonk\_terminal.economy.finnhub\_model module
 -------------------------------------------------
 
-.. automodule:: gamestonk_terminal.economy.finnhub_model
+.. automodule:: openbb_terminal.economy.finnhub_model
    :members:
    :undoc-members:
    :show-inheritance:
@@ -63,7 +48,7 @@ gamestonk\_terminal.economy.finnhub\_model module
 gamestonk\_terminal.economy.finnhub\_view module
 ------------------------------------------------
 
-.. automodule:: gamestonk_terminal.economy.finnhub_view
+.. automodule:: openbb_terminal.economy.finnhub_view
    :members:
    :undoc-members:
    :show-inheritance:
@@ -71,7 +56,7 @@ gamestonk\_terminal.economy.finnhub\_view module
 gamestonk\_terminal.economy.finviz\_model module
 ------------------------------------------------
 
-.. automodule:: gamestonk_terminal.economy.finviz_model
+.. automodule:: openbb_terminal.economy.finviz_model
    :members:
    :undoc-members:
    :show-inheritance:
@@ -79,7 +64,7 @@ gamestonk\_terminal.economy.finviz\_model module
 gamestonk\_terminal.economy.finviz\_view module
 -----------------------------------------------
 
-.. automodule:: gamestonk_terminal.economy.finviz_view
+.. automodule:: openbb_terminal.economy.finviz_view
    :members:
    :undoc-members:
    :show-inheritance:
@@ -87,7 +72,7 @@ gamestonk\_terminal.economy.finviz\_view module
 gamestonk\_terminal.economy.fred\_model module
 ----------------------------------------------
 
-.. automodule:: gamestonk_terminal.economy.fred_model
+.. automodule:: openbb_terminal.economy.fred_model
    :members:
    :undoc-members:
    :show-inheritance:
@@ -95,7 +80,7 @@ gamestonk\_terminal.economy.fred\_model module
 gamestonk\_terminal.economy.fred\_view module
 ---------------------------------------------
 
-.. automodule:: gamestonk_terminal.economy.fred_view
+.. automodule:: openbb_terminal.economy.fred_view
    :members:
    :undoc-members:
    :show-inheritance:
@@ -103,7 +88,7 @@ gamestonk\_terminal.economy.fred\_view module
 gamestonk\_terminal.economy.nasdaq\_model module
 ------------------------------------------------
 
-.. automodule:: gamestonk_terminal.economy.nasdaq_model
+.. automodule:: openbb_terminal.economy.nasdaq_model
    :members:
    :undoc-members:
    :show-inheritance:
@@ -111,7 +96,7 @@ gamestonk\_terminal.economy.nasdaq\_model module
 gamestonk\_terminal.economy.nasdaq\_view module
 -----------------------------------------------
 
-.. automodule:: gamestonk_terminal.economy.nasdaq_view
+.. automodule:: openbb_terminal.economy.nasdaq_view
    :members:
    :undoc-members:
    :show-inheritance:
@@ -119,7 +104,7 @@ gamestonk\_terminal.economy.nasdaq\_view module
 gamestonk\_terminal.economy.wsj\_model module
 ---------------------------------------------
 
-.. automodule:: gamestonk_terminal.economy.wsj_model
+.. automodule:: openbb_terminal.economy.wsj_model
    :members:
    :undoc-members:
    :show-inheritance:
@@ -127,7 +112,7 @@ gamestonk\_terminal.economy.wsj\_model module
 gamestonk\_terminal.economy.wsj\_view module
 --------------------------------------------
 
-.. automodule:: gamestonk_terminal.economy.wsj_view
+.. automodule:: openbb_terminal.economy.wsj_view
    :members:
    :undoc-members:
    :show-inheritance:
@@ -135,7 +120,7 @@ gamestonk\_terminal.economy.wsj\_view module
 Module contents
 ---------------
 
-.. automodule:: gamestonk_terminal.economy
+.. automodule:: openbb_terminal.economy
    :members:
    :undoc-members:
    :show-inheritance:

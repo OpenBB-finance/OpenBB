@@ -3,8 +3,8 @@ requires = ["jupyter_packaging~=0.10,<2", "jupyterlab~=3.1"]
 build-backend = "jupyter_packaging.build_api"
 
 [tool.jupyter-packaging.options]
-skip-if-exists = ["gamestonk_terminal_documentation/labextension/static/style.js"]
-ensured-targets = ["gamestonk_terminal_documentation/labextension/static/style.js", "gamestonk_terminal_documentation/labextension/package.json"]
+skip-if-exists = ["openbb_terminal_documentation/labextension/static/style.js"]
+ensured-targets = ["openbb_terminal_documentation/labextension/static/style.js", "openbb_terminal_documentation/labextension/package.json"]
 
 [tool.jupyter-packaging.builder]
 factory = "jupyter_packaging.npm_builder"
@@ -14,4 +14,4 @@ build_cmd = "build:prod"
 npm = ["jlpm"]
 
 [tool.check-manifest]
-ignore = ["gamestonk_terminal_documentation/labextension/**", "yarn.lock", ".*", "package-lock.json"]
+ignore = ["openbb_terminal_documentation/labextension/**", "yarn.lock", ".*", "package-lock.json"]

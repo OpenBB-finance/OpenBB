@@ -1,0 +1,41 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: GET
+    uri: https://financialmodelingprep.com/api/v3/profile/AAPL?apikey=VALIDKEY
+  response:
+    body:
+      string: '{"Error Message" : "Invalid API KEY. Please retry or visit our documentation
+        to create one FREE https://financialmodelingprep.com/developer/docs"}'
+    headers:
+      Access-Control-Allow-Headers:
+      - origin, content-type, accept, Authorization, authorization
+      Access-Control-Allow-Methods:
+      - GET, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '146'
+      Content-Type:
+      - application/json;charset=UTF-8
+      Date:
+      - Sat, 09 Apr 2022 13:01:27 GMT
+      Server:
+      - nginx/1.14.0 (Ubuntu)
+    status:
+      code: 200
+      message: ''
+version: 1

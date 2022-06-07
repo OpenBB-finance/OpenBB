@@ -1,136 +1,128 @@
-from datetime import datetime, timedelta
+import logging
 
 import plotly.graph_objects as go
-from plotly.subplots import make_subplots
 
-import bots.config_discordbot as cfg
-from bots.config_discordbot import logger
-from bots import helpers
-from gamestonk_terminal.common.technical_analysis import volume_model
+from bots import imps, load_candle
+from openbb_terminal.common.technical_analysis import volume_model
+from openbb_terminal.decorators import log_start_end
+
+logger = logging.getLogger(__name__)
 
 
-def obv_command(ticker="", start="", end=""):
+# pylint: disable=R0913
+@log_start_end(log=logger)
+def obv_command(
+    ticker="",
+    interval: int = 15,
+    past_days: int = 0,
+    start="",
+    end="",
+    extended_hours: bool = False,
+    heikin_candles: bool = False,
+    trendline: bool = False,
+    news: bool = False,
+):
     """Displays chart with on balance volume [Yahoo Finance]"""
 
     # Debug
-    if cfg.DEBUG:
+    if imps.DEBUG:
         logger.debug(
-            "ta-obv %s %s %s",
+            "ta obv %s %s %s %s %s %s %s %s %s",
             ticker,
+            interval,
+            past_days,
             start,
             end,
+            extended_hours,
+            heikin_candles,
+            trendline,
+            news,
         )
 
     # Check for argument
     if ticker == "":
         raise Exception("Stock ticker is required")
 
-    if start == "":
-        start = datetime.now() - timedelta(days=365)
-    else:
-        start = datetime.strptime(start, cfg.DATE_FORMAT)
-
-    if end == "":
-        end = datetime.now()
-    else:
-        end = datetime.strptime(end, cfg.DATE_FORMAT)
-
-    ticker = ticker.upper()
-    df_stock = helpers.load(ticker, start)
-    if df_stock.empty:
-        raise Exception("Stock ticker is invalid")
-
     # Retrieve Data
-    df_stock = df_stock.loc[(df_stock.index >= start) & (df_stock.index < end)]
+    df_stock, start, end, bar_start = load_candle.stock_data(
+        ticker=ticker,
+        interval=interval,
+        past_days=past_days,
+        extended_hours=extended_hours,
+        start=start,
+        end=end,
+        heikin_candles=heikin_candles,
+    )
+
+    if df_stock.empty:
+        raise Exception("No Data Found")
+
+    df_ta = df_stock.loc[(df_stock.index >= start) & (df_stock.index < end)]
+    df_ta = df_ta.join(volume_model.obv(df_ta))
 
     # Output Data
-    divisor = 1_000_000
-    df_vol = df_stock["Volume"].dropna()
-    df_vol = df_vol.values / divisor
-    df_ta = volume_model.obv(df_stock)
-    df_cal = df_ta.values
-    df_cal = df_cal / divisor
+    if interval != 1440:
+        df_ta = df_ta.loc[(df_ta.index >= bar_start) & (df_ta.index < end)]
+    df_ta = df_ta.fillna(0.0)
 
-    fig = make_subplots(
-        rows=3,
+    plot = load_candle.candle_fig(
+        df_ta,
+        ticker,
+        interval,
+        extended_hours,
+        news,
+        bar=bar_start,
+        int_bar=interval,
+        trendline=trendline,
+        rows=2,
         cols=1,
         shared_xaxes=True,
-        vertical_spacing=0.06,
-        row_width=[0.2, 0.2, 0.2],
+        vertical_spacing=0.05,
+        row_width=[0.4, 0.7],
+        specs=[
+            [{"secondary_y": True}],
+            [{"secondary_y": False}],
+        ],
     )
+    title = f"<b>{plot['plt_title']} OBV</b>"
+    fig = plot["fig"]
+
     fig.add_trace(
         go.Scatter(
-            name=ticker,
-            x=df_stock.index,
-            y=df_stock["Adj Close"].values,
-            line=dict(color="#fdc708", width=2),
-            opacity=1,
-        ),
-        row=1,
-        col=1,
-    )
-    colors = [
-        "green" if row.Open < row["Adj Close"] else "red"
-        for _, row in df_stock.iterrows()
-    ]
-    fig.add_trace(
-        go.Bar(
-            x=df_stock.index,
-            y=df_vol,
-            name="Volume [M]",
-            marker_color=colors,
-        ),
-        row=2,
-        col=1,
-    )
-    fig.add_trace(
-        go.Scatter(
-            name="OBC [M]",
+            name="OBV",
+            mode="lines",
             x=df_ta.index,
-            y=df_ta.iloc[:, 0].values,
+            y=df_ta.iloc[:, 6].values
+            if (not trendline) and (interval != 1440)
+            else df_ta.iloc[:, 11].values,
             line=dict(width=2),
             opacity=1,
         ),
-        row=3,
+        row=2,
         col=1,
+        secondary_y=False,
     )
     fig.update_layout(
-        margin=dict(l=10, r=0, t=40, b=20),
-        template=cfg.PLT_TA_STYLE_TEMPLATE,
-        colorway=cfg.PLT_TA_COLORWAY,
-        title=f"{ticker} OBV",
-        title_x=0.4,
-        yaxis_title="Stock Price ($)",
-        yaxis2_title="Volume [M]",
-        yaxis3_title="OBV [M]",
-        yaxis=dict(
-            fixedrange=False,
-        ),
-        xaxis=dict(
-            rangeslider=dict(visible=False),
-            type="date",
-        ),
+        margin=dict(l=0, r=0, t=50, b=20),
+        template=imps.PLT_TA_STYLE_TEMPLATE,
+        colorway=imps.PLT_TA_COLORWAY,
+        title=title,
+        title_x=0.1,
+        title_font_size=14,
         dragmode="pan",
-        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+        yaxis=dict(nticks=15),
+        yaxis2=dict(nticks=15),
     )
-    config = dict({"scrollZoom": True})
     imagefile = "ta_obv.png"
 
     # Check if interactive settings are enabled
     plt_link = ""
-    if cfg.INTERACTIVE:
-        html_ran = helpers.uuid_get()
-        fig.write_html(f"in/obv_{html_ran}.html", config=config)
-        plt_link = f"[Interactive]({cfg.INTERACTIVE_URL}/obv_{html_ran}.html)"
-
-    fig.update_layout(
-        width=800,
-        height=500,
-    )
-    imagefile = helpers.image_border(imagefile, fig=fig)
+    if imps.INTERACTIVE:
+        plt_link = imps.inter_chart(fig, imagefile, callback=False)
+    imagefile = imps.image_border(imagefile, fig=fig)
 
     return {
-        "title": f"Stocks: On-Balance-Volume {ticker}",
+        "title": f"Stocks: On-Balance-Volume {ticker.upper()}",
         "description": plt_link,
         "imagefile": imagefile,
     }

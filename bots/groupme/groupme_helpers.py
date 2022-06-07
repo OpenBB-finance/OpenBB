@@ -1,12 +1,12 @@
 """Groupme"""
 __docformat__ = "numpy"
 
-from typing import Optional
 import io
 import json
 import os
 import pathlib
 import urllib.request as urllib
+from typing import Optional
 
 import requests
 from dotenv import load_dotenv
@@ -36,7 +36,7 @@ def upload_image(image: str, local: bool) -> requests.Response:
     url = "https://image.groupme.com/pictures"
     headers = {
         "Content-Type": "image/jpeg",
-        "X-Access-Token": os.getenv("X_ACCESS_TOKEN"),
+        "X-Access-Token": os.getenv("X_ACCESS_TOKEN", "NO_TOKEN_FOUND"),
     }
     if local:
         path_string = pathlib.Path(__file__).parent.parent.resolve()
@@ -53,10 +53,8 @@ def send_message(message: str, group_id: str) -> requests.Response:
     return requests.post(url=f"{base+mid}?bot_id={bot_id}&text={cleaned}")
 
 
-def send_image(
-    image: str, group_id: str, text: str = None, local: bool = False
-) -> requests.Response:
-    if "http" in image:
+def send_image(image: str, group_id: str, text: str = None) -> requests.Response:
+    if "http" in str(image):
         response = upload_image(image, False)
     else:
         response = upload_image(image, True)

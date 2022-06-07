@@ -1,0 +1,3 @@
+                             short_name currency     market exchange exchange timezone
+^URTH-EU  Ishares MSCI World Index Fund      USD  us_market      ASE               EDT
+^URTH-IV  Ishares MSCI World Index Fund      USD  us_market      ASE               EDT

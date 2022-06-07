@@ -1,0 +1,35 @@
+Looking for data in: 
+	
+	/Users/didierlopes/Documents/OpenBBTerminal/custom_imports
+
+    load               load a dataset (also works with StatsModels datasets)
+[unvl]    remove             remove one of the loaded datasets[/unvl]
+
+Loaded files and data columns: 
+
+Exploration:
+[unvl]    show               show a portion of a loaded dataset[/unvl]
+[unvl]    plot               plot data from a dataset[/unvl]
+[unvl]    type               change types of the columns or display their types[/unvl]
+[unvl]    desc               show descriptive statistics of a dataset[/unvl]
+[unvl]    index              set (multi) index based on columns[/unvl]
+[unvl]    clean              clean a dataset by filling or dropping NaNs[/unvl]
+[unvl]    add                Add columns to dataset with option to use formulas[/unvl]
+[unvl]    delete             Delete columns from dataset[/unvl]
+[unvl]    combine            Combine columns from different datasets[/unvl]
+[unvl]    rename             Rename column from dataset[/unvl]
+[unvl]    export             export a processed dataset[/unvl]
+Tests:
+[unvl]    norm               perform normality tests on a column of a dataset[/unvl]
+[unvl]    root               perform unitroot tests (ADF & KPSS) on a column of a dataset[/unvl]
+[unvl]    granger            Granger causality tests on two columns[/unvl]
+[unvl]    coint              co-integration test on a multitude of columns[/unvl]
+Regression:
+[unvl]    ols                fit a (multi) linear regression model[/unvl]
+[unvl]    panel              estimate model based on various regression techniques[/unvl]
+[unvl]    compare            compare results of all estimated models[/unvl]
+Regression Tests:
+[unvl]    dwat               Durbin-Watson autocorrelation test on the residuals of the regression[/unvl]
+[unvl]    bgod               Breusch-Godfrey autocorrelation tests with lags on the residuals of the regression[/unvl]
+[unvl]    bpag               Breusch-Pagan heteroscedasticity test on the residuals of the regression[/unvl]
+

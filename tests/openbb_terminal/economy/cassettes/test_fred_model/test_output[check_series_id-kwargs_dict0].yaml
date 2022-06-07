@@ -1,0 +1,55 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.stlouisfed.org/fred/series?api_key=MOCK_API_KEY&file_type=json&series_id=DGS5
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy0jUw1jUyVNJByKbmpaDLFacWZaYWFytZ
+        RVcrZYJkXdyDTZH1kGxiSWZJTqqSlZJvYlF2aolCZGZqTopCfp5CqF6wnkJIUWpicWlRpUJwanJp
+        UWZJZmqxQmKJgqluZGpikYJzfl5xSWJeiYJvYglItlJJRyk/qTi1qCyxJDM/D+47Q0szI10DQ10D
+        IzQFqB40NFfSUUorSi0sTc1LrlSyUnJJzMwBmQkXiy/OyC8ChZeLko5SaV5mSbGSlVJAalFyal4J
+        TASuRlVJR6k4NbE4Py8xJz4xJau0uCQXpM5KyS+/RCEYKpNTqeAIlktNwa4ebp5fsKOSjlJOYnFJ
+        fGlBSmJJKij4YRFnaKFgaGplZGJlYqxrAIqQgvyC0pzEosySSiUrczMdpbz8klSQa93yixTSSotK
+        MlKLFDLz0vKLcsFhpVCUmp5YlJKZl65QAgvzZFjw5kKDVyElsSRRR6EgJzWxOFWhKDUttUihJF+h
+        JCNVwSk/sShFIT9NwT2/LLUoL7+oWEEjo6SkwCpGP0a/vLxcLy01JbUoMacoFRQ9qXrp+WUx+kWp
+        YJOKY/QzDE1j9JNLi4pS80rAPL2ClDRNhcS8FLDp8GSAaibMpTDTivNLi5JTdUGxkVoUow9yrW5y
+        RmJRCVwoM68ktSi1uES3KLEktThGPyAxHURVghIdYLmpJRn5KXqJxQUVmnpKtbG1ANQh0WEoAwAA
+    headers:
+      Accept-Ranges:
+      - bytes
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '570'
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Mon, 21 Mar 2022 11:04:21 GMT
+      Expires:
+      - Mon, 21 Mar 2022 11:05:21 GMT
+      Last-Modified:
+      - Fri, 18 Mar 2022 20:24:43 GMT
+      Set-Cookie:
+      - cookiesession1=678A3E1FCD2B52BC94FB0A1F60F713D4;Expires=Tue, 21 Mar 2023 11:04:14
+        GMT;Path=/;HttpOnly
+      Vary:
+      - Accept-Encoding
+      x-rate-limit-limit:
+      - '120'
+      x-rate-limit-remaining:
+      - '120'
+    status:
+      code: 200
+      message: OK
+version: 1

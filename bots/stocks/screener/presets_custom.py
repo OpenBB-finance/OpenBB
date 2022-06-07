@@ -1,8 +1,13 @@
-import bots.config_discordbot as cfg
-from bots.config_discordbot import logger
+import logging
+
+from bots import config_discordbot as cfg
 from bots.stocks.screener import screener_options as so
+from openbb_terminal.decorators import log_start_end
+
+logger = logging.getLogger(__name__)
 
 
+@log_start_end(log=logger)
 def presets_custom_command():
     """Displays every custom preset"""
 

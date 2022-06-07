@@ -1,0 +1,21 @@
+                    Name      Chain  Protocol    APY (%)   TVL ($)
+0             ESHARE-BNB  BNB Chain     Beefy  3042.51 %   1.593 M
+1   ust-wormholeUST-3Crv   Ethereum    Convex  1494.14 %   2.600 M
+2              GRAPE-MIM  Avalanche     Beefy   1253.2 %   1.109 M
+3             BSHARE-FTM     Fantom     Beefy  1158.81 %   1.649 M
+4             BASED-TOMB     Fantom     Beefy    527.6 %   1.136 M
+5                EMP-ETH  BNB Chain     Beefy   364.53 %   1.259 M
+6            BADGER-WBTC   Ethereum  Balancer   340.47 %  15.241 M
+7                BSW-BNB  BNB Chain    Alpaca   280.86 %   1.873 M
+8              WBTC-OSMO    Osmosis   Osmosis    231.2 %   4.730 M
+9             ROWAN-OSMO    Osmosis   Osmosis   228.72 %   1.834 M
+10             CAKE-BUSD  BNB Chain    Alpaca   204.62 %   4.480 M
+11              DAI-OSMO    Osmosis   Osmosis   167.25 %   4.372 M
+12             USDC-OSMO    Osmosis   Osmosis    140.3 %  25.314 M
+13               VVS-CRO     Cronos     Beefy   133.66 %   1.012 M
+14             ZERO-WETH   Ethereum   Uniswap   131.96 %   1.560 M
+15                   PTP  Avalanche    Vector   128.75 %   1.504 M
+16             CAKE-USDT  BNB Chain    Alpaca   121.38 %   1.027 M
+17              VVS-WCRO     Cronos       VVS   120.19 %  47.140 M
+18             WETH-OSMO    Osmosis   Osmosis   119.09 %   9.242 M
+19              VVS-USDT     Cronos       VVS   117.23 %   3.730 M

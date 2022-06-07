@@ -1,0 +1,60 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      x-messari-api-key:
+      - mock_x-messari-api-key
+    method: GET
+    uri: https://data.messari.io/api/v2/assets/eth/profile?fields=profile%2Feconomics%2Flaunch
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAA/4RV247bNhD9lQHRAimglSlqfVkBfUgWaYO+pED8lDoQaHEsMUuRKklZcIMF8hsF
+        2p/LlxSkLNlOAtRPFsk5c3jmzPATcZ773pHiE0HFO4eCFPlDQrxs0XnedqQgjDJ2R5d3GdtmrLhf
+        FdlDytgyWy/p6j15TojgngeEzpqDVBjBKqNNK6uIrHivqyb8q1Gj5eqyWDp/ChHk0ZpBOK6QJNOW
+        QM+lcqQgr32DFvv2y+e/HRgra6m5Am+eUIOQzlu57700GvCI2ifQcs1rFLA/gW8Qdj2lecWhsXj4
+        eUca7ztXLBYtOsetTKVZcOfQL/CcZkdiBE5p4RfTa8FDhhFqwccDCTijBFjT1406wYpCK5WKREKo
+        gxcb+iOYQ2QhtfSSK1iz+dTr7Rtwfdep00/gTTzV9XslqxS2DUKQA7wxT9ApXiHs0Q+IGn7r1QkY
+        S4DR7D4BrgW8w85ju0cL9Lyewhsz4BFtEnHjXaDrbdVwN0pTTZKD1Ed03lgHA1oEbTz0ju8VgrHg
+        LdfugDZ+7/FgLEbEsUrT7X5FjU46eKVM9QTmTDLPIpnleJ/OygpDQFQHBu4mUdQJHPqgAQ8FrUyv
+        PYpLAKOURrU6tPBq+wi99lLBy77unQe6jFkekomekhq5VScQWCmppa5H6EP0jeU+gmZ5vr4GTcAi
+        rxoUgf4Zmm0mNXc6T9aUxuxRJctlEFLqeP+DtM5DxqAxvXWTKlHdnX57RAtsmdD/i2cwID65kG02
+        QPR0HzXiSpkBxaWgt+YMl4yoYELCPJsSJoB/9vLIFeoo8g/ZJs0nF4ZkYzqLLR/Vym49+oJ9a+PJ
+        t/EugVjFQ8nONr4iFew5VmOmXBk99qyxLoW3I/BoCnemeAtS7PTM9zsZOSij6zuPtgXUwgwtar/T
+        q9uQeVKgAN4aXcNmCQKPqEwXmnVozIXZ6L5g/5HL3CzfMBHoZK0DpgMOXz7/M0PO7QadNbXl7ZfP
+        /8LQyKqBmh+vSnhFIuSysm6iCHP8qA33Vz0be8OlYf4eei1C3aWuw2QN2660QTxHij8+ES99nLHb
+        ODDfjUPWeW59KbjHOOKz+zu6vmNsm60KSgtK35OE+FMXdn+PM4kkZJ7IulcqIajFLcDDHb0F0NzL
+        I5ZxUrtyrhkplusVjb+ExNlbVkYprOIeebV9JAmJFyw7tGN4KXUZj5KCppTS5ZqxdUIuxi6/E9A7
+        EY7nWUJ4G4bKJc8VXp6t2TJ9yDb3bLl6+P7RiJRt8jNp6cqnU1XakN4G0qMiFoPFYszH3konZBXs
+        G8rw4flDci6NMFUfHDpWR/M2Fgdt62KzPBot5BiWECX1EynmN2vAfcpt1cgjpsbW4XsRtKdrlrOM
+        renDYj46DOn0osWznTi4RUzzUotLkreHbTM/decxHjySduJALqS9Re56eyp5FcdzvFNC5uXOKFlJ
+        PC931nwctesdluZQjiCdNRWiGPVIyHmWlNdveHDwtD7OGFKsGaX5akNTdp98tVla7Lj1cgqdPVZ6
+        U87vWnBFhdrzGkmxydP7dXJ70tiaa/lXHDalseUhdA9+FZit0mX+VWBnsZUaRWlx4Fa4EMylFdZ0
+        t8HBIM8JGa15feFzC40Gqkf9y314Rq+aaxm6M6dbupma6zn+/gsAAP//Gnlw0MEJAAA=
+    headers:
+      content-encoding:
+      - gzip
+      content-length:
+      - '1247'
+      content-type:
+      - application/json; charset=UTF-8
+      date:
+      - Thu, 12 May 2022 12:46:19 GMT
+      vary:
+      - Accept-Encoding,Origin
+      x-ratelimit-limit:
+      - '4000'
+      x-ratelimit-remaining:
+      - '3997'
+      x-ratelimit-reset:
+      - '1652445974'
+    status:
+      code: 200
+      message: OK
+version: 1

@@ -8,18 +8,14 @@ from typing import Any, Dict, List, Optional, Type
 import pandas as pd
 import pkg_resources
 import pytest
-from _pytest.config.argparsing import Parser
-
 from _pytest.capture import MultiCapture, SysCapture
 from _pytest.config import Config
+from _pytest.config.argparsing import Parser
 from _pytest.fixtures import SubRequest
 from _pytest.mark.structures import Mark
 
 # IMPORTATION INTERNAL
-from gamestonk_terminal import decorators
-from gamestonk_terminal import rich_config
-from gamestonk_terminal import helper_funcs
-
+from openbb_terminal import decorators, helper_funcs
 
 # pylint: disable=redefined-outer-name
 
@@ -30,6 +26,11 @@ EXTENSIONS_MATCHING: Dict[str, List[Type]] = {
     "json": [bool, dict, float, int, list, tuple],
     "txt": [str],
 }
+
+os.environ["TEST_MODE"] = "True"
+os.environ["OPENBB_IMG_HOST_ACTIVE"] = "False"
+os.environ["OPENBB_DISCORD_BOT_TOKEN"] = "123"
+os.environ["OPENBB_IMGUR_CLIENT_ID"] = "123"
 
 
 class Record:
@@ -328,6 +329,11 @@ def pytest_addoption(parser: Parser):
         help="To run tests with the marker : @pytest.mark.prediction",
     )
     parser.addoption(
+        "--bots",
+        action="store_true",
+        help="To run tests with the marker : @pytest.mark.bots",
+    )
+    parser.addoption(
         "--rewrite-expected",
         action="store_true",
         help="To force `record_stdout` and `recorder` to rewrite all files.",
@@ -342,8 +348,6 @@ def brotli_check():
 
 
 def disable_rich():
-    rich_config.disable_rich()
-
     def effect(df, *xargs, **kwargs):  # pylint: disable=unused-argument
         print(df.to_string())
 
@@ -362,8 +366,8 @@ def pytest_configure(config: Config) -> None:
     config.addinivalue_line("markers", "record_stdout: Mark the test as text record.")
 
     brotli_check()
-    disable_rich()
     enable_debug()
+    disable_rich()
     disable_check_api()
 
 
@@ -371,6 +375,11 @@ def pytest_configure(config: Config) -> None:
 def rewrite_expected(request: SubRequest) -> bool:
     """Force rewriting of all expected data by : `record_stdout` and `recorder`."""
     return request.config.getoption("--rewrite-expected")
+
+
+@pytest.fixture(autouse=True)
+def mock_matplotlib(mocker):
+    mocker.patch("matplotlib.pyplot.show")
 
 
 @pytest.fixture
@@ -394,6 +403,20 @@ def default_json_path(request: SubRequest) -> str:
 def record_stdout_markers(request: SubRequest) -> List[Mark]:
     """All markers applied to the certain test together with cassette names associated with each marker."""
     return list(request.node.iter_markers(name="record_stdout"))
+
+
+@pytest.fixture(scope="session", autouse=True)
+def delete_images():
+    yield
+    mydir = os.path.join(
+        os.path.abspath(os.path.join(os.path.dirname(__file__), "..")),
+        "bots",
+        "interactive",
+        "images",
+    )
+    filelist = [f for f in os.listdir(mydir) if f.endswith(".png")]
+    for f in filelist:
+        os.remove(os.path.join(mydir, f))
 
 
 @pytest.fixture(autouse=True)

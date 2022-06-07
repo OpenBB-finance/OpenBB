@@ -1,0 +1,4 @@
+  Validator name Validator status  Amount delegated  Total reward
+0    Terra Bites           active               0.0           0.0
+1         Bitrue         inactive               0.0           0.0
+

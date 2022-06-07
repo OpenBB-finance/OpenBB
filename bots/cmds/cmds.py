@@ -2,115 +2,35 @@
 import disnake
 from disnake.ext import commands
 
-import bots.config_discordbot as cfg
+from bots import config_discordbot as cfg
+from bots.common.help_text import cmds_text
 from bots.menus.menu import Menu
 
 
 class CmdsCommands(commands.Cog):
-    """Command List"""
+    """Misc Commands"""
 
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
     @commands.slash_command(name="cmds")
-    async def ta(self, ctx: disnake.AppCmdInter):
+    async def cmds(self, ctx: disnake.AppCmdInter):
         """Stocks Command List"""
-        misctext = "```md\n[disc-fidelity]()\n" "[ins-last](ticker) <num>\n```"
-        opttext = (
-            "```md\n[opt-unu]()\n"
-            "[opt-iv](ticker)\n"
-            "[opt-vsurf](ticker) <z>\n"
-            "[opt-hist](ticker) <strike> <expiration> <opt-typ>\n"
-            "[opt-oi](ticker) <expiration> <min-sp> <max-sp>\n"
-            "[opt-vol](ticker) <expiration> <min-sp> <max-sp>\n"
-            "[opt-overview](ticker) <expiration> <min-sp> <max-sp>\n"
-            "[opt-chain](ticker) <expiration> <opt-typ> <min-sp> <max-sp>\n```"
-        )
+        siatext = f"```md{cmds_text['sia']}```"
+        etftext = f"```md{cmds_text['etf']}```"
+        disctext = f"```md{cmds_text['disc']}```"
+        misctext = f"```md{cmds_text['misc']}```"
+        opttext = f"```md{cmds_text['opt']}```"
         tatext = (
-            "```md\n[ta-summary](ticker)\n"
-            "[ta-view](ticker)\n"
-            "[ta-recom](ticker)\n"
-            "[ta-obv](ticker) <START> <END>\n"
-            "[ta-fib](ticker) <START> <END>\n"
-            "[ta-ad](ticker) <OPEN> <START> <END>\n"
-            "[ta-cg](ticker) <LENGTH> <START> <END>\n"
-            "[ta-fisher](ticker) <LENGTH> <START> <END>\n"
-            "[ta-cci](ticker) <LENGTH> <SCALAR> <START> <END>\n"
-            "[ta-ema](ticker) <WINDOW> <OFFSET> <START> <END>\n"
-            "[ta-sma](ticker) <WINDOW> <OFFSET> <START> <END>\n"
-            "[ta-wma](ticker) <WINDOW> <OFFSET> <START> <END>\n"
-            "[ta-hma](ticker) <WINDOW> <OFFSET> <START> <END>\n"
-            "[ta-zlma](ticker) <WINDOW> <OFFSET> <START> <END>\n"
-            "[ta-aroon](ticker) <LENGTH> <SCALAR> <START> <END>\n"
-            "[ta-adosc](ticker) <OPEN> <FAST> <SLOW> <START> <END>\n"
-            "[ta-macd](ticker) <FAST> <SLOW> <SIGNAL> <START> <END>\n"
-            "[ta-kc](ticker) <LENGTH> <SCALAR> <MA_MODE> <START> <END>\n"
-            "[ta-adx](ticker) <LENGTH> <SCALAR> <DRIFT> <START> <END>\n"
-            "[ta-rsi](ticker) <LENGTH> <SCALAR> <DRIFT> <START> <END>\n"
-            "[ta-stoch](ticker) <FAST_K> <SLOW_D> <SLOW_K> <START> <END>\n"
-            "[ta-bbands](ticker) <LENGTH> <SCALAR> <MA_MODE> <START> <END>\n"
-            "[ta-donchian](ticker) <LWR_LENGTH> <UPR_LENGTH> <START> <END>\n```"
+            f"```md{cmds_text['ta']}```"
+            f"```md{cmds_text['ta_candle']}```"
+            f"```md{cmds_text['ta_ext']}```"
         )
-        ddtext = (
-            "```md\n[dd-est](ticker)\n"
-            "[dd-sec](ticker)\n"
-            "[dd-analyst](ticker)\n"
-            "[dd-supplier](ticker)\n"
-            "[dd-customer](ticker)\n"
-            "[dd-arktrades](ticker)\n"
-            "[dd-pt](ticker) <RAW> <DATE_START>\n```"
-        )
-        dpstext = (
-            "```md\n[dps.hsi]() <NUM>\n"
-            "[dps.shorted](NUM)\n"
-            "[dps.psi](ticker)\n"
-            "[dps.spos](ticker)\n"
-            "[dps.dpotc](ticker)\n"
-            "[dps.pos]() <NUM> <SORT>\n"
-            "[dps.sidtc]() <NUM> <SORT>\n"
-            "[dps.ftd](ticker) <DATE_START> <DATE_END>\n```"
-        )
-        scrtext = (
-            "```md\n[scr.presets_default]()\n"
-            "[scr.presets_custom]()\n"
-            "[scr.historical](SIGNAL) <START>\n"
-            "[scr.overview](PRESET) <SORT> <LIMIT> <ASCEND>\n"
-            "[scr.technical](PRESET) <SORT> <LIMIT> <ASCEND>\n"
-            "[scr.valuation](PRESET) <SORT> <LIMIT> <ASCEND>\n"
-            "[scr.financial](PRESET) <SORT> <LIMIT> <ASCEND>\n"
-            "[scr.ownership](PRESET) <SORT> <LIMIT> <ASCEND>\n"
-            "[scr.performance](PRESET) <SORT> <LIMIT> <ASCEND>\n```"
-        )
-        govtext = (
-            "```md\n[gov-histcont](ticker)\n"
-            "[gov-lobbying](ticker) <NUM>\n"
-            "[gov-toplobbying]() <NUM> <RAW>\n"
-            "[gov-lastcontracts]() <DAYS> <NUM>\n"
-            "[gov-contracts](ticker) <DAYS> <RAW>\n"
-            "[gov-qtrcontracts]() <ANALYSIS> <NUM>\n"
-            "[gov-lasttrades]() <GOV_TYPE> <DAYS> <REP>\n"
-            "[gov-gtrades](ticker) <GOV_TYPE> <MONTHS> <RAW>\n"
-            "[gov-topbuys]() <GOV_TYPE> <MONTHS> <NUM> <RAW>\n"
-            "[gov-topsells]() <GOV_TYPE> <MONTHS> <NUM> <RAW>\n```"
-            "\n`<DAYS> = Past Transaction Days`\n"
-            "`<MONTHS> = Past Transaction Months`"
-        )
-        econtext = (
-            "```md\n[econ-softs]()\n"
-            "[econ-meats]()\n"
-            "[econ-energy]()\n"
-            "[econ-metals]()\n"
-            "[econ-grains]()\n"
-            "[econ-futures]()\n"
-            "[econ-usbonds]()\n"
-            "[econ-glbonds]()\n"
-            "[econ-indices]()\n"
-            "[econ-overview]()\n"
-            "[econ-feargreed]()\n"
-            "[econ-currencies]()\n"
-            "[econ-valuation]() <GROUP>\n"
-            "[econ-performance]() <GROUP>\n```"
-        )
+        ddtext = f"```md{cmds_text['dd']}```"
+        dpstext = f"```md{cmds_text['dps']}```"
+        scrtext = f"```md{cmds_text['scr']}```"
+        govtext = f"```md{cmds_text['gov']}```" f"{cmds_text['gov_ext']}"
+        econtext = f"```md{cmds_text['econ']}```"
         options = [disnake.SelectOption(label="Home", value="0", emoji="🟢")]
         embeds = [
             disnake.Embed(
@@ -119,6 +39,7 @@ class CmdsCommands(commands.Cog):
                 color=cfg.COLOR,
             ),
             disnake.Embed(
+                title="",
                 description=(
                     f"**Options Command List**\n{opttext}\n"
                     f"**Dark Pool Shorts Command List**\n{dpstext}\n"
@@ -127,16 +48,25 @@ class CmdsCommands(commands.Cog):
                 color=cfg.COLOR,
             ),
             disnake.Embed(
+                title="",
                 description=(
-                    f"**Screener Command List**\n{scrtext}\n"
-                    f"**Government Command List**\n{govtext}\n"
+                    f"**ETF Command List**\n{etftext}\n"
+                    f"**Sector and Industry Analysis Command List**\n{siatext}\n"
+                    f"**Stocks Discovery Command List**\n{disctext}\n"
+                    f"**Other Command List**\n{misctext}\n"
                 ),
                 color=cfg.COLOR,
             ),
             disnake.Embed(
+                title="",
+                description=(f"**Economy Command List**\n{econtext}\n"),
+                color=cfg.COLOR,
+            ),
+            disnake.Embed(
+                title="",
                 description=(
-                    f"**Economy Command List**\n{econtext}\n"
-                    f"**Other Command List**\n{misctext}\n"
+                    f"**Screener Command List**\n{scrtext}\n"
+                    f"**Government Command List**\n{govtext}\n"
                 ),
                 color=cfg.COLOR,
             ),
@@ -157,6 +87,47 @@ class CmdsCommands(commands.Cog):
         )
         embeds[0].set_footer(text=f"Page 1 of {len(embeds)}")
         await ctx.send(embed=embeds[0], view=Menu(embeds, options))
+
+    @commands.slash_command(name="about")
+    async def about(self, ctx: disnake.AppCmdInter):
+        """About OpenBB Terminal"""
+        links = (
+            "Join our community on discord: https://discord.gg/Up2QGbMKHY\n"
+            "Follow our twitter for updates: https://twitter.com/gamestonkt\n"
+            "Access our landing page: https://openbb.co\n\n"
+            "**Main maintainers:** DidierRLopes, jmaslek, aia\n"
+        )
+        partnerships = (
+            "FinBrain: https://finbrain.tech\n"
+            "Quiver Quantitative: https://www.quiverquant.com\n"
+            "SentimentInvestor: https://sentimentinvestor.com\n"
+        )
+        disclaimer = (
+            "Trading in financial instruments involves high risks including\n"
+            "the risk of losing some, or all, of your investment amount, and\n"
+            "may not be suitable for all investors. Before deciding to trade\n"
+            "in financial instrument you should be fully informed of the risks\n"
+            "and costs associated with trading the financial markets, carefully\n"
+            "consider your investment objectives, level of experience, and risk\n"
+            "appetite, and seek professional advice where needed. The data\n"
+            "contained in OpenBB Terminal is not necessarily accurate.\n"
+            "OpenBB and any provider of the data contained in this bot will not\n"
+            "accept liability for any loss or damage as a result of your trading,\n"
+            "or your reliance on the information displayed."
+        )
+        embed = disnake.Embed(
+            title="Investment Research for Everyone",
+            description=links,
+            colour=cfg.COLOR,
+        )
+        embed.set_author(
+            name=cfg.AUTHOR_NAME,
+            icon_url=cfg.AUTHOR_ICON_URL,
+        )
+        embed.add_field(name="Partnerships:", value=partnerships, inline=False)
+        embed.add_field(name="Disclaimer:", value=disclaimer, inline=False)
+
+        await ctx.send(embed=embed)
 
 
 def setup(bot: commands.Bot):

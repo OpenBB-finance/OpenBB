@@ -1,0 +1,127 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML,
+        like Gecko) Chrome/39.0.2171.95 Safari/537.36
+    method: GET
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/GME?period1=1633924800&period2=1649653951&interval=1d&includePrePost=False&events=div%2Csplits
+  response:
+    body:
+      string: !!binary |
+        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
+        AAA=
+    headers:
+      Age:
+      - '0'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=15552000
+      Transfer-Encoding:
+      - chunked
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=10, stale-while-revalidate=20
+      content-encoding:
+      - gzip
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Mon, 11 Apr 2022 05:12:31 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-chart-api--mtls-production-gq1.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '14'
+      x-request-id:
+      - 9856e63b-70bb-420a-933d-f31025b4ce08
+      x-yahoo-request-id:
+      - bqihnhlh57e5v
+      y-rid:
+      - bqihnhlh57e5v
+    status:
+      code: 200
+      message: OK
+version: 1

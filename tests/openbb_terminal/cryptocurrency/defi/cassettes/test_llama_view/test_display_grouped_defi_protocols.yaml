@@ -1,0 +1,114 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: GET
+    uri: https://api.llama.fi/protocols
+  response:
+    body:
+      string: !!binary |
+        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
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Origin:
+      - '*'
+      Age:
+      - '556'
+      Cache-Control:
+      - max-age=600
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '1312120'
+      Content-Type:
+      - application/json
+      Date:
+      - Wed, 13 Apr 2022 01:19:12 GMT
+      FILTERED:
+      - 'TRUE'
+      Via:
+      - 1.1 352ab4fc53db02754a30e59a7814a0d2.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id:
+      - VUELT9nbDTgcGm6ItxKZPl4FfmohwDdkOt_7h439LMWdq_TDBjR8_w==
+      X-Amz-Cf-Pop:
+      - MAD51-C3
+      X-Amzn-Trace-Id:
+      - Root=1-6256250e-0259eb5974ea88e036f17404
+      X-Cache:
+      - Hit from cloudfront
+      x-amz-apigw-id:
+      - Qfq6VGYVFiAFh-w=
+      x-amzn-RequestId:
+      - f12f86fd-a0ab-4a09-9699-d7d4cdfaa87c
+    status:
+      code: 200
+      message: OK
+version: 1

@@ -1,16 +1,18 @@
+import io
+import logging
 from datetime import datetime, timedelta
 
 import pandas as pd
 from matplotlib import pyplot as plt
 
-import bots.config_discordbot as cfg
-from bots.config_discordbot import logger
-from bots.helpers import image_border
-from gamestonk_terminal.config_plot import PLOT_DPI
-from gamestonk_terminal.helper_funcs import plot_autoscale
-from gamestonk_terminal.stocks.government import quiverquant_model
+from bots import imps
+from openbb_terminal.decorators import log_start_end
+from openbb_terminal.stocks.government import quiverquant_model
+
+logger = logging.getLogger(__name__)
 
 
+@log_start_end(log=logger)
 def topsells_command(
     gov_type="",
     past_transactions_months: int = 5,
@@ -19,7 +21,7 @@ def topsells_command(
 ):
     """Displays most sold stocks by the congress/senate/house [quiverquant.com]"""
     # Debug user input
-    if cfg.DEBUG:
+    if imps.DEBUG:
         logger.debug(
             "gov-topsells %s %s %s %s",
             gov_type,
@@ -86,7 +88,7 @@ def topsells_command(
         else -float(x["min"]),
         axis=1,
     )
-    description = None
+    description = ""
     df_gov = df_gov.sort_values("TransactionDate", ascending=True)
     if raw:
         df = pd.DataFrame(
@@ -98,7 +100,7 @@ def topsells_command(
             .head(n=num)
         )
         description = "```" + df.to_string() + "```"
-    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    fig, ax = plt.subplots(figsize=imps.bot_plot_scale(), dpi=imps.BOT_PLOT_DPI)
 
     df_gov.groupby("Ticker")["upper"].sum().div(1000).sort_values().abs().head(
         n=num
@@ -110,11 +112,15 @@ def topsells_command(
     )
     plt.gcf().axes[0].yaxis.get_major_formatter().set_scientific(False)
     fig.tight_layout()
-
-    plt.savefig("gov_topsells.png")
     imagefile = "gov_topsells.png"
 
-    imagefile = image_border(imagefile)
+    dataBytesIO = io.BytesIO()
+    plt.savefig(dataBytesIO)
+    dataBytesIO.seek(0)
+    plt.close("all")
+
+    imagefile = imps.image_border(imagefile, base64=dataBytesIO)
+
     return {
         "title": f"Stocks: [quiverquant.com] Top sells for {gov_type.upper()}",
         "imagefile": imagefile,
