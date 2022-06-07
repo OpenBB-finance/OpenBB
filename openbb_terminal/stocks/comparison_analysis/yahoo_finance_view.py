@@ -220,15 +220,15 @@ def display_correlation(
     # We change some display settings for this, so we get the current
     # value and then restore them when we are done.
     correlations = df_similar.corr()
-    large_repr = pd.get_option('display.large_repr')
-    max_columns = pd.get_option('display.max_columns', 0)
-    pd.set_option('display.large_repr', 'truncate')
-    pd.set_option('display.max_columns', 0)
+    large_repr = pd.get_option("display.large_repr")
+    max_columns = pd.get_option("display.max_columns", 0)
+    pd.set_option("display.large_repr", "truncate")
+    pd.set_option("display.max_columns", 0)
     console.print("Correlations: %s" % correlations.to_string())
 
     # Restore the previous values
-    pd.set_option('display.large_repr', large_repr)
-    pd.set_option('display.max_columns', max_columns)
+    pd.set_option("display.large_repr", large_repr)
+    pd.set_option("display.max_columns", max_columns)
 
     sns.heatmap(
         correlations,
