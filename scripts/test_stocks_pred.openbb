@@ -11,5 +11,4 @@ rnn
 lstm
 conv1d
 mc
-expo
 exit

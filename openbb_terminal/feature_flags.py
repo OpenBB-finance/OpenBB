@@ -13,7 +13,12 @@ import i18n
 
 # pylint: disable=no-member
 
-i18n.load_path.append("i18n")
+i18n_dict_location = (
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), "i18n")
+    if os.path.exists(os.path.join(os.path.dirname(os.path.abspath(__file__)), "i18n"))
+    else os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "i18n")
+)
+i18n.load_path.append(i18n_dict_location)
 i18n.set("locale", "en")
 i18n.set("filename_format", "{locale}.{format}")
 
@@ -100,5 +105,5 @@ LOGGING_COMMIT_HASH = str(os.getenv("OPENBB_LOGGING_COMMIT_HASH", "REPLACE_ME"))
 try:
     version = pkg_resources.get_distribution("OpenBBTerminal").version
 except Exception:
-    version = "1.3.0m"
+    version = "1.4.0m"
 VERSION = str(os.getenv("OPENBB_VERSION", version))
