@@ -169,7 +169,7 @@ def display_correlation(
     candle_type: str = "a",
     external_axes: Optional[List[plt.Axes]] = None,
     export: str = "",
-    display_full_matrix: bool = False
+    display_full_matrix: bool = False,
 ):
     """
     Correlation heatmap based on historical price comparison

@@ -581,7 +581,7 @@ class ComparisonAnalysisController(BaseController):
         parser.add_argument(
             "--display-full-matrix",
             action="store_true",
-            help="Display all matrix values, rather than masking off half."
+            help="Display all matrix values, rather than masking off half.",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
@@ -595,7 +595,7 @@ class ComparisonAnalysisController(BaseController):
                     start=ns_parser.start.strftime("%Y-%m-%d"),
                     candle_type=ns_parser.type_candle,
                     export=ns_parser.export,
-                    display_full_matrix=ns_parser.display_full_matrix
+                    display_full_matrix=ns_parser.display_full_matrix,
                 )
             else:
                 console.print("Please make sure there are similar tickers selected. \n")
