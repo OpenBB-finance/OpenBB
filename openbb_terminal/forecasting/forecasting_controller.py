@@ -625,14 +625,6 @@ class ForecastingController(BaseController):
             help="Number of epochs over which to train the model.",
         )
         parser.add_argument(
-            "--n_epochs",
-            action="store",
-            dest="n_epochs",
-            default=100,
-            type=check_positive,
-            help="Number of epochs over which to train the model.",
-        )
-        parser.add_argument(
             "--learning_rate",
             action="store",
             dest="learning_rate",

@@ -42,10 +42,21 @@ def dt_format(x):
 def display_rnn_forecast(
     data: Union[pd.DataFrame, pd.Series],
     ticker_name: str,
-    n_predict: int,
-    target_col: str,
-    start_window: float,
-    forecast_horizon: int,
+    n_predict: int = 5,
+    target_col: str = "close",
+    start_window: float = 0.85,
+    forecast_horizon: int = 3,
+    model_type: str = "LSTM",
+    hidden_dim: int = 20,
+    dropout: float = 0.0,
+    batch_size: int = 16,
+    n_epochs: int = 100,
+    learning_rate: float = 1e-3,
+    model_save_name: str = "rnn_model",
+    training_length: int = 20,
+    input_chunk_size: int = 14,
+    force_reset: bool = True,
+    save_checkpoints: bool = True,
     export: str = "",
 ):
     """Display RNN forecast
@@ -81,6 +92,17 @@ def display_rnn_forecast(
         target_col,
         start_window,
         forecast_horizon,
+        model_type,
+        hidden_dim,
+        dropout,
+        batch_size,
+        n_epochs,
+        learning_rate,
+        model_save_name,
+        training_length,
+        input_chunk_size,
+        force_reset,
+        save_checkpoints,
     )
     # Plotting with Matplotlib
     external_axes = None

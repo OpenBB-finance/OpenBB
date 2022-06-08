@@ -16,6 +16,7 @@ from darts.models import RNNModel
 from darts.dataprocessing.transformers import MissingValuesFiller, Scaler
 from darts.metrics import mape
 from pytorch_lightning.callbacks.early_stopping import EarlyStopping
+from torch import batch_norm_backward_elemt
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
@@ -30,6 +31,17 @@ def get_rnn_data(
     target_col: str = "close",
     start_window: float = 0.85,
     forecast_horizon: int = 3,
+    model_type: str = "LSTM",
+    hidden_dim: int = 20,
+    dropout: float = 0.0,
+    batch_size: int = 16,
+    n_epochs: int = 100,
+    learning_rate: float = 1e-3,
+    model_save_name: str = "rnn_model",
+    training_length: int = 20,
+    input_chunk_size: int = 14,
+    force_reset: bool = True,
+    save_checkpoints: bool = True,
 ) -> Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], float, Any]:
 
     """Performs Recurrent Neural Network Forcasting forecasting
@@ -94,19 +106,19 @@ def get_rnn_data(
     pl_trainer_kwargs = {"callbacks": [my_stopper], "accelerator": "cpu"}
 
     rnn_model = RNNModel(
-        model="LSTM",
-        hidden_dim=20,
-        dropout=0,
-        batch_size=16,
-        n_epochs=50,
-        optimizer_kwargs={"lr": 1e-3},
-        model_name="rnn_model",
+        model=model_type,
+        hidden_dim=hidden_dim,
+        dropout=dropout,
+        batch_size=batch_size,
+        n_epochs=n_epochs,
+        optimizer_kwargs={"lr": learning_rate},
+        model_name=model_save_name,
         random_state=42,
-        training_length=20,
-        input_chunk_length=14,
+        training_length=training_length,
+        input_chunk_length=input_chunk_size,
         pl_trainer_kwargs=pl_trainer_kwargs,
-        force_reset=True,
-        save_checkpoints=True,  # TODO - where to save?
+        force_reset=force_reset,
+        save_checkpoints=save_checkpoints,
     )
 
     # fit model on train series for historical forecasting
