@@ -257,6 +257,8 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 start="2020-12-01",
                 candle_type="h",
                 export="",
+                display_full_matrix=False,
+                raw=False,
             ),
         ),
         (
