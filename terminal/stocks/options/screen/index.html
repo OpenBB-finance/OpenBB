@@ -9,12 +9,17 @@
 
 
 
-    <meta name="description" content="usage: scr [-p {TSLA_Calls_90Days,Highest_OI,template,TSLA_Poots,SPY_ATM_Poots,Long_FAANGM,high_IV,3DTE_Degenerate,SPY_ATM_Calls,Highest_IV,Highest_Volume}] [-l LIMIT] [-h] [--export {csv,json,xlsx}] Screener filter output from https://ops.syncretism.io/index.html. Where: CS: Contract Symbol; S: Symbol, T: Option Type; Str: Strike; Exp v: Expiration; IV: Implied Volatility; LP: Last Price; B: Bid; A: Ask; V: Volume; OI: Open Interest; Y: Yield; MY: Monthly Yield; SMP: Regular Market Price; SMDL: Regular Market Day Low; SMDH: Regular Market Day High; LU: Last Trade Date; LC: Last Crawl; ITM: In The Money; PC: Price Change; PB: Price-to-book.">
+    <meta name="description" content="Introduction to the Options Screener The OpenBB options screener is a versatile discovery tool for an options trader. It is powered by the Open Source Community: https://github.com/Tyruiop/syncretism - go give this repository a star!
+The screener makes use of presets (.ini files) that are stored locally in the OpenBB installation folder.
+~/Applications/OpenBB/openbb_terminal/stocks/options/presets/
+The file named template.ini is a blank slate and ready for experimentation. There are nearly infinite ways to configure an options search, so customize one and then share it with us on social media!">
 
+
+    <meta name="keywords" content="Options,,stocks,,derivatives,,puts,,calls,,oi,,vol,,greeks,,bid,,ask,,last,,lp,,price,,delta,,theta,,gamma,,interest,,screener,,dte,,expiration,,expiry,,screen">
 
 
     <title>
-      Scr | OpenBB Documentation
+      Introduction to the Options Screener | OpenBB Documentation
     </title>
 
     <link rel="icon" href="/OpenBBTerminal/favicon/favicon-32x32.png" type="image/x-icon">
@@ -35,7 +40,7 @@
 <link rel="preload" href="/OpenBBTerminal/custom.css" as="style">
 <link rel="stylesheet" href="/OpenBBTerminal/custom.css" media="all">
 
-<link rel="alternate" type="application/rss+xml" href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/options/scr/index.xml" title="OpenBB Documentation" />
+<link rel="alternate" type="application/rss+xml" href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/options/screen/index.xml" title="OpenBB Documentation" />
 
 
 <!-- Made with Geekdoc theme https://github.com/thegeeklab/hugo-geekdoc -->
@@ -6400,9 +6405,9 @@
             
             <span class="flex">
                 
-                <a href="/OpenBBTerminal/terminal/stocks/options/scr/"
+                <a href="/OpenBBTerminal/terminal/stocks/options/screen/"
                     class="gdoc-nav__entry is-active">
-                    scr
+                    screen
                 </a>
             </span>
             
@@ -7124,208 +7129,6 @@
             <span class="flex">
                 
                 <a href="/OpenBBTerminal/terminal/stocks/options/hedge/rmv/"
-                    class="gdoc-nav__entry ">
-                    rmv
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-</ul>
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <input type="checkbox" id="navtree-6308265f" class="gdoc-nav__toggle" >
-            <label for="navtree-6308265f" class="flex justify-between">
-            
-            <span class="flex">
-                
-                <a href="/OpenBBTerminal/terminal/stocks/options/payoff/"
-                    class="gdoc-nav__entry ">
-                    payoff
-                </a>
-            </span>
-            
-            <svg class="icon gdoc_keyborad_arrow_left"><use xlink:href="#gdoc_keyborad_arrow_left"></use></svg>
-            <svg class="icon gdoc_keyborad_arrow_down hidden"><use xlink:href="#gdoc_keyborad_arrow_down"></use></svg>
-            </label>
-            
-        
-
-        
-            
-
-
-
-<ul class="gdoc-nav__list">
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/OpenBBTerminal/terminal/stocks/options/payoff/add/"
-                    class="gdoc-nav__entry ">
-                    add
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/OpenBBTerminal/terminal/stocks/options/payoff/sop/"
-                    class="gdoc-nav__entry ">
-                    sop
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/OpenBBTerminal/terminal/stocks/options/payoff/pick/"
-                    class="gdoc-nav__entry ">
-                    pick
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/OpenBBTerminal/terminal/stocks/options/payoff/plot/"
-                    class="gdoc-nav__entry ">
-                    plot
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/OpenBBTerminal/terminal/stocks/options/payoff/rmv/"
                     class="gdoc-nav__entry ">
                     rmv
                 </a>
@@ -29838,7 +29641,7 @@
         
     
     
-        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/' href='/OpenBBTerminal/'><span itemprop='name'>Getting Started</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/terminal/' href='/OpenBBTerminal/terminal/'><span itemprop='name'>OpenBB Terminal</span></a><meta itemprop='position' content='3' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/terminal/stocks/' href='/OpenBBTerminal/terminal/stocks/'><span itemprop='name'>Introduction to Stocks</span></a><meta itemprop='position' content='4' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/terminal/stocks/options/' href='/OpenBBTerminal/terminal/stocks/options/'><span itemprop='name'>Options</span></a><meta itemprop='position' content='5' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>Scr</span><meta itemprop='position' content='6' /></li>
+        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/' href='/OpenBBTerminal/'><span itemprop='name'>Getting Started</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/terminal/' href='/OpenBBTerminal/terminal/'><span itemprop='name'>OpenBB Terminal</span></a><meta itemprop='position' content='3' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/terminal/stocks/' href='/OpenBBTerminal/terminal/stocks/'><span itemprop='name'>Introduction to Stocks</span></a><meta itemprop='position' content='4' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/terminal/stocks/options/' href='/OpenBBTerminal/terminal/stocks/options/'><span itemprop='name'>Options</span></a><meta itemprop='position' content='5' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>Introduction to the Options Screener</span><meta itemprop='position' content='6' /></li>
     
 
     
@@ -29856,7 +29659,7 @@
     <div>
         <span class="editpage">
             <svg class="icon gdoc_code" style="color: #C7C7C7;"><use xlink:href="#gdoc_code"></use></svg>
-            <a href="https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/website//content/terminal/stocks/options/scr/_index.md" style="color: #C7C7C7;">
+            <a href="https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/website//content/terminal/stocks/options/screen/_index.md" style="color: #C7C7C7;">
                 Edit this page
             </a>
         </span>
@@ -29865,45 +29668,227 @@
 </div>
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
-        <h1>Scr</h1>
-        <pre><code>usage: scr [-p {TSLA_Calls_90Days,Highest_OI,template,TSLA_Poots,SPY_ATM_Poots,Long_FAANGM,high_IV,3DTE_Degenerate,SPY_ATM_Calls,Highest_IV,Highest_Volume}] [-l LIMIT] [-h] [--export {csv,json,xlsx}]
-</code></pre><p>Screener filter output from <a class="gdoc-markdown__link" href="https://ops.syncretism.io/index.html">https://ops.syncretism.io/index.html</a>. Where: CS: Contract Symbol; S: Symbol, T: Option Type; Str: Strike; Exp v: Expiration; IV: Implied Volatility; LP: Last Price; B: Bid; A: Ask; V: Volume; OI: Open Interest; Y: Yield; MY: Monthly Yield;
-SMP: Regular Market Price; SMDL: Regular Market Day Low; SMDH: Regular Market Day High; LU: Last Trade Date; LC: Last Crawl; ITM: In The Money; PC: Price Change; PB: Price-to-book.</p>
-<pre><code>optional arguments:
-  -p {TSLA_Calls_90Days,Highest_OI,template,TSLA_Poots,SPY_ATM_Poots,Long_FAANGM,high_IV,3DTE_Degenerate,SPY_ATM_Calls,Highest_IV,Highest_Volume}, --preset {TSLA_Calls_90Days,Highest_OI,template,TSLA_Poots,SPY_ATM_Poots,Long_FAANGM,high_IV,3DTE_Degenerate,SPY_ATM_Calls,Highest_IV,Highest_Volume}
-                        Filter presets (default: high_IV)
-  -l LIMIT, --limit LIMIT
-                        Limit of random entries to display. Default shows all (default: 10)
-  -h, --help            show this help message (default: False)
-  --export {csv,json,xlsx}
-                        Export raw data into csv, json, xlsx (default: )
-</code></pre><p>Example:</p>
-<pre><code>2022 Feb 16, 09:50 (✨) /stocks/options/screen/ $ scr
-                                                                Screener Output
-┏━━━━━━━━━━━━━━━━━━━━━┳━━━━━━┳━━━┳━━━━━━━┳━━━━━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━┓
-┃ CS                  ┃ S    ┃ T ┃ Str   ┃ Exp ∨    ┃ IV   ┃ LP   ┃ B    ┃ A    ┃ V    ┃ OI   ┃ Y    ┃ MY   ┃ SMP   ┃ SMDL  ┃ SMDH  ┃ LU       ┃
-┡━━━━━━━━━━━━━━━━━━━━━╇━━━━━━╇━━━╇━━━━━━━╇━━━━━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━┩
-│ VIAC220218C00036000 │ VIAC │ C │ 36.00 │ 02-18-22 │ 1.00 │ 1.28 │ 1.28 │ 1.31 │ 4623 │ 3404 │ 0.04 │ 0.68 │ 35.99 │ 34.75 │ 36.03 │ 02-15-22 │
-├─────────────────────┼──────┼───┼───────┼──────────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┼───────┼───────┼───────┼──────────┤
-│ VXX220225P00020500  │ VXX  │ P │ 20.50 │ 02-25-22 │ 1.00 │ 0.97 │ 0.96 │ 1.00 │ 1552 │ 1525 │ 0.05 │ 0.17 │ 21.39 │ 21.33 │ 22.22 │ 02-15-22 │
-├─────────────────────┼──────┼───┼───────┼──────────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┼───────┼───────┼───────┼──────────┤
-│ MARA220225C00037000 │ MARA │ C │ 37.00 │ 02-25-22 │ 1.00 │ 0.16 │ 0.16 │ 0.17 │ 118  │ 261  │ 0.00 │ 0.02 │ 28.54 │ 27.44 │ 28.93 │ 02-15-22 │
-├─────────────────────┼──────┼───┼───────┼──────────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┼───────┼───────┼───────┼──────────┤
-│ RIOT220225C00025000 │ RIOT │ C │ 25.00 │ 02-25-22 │ 1.00 │ 0.16 │ 0.14 │ 0.15 │ 189  │ 1707 │ 0.01 │ 0.02 │ 19.66 │ 18.85 │ 19.76 │ 02-15-22 │
-├─────────────────────┼──────┼───┼───────┼──────────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┼───────┼───────┼───────┼──────────┤
-│ VIAC220218C00037000 │ VIAC │ C │ 37.00 │ 02-18-22 │ 1.00 │ 0.85 │ 0.86 │ 0.88 │ 2707 │ 2750 │ 0.02 │ 0.44 │ 35.99 │ 34.75 │ 36.03 │ 02-15-22 │
-├─────────────────────┼──────┼───┼───────┼──────────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┼───────┼───────┼───────┼──────────┤
-│ SKLZ220218C00004500 │ SKLZ │ C │ 4.50  │ 02-18-22 │ 1.00 │ 0.17 │ 0.16 │ 0.17 │ 1828 │ 2241 │ 0.04 │ 0.69 │ 4.46  │ 4.11  │ 4.46  │ 02-15-22 │
-├─────────────────────┼──────┼───┼───────┼──────────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┼───────┼───────┼───────┼──────────┤
-│ PLUG220218P00023000 │ PLUG │ P │ 23.00 │ 02-18-22 │ 0.99 │ 0.51 │ 0.50 │ 0.52 │ 2078 │ 778  │ 0.02 │ 0.41 │ 23.77 │ 22.08 │ 23.92 │ 02-15-22 │
-├─────────────────────┼──────┼───┼───────┼──────────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┼───────┼───────┼───────┼──────────┤
-│ BBBY220218C00018500 │ BBBY │ C │ 18.50 │ 02-18-22 │ 0.99 │ 0.15 │ 0.13 │ 0.17 │ 589  │ 905  │ 0.01 │ 0.15 │ 16.66 │ 15.71 │ 16.75 │ 02-15-22 │
-├─────────────────────┼──────┼───┼───────┼──────────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┼───────┼───────┼───────┼──────────┤
-│ TDOC220218C00091000 │ TDOC │ C │ 91.00 │ 02-18-22 │ 0.99 │ 0.08 │ 0.03 │ 0.05 │ 101  │ 104  │ 0.00 │ 0.01 │ 74.93 │ 72.09 │ 75.14 │ 02-14-22 │
-├─────────────────────┼──────┼───┼───────┼──────────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┼───────┼───────┼───────┼──────────┤
-│ PTON220225P00027000 │ PTON │ P │ 27.00 │ 02-25-22 │ 0.99 │ 0.24 │ 0.22 │ 0.25 │ 1040 │ 430  │ 0.01 │ 0.03 │ 33.25 │ 31.96 │ 33.65 │ 02-15-22 │
-└─────────────────────┴──────┴───┴───────┴──────────┴──────┴──────┴──────┴──────┴──────┴──────┴──────┴──────┴───────┴───────┴───────┴──────────┘
-</code></pre>
+        <h1>Introduction to the Options Screener</h1>
+        <h1>Introduction to the Options Screener</h1>
+<p>The OpenBB options screener is a versatile discovery tool for an options trader. It is powered by the Open Source Community: <a class="gdoc-markdown__link" href="https://github.com/Tyruiop/syncretism">https://github.com/Tyruiop/syncretism</a> - go give this repository a star!</p>
+<p><img src="https://user-images.githubusercontent.com/85772166/172467269-8752d7fe-a9c6-4cf6-bc6f-3f5a011037e4.png" alt="The Options Screener Menu"  /></p>
+<p>The screener makes use of presets (.ini files) that are stored locally in the OpenBB installation folder.</p>
+<p><code>~/Applications/OpenBB/openbb_terminal/stocks/options/presets/</code></p>
+<p><img src="https://user-images.githubusercontent.com/85772166/172467415-96aab9fe-de50-4892-8483-fbc834c17252.png" alt="The folder containing preset files"  /></p>
+<p>The file named <code>template.ini</code> is a blank slate and ready for experimentation. There are nearly infinite ways to configure an options search, so customize one and then share it with us on social media! Have a look at the available fields:</p>
+<pre><code># Author of preset: OpenBB Terminal
+# Description: This is just a sample. The user that adds the preset can add a description for what type of stocks these filters are being used.
+[FILTER]
+
+# tickers [string]: a list of space or comma separated tickers to restrict or exclude them from the query.
+# E.g. &quot;GME&quot; or for multiples &quot;AMC&quot;,&quot;BB&quot;,&quot;GME&quot;.
+tickers =
+
+# exclude [true|false]: if true, then tickers are excluded. If false, the search is restricted to these tickers.
+exclude =
+
+# min-diff [int]: minimum difference in percentage between strike and stock price.
+min-diff =
+
+# max-diff [int]: maximum difference in percentage between strike and stock price.
+max-diff =
+
+# itm [bool]: select in the money options.
+itm = true
+
+# otm [bool]: select out of the money options.
+otm = true
+
+# min-ask-bid [float]: minimum spread between bid and ask.
+min-ask-bid =
+
+# max-ask-bid [float]: maximum spread between bid and ask.
+max-ask-bid =
+
+# min-exp [int]: minimum days until expiration.
+min-exp =
+
+# max-exp [int]: maximum days until expiration.
+max-exp =
+
+# min-price [float]: minimum option premium.
+min-price =
+
+# max-price [float]: maximum option premium.
+max-price =
+
+#min-strike [float]: minimum option strike.
+min-strike =
+
+#max-strike [float]: maximum option strike.
+max-strike =
+
+# calls [true|false]: select call options.
+calls = true
+
+# puts [true|false]: select put options.
+puts = true
+
+# stock [true|false]: select normal stocks.
+stock =
+
+# etf [true|false]: select etf options.
+etf =
+
+# min-sto [float]: minimum option price / stock price ratio.
+min-sto =
+
+# max-sto [float]: maximum option price / stock price ratio.
+max-sto =
+
+# min-yield [float]: minimum premium / strike price ratio.
+min-yield =
+
+# max-yield [float]: maximum premium / strike price ratio.
+max-yield =
+
+# min-myield [float]: minimum yield per month until expiration date.
+min-myield =
+
+# max-myield [float]: maximum yield per month until expiration date.
+max-myield =
+
+# min-delta [float]: minimum delta greek.
+min-delta =
+
+# max-delta [float]: maximum delta greek.
+max-delta =
+
+# min-gamma [float]: minimum gamma greek.
+min-gamma =
+
+# max-gamma [float]: maximum gamma greek.
+max-gamma =
+
+# min-theta [float]: minimum theta greek.
+min-theta =
+
+# max-theta [float]: maximum theta greek.
+max-theta =
+
+# min-vega [float]: minimum vega greek.
+min-vega =
+
+# max-vega [float]: maximum vega greek.
+max-vega =
+
+#min-iv [float]: minimum implied volatility.
+min-iv =
+
+#max-iv [float]: maximum implied volatility.
+max-iv =
+
+#min-oi [float]: minimum open interest.
+min-oi =
+
+#max-oi[float]: maximum open interest
+max-oi =
+
+#min-volume [float]: minimum volume.
+min-volume =
+
+#max-volume [float]: maximum volume.
+max-volume =
+
+#min-voi [float]: minimum volume / oi ratio.
+min-voi =
+
+#max-voi [float]: maximum volume / oi ratio.
+max-voi =
+
+# min-cap [float]: minimum market capitalization (in billions USD).
+min-cap =
+
+# max-cap [float]: maximum market capitalization (in billions USD).
+max-cap =
+
+# order-by [default: e_desc]: how to order results, possible values:
+#     e_desc, e_asc: expiration, descending / ascending.
+#     iv_desc, iv_asc: implied volatility, descending / ascending.
+#     lp_desc, lp_asc: lastprice, descending / ascending.
+#     md_desc, md_asc: current stock price, descending / ascending.
+order-by =
+
+# limit [int]: number of results (max 50).
+limit =
+
+# active [true|false]: if set to true, restricts to options for which volume, open interest, ask, and bid are all &gt; 0.
+active =
+
+# [float|int] deviation from the 20 day average
+min-price-20d =
+max-price-20d =
+min-volume-20d =
+max-volume-20d =
+min-iv-20d =
+max-iv-20d =
+min-delta-20d =
+max-delta-20d =
+min-gamma-20d =
+max-gamma-20d =
+min-theta-20d =
+max-theta-20d =
+min-vega-20d =
+max-vega-20d =
+min-rho-20d =
+max-rho-20d =
+
+# [float|int] deviation from the 100 day average
+min-price-100d =
+max-price-100d =
+min-volume-100d =
+max-volume-100d =
+min-iv-100d =
+max-iv-100d =
+min-delta-100d =
+max-delta-100d =
+min-gamma-100d =
+max-gamma-100d =
+min-theta-100d =
+max-theta-100d =
+min-vega-100d =
+max-vega-100d =
+min-rho-100d =
+max-rho-100d =
+</code></pre><h2> How to use the Options Screener</h2>
+<p>The commands <code>set</code> and <code>view</code> will show the filters present. The command reads the contents of the preset file every time the command is called, which makes changes fast and easy; simply open it in a text editor.</p>
+<pre><code>(🦋) /stocks/options/screen/ $ set TSLA_Calls_90Days
+
+(🦋) /stocks/options/screen/ $ view TSLA_Calls_90Days
+
+ - FILTER -
+tickers    : &quot;TSLA&quot;
+exclude    : false
+itm        : true
+otm        : true
+min-exp    : 3
+max-exp    : 90
+calls      : true
+puts       : true
+stock      : true
+etf        : true
+min-delta  : 0.30
+max-delta  : 0.65
+order-by   : &quot;oi_desc&quot;
+active     : true
+</code></pre><p>The columns for the output of the screener have been abbreviated to be:</p>
+<pre><code>CS: Contract Symbol; S: Symbol, T: Option Type; Str: Strike; Exp v: Expiration; IV: Implied Volatility; LP: Last Price; B: Bid; A: Ask; V: Volume; OI: Open Interest; Y: Yield; MY: Monthly Yield; SMP: Regular Market Price; SMDL: Regular Market Day Low; SMDH: Regular Market Day High; LU: Last Trade Date; LC: Last Crawl; ITM: In The Money; PC: Price Change; PB: Price-to-book.
+</code></pre><p>The default number of results returned is 10, add the <code>-l</code> flag with the number of desired results to change.</p>
+<p><img src="https://user-images.githubusercontent.com/85772166/172467821-9f548d96-c97a-4933-86b4-7eb0946bc6db.png" alt="Options Screener preset: Highest OI"  /></p>
+<h2>Examples</h2>
+<p>Using the preset, &ldquo;3DTE_Degenerate&rdquo;:</p>
+<p><img src="https://user-images.githubusercontent.com/85772166/172467959-9f4d767e-bb60-4f80-b023-610cfa7b9694.png" alt="Options Screener preset: 3DTE_Degenerate"  /></p>
+<p>Using the preset, &ldquo;SPY_ATM_POOTS&rdquo;:</p>
+<p><img src="https://user-images.githubusercontent.com/85772166/172468094-834ae8a6-4c0e-4ccf-a88f-121741d49155.png" alt="Options Screener preset: SPY_ATM_POOTS"  /></p>
+<p>The video below shows the process for building an options screener preset. Any simple text editor will work to make changes. Build a preset and share it with OpenBB on social media!</p>
+<p><img src="https://user-images.githubusercontent.com/85772166/172468268-fc839bf1-54f1-4e91-b1e2-82c8e711dea4.gif" alt="Options Template Screener Demo"  /></p>
+<p>Back to: <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/options/" target="_blank">Introduction To Options Guide</a></p>
+
     </article>
  
 
@@ -34055,127 +34040,6 @@ SMP: Regular Market Price; SMDL: Regular Market Day Low; SMDH: Regular Market Da
         
 
         
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-            
-    
-    
-
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-
         
     
         
