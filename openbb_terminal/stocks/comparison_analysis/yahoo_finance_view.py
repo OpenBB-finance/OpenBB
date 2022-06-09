@@ -67,7 +67,6 @@ def display_historical(
         External axes (1 axis is expected in the list), by default None
 
     """
-    console.print(candle_type)
     df_similar = yahoo_finance_model.get_historical(similar_tickers, start, candle_type)
     df_similar = df_similar[similar_tickers]
 
