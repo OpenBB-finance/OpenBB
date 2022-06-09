@@ -293,7 +293,7 @@ class CryptoController(CryptoBaseController):
 
         if ns_parser:
             finbrain_crypto_view.display_crypto_sentiment_analysis(
-                coin=ns_parser.symbol, export=ns_parser.export
+                coin=ns_parser.coin, export=ns_parser.export
             )
 
     @log_start_end(log=logger)
