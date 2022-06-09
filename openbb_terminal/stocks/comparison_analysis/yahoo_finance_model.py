@@ -53,8 +53,9 @@ def get_historical(
     
     use_returns = False
     if candle_type.lower() == "r":
+        # Calculate returns based off of adjusted close
         use_returns = True
-        candle_type = "c"
+        candle_type = "a"
 
     from openbb_terminal.rich_config import console
     from openbb_terminal.helper_funcs import (
@@ -77,21 +78,11 @@ def get_historical(
     )
 
     if use_returns:
-        console.print("Using returns")
-        print_rich_table(
-                returnable,
-                headers=[x.title().upper() for x in returnable.columns],
-                show_index=True,
-        )
-
+        # To calculate the period to period return,
+        # shift the dataframe by one row, then divide it into
+        # the other, then subtract 1 to get a percentage, which is the return.
         shifted = returnable.shift(1)[1:]
         returnable = returnable.div(shifted)-1
-
-        print_rich_table(
-                returnable,
-                headers=[x.title().upper() for x in returnable.columns],
-                show_index=True,
-        )
 
     return returnable
 
