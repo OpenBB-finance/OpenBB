@@ -57,14 +57,6 @@ def get_historical(
         use_returns = True
         candle_type = "a"
 
-    from openbb_terminal.rich_config import console
-    from openbb_terminal.helper_funcs import (
-        export_data,
-        plot_autoscale,
-        is_valid_axes_count,
-        print_rich_table,
-    )
-
     # To avoid having to recursively append, just do a single yfinance call.  This will give dataframe
     # where all tickers are columns.
     similar_tickers_dataframe = yf.download(
