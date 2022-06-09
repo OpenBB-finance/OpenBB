@@ -18,7 +18,9 @@ from prompt_toolkit.styles import Style
 from prompt_toolkit.formatted_text import HTML
 
 from openbb_terminal.core.config.constants import REPO_DIR, ENV_FILE, USER_HOME
-from openbb_terminal.core.log.generation.path_tracking_file_handler import PathTrackingFileHandler
+from openbb_terminal.core.log.generation.path_tracking_file_handler import (
+    PathTrackingFileHandler,
+)
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.helper_funcs import (
     get_flair,
@@ -547,7 +549,7 @@ def insert_start_slash(cmds: List[str]) -> List[str]:
 
 
 def do_rollover():
-    """ RollOver the log file."""
+    """RollOver the log file."""
 
     for handler in logging.getLogger().handlers:
         if isinstance(handler, PathTrackingFileHandler):
