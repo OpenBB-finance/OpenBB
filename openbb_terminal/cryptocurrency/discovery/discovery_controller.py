@@ -8,6 +8,7 @@ from typing import List
 
 from prompt_toolkit.completion import NestedCompleter
 
+
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.cryptocurrency.discovery import (
     coinmarketcap_model,
@@ -358,7 +359,7 @@ class DiscoveryController(BaseController):
             dest="sortby",
             nargs="+",
             help="Sort by given column. Default: Market Cap Rank",
-            default="Market Cap Rank",
+            default=["Market Cap [$]"],
         )
 
         ns_parser = parse_known_args_and_warn(
@@ -412,7 +413,7 @@ class DiscoveryController(BaseController):
             dest="sortby",
             nargs="+",
             help="Sort by given column. Default: Market Cap Rank",
-            default="Market Cap Rank",
+            default=["Market Cap [$]"],
         )
 
         ns_parser = parse_known_args_and_warn(

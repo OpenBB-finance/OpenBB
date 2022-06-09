@@ -113,7 +113,7 @@ def display_gainers(
         if sortby in COINS_COLUMNS:
             df = df[
                 (df["Volume [$]"].notna()) & (df["Market Cap [$]"].notna())
-            ].sort_values(by=sortby, ascending=False)
+            ].sort_values(by=sortby, ascending=True)
         for col in ["Volume [$]", "Market Cap [$]"]:
             if col in df.columns:
                 df[col] = df[col].apply(lambda x: lambda_very_long_number_formatter(x))
@@ -156,7 +156,7 @@ def display_losers(
         if sortby in COINS_COLUMNS:
             df = df[
                 (df["Volume [$]"].notna()) & (df["Market Cap [$]"].notna())
-            ].sort_values(by=sortby, ascending=False)
+            ].sort_values(by=sortby, ascending=True)
         for col in ["Volume [$]", "Market Cap [$]"]:
             if col in df.columns:
                 df[col] = df[col].apply(lambda x: lambda_very_long_number_formatter(x))
