@@ -11,6 +11,8 @@ optional arguments:
   -s START, --start START
                         The starting date (format YYYY-MM-DD) of the stock (default: 2021-02-14)
   -h, --help            show this help message (default: False)
+  --display-full-matrix Display all values in the matrix, rather than masking off half (default: False)
+  --raw                 show the raw output as a table in the terminal window (default: False)
 ```
 
 ![hcorr](https://user-images.githubusercontent.com/46355364/154073186-45336f5f-85e1-4cb9-9307-9694295b1f80.png)
