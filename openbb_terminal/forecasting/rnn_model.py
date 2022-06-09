@@ -1,3 +1,4 @@
+# pylint: disable=too-many-arguments
 """RNN Model"""
 __docformat__ = "numpy"
 
@@ -16,9 +17,8 @@ from darts.models import RNNModel
 from darts.dataprocessing.transformers import MissingValuesFiller, Scaler
 from darts.metrics import mape
 from pytorch_lightning.callbacks.early_stopping import EarlyStopping
-from torch import batch_norm_backward_elemt
-
 from openbb_terminal.decorators import log_start_end
+
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -29,7 +29,8 @@ def get_rnn_data(
     data: Union[pd.Series, pd.DataFrame],
     n_predict: int = 5,
     target_col: str = "close",
-    start_window: float = 0.85,
+    past_covariates: str = None,
+    train_split: float = 0.85,
     forecast_horizon: int = 3,
     model_type: str = "LSTM",
     hidden_dim: int = 20,
@@ -82,6 +83,7 @@ def get_rnn_data(
     # Export model / save
     # load trained model
 
+    # Target Timeseries
     scaled_ticker_series = scaler.fit_transform(
         filler.transform(
             TimeSeries.from_dataframe(
@@ -94,8 +96,44 @@ def get_rnn_data(
         )
     ).astype(np.float32)
 
-    scaled_train, scaled_val = scaled_ticker_series.split_before(float(start_window))
+    scaled_train, scaled_val = scaled_ticker_series.split_before(float(train_split))
 
+    # --------------------------------------------------
+    # Covariates
+    # TODO make this a for loop for multiple covariates
+    scaled_covariates_whole = None
+    covariates_scalers = []
+
+    # split covariates by name filering out commas
+    target_covariates_names = past_covariates.split(",")
+
+    for column in target_covariates_names:
+        console.print(f"[green]Covariate: {column}[/green]")
+        _temp_scaler = Scaler()
+        covariates_scalers.append(_temp_scaler)
+        _temp_new_scaled_covariate = _temp_scaler.fit_transform(
+            filler.transform(
+                TimeSeries.from_dataframe(
+                    data,
+                    time_col="date",
+                    value_cols=[column],
+                    freq="B",
+                    fill_missing_dates=True,
+                )
+            )
+        ).astype(np.float32)
+
+        # continually stack covariates based on column names
+        scaled_covariates_whole = scaled_covariates_whole.stack(
+            _temp_new_scaled_covariate
+        )
+
+    # Split the full scale covariate to train and val
+    scaled_covariate_train, scaled_covariate_val = scaled_covariates_whole.split_before(
+        float(train_split)
+    )
+
+    # --------------------------------------------------
     # Early Stopping
     my_stopper = EarlyStopping(
         monitor="val_loss",
@@ -122,21 +160,27 @@ def get_rnn_data(
     )
 
     # fit model on train series for historical forecasting
-    rnn_model.fit(series=scaled_train, val_series=scaled_val)
+    rnn_model.fit(
+        series=scaled_train,
+        val_series=scaled_val,
+        past_covariates=scaled_covariate_train,
+        val_past_covariates=scaled_covariate_val,
+    )
     best_model = RNNModel.load_from_checkpoint(model_name="rnn_model", best=True)
 
     # Showing historical backtesting without retraining model (too slow)
     scaled_historical_fcast = rnn_model.historical_forecasts(
         scaled_ticker_series,
-        start=float(start_window),
+        start=float(train_split),
         forecast_horizon=int(forecast_horizon),
-        retrain=False,  # MUST TRAIN BEFORE HISTORICAL FCAST
+        retrain=False,
         verbose=True,
     )
 
     # Predict N timesteps in the future
     scaled_prediction = best_model.predict(
-        series=scaled_ticker_series, n=int(n_predict)
+        series=scaled_ticker_series,
+        n=int(n_predict, past_covariates=scaled_covariates_whole),
     )
 
     precision = mape(

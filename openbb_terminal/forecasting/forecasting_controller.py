@@ -546,7 +546,7 @@ class ForecastingController(BaseController):
             """,
         )
         parser.add_argument(
-            "--td",
+            "--target_dataset",
             type=str,
             choices=self.files,
             dest="target_dataset",
@@ -562,18 +562,27 @@ class ForecastingController(BaseController):
             help="prediction days.",
         )
         parser.add_argument(
-            "--tc",
+            "--target_forecast_column",
             action="store",
             dest="target_col",
             default="close",
+            type=str,
             help="target column.",
         )
         parser.add_argument(
-            "-w",
-            "--window",
+            "--past_covariates",
             action="store",
-            dest="start_window",
+            dest="past_covariates",
+            default="",
+            type=str,
+            help="Past covariates(columns/features) in same dataset that may effect price. Comma seperated.",
+        )
+        parser.add_argument(
+            "--train_split",
+            action="store",
+            dest="train_split",
             default=0.85,
+            type=check_positive_float,
             help="Start point for rolling training and forecast window. 0.0-1.0",
         )
         parser.add_argument(
@@ -700,7 +709,8 @@ class ForecastingController(BaseController):
                 ticker_name=ns_parser.target_dataset,
                 n_predict=ns_parser.n_days,
                 target_col=ns_parser.target_col,
-                start_window=ns_parser.start_window,
+                past_covariates=ns_parser.past_covariates,
+                train_split=ns_parser.train_split,
                 forecast_horizon=ns_parser.forecast_horizon,
                 model_type=ns_parser.model_type,
                 hidden_dim=ns_parser.hidden_dim,
