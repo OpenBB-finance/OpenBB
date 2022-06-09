@@ -64,7 +64,9 @@ def get_management(ticker: str) -> pd.DataFrame:
         del found_h2s[ticker_management_to_be_deleted]
 
     if found_h2s.get("Management") is None:
-        console.print(f"No management information in Business Insider for {ticker}")
+        console.print(
+            f"[red]No management information in Business Insider for {ticker}[/red]"
+        )
         console.print("")
         return pd.DataFrame()
 
