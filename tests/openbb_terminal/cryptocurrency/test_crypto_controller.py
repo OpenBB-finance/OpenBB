@@ -306,18 +306,6 @@ def test_call_func(
 ):
     path_controller = "openbb_terminal.cryptocurrency.crypto_controller"
 
-    # MOCK SHOW_AVAILABLE_PAIRS_FOR_GIVEN_SYMBOL
-    mocker.patch(
-        target=f"{path_controller}.binance_model.show_available_pairs_for_given_symbol",
-        return_value=BINANCE_SHOW_AVAILABLE_PAIRS_OF_GIVEN_SYMBOL,
-    )
-
-    # MOCK SHOW_AVAILABLE_PAIRS_FOR_GIVEN_SYMBOL
-    mocker.patch(
-        target=f"{path_controller}.coinbase_model.show_available_pairs_for_given_symbol",
-        return_value=COINBASE_SHOW_AVAILABLE_PAIRS_OF_GIVEN_SYMBOL,
-    )
-
     if mocked_func:
         mock = mocker.Mock()
         mocker.patch(
