@@ -566,9 +566,9 @@ class ComparisonAnalysisController(BaseController):
             action="store",
             dest="type_candle",
             type=str,
-            choices=["o", "h", "l", "c", "a"],
+            choices=["o", "h", "l", "c", "a", "r"],
             default="a",  # in case it's adjusted close
-            help="Candle data to use: o-open, h-high, l-low, c-close, a-adjusted close.",
+            help="Candle data to use: o-open, h-high, l-low, c-close, a-adjusted close, r-returns.",
         )
         parser.add_argument(
             "-s",
