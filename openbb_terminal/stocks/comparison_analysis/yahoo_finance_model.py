@@ -50,16 +50,48 @@ def get_historical(
     pd.DataFrame
         Dataframe containing candle type variable for each ticker
     """
+    
+    use_returns = False
+    if candle_type.lower() == "r":
+        use_returns = True
+        candle_type = "C"
+
+    from openbb_terminal.rich_config import console
+    from openbb_terminal.helper_funcs import (
+    export_data,
+    plot_autoscale,
+    is_valid_axes_count,
+    print_rich_table,
+)
+
+    console.print(d_candle_types)
     # To avoid having to recursively append, just do a single yfinance call.  This will give dataframe
     # where all tickers are columns.
     similar_tickers_dataframe = yf.download(
         similar_tickers, start=start, progress=False, threads=False
     )[d_candle_types[candle_type]]
-    return (
+
+    returnable = (
         similar_tickers_dataframe
         if similar_tickers_dataframe.empty
         else similar_tickers_dataframe[similar_tickers]
     )
+
+    print_rich_table(
+            returnable,
+            headers=[x.title().upper() for x in returnable.columns],
+            show_index=True,
+    )
+
+    shifted = returnable.shift(1)[1:]
+    returnable = returnable.div(shifted)-1
+
+    print_rich_table(
+            returnable,
+            headers=[x.title().upper() for x in returnable.columns],
+            show_index=True,
+    )
+    return returnable
 
 
 @log_start_end(log=logger)

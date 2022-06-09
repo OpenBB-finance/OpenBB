@@ -184,7 +184,7 @@ def display_correlation(
     start : str, optional
         Start date of comparison, by default 1 year ago
     candle_type : str, optional
-        OHLCA column to use, by default "a" for Adjusted Close
+        OHLCA column to use for candles or R for returns, by default "a" for Adjusted Close
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     export : str, optional
@@ -193,6 +193,7 @@ def display_correlation(
         Optionally display all values in the matrix, rather than masking off half, by default False
 
     """
+    
     df_similar = yahoo_finance_model.get_historical(similar_tickers, start, candle_type)
     df_similar = df_similar[similar_tickers]
 
