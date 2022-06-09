@@ -36,6 +36,7 @@ d_candle_types = {
     "c": "Close",
     "a": "Adj Close",
     "v": "Volume",
+    "r": "Returns"
 }
 
 
@@ -57,7 +58,7 @@ def display_historical(
     start : str, optional
         Start date of comparison, by default 1 year ago
     candle_type : str, optional
-        OHLCA column to use, by default "a" for Adjusted Close
+        OHLCA column to use or R to use daily returns calculated from Adjusted Close, by default "a" for Adjusted Close
     normalize : bool, optional
         Boolean to normalize all stock prices using MinMax defaults True
     export : str, optional
@@ -66,6 +67,7 @@ def display_historical(
         External axes (1 axis is expected in the list), by default None
 
     """
+    console.print(candle_type)
     df_similar = yahoo_finance_model.get_historical(similar_tickers, start, candle_type)
     df_similar = df_similar[similar_tickers]
 
