@@ -306,6 +306,12 @@ def test_call_func(
 ):
     path_controller = "openbb_terminal.cryptocurrency.crypto_controller"
 
+    # MOCK GET_COINGECKO_ID
+    mocker.patch(
+        target=f"{path_controller}.cryptocurrency_helpers.get_coingecko_id",
+        return_value=True,
+    )
+
     if mocked_func:
         mock = mocker.Mock()
         mocker.patch(
