@@ -54,12 +54,9 @@ class SettingsController(BaseController):
 
     all_timezones = [tz.replace("/", "_") for tz in pytz.all_timezones]
 
-    languages_i18n = os.path.join(
-        os.path.dirname(os.path.abspath(os.path.dirname(__file__))), "i18n"
-    )
     languages_available = [
         lang.strip(".yml")
-        for lang in os.listdir(languages_i18n)
+        for lang in os.listdir(obbff.i18n_dict_location)
         if lang.endswith(".yml")
     ]
 

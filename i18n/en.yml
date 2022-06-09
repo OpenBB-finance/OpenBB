@@ -43,6 +43,7 @@ en:
   defined, test unsuccessful: defined, test unsuccessful
   featflags/_info_: Feature flags through environment variables
   featflags/logcollection: allow logs to be sent to help OpenBB team
+  featflags/retryload: retry misspelled commands with load first
   featflags/tab: use tabulate to print dataframes
   featflags/cls: clear console after each command
   featflags/color: use coloring features
