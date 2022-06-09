@@ -36,7 +36,7 @@ d_candle_types = {
     "c": "Close",
     "a": "Adj Close",
     "v": "Volume",
-    "r": "Returns"
+    "r": "Returns",
 }
 
 
@@ -194,7 +194,7 @@ def display_correlation(
         Optionally display all values in the matrix, rather than masking off half, by default False
 
     """
-    
+
     df_similar = yahoo_finance_model.get_historical(similar_tickers, start, candle_type)
     df_similar = df_similar[similar_tickers]
 

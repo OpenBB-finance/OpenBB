@@ -50,7 +50,7 @@ def get_historical(
     pd.DataFrame
         Dataframe containing candle type variable for each ticker
     """
-    
+
     use_returns = False
     if candle_type.lower() == "r":
         # Calculate returns based off of adjusted close
@@ -74,7 +74,7 @@ def get_historical(
         # shift the dataframe by one row, then divide it into
         # the other, then subtract 1 to get a percentage, which is the return.
         shifted = returnable.shift(1)[1:]
-        returnable = returnable.div(shifted)-1
+        returnable = returnable.div(shifted) - 1
 
     return returnable
 
