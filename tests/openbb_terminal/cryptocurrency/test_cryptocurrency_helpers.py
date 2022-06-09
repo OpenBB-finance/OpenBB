@@ -9,8 +9,6 @@ from openbb_terminal.cryptocurrency.cryptocurrency_helpers import (
     _load_coin_map,
     plot_chart,
     load,
-    load_ta_data,
-    prepare_all_coins_df,
     load_coins_list,
     _create_closest_match_df,
 )
@@ -55,34 +53,14 @@ def test_create_closet_match_df(recorder):
 
 
 @pytest.mark.parametrize(
-    "coin, interval, source",
+    "coin, vs",
     [
-        ("badcoin", "1day", "cg"),
-        ("BTC", "1hour", "cg"),
-        ("BTC", "1hour", "cp"),
-        ("BTC", "1hour", "cp"),
+        ("btc", "usd"),
     ],
 )
-def test_load_none(coin, interval, source):
-    assert load("BTC", vs=coin, interval=interval, source=source) == (
-        None,
-        None,
-        None,
-        None,
-        None,
-        None,
-    )
-
-
-@pytest.mark.parametrize(
-    "coin, load_ta", [("BTC", True), ("ZTH", False), ("BTC", False)]
-)
-def test_load_cg(coin, load_ta):
-    load(coin, source="cg", should_load_ta_data=load_ta)
-
-
-def test_load_cg_invalid():
-    load("ZTH", source="cg")
+def test_load_none(coin, vs):
+    df = load(symbol_search=coin, vs=vs)
+    assert df is not None
 
 
 @pytest.fixture(name="get_bitcoin")
@@ -99,52 +77,49 @@ def fixture_get_bitcoin(mocker):
     ) as f:
         sample_return = json.load(f)
     mock_load.return_value = sample_return
-    coin, _, symbol, _, _, _ = load(coin="BTC", source="cp")
-    return coin, symbol
+    df = load("BTC", vs="usd")
+    return df
 
 
 # pylint: disable=R0904
 
 
-@pytest.mark.vcr
-def test_coin_api_load(get_bitcoin):
-    """
-    Mock load function through get_coin_market_chart_by_id.
-    Mock returns a dict saved as .json
-    """
-    coin, _ = get_bitcoin
-
-    assert coin == "btc-bitcoin"
+# @pytest.mark.vcr
+# def test_coin_api_load(get_bitcoin):
+#    """
+#    Mock load function through get_coin_market_chart_by_id.
+#    Mock returns a dict saved as .json
+#    """
+#    df = get_bitcoin
 
 
-@pytest.mark.vcr
-def test_coin_api_load_df_for_ta(get_bitcoin, mocker):
-    """
-    Mock load function through get_coin_market_chart_by_id.
-    Mock returns a dict saved as .json
-    """
-    mock_load = mocker.patch(
-        base
-        + "due_diligence.pycoingecko_model.CoinGeckoAPI.get_coin_market_chart_by_id"
-    )
-    _, symbol = get_bitcoin
-    coin_map_df = prepare_all_coins_df().set_index("Symbol").loc[symbol.upper()].iloc[0]
+# @pytest.mark.vcr
+# def test_coin_api_load_df_for_ta(get_bitcoin, mocker):
+#    """
+#    Mock load function through get_coin_market_chart_by_id.
+#    Mock returns a dict saved as .json
+#    """
+#    mock_load = mocker.patch(
+#        base
+#        + "due_diligence.pycoingecko_model.CoinGeckoAPI.get_coin_market_chart_by_id"
+#    )
+#    df = get_bitcoin
 
-    with open(
-        "tests/openbb_terminal/cryptocurrency/json/test_cryptocurrency_helpers/btc_usd_test_data.json",
-        encoding="utf8",
-    ) as f:
-        sample_return = json.load(f)
-
-    mock_load.return_value = sample_return
-    mock_return, vs = load_ta_data(
-        coin_map_df=coin_map_df,
-        source="cg",
-        currency="usd",
-        days=30,
-    )
-    assert mock_return.shape == (31, 4)
-    assert vs == "usd"
+# with open(
+#    "tests/openbb_terminal/cryptocurrency/json/test_cryptocurrency_helpers/btc_usd_test_data.json",
+#    encoding="utf8",
+# ) as f:
+#    sample_return = json.load(f)
+#
+#    mock_load.return_value = sample_return
+#    mock_return, vs = load_ta_data(
+#        coin_map_df=coin_map_df,
+#        source="cg",
+#        currency="usd",
+#        days=30,
+#    )
+#    assert mock_return.shape == (31, 4)
+#   assert vs == "usd"
 
 
 @pytest.mark.record_stdout
@@ -162,7 +137,11 @@ def test_get_coins():
 @pytest.mark.record_stdout
 def test_coin_chart(get_bitcoin):
     # pylint: disable=unused-argument
-    _, symbol = get_bitcoin
-    coin_map_df = prepare_all_coins_df().set_index("Symbol").loc[symbol.upper()].iloc[0]
+    df = get_bitcoin
+    # coin_map_df = prepare_all_coins_df().set_index("Symbol").loc[symbol.upper()].iloc[0]
 
-    plot_chart(coin_map_df=coin_map_df, source="cg", currency="usd", days=30)
+    plot_chart(
+        "btc",
+        df,
+        "usd",
+    )

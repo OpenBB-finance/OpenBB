@@ -496,7 +496,7 @@ en:
   stocks/pred/mc: Monte-Carlo simulations
   crypto/load: load a specific cryptocurrency for analysis
   crypto/find: find coins
-  crypto/_coin: Coin
+  crypto/_symbol: Coin
   crypto/_source: Source
   crypto/headlines: crypto sentiment from 15+ major news headlines
   crypto/chart: view a candle chart for a specific cryptocurrency
@@ -610,7 +610,7 @@ en:
   crypto/dd/_roadmap_: Roadmap and News
   crypto/dd/_activity_: Activity and Community
   crypto/dd/load: load a specific cryptocurrency for analysis
-  crypto/dd/_coin: Coin
+  crypto/dd/_symbol: Coin
   crypto/dd/_source: Source
   crypto/dd/info: basic information about loaded coin
   crypto/dd/market: market stats about loaded coin
