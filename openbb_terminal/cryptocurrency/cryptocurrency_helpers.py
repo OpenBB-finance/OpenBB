@@ -290,20 +290,18 @@ def get_coinpaprika_id(symbol: str):
 def load(
     symbol_search: str,
     vs: str,
-    start: datetime = (datetime.now() - timedelta(days=365)),
+    days: int = 365,
 ):
     coingecko_id = get_coingecko_id(symbol_search)
     if not coingecko_id:
         return pd.DataFrame()
 
-    delta = (datetime.now() - start).days
-
-    df = pycoingecko_model.get_ohlc(coingecko_id, vs, delta)
-
+    df = pycoingecko_model.get_ohlc(coingecko_id, vs, days)
+    start_date = datetime.now() - timedelta(days=days)
     df_coin = yf.download(
         f"{symbol_search}-{vs}",
         end=datetime.now(),
-        start=datetime.now() - timedelta(days=delta),
+        start=start_date,
         progress=False,
         interval="1d",
     ).sort_index(ascending=False)
@@ -314,7 +312,7 @@ def load(
     if not df.empty:
         console.print(
             f"\nLoading Daily {symbol_search.upper()} crypto "
-            f"with starting period {start.strftime('%Y-%m-%d')} for analysis.",
+            f"with starting period {start_date.strftime('%Y-%m-%d')} for analysis.",
         )
     return df
 

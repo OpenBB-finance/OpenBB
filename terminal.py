@@ -73,7 +73,11 @@ class TerminalController(BaseController):
 
     PATH = "/"
     ROUTINE_CHOICES = {
-        file: None for file in os.listdir("routines") if file.endswith(".openbb")
+        file: None
+        for file in os.listdir(
+            os.path.join(os.path.abspath(os.path.dirname(__file__)), "routines")
+        )
+        if file.endswith(".openbb")
     }
 
     def __init__(self, jobs_cmds: List[str] = None):
@@ -450,7 +454,12 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
                     if obbff.TOOLBAR_HINT:
                         random_routine = [
                             file
-                            for file in os.listdir("routines")
+                            for file in os.listdir(
+                                os.path.join(
+                                    os.path.abspath(os.path.dirname(__file__)),
+                                    "routines",
+                                )
+                            )
                             if file.endswith(".openbb")
                         ]
                         an_input = session.prompt(
@@ -458,7 +467,7 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
                             completer=t_controller.completer,
                             search_ignore_case=True,
                             bottom_toolbar=HTML(
-                                "Execute routine scripts to automate your research workflow. "
+                                "Execute routine scripts to automate your research workflow. "  # nosec
                                 f"E.g.: $ exe {random_routine[random.randint(0, len(random_routine) - 1)]}"
                             ),
                             style=Style.from_dict(

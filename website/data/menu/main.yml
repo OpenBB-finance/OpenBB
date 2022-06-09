@@ -404,8 +404,8 @@ main:
           - name: options
             ref: "/terminal/stocks/options"
             sub:
-              - name: scr
-                ref: "/terminal/stocks/options/scr"
+              - name: screen
+                ref: "/terminal/stocks/options/screen"
               - name: unu
                 ref: "/terminal/stocks/options/unu"
               - name: calc
@@ -453,19 +453,6 @@ main:
                     ref: "/terminal/stocks/options/hedge/list"
                   - name: rmv
                     ref: "/terminal/stocks/options/hedge/rmv"
-              - name: payoff
-                ref: "/terminal/stocks/options/payoff"
-                sub:
-                  - name: add
-                    ref: "/terminal/stocks/options/payoff/add"
-                  - name: sop
-                    ref: "/terminal/stocks/options/payoff/sop"
-                  - name: pick
-                    ref: "/terminal/stocks/options/payoff/pick"
-                  - name: plot
-                    ref: "/terminal/stocks/options/payoff/plot"
-                  - name: rmv
-                    ref: "/terminal/stocks/options/payoff/rmv"
               - name: pricing
                 ref: "/terminal/stocks/options/pricing"
                 sub:
