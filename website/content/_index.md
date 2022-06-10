@@ -95,9 +95,8 @@ or visit our <a href="https://openbb.co/contact" target="_blank">contact page</a
 
 The process starts off by downloading the installer, see below for how to download the most recent release:
 
-1. Go to <a href="https://github.com/OpenBB-finance/OpenBBTerminal/releases" target="_blank">the following link</a>
-2. Click on the `Latest` release and scroll down
-3. Click on the `.exe` file, this downloads the installation program
+1. Go to [the openbb.co website](https://www.openbb.co/products/terminal#get-started)
+2. Click on the `Download` button in the Windown Installer section
 
 When the file is downloaded, use the following steps to run the OpenBB Terminal:
 
@@ -132,11 +131,10 @@ The first time this takes a bit longer to load, this can take up to a few minute
 
 The process starts off by downloading the installer, see below for how to download the most recent release:
 
-1. Go to <a href="https://github.com/OpenBB-finance/OpenBBTerminal/releases" target="_blank">the following link</a>
-2. Click on the `Latest` release and scroll down
-3. Click on the `.dmg` file, this downloads the installation program
+1. Go to [the openbb.co website](https://www.openbb.co/products/terminal#get-started)
+2. Click on the `Download` button in the macOS Installer section
 
-When the file is downloaded, use the following steps to run the OpenBB Terminal:
+When the DMG file is downloaded, use the following steps to run the OpenBB Terminal:
 
 {{< columns >}}
 
