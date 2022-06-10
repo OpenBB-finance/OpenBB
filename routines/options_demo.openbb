@@ -4,7 +4,7 @@
 stocks
 options
 load SPY
-exp 1
+exp 0
 
 # Show the chain's info
 info
@@ -29,8 +29,8 @@ plot -p -c smile
 # Get chains and greeks data and export to spreadsheet.
 
 chains --export xlsx
-greeks -a -d 1.4 -r 1 --export xlsx
-greeks -p -a -d 1.4 -r 1 --export xlsx
+greeks -a -d 1.4 -r 1
+greeks -p -a -d 1.4 -r 1
 
 # Binomial pricing for $400 strike put and call.
 binom -s 400
