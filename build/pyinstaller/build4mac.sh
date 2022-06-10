@@ -18,7 +18,6 @@ mkdir DMG
 
 # Copy relevant artifacts to the packaging folder
 cp -r build/pyinstaller/macOS_package_assets/* DMG/
-mv dist/OpenBBTerminal DMG/"$DISK_IMAGE_NAME"/OpenBB
 
 # Copy launcher and other artifacts to the DMG
 hdiutil create \
@@ -27,6 +26,7 @@ hdiutil create \
         -ov \
         -format UDZO \
         "$DISK_IMAGE_NAME".dmg
+mv dist/OpenBBTerminal DMG/"$DISK_IMAGE_NAME"/.OpenBB
 
 # Clean Up artifacts from this build
 rm -rf build/terminal && rm -rf dist && rm -rf DMG
