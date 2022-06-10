@@ -145,17 +145,16 @@ When the file is downloaded, use the following steps to run the OpenBB Terminal:
 Open the `OpenBB Terminal.dmg` file that got saved to your "Downloads" folder and drag the "OpenBB Terminal" folder into "Applications" folder. A link to the `Applications` folder is presented on the screen.
 Note that this should take some time as it is extracting the files from the .dmg file.
 
-<p align="center"><img width=50% alt="dmg_contents" src="https://user-images.githubusercontent.com/11668535/173016155-16e343d1-eecf-4c27-b9e5-bca9f82e1908.png"></p>
+<p align="center"><img width=100% alt="dmg_contents" src="https://user-images.githubusercontent.com/11668535/173016155-16e343d1-eecf-4c27-b9e5-bca9f82e1908.png"></p>
 
 <--->
 
 **Step 2: Open the `OpenBB Terminal` app in the folder that you have just copied to your `Applications`.**
 
-During first launch if you get a message saying that the application can't be launched - Right-Click the app and select `Open`. You will see a message saying that macOS was not able to check whether the application contains malicious software. Click `Open` to proceed.
+During first launch if you get a message saying that the application can't be launched, do the following:
+Right-Click the app and select `Open`. You will see a message saying that macOS was not able to check whether the application contains malicious software. Click `Open` to proceed.
 
-<p align="center"><img width="50%" alt="image" src="https://user-images.githubusercontent.com/11668535/173017024-8908e867-8aa4-4454-bcba-69ae1f9adeb0.png">
-
-</p>
+<p align="center"><img width=100% alt="image" src="https://user-images.githubusercontent.com/11668535/173019360-987adbac-db8f-40ed-9efa-57c491e4ce11.png"></p>
 
 {{< /columns >}}
 
