@@ -554,7 +554,7 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
             choices=["yf", "av", "iex", "polygon"]
             if "-i" not in other_args or "--interval" not in other_args
             else ["yf", "polygon"],
-            default="yf",
+            default=obbff.PREFERRED_DATA_SOURCE,
             help="Source of historical data.",
         )
         parser.add_argument(

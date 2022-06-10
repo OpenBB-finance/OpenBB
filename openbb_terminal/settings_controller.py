@@ -126,7 +126,7 @@ class SettingsController(BaseController):
         mt.add_raw("\n")
         mt.add_cmd("preferred_data_source")
         mt.add_raw("\n")
-        mt.add_param("_preferred_data_source", obbff.PREFERRED_DATA_SOURCES)
+        mt.add_param("_preferred_data_source", obbff.PREFERRED_DATA_SOURCE)
         mt.add_raw("\n")
 
         console.print(text=mt.menu_text, menu="Settings")
@@ -152,7 +152,7 @@ class SettingsController(BaseController):
             "-v",
             "--value",
             type=str,
-            choices=["YahooFinance"],
+            choices=["yf", "av", "iex", "polygon"],
             dest="value",
             help="value",
         )
@@ -160,8 +160,8 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            obbff.PREFERRED_DATA_SOURCES = ns_parser.value
-            set_key(obbff.ENV_FILE, "OPENBB_PREFERRED_DATA_SOURCES", str(ns_parser.value))
+            obbff.PREFERRED_DATA_SOURCE = ns_parser.value
+            set_key(obbff.ENV_FILE, "OPENBB_PREFERRED_DATA_SOURCE", str(ns_parser.value))
             console.print("")
         
 
