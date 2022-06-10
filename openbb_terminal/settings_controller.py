@@ -49,6 +49,7 @@ class SettingsController(BaseController):
         "lang",
         "tz",
         "export",
+        "preferred_data_source"
     ]
     PATH = "/settings/"
 
@@ -122,6 +123,11 @@ class SettingsController(BaseController):
         mt.add_cmd("monitor")
         mt.add_raw("\n")
         mt.add_param("_monitor", cfg_plot.MONITOR)
+        mt.add_raw("\n")
+        mt.add_cmd("preferred_data_source")
+        mt.add_raw("\n")
+        mt.add_param("_preferred_data_source", obbff.PREFERRED_DATA_SOURCES)
+        mt.add_raw("\n")
 
         console.print(text=mt.menu_text, menu="Settings")
 
@@ -131,6 +137,33 @@ class SettingsController(BaseController):
         obbff.USE_DATETIME = not obbff.USE_DATETIME
         set_key(obbff.ENV_FILE, "OPENBB_USE_DATETIME", str(obbff.USE_DATETIME))
         console.print("")
+
+    @log_start_end(log=logger)
+    def call_preferred_data_source(self, other_args: List[str]):
+        """Process preferred data source command"""
+        
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="preferred_data_source",
+            description="Preferred data source.",
+        )
+        parser.add_argument(
+            "-v",
+            "--value",
+            type=str,
+            choices=["YahooFinance"],
+            dest="value",
+            help="value",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-v")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            obbff.PREFERRED_DATA_SOURCES = ns_parser.value
+            set_key(obbff.ENV_FILE, "OPENBB_PREFERRED_DATA_SOURCES", str(ns_parser.value))
+            console.print("")
+        
 
     @log_start_end(log=logger)
     def call_autoscaling(self, _):
