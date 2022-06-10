@@ -9,13 +9,14 @@
 
 
 
-    <meta name="description" content="Options are in essence contracts between two parties that grant holders the right to buy or sell an underlying asset at a certain price within a certain time frame.
-The underlying asset, which could be equities, bonds, currency, interest rates, market indexes, exchange-traded funds (ETFs), or futures contracts, determines the value of an option. Options are securities in and of themselves, similar to stocks and bonds, but they are referred to as derivatives because their value is derived from something else.">
+    <meta name="description" content="The Options menu provides the user with a comprehensive set of tools for analyzing equity options. This guide provides an overview of the menu and demonstrates commands in context. Using this menu correctly will require understanding terminology and math specific to the asset class. Wikipedia is a great resource for definitions and for learning about the mechanics of derivatives, read it here. These are complex, leveraged, financial instruments requiring specialized knoweledge and a different frame-of-mind than the approach of an equities long-only investor.">
 
+
+    <meta name="keywords" content="Options,,stocks,,derivatives,,puts,,calls,,oi,,vol,,greeks,,voi,,volatility,,vsurf,,chains,,parity,,binom,,screen,,pricing,,hedge,,pcr,,info,,hist,,grhist,,plot,,parity">
 
 
     <title>
-      Options | OpenBB Documentation
+      Introduction to the Options Menu | OpenBB Documentation
     </title>
 
     <link rel="icon" href="/OpenBBTerminal/favicon/favicon-32x32.png" type="image/x-icon">
@@ -29631,7 +29632,7 @@ The underlying asset, which could be equities, bonds, currency, interest rates, 
         
     
     
-        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/' href='/OpenBBTerminal/'><span itemprop='name'>Getting Started</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/terminal/' href='/OpenBBTerminal/terminal/'><span itemprop='name'>OpenBB Terminal</span></a><meta itemprop='position' content='3' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/terminal/stocks/' href='/OpenBBTerminal/terminal/stocks/'><span itemprop='name'>Introduction to Stocks</span></a><meta itemprop='position' content='4' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>Options</span><meta itemprop='position' content='5' /></li>
+        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/' href='/OpenBBTerminal/'><span itemprop='name'>Getting Started</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/terminal/' href='/OpenBBTerminal/terminal/'><span itemprop='name'>OpenBB Terminal</span></a><meta itemprop='position' content='3' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/terminal/stocks/' href='/OpenBBTerminal/terminal/stocks/'><span itemprop='name'>Introduction to Stocks</span></a><meta itemprop='position' content='4' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>Introduction to the Options Menu</span><meta itemprop='position' content='5' /></li>
     
 
     
@@ -29656,519 +29657,188 @@ The underlying asset, which could be equities, bonds, currency, interest rates, 
 </div>
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
-        <h1>Options</h1>
-        <p>Options are in essence contracts between two parties that grant holders the right to buy or sell an underlying asset at a certain price within a certain time frame.</p>
-<p>The underlying asset, which could be equities, bonds, currency, interest rates, market indexes, exchange-traded funds (ETFs), or futures contracts, determines the value of an option. Options are securities in and of themselves, similar to stocks and bonds, but they are referred to as derivatives because their value is derived from something else.</p>
-<p><strong>Available commands:</strong>
+        <h1>Introduction to the Options Menu</h1>
+        <p>The Options menu provides the user with a comprehensive set of tools for analyzing equity options. This guide provides an overview of the menu and demonstrates commands in context. Using this menu correctly will require understanding terminology and math specific to the asset class. Wikipedia is a great resource for definitions and for learning about the mechanics of derivatives, read it <a href="https://en.wikipedia.org/wiki/Option_(finance)" target="_blank">here</a>. These are complex, leveraged, financial instruments requiring specialized knoweledge and a different frame-of-mind than the approach of an equities long-only investor. Always conduct thorough due diligence.<br></p>
+<h2>Submenus Available</h2>
+<p>At the bottom of the menu, and near the top, there are items prefaced with <code>&gt;</code>. Like everywhere else in the OpenBB Terminal, this indicates the presence of a submenu.<br></p>
+<ul>
+<li>
+<p><code>screen</code> is a dedicated options screener that uses <code>.ini</code> files from the local installation folder <code>/OpenBBTerminal/openbb_terminal/stocks/options/presets/</code>. Refer to the Options Screener Guide <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/options/scr/" target="_blank">here</a>.</p>
+</li>
+<li>
+<p><code>pricing</code> is another method for calculating options prices. See the guide for this submenu <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/options/pricing/" target="_blank">here</a>.</p>
+</li>
+<li>
+<p><code>hedge</code> is a group of features for calculating a delta-neutral position. The guide for this submenu is located <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/options/hedge/" target="_blank">here</a>.</p>
+</li>
+</ul>
+<h2>How to use the Options Menu</h2>
+<p>Navigate to the menu by typing <code>options</code>, from the <code>Stocks</code> menu, and then pressing enter. Alternatively, absolute path navigation can jump straight there, from anywhere. <code>/stocks/options</code></p>
+<p><img src="https://user-images.githubusercontent.com/85772166/172717122-a857dd69-6e79-4773-996a-74ea71f8ee86.png" alt="The Options Menu"  /></p>
+<h3>Market Coverage and Data Sources</h3>
+<p>At the time of writing, OpenBB is able to provide coverage only for US-listed equity and ETF options. While not officially supported, some additional markets and index options may be accessible with yFinance as the source. Coverage will be added as the product grows to incorporate more community contributions but, for now, it is safe to generalize equity options as referring to US-listed companies on a major exchange and are priced in $USD.<br></br>
+By default, the Terminal loads a ticker using <a href="https://developer.tradier.com/" target="_blank">Tradier</a> as the source. It&rsquo;s not perfect but the price is right. Sign up for a free developer account and then enter that token using the <a href="https://openbb-finance.github.io/OpenBBTerminal/#accessing-other-sources-of-data-via-api-keys" target="_blank"><code>keys</code></a> function. Alternatively, there is a choice to use yFinance data sets by attaching the argument as shown below. Help dialogues are displayed for any command by adding <code>-h</code> to the string. It is worth noting that this load command is different than the load command elsewhere.</p>
+<pre><code>(🦋) /stocks/options/ $ load -h
+usage: load [-t TICKER] [-s {tr,yf}] [-h]
 
+Load a ticker into option menu
 
+optional arguments:
+  -t TICKER, --ticker TICKER
+                        Stock ticker (default: None)
+  -s {tr,yf}, --source {tr,yf}
+                        Source to get option expirations from (default: None)
+  -h, --help            show this help message (default: False)
+</code></pre><p>Having the working foundation of knowledge will make most commands, as pictured above, somewhat intuitive. <code>-h</code> is attachable to any command to print the help dialogue in the Terminal. Refer to the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/" target="_blank">user documentation</a> for details on any individual feature. Browse the commands on the left side of the page to read about any particular command.</p>
+<h2>Examples</h2>
+<p>To begin, a ticker must be loaded with an expiration date selected. Enter these commands to display the list of expiration dates for AAPL options chains.</p>
+<pre><code>(🦋) /stocks/options/ $ load aapl
 
-  <div class="gdoc-toc gdoc-toc__level--1">
-    
-  <ul>
-    
-      
-      
-      <li>
-      
-        <span>
-          <a href="/OpenBBTerminal/terminal/stocks/options/binom/" class="gdoc-toc__entry">Binom</a>
-        </span>
-      
+(🦋) /stocks/options/ $ exp
 
-      
-      
-      </li>
-      
-      
-      
-      <li>
-      
-        <span>
-          <a href="/OpenBBTerminal/terminal/stocks/options/calc/" class="gdoc-toc__entry">Calc</a>
-        </span>
-      
+   Available expiry dates   
+┏━━━━━━━━━━━━┳━━━━━━━━━━━━┓
+┃ Identifier ┃ Date       ┃
+┡━━━━━━━━━━━━╇━━━━━━━━━━━━┩
+│ 0          │ 2022-05-20 │
+├────────────┼────────────┤
+│ 1          │ 2022-05-27 │
+├────────────┼────────────┤
+│ 2          │ 2022-06-03 │
+├────────────┼────────────┤
+│ 3          │ 2022-06-10 │
+├────────────┼────────────┤
+│ 4          │ 2022-06-17 │
+├────────────┼────────────┤
+│ 5          │ 2022-06-24 │
+├────────────┼────────────┤
+│ 6          │ 2022-07-01 │
+├────────────┼────────────┤
+│ 7          │ 2022-07-15 │
+├────────────┼────────────┤
+│ 8          │ 2022-08-19 │
+├────────────┼────────────┤
+│ 9          │ 2022-09-16 │
+├────────────┼────────────┤
+│ 10         │ 2022-10-21 │
+├────────────┼────────────┤
+│ 11         │ 2022-11-18 │
+├────────────┼────────────┤
+│ 12         │ 2022-12-16 │
+├────────────┼────────────┤
+│ 13         │ 2023-01-20 │
+├────────────┼────────────┤
+│ 14         │ 2023-03-17 │
+├────────────┼────────────┤
+│ 15         │ 2023-06-16 │
+├────────────┼────────────┤
+│ 16         │ 2023-09-15 │
+├────────────┼────────────┤
+│ 17         │ 2024-01-19 │
+├────────────┼────────────┤
+│ 18         │ 2024-06-21 │
+└────────────┴────────────┘
+</code></pre><p>Choose an expiration date with the corresponding Identifier value on the left.</p>
+<pre><code>(🦋) /stocks/options/ $ exp 16
+Expiration set to 2023-09-15 
+</code></pre><p>Setting the chain for analysis will change the text colour at the bottom of the Options menu. These commands require loaded data.</p>
+<p><img src="https://user-images.githubusercontent.com/85772166/172724623-dbb16566-5dfa-482c-a67e-948e01444ca8.png" alt="The Options menu with a loaded ticker and expiration date"  /></p>
+<p>The <code>info</code> command displays a table of notable statistics.</p>
+<pre><code>(🦋) /stocks/options/ $ info
 
-      
-      
-      </li>
-      
-      
-      
-      <li>
-      
-        <span>
-          <a href="/OpenBBTerminal/terminal/stocks/options/chains/" class="gdoc-toc__entry">Chains</a>
-        </span>
-      
-
-      
-      
-      </li>
-      
-      
-      
-      <li>
-      
-        <span>
-          <a href="/OpenBBTerminal/terminal/stocks/options/exp/" class="gdoc-toc__entry">Exp</a>
-        </span>
-      
-
-      
-      
-      </li>
-      
-      
-      
-      <li>
-      
-        <span>
-          <a href="/OpenBBTerminal/terminal/stocks/options/greeks/" class="gdoc-toc__entry">Greeks</a>
-        </span>
-      
-
-      
-      
-      </li>
-      
-      
-      
-      <li>
-      
-        <span>
-          <a href="/OpenBBTerminal/terminal/stocks/options/grhist/" class="gdoc-toc__entry">Grhist</a>
-        </span>
-      
-
-      
-      
-      </li>
-      
-      
-      
-      <li>
-      
-        <span>
-          <a href="/OpenBBTerminal/terminal/stocks/options/hist/" class="gdoc-toc__entry">Hist</a>
-        </span>
-      
-
-      
-      
-      </li>
-      
-      
-      
-      <li>
-      
-        <span>
-          <a href="/OpenBBTerminal/terminal/stocks/options/info/" class="gdoc-toc__entry">Info</a>
-        </span>
-      
-
-      
-      
-      </li>
-      
-      
-      
-      <li>
-      
-        <span>
-          <a href="/OpenBBTerminal/terminal/stocks/options/load/" class="gdoc-toc__entry">Load</a>
-        </span>
-      
-
-      
-      
-      </li>
-      
-      
-      
-      <li>
-      
-        <span>
-          <a href="/OpenBBTerminal/terminal/stocks/options/oi/" class="gdoc-toc__entry">Oi</a>
-        </span>
-      
-
-      
-      
-      </li>
-      
-      
-      
-      <li>
-      
-        <span>
-          <a href="/OpenBBTerminal/terminal/stocks/options/parity/" class="gdoc-toc__entry">Parity</a>
-        </span>
-      
-
-      
-      
-      </li>
-      
-      
-      
-      <li>
-      
-        <span>
-          <a href="/OpenBBTerminal/terminal/stocks/options/payoff/" class="gdoc-toc__entry">Payoff</a>
-        </span>
-      
-
-      
-      
-        
-  <ul>
-    
-      
-      
-      <li>
-      
-        <span>
-          <a href="/OpenBBTerminal/terminal/stocks/options/payoff/add/" class="gdoc-toc__entry">Add</a>
-        </span>
-      
-
-      
-      
-      </li>
-      
-      
-      
-      <li>
-      
-        <span>
-          <a href="/OpenBBTerminal/terminal/stocks/options/payoff/list/" class="gdoc-toc__entry">List</a>
-        </span>
-      
-
-      
-      
-      </li>
-      
-      
-      
-      <li>
-      
-        <span>
-          <a href="/OpenBBTerminal/terminal/stocks/options/payoff/pick/" class="gdoc-toc__entry">Pick</a>
-        </span>
-      
-
-      
-      
-      </li>
-      
-      
-      
-      <li>
-      
-        <span>
-          <a href="/OpenBBTerminal/terminal/stocks/options/payoff/plot/" class="gdoc-toc__entry">Plot</a>
-        </span>
-      
-
-      
-      
-      </li>
-      
-      
-      
-      <li>
-      
-        <span>
-          <a href="/OpenBBTerminal/terminal/stocks/options/payoff/rmv/" class="gdoc-toc__entry">Rmv</a>
-        </span>
-      
-
-      
-      
-      </li>
-      
-      
-      
-      <li>
-      
-        <span>
-          <a href="/OpenBBTerminal/terminal/stocks/options/payoff/sop/" class="gdoc-toc__entry">Sop</a>
-        </span>
-      
-
-      
-      
-      </li>
-      
-      
-    
-  </ul>
-
-      
-      </li>
-      
-      
-      
-      <li>
-      
-        <span>
-          <a href="/OpenBBTerminal/terminal/stocks/options/pcr/" class="gdoc-toc__entry">Pcr</a>
-        </span>
-      
-
-      
-      
-      </li>
-      
-      
-      
-      <li>
-      
-        <span>
-          <a href="/OpenBBTerminal/terminal/stocks/options/plot/" class="gdoc-toc__entry">Plot</a>
-        </span>
-      
-
-      
-      
-      </li>
-      
-      
-      
-      <li>
-      
-        <span>
-          <a href="/OpenBBTerminal/terminal/stocks/options/pricing/" class="gdoc-toc__entry">Pricing</a>
-        </span>
-      
-
-      
-      
-        
-  <ul>
-    
-      
-      
-      <li>
-      
-        <span>
-          <a href="/OpenBBTerminal/terminal/stocks/options/pricing/add/" class="gdoc-toc__entry">Add</a>
-        </span>
-      
-
-      
-      
-      </li>
-      
-      
-      
-      <li>
-      
-        <span>
-          <a href="/OpenBBTerminal/terminal/stocks/options/pricing/rmv/" class="gdoc-toc__entry">Rmv</a>
-        </span>
-      
-
-      
-      
-      </li>
-      
-      
-      
-      <li>
-      
-        <span>
-          <a href="/OpenBBTerminal/terminal/stocks/options/pricing/rnval/" class="gdoc-toc__entry">Rnval</a>
-        </span>
-      
-
-      
-      
-      </li>
-      
-      
-      
-      <li>
-      
-        <span>
-          <a href="/OpenBBTerminal/terminal/stocks/options/pricing/show/" class="gdoc-toc__entry">Show</a>
-        </span>
-      
-
-      
-      
-      </li>
-      
-      
-    
-  </ul>
-
-      
-      </li>
-      
-      
-      
-      <li>
-      
-        <span>
-          <a href="/OpenBBTerminal/terminal/stocks/options/unu/" class="gdoc-toc__entry">Unu</a>
-        </span>
-      
-
-      
-      
-      </li>
-      
-      
-      
-      <li>
-      
-        <span>
-          <a href="/OpenBBTerminal/terminal/stocks/options/voi/" class="gdoc-toc__entry">Voi</a>
-        </span>
-      
-
-      
-      
-      </li>
-      
-      
-      
-      <li>
-      
-        <span>
-          <a href="/OpenBBTerminal/terminal/stocks/options/vol/" class="gdoc-toc__entry">Vol</a>
-        </span>
-      
-
-      
-      
-      </li>
-      
-      
-      
-      <li>
-      
-        <span>
-          <a href="/OpenBBTerminal/terminal/stocks/options/vsurf/" class="gdoc-toc__entry">Vsurf</a>
-        </span>
-      
-
-      
-      
-      </li>
-      
-      
-      
-      <li>
-      
-        <span>
-          <a href="/OpenBBTerminal/terminal/stocks/options/hedge/" class="gdoc-toc__entry">Introduction to the Hedge Submenu</a>
-        </span>
-      
-
-      
-      
-        
-  <ul>
-    
-      
-      
-      <li>
-      
-        <span>
-          <a href="/OpenBBTerminal/terminal/stocks/options/hedge/add/" class="gdoc-toc__entry">Add</a>
-        </span>
-      
-
-      
-      
-      </li>
-      
-      
-      
-      <li>
-      
-        <span>
-          <a href="/OpenBBTerminal/terminal/stocks/options/hedge/list/" class="gdoc-toc__entry">List</a>
-        </span>
-      
-
-      
-      
-      </li>
-      
-      
-      
-      <li>
-      
-        <span>
-          <a href="/OpenBBTerminal/terminal/stocks/options/hedge/pick/" class="gdoc-toc__entry">Pick</a>
-        </span>
-      
-
-      
-      
-      </li>
-      
-      
-      
-      <li>
-      
-        <span>
-          <a href="/OpenBBTerminal/terminal/stocks/options/hedge/rmv/" class="gdoc-toc__entry">Rmv</a>
-        </span>
-      
-
-      
-      
-      </li>
-      
-      
-      
-      <li>
-      
-        <span>
-          <a href="/OpenBBTerminal/terminal/stocks/options/hedge/sop/" class="gdoc-toc__entry">Sop</a>
-        </span>
-      
-
-      
-      
-      </li>
-      
-      
-    
-  </ul>
-
-      
-      </li>
-      
-      
-      
-      <li>
-      
-        <span>
-          <a href="/OpenBBTerminal/terminal/stocks/options/screen/" class="gdoc-toc__entry">Introduction to the Options Screener</a>
-        </span>
-      
-
-      
-      
-      </li>
-      
-      
-    
-  </ul>
-
-  </div>
-
-
-
-
-</p>
+                Options Information                
+┏━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Info                  ┃ Value                   ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Implied Volatility    │   38.07%  (  -1.48%)    │
+├───────────────────────┼─────────────────────────┤
+│ Historical Volatility │   42.90%                │
+├───────────────────────┼─────────────────────────┤
+│ IV Percentile         │   95%                   │
+├───────────────────────┼─────────────────────────┤
+│ IV Rank               │   78.41%                │
+├───────────────────────┼─────────────────────────┤
+│ IV High               │   43.37% on 04/26/22    │
+├───────────────────────┼─────────────────────────┤
+│ IV Low                │   18.80% on 06/11/21    │
+├───────────────────────┼─────────────────────────┤
+│ Put/Call Vol Ratio    │  0.81                   │
+├───────────────────────┼─────────────────────────┤
+│ Today's Volume        │  2,045,793              │
+├───────────────────────┼─────────────────────────┤
+│ Volume Avg (30-Day)   │  1,293,501              │
+├───────────────────────┼─────────────────────────┤
+│ Put/Call OI Ratio     │  0.88                   │
+├───────────────────────┼─────────────────────────┤
+│ Today's Open Interest │  8,226,541              │
+├───────────────────────┼─────────────────────────┤
+│ Open Int (30-Day)     │  7,576,733              │
+└───────────────────────┴─────────────────────────┘
+</code></pre><p>An adjustable-period put/call ratio chart is called according to the timeline selected by the user.</p>
+<ul>
+<li>Length of 180 days:<br></li>
+</ul>
+<pre><code>(🦋) /stocks/options/ $ pcr 180
+</code></pre><p><img src="https://user-images.githubusercontent.com/85772166/172721035-2c1b3191-430a-4bb4-86be-f932abb87215.png" alt="180 day window for put/call ratio"  /></p>
+<ul>
+<li>Length of 90 days:<br></li>
+</ul>
+<pre><code>(🦋) /stocks/options/ $ pcr 90
+</code></pre><p><img src="https://user-images.githubusercontent.com/85772166/172721388-4fa23c20-6813-4bcd-bc4f-964ff8562112.png" alt="90 day window for put/call ratio"  /></p>
+<ul>
+<li>Length of 30 days:<br></li>
+</ul>
+<pre><code>(🦋) /stocks/options/ $ pcr 30
+</code></pre><p><img src="https://user-images.githubusercontent.com/85772166/172721482-d7d32681-850e-4d01-b9bb-ca9a59bf83e6.png" alt="30 day window for put/call ratio"  /></p>
+<ul>
+<li>Length of 10 days:<br></li>
+</ul>
+<pre><code>(🦋) /stocks/options/ $ pcr 10
+</code></pre><p><img src="https://user-images.githubusercontent.com/85772166/172721584-a953166e-b923-4bb6-ab98-ee777f087add.png" alt="10 day window for put/call ratio"  /></p>
+<p>The chain&rsquo;s open interest and current volume can be visualized with, <code>voi</code></p>
+<pre><code>(🦋) /stocks/options/ $ voi
+</code></pre><p><img src="https://user-images.githubusercontent.com/85772166/172721788-cc801a19-9625-4180-b948-46d4a51da343.png" alt="Volume &amp;amp; Open Interest"  /></p>
+<p>The <code>chains</code> command will display pricing, volume, open interest, and greeks data as a snapshot.</p>
+<pre><code>(🦋) /stocks/options/ $ chains
+</code></pre><p><img src="https://user-images.githubusercontent.com/85772166/172721931-7d1b98f6-ebc5-44ae-8feb-e045f963c40c.png" alt="chains command"  /></p>
+<p>Narrow the focus with min/max filters:</p>
+<pre><code>(🦋) /stocks/options/ $ chains -m 50 -M 100
+</code></pre><p><img src="https://user-images.githubusercontent.com/85772166/172722075-565c0465-18ac-4426-98a7-54eaa331ef81.png" alt="Chains command with min/max filters"  /></p>
+<p>Additional Greeks are accessible through the command, <code>greeks</code></p>
+<pre><code>(🦋) /stocks/options/ $ greeks
+</code></pre><p><img src="https://user-images.githubusercontent.com/85772166/172722192-37dafb44-5267-495a-b158-afaabd911593.png" alt="greeks command"  /></p>
+<p>See the effects of monetary policy by adjusting for the risk-free rate of return, and factor in dividend payments.</p>
+<p><a href="https://www.investopedia.com/ask/answers/042215/what-does-positive-theta-mean-credit-spreads.asp" target="_blank">Investopedia</a></p>
+<pre><code>&quot;Credit spreads naturally carry a positive theta, meaning they benefit from the passage of time.&quot;
+</code></pre><pre><code>(🦋) /stocks/options/ $ greeks -d 0.67 -r 1 -m 50 -M 200 -a
+</code></pre><p>Greeks for Apple Sep/23 calls, using a RFR of 1% and dividend yield of 0.67%</p>
+<p><img src="https://user-images.githubusercontent.com/85772166/172722357-6389fdc7-19ed-4960-900c-9bd9953630e2.png" alt="Options greeks with adjustments"  /></p>
+<p><code>binom</code> will calculate options values using <a href="https://en.wikipedia.org/wiki/Binomial_options_pricing_model" target="_blank">binomial pricing models</a>.</p>
+<p>Display a probabilities distribution chart using the optional argument <code>--plot</code></p>
+<pre><code>(🦋) /stocks/options/ $ binom --plot
+</code></pre><p><img src="https://user-images.githubusercontent.com/85772166/172722694-9a4b782e-9ec5-4b47-a31a-e5b9dd04eeba.png" alt="Probabilities distribution using binomial pricing, for AAPL options expiring Sep/23"  /></p>
+<p>Visualize the volume of puts and calls in a chain with <code>vol</code></p>
+<pre><code>(🦋) /stocks/options/ $ vol -m 0 -M 250
+</code></pre><p><img src="https://user-images.githubusercontent.com/85772166/172722818-1cdf1d8c-2a8a-4ede-a455-041b3066dcb3.png" alt="Puts and calls volume for AAPL 09/23 expiration"  /></p>
+<p>Plot the open interest in a similar fashion with <code>oi</code></p>
+<pre><code>(🦋) /stocks/options/ $ oi
+</code></pre><p><img src="https://user-images.githubusercontent.com/85772166/172722959-edab3c32-a3f3-47db-80be-a33e382ddd9a.png" alt="Open interest for AAPL expiring 2023-09-15"  /></p>
+<p>Historical OHLC pricing for individual contracts can be viewed with <code>hist</code></p>
+<pre><code>(🦋) /stocks/options/ $ hist -p -s 70
+</code></pre><p><img src="https://user-images.githubusercontent.com/85772166/172723074-cd013225-9fc9-4eeb-adeb-ccc8a99f661a.png" alt="Price history for AAPL $70 put expiring 2023-09-15"  /></p>
+<p>Plot the hisotorical greek data with, <code>grhist</code></p>
+<pre><code>(🦋) /stocks/options/ $ grhist -s 70 -p -g rho
+</code></pre><p><img src="https://user-images.githubusercontent.com/85772166/172723243-71b7e323-c3c4-4c7e-a463-f56d916a87fe.png" alt="Historical Rho for $70 09/23 AAPL Put"  /></p>
+<p><code>plot</code> gives the user flexibility to chart different variables.</p>
+<pre><code>(🦋) /stocks/options/ $ plot -p -x ltd -y s
+</code></pre><p><img src="https://user-images.githubusercontent.com/85772166/172723361-e57c656a-2202-4822-abc0-080c5f99d3e4.png" alt="Stike vs Last Trade Date for Apple puts expiring Sep/23"  /></p>
+<p>Show the volatility surface of the entire chain using the command, <code>vsurf</code></p>
+<pre><code>(🦋) /stocks/options/ $ vsurf
+</code></pre><p><img src="https://user-images.githubusercontent.com/85772166/172723670-f1e3bc37-2655-4414-b0cb-3e173b48825d.png" alt="Volatility surface of QQQ"  /></p>
+<h2>Additional Resources for Equity Options</h2>
+<p><a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/options/screen/" target="_blank">Introduction to the Options Screener</a></p>
+<p><a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/options/hedge/" target="_blank">Introduction to the Options Hedge Menu</a></p>
+<p><a href="https://www.investopedia.com/options-basics-tutorial-4583012" target="_blank">Investopedia&rsquo;s Options Basics Tutorial</a></p>
 
     </article>
  
