@@ -49,7 +49,7 @@ class SettingsController(BaseController):
         "lang",
         "tz",
         "export",
-        "preferred_data_source"
+        "preferred_data_source",
     ]
     PATH = "/settings/"
 
@@ -141,7 +141,7 @@ class SettingsController(BaseController):
     @log_start_end(log=logger)
     def call_preferred_data_source(self, other_args: List[str]):
         """Process preferred data source command"""
-        
+
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -161,9 +161,10 @@ class SettingsController(BaseController):
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             obbff.PREFERRED_DATA_SOURCE = ns_parser.value
-            set_key(obbff.ENV_FILE, "OPENBB_PREFERRED_DATA_SOURCE", str(ns_parser.value))
+            set_key(
+                obbff.ENV_FILE, "OPENBB_PREFERRED_DATA_SOURCE", str(ns_parser.value)
+            )
             console.print("")
-        
 
     @log_start_end(log=logger)
     def call_autoscaling(self, _):
