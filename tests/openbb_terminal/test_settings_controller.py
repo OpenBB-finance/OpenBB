@@ -16,6 +16,9 @@ def controller(mocker):
     mocker.patch("openbb_terminal.settings_controller.obbff")
     return SettingsController()
 
+@pytest.mark.parametrize("other", [["yf"], ["-v", "yf"]])
+def test_preferred_data_source(controller, other):
+    controller.call_preferred_data_source(other)
 
 def test_print_help(controller):
     controller.print_help()
