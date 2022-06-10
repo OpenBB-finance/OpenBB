@@ -29,6 +29,7 @@ set_key(default_env_file, "OPENBB_LOGGING_COMMIT_HASH", str(commit_hash))
 added_files = [
     (os.path.join(os.getcwd(), "openbb_terminal"), "openbb_terminal"),
     (os.path.join(os.getcwd(), "routines"), "routines"),
+    (os.path.join(os.getcwd(), "portfolio"), "portfolio"),
     (os.path.join(os.getcwd(), "i18n"), "i18n"),
     (os.path.join(os.getcwd(), "styles"), "styles"),
     (os.path.join(pathex, "property_cached"), "property_cached"),

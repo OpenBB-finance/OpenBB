@@ -309,7 +309,11 @@ class TerminalController(BaseController):
         if ns_parser_exe:
             if ns_parser_exe.path:
                 if ns_parser_exe.path in self.ROUTINE_CHOICES:
-                    path = f"routines/{ns_parser_exe.path}"
+                    path = os.path.join(
+                        os.path.abspath(os.path.dirname(__file__)),
+                        "routines",
+                        ns_parser_exe.path,
+                    )
                 else:
                     path = ns_parser_exe.path
 
@@ -673,7 +677,7 @@ def main(
             return
         test_files = []
         for path in paths:
-            if "openbb" in path:
+            if path.endswith(".openbb"):
                 file = os.path.join(os.path.abspath(os.path.dirname(__file__)), path)
                 test_files.append(file)
             else:
@@ -695,9 +699,11 @@ def main(
         console.print("[green]OpenBB Terminal Integrated Tests:\n[/green]")
         for file in test_files:
             file = file.replace("//", "/")
-            file_name = file[file.rfind(REPO_DIR.name) :].replace(  # noqa: E203
-                "\\", "/"
-            )
+            repo_path_position = file.rfind(REPO_DIR.name)
+            if repo_path_position >= 0:
+                file_name = file[repo_path_position:].replace("\\", "/")
+            else:
+                file_name = file
             console.print(f"{file_name}  {((i/length)*100):.1f}%")
             try:
                 if not os.path.isfile(file):
@@ -711,9 +717,11 @@ def main(
         if fails:
             console.print("\n[red]Failures:[/red]\n")
             for key, value in fails.items():
-                file_name = key[key.rfind(REPO_DIR.name) :].replace(  # noqa: E203
-                    "\\", "/"
-                )
+                repo_path_position = key.rfind(REPO_DIR.name)
+                if repo_path_position >= 0:
+                    file_name = key[repo_path_position:].replace("\\", "/")
+                else:
+                    file_name = key
                 logger.error("%s: %s failed", file_name, value)
                 console.print(f"{file_name}: {value}\n")
         console.print(
