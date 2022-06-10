@@ -309,7 +309,11 @@ class TerminalController(BaseController):
         if ns_parser_exe:
             if ns_parser_exe.path:
                 if ns_parser_exe.path in self.ROUTINE_CHOICES:
-                    path = f"routines/{ns_parser_exe.path}"
+                    path = os.path.join(
+                        os.path.abspath(os.path.dirname(__file__)),
+                        "routines",
+                        ns_parser_exe.path,
+                    )
                 else:
                     path = ns_parser_exe.path
 
