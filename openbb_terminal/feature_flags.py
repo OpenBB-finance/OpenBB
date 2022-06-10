@@ -104,7 +104,7 @@ LOGGING_COMMIT_HASH = str(os.getenv("OPENBB_LOGGING_COMMIT_HASH", "REPLACE_ME"))
 
 # Preferred data provider
 # TODO: Consider adding support for this as a list, rather than as a single choice
-PREFERRED_DATA_SOURCES = str(os.getenv("OPENBB_PREFERRED_DATA_SOURCES", "YahooFinance"))
+PREFERRED_DATA_SOURCE = str(os.getenv("OPENBB_PREFERRED_DATA_SOURCE", "yf"))
 
 try:
     version = pkg_resources.get_distribution("OpenBBTerminal").version
