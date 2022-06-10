@@ -15,8 +15,10 @@ from binance.client import Client
 import matplotlib.pyplot as plt
 import yfinance as yf
 import mplfinance as mpf
+from pycoingecko import CoinGeckoAPI
 
 from openbb_terminal.helper_funcs import (
+    lambda_long_number_format,
     plot_autoscale,
     export_data,
     print_rich_table,
@@ -267,9 +269,119 @@ def _create_closest_match_df(
     return df.merge(coins, on="id")
 
 
+def get_coingecko_id(symbol: str):
+    client = CoinGeckoAPI()
+    coin_list = client.get_coins_list()
+    for coin in coin_list:
+        if coin["symbol"] == symbol:
+            return coin["id"]
+    return None
+
+
+def get_coinpaprika_id(symbol: str):
+    paprika_coins = get_list_of_coins()
+    paprika_coins_dict = dict(zip(paprika_coins.id, paprika_coins.symbol))
+    coinpaprika_id, _ = coinpaprika_model.validate_coin(
+        symbol.upper(), paprika_coins_dict
+    )
+    return coinpaprika_id
+
+
+def load(
+    symbol_search: str,
+    vs: str,
+    days: int = 365,
+):
+    coingecko_id = get_coingecko_id(symbol_search)
+    if not coingecko_id:
+        return pd.DataFrame()
+
+    df = pycoingecko_model.get_ohlc(coingecko_id, vs, days)
+    start_date = datetime.now() - timedelta(days=days)
+    df_coin = yf.download(
+        f"{symbol_search}-{vs}",
+        end=datetime.now(),
+        start=start_date,
+        progress=False,
+        interval="1d",
+    ).sort_index(ascending=False)
+
+    if not df_coin.empty:
+        df = pd.merge(df, df_coin[::-1][["Volume"]], left_index=True, right_index=True)
+    df.index.name = "date"
+    if not df.empty:
+        console.print(
+            f"\nLoading Daily {symbol_search.upper()} crypto "
+            f"with starting period {start_date.strftime('%Y-%m-%d')} for analysis.",
+        )
+    return df
+
+
+def show_quick_performance(crypto_df: pd.DataFrame, symbol: str, current_currency: str):
+    """Show quick performance stats of crypto prices. Daily prices expected"""
+    closes = crypto_df["Close"]
+    volumes = crypto_df["Volume"] if "Volume" in crypto_df else pd.DataFrame()
+
+    perfs = {
+        "1D": 100 * closes.pct_change(2)[-1],
+        "7D": 100 * closes.pct_change(5)[-1],
+        "1M": 100 * closes.pct_change(21)[-1],
+        "1Y": 100 * closes.pct_change(252)[-1],
+    }
+    first_day_current_year = str(datetime.now().date().replace(month=1, day=1))
+    if first_day_current_year in closes.index:
+        closes_ytd = closes[closes.index > first_day_current_year]
+        perfs["YTD"] = 100 * (closes_ytd[-1] - closes_ytd[0]) / closes_ytd[0]
+    else:
+        perfs["Period"] = 100 * (closes[-1] - closes[0]) / closes[0]
+
+    df = pd.DataFrame.from_dict(perfs, orient="index").dropna().T
+    df = df.applymap(lambda x: str(round(x, 2)) + " %")
+    df = df.applymap(lambda x: f"[red]{x}[/red]" if "-" in x else f"[green]{x}[/green]")
+    if len(closes) > 252:
+        df["Volatility (1Y)"] = (
+            str(round(100 * np.sqrt(252) * closes[:-252].pct_change().std(), 2)) + " %"
+        )
+    else:
+        df["Volatility (Ann)"] = (
+            str(round(100 * np.sqrt(252) * closes.pct_change().std(), 2)) + " %"
+        )
+    if len(volumes) > 7:
+        df["Volume (7D avg)"] = lambda_long_number_format(np.mean(volumes[-9:-2]), 2)
+
+    df.insert(0, f"Price ({current_currency.upper()})", closes[-1])
+    # df.insert(
+    #    len(df.columns),
+    #    f"Market Cap ({current_currency.upper()})",
+    #    lambda_long_number_format(int(crypto_df["Market Cap"][-1])),
+    # )
+
+    coingecko_id = get_coingecko_id(symbol)
+
+    coin_data_cg = pycoingecko_model.get_coin_tokenomics(coingecko_id)
+    if not coin_data_cg.empty:
+        df.insert(
+            len(df.columns),
+            "Circulating Supply",
+            lambda_long_number_format(
+                int(
+                    coin_data_cg.loc[coin_data_cg["Metric"] == "Circulating Supply"][
+                        "Value"
+                    ]
+                )
+            ),
+        )
+
+    console.print()
+    print_rich_table(
+        df, show_index=False, headers=df.columns, title=f"{symbol.upper()} Performance"
+    )
+    console.print()
+
+
 # pylint: disable=R0912
 # TODO: verify vs, interval, days, depending on source
-def load(
+def load_deprecated(
     coin: str,
     source: str = "cp",
     days: int = 60,
@@ -1043,9 +1155,7 @@ def load_yf_data(symbol: str, currency: str, interval: str, days: int):
     return df_coin[::-1], currency
 
 
-def plot_chart(
-    coin_map_df: pd.DataFrame, source: str, currency: str, **kwargs: Any
-) -> None:
+def plot_chart(symbol: str, prices_df: pd.DataFrame, currency: str) -> None:
     """Load data for Technical Analysis
 
     Parameters
@@ -1070,187 +1180,22 @@ def plot_chart(
         quoted currency
     """
 
-    limit = kwargs.get("limit", 100)
-    interval = kwargs.get("interval", "1day")
-    days = kwargs.get("days", 30)
+    if prices_df.empty:
+        console.print("There is not data to plot chart\n")
+        return
 
-    if source == "bin":
-        client = Client(cfg.API_BINANCE_KEY, cfg.API_BINANCE_SECRET)
+    title = f"{symbol}/{currency} from {prices_df.index[0].strftime('%Y/%m/%d')} to {prices_df.index[-1].strftime('%Y/%m/%d')}"  # noqa: E501
 
-        interval_map = {
-            "1day": client.KLINE_INTERVAL_1DAY,
-            "3day": client.KLINE_INTERVAL_3DAY,
-            "1hour": client.KLINE_INTERVAL_1HOUR,
-            "2hour": client.KLINE_INTERVAL_2HOUR,
-            "4hour": client.KLINE_INTERVAL_4HOUR,
-            "6hour": client.KLINE_INTERVAL_6HOUR,
-            "8hour": client.KLINE_INTERVAL_8HOUR,
-            "12hour": client.KLINE_INTERVAL_12HOUR,
-            "1week": client.KLINE_INTERVAL_1WEEK,
-            "1min": client.KLINE_INTERVAL_1MINUTE,
-            "3min": client.KLINE_INTERVAL_3MINUTE,
-            "5min": client.KLINE_INTERVAL_5MINUTE,
-            "15min": client.KLINE_INTERVAL_15MINUTE,
-            "30min": client.KLINE_INTERVAL_30MINUTE,
-            "1month": client.KLINE_INTERVAL_1MONTH,
-        }
+    prices_df["Volume"] = prices_df["Volume"] / 1_000_000
 
-        symbol_binance = coin_map_df["Binance"]
+    plot_candles(
+        candles_df=prices_df,
+        title=title,
+        volume=True,
+        ylabel="Volume [1M]",
+    )
 
-        pair = symbol_binance + currency
-
-        if check_valid_binance_str(pair):
-            # console.print(f"{symbol_binance} loaded vs {currency.upper()}")
-
-            candles = client.get_klines(
-                symbol=pair,
-                interval=interval_map[interval],
-                limit=limit,
-            )
-            candles_df = pd.DataFrame(candles).astype(float).iloc[:, :6]
-            candles_df.columns = [
-                "date",
-                "Open",
-                "High",
-                "Low",
-                "Close",
-                "Volume",
-            ]
-            df_coin = candles_df.set_index(
-                pd.to_datetime(candles_df["date"], unit="ms")
-            ).drop("date", axis=1)
-
-            title = f"{symbol_binance + currency} from {df_coin.index[0].strftime('%Y/%m/%d')} to {df_coin.index[-1].strftime('%Y/%m/%d')}"  # noqa: E501
-
-            plot_candles(
-                candles_df=df_coin,
-                title=title,
-                volume=True,
-            )
-
-    if source == "cp":
-        symbol_coinpaprika = coin_map_df["CoinPaprika"]
-        df = coinpaprika_model.get_ohlc_historical(
-            str(symbol_coinpaprika), currency.upper(), days
-        )
-
-        if df.empty:
-            console.print("There is not data to plot chart\n")
-            return
-
-        df.drop(["time_close", "market_cap"], axis=1, inplace=True)
-        df.columns = [
-            "date",
-            "Open",
-            "High",
-            "Low",
-            "Close",
-            "Volume",
-        ]
-        df = df.set_index(pd.to_datetime(df["date"])).drop("date", axis=1)
-
-        title = f"{symbol_coinpaprika}/{currency} from {df.index[0].strftime('%Y/%m/%d')} to {df.index[-1].strftime('%Y/%m/%d')}"  # noqa: E501
-
-        df["Volume"] = df["Volume"] / 1_000_000
-
-        plot_candles(
-            candles_df=df,
-            title=title,
-            volume=True,
-            ylabel="Volume [1M]",
-        )
-
-        console.print("")
-
-    if source == "cg":
-
-        if isinstance(coin_map_df["CoinGecko"], str):
-            symbol_coingecko = coin_map_df["CoinGecko"]
-        else:
-            symbol_coingecko = coin_map_df["CoinGecko"].coin["id"]
-
-        coin = pycoingecko_model.Coin(symbol_coingecko)
-        df = coin.get_coin_market_chart(currency, days)
-        df = df["price"].resample("1D").ohlc().ffill()
-
-        df.columns = [
-            "Open",
-            "High",
-            "Low",
-            "Close",
-        ]
-
-        title = f"{symbol_coingecko}/{currency} from {df.index[0].strftime('%Y/%m/%d')} to {df.index[-1].strftime('%Y/%m/%d')}"  # noqa: E501
-
-        plot_candles(
-            candles_df=df,
-            title=title,
-            volume=False,
-            ylabel="Volume [1M]",
-        )
-
-        console.print("")
-
-    if source == "cb":
-        symbol_coinbase = coin_map_df["Coinbase"]
-        coin, currency = symbol_coinbase.upper(), currency.upper()
-        pair = f"{coin}-{currency}"
-
-        if coinbase_model.check_validity_of_product(pair):
-
-            df = coinbase_model.get_candles(
-                product_id=pair,
-                interval=interval or "24hour",
-            ).head(limit)
-            df = df.astype(float).iloc[:, :6]
-            df.sort_values(by="date", inplace=True, ascending=True)
-            df = df.set_index(pd.to_datetime(df["date"], unit="s")).drop("date", axis=1)
-
-            title = f"{coin}/{currency} from {df.index[0].strftime('%Y/%m/%d')} to {df.index[-1].strftime('%Y/%m/%d')}"  # noqa: E501
-
-            df["Volume"] = df["Volume"] / 1_000
-
-            plot_candles(
-                candles_df=df,
-                title=title,
-                volume=True,
-                ylabel="Volume [1K]",
-            )
-
-            console.print("")
-
-    if source == "yf":
-        symbol_yf = coin_map_df["YahooFinance"]
-
-        df = yf.download(
-            symbol_yf,
-            end=datetime.now(),
-            start=datetime.now() - timedelta(days=days),
-            progress=False,
-            interval=interval,
-        )[
-            [
-                "Open",
-                "High",
-                "Low",
-                "Close",
-                "Volume",
-            ]
-        ].copy()
-        # Because the label has Volume [1M]
-        df.Volume = df.Volume / 1_000_000
-        df.index.name = "date"
-
-        title = f"{symbol_yf.replace('-', '/')} from {df.index[0].strftime('%Y/%m/%d')} to {df.index[-1].strftime('%Y/%m/%d')}"  # noqa: E501
-
-        plot_candles(
-            candles_df=df,
-            title=title,
-            volume=True,
-            ylabel="Volume [1M]",
-        )
-
-        console.print()
+    console.print("")
 
 
 def plot_candles(
