@@ -145,7 +145,7 @@ When the file is downloaded, use the following steps to run the OpenBB Terminal:
 Open the `OpenBB Terminal.dmg` file that got saved to your "Downloads" folder and drag the "OpenBB Terminal" folder into "Applications" folder. A link to the `Applications` folder is presented on the screen.
 Note that this should take some time as it is extracting the files from the .dmg file.
 
-<p align="center"><img width=100% alt="dmg_contents" src="https://user-images.githubusercontent.com/11668535/173016155-16e343d1-eecf-4c27-b9e5-bca9f82e1908.png"></p>
+<p align="center"><img width=100% alt="image" src="https://user-images.githubusercontent.com/11668535/173027899-9b25ae4f-1eef-462c-9dc9-86086e9cf197.png"></p>
 
 <--->
 
@@ -154,15 +154,15 @@ Note that this should take some time as it is extracting the files from the .dmg
 During first launch if you get a message saying that the application can't be launched, do the following:
 Right-Click the app and select `Open`. You will see a message saying that macOS was not able to check whether the application contains malicious software. Click `Open` to proceed.
 
-<p align="center"><img width=100% alt="image" src="https://user-images.githubusercontent.com/11668535/173019360-987adbac-db8f-40ed-9efa-57c491e4ce11.png"></p>
+<p align="center"><img width=100% alt="image" src="https://user-images.githubusercontent.com/11668535/173027798-b4d25a20-d932-4ed9-a8ce-f911c4ee4342.png"></p>
 
 {{< /columns >}}
 
 **Troubleshooting: Allow the application to run by going into your settings**
 
-If you have trouble launching the app because of security settings, go to `System Preferences > Security & Privacy > General`. You should see a message at the bottom that says that the file "was blocked from use because it is not from an identified developer". Click on `Allow anyway` or `Open anyway`.
+If you have trouble launching the app because of security settings and the "Right-click and Open" approach from Step 2 of this instructions doesn't work, go to `System Preferences > Security & Privacy > General`. You should see a message at the bottom that says that the file "was blocked from use because it is not from an identified developer". Click on `Allow anyway` or `Open anyway`.
 
-<p align="center"><a target="_blank" href="https://user-images.githubusercontent.com/46355364/169502720-e28c78c5-7684-45a9-aafc-cf497de38c09.png"><img width="500" alt="warning_fix" src="https://user-images.githubusercontent.com/46355364/169502720-e28c78c5-7684-45a9-aafc-cf497de38c09.png"></a></p>
+<p align="center"><img width=60% alt="image" src="https://user-images.githubusercontent.com/11668535/173027428-a85890d7-8a3c-4954-a6c0-d3214c635982.png"></p>
 
 
 ## Structure of the OpenBB Terminal
