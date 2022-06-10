@@ -13,6 +13,9 @@ rm -rf openbb_terminal/logs
 
 pyinstaller build/pyinstaller/terminal.spec
 
+# Assign icons to the built folder and launcher
+osascript build/pyinstaller/setup_icons.applescript
+
 # Create the folder that is used for packaging
 mkdir DMG
 
