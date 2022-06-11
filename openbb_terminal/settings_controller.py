@@ -144,34 +144,6 @@ class SettingsController(BaseController):
         console.print("")
 
     @log_start_end(log=logger)
-    def call_preferred_data_source(self, other_args: List[str]):
-        """Process preferred data source command"""
-
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="preferred_data_source",
-            description="Preferred data source.",
-        )
-        parser.add_argument(
-            "-v",
-            "--value",
-            type=str,
-            choices=["yf", "av", "iex", "polygon"],
-            dest="value",
-            help="value",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-v")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            obbff.PREFERRED_DATA_SOURCE = ns_parser.value
-            set_key(
-                obbff.ENV_FILE, "OPENBB_PREFERRED_DATA_SOURCE", str(ns_parser.value)
-            )
-            console.print("")
-    
-    @log_start_end(log=logger)
     def call_preferred_data_source_file(self, other_args: List[str]):
         """Process preferred data source file command"""
 
