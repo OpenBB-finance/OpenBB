@@ -105,7 +105,7 @@ def get_NBEATS_data(
 
     # create first covariate to then stack onto
     past_covariate_scaler = Scaler()
-    console.print(f"[green]First Covariate: {target_covariates_names[0]}[/green]")
+    console.print(f"[green]Covariate #0: {target_covariates_names[0]}[/green]")
     scaled_past_covariate_whole = past_covariate_scaler.fit_transform(
         filler.transform(
             TimeSeries.from_dataframe(
@@ -119,8 +119,8 @@ def get_NBEATS_data(
     ).astype(np.float32)
 
     if len(target_covariates_names) > 1:
-        for column in target_covariates_names[1:]:
-            console.print(f"[green]Other Covariate: {column}[/green]")
+        for i, column in enumerate(target_covariates_names[1:]):
+            console.print(f"[green]Covariate #{i+1}: {column}[/green]")
             _temp_scaler = Scaler()
             covariates_scalers.append(_temp_scaler)
             _temp_new_scaled_covariate = _temp_scaler.fit_transform(
