@@ -1609,3 +1609,42 @@ def check_list_values(valid_values: List[str]):
 
     # Return function handle to checking function
     return check_list_values_from_valid_values_list
+
+def get_preferred_source(command_path):
+    """
+    Returns the preferred source for the given command. If a value is not available for the specific
+    command, returns the most specific source, eventually returning the overall default source.
+
+    Parameters
+    ----------
+    command_path - The command to find the source for. Example would be "stocks.load" to return the value
+    for stocks.load first, then stocks, then the default value.
+
+    Returns
+    -------
+    The preferred source for the given command
+    """
+
+    import json
+    try:
+        with open(obbff.PREFERRED_DATA_SOURCE_FILE, "r") as f:
+            json_doc = json.load(f)
+
+            path_objects = command_path.split(".")
+
+            deepest_level = json_doc
+            while len(path_objects)>0:
+                if path_objects[0] in deepest_level:
+                    # We found the element, so go one level deeper
+                    deepest_level = deepest_level[path_objects[0]]
+                else:
+                    # We didn't findt he next level, so use the default at this level
+                    return deepest_level["default"]
+
+                path_objects = path_objects[1:] # Go one level deeper into the path
+
+            # We got through all values, so return this as the final value
+            return deepest_level
+    except Exception as e:
+        console.print("Failed to load preferred source from file: " + obbff.PREFERRED_DATA_SOURCE_FILE)
+        console.print(e)
