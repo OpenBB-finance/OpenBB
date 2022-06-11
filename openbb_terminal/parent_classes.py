@@ -32,6 +32,7 @@ from openbb_terminal.helper_funcs import (
     set_command_location,
     prefill_form,
     support_message,
+    get_preferred_source,
 )
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.rich_config import console
@@ -554,7 +555,7 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
             choices=["yf", "av", "iex", "polygon"]
             if "-i" not in other_args or "--interval" not in other_args
             else ["yf", "polygon"],
-            default=obbff.PREFERRED_DATA_SOURCE,
+            default=get_preferred_source("stocks.load"),
             help="Source of historical data.",
         )
         parser.add_argument(
