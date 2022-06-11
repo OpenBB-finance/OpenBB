@@ -8,8 +8,6 @@ excerpt: "This guide introduces the user to the Options Screener, located within
 geekdocCollapseSection: true
 ---
 
-<h1>Introduction to the Options Screener</h1>
-
 The OpenBB options screener is a versatile discovery tool for an options trader. It is powered by the Open Source Community: https://github.com/Tyruiop/syncretism - go give this repository a star!
 
 ![The Options Screener Menu](https://user-images.githubusercontent.com/85772166/172467269-8752d7fe-a9c6-4cf6-bc6f-3f5a011037e4.png)
