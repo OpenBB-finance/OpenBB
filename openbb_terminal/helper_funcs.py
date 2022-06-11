@@ -1633,7 +1633,7 @@ def get_preferred_source(command_path):
             # Load the file as a JSON document
             json_doc = json.load(f)
 
-            # We are going to iterate thorugh each command as if it is broken up by period characters (.)
+            # We are going to iterate through each command as if it is broken up by period characters (.)
             path_objects = command_path.split(".")
 
             # Start iterating through the top-level JSON doc to start
