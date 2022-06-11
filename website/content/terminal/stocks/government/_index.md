@@ -30,9 +30,9 @@ The menu is divided into two sections. Features under the `Explore:` do not depe
 
 The trivial spending by government can be tracked with the command, `lastcontracts`. Screwdrivers, furniture, bath towels; keep tabs on where those tax dollars are spent.
 
-![The lastest agency line items to be reported](https://user-images.githubusercontent.com/85772166/173206164-a76b89f1-23fb-4ef1-ae0d-b1e7989f12ea.png)
+![The latest agency line items to be reported](https://user-images.githubusercontent.com/85772166/173206164-a76b89f1-23fb-4ef1-ae0d-b1e7989f12ea.png)
 
-`load` a specifc ticker to activate the lower features.
+`load` a specific ticker to activate the lower features.
 
 <h2>Examples</h2>
 
