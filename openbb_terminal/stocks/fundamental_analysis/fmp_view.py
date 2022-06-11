@@ -3,16 +3,18 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import List
 
+import matplotlib.pyplot as plt
 import pandas as pd
 
+from openbb_terminal.config_terminal import theme
+from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.decorators import check_api_key
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import export_data, print_rich_table
+from openbb_terminal.helper_funcs import export_data, print_rich_table, plot_autoscale
 from openbb_terminal.rich_config import console
-from openbb_terminal.stocks.fundamental_analysis.financial_modeling_prep import (
-    fmp_model,
-)
+from openbb_terminal.stocks.fundamental_analysis import fmp_model
 
 logger = logging.getLogger(__name__)
 
@@ -165,7 +167,7 @@ def display_discounted_cash_flow(
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
 def display_income_statement(
-    ticker: str, number: int, quarterly: bool = False, export: str = ""
+    ticker: str, number: int, quarterly: bool = False, ratios: bool = False, plot: List[str] = None, export: str = ""
 ):
     """Financial Modeling Prep ticker income statement
 
@@ -177,17 +179,35 @@ def display_income_statement(
         Number to get
     quarterly: bool
         Flag to get quarterly data
+    ratios: bool
+        Shows percentage change, by default False
+    plot: list
+        List of row labels to plot
     export: str
         Format to export data
     """
-    income = fmp_model.get_income(ticker, number, quarterly)
+    income, income_plot_data = fmp_model.get_income(ticker, number, quarterly, ratios)
 
     if not income.empty:
+        if plot:
+            rows_plot = len(plot)
+            income_plot_data.transpose()
+            if rows_plot == 1:
+                _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+                income_plot_data[plot[0].replace("_", " ")].plot(title=f"{plot[0].replace('_', ' ')} of {ticker.upper()}")
+                theme.style_primary_axis(ax)
+                theme.visualize_output()
+            else:
+                _, axes = plt.subplots(rows_plot)
+                for i in range(rows_plot):
+                    axes[i].plot(income_plot_data[plot[i].replace("_", " ")])
+                    theme.style_primary_axis(axes[0])
+
         income = income[income.columns[::-1]]
         print_rich_table(
             income.drop(index=["Final link", "Link"]),
             headers=list(income.columns),
-            title=f"{ticker.upper()} Income Statement",
+            title=f"{ticker.upper()} Income Statement" if not ratios else f"YoY Change of {ticker.upper()} Income Statement",
             show_index=True,
         )
 
