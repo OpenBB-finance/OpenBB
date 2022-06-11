@@ -1610,6 +1610,7 @@ def check_list_values(valid_values: List[str]):
     # Return function handle to checking function
     return check_list_values_from_valid_values_list
 
+
 def get_preferred_source(command_path):
     """
     Returns the preferred source for the given command. If a value is not available for the specific
@@ -1626,6 +1627,7 @@ def get_preferred_source(command_path):
     """
 
     import json
+
     try:
         with open(obbff.PREFERRED_DATA_SOURCE_FILE, "r") as f:
             # Load the file as a JSON document
@@ -1638,7 +1640,7 @@ def get_preferred_source(command_path):
             deepest_level = json_doc
 
             # If we still have entries in path_objects, continue to go deeper
-            while len(path_objects)>0:
+            while len(path_objects) > 0:
 
                 # Is this path object in the JSON doc? If so, go into that for our next iteration.
                 if path_objects[0] in deepest_level:
@@ -1654,5 +1656,8 @@ def get_preferred_source(command_path):
             # We got through all values, so return this as the final value
             return deepest_level
     except Exception as e:
-        console.print("Failed to load preferred source from file: " + obbff.PREFERRED_DATA_SOURCE_FILE)
+        console.print(
+            "Failed to load preferred source from file: "
+            + obbff.PREFERRED_DATA_SOURCE_FILE
+        )
         console.print(e)
