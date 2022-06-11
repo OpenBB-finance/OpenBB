@@ -1628,20 +1628,28 @@ def get_preferred_source(command_path):
     import json
     try:
         with open(obbff.PREFERRED_DATA_SOURCE_FILE, "r") as f:
+            # Load the file as a JSON document
             json_doc = json.load(f)
 
+            # We are going to iterate thorugh each command as if it is broken up by period characters (.)
             path_objects = command_path.split(".")
 
+            # Start iterating through the top-level JSON doc to start
             deepest_level = json_doc
+
+            # If we still have entries in path_objects, continue to go deeper
             while len(path_objects)>0:
+
+                # Is this path object in the JSON doc? If so, go into that for our next iteration.
                 if path_objects[0] in deepest_level:
                     # We found the element, so go one level deeper
                     deepest_level = deepest_level[path_objects[0]]
                 else:
-                    # We didn't findt he next level, so use the default at this level
+                    # We didn't find the next level, so use the default value at this level
                     return deepest_level["default"]
 
-                path_objects = path_objects[1:] # Go one level deeper into the path
+                # Go one level deeper into the path
+                path_objects = path_objects[1:]
 
             # We got through all values, so return this as the final value
             return deepest_level
