@@ -26,7 +26,7 @@ optional arguments:
   -i {1,5,15,30,60}, --interval {1,5,15,30,60}
                         Intraday stock minutes (default: 1440)
   --source {yf,av,iex,polygon}
-                        Source of historical data. (default: $OPENBB_PREFERRED_DATA_SOURCE value)
+                        Source of historical data. (default: stocks.load value from $OPENBB_PREFERRED_DATA_SOURCE_FILE file)
   -p, --prepost         Pre/After market hours. Only works for 'yf' source, and intraday data (default: False)
   -f FILEPATH, --file FILEPATH
                         Path to load custom file. (default: None)
