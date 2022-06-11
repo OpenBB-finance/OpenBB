@@ -50,6 +50,7 @@ class SettingsController(BaseController):
         "tz",
         "export",
         "preferred_data_source",
+        "preferred_data_source_file",
     ]
     PATH = "/settings/"
 
@@ -128,6 +129,10 @@ class SettingsController(BaseController):
         mt.add_raw("\n")
         mt.add_param("_preferred_data_source", obbff.PREFERRED_DATA_SOURCE)
         mt.add_raw("\n")
+        mt.add_cmd("preferred_data_source_file")
+        mt.add_raw("\n")
+        mt.add_param("_preferred_data_source_file", obbff.PREFERRED_DATA_SOURCE_FILE)
+        mt.add_raw("\n")
 
         console.print(text=mt.menu_text, menu="Settings")
 
@@ -163,6 +168,44 @@ class SettingsController(BaseController):
             obbff.PREFERRED_DATA_SOURCE = ns_parser.value
             set_key(
                 obbff.ENV_FILE, "OPENBB_PREFERRED_DATA_SOURCE", str(ns_parser.value)
+            )
+            console.print("")
+    
+    @log_start_end(log=logger)
+    def call_preferred_data_source_file(self, other_args: List[str]):
+        """Process preferred data source file command"""
+
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="preferred_data_source_file",
+            description="Preferred data source file.",
+        )
+        parser.add_argument(
+            "-v",
+            "--value",
+            type=str,
+            default="sources.json",
+            dest="value",
+            help="value",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-v")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            try:
+                import os
+                import os.path
+                the_path = os.getcwd() + os.path.sep + ns_parser.value
+                console.print("Loading sources from " + the_path)
+                with open(the_path, "r") as f:
+                    pass
+            except Exception as e:
+                console.print("Couldn't open the sources file!")
+                console.print(e)
+            obbff.PREFERRED_DATA_SOURCE_FILE = ns_parser.value
+            set_key(
+                obbff.ENV_FILE, "OPENBB_PREFERRED_DATA_SOURCE_FILE", str(ns_parser.value)
             )
             console.print("")
 
