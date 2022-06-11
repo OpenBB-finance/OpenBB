@@ -17,8 +17,8 @@ def controller(mocker):
     return SettingsController()
 
 
-@pytest.mark.parametrize("other", [["yf"], ["-v", "yf"]])
-def test_preferred_data_source(controller, other):
+@pytest.mark.parametrize("other", [["sources.json.default"], ["-v", "sources.json.default"]])
+def test_preferred_data_source_file(controller, other):
     controller.call_preferred_data_source(other)
 
 
