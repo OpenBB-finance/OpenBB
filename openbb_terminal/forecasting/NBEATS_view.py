@@ -125,7 +125,9 @@ def display_nbeats_forecast(
         label=f"Backtest {forecast_horizon}-Steps ahead forecast",
         figure=fig,
     )
-    predicted_values.plot(label=f"NBEATS Forecast past({past_covariates})", figure=fig)
+    predicted_values.plot(
+        label=f"NBEATS Forecast w/ past covs({past_covariates})", figure=fig
+    )
     ax.set_title(
         f"NBEATS for ${ticker_name} for next [{n_predict}] days (MAPE={precision:.2f}%)"
     )

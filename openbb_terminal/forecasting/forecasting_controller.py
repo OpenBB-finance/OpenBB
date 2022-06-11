@@ -754,7 +754,7 @@ class ForecastingController(BaseController):
             "--past_covariates",
             action="store",
             dest="past_covariates",
-            default="",
+            default=None,
             type=str,
             help="Past covariates(columns/features) in same dataset that may effect price. Comma seperated.",
         )
