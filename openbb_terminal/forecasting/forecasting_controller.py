@@ -52,7 +52,18 @@ logger = logging.getLogger(__name__)
 class ForecastingController(BaseController):
     """Forecasting class"""
 
-    CHOICES_COMMANDS: List[str] = ["load", "show", "expo", "theta", "rnn", "nbeats"]
+    CHOICES_COMMANDS: List[str] = [
+        "load",
+        "show",
+        "plot",
+        "combine",
+        "delete",
+        "export",
+        "expo",
+        "theta",
+        "rnn",
+        "nbeats",
+    ]
     # CHOICES_MENUS: List[str] = ["qa", "pred"]
     pandas_plot_choices = [
         "line",
@@ -76,7 +87,6 @@ class ForecastingController(BaseController):
         super().__init__(queue)
         self.files: List[str] = list()
         self.datasets: Dict[str, pd.DataFrame] = dict()
-        self.regression: Dict[Any[Dict, Any], Any] = dict()
 
         self.DATA_TYPES: List[str] = ["int", "float", "str", "bool", "category", "date"]
 
@@ -104,6 +114,12 @@ class ForecastingController(BaseController):
             choices["load"] = {c: None for c in self.DATA_FILES.keys()}
             choices["show"] = {c: None for c in self.files}
 
+            for feature in ["export", "show"]:
+                choices[feature] = {c: None for c in self.files}
+
+            for feature in ["plot"]:
+                choices[feature] = dict()
+
             self.choices = choices
 
             # To link to the support HTML
@@ -113,12 +129,43 @@ class ForecastingController(BaseController):
 
     def update_runtime_choices(self):
         if session and obbff.USE_PROMPT_TOOLKIT:
+            dataset_columns = {
+                f"{dataset}.{column}": {column: None, dataset: None}
+                for dataset, dataframe in self.datasets.items()
+                for column in dataframe.columns
+            }
 
-            # Autocomplete for the user to use a particular dataset
             for feature in [
+                "plot",
+                "delete",
+            ]:
+                self.choices[feature] = dataset_columns
+
+            for feature in [
+                "export",
                 "show",
-            ]:  # "expo"]:
+                # "clean",
+                # "index",
+                # "remove",
+                "combine",
+                # "rename",
+            ]:
                 self.choices[feature] = {c: None for c in self.files}
+
+            # self.choices["type"] = {
+            #     c: None for c in self.files + list(dataset_columns.keys())
+            # }
+            # self.choices["desc"] = {
+            #     c: None for c in self.files + list(dataset_columns.keys())
+            # }
+
+            pairs_timeseries = list()
+            for dataset_col in list(dataset_columns.keys()):
+                pairs_timeseries += [
+                    f"{dataset_col},{dataset_col2}"
+                    for dataset_col2 in list(dataset_columns.keys())
+                    if dataset_col != dataset_col2
+                ]
 
             self.completer = NestedCompleter.from_nested_dict(self.choices)
 
@@ -135,6 +182,10 @@ class ForecastingController(BaseController):
         mt.add_param("_loaded", self.loaded_dataset_cols)
         mt.add_info("_exploration_")
         mt.add_cmd("show", "", self.files)
+        mt.add_cmd("plot", "", self.files)
+        mt.add_cmd("combine", "", self.files)
+        mt.add_cmd("delete", "", self.files)
+        mt.add_cmd("export", "", self.files)
         mt.add_info("_tsforecasting_")
         mt.add_cmd("expo", "", self.files)
         mt.add_cmd("theta", "", self.files)
@@ -298,6 +349,185 @@ class ForecastingController(BaseController):
                     f"{ns_parser.name}_show",
                     df.head(ns_parser.limit),
                 )
+
+    @log_start_end(log=logger)
+    def call_plot(self, other_args: List[str]):
+        """Process plot command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="plot",
+            description="Plot data based on the index",
+        )
+        parser.add_argument(
+            "-v",
+            "--values",
+            help="Dataset.column values to be displayed in a plot",
+            dest="values",
+            type=check_list_values(self.choices["plot"]),
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-v")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
+        )
+
+        if ns_parser and ns_parser.values:
+            data: Dict = {}
+            for datasetcol in ns_parser.values:
+                dataset, col = datasetcol.split(".")
+                data[datasetcol] = self.datasets[dataset][col]
+
+            forecasting_view.display_plot(
+                data,
+                ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
+    def call_combine(self, other_args: List[str]):
+        """Process combine"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="combine",
+            description="The columns you want to add to a dataset. The first argument is the dataset to add columns in"
+            "and the remaining could be: <datasetX.column2>,<datasetY.column3>",
+        )
+        parser.add_argument(
+            "-d",
+            "--dataset",
+            help="Dataset to add columns to",
+            dest="dataset",
+            choices=self.choices["combine"],
+        )
+        parser.add_argument(
+            "-c",
+            "--columns",
+            help="The columns we want to add <dataset.column>,<datasetb.column2>",
+            dest="columns",
+            type=check_list_values(self.choices["delete"]),
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-d")
+        ns_parser = parse_known_args_and_warn(parser, other_args, NO_EXPORT)
+
+        if ns_parser:
+            if ns_parser.dataset not in self.datasets:
+                console.print(
+                    f"Not able to find the dataset {ns_parser.dataset}. Please choose one of "
+                    f"the following: {', '.join(self.datasets)}"
+                )
+                return
+
+            data = self.datasets[ns_parser.dataset]
+
+            for option in ns_parser.columns:
+                dataset, column = option.split(".")
+
+                if dataset not in self.datasets:
+                    console.print(
+                        f"Not able to find the dataset {dataset}. Please choose one of "
+                        f"the following: {', '.join(self.datasets)}"
+                    )
+                elif column not in self.datasets[dataset]:
+                    console.print(
+                        f"Not able to find the column {column}. Please choose one of "
+                        f"the following: {', '.join(self.datasets[dataset].columns)}"
+                    )
+                else:
+                    data[f"{dataset}_{column}"] = self.datasets[dataset][column]
+
+            self.update_runtime_choices()
+        console.print()
+
+    @log_start_end(log=logger)
+    def call_delete(self, other_args: List[str]):
+        """Process add"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="delete",
+            description="The column you want to delete from a dataset.",
+        )
+        parser.add_argument(
+            "-d",
+            "--delete",
+            help="The columns you want to delete from a dataset. Use format: <dataset.column> or"
+            " multiple with <dataset.column>,<datasetb.column2>",
+            dest="delete",
+            type=check_list_values(self.choices["delete"]),
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-d")
+        ns_parser = parse_known_args_and_warn(parser, other_args, NO_EXPORT)
+
+        if ns_parser:
+            for option in ns_parser.delete:
+                dataset, column = option.split(".")
+
+                if dataset not in self.datasets:
+                    console.print(
+                        f"Not able to find the dataset {dataset}. Please choose one of "
+                        f"the following: {', '.join(self.datasets)}"
+                    )
+                elif column not in self.datasets[dataset]:
+                    console.print(
+                        f"Not able to find the column {column}. Please choose one of "
+                        f"the following: {', '.join(self.datasets[dataset].columns)}"
+                    )
+                else:
+                    del self.datasets[dataset][column]
+
+            self.update_runtime_choices()
+        console.print()
+
+    @log_start_end(log=logger)
+    def call_export(self, other_args: List[str]):
+        """Process export command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="export",
+            description="Export dataset to Excel",
+        )
+
+        parser.add_argument(
+            "-n",
+            "--name",
+            dest="name",
+            help="The name of the dataset you wish to export",
+            type=str,
+        )
+
+        parser.add_argument(
+            "-t",
+            "--type",
+            help="The file type you wish to export to",
+            dest="type",
+            choices=self.file_types,
+            type=str,
+            default="xlsx",
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-n")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=NO_EXPORT
+        )
+
+        if ns_parser:
+            if not ns_parser.name or ns_parser.name not in self.datasets:
+                console.print("Please enter a valid dataset.")
+            else:
+                export_data(
+                    ns_parser.type,
+                    os.path.dirname(os.path.abspath(__file__)),
+                    ns_parser.name,
+                    self.datasets[ns_parser.name],
+                )
+
+        console.print()
 
     """
     TODO:

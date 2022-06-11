@@ -1093,9 +1093,13 @@ en:
   forecasting/load: load a dataset from csv
   forecasting/_loaded: Loaded files and data columns
   forecasting/_exploration_: Exploration
-  forecasting/show: show a portion of a loaded dataset
+  forecasting/show: Show a portion of a loaded dataset
+  forecasting/plot: Plot a specific column of a loaded dataset
+  forecasting/combine: Combine columns from different datasets
+  forecasting/delete: Delete columns from dataset
+  forecasting/export: Export a processed dataset
   forecasting/_tsforecasting_: TimeSeries Forecasting
   forecasting/expo: Probablistic Exponential Smoothing
   forecasting/theta: Theta Method
   forecasting/rnn: Recurrent Neural Network (Vanilla RNN, LSTM, GRU)
-  forecasting/nbeats: Neural Bayesian Estimation
+  forecasting/nbeats: Neural Bayesian Estimation (with multi-col input)
