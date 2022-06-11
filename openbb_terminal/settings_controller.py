@@ -51,7 +51,6 @@ class SettingsController(BaseController):
         "lang",
         "tz",
         "export",
-        "preferred_data_source",
         "preferred_data_source_file",
     ]
     PATH = "/settings/"
@@ -126,10 +125,6 @@ class SettingsController(BaseController):
         mt.add_cmd("monitor")
         mt.add_raw("\n")
         mt.add_param("_monitor", cfg_plot.MONITOR)
-        mt.add_raw("\n")
-        mt.add_cmd("preferred_data_source")
-        mt.add_raw("\n")
-        mt.add_param("_preferred_data_source", obbff.PREFERRED_DATA_SOURCE)
         mt.add_raw("\n")
         mt.add_cmd("preferred_data_source_file")
         mt.add_raw("\n")
