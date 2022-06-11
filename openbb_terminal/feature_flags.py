@@ -106,6 +106,9 @@ LOGGING_COMMIT_HASH = str(os.getenv("OPENBB_LOGGING_COMMIT_HASH", "REPLACE_ME"))
 # TODO: Consider adding support for this as a list, rather than as a single choice
 PREFERRED_DATA_SOURCE = str(os.getenv("OPENBB_PREFERRED_DATA_SOURCE", "yf"))
 
+# File that contains a JSON dictionary of preferred sources for commands
+PREFERRED_DATA_SOURCE_FILE = str(os.getenv("OPENBB_PREFERRED_DATA_SOURCE_FILE", "sources.json"))
+
 try:
     version = pkg_resources.get_distribution("OpenBBTerminal").version
 except Exception:
