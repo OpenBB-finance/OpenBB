@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 # IMPORTATION STANDARD
 import os
+import os.path
 import argparse
 import logging
 from typing import List
@@ -26,8 +27,6 @@ from openbb_terminal.helper_funcs import (
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console, MenuText
-import os
-import os.path
 
 # pylint: disable=too-many-lines,no-member,too-many-public-methods,C0302
 # pylint:disable=import-outside-toplevel
@@ -166,8 +165,10 @@ class SettingsController(BaseController):
 
                 the_path = os.getcwd() + os.path.sep + ns_parser.value
                 console.print("Loading sources from " + the_path)
-                with open(the_path, "r") as f:
+                with open(the_path, "r"):
+                    # Try to open the file to get an exception if the file doesn't exist
                     pass
+
             except Exception as e:
                 console.print("Couldn't open the sources file!")
                 console.print(e)
