@@ -10,7 +10,6 @@ from dotenv import load_dotenv
 from openbb_terminal.core.config.constants import ENV_FILE
 
 import i18n
-import os
 import os.path
 
 # pylint: disable=no-member
@@ -105,7 +104,12 @@ USE_LANGUAGE = str(os.getenv("OPENBB_USE_LANGUAGE", "en"))
 LOGGING_COMMIT_HASH = str(os.getenv("OPENBB_LOGGING_COMMIT_HASH", "REPLACE_ME"))
 
 # File that contains a JSON dictionary of preferred sources for commands
-PREFERRED_DATA_SOURCE_FILE = str(os.getenv("OPENBB_PREFERRED_DATA_SOURCE_FILE", os.getcwd() + os.path.sep + "sources.json.default"))
+PREFERRED_DATA_SOURCE_FILE = str(
+    os.getenv(
+        "OPENBB_PREFERRED_DATA_SOURCE_FILE",
+        os.getcwd() + os.path.sep + "sources.json.default",
+    )
+)
 
 try:
     version = pkg_resources.get_distribution("OpenBBTerminal").version
