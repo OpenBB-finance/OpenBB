@@ -779,3 +779,29 @@ class Coin:
         df = df.set_index("time")
         df["currency"] = vs_currency
         return df
+
+
+@log_start_end(log=logger)
+def get_ohlc(symbol: str, vs_currency: str = "usd", days: int = 90) -> pd.DataFrame:
+    """Get Open, High, Low, Close prices for given coin. [Source: CoinGecko]
+
+    Parameters
+    ----------
+    vs_currency: str
+        currency vs which display data
+    days: int
+        number of days to display the data
+        on from (1/7/14/30/90/180/365, max)
+
+    Returns
+    -------
+    pandas.DataFrame
+        OHLC data for coin
+        Columns: time, price, currency
+    """
+    client = CoinGeckoAPI()
+    prices = client.get_coin_ohlc_by_id(symbol, vs_currency, days)
+    df = pd.DataFrame(data=prices, columns=["date", "Open", "High", "Low", "Close"])
+    df["date"] = pd.to_datetime(df.date, unit="ms")
+    df = df.set_index("date")
+    return df

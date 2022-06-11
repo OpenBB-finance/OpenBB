@@ -20,6 +20,7 @@ from openbb_terminal.helper_funcs import (
     export_data,
     plot_autoscale,
     is_valid_axes_count,
+    print_rich_table,
 )
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.comparison_analysis import yahoo_finance_model
@@ -35,6 +36,7 @@ d_candle_types = {
     "c": "Close",
     "a": "Adj Close",
     "v": "Volume",
+    "r": "Returns",
 }
 
 
@@ -56,7 +58,7 @@ def display_historical(
     start : str, optional
         Start date of comparison, by default 1 year ago
     candle_type : str, optional
-        OHLCA column to use, by default "a" for Adjusted Close
+        OHLCA column to use or R to use daily returns calculated from Adjusted Close, by default "a" for Adjusted Close
     normalize : bool, optional
         Boolean to normalize all stock prices using MinMax defaults True
     export : str, optional
@@ -169,6 +171,8 @@ def display_correlation(
     candle_type: str = "a",
     external_axes: Optional[List[plt.Axes]] = None,
     export: str = "",
+    display_full_matrix: bool = False,
+    raw: bool = False,
 ):
     """
     Correlation heatmap based on historical price comparison
@@ -181,13 +185,16 @@ def display_correlation(
     start : str, optional
         Start date of comparison, by default 1 year ago
     candle_type : str, optional
-        OHLCA column to use, by default "a" for Adjusted Close
+        OHLCA column to use for candles or R for returns, by default "a" for Adjusted Close
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     export : str, optional
         Format to export correlation prices, by default ""
+    display_full_matrix : bool, optional
+        Optionally display all values in the matrix, rather than masking off half, by default False
 
     """
+
     df_similar = yahoo_finance_model.get_historical(similar_tickers, start, candle_type)
     df_similar = df_similar[similar_tickers]
 
@@ -200,8 +207,10 @@ def display_correlation(
 
     df_similar = df_similar.dropna(axis=1, how="all")
 
-    mask = np.zeros((df_similar.shape[1], df_similar.shape[1]), dtype=bool)
-    mask[np.triu_indices(len(mask))] = True
+    mask = None
+    if not display_full_matrix:
+        mask = np.zeros((df_similar.shape[1], df_similar.shape[1]), dtype=bool)
+        mask[np.triu_indices(len(mask))] = True
 
     # This plot has 1 axis
     if not external_axes:
@@ -211,8 +220,17 @@ def display_correlation(
     else:
         return
 
+    # Print correlations to command line as well
+    correlations = df_similar.corr()
+    if raw:
+        print_rich_table(
+            correlations,
+            headers=[x.title().upper() for x in correlations.columns],
+            show_index=True,
+        )
+
     sns.heatmap(
-        df_similar.corr(),
+        correlations,
         cbar_kws={"ticks": [-1.0, -0.5, 0.0, 0.5, 1.0]},
         cmap="RdYlGn",
         linewidths=1,

@@ -1,7 +1,7 @@
     load               load a specific cryptocurrency for analysis
 
 Coin: None
-Source: ?
+Source: cg
 
 Overview:
     info               basic information about loaded coin                                                 [CoinGecko]
