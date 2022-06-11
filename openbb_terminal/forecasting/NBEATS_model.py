@@ -31,9 +31,9 @@ def get_NBEATS_data(
     target_col: str = "close",
     past_covariates: str = None,
     train_split: float = 0.85,
-    forecast_horizon: int = 3,
-    input_chunk_length: int = 30,
-    output_chunk_length: int = 7,
+    forecast_horizon: int = 5,
+    input_chunk_length: int = 14,
+    output_chunk_length: int = 5,
     num_stacks: int = 10,
     num_blocks: int = 3,
     num_layers: int = 4,
@@ -195,16 +195,16 @@ def get_NBEATS_data(
         scaled_historical_fcast = best_model.historical_forecasts(
             scaled_ticker_series,
             past_covariates=scaled_past_covariate_whole,
-            start=float(train_split),
-            forecast_horizon=int(forecast_horizon),
+            start=train_split,
+            forecast_horizon=forecast_horizon,
             retrain=False,
             verbose=True,
         )
     else:
         scaled_historical_fcast = best_model.historical_forecasts(
             scaled_ticker_series,
-            start=float(train_split),
-            forecast_horizon=int(forecast_horizon),
+            start=train_split,
+            forecast_horizon=forecast_horizon,
             retrain=False,
             verbose=True,
         )
@@ -214,12 +214,10 @@ def get_NBEATS_data(
         scaled_prediction = best_model.predict(
             series=scaled_ticker_series,
             past_covariates=scaled_past_covariate_whole,
-            n=int(n_predict),
+            n=n_predict,
         )
     else:
-        scaled_prediction = best_model.predict(
-            series=scaled_ticker_series, n=int(n_predict)
-        )
+        scaled_prediction = best_model.predict(series=scaled_ticker_series, n=n_predict)
 
     precision = mape(
         actual_series=scaled_ticker_series, pred_series=scaled_historical_fcast

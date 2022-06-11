@@ -770,7 +770,7 @@ class ForecastingController(BaseController):
             "--forecasthorizon",
             action="store",
             dest="forecast_horizon",
-            default=7,
+            default=5,
             help="Days/Points to forecast when training and performing historical back-testing",
         )
         # NBEATS Hyperparameters
@@ -778,7 +778,7 @@ class ForecastingController(BaseController):
             "--input_chunk_length",
             action="store",
             dest="input_chunk_length",
-            default=30,
+            default=14,
             type=check_positive,
             help="The length of the input sequence fed to the model.",
         )
@@ -786,7 +786,7 @@ class ForecastingController(BaseController):
             "--output_chunk_length",
             action="store",
             dest="output_chunk_length",
-            default=7,
+            default=5,
             type=check_positive,
             help="The length of the forecast of the model.",
         )

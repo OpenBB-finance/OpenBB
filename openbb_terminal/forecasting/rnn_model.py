@@ -131,8 +131,8 @@ def get_rnn_data(
     # Showing historical backtesting without retraining model (too slow)
     scaled_historical_fcast = best_model.historical_forecasts(
         scaled_ticker_series,
-        start=float(train_split),
-        forecast_horizon=int(forecast_horizon),
+        start=train_split,
+        forecast_horizon=forecast_horizon,
         retrain=False,
         verbose=True,
     )
@@ -140,7 +140,7 @@ def get_rnn_data(
     # Predict N timesteps in the future
     scaled_prediction = best_model.predict(
         series=scaled_ticker_series,
-        n=int(n_predict),
+        n=n_predict,
     )
 
     precision = mape(
