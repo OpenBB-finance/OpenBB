@@ -1098,3 +1098,4 @@ en:
   forecasting/expo: Probablistic Exponential Smoothing
   forecasting/theta: Theta Method
   forecasting/rnn: Recurrent Neural Network (Vanilla RNN, LSTM, GRU)
+  forecasting/nbeats: Neural Bayesian Estimation

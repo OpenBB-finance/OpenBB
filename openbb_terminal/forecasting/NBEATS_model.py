@@ -1,5 +1,5 @@
 # pylint: disable=too-many-arguments
-"""RNN Model"""
+"""NBEATS Model"""
 __docformat__ = "numpy"
 
 import logging
@@ -13,7 +13,7 @@ import numpy as np
 import pandas as pd
 
 from darts import TimeSeries
-from darts.models import RNNModel
+from darts.models import NBEATSModel
 from darts.dataprocessing.transformers import MissingValuesFiller, Scaler
 from darts.metrics import mape
 from pytorch_lightning.callbacks.early_stopping import EarlyStopping
@@ -25,26 +25,28 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def get_rnn_data(
+def get_NBEATS_data(
     data: Union[pd.Series, pd.DataFrame],
     n_predict: int = 5,
     target_col: str = "close",
+    past_covariates: str = None,
     train_split: float = 0.85,
     forecast_horizon: int = 3,
-    model_type: str = "LSTM",
-    hidden_dim: int = 20,
-    dropout: float = 0.0,
-    batch_size: int = 16,
+    input_chunk_length: int = 30,
+    output_chunk_length: int = 7,
+    num_stacks: int = 10,
+    num_blocks: int = 3,
+    num_layers: int = 4,
+    layer_widths: int = 512,
+    batch_size: int = 800,
     n_epochs: int = 100,
     learning_rate: float = 1e-3,
-    model_save_name: str = "rnn_model",
-    training_length: int = 20,
-    input_chunk_size: int = 14,
+    model_save_name: str = "nbeats_model",
     force_reset: bool = True,
     save_checkpoints: bool = True,
 ) -> Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], float, Any]:
 
-    """Performs Recurrent Neural Network forecasting
+    """Performs NBEATS forecasting
 
     Parameters
     ----------
@@ -62,13 +64,13 @@ def get_rnn_data(
     List[TimeSeries]
         Adjusted Data series
     List[TimeSeries]
-        Historical forecast by best RNN model
+        Historical forecast by best NBEATS model
     List[TimeSeries]
         list of Predictions
     float
         Mean average precision error
     Any
-        RNN Model
+        NBEATS Model
     """
     filler = MissingValuesFiller()
     scaler = Scaler()
@@ -76,7 +78,7 @@ def get_rnn_data(
     # TODO add proper doc string
     # TODO Check if torch GPU AVAILABLE
     # TODO add in covariates
-    # todo add in all possible parameters for training - RNN does not take past covariates
+    # todo add in all possible parameters for training
     # Export model / save
     # load trained model
 
@@ -96,41 +98,96 @@ def get_rnn_data(
     scaled_train, scaled_val = scaled_ticker_series.split_before(float(train_split))
 
     # --------------------------------------------------
+    # Covariates
+    # split covariates by name filering out commas
+    covariates_scalers = []  # to hold all temp scalers in case we need them
+    target_covariates_names = past_covariates.split(",")
+
+    # create first covariate to then stack onto
+    past_covariate_scaler = Scaler()
+    console.print(f"[green]First Covariate: {target_covariates_names[0]}[/green]")
+    scaled_past_covariate_whole = past_covariate_scaler.fit_transform(
+        filler.transform(
+            TimeSeries.from_dataframe(
+                data,
+                time_col="date",
+                value_cols=target_covariates_names[0],
+                freq="B",
+                fill_missing_dates=True,
+            )
+        )
+    ).astype(np.float32)
+
+    if len(target_covariates_names) > 1:
+        for column in target_covariates_names[1:]:
+            console.print(f"[green]Other Covariate: {column}[/green]")
+            _temp_scaler = Scaler()
+            covariates_scalers.append(_temp_scaler)
+            _temp_new_scaled_covariate = _temp_scaler.fit_transform(
+                filler.transform(
+                    TimeSeries.from_dataframe(
+                        data,
+                        time_col="date",
+                        value_cols=[column],
+                        freq="B",
+                        fill_missing_dates=True,
+                    )
+                )
+            ).astype(np.float32)
+
+            # continually stack covariates based on column names
+            scaled_past_covariate_whole = scaled_past_covariate_whole.stack(
+                _temp_new_scaled_covariate
+            )
+
+    # Split the full scale covariate to train and val
+    (
+        scaled_past_covariate_train,
+        scaled_past_covariate_val,
+    ) = scaled_past_covariate_whole.split_before(float(train_split))
+
+    # --------------------------------------------------
     # Early Stopping
     my_stopper = EarlyStopping(
         monitor="val_loss",
-        patience=5,
+        patience=10,
         min_delta=0,
         mode="min",
     )
     pl_trainer_kwargs = {"callbacks": [my_stopper], "accelerator": "cpu"}
 
-    rnn_model = RNNModel(
-        model=model_type,
-        hidden_dim=hidden_dim,
-        dropout=dropout,
-        batch_size=batch_size,
+    nbeats_model = NBEATSModel(
+        input_chunk_length=input_chunk_length,
+        output_chunk_length=output_chunk_length,
+        generic_architecture=True,
+        num_stacks=num_stacks,
+        num_blocks=num_blocks,
+        num_layers=num_layers,
+        layer_widths=layer_widths,
         n_epochs=n_epochs,
+        nr_epochs_val_period=1,
+        batch_size=batch_size,
         optimizer_kwargs={"lr": learning_rate},
         model_name=model_save_name,
-        random_state=42,
-        training_length=training_length,
-        input_chunk_length=input_chunk_size,
-        pl_trainer_kwargs=pl_trainer_kwargs,
         force_reset=force_reset,
         save_checkpoints=save_checkpoints,
+        random_state=42,
+        pl_trainer_kwargs=pl_trainer_kwargs,
     )
 
     # fit model on train series for historical forecasting
-    rnn_model.fit(
+    nbeats_model.fit(
         series=scaled_train,
         val_series=scaled_val,
+        past_covariates=scaled_past_covariate_train,
+        val_past_covariates=scaled_past_covariate_val,
     )
-    best_model = RNNModel.load_from_checkpoint(model_name="rnn_model", best=True)
+    best_model = NBEATSModel.load_from_checkpoint(model_name="nbeats_model", best=True)
 
     # Showing historical backtesting without retraining model (too slow)
     scaled_historical_fcast = best_model.historical_forecasts(
         scaled_ticker_series,
+        past_covariates=scaled_past_covariate_whole,
         start=float(train_split),
         forecast_horizon=int(forecast_horizon),
         retrain=False,
@@ -140,13 +197,14 @@ def get_rnn_data(
     # Predict N timesteps in the future
     scaled_prediction = best_model.predict(
         series=scaled_ticker_series,
+        past_covariates=scaled_past_covariate_whole,
         n=int(n_predict),
     )
 
     precision = mape(
         actual_series=scaled_ticker_series, pred_series=scaled_historical_fcast
     )  # mape = mean average precision error
-    console.print(f"RNN model obtains MAPE: {precision:.2f}% \n")
+    console.print(f"NBEATS model obtains MAPE: {precision:.2f}% \n")
 
     # scale back
     ticker_series = scaler.inverse_transform(scaled_ticker_series)

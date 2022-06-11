@@ -1,4 +1,4 @@
-"""RNN View"""
+"""NBEATS View"""
 __docformat__ = "numpy"
 
 import logging
@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 from openbb_terminal.config_terminal import theme
-from openbb_terminal.forecasting import rnn_model
+from openbb_terminal.forecasting import NBEATS_model
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
@@ -39,27 +39,29 @@ def dt_format(x):
 
 
 @log_start_end(log=logger)
-def display_rnn_forecast(
+def display_nbeats_forecast(
     data: Union[pd.DataFrame, pd.Series],
     ticker_name: str,
     n_predict: int = 5,
     target_col: str = "close",
+    past_covariates: str = None,
     train_split: float = 0.85,
     forecast_horizon: int = 3,
-    model_type: str = "LSTM",
-    hidden_dim: int = 20,
-    dropout: float = 0.0,
-    batch_size: int = 16,
+    input_chunk_length: int = 30,
+    output_chunk_length: int = 7,
+    num_stacks: int = 10,
+    num_blocks: int = 3,
+    num_layers: int = 4,
+    layer_widths: int = 512,
     n_epochs: int = 100,
     learning_rate: float = 1e-3,
-    model_save_name: str = "rnn_model",
-    training_length: int = 20,
-    input_chunk_size: int = 14,
+    batch_size: int = 800,
+    model_save_name: str = "nbeats_model",
     force_reset: bool = True,
     save_checkpoints: bool = True,
     export: str = "",
 ):
-    """Display RNN forecast
+    """Display NBEATS forecast
 
     Parameters
     ----------
@@ -86,21 +88,23 @@ def display_rnn_forecast(
         predicted_values,
         precision,
         _model,
-    ) = rnn_model.get_rnn_data(
+    ) = NBEATS_model.get_NBEATS_data(
         data,
         n_predict,
         target_col,
+        past_covariates,
         train_split,
         forecast_horizon,
-        model_type,
-        hidden_dim,
-        dropout,
+        input_chunk_length,
+        output_chunk_length,
+        num_stacks,
+        num_blocks,
+        num_layers,
+        layer_widths,
         batch_size,
         n_epochs,
         learning_rate,
         model_save_name,
-        training_length,
-        input_chunk_size,
         force_reset,
         save_checkpoints,
     )
@@ -121,9 +125,9 @@ def display_rnn_forecast(
         label=f"Backtest {forecast_horizon}-Steps ahead forecast",
         figure=fig,
     )
-    predicted_values.plot(label="RNN Forecast", figure=fig)
+    predicted_values.plot(label="NBEATS Forecast", figure=fig)
     ax.set_title(
-        f"RNN for ${ticker_name} for next [{n_predict}] days (MAPE={precision:.2f}%)"
+        f"NBEATS for ${ticker_name} for next [{n_predict}] days (MAPE={precision:.2f}%)"
     )
     ax.set_ylabel(target_col)
     ax.set_xlabel("Date")

@@ -36,15 +36,12 @@ from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.forecasting import (
     forecasting_model,
     forecasting_view,
-    rnn_view,
-)
-from openbb_terminal.forecasting import (
     expo_model,
     expo_view,
     theta_model,
     theta_view,
-    rnn_model,  # keep so that I can use RNN.LSTM / RNN.GRU (like theta model)
     rnn_view,
+    NBEATS_view,
 )
 
 logger = logging.getLogger(__name__)
@@ -55,7 +52,7 @@ logger = logging.getLogger(__name__)
 class ForecastingController(BaseController):
     """Forecasting class"""
 
-    CHOICES_COMMANDS: List[str] = ["load", "show", "expo", "theta", "rnn"]
+    CHOICES_COMMANDS: List[str] = ["load", "show", "expo", "theta", "rnn", "nbeats"]
     # CHOICES_MENUS: List[str] = ["qa", "pred"]
     pandas_plot_choices = [
         "line",
@@ -142,6 +139,7 @@ class ForecastingController(BaseController):
         mt.add_cmd("expo", "", self.files)
         mt.add_cmd("theta", "", self.files)
         mt.add_cmd("rnn", "", self.files)
+        mt.add_cmd("nbeats", "", self.files)
 
         console.print(text=mt.menu_text, menu="Forecasting")
 
@@ -570,14 +568,6 @@ class ForecastingController(BaseController):
             help="target column.",
         )
         parser.add_argument(
-            "--past_covariates",
-            action="store",
-            dest="past_covariates",
-            default="",
-            type=str,
-            help="Past covariates(columns/features) in same dataset that may effect price. Comma seperated.",
-        )
-        parser.add_argument(
             "--train_split",
             action="store",
             dest="train_split",
@@ -709,7 +699,6 @@ class ForecastingController(BaseController):
                 ticker_name=ns_parser.target_dataset,
                 n_predict=ns_parser.n_days,
                 target_col=ns_parser.target_col,
-                past_covariates=ns_parser.past_covariates,
                 train_split=ns_parser.train_split,
                 forecast_horizon=ns_parser.forecast_horizon,
                 model_type=ns_parser.model_type,
@@ -721,6 +710,205 @@ class ForecastingController(BaseController):
                 model_save_name=ns_parser.model_save_name,
                 training_length=ns_parser.training_length,
                 input_chunk_size=ns_parser.input_chunk_size,
+                force_reset=ns_parser.force_reset,
+                save_checkpoints=ns_parser.save_checkpoints,
+                export=ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
+    def call_nbeats(self, other_args: List[str]):
+        """Process NBEATS command"""
+        parser = argparse.ArgumentParser(
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            add_help=False,
+            prog="rnn",
+            description="""
+                Perform NBEATS forecast (Neural Bayesian Estimation of Time Series).
+            """,
+        )
+        parser.add_argument(
+            "--target_dataset",
+            type=str,
+            choices=self.files,
+            dest="target_dataset",
+            help="Dataset name",
+        )
+        parser.add_argument(
+            "-n",
+            "--n_days",
+            action="store",
+            dest="n_days",
+            type=check_positive,
+            default=5,
+            help="prediction days.",
+        )
+        parser.add_argument(
+            "--target_forecast_column",
+            action="store",
+            dest="target_col",
+            default="close",
+            type=str,
+            help="target column.",
+        )
+        parser.add_argument(
+            "--past_covariates",
+            action="store",
+            dest="past_covariates",
+            default="",
+            type=str,
+            help="Past covariates(columns/features) in same dataset that may effect price. Comma seperated.",
+        )
+        parser.add_argument(
+            "--train_split",
+            action="store",
+            dest="train_split",
+            default=0.85,
+            type=check_positive_float,
+            help="Start point for rolling training and forecast window. 0.0-1.0",
+        )
+        parser.add_argument(
+            "--forecasthorizon",
+            action="store",
+            dest="forecast_horizon",
+            default=7,
+            help="Days/Points to forecast when training and performing historical back-testing",
+        )
+        # NBEATS Hyperparameters
+        parser.add_argument(
+            "--input_chunk_length",
+            action="store",
+            dest="input_chunk_length",
+            default=30,
+            type=check_positive,
+            help="The length of the input sequence fed to the model.",
+        )
+        parser.add_argument(
+            "--output_chunk_length",
+            action="store",
+            dest="output_chunk_length",
+            default=7,
+            type=check_positive,
+            help="The length of the forecast of the model.",
+        )
+        parser.add_argument(
+            "--num_stacks",
+            action="store",
+            dest="num_stacks",
+            default=10,
+            type=check_positive_float,
+            help="The number of stacks that make up the whole model.",
+        )
+        parser.add_argument(
+            "--num_blocks",
+            action="store",
+            dest="num_blocks",
+            default=3,
+            type=check_positive,
+            help="The number of blocks making up every stack.",
+        )
+        parser.add_argument(
+            "--num_layers",
+            action="store",
+            dest="num_layers",
+            default=4,
+            type=check_positive,
+            help="he number of fully connected layers preceding the final forking layers in each block of every stack.",
+        )
+        parser.add_argument(
+            "--layer_widths",
+            action="store",
+            dest="layer_widths",
+            default=512,
+            type=check_positive,
+            help="Determines the number of neurons that make up each fully connected layer in each block of every stack",
+        )
+        parser.add_argument(
+            "--batch_size",
+            action="store",
+            dest="batch_size",
+            default=800,
+            type=check_positive,
+            help="Number of time series (input and output sequences) used in each training pass.",
+        )
+        parser.add_argument(
+            "--n_epochs",
+            action="store",
+            dest="n_epochs",
+            default=100,
+            type=check_positive,
+            help="Number of epochs over which to train the model.",
+        )
+        parser.add_argument(
+            "--learning_rate",
+            action="store",
+            dest="learning_rate",
+            default=1e-3,
+            type=check_positive_float,
+            help="Learning rate during training.",
+        )
+        parser.add_argument(
+            "--model_save_name",
+            type=str,
+            action="store",
+            dest="model_save_name",
+            default="nbeats_model",
+            help="Name of the model to save.",
+        )
+        parser.add_argument(
+            "--force_reset",
+            action="store",
+            dest="force_reset",
+            default=True,
+            type=bool,
+            help="If set to True, any previously-existing model with the same name will be reset (all checkpoints will be discarded).",
+        )
+        parser.add_argument(
+            "--save_checkpoints",
+            action="store",
+            dest="save_checkpoints",
+            default=True,
+            type=bool,
+            help="Whether or not to automatically save the untrained model and checkpoints from training.",
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
+        )
+
+        if ns_parser:
+            # check proper file name is provided
+            if not ns_parser.target_dataset:
+                console.print("[red]Please enter valid dataset.\n[/red]")
+                return
+
+            # must check that target col is within target series
+            if (
+                ns_parser.target_col
+                not in self.datasets[ns_parser.target_dataset].columns
+            ):
+                console.print(
+                    f"[red]The target column {ns_parser.target_col} does not exist in dataframe.\n[/red]"
+                )
+                return
+
+            NBEATS_view.display_nbeats_forecast(
+                data=self.datasets[ns_parser.target_dataset],
+                ticker_name=ns_parser.target_dataset,
+                n_predict=ns_parser.n_days,
+                target_col=ns_parser.target_col,
+                past_covariates=ns_parser.past_covariates,
+                train_split=ns_parser.train_split,
+                forecast_horizon=ns_parser.forecast_horizon,
+                input_chunk_length=ns_parser.input_chunk_length,
+                output_chunk_length=ns_parser.output_chunk_length,
+                num_stacks=ns_parser.num_stacks,
+                num_blocks=ns_parser.num_blocks,
+                num_layers=ns_parser.num_layers,
+                layer_widths=ns_parser.layer_widths,
+                batch_size=ns_parser.batch_size,
+                n_epochs=ns_parser.n_epochs,
+                learning_rate=ns_parser.learning_rate,
+                model_save_name=ns_parser.model_save_name,
                 force_reset=ns_parser.force_reset,
                 save_checkpoints=ns_parser.save_checkpoints,
                 export=ns_parser.export,
