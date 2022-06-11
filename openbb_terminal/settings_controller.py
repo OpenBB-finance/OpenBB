@@ -173,7 +173,9 @@ class SettingsController(BaseController):
                 console.print(e)
             obbff.PREFERRED_DATA_SOURCE_FILE = ns_parser.value
             set_key(
-                obbff.ENV_FILE, "OPENBB_PREFERRED_DATA_SOURCE_FILE", str(ns_parser.value)
+                obbff.ENV_FILE,
+                "OPENBB_PREFERRED_DATA_SOURCE_FILE",
+                str(ns_parser.value),
             )
             console.print("")
 
