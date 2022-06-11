@@ -21,7 +21,6 @@ def controller(mocker):
 def test_preferred_data_source_file(controller, other):
     controller.call_preferred_data_source(other)
 
-
 def test_print_help(controller):
     controller.print_help()
 
