@@ -26,6 +26,8 @@ from openbb_terminal.helper_funcs import (
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console, MenuText
+import os
+import os.path
 
 # pylint: disable=too-many-lines,no-member,too-many-public-methods,C0302
 # pylint:disable=import-outside-toplevel
@@ -157,7 +159,7 @@ class SettingsController(BaseController):
             "-v",
             "--value",
             type=str,
-            default="sources.json",
+            default=os.getcwd() + os.path.sep + "sources.json.default",
             dest="value",
             help="value",
         )
@@ -166,8 +168,7 @@ class SettingsController(BaseController):
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             try:
-                import os
-                import os.path
+
                 the_path = os.getcwd() + os.path.sep + ns_parser.value
                 console.print("Loading sources from " + the_path)
                 with open(the_path, "r") as f:
