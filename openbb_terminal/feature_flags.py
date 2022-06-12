@@ -3,10 +3,10 @@ import os
 import os.path
 from distutils.util import strtobool
 import pkg_resources
-import i18n
 
 # IMPORTATION THIRDPARTY
 from dotenv import load_dotenv
+import i18n
 
 # IMPORTATION INTERNAL
 from openbb_terminal.core.config.constants import ENV_FILE
