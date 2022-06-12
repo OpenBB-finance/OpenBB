@@ -34,6 +34,7 @@ from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.forecasting import (
+    TCN_view,
     forecasting_model,
     forecasting_view,
     expo_model,
@@ -63,6 +64,11 @@ class ForecastingController(BaseController):
         "theta",
         "rnn",
         "nbeats",
+        "tcn",
+        "regr",
+        "brnn",
+        "trans",
+        "tft",
     ]
     # CHOICES_MENUS: List[str] = ["qa", "pred"]
     pandas_plot_choices = [
@@ -191,6 +197,12 @@ class ForecastingController(BaseController):
         mt.add_cmd("theta", "", self.files)
         mt.add_cmd("rnn", "", self.files)
         mt.add_cmd("nbeats", "", self.files)
+        mt.add_cmd("tcn", "", self.files)
+        mt.add_info("_comingsoon_")
+        mt.add_cmd("regr", "", self.files)
+        mt.add_cmd("brnn", "", self.files)
+        mt.add_cmd("trans", "", self.files)
+        mt.add_cmd("tft", "", self.files)
 
         console.print(text=mt.menu_text, menu="Forecasting")
 
@@ -528,14 +540,6 @@ class ForecastingController(BaseController):
                 )
 
         console.print()
-
-    """
-    TODO:
-    - target series and supplimental series
-    - Timeseries frequency
-    - past covariates aka. pick columns
-    - create your own time series
-    """
 
     # EXPO Model
     @log_start_end(log=logger)
@@ -896,7 +900,8 @@ class ForecastingController(BaseController):
             dest="force_reset",
             default=True,
             type=bool,
-            help="If set to True, any previously-existing model with the same name will be reset (all checkpoints will be discarded).",
+            help="""If set to True, any previously-existing model with the same name will be reset
+                    (all checkpoints will be discarded).""",
         )
         parser.add_argument(
             "--save_checkpoints",
@@ -1045,7 +1050,7 @@ class ForecastingController(BaseController):
             dest="num_layers",
             default=4,
             type=check_positive,
-            help="he number of fully connected layers preceding the final forking layers in each block of every stack.",
+            help="The number of fully connected layers preceding the final forking layers in each block of every stack.",
         )
         parser.add_argument(
             "--layer_widths",
@@ -1053,7 +1058,8 @@ class ForecastingController(BaseController):
             dest="layer_widths",
             default=512,
             type=check_positive,
-            help="Determines the number of neurons that make up each fully connected layer in each block of every stack",
+            help="""Determines the number of neurons that make up each fully connected layer
+                in each block of every stack""",
         )
         parser.add_argument(
             "--batch_size",
@@ -1146,3 +1152,219 @@ class ForecastingController(BaseController):
                 save_checkpoints=ns_parser.save_checkpoints,
                 export=ns_parser.export,
             )
+
+    @log_start_end(log=logger)
+    def call_tcn(self, other_args: List[str]):
+        """Process TCN command"""
+        parser = argparse.ArgumentParser(
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            add_help=False,
+            prog="rnn",
+            description="""
+                Perform TCN forecast.
+            """,
+        )
+        parser.add_argument(
+            "--target_dataset",
+            type=str,
+            choices=self.files,
+            dest="target_dataset",
+            help="Dataset name",
+        )
+        parser.add_argument(
+            "-n",
+            "--n_days",
+            action="store",
+            dest="n_days",
+            type=check_positive,
+            default=5,
+            help="prediction days.",
+        )
+        parser.add_argument(
+            "--target_forecast_column",
+            action="store",
+            dest="target_col",
+            default="close",
+            type=str,
+            help="target column.",
+        )
+        parser.add_argument(
+            "--past_covariates",
+            action="store",
+            dest="past_covariates",
+            default=None,
+            type=str,
+            help="Past covariates(columns/features) in same dataset that may effect price. Comma seperated.",
+        )
+        parser.add_argument(
+            "--train_split",
+            action="store",
+            dest="train_split",
+            default=0.85,
+            type=check_positive_float,
+            help="Start point for rolling training and forecast window. 0.0-1.0",
+        )
+        parser.add_argument(
+            "--forecasthorizon",
+            action="store",
+            dest="forecast_horizon",
+            default=5,
+            help="Days/Points to forecast when training and performing historical back-testing",
+        )
+        # TCN Hyperparameters
+        parser.add_argument(
+            "--input_chunk_length",
+            action="store",
+            dest="input_chunk_length",
+            default=14,
+            type=check_positive,
+            help="The length of the input sequence fed to the model.",
+        )
+        parser.add_argument(
+            "--output_chunk_length",
+            action="store",
+            dest="output_chunk_length",
+            default=5,
+            type=check_positive,
+            help="The length of the forecast of the model.",
+        )
+        parser.add_argument(
+            "--dropout",
+            action="store",
+            dest="dropout",
+            default=0.1,
+            type=check_positive_float,
+            help="The dropout rate for every convolutional layer.",
+        )
+        parser.add_argument(
+            "--num_filters",
+            action="store",
+            dest="num_filters",
+            default=3,
+            type=check_positive,
+            help="The number of filters in a convolutional layer of the TCN",
+        )
+        parser.add_argument(
+            "--weight_norm",
+            action="store",
+            dest="weight_norm",
+            default=True,
+            type=bool,
+            help="Boolean value indicating whether to use weight normalization.",
+        )
+        parser.add_argument(
+            "--dilation_base",
+            action="store",
+            dest="dilation_base",
+            default=2,
+            type=check_positive,
+            help="The base of the exponent that will determine the dilation on every level.",
+        )
+        parser.add_argument(
+            "--batch_size",
+            action="store",
+            dest="batch_size",
+            default=32,
+            type=check_positive,
+            help="Number of time series (input and output sequences) used in each training pass.",
+        )
+        parser.add_argument(
+            "--n_epochs",
+            action="store",
+            dest="n_epochs",
+            default=100,
+            type=check_positive,
+            help="Number of epochs over which to train the model.",
+        )
+        parser.add_argument(
+            "--learning_rate",
+            action="store",
+            dest="learning_rate",
+            default=1e-3,
+            type=check_positive_float,
+            help="Learning rate during training.",
+        )
+        parser.add_argument(
+            "--model_save_name",
+            type=str,
+            action="store",
+            dest="model_save_name",
+            default="tcn_model",
+            help="Name of the model to save.",
+        )
+        parser.add_argument(
+            "--force_reset",
+            action="store",
+            dest="force_reset",
+            default=True,
+            type=bool,
+            help="If set to True, any previously-existing model with the same name will be reset (all checkpoints will be discarded).",
+        )
+        parser.add_argument(
+            "--save_checkpoints",
+            action="store",
+            dest="save_checkpoints",
+            default=True,
+            type=bool,
+            help="Whether or not to automatically save the untrained model and checkpoints from training.",
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
+        )
+
+        if ns_parser:
+            # check proper file name is provided
+            if not ns_parser.target_dataset:
+                console.print("[red]Please enter valid dataset.\n[/red]")
+                return
+
+            # must check that target col is within target series
+            if (
+                ns_parser.target_col
+                not in self.datasets[ns_parser.target_dataset].columns
+            ):
+                console.print(
+                    f"[red]The target column {ns_parser.target_col} does not exist in dataframe.\n[/red]"
+                )
+                return
+
+            TCN_view.display_tcn_forecast(
+                data=self.datasets[ns_parser.target_dataset],
+                ticker_name=ns_parser.target_dataset,
+                n_predict=ns_parser.n_days,
+                target_col=ns_parser.target_col,
+                past_covariates=ns_parser.past_covariates,
+                train_split=ns_parser.train_split,
+                forecast_horizon=ns_parser.forecast_horizon,
+                input_chunk_length=ns_parser.input_chunk_length,
+                output_chunk_length=ns_parser.output_chunk_length,
+                dropout=ns_parser.dropout,
+                num_filters=ns_parser.num_filters,
+                weight_norm=ns_parser.weight_norm,
+                dilation_base=ns_parser.dilation_base,
+                batch_size=ns_parser.batch_size,
+                n_epochs=ns_parser.n_epochs,
+                learning_rate=ns_parser.learning_rate,
+                model_save_name=ns_parser.model_save_name,
+                force_reset=ns_parser.force_reset,
+                save_checkpoints=ns_parser.save_checkpoints,
+                export=ns_parser.export,
+            )
+
+    # Coming soon to a theater near you :)
+    @log_start_end(log=logger)
+    def call_regr(self, other_args: List[str]):
+        console.print("[green]Coming soon!\n[/green]")
+
+    @log_start_end(log=logger)
+    def call_brnn(self, other_args: List[str]):
+        console.print("[green]Coming soon!\n[/green]")
+
+    @log_start_end(log=logger)
+    def call_trans(self, other_args: List[str]):
+        console.print("[green]Coming soon!\n[/green]")
+
+    @log_start_end(log=logger)
+    def call_tft(self, other_args: List[str]):
+        console.print("[green]Coming soon!\n[/green]")
