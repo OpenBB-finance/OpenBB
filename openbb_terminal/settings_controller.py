@@ -165,7 +165,7 @@ class SettingsController(BaseController):
 
                 the_path = os.getcwd() + os.path.sep + ns_parser.value
                 console.print("Loading sources from " + the_path)
-                with open(the_path, "r"):
+                with open(the_path):
                     # Try to open the file to get an exception if the file doesn't exist
                     pass
 

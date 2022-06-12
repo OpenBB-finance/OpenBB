@@ -1629,7 +1629,7 @@ def get_preferred_source(command_path):
     import json
 
     try:
-        with open(obbff.PREFERRED_DATA_SOURCE_FILE, "r") as f:
+        with open(obbff.PREFERRED_DATA_SOURCE_FILE) as f:
             # Load the file as a JSON document
             json_doc = json.load(f)
 
