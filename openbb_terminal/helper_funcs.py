@@ -15,6 +15,7 @@ import sys
 from difflib import SequenceMatcher
 import webbrowser
 import urllib.parse
+import json
 
 import pytz
 import pandas as pd
@@ -1626,8 +1627,6 @@ def get_preferred_source(command_path):
     The preferred source for the given command
     """
 
-    import json
-
     try:
         with open(obbff.PREFERRED_DATA_SOURCE_FILE) as f:
             # Load the file as a JSON document
@@ -1661,3 +1660,4 @@ def get_preferred_source(command_path):
             + obbff.PREFERRED_DATA_SOURCE_FILE
         )
         console.print(e)
+        return None

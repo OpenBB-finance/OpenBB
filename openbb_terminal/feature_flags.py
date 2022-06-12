@@ -1,16 +1,15 @@
 # IMPORTATION STANDARD
 import os
+import os.path
 from distutils.util import strtobool
 import pkg_resources
+import i18n
 
 # IMPORTATION THIRDPARTY
 from dotenv import load_dotenv
 
 # IMPORTATION INTERNAL
 from openbb_terminal.core.config.constants import ENV_FILE
-
-import i18n
-import os.path
 
 # pylint: disable=no-member
 
