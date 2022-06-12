@@ -117,11 +117,20 @@ def display_rnn_forecast(
 
     # ax = fig.get_axes()[0] # fig gives list of axes (only one for this case)
     ticker_series.plot(label=target_col, figure=fig)
+
+    # TODO - fix why +/- quantiles are not plotted.
     historical_fcast.plot(
         label=f"Backtest {forecast_horizon}-Steps ahead forecast",
+        low_quantile=0.1,
+        high_quantile=0.9,
         figure=fig,
     )
-    predicted_values.plot(label="RNN Forecast", figure=fig)
+    predicted_values.plot(
+        label="RNN Probabilistic Forecast",
+        low_quantile=0.1,
+        high_quantile=0.9,
+        figure=fig,
+    )
     ax.set_title(
         f"RNN for ${ticker_name} for next [{n_predict}] days (MAPE={precision:.2f}%)"
     )
@@ -132,7 +141,9 @@ def display_rnn_forecast(
     if not external_axes:
         theme.visualize_output()
 
-    numeric_forecast = predicted_values.pd_dataframe()[target_col].tail(n_predict)
+    numeric_forecast = predicted_values.quantile_df()[f"{target_col}_0.5"].tail(
+        n_predict
+    )
     print_pretty_prediction(numeric_forecast, data[target_col].iloc[-1])
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "expo")

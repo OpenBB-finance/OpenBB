@@ -15,6 +15,7 @@ import pandas as pd
 from darts import TimeSeries
 from darts.models import RNNModel
 from darts.dataprocessing.transformers import MissingValuesFiller, Scaler
+from darts.utils.likelihood_models import GaussianLikelihood
 from darts.metrics import mape
 from pytorch_lightning.callbacks.early_stopping import EarlyStopping
 from openbb_terminal.decorators import log_start_end
@@ -119,6 +120,7 @@ def get_rnn_data(
         pl_trainer_kwargs=pl_trainer_kwargs,
         force_reset=force_reset,
         save_checkpoints=save_checkpoints,
+        likelihood=GaussianLikelihood(),
     )
 
     # fit model on train series for historical forecasting
@@ -135,12 +137,12 @@ def get_rnn_data(
         forecast_horizon=forecast_horizon,
         retrain=False,
         verbose=True,
+        num_samples=500,
     )
 
     # Predict N timesteps in the future
     scaled_prediction = best_model.predict(
-        series=scaled_ticker_series,
-        n=n_predict,
+        series=scaled_ticker_series, n=n_predict, num_samples=500
     )
 
     precision = mape(
