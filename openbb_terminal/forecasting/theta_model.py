@@ -32,7 +32,7 @@ def get_theta_data(
     seasonal_periods: int = 7,
     n_predict: int = 30,
     target_col: str = "close",
-    start_window: float = 0.65,
+    start_window: float = 0.85,
     forecast_horizon: int = 3,
 ) -> Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], float, float, Any]:
 
@@ -121,9 +121,15 @@ def get_theta_data(
         verbose=True,
     )
 
+    best_theta_model_final = Theta(
+        best_theta,
+        season_mode=seasonal,
+        seasonality_period=seasonal_periods,
+    )
+
     # fit model on entire series for final prediction
-    best_theta_model.fit(ticker_series)
-    prediction = best_theta_model.predict(int(n_predict))
+    best_theta_model_final.fit(ticker_series)
+    prediction = best_theta_model_final.predict(int(n_predict))
     precision = mape(
         actual_series=ticker_series, pred_series=historical_fcast_theta
     )  # mape = mean average precision error

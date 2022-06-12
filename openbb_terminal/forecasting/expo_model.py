@@ -1,3 +1,4 @@
+# pylint: disable=too-many-arguments
 """Probabilistic Exponential Smoothing Model"""
 __docformat__ = "numpy"
 
@@ -38,7 +39,7 @@ def get_expo_data(
     dampen: str = "F",
     n_predict: int = 30,
     target_col: str = "close",
-    start_window: float = 0.65,
+    start_window: float = 0.85,
     forecast_horizon: int = 3,
 ) -> Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], float, Any]:
 
@@ -93,6 +94,7 @@ def get_expo_data(
     )
 
     ticker_series = filler.transform(ticker_series).astype(np.float32)
+    train, val = ticker_series.split_before(float(start_window))
 
     if trend == "M":
         trend = ModelMode.MULTIPLICATIVE
@@ -121,7 +123,7 @@ def get_expo_data(
         random_state=42,
     )
 
-    # Training model based on historical backtesting
+    # Historical backtesting
     historical_fcast_es = model_es.historical_forecasts(
         ticker_series,  # backtest on entire ts
         start=float(start_window),
@@ -129,9 +131,18 @@ def get_expo_data(
         verbose=True,
     )
 
+    # train new model on entire timeseries to provide best current forecast
+    best_model = ExponentialSmoothing(
+        trend=trend,
+        seasonal=seasonal,
+        seasonal_periods=int(seasonal_periods),
+        damped=damped,
+        random_state=42,
+    )
+
     # we have the historical fcast, now lets train on entire set and predict.
-    model_es.fit(ticker_series)
-    probabilistic_forecast = model_es.predict(int(n_predict), num_samples=500)
+    best_model.fit(ticker_series)
+    probabilistic_forecast = best_model.predict(int(n_predict), num_samples=500)
     precision = mape(actual_series=ticker_series, pred_series=historical_fcast_es)
     console.print(f"model {model_es} obtains MAPE: {precision:.2f}% \n")  # TODO
 
@@ -140,5 +151,5 @@ def get_expo_data(
         historical_fcast_es,
         probabilistic_forecast,
         precision,
-        model_es,
+        best_model,
     )

@@ -615,7 +615,7 @@ class ForecastingController(BaseController):
             "--window",
             action="store",
             dest="start_window",
-            default=0.65,
+            default=0.85,
             help="Start point for rolling training and forecast window. 0.0-1.0",
         )
         parser.add_argument(
@@ -720,7 +720,7 @@ class ForecastingController(BaseController):
             "--window",
             action="store",
             dest="start_window",
-            default=0.65,
+            default=0.85,
             help="Start point for rolling training and forecast window. 0.0-1.0",
         )
         parser.add_argument(
