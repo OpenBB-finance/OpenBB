@@ -553,13 +553,14 @@ class ForecastingController(BaseController):
             """,
         )
         parser.add_argument(
-            "--td",
+            "--target_dataset",
             type=str,
             choices=self.files,
             dest="target_dataset",
             help="Dataset name",
         )
         parser.add_argument(
+            "-n",
             "--n_days",
             action="store",
             dest="n_days",
@@ -568,10 +569,11 @@ class ForecastingController(BaseController):
             help="prediction days.",
         )
         parser.add_argument(
-            "--tc",
+            "--target_forecast_column",
             action="store",
             dest="target_col",
             default="close",
+            type=str,
             help="target column.",
         )
         parser.add_argument(
@@ -672,7 +674,7 @@ class ForecastingController(BaseController):
             """,
         )
         parser.add_argument(
-            "--td",
+            "--target_dataset",
             type=str,
             choices=self.files,
             dest="target_dataset",
@@ -688,10 +690,11 @@ class ForecastingController(BaseController):
             help="prediction days.",
         )
         parser.add_argument(
-            "--tc",
+            "--target_forecast_column",
             action="store",
             dest="target_col",
             default="close",
+            type=str,
             help="target column.",
         )
         parser.add_argument(
