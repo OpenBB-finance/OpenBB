@@ -15,7 +15,6 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forex import av_view, forex_helper, fxempire_view
 from openbb_terminal.forex.forex_helper import FOREX_SOURCES, SOURCES_INTERVALS
 from openbb_terminal.helper_funcs import (
-    parse_known_args_and_warn,
     valid_date,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     get_preferred_source,
@@ -138,8 +137,8 @@ class ForexController(BaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
 
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, sources=["yf", "av", "polygon"], path=self.PATH
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, sources=["yf", "av", "polygon"]
         )
 
         if ns_parser:
@@ -197,7 +196,7 @@ class ForexController(BaseController):
             help=translate("stocks/CANDLE_mov_avg"),
             default=None,
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             mov_avgs = []
             if not self.data.empty:
@@ -231,7 +230,7 @@ class ForexController(BaseController):
             prog="quote",
             description="Get current exchange rate quote",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if self.to_symbol and self.from_symbol:
                 av_view.display_quote(self.to_symbol, self.from_symbol)
@@ -248,7 +247,7 @@ class ForexController(BaseController):
             prog="fwd",
             description="Get forward rates for loaded pair.",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:

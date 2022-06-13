@@ -14,7 +14,6 @@ from openbb_terminal.custom import custom_model, custom_view
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_FIGURES_ALLOWED,
-    parse_known_args_and_warn,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
@@ -108,7 +107,7 @@ class CustomDataController(BaseController):
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-f")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             file = Path("custom_imports") / ns_parser.file
             self.data = custom_model.load(file)
@@ -155,7 +154,7 @@ class CustomDataController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-y")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
         if ns_parser:
@@ -187,7 +186,7 @@ class CustomDataController(BaseController):
         parser.add_argument(
             "-a", "--ascend", action="store_true", default=False, dest="ascend"
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args, limit=5)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args, limit=5)
         if ns_parser:
             if self.data.empty:
                 logger.error("No data loaded")
@@ -224,7 +223,7 @@ class CustomDataController(BaseController):
             description="Show information of custom data.",
         )
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if self.data.empty:
                 logger.error("No data loaded.")

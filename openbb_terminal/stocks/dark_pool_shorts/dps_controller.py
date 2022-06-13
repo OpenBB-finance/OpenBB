@@ -16,7 +16,6 @@ from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_int_range,
     check_positive,
-    parse_known_args_and_warn,
     valid_date,
 )
 from openbb_terminal.menu import session
@@ -114,7 +113,7 @@ class DarkPoolShortsController(StockBaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -143,7 +142,7 @@ class DarkPoolShortsController(StockBaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -176,7 +175,7 @@ class DarkPoolShortsController(StockBaseController):
             default=10,
             help="Limit of the top heavily shorted stocks to retrieve.",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -224,7 +223,7 @@ class DarkPoolShortsController(StockBaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -272,7 +271,7 @@ class DarkPoolShortsController(StockBaseController):
             dest="ascending",
             help="Data in ascending order",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -310,7 +309,7 @@ class DarkPoolShortsController(StockBaseController):
             default="float",
             dest="sort_field",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -329,7 +328,7 @@ class DarkPoolShortsController(StockBaseController):
             prog="dpotc",
             description="Display barchart of dark pool (ATS) and OTC (Non ATS) data. [Source: FINRA]",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -383,7 +382,7 @@ class DarkPoolShortsController(StockBaseController):
             dest="raw",
             help="Print raw data.",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -424,7 +423,7 @@ class DarkPoolShortsController(StockBaseController):
             help="Flag to print raw data instead",
             dest="raw",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -453,14 +452,13 @@ class DarkPoolShortsController(StockBaseController):
             dest="b_nyse",
             help="Data from NYSE flag. Otherwise comes from NASDAQ. Only works for Quandl.",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             EXPORT_BOTH_RAW_DATA_AND_FIGURES,
             raw=True,
             limit=10 if "-r" in other_args else 120,
             sources=["quandl", "stockgrid"],
-            path=self.PATH,
         )
         if ns_parser:
             if self.ticker:
@@ -524,7 +522,7 @@ class DarkPoolShortsController(StockBaseController):
     #         action="store_false",
     #         default=True,
     #     )
-    #     ns_parser = parse_known_args_and_warn(
+    #     ns_parser =  self.parse_known_args_and_warn(
     #         parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
     #     )
     #     if ns_parser:
