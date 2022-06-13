@@ -9,7 +9,6 @@ from prompt_toolkit.completion import NestedCompleter
 # IMPORTATION INTERNAL
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import parse_known_args_and_warn
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.portfolio.brokers.degiro.degiro_view import DegiroView
@@ -63,7 +62,7 @@ class DegiroController(BaseController):
             help="Order's id.",
             type=str,
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         self.__degiro_view.cancel(ns_parser=ns_parser)
 
@@ -81,7 +80,7 @@ class DegiroController(BaseController):
             type=str,
             help="ISIN code of the company.",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         self.__degiro_view.companynews(ns_parser=ns_parser)
 
@@ -160,7 +159,7 @@ class DegiroController(BaseController):
             required=False,
             type=str,
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         self.__degiro_view.create(ns_parser=ns_parser)
 
@@ -173,7 +172,7 @@ class DegiroController(BaseController):
             add_help=False,
             prog="hold",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         self.__degiro_view.hold(ns_parser=ns_parser)
 
@@ -194,7 +193,7 @@ class DegiroController(BaseController):
             help="Number of news to display.",
             required=False,
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         self.__degiro_view.lastnews(ns_parser=ns_parser)
 
@@ -207,7 +206,7 @@ class DegiroController(BaseController):
             add_help=False,
             prog="login",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
             self.__degiro_view.login()
@@ -221,7 +220,7 @@ class DegiroController(BaseController):
             add_help=False,
             prog="logout",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
             self.__degiro_view.logout()
@@ -254,7 +253,7 @@ class DegiroController(BaseController):
             default=0,
             help="To use an offset.",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         self.__degiro_view.lookup(ns_parser=ns_parser)
 
@@ -267,7 +266,7 @@ class DegiroController(BaseController):
             add_help=False,
             prog="pending",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         self.__degiro_view.pending(ns_parser=ns_parser)
 
@@ -280,7 +279,7 @@ class DegiroController(BaseController):
             add_help=False,
             prog="topnews",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         self.__degiro_view.topnews(ns_parser=ns_parser)
 
@@ -305,6 +304,6 @@ class DegiroController(BaseController):
             required="-h" not in other_args,
             type=float,
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         self.__degiro_view.update(ns_parser=ns_parser)

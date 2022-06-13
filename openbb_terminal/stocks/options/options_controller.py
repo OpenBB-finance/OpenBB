@@ -17,7 +17,6 @@ from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_FIGURES_ALLOWED,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
-    parse_known_args_and_warn,
     valid_date,
 )
 from openbb_terminal.menu import session
@@ -264,7 +263,7 @@ class OptionsController(BaseController):
             default=-1,
             required="-m" in other_args,
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if ns_parser.min > 0 and ns_parser.max > 0:
                 pars = {"x_min": ns_parser.min, "x_max": ns_parser.max}
@@ -331,7 +330,7 @@ class OptionsController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -375,7 +374,7 @@ class OptionsController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
@@ -398,7 +397,7 @@ class OptionsController(BaseController):
             prog="info",
             description="Display option data [Source: Barchart.com]",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -468,7 +467,7 @@ class OptionsController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-s")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
@@ -523,8 +522,8 @@ class OptionsController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, sources=["tradier", "yf"], path=self.PATH
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, sources=["tradier", "yf"]
         )
         if ns_parser:
             self.ticker = ns_parser.ticker.upper()
@@ -572,7 +571,7 @@ class OptionsController(BaseController):
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-i")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if self.ticker:
                 # Print possible expiry dates
@@ -632,14 +631,13 @@ class OptionsController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-s")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             EXPORT_BOTH_RAW_DATA_AND_FIGURES,
             raw=True,
             limit=10,
             sources=["chartexchange", "tradier"],
-            path=self.PATH,
         )
         if ns_parser:
             if self.ticker:
@@ -736,7 +734,7 @@ class OptionsController(BaseController):
             help="Columns to look at.  Columns can be: bid, ask, strike, bidsize, asksize, volume, open_interest, "
             "delta, gamma, theta, vega, ask_iv, bid_iv, mid_iv. E.g. 'bid,ask,strike' ",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -801,12 +799,11 @@ class OptionsController(BaseController):
             dest="puts",
             help="Flag to plot put options only",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             EXPORT_BOTH_RAW_DATA_AND_FIGURES,
             sources=["tradier", "yf"],
-            path=self.PATH,
         )
         if ns_parser:
             if self.ticker:
@@ -872,12 +869,11 @@ class OptionsController(BaseController):
             default=-1,
             help="maximum strike price to consider in the plot.",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             EXPORT_BOTH_RAW_DATA_AND_FIGURES,
             sources=["tradier", "yf"],
-            path=self.PATH,
         )
         if ns_parser:
             if self.ticker:
@@ -949,12 +945,11 @@ class OptionsController(BaseController):
             dest="puts",
             help="Flag to plot put options only",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             EXPORT_BOTH_RAW_DATA_AND_FIGURES,
             sources=["tradier", "yf"],
-            path=self.PATH,
         )
         if ns_parser:
             if self.ticker:
@@ -1038,7 +1033,7 @@ class OptionsController(BaseController):
             help="Choose from already created graphs",
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_FIGURES_ALLOWED
         )
         if ns_parser:
@@ -1084,7 +1079,7 @@ class OptionsController(BaseController):
             help="The data for the Z axis",
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
         if ns_parser:
@@ -1149,7 +1144,7 @@ class OptionsController(BaseController):
             help="Whether to show all greeks.",
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
         if ns_parser:
@@ -1211,7 +1206,7 @@ class OptionsController(BaseController):
             dest="maxi",
             help="Maximum strike price shown",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -1289,7 +1284,7 @@ class OptionsController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-s")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if self.ticker:
                 if self.selected_date:

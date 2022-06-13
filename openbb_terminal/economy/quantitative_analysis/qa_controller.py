@@ -17,7 +17,6 @@ from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
     check_proportion_range,
-    parse_known_args_and_warn,
     check_list_dates,
 )
 from openbb_terminal.menu import session
@@ -142,7 +141,7 @@ class QaController(StockBaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-c")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             for source, sub_df in self.datasets.items():
                 if ns_parser.column in sub_df.columns:
@@ -189,7 +188,7 @@ class QaController(StockBaseController):
             help="Sort in descending order",
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -212,7 +211,7 @@ class QaController(StockBaseController):
                 Summary statistics
             """,
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -259,7 +258,7 @@ class QaController(StockBaseController):
             default="",
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
         if ns_parser:
@@ -286,7 +285,7 @@ class QaController(StockBaseController):
         parser.add_argument(
             "-b", "--bins", type=check_positive, default=15, dest="n_bins"
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             qa_view.display_hist(
                 name="",
@@ -306,7 +305,7 @@ class QaController(StockBaseController):
                 Cumulative distribution function
             """,
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -336,7 +335,7 @@ class QaController(StockBaseController):
             dest="year",
             help="Flag to show yearly bw plot",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             qa_view.display_bw(
                 name="",
@@ -366,7 +365,7 @@ class QaController(StockBaseController):
             dest="multiplicative",
             help="decompose using multiplicative model instead of additive",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -405,7 +404,7 @@ class QaController(StockBaseController):
             default=(max(self.data.values) - min(self.data.values)) / 80,
             help="drift",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             qa_view.display_cusum(
                 df=self.current_source_dataframe,
@@ -433,7 +432,7 @@ class QaController(StockBaseController):
             default=15,
             help="maximum lags to display in plots",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
 
             qa_view.display_acf(
@@ -463,7 +462,7 @@ class QaController(StockBaseController):
             default=14,
             help="Window length",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -494,7 +493,7 @@ class QaController(StockBaseController):
             default=14,
             help="Window length",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -542,7 +541,7 @@ class QaController(StockBaseController):
             default=0.5,
             help="quantile",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -580,7 +579,7 @@ class QaController(StockBaseController):
             default=14,
             help="window length",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -617,7 +616,7 @@ class QaController(StockBaseController):
             default=14,
             help="window length",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -640,7 +639,7 @@ class QaController(StockBaseController):
                 Normality tests
             """,
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -661,7 +660,7 @@ class QaController(StockBaseController):
                 Display QQ plot vs normal quantiles
             """,
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             qa_view.display_qqplot(
                 name="", df=self.current_source_dataframe, target=self.current_id
@@ -696,7 +695,7 @@ class QaController(StockBaseController):
             dest="kpss_reg",
             default="c",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:

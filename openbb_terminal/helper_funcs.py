@@ -874,15 +874,7 @@ def patch_pandas_text_adjustment():
     pandas.io.formats.format.TextAdjustment.adjoin = text_adjustment_adjoin
 
 
-def parse_known_args_and_warn(
-    parser: argparse.ArgumentParser,
-    other_args: List[str],
-    export_allowed: int = NO_EXPORT,
-    raw: bool = False,
-    limit: int = 0,
-    sources: List[str] = None,
-    path: str = "",
-):
+def parse_simple_args(parser: argparse.ArgumentParser, other_args: List[str]):
     """Parses list of arguments into the supplied parser
 
     Parameters
@@ -891,17 +883,6 @@ def parse_known_args_and_warn(
         Parser with predefined arguments
     other_args: List[str]
         List of arguments to parse
-    export_allowed: int
-        Choose from NO_EXPORT, EXPORT_ONLY_RAW_DATA_ALLOWED,
-        EXPORT_ONLY_FIGURES_ALLOWED and EXPORT_BOTH_RAW_DATA_AND_FIGURES
-    raw: bool
-        Add the --raw flag
-    limit: int
-        Add a --limit flag with this number default
-    sources: List[str]
-        Data sources from where to select from
-    path: str
-        Path to command
 
     Returns
     -------
@@ -911,54 +892,6 @@ def parse_known_args_and_warn(
     parser.add_argument(
         "-h", "--help", action="store_true", help="show this help message"
     )
-    if export_allowed > NO_EXPORT:
-        choices_export = []
-        help_export = "Does not export!"
-
-        if export_allowed == EXPORT_ONLY_RAW_DATA_ALLOWED:
-            choices_export = ["csv", "json", "xlsx"]
-            help_export = "Export raw data into csv, json, xlsx"
-        elif export_allowed == EXPORT_ONLY_FIGURES_ALLOWED:
-            choices_export = ["png", "jpg", "pdf", "svg"]
-            help_export = "Export figure into png, jpg, pdf, svg "
-        else:
-            choices_export = ["csv", "json", "xlsx", "png", "jpg", "pdf", "svg"]
-            help_export = "Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg "
-
-        parser.add_argument(
-            "--export",
-            default="",
-            type=check_file_type_saved(choices_export),
-            dest="export",
-            help=help_export,
-        )
-
-    if raw:
-        parser.add_argument(
-            "--raw",
-            dest="raw",
-            action="store_true",
-            default=False,
-            help="Flag to display raw data",
-        )
-    if limit > 0:
-        parser.add_argument(
-            "-l",
-            "--limit",
-            dest="limit",
-            default=limit,
-            help="Number of entries to show in data.",
-            type=check_positive,
-        )
-    if sources:
-        parser.add_argument(
-            "--source",
-            action="store",
-            dest="source",
-            choices=sources,
-            default=get_preferred_source(f"{path}{parser.prog}"),
-            help="Data source to select from",
-        )
 
     if obbff.USE_CLEAR_AFTER_CMD:
         system_clear()
