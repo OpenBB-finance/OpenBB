@@ -9,9 +9,8 @@
 
 
 
-    <meta name="description" content="usage: load [-f {}] [-n NAME] [-r RISK_FREE_RATE] [-h] Load your portfolio
-optional arguments: -f {}, --file {} The file to be loaded (default: None) -n NAME, --name NAME The name that you wish to give to your portfolio (default: None) -r RISK_FREE_RATE, --risk_free_rate RISK_FREE_RATE Set the risk free rate. (default: 0) -h, --help show this help message (default: False) Example:
-2022 May 13, 05:00 (🦋) /portfolio/ $ load Public_Equity_Orderbook.xlsx Portfolio: Public_Equity_Orderbook.">
+    <meta name="description" content="usage: load [-f {}] [-n NAME] [-r RISK_FREE_RATE] [-h] optional arguments: -f {}, --file {} The file to be loaded (default: None) -n NAME, --name NAME The name that you wish to give to your portfolio (default: None) -r RISK_FREE_RATE, --risk_free_rate RISK_FREE_RATE Set the risk free rate. (default: 0) -h, --help show this help message (default: False) Load your portfolio for analysis.
+This command works by taking in a list of trades you have made and constructs the resulting portfolio from them.">
 
 
 
@@ -29659,8 +29658,8 @@ optional arguments: -f {}, --file {} The file to be loaded (default: None) -n NA
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Load</h1>
         <pre><code>usage: load [-f {}] [-n NAME] [-r RISK_FREE_RATE] [-h]
-</code></pre><p>Load your portfolio</p>
-<pre><code>optional arguments:
+
+optional arguments:
   -f {}, --file {}
                         The file to be loaded (default: None)
   -n NAME, --name NAME  The name that you wish to give to your portfolio (default: None)
@@ -29668,7 +29667,29 @@ optional arguments: -f {}, --file {} The file to be loaded (default: None) -n NA
                         Set the risk free rate. (default: 0)
   -h, --help            show this help message (default: False)
 
-</code></pre><p>Example:</p>
+</code></pre><p>Load your portfolio for analysis.</p>
+<p>This command works by taking in a list of trades you have made and constructs the resulting portfolio from them. It can accept either an Excel or CSV file with this information. Each row in the file should have the following information:</p>
+<p>Required:</p>
+<ul>
+<li>Date - The date the trade occurred</li>
+<li>Name - The name of the security</li>
+<li>Type - The type of the security. Use <code>Cash</code>/<code>Stock</code>/<code>Crypto</code>/<code>ETF</code> as appropriate</li>
+<li>Price - The price the security was added or removed at, on a per-unit basis</li>
+<li>Quantity - How much of the security in question was added or removed</li>
+<li>Side - Whether or not you bought or sold. Use <code>Buy</code>/<code>Deposit</code>/<code>1</code> to add to the portfolio or <code>Sell</code>/<code>Withdrawal</code>/<code>0</code> to remove from the portfolio</li>
+</ul>
+<p>Optional:</p>
+<ul>
+<li>Investment - Total value of the investment, less any fees. Calculated dynamically as price * quantity by the terminal</li>
+<li>Fees - Any fees paid as part of the transaction</li>
+<li>Premium - Any premiums received or paid</li>
+<li>Quantity - How much of the security in question was added or removed</li>
+<li>Currency - The currency the transaction was made in</li>
+<li>Sector - The sector of the security. Required for <code>alloc</code> commands</li>
+<li>Industry - The industry of the security. Required for <code>alloc</code> commands</li>
+<li>Country - The country of the security. Required for <code>alloc</code> commands</li>
+</ul>
+<p>Example:</p>
 <pre><code>2022 May 13, 05:00 (🦋) /portfolio/ $ load Public_Equity_Orderbook.xlsx
 
 Portfolio: Public_Equity_Orderbook.xlsx
