@@ -447,53 +447,35 @@ class DarkPoolShortsController(StockBaseController):
             description="Shows price vs short interest volume. [Source: Quandl/Stockgrid]",
         )
         parser.add_argument(
-            "--source",
-            choices=["quandl", "stockgrid"],
-            default="",
-            dest="stockgrid",
-            help="Source of short interest volume",
-        )
-        if "quandl" in other_args:
-            parser.add_argument(
-                "--nyse",
-                action="store_true",
-                default=False,
-                dest="b_nyse",
-                help="Data from NYSE flag. Otherwise comes from NASDAQ.",
-            )
-        parser.add_argument(
-            "-n",
-            "--number",
-            help="Number of last open market days to show",
-            type=check_positive,
-            default=10 if "-r" in other_args else 120,
-            dest="num",
-        )
-        parser.add_argument(
-            "-r",
-            "--raw",
+            "--nyse",
             action="store_true",
             default=False,
-            help="Flag to print raw data instead",
-            dest="raw",
+            dest="b_nyse",
+            help="Data from NYSE flag. Otherwise comes from NASDAQ. Only works for Quandl.",
         )
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+            parser,
+            other_args,
+            EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+            raw=True,
+            limit=10 if "-r" in other_args else 120,
+            sources=["quandl", "stockgrid"],
+            path=self.PATH,
         )
         if ns_parser:
             if self.ticker:
-                if "quandl" in other_args:
+                if ns_parser.source == "quandl":
                     quandl_view.short_interest(
                         ticker=self.ticker,
                         nyse=ns_parser.b_nyse,
-                        days=ns_parser.num,
+                        days=ns_parser.limit,
                         raw=ns_parser.raw,
                         export=ns_parser.export,
                     )
                 else:
                     stockgrid_view.short_interest_volume(
                         ticker=self.ticker,
-                        num=ns_parser.num,
+                        num=ns_parser.limit,
                         raw=ns_parser.raw,
                         export=ns_parser.export,
                     )

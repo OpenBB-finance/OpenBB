@@ -522,15 +522,6 @@ class FundamentalAnalysisController(StockBaseController):
                 average shs out dil [Source: Alpha Vantage]""",
         )
         parser.add_argument(
-            "-l",
-            "--limit",
-            action="store",
-            dest="limit",
-            type=check_positive,
-            default=5,
-            help="Number of latest years/quarters.",
-        )
-        parser.add_argument(
             "-q",
             "--quarter",
             action="store_true",
@@ -538,16 +529,13 @@ class FundamentalAnalysisController(StockBaseController):
             dest="b_quarter",
             help="Quarter fundamental data flag.",
         )
-        parser.add_argument(
-            "-s",
-            "--source",
-            help="Source to get fundamentals from",
-            default="av",
-            choices=["polygon", "av"],
-            dest="source",
-        )
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
+            limit=5,
+            sources=["polygon", "av"],
+            path=self.PATH,
         )
         if ns_parser:
             if ns_parser.source == "av":
@@ -591,15 +579,6 @@ class FundamentalAnalysisController(StockBaseController):
             """,
         )
         parser.add_argument(
-            "-l",
-            "--limit",
-            action="store",
-            dest="limit",
-            type=check_positive,
-            default=5,
-            help="Number of latest years/quarters.",
-        )
-        parser.add_argument(
             "-q",
             "--quarter",
             action="store_true",
@@ -607,16 +586,13 @@ class FundamentalAnalysisController(StockBaseController):
             dest="b_quarter",
             help="Quarter fundamental data flag.",
         )
-        parser.add_argument(
-            "-s",
-            "--source",
-            help="Source to get fundamentals from",
-            default="av",
-            choices=["polygon", "av"],
-            dest="source",
-        )
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
+            limit=5,
+            sources=["polygon", "av"],
+            path=self.PATH,
         )
         if ns_parser:
             if ns_parser.source == "av":

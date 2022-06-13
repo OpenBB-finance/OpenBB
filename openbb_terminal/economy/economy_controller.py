@@ -963,16 +963,6 @@ class EconomyController(BaseController):
             " at different maturities.",
         )
         parser.add_argument(
-            "-s",
-            "--source",
-            action="store",
-            dest="source",
-            choices=self.ycrv_sources,
-            type=str,
-            default="investpy",
-            help="Source for the data. If not supplied, the most recent entry from investpy will be used.",
-        )
-        parser.add_argument(
             "-c",
             "--country",
             action="store",
@@ -994,6 +984,8 @@ class EconomyController(BaseController):
             other_args,
             export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
             raw=True,
+            sources=self.ycrv_sources,
+            path=self.PATH,
         )
         if ns_parser:
             if isinstance(ns_parser.country, list):
