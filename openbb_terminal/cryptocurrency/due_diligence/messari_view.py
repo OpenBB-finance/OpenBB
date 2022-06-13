@@ -371,7 +371,6 @@ def display_roadmap(
 @check_api_key(["API_MESSARI_KEY"])
 def display_tokenomics(
     coin: str,
-    coingecko_symbol: str,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
@@ -382,13 +381,12 @@ def display_tokenomics(
     ----------
     coin : str
         Crypto symbol to check tokenomics
-    coingecko_symbol : str
-        Coingecko crypto symbol to check tokenomics
     export : str
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
     """
+    coingecko_symbol = cryptocurrency_helpers.check_cg_id(coin)
     df, circ_df = get_tokenomics(coin, coingecko_symbol)
 
     if not df.empty and not circ_df.empty:
