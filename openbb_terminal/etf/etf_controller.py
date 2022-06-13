@@ -141,29 +141,17 @@ class ETFController(BaseController):
             help="Name to look for ETFs",
             required="-h" not in other_args,
         )
-        parser.add_argument(
-            "-s",
-            "--source",
-            type=str,
-            default="fd",
-            dest="source",
-            help="Name to search for, using either FinanceDatabase (fd) or StockAnalysis (sa) as source.",
-            choices=["sa", "fd"],
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            type=check_positive,
-            dest="limit",
-            help="Limit of ETFs to display",
-            default=5,
-        )
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
 
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser,
+            other_args,
+            limit=5,
+            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
+            sources=["sa", "fd"],
+            path=self.PATH,
         )
         if ns_parser:
             name_to_search = " ".join(ns_parser.name)

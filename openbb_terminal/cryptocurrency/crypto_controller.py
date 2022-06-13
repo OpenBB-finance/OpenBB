@@ -439,16 +439,6 @@ class CryptoController(CryptoBaseController):
             help="Number of records to display",
             type=check_positive,
         )
-
-        parser.add_argument(
-            "--source",
-            dest="source",
-            choices=CRYPTO_SOURCES.keys(),
-            default="cg",
-            help="Source of data.",
-            type=str,
-        )
-
         parser.add_argument(
             "-s",
             "--skip",
@@ -462,7 +452,11 @@ class CryptoController(CryptoBaseController):
             other_args.insert(0, "-c")
 
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser,
+            other_args,
+            EXPORT_ONLY_RAW_DATA_ALLOWED,
+            sources=CRYPTO_SOURCES.keys(),
+            path=self.PATH,
         )
         # TODO: merge find + display_all_coins
         if ns_parser:

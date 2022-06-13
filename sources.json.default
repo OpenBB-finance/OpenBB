@@ -1,9 +1,0 @@
-{
-  "default": "yf",
-  "stocks": {
-    "default": "yf"
-  },
-  "crypto": {
-    "default": "polygon"
-  }
-}

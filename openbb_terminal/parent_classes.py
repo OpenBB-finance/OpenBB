@@ -32,7 +32,6 @@ from openbb_terminal.helper_funcs import (
     set_command_location,
     prefill_form,
     support_message,
-    get_preferred_source,
 )
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.rich_config import console
@@ -549,16 +548,6 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
             help="Intraday stock minutes",
         )
         parser.add_argument(
-            "--source",
-            action="store",
-            dest="source",
-            choices=["yf", "av", "iex", "polygon"]
-            if "-i" not in other_args or "--interval" not in other_args
-            else ["yf", "polygon"],
-            default=get_preferred_source("stocks.load"),
-            help="Source of historical data.",
-        )
-        parser.add_argument(
             "-p",
             "--prepost",
             action="store_true",
@@ -602,7 +591,9 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, sources=["yf", "av", "iex", "polygon"], path=self.PATH
+        )
 
         if ns_parser:
             if ns_parser.weekly and ns_parser.monthly:

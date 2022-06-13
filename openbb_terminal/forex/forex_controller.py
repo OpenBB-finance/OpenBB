@@ -18,12 +18,12 @@ from openbb_terminal.helper_funcs import (
     parse_known_args_and_warn,
     valid_date,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
+    get_preferred_source,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console, MenuText, translate
 from openbb_terminal.decorators import check_api_key
-from openbb_terminal import config_terminal as cfg
 from openbb_terminal.forex.forex_helper import parse_forex_symbol
 
 # pylint: disable=R1710,import-outside-toplevel
@@ -52,7 +52,7 @@ class ForexController(BaseController):
         self.fx_pair = ""
         self.from_symbol = ""
         self.to_symbol = ""
-        self.source = "polygon" if cfg.API_POLYGON_KEY != "REPLACE_ME" else "yf"
+        self.source = (get_preferred_source(f"{self.PATH}load"),)
         self.data = pd.DataFrame()
 
         if session and obbff.USE_PROMPT_TOOLKIT:
@@ -101,7 +101,6 @@ class ForexController(BaseController):
             "Available data sources are Alpha Advantage and YahooFinance"
             "By default main source used for analysis is YahooFinance (yf). To change it use --source av",
         )
-
         parser.add_argument(
             "-t",
             "--ticker",
@@ -109,16 +108,6 @@ class ForexController(BaseController):
             help="Currency pair to load.",
             type=parse_forex_symbol,
         )
-
-        parser.add_argument(
-            "--source",
-            help="Source of historical data",
-            dest="source",
-            choices=("yf", "av", "polygon"),
-            default=self.source,
-            required=False,
-        )
-
         parser.add_argument(
             "-r",
             "--resolution",
@@ -149,10 +138,11 @@ class ForexController(BaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, sources=["yf", "av", "polygon"], path=self.PATH
+        )
 
         if ns_parser:
-
             if ns_parser.ticker not in FX_TICKERS:
                 logger.error("Invalid forex pair")
                 console.print(f"{ns_parser.ticker} not a valid forex pair.\n")
