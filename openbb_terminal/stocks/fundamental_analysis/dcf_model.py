@@ -531,10 +531,16 @@ def get_value(df: pd.DataFrame, row: str, column: int) -> Tuple[float, float]:
     value : List[float]
         The information in float format
     """
-    val1: str = df.at[row, df.columns[column]]
-    fin_val1: float = float(val1.replace(",", "").replace("-", "-0"))
-    val2: str = df.at[row, df.columns[column + 1]]
-    fin_val2: float = float(val2.replace(",", "").replace("-", "-0"))
+    val1 = df.at[row, df.columns[column]]
+    if isinstance(val1, str):
+        fin_val1: float = float(val1.replace(",", "").replace("-", "-0"))
+    else:
+        fin_val1 = float(val1)
+    val2 = df.at[row, df.columns[column + 1]]
+    if isinstance(val2, str):
+        fin_val2: float = float(val2.replace(",", "").replace("-", "-0"))
+    else:
+        fin_val2 = float(val2)
     return fin_val1, fin_val2
 
 
