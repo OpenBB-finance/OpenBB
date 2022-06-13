@@ -915,7 +915,7 @@ def test_call_func_test(
 )
 def test_call_func_no_ticker(func, mocker):
     mocker.patch(
-        "openbb_terminal.stocks.options.options_controller.parse_known_args_and_warn",
+        "openbb_terminal.stocks.options.options_controller.OptionsController.parse_known_args_and_warn",
         return_value=True,
     )
     controller = options_controller.OptionsController(ticker=None)
@@ -960,7 +960,7 @@ def test_call_func_no_selected_date(func, mocker):
 
     # MOCK PARSE_KNOWN_ARGS_AND_WARN
     mocker.patch(
-        "openbb_terminal.stocks.options.options_controller.parse_known_args_and_warn",
+        "openbb_terminal.stocks.options.options_controller.OptionsController.parse_known_args_and_warn",
         return_value=True,
     )
 
