@@ -17,7 +17,6 @@ from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_FIGURES_ALLOWED,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive_float,
-    parse_known_args_and_warn,
     print_rich_table,
 )
 from openbb_terminal.menu import session
@@ -303,7 +302,7 @@ class PortfolioController(BaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-f")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         if ns_parser and ns_parser.file:
             if ns_parser.file in self.DATA_HOLDINGS_FILES:
@@ -364,7 +363,7 @@ class PortfolioController(BaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-b")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
             # needs to be checked since we want to use the start date of the portfolio when comparing with benchmark
@@ -421,7 +420,7 @@ class PortfolioController(BaseController):
             if other_args and "-" not in other_args[0][0]:
                 other_args.insert(0, "-a")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args, limit=10)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args, limit=10)
 
         if ns_parser:
             console.print()
@@ -507,7 +506,7 @@ class PortfolioController(BaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
             if check_portfolio_benchmark_defined(
@@ -541,7 +540,7 @@ class PortfolioController(BaseController):
             dest="sum_assets",
             help="Sum all assets value over time",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -577,7 +576,7 @@ class PortfolioController(BaseController):
             dest="sum_assets",
             help="Sum all assets percentage over time",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -647,7 +646,7 @@ class PortfolioController(BaseController):
             """,
         )
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
             if self.portfolio_name:
@@ -711,7 +710,7 @@ class PortfolioController(BaseController):
             """,
         )
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
             if self.portfolio_name:
@@ -761,7 +760,7 @@ class PortfolioController(BaseController):
                    End of the omega ratio threshold
                """,
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if self.portfolio_name:
                 data = self.portfolio.returns[1:]
@@ -796,7 +795,7 @@ class PortfolioController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             raw=True,
@@ -837,7 +836,7 @@ class PortfolioController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             raw=True,
@@ -884,7 +883,7 @@ class PortfolioController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             raw=True,
@@ -924,7 +923,7 @@ class PortfolioController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             raw=True,
@@ -954,7 +953,7 @@ class PortfolioController(BaseController):
             prog="maxdd",
             description="Show portfolio maximum drawdown",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
         if ns_parser:
@@ -983,7 +982,7 @@ class PortfolioController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
@@ -1025,7 +1024,7 @@ class PortfolioController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
@@ -1068,7 +1067,7 @@ class PortfolioController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
@@ -1103,7 +1102,7 @@ class PortfolioController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
@@ -1145,7 +1144,7 @@ class PortfolioController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-m")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -1194,7 +1193,7 @@ class PortfolioController(BaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             raw=True,
@@ -1241,7 +1240,7 @@ class PortfolioController(BaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,

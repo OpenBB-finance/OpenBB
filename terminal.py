@@ -24,7 +24,7 @@ from openbb_terminal.core.log.generation.path_tracking_file_handler import (
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.helper_funcs import (
     get_flair,
-    parse_known_args_and_warn,
+    parse_simple_args,
 )
 from openbb_terminal.loggers import setup_logging
 from openbb_terminal.menu import session
@@ -308,7 +308,7 @@ class TerminalController(BaseController):
         )
         if args and "-" not in args[0][0]:
             args.insert(0, "-p")
-        ns_parser_exe = parse_known_args_and_warn(parser_exe, args)
+        ns_parser_exe = parse_simple_args(parser_exe, args)
         if ns_parser_exe:
             if ns_parser_exe.path:
                 if ns_parser_exe.path in self.ROUTINE_CHOICES:
