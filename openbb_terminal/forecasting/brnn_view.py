@@ -65,18 +65,46 @@ def display_brnn_forecast(
 
     Parameters
     ----------
-    data : Union[pd.Series, np.array]
-        Data to forecast
-    n_predict: int
-        Number of days to forecast
-    start_window: float
-        Size of sliding window from start of timeseries and onwards
-    forecast_horizon: int
-        Number of days to forecast when backtesting and retraining historical
-    export: str
-        Format to export data
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (2 axis is expected in the list), by default None
+        data (Union[pd.Series, pd.DataFrame]):
+            Input Data
+        n_predict (int, optional):
+            Days to predict. Defaults to 5.
+        target_col (str, optional):
+            Target column to forecast. Defaults to "close".
+        train_split (float, optional):
+            Train/val split. Defaults to 0.85.
+        past_covariates (str, optional):
+            Multiple secondary columns to factor in when forecasting. Defaults to None.
+        forecast_horizon (int, optional):
+            Forecast horizon when performing historical forecasting. Defaults to 5.
+        input_chunk_length (int, optional):
+            Number of past time steps that are fed to the forecasting module at prediction time. Defaults to 14.
+        output_chunk_length (int, optional):
+            The length of the forecast of the model. Defaults to 5.
+        model_type (str, optional):
+            Either a string specifying the RNN module type ("RNN", "LSTM" or "GRU"). Defaults to "LSTM".
+        n_rnn_layers (int, optional):
+             Number of layers in the RNN module. Defaults to 1.
+        hidden_size (int, optional):
+            Size for feature maps for each hidden RNN layer. Defaults to 20.
+        dropout (float, optional):
+            Fraction of neurons afected by Dropout. Defaults to 0.0.
+        batch_size (int, optional):
+            Number of time series (input and output sequences) used in each training pass. Defaults to 32.
+        n_epochs (int, optional):
+            Number of epochs over which to train the model. Defaults to 100.
+        learning_rate (float, optional):
+            Defaults to 1e-3.
+        model_save_name (str, optional):
+            Name for model. Defaults to "brnn_model".
+        force_reset (bool, optional):
+            If set to True, any previously-existing model with the same name will be reset (all checkpoints will be discarded). Defaults to True.
+        save_checkpoints (bool, optional):
+            Whether or not to automatically save the untrained model and checkpoints from training. Defaults to True.
+        export: str
+            Format to export data
+        external_axes : Optional[List[plt.Axes]], optional
+            External axes (2 axis is expected in the list), by default None
     """
 
     # reformat the date column to remove any hour/min/sec
