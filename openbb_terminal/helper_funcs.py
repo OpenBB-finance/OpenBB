@@ -1611,7 +1611,7 @@ def get_preferred_source(command_path: str):
                     # We didn't find the next level, so flag that that command default source is missing
                     # We decided to have these mentioned explicitly
                     console.print(
-                        f"[red]'sources.json.default' file does not contain {command_path}[/red]"
+                        f"[red]'data_sources_default.json' file does not contain {command_path}[/red]"
                     )
                     return None
 
