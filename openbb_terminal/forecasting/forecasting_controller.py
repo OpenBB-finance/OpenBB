@@ -624,10 +624,11 @@ class ForecastingController(BaseController):
             help="Start point for rolling training and forecast window. 0.0-1.0",
         )
         parser.add_argument(
-            "--forecasthorizon",
+            "--forecast_horizon",
             action="store",
             dest="forecast_horizon",
             default=5,
+            type=check_positive,
             help="Days/Points to forecast when training and performing historical back-testing",
         )
 
@@ -729,10 +730,11 @@ class ForecastingController(BaseController):
             help="Start point for rolling training and forecast window. 0.0-1.0",
         )
         parser.add_argument(
-            "--forecasthorizon",
+            "--forecast_horizon",
             action="store",
             dest="forecast_horizon",
             default=5,
+            type=check_positive,
             help="Days/Points to forecast when training and performing historical back-testing",
         )
 
@@ -812,10 +814,11 @@ class ForecastingController(BaseController):
             help="Start point for rolling training and forecast window. 0.0-1.0",
         )
         parser.add_argument(
-            "--forecasthorizon",
+            "--forecast_horizon",
             action="store",
             dest="forecast_horizon",
             default=5,
+            type=check_positive,
             help="Days/Points to forecast when training and performing historical back-testing",
         )
         # RNN Hyperparameters
@@ -1004,10 +1007,11 @@ class ForecastingController(BaseController):
             help="Start point for rolling training and forecast window. 0.0-1.0",
         )
         parser.add_argument(
-            "--forecasthorizon",
+            "--forecast_horizon",
             action="store",
             dest="forecast_horizon",
             default=5,
+            type=check_positive,
             help="Days/Points to forecast when training and performing historical back-testing",
         )
         # NBEATS Hyperparameters
@@ -1204,10 +1208,11 @@ class ForecastingController(BaseController):
             help="Start point for rolling training and forecast window. 0.0-1.0",
         )
         parser.add_argument(
-            "--forecasthorizon",
+            "--forecast_horizon",
             action="store",
             dest="forecast_horizon",
             default=5,
+            type=check_positive,
             help="Days/Points to forecast when training and performing historical back-testing",
         )
         # TCN Hyperparameters
@@ -1409,10 +1414,11 @@ class ForecastingController(BaseController):
             help="Start point for rolling training and forecast window. 0.0-1.0",
         )
         parser.add_argument(
-            "--forecasthorizon",
+            "--forecast_horizon",
             action="store",
             dest="forecast_horizon",
             default=5,
+            type=check_positive,
             help="Days/Points to forecast when training and performing historical back-testing",
         )
         # BRNN Hyperparameters
