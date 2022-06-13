@@ -1,5 +1,5 @@
 # pylint: disable=too-many-arguments
-"""NBEATS Model"""
+"""RNN Model"""
 __docformat__ = "numpy"
 
 import logging
@@ -13,8 +13,9 @@ import numpy as np
 import pandas as pd
 
 from darts import TimeSeries
-from darts.models import NBEATSModel
+from darts.models import BlockRNNModel
 from darts.dataprocessing.transformers import MissingValuesFiller, Scaler
+from darts.utils.likelihood_models import GaussianLikelihood
 from darts.metrics import mape
 from pytorch_lightning.callbacks.early_stopping import EarlyStopping
 from openbb_terminal.decorators import log_start_end
@@ -25,28 +26,28 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def get_NBEATS_data(
+def get_brnn_data(
     data: Union[pd.Series, pd.DataFrame],
     n_predict: int = 5,
     target_col: str = "close",
-    past_covariates: str = None,
     train_split: float = 0.85,
+    past_covariates: str = None,
     forecast_horizon: int = 5,
     input_chunk_length: int = 14,
     output_chunk_length: int = 5,
-    num_stacks: int = 10,
-    num_blocks: int = 3,
-    num_layers: int = 4,
-    layer_widths: int = 512,
-    batch_size: int = 800,
+    model_type: str = "LSTM",
+    n_rnn_layers: int = 1,
+    hidden_size: int = 20,
+    dropout: float = 0.0,
+    batch_size: int = 16,
     n_epochs: int = 100,
     learning_rate: float = 1e-3,
-    model_save_name: str = "nbeats_model",
+    model_save_name: str = "brnn_model",
     force_reset: bool = True,
     save_checkpoints: bool = True,
 ) -> Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], float, Any]:
 
-    """Performs NBEATS forecasting
+    """Performs Block Recurrent Neural Network forecasting
 
     Parameters
     ----------
@@ -64,13 +65,13 @@ def get_NBEATS_data(
     List[TimeSeries]
         Adjusted Data series
     List[TimeSeries]
-        Historical forecast by best NBEATS model
+        Historical forecast by best RNN model
     List[TimeSeries]
         list of Predictions
     float
         Mean average precision error
     Any
-        NBEATS Model
+        RNN Model
     """
     filler = MissingValuesFiller()
     scaler = Scaler()
@@ -78,7 +79,7 @@ def get_NBEATS_data(
     # TODO add proper doc string
     # TODO Check if torch GPU AVAILABLE
     # TODO add in covariates
-    # todo add in all possible parameters for training
+    # todo add in all possible parameters for training - RNN does not take past covariates
     # Export model / save
     # load trained model
 
@@ -150,45 +151,46 @@ def get_NBEATS_data(
     # Early Stopping
     my_stopper = EarlyStopping(
         monitor="val_loss",
-        patience=10,
+        patience=5,
         min_delta=0,
         mode="min",
     )
     pl_trainer_kwargs = {"callbacks": [my_stopper], "accelerator": "cpu"}
 
-    nbeats_model = NBEATSModel(
+    brnn_model = BlockRNNModel(
         input_chunk_length=input_chunk_length,
         output_chunk_length=output_chunk_length,
-        generic_architecture=True,
-        num_stacks=num_stacks,
-        num_blocks=num_blocks,
-        num_layers=num_layers,
-        layer_widths=layer_widths,
-        n_epochs=n_epochs,
-        nr_epochs_val_period=1,
+        model=model_type,
+        n_rnn_layers=n_rnn_layers,
+        hidden_size=hidden_size,
+        dropout=dropout,
         batch_size=batch_size,
+        n_epochs=n_epochs,
         optimizer_kwargs={"lr": learning_rate},
         model_name=model_save_name,
-        force_reset=force_reset,
-        save_checkpoints=save_checkpoints,
         random_state=42,
         pl_trainer_kwargs=pl_trainer_kwargs,
+        force_reset=force_reset,
+        save_checkpoints=save_checkpoints,
+        likelihood=GaussianLikelihood(),
     )
 
     # fit model on train series for historical forecasting
     if past_covariates is not None:
-        nbeats_model.fit(
+        brnn_model.fit(
             series=scaled_train,
             val_series=scaled_val,
             past_covariates=scaled_past_covariate_train,
             val_past_covariates=scaled_past_covariate_val,
         )
     else:
-        nbeats_model.fit(
+        brnn_model.fit(
             series=scaled_train,
             val_series=scaled_val,
         )
-    best_model = NBEATSModel.load_from_checkpoint(model_name=model_save_name, best=True)
+    best_model = BlockRNNModel.load_from_checkpoint(
+        model_name=model_save_name, best=True
+    )
 
     # Showing historical backtesting without retraining model (too slow)
     if past_covariates is not None:
@@ -209,8 +211,8 @@ def get_NBEATS_data(
             verbose=True,
         )
 
+    # Predict N timesteps in the future
     if past_covariates is not None:
-        # Predict N timesteps in the future
         scaled_prediction = best_model.predict(
             series=scaled_ticker_series,
             past_covariates=scaled_past_covariate_whole,
@@ -222,7 +224,7 @@ def get_NBEATS_data(
     precision = mape(
         actual_series=scaled_ticker_series, pred_series=scaled_historical_fcast
     )  # mape = mean average precision error
-    console.print(f"NBEATS model obtains MAPE: {precision:.2f}% \n")
+    console.print(f"BRNN model obtains MAPE: {precision:.2f}% \n")
 
     # scale back
     ticker_series = scaler.inverse_transform(scaled_ticker_series)

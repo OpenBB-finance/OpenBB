@@ -144,7 +144,7 @@ def get_tcn_data(
         (
             scaled_past_covariate_train,
             scaled_past_covariate_val,
-        ) = scaled_past_covariate_whole.split_before(float(train_split))
+        ) = scaled_past_covariate_whole.split_before(train_split)
 
     # --------------------------------------------------
     # Early Stopping
@@ -187,7 +187,7 @@ def get_tcn_data(
             series=scaled_train,
             val_series=scaled_val,
         )
-    best_model = TCNModel.load_from_checkpoint(model_name="tcn_model", best=True)
+    best_model = TCNModel.load_from_checkpoint(model_name=model_save_name, best=True)
 
     # Showing historical backtesting without retraining model (too slow)
     if past_covariates is not None:

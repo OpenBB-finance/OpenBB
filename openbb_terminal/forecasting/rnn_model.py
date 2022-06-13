@@ -31,7 +31,7 @@ def get_rnn_data(
     n_predict: int = 5,
     target_col: str = "close",
     train_split: float = 0.85,
-    forecast_horizon: int = 3,
+    forecast_horizon: int = 5,
     model_type: str = "LSTM",
     hidden_dim: int = 20,
     dropout: float = 0.0,
@@ -94,7 +94,7 @@ def get_rnn_data(
         )
     ).astype(np.float32)
 
-    scaled_train, scaled_val = scaled_ticker_series.split_before(float(train_split))
+    scaled_train, scaled_val = scaled_ticker_series.split_before(train_split)
 
     # --------------------------------------------------
     # Early Stopping
@@ -128,7 +128,7 @@ def get_rnn_data(
         series=scaled_train,
         val_series=scaled_val,
     )
-    best_model = RNNModel.load_from_checkpoint(model_name="rnn_model", best=True)
+    best_model = RNNModel.load_from_checkpoint(model_name=model_save_name, best=True)
 
     # Showing historical backtesting without retraining model (too slow)
     scaled_historical_fcast = best_model.historical_forecasts(

@@ -33,7 +33,7 @@ def get_theta_data(
     n_predict: int = 30,
     target_col: str = "close",
     start_window: float = 0.85,
-    forecast_horizon: int = 3,
+    forecast_horizon: int = 5,
 ) -> Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], float, float, Any]:
 
     """Performs Theta forecasting

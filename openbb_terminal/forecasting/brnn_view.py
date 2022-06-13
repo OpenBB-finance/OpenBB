@@ -1,4 +1,4 @@
-"""RNN View"""
+"""Block RNN View"""
 __docformat__ = "numpy"
 
 import logging
@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 from openbb_terminal.config_terminal import theme
-from openbb_terminal.forecasting import rnn_model
+from openbb_terminal.forecasting import brnn_model
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
@@ -39,27 +39,29 @@ def dt_format(x):
 
 
 @log_start_end(log=logger)
-def display_rnn_forecast(
-    data: Union[pd.DataFrame, pd.Series],
+def display_brnn_forecast(
+    data: Union[pd.Series, pd.DataFrame],
     ticker_name: str,
     n_predict: int = 5,
     target_col: str = "close",
+    past_covariates: str = None,
     train_split: float = 0.85,
     forecast_horizon: int = 5,
+    input_chunk_length: int = 14,
+    output_chunk_length: int = 5,
     model_type: str = "LSTM",
-    hidden_dim: int = 20,
+    n_rnn_layers: int = 1,
+    hidden_size: int = 20,
     dropout: float = 0.0,
     batch_size: int = 16,
     n_epochs: int = 100,
     learning_rate: float = 1e-3,
     model_save_name: str = "rnn_model",
-    training_length: int = 20,
-    input_chunk_size: int = 14,
     force_reset: bool = True,
     save_checkpoints: bool = True,
     export: str = "",
 ):
-    """Display RNN forecast
+    """Display BRNN forecast
 
     Parameters
     ----------
@@ -86,23 +88,25 @@ def display_rnn_forecast(
         predicted_values,
         precision,
         _model,
-    ) = rnn_model.get_rnn_data(
-        data,
-        n_predict,
-        target_col,
-        train_split,
-        forecast_horizon,
-        model_type,
-        hidden_dim,
-        dropout,
-        batch_size,
-        n_epochs,
-        learning_rate,
-        model_save_name,
-        training_length,
-        input_chunk_size,
-        force_reset,
-        save_checkpoints,
+    ) = brnn_model.get_brnn_data(
+        data=data,
+        n_predict=n_predict,
+        target_col=target_col,
+        past_covariates=past_covariates,
+        train_split=train_split,
+        forecast_horizon=forecast_horizon,
+        input_chunk_length=input_chunk_length,
+        output_chunk_length=output_chunk_length,
+        model_type=model_type,
+        n_rnn_layers=n_rnn_layers,
+        hidden_size=hidden_size,
+        dropout=dropout,
+        batch_size=batch_size,
+        n_epochs=n_epochs,
+        learning_rate=learning_rate,
+        model_save_name=model_save_name,
+        force_reset=force_reset,
+        save_checkpoints=save_checkpoints,
     )
     # Plotting with Matplotlib
     external_axes = None
@@ -117,22 +121,15 @@ def display_rnn_forecast(
 
     # ax = fig.get_axes()[0] # fig gives list of axes (only one for this case)
     ticker_series.plot(label=target_col, figure=fig)
-
-    # TODO - fix why +/- quantiles are not plotted.
     historical_fcast.plot(
         label=f"Backtest {forecast_horizon}-Steps ahead forecast",
-        low_quantile=0.1,
-        high_quantile=0.9,
         figure=fig,
     )
     predicted_values.plot(
-        label="RNN Probabilistic Forecast",
-        low_quantile=0.1,
-        high_quantile=0.9,
-        figure=fig,
+        label=f"BRNN Forecast w/ past covs({past_covariates})", figure=fig
     )
     ax.set_title(
-        f"RNN for ${ticker_name} for next [{n_predict}] days (MAPE={precision:.2f}%)"
+        f"BRNN for ${ticker_name} for next [{n_predict}] days (MAPE={precision:.2f}%)"
     )
     ax.set_ylabel(target_col)
     ax.set_xlabel("Date")
@@ -141,9 +138,7 @@ def display_rnn_forecast(
     if not external_axes:
         theme.visualize_output()
 
-    numeric_forecast = predicted_values.quantile_df()[f"{target_col}_0.5"].tail(
-        n_predict
-    )
+    numeric_forecast = predicted_values.pd_dataframe()[target_col].tail(n_predict)
     print_pretty_prediction(numeric_forecast, data[target_col].iloc[-1])
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "expo")

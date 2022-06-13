@@ -1101,11 +1101,11 @@ en:
   forecasting/_tsforecasting_: TimeSeries Forecasting
   forecasting/expo: Probablistic Exponential Smoothing
   forecasting/theta: Theta Method
-  forecasting/rnn: Recurrent Neural Network (Vanilla RNN, LSTM, GRU)
+  forecasting/rnn: Probablistic Recurrent Neural Network (RNN, LSTM, GRU)
+  forecasting/brnn: Block Recurrent Neural Network (RNN, LSTM, GRU)
   forecasting/nbeats: Neural Bayesian Estimation (feat. Past covariates)
   forecasting/tcn: Temporal Convolutional Neural Network (feat. Past covariates)
   forecasting/_comingsoon_: Coming Soon
   forecasting/regr: Regression
-  forecasting/brnn: Block Recurrent Neural Network
   forecasting/trans: Transformer model
   forecasting/tft: Temporal Fusion Transformer

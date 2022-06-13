@@ -43,6 +43,7 @@ from openbb_terminal.forecasting import (
     theta_view,
     rnn_view,
     NBEATS_view,
+    brnn_view,
 )
 
 logger = logging.getLogger(__name__)
@@ -196,11 +197,11 @@ class ForecastingController(BaseController):
         mt.add_cmd("expo", "", self.files)
         mt.add_cmd("theta", "", self.files)
         mt.add_cmd("rnn", "", self.files)
+        mt.add_cmd("brnn", "", self.files)
         mt.add_cmd("nbeats", "", self.files)
         mt.add_cmd("tcn", "", self.files)
         mt.add_info("_comingsoon_")
         mt.add_cmd("regr", "", self.files)
-        mt.add_cmd("brnn", "", self.files)
         mt.add_cmd("trans", "", self.files)
         mt.add_cmd("tft", "", self.files)
 
@@ -626,7 +627,7 @@ class ForecastingController(BaseController):
             "--forecasthorizon",
             action="store",
             dest="forecast_horizon",
-            default=3,
+            default=5,
             help="Days/Points to forecast when training and performing historical back-testing",
         )
 
@@ -731,7 +732,7 @@ class ForecastingController(BaseController):
             "--forecasthorizon",
             action="store",
             dest="forecast_horizon",
-            default=3,
+            default=5,
             help="Days/Points to forecast when training and performing historical back-testing",
         )
 
@@ -767,8 +768,6 @@ class ForecastingController(BaseController):
                 export=ns_parser.export,
             )
 
-    # TODO add in all the hyperparameters ZzZzzzzZzzzZzzzzzz
-    # TODO Add in Inference menu so that people can bring in their own models
     @log_start_end(log=logger)
     def call_rnn(self, other_args: List[str]):
         """Process RNN command"""
@@ -816,7 +815,7 @@ class ForecastingController(BaseController):
             "--forecasthorizon",
             action="store",
             dest="forecast_horizon",
-            default=3,
+            default=5,
             help="Days/Points to forecast when training and performing historical back-testing",
         )
         # RNN Hyperparameters
@@ -1298,7 +1297,8 @@ class ForecastingController(BaseController):
             dest="force_reset",
             default=True,
             type=bool,
-            help="If set to True, any previously-existing model with the same name will be reset (all checkpoints will be discarded).",
+            help="""If set to True, any previously-existing model with the same name will be reset
+                (all checkpoints will be discarded).""",
         )
         parser.add_argument(
             "--save_checkpoints",
@@ -1359,7 +1359,203 @@ class ForecastingController(BaseController):
 
     @log_start_end(log=logger)
     def call_brnn(self, other_args: List[str]):
-        console.print("[green]Coming soon!\n[/green]")
+        """Process BRNN command"""
+        parser = argparse.ArgumentParser(
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            add_help=False,
+            prog="brnn",
+            description="""
+                Perform BRNN forecast (Vanilla RNN, LSTM, GRU)
+            """,
+        )
+        parser.add_argument(
+            "--target_dataset",
+            type=str,
+            choices=self.files,
+            dest="target_dataset",
+            help="Dataset name",
+        )
+        parser.add_argument(
+            "-n",
+            "--n_days",
+            action="store",
+            dest="n_days",
+            type=check_positive,
+            default=5,
+            help="prediction days.",
+        )
+        parser.add_argument(
+            "--target_forecast_column",
+            action="store",
+            dest="target_col",
+            default="close",
+            type=str,
+            help="target column.",
+        )
+        parser.add_argument(
+            "--past_covariates",
+            action="store",
+            dest="past_covariates",
+            default=None,
+            type=str,
+            help="Past covariates(columns/features) in same dataset that may effect price. Comma seperated.",
+        )
+        parser.add_argument(
+            "--train_split",
+            action="store",
+            dest="train_split",
+            default=0.85,
+            type=check_positive_float,
+            help="Start point for rolling training and forecast window. 0.0-1.0",
+        )
+        parser.add_argument(
+            "--forecasthorizon",
+            action="store",
+            dest="forecast_horizon",
+            default=5,
+            help="Days/Points to forecast when training and performing historical back-testing",
+        )
+        # BRNN Hyperparameters
+        parser.add_argument(
+            "--input_chunk_length",
+            action="store",
+            dest="input_chunk_length",
+            default=14,
+            type=check_positive,
+            help="The length of the input sequence fed to the model.",
+        )
+        parser.add_argument(
+            "--output_chunk_length",
+            action="store",
+            dest="output_chunk_length",
+            default=5,
+            type=check_positive,
+            help="The length of the forecast of the model.",
+        )
+        parser.add_argument(
+            "--model_type",
+            type=str,
+            action="store",
+            dest="model_type",
+            default="LSTM",
+            help='Either a string specifying the RNN module type ("RNN", "LSTM" or "GRU")',
+        )
+        parser.add_argument(
+            "--n_rnn_layers",
+            action="store",
+            dest="n_rnn_layers",
+            default=1,
+            type=check_positive,
+            help="Number of layers in the RNN module.",
+        )
+        parser.add_argument(
+            "--hidden_size",
+            action="store",
+            dest="hidden_size",
+            default=10,
+            type=check_positive,
+            help="Size for feature maps for each hidden RNN layer (h_n)",
+        )
+        parser.add_argument(
+            "--dropout",
+            action="store",
+            dest="dropout",
+            default=0,
+            type=check_positive_float,
+            help="Fraction of neurons afected by Dropout.",
+        )
+        parser.add_argument(
+            "--batch_size",
+            action="store",
+            dest="batch_size",
+            default=32,
+            type=check_positive,
+            help="Number of time series (input and output sequences) used in each training pass",
+        )
+        parser.add_argument(
+            "--n_epochs",
+            action="store",
+            dest="n_epochs",
+            default=100,
+            type=check_positive,
+            help="Number of epochs over which to train the model.",
+        )
+        parser.add_argument(
+            "--learning_rate",
+            action="store",
+            dest="learning_rate",
+            default=1e-3,
+            type=check_positive_float,
+            help="Learning rate during training.",
+        )
+        parser.add_argument(
+            "--model_save_name",
+            type=str,
+            action="store",
+            dest="model_save_name",
+            default="rnn_model",
+            help="Name of the model to save.",
+        )
+        parser.add_argument(
+            "--force_reset",
+            action="store",
+            dest="force_reset",
+            default=True,
+            type=bool,
+            help="""If set to True, any previously-existing model with the same name will be reset
+                    (all checkpoints will be discarded).""",
+        )
+        parser.add_argument(
+            "--save_checkpoints",
+            action="store",
+            dest="save_checkpoints",
+            default=True,
+            type=bool,
+            help="Whether or not to automatically save the untrained model and checkpoints from training.",
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
+        )
+
+        if ns_parser:
+            # check proper file name is provided
+            if not ns_parser.target_dataset:
+                console.print("[red]Please enter valid dataset.\n[/red]")
+                return
+
+            # must check that target col is within target series
+            if (
+                ns_parser.target_col
+                not in self.datasets[ns_parser.target_dataset].columns
+            ):
+                console.print(
+                    f"[red]The target column {ns_parser.target_col} does not exist in dataframe.\n[/red]"
+                )
+                return
+
+            brnn_view.display_brnn_forecast(
+                data=self.datasets[ns_parser.target_dataset],
+                ticker_name=ns_parser.target_dataset,
+                n_predict=ns_parser.n_days,
+                target_col=ns_parser.target_col,
+                past_covariates=ns_parser.past_covariates,
+                train_split=ns_parser.train_split,
+                forecast_horizon=ns_parser.forecast_horizon,
+                input_chunk_length=ns_parser.input_chunk_length,
+                output_chunk_length=ns_parser.output_chunk_length,
+                model_type=ns_parser.model_type,
+                n_rnn_layers=ns_parser.n_rnn_layers,
+                hidden_size=ns_parser.hidden_size,
+                dropout=ns_parser.dropout,
+                batch_size=ns_parser.batch_size,
+                n_epochs=ns_parser.n_epochs,
+                learning_rate=ns_parser.learning_rate,
+                model_save_name=ns_parser.model_save_name,
+                force_reset=ns_parser.force_reset,
+                save_checkpoints=ns_parser.save_checkpoints,
+                export=ns_parser.export,
+            )
 
     @log_start_end(log=logger)
     def call_trans(self, other_args: List[str]):
