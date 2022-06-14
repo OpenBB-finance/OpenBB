@@ -71,6 +71,7 @@ class ForecastingController(BaseController):
         "load",
         "show",
         "plot",
+        "clean",
         "combine",
         "delete",
         "export",
@@ -164,7 +165,7 @@ class ForecastingController(BaseController):
             for feature in [
                 "export",
                 "show",
-                # "clean",
+                "clean",
                 # "index",
                 # "remove",
                 "combine",
@@ -203,6 +204,7 @@ class ForecastingController(BaseController):
         mt.add_info("_exploration_")
         mt.add_cmd("show", "", self.files)
         mt.add_cmd("plot", "", self.files)
+        mt.add_cmd("clean", "", self.files)
         mt.add_cmd("combine", "", self.files)
         mt.add_cmd("delete", "", self.files)
         mt.add_cmd("export", "", self.files)
@@ -465,6 +467,55 @@ class ForecastingController(BaseController):
                     data[f"{dataset}_{column}"] = self.datasets[dataset][column]
 
             self.update_runtime_choices()
+        console.print()
+
+    @log_start_end(log=logger)
+    def call_clean(self, other_args: List[str]):
+        """Process clean"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="clean",
+            description="Clean a dataset by filling and dropping NaN values.",
+        )
+        parser.add_argument(
+            "-n",
+            "--name",
+            help="The name of the dataset you want to clean up",
+            dest="name",
+            type=str,
+            choices=list(self.datasets.keys()),
+        )
+        parser.add_argument(
+            "-f",
+            "--fill",
+            help="The method of filling NaNs. This has options to fill rows (rfill, rbfill, rffill) or fill "
+            "columns (cfill, cbfill, cffill). Furthermore, it has the option to forward fill and backward fill "
+            "(up to --limit) which refer to how many rows/columns can be set equal to the last non-NaN value",
+            dest="fill",
+            choices=["rfill", "cfill", "rbfill", "cbfill", "rffill", "bffill"],
+            default="",
+        )
+        parser.add_argument(
+            "-d",
+            "--drop",
+            help="The method of dropping NaNs. This either has the option rdrop (drop rows that contain NaNs) "
+            "or cdrop (drop columns that contain NaNs)",
+            dest="drop",
+            choices=["rdrop", "cdrop"],
+            default="",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-n")
+        ns_parser = parse_known_args_and_warn(parser, other_args, NO_EXPORT, limit=5)
+        if ns_parser:
+            self.datasets[ns_parser.name] = forecasting_model.clean(
+                self.datasets[ns_parser.name],
+                ns_parser.fill,
+                ns_parser.drop,
+                ns_parser.limit,
+            )
+            console.print(f"Successfully cleaned '{ns_parser.name}' dataset")
         console.print()
 
     @log_start_end(log=logger)
