@@ -673,14 +673,14 @@ class ForecastingController(BaseController):
         )
         parser.add_argument(
             "--target_dataset",
-            help="The name of the dataset you want to add the EMA to",
+            help="The name of the dataset you want to add the RSI to",
             dest="target_dataset",
             type=str,
             choices=list(self.datasets.keys()),
         )
         parser.add_argument(
             "--target_column",
-            help="The name of the specific column you want to calculate EMA for.",
+            help="The name of the specific column you want to calculate RSI for.",
             dest="target_column",
             type=str,
             default="close",
