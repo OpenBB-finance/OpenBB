@@ -29666,17 +29666,17 @@ The default source is, yFinance (https://pypi.org/project/yfinance/). Alternativ
 <p>Certain analytical features, such as VWAP, require the ticker to be loaded as intraday using the &lsquo;-i x&rsquo; argument. When encountering this error, simply reload the symbol using the interval argument. i.e. &lsquo;load -t BNS -s YYYY-MM-DD -i 1 -p&rsquo; loads one-minute intervals, including Pre/After Market data, using the default source, yFinance.</p>
 <p>Certain features, such as the Prediction menu, require the symbol to be loaded as daily and not intraday.</p>
 <pre><code>optional arguments:
-optional arguments:
   -t TICKER, --ticker TICKER
                         Stock ticker (default: None)
   -s START, --start START
-                        The starting date (format YYYY-MM-DD) of the stock (default: 2019-03-12)
-  -e END, --end END     The ending date (format YYYY-MM-DD) of the stock (default: 2022-03-16)
+                        The starting date (format YYYY-MM-DD) of the stock (default: 2019-06-06)
+  -e END, --end END     The ending date (format YYYY-MM-DD) of the stock (default: 2022-06-10)
   -i {1,5,15,30,60}, --interval {1,5,15,30,60}
                         Intraday stock minutes (default: 1440)
-  --source {yf,av,iex}  Source of historical data. (default: yf)
+  --source {yf,av,iex,polygon}
+                        Source of historical data. (default: stocks.load value from $OPENBB_PREFERRED_DATA_SOURCE_FILE file)
   -p, --prepost         Pre/After market hours. Only works for 'yf' source, and intraday data (default: False)
-  -f {Test.csv}, --file {Test.csv}
+  -f FILEPATH, --file FILEPATH
                         Path to load custom file. (default: None)
   -m, --monthly         Load monthly data (default: False)
   -w, --weekly          Load weekly data (default: False)
