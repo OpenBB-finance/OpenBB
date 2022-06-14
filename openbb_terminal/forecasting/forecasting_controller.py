@@ -25,6 +25,7 @@ from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     export_data,
+    log_and_raise,
 )
 from openbb_terminal.helper_funcs import (
     print_rich_table,
@@ -49,6 +50,18 @@ from openbb_terminal.forecasting import (
 logger = logging.getLogger(__name__)
 
 # pylint: disable=R0902
+
+
+def check_greater_than_one(value) -> int:
+    """Argparse type to check positive int above 1"""
+    new_value = int(value)
+    if new_value <= 1:
+        log_and_raise(
+            argparse.ArgumentTypeError(
+                f"{value} is an invalid positive int value. Must be greater than 1."
+            )
+        )
+    return new_value
 
 
 class ForecastingController(BaseController):
@@ -569,7 +582,7 @@ class ForecastingController(BaseController):
             "--n_days",
             action="store",
             dest="n_days",
-            type=check_positive,
+            type=check_greater_than_one,
             default=5,
             help="prediction days.",
         )
@@ -628,7 +641,7 @@ class ForecastingController(BaseController):
             action="store",
             dest="forecast_horizon",
             default=5,
-            type=check_positive,
+            type=check_greater_than_one,
             help="Days/Points to forecast when training and performing historical back-testing",
         )
 
@@ -691,7 +704,7 @@ class ForecastingController(BaseController):
             "--n_days",
             action="store",
             dest="n_days",
-            type=check_positive,
+            type=check_greater_than_one,
             default=5,
             help="prediction days.",
         )
@@ -734,7 +747,7 @@ class ForecastingController(BaseController):
             action="store",
             dest="forecast_horizon",
             default=5,
-            type=check_positive,
+            type=check_greater_than_one,
             help="Days/Points to forecast when training and performing historical back-testing",
         )
 
@@ -793,7 +806,7 @@ class ForecastingController(BaseController):
             "--n_days",
             action="store",
             dest="n_days",
-            type=check_positive,
+            type=check_greater_than_one,
             default=5,
             help="prediction days.",
         )
@@ -818,7 +831,7 @@ class ForecastingController(BaseController):
             action="store",
             dest="forecast_horizon",
             default=5,
-            type=check_positive,
+            type=check_greater_than_one,
             help="Days/Points to forecast when training and performing historical back-testing",
         )
         # RNN Hyperparameters
@@ -978,7 +991,7 @@ class ForecastingController(BaseController):
             "--n_days",
             action="store",
             dest="n_days",
-            type=check_positive,
+            type=check_greater_than_one,
             default=5,
             help="prediction days.",
         )
@@ -1011,7 +1024,7 @@ class ForecastingController(BaseController):
             action="store",
             dest="forecast_horizon",
             default=5,
-            type=check_positive,
+            type=check_greater_than_one,
             help="Days/Points to forecast when training and performing historical back-testing",
         )
         # NBEATS Hyperparameters
@@ -1179,7 +1192,7 @@ class ForecastingController(BaseController):
             "--n_days",
             action="store",
             dest="n_days",
-            type=check_positive,
+            type=check_greater_than_one,
             default=5,
             help="prediction days.",
         )
@@ -1212,7 +1225,7 @@ class ForecastingController(BaseController):
             action="store",
             dest="forecast_horizon",
             default=5,
-            type=check_positive,
+            type=check_greater_than_one,
             help="Days/Points to forecast when training and performing historical back-testing",
         )
         # TCN Hyperparameters
@@ -1385,7 +1398,7 @@ class ForecastingController(BaseController):
             "--n_days",
             action="store",
             dest="n_days",
-            type=check_positive,
+            type=check_greater_than_one,
             default=5,
             help="prediction days.",
         )
@@ -1418,7 +1431,7 @@ class ForecastingController(BaseController):
             action="store",
             dest="forecast_horizon",
             default=5,
-            type=check_positive,
+            type=check_greater_than_one,
             help="Days/Points to forecast when training and performing historical back-testing",
         )
         # BRNN Hyperparameters
