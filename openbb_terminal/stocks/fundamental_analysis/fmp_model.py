@@ -1,7 +1,7 @@
 """ Financial Modeling Prep Model"""
 __docformat__ = "numpy"
 import logging
-from typing import Optional, Union
+from typing import Optional, List
 
 from datetime import datetime
 from requests.exceptions import HTTPError
@@ -200,7 +200,7 @@ def get_dcf(ticker: str, number: int, quarterly: bool = False) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_income(ticker: str, number: int, quarterly: bool = False, ratios: bool = False) -> list[Union[pd.DataFrame, pd.DataFrame]]:
+def get_income(ticker: str, number: int, quarterly: bool = False, ratios: bool = False) -> List[pd.DataFrame]:
     """Get income statements
 
     Parameters
@@ -221,7 +221,6 @@ def get_income(ticker: str, number: int, quarterly: bool = False, ratios: bool =
     """
 
     df_fa = pd.DataFrame()
-    df_fa_c = pd.DataFrame()
 
     try:
         if quarterly:
@@ -230,7 +229,7 @@ def get_income(ticker: str, number: int, quarterly: bool = False, ratios: bool =
             )
         else:
             df_fa = fa.income_statement(ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
-        df_fa_c = clean_metrics_df(df_fa, num=number)
+
     # Invalid API Keys
     except ValueError as e:
         console.print(e)
@@ -251,14 +250,15 @@ def get_income(ticker: str, number: int, quarterly: bool = False, ratios: bool =
         for i in valid:
             df_fa.iloc[i] = df_fa_pc.iloc[j]
             j += 1
-        df_fa = df_fa.iloc[:, 0:number]
-        df_fa_c = clean_metrics_df(df_fa, num=number)
+
+    df_fa = df_fa.iloc[:, 0:number]
+    df_fa_c = clean_metrics_df(df_fa, num=number)
 
     return [df_fa_c, df_fa]
 
 
 @log_start_end(log=logger)
-def get_balance(ticker: str, number: int, quarterly: bool = False) -> pd.DataFrame:
+def get_balance(ticker: str, number: int, quarterly: bool = False, ratios: bool = False) -> List[pd.DataFrame]:
     """Get balance sheets
 
     Parameters
@@ -269,11 +269,13 @@ def get_balance(ticker: str, number: int, quarterly: bool = False) -> pd.DataFra
         Number to get
     quarterly : bool, optional
         Flag to get quarterly data, by default False
+    ratios: bool
+        Shows percentage change, by default False
 
     Returns
     -------
-    pd.DataFrame
-        Dataframe of balance sheets
+    list
+        List of two Dataframes first, is the balance sheets table formatted and the second is for plotting
     """
 
     df_fa = pd.DataFrame()
@@ -288,7 +290,6 @@ def get_balance(ticker: str, number: int, quarterly: bool = False) -> pd.DataFra
                 ticker, cfg.API_KEY_FINANCIALMODELINGPREP
             )
 
-        df_fa = clean_metrics_df(df_fa, num=number)
     # Invalid API Keys
     except ValueError as e:
         console.print(e)
@@ -296,7 +297,24 @@ def get_balance(ticker: str, number: int, quarterly: bool = False) -> pd.DataFra
     except HTTPError as e:
         console.print(e)
 
-    return df_fa
+    if ratios:
+        types = df_fa.copy().applymap(lambda x: type(x) == int or type(x) == float).all(axis=1)
+        valid = []
+        i = 0
+        for row in types:
+            if row:
+                valid.append(i)
+            i += 1
+        df_fa_pc = df_fa.iloc[valid].pct_change(axis="columns", periods=-1).fillna(0)
+        j = 0
+        for i in valid:
+            df_fa.iloc[i] = df_fa_pc.iloc[j]
+            j += 1
+
+    df_fa = df_fa.iloc[:, 0:number]
+    df_fa_c = clean_metrics_df(df_fa, num=number)
+
+    return [df_fa_c, df_fa]
 
 
 @log_start_end(log=logger)

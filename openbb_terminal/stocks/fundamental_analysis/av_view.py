@@ -71,7 +71,7 @@ def display_key(ticker: str):
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
 def display_income_statement(
-    ticker: str, limit: int, quarterly: bool = False, export: str = ""
+    ticker: str, limit: int, quarterly: bool = False, ratios: bool = False, plot: list = [], export: str = ""
 ):
     """Alpha Vantage income statement
 
@@ -83,13 +83,37 @@ def display_income_statement(
         Number of past statements
     quarterly: bool
         Flag to get quarterly instead of annual
+    ratios: bool
+        Shows percentage change, by default False
+    plot: list
+        List of row labels to plot
     export: str
         Format to export data
     """
-    df_income = av_model.get_income_statements(ticker, limit, quarterly)
+    df_income, income_plot_data = av_model.get_income_statements(ticker, limit, quarterly, ratios)
 
     if df_income.empty:
         return
+
+    if plot:
+        rows_plot = len(plot)
+        income_plot_data = income_plot_data.transpose()
+        income_plot_data.columns = income_plot_data.columns.str.lower()
+
+        if rows_plot == 1:
+            fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+            income_plot_data[plot[0].replace("_", "")].plot()
+            title = f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {ticker.upper()}" if ratios else f"{plot[0].replace('_', ' ')} of {ticker.upper()}"
+            plt.title(title)
+            theme.style_primary_axis(ax)
+            theme.visualize_output()
+        else:
+            fig, axes = plt.subplots(rows_plot)
+            for i in range(rows_plot):
+                axes[i].plot(income_plot_data[plot[i].replace("_", "")])
+                axes[i].set_title(plot[i].replace("_", " "))
+            theme.style_primary_axis(axes[0])
+            fig.autofmt_xdate()
 
     indexes = df_income.index
     new_indexes = [camel_case_split(ind) for ind in indexes]
@@ -98,7 +122,7 @@ def display_income_statement(
     print_rich_table(
         df_income,
         headers=list(df_income.columns),
-        title=f"{ticker} Income Statement",
+        title=f"{ticker} Income Statement" if not ratios else f"{'QoQ' if quarterly else 'YoY'} Change of {ticker} Income Statement",
         show_index=True,
     )
 
@@ -108,7 +132,7 @@ def display_income_statement(
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
 def display_balance_sheet(
-    ticker: str, limit: int, quarterly: bool = False, export: str = ""
+    ticker: str, limit: int, quarterly: bool = False, ratios: bool = False, plot: list = [], export: str = ""
 ):
     """Alpha Vantage income statement
 
@@ -120,13 +144,37 @@ def display_balance_sheet(
         Number of past statements
     quarterly: bool
         Flag to get quarterly instead of annual
+    ratios: bool
+        Shows percentage change, by default False
+    plot: list
+        List of row labels to plot
     export: str
         Format to export data
     """
-    df_balance = av_model.get_balance_sheet(ticker, limit, quarterly)
+    df_balance, balance_plot_data = av_model.get_balance_sheet(ticker, limit, quarterly, ratios)
 
     if df_balance.empty:
         return
+
+    if plot:
+        rows_plot = len(plot)
+        balance_plot_data = balance_plot_data.transpose()
+        balance_plot_data.columns = balance_plot_data.columns.str.lower()
+
+        if rows_plot == 1:
+            fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+            balance_plot_data[plot[0].replace("_", "")].plot()
+            title = f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {ticker.upper()}" if ratios else f"{plot[0].replace('_', ' ')} of {ticker.upper()}"
+            plt.title(title)
+            theme.style_primary_axis(ax)
+            theme.visualize_output()
+        else:
+            fig, axes = plt.subplots(rows_plot)
+            for i in range(rows_plot):
+                axes[i].plot(balance_plot_data[plot[i].replace("_", "")])
+                axes[i].set_title(plot[i].replace("_", " "))
+            theme.style_primary_axis(axes[0])
+            fig.autofmt_xdate()
 
     indexes = df_balance.index
     new_indexes = [camel_case_split(ind) for ind in indexes]
@@ -135,7 +183,7 @@ def display_balance_sheet(
     print_rich_table(
         df_balance,
         headers=list(df_balance.columns),
-        title=f"{ticker} Balance Sheet",
+        title=f"{ticker} Balance Sheet" if not ratios else f"{'QoQ' if quarterly else 'YoY'} Change of {ticker} Balance Sheet",
         show_index=True,
     )
 

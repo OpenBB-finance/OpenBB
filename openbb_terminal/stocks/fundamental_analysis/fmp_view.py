@@ -3,7 +3,6 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import List
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -167,7 +166,7 @@ def display_discounted_cash_flow(
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
 def display_income_statement(
-    ticker: str, number: int, quarterly: bool = False, ratios: bool = False, plot: List[str] = None, export: str = ""
+    ticker: str, number: int, quarterly: bool = False, ratios: bool = False, plot: list = [], export: str = ""
 ):
     """Financial Modeling Prep ticker income statement
 
@@ -190,24 +189,31 @@ def display_income_statement(
 
     if not income.empty:
         if plot:
+            income_plot_data = income_plot_data[income_plot_data.columns[::-1]]
             rows_plot = len(plot)
-            income_plot_data.transpose()
+            income_plot_data = income_plot_data.transpose()
+            income_plot_data.columns = income_plot_data.columns.str.lower()
+
             if rows_plot == 1:
-                _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-                income_plot_data[plot[0].replace("_", " ")].plot(title=f"{plot[0].replace('_', ' ')} of {ticker.upper()}")
+                fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+                income_plot_data[plot[0].replace("_", "")].plot()
+                title = f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {ticker.upper()}" if ratios else f"{plot[0].replace('_', ' ')} of {ticker.upper()}"
+                plt.title(title)
                 theme.style_primary_axis(ax)
                 theme.visualize_output()
             else:
-                _, axes = plt.subplots(rows_plot)
+                fig, axes = plt.subplots(rows_plot)
                 for i in range(rows_plot):
-                    axes[i].plot(income_plot_data[plot[i].replace("_", " ")])
-                    theme.style_primary_axis(axes[0])
+                    axes[i].plot(income_plot_data[plot[i].replace("_", "")])
+                    axes[i].set_title(plot[i].replace("_", " "))
+                theme.style_primary_axis(axes[0])
+                fig.autofmt_xdate()
 
         income = income[income.columns[::-1]]
         print_rich_table(
             income.drop(index=["Final link", "Link"]),
             headers=list(income.columns),
-            title=f"{ticker.upper()} Income Statement" if not ratios else f"YoY Change of {ticker.upper()} Income Statement",
+            title=f"{ticker.upper()} Income Statement" if not ratios else f"{'QoQ' if quarterly else 'YoY'} Change of {ticker.upper()} Income Statement",
             show_index=True,
         )
 
@@ -228,7 +234,7 @@ def display_income_statement(
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
 def display_balance_sheet(
-    ticker: str, number: int, quarterly: bool = False, export: str = ""
+    ticker: str, number: int, quarterly: bool = False, ratios: bool = False, plot: list = [], export: str = ""
 ):
     """Financial Modeling Prep ticker balance sheet
 
@@ -240,12 +246,37 @@ def display_balance_sheet(
         Number to get
     quarterly: bool
         Flag to get quarterly data
+    ratios: bool
+        Shows percentage change, by default False
+    plot: list
+        List of row labels to plot
     export: str
         Format to export data
     """
-    balance = fmp_model.get_balance(ticker, number, quarterly)
+    balance, balance_plot_data = fmp_model.get_balance(ticker, number, quarterly, ratios)
 
     if not balance.empty:
+        if plot:
+            balance_plot_data = balance_plot_data[balance_plot_data.columns[::-1]]
+            rows_plot = len(plot)
+            balance_plot_data = balance_plot_data.transpose()
+            balance_plot_data.columns = balance_plot_data.columns.str.lower()
+
+            if rows_plot == 1:
+                fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+                balance_plot_data[plot[0].replace("_", "")].plot()
+                title = f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {ticker.upper()}" if ratios else f"{plot[0].replace('_', ' ')} of {ticker.upper()}"
+                plt.title(title)
+                theme.style_primary_axis(ax)
+                theme.visualize_output()
+            else:
+                fig, axes = plt.subplots(rows_plot)
+                for i in range(rows_plot):
+                    axes[i].plot(balance_plot_data[plot[i].replace("_", "")])
+                    axes[i].set_title(plot[i].replace("_", " "))
+                theme.style_primary_axis(axes[0])
+                fig.autofmt_xdate()
+
         balance = balance[balance.columns[::-1]]
         print_rich_table(
             balance.drop(index=["Final link", "Link"]),

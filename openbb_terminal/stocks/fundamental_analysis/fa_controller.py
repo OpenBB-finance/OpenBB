@@ -803,16 +803,10 @@ class FundamentalAnalysisController(StockBaseController):
             "--plot",
             action="store",
             nargs="+",
-            default=None,
-            choices=["Revenue", "Cost_of_revenue", "Gross_profit", "Gross_profit_ratio", "Research_and_development_expenses",
-                     "General_and_administrative_expenses", "Selling and_marketing_expenses", "Selling_and_marketing_expenses",
-                     "Selling_general_and_administrative_expenses", "Other_expenses", "Operating_expenses", "Cost_and_expenses",
-                     "Interest_income", "Interest_expense", "Depreciation_and_amortization", "Ebitda", "Ebitdaratio", "Operating_income",
-                     "Operating_income_ratio", "Total_other_income_expenses_net", "Income_before_tax", "Income_before_tax_ratio",
-                     "Income_tax_expense", "Net_income", "Net_income_ratio", "Eps", "Epsdiluted", "Weighted_average_shs_out",
-                     "Weighted_average_shs_out_dil"],
+            type=str,
+            default=[],
             dest="plot",
-            help="Rows to plot."
+            help="Rows to plot. (-1 represents invalid data)"
         )
         parser.add_argument(
             "-s",
@@ -831,6 +825,8 @@ class FundamentalAnalysisController(StockBaseController):
                     ticker=self.ticker,
                     limit=ns_parser.limit,
                     quarterly=ns_parser.b_quarter,
+                    ratios=ns_parser.ratios,
+                    plot=ns_parser.plot,
                     export=ns_parser.export,
                 )
             elif ns_parser.source == "polygon":
@@ -839,6 +835,8 @@ class FundamentalAnalysisController(StockBaseController):
                     financial="income",
                     limit=ns_parser.limit,
                     quarterly=ns_parser.b_quarter,
+                    ratios=ns_parser.ratios,
+                    plot=ns_parser.plot,
                     export=ns_parser.export,
                 )
             elif ns_parser.source == "fmp":
@@ -893,6 +891,24 @@ class FundamentalAnalysisController(StockBaseController):
             help="Quarter fundamental data flag.",
         )
         parser.add_argument(
+            "-r",
+            "--ratios",
+            action="store_true",
+            default=False,
+            dest="ratios",
+            help="Shows percentage change of values.",
+        )
+        parser.add_argument(
+            "-p",
+            "--plot",
+            action="store",
+            nargs="+",
+            type=str,
+            default=[],
+            dest="plot",
+            help="Rows to plot. (-1 represents invalid data)"
+        )
+        parser.add_argument(
             "-s",
             "--source",
             help="Source to get fundamentals from",
@@ -909,6 +925,8 @@ class FundamentalAnalysisController(StockBaseController):
                     ticker=self.ticker,
                     limit=ns_parser.limit,
                     quarterly=ns_parser.b_quarter,
+                    ratios=ns_parser.ratios,
+                    plot=ns_parser.plot,
                     export=ns_parser.export,
                 )
             elif ns_parser.source == "polygon":
@@ -917,6 +935,8 @@ class FundamentalAnalysisController(StockBaseController):
                     financial="balance",
                     limit=ns_parser.limit,
                     quarterly=ns_parser.b_quarter,
+                    ratios=ns_parser.ratios,
+                    plot=ns_parser.plot,
                     export=ns_parser.export,
                 )
             elif ns_parser.source == "fmp":
@@ -924,6 +944,8 @@ class FundamentalAnalysisController(StockBaseController):
                     ticker=self.ticker,
                     number=ns_parser.limit,
                     quarterly=ns_parser.b_quarter,
+                    ratios=ns_parser.ratios,
+                    plot=ns_parser.plot,
                     export=ns_parser.export,
                 )
 

@@ -146,8 +146,8 @@ def get_key_metrics(ticker: str) -> pd.DataFrame:
 
 @log_start_end(log=logger)
 def get_income_statements(
-    ticker: str, number: int, quarterly: bool = False
-) -> pd.DataFrame:
+    ticker: str, number: int, quarterly: bool = False, ratios: bool = False
+) -> List[pd.DataFrame]:
     """Get income statements for company
 
     Parameters
@@ -158,11 +158,13 @@ def get_income_statements(
         Number of past to get
     quarterly : bool, optional
         Flag to get quarterly instead of annual, by default False
+    ratios: bool
+        Shows percentage change, by default False
 
     Returns
     -------
-    pd.DataFrame
-        Dataframe of income statements
+    list
+        List of two Dataframes first, is income statement table formatted and the second is for plotting
     """
     url = (
         f"https://www.alphavantage.co/query?function=INCOME_STATEMENT&symbol={ticker}"
@@ -191,19 +193,30 @@ def get_income_statements(
 
             if df_fa.empty:
                 console.print("No data found")
-                return pd.DataFrame()
+                return [pd.DataFrame(), pd.DataFrame()]
 
             df_fa = df_fa.set_index("fiscalDateEnding")
-            df_fa = df_fa.head(number)
-            df_fa = df_fa.applymap(lambda x: lambda_long_number_format(x))
-            return df_fa[::-1].T
-    return pd.DataFrame()
+            df_fa = df_fa[::-1].T
+            df_fa.iloc[1:] = df_fa.iloc[1:].astype("float")
+
+            if ratios:
+                df_fa_pc = df_fa.iloc[1:].pct_change(axis="columns").fillna(0)
+                j = 0
+                for i in list(range(1, 25)):
+                    df_fa.iloc[i] = df_fa_pc.iloc[j]
+                    j += 1
+
+            df_fa = df_fa.iloc[:, 0:number]
+            df_fa_c = df_fa.applymap(lambda x: lambda_long_number_format(x))
+
+            return [df_fa_c, df_fa]
+    return [pd.DataFrame(), pd.DataFrame()]
 
 
 @log_start_end(log=logger)
 def get_balance_sheet(
-    ticker: str, number: int, quarterly: bool = False
-) -> pd.DataFrame:
+    ticker: str, number: int, quarterly: bool = False, ratios: bool = False
+) -> List[pd.DataFrame]:
     """Get balance sheets for company
 
     Parameters
@@ -214,11 +227,13 @@ def get_balance_sheet(
         Number of past to get
     quarterly : bool, optional
         Flag to get quarterly instead of annual, by default False
+    ratios: bool
+        Shows percentage change, by default False
 
     Returns
     -------
-    pd.DataFrame
-        Dataframe of income statements
+    list
+        List of two Dataframes first, is the balance sheets table formatted and the second is for plotting
     """
     url = f"https://www.alphavantage.co/query?function=BALANCE_SHEET&symbol={ticker}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
     r = requests.get(url)
@@ -244,13 +259,29 @@ def get_balance_sheet(
 
             if df_fa.empty:
                 console.print("No data found")
-                return pd.DataFrame()
+                return [pd.DataFrame(), pd.DataFrame()]
 
             df_fa = df_fa.set_index("fiscalDateEnding")
-            df_fa = df_fa.head(number)
-            df_fa = df_fa.applymap(lambda x: lambda_long_number_format(x))
-            return df_fa[::-1].T
-    return pd.DataFrame()
+            df_fa = df_fa[::-1].T
+
+            df_fa_c = df_fa.iloc[:, 0:number].applymap(lambda x: lambda_long_number_format(x))
+
+            df_fa = df_fa.replace("None", "0")
+            df_fa.iloc[1:] = df_fa.iloc[1:].astype("float")
+
+            if ratios:
+                df_fa_pc = df_fa.iloc[1:].pct_change(axis="columns").fillna(0)
+                j = 0
+                for i in list(range(1, 37)):
+                    df_fa.iloc[i] = df_fa_pc.iloc[j]
+                    j += 1
+                
+                df_fa_c = df_fa.iloc[:, 0:number].applymap(lambda x: lambda_long_number_format(x))
+
+            df_fa = df_fa.iloc[:, 0:number]
+
+            return [df_fa_c, df_fa]
+    return [pd.DataFrame(), pd.DataFrame()]
 
 
 @log_start_end(log=logger)
