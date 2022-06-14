@@ -274,3 +274,35 @@ def add_rsi(
     dataset = dataset.dropna(subset=[f"RSI_{period}"])
     dataset = dataset.reset_index(drop=True)
     return dataset
+
+
+@log_start_end(log=logger)
+def add_roc(
+    dataset: pd.DataFrame, target_column: str = "close", period: int = 10
+) -> pd.DataFrame:
+    """A momentum oscillator, which measures the percentage change between the current
+    value and the n period past value.
+
+    Parameters
+    ----------
+    dataset : pd.DataFrame
+        The dataset you wish to clean
+    target_column : str
+        The column you wish to add the ROC to
+    period : int
+        Time Span
+
+    Returns
+    -------
+    pd.DataFrame:
+        Dataframe with added ROC column
+    """
+    M = dataset[target_column].diff(period - 1)
+    N = dataset[target_column].shift(period - 1)
+
+    dataset[f"ROC_{period}"] = (M / N) * 100
+    # TODO - See what other thing we can do to avoid this...
+    # drop na in dataset
+    dataset = dataset.dropna(subset=[f"ROC_{period}"])
+    dataset = dataset.reset_index(drop=True)
+    return dataset
