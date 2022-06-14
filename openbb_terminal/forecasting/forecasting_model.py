@@ -165,8 +165,8 @@ def add_ema(
     ----------
     dataset : pd.DataFrame
         The dataset you wish to clean
-    n : int
-        Span and min periods of ema
+    period : int
+        Time Span
 
     Returns
     -------
@@ -178,3 +178,52 @@ def add_ema(
     )
 
     return dataset
+
+
+@log_start_end(log=logger)
+def add_sto(dataset: pd.DataFrame, period: int = 10) -> pd.DataFrame:
+    """Stochastic Oscillator %K and %D : A stochastic oscillator is a momentum indicator comparing a particular closing
+    price of a security to a range of its prices over a certain period of time. %K and %D are slow and fast indicators.
+
+    Requires Low/High/Close columns.
+    Note: This will drop first rows equal to period due to how this metric is calculated.
+
+    Parameters
+    ----------
+    dataset : pd.DataFrame
+        The dataset you wish to clean
+    period : int
+        Span
+
+    Returns
+    -------
+    pd.DataFrame:
+        Dataframe added EMA column
+    """
+
+    # check if columns exist
+    if (
+        "low" in dataset.columns
+        and "high" in dataset.columns
+        and "close" in dataset.columns
+    ):
+        STOK = (
+            (dataset["close"] - dataset["low"].rolling(period).min())
+            / (
+                dataset["high"].rolling(period).max()
+                - dataset["low"].rolling(period).min()
+            )
+        ) * 100
+
+        dataset[f"SO%K_{period}"] = STOK
+        dataset[f"SO%D_{period}"] = STOK.rolling(3).mean()
+
+        # TODO - See what other thing we can do to avoid this...
+        # drop na in %K and %D
+        dataset = dataset.dropna(subset=[f"SO%K_{period}", f"SO%D_{period}"])
+        dataset = dataset.reset_index(drop=True)
+        return dataset
+
+    else:
+        console.print("[red]Missing Low/High/Close columns[/red]\n")
+        return dataset

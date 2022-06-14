@@ -76,6 +76,7 @@ class ForecastingController(BaseController):
         "delete",
         "export",
         "ema",
+        "sto",
         "expo",
         "theta",
         "rnn",
@@ -168,6 +169,7 @@ class ForecastingController(BaseController):
                 "show",
                 "clean",
                 "ema",
+                "sto",
                 # "index",
                 # "remove",
                 "combine",
@@ -212,6 +214,7 @@ class ForecastingController(BaseController):
         mt.add_cmd("export", "", self.files)
         mt.add_info("_feateng_")
         mt.add_cmd("ema", "", self.files)
+        mt.add_cmd("sto", "", self.files)
         mt.add_info("_tsforecasting_")
         mt.add_cmd("expo", "", self.files)
         mt.add_cmd("theta", "", self.files)
@@ -524,16 +527,16 @@ class ForecastingController(BaseController):
 
     @log_start_end(log=logger)
     def call_ema(self, other_args: List[str]):
-        """Process clean"""
+        """Process EMA"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="clean",
-            description="Clean a dataset by filling and dropping NaN values.",
+            prog="ema",
+            description="Add exponential moving average to dataset based on specfic column.",
         )
         parser.add_argument(
             "--target_dataset",
-            help="The name of the dataset you want to clean up",
+            help="The name of the dataset you want to add the EMA to",
             dest="target_dataset",
             type=str,
             choices=list(self.datasets.keys()),
@@ -548,7 +551,7 @@ class ForecastingController(BaseController):
 
         parser.add_argument(
             "--period",
-            help="The name of the specific column you want to calculate EMA for.",
+            help="The period to calculate EMA with.",
             dest="period",
             type=check_greater_than_one,
             default=10,
@@ -566,6 +569,44 @@ class ForecastingController(BaseController):
             )
             console.print(
                 f"Successfully added 'EMA_{ns_parser.period}' to '{ns_parser.target_dataset}' dataset"
+            )
+        console.print()
+
+    @log_start_end(log=logger)
+    def call_sto(self, other_args: List[str]):
+        """Process Stoch Oscill"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="sto",
+            description="Add in Stochastic Oscillator %K and %D",
+        )
+        parser.add_argument(
+            "--target_dataset",
+            help="The name of the dataset to use.",
+            dest="target_dataset",
+            type=str,
+            choices=list(self.datasets.keys()),
+        )
+        parser.add_argument(
+            "--period",
+            help="The name of the specific column you want to calculate STO for.",
+            dest="period",
+            type=check_greater_than_one,
+            default=10,
+        )
+        # if user does not put in --target_dataset
+        if other_args and "--" not in other_args[0][0]:
+            other_args.insert(0, "--target_dataset")
+
+        ns_parser = parse_known_args_and_warn(parser, other_args, NO_EXPORT, limit=5)
+        if ns_parser:
+            self.datasets[ns_parser.target_dataset] = forecasting_model.add_sto(
+                self.datasets[ns_parser.target_dataset],
+                ns_parser.period,
+            )
+            console.print(
+                f"Successfully added 'STOK&D_{ns_parser.period}' to '{ns_parser.target_dataset}' dataset"
             )
         console.print()
 
