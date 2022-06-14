@@ -436,6 +436,7 @@ def test_call_load(mocker):
     other_args = [
         "TSLA",
         "--start=2021-12-17",
+        "--source=yf",
     ]
     controller.call_load(other_args=other_args)
 
