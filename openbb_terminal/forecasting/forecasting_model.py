@@ -286,7 +286,7 @@ def add_roc(
     Parameters
     ----------
     dataset : pd.DataFrame
-        The dataset you wish to clean
+        The dataset you wish to calculate with
     target_column : str
         The column you wish to add the ROC to
     period : int
@@ -304,5 +304,35 @@ def add_roc(
     # TODO - See what other thing we can do to avoid this...
     # drop na in dataset
     dataset = dataset.dropna(subset=[f"ROC_{period}"])
+    dataset = dataset.reset_index(drop=True)
+    return dataset
+
+
+@log_start_end(log=logger)
+def add_momentum(
+    dataset: pd.DataFrame, target_column: str = "close", period: int = 10
+) -> pd.DataFrame:
+    """A momentum oscillator, which measures the percentage change between the current
+    value and the n period past value.
+
+    Parameters
+    ----------
+    dataset : pd.DataFrame
+        The dataset you wish to calculate with
+    target_column : str
+        The column you wish to add the MOM to
+    period : int
+        Time Span
+
+    Returns
+    -------
+    pd.DataFrame:
+        Dataframe with added MOM column
+    """
+
+    dataset[f"Momentum_{period}"] = dataset[target_column].diff(period)
+    # TODO - See what other thing we can do to avoid this...
+    # drop na in dataset
+    dataset = dataset.dropna(subset=[f"Momentum_{period}"])
     dataset = dataset.reset_index(drop=True)
     return dataset
