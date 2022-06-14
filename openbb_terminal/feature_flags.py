@@ -1,15 +1,15 @@
 # IMPORTATION STANDARD
 import os
+import os.path
 from distutils.util import strtobool
 import pkg_resources
 
 # IMPORTATION THIRDPARTY
 from dotenv import load_dotenv
+import i18n
 
 # IMPORTATION INTERNAL
 from openbb_terminal.core.config.constants import ENV_FILE
-
-import i18n
 
 # pylint: disable=no-member
 
@@ -101,6 +101,14 @@ TOOLBAR_HINT = strtobool(os.getenv("OPENBB_TOOLBAR_HINT", "True"))
 USE_LANGUAGE = str(os.getenv("OPENBB_USE_LANGUAGE", "en"))
 
 LOGGING_COMMIT_HASH = str(os.getenv("OPENBB_LOGGING_COMMIT_HASH", "REPLACE_ME"))
+
+# File that contains a JSON dictionary of preferred sources for commands
+PREFERRED_DATA_SOURCE_FILE = str(
+    os.getenv(
+        "OPENBB_PREFERRED_DATA_SOURCE_FILE",
+        os.getcwd() + os.path.sep + "data_sources_default.json",
+    )
+)
 
 try:
     version = pkg_resources.get_distribution("OpenBBTerminal").version

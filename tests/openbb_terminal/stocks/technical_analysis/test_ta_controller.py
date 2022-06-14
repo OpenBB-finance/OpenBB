@@ -780,5 +780,6 @@ def test_call_load(mocker):
         "TSLA",
         "--start=2021-12-17",
         "--end=2021-12-18",
+        "--source=yf",
     ]
     controller.call_load(other_args=other_args)

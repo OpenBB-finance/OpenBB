@@ -13,7 +13,6 @@ from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     check_non_negative,
-    parse_known_args_and_warn,
     print_rich_table,
 )
 from openbb_terminal.menu import session
@@ -155,7 +154,7 @@ class HedgeController(BaseController):
             prog="list",
             description="""Lists available calls and puts.""",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
             calls = pd.DataFrame([call[0] for call in self.calls])
@@ -208,7 +207,7 @@ class HedgeController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-i")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
             if not self.greeks["Portfolio"]:
@@ -345,7 +344,7 @@ class HedgeController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-o")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if not self.options["Option A"] and not self.options["Option B"]:
                 console.print("Please add Options by using the 'add' command.\n")
@@ -422,7 +421,7 @@ class HedgeController(BaseController):
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             strike_type, underlying_type, side_type = ns_parser.pick
             amount_type = ns_parser.amount
@@ -487,7 +486,7 @@ class HedgeController(BaseController):
             prog="sop",
             description="Displays selected option",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if not self.options["Option A"] and not self.options["Option B"]:
                 console.print("Please add Options by using the 'add' command.\n")
@@ -537,7 +536,7 @@ class HedgeController(BaseController):
             prog="plot",
             description="This function plots option payoff diagrams",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             plot_payoff(
                 self.current_price,

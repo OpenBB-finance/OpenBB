@@ -68,6 +68,7 @@ en:
   settings/dpi: dots per inch
   settings/backend: plotting backend (None, tkAgg, MacOSX, Qt5Agg)
   settings/height: select plot height
+  settings/_preferred_data_source_file: Preferred data source file
   settings/width: select plot width
   settings/pheight: select plot percentage height
   settings/pwidth: select plot percentage width

@@ -28,10 +28,13 @@ from openbb_terminal.helper_funcs import (
     system_clear,
     get_flair,
     valid_date,
-    parse_known_args_and_warn,
+    parse_simple_args,
     set_command_location,
     prefill_form,
     support_message,
+    check_file_type_saved,
+    check_positive,
+    get_preferred_source,
 )
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.rich_config import console
@@ -40,6 +43,10 @@ from openbb_terminal.cryptocurrency import cryptocurrency_helpers
 
 logger = logging.getLogger(__name__)
 
+NO_EXPORT = 0
+EXPORT_ONLY_RAW_DATA_ALLOWED = 1
+EXPORT_ONLY_FIGURES_ALLOWED = 2
+EXPORT_BOTH_RAW_DATA_AND_FIGURES = 3
 
 controllers: Dict[str, Any] = {}
 
@@ -359,7 +366,7 @@ class BaseController(metaclass=ABCMeta):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-c")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
 
         if ns_parser:
             prefill_form(
@@ -369,6 +376,113 @@ class BaseController(metaclass=ABCMeta):
                 message=" ".join(ns_parser.msg),
                 path=self.PATH,
             )
+
+    def parse_known_args_and_warn(
+        self,
+        parser: argparse.ArgumentParser,
+        other_args: List[str],
+        export_allowed: int = NO_EXPORT,
+        raw: bool = False,
+        limit: int = 0,
+        sources: List[str] = None,
+    ):
+        """Parses list of arguments into the supplied parser
+
+        Parameters
+        ----------
+        parser: argparse.ArgumentParser
+            Parser with predefined arguments
+        other_args: List[str]
+            List of arguments to parse
+        export_allowed: int
+            Choose from NO_EXPORT, EXPORT_ONLY_RAW_DATA_ALLOWED,
+            EXPORT_ONLY_FIGURES_ALLOWED and EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        raw: bool
+            Add the --raw flag
+        limit: int
+            Add a --limit flag with this number default
+        sources: List[str]
+            Data sources from where to select from
+
+        Returns
+        -------
+        ns_parser:
+            Namespace with parsed arguments
+        """
+        parser.add_argument(
+            "-h", "--help", action="store_true", help="show this help message"
+        )
+        if export_allowed > NO_EXPORT:
+            choices_export = []
+            help_export = "Does not export!"
+
+            if export_allowed == EXPORT_ONLY_RAW_DATA_ALLOWED:
+                choices_export = ["csv", "json", "xlsx"]
+                help_export = "Export raw data into csv, json, xlsx"
+            elif export_allowed == EXPORT_ONLY_FIGURES_ALLOWED:
+                choices_export = ["png", "jpg", "pdf", "svg"]
+                help_export = "Export figure into png, jpg, pdf, svg "
+            else:
+                choices_export = ["csv", "json", "xlsx", "png", "jpg", "pdf", "svg"]
+                help_export = "Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg "
+
+            parser.add_argument(
+                "--export",
+                default="",
+                type=check_file_type_saved(choices_export),
+                dest="export",
+                help=help_export,
+            )
+
+        if raw:
+            parser.add_argument(
+                "--raw",
+                dest="raw",
+                action="store_true",
+                default=False,
+                help="Flag to display raw data",
+            )
+        if limit > 0:
+            parser.add_argument(
+                "-l",
+                "--limit",
+                dest="limit",
+                default=limit,
+                help="Number of entries to show in data.",
+                type=check_positive,
+            )
+        if sources:
+            parser.add_argument(
+                "--source",
+                action="store",
+                dest="source",
+                choices=sources,
+                default=get_preferred_source(f"{self.PATH}{parser.prog}"),
+                help="Data source to select from",
+            )
+
+        if obbff.USE_CLEAR_AFTER_CMD:
+            system_clear()
+
+        try:
+            (ns_parser, l_unknown_args) = parser.parse_known_args(other_args)
+        except SystemExit:
+            # In case the command has required argument that isn't specified
+            console.print("")
+            return None
+
+        if ns_parser.help:
+            txt_help = parser.format_help() + "\n"
+            txt_help += f"See more in https://openbb-finance.github.io/OpenBBTerminal/terminal{self.PATH}{parser.prog}\n"
+            console.print(f"[help]{txt_help}[/help]")
+            return None
+
+        if l_unknown_args:
+            console.print(
+                f"The following args couldn't be interpreted: {l_unknown_args}"
+            )
+
+        return ns_parser
 
     def menu(self, custom_path_menu_above: str = ""):
         an_input = "HELP_ME"
@@ -548,16 +662,6 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
             help="Intraday stock minutes",
         )
         parser.add_argument(
-            "--source",
-            action="store",
-            dest="source",
-            choices=["yf", "av", "iex", "polygon"]
-            if "-i" not in other_args or "--interval" not in other_args
-            else ["yf", "polygon"],
-            default="yf",
-            help="Source of historical data.",
-        )
-        parser.add_argument(
             "-p",
             "--prepost",
             action="store_true",
@@ -601,7 +705,9 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, sources=["yf", "av", "iex", "polygon"]
+        )
 
         if ns_parser:
             if ns_parser.weekly and ns_parser.monthly:
@@ -733,7 +839,7 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-c")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
 
         if ns_parser:
             (self.current_df) = cryptocurrency_helpers.load(
