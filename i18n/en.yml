@@ -1102,6 +1102,9 @@ en:
   forecasting/_feateng_: Feature Engineering
   forecasting/ema: Add Exponentially Weighted Moving Average
   forecasting/sto: Add Stochastic Oscillator %K and %D
+  forecasting/rsi: Relative Strength Index
+  forecasting/roc: Rate of Change
+  forecasting/mom: Momentum
   forecasting/_tsforecasting_: TimeSeries Forecasting
   forecasting/expo: Probablistic Exponential Smoothing
   forecasting/theta: Theta Method

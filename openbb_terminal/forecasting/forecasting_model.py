@@ -9,6 +9,7 @@ from typing import Dict, Union, Any
 
 import pandas as pd
 from pandas import DataFrame
+import numpy as np
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
@@ -165,13 +166,15 @@ def add_ema(
     ----------
     dataset : pd.DataFrame
         The dataset you wish to clean
+    target_column : str
+        The column you wish to add the EMA to
     period : int
         Time Span
 
     Returns
     -------
     pd.DataFrame:
-        Dataframe added EMA column
+        Dataframe with added EMA column
     """
     dataset[f"EMA_{period}"] = (
         dataset[target_column].ewm(span=period, adjust=False).mean()
@@ -191,14 +194,14 @@ def add_sto(dataset: pd.DataFrame, period: int = 10) -> pd.DataFrame:
     Parameters
     ----------
     dataset : pd.DataFrame
-        The dataset you wish to clean
+        The dataset you wish to calculate for
     period : int
         Span
 
     Returns
     -------
     pd.DataFrame:
-        Dataframe added EMA column
+        Dataframe with added STO K & D columns
     """
 
     # check if columns exist
@@ -227,3 +230,47 @@ def add_sto(dataset: pd.DataFrame, period: int = 10) -> pd.DataFrame:
     else:
         console.print("[red]Missing Low/High/Close columns[/red]\n")
         return dataset
+
+
+@log_start_end(log=logger)
+def add_rsi(
+    dataset: pd.DataFrame, target_column: str = "close", period: int = 10
+) -> pd.DataFrame:
+    """A momentum indicator that measures the magnitude of recent price changes to evaluate
+    overbought or oversold conditions in the price of a stock or other asset.
+
+    Parameters
+    ----------
+    dataset : pd.DataFrame
+        The dataset you wish to calculate for
+    target_column : str
+        The column you wish to add the RSI to
+    period : int
+        Time Span
+
+    Returns
+    -------
+    pd.DataFrame:
+        Dataframe with added RSI column
+    """
+
+    delta = dataset[target_column].diff().dropna()
+    u = delta * 0
+    d = u.copy()
+    u[delta > 0] = delta[delta > 0]
+    d[delta < 0] = -delta[delta < 0]
+    u[u.index[period - 1]] = np.mean(u[:period])  # first value is sum of avg gains
+    u = u.drop(u.index[: (period - 1)])
+    d[d.index[period - 1]] = np.mean(d[:period])  # first value is sum of avg losses
+    d = d.drop(d.index[: (period - 1)])
+    rs = (
+        u.ewm(com=period - 1, adjust=False).mean()
+        / d.ewm(com=period - 1, adjust=False).mean()
+    )
+    dataset[f"RSI_{period}"] = 100 - 100 / (1 + rs)
+
+    # TODO - See what other thing we can do to avoid this...
+    # drop na in dataset
+    dataset = dataset.dropna(subset=[f"RSI_{period}"])
+    dataset = dataset.reset_index(drop=True)
+    return dataset

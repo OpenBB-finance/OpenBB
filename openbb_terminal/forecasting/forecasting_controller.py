@@ -77,6 +77,9 @@ class ForecastingController(BaseController):
         "export",
         "ema",
         "sto",
+        "rsi",
+        "roc",
+        "mom",
         "expo",
         "theta",
         "rnn",
@@ -170,6 +173,9 @@ class ForecastingController(BaseController):
                 "clean",
                 "ema",
                 "sto",
+                "rsi",
+                "roc",
+                "mom",
                 # "index",
                 # "remove",
                 "combine",
@@ -215,6 +221,9 @@ class ForecastingController(BaseController):
         mt.add_info("_feateng_")
         mt.add_cmd("ema", "", self.files)
         mt.add_cmd("sto", "", self.files)
+        mt.add_cmd("rsi", "", self.files)
+        mt.add_cmd("roc", "", self.files)
+        mt.add_cmd("mom", "", self.files)
         mt.add_info("_tsforecasting_")
         mt.add_cmd("expo", "", self.files)
         mt.add_cmd("theta", "", self.files)
@@ -371,6 +380,8 @@ class ForecastingController(BaseController):
                     else:
                         df = df.sort_values(by=sort_column, ascending=ns_parser.ascend)
 
+                # print shape of dataframe
+                console.print(f"[green]{name} has following shape: {df.shape}.[/green]")
                 print_rich_table(
                     df.head(ns_parser.limit),
                     headers=list(df.columns),
@@ -649,6 +660,53 @@ class ForecastingController(BaseController):
                     del self.datasets[dataset][column]
 
             self.update_runtime_choices()
+        console.print()
+
+    @log_start_end(log=logger)
+    def call_rsi(self, other_args: List[str]):
+        """Process RSI"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="rsi",
+            description="Add rsi to dataset based on specfic column.",
+        )
+        parser.add_argument(
+            "--target_dataset",
+            help="The name of the dataset you want to add the EMA to",
+            dest="target_dataset",
+            type=str,
+            choices=list(self.datasets.keys()),
+        )
+        parser.add_argument(
+            "--target_column",
+            help="The name of the specific column you want to calculate EMA for.",
+            dest="target_column",
+            type=str,
+            default="close",
+        )
+
+        parser.add_argument(
+            "--period",
+            help="The period to calculate RSI with.",
+            dest="period",
+            type=check_greater_than_one,
+            default=10,
+        )
+        # if user does not put in --target_dataset
+        if other_args and "--" not in other_args[0][0]:
+            other_args.insert(0, "--target_dataset")
+
+        ns_parser = parse_known_args_and_warn(parser, other_args, NO_EXPORT, limit=5)
+        if ns_parser:
+            self.datasets[ns_parser.target_dataset] = forecasting_model.add_rsi(
+                self.datasets[ns_parser.target_dataset],
+                ns_parser.target_column,
+                ns_parser.period,
+            )
+            console.print(
+                f"Successfully added 'RSI_{ns_parser.period}' to '{ns_parser.target_dataset}' dataset"
+            )
         console.print()
 
     @log_start_end(log=logger)
