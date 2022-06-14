@@ -485,7 +485,8 @@ def test_call_func(
 )
 def test_call_func_no_parser(func, mocker):
     mocker.patch(
-        target="openbb_terminal.stocks.sector_industry_analysis.sia_controller.SectorIndustryAnalysisController.parse_known_args_and_warn",
+        target="openbb_terminal.stocks.sector_industry_analysis.sia_controller"
+        ".SectorIndustryAnalysisController.parse_known_args_and_warn",
         return_value=None,
     )
     controller = sia_controller.SectorIndustryAnalysisController(

@@ -393,7 +393,8 @@ def test_call_func(tested_func, mocked_func, other_args, called_with, mocker):
 )
 def test_call_func_no_parser(func, mocker):
     mocker.patch(
-        "openbb_terminal.stocks.fundamental_analysis.fa_controller.FundamentalAnalysisController.parse_known_args_and_warn",
+        "openbb_terminal.stocks.fundamental_analysis.fa_controller"
+        ".FundamentalAnalysisController.parse_known_args_and_warn",
         return_value=None,
     )
     controller = fa_controller.FundamentalAnalysisController(
