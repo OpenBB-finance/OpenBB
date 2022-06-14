@@ -21,7 +21,6 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     check_positive,
     check_positive_float,
-    parse_known_args_and_warn,
     NO_EXPORT,
     EXPORT_ONLY_FIGURES_ALLOWED,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
@@ -324,7 +323,7 @@ class EconometricsController(BaseController):
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-f")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
             # show examples from statsmodels
@@ -434,7 +433,7 @@ class EconometricsController(BaseController):
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=NO_EXPORT
         )
 
@@ -471,7 +470,7 @@ class EconometricsController(BaseController):
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
-        ns_parser = parse_known_args_and_warn(parser, other_args, NO_EXPORT)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args, NO_EXPORT)
 
         if not ns_parser.name:
             console.print("Please enter a valid dataset.\n")
@@ -515,7 +514,7 @@ class EconometricsController(BaseController):
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-v")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
 
@@ -569,7 +568,7 @@ class EconometricsController(BaseController):
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED, limit=10
         )
 
@@ -629,7 +628,7 @@ class EconometricsController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -698,7 +697,7 @@ class EconometricsController(BaseController):
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
-        ns_parser = parse_known_args_and_warn(parser, other_args, NO_EXPORT)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args, NO_EXPORT)
 
         if ns_parser:
             if ns_parser.name:
@@ -787,7 +786,7 @@ class EconometricsController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
-        ns_parser = parse_known_args_and_warn(parser, other_args, NO_EXPORT)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args, NO_EXPORT)
 
         if ns_parser:
             name = ns_parser.name
@@ -896,7 +895,9 @@ class EconometricsController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
-        ns_parser = parse_known_args_and_warn(parser, other_args, NO_EXPORT, limit=5)
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, NO_EXPORT, limit=5
+        )
         if ns_parser:
             self.datasets[ns_parser.name] = econometrics_model.clean(
                 self.datasets[ns_parser.name],
@@ -954,7 +955,7 @@ class EconometricsController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
-        ns_parser = parse_known_args_and_warn(parser, other_args, NO_EXPORT)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args, NO_EXPORT)
 
         if ns_parser:
             dataset, new_column = ns_parser.newdatasetcol.split(".")
@@ -1030,7 +1031,7 @@ class EconometricsController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-d")
-        ns_parser = parse_known_args_and_warn(parser, other_args, NO_EXPORT)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args, NO_EXPORT)
 
         if ns_parser:
             for option in ns_parser.delete:
@@ -1078,7 +1079,7 @@ class EconometricsController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-d")
-        ns_parser = parse_known_args_and_warn(parser, other_args, NO_EXPORT)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args, NO_EXPORT)
 
         if ns_parser:
             if ns_parser.dataset not in self.datasets:
@@ -1145,7 +1146,7 @@ class EconometricsController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-d")
-        ns_parser = parse_known_args_and_warn(parser, other_args, NO_EXPORT)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args, NO_EXPORT)
 
         if ns_parser:
             dataset = ns_parser.dataset
@@ -1202,7 +1203,7 @@ class EconometricsController(BaseController):
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-d")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -1259,7 +1260,7 @@ class EconometricsController(BaseController):
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-v")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
 
@@ -1328,7 +1329,7 @@ class EconometricsController(BaseController):
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-v")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -1429,7 +1430,7 @@ class EconometricsController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-d")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -1499,7 +1500,7 @@ class EconometricsController(BaseController):
             prog="compare",
             description="Compare results between all activated Panel regression models",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -1528,7 +1529,7 @@ class EconometricsController(BaseController):
             action="store_true",
             default=False,
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -1570,7 +1571,7 @@ class EconometricsController(BaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -1597,7 +1598,7 @@ class EconometricsController(BaseController):
             ),
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -1648,7 +1649,7 @@ class EconometricsController(BaseController):
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
 
@@ -1703,7 +1704,7 @@ class EconometricsController(BaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
 

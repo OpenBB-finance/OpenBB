@@ -12,7 +12,6 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
-    parse_known_args_and_warn,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
@@ -102,7 +101,7 @@ class FinancialModelingPrepController(BaseController):
                 [Source: Financial Modeling Prep]
             """,
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             fmp_view.display_profile(self.ticker)
 
@@ -122,7 +121,7 @@ class FinancialModelingPrepController(BaseController):
                 low. [Source: Financial Modeling Prep]
             """,
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             fmp_view.display_quote(self.ticker)
 
@@ -157,7 +156,7 @@ class FinancialModelingPrepController(BaseController):
             dest="b_quarter",
             help="Quarter fundamental data flag.",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -198,7 +197,7 @@ class FinancialModelingPrepController(BaseController):
             dest="b_quarter",
             help="Quarter fundamental data flag.",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -245,7 +244,7 @@ class FinancialModelingPrepController(BaseController):
             dest="b_quarter",
             help="Quarter fundamental data flag.",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -297,7 +296,7 @@ class FinancialModelingPrepController(BaseController):
             dest="b_quarter",
             help="Quarter fundamental data flag.",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -347,7 +346,7 @@ class FinancialModelingPrepController(BaseController):
             dest="b_quarter",
             help="Quarter fundamental data flag.",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -402,7 +401,7 @@ class FinancialModelingPrepController(BaseController):
             dest="b_quarter",
             help="Quarter fundamental data flag.",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -458,7 +457,7 @@ class FinancialModelingPrepController(BaseController):
             dest="b_quarter",
             help="Quarter fundamental data flag.",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -510,7 +509,7 @@ class FinancialModelingPrepController(BaseController):
             dest="b_quarter",
             help="Quarter fundamental data flag.",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:

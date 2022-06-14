@@ -27,7 +27,6 @@ from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
-    parse_known_args_and_warn,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import CryptoBaseController
@@ -162,7 +161,7 @@ class CryptoController(CryptoBaseController):
             if other_args and "-" not in other_args[0][0]:
                 other_args.insert(0, "--vs")
 
-            ns_parser = parse_known_args_and_warn(
+            ns_parser = self.parse_known_args_and_warn(
                 parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
             )
 
@@ -201,7 +200,7 @@ class CryptoController(CryptoBaseController):
                 to show chart and also number of days to get data for.""",
             )
 
-            ns_parser = parse_known_args_and_warn(
+            ns_parser = self.parse_known_args_and_warn(
                 parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
             )
 
@@ -291,7 +290,7 @@ class CryptoController(CryptoBaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-c")
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
 
@@ -439,16 +438,6 @@ class CryptoController(CryptoBaseController):
             help="Number of records to display",
             type=check_positive,
         )
-
-        parser.add_argument(
-            "--source",
-            dest="source",
-            choices=CRYPTO_SOURCES.keys(),
-            default="cg",
-            help="Source of data.",
-            type=str,
-        )
-
         parser.add_argument(
             "-s",
             "--skip",
@@ -461,8 +450,11 @@ class CryptoController(CryptoBaseController):
         if other_args and not other_args[0][0] == "-":
             other_args.insert(0, "-c")
 
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            EXPORT_ONLY_RAW_DATA_ALLOWED,
+            sources=CRYPTO_SOURCES.keys(),
         )
         # TODO: merge find + display_all_coins
         if ns_parser:
