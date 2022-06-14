@@ -75,6 +75,7 @@ class ForecastingController(BaseController):
         "combine",
         "delete",
         "export",
+        "ema",
         "expo",
         "theta",
         "rnn",
@@ -166,6 +167,7 @@ class ForecastingController(BaseController):
                 "export",
                 "show",
                 "clean",
+                "ema",
                 # "index",
                 # "remove",
                 "combine",
@@ -208,6 +210,8 @@ class ForecastingController(BaseController):
         mt.add_cmd("combine", "", self.files)
         mt.add_cmd("delete", "", self.files)
         mt.add_cmd("export", "", self.files)
+        mt.add_info("_feateng_")
+        mt.add_cmd("ema", "", self.files)
         mt.add_info("_tsforecasting_")
         mt.add_cmd("expo", "", self.files)
         mt.add_cmd("theta", "", self.files)
@@ -516,6 +520,53 @@ class ForecastingController(BaseController):
                 ns_parser.limit,
             )
             console.print(f"Successfully cleaned '{ns_parser.name}' dataset")
+        console.print()
+
+    @log_start_end(log=logger)
+    def call_ema(self, other_args: List[str]):
+        """Process clean"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="clean",
+            description="Clean a dataset by filling and dropping NaN values.",
+        )
+        parser.add_argument(
+            "--target_dataset",
+            help="The name of the dataset you want to clean up",
+            dest="target_dataset",
+            type=str,
+            choices=list(self.datasets.keys()),
+        )
+        parser.add_argument(
+            "--target_column",
+            help="The name of the specific column you want to calculate EMA for.",
+            dest="target_column",
+            type=str,
+            default="close",
+        )
+
+        parser.add_argument(
+            "--period",
+            help="The name of the specific column you want to calculate EMA for.",
+            dest="period",
+            type=check_greater_than_one,
+            default=10,
+        )
+        # if user does not put in --target_dataset
+        if other_args and "--" not in other_args[0][0]:
+            other_args.insert(0, "--target_dataset")
+
+        ns_parser = parse_known_args_and_warn(parser, other_args, NO_EXPORT, limit=5)
+        if ns_parser:
+            self.datasets[ns_parser.target_dataset] = forecasting_model.add_ema(
+                self.datasets[ns_parser.target_dataset],
+                ns_parser.target_column,
+                ns_parser.period,
+            )
+            console.print(
+                f"Successfully added 'EMA_{ns_parser.period}' to '{ns_parser.target_dataset}' dataset"
+            )
         console.print()
 
     @log_start_end(log=logger)

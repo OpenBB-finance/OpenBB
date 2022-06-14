@@ -142,4 +142,39 @@ def clean(dataset: pd.DataFrame, fill: str, drop: str, limit: int) -> pd.DataFra
         elif drop == "cdrop":
             dataset = dataset.dropna(how="any", axis="columns")
 
+    # TODO - think about if we want to always interpolate and remove above options
+    if not fill or not drop:
+        # We just want to interpolate any missing nans for timeseries
+        dataset = dataset.interpolate(method="linear")
+
+    # reset dataset index
+    # dataset = dataset.reset_index(drop=True)
+    console.print("Null Values in dataset =", dataset.isnull().values.any())
+
+    return dataset
+
+
+@log_start_end(log=logger)
+def add_ema(
+    dataset: pd.DataFrame, target_column: str = "close", period: int = 10
+) -> pd.DataFrame:
+    """A moving average provides an indication of the trend of the price movement
+    by cut down the amount of "noise" on a price chart.
+
+    Parameters
+    ----------
+    dataset : pd.DataFrame
+        The dataset you wish to clean
+    n : int
+        Span and min periods of ema
+
+    Returns
+    -------
+    pd.DataFrame:
+        Dataframe added EMA column
+    """
+    dataset[f"EMA_{period}"] = (
+        dataset[target_column].ewm(span=period, adjust=False).mean()
+    )
+
     return dataset
