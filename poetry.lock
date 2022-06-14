@@ -1205,6 +1205,24 @@ korean-lunar-calendar = "*"
 python-dateutil = "*"
 
 [[package]]
+name = "html5lib"
+version = "1.1"
+description = "HTML parser based on the WHATWG HTML specification"
+category = "main"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+
+[package.dependencies]
+six = ">=1.9"
+webencodings = "*"
+
+[package.extras]
+all = ["genshi", "chardet (>=2.2)", "lxml"]
+chardet = ["chardet (>=2.2)"]
+genshi = ["genshi"]
+lxml = ["lxml"]
+
+[[package]]
 name = "identify"
 version = "2.5.1"
 description = "File identification library for Python"
@@ -4572,7 +4590,7 @@ prediction = ["tensorflow"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8,<3.10"
-content-hash = "6f1fdd3e76f3826d325ccf5f2e0c2b5bc0ad537038784096dab0018af86a4196"
+content-hash = "d6fa69aa88f955931a3c20e39fc70c64ec3008721e46de9f485c25157e4b20a6"
 
 [metadata.files]
 absl-py = [
@@ -5462,6 +5480,10 @@ hijri-converter = [
 holidays = [
     {file = "holidays-0.11.3.1-py3-none-any.whl", hash = "sha256:63e2578513d0877aefd43d49870caf666fd902ec3a5884a3397f403c912a8246"},
     {file = "holidays-0.11.3.1.tar.gz", hash = "sha256:4855afe0ebf428efbcf848477828b889f8515be7f4f15ae26682919369d92774"},
+]
+html5lib = [
+    {file = "html5lib-1.1-py2.py3-none-any.whl", hash = "sha256:0d78f8fde1c230e99fe37986a60526d7049ed4bf8a9fadbad5f00e22e58e041d"},
+    {file = "html5lib-1.1.tar.gz", hash = "sha256:b2e5b40261e20f354d198eae92afc10d750afb487ed5e50f9c4eaf07c184146f"},
 ]
 identify = [
     {file = "identify-2.5.1-py2.py3-none-any.whl", hash = "sha256:0dca2ea3e4381c435ef9c33ba100a78a9b40c0bab11189c7cf121f75815efeaa"},
