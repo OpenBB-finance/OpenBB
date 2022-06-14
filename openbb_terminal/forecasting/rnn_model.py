@@ -19,6 +19,7 @@ from darts.utils.likelihood_models import GaussianLikelihood
 from darts.metrics import mape
 from pytorch_lightning.callbacks.early_stopping import EarlyStopping
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.forecasting import helpers
 
 from openbb_terminal.rich_config import console
 
@@ -114,14 +115,8 @@ def get_rnn_data(
 
     scaled_train, scaled_val = scaled_ticker_series.split_before(train_split)
 
-    # --------------------------------------------------
-    # Early Stopping
-    my_stopper = EarlyStopping(
-        monitor="val_loss",
-        patience=5,
-        min_delta=0,
-        mode="min",
-    )
+    my_stopper = helpers.early_stopper(5)
+
     pl_trainer_kwargs = {"callbacks": [my_stopper], "accelerator": "cpu"}
 
     rnn_model = RNNModel(
