@@ -482,6 +482,7 @@ INDICES = {
     "crypto200": {"name": "CMC Crypto 200 Index by Solacti", "ticker": "^CMC200"},
 }
 
+
 @log_start_end(log=logger)
 def get_index(
     index: str,
