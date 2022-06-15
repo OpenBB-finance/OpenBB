@@ -2,41 +2,16 @@
 __docformat__ = "numpy"
 
 import logging
-import os
 from typing import Union
 
-import matplotlib.pyplot as plt
 import pandas as pd
 
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.forecasting import rnn_model
-from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import (
-    export_data,
-    plot_autoscale,
-)
-from openbb_terminal.rich_config import console
-from openbb_terminal.common.prediction_techniques.pred_helper import (
-    print_pretty_prediction,
-)
 from openbb_terminal.forecasting import helpers
 
 logger = logging.getLogger(__name__)
 # pylint: disable=too-many-arguments
-
-
-def dt_format(x):
-    """Convert any Timestamp to YYYY-MM-DD
-    Args:
-        x: Pandas Timestamp of any length
-    Returns:
-        x: formatted string
-    """
-    # convert string to pandas datetime
-    x = pd.to_datetime(x)
-    x = x.strftime("%Y-%m-%d")
-    return x
 
 
 @log_start_end(log=logger)
@@ -89,7 +64,8 @@ def display_rnn_forecast(
         model_save_name (str, optional):
             Name for model. Defaults to "brnn_model".
         force_reset (bool, optional):
-            If set to True, any previously-existing model with the same name will be reset (all checkpoints will be discarded). Defaults to True.
+            If set to True, any previously-existing model with the same name will be reset
+            (all checkpoints will be discarded). Defaults to True.
         save_checkpoints (bool, optional):
             Whether or not to automatically save the untrained model and checkpoints from training. Defaults to True.
         export: str
@@ -99,7 +75,7 @@ def display_rnn_forecast(
     """
 
     # reformat the date column to remove any hour/min/sec
-    data["date"] = data["date"].apply(dt_format)
+    data["date"] = data["date"].apply(helpers.dt_format)
 
     (
         ticker_series,

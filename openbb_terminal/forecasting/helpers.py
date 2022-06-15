@@ -1,4 +1,5 @@
 import logging
+import pandas as pd
 import os
 import numpy as np
 import matplotlib.pyplot as plt
@@ -119,7 +120,7 @@ def plot_forecast(
     historical_fcast.plot(
         label=f"Backtest {forecast_horizon}-Steps ahead forecast",
         figure=fig,
-        **quant_kwargs
+        **quant_kwargs,
     )
 
     pred_label = f"{name} Forecast"
@@ -140,3 +141,16 @@ def plot_forecast(
     print_pretty_prediction(numeric_forecast, data[target_col].iloc[-1])
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "expo")
+
+
+def dt_format(x):
+    """Convert any Timestamp to YYYY-MM-DD
+    Args:
+        x: Pandas Timestamp of any length
+    Returns:
+        x: formatted string
+    """
+    # convert string to pandas datetime
+    x = pd.to_datetime(x)
+    x = x.strftime("%Y-%m-%d")
+    return x
