@@ -3,7 +3,7 @@ import pandas as pd
 import os
 import numpy as np
 import matplotlib.pyplot as plt
-from darts.dataprocessing.transformers import Scaler
+from darts.dataprocessing.transformers import MissingValuesFiller, Scaler
 from darts import TimeSeries
 from pytorch_lightning.callbacks.early_stopping import EarlyStopping
 from openbb_terminal.rich_config import console
@@ -154,3 +154,23 @@ def dt_format(x):
     x = pd.to_datetime(x)
     x = x.strftime("%Y-%m-%d")
     return x
+
+
+def get_series(data, target_col, is_scaler: bool = True):
+    filler = MissingValuesFiller()
+    filler_kwargs = dict(
+        df=data,
+        time_col="date",
+        value_cols=[target_col],
+        freq="B",
+        fill_missing_dates=True,
+    )
+    if is_scaler:
+        scaler = Scaler()
+        scaled_ticker_series = scaler.fit_transform(
+            filler.transform(TimeSeries.from_dataframe(**filler_kwargs))
+        ).astype(np.float32)
+        return filler, scaler, scaled_ticker_series
+    else:
+        ticker_series = TimeSeries.from_dataframe(**filler_kwargs)
+        return filler, ticker_series

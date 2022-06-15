@@ -9,12 +9,10 @@ from typing import Any, Tuple, Union, List
 # import torch
 # import torch.nn as nn
 # import torch.optim as optim
-import numpy as np
 import pandas as pd
 
 from darts import TimeSeries
 from darts.models import BlockRNNModel
-from darts.dataprocessing.transformers import MissingValuesFiller, Scaler
 from darts.utils.likelihood_models import GaussianLikelihood
 from darts.metrics import mape
 from pytorch_lightning.callbacks.early_stopping import EarlyStopping
@@ -100,23 +98,10 @@ def get_brnn_data(
             Best BRNN Model
     """
 
-    filler = MissingValuesFiller()
-    scaler = Scaler()
-
     # TODO Check if torch GPU AVAILABLE
 
     # Target Timeseries
-    scaled_ticker_series = scaler.fit_transform(
-        filler.transform(
-            TimeSeries.from_dataframe(
-                data,
-                time_col="date",
-                value_cols=[target_col],
-                freq="B",
-                fill_missing_dates=True,
-            )
-        )
-    ).astype(np.float32)
+    filler, scaler, scaled_ticker_series = helpers.get_series(data, target_col)
 
     scaled_train, scaled_val = scaled_ticker_series.split_before(float(train_split))
 

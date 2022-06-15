@@ -9,12 +9,10 @@ from typing import Any, Tuple, Union, List
 # import torch
 # import torch.nn as nn
 # import torch.optim as optim
-import numpy as np
 import pandas as pd
 
 from darts import TimeSeries
 from darts.models import TCNModel
-from darts.dataprocessing.transformers import MissingValuesFiller, Scaler
 from darts.metrics import mape
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forecasting import helpers
@@ -98,9 +96,6 @@ def get_tcn_data(
             Best TCN Model
     """
 
-    filler = MissingValuesFiller()
-    scaler = Scaler()
-
     # TODO add proper doc string
     # TODO Check if torch GPU AVAILABLE
     # TODO add in covariates
@@ -109,17 +104,8 @@ def get_tcn_data(
     # load trained model
 
     # Target Timeseries
-    scaled_ticker_series = scaler.fit_transform(
-        filler.transform(
-            TimeSeries.from_dataframe(
-                data,
-                time_col="date",
-                value_cols=[target_col],
-                freq="B",
-                fill_missing_dates=True,
-            )
-        )
-    ).astype(np.float32)
+
+    filler, scaler, scaled_ticker_series = helpers.get_series(data, target_col)
 
     scaled_train, scaled_val = scaled_ticker_series.split_before(float(train_split))
 

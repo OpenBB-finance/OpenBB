@@ -10,12 +10,12 @@ import numpy as np
 import pandas as pd
 from darts import TimeSeries
 from darts.models import Theta
-from darts.dataprocessing.transformers import MissingValuesFiller
 from darts.utils.utils import SeasonalityMode
 from darts.metrics import mape
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
+from openbb_terminal.forecasting import helpers
 
 warnings.simplefilter("ignore", ConvergenceWarning)
 
@@ -73,14 +73,7 @@ def get_theta_data(
     Any
         Theta Model
     """
-    filler = MissingValuesFiller()
-    ticker_series = TimeSeries.from_dataframe(
-        data,
-        time_col="date",
-        value_cols=[target_col],
-        freq="B",
-        fill_missing_dates=True,
-    )
+    filler, ticker_series = helpers.get_series(data, target_col)
     ticker_series = filler.transform(ticker_series).astype(np.float32)
     train, val = ticker_series.split_before(0.85)
 

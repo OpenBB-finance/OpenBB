@@ -7,16 +7,15 @@ from typing import Any, Tuple, Union, List
 
 import warnings
 from statsmodels.tools.sm_exceptions import ConvergenceWarning
-import numpy as np
 import pandas as pd
 from darts import TimeSeries
 from darts.models import ExponentialSmoothing
-from darts.dataprocessing.transformers import MissingValuesFiller
 from darts.utils.utils import ModelMode, SeasonalityMode
 from darts.metrics import mape
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
+from openbb_terminal.forecasting import helpers
 
 
 warnings.simplefilter("ignore", ConvergenceWarning)
@@ -84,16 +83,7 @@ def get_expo_data(
     Any
         Fit Prob. Expo model object.
     """
-    filler = MissingValuesFiller()
-    ticker_series = TimeSeries.from_dataframe(
-        data,
-        time_col="date",
-        value_cols=[target_col],
-        freq="B",
-        fill_missing_dates=True,
-    )
-
-    ticker_series = filler.transform(ticker_series).astype(np.float32)
+    filler, ticker_series = helpers.get_series(data, target_col, False)
     train, val = ticker_series.split_before(float(start_window))
 
     if trend == "M":
