@@ -14,12 +14,8 @@ import pandas as pd
 from darts import TimeSeries
 from darts.models import BlockRNNModel
 from darts.utils.likelihood_models import GaussianLikelihood
-from darts.metrics import mape
-from pytorch_lightning.callbacks.early_stopping import EarlyStopping
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forecasting import helpers
-
-from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -135,65 +131,25 @@ def get_brnn_data(
     )
 
     # fit model on train series for historical forecasting
-    if past_covariates is not None:
-        brnn_model.fit(
-            series=scaled_train,
-            val_series=scaled_val,
-            past_covariates=scaled_past_covariate_train,
-            val_past_covariates=scaled_past_covariate_val,
-        )
-    else:
-        brnn_model.fit(
-            series=scaled_train,
-            val_series=scaled_val,
-        )
+    helpers.fit_model(
+        brnn_model,
+        scaled_train,
+        scaled_val,
+        scaled_past_covariate_train,
+        scaled_past_covariate_val,
+    )
     best_model = BlockRNNModel.load_from_checkpoint(
         model_name=model_save_name, best=True
     )
 
     # Showing historical backtesting without retraining model (too slow)
-    if past_covariates is not None:
-        scaled_historical_fcast = best_model.historical_forecasts(
-            scaled_ticker_series,
-            past_covariates=scaled_past_covariate_whole,
-            start=train_split,
-            forecast_horizon=forecast_horizon,
-            retrain=False,
-            verbose=True,
-        )
-    else:
-        scaled_historical_fcast = best_model.historical_forecasts(
-            scaled_ticker_series,
-            start=train_split,
-            forecast_horizon=forecast_horizon,
-            retrain=False,
-            verbose=True,
-        )
-
-    # Predict N timesteps in the future
-    if past_covariates is not None:
-        scaled_prediction = best_model.predict(
-            series=scaled_ticker_series,
-            past_covariates=scaled_past_covariate_whole,
-            n=n_predict,
-        )
-    else:
-        scaled_prediction = best_model.predict(series=scaled_ticker_series, n=n_predict)
-
-    precision = mape(
-        actual_series=scaled_ticker_series, pred_series=scaled_historical_fcast
-    )  # mape = mean average precision error
-    console.print(f"BRNN model obtains MAPE: {precision:.2f}% \n")
-
-    # scale back
-    ticker_series = scaler.inverse_transform(scaled_ticker_series)
-    historical_fcast = scaler.inverse_transform(scaled_historical_fcast)
-    prediction = scaler.inverse_transform(scaled_prediction)
-
-    return (
-        ticker_series,
-        historical_fcast,
-        prediction,
-        precision,
+    return helpers.get_prediction(
+        scaler,
+        past_covariates,
         best_model,
+        scaled_ticker_series,
+        scaled_past_covariate_whole,
+        train_split,
+        forecast_horizon,
+        n_predict,
     )

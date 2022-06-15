@@ -13,10 +13,8 @@ import pandas as pd
 
 from darts import TimeSeries
 from darts.models import NBEATSModel
-from darts.metrics import mape
 from openbb_terminal.decorators import log_start_end
 
-from openbb_terminal.rich_config import console
 from openbb_terminal.forecasting import helpers
 
 logger = logging.getLogger(__name__)
@@ -67,9 +65,11 @@ def get_NBEATS_data(
         num_blocks (int, optional):
             The number of blocks making up every stack. Defaults to 3.
         num_layers (int, optional):
-            The number of fully connected layers preceding the final forking layers in each block of every stack. Defaults to 4.
+            The number of fully connected layers preceding the final forking layers in each block
+            of every stack. Defaults to 4.
         layer_widths (int, optional):
-            Determines the number of neurons that make up each fully connected layer in each block of every stack. Defaults to 512.
+            Determines the number of neurons that make up each fully connected layer in each block
+            of every stack. Defaults to 512.
         batch_size (int, optional):
             Number of time series (input and output sequences) used in each training pass. Defaults to 32.
         n_epochs (int, optional):
@@ -137,63 +137,23 @@ def get_NBEATS_data(
     )
 
     # fit model on train series for historical forecasting
-    if past_covariates is not None:
-        nbeats_model.fit(
-            series=scaled_train,
-            val_series=scaled_val,
-            past_covariates=scaled_past_covariate_train,
-            val_past_covariates=scaled_past_covariate_val,
-        )
-    else:
-        nbeats_model.fit(
-            series=scaled_train,
-            val_series=scaled_val,
-        )
+    helpers.fit_model(
+        nbeats_model,
+        scaled_train,
+        scaled_val,
+        scaled_past_covariate_train,
+        scaled_past_covariate_val,
+    )
     best_model = NBEATSModel.load_from_checkpoint(model_name=model_save_name, best=True)
 
     # Showing historical backtesting without retraining model (too slow)
-    if past_covariates is not None:
-        scaled_historical_fcast = best_model.historical_forecasts(
-            scaled_ticker_series,
-            past_covariates=scaled_past_covariate_whole,
-            start=train_split,
-            forecast_horizon=forecast_horizon,
-            retrain=False,
-            verbose=True,
-        )
-    else:
-        scaled_historical_fcast = best_model.historical_forecasts(
-            scaled_ticker_series,
-            start=train_split,
-            forecast_horizon=forecast_horizon,
-            retrain=False,
-            verbose=True,
-        )
-
-    if past_covariates is not None:
-        # Predict N timesteps in the future
-        scaled_prediction = best_model.predict(
-            series=scaled_ticker_series,
-            past_covariates=scaled_past_covariate_whole,
-            n=n_predict,
-        )
-    else:
-        scaled_prediction = best_model.predict(series=scaled_ticker_series, n=n_predict)
-
-    precision = mape(
-        actual_series=scaled_ticker_series, pred_series=scaled_historical_fcast
-    )  # mape = mean average precision error
-    console.print(f"NBEATS model obtains MAPE: {precision:.2f}% \n")
-
-    # scale back
-    ticker_series = scaler.inverse_transform(scaled_ticker_series)
-    historical_fcast = scaler.inverse_transform(scaled_historical_fcast)
-    prediction = scaler.inverse_transform(scaled_prediction)
-
-    return (
-        ticker_series,
-        historical_fcast,
-        prediction,
-        precision,
+    return helpers.get_prediction(
+        scaler,
+        past_covariates,
         best_model,
+        scaled_ticker_series,
+        scaled_past_covariate_whole,
+        train_split,
+        forecast_horizon,
+        n_predict,
     )

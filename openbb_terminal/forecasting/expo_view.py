@@ -34,6 +34,8 @@ def display_expo_forecast(
     ----------
     data : Union[pd.Series, np.array]
         Data to forecast
+    ticker_name str
+        The name of the ticker to be predicted
     trend: str
         Trend component.  One of [N, A, M]
         Defaults to ADDITIVE.

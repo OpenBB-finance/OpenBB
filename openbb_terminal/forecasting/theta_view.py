@@ -32,6 +32,8 @@ def display_theta_forecast(
     ----------
     data : Union[pd.Series, np.array]
         Data to forecast
+    ticker_name str
+        The name of the ticker to be predicted
     seasonal: str
         Seasonal component.  One of [N, A, M]
         Defaults to MULTIPLICATIVE.

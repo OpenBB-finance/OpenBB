@@ -121,10 +121,7 @@ def get_rnn_data(
     )
 
     # fit model on train series for historical forecasting
-    rnn_model.fit(
-        series=scaled_train,
-        val_series=scaled_val,
-    )
+    helpers.fit_model(rnn_model, scaled_train, scaled_val)
     best_model = RNNModel.load_from_checkpoint(model_name=model_save_name, best=True)
 
     # Showing historical backtesting without retraining model (too slow)

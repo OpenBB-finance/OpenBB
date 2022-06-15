@@ -43,6 +43,8 @@ def display_tcn_forecast(
     ----------
         data (Union[pd.Series, pd.DataFrame]):
             Input Data
+        ticker_name str
+            The name of the ticker to be predicted
         n_predict (int, optional):
             Days to predict. Defaults to 5.
         target_col (str, optional):

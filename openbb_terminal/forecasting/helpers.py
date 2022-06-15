@@ -5,6 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from darts.dataprocessing.transformers import MissingValuesFiller, Scaler
 from darts import TimeSeries
+from darts.metrics import mape
 from pytorch_lightning.callbacks.early_stopping import EarlyStopping
 from openbb_terminal.rich_config import console
 from openbb_terminal.config_terminal import theme
@@ -174,3 +175,67 @@ def get_series(data, target_col, is_scaler: bool = True):
     else:
         ticker_series = TimeSeries.from_dataframe(**filler_kwargs)
         return filler, ticker_series
+
+
+def fit_model(
+    model, series, val_series, past_covariates=None, val_past_covariates=None
+):
+    fit_kwargs = dict(
+        series=series,
+        val_series=val_series,
+    )
+    if past_covariates is not None:
+        fit_kwargs["past_covariates"] = past_covariates
+        fit_kwargs["val_past_covariates"] = val_past_covariates
+
+    model.fit(**fit_kwargs)
+
+
+def get_prediction(
+    scaler,
+    past_covariates,
+    best_model,
+    scaled_ticker_series,
+    scaled_past_covariate_whole,
+    train_split,
+    forecast_horizon,
+    n_predict: int,
+):
+    if past_covariates is not None:
+        scaled_historical_fcast = best_model.historical_forecasts(
+            scaled_ticker_series,
+            past_covariates=scaled_past_covariate_whole,
+            start=train_split,
+            forecast_horizon=forecast_horizon,
+            retrain=False,
+            verbose=True,
+        )
+    else:
+        scaled_historical_fcast = best_model.historical_forecasts(
+            scaled_ticker_series,
+            start=train_split,
+            forecast_horizon=forecast_horizon,
+            retrain=False,
+            verbose=True,
+        )
+
+    if past_covariates is not None:
+        # Predict N timesteps in the future
+        scaled_prediction = best_model.predict(
+            series=scaled_ticker_series,
+            past_covariates=scaled_past_covariate_whole,
+            n=n_predict,
+        )
+    else:
+        scaled_prediction = best_model.predict(series=scaled_ticker_series, n=n_predict)
+
+    precision = mape(
+        actual_series=scaled_ticker_series, pred_series=scaled_historical_fcast
+    )  # mape = mean average precision error
+    console.print(f"NBEATS model obtains MAPE: {precision:.2f}% \n")
+
+    # scale back
+    ticker_series = scaler.inverse_transform(scaled_ticker_series)
+    historical_fcast = scaler.inverse_transform(scaled_historical_fcast)
+    prediction = scaler.inverse_transform(scaled_prediction)
+    return ticker_series, historical_fcast, prediction, precision, best_model
