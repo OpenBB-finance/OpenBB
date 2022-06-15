@@ -144,15 +144,13 @@ def clean(dataset: pd.DataFrame, fill: str, drop: str, limit: int) -> pd.DataFra
             dataset = dataset.dropna(how="any", axis="columns")
 
     # TODO - think about if we want to always interpolate and remove above options
-    if not fill or not drop:
-        # We just want to interpolate any missing nans for timeseries
-        dataset = dataset.interpolate(method="linear")
+    if fill == "" and drop == "":
+        # drop all rows with na
+        dataset = dataset.dropna(axis=0)
 
-    # reset dataset index
-    # dataset = dataset.reset_index(drop=True)
-    console.print("Null Values in dataset =", dataset.isnull().values.any())
+    dataset = dataset.reset_index(drop=True)
 
-    return dataset
+    return dataset, dataset.isnull().values.any()
 
 
 @log_start_end(log=logger)
@@ -221,10 +219,6 @@ def add_sto(dataset: pd.DataFrame, period: int = 10) -> pd.DataFrame:
         dataset[f"SO%K_{period}"] = STOK
         dataset[f"SO%D_{period}"] = STOK.rolling(3).mean()
 
-        # TODO - See what other thing we can do to avoid this...
-        # drop na in %K and %D
-        dataset = dataset.dropna(subset=[f"SO%K_{period}", f"SO%D_{period}"])
-        dataset = dataset.reset_index(drop=True)
         return dataset
 
     else:
@@ -269,10 +263,6 @@ def add_rsi(
     )
     dataset[f"RSI_{period}"] = 100 - 100 / (1 + rs)
 
-    # TODO - See what other thing we can do to avoid this...
-    # drop na in dataset
-    dataset = dataset.dropna(subset=[f"RSI_{period}"])
-    dataset = dataset.reset_index(drop=True)
     return dataset
 
 
@@ -301,10 +291,7 @@ def add_roc(
     N = dataset[target_column].shift(period - 1)
 
     dataset[f"ROC_{period}"] = (M / N) * 100
-    # TODO - See what other thing we can do to avoid this...
-    # drop na in dataset
-    dataset = dataset.dropna(subset=[f"ROC_{period}"])
-    dataset = dataset.reset_index(drop=True)
+
     return dataset
 
 
@@ -331,8 +318,5 @@ def add_momentum(
     """
 
     dataset[f"Momentum_{period}"] = dataset[target_column].diff(period)
-    # TODO - See what other thing we can do to avoid this...
-    # drop na in dataset
-    dataset = dataset.dropna(subset=[f"Momentum_{period}"])
-    dataset = dataset.reset_index(drop=True)
+
     return dataset
