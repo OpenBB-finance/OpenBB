@@ -60,7 +60,7 @@ def get_linear_regression_data(
         Any
             Best NBEATS Model
     """
-    use_scalers = False
+    use_scalers = True
     probabilistic = True
 
     filler, scaler, ticker_series = helpers.get_series(
@@ -88,7 +88,7 @@ def get_linear_regression_data(
         quantiles=[0.05, 0.1, 0.25, 0.5, 0.75, 0.9, 0.95],
     )
 
-    best_model.fit(ticker_series, past_covariate_whole)
+    lin_reg_model.fit(ticker_series, past_covariate_whole)
 
     return helpers.get_prediction(
         "Logistic Regression",
@@ -96,7 +96,7 @@ def get_linear_regression_data(
         use_scalers,
         scaler,
         past_covariates,
-        best_model,
+        lin_reg_model,
         ticker_series,
         past_covariate_whole,
         train_split,
