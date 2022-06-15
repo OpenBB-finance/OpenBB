@@ -31,6 +31,7 @@ import pandas.io.formats.format
 import requests
 from screeninfo import get_monitors
 import yfinance as yf
+import numpy as np
 
 from openbb_terminal.rich_config import console
 from openbb_terminal import feature_flags as obbff
@@ -673,6 +674,10 @@ def lambda_clean_data_values_to_float(val: str) -> float:
 
 def lambda_int_or_round_float(x) -> str:
     """Format int or round float"""
+    # If the data is inf, -inf, or NaN then simply return '~' because it is either too
+    # large, too small, or we do not have data to display for it
+    if x in (np.inf, -np.inf, np.nan):
+        return " " + "~"
     if (x - int(x) < -sys.float_info.epsilon) or (x - int(x) > sys.float_info.epsilon):
         return " " + str(round(x, 2))
 
