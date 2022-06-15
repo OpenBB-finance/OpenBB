@@ -76,8 +76,15 @@ def get_linear_regression_data(
         scaled_past_covariate_val,
     ) = helpers.scaled_past_covs(past_covariates, filler, data, train_split)
 
+    if scaled_past_covariate_whole is None:
+        lags_past_covariates = None
+    else:
+        lags_past_covariates = lags
+
     lin_reg_model = LinearRegressionModel(
-        output_chunk_length=output_chunk_length, lags=lags, lags_past_covariates=lags
+        output_chunk_length=output_chunk_length,
+        lags=lags,
+        lags_past_covariates=lags_past_covariates,
     )
 
     lin_reg_model.fit(scaled_ticker_series, scaled_past_covariate_whole)
