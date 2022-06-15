@@ -548,7 +548,8 @@ class ForecastingController(BaseController):
                 )
                 console.print()
                 console.print(
-                    f"[green] {ns_parser.name} new shape after cleaning (rowxcolumn) = {self.datasets[ns_parser.name].shape}"
+                    f"[green] {ns_parser.name} new shape after cleaning \
+                        (rowxcolumn) = {self.datasets[ns_parser.name].shape}"
                 )
             else:
                 console.print(f"[red]{ns_parser.name} still contains NaNs.[/red]")
