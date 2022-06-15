@@ -76,6 +76,8 @@ def scaled_past_covs(past_covariates, filler, data, train_split):
             scaled_past_covariate_train,
             scaled_past_covariate_val,
         )
+    else:
+        return None, None, None
 
 
 def early_stopper(patience: int):
