@@ -23,7 +23,6 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
-    parse_known_args_and_warn,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
@@ -146,7 +145,7 @@ class DiscoveryController(BaseController):
         if other_args and not other_args[0][0] == "-":
             other_args.insert(0, "-c")
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -187,7 +186,7 @@ class DiscoveryController(BaseController):
             help="Sort by given column. Default: Daily Volume [$]",
             default="Daily Volume [$]",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -227,7 +226,7 @@ class DiscoveryController(BaseController):
             help="Sort by given column. Default: Daily Volume [$]",
             default="Daily Volume [$]",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -267,7 +266,7 @@ class DiscoveryController(BaseController):
             help="Sort by given column. Default: Daily Volume [$]",
             default="Daily Volume [$]",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -308,7 +307,7 @@ class DiscoveryController(BaseController):
             default="Market Cap [$]",
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -361,7 +360,7 @@ class DiscoveryController(BaseController):
             default="Market Cap Rank",
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -415,7 +414,7 @@ class DiscoveryController(BaseController):
             default="Market Cap Rank",
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -439,7 +438,7 @@ class DiscoveryController(BaseController):
             """,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -484,7 +483,7 @@ class DiscoveryController(BaseController):
             default=True,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -562,7 +561,7 @@ class DiscoveryController(BaseController):
             if not other_args[0][0] == "-":
                 other_args.insert(0, "-q")
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:

@@ -14,7 +14,6 @@ from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
-    parse_known_args_and_warn,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
@@ -108,7 +107,7 @@ class DueDiligenceController(StockBaseController):
             """,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -140,7 +139,7 @@ class DueDiligenceController(StockBaseController):
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
@@ -163,7 +162,7 @@ class DueDiligenceController(StockBaseController):
             description="""Yearly estimates and quarter earnings/revenues. [Source: Business Insider]""",
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -201,7 +200,7 @@ class DueDiligenceController(StockBaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
@@ -237,7 +236,7 @@ class DueDiligenceController(StockBaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -271,7 +270,7 @@ class DueDiligenceController(StockBaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -290,7 +289,7 @@ class DueDiligenceController(StockBaseController):
             description="List of suppliers from ticker provided. [Source: CSIMarket]",
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -308,7 +307,7 @@ class DueDiligenceController(StockBaseController):
             description="List of customers from ticker provided. [Source: CSIMarket]",
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -345,7 +344,7 @@ class DueDiligenceController(StockBaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:

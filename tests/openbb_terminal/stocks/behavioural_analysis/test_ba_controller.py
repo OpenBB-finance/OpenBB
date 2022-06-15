@@ -516,7 +516,8 @@ def test_call_func(
 )
 def test_call_func_no_parser(func, mocker):
     mocker.patch(
-        "openbb_terminal.stocks.behavioural_analysis.ba_controller.parse_known_args_and_warn",
+        "openbb_terminal.stocks.behavioural_analysis.ba_controller.BehaviouralAnalysisController"
+        ".parse_known_args_and_warn",
         return_value=None,
     )
     controller = ba_controller.BehaviouralAnalysisController(
@@ -527,7 +528,7 @@ def test_call_func_no_parser(func, mocker):
     func_result = getattr(controller, func)(other_args=list())
     assert func_result is None
     assert controller.queue == []
-    getattr(ba_controller, "parse_known_args_and_warn").assert_called_once()
+    controller.parse_known_args_and_warn.assert_called_once()
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -549,7 +550,8 @@ def test_call_func_no_parser(func, mocker):
 )
 def test_call_func_no_ticker(func, mocker):
     mocker.patch(
-        "openbb_terminal.stocks.behavioural_analysis.ba_controller.parse_known_args_and_warn",
+        "openbb_terminal.stocks.behavioural_analysis.ba_controller"
+        ".BehaviouralAnalysisController.parse_known_args_and_warn",
         return_value=True,
     )
     controller = ba_controller.BehaviouralAnalysisController(
@@ -560,7 +562,7 @@ def test_call_func_no_ticker(func, mocker):
     func_result = getattr(controller, func)(other_args=list())
     assert func_result is None
     assert controller.queue == []
-    getattr(ba_controller, "parse_known_args_and_warn").assert_called_once()
+    controller.parse_known_args_and_warn.assert_called_once()
 
 
 @pytest.mark.vcr
@@ -579,5 +581,6 @@ def test_call_load(mocker):
     other_args = [
         "TSLA",
         "--start=2021-12-17",
+        "--source=yf",
     ]
     controller.call_load(other_args=other_args)
