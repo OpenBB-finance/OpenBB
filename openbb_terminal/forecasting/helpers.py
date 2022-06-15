@@ -21,7 +21,7 @@ from openbb_terminal.config_plot import PLOT_DPI
 
 logger = logging.getLogger(__name__)
 
-PROBABLISTIC_MODELS = ["PES", "RNN"]
+PROBABLISTIC_MODELS = ["PES", "RNN", "TFT"]
 
 
 def scaled_past_covs(past_covariates, filler, data, train_split):
@@ -183,19 +183,19 @@ def get_series(data, target_col, is_scaler: bool = True):
             filler.transform(TimeSeries.from_dataframe(**filler_kwargs))
         ).astype(np.float32)
         return filler, scaler, scaled_ticker_series
-    else:
-        ticker_series = TimeSeries.from_dataframe(**filler_kwargs)
-        ticker_series = filler.transform(ticker_series).astype(np.float32)
-        return filler, ticker_series
+    ticker_series = TimeSeries.from_dataframe(**filler_kwargs)
+    ticker_series = filler.transform(ticker_series).astype(np.float32)
+    return filler, ticker_series
 
 
 def fit_model(
-    model, series, val_series, past_covariates=None, val_past_covariates=None
+    model, series, val_series, past_covariates=None, val_past_covariates=None, **kwargs
 ):
     fit_kwargs = dict(
         series=series,
         val_series=val_series,
     )
+    fit_kwargs.update(kwargs)
     if past_covariates is not None:
         fit_kwargs["past_covariates"] = past_covariates
         fit_kwargs["val_past_covariates"] = val_past_covariates
@@ -212,6 +212,7 @@ def get_prediction(
     train_split,
     forecast_horizon,
     n_predict: int,
+    probabilisitc: bool = False,
 ):
     if past_covariates is not None:
         scaled_historical_fcast = best_model.historical_forecasts(
@@ -249,5 +250,8 @@ def get_prediction(
     # scale back
     ticker_series = scaler.inverse_transform(scaled_ticker_series)
     historical_fcast = scaler.inverse_transform(scaled_historical_fcast)
-    prediction = scaler.inverse_transform(scaled_prediction)
-    return ticker_series, historical_fcast, prediction, precision, best_model
+    if probabilisitc:
+        prediction = scaler.inverse_transform(scaled_prediction)
+        return ticker_series, historical_fcast, prediction, precision, best_model
+    probabilistic = best_model.predict(int(n_predict), num_samples=500)
+    return ticker_series, historical_fcast, probabilistic, precision, best_model
