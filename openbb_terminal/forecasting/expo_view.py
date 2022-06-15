@@ -64,7 +64,7 @@ def display_expo_forecast(
 
     (
         ticker_series,
-        historical_fcast_es,
+        historical_fcast,
         predicted_values,
         precision,
         _,
@@ -79,11 +79,11 @@ def display_expo_forecast(
         start_window,
         forecast_horizon,
     )
-
+    probabilistic = True
     helpers.plot_forecast(
         "PES",
         target_col,
-        historical_fcast_es,
+        historical_fcast,
         predicted_values,
         ticker_series,
         ticker_name,
@@ -92,5 +92,6 @@ def display_expo_forecast(
         forecast_horizon,
         None,
         precision,
+        probabilistic,
         export,
     )

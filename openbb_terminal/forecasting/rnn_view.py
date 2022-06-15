@@ -103,6 +103,9 @@ def display_rnn_forecast(
         force_reset,
         save_checkpoints,
     )
+
+    past_covariates = None
+    probabilistic = True
     helpers.plot_forecast(
         "RNN",
         target_col,
@@ -113,9 +116,8 @@ def display_rnn_forecast(
         data,
         n_predict,
         forecast_horizon,
-        None,
+        past_covariates,
         precision,
+        probabilistic,
         export,
-        0.1,
-        0.9,
     )

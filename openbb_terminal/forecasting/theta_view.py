@@ -57,7 +57,7 @@ def display_theta_forecast(
 
     (
         ticker_series,
-        historical_fcast_theta,
+        historical_fcast,
         predicted_values,
         precision,
         best_theta,
@@ -71,10 +71,11 @@ def display_theta_forecast(
         start_window,
         forecast_horizon,
     )
+    probabilistic = False
     helpers.plot_forecast(
         f"Theta {best_theta:.2f}",
         target_col,
-        historical_fcast_theta,
+        historical_fcast,
         predicted_values,
         ticker_series,
         ticker_name,
@@ -83,5 +84,6 @@ def display_theta_forecast(
         forecast_horizon,
         None,
         precision,
+        probabilistic,
         export,
     )

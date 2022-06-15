@@ -116,6 +116,7 @@ def display_tcn_forecast(
         force_reset=force_reset,
         save_checkpoints=save_checkpoints,
     )
+    probabilistic = False
     helpers.plot_forecast(
         "TCN",
         target_col,
@@ -128,5 +129,6 @@ def display_tcn_forecast(
         forecast_horizon,
         past_covariates,
         precision,
+        probabilistic,
         export,
     )

@@ -83,7 +83,11 @@ def get_expo_data(
     Any
         Fit Prob. Expo model object.
     """
-    _, ticker_series = helpers.get_series(data, target_col, False)
+
+    use_scalers = False
+    filler, scaler, ticker_series = helpers.get_series(
+        data, target_col, is_scaler=use_scalers
+    )
 
     if trend == "M":
         trend = ModelMode.MULTIPLICATIVE
@@ -133,7 +137,7 @@ def get_expo_data(
     best_model.fit(ticker_series)
     probabilistic_forecast = best_model.predict(int(n_predict), num_samples=500)
     precision = mape(actual_series=ticker_series, pred_series=historical_fcast_es)
-    console.print(f"model {model_es} obtains MAPE: {precision:.2f}% \n")  # TODO
+    console.print(f"Exponential smoothing obtains MAPE: {precision:.2f}% \n")  # TODO
 
     return (
         ticker_series,

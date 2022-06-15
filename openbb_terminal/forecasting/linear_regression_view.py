@@ -70,8 +70,10 @@ def display_linear_regression(
         output_chunk_length,
         lags,
     )
+
+    probabilistic = True
     helpers.plot_forecast(
-        "Linear Regression",
+        "LR",
         target_col,
         historical_fcast,
         predicted_values,
@@ -82,5 +84,6 @@ def display_linear_regression(
         forecast_horizon,
         past_covariates,
         precision,
+        probabilistic,
         export,
     )

@@ -103,15 +103,25 @@ def get_NBEATS_data(
     # Export model / save
     # load trained model
 
-    filler, scaler, scaled_ticker_series = helpers.get_series(data, target_col)
+    use_scalers = True
+    probabilistic = False
 
-    scaled_train, scaled_val = scaled_ticker_series.split_before(float(train_split))
+    filler, scaler, ticker_series = helpers.get_series(
+        data, target_col, is_scaler=use_scalers
+    )
+    train, val = ticker_series.split_before(train_split)
 
-    (
-        scaled_past_covariate_whole,
-        scaled_past_covariate_train,
-        scaled_past_covariate_val,
-    ) = helpers.scaled_past_covs(past_covariates, filler, data, train_split)
+    if past_covariates is not None:
+        (
+            past_covariate_whole,
+            past_covariate_train,
+            past_covariate_val,
+        ) = helpers.past_covs(past_covariates, filler, data, train_split, use_scalers)
+
+    else:
+        past_covariate_whole = None
+        past_covariate_train = None
+        past_covariate_val = None
 
     my_stopper = helpers.early_stopper(10)
 
@@ -139,20 +149,23 @@ def get_NBEATS_data(
     # fit model on train series for historical forecasting
     helpers.fit_model(
         nbeats_model,
-        scaled_train,
-        scaled_val,
-        scaled_past_covariate_train,
-        scaled_past_covariate_val,
+        train,
+        val,
+        past_covariate_train,
+        past_covariate_val,
     )
     best_model = NBEATSModel.load_from_checkpoint(model_name=model_save_name, best=True)
 
     # Showing historical backtesting without retraining model (too slow)
     return helpers.get_prediction(
+        "NBEATS",
+        probabilistic,
+        use_scalers,
         scaler,
         past_covariates,
         best_model,
-        scaled_ticker_series,
-        scaled_past_covariate_whole,
+        ticker_series,
+        past_covariate_whole,
         train_split,
         forecast_horizon,
         n_predict,

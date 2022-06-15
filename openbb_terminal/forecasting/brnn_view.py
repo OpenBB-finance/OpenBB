@@ -116,6 +116,8 @@ def display_brnn_forecast(
         force_reset=force_reset,
         save_checkpoints=save_checkpoints,
     )
+
+    probabilistic = False
     helpers.plot_forecast(
         "BRNN",
         target_col,
@@ -128,5 +130,6 @@ def display_brnn_forecast(
         forecast_horizon,
         past_covariates,
         precision,
+        probabilistic,
         export,
     )

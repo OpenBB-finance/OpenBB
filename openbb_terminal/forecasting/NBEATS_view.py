@@ -119,6 +119,7 @@ def display_nbeats_forecast(
         force_reset,
         save_checkpoints,
     )
+    probabilistic = False
     helpers.plot_forecast(
         "NBEATS",
         target_col,
@@ -131,5 +132,6 @@ def display_nbeats_forecast(
         forecast_horizon,
         past_covariates,
         precision,
+        probabilistic,
         export,
     )

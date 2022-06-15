@@ -21,19 +21,29 @@ from openbb_terminal.config_plot import PLOT_DPI
 
 logger = logging.getLogger(__name__)
 
-PROBABLISTIC_MODELS = ["PES", "RNN"]
 
-
-def scaled_past_covs(past_covariates, filler, data, train_split):
+def past_covs(past_covariates, filler, data, train_split, is_scaler=True):
     if past_covariates is not None:
         covariates_scalers = []  # to hold all temp scalers in case we need them
         target_covariates_names = past_covariates.split(",")
 
         # create first covariate to then stack onto
-        past_covariate_scaler = Scaler()
         console.print(f"[green]Covariate #0: {target_covariates_names[0]}[/green]")
-        scaled_past_covariate_whole = past_covariate_scaler.fit_transform(
-            filler.transform(
+        if is_scaler:
+            past_covariate_scaler = Scaler()
+            past_covariate_whole = past_covariate_scaler.fit_transform(
+                filler.transform(
+                    TimeSeries.from_dataframe(
+                        data,
+                        time_col="date",
+                        value_cols=target_covariates_names[0],
+                        freq="B",
+                        fill_missing_dates=True,
+                    )
+                )
+            ).astype(np.float32)
+        else:
+            past_covariate_whole = filler.transform(
                 TimeSeries.from_dataframe(
                     data,
                     time_col="date",
@@ -41,16 +51,27 @@ def scaled_past_covs(past_covariates, filler, data, train_split):
                     freq="B",
                     fill_missing_dates=True,
                 )
-            )
-        ).astype(np.float32)
+            ).astype(np.float32)
 
         if len(target_covariates_names) > 1:
             for i, column in enumerate(target_covariates_names[1:]):
                 console.print(f"[green]Covariate #{i+1}: {column}[/green]")
-                _temp_scaler = Scaler()
-                covariates_scalers.append(_temp_scaler)
-                _temp_new_scaled_covariate = _temp_scaler.fit_transform(
-                    filler.transform(
+                if is_scaler:
+                    _temp_scaler = Scaler()
+                    covariates_scalers.append(_temp_scaler)
+                    _temp_new_covariate = _temp_scaler.fit_transform(
+                        filler.transform(
+                            TimeSeries.from_dataframe(
+                                data,
+                                time_col="date",
+                                value_cols=[column],
+                                freq="B",
+                                fill_missing_dates=True,
+                            )
+                        )
+                    ).astype(np.float32)
+                else:
+                    _temp_new_covariate = filler.transform(
                         TimeSeries.from_dataframe(
                             data,
                             time_col="date",
@@ -58,24 +79,22 @@ def scaled_past_covs(past_covariates, filler, data, train_split):
                             freq="B",
                             fill_missing_dates=True,
                         )
-                    )
-                ).astype(np.float32)
+                    ).astype(np.float32)
 
                 # continually stack covariates based on column names
-                scaled_past_covariate_whole = scaled_past_covariate_whole.stack(
-                    _temp_new_scaled_covariate
-                )
+                past_covariate_whole = past_covariate_whole.stack(_temp_new_covariate)
 
         # Split the full scale covariate to train and val
         (
-            scaled_past_covariate_train,
-            scaled_past_covariate_val,
-        ) = scaled_past_covariate_whole.split_before(train_split)
+            past_covariate_train,
+            past_covariate_val,
+        ) = past_covariate_whole.split_before(train_split)
         return (
-            scaled_past_covariate_whole,
-            scaled_past_covariate_train,
-            scaled_past_covariate_val,
+            past_covariate_whole,
+            past_covariate_train,
+            past_covariate_val,
         )
+
     else:
         return None, None, None
 
@@ -102,6 +121,7 @@ def plot_forecast(
     forecast_horizon,
     past_covariates,
     precision,
+    probabilistic,
     export: str,
     low_quantile: float = None,
     high_quantile: float = None,
@@ -143,7 +163,7 @@ def plot_forecast(
     if not external_axes:
         theme.visualize_output()
 
-    if name in PROBABLISTIC_MODELS:
+    if probabilistic:
         numeric_forecast = predicted_values.quantile_df()[f"{target_col}_0.5"].tail(
             n_predict
         )
@@ -186,7 +206,8 @@ def get_series(data, target_col, is_scaler: bool = True):
     else:
         ticker_series = TimeSeries.from_dataframe(**filler_kwargs)
         ticker_series = filler.transform(ticker_series).astype(np.float32)
-        return filler, ticker_series
+        scaler = None
+        return filler, scaler, ticker_series
 
 
 def fit_model(
@@ -204,50 +225,62 @@ def fit_model(
 
 
 def get_prediction(
+    model_name,
+    probablistic,
+    use_scalers,
     scaler,
     past_covariates,
     best_model,
-    scaled_ticker_series,
-    scaled_past_covariate_whole,
+    ticker_series,
+    past_covariate_whole,
     train_split,
     forecast_horizon,
     n_predict: int,
 ):
+    # Historical backtest if with covariates
     if past_covariates is not None:
-        scaled_historical_fcast = best_model.historical_forecasts(
-            scaled_ticker_series,
-            past_covariates=scaled_past_covariate_whole,
+        historical_fcast = best_model.historical_forecasts(
+            ticker_series,
+            past_covariates=past_covariate_whole,
             start=train_split,
             forecast_horizon=forecast_horizon,
             retrain=False,
             verbose=True,
         )
+    # historical backtest without covariates
     else:
-        scaled_historical_fcast = best_model.historical_forecasts(
-            scaled_ticker_series,
+        historical_fcast = best_model.historical_forecasts(
+            ticker_series,
             start=train_split,
             forecast_horizon=forecast_horizon,
             retrain=False,
             verbose=True,
         )
 
+    # now predict N days in the future
     if past_covariates is not None:
-        # Predict N timesteps in the future
-        scaled_prediction = best_model.predict(
-            series=scaled_ticker_series,
-            past_covariates=scaled_past_covariate_whole,
+        prediction = best_model.predict(
+            series=ticker_series,
+            past_covariates=past_covariate_whole,
             n=n_predict,
         )
     else:
-        scaled_prediction = best_model.predict(series=scaled_ticker_series, n=n_predict)
+        if probablistic:
+            prediction = best_model.predict(
+                series=ticker_series, n=n_predict, num_samples=500
+            )
+        else:
+            prediction = best_model.predict(series=ticker_series, n=n_predict)
 
     precision = mape(
-        actual_series=scaled_ticker_series, pred_series=scaled_historical_fcast
+        actual_series=ticker_series, pred_series=historical_fcast
     )  # mape = mean average precision error
-    console.print(f"NBEATS model obtains MAPE: {precision:.2f}% \n")
+    console.print(f"{model_name} model obtains MAPE: {precision:.2f}% \n")
 
     # scale back
-    ticker_series = scaler.inverse_transform(scaled_ticker_series)
-    historical_fcast = scaler.inverse_transform(scaled_historical_fcast)
-    prediction = scaler.inverse_transform(scaled_prediction)
+    if use_scalers:
+        ticker_series = scaler.inverse_transform(ticker_series)
+        historical_fcast = scaler.inverse_transform(historical_fcast)
+        prediction = scaler.inverse_transform(prediction)
+
     return ticker_series, historical_fcast, prediction, precision, best_model

@@ -73,8 +73,12 @@ def get_theta_data(
     Any
         Theta Model
     """
-    filler, ticker_series = helpers.get_series(data, target_col, False)
-    train, val = ticker_series.split_before(0.85)
+
+    use_scalers = False
+    filler, scaler, ticker_series = helpers.get_series(
+        data, target_col, is_scaler=use_scalers
+    )
+    train, val = ticker_series.split_before(start_window)
 
     if seasonal == "A":
         seasonal = SeasonalityMode.ADDITIVE
@@ -125,7 +129,7 @@ def get_theta_data(
     precision = mape(
         actual_series=ticker_series, pred_series=historical_fcast_theta
     )  # mape = mean average precision error
-    console.print(f"model {best_theta_model} obtains MAPE: {precision:.2f}% \n")
+    console.print(f"Theta Model obtains MAPE: {precision:.2f}% \n")
 
     return (
         ticker_series,

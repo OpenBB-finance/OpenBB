@@ -95,9 +95,17 @@ def get_rnn_data(
     # load trained model
 
     # Target Timeseries
-    _, scaler, scaled_ticker_series = helpers.get_series(data, target_col)
+    # TODO Check if torch GPU AVAILABLE
 
-    scaled_train, scaled_val = scaled_ticker_series.split_before(train_split)
+    use_scalers = True
+    probabilistic = True
+    past_covariates = None
+    past_covariate_whole = None
+
+    filler, scaler, ticker_series = helpers.get_series(
+        data, target_col, is_scaler=use_scalers
+    )
+    train, val = ticker_series.split_before(train_split)
 
     my_stopper = helpers.early_stopper(5)
 
@@ -121,38 +129,20 @@ def get_rnn_data(
     )
 
     # fit model on train series for historical forecasting
-    helpers.fit_model(rnn_model, scaled_train, scaled_val)
+    helpers.fit_model(rnn_model, train, val)
     best_model = RNNModel.load_from_checkpoint(model_name=model_save_name, best=True)
 
     # Showing historical backtesting without retraining model (too slow)
-    scaled_historical_fcast = best_model.historical_forecasts(
-        scaled_ticker_series,
-        start=train_split,
-        forecast_horizon=forecast_horizon,
-        retrain=False,
-        verbose=True,
-        num_samples=500,
-    )
-
-    # Predict N timesteps in the future
-    scaled_prediction = best_model.predict(
-        series=scaled_ticker_series, n=n_predict, num_samples=500
-    )
-
-    precision = mape(
-        actual_series=scaled_ticker_series, pred_series=scaled_historical_fcast
-    )  # mape = mean average precision error
-    console.print(f"RNN model obtains MAPE: {precision:.2f}% \n")
-
-    # scale back
-    ticker_series = scaler.inverse_transform(scaled_ticker_series)
-    historical_fcast = scaler.inverse_transform(scaled_historical_fcast)
-    prediction = scaler.inverse_transform(scaled_prediction)
-
-    return (
-        ticker_series,
-        historical_fcast,
-        prediction,
-        precision,
+    return helpers.get_prediction(
+        "RNN",
+        probabilistic,
+        use_scalers,
+        scaler,
+        past_covariates,
         best_model,
+        ticker_series,
+        past_covariate_whole,
+        train_split,
+        forecast_horizon,
+        n_predict,
     )

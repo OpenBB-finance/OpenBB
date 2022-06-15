@@ -70,8 +70,9 @@ def display_regression(
         output_chunk_length,
         lags,
     )
+    probabilistic = False
     helpers.plot_forecast(
-        "Regression",
+        "REGR",
         target_col,
         historical_fcast,
         predicted_values,
@@ -82,5 +83,6 @@ def display_regression(
         forecast_horizon,
         past_covariates,
         precision,
+        probabilistic,
         export,
     )
