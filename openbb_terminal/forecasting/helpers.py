@@ -185,6 +185,7 @@ def get_series(data, target_col, is_scaler: bool = True):
         return filler, scaler, scaled_ticker_series
     else:
         ticker_series = TimeSeries.from_dataframe(**filler_kwargs)
+        ticker_series = filler.transform(ticker_series).astype(np.float32)
         return filler, ticker_series
 
 
