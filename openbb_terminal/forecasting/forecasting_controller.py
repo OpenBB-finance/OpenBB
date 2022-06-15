@@ -383,7 +383,9 @@ class ForecastingController(BaseController):
                         df = df.sort_values(by=sort_column, ascending=ns_parser.ascend)
 
                 # print shape of dataframe
-                console.print(f"[green]{name} has following shape: {df.shape}.[/green]")
+                console.print(
+                    f"[green]{name} has following shape (rowxcolumn): {df.shape}[/green]"
+                )
                 print_rich_table(
                     df.head(ns_parser.limit),
                     headers=list(df.columns),
@@ -531,13 +533,26 @@ class ForecastingController(BaseController):
             parser, other_args, NO_EXPORT, limit=5
         )
         if ns_parser:
-            self.datasets[ns_parser.name] = forecasting_model.clean(
+            console.print(
+                f"[green] {ns_parser.name} original shape (rowxcolumn) = {self.datasets[ns_parser.name].shape}"
+            )
+            self.datasets[ns_parser.name], clean_status = forecasting_model.clean(
                 self.datasets[ns_parser.name],
                 ns_parser.fill,
                 ns_parser.drop,
                 ns_parser.limit,
             )
-            console.print(f"Successfully cleaned '{ns_parser.name}' dataset")
+            if not clean_status:
+                console.print(
+                    f"[green] Successfully cleaned '{ns_parser.name}' dataset[/green]"
+                )
+                console.print()
+                console.print(
+                    f"[green] {ns_parser.name} new shape after cleaning (rowxcolumn) = {self.datasets[ns_parser.name].shape}"
+                )
+            else:
+                console.print(f"[red]{ns_parser.name} still contains NaNs.[/red]")
+
         console.print()
 
     @log_start_end(log=logger)
@@ -953,6 +968,9 @@ class ForecastingController(BaseController):
             type=check_greater_than_one,
             help="Days/Points to forecast when training and performing historical back-testing",
         )
+        # if user does not put in --target_dataset
+        if other_args and "--" not in other_args[0][0]:
+            other_args.insert(0, "--target_dataset")
 
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
@@ -1059,6 +1077,10 @@ class ForecastingController(BaseController):
             type=check_greater_than_one,
             help="Days/Points to forecast when training and performing historical back-testing",
         )
+
+        # if user does not put in --target_dataset
+        if other_args and "--" not in other_args[0][0]:
+            other_args.insert(0, "--target_dataset")
 
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
@@ -1235,6 +1257,10 @@ class ForecastingController(BaseController):
             type=bool,
             help="Whether or not to automatically save the untrained model and checkpoints from training.",
         )
+
+        # if user does not put in --target_dataset
+        if other_args and "--" not in other_args[0][0]:
+            other_args.insert(0, "--target_dataset")
 
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
@@ -1435,6 +1461,10 @@ class ForecastingController(BaseController):
             type=bool,
             help="Whether or not to automatically save the untrained model and checkpoints from training.",
         )
+
+        # if user does not put in --target_dataset
+        if other_args and "--" not in other_args[0][0]:
+            other_args.insert(0, "--target_dataset")
 
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
@@ -1637,6 +1667,10 @@ class ForecastingController(BaseController):
             help="Whether or not to automatically save the untrained model and checkpoints from training.",
         )
 
+        # if user does not put in --target_dataset
+        if other_args and "--" not in other_args[0][0]:
+            other_args.insert(0, "--target_dataset")
+
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
@@ -1755,6 +1789,11 @@ class ForecastingController(BaseController):
             default=72,
             help="Lagged target values used to predict the next time step.",
         )
+
+        # if user does not put in --target_dataset
+        if other_args and "--" not in other_args[0][0]:
+            other_args.insert(0, "--target_dataset")
+
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
@@ -1863,6 +1902,11 @@ class ForecastingController(BaseController):
             default=72,
             help="Lagged target values used to predict the next time step.",
         )
+
+        # if user does not put in --target_dataset
+        if other_args and "--" not in other_args[0][0]:
+            other_args.insert(0, "--target_dataset")
+
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
@@ -2053,6 +2097,10 @@ class ForecastingController(BaseController):
             type=bool,
             help="Whether or not to automatically save the untrained model and checkpoints from training.",
         )
+
+        # if user does not put in --target_dataset
+        if other_args and "--" not in other_args[0][0]:
+            other_args.insert(0, "--target_dataset")
 
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
