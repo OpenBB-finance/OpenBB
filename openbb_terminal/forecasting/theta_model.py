@@ -73,8 +73,7 @@ def get_theta_data(
     Any
         Theta Model
     """
-    filler, ticker_series = helpers.get_series(data, target_col)
-    ticker_series = filler.transform(ticker_series).astype(np.float32)
+    filler, ticker_series = helpers.get_series(data, target_col, False)
     train, val = ticker_series.split_before(0.85)
 
     if seasonal == "A":
