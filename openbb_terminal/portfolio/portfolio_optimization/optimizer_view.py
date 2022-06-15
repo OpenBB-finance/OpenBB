@@ -2251,7 +2251,6 @@ def display_ef(
             port.mu.T * time_factor[freq.upper()], right_index=True, left_index=True
         )
         ticker_plot = ticker_plot.rename(columns={0: "ret"})
-        print(ticker_plot)
         ax.scatter(ticker_plot["var"], ticker_plot["ret"])
         for row in ticker_plot.iterrows():
             ax.annotate(row[0], (row[1]["var"], row[1]["ret"]))
