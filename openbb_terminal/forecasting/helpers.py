@@ -211,12 +211,13 @@ def get_series(data, target_col, is_scaler: bool = True):
 
 
 def fit_model(
-    model, series, val_series, past_covariates=None, val_past_covariates=None
+    model, series, val_series, past_covariates=None, val_past_covariates=None, **kwargs
 ):
     fit_kwargs = dict(
         series=series,
         val_series=val_series,
     )
+    fit_kwargs.update(kwargs)
     if past_covariates is not None:
         fit_kwargs["past_covariates"] = past_covariates
         fit_kwargs["val_past_covariates"] = val_past_covariates
@@ -236,6 +237,7 @@ def get_prediction(
     train_split,
     forecast_horizon,
     n_predict: int,
+    probabilisitc: bool = False,
 ):
     # Historical backtest if with covariates
     if past_covariates is not None:

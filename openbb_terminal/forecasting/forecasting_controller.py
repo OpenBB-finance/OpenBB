@@ -44,6 +44,7 @@ from openbb_terminal.forecasting import (
     brnn_view,
     linear_regression_view,
     regression_view,
+    tft_view,
 )
 
 logger = logging.getLogger(__name__)
@@ -2150,4 +2151,190 @@ class ForecastingController(BaseController):
 
     @log_start_end(log=logger)
     def call_tft(self, other_args: List[str]):
-        console.print("[green]Coming soon!\n[/green]")
+        """Process TFT command"""
+        parser = argparse.ArgumentParser(
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            add_help=False,
+            prog="rnn",
+            description="""
+                Perform TFT forecast (Temporal Fusion Transformer).
+            """,
+        )
+        parser.add_argument(
+            "--target_dataset",
+            type=str,
+            choices=self.files,
+            dest="target_dataset",
+            help="Dataset name",
+        )
+        parser.add_argument(
+            "-n",
+            "--n_days",
+            action="store",
+            dest="n_days",
+            type=check_greater_than_one,
+            default=5,
+            help="prediction days.",
+        )
+        parser.add_argument(
+            "--target_forecast_column",
+            action="store",
+            dest="target_col",
+            default="close",
+            type=str,
+            help="target column.",
+        )
+        parser.add_argument(
+            "--past_covariates",
+            action="store",
+            dest="past_covariates",
+            default=None,
+            type=str,
+            help="Past covariates(columns/features) in same dataset that may effect price. Comma separated.",
+        )
+        parser.add_argument(
+            "--train_split",
+            action="store",
+            dest="train_split",
+            default=0.85,
+            type=check_positive_float,
+            help="Start point for rolling training and forecast window. 0.0-1.0",
+        )
+        parser.add_argument(
+            "--forecast_horizon",
+            action="store",
+            dest="forecast_horizon",
+            default=5,
+            type=check_greater_than_one,
+            help="Days/Points to forecast when training and performing historical back-testing",
+        )
+        parser.add_argument(
+            "--input_chunk_length",
+            action="store",
+            dest="input_chunk_length",
+            default=14,
+            type=check_positive,
+            help="The length of the input sequence fed to the model.",
+        )
+        parser.add_argument(
+            "--output_chunk_length",
+            action="store",
+            dest="output_chunk_length",
+            default=5,
+            type=check_positive,
+            help="The length of the forecast of the model.",
+        )
+        parser.add_argument(
+            "--hidden_size",
+            action="store",
+            dest="hidden_size",
+            default=16,
+            type=check_positive,
+            help="Hidden state size of the TFT.",
+        )
+        parser.add_argument(
+            "--lstm_layers",
+            action="store",
+            dest="lstm_layers",
+            default=1,
+            type=check_positive,
+            help="Number of LSTM layers.",
+        )
+        parser.add_argument(
+            "--num_attention_heads",
+            action="store",
+            dest="num_attention_heads",
+            default=4,
+            type=check_positive,
+            help="Number of attention heads.",
+        )
+        parser.add_argument(
+            "--full_attention",
+            action="store_true",
+            dest="full_attention",
+            default=False,
+            help="Whether to apply a multi-head attention query.",
+        )
+        parser.add_argument(
+            "--dropout",
+            action="store",
+            dest="dropout",
+            default=0.1,
+            type=check_positive_float,
+            help="Fraction of neurons affected by dropout.",
+        )
+        parser.add_argument(
+            "--hidden_continuous_size",
+            action="store",
+            dest="hidden_continuous_size",
+            default=8,
+            type=check_positive,
+            help="Default hidden size for processing continuous variables.",
+        )
+        parser.add_argument(
+            "--model_save_name",
+            type=str,
+            action="store",
+            dest="model_save_name",
+            default="nbeats_model",
+            help="Name of the model to save.",
+        )
+        parser.add_argument(
+            "--force_reset",
+            action="store",
+            dest="force_reset",
+            default=True,
+            type=bool,
+            help="""If set to True, any previously-existing model with the same name will be reset
+            (all checkpoints will be discarded).""",
+        )
+        parser.add_argument(
+            "--save_checkpoints",
+            action="store",
+            dest="save_checkpoints",
+            default=True,
+            type=bool,
+            help="Whether or not to automatically save the untrained model and checkpoints from training.",
+        )
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
+        )
+
+        if ns_parser:
+            # check proper file name is provided
+            if not ns_parser.target_dataset:
+                console.print("[red]Please enter valid dataset.\n[/red]")
+                return
+
+            # must check that target col is within target series
+            if (
+                ns_parser.target_col
+                not in self.datasets[ns_parser.target_dataset].columns
+            ):
+                console.print(
+                    f"[red]The target column {ns_parser.target_col} does not exist in dataframe.\n[/red]"
+                )
+                return
+
+            tft_view.display_tft_forecast(
+                data=self.datasets[ns_parser.target_dataset],
+                ticker_name=ns_parser.target_dataset,
+                n_predict=ns_parser.n_days,
+                target_col=ns_parser.target_col,
+                past_covariates=ns_parser.past_covariates,
+                train_split=ns_parser.train_split,
+                forecast_horizon=ns_parser.forecast_horizon,
+                input_chunk_length=ns_parser.input_chunk_length,
+                output_chunk_length=ns_parser.output_chunk_length,
+                hidden_size=ns_parser.hidden_size,
+                lstm_layers=ns_parser.lstm_layers,
+                num_attention_heads=ns_parser.num_attention_heads,
+                full_attention=ns_parser.full_attention,
+                dropout=ns_parser.dropout,
+                hidden_continuous_size=ns_parser.hidden_continuous_size,
+                model_save_name=ns_parser.model_save_name,
+                force_reset=ns_parser.force_reset,
+                save_checkpoints=ns_parser.save_checkpoints,
+                export=ns_parser.export,
+            )
