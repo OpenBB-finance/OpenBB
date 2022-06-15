@@ -234,9 +234,9 @@ class ForecastingController(BaseController):
         mt.add_cmd("brnn", "", self.files)
         mt.add_cmd("nbeats", "", self.files)
         mt.add_cmd("tcn", "", self.files)
+        mt.add_cmd("tft", "", self.files)
         mt.add_info("_comingsoon_")
         mt.add_cmd("trans", "", self.files)
-        mt.add_cmd("tft", "", self.files)
 
         console.print(text=mt.menu_text, menu="Forecasting")
 
@@ -2296,6 +2296,10 @@ class ForecastingController(BaseController):
             type=bool,
             help="Whether or not to automatically save the untrained model and checkpoints from training.",
         )
+
+        # if user does not put in --target_dataset
+        if other_args and "--" not in other_args[0][0]:
+            other_args.insert(0, "--target_dataset")
 
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED

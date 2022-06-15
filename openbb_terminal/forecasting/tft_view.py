@@ -111,6 +111,7 @@ def display_tft_forecast(
         force_reset,
         save_checkpoints,
     )
+    probabilistic = False
     helpers.plot_forecast(
         "TFT",
         target_col,
@@ -123,5 +124,6 @@ def display_tft_forecast(
         forecast_horizon,
         past_covariates,
         precision,
+        probabilistic,
         export,
     )
