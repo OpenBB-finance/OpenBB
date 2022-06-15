@@ -1,3 +1,4 @@
+# pylint: disable=too-many-arguments
 import logging
 import pandas as pd
 import os
@@ -19,6 +20,8 @@ from openbb_terminal.common.prediction_techniques.pred_helper import (
 from openbb_terminal.config_plot import PLOT_DPI
 
 logger = logging.getLogger(__name__)
+
+PROBABLISTIC_MODELS = ["PES", "RNN"]
 
 
 def scaled_past_covs(past_covariates, filler, data, train_split):
@@ -138,7 +141,13 @@ def plot_forecast(
     if not external_axes:
         theme.visualize_output()
 
-    numeric_forecast = predicted_values.pd_dataframe()[target_col].tail(n_predict)
+    if name in PROBABLISTIC_MODELS:
+        numeric_forecast = predicted_values.quantile_df()[f"{target_col}_0.5"].tail(
+            n_predict
+        )
+    else:
+        numeric_forecast = predicted_values.pd_dataframe()[target_col].tail(n_predict)
+
     print_pretty_prediction(numeric_forecast, data[target_col].iloc[-1])
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "expo")
