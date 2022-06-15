@@ -20,6 +20,7 @@ from openbb_terminal.rich_config import console
 from openbb_terminal.common.prediction_techniques.pred_helper import (
     print_pretty_prediction,
 )
+from openbb_terminal.forecasting import helpers
 
 logger = logging.getLogger(__name__)
 # pylint: disable=too-many-arguments
@@ -124,46 +125,19 @@ def display_rnn_forecast(
         force_reset,
         save_checkpoints,
     )
-    # Plotting with Matplotlib
-    external_axes = None
-    if not external_axes:
-        fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of one axis item.\n[/red]")
-            return
-        ax = external_axes
-
-    # ax = fig.get_axes()[0] # fig gives list of axes (only one for this case)
-    ticker_series.plot(label=target_col, figure=fig)
-
-    # TODO - fix why +/- quantiles are not plotted.
-    historical_fcast.plot(
-        label=f"Backtest {forecast_horizon}-Steps ahead forecast",
-        low_quantile=0.1,
-        high_quantile=0.9,
-        figure=fig,
+    helpers.plot_forecast(
+        "RNN",
+        target_col,
+        historical_fcast,
+        predicted_values,
+        ticker_series,
+        ticker_name,
+        data,
+        n_predict,
+        forecast_horizon,
+        None,
+        precision,
+        export,
+        0.1,
+        0.9,
     )
-    predicted_values.plot(
-        label="RNN Probabilistic Forecast",
-        low_quantile=0.1,
-        high_quantile=0.9,
-        figure=fig,
-    )
-    ax.set_title(
-        f"RNN for ${ticker_name} for next [{n_predict}] days (MAPE={precision:.2f}%)"
-    )
-    ax.set_ylabel(target_col)
-    ax.set_xlabel("Date")
-    theme.style_primary_axis(ax)
-
-    if not external_axes:
-        theme.visualize_output()
-
-    numeric_forecast = predicted_values.quantile_df()[f"{target_col}_0.5"].tail(
-        n_predict
-    )
-    print_pretty_prediction(numeric_forecast, data[target_col].iloc[-1])
-
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "expo")

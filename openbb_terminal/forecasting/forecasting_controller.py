@@ -19,7 +19,6 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     check_positive,
     check_positive_float,
-    parse_known_args_and_warn,
     NO_EXPORT,
     EXPORT_ONLY_FIGURES_ALLOWED,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
@@ -269,7 +268,7 @@ class ForecastingController(BaseController):
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-f")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
             if ns_parser.file:
@@ -354,7 +353,7 @@ class ForecastingController(BaseController):
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED, limit=10
         )
 
@@ -415,7 +414,7 @@ class ForecastingController(BaseController):
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-v")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
 
@@ -456,7 +455,7 @@ class ForecastingController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-d")
-        ns_parser = parse_known_args_and_warn(parser, other_args, NO_EXPORT)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args, NO_EXPORT)
 
         if ns_parser:
             if ns_parser.dataset not in self.datasets:
@@ -525,7 +524,7 @@ class ForecastingController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
-        ns_parser = parse_known_args_and_warn(parser, other_args, NO_EXPORT, limit=5)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args, NO_EXPORT, limit=5)
         if ns_parser:
             self.datasets[ns_parser.name] = forecasting_model.clean(
                 self.datasets[ns_parser.name],
@@ -571,7 +570,7 @@ class ForecastingController(BaseController):
         if other_args and "--" not in other_args[0][0]:
             other_args.insert(0, "--target_dataset")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args, NO_EXPORT, limit=5)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args, NO_EXPORT, limit=5)
         if ns_parser:
             self.datasets[ns_parser.target_dataset] = forecasting_model.add_ema(
                 self.datasets[ns_parser.target_dataset],
@@ -610,7 +609,7 @@ class ForecastingController(BaseController):
         if other_args and "--" not in other_args[0][0]:
             other_args.insert(0, "--target_dataset")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args, NO_EXPORT, limit=5)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args, NO_EXPORT, limit=5)
         if ns_parser:
             self.datasets[ns_parser.target_dataset] = forecasting_model.add_sto(
                 self.datasets[ns_parser.target_dataset],
@@ -640,7 +639,7 @@ class ForecastingController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-d")
-        ns_parser = parse_known_args_and_warn(parser, other_args, NO_EXPORT)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args, NO_EXPORT)
 
         if ns_parser:
             for option in ns_parser.delete:
@@ -697,7 +696,7 @@ class ForecastingController(BaseController):
         if other_args and "--" not in other_args[0][0]:
             other_args.insert(0, "--target_dataset")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args, NO_EXPORT, limit=5)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args, NO_EXPORT, limit=5)
         if ns_parser:
             self.datasets[ns_parser.target_dataset] = forecasting_model.add_rsi(
                 self.datasets[ns_parser.target_dataset],
@@ -744,7 +743,7 @@ class ForecastingController(BaseController):
         if other_args and "--" not in other_args[0][0]:
             other_args.insert(0, "--target_dataset")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args, NO_EXPORT, limit=5)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args, NO_EXPORT, limit=5)
         if ns_parser:
             self.datasets[ns_parser.target_dataset] = forecasting_model.add_roc(
                 self.datasets[ns_parser.target_dataset],
@@ -791,7 +790,7 @@ class ForecastingController(BaseController):
         if other_args and "--" not in other_args[0][0]:
             other_args.insert(0, "--target_dataset")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args, NO_EXPORT, limit=5)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args, NO_EXPORT, limit=5)
         if ns_parser:
             self.datasets[ns_parser.target_dataset] = forecasting_model.add_momentum(
                 self.datasets[ns_parser.target_dataset],
@@ -833,7 +832,7 @@ class ForecastingController(BaseController):
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=NO_EXPORT
         )
 
@@ -940,7 +939,7 @@ class ForecastingController(BaseController):
             help="Days/Points to forecast when training and performing historical back-testing",
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
         # TODO Convert this to multi series
@@ -1046,7 +1045,7 @@ class ForecastingController(BaseController):
             help="Days/Points to forecast when training and performing historical back-testing",
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
 
@@ -1222,7 +1221,7 @@ class ForecastingController(BaseController):
             help="Whether or not to automatically save the untrained model and checkpoints from training.",
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
 
@@ -1421,7 +1420,7 @@ class ForecastingController(BaseController):
             help="Whether or not to automatically save the untrained model and checkpoints from training.",
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
 
@@ -1622,7 +1621,7 @@ class ForecastingController(BaseController):
             help="Whether or not to automatically save the untrained model and checkpoints from training.",
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
 
@@ -1828,7 +1827,7 @@ class ForecastingController(BaseController):
             help="Whether or not to automatically save the untrained model and checkpoints from training.",
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
 

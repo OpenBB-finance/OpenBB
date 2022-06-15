@@ -20,6 +20,7 @@ from openbb_terminal.rich_config import console
 from openbb_terminal.common.prediction_techniques.pred_helper import (
     print_pretty_prediction,
 )
+from openbb_terminal.forecasting import helpers
 
 logger = logging.getLogger(__name__)
 # pylint: disable=too-many-arguments
@@ -93,36 +94,17 @@ def display_theta_forecast(
         start_window,
         forecast_horizon,
     )
-
-    # Plotting with Matplotlib
-    external_axes = None
-    if not external_axes:
-        fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of one axis item.\n[/red]")
-            return
-        ax = external_axes
-
-    # ax = fig.get_axes()[0] # fig gives list of axes (only one for this case)
-    ticker_series.plot(label=f"{target_col}", figure=fig)
-    historical_fcast_theta.plot(
-        label=f"Backtest {forecast_horizon}-Steps ahead forecast",
-        figure=fig,
+    helpers.plot_forecast(
+        f"Theta {best_theta:.2f}",
+        target_col,
+        historical_fcast_theta,
+        predicted_values,
+        ticker_series,
+        ticker_name,
+        data,
+        n_predict,
+        forecast_horizon,
+        None,
+        precision,
+        export,
     )
-    predicted_values.plot(label="Theta Forecast", figure=fig)
-    ax.set_title(
-        f"Theta {best_theta:.2f} for ${ticker_name} for next [{n_predict}] days (MAPE={round(precision,2)}%)"
-    )
-    ax.set_ylabel(target_col)
-    ax.set_xlabel("Date")
-    theme.style_primary_axis(ax)
-
-    if not external_axes:
-        theme.visualize_output()
-
-    numeric_forecast = predicted_values.pd_dataframe()[target_col].tail(n_predict)
-    print_pretty_prediction(numeric_forecast, data[target_col].iloc[-1])
-
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "expo")
