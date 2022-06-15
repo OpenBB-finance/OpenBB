@@ -83,8 +83,7 @@ def get_expo_data(
     Any
         Fit Prob. Expo model object.
     """
-    filler, ticker_series = helpers.get_series(data, target_col, False)
-    train, val = ticker_series.split_before(float(start_window))
+    _, ticker_series = helpers.get_series(data, target_col, False)
 
     if trend == "M":
         trend = ModelMode.MULTIPLICATIVE

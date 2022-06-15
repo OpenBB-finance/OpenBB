@@ -43,6 +43,7 @@ from openbb_terminal.forecasting import (
     NBEATS_view,
     brnn_view,
     linear_regression_view,
+    regression_view,
 )
 
 logger = logging.getLogger(__name__)
@@ -81,6 +82,7 @@ class ForecastingController(BaseController):
         "expo",
         "theta",
         "rnn",
+        "brnn",
         "nbeats",
         "tcn",
         "regr",
@@ -1421,7 +1423,8 @@ class ForecastingController(BaseController):
             dest="force_reset",
             default=True,
             type=bool,
-            help="If set to True, any previously-existing model with the same name will be reset (all checkpoints will be discarded).",
+            help="""If set to True, any previously-existing model with the same name will be reset
+            (all checkpoints will be discarded).""",
         )
         parser.add_argument(
             "--save_checkpoints",
@@ -1676,10 +1679,113 @@ class ForecastingController(BaseController):
                 export=ns_parser.export,
             )
 
-    # Coming soon to a theater near you :)
     @log_start_end(log=logger)
     def call_regr(self, other_args: List[str]):
-        console.print("[green]Coming soon!\n[/green]")
+        """Process REGR command"""
+        parser = argparse.ArgumentParser(
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            add_help=False,
+            prog="linregr",
+            description="""
+                Perform a regression forecast
+            """,
+        )
+        parser.add_argument(
+            "--target_dataset",
+            type=str,
+            choices=self.files,
+            dest="target_dataset",
+            help="Dataset name",
+        )
+        parser.add_argument(
+            "-n",
+            "--n_days",
+            action="store",
+            dest="n_days",
+            type=check_greater_than_one,
+            default=5,
+            help="prediction days.",
+        )
+        parser.add_argument(
+            "--target_forecast_column",
+            action="store",
+            dest="target_col",
+            default="close",
+            type=str,
+            help="target column.",
+        )
+        parser.add_argument(
+            "--past_covariates",
+            action="store",
+            dest="past_covariates",
+            default=None,
+            type=str,
+            help="Past covariates(columns/features) in same dataset that may effect price. Comma separated.",
+        )
+        parser.add_argument(
+            "--train_split",
+            action="store",
+            dest="train_split",
+            default=0.85,
+            type=check_positive_float,
+            help="Start point for rolling training and forecast window. 0.0-1.0",
+        )
+        parser.add_argument(
+            "--forecast_horizon",
+            action="store",
+            dest="forecast_horizon",
+            default=5,
+            type=check_greater_than_one,
+            help="Days/Points to forecast when training and performing historical back-testing",
+        )
+        parser.add_argument(
+            "--output_chunk_length",
+            action="store",
+            dest="output_chunk_length",
+            default=5,
+            type=check_positive,
+            help="The length of the forecast of the model.",
+        )
+        parser.add_argument(
+            "--lags",
+            action="store",
+            dest="lags",
+            type=check_greater_than_one,
+            default=72,
+            help="Lagged target values used to predict the next time step.",
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
+        )
+
+        if ns_parser:
+            # check proper file name is provided
+            if not ns_parser.target_dataset:
+                console.print("[red]Please enter valid dataset.\n[/red]")
+                return
+
+            # must check that target col is within target series
+            if (
+                ns_parser.target_col
+                not in self.datasets[ns_parser.target_dataset].columns
+            ):
+                console.print(
+                    f"[red]The target column {ns_parser.target_col} does not exist in dataframe.\n[/red]"
+                )
+                return
+
+            regression_view.display_regression(
+                data=self.datasets[ns_parser.target_dataset],
+                ticker_name=ns_parser.target_dataset,
+                n_predict=ns_parser.n_days,
+                target_col=ns_parser.target_col,
+                past_covariates=ns_parser.past_covariates,
+                train_split=ns_parser.train_split,
+                forecast_horizon=ns_parser.forecast_horizon,
+                output_chunk_length=ns_parser.output_chunk_length,
+                lags=ns_parser.lags,
+                export=ns_parser.export,
+            )
 
     @log_start_end(log=logger)
     def call_linregr(self, other_args: List[str]):
