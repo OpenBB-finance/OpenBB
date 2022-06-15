@@ -60,7 +60,7 @@ def get_linear_regression_data(
         Any
             Best NBEATS Model
     """
-    use_scalers = True
+    use_scalers = False
     probabilistic = True
 
     filler, scaler, ticker_series = helpers.get_series(
