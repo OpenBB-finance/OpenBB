@@ -8,7 +8,7 @@ import logging
 from itertools import chain
 import os
 from pathlib import Path
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 
 import torch
 import pandas as pd
@@ -272,6 +272,46 @@ class ForecastingController(BaseController):
             load_files = [f"load {file}" for file in self.files]
             return ["forecasting"] + load_files
         return []
+
+    def parse_known_args_and_warn(
+        self,
+        parser: argparse.ArgumentParser,
+        other_args: List[str],
+        export_allowed: int = NO_EXPORT,
+        raw: bool = False,
+        limit: int = 0,
+        sources: List[str] = None,
+        target_dataset: bool = False,
+        target_column: bool = False,
+        period: Optional[int] = None,
+    ):
+        if target_dataset:
+            parser.add_argument(
+                "--target-dataset",
+                help="The name of the dataset you want to select",
+                dest="target_dataset",
+                type=str,
+                choices=list(self.datasets.keys()),
+            )
+        if target_column:
+            parser.add_argument(
+                "--target-column",
+                help="The name of the specific column you want to use",
+                dest="target_column",
+                type=str,
+                default="close",
+            )
+        if period:
+            parser.add_argument(
+                "--period",
+                help="The period to use",
+                dest="period",
+                type=check_greater_than_one,
+                default=period,
+            )
+        return super().parse_known_args_and_warn(
+            parser, other_args, export_allowed, raw, limit, sources
+        )
 
     @log_start_end(log=logger)
     def call_load(self, other_args: List[str]):
@@ -591,34 +631,19 @@ class ForecastingController(BaseController):
             prog="ema",
             description="Add exponential moving average to dataset based on specific column.",
         )
-        parser.add_argument(
-            "--target-dataset",
-            help="The name of the dataset you want to add the EMA to",
-            dest="target_dataset",
-            type=str,
-            choices=list(self.datasets.keys()),
-        )
-        parser.add_argument(
-            "--target-column",
-            help="The name of the specific column you want to calculate EMA for.",
-            dest="target_column",
-            type=str,
-            default="close",
-        )
 
-        parser.add_argument(
-            "--period",
-            help="The period to calculate EMA with.",
-            dest="period",
-            type=check_greater_than_one,
-            default=10,
-        )
         # if user does not put in --target-dataset
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "--target-dataset")
 
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, NO_EXPORT, limit=5
+            parser,
+            other_args,
+            NO_EXPORT,
+            limit=5,
+            period=10,
+            target_dataset=True,
+            target_column=True,
         )
         if ns_parser:
             self.datasets[ns_parser.target_dataset] = forecasting_model.add_ema(
@@ -640,26 +665,12 @@ class ForecastingController(BaseController):
             prog="sto",
             description="Add in Stochastic Oscillator %K and %D",
         )
-        parser.add_argument(
-            "--target-dataset",
-            help="The name of the dataset to use.",
-            dest="target_dataset",
-            type=str,
-            choices=list(self.datasets.keys()),
-        )
-        parser.add_argument(
-            "--period",
-            help="The name of the specific column you want to calculate STO for.",
-            dest="period",
-            type=check_greater_than_one,
-            default=10,
-        )
         # if user does not put in --target-dataset
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "--target-dataset")
 
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, NO_EXPORT, limit=5
+            parser, other_args, NO_EXPORT, limit=5, period=10, target_dataset=True
         )
         if ns_parser:
             self.datasets[ns_parser.target_dataset] = forecasting_model.add_sto(
@@ -721,34 +732,18 @@ class ForecastingController(BaseController):
             prog="rsi",
             description="Add rsi to dataset based on specific column.",
         )
-        parser.add_argument(
-            "--target-dataset",
-            help="The name of the dataset you want to add the RSI to",
-            dest="target_dataset",
-            type=str,
-            choices=list(self.datasets.keys()),
-        )
-        parser.add_argument(
-            "--target-column",
-            help="The name of the specific column you want to calculate RSI for.",
-            dest="target_column",
-            type=str,
-            default="close",
-        )
-
-        parser.add_argument(
-            "--period",
-            help="The period to calculate RSI with.",
-            dest="period",
-            type=check_greater_than_one,
-            default=10,
-        )
         # if user does not put in --target-dataset
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "--target-dataset")
 
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, NO_EXPORT, limit=5
+            parser,
+            other_args,
+            NO_EXPORT,
+            limit=5,
+            target_dataset=True,
+            target_column=True,
+            period=10,
         )
         if ns_parser:
             self.datasets[ns_parser.target_dataset] = forecasting_model.add_rsi(
@@ -770,34 +765,18 @@ class ForecastingController(BaseController):
             prog="roc",
             description="Add rate of change to dataset based on specific column.",
         )
-        parser.add_argument(
-            "--target-dataset",
-            help="The name of the dataset you want to add the ROC to",
-            dest="target_dataset",
-            type=str,
-            choices=list(self.datasets.keys()),
-        )
-        parser.add_argument(
-            "--target-column",
-            help="The name of the specific column you want to calculate ROC for.",
-            dest="target_column",
-            type=str,
-            default="close",
-        )
-
-        parser.add_argument(
-            "--period",
-            help="The period to calculate ROC with.",
-            dest="period",
-            type=check_greater_than_one,
-            default=10,
-        )
         # if user does not put in --target-dataset
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "--target-dataset")
 
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, NO_EXPORT, limit=5
+            parser,
+            other_args,
+            NO_EXPORT,
+            limit=5,
+            target_dataset=True,
+            target_column=True,
+            period=10,
         )
         if ns_parser:
             self.datasets[ns_parser.target_dataset] = forecasting_model.add_roc(
@@ -819,34 +798,18 @@ class ForecastingController(BaseController):
             prog="mom",
             description="Add momentum to dataset based on specific column.",
         )
-        parser.add_argument(
-            "--target-dataset",
-            help="The name of the dataset you want to add the Momentum to",
-            dest="target_dataset",
-            type=str,
-            choices=list(self.datasets.keys()),
-        )
-        parser.add_argument(
-            "--target-column",
-            help="The name of the specific column you want to calculate Momentum for.",
-            dest="target_column",
-            type=str,
-            default="close",
-        )
-
-        parser.add_argument(
-            "--period",
-            help="The period to calculate Momentum with.",
-            dest="period",
-            type=check_greater_than_one,
-            default=10,
-        )
         # if user does not put in --target-dataset
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "--target-dataset")
 
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, NO_EXPORT, limit=5
+            parser,
+            other_args,
+            NO_EXPORT,
+            limit=5,
+            target_dataset=True,
+            target_column=True,
+            period=10,
         )
         if ns_parser:
             self.datasets[ns_parser.target_dataset] = forecasting_model.add_momentum(
@@ -922,13 +885,6 @@ class ForecastingController(BaseController):
             """,
         )
         parser.add_argument(
-            "--target-dataset",
-            type=str,
-            choices=self.files,
-            dest="target_dataset",
-            help="Dataset name",
-        )
-        parser.add_argument(
             "-n",
             "--n-days",
             action="store",
@@ -1000,7 +956,10 @@ class ForecastingController(BaseController):
             other_args.insert(0, "--target-dataset")
 
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
+            target_dataset=True,
         )
         # TODO Convert this to multi series
         if ns_parser:
