@@ -8,7 +8,7 @@ excerpt: "This guide introduces the Government submenu, within the Stocks menu, 
 geekdocCollapseSection: true
 ---
 
-Elected members of the United States government enjoy the exclusive privilege of being able to trade stocks while in a position of power. The features in this menu are intended to show the reported trades of elected officials, lobbyist activity, awarded contracts, and general spending of the United States Treasury Department. This menu only covers the USA, or companies that trade on US exchanges. The information in this menu is compiled by <a href="https://quiverquant.com" target="_blank">QuiverQuant</a>. 
+The features in this menu are intended to show the reported trades of elected officials, lobbyist activity, awarded contracts, and general spending of the United States Treasury Department. This menu only covers the USA, or companies that trade on US exchanges. The information in this menu is compiled by <a href="https://quiverquant.com" target="_blank">QuiverQuant</a>. 
 
 A ticker is not required to enter the menu; navigate there from anywhere in the terminal with absolute path jumping: `/stocks/gov`
 
