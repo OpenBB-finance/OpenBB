@@ -1059,6 +1059,116 @@ def load_yf_data(symbol: str, currency: str, interval: str, days: int):
     return df_coin[::-1], currency
 
 
+def display_all_coins(
+    source: str, coin: str, top: int, skip: int, show_all: bool, export: str
+) -> None:
+    """Find similar coin by coin name,symbol or id.
+    If you don't remember exact name or id of the Coin at CoinGecko, CoinPaprika, Coinbase, Binance
+    you can use this command to display coins with similar name, symbol or id to your search query.
+    Example of usage: coin name is something like "polka". So I can try: find -c polka -k name -t 25
+    It will search for coin that has similar name to polka and display top 25 matches.
+        -c, --coin stands for coin - you provide here your search query
+        -t, --top it displays top N number of records.
+    Parameters
+    ----------
+    top: int
+        Number of records to display
+    coin: str
+        Cryptocurrency
+    source: str
+        Data source of coins.  CoinGecko (cg) or CoinPaprika (cp) or Binance (bin), Coinbase (cb)
+    skip: int
+        Skip N number of records
+    show_all: bool
+        Flag to show all sources of data
+    export : str
+        Export dataframe data to csv,json,xlsx file
+    """
+    sources = ["cg", "cp", "bin", "cb"]
+    limit, cutoff = 30, 0.75
+    coins_func_map = {
+        "cg": get_coin_list,
+        "cp": get_list_of_coins,
+        "bin": load_binance_map,
+        "cb": load_coinbase_map,
+    }
+
+    if show_all:
+        coins_func = coins_func_map.get(source)
+        if coins_func:
+            df = coins_func()
+        else:
+            df = prepare_all_coins_df()
+
+    elif not source or source not in sources:
+        df = prepare_all_coins_df()
+        cg_coins_list = df["CoinGecko"].to_list()
+        sim = difflib.get_close_matches(coin.lower(), cg_coins_list, limit, cutoff)
+        df_matched = pd.Series(sim).to_frame().reset_index()
+        df_matched.columns = ["index", "CoinGecko"]
+        df = df.merge(df_matched, on="CoinGecko")
+        df.drop("index", axis=1, inplace=True)
+
+    else:
+
+        if source == "cg":
+            coins_df = get_coin_list().drop("index", axis=1)
+            df = _create_closest_match_df(coin.lower(), coins_df, limit, cutoff)
+            df = df[["index", "id", "name"]]
+
+        elif source == "cp":
+            coins_df = get_list_of_coins()
+            df = _create_closest_match_df(coin.lower(), coins_df, limit, cutoff)
+            df = df[["index", "id", "name"]]
+
+        elif source == "bin":
+            coins_df_gecko = get_coin_list()
+            coins_df_bin = load_binance_map()
+            coins_df_bin.columns = ["symbol", "id"]
+            coins_df = pd.merge(
+                coins_df_bin, coins_df_gecko[["id", "name"]], how="left", on="id"
+            )
+            df = _create_closest_match_df(coin.lower(), coins_df, limit, cutoff)
+            df = df[["index", "symbol", "name"]]
+            df.columns = ["index", "id", "name"]
+
+        elif source == "cb":
+            coins_df_gecko = get_coin_list()
+            coins_df_cb = load_coinbase_map()
+            coins_df_cb.columns = ["symbol", "id"]
+            coins_df = pd.merge(
+                coins_df_cb, coins_df_gecko[["id", "name"]], how="left", on="id"
+            )
+            df = _create_closest_match_df(coin.lower(), coins_df, limit, cutoff)
+            df = df[["index", "symbol", "name"]]
+            df.columns = ["index", "id", "name"]
+
+        else:
+            df = pd.DataFrame(columns=["index", "id", "symbol"])
+            console.print("Couldn't find any coins")
+        console.print("")
+
+    try:
+        df = df[skip : skip + top]  # noqa
+    except Exception as e:
+        logger.exception(str(e))
+        console.print(e)
+
+    print_rich_table(
+        df.fillna("N/A"),
+        headers=list(df.columns),
+        show_index=False,
+        title="Similar Coins",
+    )
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "coins",
+        df,
+    )
+
+
 def plot_chart(prices_df: pd.DataFrame, symbol: str = "", currency: str = "") -> None:
     """Load data for Technical Analysis
 
