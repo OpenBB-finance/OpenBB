@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 # pylint: disable=too-many-lines, too-many-branches, inconsistent-return-statements
+# pylint: disable=too-many-arguments
 
 import argparse
 import logging
@@ -40,7 +41,6 @@ from openbb_terminal.forecasting import (
     forecasting_view,
     expo_model,
     expo_view,
-    theta_model,
     theta_view,
     rnn_view,
     NBEATS_view,
@@ -48,12 +48,8 @@ from openbb_terminal.forecasting import (
     linear_regression_view,
     regression_view,
     tft_view,
-)
-from openbb_terminal.common.prediction_techniques import (
-    arima_model,
     arima_view,
-    knn_view,
-    regression_view,
+    arima_model,
 )
 
 logger = logging.getLogger(__name__)
@@ -284,7 +280,44 @@ class ForecastingController(BaseController):
         target_dataset: bool = False,
         target_column: bool = False,
         period: Optional[int] = None,
+        n_days: bool = False,
+        forecast_horizon: bool = False,
+        seasonal: bool = False,
+        periods: bool = False,
+        window: bool = False,
+        train_split: bool = False,
+        input_chunk_length: bool = False,
+        output_chunk_length: bool = False,
+        force_reset: bool = False,
+        save_checkpoints: bool = False,
+        model_save_name: bool = False,
+        n_epochs: bool = False,
+        model_type: bool = False,
+        dropout: bool = False,
+        batch_size: bool = False,
+        learning_rate: bool = False,
+        past_covariates: bool = False,
+        lags: bool = False,
+        hidden_size: int = None,
     ):
+        if hidden_size:
+            parser.add_argument(
+                "--hidden-size",
+                action="store",
+                dest="hidden_size",
+                default=hidden_size,
+                type=check_positive,
+                help="Size for feature maps for each hidden RNN layer (h_n)",
+            )
+        if past_covariates:
+            parser.add_argument(
+                "--past-covariates",
+                action="store",
+                dest="past_covariates",
+                default=None,
+                type=str,
+                help="Past covariates(columns/features) in same dataset. Comma separated.",
+            )
         if target_dataset:
             parser.add_argument(
                 "--target-dataset",
@@ -309,6 +342,164 @@ class ForecastingController(BaseController):
                 type=check_greater_than_one,
                 default=period,
             )
+        if n_days:
+            parser.add_argument(
+                "-n",
+                "--n-days",
+                action="store",
+                dest="n_days",
+                type=check_greater_than_one,
+                default=5,
+                help="prediction days.",
+            )
+        if forecast_horizon:
+            parser.add_argument(
+                "--forecast-horizon",
+                action="store",
+                dest="forecast_horizon",
+                default=5,
+                type=check_greater_than_one,
+                help="Days/Points to forecast for historical back-testing",
+            )
+        if seasonal:
+            parser.add_argument(
+                "-s",
+                "--seasonal",
+                action="store",
+                dest="seasonal",
+                choices=expo_model.SEASONS,
+                default="A",
+                help="Seasonality: N: None, A: Additive, M: Multiplicative.",
+            )
+        if periods:
+            parser.add_argument(
+                "-p",
+                "--periods",
+                action="store",
+                dest="seasonal_periods",
+                type=check_positive,
+                default=7,
+                help="Seasonal periods: 4: Quarterly, 7: Daily",
+            )
+        if window:
+            parser.add_argument(
+                "-w",
+                "--window",
+                action="store",
+                dest="start_window",
+                default=0.85,
+                help="Start point for rolling training and forecast window. 0.0-1.0",
+            )
+        if train_split:
+            parser.add_argument(
+                "--train-split",
+                action="store",
+                dest="train_split",
+                default=0.85,
+                type=check_positive_float,
+                help="Start point for rolling training and forecast window. 0.0-1.0",
+            )
+        if input_chunk_length:
+            parser.add_argument(
+                "--input-chunk-length",
+                action="store",
+                dest="input_chunk_length",
+                default=14,
+                type=check_positive,
+                help="Number of past time steps for forecasting module at prediction time.",
+            )
+        if output_chunk_length:
+            parser.add_argument(
+                "--output-chunk-length",
+                action="store",
+                dest="output_chunk_length",
+                default=5,
+                type=check_positive,
+                help="The length of the forecast of the model.",
+            )
+        if force_reset:
+            parser.add_argument(
+                "--force-reset",
+                action="store",
+                dest="force_reset",
+                default=True,
+                type=bool,
+                help="""If set to True, any previously-existing model with the same name will be reset
+                        (all checkpoints will be discarded).""",
+            )
+        if save_checkpoints:
+            parser.add_argument(
+                "--save-checkpoints",
+                action="store",
+                dest="save_checkpoints",
+                default=True,
+                type=bool,
+                help="Whether or not to automatically save the untrained model and checkpoints from training.",
+            )
+        if model_save_name:
+            parser.add_argument(
+                "--model-save-name",
+                type=str,
+                action="store",
+                dest="model_save_name",
+                default="rnn_model",
+                help="Name of the model to save.",
+            )
+        if n_epochs:
+            parser.add_argument(
+                "--n-epochs",
+                action="store",
+                dest="n_epochs",
+                default=100,
+                type=check_positive,
+                help="Number of epochs over which to train the model.",
+            )
+        if model_type:
+            parser.add_argument(
+                "--model-type",
+                type=str,
+                action="store",
+                dest="model_type",
+                default="LSTM",
+                help='Either a string specifying the RNN module type ("RNN", "LSTM" or "GRU")',
+            )
+        if dropout:
+            parser.add_argument(
+                "--dropout",
+                action="store",
+                dest="dropout",
+                default=0,
+                type=check_positive_float,
+                help="Fraction of neurons afected by Dropout.",
+            )
+        if batch_size:
+            parser.add_argument(
+                "--batch-size",
+                action="store",
+                dest="batch_size",
+                default=32,
+                type=check_positive,
+                help="Number of time series (input and output sequences) used in each training pass",
+            )
+        if learning_rate:
+            parser.add_argument(
+                "--learning-rate",
+                action="store",
+                dest="learning_rate",
+                default=1e-3,
+                type=check_positive_float,
+                help="Learning rate during training.",
+            )
+        if lags:
+            parser.add_argument(
+                "--lags",
+                action="store",
+                dest="lags",
+                type=check_greater_than_one,
+                default=72,
+                help="Lagged target values used to predict the next time step.",
+            )
+            # if user does not put in --target-dataset
         return super().parse_known_args_and_warn(
             parser, other_args, export_allowed, raw, limit, sources
         )
@@ -885,47 +1076,12 @@ class ForecastingController(BaseController):
             """,
         )
         parser.add_argument(
-            "-n",
-            "--n-days",
-            action="store",
-            dest="n_days",
-            type=check_greater_than_one,
-            default=5,
-            help="prediction days.",
-        )
-        parser.add_argument(
-            "--target-forecast-column",
-            action="store",
-            dest="target_col",
-            default="close",
-            type=str,
-            help="target column.",
-        )
-        parser.add_argument(
             "--trend",
             action="store",
             dest="trend",
             choices=expo_model.TRENDS,
             default="A",
             help="Trend: N: None, A: Additive, M: Multiplicative.",
-        )
-        parser.add_argument(
-            "-s",
-            "--seasonal",
-            action="store",
-            dest="seasonal",
-            choices=expo_model.SEASONS,
-            default="A",
-            help="Seasonality: N: None, A: Additive, M: Multiplicative.",
-        )
-        parser.add_argument(
-            "-p",
-            "--periods",
-            action="store",
-            dest="seasonal_periods",
-            type=check_positive,
-            default=7,
-            help="Seasonal periods: 4: Quarterly, 7: Daily",
         )
         parser.add_argument(
             "-d",
@@ -935,23 +1091,6 @@ class ForecastingController(BaseController):
             default="F",
             help="Dampening",
         )
-        parser.add_argument(
-            "-w",
-            "--window",
-            action="store",
-            dest="start_window",
-            default=0.85,
-            help="Start point for rolling training and forecast window. 0.0-1.0",
-        )
-        parser.add_argument(
-            "--forecast-horizon",
-            action="store",
-            dest="forecast_horizon",
-            default=5,
-            type=check_greater_than_one,
-            help="Days/Points to forecast when training and performing historical back-testing",
-        )
-        # if user does not put in --target-dataset
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "--target-dataset")
 
@@ -960,6 +1099,12 @@ class ForecastingController(BaseController):
             other_args,
             export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
             target_dataset=True,
+            target_column=True,
+            n_days=True,
+            forecast_horizon=True,
+            seasonal=True,
+            periods=True,
+            window=True,
         )
         # TODO Convert this to multi series
         if ns_parser:
@@ -971,12 +1116,12 @@ class ForecastingController(BaseController):
 
             # must check that target col is within target series
             if (
-                ns_parser.target_col
+                ns_parser.target_column
                 not in self.datasets[ns_parser.target_dataset].columns
             ):
-                console.print(ns_parser.target_col)
+                console.print(ns_parser.target_column)
                 console.print(
-                    f"[red]The target column {ns_parser.target_col} does not exist in dataframe.\n[/red]"
+                    f"[red]The target column {ns_parser.target_column} does not exist in dataframe.\n[/red]"
                 )
                 return
 
@@ -984,7 +1129,7 @@ class ForecastingController(BaseController):
                 data=self.datasets[ns_parser.target_dataset],
                 ticker_name=ns_parser.target_dataset,
                 n_predict=ns_parser.n_days,
-                target_col=ns_parser.target_col,
+                target_col=ns_parser.target_column,
                 trend=ns_parser.trend,
                 seasonal=ns_parser.seasonal,
                 seasonal_periods=ns_parser.seasonal_periods,
@@ -1005,71 +1150,21 @@ class ForecastingController(BaseController):
                 Perform Theta forecast
             """,
         )
-        parser.add_argument(
-            "--target-dataset",
-            type=str,
-            choices=self.files,
-            dest="target_dataset",
-            help="Dataset name",
-        )
-        parser.add_argument(
-            "-n",
-            "--n-days",
-            action="store",
-            dest="n_days",
-            type=check_greater_than_one,
-            default=5,
-            help="prediction days.",
-        )
-        parser.add_argument(
-            "--target-forecast-column",
-            action="store",
-            dest="target_col",
-            default="close",
-            type=str,
-            help="target column.",
-        )
-        parser.add_argument(
-            "-s",
-            "--seasonal",
-            action="store",
-            dest="seasonal",
-            choices=theta_model.SEASONS,
-            default="M",
-            help="Seasonality: N: None, A: Additive, M: Multiplicative.",
-        )
-        parser.add_argument(
-            "-p",
-            "--periods",
-            action="store",
-            dest="seasonal_periods",
-            type=check_positive,
-            default=7,
-            help="Seasonal periods: 4: Quarterly, 7: Daily",
-        )
-        parser.add_argument(
-            "-w",
-            "--window",
-            action="store",
-            dest="start_window",
-            default=0.85,
-            help="Start point for rolling training and forecast window. 0.0-1.0",
-        )
-        parser.add_argument(
-            "--forecast-horizon",
-            action="store",
-            dest="forecast_horizon",
-            default=5,
-            type=check_greater_than_one,
-            help="Days/Points to forecast when training and performing historical back-testing",
-        )
-
         # if user does not put in --target-dataset
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "--target-dataset")
 
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
+            target_dataset=True,
+            n_days=True,
+            target_column=True,
+            seasonal=True,
+            periods=True,
+            window=True,
+            forecast_horizon=True,
         )
 
         if ns_parser:
@@ -1080,11 +1175,11 @@ class ForecastingController(BaseController):
 
             # must check that target col is within target series
             if (
-                ns_parser.target_col
+                ns_parser.target_column
                 not in self.datasets[ns_parser.target_dataset].columns
             ):
                 console.print(
-                    f"[red]The target column {ns_parser.target_col} does not exist in dataframe.\n[/red]"
+                    f"[red]The target column {ns_parser.target_column} does not exist in dataframe.\n[/red]"
                 )
                 return
 
@@ -1092,7 +1187,7 @@ class ForecastingController(BaseController):
                 data=self.datasets[ns_parser.target_dataset],
                 ticker_name=ns_parser.target_dataset,
                 n_predict=ns_parser.n_days,
-                target_col=ns_parser.target_col,
+                target_col=ns_parser.target_column,
                 seasonal=ns_parser.seasonal,
                 seasonal_periods=ns_parser.seasonal_periods,
                 start_window=ns_parser.start_window,
@@ -1111,55 +1206,7 @@ class ForecastingController(BaseController):
                 Perform RNN forecast (Vanilla RNN, LSTM, GRU)
             """,
         )
-        parser.add_argument(
-            "--target-dataset",
-            type=str,
-            choices=self.files,
-            dest="target_dataset",
-            help="Dataset name",
-        )
-        parser.add_argument(
-            "-n",
-            "--n-days",
-            action="store",
-            dest="n_days",
-            type=check_greater_than_one,
-            default=5,
-            help="prediction days.",
-        )
-        parser.add_argument(
-            "--target-forecast-column",
-            action="store",
-            dest="target_col",
-            default="close",
-            type=str,
-            help="target column.",
-        )
-        parser.add_argument(
-            "--train-split",
-            action="store",
-            dest="train_split",
-            default=0.85,
-            type=check_positive_float,
-            help="Start point for rolling training and forecast window. 0.0-1.0",
-        )
-        parser.add_argument(
-            "--forecast-horizon",
-            action="store",
-            dest="forecast_horizon",
-            default=5,
-            type=check_greater_than_one,
-            help="Days/Points to forecast when training and performing historical back-testing",
-        )
         # RNN Hyperparameters
-        parser.add_argument(
-            "--model-type",
-            type=str,
-            action="store",
-            dest="model_type",
-            default="LSTM",
-            help='Either a string specifying the RNN module type ("RNN", "LSTM" or "GRU")',
-        )
         parser.add_argument(
             "--hidden-dim",
             action="store",
@@ -1167,46 +1214,6 @@ class ForecastingController(BaseController):
             default=20,
             type=check_positive,
             help="Size for feature maps for each hidden RNN layer (h_n)",
-        )
-        parser.add_argument(
-            "--dropout",
-            action="store",
-            dest="dropout",
-            default=0,
-            type=check_positive_float,
-            help="Fraction of neurons afected by Dropout.",
-        )
-        parser.add_argument(
-            "--batch-size",
-            action="store",
-            dest="batch_size",
-            default=32,
-            type=check_positive,
-            help="Number of time series (input and output sequences) used in each training pass",
-        )
-        parser.add_argument(
-            "--n-epochs",
-            action="store",
-            dest="n_epochs",
-            default=100,
-            type=check_positive,
-            help="Number of epochs over which to train the model.",
-        )
-        parser.add_argument(
-            "--learning-rate",
-            action="store",
-            dest="learning_rate",
-            default=1e-3,
-            type=check_positive_float,
-            help="Learning rate during training.",
-        )
-        parser.add_argument(
-            "--model-save-name",
-            type=str,
-            action="store",
-            dest="model_save_name",
-            default="rnn_model",
-            help="Name of the model to save.",
         )
         parser.add_argument(
             "--training_length",
@@ -1218,38 +1225,29 @@ class ForecastingController(BaseController):
             Generally speaking, training_length should have a higher value than input_chunk_length because otherwise
             during training the RNN is never run for as many iterations as it will during training.""",
         )
-        parser.add_argument(
-            "--input_chunk_size",
-            action="store",
-            dest="input_chunk_size",
-            default=14,
-            type=check_positive,
-            help="Number of past time steps that are fed to the forecasting module at prediction time.",
-        )
-        parser.add_argument(
-            "--force-reset",
-            action="store",
-            dest="force_reset",
-            default=True,
-            type=bool,
-            help="""If set to True, any previously-existing model with the same name will be reset
-                    (all checkpoints will be discarded).""",
-        )
-        parser.add_argument(
-            "--save-checkpoints",
-            action="store",
-            dest="save_checkpoints",
-            default=True,
-            type=bool,
-            help="Whether or not to automatically save the untrained model and checkpoints from training.",
-        )
 
         # if user does not put in --target-dataset
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "--target-dataset")
 
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
+            target_dataset=True,
+            n_days=True,
+            target_column=True,
+            forecast_horizon=True,
+            train_split=True,
+            input_chunk_length=True,
+            force_reset=True,
+            save_checkpoints=True,
+            model_save_name=True,
+            n_epochs=True,
+            model_type=True,
+            dropout=True,
+            batch_size=True,
+            learning_rate=True,
         )
 
         if ns_parser:
@@ -1260,11 +1258,11 @@ class ForecastingController(BaseController):
 
             # must check that target col is within target series
             if (
-                ns_parser.target_col
+                ns_parser.target_column
                 not in self.datasets[ns_parser.target_dataset].columns
             ):
                 console.print(
-                    f"[red]The target column {ns_parser.target_col} does not exist in dataframe.\n[/red]"
+                    f"[red]The target column {ns_parser.target_column} does not exist in dataframe.\n[/red]"
                 )
                 return
 
@@ -1272,7 +1270,7 @@ class ForecastingController(BaseController):
                 data=self.datasets[ns_parser.target_dataset],
                 ticker_name=ns_parser.target_dataset,
                 n_predict=ns_parser.n_days,
-                target_col=ns_parser.target_col,
+                target_col=ns_parser.target_column,
                 train_split=ns_parser.train_split,
                 forecast_horizon=ns_parser.forecast_horizon,
                 model_type=ns_parser.model_type,
@@ -1283,7 +1281,7 @@ class ForecastingController(BaseController):
                 learning_rate=ns_parser.learning_rate,
                 model_save_name=ns_parser.model_save_name,
                 training_length=ns_parser.training_length,
-                input_chunk_size=ns_parser.input_chunk_size,
+                input_chunk_length=ns_parser.input_chunk_size,
                 force_reset=ns_parser.force_reset,
                 save_checkpoints=ns_parser.save_checkpoints,
                 export=ns_parser.export,
@@ -1300,71 +1298,7 @@ class ForecastingController(BaseController):
                 Perform NBEATS forecast (Neural Bayesian Estimation of Time Series).
             """,
         )
-        parser.add_argument(
-            "--target-dataset",
-            type=str,
-            choices=self.files,
-            dest="target_dataset",
-            help="Dataset name",
-        )
-        parser.add_argument(
-            "-n",
-            "--n-days",
-            action="store",
-            dest="n_days",
-            type=check_greater_than_one,
-            default=5,
-            help="prediction days.",
-        )
-        parser.add_argument(
-            "--target-forecast-column",
-            action="store",
-            dest="target_col",
-            default="close",
-            type=str,
-            help="target column.",
-        )
-        parser.add_argument(
-            "--past-covariates",
-            action="store",
-            dest="past_covariates",
-            default=None,
-            type=str,
-            help="Past covariates(columns/features) in same dataset that may effect price. Comma separated.",
-        )
-        parser.add_argument(
-            "--train-split",
-            action="store",
-            dest="train_split",
-            default=0.85,
-            type=check_positive_float,
-            help="Start point for rolling training and forecast window. 0.0-1.0",
-        )
-        parser.add_argument(
-            "--forecast-horizon",
-            action="store",
-            dest="forecast_horizon",
-            default=5,
-            type=check_greater_than_one,
-            help="Days/Points to forecast when training and performing historical back-testing",
-        )
         # NBEATS Hyperparameters
-        parser.add_argument(
-            "--input-chunk-length",
-            action="store",
-            dest="input_chunk_length",
-            default=14,
-            type=check_positive,
-            help="The length of the input sequence fed to the model.",
-        )
-        parser.add_argument(
-            "--output-chunk-length",
-            action="store",
-            dest="output_chunk_length",
-            default=5,
-            type=check_positive,
-            help="The length of the forecast of the model.",
-        )
         parser.add_argument(
             "--num_stacks",
             action="store",
@@ -1399,62 +1333,29 @@ class ForecastingController(BaseController):
             help="""Determines the number of neurons that make up each fully connected layer
                 in each block of every stack""",
         )
-        parser.add_argument(
-            "--batch-size",
-            action="store",
-            dest="batch_size",
-            default=800,
-            type=check_positive,
-            help="Number of time series (input and output sequences) used in each training pass.",
-        )
-        parser.add_argument(
-            "--n-epochs",
-            action="store",
-            dest="n_epochs",
-            default=100,
-            type=check_positive,
-            help="Number of epochs over which to train the model.",
-        )
-        parser.add_argument(
-            "--learning-rate",
-            action="store",
-            dest="learning_rate",
-            default=1e-3,
-            type=check_positive_float,
-            help="Learning rate during training.",
-        )
-        parser.add_argument(
-            "--model-save-name",
-            type=str,
-            action="store",
-            dest="model_save_name",
-            default="nbeats_model",
-            help="Name of the model to save.",
-        )
-        parser.add_argument(
-            "--force-reset",
-            action="store",
-            dest="force_reset",
-            default=True,
-            type=bool,
-            help="""If set to True, any previously-existing model with the same name will be reset
-            (all checkpoints will be discarded).""",
-        )
-        parser.add_argument(
-            "--save-checkpoints",
-            action="store",
-            dest="save_checkpoints",
-            default=True,
-            type=bool,
-            help="Whether or not to automatically save the untrained model and checkpoints from training.",
-        )
 
         # if user does not put in --target-dataset
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "--target-dataset")
 
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
+            target_dataset=True,
+            n_days=True,
+            target_column=True,
+            train_split=True,
+            forecast_horizon=True,
+            input_chunk_length=True,
+            output_chunk_length=True,
+            save_checkpoints=True,
+            force_reset=True,
+            model_save_name=True,
+            learning_rate=True,
+            n_epochs=True,
+            batch_size=True,
+            past_covariates=True,
         )
 
         if ns_parser:
@@ -1465,11 +1366,11 @@ class ForecastingController(BaseController):
 
             # must check that target col is within target series
             if (
-                ns_parser.target_col
+                ns_parser.target_column
                 not in self.datasets[ns_parser.target_dataset].columns
             ):
                 console.print(
-                    f"[red]The target column {ns_parser.target_col} does not exist in dataframe.\n[/red]"
+                    f"[red]The target column {ns_parser.target_column} does not exist in dataframe.\n[/red]"
                 )
                 return
 
@@ -1477,7 +1378,7 @@ class ForecastingController(BaseController):
                 data=self.datasets[ns_parser.target_dataset],
                 ticker_name=ns_parser.target_dataset,
                 n_predict=ns_parser.n_days,
-                target_col=ns_parser.target_col,
+                target_col=ns_parser.target_column,
                 past_covariates=ns_parser.past_covariates,
                 train_split=ns_parser.train_split,
                 forecast_horizon=ns_parser.forecast_horizon,
@@ -1507,79 +1408,7 @@ class ForecastingController(BaseController):
                 Perform TCN forecast.
             """,
         )
-        parser.add_argument(
-            "--target-dataset",
-            type=str,
-            choices=self.files,
-            dest="target_dataset",
-            help="Dataset name",
-        )
-        parser.add_argument(
-            "-n",
-            "--n-days",
-            action="store",
-            dest="n_days",
-            type=check_greater_than_one,
-            default=5,
-            help="prediction days.",
-        )
-        parser.add_argument(
-            "--target-forecast-column",
-            action="store",
-            dest="target_col",
-            default="close",
-            type=str,
-            help="target column.",
-        )
-        parser.add_argument(
-            "--past-covariates",
-            action="store",
-            dest="past_covariates",
-            default=None,
-            type=str,
-            help="Past covariates(columns/features) in same dataset that may effect price. Comma separated.",
-        )
-        parser.add_argument(
-            "--train-split",
-            action="store",
-            dest="train_split",
-            default=0.85,
-            type=check_positive_float,
-            help="Start point for rolling training and forecast window. 0.0-1.0",
-        )
-        parser.add_argument(
-            "--forecast-horizon",
-            action="store",
-            dest="forecast_horizon",
-            default=5,
-            type=check_greater_than_one,
-            help="Days/Points to forecast when training and performing historical back-testing",
-        )
         # TCN Hyperparameters
-        parser.add_argument(
-            "--input-chunk-length",
-            action="store",
-            dest="input_chunk_length",
-            default=14,
-            type=check_positive,
-            help="The length of the input sequence fed to the model.",
-        )
-        parser.add_argument(
-            "--output-chunk-length",
-            action="store",
-            dest="output_chunk_length",
-            default=5,
-            type=check_positive,
-            help="The length of the forecast of the model.",
-        )
-        parser.add_argument(
-            "--dropout",
-            action="store",
-            dest="dropout",
-            default=0.1,
-            type=check_positive_float,
-            help="The dropout rate for every convolutional layer.",
-        )
         parser.add_argument(
             "--num-filters",
             action="store",
@@ -1604,62 +1433,30 @@ class ForecastingController(BaseController):
             type=check_positive,
             help="The base of the exponent that will determine the dilation on every level.",
         )
-        parser.add_argument(
-            "--batch-size",
-            action="store",
-            dest="batch_size",
-            default=32,
-            type=check_positive,
-            help="Number of time series (input and output sequences) used in each training pass.",
-        )
-        parser.add_argument(
-            "--n-epochs",
-            action="store",
-            dest="n_epochs",
-            default=100,
-            type=check_positive,
-            help="Number of epochs over which to train the model.",
-        )
-        parser.add_argument(
-            "--learning-rate",
-            action="store",
-            dest="learning_rate",
-            default=1e-3,
-            type=check_positive_float,
-            help="Learning rate during training.",
-        )
-        parser.add_argument(
-            "--model-save-name",
-            type=str,
-            action="store",
-            dest="model_save_name",
-            default="tcn_model",
-            help="Name of the model to save.",
-        )
-        parser.add_argument(
-            "--force-reset",
-            action="store",
-            dest="force_reset",
-            default=True,
-            type=bool,
-            help="""If set to True, any previously-existing model with the same name will be reset
-                (all checkpoints will be discarded).""",
-        )
-        parser.add_argument(
-            "--save-checkpoints",
-            action="store",
-            dest="save_checkpoints",
-            default=True,
-            type=bool,
-            help="Whether or not to automatically save the untrained model and checkpoints from training.",
-        )
 
         # if user does not put in --target-dataset
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "--target-dataset")
 
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
+            target_dataset=True,
+            n_days=True,
+            target_column=True,
+            train_split=True,
+            past_covariates=True,
+            forecast_horizon=True,
+            save_checkpoints=True,
+            force_reset=True,
+            model_save_name=True,
+            learning_rate=True,
+            n_epochs=True,
+            dropout=True,
+            batch_size=True,
+            input_chunk_length=True,
+            output_chunk_length=True,
         )
 
         if ns_parser:
@@ -1670,11 +1467,11 @@ class ForecastingController(BaseController):
 
             # must check that target col is within target series
             if (
-                ns_parser.target_col
+                ns_parser.target_column
                 not in self.datasets[ns_parser.target_dataset].columns
             ):
                 console.print(
-                    f"[red]The target column {ns_parser.target_col} does not exist in dataframe.\n[/red]"
+                    f"[red]The target column {ns_parser.target_column} does not exist in dataframe.\n[/red]"
                 )
                 return
 
@@ -1682,7 +1479,7 @@ class ForecastingController(BaseController):
                 data=self.datasets[ns_parser.target_dataset],
                 ticker_name=ns_parser.target_dataset,
                 n_predict=ns_parser.n_days,
-                target_col=ns_parser.target_col,
+                target_col=ns_parser.target_column,
                 past_covariates=ns_parser.past_covariates,
                 train_split=ns_parser.train_split,
                 forecast_horizon=ns_parser.forecast_horizon,
@@ -1712,77 +1509,23 @@ class ForecastingController(BaseController):
                 Perform a regression forecast
             """,
         )
-        parser.add_argument(
-            "--target-dataset",
-            type=str,
-            choices=self.files,
-            dest="target_dataset",
-            help="Dataset name",
-        )
-        parser.add_argument(
-            "-n",
-            "--n-days",
-            action="store",
-            dest="n_days",
-            type=check_greater_than_one,
-            default=5,
-            help="prediction days.",
-        )
-        parser.add_argument(
-            "--target-forecast-column",
-            action="store",
-            dest="target_col",
-            default="close",
-            type=str,
-            help="target column.",
-        )
-        parser.add_argument(
-            "--past-covariates",
-            action="store",
-            dest="past_covariates",
-            default=None,
-            type=str,
-            help="Past covariates(columns/features) in same dataset that may effect price. Comma separated.",
-        )
-        parser.add_argument(
-            "--train-split",
-            action="store",
-            dest="train_split",
-            default=0.85,
-            type=check_positive_float,
-            help="Start point for rolling training and forecast window. 0.0-1.0",
-        )
-        parser.add_argument(
-            "--forecast-horizon",
-            action="store",
-            dest="forecast_horizon",
-            default=5,
-            type=check_greater_than_one,
-            help="Days/Points to forecast when training and performing historical back-testing",
-        )
-        parser.add_argument(
-            "--output-chunk-length",
-            action="store",
-            dest="output_chunk_length",
-            default=5,
-            type=check_positive,
-            help="The length of the forecast of the model.",
-        )
-        parser.add_argument(
-            "--lags",
-            action="store",
-            dest="lags",
-            type=check_greater_than_one,
-            default=72,
-            help="Lagged target values used to predict the next time step.",
-        )
 
         # if user does not put in --target-dataset
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "--target-dataset")
 
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
+            output_chunk_length=True,
+            forecast_horizon=True,
+            train_split=True,
+            past_covariates=True,
+            n_days=True,
+            target_dataset=True,
+            target_column=True,
+            lags=True,
         )
 
         if ns_parser:
@@ -1793,11 +1536,11 @@ class ForecastingController(BaseController):
 
             # must check that target col is within target series
             if (
-                ns_parser.target_col
+                ns_parser.target_column
                 not in self.datasets[ns_parser.target_dataset].columns
             ):
                 console.print(
-                    f"[red]The target column {ns_parser.target_col} does not exist in dataframe.\n[/red]"
+                    f"[red]The target column {ns_parser.target_column} does not exist in dataframe.\n[/red]"
                 )
                 return
 
@@ -1805,7 +1548,7 @@ class ForecastingController(BaseController):
                 data=self.datasets[ns_parser.target_dataset],
                 ticker_name=ns_parser.target_dataset,
                 n_predict=ns_parser.n_days,
-                target_col=ns_parser.target_col,
+                target_col=ns_parser.target_column,
                 past_covariates=ns_parser.past_covariates,
                 train_split=ns_parser.train_split,
                 forecast_horizon=ns_parser.forecast_horizon,
@@ -1825,77 +1568,22 @@ class ForecastingController(BaseController):
                 Perform a linear regression forecast
             """,
         )
-        parser.add_argument(
-            "--target-dataset",
-            type=str,
-            choices=self.files,
-            dest="target_dataset",
-            help="Dataset name",
-        )
-        parser.add_argument(
-            "-n",
-            "--n-days",
-            action="store",
-            dest="n_days",
-            type=check_greater_than_one,
-            default=5,
-            help="prediction days.",
-        )
-        parser.add_argument(
-            "--target-forecast-column",
-            action="store",
-            dest="target_col",
-            default="close",
-            type=str,
-            help="target column.",
-        )
-        parser.add_argument(
-            "--past-covariates",
-            action="store",
-            dest="past_covariates",
-            default=None,
-            type=str,
-            help="Past covariates(columns/features) in same dataset that may effect price. Comma separated.",
-        )
-        parser.add_argument(
-            "--train-split",
-            action="store",
-            dest="train_split",
-            default=0.85,
-            type=check_positive_float,
-            help="Start point for rolling training and forecast window. 0.0-1.0",
-        )
-        parser.add_argument(
-            "--forecast-horizon",
-            action="store",
-            dest="forecast_horizon",
-            default=5,
-            type=check_greater_than_one,
-            help="Days/Points to forecast when training and performing historical back-testing",
-        )
-        parser.add_argument(
-            "--output-chunk-length",
-            action="store",
-            dest="output_chunk_length",
-            default=5,
-            type=check_positive,
-            help="The length of the forecast of the model.",
-        )
-        parser.add_argument(
-            "--lags",
-            action="store",
-            dest="lags",
-            type=check_greater_than_one,
-            default=72,
-            help="Lagged target values used to predict the next time step.",
-        )
-
         # if user does not put in --target-dataset
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "--target-dataset")
 
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
+            lags=True,
+            output_chunk_length=True,
+            forecast_horizon=True,
+            train_split=True,
+            past_covariates=True,
+            target_column=True,
+            n_days=True,
+            target_dataset=True,
         )
 
         if ns_parser:
@@ -1906,11 +1594,11 @@ class ForecastingController(BaseController):
 
             # must check that target col is within target series
             if (
-                ns_parser.target_col
+                ns_parser.target_column
                 not in self.datasets[ns_parser.target_dataset].columns
             ):
                 console.print(
-                    f"[red]The target column {ns_parser.target_col} does not exist in dataframe.\n[/red]"
+                    f"[red]The target column {ns_parser.target_column} does not exist in dataframe.\n[/red]"
                 )
                 return
 
@@ -1918,7 +1606,7 @@ class ForecastingController(BaseController):
                 data=self.datasets[ns_parser.target_dataset],
                 ticker_name=ns_parser.target_dataset,
                 n_predict=ns_parser.n_days,
-                target_col=ns_parser.target_col,
+                target_col=ns_parser.target_column,
                 past_covariates=ns_parser.past_covariates,
                 train_split=ns_parser.train_split,
                 forecast_horizon=ns_parser.forecast_horizon,
@@ -1938,79 +1626,7 @@ class ForecastingController(BaseController):
                 Perform BRNN forecast (Vanilla RNN, LSTM, GRU)
             """,
         )
-        parser.add_argument(
-            "--target-dataset",
-            type=str,
-            choices=self.files,
-            dest="target_dataset",
-            help="Dataset name",
-        )
-        parser.add_argument(
-            "-n",
-            "--n-days",
-            action="store",
-            dest="n_days",
-            type=check_greater_than_one,
-            default=5,
-            help="prediction days.",
-        )
-        parser.add_argument(
-            "--target-forecast-column",
-            action="store",
-            dest="target_col",
-            default="close",
-            type=str,
-            help="target column.",
-        )
-        parser.add_argument(
-            "--past-covariates",
-            action="store",
-            dest="past_covariates",
-            default=None,
-            type=str,
-            help="Past covariates(columns/features) in same dataset that may effect price. Comma separated.",
-        )
-        parser.add_argument(
-            "--train-split",
-            action="store",
-            dest="train_split",
-            default=0.85,
-            type=check_positive_float,
-            help="Start point for rolling training and forecast window. 0.0-1.0",
-        )
-        parser.add_argument(
-            "--forecast-horizon",
-            action="store",
-            dest="forecast_horizon",
-            default=5,
-            type=check_greater_than_one,
-            help="Days/Points to forecast when training and performing historical back-testing",
-        )
         # BRNN Hyperparameters
-        parser.add_argument(
-            "--input-chunk-length",
-            action="store",
-            dest="input_chunk_length",
-            default=14,
-            type=check_positive,
-            help="The length of the input sequence fed to the model.",
-        )
-        parser.add_argument(
-            "--output-chunk-length",
-            action="store",
-            dest="output_chunk_length",
-            default=5,
-            type=check_positive,
-            help="The length of the forecast of the model.",
-        )
-        parser.add_argument(
-            "--model-type",
-            type=str,
-            action="store",
-            dest="model_type",
-            default="LSTM",
-            help='Either a string specifying the RNN module type ("RNN", "LSTM" or "GRU")',
-        )
         parser.add_argument(
             "--n-rnn-layers",
             action="store",
@@ -2019,78 +1635,31 @@ class ForecastingController(BaseController):
             type=check_positive,
             help="Number of layers in the RNN module.",
         )
-        parser.add_argument(
-            "--hidden-size",
-            action="store",
-            dest="hidden_size",
-            default=10,
-            type=check_positive,
-            help="Size for feature maps for each hidden RNN layer (h_n)",
-        )
-        parser.add_argument(
-            "--dropout",
-            action="store",
-            dest="dropout",
-            default=0,
-            type=check_positive_float,
-            help="Fraction of neurons afected by Dropout.",
-        )
-        parser.add_argument(
-            "--batch-size",
-            action="store",
-            dest="batch_size",
-            default=32,
-            type=check_positive,
-            help="Number of time series (input and output sequences) used in each training pass",
-        )
-        parser.add_argument(
-            "--n-epochs",
-            action="store",
-            dest="n_epochs",
-            default=100,
-            type=check_positive,
-            help="Number of epochs over which to train the model.",
-        )
-        parser.add_argument(
-            "--learning-rate",
-            action="store",
-            dest="learning_rate",
-            default=1e-3,
-            type=check_positive_float,
-            help="Learning rate during training.",
-        )
-        parser.add_argument(
-            "--model-save-name",
-            type=str,
-            action="store",
-            dest="model_save_name",
-            default="brnn_model",
-            help="Name of the model to save.",
-        )
-        parser.add_argument(
-            "--force-reset",
-            action="store",
-            dest="force_reset",
-            default=True,
-            type=bool,
-            help="""If set to True, any previously-existing model with the same name will be reset
-                    (all checkpoints will be discarded).""",
-        )
-        parser.add_argument(
-            "--save-checkpoints",
-            action="store",
-            dest="save_checkpoints",
-            default=True,
-            type=bool,
-            help="Whether or not to automatically save the untrained model and checkpoints from training.",
-        )
-
         # if user does not put in --target-dataset
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "--target-dataset")
 
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
+            save_checkpoints=True,
+            force_reset=True,
+            model_save_name=True,
+            learning_rate=True,
+            n_epochs=True,
+            batch_size=True,
+            dropout=True,
+            input_chunk_length=True,
+            output_chunk_length=True,
+            model_type=True,
+            forecast_horizon=True,
+            train_split=True,
+            past_covariates=True,
+            target_dataset=True,
+            n_days=True,
+            target_column=True,
+            hidden_size=10,
         )
 
         if ns_parser:
@@ -2101,11 +1670,11 @@ class ForecastingController(BaseController):
 
             # must check that target col is within target series
             if (
-                ns_parser.target_col
+                ns_parser.target_column
                 not in self.datasets[ns_parser.target_dataset].columns
             ):
                 console.print(
-                    f"[red]The target column {ns_parser.target_col} does not exist in dataframe.\n[/red]"
+                    f"[red]The target column {ns_parser.target_column} does not exist in dataframe.\n[/red]"
                 )
                 return
 
@@ -2113,7 +1682,7 @@ class ForecastingController(BaseController):
                 data=self.datasets[ns_parser.target_dataset],
                 ticker_name=ns_parser.target_dataset,
                 n_predict=ns_parser.n_days,
-                target_col=ns_parser.target_col,
+                target_col=ns_parser.target_column,
                 past_covariates=ns_parser.past_covariates,
                 train_split=ns_parser.train_split,
                 forecast_horizon=ns_parser.forecast_horizon,
@@ -2148,78 +1717,6 @@ class ForecastingController(BaseController):
             """,
         )
         parser.add_argument(
-            "--target-dataset",
-            type=str,
-            choices=self.files,
-            dest="target_dataset",
-            help="Dataset name",
-        )
-        parser.add_argument(
-            "-n",
-            "--n-days",
-            action="store",
-            dest="n_days",
-            type=check_greater_than_one,
-            default=5,
-            help="prediction days.",
-        )
-        parser.add_argument(
-            "--target-forecast-column",
-            action="store",
-            dest="target_col",
-            default="close",
-            type=str,
-            help="target column.",
-        )
-        parser.add_argument(
-            "--past-covariates",
-            action="store",
-            dest="past_covariates",
-            default=None,
-            type=str,
-            help="Past covariates(columns/features) in same dataset that may effect price. Comma separated.",
-        )
-        parser.add_argument(
-            "--train-split",
-            action="store",
-            dest="train_split",
-            default=0.85,
-            type=check_positive_float,
-            help="Start point for rolling training and forecast window. 0.0-1.0",
-        )
-        parser.add_argument(
-            "--forecast-horizon",
-            action="store",
-            dest="forecast_horizon",
-            default=5,
-            type=check_greater_than_one,
-            help="Days/Points to forecast when training and performing historical back-testing",
-        )
-        parser.add_argument(
-            "--input-chunk-length",
-            action="store",
-            dest="input_chunk_length",
-            default=14,
-            type=check_positive,
-            help="The length of the input sequence fed to the model.",
-        )
-        parser.add_argument(
-            "--output-chunk-length",
-            action="store",
-            dest="output_chunk_length",
-            default=5,
-            type=check_positive,
-            help="The length of the forecast of the model.",
-        )
-        parser.add_argument(
-            "--hidden-size",
-            action="store",
-            dest="hidden_size",
-            default=16,
-            type=check_positive,
-            help="Hidden state size of the TFT.",
-        )
-        parser.add_argument(
             "--lstm-layers",
             action="store",
             dest="lstm_layers",
@@ -2243,14 +1740,6 @@ class ForecastingController(BaseController):
             help="Whether to apply a multi-head attention query.",
         )
         parser.add_argument(
-            "--dropout",
-            action="store",
-            dest="dropout",
-            default=0.1,
-            type=check_positive_float,
-            help="Fraction of neurons affected by dropout.",
-        )
-        parser.add_argument(
             "--hidden-continuous-size",
             action="store",
             dest="hidden_continuous_size",
@@ -2258,54 +1747,30 @@ class ForecastingController(BaseController):
             type=check_positive,
             help="Default hidden size for processing continuous variables.",
         )
-        parser.add_argument(
-            "--n-epochs",
-            action="store",
-            dest="n_epochs",
-            default=100,
-            type=check_positive,
-            help="Number of epochs over which to train the model.",
-        )
-        parser.add_argument(
-            "--batch-size",
-            action="store",
-            dest="batch_size",
-            default=32,
-            type=check_positive,
-            help="Number of time series (input and output sequences) used in each training pass",
-        )
-        parser.add_argument(
-            "--model-save-name",
-            type=str,
-            action="store",
-            dest="model_save_name",
-            default="tft_model",
-            help="Name of the model to save.",
-        )
-        parser.add_argument(
-            "--force-reset",
-            action="store",
-            dest="force_reset",
-            default=True,
-            type=bool,
-            help="""If set to True, any previously-existing model with the same name will be reset
-            (all checkpoints will be discarded).""",
-        )
-        parser.add_argument(
-            "--save-checkpoints",
-            action="store",
-            dest="save_checkpoints",
-            default=True,
-            type=bool,
-            help="Whether or not to automatically save the untrained model and checkpoints from training.",
-        )
 
         # if user does not put in --target-dataset
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "--target-dataset")
 
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
+            save_checkpoints=True,
+            target_dataset=True,
+            n_days=True,
+            force_reset=True,
+            model_save_name=True,
+            train_split=True,
+            forecast_horizon=True,
+            hidden_size=16,
+            batch_size=True,
+            n_epochs=True,
+            dropout=True,
+            input_chunk_length=True,
+            output_chunk_length=True,
+            past_covariates=True,
+            target_column=True,
         )
 
         if ns_parser:
@@ -2316,11 +1781,11 @@ class ForecastingController(BaseController):
 
             # must check that target col is within target series
             if (
-                ns_parser.target_col
+                ns_parser.target_column
                 not in self.datasets[ns_parser.target_dataset].columns
             ):
                 console.print(
-                    f"[red]The target column {ns_parser.target_col} does not exist in dataframe.\n[/red]"
+                    f"[red]The target column {ns_parser.target_column} does not exist in dataframe.\n[/red]"
                 )
                 return
 
@@ -2328,7 +1793,7 @@ class ForecastingController(BaseController):
                 data=self.datasets[ns_parser.target_dataset],
                 ticker_name=ns_parser.target_dataset,
                 n_predict=ns_parser.n_days,
-                target_col=ns_parser.target_col,
+                target_col=ns_parser.target_column,
                 past_covariates=ns_parser.past_covariates,
                 train_split=ns_parser.train_split,
                 forecast_horizon=ns_parser.forecast_horizon,
@@ -2366,30 +1831,6 @@ class ForecastingController(BaseController):
                 degree of differencing (the number of times the data have had past values subtracted),
                 and q is the order of the moving-average model.
             """,
-        )
-        parser.add_argument(
-            "--target-dataset",
-            type=str,
-            choices=self.files,
-            dest="target_dataset",
-            help="Dataset name",
-        )
-        parser.add_argument(
-            "--target-forecast-column",
-            action="store",
-            dest="target_col",
-            default="close",
-            type=str,
-            help="target column.",
-        )
-        parser.add_argument(
-            "-d",
-            "--days",
-            action="store",
-            dest="n_days",
-            type=check_positive,
-            default=5,
-            help="prediction days.",
         )
         parser.add_argument(
             "-i",
@@ -2436,7 +1877,12 @@ class ForecastingController(BaseController):
             help="The end date (format YYYY-MM-DD) to select - Backtesting",
         )
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
+            target_column=True,
+            target_dataset=True,
+            n_days=True,
         )
         if ns_parser:
             # BACKTESTING CHECK

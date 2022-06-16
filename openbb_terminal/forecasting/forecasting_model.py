@@ -221,9 +221,8 @@ def add_sto(dataset: pd.DataFrame, period: int = 10) -> pd.DataFrame:
 
         return dataset
 
-    else:
-        console.print("[red]Missing Low/High/Close columns[/red]\n")
-        return dataset
+    console.print("[red]Missing Low/High/Close columns[/red]\n")
+    return dataset
 
 
 @log_start_end(log=logger)

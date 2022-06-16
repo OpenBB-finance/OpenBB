@@ -14,11 +14,8 @@ import pandas as pd
 from darts import TimeSeries
 from darts.models import RNNModel
 from darts.utils.likelihood_models import GaussianLikelihood
-from darts.metrics import mape
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forecasting import helpers
-
-from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -70,9 +67,11 @@ def get_rnn_data(
         model_save_name (str, optional):
             Name for model. Defaults to "brnn_model".
         force_reset (bool, optional):
-            If set to True, any previously-existing model with the same name will be reset (all checkpoints will be discarded). Defaults to True.
+            If set to True, any previously-existing model with the same name will be reset
+            (all checkpoints will be discarded). Defaults to True.
         save_checkpoints (bool, optional):
-            Whether or not to automatically save the untrained model and checkpoints from training. Defaults to True.
+            Whether or not to automatically save the untrained model and checkpoints from training.
+            Defaults to True.
 
     Returns:
         List[TimeSeries]
@@ -102,7 +101,7 @@ def get_rnn_data(
     past_covariates = None
     past_covariate_whole = None
 
-    filler, scaler, ticker_series = helpers.get_series(
+    _, scaler, ticker_series = helpers.get_series(
         data, target_col, is_scaler=use_scalers
     )
     train, val = ticker_series.split_before(train_split)

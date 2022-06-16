@@ -1,7 +1,7 @@
 # pylint: disable=too-many-arguments
+import os
 import logging
 import pandas as pd
-import os
 import numpy as np
 import matplotlib.pyplot as plt
 from darts.dataprocessing.transformers import MissingValuesFiller, Scaler
@@ -95,8 +95,7 @@ def past_covs(past_covariates, filler, data, train_split, is_scaler=True):
             past_covariate_val,
         )
 
-    else:
-        return None, None, None
+    return None, None, None
 
 
 def early_stopper(patience: int):
@@ -203,15 +202,19 @@ def get_series(data, target_col, is_scaler: bool = True):
             filler.transform(TimeSeries.from_dataframe(**filler_kwargs))
         ).astype(np.float32)
         return filler, scaler, scaled_ticker_series
-    else:
-        ticker_series = TimeSeries.from_dataframe(**filler_kwargs)
-        ticker_series = filler.transform(ticker_series).astype(np.float32)
-        scaler = None
-        return filler, scaler, ticker_series
+    ticker_series = TimeSeries.from_dataframe(**filler_kwargs)
+    ticker_series = filler.transform(ticker_series).astype(np.float32)
+    scaler = None
+    return filler, scaler, ticker_series
 
 
 def fit_model(
-    model, series, val_series=None, past_covariates=None, val_past_covariates=None, **kwargs
+    model,
+    series,
+    val_series=None,
+    past_covariates=None,
+    val_past_covariates=None,
+    **kwargs,
 ):
     fit_kwargs = dict(
         series=series,
@@ -228,7 +231,7 @@ def fit_model(
 
 def get_prediction(
     model_name,
-    probablistic,
+    probabilistic,
     use_scalers,
     scaler,
     past_covariates,
@@ -238,7 +241,6 @@ def get_prediction(
     train_split,
     forecast_horizon,
     n_predict: int,
-    probabilisitc: bool = False,
 ):
     # Historical backtest if with covariates
     if past_covariates is not None:
@@ -268,7 +270,7 @@ def get_prediction(
             n=n_predict,
         )
     else:
-        if probablistic:
+        if probabilistic:
             prediction = best_model.predict(
                 series=ticker_series, n=n_predict, num_samples=500
             )

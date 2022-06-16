@@ -66,14 +66,11 @@ def get_linear_regression_data(
     filler, scaler, ticker_series = helpers.get_series(
         data, target_col, is_scaler=use_scalers
     )
-    train, val = ticker_series.split_before(train_split)
 
     if past_covariates is not None:
-        (
-            past_covariate_whole,
-            past_covariate_train,
-            past_covariate_val,
-        ) = helpers.past_covs(past_covariates, filler, data, train_split, use_scalers)
+        past_covariate_whole, _, _ = helpers.past_covs(
+            past_covariates, filler, data, train_split, use_scalers
+        )
         lags_past_covariates = lags
 
     else:

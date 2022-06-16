@@ -79,9 +79,11 @@ def get_NBEATS_data(
         model_save_name (str, optional):
             Name for model. Defaults to "brnn_model".
         force_reset (bool, optional):
-            If set to True, any previously-existing model with the same name will be reset (all checkpoints will be discarded). Defaults to True.
+            If set to True, any previously-existing model with the same name will be reset
+            (all checkpoints will be discarded). Defaults to True.
         save_checkpoints (bool, optional):
-            Whether or not to automatically save the untrained model and checkpoints from training. Defaults to True.
+            Whether or not to automatically save the untrained model and checkpoints from training.
+            Defaults to True.
 
     Returns:
         List[TimeSeries]
