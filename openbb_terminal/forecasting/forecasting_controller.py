@@ -10,6 +10,7 @@ import os
 from pathlib import Path
 from typing import List, Dict, Any
 
+import torch
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 
@@ -62,6 +63,11 @@ def check_greater_than_one(value) -> int:
             )
         )
     return new_value
+
+
+# setting device on GPU if available, else CPU
+device = "cuda" if torch.cuda.is_available() else "cpu"
+console.print(f"[green]Using device: {device} [/green]")
 
 
 class ForecastingController(BaseController):
