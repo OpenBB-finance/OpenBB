@@ -319,7 +319,7 @@ class CryptoController(CryptoBaseController):
 
     @log_start_end(log=logger)
     def call_qa(self, _):
-        """Process pred command"""
+        """Process qa command"""
         if self.symbol:
             from openbb_terminal.cryptocurrency.quantitative_analysis import (
                 qa_controller,
@@ -464,7 +464,6 @@ class CryptoController(CryptoBaseController):
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        # TODO: merge find + display_all_coins
         if ns_parser:
             find(
                 coin=ns_parser.symbol,

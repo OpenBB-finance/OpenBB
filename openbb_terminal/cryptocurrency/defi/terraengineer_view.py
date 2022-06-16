@@ -80,7 +80,7 @@ def display_terra_asset_history(
 
 @log_start_end(log=logger)
 def display_anchor_yield_reserve(
-    export: str = "", external_axes: Optional[List[plt.Axes]] = None
+    export: str = False, external_axes: Optional[List[plt.Axes]] = None
 ) -> None:
     """Displays the 30-day history of the Anchor Yield Reserve.
     [Source: https://terra.engineer/]
@@ -88,7 +88,7 @@ def display_anchor_yield_reserve(
     Parameters
     ----------
     export : str
-        Export dataframe data to csv,json,xlsx file
+        Export dataframe data to csv,json,xlsx file, by default False
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """

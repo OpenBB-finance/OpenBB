@@ -169,14 +169,11 @@ GLASSNODE_SUPPORTED_ASSETS = [
 
 INTERVALS_HASHRATE = ["24h", "1w", "1month"]
 INTERVALS_ACTIVE_ADDRESSES = ["24h", "1w", "1month"]
-INTERVALS_NON_ZERO_ADDRESSES = ["24h"]
-INTERVALS_DISPLAY_EXCHANGE_NET_POSITION_CHANGE = ["24h"]
-INTERVALS_EXCHANGE_BALANCES = ["24h"]
 
 
 @log_start_end(log=logger)
 def get_close_price(
-    asset: str, interval: str, since: int, until: int, print_errors: bool = True
+    asset: str, since: int, until: int, print_errors: bool = True
 ) -> pd.DataFrame:
     """Returns the price of a cryptocurrency
     [Source: https://glassnode.com]
@@ -189,8 +186,6 @@ def get_close_price(
         Initial date timestamp (e.g., 1_614_556_800)
     until : int
         End date timestamp (e.g., 1_641_227_783_561)
-    interval : str
-        Interval frequency (e.g., 24h)
     print_errors: bool
         Flag to print errors. Default: True
 
@@ -205,7 +200,7 @@ def get_close_price(
     parameters = {
         "api_key": cfg.API_GLASSNODE_KEY,
         "a": asset,
-        "i": interval,
+        "i": "24h",
         "s": str(since),
         "u": str(until),
     }
@@ -408,7 +403,7 @@ def get_hashrate(asset: str, interval: str, since: int, until: int) -> pd.DataFr
 
 @log_start_end(log=logger)
 def get_exchange_balances(
-    asset: str, exchange: str, interval: str, since: int, until: int
+    asset: str, exchange: str, since: int, until: int
 ) -> pd.DataFrame:
     """Returns the total amount of coins held on exchange addresses in units and percentage.
     [Source: https://glassnode.com]
@@ -423,8 +418,6 @@ def get_exchange_balances(
         Initial date timestamp (e.g., 1_614_556_800)
     until : int
         End date timestamp (e.g., 1_614_556_800)
-    interval : str
-        Interval frequency (e.g., 24h)
 
     Returns
     -------
@@ -439,7 +432,7 @@ def get_exchange_balances(
     parameters = {
         "api_key": cfg.API_GLASSNODE_KEY,
         "a": asset,
-        "i": interval,
+        "i": "24h",
         "e": exchange,
         "s": str(since),
         "u": str(until),
@@ -486,7 +479,7 @@ def get_exchange_balances(
 
 @log_start_end(log=logger)
 def get_exchange_net_position_change(
-    asset: str, exchange: str, interval: str, since: int, until: int
+    asset: str, exchange: str, since: int, until: int
 ) -> pd.DataFrame:
     """Returns 30d change of the supply held in exchange wallets of a certain asset.
     [Source: https://glassnode.com]
@@ -501,8 +494,6 @@ def get_exchange_net_position_change(
         Initial date timestamp (e.g., 1_614_556_800)
     until : int
         End date timestamp (e.g., 1_614_556_800)
-    interval : str
-        Interval frequency (e.g., 24h)
 
     Returns
     -------
@@ -515,7 +506,7 @@ def get_exchange_net_position_change(
     parameters = {
         "api_key": cfg.API_GLASSNODE_KEY,
         "a": asset,
-        "i": interval,
+        "i": "24h",
         "e": exchange,
         "s": str(since),
         "u": str(until),
