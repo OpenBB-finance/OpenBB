@@ -10,6 +10,7 @@ from statsmodels.tools.sm_exceptions import ConvergenceWarning
 import pandas as pd
 from darts import TimeSeries
 from darts.models import TFTModel
+from darts.utils.likelihood_models import QuantileRegression
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forecasting import helpers
@@ -37,6 +38,7 @@ def get_tft_data(
     full_attention: bool = False,
     dropout: float = 0.1,
     hidden_continuous_size: int = 8,
+    n_epochs: int = 200,
     model_save_name: str = "tft_model",
     force_reset: bool = True,
     save_checkpoints: bool = True,
@@ -103,17 +105,11 @@ def get_tft_data(
     float
         precision
     Any
-        Fit Prob. Expo model object.
+        Fit Prob. TFT model object.
     """
-    # TODO add proper doc string
-    # TODO Check if torch GPU AVAILABLE
-    # TODO add in covariates
-    # todo add in all possible parameters for training
-    # Export model / save
-    # load trained model
 
     use_scalers = True
-    probabilistic = False
+    probabilistic = True
 
     filler, scaler, ticker_series = helpers.get_series(
         data, target_col, is_scaler=use_scalers
@@ -132,9 +128,29 @@ def get_tft_data(
         past_covariate_train = None
         past_covariate_val = None
 
-    my_stopper = helpers.early_stopper(10)
+    my_stopper = helpers.early_stopper(15)
 
     pl_trainer_kwargs = {"callbacks": [my_stopper], "accelerator": "cpu"}
+
+    quantiles = [
+        0.01,
+        0.05,
+        0.1,
+        0.15,
+        0.2,
+        0.25,
+        0.3,
+        0.4,
+        0.5,
+        0.6,
+        0.7,
+        0.75,
+        0.8,
+        0.85,
+        0.9,
+        0.95,
+        0.99,
+    ]
 
     tft_model = TFTModel(
         input_chunk_length=input_chunk_length,
@@ -149,7 +165,11 @@ def get_tft_data(
         force_reset=force_reset,
         save_checkpoints=save_checkpoints,
         random_state=42,
+        n_epochs=n_epochs,
         pl_trainer_kwargs=pl_trainer_kwargs,
+        likelihood=QuantileRegression(
+            quantiles=quantiles
+        ),  # QuantileRegression is set per default
         add_relative_index=True,
     )
 

@@ -2079,7 +2079,7 @@ class ForecastingController(BaseController):
             type=str,
             action="store",
             dest="model_save_name",
-            default="rnn_model",
+            default="brnn_model",
             help="Name of the model to save.",
         )
         parser.add_argument(
@@ -2237,7 +2237,7 @@ class ForecastingController(BaseController):
         parser.add_argument(
             "--lstm-layers",
             action="store",
-            dest="lstm-layers",
+            dest="lstm_layers",
             default=1,
             type=check_positive,
             help="Number of LSTM layers.",
@@ -2274,11 +2274,19 @@ class ForecastingController(BaseController):
             help="Default hidden size for processing continuous variables.",
         )
         parser.add_argument(
+            "--n-epochs",
+            action="store",
+            dest="n_epochs",
+            default=100,
+            type=check_positive,
+            help="Number of epochs over which to train the model.",
+        )
+        parser.add_argument(
             "--model-save-name",
             type=str,
             action="store",
             dest="model_save_name",
-            default="nbeats_model",
+            default="tft_model",
             help="Name of the model to save.",
         )
         parser.add_argument(
@@ -2339,6 +2347,7 @@ class ForecastingController(BaseController):
                 full_attention=ns_parser.full_attention,
                 dropout=ns_parser.dropout,
                 hidden_continuous_size=ns_parser.hidden_continuous_size,
+                n_epochs=ns_parser.n_epochs,
                 model_save_name=ns_parser.model_save_name,
                 force_reset=ns_parser.force_reset,
                 save_checkpoints=ns_parser.save_checkpoints,

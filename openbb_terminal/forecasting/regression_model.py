@@ -58,7 +58,7 @@ def get_regression_data(
         float
             Mean average precision error
         Any
-            Best NBEATS Model
+            Best Regression Model
     """
 
     use_scalers = False

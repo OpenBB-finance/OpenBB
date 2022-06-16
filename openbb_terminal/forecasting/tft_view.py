@@ -31,6 +31,7 @@ def display_tft_forecast(
     full_attention: bool = False,
     dropout: float = 0.1,
     hidden_continuous_size: int = 8,
+    n_epochs: int = 200,
     model_save_name: str = "tft_model",
     force_reset: bool = True,
     save_checkpoints: bool = True,
@@ -107,11 +108,12 @@ def display_tft_forecast(
         full_attention,
         dropout,
         hidden_continuous_size,
+        n_epochs,
         model_save_name,
         force_reset,
         save_checkpoints,
     )
-    probabilistic = False
+    probabilistic = True
     helpers.plot_forecast(
         "TFT",
         target_col,
