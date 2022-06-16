@@ -24,6 +24,8 @@ from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     export_data,
     log_and_raise,
+    get_next_stock_market_days,
+    valid_date,
 )
 from openbb_terminal.helper_funcs import (
     print_rich_table,
@@ -46,6 +48,12 @@ from openbb_terminal.forecasting import (
     linear_regression_view,
     regression_view,
     tft_view,
+)
+from openbb_terminal.common.prediction_techniques import (
+    arima_model,
+    arima_view,
+    knn_view,
+    regression_view,
 )
 
 logger = logging.getLogger(__name__)
@@ -96,6 +104,7 @@ class ForecastingController(BaseController):
         "linregr",
         "trans",
         "tft",
+        "arima",
     ]
     # CHOICES_MENUS: List[str] = ["qa", "pred"]
     pandas_plot_choices = [
@@ -253,6 +262,7 @@ class ForecastingController(BaseController):
         mt.add_cmd("tft", "", self.files)
         mt.add_info("_comingsoon_")
         mt.add_cmd("trans", "", self.files)
+        mt.add_cmd("arima", "", self.files)
 
         console.print(text=mt.menu_text, menu="Forecasting")
 
@@ -2376,5 +2386,127 @@ class ForecastingController(BaseController):
                 model_save_name=ns_parser.model_save_name,
                 force_reset=ns_parser.force_reset,
                 save_checkpoints=ns_parser.save_checkpoints,
+                export=ns_parser.export,
+            )
+
+    # Below this is ports to the old pred menu
+    @log_start_end(log=logger)
+    def call_arima(self, other_args: List[str]):
+        """Process arima command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="arima",
+            description="""
+                In statistics and econometrics, and in particular in time series analysis, an
+                autoregressive integrated moving average (ARIMA) model is a generalization of an
+                autoregressive moving average (ARMA) model. Both of these models are fitted to time
+                series data either to better understand the data or to predict future points in the
+                series (forecasting). ARIMA(p,d,q) where parameters p, d, and q are non-negative
+                integers, p is the order (number of time lags) of the autoregressive model, d is the
+                degree of differencing (the number of times the data have had past values subtracted),
+                and q is the order of the moving-average model.
+            """,
+        )
+        parser.add_argument(
+            "--target-dataset",
+            type=str,
+            choices=self.files,
+            dest="target_dataset",
+            help="Dataset name",
+        )
+        parser.add_argument(
+            "--target-forecast-column",
+            action="store",
+            dest="target_col",
+            default="close",
+            type=str,
+            help="target column.",
+        )
+        parser.add_argument(
+            "-d",
+            "--days",
+            action="store",
+            dest="n_days",
+            type=check_positive,
+            default=5,
+            help="prediction days.",
+        )
+        parser.add_argument(
+            "-i",
+            "--ic",
+            action="store",
+            dest="s_ic",
+            type=str,
+            default="aic",
+            choices=arima_model.ICS,
+            help="information criteria.",
+        )
+        parser.add_argument(
+            "-s",
+            "--seasonal",
+            action="store_true",
+            default=False,
+            dest="b_seasonal",
+            help="Use weekly seasonal data.",
+        )
+        parser.add_argument(
+            "-o",
+            "--order",
+            action="store",
+            dest="s_order",
+            default="",
+            type=str,
+            help="arima model order (p,d,q) in format: p,d,q.",
+        )
+        parser.add_argument(
+            "-r",
+            "--results",
+            action="store_true",
+            dest="b_results",
+            default=False,
+            help="results about ARIMA summary flag.",
+        )
+        parser.add_argument(
+            "-e",
+            "--end",
+            action="store",
+            type=valid_date,
+            dest="s_end_date",
+            default=None,
+            help="The end date (format YYYY-MM-DD) to select - Backtesting",
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
+        )
+        if ns_parser:
+            # BACKTESTING CHECK
+            if ns_parser.s_end_date:
+
+                if ns_parser.s_end_date < self.datasets[ns_parser.target_dataset][0]:
+                    console.print(
+                        "Backtesting not allowed, End Date is older than Start Date of data\n"
+                    )
+
+                if (
+                    ns_parser.s_end_date
+                    < get_next_stock_market_days(
+                        last_stock_day=self.datasets[ns_parser.target_dataset][0],
+                        n_next_days=5 + ns_parser.n_days,
+                    )[-1]
+                ):
+                    console.print(
+                        "Backtesting not allowed, End Date is too close to Start Date \n"
+                    )
+
+            arima_view.display_arima(
+                dataset=ns_parser.target_dataset,
+                values=self.datasets[ns_parser.target_dataset],
+                arima_order=ns_parser.s_order,
+                n_predict=ns_parser.n_days,
+                seasonal=ns_parser.b_seasonal,
+                ic=ns_parser.s_ic,
+                results=ns_parser.b_results,
+                s_end_date=ns_parser.s_end_date,
                 export=ns_parser.export,
             )

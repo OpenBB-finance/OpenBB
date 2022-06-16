@@ -85,7 +85,7 @@ def get_expo_data(
     """
 
     use_scalers = False
-    filler, scaler, ticker_series = helpers.get_series(
+    _, _, ticker_series = helpers.get_series(
         data, target_col, is_scaler=use_scalers
     )
 
