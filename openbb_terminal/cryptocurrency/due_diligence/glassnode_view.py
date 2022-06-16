@@ -279,7 +279,9 @@ def display_exchange_net_position_change(
     asset : str
         Asset to search active addresses (e.g., BTC)
     exchange : str
-        Exchange to check net position change (possible values are: aggregated, binance, bittrex, coinex, gate.io, gemini, huobi, kucoin, poloniex, bibox, bigone, bitfinex, hitbtc, kraken, okex, bithumb, zb.com, cobinhood, bitmex, bitstamp, coinbase, coincheck, luno)
+        Exchange to check net position change (possible values are: aggregated, binance,
+        bittrex, coinex, gate.io, gemini, huobi, kucoin, poloniex, bibox, bigone, bitfinex,
+        hitbtc, kraken, okex, bithumb, zb.com, cobinhood, bitmex, bitstamp, coinbase, coincheck, luno)
     since : int
         Initial date timestamp (e.g., 1_614_556_800)
     until : int
@@ -354,7 +356,9 @@ def display_exchange_balances(
     asset : str
         Asset to search active addresses (e.g., BTC)
     exchange : str
-        Exchange to check net position change (possible values are: aggregated, binance, bittrex, coinex, gate.io, gemini, huobi, kucoin, poloniex, bibox, bigone, bitfinex, hitbtc, kraken, okex, bithumb, zb.com, cobinhood, bitmex, bitstamp, coinbase, coincheck, luno)
+        Exchange to check net position change (possible values are: aggregated, binance, bittrex,
+        coinex, gate.io, gemini, huobi, kucoin, poloniex, bibox, bigone, bitfinex, hitbtc, kraken,
+        okex, bithumb, zb.com, cobinhood, bitmex, bitstamp, coinbase, coincheck, luno)
     since : int
         Initial date timestamp (e.g., 1_614_556_800)
     until : int

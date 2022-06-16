@@ -168,7 +168,8 @@ def display_uni_pools(
     top: int
         Number of records to display
     sortby: str
-        Key by which to sort data. The table can be sorted by every of its columns (see https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2).
+        Key by which to sort data. The table can be sorted by every of its columns
+        (see https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2).
     descend: bool
         Flag to sort data descending
     export : str
@@ -205,7 +206,8 @@ def display_last_uni_swaps(
     top: int
         Number of records to display
     sortby: str
-        Key by which to sort data. The table can be sorted by every of its columns (see https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2).
+        Key by which to sort data. The table can be sorted by every of its columns
+        (see https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2).
     descend: bool
         Flag to sort data descending
     export : str

@@ -103,7 +103,8 @@ def display_gainers(
     top: int
         Number of records to display
     sortby: str
-        Key to sort data. The table can be sorted by every of its columns. Refer to Coin Geckos API documentation (see https://api.coingecko.com/api/v3/)
+        Key to sort data. The table can be sorted by every of its columns. Refer to
+        Coin Geckos API documentation (see https://api.coingecko.com/api/v3/)
     export : str
         Export dataframe data to csv,json,xlsx file
     """
@@ -146,7 +147,8 @@ def display_losers(
     top: int
         Number of records to display
     sortby: str
-        Key to sort data. The table can be sorted by every of its columns. Refer to Coin Geckos API documentation (see https://api.coingecko.com/api/v3/)
+        Key to sort data. The table can be sorted by every of its columns. Refer to
+        Coin Geckos API documentation (see https://api.coingecko.com/api/v3/)
     export : str
         Export dataframe data to csv,json,xlsx file
     """

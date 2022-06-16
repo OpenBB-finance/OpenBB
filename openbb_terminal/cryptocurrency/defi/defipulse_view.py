@@ -23,7 +23,8 @@ def display_defipulse(
     top: int
         Number of records to display
     sortby: str
-        Key by which to sort data (Possible values are: "Rank", "Name", "Chain", "Sector", "TVL", "1 Day (%)"), by default TVL
+        Key by which to sort data (Possible values are: "Rank", "Name", "Chain", "Sector",
+        "TVL", "1 Day (%)"), by default TVL
     descend: bool
         Flag to sort data descending, by default True
     export : str

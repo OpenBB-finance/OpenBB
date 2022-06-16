@@ -154,7 +154,8 @@ def display_events(
     top: int
         Number of records to display
     sortby: str
-        Key by which to sort data. Every column name is valid (see for possible values: https://api.coinpaprika.com/v1).
+        Key by which to sort data. Every column name is valid
+        (see for possible values: https://api.coinpaprika.com/v1).
     descend: bool
         Flag to sort data descending
     links: bool
