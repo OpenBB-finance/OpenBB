@@ -39,6 +39,7 @@ def get_tft_data(
     dropout: float = 0.1,
     hidden_continuous_size: int = 8,
     n_epochs: int = 200,
+    batch_size: int = 32,
     model_save_name: str = "tft_model",
     force_reset: bool = True,
     save_checkpoints: bool = True,
@@ -83,6 +84,10 @@ def get_tft_data(
         Fraction of neurons affected by dropout. Defaults to 0.1.
     hidden_continuous_size (int, optional):
         Default hidden size for processing continuous variables. Defaults to 8.
+    n_epochs (int, optional):
+        Number of epochs to run during training. Defaults to 200.
+    batch_size (int, optional):
+        Number of samples to pass through network during a single epoch. Defaults to 32.
     model_save_name (str, optional):
         The name for the model. Defaults to tft_model
     force_reset (bool, optional):
@@ -130,7 +135,11 @@ def get_tft_data(
 
     my_stopper = helpers.early_stopper(15)
 
-    pl_trainer_kwargs = {"callbacks": [my_stopper], "accelerator": "cpu"}
+    pl_trainer_kwargs = {
+        "callbacks": [my_stopper],
+        "accelerator": "cpu",
+        "gradient_clip_val": 0.5,  # TODO - experiment with this more
+    }
 
     quantiles = [
         0.01,
@@ -166,11 +175,12 @@ def get_tft_data(
         save_checkpoints=save_checkpoints,
         random_state=42,
         n_epochs=n_epochs,
+        batch_size=batch_size,
         pl_trainer_kwargs=pl_trainer_kwargs,
         likelihood=QuantileRegression(
             quantiles=quantiles
         ),  # QuantileRegression is set per default
-        add_relative_index=True,
+        add_relative_index=True,  # TODO There is a bug with this. Must fix. Should be false
     )
 
     # fit model on train series for historical forecasting

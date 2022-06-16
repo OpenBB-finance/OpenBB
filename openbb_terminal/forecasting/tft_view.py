@@ -32,6 +32,7 @@ def display_tft_forecast(
     dropout: float = 0.1,
     hidden_continuous_size: int = 8,
     n_epochs: int = 200,
+    batch_size: int = 32,
     model_save_name: str = "tft_model",
     force_reset: bool = True,
     save_checkpoints: bool = True,
@@ -72,6 +73,10 @@ def display_tft_forecast(
         Fraction of neurons affected by dropout. Defaults to 0.1.
     hidden_continuous_size (int, optional):
         Default hidden size for processing continuous variables. Defaults to 8.
+    n_epochs (int, optional):
+        Number of epochs to run during training. Defaults to 200.
+    batch_size (int, optional):
+        Number of samples to pass through network during a single epoch. Defaults to 32.
     model_save_name (str, optional):
         The name for the model. Defaults to tft_model
     force_reset (bool, optional):
@@ -109,6 +114,7 @@ def display_tft_forecast(
         dropout,
         hidden_continuous_size,
         n_epochs,
+        batch_size,
         model_save_name,
         force_reset,
         save_checkpoints,

@@ -2282,6 +2282,14 @@ class ForecastingController(BaseController):
             help="Number of epochs over which to train the model.",
         )
         parser.add_argument(
+            "--batch-size",
+            action="store",
+            dest="batch_size",
+            default=32,
+            type=check_positive,
+            help="Number of time series (input and output sequences) used in each training pass",
+        )
+        parser.add_argument(
             "--model-save-name",
             type=str,
             action="store",
@@ -2348,6 +2356,7 @@ class ForecastingController(BaseController):
                 dropout=ns_parser.dropout,
                 hidden_continuous_size=ns_parser.hidden_continuous_size,
                 n_epochs=ns_parser.n_epochs,
+                batch_size=ns_parser.batch_size,
                 model_save_name=ns_parser.model_save_name,
                 force_reset=ns_parser.force_reset,
                 save_checkpoints=ns_parser.save_checkpoints,
