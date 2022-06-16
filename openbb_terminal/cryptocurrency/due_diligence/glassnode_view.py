@@ -34,8 +34,8 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 @check_api_key(["API_GLASSNODE_KEY"])
 def display_btc_rainbow(
-    since: int = datetime(2010, 1, 1).strftime("%Y-%m-%d"),
-    until: int = datetime.now().strftime("%Y-%m-%d"),
+    since: int = int(datetime(2010, 1, 1).timestamp()),
+    until: int = int(datetime.now().timestamp()),
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -418,8 +418,8 @@ def display_exchange_balances(
 @check_api_key(["API_GLASSNODE_KEY"])
 def display_hashrate(
     asset: str,
-    since: int = (datetime.now() - timedelta(days=365)).timestamp(),
-    until: int = (datetime.now()).timestamp(),
+    since: int = int((datetime.now() - timedelta(days=365)).timestamp()),
+    until: int = int(datetime.now().timestamp()),
     interval: str = "24h",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,

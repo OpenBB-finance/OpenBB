@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_defipulse(
-    top: int = 10, sortby: str = "TVL", descend: bool = True, export: str = False
+    top: int = 10, sortby: str = "TVL", descend: bool = True, export: str = ""
 ) -> None:
     """Displays all DeFi Pulse crypto protocols.
     [Source: https://defipulse.com/]

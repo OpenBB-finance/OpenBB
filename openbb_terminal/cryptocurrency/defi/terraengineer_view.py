@@ -80,7 +80,7 @@ def display_terra_asset_history(
 
 @log_start_end(log=logger)
 def display_anchor_yield_reserve(
-    export: str = False, external_axes: Optional[List[plt.Axes]] = None
+    export: str = "", external_axes: Optional[List[plt.Axes]] = None
 ) -> None:
     """Displays the 30-day history of the Anchor Yield Reserve.
     [Source: https://terra.engineer/]

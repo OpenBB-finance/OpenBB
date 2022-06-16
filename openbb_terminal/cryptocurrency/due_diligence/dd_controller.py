@@ -425,16 +425,6 @@ class DueDiligenceController(CryptoBaseController):
             )
 
             parser.add_argument(
-                "-i",
-                "--interval",
-                dest="interval",
-                type=str,
-                help="Frequency interval. Default: 24h",
-                default="24h",
-                choices=glassnode_model.INTERVALS_EXCHANGE_BALANCES,
-            )
-
-            parser.add_argument(
                 "-s",
                 "--since",
                 dest="since",
@@ -462,7 +452,6 @@ class DueDiligenceController(CryptoBaseController):
             if ns_parser:
                 glassnode_view.display_exchange_balances(
                     asset=self.symbol.upper(),
-                    interval=ns_parser.interval,
                     exchange=ns_parser.exchange,
                     since=int(datetime.timestamp(ns_parser.since)),
                     until=int(datetime.timestamp(ns_parser.until)),
