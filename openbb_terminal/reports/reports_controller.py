@@ -65,11 +65,12 @@ class ReportController(BaseController):
             ]
             + "]"
         )
-        l_params = [
-            param.split("=")[0]
-            for param in literal_eval(params.strip('source": '))
-            if param[0] not in ["#", "\n"]
-        ]
+        if "parameters" in notebook_content:
+            l_params = [
+                param.split("=")[0]
+                for param in literal_eval(params.strip('source": '))
+                if param[0] not in ["#", "\n"]
+            ]
         d_params[report_to_run] = l_params
 
         args = f"<{'> <'.join(l_params)}>"
