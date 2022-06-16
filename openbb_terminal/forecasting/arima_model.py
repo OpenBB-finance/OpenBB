@@ -2,13 +2,14 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Any, List, Tuple, Union
+from typing import Any, List, Tuple, Union, Optional
 
 import pandas as pd
 import pmdarima
 from statsmodels.tsa.arima.model import ARIMA
 
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -22,7 +23,7 @@ def get_arima_model(
     n_predict: int,
     seasonal: bool,
     ic: str,
-) -> Tuple[List[float], Any]:
+) -> Tuple[Optional[List[float]], Optional[Any]]:
     """Get an ARIMA model for data
 
     Parameters
@@ -55,22 +56,24 @@ def get_arima_model(
                 end=len(values.values) + n_predict,
             )
         )
-    else:
-        if seasonal:
-            model = pmdarima.auto_arima(
-                values.values,
-                error_action="ignore",
-                seasonal=True,
-                m=5,
-                information_criteria=ic,
-            )
-        else:
-            model = pmdarima.auto_arima(
-                values.values,
-                error_action="ignore",
-                seasonal=False,
-                information_criteria=ic,
-            )
-        l_predictions = list(model.predict(n_predict))
+        return l_predictions, model
+    kwargs = {}
+    if seasonal:
+        kwargs["m"] = 5
+    try:
+        model = pmdarima.auto_arima(
+            values.values,
+            error_action="ignore",
+            seasonal=False,
+            information_criteria=ic,
+            **kwargs
+        )
+    except ValueError:
+        console.print(
+            "[red]Column must be convertible to float (no words or dates)[/red]"
+        )
+        return None, None
+
+    l_predictions = list(model.predict(n_predict))
 
     return l_predictions, model

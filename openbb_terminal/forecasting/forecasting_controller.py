@@ -1907,6 +1907,7 @@ class ForecastingController(BaseController):
             arima_view.display_arima(
                 dataset=ns_parser.target_dataset,
                 values=self.datasets[ns_parser.target_dataset],
+                target_column=ns_parser.target_column,
                 arima_order=ns_parser.s_order,
                 n_predict=ns_parser.n_days,
                 seasonal=ns_parser.b_seasonal,

@@ -10,7 +10,7 @@ from typing import Union, Optional, List
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from openbb_terminal.common.prediction_techniques import arima_model
+from openbb_terminal.forecasting import arima_model, helpers
 from openbb_terminal.common.prediction_techniques.pred_helper import (
     print_prediction_kpis,
     print_pretty_prediction,
@@ -47,6 +47,7 @@ def display_arima(
     seasonal: bool,
     ic: str,
     results: bool,
+    target_column: Optional[str] = None,
     s_end_date: str = "",
     export: str = "",
     time_res: str = "",
@@ -70,6 +71,8 @@ def display_arima(
         Information Criteria for model evaluation
     results : bool
         Flag to display model summary
+    target_column : Optional[str}
+        The dataframe column to use
     s_end_date : str, optional
         Specified end date for backtesting comparisons
     export : str, optional
@@ -94,18 +97,27 @@ def display_arima(
 
         if future_index[-1] > datetime.datetime.now():
             console.print(
-                "Backtesting not allowed, since End Date + Prediction days is in the future\n"
+                "[red]Backtesting not allowed, since End Date + Prediction is in the future[/red]\n"
             )
             return
 
         df_future = values[future_index[0] : future_index[-1]]  # noqa: E203
         values = values[:s_end_date]  # type: ignore
 
+    clean_values = values if not target_column else values[target_column]
     l_predictions, model = arima_model.get_arima_model(
-        values, arima_order, n_predict, seasonal, ic
+        clean_values, arima_order, n_predict, seasonal, ic
     )
 
     # Prediction data
+    try:
+        values["date"] = values["date"].apply(helpers.dt_format)
+        values["date"] = values["date"].apply(lambda x: pd.to_datetime(x))
+        values.set_index("date", inplace=True)
+    except ValueError:
+        console.print("[red]Dataframe must have a 'date' column[/red]\n")
+        return
+    print(values.index[-1])
     if not time_res:
         l_pred_days = get_next_stock_market_days(
             last_stock_day=values.index[-1],
@@ -168,7 +180,7 @@ def display_arima(
     ax.set_ylabel("Value")
     ax.plot(
         [values.index[-1], df_pred.index[0]],
-        [values.values[-1], df_pred.values[0]],
+        [values[target_column].values[-1], df_pred.values[0]],
         color=theme.up_color,
         linestyle="--",
     )
@@ -188,7 +200,7 @@ def display_arima(
         ax.plot(
             [values.index[-1], df_future.index[0]],
             [
-                values.values[-1],
+                values[target_column].values[-1],
                 df_future.values[0],
             ],
             color=theme.up_color,
@@ -228,7 +240,7 @@ def display_arima(
         ax2.plot(
             [values.index[-1], df_future.index[0]],
             [
-                values.values[-1],
+                values[target_column].values[-1],
                 df_future.values[0],
             ],
             color=theme.up_color,
@@ -237,7 +249,7 @@ def display_arima(
         ax2.scatter(df_pred.index, df_pred)
         ax2.plot(
             [values.index[-1], df_pred.index[0]],
-            [values.values[-1], df_pred.values[0]],
+            [values[target_column].values[-1], df_pred.values[0]],
             linestyle="--",
         )
         ax2.set_title("BACKTESTING: Values")
@@ -311,6 +323,6 @@ def display_arima(
 
     else:
         # Print prediction data
-        print_pretty_prediction(df_pred, values.values[-1])
+        print_pretty_prediction(df_pred, values[target_column].values[-1])
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "arima")
