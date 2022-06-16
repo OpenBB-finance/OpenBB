@@ -87,6 +87,8 @@ def display_regression(
         df_future = values[future_index[0] : future_index[-1]]  # noqa: E203
         values = values[:s_end_date]  # type: ignore
 
+    print(values)
+    print(values.values)
     l_predictions, _ = regression_model.get_regression_model(
         list(values.values), poly_order, n_input, n_predict, n_jumps
     )

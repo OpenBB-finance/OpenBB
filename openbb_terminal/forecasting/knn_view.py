@@ -58,6 +58,7 @@ def display_k_nearest_neighbors(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
+    data = data.apply(lambda x: pd.to_datetime(x))
     (
         forecast_data_df,
         preds,

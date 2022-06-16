@@ -79,6 +79,7 @@ def get_knn_model_data(
     if is_error:
         return pd.DataFrame(), np.array(0), np.array(0), np.array(0), None
 
+    print(dates_forecast_input)
     future_dates = get_next_stock_market_days(
         dates_forecast_input[-1], n_next_days=n_predict_days
     )

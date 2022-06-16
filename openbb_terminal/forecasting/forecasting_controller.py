@@ -50,6 +50,7 @@ from openbb_terminal.forecasting import (
     tft_view,
     arima_view,
     arima_model,
+    knn_view,
 )
 
 logger = logging.getLogger(__name__)
@@ -101,6 +102,7 @@ class ForecastingController(BaseController):
         "trans",
         "tft",
         "arima",
+        "knn",
     ]
     # CHOICES_MENUS: List[str] = ["qa", "pred"]
     pandas_plot_choices = [
@@ -202,6 +204,7 @@ class ForecastingController(BaseController):
                 "linregr",
                 "trans",
                 "tft",
+                "knn",
             ]:
                 self.choices[feature] = {c: None for c in self.files}
 
@@ -259,6 +262,7 @@ class ForecastingController(BaseController):
         mt.add_info("_comingsoon_")
         mt.add_cmd("trans", "", self.files)
         mt.add_cmd("arima", "", self.files)
+        mt.add_cmd("knn", "", self.files)
 
         console.print(text=mt.menu_text, menu="Forecasting")
 
@@ -299,6 +303,8 @@ class ForecastingController(BaseController):
         past_covariates: bool = False,
         lags: bool = False,
         hidden_size: int = None,
+        n_jumps: bool = False,
+        end: bool = False,
     ):
         if hidden_size:
             parser.add_argument(
@@ -481,6 +487,16 @@ class ForecastingController(BaseController):
                 type=check_positive,
                 help="Number of time series (input and output sequences) used in each training pass",
             )
+        if end:
+            parser.add_argument(
+                "-e",
+                "--end",
+                action="store",
+                type=valid_date,
+                dest="s_end_date",
+                default=None,
+                help="The end date (format YYYY-MM-DD) to select for testing",
+            )
         if learning_rate:
             parser.add_argument(
                 "--learning-rate",
@@ -489,6 +505,16 @@ class ForecastingController(BaseController):
                 default=1e-3,
                 type=check_positive_float,
                 help="Learning rate during training.",
+            )
+        if n_jumps:
+            parser.add_argument(
+                "-j",
+                "--jumps",
+                action="store",
+                dest="n_jumps",
+                type=check_positive,
+                default=1,
+                help="number of jumps in training data.",
             )
         if lags:
             parser.add_argument(
@@ -1867,15 +1893,8 @@ class ForecastingController(BaseController):
             default=False,
             help="results about ARIMA summary flag.",
         )
-        parser.add_argument(
-            "-e",
-            "--end",
-            action="store",
-            type=valid_date,
-            dest="s_end_date",
-            default=None,
-            help="The end date (format YYYY-MM-DD) to select - Backtesting",
-        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "--target-dataset")
         ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
@@ -1883,6 +1902,7 @@ class ForecastingController(BaseController):
             target_column=True,
             target_dataset=True,
             n_days=True,
+            end=True,
         )
         if ns_parser:
             # BACKTESTING CHECK
@@ -1915,4 +1935,57 @@ class ForecastingController(BaseController):
                 results=ns_parser.b_results,
                 s_end_date=ns_parser.s_end_date,
                 export=ns_parser.export,
+            )
+
+    def call_knn(self, other_args: List[str]):
+        """Process knn command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="knn",
+            description="""
+                K nearest neighbors is a simple algorithm that stores all
+                available cases and predict the numerical target based on a similarity measure
+                (e.g. distance functions).
+            """,
+        )
+        parser.add_argument(
+            "--neighbors",
+            action="store",
+            dest="n_neighbors",
+            type=check_positive,
+            default=20,
+            help="number of neighbors to use on the algorithm.",
+        )
+        parser.add_argument(
+            "--no_shuffle",
+            action="store_false",
+            dest="no_shuffle",
+            default=True,
+            help="Specify if shuffling validation inputs.",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "--target-dataset")
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            EXPORT_ONLY_FIGURES_ALLOWED,
+            n_jumps=True,
+            n_days=True,
+            input_chunk_length=True,
+            train_split=True,
+            target_dataset=True,
+            target_column=True,
+            end=True,
+        )
+        if ns_parser:
+            knn_view.display_k_nearest_neighbors(
+                ticker=ns_parser.target_dataset,
+                data=self.datasets[ns_parser.target_dataset],
+                n_neighbors=ns_parser.n_neighbors,
+                n_input_days=ns_parser.input_chunk_length,
+                n_predict_days=ns_parser.n_days,
+                test_size=1 - ns_parser.train_split,
+                end_date=ns_parser.s_end_date,
+                no_shuffle=ns_parser.no_shuffle,
             )
