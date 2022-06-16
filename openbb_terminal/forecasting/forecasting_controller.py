@@ -181,6 +181,16 @@ class ForecastingController(BaseController):
                 # "remove",
                 "combine",
                 # "rename",
+                "expo",
+                "theta",
+                "rnn",
+                "brnn",
+                "nbeats",
+                "tcn",
+                "regr",
+                "linregr",
+                "trans",
+                "tft",
             ]:
                 self.choices[feature] = {c: None for c in self.files}
 
