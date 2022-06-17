@@ -1,6 +1,6 @@
 ---
 title: Introduction to the Stock Screener
-keywords: "screen, screener, stock, stocks, historical, overview, valuation, financial, ownership, performance, techincal, view, set, preset, presets, ini, scan, compare, tickers, metrics"
+keywords: "screen, screener, stock, stocks, historical, overview, valuation, financial, ownership, performance, technical, view, set, preset, presets, ini, scan, compare, tickers, metrics"
 date: "2022-06-13"
 type: guides
 status: publish
@@ -16,7 +16,7 @@ Get to the Stock Screener from the `Stocks` menu by typing `scr` and then pressi
 
 <h2>How to use the Stock Screener</h2>
 
-The default preset is `top_gainers`. Use the commands `view` and `set` to select a new one. The file in the presets folder, `template.ini`, is a blank slate for creating something fresh. Modify individual paramaters within the different presets to get more precision from a starting point. To get started, simply choose one of the categories to scour, like `technical`.
+The default preset is `top_gainers`. Use the commands `view` and `set` to select a new one. The file in the presets folder, `template.ini`, is a blank slate for creating something fresh. Modify individual parameters within the different presets to get more precision from a starting point. To get started, simply choose one of the categories to scour, like `technical`.
 
 <img width="1408" alt="Unusual Volume preset and the Technical category" src="https://user-images.githubusercontent.com/85772166/173902993-33ae5c4d-67bb-46ad-909f-ad376c16b5f9.png">
 
@@ -42,7 +42,7 @@ Setting the preset to `short_squeeze_scan` and scanning with the `ownership` cat
 
 `set triangle_ascending`, show `techincal` & `overview`
 
-![triangle_ascending preset with techincal and overview categories](https://user-images.githubusercontent.com/85772166/173903827-15d6852e-90bf-4ea3-b008-47ce3c482380.png)
+![triangle_ascending preset with technical and overview categories](https://user-images.githubusercontent.com/85772166/173903827-15d6852e-90bf-4ea3-b008-47ce3c482380.png)
 
 Enter `exe stock_screener_demo.openbb` from the main menu to play a demonstration of the Stock Screener in the Terminal.
 
