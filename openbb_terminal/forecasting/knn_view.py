@@ -7,7 +7,7 @@ from typing import Union, Optional, List
 import pandas as pd
 from matplotlib import pyplot as plt
 
-from openbb_terminal.common.prediction_techniques import knn_model
+from openbb_terminal.forecasting import knn_model
 from openbb_terminal.common.prediction_techniques.pred_helper import (
     plot_data_predictions,
     print_pretty_prediction,
@@ -41,6 +41,8 @@ def display_k_nearest_neighbors(
         Stock data
     data : Union[pd.DataFrame, pd.Series]
         Data to use for ML
+    target_column: str, optional
+        The column to select if a dataframe is sent
     n_neighbors : int
         Number of neighbors for knn
     n_input_days : int
@@ -58,7 +60,6 @@ def display_k_nearest_neighbors(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    data = data.apply(lambda x: pd.to_datetime(x))
     (
         forecast_data_df,
         preds,

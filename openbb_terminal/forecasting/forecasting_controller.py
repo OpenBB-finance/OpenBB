@@ -51,6 +51,7 @@ from openbb_terminal.forecasting import (
     arima_view,
     arima_model,
     knn_view,
+    helpers,
 )
 
 logger = logging.getLogger(__name__)
@@ -1978,10 +1979,18 @@ class ForecastingController(BaseController):
             target_column=True,
             end=True,
         )
+        data = self.datasets[ns_parser.target_dataset]
+        try:
+            data["date"] = data["date"].apply(helpers.dt_format)
+            data["date"] = data["date"].apply(lambda x: pd.to_datetime(x))
+            data = data.set_index("date")
+        except ValueError:
+            console.print("[red]Dataframe must have 'date' column.[/red]\n")
+        data = data[ns_parser.target_column]
         if ns_parser:
             knn_view.display_k_nearest_neighbors(
                 ticker=ns_parser.target_dataset,
-                data=self.datasets[ns_parser.target_dataset],
+                data=data,
                 n_neighbors=ns_parser.n_neighbors,
                 n_input_days=ns_parser.input_chunk_length,
                 n_predict_days=ns_parser.n_days,
