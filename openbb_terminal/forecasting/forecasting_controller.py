@@ -251,6 +251,8 @@ class ForecastingController(BaseController):
         mt.add_cmd("roc", "", self.files)
         mt.add_cmd("mom", "", self.files)
         mt.add_info("_tsforecasting_")
+        mt.add_cmd("arima", "", self.files)
+        mt.add_cmd("knn", "", self.files)
         mt.add_cmd("expo", "", self.files)
         mt.add_cmd("theta", "", self.files)
         mt.add_cmd("linregr", "", self.files)
@@ -262,8 +264,6 @@ class ForecastingController(BaseController):
         mt.add_cmd("tft", "", self.files)
         mt.add_info("_comingsoon_")
         mt.add_cmd("trans", "", self.files)
-        mt.add_cmd("arima", "", self.files)
-        mt.add_cmd("knn", "", self.files)
 
         console.print(text=mt.menu_text, menu="Forecasting")
 
