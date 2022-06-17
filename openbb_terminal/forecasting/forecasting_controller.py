@@ -903,7 +903,7 @@ class ForecastingController(BaseController):
 
     @log_start_end(log=logger)
     def call_delete(self, other_args: List[str]):
-        """Process add"""
+        """Process delete"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -1321,7 +1321,7 @@ class ForecastingController(BaseController):
         parser = argparse.ArgumentParser(
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             add_help=False,
-            prog="rnn",
+            prog="nbeats",
             description="""
                 Perform NBEATS forecast (Neural Bayesian Estimation of Time Series).
             """,
@@ -1431,7 +1431,7 @@ class ForecastingController(BaseController):
         parser = argparse.ArgumentParser(
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             add_help=False,
-            prog="rnn",
+            prog="tcn",
             description="""
                 Perform TCN forecast.
             """,
@@ -1532,7 +1532,7 @@ class ForecastingController(BaseController):
         parser = argparse.ArgumentParser(
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             add_help=False,
-            prog="linregr",
+            prog="regr",
             description="""
                 Perform a regression forecast
             """,
@@ -1739,7 +1739,7 @@ class ForecastingController(BaseController):
         parser = argparse.ArgumentParser(
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             add_help=False,
-            prog="rnn",
+            prog="tft",
             description="""
                 Perform TFT forecast (Temporal Fusion Transformer).
             """,
