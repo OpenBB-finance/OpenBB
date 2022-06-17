@@ -294,7 +294,7 @@ class PortfolioController(BaseController):
         parser.add_argument(
             "-r",
             "--rfr",
-            type=str,
+            type=float,
             default=0,
             dest="risk_free_rate",
             help="Set the risk free rate.",

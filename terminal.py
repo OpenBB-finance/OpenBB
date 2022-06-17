@@ -489,7 +489,7 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
                             completer=t_controller.completer,
                             search_ignore_case=True,
                         )
-                except KeyboardInterrupt:
+                except (KeyboardInterrupt, EOFError):
                     print_goodbye()
                     break
             # Get input from user without auto-completion
