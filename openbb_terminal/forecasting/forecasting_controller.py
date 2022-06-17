@@ -1308,7 +1308,7 @@ class ForecastingController(BaseController):
                 learning_rate=ns_parser.learning_rate,
                 model_save_name=ns_parser.model_save_name,
                 training_length=ns_parser.training_length,
-                input_chunk_length=ns_parser.input_chunk_size,
+                input_chunk_size=ns_parser.input_chunk_length,
                 force_reset=ns_parser.force_reset,
                 save_checkpoints=ns_parser.save_checkpoints,
                 export=ns_parser.export,
