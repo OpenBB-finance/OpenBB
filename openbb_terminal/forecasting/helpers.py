@@ -94,8 +94,8 @@ def past_covs(past_covariates, filler, data, train_split, is_scaler=True):
             past_covariate_train,
             past_covariate_val,
         )
-
-    return None, None, None
+    else:
+        return None, None, None
 
 
 def early_stopper(patience: int):
@@ -264,11 +264,19 @@ def get_prediction(
 
     # now predict N days in the future
     if past_covariates is not None:
-        prediction = best_model.predict(
-            series=ticker_series,
-            past_covariates=past_covariate_whole,
-            n=n_predict,
-        )
+        if probabilistic:
+            prediction = best_model.predict(
+                series=ticker_series,
+                past_covariates=past_covariate_whole,
+                n=n_predict,
+                num_samples=500
+            )
+        else:
+            prediction = best_model.predict(
+                series=ticker_series,
+                past_covariates=past_covariate_whole,
+                n=n_predict,
+            )
     else:
         if probabilistic:
             prediction = best_model.predict(

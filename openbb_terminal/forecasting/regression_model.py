@@ -68,15 +68,16 @@ def get_regression_data(
         data, target_col, is_scaler=use_scalers
     )
 
-    if past_covariates is not None:
-        past_covariate_whole, _, _ = helpers.past_covs(
-            past_covariates, filler, data, train_split, use_scalers
-        )
-        lags_past_covariates = lags
+    (
+        past_covariate_whole,
+        past_covariate_train,
+        past_covariate_val,
+    ) = helpers.past_covs(past_covariates, filler, data, train_split, use_scalers)
 
+    if past_covariates is not None:
+        lags_past_covariates = lags
     else:
         lags_past_covariates = None
-        past_covariate_whole = None
 
     reg_model = RegressionModel(
         output_chunk_length=output_chunk_length,

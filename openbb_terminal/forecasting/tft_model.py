@@ -121,17 +121,11 @@ def get_tft_data(
     )
     train, val = ticker_series.split_before(train_split)
 
-    if past_covariates is not None:
-        (
-            past_covariate_whole,
-            past_covariate_train,
-            past_covariate_val,
-        ) = helpers.past_covs(past_covariates, filler, data, train_split, use_scalers)
-
-    else:
-        past_covariate_whole = None
-        past_covariate_train = None
-        past_covariate_val = None
+    (
+        past_covariate_whole,
+        past_covariate_train,
+        past_covariate_val,
+    ) = helpers.past_covs(past_covariates, filler, data, train_split, use_scalers)
 
     my_stopper = helpers.early_stopper(15)
 

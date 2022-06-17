@@ -251,6 +251,8 @@ class ForecastingController(BaseController):
         mt.add_cmd("roc", "", self.files)
         mt.add_cmd("mom", "", self.files)
         mt.add_info("_tsforecasting_")
+        mt.add_cmd("arima", "", self.files)
+        mt.add_cmd("knn", "", self.files)
         mt.add_cmd("expo", "", self.files)
         mt.add_cmd("theta", "", self.files)
         mt.add_cmd("linregr", "", self.files)
@@ -262,8 +264,6 @@ class ForecastingController(BaseController):
         mt.add_cmd("tft", "", self.files)
         mt.add_info("_comingsoon_")
         mt.add_cmd("trans", "", self.files)
-        mt.add_cmd("arima", "", self.files)
-        mt.add_cmd("knn", "", self.files)
 
         console.print(text=mt.menu_text, menu="Forecasting")
 
@@ -903,7 +903,7 @@ class ForecastingController(BaseController):
 
     @log_start_end(log=logger)
     def call_delete(self, other_args: List[str]):
-        """Process add"""
+        """Process delete"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -1321,7 +1321,7 @@ class ForecastingController(BaseController):
         parser = argparse.ArgumentParser(
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             add_help=False,
-            prog="rnn",
+            prog="nbeats",
             description="""
                 Perform NBEATS forecast (Neural Bayesian Estimation of Time Series).
             """,
@@ -1431,7 +1431,7 @@ class ForecastingController(BaseController):
         parser = argparse.ArgumentParser(
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             add_help=False,
-            prog="rnn",
+            prog="tcn",
             description="""
                 Perform TCN forecast.
             """,
@@ -1532,7 +1532,7 @@ class ForecastingController(BaseController):
         parser = argparse.ArgumentParser(
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             add_help=False,
-            prog="linregr",
+            prog="regr",
             description="""
                 Perform a regression forecast
             """,
@@ -1739,7 +1739,7 @@ class ForecastingController(BaseController):
         parser = argparse.ArgumentParser(
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             add_help=False,
-            prog="rnn",
+            prog="tft",
             description="""
                 Perform TFT forecast (Temporal Fusion Transformer).
             """,
