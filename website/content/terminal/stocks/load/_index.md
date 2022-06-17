@@ -18,17 +18,17 @@ Certain features, such as the Prediction menu, require the symbol to be loaded a
 
 ```
 optional arguments:
-optional arguments:
   -t TICKER, --ticker TICKER
                         Stock ticker (default: None)
   -s START, --start START
-                        The starting date (format YYYY-MM-DD) of the stock (default: 2019-03-12)
-  -e END, --end END     The ending date (format YYYY-MM-DD) of the stock (default: 2022-03-16)
+                        The starting date (format YYYY-MM-DD) of the stock (default: 2019-06-06)
+  -e END, --end END     The ending date (format YYYY-MM-DD) of the stock (default: 2022-06-10)
   -i {1,5,15,30,60}, --interval {1,5,15,30,60}
                         Intraday stock minutes (default: 1440)
-  --source {yf,av,iex}  Source of historical data. (default: yf)
+  --source {yf,av,iex,polygon}
+                        Source of historical data. (default: stocks.load value from $OPENBB_PREFERRED_DATA_SOURCE_FILE file)
   -p, --prepost         Pre/After market hours. Only works for 'yf' source, and intraday data (default: False)
-  -f {Test.csv}, --file {Test.csv}
+  -f FILEPATH, --file FILEPATH
                         Path to load custom file. (default: None)
   -m, --monthly         Load monthly data (default: False)
   -w, --weekly          Load weekly data (default: False)
