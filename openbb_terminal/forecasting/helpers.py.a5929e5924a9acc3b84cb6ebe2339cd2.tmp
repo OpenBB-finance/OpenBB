@@ -265,6 +265,7 @@ def get_prediction(
     # now predict N days in the future
     if past_covariates is not None:
         if probabilistic:
+
             prediction = best_model.predict(
                 series=ticker_series,
                 past_covariates=past_covariate_whole,
