@@ -3,7 +3,7 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Any, Tuple, Union, List
+from typing import Any, Tuple, Union, List, Optional
 
 
 import pandas as pd
@@ -27,6 +27,7 @@ def get_linear_regression_data(
     forecast_horizon: int = 5,
     output_chunk_length: int = 1,
     lags: Union[int, List[int]] = 72,
+    random_state: Optional[int] = None,
 ) -> Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], float, Any]:
     """Perform Linear Regression Forecasting
 
@@ -47,6 +48,8 @@ def get_linear_regression_data(
             The length of the forecast of the model. Defaults to 1.
         lags (int, list)
             lagged target values to predict the next time step
+        random_state (int, optional):
+            The state for the model
 
     Returns:
         List[TimeSeries]
@@ -83,6 +86,7 @@ def get_linear_regression_data(
         lags_past_covariates=lags_past_covariates,
         likelihood="quantile",
         quantiles=[0.05, 0.1, 0.25, 0.5, 0.75, 0.9, 0.95],
+        random_state=random_state,
     )
 
     lin_reg_model.fit(ticker_series, past_covariate_whole)

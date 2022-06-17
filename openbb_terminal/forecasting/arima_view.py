@@ -117,7 +117,6 @@ def display_arima(
     except ValueError:
         console.print("[red]Dataframe must have a 'date' column[/red]\n")
         return
-    print(values.index[-1])
     if not time_res:
         l_pred_days = get_next_stock_market_days(
             last_stock_day=values.index[-1],
