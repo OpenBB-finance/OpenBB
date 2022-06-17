@@ -282,6 +282,7 @@ class ForecastingController(BaseController):
         raw: bool = False,
         limit: int = 0,
         sources: List[str] = None,
+        # Custom items
         target_dataset: bool = False,
         target_column: bool = False,
         period: Optional[int] = None,
@@ -341,7 +342,7 @@ class ForecastingController(BaseController):
                 type=str,
                 default="close",
             )
-        if period:
+        if period is not None:
             parser.add_argument(
                 "--period",
                 help="The period to use",
@@ -368,7 +369,7 @@ class ForecastingController(BaseController):
                 type=check_greater_than_one,
                 help="Days/Points to forecast for historical back-testing",
             )
-        if seasonal:
+        if seasonal is not None:
             parser.add_argument(
                 "-s",
                 "--seasonal",
@@ -443,7 +444,7 @@ class ForecastingController(BaseController):
                 type=bool,
                 help="Whether or not to automatically save the untrained model and checkpoints from training.",
             )
-        if model_save_name:
+        if model_save_name is not None:
             parser.add_argument(
                 "--model-save-name",
                 type=str,
@@ -470,7 +471,7 @@ class ForecastingController(BaseController):
                 default="LSTM",
                 help='Either a string specifying the RNN module type ("RNN", "LSTM" or "GRU")',
             )
-        if dropout:
+        if dropout is not None:
             parser.add_argument(
                 "--dropout",
                 action="store",
@@ -479,7 +480,7 @@ class ForecastingController(BaseController):
                 type=check_positive_float,
                 help="Fraction of neurons afected by Dropout.",
             )
-        if batch_size:
+        if batch_size is not None:
             parser.add_argument(
                 "--batch-size",
                 action="store",
@@ -1272,7 +1273,7 @@ class ForecastingController(BaseController):
             model_save_name="rnn_model",
             n_epochs=True,
             model_type=True,
-            dropout=True,
+            dropout=0,
             batch_size=32,
             learning_rate=True,
         )
