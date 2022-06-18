@@ -85,6 +85,7 @@ class ForecastingController(BaseController):
         "plot",
         "clean",
         "combine",
+        "desc",
         "delete",
         "export",
         "ema",
@@ -187,6 +188,7 @@ class ForecastingController(BaseController):
                 "export",
                 "show",
                 "clean",
+                "desc",
                 "ema",
                 "sto",
                 "rsi",
@@ -244,6 +246,7 @@ class ForecastingController(BaseController):
         mt.add_cmd("plot", "", self.files)
         mt.add_cmd("clean", "", self.files)
         mt.add_cmd("combine", "", self.files)
+        mt.add_cmd("desc", "", self.files)
         mt.add_cmd("delete", "", self.files)
         mt.add_cmd("export", "", self.files)
         mt.add_info("_feateng_")
@@ -686,6 +689,58 @@ class ForecastingController(BaseController):
                     os.path.dirname(os.path.abspath(__file__)),
                     f"{ns_parser.name}_show",
                     df.head(ns_parser.limit),
+                )
+
+    # Show selected dataframe on console
+    @log_start_end(log=logger)
+    def call_desc(self, other_args: List[str]):
+        """Process show command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="show",
+            description="Show a portion of the DataFrame",
+        )
+        parser.add_argument(
+            "-n",
+            "--name",
+            type=str,
+            choices=self.files,
+            dest="name",
+            help="The name of the database you want to show data for",
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-n")
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        if ns_parser:
+            if not ns_parser.name:
+                dataset_names = list(self.datasets.keys())
+            else:
+                dataset_names = [ns_parser.name]
+
+            for name in dataset_names:
+                df = self.datasets[name]
+
+                if name in self.datasets and self.datasets[name].empty:
+                    return console.print(
+                        f"[red]No data available for {ns_parser.name}.[/red]\n"
+                    )
+
+                print_rich_table(
+                    df.describe(),
+                    headers=list(df.describe().columns),
+                    show_index=True,
+                    title=f"Showing Descriptive Statistics for Dataset {name}",
+                )
+
+                export_data(
+                    ns_parser.export,
+                    os.path.dirname(os.path.abspath(__file__)),
+                    f"{ns_parser.name}_show",
                 )
 
     @log_start_end(log=logger)
