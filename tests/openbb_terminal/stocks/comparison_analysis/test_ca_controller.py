@@ -471,7 +471,7 @@ def test_call_func(tested_func, mocked_func, other_args, called_with, mocker):
 )
 def test_call_func_no_parser(func, mocker):
     mocker.patch(
-        "openbb_terminal.stocks.comparison_analysis.ca_controller.parse_known_args_and_warn",
+        "openbb_terminal.stocks.comparison_analysis.ca_controller.ComparisonAnalysisController.parse_known_args_and_warn",
         return_value=None,
     )
     controller = ca_controller.ComparisonAnalysisController(
@@ -481,7 +481,7 @@ def test_call_func_no_parser(func, mocker):
     func_result = getattr(controller, func)(other_args=list())
     assert func_result is None
     assert controller.queue == []
-    getattr(ca_controller, "parse_known_args_and_warn").assert_called_once()
+    controller.parse_known_args_and_warn.assert_called_once()
 
 
 @pytest.mark.vcr(record_mode="none")

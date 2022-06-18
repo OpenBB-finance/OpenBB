@@ -14,7 +14,6 @@ from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
-    parse_known_args_and_warn,
     valid_date,
 )
 from openbb_terminal.menu import session
@@ -154,7 +153,7 @@ class FundamentalAnalysisController(StockBaseController):
             prog="analysis",
             description="""Display analysis of SEC filings based on NLP model. [Source: https://eclect.us]""",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -173,7 +172,7 @@ class FundamentalAnalysisController(StockBaseController):
             """,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -203,7 +202,7 @@ class FundamentalAnalysisController(StockBaseController):
             """,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -221,7 +220,7 @@ class FundamentalAnalysisController(StockBaseController):
                 and Benjamin Graham thoughts [Source: FMP]
                 """,
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -255,7 +254,7 @@ class FundamentalAnalysisController(StockBaseController):
                 Regular market price, Logo_url. [Source: Yahoo Finance]
             """,
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -278,7 +277,7 @@ class FundamentalAnalysisController(StockBaseController):
             dest="start",
             help="The starting date (format YYYY-MM-DD) of the market cap display",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
@@ -295,7 +294,7 @@ class FundamentalAnalysisController(StockBaseController):
             prog="splits",
             description="""Stock splits and reverse split events since IPO [Source: Yahoo Finance]""",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
@@ -311,7 +310,7 @@ class FundamentalAnalysisController(StockBaseController):
             description="""Print Major, institutional and mutualfunds shareholders.
             [Source: Yahoo Finance]""",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if not self.suffix:
@@ -338,7 +337,7 @@ class FundamentalAnalysisController(StockBaseController):
                 Militarycontract. [Source: Yahoo Finance]
             """,
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if not self.suffix:
@@ -361,7 +360,7 @@ class FundamentalAnalysisController(StockBaseController):
                 [Source: Yahoo Finance]
             """,
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if not self.suffix:
@@ -383,7 +382,7 @@ class FundamentalAnalysisController(StockBaseController):
                 Opens company's website. [Source: Yahoo Finance]
             """,
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if not self.suffix:
@@ -403,7 +402,7 @@ class FundamentalAnalysisController(StockBaseController):
                 Opens in Google Maps HQ location of the company. [Source: Yahoo Finance]
             """,
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if not self.suffix:
@@ -437,7 +436,7 @@ class FundamentalAnalysisController(StockBaseController):
             action="store_true",
             help="Plots changes in dividend over time",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if not self.suffix:
@@ -476,7 +475,7 @@ class FundamentalAnalysisController(StockBaseController):
                 https://www.sec.gov/edgar/searchedgar/cik.htm [Source: Alpha Vantage]
             """,
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -497,7 +496,7 @@ class FundamentalAnalysisController(StockBaseController):
                 [Source: Alpha Vantage API]
             """,
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -522,15 +521,6 @@ class FundamentalAnalysisController(StockBaseController):
                 average shs out dil [Source: Alpha Vantage]""",
         )
         parser.add_argument(
-            "-l",
-            "--limit",
-            action="store",
-            dest="limit",
-            type=check_positive,
-            default=5,
-            help="Number of latest years/quarters.",
-        )
-        parser.add_argument(
             "-q",
             "--quarter",
             action="store_true",
@@ -538,16 +528,12 @@ class FundamentalAnalysisController(StockBaseController):
             dest="b_quarter",
             help="Quarter fundamental data flag.",
         )
-        parser.add_argument(
-            "-s",
-            "--source",
-            help="Source to get fundamentals from",
-            default="av",
-            choices=["polygon", "av"],
-            dest="source",
-        )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
+            limit=5,
+            sources=["polygon", "av"],
         )
         if ns_parser:
             if ns_parser.source == "av":
@@ -591,15 +577,6 @@ class FundamentalAnalysisController(StockBaseController):
             """,
         )
         parser.add_argument(
-            "-l",
-            "--limit",
-            action="store",
-            dest="limit",
-            type=check_positive,
-            default=5,
-            help="Number of latest years/quarters.",
-        )
-        parser.add_argument(
             "-q",
             "--quarter",
             action="store_true",
@@ -607,16 +584,12 @@ class FundamentalAnalysisController(StockBaseController):
             dest="b_quarter",
             help="Quarter fundamental data flag.",
         )
-        parser.add_argument(
-            "-s",
-            "--source",
-            help="Source to get fundamentals from",
-            default="av",
-            choices=["polygon", "av"],
-            dest="source",
-        )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
+            limit=5,
+            sources=["polygon", "av"],
         )
         if ns_parser:
             if ns_parser.source == "av":
@@ -674,7 +647,7 @@ class FundamentalAnalysisController(StockBaseController):
             dest="b_quarter",
             help="Quarter fundamental data flag.",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -714,7 +687,7 @@ class FundamentalAnalysisController(StockBaseController):
             default=5,
             help="Number of latest info",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -788,7 +761,7 @@ class FundamentalAnalysisController(StockBaseController):
             default=False,
             help="Shows the details for calculating the mscore",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -814,7 +787,7 @@ class FundamentalAnalysisController(StockBaseController):
             dest="raw",
             help="Print raw data.",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -885,7 +858,7 @@ class FundamentalAnalysisController(StockBaseController):
             default=6,
             help="Number of similar companies to generate ratios for.",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -921,7 +894,7 @@ class FundamentalAnalysisController(StockBaseController):
             dest="b_debug",
             help="print insights into warnings calculation.",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -939,33 +912,3 @@ class FundamentalAnalysisController(StockBaseController):
             self.interval,
             self.queue,
         )
-
-
-def key_metrics_explained(other_args: List[str]):
-    """Key metrics explained.
-
-    Parameters
-    ----------
-    other_args : List[str]
-        argparse other args
-    """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="info",
-        description="""
-            Provides information about main key metrics. Namely: EBITDA,
-            EPS, P/E, PEG, FCF, P/B, ROE, DPR, P/S, Dividend Yield Ratio, D/E, and Beta.
-        """,
-    )
-    ns_parser = parse_known_args_and_warn(
-        parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-    )
-    if ns_parser:
-        filepath = "fundamental_analysis/key_metrics_explained.txt"
-        with open(filepath) as fp:
-            line = fp.readline()
-            while line:
-                console.print(f"{line.strip()}")
-                line = fp.readline()
-            console.print("")

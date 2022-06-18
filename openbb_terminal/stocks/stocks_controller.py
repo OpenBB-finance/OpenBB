@@ -19,7 +19,6 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     export_data,
-    parse_known_args_and_warn,
     valid_date,
 )
 from openbb_terminal.helper_classes import AllowArgsWithWhiteSpace
@@ -207,7 +206,7 @@ class StocksController(StockBaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-q")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             EXPORT_ONLY_RAW_DATA_ALLOWED,
@@ -255,7 +254,7 @@ class StocksController(StockBaseController):
         # For the case where a user uses: 'quote BB'
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             stocks_helper.quote(ns_parser.s_ticker)
 
@@ -268,7 +267,7 @@ class StocksController(StockBaseController):
             prog="codes",
             description="Show CIK, FIGI and SCI code from polygon for loaded ticker.",
         )
-        ns_parser = parse_known_args_and_warn(parser, _)
+        ns_parser = self.parse_known_args_and_warn(parser, _)
         if ns_parser:
             if not self.ticker:
                 console.print("No ticker loaded. First use `load {ticker}`\n")
@@ -339,7 +338,7 @@ class StocksController(StockBaseController):
             help=translate("stocks/CANDLE_mov_avg"),
             default=None,
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             EXPORT_ONLY_RAW_DATA_ALLOWED,
@@ -428,7 +427,7 @@ class StocksController(StockBaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
-        ns_parser = parse_known_args_and_warn(parser, other_args, limit=5)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args, limit=5)
         if ns_parser:
             sources = ns_parser.sources
             for idx, source in enumerate(sources):

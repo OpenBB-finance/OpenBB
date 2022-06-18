@@ -32,6 +32,7 @@ non_gaap_is = [
     "Operating Expenses",
     "Pretax Income",
     "Revenue Growth (YoY)",
+    "Depreciation & Amortization",
 ]
 gaap_is = [
     "Revenue",
