@@ -319,3 +319,35 @@ def add_momentum(
     dataset[f"Momentum_{period}"] = dataset[target_column].diff(period)
 
     return dataset
+
+
+@log_start_end(log=logger)
+def add_signal(dataset: pd.DataFrame) -> pd.DataFrame:
+    """A price signal based on short/long term price.
+
+    1 if the signal is that short term price will go up as compared to the long term.
+    0 if the signal is that short term price will go down as compared to the long term.
+
+    Parameters
+    ----------
+    dataset : pd.DataFrame
+        The dataset you wish to calculate with
+
+    Returns
+    -------
+    pd.DataFrame:
+        Dataframe with added signal column
+    """
+
+    """Create short simple moving average over the short window
+    > Create long simple moving average over the long window"""
+
+    # Create signals
+    dataset["signal"] = np.where(
+        dataset["close"].rolling(window=10, min_periods=1, center=False).mean()
+        > dataset["close"].rolling(window=60, min_periods=1, center=False).mean(),
+        1.0,
+        0.0,
+    )
+
+    return dataset

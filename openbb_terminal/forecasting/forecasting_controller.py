@@ -92,6 +92,7 @@ class ForecastingController(BaseController):
         "rsi",
         "roc",
         "mom",
+        "signal",
         "expo",
         "theta",
         "rnn",
@@ -191,6 +192,7 @@ class ForecastingController(BaseController):
                 "rsi",
                 "roc",
                 "mom",
+                "signal",
                 # "index",
                 # "remove",
                 "combine",
@@ -250,6 +252,7 @@ class ForecastingController(BaseController):
         mt.add_cmd("rsi", "", self.files)
         mt.add_cmd("roc", "", self.files)
         mt.add_cmd("mom", "", self.files)
+        mt.add_cmd("signal", "", self.files)
         mt.add_info("_tsforecasting_")
         mt.add_cmd("arima", "", self.files)
         mt.add_cmd("knn", "", self.files)
@@ -1038,6 +1041,40 @@ class ForecastingController(BaseController):
             )
             console.print(
                 f"Successfully added 'Momentum_{ns_parser.period}' to '{ns_parser.target_dataset}' dataset"
+            )
+        console.print()
+
+    @log_start_end(log=logger)
+    def call_signal(self, other_args: List[str]):
+        """Process Momentum"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="signal",
+            description="""Add price signal to dataset based on closing price.
+            1 if the signal is that short term price will go up as compared to the long term.
+            0 if the signal is that short term price will go down as compared to the long term.
+            """,
+        )
+        # if user does not put in --target-dataset
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "--target-dataset")
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            NO_EXPORT,
+            limit=5,
+            target_dataset=True,
+            target_column=True,
+            period=10,
+        )
+        if ns_parser:
+            self.datasets[ns_parser.target_dataset] = forecasting_model.add_signal(
+                self.datasets[ns_parser.target_dataset]
+            )
+            console.print(
+                f"Successfully added 'Price Signal' to '{ns_parser.target_dataset}' dataset"
             )
         console.print()
 

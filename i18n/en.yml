@@ -1103,9 +1103,10 @@ en:
   forecasting/_feateng_: Feature Engineering
   forecasting/ema: Add Exponentially Weighted Moving Average
   forecasting/sto: Add Stochastic Oscillator %K and %D
-  forecasting/rsi: Relative Strength Index
-  forecasting/roc: Rate of Change
-  forecasting/mom: Momentum
+  forecasting/rsi: Add Relative Strength Index
+  forecasting/roc: Add Rate of Change
+  forecasting/mom: Add Momentum
+  forecasting/signal: Add Price Signal (short vs. long term)
   forecasting/_tsforecasting_: TimeSeries Forecasting
   forecasting/arima: Arima (Non-darts)
   forecasting/knn: KNN (Non-darts)
