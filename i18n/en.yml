@@ -1098,6 +1098,7 @@ en:
   forecasting/plot: Plot a specific column of a loaded dataset
   forecasting/clean: Clean a dataset by filling or dropping NaNs
   forecasting/desc: Show descriptive statistics of a dataset
+  forecasting/corr: Plot the correlation coefficients for dataset features
   forecasting/combine: Combine columns from different datasets
   forecasting/delete: Delete columns from dataset
   forecasting/export: Export a processed dataset

@@ -8,6 +8,7 @@ from typing import Dict, Optional, List
 import matplotlib.pyplot as plt
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
+import seaborn as sns
 
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.decorators import log_start_end
@@ -112,6 +113,45 @@ def display_plot(
                 theme.visualize_output()
 
         ax.legend(list(data.keys()))
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "plot",
+    )
+
+
+@log_start_end(log=logger)
+def display_corr(
+    dataset: pd.DataFrame,
+    export: str = "",
+    external_axes: Optional[List[plt.axes]] = None,
+):
+    """Plot correlation coefficients for dataset features
+
+    Parameters
+    ----------
+    dataset : pd.DataFrame
+        The dataset fore calculating correlation coefficients
+    export: str
+        Format to export image
+    external_axes:Optional[List[plt.axes]]
+        External axes to plot on
+    """
+
+    if external_axes is None:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    else:
+        ax = external_axes[0]
+
+    # correlation
+    correlation = dataset.corr()
+    sns.heatmap(correlation, vmax=1, square=True, annot=True, cmap="cubehelix")
+    ax.set_title("Correlation Matrix")
+    theme.style_primary_axis(ax)
+
+    if external_axes is None:
+        theme.visualize_output()
 
     export_data(
         export,

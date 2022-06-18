@@ -86,6 +86,7 @@ class ForecastingController(BaseController):
         "clean",
         "combine",
         "desc",
+        "corr",
         "delete",
         "export",
         "ema",
@@ -107,7 +108,6 @@ class ForecastingController(BaseController):
         "arima",
         "knn",
     ]
-    # CHOICES_MENUS: List[str] = ["qa", "pred"]
     pandas_plot_choices = [
         "line",
         "scatter",
@@ -189,6 +189,7 @@ class ForecastingController(BaseController):
                 "show",
                 "clean",
                 "desc",
+                "corr",
                 "ema",
                 "sto",
                 "rsi",
@@ -247,6 +248,7 @@ class ForecastingController(BaseController):
         mt.add_cmd("clean", "", self.files)
         mt.add_cmd("combine", "", self.files)
         mt.add_cmd("desc", "", self.files)
+        mt.add_cmd("corr", "", self.files)
         mt.add_cmd("delete", "", self.files)
         mt.add_cmd("export", "", self.files)
         mt.add_info("_feateng_")
@@ -694,54 +696,40 @@ class ForecastingController(BaseController):
     # Show selected dataframe on console
     @log_start_end(log=logger)
     def call_desc(self, other_args: List[str]):
-        """Process show command"""
+        """Process descriptive stats command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="show",
-            description="Show a portion of the DataFrame",
-        )
-        parser.add_argument(
-            "-n",
-            "--name",
-            type=str,
-            choices=self.files,
-            dest="name",
-            help="The name of the database you want to show data for",
+            prog="desc",
+            description="Show descriptive statistics of a dataset",
         )
 
+        # if user does not put in --target-dataset
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-n")
+            other_args.insert(0, "--target-dataset")
+
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser,
+            other_args,
+            EXPORT_ONLY_RAW_DATA_ALLOWED,
+            target_dataset=True,
         )
 
         if ns_parser:
-            if not ns_parser.name:
-                dataset_names = list(self.datasets.keys())
-            else:
-                dataset_names = [ns_parser.name]
+            df = self.datasets[ns_parser.target_dataset]
 
-            for name in dataset_names:
-                df = self.datasets[name]
+            print_rich_table(
+                df.describe(),
+                headers=list(df.describe().columns),
+                show_index=True,
+                title=f"Showing Descriptive Statistics for Dataset {ns_parser.target_dataset}",
+            )
 
-                if name in self.datasets and self.datasets[name].empty:
-                    return console.print(
-                        f"[red]No data available for {ns_parser.name}.[/red]\n"
-                    )
-
-                print_rich_table(
-                    df.describe(),
-                    headers=list(df.describe().columns),
-                    show_index=True,
-                    title=f"Showing Descriptive Statistics for Dataset {name}",
-                )
-
-                export_data(
-                    ns_parser.export,
-                    os.path.dirname(os.path.abspath(__file__)),
-                    f"{ns_parser.name}_show",
-                )
+            export_data(
+                ns_parser.export,
+                os.path.dirname(os.path.abspath(__file__)),
+                f"{ns_parser.target_dataset}_show",
+            )
 
     @log_start_end(log=logger)
     def call_plot(self, other_args: List[str]):
@@ -773,6 +761,35 @@ class ForecastingController(BaseController):
                 data[datasetcol] = self.datasets[dataset][col]
 
             forecasting_view.display_plot(
+                data,
+                ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
+    def call_corr(self, other_args: List[str]):
+        """Process correlation command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="corr",
+            description="Plot correlation coefficients.",
+        )
+
+        # if user does not put in --target-dataset
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "--target-dataset")
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            EXPORT_ONLY_FIGURES_ALLOWED,
+            target_dataset=True,
+        )
+
+        if ns_parser:
+            data = self.datasets[ns_parser.target_dataset]
+
+            forecasting_view.display_corr(
                 data,
                 ns_parser.export,
             )
@@ -876,9 +893,6 @@ class ForecastingController(BaseController):
             parser, other_args, NO_EXPORT, limit=5
         )
         if ns_parser:
-            console.print(
-                f"[green] {ns_parser.name} original shape (rowxcolumn) = {self.datasets[ns_parser.name].shape}"
-            )
             self.datasets[ns_parser.name], clean_status = forecasting_model.clean(
                 self.datasets[ns_parser.name],
                 ns_parser.fill,
@@ -886,14 +900,7 @@ class ForecastingController(BaseController):
                 ns_parser.limit,
             )
             if not clean_status:
-                console.print(
-                    f"[green] Successfully cleaned '{ns_parser.name}' dataset[/green]"
-                )
-                console.print()
-                console.print(
-                    f"[green] {ns_parser.name} new shape after cleaning \
-                        (rowxcolumn) = {self.datasets[ns_parser.name].shape}"
-                )
+                console.print(f"Successfully cleaned '{ns_parser.name}' dataset")
             else:
                 console.print(f"[red]{ns_parser.name} still contains NaNs.[/red]")
 
@@ -917,7 +924,6 @@ class ForecastingController(BaseController):
             parser,
             other_args,
             NO_EXPORT,
-            limit=5,
             period=10,
             target_dataset=True,
             target_column=True,
@@ -1017,7 +1023,6 @@ class ForecastingController(BaseController):
             parser,
             other_args,
             NO_EXPORT,
-            limit=5,
             target_dataset=True,
             target_column=True,
             period=10,
@@ -1050,7 +1055,6 @@ class ForecastingController(BaseController):
             parser,
             other_args,
             NO_EXPORT,
-            limit=5,
             target_dataset=True,
             target_column=True,
             period=10,
@@ -1083,7 +1087,6 @@ class ForecastingController(BaseController):
             parser,
             other_args,
             NO_EXPORT,
-            limit=5,
             target_dataset=True,
             target_column=True,
             period=10,
@@ -1101,7 +1104,7 @@ class ForecastingController(BaseController):
 
     @log_start_end(log=logger)
     def call_signal(self, other_args: List[str]):
-        """Process Momentum"""
+        """Process Price Signal"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -1119,7 +1122,6 @@ class ForecastingController(BaseController):
             parser,
             other_args,
             NO_EXPORT,
-            limit=5,
             target_dataset=True,
             target_column=True,
             period=10,
