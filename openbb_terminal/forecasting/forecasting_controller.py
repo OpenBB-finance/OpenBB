@@ -12,6 +12,7 @@ from pathlib import Path
 from typing import List, Dict, Any, Optional
 
 import torch
+import darts
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 
@@ -151,6 +152,9 @@ class ForecastingController(BaseController):
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         console.print(f"[green]Using device: {self.device} [/green]")
 
+        self.torch_version = torch.__version__
+        self.darts_version = darts.__version__
+
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             choices["load"] = {c: None for c in self.DATA_FILES.keys()}
@@ -249,6 +253,8 @@ class ForecastingController(BaseController):
         """Print help"""
         mt = MenuText("forecasting/")
         mt.add_param("_comp_device", self.device.upper())
+        mt.add_param("_torch_ver", self.torch_version)
+        mt.add_param("_darts_ver", self.darts_version)
         mt.add_raw("\n")
         mt.add_param(
             "_data_loc",
