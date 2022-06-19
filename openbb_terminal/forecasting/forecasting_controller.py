@@ -231,6 +231,21 @@ class ForecastingController(BaseController):
 
             self.completer = NestedCompleter.from_nested_dict(self.choices)
 
+    def refresh_datasets_on_menu(self):
+        """Refresh datasets on menu with new columns when adding new features"""
+
+        self.list_dataset_cols = list()
+        maxfile = max(len(file) for file in self.files)
+        self.loaded_dataset_cols = "\n"
+        for dataset, data in self.datasets.items():
+            self.loaded_dataset_cols += (
+                f"  {dataset} {(maxfile - len(dataset)) * ' '}: "
+                f"{', '.join(data.columns)}\n"
+            )
+
+            for col in data.columns:
+                self.list_dataset_cols.append(f"{dataset}.{col}")
+
     def print_help(self):
         """Print help"""
         mt = MenuText("forecasting/")
@@ -937,6 +952,10 @@ class ForecastingController(BaseController):
             console.print(
                 f"Successfully added 'EMA_{ns_parser.period}' to '{ns_parser.target_dataset}' dataset"
             )
+
+            # update forecast menu with new column on modified dataset
+            self.refresh_datasets_on_menu()
+
         console.print()
 
     @log_start_end(log=logger)
@@ -963,6 +982,10 @@ class ForecastingController(BaseController):
             console.print(
                 f"Successfully added 'STOK&D_{ns_parser.period}' to '{ns_parser.target_dataset}' dataset"
             )
+
+            # update forecast menu with new column on modified dataset
+            self.refresh_datasets_on_menu()
+
         console.print()
 
     @log_start_end(log=logger)
@@ -1036,6 +1059,10 @@ class ForecastingController(BaseController):
             console.print(
                 f"Successfully added 'RSI_{ns_parser.period}' to '{ns_parser.target_dataset}' dataset"
             )
+
+            # update forecast menu with new column on modified dataset
+            self.refresh_datasets_on_menu()
+
         console.print()
 
     @log_start_end(log=logger)
@@ -1068,6 +1095,10 @@ class ForecastingController(BaseController):
             console.print(
                 f"Successfully added 'ROC_{ns_parser.period}' to '{ns_parser.target_dataset}' dataset"
             )
+
+            # update forecast menu with new column on modified dataset
+            self.refresh_datasets_on_menu()
+
         console.print()
 
     @log_start_end(log=logger)
@@ -1100,6 +1131,10 @@ class ForecastingController(BaseController):
             console.print(
                 f"Successfully added 'Momentum_{ns_parser.period}' to '{ns_parser.target_dataset}' dataset"
             )
+
+            # update forecast menu with new column on modified dataset
+            self.refresh_datasets_on_menu()
+
         console.print()
 
     @log_start_end(log=logger)
@@ -1133,6 +1168,10 @@ class ForecastingController(BaseController):
             console.print(
                 f"Successfully added 'Price Signal' to '{ns_parser.target_dataset}' dataset"
             )
+
+            # update forecast menu with new column on modified dataset
+            self.refresh_datasets_on_menu()
+
         console.print()
 
     @log_start_end(log=logger)

@@ -269,7 +269,7 @@ def get_prediction(
                 series=ticker_series,
                 past_covariates=past_covariate_whole,
                 n=n_predict,
-                num_samples=500
+                num_samples=500,
             )
         else:
             prediction = best_model.predict(
