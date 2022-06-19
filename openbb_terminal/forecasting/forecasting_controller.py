@@ -71,11 +71,6 @@ def check_greater_than_one(value) -> int:
     return new_value
 
 
-# setting device on GPU if available, else CPU
-device = "cuda" if torch.cuda.is_available() else "cpu"
-console.print(f"[green]Using device: {device} [/green]")
-
-
 class ForecastingController(BaseController):
     """Forecasting class"""
 
@@ -151,6 +146,10 @@ class ForecastingController(BaseController):
             )
             if filepath.is_file()
         }
+
+        # setting device on GPU if available, else CPU
+        self.device = "cuda" if torch.cuda.is_available() else "cpu"
+        console.print(f"[green]Using device: {self.device} [/green]")
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
@@ -249,6 +248,8 @@ class ForecastingController(BaseController):
     def print_help(self):
         """Print help"""
         mt = MenuText("forecasting/")
+        mt.add_param("_comp_device", self.device.upper())
+        mt.add_raw("\n")
         mt.add_param(
             "_data_loc",
             f"\n\t{obbff.EXPORT_FOLDER_PATH}\n\t{Path('custom_imports').resolve()}",
