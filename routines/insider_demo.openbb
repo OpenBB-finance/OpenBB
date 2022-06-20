@@ -1,0 +1,34 @@
+# This script does not require you to use arguments.
+
+# Go to the Insider Trading menu.
+stocks
+ins
+
+# Commands not dependent on a loaded ticker
+lcb
+lit
+lis
+blcs
+tispm
+tippm
+lip
+lpsb
+
+# Screener functions
+set Gold-Silver
+filter
+set Retail-Trade
+filter
+set Guided-Missiles
+filter
+set Credit-Industry
+filter
+set Pharmaceuticals
+filter
+
+# Functions requiring a ticker
+
+load spgi -s 2022-01-01
+act
+stats
+lins
