@@ -6,7 +6,7 @@ from typing import Union, List
 
 import pandas as pd
 
-from openbb_terminal.forecasting import regression_model
+from openbb_terminal.forecasting import regr_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forecasting import helpers
 
@@ -60,7 +60,7 @@ def display_regression(
         predicted_values,
         precision,
         _model,
-    ) = regression_model.get_regression_data(
+    ) = regr_model.get_regression_data(
         data,
         n_predict,
         target_col,

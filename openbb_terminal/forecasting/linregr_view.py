@@ -6,7 +6,7 @@ from typing import Union, List
 
 import pandas as pd
 
-from openbb_terminal.forecasting import linear_regression_model
+from openbb_terminal.forecasting import linregr_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forecasting import helpers
 
@@ -60,7 +60,7 @@ def display_linear_regression(
         predicted_values,
         precision,
         _model,
-    ) = linear_regression_model.get_linear_regression_data(
+    ) = linregr_model.get_linear_regression_data(
         data,
         n_predict,
         target_col,

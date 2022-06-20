@@ -42,12 +42,12 @@ from openbb_terminal.forecasting import (
     forecasting_view,
     expo_model,
     expo_view,
+    linregr_view,
+    regr_view,
     theta_view,
     rnn_view,
     NBEATS_view,
     brnn_view,
-    linear_regression_view,
-    regression_view,
     tft_view,
     arima_view,
     arima_model,
@@ -1711,7 +1711,7 @@ class ForecastingController(BaseController):
                 )
                 return
 
-            regression_view.display_regression(
+            regr_view.display_regression(
                 data=self.datasets[ns_parser.target_dataset],
                 ticker_name=ns_parser.target_dataset,
                 n_predict=ns_parser.n_days,
@@ -1769,7 +1769,7 @@ class ForecastingController(BaseController):
                 )
                 return
 
-            linear_regression_view.display_linear_regression(
+            linregr_view.display_linear_regression(
                 data=self.datasets[ns_parser.target_dataset],
                 ticker_name=ns_parser.target_dataset,
                 n_predict=ns_parser.n_days,
