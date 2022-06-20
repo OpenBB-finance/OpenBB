@@ -53,6 +53,7 @@ from openbb_terminal.forecasting import (
     arima_model,
     knn_view,
     helpers,
+    trans_view,
 )
 
 logger = logging.getLogger(__name__)
@@ -1920,7 +1921,127 @@ class ForecastingController(BaseController):
 
     @log_start_end(log=logger)
     def call_trans(self, other_args: List[str]):
-        console.print("[green]Coming soon!\n[/green]")
+        parser = argparse.ArgumentParser(
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            add_help=False,
+            prog="tft",
+            description="""
+                Perform Transformer Forecast.
+            """,
+        )
+        parser.add_argument(
+            "--d-model",
+            action="store",
+            dest="d_model",
+            default=64,
+            type=check_positive,
+            help="Number of expected features in inputs.",
+        )
+        parser.add_argument(
+            "--nhead",
+            action="store",
+            dest="nhead",
+            default=4,
+            type=check_positive,
+            help="Number of head in the attention mechanism.",
+        )
+        parser.add_argument(
+            "--num_encoder_layers",
+            action="store",
+            dest="num_encoder_layers",
+            default=3,
+            type=check_positive,
+            help="The number of encoder leayers in the encoder.",
+        )
+        parser.add_argument(
+            "--num_decoder_layers",
+            action="store",
+            dest="num_decoder_layers",
+            default=3,
+            type=check_positive,
+            help="The number of decoder leayers in the encoder.",
+        )
+        parser.add_argument(
+            "--dim_feedforward",
+            action="store",
+            dest="dim_feedforward",
+            default=512,
+            type=check_positive,
+            help="The dimension of the feedforward model.",
+        )
+        parser.add_argument(
+            "--activation",
+            action="store",
+            dest="activation",
+            default="relu",
+            choices=["relu", "gelu"],
+            type=str,
+            help="Number of LSTM layers.",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "--target-dataset")
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
+            n_days=True,
+            target_column=True,
+            target_dataset=True,
+            past_covariates=True,
+            train_split=True,
+            forecast_horizon=True,
+            input_chunk_length=True,
+            output_chunk_length=True,
+            dropout=0,
+            batch_size=32,
+            n_epochs=True,
+            model_save_name="trans_model",
+            force_reset=True,
+            save_checkpoints=True,
+        )
+        if ns_parser:
+            # check proper file name is provided
+            if not ns_parser.target_dataset:
+                console.print("[red]Please enter valid dataset.\n[/red]")
+                return
+
+            # must check that target col is within target series
+            if (
+                ns_parser.target_column
+                not in self.datasets[ns_parser.target_dataset].columns
+            ):
+                console.print(
+                    f"[red]The target column {ns_parser.target_column} does not exist in dataframe.\n[/red]"
+                )
+                return
+
+            trans_view.display_trans_forecast(
+                data=self.datasets[ns_parser.target_dataset],
+                ticker_name=ns_parser.target_dataset,
+                n_predict=ns_parser.n_days,
+                target_col=ns_parser.target_column,
+                past_covariates=ns_parser.past_covariates,
+                train_split=ns_parser.train_split,
+                forecast_horizon=ns_parser.forecast_horizon,
+                input_chunk_length=ns_parser.input_chunk_length,
+                output_chunk_length=ns_parser.output_chunk_length,
+                d_model=ns_parser.d_model,
+                nhead=ns_parser.nhead,
+                num_encoder_layers=ns_parser.num_encoder_layers,
+                num_decoder_layers=ns_parser.num_decoder_layers,
+                dim_feedforward=ns_parser.dim_feedforward,
+                activation=ns_parser.activation,
+                dropout=ns_parser.dropout,
+                n_epochs=ns_parser.n_epochs,
+                batch_size=ns_parser.batch_size,
+                model_save_name=ns_parser.model_save_name,
+                force_reset=ns_parser.force_reset,
+                save_checkpoints=ns_parser.save_checkpoints,
+                export=ns_parser.export,
+            )
+
+    # Below this is ports to the old pred menu
 
     @log_start_end(log=logger)
     def call_tft(self, other_args: List[str]):
