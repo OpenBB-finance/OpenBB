@@ -150,7 +150,6 @@ class ForecastingController(BaseController):
 
         # setting device on GPU if available, else CPU
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
-        console.print(f"[green]Using device: {self.device} [/green]")
 
         self.torch_version = torch.__version__
         self.darts_version = darts.__version__
