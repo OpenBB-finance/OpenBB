@@ -13,7 +13,7 @@ as well as OLS regressions and Panel regressions (e.g. <a href="https://en.wikip
 
 The Econometrics menu is called upon by typing `econometrics` which opens the following menu:
 
-![img_1.png](img_1.png)
+![Econometrics Menu OpenBB Terminal](https://user-images.githubusercontent.com/46355364/174588406-7f120cf7-933e-4bef-a7f6-ba0c7c7d5028.png)
 
 You have the ability to load in your own custom datasets but there is also the option to use example datasets which are used within this guide as well. These datasets can be
 found by using the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/econometrics/load/" target="_blank">load</a> command and typing `load --examples`. See below:
@@ -593,7 +593,7 @@ By going to the main menu as depicted below, the `exe` command can be used. With
 that automatically run a set of commands similarly to that of the Stata do-files and SPSS syntax files. These scripts are located within `.openbb/routines` and can be found within `Applications/OpenBB Terminal`.
 This folder is hidden by default and can be displayed with `SHIFT (⇧) + COMMAND (⌘) + RIGHT ARROW (>)` on macOS or via `View > Show > Hidden items` on Windows.
 
-![img_2.png](img_2.png)
+![Econometrics Menu Routine Exe OpenBB Terminal](https://user-images.githubusercontent.com/46355364/174588513-5c52ea20-548a-4c2b-a4c1-6054e2d71786.png)
 
 This demo file has the following contents:
 ```
