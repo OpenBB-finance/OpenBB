@@ -148,7 +148,7 @@ def get_defi_vaults(
         data = response.json()["data"]
         if len(data) == 0:
             return pd.DataFrame()
-        return pd.DataFrame(data)[VAULTS_FILTERS].fillna("NA")
+        return pd.DataFrame(data)[VAULTS_FILTERS]
     except Exception as e:
         logger.exception(e)
         raise ValueError(f"Invalid Response: {response.text}") from e

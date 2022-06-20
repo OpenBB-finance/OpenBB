@@ -28,7 +28,6 @@ from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_FIGURES_ALLOWED,
     check_positive,
     get_next_stock_market_days,
-    parse_known_args_and_warn,
     valid_date,
 )
 from openbb_terminal.menu import session
@@ -146,7 +145,7 @@ class PredictionTechniquesController(BaseController):
         if other_args and "-t" not in other_args and "-h" not in other_args:
             other_args.insert(0, "-t")
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_FIGURES_ALLOWED
         )
         if ns_parser:
@@ -221,7 +220,7 @@ class PredictionTechniquesController(BaseController):
             default=None,
             help="The end date (format YYYY-MM-DD) to select - Backtesting",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
         if ns_parser:
@@ -328,7 +327,7 @@ class PredictionTechniquesController(BaseController):
             default=True,
             help="Specify if shuffling validation inputs.",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_FIGURES_ALLOWED
         )
         if ns_parser:
@@ -408,7 +407,7 @@ class PredictionTechniquesController(BaseController):
             and ("-p" not in other_args or "--polynomial" not in other_args)
         ):
             other_args.insert(0, "-p")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
         if ns_parser:
@@ -512,7 +511,7 @@ class PredictionTechniquesController(BaseController):
             default=None,
             help="The end date (format YYYY-MM-DD) to select - Backtesting",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
         if ns_parser:
@@ -700,7 +699,7 @@ class PredictionTechniquesController(BaseController):
             help="Whether to model returns or log returns",
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
         if ns_parser:

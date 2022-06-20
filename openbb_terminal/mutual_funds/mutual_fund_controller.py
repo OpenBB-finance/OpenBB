@@ -19,7 +19,6 @@ from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_non_negative_float,
     check_positive,
-    parse_known_args_and_warn,
     valid_date,
 )
 from openbb_terminal.menu import session
@@ -145,7 +144,7 @@ class FundController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             country_candidate = " ".join(ns_parser.name)
             if country_candidate.lower() in self.fund_countries:
@@ -209,7 +208,7 @@ class FundController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-f")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             search_string = " ".join(ns_parser.fund)
             investpy_view.display_search(
@@ -239,7 +238,7 @@ class FundController(BaseController):
             dest="limit",
             default=10,
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -257,7 +256,7 @@ class FundController(BaseController):
             prog="info",
             description="Get fund information.",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if not self.fund_name:
                 console.print(
@@ -312,7 +311,7 @@ class FundController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-f")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             parsed_fund = " ".join(ns_parser.fund)
             (
@@ -348,7 +347,7 @@ Potential errors
             description="Plot historical data.",
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
         if ns_parser:
@@ -380,7 +379,7 @@ Potential errors
             default=5,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
@@ -412,7 +411,7 @@ Potential errors
             description="Show fund equity holdings.",
         )
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if self.country != "united states":
                 console.print(
@@ -447,7 +446,7 @@ Potential errors
             help="The focus of the funds exposure/allocation",
         )
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             ava_fund = pd.read_csv(
                 os.path.join("openbb_terminal", "mutual_funds", "avanza_fund_ID.csv"),
@@ -485,7 +484,7 @@ Potential errors
             description="Show fund info of a swedish fund.",
         )
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             ava_fund = pd.read_csv(
                 os.path.join("openbb_terminal", "mutual_funds", "avanza_fund_ID.csv"),

@@ -11,10 +11,10 @@ from prompt_toolkit.completion import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import parse_known_args_and_warn
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.helper_funcs import parse_simple_args
 
 # pylint: disable=consider-using-with
 
@@ -122,7 +122,7 @@ def create_call(other_args: List[str], name: str, filename: str = None) -> None:
         help="Whether to show voila in dark mode",
     )
 
-    ns_parser = parse_known_args_and_warn(parser, other_args)
+    ns_parser = parse_simple_args(parser, other_args)
 
     if ns_parser:
         cmd = "jupyter-lab" if ns_parser.jupyter else "voila"

@@ -14,7 +14,7 @@ from prompt_toolkit.completion import NestedCompleter
 
 from openbb_terminal import feature_flags as gtff
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import parse_known_args_and_warn, log_and_raise
+from openbb_terminal.helper_funcs import log_and_raise
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.portfolio.portfolio_optimization.parameters import params_view
@@ -205,7 +205,7 @@ class ParametersController(BaseController):
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-f")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
             self.current_file = " ".join(ns_parser.file)
@@ -238,7 +238,7 @@ class ParametersController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-f")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if ns_parser.file.endswith(".ini"):
                 # Create file if it does not exist
@@ -271,7 +271,7 @@ class ParametersController(BaseController):
             prog="clear",
             description="Clear selected portfolio optimization models",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
             self.current_model = ""
@@ -296,7 +296,7 @@ class ParametersController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-m")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             self.current_model = ns_parser.model
             console.print("")
@@ -330,7 +330,7 @@ class ParametersController(BaseController):
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-a")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if ns_parser.show:
                 params_view.show_arguments(AVAILABLE_OPTIONS, self.description)

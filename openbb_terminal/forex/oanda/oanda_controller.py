@@ -15,7 +15,6 @@ from openbb_terminal.forex.forex_helper import FOREX_SOURCES
 from openbb_terminal.forex.oanda import oanda_view
 from openbb_terminal.helper_funcs import (
     check_non_negative_float,
-    parse_known_args_and_warn,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
@@ -125,7 +124,7 @@ class OandaController(BaseController):
             and "-h" not in other_args
         ):
             other_args.insert(0, "-n")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             self.to_symbol = ns_parser.to_symbol.upper()
             self.instrument = f"{self.from_symbol}_{self.to_symbol}"
@@ -162,7 +161,7 @@ class OandaController(BaseController):
         ):
             other_args.insert(0, "-n")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             self.from_symbol = ns_parser.from_symbol.upper()
             self.instrument = f"{self.from_symbol}_{self.to_symbol}"
@@ -181,7 +180,7 @@ class OandaController(BaseController):
             prog="price",
             description="Get price for selected instrument.",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             oanda_view.get_fx_price(account, self.instrument)
 
@@ -193,7 +192,7 @@ class OandaController(BaseController):
             prog="summary",
             description="Print some information about your account.",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             oanda_view.get_account_summary(account)
 
@@ -205,7 +204,7 @@ class OandaController(BaseController):
             prog="orderbook",
             description="Plot an orderbook for an instrument if Oanda provides one.",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             oanda_view.get_order_book(account, self.instrument)
 
@@ -217,7 +216,7 @@ class OandaController(BaseController):
             prog="positionbook",
             description="Plot a position book for an instrument if Oanda provides one.",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             oanda_view.get_position_book(account, self.instrument)
 
@@ -249,7 +248,7 @@ class OandaController(BaseController):
             required=False,
             help="Limit the number of orders to retrieve.",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             order_state = ns_parser.state.upper()
             order_count = ns_parser.limit
@@ -282,7 +281,7 @@ class OandaController(BaseController):
             required="-h" not in other_args,
             help="The price to set for the limit order.",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             price = ns_parser.price
             units = ns_parser.units
@@ -308,7 +307,7 @@ class OandaController(BaseController):
         if other_args:
             if "-" not in other_args[0]:
                 other_args.insert(0, "-i")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             orderID = ns_parser.orderID
             oanda_view.cancel_pending_order(account, orderID)
@@ -321,7 +320,7 @@ class OandaController(BaseController):
             prog="positions",
             description="Get information about open positions.",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             oanda_view.get_open_positions(account)
 
@@ -333,7 +332,7 @@ class OandaController(BaseController):
             prog="pending",
             description="Get information about pending orders.",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             oanda_view.get_pending_orders(account)
 
@@ -345,7 +344,7 @@ class OandaController(BaseController):
             prog="trades",
             description="Get information about open trades.",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             oanda_view.get_open_trades(account)
 
@@ -378,7 +377,7 @@ class OandaController(BaseController):
         if other_args:
             if "-i" not in other_args[0] and "-h" not in other_args[0]:
                 other_args.insert(0, "-i")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             orderID = ns_parser.orderID
             units = ns_parser.units
@@ -470,7 +469,7 @@ class OandaController(BaseController):
             action="store_true",
             help="Adds vwap (Volume Weighted Average Price) to the chart",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             oanda_view.show_candles(
                 self.instrument,
@@ -507,7 +506,7 @@ class OandaController(BaseController):
             help="The number of days to search for, up to 30 forward or backward "
             + "use negative numbers to search back. ",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             days = ns_parser.days
             oanda_view.calendar(self.instrument, days)
