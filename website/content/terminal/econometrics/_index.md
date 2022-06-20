@@ -592,8 +592,8 @@ replicated. Furthermore, as many steps could be required it can be very benefici
 adjustments without needing to re-do every single step again. This is where `.openbb` files play an important role.
 
 By going to the main menu as depicted below, the `exe` command can be used. With this command you can run `.openbb` scripts
-that automatically run a set of commands similarly to that of the Stata do-files and SPSS syntax files. These scripts are located within `.openbb/routines` and can be found within `Applications/OpenBB Terminal`.
-This folder is hidden by default and can be displayed with `SHIFT (⇧) + COMMAND (⌘) + RIGHT ARROW (>)` on macOS or via `View > Show > Hidden items` on Windows.
+that automatically run a set of commands similarly to that of the Stata do-files and SPSS syntax files. These scripts
+are located where the application is located inside the `routines` folder.
 
 ![Econometrics Menu Routine Exe OpenBB Terminal](https://user-images.githubusercontent.com/46355364/174588513-5c52ea20-548a-4c2b-a4c1-6054e2d71786.png)
 
@@ -620,7 +620,7 @@ panel -d wp.lwage -i wp.expersq,wp.union,wp.married,wp.year -r fe
 compare
 ```
 
-Everything after `#` _on the same line_ refers to comments and will not be executed. All other commands will be. This
+Everything after the `#` _on the same line_ refers to comments and will not be executed. All other commands will be. This
 ultimately leads to a comparison of three models and takes less than a few seconds to execute.
 See below for the comparison result, obtained via the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/econometrics/compare/" target="_blank">compare</a> command:
 
