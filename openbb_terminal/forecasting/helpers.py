@@ -188,7 +188,7 @@ def dt_format(x):
     return x
 
 
-def get_series(data, target_col, is_scaler: bool = True):
+def get_series(data, target_col: str = None, is_scaler: bool = True):
     filler = MissingValuesFiller()
     filler_kwargs = dict(
         df=data,

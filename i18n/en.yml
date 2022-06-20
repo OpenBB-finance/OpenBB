@@ -1127,3 +1127,4 @@ en:
   forecasting/tft: Temporal Fusion Transformer (feat. Past covariates)
   forecasting/_comingsoon_: Coming Soon
   forecasting/mc: Monte Carlo Simulation
+  forecasting/season: Plot the seasonality for a dataset

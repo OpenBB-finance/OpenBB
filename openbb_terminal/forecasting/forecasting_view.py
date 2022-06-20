@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 import seaborn as sns
+from darts.utils.statistics import plot_acf
 
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.decorators import log_start_end
@@ -22,6 +23,7 @@ from openbb_terminal.helper_funcs import (
 from openbb_terminal.rich_config import console
 from openbb_terminal.forecasting import forecasting_model
 from openbb_terminal.config_terminal import theme
+from openbb_terminal.forecasting import helpers
 
 logger = logging.getLogger(__name__)
 
@@ -75,7 +77,6 @@ def display_plot(
     external_axes: Optional[List[plt.axes]] = None,
 ):
     """Plot data from a dataset
-
     Parameters
     ----------
     data: Dict[str: pd.DataFrame]
@@ -108,11 +109,61 @@ def display_plot(
                 ax.plot(data[dataset_col])
 
             theme.style_primary_axis(ax)
-
             if external_axes is None:
                 theme.visualize_output()
 
         ax.legend(list(data.keys()))
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "plot",
+    )
+
+
+@log_start_end(log=logger)
+def display_seasonality(
+    data: pd.DataFrame,
+    column: str,
+    export: str = "",
+    m: Optional[int] = None,
+    max_lag: int = 24,
+    alpha: float = 0.05,
+    external_axes: Optional[List[plt.axes]] = None,
+):
+    """Plot seasonality from a dataset
+
+    Parameters
+    ----------
+    data: pd.DataFrame
+        The dataframe to plot
+    column: str
+        The column of the dataframe to analyze
+    export: str
+        Format to export image
+    m: Optional[int]
+        Optionally, a time lag to highlight on the plot. Default is none.
+    max_lag: int
+        The maximal lag order to consider. Default is 24.
+    alpha: float
+        The confidence interval to display. Default is 0.05.
+    external_axes:Optional[List[plt.axes]]
+        External axes to plot on
+    """
+
+    if not data.empty:
+        _, _, series = helpers.get_series(data, column)
+        if external_axes is None:
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        else:
+            ax = external_axes[0]
+
+        plot_acf(series, m=m, max_lag=max_lag, alpha=alpha, axis=ax)
+
+        theme.style_primary_axis(ax)
+
+        if external_axes is None:
+            theme.visualize_output()
 
     export_data(
         export,
