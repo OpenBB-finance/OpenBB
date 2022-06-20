@@ -221,13 +221,6 @@ class ForecastingController(BaseController):
             ]:
                 self.choices[feature] = {c: None for c in self.files}
 
-            # self.choices["type"] = {
-            #     c: None for c in self.files + list(dataset_columns.keys())
-            # }
-            # self.choices["desc"] = {
-            #     c: None for c in self.files + list(dataset_columns.keys())
-            # }
-
             pairs_timeseries = list()
             for dataset_col in list(dataset_columns.keys()):
                 pairs_timeseries += [
@@ -295,10 +288,10 @@ class ForecastingController(BaseController):
         mt.add_cmd("brnn", "", self.files)
         mt.add_cmd("nbeats", "", self.files)
         mt.add_cmd("tcn", "", self.files)
-        mt.add_cmd("tft", "", self.files)
-        mt.add_info("_comingsoon_")
         mt.add_cmd("trans", "", self.files)
         mt.add_cmd("mc", "", self.files)
+        mt.add_cmd("tft", "", self.files)
+        # mt.add_info("_comingsoon_")
 
         console.print(text=mt.menu_text, menu="Forecasting")
 
@@ -1828,7 +1821,7 @@ class ForecastingController(BaseController):
         parser = argparse.ArgumentParser(
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             add_help=False,
-            prog="tft",
+            prog="trans",
             description="""
                 Perform Transformer Forecast.
             """,
