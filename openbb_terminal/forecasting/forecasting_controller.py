@@ -2119,13 +2119,18 @@ class ForecastingController(BaseController):
             target_column=True,
             end=True,
         )
+        if ns_parser.target_dataset is None:
+            console.print("[red]No dataset selected[/red]\n")
+            return
         data = self.datasets[ns_parser.target_dataset]
         try:
             data["date"] = data["date"].apply(helpers.dt_format)
             data["date"] = data["date"].apply(lambda x: pd.to_datetime(x))
             data = data.set_index("date")
-        except ValueError:
-            console.print("[red]Dataframe must have 'date' column.[/red]\n")
+        except (KeyError, ValueError):
+            if data.index.name != "date":
+                console.print("[red]Dataframe must have 'date' column.[/red]\n")
+                return
         data = data[ns_parser.target_column]
         if ns_parser:
             knn_view.display_k_nearest_neighbors(
