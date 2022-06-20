@@ -172,6 +172,5 @@ def get_fails_to_deliver(
 
         ftds_data = ftds_data[ftds_data["SETTLEMENT DATE"] > start]
         ftds_data = ftds_data[ftds_data["SETTLEMENT DATE"] < end]
-        print(ftds_data)
 
     return ftds_data
