@@ -783,7 +783,7 @@ class ForecastingController(BaseController):
 
         if ns_parser and ns_parser.values:
             # check proper file name is provided
-            if not ns_parser.target_dataset:
+            if not ns_parser.values:
                 console.print("[red]Please enter valid dataset.\n[/red]")
                 return
 
@@ -972,8 +972,7 @@ class ForecastingController(BaseController):
         )
         if ns_parser:
             # check proper file name is provided
-            if not ns_parser.target_dataset:
-                console.print("[red]Please enter valid dataset.\n[/red]")
+            if not helpers.check_parser_input(ns_parser, self.datasets):
                 return
 
             self.datasets[ns_parser.target_dataset] = forecasting_model.add_ema(
@@ -1130,8 +1129,7 @@ class ForecastingController(BaseController):
         )
         if ns_parser:
             # check proper file name is provided
-            if not ns_parser.target_dataset:
-                console.print("[red]Please enter valid dataset.\n[/red]")
+            if not helpers.check_parser_input(ns_parser, self.datasets):
                 return
 
             self.datasets[ns_parser.target_dataset] = forecasting_model.add_roc(
@@ -1171,8 +1169,7 @@ class ForecastingController(BaseController):
         )
         if ns_parser:
             # check proper file name is provided
-            if not ns_parser.target_dataset:
-                console.print("[red]Please enter valid dataset.\n[/red]")
+            if not helpers.check_parser_input(ns_parser, self.datasets):
                 return
 
             self.datasets[ns_parser.target_dataset] = forecasting_model.add_momentum(
@@ -1215,8 +1212,7 @@ class ForecastingController(BaseController):
         )
         if ns_parser:
             # check proper file name is provided
-            if not ns_parser.target_dataset:
-                console.print("[red]Please enter valid dataset.\n[/red]")
+            if not helpers.check_parser_input(ns_parser, self.datasets):
                 return
 
             self.datasets[ns_parser.target_dataset] = forecasting_model.add_signal(
@@ -1265,16 +1261,15 @@ class ForecastingController(BaseController):
             parser, other_args, export_allowed=NO_EXPORT
         )
 
-        if ns_parser:
-            if not ns_parser.name or ns_parser.name not in self.datasets:
-                console.print("Please enter a valid dataset.")
-            else:
-                export_data(
-                    ns_parser.type,
-                    os.path.dirname(os.path.abspath(__file__)),
-                    ns_parser.name,
-                    self.datasets[ns_parser.name],
-                )
+        if not helpers.check_parser_input(ns_parser, self.datasets):
+            return
+
+        export_data(
+            ns_parser.type,
+            os.path.dirname(os.path.abspath(__file__)),
+            ns_parser.name,
+            self.datasets[ns_parser.name],
+        )
 
         console.print()
 
@@ -1326,21 +1321,7 @@ class ForecastingController(BaseController):
         )
         # TODO Convert this to multi series
         if ns_parser:
-
-            # check proper file name is provided
-            if not ns_parser.target_dataset:
-                console.print("[red]Please enter valid dataset.\n[/red]")
-                return
-
-            # must check that target col is within target series
-            if (
-                ns_parser.target_column
-                not in self.datasets[ns_parser.target_dataset].columns
-            ):
-                console.print(ns_parser.target_column)
-                console.print(
-                    f"[red]The target column {ns_parser.target_column} does not exist in dataframe.\n[/red]"
-                )
+            if not helpers.check_parser_input(ns_parser, self.datasets):
                 return
 
             expo_view.display_expo_forecast(
@@ -1386,19 +1367,7 @@ class ForecastingController(BaseController):
         )
 
         if ns_parser:
-            # check proper file name is provided
-            if not ns_parser.target_dataset:
-                console.print("[red]Please enter valid dataset.\n[/red]")
-                return
-
-            # must check that target col is within target series
-            if (
-                ns_parser.target_column
-                not in self.datasets[ns_parser.target_dataset].columns
-            ):
-                console.print(
-                    f"[red]The target column {ns_parser.target_column} does not exist in dataframe.\n[/red]"
-                )
+            if not helpers.check_parser_input(ns_parser, self.datasets):
                 return
 
             theta_view.display_theta_forecast(
@@ -1469,19 +1438,7 @@ class ForecastingController(BaseController):
         )
 
         if ns_parser:
-            # check proper file name is provided
-            if not ns_parser.target_dataset:
-                console.print("[red]Please enter valid dataset.\n[/red]")
-                return
-
-            # must check that target col is within target series
-            if (
-                ns_parser.target_column
-                not in self.datasets[ns_parser.target_dataset].columns
-            ):
-                console.print(
-                    f"[red]The target column {ns_parser.target_column} does not exist in dataframe.\n[/red]"
-                )
+            if not helpers.check_parser_input(ns_parser, self.datasets):
                 return
 
             rnn_view.display_rnn_forecast(
@@ -1577,19 +1534,7 @@ class ForecastingController(BaseController):
         )
 
         if ns_parser:
-            # check proper file name is provided
-            if not ns_parser.target_dataset:
-                console.print("[red]Please enter valid dataset.\n[/red]")
-                return
-
-            # must check that target col is within target series
-            if (
-                ns_parser.target_column
-                not in self.datasets[ns_parser.target_dataset].columns
-            ):
-                console.print(
-                    f"[red]The target column {ns_parser.target_column} does not exist in dataframe.\n[/red]"
-                )
+            if not helpers.check_parser_input(ns_parser, self.datasets):
                 return
 
             nbeats_view.display_nbeats_forecast(
@@ -1679,18 +1624,7 @@ class ForecastingController(BaseController):
 
         if ns_parser:
             # check proper file name is provided
-            if not ns_parser.target_dataset:
-                console.print("[red]Please enter valid dataset.\n[/red]")
-                return
-
-            # must check that target col is within target series
-            if (
-                ns_parser.target_column
-                not in self.datasets[ns_parser.target_dataset].columns
-            ):
-                console.print(
-                    f"[red]The target column {ns_parser.target_column} does not exist in dataframe.\n[/red]"
-                )
+            if not helpers.check_parser_input(ns_parser, self.datasets):
                 return
 
             tcn_view.display_tcn_forecast(
@@ -1748,18 +1682,7 @@ class ForecastingController(BaseController):
 
         if ns_parser:
             # check proper file name is provided
-            if not ns_parser.target_dataset:
-                console.print("[red]Please enter valid dataset.\n[/red]")
-                return
-
-            # must check that target col is within target series
-            if (
-                ns_parser.target_column
-                not in self.datasets[ns_parser.target_dataset].columns
-            ):
-                console.print(
-                    f"[red]The target column {ns_parser.target_column} does not exist in dataframe.\n[/red]"
-                )
+            if not helpers.check_parser_input(ns_parser, self.datasets):
                 return
 
             regr_view.display_regression(
@@ -1805,19 +1728,7 @@ class ForecastingController(BaseController):
         )
 
         if ns_parser:
-            # check proper file name is provided
-            if not ns_parser.target_dataset:
-                console.print("[red]Please enter valid dataset.\n[/red]")
-                return
-
-            # must check that target col is within target series
-            if (
-                ns_parser.target_column
-                not in self.datasets[ns_parser.target_dataset].columns
-            ):
-                console.print(
-                    f"[red]The target column {ns_parser.target_column} does not exist in dataframe.\n[/red]"
-                )
+            if not helpers.check_parser_input(ns_parser, self.datasets):
                 return
 
             linregr_view.display_linear_regression(
@@ -1881,19 +1792,7 @@ class ForecastingController(BaseController):
         )
 
         if ns_parser:
-            # check proper file name is provided
-            if not ns_parser.target_dataset:
-                console.print("[red]Please enter valid dataset.\n[/red]")
-                return
-
-            # must check that target col is within target series
-            if (
-                ns_parser.target_column
-                not in self.datasets[ns_parser.target_dataset].columns
-            ):
-                console.print(
-                    f"[red]The target column {ns_parser.target_column} does not exist in dataframe.\n[/red]"
-                )
+            if not helpers.check_parser_input(ns_parser, self.datasets):
                 return
 
             brnn_view.display_brnn_forecast(
@@ -2001,19 +1900,7 @@ class ForecastingController(BaseController):
             save_checkpoints=True,
         )
         if ns_parser:
-            # check proper file name is provided
-            if not ns_parser.target_dataset:
-                console.print("[red]Please enter valid dataset.\n[/red]")
-                return
-
-            # must check that target col is within target series
-            if (
-                ns_parser.target_column
-                not in self.datasets[ns_parser.target_dataset].columns
-            ):
-                console.print(
-                    f"[red]The target column {ns_parser.target_column} does not exist in dataframe.\n[/red]"
-                )
+            if not helpers.check_parser_input(ns_parser, self.datasets):
                 return
 
             trans_view.display_trans_forecast(
@@ -2112,19 +1999,7 @@ class ForecastingController(BaseController):
         )
 
         if ns_parser:
-            # check proper file name is provided
-            if not ns_parser.target_dataset:
-                console.print("[red]Please enter valid dataset.\n[/red]")
-                return
-
-            # must check that target col is within target series
-            if (
-                ns_parser.target_column
-                not in self.datasets[ns_parser.target_dataset].columns
-            ):
-                console.print(
-                    f"[red]The target column {ns_parser.target_column} does not exist in dataframe.\n[/red]"
-                )
+            if not helpers.check_parser_input(ns_parser, self.datasets):
                 return
 
             tft_view.display_tft_forecast(
@@ -2217,9 +2092,7 @@ class ForecastingController(BaseController):
             end=True,
         )
         if ns_parser:
-            # check proper file name is provided
-            if not ns_parser.target_dataset:
-                console.print("[red]Please enter valid dataset.\n[/red]")
+            if not helpers.check_parser_input(ns_parser, self.datasets):
                 return
 
             # BACKTESTING CHECK
@@ -2295,8 +2168,7 @@ class ForecastingController(BaseController):
             target_column=True,
             end=True,
         )
-        if ns_parser.target_dataset is None:
-            console.print("[red]Please enter valid dataset.[/red]\n")
+        if not helpers.check_parser_input(ns_parser, self.datasets):
             return
         data = self.datasets[ns_parser.target_dataset]
         try:

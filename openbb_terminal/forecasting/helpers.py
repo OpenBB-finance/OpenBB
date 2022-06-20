@@ -1,5 +1,6 @@
 # pylint: disable=too-many-arguments
 import os
+import argparse
 import logging
 import pandas as pd
 import numpy as np
@@ -297,3 +298,18 @@ def get_prediction(
         prediction = scaler.inverse_transform(prediction)
 
     return ticker_series, historical_fcast, prediction, precision, best_model
+
+
+def check_parser_input(parser: argparse.ArgumentParser, datasets):
+    # check proper file name is provided
+    if not parser.target_dataset:
+        console.print("[red]Please enter valid dataset.\n[/red]")
+        return False
+
+    # must check that target col is within target series
+    if parser.target_column not in datasets[parser.target_dataset].columns:
+        console.print(
+            f"[red]The target column {parser.target_column} does not exist in dataframe.\n[/red]"
+        )
+        return False
+    return True
