@@ -291,9 +291,9 @@ class ForecastingController(BaseController):
         mt.add_cmd("brnn", "", self.files)
         mt.add_cmd("nbeats", "", self.files)
         mt.add_cmd("tcn", "", self.files)
-        mt.add_cmd("tft", "", self.files)
-        mt.add_info("_comingsoon_")
         mt.add_cmd("trans", "", self.files)
+        mt.add_cmd("tft", "", self.files)
+        # mt.add_info("_comingsoon_")
 
         console.print(text=mt.menu_text, menu="Forecasting")
 
@@ -1924,7 +1924,7 @@ class ForecastingController(BaseController):
         parser = argparse.ArgumentParser(
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             add_help=False,
-            prog="tft",
+            prog="trans",
             description="""
                 Perform Transformer Forecast.
             """,
