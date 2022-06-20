@@ -101,7 +101,7 @@ class ForecastingController(BaseController):
         "linregr",
         "trans",
         "tft",
-        "arima",
+        # "arima",
         "knn",
     ]
     pandas_plot_choices = [
@@ -280,7 +280,7 @@ class ForecastingController(BaseController):
         mt.add_cmd("mom", "", self.files)
         mt.add_cmd("signal", "", self.files)
         mt.add_info("_tsforecasting_")
-        mt.add_cmd("arima", "", self.files)
+        # mt.add_cmd("arima", "", self.files)
         mt.add_cmd("knn", "", self.files)
         mt.add_cmd("expo", "", self.files)
         mt.add_cmd("theta", "", self.files)
