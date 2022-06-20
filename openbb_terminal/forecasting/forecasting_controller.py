@@ -217,13 +217,6 @@ class ForecastingController(BaseController):
             ]:
                 self.choices[feature] = {c: None for c in self.files}
 
-            # self.choices["type"] = {
-            #     c: None for c in self.files + list(dataset_columns.keys())
-            # }
-            # self.choices["desc"] = {
-            #     c: None for c in self.files + list(dataset_columns.keys())
-            # }
-
             pairs_timeseries = list()
             for dataset_col in list(dataset_columns.keys()):
                 pairs_timeseries += [
