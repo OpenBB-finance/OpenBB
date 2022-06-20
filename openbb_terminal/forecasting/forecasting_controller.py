@@ -737,6 +737,11 @@ class ForecastingController(BaseController):
         )
 
         if ns_parser:
+            # check proper file name is provided
+            if not ns_parser.target_dataset:
+                console.print("[red]Please enter valid dataset.\n[/red]")
+                return
+
             df = self.datasets[ns_parser.target_dataset]
 
             print_rich_table(
@@ -776,6 +781,11 @@ class ForecastingController(BaseController):
         )
 
         if ns_parser and ns_parser.values:
+            # check proper file name is provided
+            if not ns_parser.target_dataset:
+                console.print("[red]Please enter valid dataset.\n[/red]")
+                return
+
             data: Dict = {}
             for datasetcol in ns_parser.values:
                 dataset, col = datasetcol.split(".")
@@ -808,6 +818,11 @@ class ForecastingController(BaseController):
         )
 
         if ns_parser:
+            # check proper file name is provided
+            if not ns_parser.target_dataset:
+                console.print("[red]Please enter valid dataset.\n[/red]")
+                return
+
             data = self.datasets[ns_parser.target_dataset]
 
             forecasting_view.display_corr(
@@ -914,6 +929,11 @@ class ForecastingController(BaseController):
             parser, other_args, NO_EXPORT, limit=5
         )
         if ns_parser:
+            # check proper file name is provided
+            if not ns_parser.target_dataset:
+                console.print("[red]Please enter valid dataset.\n[/red]")
+                return
+
             self.datasets[ns_parser.name], clean_status = forecasting_model.clean(
                 self.datasets[ns_parser.name],
                 ns_parser.fill,
@@ -950,6 +970,11 @@ class ForecastingController(BaseController):
             target_column=True,
         )
         if ns_parser:
+            # check proper file name is provided
+            if not ns_parser.target_dataset:
+                console.print("[red]Please enter valid dataset.\n[/red]")
+                return
+
             self.datasets[ns_parser.target_dataset] = forecasting_model.add_ema(
                 self.datasets[ns_parser.target_dataset],
                 ns_parser.target_column,
@@ -981,6 +1006,11 @@ class ForecastingController(BaseController):
             parser, other_args, NO_EXPORT, limit=5, period=10, target_dataset=True
         )
         if ns_parser:
+            # check proper file name is provided
+            if not ns_parser.target_dataset:
+                console.print("[red]Please enter valid dataset.\n[/red]")
+                return
+
             self.datasets[ns_parser.target_dataset] = forecasting_model.add_sto(
                 self.datasets[ns_parser.target_dataset],
                 ns_parser.period,
@@ -1057,6 +1087,11 @@ class ForecastingController(BaseController):
             period=10,
         )
         if ns_parser:
+            # check proper file name is provided
+            if not ns_parser.target_dataset:
+                console.print("[red]Please enter valid dataset.\n[/red]")
+                return
+
             self.datasets[ns_parser.target_dataset] = forecasting_model.add_rsi(
                 self.datasets[ns_parser.target_dataset],
                 ns_parser.target_column,
@@ -1093,6 +1128,11 @@ class ForecastingController(BaseController):
             period=10,
         )
         if ns_parser:
+            # check proper file name is provided
+            if not ns_parser.target_dataset:
+                console.print("[red]Please enter valid dataset.\n[/red]")
+                return
+
             self.datasets[ns_parser.target_dataset] = forecasting_model.add_roc(
                 self.datasets[ns_parser.target_dataset],
                 ns_parser.target_column,
@@ -1129,6 +1169,11 @@ class ForecastingController(BaseController):
             period=10,
         )
         if ns_parser:
+            # check proper file name is provided
+            if not ns_parser.target_dataset:
+                console.print("[red]Please enter valid dataset.\n[/red]")
+                return
+
             self.datasets[ns_parser.target_dataset] = forecasting_model.add_momentum(
                 self.datasets[ns_parser.target_dataset],
                 ns_parser.target_column,
@@ -1168,6 +1213,11 @@ class ForecastingController(BaseController):
             period=10,
         )
         if ns_parser:
+            # check proper file name is provided
+            if not ns_parser.target_dataset:
+                console.print("[red]Please enter valid dataset.\n[/red]")
+                return
+
             self.datasets[ns_parser.target_dataset] = forecasting_model.add_signal(
                 self.datasets[ns_parser.target_dataset]
             )
@@ -2046,6 +2096,11 @@ class ForecastingController(BaseController):
             end=True,
         )
         if ns_parser:
+            # check proper file name is provided
+            if not ns_parser.target_dataset:
+                console.print("[red]Please enter valid dataset.\n[/red]")
+                return
+
             # BACKTESTING CHECK
             if ns_parser.s_end_date:
 
@@ -2120,7 +2175,7 @@ class ForecastingController(BaseController):
             end=True,
         )
         if ns_parser.target_dataset is None:
-            console.print("[red]No dataset selected[/red]\n")
+            console.print("[red]Please enter valid dataset.[/red]\n")
             return
         data = self.datasets[ns_parser.target_dataset]
         try:
