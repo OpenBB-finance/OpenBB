@@ -37,16 +37,16 @@ from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.forecasting import (
-    TCN_view,
     forecasting_model,
     forecasting_view,
     expo_model,
     expo_view,
     linregr_view,
+    nbeats_view,
     regr_view,
+    tcn_view,
     theta_view,
     rnn_view,
-    NBEATS_view,
     brnn_view,
     tft_view,
     arima_view,
@@ -1541,7 +1541,7 @@ class ForecastingController(BaseController):
                 )
                 return
 
-            NBEATS_view.display_nbeats_forecast(
+            nbeats_view.display_nbeats_forecast(
                 data=self.datasets[ns_parser.target_dataset],
                 ticker_name=ns_parser.target_dataset,
                 n_predict=ns_parser.n_days,
@@ -1642,7 +1642,7 @@ class ForecastingController(BaseController):
                 )
                 return
 
-            TCN_view.display_tcn_forecast(
+            tcn_view.display_tcn_forecast(
                 data=self.datasets[ns_parser.target_dataset],
                 ticker_name=ns_parser.target_dataset,
                 n_predict=ns_parser.n_days,

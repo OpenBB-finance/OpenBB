@@ -6,7 +6,7 @@ from typing import Union
 
 import pandas as pd
 
-from openbb_terminal.forecasting import TCN_model
+from openbb_terminal.forecasting import tcn_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forecasting import helpers
 
@@ -95,7 +95,7 @@ def display_tcn_forecast(
         predicted_values,
         precision,
         _model,
-    ) = TCN_model.get_tcn_data(
+    ) = tcn_model.get_tcn_data(
         data=data,
         n_predict=n_predict,
         target_col=target_col,
