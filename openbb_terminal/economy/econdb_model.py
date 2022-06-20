@@ -708,7 +708,10 @@ def get_treasuries(
 
                     for column in df.columns:
                         # check if type inside the name and maturity inside the maturity string
-                        if type_string in column[2] and maturity_string in column[3]:
+                        if (
+                            type_string.lower() in column[2].lower()
+                            and maturity_string in column[3]
+                        ):
                             treasury_data[type_string][maturity_string] = df[
                                 column
                             ].dropna()
