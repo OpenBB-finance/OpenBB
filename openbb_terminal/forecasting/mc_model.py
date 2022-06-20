@@ -38,7 +38,6 @@ def get_mc_brownian(
         Array of predictions.  Has shape (n_future, n_sims)
     """
 
-    print(data)
     changes = data.pct_change().dropna()  # type: ignore
 
     if use_log:

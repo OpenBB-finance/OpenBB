@@ -302,14 +302,18 @@ def get_prediction(
 
 def check_parser_input(parser: argparse.ArgumentParser, datasets):
     # check proper file name is provided
-    if not parser.target_dataset:
+    if not hasattr(parser, "target_dataset"):
+        return False
+    if not hasattr(parser, "target_column"):
+        return False
+    if not parser.target_dataset:  # type: ignore
         console.print("[red]Please enter valid dataset.\n[/red]")
         return False
 
     # must check that target col is within target series
-    if parser.target_column not in datasets[parser.target_dataset].columns:
+    if parser.target_column not in datasets[parser.target_dataset].columns:  # type: ignore
         console.print(
-            f"[red]The target column {parser.target_column} does not exist in dataframe.\n[/red]"
+            f"[red]The column {parser.target_column} does not exist.\n[/red]"  # type: ignore
         )
         return False
     return True

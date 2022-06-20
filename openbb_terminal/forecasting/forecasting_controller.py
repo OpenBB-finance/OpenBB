@@ -54,6 +54,8 @@ from openbb_terminal.forecasting import (
     knn_view,
     helpers,
     trans_view,
+    mc_model,
+    mc_view,
 )
 
 logger = logging.getLogger(__name__)
@@ -104,6 +106,7 @@ class ForecastingController(BaseController):
         "tft",
         # "arima",
         "knn",
+        "mc",
     ]
     pandas_plot_choices = [
         "line",
@@ -214,6 +217,7 @@ class ForecastingController(BaseController):
                 "trans",
                 "tft",
                 "knn",
+                "mc",
             ]:
                 self.choices[feature] = {c: None for c in self.files}
 
@@ -294,6 +298,7 @@ class ForecastingController(BaseController):
         mt.add_cmd("tft", "", self.files)
         mt.add_info("_comingsoon_")
         mt.add_cmd("trans", "", self.files)
+        mt.add_cmd("mc", "", self.files)
 
         console.print(text=mt.menu_text, menu="Forecasting")
 
@@ -2168,26 +2173,78 @@ class ForecastingController(BaseController):
             target_column=True,
             end=True,
         )
-        if not helpers.check_parser_input(ns_parser, self.datasets):
-            return
-        data = self.datasets[ns_parser.target_dataset]
-        try:
-            data["date"] = data["date"].apply(helpers.dt_format)
-            data["date"] = data["date"].apply(lambda x: pd.to_datetime(x))
-            data = data.set_index("date")
-        except (KeyError, ValueError):
-            if data.index.name != "date":
-                console.print("[red]Dataframe must have 'date' column.[/red]\n")
-                return
-        data = data[ns_parser.target_column]
         if ns_parser:
-            knn_view.display_k_nearest_neighbors(
-                ticker=ns_parser.target_dataset,
+            if not helpers.check_parser_input(ns_parser, self.datasets):
+                return
+            data = self.datasets[ns_parser.target_dataset]
+            try:
+                data["date"] = data["date"].apply(helpers.dt_format)
+                data["date"] = data["date"].apply(lambda x: pd.to_datetime(x))
+                data = data.set_index("date")
+            except (KeyError, ValueError):
+                if data.index.name != "date":
+                    console.print("[red]Dataframe must have 'date' column.[/red]\n")
+                    return
+            data = data[ns_parser.target_column]
+            if ns_parser:
+                knn_view.display_k_nearest_neighbors(
+                    ticker=ns_parser.target_dataset,
+                    data=data,
+                    n_neighbors=ns_parser.n_neighbors,
+                    n_input_days=ns_parser.input_chunk_length,
+                    n_predict_days=ns_parser.n_days,
+                    test_size=1 - ns_parser.train_split,
+                    end_date=ns_parser.s_end_date,
+                    no_shuffle=ns_parser.no_shuffle,
+                )
+
+    @log_start_end(log=logger)
+    def call_mc(self, other_args: List[str]):
+        """Process mc command"""
+        parser = argparse.ArgumentParser(
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            add_help=False,
+            prog="mc",
+            description="""
+                Perform Monte Carlo forecasting
+            """,
+        )
+        parser.add_argument(
+            "--dist",
+            choices=mc_model.DISTRIBUTIONS,
+            default="lognormal",
+            dest="dist",
+            help="Whether to model returns or log returns",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "--target-dataset")
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
+            n_days=True,
+            target_dataset=True,
+            target_column=True,
+            n_epochs=True,
+        )
+        if ns_parser:
+            if not helpers.check_parser_input(ns_parser, self.datasets):
+                return
+            data = self.datasets[ns_parser.target_dataset]
+            try:
+                data["date"] = data["date"].apply(helpers.dt_format)
+                data["date"] = data["date"].apply(lambda x: pd.to_datetime(x))
+                data = data.set_index("date")
+            except (KeyError, ValueError):
+                if data.index.name != "date":
+                    console.print("[red]Dataframe must have 'date' column.[/red]\n")
+                    return
+            data = data[ns_parser.target_column]
+
+            mc_view.display_mc_forecast(
                 data=data,
-                n_neighbors=ns_parser.n_neighbors,
-                n_input_days=ns_parser.input_chunk_length,
-                n_predict_days=ns_parser.n_days,
-                test_size=1 - ns_parser.train_split,
-                end_date=ns_parser.s_end_date,
-                no_shuffle=ns_parser.no_shuffle,
+                n_future=ns_parser.n_days,
+                n_sims=ns_parser.n_epochs,
+                use_log=ns_parser.dist == "lognormal",
+                export=ns_parser.export,
             )

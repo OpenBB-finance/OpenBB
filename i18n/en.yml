@@ -1126,3 +1126,4 @@ en:
   forecasting/tft: Temporal Fusion Transformer (feat. Past covariates)
   forecasting/_comingsoon_: Coming Soon
   forecasting/trans: Transformer model
+  forecasting/mc: Monte Carlo Simulation
