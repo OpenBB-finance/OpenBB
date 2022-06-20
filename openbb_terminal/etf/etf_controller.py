@@ -30,7 +30,6 @@ from openbb_terminal.helper_funcs import (
     check_non_negative_float,
     check_positive,
     export_data,
-    parse_known_args_and_warn,
     valid_date,
     compose_export_path,
 )
@@ -141,29 +140,16 @@ class ETFController(BaseController):
             help="Name to look for ETFs",
             required="-h" not in other_args,
         )
-        parser.add_argument(
-            "-s",
-            "--source",
-            type=str,
-            default="fd",
-            dest="source",
-            help="Name to search for, using either FinanceDatabase (fd) or StockAnalysis (sa) as source.",
-            choices=["sa", "fd"],
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            type=check_positive,
-            dest="limit",
-            help="Limit of ETFs to display",
-            default=5,
-        )
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
 
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            limit=5,
+            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
+            sources=["sa", "fd"],
         )
         if ns_parser:
             name_to_search = " ".join(ns_parser.name)
@@ -212,7 +198,7 @@ class ETFController(BaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-d")
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -267,7 +253,7 @@ class ETFController(BaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             df_etf_candidate = yf.download(
                 ns_parser.ticker,
@@ -319,7 +305,7 @@ class ETFController(BaseController):
             prog="overview",
             description="Get overview data for selected etf",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -348,7 +334,7 @@ class ETFController(BaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -403,7 +389,7 @@ class ETFController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if self.etf_name:
                 sources = ns_parser.sources
@@ -498,7 +484,7 @@ class ETFController(BaseController):
             default="",
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -578,7 +564,7 @@ class ETFController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-e")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if ns_parser.names:
                 create_ETF_report(
@@ -616,7 +602,7 @@ class ETFController(BaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
@@ -636,7 +622,7 @@ class ETFController(BaseController):
             prog="summary",
             description="Print ETF description summary",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
         )
@@ -738,7 +724,7 @@ class ETFController(BaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-e")
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:

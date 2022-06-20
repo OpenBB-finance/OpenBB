@@ -14,9 +14,9 @@ import pandas as pd
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     lambda_financials_colored_values,
-    parse_known_args_and_warn,
     patch_pandas_text_adjustment,
     print_rich_table,
+    parse_simple_args,
 )
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.fundamental_analysis import market_watch_model as mwm
@@ -73,7 +73,7 @@ def income(other_args: List[str], ticker: str):
         help="Quarter fundamental data flag.",
     )
 
-    ns_parser = parse_known_args_and_warn(parser, other_args)
+    ns_parser = parse_simple_args(parser, other_args)
     if not ns_parser:
         return
 
@@ -150,7 +150,7 @@ def balance(other_args: List[str], ticker: str):
         help="Quarter fundamental data flag.",
     )
 
-    ns_parser = parse_known_args_and_warn(parser, other_args)
+    ns_parser = parse_simple_args(parser, other_args)
     if not ns_parser:
         return
 
@@ -223,7 +223,7 @@ def cash(other_args: List[str], ticker: str):
         help="Quarter fundamental data flag.",
     )
 
-    ns_parser = parse_known_args_and_warn(parser, other_args)
+    ns_parser = parse_simple_args(parser, other_args)
     if not ns_parser:
         return
 

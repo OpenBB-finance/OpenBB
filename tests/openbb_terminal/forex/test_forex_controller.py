@@ -311,7 +311,7 @@ def test_call_func(
 def test_call_func_no_parser(func, mocker):
     # MOCK PARSE_KNOWN_ARGS_AND_WARN
     mocker.patch(
-        target="openbb_terminal.forex.forex_controller.parse_known_args_and_warn",
+        target="openbb_terminal.forex.forex_controller.ForexController.parse_known_args_and_warn",
         return_value=None,
     )
     controller = forex_controller.ForexController(queue=None)
@@ -319,7 +319,7 @@ def test_call_func_no_parser(func, mocker):
     func_result = getattr(controller, func)(other_args=list())
     assert func_result is None
     assert controller.queue == []
-    getattr(forex_controller, "parse_known_args_and_warn").assert_called_once()
+    controller.parse_known_args_and_warn.assert_called_once()
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -335,7 +335,7 @@ def test_call_func_no_parser(func, mocker):
 def test_call_func_no_ticker(func, mocker):
     # MOCK PARSE_KNOWN_ARGS_AND_WARN
     mocker.patch(
-        "openbb_terminal.forex.forex_controller.parse_known_args_and_warn",
+        target="openbb_terminal.forex.forex_controller.ForexController.parse_known_args_and_warn",
         return_value=True,
     )
 

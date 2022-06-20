@@ -1,0 +1,32 @@
+{
+  "stocks": {
+    "load": "yf",
+    "dps": {
+      "psi": "quandl"
+    },
+    "fa": {
+      "income": "av",
+      "balance": "av"
+    },
+    "options": {
+      "load": "yf",
+      "hist": "chartexchange",
+      "vol": "tradier",
+      "voi": "tradier",
+      "oi": "tradier"
+    }
+  },
+  "crypto": {
+    "load": "cg",
+    "find": "cg"
+  },
+  "economy": {
+    "ycrv": "investpy"
+  },
+  "etf": {
+    "ln": "fd"
+  },
+  "forex": {
+    "load": "yf"
+  }
+}

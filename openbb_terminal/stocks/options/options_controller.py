@@ -17,7 +17,6 @@ from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_FIGURES_ALLOWED,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
-    parse_known_args_and_warn,
     valid_date,
 )
 from openbb_terminal.menu import session
@@ -55,8 +54,6 @@ class OptionsController(BaseController):
 
     CHOICES_COMMANDS = [
         "calc",
-        "yf",
-        "tr",
         "info",
         "pcr",
         "load",
@@ -106,10 +103,6 @@ class OptionsController(BaseController):
     ]
     pcr_length_choices = ["10", "20", "30", "60", "90", "120", "150", "180"]
 
-    load_source_choices = ["tr", "yf"]
-    hist_source_choices = ["td", "ce"]
-    voi_source_choices = ["tr", "yf"]
-    oi_source_choices = ["tr", "yf"]
     plot_vars_choices = ["ltd", "s", "lp", "b", "a", "c", "pc", "v", "oi", "iv"]
     plot_custom_choices = ["smile"]
     PATH = "/stocks/options/"
@@ -140,9 +133,6 @@ class OptionsController(BaseController):
             choices["disp"] = {c: {} for c in self.presets}
             choices["scr"] = {c: {} for c in self.presets}
             choices["grhist"]["-g"] = {c: {} for c in self.grhist_greeks_choices}
-            choices["load"]["-s"] = {c: {} for c in self.load_source_choices}
-            choices["load"]["--source"] = {c: {} for c in self.hist_source_choices}
-            choices["load"]["-s"] = {c: {} for c in self.voi_source_choices}
             choices["plot"]["-x"] = {c: {} for c in self.plot_vars_choices}
             choices["plot"]["-y"] = {c: {} for c in self.plot_vars_choices}
             choices["plot"]["-c"] = {c: {} for c in self.plot_custom_choices}
@@ -273,7 +263,7 @@ class OptionsController(BaseController):
             default=-1,
             required="-m" in other_args,
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if ns_parser.min > 0 and ns_parser.max > 0:
                 pars = {"x_min": ns_parser.min, "x_max": ns_parser.max}
@@ -340,7 +330,7 @@ class OptionsController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -384,7 +374,7 @@ class OptionsController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
@@ -407,7 +397,7 @@ class OptionsController(BaseController):
             prog="info",
             description="Display option data [Source: Barchart.com]",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -477,7 +467,7 @@ class OptionsController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-s")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
@@ -530,22 +520,16 @@ class OptionsController(BaseController):
             required="-h" not in other_args,
             help="Stock ticker",
         )
-        parser.add_argument(
-            "-s",
-            "--source",
-            choices=self.load_source_choices,
-            dest="source",
-            default=None,
-            help="Source to get option expirations from",
-        )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, sources=["tradier", "yf"]
+        )
         if ns_parser:
             self.ticker = ns_parser.ticker.upper()
             self.update_runtime_choices()
 
-            if TRADIER_TOKEN == "REPLACE_ME" or ns_parser.source == "yf":  # nosec
+            if ns_parser.source == "yf":
                 self.expiry_dates = yfinance_model.option_expirations(self.ticker)
             else:
                 self.expiry_dates = tradier_model.option_expirations(self.ticker)
@@ -587,7 +571,7 @@ class OptionsController(BaseController):
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-i")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if self.ticker:
                 # Print possible expiry dates
@@ -645,34 +629,15 @@ class OptionsController(BaseController):
         parser.add_argument(
             "-c", "--chain", dest="chain_id", type=str, help="OCC option symbol"
         )
-        parser.add_argument(
-            "-r",
-            "--raw",
-            dest="raw",
-            action="store_true",
-            default=False,
-            help="Display raw data",
-        )
-        parser.add_argument(
-            "--source",
-            dest="source",
-            type=str,
-            choices=self.hist_source_choices,
-            default="ce",
-            help="Choose Tradier(TD) or ChartExchange (CE), only affects raw data",
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            dest="limit",
-            type=int,
-            default=10,
-            help="Limit of data rows to display",
-        )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-s")
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+            raw=True,
+            limit=10,
+            sources=["chartexchange", "tradier"],
         )
         if ns_parser:
             if self.ticker:
@@ -689,7 +654,7 @@ class OptionsController(BaseController):
                             in [float(strike) for strike in self.chain.calls["strike"]]
                         )
                     ):
-                        if ns_parser.source.lower() == "ce":
+                        if ns_parser.source == "chartexchange":
                             chartexchange_view.display_raw(
                                 self.ticker,
                                 self.selected_date,
@@ -769,7 +734,7 @@ class OptionsController(BaseController):
             help="Columns to look at.  Columns can be: bid, ask, strike, bidsize, asksize, volume, open_interest, "
             "delta, gamma, theta, vega, ask_iv, bid_iv, mid_iv. E.g. 'bid,ask,strike' ",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -800,7 +765,7 @@ class OptionsController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="vol",
-            description="Plot volume.  Volume refers to the number of contracts traded today.",
+            description="Plot volume. Volume refers to the number of contracts traded today.",
         )
         parser.add_argument(
             "-m",
@@ -834,23 +799,17 @@ class OptionsController(BaseController):
             dest="puts",
             help="Flag to plot put options only",
         )
-        parser.add_argument(
-            "-s",
-            "--source",
-            type=str,
-            default="tr",
-            choices=["tr", "yf"],
-            dest="source",
-            help="Source to get data from",
-        )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+            sources=["tradier", "yf"],
         )
         if ns_parser:
             if self.ticker:
                 if self.selected_date:
                     if (
-                        ns_parser.source == "tr"
+                        ns_parser.source == "tradier"
                         and TRADIER_TOKEN != "REPLACE_ME"  # nosec
                     ):
                         tradier_view.plot_vol(
@@ -910,23 +869,17 @@ class OptionsController(BaseController):
             default=-1,
             help="maximum strike price to consider in the plot.",
         )
-        parser.add_argument(
-            "-s",
-            "--source",
-            type=str,
-            default="tr",
-            choices=self.voi_source_choices,
-            dest="source",
-            help="Source to get data from",
-        )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+            sources=["tradier", "yf"],
         )
         if ns_parser:
             if self.ticker:
                 if self.selected_date:
                     if (
-                        ns_parser.source == "tr"
+                        ns_parser.source == "tradier"
                         and TRADIER_TOKEN != "REPLACE_ME"  # nosec
                     ):
                         tradier_view.plot_volume_open_interest(
@@ -992,23 +945,17 @@ class OptionsController(BaseController):
             dest="puts",
             help="Flag to plot put options only",
         )
-        parser.add_argument(
-            "-s",
-            "--source",
-            type=str,
-            default="tr",
-            choices=self.oi_source_choices,
-            dest="source",
-            help="Source to get data from",
-        )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+            sources=["tradier", "yf"],
         )
         if ns_parser:
             if self.ticker:
                 if self.selected_date:
                     if (
-                        ns_parser.source == "tr"
+                        ns_parser.source == "tradier"
                         and TRADIER_TOKEN != "REPLACE_ME"  # nosec
                     ):
                         tradier_view.plot_oi(
@@ -1086,7 +1033,7 @@ class OptionsController(BaseController):
             help="Choose from already created graphs",
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_FIGURES_ALLOWED
         )
         if ns_parser:
@@ -1132,7 +1079,7 @@ class OptionsController(BaseController):
             help="The data for the Z axis",
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
         if ns_parser:
@@ -1197,7 +1144,7 @@ class OptionsController(BaseController):
             help="Whether to show all greeks.",
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
         if ns_parser:
@@ -1259,7 +1206,7 @@ class OptionsController(BaseController):
             dest="maxi",
             help="Maximum strike price shown",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -1337,7 +1284,7 @@ class OptionsController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-s")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if self.ticker:
                 if self.selected_date:
