@@ -9,7 +9,9 @@ The menu allows the user to load in his/her own dataset(s), modify the data by (
 indices, apply statistical tests (e.g. <a href="https://en.wikipedia.org/wiki/Breusch%E2%80%93Godfrey_test" target="_blank">Breusch-Godfrey autocorrelation tests</a>)
 as well as OLS regressions and Panel regressions (e.g. <a href="https://en.wikipedia.org/wiki/Random_effects_model" target="_blank">Random Effects</a> and <a href="https://en.wikipedia.org/wiki/Fixed_effects_model" target="_blank">Fixed Effects</a>)
 
-## How to use
+{{< toc >}}
+
+## Accessing the Econometrics menu
 
 The Econometrics menu is called upon by typing `econometrics` which opens the following menu:
 
@@ -87,7 +89,7 @@ found by using the <a href="https://openbb-finance.github.io/OpenBBTerminal/term
 As there is a clear difference between time series data, which is 1-dimensional data (e.g. a single company over time)
 and panel data, which is 2-dimensional data (e.g. multiple companies over time) both use-cases are provided.
 
-### Working with time series data
+## Working with Time Series data
 To demonstrate the usage of the menu, the <a href="https://www.statsmodels.org/dev/datasets/generated/longley.html" target="_blank">longley</a>
 dataset is loaded in. This can be done by `load longley` as shown below:
 
@@ -275,10 +277,10 @@ Warnings:
 kurtosistest only valid for n>=20 ... continuing anyway, n=16
 ```
 
-The variable `-d` refers to the dependent variable, in this example `longley.totemp`, and `-i` refers to the
+The argument `-d` refers to the dependent variable, in this example `longley.totemp`, and the argument `-i` refers to the
 independent variables, in this example this is `longley.gnpdefl,longley.gnp,longley.unemp,longley.armed,longley.pop,longley.year`.
 
-With this regression done, it is possible to perform tests on the residuals of the model. E.g. for autocorrelation and
+After running the regression estimation, it is possible to perform tests on the residuals of the model. E.g. for autocorrelation and
 heteroscedasity as shown below with the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/econometrics/bgod/" target="_blank">bgod</a> and
 <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/econometrics/bpag/" target="_blank">bpag</a> commands.
 
@@ -318,7 +320,7 @@ Breusch-Pagan heteroscedasticity test
 The result 0.16 indicates the existence of heteroscedasticity. Consider taking the log or a rate for the dependent variable.
 ```
 
-### Working with panel data
+## Working with Panel data
 Within the examples of `load --examples` there is one panel dataset available named `wage_panel`. This is a dataset from the
 paper by Vella and M. Verbeek (1998), “Whose Wages Do Unions Raise? A Dynamic Model of Unionism and Wage Rate Determination for Young Men,”
 Journal of Applied Econometrics 13, 163-183. This is a well-known dataset also used within Chapter 14 of <a href="https://www.amazon.com/Introductory-Econometrics-Modern-Approach-Economics/dp/1111531048" target="_blank">Introduction to Econometrics by Jeffrey Wooldridge</a>.
@@ -585,9 +587,9 @@ wp.year.1987     0.1348     0.0817     1.6504     0.0989     -0.0253      0.2950
 ```
 
 ## Scripts & Routines
-Doing research both as a student for a university or as a professional often requires the findings to be easily
-replicated. Furthermore, as many steps could be required it can be very beneficial to make small adjustments without needing
-to re-do every single step again. This is where `.openbb` files play an important role.
+Doing research both as a student or professor for a university or as a professional often requires the findings to be easily
+replicated. Furthermore, as many steps could be required it can be very beneficial to have the ability to make small
+adjustments without needing to re-do every single step again. This is where `.openbb` files play an important role.
 
 By going to the main menu as depicted below, the `exe` command can be used. With this command you can run `.openbb` scripts
 that automatically run a set of commands similarly to that of the Stata do-files and SPSS syntax files. These scripts are located within `.openbb/routines` and can be found within `Applications/OpenBB Terminal`.
@@ -618,8 +620,8 @@ panel -d wp.lwage -i wp.expersq,wp.union,wp.married,wp.year -r fe
 compare
 ```
 
-Everything after `#` _on the same line_ refer to comments and will not be executed. All other commands will be. This
-ultimately leads to a comparison of three models and takes less than a second to execute.
+Everything after `#` _on the same line_ refers to comments and will not be executed. All other commands will be. This
+ultimately leads to a comparison of three models and takes less than a few seconds to execute.
 See below for the comparison result, obtained via the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/econometrics/compare/" target="_blank">compare</a> command:
 
 ```
