@@ -824,7 +824,7 @@ class ForecastingController(BaseController):
         parser.add_argument(
             "--max_lag",
             help="The maximal lag order to consider",
-            dest="m",
+            dest="max_lag",
             type=int,
             default=24,
         )
@@ -832,7 +832,7 @@ class ForecastingController(BaseController):
             "-a",
             "--alpha",
             help="The confidence interval to display",
-            dest="m",
+            dest="alpha",
             type=float,
             default=0.05,
         )
