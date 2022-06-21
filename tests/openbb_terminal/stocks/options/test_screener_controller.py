@@ -112,8 +112,8 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
     )
 
     result_menu = screener_controller.ScreenerController(queue=None).menu()
-    
-    assert result_menu == ['help']
+
+    assert result_menu == ["help"]
 
 
 @pytest.mark.vcr(record_mode="none")
