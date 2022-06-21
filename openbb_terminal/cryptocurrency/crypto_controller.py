@@ -208,9 +208,7 @@ class CryptoController(CryptoBaseController):
             if ns_parser:
                 export_data(
                     ns_parser.export,
-                    os.path.join(
-                        os.path.dirname(os.path.abspath(__file__))
-                    ),
+                    os.path.join(os.path.dirname(os.path.abspath(__file__))),
                     f"{self.symbol}",
                     self.current_df,
                 )
