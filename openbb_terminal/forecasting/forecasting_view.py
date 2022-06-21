@@ -9,7 +9,6 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 import seaborn as sns
-from darts.utils.statistics import plot_acf
 
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.decorators import log_start_end
@@ -24,6 +23,7 @@ from openbb_terminal.rich_config import console
 from openbb_terminal.forecasting import forecasting_model
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.forecasting import helpers
+from openbb_terminal.forecasting.from_darts import plot_acf
 
 logger = logging.getLogger(__name__)
 

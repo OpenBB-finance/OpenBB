@@ -857,7 +857,7 @@ class ForecastingController(BaseController):
 
             forecasting_view.display_seasonality(
                 data=data,
-                col=col,
+                column=col,
                 export=ns_parser.export,
                 m=ns_parser.m,
                 max_lag=ns_parser.max_lag,
