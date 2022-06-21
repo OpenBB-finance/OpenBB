@@ -9,9 +9,8 @@
 
 
 
-    <meta name="description" content="Search for an ETF by name, using either FinanceDatabase or Stockanalysis.com as the source.
-usage: ln -n NAME [NAME ...] [-s {sa,fd}] [-l LIMIT] [-h] [--export {csv,json,xlsx}] ln: error: the following arguments are required: -n/--name Sample output:
-2022 Jan 18, 23:49 (✨) /etf/ $ ln energy -l 10 ╒══════╤═══════════════════════════════════════════════════════╤═══════════════════════════════════╤════════════════════════════╤════════════════════╕ │ │ Name │ Family │ Category │ Total Assets [M] │ ╞══════╪═══════════════════════════════════════════════════════╪═══════════════════════════════════╪════════════════════════════╪════════════════════╡ │ XLE │ Energy Select Sector SPDR Fund │ SPDR State Street Global Advisors │ Equity Energy │ 23081.">
+    <meta name="description" content="usage: ln -n NAME [NAME ...] [-s {sa,fd}] [-l LIMIT] [-h] [--export {csv,json,xlsx}] Search for an ETF by name, using either FinanceDatabase or Stockanalysis.com as the source.
+optional arguments: -n NAME [NAME ...], --name NAME [NAME ...] Name to look for ETFs (default: None) -h, --help show this help message (default: False) --export EXPORT Export raw data into csv, json, xlsx (default: ) -l LIMIT, --limit LIMIT Number of entries to show in data.">
 
 
 
@@ -16803,6 +16802,37 @@ usage: ln -n NAME [NAME ...] [-s {sa,fd}] [-l LIMIT] [-h] [--export {csv,json,xl
             
             <span class="flex">
                 
+                <a href="/OpenBBTerminal/terminal/etf/load/"
+                    class="gdoc-nav__entry ">
+                    load
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
                 <a href="/OpenBBTerminal/terminal/etf/overview/"
                     class="gdoc-nav__entry ">
                     overview
@@ -29632,7 +29662,7 @@ usage: ln -n NAME [NAME ...] [-s {sa,fd}] [-l LIMIT] [-h] [--export {csv,json,xl
         
     
     
-        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/' href='/OpenBBTerminal/'><span itemprop='name'>Getting Started</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/terminal/' href='/OpenBBTerminal/terminal/'><span itemprop='name'>OpenBB Terminal</span></a><meta itemprop='position' content='3' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/terminal/etf/' href='/OpenBBTerminal/terminal/etf/'><span itemprop='name'>Exchange Traded Funds (ETFs)</span></a><meta itemprop='position' content='4' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>Ln</span><meta itemprop='position' content='5' /></li>
+        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/' href='/OpenBBTerminal/'><span itemprop='name'>Getting Started</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/terminal/' href='/OpenBBTerminal/terminal/'><span itemprop='name'>OpenBB Terminal</span></a><meta itemprop='position' content='3' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/terminal/etf/' href='/OpenBBTerminal/terminal/etf/'><span itemprop='name'>Introduction to ETFs</span></a><meta itemprop='position' content='4' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>Ln</span><meta itemprop='position' content='5' /></li>
     
 
     
@@ -29658,10 +29688,17 @@ usage: ln -n NAME [NAME ...] [-s {sa,fd}] [-l LIMIT] [-h] [--export {csv,json,xl
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Ln</h1>
-        <p>Search for an ETF by name, using either FinanceDatabase or Stockanalysis.com as the source.</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">usage: ln -n NAME [NAME ...] [-s {sa,fd}] [-l LIMIT] [-h] [--export {csv,json,xlsx}]
-ln: error: the following arguments are required: -n/--name
-</code></pre></div><p>Sample output:</p>
+        <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">usage: ln -n NAME [NAME ...] [-s {sa,fd}] [-l LIMIT] [-h] [--export {csv,json,xlsx}]
+</code></pre></div><p>Search for an ETF by name, using either FinanceDatabase or Stockanalysis.com as the source.</p>
+<pre><code>optional arguments:
+  -n NAME [NAME ...], --name NAME [NAME ...]
+                        Name to look for ETFs (default: None)
+  -h, --help            show this help message (default: False)
+  --export EXPORT       Export raw data into csv, json, xlsx (default: )
+  -l LIMIT, --limit LIMIT
+                        Number of entries to show in data. (default: 5)
+  --source {sa,fd}      Data source to select from (default: None)
+</code></pre><p>Sample output:</p>
 <pre><code>2022 Jan 18, 23:49 (✨) /etf/ $ ln energy -l 10
 ╒══════╤═══════════════════════════════════════════════════════╤═══════════════════════════════════╤════════════════════════════╤════════════════════╕
 │      │ Name                                                  │ Family                            │ Category                   │   Total Assets [M] │
@@ -39806,6 +39843,25 @@ ln: error: the following arguments are required: -n/--name
             
                 
                 
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
             
 
             

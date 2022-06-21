@@ -9,8 +9,8 @@
 
 
 
-    <meta name="description" content="Search for an ETF by description using either FinanceDatabase or StockAnalysis as the source.
-usage: ld [-d DESCRIPTION [DESCRIPTION ...]] [-l LIMIT] [-h] [--export {csv,json,xlsx}] Lookup by description [Source: FinanceDatabase/StockAnalysis.com] optional arguments: -d DESCRIPTION [DESCRIPTION ...], --description DESCRIPTION [DESCRIPTION ...] Name to look for ETFs (default: None) -l LIMIT, --limit LIMIT Limit of ETFs to display (default: 5) -h, --help show this help message (default: False) --export {csv,json,xlsx} Export raw data into csv, json, xlsx (default: ) Sample output:">
+    <meta name="description" content="usage: ld [-d DESCRIPTION [DESCRIPTION ...]] [-l LIMIT] [-h] [--export {csv,json,xlsx}] Search for an ETF by description using either FinanceDatabase or StockAnalysis as the source. [Source: FinanceDatabase/StockAnalysis.com]
+optional arguments: -d DESCRIPTION [DESCRIPTION ...], --description DESCRIPTION [DESCRIPTION ...] Name to look for ETFs (default: None) -l LIMIT, --limit LIMIT Limit of ETFs to display (default: 5) -h, --help show this help message (default: False) --export {csv,json,xlsx} Export raw data into csv, json, xlsx (default: ) Sample output:">
 
 
 
@@ -16802,6 +16802,37 @@ usage: ld [-d DESCRIPTION [DESCRIPTION ...]] [-l LIMIT] [-h] [--export {csv,json
             
             <span class="flex">
                 
+                <a href="/OpenBBTerminal/terminal/etf/load/"
+                    class="gdoc-nav__entry ">
+                    load
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
                 <a href="/OpenBBTerminal/terminal/etf/overview/"
                     class="gdoc-nav__entry ">
                     overview
@@ -29631,7 +29662,7 @@ usage: ld [-d DESCRIPTION [DESCRIPTION ...]] [-l LIMIT] [-h] [--export {csv,json
         
     
     
-        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/' href='/OpenBBTerminal/'><span itemprop='name'>Getting Started</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/terminal/' href='/OpenBBTerminal/terminal/'><span itemprop='name'>OpenBB Terminal</span></a><meta itemprop='position' content='3' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/terminal/etf/' href='/OpenBBTerminal/terminal/etf/'><span itemprop='name'>Exchange Traded Funds (ETFs)</span></a><meta itemprop='position' content='4' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>Ld</span><meta itemprop='position' content='5' /></li>
+        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/' href='/OpenBBTerminal/'><span itemprop='name'>Getting Started</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/terminal/' href='/OpenBBTerminal/terminal/'><span itemprop='name'>OpenBB Terminal</span></a><meta itemprop='position' content='3' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/terminal/etf/' href='/OpenBBTerminal/terminal/etf/'><span itemprop='name'>Introduction to ETFs</span></a><meta itemprop='position' content='4' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>Ld</span><meta itemprop='position' content='5' /></li>
     
 
     
@@ -29657,12 +29688,9 @@ usage: ld [-d DESCRIPTION [DESCRIPTION ...]] [-l LIMIT] [-h] [--export {csv,json
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Ld</h1>
-        <p>Search for an ETF by description using either FinanceDatabase or StockAnalysis as the source.</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">usage: ld [-d DESCRIPTION [DESCRIPTION ...]] [-l LIMIT] [-h] [--export {csv,json,xlsx}]
-
-Lookup by description [Source: FinanceDatabase/StockAnalysis.com]
-
-optional arguments:
+        <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">usage: ld [-d DESCRIPTION [DESCRIPTION ...]] [-l LIMIT] [-h] [--export {csv,json,xlsx}]
+</code></pre></div><p>Search for an ETF by description using either FinanceDatabase or StockAnalysis as the source. [Source: FinanceDatabase/StockAnalysis.com]</p>
+<pre><code>optional arguments:
   -d DESCRIPTION [DESCRIPTION ...], --description DESCRIPTION [DESCRIPTION ...]
                         Name to look for ETFs (default: None)
   -l LIMIT, --limit LIMIT
@@ -29670,7 +29698,7 @@ optional arguments:
   -h, --help            show this help message (default: False)
   --export {csv,json,xlsx}
                         Export raw data into csv, json, xlsx (default: )
-</code></pre></div><p>Sample output:</p>
+</code></pre><p>Sample output:</p>
 <pre><code>2022 Jan 18, 23:52 (✨) /etf/ $ ld 3X -l 10
 ╒══════╤═════════════════════════════════════════════════════╤══════════════╤═══════════════════════════╤════════════════════╕
 │      │ Name                                                │ Family       │ Category                  │   Total Assets [M] │
@@ -39957,6 +39985,25 @@ optional arguments:
 
         
         
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
             
     
     
@@ -47510,7 +47557,7 @@ optional arguments:
         </span>
         <span class="gdoc-page__nav">
             
-                <a class="gdoc-page__nav--next flex align-center" href="/OpenBBTerminal/terminal/etf/overview/" title="overview">overview </a>
+                <a class="gdoc-page__nav--next flex align-center" href="/OpenBBTerminal/terminal/etf/load/" title="load">load </a>
             
         </span>
     
