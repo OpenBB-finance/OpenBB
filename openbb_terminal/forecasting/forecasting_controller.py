@@ -1413,6 +1413,7 @@ class ForecastingController(BaseController):
                 start_window=ns_parser.start_window,
                 forecast_horizon=ns_parser.forecast_horizon,
                 export=ns_parser.export,
+                residuals=ns_parser.residuals,
             )
 
     @log_start_end(log=logger)
@@ -1458,6 +1459,7 @@ class ForecastingController(BaseController):
                 start_window=ns_parser.start_window,
                 forecast_horizon=ns_parser.forecast_horizon,
                 export=ns_parser.export,
+                residuals=ns_parser.residuals,
             )
 
     @log_start_end(log=logger)
@@ -1539,6 +1541,7 @@ class ForecastingController(BaseController):
                 force_reset=ns_parser.force_reset,
                 save_checkpoints=ns_parser.save_checkpoints,
                 export=ns_parser.export,
+                residuals=ns_parser.residuals,
             )
 
     @log_start_end(log=logger)
@@ -1638,6 +1641,7 @@ class ForecastingController(BaseController):
                 force_reset=ns_parser.force_reset,
                 save_checkpoints=ns_parser.save_checkpoints,
                 export=ns_parser.export,
+                residuals=ns_parser.residuals,
             )
 
     @log_start_end(log=logger)
@@ -1729,6 +1733,7 @@ class ForecastingController(BaseController):
                 force_reset=ns_parser.force_reset,
                 save_checkpoints=ns_parser.save_checkpoints,
                 export=ns_parser.export,
+                residuals=ns_parser.residuals,
             )
 
     @log_start_end(log=logger)
@@ -1778,6 +1783,7 @@ class ForecastingController(BaseController):
                 output_chunk_length=ns_parser.output_chunk_length,
                 lags=ns_parser.lags,
                 export=ns_parser.export,
+                residuals=ns_parser.residuals,
             )
 
     @log_start_end(log=logger)
@@ -1825,6 +1831,7 @@ class ForecastingController(BaseController):
                 output_chunk_length=ns_parser.output_chunk_length,
                 lags=ns_parser.lags,
                 export=ns_parser.export,
+                residuals=ns_parser.residuals,
             )
 
     @log_start_end(log=logger)
@@ -2012,6 +2019,7 @@ class ForecastingController(BaseController):
                 force_reset=ns_parser.force_reset,
                 save_checkpoints=ns_parser.save_checkpoints,
                 export=ns_parser.export,
+                residuals=ns_parser.residuals,
             )
 
     # Below this is ports to the old pred menu

@@ -61,7 +61,6 @@ def display_expo_forecast(
     residuals: bool
         Whether to show residuals for the model. Defaults to False.
     """
-
     # reformat the date column to remove any hour/min/sec
     data["date"] = data["date"].apply(helpers.dt_format)
 

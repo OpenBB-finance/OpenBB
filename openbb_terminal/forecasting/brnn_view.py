@@ -71,7 +71,7 @@ def display_brnn_forecast(
         batch_size (int, optional):
             Number of time series (input and output sequences) used in each training pass. Defaults to 32.
         n_epochs (int, optional):
-            Number of epochs over which to train the model. Defaults to 100.
+            Number of epochs over which to train the model. Defaults to 101.
         learning_rate (float, optional):
             Defaults to 1e-3.
         model_save_name (str, optional):
