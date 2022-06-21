@@ -46,7 +46,7 @@ The help dialogue for any feature is printed by attaching `-h` to the command.
 
 <h2>Examples</h2>
 
-`recom` & `summary` are commands available only with a stock loaded as the asset. `summary` is a text description of the techincal conditions.
+`recom` & `summary` are commands available only with a stock loaded as the asset. `summary` is a text description of the technical conditions.
 ````
 (🦋) /stocks/ta/ $ summary
 MSFT price has changed 1.29% in the last 3 days and 1.09% yesterday.
