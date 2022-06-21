@@ -17,7 +17,7 @@ it also has the option to export multiple ETFs to Excel with <a href="https://op
 
 The ETF menu is called upon by typing `etf` which opens the following menu:
 
-![img_1.png](img_1.png)
+![ETF Menu](https://user-images.githubusercontent.com/46355364/174823477-48d3c21f-eb88-4942-b513-dbb4269cc9ee.png)
 
 You have the ability to look up any ETF (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/etf/ln/" target="_blank">ln</a> and <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/etf/ld/" target="_blank">ld</a>). With the example below, the `ld` command is used that searches the description of the ETFs. Then the search query is entered with is `500`. Lastly, the `-l` argument is included which refers to `limit` and is maxed to `15` ETFs.
 ````
@@ -70,12 +70,12 @@ Top company holdings found: AAPL, MSFT, AMZN, GOOGL, TSLA
 To then view the stock chart, you can call <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/etf/candle/" target="_blank">candle</a>
 which shows a candle chart for the defined period (by default set to a year by `load`):
 
-![](Figure_1.png)
+![Candle Chart of VOO](https://user-images.githubusercontent.com/46355364/174823545-6695f9b0-864c-4b94-a612-baa8087d1858.png)
 
 By calling `?` or `help` the ETF menu re-appears. Here you can see that multiple commands menus have turned blue. Because of loading 
 a ticker, these menus can now be used in combination with the chosen ticker.
 
-![img.png](img.png)
+![ETF Menu with ETF Loaded](https://user-images.githubusercontent.com/46355364/174823623-42f0c54c-93a0-484e-a0b8-b82302977b29.png)
 
 For example, the ETF's weights can now be depicted with the following:
 ````
@@ -84,7 +84,7 @@ For example, the ETF's weights can now be depicted with the following:
 
 Which shows the following graph:
 
-![](Figure_12.png)
+![Weights of VOO](https://user-images.githubusercontent.com/46355364/174823708-bdf1221f-c183-435a-b436-f0319123f13d.png)
 
 ## Sub-menus available
 
@@ -156,7 +156,7 @@ the company's historical data from `2010-01-01` until the current date. We are a
 2022 Jun 21, 10:13 (🦋) /etf/ $ candle -t
 ```
 
-![](Figure_3.png)
+![Candle Chart with Trendlines](https://user-images.githubusercontent.com/46355364/174823785-ec11cb1a-dbf0-45a7-b086-31542ece39a3.png)
 
 Now we can go ahead and explore more about the ETF by running <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/etf/holdings/" target="_blank">holdings</a> and 
 <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/etf/weights/" target="_blank">weights</a> using the `--raw` argument for weights to display a table instead of a graph.
