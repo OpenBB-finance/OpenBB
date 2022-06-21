@@ -393,30 +393,20 @@ def test_call_func(tested_func, mocked_func, other_args, called_with, mocker):
 )
 def test_call_func_no_parser(func, mocker):
     mocker.patch(
-        "openbb_terminal.stocks.fundamental_analysis.fa_controller.parse_known_args_and_warn",
+        "openbb_terminal.stocks.fundamental_analysis.fa_controller"
+        ".FundamentalAnalysisController.parse_known_args_and_warn",
         return_value=None,
     )
-    fa = fa_controller.FundamentalAnalysisController(
+    controller = fa_controller.FundamentalAnalysisController(
         ticker="AAPL",
         start="10/25/2021",
         interval="1440min",
         suffix="",
     )
 
-    func_result = getattr(fa, func)(other_args=list())
+    func_result = getattr(controller, func)(other_args=list())
     assert func_result is None
-    getattr(fa_controller, "parse_known_args_and_warn").assert_called_once()
-
-
-@pytest.mark.vcr(record_mode="none")
-def test_key_metrics_explained_no_parser(mocker):
-    mocker.patch(
-        "openbb_terminal.stocks.fundamental_analysis.fa_controller.parse_known_args_and_warn",
-        return_value=None,
-    )
-
-    fa_controller.key_metrics_explained(other_args=list())
-    getattr(fa_controller, "parse_known_args_and_warn").assert_called_once()
+    controller.parse_known_args_and_warn.assert_called_once()
 
 
 @pytest.mark.vcr(record_mode="none")

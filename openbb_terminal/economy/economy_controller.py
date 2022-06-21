@@ -34,7 +34,6 @@ from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_FIGURES_ALLOWED,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
-    parse_known_args_and_warn,
     print_rich_table,
     valid_date,
 )
@@ -270,7 +269,7 @@ class EconomyController(BaseController):
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -334,7 +333,7 @@ class EconomyController(BaseController):
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-c")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -382,7 +381,7 @@ class EconomyController(BaseController):
             choices=self.map_type_list,
             help="Map filter type.",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             finviz_view.map_sp500_view(
                 period=ns_parser.s_period,
@@ -416,7 +415,7 @@ class EconomyController(BaseController):
             type=nasdaq_model.check_country_code_type,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -520,7 +519,7 @@ class EconomyController(BaseController):
             default=False,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED, raw=True
         )
         if ns_parser:
@@ -622,7 +621,7 @@ class EconomyController(BaseController):
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -782,7 +781,7 @@ class EconomyController(BaseController):
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-i")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
@@ -907,7 +906,7 @@ class EconomyController(BaseController):
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-m")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
@@ -963,16 +962,6 @@ class EconomyController(BaseController):
             " at different maturities.",
         )
         parser.add_argument(
-            "-s",
-            "--source",
-            action="store",
-            dest="source",
-            choices=self.ycrv_sources,
-            type=str,
-            default="investpy",
-            help="Source for the data. If not supplied, the most recent entry from investpy will be used.",
-        )
-        parser.add_argument(
             "-c",
             "--country",
             action="store",
@@ -989,11 +978,12 @@ class EconomyController(BaseController):
             dest="date",
             default=None,
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
             raw=True,
+            sources=self.ycrv_sources,
         )
         if ns_parser:
             if isinstance(ns_parser.country, list):
@@ -1045,7 +1035,7 @@ class EconomyController(BaseController):
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-y1")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
@@ -1176,7 +1166,7 @@ class EconomyController(BaseController):
             "axes graph. Furthermore, this command also allows you to see and export all stored data.",
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
@@ -1213,7 +1203,7 @@ class EconomyController(BaseController):
             """,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -1265,7 +1255,7 @@ class EconomyController(BaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-g")
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -1319,7 +1309,7 @@ class EconomyController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-g")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -1358,7 +1348,7 @@ class EconomyController(BaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-g")
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
         if ns_parser:

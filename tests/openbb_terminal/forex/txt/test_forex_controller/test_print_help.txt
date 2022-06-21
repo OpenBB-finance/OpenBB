@@ -1,5 +1,5 @@
 Ticker: 
-Source: Polygon
+Source: YahooFinance
 
 [unvl]    quote              get last quote[/unvl]                              [AlphaVantage]
 [unvl]    load               get historical data[/unvl]

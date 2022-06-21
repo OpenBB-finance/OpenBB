@@ -33,7 +33,6 @@ from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
-    parse_known_args_and_warn,
     valid_date,
 )
 from openbb_terminal.menu import session
@@ -275,7 +274,7 @@ class DueDiligenceController(CryptoBaseController):
                 default=(datetime.now() - timedelta(days=367)).strftime("%Y-%m-%d"),
             )
 
-            ns_parser = parse_known_args_and_warn(
+            ns_parser = self.parse_known_args_and_warn(
                 parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
             )
 
@@ -334,7 +333,7 @@ class DueDiligenceController(CryptoBaseController):
                 default=(datetime.now()).strftime("%Y-%m-%d"),
             )
 
-            ns_parser = parse_known_args_and_warn(
+            ns_parser = self.parse_known_args_and_warn(
                 parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
             )
 
@@ -407,7 +406,7 @@ class DueDiligenceController(CryptoBaseController):
                 if not other_args[0][0] == "-":
                     other_args.insert(0, "-e")
 
-            ns_parser = parse_known_args_and_warn(
+            ns_parser = self.parse_known_args_and_warn(
                 parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
             )
 
@@ -487,7 +486,7 @@ class DueDiligenceController(CryptoBaseController):
             if other_args and not other_args[0][0] == "-":
                 other_args.insert(0, "-e")
 
-            ns_parser = parse_known_args_and_warn(
+            ns_parser = self.parse_known_args_and_warn(
                 parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
             )
 
@@ -529,7 +528,7 @@ class DueDiligenceController(CryptoBaseController):
             choices=coinglass_model.INTERVALS,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
 
@@ -553,7 +552,7 @@ class DueDiligenceController(CryptoBaseController):
                     """,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -576,7 +575,7 @@ class DueDiligenceController(CryptoBaseController):
             Market data for loaded coin. There you find metrics like:
             Market Cap, Supply, Circulating Supply, Price, Volume and many others.""",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -595,7 +594,7 @@ class DueDiligenceController(CryptoBaseController):
                                 homepage, forum, announcement site and others.""",
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -617,7 +616,7 @@ class DueDiligenceController(CryptoBaseController):
             description="""Shows social media corresponding to loaded coin. You can find there name of
             telegram channel, urls to twitter, reddit, bitcointalk, facebook and discord.""",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -639,7 +638,7 @@ class DueDiligenceController(CryptoBaseController):
             There are some statistics that shows number of stars, forks, subscribers, pull requests,
             commits, merges, contributors on github.""",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -666,7 +665,7 @@ class DueDiligenceController(CryptoBaseController):
             choices=FILTERS_VS_USD_BTC,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -692,7 +691,7 @@ class DueDiligenceController(CryptoBaseController):
             default="usd",
             choices=FILTERS_VS_USD_BTC,
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -715,7 +714,7 @@ class DueDiligenceController(CryptoBaseController):
             and many others.""",
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -736,7 +735,7 @@ class DueDiligenceController(CryptoBaseController):
             in which you can see all blockchain data e.g. all txs, all tokens, all contracts...
                                 """,
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -777,7 +776,7 @@ class DueDiligenceController(CryptoBaseController):
             choices=quotes,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
@@ -812,7 +811,7 @@ class DueDiligenceController(CryptoBaseController):
             choices=quotes,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
@@ -844,7 +843,7 @@ class DueDiligenceController(CryptoBaseController):
             choices=quotes,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -896,7 +895,7 @@ class DueDiligenceController(CryptoBaseController):
             type=check_positive,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -933,7 +932,7 @@ class DueDiligenceController(CryptoBaseController):
             choices=quotes,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -959,7 +958,7 @@ class DueDiligenceController(CryptoBaseController):
             type=str,
             choices=coinpaprika_view.CURRENCIES,
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -982,7 +981,7 @@ class DueDiligenceController(CryptoBaseController):
                 name, symbol, rank, type, description, platform, proof_type,
                 contract, tags, parent""",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -1054,7 +1053,7 @@ class DueDiligenceController(CryptoBaseController):
                 exchange, pair, trust_score, market_url columns""",
             default=False,
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -1112,7 +1111,7 @@ class DueDiligenceController(CryptoBaseController):
             default=False,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -1179,7 +1178,7 @@ class DueDiligenceController(CryptoBaseController):
             default=False,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -1237,7 +1236,7 @@ class DueDiligenceController(CryptoBaseController):
             default=False,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -1293,7 +1292,7 @@ class DueDiligenceController(CryptoBaseController):
             default=datetime.now().strftime("%Y-%m-%d"),
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
 
@@ -1319,7 +1318,7 @@ class DueDiligenceController(CryptoBaseController):
             """,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -1382,7 +1381,7 @@ class DueDiligenceController(CryptoBaseController):
             default=datetime.now().strftime("%Y-%m-%d"),
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
 
@@ -1416,7 +1415,7 @@ class DueDiligenceController(CryptoBaseController):
             default=False,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED, limit=5
         )
 
@@ -1442,7 +1441,7 @@ class DueDiligenceController(CryptoBaseController):
             """,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -1469,7 +1468,7 @@ class DueDiligenceController(CryptoBaseController):
             """,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -1493,7 +1492,7 @@ class DueDiligenceController(CryptoBaseController):
             """,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -1517,7 +1516,7 @@ class DueDiligenceController(CryptoBaseController):
             """,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -1541,7 +1540,7 @@ class DueDiligenceController(CryptoBaseController):
             """,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -1565,7 +1564,7 @@ class DueDiligenceController(CryptoBaseController):
             """,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -1653,7 +1652,7 @@ class DueDiligenceController(CryptoBaseController):
         if other_args and not other_args[0][0] == "-":
             other_args.insert(0, "-t")
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, limit=10
         )
 
@@ -1760,7 +1759,7 @@ class DueDiligenceController(CryptoBaseController):
             default=True,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 

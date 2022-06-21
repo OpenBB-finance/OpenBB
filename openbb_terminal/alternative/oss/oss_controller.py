@@ -15,7 +15,6 @@ from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     log_and_raise,
-    parse_known_args_and_warn,
     valid_repo,
 )
 from openbb_terminal.menu import session
@@ -70,7 +69,7 @@ class OSSController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-r")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -107,7 +106,7 @@ class OSSController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-r")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED, raw=True
         )
         if ns_parser:
@@ -178,7 +177,7 @@ class OSSController(BaseController):
             choices=["stars", "forks"],
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
@@ -225,7 +224,7 @@ class OSSController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-c")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,

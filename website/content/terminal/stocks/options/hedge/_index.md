@@ -7,7 +7,6 @@ status: publish
 excerpt: "This guide introduces the Hedge submenu, within the Options menu, providing examples in use."
 geekdocCollapseSection: true
 ---
-<h1>Introduction to the Hedge Submenu</h1>
 
 The Hedge menu is designed to help the user calculate positions within the selected expiration chain to be directionally neutral. It is worth reviewing reference material, such as <a href="https://en.wikipedia.org/wiki/Hedge_(finance)#Delta_hedging" target="_blank">Wikipedia</a> or <a href="https://www.investopedia.com/terms/d/deltahedging.asp" target="_blank">Investopedia</a>, before using this feature set.
 
