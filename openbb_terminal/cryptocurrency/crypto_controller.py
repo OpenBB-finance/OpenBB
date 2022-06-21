@@ -27,6 +27,7 @@ from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
+    export_data,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import CryptoBaseController
@@ -108,7 +109,7 @@ class CryptoController(CryptoBaseController):
         )
         mt.add_raw("\n")
         mt.add_cmd("headlines", "FinBrain")
-        mt.add_cmd("chart", "", self.symbol)
+        mt.add_cmd("candle", "", self.symbol)
         mt.add_cmd("prt", "", self.symbol)
         mt.add_raw("\n")
         mt.add_menu("disc")
@@ -205,6 +206,15 @@ class CryptoController(CryptoBaseController):
             )
 
             if ns_parser:
+                export_data(
+                    ns_parser.export,
+                    os.path.join(
+                        os.path.dirname(os.path.abspath(__file__))
+                    ),
+                    f"{self.symbol}",
+                    self.current_df,
+                )
+
                 plot_chart(
                     symbol=self.symbol,
                     currency=self.current_currency,

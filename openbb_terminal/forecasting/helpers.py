@@ -207,13 +207,18 @@ def get_series(data, target_col: str = None, is_scaler: bool = True):
         freq="B",
         fill_missing_dates=True,
     )
+    try:
+        ticker_series = TimeSeries.from_dataframe(**filler_kwargs)
+    except ValueError:
+        filler_kwargs.pop("freq")
+        ticker_series = TimeSeries.from_dataframe(**filler_kwargs)
+
     if is_scaler:
         scaler = Scaler()
         scaled_ticker_series = scaler.fit_transform(
-            filler.transform(TimeSeries.from_dataframe(**filler_kwargs))
+            filler.transform(ticker_series)
         ).astype(np.float32)
         return filler, scaler, scaled_ticker_series
-    ticker_series = TimeSeries.from_dataframe(**filler_kwargs)
     ticker_series = filler.transform(ticker_series).astype(np.float32)
     scaler = None
     return filler, scaler, ticker_series
