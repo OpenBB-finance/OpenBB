@@ -1102,6 +1102,7 @@ en:
   forecasting/clean: Clean a dataset by filling or dropping NaNs
   forecasting/desc: Show descriptive statistics of a dataset
   forecasting/corr: Plot the correlation coefficients for dataset features
+  forecasting/season: Plot the seasonality for a dataset column
   forecasting/combine: Combine columns from different datasets
   forecasting/delete: Delete columns from dataset
   forecasting/export: Export a processed dataset
@@ -1115,6 +1116,7 @@ en:
   forecasting/_tsforecasting_: TimeSeries Forecasting
   forecasting/arima: Arima (Non-darts)
   forecasting/knn: KNN (Non-darts)
+  forecasting/mc: Monte Carlo Simulation (Non-darts)
   forecasting/expo: Probabilistic Exponential Smoothing
   forecasting/theta: Theta Method
   forecasting/linregr: Probabilistic Linear Regression
@@ -1126,5 +1128,3 @@ en:
   forecasting/trans: Transformer model (feat. Past covariates)
   forecasting/tft: Temporal Fusion Transformer (feat. Past covariates)
   forecasting/_comingsoon_: Coming Soon
-  forecasting/mc: Monte Carlo Simulation
-  forecasting/season: Plot the seasonality for a dataset
