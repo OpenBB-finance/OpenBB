@@ -338,11 +338,17 @@ def plot_residuals(
     model, past_covariates, series, forecast_horizon: int = 1, num_bins: int = 20
 ):
     if past_covariates:
-        console.print("[red]Cannot plot residuals if there are past covariates[/red]")
-    my_stopper = early_stopper(5, "train_loss")
-    pl_trainer_kwargs = {"callbacks": [my_stopper], "accelerator": "cpu"}
-    model.pl_trainer_kwargs = pl_trainer_kwargs
-    residuals = model.residuals(
-        series=series, forecast_horizon=forecast_horizon, verbose=False
-    )
-    plot_residuals_analysis(residuals=residuals, num_bins=num_bins, fill_nan=True)
+        console.print(
+            "[red]Cannot calculate and plot residuals if there are past covariates.[/red]"
+        )
+    else:
+        console.print(
+            "[green]Calculating and plotting residuals... This may take a few moments.[/green]"
+        )
+        my_stopper = early_stopper(5, "train_loss")
+        pl_trainer_kwargs = {"callbacks": [my_stopper], "accelerator": "cpu"}
+        model.pl_trainer_kwargs = pl_trainer_kwargs
+        residuals = model.residuals(
+            series=series, forecast_horizon=forecast_horizon, verbose=True
+        )
+        plot_residuals_analysis(residuals=residuals, num_bins=num_bins, fill_nan=True)
