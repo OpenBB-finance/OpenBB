@@ -119,10 +119,6 @@ def get_NBEATS_data(
         past_covariate_val,
     ) = helpers.past_covs(past_covariates, filler, data, train_split, use_scalers)
 
-    my_stopper = helpers.early_stopper(10)
-
-    pl_trainer_kwargs = {"callbacks": [my_stopper], "accelerator": "cpu"}
-
     nbeats_model = NBEATSModel(
         input_chunk_length=input_chunk_length,
         output_chunk_length=output_chunk_length,
@@ -139,7 +135,7 @@ def get_NBEATS_data(
         force_reset=force_reset,
         save_checkpoints=save_checkpoints,
         random_state=42,
-        pl_trainer_kwargs=pl_trainer_kwargs,
+        pl_trainer_kwargs=helpers.get_pl_kwargs(5),
     )
 
     # fit model on train series for historical forecasting

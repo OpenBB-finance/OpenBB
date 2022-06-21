@@ -76,6 +76,7 @@ class BaseController(metaclass=ABCMeta):
         "r",
         "reset",
         "support",
+        "glossary",
     ]
 
     CHOICES_COMMANDS: List[str] = []
@@ -376,6 +377,40 @@ class BaseController(metaclass=ABCMeta):
                 message=" ".join(ns_parser.msg),
                 path=self.PATH,
             )
+
+    @log_start_end(log=logger)
+    def call_glossary(self, other_args: List[str]) -> None:
+        """Process glossary command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="support",
+            description="Submit your support request",
+        )
+        parser.add_argument(
+            "-w",
+            "--word",
+            action="store",
+            dest="word",
+            type=str,
+            required="-h" not in other_args,
+            help="Word that you want defined",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-w")
+
+        ns_parser = parse_simple_args(parser, other_args)
+
+        glossary_dict = {
+            "option": "A financial asset that is based on the value of an underlying asset."
+        }
+
+        if ns_parser:
+            word = glossary_dict.get(ns_parser.word, None)
+            if word:
+                console.print(word + "\n")
+            else:
+                console.print("Word is not in glossary.\n")
 
     def parse_known_args_and_warn(
         self,

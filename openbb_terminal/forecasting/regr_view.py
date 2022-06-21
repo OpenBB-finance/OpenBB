@@ -26,6 +26,7 @@ def display_regression(
     output_chunk_length: int = 1,
     lags: Union[int, List[int]] = 72,
     export: str = "",
+    residuals: bool = False,
 ):
     """Display Regression Forecasting
 
@@ -52,6 +53,8 @@ def display_regression(
             Format to export data
         external_axes : Optional[List[plt.Axes]], optional
             External axes (2 axis is expected in the list), by default None
+        residuals: bool
+            Whether to show residuals for the model. Defaults to False.
     """
     data["date"] = data["date"].apply(helpers.dt_format)
     (
@@ -86,3 +89,5 @@ def display_regression(
         probabilistic,
         export,
     )
+    if residuals:
+        helpers.plot_residuals(_model, past_covariates, ticker_series)

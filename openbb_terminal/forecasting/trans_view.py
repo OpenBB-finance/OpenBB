@@ -39,6 +39,7 @@ def display_trans_forecast(
     force_reset: bool = True,
     save_checkpoints: bool = True,
     export: str = "",
+    residuals: bool = False,
 ):
     """Display Transformer forecast
 
@@ -92,6 +93,8 @@ def display_trans_forecast(
             Format to export data
         external_axes : Optional[List[plt.Axes]], optional
             External axes (2 axis is expected in the list), by default None
+        residuals: bool
+            Whether to show residuals for the model. Defaults to False.
     """
 
     # reformat the date column to remove any hour/min/sec
@@ -143,3 +146,5 @@ def display_trans_forecast(
         probabilistic,
         export,
     )
+    if residuals:
+        helpers.plot_residuals(_model, past_covariates, ticker_series)

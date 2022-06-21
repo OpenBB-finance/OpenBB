@@ -338,6 +338,7 @@ class ForecastingController(BaseController):
         hidden_size: int = None,
         n_jumps: bool = False,
         end: bool = False,
+        residuals: bool = False,
     ):
         if hidden_size:
             parser.add_argument(
@@ -557,6 +558,14 @@ class ForecastingController(BaseController):
                 type=check_greater_than_one,
                 default=72,
                 help="Lagged target values used to predict the next time step.",
+            )
+        if residuals:
+            parser.add_argument(
+                "--residuals",
+                help="Show the residuals for the model.",
+                action="store_true",
+                default=False,
+                dest="residuals",
             )
             # if user does not put in --target-dataset
         return super().parse_known_args_and_warn(
@@ -1385,6 +1394,7 @@ class ForecastingController(BaseController):
             seasonal="A",
             periods=True,
             window=True,
+            residuals=True,
         )
         # TODO Convert this to multi series
         if ns_parser:
@@ -1431,6 +1441,7 @@ class ForecastingController(BaseController):
             periods=True,
             window=True,
             forecast_horizon=True,
+            residuals=True,
         )
 
         if ns_parser:
@@ -1502,6 +1513,7 @@ class ForecastingController(BaseController):
             dropout=0,
             batch_size=32,
             learning_rate=True,
+            residuals=True,
         )
 
         if ns_parser:
@@ -1598,6 +1610,7 @@ class ForecastingController(BaseController):
             n_epochs=True,
             batch_size=800,
             past_covariates=True,
+            residuals=True,
         )
 
         if ns_parser:
@@ -1687,6 +1700,7 @@ class ForecastingController(BaseController):
             batch_size=32,
             input_chunk_length=True,
             output_chunk_length=True,
+            residuals=True,
         )
 
         if ns_parser:
@@ -1745,6 +1759,7 @@ class ForecastingController(BaseController):
             target_dataset=True,
             target_column=True,
             lags=True,
+            residuals=True,
         )
 
         if ns_parser:
@@ -1792,6 +1807,7 @@ class ForecastingController(BaseController):
             target_column=True,
             n_days=True,
             target_dataset=True,
+            residuals=True,
         )
 
         if ns_parser:
@@ -1856,6 +1872,7 @@ class ForecastingController(BaseController):
             n_days=True,
             target_column=True,
             hidden_size=10,
+            residuals=True,
         )
 
         if ns_parser:
@@ -1883,6 +1900,7 @@ class ForecastingController(BaseController):
                 force_reset=ns_parser.force_reset,
                 save_checkpoints=ns_parser.save_checkpoints,
                 export=ns_parser.export,
+                residuals=ns_parser.residuals,
             )
 
     @log_start_end(log=logger)
@@ -1965,6 +1983,7 @@ class ForecastingController(BaseController):
             model_save_name="trans_model",
             force_reset=True,
             save_checkpoints=True,
+            residuals=True,
         )
         if ns_parser:
             if not helpers.check_parser_input(ns_parser, self.datasets):
@@ -2063,6 +2082,7 @@ class ForecastingController(BaseController):
             output_chunk_length=True,
             past_covariates=True,
             target_column=True,
+            residuals=True,
         )
 
         if ns_parser:

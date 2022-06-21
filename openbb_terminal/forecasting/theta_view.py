@@ -25,6 +25,7 @@ def display_theta_forecast(
     start_window: float,
     forecast_horizon: int,
     export: str = "",
+    residuals: bool = False,
 ):
     """Display Theta forecast
 
@@ -50,6 +51,8 @@ def display_theta_forecast(
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axis is expected in the list), by default None
+    residuals: bool
+        Whether to show residuals for the model. Defaults to False.
     """
 
     # reformat the date column to remove any hour/min/sec
@@ -87,3 +90,5 @@ def display_theta_forecast(
         probabilistic,
         export,
     )
+    if residuals:
+        helpers.plot_residuals(_model, None, ticker_series)

@@ -1,11 +1,13 @@
 # pylint: disable=too-many-arguments
 import os
 import argparse
+from typing import Dict, Any
 import logging
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from darts.dataprocessing.transformers import MissingValuesFiller, Scaler
+from darts.utils.statistics import plot_residuals_analysis
 from darts import TimeSeries
 from darts.metrics import mape
 from pytorch_lightning.callbacks.early_stopping import EarlyStopping
@@ -99,14 +101,22 @@ def past_covs(past_covariates, filler, data, train_split, is_scaler=True):
         return None, None, None
 
 
-def early_stopper(patience: int):
+def early_stopper(patience: int, monitor: str = "train_loss"):
     my_stopper = EarlyStopping(
-        monitor="val_loss",
+        monitor=monitor,
         patience=patience,
         min_delta=0,
         mode="min",
     )
     return my_stopper
+
+
+def get_pl_kwargs(
+    patience: int, monitor: str = "train_loss", accelerator: str = "cpu"
+) -> Dict[str, Any]:
+    my_stopper = early_stopper(5, "train_loss")
+    pl_trainer_kwargs = {"callbacks": [my_stopper], "accelerator": "cpu"}
+    return pl_trainer_kwargs
 
 
 def plot_forecast(
@@ -317,3 +327,17 @@ def check_parser_input(parser: argparse.ArgumentParser, datasets):
         )
         return False
     return True
+
+
+def plot_residuals(
+    model, past_covariates, series, forecast_horizon: int = 1, num_bins: int = 20
+):
+    if past_covariates:
+        console.print("[red]Cannot plot residuals if there are past covariates[/red]")
+    my_stopper = early_stopper(5, "train_loss")
+    pl_trainer_kwargs = {"callbacks": [my_stopper], "accelerator": "cpu"}
+    model.pl_trainer_kwargs = pl_trainer_kwargs
+    residuals = model.residuals(
+        series=series, forecast_horizon=forecast_horizon, verbose=False
+    )
+    plot_residuals_analysis(residuals=residuals, num_bins=num_bins, fill_nan=True)

@@ -115,11 +115,6 @@ def get_trans_data(
         past_covariate_val,
     ) = helpers.past_covs(past_covariates, filler, data, train_split, use_scalers)
 
-    # Early Stopping
-    my_stopper = helpers.early_stopper(5)
-
-    pl_trainer_kwargs = {"callbacks": [my_stopper], "accelerator": "cpu"}
-
     brnn_model = TransformerModel(
         input_chunk_length=input_chunk_length,
         output_chunk_length=output_chunk_length,
@@ -135,7 +130,7 @@ def get_trans_data(
         optimizer_kwargs={"lr": learning_rate},
         model_name=model_save_name,
         random_state=42,
-        pl_trainer_kwargs=pl_trainer_kwargs,
+        pl_trainer_kwargs=helpers.get_pl_kwargs(5),
         force_reset=force_reset,
         save_checkpoints=save_checkpoints,
     )

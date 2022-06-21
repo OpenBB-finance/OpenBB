@@ -106,10 +106,6 @@ def get_rnn_data(
     )
     train, val = ticker_series.split_before(train_split)
 
-    my_stopper = helpers.early_stopper(5)
-
-    pl_trainer_kwargs = {"callbacks": [my_stopper], "accelerator": "cpu"}
-
     rnn_model = RNNModel(
         model=model_type,
         hidden_dim=hidden_dim,
@@ -121,7 +117,7 @@ def get_rnn_data(
         random_state=42,
         training_length=training_length,
         input_chunk_length=input_chunk_size,
-        pl_trainer_kwargs=pl_trainer_kwargs,
+        pl_trainer_kwargs=helpers.get_pl_kwargs(5),
         force_reset=force_reset,
         save_checkpoints=save_checkpoints,
         likelihood=GaussianLikelihood(),
