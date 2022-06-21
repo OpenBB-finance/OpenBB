@@ -406,12 +406,14 @@ class BaseController(metaclass=ABCMeta):
         with open(glossary_file) as file:
             glossary_dict = json.load(file)
 
+        # TODO: clean input
+
         if ns_parser:
             word = glossary_dict.get(ns_parser.word, None)
             if word:
                 console.print(word + "\n")
             else:
-                console.print("Word is not in glossary.\n")
+                console.print("Word is not in the glossary.\n")
 
     def parse_known_args_and_warn(
         self,
@@ -883,6 +885,7 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
                 days=int(ns_parser.days),
                 vs=ns_parser.vs,
             )
+            print(self.current_df)
             if not self.current_df.empty:
                 self.current_interval = "1day"
                 self.current_currency = ns_parser.vs
