@@ -18,7 +18,7 @@ from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive_float,
     print_rich_table,
-    check_file_existance,
+    check_file_existence,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
