@@ -6,6 +6,7 @@ __docformat__ = "numpy"
 from abc import ABCMeta, abstractmethod
 import argparse
 import re
+import json
 import os
 import difflib
 import logging
@@ -401,9 +402,9 @@ class BaseController(metaclass=ABCMeta):
 
         ns_parser = parse_simple_args(parser, other_args)
 
-        glossary_dict = {
-            "option": "A financial asset that is based on the value of an underlying asset."
-        }
+        glossary_file = os.path.join(os.path.dirname(__file__), "glossary.json")
+        with open(glossary_file) as file:
+            glossary_dict = json.load(file)
 
         if ns_parser:
             word = glossary_dict.get(ns_parser.word, None)
