@@ -311,7 +311,7 @@ class PortfolioController(BaseController):
             else:
                 new_path = os.getcwd() + os.path.sep + ns_parser.file
                 if not os.path.exists(new_path):
-                    raise Exception(
+                    raise FileNotFoundError(
                         "Portfolio file does not exist. Path supplied was " + new_path
                     )
 
