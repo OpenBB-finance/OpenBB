@@ -1658,7 +1658,7 @@ def check_file_existence(filename: str, default_path: str = None, raise_exceptio
     str:
         The filepath the file exists at
     """
-    if os.path.exists(default_path + os.sep + filename):
+    if default_path != None and os.path.exists(default_path + os.sep + filename):
         return default_path + os.sep + filename
     elif os.path.exists(os.getcwd() + os.sep + filename):
         return os.getcwd() + os.sep + filename
