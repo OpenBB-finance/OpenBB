@@ -281,7 +281,9 @@ class PortfolioController(BaseController):
             type=str,
             dest="file",
             required="-h" not in other_args,
-            help="The file to be loaded",
+            help="The file to be loaded. Looks in "
+            + self.DEFAULT_HOLDINGS_PATH
+            + " by default",
         )
         parser.add_argument(
             "-n",
@@ -309,7 +311,9 @@ class PortfolioController(BaseController):
             else:
                 new_path = os.getcwd() + os.path.sep + ns_parser.file
                 if not os.path.exists(new_path):
-                    raise Exception("Portfolio file does not exist. Path supplied was " + new_path)
+                    raise Exception(
+                        "Portfolio file does not exist. Path supplied was " + new_path
+                    )
 
                 file_location = new_path  # type: ignore
 
