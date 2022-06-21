@@ -2119,6 +2119,7 @@ class ForecastingController(BaseController):
                 force_reset=ns_parser.force_reset,
                 save_checkpoints=ns_parser.save_checkpoints,
                 export=ns_parser.export,
+                residuals=ns_parser.residuals,
             )
 
     # Below this is ports to the old pred menu

@@ -9,6 +9,7 @@ import pandas as pd
 from openbb_terminal.forecasting import theta_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forecasting import helpers
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 # pylint: disable=too-many-arguments
@@ -90,5 +91,10 @@ def display_theta_forecast(
         probabilistic,
         export,
     )
-    if residuals:
-        helpers.plot_residuals(_model, None, ticker_series)
+    if residuals:  # TODO - Fix problem
+        console.print(
+            "[red]Theta residual is currently not supported. Please stay tuned![/red]"
+        )
+        # helpers.plot_residuals(
+        #     _model, None, ticker_series, forecast_horizon=forecast_horizon
+        # )
