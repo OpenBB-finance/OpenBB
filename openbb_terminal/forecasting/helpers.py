@@ -344,6 +344,6 @@ def plot_residuals(
         pl_trainer_kwargs = {"callbacks": [my_stopper], "accelerator": "cpu"}
         model.pl_trainer_kwargs = pl_trainer_kwargs
         residuals = model.residuals(
-            series=series, forecast_horizon=forecast_horizon, verbose=False
+            series=series, forecast_horizon=forecast_horizon, verbose=True
         )
         plot_residuals_analysis(residuals=residuals, num_bins=num_bins, fill_nan=True)
