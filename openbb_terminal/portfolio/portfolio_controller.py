@@ -18,6 +18,7 @@ from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive_float,
     print_rich_table,
+    check_file_existance,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
@@ -278,7 +279,9 @@ class PortfolioController(BaseController):
         parser.add_argument(
             "-f",
             "--file",
-            type=str,
+            type=lambda x: check_file_existance(
+                x, default_path=self.DEFAULT_HOLDINGS_PATH
+            ),
             dest="file",
             required="-h" not in other_args,
             help="The file to be loaded. Looks in "
@@ -306,16 +309,7 @@ class PortfolioController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         if ns_parser and ns_parser.file:
-            if ns_parser.file in self.DATA_HOLDINGS_FILES:
-                file_location = self.DATA_HOLDINGS_FILES[ns_parser.file]
-            else:
-                new_path = os.getcwd() + os.path.sep + ns_parser.file
-                if not os.path.exists(new_path):
-                    raise FileNotFoundError(
-                        "Portfolio file does not exist. Path supplied was " + new_path
-                    )
-
-                file_location = new_path  # type: ignore
+            file_location = ns_parser.file
 
             if str(file_location).endswith(".csv"):
                 self.portfolio = portfolio_model.Portfolio.from_csv(file_location)

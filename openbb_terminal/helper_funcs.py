@@ -1633,3 +1633,37 @@ def get_preferred_source(command_path: str):
         )
         console.print(f"[red]{e}[/red]")
         return None
+
+
+def check_file_existance(filename: str, default_path: str = None, raise_exception=True):
+    """
+    Checks for the existance of a file and returns the filepath where it was found. It first searches in
+    the default file path and then looks in the current directory. It can also optionally raise an exception
+    if not found or return None.
+
+    Parameters
+    ----------
+    filename: str
+        The filename to look for
+
+    default_path: str
+        The default filepath to look in first. Will look in the current directory
+        if not found in the default path
+
+    raise_exception: bool
+        Raise an exception if the filepath is not found. Otherwise, return None. Defaults to True
+
+    Returns
+    -------
+    str:
+        The filepath the file exists at
+    """
+    if os.path.exists(default_path + os.sep + filename):
+        return default_path + os.sep + filename
+    elif os.path.exists(os.getcwd() + os.sep + filename):
+        return os.getcwd() + os.sep + filename
+    if raise_exception:
+        raise FileNotFoundError(
+            "File does not exist. Path supplied was " + os.getcwd() + os.sep + filename
+        )
+    return None
