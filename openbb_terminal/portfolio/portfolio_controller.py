@@ -279,7 +279,7 @@ class PortfolioController(BaseController):
         parser.add_argument(
             "-f",
             "--file",
-            type=lambda x: check_file_existance(
+            type=lambda x: check_file_existence(
                 x, default_path=self.DEFAULT_HOLDINGS_PATH
             ),
             dest="file",

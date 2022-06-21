@@ -1635,7 +1635,7 @@ def get_preferred_source(command_path: str):
         return None
 
 
-def check_file_existance(filename: str, default_path: str = None, raise_exception=True):
+def check_file_existence(filename: str, default_path: str = None, raise_exception=True):
     """
     Checks for the existance of a file and returns the filepath where it was found. It first searches in
     the default file path and then looks in the current directory. It can also optionally raise an exception
