@@ -1,9 +1,20 @@
-Search for an ETF by name, using either FinanceDatabase or Stockanalysis.com as the source.
-
 ```text
 usage: ln -n NAME [NAME ...] [-s {sa,fd}] [-l LIMIT] [-h] [--export {csv,json,xlsx}]
-ln: error: the following arguments are required: -n/--name
 ```
+
+Search for an ETF by name, using either FinanceDatabase or Stockanalysis.com as the source.
+
+````
+optional arguments:
+  -n NAME [NAME ...], --name NAME [NAME ...]
+                        Name to look for ETFs (default: None)
+  -h, --help            show this help message (default: False)
+  --export EXPORT       Export raw data into csv, json, xlsx (default: )
+  -l LIMIT, --limit LIMIT
+                        Number of entries to show in data. (default: 5)
+  --source {sa,fd}      Data source to select from (default: None)
+````
+
 Sample output:
 
 ```
