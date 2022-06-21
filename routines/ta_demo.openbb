@@ -1,0 +1,37 @@
+# Demonstration of the Technical Analysis features, using SPY. No arguments are required to run this routine.
+
+# Enter stocks menu, load intraday SPY with 30 minute interval, enter the T/A menu.
+stocks
+load spy -i 30
+ta
+
+# Show the RSI and OBV for 30 minute intervals and weekly intervals.
+rsi
+obv
+..
+load spy -w
+ta
+rsi
+obv
+
+# Show one week of OBV, VWAP, Bollinger Bands, MACD, and Fibonacci Retracements with one-minute intervals.
+..
+load spy -i 1
+ta
+obv
+vwap
+bbands
+fib
+macd
+
+# Print T/A summary
+summary
+
+# Show long chart of SPY with monthly intervals with EMA for 3 and 6 months & MACD using six months as the slow and 4 as the signal.
+..
+load spy -s 1993-02-01 -m
+ta
+ema 3,6
+macd -f 1 -s 6 --signal 4
+..
+candle --ma 6,12
