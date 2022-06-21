@@ -279,7 +279,6 @@ class PortfolioController(BaseController):
             "-f",
             "--file",
             type=str,
-            choices=self.DATA_HOLDINGS_FILES,
             dest="file",
             required="-h" not in other_args,
             help="The file to be loaded",
@@ -308,7 +307,11 @@ class PortfolioController(BaseController):
             if ns_parser.file in self.DATA_HOLDINGS_FILES:
                 file_location = self.DATA_HOLDINGS_FILES[ns_parser.file]
             else:
-                file_location = ns_parser.file  # type: ignore
+                new_path = os.getcwd() + os.path.sep + ns_parser.file
+                if not os.path.exists(new_path):
+                    raise Exception("Portfolio file does not exist. Path supplied was " + new_path)
+
+                file_location = new_path  # type: ignore
 
             if str(file_location).endswith(".csv"):
                 self.portfolio = portfolio_model.Portfolio.from_csv(file_location)
