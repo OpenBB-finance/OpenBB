@@ -3,6 +3,7 @@ import json
 import os
 import pathlib
 from typing import Any, Dict, List, Optional, Type
+from distutils.util import strtobool
 
 # IMPORTATION THIRDPARTY
 import pandas as pd
@@ -32,7 +33,7 @@ os.environ["TEST_MODE"] = "True"
 os.environ["OPENBB_IMG_HOST_ACTIVE"] = "False"
 os.environ["OPENBB_DISCORD_BOT_TOKEN"] = "123"
 os.environ["OPENBB_IMGUR_CLIENT_ID"] = "123"
-obbff.ENABLE_EXIT_AUTO_HELP = int(True)
+obbff.ENABLE_EXIT_AUTO_HELP = strtobool("True")
 
 
 class Record:
