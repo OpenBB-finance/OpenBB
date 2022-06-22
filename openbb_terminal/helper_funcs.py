@@ -4,7 +4,8 @@ __docformat__ = "numpy"
 import argparse
 import logging
 from pathlib import Path
-from typing import List, Tuple, Union, Optional
+from typing import List, Tuple, Union, Optional, Dict
+from functools import lru_cache
 from datetime import datetime, timedelta, date as d
 import types
 from collections.abc import Iterable
@@ -1633,3 +1634,21 @@ def get_preferred_source(command_path: str):
         )
         console.print(f"[red]{e}[/red]")
         return None
+
+
+@lru_cache
+def load_json(path: str) -> Dict[str, str]:
+    """Loads a dictionary from a json file path
+
+    Parameter
+    ----------
+    path : str
+        The path for the json file
+
+    Returns
+    ----------
+    Dict[str, str]
+        The dictionary loaded from json
+    """
+    with open(path) as file:
+        return json.load(file)

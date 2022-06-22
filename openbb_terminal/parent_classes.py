@@ -6,7 +6,6 @@ __docformat__ = "numpy"
 from abc import ABCMeta, abstractmethod
 import argparse
 import re
-import json
 import os
 import difflib
 import logging
@@ -36,6 +35,7 @@ from openbb_terminal.helper_funcs import (
     check_file_type_saved,
     check_positive,
     get_preferred_source,
+    load_json,
 )
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.rich_config import console
@@ -403,8 +403,7 @@ class BaseController(metaclass=ABCMeta):
         ns_parser = parse_simple_args(parser, other_args)
 
         glossary_file = os.path.join(os.path.dirname(__file__), "glossary.json")
-        with open(glossary_file) as file:
-            glossary_dict = json.load(file)
+        glossary_dict = load_json(glossary_file)
 
         # TODO: clean input
 
@@ -885,7 +884,6 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
                 days=int(ns_parser.days),
                 vs=ns_parser.vs,
             )
-            print(self.current_df)
             if not self.current_df.empty:
                 self.current_interval = "1day"
                 self.current_currency = ns_parser.vs
