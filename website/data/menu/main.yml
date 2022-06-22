@@ -1074,6 +1074,8 @@ main:
             ref: "/terminal/etf/ln"
           - name: ld
             ref: "/terminal/etf/ld"
+          - name: load
+            ref: "/terminal/etf/load"
           - name: overview
             ref: "/terminal/etf/overview"
           - name: holdings
