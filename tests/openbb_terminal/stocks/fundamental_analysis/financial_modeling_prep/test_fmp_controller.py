@@ -18,7 +18,7 @@ from openbb_terminal.stocks.fundamental_analysis.financial_modeling_prep import 
 @pytest.mark.parametrize(
     "queue, expected",
     [
-        (["profile", "help"], []),
+        (["profile", "help"], ["help"]),
         (["quit", "help"], ["help"]),
     ],
 )
@@ -72,7 +72,7 @@ def test_menu_without_queue_completion(mocker):
         ticker="TSLA", start="10/25/2021", interval="1440min", queue=None
     ).menu()
 
-    assert result_menu == []
+    assert result_menu == ["help"]
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -118,7 +118,7 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
         ticker="TSLA", start="10/25/2021", interval="1440min", queue=None
     ).menu()
 
-    assert result_menu == []
+    assert result_menu == ["help"]
 
 
 @pytest.mark.vcr(record_mode="none")
