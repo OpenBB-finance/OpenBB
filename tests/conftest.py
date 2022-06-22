@@ -32,7 +32,7 @@ os.environ["TEST_MODE"] = "True"
 os.environ["OPENBB_IMG_HOST_ACTIVE"] = "False"
 os.environ["OPENBB_DISCORD_BOT_TOKEN"] = "123"
 os.environ["OPENBB_IMGUR_CLIENT_ID"] = "123"
-obbff.ENABLE_EXIT_AUTO_HELP = True
+obbff.ENABLE_EXIT_AUTO_HELP = int(True)
 
 
 class Record:
