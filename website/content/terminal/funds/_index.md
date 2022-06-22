@@ -14,7 +14,7 @@ as well as <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/fun
 
 The Funds menu is called upon by typing `funds` which opens the following menu:
 
-![img.png](img.png)
+![Funds Menu](https://user-images.githubusercontent.com/46355364/174990788-3b432068-f303-4548-b9b5-0cb158e62628.png)
 
 You have the ability to look up any fund (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/funds/overview/" target="_blank">overview</a> or <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/funds/search/" target="_blank">search</a>). With the example below, the `search` command is used that searches the name and description of the fund. Then the search query is entered which is `total market`. Lastly, the `-l` argument is included which refers to `limit` and is maxed to `10` funds.
 ````
@@ -57,12 +57,12 @@ Name: Blackrock Advantage U.S. Total Market Fund, Inc.Investor A Shares found fo
 To then view the stock chart, you can call <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/funds/plot/" target="_blank">plot</a>
 which shows a chart for the defined period (by default set to a year by `load`):
 
-![](Figure_1.png)
+![Plot](https://user-images.githubusercontent.com/46355364/174990848-8f0be3b3-945b-4e4d-801a-5a6a036b62c0.png)
 
 By calling `?` or `help` the Funds menu re-appears. Here you can see that multiple commands have turned blue. Because of loading 
 a symbol, these commands can now be used in combination with the chosen symbol as seen above.
 
-![img_1.png](img_1.png)
+![Funds Menu with Fund Loaded](https://user-images.githubusercontent.com/46355364/174990913-0a4e69bd-30d6-4a7f-adda-b921cfb21076.png)
 
 For example, the Fund's general statistics can now be depicted with the following:
 ````
@@ -153,7 +153,7 @@ the company's historical data from `2015-01-01` until the current date.
 2022 Jun 22, 04:58 (🦋) /funds/ $ plot
 ```
 
-![](Figure_2.png)
+![Plot #2](https://user-images.githubusercontent.com/46355364/174990983-d052370c-825a-480e-adaf-239e75b26675.png)
 
 Now we can go ahead and explore more about the fund by running <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/funds/info/" target="_blank">info</a>.
 This provides some general statistics about the fund.
