@@ -514,6 +514,7 @@ class BaseController(metaclass=ABCMeta):
                 if (
                     an_input
                     and an_input != "home"
+                    and an_input != "help"
                     and an_input.split(" ")[0] in self.controller_choices
                 ):
                     console.print(f"{get_flair()} {self.PATH} $ {an_input}")
