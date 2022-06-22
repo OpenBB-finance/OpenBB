@@ -18,7 +18,7 @@ DF_EMPTY = pd.DataFrame()
 @pytest.mark.parametrize(
     "queue, expected",
     [
-        (["historical", "help"], []),
+        (["historical", "help"], ["help"]),
         (["q", ".."], [".."]),
     ],
 )

@@ -18,7 +18,7 @@ from openbb_terminal.stocks.fundamental_analysis.financial_modeling_prep import 
 @pytest.mark.parametrize(
     "queue, expected",
     [
-        (["profile", "help"], []),
+        (["profile", "help"], ["help"]),
         (["quit", "help"], ["help"]),
     ],
 )
