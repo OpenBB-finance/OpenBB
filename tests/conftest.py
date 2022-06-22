@@ -34,6 +34,7 @@ os.environ["OPENBB_DISCORD_BOT_TOKEN"] = "123"
 os.environ["OPENBB_IMGUR_CLIENT_ID"] = "123"
 obbff.ENABLE_EXIT_AUTO_HELP = True
 
+
 class Record:
     @staticmethod
     def extract_string(data: Any, **kwargs) -> str:
