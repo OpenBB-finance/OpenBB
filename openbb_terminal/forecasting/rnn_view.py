@@ -125,4 +125,6 @@ def display_rnn_forecast(
         export,
     )
     if residuals:
-        helpers.plot_residuals(_model, past_covariates, ticker_series)
+        helpers.plot_residuals(
+            _model, past_covariates, ticker_series, forecast_horizon=forecast_horizon
+        )

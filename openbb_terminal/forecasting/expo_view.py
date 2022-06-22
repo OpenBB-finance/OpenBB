@@ -98,4 +98,6 @@ def display_expo_forecast(
         export,
     )
     if residuals:
-        helpers.plot_residuals(_model, None, ticker_series)
+        helpers.plot_residuals(
+            _model, None, ticker_series, forecast_horizon=forecast_horizon
+        )
