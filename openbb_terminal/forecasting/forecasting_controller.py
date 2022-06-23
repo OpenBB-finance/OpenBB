@@ -14,6 +14,7 @@ from typing import List, Dict, Any, Optional
 import torch
 import darts
 import pandas as pd
+import psutil
 from prompt_toolkit.completion import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
@@ -155,7 +156,8 @@ class ForecastingController(BaseController):
 
         # setting device on GPU if available, else CPU
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
-
+        self.comp_ram = f"{round(psutil.virtual_memory().total / (1024.0 ** 3),2)}G"
+        self.rec_data_size = f"{(psutil.virtual_memory().total / (1024.0 ** 3))//3}G"
         self.torch_version = torch.__version__
         self.darts_version = darts.__version__
 
@@ -252,6 +254,8 @@ class ForecastingController(BaseController):
         """Print help"""
         mt = MenuText("forecasting/")
         mt.add_param("_comp_device", self.device.upper())
+        mt.add_param("_comp_ram", self.comp_ram)
+        mt.add_param("_rec_data_size", self.rec_data_size)
         mt.add_param("_torch_ver", self.torch_version)
         mt.add_param("_darts_ver", self.darts_version)
         mt.add_raw("\n")

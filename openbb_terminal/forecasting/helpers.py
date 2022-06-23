@@ -210,6 +210,7 @@ def get_series(data, target_col: str = None, is_scaler: bool = True):
     try:
         ticker_series = TimeSeries.from_dataframe(**filler_kwargs)
     except ValueError:
+        # remove business days to allow base lib to assume freq
         filler_kwargs.pop("freq")
         ticker_series = TimeSeries.from_dataframe(**filler_kwargs)
 
