@@ -6,7 +6,7 @@ from openbb_terminal.portfolio.brokers.coinbase import coinbase_controller
 @pytest.mark.parametrize(
     "queue, expected",
     [
-        (["load", "help"], []),
+        (["load", "help"], ["help"]),
         (["quit", "help"], ["help"]),
     ],
 )
