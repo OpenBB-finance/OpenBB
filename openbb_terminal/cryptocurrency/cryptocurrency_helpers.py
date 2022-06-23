@@ -292,13 +292,8 @@ def load(
     vs: str,
     days: int = 365,
 ):
-    coingecko_id = get_coingecko_id(symbol_search)
-    if not coingecko_id:
-        return pd.DataFrame()
-
-    df = pycoingecko_model.get_ohlc(coingecko_id, vs, days)
     start_date = datetime.now() - timedelta(days=days)
-    df_coin = yf.download(
+    df = yf.download(
         f"{symbol_search}-{vs}",
         end=datetime.now(),
         start=start_date,
@@ -306,8 +301,8 @@ def load(
         interval="1d",
     ).sort_index(ascending=False)
 
-    if not df_coin.empty:
-        df = pd.merge(df, df_coin[::-1][["Volume"]], left_index=True, right_index=True)
+    if df.empty:
+        return pd.DataFrame()
     df.index.name = "date"
     if not df.empty:
         console.print(
