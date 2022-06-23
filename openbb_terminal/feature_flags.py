@@ -71,7 +71,7 @@ ENABLE_QUICK_EXIT = strtobool(os.getenv("OPENBB_ENABLE_QUICK_EXIT", "False"))
 OPEN_REPORT_AS_HTML = strtobool(os.getenv("OPENBB_OPEN_REPORT_AS_HTML", "True"))
 
 # Enable auto print_help when exiting menus
-ENABLE_EXIT_AUTO_HELP = strtobool(os.getenv("OPENBB_ENABLE_EXIT_AUTO_HELP", "False"))
+ENABLE_EXIT_AUTO_HELP = strtobool(os.getenv("OPENBB_ENABLE_EXIT_AUTO_HELP", "True"))
 
 # Remember contexts during session
 REMEMBER_CONTEXTS = strtobool(os.getenv("OPENBB_REMEMBER_CONTEXTS", "True"))
