@@ -267,6 +267,8 @@ class BaseController(metaclass=ABCMeta):
         """Process home command"""
         self.save_class()
         console.print("")
+        if self.PATH.count("/") == 1 and obbff.ENABLE_EXIT_AUTO_HELP:
+            self.print_help()
         for _ in range(self.PATH.count("/") - 1):
             self.queue.insert(0, "quit")
 
@@ -549,6 +551,7 @@ class BaseController(metaclass=ABCMeta):
                 if (
                     an_input
                     and an_input != "home"
+                    and an_input != "help"
                     and an_input.split(" ")[0] in self.controller_choices
                 ):
                     console.print(f"{get_flair()} {self.PATH} $ {an_input}")
