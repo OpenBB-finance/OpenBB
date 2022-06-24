@@ -18,6 +18,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.fundamental_analysis import av_model
+from openbb_terminal.stocks.fundamental_analysis import yahoo_finance_model
 
 logger = logging.getLogger(__name__)
 
@@ -89,7 +90,8 @@ def display_income_statement(
     df_income = av_model.get_income_statements(ticker, limit, quarterly)
 
     if df_income.empty:
-        return
+        # When no data returned from Alpha Vantage, try Yahoo Finance Model. (FTSE UK Data)
+        df_income = yahoo_finance_model.get_yahoo_financials(ticker, 'financials')
 
     indexes = df_income.index
     new_indexes = [camel_case_split(ind) for ind in indexes]
@@ -110,7 +112,7 @@ def display_income_statement(
 def display_balance_sheet(
     ticker: str, limit: int, quarterly: bool = False, export: str = ""
 ):
-    """Alpha Vantage income statement
+    """Alpha Vantage balance sheet statement
 
     Parameters
     ----------
@@ -126,7 +128,8 @@ def display_balance_sheet(
     df_balance = av_model.get_balance_sheet(ticker, limit, quarterly)
 
     if df_balance.empty:
-        return
+        # When no data returned from Alpha Vantage, try Yahoo Finance Model. (FTSE UK Data)
+        df_balance = yahoo_finance_model.get_yahoo_financials(ticker, 'balance-sheet')
 
     indexes = df_balance.index
     new_indexes = [camel_case_split(ind) for ind in indexes]
@@ -165,7 +168,8 @@ def display_cash_flow(
     df_cash = av_model.get_cash_flow(ticker, limit, quarterly)
 
     if df_cash.empty:
-        return
+        # When no data returned from Alpha Vantage, try Yahoo Finance Model. (FTSE UK Data)
+        df_cash = yahoo_finance_model.get_yahoo_financials(ticker, 'cash-flow')
 
     indexes = df_cash.index
     new_indexes = [camel_case_split(ind) for ind in indexes]
@@ -174,7 +178,7 @@ def display_cash_flow(
     print_rich_table(
         df_cash,
         headers=list(df_cash.columns),
-        title=f"{ticker} Balance Sheet",
+        title=f"{ticker} Cash flow",
         show_index=True,
     )
 

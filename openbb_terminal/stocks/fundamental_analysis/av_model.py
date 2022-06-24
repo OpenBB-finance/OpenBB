@@ -45,7 +45,7 @@ def get_overview(ticker: str) -> pd.DataFrame:
     else:
         # check if json is empty
         if not result_json:
-            console.print("No data found")
+            console.print("No data found from Alpha Vantage")
         # Parse json data to dataframe
         elif "Note" in result_json:
             console.print(result_json["Note"], "\n")
@@ -108,7 +108,7 @@ def get_key_metrics(ticker: str) -> pd.DataFrame:
     else:
         # check if json is empty
         if not result_json or len(result_json) < 2:
-            console.print("No data found")
+            console.print("No data found from Alpha Vantage")
             return pd.DataFrame()
 
         df_fa = pd.json_normalize(result_json)
@@ -177,7 +177,9 @@ def get_income_statements(
     else:
         # check if json is empty
         if not response_json:
-            console.print("No data found")
+            console.print(
+                "No data found from Alpha Vantage, checking Yahoo Finance ....."
+            )
         else:
             statements = response_json
             df_fa = pd.DataFrame()
@@ -190,7 +192,7 @@ def get_income_statements(
                     df_fa = pd.DataFrame(statements["annualReports"])
 
             if df_fa.empty:
-                console.print("No data found")
+                console.print("No data found from Alpha Vantage")
                 return pd.DataFrame()
 
             df_fa = df_fa.set_index("fiscalDateEnding")
@@ -218,7 +220,7 @@ def get_balance_sheet(
     Returns
     -------
     pd.DataFrame
-        Dataframe of income statements
+        Dataframe of balance sheet statements
     """
     url = f"https://www.alphavantage.co/query?function=BALANCE_SHEET&symbol={ticker}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
     r = requests.get(url)
@@ -230,7 +232,9 @@ def get_balance_sheet(
     else:
         # check if json is empty
         if not response_json:
-            console.print("No data found")
+            console.print(
+                "No data found from Alpha Vantage, checking Yahoo Finance ....."
+            )
         else:
             statements = response_json
             df_fa = pd.DataFrame()
@@ -243,7 +247,7 @@ def get_balance_sheet(
                     df_fa = pd.DataFrame(statements["annualReports"])
 
             if df_fa.empty:
-                console.print("No data found")
+                console.print("No data found from Alpha Vantage")
                 return pd.DataFrame()
 
             df_fa = df_fa.set_index("fiscalDateEnding")
@@ -269,7 +273,7 @@ def get_cash_flow(ticker: str, number: int, quarterly: bool = False) -> pd.DataF
     Returns
     -------
     pd.DataFrame
-        Dataframe of income statements
+        Dataframe of cash flow statements
     """
     url = f"https://www.alphavantage.co/query?function=CASH_FLOW&symbol={ticker}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
     r = requests.get(url)
@@ -281,7 +285,9 @@ def get_cash_flow(ticker: str, number: int, quarterly: bool = False) -> pd.DataF
     else:
         # check if json is empty
         if not response_json:
-            console.print("No data found")
+            console.print(
+                "No data found from Alpha Vantage, checking Yahoo Finance ....."
+            )
         else:
             statements = response_json
             df_fa = pd.DataFrame()
@@ -294,7 +300,7 @@ def get_cash_flow(ticker: str, number: int, quarterly: bool = False) -> pd.DataF
                     df_fa = pd.DataFrame(statements["annualReports"])
 
             if df_fa.empty:
-                console.print("No data found")
+                console.print("No data found from Alpha Vantage")
                 return pd.DataFrame()
 
             df_fa = df_fa.set_index("fiscalDateEnding")
@@ -335,7 +341,7 @@ def get_earnings(ticker: str, quarterly: bool = False) -> pd.DataFrame:
     else:
         # check if json is empty
         if not result_json or len(result_json) < 2:
-            console.print("No data found")
+            console.print("No data found from Alpha Vantage")
         else:
 
             df_fa = pd.json_normalize(result_json)

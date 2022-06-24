@@ -52,7 +52,7 @@ def get_financials(
     all_results = json_request["results"]
 
     if len(all_results) == 0:
-        console.print("No financials found.\n")
+        console.print("No financials found from Polygon.\n")
         return pd.DataFrame()
 
     balance_sheets = pd.DataFrame()

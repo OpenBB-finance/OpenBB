@@ -4,15 +4,23 @@ __docformat__ = "numpy"
 import logging
 from datetime import datetime, timedelta
 from typing import Tuple
+from urllib.request import Request, urlopen
 
+import ssl
+import numpy as np
 import pandas as pd
 import yfinance as yf
+
+from bs4 import BeautifulSoup
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import lambda_long_number_format
 from openbb_terminal.stocks.fundamental_analysis.fa_helper import clean_df_index
 
 logger = logging.getLogger(__name__)
+
+
+ssl._create_default_https_context = ssl._create_unverified_context
 
 
 @log_start_end(log=logger)
@@ -286,3 +294,60 @@ def get_splits(ticker: str) -> pd.DataFrame:
     if not data.empty:
         return data.to_frame()
     return pd.DataFrame()
+
+
+@log_start_end(log=logger)
+def get_yahoo_financials(ticker: str, financial_type: str) -> pd.DataFrame:
+    """Get cashflow statement for company
+
+    Parameters
+    ----------
+    ticker : str
+        Stock ticker
+    financial_type: str
+        can be:
+            cash-flow
+            financials for Income
+            balance-sheet
+
+    Returns
+    -------
+    pd.DataFrame
+        Dataframe of Financial statement
+    """
+    url = (
+            "https://uk.finance.yahoo.com/quote/" + ticker + "/" + financial_type + "?p=" + ticker
+    )
+
+    # Making the website believe that you are accessing it using a Mozilla browser
+    req = Request(url, headers={"User-Agent": "Mozilla/5.0"})
+
+    webpage = urlopen(req).read()
+    # Creating a BeautifulSoup object of the HTML page for easy extraction of data.
+
+    soup = BeautifulSoup(webpage, "html.parser")
+    features = soup.find_all("div", class_="D(tbr)")
+    headers = []
+    temp_list = []
+    final = []
+    index = 0  # create headers
+    for item in features[0].find_all("div", class_="D(ib)"):
+        headers.append(item.text)  # statement contents
+
+    while index <= len(features) - 1:
+        # filter for each line of the statement
+        temp = features[index].find_all("div", class_="D(tbc)")
+        for line in temp:
+            # each item adding to a temporary list
+            temp_list.append(line.text)
+        # temp_list added to final list
+        final.append(temp_list)
+        # clear temp_list
+        temp_list = []
+        index += 1
+
+    df = pd.DataFrame(final[1:])
+    df.columns = headers
+    df.set_index("Breakdown", inplace=True)
+    df.replace("", np.nan, inplace=True)
+    return df.dropna(how="all")
