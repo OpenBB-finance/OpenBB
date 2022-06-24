@@ -30,7 +30,7 @@ poetry install -E bots
 2. On the "Applications" tab, select "New Application" and name it something like "GST Bot". This will create a new application.
 3. For creating a bot, we need to go into the "GST Bot" application previously created, and on the "Bot" tab select
    "Add Bot".
-4. Allow privileged gateway intents by enabling MESSAGE CONTENT INTENT under the bot tab. Save your bot's TOKEN located here as well, we'll be using it later.
+4. Allow privileged gateway intents by enabling PRESENCE INTENT, SERVER MEMBERS INTENT, and MESSAGE CONTENT INTENT under the bot tab. Save your bot's TOKEN located here as well, we'll be using it later.
 5. Next we need to obtain the "Client ID". For that we choose the "OAuth2" tab and copy our "Client ID" under "Client".
 6. At this stage the bot is created and we are ready to invite it to one of our servers. To do so we need to access:
 <https://discord.com/oauth2/authorize?client_id=CLIENTID&scope=bot%20applications.commands>, where **CLIENTID** is replaced by the value copied above.
