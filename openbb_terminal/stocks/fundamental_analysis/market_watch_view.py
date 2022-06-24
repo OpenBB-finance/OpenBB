@@ -77,7 +77,11 @@ def income(other_args: List[str], ticker: str):
     if not ns_parser:
         return
 
-    df_financials = mwm.prepare_df_financials(ticker, "income", ns_parser.b_quarter)
+    try:
+        df_financials = mwm.prepare_df_financials(ticker, "income", ns_parser.b_quarter)
+    except RuntimeError as e:
+        console.print(e)
+        return
 
     if rich_config.USE_COLOR:
         df_financials = df_financials.applymap(lambda_financials_colored_values)
@@ -154,7 +158,11 @@ def balance(other_args: List[str], ticker: str):
     if not ns_parser:
         return
 
-    df_financials = mwm.prepare_df_financials(ticker, "balance", ns_parser.b_quarter)
+    try:
+        df_financials = mwm.prepare_df_financials(ticker, "income", ns_parser.b_quarter)
+    except RuntimeError as e:
+        console.print(e)
+        return
 
     if rich_config.USE_COLOR:
         df_financials = df_financials.applymap(lambda_financials_colored_values)
@@ -227,7 +235,11 @@ def cash(other_args: List[str], ticker: str):
     if not ns_parser:
         return
 
-    df_financials = mwm.prepare_df_financials(ticker, "cashflow", ns_parser.b_quarter)
+    try:
+        df_financials = mwm.prepare_df_financials(ticker, "income", ns_parser.b_quarter)
+    except RuntimeError as e:
+        console.print(e)
+        return
 
     if rich_config.USE_COLOR:
         df_financials = df_financials.applymap(lambda_financials_colored_values)

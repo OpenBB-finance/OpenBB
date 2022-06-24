@@ -9,7 +9,7 @@ import requests
 from bs4 import BeautifulSoup
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import get_user_agent
+from openbb_terminal.helper_funcs import get_user_agent, log_and_raise
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -53,6 +53,8 @@ def get_financial_comparisons(
             )
         s_timeframe = timeframe
     else:
+        if len(l_timeframes) == 0:
+            return pd.DataFrame()
         s_timeframe = l_timeframes[-1]
 
     console.print(
@@ -86,6 +88,8 @@ def prepare_df_financials(
     ------
     ValueError
         If statement is not income, balance or cashflow
+    RuntimeError
+        If the financial statements could not be parsed correctly
     """
     financial_urls = {
         "income": {
@@ -123,9 +127,13 @@ def prepare_df_financials(
     ]
 
     s_header_end_trend = ("5-year trend", "5- qtr trend")[quarter]
-    df_financials = pd.DataFrame(
-        columns=a_financials_header[0 : a_financials_header.index(s_header_end_trend)]
-    )
+    if s_header_end_trend in a_financials_header:
+        df_financials = pd.DataFrame(
+            columns=a_financials_header[0 : a_financials_header.index(s_header_end_trend)]
+        )
+    else:
+        log_and_raise(RuntimeError("Couldn't parse financial statement for ticker " + ticker))
+
 
     find_table = text_soup_financials.findAll(
         "div", {"class": "element element--table table--fixed financials"}
@@ -184,10 +192,16 @@ def prepare_comparison_financials(
         A dictionary of DataFrame with financial info from list of similar tickers
     """
 
-    financials = {
-        symbol: prepare_df_financials(symbol, statement, quarter).set_index("Item")
-        for symbol in similar
-    }
+    financials = {}
+    for symbol in similar.copy(): # We need a copy since we are modifying the original potentially
+        try:
+            console.print("Symbol " + symbol)
+            financials[symbol] = prepare_df_financials(symbol, statement, quarter).set_index("Item")
+        except RuntimeError as e:
+            console.print(e)
+            console.print("Removing ticker " + symbol + " from further processing")
+            similar.remove(symbol)
+
     if quarter:
         items = financials[similar[0]].columns
 
