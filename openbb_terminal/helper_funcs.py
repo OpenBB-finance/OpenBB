@@ -1663,7 +1663,9 @@ def check_file_existence(filename: str, default_path: str = None, raise_exceptio
     elif os.path.exists(os.getcwd() + os.sep + filename):
         return os.getcwd() + os.sep + filename
     if raise_exception:
-        raise FileNotFoundError(
-            "File does not exist. Path supplied was " + os.getcwd() + os.sep + filename
+        log_and_raise(
+            FileNotFoundError(
+                "File does not exist. Path supplied was " + os.getcwd() + os.sep + filename
+            )
         )
     return None
