@@ -116,7 +116,7 @@ def check_path(path: str) -> str:
 
 
 def log_and_raise(
-    error: Union[argparse.ArgumentTypeError, ValueError, RuntimeError]
+    error: Union[argparse.ArgumentTypeError, ValueError]
 ) -> None:
     logger.error(str(error))
     raise error
