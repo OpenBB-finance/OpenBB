@@ -231,7 +231,7 @@ def get_close_price(
 
 @log_start_end(log=logger)
 def get_non_zero_addresses(
-    asset: str, interval: str, since: int, until: int
+    asset: str, since: int, until: int
 ) -> pd.DataFrame:
     """Returns addresses with non-zero balance of a certain asset
     [Source: https://glassnode.com]
@@ -244,8 +244,6 @@ def get_non_zero_addresses(
         Initial date timestamp (e.g., 1_577_836_800)
     until : int
         End date timestamp (e.g., 1_609_459_200)
-    interval : str
-        Interval frequency (e.g., 24h)
 
     Returns
     -------
@@ -258,7 +256,7 @@ def get_non_zero_addresses(
     parameters = {
         "api_key": cfg.API_GLASSNODE_KEY,
         "a": asset,
-        "i": interval,
+        "i": "24h",
         "s": str(since),
         "u": str(until),
     }
