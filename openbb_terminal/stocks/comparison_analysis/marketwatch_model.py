@@ -129,11 +129,14 @@ def prepare_df_financials(
     s_header_end_trend = ("5-year trend", "5- qtr trend")[quarter]
     if s_header_end_trend in a_financials_header:
         df_financials = pd.DataFrame(
-            columns=a_financials_header[0 : a_financials_header.index(s_header_end_trend)]
+            columns=a_financials_header[
+                0 : a_financials_header.index(s_header_end_trend)
+            ]
         )
     else:
-        log_and_raise(RuntimeError("Couldn't parse financial statement for ticker " + ticker))
-
+        log_and_raise(
+            RuntimeError("Couldn't parse financial statement for ticker " + ticker)
+        )
 
     find_table = text_soup_financials.findAll(
         "div", {"class": "element element--table table--fixed financials"}
@@ -193,10 +196,16 @@ def prepare_comparison_financials(
     """
 
     financials = {}
-    for symbol in similar.copy(): # We need a copy since we are modifying the original potentially
+    for (
+        symbol
+    ) in (
+        similar.copy()
+    ):  # We need a copy since we are modifying the original potentially
         try:
             console.print("Symbol " + symbol)
-            financials[symbol] = prepare_df_financials(symbol, statement, quarter).set_index("Item")
+            financials[symbol] = prepare_df_financials(
+                symbol, statement, quarter
+            ).set_index("Item")
         except RuntimeError as e:
             console.print(e)
             console.print("Removing ticker " + symbol + " from further processing")

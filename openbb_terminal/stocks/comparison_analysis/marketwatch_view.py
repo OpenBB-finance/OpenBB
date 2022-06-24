@@ -42,7 +42,7 @@ def display_income_comparison(
         similar, "income", timeframe, quarter
     )
 
-    if df_financials_compared == None or df_financials_compared.empty:
+    if len(df_financials_compared) == 0 or df_financials_compared.empty:
         return
 
     # Export data before the color
@@ -148,7 +148,7 @@ def display_cashflow_comparison(
         similar, "cashflow", timeframe, quarter
     )
 
-    if df_financials_compared == None or df_financials_compared.empty:
+    if len(df_financials_compared) == 0 or df_financials_compared.empty:
         return
 
     # Export data before the color
