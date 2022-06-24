@@ -9,7 +9,7 @@ import requests
 from bs4 import BeautifulSoup
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import get_user_agent, log_and_raise
+from openbb_terminal.helper_funcs import get_user_agent
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -134,9 +134,8 @@ def prepare_df_financials(
             ]
         )
     else:
-        log_and_raise(
-            RuntimeError("Couldn't parse financial statement for ticker " + ticker)
-        )
+        # We don't have the data we need for whatever reason, so return an empty DataFrame
+        return pd.DataFrame()
 
     find_table = text_soup_financials.findAll(
         "div", {"class": "element element--table table--fixed financials"}
@@ -201,14 +200,17 @@ def prepare_comparison_financials(
     ) in (
         similar.copy()
     ):  # We need a copy since we are modifying the original potentially
-        try:
-            financials[symbol] = prepare_df_financials(
-                symbol, statement, quarter
-            ).set_index("Item")
-        except RuntimeError as e:
-            console.print(e)
-            console.print("Removing ticker " + symbol + " from further processing")
+        results = prepare_df_financials(symbol, statement, quarter)
+        if results.empty:
+            # If we have an empty result set, don't do further analysis on this symbol and remove it from consideration
+            console.print(
+                "Didn't get data for ticker "
+                + symbol
+                + ". Removing from further processing."
+            )
             similar.remove(symbol)
+            continue
+        financials[symbol] = results.set_index("Item")
 
     if quarter:
         items = financials[similar[0]].columns
