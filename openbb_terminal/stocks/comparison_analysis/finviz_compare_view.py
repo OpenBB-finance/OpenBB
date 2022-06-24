@@ -38,7 +38,6 @@ def screener(similar: List[str], data_type: str, export: str = ""):
             title="Stock Screener",
         )
 
-    console.print("")
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), data_type, df_screen
     )

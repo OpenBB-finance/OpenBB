@@ -1,37 +1,36 @@
-Fiscal Date Ending                              2017    2018    2019    2020    2021
-Period                                            FY      FY      FY      FY      FY
-Revenue growth                                 0.077   0.031   0.006  -0.037   0.094
-Gross profit growth                            0.059   0.030   0.023  -0.009   0.118
-Ebitgrowth                                     0.064  -0.015  -0.079   0.108   0.111
-Operating income growth                        0.064  -0.015  -0.079   0.108   0.111
-Net income growth                             -0.134   0.311  -0.092   0.121   0.131
-Epsgrowth                                     -0.132   0.306  -0.090   0.117      -1
-Epsdiluted growth                             -0.133   0.307  -0.091   0.117      -1
-Weighted average shares growth                 0.001   0.002       0   0.001      -1
-Weighted average shares diluted growth         0.001   0.001   0.001   0.001      -1
-Dividendsper share growth                      0.022   0.054   0.040   0.027       0
-Operating cash flow growth                     0.103   0.064   0.065  -0.028   0.220
-Free cash flow growth                          0.066   0.092   0.149  -0.003   0.218
-Ten y revenue growth per share                 0.707   0.533   0.488   0.246       0
-Five y revenue growth per share               -0.001  -0.010   0.008   0.065       0
-Three y revenue growth per share              -0.026   0.101   0.114  -0.005       0
-Ten y operating c f growth per share           1.159   0.589   0.599   0.228       0
-Five y operating c f growth per share          0.031  -0.025   0.313   0.241       0
-Three y operating c f growth per share         0.162   0.200   0.246   0.097       0
-Ten y net income growth per share              0.356   0.527   0.416   0.311       0
-Five y net income growth per share            -0.252  -0.038  -0.034   0.166       0
-Three y net income growth per share           -0.187   0.147   0.029   0.331       0
-Ten y shareholders equity growth per share    -2.062  -3.209  -3.531  -5.234       0
-Five y shareholders equity growth per share    2.791   0.673  -0.077  -0.056       0
-Three y shareholders equity growth per share  -0.034  -0.063  -0.090   0.036       0
-Ten y dividendper share growth per share       0.345   0.803   1.068   0.966       0
-Five y dividendper share growth per share      0.315   0.256   0.195   0.172       0
-Three y dividendper share growth per share     0.090   0.097   0.120   0.126       0
-Receivables growth                             0.068  -0.047   0.043   0.012   0.048
-Inventory growth                              -0.023  -0.000   0.049   0.039  -0.091
-Asset growth                                   0.166  -0.074   0.077   0.045  -0.079
-Book valueper share growth                    -0.048   0.029  -0.071   0.084       0
-Debt growth                                    0.181  -0.075  -0.022   0.016  -0.118
-Rdexpense growth                                   0       0       0       0       0
-Sgaexpenses growth                             0.050   0.108   0.179  -0.989   0.186
-
+Fiscal Date Ending                              2017    2018    2019    2020     2021
+Period                                            FY      FY      FY      FY       FY
+Revenue growth                                 0.077   0.031   0.006  -0.037    0.094
+Gross profit growth                            0.059   0.030   0.023  -0.009    0.118
+Ebitgrowth                                     0.064  -0.011  -0.074   0.108    0.112
+Operating income growth                        0.064  -0.011  -0.074   0.108    0.112
+Net income growth                             -0.134   0.311  -0.092   0.121    0.131
+Epsgrowth                                     -0.134   0.309  -0.093   0.119    0.134
+Epsdiluted growth                             -0.134   0.309  -0.093   0.119    0.134
+Weighted average shares growth                 0.001   0.002       0   0.001        0
+Weighted average shares diluted growth         0.001   0.001   0.001   0.001   -0.001
+Dividendsper share growth                      0.022   0.054   0.040   0.027    0.029
+Operating cash flow growth                     0.103   0.064   0.065  -0.028    0.220
+Free cash flow growth                          0.066   0.092   0.149  -0.003    0.218
+Ten y revenue growth per share                 0.707   0.533   0.488   0.246    0.119
+Five y revenue growth per share               -0.001  -0.010   0.008   0.065    0.172
+Three y revenue growth per share              -0.026   0.101   0.114  -0.005    0.059
+Ten y operating c f growth per share           1.159   0.589   0.599   0.228    0.260
+Five y operating c f growth per share          0.031  -0.025   0.313   0.241    0.476
+Three y operating c f growth per share         0.162   0.200   0.246   0.097    0.261
+Ten y net income growth per share              0.356   0.527   0.416   0.311    0.175
+Five y net income growth per share            -0.252  -0.038  -0.034   0.166    0.302
+Three y net income growth per share           -0.187   0.147   0.029   0.331    0.150
+Ten y shareholders equity growth per share    -2.062  -3.209  -3.531  -5.234  -49.918
+Five y shareholders equity growth per share    2.791   0.673  -0.077  -0.056   -0.207
+Three y shareholders equity growth per share  -0.034  -0.063  -0.090   0.036   -0.190
+Ten y dividendper share growth per share       0.345   0.803   1.068   0.966    0.755
+Five y dividendper share growth per share      0.315   0.256   0.195   0.172    0.184
+Three y dividendper share growth per share     0.090   0.097   0.120   0.126    0.100
+Receivables growth                             0.068  -0.047   0.043   0.012    0.048
+Inventory growth                              -0.023  -0.000   0.049   0.039   -0.091
+Asset growth                                   0.166  -0.074   0.077   0.045   -0.079
+Book valueper share growth                    -0.048   0.029  -0.071   0.084   -0.196
+Debt growth                                    0.181  -0.075  -0.022   0.016   -0.118
+Rdexpense growth                                   0       0       0       0        0
+Sgaexpenses growth                             0.050   0.108   0.179  -0.989    0.186

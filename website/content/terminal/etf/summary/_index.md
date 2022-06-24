@@ -1,8 +1,10 @@
 ```text
 usage: summary [-h]
+```
 
 Displays the summary description of the loaded ETF.
 
+```
 optional arguments:
   -h, --help  show this help message (default: False)
 ```

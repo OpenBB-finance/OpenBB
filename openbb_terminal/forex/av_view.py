@@ -47,4 +47,3 @@ def display_quote(to_symbol: str, from_symbol: str):
         show_index=True,
         title=f"[bold]{from_symbol}/{to_symbol} Quote [/bold]",
     )
-    console.print("")

@@ -1,6 +1,8 @@
 """Keys Controller Module"""
 __docformat__ = "numpy"
 
+# pylint: disable=too-many-lines
+
 import argparse
 import logging
 import os
@@ -11,9 +13,9 @@ import praw
 import pyEX
 import quandl
 import requests
+from prawcore.exceptions import ResponseException
 from alpha_vantage.timeseries import TimeSeries
 from coinmarketcapapi import CoinMarketCapAPI, CoinMarketCapAPIError
-from prawcore.exceptions import ResponseException
 from prompt_toolkit.completion import NestedCompleter
 from pyEX.common.exception import PyEXception
 
@@ -24,18 +26,16 @@ from openbb_terminal.cryptocurrency.coinbase_helpers import (
     make_coinbase_request,
 )
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import parse_known_args_and_warn
+from openbb_terminal.helper_funcs import parse_simple_args
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console
-
-# pylint: disable=too-many-lines,no-member,too-many-public-methods,C0302
+from openbb_terminal.rich_config import console, MenuText, translate
+from openbb_terminal.terminal_helper import suppress_stdout
 
 logger = logging.getLogger(__name__)
-# pylint:disable=import-outside-toplevel
 
 
-class KeysController(BaseController):
+class KeysController(BaseController):  # pylint: disable=too-many-public-methods
     """Keys Controller class"""
 
     CHOICES_COMMANDS: List[str] = [
@@ -58,12 +58,14 @@ class KeysController(BaseController):
         "bitquery",
         "si",
         "cb",
-        "wa",
+        "walert",
         "glassnode",
         "coinglass",
         "cpanic",
         "ethplorer",
         "smartstake",
+        "github",
+        "mesari",
     ]
     PATH = "/keys/"
     key_dict: Dict = {}
@@ -80,7 +82,24 @@ class KeysController(BaseController):
 
             if session and obbff.USE_PROMPT_TOOLKIT:
                 choices: dict = {c: {} for c in self.controller_choices}
+
+                choices["support"] = self.SUPPORT_CHOICES
+
                 self.completer = NestedCompleter.from_nested_dict(choices)
+
+    def check_github_key(self, show_output: bool = False) -> None:
+        """Check GitHub key"""
+        self.cfg_dict["GITHUB"] = "github"
+        if cfg.API_GITHUB_KEY == "REPLACE_ME":  # pragma: allowlist secret
+            logger.info("GitHub key not defined")
+            self.key_dict["GITHUB"] = "not defined"
+        else:
+            self.key_dict["GITHUB"] = "defined"
+            # github api will not fail for the first requests without key
+            # only after certain amount of requests the user will get rate limited
+
+        if show_output:
+            console.print(self.key_dict["GITHUB"] + "\n")
 
     def check_av_key(self, show_output: bool = False) -> None:
         """Check Alpha Vantage key"""
@@ -92,7 +111,7 @@ class KeysController(BaseController):
             df = TimeSeries(
                 key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas"
             ).get_intraday(symbol="AAPL")
-            if df[0].empty:
+            if df[0].empty:  # pylint: disable=no-member
                 logger.warning("Alpha Vantage key defined, test failed")
                 self.key_dict["ALPHA_VANTAGE"] = "defined, test failed"
             else:
@@ -203,7 +222,7 @@ class KeysController(BaseController):
     def check_news_key(self, show_output: bool = False) -> None:
         """Check News API key"""
         self.cfg_dict["NEWSAPI"] = "news"
-        if cfg.API_NEWS_TOKEN == "REPLACE_ME":
+        if cfg.API_NEWS_TOKEN == "REPLACE_ME":  # nosec
             logger.info("News API key not defined")
             self.key_dict["NEWSAPI"] = "not defined"
         else:
@@ -226,7 +245,7 @@ class KeysController(BaseController):
     def check_tradier_key(self, show_output: bool = False) -> None:
         """Check Tradier key"""
         self.cfg_dict["TRADIER"] = "tradier"
-        if cfg.TRADIER_TOKEN == "REPLACE_ME":
+        if cfg.TRADIER_TOKEN == "REPLACE_ME":  # nosec
             logger.info("Tradier key not defined")
             self.key_dict["TRADIER"] = "not defined"
         else:
@@ -297,7 +316,7 @@ class KeysController(BaseController):
     def check_iex_key(self, show_output: bool = False) -> None:
         """Check IEX Cloud key"""
         self.cfg_dict["IEXCLOUD"] = "iex"
-        if cfg.API_IEX_TOKEN == "REPLACE_ME":
+        if cfg.API_IEX_TOKEN == "REPLACE_ME":  # nosec
             logger.info("IEX Cloud key not defined")
             self.key_dict["IEXCLOUD"] = "not defined"
         else:
@@ -328,19 +347,20 @@ class KeysController(BaseController):
         else:
 
             try:
-                praw_api = praw.Reddit(
-                    client_id=cfg.API_REDDIT_CLIENT_ID,
-                    client_secret=cfg.API_REDDIT_CLIENT_SECRET,
-                    username=cfg.API_REDDIT_USERNAME,
-                    user_agent=cfg.API_REDDIT_USER_AGENT,
-                    password=cfg.API_REDDIT_PASSWORD,
-                )
+                with suppress_stdout():
+                    praw_api = praw.Reddit(
+                        client_id=cfg.API_REDDIT_CLIENT_ID,
+                        client_secret=cfg.API_REDDIT_CLIENT_SECRET,
+                        username=cfg.API_REDDIT_USERNAME,
+                        user_agent=cfg.API_REDDIT_USER_AGENT,
+                        password=cfg.API_REDDIT_PASSWORD,
+                    )
 
-                praw_api.user.me()
+                    praw_api.user.me()
                 logger.info("Reddit key defined, test passed")
                 self.key_dict["REDDIT"] = "defined, test passed"
             except (Exception, ResponseException):
-                logger.warning("Reddit key defined, test passed")
+                logger.warning("Reddit key defined, test failed")
                 self.key_dict["REDDIT"] = "defined, test failed"
 
         if show_output:
@@ -522,8 +542,8 @@ class KeysController(BaseController):
 
     def check_walert_key(self, show_output: bool = False) -> None:
         """Check Walert key"""
-        self.cfg_dict["WHALE_ALERT"] = "wa"
-        if "REPLACE_ME" == cfg.API_WHALE_ALERT_KEY:
+        self.cfg_dict["WHALE_ALERT"] = "walert"
+        if cfg.API_WHALE_ALERT_KEY == "REPLACE_ME":
             logger.info("Walert key not defined")
             self.key_dict["WHALE_ALERT"] = "not defined"
         else:
@@ -531,14 +551,14 @@ class KeysController(BaseController):
                 "https://api.whale-alert.io/v1/transactions?api_key="
                 + cfg.API_WHALE_ALERT_KEY
             )
-            response = requests.get(url)
-
-            if not 200 <= response.status_code < 300:
-                logger.warning("Walert key defined, test failed")
-                self.key_dict["WHALE_ALERT"] = "defined, test unsuccessful"
             try:
-                logger.info("Walert key defined, test passed")
-                self.key_dict["WHALE_ALERT"] = "defined, test passed"
+                response = requests.get(url, timeout=2)
+                if not 200 <= response.status_code < 300:
+                    logger.warning("Walert key defined, test failed")
+                    self.key_dict["WHALE_ALERT"] = "defined, test unsuccessful"
+                else:
+                    logger.info("Walert key defined, test passed")
+                    self.key_dict["WHALE_ALERT"] = "defined, test passed"
             except Exception:
                 logger.exception("Walert key defined, test failed")
                 self.key_dict["WHALE_ALERT"] = "defined, test unsuccessful"
@@ -549,7 +569,7 @@ class KeysController(BaseController):
     def check_glassnode_key(self, show_output: bool = False) -> None:
         """Check glassnode key"""
         self.cfg_dict["GLASSNODE"] = "glassnode"
-        if "REPLACE_ME" == cfg.API_GLASSNODE_KEY:
+        if cfg.API_GLASSNODE_KEY == "REPLACE_ME":
             logger.info("Glassnode key not defined")
             self.key_dict["GLASSNODE"] = "not defined"
         else:
@@ -577,7 +597,7 @@ class KeysController(BaseController):
     def check_coinglass_key(self, show_output: bool = False) -> None:
         """Check coinglass key"""
         self.cfg_dict["COINGLASS"] = "coinglass"
-        if "REPLACE_ME" == cfg.API_COINGLASS_KEY:
+        if cfg.API_COINGLASS_KEY == "REPLACE_ME":
             logger.info("Coinglass key not defined")
             self.key_dict["COINGLASS"] = "not defined"
         else:
@@ -600,7 +620,7 @@ class KeysController(BaseController):
     def check_cpanic_key(self, show_output: bool = False) -> None:
         """Check cpanic key"""
         self.cfg_dict["CRYPTO_PANIC"] = "cpanic"
-        if "REPLACE_ME" == cfg.API_CRYPTO_PANIC_KEY:
+        if cfg.API_CRYPTO_PANIC_KEY == "REPLACE_ME":
             logger.info("cpanic key not defined")
             self.key_dict["CRYPTO_PANIC"] = "not defined"
         else:
@@ -623,7 +643,7 @@ class KeysController(BaseController):
     def check_ethplorer_key(self, show_output: bool = False) -> None:
         """Check ethplorer key"""
         self.cfg_dict["ETHPLORER"] = "ethplorer"
-        if "REPLACE_ME" == cfg.API_ETHPLORER_KEY:
+        if cfg.API_ETHPLORER_KEY == "REPLACE_ME":
             logger.info("ethplorer key not defined")
             self.key_dict["ETHPLORER"] = "not defined"
         else:
@@ -674,6 +694,31 @@ class KeysController(BaseController):
         if show_output:
             console.print(self.key_dict["SMARTSTAKE"] + "\n")
 
+    def check_messari_key(self, show_output: bool = False) -> None:
+        """Check Messari key"""
+        self.cfg_dict["MESSARI"] = "messari"
+        if (
+            cfg.API_MESSARI_KEY == "REPLACE_ME"  # pragma: allowlist secret
+        ):  # pragma: allowlist secret
+            logger.info("Messari key not defined")
+            self.key_dict["MESSARI"] = "not defined"
+        else:
+
+            url = "https://data.messari.io/api/v2/assets/bitcoin/profile"
+            headers = {"x-messari-api-key": cfg.API_MESSARI_KEY}
+            params = {"fields": "profile/general/overview/official_links"}
+            r = requests.get(url, headers=headers, params=params)
+
+            if r.status_code == 200:
+                logger.info("FMessari key defined, test passed")
+                self.key_dict["MESSARI"] = "defined, test passed"
+            else:
+                logger.warning("Messari key defined, test failed")
+                self.key_dict["MESSARI"] = "defined, test failed"
+
+        if show_output:
+            console.print(self.key_dict["MESSARI"] + "\n")
+
     def check_keys_status(self) -> None:
         """Check keys status"""
         self.check_av_key()
@@ -701,24 +746,63 @@ class KeysController(BaseController):
         self.check_cpanic_key()
         self.check_ethplorer_key()
         self.check_smartstake_key()
+        self.check_github_key()
+        self.check_messari_key()
 
     def print_help(self):
         """Print help"""
         self.check_keys_status()
-        help_text = "\n[info]Set API keys through environment variables:[/info]\n"
+        mt = MenuText("keys/")
+        mt.add_info("_keys_")
+        mt.add_raw("\n")
         for k, v in self.key_dict.items():
             cmd_name = self.cfg_dict[k]
             c = "red"
             if v == "defined, test passed":
                 c = "green"
+            elif v == "defined":
+                c = "green"
             elif v == "defined, test inconclusive":
                 c = "yellow"
             elif v == "not defined":
                 c = "grey30"
-            help_text += f"   [cmds]{cmd_name}[/cmds] {(20 - len(cmd_name)) * ' '}"
-            help_text += f" [{c}] {k} {(25 - len(k)) * ' '} {v} [/{c}]\n"
+            mt.add_raw(
+                f"   [cmds]{cmd_name}[/cmds] {(20 - len(cmd_name)) * ' '}"
+                f" [{c}] {k} {(25 - len(k)) * ' '} {translate(v)} [/{c}]\n"
+            )
 
-        console.print(text=help_text, menu="Keys")
+        console.print(text=mt.menu_text, menu="Keys")
+
+    @log_start_end(log=logger)
+    def call_github(self, other_args: List[str]):
+        """Process github command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="github",
+            description="Set GitHub API key.",
+        )
+        parser.add_argument(
+            "-k",
+            "--key",
+            type=str,
+            dest="key",
+            help="key",
+        )
+        if not other_args:
+            console.print(
+                "For your API Key, visit: https://docs.github.com/en/rest/guides/getting-started-with-the-rest-api\n"
+            )
+            return
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-k")
+        ns_parser = parse_simple_args(parser, other_args)
+        if ns_parser:
+            os.environ["OPENBB_API_GITHUB_KEY"] = ns_parser.key
+            dotenv.set_key(self.env_file, "OPENBB_API_GITHUB_KEY", ns_parser.key)
+            cfg.API_GITHUB_KEY = ns_parser.key
+            self.check_github_key(show_output=True)
 
     @log_start_end(log=logger)
     def call_av(self, other_args: List[str]):
@@ -744,7 +828,7 @@ class KeysController(BaseController):
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-k")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             os.environ["OPENBB_API_KEY_ALPHAVANTAGE"] = ns_parser.key
             dotenv.set_key(self.env_file, "OPENBB_API_KEY_ALPHAVANTAGE", ns_parser.key)
@@ -775,7 +859,7 @@ class KeysController(BaseController):
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-k")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             os.environ["OPENBB_API_KEY_FINANCIALMODELINGPREP"] = ns_parser.key
             dotenv.set_key(
@@ -806,7 +890,7 @@ class KeysController(BaseController):
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-k")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             os.environ["OPENBB_API_KEY_QUANDL"] = ns_parser.key
             dotenv.set_key(self.env_file, "OPENBB_API_KEY_QUANDL", ns_parser.key)
@@ -835,7 +919,7 @@ class KeysController(BaseController):
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-k")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             os.environ["OPENBB_API_POLYGON_KEY"] = ns_parser.key
             dotenv.set_key(self.env_file, "OPENBB_API_POLYGON_KEY", ns_parser.key)
@@ -864,7 +948,7 @@ class KeysController(BaseController):
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-k")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             os.environ["OPENBB_API_FRED_KEY"] = ns_parser.key
             dotenv.set_key(self.env_file, "OPENBB_API_FRED_KEY", ns_parser.key)
@@ -893,7 +977,7 @@ class KeysController(BaseController):
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-k")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             os.environ["OPENBB_API_NEWS_TOKEN"] = ns_parser.key
             dotenv.set_key(self.env_file, "OPENBB_API_NEWS_TOKEN", ns_parser.key)
@@ -922,7 +1006,7 @@ class KeysController(BaseController):
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-k")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             os.environ["OPENBB_API_TRADIER_TOKEN"] = ns_parser.key
             dotenv.set_key(self.env_file, "OPENBB_API_TRADIER_TOKEN", ns_parser.key)
@@ -950,7 +1034,7 @@ class KeysController(BaseController):
             return
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-k")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             os.environ["OPENBB_API_CMC_KEY"] = ns_parser.key
             dotenv.set_key(self.env_file, "OPENBB_API_CMC_KEY", ns_parser.key)
@@ -978,7 +1062,7 @@ class KeysController(BaseController):
             return
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-k")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             os.environ["OPENBB_API_FINNHUB_KEY"] = ns_parser.key
             dotenv.set_key(self.env_file, "OPENBB_API_FINNHUB_KEY", ns_parser.key)
@@ -1006,7 +1090,7 @@ class KeysController(BaseController):
             return
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-k")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             os.environ["OPENBB_API_IEX_KEY"] = ns_parser.key
             dotenv.set_key(self.env_file, "OPENBB_API_IEX_KEY", ns_parser.key)
@@ -1028,6 +1112,7 @@ class KeysController(BaseController):
             type=str,
             dest="client_id",
             help="Client ID",
+            required="-h" not in other_args,
         )
         parser.add_argument(
             "-s",
@@ -1035,6 +1120,7 @@ class KeysController(BaseController):
             type=str,
             dest="client_secret",
             help="Client Secret",
+            required="-h" not in other_args,
         )
         parser.add_argument(
             "-u",
@@ -1042,6 +1128,7 @@ class KeysController(BaseController):
             type=str,
             dest="username",
             help="Username",
+            required="-h" not in other_args,
         )
         parser.add_argument(
             "-p",
@@ -1049,6 +1136,7 @@ class KeysController(BaseController):
             type=str,
             dest="password",
             help="Password",
+            required="-h" not in other_args,
         )
         parser.add_argument(
             "-a",
@@ -1056,11 +1144,13 @@ class KeysController(BaseController):
             type=str,
             dest="user_agent",
             help="User agent",
+            required="-h" not in other_args,
+            nargs="+",
         )
         if not other_args:
             console.print("For your API Key, visit: https://www.reddit.com\n")
             return
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             os.environ["OPENBB_API_REDDIT_CLIENT_ID"] = ns_parser.client_id
             dotenv.set_key(
@@ -1076,23 +1166,26 @@ class KeysController(BaseController):
             )
             cfg.API_REDDIT_CLIENT_SECRET = ns_parser.client_secret
 
-            os.environ["OPENBB_API_REDDIT_PASSWORD"] = ns_parser.username
+            os.environ["OPENBB_API_REDDIT_PASSWORD"] = ns_parser.password
             dotenv.set_key(
-                self.env_file, "OPENBB_API_REDDIT_PASSWORD", ns_parser.username
-            )
-            cfg.API_REDDIT_USERNAME = ns_parser.username
-
-            os.environ["OPENBB_API_REDDIT_CLIENT_ID"] = ns_parser.password
-            dotenv.set_key(
-                self.env_file, "OPENBB_API_REDDIT_CLIENT_ID", ns_parser.password
+                self.env_file, "OPENBB_API_REDDIT_PASSWORD", ns_parser.password
             )
             cfg.API_REDDIT_PASSWORD = ns_parser.password
 
-            os.environ["OPENBB_API_REDDIT_USER_AGENT"] = ns_parser.user_agent
+            os.environ["OPENBB_API_REDDIT_USERNAME"] = ns_parser.username
             dotenv.set_key(
-                self.env_file, "OPENBB_API_REDDIT_USER_AGENT", ns_parser.user_agent
+                self.env_file, "OPENBB_API_REDDIT_USERNAME", ns_parser.username
             )
-            cfg.API_REDDIT_USER_AGENT = ns_parser.user_agent
+            cfg.API_REDDIT_USERNAME = ns_parser.username
+
+            slash_components = "".join([f"/{val}" for val in self.queue])
+            useragent = " ".join(ns_parser.user_agent) + " " + slash_components
+            useragent = useragent.replace('"', "")
+            self.queue = []
+
+            os.environ["OPENBB_API_REDDIT_USER_AGENT"] = useragent
+            dotenv.set_key(self.env_file, "OPENBB_API_REDDIT_USER_AGENT", useragent)
+            cfg.API_REDDIT_USER_AGENT = useragent
 
             self.check_reddit_key(show_output=True)
 
@@ -1111,6 +1204,7 @@ class KeysController(BaseController):
             type=str,
             dest="key",
             help="Key",
+            required="-h" not in other_args,
         )
         parser.add_argument(
             "-s",
@@ -1118,6 +1212,7 @@ class KeysController(BaseController):
             type=str,
             dest="secret_key",
             help="Secret key",
+            required="-h" not in other_args,
         )
         parser.add_argument(
             "-t",
@@ -1125,11 +1220,12 @@ class KeysController(BaseController):
             type=str,
             dest="bearer_token",
             help="Bearer token",
+            required="-h" not in other_args,
         )
         if not other_args:
             console.print("For your API Key, visit: https://developer.twitter.com\n")
             return
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             os.environ["OPENBB_API_TWITTER_KEY"] = ns_parser.key
             dotenv.set_key(self.env_file, "OPENBB_API_TWITTER_KEY", ns_parser.key)
@@ -1175,7 +1271,7 @@ class KeysController(BaseController):
         if not other_args:
             console.print("For your API Key, visit: https://robinhood.com/us/en/\n")
             return
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             os.environ["OPENBB_RH_USERNAME"] = ns_parser.username
             dotenv.set_key(self.env_file, "OPENBB_RH_USERNAME", ns_parser.username)
@@ -1220,7 +1316,7 @@ class KeysController(BaseController):
         if not other_args:
             console.print("For your API Key, visit: https://www.degiro.fr\n")
             return
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             os.environ["OPENBB_DG_USERNAME"] = ns_parser.username
             dotenv.set_key(self.env_file, "OPENBB_DG_USERNAME", ns_parser.username)
@@ -1260,7 +1356,7 @@ class KeysController(BaseController):
             help="token",
         )
         parser.add_argument(
-            "-t",
+            "-at",
             "--account_type",
             type=str,
             dest="account_type",
@@ -1269,7 +1365,7 @@ class KeysController(BaseController):
         if not other_args:
             console.print("For your API Key, visit: https://developer.oanda.com\n")
             return
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             os.environ["OPENBB_OANDA_ACCOUNT"] = ns_parser.account
             dotenv.set_key(self.env_file, "OPENBB_OANDA_ACCOUNT", ns_parser.account)
@@ -1313,7 +1409,7 @@ class KeysController(BaseController):
         if not other_args:
             console.print("For your API Key, visit: https://binance.com\n")
             return
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             os.environ["OPENBB_API_BINANCE_KEY"] = ns_parser.key
             dotenv.set_key(self.env_file, "OPENBB_API_BINANCE_KEY", ns_parser.key)
@@ -1348,7 +1444,7 @@ class KeysController(BaseController):
             return
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-k")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             os.environ["OPENBB_API_BITQUERY_KEY"] = ns_parser.key
             dotenv.set_key(self.env_file, "OPENBB_API_BITQUERY_KEY", ns_parser.key)
@@ -1377,7 +1473,7 @@ class KeysController(BaseController):
             return
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-k")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             os.environ["OPENBB_API_SENTIMENTINVESTOR_TOKEN"] = ns_parser.key
             dotenv.set_key(
@@ -1420,7 +1516,7 @@ class KeysController(BaseController):
         if not other_args:
             console.print("For your API Key, visit: https://docs.pro.coinbase.com/\n")
             return
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             os.environ["OPENBB_API_COINBASE_KEY"] = ns_parser.key
             dotenv.set_key(self.env_file, "OPENBB_API_COINBASE_KEY", ns_parser.key)
@@ -1461,7 +1557,7 @@ class KeysController(BaseController):
             return
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-k")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             os.environ["OPENBB_API_WHALE_ALERT_KEY"] = ns_parser.key
             dotenv.set_key(self.env_file, "OPENBB_API_WHALE_ALERT_KEY", ns_parser.key)
@@ -1492,7 +1588,7 @@ class KeysController(BaseController):
             return
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-k")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             os.environ["OPENBB_API_GLASSNODE_KEY"] = ns_parser.key
             dotenv.set_key(self.env_file, "OPENBB_API_GLASSNODE_KEY", ns_parser.key)
@@ -1523,7 +1619,7 @@ class KeysController(BaseController):
             return
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-k")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             os.environ["OPENBB_API_COINGLASS_KEY"] = ns_parser.key
             dotenv.set_key(self.env_file, "OPENBB_API_COINGLASS_KEY", ns_parser.key)
@@ -1554,7 +1650,7 @@ class KeysController(BaseController):
             return
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-k")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             os.environ["OPENBB_API_CRYPTO_PANIC_KEY"] = ns_parser.key
             dotenv.set_key(self.env_file, "OPENBB_API_CRYPTO_PANIC_KEY", ns_parser.key)
@@ -1585,7 +1681,7 @@ class KeysController(BaseController):
             return
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-k")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             os.environ["OPENBB_API_ETHPLORER_KEY"] = ns_parser.key
             dotenv.set_key(self.env_file, "OPENBB_API_ETHPLORER_KEY", ns_parser.key)
@@ -1618,7 +1714,7 @@ class KeysController(BaseController):
         if not other_args:
             console.print("For your API Key, visit: https://www.smartstake.io\n")
             return
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
 
         if ns_parser:
             os.environ["OPENBB_API_SMARTSTAKE_TOKEN"] = ns_parser.token
@@ -1632,3 +1728,32 @@ class KeysController(BaseController):
             cfg.API_SMARTSTAKE_KEY = ns_parser.key
 
             self.check_smartstake_key(show_output=True)
+
+    @log_start_end(log=logger)
+    def call_messari(self, other_args: List[str]):
+        """Process messari command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="messari",
+            description="Set Messari API key.",
+        )
+        parser.add_argument(
+            "-k",
+            "--key",
+            type=str,
+            dest="key",
+            help="key",
+        )
+        if not other_args:
+            console.print("For your API Key, visit: https://messari.io/api/docs\n")
+            return
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-k")
+        ns_parser = parse_simple_args(parser, other_args)
+        if ns_parser:
+            os.environ["OPENBB_API_MESSARI_KEY"] = ns_parser.key
+            dotenv.set_key(self.env_file, "OPENBB_API_MESSARI_KEY", ns_parser.key)
+            cfg.API_MESSARI_KEY = ns_parser.key
+            self.check_messari_key(show_output=True)

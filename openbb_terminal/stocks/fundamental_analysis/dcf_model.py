@@ -3,7 +3,6 @@ __docformat__ = "numpy"
 
 import logging
 import os
-import re
 from io import BytesIO
 from pathlib import Path
 from typing import Any, Dict, List, Tuple, Union
@@ -20,6 +19,7 @@ from sklearn.linear_model import LinearRegression
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.stocks.fundamental_analysis import dcf_static
+from openbb_terminal.helper_funcs import compose_export_path
 
 logger = logging.getLogger(__name__)
 
@@ -245,8 +245,8 @@ def get_fama_raw() -> pd.DataFrame:
     df : pd.DataFrame
         Fama French data
     """
-    with urlopen(
-        "http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_CSV.zip"
+    with urlopen(  # nosec
+        "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_CSV.zip"
     ) as url:
 
         # Download Zipfile and create pandas DataFrame
@@ -407,22 +407,14 @@ def create_dataframe(ticker: str, statement: str, period: str = "annual"):
 
     if "404 - Page Not Found" in r.text:
         return pd.DataFrame(), None, None
+
+    try:
+        df = pd.read_html(r.text)[0]
+    except ValueError:
+        return pd.DataFrame(), None, None
+
     soup = BeautifulSoup(r.content, "html.parser")
-
-    table = soup.find("table", attrs={"class": re.compile("fintbl")})
-    if table is None:
-        return pd.DataFrame(), None, None
-    head = table.find("thead")
-    if head is None:
-        return pd.DataFrame(), None, None
-    columns = head.find_all("th")
-    if columns is None:
-        return pd.DataFrame(), None, None
-
-    years = [x.get_text().strip() for x in columns]
-    len_data = len(years) - 1
-
-    phrase = soup.find("div", attrs={"class": "block text-sm text-gray-600 lg:hidden"})
+    phrase = soup.find("div", attrs={"class": "info-long svelte-f7kao3"})
     phrase = phrase.get_text().lower() if phrase else ""
 
     if "thousand" in phrase:
@@ -439,23 +431,7 @@ def create_dataframe(ticker: str, statement: str, period: str = "annual"):
             statement_currency = currency
             break
 
-    body = table.find("tbody")
-    rows = body.find_all("tr")
-
-    all_data = [
-        [
-            x.get_text().strip() if x.get_text().strip() != "-" else "0"
-            for x in y.find_all("td")
-        ]
-        for y in rows
-    ]
-
-    df = pd.DataFrame(data=all_data)
-    df = df.set_index(0)
-    n = df.shape[1] - len_data
-    if n > 0:
-        df = df.iloc[:, :-n]
-    df.columns = years[1 : len(df.columns) + 1]
+    df = df.set_index("Year")
     df = df.loc[:, ~(df == "Upgrade").any()]
 
     for ignore in ignores:
@@ -555,10 +531,16 @@ def get_value(df: pd.DataFrame, row: str, column: int) -> Tuple[float, float]:
     value : List[float]
         The information in float format
     """
-    val1: str = df.at[row, df.columns[column]]
-    fin_val1: float = float(val1.replace(",", "").replace("-", "-0"))
-    val2: str = df.at[row, df.columns[column + 1]]
-    fin_val2: float = float(val2.replace(",", "").replace("-", "-0"))
+    val1 = df.at[row, df.columns[column]]
+    if isinstance(val1, str):
+        fin_val1: float = float(val1.replace(",", "").replace("-", "-0"))
+    else:
+        fin_val1 = float(val1)
+    val2 = df.at[row, df.columns[column + 1]]
+    if isinstance(val2, str):
+        fin_val2: float = float(val2.replace(",", "").replace("-", "-0"))
+    else:
+        fin_val2 = float(val2)
     return fin_val1, fin_val2
 
 
@@ -602,11 +584,11 @@ def generate_path(n: int, ticker: str, date: str) -> Path:
         The path to save a file to
     """
     val = "" if n == 0 else f"({n})"
+    export_folder, _ = compose_export_path(
+        func_name="dcf", dir_path=os.path.abspath(os.path.dirname(__file__))
+    )
     trypath = os.path.join(
-        os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..")),
-        "exports",
-        "stocks",
-        "fundamental_analysis",
+        export_folder,
         f"{ticker} {date}{val}.xlsx",
     )
     return Path(trypath)

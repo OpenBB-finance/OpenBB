@@ -33,8 +33,9 @@
   </a>
 
   <h3 align="center">OpenBB Terminal 🚀</h3>
+  <h4 align="center">Documentation can be found at: https://openbb-finance.github.io/OpenBBTerminal/ </h4>
   <p align="center">Click on the GIF below for a DEMO of the terminal.</p>
-  
+
 <p align="center">
    <a href="https://www.youtube.com/watch?v=fqGPK8OVHLk" rel="honest work">
       <img src="images/usage.gif" alt="drawing" width="1000"/>
@@ -45,7 +46,7 @@
     Investment research for everyone.
     <br />
     <a href="https://github.com/OpenBB-finance/OpenBBTerminal/tree/master/openbb_terminal/README.md"><strong>≪  GETTING STARTED</strong></a>
-    &nbsp · &nbsp
+    &nbsp · &nbsp <a href="https://github.com/OpenBB-finance/OpenBBTerminal/tree/master/openbb_terminal/CONTRIBUTING.md"><strong>CONTRIBUTING</strong></a> &nbsp · &nbsp
     <a href="https://openbb-finance.github.io/OpenBBTerminal/">
     <strong>SEE FEATURES »</strong></a>
     <br />
@@ -95,10 +96,11 @@ As a modern Python-based environment, OpenBBTerminal opens access to numerous Py
 
 If you wish to install the Terminal, there are currently four options:
 
-- [Using the Installer](openbb_terminal/README.md#User) (recommended if you just want to use the terminal)
+- [Using the Installer](https://openbb-finance.github.io/OpenBBTerminal/#accessing-the-openbb-terminal) (recommended if you just want to use the terminal)
 - [Using Python](openbb_terminal/README.md#anaconda--python) (recommended if you want to develop new features)
 - [Using Docker](openbb_terminal/README.md#Docker-Installation) (alternative option to the installer if preferred)
-- [Using Docker Web UI](openbb_terminal/README.md#web-ui---docker) (if you want to deploy the web UI for users to access over your LAN)
+- [Using Docker Web UI](openbb_terminal/README.md#web-ui---docker) (if you want to deploy the web UI for users to access
+  over your LAN)
 
 ## Contributing
 
@@ -121,21 +123,21 @@ go up.
 5. Push to your Branch (`git push origin feature/AmazingFeature`)
 6. Open a Pull Request
 
-**Become a Karen 🤷**
+**Raise an Issue**
 
 Recommended if you adopted a strategy of buying high and selling low.
 
 We are interested in your view on what sort of [features](https://github.com/OpenBB-finance/OpenBBTerminal/issues)
-would make you buy even higher and selling even lower.
+would make you buy even higher and sell even lower.
 
 Also, if somehow you're sitting in several mils due to this terminal, don't forget to report a
 [bug](https://github.com/OpenBB-finance/OpenBBTerminal/issues) so that the team can fix, and keep the old ways.
 
-**Join the 🙌 💎 Gang**
-
-If red is your favorite color, and you never sell for a loss.
+**Join Us and Contribute**
 
 Welcome to the club, and feel free to support the developers behind this amazing open-source project.
+
+If you're interested in contributing, fork us! Grab an issue or enhancement and put in a PR request with the fix.
 
 ## License
 
@@ -148,7 +150,7 @@ Distributed under the MIT License. See
 clients and I do not provide personalized investment advice for fees or commissions." DFV
 
 Trading in financial instruments involves high risks including the risk of losing some, or all, of your investment
-amount, and may not be suitable for all investors. Before deciding to trade in financial instrument you should be fully
+amount, and may not be suitable for all investors. Before deciding to trade in a financial instrument you should be fully
 informed of the risks and costs associated with trading the financial markets, carefully consider your investment
 objectives, level of experience, and risk appetite, and seek professional advice where needed. The data contained in GST
 is not necessarily accurate. GST and any provider of the data contained in this website will not accept liability for
@@ -172,6 +174,10 @@ Feel free to share loss porn, memes or any questions at:
 <a href="https://github.com/OpenBB-finance/OpenBBTerminal/graphs/contributors">
    <img src="https://contributors-img.web.app/image?repo=OpenBB-finance/OpenBBTerminal" height="276"/>
 </a>
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=openbb-finance/OpenBBTerminal&type=Date)](https://star-history.com/#openbb-finance/OpenBBTerminal&Date)
 
 ## Acknowledgments
 

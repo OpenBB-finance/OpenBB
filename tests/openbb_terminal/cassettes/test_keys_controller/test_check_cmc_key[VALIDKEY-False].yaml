@@ -1,0 +1,72 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - deflate, gzip
+      Accepts:
+      - application/json
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+      X-CMC_PRO_API_KEY:
+      - VALIDKEY
+    method: GET
+    uri: https://pro-api.coinmarketcap.com/v1/cryptocurrency/map
+  response:
+    body:
+      string: "{\n    \"status\": {\n        \"timestamp\": \"2022-04-09T13:01:28.940Z\",\n
+        \       \"error_code\": 1001,\n        \"error_message\": \"This API Key is
+        invalid.\",\n        \"elapsed\": 0,\n        \"credit_count\": 0\n    }\n}"
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 6f936e7f1e572007-IND
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '203'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sat, 09 Apr 2022 13:01:28 GMT
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Referrer-Policy:
+      - origin-when-cross-origin
+      Server:
+      - cloudflare
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains
+      Vary:
+      - origin
+      Via:
+      - 1.1 c6aa039b46ee567794869d726acc308a.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id:
+      - 4ZVc87fyN46mMSLRXxKtPhYItIUOmrHQ6k8YkwO5uG7q4YSq5SxqLA==
+      X-Amz-Cf-Pop:
+      - ORD56-P1
+      X-Cache:
+      - Error from cloudfront
+      X-Content-Type-Options:
+      - nosniff
+      X-Envoy-Decorator-Operation:
+      - coinmarketcap-pro-apis.cmc-api.svc.cluster.local:80/*
+      X-Envoy-Upstream-Service-Time:
+      - '4'
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Traefik-Route:
+      - coinmarketcap-pro-apis
+      X-Xss-Protection:
+      - 1; mode=block
+    status:
+      code: 401
+      message: Unauthorized
+version: 1

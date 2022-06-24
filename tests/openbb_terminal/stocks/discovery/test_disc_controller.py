@@ -16,7 +16,7 @@ from openbb_terminal.stocks.discovery import disc_controller
 @pytest.mark.parametrize(
     "queue, expected",
     [
-        (["load", "help"], []),
+        (["load", "help"], ["help"]),
         (["quit", "help"], ["help"]),
     ],
 )
@@ -66,7 +66,7 @@ def test_menu_without_queue_completion(mocker):
 
     result_menu = disc_controller.DiscoveryController(queue=None).menu()
 
-    assert result_menu == []
+    assert result_menu == ["help"]
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -111,7 +111,7 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
 
     result_menu = disc_controller.DiscoveryController(queue=None).menu()
 
-    assert result_menu == []
+    assert result_menu == ["help"]
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -366,7 +366,7 @@ def test_call_func(tested_func, mocked_func, other_args, called_with, mocker):
 )
 def test_call_func_no_parser(func, mocker):
     mocker.patch(
-        "openbb_terminal.stocks.discovery.disc_controller.parse_known_args_and_warn",
+        "openbb_terminal.stocks.discovery.disc_controller.DiscoveryController.parse_known_args_and_warn",
         return_value=None,
     )
     controller = disc_controller.DiscoveryController()
@@ -374,4 +374,4 @@ def test_call_func_no_parser(func, mocker):
     func_result = getattr(controller, func)(other_args=list())
     assert func_result is None
     assert controller.queue == []
-    getattr(disc_controller, "parse_known_args_and_warn").assert_called_once()
+    controller.parse_known_args_and_warn.assert_called_once()

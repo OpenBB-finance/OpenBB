@@ -25,7 +25,7 @@ def display_order_book(
     coin: str,
     limit: int,
     currency: str,
-    export: str,
+    export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Get order book for currency. [Source: Binance]
@@ -101,7 +101,6 @@ def display_balance(coin: str, currency: str, export: str) -> None:
     print_rich_table(
         df, headers=df.columns, show_index=True, title="Account Holdings for Assets"
     )
-    console.print("")
 
     export_data(
         export,

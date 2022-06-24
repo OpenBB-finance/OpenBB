@@ -23,11 +23,10 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
-    parse_known_args_and_warn,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 
 logger = logging.getLogger(__name__)
 
@@ -82,28 +81,25 @@ class DiscoveryController(BaseController):
             choices["drdapps"]["--sort"] = {
                 c: {} for c in dappradar_model.DAPPS_COLUMNS
             }
+
+            choices["support"] = self.SUPPORT_CHOICES
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
         """Print help"""
-        help_text = """[cmds]
-[src][CoinGecko][/src]
-    cgtop             top coins (with or without category)
-    cgtrending        trending coins
-    cggainers         top gainers - coins which price gained the most in given period
-    cglosers          top losers - coins which price dropped the most in given period
-[src][CoinPaprika][/src]
-    cpsearch          search for coins
-[src][CoinMarketCap][/src]
-    cmctop            top coins
-[src][DappRadar][/src]
-    drnft             top non fungible tokens
-    drgames           top blockchain games
-    drdapps           top decentralized apps
-    drdex             top decentralized exchanges
-[/cmds]
-"""
-        console.print(text=help_text, menu="Cryptocurrency - Discovery")
+        mt = MenuText("crypto/disc/")
+        mt.add_cmd("cgtop", "CoinGecko")
+        mt.add_cmd("cgtrending", "CoinGecko")
+        mt.add_cmd("cggainers", "CoinGecko")
+        mt.add_cmd("cglosers", "CoinGecko")
+        mt.add_cmd("cpsearch", "CoinPaprika")
+        mt.add_cmd("cmctop", "CoinMarketCap")
+        mt.add_cmd("drnft", "DappRadar")
+        mt.add_cmd("drgames", "DappRadar")
+        mt.add_cmd("drdapps", "DappRadar")
+        mt.add_cmd("drdex", "DappRadar")
+        console.print(text=mt.menu_text, menu="Cryptocurrency - Discovery")
 
     @log_start_end(log=logger)
     def call_cgtop(self, other_args):
@@ -149,7 +145,7 @@ class DiscoveryController(BaseController):
         if other_args and not other_args[0][0] == "-":
             other_args.insert(0, "-c")
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -190,7 +186,7 @@ class DiscoveryController(BaseController):
             help="Sort by given column. Default: Daily Volume [$]",
             default="Daily Volume [$]",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -230,7 +226,7 @@ class DiscoveryController(BaseController):
             help="Sort by given column. Default: Daily Volume [$]",
             default="Daily Volume [$]",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -270,7 +266,7 @@ class DiscoveryController(BaseController):
             help="Sort by given column. Default: Daily Volume [$]",
             default="Daily Volume [$]",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -311,7 +307,7 @@ class DiscoveryController(BaseController):
             default="Market Cap [$]",
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -364,7 +360,7 @@ class DiscoveryController(BaseController):
             default="Market Cap Rank",
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -418,7 +414,7 @@ class DiscoveryController(BaseController):
             default="Market Cap Rank",
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -442,7 +438,7 @@ class DiscoveryController(BaseController):
             """,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -487,7 +483,7 @@ class DiscoveryController(BaseController):
             default=True,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -565,7 +561,7 @@ class DiscoveryController(BaseController):
             if not other_args[0][0] == "-":
                 other_args.insert(0, "-q")
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:

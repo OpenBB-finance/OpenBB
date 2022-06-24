@@ -1,0 +1,14 @@
+                                               2021-10-29 2020-10-30
+Liabilities                                     287.912 B  258.549 B
+Noncurrent Assets                               216.166 B  180.175 B
+Other Than Fixed Noncurrent Assets              216.166 B  180.175 B
+Liabilities And Equity                          351.002 B  323.888 B
+Current Assets                                  134.836 B  143.713 B
+Current Liabilities                             125.481 B  105.392 B
+Equity Attributable To Noncontrolling Interest          0          0
+Noncurrent Liabilities                          162.431 B  153.157 B
+Fixed Assets                                     39.440 B   36.766 B
+Equity                                           63.090 B   65.339 B
+Assets                                          351.002 B  323.888 B
+Equity Attributable To Parent                    63.090 B   65.339 B
+

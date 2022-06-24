@@ -33,11 +33,10 @@ from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
     check_terra_address_format,
-    parse_known_args_and_warn,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 
 logger = logging.getLogger(__name__)
 
@@ -67,7 +66,6 @@ class DefiController(BaseController):
         "validators",
         "govp",
         "gacc",
-        "sratio",
         "sreturn",
         "lcsc",
         "anchor",
@@ -100,44 +98,38 @@ class DefiController(BaseController):
                 c: {} for c in terramoney_fcd_model.VALIDATORS_COLUMNS
             }
 
+            choices["support"] = self.SUPPORT_CHOICES
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
         """Print help"""
-        help_text = """[cmds]
-    newsletter    Recent DeFi related newsletters [src][Substack][/src]
-    dpi           DeFi protocols listed on DefiPulse [src][Defipulse][/src]
-    funding       Funding rates - current or last 30 days average [src][Defirate][/src]
-    borrow        DeFi borrow rates - current or last 30 days average [src][Defirate][/src]
-    lending       DeFi ending rates - current or last 30 days average [src][Defirate][/src]
-    vaults        Top DeFi Vaults on different blockchains [src][Coindix][/src]
-[src][The Graph][/src] [info]Uniswap[/info]
-    tokens        Tokens trade-able on Uniswap
-    stats         Base statistics about Uniswap
-    pairs         Recently added pairs on Uniswap
-    pools         Pools by volume on Uniswap
-    swaps         Recent swaps done on Uniswap
-[src][Defi Llama][/src]
-    ldapps        Lists dApps
-    gdapps        Displays top DeFi dApps grouped by chain
-    stvl          Displays historical values of the total sum of TVLs from all dApps
-    dtvl          Displays historical total value locked (TVL) by dApp
-[src][Terra Engineer][/src]
-    aterra        Displays 30-day history of specified asset in terra address
-    ayr           Displays 30-day history of anchor yield reserve
-[src][Terra FCD][/src]
-    sinfo         Displays staking info for provided terra account address
-    validators    Displays information about terra blockchain validators
-    govp          Displays terra blockchain governance proposals list
-    gacc          Displays terra blockchain account growth history
-    sratio        Displays terra blockchain staking ratio history
-    sreturn       Displays terra blockchain staking returns history
-[src][Smartstake][/src]
-    lcsc          Displays Luna circulating supply changes
-[src][CryptoSaurio][/src]
-    anchor        Display anchor earnings data[/cmds]
-"""
-        console.print(text=help_text, menu="Cryptocurrency - Decentralized Finance")
+        mt = MenuText("crypto/defi/")
+        mt.add_cmd("newsletter", "Substack")
+        mt.add_cmd("dpi", "Defipulse")
+        mt.add_cmd("funding", "Defirate")
+        mt.add_cmd("borrow", "Defirate")
+        mt.add_cmd("lending", "Defirate")
+        mt.add_cmd("vaults", "Coindix")
+        mt.add_cmd("tokens", "The Graph")
+        mt.add_cmd("stats", "The Graph")
+        mt.add_cmd("pairs", "The Graph")
+        mt.add_cmd("pools", "The Graph")
+        mt.add_cmd("swaps", "The Graph")
+        mt.add_cmd("ldapps", "Defi Llama")
+        mt.add_cmd("gdapps", "Defi Llama")
+        mt.add_cmd("stvl", "Defi Llama")
+        mt.add_cmd("dtvl", "Defi Llama")
+        mt.add_cmd("aterra", "Terra Engineer")
+        mt.add_cmd("ayr", "Terra Engineer")
+        mt.add_cmd("sinfo", "Terra FCD")
+        mt.add_cmd("validators", "Terra FCD")
+        mt.add_cmd("govp", "Terra FCD")
+        mt.add_cmd("gacc", "Terra FCD")
+        mt.add_cmd("sreturn", "Terra FCD")
+        mt.add_cmd("lcsc", "Smartstake")
+        mt.add_cmd("anchor", "CryptoSaurio")
+        console.print(text=mt.menu_text, menu="Cryptocurrency - Decentralized Finance")
 
     @log_start_end(log=logger)
     def call_anchor(self, other_args: List[str]):
@@ -169,7 +161,7 @@ class DefiController(BaseController):
         if other_args and not other_args[0][0] == "-":
             other_args.insert(0, "--address")
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -210,7 +202,7 @@ class DefiController(BaseController):
         if other_args and not other_args[0][0] == "-":
             other_args.insert(0, "--asset")
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -238,7 +230,7 @@ class DefiController(BaseController):
             """,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -276,7 +268,7 @@ class DefiController(BaseController):
         if other_args and not other_args[0][0] == "-":
             other_args.insert(0, "-a")
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -328,7 +320,7 @@ class DefiController(BaseController):
             default=False,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -384,7 +376,7 @@ class DefiController(BaseController):
             default=False,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -440,7 +432,7 @@ class DefiController(BaseController):
             default=False,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
 
@@ -472,7 +464,7 @@ class DefiController(BaseController):
             default=90,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
 
@@ -501,7 +493,7 @@ class DefiController(BaseController):
             default=90,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
 
@@ -550,7 +542,7 @@ class DefiController(BaseController):
             default=True,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -583,7 +575,7 @@ class DefiController(BaseController):
             default=40,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -613,7 +605,7 @@ class DefiController(BaseController):
         if other_args and not other_args[0][0] == "-":
             other_args.insert(0, "-d")
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -668,7 +660,7 @@ class DefiController(BaseController):
             default=False,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -703,7 +695,7 @@ class DefiController(BaseController):
             default=10,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
 
@@ -740,7 +732,7 @@ class DefiController(BaseController):
             help="Show Current Funding Rates or Last 30 Days Average",
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -779,7 +771,7 @@ class DefiController(BaseController):
             help="Show Current Borrow Rates or Last 30 Days Average",
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -818,7 +810,7 @@ class DefiController(BaseController):
             help="Show Current Lending Rates or Last 30 Days Average",
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -849,7 +841,7 @@ class DefiController(BaseController):
             default=10,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -905,7 +897,7 @@ class DefiController(BaseController):
             default=True,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -931,7 +923,7 @@ class DefiController(BaseController):
              """,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -1004,7 +996,7 @@ class DefiController(BaseController):
             default=False,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -1059,7 +1051,7 @@ class DefiController(BaseController):
             default=False,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -1111,7 +1103,7 @@ class DefiController(BaseController):
             default=False,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -1205,7 +1197,7 @@ class DefiController(BaseController):
             default=True,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -1251,7 +1243,7 @@ class DefiController(BaseController):
             default=30,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, limit=5
         )
 

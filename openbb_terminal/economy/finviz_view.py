@@ -31,9 +31,8 @@ def map_sp500_view(period: str, map_type: str):
     d_period = {"1d": "", "1w": "w1", "1m": "w4", "3m": "w13", "6m": "w26", "1y": "w52"}
     d_type = {"sp500": "sec", "world": "geo", "full": "sec_all", "etf": "etf"}
     # TODO: Try to get this image and output it instead of opening browser
-    webbrowser.open(
-        f"https://finviz.com/map.ashx?t={d_type[map_type]}&st={d_period[period]}"
-    )
+    url = f"https://finviz.com/map.ashx?t={d_type[map_type]}&st={d_period[period]}"
+    webbrowser.open(url)
     console.print("")
 
 
@@ -88,8 +87,6 @@ def display_performance(
         title="Group Performance Data",
     )
 
-    console.print("")
-
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
@@ -138,8 +135,6 @@ def display_valuation(
         headers=list(df_group.columns),
         title="Group Valuation Data",
     )
-
-    console.print()
 
     export_data(
         export,
@@ -212,4 +207,3 @@ def display_future(
         future_type.lower(),
         df,
     )
-    console.print("")

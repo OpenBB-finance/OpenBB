@@ -6,10 +6,14 @@ repos:
         description: Ensures that all of the commands in the terminal are included in Hugo.
         language: python
         pass_filenames: false
-        args: ["--ignore-files=settings_controller.py,keys_controller.py,degiro_controller.py,", "--ignore-commands=login,al_swe,info_swe,goodness,resources,yf,yolo"]
+        args:
+          [
+            "--ignore-files=settings_controller.py,featflags_controller.py,keys_controller.py,degiro_controller.py,",
+            "--ignore-commands=login,al_swe,info_swe,goodness,resources,yf,yolo,from,to",
+          ]
         entry: python custom_pre_commit/check_doc.py
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.1.0
+    rev: v4.2.0
     hooks:
       - id: check-yaml
       - id: end-of-file-fixer
@@ -19,7 +23,7 @@ repos:
       - id: check-merge-conflict
       - id: detect-private-key
   - repo: https://github.com/psf/black
-    rev: 22.1.0
+    rev: 22.3.0
     hooks:
       - id: black
   - repo: https://github.com/pycqa/flake8
@@ -34,12 +38,12 @@ repos:
         entry: codespell
         args:
           [
-            "--ignore-words-list=zlot,ba,buil,coo,ether,hist,hsi,mape,navagation,operatio,pres,ser,yeld,shold,ist,varian,datas",
+            "--ignore-words-list=vie,hel,zlot,ba,buil,coo,ether,hist,hsi,mape,navagation,operatio,pres,ser,yeld,shold,ist,varian,datas,ake,creat",
             "--quiet-level=2",
             "--skip=./tests,.git,*.css,*.csv,*.html,*.ini,*.ipynb,*.js,*.json,*.lock,*.scss,*.txt,*.yaml,build/pyinstaller/*",
           ]
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: "v0.940"
+    rev: "v0.960"
     hooks:
       - id: mypy
         args: ["--ignore-missing-imports", '--exclude=/setup\.py$']
@@ -60,10 +64,11 @@ repos:
     rev: v1.2.0
     hooks:
       - id: detect-secrets
-        args: [ '--baseline', '.secrets.baseline', '--exclude-files', 'cassettes/*' ]
+        args:
+          ["--baseline", ".secrets.baseline", "--exclude-files", "cassettes/*"]
         exclude: package.lock.json
   - repo: https://github.com/asottile/pyupgrade
-    rev: v2.31.0
+    rev: v2.32.1
     hooks:
       - id: pyupgrade
         args: [--py36-plus]

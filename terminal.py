@@ -7,30 +7,33 @@ import difflib
 import logging
 import os
 import platform
+import random
 import sys
 from typing import List
 from pathlib import Path
-import pytz
 import dotenv
 
 from prompt_toolkit.completion import NestedCompleter
+from prompt_toolkit.styles import Style
+from prompt_toolkit.formatted_text import HTML
 
+from openbb_terminal.core.config.constants import REPO_DIR, ENV_FILE, USER_HOME
+from openbb_terminal.core.log.generation.path_tracking_file_handler import (
+    PathTrackingFileHandler,
+)
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.helper_funcs import (
-    check_path,
     get_flair,
-    get_user_timezone_or_invalid,
-    parse_known_args_and_warn,
-    replace_user_timezone,
-    set_export_folder,
+    parse_simple_args,
 )
 from openbb_terminal.loggers import setup_logging
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.terminal_helper import (
     about_us,
     bootup,
+    check_for_updates,
     is_reset,
     print_goodbye,
     reset,
@@ -39,11 +42,11 @@ from openbb_terminal.terminal_helper import (
     welcome_message,
 )
 
-# pylint: disable=too-many-public-methods,import-outside-toplevel,too-many-branches
+# pylint: disable=too-many-public-methods,import-outside-toplevel,too-many-branches,no-member
 
 logger = logging.getLogger(__name__)
 
-env_file = ".env"
+env_file = str(ENV_FILE)
 
 
 class TerminalController(BaseController):
@@ -54,9 +57,8 @@ class TerminalController(BaseController):
         "about",
         "keys",
         "settings",
-        "tz",
+        "featflags",
         "exe",
-        "export",
     ]
     CHOICES_MENUS = [
         "stocks",
@@ -65,23 +67,31 @@ class TerminalController(BaseController):
         "portfolio",
         "forex",
         "etf",
-        "jupyter",
+        "reports",
+        "dashboards",
         "funds",
         "alternative",
         "econometrics",
     ]
 
     PATH = "/"
-
-    all_timezones = pytz.all_timezones
+    ROUTINE_CHOICES = {
+        file: None
+        for file in os.listdir(
+            os.path.join(os.path.abspath(os.path.dirname(__file__)), "routines")
+        )
+        if file.endswith(".openbb")
+    }
 
     def __init__(self, jobs_cmds: List[str] = None):
         """Constructor"""
         super().__init__(jobs_cmds)
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: None for c in self.controller_choices}
-            choices["tz"] = {c.replace("/", "-"): None for c in self.all_timezones}
+            choices: dict = {c: {} for c in self.controller_choices}
+            choices["support"] = self.SUPPORT_CHOICES
+            choices["exe"] = self.ROUTINE_CHOICES
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
         self.queue: List[str] = list()
@@ -93,55 +103,41 @@ class TerminalController(BaseController):
 
     def print_help(self):
         """Print help"""
-        console.print(
-            text=f"""
-[info]Multiple jobs queue (where each '/' denotes a new command).[/info]
-    E.g. '/stocks $ disc/ugs -n 3/../load tsla/candle'
-
-[info]If you want to jump from crypto/ta to stocks you can use an absolute path that starts with a slash (/).[/info]
-    E.g. '/crypto/ta $ /stocks'
-
-[info]The previous logic also holds for when launching the terminal.[/info]
-    E.g. '$ python terminal.py /stocks/disc/ugs -n 3/../load tsla/candle'
-
-[info]You can run a standalone .openbb routine file with:[/info]
-    E.g. '$ python terminal.py routines/example.openbb'
-
-[info]You can run a .openbb routine file with variable inputs:[/info]
-    E.g. '$ python terminal.py routines/example_with_inputs.gst --input pltr,tsla,nio'
-
-[info]The main commands you should be aware when navigating through the terminal are:[/info][cmds]
-    cls             clear the screen
-    help / h / ?    help menu
-    quit / q / ..   quit this menu and go one menu above
-    exit            exit the terminal
-    reset / r       reset the terminal and reload configs from the current location
-    resources       only available on main contexts (not sub-menus)
-
-    about           about us
-    update          update terminal automatically
-    tz              set different timezone
-    export          select export folder to output data
-    exe             execute automated routine script[/cmds][menu]
->   settings        set feature flags and style charts
->   keys            set API keys and check their validity[/menu]
-
-[param]Export Folder:[/param] {obbff.EXPORT_FOLDER_PATH if obbff.EXPORT_FOLDER_PATH else 'DEFAULT (folder: exports/)'}
-[param]Timezone:     [/param] {get_user_timezone_or_invalid()}
-[menu]
->   stocks
->   crypto
->   etf
->   economy
->   forex
->   funds
->   alternative
->   econometrics
->   portfolio
->   jupyter[/menu]
-    """,
-            menu="Home",
-        )
+        mt = MenuText("")
+        mt.add_custom("_home_")
+        mt.add_cmd("cls")
+        mt.add_cmd("help")
+        mt.add_cmd("quit")
+        mt.add_cmd("exit")
+        mt.add_cmd("reset")
+        mt.add_raw("\n")
+        mt.add_cmd("resources")
+        mt.add_cmd("update")
+        mt.add_cmd("about")
+        mt.add_cmd("support")
+        mt.add_raw("\n")
+        mt.add_info("_configure_")
+        mt.add_menu("keys")
+        mt.add_menu("featflags")
+        mt.add_menu("settings")
+        mt.add_raw("\n")
+        mt.add_cmd("exe")
+        mt.add_raw("\n")
+        mt.add_info("_main_menu_")
+        mt.add_menu("stocks")
+        mt.add_menu("crypto")
+        mt.add_menu("etf")
+        mt.add_menu("economy")
+        mt.add_menu("forex")
+        mt.add_menu("funds")
+        mt.add_menu("alternative")
+        mt.add_raw("\n")
+        mt.add_info("_others_")
+        mt.add_menu("econometrics")
+        mt.add_menu("portfolio")
+        mt.add_menu("dashboards")
+        mt.add_menu("reports")
+        console.print(text=mt.menu_text, menu="Home")
 
     def call_update(self, _):
         """Process update command"""
@@ -158,6 +154,12 @@ class TerminalController(BaseController):
         from openbb_terminal.settings_controller import SettingsController
 
         self.queue = self.load_class(SettingsController, self.queue)
+
+    def call_featflags(self, _):
+        """Process feature flags command"""
+        from openbb_terminal.featflags_controller import FeatureFlagsController
+
+        self.queue = self.load_class(FeatureFlagsController, self.queue)
 
     def call_about(self, _):
         """Process about command"""
@@ -201,12 +203,28 @@ class TerminalController(BaseController):
 
         self.queue = self.load_class(ForexController, self.queue)
 
-    def call_jupyter(self, _):
-        """Process jupyter command"""
+    def call_reports(self, _):
+        """Process reports command"""
         if not obbff.PACKAGED_APPLICATION:
-            from openbb_terminal.jupyter.jupyter_controller import JupyterController
+            from openbb_terminal.reports.reports_controller import (
+                ReportController,
+            )
 
-            self.queue = self.load_class(JupyterController, self.queue)
+            self.queue = self.load_class(ReportController, self.queue)
+        else:
+            console.print("This feature is coming soon.")
+            console.print(
+                "Use the source code and an Anaconda environment if you are familiar with Python."
+            )
+
+    def call_dashboards(self, _):
+        """Process dashboards command"""
+        if not obbff.PACKAGED_APPLICATION:
+            from openbb_terminal.dashboards.dashboards_controller import (
+                DashboardsController,
+            )
+
+            self.queue = self.load_class(DashboardsController, self.queue)
         else:
             console.print("This feature is coming soon.")
             console.print(
@@ -236,102 +254,6 @@ class TerminalController(BaseController):
         )
 
         self.queue = self.load_class(PortfolioController, self.queue)
-
-    def call_tz(self, other_args: List[str]):
-        """Process tz command"""
-
-        tz_parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            description="""
-                   Setting a different timezone
-               """,
-        )
-
-        tz_parser.add_argument(
-            "-tz",
-            dest="timezone",
-            help="Choose timezone",
-            required="-h" not in other_args,
-        )
-
-        if other_args and "-tz" not in other_args[0] and "-h" not in other_args[0]:
-            other_args.insert(0, "-tz")
-
-        tz_ns_parser = parse_known_args_and_warn(tz_parser, other_args)
-        if tz_ns_parser:
-            if tz_ns_parser.timezone:
-                replace_user_timezone(tz_ns_parser.timezone.replace("-", "/"))
-
-    def call_export(self, other_args: List[str]):
-        """Process export command"""
-        if other_args or self.queue:
-            if other_args:
-                export_path = ""
-            else:
-                # Re-add the initial slash for an absolute directory provided
-                export_path = "/"
-
-            other_args += self.queue
-            self.queue = []
-
-            export_path += "/".join(other_args)
-
-            base_path = os.path.dirname(os.path.abspath(__file__))
-            default_path = os.path.join(base_path, "exports")
-
-            success_export = False
-            while not success_export:
-                if export_path.upper() == "DEFAULT":
-                    console.print(
-                        f"Export data to be saved in the default folder: '{default_path}'"
-                    )
-                    set_export_folder(env_file, path_folder="")
-                    success_export = True
-                else:
-                    # If the path selected does not start from the user root, give relative location from terminal root
-                    if export_path[0] == "~":
-                        export_path = export_path.replace("~", os.environ["HOME"])
-                    elif export_path[0] != "/":
-                        export_path = os.path.join(base_path, export_path)
-
-                    # Check if the directory exists
-                    if os.path.isdir(export_path):
-                        console.print(
-                            f"Export data to be saved in the selected folder: '{export_path}'"
-                        )
-                        set_export_folder(env_file, path_folder=export_path)
-                        success_export = True
-                    else:
-                        console.print(
-                            "[red]The path selected to export data does not exist![/red]\n"
-                        )
-                        user_opt = "None"
-                        while user_opt not in ("Y", "N"):
-                            user_opt = input(
-                                f"Do you wish to create folder: `{export_path}` ? [Y/N]\n"
-                            ).upper()
-
-                        if user_opt == "Y":
-                            os.makedirs(export_path)
-                            console.print(
-                                f"[green]Folder '{export_path}' successfully created.[/green]"
-                            )
-                            set_export_folder(env_file, path_folder=export_path)
-                        else:
-                            # Do not update export_folder path since we will keep the same as before
-                            path_display = (
-                                obbff.EXPORT_FOLDER_PATH
-                                if obbff.EXPORT_FOLDER_PATH
-                                else "DEFAULT (folder: exports/)"
-                            )
-                            console.print(
-                                "[yellow]Export data to keep being saved in"
-                                + f"the selected folder: {path_display}[/yellow]"
-                            )
-                        success_export = True
-
-        console.print()
 
     def call_exe(self, other_args: List[str]):
         """Process exe command"""
@@ -372,10 +294,9 @@ class TerminalController(BaseController):
         parser_exe.add_argument(
             "-p",
             "--path",
-            help="The path or .gst file to run.",
+            help="The path or .openbb file to run.",
             dest="path",
             default="",
-            type=check_path,
             required="-h" not in args,
         )
         parser_exe.add_argument(
@@ -384,14 +305,22 @@ class TerminalController(BaseController):
             help="Select multiple inputs to be replaced in the routine and separated by commas. E.g. GME,AMC,BTC-USD",
             dest="routine_args",
             type=lambda s: [str(item) for item in s.split(",")],
-            default=None,
         )
         if args and "-" not in args[0][0]:
             args.insert(0, "-p")
-        ns_parser_exe = parse_known_args_and_warn(parser_exe, args)
+        ns_parser_exe = parse_simple_args(parser_exe, args)
         if ns_parser_exe:
             if ns_parser_exe.path:
-                with open(ns_parser_exe.path) as fp:
+                if ns_parser_exe.path in self.ROUTINE_CHOICES:
+                    path = os.path.join(
+                        os.path.abspath(os.path.dirname(__file__)),
+                        "routines",
+                        ns_parser_exe.path,
+                    )
+                else:
+                    path = ns_parser_exe.path
+
+                with open(path) as fp:
                     raw_lines = [
                         x for x in fp if (not is_reset(x)) and ("#" not in x) and x
                     ]
@@ -402,7 +331,6 @@ class TerminalController(BaseController):
                     ]
                     if ns_parser_exe.routine_args:
                         lines = list()
-                        idx = 0
                         for rawline in raw_lines:
                             templine = rawline
                             for i, arg in enumerate(ns_parser_exe.routine_args):
@@ -423,7 +351,7 @@ class TerminalController(BaseController):
                         export_path = self.queue[0].split(" ")[1]
                         # If the path selected does not start from the user root, give relative location from root
                         if export_path[0] == "~":
-                            export_path = export_path.replace("~", os.environ["HOME"])
+                            export_path = export_path.replace("~", USER_HOME.as_posix())
                         elif export_path[0] != "/":
                             export_path = os.path.join(
                                 os.path.dirname(os.path.abspath(__file__)), export_path
@@ -469,7 +397,7 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
     if export_path:
         # If the path selected does not start from the user root, give relative location from terminal root
         if export_path[0] == "~":
-            export_path = export_path.replace("~", os.environ["HOME"])
+            export_path = export_path.replace("~", USER_HOME.as_posix())
         elif export_path[0] != "/":
             export_path = os.path.join(
                 os.path.dirname(os.path.abspath(__file__)), export_path
@@ -491,6 +419,7 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
     if not jobs_cmds:
         welcome_message()
         t_controller.print_help()
+        check_for_updates()
 
     env_files = [f for f in os.listdir() if f.endswith(".env")]
     if env_files:
@@ -529,12 +458,38 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
             # Get input from user using auto-completion
             if session and obbff.USE_PROMPT_TOOLKIT:
                 try:
-                    an_input = session.prompt(
-                        f"{get_flair()} / $ ",
-                        completer=t_controller.completer,
-                        search_ignore_case=True,
-                    )
-                except KeyboardInterrupt:
+                    if obbff.TOOLBAR_HINT:
+                        random_routine = [
+                            file
+                            for file in os.listdir(
+                                os.path.join(
+                                    os.path.abspath(os.path.dirname(__file__)),
+                                    "routines",
+                                )
+                            )
+                            if file.endswith(".openbb")
+                        ]
+                        an_input = session.prompt(
+                            f"{get_flair()} / $ ",
+                            completer=t_controller.completer,
+                            search_ignore_case=True,
+                            bottom_toolbar=HTML(
+                                "Execute routine scripts to automate your research workflow. "  # nosec
+                                f"E.g.: $ exe {random_routine[random.randint(0, len(random_routine) - 1)]}"
+                            ),
+                            style=Style.from_dict(
+                                {
+                                    "bottom-toolbar": "#ffffff bg:#333333",
+                                }
+                            ),
+                        )
+                    else:
+                        an_input = session.prompt(
+                            f"{get_flair()} / $ ",
+                            completer=t_controller.completer,
+                            search_ignore_case=True,
+                        )
+                except (KeyboardInterrupt, EOFError):
                     print_goodbye()
                     break
             # Get input from user without auto-completion
@@ -597,6 +552,14 @@ def insert_start_slash(cmds: List[str]) -> List[str]:
     return cmds
 
 
+def do_rollover():
+    """RollOver the log file."""
+
+    for handler in logging.getLogger().handlers:
+        if isinstance(handler, PathTrackingFileHandler):
+            handler.doRollover()
+
+
 def log_settings() -> None:
     """Log settings"""
     settings_dict = {}
@@ -620,6 +583,8 @@ def log_settings() -> None:
     settings_dict["os"] = str(platform.system())
 
     logger.info("SETTINGS: %s ", str(settings_dict))
+
+    do_rollover()
 
 
 def run_scripts(
@@ -725,7 +690,7 @@ def main(
             return
         test_files = []
         for path in paths:
-            if "openbb" in path:
+            if path.endswith(".openbb"):
                 file = os.path.join(os.path.abspath(os.path.dirname(__file__)), path)
                 test_files.append(file)
             else:
@@ -747,9 +712,11 @@ def main(
         console.print("[green]OpenBB Terminal Integrated Tests:\n[/green]")
         for file in test_files:
             file = file.replace("//", "/")
-            file_name = file[file.rfind("OpenBBTerminal") :].replace(  # noqa: E203
-                "\\", "/"
-            )
+            repo_path_position = file.rfind(REPO_DIR.name)
+            if repo_path_position >= 0:
+                file_name = file[repo_path_position:].replace("\\", "/")
+            else:
+                file_name = file
             console.print(f"{file_name}  {((i/length)*100):.1f}%")
             try:
                 if not os.path.isfile(file):
@@ -763,9 +730,11 @@ def main(
         if fails:
             console.print("\n[red]Failures:[/red]\n")
             for key, value in fails.items():
-                file_name = key[key.rfind("OpenBBTerminal") :].replace(  # noqa: E203
-                    "\\", "/"
-                )
+                repo_path_position = key.rfind(REPO_DIR.name)
+                if repo_path_position >= 0:
+                    file_name = key[repo_path_position:].replace("\\", "/")
+                else:
+                    file_name = key
                 logger.error("%s: %s failed", file_name, value)
                 console.print(f"{file_name}: {value}\n")
         console.print(

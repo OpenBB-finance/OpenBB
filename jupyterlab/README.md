@@ -10,7 +10,7 @@ of the terminal in connection with Jupyter:
 
 ## 1. Jupyter Lab Extensions for using OpenBB Terminal
 
-Documentation, GST and GST-settings are 3 Jupyter Lab extensions that illustrate how
+Documentation, OpenBB and GOpenBB-settings are 3 Jupyter Lab extensions that illustrate how
 the terminal can be integrated with Jupyter Lab based IDEs.
 
 _NOTE: The extensions should be considered prototypes and are not production-ready._
@@ -23,22 +23,22 @@ _NOTE: The extensions should be considered prototypes and are not production-rea
 To install the Terminal Launcher and the Settings Extensions run the following commands from the [root folder of the project](/):
 
 ```bash
-pip install jupyterlab/gst
-pip install jupyterlab/gst-settings
+pip install jupyterlab/openbb
+pip install jupyterlab/openbb-settings
 pip install jupyterlab/documentation
-jupyter labextension install jupyterlab/gst
-jupyter labextension install jupyterlab/gst-settings
+jupyter labextension install jupyterlab/openbb
+jupyter labextension install jupyterlab/openbb-settings
 jupyter labextension install jupyterlab/documentation
 ```
 
 ### Development setup
 
-In this section `gst` extension will be used as an example.
+In this section `openbb` extension will be used as an example.
 
 - In one terminal window `cd` into the launcher extension folder and build the extension:
 
 ```bash
-cd gst
+cd openbb
 jlpm
 pip install -e .
 jlpm run build

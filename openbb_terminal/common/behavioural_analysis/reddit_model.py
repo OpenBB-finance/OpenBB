@@ -11,6 +11,9 @@ import praw
 from prawcore.exceptions import ResponseException
 from psaw import PushshiftAPI
 from requests import HTTPError
+from sklearn.feature_extraction import _stop_words
+from tqdm import tqdm
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.common.behavioural_analysis.reddit_helpers import find_tickers
@@ -63,7 +66,25 @@ def get_watchlists(
         username=cfg.API_REDDIT_USERNAME,
         user_agent=cfg.API_REDDIT_USER_AGENT,
         password=cfg.API_REDDIT_PASSWORD,
+        check_for_updates=False,
+        comment_kind="t1",
+        message_kind="t4",
+        redditor_kind="t2",
+        submission_kind="t3",
+        subreddit_kind="t5",
+        trophy_kind="t6",
+        oauth_url="https://oauth.reddit.com",
+        reddit_url="https://www.reddit.com",
+        short_url="https://redd.it",
+        ratelimit_seconds=5,
+        timeout=16,
     )
+    try:
+        praw_api.user.me()
+    except (Exception, ResponseException):
+        console.print("[red]Wrong Reddit API keys[/red]\n")
+        return [], {}, 0
+
     psaw_api = PushshiftAPI()
     submissions = psaw_api.search_submissions(
         subreddit=l_sub_reddits,
@@ -146,7 +167,24 @@ def get_popular_tickers(
         username=cfg.API_REDDIT_USERNAME,
         user_agent=cfg.API_REDDIT_USER_AGENT,
         password=cfg.API_REDDIT_PASSWORD,
+        check_for_updates=False,
+        comment_kind="t1",
+        message_kind="t4",
+        redditor_kind="t2",
+        submission_kind="t3",
+        subreddit_kind="t5",
+        trophy_kind="t6",
+        oauth_url="https://oauth.reddit.com",
+        reddit_url="https://www.reddit.com",
+        short_url="https://redd.it",
+        ratelimit_seconds=5,
+        timeout=16,
     )
+    try:
+        praw_api.user.me()
+    except (Exception, ResponseException):
+        console.print("[red]Wrong Reddit API keys[/red]\n")
+        return pd.DataFrame()
 
     psaw_api = PushshiftAPI()
 
@@ -281,7 +319,24 @@ def get_spac_community(
         username=cfg.API_REDDIT_USERNAME,
         user_agent=cfg.API_REDDIT_USER_AGENT,
         password=cfg.API_REDDIT_PASSWORD,
+        check_for_updates=False,
+        comment_kind="t1",
+        message_kind="t4",
+        redditor_kind="t2",
+        submission_kind="t3",
+        subreddit_kind="t5",
+        trophy_kind="t6",
+        oauth_url="https://oauth.reddit.com",
+        reddit_url="https://www.reddit.com",
+        short_url="https://redd.it",
+        ratelimit_seconds=5,
+        timeout=16,
     )
+    try:
+        praw_api.user.me()
+    except (Exception, ResponseException):
+        console.print("[red]Wrong Reddit API keys[/red]\n")
+        return [], {}
 
     d_watchlist_tickers: Dict = {}
     l_watchlist_author = []
@@ -362,7 +417,24 @@ def get_spac(
         username=cfg.API_REDDIT_USERNAME,
         user_agent=cfg.API_REDDIT_USER_AGENT,
         password=cfg.API_REDDIT_PASSWORD,
+        check_for_updates=False,
+        comment_kind="t1",
+        message_kind="t4",
+        redditor_kind="t2",
+        submission_kind="t3",
+        subreddit_kind="t5",
+        trophy_kind="t6",
+        oauth_url="https://oauth.reddit.com",
+        reddit_url="https://www.reddit.com",
+        short_url="https://redd.it",
+        ratelimit_seconds=5,
+        timeout=16,
     )
+    try:
+        praw_api.user.me()
+    except (Exception, ResponseException):
+        console.print("[red]Wrong Reddit API keys[/red]\n")
+        return [], {}, 0
 
     d_watchlist_tickers: Dict = {}
     l_watchlist_author = []
@@ -441,13 +513,31 @@ def get_wsb_community(
     List[praw.models.reddit.submission.Submission]
         List of reddit submissions
     """
+    # See https://github.com/praw-dev/praw/issues/1016 regarding praw arguments
     praw_api = praw.Reddit(
         client_id=cfg.API_REDDIT_CLIENT_ID,
         client_secret=cfg.API_REDDIT_CLIENT_SECRET,
         username=cfg.API_REDDIT_USERNAME,
         user_agent=cfg.API_REDDIT_USER_AGENT,
         password=cfg.API_REDDIT_PASSWORD,
+        check_for_updates=False,
+        comment_kind="t1",
+        message_kind="t4",
+        redditor_kind="t2",
+        submission_kind="t3",
+        subreddit_kind="t5",
+        trophy_kind="t6",
+        oauth_url="https://oauth.reddit.com",
+        reddit_url="https://www.reddit.com",
+        short_url="https://redd.it",
+        ratelimit_seconds=5,
+        timeout=16,
     )
+    try:
+        praw_api.user.me()
+    except (Exception, ResponseException):
+        console.print("[red]Wrong Reddit API keys[/red]\n")
+        return []
 
     if new:
         submissions = praw_api.subreddit("wallstreetbets").new(limit=limit)
@@ -455,6 +545,8 @@ def get_wsb_community(
         submissions = praw_api.subreddit("wallstreetbets").hot(limit=limit)
 
     subs = []
+
+    console.print(submissions)
 
     try:
         for submission in submissions:
@@ -502,7 +594,24 @@ def get_due_dilligence(
         username=cfg.API_REDDIT_USERNAME,
         user_agent=cfg.API_REDDIT_USER_AGENT,
         password=cfg.API_REDDIT_PASSWORD,
+        check_for_updates=False,
+        comment_kind="t1",
+        message_kind="t4",
+        redditor_kind="t2",
+        submission_kind="t3",
+        subreddit_kind="t5",
+        trophy_kind="t6",
+        oauth_url="https://oauth.reddit.com",
+        reddit_url="https://www.reddit.com",
+        short_url="https://redd.it",
+        ratelimit_seconds=5,
+        timeout=16,
     )
+    try:
+        praw_api.user.me()
+    except (Exception, ResponseException):
+        console.print("[red]Wrong Reddit API keys[/red]\n")
+        return []
 
     psaw_api = PushshiftAPI()
 
@@ -567,3 +676,176 @@ def get_due_dilligence(
             console.print(f"[red]Invalid response: {str(e)}[/red]\n")
 
     return subs
+
+
+@log_start_end(log=logger)
+def get_posts_about(
+    ticker: str,
+    limit: int = 100,
+    sort: str = "relevance",
+    time_frame: str = "week",
+    subreddits: str = "all",
+) -> List[praw.models.reddit.submission.Submission]:
+    """Finds posts related to a specific search term in Reddit
+
+    Parameters
+    ----------
+    ticker: str
+        Ticker to search for
+    limit: int
+        Number of posts to get per subreddit
+    sort: str
+        Search type
+        Possibilities: "relevance", "hot", "top", "new", or "comments"
+    time_frame: str
+        Relative time of post
+        Possibilities: "hour", "day", "week", "month", "year", "all"
+    subreddits: str
+        Comma-separated list of subreddits
+
+    Returns
+    -------
+    List[praw.models.reddit.submission.Submission]
+        List of submissions related to the search term
+    """
+    praw_api = praw.Reddit(
+        client_id=cfg.API_REDDIT_CLIENT_ID,
+        client_secret=cfg.API_REDDIT_CLIENT_SECRET,
+        username=cfg.API_REDDIT_USERNAME,
+        user_agent=cfg.API_REDDIT_USER_AGENT,
+        password=cfg.API_REDDIT_PASSWORD,
+        check_for_updates=False,
+        comment_kind="t1",
+        message_kind="t4",
+        redditor_kind="t2",
+        submission_kind="t3",
+        subreddit_kind="t5",
+        trophy_kind="t6",
+        oauth_url="https://oauth.reddit.com",
+        reddit_url="https://www.reddit.com",
+        short_url="https://redd.it",
+        ratelimit_seconds=5,
+        timeout=16,
+    )
+    try:
+        praw_api.user.me()
+    except (Exception, ResponseException):
+        console.print("[red]Wrong Reddit API keys[/red]\n")
+        return []
+
+    subreddits_l = subreddits.split(",")
+
+    posts = []
+    post_ids = set()
+    console.print("Searching through subreddits for posts.")
+    for sub_str in tqdm(subreddits_l):
+        try:
+            subreddit = praw_api.subreddit(sub_str)
+        except Exception:
+            console.print("Invalid subreddit name {sub_str}, skipping")
+            continue
+        submissions = subreddit.search(
+            query=ticker,
+            limit=limit,
+            sort=sort,
+            time_filter=time_frame,
+        )
+        for sub in submissions:
+            if (
+                sub.selftext
+                and sub.title
+                and not sub.removed_by_category
+                and sub.id not in post_ids
+            ):
+                post_ids.add(sub.id)
+                posts.append(sub)
+    return posts
+
+
+@log_start_end(log=logger)
+def get_comments(
+    post: praw.models.reddit.submission.Submission,
+) -> List[praw.models.reddit.comment.Comment]:
+    """Recursively gets comments from a post
+
+    Parameters
+    ----------
+    post: praw.models.reddit.submission.Submission
+        Post to get comments from
+
+    Returns
+    -------
+    List[praw.models.reddit.comment.Comment]
+        List of all comments on the post
+    """
+
+    def get_more_comments(comments):
+        sub_tlcs = []
+        for comment in comments:
+            if isinstance(comment, praw.models.reddit.comment.Comment):
+                sub_tlcs.append(comment.body)
+            else:
+                sub_comments = get_more_comments(comment.comments())
+                sub_tlcs.extend(sub_comments)
+        return sub_tlcs
+
+    if post.comments:
+        return get_more_comments(post.comments)
+    return []
+
+
+@log_start_end(log=logger)
+def clean_reddit_text(docs: List[str]) -> List[str]:
+    """Tokenizes and cleans a list of documents for sentiment analysis
+
+    Parameters
+    ----------
+    docs: List[str]
+        A list of documents to prepare for sentiment analysis
+
+    Returns
+    -------
+    List[str]
+        List of cleaned and prepared docs
+    """
+    stopwords = _stop_words.ENGLISH_STOP_WORDS
+
+    clean_docs = []
+    docs = [doc.lower().strip() for doc in docs]
+
+    for doc in docs:
+        clean_doc = []
+        tokens = doc.split()
+        for tok in tokens:
+            clean_tok = [c for c in tok if c.isalpha()]
+            tok = "".join(clean_tok)
+            if tok not in stopwords:
+                clean_doc.append(tok)
+        clean_docs.append(" ".join(clean_doc))
+    return clean_docs
+
+
+@log_start_end(log=logger)
+def get_sentiment(post_data: List[str]) -> float:
+    """Find the sentiment of a post and related comments
+
+    Parameters
+    ----------
+    post_data: List[str]
+        A post and its comments in string form
+
+    Returns
+    -------
+    float
+        A number in the range [-1, 1] representing sentiment
+    """
+    analyzer = SentimentIntensityAnalyzer()
+    post_data_l = " ".join(post_data)
+    sentiment = analyzer.polarity_scores(post_data_l)
+    score = sentiment["pos"] - sentiment["neg"]
+
+    # Because we score a long document (post text and all comments),
+    # our score will be limited to a small range. We scale the score
+    # empirically to make it more interpretable.
+    scaled_score = (score - 0.06) * 8
+    return scaled_score

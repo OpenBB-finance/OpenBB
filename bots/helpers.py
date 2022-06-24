@@ -1,15 +1,17 @@
+import io
 import logging
 import os
 import re
 import uuid
-from typing import List
+from typing import Any, Dict, List
 
 import disnake
 import financedatabase as fd
 import natsort
 import pandas as pd
-import plotly.graph_objects
+import plotly.graph_objects as go
 import yfinance as yf
+from kaleido.scopes.plotly import PlotlyScope
 from numpy.core.fromnumeric import transpose
 from PIL import Image
 from plotly.offline import plot
@@ -136,6 +138,11 @@ metric_yf_keys = {
     "Forward PE": ("defaultKeyStatistics", "forwardPE"),
 }
 
+# kaleido Scope to handle all plots image converting
+scope = PlotlyScope(
+    plotlyjs=imps.bots_path.joinpath("interactive/plotly.js"),
+)
+
 
 def load(ticker, start_date):
     df_stock_candidate = yf.download(ticker, start=start_date, progress=False)
@@ -184,7 +191,7 @@ def quote(ticker):
     return quote_data
 
 
-def autocrop_image(image: Image, border=0) -> Image:
+def autocrop_image(image: Any, border=0) -> Any:
     """Crop empty space from PIL image
 
     Parameters
@@ -272,7 +279,12 @@ def ticker_autocomp(inter, ticker: str):
     print(f"ticker_autocomp [ticker]: {ticker}")
     tlow = ticker.lower()
     col_list = ["Name"]
-    df = pd.read_csv("files/tickers.csv", usecols=col_list)
+    file = os.path.join(
+        os.path.dirname(os.path.abspath(__file__)),
+        "files",
+        "tickers.csv",
+    )
+    df = pd.read_csv(file, usecols=col_list)
     df = df["Name"]
     return [ticker for ticker in df if ticker.lower().startswith(tlow)][:24]
 
@@ -302,13 +314,80 @@ def signals_autocomp(inter, signal: str):
     return [signal for signal in df if signal.lower().startswith(slow)][:24]
 
 
-def inter_chart(fig: plotly.graph_objects, filename: str, **data) -> str:
+def in_decreasing_color_list(df_column: pd.DataFrame.columns) -> List[str]:
+    """Makes a colorlist for increase/decrease if value in df_column contains "-"
+
+    Parameters
+    ----------
+    df_column : pd.DataFrame.columns
+        Dataframe column to create colorlist.
+
+    Returns
+    -------
+    List[str]
+        List of colors for df_column
+    """
+    colorlist = [
+        imps.PLT_CANDLE_DECREASING if boolv else imps.PLT_CANDLE_INCREASING
+        for boolv in df_column.str.contains("-")
+    ]
+    return colorlist
+
+
+def chart_volume_scaling(
+    df_column: pd.DataFrame.columns, range_x: int = 5
+) -> Dict[str, list]:
+    """Takes df_column and returns volume_ticks, tickvals for chart volume scaling
+
+    Parameters
+    ----------
+    df_column : pd.DataFrame.columns
+        Dataframe column
+    range_x : int, optional
+        Number to multiply volume, by default 5
+    Returns
+    -------
+    Dict[str, list]
+        {"range": volume_range, "ticks": tickvals}
+    """
+    df_column = df_column.apply(lambda x: f"{x:.1f}")
+    df_column = pd.to_numeric(df_column.astype(float))
+    volume_ticks = (df_column.values.max()).astype(int)
+    round_digits = -3
+    first_val = round(volume_ticks * 0.20, round_digits)
+    if len(str(volume_ticks)) > 5:
+        round_digits = -4
+        first_val = round(volume_ticks * 0.20, round_digits)
+    if len(str(volume_ticks)) > 6:
+        round_digits = -5
+        first_val = round(volume_ticks * 0.20, round_digits)
+    if len(str(volume_ticks)) > 7:
+        round_digits = -6
+        first_val = round(volume_ticks * 0.20, round_digits)
+    if len(str(volume_ticks)) > 8:
+        round_digits = -8
+        first_val = round(volume_ticks * 0.20, round_digits)
+    if len(str(volume_ticks)) > 9:
+        round_digits = -9
+        first_val = round(volume_ticks * 0.20, round_digits)
+    tickvals = [
+        first_val * 1,
+        first_val * 2,
+        first_val * 3,
+        first_val * 4,
+        first_val * 5,
+    ]
+    volume_range = [0, (volume_ticks * range_x)]
+    return {"range": volume_range, "ticks": tickvals}
+
+
+def inter_chart(fig: go.Figure, filename: str, **data) -> str:
     """Takes plotly chart object and saves as a html file for interactive charts
 
     Parameters
     ----------
-    fig : plotly.graph_objects
-        Table object to autocrop and save
+    fig : go.Figure
+        go.Figure chart object
     filename : str
         Name to save html as
     **kawrgs:
@@ -317,16 +396,16 @@ def inter_chart(fig: plotly.graph_objects, filename: str, **data) -> str:
     Returns
     -------
     str
-        Link for interactive charts Ex. f"[Interactive]({imps.INTERACTIVE_URL}/{filename})"
+        Link for interactive charts Ex. "[Interactive]({imps.INTERACTIVE_URL}/{filename})"
     """
     filename = f"{filename.replace('.png', '')}_{uuid_get()}.html"
     if "config" not in data:
         config = dict(scrollZoom=True, displayModeBar=False)
-    plot_div = plot(fig, output_type="div", include_plotlyjs=True, config=config)
+    plot_div = plot(fig, output_type="div", include_plotlyjs="plotly.js", config=config)
     if data["callback"]:
         res = re.search('<div id="([^"]*)"', plot_div)
         if res is not None:
-            res = res.groups()[0]
+            # res = res.groups()[0]  # noqa
             div_id = res
 
         js_callback = f"""
@@ -371,32 +450,51 @@ def inter_chart(fig: plotly.graph_objects, filename: str, **data) -> str:
     return plt_link
 
 
-def save_image(filename: str, fig: plotly.graph_objects) -> str:
-    """Takes plotly table object, adds uuid to filename, and autocrops
+def save_image(filename: str, fig: go.Figure = None, bytesIO: io.BytesIO = None) -> str:
+    """Takes go.Figure or io.BytesIO object, adds uuid to filename, autocrops, and saves
 
     Parameters
     ----------
     filename : str
         Name to save image as
-    fig : plotly.graph_objects
-        Table object to autocrop and save
+    fig : go.Figure, optional
+        Table object to autocrop and save, by default None
+    bytesIO : io.BytesIO, optional
+        BystesIO object to autocrop and save, by default None
 
     Returns
     -------
     str
         filename with UUID added to use for bot processing
+
+    Raises
+    ------
+    Exception
+        Function requires a go.Figure or BytesIO object
     """
     imagefile = f"{filename.replace('.png', '')}_{uuid_get()}.png"
     filesave = imps.IMG_DIR.joinpath(imagefile)
-    fig.write_image(filesave)
-    image = Image.open(filesave)
+    if fig:
+        # Transform Fig into PNG with Running Scope. Returns image bytes
+        fig = scope.transform(fig, scale=3, format="png")
+        imgbytes = io.BytesIO(fig)
+    elif bytesIO:
+        imgbytes = bytesIO
+    else:
+        raise Exception("Function requires a go.Figure or io.BytesIO object")
+
+    image = Image.open(imgbytes)
     image = autocrop_image(image, 0)
+    imgbytes.seek(0)
     image.save(filesave, "PNG", quality=100)
     image.close()
+
     return imagefile
 
 
-def image_border(filename: str, **kwargs) -> str:
+def image_border(
+    filename: str, fig: go.Figure = None, base64: io.BytesIO = None, **kwargs
+) -> str:
     """Takes fig, base64, or already saved image and adds border to it
 
     Parameters
@@ -404,9 +502,10 @@ def image_border(filename: str, **kwargs) -> str:
     filename : str
         Name to save image as. If no fig or base64, will try to find
         an image with this name to open.
-    **kawrgs:
-        fig=plotly.graph_objects
-        base64=BytesIo object
+    fig : go.Figure, optional
+        Table object to add border to, by default None
+    base64 : io.BytesIO, optional
+        BystesIO object to add border to, by default None
     Returns
     -------
     str
@@ -414,33 +513,39 @@ def image_border(filename: str, **kwargs) -> str:
     """
     imagefile = f"{filename.replace('.png', '')}_{uuid_get()}.png"
     filesave = imps.IMG_DIR.joinpath(imagefile)
-    if "fig" in kwargs:
-        fig = kwargs["fig"]
-        fig.write_image(filesave)
-        img = Image.open(filesave)
-    elif "base64" in kwargs:
-        img = Image.open(kwargs["base64"])
+    im_bgbytes = io.BytesIO()
+    if fig:
+        # Transform Fig into PNG with Running Scope. Returns image bytes
+        fig = scope.transform(fig, scale=5, format="png")
+        imgbytes = io.BytesIO(fig)
+        img = Image.open(imgbytes)
+    elif base64:
+        img = Image.open(base64)
     else:
-        img = Image.open(filesave)
+        img = Image.open(filename)
+
     im_bg = Image.open(imps.IMG_BG)
+    im_bg = im_bg.resize((4200, 2600), resample=Image.Resampling.LANCZOS)  # type: ignore
 
     w = img.width + 520
-    h = img.height + 240
+    h = img.height
 
     # Paste fig onto background img and autocrop background
-    img = img.resize((w, h), Image.ANTIALIAS)
+    img = img.resize((w, h), resample=Image.Resampling.LANCZOS)  # type: ignore
     x1 = int(0.5 * im_bg.size[0]) - int(0.5 * img.size[0])
     y1 = int(0.5 * im_bg.size[1]) - int(0.5 * img.size[1])
     x2 = int(0.5 * im_bg.size[0]) + int(0.5 * img.size[0])
     y2 = int(0.5 * im_bg.size[1]) + int(0.5 * img.size[1])
     img = img.convert("RGB")
-    im_bg.paste(img, box=(x1 - 5, y1, x2 - 5, y2))
+    im_bg.paste(img, box=(x1 + 5, y1 + 10, x2 + 5, y2 + 10))
     img.close()
-    im_bg.save(filesave, "PNG", quality=100)
+    im_bg.save(im_bgbytes, "PNG", quality=100)
     im_bg.close()
-    image = Image.open(filesave)
-    image = autocrop_image(image, 0)
-    image.save(filesave, "PNG", quality=100)
+    im_bgbytes.seek(0)
+    image = Image.open(im_bgbytes)
+    image = imps.autocrop_image(image, 0)
+    image = image.resize((1800, 1200), resample=Image.Resampling.LANCZOS)  # type: ignore
+    image.save(filesave, "PNG")
     image.close()
     return imagefile
 
@@ -459,10 +564,12 @@ def multi_image(filename: str, **kwargs) -> str:
         Image url
     """
     if imps.IMAGES_URL or not imps.IMG_HOST_ACTIVE:
-        image_link = imps.IMAGES_URL + filename
+        image_link = str(imps.IMAGES_URL) + str(filename)
     else:
         imagefile_save = imps.IMG_DIR.joinpath(filename)
-        uploaded_image = imps.gst_imgur.upload_image(imagefile_save, title="something")
+        uploaded_image = imps.openbb_imgur.upload_image(
+            imagefile_save, title="something"
+        )
         image_link = uploaded_image.link
         os.remove(imagefile_save)
 
@@ -525,11 +632,13 @@ class ShowView:
         if "imagefile" in data:
             imagefile = imps.IMG_DIR.joinpath(data["imagefile"])
             send_image(imagefile, group_id, data.get("description", ""))
+            os.remove(imagefile)
         elif "embeds_img" in data:
             imagefiles = data["images_list"]
             for img in imagefiles:
                 imagefile = imps.IMG_DIR.joinpath(img)
                 send_image(imagefile, group_id, data.get("description", ""))
+                os.remove(imagefile)
         elif "description" in data:
             title = data.get("title", "")
             # TODO: Allow navigation through pages
@@ -540,7 +649,6 @@ class ShowView:
                 clean_desc = description.replace("Page ", "")
             message = f"{title}\n{clean_desc}"
             send_message(message, group_id)
-            os.remove(imagefile)
 
     def slack(self, func, channel_id, user_id, client, *args, **kwargs):
         data = func(*args, **kwargs)

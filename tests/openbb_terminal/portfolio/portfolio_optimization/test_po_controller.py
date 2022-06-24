@@ -16,7 +16,7 @@ from openbb_terminal.portfolio.portfolio_optimization import po_controller
 @pytest.mark.parametrize(
     "queue, expected",
     [
-        (["load", "help"], []),
+        (["load", "help"], ["help"]),
         (["quit", "help"], ["help"]),
     ],
 )
@@ -66,7 +66,7 @@ def test_menu_without_queue_completion(mocker):
 
     result_menu = po_controller.PortfolioOptimizationController(queue=None).menu()
 
-    assert result_menu == []
+    assert result_menu == ["help"]
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -110,7 +110,7 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
 
     result_menu = po_controller.PortfolioOptimizationController(queue=None).menu()
 
-    assert result_menu == []
+    assert result_menu == ["help"]
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -192,27 +192,6 @@ def test_call_func_expect_queue(expected_queue, func, queue):
     "tested_func, other_args, mocked_func, called_args, called_kwargs",
     [
         (
-            "call_select",
-            [],
-            "PortfolioOptimizationController.add_stocks",
-            [],
-            dict(),
-        ),
-        (
-            "call_add",
-            [],
-            "PortfolioOptimizationController.add_stocks",
-            [],
-            dict(),
-        ),
-        (
-            "call_rmv",
-            [],
-            "PortfolioOptimizationController.rmv_stocks",
-            [],
-            dict(),
-        ),
-        (
             "call_equal",
             [],
             "optimizer_view.display_equal_weight",
@@ -248,30 +227,9 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             dict(),
         ),
         (
-            "call_minvol",
+            "call_minrisk",
             [],
-            "optimizer_view.display_min_volatility",
-            [],
-            dict(),
-        ),
-        (
-            "call_maxquadutil",
-            [],
-            "optimizer_view.display_max_quadratic_utility",
-            [],
-            dict(),
-        ),
-        (
-            "call_effrisk",
-            [],
-            "optimizer_view.display_efficient_risk",
-            [],
-            dict(),
-        ),
-        (
-            "call_effret",
-            [],
-            "optimizer_view.display_efficient_return",
+            "optimizer_view.display_min_risk",
             [],
             dict(),
         ),
@@ -279,27 +237,6 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             "call_ef",
             [],
             "optimizer_view.display_ef",
-            [],
-            dict(),
-        ),
-        (
-            "call_yolo",
-            [],
-            "",
-            [],
-            dict(),
-        ),
-        (
-            "add_stocks",
-            [],
-            "",
-            [],
-            dict(),
-        ),
-        (
-            "rmv_stocks",
-            [],
-            "",
             [],
             dict(),
         ),

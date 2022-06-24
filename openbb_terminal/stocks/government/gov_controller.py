@@ -13,11 +13,10 @@ from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
-    parse_known_args_and_warn,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.stocks.government import quiverquant_view
 
 logger = logging.getLogger(__name__)
@@ -67,29 +66,24 @@ class GovController(StockBaseController):
 
     def print_help(self):
         """Print help"""
-        has_ticker_start = "[unvl]" if not self.ticker else ""
-        has_ticker_end = "[/unvl]" if not self.ticker else ""
-        help_text = f"""
-[src][QuiverQuant][/src]
-
-[info]Explore:[/info][cmds]
-    lasttrades           last trades
-    topbuys              show most purchased stocks
-    topsells             show most sold stocks
-    lastcontracts        show last government contracts given out
-    qtrcontracts         quarterly government contracts analysis
-    toplobbying          top corporate lobbying tickers
-
-    load                 load a specific ticker for analysis[/cmds]
-
-[param]Ticker: [/param]{self.ticker or None}{has_ticker_start}[cmds]
-
-    gtrades              show government trades for ticker
-    contracts            show government contracts for ticker
-    histcont             show historical quarterly government contracts for ticker
-    lobbying             corporate lobbying details for ticker[/cmds]{has_ticker_end}
-            """
-        console.print(text=help_text, menu="Stocks - Screener")
+        mt = MenuText("stocks/gov/", 80)
+        mt.add_info("_explore")
+        mt.add_cmd("lasttrades", "QuiverQuant")
+        mt.add_cmd("topbuys", "QuiverQuant")
+        mt.add_cmd("topsells", "QuiverQuant")
+        mt.add_cmd("lastcontracts", "QuiverQuant")
+        mt.add_cmd("qtrcontracts", "QuiverQuant")
+        mt.add_cmd("toplobbying", "QuiverQuant")
+        mt.add_raw("\n")
+        mt.add_cmd("load")
+        mt.add_raw("\n")
+        mt.add_param("_ticker", self.ticker or "")
+        mt.add_raw("\n")
+        mt.add_cmd("gtrades", "QuiverQuant", self.ticker)
+        mt.add_cmd("contracts", "QuiverQuant", self.ticker)
+        mt.add_cmd("histcont", "QuiverQuant", self.ticker)
+        mt.add_cmd("lobbying", "QuiverQuant", self.ticker)
+        console.print(text=mt.menu_text, menu="Stocks - Government")
 
     def custom_reset(self):
         """Class specific component of reset command"""
@@ -134,7 +128,7 @@ class GovController(StockBaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-g")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -189,7 +183,7 @@ class GovController(StockBaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-g")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
@@ -245,7 +239,7 @@ class GovController(StockBaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-g")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
@@ -294,7 +288,7 @@ class GovController(StockBaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
@@ -343,7 +337,7 @@ class GovController(StockBaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
@@ -379,7 +373,7 @@ class GovController(StockBaseController):
             dest="raw",
             help="Print raw data.",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
@@ -422,7 +416,7 @@ class GovController(StockBaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-g")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
@@ -464,7 +458,7 @@ class GovController(StockBaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
@@ -494,7 +488,7 @@ class GovController(StockBaseController):
             dest="raw",
             help="Print raw data.",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
@@ -525,7 +519,7 @@ class GovController(StockBaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if self.ticker:
                 quiverquant_view.display_lobbying(

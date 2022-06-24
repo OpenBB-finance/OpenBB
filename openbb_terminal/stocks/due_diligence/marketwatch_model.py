@@ -51,20 +51,22 @@ def get_sec_filings(ticker: str) -> pd.DataFrame:
 
         # If header has been processed and dataframe created ready to populate the SEC information
         if b_ready_to_process_info:
-            l_financials_info = [a_financials[2]]
-            l_financials_info.extend(a_financials[5:-1])
-            l_financials_info.append(financials_info.a["href"])
-            # Append data values to financials
-            df_financials.loc[len(df_financials.index)] = l_financials_info  # type: ignore
+            if len(a_financials) > 1:
+                l_financials_info = [a_financials[2]]
+                l_financials_info.extend(a_financials[5:-1])
+                l_financials_info.append(financials_info.a["href"])
+                # Append data values to financials
+                df_financials.loc[len(df_financials.index)] = l_financials_info  # type: ignore
 
         if "Filing Date" in a_financials:
-            l_financials_header = [a_financials[2]]
-            l_financials_header.extend(a_financials[5:-1])
-            l_financials_header.append("Link")
+            if len(a_financials) > 1:
+                l_financials_header = [a_financials[2]]
+                l_financials_header.extend(a_financials[5:-1])
+                l_financials_header.append("Link")
 
-            df_financials = pd.DataFrame(columns=l_financials_header)
-            df_financials.set_index("Filing Date")
-            b_ready_to_process_info = True
+                df_financials = pd.DataFrame(columns=l_financials_header)
+                df_financials.set_index("Filing Date")
+                b_ready_to_process_info = True
 
     # Set Filing Date as index
     df_financials = df_financials.set_index("Filing Date")  # type: ignore

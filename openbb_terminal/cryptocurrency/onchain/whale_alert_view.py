@@ -48,6 +48,7 @@ def display_whales_transactions(
     df = whale_alert_model.get_whales_transactions(min_value)
 
     if df.empty:
+        console.print("Failed to retrieve data.")
         return
 
     df_data = df.copy()
@@ -68,7 +69,6 @@ def display_whales_transactions(
         show_index=False,
         title="Large Value Transactions",
     )
-    console.print("")
 
     export_data(
         export,

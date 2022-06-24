@@ -58,7 +58,7 @@ def vcr_config():
 @pytest.mark.parametrize(
     "queue, expected",
     [
-        (["load", "help"], []),
+        (["load", "help"], ["help"]),
         (["quit", "help"], ["help"]),
     ],
 )
@@ -108,7 +108,7 @@ def test_menu_without_queue_completion(mocker):
 
     result_menu = stocks_controller.StocksController(queue=None).menu()
 
-    assert result_menu == []
+    assert result_menu == ["help"]
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -152,7 +152,7 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
 
     result_menu = stocks_controller.StocksController(queue=None).menu()
 
-    assert result_menu == []
+    assert result_menu == ["help"]
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -248,14 +248,20 @@ def test_call_func_expect_queue(expected_queue, func, queue):
         (
             "call_search",
             [
-                "mock_query",
-                "--amount=1",
+                "--query=mock_query",
+                "--limit=1",
+                "--export=''",
             ],
             "stocks_helper.search",
             [],
             dict(
                 query="mock_query",
-                amount=1,
+                limit=1,
+                country="",
+                sector="",
+                industry="",
+                exchange_country="",
+                export="",
             ),
         ),
         (
@@ -272,7 +278,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 "--sort=Open",
                 "--descending",
                 "--raw",
-                "--num=1",
+                "--limit=1",
                 "--trend",
                 "--ma=2",
             ],
@@ -291,7 +297,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 "--plotly",
                 "--sort=Open",
                 "--descending",
-                "--num=1",
+                "--limit=1",
                 "--trend",
                 "--ma=20,30",
             ],
@@ -491,7 +497,7 @@ def test_call_func(
 def test_call_func_no_parser(func, mocker):
     # MOCK PARSE_KNOWN_ARGS_AND_WARN
     mocker.patch(
-        target="openbb_terminal.stocks.stocks_controller.parse_known_args_and_warn",
+        "openbb_terminal.stocks.stocks_controller.StocksController.parse_known_args_and_warn",
         return_value=None,
     )
     controller = stocks_controller.StocksController(queue=None)
@@ -499,7 +505,7 @@ def test_call_func_no_parser(func, mocker):
     func_result = getattr(controller, func)(other_args=list())
     assert func_result is None
     assert controller.queue == []
-    getattr(stocks_controller, "parse_known_args_and_warn").assert_called_once()
+    controller.parse_known_args_and_warn.assert_called_once()
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -520,7 +526,7 @@ def test_call_func_no_parser(func, mocker):
 def test_call_func_no_ticker(func, mocker):
     # MOCK PARSE_KNOWN_ARGS_AND_WARN
     mocker.patch(
-        "openbb_terminal.stocks.stocks_controller.parse_known_args_and_warn",
+        "openbb_terminal.stocks.stocks_controller.StocksController.parse_known_args_and_warn",
         return_value=True,
     )
 

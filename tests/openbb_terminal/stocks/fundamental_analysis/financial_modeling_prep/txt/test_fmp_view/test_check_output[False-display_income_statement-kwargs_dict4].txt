@@ -1,5 +1,6 @@
 Fiscal Date Ending                                          2017                 2018                 2019                 2020                 2021
 Reported currency                                            USD                  USD                  USD                  USD                  USD
+Cik                                                      1.413 M              1.413 M              1.413 M              1.413 M              1.413 M
 Filling date                                          2018-02-13           2019-02-07           2020-02-07           2021-02-09           2022-02-11
 Accepted date                                2018-02-13 08:07:16  2019-02-07 15:09:20  2020-02-07 06:47:13  2021-02-09 16:20:37  2022-02-11 08:29:22
 Calendar year                                            2.017 K              2.018 K              2.019 K              2.020 K              2.021 K
@@ -20,19 +21,18 @@ Interest expense                                         1.096 B                
 Depreciation and amortization                              875 M                989 M                964 M                981 M                998 M
 Ebitda                                                  12.313 B             12.200 B             11.238 B             12.142 B             13.515 B
 Ebitdaratio                                                0.428                0.412                0.377                0.423                0.430
-Operating income                                        11.503 B             11.336 B             10.442 B             11.571 B             12.860 B
-Operating income ratio                                     0.400                0.383                0.350                0.403                0.409
-Total other income expenses net                           -914 M               -665 M               -570 M               -618 M               -628 M
+Operating income                                        11.503 B             11.377 B             10.531 B             11.668 B             12.975 B
+Operating income ratio                                     0.400                0.384                0.353                0.407                0.413
+Total other income expenses net                           -914 M               -706 M               -659 M               -715 M               -743 M
 Income before tax                                       10.589 B             10.671 B              9.872 B             10.953 B             12.232 B
 Income before tax ratio                                    0.368                0.360                0.331                0.382                0.389
 Income tax expense                                       4.307 B              2.445 B              2.293 B              2.377 B              2.671 B
 Net income                                               6.035 B              7.911 B              7.185 B              8.056 B              9.109 B
 Net income ratio                                           0.210                0.267                0.241                0.281                0.290
-Eps                                                        3.889                5.080                4.621                5.160                    0
-Epsdiluted                                                 3.886                5.080                4.618                5.160                    0
-Weighted average shs out                                 1.552 B              1.555 B              1.555 B              1.557 B                    0
-Weighted average shs out dil                             1.553 B              1.555 B              1.556 B              1.558 B                    0
-
+Eps                                                        3.880                5.080                4.610                5.160                5.850
+Epsdiluted                                                 3.880                5.080                4.610                5.160                5.850
+Weighted average shs out                                 1.552 B              1.555 B              1.555 B              1.557 B              1.557 B
+Weighted average shs out dil                             1.553 B              1.555 B              1.556 B              1.558 B              1.557 B
                                                                                                            Final link
 Fiscal Date Ending                                                                                                   
 2017                https://www.sec.gov/Archives/edgar/data/1413329/000141332918000007/pm123117form10kwrapinclfsm.htm

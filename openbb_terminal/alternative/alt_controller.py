@@ -10,7 +10,7 @@ from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 
 logger = logging.getLogger(__name__)
 # pylint:disable=import-outside-toplevel
@@ -20,7 +20,7 @@ class AlternativeDataController(BaseController):
     """Alternative Controller class"""
 
     CHOICES_COMMANDS: List[str] = []
-    CHOICES_MENUS = ["covid"]
+    CHOICES_MENUS = ["covid", "oss"]
     PATH = "/alternative/"
 
     def __init__(self, queue: List[str] = None):
@@ -29,20 +29,27 @@ class AlternativeDataController(BaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
+            choices["support"] = self.SUPPORT_CHOICES
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
         """Print help"""
-        help_text = """[menu]
->   covid     COVID menu,                    e.g.: cases, deaths, rates[/menu]
-        """
-        console.print(text=help_text, menu="Alternative")
+        mt = MenuText("alternative/")
+        mt.add_menu("covid")
+        mt.add_menu("oss")
+        console.print(text=mt.menu_text, menu="Alternative")
 
     @log_start_end(log=logger)
     def call_covid(self, _):
         """Process covid command"""
-        from openbb_terminal.alternative.covid.covid_controller import (
-            CovidController,
-        )
+        from openbb_terminal.alternative.covid.covid_controller import CovidController
 
         self.queue = self.load_class(CovidController, self.queue)
+
+    @log_start_end(log=logger)
+    def call_oss(self, _):
+        """Process oss command"""
+        from openbb_terminal.alternative.oss.oss_controller import OSSController
+
+        self.queue = self.load_class(OSSController, self.queue)

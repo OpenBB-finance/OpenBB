@@ -14,12 +14,11 @@ from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
-    parse_known_args_and_warn,
     valid_date,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.stocks.fundamental_analysis import (
     av_view,
@@ -29,6 +28,7 @@ from openbb_terminal.stocks.fundamental_analysis import (
     finviz_view,
     market_watch_view,
     yahoo_finance_view,
+    polygon_view,
 )
 from openbb_terminal.stocks.fundamental_analysis.financial_modeling_prep import (
     fmp_controller,
@@ -103,44 +103,44 @@ class FundamentalAnalysisController(StockBaseController):
 
     def print_help(self):
         """Print help."""
-        is_foreign_start = "" if not self.suffix else "[unvl]"
-        is_foreign_end = "" if not self.suffix else "[/unvl]"
-        help_text = f"""[param]
-Ticker: [/param] {self.ticker} [cmds]
-
-[cmds]    data          fundamental and technical data of company [src][FinViz][/src]
-    mgmt          management team of the company [src][Business Insider][/src]
-    analysis      analyse SEC filings with the help of machine learning [src][Eclect.us][/src]
-    score         investing score from Warren Buffett, Joseph Piotroski and Benjamin Graham [src][FMP][/src]
-    warnings      company warnings according to Sean Seah book [src][Market Watch][/src]
-    dcf           advanced Excel customizable discounted cash flow [src][Stockanalysis][/src][/cmds]
-[src][Yahoo Finance][/src]
-    info          information scope of the company
-    mktcap        estimated market cap{is_foreign_start}
-    shrs          shareholders (insiders, institutions and mutual funds)
-    sust          sustainability values (environment, social and governance)
-    cal           calendar earnings and estimates of the company
-    divs          show historical dividends for company
-    splits        stock split and reverse split events since IPO
-    web           open web browser of the company
-    hq            open HQ location of the company{is_foreign_end}
-[src][Alpha Vantage][/src]
-    overview      overview of the company
-    key           company key metrics
-    income        income statements of the company
-    balance       balance sheet of the company
-    cash          cash flow of the company
-    earnings      earnings dates and reported EPS
-    fraud         key fraud ratios
-    dupont        detailed breakdown for return on equity[/cmds]
-[info]Other Sources:[/info][menu]
->   fmp           profile,quote,enterprise,dcf,income,ratios,growth from FMP[/menu]
-        """
-        console.print(text=help_text, menu="Stocks - Fundamental Analysis")
+        mt = MenuText("stocks/fa/")
+        mt.add_cmd("load")
+        mt.add_raw("\n")
+        mt.add_param("_ticker", self.ticker.upper())
+        mt.add_raw("\n")
+        mt.add_cmd("data", "Finviz")
+        mt.add_cmd("mgmt", "Business Insider")
+        mt.add_cmd("analysis", "Elect")
+        mt.add_cmd("score", "FMP")
+        mt.add_cmd("warnings", "Market Watch")
+        mt.add_cmd("dcf", "Stockanalysis")
+        mt.add_cmd("info", "Yahoo Finance")
+        mt.add_cmd("mktcap", "Yahoo Finance")
+        mt.add_cmd("shrs", "Yahoo Finance", not self.suffix)
+        mt.add_cmd("sust", "Yahoo Finance", not self.suffix)
+        mt.add_cmd("cal", "Yahoo Finance", not self.suffix)
+        mt.add_cmd("divs", "Yahoo Finance", not self.suffix)
+        mt.add_cmd("splits", "Yahoo Finance", not self.suffix)
+        mt.add_cmd("web", "Yahoo Finance", not self.suffix)
+        mt.add_cmd("hq", "Yahoo Finance", not self.suffix)
+        mt.add_cmd("income", "Alpha Vantage / Polygon")
+        mt.add_cmd("balance", "Alpha Vantage / Polygon")
+        mt.add_cmd("overview", "Alpha Vantage")
+        mt.add_cmd("key", "Alpha Vantage")
+        mt.add_cmd("cash", "Alpha Vantage")
+        mt.add_cmd("earnings", "Alpha Vantage")
+        mt.add_cmd("fraud", "Alpha Vantage")
+        mt.add_cmd("dupont", "Alpha Vantage")
+        mt.add_raw("\n")
+        mt.add_info("_sources_")
+        mt.add_menu("fmp")
+        console.print(text=mt.menu_text, menu="Stocks - Fundamental Analysis")
 
     def custom_reset(self):
         """Class specific component of reset command"""
         if self.ticker:
+            if self.suffix:
+                return ["stocks", f"load {self.ticker}.{self.suffix}", "fa"]
             return ["stocks", f"load {self.ticker}", "fa"]
         return []
 
@@ -153,7 +153,7 @@ Ticker: [/param] {self.ticker} [cmds]
             prog="analysis",
             description="""Display analysis of SEC filings based on NLP model. [Source: https://eclect.us]""",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -172,7 +172,7 @@ Ticker: [/param] {self.ticker} [cmds]
             """,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -202,7 +202,7 @@ Ticker: [/param] {self.ticker} [cmds]
             """,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -220,7 +220,7 @@ Ticker: [/param] {self.ticker} [cmds]
                 and Benjamin Graham thoughts [Source: FMP]
                 """,
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -254,7 +254,7 @@ Ticker: [/param] {self.ticker} [cmds]
                 Regular market price, Logo_url. [Source: Yahoo Finance]
             """,
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -277,7 +277,7 @@ Ticker: [/param] {self.ticker} [cmds]
             dest="start",
             help="The starting date (format YYYY-MM-DD) of the market cap display",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
@@ -294,7 +294,7 @@ Ticker: [/param] {self.ticker} [cmds]
             prog="splits",
             description="""Stock splits and reverse split events since IPO [Source: Yahoo Finance]""",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
@@ -310,7 +310,7 @@ Ticker: [/param] {self.ticker} [cmds]
             description="""Print Major, institutional and mutualfunds shareholders.
             [Source: Yahoo Finance]""",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if not self.suffix:
@@ -337,7 +337,7 @@ Ticker: [/param] {self.ticker} [cmds]
                 Militarycontract. [Source: Yahoo Finance]
             """,
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if not self.suffix:
@@ -360,7 +360,7 @@ Ticker: [/param] {self.ticker} [cmds]
                 [Source: Yahoo Finance]
             """,
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if not self.suffix:
@@ -382,7 +382,7 @@ Ticker: [/param] {self.ticker} [cmds]
                 Opens company's website. [Source: Yahoo Finance]
             """,
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if not self.suffix:
@@ -402,7 +402,7 @@ Ticker: [/param] {self.ticker} [cmds]
                 Opens in Google Maps HQ location of the company. [Source: Yahoo Finance]
             """,
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if not self.suffix:
@@ -436,7 +436,7 @@ Ticker: [/param] {self.ticker} [cmds]
             action="store_true",
             help="Plots changes in dividend over time",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if not self.suffix:
@@ -475,7 +475,7 @@ Ticker: [/param] {self.ticker} [cmds]
                 https://www.sec.gov/edgar/searchedgar/cik.htm [Source: Alpha Vantage]
             """,
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -496,7 +496,7 @@ Ticker: [/param] {self.ticker} [cmds]
                 [Source: Alpha Vantage API]
             """,
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -521,15 +521,6 @@ Ticker: [/param] {self.ticker} [cmds]
                 average shs out dil [Source: Alpha Vantage]""",
         )
         parser.add_argument(
-            "-l",
-            "--limit",
-            action="store",
-            dest="limit",
-            type=check_positive,
-            default=1,
-            help="Number of latest years/quarters.",
-        )
-        parser.add_argument(
             "-q",
             "--quarter",
             action="store_true",
@@ -537,16 +528,29 @@ Ticker: [/param] {self.ticker} [cmds]
             dest="b_quarter",
             help="Quarter fundamental data flag.",
         )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
+            limit=5,
+            sources=["polygon", "av"],
         )
         if ns_parser:
-            av_view.display_income_statement(
-                ticker=self.ticker,
-                limit=ns_parser.limit,
-                quarterly=ns_parser.b_quarter,
-                export=ns_parser.export,
-            )
+            if ns_parser.source == "av":
+                av_view.display_income_statement(
+                    ticker=self.ticker,
+                    limit=ns_parser.limit,
+                    quarterly=ns_parser.b_quarter,
+                    export=ns_parser.export,
+                )
+            elif ns_parser.source == "polygon":
+                polygon_view.display_fundamentals(
+                    ticker=self.ticker,
+                    financial="income",
+                    limit=ns_parser.limit,
+                    quarterly=ns_parser.b_quarter,
+                    export=ns_parser.export,
+                )
 
     @log_start_end(log=logger)
     def call_balance(self, other_args: List[str]):
@@ -573,15 +577,6 @@ Ticker: [/param] {self.ticker} [cmds]
             """,
         )
         parser.add_argument(
-            "-l",
-            "--limit",
-            action="store",
-            dest="limit",
-            type=check_positive,
-            default=1,
-            help="Number of latest years/quarters.",
-        )
-        parser.add_argument(
             "-q",
             "--quarter",
             action="store_true",
@@ -589,16 +584,29 @@ Ticker: [/param] {self.ticker} [cmds]
             dest="b_quarter",
             help="Quarter fundamental data flag.",
         )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
+            limit=5,
+            sources=["polygon", "av"],
         )
         if ns_parser:
-            av_view.display_balance_sheet(
-                ticker=self.ticker,
-                limit=ns_parser.limit,
-                quarterly=ns_parser.b_quarter,
-                export=ns_parser.export,
-            )
+            if ns_parser.source == "av":
+                av_view.display_balance_sheet(
+                    ticker=self.ticker,
+                    limit=ns_parser.limit,
+                    quarterly=ns_parser.b_quarter,
+                    export=ns_parser.export,
+                )
+            elif ns_parser.source == "polygon":
+                polygon_view.display_fundamentals(
+                    ticker=self.ticker,
+                    financial="balance",
+                    limit=ns_parser.limit,
+                    quarterly=ns_parser.b_quarter,
+                    export=ns_parser.export,
+                )
 
     @log_start_end(log=logger)
     def call_cash(self, other_args: List[str]):
@@ -639,7 +647,7 @@ Ticker: [/param] {self.ticker} [cmds]
             dest="b_quarter",
             help="Quarter fundamental data flag.",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -679,7 +687,7 @@ Ticker: [/param] {self.ticker} [cmds]
             default=5,
             help="Number of latest info",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -731,9 +739,9 @@ Ticker: [/param] {self.ticker} [cmds]
                 " higher probability of default. One of the criticisms that Zmijewski made was that"
                 " other bankruptcy scoring models oversampled distressed firms and favored situations"
                 " with more complete data.[Source: YCharts]"
-                "McKee-score:\n------------------------------------------------\n"
+                "\n\nMcKee-score:\n------------------------------------------------\n"
                 "The McKee Score is a bankruptcy model used to predict a firm's bankruptcy in one year"
-                "It looks at a companie's size, profitability, and liquidity to determine the probability."
+                "It looks at a company's size, profitability, and liquidity to determine the probability."
                 "This model is 80% accurate in predicting bankruptcy."
             ),
         )
@@ -745,11 +753,23 @@ Ticker: [/param] {self.ticker} [cmds]
             default=False,
             help="Shows an explanation for the metrics",
         )
-        ns_parser = parse_known_args_and_warn(
+        parser.add_argument(
+            "-d",
+            "--detail",
+            action="store_true",
+            dest="detail",
+            default=False,
+            help="Shows the details for calculating the mscore",
+        )
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            av_view.display_fraud(self.ticker, ns_parser.exp)
+            av_view.display_fraud(
+                ticker=self.ticker,
+                export=ns_parser.exp,
+                detail=ns_parser.detail,
+            )
 
     @log_start_end(log=logger)
     def call_dupont(self, other_args: List[str]):
@@ -767,7 +787,7 @@ Ticker: [/param] {self.ticker} [cmds]
             dest="raw",
             help="Print raw data.",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -787,7 +807,7 @@ Ticker: [/param] {self.ticker} [cmds]
                 this we need to predict the future cash flows and then determine how much those
                 cash flows are worth to us today.\n\n
 
-                We predict the future expected cash flows by prediciting what the financial
+                We predict the future expected cash flows by predicting what the financial
                 statements will look like in the future, and then using this to determine the
                 cash the company will have in the future. This cash is paid to share holders.
                 We use linear regression to predict the future financial statements.\n\n
@@ -838,7 +858,7 @@ Ticker: [/param] {self.ticker} [cmds]
             default=6,
             help="Number of similar companies to generate ratios for.",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -874,7 +894,7 @@ Ticker: [/param] {self.ticker} [cmds]
             dest="b_debug",
             help="print insights into warnings calculation.",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -892,33 +912,3 @@ Ticker: [/param] {self.ticker} [cmds]
             self.interval,
             self.queue,
         )
-
-
-def key_metrics_explained(other_args: List[str]):
-    """Key metrics explained.
-
-    Parameters
-    ----------
-    other_args : List[str]
-        argparse other args
-    """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="info",
-        description="""
-            Provides information about main key metrics. Namely: EBITDA,
-            EPS, P/E, PEG, FCF, P/B, ROE, DPR, P/S, Dividend Yield Ratio, D/E, and Beta.
-        """,
-    )
-    ns_parser = parse_known_args_and_warn(
-        parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-    )
-    if ns_parser:
-        filepath = "fundamental_analysis/key_metrics_explained.txt"
-        with open(filepath) as fp:
-            line = fp.readline()
-            while line:
-                console.print(f"{line.strip()}")
-                line = fp.readline()
-            console.print("")

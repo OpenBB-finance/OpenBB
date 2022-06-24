@@ -18,7 +18,7 @@ DF_EMPTY = pd.DataFrame()
 @pytest.mark.parametrize(
     "queue, expected",
     [
-        (["historical", "help"], []),
+        (["historical", "help"], ["help"]),
         (["q", ".."], [".."]),
     ],
 )
@@ -72,7 +72,7 @@ def test_menu_without_queue_completion(mocker):
         queue=None,
     ).menu()
 
-    assert result_menu == []
+    assert result_menu == ["help"]
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -120,7 +120,7 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
         queue=None,
     ).menu()
 
-    assert result_menu == []
+    assert result_menu == ["help"]
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -256,6 +256,9 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 similar_tickers=["MOCK_SIMILAR_1", "MOCK_SIMILAR_2"],
                 start="2020-12-01",
                 candle_type="h",
+                export="",
+                display_full_matrix=False,
+                raw=False,
             ),
         ),
         (
@@ -468,7 +471,7 @@ def test_call_func(tested_func, mocked_func, other_args, called_with, mocker):
 )
 def test_call_func_no_parser(func, mocker):
     mocker.patch(
-        "openbb_terminal.stocks.comparison_analysis.ca_controller.parse_known_args_and_warn",
+        "openbb_terminal.stocks.comparison_analysis.ca_controller.ComparisonAnalysisController.parse_known_args_and_warn",
         return_value=None,
     )
     controller = ca_controller.ComparisonAnalysisController(
@@ -478,7 +481,7 @@ def test_call_func_no_parser(func, mocker):
     func_result = getattr(controller, func)(other_args=list())
     assert func_result is None
     assert controller.queue == []
-    getattr(ca_controller, "parse_known_args_and_warn").assert_called_once()
+    controller.parse_known_args_and_warn.assert_called_once()
 
 
 @pytest.mark.vcr(record_mode="none")

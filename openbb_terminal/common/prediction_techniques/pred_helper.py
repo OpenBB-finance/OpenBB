@@ -22,10 +22,11 @@ from tensorflow.keras.models import Sequential
 from openbb_terminal.helper_funcs import (
     check_positive,
     check_positive_float,
-    parse_known_args_and_warn,
+    parse_simple_args,
     valid_date,
     plot_autoscale,
     print_rich_table,
+    is_valid_axes_count,
 )
 from openbb_terminal import config_neural_network_models as cfg
 from openbb_terminal.config_terminal import theme
@@ -194,7 +195,7 @@ def parse_args(prog: str, description: str, other_args: List[str]):
     )
 
     try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
         if not ns_parser:
             return None
 
@@ -432,12 +433,10 @@ def plot_data_predictions(
             figsize=plot_autoscale(),
             dpi=PLOT_DPI,
         )
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item")
-            console.print("[red]Expected list of 1 axis item./n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
+    else:
+        return
 
     ax.plot(
         data.index,
@@ -558,7 +557,6 @@ def lambda_price_prediction_color(val: float, last_val: float) -> str:
 
 def print_pretty_prediction(df_pred: pd.DataFrame, last_price: float):
     """Print predictions"""
-    console.print("")
     if rich_config.USE_COLOR:
         df_pred = pd.DataFrame(df_pred)
         df_pred.columns = ["pred"]
@@ -571,7 +569,7 @@ def print_pretty_prediction(df_pred: pd.DataFrame, last_price: float):
             index_name="Datetime",
             headers=["Prediction"],
             floatfmt=".2f",
-            title=f"Actual price: [yellow]{last_price:.2f} $[/yellow]\n",
+            title=f"Actual price: [yellow]{last_price:.2f} $[/yellow]",
         )
 
     else:
@@ -580,7 +578,7 @@ def print_pretty_prediction(df_pred: pd.DataFrame, last_price: float):
         print_rich_table(
             df_pred,
             show_index=True,
-            title=f"Actual price: [yellow]{last_price:.2f} $[/yellow]\n",
+            title=f"Actual price: [yellow]{last_price:.2f} $[/yellow]",
             index_name="Datetime",
             headers=["Prediction"],
             floatfmt=".2f",

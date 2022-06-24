@@ -14,6 +14,7 @@ from openbb_terminal.cryptocurrency.coinbase_helpers import (
 )
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
+import openbb_terminal.cryptocurrency.due_diligence.coinbase_model as cbm
 
 logger = logging.getLogger(__name__)
 
@@ -72,15 +73,32 @@ def get_accounts(add_current_price: bool = True, currency: str = "USD") -> pd.Da
 
     if add_current_price:
         current_prices = []
-        for _, row in df.iterrows():
+        for index, row in df.iterrows():
+            _, pairs = cbm.show_available_pairs_for_given_symbol(row.currency)
+            if currency not in pairs:
+                df.drop(index, inplace=True)
+                continue
+
             to_get = f"{row.currency}-{currency}"
-            current_prices.append(
-                float(
-                    make_coinbase_request(f"/products/{to_get}/stats", auth=auth)[
-                        "last"
-                    ]
+            # Check pair validity. This is needed for delisted products like XRP
+            try:
+                cb_request = make_coinbase_request(
+                    f"/products/{to_get}/stats", auth=auth
                 )
-            )
+            except Exception as e:
+                if "Not allowed for delisted products" in str(e):
+                    message = f"Coinbase product is delisted {str(e)}"
+                    logger.debug(message)
+                else:
+                    message = (
+                        f"Coinbase does not recognize this pair {to_get}: {str(e)}"
+                    )
+                    logger.debug(message)
+
+                df.drop(index, inplace=True)
+                continue
+
+            current_prices.append(float(cb_request["last"]))
 
         df["current_price"] = current_prices
         df[f"BalanceValue({currency})"] = df.current_price * df.balance.astype(float)

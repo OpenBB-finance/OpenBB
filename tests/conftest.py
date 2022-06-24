@@ -3,6 +3,7 @@ import json
 import os
 import pathlib
 from typing import Any, Dict, List, Optional, Type
+from distutils.util import strtobool
 
 # IMPORTATION THIRDPARTY
 import pandas as pd
@@ -16,7 +17,7 @@ from _pytest.mark.structures import Mark
 
 # IMPORTATION INTERNAL
 from openbb_terminal import decorators, helper_funcs
-from bots import config_discordbot as cfg
+from openbb_terminal import feature_flags as obbff
 
 # pylint: disable=redefined-outer-name
 
@@ -30,6 +31,9 @@ EXTENSIONS_MATCHING: Dict[str, List[Type]] = {
 
 os.environ["TEST_MODE"] = "True"
 os.environ["OPENBB_IMG_HOST_ACTIVE"] = "False"
+os.environ["OPENBB_DISCORD_BOT_TOKEN"] = "123"
+os.environ["OPENBB_IMGUR_CLIENT_ID"] = "123"
+obbff.ENABLE_EXIT_AUTO_HELP = strtobool("True")
 
 
 class Record:
@@ -328,6 +332,11 @@ def pytest_addoption(parser: Parser):
         help="To run tests with the marker : @pytest.mark.prediction",
     )
     parser.addoption(
+        "--bots",
+        action="store_true",
+        help="To run tests with the marker : @pytest.mark.bots",
+    )
+    parser.addoption(
         "--rewrite-expected",
         action="store_true",
         help="To force `record_stdout` and `recorder` to rewrite all files.",
@@ -371,6 +380,11 @@ def rewrite_expected(request: SubRequest) -> bool:
     return request.config.getoption("--rewrite-expected")
 
 
+@pytest.fixture(autouse=True)
+def mock_matplotlib(mocker):
+    mocker.patch("matplotlib.pyplot.show")
+
+
 @pytest.fixture
 def default_csv_path(request: SubRequest) -> str:
     return build_path_by_extension(request=request, extension="csv", create_folder=True)
@@ -397,7 +411,12 @@ def record_stdout_markers(request: SubRequest) -> List[Mark]:
 @pytest.fixture(scope="session", autouse=True)
 def delete_images():
     yield
-    mydir = os.path.join(cfg.GST_PATH, "bots", "interactive", "images")
+    mydir = os.path.join(
+        os.path.abspath(os.path.join(os.path.dirname(__file__), "..")),
+        "bots",
+        "interactive",
+        "images",
+    )
     filelist = [f for f in os.listdir(mydir) if f.endswith(".png")]
     for f in filelist:
         os.remove(os.path.join(mydir, f))

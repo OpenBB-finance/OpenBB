@@ -4,6 +4,7 @@ import os
 # IMPORTATION THIRDPARTY
 import pandas as pd
 import pytest
+import yfinance
 
 # IMPORTATION INTERNAL
 from openbb_terminal.stocks.insider import insider_controller
@@ -57,7 +58,7 @@ def vcr_config():
 @pytest.mark.parametrize(
     "queue, expected",
     [
-        (["load", "help"], []),
+        (["load", "help"], ["help"]),
         (["quit", "help"], ["help"]),
     ],
 )
@@ -119,7 +120,7 @@ def test_menu_without_queue_completion(mocker):
         queue=None,
     ).menu()
 
-    assert result_menu == []
+    assert result_menu == ["help"]
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -171,7 +172,7 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
         queue=None,
     ).menu()
 
-    assert result_menu == []
+    assert result_menu == ["help"]
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -528,7 +529,7 @@ def test_call_func(
 )
 def test_call_func_no_parser(func, mocker):
     mocker.patch(
-        "openbb_terminal.stocks.insider.insider_controller.parse_known_args_and_warn",
+        "openbb_terminal.stocks.insider.insider_controller.InsiderController.parse_known_args_and_warn",
         return_value=None,
     )
     controller = insider_controller.InsiderController(
@@ -541,7 +542,7 @@ def test_call_func_no_parser(func, mocker):
     func_result = getattr(controller, func)(other_args=list())
     assert func_result is None
     assert controller.queue == []
-    getattr(insider_controller, "parse_known_args_and_warn").assert_called_once()
+    controller.parse_known_args_and_warn.assert_called_once()
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -602,9 +603,13 @@ def test_call_func_no_stock(func):
 def test_call_load(mocker):
 
     # MOCK LOAD
-    target = "openbb_terminal.parent_classes.stocks_helper.load"
-    mocker.patch(target=target, return_value=DF_STOCK)
+    yf_download = yfinance.download
 
+    def mock_yf_download(*args, **kwargs):
+        kwargs["threads"] = False
+        return yf_download(*args, **kwargs)
+
+    mocker.patch("yfinance.download", side_effect=mock_yf_download)
     controller = insider_controller.InsiderController(
         ticker=None,
         start="2021-10-25",
@@ -616,5 +621,6 @@ def test_call_load(mocker):
         "TSLA",
         "--start=2021-12-17",
         "--end=2021-12-18",
+        "--source=yf",
     ]
     controller.call_load(other_args=other_args)

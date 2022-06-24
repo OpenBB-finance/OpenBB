@@ -1,13 +1,13 @@
 """Main helper"""
 __docformat__ = "numpy"
 
-import argparse
-import json
 import logging
 import os
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from typing import List, Union, Optional, Iterable
+import warnings
 
+import financedatabase as fd
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
 import mplfinance as mpf
@@ -18,16 +18,16 @@ import plotly.graph_objects as go
 import pyEX
 import pytz
 import requests
+
 import yfinance as yf
 from alpha_vantage.timeseries import TimeSeries
 from numpy.core.fromnumeric import transpose
 from plotly.subplots import make_subplots
 from scipy import stats
 
-from openbb_terminal.config_terminal import theme
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.helper_funcs import (
-    parse_known_args_and_warn,
+    export_data,
     plot_autoscale,
     get_user_timezone_or_invalid,
     print_rich_table,
@@ -42,51 +42,203 @@ logger = logging.getLogger(__name__)
 INTERVALS = [1, 5, 15, 30, 60]
 SOURCES = ["yf", "av", "iex"]
 
+market_coverage_suffix = {
+    "USA": ["CBT", "CME", "NYB", "CMX", "NYM", ""],
+    "Argentina": ["BA"],
+    "Austria": ["VI"],
+    "Australia": ["AX"],
+    "Belgium": ["BR"],
+    "Brazil": ["SA"],
+    "Canada": ["CN", "NE", "TO", "V"],
+    "Chile": ["SN"],
+    "China": ["SS", "SZ"],
+    "Czech-Republic": ["PR"],
+    "Denmark": ["CO"],
+    "Egypt": ["CA"],
+    "Estonia": ["TL"],
+    "Europe": ["NX"],
+    "Finland": ["HE"],
+    "France": ["PA"],
+    "Germany": ["BE", "BM", "DU", "F", "HM", "HA", "MU", "SG", "DE"],
+    "Greece": ["AT"],
+    "Hong-Kong": ["HK"],
+    "Hungary": ["BD"],
+    "Iceland": ["IC"],
+    "India": ["BO", "NS"],
+    "Indonesia": ["JK"],
+    "Ireland": ["IR"],
+    "Israel": ["TA"],
+    "Italy": ["MI"],
+    "Japan": ["T", "S"],
+    "Latvia": ["RG"],
+    "Lithuania": ["VS"],
+    "Malaysia": ["KL"],
+    "Mexico": ["MX"],
+    "Netherlands": ["AS"],
+    "New-Zealand": ["NZ"],
+    "Norway": ["OL"],
+    "Portugal": ["LS"],
+    "Qatar": ["QA"],
+    "Russia": ["ME"],
+    "Singapore": ["SI"],
+    "South-Africa": ["JO"],
+    "South-Korea": ["KS", "KQ"],
+    "Spain": ["MC"],
+    "Saudi-Arabia": ["SAU"],
+    "Sweden": ["ST"],
+    "Switzerland": ["SW"],
+    "Taiwan": ["TWO", "TW"],
+    "Thailand": ["BK"],
+    "Turkey": ["IS"],
+    "United-Kingdom": ["L", "IL"],
+    "Venezuela": ["CR"],
+}
+
 
 def search(
-    query: str,
-    amount: int,
+    query: str = "",
+    country: str = "",
+    sector: str = "",
+    industry: str = "",
+    exchange_country: str = "",
+    limit: int = 0,
+    export: str = "",
 ) -> None:
     """Search selected query for tickers.
 
     Parameters
     ----------
     query : str
-        The search term used to find company tickers.
-    amount : int
-        The amount of companies shown.
+        The search term used to find company tickers
+    country: str
+        Search by country to find stocks matching the criteria
+    sector : str
+        Search by sector to find stocks matching the criteria
+    industry : str
+        Search by industry to find stocks matching the criteria
+    exchange_country: str
+        Search by exchange country to find stock matching
+    limit : int
+        The limit of companies shown.
+    export : str
+        Export data
     """
-    equities_list = (
-        "https://raw.githubusercontent.com/JerBouma/FinanceDatabase/master/"
-        "Database/Equities/Equities List.json"
-    )
-    request = requests.get(equities_list)
-    equities = json.loads(request.text)
+    if country:
+        if sector:
+            if industry:
+                data = fd.select_equities(
+                    country=country,
+                    sector=sector,
+                    industry=industry,
+                    exclude_exchanges=False,
+                )
+            else:  # no industry
+                data = fd.select_equities(
+                    country=country,
+                    sector=sector,
+                    exclude_exchanges=False,
+                )
+        else:  # no sector
+            if industry:
+                data = fd.select_equities(
+                    country=country,
+                    industry=industry,
+                    exclude_exchanges=False,
+                )
+            else:  # no industry
+                data = fd.select_equities(
+                    country=country,
+                    exclude_exchanges=False,
+                )
 
-    equities_query = {
-        key: value
-        for key, value in equities.items()
-        if (query in key.lower()) or (query in value.lower())
-    }
+    else:  # no country
+        if sector:
+            if industry:
+                data = fd.select_equities(
+                    sector=sector,
+                    industry=industry,
+                    exclude_exchanges=False,
+                )
+            else:  # no industry
+                data = fd.select_equities(
+                    sector=sector,
+                    exclude_exchanges=False,
+                )
+        else:  # no sector
+            if industry:
+                data = fd.select_equities(
+                    industry=industry,
+                    exclude_exchanges=False,
+                )
+            else:  # no industry
+                data = fd.select_equities(
+                    exclude_exchanges=False,
+                )
 
-    equities_dataframe = pd.DataFrame(
-        equities_query.items(),
-        index=equities_query.values(),
-        columns=["Company", "Ticker"],
-    )
+    if not data:
+        console.print("No companies found.\n")
+        return
 
-    if equities_dataframe.empty:
-        raise ValueError("No companies found. \n")
+    if query:
+        d = fd.search_products(
+            data, query, search="long_name", case_sensitive=False, new_database=None
+        )
+    else:
+        d = data
+
+    if not d:
+        console.print("No companies found.\n")
+        return
+
+    df = pd.DataFrame.from_dict(d).T[["long_name", "country", "sector", "industry"]]
+    if exchange_country:
+        if exchange_country in market_coverage_suffix:
+            suffix_tickers = [
+                ticker.split(".")[1] if "." in ticker else ""
+                for ticker in list(df.index)
+            ]
+            df = df[
+                [
+                    val in market_coverage_suffix[exchange_country]
+                    for val in suffix_tickers
+                ]
+            ]
+
+    exchange_suffix = {}
+    for k, v in market_coverage_suffix.items():
+        for x in v:
+            exchange_suffix[x] = k
+
+    df["exchange"] = [
+        exchange_suffix.get(ticker.split(".")[1]) if "." in ticker else "USA"
+        for ticker in list(df.index)
+    ]
+
+    title = "Companies found"
+    if query:
+        title += f" on term {query}"
+    if exchange_country:
+        title += f" {exchange_country} exchange"
+    if country:
+        title += f" in {country}"
+    if sector:
+        title += f" within {sector}"
+        if industry:
+            title += f" and {industry}"
+    if not sector and industry:
+        title += f" within {industry}"
 
     print_rich_table(
-        equities_dataframe.iloc[:amount],
-        show_index=False,
-        headers=["Company", "Ticker"],
-        title="Search Results",
+        df.iloc[:limit] if limit else df,
+        show_index=True,
+        headers=["Name", "Country", "Sector", "Industry", "Exchange"],
+        title=title,
     )
-    console.print("")
+
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), "search", df)
 
 
+# pylint:disable=too-many-return-statements
 def load(
     ticker: str,
     start: datetime = (datetime.now() - timedelta(days=1100)),
@@ -161,7 +313,7 @@ def load(
                     symbol=ticker, outputsize="full"
                 )
             except Exception as e:
-                console.print(e)
+                console.print(e, "")
                 return pd.DataFrame()
 
             df_stock_candidate.columns = [
@@ -218,7 +370,6 @@ def load(
 
         # IEX Cloud Source
         elif source == "iex":
-
             df_stock_candidate = pd.DataFrame()
 
             try:
@@ -229,11 +380,13 @@ def load(
                 # Check that loading a stock was not successful
                 if df_stock_candidate.empty:
                     console.print("No data found.\n")
+                    return df_stock_candidate
+
             except Exception as e:
                 if "The API key provided is not valid" in str(e):
                     console.print("[red]Invalid API Key[/red]\n")
                 else:
-                    console.print(e)
+                    console.print(e, "\n")
 
                 return df_stock_candidate
 
@@ -252,42 +405,135 @@ def load(
             )
 
             df_stock_candidate.sort_index(ascending=True, inplace=True)
+
+        # Polygon source
+        elif source == "polygon":
+
+            request_url = (
+                f"https://api.polygon.io/v2/aggs/ticker/"
+                f"{ticker.upper()}/range/1/day/{start.strftime('%Y-%m-%d')}/{end.strftime('%Y-%m-%d')}?adjusted=true"
+                f"&sort=desc&limit=49999&apiKey={cfg.API_POLYGON_KEY}"
+            )
+            r = requests.get(request_url)
+            if r.status_code != 200:
+                console.print("[red]Error in polygon request[/red]")
+                return pd.DataFrame()
+
+            r_json = r.json()
+            if "results" not in r_json.keys():
+                console.print("[red]No results found in polygon reply.[/red]")
+                return pd.DataFrame()
+
+            df_stock_candidate = pd.DataFrame(r_json["results"])
+
+            df_stock_candidate = df_stock_candidate.rename(
+                columns={
+                    "o": "Open",
+                    "c": "Adj Close",
+                    "h": "High",
+                    "l": "Low",
+                    "t": "date",
+                    "v": "Volume",
+                    "n": "Transactions",
+                }
+            )
+            df_stock_candidate["date"] = pd.to_datetime(
+                df_stock_candidate.date, unit="ms"
+            )
+            # TODO: Clean up Close vs Adj Close throughout
+            df_stock_candidate["Close"] = df_stock_candidate["Adj Close"]
+            df_stock_candidate = df_stock_candidate.sort_values(by="date")
+            df_stock_candidate = df_stock_candidate.set_index("date")
+
         s_start = df_stock_candidate.index[0]
         s_interval = f"{interval}min"
         int_string = "Daily" if interval == 1440 else "Intraday"
 
     else:
 
-        s_int = str(interval) + "m"
-        s_interval = s_int + "in"
-        d_granularity = {"1m": 6, "5m": 59, "15m": 59, "30m": 59, "60m": 729}
+        if source == "yf":
+            s_int = str(interval) + "m"
+            s_interval = s_int + "in"
+            d_granularity = {"1m": 6, "5m": 59, "15m": 59, "30m": 59, "60m": 729}
 
-        s_start_dt = datetime.utcnow() - timedelta(days=d_granularity[s_int])
-        s_date_start = s_start_dt.strftime("%Y-%m-%d")
+            s_start_dt = datetime.utcnow() - timedelta(days=d_granularity[s_int])
+            s_date_start = s_start_dt.strftime("%Y-%m-%d")
 
-        df_stock_candidate = yf.download(
-            ticker,
-            start=s_date_start if s_start_dt > start else start.strftime("%Y-%m-%d"),
-            progress=False,
-            interval=s_int,
-            prepost=prepost,
-        )
+            df_stock_candidate = yf.download(
+                ticker,
+                start=s_date_start
+                if s_start_dt > start
+                else start.strftime("%Y-%m-%d"),
+                progress=False,
+                interval=s_int,
+                prepost=prepost,
+            )
 
-        # Check that loading a stock was not successful
-        if df_stock_candidate.empty:
-            console.print("")
-            return pd.DataFrame()
+            # Check that loading a stock was not successful
+            if df_stock_candidate.empty:
+                console.print()
+                return pd.DataFrame()
 
-        df_stock_candidate.index = df_stock_candidate.index.tz_localize(None)
+            df_stock_candidate.index = df_stock_candidate.index.tz_localize(None)
 
-        if s_start_dt > start:
-            s_start = pytz.utc.localize(s_start_dt)
-        else:
-            s_start = start
+            if s_start_dt > start:
+                s_start = pytz.utc.localize(s_start_dt)
+            else:
+                s_start = start
 
-        df_stock_candidate.index.name = "date"
+            df_stock_candidate.index.name = "date"
 
+        elif source == "polygon":
+            request_url = (
+                f"https://api.polygon.io/v2/aggs/ticker/"
+                f"{ticker.upper()}/range/{interval}/minute/{start.strftime('%Y-%m-%d')}/{end.strftime('%Y-%m-%d')}"
+                f"?adjusted=true&sort=desc&limit=49999&apiKey={cfg.API_POLYGON_KEY}"
+            )
+            r = requests.get(request_url)
+            if r.status_code != 200:
+                console.print("[red]Error in polygon request[/red]")
+                return pd.DataFrame()
+
+            r_json = r.json()
+            if "results" not in r_json.keys():
+                console.print("[red]No results found in polygon reply.[/red]")
+                return pd.DataFrame()
+
+            df_stock_candidate = pd.DataFrame(r_json["results"])
+
+            df_stock_candidate = df_stock_candidate.rename(
+                columns={
+                    "o": "Open",
+                    "c": "Close",
+                    "h": "High",
+                    "l": "Low",
+                    "t": "date",
+                    "v": "Volume",
+                    "n": "Transactions",
+                }
+            )
+            df_stock_candidate["date"] = pd.to_datetime(
+                df_stock_candidate.date, unit="ms"
+            )
+            df_stock_candidate["Adj Close"] = df_stock_candidate.Close
+            df_stock_candidate = df_stock_candidate.sort_values(by="date")
+
+            df_stock_candidate = df_stock_candidate.set_index("date")
+            # Check that loading a stock was not successful
+            if df_stock_candidate.empty:
+                console.print()
+                return pd.DataFrame()
+
+            df_stock_candidate.index = df_stock_candidate.index.tz_localize(None)
+            s_start_dt = df_stock_candidate.index[0]
+
+            if s_start_dt > start:
+                s_start = pytz.utc.localize(s_start_dt)
+            else:
+                s_start = start
+            s_interval = f"{interval}min"
         int_string = "Intraday"
+
     s_intraday = (f"Intraday {s_interval}", int_string)[interval == 1440]
 
     console.print(
@@ -343,7 +589,7 @@ def display_candle(
                 ap0.append(
                     mpf.make_addplot(
                         df_stock["OC_High_trend"],
-                        color=theme.up_color,
+                        color=cfg.theme.up_color,
                         secondary_y=False,
                     ),
                 )
@@ -352,17 +598,17 @@ def display_candle(
                 ap0.append(
                     mpf.make_addplot(
                         df_stock["OC_Low_trend"],
-                        color=theme.down_color,
+                        color=cfg.theme.down_color,
                         secondary_y=False,
                     ),
                 )
 
         candle_chart_kwargs = {
             "type": "candle",
-            "style": theme.mpf_style,
+            "style": cfg.theme.mpf_style,
             "volume": True,
             "addplot": ap0,
-            "xrotation": theme.xticks_rotation,
+            "xrotation": cfg.theme.xticks_rotation,
             "scale_padding": {"left": 0.3, "right": 1, "top": 0.8, "bottom": 0.8},
             "update_width_config": {
                 "candle_linewidth": 0.6,
@@ -396,17 +642,17 @@ def display_candle(
                 colors = []
 
                 for i, _ in enumerate(ma):
-                    colors.append(theme.get_colors()[i])
+                    colors.append(cfg.theme.get_colors()[i])
 
                 lines = [Line2D([0], [0], color=c) for c in colors]
                 labels = ["MA " + str(label) for label in ma]
                 ax[0].legend(lines, labels)
 
-            theme.visualize_output(force_tight_layout=False)
+            cfg.theme.visualize_output(force_tight_layout=False)
         else:
             if len(external_axes) != 2:
                 logger.error("Expected list of one axis item.")
-                console.print("[red]Expected list of 2 axis items./n[/red]")
+                console.print("[red]Expected list of 2 axis items.\n[/red]")
                 return
             ax1, ax2 = external_axes
             candle_chart_kwargs["ax"] = ax1
@@ -564,72 +810,15 @@ def display_candle(
         fig.show(config=dict({"scrollZoom": True}))
 
 
-def quote(other_args: List[str], s_ticker: str):
+def quote(s_ticker: str):
     """Ticker quote
 
     Parameters
     ----------
-    other_args : List[str]
-        Argparse arguments
     s_ticker : str
         Ticker
     """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="quote",
-        description="Current quote for stock ticker",
-    )
-
-    if s_ticker:
-        parser.add_argument(
-            "-t",
-            "--ticker",
-            action="store",
-            dest="s_ticker",
-            default=s_ticker,
-            help="Stock ticker",
-        )
-    else:
-        parser.add_argument(
-            "-t",
-            "--ticker",
-            action="store",
-            dest="s_ticker",
-            required="-h" not in other_args,
-            help="Stock ticker",
-        )
-
-    # Price only option.
-    parser.add_argument(
-        "-p",
-        "--price",
-        action="store_true",
-        dest="price_only",
-        default=False,
-        help="Price only",
-    )
-
-    try:
-        # For the case where a user uses: 'quote BB'
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-t")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-    except SystemExit:
-        console.print("")
-        return
-
-    ticker = yf.Ticker(ns_parser.s_ticker)
-
-    # If price only option, return immediate market price for ticker.
-    if ns_parser.price_only:
-        console.print(
-            f"Price of {ns_parser.s_ticker} {ticker.info['regularMarketPrice']} \n"
-        )
-        return
+    ticker = yf.Ticker(s_ticker)
 
     try:
         quote_df = pd.DataFrame(
@@ -675,10 +864,7 @@ def quote(other_args: List[str], s_ticker: str):
 
     except KeyError:
         logger.exception("Invalid stock ticker")
-        console.print(f"Invalid stock ticker: {ns_parser.s_ticker}")
-
-    console.print("")
-    return
+        console.print(f"Invalid stock ticker: {s_ticker}")
 
 
 def load_ticker(
@@ -816,10 +1002,9 @@ def additional_info_about_ticker(ticker: str) -> str:
     """
     extra_info = ""
     if ticker:
+        ticker_info = yf.Ticker(ticker).info
         # outside US exchange
         if "." in ticker:
-            ticker_info = yf.Ticker(ticker).info
-
             extra_info += "\n[param]Datetime: [/param]"
             if (
                 "exchangeTimezoneName" in ticker_info
@@ -868,6 +1053,9 @@ def additional_info_about_ticker(ticker: str) -> str:
                             extra_info += "OPEN"
                         else:
                             extra_info += "CLOSED"
+
+            if "shortName" in ticker_info and ticker_info["shortName"]:
+                extra_info += ticker_info["shortName"]
         else:
             extra_info += "\n[param]Datetime: [/param]"
             dtime = datetime.now(pytz.timezone("America/New_York")).strftime(
@@ -878,6 +1066,7 @@ def additional_info_about_ticker(ticker: str) -> str:
             extra_info += "\n[param]Currency: [/param]USD"
             extra_info += "\n[param]Market:   [/param]"
             calendar = mcal.get_calendar("NYSE")
+            warnings.filterwarnings("ignore")
             sch = calendar.schedule(
                 start_date=(datetime.now() - timedelta(days=3)).strftime("%Y-%m-%d"),
                 end_date=(datetime.now() + timedelta(days=3)).strftime("%Y-%m-%d"),
@@ -893,12 +1082,16 @@ def additional_info_about_ticker(ticker: str) -> str:
                 else:
                     extra_info += "CLOSED"
 
+            extra_info += "\n[param]Company:  [/param]"
+            if "shortName" in ticker_info and ticker_info["shortName"]:
+                extra_info += ticker_info["shortName"]
     else:
         extra_info += "\n[param]Datetime: [/param]"
         extra_info += "\n[param]Timezone: [/param]"
         extra_info += "\n[param]Exchange: [/param]"
         extra_info += "\n[param]Market: [/param]"
         extra_info += "\n[param]Currency: [/param]"
+        extra_info += "\n[param]Company: [/param]"
 
     return extra_info + "\n"
 
@@ -977,3 +1170,71 @@ def clean_function(entry: str) -> Union[str, float]:
     if any(char.isdigit() for char in entry):
         return float(entry.replace("$", "").replace(",", ""))
     return entry
+
+
+def show_quick_performance(stock_df: pd.DataFrame, ticker: str):
+    """Show quick performance stats of stock prices.  Daily prices expected"""
+    closes = stock_df["Adj Close"]
+    volumes = stock_df["Volume"]
+
+    perfs = {
+        "1 Day": 100 * closes.pct_change(2)[-1],
+        "1 Week": 100 * closes.pct_change(5)[-1],
+        "1 Month": 100 * closes.pct_change(21)[-1],
+        "1 Year": 100 * closes.pct_change(252)[-1],
+    }
+    if "2022-01-03" in closes.index:
+        closes_ytd = closes[closes.index > f"{date.today().year}-01-01"]
+        perfs["YTD"] = 100 * (closes_ytd[-1] - closes_ytd[0]) / closes_ytd[0]
+    else:
+        perfs["Period"] = 100 * (closes[-1] - closes[0]) / closes[0]
+
+    df = pd.DataFrame.from_dict(perfs, orient="index").dropna().T
+    df = df.applymap(lambda x: str(round(x, 2)) + " %")
+    df = df.applymap(lambda x: f"[red]{x}[/red]" if "-" in x else f"[green]{x}[/green]")
+    if len(closes) > 252:
+        df["Volatility (1Y)"] = (
+            str(round(100 * np.sqrt(252) * closes[:-252].pct_change().std(), 2)) + " %"
+        )
+    else:
+        df["Volatility (Ann)"] = (
+            str(round(100 * np.sqrt(252) * closes.pct_change().std(), 2)) + " %"
+        )
+    if len(volumes) > 10:
+        df["Volume (10D avg)"] = (
+            str(round(np.mean(volumes[-12:-2]) / 1_000_000, 2)) + " M"
+        )
+
+    df["Last Price"] = closes[-1]
+    print_rich_table(
+        df, show_index=False, headers=df.columns, title=f"{ticker.upper()} Performance"
+    )
+
+
+def show_codes_polygon(ticker: str):
+    """Show FIGI, SIC and SIK codes for ticker
+
+    Parameters
+    ----------
+    ticker: str
+        Stock ticker
+    """
+    link = f"https://api.polygon.io/v3/reference/tickers/{ticker.upper()}?apiKey={cfg.API_POLYGON_KEY}"
+    r = requests.get(link)
+    if r.status_code != 200:
+        console.print("[red]Error in polygon request[/red]\n")
+        return
+    r_json = r.json()
+    if "results" not in r_json.keys():
+        console.print("[red]Results not found in polygon request[/red]")
+        return
+    r_json = r_json["results"]
+    cols = ["cik", "composite_figi", "share_class_figi", "sic_code"]
+    vals = []
+    for col in cols:
+        vals.append(r_json[col])
+    df = pd.DataFrame({"codes": [c.upper() for c in cols], "vals": vals})
+    df.codes = df.codes.apply(lambda x: x.replace("_", " "))
+    print_rich_table(
+        df, show_index=False, headers=["", ""], title=f"{ticker.upper()} Codes"
+    )

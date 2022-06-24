@@ -13,6 +13,8 @@ import requests
 import openbb_terminal.config_terminal as cfg
 from openbb_terminal.rich_config import console
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.cryptocurrency.cryptocurrency_helpers import prepare_all_coins_df
+from openbb_terminal.parent_classes import CRYPTO_SOURCES
 
 logger = logging.getLogger(__name__)
 
@@ -72,6 +74,8 @@ def make_request(**kwargs: Any) -> Optional[dict]:
     post_kind = kwargs.get("post_kind")
     filter_ = kwargs.get("filter_")
     region = kwargs.get("region")
+    currency = kwargs.get("currency")
+    source = kwargs.get("source")
 
     if post_kind not in ["news", "media", "all"]:
         post_kind = "all"
@@ -92,16 +96,30 @@ def make_request(**kwargs: Any) -> Optional[dict]:
     if region and region in REGIONS:
         url += f"&regions={region}"
 
+    if currency and source:
+        source_full = CRYPTO_SOURCES[source]
+        df_mapp = prepare_all_coins_df()
+
+        try:
+            mapped_coin = df_mapp.loc[df_mapp[source_full] == currency][
+                "Symbol"
+            ].values[0]
+            url += f"&currency={mapped_coin.upper()}"
+        except IndexError:
+            console.print(f"Cannot find news for {currency}.\n")
+            return {}
+
     response = requests.get(url)
+    response_json = response.json()
     result = None
 
     if response.status_code == 200:
-        result = response.json()
+        result = response_json
     else:
-        if "Token not found" in response.json()["info"]:
+        if "Token not found" in response_json["info"]:
             console.print("[red]Invalid API Key[/red]\n")
         else:
-            console.print(response.json()["info"])
+            console.print(response_json["info"])
 
         logger.warning("Invalid authentication: %s", response.text)
 
@@ -140,6 +158,8 @@ def get_news(
     post_kind: str = "news",
     filter_: Optional[str] = None,
     region: str = "en",
+    source: str = "cp",
+    currency: str = None,
 ) -> pd.DataFrame:
     """Get recent posts from CryptoPanic news aggregator platform. [Source: https://cryptopanic.com/]
 
@@ -166,7 +186,13 @@ def get_news(
 
     results = []
 
-    response = make_request(post_kind=post_kind, filter_=filter_, region=region)
+    response = make_request(
+        post_kind=post_kind,
+        filter_=filter_,
+        region=region,
+        source=source,
+        currency=currency,
+    )
 
     if response:
         data, next_page, _ = (

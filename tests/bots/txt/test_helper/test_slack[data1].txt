@@ -1,0 +1,10 @@
+()
+{}
+channel <class 'str'>
+username <class 'str'>
+text <class 'str'>
+file <class 'str'>
+filename <class 'str'>
+initial_comment <class 'str'>
+channels <class 'str'>
+user_id <class 'str'>

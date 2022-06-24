@@ -7,14 +7,13 @@ from typing import List, Optional
 import matplotlib.pyplot as plt
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.cryptocurrency.defi import (
-    cryptosaurio_model,
-)
+from openbb_terminal.cryptocurrency.defi import cryptosaurio_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
     plot_autoscale,
     print_rich_table,
+    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
 
@@ -51,14 +50,12 @@ def display_anchor_data(
     # This plot has 1 axis
     if not external_axes:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of one axis item./n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
+    else:
+        return
     print("")
-    print(stats_str)
+    console.print(stats_str)
     print("")
 
     if show_transactions:

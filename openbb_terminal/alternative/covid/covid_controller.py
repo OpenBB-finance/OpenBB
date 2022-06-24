@@ -16,11 +16,10 @@ from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
-    parse_known_args_and_warn,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 
 logger = logging.getLogger(__name__)
 
@@ -38,7 +37,7 @@ class CovidController(BaseController):
         super().__init__(queue)
 
         self.country = "US"
-        self.COUNTRY_LIST = pd.read_csv(country_file, sep="\n", index_col=None)[
+        self.COUNTRY_LIST = pd.read_csv(country_file, sep="|", index_col=None)[
             "Countries"
         ].to_list()
 
@@ -49,18 +48,17 @@ class CovidController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = f"""[cmds]
-        slopes      get countries with highest slope in cases
-        country     select country for data[/cmds]
-
-[param]Country: [/param]{self.country}[cmds]
-
-        ov          get overview (cases and deaths) for selected country
-        deaths      get deaths for selected country
-        cases       get cases for selected country
-        rates       get death/cases rate for selected country[/cmds]
-        """
-        console.print(text=help_text, menu="Alternative - COVID")
+        mt = MenuText("alternative/covid/")
+        mt.add_cmd("slopes")
+        mt.add_cmd("country")
+        mt.add_raw("\n")
+        mt.add_param("_country", self.country)
+        mt.add_raw("\n")
+        mt.add_cmd("ov")
+        mt.add_cmd("deaths")
+        mt.add_cmd("cases")
+        mt.add_cmd("rates")
+        console.print(text=mt.menu_text, menu="Alternative - COVID")
 
     def custom_reset(self):
         """Class specific component of reset command"""
@@ -85,7 +83,7 @@ class CovidController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-c")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if ns_parser.country:
                 country = " ".join(ns_parser.country)
@@ -108,7 +106,7 @@ class CovidController(BaseController):
             prog="ov",
             description="Show historical cases and deaths by country.",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -132,7 +130,7 @@ class CovidController(BaseController):
             prog="rates",
             description="Show historical death/cases rates for a country.",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -157,7 +155,7 @@ class CovidController(BaseController):
             prog="deaths",
             description="Show historical deaths by country.",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -182,7 +180,7 @@ class CovidController(BaseController):
             prog="cases",
             description="Show historical cases for country.",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -230,7 +228,7 @@ class CovidController(BaseController):
             help="Threshold for total cases over period",
             type=check_positive,
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED, limit=10
         )
         if ns_parser:

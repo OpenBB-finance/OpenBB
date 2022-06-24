@@ -5,7 +5,7 @@ from plotly.subplots import make_subplots
 
 from bots import imps
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.stocks.options import syncretism_model
+from openbb_terminal.stocks.options.screen import syncretism_model
 
 logger = logging.getLogger(__name__)
 
@@ -90,9 +90,9 @@ def hist_command(
         margin=dict(l=10, r=10, t=30, b=20),
         template=imps.PLT_TA_STYLE_TEMPLATE,
         colorway=imps.PLT_TA_COLORWAY,
-        title=title,
-        title_x=0.03,
-        title_font_size=14,
+        title=f"<b>{title}</b>",
+        title_x=0.01,
+        title_font_size=12,
         yaxis_title="<b>Stock Price</b>",
         font=imps.PLT_FONT,
         yaxis=dict(
@@ -121,7 +121,9 @@ def hist_command(
             fixedrange=False,
         ),
         dragmode="pan",
-        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+        legend=dict(
+            orientation="h", yanchor="bottom", y=1.02, font_size=8, xanchor="right", x=1
+        ),
         yaxis2=dict(
             side="left",
             fixedrange=False,
@@ -150,11 +152,6 @@ def hist_command(
     plt_link = ""
     if imps.INTERACTIVE:
         plt_link = imps.inter_chart(fig, imagefile, callback=False)
-
-    fig.update_layout(
-        width=800,
-        height=500,
-    )
 
     imagefile = imps.image_border(imagefile, fig=fig)
 

@@ -16,7 +16,6 @@ from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.economy import (
     alphavantage_view,
-    cnn_view,
     finviz_view,
     nasdaq_model,
     nasdaq_view,
@@ -27,19 +26,20 @@ from openbb_terminal.economy import (
     fred_model,
     yfinance_model,
     yfinance_view,
+    investingcom_model,
+    investingcom_view,
     plot_view,
 )
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_FIGURES_ALLOWED,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
-    parse_known_args_and_warn,
     print_rich_table,
     valid_date,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 
 logger = logging.getLogger(__name__)
 
@@ -54,7 +54,6 @@ class EconomyController(BaseController):
         "fred",
         "index",
         "treasury",
-        "yield",
         "plot",
         "options",
         "valuation",
@@ -63,13 +62,12 @@ class EconomyController(BaseController):
         "map",
         "rtps",
         "industry",
-        "feargreed",
         "bigmac",
+        "ycrv",
     ]
 
     CHOICES_MENUS = ["pred", "qa"]
 
-    fear_greed_indicators = ["jbd", "mv", "pco", "mm", "sps", "spb", "shd", "index"]
     wsj_sortby_cols_dict = {c: None for c in ["ticker", "last", "change", "prevClose"]}
     map_period_list = ["1d", "1w", "1m", "3m", "6m", "1y"]
     map_type_list = ["sp500", "world", "full", "etf"]
@@ -145,6 +143,7 @@ class EconomyController(BaseController):
         "country": "Country (U.S. listed stocks only)",
         "capitalization": "Capitalization",
     }
+    ycrv_sources = ["FRED", "investpy"]
     PATH = "/economy/"
     FILE_PATH = os.path.join(os.path.dirname(__file__), "README.md")
 
@@ -153,7 +152,7 @@ class EconomyController(BaseController):
         super().__init__(queue)
 
         self.current_series: Dict = dict()
-        self.fred_query: pd.Series = pd.Series()
+        self.fred_query: pd.Series = pd.Series(dtype=float)
         self.DATASETS: Dict[Any, pd.DataFrame] = dict()
         self.UNITS: Dict[Any, Dict[Any, Any]] = dict()
         self.FRED_TITLES: Dict = dict()
@@ -175,6 +174,11 @@ class EconomyController(BaseController):
                 c: None for c in econdb_model.COUNTRY_CODES
             }
 
+            self.choices["ycrv"]["-c"] = {c: None for c in investingcom_model.COUNTRIES}
+            self.choices["ycrv"]["--countries"] = {
+                c: None for c in investingcom_model.COUNTRIES
+            }
+
             self.choices["valuation"]["-s"] = {
                 c: None for c in self.valuation_sort_cols
             }
@@ -192,12 +196,7 @@ class EconomyController(BaseController):
             self.choices["map"]["-p"] = {c: None for c in self.map_period_list}
             self.choices["map"]["--period"] = {c: None for c in self.map_period_list}
 
-            self.choices["feargreed"]["-i"] = {
-                c: None for c in self.fear_greed_indicators
-            }
-            self.choices["feargreed"]["--indicator"] = {
-                c: None for c in self.fear_greed_indicators
-            }
+            self.choices["support"] = self.SUPPORT_CHOICES
 
             self.completer = NestedCompleter.from_nested_dict(self.choices)
 
@@ -221,32 +220,29 @@ class EconomyController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = """[cmds]
-Overview
-    overview      show a market overview of either indices, bonds or currencies [src][Source: Wall St. Journal][/src]
-    futures       display a futures and commodities overview [src][Source: Wall St. Journal / FinViz][/src]
-    map           S&P500 index stocks map [src][Source: FinViz][/src]
-    feargreed     CNN Fear and Greed Index [src][Source: CNN][/src]
-    bigmac        The Economist Big Mac index [src][Source: NASDAQ Datalink][/src]
-
-Macro Data
-    macro         collect macro data for a country or countries [src][Source: EconDB][/src]
-    fred          collect macro data from FRED based on a series ID [src][Source: FRED][/src]
-    index         find and plot any (major) index on the market [src][Source: Yahoo Finance][/src]
-    treasury      obtain U.S. treasury rates [src][Source: EconDB][/src]
-    yield         show the U.S. Treasury yield curve [src][Source: FRED][/src]
-    plot          plot data from the above commands together
-    options       show the available options for 'plot' or show/export the data
-
-Performance & Valuations
-    rtps          real-time performance sectors [src][Source: Alpha Vantage][/src]
-    valuation     valuation of sectors, industry, country [src][Source: FinViz][/src]
-    performance   performance of sectors, industry, country [src][Source: FinViz][/src]
-    spectrum      spectrum of sectors, industry, country [src][Source: FinViz][/src][/cmds]
-[menu]
->   pred          Open the prediction menu to analyse stored data
->   qa            Open quantitative analysis menu with stored data[/menu]"""
-        console.print(text=help_text, menu="Economy")
+        mt = MenuText("economy/")
+        mt.add_cmd("macro", "EconDB")
+        mt.add_cmd("fred", "FRED")
+        mt.add_cmd("index", "Yahoo Finance")
+        mt.add_cmd("treasury", "EconDB")
+        mt.add_raw("\n")
+        mt.add_cmd("options")
+        mt.add_cmd("plot")
+        mt.add_raw("\n")
+        mt.add_cmd("overview", "Wall St. Journal")
+        mt.add_cmd("futures", "Wall St. Journal / Finviz")
+        mt.add_cmd("map", "Finviz")
+        mt.add_cmd("bigmac", "NASDAQ Datalink")
+        mt.add_cmd("ycrv", "Investing / FRED")
+        mt.add_raw("\n")
+        mt.add_cmd("rtps", "Alpha Vantage")
+        mt.add_cmd("valuation", "Finviz")
+        mt.add_cmd("performance", "Finviz")
+        mt.add_cmd("spectrum", "Finviz")
+        mt.add_raw("\n")
+        mt.add_menu("pred")
+        mt.add_menu("qa")
+        console.print(text=mt.menu_text, menu="Economy")
 
     @log_start_end(log=logger)
     def call_overview(self, other_args: List[str]):
@@ -273,7 +269,7 @@ Performance & Valuations
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -337,7 +333,7 @@ Performance & Valuations
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-c")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -385,46 +381,11 @@ Performance & Valuations
             choices=self.map_type_list,
             help="Map filter type.",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             finviz_view.map_sp500_view(
                 period=ns_parser.s_period,
                 map_type=ns_parser.s_type,
-            )
-
-    @log_start_end(log=logger)
-    def call_feargreed(self, other_args: List[str]):
-        """Process feargreed command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            prog="feargreed",
-            description="""
-                Display CNN Fear And Greed Index from https://money.cnn.com/data/fear-and-greed/.
-            """,
-        )
-        parser.add_argument(
-            "-i",
-            "--indicator",
-            dest="indicator",
-            required=False,
-            type=str,
-            choices=self.fear_greed_indicators,
-            help="""
-                CNN Fear And Greed indicator or index. From Junk Bond Demand, Market Volatility,
-                Put and Call Options, Market Momentum Stock Price Strength, Stock Price Breadth,
-                Safe Heaven Demand, and Index.
-            """,
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-i")
-
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
-        )
-        if ns_parser:
-            cnn_view.fear_and_greed_index(
-                indicator=ns_parser.indicator,
-                export=ns_parser.export,
             )
 
     @log_start_end(log=logger)
@@ -454,7 +415,7 @@ Performance & Valuations
             type=nasdaq_model.check_country_code_type,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -558,7 +519,7 @@ Performance & Valuations
             default=False,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED, raw=True
         )
         if ns_parser:
@@ -660,7 +621,7 @@ Performance & Valuations
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -820,7 +781,7 @@ Performance & Valuations
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-i")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
@@ -945,7 +906,7 @@ Performance & Valuations
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-m")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
@@ -991,26 +952,53 @@ Performance & Valuations
             self.update_runtime_choices()
 
     @log_start_end(log=logger)
-    def call_yield(self, other_args: List[str]):
-        """Process treasury command"""
+    def call_ycrv(self, other_args: List[str]):
+        """Process ycrv command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="yield",
-            description="Generate the US yield curve for a specific date.  The yield curve shows the bond rates"
+            prog="ycrv",
+            description="Generate country yield curve. The yield curve shows the bond rates"
             " at different maturities.",
+        )
+        parser.add_argument(
+            "-c",
+            "--country",
+            action="store",
+            dest="country",
+            nargs="+",
+            default="united states",
+            help="Display yield curve for specific country.",
         )
         parser.add_argument(
             "-d",
             "--date",
             type=valid_date,
-            help="Date to get the curve for. If not supplied, the most recent entry from FRED will be used.",
+            help="Date to get data from FRED. If not supplied, the most recent entry will be used.",
             dest="date",
             default=None,
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
+            raw=True,
+            sources=self.ycrv_sources,
+        )
         if ns_parser:
-            fred_view.display_yield_curve(ns_parser.date)
+            if isinstance(ns_parser.country, list):
+                ns_parser.country = " ".join(ns_parser.country)
+
+            investingcom_model.check_correct_country(ns_parser.country)
+
+            if ns_parser.source == "FRED":
+                fred_view.display_yield_curve(ns_parser.date)
+            elif ns_parser.source == "investpy":
+                investingcom_view.display_yieldcurve(
+                    country=ns_parser.country,
+                    raw=ns_parser.raw,
+                    export=ns_parser.export,
+                )
 
     @log_start_end(log=logger)
     def call_plot(self, other_args: List[str]):
@@ -1047,7 +1035,7 @@ Performance & Valuations
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-y1")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
@@ -1178,7 +1166,7 @@ Performance & Valuations
             "axes graph. Furthermore, this command also allows you to see and export all stored data.",
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
@@ -1215,7 +1203,7 @@ Performance & Valuations
             """,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -1267,7 +1255,7 @@ Performance & Valuations
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-g")
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -1321,7 +1309,7 @@ Performance & Valuations
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-g")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -1360,7 +1348,7 @@ Performance & Valuations
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-g")
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
         if ns_parser:
