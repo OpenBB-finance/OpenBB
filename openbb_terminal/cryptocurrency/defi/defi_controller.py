@@ -66,7 +66,6 @@ class DefiController(BaseController):
         "validators",
         "govp",
         "gacc",
-        "sratio",
         "sreturn",
         "lcsc",
         "anchor",
@@ -127,7 +126,6 @@ class DefiController(BaseController):
         mt.add_cmd("validators", "Terra FCD")
         mt.add_cmd("govp", "Terra FCD")
         mt.add_cmd("gacc", "Terra FCD")
-        mt.add_cmd("sratio", "Terra FCD")
         mt.add_cmd("sreturn", "Terra FCD")
         mt.add_cmd("lcsc", "Smartstake")
         mt.add_cmd("anchor", "CryptoSaurio")
