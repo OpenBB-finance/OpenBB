@@ -1,1 +1,33 @@
-No data found
+No data found from Alpha Vantage
+                                            31/12/2021  31/12/2020   31/12/2019  31/12/2018
+Cash And Cash Equivalents                   17,576,000  19,384,000    6,268,000   3,685,618
+Other Short-Term Investments                   131,000           -            -           -
+Total Cash                                  17,707,000  19,384,000    6,268,000   3,685,618
+Net Receivables                              1,913,000   1,886,000    1,324,000     949,022
+Inventory                                    5,757,000   4,101,000    3,552,000   3,113,446
+Total Current Assets                        27,100,000  26,717,000   12,103,000   8,306,308
+Gross Property, Plant And Equipment         39,094,000  29,447,000   31,925,000  22,885,847
+Accumulated Depreciation                    -7,918,000  -6,072,000  -11,726,000  -3,194,616
+Net Property, Plant And Equipment           31,176,000  23,375,000   20,199,000  19,691,231
+Goodwill                                       200,000     207,000      198,000      68,159
+Intangible Assets                            1,517,000     313,000      339,000     282,492
+Other Long-Term Assets                       2,138,000   1,536,000    1,077,000     969,876
+Total Non-Current Assets                    35,031,000  25,431,000   22,206,000  21,433,306
+Total Assets                                62,131,000  52,148,000   34,309,000  29,739,614
+Current Debt                                 1,088,000   1,758,000    1,399,000   2,221,985
+Accounts Payable                            10,025,000   6,051,000    3,771,000   3,404,451
+Accrued Liabilities                          3,670,000   2,134,000    1,534,000   1,121,670
+Deferred Revenues                            2,372,000   2,210,000    1,889,000   1,422,893
+Other Current Liabilities                      294,000     241,000      520,000     875,460
+Total Current Liabilities                   19,705,000  14,248,000   10,667,000   9,992,136
+Long-Term Debt                               4,254,000   8,513,000   10,402,000   8,410,490
+Deferred Tax Liabilities                        24,000     151,000            -           -
+Deferred Revenues                            2,052,000   1,284,000    1,207,000     990,873
+Other Long-Term Liabilities                    320,000     436,000      408,000     636,409
+Total Non-Current Liabilities               10,843,000  14,221,000   15,532,000  13,433,874
+Total Liabilities                           30,548,000  28,469,000   26,199,000  23,426,010
+Common Stock                                     1,000       1,000            0         173
+Retained Earnings                              331,000  -5,399,000   -6,083,000  -5,317,832
+Accumulated Other Comprehensive Income          54,000     363,000      -36,000      -8,218
+Total Stockholders' Equity                  30,189,000  22,225,000    6,618,000   4,923,243
+Total Liabilities And Stockholders' Equity  62,131,000  52,148,000   34,309,000  29,739,614

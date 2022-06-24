@@ -1,1 +1,29 @@
-No data found
+fiscalDateEnding                                                    2021-03-31 2021-06-30 2021-09-30 2021-12-31 2022-03-31
+Reported Currency                                                          USD        USD        USD        USD        USD
+Operating Cashflow                                                     1.641 B    2.124 B    3.147 B    4.585 B    3.995 B
+Payments For Operating Activities                                         None       None       None       None       None
+Proceeds From Operating Activities                                        None       None       None       None       None
+Change In Operating Liabilities                                          857 M    1.061 B    1.545 B    2.384 B    1.598 B
+Change In Operating Assets                                              -441 M    1.831 B      964 M   -5.755 B    1.942 B
+Depreciation Depletion And Amortization                                  426 M      462 M      496 M      997 M      552 M
+Capital Expenditures                                                   2.848 B    1.505 B    1.819 B    1.810 B    1.767 B
+Change In Receivables                                                    -24 M      307 M     -135 M     -278 M      409 M
+Change In Inventory                                                      106 M      581 M      488 M   -2.884 B      633 M
+Profit Loss                                                              464 M    1.178 B    1.659 B    2.343 B    3.280 B
+Cashflow From Investment                                              -2.582 B   -1.515 B   -1.855 B   -1.916 B   -2.167 B
+Cashflow From Financing                                               -1.016 B   -1.549 B   -1.381 B   -1.257 B   -1.914 B
+Proceeds From Repayments Of Short Term Debt                                  0          0          0          0          0
+Payments For Repurchase Of Common Stock                                   None       None       None       None       None
+Payments For Repurchase Of Equity                                            0          0          0          0          0
+Payments For Repurchase Of Preferred Stock                                None       None       None       None       None
+Dividend Payout                                                           None       None       None       None       None
+Dividend Payout Common Stock                                              None       None       None       None       None
+Dividend Payout Preferred Stock                                           None       None       None       None       None
+Proceeds From Issuance Of Common Stock                                       0          0          0          0          0
+Proceeds From Issuance Of Long Term Debt And Capital Securities Net          0          0          0          0          0
+Proceeds From Issuance Of Preferred Stock                                    0          0          0          0          0
+Proceeds From Repurchase Of Equity                                       183 M       70 M      192 M      262 M      202 M
+Proceeds From Sale Of Treasury Stock                                      None       None       None       None       None
+Change In Cash And Cash Equivalents                                   -1.957 B    1.639 B    2.154 B    1.412 B      -86 M
+Change In Exchange Rate                                                   None       None       None       None       None
+Net Income                                                               438 M    1.142 B    1.618 B    2.321 B    3.318 B
