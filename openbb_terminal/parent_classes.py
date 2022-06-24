@@ -859,5 +859,5 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
                 )
             else:
                 console.print(
-                    f"\n[red]Could not find [bold]{ns_parser.coin}[/bold] in [bold]CoinGecko[/bold]. Make sure you search for symbol (e.g., btc) and not full name (e.g., bitcoin)[/red]\n"  # noqa: E501
+                    f"\n[red]Could not find [bold]{ns_parser.coin}[/bold] in [bold]yfinance[/bold]. Make sure you search for symbol (e.g., btc) and not full name (e.g., bitcoin)[/red]\n"  # noqa: E501
                 )
