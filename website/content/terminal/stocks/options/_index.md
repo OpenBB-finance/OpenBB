@@ -44,7 +44,7 @@ optional arguments:
   -h, --help            show this help message (default: False)
 ````
 
-Having the working foundation of knowledge will make most commands, as pictured above, somewhat intuitive. `-h` is attachable to any command to print the help dialogue in the Terminal. Refer to the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/" target="_blank">user documentation</a> for details on any individual feature. Browse the commands on the left side of the page to read about any particular command.
+Having the working foundation of knowledge will make most commands, as pictured above, somewhat intuitive. `-h` is attachable to any command to print the help dialogue in the Terminal. Refer to the <a href="https://openbb-finance.github.io/OpenBBTerminal/" target="_blank">user documentation</a> for details on any individual feature. Browse the commands on the left side of the page to read about any particular command.
 
 <h2>Examples</h2>
 
