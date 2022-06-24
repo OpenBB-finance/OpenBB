@@ -159,7 +159,9 @@ def balance(other_args: List[str], ticker: str):
         return
 
     try:
-        df_financials = mwm.prepare_df_financials(ticker, "balance", ns_parser.b_quarter)
+        df_financials = mwm.prepare_df_financials(
+            ticker, "balance", ns_parser.b_quarter
+        )
     except RuntimeError as e:
         console.print(e)
         return
@@ -236,7 +238,9 @@ def cash(other_args: List[str], ticker: str):
         return
 
     try:
-        df_financials = mwm.prepare_df_financials(ticker, "cashflow", ns_parser.b_quarter)
+        df_financials = mwm.prepare_df_financials(
+            ticker, "cashflow", ns_parser.b_quarter
+        )
     except RuntimeError as e:
         console.print(e)
         return
