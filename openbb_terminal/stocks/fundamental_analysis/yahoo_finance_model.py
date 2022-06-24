@@ -18,8 +18,6 @@ from openbb_terminal.helper_funcs import lambda_long_number_format
 from openbb_terminal.stocks.fundamental_analysis.fa_helper import clean_df_index
 
 logger = logging.getLogger(__name__)
-
-
 ssl._create_default_https_context = ssl._create_unverified_context
 
 
@@ -316,7 +314,12 @@ def get_yahoo_financials(ticker: str, financial_type: str) -> pd.DataFrame:
         Dataframe of Financial statement
     """
     url = (
-            "https://uk.finance.yahoo.com/quote/" + ticker + "/" + financial_type + "?p=" + ticker
+        "https://uk.finance.yahoo.com/quote/"
+        + ticker
+        + "/"
+        + financial_type
+        + "?p="
+        + ticker
     )
 
     # Making the website believe that you are accessing it using a Mozilla browser
