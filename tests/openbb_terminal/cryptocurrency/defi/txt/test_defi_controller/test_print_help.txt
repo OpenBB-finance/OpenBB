@@ -18,7 +18,6 @@
     sinfo              staking info for provided terra account address                 [Terra FCD]
     validators         information about terra blockchain validators                   [Terra FCD]
     gacc               terra blockchain account growth history                         [Terra FCD]
-    sratio             terra blockchain staking ratio history                          [Terra FCD]
     sreturn            terra blockchain staking returns history                        [Terra FCD]
     lcsc               Luna circulating supply changes                                 [Smartstake]
     anchor             anchor earnings data                                            [CryptoSaurio]

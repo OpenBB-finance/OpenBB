@@ -16,7 +16,7 @@ Navigate into the menu from the <a href="https://openbb-finance.github.io/OpenBB
 
 ## How to use
 
-The commands with <span style="color:#00AAFF">Light Blue</span> text, representing <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/#structure-of-the-openbb-terminal" target="_blank">commands</a>,
+The commands with <span style="color:#00AAFF">Light Blue</span> text, representing <a href="https://openbb-finance.github.io/OpenBBTerminal/#structure-of-the-openbb-terminal" target="_blank">commands</a>,
 do not require a ticker, faded commands will turn light blue when there is a ticker loaded.
 
 ````
