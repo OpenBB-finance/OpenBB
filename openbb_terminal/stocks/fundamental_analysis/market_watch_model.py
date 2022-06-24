@@ -100,6 +100,7 @@ def prepare_df_financials(
         log_and_raise(
             RuntimeError("Couldn't parse financial statement for ticker " + ticker)
         )
+        return []
 
     find_table = text_soup_financials.findAll(
         "div", {"class": "element element--table table--fixed financials"}
