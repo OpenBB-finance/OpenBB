@@ -230,9 +230,7 @@ def get_close_price(
 
 
 @log_start_end(log=logger)
-def get_non_zero_addresses(
-    asset: str, since: int, until: int
-) -> pd.DataFrame:
+def get_non_zero_addresses(asset: str, since: int, until: int) -> pd.DataFrame:
     """Returns addresses with non-zero balance of a certain asset
     [Source: https://glassnode.com]
 
