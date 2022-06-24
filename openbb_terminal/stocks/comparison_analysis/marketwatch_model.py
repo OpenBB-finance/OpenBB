@@ -202,7 +202,6 @@ def prepare_comparison_financials(
         similar.copy()
     ):  # We need a copy since we are modifying the original potentially
         try:
-            console.print("Symbol " + symbol)
             financials[symbol] = prepare_df_financials(
                 symbol, statement, quarter
             ).set_index("Item")
