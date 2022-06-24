@@ -64,7 +64,6 @@ class DefiController(BaseController):
         "aterra",
         "sinfo",
         "validators",
-        "govp",
         "gacc",
         "sreturn",
         "lcsc",
@@ -90,10 +89,6 @@ class DefiController(BaseController):
             choices["vaults"]["-k"] = {c: {} for c in coindix_model.VAULT_KINDS}
             choices["vaults"]["-c"] = {c: {} for c in coindix_model.CHAINS}
             choices["vaults"]["-p"] = {c: {} for c in coindix_model.PROTOCOLS}
-            choices["govp"]["-s"] = {c: {} for c in terramoney_fcd_model.GOV_COLUMNS}
-            choices["govp"]["--status"] = {
-                c: {} for c in terramoney_fcd_model.GOV_STATUSES
-            }
             choices["validators"]["-s"] = {
                 c: {} for c in terramoney_fcd_model.VALIDATORS_COLUMNS
             }
@@ -124,7 +119,6 @@ class DefiController(BaseController):
         mt.add_cmd("ayr", "Terra Engineer")
         mt.add_cmd("sinfo", "Terra FCD")
         mt.add_cmd("validators", "Terra FCD")
-        mt.add_cmd("govp", "Terra FCD")
         mt.add_cmd("gacc", "Terra FCD")
         mt.add_cmd("sreturn", "Terra FCD")
         mt.add_cmd("lcsc", "Smartstake")
