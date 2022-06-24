@@ -724,6 +724,13 @@ class ETFController(BaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-e")
 
+        # to allow inputs with spaces in between them instead of commas (inputs with spaces are not parsed correctly)
+
+        if len(other_args) > 2:
+            for i in range(2, len(other_args)):
+                other_args[1] += "," + other_args[i]
+            del other_args[2 : len(other_args)]
+
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
