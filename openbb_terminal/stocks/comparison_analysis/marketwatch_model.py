@@ -88,8 +88,6 @@ def prepare_df_financials(
     ------
     ValueError
         If statement is not income, balance or cashflow
-    RuntimeError
-        If the financial statements could not be parsed correctly
     """
     financial_urls = {
         "income": {
