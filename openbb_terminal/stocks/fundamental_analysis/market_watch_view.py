@@ -79,6 +79,7 @@ def income(other_args: List[str], ticker: str):
 
     df_financials = mwm.prepare_df_financials(ticker, "income", ns_parser.b_quarter)
     if len(df_financials) == 0 or df_financials.empty:
+        console.print("Marketwatch does not yet provide financials for this ticker")
         return
 
     if rich_config.USE_COLOR:
@@ -158,6 +159,7 @@ def balance(other_args: List[str], ticker: str):
 
     df_financials = mwm.prepare_df_financials(ticker, "balance", ns_parser.b_quarter)
     if len(df_financials) == 0 or df_financials.empty:
+        console.print("Marketwatch does not yet provide financials for this ticker")
         return
 
     if rich_config.USE_COLOR:
@@ -233,6 +235,7 @@ def cash(other_args: List[str], ticker: str):
 
     df_financials = mwm.prepare_df_financials(ticker, "cashflow", ns_parser.b_quarter)
     if len(df_financials) == 0 or df_financials.empty:
+        console.print("Marketwatch does not yet provide financials for this ticker")
         return
 
     if rich_config.USE_COLOR:
