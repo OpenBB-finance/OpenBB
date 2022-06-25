@@ -5,7 +5,9 @@ from disnake.ext import commands
 
 from bots import imps
 
-bot = commands.Bot()
+bot = commands.Bot(
+    intents=disnake.Intents.all(),
+)
 
 
 class Menu(disnake.ui.View):
