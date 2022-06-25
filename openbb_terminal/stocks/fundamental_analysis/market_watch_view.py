@@ -78,7 +78,7 @@ def income(other_args: List[str], ticker: str):
         return
 
     df_financials = mwm.prepare_df_financials(ticker, "income", ns_parser.b_quarter)
-    if df_financials == []:
+    if len(df_financials) == 0 or df_financials.empty:
         return
 
     if rich_config.USE_COLOR:
@@ -157,7 +157,7 @@ def balance(other_args: List[str], ticker: str):
         return
 
     df_financials = mwm.prepare_df_financials(ticker, "balance", ns_parser.b_quarter)
-    if df_financials == []:
+    if len(df_financials) == 0 or df_financials.empty:
         return
 
     if rich_config.USE_COLOR:
@@ -232,7 +232,7 @@ def cash(other_args: List[str], ticker: str):
         return
 
     df_financials = mwm.prepare_df_financials(ticker, "cashflow", ns_parser.b_quarter)
-    if df_financials == []:
+    if len(df_financials) == 0 or df_financials.empty:
         return
 
     if rich_config.USE_COLOR:
