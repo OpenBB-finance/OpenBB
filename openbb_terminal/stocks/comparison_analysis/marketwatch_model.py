@@ -53,6 +53,8 @@ def get_financial_comparisons(
             )
         s_timeframe = timeframe
     else:
+        if len(l_timeframes) == 0:
+            return pd.DataFrame()
         s_timeframe = l_timeframes[-1]
 
     console.print(
@@ -123,9 +125,15 @@ def prepare_df_financials(
     ]
 
     s_header_end_trend = ("5-year trend", "5- qtr trend")[quarter]
-    df_financials = pd.DataFrame(
-        columns=a_financials_header[0 : a_financials_header.index(s_header_end_trend)]
-    )
+    if s_header_end_trend in a_financials_header:
+        df_financials = pd.DataFrame(
+            columns=a_financials_header[
+                0 : a_financials_header.index(s_header_end_trend)
+            ]
+        )
+    else:
+        # We don't have the data we need for whatever reason, so return an empty DataFrame
+        return pd.DataFrame()
 
     find_table = text_soup_financials.findAll(
         "div", {"class": "element element--table table--fixed financials"}
@@ -184,10 +192,24 @@ def prepare_comparison_financials(
         A dictionary of DataFrame with financial info from list of similar tickers
     """
 
-    financials = {
-        symbol: prepare_df_financials(symbol, statement, quarter).set_index("Item")
-        for symbol in similar
-    }
+    financials = {}
+    for (
+        symbol
+    ) in (
+        similar.copy()
+    ):  # We need a copy since we are modifying the original potentially
+        results = prepare_df_financials(symbol, statement, quarter)
+        if results.empty:
+            # If we have an empty result set, don't do further analysis on this symbol and remove it from consideration
+            console.print(
+                "Didn't get data for ticker "
+                + symbol
+                + ". Removing from further processing."
+            )
+            similar.remove(symbol)
+            continue
+        financials[symbol] = results.set_index("Item")
+
     if quarter:
         items = financials[similar[0]].columns
 

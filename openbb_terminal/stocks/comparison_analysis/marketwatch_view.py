@@ -41,6 +41,10 @@ def display_income_comparison(
     df_financials_compared = marketwatch_model.get_financial_comparisons(
         similar, "income", timeframe, quarter
     )
+
+    if len(df_financials_compared) == 0 or df_financials_compared.empty:
+        return
+
     # Export data before the color
     export_data(
         export,
@@ -89,6 +93,10 @@ def display_balance_comparison(
     df_financials_compared = marketwatch_model.get_financial_comparisons(
         similar, "balance", timeframe, quarter
     )
+
+    if len(df_financials_compared) == 0 or df_financials_compared.empty:
+        return
+
     # Export data before the color
     export_data(
         export,
@@ -139,6 +147,9 @@ def display_cashflow_comparison(
     df_financials_compared = marketwatch_model.get_financial_comparisons(
         similar, "cashflow", timeframe, quarter
     )
+
+    if len(df_financials_compared) == 0 or df_financials_compared.empty:
+        return
 
     # Export data before the color
     export_data(
