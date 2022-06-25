@@ -1635,7 +1635,7 @@ def get_preferred_source(command_path: str):
         return None
 
 
-def check_file_existence(filename: str, default_path: str = None, raise_exception=True):
+def check_file_existence(default_path: str, raise_exception=True):
     """
     Checks for the existence of a file and returns the filepath where it was found. It first searches in
     the default file path and then looks in the current directory. It can also optionally raise an exception
@@ -1643,9 +1643,6 @@ def check_file_existence(filename: str, default_path: str = None, raise_exceptio
 
     Parameters
     ----------
-    filename: str
-        The filename to look for
-
     default_path: str
         The default filepath to look in first. Will look in the current directory
         if not found in the default path
@@ -1658,14 +1655,23 @@ def check_file_existence(filename: str, default_path: str = None, raise_exceptio
     str:
         The filepath the file exists at
     """
-    if default_path != None and os.path.exists(default_path + os.sep + filename):
-        return default_path + os.sep + filename
-    elif os.path.exists(os.getcwd() + os.sep + filename):
-        return os.getcwd() + os.sep + filename
-    if raise_exception:
-        log_and_raise(
-            FileNotFoundError(
-                "File does not exist. Path supplied was " + os.getcwd() + os.sep + filename
+
+    def logic_check(filename: str):
+        if default_path is not None and os.path.exists(
+            default_path + os.sep + filename
+        ):
+            return default_path + os.sep + filename
+        if os.path.exists(os.getcwd() + os.sep + filename):
+            return os.getcwd() + os.sep + filename
+        if raise_exception:
+            log_and_raise(
+                FileNotFoundError(
+                    "File does not exist. Path supplied was "
+                    + os.getcwd()
+                    + os.sep
+                    + filename
+                )
             )
-        )
-    return None
+        return None
+
+    return logic_check
