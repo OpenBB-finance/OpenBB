@@ -14,7 +14,7 @@ The Options menu provides the user with a comprehensive set of tools for analyzi
 
 At the bottom of the menu, and near the top, there are items prefaced with `>`. Like everywhere else in the OpenBB Terminal, this indicates the presence of a submenu.<br>
 
-  - `screen` is a dedicated options screener that uses `.ini` files from the local installation folder `/OpenBBTerminal/openbb_terminal/stocks/options/presets/`. Refer to the Options Screener Guide <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/options/scr/" target="_blank">here</a>.
+  - `screen` is a dedicated options screener that uses `.ini` files from the local installation folder `/OpenBBTerminal/openbb_terminal/stocks/options/presets/`. Refer to the Options Screener Guide <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/options/screen/" target="_blank">here</a>.
 
   - `pricing` is another method for calculating options prices. See the guide for this submenu <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/options/pricing/" target="_blank">here</a>. 
 
