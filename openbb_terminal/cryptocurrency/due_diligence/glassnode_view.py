@@ -481,7 +481,7 @@ def display_hashrate(
     lines = [
         Line2D([0], [0], color=color) for color in [theme.up_color, theme.down_color]
     ]
-    labels = ["Hash Rate", "Price"]
+    labels = ["Price", "Hash Rate"]
     ax2.legend(lines, labels)
 
     if not external_axes:
