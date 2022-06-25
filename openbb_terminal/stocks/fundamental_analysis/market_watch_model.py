@@ -15,7 +15,6 @@ from openbb_terminal.helper_funcs import (
     lambda_clean_data_values_to_float,
     get_user_agent,
     lambda_int_or_round_float,
-    log_and_raise,
 )
 from openbb_terminal.rich_config import console
 
@@ -97,10 +96,7 @@ def prepare_df_financials(
             ]
         )
     else:
-        log_and_raise(
-            RuntimeError("Couldn't parse financial statement for ticker " + ticker)
-        )
-        return []
+        return pd.DataFrame()
 
     find_table = text_soup_financials.findAll(
         "div", {"class": "element element--table table--fixed financials"}
