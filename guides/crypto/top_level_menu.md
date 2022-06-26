@@ -60,15 +60,28 @@ The Cryptocurrency menu has an extensive list of available sub-menus ranging fro
 ## Examples
 
 When entering the `crypto` menu, you would typically want to load in a coin. Let's go with Ethereum. You can do this by specifying its symbol: `load eth`
+![image](https://user-images.githubusercontent.com/40023817/175827660-3b106e6e-2638-4536-939e-e38692ec1003.png)
 
 
 Let's checkout its sentiments from major headlines news by typing: `headlines`
+<img width="791" alt="image" src="https://user-images.githubusercontent.com/40023817/175827670-15042c5e-0650-486e-92fa-a154de13b208.png">
 
 
-To perform further analysis, the best menu to enter is `dd`. We can checkout the project's roadmap and its effect to historical price, by typing `rm`
+To perform further analysis, the best menu to enter is `dd`. 
+<img width="791" alt="image" src="https://user-images.githubusercontent.com/40023817/175827687-5212030a-7871-4773-908f-b5ee0376c674.png">
+
+We can checkout the project's roadmap and its effect to historical price, by typing `rm`
+
+<img width="789" alt="image" src="https://user-images.githubusercontent.com/40023817/175827701-b6b01a67-b90a-4aac-94bf-b9f5a19023c5.png">
 
 
 Once you have finished analyzing a specific coin, you would want to get a good understanding of the overall crypto market. To do that, head over to `ov` by typing `../ov`.
 Hint: `..` basically took you back to the previous menu. Instead of performing 2 separate commands, you can combine them together using `/`. As such `../ov` will take us back to previous menu, and then enter the `ov` menu.
 
+<img width="789" alt="image" src="https://user-images.githubusercontent.com/40023817/175827714-8545c2c4-88f3-4415-9e53-3c1938717c30.png">
+
+
 Bitcoin has such a big influence on the entire crypto market. So seeing whether we are in a Bitcoin season or a Altcoin season will be useful to your investment decisions. `altindex` is a great command for this purpose.
+
+<img width="786" alt="image" src="https://user-images.githubusercontent.com/40023817/175827720-323ea70c-6eab-4cc7-819c-9fe1339af380.png">
+
