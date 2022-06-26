@@ -786,6 +786,8 @@ en:
   etf/pred/lstm: Long-Short Term Memory
   etf/pred/conv1d: 1D Convolutional Neural Network
   etf/pred/mc: Monte-Carlo simulations
+  economy/_database_: Databases
+  economy/_stored: Stored datasets
   economy/overview: show a market overview of either indices, bonds or currencies
   economy/futures: display a futures and commodities overview
   economy/map: S&P500 index stocks map
@@ -796,7 +798,6 @@ en:
   economy/treasury: obtain U.S. treasury rates
   economy/ycrv: show sovereign yield curves
   economy/plot: plot data from the above commands together
-  economy/options: show the available options for 'plot' or show/export the data
   economy/rtps: real-time performance sectors
   economy/valuation: valuation of sectors, industry, country
   economy/performance: performance of sectors, industry, country
