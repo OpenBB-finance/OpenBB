@@ -4,8 +4,7 @@ keywords: "crypto, web3, nft, blockchain"
 date: "2022-06-20"
 type: our story
 status: publish
-excerpt: "The Introduction to ENTER_MENU_NAME_HERE explains how to use the
-Cryptocurrency and provides a brief description of its sub-menus"
+excerpt: "The Introduction to Cryptocurrency explains how to use the Cryptocurrency and provides a brief description of its sub-menus"
 ---
 
 
