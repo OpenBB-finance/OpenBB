@@ -1,6 +1,6 @@
 ---
 title: Introduction to Cryptocurrency
-keywords: "crypto, web3, ENTER_KEY_WORD_HERE, ENTER_KEY_WORD_HERE"
+keywords: "crypto, web3, nft, blockchain"
 date: "2022-06-20"
 type: our story
 status: publish
@@ -67,7 +67,7 @@ Let's checkout its sentiments from major headlines news by typing: `headlines`
 <img width="791" alt="image" src="https://user-images.githubusercontent.com/40023817/175827670-15042c5e-0650-486e-92fa-a154de13b208.png">
 
 
-To perform further analysis, the best menu to enter is `dd`. 
+To perform further analysis, the best menu to enter is `dd`.
 <img width="791" alt="image" src="https://user-images.githubusercontent.com/40023817/175827687-5212030a-7871-4773-908f-b5ee0376c674.png">
 
 We can checkout the project's roadmap and its effect to historical price, by typing `rm`
@@ -84,4 +84,3 @@ Hint: `..` basically took you back to the previous menu. Instead of performing 2
 Bitcoin has such a big influence on the entire crypto market. So seeing whether we are in a Bitcoin season or a Altcoin season will be useful to your investment decisions. `altindex` is a great command for this purpose.
 
 <img width="786" alt="image" src="https://user-images.githubusercontent.com/40023817/175827720-323ea70c-6eab-4cc7-819c-9fe1339af380.png">
-
