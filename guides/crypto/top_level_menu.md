@@ -45,16 +45,30 @@ Lastly, by calling `?` or `help` or `h`, the `crypto` menu will be re-populated.
 
 
 ## Sub-menus available
-The Cryptocurrency menu has an extensive list of available sub-menus ranging from due dilligence to NFT to onchain analysis. To find more information about each menu, you can click on one of the following:
+The Cryptocurrency menu has an extensive list of available sub-menus ranging from due diligence to NFT to onchain analysis. To find more information about each menu, you can click on one of the following:
 
-- [Introduction to Crypto Discovery]
-- [Introduction to CryptoOverview]
-- [Introduction to Onchain]
-- [Introduction to DeFi]
-- [Introduction to Tools]
-- [Introduction to NFTs]
-- [Introduction to Due Diligence]
-- [Introduction to Technical Analysis]
-- [Introduction to Prediction Techniques]
+- [Introduction to Cryptocurrency Discovery](https://openbb-finance.github.io/OpenBBTerminal/terminal/cryptocurrency/discovery): discovers top trending, top gainers or losers coins, as well as top NFTs, dApps and exchanges based on prices.
+- [Introduction to Overview](https://openbb-finance.github.io/OpenBBTerminal/terminal/cryptocurrency/overview/): gives the overview of the cryptocurrency market, including global Defi market, stablecoins, exchanges as well as latest news.
+- [Introduction to Onchain](https://openbb-finance.github.io/OpenBBTerminal/terminal/cryptocurrency/onchain/): provides information on different blockchains, whales transaction and traded volumes on certain crypto pair. You can also specify a Ethereum address and look up past transactions and balance history.
+- [Introduction to DeFi](https://openbb-finance.github.io/OpenBBTerminal/terminal/cryptocurrency/defi/): explore the decentralized finance market through a variety of indicators and data, from lending interests, staking ratio, Uniswap pools to top Defi dApps.
+- [Introduction to Tools](https://openbb-finance.github.io/OpenBBTerminal/terminal/cryptocurrency/tools/): gives you the tool to calculate crypto metrics, such as impermanent loss and converting APR to APY.
+- [Introduction to NFTs](https://openbb-finance.github.io/OpenBBTerminal/terminal/cryptocurrency/nft/): Discover latest NFT drops and OpenSea's NFT Collection statistics.
+- [Introduction to Due Diligence](https://openbb-finance.github.io/OpenBBTerminal/terminal/cryptocurrency/due_diligence/): performs due diligence on a chosen coin based on, among other things, tokenomics, roadmaps, news, and community.
+- [Introduction to Technical Analysis](https://openbb-finance.github.io/OpenBBTerminal/terminal/cryptocurrency/technical_analysis/): analyzes the chosen coin's historical data extensively with moving averages and momentum, trend, volatility and volume indicators.
+- [Introduction to Prediction Techniques](https://openbb-finance.github.io/OpenBBTerminal/terminal/cryptocurrency/prediction_techniques/): applies advanced AI and Machine Learning models to form prediction of future stock prices including Recurrent Neural Network (RNN), Autoregressive Integrated Moving Average (ARIMA) and Monte Carlo forecasting
 
 ## Examples
+
+When entering the `crypto` menu, you would typically want to load in a coin. Let's go with Ethereum. You can do this by specifying its symbol: `load eth`
+
+
+Let's checkout its sentiments from major headlines news by typing: `headlines`
+
+
+To perform further analysis, the best menu to enter is `dd`. We can checkout the project's roadmap and its effect to historical price, by typing `rm`
+
+
+Once you have finished analyzing a specific coin, you would want to get a good understanding of the overall crypto market. To do that, head over to `ov` by typing `../ov`.
+Hint: `..` basically took you back to the previous menu. Instead of performing 2 separate commands, you can combine them together using `/`. As such `../ov` will take us back to previous menu, and then enter the `ov` menu.
+
+Bitcoin has such a big influence on the entire crypto market. So seeing whether we are in a Bitcoin season or a Altcoin season will be useful to your investment decisions. `altindex` is a great command for this purpose.
