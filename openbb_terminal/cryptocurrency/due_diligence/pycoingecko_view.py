@@ -6,6 +6,7 @@ import os
 from typing import Union
 from pandas.plotting import register_matplotlib_converters
 import openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model as gecko
+from openbb_terminal.cryptocurrency import cryptocurrency_helpers
 from openbb_terminal.cryptocurrency.dataframe_helpers import wrap_text_in_df
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
@@ -67,12 +68,17 @@ def display_info(symbol: str, export: str) -> None:
     Parameters
     ----------
     symbol : str
-        Cryptocurrency
+        Cryptocurrency symbol
     export : str
         Export dataframe data to csv,json,xlsx file
     """
 
-    coin = gecko.Coin(symbol)
+    cg_id = cryptocurrency_helpers.check_cg_id(symbol)
+
+    if not cg_id:
+        return
+
+    coin = gecko.Coin(cg_id)
 
     df = wrap_text_in_df(coin.get_base_info(), w=80)
 
@@ -95,12 +101,17 @@ def display_web(symbol: str, export: str) -> None:
     Parameters
     ----------
     symbol : str
-        Cryptocurrency
+        Cryptocurrency symbol
     export : str
         Export dataframe data to csv,json,xlsx file
     """
 
-    coin = gecko.Coin(symbol)
+    cg_id = cryptocurrency_helpers.check_cg_id(symbol)
+
+    if not cg_id:
+        return
+
+    coin = gecko.Coin(cg_id)
 
     df = coin.get_websites()
 
