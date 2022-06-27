@@ -8,6 +8,7 @@ from typing import List
 
 from prompt_toolkit.completion import NestedCompleter
 
+
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.cryptocurrency.discovery import (
     coinmarketcap_model,
@@ -112,7 +113,7 @@ class DiscoveryController(BaseController):
             can receive a category as argument (-c decentralized-finance-defi or -c stablecoins)
             and will show only the top coins in that category.
             can also receive sort arguments, e.g., --sort Volume [$]
-            You can sort by {Symbol,Name,Price [$],Market Cap [$],Market Cap Rank,Volume [$]}
+            You can sort by {Symbol,Name,Price [$],Market Cap,Market Cap Rank,Volume [$]}
             Number of coins to show: -l 10
             """,
         )
@@ -285,7 +286,7 @@ class DiscoveryController(BaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""
             Shows top NFT collections [Source: https://dappradar.com/]
-            Accepts --sort {Name,Protocols,Floor Price [$],Avg Price [$],Market Cap [$],Volume [$]}
+            Accepts --sort {Name,Protocols,Floor Price [$],Avg Price [$],Market Cap,Volume [$]}
             to sort by column
             """,
         )
@@ -303,8 +304,8 @@ class DiscoveryController(BaseController):
             "--sort",
             dest="sortby",
             nargs="+",
-            help="Sort by given column. Default: Market Cap [$]",
-            default="Market Cap [$]",
+            help="Sort by given column. Default: Market Cap",
+            default="Market Cap",
         )
 
         ns_parser = self.parse_known_args_and_warn(
@@ -328,7 +329,7 @@ class DiscoveryController(BaseController):
             Shows Largest Gainers - coins which gain the most in given period.
             You can use parameter --period to set which timeframe are you interested in: {14d,1h,1y,200d,24h,30d,7d}
             You can look on only N number of records with --limit,
-            You can sort by {Symbol,Name,Price [$],Market Cap [$],Market Cap Rank,Volume [$]} with --sort.
+            You can sort by {Symbol,Name,Price [$],Market Cap,Market Cap Rank,Volume [$]} with --sort.
             """,
         )
 
@@ -357,7 +358,7 @@ class DiscoveryController(BaseController):
             dest="sortby",
             nargs="+",
             help="Sort by given column. Default: Market Cap Rank",
-            default="Market Cap Rank",
+            default=["Market Cap"],
         )
 
         ns_parser = self.parse_known_args_and_warn(
@@ -382,7 +383,7 @@ class DiscoveryController(BaseController):
            Shows Largest Losers - coins which price dropped the most in given period
            You can use parameter --period to set which timeframe are you interested in: {14d,1h,1y,200d,24h,30d,7d}
            You can look on only N number of records with --limit,
-           You can sort by {Symbol,Name,Price [$],Market Cap [$],Market Cap Rank,Volume [$]} with --sort.
+           You can sort by {Symbol,Name,Price [$],Market Cap,Market Cap Rank,Volume [$]} with --sort.
             """,
         )
 
@@ -411,7 +412,7 @@ class DiscoveryController(BaseController):
             dest="sortby",
             nargs="+",
             help="Sort by given column. Default: Market Cap Rank",
-            default="Market Cap Rank",
+            default=["Market Cap"],
         )
 
         ns_parser = self.parse_known_args_and_warn(

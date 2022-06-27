@@ -248,6 +248,8 @@ def get_tokenomics(
     ----------
     symbol : str
         Crypto symbol to check tokenomics
+    coingecko_symbol : str
+        ID from coingecko
     Returns
     -------
     pd.DataFrame

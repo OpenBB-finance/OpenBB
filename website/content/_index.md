@@ -96,7 +96,7 @@ or visit our <a href="https://openbb.co/contact" target="_blank">contact page</a
 The process starts off by downloading the installer, see below for how to download the most recent release:
 
 1. Go to [the openbb.co website](https://www.openbb.co/products/terminal#get-started)
-2. Click on the `Download` button in the Windown Installer section
+2. Click on the `Download` button in the Windows Installer section
 
 When the file is downloaded, use the following steps to run the OpenBB Terminal:
 
@@ -158,7 +158,7 @@ Right-Click the app and select `Open`. You will see a message saying that macOS 
 
 **Troubleshooting: Allow the application to run by going into your settings**
 
-If you have trouble launching the app because of security settings and the "Right-click and Open" approach from Step 2 of this instructions doesn't work, go to `System Preferences > Security & Privacy > General`. You should see a message at the bottom that says that the file "was blocked from use because it is not from an identified developer". Click on `Allow anyway` or `Open anyway`.
+If you have trouble launching the app because of security settings and the "Right-click and Open" approach from Step 2 of these instructions doesn't work, go to `System Preferences > Security & Privacy > General`. You should see a message at the bottom that says that the file "was blocked from use because it is not from an identified developer". Click on `Allow anyway` or `Open anyway`.
 
 <p align="center"><img width=60% alt="image" src="https://user-images.githubusercontent.com/11668535/173027428-a85890d7-8a3c-4954-a6c0-d3214c635982.png"></p>
 
