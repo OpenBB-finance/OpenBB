@@ -299,7 +299,7 @@ def load(
         start=start_date,
         progress=False,
         interval="1d",
-    ).sort_index(ascending=False)
+    ).sort_index(ascending=True)
 
     if df.empty:
         return pd.DataFrame()
