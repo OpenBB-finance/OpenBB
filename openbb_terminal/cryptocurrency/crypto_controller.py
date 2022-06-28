@@ -458,14 +458,14 @@ class CryptoController(CryptoBaseController):
         )
         if ns_parser:
             find(
-                coin=ns_parser.symbol,
+                coin=ns_parser.coin,
                 source=ns_parser.source,
                 key=ns_parser.key,
                 top=ns_parser.limit,
                 export=ns_parser.export,
             )
             display_all_coins(
-                coin=ns_parser.symbol,
+                coin=ns_parser.coin,
                 source=ns_parser.source,
                 top=ns_parser.limit,
                 skip=ns_parser.skip,

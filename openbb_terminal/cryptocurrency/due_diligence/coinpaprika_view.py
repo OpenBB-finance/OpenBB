@@ -101,7 +101,8 @@ def display_twitter(
         Number of records to display
     sortby: str
         Key by which to sort data. Every column name is valid
-        (see for possible values: https://api.coinpaprika.com/v1).
+        (see for possible values:
+        https://api.coinpaprika.com/docs#tag/Coins/paths/~1coins~1%7Bcoin_id%7D~1twitter/get).
     descend: bool
         Flag to sort data descending
     export : str
@@ -156,7 +157,8 @@ def display_events(
         Number of records to display
     sortby: str
         Key by which to sort data. Every column name is valid
-        (see for possible values: https://api.coinpaprika.com/v1).
+        (see for possible values:
+        https://api.coinpaprika.com/docs#tag/Coins/paths/~1coins~1%7Bcoin_id%7D~1events/get).
     descend: bool
         Flag to sort data descending
     links: bool

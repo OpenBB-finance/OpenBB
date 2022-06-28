@@ -33,7 +33,7 @@ def display_search_results(
         Number of records to display
     sortby: str
         Key to sort data. The table can be sorted by every of its columns. Refer to
-        CoinPaprikas API documentation (see https://api.coinpaprika.com/v1/search)
+        CoinPaprikas API documentation (see https://api.coinpaprika.com/docs#tag/Tools/paths/~1search/get)
     descend: bool
         Flag to sort data descending
     export : str

@@ -757,7 +757,9 @@ FIND_KEYS = ["id", "symbol", "name"]
 # TODO: Find better algorithm then difflib.get_close_matches to find most similar coins
 
 
-def find(source: str, coin: str, key: str, top: int, export: str) -> None:
+def find(
+    coin: str, source: str = "cg", key: str = "symbol", top: int = 10, export: str = ""
+) -> None:
     """Find similar coin by coin name,symbol or id.
 
     If you don't remember exact name or id of the Coin at CoinGecko CoinPaprika, Binance or Coinbase
@@ -1239,18 +1241,34 @@ def plot_candles(
         "warn_too_much_data": 10000,
     }
 
+    maximum_value = candles_df.max().max()
+
+    if maximum_value > 1_000_000_000_000:
+        df_rounded = candles_df / 1_000_000_000_000
+        denomination = " in Trillions"
+    elif maximum_value > 1_000_000_000:
+        df_rounded = candles_df / 1_000_000_000
+        denomination = " in Billions"
+    elif maximum_value > 1_000_000:
+        df_rounded = candles_df / 1_000_000
+        denomination = " in Millions"
+    elif maximum_value > 1_000:
+        df_rounded = candles_df / 1_000
+        denomination = " in Thousands"
+    else:
+        df_rounded = candles_df
+        denomination = ""
+
     # This plot has 2 axes
     if external_axes is None:
         candle_chart_kwargs["returnfig"] = True
         candle_chart_kwargs["figratio"] = (10, 7)
         candle_chart_kwargs["figscale"] = 1.10
         candle_chart_kwargs["figsize"] = plot_autoscale()
-        fig, _ = mpf.plot(candles_df, **candle_chart_kwargs)
-        fig.get_yaxis().set_major_formatter(
-            ticker.FuncFormatter(lambda x, _: lambda_long_number_format(x))
-        )
+        fig, _ = mpf.plot(df_rounded, **candle_chart_kwargs)
+
         fig.suptitle(
-            f"\n{title}",
+            f"\n{title} [{denomination}]",
             horizontalalignment="left",
             verticalalignment="top",
             x=0.05,
@@ -1270,7 +1288,9 @@ def plot_candles(
 
         candle_chart_kwargs["ax"] = ax
 
-        mpf.plot(candles_df, **candle_chart_kwargs)
+        console.print(f"Data {denomination}")
+
+        mpf.plot(df_rounded, **candle_chart_kwargs)
 
 
 def plot_order_book(

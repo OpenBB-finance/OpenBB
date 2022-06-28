@@ -169,7 +169,15 @@ def display_uni_pools(
         Number of records to display
     sortby: str
         Key by which to sort data. The table can be sorted by every of its columns
-        (see https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2).
+        (see https://bit.ly/3ORagr1 or below the whole link chopped into pieces)
+        https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2/graphql?query=
+        %7B%0A++++++++++pairs%28first%3A+1000%2C+where%3A+%7BreserveUSD_gt%3A+%221000%
+        22%2C+volumeUSD_gt%3A+%2210000%22%7D%2C%0A++++++++++orderBy%3A+volumeUSD%2C+or
+        derDirection%3A+desc%29+%7B%0A++++++++++++token0+%7B%0A++++++++++++++symbol%0A
+        ++++++++++++++name%0A++++++++++++%7D%0A++++++++++++token1+%7B%0A++++++++++++++
+        symbol%0A++++++++++++++name%0A++++++++++++%7D%0A++++++++++++volumeUSD%0A++++++
+        ++++++txCount%0A++++++++++%7D%0A++++++++%7D then press ctrl-enter or execute
+        the query).
     descend: bool
         Flag to sort data descending
     export : str
