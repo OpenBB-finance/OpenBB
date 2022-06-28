@@ -182,7 +182,6 @@ def get_income_statements(
                 "No data found from Alpha Vantage, looking in Yahoo Finance"
             )
             yahoo_finance_model.get_financials(ticker, 'financials')
-
         else:
             statements = response_json
             df_fa = pd.DataFrame()
