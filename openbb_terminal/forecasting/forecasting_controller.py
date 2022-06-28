@@ -1316,15 +1316,6 @@ class ForecastingController(BaseController):
             prog="export",
             description="Export dataset to Excel",
         )
-
-        parser.add_argument(
-            "-n",
-            "--name",
-            dest="name",
-            help="The name of the dataset you wish to export",
-            type=str,
-        )
-
         parser.add_argument(
             "-t",
             "--type",
@@ -1336,9 +1327,13 @@ class ForecastingController(BaseController):
         )
 
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-n")
+            other_args.insert(0, "--target-dataset")
+
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, export_allowed=NO_EXPORT
+            parser,
+            other_args,
+            export_allowed=NO_EXPORT,
+            target_dataset=True,
         )
 
         if not helpers.check_parser_input(ns_parser, self.datasets):
@@ -1347,8 +1342,8 @@ class ForecastingController(BaseController):
         export_data(
             ns_parser.type,
             os.path.dirname(os.path.abspath(__file__)),
-            ns_parser.name,
-            self.datasets[ns_parser.name],
+            ns_parser.target_dataset,
+            self.datasets[ns_parser.target_dataset],
         )
 
         console.print()
