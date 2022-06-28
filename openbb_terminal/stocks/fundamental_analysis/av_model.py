@@ -12,6 +12,7 @@ from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import lambda_long_number_format
 from openbb_terminal.rich_config import console
+from openbb_terminal.stocks.fundamental_analysis import yahoo_finance_model
 from openbb_terminal.stocks.stocks_helper import clean_fraction
 from openbb_terminal.stocks.fundamental_analysis.fa_helper import clean_df_index
 
@@ -177,9 +178,8 @@ def get_income_statements(
     else:
         # check if json is empty
         if not response_json:
-            console.print(
-                "No data found from Alpha Vantage"
-            )
+            console.print("No data found from Alpha Vantage, looking in Yahoo Finance")
+            return yahoo_finance_model.get_financials(ticker, financial="financials")
         else:
             statements = response_json
             df_fa = pd.DataFrame()
@@ -232,9 +232,9 @@ def get_balance_sheet(
     else:
         # check if json is empty
         if not response_json:
-            console.print(
-                "No data found from Alpha Vantage"
-            )
+            console.print("No data found from Alpha Vantage, looking in Yahoo Finance")
+            return yahoo_finance_model.get_financials(ticker, financial="balance-sheet")
+
         else:
             statements = response_json
             df_fa = pd.DataFrame()
@@ -285,9 +285,9 @@ def get_cash_flow(ticker: str, number: int, quarterly: bool = False) -> pd.DataF
     else:
         # check if json is empty
         if not response_json:
-            console.print(
-                "No data found from Alpha Vantage"
-            )
+            console.print("No data found from Alpha Vantage, looking in Yahoo Finance")
+            return yahoo_finance_model.get_financials(ticker, financial="cash-flow")
+
         else:
             statements = response_json
             df_fa = pd.DataFrame()
