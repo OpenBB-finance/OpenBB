@@ -350,7 +350,13 @@ def get_financials(ticker: str, financial_type: str) -> pd.DataFrame:
         index += 1
 
     df = pd.DataFrame(final[1:])
-    df.columns = headers
-    df.set_index("Breakdown", inplace=True)
-    df.replace("", np.nan, inplace=True)
+    new_headers = []
+    for dates in headers[1:]:
+        read = datetime.datetime.strptime(dates, '%d/%m/%Y')
+        write = read.strftime('%Y-%m-%d')
+        new_headers.append(write)
+    new_headers[:0] = ['Breakdown']
+    df.columns = new_headers
+    df.set_index('Breakdown', inplace=True)
+    df.replace('', np.nan, inplace=True)
     return df.dropna(how="all")
