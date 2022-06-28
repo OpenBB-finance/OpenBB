@@ -694,6 +694,14 @@ class FundamentalAnalysisController(StockBaseController):
                     quarterly=ns_parser.b_quarter,
                     export=ns_parser.export,
                 )
+            elif ns_parser.source == "polygon":
+                polygon_view.display_fundamentals(
+                    ticker=self.ticker,
+                    financial="cash",
+                    limit=ns_parser.limit,
+                    quarterly=ns_parser.b_quarter,
+                    export=ns_parser.export,
+                )
             elif ns_parser.source == "yf":
                 yahoo_finance_view.display_fundamentals(
                     ticker=self.ticker,

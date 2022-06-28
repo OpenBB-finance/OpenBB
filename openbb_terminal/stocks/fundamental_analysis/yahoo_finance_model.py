@@ -18,6 +18,7 @@ from openbb_terminal.helper_funcs import lambda_long_number_format
 from openbb_terminal.stocks.fundamental_analysis.fa_helper import clean_df_index
 
 logger = logging.getLogger(__name__)
+# pylint: disable=W0212
 ssl._create_default_https_context = ssl._create_unverified_context
 
 
@@ -325,10 +326,9 @@ def get_financials(ticker: str, financial: str) -> pd.DataFrame:
     # Making the website believe that you are accessing it using a Mozilla browser
     req = Request(url, headers={"User-Agent": "Mozilla/5.0"})
 
-    webpage = urlopen(req).read()
-    # Creating a BeautifulSoup object of the HTML page for easy extraction of data.
+    with urlopen(req).read() as webpage:
+        soup = BeautifulSoup(webpage, "html.parser")
 
-    soup = BeautifulSoup(webpage, "html.parser")
     features = soup.find_all("div", class_="D(tbr)")
     headers = []
     temp_list = []
