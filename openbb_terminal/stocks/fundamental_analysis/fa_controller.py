@@ -528,12 +528,19 @@ class FundamentalAnalysisController(StockBaseController):
             dest="b_quarter",
             help="Quarter fundamental data flag.",
         )
+        parser.add_argument(
+            "-s",
+            "--sources",
+            default="av",
+            dest="source",
+            choices=["polygon", "av", "yf"],
+            help="The source to get the data from",
+        )
         ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
             limit=5,
-            sources=["polygon", "av", "yf"],
         )
         if ns_parser:
             if ns_parser.source == "av":
@@ -666,7 +673,7 @@ class FundamentalAnalysisController(StockBaseController):
             sources=["polygon", "av", "yf"],
         )
         if ns_parser:
-            if ns_parser.source=='av':
+            if ns_parser.source == "av":
                 av_view.display_cash_flow(
                     ticker=self.ticker,
                     limit=ns_parser.limit,
@@ -710,7 +717,9 @@ class FundamentalAnalysisController(StockBaseController):
             help="Number of latest info",
         )
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED,
+            parser,
+            other_args,
+            EXPORT_ONLY_RAW_DATA_ALLOWED,
         )
         if ns_parser:
             av_view.display_earnings(
