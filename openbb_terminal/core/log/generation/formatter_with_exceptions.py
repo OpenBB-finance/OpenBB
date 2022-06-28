@@ -167,6 +167,8 @@ class FormatterWithExceptions(logging.Formatter):
         log_prefix_content = {**log_prefix_content, **log_extra}
         log_prefix = self.LOGPREFIXFORMAT % log_prefix_content
 
+        record.msg = record.msg.replace("|", "-MOCK_PIPE-")
+
         log_line = super().format(record)
         log_line = self.filter_log_line(text=log_line)
         log_line_full = log_prefix + log_line
