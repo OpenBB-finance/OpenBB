@@ -90,8 +90,7 @@ def display_income_statement(
     df_income = av_model.get_income_statements(ticker, limit, quarterly)
 
     if df_income.empty:
-        # When no data returned from Alpha Vantage, try Yahoo Finance Model. (FTSE UK Data)
-        df_income = yahoo_finance_model.get_yahoo_financials(ticker, 'financials')
+        return
 
     indexes = df_income.index
     new_indexes = [camel_case_split(ind) for ind in indexes]
@@ -128,8 +127,7 @@ def display_balance_sheet(
     df_balance = av_model.get_balance_sheet(ticker, limit, quarterly)
 
     if df_balance.empty:
-        # When no data returned from Alpha Vantage, try Yahoo Finance Model. (FTSE UK Data)
-        df_balance = yahoo_finance_model.get_yahoo_financials(ticker, 'balance-sheet')
+        return
 
     indexes = df_balance.index
     new_indexes = [camel_case_split(ind) for ind in indexes]
@@ -168,8 +166,7 @@ def display_cash_flow(
     df_cash = av_model.get_cash_flow(ticker, limit, quarterly)
 
     if df_cash.empty:
-        # When no data returned from Alpha Vantage, try Yahoo Finance Model. (FTSE UK Data)
-        df_cash = yahoo_finance_model.get_yahoo_financials(ticker, 'cash-flow')
+        return
 
     indexes = df_cash.index
     new_indexes = [camel_case_split(ind) for ind in indexes]

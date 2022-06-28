@@ -178,7 +178,7 @@ def get_income_statements(
         # check if json is empty
         if not response_json:
             console.print(
-                "No data found from Alpha Vantage, checking Yahoo Finance ....."
+                "No data found from Alpha Vantage"
             )
         else:
             statements = response_json
@@ -233,7 +233,7 @@ def get_balance_sheet(
         # check if json is empty
         if not response_json:
             console.print(
-                "No data found from Alpha Vantage, checking Yahoo Finance ....."
+                "No data found from Alpha Vantage"
             )
         else:
             statements = response_json
@@ -286,7 +286,7 @@ def get_cash_flow(ticker: str, number: int, quarterly: bool = False) -> pd.DataF
         # check if json is empty
         if not response_json:
             console.print(
-                "No data found from Alpha Vantage, checking Yahoo Finance ....."
+                "No data found from Alpha Vantage"
             )
         else:
             statements = response_json

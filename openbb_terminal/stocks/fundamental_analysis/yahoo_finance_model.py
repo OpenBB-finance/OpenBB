@@ -295,7 +295,7 @@ def get_splits(ticker: str) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_yahoo_financials(ticker: str, financial_type: str) -> pd.DataFrame:
+def get_financials(ticker: str, financial_type: str) -> pd.DataFrame:
     """Get cashflow statement for company
 
     Parameters

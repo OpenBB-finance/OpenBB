@@ -533,7 +533,7 @@ class FundamentalAnalysisController(StockBaseController):
             other_args,
             export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
             limit=5,
-            sources=["polygon", "av"],
+            sources=["polygon", "av", "yahoo"],
         )
         if ns_parser:
             if ns_parser.source == "av":
@@ -549,6 +549,12 @@ class FundamentalAnalysisController(StockBaseController):
                     financial="income",
                     limit=ns_parser.limit,
                     quarterly=ns_parser.b_quarter,
+                    export=ns_parser.export,
+                )
+            elif ns_parser.source == "yahoo":
+                yahoo_finance_view.display_fundamentals(
+                    ticker=self.ticker,
+                    financial="financials",
                     export=ns_parser.export,
                 )
 
@@ -605,6 +611,12 @@ class FundamentalAnalysisController(StockBaseController):
                     financial="balance",
                     limit=ns_parser.limit,
                     quarterly=ns_parser.b_quarter,
+                    export=ns_parser.export,
+                )
+            elif ns_parser.source == "yahoo":
+                polygon_view.display_fundamentals(
+                    ticker=self.ticker,
+                    financial="financials",
                     export=ns_parser.export,
                 )
 
