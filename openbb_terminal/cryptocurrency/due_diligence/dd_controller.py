@@ -557,10 +557,9 @@ class DueDiligenceController(CryptoBaseController):
         )
 
         if ns_parser:
-            cg_id = check_cg_id(self.symbol)
-            if cg_id:
+            if self.symbol:
                 pycoingecko_view.display_info(
-                    symbol=cg_id,
+                    symbol=self.symbol,
                     export=ns_parser.export,
                 )
 
@@ -599,10 +598,9 @@ class DueDiligenceController(CryptoBaseController):
         )
 
         if ns_parser:
-            cg_id = check_cg_id(self.symbol)
-            if cg_id:
+            if self.symbol:
                 pycoingecko_view.display_web(
-                    cg_id,
+                    self.symbol,
                     export=ns_parser.export,
                 )
 
@@ -962,10 +960,9 @@ class DueDiligenceController(CryptoBaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            cp_id = cryptocurrency_helpers.get_coinpaprika_id(self.symbol)
-            if cp_id:
+            if self.symbol:
                 coinpaprika_view.display_price_supply(
-                    cp_id,
+                    self.symbol,
                     ns_parser.vs,
                     ns_parser.export,
                 )
@@ -985,10 +982,9 @@ class DueDiligenceController(CryptoBaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            cp_id = cryptocurrency_helpers.get_coinpaprika_id(self.symbol)
-            if cp_id:
+            if self.symbol:
                 coinpaprika_view.display_basic(
-                    cp_id,
+                    self.symbol,
                     ns_parser.export,
                 )
 
@@ -1057,10 +1053,9 @@ class DueDiligenceController(CryptoBaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            cp_id = cryptocurrency_helpers.get_coinpaprika_id(self.symbol)
-            if cp_id:
+            if self.symbol:
                 coinpaprika_view.display_markets(
-                    coin_id=cp_id,
+                    symbol=self.symbol,
                     currency=ns_parser.vs,
                     top=ns_parser.limit,
                     sortby=ns_parser.sortby,
@@ -1115,10 +1110,9 @@ class DueDiligenceController(CryptoBaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            cp_id = cryptocurrency_helpers.get_coinpaprika_id(self.symbol)
-            if cp_id:
+            if self.symbol:
                 coinpaprika_view.display_exchanges(
-                    coin_id=cp_id,
+                    symbol=self.symbol,
                     top=ns_parser.limit,
                     sortby=ns_parser.sortby,
                     descend=ns_parser.descend,
@@ -1182,10 +1176,9 @@ class DueDiligenceController(CryptoBaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            cp_id = cryptocurrency_helpers.get_coinpaprika_id(self.symbol)
-            if cp_id:
+            if self.symbol:
                 coinpaprika_view.display_events(
-                    coin_id=cp_id,
+                    symbol=self.symbol,
                     top=ns_parser.limit,
                     sortby=ns_parser.sortby,
                     descend=ns_parser.descend,
@@ -1240,10 +1233,9 @@ class DueDiligenceController(CryptoBaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            cp_id = cryptocurrency_helpers.get_coinpaprika_id(self.symbol)
-            if cp_id:
+            if self.symbol:
                 coinpaprika_view.display_twitter(
-                    coin_id=cp_id,
+                    symbol=self.symbol,
                     top=ns_parser.limit,
                     sortby=ns_parser.sortby,
                     descend=ns_parser.descend,
@@ -1446,11 +1438,9 @@ class DueDiligenceController(CryptoBaseController):
         )
 
         if ns_parser:
-            cg_id = check_cg_id(self.symbol)
-            if cg_id:
+            if self.symbol:
                 messari_view.display_tokenomics(
                     coin=self.symbol.upper(),
-                    coingecko_symbol=cg_id,
                     export=ns_parser.export,
                 )
 

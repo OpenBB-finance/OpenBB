@@ -299,7 +299,7 @@ def load(
         start=start_date,
         progress=False,
         interval="1d",
-    ).sort_index(ascending=False)
+    ).sort_index(ascending=True)
 
     if df.empty:
         return pd.DataFrame()
@@ -1301,3 +1301,11 @@ def plot_order_book(
 
     if external_axes is None:
         theme.visualize_output(force_tight_layout=False)
+
+
+def check_cg_id(symbol: str):
+    cg_id = get_coingecko_id(symbol)
+    if not cg_id:
+        print(f"\n{symbol} not found on CoinGecko")
+        return ""
+    return symbol

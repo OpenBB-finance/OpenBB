@@ -30,9 +30,9 @@ def get_all_names_symbols() -> Tuple[List[str], List[str]]:
         "https://stockanalysis.com/etf/", headers={"User-Agent": get_user_agent()}
     )
     soup2 = bs(r.text, "html.parser")
-    script = soup2.find("script", {"id": "__NEXT_DATA__"})
+    script = soup2.find("script", {"type": "application/json"})
 
-    etfs = pd.DataFrame(json.loads(script.string)["props"]["pageProps"]["stocks"])
+    etfs = pd.DataFrame(json.loads(script.string)["data"])
     etf_symbols = etfs.s.to_list()
     etf_names = etfs.n.to_list()
     return etf_symbols, etf_names
