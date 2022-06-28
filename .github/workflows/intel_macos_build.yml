@@ -42,6 +42,9 @@ jobs:
       - name: Install Pyinstaller
         shell: bash -l {0}
         run: poetry install -E installer
+      - name: Install Prediction Modules
+        shell: bash -l {0}
+        run: poetry install -E prediction
       - name: Run Build Shell Script
         shell: bash -l {0}
         continue-on-error: true # this is here because there is a known error in create-dmg that cannot unmount disks if they are too large
