@@ -123,11 +123,11 @@ class FundamentalAnalysisController(StockBaseController):
         mt.add_cmd("splits", "Yahoo Finance", not self.suffix)
         mt.add_cmd("web", "Yahoo Finance", not self.suffix)
         mt.add_cmd("hq", "Yahoo Finance", not self.suffix)
-        mt.add_cmd("income", "Alpha Vantage / Polygon")
-        mt.add_cmd("balance", "Alpha Vantage / Polygon")
+        mt.add_cmd("income", "Alpha Vantage / Polygon / Yahoo Finance")
+        mt.add_cmd("balance", "Alpha Vantage / Polygon / Yahoo Finance")
         mt.add_cmd("overview", "Alpha Vantage")
         mt.add_cmd("key", "Alpha Vantage")
-        mt.add_cmd("cash", "Alpha Vantage")
+        mt.add_cmd("cash", "Alpha Vantage / Yahoo Finance")
         mt.add_cmd("earnings", "Alpha Vantage")
         mt.add_cmd("fraud", "Alpha Vantage")
         mt.add_cmd("dupont", "Alpha Vantage")
@@ -614,9 +614,9 @@ class FundamentalAnalysisController(StockBaseController):
                     export=ns_parser.export,
                 )
             elif ns_parser.source == "yahoo":
-                polygon_view.display_fundamentals(
+                yahoo_finance_view.display_fundamentals(
                     ticker=self.ticker,
-                    financial="financials",
+                    financial="balance",
                     export=ns_parser.export,
                 )
 
@@ -667,6 +667,12 @@ class FundamentalAnalysisController(StockBaseController):
                 ticker=self.ticker,
                 limit=ns_parser.limit,
                 quarterly=ns_parser.b_quarter,
+                export=ns_parser.export,
+            )
+        elif ns_parser.source == "yahoo":
+            yahoo_finance_view.display_fundamentals(
+                ticker=self.ticker,
+                financial="cash-flow",
                 export=ns_parser.export,
             )
 
