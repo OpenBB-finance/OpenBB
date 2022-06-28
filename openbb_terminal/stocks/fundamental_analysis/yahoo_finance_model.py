@@ -295,14 +295,14 @@ def get_splits(ticker: str) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_financials(ticker: str, financial_type: str) -> pd.DataFrame:
+def get_financials(ticker: str, financials: str) -> pd.DataFrame:
     """Get cashflow statement for company
 
     Parameters
     ----------
     ticker : str
         Stock ticker
-    financial_type: str
+    financials: str
         can be:
             cash-flow
             financials for Income
@@ -317,7 +317,7 @@ def get_financials(ticker: str, financial_type: str) -> pd.DataFrame:
         "https://uk.finance.yahoo.com/quote/"
         + ticker
         + "/"
-        + financial_type
+        + financials
         + "?p="
         + ticker
     )
@@ -351,12 +351,32 @@ def get_financials(ticker: str, financial_type: str) -> pd.DataFrame:
 
     df = pd.DataFrame(final[1:])
     new_headers = []
-    for dates in headers[1:]:
-        read = datetime.strptime(dates, "%d/%m/%Y")
-        write = read.strftime("%Y-%m-%d")
-        new_headers.append(write)
-    new_headers[:0] = ["Breakdown"]
-    df.columns = new_headers
-    df.set_index("Breakdown", inplace=True)
+
+    if financials == 'balance-sheet':
+        for dates in headers[1:]:
+            read = datetime.strptime(dates, "%d/%m/%Y")
+            write = read.strftime("%Y-%m-%d")
+            new_headers.append(write)
+        new_headers[:0] = ["Breakdown"]
+        df.columns = new_headers
+        df.set_index("Breakdown", inplace=True)
+    elif financials == 'financials':
+        for dates in headers[2:]:
+            read = datetime.strptime(dates, "%d/%m/%Y")
+            write = read.strftime("%Y-%m-%d")
+            new_headers.append(write)
+        new_headers[:0] = ["Breakdown"]
+        new_headers[:1] = ["ttm"]
+        df.columns = new_headers
+        df.set_index("Breakdown", inplace=True)
+    elif financials == 'cash-flow':
+        for dates in headers[2:]:
+            read = datetime.strptime(dates, "%d/%m/%Y")
+            write = read.strftime("%Y-%m-%d")
+            new_headers.append(write)
+        new_headers[:0] = ["Breakdown"]
+        new_headers[:1] = ["ttm"]
+        df.columns = new_headers
+        df.set_index("Breakdown", inplace=True)
     df.replace("", np.nan, inplace=True)
     return df.dropna(how="all")
