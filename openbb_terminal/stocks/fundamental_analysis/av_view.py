@@ -18,7 +18,6 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.fundamental_analysis import av_model
-from openbb_terminal.stocks.fundamental_analysis import yahoo_finance_model
 
 logger = logging.getLogger(__name__)
 

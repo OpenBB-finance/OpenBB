@@ -197,7 +197,7 @@ class FundamentalAnalysisController(StockBaseController):
                 ROI, 52W High, Beta, Quick Ratio, Sales past 5Y, Gross Margin, 52W Low, ATR,
                 Employees, Current Ratio, Sales Q/Q, Operating Margin, RSI (14), Volatility, Optionable,
                 Debt/Eq, EPS Q/Q, Profit Margin, Rel Volume, Prev Close, Shortable, LT Debt/Eq,
-                Earnings, Payout, Avg Volume, Price, Recomendation, SMA20, SMA50, SMA200, Volume, Change.
+                Earnings, Payout, Avg Volume, Price, Recommendation, SMA20, SMA50, SMA200, Volume, Change.
                 [Source: Finviz]
             """,
         )
@@ -666,7 +666,7 @@ class FundamentalAnalysisController(StockBaseController):
             sources=["polygon", "av", "yf"],
         )
         if ns_parser:
-            if ns_parser.source=='av':
+            if ns_parser.source == "av":
                 av_view.display_cash_flow(
                     ticker=self.ticker,
                     limit=ns_parser.limit,
@@ -710,7 +710,9 @@ class FundamentalAnalysisController(StockBaseController):
             help="Number of latest info",
         )
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED,
+            parser,
+            other_args,
+            EXPORT_ONLY_RAW_DATA_ALLOWED,
         )
         if ns_parser:
             av_view.display_earnings(

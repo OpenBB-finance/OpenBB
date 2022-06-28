@@ -21,6 +21,7 @@ from openbb_terminal.helper_funcs import (
     plot_autoscale,
     print_rich_table,
     is_valid_axes_count,
+    lambda_long_number_format,
 )
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.fundamental_analysis import yahoo_finance_model
@@ -395,10 +396,12 @@ def display_mktcap(
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "mktcap", df_mktcap)
 
+
 @log_start_end(log=logger)
 def display_fundamentals(
     ticker: str,
     financial: str,
+    limit: int = 120,
     export: str = "",
 ):
     """Display tickers balance sheet or income statement
@@ -409,6 +412,7 @@ def display_fundamentals(
         Stock ticker
     financial:str
         Either balance or financials for income or cash-flow
+    limit : int
     export: str
         Format to export data
     """
@@ -441,4 +445,3 @@ def display_fundamentals(
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), financial, fundamentals
     )
-
