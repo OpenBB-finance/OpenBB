@@ -104,6 +104,8 @@ jupyterlab-lsp = {version = "^3.10.1", optional = true}
 jedi-language-server = {version = "^0.35.1", optional = true}
 kaleido = {version = "<=0.2.1", optional = true}
 html5lib = "^1.1"
+u8darts = {extras = ["prediction"], version = "^0.20.0"}
+pytorch-lightning = {version = "^1.6.4", extras = ["prediction"]}
 
 
 [tool.poetry.dev-dependencies]
