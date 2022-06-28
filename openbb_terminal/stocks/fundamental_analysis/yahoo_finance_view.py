@@ -416,7 +416,7 @@ def display_fundamentals(
     export: str
         Format to export data
     """
-    if financial == "balance":
+    if financial == "balance-sheet":
         fundamentals = yahoo_finance_model.get_financials(ticker, financial)
         title_str = "Balance Sheet"
     elif financial == "financials":

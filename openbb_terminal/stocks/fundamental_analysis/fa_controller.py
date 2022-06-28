@@ -630,7 +630,7 @@ class FundamentalAnalysisController(StockBaseController):
             elif ns_parser.source == "yf":
                 yahoo_finance_view.display_fundamentals(
                     ticker=self.ticker,
-                    financial="balance",
+                    financial="balance-sheet",
                     export=ns_parser.export,
                 )
 
