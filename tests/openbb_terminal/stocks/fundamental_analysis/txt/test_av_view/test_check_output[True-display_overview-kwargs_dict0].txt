@@ -11,9 +11,9 @@ Industry                       MOTOR VEHICLES & PASSENGER CAR BODIES
 Address                        3500 DEER CREEK RD, PALO ALTO, CA, US
 Fiscal year end                                             December
 Latest quarter                                            2022-03-31
-Market capitalization                                      730.605 B
+Market capitalization                                      761.219 B
 EBITDA                                                      12.702 B
-PE ratio                                                        95.3
+PE ratio                                                       99.29
 PEG ratio                                                      1.657
 Book value                                                      32.9
 Dividend per share                                                 0
@@ -30,17 +30,17 @@ Diluted EPS TTM                                                  7.4
 Quarterly earnings growth YOY                                   6.32
 Quarterly revenue growth YOY                                   0.805
 Analyst target price                                          905.97
-Trailing PE                                                     95.3
+Trailing PE                                                    99.29
 Forward PE                                                     59.52
-Price to sales ratio TTM                                       11.75
+Price to sales ratio TTM                                       12.24
 Price to book ratio                                            21.61
 EV to revenue                                                  11.67
 EV to EBITDA                                                   56.09
 Beta                                                           2.132
 52 week high                                                 1243.49
 52 week low                                                   620.46
-50 day moving average                                         796.32
-200 day moving average                                        912.25
+50 day moving average                                         785.57
+200 day moving average                                        912.06
 Shares outstanding                                           1.036 B
 Dividend date                                                   None
 Ex dividend date                                                None
