@@ -8,6 +8,9 @@ import yfinance as yf
 
 from openbb_terminal.rich_config import console
 
+# Disable warning on pd chained assignments used to get benchmark quantity
+pd.options.mode.chained_assignment = None  
+
 logger = logging.getLogger(__name__)
 
 class Portfolio:
@@ -27,14 +30,16 @@ class Portfolio:
     load_benchmark: Adds benchmark ticker, info, prices and returns
         mimic_trades_for_benchmark: Mimic trades from the orderbook based on chosen benchmark assuming partial shares
 
-    calculate_trades:
+    calculate_trades: Generates portfolio data from orderbook
         load_historical_prices: Loads historical adj close prices for tickers in list of trades
+        populate_historical_trade_data:
 
     determine_reserves:
 
     determine_allocations:
 
-    set_risk_free_rate: Sets risk free rate
+    determine_metrics:
+        set_risk_free_rate: Sets risk free rate
     """
     
     def __init__(self, orderbook: pd.DataFrame = pd.DataFrame()):
@@ -46,6 +51,8 @@ class Portfolio:
         # Portfolio
         self.tickers = {}
         self.inception_date = None
+        self.static_data = pd.DataFrame()
+        self.historical_trade_data = pd.DataFrame()
         self.holdings = pd.DataFrame()
 
         # Prices
@@ -107,6 +114,14 @@ class Portfolio:
             # Determining the investment/divestment value
             self.orderbook["Investment"] = self.orderbook["Quantity"] * self.orderbook["Price"]
 
+            # Reformat crypto tickers to yfinance format (e.g. BTC -> BTC-USD)
+            crypto_trades = self.orderbook[self.orderbook.Type == "CRYPTOCURRENCY"]
+            self.orderbook.loc[(self.orderbook.Type == "CRYPTOCURRENCY"), "Ticker"] = [
+                f"{crypto}-{currency}"
+                for crypto, currency in zip(crypto_trades.Ticker, crypto_trades.Currency)
+            ]
+
+
             # Create tickers dictionary with structure {'Type': [Ticker]}
             for type in set(self.orderbook["Type"]):
                 self.tickers[type] = list(self.orderbook[self.orderbook['Type'].isin([type])]["Ticker"])
@@ -124,6 +139,9 @@ class Portfolio:
 
             # Save orderbook inception date
             self.inception_date = self.orderbook["Date"][0]
+
+            # Save trades static data
+            self.static_data = self.orderbook.pivot(index="Ticker", columns=[], values=["Type", "Sector", "Industry", "Country"])
 
     def load_benchmark(self, ticker: str):
         """Adds benchmark dataframe
@@ -172,44 +190,114 @@ class Portfolio:
         self.benchmark_orderbook.fillna(0, inplace=True)
 
     def calculate_trades(self):
-        """_summary_
+        """Generates portfolio data from orderbook
         """
         self.load_historical_prices()
-        #TODO: Calculate holdings from trades, this should be similar
-        # to the generate_holdings_from_trades method in portfolio_module.py
-        pass
+
+        self.populate_historical_trade_data()
+
 
     def load_historical_prices(self):
         """Loads historical adj close prices for tickers in list of trades
         """
         for type in self.tickers.keys():
             if type == "STOCK":
-                # Here use concat to append yf dataframe to existing
-                # portfolio_historical_prices, which might already have
-                # data from other 'type' that we don't want to overwrite
+                
+                # Download yfinance data
+                data = yf.download(
+                        self.tickers[type],
+                        start=self.inception_date,
+                        progress=False
+                    )["Adj Close"]
+
+                # Set up column name if only 1 ticker (pd.DataFrame only does this if >1 ticker)
+                if len(self.tickers[type]) == 1:
+                    data = pd.DataFrame(data)
+                    data.columns = self.tickers[type]
+
+                # Add to historical_prices dataframe
                 self.portfolio_historical_prices = pd.concat(
                     [
                         self.portfolio_historical_prices, 
-                        yf.download(
-                            self.tickers.get(type),
-                            start=self.inception_date,
-                            progress=False
-                        )["Adj Close"]
+                        data
                     ], axis=1)
-            elif type == "CRYPTO":
-                #TODO: Account for CRYPTO and other assets
-                pass
+
+            elif type == "CRYPTOCURRENCY":
+                
+                # Download yfinance data
+                data = yf.download(
+                        self.tickers[type],
+                        start=self.inception_date,
+                        progress=False
+                    )["Close"]
+
+                # Set up column name if only 1 ticker (pd.DataFrame only does this if >1 ticker)
+                if len(self.tickers[type]) == 1:
+                    data = pd.DataFrame(data)
+                    data.columns = self.tickers[type]
+        
+                # Add to historical_prices dataframe
+                self.portfolio_historical_prices = pd.concat(
+                    [
+                        self.portfolio_historical_prices, 
+                        data
+                    ], axis=1)
+                
             else:
                 # Type not supported
                 pass
 
-    def set_risk_free_rate(self, risk_free_rate: float):
-        """Sets risk free rate
+            # Set CASH price to 1 by default
+            self.portfolio_historical_prices["CASH"] = 1
 
-        Args:
-            risk_free (float): risk free rate in decimal format
+            # Fill missing values with last known price
+            self.portfolio_historical_prices.fillna(method='ffill', inplace=True)
+
+    def populate_historical_trade_data(self):
+        """Create a new dataframe to store historical prices by ticker
         """
-        self.risk_free_rate = risk_free_rate
+
+        self.historical_trade_data = self.orderbook.pivot(
+            index="Date",
+            columns="Ticker",
+            values=[
+                "Type",
+                "Sector",
+                "Industry",
+                "Country",
+                "Price",
+                "Quantity",
+                "Fees",
+                "Premium",
+                "Investment",
+                "Side",
+                "Currency",
+            ],
+        )
+
+        # Make historical prices columns a multi-index. This helps the merging.
+        self.portfolio_historical_prices.columns = pd.MultiIndex.from_product(
+            [["Close"], self.portfolio_historical_prices.columns]
+        )
+
+        # # Merge with historical close prices (and fillna)
+        self.historical_trade_data = pd.merge(
+            self.historical_trade_data,
+            self.portfolio_historical_prices,
+            how="right",
+            left_index=True,
+            right_index=True,
+        ).fillna(0)
+
+        # # Accumulate quantity held by trade date
+        self.historical_trade_data["Quantity"] = self.historical_trade_data["Quantity"].cumsum()
+
+        # For each type [STOCK, ETF, etc] calculate holdings value by trade date
+        # and add it to historical_trade_data
+        for type in self.tickers.keys():
+            self.historical_trade_data[pd.MultiIndex.from_product([[type], self.tickers[type]])] = self.historical_trade_data["Quantity"][self.tickers[type]] * self.historical_trade_data["Close"][self.tickers[type]]
+            # portfolio.historical_trade_data[pd.MultiIndex.from_product([[type], portfolio.tickers[type]])] = portfolio.historical_trade_data["Quantity"][portfolio.tickers[type]] * portfolio.historical_trade_data["Close"][portfolio.tickers[type]]
+
 
     def determine_reserves(self):
         """_summary_
@@ -224,6 +312,18 @@ class Portfolio:
         # original form, which uses the allocation_model module
         pass
 
+    def determine_metrics(self):
+        """_summary_
+        """
+        pass
+
+    def set_risk_free_rate(self, risk_free_rate: float):
+        """Sets risk free rate
+
+        Args:
+            risk_free (float): risk free rate in decimal format
+        """
+        self.risk_free_rate = risk_free_rate
 
 if __name__ == "__main__":
     path = "openbb_terminal/portfolio/portfolio_analysis/portfolios/Public_Equity_Orderbook.xlsx"
@@ -235,11 +335,11 @@ if __name__ == "__main__":
     # print(portfolio.risk_free_rate)
     portfolio.load_benchmark("SPY")
     # print(portfolio.benchmark_ticker)
-    print(portfolio.benchmark_historical_prices)
+    # print(portfolio.benchmark_historical_prices)
     # # print(portfolio.benchmark_returns)
     # print(portfolio.benchmark_orderbook)
-    # portfolio.load_historical_prices()
-    # print(portfolio.portfolio_historical_prices)
+    portfolio.load_historical_prices()
+    print(portfolio.portfolio_historical_prices)
     # Ver com o Chavi porque é que o yfinance fica bloqueado
     # quando peço preços neste modulo... No Jupyter funciona bem..
 
@@ -248,3 +348,4 @@ if __name__ == "__main__":
 # Calculate trades
 # Determine reserves
 # Determine allocations
+# Determine key metrics and ratios
