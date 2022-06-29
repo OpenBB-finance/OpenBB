@@ -709,7 +709,7 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
             other_args.insert(0, "-t")
 
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, sources=["yf", "av", "iex", "polygon"]
+            parser, other_args, sources=["yf", "av", "iex", "polygon", "eodhd"]
         )
 
         if ns_parser:

@@ -20,6 +20,7 @@ import pytz
 import requests
 
 import yfinance as yf
+from eod import EodHistoricalData
 from alpha_vantage.timeseries import TimeSeries
 from numpy.core.fromnumeric import transpose
 from plotly.subplots import make_subplots
@@ -40,7 +41,7 @@ logger = logging.getLogger(__name__)
 # pylint: disable=no-member,too-many-branches,C0302,R0913
 
 INTERVALS = [1, 5, 15, 30, 60]
-SOURCES = ["yf", "av", "iex"]
+SOURCES = ["yf", "av", "iex", "eodhd"]
 
 market_coverage_suffix = {
     "USA": ["CBT", "CME", "NYB", "CMX", "NYM", ""],
@@ -251,14 +252,21 @@ def load(
     monthly: bool = False,
 ):
     """
-    Load a symbol to perform analysis using the string above as a template. Optional arguments and their
-    descriptions are listed above. The default source is, yFinance (https://pypi.org/project/yfinance/).
-    Alternatively, one may select either AlphaVantage (https://www.alphavantage.co/documentation/)
-    or IEX Cloud (https://iexcloud.io/docs/api/) as the data source for the analysis.
-    Please note that certain analytical features are exclusive to the source.
+    Load a symbol to perform analysis using the string above as a template.
+
+    Optional arguments and their descriptions are listed above.
+
+    The default source is, yFinance (https://pypi.org/project/yfinance/).
+    Other sources:
+            -   AlphaVantage (https://www.alphavantage.co/documentation/)
+            -   IEX Cloud (https://iexcloud.io/docs/api/)
+            -   Eod Historical Data (https://eodhistoricaldata.com/financial-apis/)
+
+    Please note that certain analytical features are exclusive to the specific source.
 
     To load a symbol from an exchange outside of the NYSE/NASDAQ default, use yFinance as the source and
-    add the corresponding exchange to the end of the symbol. i.e. ‘BNS.TO’.
+    add the corresponding exchange to the end of the symbol. i.e. ‘BNS.TO’.  Note this may be possible with
+    other paid sources check their docs.
 
     BNS is a dual-listed stock, there are separate options chains and order books for each listing.
     Opportunities for arbitrage may arise from momentary pricing discrepancies between listings
@@ -367,6 +375,50 @@ def load(
                 return pd.DataFrame()
 
             df_stock_candidate.index.name = "date"
+
+        # TODO:  ###########################
+
+        # End of Day Historical Data  Source
+        elif source == "eodhd":
+
+            try:
+                client = EodHistoricalData(cfg.API_EODHD_TOKEN)
+
+                resp = client.get_prices_eod(ticker)
+                df_stock_candidate = pd.DataFrame(resp)
+
+                # Check that loading a stock was not successful
+                if df_stock_candidate.empty:
+                    console.print("No data found.\n")
+                    return df_stock_candidate
+
+            except Exception as e:
+                if "The API key provided is not valid" in str(e):
+                    console.print("[red]Invalid API Key[/red]\n")
+                else:
+                    console.print(e, "\n")
+
+                return df_stock_candidate
+
+            df_stock_candidate = df_stock_candidate[
+                ["date", "open", "high", "low", "close", "adjusted_close", "volume"]
+            ]
+
+            df_stock_candidate = df_stock_candidate.rename(
+                columns={
+                    "date": "Date",
+                    "close": "Close",
+                    "high": "High",
+                    "low": "Low",
+                    "open": "Open",
+                    "adjusted_close": "Adj Close",
+                    "volume": "Volume",
+                }
+            )
+            df_stock_candidate["Date"] = pd.to_datetime(df_stock_candidate.Date)
+            df_stock_candidate.set_index("Date", inplace=True)
+            df_stock_candidate.sort_index(ascending=True, inplace=True)
+        # TODO:  ###########################
 
         # IEX Cloud Source
         elif source == "iex":
