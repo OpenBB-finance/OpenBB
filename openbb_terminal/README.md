@@ -4,7 +4,7 @@
 <details open="open">
   <summary><h2 style="display: inline-block">Table of Contents</h2></summary>
     <ol>
-      <li><a href="#Anaconda---Python">Anaconda & Python Installation</a></li>
+      <li><a href="#anaconda--python">Anaconda & Python Installation</a></li>
       <li><a href="#Docker-Installation">Docker Installation</a></li>
       <li><a href="#web-ui---docker">Docker Web UI Installation</a></li>
       <li><a href="#local-installation-of-gst-on-raspberry-pi">Raspberry-Pi-Installation - Portable GST</a></li>
