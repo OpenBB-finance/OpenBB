@@ -15,6 +15,7 @@ from bs4 import BeautifulSoup
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import lambda_long_number_format
+from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.fundamental_analysis.fa_helper import clean_df_index
 
 logger = logging.getLogger(__name__)
@@ -333,10 +334,12 @@ def get_financials(ticker: str, financial: str) -> pd.DataFrame:
     headers = []
     temp_list = []
     final = []
+    if len(features) == 0:
+        return console.print("No data found in Yahoo Finance")
+
     index = 0  # create headers
     for item in features[0].find_all("div", class_="D(ib)"):
         headers.append(item.text)  # statement contents
-
     while index <= len(features) - 1:
         # filter for each line of the statement
         temp = features[index].find_all("div", class_="D(tbc)")
