@@ -335,7 +335,7 @@ def get_financials(ticker: str, financial: str) -> pd.DataFrame:
     temp_list = []
     final = []
     if len(features) == 0:
-        return console.print("No data found in Yahoo Finance")
+        return console.print("No data found in Yahoo Finance\n")
 
     index = 0  # create headers
     for item in features[0].find_all("div", class_="D(ib)"):
