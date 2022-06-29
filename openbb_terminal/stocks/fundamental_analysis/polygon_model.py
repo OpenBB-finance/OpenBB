@@ -41,6 +41,10 @@ def get_financials(
         f"&apiKey={cfg.API_POLYGON_KEY}"
     ).json()
 
+    if financial == "cash" and quarterly:
+        console.print(
+            "[red]Quarterly information not available for statement of cash flows[/red]\n"
+        )
     if financial not in ["balance", "income", "cash"]:
         console.print("financial must be 'balance' or 'income'.\n")
         return pd.DataFrame()
@@ -85,20 +89,21 @@ def get_financials(
             income_statements = income_statements[["value"]]
             income_statements.columns = [single_thing["filing_date"]]
 
-            cash_flows = pd.concat(
-                [
-                    pd.DataFrame(),
-                    pd.DataFrame.from_dict(
-                        single_thing["financials"]["cash_flow_statement"],
-                        orient="index",
-                    ),
-                ],
-                axis=1,
-            )
-            cash_flows = cash_flows[["value"]]
-            cash_flows.columns = [single_thing["filing_date"]]
+            if not quarterly:
+                cash_flows = pd.concat(
+                    [
+                        pd.DataFrame(),
+                        pd.DataFrame.from_dict(
+                            single_thing["financials"]["cash_flow_statement"],
+                            orient="index",
+                        ),
+                    ],
+                    axis=1,
+                )
+                cash_flows = cash_flows[["value"]]
+                cash_flows.columns = [single_thing["filing_date"]]
 
-            first = False
+                first = False
         else:
             values = pd.DataFrame(
                 pd.DataFrame.from_dict(
@@ -115,12 +120,14 @@ def get_financials(
             )
             income_statements = pd.concat([income_statements, values], axis=1)
 
-            values = pd.DataFrame(
-                pd.DataFrame.from_dict(
-                    single_thing["financials"]["cash_flow_statement"], orient="index"
-                ).value
-            )
-            cash_flows = pd.concat([cash_flows, values], axis=1)
+            if not quarterly:
+                values = pd.DataFrame(
+                    pd.DataFrame.from_dict(
+                        single_thing["financials"]["cash_flow_statement"],
+                        orient="index",
+                    ).value
+                )
+                cash_flows = pd.concat([cash_flows, values], axis=1)
     if financial == "balance":
         return balance_sheets
     if financial == "income":

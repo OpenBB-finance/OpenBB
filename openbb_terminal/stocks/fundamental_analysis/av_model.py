@@ -175,31 +175,28 @@ def get_income_statements(
     # If the returned data was unsuccessful
     if "Error Message" in response_json:
         console.print(response_json["Error Message"])
+        return pd.DataFrame()
+    if not response_json:
+        console.print("No data found from Alpha Vantage, looking in Yahoo Finance")
+        return yahoo_finance_model.get_financials(ticker, financial="financials")
+    statements = response_json
+    df_fa = pd.DataFrame()
+
+    if quarterly:
+        if "quarterlyReports" in statements:
+            df_fa = pd.DataFrame(statements["quarterlyReports"])
     else:
-        # check if json is empty
-        if not response_json:
-            console.print("No data found from Alpha Vantage, looking in Yahoo Finance")
-            return yahoo_finance_model.get_financials(ticker, financial="financials")
-        else:
-            statements = response_json
-            df_fa = pd.DataFrame()
+        if "annualReports" in statements:
+            df_fa = pd.DataFrame(statements["annualReports"])
 
-            if quarterly:
-                if "quarterlyReports" in statements:
-                    df_fa = pd.DataFrame(statements["quarterlyReports"])
-            else:
-                if "annualReports" in statements:
-                    df_fa = pd.DataFrame(statements["annualReports"])
+    if df_fa.empty:
+        console.print("No data found from Alpha Vantage")
+        return pd.DataFrame()
 
-            if df_fa.empty:
-                console.print("No data found from Alpha Vantage")
-                return pd.DataFrame()
-
-            df_fa = df_fa.set_index("fiscalDateEnding")
-            df_fa = df_fa.head(number)
-            df_fa = df_fa.applymap(lambda x: lambda_long_number_format(x))
-            return df_fa[::-1].T
-    return pd.DataFrame()
+    df_fa = df_fa.set_index("fiscalDateEnding")
+    df_fa = df_fa.head(number)
+    df_fa = df_fa.applymap(lambda x: lambda_long_number_format(x))
+    return df_fa[::-1].T
 
 
 @log_start_end(log=logger)
