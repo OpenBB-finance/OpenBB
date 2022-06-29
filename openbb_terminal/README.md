@@ -4,8 +4,8 @@
 <details open="open">
   <summary><h2 style="display: inline-block">Table of Contents</h2></summary>
     <ol>
-      <li><a href="#Anaconda---Python">Anaconda & Python Installation</a></li>
-      <li><a href="#Docker-Installation">Docker Installation</a></li>
+      <li><a href="#anaconda--python">Anaconda & Python Installation</a></li>
+      <li><a href="#docker-installation">Docker Installation</a></li>
       <li><a href="#web-ui---docker">Docker Web UI Installation</a></li>
       <li><a href="#local-installation-of-gst-on-raspberry-pi">Raspberry-Pi-Installation - Portable GST</a></li>
       <li><a href="#api-keys">API Keys</a></li>
@@ -16,14 +16,15 @@
 
 There are currently four options to install the terminal:
 
-- using Installer: recommended if you just want to use the terminal
-- using Python: recommended if you want to develop new features
-- using Docker: alternative option to the installer if preferred
-- using Docker Web UI: if you want to deploy the web UI for users to access over your LAN
+- [Using the Installer](https://openbb-finance.github.io/OpenBBTerminal/#accessing-the-openbb-terminal) (recommended if you just want to use the terminal)
+- [Using Python](#anaconda--python) (recommended if you want to develop new features)
+- [Using Docker](#docker-installation) (alternative option to the installer if preferred)
+- [Using Docker Web UI](#web-ui---docker) (if you want to deploy the web UI for users to access
+  over your LAN)
 
 First step in all options is to star the project
 
-<img width="1272" alt="Github starts" src="https://user-images.githubusercontent.com/25267873/115989986-e20cfe80-a5b8-11eb-8182-d6d87d092252.png">
+<img width="1512" alt="OpenBB Terminal GitHub Stars" src="https://user-images.githubusercontent.com/46355364/176408138-771ec9ae-c873-4406-b964-939b8e433c15.png">
 
 ## Anaconda & Python
 

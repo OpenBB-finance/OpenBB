@@ -77,23 +77,14 @@ def display_crypto_sentiment_analysis(
             (ax,) = external_axes
         else:
             return
-
         for index, row in sentiment.iterrows():
-            if float(row["Sentiment Analysis"]) >= 0:
-                ax.scatter(
-                    index, float(row["Sentiment Analysis"]), s=100, color=theme.up_color
-                )
-            else:
-                ax.scatter(
-                    index,
-                    float(row["Sentiment Analysis"]),
-                    s=100,
-                    color=theme.down_color,
-                )
+            ax.scatter(
+                index, float(row["Sentiment Analysis"]), s=75, color="white", zorder=3
+            )
         ax.axhline(y=0, linestyle="--")
         ax.set_xlabel("Time")
         ax.set_ylabel("Finbrain's Sentiment Score")
-        start_date = sentiment.index[-1].strftime("%Y/%m/%d")
+        start_date = sentiment.index[0].strftime("%Y/%m/%d")
         ax.set_title(f"FinBrain's Sentiment Analysis for {coin}-USD since {start_date}")
         ax.set_ylim([-1.1, 1.1])
         senValues = np.array(pd.to_numeric(sentiment["Sentiment Analysis"].values))
@@ -117,7 +108,6 @@ def display_crypto_sentiment_analysis(
             interpolate=True,
         )
         theme.style_primary_axis(ax)
-
         if external_axes is None:
             theme.visualize_output()
 
