@@ -5,13 +5,13 @@ excerpt: "The Introduction to Cryptocurrency explains how to use the Cryptocurre
 geekdocCollapseSection: true
 ---
 
-The Cryptocurrency menu allows you to discover trending cryptocurrency (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/disc/" target="_blank">disc</a>).
-Additionally, you can also perform research of a specific coin (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/dd/" target="_blank">dd</a>),
-NFT (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/nft/" target="_blank">nft</a>)
-or most lucrative Defi project (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/defi/" target="_blank">defi</a>).
+The Cryptocurrency menu allows you to discover trending cryptocurrency (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/cryptocurrency/discovery/" target="_blank">disc</a>).
+Additionally, you can also perform research of a specific coin (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/cryptocurrency/due_diligence/" target="_blank">dd</a>),
+NFT (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/cryptocurrency/nft/" target="_blank">nft</a>)
+or most lucrative Defi project (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/cryptocurrency/defi/" target="_blank">defi</a>).
 It does so by handing you tools to (among other things) perform technical analysis (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/common/technical_analysis/" target="_blank">ta</a>),
 quantitative analysis (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/common/quantitative_analysis/" target="_blank">qa</a>), and give you access to onchain information
-(<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/onchain/" target="_blank">onchain</a>).
+(<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/cryptocurrency/onchain/" target="_blank">onchain</a>).
 
 ## How to use
 The Cryptocurrency menu is called upon by typing `crypto` which opens the following menu:
