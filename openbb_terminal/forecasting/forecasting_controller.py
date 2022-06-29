@@ -922,7 +922,6 @@ class ForecastingController(BaseController):
             "and the remaining could be: <datasetX.column2>,<datasetY.column3>",
         )
         parser.add_argument(
-            "-d",
             "--dataset",
             help="Dataset to add columns to",
             dest="dataset",
@@ -978,14 +977,6 @@ class ForecastingController(BaseController):
             description="Clean a dataset by filling and dropping NaN values.",
         )
         parser.add_argument(
-            "-n",
-            "--name",
-            help="The name of the dataset you want to clean up",
-            dest="name",
-            type=str,
-            choices=list(self.datasets.keys()),
-        )
-        parser.add_argument(
             "-f",
             "--fill",
             help="The method of filling NaNs. This has options to fill rows (rfill, rbfill, rffill) or fill "
@@ -1004,25 +995,37 @@ class ForecastingController(BaseController):
             choices=["rdrop", "cdrop"],
             default="",
         )
+        # if user does not put in --target-dataset
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-n")
+            other_args.insert(0, "--target-dataset")
+
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, NO_EXPORT, limit=5
+            parser,
+            other_args,
+            NO_EXPORT,
+            target_dataset=True,
+            limit=5,
         )
+        print(ns_parser)
         if ns_parser:
             # check proper file name is provided
             if not ns_parser.target_dataset:
                 console.print("[red]Please enter valid dataset.\n[/red]")
                 return
 
-            self.datasets[ns_parser.name], clean_status = forecasting_model.clean(
-                self.datasets[ns_parser.name],
+            (
+                self.datasets[ns_parser.target_dataset],
+                clean_status,
+            ) = forecasting_model.clean(
+                self.datasets[ns_parser.target_dataset],
                 ns_parser.fill,
                 ns_parser.drop,
                 ns_parser.limit,
             )
             if not clean_status:
-                console.print(f"Successfully cleaned '{ns_parser.name}' dataset")
+                console.print(
+                    f"Successfully cleaned '{ns_parser.target_dataset}' dataset"
+                )
             else:
                 console.print(f"[red]{ns_parser.name} still contains NaNs.[/red]")
 
