@@ -543,6 +543,10 @@ class FundamentalAnalysisController(StockBaseController):
             limit=5,
         )
         if ns_parser:
+            # TODO: Switch to actually getting data
+            if ns_parser.source == "yf" and ns_parser.b_quarter:
+                text = "Quarterly data currently unavailable for yfinance"
+                console.print(f"[red]{text}, showing yearly.[/red]\n")
             if ns_parser.source == "av":
                 av_view.display_income_statement(
                     ticker=self.ticker,
@@ -612,6 +616,10 @@ class FundamentalAnalysisController(StockBaseController):
             limit=5,
         )
         if ns_parser:
+            # TODO: Switch to actually getting data
+            if ns_parser.source == "yf" and ns_parser.b_quarter:
+                text = "Quarterly data currently unavailable for yfinance"
+                console.print(f"[red]{text}, showing yearly.[/red]\n")
             if ns_parser.source == "av":
                 av_view.display_balance_sheet(
                     ticker=self.ticker,
@@ -687,6 +695,10 @@ class FundamentalAnalysisController(StockBaseController):
             export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
         )
         if ns_parser:
+            # TODO: Switch to actually getting data
+            if ns_parser.source == "yf" and ns_parser.b_quarter:
+                text = "Quarterly data currently unavailable for yfinance"
+                console.print(f"[red]{text}, showing yearly.[/red]\n")
             if ns_parser.source == "av":
                 av_view.display_cash_flow(
                     ticker=self.ticker,
