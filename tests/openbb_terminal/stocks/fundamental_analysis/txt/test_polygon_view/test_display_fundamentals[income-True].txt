@@ -1,24 +1,21 @@
-                                                                           2022-04-29 2022-01-28
-Net Income Loss Available To Common Stockholders Basic                       25.010 B   34.630 B
-Costs And Expenses                                                           67.139 B   82.704 B
-Net Income Loss Attributable To Noncontrolling Interest                             0          0
-Income Loss From Continuing Operations After Tax                             25.010 B   34.630 B
-Operating Expenses                                                           12.580 B   12.755 B
-Cost Of Revenue                                                              54.719 B   69.702 B
-Participating Securities Distributed And Undistributed Earnings Loss Basic          0          0
-Gross Profit                                                                 42.559 B   54.243 B
-Net Income Loss                                                              25.010 B   34.630 B
-Benefits Costs Expenses                                                      67.139 B   82.704 B
-Diluted Earnings Per Share                                                      1.520      2.100
-Revenues                                                                     97.278 B  123.945 B
-Basic Earnings Per Share                                                        1.540      2.110
-Income Loss From Continuing Operations Before Tax                            30.139 B   41.241 B
-Operating Income Loss                                                        29.979 B   41.488 B
-Net Income Loss Attributable To Parent                                       25.010 B   34.630 B
-Preferred Stock Dividends And Other Adjustments                                     0          0
-Nonoperating Income Loss                                                        160 M     -247 M
-Income Tax Expense Benefit                                                    5.129 B    6.611 B
-Interest Expense Operating                                                      691 M      694 M
-Income Tax Expense Benefit Deferred                                                 -      682 M
-Income Loss Before Equity Method Investments                                        -          -
-
+                                                                           2009-07-22
+Net Income Loss                                                               1.229 B
+Preferred Stock Dividends And Other Adjustments                                     0
+Income Loss From Continuing Operations After Tax                              1.229 B
+Basic Earnings Per Share                                                        1.380
+Operating Income Loss                                                         1.672 B
+Income Loss Before Equity Method Investments                                  1.732 B
+Gross Profit                                                                  3.023 B
+Income Loss From Continuing Operations Before Tax                             1.732 B
+Net Income Loss Available To Common Stockholders Basic                        1.229 B
+Cost Of Revenue                                                               5.314 B
+Operating Expenses                                                            1.351 B
+Costs And Expenses                                                            6.605 B
+Nonoperating Income Loss                                                         60 M
+Revenues                                                                      8.337 B
+Income Tax Expense Benefit                                                      503 M
+Diluted Earnings Per Share                                                      1.350
+Net Income Loss Attributable To Noncontrolling Interest                             0
+Benefits Costs Expenses                                                       6.605 B
+Participating Securities Distributed And Undistributed Earnings Loss Basic          0
+Net Income Loss Attributable To Parent                                        1.229 B

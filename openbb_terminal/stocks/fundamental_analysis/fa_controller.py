@@ -123,11 +123,11 @@ class FundamentalAnalysisController(StockBaseController):
         mt.add_cmd("splits", "Yahoo Finance", not self.suffix)
         mt.add_cmd("web", "Yahoo Finance", not self.suffix)
         mt.add_cmd("hq", "Yahoo Finance", not self.suffix)
-        mt.add_cmd("income", "Alpha Vantage / Polygon")
-        mt.add_cmd("balance", "Alpha Vantage / Polygon")
+        mt.add_cmd("income", "Alpha Vantage / Polygon / Yahoo Finance")
+        mt.add_cmd("balance", "Alpha Vantage / Polygon / Yahoo Finance")
         mt.add_cmd("overview", "Alpha Vantage")
         mt.add_cmd("key", "Alpha Vantage")
-        mt.add_cmd("cash", "Alpha Vantage")
+        mt.add_cmd("cash", "Alpha Vantage / Yahoo Finance")
         mt.add_cmd("earnings", "Alpha Vantage")
         mt.add_cmd("fraud", "Alpha Vantage")
         mt.add_cmd("dupont", "Alpha Vantage")
@@ -197,7 +197,7 @@ class FundamentalAnalysisController(StockBaseController):
                 ROI, 52W High, Beta, Quick Ratio, Sales past 5Y, Gross Margin, 52W Low, ATR,
                 Employees, Current Ratio, Sales Q/Q, Operating Margin, RSI (14), Volatility, Optionable,
                 Debt/Eq, EPS Q/Q, Profit Margin, Rel Volume, Prev Close, Shortable, LT Debt/Eq,
-                Earnings, Payout, Avg Volume, Price, Recomendation, SMA20, SMA50, SMA200, Volume, Change.
+                Earnings, Payout, Avg Volume, Price, Recommendation, SMA20, SMA50, SMA200, Volume, Change.
                 [Source: Finviz]
             """,
         )
@@ -528,12 +528,19 @@ class FundamentalAnalysisController(StockBaseController):
             dest="b_quarter",
             help="Quarter fundamental data flag.",
         )
+        parser.add_argument(
+            "-s",
+            "--source",
+            default="av",
+            dest="source",
+            choices=["polygon", "av", "yf"],
+            help="The source to get the data from",
+        )
         ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
             limit=5,
-            sources=["polygon", "av"],
         )
         if ns_parser:
             if ns_parser.source == "av":
@@ -549,6 +556,12 @@ class FundamentalAnalysisController(StockBaseController):
                     financial="income",
                     limit=ns_parser.limit,
                     quarterly=ns_parser.b_quarter,
+                    export=ns_parser.export,
+                )
+            elif ns_parser.source == "yf":
+                yahoo_finance_view.display_fundamentals(
+                    ticker=self.ticker,
+                    financial="financials",
                     export=ns_parser.export,
                 )
 
@@ -584,12 +597,19 @@ class FundamentalAnalysisController(StockBaseController):
             dest="b_quarter",
             help="Quarter fundamental data flag.",
         )
+        parser.add_argument(
+            "-s",
+            "--source",
+            default="av",
+            dest="source",
+            choices=["polygon", "av", "yf"],
+            help="The source to get the data from",
+        )
         ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
             limit=5,
-            sources=["polygon", "av"],
         )
         if ns_parser:
             if ns_parser.source == "av":
@@ -605,6 +625,12 @@ class FundamentalAnalysisController(StockBaseController):
                     financial="balance",
                     limit=ns_parser.limit,
                     quarterly=ns_parser.b_quarter,
+                    export=ns_parser.export,
+                )
+            elif ns_parser.source == "yf":
+                yahoo_finance_view.display_fundamentals(
+                    ticker=self.ticker,
+                    financial="balance-sheet",
                     export=ns_parser.export,
                 )
 
@@ -647,16 +673,41 @@ class FundamentalAnalysisController(StockBaseController):
             dest="b_quarter",
             help="Quarter fundamental data flag.",
         )
+        parser.add_argument(
+            "-s",
+            "--source",
+            default="av",
+            dest="source",
+            choices=["polygon", "av", "yf"],
+            help="The source to get the data from",
+        )
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
         )
         if ns_parser:
-            av_view.display_cash_flow(
-                ticker=self.ticker,
-                limit=ns_parser.limit,
-                quarterly=ns_parser.b_quarter,
-                export=ns_parser.export,
-            )
+            if ns_parser.source == "av":
+                av_view.display_cash_flow(
+                    ticker=self.ticker,
+                    limit=ns_parser.limit,
+                    quarterly=ns_parser.b_quarter,
+                    export=ns_parser.export,
+                )
+            elif ns_parser.source == "polygon":
+                polygon_view.display_fundamentals(
+                    ticker=self.ticker,
+                    financial="cash",
+                    limit=ns_parser.limit,
+                    quarterly=ns_parser.b_quarter,
+                    export=ns_parser.export,
+                )
+            elif ns_parser.source == "yf":
+                yahoo_finance_view.display_fundamentals(
+                    ticker=self.ticker,
+                    financial="cash-flow",
+                    export=ns_parser.export,
+                )
 
     @log_start_end(log=logger)
     def call_earnings(self, other_args: List[str]):
@@ -688,7 +739,9 @@ class FundamentalAnalysisController(StockBaseController):
             help="Number of latest info",
         )
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser,
+            other_args,
+            EXPORT_ONLY_RAW_DATA_ALLOWED,
         )
         if ns_parser:
             av_view.display_earnings(
