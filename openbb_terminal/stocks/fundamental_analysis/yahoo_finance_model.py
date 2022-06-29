@@ -326,7 +326,7 @@ def get_financials(ticker: str, financial: str) -> pd.DataFrame:
     # Making the website believe that you are accessing it using a Mozilla browser
     req = Request(url, headers={"User-Agent": "Mozilla/5.0"})
 
-    webpage = urlopen(req).read()
+    webpage = urlopen(req).read()  # pylint: disable= R1732
     soup = BeautifulSoup(webpage, "html.parser")
 
     features = soup.find_all("div", class_="D(tbr)")
