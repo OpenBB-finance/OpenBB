@@ -37,8 +37,8 @@
   <p align="center">Click on the GIF below for a DEMO of the terminal.</p>
 
 <p align="center">
-   <a href="https://www.youtube.com/watch?v=fqGPK8OVHLk" rel="honest work">
-      <img src="images/usage.gif" alt="drawing" width="1000"/>
+   <a href="https://www.youtube.com/watch?v=fqGPK8OVHLk" rel="OpenBB Terminal Demonstration">
+      <img src="" alt="OpenBB Terminal Illustration Showcase" width="1000"/>
    </a>
 </p>
 
