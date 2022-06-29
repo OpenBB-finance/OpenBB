@@ -38,15 +38,14 @@ def display_fundamentals(
     export: str
         Format to export data
     """
-    if financial == "balance":
-        fundamentals = polygon_model.get_financials(ticker, financial, quarterly)
-        title_str = "Balance Sheet"
-    elif financial == "income":
-        fundamentals = polygon_model.get_financials(ticker, financial, quarterly)
-        title_str = "Income Statement"
+    fundamentals = polygon_model.get_financials(ticker, financial, quarterly)
+    title_str = {
+        "balance": "Balance Sheet",
+        "income": "Income Statement",
+        "cash": "Cash Flows",
+    }[financial]
 
     if fundamentals.empty:
-        # The empty data frame error handling done in model
         return
 
     # Snake case to english
