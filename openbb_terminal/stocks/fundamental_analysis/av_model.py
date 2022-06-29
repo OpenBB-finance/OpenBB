@@ -46,7 +46,7 @@ def get_overview(ticker: str) -> pd.DataFrame:
     else:
         # check if json is empty
         if not result_json:
-            console.print("No data found from Alpha Vantage")
+            console.print("No data found from Alpha Vantage\n")
         # Parse json data to dataframe
         elif "Note" in result_json:
             console.print(result_json["Note"], "\n")
@@ -109,7 +109,7 @@ def get_key_metrics(ticker: str) -> pd.DataFrame:
     else:
         # check if json is empty
         if not result_json or len(result_json) < 2:
-            console.print("No data found from Alpha Vantage")
+            console.print("No data found from Alpha Vantage\n")
             return pd.DataFrame()
 
         df_fa = pd.json_normalize(result_json)
@@ -178,7 +178,9 @@ def get_income_statements(
     else:
         # check if json is empty
         if not response_json:
-            console.print("No data found from Alpha Vantage, looking in Yahoo Finance")
+            console.print(
+                "No data found from Alpha Vantage, looking in Yahoo Finance\n"
+            )
             if (
                 yahoo_finance_model.get_financials(ticker, financial="financials")
                 is not None
@@ -198,7 +200,7 @@ def get_income_statements(
                     df_fa = pd.DataFrame(statements["annualReports"])
 
             if df_fa.empty:
-                console.print("No data found from Alpha Vantage")
+                console.print("No data found from Alpha Vantage\n")
                 return pd.DataFrame()
 
             df_fa = df_fa.set_index("fiscalDateEnding")
@@ -238,7 +240,7 @@ def get_balance_sheet(
 
     # check if json is empty
     if not response_json:
-        console.print("No data found from Alpha Vantage, looking in Yahoo Finance")
+        console.print("No data found from Alpha Vantage, looking in Yahoo Finance\n")
         if (
             yahoo_finance_model.get_financials(ticker, financial="balance-sheet")
             is not None
@@ -256,7 +258,7 @@ def get_balance_sheet(
                 df_fa = pd.DataFrame(statements["annualReports"])
 
         if df_fa.empty:
-            console.print("No data found from Alpha Vantage")
+            console.print("No data found from Alpha Vantage\n")
             return pd.DataFrame()
 
         df_fa = df_fa.set_index("fiscalDateEnding")
@@ -294,7 +296,9 @@ def get_cash_flow(ticker: str, number: int, quarterly: bool = False) -> pd.DataF
     else:
         # check if json is empty
         if not response_json:
-            console.print("No data found from Alpha Vantage, looking in Yahoo Finance")
+            console.print(
+                "No data found from Alpha Vantage, looking in Yahoo Finance\n"
+            )
 
             if (
                 yahoo_finance_model.get_financials(ticker, financial="cash-flow")
@@ -313,7 +317,7 @@ def get_cash_flow(ticker: str, number: int, quarterly: bool = False) -> pd.DataF
                     df_fa = pd.DataFrame(statements["annualReports"])
 
             if df_fa.empty:
-                console.print("No data found from Alpha Vantage")
+                console.print("No data found from Alpha Vantage\n")
                 return pd.DataFrame()
 
             df_fa = df_fa.set_index("fiscalDateEnding")
@@ -354,7 +358,7 @@ def get_earnings(ticker: str, quarterly: bool = False) -> pd.DataFrame:
     else:
         # check if json is empty
         if not result_json or len(result_json) < 2:
-            console.print("No data found from Alpha Vantage")
+            console.print("No data found from Alpha Vantage\n")
         else:
 
             df_fa = pd.json_normalize(result_json)
