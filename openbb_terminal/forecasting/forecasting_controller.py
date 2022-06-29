@@ -1337,6 +1337,7 @@ class ForecastingController(BaseController):
             other_args,
             export_allowed=NO_EXPORT,
             target_dataset=True,
+            target_column=True,  # temp fix, but shouldnt have to inser this.
         )
 
         if not helpers.check_parser_input(ns_parser, self.datasets):
