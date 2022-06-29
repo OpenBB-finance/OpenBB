@@ -48,8 +48,14 @@ class ReportController(BaseController):
         notebook_file = os.path.join(
             os.path.dirname(os.path.abspath(__file__)), report_to_run
         )
+
+        # Open notebook with report template
         notebook_content = open(notebook_file + ".ipynb").read()
+
+        # Look for the metadata cell to understand if there are parameters required by the report
         metadata_cell = """"metadata": {\n    "tags": [\n     "parameters"\n    ]\n   },\n   "outputs":"""
+
+        # Locate position of the data of interest and get parameters
         notebook_metadata_content = notebook_content[
             notebook_content.find(metadata_cell) :  # noqa: E203
         ]
@@ -65,6 +71,8 @@ class ReportController(BaseController):
             ]
             + "]"
         )
+
+        # Make sure that the parameters provided are relevant
         if "parameters" in notebook_content:
             l_params = [
                 param.split("=")[0]
@@ -73,13 +81,17 @@ class ReportController(BaseController):
             ]
         d_params[report_to_run] = l_params
 
-        args = f"<{'> <'.join(l_params)}>"
+        # On the menu of choices add the parameters necessary for each template report
+        if len(l_params) > 1:
+            args = f"<{'> <'.join(l_params)}>"
+        else:
+            args = f"<{l_params[0]}>"
         reports_opts += (
             f"    {k}. {report_to_run}"
             + f"{(max_len_name-len(report_to_run))*' '} "
             + f"{args if args != '<>' else ''}\n"
         )
-    CHOICES_MENUS = report_names + ids_reports
+    CHOICES_MENUS = report_names + ids_reports + ["r", "reset"]
     PATH = "/reports/"
 
     def __init__(self, queue: List[str] = None):
@@ -137,11 +149,6 @@ class ReportController(BaseController):
 
         (known_args, other_args) = self.parser.parse_known_args(an_input.split())
 
-        if not other_args and an_input in ("1", "3", "4"):
-            console.print("[red]Error: No ticker provided\n[/red]")
-            logger.error("Exception: No ticker provided")
-            return self.queue
-
         # Redirect commands to their correct functions
         if known_args.cmd:
             if known_args.cmd in ("..", "q"):
@@ -151,7 +158,7 @@ class ReportController(BaseController):
             elif known_args.cmd == "r":
                 known_args.cmd = "reset"
 
-            if known_args.cmd in ["quit", "help", "reset", "home", "exit"]:
+            if known_args.cmd in ["quit", "help", "reset", "home", "exit", "cls"]:
                 getattr(
                     self,
                     "call_" + known_args.cmd,
@@ -181,6 +188,7 @@ class ReportController(BaseController):
                 else:
                     console.print("No argument required.")
                 console.print("")
+                return []
 
             notebook_template = os.path.join(
                 "openbb_terminal", "reports", report_to_run
