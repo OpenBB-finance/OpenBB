@@ -18,7 +18,7 @@ All of this can also be further analysed with <a href="https://openbb-finance.gi
 
 The Economy menu is called upon by typing `economy` which opens the following menu:
 
-![img.png](img.png)
+![Economy Menu](https://user-images.githubusercontent.com/46355364/176679746-21b28263-96be-4701-9fd1-8657602e0214.png)
 
 Within the Economy menu you have a variety of options ranging from treasury rates to population growth to country financial performance.
 As this is quite extensive, the guide has two sections. The first section will discuss valuations and performance and the
@@ -85,11 +85,11 @@ of a variety of commodities. For example, let's look at a general overview:
 
 Furthermore, we can look into yield curves of any country, by default this is set to the United States, but it can be any:
 
-![img_1.png](img_1.png)
+![Yield Curves Options Menu](https://user-images.githubusercontent.com/46355364/176679828-bd90df8c-bff3-42a7-8e03-897c0be99443.png)
 
 Which then returns the following plot:
 
-![](Figure_1.png)
+![Yield Curve](https://user-images.githubusercontent.com/46355364/176679949-dd8b5b47-1125-4b1c-9558-25f1d2d70ffc.png)
 
 Lastly, we can also show industry, sector and country performance with <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/economy/performance/" target="_blank">performance</a>.
 For example, looking at the `sectors` returns the following:
@@ -187,7 +187,7 @@ rate (`URATE`) of the Netherlands, Germany and France with the following:
 
 This returns the following graph:
 
-![](Figure_2.png)
+![Unemployment Rates](https://user-images.githubusercontent.com/46355364/176680030-b7936018-16ae-4dce-b652-5718977e9d57.png)
 
 The FRED database similarly has a lot of macroeconomic data, do note that you need an API key to do this which is explained in more detail
 in the <a href="https://openbb-finance.github.io/OpenBBTerminal/#accessing-other-sources-of-data-via-api-keys" target="_blank">Accessing other sources of data via API keys</a> section.
@@ -285,16 +285,16 @@ break-even inflation rates, the number after the `T` refers to the amount of yea
 
 Which returns the following graph:
 
-![](Figure_5.png)
+![Break-Even Inflation Rates](https://user-images.githubusercontent.com/46355364/176680117-6d2b53e4-4980-42e6-a46c-4da34001ad46.png)
 
 Furthermore, understanding the influence macroeconomic trends have to indices, the `index` command can be used. This has a
 large set of pre-configured indices but has the possibility to add your own if you enter the ticker.
 
-![img_2.png](img_2.png)
+![Index Command Menu](https://user-images.githubusercontent.com/46355364/176680206-7ad44c3a-6cd7-45de-be5a-9bbb4e3e5c9a.png)
 
 Which plots the following:
 
-![](Figure_3.png)
+![Index Plot](https://user-images.githubusercontent.com/46355364/176680336-9ce60aa4-b2f7-4199-be42-62a8d78b1f5c.png)
 
 This then all comes together within the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/economy/plot/" target="_blank">plot</a> command where you can combine the datasets from the above commands into one graph.
 For example, it seems there is a relationship between the inflation rates and the unemployment rate (<a href="https://www.investopedia.com/articles/markets/081515/how-inflation-and-unemployment-are-related.asp" target="_blank">source</a>)
@@ -310,7 +310,7 @@ which we can graphically show with:
 
 Resulting in the following graph:
 
-![](Figure_4.png)
+![Combine plots of Unemployment Rate and Break Even Inflation](https://user-images.githubusercontent.com/46355364/176680454-b878604e-08a2-474e-ad9f-3b695ee958d1.png)
 
 ## Sub-menus available
 
@@ -384,7 +384,7 @@ is defined from 2008 to 2015, showing the influence of the <a href="https://en.w
 
 This plots the following graph:
 
-![](Figure_6.png)
+![CBOE Crude OIL ETF Volatility Index](https://user-images.githubusercontent.com/46355364/176680559-2806bd91-2938-47be-8074-43b8f071aaad.png)
 
 A hypothesis could be that the more volatile the price of oil is, the lower the confidence of the consumers is. It is
 possible to visually depict this. First, let's plot the consumer confidence of Germany.
@@ -393,7 +393,8 @@ possible to visually depict this. First, let's plot the consumer confidence of G
 2022 Jun 30, 07:59 (🦋) /economy/ $ macro -p CONF -c Germany -s 2008-01-01 -e 2015-01-01
 ```
 
-![](Figure_7.png)
+![Consumer Confidence Germany](https://user-images.githubusercontent.com/46355364/176680603-1ace9534-f18a-4362-a1c0-d28c675d9415.png)
+
 
 Now, combine these two graphs with the `plot` command. This helps in visually depicting a (negative) relationship.
 
@@ -401,4 +402,4 @@ Now, combine these two graphs with the `plot` command. This helps in visually de
 2022 Jun 30, 08:00 (🦋) /economy/ $ plot --y1 Germany_CONF --y2 OVXCLS
 ```
 
-![](Figure_8.png)
+![CBOE Crude OIL ETF Volatility Index and Consumer Confidence Germany](https://user-images.githubusercontent.com/46355364/176680645-79b8f44d-adc7-49e4-b749-80188f22850f.png)
