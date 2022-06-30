@@ -21,6 +21,7 @@ from openbb_terminal.helper_funcs import (
     plot_autoscale,
     print_rich_table,
     is_valid_axes_count,
+    lambda_long_number_format,
 )
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.fundamental_analysis import yahoo_finance_model
@@ -394,3 +395,53 @@ def display_mktcap(
         theme.visualize_output()
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "mktcap", df_mktcap)
+
+
+@log_start_end(log=logger)
+def display_fundamentals(
+    ticker: str,
+    financial: str,
+    limit: int = 120,
+    export: str = "",
+):
+    """Display tickers balance sheet or income statement
+
+    Parameters
+    ----------
+    ticker: str
+        Stock ticker
+    financial:str
+        Either balance or financials for income or cash-flow
+    limit : int
+    export: str
+        Format to export data
+    """
+    if financial == "balance-sheet":
+        fundamentals = yahoo_finance_model.get_financials(ticker, financial)
+        title_str = "Balance Sheet"
+    elif financial == "financials":
+        fundamentals = yahoo_finance_model.get_financials(ticker, financial)
+        title_str = "Income Statement"
+    elif financial == "cash-flow":
+        fundamentals = yahoo_finance_model.get_financials(ticker, financial)
+        title_str = "Cash Flow Statement"
+
+    if fundamentals.empty:
+        # The empty data frame error handling done in model
+        return
+
+    # Snake case to english
+    fundamentals.index = fundamentals.index.to_series().apply(
+        lambda x: x.replace("_", " ").title()
+    )
+
+    # Readable numbers
+    fundamentals = fundamentals.applymap(lambda_long_number_format).fillna("-")
+    print_rich_table(
+        fundamentals.iloc[:, :limit].applymap(lambda x: "-" if x == "nan" else x),
+        show_index=True,
+        title=f"{ticker} {title_str}",
+    )
+    export_data(
+        export, os.path.dirname(os.path.abspath(__file__)), financial, fundamentals
+    )
