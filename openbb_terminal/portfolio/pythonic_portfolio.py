@@ -5,6 +5,7 @@ import logging
 
 import pandas as pd
 import yfinance as yf
+import numpy as np
 
 from openbb_terminal.rich_config import console
 
@@ -24,15 +25,18 @@ class Portfolio:
 
     Methods
     -------
-    load_orderbook: Class method that loads orderbook into Portfolio object
+    read_orderbook: Class method to read orderbook from file
+        
+    __set_orderbook:
         preprocess_orderbook: Method to preprocess, format and compute auxiliary fields
     
     load_benchmark: Adds benchmark ticker, info, prices and returns
         mimic_trades_for_benchmark: Mimic trades from the orderbook based on chosen benchmark assuming partial shares
 
     calculate_trades: Generates portfolio data from orderbook
-        load_historical_prices: Loads historical adj close prices for tickers in list of trades
-        populate_historical_trade_data:
+        load_portfolio_historical_prices: Loads historical adj close prices for tickers in list of trades
+        populate_historical_trade_data: Create a new dataframe to store historical prices by ticker
+        calculate_holdings: Calculate holdings from historical data
 
     determine_reserves:
 
@@ -45,15 +49,14 @@ class Portfolio:
     def __init__(self, orderbook: pd.DataFrame = pd.DataFrame()):
         """Initialize Portfolio class"""
 
-        # Orderbook
-        self.orderbook = orderbook
-
         # Portfolio
         self.tickers = {}
         self.inception_date = None
         self.static_data = pd.DataFrame()
         self.historical_trade_data = pd.DataFrame()
-        self.holdings = pd.DataFrame()
+        self.returns = pd.DataFrame()
+        self.itemized_holdings = pd.DataFrame()
+        self.portfolio_trades = pd.DataFrame()
 
         # Prices
         self.portfolio_historical_prices = pd.DataFrame()
@@ -65,10 +68,16 @@ class Portfolio:
         self.benchmark_returns = pd.DataFrame()
         self.benchmark_orderbook = pd.DataFrame()
 
+        # Set and preprocess orderbook
+        self.__set_orderbook(orderbook)
 
-    @classmethod   
-    def load_orderbook(cls, path: str):
-        """Class method creates a Portfolio object by loading an orderbook into it
+    def __set_orderbook(self, orderbook):
+        self.__orderbook = orderbook
+        self.preprocess_orderbook()
+        
+    @staticmethod
+    def read_orderbook(path: str) -> pd.DataFrame:
+        """Class method to read orderbook from file
 
         Args:
             path (str): path to orderbook file
@@ -79,52 +88,50 @@ class Portfolio:
         elif path.endswith(".csv"):
             orderbook = pd.read_csv(path)
 
-        # Create Portfolio object
-        portfolio = cls(orderbook)
-        # Ask portfolio for orderbook preprocess
-        portfolio.preprocess_orderbook()
-
-        return portfolio
+        return orderbook
 
     def preprocess_orderbook(self):
         """Method to preprocess, format and compute auxiliary fields
         """
-        if not self.orderbook.empty:
-
+        try:
             # Convert Date to datetime
-            self.orderbook["Date"] = pd.to_datetime(self.orderbook["Date"])
+            self.__orderbook["Date"] = pd.to_datetime(self.__orderbook["Date"])
 
             # Sort orderbook by date
-            self.orderbook = self.orderbook.sort_values(by="Date")
+            self.__orderbook = self.__orderbook.sort_values(by="Date")
             
             # Capitalize Ticker and Type [of instrument...]
-            self.orderbook["Ticker"] = self.orderbook["Ticker"].map(lambda x: x.upper())
-            self.orderbook["Type"] = self.orderbook["Type"].map(lambda x: x.upper())
+            self.__orderbook["Ticker"] = self.__orderbook["Ticker"].map(lambda x: x.upper())
+            self.__orderbook["Type"] = self.__orderbook["Type"].map(lambda x: x.upper())
 
             # Translate side: ["deposit", "buy"] -> 1 and ["withdrawal", "sell"] -> -1
-            self.orderbook["Side"] = self.orderbook["Side"].map(
+            self.__orderbook["Side"] = self.__orderbook["Side"].map(
                 lambda x: 
                 1 if x.lower() in ["deposit", "buy"]
                 else (-1 if x.lower() in ["withdrawal", "sell"] else 0)
             )
 
             # Convert quantity to signed integer
-            self.orderbook["Quantity"] = self.orderbook["Quantity"] * self.orderbook["Side"]
+            self.__orderbook["Quantity"] = self.__orderbook["Quantity"] * self.__orderbook["Side"]
 
             # Determining the investment/divestment value
-            self.orderbook["Investment"] = self.orderbook["Quantity"] * self.orderbook["Price"]
+            self.__orderbook["Investment"] = self.__orderbook["Quantity"] * self.__orderbook["Price"]
 
             # Reformat crypto tickers to yfinance format (e.g. BTC -> BTC-USD)
-            crypto_trades = self.orderbook[self.orderbook.Type == "CRYPTOCURRENCY"]
-            self.orderbook.loc[(self.orderbook.Type == "CRYPTOCURRENCY"), "Ticker"] = [
+            crypto_trades = self.__orderbook[self.__orderbook.Type == "CRYPTOCURRENCY"]
+            self.__orderbook.loc[(self.__orderbook.Type == "CRYPTOCURRENCY"), "Ticker"] = [
                 f"{crypto}-{currency}"
                 for crypto, currency in zip(crypto_trades.Ticker, crypto_trades.Currency)
             ]
 
 
             # Create tickers dictionary with structure {'Type': [Ticker]}
-            for type in set(self.orderbook["Type"]):
-                self.tickers[type] = list(self.orderbook[self.orderbook['Type'].isin([type])]["Ticker"])
+            for type in set(self.__orderbook["Type"]):
+                self.tickers[type] = list(set(self.__orderbook[self.__orderbook['Type'].isin([type])]["Ticker"]))
+
+            # Create list with tickers except cash
+            self.tickers_except_cash = list(set(self.__orderbook["Ticker"]))
+            if "CASH" in self.tickers_except_cash: self.tickers_except_cash.remove("CASH")
 
             # Warn user if no cash deposit in account
             if "CASH" not in self.tickers.keys():
@@ -138,12 +145,15 @@ class Portfolio:
                 )
 
             # Save orderbook inception date
-            self.inception_date = self.orderbook["Date"][0]
+            self.inception_date = self.__orderbook["Date"][0]
 
             # Save trades static data
-            self.static_data = self.orderbook.pivot(index="Ticker", columns=[], values=["Type", "Sector", "Industry", "Country"])
+            self.static_data = self.__orderbook.pivot(index="Ticker", columns=[], values=["Type", "Sector", "Industry", "Country"])
 
-    def load_benchmark(self, ticker: str):
+        except:
+            raise Exception('Could not preprocess orderbook.') 
+
+    def load_benchmark(self, ticker: str = "SPY"):
         """Adds benchmark dataframe
 
         Args:
@@ -158,7 +168,7 @@ class Portfolio:
         """Mimic trades from the orderbook based on chosen benchmark assuming partial shares
         """
         # Create dataframe to store benchmark trades
-        self.benchmark_orderbook = self.orderbook[["Date", "Type", "Investment"]].copy()
+        self.benchmark_orderbook = self.__orderbook[["Date", "Type", "Investment"]].copy()
         # Set current price of benchmark
         self.benchmark_orderbook["Last price"] = self.benchmark_historical_prices[-1]
         self.benchmark_orderbook[
@@ -169,7 +179,7 @@ class Portfolio:
         ] = float(0)
 
         # Iterate over orderbook to replicate trades on benchmark (skip CASH)
-        for index, trade in self.orderbook.iterrows():
+        for index, trade in self.__orderbook.iterrows():
             if trade["Type"] != "CASH":
                 # Select date to search (if not in historical prices, get closest value)
                 if trade["Date"] not in self.benchmark_historical_prices.index:
@@ -192,19 +202,46 @@ class Portfolio:
     def calculate_trades(self):
         """Generates portfolio data from orderbook
         """
-        self.load_historical_prices()
-
+        self.load_portfolio_historical_prices()
         self.populate_historical_trade_data()
+        self.calculate_holdings()
+
+        # # Determine the returns, replace inf values with NaN and then drop any missing values
+        self.returns = self.historical_trade_data["Holdings"]["Total"].pct_change()
+        self.returns.replace([np.inf, -np.inf], np.nan, inplace=True)
+        self.returns = self.returns.dropna()
+
+        # Determine invested amount, relative and absolute return based on last close
+        last_price = self.historical_trade_data["Close"].iloc[-1]
+
+        self.portfolio_trades = pd.DataFrame(self.__orderbook["Date"])
+        self.portfolio_trades[
+            [
+                "Close",
+                "Investment",
+                "Value",
+                "% Return",
+                "Abs Return",
+            ]
+        ] = float(0)
+
+        for index, trade in self.__orderbook.iterrows():
+            if trade["Type"] != "CASH":
+                self.portfolio_trades["Close"][index] = last_price[trade["Ticker"]]
+                self.portfolio_trades["Investment"][index] = trade["Investment"]
+                self.portfolio_trades["Value"][index] = (self.portfolio_trades["Close"][index] * trade["Quantity"])
+                self.portfolio_trades["% Return"][index] = (self.portfolio_trades["Value"][index]/self.portfolio_trades["Investment"][index]) - 1
+                self.portfolio_trades["Abs Return"].loc[index] = (self.portfolio_trades["Value"][index]- self.portfolio_trades["Investment"][index])
 
 
-    def load_historical_prices(self):
+    def load_portfolio_historical_prices(self):
         """Loads historical adj close prices for tickers in list of trades
         """
         for type in self.tickers.keys():
-            if type == "STOCK":
+            if type == "STOCK" or type == "ETF":
                 
                 # Download yfinance data
-                data = yf.download(
+                price_data = yf.download(
                         self.tickers[type],
                         start=self.inception_date,
                         progress=False
@@ -212,20 +249,20 @@ class Portfolio:
 
                 # Set up column name if only 1 ticker (pd.DataFrame only does this if >1 ticker)
                 if len(self.tickers[type]) == 1:
-                    data = pd.DataFrame(data)
-                    data.columns = self.tickers[type]
+                    price_data = pd.DataFrame(price_data)
+                    price_data.columns = self.tickers[type]
 
                 # Add to historical_prices dataframe
                 self.portfolio_historical_prices = pd.concat(
                     [
                         self.portfolio_historical_prices, 
-                        data
+                        price_data
                     ], axis=1)
 
             elif type == "CRYPTOCURRENCY":
                 
                 # Download yfinance data
-                data = yf.download(
+                price_data = yf.download(
                         self.tickers[type],
                         start=self.inception_date,
                         progress=False
@@ -233,22 +270,22 @@ class Portfolio:
 
                 # Set up column name if only 1 ticker (pd.DataFrame only does this if >1 ticker)
                 if len(self.tickers[type]) == 1:
-                    data = pd.DataFrame(data)
-                    data.columns = self.tickers[type]
+                    price_data = pd.DataFrame(price_data)
+                    price_data.columns = self.tickers[type]
         
                 # Add to historical_prices dataframe
                 self.portfolio_historical_prices = pd.concat(
                     [
                         self.portfolio_historical_prices, 
-                        data
+                        price_data
                     ], axis=1)
-                
-            else:
-                # Type not supported
-                pass
 
-            # Set CASH price to 1 by default
-            self.portfolio_historical_prices["CASH"] = 1
+            elif type == "CASH":
+                # Set CASH price to 1
+                self.portfolio_historical_prices["CASH"] = 1
+
+            else:
+                raise Exception("Type not supported in the orderbook.")
 
             # Fill missing values with last known price
             self.portfolio_historical_prices.fillna(method='ffill', inplace=True)
@@ -256,8 +293,7 @@ class Portfolio:
     def populate_historical_trade_data(self):
         """Create a new dataframe to store historical prices by ticker
         """
-
-        self.historical_trade_data = self.orderbook.pivot(
+        trade_data = self.__orderbook.pivot(
             index="Date",
             columns="Ticker",
             values=[
@@ -276,27 +312,56 @@ class Portfolio:
         )
 
         # Make historical prices columns a multi-index. This helps the merging.
-        self.portfolio_historical_prices.columns = pd.MultiIndex.from_product(
-            [["Close"], self.portfolio_historical_prices.columns]
-        )
+        self.portfolio_historical_prices.columns = pd.MultiIndex.from_product([["Close"], self.portfolio_historical_prices.columns])
 
-        # # Merge with historical close prices (and fillna)
-        self.historical_trade_data = pd.merge(
-            self.historical_trade_data,
+        # Merge with historical close prices (and fillna)
+        trade_data = pd.merge(
+            trade_data,
             self.portfolio_historical_prices,
             how="right",
             left_index=True,
             right_index=True,
         ).fillna(0)
 
-        # # Accumulate quantity held by trade date
-        self.historical_trade_data["Quantity"] = self.historical_trade_data["Quantity"].cumsum()
+        # Accumulate quantity held by trade date
+        trade_data["Quantity"] = trade_data["Quantity"].cumsum()
 
+        self.historical_trade_data = trade_data
+
+
+    def calculate_holdings(self):
+        """Calculate holdings from historical data
+        """
+        trade_data = self.historical_trade_data
+        
         # For each type [STOCK, ETF, etc] calculate holdings value by trade date
         # and add it to historical_trade_data
         for type in self.tickers.keys():
-            self.historical_trade_data[pd.MultiIndex.from_product([[type], self.tickers[type]])] = self.historical_trade_data["Quantity"][self.tickers[type]] * self.historical_trade_data["Close"][self.tickers[type]]
-            # portfolio.historical_trade_data[pd.MultiIndex.from_product([[type], portfolio.tickers[type]])] = portfolio.historical_trade_data["Quantity"][portfolio.tickers[type]] * portfolio.historical_trade_data["Close"][portfolio.tickers[type]]
+            trade_data[pd.MultiIndex.from_product([["Holdings"], self.tickers[type]])] = trade_data["Quantity"][self.tickers[type]] * trade_data["Close"][self.tickers[type]]
+
+        # Find amount of cash held in account. If CASH exist within the Orderbook,
+        # the cash hold is defined as deposited cash - stocks bought + stocks sold
+        # Otherwise, the cash hold will equal the invested amount.
+        if "CASH" in self.tickers:
+            trade_data.loc[:, ("Holdings", "CASH")] = (trade_data["Investment"]["CASH"] 
+                - trade_data["Investment"][self.tickers_except_cash].sum(axis=1) 
+                - trade_data["Fees"].sum(axis=1)
+                - trade_data["Premium"].sum(axis=1)
+            ).cumsum()
+        else:
+            trade_data.loc[:, ("Holdings", "CASH")] = (trade_data["Investment"][self.tickers_except_cash].sum(axis=1)).cumsum()
+
+        trade_data.loc[:, ("Holdings", "Total")] = (trade_data["Holdings"]["CASH"] + 
+                                                        trade_data["Holdings"][self.tickers_except_cash].sum(axis=1)
+                                                        )
+
+        # IS THIS BEING USED ANYWHERE?
+        # self.portfolio_value = portfolio["TotalHoldings"]
+
+        for type in self.tickers.keys():
+                self.itemized_holdings[type] = trade_data["Holdings"][self.tickers[type]].sum(axis=1)
+
+        self.historical_trade_data = trade_data
 
 
     def determine_reserves(self):
@@ -325,27 +390,7 @@ class Portfolio:
         """
         self.risk_free_rate = risk_free_rate
 
-if __name__ == "__main__":
-    path = "openbb_terminal/portfolio/portfolio_analysis/portfolios/Public_Equity_Orderbook.xlsx"
-    portfolio = Portfolio.load_orderbook(path)
-    # print(portfolio.tickers)
-    # print(portfolio.inception_date)
-    # print(portfolio.orderbook.head())
-    # portfolio.set_risk_free_rate(0.035)
-    # print(portfolio.risk_free_rate)
-    portfolio.load_benchmark("SPY")
-    # print(portfolio.benchmark_ticker)
-    # print(portfolio.benchmark_historical_prices)
-    # # print(portfolio.benchmark_returns)
-    # print(portfolio.benchmark_orderbook)
-    portfolio.load_historical_prices()
-    print(portfolio.portfolio_historical_prices)
-    # Ver com o Chavi porque é que o yfinance fica bloqueado
-    # quando peço preços neste modulo... No Jupyter funciona bem..
 
-# Load orderbook
-# Load benchmark
-# Calculate trades
 # Determine reserves
 # Determine allocations
 # Determine key metrics and ratios
