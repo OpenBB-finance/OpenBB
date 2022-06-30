@@ -7,6 +7,7 @@ import pandas as pd
 import yfinance as yf
 import numpy as np
 
+from openbb_terminal.portfolio import allocation_model
 from openbb_terminal.rich_config import console
 
 # Disable warning on pd chained assignments used to get benchmark quantity
@@ -38,11 +39,11 @@ class Portfolio:
         populate_historical_trade_data: Create a new dataframe to store historical prices by ticker
         calculate_holdings: Calculate holdings from historical data
 
-    determine_reserves:
+    calculate_reserves:
 
-    determine_allocations:
+    calculate_allocations:
 
-    determine_metrics:
+    calculate_metrics:
         set_risk_free_rate: Sets risk free rate
     """
     
@@ -58,6 +59,10 @@ class Portfolio:
         self.itemized_holdings = pd.DataFrame()
         self.portfolio_trades = pd.DataFrame()
 
+        self.portfolio_assets_allocation = pd.DataFrame()
+        self.portfolio_regional_allocation = pd.DataFrame()
+        self.portfolio_country_allocation = pd.DataFrame()
+
         # Prices
         self.portfolio_historical_prices = pd.DataFrame()
         self.risk_free_rate = float(0)
@@ -67,6 +72,10 @@ class Portfolio:
         self.benchmark_historical_prices = pd.DataFrame()
         self.benchmark_returns = pd.DataFrame()
         self.benchmark_orderbook = pd.DataFrame()
+
+        self.benchmark_assets_allocation = pd.DataFrame()
+        self.benchmark_regional_allocation = pd.DataFrame()
+        self.benchmark_country_allocation = pd.DataFrame()
 
         # Set and preprocess orderbook
         self.__set_orderbook(orderbook)
@@ -162,6 +171,7 @@ class Portfolio:
         self.benchmark_ticker = ticker
         self.benchmark_historical_prices = yf.download(ticker, start=self.inception_date, threads=False, progress=False)["Adj Close"]
         self.benchmark_returns = self.benchmark_historical_prices.pct_change().dropna()
+        self.benchmark_info = yf.Ticker(ticker).info
         self.mimic_trades_for_benchmark()
         
     def mimic_trades_for_benchmark(self):
@@ -206,7 +216,7 @@ class Portfolio:
         self.populate_historical_trade_data()
         self.calculate_holdings()
 
-        # # Determine the returns, replace inf values with NaN and then drop any missing values
+        # Determine the returns, replace inf values with NaN and then drop any missing values
         self.returns = self.historical_trade_data["Holdings"]["Total"].pct_change()
         self.returns.replace([np.inf, -np.inf], np.nan, inplace=True)
         self.returns = self.returns.dropna()
@@ -214,38 +224,39 @@ class Portfolio:
         # Determine invested amount, relative and absolute return based on last close
         last_price = self.historical_trade_data["Close"].iloc[-1]
 
-        self.portfolio_trades = pd.DataFrame(self.__orderbook["Date"])
+        # self.portfolio_trades = pd.DataFrame(self.__orderbook["Date"])
+        self.portfolio_trades = self.__orderbook.copy()
         self.portfolio_trades[
             [
+                "Portfolio Investment",
                 "Close",
-                "Investment",
-                "Value",
-                "% Return",
-                "Abs Return",
+                "Portfolio Value",
+                "% Portfolio Return",
+                "Abs Portfolio Return",
             ]
         ] = float(0)
 
         for index, trade in self.__orderbook.iterrows():
             if trade["Type"] != "CASH":
                 self.portfolio_trades["Close"][index] = last_price[trade["Ticker"]]
-                self.portfolio_trades["Investment"][index] = trade["Investment"]
-                self.portfolio_trades["Value"][index] = (self.portfolio_trades["Close"][index] * trade["Quantity"])
-                self.portfolio_trades["% Return"][index] = (self.portfolio_trades["Value"][index]/self.portfolio_trades["Investment"][index]) - 1
-                self.portfolio_trades["Abs Return"].loc[index] = (self.portfolio_trades["Value"][index]- self.portfolio_trades["Investment"][index])
+                self.portfolio_trades["Portfolio Investment"][index] = trade["Investment"]
+                self.portfolio_trades["Portfolio Value"][index] = (self.portfolio_trades["Close"][index] * trade["Quantity"])
+                self.portfolio_trades["% Portfolio Return"][index] = (self.portfolio_trades["Portfolio Value"][index]/self.portfolio_trades["Portfolio Investment"][index]) - 1
+                self.portfolio_trades["Abs Portfolio Return"].loc[index] = (self.portfolio_trades["Portfolio Value"][index]- self.portfolio_trades["Portfolio Investment"][index])
 
 
-    def load_portfolio_historical_prices(self):
+    def load_portfolio_historical_prices(self, use_close: bool = False):
         """Loads historical adj close prices for tickers in list of trades
         """
+
         for type in self.tickers.keys():
             if type == "STOCK" or type == "ETF":
-                
                 # Download yfinance data
                 price_data = yf.download(
                         self.tickers[type],
                         start=self.inception_date,
                         progress=False
-                    )["Adj Close"]
+                    )["Close" if use_close else "Adj Close"]
 
                 # Set up column name if only 1 ticker (pd.DataFrame only does this if >1 ticker)
                 if len(self.tickers[type]) == 1:
@@ -364,20 +375,48 @@ class Portfolio:
         self.historical_trade_data = trade_data
 
 
-    def determine_reserves(self):
+    def calculate_reserves(self):
         """_summary_
         """
         #TODO: Add back cash dividends and deduct exchange costs
         pass
 
-    def determine_allocations(self):
-        """_summary_
-        """
-        #TODO: Calculate allocations: this method seems fine in it's
-        # original form, which uses the allocation_model module
-        pass
+    def calculate_allocations(self):
+        """Determine allocations based on assets, sectors, countries and regional."""
+        
+        # Determine asset allocation
+        (
+            self.benchmark_assets_allocation,
+            self.portfolio_assets_allocation,
+        ) = allocation_model.obtain_assets_allocation(
+            self.benchmark_info, self.portfolio_trades
+        )
 
-    def determine_metrics(self):
+        # Determine sector allocation
+        (
+            self.benchmark_sectors_allocation,
+            self.portfolio_sectors_allocation,
+        ) = allocation_model.obtain_sector_allocation(
+            self.benchmark_info, self.portfolio_trades
+        )
+
+        # Determine regional and country allocations
+        (
+            self.benchmark_regional_allocation,
+            self.benchmark_country_allocation,
+        ) = allocation_model.obtain_benchmark_regional_and_country_allocation(
+            self.benchmark_ticker
+        )
+
+        (
+            self.portfolio_regional_allocation,
+            self.portfolio_country_allocation,
+        ) = allocation_model.obtain_portfolio_regional_and_country_allocation(
+            self.portfolio_trades
+        )
+
+
+    def calculate_metrics(self):
         """_summary_
         """
         pass
