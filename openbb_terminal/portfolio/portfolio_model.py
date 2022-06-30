@@ -199,79 +199,45 @@ class Portfolio:
 
     Methods
     -------
-    add_rf:
-        Sets the risk free rate for calculation purposes
+    add_trade:
+        Adds a trade to the dataframe of trades
     generate_holdings_from_trades:
-        Generates portfolio data from list of trades
-    get_prices_yfinance:
-        Gets historical adj close prices for tickers in list of trades
-    get_crypto_yfinance:
-        Gets historical coin data from coingecko
-    add_benchmark:
-        Adds benchmark dataframe
-    mimic_portfolio_trades_for_benchmark:
-        Mimic trades from the orderbook based on chosen benchmark assuming partial shares
-    calculate_allocations:
-        Determine allocations based on assets, sectors, countries and regional
-    from__csv:
-        Class method that generates a portfolio object from a csv file
-    from_xlsx:
-        Class method that generates a portfolio object from a xlsx file
-    get_r2_score:
-        Class method that retrieves R2 Score for portfolio and benchmark selected
-    get_skewness:
-        Class method that retrieves skewness for portfolio and benchmark selected
-    get_kurtosis:
-        Class method that retrieves kurtosis for portfolio and benchmark selected
-    get_stats:
-        Class method that retrieves stats for portfolio and benchmark selected based on a certain period    
-    get_volatility:
-        Class method that retrieves volatility for portfolio and benchmark selected
-    get_sharpe_ratio:
-        Class method that retrieves sharpe ratio for portfolio and benchmark selected
-    get_sortino_ratio:
-        Class method that retrieves sortino ratio for portfolio and benchmark selected
-    get_maximum_drawdown_ratio:
-        Class method that retrieves maximum drawdown ratio for portfolio and benchmark selected
+        Takes a list of trades and converts to holdings on each day
+    get_yahoo_close_prices:
+        Gets close prices or adj close prices from yfinance
+    add_benchmark
+        Adds a benchmark to the class
+
     """
 
     @log_start_end(log=logger)
     def __init__(self, trades: pd.DataFrame = pd.DataFrame(), rf: float = 0.0):
         """Initialize Portfolio class"""
         # Allow for empty initialization
-
-        # Benchmark
         self.benchmark_ticker: str = ""
         self.benchmark_info = None
         self.benchmark: pd.DataFrame = pd.DataFrame()
-        self.benchmark_trades = pd.DataFrame()
-        self.benchmark_returns = None
-        self.benchmark_sectors_allocation = pd.DataFrame()
-        self.benchmark_assets_allocation = pd.DataFrame()
-
-        # Portfolio
-        self.portfolio_trades = pd.DataFrame()
-        self.returns = None     
-        self.portfolio_sectors_allocation = pd.DataFrame()
-        self.portfolio_assets_allocation = pd.DataFrame()
-        self.portfolio_value = None
-        self.ItemizedHoldings = None  
-
-        # Prices
         self._historical_crypto: pd.DataFrame = pd.DataFrame()
         self._historical_prices: pd.DataFrame = pd.DataFrame()
+        self.returns = None
+        self.portfolio_value = None
+        self.ItemizedHoldings = None
+        self.benchmark_returns = None
+        self.portfolio_sectors_allocation = pd.DataFrame()
+        self.portfolio_assets_allocation = pd.DataFrame()
+        self.benchmark_sectors_allocation = pd.DataFrame()
+        self.benchmark_assets_allocation = pd.DataFrame()
+        self.benchmark_trades = pd.DataFrame()
+        self.portfolio_trades = pd.DataFrame()
         self.last_price = pd.DataFrame()
         self.empty = True
         self.rf = rf
 
-        # Preprocess
         if not trades.empty:
-
-            # Capitalize Name (ticker) and Type (cash, stock...)
             trades.Name = trades.Name.map(lambda x: x.upper())
             trades.Type = trades.Type.map(lambda x: x.upper())
 
-            # Translate side to ["deposit", "buy"] -> 1 and ["withdrawal", "sell"] -> -1
+            # Load in trades df and do some quick editing
             trades["Side"] = trades["Side"].map(
                 lambda x: 1
                 if x.lower() in ["deposit", "buy"]
@@ -281,7 +247,6 @@ class Portfolio:
             # Determining the investment value
             trades["Investment"] = trades.Quantity * trades.Price * trades.Side
 
-            # Warn user if no cash deposit in account
             if "CASH" not in trades.Name.to_list():
                 logger.warning(
                     "No initial cash deposit. Calculations may be off as this assumes trading from a "
@@ -297,34 +262,26 @@ class Portfolio:
 
             # Should be simply extended for crypto/bonds etc
             # Treat etf as stock for yfinance historical.
-
-            # Create set with stock tickers
             self._stock_tickers = list(
                 set(trades[trades.Type == "STOCK"].Name.to_list())
             )
-            # Create set with ETF tickers
             self._etf_tickers = list(set(trades[trades.Type == "ETF"].Name.to_list()))
 
-            # ????
             crypto_trades = trades[trades.Type == "CRYPTO"]
             self._crypto_tickers = [
                 f"{crypto}-{currency}"
                 for crypto, currency in zip(crypto_trades.Name, crypto_trades.Currency)
             ]
             trades.loc[(trades.Type == "CRYPTO"), "Name"] = self._crypto_tickers
-            
-            # Save first trade date
             self._start_date = trades.Date[0]
-            
+
             # Copy pandas notation
             self.empty = False
 
-            # Adjust date of trades (WHY IS THIS USEFULL???)
+            # Adjust date of trades
             trades["Date"] = pd.DatetimeIndex(trades["Date"])
 
-        # Save preprocessed trades as instance attribute
         self.trades = trades
-
         self.portfolio = pd.DataFrame()
 
     @log_start_end(log=logger)
@@ -336,10 +293,10 @@ class Portfolio:
     def generate_holdings_from_trades(self, yfinance_use_close: bool = False):
         """Generates portfolio data from list of trades"""
         # Load historical prices from yahoo (option to get close instead of adj close)
-        self.get_prices_yfinance(use_close=yfinance_use_close)
+        self.get_yahoo_close_prices(use_close=yfinance_use_close)
         self.get_crypto_yfinance()
 
-        # Pivot list of trades on Name. This will give a multi-index df where the multiindex are the individual ticker
+        # Pivot list of trades on Name.  This will give a multi-index df where the multiindex are the individual ticker
         # and the values from the table
         portfolio = self.trades.pivot(
             index="Date",
@@ -421,8 +378,6 @@ class Portfolio:
         # Find amount of cash held in account. If CASH does not exist within the Orderbook,
         # the cash hold will equal the invested amount. Otherwise, the cash hold is defined as deposited cash -
         # stocks bought + stocks sold
-        
-
         if "CASH" not in portfolio["Investment"]:
             portfolio["CashHold"] = (
                 portfolio["Investment"][
@@ -437,14 +392,6 @@ class Portfolio:
             ][self._stock_tickers + self._etf_tickers + self._crypto_tickers].sum(
                 axis=1
             )
-
-        # TODO: I think fees are being duplicated here because
-        # From above: CashHold = CASH - Investment 
-        # From Excel: Investment = Price * Quantity - Fees
-        # Below: CashHold = CASH - Investment - Fees - Premium
-        # So Fees come twice in the calculations
-        # Note to self: actually no, because Investment is recalculated on __init__()
-        # as Investment = Price * Quantity * Side(-1,1)
 
         # Subtract Fees or Premiums from cash holdings
         portfolio["CashHold"] = (
@@ -512,7 +459,7 @@ class Portfolio:
 
     # TODO: Add back dividends
     @log_start_end(log=logger)
-    def get_prices_yfinance(self, use_close: bool = False):
+    def get_yahoo_close_prices(self, use_close: bool = False):
         """Gets historical adj close prices for tickers in list of trades"""
         tickers_to_download = self._stock_tickers + self._etf_tickers
         if tickers_to_download:
@@ -525,10 +472,11 @@ class Portfolio:
                     tickers_to_download, start=self._start_date, progress=False
                 )["Close"]
 
-            # Set up column name if only 1 ticker (pd.DataFrame only does this if >1 ticker)
+            # Adjust for case of only 1 ticker
             if len(tickers_to_download) == 1:
                 self._historical_prices = pd.DataFrame(self._historical_prices)
                 self._historical_prices.columns = tickers_to_download
+
         else:
             data_for_index_purposes = yf.download(
                 "AAPL", start=self._start_date, progress=False
@@ -539,7 +487,7 @@ class Portfolio:
 
         self._historical_prices["CASH"] = 1
 
-        # Make columns a multi-index. This helps the merging.
+        # Make columns a multi-index.  This helps the merging.
         self._historical_prices.columns = pd.MultiIndex.from_product(
             [["Close"], self._historical_prices.columns]
         )
@@ -578,11 +526,11 @@ class Portfolio:
 
         self.benchmark_ticker = benchmark
 
-    # If without partial shares assumption the model is not correct
-    # why are you allowing the user to have this option?
     @log_start_end(log=logger)
     def mimic_portfolio_trades_for_benchmark(self, full_shares: bool = False):
-        """Mimic trades from the orderbook based on chosen benchmark assuming partial shares"""
+        """Mimic trades from the orderbook as good as possible based on chosen benchmark. The assumption is that the
+        benchmark is always tradable and allows for partial shares. This eliminates the need to keep track of a cash
+        position due to a mismatch in trades"""
 
         if full_shares:
             console.print(
@@ -590,7 +538,7 @@ class Portfolio:
                 "due to the model not taking into account the remaining cash position.[/red]"
             )
 
-        self.benchmark_trades = self.trades[["Date", "Type", "Investment"]].copy() last price?
+        self.benchmark_trades = self.trades[["Date", "Type", "Investment"]].copy()
         self.benchmark_trades["Close"] = self.benchmark[-1]
         self.benchmark_trades[
             [
@@ -625,7 +573,6 @@ class Portfolio:
                     self.benchmark_trades["Price"][index]
                     * self.benchmark_trades["Benchmark Quantity"][index]
                 )
-                # Benchmark value is the current value of the specific trade quantity
                 self.benchmark_trades["Benchmark Value"][index] = (
                     self.benchmark_trades["Close"][index]
                     * self.benchmark_trades["Benchmark Quantity"][index]
@@ -642,7 +589,7 @@ class Portfolio:
     # pylint:disable=no-member
     @log_start_end(log=logger)
     def calculate_allocations(self):
-        """Determine allocations based on assets, sectors, countries and regional"""
+        """Determine allocations based on assets, sectors, countries and regional."""
         # Determine asset allocation
         (
             self.benchmark_assets_allocation,
@@ -989,21 +936,3 @@ class Portfolio:
         return pd.DataFrame(
             vals, index=portfolio_helper.PERIODS, columns=["Portfolio", "Benchmark"]
         )
-
-if __name__ == "__main__":    
-    portfolio = Portfolio()
-    print(portfolio.trades)
-    print(portfolio.rf)
-
-    path = "openbb_terminal/portfolio/portfolio_analysis/portfolios/Public_Equity_Orderbook.xlsx"
-    portfolio = Portfolio.from_xlsx(path)
-    trades = portfolio.trades
-    print(trades)
-
-    rf_rate = 0.034
-    portfolio.add_rf(rf_rate)
-    
-    portfolio.get_prices_yfinance()
-    print(portfolio._historical_prices)
-
-
