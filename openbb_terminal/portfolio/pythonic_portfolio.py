@@ -34,7 +34,7 @@ class Portfolio:
     load_benchmark: Adds benchmark ticker, info, prices and returns
         mimic_trades_for_benchmark: Mimic trades from the orderbook based on chosen benchmark assuming partial shares
 
-    calculate_trades: Generates portfolio data from orderbook
+    generate_portfolio_data: Generates portfolio data from orderbook
         load_portfolio_historical_prices: Loads historical adj close prices for tickers in list of trades
         populate_historical_trade_data: Create a new dataframe to store historical prices by ticker
         calculate_holdings: Calculate holdings from historical data
@@ -43,8 +43,10 @@ class Portfolio:
 
     calculate_allocations:
 
+    set_risk_free_rate: Sets risk free rate
+
     calculate_metrics:
-        set_risk_free_rate: Sets risk free rate
+        
     """
     
     def __init__(self, orderbook: pd.DataFrame = pd.DataFrame()):
@@ -69,9 +71,10 @@ class Portfolio:
 
         # Benchmark
         self.benchmark_ticker: str = ""
+        self.benchmark_info = None
         self.benchmark_historical_prices = pd.DataFrame()
         self.benchmark_returns = pd.DataFrame()
-        self.benchmark_orderbook = pd.DataFrame()
+        self.benchmark_trades = pd.DataFrame()
 
         self.benchmark_assets_allocation = pd.DataFrame()
         self.benchmark_regional_allocation = pd.DataFrame()
@@ -83,6 +86,13 @@ class Portfolio:
     def __set_orderbook(self, orderbook):
         self.__orderbook = orderbook
         self.preprocess_orderbook()
+    
+    def get_orderbook(self):
+        try:
+            return self.__orderbook
+        except:
+            logger.warning("No orderbook loaded")
+            console.print("[red]No orderbook loaded.[/red]\n")
         
     @staticmethod
     def read_orderbook(path: str) -> pd.DataFrame:
@@ -178,12 +188,12 @@ class Portfolio:
         """Mimic trades from the orderbook based on chosen benchmark assuming partial shares
         """
         # Create dataframe to store benchmark trades
-        self.benchmark_orderbook = self.__orderbook[["Date", "Type", "Investment"]].copy()
+        self.benchmark_trades = self.__orderbook[["Date", "Type", "Investment"]].copy()
         # Set current price of benchmark
-        self.benchmark_orderbook["Last price"] = self.benchmark_historical_prices[-1]
-        self.benchmark_orderbook[
+        self.benchmark_trades["Last price"] = self.benchmark_historical_prices[-1]
+        self.benchmark_trades[
             [
-                "Quantity", 
+                "Benchmark Quantity", 
                 "Trade price"
             ]
         ] = float(0)
@@ -198,18 +208,18 @@ class Portfolio:
                     date = trade["Date"]
 
                 # Populate benchmark orderbook trades
-                self.benchmark_orderbook["Trade price"][index] = self.benchmark_historical_prices[date]
-                self.benchmark_orderbook["Quantity"][index] = trade["Investment"] / self.benchmark_orderbook["Trade price"][index]
+                self.benchmark_trades["Trade price"][index] = self.benchmark_historical_prices[date]
+                self.benchmark_trades["Benchmark Quantity"][index] = trade["Investment"] / self.benchmark_trades["Trade price"][index]
                
-        self.benchmark_orderbook["Investment"] = self.benchmark_orderbook["Trade price"] * self.benchmark_orderbook["Quantity"]
-        self.benchmark_orderbook["Current value"] = self.benchmark_orderbook["Last price"] * self.benchmark_orderbook["Quantity"]
-        self.benchmark_orderbook["% Return"] = self.benchmark_orderbook["Current value"] / self.benchmark_orderbook["Investment"] - 1
-        self.benchmark_orderbook["Absolute Return"] = self.benchmark_orderbook["Current value"] - self.benchmark_orderbook["Investment"]
+        self.benchmark_trades["Benchmark Investment"] = self.benchmark_trades["Trade price"] * self.benchmark_trades["Benchmark Quantity"]
+        self.benchmark_trades["Benchmark Value"] = self.benchmark_trades["Last price"] * self.benchmark_trades["Benchmark Quantity"]
+        self.benchmark_trades["Benchmark % Return"] = self.benchmark_trades["Benchmark Value"] / self.benchmark_trades["Benchmark Investment"] - 1
+        self.benchmark_trades["Benchmark Abs Return"] = self.benchmark_trades["Benchmark Value"] - self.benchmark_trades["Benchmark Investment"]
         # TODO: To add alpha here, we must pull prices from original trades and get last price
         # for each of those trades. Then just calculate returns and compare to benchmark
-        self.benchmark_orderbook.fillna(0, inplace=True)
+        self.benchmark_trades.fillna(0, inplace=True)
 
-    def calculate_trades(self):
+    def generate_portfolio_data(self):
         """Generates portfolio data from orderbook
         """
         self.load_portfolio_historical_prices()
