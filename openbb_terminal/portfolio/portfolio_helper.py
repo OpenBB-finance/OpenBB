@@ -194,7 +194,7 @@ def filter_df_by_period(df: pd.DataFrame, period: str = "all") -> pd.DataFrame:
 
     Returns
     ----------
-    str
+    pd.DataFrame
         A cleaned value
     """
     if period == "mtd":
@@ -284,7 +284,7 @@ def get_maximum_drawdown(return_series: pd.Series) -> float:
     Returns
     -------
     float
-        maximum drawdown
+        Maximum drawdown
     """
     comp_ret = (return_series + 1).cumprod()
     peak = comp_ret.expanding(min_periods=1).max()
