@@ -45,8 +45,8 @@ deprecation==2.1.0
 detecta==0.0.5; python_version >= "3.6"
 dnspython==2.2.1; python_version >= "3.6" and python_version < "4.0"
 ecos==2.0.10; python_full_version >= "3.6.1" and python_full_version < "4.0.0" and python_version >= "3.7"
-eod==0.2.0; python_version >= "3.8"
 entrypoints==0.4; python_full_version >= "3.7.0" and python_version >= "3.7"
+eod==0.2.0
 et-xmlfile==1.1.0; python_version >= "3.6"
 exchange-calendars==3.6.3; python_version >= "3.7" and python_full_version >= "3.7.0"
 executing==0.8.3; python_full_version >= "3.6.2" and python_version >= "3.8"
@@ -55,7 +55,7 @@ ffn==0.3.6; python_version >= "2.7" and python_full_version < "3.0.0" or python_
 financedatabase==1.0.2
 finnhub-python==2.4.13
 finviz==1.4.4
-finvizfinance==0.14.3; python_version >= "3.5"
+finvizfinance==0.14.1; python_version >= "3.5"
 fonttools==4.33.3; python_version >= "3.7"
 formulaic==0.3.4; python_full_version >= "3.7.1" and python_full_version < "4.0.0" and python_version >= "3.8"
 fred==3.1

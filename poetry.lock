@@ -806,6 +806,19 @@ optional = false
 python-versions = ">=3.6"
 
 [[package]]
+name = "eod"
+version = "0.2.0"
+description = "SDK for EOD Historical data APIs"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+numpy = "*"
+pandas = "*"
+requests = "*"
+
+[[package]]
 name = "et-xmlfile"
 version = "1.1.0"
 description = "An implementation of lxml.xmlfile for the standard library"
@@ -4590,7 +4603,7 @@ prediction = ["tensorflow"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8,<3.10"
-content-hash = "d6fa69aa88f955931a3c20e39fc70c64ec3008721e46de9f485c25157e4b20a6"
+content-hash = "4452945df062b58ebdd179a2a71b7f6c91f608320de137ef65ada7857a7e5731"
 
 [metadata.files]
 absl-py = [
@@ -5060,16 +5073,19 @@ cssselect = [
     {file = "cssselect-1.1.0.tar.gz", hash = "sha256:f95f8dedd925fd8f54edb3d2dfb44c190d9d18512377d3c1e2388d16126879bc"},
 ]
 cvxpy = [
+    {file = "cvxpy-1.2.1-1-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:e0f85757a936905c64f92e84b06e04d0bc9e7b8ab932ebf9b0c7e80949b60160"},
+    {file = "cvxpy-1.2.1-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:e98a5aadf033ab9b8f7c0e3aca920e4413ca181cd6eaa18c7c3386225bfbcb19"},
     {file = "cvxpy-1.2.1-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:4e081576a625255bd3949d8d7f751a5d0175b2db512673e0ebc19fcabdfdb60a"},
     {file = "cvxpy-1.2.1-cp310-cp310-manylinux_2_24_x86_64.whl", hash = "sha256:55b1cdbfb7fb7eba53077b5154d5287e8a0d31404eb342737eb1db360a265eef"},
     {file = "cvxpy-1.2.1-cp310-cp310-win_amd64.whl", hash = "sha256:0da15d10459908d1964cf2f35c706a99150ab22a1243d98796943d7daa43aa95"},
     {file = "cvxpy-1.2.1-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:8d51712e1f5cee68de1068a28d72d4ca855acae7162ded3872fa7bd46b9051d3"},
     {file = "cvxpy-1.2.1-cp37-cp37m-manylinux_2_24_x86_64.whl", hash = "sha256:94ad386214e8b92b990caa2e3367cf503b03c0ded8ba4d3a4b916fe310bac97f"},
     {file = "cvxpy-1.2.1-cp37-cp37m-win_amd64.whl", hash = "sha256:21efdff59d3128b23c18f1a0c82bc8cf177ac40de0c10aece4e7536c4b942abe"},
+    {file = "cvxpy-1.2.1-cp38-cp38-macosx_10_9_universal2.whl", hash = "sha256:f76d5740bcfd968cf3601c98c709ca5279886c2b47829cbfe85f48e37ec0844b"},
     {file = "cvxpy-1.2.1-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:8861a12efa88e626fd932eb5ca8e5b97bc55efaba0a4b580265990ae3b29f323"},
     {file = "cvxpy-1.2.1-cp38-cp38-manylinux_2_24_x86_64.whl", hash = "sha256:b6a3d1e5f37c6bb01cbaf1e6574c805499ef60619ca0dcac4927c403c4a6f46c"},
     {file = "cvxpy-1.2.1-cp38-cp38-win_amd64.whl", hash = "sha256:08711eda2b7c371b67450e1e7de98223b4940a89b065e3295777b184b9e9131b"},
-    {file = "cvxpy-1.2.1-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:e0f85757a936905c64f92e84b06e04d0bc9e7b8ab932ebf9b0c7e80949b60160"},
+    {file = "cvxpy-1.2.1-cp39-cp39-macosx_10_9_universal2.whl", hash = "sha256:89125916eb98a0f3da326d5a70853eea2a911cbded1235827ee23d0556ff80e4"},
     {file = "cvxpy-1.2.1-cp39-cp39-manylinux_2_24_x86_64.whl", hash = "sha256:0ed7e4b4bbcc80a55582e62d5688e2202f33dde3d0fceb23c81373dc6257d745"},
     {file = "cvxpy-1.2.1-cp39-cp39-win_amd64.whl", hash = "sha256:8df52e9b0817d15814f3cdc7861c65b6f4e5554d90429fe4cfecb7bdd91994cf"},
     {file = "cvxpy-1.2.1.tar.gz", hash = "sha256:6d67642643d1ddb2f2af59b466b87d42c4a2e367831ad7b43c33b59eefa5b50e"},
@@ -5213,6 +5229,10 @@ ecos = [
 entrypoints = [
     {file = "entrypoints-0.4-py3-none-any.whl", hash = "sha256:f174b5ff827504fd3cd97cc3f8649f3693f51538c7e4bdf3ef002c8429d42f9f"},
     {file = "entrypoints-0.4.tar.gz", hash = "sha256:b706eddaa9218a19ebcd67b56818f05bb27589b1ca9e8d797b74affad4ccacd4"},
+]
+eod = [
+    {file = "eod-0.2.0-py3-none-any.whl", hash = "sha256:b13cb27dff668501d10586d1ae440f8db4bb674049dd4d5a05324a63d383cd59"},
+    {file = "eod-0.2.0.tar.gz", hash = "sha256:8b25c9748109908b7a50f219ec4e27dd9d16eee131f884dc32d23b987bca5e0c"},
 ]
 et-xmlfile = [
     {file = "et_xmlfile-1.1.0-py3-none-any.whl", hash = "sha256:a2ba85d1d6a74ef63837eed693bcb89c3f752169b0e3e7ae5b16ca5e1b3deada"},

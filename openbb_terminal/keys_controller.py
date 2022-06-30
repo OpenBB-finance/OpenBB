@@ -1780,7 +1780,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
 
     @log_start_end(log=logger)
     def call_eodhd(self, other_args: List[str]):
-        """Process iex command"""
+        """Process eodhd command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
