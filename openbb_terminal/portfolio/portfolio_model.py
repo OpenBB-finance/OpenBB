@@ -1180,4 +1180,37 @@ class Portfolio:
 
     @log_start_end(log=logger)
     def get_calmar_ratio(self, period: float = 756):
+        period_return = self.returns.rolling(period, min_periods=period)
+        period_cum_returns = ((1 + period_return.shift(periods=1, fill_value=0)).cumprod() - 1)
+
+        # Calculate annual return
+        annual_return = (period_cum_returns + 1) ** (1 / (period / 252)) - 1
+
+        cr_rolling = annual_return / portfolio_helper.get_maximum_drawdown(period_return)
+
+        vals = list()
+        for period in portfolio_helper.PERIODS:
+            period_return = portfolio_helper.filter_df_by_period(self.returns, period)
+            period_bench_return = portfolio_helper.filter_df_by_period(self.benchmark_returns, period)
+            annual_return = (period_cum_returns + 1) ** (1 / (period / 252)) - 1
+            annual_bench_return = (period_cum_returns + 1) ** (1 / (period / 252)) - 1
+            vals.append(
+                [
+                    round(
+                        annual_return / portfolio_helper.get_maximum_drawdown(period_return),
+                        3,
+                    ),
+                    round(
+                        annual_bench_return / portfolio_helper.get_maximum_drawdown(period_bench_return),
+                        3,
+                    ),
+                ]
+            )
+
+        cr_period_df = pd.DataFrame(vals, index=portfolio_helper.PERIODS, columns=["Portfolio", "Benchmark"])
+
+        return cr_period_df, cr_rolling
+
+
+
 
