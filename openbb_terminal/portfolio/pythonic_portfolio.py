@@ -248,10 +248,12 @@ class Portfolio:
         self.benchmark_regional_allocation = pd.DataFrame()
         self.benchmark_country_allocation = pd.DataFrame()
 
-        # Set and preprocess orderbook
+        
         if orderbook.empty:
+            # Allow for empty initialization
             self.empty = True
         else:
+            # Set and preprocess orderbook
             self.__set_orderbook(orderbook)
 
     def __set_orderbook(self, orderbook):
@@ -314,9 +316,9 @@ class Portfolio:
             )
 
             # Reformat crypto tickers to yfinance format (e.g. BTC -> BTC-USD)
-            crypto_trades = self.__orderbook[self.__orderbook.Type == "CRYPTOCURRENCY"]
+            crypto_trades = self.__orderbook[self.__orderbook.Type == "CRYPTO"]
             self.__orderbook.loc[
-                (self.__orderbook.Type == "CRYPTOCURRENCY"), "Ticker"
+                (self.__orderbook.Type == "CRYPTO"), "Ticker"
             ] = [
                 f"{crypto}-{currency}"
                 for crypto, currency in zip(
@@ -489,7 +491,7 @@ class Portfolio:
                     [self.portfolio_historical_prices, price_data], axis=1
                 )
 
-            elif type == "CRYPTOCURRENCY":
+            elif type == "CRYPTO":
 
                 # Download yfinance data
                 price_data = yf.download(
@@ -635,10 +637,6 @@ class Portfolio:
         ) = allocation_model.obtain_portfolio_regional_and_country_allocation(
             self.portfolio_trades
         )
-
-    def calculate_metrics(self):
-        """_summary_"""
-        pass
 
     def set_risk_free_rate(self, risk_free_rate: float):
         """Sets risk free rate
