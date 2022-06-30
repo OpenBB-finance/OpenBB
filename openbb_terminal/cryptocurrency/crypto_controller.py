@@ -191,25 +191,29 @@ class CryptoController(CryptoBaseController):
     @log_start_end(log=logger)
     def call_candle(self, other_args):
         """Process candle command"""
-        if self.symbol:
-            parser = argparse.ArgumentParser(
-                add_help=False,
-                formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-                prog="candle",
-                description="""Display chart for loaded coin. You can specify currency vs which you want
-                to show chart and also number of days to get data for.""",
-            )
 
-            ns_parser = self.parse_known_args_and_warn(
-                parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-            )
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="candle",
+            description="""Display chart for loaded coin. You can specify currency vs which you want
+            to show chart and also number of days to get data for.""",
+        )
 
-            if ns_parser:
-                plot_chart(
-                    symbol=self.symbol,
-                    currency=self.current_currency,
-                    prices_df=self.current_df,
-                )
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+
+        if ns_parser:
+            if not self.symbol:
+                console.print("No coin loaded. First use `load {symbol}`\n")
+                return
+
+            plot_chart(
+                symbol=self.symbol,
+                currency=self.current_currency,
+                prices_df=self.current_df,
+            )
 
     @log_start_end(log=logger)
     def call_ta(self, _):
@@ -318,7 +322,7 @@ class CryptoController(CryptoBaseController):
 
     @log_start_end(log=logger)
     def call_qa(self, _):
-        """Process qa command"""
+        """Process pred command"""
         if self.symbol:
             from openbb_terminal.cryptocurrency.quantitative_analysis import (
                 qa_controller,
@@ -456,7 +460,8 @@ class CryptoController(CryptoBaseController):
             EXPORT_ONLY_RAW_DATA_ALLOWED,
             sources=CRYPTO_SOURCES.keys(),
         )
-        if ns_parser:
+        # TODO: merge find + display_all_coins
+        if ns_parser.coin:
             find(
                 coin=ns_parser.coin,
                 source=ns_parser.source,

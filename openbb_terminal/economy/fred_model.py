@@ -51,7 +51,7 @@ def check_series_id(series_id: str) -> Tuple[bool, Dict]:
             console.print("[red]Invalid API Key[/red]\n")
             logger.error("[red]Invalid API Key[/red]\n")
         elif "The series does not exist" in r.json()["error_message"]:
-            console.print(f"[red]{series_id} not found[/red].\n")
+            console.print(f"[red]{series_id} not found.[/red]\n")
             logger.error("%s not found", str(series_id))
         else:
             console.print(r.json()["error_message"])
