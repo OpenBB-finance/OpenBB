@@ -120,7 +120,7 @@ class PortfolioController(BaseController):
         self.benchmark_name = ""
         self.original_benchmark_name = ""
         self.portlist: List[str] = os.listdir(self.DEFAULT_HOLDINGS_PATH)
-        self.portfolio = portfolio_model.Portfolio()
+        self.portfolio = pythonic_portfolio.Portfolio()
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
@@ -178,7 +178,7 @@ class PortfolioController(BaseController):
         mt.add_cmd("es", self.portfolio_name and self.benchmark_name)
         mt.add_cmd("os", self.portfolio_name and self.benchmark_name)
 
-        console.print(text=mt.menu_text, menu="Portfolio")
+        # console.print(text=mt.menu_text, menu="Portfolio")
 
         port = bool(self.portfolio_name)
         port_bench = bool(self.portfolio_name) and bool(self.benchmark_name)
@@ -190,7 +190,7 @@ class PortfolioController(BaseController):
     load             load data into the portfolio[/cmds]
 
 [param]Loaded orderbook:[/param] {self.portfolio_name or ""}
-[param]Risk Free Rate:  [/param] {self.portfolio.rf:.2%}
+[param]Risk Free Rate:  [/param] {self.portfolio.risk_free_rate:.2%}
 {("[unvl]", "[cmds]")[port]}
     show             show existing transactions{("[/unvl]", "[/cmds]")[port]}
 {("[unvl]", "[cmds]")[port]}
@@ -379,7 +379,7 @@ class PortfolioController(BaseController):
                 )
             else:
                 console.print(
-                    "[red]Please first define the portfolio using 'load'[/red]\n"
+                    "[red]Please first load orderbook using 'load'[/red]\n"
                 )
             console.print()
 
@@ -506,9 +506,6 @@ class PortfolioController(BaseController):
             if check_portfolio_benchmark_defined(
                 self.portfolio_name, self.benchmark_name
             ):
-                # self.portfolio.mimic_portfolio_trades_for_benchmark(
-                #     full_shares=ns_parser.full_shares
-                # )
                 
                 portfolio_view.display_performance_vs_benchmark(
                     self.portfolio.portfolio_trades,
@@ -1013,7 +1010,7 @@ class PortfolioController(BaseController):
             "--rfr",
             type=check_positive_float,
             dest="risk_free_rate",
-            default=self.portfolio.rf,
+            default=self.portfolio.risk_free_rate,
             help="Set risk free rate for calculations.",
         )
         if other_args and "-" not in other_args[0][0]:
@@ -1056,7 +1053,7 @@ class PortfolioController(BaseController):
             "--rfr",
             type=check_positive_float,
             dest="risk_free_rate",
-            default=self.portfolio.rf,
+            default=self.portfolio.risk_free_rate,
             help="Set risk free rate for calculations.",
         )
         if other_args and "-" not in other_args[0][0]:
@@ -1133,7 +1130,7 @@ class PortfolioController(BaseController):
             "--rfr",
             type=check_positive_float,
             dest="risk_free_rate",
-            default=self.portfolio.rf,
+            default=self.portfolio.risk_free_rate,
             help="Set risk free rate for calculations.",
         )
         if other_args and "-" not in other_args[0][0]:
@@ -1228,7 +1225,7 @@ class PortfolioController(BaseController):
             "--rfr",
             type=check_positive_float,
             dest="risk_free_rate",
-            default=self.portfolio.rf,
+            default=self.portfolio.risk_free_rate,
             help="Set risk free rate for calculations.",
         )
         if other_args and "-" not in other_args[0][0]:
