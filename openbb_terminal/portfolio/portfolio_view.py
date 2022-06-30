@@ -18,7 +18,6 @@ from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.portfolio import (
     portfolio_helper,
     portfolio_model,
-    pythonic_portfolio,
 )
 
 from openbb_terminal.helper_funcs import (
@@ -822,7 +821,7 @@ def display_distribution_returns(
 
 @log_start_end(log=logger)
 def display_holdings_value(
-    portfolio: pythonic_portfolio.Portfolio,
+    portfolio: portfolio_model.Portfolio,
     sum_assets: bool = False,
     raw: bool = False,
     limit: int = 10,
@@ -909,7 +908,7 @@ def display_holdings_value(
 
 @log_start_end(log=logger)
 def display_holdings_percentage(
-    portfolio: pythonic_portfolio.Portfolio,
+    portfolio: portfolio_model.Portfolio,
     sum_assets: bool = False,
     raw: bool = False,
     limit: int = 10,
@@ -1265,7 +1264,7 @@ def display_maximum_drawdown(
     external_axes: plt.Axes
         Optional axes to display plot on
     """
-    drawdown = pythonic_portfolio.calculate_drawdown(holdings)
+    drawdown = portfolio_model.calculate_drawdown(holdings)
     if external_axes is None:
         _, ax = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI, sharex=True)
     else:
@@ -1289,7 +1288,7 @@ def display_maximum_drawdown(
 
 @log_start_end(log=logger)
 def display_rsquare(
-    portfolio: pythonic_portfolio.Portfolio,
+    portfolio: portfolio_model.Portfolio,
     export: str = "",
 ):
     """Display R-square
@@ -1316,7 +1315,7 @@ def display_rsquare(
 
 @log_start_end(log=logger)
 def display_skewness(
-    portfolio: pythonic_portfolio.Portfolio,
+    portfolio: portfolio_model.Portfolio,
     export: str = "",
 ):
     """Display skewness
@@ -1343,7 +1342,7 @@ def display_skewness(
 
 @log_start_end(log=logger)
 def display_kurtosis(
-    portfolio: pythonic_portfolio.Portfolio,
+    portfolio: portfolio_model.Portfolio,
     export: str = "",
 ):
     """Display kurtosis
@@ -1370,7 +1369,7 @@ def display_kurtosis(
 
 @log_start_end(log=logger)
 def display_stats(
-    portfolio: pythonic_portfolio.Portfolio,
+    portfolio: portfolio_model.Portfolio,
     period: str = "all",
     export: str = "",
 ):
@@ -1400,7 +1399,7 @@ def display_stats(
 
 @log_start_end(log=logger)
 def display_volatility(
-    portfolio: pythonic_portfolio.Portfolio,
+    portfolio: portfolio_model.Portfolio,
     export: str = "",
 ):
     """Display volatility for multiple periods
@@ -1426,7 +1425,7 @@ def display_volatility(
 
 @log_start_end(log=logger)
 def display_sharpe_ratio(
-    portfolio: pythonic_portfolio.Portfolio,
+    portfolio: portfolio_model.Portfolio,
     risk_free_rate: float,
     export: str = "",
 ):
@@ -1458,7 +1457,7 @@ def display_sharpe_ratio(
 
 @log_start_end(log=logger)
 def display_sortino_ratio(
-    portfolio: pythonic_portfolio.Portfolio,
+    portfolio: portfolio_model.Portfolio,
     risk_free_rate: float,
     export: str = "",
 ):
@@ -1490,7 +1489,7 @@ def display_sortino_ratio(
 
 @log_start_end(log=logger)
 def display_maximum_drawdown_ratio(
-    portfolio: pythonic_portfolio.Portfolio,
+    portfolio: portfolio_model.Portfolio,
     export: str = "",
 ):
     """Display maximum drawdown for multiple periods

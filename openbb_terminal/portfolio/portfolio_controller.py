@@ -21,7 +21,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.portfolio import portfolio_model, pythonic_portfolio
+from openbb_terminal.portfolio import portfolio_model
 from openbb_terminal.portfolio import portfolio_view
 from openbb_terminal.portfolio import portfolio_helper
 from openbb_terminal.portfolio.portfolio_optimization import po_controller
@@ -120,7 +120,7 @@ class PortfolioController(BaseController):
         self.benchmark_name = ""
         self.original_benchmark_name = ""
         self.portlist: List[str] = os.listdir(self.DEFAULT_HOLDINGS_PATH)
-        self.portfolio = pythonic_portfolio.Portfolio()
+        self.portfolio = portfolio_model.Portfolio()
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
@@ -310,8 +310,8 @@ class PortfolioController(BaseController):
             else:
                 file_location = ns_parser.file  # type: ignore
 
-            orderbook = pythonic_portfolio.Portfolio.read_orderbook(str(file_location))
-            self.portfolio = pythonic_portfolio.Portfolio(orderbook)
+            orderbook = portfolio_model.Portfolio.read_orderbook(str(file_location))
+            self.portfolio = portfolio_model.Portfolio(orderbook)
 
             if ns_parser.name:
                 self.portfolio_name = ns_parser.name
