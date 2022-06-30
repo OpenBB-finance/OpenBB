@@ -1,19 +1,186 @@
-"""Pythonic portfolio"""
+"""Portfolio Model"""
 __docformat__ = "numpy"
 
 import logging
+from datetime import timedelta, datetime
 
-import pandas as pd
-import yfinance as yf
 import numpy as np
+import scipy
+import pandas as pd
+import statsmodels.api as sm
+import yfinance as yf
+from sklearn.metrics import r2_score
+from pycoingecko import CoinGeckoAPI
+from statsmodels.regression.rolling import RollingOLS
 
-from openbb_terminal.portfolio import allocation_model
+from openbb_terminal.decorators import log_start_end
+from openbb_terminal.portfolio import portfolio_helper, allocation_model
 from openbb_terminal.rich_config import console
 
-# Disable warning on pd chained assignments used to get benchmark quantity
-pd.options.mode.chained_assignment = None  
-
+# pylint: disable=E1136,W0201,R0902
+# pylint: disable=unsupported-assignment-operation
 logger = logging.getLogger(__name__)
+cg = CoinGeckoAPI()
+
+pd.options.mode.chained_assignment = None
+
+
+@log_start_end(log=logger)
+def get_rolling_beta(
+    df: pd.DataFrame, hist: pd.DataFrame, mark: pd.DataFrame, n: pd.DataFrame
+) -> pd.DataFrame:
+    """Turns the holdings of a portfolio into a rolling beta dataframe
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        The dataframe of daily holdings
+    hist : pd.DataFrame
+        A dataframe of historical returns
+    mark : pd.DataFrame
+        The dataframe of market performance
+    n : int
+        The period to get returns for
+
+    Returns
+    ----------
+    final : pd.DataFrame
+        A Dataframe with rolling beta
+    """
+    df = df["Holding"]
+    uniques = df.columns.tolist()
+    res = df.div(df.sum(axis=1), axis=0)
+    res = res.fillna(0)
+    comb = pd.merge(
+        hist["Close"], mark["Market"], how="outer", left_index=True, right_index=True
+    )
+    comb = comb.fillna(method="ffill")
+    for col in hist["Close"].columns:
+        exog = sm.add_constant(comb["Close"])
+        rols = RollingOLS(comb[col], exog, window=252)
+        rres = rols.fit()
+        res[f"beta_{col}"] = rres.params["Close"]
+    final = res.fillna(method="ffill")
+    for uni in uniques:
+        final[f"prod_{uni}"] = final[uni] * final[f"beta_{uni}"]
+    dropped = final[[f"beta_{x}" for x in uniques]].copy()
+    final = final.drop(columns=[f"beta_{x}" for x in uniques] + uniques)
+    final["total"] = final.sum(axis=1)
+    final = final[final.index >= datetime.now() - timedelta(days=n + 1)]
+    comb = pd.merge(final, dropped, how="left", left_index=True, right_index=True)
+    return comb
+
+
+@log_start_end(log=logger)
+def get_main_text(df: pd.DataFrame) -> str:
+    """Get main performance summary from a dataframe with returns
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        Stock holdings and returns with market returns
+
+    Returns
+    ----------
+    t : str
+        The main summary of performance
+    """
+    d_debt = np.where(df[("Cash", "Cash")] > 0, 0, 1)
+    bcash = 0 if df[("Cash", "Cash")][0] > 0 else abs(df[("Cash", "Cash")][0])
+    ecash = 0 if df[("Cash", "Cash")][-1] > 0 else abs(df[("Cash", "Cash")][-1])
+    bdte = bcash / (df["holdings"][0] - bcash)
+    edte = ecash / (df["holdings"][-1] - ecash)
+    if sum(d_debt) > 0:
+        t_debt = (
+            f"Beginning debt to equity was {bdte:.2%} and ending debt to equity was"
+            f" {edte:.2%}. Debt adds risk to a portfolio by amplifying the gains and losses when"
+            " equities change in value."
+        )
+        if bdte > 1 or edte > 1:
+            t_debt += " Debt to equity ratios above one represent a significant amount of risk."
+    else:
+        t_debt = (
+            "Margin was not used this year. This reduces this risk of the portfolio."
+        )
+    text = (
+        f"Your portfolio's performance for the period was {df['return'][-1]:.2%}. This was"
+        f" {'greater' if df['return'][-1] > df[('Market', 'Return')][-1] else 'less'} than"
+        f" the market return of {df[('Market', 'Return')][-1]:.2%}. The variance for the"
+        f" portfolio is {np.var(df['return']):.2%}, while the variance for the market was"
+        f" {np.var(df[('Market', 'Return')]):.2%}. {t_debt} The following report details"
+        f" various analytics from the portfolio. Read below to see the moving beta for a"
+        f" stock."
+    )
+    return text
+
+
+@log_start_end(log=logger)
+def get_beta_text(df: pd.DataFrame) -> str:
+    """Get beta summary for a dataframe
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        The beta history of the stock
+
+    Returns
+    ----------
+    t : str
+        The beta history for a ticker
+    """
+    betas = df[list(filter(lambda score: "beta" in score, list(df.columns)))]
+    high = betas.idxmax(axis=1)
+    low = betas.idxmin(axis=1)
+    text = (
+        "Beta is how strongly a portfolio's movements correlate with the market's movements."
+        " A stock with a high beta is considered to be riskier. The beginning beta for the period"
+        f" was {portfolio_helper.beta_word(df['total'][0])} at {df['total'][0]:.2f}. This went"
+        f" {'up' if df['total'][-1] > df['total'][0] else 'down'} to"
+        f" {portfolio_helper.beta_word(df['total'][-1])} at {df['total'][-1]:.2f} by the end"
+        f" of the period. The ending beta was pulled {'up' if df['total'][-1] > 1 else 'down'} by"
+        f" {portfolio_helper.clean_name(high[-1] if df['total'][-1] > 1 else low[-1])}, which had"
+        f" an ending beta of {df[high[-1]][-1] if df['total'][-1] > 1 else df[low[-1]][-1]:.2f}."
+    )
+    return text
+
+
+performance_text = (
+    "The Sharpe ratio is a measure of reward to total volatility. A Sharpe ratio above one is"
+    " considered acceptable. The Treynor ratio is a measure of systematic risk to reward."
+    " Alpha is the average return above what CAPM predicts. This measure should be above zero"
+    ". The information ratio is the excess return on systematic risk. An information ratio of"
+    " 0.4 to 0.6 is considered good."
+)
+
+
+@log_start_end(log=logger)
+def calculate_drawdown(input_series: pd.Series, is_returns: bool = False) -> pd.Series:
+    """Calculate the drawdown (MDD) of historical series.  Note that the calculation is done
+     on cumulative returns (or prices).  The definition of drawdown is
+
+     DD = (current value - rolling maximum) / rolling maximum
+
+    Parameters
+    ----------
+    input_series: pd.DataFrame
+        Dataframe of input values
+    is_returns: bool
+        Flag to indicate inputs are returns
+
+    Returns
+    ----------
+    pd.Series
+        Drawdown series
+    -------
+    """
+    if is_returns:
+        input_series = (1 + input_series).cumprod()
+
+    rolling_max = input_series.cummax()
+    drawdown = (input_series - rolling_max) / rolling_max
+
+    return drawdown
+
 
 class Portfolio:
     """
@@ -60,6 +227,7 @@ class Portfolio:
         self.returns = pd.DataFrame()
         self.itemized_holdings = pd.DataFrame()
         self.portfolio_trades = pd.DataFrame()
+        self.portfolio_value = None
 
         self.portfolio_assets_allocation = pd.DataFrame()
         self.portfolio_regional_allocation = pd.DataFrame()
@@ -81,11 +249,15 @@ class Portfolio:
         self.benchmark_country_allocation = pd.DataFrame()
 
         # Set and preprocess orderbook
-        self.__set_orderbook(orderbook)
+        if orderbook.empty:
+            self.empty = True
+        else:
+            self.__set_orderbook(orderbook)
 
     def __set_orderbook(self, orderbook):
         self.__orderbook = orderbook
         self.preprocess_orderbook()
+        self.empty = False
     
     def get_orderbook(self):
         try:
@@ -376,8 +548,7 @@ class Portfolio:
                                                         trade_data["Holdings"][self.tickers_except_cash].sum(axis=1)
                                                         )
 
-        # IS THIS BEING USED ANYWHERE?
-        # self.portfolio_value = portfolio["TotalHoldings"]
+        self.portfolio_value = trade_data["Holdings"]["Total"]
 
         for type in self.tickers.keys():
                 self.itemized_holdings[type] = trade_data["Holdings"][self.tickers[type]].sum(axis=1)
@@ -439,7 +610,262 @@ class Portfolio:
         """
         self.risk_free_rate = risk_free_rate
 
+    @log_start_end(log=logger)
+    def get_r2_score(self) -> pd.DataFrame:
+        """Class method that retrieves R2 Score for portfolio and benchmark selected
 
-# Determine reserves
-# Determine allocations
-# Determine key metrics and ratios
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame with R2 Score between portfolio and benchmark for different periods
+        """
+        vals = list()
+        for period in portfolio_helper.PERIODS:
+            vals.append(
+                round(
+                    r2_score(
+                        portfolio_helper.filter_df_by_period(self.returns, period),
+                        portfolio_helper.filter_df_by_period(
+                            self.benchmark_returns, period
+                        ),
+                    ),
+                    3,
+                )
+            )
+        return pd.DataFrame(vals, index=portfolio_helper.PERIODS, columns=["R2 Score"])
+
+    @log_start_end(log=logger)
+    def get_skewness(self) -> pd.DataFrame:
+        """Class method that retrieves skewness for portfolio and benchmark selected
+
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame with skewness for portfolio and benchmark for different periods
+        """
+        vals = list()
+        for period in portfolio_helper.PERIODS:
+            vals.append(
+                [
+                    round(
+                        scipy.stats.skew(
+                            portfolio_helper.filter_df_by_period(self.returns, period)
+                        ),
+                        3,
+                    ),
+                    round(
+                        scipy.stats.skew(
+                            portfolio_helper.filter_df_by_period(
+                                self.benchmark_returns, period
+                            )
+                        ),
+                        3,
+                    ),
+                ]
+            )
+        return pd.DataFrame(
+            vals, index=portfolio_helper.PERIODS, columns=["Portfolio", "Benchmark"]
+        )
+
+    @log_start_end(log=logger)
+    def get_kurtosis(self) -> pd.DataFrame:
+        """Class method that retrieves kurtosis for portfolio and benchmark selected
+
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame with kurtosis for portfolio and benchmark for different periods
+        """
+        vals = list()
+        for period in portfolio_helper.PERIODS:
+            vals.append(
+                [
+                    round(
+                        scipy.stats.kurtosis(
+                            portfolio_helper.filter_df_by_period(self.returns, period)
+                        ),
+                        3,
+                    ),
+                    round(
+                        scipy.stats.skew(
+                            portfolio_helper.filter_df_by_period(
+                                self.benchmark_returns, period
+                            )
+                        ),
+                        3,
+                    ),
+                ]
+            )
+        return pd.DataFrame(
+            vals, index=portfolio_helper.PERIODS, columns=["Portfolio", "Benchmark"]
+        )
+
+    @log_start_end(log=logger)
+    def get_stats(self, period: str = "all") -> pd.DataFrame:
+        """Class method that retrieves stats for portfolio and benchmark selected based on a certain period
+
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame with overall stats for portfolio and benchmark for a certain periods
+        period : str
+            Period to consider. Choices are: mtd, qtd, ytd, 3m, 6m, 1y, 3y, 5y, 10y, all
+        """
+        df = (
+            portfolio_helper.filter_df_by_period(self.returns, period)
+            .describe()
+            .to_frame()
+            .join(
+                portfolio_helper.filter_df_by_period(
+                    self.benchmark_returns, period
+                ).describe()
+            )
+        )
+        df.columns = ["Portfolio", "Benchmark"]
+        return df
+
+    @log_start_end(log=logger)
+    def get_volatility(self) -> pd.DataFrame:
+        """Class method that retrieves volatility for portfolio and benchmark selected
+
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame with volatility for portfolio and benchmark for different periods
+        """
+        vals = list()
+        for period in portfolio_helper.PERIODS:
+            port_rets = portfolio_helper.filter_df_by_period(self.returns, period)
+            bench_rets = portfolio_helper.filter_df_by_period(
+                self.benchmark_returns, period
+            )
+            vals.append(
+                [
+                    round(
+                        100 * port_rets.std() * (len(port_rets) ** 0.5),
+                        3,
+                    ),
+                    round(
+                        100 * bench_rets.std() * (len(bench_rets) ** 0.5),
+                        3,
+                    ),
+                ]
+            )
+        return pd.DataFrame(
+            vals,
+            index=portfolio_helper.PERIODS,
+            columns=["Portfolio [%]", "Benchmark [%]"],
+        )
+
+    @log_start_end(log=logger)
+    def get_sharpe_ratio(self, risk_free_rate: float) -> pd.DataFrame:
+        """Class method that retrieves sharpe ratio for portfolio and benchmark selected
+
+        Parameters
+        ----------
+        risk_free_rate: float
+            Risk free rate value
+
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame with sharpe ratio for portfolio and benchmark for different periods
+        """
+        vals = list()
+        for period in portfolio_helper.PERIODS:
+            vals.append(
+                [
+                    round(
+                        portfolio_helper.sharpe_ratio(
+                            portfolio_helper.filter_df_by_period(self.returns, period),
+                            risk_free_rate,
+                        ),
+                        3,
+                    ),
+                    round(
+                        portfolio_helper.sharpe_ratio(
+                            portfolio_helper.filter_df_by_period(
+                                self.benchmark_returns, period
+                            ),
+                            risk_free_rate,
+                        ),
+                        3,
+                    ),
+                ]
+            )
+        return pd.DataFrame(
+            vals, index=portfolio_helper.PERIODS, columns=["Portfolio", "Benchmark"]
+        )
+
+    @log_start_end(log=logger)
+    def get_sortino_ratio(self, risk_free_rate: float) -> pd.DataFrame:
+        """Class method that retrieves sortino ratio for portfolio and benchmark selected
+
+        Parameters
+        ----------
+        risk_free_rate: float
+            Risk free rate value
+
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame with sortino ratio for portfolio and benchmark for different periods
+        """
+        vals = list()
+        for period in portfolio_helper.PERIODS:
+            vals.append(
+                [
+                    round(
+                        portfolio_helper.sortino_ratio(
+                            portfolio_helper.filter_df_by_period(self.returns, period),
+                            risk_free_rate,
+                        ),
+                        3,
+                    ),
+                    round(
+                        portfolio_helper.sortino_ratio(
+                            portfolio_helper.filter_df_by_period(
+                                self.benchmark_returns, period
+                            ),
+                            risk_free_rate,
+                        ),
+                        3,
+                    ),
+                ]
+            )
+        return pd.DataFrame(
+            vals, index=portfolio_helper.PERIODS, columns=["Portfolio", "Benchmark"]
+        )
+
+    @log_start_end(log=logger)
+    def get_maximum_drawdown_ratio(self) -> pd.DataFrame:
+        """Class method that retrieves maximum drawdown ratio for portfolio and benchmark selected
+
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame with maximum drawdown for portfolio and benchmark for different periods
+        """
+        vals = list()
+        for period in portfolio_helper.PERIODS:
+            vals.append(
+                [
+                    round(
+                        portfolio_helper.get_maximum_drawdown(
+                            portfolio_helper.filter_df_by_period(self.returns, period)
+                        ),
+                        3,
+                    ),
+                    round(
+                        portfolio_helper.get_maximum_drawdown(
+                            portfolio_helper.filter_df_by_period(
+                                self.benchmark_returns, period
+                            )
+                        ),
+                        3,
+                    ),
+                ]
+            )
+        return pd.DataFrame(
+            vals, index=portfolio_helper.PERIODS, columns=["Portfolio", "Benchmark"]
+        )
