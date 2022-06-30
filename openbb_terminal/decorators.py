@@ -69,7 +69,7 @@ def log_start_end(func=None, log=None):
                     str(e),
                     extra={"func_name_override": func.__name__},
                 )
-                return []
+                return None
 
         return wrapper
 
