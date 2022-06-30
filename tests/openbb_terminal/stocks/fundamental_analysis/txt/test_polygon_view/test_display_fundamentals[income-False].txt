@@ -1,4 +1,4 @@
-                                                                           2021-10-29 2020-10-30
+                                                                           2021-10-29      value
 Income Tax Expense Benefit                                                   14.527 B    9.680 B
 Net Income Loss Attributable To Parent                                       94.680 B   57.411 B
 Net Income Loss                                                              94.680 B   57.411 B
@@ -21,4 +21,3 @@ Income Loss From Continuing Operations Before Tax                           109.
 Operating Expenses                                                           43.887 B   38.668 B
 Gross Profit                                                                152.836 B  104.956 B
 Income Loss Before Equity Method Investments                                        -          -
-
