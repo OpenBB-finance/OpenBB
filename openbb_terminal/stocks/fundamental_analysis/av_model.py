@@ -12,6 +12,7 @@ from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import lambda_long_number_format
 from openbb_terminal.rich_config import console
+from openbb_terminal.stocks.fundamental_analysis import yahoo_finance_model
 from openbb_terminal.stocks.stocks_helper import clean_fraction
 from openbb_terminal.stocks.fundamental_analysis.fa_helper import clean_df_index
 
@@ -45,7 +46,7 @@ def get_overview(ticker: str) -> pd.DataFrame:
     else:
         # check if json is empty
         if not result_json:
-            console.print("No data found")
+            console.print("No data found from Alpha Vantage\n")
         # Parse json data to dataframe
         elif "Note" in result_json:
             console.print(result_json["Note"], "\n")
@@ -108,7 +109,7 @@ def get_key_metrics(ticker: str) -> pd.DataFrame:
     else:
         # check if json is empty
         if not result_json or len(result_json) < 2:
-            console.print("No data found")
+            console.print("No data found from Alpha Vantage\n")
             return pd.DataFrame()
 
         df_fa = pd.json_normalize(result_json)
@@ -177,7 +178,16 @@ def get_income_statements(
     else:
         # check if json is empty
         if not response_json:
-            console.print("No data found")
+            console.print(
+                "No data found from Alpha Vantage, looking in Yahoo Finance\n"
+            )
+            if (
+                yahoo_finance_model.get_financials(ticker, financial="financials")
+                is not None
+            ):
+                return yahoo_finance_model.get_financials(
+                    ticker, financial="financials"
+                )
         else:
             statements = response_json
             df_fa = pd.DataFrame()
@@ -190,7 +200,7 @@ def get_income_statements(
                     df_fa = pd.DataFrame(statements["annualReports"])
 
             if df_fa.empty:
-                console.print("No data found")
+                console.print("No data found from Alpha Vantage\n")
                 return pd.DataFrame()
 
             df_fa = df_fa.set_index("fiscalDateEnding")
@@ -218,7 +228,7 @@ def get_balance_sheet(
     Returns
     -------
     pd.DataFrame
-        Dataframe of income statements
+        Dataframe of balance sheet statements
     """
     url = f"https://www.alphavantage.co/query?function=BALANCE_SHEET&symbol={ticker}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
     r = requests.get(url)
@@ -227,29 +237,34 @@ def get_balance_sheet(
     # If the returned data was unsuccessful
     if "Error Message" in response_json:
         console.print(response_json["Error Message"])
+
+    # check if json is empty
+    if not response_json:
+        console.print("No data found from Alpha Vantage, looking in Yahoo Finance\n")
+        if (
+            yahoo_finance_model.get_financials(ticker, financial="balance-sheet")
+            is not None
+        ):
+            return yahoo_finance_model.get_financials(ticker, financial="balance-sheet")
     else:
-        # check if json is empty
-        if not response_json:
-            console.print("No data found")
+        statements = response_json
+        df_fa = pd.DataFrame()
+
+        if quarterly:
+            if "quarterlyReports" in statements:
+                df_fa = pd.DataFrame(statements["quarterlyReports"])
         else:
-            statements = response_json
-            df_fa = pd.DataFrame()
+            if "annualReports" in statements:
+                df_fa = pd.DataFrame(statements["annualReports"])
 
-            if quarterly:
-                if "quarterlyReports" in statements:
-                    df_fa = pd.DataFrame(statements["quarterlyReports"])
-            else:
-                if "annualReports" in statements:
-                    df_fa = pd.DataFrame(statements["annualReports"])
+        if df_fa.empty:
+            console.print("No data found from Alpha Vantage\n")
+            return pd.DataFrame()
 
-            if df_fa.empty:
-                console.print("No data found")
-                return pd.DataFrame()
-
-            df_fa = df_fa.set_index("fiscalDateEnding")
-            df_fa = df_fa.head(number)
-            df_fa = df_fa.applymap(lambda x: lambda_long_number_format(x))
-            return df_fa[::-1].T
+        df_fa = df_fa.set_index("fiscalDateEnding")
+        df_fa = df_fa.head(number)
+        df_fa = df_fa.applymap(lambda x: lambda_long_number_format(x))
+        return df_fa[::-1].T
     return pd.DataFrame()
 
 
@@ -269,7 +284,7 @@ def get_cash_flow(ticker: str, number: int, quarterly: bool = False) -> pd.DataF
     Returns
     -------
     pd.DataFrame
-        Dataframe of income statements
+        Dataframe of cash flow statements
     """
     url = f"https://www.alphavantage.co/query?function=CASH_FLOW&symbol={ticker}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
     r = requests.get(url)
@@ -281,7 +296,15 @@ def get_cash_flow(ticker: str, number: int, quarterly: bool = False) -> pd.DataF
     else:
         # check if json is empty
         if not response_json:
-            console.print("No data found")
+            console.print(
+                "No data found from Alpha Vantage, looking in Yahoo Finance\n"
+            )
+
+            if (
+                yahoo_finance_model.get_financials(ticker, financial="cash-flow")
+                is not None
+            ):
+                return yahoo_finance_model.get_financials(ticker, financial="cash-flow")
         else:
             statements = response_json
             df_fa = pd.DataFrame()
@@ -294,7 +317,7 @@ def get_cash_flow(ticker: str, number: int, quarterly: bool = False) -> pd.DataF
                     df_fa = pd.DataFrame(statements["annualReports"])
 
             if df_fa.empty:
-                console.print("No data found")
+                console.print("No data found from Alpha Vantage\n")
                 return pd.DataFrame()
 
             df_fa = df_fa.set_index("fiscalDateEnding")
@@ -335,7 +358,7 @@ def get_earnings(ticker: str, quarterly: bool = False) -> pd.DataFrame:
     else:
         # check if json is empty
         if not result_json or len(result_json) < 2:
-            console.print("No data found")
+            console.print("No data found from Alpha Vantage\n")
         else:
 
             df_fa = pd.json_normalize(result_json)

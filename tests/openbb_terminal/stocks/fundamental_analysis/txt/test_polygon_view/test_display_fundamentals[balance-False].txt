@@ -11,4 +11,3 @@ Fixed Assets                                     39.440 B   36.766 B
 Equity                                           63.090 B   65.339 B
 Assets                                          351.002 B  323.888 B
 Equity Attributable To Parent                    63.090 B   65.339 B
-
