@@ -6,12 +6,14 @@ for every part of the terminal"
 geekdocCollapseSection: true
 ---
 
-The .openbb scripts offer the ability to automatically run a set of commands in the form of a **routine**. Furthermore,
+The `.openbb` scripts offer the ability to automatically run a set of commands in the form of a **routine**. Furthermore,
 the scripts can be adapted, and documented, at any moment giving the user full control over the type of analysis you wish
 to do (and repeat). This can fundamental research, understanding market movements, finding hidden gems and even
 doing advanced statistical/econometric research.
 
-## Explanation of Scripts
+{{< toc >}}
+
+## Explanation of scripts
 The script file below is titled *stocks_demo.openbb*. This file follows the following logic:
 
 - <b><span style="color:#EF7D00">Comments</span></b>: any text after a `#` is referred to as a comment. This is used to explain what is happening within the script
@@ -61,11 +63,9 @@ sentiment
 /
 ```
 
-## Executing Scripts
+## Executing a script
 By going to the main menu as depicted below (accessible with `home`), the <a href="https://openbb-finance.github.io/OpenBBTerminal/scripts/exe" target="_blank">exe</a>
-command can be used.
-
-With this command you can run any `.openbb` script. These scripts are located where the application is located inside the routines folder.
+command can be used. With this command you can run any `.openbb` script. These scripts are located where the application is located inside the routines folder.
 
 ![Routine Exe OpenBB Terminal](https://user-images.githubusercontent.com/46355364/174588513-5c52ea20-548a-4c2b-a4c1-6054e2d71786.png)
 
@@ -117,3 +117,13 @@ This results in the following:
 ![img_1.png](img_1.png)
 
 It is an incredibly simple script, but it gives an understanding what the possibilities are.
+
+## Create your own script
+Scripts and routines reside in the `routines` folder and are automatically shown when you type `exe` from the
+home screen (`home`). To create your own, you can use the `template.openbb` file as a basis but you are free to
+duplicate one of the demo files. 
+
+Within this template, some examples are given, and you are free to change the contents and rename the file. As long as
+the file remains in the same folder, you will be able to find your file automatically as shown below:
+
+![img_2.png](img_2.png)
