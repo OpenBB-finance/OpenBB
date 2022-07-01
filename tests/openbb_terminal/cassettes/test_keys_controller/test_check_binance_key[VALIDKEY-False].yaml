@@ -13,7 +13,7 @@ interactions:
       X-MBX-APIKEY:
       - VALIDKEY
     method: GET
-    uri: https://api.binance.com/sapi/v1/capital/config/getall?timestamp=1656679723446&signature=920e05484c1b7239e4bbe599ac719eee9f4df67d5fc70aee8e8ee3b2a16129ac
+    uri: https://api.binance.com/sapi/v1/capital/config/getall?timestamp=16566804453565&signature=36f672c3fc317058224ad0dc0c657a54e018b1960e89b01a204d5b27422bfdad
   response:
     body:
       string: '{"code":-2008,"msg":"Invalid Api-Key ID."}'
@@ -29,7 +29,7 @@ interactions:
       Content-Type:
       - application/json;charset=UTF-8
       Date:
-      - Fri, 01 Jul 2022 12:48:44 GMT
+      - Fri, 01 Jul 2022 13:03:15 GMT
       Expires:
       - '0'
       Pragma:
@@ -39,9 +39,9 @@ interactions:
       Strict-Transport-Security:
       - max-age=31536000; includeSubdomains
       Via:
-      - 1.1 26a3b065ff03011d2ba778a581eb2060.cloudfront.net (CloudFront)
+      - 1.1 a81d70097c26619d0483c0496b627838.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - 21SH2idsqovBOvpKSwThLgVYDNIvYwdfrI3ofi7nHHPJc5zK9dZENw==
+      - EiGgfvW7wEfsCfE5bMeQRHcKYcY48IN_zPEeP_yo3-nyjye-bUedsA==
       X-Amz-Cf-Pop:
       - FJR50-C1
       X-Cache:

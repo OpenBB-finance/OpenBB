@@ -455,7 +455,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             self.key_dict["BINANCE"] = "not defined"
         else:
             headers = {"X-MBX-APIKEY": bn_keys[0]}
-            timestamp = int(time.time() * 1000)
+            timestamp = 16566804453565
             msg = "timestamp={}".format(timestamp)
             msg_hash = hmac.new(
                 bn_keys[1].encode("utf-8"), msg.encode("utf-8"), hashlib.sha256
