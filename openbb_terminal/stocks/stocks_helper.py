@@ -43,7 +43,7 @@ INTERVALS = [1, 5, 15, 30, 60]
 SOURCES = ["yf", "av", "iex"]
 
 market_coverage_suffix = {
-    "USA": ["CBT", "CME", "NYB", "CMX", "NYM", ""],
+    "USA": ["CBT", "CME", "NYB", "CMX", "NYM", "US", ""],
     "Argentina": ["BA"],
     "Austria": ["VI"],
     "Australia": ["AX"],
@@ -988,7 +988,7 @@ def find_trendline(
 
 
 def additional_info_about_ticker(ticker: str) -> str:
-    """Additional information about trading the ticker such as exchange, currency, timezone and market status
+    """Information about trading the ticker such as exchange, currency, timezone and market status
 
     Parameters
     ----------
@@ -1001,7 +1001,11 @@ def additional_info_about_ticker(ticker: str) -> str:
         Additional information about trading the ticker
     """
     extra_info = ""
+
     if ticker:
+        if ".US" in ticker.upper():
+            ticker = ticker.rstrip(".US")
+            ticker = ticker.rstrip(".us")
         ticker_info = yf.Ticker(ticker).info
         # outside US exchange
         if "." in ticker:
@@ -1053,7 +1057,7 @@ def additional_info_about_ticker(ticker: str) -> str:
                             extra_info += "OPEN"
                         else:
                             extra_info += "CLOSED"
-
+            extra_info += "\n[param]Company:  [/param]"
             if "shortName" in ticker_info and ticker_info["shortName"]:
                 extra_info += ticker_info["shortName"]
         else:
