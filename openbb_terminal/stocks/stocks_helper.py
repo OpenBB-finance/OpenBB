@@ -44,7 +44,7 @@ INTERVALS = [1, 5, 15, 30, 60]
 SOURCES = ["yf", "av", "iex", "eodhd"]
 
 market_coverage_suffix = {
-    "USA": ["CBT", "CME", "NYB", "CMX", "NYM", ""],
+    "USA": ["CBT", "CME", "NYB", "CMX", "NYM", "US", ""],
     "Argentina": ["BA"],
     "Austria": ["VI"],
     "Australia": ["AX"],
@@ -381,23 +381,46 @@ def load(
         # End of Day Historical Data  Source
         elif source == "eodhd":
 
+            int_ = "d"
+            int_string = "Daily"
+            if weekly:
+                int_ = "w"
+                int_string = "Weekly"
+            if monthly:
+                int_ = "m"
+                int_string = "Monthly"
+
             try:
                 client = EodHistoricalData(cfg.API_EODHD_TOKEN)
 
-                resp = client.get_prices_eod(ticker)
-                df_stock_candidate = pd.DataFrame(resp)
-
-                # Check that loading a stock was not successful
-                if df_stock_candidate.empty:
-                    console.print("No data found from End Of Day Historical Data.\n")
-                    return df_stock_candidate
-
+                resp = client.get_prices_eod(
+                    ticker,
+                    period=int_,
+                    from_=start,
+                    to=end,
+                )
             except Exception as e:
-                if "The API key provided is not valid" in str(e):
-                    console.print("[red]Invalid API Key[/red]\n")
+
+                if "403 Client Error: Forbidden for url:" in str(e):
+                    console.print("[red]Invalid API Key for eodhistoricaldata [/red]")
+                    console.print(
+                        "Get your Key here: https://eodhistoricaldata.com/r/?ref=869U7F4J\n"
+                    )
+                elif "401 Client Error: Unauthorized for url:"  in str(e):
+                    console.print("[red]Unauthorized API Key for eodhistoricaldata [/red]")
+                    console.print(
+                        "Get your Key here: https://eodhistoricaldata.com/r/?ref=869U7F4J\n"
+                    )
+                    return
                 else:
                     console.print(e, "\n")
+                    return
 
+            df_stock_candidate = pd.DataFrame(resp).dropna(axis=0)
+
+            # Check that loading a stock was not successful
+            if df_stock_candidate.empty:
+                console.print("No data found from End Of Day Historical Data.\n")
                 return df_stock_candidate
 
             df_stock_candidate = df_stock_candidate[
@@ -1053,10 +1076,14 @@ def additional_info_about_ticker(ticker: str) -> str:
         Additional information about trading the ticker
     """
     extra_info = ""
+
     if ticker:
+        if ".US" or ".us" in ticker:
+            ticker = ticker.rstrip(".US")
+            ticker = ticker.rstrip(".us")
         ticker_info = yf.Ticker(ticker).info
         # outside US exchange
-        if "." in ticker and ".US" not in ticker:
+        if "." in ticker:
             extra_info += "\n[param]Datetime: [/param]"
             if (
                 "exchangeTimezoneName" in ticker_info
