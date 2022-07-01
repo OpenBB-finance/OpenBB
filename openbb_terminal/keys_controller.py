@@ -455,7 +455,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         else:
             headers = {"X-MBX-APIKEY": bn_keys[0]}
             timestamp = 16566804453565
-            msg = "timestamp={}".format(timestamp)
+            msg = f"timestamp={timestamp}"
             msg_hash = hmac.new(
                 bn_keys[1].encode("utf-8"), msg.encode("utf-8"), hashlib.sha256
             ).hexdigest()
