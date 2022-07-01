@@ -1566,16 +1566,16 @@ def display_summary_portfolio_benchmark(
         scipy.stats.kurtosis(benchmark_returns),
     ]
     metrics["Maximum Drawdowwn"] = [
-        portfolio_helper.get_maximum_drawdown(portfolio_returns),
-        portfolio_helper.get_maximum_drawdown(benchmark_returns),
+        portfolio_model.get_maximum_drawdown(portfolio_returns),
+        portfolio_model.get_maximum_drawdown(benchmark_returns),
     ]
     metrics["Sharpe ratio"] = [
-        portfolio_helper.sharpe_ratio(portfolio_returns, risk_free_rate),
-        portfolio_helper.sharpe_ratio(benchmark_returns, risk_free_rate),
+        portfolio_model.sharpe_ratio(portfolio_returns, risk_free_rate),
+        portfolio_model.sharpe_ratio(benchmark_returns, risk_free_rate),
     ]
     metrics["Sortino ratio"] = [
-        portfolio_helper.sortino_ratio(portfolio_returns, risk_free_rate),
-        portfolio_helper.sortino_ratio(benchmark_returns, risk_free_rate),
+        portfolio_model.sortino_ratio(portfolio_returns, risk_free_rate),
+        portfolio_model.sortino_ratio(benchmark_returns, risk_free_rate),
     ]
     metrics["R2 Score"] = [
         r2_score(portfolio_returns, benchmark_returns),
