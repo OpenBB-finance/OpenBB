@@ -1004,13 +1004,16 @@ def additional_info_about_ticker(ticker: str) -> str:
 
     if ticker:
         if ".US" or ".us" in ticker:
-            ticker = ticker.rstrip('.US')
-            ticker = ticker.rstrip('.us')
+            ticker = ticker.rstrip(".US")
+            ticker = ticker.rstrip(".us")
         ticker_info = yf.Ticker(ticker).info
         # outside US exchange
         if "." in ticker:
-            extra_info += '\n[param]Datetime: [/param]'
-            if "exchangeTimezoneName" in ticker_info and ticker_info["exchangeTimezoneName"]:
+            extra_info += "\n[param]Datetime: [/param]"
+            if (
+                "exchangeTimezoneName" in ticker_info
+                and ticker_info["exchangeTimezoneName"]
+            ):
                 dtime = datetime.now(
                     pytz.timezone(ticker_info["exchangeTimezoneName"])
                 ).strftime("%Y %b %d %H:%M")
