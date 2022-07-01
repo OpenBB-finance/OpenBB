@@ -463,7 +463,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             params = {"timestamp": timestamp, "signature": msg_hash}  # type: ignore
             r = requests.get(
                 "https://api.binance.com/sapi/v1/capital/config/getall",
-                params=params,
+                params=params,  # type: ignore
                 headers=headers,
             )
             if r.status_code == 200:
