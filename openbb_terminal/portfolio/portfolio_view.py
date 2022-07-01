@@ -12,6 +12,7 @@ import pandas as pd
 from matplotlib import pyplot as plt
 import seaborn as sns
 from sklearn.metrics import r2_score
+from openbb_terminal import portfolio
 
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
@@ -351,8 +352,7 @@ def display_performance_vs_benchmark(
 
 @log_start_end(log=logger)
 def display_cumulative_returns(
-    portfolio_returns: pd.Series,
-    benchmark_returns: pd.Series,
+    portfolio = portfolio_model.Portfolio(),
     period: str = "all",
     raw: bool = False,
     limit: int = 10,
@@ -363,10 +363,8 @@ def display_cumulative_returns(
 
     Parameters
     ----------
-    portfolio_returns : pd.Series
-        Returns of the portfolio
-    benchmark_returns : pd.Series
-        Returns of the benchmark
+    portfolio : Portfolio
+        Portfolio class instance
     period : str
         Period to compare cumulative returns and benchmark
     raw : False
@@ -379,16 +377,8 @@ def display_cumulative_returns(
         Optional axes to display plot on
     """
 
-    # SEND THIS TO MODEL
-    portfolio_returns = portfolio_helper.filter_df_by_period(portfolio_returns, period)
-    benchmark_returns = portfolio_helper.filter_df_by_period(benchmark_returns, period)
-
-    cumulative_returns = 100 * (
-        (1 + portfolio_returns.shift(periods=1, fill_value=0)).cumprod() - 1
-    )
-    benchmark_c_returns = 100 * (
-        (1 + benchmark_returns.shift(periods=1, fill_value=0)).cumprod() - 1
-    )
+    cumulative_returns = portfolio_model.get_cumulative_returns(portfolio.returns, period)
+    benchmark_c_returns = portfolio_model.get_cumulative_returns(portfolio.benchmark_returns, period)
 
     if raw:
         last_cumulative_returns = cumulative_returns.to_frame()

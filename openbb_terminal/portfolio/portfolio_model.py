@@ -154,6 +154,10 @@ pd.options.mode.chained_assignment = None
 # )
 
 
+
+
+
+
 @log_start_end(log=logger)
 def calculate_drawdown(input_series: pd.Series, is_returns: bool = False) -> pd.Series:
     """Calculate the drawdown (MDD) of historical series.  Note that the calculation is done
@@ -183,6 +187,28 @@ def calculate_drawdown(input_series: pd.Series, is_returns: bool = False) -> pd.
     return drawdown
 
 
+def get_cumulative_returns(returns: pd.Series, period) -> pd.Series:
+    """Calculate cumulative returns filtered by period
+
+    Parameters
+    ----------
+    returns : pd.Series
+        Returns series
+    period : str
+        Period to compare cumulative returns and benchmark
+
+    Returns
+    ----------
+    pd.Series
+        Cumulative returns series
+    -------
+    """
+    filtered_returns = portfolio_helper.filter_df_by_period(returns, period)
+
+    cumulative_returns = 100 * (
+        (1 + filtered_returns.shift(periods=1, fill_value=0)).cumprod() - 1
+    )
+    return cumulative_returns
 
 
 class Portfolio:
