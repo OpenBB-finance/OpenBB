@@ -1053,7 +1053,7 @@ def additional_info_about_ticker(ticker: str) -> str:
                             extra_info += "OPEN"
                         else:
                             extra_info += "CLOSED"
-
+            extra_info += "\n[param]Company:  [/param]"
             if "shortName" in ticker_info and ticker_info["shortName"]:
                 extra_info += ticker_info["shortName"]
         else:
