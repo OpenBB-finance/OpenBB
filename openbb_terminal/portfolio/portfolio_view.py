@@ -463,7 +463,7 @@ def display_yearly_returns(
 
         breturns_year = benchmark_returns[benchmark_returns.index.year == year]
         benchmark_c_returns = 100 * portfolio_model.cumulative_returns(breturns_year)
-        
+
         breturns_year_idx.append(datetime.strptime(f"{year}-08-15", "%Y-%m-%d"))
         breturns_year_val.append(benchmark_c_returns.values[-1])
 
@@ -564,8 +564,10 @@ def display_monthly_returns(
         creturns_val = list()
         for i in range(1, 13):
             creturns_year_month = creturns_year[creturns_year.index.month == i]
-            creturns_year_month_val = 100 * portfolio_model.cumulative_returns(creturns_year_month)
-            
+            creturns_year_month_val = 100 * portfolio_model.cumulative_returns(
+                creturns_year_month
+            )
+
             if creturns_year_month.empty:
                 creturns_val.append(0)
             else:
@@ -576,7 +578,9 @@ def display_monthly_returns(
         breturns_val = list()
         for i in range(1, 13):
             breturns_year_month = breturns_year[breturns_year.index.month == i]
-            breturns_year_month_val = 100 * portfolio_model.cumulative_returns(breturns_year_month)
+            breturns_year_month_val = 100 * portfolio_model.cumulative_returns(
+                breturns_year_month
+            )
 
             if breturns_year_month.empty:
                 breturns_val.append(0)
@@ -863,7 +867,9 @@ def display_holdings_value(
     # )
     # all_holdings = all_holdings.drop(columns=["temp"])
 
-    all_holdings = portfolio.historical_trade_data["Holdings"][portfolio.tickers_except_cash]
+    all_holdings = portfolio.historical_trade_data["Holdings"][
+        portfolio.tickers_except_cash
+    ]
 
     if raw:
         all_holdings["Total Value"] = all_holdings.sum(axis=1)
@@ -950,7 +956,9 @@ def display_holdings_percentage(
     # )
     # all_holdings = all_holdings.drop(columns=["temp"])
 
-    all_holdings = portfolio.historical_trade_data["Holdings"][portfolio.tickers_except_cash]
+    all_holdings = portfolio.historical_trade_data["Holdings"][
+        portfolio.tickers_except_cash
+    ]
 
     all_holdings = all_holdings.divide(all_holdings.sum(axis=1), axis=0) * 100
 

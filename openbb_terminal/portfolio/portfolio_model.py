@@ -154,10 +154,6 @@ performance_text = (
 )
 
 
-
-
-
-
 @log_start_end(log=logger)
 def calculate_drawdown(input_series: pd.Series, is_returns: bool = False) -> pd.Series:
     """Calculate the drawdown (MDD) of historical series.  Note that the calculation is done
@@ -201,9 +197,7 @@ def cumulative_returns(returns: pd.Series) -> pd.Series:
         Cumulative returns series
     -------
     """
-    cumulative_returns = (
-        (1 + returns.shift(periods=1, fill_value=0)).cumprod() - 1
-    )
+    cumulative_returns = (1 + returns.shift(periods=1, fill_value=0)).cumprod() - 1
     return cumulative_returns
 
 
@@ -274,7 +268,6 @@ class Portfolio:
         self.benchmark_regional_allocation = pd.DataFrame()
         self.benchmark_country_allocation = pd.DataFrame()
 
-        
         if orderbook.empty:
             # Allow for empty initialization
             self.empty = True
@@ -289,7 +282,7 @@ class Portfolio:
 
     def get_orderbook(self):
         return self.__orderbook
-        
+
     @staticmethod
     def read_orderbook(path: str) -> pd.DataFrame:
         """Class method to read orderbook from file
@@ -339,9 +332,7 @@ class Portfolio:
 
             # Reformat crypto tickers to yfinance format (e.g. BTC -> BTC-USD)
             crypto_trades = self.__orderbook[self.__orderbook.Type == "CRYPTO"]
-            self.__orderbook.loc[
-                (self.__orderbook.Type == "CRYPTO"), "Ticker"
-            ] = [
+            self.__orderbook.loc[(self.__orderbook.Type == "CRYPTO"), "Ticker"] = [
                 f"{crypto}-{currency}"
                 for crypto, currency in zip(
                     crypto_trades.Ticker, crypto_trades.Currency
@@ -667,7 +658,6 @@ class Portfolio:
             risk_free (float): risk free rate in decimal format
         """
         self.risk_free_rate = risk_free_rate
-
 
     # SHOULD WE MAKE THIS CLASS METHODS?
     # OR SPIN OFF AND ARE THEN CALLED FROM INSIDE THE CLASS

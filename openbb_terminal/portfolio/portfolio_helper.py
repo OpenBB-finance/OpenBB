@@ -139,7 +139,8 @@ def is_ticker(ticker: str) -> bool:
     item = yf.Ticker(ticker)
     return "previousClose" in item.info
 
-#TODO: Is this being used anywhere?
+
+# TODO: Is this being used anywhere?
 def beta_word(beta: float) -> str:
     """Describe a beta
 
@@ -231,7 +232,8 @@ def filter_df_by_period(df: pd.DataFrame, period: str = "all") -> pd.DataFrame:
         return df[df.index >= (datetime.now() - relativedelta(years=10))]
     return df
 
-#TODO: Is this being used anywhere?
+
+# TODO: Is this being used anywhere?
 def sharpe_ratio(return_series: pd.Series, risk_free_rate: float) -> float:
     """Get sharpe ratio
 

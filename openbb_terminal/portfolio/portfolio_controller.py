@@ -325,7 +325,9 @@ class PortfolioController(BaseController):
             self.portfolio.set_risk_free_rate(ns_parser.risk_free_rate)
 
             console.print(f"\n[bold]Portfolio:[/bold] {self.portfolio_name}")
-            console.print(f"[bold]Risk Free Rate:[/bold] {self.portfolio.risk_free_rate}")
+            console.print(
+                f"[bold]Risk Free Rate:[/bold] {self.portfolio.risk_free_rate}"
+            )
 
             console.print()
 
@@ -333,7 +335,7 @@ class PortfolioController(BaseController):
     def call_show(self, _):
         """Process show command"""
         portfolio_view.display_orderbook(self.portfolio, show_index=False)
-    
+
     @log_start_end(log=logger)
     def call_bench(self, other_args: List[str]):
         """Process bench command"""
@@ -378,9 +380,7 @@ class PortfolioController(BaseController):
                     f"[bold]\nBenchmark:[/bold] {self.benchmark_name} ({benchmark_ticker})"
                 )
             else:
-                console.print(
-                    "[red]Please first load orderbook using 'load'[/red]\n"
-                )
+                console.print("[red]Please first load orderbook using 'load'[/red]\n")
             console.print()
 
     @log_start_end(log=logger)
@@ -506,7 +506,7 @@ class PortfolioController(BaseController):
             if check_portfolio_benchmark_defined(
                 self.portfolio_name, self.benchmark_name
             ):
-                
+
                 portfolio_view.display_performance_vs_benchmark(
                     self.portfolio.portfolio_trades,
                     self.portfolio.benchmark_trades,
