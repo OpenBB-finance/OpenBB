@@ -73,7 +73,7 @@ Thus, using the earlier mentioned script, we can enter `exe stocks_demo.openbb` 
 Thus, it will return a candle chart with moving averages, price targets from Analysts, valuations of related companies, the correlation between these companies and the market sentiment.
 This results in the following:
 
-![img.png](img.png)
+![Script Stocks Demo OpenBB](https://user-images.githubusercontent.com/46355364/176903147-720eb2af-7e5d-40df-8ec6-7363cbc08430.png)
 
 ### Custom arguments
 
@@ -114,7 +114,7 @@ arguments. In this case, they refer to <a href="https://www.investopedia.com/ask
 Therefore, like the script also says, you can include these arguments with `-i` followed by three tickers (e.g. `exe example_with_inputs.openbb -i TSLA,AAPL,MSFT`).
 This results in the following:
 
-![img_1.png](img_1.png)
+![Example with Inputs OpenBB Script](https://user-images.githubusercontent.com/46355364/176903205-3cb55bf5-8710-4ad6-8eef-f9a99294ea3b.png)
 
 It is an incredibly simple script, but it gives an understanding what the possibilities are.
 
@@ -126,4 +126,4 @@ duplicate one of the demo files.
 Within this template, some examples are given, and you are free to change the contents and rename the file. As long as
 the file remains in the same folder, you will be able to find your file automatically as shown below:
 
-![img_2.png](img_2.png)
+![Show Copy of Template OpenBB Script](https://user-images.githubusercontent.com/46355364/176903253-00a5b0f9-a6e7-49c7-a1d8-49ae819e28e3.png)
