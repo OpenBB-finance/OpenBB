@@ -8,13 +8,13 @@ import logging
 import os
 from typing import Dict, List
 
+import hmac
+import hashlib
 import dotenv
 import praw
 import pyEX
 import quandl
 import requests
-import hmac
-import hashlib
 from prawcore.exceptions import ResponseException
 from alpha_vantage.timeseries import TimeSeries
 from coinmarketcapapi import CoinMarketCapAPI, CoinMarketCapAPIError
