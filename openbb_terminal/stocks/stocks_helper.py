@@ -1004,7 +1004,7 @@ def additional_info_about_ticker(ticker: str) -> str:
     if ticker:
         ticker_info = yf.Ticker(ticker).info
         # outside US exchange
-        if "." and not ".US" in ticker:
+        if "." in ticker and ".US" not in ticker:
             extra_info += "\n[param]Datetime: [/param]"
             if (
                 "exchangeTimezoneName" in ticker_info
