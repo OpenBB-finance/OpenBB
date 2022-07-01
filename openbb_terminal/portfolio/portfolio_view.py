@@ -65,6 +65,24 @@ In order to load a CSV do the following:
 
 
 @log_start_end(log=logger)
+def display_orderbook(portfolio=portfolio_model.Portfolio(), show_index=False):
+    """Display portfolio orderbook
+
+    Parameters
+    ----------
+    portfolio: Portfolio
+        Instance of Portfolio class
+    show_index: bool
+        Defaults to False.
+    """
+    if portfolio.empty:
+        logger.warning("No orderbook loaded")
+        console.print("[red]No orderbook loaded.[/red]\n")
+    else:
+        print_rich_table(portfolio.get_orderbook(), show_index)
+
+
+@log_start_end(log=logger)
 def display_assets_allocation(
     portfolio_allocation: pd.DataFrame,
     benchmark_allocation: pd.DataFrame,
@@ -360,6 +378,8 @@ def display_cumulative_returns(
     external_axes: plt.Axes
         Optional axes to display plot on
     """
+
+    # SEND THIS TO MODEL
     portfolio_returns = portfolio_helper.filter_df_by_period(portfolio_returns, period)
     benchmark_returns = portfolio_helper.filter_df_by_period(benchmark_returns, period)
 
@@ -1583,6 +1603,8 @@ def display_summary_portfolio_benchmark(
         summary,
     )
 
+
+# CHECK OUT WHAT TO DO WITH THIS
 
 #
 # @log_start_end(log=logger)

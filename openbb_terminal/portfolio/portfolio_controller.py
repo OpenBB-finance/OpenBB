@@ -332,8 +332,8 @@ class PortfolioController(BaseController):
     @log_start_end(log=logger)
     def call_show(self, _):
         """Process show command"""
-        print_rich_table(self.portfolio.get_orderbook(), show_index=False)
-
+        portfolio_view.display_orderbook(self.portfolio, show_index=False)
+    
     @log_start_end(log=logger)
     def call_bench(self, other_args: List[str]):
         """Process bench command"""
