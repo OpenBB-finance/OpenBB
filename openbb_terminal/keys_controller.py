@@ -13,7 +13,6 @@ import praw
 import pyEX
 import quandl
 import requests
-import time
 import hmac
 import hashlib
 from prawcore.exceptions import ResponseException
