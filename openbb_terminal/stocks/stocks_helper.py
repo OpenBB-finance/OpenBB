@@ -376,7 +376,7 @@ def load(
 
             df_stock_candidate.index.name = "date"
 
-        # TODO:  ###########################
+        # TODO: eodhd start ###########################
 
         # End of Day Historical Data  Source
         elif source == "eodhd":
@@ -389,7 +389,7 @@ def load(
 
                 # Check that loading a stock was not successful
                 if df_stock_candidate.empty:
-                    console.print("No data found.\n")
+                    console.print("No data found from End Of Day Historical Data.\n")
                     return df_stock_candidate
 
             except Exception as e:
@@ -1056,7 +1056,7 @@ def additional_info_about_ticker(ticker: str) -> str:
     if ticker:
         ticker_info = yf.Ticker(ticker).info
         # outside US exchange
-        if "." in ticker:
+        if "." in ticker and ".US" not in ticker:
             extra_info += "\n[param]Datetime: [/param]"
             if (
                 "exchangeTimezoneName" in ticker_info
@@ -1105,7 +1105,7 @@ def additional_info_about_ticker(ticker: str) -> str:
                             extra_info += "OPEN"
                         else:
                             extra_info += "CLOSED"
-
+            extra_info += "\n[param]Company:  [/param]"
             if "shortName" in ticker_info and ticker_info["shortName"]:
                 extra_info += ticker_info["shortName"]
         else:
