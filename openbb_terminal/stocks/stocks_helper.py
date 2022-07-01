@@ -1065,7 +1065,7 @@ def find_trendline(
 
 
 def additional_info_about_ticker(ticker: str) -> str:
-    """Additional information about trading the ticker such as exchange, currency, timezone and market status
+    """Information about trading the ticker such as exchange, currency, timezone and market status
 
     Parameters
     ----------
@@ -1080,7 +1080,7 @@ def additional_info_about_ticker(ticker: str) -> str:
     extra_info = ""
 
     if ticker:
-        if ".US" or ".us" in ticker:
+        if ".US" in ticker.upper():
             ticker = ticker.rstrip(".US")
             ticker = ticker.rstrip(".us")
         ticker_info = yf.Ticker(ticker).info
