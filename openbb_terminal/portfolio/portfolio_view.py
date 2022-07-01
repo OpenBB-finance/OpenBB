@@ -352,7 +352,8 @@ def display_performance_vs_benchmark(
 
 @log_start_end(log=logger)
 def display_cumulative_returns(
-    portfolio = portfolio_model.Portfolio(),
+    portfolio_returns: pd.Series,
+    benchmark_returns: pd.Series,
     period: str = "all",
     raw: bool = False,
     limit: int = 10,
@@ -363,8 +364,10 @@ def display_cumulative_returns(
 
     Parameters
     ----------
-    portfolio : Portfolio
-        Portfolio class instance
+    portfolio_returns : pd.Series
+        Returns of the portfolio
+    benchmark_returns : pd.Series
+        Returns of the benchmark
     period : str
         Period to compare cumulative returns and benchmark
     raw : False
@@ -377,8 +380,11 @@ def display_cumulative_returns(
         Optional axes to display plot on
     """
 
-    cumulative_returns = portfolio_model.get_cumulative_returns(portfolio.returns, period)
-    benchmark_c_returns = portfolio_model.get_cumulative_returns(portfolio.benchmark_returns, period)
+    portfolio_returns = portfolio_helper.filter_df_by_period(portfolio_returns, period)
+    benchmark_returns = portfolio_helper.filter_df_by_period(benchmark_returns, period)
+
+    cumulative_returns = 100 * portfolio_model.cumulative_returns(portfolio_returns)
+    benchmark_c_returns = 100 * portfolio_model.cumulative_returns(benchmark_returns)
 
     if raw:
         last_cumulative_returns = cumulative_returns.to_frame()
@@ -450,18 +456,14 @@ def display_yearly_returns(
 
     for year in sorted(set(portfolio_returns.index.year)):
         creturns_year = portfolio_returns[portfolio_returns.index.year == year]
-        cumulative_returns = 100 * (
-            (1 + creturns_year.shift(periods=1, fill_value=0)).cumprod() - 1
-        )
+        cumulative_returns = 100 * portfolio_model.cumulative_returns(creturns_year)
 
         creturns_year_idx.append(datetime.strptime(f"{year}-04-15", "%Y-%m-%d"))
         creturns_year_val.append(cumulative_returns.values[-1])
 
         breturns_year = benchmark_returns[benchmark_returns.index.year == year]
-        benchmark_c_returns = 100 * (
-            (1 + breturns_year.shift(periods=1, fill_value=0)).cumprod() - 1
-        )
-
+        benchmark_c_returns = 100 * portfolio_model.cumulative_returns(breturns_year)
+        
         breturns_year_idx.append(datetime.strptime(f"{year}-08-15", "%Y-%m-%d"))
         breturns_year_val.append(benchmark_c_returns.values[-1])
 
@@ -562,10 +564,8 @@ def display_monthly_returns(
         creturns_val = list()
         for i in range(1, 13):
             creturns_year_month = creturns_year[creturns_year.index.month == i]
-            creturns_year_month_val = 100 * (
-                (1 + creturns_year_month.shift(periods=1, fill_value=0)).cumprod() - 1
-            )
-
+            creturns_year_month_val = 100 * portfolio_model.cumulative_returns(creturns_year_month)
+            
             if creturns_year_month.empty:
                 creturns_val.append(0)
             else:
@@ -576,9 +576,7 @@ def display_monthly_returns(
         breturns_val = list()
         for i in range(1, 13):
             breturns_year_month = breturns_year[breturns_year.index.month == i]
-            breturns_year_month_val = 100 * (
-                (1 + breturns_year_month.shift(periods=1, fill_value=0)).cumprod() - 1
-            )
+            breturns_year_month_val = 100 * portfolio_model.cumulative_returns(breturns_year_month)
 
             if breturns_year_month.empty:
                 breturns_val.append(0)

@@ -187,15 +187,13 @@ def calculate_drawdown(input_series: pd.Series, is_returns: bool = False) -> pd.
     return drawdown
 
 
-def get_cumulative_returns(returns: pd.Series, period) -> pd.Series:
+def cumulative_returns(returns: pd.Series) -> pd.Series:
     """Calculate cumulative returns filtered by period
 
     Parameters
     ----------
     returns : pd.Series
         Returns series
-    period : str
-        Period to compare cumulative returns and benchmark
 
     Returns
     ----------
@@ -203,10 +201,8 @@ def get_cumulative_returns(returns: pd.Series, period) -> pd.Series:
         Cumulative returns series
     -------
     """
-    filtered_returns = portfolio_helper.filter_df_by_period(returns, period)
-
-    cumulative_returns = 100 * (
-        (1 + filtered_returns.shift(periods=1, fill_value=0)).cumprod() - 1
+    cumulative_returns = (
+        (1 + returns.shift(periods=1, fill_value=0)).cumprod() - 1
     )
     return cumulative_returns
 

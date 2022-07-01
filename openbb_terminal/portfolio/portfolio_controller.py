@@ -799,7 +799,8 @@ class PortfolioController(BaseController):
                 self.portfolio_name, self.benchmark_name
             ):
                 portfolio_view.display_cumulative_returns(
-                    self.portfolio,
+                    self.portfolio.returns,
+                    self.portfolio.benchmark_returns,
                     ns_parser.period,
                     ns_parser.raw,
                     ns_parser.limit,
