@@ -43,7 +43,7 @@ INTERVALS = [1, 5, 15, 30, 60]
 SOURCES = ["yf", "av", "iex"]
 
 market_coverage_suffix = {
-    "USA": ["CBT", "CME", "NYB", "CMX", "NYM", ""],
+    "USA": ["CBT", "CME", "NYB", "CMX", "NYM", "US", ""],
     "Argentina": ["BA"],
     "Austria": ["VI"],
     "Australia": ["AX"],
@@ -1004,7 +1004,7 @@ def additional_info_about_ticker(ticker: str) -> str:
     if ticker:
         ticker_info = yf.Ticker(ticker).info
         # outside US exchange
-        if "." in ticker and ".US" not in ticker:
+        if "." in ticker: #TODO fix for ".US" not in ticker this produces duplicate DateTime
             extra_info += "\n[param]Datetime: [/param]"
             if (
                 "exchangeTimezoneName" in ticker_info
