@@ -460,7 +460,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             msg_hash = hmac.new(
                 bn_keys[1].encode("utf-8"), msg.encode("utf-8"), hashlib.sha256
             ).hexdigest()
-            params = {"timestamp": timestamp, "signature": msg_hash} # type: ignore
+            params = {"timestamp": timestamp, "signature": msg_hash}  # type: ignore
             r = requests.get(
                 "https://api.binance.com/sapi/v1/capital/config/getall",
                 params=params,
