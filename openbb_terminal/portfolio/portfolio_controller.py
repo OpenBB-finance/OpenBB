@@ -80,6 +80,16 @@ class PortfolioController(BaseController):
         "rsquare",
         "skew",
         "kurtosis",
+        "gaintopain",
+        "trackerr",
+        "information",
+        "tail",
+        "commonsense",
+        "jensens",
+        "calmar",
+        "kelly",
+        "payoff",
+        "profitfactor",
     ]
     PATH = "/portfolio/"
 
@@ -326,6 +336,9 @@ class PortfolioController(BaseController):
 
             # Add in the Risk-free rate
             self.portfolio.add_rf(ns_parser.risk_free_rate)
+
+            # Update all period
+            portfolio_helper.PERIODS_DAYS["all"] = len(self.portfolio.returns)
 
             console.print(f"\n[bold]Portfolio:[/bold] {self.portfolio_name}")
             console.print(f"[bold]Risk Free Rate:[/bold] {self.portfolio.rf}")
@@ -771,10 +784,9 @@ class PortfolioController(BaseController):
                     ns_parser.end,
                 )
             else:
-                if not self.portfolio_name:
-                    console.print(
-                        "[red]Please first define the portfolio (via 'load')[/red]\n"
-                    )
+                console.print(
+                    "[red]Please first define the portfolio (via 'load')[/red]\n"
+                )
 
     @log_start_end(log=logger)
     def call_cret(self, other_args: List[str]):
@@ -1172,6 +1184,44 @@ class PortfolioController(BaseController):
                     )
                 elif ns_parser.metric == "rsquare":
                     portfolio_view.display_rsquare(self.portfolio, ns_parser.export)
+                elif ns_parser.metric == "gaintopain":
+                    portfolio_view.display_gaintopain_ratio(
+                        self.portfolio, ns_parser.export
+                    )
+                elif ns_parser.metric == "trackerr":
+                    portfolio_view.display_tracking_error(
+                        self.portfolio, ns_parser.export
+                    )
+                elif ns_parser.metric == "information":
+                    portfolio_view.display_information_ratio(
+                        self.portfolio, ns_parser.export
+                    )
+                elif ns_parser.metric == "tail":
+                    portfolio_view.display_tail_ratio(self.portfolio, ns_parser.export)
+                elif ns_parser.metric == "commonsense":
+                    portfolio_view.display_common_sense_ratio(
+                        self.portfolio, ns_parser.export
+                    )
+                elif ns_parser.metric == "jensens":
+                    portfolio_view.display_jensens_alpha(
+                        self.portfolio, ns_parser.risk_free_rate, ns_parser.export
+                    )
+                elif ns_parser.metric == "calmar":
+                    portfolio_view.display_calmar_ratio(
+                        self.portfolio, ns_parser.export
+                    )
+                elif ns_parser.metric == "kelly":
+                    portfolio_view.display_kelly_criterion(
+                        self.portfolio, ns_parser.export
+                    )
+                elif ns_parser.metric == "payoff":
+                    portfolio_view.display_payoff_ratio(
+                        self.portfolio, ns_parser.export
+                    )
+                elif ns_parser.metric == "profitfactor":
+                    portfolio_view.display_profit_factor(
+                        self.portfolio, ns_parser.export
+                    )
 
     @log_start_end(log=logger)
     def call_distr(self, other_args: List[str]):
