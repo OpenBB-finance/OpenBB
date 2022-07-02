@@ -236,7 +236,6 @@ class DueDiligenceController(CryptoBaseController):
                 """,
             )
 
-            
             parser.add_argument(
                 "-s",
                 "--since",
