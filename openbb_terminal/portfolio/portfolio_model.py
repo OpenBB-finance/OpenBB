@@ -801,10 +801,10 @@ class Portfolio:
         self.benchmark: pd.DataFrame = pd.DataFrame()
         self._historical_crypto: pd.DataFrame = pd.DataFrame()
         self._historical_prices: pd.DataFrame = pd.DataFrame()
-        self.returns: pd.Series = pd.Series()
+        self.returns: pd.Series = pd.Series(dtype=object)
         self.portfolio_value = None
         self.ItemizedHoldings = None
-        self.benchmark_returns: pd.Series = pd.Series()
+        self.benchmark_returns: pd.Series = pd.Series(dtype=object)
         self.portfolio_sectors_allocation = pd.DataFrame()
         self.portfolio_assets_allocation = pd.DataFrame()
         self.benchmark_sectors_allocation = pd.DataFrame()
