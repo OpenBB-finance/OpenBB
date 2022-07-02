@@ -8,13 +8,19 @@ import pytest
 # IMPORTATION INTERNAL
 from openbb_terminal.portfolio import portfolio_model
 
-portfolio_trades = pd.read_csv(StringIO(""",Date,Name,Type,Sector,Industry,Country,Price,Quantity,Fees,Premium,Investment,Side,Currency,Portfolio Investment,Close,Portfolio Value,% Portfolio Return,Abs Portfolio Return
+portfolio_trades = pd.read_csv(
+    StringIO(
+        """,Date,Name,Type,Sector,Industry,Country,Price,Quantity,Fees,Premium,Investment,Side,Currency,Portfolio Investment,Close,Portfolio Value,% Portfolio Return,Abs Portfolio Return
 0,2017-10-05,CASH,CASH,CASH,CASH,CASH,8523.0,1,0,0,8523.0,1,USD,0.0,0.0,0.0,0.0,0.0
 1,2018-10-12,QQQ,ETF,American Technology,Large,United States,174.32,30,0,0,5229.599999999999,1,USD,5229.599999999999,282.1300048828125,8463.900146484375,0.6184603309018617,3234.3001464843755
 2,2020-06-05,SPY,ETF,American Market,Large,United States,319.34,10,0,0,3193.3999999999996,1,USD,3193.3999999999996,381.239990234375,3812.39990234375,0.19383725882875624,618.9999023437504
-"""))
+"""
+    )
+)
 
-portfolio_returns = pd.read_csv(StringIO("""Date,TotalHoldings
+portfolio_returns = pd.read_csv(
+    StringIO(
+        """Date,TotalHoldings
 2017-10-06,0.0
 2017-10-09,0.0
 2017-10-10,0.0
@@ -1206,12 +1212,16 @@ portfolio_returns = pd.read_csv(StringIO("""Date,TotalHoldings
 2022-06-28,-0.027172133902980122
 2022-06-29,0.00037859625879343994
 2022-06-30,-0.01099261022575082
-2022-07-01,0.007768167295043371"""))
+2022-07-01,0.007768167295043371"""
+    )
+)
 
 portfolio_returns["Date"] = pd.to_datetime(portfolio_returns["Date"])
 portfolio_returns = portfolio_returns.set_index("Date")
 
-benchmark_returns = pd.read_csv(StringIO("""Date,Adj Close
+benchmark_returns = pd.read_csv(
+    StringIO(
+        """Date,Adj Close
 2017-10-05,0.005925101432529667
 2017-10-06,-0.0011386985711221431
 2017-10-09,-0.0016512406993203221
@@ -2404,31 +2414,41 @@ benchmark_returns = pd.read_csv(StringIO("""Date,Adj Close
 2022-06-28,-0.02043285343481205
 2022-06-29,-0.000814390026440015
 2022-06-30,-0.008124300277758567
-2022-07-01,0.010576514869118592"""))
+2022-07-01,0.010576514869118592"""
+    )
+)
 
 benchmark_returns["Date"] = pd.to_datetime(benchmark_returns["Date"])
 benchmark_returns = benchmark_returns.set_index("Date")
 
 
 def test_tracking_error(recorder):
-    result_df, _ = portfolio_model.get_tracking_error(portfolio_returns, benchmark_returns)
+    result_df, _ = portfolio_model.get_tracking_error(
+        portfolio_returns, benchmark_returns
+    )
 
     recorder.capture(result_df)
 
 
 def test_information_ratio(recorder):
-    result_df, _ = portfolio_model.get_information_ratio(portfolio_returns, benchmark_returns)
+    result_df, _ = portfolio_model.get_information_ratio(
+        portfolio_returns, benchmark_returns
+    )
 
     recorder.capture(result_df)
 
 
 def test_tail_ratio(recorder):
-    result_df, _, _ = portfolio_model.get_tail_ratio(portfolio_returns, benchmark_returns)
+    result_df, _, _ = portfolio_model.get_tail_ratio(
+        portfolio_returns, benchmark_returns
+    )
 
     recorder.capture(result_df)
 
 
 def test_common_sense_ratio(recorder):
-    result_df = portfolio_model.get_common_sense_ratio(portfolio_returns, benchmark_returns)
+    result_df = portfolio_model.get_common_sense_ratio(
+        portfolio_returns, benchmark_returns
+    )
 
     recorder.capture(result_df)
