@@ -17,7 +17,7 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.portfolio import portfolio_helper, allocation_model
 from openbb_terminal.rich_config import console
 
-# pylint: disable=E1136,W0201,R0902
+# pylint: disable=E1136,W0201,R0902,C0302
 # pylint: disable=unsupported-assignment-operation
 logger = logging.getLogger(__name__)
 cg = CoinGeckoAPI()
@@ -801,10 +801,10 @@ class Portfolio:
         self.benchmark: pd.DataFrame = pd.DataFrame()
         self._historical_crypto: pd.DataFrame = pd.DataFrame()
         self._historical_prices: pd.DataFrame = pd.DataFrame()
-        self.returns = None
+        self.returns: pd.Series = pd.Series()
         self.portfolio_value = None
         self.ItemizedHoldings = None
-        self.benchmark_returns = None
+        self.benchmark_returns: pd.Series = pd.Series()
         self.portfolio_sectors_allocation = pd.DataFrame()
         self.portfolio_assets_allocation = pd.DataFrame()
         self.benchmark_sectors_allocation = pd.DataFrame()
