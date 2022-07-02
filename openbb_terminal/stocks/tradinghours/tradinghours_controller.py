@@ -15,7 +15,6 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.menu import session
 from openbb_terminal.helper_funcs import (
     get_user_timezone_or_invalid,
-    parse_known_args_and_warn,
 )
 from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.parent_classes import BaseController
@@ -114,7 +113,7 @@ class TradingHoursController(BaseController):
         ):
             other_args.insert(0, "-n")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             self.symbol = ns_parser.symbol
             self.symbol_name = self.equities[self.symbol]["short_name"]  #
@@ -156,7 +155,7 @@ class TradingHoursController(BaseController):
         ):
             other_args.insert(0, "-n")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser and ns_parser.exchange:
             bursa_view.display_exchange(ns_parser.exchange)
         else:
@@ -176,7 +175,7 @@ class TradingHoursController(BaseController):
         if other_args and "-h" not in other_args:
             other_args.insert(0, "-n")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             bursa_view.display_open()
         else:
@@ -196,7 +195,7 @@ class TradingHoursController(BaseController):
         if other_args and "-h" not in other_args:
             other_args.insert(0, "-n")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             bursa_view.display_closed()
         else:
@@ -216,7 +215,7 @@ class TradingHoursController(BaseController):
         if other_args and "-h" not in other_args:
             other_args.insert(0, "-n")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             bursa_view.display_all()
         else:

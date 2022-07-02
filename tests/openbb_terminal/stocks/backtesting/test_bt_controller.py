@@ -19,7 +19,7 @@ EMPTY_DF = pd.DataFrame()
 @pytest.mark.parametrize(
     "queue, expected",
     [
-        (["ema", "help"], []),
+        (["ema", "help"], ["help"]),
         (["quit", "help"], ["help"]),
     ],
 )
@@ -75,7 +75,7 @@ def test_menu_without_queue_completion(mocker):
         queue=None,
     ).menu()
 
-    assert result_menu == []
+    assert result_menu == ["help"]
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -124,7 +124,7 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
         queue=None,
     ).menu()
 
-    assert result_menu == []
+    assert result_menu == ["help"]
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -313,7 +313,7 @@ def test_call_func(tested_func, mocked_func, other_args, called_with, mocker):
 )
 def test_call_func_no_parser(func, mocker):
     mocker.patch(
-        "openbb_terminal.stocks.backtesting.bt_controller.parse_known_args_and_warn",
+        "openbb_terminal.stocks.backtesting.bt_controller.BacktestingController.parse_known_args_and_warn",
         return_value=None,
     )
     controller = bt_controller.BacktestingController(
@@ -324,7 +324,7 @@ def test_call_func_no_parser(func, mocker):
     func_result = getattr(controller, func)(other_args=list())
     assert func_result is None
     assert not controller.queue
-    getattr(bt_controller, "parse_known_args_and_warn").assert_called_once()
+    controller.parse_known_args_and_warn.assert_called_once()
 
 
 @pytest.mark.vcr(record_mode="none")

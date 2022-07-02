@@ -17,7 +17,6 @@ from openbb_terminal.helper_funcs import (
     check_percentage_range,
     check_positive,
     check_positive_float,
-    parse_known_args_and_warn,
 )
 from openbb_terminal.cryptocurrency.tools import tools_view
 from openbb_terminal.menu import session
@@ -112,7 +111,7 @@ class ToolsController(BaseController):
         if other_args and not other_args[0][0] == "-":
             other_args.insert(0, "-pcA")
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -168,7 +167,7 @@ class ToolsController(BaseController):
         if other_args and not other_args[0][0] == "-":
             other_args.insert(0, "--apr")
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 

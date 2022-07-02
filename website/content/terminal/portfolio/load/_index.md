@@ -1,10 +1,6 @@
 ```
 usage: load [-f {}] [-n NAME] [-r RISK_FREE_RATE] [-h]
-```
 
-Load your portfolio
-
-```
 optional arguments:
   -f {}, --file {}
                         The file to be loaded (default: None)
@@ -14,6 +10,29 @@ optional arguments:
   -h, --help            show this help message (default: False)
 
 ```
+
+
+Load your portfolio for analysis.
+
+This command works by taking in a list of trades you have made and constructs the resulting portfolio from them. It can accept either an Excel or CSV file with this information. Each row in the file should have the following information:
+
+Required:
+* Date - The date the trade occurred
+* Name - The name of the security
+* Type - The type of the security. Use `Cash`/`Stock`/`Crypto`/`ETF` as appropriate
+* Price - The price the security was added or removed at, on a per-unit basis
+* Quantity - How much of the security in question was added or removed
+* Side - Whether or not you bought or sold. Use `Buy`/`Deposit`/`1` to add to the portfolio or `Sell`/`Withdrawal`/`0` to remove from the portfolio
+
+Optional:
+* Investment - Total value of the investment, less any fees. Calculated dynamically as price * quantity by the terminal
+* Fees - Any fees paid as part of the transaction
+* Premium - Any premiums received or paid
+* Quantity - How much of the security in question was added or removed
+* Currency - The currency the transaction was made in
+* Sector - The sector of the security. Required for `alloc` commands
+* Industry - The industry of the security. Required for `alloc` commands
+* Country - The country of the security. Required for `alloc` commands
 
 Example:
 ```

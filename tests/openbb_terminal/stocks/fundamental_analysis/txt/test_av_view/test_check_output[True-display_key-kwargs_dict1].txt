@@ -1,13 +1,13 @@
                                   0
-Market capitalization     734.966 B
+Market capitalization     761.219 B
 EBITDA                     12.702 B
 EPS                             7.4
-PE ratio                      95.87
-PEG ratio                     1.654
-Price to book ratio           21.57
+PE ratio                      99.29
+PEG ratio                     1.657
+Price to book ratio           21.61
 Return on equity TTM          0.283
-Price to sales ratio TTM      11.82
+Price to sales ratio TTM      12.24
 Dividend yield                    0
-50 day moving average        925.93
-Analyst target price         961.82
-Beta                          2.119
+50 day moving average        785.57
+Analyst target price         905.97
+Beta                          2.132

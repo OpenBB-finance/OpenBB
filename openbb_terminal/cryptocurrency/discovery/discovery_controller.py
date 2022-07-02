@@ -8,6 +8,7 @@ from typing import List
 
 from prompt_toolkit.completion import NestedCompleter
 
+
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.cryptocurrency.discovery import (
     coinmarketcap_model,
@@ -23,7 +24,6 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
-    parse_known_args_and_warn,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
@@ -113,7 +113,7 @@ class DiscoveryController(BaseController):
             can receive a category as argument (-c decentralized-finance-defi or -c stablecoins)
             and will show only the top coins in that category.
             can also receive sort arguments, e.g., --sort Volume [$]
-            You can sort by {Symbol,Name,Price [$],Market Cap [$],Market Cap Rank,Volume [$]}
+            You can sort by {Symbol,Name,Price [$],Market Cap,Market Cap Rank,Volume [$]}
             Number of coins to show: -l 10
             """,
         )
@@ -146,7 +146,7 @@ class DiscoveryController(BaseController):
         if other_args and not other_args[0][0] == "-":
             other_args.insert(0, "-c")
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -187,7 +187,7 @@ class DiscoveryController(BaseController):
             help="Sort by given column. Default: Daily Volume [$]",
             default="Daily Volume [$]",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -227,7 +227,7 @@ class DiscoveryController(BaseController):
             help="Sort by given column. Default: Daily Volume [$]",
             default="Daily Volume [$]",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -267,7 +267,7 @@ class DiscoveryController(BaseController):
             help="Sort by given column. Default: Daily Volume [$]",
             default="Daily Volume [$]",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -286,7 +286,7 @@ class DiscoveryController(BaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""
             Shows top NFT collections [Source: https://dappradar.com/]
-            Accepts --sort {Name,Protocols,Floor Price [$],Avg Price [$],Market Cap [$],Volume [$]}
+            Accepts --sort {Name,Protocols,Floor Price [$],Avg Price [$],Market Cap,Volume [$]}
             to sort by column
             """,
         )
@@ -304,11 +304,11 @@ class DiscoveryController(BaseController):
             "--sort",
             dest="sortby",
             nargs="+",
-            help="Sort by given column. Default: Market Cap [$]",
-            default="Market Cap [$]",
+            help="Sort by given column. Default: Market Cap",
+            default="Market Cap",
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -329,7 +329,7 @@ class DiscoveryController(BaseController):
             Shows Largest Gainers - coins which gain the most in given period.
             You can use parameter --period to set which timeframe are you interested in: {14d,1h,1y,200d,24h,30d,7d}
             You can look on only N number of records with --limit,
-            You can sort by {Symbol,Name,Price [$],Market Cap [$],Market Cap Rank,Volume [$]} with --sort.
+            You can sort by {Symbol,Name,Price [$],Market Cap,Market Cap Rank,Volume [$]} with --sort.
             """,
         )
 
@@ -358,10 +358,10 @@ class DiscoveryController(BaseController):
             dest="sortby",
             nargs="+",
             help="Sort by given column. Default: Market Cap Rank",
-            default="Market Cap Rank",
+            default=["Market Cap"],
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -383,7 +383,7 @@ class DiscoveryController(BaseController):
            Shows Largest Losers - coins which price dropped the most in given period
            You can use parameter --period to set which timeframe are you interested in: {14d,1h,1y,200d,24h,30d,7d}
            You can look on only N number of records with --limit,
-           You can sort by {Symbol,Name,Price [$],Market Cap [$],Market Cap Rank,Volume [$]} with --sort.
+           You can sort by {Symbol,Name,Price [$],Market Cap,Market Cap Rank,Volume [$]} with --sort.
             """,
         )
 
@@ -412,10 +412,10 @@ class DiscoveryController(BaseController):
             dest="sortby",
             nargs="+",
             help="Sort by given column. Default: Market Cap Rank",
-            default="Market Cap Rank",
+            default=["Market Cap"],
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -439,7 +439,7 @@ class DiscoveryController(BaseController):
             """,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -484,7 +484,7 @@ class DiscoveryController(BaseController):
             default=True,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -562,7 +562,7 @@ class DiscoveryController(BaseController):
             if not other_args[0][0] == "-":
                 other_args.insert(0, "-q")
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:

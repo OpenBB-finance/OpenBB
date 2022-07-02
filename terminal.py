@@ -18,10 +18,13 @@ from prompt_toolkit.styles import Style
 from prompt_toolkit.formatted_text import HTML
 
 from openbb_terminal.core.config.constants import REPO_DIR, ENV_FILE, USER_HOME
+from openbb_terminal.core.log.generation.path_tracking_file_handler import (
+    PathTrackingFileHandler,
+)
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.helper_funcs import (
     get_flair,
-    parse_known_args_and_warn,
+    parse_simple_args,
 )
 from openbb_terminal.loggers import setup_logging
 from openbb_terminal.menu import session
@@ -305,7 +308,7 @@ class TerminalController(BaseController):
         )
         if args and "-" not in args[0][0]:
             args.insert(0, "-p")
-        ns_parser_exe = parse_known_args_and_warn(parser_exe, args)
+        ns_parser_exe = parse_simple_args(parser_exe, args)
         if ns_parser_exe:
             if ns_parser_exe.path:
                 if ns_parser_exe.path in self.ROUTINE_CHOICES:
@@ -486,7 +489,7 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
                             completer=t_controller.completer,
                             search_ignore_case=True,
                         )
-                except KeyboardInterrupt:
+                except (KeyboardInterrupt, EOFError):
                     print_goodbye()
                     break
             # Get input from user without auto-completion
@@ -549,6 +552,14 @@ def insert_start_slash(cmds: List[str]) -> List[str]:
     return cmds
 
 
+def do_rollover():
+    """RollOver the log file."""
+
+    for handler in logging.getLogger().handlers:
+        if isinstance(handler, PathTrackingFileHandler):
+            handler.doRollover()
+
+
 def log_settings() -> None:
     """Log settings"""
     settings_dict = {}
@@ -572,6 +583,8 @@ def log_settings() -> None:
     settings_dict["os"] = str(platform.system())
 
     logger.info("SETTINGS: %s ", str(settings_dict))
+
+    do_rollover()
 
 
 def run_scripts(
