@@ -297,8 +297,8 @@ def get_tracking_error(
     trackr_rolling = diff_returns.rolling(period, min_periods=period).std()
 
     vals = list()
-    for period in portfolio_helper.PERIODS:
-        period_return = portfolio_helper.filter_df_by_period(returns, period)
+    for periods in portfolio_helper.PERIODS:
+        period_return = portfolio_helper.filter_df_by_period(returns, periods)
         if not period_return.empty:
             vals.append([round(period_return.std(), 3)])
         else:
@@ -340,9 +340,9 @@ def get_information_ratio(
     ) / tracking_err
 
     vals = list()
-    for period in portfolio_helper.PERIODS:
-        period_return = portfolio_helper.filter_df_by_period(returns, period)
-        period_track_err = portfolio_helper.filter_df_by_period(tracking_err, period)
+    for periods in portfolio_helper.PERIODS:
+        period_return = portfolio_helper.filter_df_by_period(returns, periods)
+        period_track_err = portfolio_helper.filter_df_by_period(tracking_err, periods)
         if not period_return.empty:
             vals.append(
                 [
@@ -399,10 +399,10 @@ def get_tail_ratio(
     )
 
     vals = list()
-    for period in portfolio_helper.PERIODS:
-        period_return = portfolio_helper.filter_df_by_period(returns, period)
+    for periods in portfolio_helper.PERIODS:
+        period_return = portfolio_helper.filter_df_by_period(returns, periods)
         period_bench_return = portfolio_helper.filter_df_by_period(
-            benchmark_returns, period
+            benchmark_returns, periods
         )
         if not period_return.empty:
             vals.append(
@@ -512,7 +512,7 @@ def get_jensens_alpha(
     pd.Series
         Series of jensens's alpha data
     """
-    periods = portfolio_helper.PERIODS_DAYS
+    periods_d = portfolio_helper.PERIODS_DAYS
 
     period_cum_returns = (1.0 + returns).rolling(window=period).agg(
         lambda x: x.prod()
@@ -527,13 +527,13 @@ def get_jensens_alpha(
     )
 
     vals = list()
-    for period in portfolio_helper.PERIODS:
-        period_return = portfolio_helper.filter_df_by_period(returns, period)
+    for periods in portfolio_helper.PERIODS:
+        period_return = portfolio_helper.filter_df_by_period(returns, periods)
         period_bench_return = portfolio_helper.filter_df_by_period(
-            benchmark_returns, period
+            benchmark_returns, periods
         )
         if not period_return.empty:
-            beta = get_rolling_beta(returns, benchmark_returns, periods[period])
+            beta = get_rolling_beta(returns, benchmark_returns, periods_d[periods])
             if not beta.empty:
                 beta = beta.iloc[-1]
                 period_cum_returns = (
@@ -543,7 +543,7 @@ def get_jensens_alpha(
                     (1 + period_bench_return.shift(periods=1, fill_value=0)).cumprod()
                     - 1
                 ).iloc[-1]
-                rfr_cum_returns = rf * periods[period] / 252
+                rfr_cum_returns = rf * periods_d[periods] / 252
                 vals.append(
                     [
                         round(
@@ -590,7 +590,7 @@ def get_calmar_ratio(
     pd.Series
         Series of calmar ratio data
     """
-    periods = portfolio_helper.PERIODS_DAYS
+    periods_d = portfolio_helper.PERIODS_DAYS
 
     period_cum_returns = (1.0 + returns).rolling(window=period).agg(
         lambda x: x.prod()
@@ -602,21 +602,21 @@ def get_calmar_ratio(
     cr_rolling = annual_return / portfolio_helper.get_maximum_drawdown(returns)
 
     vals = list()
-    for period in portfolio_helper.PERIODS:
-        period_return = portfolio_helper.filter_df_by_period(returns, period)
+    for periods in portfolio_helper.PERIODS:
+        period_return = portfolio_helper.filter_df_by_period(returns, periods)
         period_bench_return = portfolio_helper.filter_df_by_period(
-            benchmark_returns, period
+            benchmark_returns, periods
         )
-        if (not period_return.empty) and (periods[period] != 0):
+        if (not period_return.empty) and (periods_d[periods] != 0):
             period_cum_returns = (
                 (1 + period_return.shift(periods=1, fill_value=0)).cumprod() - 1
             ).iloc[-1]
             period_cum_bench_returns = (
                 (1 + period_bench_return.shift(periods=1, fill_value=0)).cumprod() - 1
             ).iloc[-1]
-            annual_return = period_cum_returns ** (1 / (periods[period] / 252)) - 1
+            annual_return = period_cum_returns ** (1 / (periods_d[periods] / 252)) - 1
             annual_bench_return = (
-                period_cum_bench_returns ** (1 / (periods[period] / 252)) - 1
+                period_cum_bench_returns ** (1 / (periods_d[periods] / 252)) - 1
             )
             drawdown = portfolio_helper.get_maximum_drawdown(period_return)
             bench_drawdown = portfolio_helper.get_maximum_drawdown(period_bench_return)
@@ -658,7 +658,7 @@ def get_kelly_criterion(returns: pd.Series, portfolio_trades: pd.DataFrame):
     portfolio_trades["Date"] = pd.to_datetime(portfolio_trades["Date"])
     portfolio_trades = portfolio_trades.set_index("Date")
 
-    vals = list()
+    vals: list = list()
     for period in portfolio_helper.PERIODS:
         period_return = portfolio_helper.filter_df_by_period(returns, period)
         period_portfolio_tr = portfolio_helper.filter_df_by_period(
