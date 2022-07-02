@@ -401,12 +401,12 @@ def display_exchange_balances(
         f"{asset}: Total Balance in {'all exchanges' if exchange == 'aggregated' else exchange}"
     )
     ax1.tick_params(axis="x", labelrotation=10)
-    ax1.legend(["ETH Unit"], loc="best")
+    ax1.legend([f"{asset} Unit"], loc="upper right")
 
     ax2.grid(visible=False)
     ax2.plot(df_balance.index, df_balance["price"], color="orange")
     ax2.set_ylabel(f"{asset} price [$]")
-    ax2.legend(["ETH Price"], loc="best")
+    ax2.legend([f"{asset} Price"], loc="upper left")
 
     if not external_axes:
         theme.visualize_output()

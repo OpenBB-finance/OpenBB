@@ -1649,6 +1649,11 @@ main:
                 ref: "/terminal/common/prediction_techniques/conv1d"
               - name: mc
                 ref: "/terminal/common/prediction_techniques/mc"
+      - name: scripts
+        ref: "/terminal/scripts"
+        sub:
+          - name: exe
+            ref: "/terminal/scripts/exe"
   - name: "OpenBB Python API"
     ref: "/api"
   - name: "OpenBB Bots"

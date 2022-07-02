@@ -6,10 +6,7 @@ env:
   OPENBB_USE_PROMPT_TOOLKIT: false
   PIP_DEFAULT_TIMEOUT: 100
   PYTHONNOUSERSITE: 1
-on:
-  push:
-    branches:
-      - 'build_workflow_test'
+on: workflow_dispatch
 jobs:
   Build:
     name: Intel MacOS Build
@@ -57,3 +54,6 @@ jobs:
           path: |
                 DMG/OpenBB\ Terminal/.openbb
                 DMG/OpenBB\ Terminal/OpenBB\ Terminal
+      - name: Run Integration Tests
+        shell: bash -l {0}
+        run: DMG/OpenBB\ Terminal/.OpenBB/OpenBBTerminal ~/work/OpenBBTerminal/OpenBBTerminal/scripts/*.openbb -t
