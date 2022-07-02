@@ -235,16 +235,7 @@ class DueDiligenceController(CryptoBaseController):
                     Note that free api keys only allow fetching data with a 1y lag
                 """,
             )
-            
-            parser.add_argument(
-                "-i",
-                "--interval",
-                dest="interval",
-                type=str,
-                help="Frequency interval. Default: 24h",
-                default="24h",
-                choices=glassnode_model.INTERVALS_NON_ZERO_ADDRESSES,
-            )
+
             
             parser.add_argument(
                 "-s",
