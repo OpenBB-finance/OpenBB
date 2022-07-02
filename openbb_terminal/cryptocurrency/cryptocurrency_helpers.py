@@ -12,7 +12,6 @@ import logging
 import pandas as pd
 import numpy as np
 from binance.client import Client
-from matplotlib import ticker
 import matplotlib.pyplot as plt
 import yfinance as yf
 import mplfinance as mpf
