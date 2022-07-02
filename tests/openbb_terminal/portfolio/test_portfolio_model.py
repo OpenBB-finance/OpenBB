@@ -2,7 +2,6 @@
 
 # IMPORTATION THIRDPARTY
 import pandas as pd
-import pytest
 
 # IMPORTATION INTERNAL
 from openbb_terminal.portfolio import portfolio_model
