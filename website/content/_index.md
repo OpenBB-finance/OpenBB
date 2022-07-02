@@ -291,6 +291,15 @@ As mentioned in the <a href="#explanation-of-menus">Explanation of Menus</a>, so
 loaded market data from <a href="terminal/stocks/load" target="_blank">load</a>.
 So, if you would visit the `ta` menu (which stands for <a href="https://www.investopedia.com/terms/t/technicalanalysis.asp" target="_blank">Technical Analysis</a>) you will see that, by running any command, the selected period above is depicted again. Return to the Stocks menu again by using `q` and use it again to return to the home screen which can be shown with `?`.
 
+
+### Explanation of Scripts
+The `.openbb` scripts offer the ability to automatically run a set of commands in the form of a **routine**. Furthermore,
+the scripts can be adapted, and documented, at any moment giving the user full control over the type of analysis you wish
+to do (and repeat). This can fundamental research, understanding market movements, finding hidden gems and even
+doing advanced statistical/econometric research.
+
+<b><span style="color:white">For a thorough guide on how to setup these files, please see the <a href="https://openbb-finance.github.io/OpenBBTerminal/scripts" target="_blank">Scripts & Routines guide</a>.</span></b>
+
 ## Accessing other sources of data via API keys
 
 Within this menu you can define your, often free, API key from various platforms like Alpha Vantage, FRED, IEX, Twitter, DeGiro, Binance and Coinglass. API keys are in essence a set of random characters that is unique to you.
