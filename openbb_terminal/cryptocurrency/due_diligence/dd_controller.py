@@ -232,16 +232,26 @@ class DueDiligenceController(CryptoBaseController):
                 description="""
                     Display addresses with nonzero assets in a certain blockchain
                     [Source: https://glassnode.org]
+                    Note that free api keys only allow fetching data with a 1y lag
                 """,
             )
-
-            # TODO: tell users that free api key only data with 1y lag
+            
+            parser.add_argument(
+                "-i",
+                "--interval",
+                dest="interval",
+                type=str,
+                help="Frequency interval. Default: 24h",
+                default="24h",
+                choices=glassnode_model.INTERVALS_NON_ZERO_ADDRESSES,
+            )
+            
             parser.add_argument(
                 "-s",
                 "--since",
                 dest="since",
                 type=valid_date,
-                help="Initial date. Default: 2020-01-01",
+                help="Initial date. Default: 2 years ago",
                 default=(datetime.now() - timedelta(days=365 * 2)).strftime("%Y-%m-%d"),
             )
 
@@ -250,7 +260,7 @@ class DueDiligenceController(CryptoBaseController):
                 "--until",
                 dest="until",
                 type=valid_date,
-                help="Final date. Default: 2021-01-01",
+                help="Final date. Default: 1 year ago",
                 default=(datetime.now() - timedelta(days=367)).strftime("%Y-%m-%d"),
             )
 
@@ -299,7 +309,7 @@ class DueDiligenceController(CryptoBaseController):
                 "--since",
                 dest="since",
                 type=valid_date,
-                help="Initial date. Default: 2020-01-01",
+                help="Initial date. Default: 1 year ago",
                 default=(datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d"),
             )
 
@@ -308,7 +318,7 @@ class DueDiligenceController(CryptoBaseController):
                 "--until",
                 dest="until",
                 type=valid_date,
-                help="Final date. Default: 2021-01-01",
+                help="Final date. Default: Today",
                 default=(datetime.now()).strftime("%Y-%m-%d"),
             )
 
@@ -340,6 +350,7 @@ class DueDiligenceController(CryptoBaseController):
                 description="""
                     Display active blockchain addresses over time
                     [Source: https://glassnode.org]
+                    Note that free api keys only allow fetching data with a 1y lag
                 """,
             )
 
@@ -358,8 +369,8 @@ class DueDiligenceController(CryptoBaseController):
                 "--since",
                 dest="since",
                 type=valid_date,
-                help="Initial date. Default: 2019-01-01",
-                default="2019-01-01",
+                help="Initial date. Default: 2 years ago",
+                default=(datetime.now() - timedelta(days=365 * 2)).strftime("%Y-%m-%d"),
             )
 
             parser.add_argument(
@@ -367,8 +378,8 @@ class DueDiligenceController(CryptoBaseController):
                 "--until",
                 dest="until",
                 type=valid_date,
-                help="Final date. Default: 2020-01-01",
-                default="2020-01-01",
+                help="Final date. Default: 1 year ago",
+                default=(datetime.now() - timedelta(days=367)).strftime("%Y-%m-%d"),
             )
 
             if other_args:
@@ -402,6 +413,7 @@ class DueDiligenceController(CryptoBaseController):
                 description="""
                     Display active blockchain addresses over time
                     [Source: https://glassnode.org]
+                    Note that free api keys only allow fetching data with a 1y lag
                 """,
             )
 
@@ -428,8 +440,8 @@ class DueDiligenceController(CryptoBaseController):
                 "--since",
                 dest="since",
                 type=valid_date,
-                help="Initial date. Default: 2019-01-01",
-                default="2019-01-01",
+                help="Initial date. Default: 2 years ago",
+                default=(datetime.now() - timedelta(days=365 * 2)).strftime("%Y-%m-%d"),
             )
 
             parser.add_argument(
@@ -437,8 +449,8 @@ class DueDiligenceController(CryptoBaseController):
                 "--until",
                 dest="until",
                 type=valid_date,
-                help="Final date. Default: 2020-01-01",
-                default="2020-01-01",
+                help="Final date. Default: 1 year ago",
+                default=(datetime.now() - timedelta(days=367)).strftime("%Y-%m-%d"),
             )
 
             if other_args and not other_args[0][0] == "-":
