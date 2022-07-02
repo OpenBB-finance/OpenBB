@@ -79,8 +79,6 @@ def display_arima(
         Format to export image
     time_res : str
         Resolution for data, allowing for predicting outside of standard market days
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
     """
 
     if arima_order:

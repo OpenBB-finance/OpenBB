@@ -51,8 +51,6 @@ def display_regression(
             lagged target values to predict the next time step
         export: str
             Format to export data
-        external_axes : Optional[List[plt.Axes]], optional
-            External axes (2 axis is expected in the list), by default None
         residuals: bool
             Whether to show residuals for the model. Defaults to False.
     """

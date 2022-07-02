@@ -73,8 +73,6 @@ def display_rnn_forecast(
             Whether or not to automatically save the untrained model and checkpoints from training. Defaults to True.
         export: str
             Format to export data
-        external_axes : Optional[List[plt.Axes]], optional
-            External axes (2 axis is expected in the list), by default None
         residuals: bool
             Whether to show residuals for the model. Defaults to False.
     """

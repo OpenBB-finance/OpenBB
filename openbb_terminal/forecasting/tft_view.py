@@ -86,8 +86,6 @@ def display_tft_forecast(
     save_checkpoints (bool, optional):
         Whether or not to automatically save the untrained model and checkpoints from training.
         Defaults to True.
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (2 axis is expected in the list), by default None
     residuals: bool
         Whether to show residuals for the model. Defaults to False.
     """

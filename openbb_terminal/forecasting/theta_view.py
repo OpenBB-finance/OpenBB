@@ -50,8 +50,6 @@ def display_theta_forecast(
         Number of days to forecast when backtesting and retraining historical
     export: str
         Format to export data
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (2 axis is expected in the list), by default None
     residuals: bool
         Whether to show residuals for the model. Defaults to False.
     """
