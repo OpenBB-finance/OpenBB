@@ -28,7 +28,6 @@ from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_FIGURES_ALLOWED,
     check_positive,
     get_next_stock_market_days,
-    parse_known_args_and_warn,
     valid_date,
 )
 from openbb_terminal.menu import session
@@ -136,7 +135,7 @@ class PredictionTechniquesController(CryptoBaseController):
         if other_args and "-t" not in other_args and "-h" not in other_args:
             other_args.insert(0, "-t")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             self.target = ns_parser.target
             console.print("")
@@ -209,7 +208,7 @@ class PredictionTechniquesController(CryptoBaseController):
             default=None,
             help="The end date (format YYYY-MM-DD) to select - Backtesting",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
         if ns_parser:
@@ -315,7 +314,7 @@ class PredictionTechniquesController(CryptoBaseController):
             default=True,
             help="Specify if shuffling validation inputs.",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_FIGURES_ALLOWED
         )
         if ns_parser:
@@ -396,7 +395,7 @@ class PredictionTechniquesController(CryptoBaseController):
             and ("-p" not in other_args or "--polynomial" not in other_args)
         ):
             other_args.insert(0, "-p")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
         if ns_parser:
@@ -501,7 +500,7 @@ class PredictionTechniquesController(CryptoBaseController):
             default=None,
             help="The end date (format YYYY-MM-DD) to select - Backtesting",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
         if ns_parser:
@@ -694,7 +693,7 @@ class PredictionTechniquesController(CryptoBaseController):
             help="Whether to model returns or log returns",
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
         if self.target != "Close":

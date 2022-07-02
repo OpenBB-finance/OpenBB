@@ -125,7 +125,8 @@ def get_coins(top: int = 250, category: str = "") -> pd.DataFrame:
         if category:
             kwargs["category"] = category
         data = client.get_coins_markets(**kwargs)
-        df = df.append(pd.DataFrame(data), ignore_index=True)
+        df = pd.concat([df, pd.DataFrame(data)], ignore_index=True)
+        # df = df.append(pd.DataFrame(data), ignore_index=True)
     else:
         p = 1
         while top > 0:
@@ -141,7 +142,8 @@ def get_coins(top: int = 250, category: str = "") -> pd.DataFrame:
                 kwargs["category"] = category
 
             data = client.get_coins_markets(**kwargs)
-            df = df.append(pd.DataFrame(data), ignore_index=True)
+            df = pd.concat([df, pd.DataFrame(data)], ignore_index=True)
+            # df = df.append(pd.DataFrame(data), ignore_index=True)
             top -= 250
             p += 1
     return df.head(top)
@@ -151,7 +153,7 @@ GAINERS_LOSERS_COLUMNS = [
     "Symbol",
     "Name",
     "Price [$]",
-    "Market Cap [$]",
+    "Market Cap",
     "Market Cap Rank",
     "Volume [$]",
 ]

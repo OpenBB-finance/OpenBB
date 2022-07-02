@@ -32,7 +32,6 @@ def show_indices(
     end_date: int = None,
     column: str = "Adj Close",
     returns: bool = False,
-    store: bool = False,
     raw: bool = False,
     external_axes: Optional[List[plt.axes]] = None,
     export: str = "",
@@ -53,8 +52,6 @@ def show_indices(
         Which column to load in, by default this is the Adjusted Close.
     returns: bool
         Flag to show cumulative returns on index
-    store : bool
-        Whether to prevent plotting the data.
     raw : bool
         Whether to display the raw output.
     external_axes: Optional[List[plt.axes]]
@@ -75,51 +72,50 @@ def show_indices(
         indices_data = indices_data + 1
         indices_data = indices_data.cumprod()
 
-    if not store:
-        if external_axes is None:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        else:
-            ax = external_axes[0]
+    if external_axes is None:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    else:
+        ax = external_axes[0]
 
-        for index in indices:
-            if index.lower() in INDICES:
-                label = INDICES[index.lower()]["name"]
+    for index in indices:
+        if index.lower() in INDICES:
+            label = INDICES[index.lower()]["name"]
+        else:
+            label = index
+
+        if not indices_data[index].empty:
+
+            if returns:
+                indices_data.index.name = "date"
+                data_to_percent = 100 * (indices_data[index].values - 1)
+                plot_data = reindex_dates(indices_data)
+                ax.plot(plot_data.index, data_to_percent, label=label)
             else:
-                label = index
+                ax.plot(indices_data.index, indices_data[index], label=label)
 
-            if not indices_data[index].empty:
+    ax.set_title("Indices")
+    if returns:
+        ax.set_ylabel("Performance (%)")
+    ax.legend(
+        bbox_to_anchor=(0, 0.40, 1, -0.52),
+        loc="upper right",
+        mode="expand",
+        borderaxespad=0,
+        prop={"size": 9},
+        ncol=2,
+    )
 
-                if returns:
-                    indices_data.index.name = "date"
-                    data_to_percent = 100 * (indices_data[index].values - 1)
-                    plot_data = reindex_dates(indices_data)
-                    ax.plot(plot_data.index, data_to_percent, label=label)
-                else:
-                    ax.plot(indices_data.index, indices_data[index], label=label)
-
-        ax.set_title("Indices")
-        if returns:
-            ax.set_ylabel("Performance (%)")
-        ax.legend(
-            bbox_to_anchor=(0, 0.40, 1, -0.52),
-            loc="upper right",
-            mode="expand",
-            borderaxespad=0,
-            prop={"size": 9},
-            ncol=2,
+    if returns:
+        theme.style_primary_axis(
+            ax,
+            data_index=plot_data.index.to_list(),
+            tick_labels=plot_data["date"].to_list(),
         )
-
-        if returns:
-            theme.style_primary_axis(
-                ax,
-                data_index=plot_data.index.to_list(),
-                tick_labels=plot_data["date"].to_list(),
-            )
-            ax.set_xlim(plot_data.index[0], plot_data.index[-1])
-        else:
-            theme.style_primary_axis(ax)
-        if external_axes is None:
-            theme.visualize_output()
+        ax.set_xlim(plot_data.index[0], plot_data.index[-1])
+    else:
+        theme.style_primary_axis(ax)
+    if external_axes is None:
+        theme.visualize_output()
 
     if raw:
         print_rich_table(

@@ -13,7 +13,6 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
-    parse_known_args_and_warn,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
@@ -94,7 +93,7 @@ class ScreenerController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if ns_parser.preset:
                 syncretism_view.view_available_presets(
@@ -126,7 +125,7 @@ class ScreenerController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             self.preset = ns_parser.preset
         console.print("")
@@ -166,7 +165,7 @@ class ScreenerController(BaseController):
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:

@@ -18,7 +18,6 @@ from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_non_negative,
     check_positive,
-    parse_known_args_and_warn,
     valid_date,
 )
 from openbb_terminal.menu import session
@@ -160,7 +159,7 @@ class ComparisonAnalysisController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if "," in ns_parser.ticker:
                 console.print("Only one ticker must be selected!")
@@ -207,7 +206,7 @@ class ComparisonAnalysisController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if self.ticker:
                 self.similar = yahoo_finance_model.get_sp500_comps_tsne(
@@ -254,7 +253,7 @@ class ComparisonAnalysisController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if self.ticker:
                 if ns_parser.b_no_country:
@@ -316,7 +315,7 @@ class ComparisonAnalysisController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
             if self.ticker:
@@ -366,7 +365,7 @@ class ComparisonAnalysisController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if self.ticker:
                 self.similar, self.user = finnhub_model.get_similar_companies(
@@ -415,7 +414,7 @@ class ComparisonAnalysisController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-s")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if self.similar:
                 self.similar = list(set(self.similar + ns_parser.l_similar))
@@ -446,7 +445,7 @@ class ComparisonAnalysisController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-s")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if ns_parser.l_similar:
                 for symbol in ns_parser.l_similar:
@@ -486,7 +485,7 @@ class ComparisonAnalysisController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-s")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             self.similar = list(set(ns_parser.l_similar))
             self.user = "Custom"
@@ -531,7 +530,7 @@ class ComparisonAnalysisController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
@@ -585,7 +584,7 @@ class ComparisonAnalysisController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, raw=True
         )
         if ns_parser:
@@ -631,7 +630,7 @@ class ComparisonAnalysisController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -661,7 +660,7 @@ class ComparisonAnalysisController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-s")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
@@ -703,7 +702,7 @@ class ComparisonAnalysisController(BaseController):
             default=None,
             help="Specify yearly/quarterly timeframe. Default is last.",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -741,7 +740,7 @@ class ComparisonAnalysisController(BaseController):
             default=None,
             help="Specify yearly/quarterly timeframe. Default is last.",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -770,7 +769,7 @@ class ComparisonAnalysisController(BaseController):
             help="Display raw sentiment data",
             dest="raw",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -804,7 +803,7 @@ class ComparisonAnalysisController(BaseController):
             help="Display raw sentiment data",
             dest="raw",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -828,7 +827,7 @@ class ComparisonAnalysisController(BaseController):
                 Prints screener data of similar companies. [Source: Finviz]
             """,
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -854,7 +853,7 @@ class ComparisonAnalysisController(BaseController):
                 Prints screener data of similar companies. [Source: Finviz]
             """,
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -880,7 +879,7 @@ class ComparisonAnalysisController(BaseController):
                 Prints screener data of similar companies. [Source: Finviz]
             """,
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -906,7 +905,7 @@ class ComparisonAnalysisController(BaseController):
                 Prints screener data of similar companies. [Source: Finviz]
             """,
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -932,7 +931,7 @@ class ComparisonAnalysisController(BaseController):
                 Prints screener data of similar companies. [Source: Finviz]
             """,
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -958,7 +957,7 @@ class ComparisonAnalysisController(BaseController):
                 Prints screener data of similar companies. [Source: Finviz]
             """,
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
