@@ -407,10 +407,11 @@ class BaseController(metaclass=ABCMeta):
         glossary_file = os.path.join(os.path.dirname(__file__), "glossary.json")
         glossary_dict = load_json(glossary_file)
 
-        # TODO: clean input
-
         if ns_parser:
-            word = glossary_dict.get(ns_parser.word, None)
+            word = glossary_dict.get(ns_parser.word, "")
+            word = word.lower()
+            word = word.replace("--", "")
+            word = word.replace("-", " ")
             if word:
                 console.print(word + "\n")
             else:
