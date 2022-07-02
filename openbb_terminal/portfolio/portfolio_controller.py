@@ -337,9 +337,6 @@ class PortfolioController(BaseController):
             # Add in the Risk-free rate
             self.portfolio.add_rf(ns_parser.risk_free_rate)
 
-            # Update all period
-            portfolio_helper.PERIODS_DAYS["all"] = len(self.portfolio.returns)
-
             console.print(f"\n[bold]Portfolio:[/bold] {self.portfolio_name}")
             console.print(f"[bold]Risk Free Rate:[/bold] {self.portfolio.rf}")
 

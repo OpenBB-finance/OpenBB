@@ -997,6 +997,9 @@ class Portfolio:
         returns.replace([np.inf, -np.inf], np.nan, inplace=True)
         self.returns = returns.dropna()
 
+        # Update all period
+        portfolio_helper.PERIODS_DAYS["all"] = len(self.returns)
+
         self.ItemizedHoldings = pd.DataFrame(
             {
                 "Stocks": portfolio["StockHoldings"][self._stock_tickers].sum(axis=1),
