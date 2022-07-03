@@ -17,11 +17,12 @@ optional arguments:
 ```
 
 Example:
+
 ```
 2022 Feb 15, 11:07 (✨) /stocks/dps/ $ sidtc
                       Data for: 2022-01-31
 ┌────────┬───────────────┬───────────────┬─────────────────────┐
-│ Ticker │ Float Short % │ Days to Cover │ Short Interest (1M) │
+│ Ticker │ Float Short % │ Days to Cover │ Short Interest [1M] │
 ├────────┼───────────────┼───────────────┼─────────────────────┤
 │ VIEW   │ 40.70         │ 14.92         │ 21.46               │
 ├────────┼───────────────┼───────────────┼─────────────────────┤
