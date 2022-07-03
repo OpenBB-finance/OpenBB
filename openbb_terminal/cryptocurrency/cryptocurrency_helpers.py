@@ -321,7 +321,7 @@ def show_quick_performance(crypto_df: pd.DataFrame, symbol: str, current_currenc
         "1D": 100 * closes.pct_change(2)[-1],
         "7D": 100 * closes.pct_change(7)[-1],
         "1M": 100 * closes.pct_change(30)[-1],
-        "1Y": 100 * closes.pct_change(364)[-1],
+        "1Y": 100 * closes.pct_change(365)[-1],
     }
     first_day_current_year = str(datetime.now().date().replace(month=1, day=1))
     if first_day_current_year in closes.index:
@@ -333,13 +333,13 @@ def show_quick_performance(crypto_df: pd.DataFrame, symbol: str, current_currenc
     df = pd.DataFrame.from_dict(perfs, orient="index").dropna().T
     df = df.applymap(lambda x: str(round(x, 2)) + " %")
     df = df.applymap(lambda x: f"[red]{x}[/red]" if "-" in x else f"[green]{x}[/green]")
-    if len(closes) > 364:
+    if len(closes) > 365:
         df["Volatility (1Y)"] = (
-            str(round(100 * np.sqrt(364) * closes[:-364].pct_change().std(), 2)) + " %"
+            str(round(100 * np.sqrt(365) * closes[:-365].pct_change().std(), 2)) + " %"
         )
     else:
         df["Volatility (Ann)"] = (
-            str(round(100 * np.sqrt(364) * closes.pct_change().std(), 2)) + " %"
+            str(round(100 * np.sqrt(365) * closes.pct_change().std(), 2)) + " %"
         )
     if len(volumes) > 7:
         df["Volume (7D avg)"] = lambda_long_number_format(np.mean(volumes[-9:-2]), 2)
