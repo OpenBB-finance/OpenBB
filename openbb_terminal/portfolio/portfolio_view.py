@@ -1049,8 +1049,8 @@ def display_rolling_volatility(
 
     length = portfolio_helper.PERIODS_DAYS[period]
 
-    rolling_volatility = portfolio_returns.rolling(length).std()
-    rolling_volatility_bench = benchmark_returns.rolling(length).std()
+    rolling_volatility = portfolio_model.rolling_volatility(portfolio_returns, length)
+    rolling_volatility_bench = portfolio_model.rolling_volatility(benchmark_returns, length)
 
     rolling_volatility.plot(ax=ax)
     rolling_volatility_bench.plot(ax=ax)
@@ -1107,12 +1107,8 @@ def display_rolling_sharpe(
 
     length = portfolio_helper.PERIODS_DAYS[period]
 
-    rolling_sharpe = portfolio_returns.rolling(length).apply(
-        lambda x: (x.mean() - risk_free_rate) / x.std()
-    )
-    rolling_sharpe_bench = benchmark_returns.rolling(length).apply(
-        lambda x: (x.mean() - risk_free_rate) / x.std()
-    )
+    rolling_sharpe = portfolio_model.rolling_sharpe(portfolio_returns, risk_free_rate, length)
+    rolling_sharpe_bench = portfolio_model.rolling_sharpe(benchmark_returns, risk_free_rate, length)
 
     rolling_sharpe.plot(ax=ax)
     rolling_sharpe_bench.plot(ax=ax)
@@ -1169,12 +1165,8 @@ def display_rolling_sortino(
 
     length = portfolio_helper.PERIODS_DAYS[period]
 
-    rolling_sortino = portfolio_returns.rolling(length).apply(
-        lambda x: (x.mean() - risk_free_rate) / x[x < 0].std()
-    )
-    rolling_sortino_bench = benchmark_returns.rolling(length).apply(
-        lambda x: (x.mean() - risk_free_rate) / x[x < 0].std()
-    )
+    rolling_sortino = portfolio_model.rolling_sortino(portfolio_returns, risk_free_rate, length)   
+    rolling_sortino_bench = portfolio_model.rolling_sortino(benchmark_returns, risk_free_rate, length)
 
     rolling_sortino.plot(ax=ax)
     rolling_sortino_bench.plot(ax=ax)
