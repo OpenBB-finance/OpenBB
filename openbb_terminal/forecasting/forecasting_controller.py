@@ -364,6 +364,7 @@ class ForecastingController(BaseController):
             )
         if target_dataset:
             parser.add_argument(
+                "-d",
                 "--target-dataset",
                 help="The name of the dataset you want to select",
                 dest="target_dataset",
@@ -372,6 +373,7 @@ class ForecastingController(BaseController):
             )
         if target_column:
             parser.add_argument(
+                "-c",
                 "--target-column",
                 help="The name of the specific column you want to use",
                 dest="target_column",
@@ -398,6 +400,7 @@ class ForecastingController(BaseController):
             )
         if forecast_horizon:
             parser.add_argument(
+                "-f",
                 "--forecast-horizon",
                 action="store",
                 dest="forecast_horizon",
@@ -436,6 +439,7 @@ class ForecastingController(BaseController):
             )
         if train_split:
             parser.add_argument(
+                "-t",
                 "--train-split",
                 action="store",
                 dest="train_split",
@@ -445,6 +449,7 @@ class ForecastingController(BaseController):
             )
         if input_chunk_length:
             parser.add_argument(
+                "-i",
                 "--input-chunk-length",
                 action="store",
                 dest="input_chunk_length",
@@ -454,6 +459,7 @@ class ForecastingController(BaseController):
             )
         if output_chunk_length:
             parser.add_argument(
+                "-o",
                 "--output-chunk-length",
                 action="store",
                 dest="output_chunk_length",
@@ -478,7 +484,7 @@ class ForecastingController(BaseController):
                 dest="save_checkpoints",
                 default=True,
                 type=bool,
-                help="Whether or not to automatically save the untrained model and checkpoints from training.",
+                help="Whether to automatically save the untrained model and checkpoints.",
             )
         if model_save_name is not None:
             parser.add_argument(
@@ -523,7 +529,7 @@ class ForecastingController(BaseController):
                 dest="batch_size",
                 default=batch_size,
                 type=check_positive,
-                help="Number of time series (input and output sequences) used in each training pass",
+                help="Number of time series (input and output) used in each training pass",
             )
         if end:
             parser.add_argument(
@@ -1337,10 +1343,9 @@ class ForecastingController(BaseController):
             other_args,
             export_allowed=NO_EXPORT,
             target_dataset=True,
-            target_column=True,  # temp fix, but shouldnt have to inser this.
         )
 
-        if not helpers.check_parser_input(ns_parser, self.datasets):
+        if not helpers.check_parser_input(ns_parser, self.datasets, "ignore_column"):
             return
 
         export_data(

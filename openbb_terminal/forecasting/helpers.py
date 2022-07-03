@@ -316,14 +316,16 @@ def get_prediction(
     return ticker_series, historical_fcast, prediction, precision, best_model
 
 
-def check_parser_input(parser: argparse.ArgumentParser, datasets):
+def check_parser_input(parser: argparse.ArgumentParser, datasets, *args) -> bool:
     # check proper file name is provided
     if not hasattr(parser, "target_dataset"):
         return False
-    if not hasattr(parser, "target_column"):
-        return False
     if not parser.target_dataset:  # type: ignore
         console.print("[red]Please enter valid dataset.\n[/red]")
+        return False
+    if "ignore_column" in args:
+        return True
+    if not hasattr(parser, "target_column"):
         return False
 
     # must check that target col is within target series
