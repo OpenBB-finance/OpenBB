@@ -795,6 +795,7 @@ en:
   economy/index: find and plot any (major) index on the market
   economy/treasury: obtain U.S. treasury rates
   economy/ycrv: show sovereign yield curves
+  economy/ecocal: display economic calendar
   economy/plot: plot data from the above commands together
   economy/options: show the available options for 'plot' or show/export the data
   economy/rtps: real-time performance sectors
