@@ -434,13 +434,14 @@ class DiscoveryController(BaseController):
             prog="cgtrending",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            description="""Discover trending coins.
-                Use --limit parameter to display only N number of records,
+            description="""Discover trending coins (Top-7) on CoinGecko in the last 24 hours
             """,
         )
 
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser,
+            other_args,
+            EXPORT_ONLY_RAW_DATA_ALLOWED,
         )
         if ns_parser:
             pycoingecko_view.display_trending(
