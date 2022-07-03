@@ -204,22 +204,22 @@ class CryptoController(CryptoBaseController):
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
-            if ns_parser:
-                if not self.symbol:
-                    console.print("No coin loaded. First use `load {symbol}`\n")
-                    return
-                    export_data(
-                        ns_parser.export,
-                        os.path.join(os.path.dirname(os.path.abspath(__file__))),
-                        f"{self.symbol}",
-                        self.current_df,
-                    )
+        if ns_parser:
+            if not self.symbol:
+                console.print("No coin loaded. First use `load {symbol}`\n")
+                return
+            export_data(
+                ns_parser.export,
+                os.path.join(os.path.dirname(os.path.abspath(__file__))),
+                f"{self.symbol}",
+                self.current_df,
+            )
 
-                    plot_chart(
-                        symbol=self.symbol,
-                        currency=self.current_currency,
-                        prices_df=self.current_df,
-                    )
+            plot_chart(
+                symbol=self.symbol,
+                currency=self.current_currency,
+                prices_df=self.current_df,
+            )
 
     @log_start_end(log=logger)
     def call_ta(self, _):
