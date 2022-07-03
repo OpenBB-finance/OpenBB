@@ -21,7 +21,8 @@
     "find": "cg"
   },
   "economy": {
-    "ycrv": "investpy"
+    "ycrv": "investpy",
+    "ecocal": "investpy"
   },
   "etf": {
     "ln": "fd"

@@ -64,6 +64,7 @@ class EconomyController(BaseController):
         "industry",
         "bigmac",
         "ycrv",
+        "ecocal"
     ]
 
     CHOICES_MENUS = ["pred", "qa"]
@@ -179,6 +180,21 @@ class EconomyController(BaseController):
                 c: None for c in investingcom_model.COUNTRIES
             }
 
+            self.choices["ecocal"]["-c"] = {c: None for c in investingcom_model.COUNTRIES}
+            self.choices["ecocal"]["--countries"] = {
+                c: None for c in investingcom_model.COUNTRIES
+            }
+
+            self.choices["ecocal"]["-i"] = {c: None for c in investingcom_model.IMPORTANCES}
+            self.choices["ecocal"]["--importances"] = {
+                c: None for c in investingcom_model.IMPORTANCES
+            }
+
+            self.choices["ecocal"]["-cat"] = {c: None for c in investingcom_model.CATEGORIES}
+            self.choices["ecocal"]["--categories"] = {
+                c: None for c in investingcom_model.CATEGORIES
+            }
+
             self.choices["valuation"]["-s"] = {
                 c: None for c in self.valuation_sort_cols
             }
@@ -233,7 +249,8 @@ class EconomyController(BaseController):
         mt.add_cmd("futures", "Wall St. Journal / Finviz")
         mt.add_cmd("map", "Finviz")
         mt.add_cmd("bigmac", "NASDAQ Datalink")
-        mt.add_cmd("ycrv", "Investing / FRED")
+        mt.add_cmd("ycrv", "Investing.com / FRED")
+        mt.add_cmd("ecocal", "Investing.com")
         mt.add_raw("\n")
         mt.add_cmd("rtps", "Alpha Vantage")
         mt.add_cmd("valuation", "Finviz")
@@ -999,6 +1016,102 @@ class EconomyController(BaseController):
                     raw=ns_parser.raw,
                     export=ns_parser.export,
                 )
+
+    
+    @log_start_end(log=logger)
+    def call_ecocal(self, other_args: List[str]):
+        """Process ecocal command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="ecocal",
+            description="Economic calendar.",
+        )
+        parser.add_argument(
+            "-tz",
+            "--timezone",
+            action="store",
+            dest="time_zone",
+            nargs="+",
+            default=None,
+            help="Time zone in GMT +/-h:mm format. E.g. GMT +1:00",
+        )
+        parser.add_argument(
+            "-c",
+            "--country",
+            action="store",
+            dest="country",
+            nargs="+",
+            default="united states",
+            help="Display calendar for specific country.",
+        )
+        parser.add_argument(
+            "-i",
+            "--importances",
+            action="store",
+            dest="importances",
+            default=None,
+            help="Event importance classified as high, medium or low.",
+        )
+        parser.add_argument(
+            "-cat",
+            "--categories",
+            action="store",
+            dest="categories",
+            nargs="+",
+            default=None,
+            help="Event category.",
+        )
+        parser.add_argument(
+            "-s",
+            "--start_date",
+            dest="start_date",
+            type=valid_date,
+            help="The start date of the data (format: YEAR-MONTH-DAY, i.e. 2010-12-31)",
+            default=None,
+        )
+
+        parser.add_argument(
+            "-e",
+            "--end_date",
+            dest="end_date",
+            type=valid_date,
+            help="The start date of the data (format: YEAR-MONTH-DAY, i.e. 2010-12-31)",
+            default=None, 
+        )
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
+            raw=True,
+        )
+
+        if ns_parser:
+
+            if isinstance(ns_parser.time_zone, list):
+                ns_parser.time_zone = " ".join(ns_parser.time_zone)
+
+            if isinstance(ns_parser.country, list):
+                ns_parser.country = " ".join(ns_parser.country)
+
+            if isinstance(ns_parser.categories, list):
+                ns_parser.categories = " ".join(ns_parser.categories)
+
+            investingcom_model.check_correct_country(ns_parser.country)
+
+            investingcom_view.display_economic_calendar(
+                time_zone= ns_parser.time_zone,
+                country= ns_parser.country,
+                importances = ns_parser.importances,
+                categories = ns_parser.categories,
+                from_date = ns_parser.start_date,
+                to_date=ns_parser.end_date,
+                export=ns_parser.export,
+            )
+
+
+    
 
     @log_start_end(log=logger)
     def call_plot(self, other_args: List[str]):

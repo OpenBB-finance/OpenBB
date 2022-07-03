@@ -1,12 +1,14 @@
 """ Investing.com View """
 __docformat__ = "numpy"
 
+from itertools import count
 import logging
 import os
 from typing import Optional, List
 
 import matplotlib.pyplot as plt
 from pandas.plotting import register_matplotlib_converters
+from pytz import timezone
 
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
@@ -111,3 +113,55 @@ def display_yieldcurve(
         "ycrv",
         df,
     )
+
+
+@log_start_end(log=logger)
+def display_economic_calendar(
+    time_zone: str, 
+    country: str, 
+    importances: list, 
+    categories: list, 
+    from_date: str, 
+    to_date: str,
+    export: str = "",
+):
+    """Display yield curve. [Source: Investing.com]
+
+    Parameters
+    ----------
+    country: str
+        Country to display
+    export : str
+        Export dataframe data to csv,json,xlsx file
+    """
+
+    if country: country = [country]
+    if importances: importances = [importances]
+    if categories: categories = [categories]
+
+    df = investingcom_model.get_economic_calendar(
+        time_zone,
+        country,
+        importances,
+        categories,
+        from_date,
+        to_date
+    )
+
+    if df.empty:
+        logger.error("No data")
+        console.print("[red]No data.[/red]\n")
+    else:
+        print_rich_table(
+            df,
+            headers=list(df.columns),
+            show_index=False,
+            title="Calendar",
+        )
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "ecocal",
+            df,
+        )
