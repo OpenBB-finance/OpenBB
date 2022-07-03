@@ -401,7 +401,6 @@ class ForecastingController(BaseController):
             )
         if forecast_horizon:
             parser.add_argument(
-                "-f",
                 "--forecast-horizon",
                 action="store",
                 dest="forecast_horizon",
@@ -1909,6 +1908,7 @@ class ForecastingController(BaseController):
             target_column=True,
             hidden_size=10,
             residuals=True,
+            forecast_only=True,
         )
 
         if ns_parser:
@@ -1937,6 +1937,7 @@ class ForecastingController(BaseController):
                 save_checkpoints=ns_parser.save_checkpoints,
                 export=ns_parser.export,
                 residuals=ns_parser.residuals,
+                forecast_only=ns_parser.forecast_only,
             )
 
     @log_start_end(log=logger)
@@ -2122,6 +2123,7 @@ class ForecastingController(BaseController):
             past_covariates=True,
             target_column=True,
             residuals=True,
+            forecast_only=True,
         )
 
         if ns_parser:
@@ -2151,6 +2153,7 @@ class ForecastingController(BaseController):
                 save_checkpoints=ns_parser.save_checkpoints,
                 export=ns_parser.export,
                 residuals=ns_parser.residuals,
+                forecast_only=ns_parser.forecast_only,
             )
 
     # Below this is ports to the old pred menu
