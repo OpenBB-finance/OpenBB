@@ -135,6 +135,7 @@ def plot_forecast(
     export: str,
     low_quantile: float = None,
     high_quantile: float = None,
+    forecast_only: bool = False,
 ):
     quant_kwargs = {}
     if low_quantile:
@@ -152,6 +153,8 @@ def plot_forecast(
         ax = external_axes
 
     # ax = fig.get_axes()[0] # fig gives list of axes (only one for this case)
+    if forecast_only:
+        ticker_series = ticker_series.drop_before(historical_fcast.start_time())
     ticker_series.plot(label=target_col, figure=fig)
     historical_fcast.plot(
         label=f"Backtest {forecast_horizon}-Steps ahead forecast",

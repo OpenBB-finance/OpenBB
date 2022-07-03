@@ -27,6 +27,7 @@ def display_linear_regression(
     lags: Union[int, List[int]] = 72,
     export: str = "",
     residuals: bool = False,
+    forecast_only: bool = False,
 ):
     """Display Linear Regression Forecasting
 
@@ -53,6 +54,8 @@ def display_linear_regression(
             Format to export data
         residuals: bool
             Whether to show residuals for the model. Defaults to False.
+        forecast_only: bool
+            Whether to only show dates in the forecasting range. Defaults to False.
     """
     data["date"] = data["date"].apply(helpers.dt_format)
     (
@@ -87,6 +90,7 @@ def display_linear_regression(
         precision,
         probabilistic,
         export,
+        forecast_only=forecast_only,
     )
     if residuals:
         helpers.plot_residuals(

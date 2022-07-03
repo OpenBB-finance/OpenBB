@@ -40,6 +40,7 @@ def display_trans_forecast(
     save_checkpoints: bool = True,
     export: str = "",
     residuals: bool = False,
+    forecast_only: bool = False,
 ):
     """Display Transformer forecast
 
@@ -93,6 +94,8 @@ def display_trans_forecast(
             Format to export data
         residuals: bool
             Whether to show residuals for the model. Defaults to False.
+        forecast_only: bool
+            Whether to only show dates in the forecasting range. Defaults to False.
     """
 
     # reformat the date column to remove any hour/min/sec
@@ -143,6 +146,7 @@ def display_trans_forecast(
         precision,
         probabilistic,
         export,
+        forecast_only=forecast_only,
     )
     if residuals:
         helpers.plot_residuals(

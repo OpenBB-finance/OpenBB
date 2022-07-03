@@ -343,6 +343,7 @@ class ForecastingController(BaseController):
         n_jumps: bool = False,
         end: bool = False,
         residuals: bool = False,
+        forecast_only: bool = False,
     ):
         if hidden_size:
             parser.add_argument(
@@ -576,6 +577,15 @@ class ForecastingController(BaseController):
                 action="store_true",
                 default=False,
                 dest="residuals",
+            )
+        if forecast_only:
+            parser.add_argument(
+                "-f",
+                "--forecast_only",
+                help="Do not plot the hisotorical data without forecasts.",
+                action="store_true",
+                default=False,
+                dest="forecast_only",
             )
             # if user does not put in --target-dataset
         return super().parse_known_args_and_warn(
@@ -941,7 +951,7 @@ class ForecastingController(BaseController):
             type=check_list_values(self.choices["delete"]),
         )
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-d")
+            other_args.insert(0, "--dataset")
         ns_parser = self.parse_known_args_and_warn(parser, other_args, NO_EXPORT)
 
         if ns_parser:
@@ -993,7 +1003,6 @@ class ForecastingController(BaseController):
             default="",
         )
         parser.add_argument(
-            "-d",
             "--drop",
             help="The method of dropping NaNs. This either has the option rdrop (drop rows that contain NaNs) "
             "or cdrop (drop columns that contain NaNs)",
@@ -1123,7 +1132,6 @@ class ForecastingController(BaseController):
             description="The column you want to delete from a dataset.",
         )
         parser.add_argument(
-            "-d",
             "--delete",
             help="The columns you want to delete from a dataset. Use format: <dataset.column> or"
             " multiple with <dataset.column>,<datasetb.column2>",
@@ -1131,7 +1139,7 @@ class ForecastingController(BaseController):
             type=check_list_values(self.choices["delete"]),
         )
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-d")
+            other_args.insert(0, "--delete")
         ns_parser = self.parse_known_args_and_warn(parser, other_args, NO_EXPORT)
 
         if ns_parser:
@@ -1381,7 +1389,6 @@ class ForecastingController(BaseController):
             help="Trend: N: None, A: Additive, M: Multiplicative.",
         )
         parser.add_argument(
-            "-d",
             "--dampen",
             action="store",
             dest="dampen",
@@ -1403,6 +1410,7 @@ class ForecastingController(BaseController):
             periods=True,
             window=True,
             residuals=True,
+            forecast_only=True,
         )
         # TODO Convert this to multi series
         if ns_parser:
@@ -1422,6 +1430,7 @@ class ForecastingController(BaseController):
                 forecast_horizon=ns_parser.forecast_horizon,
                 export=ns_parser.export,
                 residuals=ns_parser.residuals,
+                forecast_only=ns_parser.forecast_only,
             )
 
     @log_start_end(log=logger)
@@ -1451,6 +1460,7 @@ class ForecastingController(BaseController):
             window=True,
             forecast_horizon=True,
             residuals=True,
+            forecast_only=True,
         )
 
         if ns_parser:
@@ -1468,6 +1478,7 @@ class ForecastingController(BaseController):
                 forecast_horizon=ns_parser.forecast_horizon,
                 export=ns_parser.export,
                 residuals=ns_parser.residuals,
+                forecast_only=ns_parser.forecast_only,
             )
 
     @log_start_end(log=logger)
@@ -1524,6 +1535,7 @@ class ForecastingController(BaseController):
             batch_size=32,
             learning_rate=True,
             residuals=True,
+            forecast_only=True,
         )
 
         if ns_parser:
@@ -1550,6 +1562,7 @@ class ForecastingController(BaseController):
                 save_checkpoints=ns_parser.save_checkpoints,
                 export=ns_parser.export,
                 residuals=ns_parser.residuals,
+                forecast_only=ns_parser.forecast_only,
             )
 
     @log_start_end(log=logger)
@@ -1622,6 +1635,7 @@ class ForecastingController(BaseController):
             batch_size=800,
             past_covariates=True,
             residuals=True,
+            forecast_only=True,
         )
 
         if ns_parser:
@@ -1650,6 +1664,7 @@ class ForecastingController(BaseController):
                 save_checkpoints=ns_parser.save_checkpoints,
                 export=ns_parser.export,
                 residuals=ns_parser.residuals,
+                forecast_only=ns_parser.forecast_only,
             )
 
     @log_start_end(log=logger)
@@ -1713,6 +1728,7 @@ class ForecastingController(BaseController):
             input_chunk_length=True,
             output_chunk_length=True,
             residuals=True,
+            forecast_only=True,
         )
 
         if ns_parser:
@@ -1742,6 +1758,7 @@ class ForecastingController(BaseController):
                 save_checkpoints=ns_parser.save_checkpoints,
                 export=ns_parser.export,
                 residuals=ns_parser.residuals,
+                forecast_only=ns_parser.forecast_only,
             )
 
     @log_start_end(log=logger)
@@ -1773,6 +1790,7 @@ class ForecastingController(BaseController):
             target_column=True,
             lags=True,
             residuals=True,
+            forecast_only=True,
         )
 
         if ns_parser:
@@ -1792,6 +1810,7 @@ class ForecastingController(BaseController):
                 lags=ns_parser.lags,
                 export=ns_parser.export,
                 residuals=ns_parser.residuals,
+                forecast_only=ns_parser.forecast_only,
             )
 
     @log_start_end(log=logger)
@@ -1822,6 +1841,7 @@ class ForecastingController(BaseController):
             n_days=True,
             target_dataset=True,
             residuals=True,
+            forecast_only=True,
         )
 
         if ns_parser:
@@ -1840,6 +1860,7 @@ class ForecastingController(BaseController):
                 lags=ns_parser.lags,
                 export=ns_parser.export,
                 residuals=ns_parser.residuals,
+                forecast_only=ns_parser.forecast_only,
             )
 
     @log_start_end(log=logger)
@@ -1999,6 +2020,7 @@ class ForecastingController(BaseController):
             force_reset=True,
             save_checkpoints=True,
             residuals=True,
+            forecast_only=True,
         )
         if ns_parser:
             if not helpers.check_parser_input(ns_parser, self.datasets):
@@ -2028,6 +2050,7 @@ class ForecastingController(BaseController):
                 save_checkpoints=ns_parser.save_checkpoints,
                 export=ns_parser.export,
                 residuals=ns_parser.residuals,
+                forecast_only=ns_parser.forecast_only,
             )
 
     # Below this is ports to the old pred menu

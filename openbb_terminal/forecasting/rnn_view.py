@@ -35,6 +35,7 @@ def display_rnn_forecast(
     save_checkpoints: bool = True,
     export: str = "",
     residuals: bool = False,
+    forecast_only: bool = False,
 ):
     """Display RNN forecast
 
@@ -71,6 +72,8 @@ def display_rnn_forecast(
             (all checkpoints will be discarded). Defaults to True.
         save_checkpoints (bool, optional):
             Whether or not to automatically save the untrained model and checkpoints from training. Defaults to True.
+        forecast_only: bool
+            Whether to only show dates in the forecasting range. Defaults to False.
         export: str
             Format to export data
         residuals: bool
@@ -121,6 +124,7 @@ def display_rnn_forecast(
         precision,
         probabilistic,
         export,
+        forecast_only=forecast_only,
     )
     if residuals:
         helpers.plot_residuals(
