@@ -521,11 +521,13 @@ class StocksController(StockBaseController):
     @log_start_end(log=logger)
     def call_th(self, _):
         """Process th command"""
-        from openbb_terminal.stocks.tradinghours.tradinghours_controller import (
-            TradingHoursController,
-        )
+        from openbb_terminal.stocks.tradinghours import tradinghours_controller
 
-        self.queue = self.load_class(TradingHoursController, self.queue)
+        self.queue = self.load_class(
+            tradinghours_controller.TradingHoursController,
+            self.ticker,
+            self.queue,
+        )
 
     @log_start_end(log=logger)
     def call_res(self, _):
