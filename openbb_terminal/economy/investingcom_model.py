@@ -97,23 +97,17 @@ def get_economic_calendar(
 
         return day + "/" + month + "/" + year
 
-    if from_date:
-        from_date = from_date[-2:] + "/" + from_date[5:7] + "/" + from_date[:4]
-    else:
-        from_date = format_date(datetime.date.today())
-
     if to_date:
-        to_date = to_date[-2:] + "/" + to_date[5:7] + "/" + to_date[:4]
+        to_date = format_date(to_date)
+    elif from_date:
+        to_date = format_date(from_date + datetime.timedelta(days=7))
     else:
         to_date = format_date(datetime.date.today() + datetime.timedelta(days=7))
 
-    # print(        time_zone,
-    #     time_filter,
-    #     countries,
-    #     importances,
-    #     categories,
-    #     from_date,
-    #     to_date)
+    if from_date:
+        from_date = format_date(from_date)
+    else:
+        from_date = format_date(datetime.date.today())
 
     data = investpy.news.economic_calendar(
         time_zone, time_filter, countries, importances, categories, from_date, to_date
