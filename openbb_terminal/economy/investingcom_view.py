@@ -1,14 +1,12 @@
 """ Investing.com View """
 __docformat__ = "numpy"
 
-from itertools import count
 import logging
 import os
 from typing import Optional, List
 
 import matplotlib.pyplot as plt
 from pandas.plotting import register_matplotlib_converters
-from pytz import timezone
 
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
@@ -117,11 +115,11 @@ def display_yieldcurve(
 
 @log_start_end(log=logger)
 def display_economic_calendar(
-    time_zone: str, 
-    country: str, 
-    importances: list, 
-    categories: list, 
-    from_date: str, 
+    time_zone: str,
+    country: str,
+    importances: list,
+    categories: list,
+    from_date: str,
     to_date: str,
     export: str = "",
 ):
@@ -135,17 +133,15 @@ def display_economic_calendar(
         Export dataframe data to csv,json,xlsx file
     """
 
-    if country: country = [country]
-    if importances: importances = [importances]
-    if categories: categories = [categories]
+    if country:
+        country = [country]
+    if importances:
+        importances = [importances]
+    if categories:
+        categories = [categories]
 
     df = investingcom_model.get_economic_calendar(
-        time_zone,
-        country,
-        importances,
-        categories,
-        from_date,
-        to_date
+        time_zone, country, importances, categories, from_date, to_date
     )
 
     if df.empty:

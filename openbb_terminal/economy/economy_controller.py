@@ -64,7 +64,7 @@ class EconomyController(BaseController):
         "industry",
         "bigmac",
         "ycrv",
-        "ecocal"
+        "ecocal",
     ]
 
     CHOICES_MENUS = ["pred", "qa"]
@@ -180,17 +180,23 @@ class EconomyController(BaseController):
                 c: None for c in investingcom_model.COUNTRIES
             }
 
-            self.choices["ecocal"]["-c"] = {c: None for c in investingcom_model.COUNTRIES}
+            self.choices["ecocal"]["-c"] = {
+                c: None for c in investingcom_model.COUNTRIES
+            }
             self.choices["ecocal"]["--countries"] = {
                 c: None for c in investingcom_model.COUNTRIES
             }
 
-            self.choices["ecocal"]["-i"] = {c: None for c in investingcom_model.IMPORTANCES}
+            self.choices["ecocal"]["-i"] = {
+                c: None for c in investingcom_model.IMPORTANCES
+            }
             self.choices["ecocal"]["--importances"] = {
                 c: None for c in investingcom_model.IMPORTANCES
             }
 
-            self.choices["ecocal"]["-cat"] = {c: None for c in investingcom_model.CATEGORIES}
+            self.choices["ecocal"]["-cat"] = {
+                c: None for c in investingcom_model.CATEGORIES
+            }
             self.choices["ecocal"]["--categories"] = {
                 c: None for c in investingcom_model.CATEGORIES
             }
@@ -1017,7 +1023,6 @@ class EconomyController(BaseController):
                     export=ns_parser.export,
                 )
 
-    
     @log_start_end(log=logger)
     def call_ecocal(self, other_args: List[str]):
         """Process ecocal command"""
@@ -1077,7 +1082,7 @@ class EconomyController(BaseController):
             dest="end_date",
             type=valid_date,
             help="The start date of the data (format: YEAR-MONTH-DAY, i.e. 2010-12-31)",
-            default=None, 
+            default=None,
         )
 
         ns_parser = self.parse_known_args_and_warn(
@@ -1101,17 +1106,14 @@ class EconomyController(BaseController):
             investingcom_model.check_correct_country(ns_parser.country)
 
             investingcom_view.display_economic_calendar(
-                time_zone= ns_parser.time_zone,
-                country= ns_parser.country,
-                importances = ns_parser.importances,
-                categories = ns_parser.categories,
-                from_date = ns_parser.start_date,
+                time_zone=ns_parser.time_zone,
+                country=ns_parser.country,
+                importances=ns_parser.importances,
+                categories=ns_parser.categories,
+                from_date=ns_parser.start_date,
                 to_date=ns_parser.end_date,
                 export=ns_parser.export,
             )
-
-
-    
 
     @log_start_end(log=logger)
     def call_plot(self, other_args: List[str]):
