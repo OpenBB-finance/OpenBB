@@ -148,7 +148,7 @@ class ForecastingController(BaseController):
             filepath.name: filepath
             for file_type in self.file_types
             for filepath in chain(
-                Path(obbff.EXPORT_FOLDER_PATH).rglob(f"*.{file_type}"),
+                # Path(obbff.EXPORT_FOLDER_PATH).rglob(f"*.{file_type}"),
                 Path("custom_imports").rglob(f"*.{file_type}"),
             )
             if filepath.is_file()
