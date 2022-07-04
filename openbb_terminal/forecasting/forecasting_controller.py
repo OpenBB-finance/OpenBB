@@ -261,7 +261,7 @@ class ForecastingController(BaseController):
         mt.add_raw("\n")
         mt.add_param(
             "_data_loc",
-            f"\n\t{obbff.EXPORT_FOLDER_PATH}\n\t{Path('custom_imports').resolve()}",
+            f"\n\t{obbff.EXPORT_FOLDER_PATH}\n\t{Path('custom_imports').resolve()}/forecasting",
         )
         mt.add_raw("\n")
         mt.add_cmd("load")

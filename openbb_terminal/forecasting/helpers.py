@@ -207,7 +207,7 @@ def get_series(data, target_col: str = None, is_scaler: bool = True):
         df=data,
         time_col="date",
         value_cols=[target_col],
-        freq="B",
+        freq="BH",
         fill_missing_dates=True,
     )
     try:

@@ -18,7 +18,6 @@ from sklearn.metrics import (
 )
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler, MinMaxScaler, Normalizer
-from tensorflow.keras.models import Sequential
 from openbb_terminal.helper_funcs import (
     check_positive,
     check_positive_float,
@@ -374,7 +373,7 @@ def prepare_scale_train_valid_test(
 
 
 def forecast(
-    input_values: np.ndarray, future_dates: List, model: Sequential, scaler
+    input_values: np.ndarray, future_dates: List, model, scaler
 ) -> pd.DataFrame:
     """
     Forecast the stock movement over future days and rescale
