@@ -5,6 +5,7 @@ excerpt: "The Introduction to Economy explains how to use the
 menu and provides a brief description of its sub-menus"
 geekdocCollapseSection: true
 ---
+
 The Economy menu enables you to obtain market overviews (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/economy/overview/" target="_blank">overview</a> and <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/economy/futures/" target="_blank">futures</a>),
 see yield curves of any country (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/economy/ycrv/" target="_blank">ycrv</a>)
 and discover sector, industry and country performance (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/economy/performance/" target="_blank">performance</a>).
@@ -25,6 +26,7 @@ As this is quite extensive, the guide has two sections. The first section will d
 second section discusses the databases.
 
 ### Performance and valuations
+
 By using <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/economy/overview/" target="_blank">overview</a> we can look
 into market overviews from the perspective of indices (`indices`), bonds (`usbonds` and `glbonds`), currencies (`currencies`) and in general.
 E.g. let's look at global bond performance by adding the `-t` argument:
@@ -50,7 +52,7 @@ E.g. let's look at global bond performance by adding the `-t` argument:
 └───────────────────────────────────┴──────────┴─────────┴─────────────┘
 ```
 
-Next to that, to better understand the current commodity market we can look into the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/economy/futures/" target="_blank">futures</a> 
+Next to that, to better understand the current commodity market we can look into the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/economy/futures/" target="_blank">futures</a>
 of a variety of commodities. For example, let's look at a general overview:
 
 ```
@@ -99,7 +101,7 @@ For example, looking at the `sectors` returns the following:
 
                                                          Group Performance Data
 ┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━┓
-┃ Name                   ┃ Week  ┃ Month ┃ 3Month ┃ 6Month ┃ 1Year ┃ YTD   ┃ Recom ┃ AvgVolume (1M) ┃ RelVolume ┃ Change ┃ Volume (1M) ┃
+┃ Name                   ┃ Week  ┃ Month ┃ 3Month ┃ 6Month ┃ 1Year ┃ YTD   ┃ Recom ┃ AvgVolume [1M] ┃ RelVolume ┃ Change ┃ Volume [1M] ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━┩
 │ Utilities              │ 0.04  │ -0.08 │ -0.07  │ -0.03  │ 0.06  │ -0.04 │ 2.37  │ 171.85         │ 0.50      │ -0.00  │ 8.05        │
 ├────────────────────────┼───────┼───────┼────────┼────────┼───────┼───────┼───────┼────────────────┼───────────┼────────┼─────────────┤
@@ -126,6 +128,7 @@ For example, looking at the `sectors` returns the following:
 ```
 
 ### Economic Databases
+
 Starting with the EconDB database (via <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/economy/macro/" target="_blank">macro</a>)
 a large selection of Economic data can be obtained. What can be obtained is easily found by typing `macro --show parameters` which returns the following:
 
@@ -317,12 +320,12 @@ Resulting in the following graph:
 The Economy menu has a few sub-menus available to delve further into a specific macroeconomic indicator. To find more information about each menu, click on one of the following:
 
 - <a href="/OpenBBTerminal/terminal/common/prediction_techniques" target="_blank">Introduction to Prediction Techniques</a>: apply advanced AI and Machine Learning models to form prediction of future macroeconomic indicators including Recurrent Neural Network (RNN),
-Autoregressive Integrated Moving Average (ARIMA) and Monte Carlo forecasting.
+  Autoregressive Integrated Moving Average (ARIMA) and Monte Carlo forecasting.
 - <a href="/OpenBBTerminal/terminal/common/quantitative_analysis" target="_blank">Introduction to Quantitative Analysis</a>: analyse the macroeconomic indicators extensively for seasonality, rolling windows and statistical techniques.
 
 ## Examples
 
-Starting off, let's looking at current performance of energy futures with `futures`. 
+Starting off, let's looking at current performance of energy futures with `futures`.
 
 ```
 2022 Jun 30, 05:39 (🦋) /economy/ $ futures energy
@@ -394,7 +397,6 @@ possible to visually depict this. First, let's plot the consumer confidence of G
 ```
 
 ![Consumer Confidence Germany](https://user-images.githubusercontent.com/46355364/176680603-1ace9534-f18a-4362-a1c0-d28c675d9415.png)
-
 
 Now, combine these two graphs with the `plot` command. This helps in visually depicting a (negative) relationship.
 
