@@ -864,10 +864,13 @@ def display_raw(
         df1 = df.copy()
 
     if sort:
-        df1 = df.sort_values(by=sort, ascending=des)
-    df1.index = [x.strftime("%Y-%m-%d") for x in df.index]
+        df1 = df.sort_values(
+            by=sort if sort != "AdjClose" else "Adj Close", ascending=des
+        )
+    df1.index = [x.strftime("%Y-%m-%d") for x in df1.index]
+
     print_rich_table(
-        df1.tail(num),
+        df1.head(num) if sort else df1.tail(num),
         headers=[x.title() if x != "" else "Date" for x in df1.columns],
         title="[bold]Raw Data[/bold]",
         show_index=True,
