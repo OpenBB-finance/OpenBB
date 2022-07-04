@@ -298,7 +298,7 @@ def get_tracking_error(
 
     vals = list()
     for periods in portfolio_helper.PERIODS:
-        period_return = portfolio_helper.filter_df_by_period(returns, periods)
+        period_return = portfolio_helper.filter_df_by_period(diff_returns, periods)
         if not period_return.empty:
             vals.append([round(period_return.std(), 3)])
         else:
@@ -332,26 +332,46 @@ def get_information_ratio(
     pd.Series
         Series of rolling information ratio
     """
-    diff_returns = returns - benchmark_returns
-    _, tracking_err = get_tracking_error(returns, benchmark_returns, period)
+    tracking_err_df, tracking_err_rol = get_tracking_error(
+        returns, benchmark_returns, period
+    )
 
     ir_rolling = (
-        (1.0 + diff_returns).rolling(window=period).agg(lambda x: x.prod()) - 1
-    ) / tracking_err
+        (1.0 + returns).rolling(window=period).agg(lambda x: x.prod())
+        - 1
+        - ((1.0 + benchmark_returns).rolling(window=period).agg(lambda x: x.prod()) - 1)
+    ) / tracking_err_rol
 
     vals = list()
     for periods in portfolio_helper.PERIODS:
         period_return = portfolio_helper.filter_df_by_period(returns, periods)
-        period_track_err = portfolio_helper.filter_df_by_period(tracking_err, periods)
+        period_bench_return = portfolio_helper.filter_df_by_period(
+            benchmark_returns, periods
+        )
         if not period_return.empty:
             vals.append(
                 [
                     round(
                         (
-                            (1 + period_return.shift(periods=1, fill_value=0)).cumprod()
-                            - 1
-                        ).iloc[-1]
-                        / period_track_err.iloc[-1],
+                            (
+                                (
+                                    1 + period_return.shift(periods=1, fill_value=0)
+                                ).cumprod()
+                                - 1
+                            ).iloc[-1]
+                            - (
+                                (
+                                    (
+                                        1
+                                        + period_bench_return.shift(
+                                            periods=1, fill_value=0
+                                        )
+                                    ).cumprod()
+                                    - 1
+                                ).iloc[-1]
+                            )
+                        )
+                        / tracking_err_df.loc[periods, "Tracking Error"],
                         3,
                     )
                 ]
@@ -614,10 +634,12 @@ def get_calmar_ratio(
             period_cum_bench_returns = (
                 (1 + period_bench_return.shift(periods=1, fill_value=0)).cumprod() - 1
             ).iloc[-1]
-            annual_return = period_cum_returns ** (1 / (periods_d[periods] / 252)) - 1
-            annual_bench_return = (
-                period_cum_bench_returns ** (1 / (periods_d[periods] / 252)) - 1
-            )
+            annual_return = (1 + period_cum_returns) ** (
+                1 / (len(period_return) / 252)
+            ) - 1
+            annual_bench_return = (1 + period_cum_bench_returns) ** (
+                1 / (len(period_bench_return) / 252)
+            ) - 1
             drawdown = portfolio_helper.get_maximum_drawdown(period_return)
             bench_drawdown = portfolio_helper.get_maximum_drawdown(period_bench_return)
             if (drawdown != 0) and (bench_drawdown != 0):
@@ -669,7 +691,10 @@ def get_kelly_criterion(returns: pd.Series, portfolio_trades: pd.DataFrame):
             r = len(
                 period_portfolio_tr[period_portfolio_tr["% Portfolio Return"] > 0]
             ) / len(period_portfolio_tr)
-            vals.append([round(w - (1 - w) / r, 3)])
+            if r != 0:
+                vals.append([round(w - (1 - w) / r, 3)])
+            else:
+                vals.append(["-"])
         else:
             vals.append(["-"])
 
@@ -711,7 +736,7 @@ def get_payoff_ratio(portfolio_trades: pd.DataFrame):
             ]
             avg_w = portfolio_wins["Abs Portfolio Return"].mean()
             avg_l = portfolio_loses["Abs Portfolio Return"].mean()
-            vals.append([round(avg_w / avg_l, 3)])
+            vals.append([round(avg_w / abs(avg_l), 3)] if avg_w is not np.nan else [0])
         else:
             vals.append(["-"])
 
@@ -753,7 +778,7 @@ def get_profit_factor(portfolio_trades: pd.DataFrame):
             ]
             gross_profit = portfolio_wins["Abs Portfolio Return"].sum()
             gross_loss = portfolio_loses["Abs Portfolio Return"].sum()
-            vals.append([round(gross_profit / gross_loss, 3)])
+            vals.append([round(gross_profit / abs(gross_loss), 3)])
         else:
             vals.append(["-"])
 
