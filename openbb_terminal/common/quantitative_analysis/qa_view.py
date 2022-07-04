@@ -864,7 +864,9 @@ def display_raw(
         df1 = df.copy()
 
     if sort:
-        df1 = df.sort_values(by=sort, ascending=des)
+        df1 = df.sort_values(
+            by=sort if sort != "AdjClose" else "Adj Close", ascending=des
+        )
     df1.index = [x.strftime("%Y-%m-%d") for x in df1.index]
 
     print_rich_table(
