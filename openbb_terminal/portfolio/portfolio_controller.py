@@ -1141,7 +1141,7 @@ class PortfolioController(BaseController):
             dest="metric",
             default="-h" not in other_args,
             choices=self.VALID_METRICS,
-            help="Period to apply rolling window",
+            help="Set metric of choice",
         )
         parser.add_argument(
             "-r",
