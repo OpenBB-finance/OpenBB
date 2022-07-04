@@ -116,6 +116,6 @@ def get_economic_calendar(
     if not data.empty:
         data.drop(columns=data.columns[0], axis=1, inplace=True)
         data.sort_values(by="date", inplace=True)
-        data.drop_duplicates(keep = "first", inplace = True)
+        data.drop_duplicates(keep="first", inplace=True)
 
     return data
