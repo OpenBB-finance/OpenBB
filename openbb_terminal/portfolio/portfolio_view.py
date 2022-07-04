@@ -12,7 +12,6 @@ import pandas as pd
 from matplotlib import pyplot as plt
 import seaborn as sns
 from sklearn.metrics import r2_score
-from openbb_terminal import portfolio
 
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
@@ -29,7 +28,7 @@ from openbb_terminal.helper_funcs import (
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
 
-# pylint: disable=C0302
+# pylint: disable=C0302,redefined-outer-name
 
 # from reportlab.lib.pagesizes import letter
 # from reportlab.pdfgen import canvas
@@ -1050,7 +1049,9 @@ def display_rolling_volatility(
     length = portfolio_helper.PERIODS_DAYS[period]
 
     rolling_volatility = portfolio_model.rolling_volatility(portfolio_returns, length)
-    rolling_volatility_bench = portfolio_model.rolling_volatility(benchmark_returns, length)
+    rolling_volatility_bench = portfolio_model.rolling_volatility(
+        benchmark_returns, length
+    )
 
     rolling_volatility.plot(ax=ax)
     rolling_volatility_bench.plot(ax=ax)
@@ -1107,8 +1108,12 @@ def display_rolling_sharpe(
 
     length = portfolio_helper.PERIODS_DAYS[period]
 
-    rolling_sharpe = portfolio_model.rolling_sharpe(portfolio_returns, risk_free_rate, length)
-    rolling_sharpe_bench = portfolio_model.rolling_sharpe(benchmark_returns, risk_free_rate, length)
+    rolling_sharpe = portfolio_model.rolling_sharpe(
+        portfolio_returns, risk_free_rate, length
+    )
+    rolling_sharpe_bench = portfolio_model.rolling_sharpe(
+        benchmark_returns, risk_free_rate, length
+    )
 
     rolling_sharpe.plot(ax=ax)
     rolling_sharpe_bench.plot(ax=ax)
@@ -1165,8 +1170,12 @@ def display_rolling_sortino(
 
     length = portfolio_helper.PERIODS_DAYS[period]
 
-    rolling_sortino = portfolio_model.rolling_sortino(portfolio_returns, risk_free_rate, length)   
-    rolling_sortino_bench = portfolio_model.rolling_sortino(benchmark_returns, risk_free_rate, length)
+    rolling_sortino = portfolio_model.rolling_sortino(
+        portfolio_returns, risk_free_rate, length
+    )
+    rolling_sortino_bench = portfolio_model.rolling_sortino(
+        benchmark_returns, risk_free_rate, length
+    )
 
     rolling_sortino.plot(ax=ax)
     rolling_sortino_bench.plot(ax=ax)

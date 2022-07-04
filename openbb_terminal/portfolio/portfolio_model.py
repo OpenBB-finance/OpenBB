@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 from datetime import timedelta, datetime
+from typing import Dict, Any
 
 import numpy as np
 import scipy
@@ -17,8 +18,8 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.portfolio import portfolio_helper, allocation_model
 from openbb_terminal.rich_config import console
 
-# pylint: disable=E1136,W0201,R0902
-# pylint: disable=unsupported-assignment-operation
+# pylint: disable=E1136,W0201,R0902,C0302
+# pylint: disable=unsupported-assignment-operation,redefined-outer-name
 logger = logging.getLogger(__name__)
 cg = CoinGeckoAPI()
 
@@ -154,10 +155,6 @@ performance_text = (
 )
 
 
-
-
-
-
 @log_start_end(log=logger)
 def calculate_drawdown(input_series: pd.Series, is_returns: bool = False) -> pd.Series:
     """Calculate the drawdown (MDD) of historical series.  Note that the calculation is done
@@ -201,9 +198,7 @@ def cumulative_returns(returns: pd.Series) -> pd.Series:
         Cumulative returns series
     -------
     """
-    cumulative_returns = (
-        (1 + returns.shift(periods=1, fill_value=0)).cumprod() - 1
-    )
+    cumulative_returns = (1 + returns.shift(periods=1, fill_value=0)).cumprod() - 1
     return cumulative_returns
 
 
@@ -245,7 +240,8 @@ class Portfolio:
         """Initialize Portfolio class"""
 
         # Portfolio
-        self.tickers = {}
+        self.tickers_except_cash = None
+        self.tickers: Dict[Any, Any] = {}
         self.inception_date = None
         self.static_data = pd.DataFrame()
         self.historical_trade_data = pd.DataFrame()
@@ -274,7 +270,6 @@ class Portfolio:
         self.benchmark_regional_allocation = pd.DataFrame()
         self.benchmark_country_allocation = pd.DataFrame()
 
-        
         if orderbook.empty:
             # Allow for empty initialization
             self.empty = True
@@ -289,7 +284,7 @@ class Portfolio:
 
     def get_orderbook(self):
         return self.__orderbook
-        
+
     @staticmethod
     def read_orderbook(path: str) -> pd.DataFrame:
         """Class method to read orderbook from file
@@ -339,9 +334,7 @@ class Portfolio:
 
             # Reformat crypto tickers to yfinance format (e.g. BTC -> BTC-USD)
             crypto_trades = self.__orderbook[self.__orderbook.Type == "CRYPTO"]
-            self.__orderbook.loc[
-                (self.__orderbook.Type == "CRYPTO"), "Ticker"
-            ] = [
+            self.__orderbook.loc[(self.__orderbook.Type == "CRYPTO"), "Ticker"] = [
                 f"{crypto}-{currency}"
                 for crypto, currency in zip(
                     crypto_trades.Ticker, crypto_trades.Currency
@@ -349,10 +342,10 @@ class Portfolio:
             ]
 
             # Create tickers dictionary with structure {'Type': [Ticker]}
-            for type in set(self.__orderbook["Type"]):
-                self.tickers[type] = list(
+            for ticker_type in set(self.__orderbook["Type"]):
+                self.tickers[ticker_type] = list(
                     set(
-                        self.__orderbook[self.__orderbook["Type"].isin([type])][
+                        self.__orderbook[self.__orderbook["Type"].isin([ticker_type])][
                             "Ticker"
                         ]
                     )
@@ -364,7 +357,7 @@ class Portfolio:
                 self.tickers_except_cash.remove("CASH")
 
             # Warn user if no cash deposit in account
-            if "CASH" not in self.tickers.keys():
+            if "CASH" not in self.tickers:
                 logger.warning(
                     "No initial cash deposit. Calculations may be off as this assumes trading from a "
                     "funded account"
@@ -384,8 +377,8 @@ class Portfolio:
                 values=["Type", "Sector", "Industry", "Country"],
             )
 
-        except:
-            raise Exception("Could not preprocess orderbook.")
+        except Exception:
+            console.print("Could not preprocess orderbook.")
 
     def load_benchmark(self, ticker: str = "SPY"):
         """Adds benchmark dataframe
@@ -496,46 +489,45 @@ class Portfolio:
     def load_portfolio_historical_prices(self, use_close: bool = False):
         """Loads historical adj close prices for tickers in list of trades"""
 
-        for type in self.tickers.keys():
-            if type == "STOCK" or type == "ETF":
+        for ticker_type, data in self.tickers.items():
+            if ticker_type in ["STOCK", "ETF"]:
                 # Download yfinance data
                 price_data = yf.download(
-                    self.tickers[type], start=self.inception_date, progress=False
+                    data[ticker_type], start=self.inception_date, progress=False
                 )["Close" if use_close else "Adj Close"]
 
                 # Set up column name if only 1 ticker (pd.DataFrame only does this if >1 ticker)
-                if len(self.tickers[type]) == 1:
+                if len(data[ticker_type]) == 1:
                     price_data = pd.DataFrame(price_data)
-                    price_data.columns = self.tickers[type]
+                    price_data.columns = data[ticker_type]
 
                 # Add to historical_prices dataframe
                 self.portfolio_historical_prices = pd.concat(
                     [self.portfolio_historical_prices, price_data], axis=1
                 )
 
-            elif type == "CRYPTO":
-
+            elif ticker_type == "CRYPTO":
                 # Download yfinance data
                 price_data = yf.download(
-                    self.tickers[type], start=self.inception_date, progress=False
+                    data[ticker_type], start=self.inception_date, progress=False
                 )["Close"]
 
                 # Set up column name if only 1 ticker (pd.DataFrame only does this if >1 ticker)
-                if len(self.tickers[type]) == 1:
+                if len(data[ticker_type]) == 1:
                     price_data = pd.DataFrame(price_data)
-                    price_data.columns = self.tickers[type]
+                    price_data.columns = data[ticker_type]
 
                 # Add to historical_prices dataframe
                 self.portfolio_historical_prices = pd.concat(
                     [self.portfolio_historical_prices, price_data], axis=1
                 )
 
-            elif type == "CASH":
+            elif ticker_type == "CASH":
                 # Set CASH price to 1
                 self.portfolio_historical_prices["CASH"] = 1
 
             else:
-                raise Exception("Type not supported in the orderbook.")
+                console.print("Type not supported in the orderbook.")
 
             # Fill missing values with last known price
             self.portfolio_historical_prices.fillna(method="ffill", inplace=True)
@@ -585,12 +577,12 @@ class Portfolio:
 
         # For each type [STOCK, ETF, etc] calculate holdings value by trade date
         # and add it to historical_trade_data
-        for type in self.tickers.keys():
+        for ticker_type, data in self.tickers.items():
             trade_data[
-                pd.MultiIndex.from_product([["Holdings"], self.tickers[type]])
+                pd.MultiIndex.from_product([["Holdings"], data[ticker_type]])
             ] = (
-                trade_data["Quantity"][self.tickers[type]]
-                * trade_data["Close"][self.tickers[type]]
+                trade_data["Quantity"][data[ticker_type]]
+                * trade_data["Close"][data[ticker_type]]
             )
 
         # Find amount of cash held in account. If CASH exist within the Orderbook,
@@ -614,9 +606,9 @@ class Portfolio:
 
         self.portfolio_value = trade_data["Holdings"]["Total"]
 
-        for type in self.tickers.keys():
-            self.itemized_holdings[type] = trade_data["Holdings"][
-                self.tickers[type]
+        for ticker_type, data in self.tickers.items():
+            self.itemized_holdings[ticker_type] = trade_data["Holdings"][
+                data[ticker_type]
             ].sum(axis=1)
 
         self.historical_trade_data = trade_data
@@ -624,7 +616,7 @@ class Portfolio:
     def calculate_reserves(self):
         """_summary_"""
         # TODO: Add back cash dividends and deduct exchange costs
-        pass
+        console.print("Still has to be build.")
 
     def calculate_allocations(self):
         """Determine allocations based on assets, sectors, countries and regional."""
@@ -663,11 +655,11 @@ class Portfolio:
     def set_risk_free_rate(self, risk_free_rate: float):
         """Sets risk free rate
 
-        Args:
-            risk_free (float): risk free rate in decimal format
+        Parameters
+        ----------
+        risk_free (float): risk free rate in decimal format
         """
         self.risk_free_rate = risk_free_rate
-
 
     # SHOULD WE MAKE THIS CLASS METHODS?
     # OR SPIN OFF AND ARE THEN CALLED FROM INSIDE THE CLASS
@@ -932,7 +924,7 @@ class Portfolio:
         )
 
 
-def rolling_volatility(returns: pd.DataFrame(), length: int) -> pd.DataFrame:
+def rolling_volatility(returns: pd.DataFrame, length: int) -> pd.DataFrame:
     """Get rolling volatility
 
     Parameters
@@ -948,6 +940,7 @@ def rolling_volatility(returns: pd.DataFrame(), length: int) -> pd.DataFrame:
         Rolling volatility DataFrame
     """
     return returns.rolling(length).std()
+
 
 def sharpe_ratio(return_series: pd.Series, risk_free_rate: float) -> float:
     """Get sharpe ratio
@@ -969,7 +962,10 @@ def sharpe_ratio(return_series: pd.Series, risk_free_rate: float) -> float:
 
     return mean / sigma
 
-def rolling_sharpe(returns: pd.DataFrame(), risk_free_rate: float, length: int) -> pd.DataFrame:
+
+def rolling_sharpe(
+    returns: pd.DataFrame, risk_free_rate: float, length: int
+) -> pd.DataFrame:
     """Get rolling sharpe ratio
 
     Parameters
@@ -986,10 +982,11 @@ def rolling_sharpe(returns: pd.DataFrame(), risk_free_rate: float, length: int) 
     pd.DataFrame
         Rolling sharpe ratio DataFrame
     """
-    rolling_sharpe = returns.rolling(length).apply(
+    rolling_sharpe_df = returns.rolling(length).apply(
         lambda x: (x.mean() - risk_free_rate) / x.std()
     )
-    return rolling_sharpe
+    return rolling_sharpe_df
+
 
 def sortino_ratio(return_series: pd.Series, risk_free_rate: float) -> float:
     """Get sortino ratio
@@ -1008,9 +1005,13 @@ def sortino_ratio(return_series: pd.Series, risk_free_rate: float) -> float:
     """
     mean = return_series.mean() - risk_free_rate
     std_neg = return_series[return_series < 0].std()
+
     return mean / std_neg
 
-def rolling_sortino(returns: pd.DataFrame(), risk_free_rate: float, length: int) -> pd.DataFrame:
+
+def rolling_sortino(
+    returns: pd.DataFrame, risk_free_rate: float, length: int
+) -> pd.DataFrame:
     """Get rolling sortino ratio
 
     Parameters
@@ -1027,10 +1028,12 @@ def rolling_sortino(returns: pd.DataFrame(), risk_free_rate: float, length: int)
     pd.DataFrame
         Rolling sortino ratio DataFrame
     """
-    rolling_sortino = returns.rolling(length).apply(
+    rolling_sortino_df = returns.rolling(length).apply(
         lambda x: (x.mean() - risk_free_rate) / x[x < 0].std()
     )
-    return rolling_sortino
+
+    return rolling_sortino_df
+
 
 def get_maximum_drawdown(return_series: pd.Series) -> float:
     """Get maximum drawdown
@@ -1048,4 +1051,5 @@ def get_maximum_drawdown(return_series: pd.Series) -> float:
     comp_ret = (return_series + 1).cumprod()
     peak = comp_ret.expanding(min_periods=1).max()
     dd = (comp_ret / peak) - 1
+
     return dd.min()
