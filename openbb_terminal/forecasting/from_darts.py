@@ -76,7 +76,8 @@ def plot_acf(
         axis.plot(
             (i, i),
             (0, r[i]),
-            color=("#b512b8" if m is not None and i == m else "black"),
+            # color=("#b512b8" if m is not None and i == m else "black"),
+            color=None,
             lw=(1 if m is not None and i == m else 0.5),
         )
 
@@ -87,7 +88,8 @@ def plot_acf(
         np.arange(1, max_lag + 1),
         upp_band,
         [-x for x in upp_band],
-        color="#003DFD",
-        alpha=0.25,
+        # color="#003DFD",
+        # color=None,
+        # alpha=0.25,
     )
-    axis.plot((0, max_lag + 1), (0, 0), color="black")
+    axis.plot((0, max_lag + 1), (0, 0))  # color="black"
