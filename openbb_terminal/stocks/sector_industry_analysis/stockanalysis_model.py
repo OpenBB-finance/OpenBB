@@ -216,6 +216,8 @@ def change_type_dataframes(dataframe) -> pd.DataFrame:
     dataframe : pd.DataFrame
         Adjusted DataFrame
     """
-    dataframe = dataframe.apply(lambda x: x.str.replace(",", "").astype(float), axis=1)
+    dataframe = dataframe.apply(
+        lambda x: x.astype(str).str.replace(",", "").astype(float), axis=1
+    )
 
     return dataframe
