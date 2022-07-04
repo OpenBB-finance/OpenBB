@@ -242,6 +242,7 @@ class DueDiligenceController(CryptoBaseController):
                 description="""
                     Display addresses with nonzero assets in a certain blockchain
                     [Source: https://glassnode.org]
+                    Note that free api keys only allow fetching data with a 1y lag
                 """,
             )
 
@@ -255,13 +256,12 @@ class DueDiligenceController(CryptoBaseController):
                 choices=glassnode_model.INTERVALS_NON_ZERO_ADDRESSES,
             )
 
-            # TODO: tell users that free api key only data with 1y lag
             parser.add_argument(
                 "-s",
                 "--since",
                 dest="since",
                 type=valid_date,
-                help="Initial date. Default: 2020-01-01",
+                help="Initial date. Default: 2 years ago",
                 default=(datetime.now() - timedelta(days=365 * 2)).strftime("%Y-%m-%d"),
             )
 
@@ -270,7 +270,7 @@ class DueDiligenceController(CryptoBaseController):
                 "--until",
                 dest="until",
                 type=valid_date,
-                help="Final date. Default: 2021-01-01",
+                help="Final date. Default: 1 year ago",
                 default=(datetime.now() - timedelta(days=367)).strftime("%Y-%m-%d"),
             )
 
@@ -320,7 +320,7 @@ class DueDiligenceController(CryptoBaseController):
                 "--since",
                 dest="since",
                 type=valid_date,
-                help="Initial date. Default: 2020-01-01",
+                help="Initial date. Default: 1 year ago",
                 default=(datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d"),
             )
 
@@ -329,7 +329,7 @@ class DueDiligenceController(CryptoBaseController):
                 "--until",
                 dest="until",
                 type=valid_date,
-                help="Final date. Default: 2021-01-01",
+                help="Final date. Default: Today",
                 default=(datetime.now()).strftime("%Y-%m-%d"),
             )
 
@@ -361,6 +361,7 @@ class DueDiligenceController(CryptoBaseController):
                 description="""
                     Display active blockchain addresses over time
                     [Source: https://glassnode.org]
+                    Note that free api keys only allow fetching data with a 1y lag
                 """,
             )
 
@@ -389,8 +390,8 @@ class DueDiligenceController(CryptoBaseController):
                 "--since",
                 dest="since",
                 type=valid_date,
-                help="Initial date. Default: 2019-01-01",
-                default="2019-01-01",
+                help="Initial date. Default: 2 years ago",
+                default=(datetime.now() - timedelta(days=365 * 2)).strftime("%Y-%m-%d"),
             )
 
             parser.add_argument(
@@ -398,8 +399,8 @@ class DueDiligenceController(CryptoBaseController):
                 "--until",
                 dest="until",
                 type=valid_date,
-                help="Final date. Default: 2020-01-01",
-                default="2020-01-01",
+                help="Final date. Default: 1 year ago",
+                default=(datetime.now() - timedelta(days=367)).strftime("%Y-%m-%d"),
             )
 
             if other_args:
@@ -434,6 +435,7 @@ class DueDiligenceController(CryptoBaseController):
                 description="""
                     Display active blockchain addresses over time
                     [Source: https://glassnode.org]
+                    Note that free api keys only allow fetching data with a 1y lag
                 """,
             )
 
@@ -470,8 +472,8 @@ class DueDiligenceController(CryptoBaseController):
                 "--since",
                 dest="since",
                 type=valid_date,
-                help="Initial date. Default: 2019-01-01",
-                default="2019-01-01",
+                help="Initial date. Default: 2 years ago",
+                default=(datetime.now() - timedelta(days=365 * 2)).strftime("%Y-%m-%d"),
             )
 
             parser.add_argument(
@@ -479,8 +481,8 @@ class DueDiligenceController(CryptoBaseController):
                 "--until",
                 dest="until",
                 type=valid_date,
-                help="Final date. Default: 2020-01-01",
-                default="2020-01-01",
+                help="Final date. Default: 1 year ago",
+                default=(datetime.now() - timedelta(days=367)).strftime("%Y-%m-%d"),
             )
 
             if other_args and not other_args[0][0] == "-":
@@ -557,10 +559,9 @@ class DueDiligenceController(CryptoBaseController):
         )
 
         if ns_parser:
-            cg_id = check_cg_id(self.symbol)
-            if cg_id:
+            if self.symbol:
                 pycoingecko_view.display_info(
-                    symbol=cg_id,
+                    symbol=self.symbol,
                     export=ns_parser.export,
                 )
 
@@ -599,10 +600,9 @@ class DueDiligenceController(CryptoBaseController):
         )
 
         if ns_parser:
-            cg_id = check_cg_id(self.symbol)
-            if cg_id:
+            if self.symbol:
                 pycoingecko_view.display_web(
-                    cg_id,
+                    self.symbol,
                     export=ns_parser.export,
                 )
 
@@ -962,10 +962,9 @@ class DueDiligenceController(CryptoBaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            cp_id = cryptocurrency_helpers.get_coinpaprika_id(self.symbol)
-            if cp_id:
+            if self.symbol:
                 coinpaprika_view.display_price_supply(
-                    cp_id,
+                    self.symbol,
                     ns_parser.vs,
                     ns_parser.export,
                 )
@@ -985,10 +984,9 @@ class DueDiligenceController(CryptoBaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            cp_id = cryptocurrency_helpers.get_coinpaprika_id(self.symbol)
-            if cp_id:
+            if self.symbol:
                 coinpaprika_view.display_basic(
-                    cp_id,
+                    self.symbol,
                     ns_parser.export,
                 )
 
@@ -1057,10 +1055,9 @@ class DueDiligenceController(CryptoBaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            cp_id = cryptocurrency_helpers.get_coinpaprika_id(self.symbol)
-            if cp_id:
+            if self.symbol:
                 coinpaprika_view.display_markets(
-                    coin_id=cp_id,
+                    symbol=self.symbol,
                     currency=ns_parser.vs,
                     top=ns_parser.limit,
                     sortby=ns_parser.sortby,
@@ -1115,10 +1112,9 @@ class DueDiligenceController(CryptoBaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            cp_id = cryptocurrency_helpers.get_coinpaprika_id(self.symbol)
-            if cp_id:
+            if self.symbol:
                 coinpaprika_view.display_exchanges(
-                    coin_id=cp_id,
+                    symbol=self.symbol,
                     top=ns_parser.limit,
                     sortby=ns_parser.sortby,
                     descend=ns_parser.descend,
@@ -1182,10 +1178,9 @@ class DueDiligenceController(CryptoBaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            cp_id = cryptocurrency_helpers.get_coinpaprika_id(self.symbol)
-            if cp_id:
+            if self.symbol:
                 coinpaprika_view.display_events(
-                    coin_id=cp_id,
+                    symbol=self.symbol,
                     top=ns_parser.limit,
                     sortby=ns_parser.sortby,
                     descend=ns_parser.descend,
@@ -1240,10 +1235,9 @@ class DueDiligenceController(CryptoBaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            cp_id = cryptocurrency_helpers.get_coinpaprika_id(self.symbol)
-            if cp_id:
+            if self.symbol:
                 coinpaprika_view.display_twitter(
-                    coin_id=cp_id,
+                    symbol=self.symbol,
                     top=ns_parser.limit,
                     sortby=ns_parser.sortby,
                     descend=ns_parser.descend,
@@ -1446,11 +1440,9 @@ class DueDiligenceController(CryptoBaseController):
         )
 
         if ns_parser:
-            cg_id = check_cg_id(self.symbol)
-            if cg_id:
+            if self.symbol:
                 messari_view.display_tokenomics(
                     coin=self.symbol.upper(),
-                    coingecko_symbol=cg_id,
                     export=ns_parser.export,
                 )
 

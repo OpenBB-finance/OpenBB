@@ -3,6 +3,7 @@ usage: valuation [-g GROUP [GROUP ...]] [-s {Name,MarketCap,P/E,FwdP/E,PEG,P/S,P
 ```
 
 View group (sectors, industry or country) valuation data. [Source: Finviz]
+
 ```
 optional arguments:
   -g GROUP [GROUP ...], --group GROUP [GROUP ...]
@@ -16,11 +17,12 @@ optional arguments:
 ```
 
 Example:
+
 ```
 2022 Feb 15, 05:44 (✨) /economy/ $ valuation
                                                                   Group Valuation Data
 ┌────────────────────────┬───────────┬───────┬────────┬──────┬──────┬──────┬───────┬───────┬───────────┬───────────┬─────────────┬────────┬─────────────┐
-│ Name                   │ MarketCap │ P/E   │ FwdP/E │ PEG  │ P/S  │ P/B  │ P/C   │ P/FCF │ EPSpast5Y │ EPSnext5Y │ Salespast5Y │ Change │ Volume (1M) │
+│ Name                   │ MarketCap │ P/E   │ FwdP/E │ PEG  │ P/S  │ P/B  │ P/C   │ P/FCF │ EPSpast5Y │ EPSnext5Y │ Salespast5Y │ Change │ Volume [1M] │
 ├────────────────────────┼───────────┼───────┼────────┼──────┼──────┼──────┼───────┼───────┼───────────┼───────────┼─────────────┼────────┼─────────────┤
 │ Utilities              │ 1358.78   │ 23.92 │ 3.08   │ 3.42 │ 1.89 │ 1.34 │ 27.21 │ 58.67 │ -0.01     │ 0.07      │ 0.02        │ -0.01  │ 163.32      │
 ├────────────────────────┼───────────┼───────┼────────┼──────┼──────┼──────┼───────┼───────┼───────────┼───────────┼─────────────┼────────┼─────────────┤

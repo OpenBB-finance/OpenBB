@@ -25,7 +25,7 @@ COINS_COLUMNS = [
     "Symbol",
     "Name",
     "Volume [$]",
-    "Market Cap [$]",
+    "Market Cap",
     "Market Cap Rank",
     "7D Change [%]",
     "24H Change [%]",
@@ -69,9 +69,9 @@ def display_coins(
         )
         if sortby in COINS_COLUMNS:
             df = df[
-                (df["Volume [$]"].notna()) & (df["Market Cap [$]"].notna())
+                (df["Volume [$]"].notna()) & (df["Market Cap"].notna())
             ].sort_values(by=sortby, ascending=False)
-        for col in ["Volume [$]", "Market Cap [$]"]:
+        for col in ["Volume [$]", "Market Cap"]:
             if col in df.columns:
                 df[col] = df[col].apply(lambda x: lambda_very_long_number_formatter(x))
         print_rich_table(
@@ -112,9 +112,9 @@ def display_gainers(
     if not df.empty:
         if sortby in COINS_COLUMNS:
             df = df[
-                (df["Volume [$]"].notna()) & (df["Market Cap [$]"].notna())
-            ].sort_values(by=sortby, ascending=False)
-        for col in ["Volume [$]", "Market Cap [$]"]:
+                (df["Volume [$]"].notna()) & (df["Market Cap"].notna())
+            ].sort_values(by=sortby, ascending=True)
+        for col in ["Volume [$]", "Market Cap"]:
             if col in df.columns:
                 df[col] = df[col].apply(lambda x: lambda_very_long_number_formatter(x))
         print_rich_table(
@@ -155,9 +155,9 @@ def display_losers(
     if not df.empty:
         if sortby in COINS_COLUMNS:
             df = df[
-                (df["Volume [$]"].notna()) & (df["Market Cap [$]"].notna())
-            ].sort_values(by=sortby, ascending=False)
-        for col in ["Volume [$]", "Market Cap [$]"]:
+                (df["Volume [$]"].notna()) & (df["Market Cap"].notna())
+            ].sort_values(by=sortby, ascending=True)
+        for col in ["Volume [$]", "Market Cap"]:
             if col in df.columns:
                 df[col] = df[col].apply(lambda x: lambda_very_long_number_formatter(x))
         print_rich_table(

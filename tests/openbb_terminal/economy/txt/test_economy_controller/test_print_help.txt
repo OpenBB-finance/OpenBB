@@ -1,11 +1,3 @@
-    macro              collect macro data for a country or countries                   [EconDB]
-    fred               collect macro data from FRED based on a series ID               [FRED]
-    index              find and plot any (major) index on the market                   [Yahoo Finance]
-    treasury           obtain U.S. treasury rates                                      [EconDB]
-
-    options            show the available options for 'plot' or show/export the data
-    plot               plot data from the above commands together
-
     overview           show a market overview of either indices, bonds or currencies   [Wall St. Journal]
     futures            display a futures and commodities overview                      [Wall St. Journal / Finviz]
     map                S&P500 index stocks map                                         [Finviz]
@@ -16,6 +8,16 @@
     valuation          valuation of sectors, industry, country                         [Finviz]
     performance        performance of sectors, industry, country                       [Finviz]
     spectrum           spectrum of sectors, industry, country                          [Finviz]
+
+Databases:
+    macro              collect macro data for a country or countries                   [EconDB]
+    treasury           obtain U.S. treasury rates                                      [EconDB]
+    fred               collect macro data from FRED based on a series ID               [FRED]
+    index              find and plot any (major) index on the market                   [Yahoo Finance]
+
+Stored datasets: 
+
+    plot               plot data from the above commands together
 
 >   pred               Open the prediction menu to analyse stored data
 >   qa                 Open quantitative analysis menu with stored data

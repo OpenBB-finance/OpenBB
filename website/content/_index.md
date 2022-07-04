@@ -96,7 +96,7 @@ or visit our <a href="https://openbb.co/contact" target="_blank">contact page</a
 The process starts off by downloading the installer, see below for how to download the most recent release:
 
 1. Go to [the openbb.co website](https://www.openbb.co/products/terminal#get-started)
-2. Click on the `Download` button in the Windown Installer section
+2. Click on the `Download` button in the Windows Installer section
 
 When the file is downloaded, use the following steps to run the OpenBB Terminal:
 
@@ -158,7 +158,7 @@ Right-Click the app and select `Open`. You will see a message saying that macOS 
 
 **Troubleshooting: Allow the application to run by going into your settings**
 
-If you have trouble launching the app because of security settings and the "Right-click and Open" approach from Step 2 of this instructions doesn't work, go to `System Preferences > Security & Privacy > General`. You should see a message at the bottom that says that the file "was blocked from use because it is not from an identified developer". Click on `Allow anyway` or `Open anyway`.
+If you have trouble launching the app because of security settings and the "Right-click and Open" approach from Step 2 of these instructions doesn't work, go to `System Preferences > Security & Privacy > General`. You should see a message at the bottom that says that the file "was blocked from use because it is not from an identified developer". Click on `Allow anyway` or `Open anyway`.
 
 <p align="center"><img width=60% alt="image" src="https://user-images.githubusercontent.com/11668535/173027428-a85890d7-8a3c-4954-a6c0-d3214c635982.png"></p>
 
@@ -290,6 +290,15 @@ selected period.
 As mentioned in the <a href="#explanation-of-menus">Explanation of Menus</a>, some information also transfers over to other menus and this includes the
 loaded market data from <a href="terminal/stocks/load" target="_blank">load</a>.
 So, if you would visit the `ta` menu (which stands for <a href="https://www.investopedia.com/terms/t/technicalanalysis.asp" target="_blank">Technical Analysis</a>) you will see that, by running any command, the selected period above is depicted again. Return to the Stocks menu again by using `q` and use it again to return to the home screen which can be shown with `?`.
+
+
+### Explanation of Scripts
+The `.openbb` scripts offer the ability to automatically run a set of commands in the form of a **routine**. Furthermore,
+the scripts can be adapted, and documented, at any moment giving the user full control over the type of analysis you wish
+to do (and repeat). This can fundamental research, understanding market movements, finding hidden gems and even
+doing advanced statistical/econometric research.
+
+<b><span style="color:white">For a thorough guide on how to setup these files, please see the <a href="https://openbb-finance.github.io/OpenBBTerminal/scripts" target="_blank">Scripts & Routines guide</a>.</span></b>
 
 ## Accessing other sources of data via API keys
 
