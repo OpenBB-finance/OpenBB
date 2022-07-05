@@ -453,8 +453,7 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
                                 '<style bg="ansiblack" fg="ansiwhite">[e]</style> exit terminal    '
                                 '<style bg="ansiblack" fg="ansiwhite">[cmd -h]</style> '
                                 "see usage and available options    "
-                                '<style bg="ansiblack" fg="ansiwhite">[about]</style> Open the OpenBB Terminal '
-                                "Documentation"
+                                '<style bg="ansiblack" fg="ansiwhite">[about]</style> Getting Started Documentation'
                             ),
                             style=Style.from_dict(
                                 {

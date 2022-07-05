@@ -512,10 +512,7 @@ class BaseController(metaclass=ABCMeta):
 
         if ns_parser.help:
             txt_help = parser.format_help() + "\n"
-            txt_help += (
-                f"Find documentation and examples at "
-                f"https://openbb-finance.github.io/OpenBBTerminal/terminal{self.PATH}{parser.prog}\n"
-            )
+            txt_help += f"For more information and examples, use 'about {parser.prog}' to access the related guide.\n"
             console.print(f"[help]{txt_help}[/help]")
             return None
 
@@ -579,8 +576,8 @@ class BaseController(metaclass=ABCMeta):
                                     '<style bg="ansiblack" fg="ansiwhite">[e]</style> exit terminal    '
                                     '<style bg="ansiblack" fg="ansiwhite">[cmd -h]</style> '
                                     "see usage and available options    "
-                                    '<style bg="ansiblack" fg="ansiwhite">[about]</style> Open the OpenBB Terminal '
-                                    f"Documentation for {self.path[-1].capitalize()}"
+                                    f'<style bg="ansiblack" fg="ansiwhite">[about &lt;cmd&gt;]</style> '
+                                    f"{self.path[-1].capitalize()} Documentation"
                                 ),
                                 style=Style.from_dict(
                                     {
