@@ -3,6 +3,7 @@ en:
     [info]Information, guides and support for the OpenBB Terminal[/info]
   about: discover the capabilities of the OpenBB Terminal (https://openbb.co/docs)
   support: pre-populate a support ticket for our team to evaluate
+  update: attempt to update the terminal automatically (GitHub version)
   exe: execute automated routine script
   settings: tune settings (export folder, timezone, language, plot size)
   featflags: enable and disable feature flags

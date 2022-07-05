@@ -36,6 +36,7 @@ from openbb_terminal.terminal_helper import (
     print_goodbye,
     reset,
     suppress_stdout,
+    update_terminal,
     welcome_message,
 )
 
@@ -52,6 +53,7 @@ class TerminalController(BaseController):
     CHOICES_COMMANDS = [
         "keys",
         "settings",
+        "update",
         "featflags",
         "exe",
     ]
@@ -102,6 +104,7 @@ class TerminalController(BaseController):
         mt.add_custom("_home_")
         mt.add_cmd("about")
         mt.add_cmd("support")
+        mt.add_cmd("update")
         mt.add_raw("\n")
         mt.add_info("_configure_")
         mt.add_menu("keys")
@@ -125,6 +128,16 @@ class TerminalController(BaseController):
         mt.add_menu("dashboards")
         mt.add_menu("reports")
         console.print(text=mt.menu_text, menu="Home")
+
+    def call_update(self, _):
+        """Process update command"""
+        if not obbff.PACKAGED_APPLICATION:
+            self.update_success = not update_terminal()
+        else:
+            console.print(
+                "Could not automatically update. Find the most recent release of the OpenBB Terminal here: "
+                "https://openbb.co/products/terminal#get-started\n"
+            )
 
     def call_keys(self, _):
         """Process keys command"""
