@@ -193,6 +193,12 @@ and menus you can select. There are interactions in place between each menu. For
 the `stocks` menu, the terminal will remember your selection when you visit the `fa` or `options` menu.
 See <a href="terminal/stocks" target="_blank">Introduction to Stocks</a> for more information.
 
+___
+**Pro tip:** you can quickly jump between menus by using a forward slash (`/`). For example, if I want to access the options
+menu, I can type `/stocks/options` to instantly arrive at this menu. You can do this from any location within the
+OpenBB Terminal!
+___
+
 ### Explanation of Commands
 
 Commands, depicted in <b><span style="color:#00AAFF">Light Blue</span></b>, execute an action or task. For example,
