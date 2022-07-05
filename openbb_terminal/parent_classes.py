@@ -121,7 +121,7 @@ class BaseController(metaclass=ABCMeta):
         theme.applyMPLstyle()
 
         # Add in about options
-        self.ABOUT_CHOICES = {c: None for c in self.CHOICES_COMMANDS}
+        self.ABOUT_CHOICES = {c: None for c in controller_choices}
 
         # Remove common choices from list of support commands
         self.support_commands = [
@@ -295,7 +295,7 @@ class BaseController(metaclass=ABCMeta):
             dest="command",
             default=None,
             help="Obtain documentation on the given command",
-            choices=self.CHOICES_COMMANDS,
+            choices=self.controller_choices,
         )
 
         if other_args and "-" not in other_args[0][0]:
@@ -303,14 +303,7 @@ class BaseController(metaclass=ABCMeta):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
-            if ns_parser.command:
-                open_openbb_documentation(
-                    f"https://openbb-finance.github.io/OpenBBTerminal/terminal/{self.PATH}/{ns_parser.command}"
-                )
-            else:
-                open_openbb_documentation(
-                    f"https://openbb-finance.github.io/OpenBBTerminal/terminal/{self.PATH}"
-                )
+            open_openbb_documentation(self.PATH, command=ns_parser.command)
 
     @log_start_end(log=logger)
     def call_quit(self, _) -> None:

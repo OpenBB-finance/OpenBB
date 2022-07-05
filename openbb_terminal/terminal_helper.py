@@ -99,9 +99,32 @@ def update_terminal():
     return 0
 
 
-def open_openbb_documentation(url):
-    """Opens the documentation page based on your current location within the terminal"""
-    webbrowser.open(url)
+def open_openbb_documentation(
+    path, url="https://openbb-finance.github.io/OpenBBTerminal/terminal/", command=None
+):
+    """Opens the documentation page based on your current location within the terminal. Make exceptions for menus
+    that are considered 'common' by adjusting the path accordingly."""
+    if "ta" in path:
+        path = "/common/ta/"
+    elif "ta" in command:
+        path = "/common/"
+    if "ba" in path:
+        path = "/common/ba/"
+    elif "ba" in command:
+        path = "/common/"
+    elif "qa" in path:
+        path = "/common/qa/"
+    elif "qa" in command:
+        path = "/common/"
+    elif "pred" in path:
+        path = "/common/pred/"
+    elif "pred" in command:
+        path = "/common/"
+
+    if command:
+        path += command
+
+    webbrowser.open(f"{url}{path}")
 
 
 def hide_splashscreen():
