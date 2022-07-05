@@ -287,7 +287,7 @@ def plot_oi(
     ax.axvline(current_price, lw=2, ls="--", label="Current Price", alpha=0.7)
     ax.axvline(max_pain, lw=3, label=f"Max Pain: {max_pain}", alpha=0.7)
     ax.set_xlabel("Strike Price")
-    ax.set_ylabel("Open Interest (1k) ")
+    ax.set_ylabel("Open Interest [1k] ")
     ax.set_xlim(min_strike, max_strike)
     ax.set_title(f"Open Interest for {ticker.upper()} expiring {expiry}")
 
@@ -387,7 +387,7 @@ def plot_vol(
     ax.axvline(current_price, lw=2, c="k", ls="--", label="Current Price", alpha=0.7)
     ax.grid("on")
     ax.set_xlabel("Strike Price")
-    ax.set_ylabel("Volume (1k) ")
+    ax.set_ylabel("Volume [1k] ")
     ax.set_xlim(min_strike, max_strike)
     ax.set_title(f"Volume for {ticker.upper()} expiring {expiry}")
 

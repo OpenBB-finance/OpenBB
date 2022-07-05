@@ -233,6 +233,8 @@ def check_if_open(bursa, exchange):
                 and localDatetime.minute >= lunchbreak_start.minute
             ):
                 result = False
+            else:
+                result = True
         else:
             result = True
     elif (
@@ -256,6 +258,8 @@ def check_if_open(bursa, exchange):
                 and localDatetime.minute >= lunchbreak_start.minute
             ):
                 result = False
+            else:
+                result = True
         else:
             result = True
     else:
