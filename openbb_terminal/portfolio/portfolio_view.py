@@ -65,7 +65,7 @@ In order to load a CSV do the following:
 
 
 @log_start_end(log=logger)
-def display_orderbook(portfolio=portfolio_model.Portfolio(), show_index=False):
+def display_orderbook(portfolio=None, show_index=False):
     """Display portfolio orderbook
 
     Parameters
@@ -75,7 +75,8 @@ def display_orderbook(portfolio=portfolio_model.Portfolio(), show_index=False):
     show_index: bool
         Defaults to False.
     """
-    if portfolio.empty:
+    
+    if portfolio is None:
         logger.warning("No orderbook loaded")
         console.print("[red]No orderbook loaded.[/red]\n")
     else:

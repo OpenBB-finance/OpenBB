@@ -98,7 +98,7 @@ class PortfolioController(BaseController):
             if filepath.is_file()
         }
 
-        self.portfolio = pd.DataFrame(
+        self.portfolio_df = pd.DataFrame(
             columns=[
                 "Date",
                 "Name",
@@ -120,7 +120,7 @@ class PortfolioController(BaseController):
         self.benchmark_name = ""
         self.original_benchmark_name = ""
         self.portlist: List[str] = os.listdir(self.DEFAULT_HOLDINGS_PATH)
-        self.portfolio = portfolio_model.Portfolio()
+        self.portfolio = None
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
@@ -177,8 +177,6 @@ class PortfolioController(BaseController):
         mt.add_cmd("var", self.portfolio_name and self.benchmark_name)
         mt.add_cmd("es", self.portfolio_name and self.benchmark_name)
         mt.add_cmd("os", self.portfolio_name and self.benchmark_name)
-
-        # console.print(text=mt.menu_text, menu="Portfolio")
 
         port = bool(self.portfolio_name)
         port_bench = bool(self.portfolio_name) and bool(self.benchmark_name)
@@ -250,7 +248,7 @@ class PortfolioController(BaseController):
     @log_start_end(log=logger)
     def call_po(self, _):
         """Process po command"""
-        if self.portfolio.empty:
+        if self.portfolio is None:
             tickers = []
         else:
             tickers = (
@@ -310,8 +308,8 @@ class PortfolioController(BaseController):
             else:
                 file_location = ns_parser.file  # type: ignore
 
-            orderbook = portfolio_model.Portfolio.read_orderbook(str(file_location))
-            self.portfolio = portfolio_model.Portfolio(orderbook)
+            orderbook = portfolio_model.PortfolioModel.read_orderbook(str(file_location))
+            self.portfolio = portfolio_model.PortfolioModel(orderbook)
 
             if ns_parser.name:
                 self.portfolio_name = ns_parser.name

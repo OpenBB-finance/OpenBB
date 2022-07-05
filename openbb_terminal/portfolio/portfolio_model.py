@@ -202,7 +202,7 @@ def cumulative_returns(returns: pd.Series) -> pd.Series:
     return cumulative_returns
 
 
-class Portfolio:
+class PortfolioModel:
     """
     Class for portfolio analysis in OpenBB
     Implements a Portfolio and related methods.
@@ -253,7 +253,6 @@ class Portfolio:
         self.portfolio_assets_allocation = pd.DataFrame()
         self.portfolio_regional_allocation = pd.DataFrame()
         self.portfolio_country_allocation = pd.DataFrame()
-        # rolling cumulative cumulative returns
 
         # Prices
         self.portfolio_historical_prices = pd.DataFrame()
@@ -270,17 +269,12 @@ class Portfolio:
         self.benchmark_regional_allocation = pd.DataFrame()
         self.benchmark_country_allocation = pd.DataFrame()
 
-        if orderbook.empty:
-            # Allow for empty initialization
-            self.empty = True
-        else:
-            # Set and preprocess orderbook
-            self.__set_orderbook(orderbook)
+        # Set and preprocess orderbook
+        self.__set_orderbook(orderbook)
 
     def __set_orderbook(self, orderbook):
         self.__orderbook = orderbook
         self.preprocess_orderbook()
-        self.empty = False
 
     def get_orderbook(self):
         return self.__orderbook
@@ -302,6 +296,10 @@ class Portfolio:
 
     def preprocess_orderbook(self):
         """Method to preprocess, format and compute auxiliary fields"""
+
+        # descrbibe outputs
+
+
         try:
             # Convert Date to datetime
             self.__orderbook["Date"] = pd.to_datetime(self.__orderbook["Date"])
@@ -490,32 +488,16 @@ class Portfolio:
         """Loads historical adj close prices for tickers in list of trades"""
 
         for ticker_type, data in self.tickers.items():
-            if ticker_type in ["STOCK", "ETF"]:
+            if ticker_type in ["STOCK", "ETF", "CRYPTO"]:
                 # Download yfinance data
                 price_data = yf.download(
-                    data[ticker_type], start=self.inception_date, progress=False
-                )["Close" if use_close else "Adj Close"]
+                    data, start=self.inception_date, progress=False
+                )["Close" if use_close or ticker_type == "CRYPTO" else "Adj Close"]
 
                 # Set up column name if only 1 ticker (pd.DataFrame only does this if >1 ticker)
-                if len(data[ticker_type]) == 1:
+                if len(data) == 1:
                     price_data = pd.DataFrame(price_data)
-                    price_data.columns = data[ticker_type]
-
-                # Add to historical_prices dataframe
-                self.portfolio_historical_prices = pd.concat(
-                    [self.portfolio_historical_prices, price_data], axis=1
-                )
-
-            elif ticker_type == "CRYPTO":
-                # Download yfinance data
-                price_data = yf.download(
-                    data[ticker_type], start=self.inception_date, progress=False
-                )["Close"]
-
-                # Set up column name if only 1 ticker (pd.DataFrame only does this if >1 ticker)
-                if len(data[ticker_type]) == 1:
-                    price_data = pd.DataFrame(price_data)
-                    price_data.columns = data[ticker_type]
+                    price_data.columns = data
 
                 # Add to historical_prices dataframe
                 self.portfolio_historical_prices = pd.concat(
@@ -579,10 +561,10 @@ class Portfolio:
         # and add it to historical_trade_data
         for ticker_type, data in self.tickers.items():
             trade_data[
-                pd.MultiIndex.from_product([["Holdings"], data[ticker_type]])
+                pd.MultiIndex.from_product([["Holdings"], data])
             ] = (
-                trade_data["Quantity"][data[ticker_type]]
-                * trade_data["Close"][data[ticker_type]]
+                trade_data["Quantity"][data]
+                * trade_data["Close"][data]
             )
 
         # Find amount of cash held in account. If CASH exist within the Orderbook,
@@ -608,7 +590,7 @@ class Portfolio:
 
         for ticker_type, data in self.tickers.items():
             self.itemized_holdings[ticker_type] = trade_data["Holdings"][
-                data[ticker_type]
+                data
             ].sum(axis=1)
 
         self.historical_trade_data = trade_data
@@ -661,8 +643,6 @@ class Portfolio:
         """
         self.risk_free_rate = risk_free_rate
 
-    # SHOULD WE MAKE THIS CLASS METHODS?
-    # OR SPIN OFF AND ARE THEN CALLED FROM INSIDE THE CLASS
     @log_start_end(log=logger)
     def get_r2_score(self) -> pd.DataFrame:
         """Class method that retrieves R2 Score for portfolio and benchmark selected
