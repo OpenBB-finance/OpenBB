@@ -690,7 +690,9 @@ def get_kelly_criterion(returns: pd.Series, portfolio_trades: pd.DataFrame):
             w = len(period_return[period_return > 0]) / len(period_return)
             r = len(
                 period_portfolio_tr[period_portfolio_tr["% Portfolio Return"] > 0]
-            ) / len(period_portfolio_tr)
+            ) / len(
+                period_portfolio_tr[period_portfolio_tr["Type"].str.upper() != "CASH"]
+            )
             if r != 0:
                 vals.append([round(w - (1 - w) / r, 3)])
             else:
