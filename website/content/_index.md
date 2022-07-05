@@ -311,7 +311,7 @@ the scripts can be adapted, and documented, at any moment giving the user full c
 to do (and repeat). This can fundamental research, understanding market movements, finding hidden gems and even
 doing advanced statistical/econometric research.
 
-<b><span style="color:white">For a thorough guide on how to setup these files, please see the <a href="https://openbb-finance.github.io/OpenBBTerminal/scripts" target="_blank">Scripts & Routines guide</a>.</span></b>
+<b><span style="color:white">For a thorough guide on how to setup these files, please see the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/scripts/" target="_blank">Scripts & Routines guide</a>.</span></b>
 
 ## Accessing other sources of data via API keys
 
