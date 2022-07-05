@@ -39,6 +39,7 @@ from openbb_terminal.helper_funcs import (
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks import stocks_helper
+from openbb_terminal.terminal_helper import open_openbb_documentation
 from openbb_terminal.cryptocurrency import cryptocurrency_helpers
 
 logger = logging.getLogger(__name__)
@@ -66,6 +67,7 @@ class BaseController(metaclass=ABCMeta):
     CHOICES_COMMON = [
         "cls",
         "home",
+        "about",
         "h",
         "?",
         "help",
@@ -274,6 +276,13 @@ class BaseController(metaclass=ABCMeta):
     def call_help(self, _) -> None:
         """Process help command"""
         self.print_help()
+
+    @log_start_end(log=logger)
+    def call_about(self, _) -> None:
+        """Process about command"""
+        open_openbb_documentation(
+            f"https://openbb-finance.github.io/OpenBBTerminal/terminal/{self.PATH}"
+        )
 
     @log_start_end(log=logger)
     def call_quit(self, _) -> None:
@@ -537,9 +546,10 @@ class BaseController(metaclass=ABCMeta):
                                     '<style bg="ansiblack" fg="ansiwhite">[h]</style> help menu    '
                                     '<style bg="ansiblack" fg="ansiwhite">[q]</style> return to previous menu    '
                                     '<style bg="ansiblack" fg="ansiwhite">[e]</style> exit terminal    '
-                                    '<style bg="ansiblack" fg="ansiwhite">[cmd -h]</style>'
-                                    ' see usage and available options         <style bg="#0000EE">'
-                                    f"https://openbb-finance.github.io/OpenBBTerminal/terminal{self.PATH}</style>"
+                                    '<style bg="ansiblack" fg="ansiwhite">[cmd -h]</style> '
+                                    "see usage and available options    "
+                                    '<style bg="ansiblack" fg="ansiwhite">[about]</style> Open the OpenBB Terminal '
+                                    f"Documentation of {self.path[-1].capitalize()}"
                                 ),
                                 style=Style.from_dict(
                                     {
