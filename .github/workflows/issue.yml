@@ -1,0 +1,27 @@
+name: "Set Issue Label and Assignee"
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: Naturalclar/issue-action@v2.0.2
+        with:
+          title-or-body: "both"
+          parameters:
+            '[ {"keywords": ["bug", "error", "issue"], "labels": ["bug"]},
+            {"keywords": ["help", "guidance"], "labels": ["help-wanted"], "assignees": ["colin99d"]},
+            {"keywords": ["portfolio"], "labels": ["portfolio"], "assignees": ["JerBouma", "montezdesousa"]},
+            {"keywords": ["dashboards"], "labels": ["dashboards"], "assignees": ["colin99d"]},
+            {"keywords": ["dependencies"], "labels": ["dependencies"], "assignees": ["piiq"]},
+            {"keywords": ["build"], "labels": ["build"], "assignees": ["piiq"]},
+            {"keywords": ["jupyter"], "labels": ["jupyterlab"], "assignees": ["piiq"]},
+            {"keywords": ["reports"], "labels": ["notebookreports"], "assignees": ["piiq"]},
+            {"keywords": ["installer"], "labels": ["installer"], "assignees": ["piiq", "andrewkenreich"]},
+            {"keywords": ["pytest", "tests"], "labels": ["tests"], "assignees": ["Chavithra"]},
+            {"keywords": ["guides"], "labels": ["guides"], "assignees": ["JerBouma"]},
+            {"keywords": ["crypto"], "labels": ["crypto"], "assignees": ["minhhoang1023"]}
+            ]'
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
