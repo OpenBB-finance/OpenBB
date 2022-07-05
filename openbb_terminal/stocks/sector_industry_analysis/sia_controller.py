@@ -238,6 +238,7 @@ class SectorIndustryAnalysisController(BaseController):
             choices["clear"] = {c: None for c in self.clear_choices}
             choices["metric"] = {c: None for c in self.metric_choices}
             choices["support"] = self.SUPPORT_CHOICES
+            choices["about"] = self.ABOUT_CHOICES
             # This menu contains dynamic choices that may change during runtime
             self.choices = choices
             self.completer = NestedCompleter.from_nested_dict(choices)

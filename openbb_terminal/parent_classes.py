@@ -83,6 +83,7 @@ class BaseController(metaclass=ABCMeta):
     CHOICES_COMMANDS: List[str] = []
     CHOICES_MENUS: List[str] = []
     SUPPORT_CHOICES: Dict = {}
+    ABOUT_CHOICES: Dict = {}
     COMMAND_SEPARATOR = "/"
     KEYS_MENU = "keys" + COMMAND_SEPARATOR
     TRY_RELOAD = False
@@ -119,7 +120,8 @@ class BaseController(metaclass=ABCMeta):
 
         theme.applyMPLstyle()
 
-        # Terminal-wide support command auto-completion
+        # Add in about options
+        self.ABOUT_CHOICES = {c: None for c in self.CHOICES_COMMANDS}
 
         # Remove common choices from list of support commands
         self.support_commands = [
@@ -278,11 +280,37 @@ class BaseController(metaclass=ABCMeta):
         self.print_help()
 
     @log_start_end(log=logger)
-    def call_about(self, _) -> None:
+    def call_about(self, other_args: List[str]) -> None:
         """Process about command"""
-        open_openbb_documentation(
-            f"https://openbb-finance.github.io/OpenBBTerminal/terminal/{self.PATH}"
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="about",
+            description="Display the documentation of the menu or command.",
         )
+
+        parser.add_argument(
+            "-c",
+            "--command",
+            type=str,
+            dest="command",
+            default=None,
+            help="Obtain documentation on the given command",
+            choices=self.CHOICES_COMMANDS,
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-c")
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
+
+        if ns_parser:
+            if ns_parser.command:
+                open_openbb_documentation(
+                    f"https://openbb-finance.github.io/OpenBBTerminal/terminal/{self.PATH}/{ns_parser.command}"
+                )
+            else:
+                open_openbb_documentation(
+                    f"https://openbb-finance.github.io/OpenBBTerminal/terminal/{self.PATH}"
+                )
 
     @log_start_end(log=logger)
     def call_quit(self, _) -> None:
@@ -484,7 +512,10 @@ class BaseController(metaclass=ABCMeta):
 
         if ns_parser.help:
             txt_help = parser.format_help() + "\n"
-            txt_help += f"See more in https://openbb-finance.github.io/OpenBBTerminal/terminal{self.PATH}{parser.prog}\n"
+            txt_help += (
+                f"Find documentation and examples at "
+                f"https://openbb-finance.github.io/OpenBBTerminal/terminal{self.PATH}{parser.prog}\n"
+            )
             console.print(f"[help]{txt_help}[/help]")
             return None
 
@@ -549,7 +580,7 @@ class BaseController(metaclass=ABCMeta):
                                     '<style bg="ansiblack" fg="ansiwhite">[cmd -h]</style> '
                                     "see usage and available options    "
                                     '<style bg="ansiblack" fg="ansiwhite">[about]</style> Open the OpenBB Terminal '
-                                    f"Documentation of {self.path[-1].capitalize()}"
+                                    f"Documentation for {self.path[-1].capitalize()}"
                                 ),
                                 style=Style.from_dict(
                                     {
