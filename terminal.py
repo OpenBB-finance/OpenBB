@@ -36,7 +36,6 @@ from openbb_terminal.terminal_helper import (
     print_goodbye,
     reset,
     suppress_stdout,
-    update_terminal,
     welcome_message,
 )
 
@@ -126,10 +125,6 @@ class TerminalController(BaseController):
         mt.add_menu("dashboards")
         mt.add_menu("reports")
         console.print(text=mt.menu_text, menu="Home")
-
-    def call_update(self, _):
-        """Process update command"""
-        self.update_success = not update_terminal()
 
     def call_keys(self, _):
         """Process keys command"""

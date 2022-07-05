@@ -66,39 +66,6 @@ def sha256sum(filename):
     return h.hexdigest()
 
 
-def update_terminal():
-    """Updates the terminal by running git pull in the directory.
-    Runs poetry install if needed.
-    """
-
-    if not WITH_GIT or obbff.LOGGING_COMMIT_HASH != "REPLACE_ME":
-        console.print("This feature is not available : Git dependencies not installed.")
-        return 0
-
-    poetry_hash = sha256sum("poetry.lock")
-
-    completed_process = subprocess.run("git pull", shell=True, check=False)  # nosec
-    if completed_process.returncode != 0:
-        return completed_process.returncode
-
-    new_poetry_hash = sha256sum("poetry.lock")
-
-    if poetry_hash == new_poetry_hash:
-        console.print("Great, seems like poetry hasn't been updated!")
-        return completed_process.returncode
-    console.print(
-        "Seems like more modules have been added, grab a coke, this may take a while."
-    )
-
-    completed_process = subprocess.run(  # nosec
-        "poetry install", shell=True, check=False
-    )
-    if completed_process.returncode != 0:
-        return completed_process.returncode
-
-    return 0
-
-
 def open_openbb_documentation(
     path, url="https://openbb-finance.github.io/OpenBBTerminal/terminal/", command=None
 ):
