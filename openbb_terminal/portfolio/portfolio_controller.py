@@ -119,6 +119,7 @@ class PortfolioController(BaseController):
         self.portfolio_name = ""
         self.benchmark_name = ""
         self.original_benchmark_name = ""
+        self.risk_free_rate = 0
         self.portlist: List[str] = os.listdir(self.DEFAULT_HOLDINGS_PATH)
         self.portfolio = None
 
@@ -188,7 +189,7 @@ class PortfolioController(BaseController):
     load             load data into the portfolio[/cmds]
 
 [param]Loaded orderbook:[/param] {self.portfolio_name or ""}
-[param]Risk Free Rate:  [/param] {self.portfolio.risk_free_rate:.2%}
+[param]Risk Free Rate:  [/param] {self.risk_free_rate:.0%}
 {("[unvl]", "[cmds]")[port]}
     show             show existing transactions{("[/unvl]", "[/cmds]")[port]}
 {("[unvl]", "[cmds]")[port]}
