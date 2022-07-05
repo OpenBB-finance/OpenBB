@@ -36,10 +36,6 @@ class TestMainHelper(unittest.TestCase):
         value = terminal_helper.update_terminal()
         self.assertEqual(value, 2)
 
-    @check_print(assert_in="Thanks for using OpenBB Terminal.")
-    def test_about_us(self):
-        terminal_helper.about_us()
-
     @check_print(assert_in="Welcome to OpenBB Terminal")
     def test_welcome_message(self):
         terminal_helper.welcome_message()
