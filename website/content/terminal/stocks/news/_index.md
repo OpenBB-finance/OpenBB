@@ -30,7 +30,7 @@ Example:
 ├─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
 │ What comes to mind when you hear “open source?” Is it a community? Better-quality software? A technology advantage  │
 │ that helps companies scale quickly? If so, congratulations. You understand the value developing with open-source    │
-│ software can bring to a busines…                                                                                    │
+│ software can bring to a business…                                                                                    │
 ├─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
 │ https://siliconangle.com/2022/07/04/three-ways-patch-thinking-open-source-software-security/                        │
 └─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
