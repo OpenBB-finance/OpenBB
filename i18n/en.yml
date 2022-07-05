@@ -9,7 +9,7 @@ en:
   keys: set API keys and check their validity
   _configure_: Configure your own terminal
   _main_menu_: Main menu
-  keys/_keys_: Set API keys. Type <API> -h for usage details
+  keys/_keys_: This menu allows you to set your own API keys. Type 'about' for more information
   defined, test passed: defined, test passed
   defined, test failed: defined, test failed
   not defined: not defined

@@ -67,22 +67,31 @@ def sha256sum(filename):
 
 
 def open_openbb_documentation(
-    path, url="https://openbb-finance.github.io/OpenBBTerminal/terminal/", command=None
+    path, url="https://openbb-finance.github.io/OpenBBTerminal/", command=None
 ):
     """Opens the documentation page based on your current location within the terminal. Make exceptions for menus
     that are considered 'common' by adjusting the path accordingly."""
     if "ta" in path:
-        path = "/common/ta/"
+        path = "terminal/common/ta/"
     if "ba" in path:
-        path = "/common/ba/"
+        path = "terminal/common/ba/"
     elif "qa" in path:
-        path = "/common/qa/"
+        path = "terminal/common/qa/"
     elif "pred" in path:
-        path = "/common/pred/"
+        path = "terminal/common/pred/"
+    elif "keys" in path:
+        path = "#accessing-other-sources-of-data-via-api-keys"
+        command = ""
+    else:
+        path = f"terminal/{path}"
 
     if command:
         if command in ["ta", "ba", "qa", "pred"]:
-            path = "/common/"
+            path = "terminal/common/"
+        elif "keys" in command:
+            path = "#accessing-other-sources-of-data-via-api-keys"
+            command = ""
+
         path += command
 
     webbrowser.open(f"{url}{path}")
