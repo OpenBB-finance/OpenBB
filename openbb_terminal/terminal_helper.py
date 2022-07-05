@@ -106,22 +106,16 @@ def open_openbb_documentation(
     that are considered 'common' by adjusting the path accordingly."""
     if "ta" in path:
         path = "/common/ta/"
-    elif "ta" in command:
-        path = "/common/"
     if "ba" in path:
         path = "/common/ba/"
-    elif "ba" in command:
-        path = "/common/"
     elif "qa" in path:
         path = "/common/qa/"
-    elif "qa" in command:
-        path = "/common/"
     elif "pred" in path:
         path = "/common/pred/"
-    elif "pred" in command:
-        path = "/common/"
 
     if command:
+        if command in ["ta", "ba", "qa", "pred"]:
+            path = "/common/"
         path += command
 
     webbrowser.open(f"{url}{path}")
