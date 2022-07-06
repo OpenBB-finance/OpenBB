@@ -1,6 +1,6 @@
 import logging
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import List, Optional
 
 import matplotlib
@@ -34,8 +34,8 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 @check_api_key(["API_GLASSNODE_KEY"])
 def display_btc_rainbow(
-    since: int,
-    until: int,
+    since: int = int(datetime(2010, 1, 1).timestamp()),
+    until: int = int(datetime.now().timestamp()),
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -49,10 +49,12 @@ def display_btc_rainbow(
         Initial date timestamp. Default is initial BTC timestamp: 1_325_376_000
     until : int
         Final date timestamp. Default is current BTC timestamp
+    export : str
+        Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    df_data = get_close_price("BTC", "24h", since, until)
+    df_data = get_close_price("BTC", since, until)
 
     if df_data.empty:
         return
@@ -144,9 +146,9 @@ def display_btc_rainbow(
 @check_api_key(["API_GLASSNODE_KEY"])
 def display_active_addresses(
     asset: str,
-    since: int,
-    until: int,
-    interval: str,
+    since: int = 1577836800,
+    until: int = 1609459200,
+    interval: str = "24h",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
@@ -162,7 +164,7 @@ def display_active_addresses(
     until : int
         End date timestamp (e.g., 1_614_556_800)
     interval : str
-        Interval frequency (e.g., 24h)
+        Interval frequency (possible values are: 24h, 1w, 1month)
     export : str
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
@@ -205,9 +207,8 @@ def display_active_addresses(
 @check_api_key(["API_GLASSNODE_KEY"])
 def display_non_zero_addresses(
     asset: str,
-    since: int,
-    until: int,
-    interval: str,
+    since: int = 1577836800,
+    until: int = 1609459200,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
@@ -222,15 +223,13 @@ def display_non_zero_addresses(
         Initial date timestamp (e.g., 1_577_836_800)
     until : int
         End date timestamp (e.g., 1_609_459_200)
-    interval : str
-        Interval frequency (e.g., 24h)
     export : str
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
 
-    df_addresses = get_non_zero_addresses(asset, interval, since, until)
+    df_addresses = get_non_zero_addresses(asset, since, until)
 
     if df_addresses.empty:
         return
@@ -266,10 +265,9 @@ def display_non_zero_addresses(
 @check_api_key(["API_GLASSNODE_KEY"])
 def display_exchange_net_position_change(
     asset: str,
-    exchange: str,
-    since: int,
-    until: int,
-    interval: str,
+    exchange: str = "binance",
+    since: int = 1577836800,
+    until: int = 1609459200,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
@@ -281,22 +279,20 @@ def display_exchange_net_position_change(
     asset : str
         Asset to search active addresses (e.g., BTC)
     exchange : str
-        Exchange to check net position change (e.g., binance)
+        Exchange to check net position change (possible values are: aggregated, binance,
+        bittrex, coinex, gate.io, gemini, huobi, kucoin, poloniex, bibox, bigone, bitfinex,
+        hitbtc, kraken, okex, bithumb, zb.com, cobinhood, bitmex, bitstamp, coinbase, coincheck, luno)
     since : int
         Initial date timestamp (e.g., 1_614_556_800)
     until : int
         End date timestamp (e.g., 1_614_556_800)
-    interval : str
-        Interval frequency (e.g., 24h)
     export : str
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
 
-    df_addresses = get_exchange_net_position_change(
-        asset, exchange, interval, since, until
-    )
+    df_addresses = get_exchange_net_position_change(asset, exchange, since, until)
 
     if df_addresses.empty:
         return
@@ -345,11 +341,10 @@ def display_exchange_net_position_change(
 @check_api_key(["API_GLASSNODE_KEY"])
 def display_exchange_balances(
     asset: str,
-    exchange: str,
-    since: int,
-    until: int,
-    interval: str,
-    percentage: bool,
+    exchange: str = "binance",
+    since: int = 1577836800,
+    until: int = 1609459200,
+    percentage: bool = False,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
@@ -361,13 +356,13 @@ def display_exchange_balances(
     asset : str
         Asset to search active addresses (e.g., BTC)
     exchange : str
-        Exchange to check net position change (e.g., binance)
+        Exchange to check net position change (possible values are: aggregated, binance, bittrex,
+        coinex, gate.io, gemini, huobi, kucoin, poloniex, bibox, bigone, bitfinex, hitbtc, kraken,
+        okex, bithumb, zb.com, cobinhood, bitmex, bitstamp, coinbase, coincheck, luno)
     since : int
         Initial date timestamp (e.g., 1_614_556_800)
     until : int
         End date timestamp (e.g., 1_614_556_800)
-    interval : str
-        Interval frequency (e.g., 24h)
     percentage : bool
         Show percentage instead of stacked value.
     export : str
@@ -376,7 +371,7 @@ def display_exchange_balances(
         External axes (2 axes are expected in the list), by default None
     """
 
-    df_balance = get_exchange_balances(asset, exchange, interval, since, until)
+    df_balance = get_exchange_balances(asset, exchange, since, until)
 
     if df_balance.empty:
         return
@@ -423,9 +418,9 @@ def display_exchange_balances(
 @check_api_key(["API_GLASSNODE_KEY"])
 def display_hashrate(
     asset: str,
-    since: int,
-    until: int,
-    interval: str,
+    since: int = int((datetime.now() - timedelta(days=365)).timestamp()),
+    until: int = int(datetime.now().timestamp()),
+    interval: str = "24h",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
@@ -441,7 +436,7 @@ def display_hashrate(
     until : int
         End date timestamp (e.g., 1_614_556_800)
     interval : str
-        Interval frequency (e.g., 24h)
+        Interval frequency (possible values are: 24, 1w, 1month)
     export : str
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
