@@ -24,9 +24,9 @@ def display_exchange(symbol: str):
 
     if len(exchange) == 0 or exchange.empty:
         console.print(
-            "\n[red]"
+            "[red]"
             + "No exchange data loaded.\n"
-            + "Make sure you picked proper exchange symbol."
+            + "Make sure you picked a valid exchange symbol."
             + "[/red]\n"
         )
         return
@@ -50,7 +50,7 @@ def display_open():
     exchanges = bursa_model.get_open()
 
     if exchanges.empty:
-        console.print("\n[red]" + "No exchange data loaded.\n" + "[/red]\n")
+        console.print("No exchange open.\n")
         return
 
     print_rich_table(
@@ -70,7 +70,7 @@ def display_closed():
     exchanges = bursa_model.get_closed()
 
     if exchanges.empty:
-        console.print("\n[red]" + "No exchange data loaded.\n" + "[/red]\n")
+        console.print("[red]" + "No exchange data loaded.\n" + "[/red]\n")
         return
 
     print_rich_table(
@@ -90,7 +90,7 @@ def display_all():
     exchanges = bursa_model.get_all()
 
     if exchanges.empty:
-        console.print("\n[red]" + "No exchange data loaded.\n" + "[/red]\n")
+        console.print("[red]" + "No exchange data loaded.\n" + "[/red]\n")
         return
 
     print_rich_table(
