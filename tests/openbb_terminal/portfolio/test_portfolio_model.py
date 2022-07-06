@@ -2,18 +2,26 @@
 
 # IMPORTATION THIRDPARTY
 import pandas as pd
+from pathlib import Path
 
 # IMPORTATION INTERNAL
 from openbb_terminal.portfolio import portfolio_model
 
-portfolio_trades = pd.read_csv("example_portfolio.csv")
 
-portfolio_returns = pd.read_csv("portfolio_returns.csv")
+def build_csv_path(csv_name: str):
+    folder_path = Path(__file__).parent
+
+    return folder_path /"csv"/"test_portfolio_model"/csv_name
+
+
+portfolio_trades = pd.read_csv(build_csv_path("example_portfolio.csv"))
+
+portfolio_returns = pd.read_csv(build_csv_path("portfolio_returns.csv"))
 
 portfolio_returns["Date"] = pd.to_datetime(portfolio_returns["Date"])
 portfolio_returns = portfolio_returns.set_index("Date")
 
-benchmark_returns = pd.read_csv("benchmark_returns.csv")
+benchmark_returns = pd.read_csv(build_csv_path("benchmark_returns.csv"))
 
 benchmark_returns["Date"] = pd.to_datetime(benchmark_returns["Date"])
 benchmark_returns = benchmark_returns.set_index("Date")

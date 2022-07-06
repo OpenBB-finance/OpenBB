@@ -1,21 +1,31 @@
 ,Tracking Error
-mtd,"TotalHoldings   NaN
+mtd,"Adj Close       NaN
+TotalHoldings   NaN
 dtype: float64"
-qtd,"TotalHoldings   NaN
+qtd,"Adj Close       NaN
+TotalHoldings   NaN
 dtype: float64"
-ytd,"TotalHoldings    0.02
+ytd,"Adj Close       NaN
+TotalHoldings   NaN
 dtype: float64"
-3m,"TotalHoldings    0.022
+3m,"Adj Close       NaN
+TotalHoldings   NaN
 dtype: float64"
-6m,"TotalHoldings    0.02
+6m,"Adj Close       NaN
+TotalHoldings   NaN
 dtype: float64"
-1y,"TotalHoldings    0.015
+1y,"Adj Close       NaN
+TotalHoldings   NaN
 dtype: float64"
-3y,"TotalHoldings    0.014
+3y,"Adj Close       NaN
+TotalHoldings   NaN
 dtype: float64"
-5y,"TotalHoldings    0.012
+5y,"Adj Close       NaN
+TotalHoldings   NaN
 dtype: float64"
-10y,"TotalHoldings    0.012
+10y,"Adj Close       NaN
+TotalHoldings   NaN
 dtype: float64"
-all,"TotalHoldings    0.012
+all,"Adj Close       NaN
+TotalHoldings   NaN
 dtype: float64"
