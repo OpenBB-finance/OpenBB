@@ -120,8 +120,11 @@ def open_openbb_documentation(
     if command:
         if command in ["ta", "ba", "qa", "pred"]:
             path = "terminal/common/"
-        elif "keys" in command:
+        elif "keys" == command:
             path = "#accessing-other-sources-of-data-via-api-keys"
+            command = ""
+        elif "exe" == command:
+            path = "/terminal/scripts/"
             command = ""
 
         path += command
