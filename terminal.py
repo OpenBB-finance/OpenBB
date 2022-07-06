@@ -135,7 +135,7 @@ class TerminalController(BaseController):
             self.update_success = not update_terminal()
         else:
             console.print(
-                "Could not automatically update. Find the most recent release of the OpenBB Terminal here: "
+                "Find the most recent release of the OpenBB Terminal here: "
                 "https://openbb.co/products/terminal#get-started\n"
             )
 
