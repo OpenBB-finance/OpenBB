@@ -224,7 +224,7 @@ class PortfolioModel:
     generate_portfolio_data: Generates portfolio data from orderbook
         load_portfolio_historical_prices: Loads historical adj close prices for tickers in list of trades
         populate_historical_trade_data: Create a new dataframe to store historical prices by ticker
-        calculate_holdings: Calculate holdings from historical data
+        calculate_end_value: Calculate value from historical data
 
     calculate_reserves:
 
@@ -246,7 +246,7 @@ class PortfolioModel:
         self.static_data = pd.DataFrame()
         self.historical_trade_data = pd.DataFrame()
         self.returns = pd.DataFrame()
-        self.itemized_holdings = pd.DataFrame()
+        self.itemized_value = pd.DataFrame()
         self.portfolio_trades = pd.DataFrame()
         self.portfolio_value = None
 
@@ -299,7 +299,6 @@ class PortfolioModel:
 
         # descrbibe outputs
 
-
         try:
             # Convert Date to datetime
             self.__orderbook["Date"] = pd.to_datetime(self.__orderbook["Date"])
@@ -328,6 +327,7 @@ class PortfolioModel:
             # Determining the investment/divestment value
             self.__orderbook["Investment"] = (
                 self.__orderbook["Quantity"] * self.__orderbook["Price"]
+                - self.__orderbook["Fees"]
             )
 
             # Reformat crypto tickers to yfinance format (e.g. BTC -> BTC-USD)
@@ -444,17 +444,31 @@ class PortfolioModel:
         """Generates portfolio data from orderbook"""
         self.load_portfolio_historical_prices()
         self.populate_historical_trade_data()
-        self.calculate_holdings()
+        self.calculate_end_value()
 
         # Determine the returns, replace inf values with NaN and then drop any missing values
-        self.returns = self.historical_trade_data["Holdings"]["Total"].pct_change()
+        for _, data in self.tickers.items():
+            self.historical_trade_data[
+                pd.MultiIndex.from_product([["Returns"], data])
+            ] = (
+                self.historical_trade_data["End Value"][data]
+                / self.historical_trade_data["Initial Value"][data]
+                - 1
+            )
+
+        self.historical_trade_data.loc[
+            :, ("Returns", "Total")
+        ] = self.historical_trade_data["End Value"]["Total"]/self.historical_trade_data["Initial Value"]["Total"] - 1
+
+        self.returns = self.historical_trade_data["Returns"]["Total"]
         self.returns.replace([np.inf, -np.inf], np.nan, inplace=True)
         self.returns = self.returns.dropna()
 
         # Determine invested amount, relative and absolute return based on last close
         last_price = self.historical_trade_data["Close"].iloc[-1]
 
-        # self.portfolio_trades = pd.DataFrame(self.__orderbook["Date"])
+        self.portfolio_returns = pd.DataFrame(self.__orderbook["Date"])
+
         self.portfolio_trades = self.__orderbook.copy()
         self.portfolio_trades[
             [
@@ -551,47 +565,58 @@ class PortfolioModel:
         # Accumulate quantity held by trade date
         trade_data["Quantity"] = trade_data["Quantity"].cumsum()
 
+        trade_data["Investment"] = trade_data["Investment"].cumsum()
+
+        trade_data.loc[:, ("Investment", "Total")] = trade_data["Investment"][
+            self.tickers_except_cash
+        ].sum(axis=1)
+
         self.historical_trade_data = trade_data
 
-    def calculate_holdings(self):
-        """Calculate holdings from historical data"""
+    def calculate_end_value(self):
+        """Calculate value from historical data"""
         trade_data = self.historical_trade_data
 
-        # For each type [STOCK, ETF, etc] calculate holdings value by trade date
+        # For each type [STOCK, ETF, etc] calculate value value by trade date
         # and add it to historical_trade_data
+
+        # End Value
         for ticker_type, data in self.tickers.items():
-            trade_data[
-                pd.MultiIndex.from_product([["Holdings"], data])
-            ] = (
-                trade_data["Quantity"][data]
-                * trade_data["Close"][data]
+            trade_data[pd.MultiIndex.from_product([["End Value"], data])] = (
+                trade_data["Quantity"][data] * trade_data["Close"][data]
             )
 
-        # Find amount of cash held in account. If CASH exist within the Orderbook,
-        # the cash hold is defined as deposited cash - stocks bought + stocks sold
-        # Otherwise, the cash hold will equal the invested amount.
-        if "CASH" in self.tickers:
-            trade_data.loc[:, ("Holdings", "CASH")] = (
-                trade_data["Investment"]["CASH"]
-                - trade_data["Investment"][self.tickers_except_cash].sum(axis=1)
-                - trade_data["Fees"].sum(axis=1)
-                - trade_data["Premium"].sum(axis=1)
-            ).cumsum()
-        else:
-            trade_data.loc[:, ("Holdings", "CASH")] = (
-                trade_data["Investment"][self.tickers_except_cash].sum(axis=1)
-            ).cumsum()
+        trade_data.loc[:, ("End Value", "Total")] = trade_data["End Value"][
+            self.tickers_except_cash
+        ].sum(axis=1)
 
-        trade_data.loc[:, ("Holdings", "Total")] = trade_data["Holdings"][
-            "CASH"
-        ] + trade_data["Holdings"][self.tickers_except_cash].sum(axis=1)
-
-        self.portfolio_value = trade_data["Holdings"]["Total"]
+        self.portfolio_value = trade_data["End Value"]["Total"]
 
         for ticker_type, data in self.tickers.items():
-            self.itemized_holdings[ticker_type] = trade_data["Holdings"][
-                data
-            ].sum(axis=1)
+            self.itemized_value[ticker_type] = trade_data["End Value"][data].sum(axis=1)
+
+        # Initial Value = Cumulative Investment - (Previous End Value - Previous Initial Value)
+        trade_data[
+            pd.MultiIndex.from_product([["Initial Value"], self.tickers_except_cash])
+        ] = 0
+
+        for i, date in enumerate(trade_data.index):
+            if i == 0:
+                for t in self.tickers_except_cash:
+                    trade_data.at[date, ("Initial Value", t)] = trade_data.iloc[i][
+                        "Investment"
+                    ][t]
+            else:
+                for t in self.tickers_except_cash:
+                    trade_data.at[date, ("Initial Value", t)] = (
+                        + trade_data.iloc[i - 1]["End Value"][t]
+                        + trade_data.iloc[i]["Investment"][t]
+                        - trade_data.iloc[i - 1]["Investment"][t]
+                    )
+
+        trade_data.loc[:, ("Initial Value", "Total")] = trade_data["Initial Value"][
+            self.tickers_except_cash
+        ].sum(axis=1)
 
         self.historical_trade_data = trade_data
 
@@ -774,14 +799,8 @@ class PortfolioModel:
             )
             vals.append(
                 [
-                    round(
-                        100 * port_rets.std() * (len(port_rets) ** 0.5),
-                        3,
-                    ),
-                    round(
-                        100 * bench_rets.std() * (len(bench_rets) ** 0.5),
-                        3,
-                    ),
+                    round(100 * port_rets.std() * (len(port_rets) ** 0.5), 3,),
+                    round(100 * bench_rets.std() * (len(bench_rets) ** 0.5), 3,),
                 ]
             )
         return pd.DataFrame(

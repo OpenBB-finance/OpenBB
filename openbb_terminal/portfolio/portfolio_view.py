@@ -857,17 +857,8 @@ def display_holdings_value(
     external_axes: plt.Axes
         Optional axes to display plot on
     """
-    # all_holdings = pd.concat(
-    #     [
-    #         portfolio.portfolio["StockHoldings"],
-    #         portfolio.portfolio["ETFHoldings"],
-    #         portfolio.portfolio["CryptoHoldings"],
-    #     ],
-    #     axis=1,
-    # )
-    # all_holdings = all_holdings.drop(columns=["temp"])
 
-    all_holdings = portfolio.historical_trade_data["Holdings"][
+    all_holdings = portfolio.historical_trade_data["End Value"][
         portfolio.tickers_except_cash
     ]
 
@@ -946,17 +937,8 @@ def display_holdings_percentage(
     external_axes: plt.Axes
         Optional axes to display plot on
     """
-    # all_holdings = pd.concat(
-    #     [
-    #         portfolio.portfolio["StockHoldings"],
-    #         portfolio.portfolio["ETFHoldings"],
-    #         portfolio.portfolio["CryptoHoldings"],
-    #     ],
-    #     axis=1,
-    # )
-    # all_holdings = all_holdings.drop(columns=["temp"])
 
-    all_holdings = portfolio.historical_trade_data["Holdings"][
+    all_holdings = portfolio.historical_trade_data["End Value"][
         portfolio.tickers_except_cash
     ]
 
