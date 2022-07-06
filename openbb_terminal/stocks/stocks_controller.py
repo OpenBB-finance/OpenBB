@@ -355,13 +355,14 @@ class StocksController(StockBaseController):
                     self.stock,
                 )
 
-                if ns_parser.sort:
+                if ns_parser.sort and not self.stock.empty:
                     sort = (
                         ns_parser.sort if ns_parser.sort != "AdjClose" else "Adj Close"
                     )
                     if sort not in self.stock.columns:
                         col_names_no_spaces = [
-                            col.replace(" ", "") for col in self.stock.columns
+                            "'" + col.replace(" ", "") + "'"
+                            for col in self.stock.columns
                         ]
                         console.print(
                             f"candle: error: argument --sort: invalid choice: '{sort}' for the source chosen "
