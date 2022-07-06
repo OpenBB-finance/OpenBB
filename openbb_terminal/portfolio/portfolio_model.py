@@ -442,9 +442,11 @@ class PortfolioModel:
                 - 1
             )
 
-        self.historical_trade_data.loc[
-            :, ("Returns", "Total")
-        ] = self.historical_trade_data["End Value"]["Total"]/self.historical_trade_data["Initial Value"]["Total"] - 1
+        self.historical_trade_data.loc[:, ("Returns", "Total")] = (
+            self.historical_trade_data["End Value"]["Total"]
+            / self.historical_trade_data["Initial Value"]["Total"]
+            - 1
+        )
 
         self.returns = self.historical_trade_data["Returns"]["Total"]
         self.returns.replace([np.inf, -np.inf], np.nan, inplace=True)
@@ -468,9 +470,7 @@ class PortfolioModel:
 
         for index, trade in self.__orderbook.iterrows():
             self.portfolio_trades["Close"][index] = last_price[trade["Ticker"]]
-            self.portfolio_trades["Portfolio Investment"][index] = trade[
-                "Investment"
-            ]
+            self.portfolio_trades["Portfolio Investment"][index] = trade["Investment"]
             self.portfolio_trades["Portfolio Value"][index] = (
                 self.portfolio_trades["Close"][index] * trade["Quantity"]
             )
@@ -579,7 +579,6 @@ class PortfolioModel:
         #     pd.MultiIndex.from_product([["Initial Value"], self.tickers_list])
         # ] = 0
 
-
         # Initial Value = Cumulative Investment - (Previous End Value - Previous Initial Value)
         trade_data[
             pd.MultiIndex.from_product([["Initial Value"], self.tickers_list])
@@ -594,7 +593,7 @@ class PortfolioModel:
             else:
                 for t in self.tickers_list:
                     trade_data.at[date, ("Initial Value", t)] = (
-                        + trade_data.iloc[i - 1]["End Value"][t]
+                        +trade_data.iloc[i - 1]["End Value"][t]
                         + trade_data.iloc[i]["Investment"][t]
                         - trade_data.iloc[i - 1]["Investment"][t]
                     )
@@ -784,8 +783,14 @@ class PortfolioModel:
             )
             vals.append(
                 [
-                    round(100 * port_rets.std() * (len(port_rets) ** 0.5), 3,),
-                    round(100 * bench_rets.std() * (len(bench_rets) ** 0.5), 3,),
+                    round(
+                        100 * port_rets.std() * (len(port_rets) ** 0.5),
+                        3,
+                    ),
+                    round(
+                        100 * bench_rets.std() * (len(bench_rets) ** 0.5),
+                        3,
+                    ),
                 ]
             )
         return pd.DataFrame(

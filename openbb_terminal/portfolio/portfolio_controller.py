@@ -309,7 +309,9 @@ class PortfolioController(BaseController):
             else:
                 file_location = ns_parser.file  # type: ignore
 
-            orderbook = portfolio_model.PortfolioModel.read_orderbook(str(file_location))
+            orderbook = portfolio_model.PortfolioModel.read_orderbook(
+                str(file_location)
+            )
             self.portfolio = portfolio_model.PortfolioModel(orderbook)
 
             if ns_parser.name:

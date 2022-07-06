@@ -75,7 +75,7 @@ def display_orderbook(portfolio=None, show_index=False):
     show_index: bool
         Defaults to False.
     """
-    
+
     if portfolio is None:
         logger.warning("No orderbook loaded")
         console.print("[red]No orderbook loaded.[/red]\n")
@@ -858,9 +858,7 @@ def display_holdings_value(
         Optional axes to display plot on
     """
 
-    all_holdings = portfolio.historical_trade_data["End Value"][
-        portfolio.tickers_list
-    ]
+    all_holdings = portfolio.historical_trade_data["End Value"][portfolio.tickers_list]
 
     if raw:
         all_holdings["Total Value"] = all_holdings.sum(axis=1)
@@ -938,9 +936,7 @@ def display_holdings_percentage(
         Optional axes to display plot on
     """
 
-    all_holdings = portfolio.historical_trade_data["End Value"][
-        portfolio.tickers_list
-    ]
+    all_holdings = portfolio.historical_trade_data["End Value"][portfolio.tickers_list]
 
     all_holdings = all_holdings.divide(all_holdings.sum(axis=1), axis=0) * 100
 
