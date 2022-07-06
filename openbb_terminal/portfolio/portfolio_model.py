@@ -240,7 +240,7 @@ class PortfolioModel:
         """Initialize Portfolio class"""
 
         # Portfolio
-        self.tickers_except_cash = None
+        self.tickers_list = None
         self.tickers: Dict[Any, Any] = {}
         self.inception_date = None
         self.static_data = pd.DataFrame()
@@ -350,20 +350,7 @@ class PortfolioModel:
                 )
 
             # Create list with tickers except cash
-            self.tickers_except_cash = list(set(self.__orderbook["Ticker"]))
-            if "CASH" in self.tickers_except_cash:
-                self.tickers_except_cash.remove("CASH")
-
-            # Warn user if no cash deposit in account
-            if "CASH" not in self.tickers:
-                logger.warning(
-                    "No initial cash deposit. Calculations may be off as this assumes trading from a "
-                    "funded account"
-                )
-                console.print(
-                    "[red]No initial cash deposit. Calculations may be off as this assumes trading from a "
-                    "funded account[/red]."
-                )
+            self.tickers_list = list(set(self.__orderbook["Ticker"]))
 
             # Save orderbook inception date
             self.inception_date = self.__orderbook["Date"][0]
@@ -400,24 +387,23 @@ class PortfolioModel:
         self.benchmark_trades["Last price"] = self.benchmark_historical_prices[-1]
         self.benchmark_trades[["Benchmark Quantity", "Trade price"]] = float(0)
 
-        # Iterate over orderbook to replicate trades on benchmark (skip CASH)
+        # Iterate over orderbook to replicate trades on benchmark
         for index, trade in self.__orderbook.iterrows():
-            if trade["Type"] != "CASH":
-                # Select date to search (if not in historical prices, get closest value)
-                if trade["Date"] not in self.benchmark_historical_prices.index:
-                    date = self.benchmark_historical_prices.index.searchsorted(
-                        trade["Date"]
-                    )
-                else:
-                    date = trade["Date"]
-
-                # Populate benchmark orderbook trades
-                self.benchmark_trades["Trade price"][
-                    index
-                ] = self.benchmark_historical_prices[date]
-                self.benchmark_trades["Benchmark Quantity"][index] = (
-                    trade["Investment"] / self.benchmark_trades["Trade price"][index]
+            # Select date to search (if not in historical prices, get closest value)
+            if trade["Date"] not in self.benchmark_historical_prices.index:
+                date = self.benchmark_historical_prices.index.searchsorted(
+                    trade["Date"]
                 )
+            else:
+                date = trade["Date"]
+
+            # Populate benchmark orderbook trades
+            self.benchmark_trades["Trade price"][
+                index
+            ] = self.benchmark_historical_prices[date]
+            self.benchmark_trades["Benchmark Quantity"][index] = (
+                trade["Investment"] / self.benchmark_trades["Trade price"][index]
+            )
 
         self.benchmark_trades["Benchmark Investment"] = (
             self.benchmark_trades["Trade price"]
@@ -481,22 +467,21 @@ class PortfolioModel:
         ] = float(0)
 
         for index, trade in self.__orderbook.iterrows():
-            if trade["Type"] != "CASH":
-                self.portfolio_trades["Close"][index] = last_price[trade["Ticker"]]
-                self.portfolio_trades["Portfolio Investment"][index] = trade[
-                    "Investment"
-                ]
-                self.portfolio_trades["Portfolio Value"][index] = (
-                    self.portfolio_trades["Close"][index] * trade["Quantity"]
-                )
-                self.portfolio_trades["% Portfolio Return"][index] = (
-                    self.portfolio_trades["Portfolio Value"][index]
-                    / self.portfolio_trades["Portfolio Investment"][index]
-                ) - 1
-                self.portfolio_trades["Abs Portfolio Return"].loc[index] = (
-                    self.portfolio_trades["Portfolio Value"][index]
-                    - self.portfolio_trades["Portfolio Investment"][index]
-                )
+            self.portfolio_trades["Close"][index] = last_price[trade["Ticker"]]
+            self.portfolio_trades["Portfolio Investment"][index] = trade[
+                "Investment"
+            ]
+            self.portfolio_trades["Portfolio Value"][index] = (
+                self.portfolio_trades["Close"][index] * trade["Quantity"]
+            )
+            self.portfolio_trades["% Portfolio Return"][index] = (
+                self.portfolio_trades["Portfolio Value"][index]
+                / self.portfolio_trades["Portfolio Investment"][index]
+            ) - 1
+            self.portfolio_trades["Abs Portfolio Return"].loc[index] = (
+                self.portfolio_trades["Portfolio Value"][index]
+                - self.portfolio_trades["Portfolio Investment"][index]
+            )
 
     def load_portfolio_historical_prices(self, use_close: bool = False):
         """Loads historical adj close prices for tickers in list of trades"""
@@ -517,11 +502,6 @@ class PortfolioModel:
                 self.portfolio_historical_prices = pd.concat(
                     [self.portfolio_historical_prices, price_data], axis=1
                 )
-
-            elif ticker_type == "CASH":
-                # Set CASH price to 1
-                self.portfolio_historical_prices["CASH"] = 1
-
             else:
                 console.print("Type not supported in the orderbook.")
 
@@ -568,7 +548,7 @@ class PortfolioModel:
         trade_data["Investment"] = trade_data["Investment"].cumsum()
 
         trade_data.loc[:, ("Investment", "Total")] = trade_data["Investment"][
-            self.tickers_except_cash
+            self.tickers_list
         ].sum(axis=1)
 
         self.historical_trade_data = trade_data
@@ -587,7 +567,7 @@ class PortfolioModel:
             )
 
         trade_data.loc[:, ("End Value", "Total")] = trade_data["End Value"][
-            self.tickers_except_cash
+            self.tickers_list
         ].sum(axis=1)
 
         self.portfolio_value = trade_data["End Value"]["Total"]
@@ -595,19 +575,24 @@ class PortfolioModel:
         for ticker_type, data in self.tickers.items():
             self.itemized_value[ticker_type] = trade_data["End Value"][data].sum(axis=1)
 
+        # trade_data[
+        #     pd.MultiIndex.from_product([["Initial Value"], self.tickers_list])
+        # ] = 0
+
+
         # Initial Value = Cumulative Investment - (Previous End Value - Previous Initial Value)
         trade_data[
-            pd.MultiIndex.from_product([["Initial Value"], self.tickers_except_cash])
+            pd.MultiIndex.from_product([["Initial Value"], self.tickers_list])
         ] = 0
 
         for i, date in enumerate(trade_data.index):
             if i == 0:
-                for t in self.tickers_except_cash:
+                for t in self.tickers_list:
                     trade_data.at[date, ("Initial Value", t)] = trade_data.iloc[i][
                         "Investment"
                     ][t]
             else:
-                for t in self.tickers_except_cash:
+                for t in self.tickers_list:
                     trade_data.at[date, ("Initial Value", t)] = (
                         + trade_data.iloc[i - 1]["End Value"][t]
                         + trade_data.iloc[i]["Investment"][t]
@@ -615,7 +600,7 @@ class PortfolioModel:
                     )
 
         trade_data.loc[:, ("Initial Value", "Total")] = trade_data["Initial Value"][
-            self.tickers_except_cash
+            self.tickers_list
         ].sum(axis=1)
 
         self.historical_trade_data = trade_data
