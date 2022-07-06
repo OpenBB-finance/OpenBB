@@ -109,9 +109,9 @@ en:
   stocks/candle: view a candle chart for a specific stock ticker
   stocks/CANDLE: Shows historic data for a stock
   stocks/CANDLE_plotly: Flag to show interactive plotly chart
-  stocks/CANDLE_sort: Choose a column to sort by
-  stocks/CANDLE_descending: Sort selected column descending
-  stocks/CANDLE_raw: Shows raw data instead of chart
+  stocks/CANDLE_sort: Choose a column to sort by. Only works when raw data is displayed.
+  stocks/CANDLE_descending: Sort selected column descending. Only works when raw data is displayed.
+  stocks/CANDLE_raw: Shows raw data instead of chart. If sort is set those are the top ones, otherwise we grab latest data to date
   stocks/CANDLE_trend: Flag to add high and low trends to candle
   stocks/CANDLE_mov_avg: Add moving average in number of days to plot and separate by a comma
   stocks/news: latest news of the company
