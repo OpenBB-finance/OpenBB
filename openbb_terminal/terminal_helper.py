@@ -127,6 +127,7 @@ def open_openbb_documentation(
         path += command
 
     webbrowser.open(f"{url}{path}")
+    console.print("")
 
 
 def hide_splashscreen():

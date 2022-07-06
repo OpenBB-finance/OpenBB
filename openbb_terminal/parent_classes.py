@@ -121,7 +121,9 @@ class BaseController(metaclass=ABCMeta):
         theme.applyMPLstyle()
 
         # Add in about options
-        self.ABOUT_CHOICES = {c: None for c in controller_choices}
+        self.ABOUT_CHOICES = {
+            c: None for c in self.CHOICES_COMMANDS + self.CHOICES_MENUS
+        }
 
         # Remove common choices from list of support commands
         self.support_commands = [
@@ -285,7 +287,10 @@ class BaseController(metaclass=ABCMeta):
         parser = argparse.ArgumentParser(
             add_help=False,
             prog="about",
-            description="Display the documentation of the menu or command.",
+            description="Display the documentation of the menu or command. "
+            f"E.g. 'about {self.CHOICES_COMMANDS[0]}' opens a guide about the command "
+            f"{self.CHOICES_COMMANDS[0]} and 'about {self.CHOICES_MENUS[0]}' opens a guide about the "
+            f"menu {self.CHOICES_MENUS[0]}.",
         )
 
         parser.add_argument(
@@ -294,8 +299,8 @@ class BaseController(metaclass=ABCMeta):
             type=str,
             dest="command",
             default=None,
-            help="Obtain documentation on the given command",
-            choices=self.controller_choices,
+            help="Obtain documentation on the given command or menu",
+            choices=self.CHOICES_COMMANDS + self.CHOICES_MENUS,
         )
 
         if other_args and "-" not in other_args[0][0]:
@@ -505,7 +510,11 @@ class BaseController(metaclass=ABCMeta):
 
         if ns_parser.help:
             txt_help = parser.format_help() + "\n"
-            txt_help += f"For more information and examples, use 'about {parser.prog}' to access the related guide.\n"
+            if parser.prog != "about":
+                txt_help += (
+                    f"For more information and examples, use 'about {parser.prog}' "
+                    f"to access the related guide.\n"
+                )
             console.print(f"[help]{txt_help}[/help]")
             return None
 
@@ -569,8 +578,8 @@ class BaseController(metaclass=ABCMeta):
                                     '<style bg="ansiblack" fg="ansiwhite">[e]</style> exit terminal    '
                                     '<style bg="ansiblack" fg="ansiwhite">[cmd -h]</style> '
                                     "see usage and available options    "
-                                    f'<style bg="ansiblack" fg="ansiwhite">[about &lt;cmd&gt;]</style> '
-                                    f"{self.path[-1].capitalize()} Documentation"
+                                    f'<style bg="ansiblack" fg="ansiwhite">[about (cmd/menu)]</style> '
+                                    f"{self.path[-1].capitalize()} (cmd/menu) Documentation"
                                 ),
                                 style=Style.from_dict(
                                     {
