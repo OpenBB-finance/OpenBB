@@ -193,6 +193,12 @@ and menus you can select. There are interactions in place between each menu. For
 the `stocks` menu, the terminal will remember your selection when you visit the `fa` or `options` menu.
 See <a href="terminal/stocks" target="_blank">Introduction to Stocks</a> for more information.
 
+___
+**Pro tip:** you can quickly jump between menus by using a forward slash (`/`). For example, if I want to access the options
+menu, I can type `/stocks/options` to instantly arrive at this menu. You can do this from any location within the
+OpenBB Terminal!
+___
+
 ### Explanation of Commands
 
 Commands, depicted in <b><span style="color:#00AAFF">Light Blue</span></b>, execute an action or task. For example,
@@ -203,26 +209,27 @@ the commands that you are able to use from any menu in the terminal (see <a href
 - `quit`, `q` or `..`: allows for navigation through the menu. E.g. if you type `stocks` press `ENTER` (⏎) and then
 use `q` and press `ENTER` (⏎) you return to where you started. Validate this by typing `?` and pressing `ENTER` (⏎).
 - `support`: allows you to submit bugs, questions and suggestions.
+- `about`: this opens the related guide, linking to this website. It also has the ability to open a guide to a specific
+command. For example, within the `stocks` menu, `about candle` opens <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/candle/" target="_blank">this guide</a>.
 
 Continuing with the example mentioned at `quit`, revisit the `stocks` menu and look at the commands. At the top you
 will see a command named <a href="terminal/stocks/load" target="_blank">load</a>. To understand what this command can do, you can use `load -h` followed by `ENTER` (⏎). The `-h` stands for `help` and every command will have this feature. This will return the following:
 
 ```
 2022 May 19, 05:27 (🦋) /stocks/ $ load -h
-usage: load [-t TICKER] [-s START] [-e END] [-i {1,5,15,30,60}] [--source {yf,av,iex,polygon}] [-p] [-f FILEPATH] [-m] [-w] [-r {ytd,1y,2y,5y,6m}] [-h]
+usage: load [-t TICKER] [-s START] [-e END] [-i {1,5,15,30,60}] [-p] [-f FILEPATH] [-m] [-w] [-r {ytd,1y,2y,5y,6m}] [-h] [--source {yf,av,iex,polygon}]
 
-Load stock ticker to perform analysis on. When the data source is yf (Yahoo Finance), an Indian ticker can be loaded by using '.NS'at the end, e.g. 'SBIN.NS'. See available market in https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html.
+Load stock ticker to perform analysis on. When the data source is Yahoo Finance, an Indian ticker can be loaded by
+using '.NS' at the end, e.g. 'SBIN.NS'. American tickers do not have this addition, e.g. AMZN.
 
 optional arguments:
   -t TICKER, --ticker TICKER
                         Stock ticker (default: None)
   -s START, --start START
-                        The starting date (format YYYY-MM-DD) of the stock (default: 2019-05-15)
-  -e END, --end END     The ending date (format YYYY-MM-DD) of the stock (default: 2022-05-19)
+                        The starting date (format YYYY-MM-DD) of the stock (default: 2019-07-01)
+  -e END, --end END     The ending date (format YYYY-MM-DD) of the stock (default: 2022-07-05)
   -i {1,5,15,30,60}, --interval {1,5,15,30,60}
                         Intraday stock minutes (default: 1440)
-  --source {yf,av,iex,polygon}
-                        Source of historical data. (default: yf)
   -p, --prepost         Pre/After market hours. Only works for 'yf' source, and intraday data (default: False)
   -f FILEPATH, --file FILEPATH
                         Path to load custom file. (default: None)
@@ -231,10 +238,15 @@ optional arguments:
   -r {ytd,1y,2y,5y,6m}, --iexrange {ytd,1y,2y,5y,6m}
                         Range for using the iexcloud api. Note that longer range requires more tokens in account (default: ytd)
   -h, --help            show this help message (default: False)
+  --source {yf,av,iex,polygon}
+                        Data source to select from (default: yf)
+
+For more information and examples, use 'about load' to access the related guide.
 ```
 
 This shows you all **arguments** the command has. These are additional options you can provide to the command. Each
-default value is also displayed which is used when you do not select this option. For example, if I would use the <a href="https://www.investopedia.com/ask/answers/12/what-is-a-stock-ticker.asp" target="_blank">stock ticker</a>
+default value is also displayed which is used when you do not select this option. For example, if I would use the
+<a href="https://www.investopedia.com/ask/answers/12/what-is-a-stock-ticker.asp" target="_blank">stock ticker</a>
 of Amazon (AMZN, which can also be found with `search amazon`), I can use `load AMZN` which will return the following:
 
 ```
@@ -257,8 +269,15 @@ Company:  Amazon.com, Inc.
 ```
 
 The default values you see within `load -h` have been inputted here. E.g. the starting period is 2019-05-15. I can
-decide to change these default values by calling the argument and inputting a different value. Let's change the starting
-and ending period of the data that is being loaded in by doing the following:
+decide to change these default values by calling the argument and inputting a different value.
+
+Whenever you wish to apply an optional argument, you use the related shortcode, e.g. `-s` or `--start`. Then, if there
+is an additional word behind the argument (in this case there is, which is `START`) it implies the argument expects you
+to define a value. Within the documentation you can read that the format must b `YYYY-MM-DD` implying that `2010-01-01`
+will be valid. If there is not an additional word behind it, it is enough to write down `load AMZN -p` (which refers to
+the prepost optional argument)
+
+Let's change the starting and ending period of the data that is being loaded in by doing the following:
 
 ```
 2022 May 19, 05:38 (🦋) /stocks/ $ load AMZN -s 2005-01-01 -e 2010-01-01
@@ -298,7 +317,7 @@ the scripts can be adapted, and documented, at any moment giving the user full c
 to do (and repeat). This can fundamental research, understanding market movements, finding hidden gems and even
 doing advanced statistical/econometric research.
 
-<b><span style="color:white">For a thorough guide on how to setup these files, please see the <a href="https://openbb-finance.github.io/OpenBBTerminal/scripts" target="_blank">Scripts & Routines guide</a>.</span></b>
+<b><span style="color:white">For a thorough guide on how to setup these files, please see the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/scripts/" target="_blank">Scripts & Routines guide</a>.</span></b>
 
 ## Accessing other sources of data via API keys
 
