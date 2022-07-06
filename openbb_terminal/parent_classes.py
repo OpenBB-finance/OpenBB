@@ -63,7 +63,6 @@ SUPPORT_TYPE = ["bug", "suggestion", "question", "generic"]
 
 
 class BaseController(metaclass=ABCMeta):
-
     CHOICES_COMMON = [
         "cls",
         "home",
@@ -284,15 +283,17 @@ class BaseController(metaclass=ABCMeta):
     @log_start_end(log=logger)
     def call_about(self, other_args: List[str]) -> None:
         """Process about command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            prog="about",
-            description="Display the documentation of the menu or command. "
-            f"E.g. 'about {self.CHOICES_COMMANDS[0]}' opens a guide about the command "
-            f"{self.CHOICES_COMMANDS[0]} and 'about {self.CHOICES_MENUS[0]}' opens a guide about the "
-            f"menu {self.CHOICES_MENUS[0]}.",
-        )
+        description = "Display the documentation of the menu or command."
+        if self.CHOICES_COMMANDS and self.CHOICES_MENUS:
+            description += (
+                f" E.g. 'about {self.CHOICES_COMMANDS[0]}' opens a guide about the command "
+                f"{self.CHOICES_COMMANDS[0]} and 'about {self.CHOICES_MENUS[0]}' opens a guide about the "
+                f"menu {self.CHOICES_MENUS[0]}."
+            )
 
+        parser = argparse.ArgumentParser(
+            add_help=False, prog="about", description=description
+        )
         parser.add_argument(
             "-c",
             "--command",
@@ -899,5 +900,6 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
                 )
             else:
                 console.print(
-                    f"\n[red]Could not find [bold]{ns_parser.coin}[/bold] in [bold]yfinance[/bold]. Make sure you search for symbol (e.g., btc) and not full name (e.g., bitcoin)[/red]\n"  # noqa: E501
+                    f"\n[red]Could not find [bold]{ns_parser.coin}[/bold] in [bold]yfinance[/bold]."
+                    f"Make sure you search for symbol (e.g., btc) and not full name (e.g., bitcoin)[/red]\n"  # noqa: E501
                 )
