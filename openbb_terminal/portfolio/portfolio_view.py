@@ -859,7 +859,7 @@ def display_holdings_value(
     """
 
     all_holdings = portfolio.historical_trade_data["End Value"][
-        portfolio.tickers_except_cash
+        portfolio.tickers_list
     ]
 
     if raw:
@@ -939,7 +939,7 @@ def display_holdings_percentage(
     """
 
     all_holdings = portfolio.historical_trade_data["End Value"][
-        portfolio.tickers_except_cash
+        portfolio.tickers_list
     ]
 
     all_holdings = all_holdings.divide(all_holdings.sum(axis=1), axis=0) * 100
