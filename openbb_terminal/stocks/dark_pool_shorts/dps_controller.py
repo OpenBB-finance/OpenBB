@@ -255,9 +255,9 @@ class DarkPoolShortsController(StockBaseController):
         parser.add_argument(
             "-s",
             "--sort",
-            help="Field for which to sort by, where 'sv': Short Vol. (1M), "
-            "'sv_pct': Short Vol. %%, 'nsv': Net Short Vol. (1M), "
-            "'nsv_dollar': Net Short Vol. ($100M), 'dpp': DP Position (1M), "
+            help="Field for which to sort by, where 'sv': Short Vol. [1M], "
+            "'sv_pct': Short Vol. %%, 'nsv': Net Short Vol. [1M], "
+            "'nsv_dollar': Net Short Vol. ($100M), 'dpp': DP Position [1M], "
             "'dpp_dollar': DP Position ($1B)",
             choices=["sv", "sv_pct", "nsv", "nsv_dollar", "dpp", "dpp_dollar"],
             default="dpp_dollar",

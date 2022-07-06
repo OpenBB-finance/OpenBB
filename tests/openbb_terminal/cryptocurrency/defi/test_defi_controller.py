@@ -223,13 +223,6 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             dict(),
         ),
         (
-            "call_govp",
-            [],
-            "terramoney_fcd_view.display_gov_proposals",
-            [],
-            dict(),
-        ),
-        (
             "call_gacc",
             [],
             "terramoney_fcd_view.display_account_growth",

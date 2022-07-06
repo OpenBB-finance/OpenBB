@@ -67,7 +67,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         "ethplorer",
         "smartstake",
         "github",
-        "mesari",
+        "messari",
     ]
     PATH = "/keys/"
     key_dict: Dict = {}

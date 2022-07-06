@@ -93,6 +93,7 @@ class CryptoController(CryptoBaseController):
             # choices["prt"]["--vs"] = {c: {} for c in coingecko_coin_ids} # list is huge. makes typing buggy
 
             choices["support"] = self.SUPPORT_CHOICES
+            choices["about"] = self.ABOUT_CHOICES
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
