@@ -23,8 +23,8 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 def display_order_book(
     coin: str,
-    limit: int,
-    currency: str,
+    limit: int = 100,
+    currency: str = "USDT",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
@@ -34,14 +34,14 @@ def display_order_book(
     ----------
 
     coin: str
-        Cryptocurrency
+        Cryptocurrency symbol
     limit: int
         Limit parameter. Adjusts the weight
     currency: str
         Quote currency (what to view coin vs)
     export: str
         Export dataframe data to csv,json,xlsx
-    external_axes : Optional[List[plt.Axes]], optional
+    external_axes : Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list), by default None
     """
 
@@ -68,7 +68,7 @@ def display_order_book(
 
 
 @log_start_end(log=logger)
-def display_balance(coin: str, currency: str, export: str) -> None:
+def display_balance(coin: str, currency: str = "USDT", export: str = "") -> None:
     """Get account holdings for asset. [Source: Binance]
 
     Parameters

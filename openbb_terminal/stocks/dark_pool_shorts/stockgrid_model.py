@@ -19,9 +19,9 @@ def get_dark_pool_short_positions(sort_field: str, ascending: bool) -> pd.DataFr
     Parameters
     ----------
     sort_field : str
-        Field for which to sort by, where 'sv': Short Vol. (1M),
-        'sv_pct': Short Vol. %%, 'nsv': Net Short Vol. (1M),
-        'nsv_dollar': Net Short Vol. ($100M), 'dpp': DP Position (1M),
+        Field for which to sort by, where 'sv': Short Vol. [1M],
+        'sv_pct': Short Vol. %%, 'nsv': Net Short Vol. [1M],
+        'nsv_dollar': Net Short Vol. ($100M), 'dpp': DP Position [1M],
         'dpp_dollar': DP Position ($1B)
     ascending : bool
         Data in ascending order

@@ -78,7 +78,7 @@ def display_performance(
     df_group["Volume"] = df_group["Volume"] / 1_000_000
     df_group["AvgVolume"] = df_group["AvgVolume"] / 1_000_000
     df_group = df_group.rename(
-        columns={"Volume": "Volume (1M)", "AvgVolume": "AvgVolume (1M)"}
+        columns={"Volume": "Volume [1M]", "AvgVolume": "AvgVolume [1M]"}
     )
     print_rich_table(
         df_group.fillna(""),
@@ -127,7 +127,7 @@ def display_valuation(
     df_group.columns = [col.replace(" ", "") for col in df_group.columns]
     df_group = df_group.sort_values(by=sort_col, ascending=ascending)
     df_group["Volume"] = df_group["Volume"] / 1_000_000
-    df_group = df_group.rename(columns={"Volume": "Volume (1M)"})
+    df_group = df_group.rename(columns={"Volume": "Volume [1M]"})
 
     print_rich_table(
         df_group.fillna(""),
