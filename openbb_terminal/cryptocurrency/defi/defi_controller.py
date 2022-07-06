@@ -327,63 +327,6 @@ class DefiController(BaseController):
             )
 
     @log_start_end(log=logger)
-    def call_govp(self, other_args: List[str]):
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="govp",
-            description="""
-                Displays terra blockchain governance proposals list.
-                [Source: https://fcd.terra.dev/swagger]
-            """,
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            dest="limit",
-            type=check_positive,
-            help="Number of proposals to show",
-            default=10,
-        )
-        parser.add_argument(
-            "-s",
-            "--sort",
-            dest="sortby",
-            type=str,
-            help="Sort by given column. Default: id",
-            default="id",
-            choices=terramoney_fcd_model.GOV_COLUMNS,
-        )
-        parser.add_argument(
-            "--status",
-            dest="status",
-            type=str,
-            help="Status of proposal. Default: all",
-            default="all",
-            choices=terramoney_fcd_model.GOV_STATUSES,
-        )
-        parser.add_argument(
-            "--descend",
-            action="store_false",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
-            default=False,
-        )
-
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-
-        if ns_parser:
-            terramoney_fcd_view.display_gov_proposals(
-                status=ns_parser.status,
-                export=ns_parser.export,
-                sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
-                top=ns_parser.limit,
-            )
-
-    @log_start_end(log=logger)
     def call_gacc(self, other_args: List[str]):
         parser = argparse.ArgumentParser(
             add_help=False,

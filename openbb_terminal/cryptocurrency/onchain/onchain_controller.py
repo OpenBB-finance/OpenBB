@@ -282,7 +282,7 @@ class OnchainController(BaseController):
             "--since",
             dest="since",
             type=valid_date,
-            help="Initial date. Default: 2020-01-01",
+            help=f"Initial date. Default: {(datetime.now() - timedelta(days=365)).strftime('%Y-%m-%d')}",
             default=(datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d"),
         )
 
@@ -291,7 +291,7 @@ class OnchainController(BaseController):
             "--until",
             dest="until",
             type=valid_date,
-            help="Final date. Default: 2021-01-01",
+            help=f"Final date. Default: {(datetime.now()).strftime('%Y-%m-%d')}",
             default=(datetime.now()).strftime("%Y-%m-%d"),
         )
 
