@@ -517,7 +517,7 @@ def plot_view_stock(df: pd.DataFrame, symbol: str, interval: str):
     ax[1].set_xlim(df.index[0], df.index[-1])
     ax[1].yaxis.tick_right()
     ax[1].yaxis.set_label_position("right")
-    ax[1].set_ylabel("Volume (1M)")
+    ax[1].set_ylabel("Volume [1M]")
     ax[1].grid(axis="y", color="gainsboro", linestyle="-", linewidth=0.5)
     ax[1].spines["top"].set_visible(False)
     ax[1].spines["left"].set_visible(False)

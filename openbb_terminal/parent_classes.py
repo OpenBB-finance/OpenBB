@@ -39,6 +39,7 @@ from openbb_terminal.helper_funcs import (
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks import stocks_helper
+from openbb_terminal.terminal_helper import open_openbb_documentation
 from openbb_terminal.cryptocurrency import cryptocurrency_helpers
 
 logger = logging.getLogger(__name__)
@@ -62,10 +63,10 @@ SUPPORT_TYPE = ["bug", "suggestion", "question", "generic"]
 
 
 class BaseController(metaclass=ABCMeta):
-
     CHOICES_COMMON = [
         "cls",
         "home",
+        "about",
         "h",
         "?",
         "help",
@@ -81,6 +82,7 @@ class BaseController(metaclass=ABCMeta):
     CHOICES_COMMANDS: List[str] = []
     CHOICES_MENUS: List[str] = []
     SUPPORT_CHOICES: Dict = {}
+    ABOUT_CHOICES: Dict = {}
     COMMAND_SEPARATOR = "/"
     KEYS_MENU = "keys" + COMMAND_SEPARATOR
     TRY_RELOAD = False
@@ -117,7 +119,10 @@ class BaseController(metaclass=ABCMeta):
 
         theme.applyMPLstyle()
 
-        # Terminal-wide support command auto-completion
+        # Add in about options
+        self.ABOUT_CHOICES = {
+            c: None for c in self.CHOICES_COMMANDS + self.CHOICES_MENUS
+        }
 
         # Remove common choices from list of support commands
         self.support_commands = [
@@ -274,6 +279,37 @@ class BaseController(metaclass=ABCMeta):
     def call_help(self, _) -> None:
         """Process help command"""
         self.print_help()
+
+    @log_start_end(log=logger)
+    def call_about(self, other_args: List[str]) -> None:
+        """Process about command"""
+        description = "Display the documentation of the menu or command."
+        if self.CHOICES_COMMANDS and self.CHOICES_MENUS:
+            description += (
+                f" E.g. 'about {self.CHOICES_COMMANDS[0]}' opens a guide about the command "
+                f"{self.CHOICES_COMMANDS[0]} and 'about {self.CHOICES_MENUS[0]}' opens a guide about the "
+                f"menu {self.CHOICES_MENUS[0]}."
+            )
+
+        parser = argparse.ArgumentParser(
+            add_help=False, prog="about", description=description
+        )
+        parser.add_argument(
+            "-c",
+            "--command",
+            type=str,
+            dest="command",
+            default=None,
+            help="Obtain documentation on the given command or menu",
+            choices=self.CHOICES_COMMANDS + self.CHOICES_MENUS,
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-c")
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
+
+        if ns_parser:
+            open_openbb_documentation(self.PATH, command=ns_parser.command)
 
     @log_start_end(log=logger)
     def call_quit(self, _) -> None:
@@ -475,7 +511,11 @@ class BaseController(metaclass=ABCMeta):
 
         if ns_parser.help:
             txt_help = parser.format_help() + "\n"
-            txt_help += f"See more in https://openbb-finance.github.io/OpenBBTerminal/terminal{self.PATH}{parser.prog}\n"
+            if parser.prog != "about":
+                txt_help += (
+                    f"For more information and examples, use 'about {parser.prog}' "
+                    f"to access the related guide.\n"
+                )
             console.print(f"[help]{txt_help}[/help]")
             return None
 
@@ -537,9 +577,10 @@ class BaseController(metaclass=ABCMeta):
                                     '<style bg="ansiblack" fg="ansiwhite">[h]</style> help menu    '
                                     '<style bg="ansiblack" fg="ansiwhite">[q]</style> return to previous menu    '
                                     '<style bg="ansiblack" fg="ansiwhite">[e]</style> exit terminal    '
-                                    '<style bg="ansiblack" fg="ansiwhite">[cmd -h]</style>'
-                                    ' see usage and available options         <style bg="#0000EE">'
-                                    f"https://openbb-finance.github.io/OpenBBTerminal/terminal{self.PATH}</style>"
+                                    '<style bg="ansiblack" fg="ansiwhite">[cmd -h]</style> '
+                                    "see usage and available options    "
+                                    f'<style bg="ansiblack" fg="ansiwhite">[about (cmd/menu)]</style> '
+                                    f"{self.path[-1].capitalize()} (cmd/menu) Documentation"
                                 ),
                                 style=Style.from_dict(
                                     {
@@ -859,5 +900,6 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
                 )
             else:
                 console.print(
-                    f"\n[red]Could not find [bold]{ns_parser.coin}[/bold] in [bold]yfinance[/bold]. Make sure you search for symbol (e.g., btc) and not full name (e.g., bitcoin)[/red]\n"  # noqa: E501
+                    f"\n[red]Could not find [bold]{ns_parser.coin}[/bold] in [bold]yfinance[/bold]."
+                    f"Make sure you search for symbol (e.g., btc) and not full name (e.g., bitcoin)[/red]\n"  # noqa: E501
                 )

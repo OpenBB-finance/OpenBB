@@ -36,7 +36,9 @@ def display_cmc_top_coins(
     top: int
         Number of records to display
     sortby: str
-        Key by which to sort data
+        Key to sort data. The table can be sorted by every of its columns. Refer to
+        Coin Market Cap:s API documentation
+        (see https://coinmarketcap.com/api/documentation/v1/#operation/getV1CryptocurrencyListingsLatest)
     descend: bool
         Flag to sort data descending
     export : str
