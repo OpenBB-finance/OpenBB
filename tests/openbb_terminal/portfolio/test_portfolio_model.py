@@ -11,7 +11,7 @@ from openbb_terminal.portfolio import portfolio_model
 def build_csv_path(csv_name: str):
     folder_path = Path(__file__).parent
 
-    return folder_path /"csv"/"test_portfolio_model"/csv_name
+    return folder_path / "csv" / "test_portfolio_model" / csv_name
 
 
 portfolio_trades = pd.read_csv(build_csv_path("example_portfolio.csv"))
