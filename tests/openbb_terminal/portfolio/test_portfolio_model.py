@@ -1,8 +1,8 @@
 # IMPORTATION STANDARD
 
 # IMPORTATION THIRDPARTY
-import pandas as pd
 from pathlib import Path
+import pandas as pd
 
 # IMPORTATION INTERNAL
 from openbb_terminal.portfolio import portfolio_model
