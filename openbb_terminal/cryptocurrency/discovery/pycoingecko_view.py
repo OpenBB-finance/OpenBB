@@ -92,7 +92,7 @@ def display_coins(
 
 @log_start_end(log=logger)
 def display_gainers(
-    period: str = "1h", top: int = 20, sortby: str = "Symbol", export: str = ""
+    period: str = "1h", top: int = 20, sortby: str = "Market Cap Rank", export: str = ""
 ) -> None:
     """Shows Largest Gainers - coins which gain the most in given period. [Source: CoinGecko]
 
@@ -103,7 +103,8 @@ def display_gainers(
     top: int
         Number of records to display
     sortby: str
-        Key to sort data
+        Key to sort data. The table can be sorted by every of its columns. Refer to
+        Coin Geckos API documentation (see /coins/markets part in https://www.coingecko.com/en/api/documentation)
     export : str
         Export dataframe data to csv,json,xlsx file
     """
@@ -135,7 +136,7 @@ def display_gainers(
 
 @log_start_end(log=logger)
 def display_losers(
-    period: str = "1h", top: int = 20, export: str = "", sortby: str = "Symbol"
+    period: str = "1h", top: int = 20, export: str = "", sortby: str = "Market Cap Rank"
 ) -> None:
     """Shows Largest Losers - coins which lost the most in given period of time. [Source: CoinGecko]
 
@@ -146,7 +147,8 @@ def display_losers(
     top: int
         Number of records to display
     sortby: str
-        Key to sort data
+        Key to sort data. The table can be sorted by every of its columns. Refer to
+        Coin Geckos API documentation (see /coins/markets part in https://www.coingecko.com/en/api/documentation)
     export : str
         Export dataframe data to csv,json,xlsx file
     """

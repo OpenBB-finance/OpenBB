@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 @check_api_key(["API_COINGLASS_KEY"])
-def display_open_interest(symbol: str, interval: int, export: str) -> None:
+def display_open_interest(symbol: str, interval: int = 0, export: str = "") -> None:
     """Displays open interest by exchange for a certain cryptocurrency
     [Source: https://coinglass.github.io/API-Reference/]
 
@@ -35,7 +35,7 @@ def display_open_interest(symbol: str, interval: int, export: str) -> None:
     symbol : str
         Crypto symbol to search open interest (e.g., BTC)
     interval : int
-        Interval frequency (e.g., 0)
+        Interval frequency (possible values are: 0 for ALL, 2 for 1H, 1 for 4H, 4 for 12H), by default 0
     export : str
         Export dataframe data to csv,json,xlsx file"""
     df = get_open_interest_per_exchange(symbol, interval)

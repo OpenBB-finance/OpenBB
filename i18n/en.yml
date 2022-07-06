@@ -1,41 +1,16 @@
 en:
   _home_: >
-    [info]Get API keys from data providers to access more features.[/info]
-        For more instructions use: 'keys'.
-        To see all features follow: https://openbb-finance.github.io/OpenBBTerminal/
-
-    [info]Multiple jobs queue (where each '/' denotes a new command).[/info]
-        E.g. '/stocks $ disc/ugs -n 3/../load tsla/candle'
-
-    [info]If you want to jump from crypto/ta to stocks you can use an absolute path that starts with a slash (/).[/info]
-        E.g. '/crypto/ta $ /stocks'
-
-    [info]You can run a standalone .openbb routine file with:[/info]
-        E.g. '/ $ exe routines/example.openbb'
-
-    [info]You can run a .openbb routine file with variable inputs:[/info]
-        E.g. '/ $ exe routines/example_with_inputs.openbb --input pltr,tsla,nio'
-
-
-    [info]The main commands you should be aware when navigating through the terminal are:[/info]
-  cls: clear the screen
-  help: help menu ('h' or '?' also works)
-  quit: quit this menu and go one menu above ('q' or '..' also works)
-  exit: exit the terminal
-  reset: reset the terminal and reload configs from the current location ('r' also works)
-  resources: only available on main contexts (not sub-menus)
-  support: pre-populate support ticket for our team to evaluate
-  about: amore information about OpenBB
-  update: update terminal automatically (when using GitHub)
-  tz: set different timezone
-  export: select export folder to output data
+    [info]Information, guides and support for the OpenBB Terminal[/info]
+  about: discover the capabilities of the OpenBB Terminal (https://openbb.co/docs)
+  support: pre-populate a support ticket for our team to evaluate
+  update: attempt to update the terminal automatically (GitHub version)
   exe: execute automated routine script
   settings: tune settings (export folder, timezone, language, plot size)
   featflags: enable and disable feature flags
   keys: set API keys and check their validity
   _configure_: Configure your own terminal
   _main_menu_: Main menu
-  keys/_keys_: Set API keys. Type <API> -h for usage details
+  keys/_keys_: This menu allows you to set your own API keys. Type 'about' for more information
   defined, test passed: defined, test passed
   defined, test failed: defined, test failed
   not defined: not defined
@@ -65,6 +40,8 @@ en:
   settings/_flair: Flair
   settings/lang: terminal language
   settings/_language: Language
+  settings/export: select export folder to output data
+  settings/tz: set different timezone
   settings/dpi: dots per inch
   settings/backend: plotting backend (None, tkAgg, MacOSX, Qt5Agg)
   settings/height: select plot height
@@ -797,6 +774,7 @@ en:
   economy/index: find and plot any (major) index on the market
   economy/treasury: obtain U.S. treasury rates
   economy/ycrv: show sovereign yield curves
+  economy/ecocal: display economic calendar
   economy/plot: plot data from the above commands together
   economy/rtps: real-time performance sectors
   economy/valuation: valuation of sectors, industry, country

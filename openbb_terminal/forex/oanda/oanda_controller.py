@@ -69,6 +69,7 @@ class OandaController(BaseController):
             choices["from"] = {c: None for c in forex_helper.YF_CURRENCY_LIST}
 
             choices["support"] = self.SUPPORT_CHOICES
+            choices["about"] = self.ABOUT_CHOICES
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 

@@ -289,9 +289,31 @@ def get_coinpaprika_id(symbol: str):
 
 def load(
     symbol_search: str,
-    vs: str,
+    vs: str = "usd",
     days: int = 365,
 ):
+    """Load crypto currency to perform analysis on. CoinGecko is used as source for price and YahooFinance for volume.
+
+    Parameters
+    ----------
+    symbol_search: str
+        Coin to get
+    vs: str
+        Quote Currency (usd or eur), by default usd
+    days: int
+        Data up to number of days ago, by default 365
+
+    Returns
+    -------
+    pd.DataFrame
+        Dataframe consisting of price and volume data
+    """
+    coingecko_id = get_coingecko_id(symbol_search)
+    if not coingecko_id:
+        return pd.DataFrame()
+
+    df = pycoingecko_model.get_ohlc(coingecko_id, vs, days)
+
     start_date = datetime.now() - timedelta(days=days)
     df = yf.download(
         f"{symbol_search}-{vs}",
@@ -734,7 +756,9 @@ FIND_KEYS = ["id", "symbol", "name"]
 # TODO: Find better algorithm then difflib.get_close_matches to find most similar coins
 
 
-def find(source: str, coin: str, key: str, top: int, export: str) -> None:
+def find(
+    coin: str, source: str = "cg", key: str = "symbol", top: int = 10, export: str = ""
+) -> None:
     """Find similar coin by coin name,symbol or id.
 
     If you don't remember exact name or id of the Coin at CoinGecko CoinPaprika, Binance or Coinbase
@@ -832,119 +856,6 @@ def find(source: str, coin: str, key: str, top: int, export: str) -> None:
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "find",
-        df,
-    )
-
-
-def display_all_coins(
-    source: str, coin: str, top: int, skip: int, show_all: bool, export: str
-) -> None:
-    """Find similar coin by coin name,symbol or id.
-
-    If you don't remember exact name or id of the Coin at CoinGecko, CoinPaprika, Coinbase, Binance
-    you can use this command to display coins with similar name, symbol or id to your search query.
-    Example of usage: coin name is something like "polka". So I can try: find -c polka -k name -t 25
-    It will search for coin that has similar name to polka and display top 25 matches.
-
-        -c, --coin stands for coin - you provide here your search query
-        -t, --top it displays top N number of records.
-
-    Parameters
-    ----------
-    top: int
-        Number of records to display
-    coin: str
-        Cryptocurrency
-    source: str
-        Data source of coins.  CoinGecko (cg) or CoinPaprika (cp) or Binance (bin), Coinbase (cb)
-    skip: int
-        Skip N number of records
-    show_all: bool
-        Flag to show all sources of data
-    export : str
-        Export dataframe data to csv,json,xlsx file
-    """
-    sources = ["cg", "cp", "bin", "cb"]
-    limit, cutoff = 30, 0.75
-    coins_func_map = {
-        "cg": get_coin_list,
-        "cp": get_list_of_coins,
-        "bin": load_binance_map,
-        "cb": load_coinbase_map,
-    }
-
-    if show_all:
-        coins_func = coins_func_map.get(source)
-        if coins_func:
-            df = coins_func()
-        else:
-            df = prepare_all_coins_df()
-
-    elif not source or source not in sources:
-        df = prepare_all_coins_df()
-        cg_coins_list = df["CoinGecko"].to_list()
-        sim = difflib.get_close_matches(coin.lower(), cg_coins_list, limit, cutoff)
-        df_matched = pd.Series(sim).to_frame().reset_index()
-        df_matched.columns = ["index", "CoinGecko"]
-        df = df.merge(df_matched, on="CoinGecko")
-        df.drop("index", axis=1, inplace=True)
-
-    else:
-
-        if source == "cg":
-            coins_df = get_coin_list().drop("index", axis=1)
-            df = _create_closest_match_df(coin.lower(), coins_df, limit, cutoff)
-            df = df[["index", "id", "name"]]
-
-        elif source == "cp":
-            coins_df = get_list_of_coins()
-            df = _create_closest_match_df(coin.lower(), coins_df, limit, cutoff)
-            df = df[["index", "id", "name"]]
-
-        elif source == "bin":
-            coins_df_gecko = get_coin_list()
-            coins_df_bin = load_binance_map()
-            coins_df_bin.columns = ["symbol", "id"]
-            coins_df = pd.merge(
-                coins_df_bin, coins_df_gecko[["id", "name"]], how="left", on="id"
-            )
-            df = _create_closest_match_df(coin.lower(), coins_df, limit, cutoff)
-            df = df[["index", "symbol", "name"]]
-            df.columns = ["index", "id", "name"]
-
-        elif source == "cb":
-            coins_df_gecko = get_coin_list()
-            coins_df_cb = load_coinbase_map()
-            coins_df_cb.columns = ["symbol", "id"]
-            coins_df = pd.merge(
-                coins_df_cb, coins_df_gecko[["id", "name"]], how="left", on="id"
-            )
-            df = _create_closest_match_df(coin.lower(), coins_df, limit, cutoff)
-            df = df[["index", "symbol", "name"]]
-            df.columns = ["index", "id", "name"]
-
-        else:
-            df = pd.DataFrame(columns=["index", "id", "symbol"])
-            console.print("Couldn't find any coins")
-        console.print("")
-
-    try:
-        df = df[skip : skip + top]  # noqa
-    except Exception as e:
-        logger.exception(str(e))
-        console.print(e)
-
-    print_rich_table(
-        df.fillna("N/A"),
-        headers=list(df.columns),
-        show_index=False,
-        title="Similar Coins",
-    )
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "coins",
         df,
     )
 
@@ -1150,29 +1061,127 @@ def load_yf_data(symbol: str, currency: str, interval: str, days: int):
     return df_coin[::-1], currency
 
 
-def plot_chart(symbol: str, prices_df: pd.DataFrame, currency: str) -> None:
+def display_all_coins(
+    source: str, coin: str, top: int, skip: int, show_all: bool, export: str
+) -> None:
+    """Find similar coin by coin name,symbol or id.
+    If you don't remember exact name or id of the Coin at CoinGecko, CoinPaprika, Coinbase, Binance
+    you can use this command to display coins with similar name, symbol or id to your search query.
+    Example of usage: coin name is something like "polka". So I can try: find -c polka -k name -t 25
+    It will search for coin that has similar name to polka and display top 25 matches.
+        -c, --coin stands for coin - you provide here your search query
+        -t, --top it displays top N number of records.
+    Parameters
+    ----------
+    top: int
+        Number of records to display
+    coin: str
+        Cryptocurrency
+    source: str
+        Data source of coins.  CoinGecko (cg) or CoinPaprika (cp) or Binance (bin), Coinbase (cb)
+    skip: int
+        Skip N number of records
+    show_all: bool
+        Flag to show all sources of data
+    export : str
+        Export dataframe data to csv,json,xlsx file
+    """
+    sources = ["cg", "cp", "bin", "cb"]
+    limit, cutoff = 30, 0.75
+    coins_func_map = {
+        "cg": get_coin_list,
+        "cp": get_list_of_coins,
+        "bin": load_binance_map,
+        "cb": load_coinbase_map,
+    }
+
+    if show_all:
+        coins_func = coins_func_map.get(source)
+        if coins_func:
+            df = coins_func()
+        else:
+            df = prepare_all_coins_df()
+
+    elif not source or source not in sources:
+        df = prepare_all_coins_df()
+        cg_coins_list = df["CoinGecko"].to_list()
+        sim = difflib.get_close_matches(coin.lower(), cg_coins_list, limit, cutoff)
+        df_matched = pd.Series(sim).to_frame().reset_index()
+        df_matched.columns = ["index", "CoinGecko"]
+        df = df.merge(df_matched, on="CoinGecko")
+        df.drop("index", axis=1, inplace=True)
+
+    else:
+
+        if source == "cg":
+            coins_df = get_coin_list().drop("index", axis=1)
+            df = _create_closest_match_df(coin.lower(), coins_df, limit, cutoff)
+            df = df[["index", "id", "name"]]
+
+        elif source == "cp":
+            coins_df = get_list_of_coins()
+            df = _create_closest_match_df(coin.lower(), coins_df, limit, cutoff)
+            df = df[["index", "id", "name"]]
+
+        elif source == "bin":
+            coins_df_gecko = get_coin_list()
+            coins_df_bin = load_binance_map()
+            coins_df_bin.columns = ["symbol", "id"]
+            coins_df = pd.merge(
+                coins_df_bin, coins_df_gecko[["id", "name"]], how="left", on="id"
+            )
+            df = _create_closest_match_df(coin.lower(), coins_df, limit, cutoff)
+            df = df[["index", "symbol", "name"]]
+            df.columns = ["index", "id", "name"]
+
+        elif source == "cb":
+            coins_df_gecko = get_coin_list()
+            coins_df_cb = load_coinbase_map()
+            coins_df_cb.columns = ["symbol", "id"]
+            coins_df = pd.merge(
+                coins_df_cb, coins_df_gecko[["id", "name"]], how="left", on="id"
+            )
+            df = _create_closest_match_df(coin.lower(), coins_df, limit, cutoff)
+            df = df[["index", "symbol", "name"]]
+            df.columns = ["index", "id", "name"]
+
+        else:
+            df = pd.DataFrame(columns=["index", "id", "symbol"])
+            console.print("Couldn't find any coins")
+        console.print("")
+
+    try:
+        df = df[skip : skip + top]  # noqa
+    except Exception as e:
+        logger.exception(str(e))
+        console.print(e)
+
+    print_rich_table(
+        df.fillna("N/A"),
+        headers=list(df.columns),
+        show_index=False,
+        title="Similar Coins",
+    )
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "coins",
+        df,
+    )
+
+
+def plot_chart(prices_df: pd.DataFrame, symbol: str = "", currency: str = "") -> None:
     """Load data for Technical Analysis
 
     Parameters
     ----------
-    coin_map_df: pd.DataFrame
+    prices_df: pd.DataFrame
         Cryptocurrency
-    source: str
-        Source of data: CoinGecko, Binance, CoinPaprika
+    symbol: str
+        Coin (only used for chart title), by default ""
     currency: str
-        Quotes currency
-    kwargs:
-        days: int
-            Days limit for coingecko, coinpaprika
-        limit: int
-            Limit for binance quotes
-        interval: str
-            Time interval for Binance
-    Returns
-    ----------
-    Tuple[pd.DataFrame, str]
-        dataframe with prices
-        quoted currency
+        Currency (only used for chart title), by default ""
     """
 
     if prices_df.empty:
@@ -1195,7 +1204,7 @@ def plot_chart(symbol: str, prices_df: pd.DataFrame, currency: str) -> None:
 
 def plot_candles(
     candles_df: pd.DataFrame,
-    volume: bool,
+    volume: bool = True,
     ylabel: str = "",
     title: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -1206,8 +1215,12 @@ def plot_candles(
     ----------
     candles_df: pd.DataFrame
         Dataframe containing time and OHLCV
+    volume: bool
+        If volume data shall be plotted, by default True
+    ylabel: str
+        Y-label of the graph, by default ""
     title: str
-        title of graph
+        Title of graph, by default ""
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
@@ -1227,15 +1240,34 @@ def plot_candles(
         "warn_too_much_data": 10000,
     }
 
+    maximum_value = candles_df.max().max()
+
+    if maximum_value > 1_000_000_000_000:
+        df_rounded = candles_df / 1_000_000_000_000
+        denomination = " in Trillions"
+    elif maximum_value > 1_000_000_000:
+        df_rounded = candles_df / 1_000_000_000
+        denomination = " in Billions"
+    elif maximum_value > 1_000_000:
+        df_rounded = candles_df / 1_000_000
+        denomination = " in Millions"
+    elif maximum_value > 1_000:
+        df_rounded = candles_df / 1_000
+        denomination = " in Thousands"
+    else:
+        df_rounded = candles_df
+        denomination = ""
+
     # This plot has 2 axes
     if external_axes is None:
         candle_chart_kwargs["returnfig"] = True
         candle_chart_kwargs["figratio"] = (10, 7)
         candle_chart_kwargs["figscale"] = 1.10
         candle_chart_kwargs["figsize"] = plot_autoscale()
-        fig, _ = mpf.plot(candles_df, **candle_chart_kwargs)
+        fig, _ = mpf.plot(df_rounded, **candle_chart_kwargs)
+
         fig.suptitle(
-            f"\n{title}",
+            f"\n{title} [{denomination}]",
             horizontalalignment="left",
             verticalalignment="top",
             x=0.05,
@@ -1255,7 +1287,9 @@ def plot_candles(
 
         candle_chart_kwargs["ax"] = ax
 
-        mpf.plot(candles_df, **candle_chart_kwargs)
+        console.print(f"Data {denomination}")
+
+        mpf.plot(df_rounded, **candle_chart_kwargs)
 
 
 def plot_order_book(
