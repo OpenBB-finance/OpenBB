@@ -346,10 +346,14 @@ class ParametersController(BaseController):
             other_args.insert(0, "-a")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            if ns_parser.show:
+            if self.current_file.endswith(".ini"):
+                console.print(
+                    f"Please adjust the parameters directly in the {self.current_file} file."
+                )
+            elif ns_parser.show:
                 params_view.show_arguments(AVAILABLE_OPTIONS, self.description)
 
-            if ns_parser.argument:
+            elif ns_parser.argument:
                 argument = ns_parser.argument[0]
                 value = ns_parser.argument[1]
 
