@@ -1516,137 +1516,6 @@ class PortfolioModel:
             vals, index=portfolio_helper.PERIODS, columns=["Portfolio", "Benchmark"]
         )
 
-
-def rolling_volatility(returns: pd.DataFrame, length: int) -> pd.DataFrame:
-    """Get rolling volatility
-
-    Parameters
-    ----------
-    returns : pd.DataFrame
-        Returns series
-    length : int
-        Rolling window to use
-
-    Returns
-    -------
-    pd.DataFrame
-        Rolling volatility DataFrame
-    """
-    return returns.rolling(length).std()
-
-
-def sharpe_ratio(return_series: pd.Series, risk_free_rate: float) -> float:
-    """Get sharpe ratio
-
-    Parameters
-    ----------
-    return_series : pd.Series
-        Returns of the portfolio
-    risk_free_rate: float
-        Value to use for risk free rate
-
-    Returns
-    -------
-    float
-        Sharpe ratio
-    """
-    mean = return_series.mean() - risk_free_rate
-    sigma = return_series.std()
-
-    return mean / sigma
-
-
-def rolling_sharpe(
-    returns: pd.DataFrame, risk_free_rate: float, length: int
-) -> pd.DataFrame:
-    """Get rolling sharpe ratio
-
-    Parameters
-    ----------
-    returns : pd.DataFrame
-        Returns series
-    risk_free_rate : float
-        Risk free rate
-    length : int
-        Rolling window to use
-
-    Returns
-    -------
-    pd.DataFrame
-        Rolling sharpe ratio DataFrame
-    """
-    rolling_sharpe_df = returns.rolling(length).apply(
-        lambda x: (x.mean() - risk_free_rate) / x.std()
-    )
-    return rolling_sharpe_df
-
-
-def sortino_ratio(return_series: pd.Series, risk_free_rate: float) -> float:
-    """Get sortino ratio
-
-    Parameters
-    ----------
-    return_series : pd.Series
-        Returns of the portfolio
-    risk_free_rate: float
-        Value to use for risk free rate
-
-    Returns
-    -------
-    float
-        Sortino ratio
-    """
-    mean = return_series.mean() - risk_free_rate
-    std_neg = return_series[return_series < 0].std()
-
-    return mean / std_neg
-
-
-def rolling_sortino(
-    returns: pd.DataFrame, risk_free_rate: float, length: int
-) -> pd.DataFrame:
-    """Get rolling sortino ratio
-
-    Parameters
-    ----------
-    returns : pd.DataFrame
-        Returns series
-    risk_free_rate : float
-        Risk free rate
-    length : int
-        Rolling window to use
-
-    Returns
-    -------
-    pd.DataFrame
-        Rolling sortino ratio DataFrame
-    """
-    rolling_sortino_df = returns.rolling(length).apply(
-        lambda x: (x.mean() - risk_free_rate) / x[x < 0].std()
-    )
-
-    return rolling_sortino_df
-
-
-def get_maximum_drawdown(return_series: pd.Series) -> float:
-    """Get maximum drawdown
-
-    Parameters
-    ----------
-    return_series : pd.Series
-        Returns of the portfolio
-
-    Returns
-    -------
-    float
-        maximum drawdown
-    """
-    comp_ret = (return_series + 1).cumprod()
-    peak = comp_ret.expanding(min_periods=1).max()
-    dd = (comp_ret / peak) - 1
-
-    return dd.min()
-
     @log_start_end(log=logger)
     def get_gaintopain_ratio(self):
         """Gets Pain-to-Gain ratio based on historical data
@@ -1843,3 +1712,134 @@ def get_maximum_drawdown(return_series: pd.Series) -> float:
         pf_period_df = get_profit_factor(self.portfolio_trades)
 
         return pf_period_df
+
+
+def rolling_volatility(returns: pd.DataFrame, length: int) -> pd.DataFrame:
+    """Get rolling volatility
+
+    Parameters
+    ----------
+    returns : pd.DataFrame
+        Returns series
+    length : int
+        Rolling window to use
+
+    Returns
+    -------
+    pd.DataFrame
+        Rolling volatility DataFrame
+    """
+    return returns.rolling(length).std()
+
+
+def sharpe_ratio(return_series: pd.Series, risk_free_rate: float) -> float:
+    """Get sharpe ratio
+
+    Parameters
+    ----------
+    return_series : pd.Series
+        Returns of the portfolio
+    risk_free_rate: float
+        Value to use for risk free rate
+
+    Returns
+    -------
+    float
+        Sharpe ratio
+    """
+    mean = return_series.mean() - risk_free_rate
+    sigma = return_series.std()
+
+    return mean / sigma
+
+
+def rolling_sharpe(
+    returns: pd.DataFrame, risk_free_rate: float, length: int
+) -> pd.DataFrame:
+    """Get rolling sharpe ratio
+
+    Parameters
+    ----------
+    returns : pd.DataFrame
+        Returns series
+    risk_free_rate : float
+        Risk free rate
+    length : int
+        Rolling window to use
+
+    Returns
+    -------
+    pd.DataFrame
+        Rolling sharpe ratio DataFrame
+    """
+    rolling_sharpe_df = returns.rolling(length).apply(
+        lambda x: (x.mean() - risk_free_rate) / x.std()
+    )
+    return rolling_sharpe_df
+
+
+def sortino_ratio(return_series: pd.Series, risk_free_rate: float) -> float:
+    """Get sortino ratio
+
+    Parameters
+    ----------
+    return_series : pd.Series
+        Returns of the portfolio
+    risk_free_rate: float
+        Value to use for risk free rate
+
+    Returns
+    -------
+    float
+        Sortino ratio
+    """
+    mean = return_series.mean() - risk_free_rate
+    std_neg = return_series[return_series < 0].std()
+
+    return mean / std_neg
+
+
+def rolling_sortino(
+    returns: pd.DataFrame, risk_free_rate: float, length: int
+) -> pd.DataFrame:
+    """Get rolling sortino ratio
+
+    Parameters
+    ----------
+    returns : pd.DataFrame
+        Returns series
+    risk_free_rate : float
+        Risk free rate
+    length : int
+        Rolling window to use
+
+    Returns
+    -------
+    pd.DataFrame
+        Rolling sortino ratio DataFrame
+    """
+    rolling_sortino_df = returns.rolling(length).apply(
+        lambda x: (x.mean() - risk_free_rate) / x[x < 0].std()
+    )
+
+    return rolling_sortino_df
+
+
+def get_maximum_drawdown(return_series: pd.Series) -> float:
+    """Get maximum drawdown
+
+    Parameters
+    ----------
+    return_series : pd.Series
+        Returns of the portfolio
+
+    Returns
+    -------
+    float
+        maximum drawdown
+    """
+    comp_ret = (return_series + 1).cumprod()
+    peak = comp_ret.expanding(min_periods=1).max()
+    dd = (comp_ret / peak) - 1
+
+    return dd.min()
