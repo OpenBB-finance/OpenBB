@@ -202,10 +202,6 @@ def cumulative_returns(returns: pd.Series) -> pd.Series:
     cumulative_returns = (1 + returns.shift(periods=1, fill_value=0)).cumprod() - 1
     return cumulative_returns
 
-
-<<<<<<< HEAD
-class PortfolioModel:
-=======
 @log_start_end(log=logger)
 def get_gaintopain_ratio(returns: pd.DataFrame, benchmark_returns: pd.DataFrame):
     """Gets Pain-to-Gain ratio
@@ -815,8 +811,7 @@ def get_profit_factor(portfolio_trades: pd.DataFrame):
     return pf_period_df
 
 
-class Portfolio:
->>>>>>> 0c859b3c106585926eaf4f14a98b0cb1ae8c921c
+class PortfolioModel:
     """
     Class for portfolio analysis in OpenBB
     Implements a Portfolio and related methods.

@@ -1511,7 +1511,7 @@ def display_maximum_drawdown_ratio(
 
 @log_start_end(log=logger)
 def display_gaintopain_ratio(
-    portfolio: portfolio_model.Portfolio,
+    portfolio: portfolio_model.PortfolioModel,
     export: str = "",
 ):
     """Display gain-to-pain ratio for multiple periods
@@ -1540,7 +1540,7 @@ def display_gaintopain_ratio(
 
 @log_start_end(log=logger)
 def display_tracking_error(
-    portfolio: portfolio_model.Portfolio,
+    portfolio: portfolio_model.PortfolioModel,
     export: str = "",
 ):
     """Display tracking error for multiple periods
@@ -1566,7 +1566,7 @@ def display_tracking_error(
 
 @log_start_end(log=logger)
 def display_information_ratio(
-    portfolio: portfolio_model.Portfolio,
+    portfolio: portfolio_model.PortfolioModel,
     export: str = "",
 ):
     """Display information ratio for multiple periods
@@ -1595,7 +1595,7 @@ def display_information_ratio(
 
 @log_start_end(log=logger)
 def display_tail_ratio(
-    portfolio: portfolio_model.Portfolio,
+    portfolio: portfolio_model.PortfolioModel,
     export: str = "",
 ):
     """Display tail ratio for multiple periods
@@ -1621,7 +1621,7 @@ def display_tail_ratio(
 
 @log_start_end(log=logger)
 def display_common_sense_ratio(
-    portfolio: portfolio_model.Portfolio,
+    portfolio: portfolio_model.PortfolioModel,
     export: str = "",
 ):
     """Display common sense ratio for multiple periods
@@ -1650,7 +1650,7 @@ def display_common_sense_ratio(
 
 @log_start_end(log=logger)
 def display_jensens_alpha(
-    portfolio: portfolio_model.Portfolio,
+    portfolio: portfolio_model.PortfolioModel,
     rf: float = 0,
     export: str = "",
 ):
@@ -1679,7 +1679,7 @@ def display_jensens_alpha(
 
 @log_start_end(log=logger)
 def display_calmar_ratio(
-    portfolio: portfolio_model.Portfolio,
+    portfolio: portfolio_model.PortfolioModel,
     export: str = "",
 ):
     """Display calmar ratio for multiple periods
@@ -1705,7 +1705,7 @@ def display_calmar_ratio(
 
 @log_start_end(log=logger)
 def display_kelly_criterion(
-    portfolio: portfolio_model.Portfolio,
+    portfolio: portfolio_model.PortfolioModel,
     export: str = "",
 ):
     """Display kelly criterion for multiple periods
@@ -1730,7 +1730,7 @@ def display_kelly_criterion(
 
 
 def display_payoff_ratio(
-    portfolio: portfolio_model.Portfolio,
+    portfolio: portfolio_model.PortfolioModel,
     export: str = "",
 ):
     """Display payoff ratio for multiple periods
@@ -1755,7 +1755,7 @@ def display_payoff_ratio(
 
 
 def display_profit_factor(
-    portfolio: portfolio_model.Portfolio,
+    portfolio: portfolio_model.PortfolioModel,
     export: str = "",
 ):
     """Display profit factor for multiple periods
