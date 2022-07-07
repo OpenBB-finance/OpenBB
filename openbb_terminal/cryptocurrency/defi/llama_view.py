@@ -217,7 +217,7 @@ def display_historical_tvl(
 
 @log_start_end(log=logger)
 def display_defi_tvl(
-    top: int,
+    top: int = 5,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
@@ -227,7 +227,7 @@ def display_defi_tvl(
     Parameters
     ----------
     top: int
-        Number of records to display
+        Number of records to display, by default 5
     export : str
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
