@@ -232,7 +232,7 @@ def get_gaintopain_ratio(returns: pd.DataFrame, benchmark_returns: pd.DataFrame)
                             (1 + period_return.shift(periods=1, fill_value=0)).cumprod()
                             - 1
                         ).iloc[-1]
-                        / portfolio_helper.get_maximum_drawdown(period_return),
+                        / get_maximum_drawdown(period_return),
                         3,
                     ),
                     round(
@@ -242,7 +242,7 @@ def get_gaintopain_ratio(returns: pd.DataFrame, benchmark_returns: pd.DataFrame)
                             ).cumprod()
                             - 1
                         ).iloc[-1]
-                        / portfolio_helper.get_maximum_drawdown(period_bench_return),
+                        / get_maximum_drawdown(period_bench_return),
                         3,
                     ),
                 ]
@@ -502,7 +502,7 @@ def get_common_sense_ratio(returns: pd.Series, benchmark_returns: pd.Series):
                             (1 + period_return.shift(periods=1, fill_value=0)).cumprod()
                             - 1
                         ).iloc[-1]
-                        / portfolio_helper.get_maximum_drawdown(period_return),
+                        / get_maximum_drawdown(period_return),
                         3,
                     ),
                     round(
@@ -513,7 +513,7 @@ def get_common_sense_ratio(returns: pd.Series, benchmark_returns: pd.Series):
                             ).cumprod()
                             - 1
                         ).iloc[-1]
-                        / portfolio_helper.get_maximum_drawdown(period_bench_return),
+                        / get_maximum_drawdown(period_bench_return),
                         3,
                     ),
                 ]

@@ -200,7 +200,7 @@ class PortfolioController(BaseController):
     load             load data into the portfolio[/cmds]
 
 [param]Loaded orderbook:[/param] {self.portfolio_name or ""}
-[param]Risk Free Rate:  [/param] {self.risk_free_rate:.0%}
+[param]Risk Free Rate:  [/param] {self.risk_free_rate:0.00%}
 {("[unvl]", "[cmds]")[port]}
     show             show existing transactions{("[/unvl]", "[/cmds]")[port]}
 {("[unvl]", "[cmds]")[port]}
