@@ -415,9 +415,15 @@ def load(
         # Polygon source
         elif source == "polygon":
 
+            # Polygon allows: day, minute, hour, day, week, month, quarter, year
+            timespan = "day"
+            if weekly or monthly:
+                timespan = "week" if weekly else "month"
+
             request_url = (
                 f"https://api.polygon.io/v2/aggs/ticker/"
-                f"{ticker.upper()}/range/1/day/{start.strftime('%Y-%m-%d')}/{end.strftime('%Y-%m-%d')}?adjusted=true"
+                f"{ticker.upper()}/range/1/{timespan}/"
+                f"{start.strftime('%Y-%m-%d')}/{end.strftime('%Y-%m-%d')}?adjusted=true"
                 f"&sort=desc&limit=49999&apiKey={cfg.API_POLYGON_KEY}"
             )
             r = requests.get(request_url)
