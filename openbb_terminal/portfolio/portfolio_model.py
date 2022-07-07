@@ -640,7 +640,7 @@ def get_calmar_ratio(
     # Calculate annual return
     annual_return = period_cum_returns ** (1 / (period / 252)) - 1
 
-    cr_rolling = annual_return / portfolio_helper.get_maximum_drawdown(returns)
+    cr_rolling = annual_return / get_maximum_drawdown(returns)
 
     vals = list()
     for periods in portfolio_helper.PERIODS:
@@ -661,8 +661,8 @@ def get_calmar_ratio(
             annual_bench_return = (1 + period_cum_bench_returns) ** (
                 1 / (len(period_bench_return) / 252)
             ) - 1
-            drawdown = portfolio_helper.get_maximum_drawdown(period_return)
-            bench_drawdown = portfolio_helper.get_maximum_drawdown(period_bench_return)
+            drawdown = get_maximum_drawdown(period_return)
+            bench_drawdown = get_maximum_drawdown(period_bench_return)
             if (drawdown != 0) and (bench_drawdown != 0):
                 vals.append(
                     [
