@@ -224,7 +224,7 @@ class PortfolioModel:
     generate_portfolio_data: Generates portfolio data from orderbook
         load_portfolio_historical_prices: Loads historical adj close prices for tickers in list of trades
         populate_historical_trade_data: Create a new dataframe to store historical prices by ticker
-        calculate_end_value: Calculate value from historical data
+        calculate_value: Calculate value from historical data
 
     calculate_reserves:
 
@@ -430,7 +430,7 @@ class PortfolioModel:
         """Generates portfolio data from orderbook"""
         self.load_portfolio_historical_prices()
         self.populate_historical_trade_data()
-        self.calculate_end_value()
+        self.calculate_value()
 
         # Determine the returns, replace inf values with NaN and then drop any missing values
         for _, data in self.tickers.items():
@@ -553,7 +553,7 @@ class PortfolioModel:
 
         self.historical_trade_data = trade_data
 
-    def calculate_end_value(self):
+    def calculate_value(self):
         """Calculate value from historical data"""
         trade_data = self.historical_trade_data
 
@@ -574,10 +574,6 @@ class PortfolioModel:
 
         for ticker_type, data in self.tickers.items():
             self.itemized_value[ticker_type] = trade_data["End Value"][data].sum(axis=1)
-
-        # trade_data[
-        #     pd.MultiIndex.from_product([["Initial Value"], self.tickers_list])
-        # ] = 0
 
         # Initial Value = Cumulative Investment - (Previous End Value - Previous Initial Value)
         trade_data[
