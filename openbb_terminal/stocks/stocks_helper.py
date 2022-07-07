@@ -356,6 +356,12 @@ def load(
                 int_ = "1mo"
                 int_string = "Monthly"
 
+            # Win10 version of mktime cannot cope with dates before 1970
+            if os.name == "nt" and start < datetime(1970, 1, 1):
+                start = datetime(
+                    1970, 1, 2
+                )  # 1 day buffer in case of timezone adjustments
+
             # Adding a dropna for weekly and monthly because these include weird NaN columns.
             df_stock_candidate = yf.download(
                 ticker, start=start, end=end, progress=False, interval=int_
@@ -409,9 +415,15 @@ def load(
         # Polygon source
         elif source == "polygon":
 
+            # Polygon allows: day, minute, hour, day, week, month, quarter, year
+            timespan = "day"
+            if weekly or monthly:
+                timespan = "week" if weekly else "month"
+
             request_url = (
                 f"https://api.polygon.io/v2/aggs/ticker/"
-                f"{ticker.upper()}/range/1/day/{start.strftime('%Y-%m-%d')}/{end.strftime('%Y-%m-%d')}?adjusted=true"
+                f"{ticker.upper()}/range/1/{timespan}/"
+                f"{start.strftime('%Y-%m-%d')}/{end.strftime('%Y-%m-%d')}?adjusted=true"
                 f"&sort=desc&limit=49999&apiKey={cfg.API_POLYGON_KEY}"
             )
             r = requests.get(request_url)
