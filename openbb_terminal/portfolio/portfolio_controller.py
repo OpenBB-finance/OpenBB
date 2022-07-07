@@ -264,9 +264,7 @@ class PortfolioController(BaseController):
             tickers = []
         else:
             tickers = (
-                self.portfolio._stock_tickers
-                + self.portfolio._etf_tickers
-                + self.portfolio._crypto_tickers
+                self.portfolio.tickers_list
             )
         self.queue = self.load_class(
             po_controller.PortfolioOptimizationController,
@@ -314,7 +312,7 @@ class PortfolioController(BaseController):
 
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
-        if ns_parser and ns_parser.file:
+        if ns_parser and ns_parser.file and self.portfolio is not None:
             if ns_parser.file in self.DATA_HOLDINGS_FILES:
                 file_location = self.DATA_HOLDINGS_FILES[ns_parser.file]
             else:
@@ -372,7 +370,7 @@ class PortfolioController(BaseController):
 
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
-        if ns_parser:
+        if ns_parser and self.portfolio is not None:
             # needs to be checked since we want to use the start date of the portfolio when comparing with benchmark
             if self.portfolio_name:
                 chosen_benchmark = " ".join(ns_parser.benchmark)
@@ -428,7 +426,7 @@ class PortfolioController(BaseController):
 
         ns_parser = self.parse_known_args_and_warn(parser, other_args, limit=10)
 
-        if ns_parser:
+        if ns_parser and self.portfolio is not None:
             console.print()
             if check_portfolio_benchmark_defined(
                 self.portfolio_name, self.benchmark_name
@@ -514,7 +512,7 @@ class PortfolioController(BaseController):
 
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
-        if ns_parser:
+        if ns_parser and self.portfolio is not None:
             if check_portfolio_benchmark_defined(
                 self.portfolio_name, self.benchmark_name
             ):
@@ -651,7 +649,7 @@ class PortfolioController(BaseController):
 
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
-        if ns_parser:
+        if ns_parser and self.portfolio is not None:
             if self.portfolio_name:
                 if ns_parser.adjusted and ns_parser.student_t:
                     console.print(
@@ -715,7 +713,7 @@ class PortfolioController(BaseController):
 
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
-        if ns_parser:
+        if ns_parser and self.portfolio is not None:
             if self.portfolio_name:
                 qa_view.display_es(
                     self.portfolio.returns,
@@ -764,7 +762,7 @@ class PortfolioController(BaseController):
                """,
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
+        if ns_parser and self.portfolio is not None:
             if self.portfolio_name:
                 data = self.portfolio.returns[1:]
                 qa_view.display_omega(
@@ -805,7 +803,7 @@ class PortfolioController(BaseController):
             export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
         )
 
-        if ns_parser:
+        if ns_parser and self.portfolio is not None:
             if check_portfolio_benchmark_defined(
                 self.portfolio_name, self.benchmark_name
             ):
@@ -845,7 +843,7 @@ class PortfolioController(BaseController):
             export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
         )
 
-        if ns_parser:
+        if ns_parser and self.portfolio is not None:
             if check_portfolio_benchmark_defined(
                 self.portfolio_name, self.benchmark_name
             ):
@@ -892,7 +890,7 @@ class PortfolioController(BaseController):
             export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
         )
 
-        if ns_parser:
+        if ns_parser and self.portfolio is not None:
             if check_portfolio_benchmark_defined(
                 self.portfolio_name, self.benchmark_name
             ):
@@ -933,7 +931,7 @@ class PortfolioController(BaseController):
             export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
         )
 
-        if ns_parser:
+        if ns_parser and self.portfolio is not None:
             if check_portfolio_benchmark_defined(
                 self.portfolio_name, self.benchmark_name
             ):
@@ -958,7 +956,7 @@ class PortfolioController(BaseController):
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
-        if ns_parser:
+        if ns_parser and self.portfolio is not None:
             if check_portfolio_benchmark_defined(
                 self.portfolio_name, self.benchmark_name
             ):
@@ -987,7 +985,7 @@ class PortfolioController(BaseController):
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
-        if ns_parser:
+        if ns_parser and self.portfolio is not None:
             if check_portfolio_benchmark_defined(
                 self.portfolio_name, self.benchmark_name
             ):
@@ -1021,7 +1019,7 @@ class PortfolioController(BaseController):
             "--rfr",
             type=check_positive_float,
             dest="risk_free_rate",
-            default=self.portfolio.risk_free_rate,
+            default=self.risk_free_rate,
             help="Set risk free rate for calculations.",
         )
         if other_args and "-" not in other_args[0][0]:
@@ -1285,7 +1283,7 @@ class PortfolioController(BaseController):
             other_args,
             export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
         )
-        if ns_parser:
+        if ns_parser and self.portfolio is not None:
             if check_portfolio_benchmark_defined(
                 self.portfolio_name, self.benchmark_name
             ):
