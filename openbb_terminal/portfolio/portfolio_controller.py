@@ -263,9 +263,7 @@ class PortfolioController(BaseController):
         if self.portfolio is None:
             tickers = []
         else:
-            tickers = (
-                self.portfolio.tickers_list
-            )
+            tickers = self.portfolio.tickers_list
         self.queue = self.load_class(
             po_controller.PortfolioOptimizationController,
             tickers,
