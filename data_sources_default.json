@@ -2,7 +2,7 @@
   "stocks": {
     "load": "yf",
     "dps": {
-      "psi": "quandl"
+      "psi": "stockgrid"
     },
     "fa": {
       "income": "av",
