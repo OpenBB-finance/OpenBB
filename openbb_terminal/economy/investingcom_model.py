@@ -5,11 +5,16 @@ import logging
 import argparse
 
 import datetime
+from time import time
 import pandas as pd
+import math
+import pytz
 import investpy
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import log_and_raise
+from openbb_terminal import helper_funcs
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -109,13 +114,42 @@ def get_economic_calendar(
     else:
         from_date = format_date(datetime.date.today())
 
-    data = investpy.news.economic_calendar(
-        time_zone, time_filter, countries, importances, categories, from_date, to_date
-    )
+    # Get user time zone in GMT offset format
+    user_time_zone = pytz.timezone(helper_funcs.get_user_timezone())
+    diff = pd.Timestamp.now(tz=user_time_zone).tz_localize(
+        None
+    ) - pd.Timestamp.utcnow().tz_localize(None)
+
+    # Ceil time difference, might have actual decimal difference between .now() and .utcnow()
+    offset = divmod(math.ceil(diff.total_seconds()), 3600)[0]
+    sign = "+" if offset > 0 else ""
+    time_zone = "GMT " + sign + str(int(offset)) + ":00"
+
+    try:
+        data = investpy.news.economic_calendar(
+            time_zone,
+            time_filter,
+            countries,
+            importances,
+            categories,
+            from_date,
+            to_date,
+        )
+    except:
+        time_zone = None
+        data = investpy.news.economic_calendar(
+            time_zone,
+            time_filter,
+            countries,
+            importances,
+            categories,
+            from_date,
+            to_date,
+        )
 
     if not data.empty:
         data.drop(columns=data.columns[0], axis=1, inplace=True)
         data.sort_values(by="date", inplace=True)
         data.drop_duplicates(keep="first", inplace=True)
 
-    return data
+    return data, time_zone

@@ -134,15 +134,19 @@ def display_economic_calendar(
     """
 
     if country:
-        country = [country]
+        country_ = [country]
     if importances:
-        importances = [importances]
+        importances_ = [importances]
     if categories:
-        categories = [categories]
+        categories_ = [categories]
 
-    df = investingcom_model.get_economic_calendar(
-        time_zone, country, importances, categories, from_date, to_date
+    df, time_zone = investingcom_model.get_economic_calendar(
+        time_zone, country_, importances_, categories_, from_date, to_date
     )
+
+    if time_zone is None:
+        time_zone = "GMT"
+        console.print("[red]Error on timezone, default was used.[/red]\n")
 
     if df.empty:
         logger.error("No data")
@@ -152,7 +156,7 @@ def display_economic_calendar(
             df,
             headers=list(df.columns),
             show_index=False,
-            title="Calendar",
+            title=f"Calendar ({time_zone})",
         )
 
         export_data(
