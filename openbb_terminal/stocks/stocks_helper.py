@@ -356,6 +356,12 @@ def load(
                 int_ = "1mo"
                 int_string = "Monthly"
 
+            # Win10 version of mktime cannot cope with dates before 1970
+            if os.name == "nt" and start < datetime(1970, 1, 1):
+                start = datetime(
+                    1970, 1, 2
+                )  # 1 day buffer in case of timezone adjustments
+
             # Adding a dropna for weekly and monthly because these include weird NaN columns.
             df_stock_candidate = yf.download(
                 ticker, start=start, end=end, progress=False, interval=int_
