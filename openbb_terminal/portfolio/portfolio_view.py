@@ -1510,6 +1510,276 @@ def display_maximum_drawdown_ratio(
 
 
 @log_start_end(log=logger)
+def display_gaintopain_ratio(
+    portfolio: portfolio_model.Portfolio,
+    export: str = "",
+):
+    """Display gain-to-pain ratio for multiple periods
+
+    Parameters
+    ----------
+    portfolio: Portfolio
+        Portfolio object with returns and benchmark loaded
+    export : str
+        Export data format
+    """
+    df = portfolio.get_gaintopain_ratio()
+    print_rich_table(
+        df,
+        title="Gain-to-pain ratio for portfolio and benchmark",
+        show_index=True,
+        floatfmt=".3f",
+    )
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "metric_gaintopain_ratio",
+        df,
+    )
+
+
+@log_start_end(log=logger)
+def display_tracking_error(
+    portfolio: portfolio_model.Portfolio,
+    export: str = "",
+):
+    """Display tracking error for multiple periods
+
+    Parameters
+    ----------
+    portfolio: Portfolio
+        Portfolio object with returns and benchmark loaded
+    export : str
+        Export data format
+    """
+    df, _ = portfolio.get_tracking_error()
+    print_rich_table(
+        df,
+        title="Benchmark Tracking Error",
+        show_index=True,
+        floatfmt=".3f",
+    )
+    export_data(
+        export, os.path.dirname(os.path.abspath(__file__)), "metric_tracking_error", df
+    )
+
+
+@log_start_end(log=logger)
+def display_information_ratio(
+    portfolio: portfolio_model.Portfolio,
+    export: str = "",
+):
+    """Display information ratio for multiple periods
+
+    Parameters
+    ----------
+    portfolio: Portfolio
+        Portfolio object with returns and benchmark loaded
+    export : str
+        Export data format
+    """
+    df, _ = portfolio.get_information_ratio()
+    print_rich_table(
+        df,
+        title="Information ratio for portfolio",
+        show_index=True,
+        floatfmt=".3f",
+    )
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "metric_information_ratio",
+        df,
+    )
+
+
+@log_start_end(log=logger)
+def display_tail_ratio(
+    portfolio: portfolio_model.Portfolio,
+    export: str = "",
+):
+    """Display tail ratio for multiple periods
+
+    Parameters
+    ----------
+    portfolio: Portfolio
+        Portfolio object with returns and benchmark loaded
+    export : str
+        Export data format
+    """
+    df, _, _ = portfolio.get_tail_ratio()
+    print_rich_table(
+        df,
+        title="Tail ratio for portfolio and benchmark",
+        show_index=True,
+        floatfmt=".3f",
+    )
+    export_data(
+        export, os.path.dirname(os.path.abspath(__file__)), "metric_tail_ratio", df
+    )
+
+
+@log_start_end(log=logger)
+def display_common_sense_ratio(
+    portfolio: portfolio_model.Portfolio,
+    export: str = "",
+):
+    """Display common sense ratio for multiple periods
+
+    Parameters
+    ----------
+    portfolio: Portfolio
+        Portfolio object with returns and benchmark loaded
+    export : str
+        Export data format
+    """
+    df = portfolio.get_common_sense_ratio()
+    print_rich_table(
+        df,
+        title="Common sense ratio for portfolio and benchmark",
+        show_index=True,
+        floatfmt=".3f",
+    )
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "metric_common_sense_ratio",
+        df,
+    )
+
+
+@log_start_end(log=logger)
+def display_jensens_alpha(
+    portfolio: portfolio_model.Portfolio,
+    rf: float = 0,
+    export: str = "",
+):
+    """Display jensens alpha for multiple periods
+
+    Parameters
+    ----------
+    portfolio: Portfolio
+        Portfolio object with returns and benchmark loaded
+    rf: float
+            Risk free rate
+    export : str
+        Export data format
+    """
+    df, _ = portfolio.get_jensens_alpha(rf=rf)
+    print_rich_table(
+        df,
+        title="Portfolio's jensen's alpha",
+        show_index=True,
+        floatfmt=".3f",
+    )
+    export_data(
+        export, os.path.dirname(os.path.abspath(__file__)), "metric_jensens_alpha", df
+    )
+
+
+@log_start_end(log=logger)
+def display_calmar_ratio(
+    portfolio: portfolio_model.Portfolio,
+    export: str = "",
+):
+    """Display calmar ratio for multiple periods
+
+    Parameters
+    ----------
+    portfolio: Portfolio
+        Portfolio object with returns and benchmark loaded
+    export : str
+        Export data format
+    """
+    df, _ = portfolio.get_calmar_ratio()
+    print_rich_table(
+        df,
+        title="Calmar ratio for portfolio and benchmark",
+        show_index=True,
+        floatfmt=".3f",
+    )
+    export_data(
+        export, os.path.dirname(os.path.abspath(__file__)), "metric_calmar_ratio", df
+    )
+
+
+@log_start_end(log=logger)
+def display_kelly_criterion(
+    portfolio: portfolio_model.Portfolio,
+    export: str = "",
+):
+    """Display kelly criterion for multiple periods
+
+    Parameters
+    ----------
+    portfolio: Portfolio
+        Portfolio object with trades and returns loaded
+    export : str
+        Export data format
+    """
+    df = portfolio.get_kelly_criterion()
+    print_rich_table(
+        df,
+        title="Kelly criterion of the portfolio",
+        show_index=True,
+        floatfmt=".3f",
+    )
+    export_data(
+        export, os.path.dirname(os.path.abspath(__file__)), "metric_kelly_criterion", df
+    )
+
+
+def display_payoff_ratio(
+    portfolio: portfolio_model.Portfolio,
+    export: str = "",
+):
+    """Display payoff ratio for multiple periods
+
+    Parameters
+    ----------
+    portfolio: Portfolio
+        Portfolio object with trades loaded
+    export : str
+        Export data format
+    """
+    df = portfolio.get_payoff_ratio()
+    print_rich_table(
+        df,
+        title="Portfolio's payoff ratio",
+        show_index=True,
+        floatfmt=".3f",
+    )
+    export_data(
+        export, os.path.dirname(os.path.abspath(__file__)), "metric_payoff_ratio", df
+    )
+
+
+def display_profit_factor(
+    portfolio: portfolio_model.Portfolio,
+    export: str = "",
+):
+    """Display profit factor for multiple periods
+
+    Parameters
+    ----------
+    portfolio: Portfolio
+        Portfolio object with trades loaded
+    export : str
+        Export data format
+    """
+    df = portfolio.get_profit_factor()
+    print_rich_table(
+        df,
+        title="Portfolio's profit factor",
+        show_index=True,
+        floatfmt=".3f",
+    )
+    export_data(
+        export, os.path.dirname(os.path.abspath(__file__)), "metric_profit_factor", df
+    )
+
+
+@log_start_end(log=logger)
 def display_summary_portfolio_benchmark(
     portfolio_returns: pd.Series,
     benchmark_returns: pd.Series,
