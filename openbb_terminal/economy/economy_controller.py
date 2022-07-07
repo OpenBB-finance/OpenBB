@@ -199,6 +199,7 @@ class EconomyController(BaseController):
             self.choices["map"]["--period"] = {c: None for c in self.map_period_list}
 
             self.choices["support"] = self.SUPPORT_CHOICES
+            self.choices["about"] = self.ABOUT_CHOICES
 
             self.completer = NestedCompleter.from_nested_dict(self.choices)
 

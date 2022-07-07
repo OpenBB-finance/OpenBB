@@ -13,7 +13,7 @@ Next to that, the databases of <a href="https://www.econdb.com/" target="_blank"
 can be accessed via <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/economy/macro/" target="_blank">macro</a>,
 <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/economy/fred/" target="_blank">fred</a> and
 <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/economy/index/" target="_blank">index</a> respectively.
-All of this can also be further analysed with <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/common/prediction_techniques/" target="_blank">Prediction Techniques</a> (`pred`) and <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/common/quantitative_analysis/" target="_blank">Quantitative Techniques</a> (`qa`).
+All of this can also be further analysed with <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/common/pred/" target="_blank">Prediction Techniques</a> (`pred`) and <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/common/quantitative_analysis/" target="_blank">Quantitative Techniques</a> (`qa`).
 
 ## How to use
 
@@ -319,9 +319,9 @@ Resulting in the following graph:
 
 The Economy menu has a few sub-menus available to delve further into a specific macroeconomic indicator. To find more information about each menu, click on one of the following:
 
-- <a href="/OpenBBTerminal/terminal/common/prediction_techniques" target="_blank">Introduction to Prediction Techniques</a>: apply advanced AI and Machine Learning models to form prediction of future macroeconomic indicators including Recurrent Neural Network (RNN),
+- <a href="/OpenBBTerminal/terminal/common/pred" target="_blank">Introduction to Prediction Techniques</a>: apply advanced AI and Machine Learning models to form prediction of future macroeconomic indicators including Recurrent Neural Network (RNN),
   Autoregressive Integrated Moving Average (ARIMA) and Monte Carlo forecasting.
-- <a href="/OpenBBTerminal/terminal/common/quantitative_analysis" target="_blank">Introduction to Quantitative Analysis</a>: analyse the macroeconomic indicators extensively for seasonality, rolling windows and statistical techniques.
+- <a href="/OpenBBTerminal/terminal/common/qa" target="_blank">Introduction to Quantitative Analysis</a>: analyse the macroeconomic indicators extensively for seasonality, rolling windows and statistical techniques.
 
 ## Examples
 
