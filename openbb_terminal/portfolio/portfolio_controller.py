@@ -1027,7 +1027,7 @@ class PortfolioController(BaseController):
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
-        if ns_parser:
+        if ns_parser and self.portfolio is not None:
             if check_portfolio_benchmark_defined(
                 self.portfolio_name, self.benchmark_name
             ):
@@ -1062,7 +1062,7 @@ class PortfolioController(BaseController):
             "--rfr",
             type=check_positive_float,
             dest="risk_free_rate",
-            default=self.portfolio.risk_free_rate,
+            default=self.risk_free_rate,
             help="Set risk free rate for calculations.",
         )
         if other_args and "-" not in other_args[0][0]:
@@ -1070,7 +1070,7 @@ class PortfolioController(BaseController):
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
-        if ns_parser:
+        if ns_parser and self.portfolio is not None:
             if check_portfolio_benchmark_defined(
                 self.portfolio_name, self.benchmark_name
             ):
@@ -1105,7 +1105,7 @@ class PortfolioController(BaseController):
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
-        if ns_parser:
+        if ns_parser and self.portfolio is not None:
             if check_portfolio_benchmark_defined(
                 self.portfolio_name, self.benchmark_name
             ):
@@ -1139,7 +1139,7 @@ class PortfolioController(BaseController):
             "--rfr",
             type=check_positive_float,
             dest="risk_free_rate",
-            default=self.portfolio.risk_free_rate,
+            default=self.risk_free_rate,
             help="Set risk free rate for calculations.",
         )
         if other_args and "-" not in other_args[0][0]:
@@ -1201,11 +1201,11 @@ class PortfolioController(BaseController):
                     portfolio_view.display_kelly_criterion(
                         self.portfolio, ns_parser.export
                     )
-                elif ns_parser.metric == "payoff":
+                elif ns_parser.metric == "payoff" and self.portfolio is not None:
                     portfolio_view.display_payoff_ratio(
                         self.portfolio, ns_parser.export
                     )
-                elif ns_parser.metric == "profitfactor":
+                elif ns_parser.metric == "profitfactor" and self.portfolio is not None:
                     portfolio_view.display_profit_factor(
                         self.portfolio, ns_parser.export
                     )
@@ -1237,7 +1237,7 @@ class PortfolioController(BaseController):
             raw=True,
             export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
         )
-        if ns_parser:
+        if ns_parser and self.portfolio is not None:
             if check_portfolio_benchmark_defined(
                 self.portfolio_name, self.benchmark_name
             ):
@@ -1272,7 +1272,7 @@ class PortfolioController(BaseController):
             "--rfr",
             type=check_positive_float,
             dest="risk_free_rate",
-            default=self.portfolio.risk_free_rate,
+            default=self.risk_free_rate,
             help="Set risk free rate for calculations.",
         )
         if other_args and "-" not in other_args[0][0]:
