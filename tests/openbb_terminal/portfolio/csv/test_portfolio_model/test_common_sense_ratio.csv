@@ -1,0 +1,31 @@
+,Portfolio,Benchmark
+mtd,"TotalHoldings   NaN
+dtype: float64","Adj Close   NaN
+dtype: float64"
+qtd,"TotalHoldings   NaN
+dtype: float64","Adj Close   NaN
+dtype: float64"
+ytd,"TotalHoldings    0.759
+dtype: float64","Adj Close    0.722
+dtype: float64"
+3m,"TotalHoldings    0.658
+dtype: float64","Adj Close    0.584
+dtype: float64"
+6m,"TotalHoldings    0.751
+dtype: float64","Adj Close    0.714
+dtype: float64"
+1y,"TotalHoldings    0.582
+dtype: float64","Adj Close    0.469
+dtype: float64"
+3y,"TotalHoldings   -1.153
+dtype: float64","Adj Close   -0.774
+dtype: float64"
+5y,"TotalHoldings   -1.308
+dtype: float64","Adj Close   -1.483
+dtype: float64"
+10y,"TotalHoldings   -1.308
+dtype: float64","Adj Close   -1.483
+dtype: float64"
+all,"TotalHoldings   -1.308
+dtype: float64","Adj Close   -1.483
+dtype: float64"
