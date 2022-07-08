@@ -140,7 +140,7 @@ def get_financials(
 
     if ratios:
         types = df_fa.copy().applymap(
-            lambda x: isinstance(x, int) or isinstance(x, float)
+            lambda x: isinstance(x, (float, int))
         )
         types = types.all(axis=1)
 

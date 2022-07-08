@@ -248,7 +248,7 @@ def get_income(
     if ratios:
         types = (
             df_fa.copy()
-            .applymap(lambda x: isinstance(x, int) or isinstance(x, float))
+            .applymap(lambda x: isinstance(x, (float, int)))
             .all(axis=1)
         )
         valid = []
@@ -320,7 +320,7 @@ def get_balance(
     if ratios:
         types = (
             df_fa.copy()
-            .applymap(lambda x: isinstance(x, int) or isinstance(x, float))
+            .applymap(lambda x: isinstance(x, (float, int)))
             .all(axis=1)
         )
         valid = []
@@ -389,7 +389,7 @@ def get_cash(
     if ratios:
         types = (
             df_fa.copy()
-            .applymap(lambda x: isinstance(x, int) or isinstance(x, float))
+            .applymap(lambda x: isinstance(x, (float, int)))
             .all(axis=1)
         )
         valid = []
