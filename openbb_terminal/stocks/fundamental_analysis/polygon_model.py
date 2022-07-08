@@ -139,9 +139,7 @@ def get_financials(
         return pd.DataFrame()
 
     if ratios:
-        types = df_fa.copy().applymap(
-            lambda x: isinstance(x, (float, int))
-        )
+        types = df_fa.copy().applymap(lambda x: isinstance(x, (float, int)))
         types = types.all(axis=1)
 
         # For rows with complete data
