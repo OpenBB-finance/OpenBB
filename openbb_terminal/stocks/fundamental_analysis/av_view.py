@@ -71,7 +71,12 @@ def display_key(ticker: str):
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
 def display_income_statement(
-    ticker: str, limit: int, quarterly: bool = False, ratios: bool = False, plot: list = [], export: str = ""
+    ticker: str,
+    limit: int,
+    quarterly: bool = False,
+    ratios: bool = False,
+    plot: list = [],
+    export: str = "",
 ):
     """Alpha Vantage income statement
 
@@ -90,7 +95,9 @@ def display_income_statement(
     export: str
         Format to export data
     """
-    df_income = av_model.get_income_statements(ticker, limit, quarterly, ratios, True if plot else False)
+    df_income = av_model.get_income_statements(
+        ticker, limit, quarterly, ratios, True if plot else False
+    )
 
     if df_income.empty:
         return
@@ -103,7 +110,11 @@ def display_income_statement(
         if rows_plot == 1:
             fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
             income_plot_data[plot[0].replace("_", "")].plot()
-            title = f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {ticker.upper()}" if ratios else f"{plot[0].replace('_', ' ')} of {ticker.upper()}"
+            title = (
+                f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {ticker.upper()}"
+                if ratios
+                else f"{plot[0].replace('_', ' ')} of {ticker.upper()}"
+            )
             plt.title(title)
             theme.style_primary_axis(ax)
             theme.visualize_output()
@@ -122,7 +133,9 @@ def display_income_statement(
         print_rich_table(
             df_income,
             headers=list(df_income.columns),
-            title=f"{ticker} Income Statement" if not ratios else f"{'QoQ' if quarterly else 'YoY'} Change of {ticker} Income Statement",
+            title=f"{ticker} Income Statement"
+            if not ratios
+            else f"{'QoQ' if quarterly else 'YoY'} Change of {ticker} Income Statement",
             show_index=True,
         )
 
@@ -132,7 +145,12 @@ def display_income_statement(
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
 def display_balance_sheet(
-    ticker: str, limit: int, quarterly: bool = False, ratios: bool = False, plot: list = [], export: str = ""
+    ticker: str,
+    limit: int,
+    quarterly: bool = False,
+    ratios: bool = False,
+    plot: list = [],
+    export: str = "",
 ):
     """Alpha Vantage balance sheet statement
 
@@ -151,7 +169,9 @@ def display_balance_sheet(
     export: str
         Format to export data
     """
-    df_balance = av_model.get_balance_sheet(ticker, limit, quarterly, ratios, True if plot else False)
+    df_balance = av_model.get_balance_sheet(
+        ticker, limit, quarterly, ratios, True if plot else False
+    )
 
     if df_balance.empty:
         return
@@ -164,7 +184,11 @@ def display_balance_sheet(
         if rows_plot == 1:
             fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
             balance_plot_data[plot[0].replace("_", "")].plot()
-            title = f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {ticker.upper()}" if ratios else f"{plot[0].replace('_', ' ')} of {ticker.upper()}"
+            title = (
+                f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {ticker.upper()}"
+                if ratios
+                else f"{plot[0].replace('_', ' ')} of {ticker.upper()}"
+            )
             plt.title(title)
             theme.style_primary_axis(ax)
             theme.visualize_output()
@@ -185,7 +209,9 @@ def display_balance_sheet(
         print_rich_table(
             df_balance,
             headers=list(df_balance.columns),
-            title=f"{ticker} Balance Sheet" if not ratios else f"{'QoQ' if quarterly else 'YoY'} Change of {ticker} Balance Sheet",
+            title=f"{ticker} Balance Sheet"
+            if not ratios
+            else f"{'QoQ' if quarterly else 'YoY'} Change of {ticker} Balance Sheet",
             show_index=True,
         )
 

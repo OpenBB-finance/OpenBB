@@ -200,7 +200,9 @@ def get_dcf(ticker: str, number: int, quarterly: bool = False) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_income(ticker: str, number: int, quarterly: bool = False, ratios: bool = False) -> List[pd.DataFrame]:
+def get_income(
+    ticker: str, number: int, quarterly: bool = False, ratios: bool = False
+) -> List[pd.DataFrame]:
     """Get income statements
 
     Parameters
@@ -238,7 +240,11 @@ def get_income(ticker: str, number: int, quarterly: bool = False, ratios: bool =
         console.print(e)
 
     if ratios:
-        types = df_fa.copy().applymap(lambda x: type(x) == int or type(x) == float).all(axis=1)
+        types = (
+            df_fa.copy()
+            .applymap(lambda x: type(x) == int or type(x) == float)
+            .all(axis=1)
+        )
         valid = []
         i = 0
         for row in types:
@@ -258,7 +264,9 @@ def get_income(ticker: str, number: int, quarterly: bool = False, ratios: bool =
 
 
 @log_start_end(log=logger)
-def get_balance(ticker: str, number: int, quarterly: bool = False, ratios: bool = False) -> List[pd.DataFrame]:
+def get_balance(
+    ticker: str, number: int, quarterly: bool = False, ratios: bool = False
+) -> List[pd.DataFrame]:
     """Get balance sheets
 
     Parameters
@@ -298,7 +306,11 @@ def get_balance(ticker: str, number: int, quarterly: bool = False, ratios: bool 
         console.print(e)
 
     if ratios:
-        types = df_fa.copy().applymap(lambda x: type(x) == int or type(x) == float).all(axis=1)
+        types = (
+            df_fa.copy()
+            .applymap(lambda x: type(x) == int or type(x) == float)
+            .all(axis=1)
+        )
         valid = []
         i = 0
         for row in types:

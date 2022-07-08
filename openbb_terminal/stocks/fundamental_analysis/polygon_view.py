@@ -67,12 +67,18 @@ def display_fundamentals(
         rows_plot = len(plot)
         fundamentals_plot_data = fundamentals_plot_data.transpose()
         fundamentals_plot_data.columns = fundamentals_plot_data.columns.str.lower()
-        fundamentals_plot_data.columns = [x.replace("_", "") for x in list(fundamentals_plot_data.columns)]
+        fundamentals_plot_data.columns = [
+            x.replace("_", "") for x in list(fundamentals_plot_data.columns)
+        ]
 
         if rows_plot == 1:
             fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
             fundamentals_plot_data[plot[0].replace("_", "")].plot()
-            title = f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {ticker.upper()}" if ratios else f"{plot[0].replace('_', ' ')} of {ticker.upper()}"
+            title = (
+                f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {ticker.upper()}"
+                if ratios
+                else f"{plot[0].replace('_', ' ')} of {ticker.upper()}"
+            )
             plt.title(title)
             theme.style_primary_axis(ax)
             theme.visualize_output()
@@ -94,7 +100,9 @@ def display_fundamentals(
     print_rich_table(
         fundamentals.applymap(lambda x: "-" if x == "nan" else x),
         show_index=True,
-        title=f"{ticker} {title_str}" if not ratios else f"{'QoQ' if quarterly else 'YoY'} Change of {ticker} {title_str}",
+        title=f"{ticker} {title_str}"
+        if not ratios
+        else f"{'QoQ' if quarterly else 'YoY'} Change of {ticker} {title_str}",
     )
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), financial, fundamentals

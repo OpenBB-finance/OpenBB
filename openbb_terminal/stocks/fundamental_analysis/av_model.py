@@ -147,7 +147,11 @@ def get_key_metrics(ticker: str) -> pd.DataFrame:
 
 @log_start_end(log=logger)
 def get_income_statements(
-    ticker: str, number: int, quarterly: bool = False, ratios: bool = False, plot: bool = False
+    ticker: str,
+    number: int,
+    quarterly: bool = False,
+    ratios: bool = False,
+    plot: bool = False,
 ) -> pd.DataFrame:
     """Get income statements for company
 
@@ -227,7 +231,11 @@ def get_income_statements(
 
 @log_start_end(log=logger)
 def get_balance_sheet(
-    ticker: str, number: int, quarterly: bool = False, ratios: bool = False, plot: bool = False
+    ticker: str,
+    number: int,
+    quarterly: bool = False,
+    ratios: bool = False,
+    plot: bool = False,
 ) -> pd.DataFrame:
     """Get balance sheets for company
 
@@ -286,7 +294,9 @@ def get_balance_sheet(
         df_fa = df_fa.replace("None", "0")
         df_fa.iloc[1:] = df_fa.iloc[1:].astype("float")
 
-        df_fa_c = df_fa.iloc[:, 0:number].applymap(lambda x: lambda_long_number_format(x))
+        df_fa_c = df_fa.iloc[:, 0:number].applymap(
+            lambda x: lambda_long_number_format(x)
+        )
 
         if ratios:
             df_fa_pc = df_fa.iloc[1:].pct_change(axis="columns").fillna(0)
@@ -295,7 +305,9 @@ def get_balance_sheet(
                 df_fa.iloc[i] = df_fa_pc.iloc[j]
                 j += 1
 
-            df_fa_c = df_fa.iloc[:, 0:number].applymap(lambda x: lambda_long_number_format(x))
+            df_fa_c = df_fa.iloc[:, 0:number].applymap(
+                lambda x: lambda_long_number_format(x)
+            )
 
         df_fa = df_fa.iloc[:, 0:number]
 

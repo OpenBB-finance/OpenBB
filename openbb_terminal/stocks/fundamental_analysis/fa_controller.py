@@ -796,7 +796,7 @@ class FundamentalAnalysisController(StockBaseController):
             type=str,
             default=[],
             dest="plot",
-            help="Rows to plot. (-1 represents invalid data)"
+            help="Rows to plot. (-1 represents invalid data)",
         )
         parser.add_argument(
             "-s",
@@ -849,6 +849,8 @@ class FundamentalAnalysisController(StockBaseController):
                 yahoo_finance_view.display_fundamentals(
                     ticker=self.ticker,
                     financial="financials",
+                    ratios=ns_parser.ratios,
+                    plot=ns_parser.plot,
                     export=ns_parser.export,
                 )
 
@@ -900,7 +902,7 @@ class FundamentalAnalysisController(StockBaseController):
             type=str,
             default=[],
             dest="plot",
-            help="Rows to plot. (-1 represents invalid data)"
+            help="Rows to plot. (-1 represents invalid data)",
         )
         parser.add_argument(
             "-s",
@@ -953,6 +955,8 @@ class FundamentalAnalysisController(StockBaseController):
                 yahoo_finance_view.display_fundamentals(
                     ticker=self.ticker,
                     financial="balance-sheet",
+                    ratios=ns_parser.ratios,
+                    plot=ns_parser.plot,
                     export=ns_parser.export,
                 )
 
