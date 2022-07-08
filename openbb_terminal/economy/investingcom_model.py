@@ -67,7 +67,7 @@ def get_yieldcurve(country) -> pd.DataFrame:
         },
         inplace=True,
     )
-    return
+    return data
 
 
 @log_start_end(log=logger)
