@@ -2,73 +2,26 @@
 __docformat__ = "numpy"
 
 import logging
-from datetime import timedelta, datetime
+from typing import Dict, Any
 
 import numpy as np
 import scipy
 import pandas as pd
-import statsmodels.api as sm
 import yfinance as yf
 from sklearn.metrics import r2_score
 from pycoingecko import CoinGeckoAPI
-from statsmodels.regression.rolling import RollingOLS
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.portfolio import portfolio_helper, allocation_model
 from openbb_terminal.rich_config import console
 
 # pylint: disable=E1136,W0201,R0902,C0302
-# pylint: disable=unsupported-assignment-operation
+# pylint: disable=unsupported-assignment-operation,redefined-outer-name,too-many-public-methods
+
 logger = logging.getLogger(__name__)
 cg = CoinGeckoAPI()
 
 pd.options.mode.chained_assignment = None
-
-
-@log_start_end(log=logger)
-def get_rolling_beta2(
-    df: pd.DataFrame, hist: pd.DataFrame, mark: pd.DataFrame, n: pd.DataFrame
-) -> pd.DataFrame:
-    """Turns the holdings of a portfolio into a rolling beta dataframe
-
-    Parameters
-    ----------
-    df : pd.DataFrame
-        The dataframe of daily holdings
-    hist : pd.DataFrame
-        A dataframe of historical returns
-    mark : pd.DataFrame
-        The dataframe of market performance
-    n : int
-        The period to get returns for
-
-    Returns
-    ----------
-    final : pd.DataFrame
-        A Dataframe with rolling beta
-    """
-    df = df["Holding"]
-    uniques = df.columns.tolist()
-    res = df.div(df.sum(axis=1), axis=0)
-    res = res.fillna(0)
-    comb = pd.merge(
-        hist["Close"], mark["Market"], how="outer", left_index=True, right_index=True
-    )
-    comb = comb.fillna(method="ffill")
-    for col in hist["Close"].columns:
-        exog = sm.add_constant(comb["Close"])
-        rols = RollingOLS(comb[col], exog, window=252)
-        rres = rols.fit()
-        res[f"beta_{col}"] = rres.params["Close"]
-    final = res.fillna(method="ffill")
-    for uni in uniques:
-        final[f"prod_{uni}"] = final[uni] * final[f"beta_{uni}"]
-    dropped = final[[f"beta_{x}" for x in uniques]].copy()
-    final = final.drop(columns=[f"beta_{x}" for x in uniques] + uniques)
-    final["total"] = final.sum(axis=1)
-    final = final[final.index >= datetime.now() - timedelta(days=n + 1)]
-    comb = pd.merge(final, dropped, how="left", left_index=True, right_index=True)
-    return comb
 
 
 @log_start_end(log=logger)
@@ -182,6 +135,24 @@ def calculate_drawdown(input_series: pd.Series, is_returns: bool = False) -> pd.
     return drawdown
 
 
+def cumulative_returns(returns: pd.Series) -> pd.Series:
+    """Calculate cumulative returns filtered by period
+
+    Parameters
+    ----------
+    returns : pd.Series
+        Returns series
+
+    Returns
+    ----------
+    pd.Series
+        Cumulative returns series
+    -------
+    """
+    cumulative_returns = (1 + returns.shift(periods=1, fill_value=0)).cumprod() - 1
+    return cumulative_returns
+
+
 @log_start_end(log=logger)
 def get_gaintopain_ratio(returns: pd.DataFrame, benchmark_returns: pd.DataFrame):
     """Gets Pain-to-Gain ratio
@@ -212,7 +183,7 @@ def get_gaintopain_ratio(returns: pd.DataFrame, benchmark_returns: pd.DataFrame)
                             (1 + period_return.shift(periods=1, fill_value=0)).cumprod()
                             - 1
                         ).iloc[-1]
-                        / portfolio_helper.get_maximum_drawdown(period_return),
+                        / get_maximum_drawdown(period_return),
                         3,
                     ),
                     round(
@@ -222,7 +193,7 @@ def get_gaintopain_ratio(returns: pd.DataFrame, benchmark_returns: pd.DataFrame)
                             ).cumprod()
                             - 1
                         ).iloc[-1]
-                        / portfolio_helper.get_maximum_drawdown(period_bench_return),
+                        / get_maximum_drawdown(period_bench_return),
                         3,
                     ),
                 ]
@@ -482,7 +453,7 @@ def get_common_sense_ratio(returns: pd.Series, benchmark_returns: pd.Series):
                             (1 + period_return.shift(periods=1, fill_value=0)).cumprod()
                             - 1
                         ).iloc[-1]
-                        / portfolio_helper.get_maximum_drawdown(period_return),
+                        / get_maximum_drawdown(period_return),
                         3,
                     ),
                     round(
@@ -493,7 +464,7 @@ def get_common_sense_ratio(returns: pd.Series, benchmark_returns: pd.Series):
                             ).cumprod()
                             - 1
                         ).iloc[-1]
-                        / portfolio_helper.get_maximum_drawdown(period_bench_return),
+                        / get_maximum_drawdown(period_bench_return),
                         3,
                     ),
                 ]
@@ -619,7 +590,7 @@ def get_calmar_ratio(
     # Calculate annual return
     annual_return = period_cum_returns ** (1 / (period / 252)) - 1
 
-    cr_rolling = annual_return / portfolio_helper.get_maximum_drawdown(returns)
+    cr_rolling = annual_return / get_maximum_drawdown(returns)
 
     vals = list()
     for periods in portfolio_helper.PERIODS:
@@ -640,8 +611,8 @@ def get_calmar_ratio(
             annual_bench_return = (1 + period_cum_bench_returns) ** (
                 1 / (len(period_bench_return) / 252)
             ) - 1
-            drawdown = portfolio_helper.get_maximum_drawdown(period_return)
-            bench_drawdown = portfolio_helper.get_maximum_drawdown(period_bench_return)
+            drawdown = get_maximum_drawdown(period_return)
+            bench_drawdown = get_maximum_drawdown(period_bench_return)
             if (drawdown != 0) and (bench_drawdown != 0):
                 vals.append(
                     [
@@ -791,125 +762,332 @@ def get_profit_factor(portfolio_trades: pd.DataFrame):
     return pf_period_df
 
 
-class Portfolio:
+class PortfolioModel:
     """
     Class for portfolio analysis in OpenBB
+    Implements a Portfolio and related methods.
 
     Attributes
     -------
-    portfolio_value: pd.Series
-        Series containing value at each day
-    returns: pd.Series
-        Series containing daily returns
-    ItemizedReturns: pd.DataFrame
-        Dataframe of Holdings by class
-    portfolio: pd.DataFrame
-        Dataframe containing all relevant holdings data
+
 
     Methods
     -------
-    add_trade:
-        Adds a trade to the dataframe of trades
-    generate_holdings_from_trades:
-        Takes a list of trades and converts to holdings on each day
-    get_yahoo_close_prices:
-        Gets close prices or adj close prices from yfinance
-    add_benchmark
-        Adds a benchmark to the class
+    read_orderbook: Class method to read orderbook from file
+
+    __set_orderbook:
+        preprocess_orderbook: Method to preprocess, format and compute auxiliary fields
+
+    load_benchmark: Adds benchmark ticker, info, prices and returns
+        mimic_trades_for_benchmark: Mimic trades from the orderbook based on chosen benchmark assuming partial shares
+
+    generate_portfolio_data: Generates portfolio data from orderbook
+        load_portfolio_historical_prices: Loads historical adj close prices for tickers in list of trades
+        populate_historical_trade_data: Create a new dataframe to store historical prices by ticker
+        calculate_value: Calculate value from historical data
+
+    calculate_reserves:
+
+    calculate_allocations:
+
+    set_risk_free_rate: Sets risk free rate
+
+    calculate_metrics:
 
     """
 
-    @log_start_end(log=logger)
-    def __init__(self, trades: pd.DataFrame = pd.DataFrame(), rf: float = 0.0):
+    def __init__(self, orderbook: pd.DataFrame = pd.DataFrame()):
         """Initialize Portfolio class"""
-        # Allow for empty initialization
+        # Portfolio
+        self.tickers_list = None
+        self.tickers: Dict[Any, Any] = {}
+        self.inception_date = None
+        self.static_data = pd.DataFrame()
+        self.historical_trade_data = pd.DataFrame()
+        self.returns = pd.DataFrame()
+        self.itemized_value = pd.DataFrame()
+        self.portfolio_trades = pd.DataFrame()
+        self.portfolio_value = None
+        self.portfolio_assets_allocation = pd.DataFrame()
+        self.portfolio_regional_allocation = pd.DataFrame()
+        self.portfolio_country_allocation = pd.DataFrame()
+
+        # Prices
+        self.portfolio_historical_prices = pd.DataFrame()
+        self.risk_free_rate = float(0)
+
+        # Benchmark
         self.benchmark_ticker: str = ""
         self.benchmark_info = None
-        self.benchmark: pd.DataFrame = pd.DataFrame()
-        self._historical_crypto: pd.DataFrame = pd.DataFrame()
-        self._historical_prices: pd.DataFrame = pd.DataFrame()
-        self.returns: pd.Series = pd.Series(dtype=object)
-        self.portfolio_value = None
-        self.ItemizedHoldings = None
-        self.benchmark_returns: pd.Series = pd.Series(dtype=object)
-        self.portfolio_sectors_allocation = pd.DataFrame()
-        self.portfolio_assets_allocation = pd.DataFrame()
-        self.benchmark_sectors_allocation = pd.DataFrame()
-        self.benchmark_assets_allocation = pd.DataFrame()
+        self.benchmark_historical_prices = pd.DataFrame()
+        self.benchmark_returns = pd.DataFrame()
         self.benchmark_trades = pd.DataFrame()
-        self.portfolio_trades = pd.DataFrame()
-        self.last_price = pd.DataFrame()
-        self.empty = True
-        self.rf = rf
 
-        if not trades.empty:
-            trades.Name = trades.Name.map(lambda x: x.upper())
-            trades.Type = trades.Type.map(lambda x: x.upper())
+        self.benchmark_assets_allocation = pd.DataFrame()
+        self.benchmark_regional_allocation = pd.DataFrame()
+        self.benchmark_country_allocation = pd.DataFrame()
 
-            # Load in trades df and do some quick editing
-            trades["Side"] = trades["Side"].map(
+        # Set and preprocess orderbook
+        self.__set_orderbook(orderbook)
+
+    def __set_orderbook(self, orderbook):
+        self.__orderbook = orderbook
+        self.preprocess_orderbook()
+
+    def get_orderbook(self):
+        return self.__orderbook
+
+    @staticmethod
+    def read_orderbook(path: str) -> pd.DataFrame:
+        """Class method to read orderbook from file
+
+        Args:
+            path (str): path to orderbook file
+        """
+        # Load orderbook from file
+        if path.endswith(".xlsx"):
+            orderbook = pd.read_excel(path)
+        elif path.endswith(".csv"):
+            orderbook = pd.read_csv(path)
+
+        return orderbook
+
+    def preprocess_orderbook(self):
+        """Method to preprocess, format and compute auxiliary fields"""
+
+        # descrbibe outputs
+
+        try:
+            # Convert Date to datetime
+            self.__orderbook["Date"] = pd.to_datetime(self.__orderbook["Date"])
+
+            # Sort orderbook by date
+            self.__orderbook = self.__orderbook.sort_values(by="Date")
+
+            # Capitalize Ticker and Type [of instrument...]
+            self.__orderbook["Ticker"] = self.__orderbook["Ticker"].map(
+                lambda x: x.upper()
+            )
+            self.__orderbook["Type"] = self.__orderbook["Type"].map(lambda x: x.upper())
+
+            # Translate side: ["deposit", "buy"] -> 1 and ["withdrawal", "sell"] -> -1
+            self.__orderbook["Side"] = self.__orderbook["Side"].map(
                 lambda x: 1
                 if x.lower() in ["deposit", "buy"]
                 else (-1 if x.lower() in ["withdrawal", "sell"] else 0)
             )
 
-            # Determining the investment value
-            trades["Investment"] = trades.Quantity * trades.Price * trades.Side
-
-            if "CASH" not in trades.Name.to_list():
-                logger.warning(
-                    "No initial cash deposit. Calculations may be off as this assumes trading from a "
-                    "funded account"
-                )
-                console.print(
-                    "[red]No initial cash deposit. Calculations may be off as this assumes trading from a "
-                    "funded account[/red]."
-                )
-
-            # Make selling negative for cumulative sum of quantity later
-            trades["Quantity"] = trades["Quantity"] * trades["Side"]
-
-            # Should be simply extended for crypto/bonds etc
-            # Treat etf as stock for yfinance historical.
-            self._stock_tickers = list(
-                set(trades[trades.Type == "STOCK"].Name.to_list())
+            # Convert quantity to signed integer
+            self.__orderbook["Quantity"] = (
+                self.__orderbook["Quantity"] * self.__orderbook["Side"]
             )
-            self._etf_tickers = list(set(trades[trades.Type == "ETF"].Name.to_list()))
 
-            crypto_trades = trades[trades.Type == "CRYPTO"]
-            self._crypto_tickers = [
+            # Determining the investment/divestment value
+            self.__orderbook["Investment"] = (
+                self.__orderbook["Quantity"] * self.__orderbook["Price"]
+                - self.__orderbook["Fees"]
+            )
+
+            # Reformat crypto tickers to yfinance format (e.g. BTC -> BTC-USD)
+            crypto_trades = self.__orderbook[self.__orderbook.Type == "CRYPTO"]
+            self.__orderbook.loc[(self.__orderbook.Type == "CRYPTO"), "Ticker"] = [
                 f"{crypto}-{currency}"
-                for crypto, currency in zip(crypto_trades.Name, crypto_trades.Currency)
+                for crypto, currency in zip(
+                    crypto_trades.Ticker, crypto_trades.Currency
+                )
             ]
-            trades.loc[(trades.Type == "CRYPTO"), "Name"] = self._crypto_tickers
-            self._start_date = trades.Date[0]
 
-            # Copy pandas notation
-            self.empty = False
+            # Create tickers dictionary with structure {'Type': [Ticker]}
+            for ticker_type in set(self.__orderbook["Type"]):
+                self.tickers[ticker_type] = list(
+                    set(
+                        self.__orderbook[self.__orderbook["Type"].isin([ticker_type])][
+                            "Ticker"
+                        ]
+                    )
+                )
 
-            # Adjust date of trades
-            trades["Date"] = pd.DatetimeIndex(trades["Date"])
+            # Create list with tickers except cash
+            self.tickers_list = list(set(self.__orderbook["Ticker"]))
 
-        self.trades = trades
-        self.portfolio = pd.DataFrame()
+            # Save orderbook inception date
+            self.inception_date = self.__orderbook["Date"][0]
 
-    @log_start_end(log=logger)
-    def add_rf(self, risk_free_rate: float):
-        """Sets the risk free rate for calculation purposes"""
-        self.rf = risk_free_rate
+            # Save trades static data
+            self.static_data = self.__orderbook.pivot(
+                index="Ticker",
+                columns=[],
+                values=["Type", "Sector", "Industry", "Country"],
+            )
 
-    @log_start_end(log=logger)
-    def generate_holdings_from_trades(self, yfinance_use_close: bool = False):
-        """Generates portfolio data from list of trades"""
-        # Load historical prices from yahoo (option to get close instead of adj close)
-        self.get_yahoo_close_prices(use_close=yfinance_use_close)
-        self.get_crypto_yfinance()
+        except Exception:
+            console.print("Could not preprocess orderbook.")
 
-        # Pivot list of trades on Name.  This will give a multi-index df where the multiindex are the individual ticker
-        # and the values from the table
-        portfolio = self.trades.pivot(
+    def load_benchmark(self, ticker: str = "SPY", full_shares: bool = False):
+        """Adds benchmark dataframe
+
+        Args:
+            ticker (str): benchmark ticker to download data
+            full_shares (bool): whether to mimic the portfolio trades exactly (partial shares) or round down the
+            quantity to the nearest number.
+        """
+        self.benchmark_ticker = ticker
+        self.benchmark_historical_prices = yf.download(
+            ticker, start=self.inception_date, threads=False, progress=False
+        )["Adj Close"]
+        self.benchmark_returns = self.benchmark_historical_prices.pct_change().dropna()
+        self.benchmark_info = yf.Ticker(ticker).info
+        self.mimic_trades_for_benchmark(full_shares)
+
+    def mimic_trades_for_benchmark(self, full_shares: bool = False):
+        """Mimic trades from the orderbook based on chosen benchmark assuming partial shares"""
+        # Create dataframe to store benchmark trades
+        self.benchmark_trades = self.__orderbook[["Date", "Type", "Investment"]].copy()
+
+        # Set current price of benchmark
+        self.benchmark_trades["Last price"] = self.benchmark_historical_prices[-1]
+        self.benchmark_trades[["Benchmark Quantity", "Trade price"]] = float(0)
+
+        # Iterate over orderbook to replicate trades on benchmark
+        for index, trade in self.__orderbook.iterrows():
+            # Select date to search (if not in historical prices, get closest value)
+            if trade["Date"] not in self.benchmark_historical_prices.index:
+                date = self.benchmark_historical_prices.index.searchsorted(
+                    trade["Date"]
+                )
+            else:
+                date = trade["Date"]
+
+            # Populate benchmark orderbook trades
+            self.benchmark_trades["Trade price"][
+                index
+            ] = self.benchmark_historical_prices[date]
+
+            # Whether full shares are desired (thus no partial shares).
+            if full_shares:
+                self.benchmark_trades["Benchmark Quantity"][index] = np.floor(
+                    trade["Investment"] / self.benchmark_trades["Trade price"][index]
+                )
+            else:
+                self.benchmark_trades["Benchmark Quantity"][index] = (
+                    trade["Investment"] / self.benchmark_trades["Trade price"][index]
+                )
+
+        self.benchmark_trades["Benchmark Investment"] = (
+            self.benchmark_trades["Trade price"]
+            * self.benchmark_trades["Benchmark Quantity"]
+        )
+        self.benchmark_trades["Benchmark Value"] = (
+            self.benchmark_trades["Last price"]
+            * self.benchmark_trades["Benchmark Quantity"]
+        )
+        self.benchmark_trades["Benchmark % Return"] = (
+            self.benchmark_trades["Benchmark Value"]
+            / self.benchmark_trades["Benchmark Investment"]
+            - 1
+        )
+        self.benchmark_trades["Benchmark Abs Return"] = (
+            self.benchmark_trades["Benchmark Value"]
+            - self.benchmark_trades["Benchmark Investment"]
+        )
+        # TODO: To add alpha here, we must pull prices from original trades and get last price
+        # for each of those trades. Then just calculate returns and compare to benchmark
+        self.benchmark_trades.fillna(0, inplace=True)
+
+        if full_shares:
+            console.print(
+                "Note that with full shares (-s) enabled, there will be a mismatch between how much you invested in the"
+                f" portfolio ({round(sum(self.portfolio_trades['Portfolio Investment']), 2)}) and how much you invested"
+                f" in the benchmark ({round(sum(self.benchmark_trades['Benchmark Investment']), 2)})."
+            )
+
+    def generate_portfolio_data(self):
+        """Generates portfolio data from orderbook"""
+        self.load_portfolio_historical_prices()
+        self.populate_historical_trade_data()
+        self.calculate_value()
+
+        # Determine the returns, replace inf values with NaN and then drop any missing values
+        for _, data in self.tickers.items():
+            self.historical_trade_data[
+                pd.MultiIndex.from_product([["Returns"], data])
+            ] = (
+                self.historical_trade_data["End Value"][data]
+                / self.historical_trade_data["Initial Value"][data]
+                - 1
+            )
+
+        self.historical_trade_data.loc[:, ("Returns", "Total")] = (
+            self.historical_trade_data["End Value"]["Total"]
+            / self.historical_trade_data["Initial Value"]["Total"]
+            - 1
+        )
+
+        self.returns = self.historical_trade_data["Returns"]["Total"]
+        self.returns.replace([np.inf, -np.inf], np.nan, inplace=True)
+        self.returns = self.returns.dropna()
+
+        # Determine invested amount, relative and absolute return based on last close
+        last_price = self.historical_trade_data["Close"].iloc[-1]
+
+        self.portfolio_returns = pd.DataFrame(self.__orderbook["Date"])
+
+        self.portfolio_trades = self.__orderbook.copy()
+        self.portfolio_trades[
+            [
+                "Portfolio Investment",
+                "Close",
+                "Portfolio Value",
+                "% Portfolio Return",
+                "Abs Portfolio Return",
+            ]
+        ] = float(0)
+
+        for index, trade in self.__orderbook.iterrows():
+            self.portfolio_trades["Close"][index] = last_price[trade["Ticker"]]
+            self.portfolio_trades["Portfolio Investment"][index] = trade["Investment"]
+            self.portfolio_trades["Portfolio Value"][index] = (
+                self.portfolio_trades["Close"][index] * trade["Quantity"]
+            )
+            self.portfolio_trades["% Portfolio Return"][index] = (
+                self.portfolio_trades["Portfolio Value"][index]
+                / self.portfolio_trades["Portfolio Investment"][index]
+            ) - 1
+            self.portfolio_trades["Abs Portfolio Return"].loc[index] = (
+                self.portfolio_trades["Portfolio Value"][index]
+                - self.portfolio_trades["Portfolio Investment"][index]
+            )
+
+    def load_portfolio_historical_prices(self, use_close: bool = False):
+        """Loads historical adj close prices for tickers in list of trades"""
+
+        for ticker_type, data in self.tickers.items():
+            if ticker_type in ["STOCK", "ETF", "CRYPTO"]:
+                # Download yfinance data
+                price_data = yf.download(
+                    data, start=self.inception_date, progress=False
+                )["Close" if use_close or ticker_type == "CRYPTO" else "Adj Close"]
+
+                # Set up column name if only 1 ticker (pd.DataFrame only does this if >1 ticker)
+                if len(data) == 1:
+                    price_data = pd.DataFrame(price_data)
+                    price_data.columns = data
+
+                # Add to historical_prices dataframe
+                self.portfolio_historical_prices = pd.concat(
+                    [self.portfolio_historical_prices, price_data], axis=1
+                )
+            else:
+                console.print("Type not supported in the orderbook.")
+
+            # Fill missing values with last known price
+            self.portfolio_historical_prices.fillna(method="ffill", inplace=True)
+
+    def populate_historical_trade_data(self):
+        """Create a new dataframe to store historical prices by ticker"""
+        trade_data = self.__orderbook.pivot(
             index="Date",
-            columns="Name",
+            columns="Ticker",
             values=[
                 "Type",
                 "Sector",
@@ -924,284 +1102,87 @@ class Portfolio:
                 "Currency",
             ],
         )
+
+        # Make historical prices columns a multi-index. This helps the merging.
+        self.portfolio_historical_prices.columns = pd.MultiIndex.from_product(
+            [["Close"], self.portfolio_historical_prices.columns]
+        )
+
         # Merge with historical close prices (and fillna)
-        portfolio = pd.merge(
-            portfolio,
-            self._historical_prices,
+        trade_data = pd.merge(
+            trade_data,
+            self.portfolio_historical_prices,
             how="right",
             left_index=True,
             right_index=True,
         ).fillna(0)
 
-        is_there_stock_or_etf = self._stock_tickers + self._etf_tickers
+        # Accumulate quantity held by trade date
+        trade_data["Quantity"] = trade_data["Quantity"].cumsum()
 
-        # Merge with crypto
-        if self._crypto_tickers:
-            portfolio = pd.merge(
-                portfolio,
-                self._historical_crypto,
-                how="left" if is_there_stock_or_etf else "right",
-                left_index=True,
-                right_index=True,
-            ).fillna(0)
-        else:
-            portfolio[pd.MultiIndex.from_product([["Close"], ["crypto"]])] = 0
+        trade_data["Investment"] = trade_data["Investment"].cumsum()
 
-        # Add cumulative Quantity held
-        portfolio["Quantity"] = portfolio["Quantity"].cumsum()
+        trade_data.loc[:, ("Investment", "Total")] = trade_data["Investment"][
+            self.tickers_list
+        ].sum(axis=1)
 
-        # Add holdings for each 'type'. Will check for tickers matching type.
+        self.historical_trade_data = trade_data
 
-        if self._stock_tickers:
-            # Find end of day holdings for each stock
-            portfolio[
-                pd.MultiIndex.from_product([["StockHoldings"], self._stock_tickers])
-            ] = (
-                portfolio["Quantity"][self._stock_tickers]
-                * portfolio["Close"][self._stock_tickers]
-            )
-        else:
-            portfolio[pd.MultiIndex.from_product([["StockHoldings"], ["temp"]])] = 0
+    def calculate_value(self):
+        """Calculate value from historical data"""
+        trade_data = self.historical_trade_data
 
-        if self._etf_tickers:
-            # Find end of day holdings for each ETF
-            portfolio[
-                pd.MultiIndex.from_product([["ETFHoldings"], self._etf_tickers])
-            ] = (
-                portfolio["Quantity"][self._etf_tickers]
-                * portfolio["Close"][self._etf_tickers]
-            )
-        else:
-            portfolio[pd.MultiIndex.from_product([["ETFHoldings"], ["temp"]])] = 0
-        if self._crypto_tickers:
-            # Find end of day holdings for each stock
-            portfolio[
-                pd.MultiIndex.from_product([["CryptoHoldings"], self._crypto_tickers])
-            ] = (
-                portfolio["Quantity"][self._crypto_tickers]
-                * portfolio["Close"][self._crypto_tickers]
-            )
-        else:
-            portfolio[pd.MultiIndex.from_product([["CryptoHoldings"], ["temp"]])] = 0
+        # For each type [STOCK, ETF, etc] calculate value value by trade date
+        # and add it to historical_trade_data
 
-        # Find amount of cash held in account. If CASH does not exist within the Orderbook,
-        # the cash hold will equal the invested amount. Otherwise, the cash hold is defined as deposited cash -
-        # stocks bought + stocks sold
-        if "CASH" not in portfolio["Investment"]:
-            portfolio["CashHold"] = (
-                portfolio["Investment"][
-                    self._stock_tickers + self._etf_tickers + self._crypto_tickers
-                ].sum(axis=1)
-                + portfolio["Fees"].sum(axis=1)
-                + portfolio["Premium"].sum(axis=1)
-            )
-        else:
-            portfolio["CashHold"] = portfolio["Investment"]["CASH"] - portfolio[
-                "Investment"
-            ][self._stock_tickers + self._etf_tickers + self._crypto_tickers].sum(
-                axis=1
+        # End Value
+        for ticker_type, data in self.tickers.items():
+            trade_data[pd.MultiIndex.from_product([["End Value"], data])] = (
+                trade_data["Quantity"][data] * trade_data["Close"][data]
             )
 
-        # Subtract Fees or Premiums from cash holdings
-        portfolio["CashHold"] = (
-            portfolio["CashHold"]
-            - portfolio["Fees"].sum(axis=1)
-            - portfolio["Premium"].sum(axis=1)
-        )
-        portfolio["CashHold"] = portfolio["CashHold"].cumsum()
+        trade_data.loc[:, ("End Value", "Total")] = trade_data["End Value"][
+            self.tickers_list
+        ].sum(axis=1)
 
-        portfolio["TotalHoldings"] = (
-            portfolio["CashHold"]
-            + portfolio["StockHoldings"].sum(axis=1)
-            + portfolio["ETFHoldings"].sum(axis=1)
-            + portfolio["CryptoHoldings"].sum(axis=1)
-        )
+        self.portfolio_value = trade_data["End Value"]["Total"]
 
-        self.portfolio_value = portfolio["TotalHoldings"]
+        for ticker_type, data in self.tickers.items():
+            self.itemized_value[ticker_type] = trade_data["End Value"][data].sum(axis=1)
 
-        # Determine the returns, replace inf values with NaN and then drop any missing values
-        returns = portfolio["TotalHoldings"].pct_change()
-        returns.replace([np.inf, -np.inf], np.nan, inplace=True)
-        self.returns = returns.dropna()
+        # Initial Value = Cumulative Investment - (Previous End Value - Previous Initial Value)
+        trade_data[
+            pd.MultiIndex.from_product([["Initial Value"], self.tickers_list])
+        ] = 0
 
-        # Update all period
-        portfolio_helper.PERIODS_DAYS["all"] = len(self.returns)
-
-        self.ItemizedHoldings = pd.DataFrame(
-            {
-                "Stocks": portfolio["StockHoldings"][self._stock_tickers].sum(axis=1),
-                "ETFs": portfolio["ETFHoldings"][self._etf_tickers].sum(axis=1),
-                "Crypto": portfolio["CryptoHoldings"][self._crypto_tickers].sum(axis=1),
-                "Cash": portfolio["CashHold"],
-            }
-        )
-
-        # Determine invested amount, relative and absolute return based on last close
-        self.last_price = portfolio["Close"].iloc[-1]
-        self.portfolio_trades = self.trades.copy()
-        self.portfolio_trades[
-            [
-                "Portfolio Investment",
-                "Close",
-                "Portfolio Value",
-                "% Portfolio Return",
-                "Abs Portfolio Return",
-            ]
-        ] = float(0)
-
-        for index, trade in self.trades.iterrows():
-            if trade["Type"] != "CASH":
-                self.portfolio_trades["Close"][index] = self.last_price[trade["Name"]]
-                self.portfolio_trades["Portfolio Investment"][index] = trade[
-                    "Investment"
-                ]
-                self.portfolio_trades["Portfolio Value"][index] = (
-                    self.portfolio_trades["Close"][index] * trade["Quantity"]
-                )
-                self.portfolio_trades["% Portfolio Return"][index] = (
-                    self.portfolio_trades["Portfolio Value"][index]
-                    / self.portfolio_trades["Portfolio Investment"][index]
-                ) - 1
-                self.portfolio_trades["Abs Portfolio Return"].loc[index] = (
-                    self.portfolio_trades["Portfolio Value"][index]
-                    - self.portfolio_trades["Portfolio Investment"][index]
-                )
-
-        self.portfolio = portfolio.copy()
-
-    # TODO: Add back dividends
-    @log_start_end(log=logger)
-    def get_yahoo_close_prices(self, use_close: bool = False):
-        """Gets historical adj close prices for tickers in list of trades"""
-        tickers_to_download = self._stock_tickers + self._etf_tickers
-        if tickers_to_download:
-            if not use_close:
-                self._historical_prices = yf.download(
-                    tickers_to_download, start=self._start_date, progress=False
-                )["Adj Close"]
+        for i, date in enumerate(trade_data.index):
+            if i == 0:
+                for t in self.tickers_list:
+                    trade_data.at[date, ("Initial Value", t)] = trade_data.iloc[i][
+                        "Investment"
+                    ][t]
             else:
-                self._historical_prices = yf.download(
-                    tickers_to_download, start=self._start_date, progress=False
-                )["Close"]
-
-            # Adjust for case of only 1 ticker
-            if len(tickers_to_download) == 1:
-                self._historical_prices = pd.DataFrame(self._historical_prices)
-                self._historical_prices.columns = tickers_to_download
-
-        else:
-            data_for_index_purposes = yf.download(
-                "AAPL", start=self._start_date, progress=False
-            )["Adj Close"]
-            self._historical_prices = pd.DataFrame()
-            self._historical_prices.index = data_for_index_purposes.index
-            self._historical_prices["stock"] = 0
-
-        self._historical_prices["CASH"] = 1
-
-        # Make columns a multi-index.  This helps the merging.
-        self._historical_prices.columns = pd.MultiIndex.from_product(
-            [["Close"], self._historical_prices.columns]
-        )
-
-    @log_start_end(log=logger)
-    def get_crypto_yfinance(self):
-        """Gets historical coin data from yfinance"""
-        if self._crypto_tickers:
-            self._historical_crypto = yf.download(
-                self._crypto_tickers, start=self._start_date, progress=False
-            )["Close"]
-
-            if len(self._crypto_tickers) == 1:
-                self._historical_crypto = pd.DataFrame(self._historical_crypto)
-                self._historical_crypto.columns = self._crypto_tickers
-
-            self._historical_crypto.columns = pd.MultiIndex.from_product(
-                [["Close"], self._crypto_tickers]
-            )
-
-        else:
-            self._historical_crypto = pd.DataFrame()
-            self._historical_crypto[
-                pd.MultiIndex.from_product([["Close"], ["crypto"]])
-            ] = 0
-
-    @log_start_end(log=logger)
-    def add_benchmark(self, benchmark: str):
-        """Adds benchmark dataframe"""
-        self.benchmark = yf.download(benchmark, start=self._start_date, progress=False)[
-            "Adj Close"
-        ]
-        self.benchmark_returns = self.benchmark.pct_change().dropna()
-
-        self.benchmark_info = yf.Ticker(benchmark).info
-
-        self.benchmark_ticker = benchmark
-
-    @log_start_end(log=logger)
-    def mimic_portfolio_trades_for_benchmark(self, full_shares: bool = False):
-        """Mimic trades from the orderbook as good as possible based on chosen benchmark. The assumption is that the
-        benchmark is always tradable and allows for partial shares. This eliminates the need to keep track of a cash
-        position due to a mismatch in trades"""
-
-        if full_shares:
-            console.print(
-                "[red]Note that without the partial shares assumption, the absolute return will be incorrect "
-                "due to the model not taking into account the remaining cash position.[/red]"
-            )
-
-        self.benchmark_trades = self.trades[["Date", "Type", "Investment"]].copy()
-        self.benchmark_trades["Close"] = self.benchmark[-1]
-        self.benchmark_trades[
-            [
-                "Benchmark Quantity",
-                "Price",
-                "Benchmark Investment",
-                "Benchmark Value",
-                "% Benchmark Return",
-                "Abs Benchmark Return",
-            ]
-        ] = float(0)
-
-        for index, trade in self.trades.iterrows():
-            if trade["Type"] != "CASH":
-                if trade["Date"] not in self.benchmark.index:
-                    date = self.benchmark.index.searchsorted(trade["Date"])
-                else:
-                    date = trade["Date"]
-
-                self.benchmark_trades["Price"][index] = self.benchmark[date]
-
-                if not full_shares:
-                    self.benchmark_trades["Benchmark Quantity"][index] = (
-                        trade["Investment"] / self.benchmark_trades["Price"][index]
-                    )
-                else:
-                    self.benchmark_trades["Benchmark Quantity"][index] = np.floor(
-                        trade["Investment"] / self.benchmark_trades["Price"][index]
+                for t in self.tickers_list:
+                    trade_data.at[date, ("Initial Value", t)] = (
+                        +trade_data.iloc[i - 1]["End Value"][t]
+                        + trade_data.iloc[i]["Investment"][t]
+                        - trade_data.iloc[i - 1]["Investment"][t]
                     )
 
-                self.benchmark_trades["Benchmark Investment"][index] = (
-                    self.benchmark_trades["Price"][index]
-                    * self.benchmark_trades["Benchmark Quantity"][index]
-                )
-                self.benchmark_trades["Benchmark Value"][index] = (
-                    self.benchmark_trades["Close"][index]
-                    * self.benchmark_trades["Benchmark Quantity"][index]
-                )
-                self.benchmark_trades["% Benchmark Return"][index] = (
-                    self.benchmark_trades["Benchmark Value"][index]
-                    / self.benchmark_trades["Benchmark Investment"][index]
-                ) - 1
-                self.benchmark_trades["Abs Benchmark Return"][index] = (
-                    self.benchmark_trades["Benchmark Value"][index]
-                    - self.benchmark_trades["Benchmark Investment"][index]
-                )
+        trade_data.loc[:, ("Initial Value", "Total")] = trade_data["Initial Value"][
+            self.tickers_list
+        ].sum(axis=1)
 
-    # pylint:disable=no-member
-    @log_start_end(log=logger)
+        self.historical_trade_data = trade_data
+
+    def calculate_reserves(self):
+        """_summary_"""
+        # TODO: Add back cash dividends and deduct exchange costs
+        console.print("Still has to be build.")
+
     def calculate_allocations(self):
         """Determine allocations based on assets, sectors, countries and regional."""
+
         # Determine asset allocation
         (
             self.benchmark_assets_allocation,
@@ -1233,61 +1214,14 @@ class Portfolio:
             self.portfolio_trades
         )
 
-    # pylint:disable=no-member
-    @classmethod
-    @log_start_end(log=logger)
-    def from_csv(cls, csv_path: str):
-        """Class method that generates a portfolio object from a csv file
+    def set_risk_free_rate(self, risk_free_rate: float):
+        """Sets risk free rate
 
         Parameters
         ----------
-        csv_path: str
-            Path to csv of trade data
-
-        Returns
-        -------
-        Portfolio
-            Initialized portfolio object
+        risk_free (float): risk free rate in decimal format
         """
-        # Load in a list of trades
-        trades = pd.read_csv(csv_path)
-
-        # Convert the date to what pandas understands
-        trades.Date = pd.to_datetime(trades.Date)
-
-        # Sort by date to make more sense of trades
-        trades = trades.sort_values(by="Date")
-
-        # Build the portfolio object
-        return cls(trades)
-
-    # pylint:disable=no-member
-    @classmethod
-    @log_start_end(log=logger)
-    def from_xlsx(cls, xlsx_path: str):
-        """Class method that generates a portfolio object from a xlsx file
-
-        Parameters
-        ----------
-        xlsx_path: str
-            Path to xlsx of trade data
-
-        Returns
-        -------
-        Portfolio
-            Initialized portfolio object
-        """
-        # Load in a list of trades
-        trades = pd.read_excel(xlsx_path)
-
-        # Convert the date to what pandas understands
-        trades.Date = pd.to_datetime(trades.Date)
-
-        # Sort by date to make more sense of trades
-        trades = trades.sort_values(by="Date")
-
-        # Build the portfolio object
-        return cls(trades)
+        self.risk_free_rate = risk_free_rate
 
     @log_start_end(log=logger)
     def get_r2_score(self) -> pd.DataFrame:
@@ -1455,14 +1389,14 @@ class Portfolio:
             vals.append(
                 [
                     round(
-                        portfolio_helper.sharpe_ratio(
+                        sharpe_ratio(
                             portfolio_helper.filter_df_by_period(self.returns, period),
                             risk_free_rate,
                         ),
                         3,
                     ),
                     round(
-                        portfolio_helper.sharpe_ratio(
+                        sharpe_ratio(
                             portfolio_helper.filter_df_by_period(
                                 self.benchmark_returns, period
                             ),
@@ -1495,14 +1429,14 @@ class Portfolio:
             vals.append(
                 [
                     round(
-                        portfolio_helper.sortino_ratio(
+                        sortino_ratio(
                             portfolio_helper.filter_df_by_period(self.returns, period),
                             risk_free_rate,
                         ),
                         3,
                     ),
                     round(
-                        portfolio_helper.sortino_ratio(
+                        sortino_ratio(
                             portfolio_helper.filter_df_by_period(
                                 self.benchmark_returns, period
                             ),
@@ -1530,13 +1464,13 @@ class Portfolio:
             vals.append(
                 [
                     round(
-                        portfolio_helper.get_maximum_drawdown(
+                        get_maximum_drawdown(
                             portfolio_helper.filter_df_by_period(self.returns, period)
                         ),
                         3,
                     ),
                     round(
-                        portfolio_helper.get_maximum_drawdown(
+                        get_maximum_drawdown(
                             portfolio_helper.filter_df_by_period(
                                 self.benchmark_returns, period
                             )
@@ -1745,3 +1679,134 @@ class Portfolio:
         pf_period_df = get_profit_factor(self.portfolio_trades)
 
         return pf_period_df
+
+
+def rolling_volatility(returns: pd.DataFrame, length: int) -> pd.DataFrame:
+    """Get rolling volatility
+
+    Parameters
+    ----------
+    returns : pd.DataFrame
+        Returns series
+    length : int
+        Rolling window to use
+
+    Returns
+    -------
+    pd.DataFrame
+        Rolling volatility DataFrame
+    """
+    return returns.rolling(length).std()
+
+
+def sharpe_ratio(return_series: pd.Series, risk_free_rate: float) -> float:
+    """Get sharpe ratio
+
+    Parameters
+    ----------
+    return_series : pd.Series
+        Returns of the portfolio
+    risk_free_rate: float
+        Value to use for risk free rate
+
+    Returns
+    -------
+    float
+        Sharpe ratio
+    """
+    mean = return_series.mean() - risk_free_rate
+    sigma = return_series.std()
+
+    return mean / sigma
+
+
+def rolling_sharpe(
+    returns: pd.DataFrame, risk_free_rate: float, length: int
+) -> pd.DataFrame:
+    """Get rolling sharpe ratio
+
+    Parameters
+    ----------
+    returns : pd.DataFrame
+        Returns series
+    risk_free_rate : float
+        Risk free rate
+    length : int
+        Rolling window to use
+
+    Returns
+    -------
+    pd.DataFrame
+        Rolling sharpe ratio DataFrame
+    """
+    rolling_sharpe_df = returns.rolling(length).apply(
+        lambda x: (x.mean() - risk_free_rate) / x.std()
+    )
+    return rolling_sharpe_df
+
+
+def sortino_ratio(return_series: pd.Series, risk_free_rate: float) -> float:
+    """Get sortino ratio
+
+    Parameters
+    ----------
+    return_series : pd.Series
+        Returns of the portfolio
+    risk_free_rate: float
+        Value to use for risk free rate
+
+    Returns
+    -------
+    float
+        Sortino ratio
+    """
+    mean = return_series.mean() - risk_free_rate
+    std_neg = return_series[return_series < 0].std()
+
+    return mean / std_neg
+
+
+def rolling_sortino(
+    returns: pd.DataFrame, risk_free_rate: float, length: int
+) -> pd.DataFrame:
+    """Get rolling sortino ratio
+
+    Parameters
+    ----------
+    returns : pd.DataFrame
+        Returns series
+    risk_free_rate : float
+        Risk free rate
+    length : int
+        Rolling window to use
+
+    Returns
+    -------
+    pd.DataFrame
+        Rolling sortino ratio DataFrame
+    """
+    rolling_sortino_df = returns.rolling(length).apply(
+        lambda x: (x.mean() - risk_free_rate) / x[x < 0].std()
+    )
+
+    return rolling_sortino_df
+
+
+def get_maximum_drawdown(return_series: pd.Series) -> float:
+    """Get maximum drawdown
+
+    Parameters
+    ----------
+    return_series : pd.Series
+        Returns of the portfolio
+
+    Returns
+    -------
+    float
+        maximum drawdown
+    """
+    comp_ret = (return_series + 1).cumprod()
+    peak = comp_ret.expanding(min_periods=1).max()
+    dd = (comp_ret / peak) - 1
+
+    return dd.min()
