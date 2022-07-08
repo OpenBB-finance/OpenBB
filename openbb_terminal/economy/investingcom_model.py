@@ -5,7 +5,6 @@ import logging
 import argparse
 
 import datetime
-from time import time
 import pandas as pd
 import math
 import pytz
@@ -14,7 +13,6 @@ import investpy
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import log_and_raise
 from openbb_terminal import helper_funcs
-from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
