@@ -126,12 +126,14 @@ class PortfolioController(BaseController):
             ]
         )
 
-        self.portfolio_name = ""
-        self.benchmark_name = ""
+        self.portfolio_name: str = ""
+        self.benchmark_name: str = ""
         self.original_benchmark_name = ""
         self.risk_free_rate = 0
         self.portlist: List[str] = os.listdir(self.DEFAULT_HOLDINGS_PATH)
-        self.portfolio = None
+        self.portfolio: portfolio_model.PortfolioModel = (
+            portfolio_model.PortfolioModel()
+        )
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
@@ -310,7 +312,7 @@ class PortfolioController(BaseController):
 
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
-        if ns_parser and ns_parser.file and self.portfolio is not None:
+        if ns_parser and ns_parser.file:
             if ns_parser.file in self.DATA_HOLDINGS_FILES:
                 file_location = self.DATA_HOLDINGS_FILES[ns_parser.file]
             else:
@@ -369,7 +371,7 @@ class PortfolioController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         if ns_parser and self.portfolio is not None:
-            # needs to be checked since we want to use the start date of the portfolio when comparing with benchmark
+            # Needs to be checked since we want to use the start date of the portfolio when comparing with benchmark
             if self.portfolio_name:
                 chosen_benchmark = " ".join(ns_parser.benchmark)
 
@@ -382,7 +384,7 @@ class PortfolioController(BaseController):
                 # self.portfolio.add_benchmark(benchmark_ticker)
                 self.portfolio.load_benchmark(benchmark_ticker)
 
-                self.benchmark_name = self.portfolio.benchmark_info["longName"]
+                self.benchmark_name = chosen_benchmark
 
                 console.print(
                     f"[bold]\nBenchmark:[/bold] {self.benchmark_name} ({benchmark_ticker})"
