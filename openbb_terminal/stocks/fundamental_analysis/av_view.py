@@ -90,14 +90,14 @@ def display_income_statement(
     export: str
         Format to export data
     """
-    df_income, income_plot_data = av_model.get_income_statements(ticker, limit, quarterly, ratios)
+    df_income = av_model.get_income_statements(ticker, limit, quarterly, ratios, True if plot else False)
 
     if df_income.empty:
         return
 
     if plot:
         rows_plot = len(plot)
-        income_plot_data = income_plot_data.transpose()
+        income_plot_data = df_income.transpose()
         income_plot_data.columns = income_plot_data.columns.str.lower()
 
         if rows_plot == 1:
@@ -114,17 +114,17 @@ def display_income_statement(
                 axes[i].set_title(plot[i].replace("_", " "))
             theme.style_primary_axis(axes[0])
             fig.autofmt_xdate()
+    else:
+        indexes = df_income.index
+        new_indexes = [camel_case_split(ind) for ind in indexes]
+        df_income.index = new_indexes
 
-    indexes = df_income.index
-    new_indexes = [camel_case_split(ind) for ind in indexes]
-    df_income.index = new_indexes
-
-    print_rich_table(
-        df_income,
-        headers=list(df_income.columns),
-        title=f"{ticker} Income Statement" if not ratios else f"{'QoQ' if quarterly else 'YoY'} Change of {ticker} Income Statement",
-        show_index=True,
-    )
+        print_rich_table(
+            df_income,
+            headers=list(df_income.columns),
+            title=f"{ticker} Income Statement" if not ratios else f"{'QoQ' if quarterly else 'YoY'} Change of {ticker} Income Statement",
+            show_index=True,
+        )
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "income", df_income)
 
@@ -151,14 +151,14 @@ def display_balance_sheet(
     export: str
         Format to export data
     """
-    df_balance, balance_plot_data = av_model.get_balance_sheet(ticker, limit, quarterly, ratios)
+    df_balance = av_model.get_balance_sheet(ticker, limit, quarterly, ratios, True if plot else False)
 
     if df_balance.empty:
         return
 
     if plot:
         rows_plot = len(plot)
-        balance_plot_data = balance_plot_data.transpose()
+        balance_plot_data = df_balance.transpose()
         balance_plot_data.columns = balance_plot_data.columns.str.lower()
 
         if rows_plot == 1:
@@ -176,16 +176,18 @@ def display_balance_sheet(
             theme.style_primary_axis(axes[0])
             fig.autofmt_xdate()
 
-    indexes = df_balance.index
-    new_indexes = [camel_case_split(ind) for ind in indexes]
-    df_balance.index = new_indexes
+    else:
 
-    print_rich_table(
-        df_balance,
-        headers=list(df_balance.columns),
-        title=f"{ticker} Balance Sheet" if not ratios else f"{'QoQ' if quarterly else 'YoY'} Change of {ticker} Balance Sheet",
-        show_index=True,
-    )
+        indexes = df_balance.index
+        new_indexes = [camel_case_split(ind) for ind in indexes]
+        df_balance.index = new_indexes
+
+        print_rich_table(
+            df_balance,
+            headers=list(df_balance.columns),
+            title=f"{ticker} Balance Sheet" if not ratios else f"{'QoQ' if quarterly else 'YoY'} Change of {ticker} Balance Sheet",
+            show_index=True,
+        )
 
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "balance", df_balance
