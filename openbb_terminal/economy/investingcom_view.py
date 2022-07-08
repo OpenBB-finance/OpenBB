@@ -69,7 +69,10 @@ def display_yieldcurve(
         df = df.replace(float("NaN"), "")
 
         if df.empty:
-            console.print(f"[red]Yield data not found for {country.title()}[/red].\n")
+            console.print(
+                f"[red]Yield data not found for \
+                          {country.title()}[/red].\n"
+            )
             return
         if external_axes is None:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)

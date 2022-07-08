@@ -101,15 +101,15 @@ def get_economic_calendar(
         return day + "/" + month + "/" + year
 
     if from_date and not to_date:
-        to_date = format_date(from_date + datetime.timedelta(days=7))
-        from_date = format_date(from_date)
+        to_date_string = format_date(from_date + datetime.timedelta(days=7))
+        from_date_string = format_date(from_date)
     elif to_date and not from_date:
-        from_date = format_date(to_date + datetime.timedelta(days=-7))
-        to_date = format_date(to_date)
+        from_date_string = format_date(to_date + datetime.timedelta(days=-7))
+        to_date_string = format_date(to_date)
     else:
         today = datetime.date.today()
-        from_date = format_date(today)
-        to_date = format_date(today + datetime.timedelta(days=7))
+        from_date_string = format_date(today)
+        to_date_string = format_date(today + datetime.timedelta(days=7))
 
     # Get user time zone in GMT offset format
     user_time_zone = pytz.timezone(helper_funcs.get_user_timezone())
@@ -130,19 +130,18 @@ def get_economic_calendar(
             countries,
             importances,
             categories,
-            from_date,
-            to_date,
+            from_date_string,
+            to_date_string,
         )
     except Exception:
-        time_zone = None
         data = investpy.news.economic_calendar(
-            time_zone,
+            None,
             time_filter,
             countries,
             importances,
             categories,
-            from_date,
-            to_date,
+            from_date_string,
+            to_date_string,
         )
 
     if not data.empty:
