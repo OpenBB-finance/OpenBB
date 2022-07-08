@@ -107,15 +107,15 @@ find out about shares that failed to deliver.
 for example unusual volumes, overbought or that include analyst upgrades, and be able to compare valuations and performance.
 - <a href="insider" target="_blank">Introduction to Insider Trading</a>: explains what large insiders, e.g. a CEO of a company, is buying the chosen company and insider trading activity for the chosen company.
 - <a href="government" target="_blank">Introduction to Government</a>: gives insights in what the House of Congress is trading and the corporate lobbying that is performed.
-- <a href="/OpenBBTerminal/terminal/common/behavioural_analysis" target="_blank">Introduction to Behavioural Analysis</a>: gives the abilities to discover how different social media platforms view the chosen company and what is written about them.
+- <a href="/OpenBBTerminal/terminal/common/ba" target="_blank">Introduction to Behavioural Analysis</a>: gives the abilities to discover how different social media platforms view the chosen company and what is written about them.
 - <a href="comparison_analysis" target="_blank">Introduction to Comparison Analysis</a>: have the ability to compare companies based on, among other things, correlation, financial statements, sentiment, valuations and performance.
 - <a href="fundamental_analysis" target="_blank">Introduction to Fundamental Analysis</a>: look into the fundamentals of a chosen company including financial statements, SEC filings, investing scores, discounted cash flow analysis (DCF),
 sustainability scores and key ratios.
 - <a href="due_diligence" target="_blank">Introduction to Due Diligence</a>: explore analyst recommendations, ratings over time, price targets and quarterly and yearly earnings estimates.
 - <a href="backtesting" target="_blank">Introduction to Strategy Backtesting</a>: explore back testing strategies based on technical indicators.
-- <a href="/OpenBBTerminal/terminal/common/technical_analysis" target="_blank">Introduction to Technical Analysis</a>: analysis the chosen company's historical data extensively with moving averages and momentum, trend, volatility and volume indicators.
-- <a href="/OpenBBTerminal/terminal/common/quantitative_analysis" target="_blank">Introduction to Quantitative Analysis</a>: delve deeper in the historical data with quantitative methods including cumulative distribution function (CDF), (conditional) Value at Risk and rolling ratios.
-- <a href="/OpenBBTerminal/terminal/common/prediction_techniques" target="_blank">Introduction to Prediction Techniques</a>: apply advanced AI and Machine Learning models to form prediction of future stock prices including Recurrent Neural Network (RNN),
+- <a href="/OpenBBTerminal/terminal/common/ta" target="_blank">Introduction to Technical Analysis</a>: analysis the chosen company's historical data extensively with moving averages and momentum, trend, volatility and volume indicators.
+- <a href="/OpenBBTerminal/terminal/common/qa" target="_blank">Introduction to Quantitative Analysis</a>: delve deeper in the historical data with quantitative methods including cumulative distribution function (CDF), (conditional) Value at Risk and rolling ratios.
+- <a href="/OpenBBTerminal/terminal/common/pred" target="_blank">Introduction to Prediction Techniques</a>: apply advanced AI and Machine Learning models to form prediction of future stock prices including Recurrent Neural Network (RNN),
 Autoregressive Integrated Moving Average (ARIMA) and Monte Carlo forecasting.
 
 ## Examples

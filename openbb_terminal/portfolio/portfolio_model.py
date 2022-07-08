@@ -17,7 +17,7 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.portfolio import portfolio_helper, allocation_model
 from openbb_terminal.rich_config import console
 
-# pylint: disable=E1136,W0201,R0902
+# pylint: disable=E1136,W0201,R0902,C0302
 # pylint: disable=unsupported-assignment-operation
 logger = logging.getLogger(__name__)
 cg = CoinGeckoAPI()
@@ -26,7 +26,7 @@ pd.options.mode.chained_assignment = None
 
 
 @log_start_end(log=logger)
-def get_rolling_beta(
+def get_rolling_beta2(
     df: pd.DataFrame, hist: pd.DataFrame, mark: pd.DataFrame, n: pd.DataFrame
 ) -> pd.DataFrame:
     """Turns the holdings of a portfolio into a rolling beta dataframe
@@ -182,6 +182,615 @@ def calculate_drawdown(input_series: pd.Series, is_returns: bool = False) -> pd.
     return drawdown
 
 
+@log_start_end(log=logger)
+def get_gaintopain_ratio(returns: pd.DataFrame, benchmark_returns: pd.DataFrame):
+    """Gets Pain-to-Gain ratio
+
+    Parameters
+    ----------
+    returns: pd.Series
+        Series of portfolio returns
+    benchmark_returns: pd.Series
+        Series of benchmark returns
+
+    Returns
+    -------
+    pd.DataFrame
+            DataFrame of the portfolio's gain-to-pain ratio
+    """
+    vals = list()
+    for period in portfolio_helper.PERIODS:
+        period_return = portfolio_helper.filter_df_by_period(returns, period)
+        period_bench_return = portfolio_helper.filter_df_by_period(
+            benchmark_returns, period
+        )
+        if not period_return.empty:
+            vals.append(
+                [
+                    round(
+                        (
+                            (1 + period_return.shift(periods=1, fill_value=0)).cumprod()
+                            - 1
+                        ).iloc[-1]
+                        / portfolio_helper.get_maximum_drawdown(period_return),
+                        3,
+                    ),
+                    round(
+                        (
+                            (
+                                1 + period_bench_return.shift(periods=1, fill_value=0)
+                            ).cumprod()
+                            - 1
+                        ).iloc[-1]
+                        / portfolio_helper.get_maximum_drawdown(period_bench_return),
+                        3,
+                    ),
+                ]
+            )
+        else:
+            vals.append(["-", "-"])
+    gtr_period_df = pd.DataFrame(
+        vals, index=portfolio_helper.PERIODS, columns=["Portfolio", "Benchmark"]
+    )
+
+    return gtr_period_df
+
+
+@log_start_end(log=logger)
+def get_rolling_beta(
+    returns: pd.Series, benchmark_returns: pd.Series, period: float = 252
+):
+    """Get rolling beta
+
+    Parameters
+    ----------
+    returns: pd.Series
+        Series of portfolio returns
+    benchmark_returns: pd.Series
+        Series of benchmark returns
+    period: float
+        Interval used for rolling values
+
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of the portfolio's rolling beta
+    """
+    # Rolling beta is defined as Cov(Port,Bench)/var(Bench)
+    covs = (
+        pd.DataFrame({"Portfolio": returns, "Benchmark": benchmark_returns})
+        .dropna(axis=0)
+        .rolling(max(1, period))
+        .cov()
+        .unstack()
+        .dropna()
+    )
+    rolling_beta = covs["Portfolio"]["Benchmark"] / covs["Benchmark"]["Benchmark"]
+
+    return rolling_beta
+
+
+@log_start_end(log=logger)
+def get_tracking_error(
+    returns: pd.Series, benchmark_returns: pd.Series, period: float = 252
+):
+    """Get tracking error
+
+    Parameters
+    ----------
+    returns: pd.Series
+        Series of portfolio returns
+    benchmark_returns: pd.Series
+        Series of benchmark returns
+    period: float
+        Interval used for rolling values
+
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of tracking errors during different time periods
+    pd.Series
+        Series of rolling tracking error
+    """
+    diff_returns = returns - benchmark_returns
+
+    trackr_rolling = diff_returns.rolling(period, min_periods=period).std()
+
+    vals = list()
+    for periods in portfolio_helper.PERIODS:
+        period_return = portfolio_helper.filter_df_by_period(diff_returns, periods)
+        if not period_return.empty:
+            vals.append([round(period_return.std(), 3)])
+        else:
+            vals.append(["-"])
+    trackr_period_df = pd.DataFrame(
+        vals, index=portfolio_helper.PERIODS, columns=["Tracking Error"]
+    )
+
+    return trackr_period_df, trackr_rolling
+
+
+@log_start_end(log=logger)
+def get_information_ratio(
+    returns: pd.Series, benchmark_returns: pd.Series, period: float = 252
+):
+    """
+
+    Parameters
+    ----------
+    returns: pd.Series
+        Series of portfolio returns
+    benchmark_returns: pd.Series
+        Series of benchmark returns
+    period: float
+        Interval used for rolling values
+
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of the information ratio during different time periods
+    pd.Series
+        Series of rolling information ratio
+    """
+    tracking_err_df, tracking_err_rol = get_tracking_error(
+        returns, benchmark_returns, period
+    )
+
+    ir_rolling = (
+        (1.0 + returns).rolling(window=period).agg(lambda x: x.prod())
+        - 1
+        - ((1.0 + benchmark_returns).rolling(window=period).agg(lambda x: x.prod()) - 1)
+    ) / tracking_err_rol
+
+    vals = list()
+    for periods in portfolio_helper.PERIODS:
+        period_return = portfolio_helper.filter_df_by_period(returns, periods)
+        period_bench_return = portfolio_helper.filter_df_by_period(
+            benchmark_returns, periods
+        )
+        if not period_return.empty:
+            vals.append(
+                [
+                    round(
+                        (
+                            (
+                                (
+                                    1 + period_return.shift(periods=1, fill_value=0)
+                                ).cumprod()
+                                - 1
+                            ).iloc[-1]
+                            - (
+                                (
+                                    (
+                                        1
+                                        + period_bench_return.shift(
+                                            periods=1, fill_value=0
+                                        )
+                                    ).cumprod()
+                                    - 1
+                                ).iloc[-1]
+                            )
+                        )
+                        / tracking_err_df.loc[periods, "Tracking Error"],
+                        3,
+                    )
+                ]
+            )
+        else:
+            vals.append(["-"])
+
+    ir_period_df = pd.DataFrame(
+        vals, index=portfolio_helper.PERIODS, columns=["Information Ratio"]
+    )
+
+    return ir_period_df, ir_rolling
+
+
+@log_start_end(log=logger)
+def get_tail_ratio(
+    returns: pd.Series, benchmark_returns: pd.Series, period: float = 252
+):
+    """
+
+    Parameters
+    ----------
+    returns: pd.Series
+        Series of portfolio returns
+    benchmark_returns: pd.Series
+        Series of benchmark returns
+    period: float
+        Interval used for rolling values
+
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of the portfolios and the benchmarks tail ratio during different time periods
+    pd.Series
+        Series of the portfolios rolling tail ratio
+    pd.Series
+        Series of the benchmarks rolling tail ratio
+    """
+    returns_r = returns.rolling(period, min_periods=period)
+    benchmark_returns_r = benchmark_returns.rolling(period, min_periods=period)
+
+    portfolio_tr = returns_r.quantile(0.95) / abs(returns_r.quantile(0.05))
+    benchmark_tr = benchmark_returns_r.quantile(0.95) / abs(
+        benchmark_returns_r.quantile(0.05)
+    )
+
+    vals = list()
+    for periods in portfolio_helper.PERIODS:
+        period_return = portfolio_helper.filter_df_by_period(returns, periods)
+        period_bench_return = portfolio_helper.filter_df_by_period(
+            benchmark_returns, periods
+        )
+        if not period_return.empty:
+            vals.append(
+                [
+                    round(
+                        period_return.quantile(0.95)
+                        / abs(period_return.quantile(0.05)),
+                        3,
+                    ),
+                    round(
+                        period_bench_return.quantile(0.95)
+                        / abs(period_bench_return.quantile(0.05)),
+                        3,
+                    ),
+                ]
+            )
+        else:
+            vals.append(["-", "-"])
+
+    tailr_period_df = pd.DataFrame(
+        vals, index=portfolio_helper.PERIODS, columns=["Portfolio", "Benchmark"]
+    )
+
+    return tailr_period_df, portfolio_tr, benchmark_tr
+
+
+@log_start_end(log=logger)
+def get_common_sense_ratio(returns: pd.Series, benchmark_returns: pd.Series):
+    """Get common sense ratio
+
+    Parameters
+    ----------
+    returns: pd.Series
+        Series of portfolio returns
+    benchmark_returns: pd.Series
+        Series of benchmark returns
+
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of the portfolios and the benchmarks common sense ratio during different time periods
+    """
+    tail_ratio_df, _, _ = get_tail_ratio(returns, benchmark_returns)
+
+    vals = list()
+    for period in portfolio_helper.PERIODS:
+        period_return = portfolio_helper.filter_df_by_period(returns, period)
+        period_bench_return = portfolio_helper.filter_df_by_period(
+            benchmark_returns, period
+        )
+        if not period_return.empty:
+            vals.append(
+                [
+                    round(
+                        tail_ratio_df.loc[period, "Portfolio"]
+                        * (
+                            (1 + period_return.shift(periods=1, fill_value=0)).cumprod()
+                            - 1
+                        ).iloc[-1]
+                        / portfolio_helper.get_maximum_drawdown(period_return),
+                        3,
+                    ),
+                    round(
+                        tail_ratio_df.loc[period, "Benchmark"]
+                        * (
+                            (
+                                1 + period_bench_return.shift(periods=1, fill_value=0)
+                            ).cumprod()
+                            - 1
+                        ).iloc[-1]
+                        / portfolio_helper.get_maximum_drawdown(period_bench_return),
+                        3,
+                    ),
+                ]
+            )
+        else:
+            vals.append(["-", "-"])
+
+    csr_period_df = pd.DataFrame(
+        vals, index=portfolio_helper.PERIODS, columns=["Portfolio", "Benchmark"]
+    )
+
+    return csr_period_df
+
+
+@log_start_end(log=logger)
+def get_jensens_alpha(
+    returns: pd.Series, benchmark_returns: pd.Series, rf: float = 0, period: float = 252
+):
+    """Get jensen's alpha
+
+    Parameters
+    ----------
+    returns: pd.Series
+        Series of portfolio returns
+    benchmark_returns: pd.Series
+        Series of benchmark returns
+    rf: float
+        Risk free rate
+    period: float
+        Interval used for rolling values
+
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of jensens's alpha during different time periods
+    pd.Series
+        Series of jensens's alpha data
+    """
+    periods_d = portfolio_helper.PERIODS_DAYS
+
+    period_cum_returns = (1.0 + returns).rolling(window=period).agg(
+        lambda x: x.prod()
+    ) - 1
+    period_cum_bench_returns = (1.0 + benchmark_returns).rolling(window=period).agg(
+        lambda x: x.prod()
+    ) - 1
+    rfr_cum_returns = rf * period / 252
+    beta = get_rolling_beta(returns, benchmark_returns, period)
+    ja_rolling = period_cum_returns - (
+        rfr_cum_returns + beta * (period_cum_bench_returns - rfr_cum_returns)
+    )
+
+    vals = list()
+    for periods in portfolio_helper.PERIODS:
+        period_return = portfolio_helper.filter_df_by_period(returns, periods)
+        period_bench_return = portfolio_helper.filter_df_by_period(
+            benchmark_returns, periods
+        )
+        if not period_return.empty:
+            beta = get_rolling_beta(returns, benchmark_returns, periods_d[periods])
+            if not beta.empty:
+                beta = beta.iloc[-1]
+                period_cum_returns = (
+                    (1 + period_return.shift(periods=1, fill_value=0)).cumprod() - 1
+                ).iloc[-1]
+                period_cum_bench_returns = (
+                    (1 + period_bench_return.shift(periods=1, fill_value=0)).cumprod()
+                    - 1
+                ).iloc[-1]
+                rfr_cum_returns = rf * periods_d[periods] / 252
+                vals.append(
+                    [
+                        round(
+                            period_cum_returns
+                            - (
+                                rfr_cum_returns
+                                + beta * (period_cum_bench_returns - rfr_cum_returns)
+                            ),
+                            3,
+                        )
+                    ]
+                )
+            else:
+                vals.append(["-"])
+        else:
+            vals.append(["-"])
+
+    ja_period_df = pd.DataFrame(
+        vals, index=portfolio_helper.PERIODS, columns=["Portfolio"]
+    )
+
+    return ja_period_df, ja_rolling
+
+
+@log_start_end(log=logger)
+def get_calmar_ratio(
+    returns: pd.Series, benchmark_returns: pd.Series, period: float = 756
+):
+    """Get calmar ratio
+
+    Parameters
+    ----------
+    returns: pd.Series
+        Series of portfolio returns
+    benchmark_returns: pd.Series
+        Series of benchmark returns
+    period: float
+        Interval used for rolling values
+
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of calmar ratio of the benchmark and portfolio during different time periods
+    pd.Series
+        Series of calmar ratio data
+    """
+    periods_d = portfolio_helper.PERIODS_DAYS
+
+    period_cum_returns = (1.0 + returns).rolling(window=period).agg(
+        lambda x: x.prod()
+    ) - 1
+
+    # Calculate annual return
+    annual_return = period_cum_returns ** (1 / (period / 252)) - 1
+
+    cr_rolling = annual_return / portfolio_helper.get_maximum_drawdown(returns)
+
+    vals = list()
+    for periods in portfolio_helper.PERIODS:
+        period_return = portfolio_helper.filter_df_by_period(returns, periods)
+        period_bench_return = portfolio_helper.filter_df_by_period(
+            benchmark_returns, periods
+        )
+        if (not period_return.empty) and (periods_d[periods] != 0):
+            period_cum_returns = (
+                (1 + period_return.shift(periods=1, fill_value=0)).cumprod() - 1
+            ).iloc[-1]
+            period_cum_bench_returns = (
+                (1 + period_bench_return.shift(periods=1, fill_value=0)).cumprod() - 1
+            ).iloc[-1]
+            annual_return = (1 + period_cum_returns) ** (
+                1 / (len(period_return) / 252)
+            ) - 1
+            annual_bench_return = (1 + period_cum_bench_returns) ** (
+                1 / (len(period_bench_return) / 252)
+            ) - 1
+            drawdown = portfolio_helper.get_maximum_drawdown(period_return)
+            bench_drawdown = portfolio_helper.get_maximum_drawdown(period_bench_return)
+            if (drawdown != 0) and (bench_drawdown != 0):
+                vals.append(
+                    [
+                        round(annual_return / drawdown, 3),
+                        round(annual_bench_return / bench_drawdown, 3),
+                    ]
+                )
+            else:
+                vals.append(["-", "-"])
+        else:
+            vals.append(["-", "-"])
+
+    cr_period_df = pd.DataFrame(
+        vals, index=portfolio_helper.PERIODS, columns=["Portfolio", "Benchmark"]
+    )
+
+    return cr_period_df, cr_rolling
+
+
+@log_start_end(log=logger)
+def get_kelly_criterion(returns: pd.Series, portfolio_trades: pd.DataFrame):
+    """Gets kelly criterion
+
+    Parameters
+    ----------
+    returns: pd.Series
+        Series of portfolio returns
+    portfolio_trades: pd.DataFrame
+        DataFrame of the portfolio trades with trade return in %
+
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of kelly criterion of the portfolio during different time periods
+    """
+    portfolio_trades["Date"] = pd.to_datetime(portfolio_trades["Date"])
+    portfolio_trades = portfolio_trades.set_index("Date")
+
+    vals: list = list()
+    for period in portfolio_helper.PERIODS:
+        period_return = portfolio_helper.filter_df_by_period(returns, period)
+        period_portfolio_tr = portfolio_helper.filter_df_by_period(
+            portfolio_trades, period
+        )
+        if (not period_return.empty) and (not period_portfolio_tr.empty):
+            w = len(period_return[period_return > 0]) / len(period_return)
+            r = len(
+                period_portfolio_tr[period_portfolio_tr["% Portfolio Return"] > 0]
+            ) / len(
+                period_portfolio_tr[period_portfolio_tr["Type"].str.upper() != "CASH"]
+            )
+            if r != 0:
+                vals.append([round(w - (1 - w) / r, 3)])
+            else:
+                vals.append(["-"])
+        else:
+            vals.append(["-"])
+
+    kc_period_df = pd.DataFrame(
+        vals, index=portfolio_helper.PERIODS, columns=["Kelly %"]
+    )
+
+    return kc_period_df
+
+
+@log_start_end(log=logger)
+def get_payoff_ratio(portfolio_trades: pd.DataFrame):
+    """Gets payoff ratio
+
+    Parameters
+    ----------
+    portfolio_trades: pd.DataFrame
+        DataFrame of the portfolio trades with trade return in % and abs values
+
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of payoff ratio of the portfolio during different time periods
+    """
+    portfolio_trades["Date"] = pd.to_datetime(portfolio_trades["Date"])
+    portfolio_trades = portfolio_trades.set_index("Date")
+
+    vals = list()
+    for period in portfolio_helper.PERIODS:
+        period_portfolio_tr = portfolio_helper.filter_df_by_period(
+            portfolio_trades, period
+        )
+        if not portfolio_trades.empty:
+            portfolio_wins = period_portfolio_tr[
+                period_portfolio_tr["% Portfolio Return"] > 0
+            ]
+            portfolio_loses = period_portfolio_tr[
+                period_portfolio_tr["% Portfolio Return"] < 0
+            ]
+            avg_w = portfolio_wins["Abs Portfolio Return"].mean()
+            avg_l = portfolio_loses["Abs Portfolio Return"].mean()
+            vals.append([round(avg_w / abs(avg_l), 3)] if avg_w is not np.nan else [0])
+        else:
+            vals.append(["-"])
+
+    pr_period_ratio = pd.DataFrame(
+        vals, index=portfolio_helper.PERIODS, columns=["Payoff Ratio"]
+    )
+
+    return pr_period_ratio
+
+
+@log_start_end(log=logger)
+def get_profit_factor(portfolio_trades: pd.DataFrame):
+    """Gets profit factor
+
+    Parameters
+    ----------
+    portfolio_trades: pd.DataFrame
+        DataFrame of the portfolio trades with trade return in % and abs values
+
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of profit factor of the portfolio during different time periods
+    """
+    portfolio_trades["Date"] = pd.to_datetime(portfolio_trades["Date"])
+    portfolio_trades = portfolio_trades.set_index("Date")
+
+    vals = list()
+    for period in portfolio_helper.PERIODS:
+        period_portfolio_tr = portfolio_helper.filter_df_by_period(
+            portfolio_trades, period
+        )
+        if not portfolio_trades.empty:
+            portfolio_wins = period_portfolio_tr[
+                period_portfolio_tr["% Portfolio Return"] > 0
+            ]
+            portfolio_loses = period_portfolio_tr[
+                period_portfolio_tr["% Portfolio Return"] < 0
+            ]
+            gross_profit = portfolio_wins["Abs Portfolio Return"].sum()
+            gross_loss = portfolio_loses["Abs Portfolio Return"].sum()
+            vals.append([round(gross_profit / abs(gross_loss), 3)])
+        else:
+            vals.append(["-"])
+
+    pf_period_df = pd.DataFrame(
+        vals, index=portfolio_helper.PERIODS, columns=["Profit Factor"]
+    )
+
+    return pf_period_df
+
+
 class Portfolio:
     """
     Class for portfolio analysis in OpenBB
@@ -219,10 +828,10 @@ class Portfolio:
         self.benchmark: pd.DataFrame = pd.DataFrame()
         self._historical_crypto: pd.DataFrame = pd.DataFrame()
         self._historical_prices: pd.DataFrame = pd.DataFrame()
-        self.returns = None
+        self.returns: pd.Series = pd.Series(dtype=object)
         self.portfolio_value = None
         self.ItemizedHoldings = None
-        self.benchmark_returns = None
+        self.benchmark_returns: pd.Series = pd.Series(dtype=object)
         self.portfolio_sectors_allocation = pd.DataFrame()
         self.portfolio_assets_allocation = pd.DataFrame()
         self.benchmark_sectors_allocation = pd.DataFrame()
@@ -415,6 +1024,9 @@ class Portfolio:
         returns.replace([np.inf, -np.inf], np.nan, inplace=True)
         self.returns = returns.dropna()
 
+        # Update all period
+        portfolio_helper.PERIODS_DAYS["all"] = len(self.returns)
+
         self.ItemizedHoldings = pd.DataFrame(
             {
                 "Stocks": portfolio["StockHoldings"][self._stock_tickers].sum(axis=1),
@@ -494,7 +1106,7 @@ class Portfolio:
 
     @log_start_end(log=logger)
     def get_crypto_yfinance(self):
-        """Gets historical coin data from coingecko"""
+        """Gets historical coin data from yfinance"""
         if self._crypto_tickers:
             self._historical_crypto = yf.download(
                 self._crypto_tickers, start=self._start_date, progress=False
@@ -936,3 +1548,200 @@ class Portfolio:
         return pd.DataFrame(
             vals, index=portfolio_helper.PERIODS, columns=["Portfolio", "Benchmark"]
         )
+
+    @log_start_end(log=logger)
+    def get_gaintopain_ratio(self):
+        """Gets Pain-to-Gain ratio based on historical data
+
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame of the portfolio's gain-to-pain ratio
+        """
+        gtp_period_df = get_gaintopain_ratio(self.returns, self.benchmark_returns)
+
+        return gtp_period_df
+
+    @log_start_end(log=logger)
+    def get_rolling_beta(self, period: float = 252):
+        """Get rolling beta
+
+        Parameters
+        ----------
+        period: float
+            Interval used for rolling values
+
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame of the portfolio's rolling beta
+        """
+        rolling_beta = get_rolling_beta(self.returns, self.benchmark_returns, period)
+
+        return rolling_beta
+
+    @log_start_end(log=logger)
+    def get_tracking_error(self, period: float = 252):
+        """Get tracking error
+
+        Parameters
+        ----------
+        period: float
+            Interval used for rolling values
+
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame of tracking errors during different time periods
+        pd.Series
+            Series of rolling tracking error
+        """
+        trackr_period_df, trackr_rolling = get_tracking_error(
+            self.returns, self.benchmark_returns, period
+        )
+
+        return trackr_period_df, trackr_rolling
+
+    @log_start_end(log=logger)
+    def get_information_ratio(self, period: float = 252):
+        """
+
+        Parameters
+        ----------
+        period: float
+            Interval used for rolling values
+
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame of the information ratio during different time periods
+        pd.Series
+            Series of rolling information ratio
+        """
+        ir_period_df, ir_rolling = get_information_ratio(
+            self.returns, self.benchmark_returns, period
+        )
+
+        return ir_period_df, ir_rolling
+
+    @log_start_end(log=logger)
+    def get_tail_ratio(self, period: float = 252):
+        """
+
+        Parameters
+        ----------
+        period: float
+            Interval used for rolling values
+
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame of the portfolios and the benchmarks tail ratio during different time periods
+        pd.Series
+            Series of the portfolios rolling tail ratio
+        pd.Series
+            Series of the benchmarks rolling tail ratio
+        """
+        tailr_period_df, portfolio_tr, benchmark_tr = get_tail_ratio(
+            self.returns, self.benchmark_returns, period
+        )
+
+        return tailr_period_df, portfolio_tr, benchmark_tr
+
+    @log_start_end(log=logger)
+    def get_common_sense_ratio(self):
+        """Get common sense ratio
+
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame of the portfolios and the benchmarks common sense ratio during different time periods
+        """
+        csr_period_df = get_common_sense_ratio(self.returns, self.benchmark_returns)
+
+        return csr_period_df
+
+    @log_start_end(log=logger)
+    def get_jensens_alpha(self, rf: float = 0, period: float = 252):
+        """Get jensen's alpha
+
+        Parameters
+        ----------
+        period: float
+            Interval used for rolling values
+        rf: float
+            Risk free rate
+
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame of jensens's alpha during different time periods
+        pd.Series
+            Series of jensens's alpha data
+        """
+        ja_period_df, ja_rolling = get_jensens_alpha(
+            self.returns, self.benchmark_returns, rf, period
+        )
+
+        return ja_period_df, ja_rolling
+
+    @log_start_end(log=logger)
+    def get_calmar_ratio(self, period: float = 756):
+        """Get calmar ratio
+
+        Parameters
+        ----------
+        period: float
+            Interval used for rolling values
+
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame of calmar ratio of the benchmark and portfolio during different time periods
+        pd.Series
+            Series of calmar ratio data
+        """
+        cr_period_df, cr_rolling = get_calmar_ratio(
+            self.returns, self.benchmark_returns, period
+        )
+
+        return cr_period_df, cr_rolling
+
+    @log_start_end(log=logger)
+    def get_kelly_criterion(self):
+        """Gets kelly criterion
+
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame of kelly criterion of the portfolio during different time periods
+        """
+        kc_period_df = get_kelly_criterion(self.returns, self.portfolio_trades)
+
+        return kc_period_df
+
+    @log_start_end(log=logger)
+    def get_payoff_ratio(self):
+        """Gets payoff ratio
+
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame of payoff ratio of the portfolio during different time periods
+        """
+        pr_period_ratio = get_payoff_ratio(self.portfolio_trades)
+
+        return pr_period_ratio
+
+    @log_start_end(log=logger)
+    def get_profit_factor(self):
+        """Gets profit factor
+
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame of profit factor of the portfolio during different time periods
+        """
+        pf_period_df = get_profit_factor(self.portfolio_trades)
+
+        return pf_period_df

@@ -2,6 +2,7 @@ import logging
 import os
 from typing import List, Optional
 
+from datetime import datetime, timedelta
 from matplotlib import pyplot as plt
 
 from openbb_terminal.config_terminal import theme
@@ -24,10 +25,10 @@ logger = logging.getLogger(__name__)
 @check_api_key(["API_SANTIMENT_KEY"])
 def display_github_activity(
     coin: str,
-    start: str,
-    dev_activity: bool,
-    end: str,
-    interval: str,
+    start: str = (datetime.now() - timedelta(days=365)).strftime("%Y-%m-%dT%H:%M:%SZ"),
+    dev_activity: bool = False,
+    end: str = (datetime.now()).strftime("%Y-%m-%dT%H:%M:%SZ"),
+    interval: str = "1d",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
@@ -46,7 +47,7 @@ def display_github_activity(
     end : int
         End date like string (e.g., 2021-10-01)
     interval : str
-        Interval frequency (e.g., 1d)
+        Interval frequency (some possible values are: 1h, 1d, 1w)
     export : str
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional

@@ -12,14 +12,16 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_funding_rates(top: int, current: bool = True, export: str = "") -> None:
+def display_funding_rates(
+    top: int = 10, current: bool = True, export: str = ""
+) -> None:
     """Display Funding rates - transfer payments made between long and short positions on perpetual swap futures markets
     [Source: https://defirate.com/]
 
     Parameters
     ----------
     top: int
-        Number of records to display
+        Number of records to display, by default 10
     current: bool
         If true displays current funding rate values. If false displays last 30 day average of funding rates.
     export : str
@@ -80,7 +82,7 @@ def display_lending_rates(top: int, current: bool = True, export: str = "") -> N
 
 
 @log_start_end(log=logger)
-def display_borrow_rates(top: int, current: bool = True, export: str = "") -> None:
+def display_borrow_rates(top: int = 10, current: bool = True, export: str = "") -> None:
     """Displays DeFi borrow rates. By using smart contracts, borrowers are able to lock
     collateral to protect against defaults while seamlessly adding to or closing their
     loans at any time.
@@ -90,7 +92,7 @@ def display_borrow_rates(top: int, current: bool = True, export: str = "") -> No
     Parameters
     ----------
     top: int
-        Number of records to display
+        Number of records to display, by default 10
     current: bool
         If true displays current funding rate values. If false displays last 30 day average of funding rates.
     export : str

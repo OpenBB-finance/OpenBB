@@ -107,7 +107,7 @@ class DiscoveryController(BaseController):
         "Payment Date",
         "Record Date",
         "Dividend",
-        "Indicated Annual Dividend",
+        "Annual Dividend",
         "Announcement Date",
     ]
 
