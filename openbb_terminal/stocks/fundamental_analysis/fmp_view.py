@@ -190,9 +190,7 @@ def display_income_statement(
     export: str
         Format to export data
     """
-    income = fmp_model.get_income(
-        ticker, number, quarterly, ratios, bool(plot)
-    )
+    income = fmp_model.get_income(ticker, number, quarterly, ratios, bool(plot))
 
     if not income.empty:
         if plot:
@@ -271,9 +269,7 @@ def display_balance_sheet(
     export: str
         Format to export data
     """
-    balance = fmp_model.get_balance(
-        ticker, number, quarterly, ratios, bool(plot)
-    )
+    balance = fmp_model.get_balance(ticker, number, quarterly, ratios, bool(plot))
 
     if not balance.empty:
         if plot:
