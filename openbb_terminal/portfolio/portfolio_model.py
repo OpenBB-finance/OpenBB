@@ -19,7 +19,7 @@ from openbb_terminal.portfolio import portfolio_helper, allocation_model
 from openbb_terminal.rich_config import console
 
 # pylint: disable=E1136,W0201,R0902,C0302
-# pylint: disable=unsupported-assignment-operation,redefined-outer-name
+# pylint: disable=unsupported-assignment-operation,redefined-outer-name,too-many-public-methods
 
 logger = logging.getLogger(__name__)
 cg = CoinGeckoAPI()
