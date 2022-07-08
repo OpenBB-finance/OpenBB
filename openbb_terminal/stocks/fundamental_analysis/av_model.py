@@ -321,7 +321,13 @@ def get_balance_sheet(
 
 
 @log_start_end(log=logger)
-def get_cash_flow(ticker: str, number: int, quarterly: bool = False, ratios: bool = False, plot: bool = False,) -> pd.DataFrame:
+def get_cash_flow(
+    ticker: str,
+    number: int,
+    quarterly: bool = False,
+    ratios: bool = False,
+    plot: bool = False,
+) -> pd.DataFrame:
     """Get cash flows for company
 
     Parameters

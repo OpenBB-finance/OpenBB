@@ -201,7 +201,11 @@ def get_dcf(ticker: str, number: int, quarterly: bool = False) -> pd.DataFrame:
 
 @log_start_end(log=logger)
 def get_income(
-    ticker: str, number: int, quarterly: bool = False, ratios: bool = False, plot: bool = False,
+    ticker: str,
+    number: int,
+    quarterly: bool = False,
+    ratios: bool = False,
+    plot: bool = False,
 ) -> pd.DataFrame:
     """Get income statements
 
@@ -267,7 +271,11 @@ def get_income(
 
 @log_start_end(log=logger)
 def get_balance(
-    ticker: str, number: int, quarterly: bool = False, ratios: bool = False, plot: bool = False
+    ticker: str,
+    number: int,
+    quarterly: bool = False,
+    ratios: bool = False,
+    plot: bool = False,
 ) -> pd.DataFrame:
     """Get balance sheets
 
@@ -334,7 +342,13 @@ def get_balance(
 
 
 @log_start_end(log=logger)
-def get_cash(ticker: str, number: int, quarterly: bool = False, ratios: bool = False, plot: bool = False) -> pd.DataFrame:
+def get_cash(
+    ticker: str,
+    number: int,
+    quarterly: bool = False,
+    ratios: bool = False,
+    plot: bool = False,
+) -> pd.DataFrame:
     """Get cash flow
 
     Parameters

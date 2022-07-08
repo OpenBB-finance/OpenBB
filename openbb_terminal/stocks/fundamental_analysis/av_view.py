@@ -223,7 +223,12 @@ def display_balance_sheet(
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
 def display_cash_flow(
-    ticker: str, limit: int = 5, quarterly: bool = False, ratios: bool = False, plot: list = [], export: str = ""
+    ticker: str,
+    limit: int = 5,
+    quarterly: bool = False,
+    ratios: bool = False,
+    plot: list = [],
+    export: str = "",
 ):
     """Alpha Vantage income statement
 

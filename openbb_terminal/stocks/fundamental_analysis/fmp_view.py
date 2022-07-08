@@ -190,7 +190,9 @@ def display_income_statement(
     export: str
         Format to export data
     """
-    income = fmp_model.get_income(ticker, number, quarterly, ratios, True if plot else False)
+    income = fmp_model.get_income(
+        ticker, number, quarterly, ratios, True if plot else False
+    )
 
     if not income.empty:
         if plot:
@@ -324,7 +326,12 @@ def display_balance_sheet(
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
 def display_cash_flow(
-    ticker: str, number: int, quarterly: bool = False, ratios: bool = False, plot: list = [], export: str = ""
+    ticker: str,
+    number: int,
+    quarterly: bool = False,
+    ratios: bool = False,
+    plot: list = [],
+    export: str = "",
 ):
     """Financial Modeling Prep ticker cash flow
 
