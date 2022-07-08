@@ -1,18 +1,27 @@
 ```
-usage: cash [-l LIMIT] [-q] [-h] [--export {csv,json,xlsx}]
+usage: cash [-l LIMIT] [-q] [-r] [-p PLOT [PLOT ...]] [-s {polygon,av,yf,fmp}] [-h] [--export EXPORT]
 ```
 
-Prints a complete cash flow statement over time. This can be either quarterly or annually. [Source: Alpha Vantage]
+Prints a complete cash flow statement over time. This can be either quarterly or annually. The following fields are expected: Accepted date, Accounts payables, Accounts
+receivables, Acquisitions net, Capital expenditure, Cash at beginning of period, Cash at end of period, Change in working capital, Common stock issued, Common stock
+repurchased, Debt repayment, Deferred income tax, Depreciation and amortization, Dividends paid, Effect of forex changes on cash, Filling date, Final link, Free cash
+flow, Inventory, Investments in property plant and equipment, Link, Net cash provided by operating activities, Net cash used for investing activities, Net cash used
+provided by financing activities, Net change in cash, Net income, Operating cash flow, Other financing activities, Other investing activities, Other non cash items, Other
+working capital, Period, Purchases of investments, Sales maturities of investments, Stock based compensation. [Source: Alpha Vantage]
 
 ```
 optional arguments:
   -l LIMIT, --limit LIMIT
                         Number of latest years/quarters. (default: 1)
   -q, --quarter         Quarter fundamental data flag. (default: False)
+  -r, --ratios          Shows percentage change of values. (default: False)
+  -p PLOT [PLOT ...], --plot PLOT [PLOT ...]
+                        Rows to plot. (-1 represents invalid data) (default: [])
+  -s {polygon,av,yf,fmp}, --source {polygon,av,yf,fmp}
+                        The source to get the data from (default: av)
   -h, --help            show this help message (default: False)
-  --export {csv,json,xlsx}
-                        Export raw data into csv, json, xlsx (default: )
-```
+  --export EXPORT       Export raw data into csv, json, xlsx (default: )
+  ```
 
 Example:
 ```
