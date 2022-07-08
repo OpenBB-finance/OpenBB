@@ -115,7 +115,6 @@ def display_yieldcurve(
 
 @log_start_end(log=logger)
 def display_economic_calendar(
-    time_zone: str,
     country: str,
     importances: list,
     categories: list,
@@ -133,15 +132,19 @@ def display_economic_calendar(
         Export dataframe data to csv,json,xlsx file
     """
 
+    country_list = []
+    importances_list = []
+    categories_list = []
+
     if country:
-        country_ = [country]
+        country_list = [country]
     if importances:
-        importances_ = [importances]
+        importances_list = [importances]
     if categories:
-        categories_ = [categories]
+        categories_list = [categories]
 
     df, time_zone = investingcom_model.get_economic_calendar(
-        time_zone, country_, importances_, categories_, from_date, to_date
+        country_list, importances_list, categories_list, from_date, to_date
     )
 
     if time_zone is None:
@@ -152,6 +155,8 @@ def display_economic_calendar(
         logger.error("No data")
         console.print("[red]No data.[/red]\n")
     else:
+        df.fillna(value="", inplace=True)
+
         print_rich_table(
             df,
             headers=list(df.columns),

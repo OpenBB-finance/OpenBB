@@ -989,15 +989,6 @@ class EconomyController(BaseController):
             description="Economic calendar.",
         )
         parser.add_argument(
-            "-tz",
-            "--timezone",
-            action="store",
-            dest="time_zone",
-            nargs="+",
-            default=None,
-            help="Time zone in GMT +/-h:mm format. E.g. GMT +1:00",
-        )
-        parser.add_argument(
             "-c",
             "--country",
             action="store",
@@ -1050,9 +1041,6 @@ class EconomyController(BaseController):
 
         if ns_parser:
 
-            if isinstance(ns_parser.time_zone, list):
-                ns_parser.time_zone = " ".join(ns_parser.time_zone)
-
             if isinstance(ns_parser.country, list):
                 ns_parser.country = " ".join(ns_parser.country)
 
@@ -1062,7 +1050,6 @@ class EconomyController(BaseController):
             investingcom_model.check_correct_country(ns_parser.country)
 
             investingcom_view.display_economic_calendar(
-                time_zone=ns_parser.time_zone,
                 country=ns_parser.country,
                 importances=ns_parser.importances,
                 categories=ns_parser.categories,

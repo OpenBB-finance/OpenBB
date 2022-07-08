@@ -72,7 +72,6 @@ def get_yieldcurve(country) -> pd.DataFrame:
 
 @log_start_end(log=logger)
 def get_economic_calendar(
-    time_zone=None,
     countries=None,
     importances=None,
     categories=None,
@@ -151,5 +150,8 @@ def get_economic_calendar(
         data.drop(columns=data.columns[0], axis=1, inplace=True)
         data.sort_values(by="date", inplace=True)
         data.drop_duplicates(keep="first", inplace=True)
+        # To avoid displaying None when user selects importances
+        if importances:
+            data = data[data["importance"].isin(importances)]
 
     return data, time_zone
