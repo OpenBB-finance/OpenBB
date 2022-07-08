@@ -1,9 +1,9 @@
 # IMPORTATION STANDARD
 
 # IMPORTATION THIRDPARTY
+import datetime
 import pandas as pd
 import pytest
-import datetime
 
 # IMPORTATION INTERNAL
 from openbb_terminal.economy import investingcom_model

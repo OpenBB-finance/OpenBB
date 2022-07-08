@@ -5,9 +5,9 @@ import logging
 import os
 from typing import Optional, List
 
+import datetime
 import matplotlib.pyplot as plt
 from pandas.plotting import register_matplotlib_converters
-import datetime
 
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme

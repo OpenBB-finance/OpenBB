@@ -4,8 +4,8 @@
 # IMPORTATION THIRDPARTY
 # import pandas as pd
 
-import pytest
 import datetime
+import pytest
 
 # IMPORTATION INTERNAL
 from openbb_terminal.economy import investingcom_view
