@@ -7,6 +7,7 @@ from typing import Optional, List
 
 import matplotlib.pyplot as plt
 from pandas.plotting import register_matplotlib_converters
+import datetime
 
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
@@ -118,8 +119,8 @@ def display_economic_calendar(
     country: str,
     importances: list,
     categories: list,
-    from_date: str,
-    to_date: str,
+    from_date: datetime.date,
+    to_date: datetime.date,
     export: str = "",
 ):
     """Display yield curve. [Source: Investing.com]

@@ -72,11 +72,11 @@ def get_yieldcurve(country) -> pd.DataFrame:
 
 @log_start_end(log=logger)
 def get_economic_calendar(
-    countries=None,
-    importances=None,
-    categories=None,
-    from_date=None,
-    to_date=None,
+    countries: list = None,
+    importances: list = None,
+    categories: list = None,
+    from_date: datetime.date = None,
+    to_date: datetime.date = None,
 ) -> pd.DataFrame:
     """Get economic calendar [Source: Investing.com]
 
@@ -101,17 +101,15 @@ def get_economic_calendar(
 
         return day + "/" + month + "/" + year
 
-    if to_date:
-        to_date = format_date(to_date)
-    elif from_date:
+    if from_date and not to_date:
         to_date = format_date(from_date + datetime.timedelta(days=7))
-    else:
-        to_date = format_date(datetime.date.today() + datetime.timedelta(days=7))
-
-    if from_date:
         from_date = format_date(from_date)
+    elif to_date and not from_date:
+        from_date = format_date(to_date + datetime.timedelta(days=-7))
+        to_date = format_date(to_date)
     else:
         from_date = format_date(datetime.date.today())
+        to_date = format_date(datetime.date.today() + datetime.timedelta(days=7))
 
     # Get user time zone in GMT offset format
     user_time_zone = pytz.timezone(helper_funcs.get_user_timezone())
