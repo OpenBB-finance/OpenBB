@@ -2,17 +2,14 @@
 __docformat__ = "numpy"
 
 import logging
-from datetime import timedelta, datetime
 from typing import Dict, Any
 
 import numpy as np
 import scipy
 import pandas as pd
-import statsmodels.api as sm
 import yfinance as yf
 from sklearn.metrics import r2_score
 from pycoingecko import CoinGeckoAPI
-from statsmodels.regression.rolling import RollingOLS
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.portfolio import portfolio_helper, allocation_model
@@ -25,53 +22,6 @@ logger = logging.getLogger(__name__)
 cg = CoinGeckoAPI()
 
 pd.options.mode.chained_assignment = None
-
-
-# TODO: Check if this is being used anywhere and if it should be deleted?
-@log_start_end(log=logger)
-def get_rolling_beta2(
-    df: pd.DataFrame, hist: pd.DataFrame, mark: pd.DataFrame, n: pd.DataFrame
-) -> pd.DataFrame:
-    """Turns the holdings of a portfolio into a rolling beta dataframe
-
-    Parameters
-    ----------
-    df : pd.DataFrame
-        The dataframe of daily holdings
-    hist : pd.DataFrame
-        A dataframe of historical returns
-    mark : pd.DataFrame
-        The dataframe of market performance
-    n : int
-        The period to get returns for
-
-    Returns
-    ----------
-    final : pd.DataFrame
-        A Dataframe with rolling beta
-    """
-    df = df["Holding"]
-    uniques = df.columns.tolist()
-    res = df.div(df.sum(axis=1), axis=0)
-    res = res.fillna(0)
-    comb = pd.merge(
-        hist["Close"], mark["Market"], how="outer", left_index=True, right_index=True
-    )
-    comb = comb.fillna(method="ffill")
-    for col in hist["Close"].columns:
-        exog = sm.add_constant(comb["Close"])
-        rols = RollingOLS(comb[col], exog, window=252)
-        rres = rols.fit()
-        res[f"beta_{col}"] = rres.params["Close"]
-    final = res.fillna(method="ffill")
-    for uni in uniques:
-        final[f"prod_{uni}"] = final[uni] * final[f"beta_{uni}"]
-    dropped = final[[f"beta_{x}" for x in uniques]].copy()
-    final = final.drop(columns=[f"beta_{x}" for x in uniques] + uniques)
-    final["total"] = final.sum(axis=1)
-    final = final[final.index >= datetime.now() - timedelta(days=n + 1)]
-    comb = pd.merge(final, dropped, how="left", left_index=True, right_index=True)
-    return comb
 
 
 @log_start_end(log=logger)
