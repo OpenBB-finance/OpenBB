@@ -213,7 +213,13 @@ def get_income_statements(
 
             df_fa = df_fa.set_index("fiscalDateEnding")
             df_fa = df_fa[::-1].T
+
+            df_fa = df_fa.replace("None", "0")
             df_fa.iloc[1:] = df_fa.iloc[1:].astype("float")
+
+            df_fa_c = df_fa.iloc[:, 0:number].applymap(
+                lambda x: lambda_long_number_format(x)
+            )
 
             if ratios:
                 df_fa_pc = df_fa.iloc[1:].pct_change(axis="columns").fillna(0)
@@ -223,7 +229,6 @@ def get_income_statements(
                     j += 1
 
             df_fa = df_fa.iloc[:, 0:number]
-            df_fa_c = df_fa.applymap(lambda x: lambda_long_number_format(x))
 
             return df_fa_c if not plot else df_fa
     return pd.DataFrame()
@@ -372,7 +377,6 @@ def get_cash_flow(ticker: str, number: int, quarterly: bool = False, ratios: boo
                 return pd.DataFrame()
 
             df_fa = df_fa.set_index("fiscalDateEnding")
-
             df_fa = df_fa[::-1].T
 
             df_fa = df_fa.replace("None", "0")
