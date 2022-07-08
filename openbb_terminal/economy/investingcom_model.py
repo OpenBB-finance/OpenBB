@@ -35,7 +35,8 @@ def check_correct_country(country):
     if country not in investpy.bonds.get_bond_countries():
         log_and_raise(
             argparse.ArgumentTypeError(
-                f"{country} is an invalid country. Choose from {', '.join(investpy.bonds.get_bond_countries())}"
+                f"{country} is an invalid country. Choose from \
+                    {', '.join(investpy.bonds.get_bond_countries())}"
             )
         )
     return country
@@ -106,8 +107,9 @@ def get_economic_calendar(
         from_date = format_date(to_date + datetime.timedelta(days=-7))
         to_date = format_date(to_date)
     else:
-        from_date = format_date(datetime.date.today())
-        to_date = format_date(datetime.date.today() + datetime.timedelta(days=7))
+        today = datetime.date.today()
+        from_date = format_date(today)
+        to_date = format_date(today + datetime.timedelta(days=7))
 
     # Get user time zone in GMT offset format
     user_time_zone = pytz.timezone(helper_funcs.get_user_timezone())
@@ -115,7 +117,8 @@ def get_economic_calendar(
         None
     ) - pd.Timestamp.utcnow().tz_localize(None)
 
-    # Ceil time difference, might have actual decimal difference between .now() and .utcnow()
+    # Ceil time difference, might have actual decimal difference
+    # between .now() and .utcnow()
     offset = divmod(math.ceil(diff.total_seconds()), 3600)[0]
     sign = "+" if offset > 0 else ""
     time_zone = "GMT " + sign + str(int(offset)) + ":00"
@@ -130,7 +133,7 @@ def get_economic_calendar(
             from_date,
             to_date,
         )
-    except:
+    except Exception:
         time_zone = None
         data = investpy.news.economic_calendar(
             time_zone,
