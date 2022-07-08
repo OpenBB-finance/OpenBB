@@ -387,7 +387,7 @@ def get_financials(ticker: str, financial: str, ratios: bool = False) -> pd.Data
         df = df.replace(",", "", regex=True)
         df = df.replace("-", "0")
         df = df.astype(float)
-        types = df.copy().applymap(lambda x: type(x) == int or type(x) == float)
+        types = df.copy().applymap(lambda x: isinstance(x, int) or isinstance(x, float))
         types = types.all(axis=1)
 
         # For rows with complete data

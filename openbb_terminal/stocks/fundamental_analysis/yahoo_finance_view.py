@@ -403,7 +403,7 @@ def display_fundamentals(
     financial: str,
     limit: int = 120,
     ratios: bool = False,
-    plot: list = [],
+    plot: list = None,
     export: str = "",
 ):
     """Display tickers balance sheet, income statement or cash-flow

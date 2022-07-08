@@ -75,7 +75,7 @@ def display_income_statement(
     limit: int = 5,
     quarterly: bool = False,
     ratios: bool = False,
-    plot: list = [],
+    plot: list = None,
     export: str = "",
 ):
     """Alpha Vantage income statement
@@ -96,7 +96,7 @@ def display_income_statement(
         Format to export data
     """
     df_income = av_model.get_income_statements(
-        ticker, limit, quarterly, ratios, True if plot else False
+        ticker, limit, quarterly, ratios, bool(plot)
     )
 
     if df_income.empty:
@@ -149,7 +149,7 @@ def display_balance_sheet(
     limit: int = 5,
     quarterly: bool = False,
     ratios: bool = False,
-    plot: list = [],
+    plot: list = None,
     export: str = "",
 ):
     """Alpha Vantage balance sheet statement
@@ -170,7 +170,7 @@ def display_balance_sheet(
         Format to export data
     """
     df_balance = av_model.get_balance_sheet(
-        ticker, limit, quarterly, ratios, True if plot else False
+        ticker, limit, quarterly, ratios, bool(plot)
     )
 
     if df_balance.empty:
@@ -227,7 +227,7 @@ def display_cash_flow(
     limit: int = 5,
     quarterly: bool = False,
     ratios: bool = False,
-    plot: list = [],
+    plot: list = None,
     export: str = "",
 ):
     """Alpha Vantage income statement
@@ -247,7 +247,7 @@ def display_cash_flow(
     export: str
         Format to export data
     """
-    df_cash = av_model.get_cash_flow(ticker, limit, quarterly, True if plot else False)
+    df_cash = av_model.get_cash_flow(ticker, limit, quarterly, bool(plot))
 
     if df_cash.empty:
         return

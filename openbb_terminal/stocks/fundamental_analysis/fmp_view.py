@@ -170,7 +170,7 @@ def display_income_statement(
     number: int,
     quarterly: bool = False,
     ratios: bool = False,
-    plot: list = [],
+    plot: list = None,
     export: str = "",
 ):
     """Financial Modeling Prep ticker income statement
@@ -191,7 +191,7 @@ def display_income_statement(
         Format to export data
     """
     income = fmp_model.get_income(
-        ticker, number, quarterly, ratios, True if plot else False
+        ticker, number, quarterly, ratios, bool(plot)
     )
 
     if not income.empty:
@@ -251,7 +251,7 @@ def display_balance_sheet(
     number: int,
     quarterly: bool = False,
     ratios: bool = False,
-    plot: list = [],
+    plot: list = None,
     export: str = "",
 ):
     """Financial Modeling Prep ticker balance sheet
@@ -272,7 +272,7 @@ def display_balance_sheet(
         Format to export data
     """
     balance = fmp_model.get_balance(
-        ticker, number, quarterly, ratios, True if plot else False
+        ticker, number, quarterly, ratios, bool(plot)
     )
 
     if not balance.empty:
@@ -330,7 +330,7 @@ def display_cash_flow(
     number: int,
     quarterly: bool = False,
     ratios: bool = False,
-    plot: list = [],
+    plot: list = None,
     export: str = "",
 ):
     """Financial Modeling Prep ticker cash flow
@@ -350,7 +350,7 @@ def display_cash_flow(
     export: str
         Format to export data
     """
-    cash = fmp_model.get_cash(ticker, number, quarterly, True if plot else False)
+    cash = fmp_model.get_cash(ticker, number, quarterly, bool(plot))
 
     if not cash.empty:
         if plot:

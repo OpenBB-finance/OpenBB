@@ -27,7 +27,7 @@ def display_fundamentals(
     limit: int = 10,
     quarterly: bool = False,
     ratios: bool = False,
-    plot: list = [],
+    plot: list = None,
     export: str = "",
 ):
     """Display tickers balance sheet or income statement
