@@ -1,40 +1,4 @@
->   bro                brokers holdings,   supports robinhood, ally, degiro, coinbase
->   po                 portfolio optimization,  optimal your portfolio weights efficiently
-
-    load               load data into the portfolio
-
-Loaded orderbook: 
-Risk Free Rate: 
-
-    show               show existing transactions
-
-    bench              define the benchmark
-
-Benchmark: 
-
-Graphs:
-    holdv              holdings of assets (absolute value)
-    holdp              portfolio holdings of assets (in percentage)
-    cret               cumulative returns
-    yret               yearly returns
-    mret               monthly returns
-    dret               daily returns
-    distr              distribution of daily returns
-    maxdd              maximum drawdown
-    rvol               rolling volatility
-    rsharpe            rolling sharpe
-    rsort              rolling sortino
-    rbeta              rolling beta
-Metrics:
-    alloc              allocation on an asset, sector, countries or regions basis
-    summary            all portfolio vs benchmark metrics for a certain period of choice
-    metric             portfolio vs benchmark metric for all different periods
-    perf               performance of the portfolio versus benchmark
-Risk Metrics:
-    var                display value at risk
-    es                 display expected shortfall
-    os                 portfolio/os
-
+Could not preprocess orderbook.
 
 >   bro              brokers holdings, 		 supports: robinhood, ally, degiro, coinbase
 >   po               portfolio optimization, 	 optimal your portfolio weights efficiently
