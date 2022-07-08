@@ -72,7 +72,7 @@ def display_key(ticker: str):
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
 def display_income_statement(
     ticker: str,
-    limit: int,
+    limit: int = 5,
     quarterly: bool = False,
     ratios: bool = False,
     plot: list = [],
@@ -85,9 +85,9 @@ def display_income_statement(
     ticker : str
         Fundamental analysis ticker symbol
     limit: int
-        Number of past statements
+        Number of past statements, by default 5
     quarterly: bool
-        Flag to get quarterly instead of annual
+        Flag to get quarterly instead of annual, by default False
     ratios: bool
         Shows percentage change, by default False
     plot: list
@@ -146,7 +146,7 @@ def display_income_statement(
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
 def display_balance_sheet(
     ticker: str,
-    limit: int,
+    limit: int = 5,
     quarterly: bool = False,
     ratios: bool = False,
     plot: list = [],
@@ -159,9 +159,9 @@ def display_balance_sheet(
     ticker : str
         Fundamental analysis ticker symbol
     limit: int
-        Number of past statements
+        Number of past statements, by default 5
     quarterly: bool
-        Flag to get quarterly instead of annual
+        Flag to get quarterly instead of annual, by default False
     ratios: bool
         Shows percentage change, by default False
     plot: list
@@ -223,7 +223,7 @@ def display_balance_sheet(
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
 def display_cash_flow(
-    ticker: str, limit: int, quarterly: bool = False, export: str = ""
+    ticker: str, limit: int = 5, quarterly: bool = False, ratios: bool = False, plot: list = [], export: str = ""
 ):
     """Alpha Vantage income statement
 
@@ -232,27 +232,59 @@ def display_cash_flow(
     ticker : str
         Fundamental analysis ticker symbol
     limit: int
-        Number of past statements
+        Number of past statements, by default 5
     quarterly: bool
-        Flag to get quarterly instead of annual
+        Flag to get quarterly instead of annual, by default False
+    ratios: bool
+        Shows percentage change, by default False
+    plot: list
+        List of row labels to plot
     export: str
         Format to export data
     """
-    df_cash = av_model.get_cash_flow(ticker, limit, quarterly)
+    df_cash = av_model.get_cash_flow(ticker, limit, quarterly, True if plot else False)
 
     if df_cash.empty:
         return
 
-    indexes = df_cash.index
-    new_indexes = [camel_case_split(ind) for ind in indexes]
-    df_cash.index = new_indexes
+    if plot:
+        rows_plot = len(plot)
+        cash_plot_data = df_cash.transpose()
+        cash_plot_data.columns = cash_plot_data.columns.str.lower()
 
-    print_rich_table(
-        df_cash,
-        headers=list(df_cash.columns),
-        title=f"{ticker} Cash flow",
-        show_index=True,
-    )
+        if rows_plot == 1:
+            fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+            cash_plot_data[plot[0].replace("_", "")].plot()
+            title = (
+                f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {ticker.upper()}"
+                if ratios
+                else f"{plot[0].replace('_', ' ')} of {ticker.upper()}"
+            )
+            plt.title(title)
+            theme.style_primary_axis(ax)
+            theme.visualize_output()
+        else:
+            fig, axes = plt.subplots(rows_plot)
+            for i in range(rows_plot):
+                axes[i].plot(cash_plot_data[plot[i].replace("_", "")])
+                axes[i].set_title(plot[i].replace("_", " "))
+            theme.style_primary_axis(axes[0])
+            fig.autofmt_xdate()
+
+    else:
+
+        indexes = df_cash.index
+        new_indexes = [camel_case_split(ind) for ind in indexes]
+        df_cash.index = new_indexes
+
+        print_rich_table(
+            df_cash,
+            headers=list(df_cash.columns),
+            title=f"{ticker} Cash flow"
+            if not ratios
+            else f"{'QoQ' if quarterly else 'YoY'} Change of {ticker} Cash flow",
+            show_index=True,
+        )
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "cash", df_cash)
 

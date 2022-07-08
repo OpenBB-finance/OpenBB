@@ -316,7 +316,7 @@ def get_balance_sheet(
 
 
 @log_start_end(log=logger)
-def get_cash_flow(ticker: str, number: int, quarterly: bool = False) -> pd.DataFrame:
+def get_cash_flow(ticker: str, number: int, quarterly: bool = False, ratios: bool = False, plot: bool = False,) -> pd.DataFrame:
     """Get cash flows for company
 
     Parameters
@@ -327,6 +327,10 @@ def get_cash_flow(ticker: str, number: int, quarterly: bool = False) -> pd.DataF
         Number of past to get
     quarterly : bool, optional
         Flag to get quarterly instead of annual, by default False
+    ratios: bool
+        Shows percentage change, by default False
+    plot: bool
+        If the data shall be formatted ready to plot
 
     Returns
     -------
@@ -368,9 +372,30 @@ def get_cash_flow(ticker: str, number: int, quarterly: bool = False) -> pd.DataF
                 return pd.DataFrame()
 
             df_fa = df_fa.set_index("fiscalDateEnding")
-            df_fa = df_fa.head(number)
-            df_fa = df_fa.applymap(lambda x: lambda_long_number_format(x))
-            return df_fa[::-1].T
+
+            df_fa = df_fa[::-1].T
+
+            df_fa = df_fa.replace("None", "0")
+            df_fa.iloc[1:] = df_fa.iloc[1:].astype("float")
+
+            df_fa_c = df_fa.iloc[:, 0:number].applymap(
+                lambda x: lambda_long_number_format(x)
+            )
+
+            if ratios:
+                df_fa_pc = df_fa.iloc[1:].pct_change(axis="columns").fillna(0)
+                j = 0
+                for i in list(range(1, 37)):
+                    df_fa.iloc[i] = df_fa_pc.iloc[j]
+                    j += 1
+
+                df_fa_c = df_fa.iloc[:, 0:number].applymap(
+                    lambda x: lambda_long_number_format(x)
+                )
+
+            df_fa = df_fa.iloc[:, 0:number]
+
+            return df_fa_c if not plot else df_fa
     return pd.DataFrame()
 
 

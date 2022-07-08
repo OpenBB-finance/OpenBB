@@ -190,11 +190,11 @@ def display_income_statement(
     export: str
         Format to export data
     """
-    income, income_plot_data = fmp_model.get_income(ticker, number, quarterly, ratios)
+    income = fmp_model.get_income(ticker, number, quarterly, ratios, True if plot else False)
 
     if not income.empty:
         if plot:
-            income_plot_data = income_plot_data[income_plot_data.columns[::-1]]
+            income_plot_data = income[income.columns[::-1]]
             rows_plot = len(plot)
             income_plot_data = income_plot_data.transpose()
             income_plot_data.columns = income_plot_data.columns.str.lower()
@@ -269,13 +269,13 @@ def display_balance_sheet(
     export: str
         Format to export data
     """
-    balance, balance_plot_data = fmp_model.get_balance(
-        ticker, number, quarterly, ratios
+    balance = fmp_model.get_balance(
+        ticker, number, quarterly, ratios, True if plot else False
     )
 
     if not balance.empty:
         if plot:
-            balance_plot_data = balance_plot_data[balance_plot_data.columns[::-1]]
+            balance_plot_data = balance[balance.columns[::-1]]
             rows_plot = len(plot)
             balance_plot_data = balance_plot_data.transpose()
             balance_plot_data.columns = balance_plot_data.columns.str.lower()
@@ -298,21 +298,21 @@ def display_balance_sheet(
                     axes[i].set_title(plot[i].replace("_", " "))
                 theme.style_primary_axis(axes[0])
                 fig.autofmt_xdate()
+        else:
+            balance = balance[balance.columns[::-1]]
+            print_rich_table(
+                balance.drop(index=["Final link", "Link"]),
+                headers=list(balance.columns),
+                title=f"{ticker.upper()} Balance Sheet",
+                show_index=True,
+            )
 
-        balance = balance[balance.columns[::-1]]
-        print_rich_table(
-            balance.drop(index=["Final link", "Link"]),
-            headers=list(balance.columns),
-            title=f"{ticker.upper()} Balance Sheet",
-            show_index=True,
-        )
+            pd.set_option("display.max_colwidth", None)
 
-        pd.set_option("display.max_colwidth", None)
-
-        console.print(balance.loc["Final link"].to_frame().to_string())
-        console.print()
-        console.print(balance.loc["Link"].to_frame().to_string())
-        console.print()
+            console.print(balance.loc["Final link"].to_frame().to_string())
+            console.print()
+            console.print(balance.loc["Link"].to_frame().to_string())
+            console.print()
         export_data(
             export, os.path.dirname(os.path.abspath(__file__)), "balance", balance
         )
@@ -324,7 +324,7 @@ def display_balance_sheet(
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
 def display_cash_flow(
-    ticker: str, number: int, quarterly: bool = False, export: str = ""
+    ticker: str, number: int, quarterly: bool = False, ratios: bool = False, plot: list = [], export: str = ""
 ):
     """Financial Modeling Prep ticker cash flow
 
@@ -336,26 +336,55 @@ def display_cash_flow(
         Number to get
     quarterly: bool
         Flag to get quarterly data
+    ratios: bool
+        Shows percentage change, by default False
+    plot: list
+        List of row labels to plot
     export: str
         Format to export data
     """
-    cash = fmp_model.get_cash(ticker, number, quarterly)
+    cash = fmp_model.get_cash(ticker, number, quarterly, True if plot else False)
 
     if not cash.empty:
-        cash = cash[cash.columns[::-1]]
-        print_rich_table(
-            cash.drop(index=["Final link", "Link"]),
-            headers=list(cash.columns),
-            title=f"{ticker.upper()} Cash Flow",
-            show_index=True,
-        )
+        if plot:
+            cash_plot_data = cash[cash.columns[::-1]]
+            rows_plot = len(plot)
+            cash_plot_data = cash_plot_data.transpose()
+            cash_plot_data.columns = cash_plot_data.columns.str.lower()
 
-        pd.set_option("display.max_colwidth", None)
+            if rows_plot == 1:
+                fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+                cash_plot_data[plot[0].replace("_", "")].plot()
+                title = (
+                    f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {ticker.upper()}"
+                    if ratios
+                    else f"{plot[0].replace('_', ' ')} of {ticker.upper()}"
+                )
+                plt.title(title)
+                theme.style_primary_axis(ax)
+                theme.visualize_output()
+            else:
+                fig, axes = plt.subplots(rows_plot)
+                for i in range(rows_plot):
+                    axes[i].plot(cash_plot_data[plot[i].replace("_", "")])
+                    axes[i].set_title(plot[i].replace("_", " "))
+                theme.style_primary_axis(axes[0])
+                fig.autofmt_xdate()
+        else:
+            cash = cash[cash.columns[::-1]]
+            print_rich_table(
+                cash.drop(index=["Final link", "Link"]),
+                headers=list(cash.columns),
+                title=f"{ticker.upper()} Cash Flow",
+                show_index=True,
+            )
 
-        console.print(cash.loc["Final link"].to_frame().to_string())
-        console.print()
-        console.print(cash.loc["Link"].to_frame().to_string())
-        console.print()
+            pd.set_option("display.max_colwidth", None)
+
+            console.print(cash.loc["Final link"].to_frame().to_string())
+            console.print()
+            console.print(cash.loc["Link"].to_frame().to_string())
+            console.print()
         export_data(export, os.path.dirname(os.path.abspath(__file__)), "cash", cash)
     else:
         logger.error("Could not get data")

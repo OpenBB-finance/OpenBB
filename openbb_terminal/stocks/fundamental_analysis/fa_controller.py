@@ -1000,6 +1000,24 @@ class FundamentalAnalysisController(StockBaseController):
             help="Quarter fundamental data flag.",
         )
         parser.add_argument(
+            "-r",
+            "--ratios",
+            action="store_true",
+            default=False,
+            dest="ratios",
+            help="Shows percentage change of values.",
+        )
+        parser.add_argument(
+            "-p",
+            "--plot",
+            action="store",
+            nargs="+",
+            type=str,
+            default=[],
+            dest="plot",
+            help="Rows to plot. (-1 represents invalid data)",
+        )
+        parser.add_argument(
             "-s",
             "--source",
             default="av",
@@ -1022,6 +1040,8 @@ class FundamentalAnalysisController(StockBaseController):
                     ticker=self.ticker,
                     limit=ns_parser.limit,
                     quarterly=ns_parser.b_quarter,
+                    ratios=ns_parser.ratios,
+                    plot=ns_parser.plot,
                     export=ns_parser.export,
                 )
             elif ns_parser.source == "fmp":
@@ -1029,6 +1049,8 @@ class FundamentalAnalysisController(StockBaseController):
                     ticker=self.ticker,
                     number=ns_parser.limit,
                     quarterly=ns_parser.b_quarter,
+                    ratios=ns_parser.ratios,
+                    plot=ns_parser.plot,
                     export=ns_parser.export,
                 )
             elif ns_parser.source == "polygon":
@@ -1037,12 +1059,16 @@ class FundamentalAnalysisController(StockBaseController):
                     financial="cash",
                     limit=ns_parser.limit,
                     quarterly=ns_parser.b_quarter,
+                    ratios=ns_parser.ratios,
+                    plot=ns_parser.plot,
                     export=ns_parser.export,
                 )
             elif ns_parser.source == "yf":
                 yahoo_finance_view.display_fundamentals(
                     ticker=self.ticker,
                     financial="cash-flow",
+                    ratios=ns_parser.ratios,
+                    plot=ns_parser.plot,
                     export=ns_parser.export,
                 )
 
