@@ -1052,7 +1052,7 @@ class EconomyController(BaseController):
             investingcom_model.check_correct_country(ns_parser.country)
 
             investingcom_view.display_economic_calendar(
-                country=ns_parser.country,
+                countries=ns_parser.country,
                 importances=ns_parser.importances,
                 categories=ns_parser.categories,
                 from_date=ns_parser.start_date,
