@@ -1359,32 +1359,26 @@ class FundamentalAnalysisController(StockBaseController):
                 ticker=self.ticker, debug=ns_parser.b_debug
             )
 
-
-def key_metrics_explained(other_args: List[str]):
-    """Key metrics explained.
-
-    Parameters
-    ----------
-    other_args : List[str]
-        argparse other args
-    """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="info",
-        description="""
-            Provides information about main key metrics. Namely: EBITDA,
-            EPS, P/E, PEG, FCF, P/B, ROE, DPR, P/S, Dividend Yield Ratio, D/E, and Beta.
-        """,
-    )
-    ns_parser = self.parse_known_args_and_warn(
-        parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-    )
-    if ns_parser:
-        filepath = "fundamental_analysis/key_metrics_explained.txt"
-        with open(filepath) as fp:
-            line = fp.readline()
-            while line:
-                console.print(f"{line.strip()}")
+    @log_start_end(log=logger)
+    def key_metrics_explained(self, other_args: List[str]):
+        """Key metrics explained."""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="info",
+            description="""
+                Provides information about main key metrics. Namely: EBITDA,
+                EPS, P/E, PEG, FCF, P/B, ROE, DPR, P/S, Dividend Yield Ratio, D/E, and Beta.
+            """,
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            filepath = "fundamental_analysis/key_metrics_explained.txt"
+            with open(filepath) as fp:
                 line = fp.readline()
-            console.print("")
+                while line:
+                    console.print(f"{line.strip()}")
+                    line = fp.readline()
+                console.print("")

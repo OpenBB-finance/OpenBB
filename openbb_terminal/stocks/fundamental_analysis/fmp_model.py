@@ -1,7 +1,7 @@
 """ Financial Modeling Prep Model"""
 __docformat__ = "numpy"
 import logging
-from typing import Optional, List
+from typing import Optional
 
 from datetime import datetime
 from requests.exceptions import HTTPError
