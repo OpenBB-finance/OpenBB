@@ -29,7 +29,7 @@ CATEGORIES = [
     "Inflation",
     "Confidence Index",
 ]
-IMPORTANCES = ["high", "medium", "low"]
+IMPORTANCES = ["high", "medium", "low", "all"]
 
 
 def check_correct_country(country):
@@ -150,8 +150,10 @@ def get_economic_calendar(
         data.drop(columns=data.columns[0], axis=1, inplace=True)
         data.sort_values(by="date", inplace=True)
         data.drop_duplicates(keep="first", inplace=True)
-        # To avoid displaying None when user selects importances
+
         if importances:
+            if importances == ["all"]:
+                importances = IMPORTANCES
             data = data[data["importance"].isin(importances)]
 
     return data, time_zone
