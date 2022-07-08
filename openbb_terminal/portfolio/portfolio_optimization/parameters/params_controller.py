@@ -14,7 +14,7 @@ from prompt_toolkit.completion import NestedCompleter
 
 from openbb_terminal import feature_flags as gtff
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import parse_known_args_and_warn, log_and_raise
+from openbb_terminal.helper_funcs import log_and_raise
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.portfolio.portfolio_optimization.parameters import params_view
@@ -145,11 +145,11 @@ class ParametersController(BaseController):
         mt.add_raw("\n")
         mt.add_param("_model", self.current_model or "")
         mt.add_raw("\n")
-        mt.add_cmd("clear")
-        mt.add_cmd("set")
-        mt.add_cmd("arg")
-        mt.add_raw("\n")
+        mt.add_cmd("clear", condition=self.current_file)
+        mt.add_cmd("set", condition=self.current_file)
+        mt.add_cmd("arg", condition=self.current_file)
         if self.current_file:
+            mt.add_raw("\n")
             mt.add_info("_parameters_")
             if self.current_model:
                 max_len = max(len(k) for k in self.params.keys())
@@ -205,7 +205,7 @@ class ParametersController(BaseController):
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-f")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
             self.current_file = " ".join(ns_parser.file)
@@ -238,7 +238,7 @@ class ParametersController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-f")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if ns_parser.file.endswith(".ini"):
                 # Create file if it does not exist
@@ -265,13 +265,18 @@ class ParametersController(BaseController):
     @log_start_end(log=logger)
     def call_clear(self, other_args: List[str]):
         """Process set command"""
+        if not self.current_file:
+            console.print(
+                "[red]Load portfolio risk parameters first using `file`.\n[/red]"
+            )
+            return
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="clear",
             description="Clear selected portfolio optimization models",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
             self.current_model = ""
@@ -280,6 +285,12 @@ class ParametersController(BaseController):
     @log_start_end(log=logger)
     def call_set(self, other_args: List[str]):
         """Process set command"""
+        if not self.current_file:
+            console.print(
+                "[red]Load portfolio risk parameters first using `file`.\n[/red]"
+            )
+            return
+
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -296,7 +307,7 @@ class ParametersController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-m")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             self.current_model = ns_parser.model
             console.print("")
@@ -304,13 +315,17 @@ class ParametersController(BaseController):
     @log_start_end(log=logger)
     def call_arg(self, other_args: List[str]):
         """Process arg command"""
+        if not self.current_file:
+            console.print(
+                "[red]Load portfolio risk parameters first using `file`.\n[/red]"
+            )
+            return
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="arg",
             description="Set a different value for one of the available arguments.",
         )
-
         parser.add_argument(
             "-a",
             "--argument",
@@ -318,7 +333,6 @@ class ParametersController(BaseController):
             dest="argument",
             help="Set a value for an argument",
         )
-
         parser.add_argument(
             "-s",
             "--show_arguments",
@@ -330,12 +344,16 @@ class ParametersController(BaseController):
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-a")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            if ns_parser.show:
+            if self.current_file.endswith(".ini"):
+                console.print(
+                    f"Please adjust the parameters directly in the {self.current_file} file."
+                )
+            elif ns_parser.show:
                 params_view.show_arguments(AVAILABLE_OPTIONS, self.description)
 
-            if ns_parser.argument:
+            elif ns_parser.argument:
                 argument = ns_parser.argument[0]
                 value = ns_parser.argument[1]
 
@@ -376,7 +394,7 @@ class ParametersController(BaseController):
                             f"{maximum / sum(x > 0 for x in AVAILABLE_OPTIONS[argument])}"
                         )
                     else:
-                        options = AVAILABLE_OPTIONS[argument]
+                        self.params[argument] = str(AVAILABLE_OPTIONS[argument])  # type: ignore
 
                     console.print(
                         f"[red]The value {value} is not an option for {argument}.\n"

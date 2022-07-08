@@ -69,7 +69,7 @@ def display_defi_vaults(
         )
         return
 
-    df = df.sort_values(by=sortby, ascending=descend)
+    df = df.sort_values(by=sortby, ascending=descend).fillna("NA")
     df["tvl"] = df["tvl"].apply(lambda x: lambda_long_number_format(x))
     df["apy"] = df["apy"].apply(
         lambda x: f"{str(round(x * 100, 2))} %" if isinstance(x, (int, float)) else x

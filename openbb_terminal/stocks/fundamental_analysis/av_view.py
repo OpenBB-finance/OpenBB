@@ -134,7 +134,7 @@ def display_income_statement(
 def display_balance_sheet(
     ticker: str, limit: int, quarterly: bool = False, ratios: bool = False, plot: list = [], export: str = ""
 ):
-    """Alpha Vantage income statement
+    """Alpha Vantage balance sheet statement
 
     Parameters
     ----------
@@ -222,7 +222,7 @@ def display_cash_flow(
     print_rich_table(
         df_cash,
         headers=list(df_cash.columns),
-        title=f"{ticker} Balance Sheet",
+        title=f"{ticker} Cash flow",
         show_index=True,
     )
 

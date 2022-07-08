@@ -43,7 +43,7 @@ INTERVALS = [1, 5, 15, 30, 60]
 SOURCES = ["yf", "av", "iex"]
 
 market_coverage_suffix = {
-    "USA": ["CBT", "CME", "NYB", "CMX", "NYM"],
+    "USA": ["CBT", "CME", "NYB", "CMX", "NYM", "US", ""],
     "Argentina": ["BA"],
     "Austria": ["VI"],
     "Australia": ["AX"],
@@ -356,6 +356,12 @@ def load(
                 int_ = "1mo"
                 int_string = "Monthly"
 
+            # Win10 version of mktime cannot cope with dates before 1970
+            if os.name == "nt" and start < datetime(1970, 1, 1):
+                start = datetime(
+                    1970, 1, 2
+                )  # 1 day buffer in case of timezone adjustments
+
             # Adding a dropna for weekly and monthly because these include weird NaN columns.
             df_stock_candidate = yf.download(
                 ticker, start=start, end=end, progress=False, interval=int_
@@ -409,9 +415,15 @@ def load(
         # Polygon source
         elif source == "polygon":
 
+            # Polygon allows: day, minute, hour, day, week, month, quarter, year
+            timespan = "day"
+            if weekly or monthly:
+                timespan = "week" if weekly else "month"
+
             request_url = (
                 f"https://api.polygon.io/v2/aggs/ticker/"
-                f"{ticker.upper()}/range/1/day/{start.strftime('%Y-%m-%d')}/{end.strftime('%Y-%m-%d')}?adjusted=true"
+                f"{ticker.upper()}/range/1/{timespan}/"
+                f"{start.strftime('%Y-%m-%d')}/{end.strftime('%Y-%m-%d')}?adjusted=true"
                 f"&sort=desc&limit=49999&apiKey={cfg.API_POLYGON_KEY}"
             )
             r = requests.get(request_url)
@@ -988,7 +1000,7 @@ def find_trendline(
 
 
 def additional_info_about_ticker(ticker: str) -> str:
-    """Additional information about trading the ticker such as exchange, currency, timezone and market status
+    """Information about trading the ticker such as exchange, currency, timezone and market status
 
     Parameters
     ----------
@@ -1001,7 +1013,11 @@ def additional_info_about_ticker(ticker: str) -> str:
         Additional information about trading the ticker
     """
     extra_info = ""
+
     if ticker:
+        if ".US" in ticker.upper():
+            ticker = ticker.rstrip(".US")
+            ticker = ticker.rstrip(".us")
         ticker_info = yf.Ticker(ticker).info
         # outside US exchange
         if "." in ticker:
@@ -1053,7 +1069,7 @@ def additional_info_about_ticker(ticker: str) -> str:
                             extra_info += "OPEN"
                         else:
                             extra_info += "CLOSED"
-
+            extra_info += "\n[param]Company:  [/param]"
             if "shortName" in ticker_info and ticker_info["shortName"]:
                 extra_info += ticker_info["shortName"]
         else:

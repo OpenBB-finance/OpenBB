@@ -1,0 +1,71 @@
+{
+  "stocks": {
+    "load": "yf",
+    "dps": {
+      "psi": "stockgrid"
+    },
+    "fa": {
+      "income": "av",
+      "balance": "av"
+    },
+    "options": {
+      "load": "yf",
+      "hist": "chartexchange",
+      "vol": "tradier",
+      "voi": "tradier",
+      "oi": "tradier"
+    },
+    "disc": {
+      "load": "yf"
+    },
+    "sia": {
+      "load": "yf"
+    },
+    "scr": {
+      "load": "yf"
+    },
+    "ins": {
+      "load": "yf"
+    },
+    "gov": {
+      "load": "yf"
+    },
+    "ba": {
+      "load": "yf"
+    },
+    "ca": {
+      "load": "yf"
+    },
+    "res": {
+      "load": "yf"
+    },
+    "dd": {
+      "load": "yf"
+    },
+    "bt": {
+      "load": "yf"
+    },
+    "ta": {
+      "load": "yf"
+    },
+    "qa": {
+      "load": "yf"
+    },
+    "pred": {
+      "load": "yf"
+    }
+  },
+  "crypto": {
+    "load": "cg",
+    "find": "cg"
+  },
+  "economy": {
+    "ycrv": "investpy"
+  },
+  "etf": {
+    "ln": "fd"
+  },
+  "forex": {
+    "load": "yf"
+  }
+}

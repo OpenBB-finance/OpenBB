@@ -6,6 +6,7 @@ import os
 from typing import Union
 from pandas.plotting import register_matplotlib_converters
 import openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model as gecko
+from openbb_terminal.cryptocurrency import cryptocurrency_helpers
 from openbb_terminal.cryptocurrency.dataframe_helpers import wrap_text_in_df
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
@@ -61,18 +62,23 @@ def display_coin_potential_returns(
 
 
 @log_start_end(log=logger)
-def display_info(symbol: str, export: str) -> None:
+def display_info(symbol: str, export: str = "") -> None:
     """Shows basic information about loaded coin. [Source: CoinGecko]
 
     Parameters
     ----------
     symbol : str
-        Cryptocurrency
+        Cryptocurrency symbol
     export : str
         Export dataframe data to csv,json,xlsx file
     """
 
-    coin = gecko.Coin(symbol)
+    cg_id = cryptocurrency_helpers.check_cg_id(symbol)
+
+    if not cg_id:
+        return
+
+    coin = gecko.Coin(cg_id)
 
     df = wrap_text_in_df(coin.get_base_info(), w=80)
 
@@ -89,18 +95,23 @@ def display_info(symbol: str, export: str) -> None:
 
 
 @log_start_end(log=logger)
-def display_web(symbol: str, export: str) -> None:
+def display_web(symbol: str, export: str = "") -> None:
     """Shows found websites corresponding to loaded coin. [Source: CoinGecko]
 
     Parameters
     ----------
     symbol : str
-        Cryptocurrency
+        Cryptocurrency symbol
     export : str
         Export dataframe data to csv,json,xlsx file
     """
 
-    coin = gecko.Coin(symbol)
+    cg_id = cryptocurrency_helpers.check_cg_id(symbol)
+
+    if not cg_id:
+        return
+
+    coin = gecko.Coin(cg_id)
 
     df = coin.get_websites()
 
@@ -117,7 +128,7 @@ def display_web(symbol: str, export: str) -> None:
 
 
 @log_start_end(log=logger)
-def display_social(symbol: str, export: str) -> None:
+def display_social(symbol: str, export: str = "") -> None:
     """Shows social media corresponding to loaded coin. [Source: CoinGecko]
 
     Parameters
@@ -146,7 +157,7 @@ def display_social(symbol: str, export: str) -> None:
 
 
 @log_start_end(log=logger)
-def display_dev(symbol: str, export: str) -> None:
+def display_dev(symbol: str, export: str = "") -> None:
     """Shows developers data for loaded coin. [Source: CoinGecko]
 
     Parameters
@@ -176,14 +187,13 @@ def display_dev(symbol: str, export: str) -> None:
 
 
 @log_start_end(log=logger)
-def display_ath(symbol: str, currency: str, export: str) -> None:
+def display_ath(symbol: str, currency: str = "usd", export: str = "") -> None:
     """Shows all time high data for loaded coin. [Source: CoinGecko]
 
     Parameters
     ----------
     symbol : str
         Cryptocurrency
-
     currency: str
         currency vs which coin ath will be displayed: usd or btc
     export : str
@@ -204,14 +214,13 @@ def display_ath(symbol: str, currency: str, export: str) -> None:
 
 
 @log_start_end(log=logger)
-def display_atl(symbol: str, currency: str, export: str) -> None:
+def display_atl(symbol: str, currency: str = "usd", export: str = "") -> None:
     """Shows all time low data for loaded coin. [Source: CoinGecko]
 
     Parameters
     ----------
     symbol : str
         Cryptocurrency
-
     currency: str
         currency vs which coin ath will be displayed: usd or btc
     export : str
@@ -232,7 +241,7 @@ def display_atl(symbol: str, currency: str, export: str) -> None:
 
 
 @log_start_end(log=logger)
-def display_score(symbol: str, export: str) -> None:
+def display_score(symbol: str, export: str = "") -> None:
     """Shows different kind of scores for loaded coin. [Source: CoinGecko]
 
     Parameters
@@ -262,7 +271,7 @@ def display_score(symbol: str, export: str) -> None:
 
 
 @log_start_end(log=logger)
-def display_bc(symbol: str, export: str) -> None:
+def display_bc(symbol: str, export: str = "") -> None:
     """Shows urls to blockchain explorers. [Source: CoinGecko]
 
     Parameters
@@ -289,7 +298,7 @@ def display_bc(symbol: str, export: str) -> None:
 
 
 @log_start_end(log=logger)
-def display_market(symbol: str, export: str) -> None:
+def display_market(symbol: str, export: str = "") -> None:
     """Shows market data for loaded coin. [Source: CoinGecko]
 
     Parameters

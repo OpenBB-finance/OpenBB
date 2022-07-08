@@ -251,7 +251,8 @@ def getATSdata(num_tickers_to_filter: int, tier_ats: str) -> Tuple[pd.DataFrame,
             df_ats_week["weekStartDate"] = d_week["weekStartDate"]
 
             if not df_ats_week.empty:
-                df_ats = df_ats.append(df_ats_week, ignore_index=True)
+                # df_ats = df_ats.append(df_ats_week, ignore_index=True)
+                df_ats = pd.concat([df_ats, df_ats_week], ignore_index=True)
 
     df_ats = df_ats.sort_values("weekStartDate")
     df_ats["weekStartDateInt"] = pd.to_datetime(df_ats["weekStartDate"]).apply(
@@ -282,7 +283,7 @@ def getATSdata(num_tickers_to_filter: int, tier_ats: str) -> Tuple[pd.DataFrame,
                 ].values,
             )[0]
             d_ats_reg[symbol] = slope
-        except Exception:
+        except Exception:  # nosec B110
             pass
 
     return df_ats, d_ats_reg

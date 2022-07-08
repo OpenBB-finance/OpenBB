@@ -13,17 +13,17 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA2yOsRKCMBAFe77iyQcADY2dpY1SOPY35CA3hASTiwzj+O+O2ljY7ha7jwIAylNQ
-        LvcoL5b8hC1kDCEiJ/EjDm6xhCt5pZF3OOeIpOQNRYNDd0RPzmGIfMvs+w2S0H5YwsIRs/isDPIG
-        bdP8CENbhc4xJcZdkiis6pL2db2ua0Xv6P3brPpQL5FnyXMNGT57a8jOwMnE0AClOLKCYGW0HP9s
-        VWXxfAEAAP//AwDOG3xz7AAAAA==
+        H4sIAAAAAAAAAwAAAP//bI6xEoIwEAV7vuLJBwANjZ2ljVI49jfkIDeEBJOLDOP4747aWNjuFruP
+        AgDKU1Au9ygvlvyELWQMISIn8SMObrGEK3mlkXc454ik5A1Fg0N3RE/OYYh8y+z7DZLQfljCwhGz
+        +KwM8gZt0/wIQ1uFzjElxl2SKKzqkvZ1va5rRe/o/dus+lAvkWfJcw0ZPntryM7AycTQAKU4soJg
+        ZbQc/2xVZfF8AQAA//8DAM4bfHPsAAAA
     headers:
       Allow:
       - GET, HEAD, OPTIONS
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 70ee1aade97a06ae-LHR
+      - 722d6a7178ba3628-MAN
       Connection:
       - keep-alive
       Content-Encoding:
@@ -31,7 +31,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Sat, 21 May 2022 14:46:54 GMT
+      - Wed, 29 Jun 2022 08:50:39 GMT
       Expect-CT:
       - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
       Server:

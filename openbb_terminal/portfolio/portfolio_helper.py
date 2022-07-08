@@ -113,7 +113,19 @@ BENCHMARK_LIST = {
 
 PERIODS = ["mtd", "qtd", "ytd", "3m", "6m", "1y", "3y", "5y", "10y", "all"]
 
+now = datetime.now()
 PERIODS_DAYS = {
+    "mtd": (now - datetime(now.year, now.month, 1)).days,
+    "qtd": (
+        now
+        - datetime(
+            now.year,
+            1 if now.month < 4 else 4 if now.month < 7 else 7 if now.month < 7 else 10,
+            1,
+        )
+    ).days,
+    "ytd": (now - datetime(now.year, 1, 1)).days,
+    "all": 0,
     "3m": 3 * 21,
     "6m": 6 * 21,
     "1y": 12 * 21,
@@ -194,7 +206,7 @@ def filter_df_by_period(df: pd.DataFrame, period: str = "all") -> pd.DataFrame:
 
     Returns
     ----------
-    str
+    pd.DataFrame
         A cleaned value
     """
     if period == "mtd":
@@ -284,7 +296,7 @@ def get_maximum_drawdown(return_series: pd.Series) -> float:
     Returns
     -------
     float
-        maximum drawdown
+        Maximum drawdown
     """
     comp_ret = (return_series + 1).cumprod()
     peak = comp_ret.expanding(min_periods=1).max()

@@ -1,0 +1,17 @@
+# This is a comment, below you can find a command
+stocks
+
+# This is another comment
+# There can be multiple lines of comments if desired
+load MSFT
+
+# You can also have multiple commands below each other
+candle
+fa
+
+# You have the ability to move around menus by using /
+/portfolio/po
+/economy
+
+# Returning to home is easily done with home
+home

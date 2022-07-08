@@ -103,6 +103,7 @@ jupyterlab-code-formatter = {version = "^1.4.10", optional = true}
 jupyterlab-lsp = {version = "^3.10.1", optional = true}
 jedi-language-server = {version = "^0.35.1", optional = true}
 kaleido = {version = "<=0.2.1", optional = true}
+html5lib = "^1.1"
 
 
 [tool.poetry.dev-dependencies]

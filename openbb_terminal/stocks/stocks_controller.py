@@ -19,7 +19,6 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     export_data,
-    parse_known_args_and_warn,
     valid_date,
 )
 from openbb_terminal.helper_classes import AllowArgsWithWhiteSpace
@@ -95,6 +94,7 @@ class StocksController(StockBaseController):
             }
 
             choices["support"] = self.SUPPORT_CHOICES
+            choices["about"] = self.ABOUT_CHOICES
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -207,7 +207,7 @@ class StocksController(StockBaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-q")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             EXPORT_ONLY_RAW_DATA_ALLOWED,
@@ -255,7 +255,7 @@ class StocksController(StockBaseController):
         # For the case where a user uses: 'quote BB'
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             stocks_helper.quote(ns_parser.s_ticker)
 
@@ -268,7 +268,7 @@ class StocksController(StockBaseController):
             prog="codes",
             description="Show CIK, FIGI and SCI code from polygon for loaded ticker.",
         )
-        ns_parser = parse_known_args_and_warn(parser, _)
+        ns_parser = self.parse_known_args_and_warn(parser, _)
         if ns_parser:
             if not self.ticker:
                 console.print("No ticker loaded. First use `load {ticker}`\n")
@@ -339,7 +339,7 @@ class StocksController(StockBaseController):
             help=translate("stocks/CANDLE_mov_avg"),
             default=None,
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             EXPORT_ONLY_RAW_DATA_ALLOWED,
@@ -355,6 +355,21 @@ class StocksController(StockBaseController):
                     f"{self.ticker}",
                     self.stock,
                 )
+
+                if ns_parser.sort and not self.stock.empty:
+                    sort = (
+                        ns_parser.sort if ns_parser.sort != "AdjClose" else "Adj Close"
+                    )
+                    if sort not in self.stock.columns:
+                        col_names_no_spaces = [
+                            "'" + col.replace(" ", "") + "'"
+                            for col in self.stock.columns
+                        ]
+                        console.print(
+                            f"candle: error: argument --sort: invalid choice: '{sort}' for the source chosen "
+                            f"(choose from {(', '.join(list(col_names_no_spaces)))})"
+                        )
+                        return
 
                 if ns_parser.raw:
                     qa_view.display_raw(
@@ -428,7 +443,7 @@ class StocksController(StockBaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
-        ns_parser = parse_known_args_and_warn(parser, other_args, limit=5)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args, limit=3)
         if ns_parser:
             sources = ns_parser.sources
             for idx, source in enumerate(sources):
@@ -522,11 +537,13 @@ class StocksController(StockBaseController):
     @log_start_end(log=logger)
     def call_th(self, _):
         """Process th command"""
-        from openbb_terminal.stocks.tradinghours.tradinghours_controller import (
-            TradingHoursController,
-        )
+        from openbb_terminal.stocks.tradinghours import tradinghours_controller
 
-        self.queue = self.load_class(TradingHoursController, self.queue)
+        self.queue = self.load_class(
+            tradinghours_controller.TradingHoursController,
+            self.ticker,
+            self.queue,
+        )
 
     @log_start_end(log=logger)
     def call_res(self, _):

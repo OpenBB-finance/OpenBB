@@ -1,13 +1,11 @@
 ```
 usage: codes [-h]
 ```
-
-Show CIK, FIGI and SCI code from polygon for loaded ticker.
+Shows CIK, FIGI, and SIC codes for the loaded ticker, from Polygon.
 ```
 options:
   -h, --help  show this help message (default: False)
 ```
-
 Sample usage:
 ```
 2022 May 03, 08:35 (🦋) /stocks/ $ codes

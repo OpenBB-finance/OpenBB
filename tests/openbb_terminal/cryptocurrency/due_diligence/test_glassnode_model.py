@@ -18,13 +18,13 @@ def vcr_config():
 
 @pytest.mark.vcr
 @pytest.mark.parametrize(
-    "asset,interval,since,until",
+    "asset,since,until",
     [
-        ("BTC", "24h", 1_601_596_800, 1_641_573_787),
+        ("BTC", 1_601_596_800, 1_641_573_787),
     ],
 )
-def test_get_close_price(asset, interval, since, until, recorder):
-    df = glassnode_model.get_close_price(asset, interval, since, until)
+def test_get_close_price(asset, since, until, recorder):
+    df = glassnode_model.get_close_price(asset, since, until)
     recorder.capture(df)
 
 

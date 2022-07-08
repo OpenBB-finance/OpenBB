@@ -7,7 +7,6 @@ import difflib
 import logging
 import os
 import platform
-import random
 import sys
 from typing import List
 from pathlib import Path
@@ -18,17 +17,19 @@ from prompt_toolkit.styles import Style
 from prompt_toolkit.formatted_text import HTML
 
 from openbb_terminal.core.config.constants import REPO_DIR, ENV_FILE, USER_HOME
+from openbb_terminal.core.log.generation.path_tracking_file_handler import (
+    PathTrackingFileHandler,
+)
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.helper_funcs import (
     get_flair,
-    parse_known_args_and_warn,
+    parse_simple_args,
 )
 from openbb_terminal.loggers import setup_logging
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.terminal_helper import (
-    about_us,
     bootup,
     check_for_updates,
     is_reset,
@@ -50,10 +51,9 @@ class TerminalController(BaseController):
     """Terminal Controller class"""
 
     CHOICES_COMMANDS = [
-        "update",
-        "about",
         "keys",
         "settings",
+        "update",
         "featflags",
         "exe",
     ]
@@ -102,16 +102,9 @@ class TerminalController(BaseController):
         """Print help"""
         mt = MenuText("")
         mt.add_custom("_home_")
-        mt.add_cmd("cls")
-        mt.add_cmd("help")
-        mt.add_cmd("quit")
-        mt.add_cmd("exit")
-        mt.add_cmd("reset")
-        mt.add_raw("\n")
-        mt.add_cmd("resources")
-        mt.add_cmd("update")
         mt.add_cmd("about")
         mt.add_cmd("support")
+        mt.add_cmd("update")
         mt.add_raw("\n")
         mt.add_info("_configure_")
         mt.add_menu("keys")
@@ -138,7 +131,13 @@ class TerminalController(BaseController):
 
     def call_update(self, _):
         """Process update command"""
-        self.update_success = not update_terminal()
+        if not obbff.PACKAGED_APPLICATION:
+            self.update_success = not update_terminal()
+        else:
+            console.print(
+                "Find the most recent release of the OpenBB Terminal here: "
+                "https://openbb.co/products/terminal#get-started\n"
+            )
 
     def call_keys(self, _):
         """Process keys command"""
@@ -157,10 +156,6 @@ class TerminalController(BaseController):
         from openbb_terminal.featflags_controller import FeatureFlagsController
 
         self.queue = self.load_class(FeatureFlagsController, self.queue)
-
-    def call_about(self, _):
-        """Process about command"""
-        about_us()
 
     def call_stocks(self, _):
         """Process stocks command"""
@@ -305,7 +300,7 @@ class TerminalController(BaseController):
         )
         if args and "-" not in args[0][0]:
             args.insert(0, "-p")
-        ns_parser_exe = parse_known_args_and_warn(parser_exe, args)
+        ns_parser_exe = parse_simple_args(parser_exe, args)
         if ns_parser_exe:
             if ns_parser_exe.path:
                 if ns_parser_exe.path in self.ROUTINE_CHOICES:
@@ -439,9 +434,6 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
                 print_goodbye()
                 break
 
-            if obbff.ENABLE_EXIT_AUTO_HELP and len(t_controller.queue) > 1:
-                t_controller.queue = t_controller.queue[1:]
-
             # Consume 1 element from the queue
             an_input = t_controller.queue[0]
             t_controller.queue = t_controller.queue[1:]
@@ -456,23 +448,17 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
             if session and obbff.USE_PROMPT_TOOLKIT:
                 try:
                     if obbff.TOOLBAR_HINT:
-                        random_routine = [
-                            file
-                            for file in os.listdir(
-                                os.path.join(
-                                    os.path.abspath(os.path.dirname(__file__)),
-                                    "routines",
-                                )
-                            )
-                            if file.endswith(".openbb")
-                        ]
                         an_input = session.prompt(
                             f"{get_flair()} / $ ",
                             completer=t_controller.completer,
                             search_ignore_case=True,
                             bottom_toolbar=HTML(
-                                "Execute routine scripts to automate your research workflow. "  # nosec
-                                f"E.g.: $ exe {random_routine[random.randint(0, len(random_routine) - 1)]}"
+                                '<style bg="ansiblack" fg="ansiwhite">[h]</style> help menu    '
+                                '<style bg="ansiblack" fg="ansiwhite">[q]</style> return to previous menu    '
+                                '<style bg="ansiblack" fg="ansiwhite">[e]</style> exit terminal    '
+                                '<style bg="ansiblack" fg="ansiwhite">[cmd -h]</style> '
+                                "see usage and available options    "
+                                '<style bg="ansiblack" fg="ansiwhite">[about]</style> Getting Started Documentation'
                             ),
                             style=Style.from_dict(
                                 {
@@ -486,7 +472,7 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
                             completer=t_controller.completer,
                             search_ignore_case=True,
                         )
-                except KeyboardInterrupt:
+                except (KeyboardInterrupt, EOFError):
                     print_goodbye()
                     break
             # Get input from user without auto-completion
@@ -549,6 +535,14 @@ def insert_start_slash(cmds: List[str]) -> List[str]:
     return cmds
 
 
+def do_rollover():
+    """RollOver the log file."""
+
+    for handler in logging.getLogger().handlers:
+        if isinstance(handler, PathTrackingFileHandler):
+            handler.doRollover()
+
+
 def log_settings() -> None:
     """Log settings"""
     settings_dict = {}
@@ -572,6 +566,8 @@ def log_settings() -> None:
     settings_dict["os"] = str(platform.system())
 
     logger.info("SETTINGS: %s ", str(settings_dict))
+
+    do_rollover()
 
 
 def run_scripts(
