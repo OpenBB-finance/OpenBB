@@ -6,9 +6,7 @@ import numpy as np
 import pandas as pd
 
 # IMPORTATION INTERNAL
-from openbb_terminal.stocks.fundamental_analysis.financial_modeling_prep import (
-    fmp_model,
-)
+from openbb_terminal.stocks.fundamental_analysis import fmp_model
 
 
 @pytest.fixture(scope="module")

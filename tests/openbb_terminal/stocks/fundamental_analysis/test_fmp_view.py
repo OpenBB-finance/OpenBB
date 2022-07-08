@@ -4,9 +4,7 @@
 import pytest
 
 # IMPORTATION INTERNAL
-from openbb_terminal.stocks.fundamental_analysis.financial_modeling_prep import (
-    fmp_view,
-)
+from openbb_terminal.stocks.fundamental_analysis import fmp_view
 from openbb_terminal import helper_funcs
 
 
