@@ -2,7 +2,7 @@
   "stocks": {
     "load": "yf",
     "dps": {
-      "psi": "quandl"
+      "psi": "stockgrid"
     },
     "fa": {
       "income": "av",
@@ -14,6 +14,45 @@
       "vol": "tradier",
       "voi": "tradier",
       "oi": "tradier"
+    },
+    "disc": {
+      "load": "yf"
+    },
+    "sia": {
+      "load": "yf"
+    },
+    "scr": {
+      "load": "yf"
+    },
+    "ins": {
+      "load": "yf"
+    },
+    "gov": {
+      "load": "yf"
+    },
+    "ba": {
+      "load": "yf"
+    },
+    "ca": {
+      "load": "yf"
+    },
+    "res": {
+      "load": "yf"
+    },
+    "dd": {
+      "load": "yf"
+    },
+    "bt": {
+      "load": "yf"
+    },
+    "ta": {
+      "load": "yf"
+    },
+    "qa": {
+      "load": "yf"
+    },
+    "pred": {
+      "load": "yf"
     }
   },
   "crypto": {
