@@ -32,7 +32,7 @@ from openbb_terminal.stocks.fundamental_analysis import (
     fmp_view,
 )
 
-# pylint: disable=inconsistent-return-statements,too-many-lines,R0904
+# pylint: disable=inconsistent-return-statements,C0302,R0904
 
 
 logger = logging.getLogger(__name__)
