@@ -242,7 +242,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
         ),
         (
             "call_score",
-            "fmp_view.valinvest_score",
+            "financial_modeling_prep.fmp_view.valinvest_score",
             [],
             {"TSLA"},
         ),
@@ -304,19 +304,19 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "call_income",
             "av_view.display_income_statement",
             ["--export=csv", "--limit=5", "--quarter"],
-            {"ticker": "TSLA", "limit": 5, "quarterly": True, "ratios": False, "plot": [], "export": "csv"},
+            {"ticker": "TSLA", "limit": 5, "quarterly": True, "export": "csv"},
         ),
         (
             "call_balance",
             "av_view.display_balance_sheet",
             ["--export=csv", "--limit=5", "--quarter"],
-            {"ticker": "TSLA", "limit": 5, "quarterly": True, "ratios": False, "plot": [], "export": "csv"},
+            {"ticker": "TSLA", "limit": 5, "quarterly": True, "export": "csv"},
         ),
         (
             "call_cash",
             "av_view.display_cash_flow",
             ["--export=csv", "--limit=5", "--quarter"],
-            {"ticker": "TSLA", "limit": 5, "quarterly": True, "ratios": False, "plot": [], "export": "csv"},
+            {"ticker": "TSLA", "limit": 5, "quarterly": True, "export": "csv"},
         ),
         (
             "call_earnings",
@@ -407,6 +407,28 @@ def test_call_func_no_parser(func, mocker):
     func_result = getattr(controller, func)(other_args=list())
     assert func_result is None
     controller.parse_known_args_and_warn.assert_called_once()
+
+
+@pytest.mark.vcr(record_mode="none")
+def test_call_fmp(mocker):
+    mocker.patch(
+        (
+            "openbb_terminal.stocks.fundamental_analysis.financial_modeling_prep."
+            "fmp_controller.FinancialModelingPrepController.menu"
+        ),
+        return_value=["quit"],
+    )
+
+    controller = fa_controller.FundamentalAnalysisController(
+        ticker="AAPL",
+        start="10/25/2021",
+        interval="1440min",
+        suffix="",
+    )
+
+    mocker.patch.object(controller, "print_help", autospec=True)
+    controller.call_fmp(list())
+    assert controller.queue == ["quit"]
 
 
 @pytest.mark.vcr(record_mode="none")

@@ -294,13 +294,13 @@ interactions:
       Content-Type:
       - text/plain; charset=utf-8
       Date:
-      - Fri, 08 Jul 2022 12:43:12 GMT
+      - Mon, 25 Apr 2022 12:02:04 GMT
       ETag:
       - W/"4b76bcec17a09df73e81231782a268cf01a762cd430299313452dcf15482db6b"
       Expires:
-      - Fri, 08 Jul 2022 12:48:12 GMT
+      - Mon, 25 Apr 2022 12:07:04 GMT
       Source-Age:
-      - '0'
+      - '244'
       Strict-Transport-Security:
       - max-age=31536000
       Vary:
@@ -308,21 +308,21 @@ interactions:
       Via:
       - 1.1 varnish
       X-Cache:
-      - MISS
+      - HIT
       X-Cache-Hits:
-      - '0'
+      - '1'
       X-Content-Type-Options:
       - nosniff
       X-Fastly-Request-ID:
-      - a7f95a34631daba225471ae7beae5ff834ef84c9
+      - 5ebb6af285ff86f1015d26a5727ff1c4f6e12819
       X-Frame-Options:
       - deny
       X-GitHub-Request-Id:
-      - 8352:E5C5:1143921:1256711:62C82660
+      - 415E:069E:10D6992:1237D2D:62668CC7
       X-Served-By:
-      - cache-fra19141-FRA
+      - cache-ams21040-AMS
       X-Timer:
-      - S1657284193.802894,VS0,VE155
+      - S1650888124.352546,VS0,VE1
       X-XSS-Protection:
       - 1; mode=block
     status:
