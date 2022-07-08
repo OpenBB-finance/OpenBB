@@ -83,12 +83,11 @@ finnhub-python = "^2.4.10"
 linearmodels = "^4.25"
 black = "^22.1"
 ipywidgets = "^7.7.0"
-Jinja2 = "^3.0.3"  # Remove pinned version when Voila supports 3.1
-click = "^8.0.1"  # Remove pinned version when Black supports 8.1
+Jinja2 = "^3.0.3"
 Riskfolio-Lib = "^3.1.1"
 pyimgur = {version = "^0.6.0", optional = true}
 libclang = {version = ">=12.0.0", optional = true}
-tensorflow = {version = "^2.7.1", optional = true}  # Remove pinned version once working >2.8 builds will be available on macOS
+tensorflow = {version = "^2.8.2", optional = true}
 fastapi = {version = "^0.73.0", optional = true}
 uvicorn = {version = "^0.17.1", optional = true}
 disnake = {version = "^2.3.0", optional = true}
@@ -118,7 +117,7 @@ codespell = "^2.0.0"
 pyupgrade = "^2.11.0"
 sphinx = "^4.5.0"
 myst-parser = "^0.15.2"
-black = {extras = ["jupyter"], version = "22.1.0"}
+black = {extras = ["jupyter"], version = "^22.1.0"}
 bandit = "^1.7.0"
 coverage = ">=5.5"
 vcrpy = "^4.1.1"
