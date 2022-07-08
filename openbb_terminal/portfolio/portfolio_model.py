@@ -923,11 +923,13 @@ class PortfolioModel:
         except Exception:
             console.print("Could not preprocess orderbook.")
 
-    def load_benchmark(self, ticker: str = "SPY"):
+    def load_benchmark(self, ticker: str = "SPY", full_shares: bool = False):
         """Adds benchmark dataframe
 
         Args:
             ticker (str): benchmark ticker to download data
+            full_shares (bool): whether to mimic the portfolio trades exactly (partial shares) or round down the
+            quantity to the nearest number.
         """
         self.benchmark_ticker = ticker
         self.benchmark_historical_prices = yf.download(
@@ -935,12 +937,13 @@ class PortfolioModel:
         )["Adj Close"]
         self.benchmark_returns = self.benchmark_historical_prices.pct_change().dropna()
         self.benchmark_info = yf.Ticker(ticker).info
-        self.mimic_trades_for_benchmark()
+        self.mimic_trades_for_benchmark(full_shares)
 
-    def mimic_trades_for_benchmark(self):
+    def mimic_trades_for_benchmark(self, full_shares: bool = False):
         """Mimic trades from the orderbook based on chosen benchmark assuming partial shares"""
         # Create dataframe to store benchmark trades
         self.benchmark_trades = self.__orderbook[["Date", "Type", "Investment"]].copy()
+
         # Set current price of benchmark
         self.benchmark_trades["Last price"] = self.benchmark_historical_prices[-1]
         self.benchmark_trades[["Benchmark Quantity", "Trade price"]] = float(0)
@@ -959,9 +962,16 @@ class PortfolioModel:
             self.benchmark_trades["Trade price"][
                 index
             ] = self.benchmark_historical_prices[date]
-            self.benchmark_trades["Benchmark Quantity"][index] = (
-                trade["Investment"] / self.benchmark_trades["Trade price"][index]
-            )
+
+            # Whether full shares are desired (thus no partial shares).
+            if full_shares:
+                self.benchmark_trades["Benchmark Quantity"][index] = np.floor(
+                    trade["Investment"] / self.benchmark_trades["Trade price"][index]
+                )
+            else:
+                self.benchmark_trades["Benchmark Quantity"][index] = (
+                    trade["Investment"] / self.benchmark_trades["Trade price"][index]
+                )
 
         self.benchmark_trades["Benchmark Investment"] = (
             self.benchmark_trades["Trade price"]
@@ -983,6 +993,13 @@ class PortfolioModel:
         # TODO: To add alpha here, we must pull prices from original trades and get last price
         # for each of those trades. Then just calculate returns and compare to benchmark
         self.benchmark_trades.fillna(0, inplace=True)
+
+        if full_shares:
+            console.print(
+                "Note that with full shares (-s) enabled, there will be a mismatch between how much you invested in the"
+                f" portfolio ({round(sum(self.portfolio_trades['Portfolio Investment']), 2)}) and how much you invested"
+                f" in the benchmark ({round(sum(self.benchmark_trades['Benchmark Investment']), 2)})."
+            )
 
     def generate_portfolio_data(self):
         """Generates portfolio data from orderbook"""

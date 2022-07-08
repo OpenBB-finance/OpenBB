@@ -1805,12 +1805,6 @@ def display_summary_portfolio_benchmark(
     portfolio_returns = portfolio_helper.filter_df_by_period(portfolio_returns, period)
     benchmark_returns = portfolio_helper.filter_df_by_period(benchmark_returns, period)
 
-    # Match the DataFrames so they share a similar length
-    if len(benchmark_returns.index) > len(portfolio_returns.index):
-        benchmark_returns = benchmark_returns.loc[portfolio_returns.index]
-    elif len(portfolio_returns.index) > len(benchmark_returns.index):
-        portfolio_returns = portfolio_returns.loc[benchmark_returns.index]
-
     metrics = {
         "Volatility": [portfolio_returns.std(), benchmark_returns.std()],
         "Skew": [

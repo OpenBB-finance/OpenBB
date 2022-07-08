@@ -365,6 +365,14 @@ class PortfolioController(BaseController):
             required="-h" not in other_args,
             help="Set the benchmark for the portfolio. By default, this is SPDR S&P 500 ETF Trust (SPY).",
         )
+        parser.add_argument(
+            "-s",
+            "--full_shares",
+            action="store_true",
+            default=False,
+            dest="full_shares",
+            help="Whether to only make a trade with the benchmark when a full share can be bought (no partial shares).",
+        )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-b")
 
@@ -381,10 +389,18 @@ class PortfolioController(BaseController):
                 else:
                     benchmark_ticker = chosen_benchmark
 
-                # self.portfolio.add_benchmark(benchmark_ticker)
-                self.portfolio.load_benchmark(benchmark_ticker)
+                self.portfolio.load_benchmark(benchmark_ticker, ns_parser.full_shares)
 
                 self.benchmark_name = chosen_benchmark
+
+                # Make it so that there is no chance of there being a difference in length between
+                # the portfolio and benchmark return DataFrames
+                (
+                    self.portfolio.returns,
+                    self.portfolio.benchmark_returns,
+                ) = portfolio_helper.make_equal_length(
+                    self.portfolio.returns, self.portfolio.benchmark_returns
+                )
 
                 console.print(
                     f"[bold]\nBenchmark:[/bold] {self.benchmark_name} ({benchmark_ticker})"
@@ -481,14 +497,6 @@ class PortfolioController(BaseController):
             description="""
                 Shows performance of each trade and total performance of the portfolio versus the benchmark.
             """,
-        )
-        parser.add_argument(
-            "-s",
-            "--full_shares",
-            action="store_true",
-            default=False,
-            dest="full_shares",
-            help="Whether to only make a trade with the benchmark when a full share can be bought (no partial shares).",
         )
         parser.add_argument(
             "-t",
