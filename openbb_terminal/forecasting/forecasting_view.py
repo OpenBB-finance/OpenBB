@@ -23,7 +23,9 @@ from openbb_terminal.rich_config import console
 from openbb_terminal.forecasting import forecasting_model
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.forecasting import helpers
-from openbb_terminal.forecasting.from_darts import plot_acf
+
+# from openbb_terminal.forecasting.from_darts import plot_acf
+from darts.utils.statistics import plot_acf
 
 logger = logging.getLogger(__name__)
 
@@ -158,7 +160,10 @@ def display_seasonality(
         else:
             ax = external_axes[0]
 
-        plot_acf(series, m=m, max_lag=max_lag, alpha=alpha, axis=ax)
+        # TODO: Add darts check_seasonality here
+        plot_acf(
+            series, m=m, max_lag=max_lag, alpha=alpha, axis=ax, default_formatting=False
+        )
 
         theme.style_primary_axis(ax)
 
