@@ -189,7 +189,7 @@ class FundamentalAnalysisController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_data(self, other_args: List[str]):
-        """Process screener command."""
+        """Process data command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -275,7 +275,7 @@ class FundamentalAnalysisController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_enterprise(self, other_args: List[str]):
-        """Process income command"""
+        """Process enterprise command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -293,7 +293,7 @@ class FundamentalAnalysisController(StockBaseController):
             action="store",
             dest="limit",
             type=check_positive,
-            default=1,
+            default=5,
             help="Limit of latest years/quarters.",
         )
         parser.add_argument(
@@ -348,7 +348,7 @@ class FundamentalAnalysisController(StockBaseController):
             action="store",
             dest="limit",
             type=check_positive,
-            default=1,
+            default=5,
             help="Limit of latest years/quarters.",
         )
         parser.add_argument(
@@ -404,7 +404,7 @@ class FundamentalAnalysisController(StockBaseController):
             action="store",
             dest="limit",
             type=check_positive,
-            default=1,
+            default=5,
             help="Limit of latest years/quarters.",
         )
         parser.add_argument(
@@ -456,7 +456,7 @@ class FundamentalAnalysisController(StockBaseController):
             action="store",
             dest="limit",
             type=check_positive,
-            default=1,
+            default=5,
             help="Limit of latest years/quarters.",
         )
         parser.add_argument(
@@ -988,7 +988,7 @@ class FundamentalAnalysisController(StockBaseController):
             action="store",
             dest="limit",
             type=check_positive,
-            default=1,
+            default=5,
             help="Number of latest years/quarters.",
         )
         parser.add_argument(
@@ -1307,7 +1307,7 @@ class FundamentalAnalysisController(StockBaseController):
             action="store",
             dest="limit",
             type=check_positive,
-            default=1,
+            default=5,
             help="Limit of latest years/quarters.",
         )
         parser.add_argument(
