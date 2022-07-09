@@ -11,7 +11,7 @@ Ticker: TSLA
     enterprise         company enterprise value                                        [FMP]
     metrics            key metrics over time                                           [FMP]
     ratios             in-depth ratios over time                                       [FMP]
-    growth             growth of finacial statement items and ratios                   [FMP]
+    growth             growth of financial statement items and ratios                  [FMP]
     warnings           company warnings according to Sean Seah book                    [Market Watch]
     dcf                advanced Excel customizable discounted cash flow                [Stockanalysis]
     dcfc               stocks/fa/dcfc                                                  [FMP]
