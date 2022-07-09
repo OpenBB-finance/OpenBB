@@ -12,7 +12,6 @@ from typing import List, Dict
 from prompt_toolkit.completion import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
-from openbb_terminal import parent_classes
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     check_non_negative,
@@ -530,13 +529,6 @@ class PortfolioOptimizationController(BaseController):
             self.params,
             self.current_model,
         )
-        self.current_file = parent_classes.controllers[
-            "/portfolio/po/params/"
-        ].current_file
-        self.current_model = parent_classes.controllers[
-            "/portfolio/po/params/"
-        ].current_model
-        self.params = parent_classes.controllers["/portfolio/po/params/"].params
 
     @log_start_end(log=logger)
     def call_show(self, other_args: List[str]):
