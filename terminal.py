@@ -56,6 +56,7 @@ class TerminalController(BaseController):
         "update",
         "featflags",
         "exe",
+        "guess",
     ]
     CHOICES_MENUS = [
         "stocks",
@@ -128,6 +129,27 @@ class TerminalController(BaseController):
         mt.add_menu("dashboards")
         mt.add_menu("reports")
         console.print(text=mt.menu_text, menu="Home")
+
+    def call_guess(self, _) -> None:
+        """Process guess command"""
+        import time
+
+        task = "load AAPL and display it's EMA"
+        solution = "stocks/load aapl/ta/ema"
+
+        start = time.time()
+        console.print(f"\n[yellow]{task}[/yellow]\n")
+        an_input = session.prompt("GUESS / $ ")
+        if an_input == solution:
+            self.queue = an_input.split("/")
+            time_dif = time.time() - start
+            console.print(
+                f"\n[green]You guessed correctly in {round(time_dif, 2)} seconds![green]\n"
+            )
+        else:
+            console.print(
+                f"\n[red]You guessed wrong! The correct path would have been: {solution}[/red]\n"
+            )
 
     def call_update(self, _):
         """Process update command"""
