@@ -134,15 +134,11 @@ def parse_and_split_input(an_input: str) -> List[str]:
     """
     # everything from `-f ` to the next space or line break that follows the extension
     unix_path_arg_exp = r"((\ -f |\ --file ).*?\.\S*)|((\ -f \/|\ --file \/).*?\.\S*)"
-    # everything from `-s ` to the next slash followed by 1 capital letter
-    screener_arg_exp = r"((\ -s |\ --sort |\ --sortby ).*?\/[A-Z ]\S*)"
-
-    slash_filter_exp = f"{unix_path_arg_exp}|{screener_arg_exp}"
 
     filter_input = True
     placeholders: Dict[str, str] = {}
     while filter_input:
-        match = re.search(pattern=slash_filter_exp, string=an_input)
+        match = re.search(pattern=unix_path_arg_exp, string=an_input)
         if match is not None:
             placeholder = f"{{placeholder{len(placeholders)+1}}}"
             placeholders[placeholder] = an_input[
