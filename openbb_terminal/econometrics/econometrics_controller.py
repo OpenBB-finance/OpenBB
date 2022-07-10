@@ -322,8 +322,6 @@ class EconometricsController(BaseController):
             dest="examples",
         )
 
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-f")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
