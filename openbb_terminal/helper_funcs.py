@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import argparse
 import logging
 from pathlib import Path
-from typing import List, Tuple, Union, Optional
+from typing import List, Tuple, Union, Optional, Dict
 from datetime import datetime, timedelta, date as d
 import types
 from collections.abc import Iterable
@@ -113,6 +113,58 @@ def check_path(path: str) -> str:
     logger.error("The path file '%s' does not exist.", path)
     console.print(f"[red]The path file '{path}' does not exist.\n[/red]")
     return ""
+
+
+def parse_and_split_input(an_input: str) -> List[str]:
+    """Filter and split the input queue
+
+    Uses regex to filters command arguments that have forward slashes so that it doesn't
+    break the execution of the command queue.
+    Currently handles unix paths and sorting settings for screener menus.
+
+    Parameters
+    ----------
+    an_input : str
+        User input as string
+
+    Returns
+    -------
+    List[str]
+        Command queue
+    """
+    # everything from `-f ` to the next space or line break that follows the extension
+    unix_path_arg_exp = r"((\ -f |\ --file ).*?\.\S*)|((\ -f \/|\ --file \/).*?\.\S*)"
+    # everything from `-s ` to the next slash followed by 1 capital letter
+    screener_arg_exp = r"((\ -s |\ --sort |\ --sortby ).*?\/[A-Z ]\S*)"
+
+    slash_filter_exp = f"{unix_path_arg_exp}|{screener_arg_exp}"
+
+    filter_input = True
+    placeholders: Dict[str, str] = {}
+    while filter_input:
+        match = re.search(pattern=slash_filter_exp, string=an_input)
+        if match is not None:
+            placeholder = f"{{placeholder{len(placeholders)+1}}}"
+            placeholders[placeholder] = an_input[
+                match.span()[0] : match.span()[1]  # noqa:E203
+            ]
+            an_input = (
+                an_input[: match.span()[0]]
+                + placeholder
+                + an_input[match.span()[1] :]  # noqa:E203
+            )
+        else:
+            filter_input = False
+
+    commands = an_input.split("/")
+
+    for command_num, command in enumerate(commands):
+        matching_placeholders = [tag for tag in placeholders if tag in command]
+        if len(matching_placeholders) > 0:
+            for tag in matching_placeholders:
+                commands[command_num] = command.replace(tag, placeholders[tag])
+
+    return commands
 
 
 def log_and_raise(error: Union[argparse.ArgumentTypeError, ValueError]) -> None:

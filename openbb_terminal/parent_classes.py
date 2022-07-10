@@ -35,6 +35,7 @@ from openbb_terminal.helper_funcs import (
     check_file_type_saved,
     check_positive,
     get_preferred_source,
+    parse_and_split_input,
 )
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.rich_config import console
@@ -222,7 +223,7 @@ class BaseController(metaclass=ABCMeta):
 
         # Navigation slash is being used first split commands
         elif "/" in an_input:
-            actions = an_input.split("/")
+            actions = parse_and_split_input(an_input)
 
             # Absolute path is specified
             if not actions[0]:
