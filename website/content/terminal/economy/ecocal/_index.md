@@ -23,6 +23,7 @@ optional arguments:
 ```
 
 Example:
+```
 2022 Jul 11, 00:12 (🦋) /economy/ $ ecocal
 
                                                      Calendar (GMT +1:00)
