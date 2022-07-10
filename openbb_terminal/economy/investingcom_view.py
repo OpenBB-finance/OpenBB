@@ -127,12 +127,20 @@ def display_economic_calendar(
     to_date: datetime.date,
     export: str = "",
 ):
-    """Display yield curve. [Source: Investing.com]
+    """Display economic calendar. [Source: Investing.com]
 
     Parameters
     ----------
-    country: str
-        Country to display
+    countries: str
+        Country selected from allowed list
+    importances: str
+        Importance selected from high, medium, low or all
+    categories: str
+        Event category. E.g. Employment, Inflation, among others
+    from_date: datetime.date
+        First date to get events if applicable
+    to_date: datetime.date
+        Last date to get events if applicable
     export : str
         Export dataframe data to csv,json,xlsx file
     """

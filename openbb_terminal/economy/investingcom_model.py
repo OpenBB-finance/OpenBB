@@ -80,6 +80,19 @@ def get_economic_calendar(
 ) -> pd.DataFrame:
     """Get economic calendar [Source: Investing.com]
 
+    Parameters
+    ----------
+    countries: list
+        Country selected from allowed list
+    importances: list
+        Importance selected from high, medium, low or all
+    categories: list
+        Event category. E.g. Employment, Inflation, among others
+    from_date: datetime.date
+        First date to get events if applicable
+    to_date: datetime.date
+        Last date to get events if applicable
+
     Returns
     -------
     pd.DataFrame
