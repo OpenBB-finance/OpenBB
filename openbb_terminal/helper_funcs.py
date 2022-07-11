@@ -1566,7 +1566,7 @@ def check_list_values(valid_values: List[str]):
     return check_list_values_from_valid_values_list
 
 
-def get_preferred_source(command_path: str):
+def get_ordered_list_sources(command_path: str):
     """
     Returns the preferred source for the given command. If a value is not available for the specific
     command, returns the most specific source, eventually returning the overall default source.
@@ -1614,11 +1614,8 @@ def get_preferred_source(command_path: str):
                                 return json_doc[context]["load"]
 
                     # We didn't find the next level, so flag that that command default source is missing
-                    # We decided to have these mentioned explicitly
-                    console.print(
-                        f"[red]'data_sources_default.json' file does not contain {command_path}[/red]"
-                    )
-                    return None
+                    # Which means that there aren't more than 1 source and therefore no selection is necessary
+                    return []
 
                 # Go one level deeper into the path
                 path_objects = path_objects[1:]

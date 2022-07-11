@@ -150,7 +150,6 @@ class ETFController(BaseController):
             other_args,
             limit=5,
             export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
-            sources=["sa", "fd"],
         )
         if ns_parser:
             name_to_search = " ".join(ns_parser.name)

@@ -17,7 +17,7 @@ from openbb_terminal.forex.forex_helper import FOREX_SOURCES, SOURCES_INTERVALS
 from openbb_terminal.helper_funcs import (
     valid_date,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
-    get_preferred_source,
+    get_ordered_list_sources,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
@@ -51,7 +51,7 @@ class ForexController(BaseController):
         self.fx_pair = ""
         self.from_symbol = ""
         self.to_symbol = ""
-        self.source = get_preferred_source(f"{self.PATH}load")
+        self.source = get_ordered_list_sources(f"{self.PATH}load")
         self.data = pd.DataFrame()
 
         if session and obbff.USE_PROMPT_TOOLKIT:
@@ -139,7 +139,8 @@ class ForexController(BaseController):
             other_args.insert(0, "-t")
 
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, sources=["yf", "av", "polygon"]
+            parser,
+            other_args,
         )
 
         if ns_parser:

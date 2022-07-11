@@ -142,7 +142,6 @@ class EconomyController(BaseController):
         "country": "Country (U.S. listed stocks only)",
         "capitalization": "Capitalization",
     }
-    ycrv_sources = ["FRED", "investpy"]
     PATH = "/economy/"
 
     stored_datasets = ""
@@ -939,7 +938,6 @@ class EconomyController(BaseController):
             other_args,
             export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
             raw=True,
-            sources=self.ycrv_sources,
         )
         if ns_parser:
             if isinstance(ns_parser.country, list):

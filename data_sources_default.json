@@ -1,71 +1,71 @@
 {
   "stocks": {
-    "load": "yf",
+    "load": ["yf", "av", "iex", "polygon"],
     "dps": {
-      "psi": "stockgrid"
+      "psi": ["stockgrid", "quandl"]
     },
     "fa": {
-      "income": "av",
-      "balance": "av"
+      "income": ["yf", "polygon", "av"],
+      "balance": ["yf", "polygon", "av"]
     },
     "options": {
-      "load": "yf",
-      "hist": "chartexchange",
-      "vol": "tradier",
-      "voi": "tradier",
-      "oi": "tradier"
+      "load": ["tradier", "yf"],
+      "hist": ["chartexchange", "tradier"],
+      "vol": ["tradier", "yf"],
+      "voi": ["tradier", "yf"],
+      "oi": ["tradier", "yf"]
     },
     "disc": {
-      "load": "yf"
+      "load": ["yf", "av", "iex", "polygon"]
     },
     "sia": {
-      "load": "yf"
+      "load": ["yf", "av", "iex", "polygon"]
     },
     "scr": {
-      "load": "yf"
+      "load": ["yf", "av", "iex", "polygon"]
     },
     "ins": {
-      "load": "yf"
+      "load": ["yf", "av", "iex", "polygon"]
     },
     "gov": {
-      "load": "yf"
+      "load": ["yf", "av", "iex", "polygon"]
     },
     "ba": {
-      "load": "yf"
+      "load": ["yf", "av", "iex", "polygon"]
     },
     "ca": {
-      "load": "yf"
+      "load": ["yf", "av", "iex", "polygon"]
     },
     "res": {
-      "load": "yf"
+      "load": ["yf", "av", "iex", "polygon"]
     },
     "dd": {
-      "load": "yf"
+      "load": ["yf", "av", "iex", "polygon"]
     },
     "bt": {
-      "load": "yf"
+      "load": ["yf", "av", "iex", "polygon"]
     },
     "ta": {
-      "load": "yf"
+      "load": ["yf", "av", "iex", "polygon"]
     },
     "qa": {
-      "load": "yf"
+      "load": ["yf", "av", "iex", "polygon"]
     },
     "pred": {
-      "load": "yf"
+      "load": ["yf", "av", "iex", "polygon"]
     }
   },
   "crypto": {
-    "load": "cg",
-    "find": "cg"
+    "load": ["cg"],
+    "find": ["cg", "cp", "bin", "cb", "yf"]
   },
   "economy": {
-    "ycrv": "investpy"
+    "ycrv": ["investpy", "FRED"]
   },
   "etf": {
-    "ln": "fd"
+    "ln": ["sa", "fd"]
   },
   "forex": {
-    "load": "yf"
+    "load": ["yf", "av", "polygon"]
   }
 }
