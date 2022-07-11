@@ -1,4 +1,3 @@
-Date,Name,Type,Sector,Industry,Country,Price,Quantity,Fees,Premium,Investment,Side,Currency
-07/20/2021,CASH,CASH,CASH,CASH,CASH,30000,1,0,0,30000,Deposit,USD
-07/20/2021,btc,CRYPTO,Digital Currency,Large,United States,29790,1,0,0,29790,Buy,USD
-07/25/2021,eth,CRYPTO,Digital Asset,Mid,United States,29799,1,0,0,29799,Buy,USD
+Date,Ticker,Type,Sector,Industry,Country,Price,Quantity,Fees,Premium,Investment,Side,Currency
+7/20/2021,btc,CRYPTO,Digital Currency,Large,United States,29790,1,0,0,29790,Buy,USD
+7/25/2021,eth,CRYPTO,Digital Asset,Mid,United States,29799,1,0,0,29799,Buy,USD

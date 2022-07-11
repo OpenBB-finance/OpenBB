@@ -122,11 +122,13 @@ def get_borrow_rates(current: bool = True) -> pd.DataFrame:
     url = "https://defirate.com/loans/?exchange_table_type=borrow"
     table = _scrape_defirate(url, current)
     items = []
-    first_row = table.find("thead").text.strip().split()
+    first_row = (
+        table.find("thead").text.strip().replace("Compound v2", "Compound_v2").split()
+    )
 
     headers = [r for r in first_row if r not in ["Borrow", ""]]
     headers.insert(0, "Symbol")
     for i in table.find_all("td"):
         items.append(i.text.strip())
-    borrowings = [items[i : i + 12] for i in range(0, len(items), 12)]  # noqa: E203
+    borrowings = [items[i : i + 8] for i in range(0, len(items), 8)]  # noqa: E203
     return pd.DataFrame(columns=headers, data=borrowings)
