@@ -1003,8 +1003,8 @@ class EconomyController(BaseController):
             action="store",
             dest="importances",
             choices=investingcom_model.IMPORTANCES,
-            default="high",
-            help="Event importance classified as high, medium or low.",
+            default="all",
+            help="Event importance classified as high, medium, low or all.",
         )
         parser.add_argument(
             "-cat",

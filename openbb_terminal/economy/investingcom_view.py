@@ -150,11 +150,11 @@ def display_economic_calendar(
     categories_list = []
 
     if countries:
-        countries_list = [countries]
+        countries_list = [countries.lower()]
     if importances:
-        importances_list = [importances]
+        importances_list = [importances.lower()]
     if categories:
-        categories_list = [categories]
+        categories_list = [categories.title()]
 
     df, time_zone = investingcom_model.get_economic_calendar(
         countries_list, importances_list, categories_list, from_date, to_date
@@ -174,7 +174,7 @@ def display_economic_calendar(
             df,
             headers=list(df.columns),
             show_index=False,
-            title=f"Calendar ({time_zone})",
+            title=f"Economic Calendar ({time_zone})",
         )
 
         export_data(

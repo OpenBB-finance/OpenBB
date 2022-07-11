@@ -19,21 +19,21 @@ logger = logging.getLogger(__name__)
 
 COUNTRIES = investpy.bonds.get_bond_countries()
 CATEGORIES = [
-    "Employment",
-    "Credit",
-    "Balance",
-    "Economic Activity",
-    "Central Banks",
-    "Bonds",
-    "Inflation",
-    "Confidence Index",
+    "employment",
+    "credit",
+    "balance",
+    "economic activity",
+    "central banks",
+    "bonds",
+    "inflation",
+    "confidence index",
 ]
 IMPORTANCES = ["high", "medium", "low", "all"]
 
 
 def check_correct_country(country):
     """Argparse type to check that correct country is inserted"""
-    if country not in investpy.bonds.get_bond_countries():
+    if country.lower() not in investpy.bonds.get_bond_countries():
         log_and_raise(
             argparse.ArgumentTypeError(
                 f"{country} is an invalid country. Choose from \
@@ -119,6 +119,9 @@ def get_economic_calendar(
         from_date_string = format_date(from_date)
     elif to_date and not from_date:
         from_date_string = format_date(to_date + datetime.timedelta(days=-7))
+        to_date_string = format_date(to_date)
+    elif to_date and from_date:
+        from_date_string = format_date(from_date)
         to_date_string = format_date(to_date)
     else:
         today = datetime.date.today()
