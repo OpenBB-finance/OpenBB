@@ -6,7 +6,8 @@
     },
     "fa": {
       "income": "av",
-      "balance": "av"
+      "balance": "av",
+      "cash": "av"
     },
     "options": {
       "load": "yf",

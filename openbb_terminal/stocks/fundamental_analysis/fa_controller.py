@@ -15,6 +15,7 @@ from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
     valid_date,
+    get_preferred_source,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
@@ -96,10 +97,23 @@ class FundamentalAnalysisController(StockBaseController):
         self.interval = interval
         self.suffix = suffix
 
+        self.default_income = get_preferred_source(f"{self.PATH}income")
+        self.default_balance = get_preferred_source(f"{self.PATH}balance")
+        self.default_cash = get_preferred_source(f"{self.PATH}cash")
+
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             choices["load"]["-i"] = {c: {} for c in stocks_helper.INTERVALS}
             choices["load"]["-s"] = {c: {} for c in stocks_helper.SOURCES}
+            choices["income"]["-p"] = {
+                c: {} for c in stocks_helper.INCOME_PLOT[self.default_income]
+            }
+            choices["balance"]["-p"] = {
+                c: {} for c in stocks_helper.BALANCE_PLOT[self.default_balance]
+            }
+            choices["cash"]["-p"] = {
+                c: {} for c in stocks_helper.CASH_PLOT[self.default_cash]
+            }
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
@@ -801,7 +815,7 @@ class FundamentalAnalysisController(StockBaseController):
         parser.add_argument(
             "-s",
             "--source",
-            default="av",
+            default=self.default_income,
             dest="source",
             choices=["polygon", "av", "yf", "fmp"],
             help="The source to get the data from",
@@ -907,7 +921,7 @@ class FundamentalAnalysisController(StockBaseController):
         parser.add_argument(
             "-s",
             "--source",
-            default="av",
+            default=self.default_balance,
             dest="source",
             choices=["polygon", "av", "yf", "fmp"],
             help="The source to get the data from",
@@ -1020,7 +1034,7 @@ class FundamentalAnalysisController(StockBaseController):
         parser.add_argument(
             "-s",
             "--source",
-            default="av",
+            default=self.default_cash,
             dest="source",
             choices=["polygon", "av", "yf", "fmp"],
             help="The source to get the data from",

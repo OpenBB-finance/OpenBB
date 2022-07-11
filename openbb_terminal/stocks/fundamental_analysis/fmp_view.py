@@ -196,11 +196,11 @@ def display_income_statement(
         if plot:
             income_plot_data = income[income.columns[::-1]]
             rows_plot = len(plot)
+            maximum_value = income_plot_data.max().max()
             income_plot_data = income_plot_data.transpose()
             income_plot_data.columns = income_plot_data.columns.str.lower()
 
             if not ratios:
-                maximum_value = income_plot_data.max().max()
                 if maximum_value > 1_000_000_000_000:
                     df_rounded = income_plot_data / 1_000_000_000_000
                     denomination = " in Trillions"
@@ -295,11 +295,11 @@ def display_balance_sheet(
         if plot:
             balance_plot_data = balance[balance.columns[::-1]]
             rows_plot = len(plot)
+            maximum_value = balance_plot_data.max().max()
             balance_plot_data = balance_plot_data.transpose()
             balance_plot_data.columns = balance_plot_data.columns.str.lower()
 
             if not ratios:
-                maximum_value = balance_plot_data.max().max()
                 if maximum_value > 1_000_000_000_000:
                     df_rounded = balance_plot_data / 1_000_000_000_000
                     denomination = " in Trillions"
@@ -387,17 +387,17 @@ def display_cash_flow(
     export: str
         Format to export data
     """
-    cash = fmp_model.get_cash(ticker, number, quarterly, bool(plot))
+    cash = fmp_model.get_cash(ticker, number, quarterly, ratios, bool(plot))
 
     if not cash.empty:
         if plot:
             cash_plot_data = cash[cash.columns[::-1]]
             rows_plot = len(plot)
+            maximum_value = cash_plot_data.max().max()
             cash_plot_data = cash_plot_data.transpose()
             cash_plot_data.columns = cash_plot_data.columns.str.lower()
 
             if not ratios:
-                maximum_value = cash_plot_data.max().max()
                 if maximum_value > 1_000_000_000_000:
                     df_rounded = cash_plot_data / 1_000_000_000_000
                     denomination = " in Trillions"

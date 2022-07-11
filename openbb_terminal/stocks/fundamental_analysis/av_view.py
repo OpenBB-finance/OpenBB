@@ -104,11 +104,11 @@ def display_income_statement(
 
     if plot:
         rows_plot = len(plot)
+        maximum_value = df_income.max().max()
         income_plot_data = df_income.transpose()
         income_plot_data.columns = income_plot_data.columns.str.lower()
 
         if not ratios:
-            maximum_value = income_plot_data.max().max()
             if maximum_value > 1_000_000_000_000:
                 df_rounded = income_plot_data / 1_000_000_000_000
                 denomination = " in Trillions"
@@ -199,11 +199,11 @@ def display_balance_sheet(
 
     if plot:
         rows_plot = len(plot)
+        maximum_value = df_balance.max().max()
         balance_plot_data = df_balance.transpose()
         balance_plot_data.columns = balance_plot_data.columns.str.lower()
 
         if not ratios:
-            maximum_value = balance_plot_data.max().max()
             if maximum_value > 1_000_000_000_000:
                 df_rounded = balance_plot_data / 1_000_000_000_000
                 denomination = " in Trillions"
@@ -289,18 +289,18 @@ def display_cash_flow(
     export: str
         Format to export data
     """
-    df_cash = av_model.get_cash_flow(ticker, limit, quarterly, bool(plot))
+    df_cash = av_model.get_cash_flow(ticker, limit, quarterly, ratios, bool(plot))
 
     if df_cash.empty:
         return
 
     if plot:
         rows_plot = len(plot)
+        maximum_value = df_cash.max().max()
         cash_plot_data = df_cash.transpose()
         cash_plot_data.columns = cash_plot_data.columns.str.lower()
 
         if not ratios:
-            maximum_value = cash_plot_data.max().max()
             if maximum_value > 1_000_000_000_000:
                 df_rounded = cash_plot_data / 1_000_000_000_000
                 denomination = " in Trillions"
