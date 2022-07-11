@@ -43,6 +43,7 @@ def test_information_ratio(recorder):
 
     recorder.capture(result_df)
 
+
 @pytest.mark.vcr
 def test_tail_ratio(recorder):
     result_df, _, _ = portfolio_model.get_tail_ratio(
@@ -50,6 +51,7 @@ def test_tail_ratio(recorder):
     )
 
     recorder.capture(result_df)
+
 
 @pytest.mark.vcr
 def test_common_sense_ratio(recorder):
