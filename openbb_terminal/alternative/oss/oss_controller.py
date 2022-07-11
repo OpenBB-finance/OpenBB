@@ -49,8 +49,8 @@ class OSSController(BaseController):
         """
         # Covering the github "org/repo" convention in rs and sh commands
         custom_filters = [
-            r"(sh .*?\/\S*)",
-            r"(rs .*?\/\S*)",
+            r"(sh .*?(\/[a-zA-Z0-9_\-\/]).*?((?=\/)|(?= )|(?=$)))",
+            r"(rs .*?(\/[a-zA-Z0-9_\-\/]).*?((?=\/)|(?= )|(?=$)))",
         ]
         commands = parse_and_split_input(
             an_input=an_input, custom_filters=custom_filters
