@@ -13,6 +13,8 @@ from typing import List
 from pathlib import Path
 import dotenv
 
+import re
+
 from prompt_toolkit.completion import NestedCompleter
 from prompt_toolkit.styles import Style
 from prompt_toolkit.formatted_text import HTML
@@ -95,6 +97,9 @@ class TerminalController(BaseController):
             self.completer = NestedCompleter.from_nested_dict(choices)
 
         self.queue: List[str] = list()
+
+        self.queue_lists = list()
+        self.building_sequence = False
 
         if jobs_cmds:
             self.queue = " ".join(jobs_cmds).split("/")
@@ -345,10 +350,12 @@ class TerminalController(BaseController):
                         insert_start_slash(file_cmds) if file_cmds else file_cmds
                     )
                     cmds_with_params = " ".join(file_cmds)
-                    self.queue = [val for val in cmds_with_params.split("/") if val]
 
-                    if "export" in self.queue[0]:
-                        export_path = self.queue[0].split(" ")[1]
+                    # check if the first command is a export in the string
+                    if "export" in cmds_with_params[0 : cmds_with_params.find("/", 2)]:
+                        export_path = cmds_with_params[
+                            cmds_with_params.find("e") : cmds_with_params.find("/", 2)
+                        ].split(" ")[1]
                         # If the path selected does not start from the user root, give relative location from root
                         if export_path[0] == "~":
                             export_path = export_path.replace("~", USER_HOME.as_posix())
@@ -368,7 +375,12 @@ class TerminalController(BaseController):
                                 f"[green]Folder '{export_path}' successfully created.[/green]"
                             )
                         obbff.EXPORT_FOLDER_PATH = export_path
-                        self.queue = self.queue[1:]
+                        cmds_with_params = cmds_with_params[
+                            cmds_with_params.find("/", 2) :
+                        ]
+
+                    # passing commands as string to be transformed in queue a queue list always on the same place
+                    self.queue_lists = cmds_with_params
 
 
 # pylint: disable=global-statement
@@ -393,6 +405,7 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
     ret_code = 1
     t_controller = TerminalController(jobs_cmds)
     an_input = ""
+    sequence_counter = 0
 
     if export_path:
         # If the path selected does not start from the user root, give relative location from terminal root
@@ -497,8 +510,95 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
                 an_input = input(f"{get_flair()} / $ ")
 
         try:
-            # Process the input command
+
+            # check if any other controller returned a list of commands after a home input in chain
+            if len(BaseController.returned_cmds) > 0:
+                an_input = BaseController.returned_cmds
+                BaseController.returned_cmds = []
+
+            if an_input and len(an_input) > 0:
+                if type(an_input) == str:
+                    if an_input[0:3] == "exe":
+                        t_controller.queue = t_controller.switch(an_input)
+                        an_input = t_controller.queue_lists
+                        t_controller.queue_lists = []
+
+                # build the list of queues
+                if (
+                    len(t_controller.queue_lists) == 0
+                    and t_controller.building_sequence == False
+                ):
+
+                    if re.findall(" -[-A-Za-z]", an_input):
+                        matches_list = re.findall(r"\/[\w]+[\s]+-+\w[^;]*;", an_input)
+                        for match in matches_list:
+                            string_to_replace = an_input[
+                                an_input.find(match) : len(match)
+                                + an_input.find(match)
+                                + 1
+                            ]
+                            an_input = an_input.replace(
+                                string_to_replace, "/{{re_add_string_here}}/"
+                            )
+
+                        an_input_split = [val for val in an_input.split("/") if val]
+
+                        for i in range(len(an_input_split)):
+                            if an_input_split[i] == "{{re_add_string_here}}":
+                                an_input_split[i] = matches_list[0][1:-1]
+                                matches_list = matches_list[1:]
+                    else:
+                        an_input_split = [val for val in an_input.split("/") if val]
+
+                    sequence_counter = 0
+
+                    if len(an_input_split) > 1:
+                        queue_builder = [[]]
+                        t_controller.building_sequence = True
+
+                        current_queue_list = 0
+
+                        for command in an_input_split:
+                            if command in t_controller.CHOICES_MENUS:
+                                queue_builder.append([command])
+                                current_queue_list += 1
+                            else:
+                                queue_builder[current_queue_list].append(command)
+
+                        for item in queue_builder:
+                            if len(item) > 0:
+                                t_controller.queue_lists.append("/" + "/".join(item))
+
+                        an_input = t_controller.queue_lists[0]
+                        t_controller.queue_lists = t_controller.queue_lists[1:]
+
+                # check if the queue was built and terminal is ready for the next queue
+                if (
+                    len(t_controller.queue_lists) >= 1
+                    and t_controller.building_sequence == False
+                ):
+                    an_input = t_controller.queue_lists[0]
+                    t_controller.queue_lists = t_controller.queue_lists[1:]
+                    t_controller.building_sequence = True
+
+            # exception for if the first command is home in terminal or script
+            if (
+                t_controller.building_sequence == True
+                and an_input == "/home"
+                and t_controller.PATH.count("/") == 1
+            ):
+                t_controller.building_sequence = False
+
             t_controller.queue = t_controller.switch(an_input)
+
+            #used so the next queue_list is only used after the current is over
+            if t_controller.building_sequence == True:
+                if sequence_counter == 0:
+                    sequence_counter += 1
+                else:
+                    sequence_counter = 0
+                    t_controller.building_sequence = False
+
             if an_input in ("q", "quit", "..", "exit"):
                 print_goodbye()
                 break

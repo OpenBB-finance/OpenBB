@@ -86,6 +86,7 @@ class BaseController(metaclass=ABCMeta):
     TRY_RELOAD = False
     PATH: str = ""
     FILE_PATH: str = ""
+    returned_cmds = []
 
     def __init__(self, queue: List[str] = None) -> None:
         """
@@ -217,7 +218,34 @@ class BaseController(metaclass=ABCMeta):
 
         # Navigation slash is being used first split commands
         elif "/" in an_input:
-            actions = an_input.split("/")
+
+            # if not at home, and using home, get all commands after home to share with main terminal
+            if self.PATH.count("/") > 1:
+                if an_input.find("home") != -1:
+                    return_commands = an_input[an_input.find("home") + 4 :]
+                    an_input = an_input[: an_input.find("home") + 4]
+                if len(return_commands) > 0:
+                    BaseController.returned_cmds = return_commands
+
+            if re.findall(" -[-A-Za-z]", an_input):
+                matches_list = re.findall(r"\/[\w]+[\s]+-+\w[^;]*;", an_input)
+                for match in matches_list:
+                    string_to_replace = an_input[
+                        an_input.find(match) : len(match) + an_input.find(match) + 1
+                    ]
+                    an_input = an_input.replace(
+                        string_to_replace, "/{{re_add_string_here}}/"
+                    )
+
+                actions = an_input.split("/")
+
+                for i in range(len(actions)):
+                    if actions[i] == "{{re_add_string_here}}":
+                        actions[i] = matches_list[0][1:-1]
+                        matches_list = matches_list[1:]
+
+            else:
+                actions = an_input.split("/")
 
             # Absolute path is specified
             if not actions[0]:
