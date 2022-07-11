@@ -115,7 +115,7 @@ def check_path(path: str) -> str:
     return ""
 
 
-def parse_and_split_input(an_input: str) -> List[str]:
+def parse_and_split_input(an_input: str, custom_filters: List) -> List[str]:
     """Filter and split the input queue
 
     Uses regex to filters command arguments that have forward slashes so that it doesn't
@@ -126,19 +126,30 @@ def parse_and_split_input(an_input: str) -> List[str]:
     ----------
     an_input : str
         User input as string
+    custom_filters : List
+        Additional regular expressions to match
 
     Returns
     -------
     List[str]
-        Command queue
+        Command queue as list
     """
     # everything from `-f ` to the next space or line break that follows the extension
     unix_path_arg_exp = r"((\ -f |\ --file ).*?\.\S*)|((\ -f \/|\ --file \/).*?\.\S*)"
 
+    # Add custom expressions to handle edge cases of individual controllers
+    custom_filter = ""
+    for exp in custom_filters:
+        if exp is not None:
+            custom_filter += f"|{exp}"
+            del exp
+
+    slash_filter_exp = f"({unix_path_arg_exp}){custom_filter}"
+
     filter_input = True
     placeholders: Dict[str, str] = {}
     while filter_input:
-        match = re.search(pattern=unix_path_arg_exp, string=an_input)
+        match = re.search(pattern=slash_filter_exp, string=an_input)
         if match is not None:
             placeholder = f"{{placeholder{len(placeholders)+1}}}"
             placeholders[placeholder] = an_input[

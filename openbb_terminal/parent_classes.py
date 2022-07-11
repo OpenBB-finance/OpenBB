@@ -178,6 +178,34 @@ class BaseController(metaclass=ABCMeta):
     def print_help(self) -> None:
         raise NotImplementedError("Must override print_help.")
 
+    def parse_input(self, an_input: str) -> List:
+        """Parse controller input
+
+        Splits the command chain from user input into a list of individual commands
+        while respecting the forward slash in the command arguments.
+
+        In the default scenario only unix-like paths are handles by the parser.
+        Override this function in the controller classes that inherit from this one to
+        resolve edge cases specific to command arguments on those controllers.
+
+        When handling edge cases add additional regular expressions to the list.
+
+        Parameters
+        ----------
+        an_input : str
+            User input string
+
+        Returns
+        -------
+        List
+            Command queue as list
+        """
+        custom_filters: List = []
+        commands = parse_and_split_input(
+            an_input=an_input, custom_filters=custom_filters
+        )
+        return commands
+
     def contains_keys(self, string_to_check: str) -> bool:
         if self.KEYS_MENU in string_to_check or self.KEYS_MENU in self.PATH:
             return True
@@ -215,7 +243,7 @@ class BaseController(metaclass=ABCMeta):
         List[str]
             List of commands in the queue to execute
         """
-        actions = parse_and_split_input(an_input)
+        actions = self.parse_input(an_input)
 
         # Empty command
         if len(actions) == 0:
