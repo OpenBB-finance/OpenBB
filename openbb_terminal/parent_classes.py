@@ -224,6 +224,8 @@ class BaseController(metaclass=ABCMeta):
                 if an_input.find("home") != -1:
                     return_commands = an_input[an_input.find("home") + 4 :]
                     an_input = an_input[: an_input.find("home") + 4]
+                else:
+                    return_commands = ''
                 if len(return_commands) > 0:
                     BaseController.returned_cmds = return_commands
 
