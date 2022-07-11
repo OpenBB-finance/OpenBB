@@ -215,15 +215,14 @@ class BaseController(metaclass=ABCMeta):
         List[str]
             List of commands in the queue to execute
         """
+        actions = parse_and_split_input(an_input)
 
         # Empty command
-        if not an_input:
+        if len(actions) == 0:
             pass
-        #    console.print("")
 
         # Navigation slash is being used first split commands
-        elif "/" in an_input:
-            actions = parse_and_split_input(an_input)
+        elif len(actions) > 1:
 
             # Absolute path is specified
             if not actions[0]:
