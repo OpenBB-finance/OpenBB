@@ -50,8 +50,6 @@ class DegiroController(BaseController):
             choices: dict = {c: {} for c in self.controller_choices}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
-        self.__degiro_view.login()
-
     def print_help(self):
         """Print help."""
         DegiroView.help_display()
