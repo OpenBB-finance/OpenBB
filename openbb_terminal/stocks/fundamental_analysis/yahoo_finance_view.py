@@ -443,13 +443,34 @@ def display_fundamentals(
         fundamentals_plot_data = fundamentals_plot_data.replace("-", "-1")
         fundamentals_plot_data = fundamentals_plot_data.astype(float)
 
+        if not ratios:
+            maximum_value = fundamentals_plot_data.max().max()
+            if maximum_value > 1_000_000_000_000:
+                df_rounded = fundamentals_plot_data / 1_000_000_000_000
+                denomination = " in Trillions"
+            elif maximum_value > 1_000_000_000:
+                df_rounded = fundamentals_plot_data / 1_000_000_000
+                denomination = " in Billions"
+            elif maximum_value > 1_000_000:
+                df_rounded = fundamentals_plot_data / 1_000_000
+                denomination = " in Millions"
+            elif maximum_value > 1_000:
+                df_rounded = fundamentals_plot_data / 1_000
+                denomination = " in Thousands"
+            else:
+                df_rounded = fundamentals_plot_data
+                denomination = ""
+        else:
+            df_rounded = fundamentals_plot_data
+            denomination = ""
+
         if rows_plot == 1:
             fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-            fundamentals_plot_data[plot[0].replace("_", " ")].plot()
+            df_rounded[plot[0].replace("_", " ")].plot()
             title = (
                 f"{plot[0].replace('_', ' ').lower()} QoQ Growth of {ticker.upper()}"
                 if ratios
-                else f"{plot[0].replace('_', ' ')} of {ticker.upper()}"
+                else f"{plot[0].replace('_', ' ')} of {ticker.upper()} {denomination}"
             )
             plt.title(title)
             theme.style_primary_axis(ax)
@@ -457,8 +478,8 @@ def display_fundamentals(
         else:
             fig, axes = plt.subplots(rows_plot)
             for i in range(rows_plot):
-                axes[i].plot(fundamentals_plot_data[plot[i].replace("_", " ")])
-                axes[i].set_title(plot[i].replace("_", " "))
+                axes[i].plot(df_rounded[plot[i].replace("_", " ")])
+                axes[i].set_title(f"{plot[i].replace('_', ' ')} {denomination}")
             theme.style_primary_axis(axes[0])
             fig.autofmt_xdate()
     else:

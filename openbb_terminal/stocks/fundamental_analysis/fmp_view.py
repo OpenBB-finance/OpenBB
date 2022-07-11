@@ -199,13 +199,33 @@ def display_income_statement(
             income_plot_data = income_plot_data.transpose()
             income_plot_data.columns = income_plot_data.columns.str.lower()
 
+            if not ratios:
+                maximum_value = income_plot_data.max().max()
+                if maximum_value > 1_000_000_000_000:
+                    df_rounded = income_plot_data / 1_000_000_000_000
+                    denomination = " in Trillions"
+                elif maximum_value > 1_000_000_000:
+                    df_rounded = income_plot_data / 1_000_000_000
+                    denomination = " in Billions"
+                elif maximum_value > 1_000_000:
+                    df_rounded = income_plot_data / 1_000_000
+                    denomination = " in Millions"
+                elif maximum_value > 1_000:
+                    df_rounded = income_plot_data / 1_000
+                    denomination = " in Thousands"
+                else:
+                    df_rounded = income_plot_data
+                    denomination = ""
+            else:
+                df_rounded = income_plot_data
+                denomination = ""
             if rows_plot == 1:
                 fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-                income_plot_data[plot[0].replace("_", "")].plot()
+                df_rounded[plot[0].replace("_", "")].plot()
                 title = (
                     f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {ticker.upper()}"
                     if ratios
-                    else f"{plot[0].replace('_', ' ')} of {ticker.upper()}"
+                    else f"{plot[0].replace('_', ' ')} of {ticker.upper()} {denomination}"
                 )
                 plt.title(title)
                 theme.style_primary_axis(ax)
@@ -213,27 +233,27 @@ def display_income_statement(
             else:
                 fig, axes = plt.subplots(rows_plot)
                 for i in range(rows_plot):
-                    axes[i].plot(income_plot_data[plot[i].replace("_", "")])
-                    axes[i].set_title(plot[i].replace("_", " "))
+                    axes[i].plot(df_rounded[plot[i].replace("_", "")])
+                    axes[i].set_title(f"{plot[i].replace('_', ' ')} {denomination}")
                 theme.style_primary_axis(axes[0])
                 fig.autofmt_xdate()
+        else:
+            income = income[income.columns[::-1]]
+            print_rich_table(
+                income.drop(index=["Final link", "Link"]),
+                headers=list(income.columns),
+                title=f"{ticker.upper()} Income Statement"
+                if not ratios
+                else f"{'QoQ' if quarterly else 'YoY'} Change of {ticker.upper()} Income Statement",
+                show_index=True,
+            )
 
-        income = income[income.columns[::-1]]
-        print_rich_table(
-            income.drop(index=["Final link", "Link"]),
-            headers=list(income.columns),
-            title=f"{ticker.upper()} Income Statement"
-            if not ratios
-            else f"{'QoQ' if quarterly else 'YoY'} Change of {ticker.upper()} Income Statement",
-            show_index=True,
-        )
+            pd.set_option("display.max_colwidth", None)
 
-        pd.set_option("display.max_colwidth", None)
-
-        console.print(income.loc["Final link"].to_frame().to_string())
-        console.print()
-        console.print(income.loc["Link"].to_frame().to_string())
-        console.print()
+            console.print(income.loc["Final link"].to_frame().to_string())
+            console.print()
+            console.print(income.loc["Link"].to_frame().to_string())
+            console.print()
         export_data(
             export, os.path.dirname(os.path.abspath(__file__)), "income", income
         )
@@ -278,13 +298,34 @@ def display_balance_sheet(
             balance_plot_data = balance_plot_data.transpose()
             balance_plot_data.columns = balance_plot_data.columns.str.lower()
 
+            if not ratios:
+                maximum_value = balance_plot_data.max().max()
+                if maximum_value > 1_000_000_000_000:
+                    df_rounded = balance_plot_data / 1_000_000_000_000
+                    denomination = " in Trillions"
+                elif maximum_value > 1_000_000_000:
+                    df_rounded = balance_plot_data / 1_000_000_000
+                    denomination = " in Billions"
+                elif maximum_value > 1_000_000:
+                    df_rounded = balance_plot_data / 1_000_000
+                    denomination = " in Millions"
+                elif maximum_value > 1_000:
+                    df_rounded = balance_plot_data / 1_000
+                    denomination = " in Thousands"
+                else:
+                    df_rounded = balance_plot_data
+                    denomination = ""
+            else:
+                df_rounded = balance_plot_data
+                denomination = ""
+
             if rows_plot == 1:
                 fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-                balance_plot_data[plot[0].replace("_", "")].plot()
+                df_rounded[plot[0].replace("_", "")].plot()
                 title = (
                     f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {ticker.upper()}"
                     if ratios
-                    else f"{plot[0].replace('_', ' ')} of {ticker.upper()}"
+                    else f"{plot[0].replace('_', ' ')} of {ticker.upper()} {denomination}"
                 )
                 plt.title(title)
                 theme.style_primary_axis(ax)
@@ -292,8 +333,8 @@ def display_balance_sheet(
             else:
                 fig, axes = plt.subplots(rows_plot)
                 for i in range(rows_plot):
-                    axes[i].plot(balance_plot_data[plot[i].replace("_", "")])
-                    axes[i].set_title(plot[i].replace("_", " "))
+                    axes[i].plot(df_rounded[plot[i].replace("_", "")])
+                    axes[i].set_title(f"{plot[i].replace('_', ' ')} {denomination}")
                 theme.style_primary_axis(axes[0])
                 fig.autofmt_xdate()
         else:
@@ -355,13 +396,34 @@ def display_cash_flow(
             cash_plot_data = cash_plot_data.transpose()
             cash_plot_data.columns = cash_plot_data.columns.str.lower()
 
+            if not ratios:
+                maximum_value = cash_plot_data.max().max()
+                if maximum_value > 1_000_000_000_000:
+                    df_rounded = cash_plot_data / 1_000_000_000_000
+                    denomination = " in Trillions"
+                elif maximum_value > 1_000_000_000:
+                    df_rounded = cash_plot_data / 1_000_000_000
+                    denomination = " in Billions"
+                elif maximum_value > 1_000_000:
+                    df_rounded = cash_plot_data / 1_000_000
+                    denomination = " in Millions"
+                elif maximum_value > 1_000:
+                    df_rounded = cash_plot_data / 1_000
+                    denomination = " in Thousands"
+                else:
+                    df_rounded = cash_plot_data
+                    denomination = ""
+            else:
+                df_rounded = cash_plot_data
+                denomination = ""
+
             if rows_plot == 1:
                 fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-                cash_plot_data[plot[0].replace("_", "")].plot()
+                df_rounded[plot[0].replace("_", "")].plot()
                 title = (
                     f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {ticker.upper()}"
                     if ratios
-                    else f"{plot[0].replace('_', ' ')} of {ticker.upper()}"
+                    else f"{plot[0].replace('_', ' ')} of {ticker.upper()} {denomination}"
                 )
                 plt.title(title)
                 theme.style_primary_axis(ax)
@@ -369,8 +431,8 @@ def display_cash_flow(
             else:
                 fig, axes = plt.subplots(rows_plot)
                 for i in range(rows_plot):
-                    axes[i].plot(cash_plot_data[plot[i].replace("_", "")])
-                    axes[i].set_title(plot[i].replace("_", " "))
+                    axes[i].plot(df_rounded[plot[i].replace("_", "")])
+                    axes[i].set_title(f"{plot[i].replace('_', ' ')} {denomination}")
                 theme.style_primary_axis(axes[0])
                 fig.autofmt_xdate()
         else:

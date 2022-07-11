@@ -71,13 +71,34 @@ def display_fundamentals(
             x.replace("_", "") for x in list(fundamentals_plot_data.columns)
         ]
 
+        if not ratios:
+            maximum_value = fundamentals_plot_data.max().max()
+            if maximum_value > 1_000_000_000_000:
+                df_rounded = fundamentals_plot_data / 1_000_000_000_000
+                denomination = " in Trillions"
+            elif maximum_value > 1_000_000_000:
+                df_rounded = fundamentals_plot_data / 1_000_000_000
+                denomination = " in Billions"
+            elif maximum_value > 1_000_000:
+                df_rounded = fundamentals_plot_data / 1_000_000
+                denomination = " in Millions"
+            elif maximum_value > 1_000:
+                df_rounded = fundamentals_plot_data / 1_000
+                denomination = " in Thousands"
+            else:
+                df_rounded = fundamentals_plot_data
+                denomination = ""
+        else:
+            df_rounded = fundamentals_plot_data
+            denomination = ""
+
         if rows_plot == 1:
             fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-            fundamentals_plot_data[plot[0].replace("_", "")].plot()
+            df_rounded[plot[0].replace("_", "")].plot()
             title = (
                 f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {ticker.upper()}"
                 if ratios
-                else f"{plot[0].replace('_', ' ')} of {ticker.upper()}"
+                else f"{plot[0].replace('_', ' ')} of {ticker.upper()} {denomination}"
             )
             plt.title(title)
             theme.style_primary_axis(ax)
@@ -85,25 +106,26 @@ def display_fundamentals(
         else:
             fig, axes = plt.subplots(rows_plot)
             for i in range(rows_plot):
-                axes[i].plot(fundamentals_plot_data[plot[i].replace("_", "")])
-                axes[i].set_title(plot[i].replace("_", " "))
+                axes[i].plot(df_rounded[plot[i].replace("_", "")])
+                axes[i].set_title(f"{plot[i].replace('_', ' ')} {denomination}")
             theme.style_primary_axis(axes[0])
             fig.autofmt_xdate()
+    else:
+        # Snake case to english
+        fundamentals.index = fundamentals.index.to_series().apply(
+            lambda x: x.replace("_", " ").title()
+        )
 
-    # Snake case to english
-    fundamentals.index = fundamentals.index.to_series().apply(
-        lambda x: x.replace("_", " ").title()
-    )
+        # Readable numbers
+        fundamentals = fundamentals.applymap(lambda_long_number_format).fillna("-")
+        print_rich_table(
+            fundamentals.applymap(lambda x: "-" if x == "nan" else x),
+            show_index=True,
+            title=f"{ticker} {title_str}"
+            if not ratios
+            else f"{'QoQ' if quarterly else 'YoY'} Change of {ticker} {title_str}",
+        )
 
-    # Readable numbers
-    fundamentals = fundamentals.applymap(lambda_long_number_format).fillna("-")
-    print_rich_table(
-        fundamentals.applymap(lambda x: "-" if x == "nan" else x),
-        show_index=True,
-        title=f"{ticker} {title_str}"
-        if not ratios
-        else f"{'QoQ' if quarterly else 'YoY'} Change of {ticker} {title_str}",
-    )
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), financial, fundamentals
     )
