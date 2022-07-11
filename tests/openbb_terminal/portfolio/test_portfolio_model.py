@@ -3,7 +3,6 @@
 # IMPORTATION THIRDPARTY
 from pathlib import Path
 import pandas as pd
-import pytest
 
 # IMPORTATION INTERNAL
 from openbb_terminal.portfolio import portfolio_model
@@ -44,7 +43,6 @@ def test_information_ratio(recorder):
     recorder.capture(result_df)
 
 
-@pytest.mark.vcr
 def test_tail_ratio(recorder):
     result_df, _, _ = portfolio_model.get_tail_ratio(
         portfolio_returns, benchmark_returns
@@ -53,7 +51,6 @@ def test_tail_ratio(recorder):
     recorder.capture(result_df)
 
 
-@pytest.mark.vcr
 def test_common_sense_ratio(recorder):
     result_df = portfolio_model.get_common_sense_ratio(
         portfolio_returns, benchmark_returns
