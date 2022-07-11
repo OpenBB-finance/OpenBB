@@ -133,23 +133,50 @@ class TerminalController(BaseController):
     def call_guess(self, _) -> None:
         """Process guess command"""
         import time
+        import json
+        import random
 
-        task = "load AAPL and display it's EMA"
-        solution = "stocks/load aapl/ta/ema"
+        try:
+            with open(obbff.GUESS_EASTER_EGG_FILE) as f:
+                # Load the file as a JSON document
+                json_doc = json.load(f)
 
-        start = time.time()
-        console.print(f"\n[yellow]{task}[/yellow]\n")
-        an_input = session.prompt("GUESS / $ ")
-        if an_input == solution:
-            self.queue = an_input.split("/")
-            time_dif = time.time() - start
+                task = random.choice(list(json_doc.keys()))
+                solution = json_doc[task]
+
+                start = time.time()
+                console.print(f"\n[yellow]{task}[/yellow]\n")
+                an_input = session.prompt("GUESS / $ ")
+                if isinstance(solution, List):
+                    if an_input in solution:
+                        self.queue = an_input.split("/") + ["home"]
+                        time_dif = time.time() - start
+                        console.print(
+                            f"\n[green]You guessed correctly in {round(time_dif, 2)} seconds![green]\n"
+                        )
+                    else:
+                        solutions_texts = "\n".join(solution)
+                        console.print(
+                            f"\n[red]You guessed wrong! The correct paths would have been:\n{solutions_texts}[/red]\n"
+                        )
+                else:
+                    if an_input == solution:
+                        self.queue = an_input.split("/") + ["home"]
+                        time_dif = time.time() - start
+                        console.print(
+                            f"\n[green]You guessed correctly in {round(time_dif, 2)} seconds![green]\n"
+                        )
+                    else:
+                        console.print(
+                            f"\n[red]You guessed wrong! The correct path would have been:\n{solution}[/red]\n"
+                        )
+
+        except Exception as e:
             console.print(
-                f"\n[green]You guessed correctly in {round(time_dif, 2)} seconds![green]\n"
+                f"[red]Failed to load guess game from file: "
+                f"{obbff.GUESS_EASTER_EGG_FILE}[/red]"
             )
-        else:
-            console.print(
-                f"\n[red]You guessed wrong! The correct path would have been: {solution}[/red]\n"
-            )
+            console.print(f"[red]{e}[/red]")
 
     def call_update(self, _):
         """Process update command"""
