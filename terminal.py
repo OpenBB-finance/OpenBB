@@ -22,6 +22,7 @@ from openbb_terminal.core.log.generation.path_tracking_file_handler import (
 )
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.helper_funcs import (
+    check_positive,
     get_flair,
     parse_simple_args,
 )
@@ -81,6 +82,11 @@ class TerminalController(BaseController):
         if file.endswith(".openbb")
     }
 
+    GUESS_TOTAL_TRIES = 0
+    GUESS_NUMBER_TRIES_LEFT = 0
+    GUESS_SUM_SCORE = 0.0
+    GUESS_CORRECTLY = 0
+
     def __init__(self, jobs_cmds: List[str] = None):
         """Constructor"""
         super().__init__(jobs_cmds)
@@ -130,11 +136,35 @@ class TerminalController(BaseController):
         mt.add_menu("reports")
         console.print(text=mt.menu_text, menu="Home")
 
-    def call_guess(self, _) -> None:
+    def call_guess(self, other_args: List[str]) -> None:
         """Process guess command"""
         import time
         import json
         import random
+
+        if self.GUESS_NUMBER_TRIES_LEFT == 0 and self.GUESS_SUM_SCORE < 0.01:
+            parser_exe = argparse.ArgumentParser(
+                add_help=False,
+                formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+                prog="guess",
+                description="Guess command to achieve task successfully.",
+            )
+            parser_exe.add_argument(
+                "-l",
+                "--limit",
+                type=check_positive,
+                help="Number of tasks to attempt.",
+                dest="limit",
+                default=1,
+            )
+            if other_args and "-" not in other_args[0][0]:
+                other_args.insert(0, "-l")
+                ns_parser_guess = parse_simple_args(parser_exe, other_args)
+
+                if self.GUESS_TOTAL_TRIES == 0:
+                    self.GUESS_NUMBER_TRIES_LEFT = ns_parser_guess.limit
+                    self.GUESS_SUM_SCORE = 0
+                    self.GUESS_TOTAL_TRIES = ns_parser_guess.limit
 
         try:
             with open(obbff.GUESS_EASTER_EGG_FILE) as f:
@@ -147,29 +177,65 @@ class TerminalController(BaseController):
                 start = time.time()
                 console.print(f"\n[yellow]{task}[/yellow]\n")
                 an_input = session.prompt("GUESS / $ ")
+                time_dif = time.time() - start
+
+                # When there are multiple paths to same solution
                 if isinstance(solution, List):
                     if an_input in solution:
                         self.queue = an_input.split("/") + ["home"]
-                        time_dif = time.time() - start
                         console.print(
                             f"\n[green]You guessed correctly in {round(time_dif, 2)} seconds![green]\n"
                         )
+                        # If we are already counting successes
+                        if self.GUESS_TOTAL_TRIES > 0:
+                            self.GUESS_CORRECTLY += 1
+                            self.GUESS_SUM_SCORE += time_dif
                     else:
                         solutions_texts = "\n".join(solution)
                         console.print(
                             f"\n[red]You guessed wrong! The correct paths would have been:\n{solutions_texts}[/red]\n"
                         )
+
+                # When there is a single path to the solution
                 else:
                     if an_input == solution:
                         self.queue = an_input.split("/") + ["home"]
-                        time_dif = time.time() - start
                         console.print(
                             f"\n[green]You guessed correctly in {round(time_dif, 2)} seconds![green]\n"
                         )
+                        # If we are already counting successes
+                        if self.GUESS_TOTAL_TRIES > 0:
+                            self.GUESS_CORRECTLY += 1
+                            self.GUESS_SUM_SCORE += time_dif
                     else:
                         console.print(
                             f"\n[red]You guessed wrong! The correct path would have been:\n{solution}[/red]\n"
                         )
+
+                # Compute average score and provide a result if it's the last try
+                if self.GUESS_TOTAL_TRIES > 0:
+
+                    self.GUESS_NUMBER_TRIES_LEFT -= 1
+                    if self.GUESS_NUMBER_TRIES_LEFT == 0 and self.GUESS_TOTAL_TRIES > 1:
+                        color = (
+                            "green"
+                            if self.GUESS_CORRECTLY == self.GUESS_TOTAL_TRIES
+                            else "red"
+                        )
+                        console.print(
+                            f"[{color}]OUTCOME: You got {int(self.GUESS_CORRECTLY)} out of"
+                            f" {int(self.GUESS_TOTAL_TRIES)}.[/{color}]\n"
+                        )
+                        if self.GUESS_CORRECTLY == self.GUESS_TOTAL_TRIES:
+                            avg = self.GUESS_SUM_SCORE / self.GUESS_TOTAL_TRIES
+                            console.print(
+                                f"[green]Average score: {round(avg, 2)} seconds![/green]\n"
+                            )
+                        self.GUESS_TOTAL_TRIES = 0
+                        self.GUESS_CORRECTLY = 0
+                        self.GUESS_SUM_SCORE = 0
+                    else:
+                        self.queue += ["guess"]
 
         except Exception as e:
             console.print(
