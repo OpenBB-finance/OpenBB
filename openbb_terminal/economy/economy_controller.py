@@ -594,7 +594,7 @@ class EconomyController(BaseController):
             nargs="+",
             action="store",
             dest="query",
-            help="Query the FRED database to obtain Series IDs given the query seaarch term.",
+            help="Query the FRED database to obtain Series IDs given the query search term.",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
@@ -968,7 +968,8 @@ class EconomyController(BaseController):
             "commands. For example 'macro -p GDP -c Germany Netherlands -st' will store the data for usage "
             "in this command. Therefore, it allows you to plot different time series in one graph. You can use "
             "the 'options' command to show the required arguments to be entered. The example above could be plotted "
-            "the following way: 'plot --y1 Germany_GDP --y2 Netherlands_GDP' or 'plot --y1 Germany_GDP Netherlands_GDP'",
+            "the following way: "
+            "'plot --y1 Germany_GDP --y2 Netherlands_GDP' or 'plot --y1 Germany_GDP Netherlands_GDP'",
         )
         parser.add_argument(
             "--y1",
