@@ -915,7 +915,7 @@ class PortfolioModel:
 
             # Populate fields Sector, Industry and Country if not in the orderbook
             if not (
-                set(["Sector", "Industry", "Country"]).issubset(
+                {"Sector", "Industry", "Country"}.issubset(
                     set(self.__orderbook.columns)
                 )
             ):
