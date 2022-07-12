@@ -87,7 +87,7 @@ class SourcesController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="get",
-            description="Get data sources associated with a command and the one selected by default.",
+            description="Get sources associated with a command and the one selected by default, using 'get <command>'.",
         )
         parser.add_argument(
             "-c",
@@ -96,6 +96,7 @@ class SourcesController(BaseController):
             dest="cmd",
             choices=list(self.commands_with_sources.keys()),
             help="Command that we want to check the available data sources and the default one.",
+            metavar="{stocks_load, stocks_dps_ins}",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-c")
@@ -115,7 +116,7 @@ class SourcesController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="set",
-            description="Set a default data sources associated with a command",
+            description="Set a default data sources associated with a command, using 'set <command> <source>'.",
         )
         parser.add_argument(
             "-c",
@@ -124,6 +125,7 @@ class SourcesController(BaseController):
             dest="cmd",
             choices=list(self.commands_with_sources.keys()),
             help="Command that we to select the default data source.",
+            metavar="{stocks_load, stocks_dps_ins}",
         )
         parser.add_argument(
             "-s",
@@ -131,7 +133,7 @@ class SourcesController(BaseController):
             action="store",
             dest="source",
             type=str,
-            help="Command that we to select the default data source.",
+            help="Data source to use by default on specified command.",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-c")
