@@ -919,10 +919,10 @@ class PortfolioModel:
                     set(self.__orderbook.columns)
                 )
             ):
-                for ticker_type, _ in self.tickers.items():
+                for ticker_type, ticker_list in self.tickers.items():
                     # yfinance only has sector, industry and country for stocks
                     if ticker_type == "STOCK":
-                        for ticker in self.tickers[ticker_type]:
+                        for ticker in ticker_list:
                             yf_ticker = yf.Ticker(ticker).info
                             self.__orderbook.loc[
                                 self.__orderbook.Ticker == ticker,
