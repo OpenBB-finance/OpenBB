@@ -210,7 +210,7 @@ class BaseController(metaclass=ABCMeta):
         List[str]
             List of commands in the queue to execute
         """
-        
+
         # Empty command
         if not an_input:
             pass
