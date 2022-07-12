@@ -121,7 +121,6 @@ class DiscoveryController(BaseController):
             choices["arkord"]["--sortby"] = {
                 c: None for c in self.arkord_sortby_choices
             }
-            choices["arkord"]["-f"] = {c: None for c in self.arkord_fund_choices}
             choices["arkord"]["--fund"] = {c: None for c in self.arkord_fund_choices}
             choices["cnews"]["-t"] = {c: None for c in self.cnews_type_choices}
             choices["cnews"]["--type"] = {c: None for c in self.cnews_type_choices}
@@ -143,7 +142,7 @@ class DiscoveryController(BaseController):
         mt.add_cmd("ulc", "Yahoo Finance")
         mt.add_cmd("asc", "Yahoo Finance")
         mt.add_cmd("ford", "Fidelity")
-        mt.add_cmd("arkord", "Cathiesark")
+        mt.add_cmd("arkord", "Cathies Ark")
         mt.add_cmd("upcoming", "Seeking Alpha")
         mt.add_cmd("trending", "Seeking Alpha")
         mt.add_cmd("cnews", "Seeking Alpha")
@@ -617,7 +616,6 @@ class DiscoveryController(BaseController):
             default=False,
         )
         parser.add_argument(
-            "-f",
             "--fund",
             type=str,
             default="",

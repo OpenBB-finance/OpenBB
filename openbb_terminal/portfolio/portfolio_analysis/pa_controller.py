@@ -161,21 +161,6 @@ class PortfolioAnalysisController(BaseController):
             dest="allocation",
         )
 
-        # The following arguments will be used in a later PR for customizable 'reports'
-
-        # The --func flag will need to be tested that it exists for pandas groupby
-        # parser.add_argument("-f",
-        #                     "--func",
-        #                     type=str,
-        #                     dest="function",
-        #                     help="Aggregate function to apply to groups"
-        #                     )
-        # parser.add_argument("-d",
-        #                     "--display",
-        #                     default = None,
-        #                     help = "Columns to display",
-        #                     dest="cols")
-
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if "value" in self.portfolio.columns:

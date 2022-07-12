@@ -435,7 +435,6 @@ class SettingsController(BaseController):
             description="Select folder where to export data",
         )
         parser.add_argument(
-            "-f",
             "--folder",
             type=str,
             dest="folder",
