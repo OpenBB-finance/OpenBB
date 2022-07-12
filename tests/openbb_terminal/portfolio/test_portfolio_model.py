@@ -3,6 +3,7 @@
 # IMPORTATION THIRDPARTY
 from pathlib import Path
 import pandas as pd
+import pytest
 
 # IMPORTATION INTERNAL
 from openbb_terminal.portfolio import portfolio_model
@@ -27,6 +28,7 @@ benchmark_returns["Date"] = pd.to_datetime(benchmark_returns["Date"])
 benchmark_returns = benchmark_returns.set_index("Date")
 
 
+@pytest.mark.vcr(record_mode="none")
 def test_tracking_error(recorder):
     result_df, _ = portfolio_model.get_tracking_error(
         portfolio_returns, benchmark_returns
@@ -35,6 +37,7 @@ def test_tracking_error(recorder):
     recorder.capture(result_df)
 
 
+@pytest.mark.vcr(record_mode="none")
 def test_information_ratio(recorder):
     result_df, _ = portfolio_model.get_information_ratio(
         portfolio_returns, benchmark_returns
@@ -43,17 +46,19 @@ def test_information_ratio(recorder):
     recorder.capture(result_df)
 
 
-def test_tail_ratio(recorder):
+@pytest.mark.vcr(record_mode="none")
+def test_tail_ratio():
     result_df, _, _ = portfolio_model.get_tail_ratio(
         portfolio_returns, benchmark_returns
     )
 
-    recorder.capture(result_df)
+    assert isinstance(result_df, pd.DataFrame)
 
 
-def test_common_sense_ratio(recorder):
+@pytest.mark.vcr(record_mode="none")
+def test_common_sense_ratio():
     result_df = portfolio_model.get_common_sense_ratio(
         portfolio_returns, benchmark_returns
     )
 
-    recorder.capture(result_df)
+    assert isinstance(result_df, pd.DataFrame)

@@ -1,4 +1,4 @@
            Kurtosis  Skewness   Jarque-Bera  Shapiro-Wilk  Kolmogorov-Smirnov
 Statistic  3.801112  4.037817  6.066372e+01  9.108574e-01        7.882806e-01
-p-value    0.000144  0.000054  6.716849e-14  1.060935e-09       6.730586e-135
+p-value    0.000144  0.000054  6.716849e-14  1.060932e-09       6.730586e-135
 
