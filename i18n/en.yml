@@ -63,6 +63,8 @@ en:
   settings/_monitor: Monitor
   settings/_export_folder: Export Folder
   settings/_timezone: Timezone
+  settings/source: specify data source file
+  settings/_data_source: Data sources
   _others_: Others
   stocks: access historical pricing data, options, sector and industry, and overall due diligence
   crypto: dive into onchain data, tokenomics, circulation supply, nfts and more
