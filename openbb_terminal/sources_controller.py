@@ -135,6 +135,8 @@ class SourcesController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-c")
+            if "-s" not in other_args and "--source" not in other_args:
+                other_args.insert(2, "-s")
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             menus = ns_parser.cmd.split("_")
