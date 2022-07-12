@@ -459,7 +459,6 @@ class CryptoController(CryptoBaseController):
             parser,
             other_args,
             EXPORT_ONLY_RAW_DATA_ALLOWED,
-            sources=CRYPTO_SOURCES.keys(),
         )
         # TODO: merge find + display_all_coins
         if ns_parser.coin:

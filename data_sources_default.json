@@ -1,72 +1,185 @@
 {
-  "stocks": {
-    "load": "yf",
-    "dps": {
-      "psi": "stockgrid"
+    "stocks": {
+        "load": [
+            "yf",
+            "iex",
+            "av",
+            "polygon"
+        ],
+        "dps": {
+            "psi": [
+                "stockgrid",
+                "quandl"
+            ]
+        },
+        "fa": {
+            "income": [
+                "yf",
+                "polygon",
+                "av"
+            ],
+            "balance": [
+                "yf",
+                "polygon",
+                "av"
+            ]
+        },
+        "options": {
+            "load": [
+                "tradier",
+                "yf"
+            ],
+            "hist": [
+                "chartexchange",
+                "tradier"
+            ],
+            "vol": [
+                "tradier",
+                "yf"
+            ],
+            "voi": [
+                "tradier",
+                "yf"
+            ],
+            "oi": [
+                "tradier",
+                "yf"
+            ]
+        },
+        "disc": {
+            "load": [
+                "yf",
+                "av",
+                "iex",
+                "polygon"
+            ]
+        },
+        "sia": {
+            "load": [
+                "yf",
+                "av",
+                "iex",
+                "polygon"
+            ]
+        },
+        "scr": {
+            "load": [
+                "yf",
+                "av",
+                "iex",
+                "polygon"
+            ]
+        },
+        "ins": {
+            "load": [
+                "yf",
+                "av",
+                "iex",
+                "polygon"
+            ]
+        },
+        "gov": {
+            "load": [
+                "yf",
+                "av",
+                "iex",
+                "polygon"
+            ]
+        },
+        "ba": {
+            "load": [
+                "yf",
+                "av",
+                "iex",
+                "polygon"
+            ]
+        },
+        "ca": {
+            "load": [
+                "yf",
+                "av",
+                "iex",
+                "polygon"
+            ]
+        },
+        "res": {
+            "load": [
+                "yf",
+                "av",
+                "iex",
+                "polygon"
+            ]
+        },
+        "dd": {
+            "load": [
+                "yf",
+                "av",
+                "iex",
+                "polygon"
+            ]
+        },
+        "bt": {
+            "load": [
+                "yf",
+                "av",
+                "iex",
+                "polygon"
+            ]
+        },
+        "ta": {
+            "load": [
+                "yf",
+                "av",
+                "iex",
+                "polygon"
+            ]
+        },
+        "qa": {
+            "load": [
+                "yf",
+                "av",
+                "iex",
+                "polygon"
+            ]
+        },
+        "pred": {
+            "load": [
+                "yf",
+                "av",
+                "iex",
+                "polygon"
+            ]
+        }
     },
-    "fa": {
-      "income": "av",
-      "balance": "av"
+    "crypto": {
+        "load": [
+            "cg"
+        ],
+        "find": [
+            "cg",
+            "cp",
+            "bin",
+            "cb",
+            "yf"
+        ]
     },
-    "options": {
-      "load": "yf",
-      "hist": "chartexchange",
-      "vol": "tradier",
-      "voi": "tradier",
-      "oi": "tradier"
+    "economy": {
+        "ycrv": [
+            "investpy",
+            "FRED"
+        ]
     },
-    "disc": {
-      "load": "yf"
+    "etf": {
+        "ln": [
+            "sa",
+            "fd"
+        ]
     },
-    "sia": {
-      "load": "yf"
-    },
-    "scr": {
-      "load": "yf"
-    },
-    "ins": {
-      "load": "yf"
-    },
-    "gov": {
-      "load": "yf"
-    },
-    "ba": {
-      "load": "yf"
-    },
-    "ca": {
-      "load": "yf"
-    },
-    "res": {
-      "load": "yf"
-    },
-    "dd": {
-      "load": "yf"
-    },
-    "bt": {
-      "load": "yf"
-    },
-    "ta": {
-      "load": "yf"
-    },
-    "qa": {
-      "load": "yf"
-    },
-    "pred": {
-      "load": "yf"
+    "forex": {
+        "load": [
+            "yf",
+            "av",
+            "polygon"
+        ]
     }
-  },
-  "crypto": {
-    "load": "cg",
-    "find": "cg"
-  },
-  "economy": {
-    "ycrv": "investpy",
-    "ecocal": "investpy"
-  },
-  "etf": {
-    "ln": "fd"
-  },
-  "forex": {
-    "load": "yf"
-  }
 }

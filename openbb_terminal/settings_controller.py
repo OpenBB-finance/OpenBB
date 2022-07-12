@@ -50,7 +50,7 @@ class SettingsController(BaseController):
         "lang",
         "tz",
         "export",
-        "preferred_data_source_file",
+        "source",
     ]
     PATH = "/settings/"
 
@@ -125,9 +125,9 @@ class SettingsController(BaseController):
         mt.add_raw("\n")
         mt.add_param("_monitor", cfg_plot.MONITOR)
         mt.add_raw("\n")
-        mt.add_cmd("preferred_data_source_file")
+        mt.add_cmd("source")
         mt.add_raw("\n")
-        mt.add_param("_preferred_data_source_file", obbff.PREFERRED_DATA_SOURCE_FILE)
+        mt.add_param("_data_source", obbff.PREFERRED_DATA_SOURCE_FILE)
         mt.add_raw("\n")
 
         console.print(text=mt.menu_text, menu="Settings")
@@ -140,13 +140,12 @@ class SettingsController(BaseController):
         console.print("")
 
     @log_start_end(log=logger)
-    def call_preferred_data_source_file(self, other_args: List[str]):
-        """Process preferred data source file command"""
-
+    def call_source(self, other_args: List[str]):
+        """Process source command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="preferred_data_source_file",
+            prog="source",
             description="Preferred data source file.",
         )
         parser.add_argument(

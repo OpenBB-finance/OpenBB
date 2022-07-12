@@ -7,6 +7,7 @@ en:
   exe: execute automated routine script
   settings: tune settings (export folder, timezone, language, plot size)
   featflags: enable and disable feature flags
+  sources: select your preferred data sources
   keys: set API keys and check their validity
   _configure_: Configure your own terminal
   _main_menu_: Main menu
@@ -16,6 +17,9 @@ en:
   not defined: not defined
   defined, not tested: defined, not tested
   defined, test unsuccessful: defined, test unsuccessful
+  sources/_info_: Get and set default data sources
+  sources/get: get available data sources associated with command
+  sources/set: set default data source for a command
   featflags/_info_: Feature flags through environment variables
   featflags/logcollection: allow logs to be sent to help OpenBB team
   featflags/retryload: retry misspelled commands with load first
@@ -59,6 +63,8 @@ en:
   settings/_monitor: Monitor
   settings/_export_folder: Export Folder
   settings/_timezone: Timezone
+  settings/source: specify data source file
+  settings/_data_source: Data sources
   _others_: Others
   stocks: access historical pricing data, options, sector and industry, and overall due diligence
   crypto: dive into onchain data, tokenomics, circulation supply, nfts and more
