@@ -35,12 +35,6 @@ os.environ["OPENBB_DISCORD_BOT_TOKEN"] = "123"
 os.environ["OPENBB_IMGUR_CLIENT_ID"] = "123"
 obbff.ENABLE_EXIT_AUTO_HELP = strtobool("True")
 
-# In the CI runners we have rich disabled. This leads to depending on how pandas prints
-# a dataframe which is not consistent between pandas versions (scientific notation vs
-# floats). To bring consistency we explicitly set how floats are displayed in printed
-# dataframes in the test runtime.
-pd.set_option("display.float_format", lambda x: f"{x}")
-
 
 class Record:
     @staticmethod

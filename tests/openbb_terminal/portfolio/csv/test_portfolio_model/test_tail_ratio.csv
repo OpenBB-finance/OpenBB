@@ -1,31 +1,31 @@
 ,Portfolio,Benchmark
-mtd,"TotalHoldings   1.0
-dtype: float64","Adj Close   1.0
+mtd,"TotalHoldings    1.0
+dtype: float64","Adj Close    1.0
 dtype: float64"
-qtd,"TotalHoldings   1.0
-dtype: float64","Adj Close   1.0
+qtd,"TotalHoldings    1.0
+dtype: float64","Adj Close    1.0
 dtype: float64"
-ytd,"TotalHoldings   0.845
-dtype: float64","Adj Close   0.831
+ytd,"TotalHoldings    0.845
+dtype: float64","Adj Close    0.831
 dtype: float64"
-3m,"TotalHoldings   0.757
-dtype: float64","Adj Close   0.701
+3m,"TotalHoldings    0.757
+dtype: float64","Adj Close    0.701
 dtype: float64"
-6m,"TotalHoldings   0.852
-dtype: float64","Adj Close   0.821
+6m,"TotalHoldings    0.852
+dtype: float64","Adj Close    0.821
 dtype: float64"
-1y,"TotalHoldings   0.923
-dtype: float64","Adj Close   0.925
+1y,"TotalHoldings    0.923
+dtype: float64","Adj Close    0.925
 dtype: float64"
-3y,"TotalHoldings   0.907
-dtype: float64","Adj Close   0.799
+3y,"TotalHoldings    0.907
+dtype: float64","Adj Close    0.799
 dtype: float64"
-5y,"TotalHoldings   0.882
-dtype: float64","Adj Close   0.81
+5y,"TotalHoldings    0.882
+dtype: float64","Adj Close    0.81
 dtype: float64"
-10y,"TotalHoldings   0.882
-dtype: float64","Adj Close   0.81
+10y,"TotalHoldings    0.882
+dtype: float64","Adj Close    0.81
 dtype: float64"
-all,"TotalHoldings   0.882
-dtype: float64","Adj Close   0.81
+all,"TotalHoldings    0.882
+dtype: float64","Adj Close    0.81
 dtype: float64"

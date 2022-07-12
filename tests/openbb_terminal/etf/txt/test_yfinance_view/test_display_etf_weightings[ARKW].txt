@@ -9,6 +9,6 @@ Financial Services                             2.68
 Real Estate                                    2.53
 Consumer Defensive                             0.92
 Industrials                                    0.09
-Basic Materials                                 0.0
-Utilities                                       0.0
-Energy                                          0.0
+Basic Materials                                0.00
+Utilities                                      0.00
+Energy                                         0.00
