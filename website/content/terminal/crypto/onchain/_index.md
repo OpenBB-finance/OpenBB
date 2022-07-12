@@ -60,7 +60,7 @@ command as follows:
 2022 Jul 12, 08:48 (🦋) /crypto/onchain/ $ address 0x71C7656EC7ab88b098defB751B7401B5f6d8976F
 ```
 
-Which allows you to see the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/onchain/balance/" target="_blank>balance</a> and <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/onchain/hist/" target="_blank>hist</a>
+Which allows you to see the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/onchain/balance/" target="_blank">balance</a> and <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/onchain/hist/" target="_blank">hist</a>
 which returns the following for `balance`:
 
 ```
