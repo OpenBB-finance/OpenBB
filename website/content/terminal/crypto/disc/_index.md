@@ -14,7 +14,7 @@ NFTs (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/d
 
 The Cryptocurrency Discovery menu is called upon by typing `disc`, while inside the `crypto` menu, which opens the following menu:
 
-![img.png](img.png)
+![Cryptocurrency Discovery Menu](https://user-images.githubusercontent.com/46355364/178532081-747a3a32-df67-4714-b969-074a4ee3e885.png)
 
 Alternatively, you can also type `/crypto/disc`. Within the Cryptocurrency Discovery menu you have a variety of options
 to find that information about a coin, a NFT, a specific blockchain game, decentralized app or exchange. E.g. we can
