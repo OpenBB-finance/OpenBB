@@ -15,7 +15,7 @@ top traded crypto pairs (<a href="https://openbb-finance.github.io/OpenBBTermina
 
 The Cryptocurrency Onchain menu is called upon by typing `onchain`, while inside the `crypto` menu, which opens the following menu:
 
-![img.png](img.png)
+![Cryptocurrency Onchain Menu](https://user-images.githubusercontent.com/46355364/178532254-8f4ef039-fab5-4ac5-afbf-584f8ce711c4.png)
 
 Alternatively, you can also type `/crypto/onchain`. Within the Cryptocurrency Onchain menu you can find features examining
 transaction data and crypto wallet balances, both of which are helpful when deciding whether to invest. E.g. we can
