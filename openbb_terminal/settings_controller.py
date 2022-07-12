@@ -51,6 +51,7 @@ class SettingsController(BaseController):
         "tz",
         "export",
         "source",
+        "flair",
     ]
     PATH = "/settings/"
 
@@ -79,6 +80,7 @@ class SettingsController(BaseController):
         mt.add_info("_info_")
         mt.add_raw("\n")
         mt.add_setting("dt", obbff.USE_DATETIME)
+        mt.add_cmd("flair")
         mt.add_raw("\n")
         mt.add_param("_flair", get_flair())
         mt.add_raw("\n")
@@ -400,6 +402,7 @@ class SettingsController(BaseController):
                 )
             console.print("")
 
+    @log_start_end(log=logger)
     def call_tz(self, other_args: List[str]):
         """Process tz command"""
         parser = argparse.ArgumentParser(
@@ -425,6 +428,36 @@ class SettingsController(BaseController):
             if ns_parser.timezone:
                 replace_user_timezone(ns_parser.timezone.replace("_", "/", 1))
 
+    @log_start_end(log=logger)
+    def call_flair(self, other_args: List[str]):
+        """Process flair command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="flair",
+            description="set the flair emoji to be used",
+        )
+        parser.add_argument(
+            "-e",
+            "--emoji",
+            type=str,
+            dest="emoji",
+            help="flair emoji to be used",
+            nargs="+",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-e")
+        ns_parser = parse_simple_args(parser, other_args)
+        if ns_parser:
+            if not ns_parser.emoji:
+                ns_parser.emoji = ""
+            else:
+                ns_parser.emoji = " ".join(ns_parser.emoji)
+            set_key(obbff.ENV_FILE, "OPENBB_USE_FLAIR", str(ns_parser.emoji))
+            obbff.USE_FLAIR = ns_parser.emoji
+            console.print("")
+
+    @log_start_end(log=logger)
     def call_export(self, other_args: List[str]):
         """Process export command"""
         parser = argparse.ArgumentParser(
