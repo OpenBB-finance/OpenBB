@@ -926,11 +926,14 @@ class PortfolioModel:
                             yf_ticker = yf.Ticker(ticker).info
                             self.__orderbook.loc[
                                 self.__orderbook.Ticker == ticker,
-                                ["Sector", "Industry", "Country"],
+                                ["Sector", "Industry", "Country", "Region"],
                             ] = [
                                 yf_ticker["sector"],
                                 yf_ticker["industry"],
                                 yf_ticker["country"],
+                                portfolio_helper.get_region_from_country(
+                                    yf_ticker["country"]
+                                ),
                             ]
                     else:
                         # If not stock just use the ticker_type (E.g. ETF, Crypto)
@@ -1174,7 +1177,6 @@ class PortfolioModel:
         for ticker_type, data in self.tickers.items():
             self.itemized_value[ticker_type] = trade_data["End Value"][data].sum(axis=1)
 
-        # Initial Value = Cumulative Investment - (Previous End Value - Previous Initial Value)
         trade_data[
             pd.MultiIndex.from_product([["Initial Value"], self.tickers_list])
         ] = 0
