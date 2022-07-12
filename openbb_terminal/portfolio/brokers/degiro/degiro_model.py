@@ -415,7 +415,7 @@ class DegiroModel:
             }
         )
 
-        portfolio_df["Prenium"] = 0
+        portfolio_df["Premium"] = 0
         portfolio_df["Currency"] = currency
         portfolio_df["Side"] = portfolio_df["Side"].replace({"S":"SELL", "B":"BUY"})
         portfolio_df['Date'] = pd.to_datetime(portfolio_df["Date"].str.slice(0,10)).dt.date
@@ -426,7 +426,7 @@ class DegiroModel:
             "Price",
             "Quantity",
             "Fees",
-            "Prenium",
+            "Premium",
             "Side",
             "Currency",
         ]
