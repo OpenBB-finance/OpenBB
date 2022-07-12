@@ -510,7 +510,7 @@ class DegiroView:
             print_rich_table(
                 df=portfolio_df,
                 headers=list(portfolio_df.columns),
-                show_index=False,
+                show_index=True,
                 title="Degiro Transactions",
             )
             export_data(
