@@ -538,15 +538,17 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
                                 + 1
                             ]
                             an_input = an_input.replace(
-                                string_to_replace, "/{{re_add_string_here}}/"
+                                string_to_replace, "/{{re_add_string_here}}/", 1
                             )
 
                         an_input_split = [val for val in an_input.split("/") if val]
 
                         for i in range(len(an_input_split)):
                             if an_input_split[i] == "{{re_add_string_here}}":
-                                an_input_split[i] = matches_list[0][1:-1]
+                                # an_input_split[i] = matches_list[0][1:-1]+";"
+                                an_input_split[i] = matches_list[0][1:]
                                 matches_list = matches_list[1:]
+
                     else:
                         an_input_split = [val for val in an_input.split("/") if val]
 
@@ -591,7 +593,7 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
 
             t_controller.queue = t_controller.switch(an_input)
 
-            #used so the next queue_list is only used after the current is over
+            # used so the next queue_list is only used after the current is over
             if t_controller.building_sequence == True:
                 if sequence_counter == 0:
                     sequence_counter += 1

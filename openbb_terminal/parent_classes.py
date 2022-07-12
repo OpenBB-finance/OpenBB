@@ -210,7 +210,7 @@ class BaseController(metaclass=ABCMeta):
         List[str]
             List of commands in the queue to execute
         """
-
+        
         # Empty command
         if not an_input:
             pass
@@ -225,10 +225,18 @@ class BaseController(metaclass=ABCMeta):
                     return_commands = an_input[an_input.find("home") + 4 :]
                     an_input = an_input[: an_input.find("home") + 4]
                 else:
-                    return_commands = ''
+                    return_commands = ""
                 if len(return_commands) > 0:
                     BaseController.returned_cmds = return_commands
 
+            # make commands with path already execute without calling it self again
+            if len(re.findall(r"[\w]+[\s]+-+\w[^;]*;", an_input)) > 0:
+                if re.findall(r"[\w]+[\s]+-+\w[^;]*;", an_input)[0] == an_input:
+                    self.log_queue()
+
+                    return self.queue
+
+            # split properly commands with path
             if re.findall(" -[-A-Za-z]", an_input):
                 matches_list = re.findall(r"\/[\w]+[\s]+-+\w[^;]*;", an_input)
                 for match in matches_list:
@@ -236,14 +244,14 @@ class BaseController(metaclass=ABCMeta):
                         an_input.find(match) : len(match) + an_input.find(match) + 1
                     ]
                     an_input = an_input.replace(
-                        string_to_replace, "/{{re_add_string_here}}/"
+                        string_to_replace, "/{{re_add_string_here}}/", 1
                     )
 
                 actions = an_input.split("/")
 
                 for i in range(len(actions)):
                     if actions[i] == "{{re_add_string_here}}":
-                        actions[i] = matches_list[0][1:-1]
+                        actions[i] = matches_list[0][1:]
                         matches_list = matches_list[1:]
 
             else:
@@ -260,6 +268,10 @@ class BaseController(metaclass=ABCMeta):
 
         # Single command fed, process
         else:
+            # remove ; from args with path
+            if ";" in an_input:
+                an_input = an_input[:-1]
+
             (known_args, other_args) = self.parser.parse_known_args(an_input.split())
 
             # Redirect commands to their correct functions
