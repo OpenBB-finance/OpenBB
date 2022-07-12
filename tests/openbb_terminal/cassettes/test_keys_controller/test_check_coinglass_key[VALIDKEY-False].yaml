@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - python-requests/2.27.1
+      - python-requests/2.28.1
       coinglassSecret:
       - VALIDKEY
     method: GET
@@ -17,8 +17,8 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA6tWSs5PSVWyUjI2MDAwVNJRyi1OB/KKU5OLUksUMvPKEnMyU4DCxaXJyanFxUpW
-        aYk5xam1AA0yV003AAAA
+        H4sIAAAAAAAAAKpWSs5PSVWyUjI2MDAwVNJRyi1OB/KKU5OLUksUMvPKEnMyU4DCxaXJyanFxUpW
+        aYk5xam1AAAAAP//AwANMldNNwAAAA==
     headers:
       Access-Control-Allow-Credentials:
       - 'true'
@@ -37,19 +37,19 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Sat, 09 Apr 2022 13:56:15 GMT
+      - Mon, 11 Jul 2022 13:59:58 GMT
       Server:
       - nginx
       Transfer-Encoding:
       - chunked
-      Vary:
-      - Accept-Encoding
       X-RateLimit-Burst-Capacity:
       - '20'
       X-RateLimit-Remaining:
       - '19'
       X-RateLimit-Replenish-Rate:
       - '3'
+      vary:
+      - accept-encoding
     status:
       code: 200
       message: OK

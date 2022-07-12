@@ -176,20 +176,25 @@ def get_normality(data: pd.Series) -> pd.DataFrame:
     """
     # Kurtosis: measures height and sharpness of the central peak relative to that of a standard bell curve
     k, kpval = stats.kurtosistest(data)
+    kpval = round(kpval, 5)
 
     # Skewness: measure of the asymmetry of the probability distribution of a random variable about its mean
     s, spval = stats.skewtest(data)
+    spval = round(spval, 5)
 
     # Jarque-Bera goodness of fit test on sample data: tests if the sample data has the skewness and kurtosis
     # matching a normal distribution
     jb, jbpval = stats.jarque_bera(data)
+    jbpval = round(jbpval, 5)
 
     # The Shapiro-Wilk test: tests the null hypothesis that the data was drawn from a normal distribution.
     sh, shpval = stats.shapiro(data)
+    shpval = round(shpval, 5)
 
     # Kolmogorov-Smirnov: the one-sample test compares the underlying distribution F(x) of a sample
     # against a given distribution G(x). Comparing to normal here.
     ks, kspval = stats.kstest(data, "norm")
+    kspval = round(kspval, 5)
 
     l_statistic = [k, s, jb, sh, ks]
     l_pvalue = [kpval, spval, jbpval, shpval, kspval]
@@ -288,10 +293,10 @@ def get_engle_granger_two_step_cointegration_test(y, x):
     Parameters
     ----------
     y : pd.Series
-        The first time series of the pair to analyse.
+        The first time series of the pair to analyze.
 
     x : pd.Series
-        The second time series of the pair to analyse.
+        The second time series of the pair to analyze.
 
     Returns
     -------

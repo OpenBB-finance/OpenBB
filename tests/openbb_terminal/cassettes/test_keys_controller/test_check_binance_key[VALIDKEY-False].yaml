@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - python-requests/2.27.1
+      - python-requests/2.28.1
       X-MBX-APIKEY:
       - VALIDKEY
     method: GET
@@ -29,7 +29,7 @@ interactions:
       Content-Type:
       - application/json;charset=UTF-8
       Date:
-      - Fri, 01 Jul 2022 13:03:15 GMT
+      - Mon, 11 Jul 2022 13:59:50 GMT
       Expires:
       - '0'
       Pragma:
@@ -39,11 +39,11 @@ interactions:
       Strict-Transport-Security:
       - max-age=31536000; includeSubdomains
       Via:
-      - 1.1 a81d70097c26619d0483c0496b627838.cloudfront.net (CloudFront)
+      - 1.1 40b77149d6ba01da8c2f52c235bceed0.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - EiGgfvW7wEfsCfE5bMeQRHcKYcY48IN_zPEeP_yo3-nyjye-bUedsA==
+      - GMIg2w313y-vHgMizW746IQBm-Kfl5YGQvrenIwV5hWoEE6N8Jboug==
       X-Amz-Cf-Pop:
-      - FJR50-C1
+      - BUD50-C1
       X-Cache:
       - Error from cloudfront
       X-Content-Security-Policy:

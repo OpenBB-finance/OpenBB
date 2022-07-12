@@ -302,7 +302,8 @@ class EconometricsController(BaseController):
         parser.add_argument(
             "-f",
             "--file",
-            help="File to load data in (can be custom import, may have been exported before or can be from Statsmodels)",
+            help="File to load data in (can be custom import, "
+            "may have been exported before or can be from Statsmodels)",
             type=str,
         )
         parser.add_argument(
@@ -828,9 +829,10 @@ class EconometricsController(BaseController):
                     if len(columns) > 1 and dataset[columns[0]].isnull().any():
                         null_values = dataset[dataset[columns[0]].isnull()]
                         console.print(
-                            f"The column '{columns[0]}' contains {len(null_values)} NaN values. As multiple columns are "
-                            f"provided, it is assumed this column represents entities (i), the NaN values are "
-                            f"forward filled. Remove the -a argument to disable this."
+                            f"The column '{columns[0]}' contains {len(null_values)} NaN "
+                            "values. As multiple columns are provided, it is assumed this "
+                            "column represents entities (i), the NaN values are forward "
+                            "filled. Remove the -a argument to disable this."
                         )
                         dataset[columns[0]] = dataset[columns[0]].fillna(method="ffill")
                     if dataset[columns[-1]].isnull().any():
@@ -1024,7 +1026,7 @@ class EconometricsController(BaseController):
             "-d",
             "--delete",
             help="The columns you want to delete from a dataset. Use format: <dataset.column> or"
-            " multiple with <dataset.column>,<datasetb.column2>",
+            " multiple with <dataset.column>,<dataset.column2>",
             dest="delete",
             type=check_list_values(self.choices["delete"]),
         )
@@ -1072,7 +1074,7 @@ class EconometricsController(BaseController):
         parser.add_argument(
             "-c",
             "--columns",
-            help="The columns we want to add <dataset.column>,<datasetb.column2>",
+            help="The columns we want to add <dataset.column>,<dataset.column2>",
             dest="columns",
             type=check_list_values(self.choices["delete"]),
         )
