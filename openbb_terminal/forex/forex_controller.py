@@ -51,7 +51,7 @@ class ForexController(BaseController):
         self.fx_pair = ""
         self.from_symbol = ""
         self.to_symbol = ""
-        self.source = get_ordered_list_sources(f"{self.PATH}load")
+        self.source = get_ordered_list_sources(f"{self.PATH}load")[0]
         self.data = pd.DataFrame()
 
         if session and obbff.USE_PROMPT_TOOLKIT:
