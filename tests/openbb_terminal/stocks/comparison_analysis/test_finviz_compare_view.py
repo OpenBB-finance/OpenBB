@@ -25,7 +25,7 @@ def test_screener(mocker, tab):
     )
 
 
-@pytest.mark.vcr(record_mode="none")
+@pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_screener_empty(mocker):
     target = "openbb_terminal.stocks.comparison_analysis.finviz_compare_model.get_comparison_data"
