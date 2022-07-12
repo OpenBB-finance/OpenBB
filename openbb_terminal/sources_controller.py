@@ -96,7 +96,7 @@ class SourcesController(BaseController):
             dest="cmd",
             choices=list(self.commands_with_sources.keys()),
             help="Command that we want to check the available data sources and the default one.",
-            metavar="{stocks_load, stocks_dps_ins}",
+            metavar="COMMAND",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-c")
@@ -109,6 +109,7 @@ class SourcesController(BaseController):
                 f"[param]Available :[/param] {', '.join(self.commands_with_sources[ns_parser.cmd])}\n"
             )
 
+    # pylint: disable=R0912
     @log_start_end(log=logger)
     def call_set(self, other_args):
         """Process set command"""
@@ -125,7 +126,7 @@ class SourcesController(BaseController):
             dest="cmd",
             choices=list(self.commands_with_sources.keys()),
             help="Command that we to select the default data source.",
-            metavar="{stocks_load, stocks_dps_ins}",
+            metavar="COMMAND",
         )
         parser.add_argument(
             "-s",
