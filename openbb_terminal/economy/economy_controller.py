@@ -1039,6 +1039,7 @@ class EconomyController(BaseController):
             other_args,
             export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
             raw=True,
+            limit=10,
         )
 
         if ns_parser:
@@ -1057,6 +1058,7 @@ class EconomyController(BaseController):
                 categories=ns_parser.categories,
                 from_date=ns_parser.start_date,
                 to_date=ns_parser.end_date,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
 

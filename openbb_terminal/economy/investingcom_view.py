@@ -125,6 +125,7 @@ def display_economic_calendar(
     categories: str,
     from_date: datetime.date,
     to_date: datetime.date,
+    limit=10,
     export: str = "",
 ):
     """Display economic calendar. [Source: Investing.com]
@@ -141,6 +142,8 @@ def display_economic_calendar(
         First date to get events if applicable
     to_date: datetime.date
         Last date to get events if applicable
+    limit: int
+        The maximum number of events to show, default is 10.
     export : str
         Export dataframe data to csv,json,xlsx file
     """
@@ -171,7 +174,7 @@ def display_economic_calendar(
         df.fillna(value="", inplace=True)
 
         print_rich_table(
-            df,
+            df[:limit],
             headers=list(df.columns),
             show_index=False,
             title=f"Economic Calendar ({time_zone})",
