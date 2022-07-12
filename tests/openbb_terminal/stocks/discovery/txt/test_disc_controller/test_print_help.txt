@@ -8,7 +8,7 @@
     ulc                potentially undervalued large cap stocks                        [Yahoo Finance]
     asc                small cap stocks with earnings growth rates better than 25%     [Yahoo Finance]
     ford               orders by Fidelity Customers                                    [Fidelity]
-    arkord             orders by ARK Investment Management LLC                         [Cathiesark]
+    arkord             orders by ARK Investment Management LLC                         [Cathies Ark]
     upcoming           upcoming earnings release dates                                 [Seeking Alpha]
     trending           trending news                                                   [Seeking Alpha]
     cnews              customized news (buybacks, ipos, spacs, healthcare, politics)   [Seeking Alpha]
