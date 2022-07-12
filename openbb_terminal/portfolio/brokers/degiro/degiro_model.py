@@ -400,25 +400,29 @@ class DegiroModel:
         transactions_df["productId"] = transactions_df["productId"].astype("int")
         products_df["productId"] = products_df["productId"].astype("int")
         transactions_full_df = pd.merge(
-            transactions_df, products_df[{"productId", "symbol", "productType"}], on="productId"
+            transactions_df,
+            products_df[{"productId", "symbol", "productType"}],
+            on="productId",
         )
 
         portfolio_df = transactions_full_df.rename(
             columns={
                 "date": "Date",
                 "symbol": "Ticker",
-                "productType": "Type", # STOCK or ETF
+                "productType": "Type",  # STOCK or ETF
                 "price": "Price",
                 "quantity": "Quantity",
-                "buysell": "Side", # BUY or SELL
+                "buysell": "Side",  # BUY or SELL
                 "totalFeesInBaseCurrency": "Fees",
             }
         )
 
         portfolio_df["Premium"] = 0
         portfolio_df["Currency"] = currency
-        portfolio_df["Side"] = portfolio_df["Side"].replace({"S":"SELL", "B":"BUY"})
-        portfolio_df['Date'] = pd.to_datetime(portfolio_df["Date"].str.slice(0,10)).dt.date
+        portfolio_df["Side"] = portfolio_df["Side"].replace({"S": "SELL", "B": "BUY"})
+        portfolio_df["Date"] = pd.to_datetime(
+            portfolio_df["Date"].str.slice(0, 10)
+        ).dt.date
         columns = [
             "Date",
             "Ticker",
