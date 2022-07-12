@@ -13,7 +13,7 @@ The Cryptocurrency Overview menu provides, among other things, the option to obt
 
 The Cryptocurrency Overview menu is called upon by typing `ov`, while inside the `crypto` menu, which opens the following menu:
 
-![img.png](img.png)
+![Cryptocurrency Overview menu](https://user-images.githubusercontent.com/46355364/178532373-d03c32f5-df7b-487e-a4ae-b60f7297c48e.png)
 
 Alternatively, you can also type `/crypto/ov`. Within the Cryptocurrency Overview menu you have a variety of options
 to get an understanding of the global market, derivatives, heatmaps, a full list of exchanges, news, fees and borrow rates.
