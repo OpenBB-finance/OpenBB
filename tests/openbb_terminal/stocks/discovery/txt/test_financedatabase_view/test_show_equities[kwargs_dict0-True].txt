@@ -101,4 +101,3 @@ XUP.SG                            Genfit SA  Healthcare  Biotechnology  France  
 XUPB.MU                           Genfit SA  Healthcare  Biotechnology  France                    Loos              http://www.genfit.com  Small Cap
 ZVA.F                        Cellectis S.A.  Healthcare  Biotechnology  France                   Paris           http://www.cellectis.com  Small Cap
 ZVAA.F                       Cellectis S.A.  Healthcare  Biotechnology  France                   Paris           http://www.cellectis.com  Small Cap
-

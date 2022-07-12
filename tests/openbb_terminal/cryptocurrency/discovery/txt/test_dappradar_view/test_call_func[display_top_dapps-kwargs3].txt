@@ -9,4 +9,3 @@
 7        OpenSea  marketplaces         ethereum,polygon         54K             200M
 8         Katana          defi                    ronin       45.9K            92.7M
 9     Magic Eden  marketplaces                   solana       40.2K            18.5M
-

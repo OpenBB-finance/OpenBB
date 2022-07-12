@@ -9,4 +9,3 @@
 7        OpenSea         54K             200M
 8         Katana       45.9K            92.7M
 9     Magic Eden       40.2K            18.5M
-

@@ -9,4 +9,3 @@
 7               Corn Futures   752.25    10.50   1.42
 8              Wheat Futures  1079.25    15.50   1.46
 9  Bloomberg Commodity Index   125.49     2.12   1.72
-

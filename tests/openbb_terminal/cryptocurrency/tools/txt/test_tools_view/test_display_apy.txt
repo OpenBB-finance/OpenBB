@@ -2,4 +2,3 @@
 0                APR      100%
 1  Compounding Times        12
 2                APY  161.304%
-

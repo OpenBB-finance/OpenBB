@@ -12,4 +12,3 @@ Consumer Defensive                             0.00
 Utilities                                      0.00
 Industrials                                    0.00
 Energy                                         0.00
-

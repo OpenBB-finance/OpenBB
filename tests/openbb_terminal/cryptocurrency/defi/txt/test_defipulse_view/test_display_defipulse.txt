@@ -4,4 +4,3 @@
 129   129               Primitive  Ethereum  Derivatives  $19.7K   -18.52%
 128   128                 DeFireX  Ethereum       Assets  $35.6K    -0.21%
 127   127               S Finance  Ethereum        DEXes  $99.1K     0.54%
-

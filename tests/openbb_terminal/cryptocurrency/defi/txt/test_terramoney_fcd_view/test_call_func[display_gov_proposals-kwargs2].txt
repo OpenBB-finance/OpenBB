@@ -9,4 +9,3 @@
 7  721  2022-03-22 08:55  2022-04-05 08:55   Passed  Community-pool Spend  UST Goes Interchain: Part Five -\nEverything Else   93   0        1             0
 8  720  2022-03-22 08:52  2022-04-05 08:52   Passed  Community-pool Spend   UST Goes Interchain: Part Five - Curve &\nConvex   97   0        0             0
 9  599  2022-03-19 03:17  2022-04-02 03:17   Passed  Community-pool Spend  Allocate Earmarked Community Pool Funds\nto Ozone   87   4        5             0
-

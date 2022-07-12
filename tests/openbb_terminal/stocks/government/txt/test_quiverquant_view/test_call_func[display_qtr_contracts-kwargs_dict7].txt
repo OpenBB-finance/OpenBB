@@ -1,5 +1,4 @@
-              Amount
-Ticker              
-NYRT    1.892657e+11
-LMT     7.070704e+10
-
+                Amount
+Ticker                
+NYRT   189265686585.09
+LMT     70707036450.10
