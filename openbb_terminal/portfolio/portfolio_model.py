@@ -879,7 +879,7 @@ class PortfolioModel:
 
             # Convert quantity to signed integer
             self.__orderbook["Quantity"] = (
-                self.__orderbook["Quantity"] * self.__orderbook["Side"]
+                abs(self.__orderbook["Quantity"]) * self.__orderbook["Side"]
             )
 
             # Determining the investment/divestment value
@@ -913,13 +913,37 @@ class PortfolioModel:
             # Save orderbook inception date
             self.inception_date = self.__orderbook["Date"][0]
 
-            # Save trades static data
-            self.static_data = self.__orderbook.pivot(
-                index="Ticker",
-                columns=[],
-                values=["Type", "Sector", "Industry", "Country"],
-            )
-
+            # Populate fields Sector, Industry and Country if not in the orderbook
+            if not (
+                set(["Sector", "Industry", "Country"]).issubset(
+                    set(self.__orderbook.columns)
+                )
+            ):
+                for ticker_type in self.tickers.keys():
+                    # yfinance only has sector, industry and country for stocks
+                    if ticker_type == "STOCK":
+                        for ticker in self.tickers[ticker_type]:
+                            yf_ticker = yf.Ticker(ticker).info
+                            self.__orderbook.loc[
+                                self.__orderbook.Ticker == ticker,
+                                ["Sector", "Industry", "Country"],
+                            ] = [
+                                yf_ticker["sector"],
+                                yf_ticker["industry"],
+                                yf_ticker["country"],
+                            ]
+                    else:
+                        # If not stock just use the ticker_type (E.g. ETF, Crypto)
+                        # Help wanted for smarter solution
+                        for ticker in self.tickers[ticker_type]:
+                            self.__orderbook.loc[
+                                self.__orderbook.Ticker == ticker,
+                                ["Sector", "Industry", "Country"],
+                            ] = [
+                                ticker_type,
+                                ticker_type,
+                                ticker_type,
+                            ]
         except Exception:
             console.print("Could not preprocess orderbook.")
 
