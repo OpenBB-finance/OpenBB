@@ -1014,6 +1014,7 @@ en:
   portfolio/bro/degiro/companynews: view news about a company with it's isin
   portfolio/bro/degiro/lastnews: view latest news
   portfolio/bro/degiro/topnews: view top news preview
+  portfolio/bro/degiro/paexport: csv export for portfolio analysis
   portfolio/bro/rh/login: login to robinhood
   portfolio/bro/rh/holdings: show account holdings in stocks
   portfolio/bro/rh/history: show equity history of your account
