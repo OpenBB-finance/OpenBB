@@ -262,7 +262,7 @@ def print_rich_table(
             row = [str(idx)] if show_index else []
             row += [
                 str(x)
-                if not isinstance(x, float)
+                if not isinstance(x, float) or not isinstance(x, np.float64)
                 else (
                     f"{x:{floatfmt[idx]}}"
                     if isinstance(floatfmt, list)

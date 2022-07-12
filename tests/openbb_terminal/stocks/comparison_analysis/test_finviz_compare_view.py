@@ -26,7 +26,7 @@ def test_screener(mocker, tab):
 
 
 @pytest.mark.vcr
-# @pytest.mark.record_stdout  # try to remove this after everyone updates numpy > 1.23
+@pytest.mark.record_stdout
 def test_screener_empty(mocker):
     target = "openbb_terminal.stocks.comparison_analysis.finviz_compare_model.get_comparison_data"
     mocker.patch(target=target, return_value=pd.DataFrame())
