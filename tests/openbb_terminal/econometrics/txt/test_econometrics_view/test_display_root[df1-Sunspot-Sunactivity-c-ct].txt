@@ -1,6 +1,6 @@
-                   ADF  KPSS
-Test Statistic   -2.84  0.12
-P-Value           0.05  0.10
-NLags             8.00  7.00
-Nobs            300.00  0.00
-ICBest         2430.50  0.00
+                              ADF                KPSS
+Test Statistic -2.837780724938197 0.11583078961759759
+P-Value        0.0530764217281203                 0.1
+NLags                         8.0                 7.0
+Nobs                        300.0                 0.0
+ICBest           2430.50034229055                 0.0

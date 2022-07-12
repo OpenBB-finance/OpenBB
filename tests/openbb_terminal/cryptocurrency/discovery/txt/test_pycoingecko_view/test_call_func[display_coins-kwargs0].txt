@@ -1,17 +1,17 @@
-    Symbol                                       Name Volume [$] Market Cap  Market Cap Rank  7D Change [%]  24H Change [%]
-9   vision                                 APY.vision        278     666.6K             2146         -32.01          -15.88
-5      vib                                   Viberate     275.1K       2.3M             1474         -11.01          -18.69
-7      uwl                                  UniWhales         8K       1.7M             1630         -33.77          -16.54
-4     push  Ethereum Push Notification Service - EPNS     591.8K       5.1M             1071         -27.09          -15.81
-2      prq                                     PARSIQ         1M      18.5M              655           2.79          -14.89
-15   moons                                  MoonTools         2K      79.9K             3240            NaN           -9.75
-12     krw                                      KROWN       2.6K     217.4K             2773         -27.51          -24.06
-0      grt                                  The Graph     128.6M     789.5M               61         -31.93           -8.45
-10     glq                         GraphLinq Protocol     175.6K     580.9K             2239         -29.25          -17.16
-6     dobo                                   DogeBonk      27.9K       2.2M             1496         -31.36          -21.39
-3     dext                                   DexTools     309.8K      12.6M              774         -26.81          -12.44
-11    data                         Data Economy Index      23.7K     478.4K             2358         -27.02          -12.02
-1      cqt                                   Covalent       1.4M      34.7M              464         -19.84            2.77
-13   chart                                    ChartEx        785       132K             3022         -23.07          -15.00
-8      bdp                          Big Data Protocol     358.4K       1.1M             1846         -15.18          -14.20
-14   astro                                 AstroTools        291     117.3K             3081            NaN          -10.24
+    Symbol                                       Name Volume [$] Market Cap  Market Cap Rank       7D Change [%]      24H Change [%]
+9   vision                                 APY.vision        278     666.6K             2146 -32.008443857413624 -15.884685064467494
+5      vib                                   Viberate     275.1K       2.3M             1474 -11.006699460089973 -18.687007831296757
+7      uwl                                  UniWhales         8K       1.7M             1630  -33.76699379944041   -16.5372441868792
+4     push  Ethereum Push Notification Service - EPNS     591.8K       5.1M             1071 -27.091947397064175  -15.80919995892018
+2      prq                                     PARSIQ         1M      18.5M              655  2.7856812031907214 -14.888739125596665
+15   moons                                  MoonTools         2K      79.9K             3240                 NaN  -9.745230421727735
+12     krw                                      KROWN       2.6K     217.4K             2773 -27.511136687107214  -24.05508704227163
+0      grt                                  The Graph     128.6M     789.5M               61 -31.926985616056225  -8.447585105336003
+10     glq                         GraphLinq Protocol     175.6K     580.9K             2239  -29.24615731414018  -17.15760985757005
+6     dobo                                   DogeBonk      27.9K       2.2M             1496  -31.35574116498871 -21.394393527724944
+3     dext                                   DexTools     309.8K      12.6M              774 -26.811056234773904 -12.443686496709642
+11    data                         Data Economy Index      23.7K     478.4K             2358 -27.024602843053497 -12.021063053754165
+1      cqt                                   Covalent       1.4M      34.7M              464  -19.83989518716682   2.766840265994869
+13   chart                                    ChartEx        785       132K             3022 -23.068072833641573  -14.99568803098823
+8      bdp                          Big Data Protocol     358.4K       1.1M             1846 -15.180303507417475 -14.199649667696148
+14   astro                                 AstroTools        291     117.3K             3081                 NaN -10.240356599465521

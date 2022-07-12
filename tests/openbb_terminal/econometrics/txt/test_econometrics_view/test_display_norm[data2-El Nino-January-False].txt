@@ -1,4 +1,4 @@
-           Kurtosis  Skewness  Jarque-Bera  Shapiro-Wilk  Kolmogorov-Smirnov
-Statistic      3.56      4.17        68.87          0.89                1.00
-p-value        0.00      0.00         0.00          0.00                0.00
+                    Kurtosis          Skewness      Jarque-Bera       Shapiro-Wilk  Kolmogorov-Smirnov
+Statistic 3.5561386812962525 4.171875455718783 68.8703208074603 0.8871077299118042                 1.0
+p-value              0.00038             3e-05              0.0              4e-05                 0.0
 

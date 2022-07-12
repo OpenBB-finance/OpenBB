@@ -5,27 +5,27 @@ dtype: float64"
 qtd,"TotalHoldings   NaN
 dtype: float64","Adj Close   NaN
 dtype: float64"
-ytd,"TotalHoldings   0.76
-dtype: float64","Adj Close   0.72
+ytd,"TotalHoldings   0.759
+dtype: float64","Adj Close   0.722
 dtype: float64"
-3m,"TotalHoldings   0.60
-dtype: float64","Adj Close   0.54
+3m,"TotalHoldings   0.599
+dtype: float64","Adj Close   0.539
 dtype: float64"
-6m,"TotalHoldings   0.81
+6m,"TotalHoldings   0.813
 dtype: float64","Adj Close   0.76
 dtype: float64"
-1y,"TotalHoldings   0.60
-dtype: float64","Adj Close   0.50
+1y,"TotalHoldings   0.6
+dtype: float64","Adj Close   0.501
 dtype: float64"
-3y,"TotalHoldings   -1.11
-dtype: float64","Adj Close   -0.75
+3y,"TotalHoldings   -1.113
+dtype: float64","Adj Close   -0.752
 dtype: float64"
-5y,"TotalHoldings   -1.31
-dtype: float64","Adj Close   -1.48
+5y,"TotalHoldings   -1.308
+dtype: float64","Adj Close   -1.483
 dtype: float64"
-10y,"TotalHoldings   -1.31
-dtype: float64","Adj Close   -1.48
+10y,"TotalHoldings   -1.308
+dtype: float64","Adj Close   -1.483
 dtype: float64"
-all,"TotalHoldings   -1.31
-dtype: float64","Adj Close   -1.48
+all,"TotalHoldings   -1.308
+dtype: float64","Adj Close   -1.483
 dtype: float64"

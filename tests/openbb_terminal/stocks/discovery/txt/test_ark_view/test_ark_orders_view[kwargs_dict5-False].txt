@@ -1,4 +1,4 @@
 
-         date ticker direction  volume  open  close  high   low      total  fund  weight  shares
-0  2021-12-09   VCYT       Buy  458689 41.67  39.42 41.90 39.38 1965520.53  ARKK  0.0113   49861
-7  2021-12-09   SSYS       Buy  764043 26.31  25.47 26.70 25.34 4199646.31  ARKK  0.0238  164886
+         date ticker direction  volume               open              close               high                low              total  fund  weight  shares
+0  2021-12-09   VCYT       Buy  458689  41.66999816894531  39.41999816894531 41.900001525878906 39.380001068115234 1965520.5287017822  ARKK  0.0113   49861
+7  2021-12-09   SSYS       Buy  764043 26.309999465942383 25.469999313354492 26.702499389648438  25.34000015258789  4199646.306781769  ARKK  0.0238  164886

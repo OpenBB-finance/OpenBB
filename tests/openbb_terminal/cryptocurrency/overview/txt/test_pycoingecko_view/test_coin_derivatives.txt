@@ -1,16 +1,16 @@
-    Rank                         Market         Symbol    Price  Pct_Change_24h Contract_Type  Basis  Spread  Funding_Rate     Volume_24h
-0      1              Binance (Futures)        BTCUSDT 43910.20           -3.83     perpetual  -0.03    0.01          0.01 16945759879.38
-1      2                 Bitget Futures  BTCUSDT_UMCBL 43901.30           -3.85     perpetual   0.07    0.02          0.01  5481296193.41
-2      3              Gate.io (Futures)       BTC_USDT 43916.60           -3.85     perpetual  -0.02    0.01          0.01  1664043796.97
-3      4          MEXC Global (Futures)       BTC_USDT 43970.43           -4.23     perpetual  -0.15    0.01          0.01    70152574.63
-4      5  Crypto.com Exchange (Futures)    BTCUSD-PERP 43918.00           -3.84     perpetual   0.03    0.02          0.00  2010151028.08
-5      6          MEXC Global (Futures)       ETH_USDT  3214.70           -6.72     perpetual   0.05    0.01          0.01  1832468691.22
-6      7              FTX (Derivatives)       BTC-PERP 43943.00           -3.88     perpetual   0.00    0.01          0.00  4432016271.62
-7      8              Binance (Futures)        ETHUSDT  3219.22           -6.01     perpetual   0.00    0.01          0.01  8339795905.90
-8      9                      Prime XBT        BTC/USD 43918.80           -4.16     perpetual   0.00    0.02          0.00   610222212.57
-9     10                        C-Trade         BTCUSD 43923.00           -3.76     perpetual   0.10    0.01          0.01    30362880.15
-10    11                 BTSE (Futures)         BTCPFC 43899.00           -4.10     perpetual   0.07    0.01          0.00   656214683.57
-11    12             Bitfinex (Futures)    ETHF0:USTF0  3218.40           -6.40     perpetual   0.02    0.01          0.00    48464804.75
-12    13              FTX (Derivatives)       ETH-PERP  3221.20           -6.04     perpetual   0.00    0.01         -0.01  3677086649.93
-13    14               Phemex (Futures)         ADAUSD     1.09           -7.84     perpetual  -0.02    0.02          0.01   356547191.56
-14    15                          Bybit        BTCUSDT 43915.29           -3.74     perpetual   0.03    0.01          0.01  5020144052.42
+    Rank                         Market         Symbol    Price      Pct_Change_24h Contract_Type                 Basis  Spread  Funding_Rate         Volume_24h
+0      1              Binance (Futures)        BTCUSDT  43910.2  -3.829024121078354     perpetual  -0.03005914257221505    0.01          0.01 16945759879.383444
+1      2                 Bitget Futures  BTCUSDT_UMCBL  43901.3 -3.8535645472061657     perpetual   0.06653589451630534    0.02          0.01  5481296193.408666
+2      3              Gate.io (Futures)       BTC_USDT  43916.6  -3.850590436999989     perpetual  -0.02372101176261687    0.01          0.01 1664043796.9740682
+3      4          MEXC Global (Futures)       BTC_USDT 43970.43  -4.229064334491434     perpetual  -0.14715582141151318    0.01         0.005  70152574.63021475
+4      5  Crypto.com Exchange (Futures)    BTCUSD-PERP  43918.0  -3.843585448892684     perpetual  0.030875722938203013    0.02         6e-06    2010151028.0754
+5      6          MEXC Global (Futures)       ETH_USDT   3214.7  -6.718031312120025     perpetual  0.054205229510491684    0.01         0.015 1832468691.2240598
+6      7              FTX (Derivatives)       BTC-PERP  43943.0 -3.8761894345400854     perpetual 0.0028749110848144185    0.01        0.0024    4432016271.6165
+7      8              Binance (Futures)        ETHUSDT  3219.22 -6.0133916322730165     perpetual  0.004976434782608696    0.01          0.01 8339795905.8964205
+8      9                      Prime XBT        BTC/USD  43918.8 -4.1578558007685915     perpetual                   0.0    0.02           0.0     610222212.5664
+9     10                        C-Trade         BTCUSD  43923.0   -3.76205083260298     perpetual   0.09639596566719032    0.01          0.01  30362880.15192234
+10    11                 BTSE (Futures)         BTCPFC  43899.0  -4.100401957357567     perpetual    0.0712193836784437    0.01           0.0      656214683.568
+11    12             Bitfinex (Futures)    ETHF0:USTF0   3218.4 -6.3983248022335975     perpetual  0.017182450907283122    0.01           0.0  48464804.74734864
+12    13              FTX (Derivatives)       ETH-PERP   3221.2  -6.043635515109089     perpetual  0.000971923693033652    0.01       -0.0072    3677086649.9313
+13    14               Phemex (Futures)         ADAUSD     1.09  -7.838019868664758     perpetual -0.018269845619804513    0.02          0.01      356547191.558
+14    15                          Bybit        BTCUSDT 43915.29 -3.7375906730073853     perpetual    0.0345812796667084    0.01          0.01  5020144052.419453

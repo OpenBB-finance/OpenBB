@@ -8,11 +8,6 @@ import pytest
 from openbb_terminal.stocks.comparison_analysis import finviz_compare_view
 from openbb_terminal import helper_funcs
 
-pd.set_option(
-    "display.float_format",
-    lambda x: "%.2f" % x,  # pylint:disable=consider-using-f-string
-)
-
 
 @pytest.mark.default_cassette("test_screener")
 @pytest.mark.vcr

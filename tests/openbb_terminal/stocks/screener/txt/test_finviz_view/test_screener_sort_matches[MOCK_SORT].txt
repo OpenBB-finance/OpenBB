@@ -1,4 +1,4 @@
 Wrong sort column provided! Provide one of these: Ticker, Company, Sector, Industry, Country, Market Cap, P/E, Price, Change, Volume
   Ticker                             Company           Sector                        Industry Country Market Cap P/E  Price  Change   Volume
-0   HYMC  Hycroft Mining Holding Corporation  Basic Materials                            Gold     USA     57.8 M       1.00    2.03  202.7 M
-1   ENSV                Enservco Corporation           Energy  Oil & Gas Equipment & Services     USA     40.5 M       4.20    0.68  115.3 M
+0   HYMC  Hycroft Mining Holding Corporation  Basic Materials                            Gold     USA     57.8 M        1.0  2.0331  202.7 M
+1   ENSV                Enservco Corporation           Energy  Oil & Gas Equipment & Services     USA     40.5 M        4.2    0.68  115.3 M

@@ -1,16 +1,16 @@
     Rank Trust_Score          Id                 Name                 Country Year_Established Trade_Volume_24h_BTC
-0      1       10.00     binance              Binance          Cayman Islands          2017.00            615602.19
-1      2       10.00        okex                  OKX                  Belize          2013.00            153111.66
-2      3       10.00  crypto_com  Crypto.com Exchange          Cayman Islands          2019.00            105015.63
-3      4       10.00        gdax    Coinbase Exchange           United States          2012.00            105007.72
-4      5       10.00         mxc          MEXC Global                    None          2018.00             89127.83
-5      6       10.00      kucoin               KuCoin              Seychelles          2014.00             82940.19
-6      7       10.00        gate              Gate.io               Hong Kong             None             72198.58
-7      8       10.00       huobi         Huobi Global              Seychelles          2013.00             67724.29
-8      9       10.00    ftx_spot                  FTX     Antigua and Barbuda          2019.00             66662.49
-9     10       10.00      kraken               Kraken           United States          2011.00             28006.45
-10    11       10.00    bitfinex             Bitfinex  British Virgin Islands          2014.00             22042.61
-11    12       10.00  bybit_spot         Bybit (Spot)                    None          2018.00             16534.62
-12    13       10.00  binance_us           Binance US           United States          2019.00              9934.78
-13    14       10.00      gemini               Gemini           United States          2014.00              4484.52
-14    15       10.00     bittrex              Bittrex           United States          2014.00              1984.07
+0      1        10.0     binance              Binance          Cayman Islands           2017.0    615602.1917756684
+1      2        10.0        okex                  OKX                  Belize           2013.0   153111.66164279747
+2      3        10.0  crypto_com  Crypto.com Exchange          Cayman Islands           2019.0   105015.63445543339
+3      4        10.0        gdax    Coinbase Exchange           United States           2012.0   105007.71869450768
+4      5        10.0         mxc          MEXC Global                    None           2018.0    89127.83318296203
+5      6        10.0      kucoin               KuCoin              Seychelles           2014.0    82940.18665131867
+6      7        10.0        gate              Gate.io               Hong Kong             None    72198.57768815137
+7      8        10.0       huobi         Huobi Global              Seychelles           2013.0    67724.29312992419
+8      9        10.0    ftx_spot                  FTX     Antigua and Barbuda           2019.0    66662.48767066294
+9     10        10.0      kraken               Kraken           United States           2011.0   28006.450674239004
+10    11        10.0    bitfinex             Bitfinex  British Virgin Islands           2014.0    22042.61428710614
+11    12        10.0  bybit_spot         Bybit (Spot)                    None           2018.0    16534.61819340395
+12    13        10.0  binance_us           Binance US           United States           2019.0    9934.784040369525
+13    14        10.0      gemini               Gemini           United States           2014.0    4484.521409534234
+14    15        10.0     bittrex              Bittrex           United States           2014.0   1984.0702011348424

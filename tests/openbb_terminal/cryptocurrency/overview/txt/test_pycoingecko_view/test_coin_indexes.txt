@@ -1,16 +1,16 @@
-    Rank                         Name      Id                 Market  Last MultiAsset
-0      1       CoinFLEX (Futures) DFN     DFN     CoinFLEX (Futures)   NaN       None
-1      2       Perpetual Protocol ZIL     ZIL     Perpetual Protocol  0.11       None
-2      3         Bibox (Futures) LINK    LINK        Bibox (Futures)  0.11       None
-3      4      CME Bitcoin Futures BTC     BTC              CME Group  0.11      False
-4      5          Bibox (Futures) XRP     XRP        Bibox (Futures)  0.11       None
-5      6          Bibox (Futures) AXS     AXS        Bibox (Futures)  0.11       None
-6      7              ZBG Futures BSV     BSV            ZBG Futures  0.11       None
-7      8  MEXC Global (Futures) ATLAS   ATLAS  MEXC Global (Futures)  4.54       None
-8      9    CoinFLEX (Futures) BCHABC  BCHABC     CoinFLEX (Futures)  0.00       None
-9     10               Prime XBT USDC    USDC              Prime XBT  0.00       None
-10    11          Bibox (Futures) ETC     ETC        Bibox (Futures)  0.00       None
-11    12              MyCoinStory SUN     SUN                    MCS 13.41       None
-12    13                Prime XBT UNI     UNI              Prime XBT 13.41      False
-13    14          Bibox (Futures) BSV     BSV        Bibox (Futures) 13.41       None
-14    15         Bibox (Futures) DASH    DASH        Bibox (Futures) 13.41       None
+    Rank                         Name      Id                 Market         Last MultiAsset
+0      1       CoinFLEX (Futures) DFN     DFN     CoinFLEX (Futures)          NaN       None
+1      2       Perpetual Protocol ZIL     ZIL     Perpetual Protocol         0.11       None
+2      3         Bibox (Futures) LINK    LINK        Bibox (Futures)         0.11       None
+3      4      CME Bitcoin Futures BTC     BTC              CME Group         0.11      False
+4      5          Bibox (Futures) XRP     XRP        Bibox (Futures)         0.11       None
+5      6          Bibox (Futures) AXS     AXS        Bibox (Futures)         0.11       None
+6      7              ZBG Futures BSV     BSV            ZBG Futures         0.11       None
+7      8  MEXC Global (Futures) ATLAS   ATLAS  MEXC Global (Futures)       4.5436       None
+8      9    CoinFLEX (Futures) BCHABC  BCHABC     CoinFLEX (Futures)          0.0       None
+9     10               Prime XBT USDC    USDC              Prime XBT          0.0       None
+10    11          Bibox (Futures) ETC     ETC        Bibox (Futures)          0.0       None
+11    12              MyCoinStory SUN     SUN                    MCS 13.407576375       None
+12    13                Prime XBT UNI     UNI              Prime XBT 13.407576375      False
+13    14          Bibox (Futures) BSV     BSV        Bibox (Futures) 13.407576375       None
+14    15         Bibox (Futures) DASH    DASH        Bibox (Futures) 13.407576375       None
