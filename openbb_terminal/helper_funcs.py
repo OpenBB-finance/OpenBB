@@ -950,8 +950,8 @@ def get_flair() -> str:
     """Get a flair icon"""
     flairs = {
         ":openbb": "(🦋)",
-        ":rocket": "(🚀🚀)",
-        ":diamond": "(💎💎)",
+        ":rocket": "(🚀)",
+        ":diamond": "(💎)",
         ":stars": "(✨)",
         ":baseball": "(⚾)",
         ":boat": "(⛵)",

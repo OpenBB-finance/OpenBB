@@ -41,6 +41,7 @@ en:
   settings/_info_: Settings through environment variables
   settings/autoscaling: plot autoscaling
   settings/dt: add or remove datetime from flair
+  settings/flair: set the flair emoji to be used
   settings/_flair: Flair
   settings/lang: terminal language
   settings/_language: Language
