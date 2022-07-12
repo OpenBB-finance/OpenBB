@@ -66,13 +66,17 @@ installation on Windows without WSL, @JohnnyDankseed has made one available [her
 
 These steps are common in all operating systems (Windows with or without WSL, MacOS or Linux).
 
-This project supports Python 3.8 and 3.9. By default, the newly created virtual environment will use Python 3.8.13
+This project supports Python 3.8 and 3.9. By default, the newly created virtual environment will use Python 3.9.13
 
 Our current recommendation is to use this project with Anaconda's Python distribution - either full
 [**Anaconda3 Latest**](https://www.anaconda.com/products/distribution) or
 [**Miniconda3 Latest**](https://docs.conda.io/en/latest/miniconda.html) (recommended).
 Several features in this project utilize Machine Learning. Machine Learning Python dependencies are optional. For MacOS systems, the "Miniconda3 MacOSX 64-bit" version that works on both Intel and M1
 macs is recommended.
+
+**NOTE:** We recommend using `conda` and `poetry` because it just works. You can use other python
+distributions and use raw `pip` instead of `poetry` but you will very likely bump into installation
+issues.
 
 1. [Install Anaconda](https://docs.anaconda.com/anaconda/install/index.html) (It's on the AUR as anaconda or miniconda3!)
 
@@ -118,7 +122,7 @@ macs is recommended.
    from now onwards.
 
    ```bash
-   conda env create -n gst --file build/conda/conda-3-8-env.yaml
+   conda env create -n gst --file build/conda/conda-3-9-env.yaml
    ```
 
 6. Activate the virtual environment
@@ -139,22 +143,20 @@ macs is recommended.
 
    To enable the `prediction` menu install additional dependencies after installing main dependencies:
 
-   - On Intel and M1 macs
+   - On M1 macs
 
      ```bash
-     conda install -c conda-forge tensorflow==2.7.1
-     conda install -c pytorch u8darts-torch
-     poetry install -E prediction
+     conda install -c apple tensorflow-deps
+     poetry install -E prediction-m1-mac
      ```
 
    - On all other systems
 
      ```bash
-     conda install -c pytorch u8darts-torch
      poetry install -E prediction
      ```
 
-   If you are having trouble with Poetry (e.g. on a Windows system), simply install requirements.txt with pip
+   If you are having trouble with Poetry (e.g. on a non-conda python), simply install requirements.txt with pip
 
    ```bash
    pip install -r requirements.txt
@@ -185,43 +187,31 @@ before you call `python terminal.py` again.
 <a href="https://github.com/OpenBB-finance/OpenBBTerminal/blob/master/TROUBLESHOOT.md">
 <strong>troubleshoot page</strong></a>. You can also reach for help on our [discord](https://discord.gg/Up2QGbMKHY).
 
-## Advanced User Install - Machine Learning
+## Advanced User Install - Custom installation procedures
 
-If you are an advanced user and use other Python distributions, we have several requirements.txt documents that you can
-pick from to download project dependencies.
+By default we advice using `conda` and `poetry` for environment setup and dependency management.
+Conda ships binaries for packages like `numpy` and `tensorflow` so these dependencies are
+not built from source locally by `pip`.
+Poetry solves the dependency tree in a way that the dependencies of dependencies of dependencies
+use versions that are compatible with each other.
 
-If you are using conda instead of build/conda/conda-3-8-env.yaml configuration file in Step 5, use build/conda/conda-3-8-env-full.
+If you are using a conda environment the `build/conda` folder contains multiple `.yaml` configuration
+files that you can choose from.
 
-Note: The libraries specified in the [requirements.txt](/requirements.txt) file have been tested and work for
-the purpose of this project, however, these may be older versions. Hence, it is recommended for the user to set up
-a virtual python environment prior to installing these. This allows to keep dependencies required by different projects
-in separate places.
+If you are using other python distributions we highly recommend that you use some virtual
+environment like `virtualenv` or `pyenv` for installing the terminal dependency libraries.
 
-_If you would like to use optional Machine Learning features:_
+Requirements files that you can find in the project root:
 
-- Update your [feature_flags.py](/openbb_terminal/feature_flags.py) with:
+- `requirements.txt` list all the dependencies without Machine Learning libraries
+- `requirements-full.txt` list all the dependencies without Machine Learning libraries
 
-```bash
-ENABLE_PREDICT = os.getenv("OPENBB_ENABLE_PREDICT") or True
-```
+The dependency tree is solved by poetry.
 
-- Install optional ML features dependencies:
-
-```bash
-poetry install -E prediction
-```
-
-\*\*NOTE: For MacOS users should use this method instead of the poetry command
-
-```bash
-conda install -c conda-forge tensorflow==2.7.0
-```
-
-- Ready to launch:
-
-  ```python
-  python terminal.py
-  ```
+Note: The libraries specified in the requirements files have been tested and work for
+the purpose of this project, however, these may be older versions. Hence, it is recommended
+for the user to set up a virtual python environment prior to installing these. This allows
+to keep dependencies required by different projects in separate places.
 
 ## Update Terminal
 
