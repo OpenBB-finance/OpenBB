@@ -27,6 +27,7 @@ benchmark_returns = pd.read_csv(build_csv_path("benchmark_returns.csv"))
 benchmark_returns["Date"] = pd.to_datetime(benchmark_returns["Date"])
 benchmark_returns = benchmark_returns.set_index("Date")
 
+
 @pytest.mark.vcr(record_mode="none")
 def test_tracking_error(recorder):
     result_df, _ = portfolio_model.get_tracking_error(
@@ -34,6 +35,7 @@ def test_tracking_error(recorder):
     )
 
     recorder.capture(result_df)
+
 
 @pytest.mark.vcr(record_mode="none")
 def test_information_ratio(recorder):
@@ -43,6 +45,7 @@ def test_information_ratio(recorder):
 
     recorder.capture(result_df)
 
+
 @pytest.mark.vcr(record_mode="none")
 def test_tail_ratio(recorder):
     result_df, _, _ = portfolio_model.get_tail_ratio(
@@ -50,6 +53,7 @@ def test_tail_ratio(recorder):
     )
 
     assert isinstance(result_df, pd.DataFrame)
+
 
 @pytest.mark.vcr(record_mode="none")
 def test_common_sense_ratio(recorder):
