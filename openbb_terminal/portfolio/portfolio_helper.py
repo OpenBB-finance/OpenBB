@@ -380,5 +380,6 @@ def make_equal_length(df1: pd.DataFrame, df2: pd.DataFrame):
 
     return df1, df2
 
+
 def get_region_from_country(country: str) -> str:
     return REGIONS[country]
