@@ -59,7 +59,8 @@
     "@jupyterlab/terminal": "^3.2.8",
     "@jupyterlab/translation": "^3.2.8",
     "@jupyterlab/ui-components": "^3.2.8",
-    "@lumino/algorithm": "^1.9.1"
+    "@lumino/algorithm": "^1.9.1",
+    "marked": "^4.0.10"
   },
   "devDependencies": {
     "@jupyterlab/builder": "^3.2.8",
@@ -77,7 +78,9 @@
   },
   "resolutions": {
     "json-schema": "^0.4.0",
-    "marked": "^4.0.10"
+    "marked": "^4.0.10",
+    "got": "^11.8.5",
+    "jpeg-js": "^0.4.4"
   },
   "sideEffects": [
     "style/*.css",
