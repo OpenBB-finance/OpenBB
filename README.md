@@ -46,7 +46,7 @@
     Investment research for everyone.
     <br />
     <a href="https://github.com/OpenBB-finance/OpenBBTerminal/tree/master/openbb_terminal/README.md"><strong>≪  GETTING STARTED</strong></a>
-    &nbsp · &nbsp <a href="https://github.com/OpenBB-finance/OpenBBTerminal/tree/master/openbb_terminal/CONTRIBUTING.md"><strong>CONTRIBUTING</strong></a> &nbsp · &nbsp
+    &nbsp · &nbsp <a href="https://github.com/OpenBB-finance/OpenBBTerminal/tree/master/CONTRIBUTING.md"><strong>CONTRIBUTING</strong></a> &nbsp · &nbsp
     <a href="https://openbb-finance.github.io/OpenBBTerminal/">
     <strong>SEE FEATURES »</strong></a>
     <br />
