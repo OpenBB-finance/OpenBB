@@ -971,7 +971,7 @@ en:
   econometrics/granger: Granger causality tests on two columns
   econometrics/coint: co-integration test on a multitude of columns
   portfolio/bro: brokers holdings,   supports robinhood, ally, degiro, coinbase
-  portfolio/po: portfolio optimization,  optimal your portfolio weights efficiently
+  portfolio/po: portfolio optimization,  optimize your portfolio weights efficiently
   portfolio/load: load data into the portfolio
   portfolio/_loaded: Loaded orderbook
   portfolio/_riskfreerate: Risk Free Rate
