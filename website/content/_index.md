@@ -358,6 +358,7 @@ To figure out where you can obtain the API key, you can enter the command (e.g. 
 | ethplorer  | Ethplorer                                | https://github.com/EverexIO/Ethplorer/wiki/Ethplorer-API                           |
 | smartstake | Smartstake                               | https://www.smartstake.io                                                          |
 | github     | GitHub                                   | https://docs.github.com/en/rest/guides/getting-started-with-the-rest-api           |
+| messari    | messari                                  | https://messari.io/api/docs                                                        |
 
 ## Available menus within the OpenBB Terminal
 
