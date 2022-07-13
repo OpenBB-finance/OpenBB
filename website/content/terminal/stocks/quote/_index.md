@@ -8,7 +8,6 @@ Retrieves a current quote from the currently [loaded ticker](https://openbb-fina
 optional arguments:
   -t S_TICKER, --ticker S_TICKER
                         Stock ticker (default: TSLA)
-  -p, --price           Price only (default: False)
   -h, --help            show this help message (default: False)
 ```
 
