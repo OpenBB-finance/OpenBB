@@ -1,7 +1,7 @@
 Could not preprocess orderbook.
 
 >   bro              brokers holdings, 		 supports: robinhood, ally, degiro, coinbase
->   po               portfolio optimization, 	 optimal your portfolio weights efficiently
+>   po               portfolio optimization, 	 optimize your portfolio weights efficiently
 
     load             load data into the portfolio
 
