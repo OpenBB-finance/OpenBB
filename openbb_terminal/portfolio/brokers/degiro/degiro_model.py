@@ -1,7 +1,8 @@
 # IMPORTATION STANDARD
+import datetime
 import logging
 import math
-from typing import Union
+from typing import List, Union
 
 # IMPORTATION THIRDPARTY
 import pandas as pd
@@ -15,6 +16,7 @@ from degiro_connector.trading.models.trading_pb2 import (
     ProductSearch,
     ProductsInfo,
     TopNewsPreview,
+    TransactionsHistory,
     Update,
 )
 
@@ -336,3 +338,103 @@ class DegiroModel:
             return None
         else:
             return None
+
+    @log_start_end(log=logger)
+    def get_transactions(
+        self, start: datetime.date, end: datetime.date
+    ) -> pd.DataFrame:
+        trading_api = self.__trading_api
+
+        from_date = TransactionsHistory.Request.Date(
+            year=start.year,
+            month=start.month,
+            day=start.day,
+        )
+        to_date = TransactionsHistory.Request.Date(
+            year=end.year,
+            month=end.month,
+            day=end.day,
+        )
+        request = TransactionsHistory.Request(
+            from_date=from_date,
+            to_date=to_date,
+        )
+
+        transactions_dict = trading_api.get_transactions_history(
+            request=request,
+            raw=True,
+        )
+
+        transactions_df = pd.DataFrame(transactions_dict["data"])
+        transactions_df["productId"] = transactions_df["productId"].astype("int")
+
+        return transactions_df
+
+    @log_start_end(log=logger)
+    def get_products_details(self, product_id_list: List[int]) -> pd.DataFrame:
+        trading_api = self.__trading_api
+
+        product_id_list = list(set(product_id_list))
+
+        request = ProductsInfo.Request()
+        request.products.extend(product_id_list)
+
+        products_info = trading_api.get_products_info(
+            request=request,
+            raw=True,
+        )
+
+        products_df = pd.DataFrame(products_info["data"].values())
+
+        return products_df
+
+    @log_start_end(log=logger)
+    def get_transactions_export(
+        self, start: datetime.date, end: datetime.date, currency: str
+    ) -> pd.DataFrame:
+        transactions_df = self.get_transactions(start=start, end=end)
+        product_id_list = list(transactions_df.productId)
+        products_df = self.get_products_details(product_id_list=product_id_list)
+
+        products_df["productId"] = products_df["id"]
+        transactions_df["productId"] = transactions_df["productId"].astype("int")
+        products_df["productId"] = products_df["productId"].astype("int")
+        transactions_full_df = pd.merge(
+            transactions_df,
+            products_df[{"productId", "symbol", "productType"}],
+            on="productId",
+        )
+
+        portfolio_df = transactions_full_df.rename(
+            columns={
+                "date": "Date",
+                "symbol": "Ticker",
+                "productType": "Type",  # STOCK or ETF
+                "price": "Price",
+                "quantity": "Quantity",
+                "buysell": "Side",  # BUY or SELL
+                "totalFeesInBaseCurrency": "Fees",
+            }
+        )
+
+        portfolio_df["Premium"] = 0
+        portfolio_df["Currency"] = currency
+        portfolio_df["Side"] = portfolio_df["Side"].replace({"S": "SELL", "B": "BUY"})
+        portfolio_df["Date"] = pd.to_datetime(
+            portfolio_df["Date"].str.slice(0, 10)
+        ).dt.date
+        columns = [
+            "Date",
+            "Ticker",
+            "Type",
+            "Price",
+            "Quantity",
+            "Fees",
+            "Premium",
+            "Side",
+            "Currency",
+        ]
+        portfolio_df = portfolio_df[columns]
+        portfolio_df = portfolio_df.set_index("Date")
+
+        return portfolio_df

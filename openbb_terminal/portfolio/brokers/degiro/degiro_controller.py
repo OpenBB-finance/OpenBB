@@ -1,5 +1,6 @@
 # IMPORTATION STANDARD
 import argparse
+import datetime
 import logging
 from typing import List
 
@@ -9,6 +10,10 @@ from prompt_toolkit.completion import NestedCompleter
 # IMPORTATION INTERNAL
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.helper_funcs import (
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
+    valid_date,
+)
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.portfolio.brokers.degiro.degiro_view import DegiroView
@@ -31,6 +36,7 @@ class DegiroController(BaseController):
         "pending",
         "topnews",
         "update",
+        "paexport",
     ]
     PATH = "/portfolio/bro/degiro/"
 
@@ -307,3 +313,42 @@ class DegiroController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         self.__degiro_view.update(ns_parser=ns_parser)
+
+    @log_start_end(log=logger)
+    def call_paexport(self, other_args: List[str]):
+        """Export transactions for Portfolio Analysis Menu into CSV format."""
+
+        # PARSING ARGS
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="paexport",
+        )
+        parser.add_argument(
+            "-s",
+            "--start",
+            help="Start date.",
+            required=True,
+            type=valid_date,
+        )
+        parser.add_argument(
+            "-e",
+            "--end",
+            help="End date.",
+            type=valid_date,
+            default=datetime.datetime.now(),
+        )
+        parser.add_argument(
+            "-c",
+            "--currency",
+            help="Used currency.",
+            default="USD",
+            type=str,
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
+        )
+
+        if ns_parser:
+            self.__degiro_view.transactions_export(ns_parser=ns_parser)

@@ -998,6 +998,8 @@ main:
             ref: "/terminal/economy/yield"
           - name: ycrv
             ref: "/terminal/economy/ycrv"
+          - name: ecocal
+            ref: "/terminal/economy/ecocal"
           - name: plot
             ref: "/terminal/economy/plot"
           - name: rtps

@@ -1383,22 +1383,24 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             console.print("For your API Key, visit: https://developer.oanda.com\n")
             return
         ns_parser = parse_simple_args(parser, other_args)
-        if ns_parser:
+        if not ns_parser:
+            return
+        if ns_parser.account:
             os.environ["OPENBB_OANDA_ACCOUNT"] = ns_parser.account
             dotenv.set_key(self.env_file, "OPENBB_OANDA_ACCOUNT", ns_parser.account)
             cfg.OANDA_ACCOUNT = ns_parser.account
-
+        if ns_parser.token:
             os.environ["OPENBB_OANDA_TOKEN"] = ns_parser.token
             dotenv.set_key(self.env_file, "OPENBB_OANDA_TOKEN", ns_parser.token)
             cfg.OANDA_TOKEN = ns_parser.token
-
+        if ns_parser.account_type:
             os.environ["OPENBB_OANDA_ACCOUNT_TYPE"] = ns_parser.account_type
             dotenv.set_key(
                 self.env_file, "OPENBB_OANDA_ACCOUNT_TYPE", ns_parser.account_type
             )
             cfg.OANDA_ACCOUNT_TYPE = ns_parser.account_type
 
-            self.check_oanda_key(show_output=True)
+        self.check_oanda_key(show_output=True)
 
     @log_start_end(log=logger)
     def call_binance(self, other_args: List[str]):
