@@ -14,7 +14,7 @@ as well as statistics about certain NFTs (<a href="https://openbb-finance.github
 
 The Non Fungible Token (NFT) menu is called upon by typing `nft`, while inside the `crypto` menu, which opens the following menu:
 
-![img.png](img.png)
+![Non Fungible Token (NFT) menu](https://user-images.githubusercontent.com/46355364/178734682-24b58a33-ae3d-4ef9-9f07-44fe713f6f16.png)
 
 Alternatively, you can also type `/crypto/nft`. Within the Non Fungible Token (NFT) menu you can find upcoming NFTs
 and explore the statistics of specific NFTs you are interested in. For example, today's NFT drops are as follows:
