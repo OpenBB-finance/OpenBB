@@ -21,7 +21,7 @@ and <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/dd/
 
 The Cryptocurrency Due Diligence menu is called upon by typing `dd` (after loading a coin), while inside the `crypto` menu, which opens the following menu:
 
-![img.png](img.png)
+![Cryptocurrency Due Diligence menu](https://user-images.githubusercontent.com/46355364/178734389-dcee7a96-bb57-42fb-ad8e-13f27662e03b.png)
 
 This menu requires you to load a coin with the `load` command. Thus, alternatively, you can also type `/crypto/load BTC/dd`.
 Within the Cryptocurrency Due Diligence menu you can find features examining an extensive amount of metrics about the
@@ -230,7 +230,7 @@ if we load in `ETH` with `load ETH` and use `rm` we receive the following:
 
 As well as a graph that depicts price movements after these announcements.
 
-![](Figure_1.png)
+![price movements ETH](https://user-images.githubusercontent.com/46355364/178734435-175181e3-a0fe-403c-b59c-c80ee70f6078.png)
 
 Lastly, keeping the ETH coin loaded, we can also look at some sentiment analysis by acquiring the different sentiment
 scores with `score` as follows:
