@@ -16,7 +16,7 @@ as well as infomration about terra blockchain (<a href="https://openbb-finance.g
 
 The Cryptocurrency Decentralized Finance (DeFi) menu is called upon by typing `defi`, while inside the `crypto` menu, which opens the following menu:
 
-![img.png](img.png)
+![Cryptocurrency Decentralized Finance (DeFi) menu](https://user-images.githubusercontent.com/46355364/178734540-716f2232-20a4-4f31-b8a8-10c0badfd5dd.png)
 
 Alternatively, you can also type `/crypto/defi`. Within the Cryptocurrency Decentralized Finance (DeFi) menu you can
 find features that delve deeper in the world of decentralized finance. For example you cna look into the funding rates
@@ -134,7 +134,7 @@ Furthermore, we can also look at the recently added pairs with `pairs`:
 
 When interested in dApps, it is possible to find the top DeFI dApps grouped by chain with `gdapps`:
 
-![Figure_1](Figure_1.png)
+![top DeFI dApps grouped by chain](https://user-images.githubusercontent.com/46355364/178734582-c9b96ce5-e0d5-4913-9e7d-ced35e4118d7.png)
 
 Including a list of recent dApps with `ldapps`:
 
