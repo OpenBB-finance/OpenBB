@@ -19,7 +19,7 @@ The Cryptocurrency Decentralized Finance (DeFi) menu is called upon by typing `d
 ![Cryptocurrency Decentralized Finance (DeFi) menu](https://user-images.githubusercontent.com/46355364/178734540-716f2232-20a4-4f31-b8a8-10c0badfd5dd.png)
 
 Alternatively, you can also type `/crypto/defi`. Within the Cryptocurrency Decentralized Finance (DeFi) menu you can
-find features that delve deeper in the world of decentralized finance. For example you cna look into the funding rates
+find features that delve deeper in the world of decentralized finance. For example, you can look into the funding rates
 of the current or last 30 days average with `funding` which returns the following:
 
 ```
