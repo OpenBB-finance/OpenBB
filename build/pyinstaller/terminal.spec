@@ -49,6 +49,7 @@ added_files = [
         os.path.join(pathex, "investpy", "resources"),
         os.path.join("investpy", "resources"),
     ),
+    (".env", "."),
 ]
 
 # Python libraries that are explicitly pulled into the bundle
