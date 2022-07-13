@@ -367,7 +367,7 @@ The asset class menus are as follows:
 
 - <a href="terminal/stocks" target="_blank">Introduction to Stocks</a>: access historical pricing data, options, sector and
 industry analysis, and overall due diligence.
-- <a href="terminal/cryptocurrency" target="_blank">Introduction to Crypto</a>: dive into onchain data, tokenomics, circulation supply,
+- <a href="terminal/crypto" target="_blank">Introduction to Crypto</a>: dive into onchain data, tokenomics, circulation supply,
 nfts and more.
 - <a href="terminal/etf" target="_blank">Introduction to ETF</a>: explore exchange traded funds, historical pricing, holdings
 and screeners.
