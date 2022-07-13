@@ -43,6 +43,7 @@ docker run -it --rm --env-file=path/to/setenv ghcr.io/openbb-finance/openbbtermi
 In order to display plots in the docker container, we can use IPC socket to connect Desktop.
 
 Add this setting to 'setenv' file .
+
 ```bash
 OPENBB_BACKEND=Qt5Agg
 ```
