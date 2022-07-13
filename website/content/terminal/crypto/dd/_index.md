@@ -10,7 +10,7 @@ The Cryptocurrency Due Diligence menu gives the user the ability to delve deeper
 do this, the menu offers basic information about the loaded coin (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/dd/info/" target="_blank">info</a>
 and <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/dd/basic/" target="_blank">basic</a>), information about the project, technology details, audits etcetera
 (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/dd/pi/" target="_blank">pi</a>), insights into the coin balance and order book
-(<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/dd/balance/" target="_blank">balance</a> and <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/dd/cbook/" target="_blank">cbook</a>),
+(<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/dd/balance/" target="_blank">balance</a> and <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/dd/cbbook/" target="_blank">cbbook</a>),
 the tokenomics and fundraising details
 (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/dd/tk/" target="_blank">tk</a> and <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/dd/fr/" target="_blank">fr</a>)
 and lastly, social media activity
