@@ -390,7 +390,7 @@ def get_region_from_country(country: str) -> str:
     return REGIONS[country]
 
 
-def get_info_update_file(ticker: str, file_path: str, writemode: str) -> list:
+def get_info_update_file(ticker: str, file_path: Path, writemode: str) -> list:
 
     # Pull ticker info from yf
     yf_ticker_info = yf.Ticker(ticker).info
