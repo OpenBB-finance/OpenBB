@@ -2585,32 +2585,3 @@ img {
 .gdoc-mermaid {
   font-family: "Liberation Sans", sans-serif;
 }
-
-.text-sm {
-    font-size: .875rem;
-    line-height: 1.25rem;
-}
-
-.w-full {
-    width: 100%;
-}
-._btn {
-    display: inline-flex;
-    width: -webkit-fit-content;
-    width: -moz-fit-content;
-    width: fit-content;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    border-radius: 9999px;
-    padding: 0.5rem 1.5rem;
-    text-align: center;
-    transition-property: color,background-color,border-color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-text-decoration-color,-webkit-backdrop-filter;
-    transition-property: color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;
-    transition-property: color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-text-decoration-color,-webkit-backdrop-filter;
-    transition-timing-function: cubic-bezier(.4,0,.2,1);
-    transition-duration: .15s;
-    transition-timing-function: cubic-bezier(0,0,.2,1);
-    background-color: #eaeaea;
-    color: #2a2a2a !important;
-}
