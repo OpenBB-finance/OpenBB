@@ -2,12 +2,12 @@
 __docformat__ = "numpy"
 
 from datetime import datetime
-from dateutil.relativedelta import relativedelta
-import yfinance as yf
-import pandas as pd
 import os
 from pathlib import Path
 import csv
+from dateutil.relativedelta import relativedelta
+import yfinance as yf
+import pandas as pd
 
 from openbb_terminal.rich_config import console
 
@@ -417,10 +417,9 @@ def get_info_update_file(ticker: str, file_path: Path, writemode: str) -> list:
             writer.writerow([ticker] + ticker_info_list)
         f.close()
         return ticker_info_list
-    else:
-        # Ticker does not have a valid sector
-        console.print(f"Cannot get sector, industry, country and region for {ticker}.")
-        return []
+    # Ticker does not have a valid sector
+    console.print(f"Cannot get sector, industry, country and region for {ticker}.")
+    return []
 
 
 def get_info_from_ticker(ticker: str) -> list:
@@ -445,10 +444,9 @@ def get_info_from_ticker(ticker: str) -> list:
             # ticker is in file, just return it
             ticker_info_list = list(df_row.iloc[0].drop("Ticker"))
             return ticker_info_list
-        else:
-            # ticker is not in file, go get it
-            ticker_info_list = get_info_update_file(ticker, file_path, "a")
-            return ticker_info_list
+        # ticker is not in file, go get it
+        ticker_info_list = get_info_update_file(ticker, file_path, "a")
+        return ticker_info_list
     else:
         # file does not exist or is empty, so write it
         ticker_info_list = get_info_update_file(ticker, file_path, "w")
