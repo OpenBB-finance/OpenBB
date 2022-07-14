@@ -25,6 +25,8 @@ from openbb_terminal.parent_classes import StockBaseController
 from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.stocks.quantitative_analysis.factors_view import capm_view
 
+# pylint: disable=C0302
+
 logger = logging.getLogger(__name__)
 
 
