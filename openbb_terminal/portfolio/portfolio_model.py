@@ -931,6 +931,11 @@ class PortfolioModel:
                 )
             ):
                 # if fields not in the orderbook
+                # Add fields to orderbook
+                self.__orderbook["Sector"] = np.nan
+                self.__orderbook["Industry"] = np.nan
+                self.__orderbook["Country"] = np.nan
+                self.__orderbook["Region"] = np.nan
                 self.load_company_data()
             elif (
                 self.__orderbook.loc[
@@ -955,14 +960,27 @@ class PortfolioModel:
             # yfinance only has sector, industry and country for stocks
             if ticker_type == "STOCK":
                 for ticker in ticker_list:
-                    ticker_info_list = portfolio_helper.get_info_from_ticker(ticker)
 
-                    self.__orderbook.loc[
-                        self.__orderbook.Ticker == ticker,
-                        ["Sector", "Industry", "Country", "Region"],
-                    ] = ticker_info_list
-                    # Display progress
-                    console.print(".", end="")
+                    # Only gets fields for tickers with missing data
+                    # TODO: Should only get field missing for tickers with missing data
+                    # now it's taking the 4 of them
+                    if (
+                        self.__orderbook.loc[
+                            self.__orderbook["Ticker"] == ticker,
+                            ["Sector", "Industry", "Country", "Region"],
+                        ]
+                        .isnull()
+                        .values.any()
+                    ):
+                        ticker_info_list = portfolio_helper.get_info_from_ticker(ticker)
+
+                        # replace fields in orderbook
+                        self.__orderbook.loc[
+                            self.__orderbook.Ticker == ticker,
+                            ["Sector", "Industry", "Country", "Region"],
+                        ] = ticker_info_list
+                        # Display progress
+                        console.print(".", end="")
 
     def load_benchmark(self, ticker: str = "SPY", full_shares: bool = False):
         """Adds benchmark dataframe
