@@ -930,12 +930,16 @@ class PortfolioModel:
                     set(self.__orderbook.columns)
                 )
             ):
-                # if fields not in the orderbook
-                # Add fields to orderbook
-                self.__orderbook["Sector"] = np.nan
-                self.__orderbook["Industry"] = np.nan
-                self.__orderbook["Country"] = np.nan
-                self.__orderbook["Region"] = np.nan
+                # if fields not in the orderbook add missing
+                if "Sector" not in self.__orderbook.columns:
+                    self.__orderbook["Sector"] = np.nan
+                if "Industry" not in self.__orderbook.columns:
+                    self.__orderbook["Industry"] = np.nan
+                if "Country" not in self.__orderbook.columns:
+                    self.__orderbook["Country"] = np.nan
+                if "Region" not in self.__orderbook.columns:
+                    self.__orderbook["Region"] = np.nan
+                
                 self.load_company_data()
             elif (
                 self.__orderbook.loc[
