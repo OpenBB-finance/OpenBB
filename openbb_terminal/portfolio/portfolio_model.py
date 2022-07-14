@@ -923,7 +923,7 @@ class PortfolioModel:
             # Save orderbook inception date
             self.inception_date = self.__orderbook["Date"][0]
             console.print(".", end="")
-            
+
             # Populate fields Sector, Industry and Country
             if not (
                 {"Sector", "Industry", "Country", "Region"}.issubset(
