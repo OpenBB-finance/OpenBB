@@ -858,17 +858,21 @@ class PortfolioModel:
         # descrbibe outputs
 
         try:
+            console.print("Preprocessing orderbook: ", end='')
             # Convert Date to datetime
             self.__orderbook["Date"] = pd.to_datetime(self.__orderbook["Date"])
+            console.print(".", end='')
 
             # Sort orderbook by date
             self.__orderbook = self.__orderbook.sort_values(by="Date")
+            console.print(".", end='')
 
             # Capitalize Ticker and Type [of instrument...]
             self.__orderbook["Ticker"] = self.__orderbook["Ticker"].map(
                 lambda x: x.upper()
             )
             self.__orderbook["Type"] = self.__orderbook["Type"].map(lambda x: x.upper())
+            console.print(".", end='')
 
             # Translate side: ["deposit", "buy"] -> 1 and ["withdrawal", "sell"] -> -1
             self.__orderbook["Side"] = self.__orderbook["Side"].map(
@@ -876,17 +880,20 @@ class PortfolioModel:
                 if x.lower() in ["deposit", "buy"]
                 else (-1 if x.lower() in ["withdrawal", "sell"] else 0)
             )
+            console.print(".", end='')
 
             # Convert quantity to signed integer
             self.__orderbook["Quantity"] = (
                 abs(self.__orderbook["Quantity"]) * self.__orderbook["Side"]
             )
+            console.print(".", end='')
 
             # Determining the investment/divestment value
             self.__orderbook["Investment"] = (
                 self.__orderbook["Quantity"] * self.__orderbook["Price"]
                 - self.__orderbook["Fees"]
             )
+            console.print(".", end='')
 
             # Reformat crypto tickers to yfinance format (e.g. BTC -> BTC-USD)
             crypto_trades = self.__orderbook[self.__orderbook.Type == "CRYPTO"]
@@ -896,6 +903,7 @@ class PortfolioModel:
                     crypto_trades.Ticker, crypto_trades.Currency
                 )
             ]
+            console.print(".", end='')
 
             # Create tickers dictionary with structure {'Type': [Ticker]}
             for ticker_type in set(self.__orderbook["Type"]):
@@ -906,12 +914,15 @@ class PortfolioModel:
                         ]
                     )
                 )
+            console.print(".", end='')
 
             # Create list with tickers except cash
             self.tickers_list = list(set(self.__orderbook["Ticker"]))
+            console.print(".", end='')
 
             # Save orderbook inception date
             self.inception_date = self.__orderbook["Date"][0]
+            console.print(".", end='')
 
             # Populate fields Sector, Industry and Country if not in the orderbook
             if not (
@@ -919,26 +930,24 @@ class PortfolioModel:
                     set(self.__orderbook.columns)
                 )
             ):
+                console.print("\n    Loading stock data: ", end='')
                 for ticker_type, ticker_list in self.tickers.items():
+
                     # yfinance only has sector, industry and country for stocks
                     if ticker_type == "STOCK":
                         for ticker in ticker_list:
-                            yf_ticker = yf.Ticker(ticker).info
+                            ticker_info_list = portfolio_helper.get_info_from_ticker(ticker)
+
                             self.__orderbook.loc[
                                 self.__orderbook.Ticker == ticker,
                                 ["Sector", "Industry", "Country", "Region"],
-                            ] = [
-                                yf_ticker["sector"],
-                                yf_ticker["industry"],
-                                yf_ticker["country"],
-                                portfolio_helper.get_region_from_country(
-                                    yf_ticker["country"]
-                                ),
-                            ]
+                            ] = ticker_info_list
+                            # Display progress
+                            console.print(".", end='')
                     else:
                         # If not stock just use the ticker_type (E.g. ETF, Crypto)
                         # Help wanted for smarter solution
-                        for ticker in self.tickers[ticker_type]:
+                        for ticker in ticker_list:
                             self.__orderbook.loc[
                                 self.__orderbook.Ticker == ticker,
                                 ["Sector", "Industry", "Country"],
@@ -947,8 +956,10 @@ class PortfolioModel:
                                 ticker_type,
                                 ticker_type,
                             ]
+                            # Display progress
+                            console.print(".", end='')
         except Exception:
-            console.print("Could not preprocess orderbook.")
+            console.print("\nCould not preprocess orderbook.")
 
     def load_benchmark(self, ticker: str = "SPY", full_shares: bool = False):
         """Adds benchmark dataframe
@@ -1030,6 +1041,9 @@ class PortfolioModel:
 
     def generate_portfolio_data(self):
         """Generates portfolio data from orderbook"""
+
+        console.print("\nGenerating porfolio data: ", end='')
+
         self.load_portfolio_historical_prices()
         self.populate_historical_trade_data()
         self.calculate_value()
@@ -1105,13 +1119,14 @@ class PortfolioModel:
                     [self.portfolio_historical_prices, price_data], axis=1
                 )
             else:
-                console.print("Type not supported in the orderbook.")
+                console.print(f"Type {ticker_type} not supported.")
 
             # Fill missing values with last known price
             self.portfolio_historical_prices.fillna(method="ffill", inplace=True)
 
     def populate_historical_trade_data(self):
         """Create a new dataframe to store historical prices by ticker"""
+        
         trade_data = self.__orderbook.pivot(
             index="Date",
             columns="Ticker",
@@ -1194,6 +1209,9 @@ class PortfolioModel:
                         + trade_data.iloc[i]["Investment"][t]
                         - trade_data.iloc[i - 1]["Investment"][t]
                     )
+            # To avoid filling users terminal with dots if orderbook is very old, used %40
+            if i%40 == 0:
+                console.print(".", end='')
 
         trade_data.loc[:, ("Initial Value", "Total")] = trade_data["Initial Value"][
             self.tickers_list
@@ -1380,14 +1398,8 @@ class PortfolioModel:
             )
             vals.append(
                 [
-                    round(
-                        100 * port_rets.std() * (len(port_rets) ** 0.5),
-                        3,
-                    ),
-                    round(
-                        100 * bench_rets.std() * (len(bench_rets) ** 0.5),
-                        3,
-                    ),
+                    round(100 * port_rets.std() * (len(port_rets) ** 0.5), 3,),
+                    round(100 * bench_rets.std() * (len(bench_rets) ** 0.5), 3,),
                 ]
             )
         return pd.DataFrame(

@@ -5,6 +5,11 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 import yfinance as yf
 import pandas as pd
+import os
+from pathlib import Path
+import csv
+
+from openbb_terminal.rich_config import console
 
 # pylint: disable=too-many-return-statements
 
@@ -383,3 +388,60 @@ def make_equal_length(df1: pd.DataFrame, df2: pd.DataFrame):
 
 def get_region_from_country(country: str) -> str:
     return REGIONS[country]
+
+
+def get_info_update_file(ticker: str, filename: str, writemode: str) -> list:
+
+    # Pull ticker info from yf
+    yf_ticker_info = yf.Ticker(ticker).info
+
+    if "sector" in yf_ticker_info.keys():
+        # Ticker has valid sector
+        # Replace the dash to UTF-8 readable
+        ticker_info_list = [
+            yf_ticker_info["sector"],
+            yf_ticker_info["industry"].replace("—", "-"),
+            yf_ticker_info["country"],
+            get_region_from_country(yf_ticker_info["country"]),
+        ]
+
+        f = open(filename, writemode, newline="")
+        writer = csv.writer(f)
+        
+        if writemode == "a":
+            # file already has data, so just append
+            writer.writerow([ticker] + ticker_info_list)
+        else:
+            # file did not exist or as empty, so write headers first
+            writer.writerow(["Ticker", "Sector", "Industry", "Country", "Region"])
+            writer.writerow([ticker] + ticker_info_list)
+        f.close()
+        return ticker_info_list
+    else:
+        # Ticker does not have a valid sector
+        console.print(f"Cannot get sector, industry, country and region for {ticker}.")
+        return []
+
+
+def get_info_from_ticker(ticker: str) -> list:
+    filename = "tickers_info.csv"
+    path = Path(filename)
+
+    if path.is_file() and os.stat(filename).st_size > 0:
+        # file exists and is not empty, so append if necessary
+        ticker_info_df = pd.read_csv(filename)
+        df_row = ticker_info_df.loc[ticker_info_df["Ticker"] == ticker]
+
+        if len(df_row) > 0:
+            # ticker is in file, just return it
+            ticker_info_list = list(df_row.iloc[0].drop("Ticker"))
+            return ticker_info_list
+        else:
+            # ticker is not in file, go get it
+            ticker_info_list = get_info_update_file(ticker, filename, "a")
+            return ticker_info_list
+    else:
+        console.print("Creating stock data file for first time, please be patient.")
+        # file does not exist or is empty, so write it
+        ticker_info_list = get_info_update_file(ticker, filename, "w")
+        return ticker_info_list
