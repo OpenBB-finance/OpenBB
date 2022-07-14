@@ -836,8 +836,7 @@ class PortfolioModel:
         self.empty = False
 
     def get_orderbook(self):
-        if not self.empty:
-            return self.__orderbook
+        return self.__orderbook
 
     @staticmethod
     def read_orderbook(path: str) -> pd.DataFrame:
