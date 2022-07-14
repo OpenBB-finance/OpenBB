@@ -458,7 +458,6 @@ class DarkPoolShortsController(StockBaseController):
             EXPORT_BOTH_RAW_DATA_AND_FIGURES,
             raw=True,
             limit=10 if "-r" in other_args else 120,
-            sources=["quandl", "stockgrid"],
         )
         if ns_parser:
             if self.ticker:
