@@ -1,6 +1,7 @@
 # IMPORTATION THIRDPARTY
 import logging
 from argparse import Namespace
+from pathlib import Path
 
 # IMPORTATION THIRDPARTY
 import pandas as pd
@@ -19,6 +20,10 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.decorators import check_api_key
 
 # IMPORTATION INTERNAL
+from openbb_terminal.helper_funcs import (
+    export_data,
+    print_rich_table,
+)
 from openbb_terminal.portfolio.brokers.degiro.degiro_model import DegiroModel
 from openbb_terminal.rich_config import console, MenuText
 
@@ -68,6 +73,7 @@ class DegiroView:
         mt.add_cmd("companynews")
         mt.add_cmd("lastnews")
         mt.add_cmd("topnews")
+        mt.add_cmd("paexport")
         console.print(text=mt.menu_text, menu="Portfolio - Brokers - Degiro")
 
     @log_start_end(log=logger)
@@ -489,3 +495,29 @@ class DegiroView:
     @log_start_end(log=logger)
     def __update_display_success():
         console.print("`Order` updated .")
+
+    @log_start_end(log=logger)
+    def transactions_export(self, ns_parser: Namespace):
+        degiro_model = self.__degiro_model
+
+        portfolio_df = degiro_model.get_transactions_export(
+            start=ns_parser.start.date(),
+            end=ns_parser.end.date(),
+            currency=ns_parser.currency,
+        )
+
+        if portfolio_df is not None:
+            print_rich_table(
+                df=portfolio_df,
+                headers=list(portfolio_df.columns),
+                show_index=True,
+                title="Degiro Transactions",
+            )
+            export_data(
+                export_type=ns_parser.export,
+                dir_path=str(Path(__file__).parent.parent.parent.absolute()),
+                func_name="paexport",
+                df=portfolio_df,
+            )
+        else:
+            console.print("Error while fetching or processing Transactions.")

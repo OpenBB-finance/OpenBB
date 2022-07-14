@@ -528,14 +528,6 @@ class FundamentalAnalysisController(StockBaseController):
             dest="b_quarter",
             help="Quarter fundamental data flag.",
         )
-        parser.add_argument(
-            "-s",
-            "--source",
-            default="av",
-            dest="source",
-            choices=["polygon", "av", "yf"],
-            help="The source to get the data from",
-        )
         ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
@@ -600,14 +592,6 @@ class FundamentalAnalysisController(StockBaseController):
             default=False,
             dest="b_quarter",
             help="Quarter fundamental data flag.",
-        )
-        parser.add_argument(
-            "-s",
-            "--source",
-            default="av",
-            dest="source",
-            choices=["polygon", "av", "yf"],
-            help="The source to get the data from",
         )
         ns_parser = self.parse_known_args_and_warn(
             parser,

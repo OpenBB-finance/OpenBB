@@ -197,7 +197,7 @@ class PortfolioController(BaseController):
 
         help_text = f"""[menu]
 >   bro              brokers holdings, \t\t supports: robinhood, ally, degiro, coinbase
->   po               portfolio optimization, \t optimal your portfolio weights efficiently[/menu]
+>   po               portfolio optimization, \t optimize your portfolio weights efficiently[/menu]
 [cmds]
     load             load data into the portfolio[/cmds]
 

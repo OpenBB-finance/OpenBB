@@ -64,7 +64,7 @@ sentiment
 ```
 
 ## Executing a script
-By going to the main menu as depicted below (accessible with `home`), the <a href="https://openbb-finance.github.io/OpenBBTerminal/scripts/exe" target="_blank">exe</a>
+By going to the main menu as depicted below (accessible with `home`), the <a href="exe" target="_blank">exe</a>
 command can be used. With this command you can run any `.openbb` script. These scripts are located where the application is located inside the routines folder.
 
 ![Routine Exe OpenBB Terminal](https://user-images.githubusercontent.com/46355364/174588513-5c52ea20-548a-4c2b-a4c1-6054e2d71786.png)
