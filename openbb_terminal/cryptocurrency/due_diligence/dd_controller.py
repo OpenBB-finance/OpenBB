@@ -15,6 +15,8 @@ from openbb_terminal.cryptocurrency.overview import cryptopanic_model
 from openbb_terminal.cryptocurrency.due_diligence import (
     binance_model,
     binance_view,
+    ccxt_model,
+    ccxt_view,
     coinbase_model,
     coinbase_view,
     coinglass_model,
@@ -59,29 +61,10 @@ class DueDiligenceController(CryptoBaseController):
     CHOICES_COMMANDS = ["load", "oi", "active", "change", "nonzero", "eb"]
 
     SPECIFIC_CHOICES = {
-        "cp": [
-            "events",
-            "twitter",
-            "ex",
-            "mkt",
-            "ps",
-            "basic",
-        ],
-        "cg": [
-            "info",
-            "market",
-            "ath",
-            "atl",
-            "score",
-            "web",
-            "social",
-            "bc",
-            "dev",
-        ],
-        "bin": [
-            "binbook",
-            "balance",
-        ],
+        "cp": ["events", "twitter", "ex", "mkt", "ps", "basic",],
+        "cg": ["info", "market", "ath", "atl", "score", "web", "social", "bc", "dev",],
+        "bin": ["binbook", "balance",],
+        "ccxt": ["ob"],
         "cb": ["cbbook", "trades", "stats"],
         "mes": ["mcapdom", "links", "rm", "tk", "pi", "mt", "team", "gov", "fr", "inv"],
         "san": ["gh"],
@@ -100,10 +83,7 @@ class DueDiligenceController(CryptoBaseController):
     PATH = "/crypto/dd/"
 
     def __init__(
-        self,
-        symbol=None,
-        source=None,
-        queue: List[str] = None,
+        self, symbol=None, source=None, queue: List[str] = None,
     ):
         """Constructor"""
         super().__init__(queue)
@@ -115,11 +95,13 @@ class DueDiligenceController(CryptoBaseController):
         self.symbol = symbol
         self.messari_timeseries = []
         df_mt = messari_model.get_available_timeseries()
+        self.ccxt_exchanges = ccxt_model.get_exchanges()
+
         if not df_mt.empty:
             self.messari_timeseries = df_mt.index.to_list()
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
-            choices["load"]["--source"] = {c: None for c in CRYPTO_SOURCES.keys()}
+            choices["ob"]["-e"] = {c: None for c in self.ccxt_exchanges}
             choices["active"]["-i"] = {
                 c: None for c in glassnode_model.INTERVALS_ACTIVE_ADDRESSES
             }
@@ -561,8 +543,7 @@ class DueDiligenceController(CryptoBaseController):
             cg_id = check_cg_id(self.symbol)
             if cg_id:
                 pycoingecko_view.display_info(
-                    symbol=cg_id,
-                    export=ns_parser.export,
+                    symbol=cg_id, export=ns_parser.export,
                 )
 
     @log_start_end(log=logger)
@@ -603,8 +584,7 @@ class DueDiligenceController(CryptoBaseController):
             cg_id = check_cg_id(self.symbol)
             if cg_id:
                 pycoingecko_view.display_web(
-                    cg_id,
-                    export=ns_parser.export,
+                    cg_id, export=ns_parser.export,
                 )
 
     @log_start_end(log=logger)
@@ -746,6 +726,48 @@ class DueDiligenceController(CryptoBaseController):
                 pycoingecko_view.display_bc(cg_id, ns_parser.export)
 
     @log_start_end(log=logger)
+    def call_ob(self, other_args):
+        """Process order book command"""
+        parser = argparse.ArgumentParser(
+            prog="ob",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="Get the order book for selected coin",
+        )
+
+        parser.add_argument(
+            "-e",
+            "--exchange",
+            help="Exchange to search for order book",
+            dest="exchange",
+            type=str,
+            default="binance",
+            choices=self.ccxt_exchanges,
+        )
+
+        parser.add_argument(
+            "--vs",
+            help="Quote currency (what to view coin vs)",
+            dest="vs",
+            type=str,
+            default="USDT",
+            choices=["USDT"],
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+
+        if ns_parser:
+            ccxt_view.display_order_book(
+                ns_parser.exchange,
+                # coin=coin,
+                # limit=ns_parser.limit,
+                # currency=ns_parser.vs,
+                export=ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
     def call_binbook(self, other_args):
         """Process book command"""
         parser = argparse.ArgumentParser(
@@ -818,8 +840,7 @@ class DueDiligenceController(CryptoBaseController):
         if ns_parser:
             pair = f"{coin}-{ns_parser.vs.upper()}"
             coinbase_view.display_order_book(
-                product_id=pair,
-                export=ns_parser.export,
+                product_id=pair, export=ns_parser.export,
             )
 
     @log_start_end(log=logger)
@@ -966,9 +987,7 @@ class DueDiligenceController(CryptoBaseController):
             cp_id = cryptocurrency_helpers.get_coinpaprika_id(self.symbol)
             if cp_id:
                 coinpaprika_view.display_price_supply(
-                    cp_id,
-                    ns_parser.vs,
-                    ns_parser.export,
+                    cp_id, ns_parser.vs, ns_parser.export,
                 )
 
     @log_start_end(log=logger)
@@ -989,8 +1008,7 @@ class DueDiligenceController(CryptoBaseController):
             cp_id = cryptocurrency_helpers.get_coinpaprika_id(self.symbol)
             if cp_id:
                 coinpaprika_view.display_basic(
-                    cp_id,
-                    ns_parser.export,
+                    cp_id, ns_parser.export,
                 )
 
     @log_start_end(log=logger)
@@ -1325,8 +1343,7 @@ class DueDiligenceController(CryptoBaseController):
 
         if ns_parser:
             messari_view.display_links(
-                coin=self.symbol.upper(),
-                export=ns_parser.export,
+                coin=self.symbol.upper(), export=ns_parser.export,
             )
 
     @log_start_end(log=logger)
@@ -1475,8 +1492,7 @@ class DueDiligenceController(CryptoBaseController):
 
         if ns_parser:
             messari_view.display_project_info(
-                coin=self.symbol.upper(),
-                export=ns_parser.export,
+                coin=self.symbol.upper(), export=ns_parser.export,
             )
 
     @log_start_end(log=logger)
@@ -1499,8 +1515,7 @@ class DueDiligenceController(CryptoBaseController):
 
         if ns_parser:
             messari_view.display_team(
-                coin=self.symbol.upper(),
-                export=ns_parser.export,
+                coin=self.symbol.upper(), export=ns_parser.export,
             )
 
     @log_start_end(log=logger)
@@ -1523,8 +1538,7 @@ class DueDiligenceController(CryptoBaseController):
 
         if ns_parser:
             messari_view.display_investors(
-                coin=self.symbol.upper(),
-                export=ns_parser.export,
+                coin=self.symbol.upper(), export=ns_parser.export,
             )
 
     @log_start_end(log=logger)
@@ -1547,8 +1561,7 @@ class DueDiligenceController(CryptoBaseController):
 
         if ns_parser:
             messari_view.display_fundraising(
-                coin=self.symbol.upper(),
-                export=ns_parser.export,
+                coin=self.symbol.upper(), export=ns_parser.export,
             )
 
     @log_start_end(log=logger)
@@ -1571,8 +1584,7 @@ class DueDiligenceController(CryptoBaseController):
 
         if ns_parser:
             messari_view.display_governance(
-                coin=self.symbol.upper(),
-                export=ns_parser.export,
+                coin=self.symbol.upper(), export=ns_parser.export,
             )
 
     @log_start_end(log=logger)
