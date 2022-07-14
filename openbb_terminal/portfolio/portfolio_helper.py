@@ -390,7 +390,7 @@ def get_region_from_country(country: str) -> str:
     return REGIONS[country]
 
 
-def get_info_update_file(ticker: str, filename: str, writemode: str) -> list:
+def get_info_update_file(ticker: str, file_path: str, writemode: str) -> list:
 
     # Pull ticker info from yf
     yf_ticker_info = yf.Ticker(ticker).info
@@ -405,9 +405,9 @@ def get_info_update_file(ticker: str, filename: str, writemode: str) -> list:
             get_region_from_country(yf_ticker_info["country"]),
         ]
 
-        f = open(filename, writemode, newline="")
+        f = open(file_path, writemode, newline="")
         writer = csv.writer(f)
-        
+
         if writemode == "a":
             # file already has data, so just append
             writer.writerow([ticker] + ticker_info_list)
@@ -424,12 +424,21 @@ def get_info_update_file(ticker: str, filename: str, writemode: str) -> list:
 
 
 def get_info_from_ticker(ticker: str) -> list:
-    filename = "tickers_info.csv"
-    path = Path(filename)
 
-    if path.is_file() and os.stat(filename).st_size > 0:
+    filename = "tickers_info.csv"
+
+    # Direct file to openbb_terminal\portfolio
+    DEFAULT_HOLDINGS_PATH = os.path.abspath(
+        os.path.join(
+            os.path.dirname(__file__), "..", "..", "openbb_terminal", "portfolio"
+        )
+    )
+
+    file_path = Path(str(DEFAULT_HOLDINGS_PATH), filename)
+
+    if file_path.is_file() and os.stat(file_path).st_size > 0:
         # file exists and is not empty, so append if necessary
-        ticker_info_df = pd.read_csv(filename)
+        ticker_info_df = pd.read_csv(file_path)
         df_row = ticker_info_df.loc[ticker_info_df["Ticker"] == ticker]
 
         if len(df_row) > 0:
@@ -438,10 +447,9 @@ def get_info_from_ticker(ticker: str) -> list:
             return ticker_info_list
         else:
             # ticker is not in file, go get it
-            ticker_info_list = get_info_update_file(ticker, filename, "a")
+            ticker_info_list = get_info_update_file(ticker, file_path, "a")
             return ticker_info_list
     else:
-        console.print("Creating stock data file for first time, please be patient.")
         # file does not exist or is empty, so write it
-        ticker_info_list = get_info_update_file(ticker, filename, "w")
+        ticker_info_list = get_info_update_file(ticker, file_path, "w")
         return ticker_info_list
