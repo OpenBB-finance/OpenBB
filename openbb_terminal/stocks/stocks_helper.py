@@ -5,7 +5,6 @@ import logging
 import os
 from datetime import datetime, timedelta, date
 from typing import List, Union, Optional, Iterable
-import warnings
 
 import financedatabase as fd
 import matplotlib.pyplot as plt
@@ -13,7 +12,6 @@ from matplotlib.lines import Line2D
 import mplfinance as mpf
 import numpy as np
 import pandas as pd
-import pandas_market_calendars as mcal
 import plotly.graph_objects as go
 import pyEX
 import pytz
@@ -29,7 +27,6 @@ from openbb_terminal import config_terminal as cfg
 from openbb_terminal.helper_funcs import (
     export_data,
     plot_autoscale,
-    get_user_timezone_or_invalid,
     print_rich_table,
     lambda_long_number_format_y_axis,
 )
@@ -93,6 +90,18 @@ market_coverage_suffix = {
     "United-Kingdom": ["L", "IL"],
     "Venezuela": ["CR"],
 }
+
+exchange_mappings = (
+    pd.read_csv(
+        os.path.join(
+            os.path.dirname(os.path.abspath(__file__)), "mappings", "Mic_Codes.csv"
+        ),
+        index_col=0,
+        header=None,
+    )
+    .squeeze("columns")
+    .to_dict()
+)
 
 
 def search(
@@ -1019,95 +1028,26 @@ def additional_info_about_ticker(ticker: str) -> str:
             ticker = ticker.rstrip(".US")
             ticker = ticker.rstrip(".us")
         ticker_info = yf.Ticker(ticker).info
-        # outside US exchange
-        if "." in ticker:
-            extra_info += "\n[param]Datetime: [/param]"
-            if (
-                "exchangeTimezoneName" in ticker_info
-                and ticker_info["exchangeTimezoneName"]
-            ):
-                dtime = datetime.now(
-                    pytz.timezone(ticker_info["exchangeTimezoneName"])
-                ).strftime("%Y %b %d %H:%M")
-                extra_info += dtime
-                extra_info += "\n[param]Timezone: [/param]"
-                extra_info += ticker_info["exchangeTimezoneName"]
-            else:
-                extra_info += "\n[param]Datetime: [/param]"
-                extra_info += "\n[param]Timezone: [/param]"
-
-            extra_info += "\n[param]Exchange: [/param]"
-            if "exchange" in ticker_info and ticker_info["exchange"]:
-                exchange_name = ticker_info["exchange"]
-                extra_info += exchange_name
-
-            extra_info += "\n[param]Currency: [/param]"
-            if "currency" in ticker_info and ticker_info["currency"]:
-                extra_info += ticker_info["currency"]
-
-            extra_info += "\n[param]Market:   [/param]"
-            if "exchange" in ticker_info and ticker_info["exchange"]:
-                if exchange_name in mcal.get_calendar_names():
-                    calendar = mcal.get_calendar(exchange_name)
-                    sch = calendar.schedule(
-                        start_date=(datetime.now() - timedelta(days=3)).strftime(
-                            "%Y-%m-%d"
-                        ),
-                        end_date=(datetime.now() + timedelta(days=3)).strftime(
-                            "%Y-%m-%d"
-                        ),
-                    )
-                    user_tz = get_user_timezone_or_invalid()
-                    if user_tz != "INVALID":
-                        is_market_open = calendar.open_at_time(
-                            sch,
-                            pd.Timestamp(
-                                datetime.now().strftime("%Y-%m-%d %H:%M"), tz=user_tz
-                            ),
-                        )
-                        if is_market_open:
-                            extra_info += "OPEN"
-                        else:
-                            extra_info += "CLOSED"
-            extra_info += "\n[param]Company:  [/param]"
-            if "shortName" in ticker_info and ticker_info["shortName"]:
-                extra_info += ticker_info["shortName"]
-        else:
-            extra_info += "\n[param]Datetime: [/param]"
-            dtime = datetime.now(pytz.timezone("America/New_York")).strftime(
-                "%Y %b %d %H:%M"
-            )
-            extra_info += dtime
-            extra_info += "\n[param]Timezone: [/param]America/New_York"
-            extra_info += "\n[param]Currency: [/param]USD"
-            extra_info += "\n[param]Market:   [/param]"
-            calendar = mcal.get_calendar("NYSE")
-            warnings.filterwarnings("ignore")
-            sch = calendar.schedule(
-                start_date=(datetime.now() - timedelta(days=3)).strftime("%Y-%m-%d"),
-                end_date=(datetime.now() + timedelta(days=3)).strftime("%Y-%m-%d"),
-            )
-            user_tz = get_user_timezone_or_invalid()
-            if user_tz != "INVALID":
-                is_market_open = calendar.open_at_time(
-                    sch,
-                    pd.Timestamp(datetime.now().strftime("%Y-%m-%d %H:%M"), tz=user_tz),
-                )
-                if is_market_open:
-                    extra_info += "OPEN"
-                else:
-                    extra_info += "CLOSED"
-
-            extra_info += "\n[param]Company:  [/param]"
-            if "shortName" in ticker_info and ticker_info["shortName"]:
-                extra_info += ticker_info["shortName"]
-    else:
-        extra_info += "\n[param]Datetime: [/param]"
-        extra_info += "\n[param]Timezone: [/param]"
+        extra_info += "\n[param]Company:  [/param]"
+        if "shortName" in ticker_info and ticker_info["shortName"]:
+            extra_info += ticker_info["shortName"]
         extra_info += "\n[param]Exchange: [/param]"
-        extra_info += "\n[param]Market: [/param]"
+        if "exchange" in ticker_info and ticker_info["exchange"]:
+            exchange_name = ticker_info["exchange"]
+            extra_info += (
+                exchange_mappings["X" + exchange_name]
+                if "X" + exchange_name in exchange_mappings
+                else exchange_name
+            )
+
         extra_info += "\n[param]Currency: [/param]"
+        if "currency" in ticker_info and ticker_info["currency"]:
+            extra_info += ticker_info["currency"]
+
+    else:
         extra_info += "\n[param]Company: [/param]"
+        extra_info += "\n[param]Exchange: [/param]"
+        extra_info += "\n[param]Currency: [/param]"
 
     return extra_info + "\n"
 

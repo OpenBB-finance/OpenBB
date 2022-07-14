@@ -71,6 +71,7 @@ class TerminalController(BaseController):
         "funds",
         "alternative",
         "econometrics",
+        "sources",
     ]
 
     PATH = "/"
@@ -116,6 +117,7 @@ class TerminalController(BaseController):
         mt.add_info("_configure_")
         mt.add_menu("keys")
         mt.add_menu("featflags")
+        mt.add_menu("sources")
         mt.add_menu("settings")
         mt.add_raw("\n")
         mt.add_cmd("exe")
@@ -361,6 +363,12 @@ class TerminalController(BaseController):
         )
 
         self.queue = self.load_class(PortfolioController, self.queue)
+
+    def call_sources(self, _):
+        """Process sources command"""
+        from openbb_terminal.sources_controller import SourcesController
+
+        self.queue = self.load_class(SourcesController, self.queue)
 
     def call_exe(self, other_args: List[str]):
         """Process exe command"""
