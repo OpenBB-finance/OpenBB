@@ -858,7 +858,7 @@ class PortfolioModel:
         # descrbibe outputs
 
         try:
-            console.print("Preprocessing orderbook: ", end="")
+            console.print(" Preprocessing orderbook: ", end="")
             # Convert Date to datetime
             self.__orderbook["Date"] = pd.to_datetime(self.__orderbook["Date"])
             console.print(".", end="")
@@ -923,10 +923,10 @@ class PortfolioModel:
             # Save orderbook inception date
             self.inception_date = self.__orderbook["Date"][0]
             console.print(".", end="")
-
+            
             # Populate fields Sector, Industry and Country
             if not (
-                {"Sector", "Industry", "Country"}.issubset(
+                {"Sector", "Industry", "Country", "Region"}.issubset(
                     set(self.__orderbook.columns)
                 )
             ):
@@ -953,7 +953,7 @@ class PortfolioModel:
 
     def load_company_data(self):
 
-        console.print("\n    Loading stock data: ", end="")
+        console.print("\n    Loading company data: ", end="")
 
         for ticker_type, ticker_list in self.tickers.items():
 
@@ -1063,8 +1063,6 @@ class PortfolioModel:
     def generate_portfolio_data(self):
         """Generates portfolio data from orderbook"""
 
-        console.print("\nGenerating porfolio data: ", end="")
-
         self.load_portfolio_historical_prices()
         self.populate_historical_trade_data()
         self.calculate_value()
@@ -1123,6 +1121,8 @@ class PortfolioModel:
     def load_portfolio_historical_prices(self, use_close: bool = False):
         """Loads historical adj close prices for tickers in list of trades"""
 
+        console.print("\n      Loading price data: ", end="")
+
         for ticker_type, data in self.tickers.items():
             if ticker_type in ["STOCK", "ETF", "CRYPTO"]:
                 # Download yfinance data
@@ -1141,6 +1141,8 @@ class PortfolioModel:
                 )
             else:
                 console.print(f"Type {ticker_type} not supported.")
+
+            console.print(".", end="")
 
             # Fill missing values with last known price
             self.portfolio_historical_prices.fillna(method="ffill", inplace=True)
@@ -1193,6 +1195,9 @@ class PortfolioModel:
 
     def calculate_value(self):
         """Calculate value from historical data"""
+
+        console.print("\n     Calculating returns: ", end="")
+
         trade_data = self.historical_trade_data
 
         # For each type [STOCK, ETF, etc] calculate value value by trade date
@@ -1239,6 +1244,8 @@ class PortfolioModel:
         ].sum(axis=1)
 
         self.historical_trade_data = trade_data
+
+        console.print("\n")
 
     def calculate_reserves(self):
         """_summary_"""
