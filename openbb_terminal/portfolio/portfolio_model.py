@@ -939,7 +939,7 @@ class PortfolioModel:
                     self.__orderbook["Country"] = np.nan
                 if "Region" not in self.__orderbook.columns:
                     self.__orderbook["Region"] = np.nan
-                
+
                 self.load_company_data()
             elif (
                 self.__orderbook.loc[

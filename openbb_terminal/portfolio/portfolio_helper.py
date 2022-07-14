@@ -418,7 +418,7 @@ def get_info_update_file(ticker: str, file_path: Path, writemode: str) -> list:
             f.close()
         return ticker_info_list
     # Ticker does not have a valid sector
-    console.print(f"\n{ticker}: No data found ")
+    console.print(f"F:{ticker}", end="")
     return ["", "", "", ""]
 
 
