@@ -36,11 +36,75 @@ optional arguments: -s START, --start START start of datetime to see FTD -e END,
 <link rel="preload" href="/OpenBBTerminal/custom.css" as="style">
 <link rel="stylesheet" href="/OpenBBTerminal/custom.css" media="all">
 
+<style>
+._btn {
+    text-decoration: none !important;
+  display: inline-flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 4px;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  text-align: center;
+  transition-property: color, background-color, border-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-text-decoration-color, -webkit-backdrop-filter;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-text-decoration-color, -webkit-backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+  transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  background-color: #eaeaeaff;
+  color: #2a2a2aff !important;
+}
+
+@media (min-width: 768px) {
+  ._btn {
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
+    width: fit-content;
+  }
+}
+
+._btn > svg {
+  pointer-events: none;
+}
+
+._btn:hover {
+  background-color: #ffffffff;
+}
+
+._btn:focus {
+  outline-style: solid;
+  outline-width: 2px;
+  outline-color: #808080ff;
+}
+
+._btn:active {
+  background-color: #dcdcdcff;
+}
+
+._btn:active:hover {
+  color: #070707ff;
+}
+
+._btn:disabled {
+  background-color: #c8c8c8ff;
+  color: #808080ff;
+}
+
+._btn:disabled:active {
+  background-color: #c8c8c8ff;
+  color: #808080ff;
+}
+</style>
+
 <link rel="alternate" type="application/rss+xml" href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/dps/ftd/index.xml" title="OpenBB Documentation" />
 
 
-<!-- Made with Geekdoc theme https://github.com/thegeeklab/hugo-geekdoc -->
- 
+<!-- Made with Geekdoc theme https://github.com/thegeeklab/hugo-geekdoc --> 
 
   </head>
 
@@ -80,12 +144,11 @@ optional arguments: -s START, --start START start of datetime to see FTD -e END,
       </span>
     </a>
 
-    <span id="gdoc-dark-mode">
-      
-    </span>
+    <span id="gdoc-dark-mode"> </span>
+    <a href="https://openbb.co/products/terminal" class="_btn" target="_blank" rel="noopener noreferrer"
+      >Install the OpenBB Terminal</a>
   </div>
 </header>
-
 
       <main class="flex flex-even">
         
@@ -29632,6 +29695,37 @@ optional arguments: -s START, --start START start of datetime to see FTD -e END,
 
 
 <ul class="gdoc-nav__list">
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                <svg class="icon gdoc_download"><use xlink:href="#gdoc_download"></use></svg>
+                <a href="https://www.openbb.co/products/terminal"
+                    class="gdoc-nav__entry ">
+                    Install the Terminal
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
 
     
     
