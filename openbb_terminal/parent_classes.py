@@ -35,7 +35,6 @@ from openbb_terminal.helper_funcs import (
     check_file_type_saved,
     check_positive,
     get_ordered_list_sources,
-    get_preferred_source,
     load_json,
 )
 from openbb_terminal.config_terminal import theme
