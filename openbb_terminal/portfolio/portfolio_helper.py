@@ -405,17 +405,17 @@ def get_info_update_file(ticker: str, file_path: Path, writemode: str) -> list:
             get_region_from_country(yf_ticker_info["country"]),
         ]
 
-        f = open(file_path, writemode, newline="")
-        writer = csv.writer(f)
+        with open(file_path, writemode, newline="") as f:
+            writer = csv.writer(f)
 
-        if writemode == "a":
-            # file already has data, so just append
-            writer.writerow([ticker] + ticker_info_list)
-        else:
-            # file did not exist or as empty, so write headers first
-            writer.writerow(["Ticker", "Sector", "Industry", "Country", "Region"])
-            writer.writerow([ticker] + ticker_info_list)
-        f.close()
+            if writemode == "a":
+                # file already has data, so just append
+                writer.writerow([ticker] + ticker_info_list)
+            else:
+                # file did not exist or as empty, so write headers first
+                writer.writerow(["Ticker", "Sector", "Industry", "Country", "Region"])
+                writer.writerow([ticker] + ticker_info_list)
+            f.close()
         return ticker_info_list
     # Ticker does not have a valid sector
     console.print(f"Cannot get sector, industry, country and region for {ticker}.")
@@ -447,7 +447,6 @@ def get_info_from_ticker(ticker: str) -> list:
         # ticker is not in file, go get it
         ticker_info_list = get_info_update_file(ticker, file_path, "a")
         return ticker_info_list
-    else:
-        # file does not exist or is empty, so write it
-        ticker_info_list = get_info_update_file(ticker, file_path, "w")
-        return ticker_info_list
+    # file does not exist or is empty, so write it
+    ticker_info_list = get_info_update_file(ticker, file_path, "w")
+    return ticker_info_list
