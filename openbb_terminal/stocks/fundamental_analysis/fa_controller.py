@@ -15,7 +15,7 @@ from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
     valid_date,
-    get_preferred_source,
+    get_ordered_list_sources,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
@@ -97,9 +97,9 @@ class FundamentalAnalysisController(StockBaseController):
         self.interval = interval
         self.suffix = suffix
 
-        self.default_income = get_preferred_source(f"{self.PATH}income")
-        self.default_balance = get_preferred_source(f"{self.PATH}balance")
-        self.default_cash = get_preferred_source(f"{self.PATH}cash")
+        self.default_income = get_ordered_list_sources(f"{self.PATH}income")[0]
+        self.default_balance = get_ordered_list_sources(f"{self.PATH}balance")[0]
+        self.default_cash = get_ordered_list_sources(f"{self.PATH}cash")[0]
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
