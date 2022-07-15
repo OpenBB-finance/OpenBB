@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 from datetime import datetime
+import os
 from dateutil.relativedelta import relativedelta
 import yfinance as yf
 import pandas as pd
@@ -134,6 +135,11 @@ PERIODS_DAYS = {
     "10y": 10 * 12 * 21,
 }
 
+DEFAULT_HOLDINGS_PATH = os.path.abspath(
+    os.path.join(
+        os.path.dirname(__file__), "..", "..", "portfolio", "holdings"
+    )
+)
 
 def is_ticker(ticker: str) -> bool:
     """Determine whether a string is a valid ticker

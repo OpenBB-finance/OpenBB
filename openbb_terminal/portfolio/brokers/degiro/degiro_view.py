@@ -1,7 +1,9 @@
 # IMPORTATION THIRDPARTY
 import logging
 from argparse import Namespace
+import os
 from pathlib import Path
+from datetime import datetime
 
 # IMPORTATION THIRDPARTY
 import pandas as pd
@@ -26,6 +28,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.portfolio.brokers.degiro.degiro_model import DegiroModel
 from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.portfolio import portfolio_helper
 
 # pylint: disable=no-member
 
@@ -505,8 +508,17 @@ class DegiroView:
             end=ns_parser.end.date(),
             currency=ns_parser.currency,
         )
-
+        
         if portfolio_df is not None:
+
+            now = datetime.now()
+
+            filename = f"paexport_{now.strftime('%Y%m%d_%H%M%S')}.csv"
+
+            file_path = Path(str(portfolio_helper.DEFAULT_HOLDINGS_PATH), filename)
+
+            portfolio_df.to_csv(file_path)
+
             print_rich_table(
                 df=portfolio_df,
                 headers=list(portfolio_df.columns),
