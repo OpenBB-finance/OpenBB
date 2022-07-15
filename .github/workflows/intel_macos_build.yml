@@ -6,10 +6,7 @@ env:
   OPENBB_USE_PROMPT_TOOLKIT: false
   PIP_DEFAULT_TIMEOUT: 100
   PYTHONNOUSERSITE: 1
-on:
-  push:
-    branches:
-      - 'build_workflow_test'
+on: workflow_dispatch
 jobs:
   Build:
     name: Intel MacOS Build
@@ -23,7 +20,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/conda_pkgs_dir
-          key: conda-macos-3-8-${{ hashFiles('build/conda/conda-3-8-env-full.yaml') }}
+          key: conda-macos-3-9-${{ hashFiles('build/conda/conda-3-9-env.yaml') }}
       # Set up miniconda using the environment yaml file within the repo
       - name: Setup Miniconda
         uses: conda-incubator/setup-miniconda@v2
@@ -33,7 +30,7 @@ jobs:
           channels: conda-forge,defaults
           show-channel-urls: true
           channel-priority: flexible
-          environment-file: build/conda/conda-3-8-env-full.yaml
+          environment-file: build/conda/conda-3-9-env.yaml
           activate-environment: build_env
           use-only-tar-bz2: true # Needed for caching some reason
       - name: Run Poetry
@@ -57,3 +54,6 @@ jobs:
           path: |
                 DMG/OpenBB\ Terminal/.openbb
                 DMG/OpenBB\ Terminal/OpenBB\ Terminal
+      - name: Run Integration Tests
+        shell: bash -l {0}
+        run: DMG/OpenBB\ Terminal/.OpenBB/OpenBBTerminal ~/work/OpenBBTerminal/OpenBBTerminal/scripts/*.openbb -t

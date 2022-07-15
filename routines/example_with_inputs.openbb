@@ -1,5 +1,5 @@
 # This script requires you to use arguments. This can be done with the following:
-# exe routines/example_with_inputs.openbb -i TSLA,AAPL,MSFT
+# exe example_with_inputs.openbb -i TSLA,AAPL,MSFT
 
 # Go to the stocks menu
 stocks

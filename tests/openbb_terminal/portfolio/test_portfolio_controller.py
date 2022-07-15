@@ -206,13 +206,6 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             dict(),
         ),
         (
-            "call_load",
-            ["Public_Equity_Orderbook.xlsx"],
-            "portfolio_model.Portfolio.from_xlsx",
-            [],
-            dict(),
-        ),
-        (
             "call_show",
             [],
             "",

@@ -5,6 +5,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from datetime import datetime, timedelta
 from typing import List, Optional
 import pandas as pd
 import numpy as np
@@ -105,9 +106,9 @@ def display_messari_timeseries_list(
 def display_messari_timeseries(
     coin: str,
     timeseries_id: str,
-    start: str,
-    end: str,
-    interval: str,
+    start: str = (datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d"),
+    end: str = datetime.now().strftime("%Y-%m-%d"),
+    interval: str = "1d",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
@@ -118,12 +119,14 @@ def display_messari_timeseries(
     ----------
     coin : str
         Crypto symbol to check market cap dominance
+    timeseries_id: str
+        Obtained by api.crypto.dd.get_mt command
     start : int
         Initial date like string (e.g., 2021-10-01)
     end : int
         End date like string (e.g., 2021-10-01)
     interval : str
-        Interval frequency (e.g., 1d)
+        Interval frequency (possible values are: 5m, 15m, 30m, 1h, 1d, 1w)
     export : str
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
@@ -170,9 +173,9 @@ def display_messari_timeseries(
 @check_api_key(["API_MESSARI_KEY"])
 def display_marketcap_dominance(
     coin: str,
-    start: str,
-    end: str,
-    interval: str,
+    start: str = (datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d"),
+    end: str = datetime.now().strftime("%Y-%m-%d"),
+    interval: str = "1d",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
@@ -188,7 +191,7 @@ def display_marketcap_dominance(
     end : int
         End date like string (e.g., 2021-10-01)
     interval : str
-        Interval frequency (e.g., 1d)
+        Interval frequency (possible values are: 5m, 15m, 30m, 1h, 1d, 1w)
     export : str
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
@@ -265,8 +268,8 @@ def display_links(coin: str, export: str = "") -> None:
 @check_api_key(["API_MESSARI_KEY"])
 def display_roadmap(
     coin: str,
-    descend: bool,
-    limit: int,
+    descend: bool = False,
+    limit: int = 5,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:

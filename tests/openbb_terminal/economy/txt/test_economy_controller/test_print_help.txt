@@ -2,7 +2,8 @@
     futures            display a futures and commodities overview                      [Wall St. Journal / Finviz]
     map                S&P500 index stocks map                                         [Finviz]
     bigmac             The Economist Big Mac index                                     [NASDAQ Datalink]
-    ycrv               show sovereign yield curves                                     [Investing / FRED]
+    ycrv               show sovereign yield curves                                     [Investing.com / FRED]
+    ecocal             display economic calendar                                       [Investing.com]
 
     rtps               real-time performance sectors                                   [Alpha Vantage]
     valuation          valuation of sectors, industry, country                         [Finviz]

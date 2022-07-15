@@ -17,7 +17,7 @@ on:
         description: "Test scenario tags"
 jobs:
   macos-conda:
-    name: MacOS-latest, Conda-latest,  Python 3.8
+    name: MacOS-latest, Conda-latest,  Python 3.9
     runs-on: macos-latest
     steps:
       - name: Checkout
@@ -36,7 +36,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/conda_pkgs_dir
-          key: conda-macos-3-8-${{ hashFiles('build/conda/conda-3-8-env-full.yaml') }}
+          key: conda-macos-3-9-${{ hashFiles('build/conda/conda-3-9-env.yaml') }}
 
       - name: Setup Miniconda
         uses: conda-incubator/setup-miniconda@v2
@@ -46,7 +46,7 @@ jobs:
           channels: conda-forge,defaults
           show-channel-urls: true
           channel-priority: flexible
-          environment-file: build/conda/conda-3-8-env-full.yaml
+          environment-file: build/conda/conda-3-9-env.yaml
           activate-environment: testing
           # Needed for caching
           use-only-tar-bz2: true
@@ -61,7 +61,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ${{ steps.pip-cache.outputs.dir }}
-          key: macos-3-8-pip-${{ hashFiles('**/requirements-full.txt') }}
+          key: macos-3-9-pip-${{ hashFiles('**/requirements-full.txt') }}
           restore-keys: |
             macos-pip-
 

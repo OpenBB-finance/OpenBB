@@ -5,7 +5,6 @@ import logging
 import os
 from datetime import datetime, timedelta, date
 from typing import List, Union, Optional, Iterable
-import warnings
 
 import financedatabase as fd
 import matplotlib.pyplot as plt
@@ -13,7 +12,6 @@ from matplotlib.lines import Line2D
 import mplfinance as mpf
 import numpy as np
 import pandas as pd
-import pandas_market_calendars as mcal
 import plotly.graph_objects as go
 import pyEX
 import pytz
@@ -29,7 +27,6 @@ from openbb_terminal import config_terminal as cfg
 from openbb_terminal.helper_funcs import (
     export_data,
     plot_autoscale,
-    get_user_timezone_or_invalid,
     print_rich_table,
     lambda_long_number_format_y_axis,
 )
@@ -43,7 +40,7 @@ INTERVALS = [1, 5, 15, 30, 60]
 SOURCES = ["yf", "av", "iex"]
 
 market_coverage_suffix = {
-    "USA": ["CBT", "CME", "NYB", "CMX", "NYM", ""],
+    "USA": ["CBT", "CME", "NYB", "CMX", "NYM", "US", ""],
     "Argentina": ["BA"],
     "Austria": ["VI"],
     "Australia": ["AX"],
@@ -93,6 +90,18 @@ market_coverage_suffix = {
     "United-Kingdom": ["L", "IL"],
     "Venezuela": ["CR"],
 }
+
+exchange_mappings = (
+    pd.read_csv(
+        os.path.join(
+            os.path.dirname(os.path.abspath(__file__)), "mappings", "Mic_Codes.csv"
+        ),
+        index_col=0,
+        header=None,
+    )
+    .squeeze("columns")
+    .to_dict()
+)
 
 
 def search(
@@ -356,6 +365,12 @@ def load(
                 int_ = "1mo"
                 int_string = "Monthly"
 
+            # Win10 version of mktime cannot cope with dates before 1970
+            if os.name == "nt" and start < datetime(1970, 1, 1):
+                start = datetime(
+                    1970, 1, 2
+                )  # 1 day buffer in case of timezone adjustments
+
             # Adding a dropna for weekly and monthly because these include weird NaN columns.
             df_stock_candidate = yf.download(
                 ticker, start=start, end=end, progress=False, interval=int_
@@ -409,9 +424,15 @@ def load(
         # Polygon source
         elif source == "polygon":
 
+            # Polygon allows: day, minute, hour, day, week, month, quarter, year
+            timespan = "day"
+            if weekly or monthly:
+                timespan = "week" if weekly else "month"
+
             request_url = (
                 f"https://api.polygon.io/v2/aggs/ticker/"
-                f"{ticker.upper()}/range/1/day/{start.strftime('%Y-%m-%d')}/{end.strftime('%Y-%m-%d')}?adjusted=true"
+                f"{ticker.upper()}/range/1/{timespan}/"
+                f"{start.strftime('%Y-%m-%d')}/{end.strftime('%Y-%m-%d')}?adjusted=true"
                 f"&sort=desc&limit=49999&apiKey={cfg.API_POLYGON_KEY}"
             )
             r = requests.get(request_url)
@@ -988,7 +1009,7 @@ def find_trendline(
 
 
 def additional_info_about_ticker(ticker: str) -> str:
-    """Additional information about trading the ticker such as exchange, currency, timezone and market status
+    """Information about trading the ticker such as exchange, currency, timezone and market status
 
     Parameters
     ----------
@@ -1001,97 +1022,32 @@ def additional_info_about_ticker(ticker: str) -> str:
         Additional information about trading the ticker
     """
     extra_info = ""
+
     if ticker:
+        if ".US" in ticker.upper():
+            ticker = ticker.rstrip(".US")
+            ticker = ticker.rstrip(".us")
         ticker_info = yf.Ticker(ticker).info
-        # outside US exchange
-        if "." in ticker:
-            extra_info += "\n[param]Datetime: [/param]"
-            if (
-                "exchangeTimezoneName" in ticker_info
-                and ticker_info["exchangeTimezoneName"]
-            ):
-                dtime = datetime.now(
-                    pytz.timezone(ticker_info["exchangeTimezoneName"])
-                ).strftime("%Y %b %d %H:%M")
-                extra_info += dtime
-                extra_info += "\n[param]Timezone: [/param]"
-                extra_info += ticker_info["exchangeTimezoneName"]
-            else:
-                extra_info += "\n[param]Datetime: [/param]"
-                extra_info += "\n[param]Timezone: [/param]"
-
-            extra_info += "\n[param]Exchange: [/param]"
-            if "exchange" in ticker_info and ticker_info["exchange"]:
-                exchange_name = ticker_info["exchange"]
-                extra_info += exchange_name
-
-            extra_info += "\n[param]Currency: [/param]"
-            if "currency" in ticker_info and ticker_info["currency"]:
-                extra_info += ticker_info["currency"]
-
-            extra_info += "\n[param]Market:   [/param]"
-            if "exchange" in ticker_info and ticker_info["exchange"]:
-                if exchange_name in mcal.get_calendar_names():
-                    calendar = mcal.get_calendar(exchange_name)
-                    sch = calendar.schedule(
-                        start_date=(datetime.now() - timedelta(days=3)).strftime(
-                            "%Y-%m-%d"
-                        ),
-                        end_date=(datetime.now() + timedelta(days=3)).strftime(
-                            "%Y-%m-%d"
-                        ),
-                    )
-                    user_tz = get_user_timezone_or_invalid()
-                    if user_tz != "INVALID":
-                        is_market_open = calendar.open_at_time(
-                            sch,
-                            pd.Timestamp(
-                                datetime.now().strftime("%Y-%m-%d %H:%M"), tz=user_tz
-                            ),
-                        )
-                        if is_market_open:
-                            extra_info += "OPEN"
-                        else:
-                            extra_info += "CLOSED"
-
-            if "shortName" in ticker_info and ticker_info["shortName"]:
-                extra_info += ticker_info["shortName"]
-        else:
-            extra_info += "\n[param]Datetime: [/param]"
-            dtime = datetime.now(pytz.timezone("America/New_York")).strftime(
-                "%Y %b %d %H:%M"
-            )
-            extra_info += dtime
-            extra_info += "\n[param]Timezone: [/param]America/New_York"
-            extra_info += "\n[param]Currency: [/param]USD"
-            extra_info += "\n[param]Market:   [/param]"
-            calendar = mcal.get_calendar("NYSE")
-            warnings.filterwarnings("ignore")
-            sch = calendar.schedule(
-                start_date=(datetime.now() - timedelta(days=3)).strftime("%Y-%m-%d"),
-                end_date=(datetime.now() + timedelta(days=3)).strftime("%Y-%m-%d"),
-            )
-            user_tz = get_user_timezone_or_invalid()
-            if user_tz != "INVALID":
-                is_market_open = calendar.open_at_time(
-                    sch,
-                    pd.Timestamp(datetime.now().strftime("%Y-%m-%d %H:%M"), tz=user_tz),
-                )
-                if is_market_open:
-                    extra_info += "OPEN"
-                else:
-                    extra_info += "CLOSED"
-
-            extra_info += "\n[param]Company:  [/param]"
-            if "shortName" in ticker_info and ticker_info["shortName"]:
-                extra_info += ticker_info["shortName"]
-    else:
-        extra_info += "\n[param]Datetime: [/param]"
-        extra_info += "\n[param]Timezone: [/param]"
+        extra_info += "\n[param]Company:  [/param]"
+        if "shortName" in ticker_info and ticker_info["shortName"]:
+            extra_info += ticker_info["shortName"]
         extra_info += "\n[param]Exchange: [/param]"
-        extra_info += "\n[param]Market: [/param]"
+        if "exchange" in ticker_info and ticker_info["exchange"]:
+            exchange_name = ticker_info["exchange"]
+            extra_info += (
+                exchange_mappings["X" + exchange_name]
+                if "X" + exchange_name in exchange_mappings
+                else exchange_name
+            )
+
         extra_info += "\n[param]Currency: [/param]"
+        if "currency" in ticker_info and ticker_info["currency"]:
+            extra_info += ticker_info["currency"]
+
+    else:
         extra_info += "\n[param]Company: [/param]"
+        extra_info += "\n[param]Exchange: [/param]"
+        extra_info += "\n[param]Currency: [/param]"
 
     return extra_info + "\n"
 

@@ -1,4 +1,4 @@
-                      Name    Week   Month  3Month  6Month   1Year     YTD  Recom  AvgVolume (1M)  RelVolume  Change  Volume (1M)
+                      Name    Week   Month  3Month  6Month   1Year     YTD  Recom  AvgVolume [1M]  RelVolume  Change  Volume [1M]
 0          Basic Materials  0.0303  0.0337  0.0721  0.1212  0.1058  0.0419   2.21          564.39       1.70  0.0070       961.36
 1   Communication Services  0.0637 -0.0258 -0.1031 -0.1558 -0.0248 -0.1145   1.88          764.96       1.78  0.0169      1360.00
 2        Consumer Cyclical  0.1093 -0.0505 -0.0915 -0.1022 -0.0962 -0.1226   2.06         1340.00       1.78  0.0256      2390.00

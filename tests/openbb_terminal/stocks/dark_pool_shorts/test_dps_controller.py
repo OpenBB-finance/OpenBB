@@ -315,6 +315,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             [
                 "quandl",
                 "--nyse",
+                "--source=quandl",
                 "--limit=1",
                 "--raw",
                 "--export=csv",

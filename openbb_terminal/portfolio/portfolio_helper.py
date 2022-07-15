@@ -113,7 +113,19 @@ BENCHMARK_LIST = {
 
 PERIODS = ["mtd", "qtd", "ytd", "3m", "6m", "1y", "3y", "5y", "10y", "all"]
 
+now = datetime.now()
 PERIODS_DAYS = {
+    "mtd": (now - datetime(now.year, now.month, 1)).days,
+    "qtd": (
+        now
+        - datetime(
+            now.year,
+            1 if now.month < 4 else 4 if now.month < 7 else 7 if now.month < 7 else 10,
+            1,
+        )
+    ).days,
+    "ytd": (now - datetime(now.year, 1, 1)).days,
+    "all": 0,
     "3m": 3 * 21,
     "6m": 6 * 21,
     "1y": 12 * 21,
@@ -140,6 +152,7 @@ def is_ticker(ticker: str) -> bool:
     return "previousClose" in item.info
 
 
+# TODO: Is this being used anywhere?
 def beta_word(beta: float) -> str:
     """Describe a beta
 
@@ -194,7 +207,7 @@ def filter_df_by_period(df: pd.DataFrame, period: str = "all") -> pd.DataFrame:
 
     Returns
     ----------
-    str
+    pd.DataFrame
         A cleaned value
     """
     if period == "mtd":
@@ -232,61 +245,25 @@ def filter_df_by_period(df: pd.DataFrame, period: str = "all") -> pd.DataFrame:
     return df
 
 
-def sharpe_ratio(return_series: pd.Series, risk_free_rate: float) -> float:
-    """Get sharpe ratio
+def make_equal_length(df1: pd.DataFrame, df2: pd.DataFrame):
+    """Filter dataframe by selected period
 
-    Parameters
-    ----------
-    return_series : pd.Series
-        Returns of the portfolio
-    risk_free_rate: float
-        Value to use for risk free rate
+     Parameters
+     ----------
+     df1: pd.DataFrame
+         The first DataFrame that needs to be compared.
+     df2: pd.DataFrame
+         The second DataFrame that needs to be compared.
 
-    Returns
-    -------
-    float
-        Sharpe ratio
+     Returns
+     ----------
+    df1 and df2
+         Both DataFrames returned
     """
-    mean = return_series.mean() - risk_free_rate
-    sigma = return_series.std()
+    # Match the DataFrames so they share a similar length
+    if len(df1.index) > len(df2.index):
+        df1 = df1.loc[df2.index]
+    elif len(df2.index) > len(df1.index):
+        df2 = df2.loc[df1.index]
 
-    return mean / sigma
-
-
-def sortino_ratio(return_series: pd.Series, risk_free_rate: float) -> float:
-    """Get sortino ratio
-
-    Parameters
-    ----------
-    return_series : pd.Series
-        Returns of the portfolio
-    risk_free_rate: float
-        Value to use for risk free rate
-
-    Returns
-    -------
-    float
-        Sortino ratio
-    """
-    mean = return_series.mean() - risk_free_rate
-    std_neg = return_series[return_series < 0].std()
-    return mean / std_neg
-
-
-def get_maximum_drawdown(return_series: pd.Series) -> float:
-    """Get maximum drawdown
-
-    Parameters
-    ----------
-    return_series : pd.Series
-        Returns of the portfolio
-
-    Returns
-    -------
-    float
-        maximum drawdown
-    """
-    comp_ret = (return_series + 1).cumprod()
-    peak = comp_ret.expanding(min_periods=1).max()
-    dd = (comp_ret / peak) - 1
-    return dd.min()
+    return df1, df2
