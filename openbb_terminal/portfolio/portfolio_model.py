@@ -811,9 +811,9 @@ class PortfolioModel:
         self.portfolio_assets_allocation = pd.DataFrame()
         self.portfolio_regional_allocation = pd.DataFrame()
         self.portfolio_country_allocation = pd.DataFrame()
-
-        # Prices
         self.portfolio_historical_prices = pd.DataFrame()
+        self.empty = True
+
         self.risk_free_rate = float(0)
 
         # Benchmark
@@ -822,17 +822,18 @@ class PortfolioModel:
         self.benchmark_historical_prices = pd.DataFrame()
         self.benchmark_returns = pd.DataFrame()
         self.benchmark_trades = pd.DataFrame()
-
         self.benchmark_assets_allocation = pd.DataFrame()
         self.benchmark_regional_allocation = pd.DataFrame()
         self.benchmark_country_allocation = pd.DataFrame()
 
         # Set and preprocess orderbook
-        self.__set_orderbook(orderbook)
+        if not orderbook.empty:
+            self.__set_orderbook(orderbook)
 
     def __set_orderbook(self, orderbook):
         self.__orderbook = orderbook
         self.preprocess_orderbook()
+        self.empty = False
 
     def get_orderbook(self):
         return self.__orderbook
