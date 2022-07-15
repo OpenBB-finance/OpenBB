@@ -69,6 +69,7 @@ class TerminalController(BaseController):
         "funds",
         "alternative",
         "econometrics",
+        "sources",
     ]
 
     PATH = "/"
@@ -109,6 +110,7 @@ class TerminalController(BaseController):
         mt.add_info("_configure_")
         mt.add_menu("keys")
         mt.add_menu("featflags")
+        mt.add_menu("sources")
         mt.add_menu("settings")
         mt.add_raw("\n")
         mt.add_cmd("exe")
@@ -246,6 +248,12 @@ class TerminalController(BaseController):
         )
 
         self.queue = self.load_class(PortfolioController, self.queue)
+
+    def call_sources(self, _):
+        """Process sources command"""
+        from openbb_terminal.sources_controller import SourcesController
+
+        self.queue = self.load_class(SourcesController, self.queue)
 
     def call_exe(self, other_args: List[str]):
         """Process exe command"""
@@ -433,9 +441,6 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
             if t_controller.queue[0] in ("q", "..", "quit"):
                 print_goodbye()
                 break
-
-            if obbff.ENABLE_EXIT_AUTO_HELP and len(t_controller.queue) > 1:
-                t_controller.queue = t_controller.queue[1:]
 
             # Consume 1 element from the queue
             an_input = t_controller.queue[0]

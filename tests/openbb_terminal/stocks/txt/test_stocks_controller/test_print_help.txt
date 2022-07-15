@@ -3,12 +3,9 @@
 
 Stock: 
 
-Datetime: 
-Timezone: 
-Exchange: 
-Market: 
-Currency: 
 Company: 
+Exchange: 
+Currency: 
 
 [unvl]    quote              view the current price for a specific stock ticker[/unvl]
 [unvl]    candle             view a candle chart for a specific stock ticker[/unvl]
