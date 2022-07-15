@@ -143,9 +143,9 @@ issues.
 
    To enable the `prediction` menu install additional dependencies after installing main dependencies:
 
- ```bash
- conda install -c conda-forge tensorflow
- ```
+   ```bash
+   conda install -c conda-forge tensorflow
+   ```
 
    If you are having trouble with Poetry (e.g. on a non-conda python), simply install requirements.txt with pip
 
