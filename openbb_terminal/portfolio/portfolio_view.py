@@ -76,7 +76,7 @@ def display_orderbook(portfolio=None, show_index=False):
         Defaults to False.
     """
 
-    if portfolio is None:
+    if portfolio.empty:
         logger.warning("No orderbook loaded")
         console.print("[red]No orderbook loaded.[/red]\n")
     else:

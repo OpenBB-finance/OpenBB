@@ -1,6 +1,6 @@
 `usage: aprtoapy [--apr APR] [-c COMPOUNDING] [-n] [-h] [--export EXPORT]`
 
-Tool to calculate APY from APR value. Compouding periods, i.e., the number of times compounded per year can be defined with -c argument.
+Tool to calculate APY from APR value. Compounding periods, i.e., the number of times compounded per year can be defined with -c argument.
 
 ```
 optional arguments:
