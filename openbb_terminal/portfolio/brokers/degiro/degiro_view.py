@@ -508,12 +508,17 @@ class DegiroView:
             end=ns_parser.end.date(),
             currency=ns_parser.currency,
         )
-        
+
         if portfolio_df is not None:
 
             now = datetime.now()
 
-            filename = f"paexport_{now.strftime('%Y%m%d_%H%M%S')}.csv"
+            # In this scenario the path was provided, e.g. --export pt.csv, pt.jpg
+            if "." in ns_parser.export:
+                filename = ns_parser.export
+            # In this scenario we use the default filename
+            else:
+                filename = f"paexport_{now.strftime('%Y%m%d_%H%M%S')}.csv"
 
             file_path = Path(str(portfolio_helper.DEFAULT_HOLDINGS_PATH), filename)
 
@@ -524,12 +529,6 @@ class DegiroView:
                 headers=list(portfolio_df.columns),
                 show_index=True,
                 title="Degiro Transactions",
-            )
-            export_data(
-                export_type=ns_parser.export,
-                dir_path=str(Path(__file__).parent.parent.parent.absolute()),
-                func_name="paexport",
-                df=portfolio_df,
             )
         else:
             console.print("Error while fetching or processing Transactions.")

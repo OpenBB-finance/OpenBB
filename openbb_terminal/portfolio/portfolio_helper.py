@@ -136,10 +136,9 @@ PERIODS_DAYS = {
 }
 
 DEFAULT_HOLDINGS_PATH = os.path.abspath(
-    os.path.join(
-        os.path.dirname(__file__), "..", "..", "portfolio", "holdings"
-    )
+    os.path.join(os.path.dirname(__file__), "..", "..", "portfolio", "holdings")
 )
+
 
 def is_ticker(ticker: str) -> bool:
     """Determine whether a string is a valid ticker
