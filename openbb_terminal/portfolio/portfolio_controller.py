@@ -97,9 +97,7 @@ class PortfolioController(BaseController):
         super().__init__(queue)
         self.file_types = ["xlsx", "csv"]
 
-        self.DEFAULT_HOLDINGS_PATH = os.path.abspath(
-            os.path.join(os.path.dirname(__file__), "..", "..", "portfolio", "holdings")
-        )
+        self.DEFAULT_HOLDINGS_PATH = portfolio_helper.DEFAULT_HOLDINGS_PATH
 
         self.DATA_HOLDINGS_FILES = {
             filepath.name: filepath
