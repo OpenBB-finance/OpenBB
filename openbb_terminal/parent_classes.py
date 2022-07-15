@@ -157,8 +157,7 @@ class BaseController(metaclass=ABCMeta):
     def load_class(self, class_ins, *args, **kwargs):
         """Checks for an existing instance of the controller before creating a new one"""
         self.save_class()
-        arguments = len(args) + len(kwargs)
-        if class_ins.PATH in controllers and arguments == 1 and obbff.REMEMBER_CONTEXTS:
+        if class_ins.PATH in controllers and obbff.REMEMBER_CONTEXTS:
             old_class = controllers[class_ins.PATH]
             old_class.queue = self.queue
             return old_class.menu()
@@ -322,6 +321,7 @@ class BaseController(metaclass=ABCMeta):
     def call_exit(self, _) -> None:
         # Not sure how to handle controller loading here
         """Process exit terminal command"""
+        self.save_class()
         console.print("")
         for _ in range(self.PATH.count("/")):
             self.queue.insert(0, "quit")
@@ -331,6 +331,7 @@ class BaseController(metaclass=ABCMeta):
         """Process reset command. If you would like to have customization in the
         reset process define a method `custom_reset` in the child class.
         """
+        self.save_class()
         if self.PATH != "/":
             if self.custom_reset():
                 self.queue = self.custom_reset() + self.queue
