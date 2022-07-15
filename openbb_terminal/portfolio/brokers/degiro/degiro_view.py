@@ -518,7 +518,7 @@ class DegiroView:
                 filename = ns_parser.export
             # In this scenario we use the default filename
             else:
-                filename = f"paexport_{now.strftime('%Y%m%d_%H%M%S')}.csv"
+                filename = f"paexport_degiro.csv"
 
             file_path = Path(str(portfolio_helper.DEFAULT_HOLDINGS_PATH), filename)
 
