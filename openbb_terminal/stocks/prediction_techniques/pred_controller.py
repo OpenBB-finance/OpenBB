@@ -43,6 +43,8 @@ class PredictionTechniquesController(BaseController):
 
     CHOICES_COMMANDS = [
         "load",
+        "loadrange",
+        "loadfulldata",
         "pick",
         "ets",
         "knn",
@@ -103,6 +105,8 @@ class PredictionTechniquesController(BaseController):
 
         mt = MenuText("stocks/pred/")
         mt.add_cmd("load")
+        mt.add_cmd("loadrange")
+        mt.add_cmd("loadfulldata")
         mt.add_cmd("pick")
         mt.add_raw("\n")
         mt.add_param("_ticker", stock_info)

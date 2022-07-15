@@ -1,5 +1,7 @@
     search             search a specific stock ticker for analysis
     load               load a specific stock ticker and additional info for analysis
+    loadrange          change the range of currently loaded data
+    loadfulldata       goes back to the fully loaded data
 
 Stock: 
 

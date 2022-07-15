@@ -652,12 +652,82 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
         """
         super().__init__(queue)
         self.stock = pd.DataFrame()
+        self.fully_loaded_stock = pd.DataFrame()
         self.interval = "1440min"
         self.ticker = ""
         self.start = ""
         self.suffix = ""  # To hold suffix for Yahoo Finance
         self.add_info = stocks_helper.additional_info_about_ticker("")
         self.TRY_RELOAD = True
+
+    def call_loadrange(self, other_args: List[str]):
+        """Process loadrange command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="loadrange",
+            description="Change range current range of the stock you already loaded"
+            + " this way you can make analysis in a different time period without reloading"
+            + " changes are based in the row numbers",
+        )
+        parser.add_argument(
+            "-s",
+            "--start",
+            dest="start",
+            type=int,
+            default=0,
+            help="which row to start, tip : using - will start the count from the end"
+            + " ex: -30, would start from the last 30, to get last 30 days",
+        )
+        parser.add_argument(
+            "-e",
+            "--end",
+            dest="end",
+            type=int,
+            default=0,
+            help="which row to end, tip : using - will start the count from the end"
+            + " ex: -30, would stop before the last 30 days",
+        )
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
+        if self.ticker:
+            if ns_parser:
+                if ns_parser.start != 0 or ns_parser.end != 0:
+                    if ns_parser.end == 0:
+                        ns_parser.end = len(self.fully_loaded_stock)
+                    if len(self.fully_loaded_stock) > 0:
+                        self.stock = self.fully_loaded_stock[
+                            ns_parser.start : ns_parser.end
+                        ].copy()
+                    else:
+                        self.fully_loaded_stock = self.stock.copy()
+                        self.stock = self.fully_loaded_stock[
+                            ns_parser.start : ns_parser.end
+                        ].copy()
+                else:
+                    console.print("You need to pick a different start or end.\n")
+        else:
+            console.print("No ticker loaded. First use `load {ticker}`\n")
+
+    def call_loadfulldata(self, other_args: List[str]):
+        """Process loadfulldata command"""
+        parser = argparse.ArgumentParser(
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            add_help=False,
+            prog="loadfulldata",
+            description="""
+                Goes back to the whole data loaded after you changed the range
+            """,
+        )
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
+
+        if ns_parser:
+            if self.ticker:
+                if len(self.fully_loaded_stock) > len(self.stock):
+                    self.stock = self.fully_loaded_stock.copy()
+                else:
+                    console.print("You are already using the Full Data.\n")
+            else:
+                console.print("No ticker loaded. First use `load {ticker}`\n")
 
     def call_load(self, other_args: List[str]):
         """Process load command"""

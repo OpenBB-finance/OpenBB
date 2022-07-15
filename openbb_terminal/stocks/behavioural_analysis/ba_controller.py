@@ -43,6 +43,8 @@ class BehaviouralAnalysisController(StockBaseController):
 
     CHOICES_COMMANDS = [
         "load",
+        "loadrange",
+        "loadfulldata",
         "watchlist",
         "spac",
         "spac_c",
@@ -90,6 +92,8 @@ class BehaviouralAnalysisController(StockBaseController):
         """Print help"""
         mt = MenuText("stocks/ba/")
         mt.add_cmd("load")
+        mt.add_cmd("loadrange")
+        mt.add_cmd("loadfulldata")
         mt.add_raw("\n")
         mt.add_param("_ticker", self.ticker.upper())
         mt.add_raw("\n")

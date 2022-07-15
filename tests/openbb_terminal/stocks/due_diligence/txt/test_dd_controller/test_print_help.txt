@@ -1,4 +1,6 @@
     load               load a specific stock ticker for analysis
+    loadrange          change the range of currently loaded data
+    loadfulldata       goes back to the fully loaded data
 
 Ticker: 
 

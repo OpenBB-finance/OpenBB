@@ -1,4 +1,6 @@
 Ticker: Intraday MOCK_INTERVAL MOCK_TICKER
+    loadrange          change the range of currently loaded data
+    loadfulldata       goes back to the fully loaded data
 
     tv                 open interactive chart on                             [TradingView]
     view               view historical data and trendlines                   [Finviz]

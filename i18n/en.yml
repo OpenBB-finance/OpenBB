@@ -86,6 +86,8 @@ en:
   stocks/SEARCH_industry: Search by industry to find stocks matching the criteria
   stocks/SEARCH_exchange: Search by a specific exchange country to find stocks matching the criteria
   stocks/load: load a specific stock ticker and additional info for analysis
+  stocks/loadrange: change the range of currently loaded data
+  stocks/loadfulldata: goes back to the fully loaded data
   stocks/_ticker: Stock
   stocks/quote: view the current price for a specific stock ticker
   stocks/QUOTE: Current quote for stock ticker
@@ -220,6 +222,8 @@ en:
   stocks/sia/_returned_tickers: Returned tickers
   stocks/sia/ca: take these to comparison analysis menu
   stocks/dps/load: load a specific stock ticker for analysis
+  stocks/dps/loadrange: change the range of currently loaded data
+  stocks/dps/loadfulldata: goes back to the fully loaded data
   stocks/dps/shorted: show most shorted stocks
   stocks/dps/ctb: stocks with highest cost to borrow
   stocks/dps/hsi: show top high short interest stocks of over 20% ratio
@@ -283,6 +287,8 @@ en:
   stocks/gov/qtrcontracts: quarterly government contracts analysis
   stocks/gov/toplobbying: top corporate lobbying tickers
   stocks/gov/load: load a specific ticker for analysis
+  stocks/gov/loadrange: change the range of currently loaded data
+  stocks/gov/loadfulldata: goes back to the fully loaded data
   stocks/gov/_ticker: Ticker
   stocks/gov/gtrades: show government trades
   stocks/gov/contracts: show government contracts
@@ -314,6 +320,8 @@ en:
   stocks/ca/technical: brief technical comparison
   stocks/ca/po: portfolio optimization for selected tickers
   stocks/ba/load: load a specific stock ticker for analysis
+  stocks/ba/loadrange: change the range of currently loaded data
+  stocks/ba/loadfulldata: goes back to the fully loaded data
   stocks/ba/_ticker: Ticker
   stocks/ba/headlines: sentiment from 15+ major news headlines
   stocks/ba/snews: stock price displayed over sentiment of news headlines
@@ -340,6 +348,8 @@ en:
   stocks/ba/jcdr: Jim Cramer's daily recommendations
   stocks/ba/jctr: Jim Cramer's recommendations by ticker
   stocks/fa/load: load a specific stock ticker for analysis
+  stocks/fa/loadrange: change the range of currently loaded data
+  stocks/fa/loadfulldata: goes back to the fully loaded data
   stocks/fa/_ticker: Ticker
   stocks/fa/data: fundamental and technical data of company
   stocks/fa/mgmt: management team of the company
@@ -386,6 +396,8 @@ en:
   stocks/res/newsfilter: www.newsfilter.io
   stocks/res/stockanalysis: www.stockanalysis.com
   stocks/dd/load: load a specific stock ticker for analysis
+  stocks/dd/loadrange: change the range of currently loaded data
+  stocks/dd/loadfulldata: goes back to the fully loaded data
   stocks/dd/_ticker: Ticker
   stocks/dd/analyst: analyst prices and ratings of the company
   stocks/dd/rating: rating over time (daily)
@@ -402,6 +414,8 @@ en:
   stocks/bt/ema_cross: buy when EMA(short) > EMA(long)
   stocks/bt/rsi: buy when RSI < low and sell when RSI > high
   stocks/ta/_ticker: Ticker
+  stocks/ta/loadrange: change the range of currently loaded data
+  stocks/ta/loadfulldata: goes back to the fully loaded data
   stocks/ta/tv: open interactive chart on
   stocks/ta/view: view historical data and trendlines
   stocks/ta/summary: technical summary report
@@ -434,6 +448,8 @@ en:
   stocks/ta/_custom_: Custom
   stocks/ta/fib: fibonacci retracement
   stocks/qa/load: load new ticker
+  stocks/qa/loadrange: change the range of currently loaded data
+  stocks/qa/loadfulldata: goes back to the fully loaded data
   stocks/qa/pick: pick target column for analysis
   stocks/qa/_ticker: Ticker
   stocks/qa/_target: Target Column
@@ -466,6 +482,8 @@ en:
   stocks/qa/cusum: detects abrupt changes using cumulative sum algorithm of prices
   stocks/qa/capm: capital asset pricing model
   stocks/pred/load: load new ticker
+  stocks/pred/loadrange: change the range of currently loaded data
+  stocks/pred/loadfulldata: goes back to the fully loaded data
   stocks/pred/pick: pick target column for analysis
   stocks/pred/_ticker: Ticker
   stocks/pred/_target: Target Column

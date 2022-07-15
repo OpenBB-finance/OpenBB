@@ -39,6 +39,8 @@ class StocksController(StockBaseController):
     CHOICES_COMMANDS = [
         "search",
         "load",
+        "loadrange",
+        "loadfulldata",
         "quote",
         "candle",
         "news",
@@ -113,6 +115,8 @@ class StocksController(StockBaseController):
         mt = MenuText("stocks/", 80)
         mt.add_cmd("search")
         mt.add_cmd("load")
+        mt.add_cmd("loadrange")
+        mt.add_cmd("loadfulldata")
         mt.add_raw("\n")
         mt.add_param("_ticker", stock_text)
         mt.add_raw(self.add_info)

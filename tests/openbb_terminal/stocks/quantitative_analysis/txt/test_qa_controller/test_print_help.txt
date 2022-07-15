@@ -1,4 +1,6 @@
     load               load new ticker
+    loadrange          change the range of currently loaded data
+    loadfulldata       goes back to the fully loaded data
     pick               pick target column for analysis
 
 Ticker: Intraday  

@@ -37,6 +37,8 @@ class DueDiligenceController(StockBaseController):
 
     CHOICES_COMMANDS = [
         "load",
+        "loadrange",
+        "loadfulldata",
         "sec",
         "rating",
         "pt",
@@ -75,6 +77,8 @@ class DueDiligenceController(StockBaseController):
         """Print help"""
         mt = MenuText("stocks/dd/", 90)
         mt.add_cmd("load")
+        mt.add_cmd("loadrange")
+        mt.add_cmd("loadfulldata")
         mt.add_raw("\n")
         mt.add_param("_ticker", self.ticker.upper())
         mt.add_raw("\n")

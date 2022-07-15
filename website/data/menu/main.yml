@@ -10,6 +10,10 @@ main:
             ref: "/terminal/stocks/search"
           - name: load
             ref: "/terminal/stocks/load"
+          - name: loadrange
+            ref: "/terminal/stocks/loadrange"
+          - name: loadfulldata
+            ref: "/terminal/stocks/loadfulldata"
           - name: candle
             ref: "/terminal/stocks/candle"
           - name: quote

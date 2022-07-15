@@ -27,6 +27,8 @@ class GovController(StockBaseController):
 
     CHOICES_COMMANDS = [
         "load",
+        "loadrange",
+        "loadfulldata",
         "lasttrades",
         "topbuys",
         "topsells",
@@ -76,6 +78,8 @@ class GovController(StockBaseController):
         mt.add_cmd("toplobbying", "QuiverQuant")
         mt.add_raw("\n")
         mt.add_cmd("load")
+        mt.add_cmd("loadrange")
+        mt.add_cmd("loadfulldata")
         mt.add_raw("\n")
         mt.add_param("_ticker", self.ticker or "")
         mt.add_raw("\n")

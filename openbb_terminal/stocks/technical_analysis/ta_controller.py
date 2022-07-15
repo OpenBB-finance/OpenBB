@@ -50,6 +50,8 @@ class TechnicalAnalysisController(StockBaseController):
 
     CHOICES_COMMANDS = [
         "load",
+        "loadrange",
+        "loadfulldata",
         "view",
         "summary",
         "recom",
@@ -115,6 +117,8 @@ class TechnicalAnalysisController(StockBaseController):
 
         mt = MenuText("stocks/ta/", 90)
         mt.add_param("_ticker", stock_str)
+        mt.add_cmd("loadrange")
+        mt.add_cmd("loadfulldata")
         mt.add_raw("\n")
         mt.add_cmd("tv", "TradingView")
         mt.add_cmd("view", "Finviz")

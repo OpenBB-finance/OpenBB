@@ -39,6 +39,8 @@ class DarkPoolShortsController(StockBaseController):
 
     CHOICES_COMMANDS = [
         "load",
+        "loadrange",
+        "loadfulldata",
         "shorted",
         "ctb",
         "hsi",
@@ -77,6 +79,8 @@ class DarkPoolShortsController(StockBaseController):
         """Print help"""
         mt = MenuText("stocks/dps/")
         mt.add_cmd("load")
+        mt.add_cmd("loadrange")
+        mt.add_cmd("loadfulldata")
         mt.add_raw("\n")
         mt.add_cmd("shorted", "Yahoo Finance")
         mt.add_cmd("ctb", "Interactive Broker")

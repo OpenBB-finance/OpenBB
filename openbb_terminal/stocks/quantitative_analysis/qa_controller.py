@@ -35,6 +35,8 @@ class QaController(StockBaseController):
 
     CHOICES_COMMANDS = [
         "load",
+        "loadrange",
+        "loadfulldata",
         "pick",
         "raw",
         "summary",
@@ -115,6 +117,8 @@ class QaController(StockBaseController):
 
         mt = MenuText("stocks/qa/")
         mt.add_cmd("load")
+        mt.add_cmd("loadrange")
+        mt.add_cmd("loadfulldata")
         mt.add_cmd("pick")
         mt.add_raw("\n")
         mt.add_param("_ticker", stock_str)
