@@ -62,12 +62,6 @@ class API_Factory:
             return self.model(*args, **kwargs)
 
 
-def get_function(function_path: str):
-    module_path, function_name = function_path.rsplit(sep=".", maxsplit=1)
-    module = LazyLoader.load_module(module_path=module_path)
-
-    return getattr(module, function_name)
-
 
 class Item:
     def __init__(self, function):
@@ -97,7 +91,14 @@ class APILoader:
             previous.__setattr__(last_shortcurt, function)
 
     @staticmethod
-    def build_mapping(shortcuts: dict):
+    def get_function(function_path: str):
+        module_path, function_name = function_path.rsplit(sep=".", maxsplit=1)
+        module = LazyLoader.load_module(module_path=module_path)
+
+        return getattr(module, function_name)
+
+    @classmethod
+    def build_mapping(cls, shortcuts: dict):
         mapping = {}
 
         for shortcut in shortcuts.keys():
@@ -105,12 +106,12 @@ class APILoader:
             view_path = shortcuts[shortcut].get("view")
 
             if model_path:
-                model_function = get_function(function_path=model_path)
+                model_function = cls.get_function(function_path=model_path)
             else:
                 model_function = None
 
             if view_path:
-                view_function = get_function(function_path=view_path)
+                view_function = cls.get_function(function_path=view_path)
             else:
                 view_function = None
 
