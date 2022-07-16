@@ -1,15 +1,38 @@
 """OpenBB Terminal API."""
-# flake8: noqa
-# pylint: disable=unused-import
-from .stocks import stocks_api as stocks
-from .alternative import alt_api as alt
-from .cryptocurrency import crypto_api as crypto
-from .economy import economy_api as economy
-from .econometrics import econometrics_api as econometrics
-from .etf import etf_api as etf
-from .forex import forex_api as forex
-from .mutual_funds import mutual_fund_api as funds
-from .portfolio import portfolio_api as portfolio
-from .reports import widget_helpers as widgets
 
-from .config_terminal import theme
+
+import types
+import functools
+
+
+def copy_func(f):
+    """Based on https://stackoverflow.com/a/13503277"""
+    g = types.FunctionType(f.__code__, f.__globals__, name=f.__name__,
+                           argdefs=f.__defaults__,
+                           closure=f.__closure__)
+    g = functools.update_wrapper(g, f)
+    g.__kwdefaults__ = f.__kwdefaults__
+    return g
+
+
+class API_Factory():
+    def __init__(self, model, view):
+        self.model_only = False
+        if view is None:
+            self.model_only = True
+            self.model = copy_func(model)
+            print(self.model.__doc__)
+        else:
+            # Get attributes from functions
+            self.model = copy_func(model)
+            self.view = copy_func(view)
+
+    def __call__(self, *args, **kwargs):
+        if "chart" not in kwargs:
+            kwargs["chart"] = False
+        if kwargs["chart"] and (not self.model_only):
+            kwargs.pop("chart")
+            return self.view(*args, **kwargs)
+        else:
+            kwargs.pop("chart")
+            return self.model(*args, **kwargs)
