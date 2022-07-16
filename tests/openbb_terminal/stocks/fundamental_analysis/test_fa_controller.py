@@ -303,19 +303,19 @@ def test_call_func_expect_queue(expected_queue, queue, func):
         (
             "call_income",
             "av_view.display_income_statement",
-            ["--export=csv", "--limit=5", "--quarter"],
+            ["--export=csv", "--limit=5", "--quarter", "--source=av"],
             {"ticker": "TSLA", "limit": 5, "quarterly": True, "export": "csv"},
         ),
         (
             "call_balance",
             "av_view.display_balance_sheet",
-            ["--export=csv", "--limit=5", "--quarter"],
+            ["--export=csv", "--limit=5", "--quarter", "--source=av"],
             {"ticker": "TSLA", "limit": 5, "quarterly": True, "export": "csv"},
         ),
         (
             "call_cash",
             "av_view.display_cash_flow",
-            ["--export=csv", "--limit=5", "--quarter"],
+            ["--export=csv", "--limit=5", "--quarter", "--source=av"],
             {"ticker": "TSLA", "limit": 5, "quarterly": True, "export": "csv"},
         ),
         (

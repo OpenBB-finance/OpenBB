@@ -93,26 +93,26 @@ a stock ticker, these menus can now be used in combination with the chosen stock
 The Stock menu has an extensive list of available sub-menus ranging from fundamental analysis to sector analysis to 
 advanced prediction techniques. To find more information about each menu, click on one of the following:
 
-- <a href="tradinghours" target="_blank">Introduction to Trading Hours</a>: discover exchanges that are currently open or
+- <a href="th" target="_blank">Introduction to Trading Hours</a>: discover exchanges that are currently open or
 closed for a specified ticker. Also find relevant information about each exchange.
 - <a href="options" target="_blank">Introduction to Options</a>: look into available options, option spreads,
 open interest and binomial valuation models.
-- <a href="discovery" target="_blank">Introduction to Stock Discovery</a>: discover trending stocks based on return metrics, revenue and earnings growth, 
+- <a href="disc" target="_blank">Introduction to Stock Discovery</a>: discover trending stocks based on return metrics, revenue and earnings growth, 
 penny stocks and based on upcoming earnings release dates.
 - <a href="sia" target="_blank">Introduction to Sector & Industry Analysis</a>: analyse companies that reside in the same industry, sector and/or country and
 share a similar market cap to determine potential under- and out performance of each company.
-- <a href="dark_pool_shorts" target="_blank">Introduction to Dark Pools</a>: discover companies that have enormous shorting pressure, obtain information about dark pool positions and
+- <a href="dps" target="_blank">Introduction to Dark Pools</a>: discover companies that have enormous shorting pressure, obtain information about dark pool positions and
 find out about shares that failed to deliver.
-- <a href="screener" target="_blank">Introduction to Stock Screener</a>: provides the ability to screen companies that share a similar characteristic,
+- <a href="scr" target="_blank">Introduction to Stock Screener</a>: provides the ability to screen companies that share a similar characteristic,
 for example unusual volumes, overbought or that include analyst upgrades, and be able to compare valuations and performance.
-- <a href="insider" target="_blank">Introduction to Insider Trading</a>: explains what large insiders, e.g. a CEO of a company, is buying the chosen company and insider trading activity for the chosen company.
-- <a href="government" target="_blank">Introduction to Government</a>: gives insights in what the House of Congress is trading and the corporate lobbying that is performed.
+- <a href="ins" target="_blank">Introduction to Insider Trading</a>: explains what large insiders, e.g. a CEO of a company, is buying the chosen company and insider trading activity for the chosen company.
+- <a href="gov" target="_blank">Introduction to Government</a>: gives insights in what the House of Congress is trading and the corporate lobbying that is performed.
 - <a href="/OpenBBTerminal/terminal/common/ba" target="_blank">Introduction to Behavioural Analysis</a>: gives the abilities to discover how different social media platforms view the chosen company and what is written about them.
-- <a href="comparison_analysis" target="_blank">Introduction to Comparison Analysis</a>: have the ability to compare companies based on, among other things, correlation, financial statements, sentiment, valuations and performance.
-- <a href="fundamental_analysis" target="_blank">Introduction to Fundamental Analysis</a>: look into the fundamentals of a chosen company including financial statements, SEC filings, investing scores, discounted cash flow analysis (DCF),
+- <a href="ca" target="_blank">Introduction to Comparison Analysis</a>: have the ability to compare companies based on, among other things, correlation, financial statements, sentiment, valuations and performance.
+- <a href="fa" target="_blank">Introduction to Fundamental Analysis</a>: look into the fundamentals of a chosen company including financial statements, SEC filings, investing scores, discounted cash flow analysis (DCF),
 sustainability scores and key ratios.
-- <a href="due_diligence" target="_blank">Introduction to Due Diligence</a>: explore analyst recommendations, ratings over time, price targets and quarterly and yearly earnings estimates.
-- <a href="backtesting" target="_blank">Introduction to Strategy Backtesting</a>: explore back testing strategies based on technical indicators.
+- <a href="dd" target="_blank">Introduction to Due Diligence</a>: explore analyst recommendations, ratings over time, price targets and quarterly and yearly earnings estimates.
+- <a href="bt" target="_blank">Introduction to Strategy Backtesting</a>: explore back testing strategies based on technical indicators.
 - <a href="/OpenBBTerminal/terminal/common/ta" target="_blank">Introduction to Technical Analysis</a>: analysis the chosen company's historical data extensively with moving averages and momentum, trend, volatility and volume indicators.
 - <a href="/OpenBBTerminal/terminal/common/qa" target="_blank">Introduction to Quantitative Analysis</a>: delve deeper in the historical data with quantitative methods including cumulative distribution function (CDF), (conditional) Value at Risk and rolling ratios.
 - <a href="/OpenBBTerminal/terminal/common/pred" target="_blank">Introduction to Prediction Techniques</a>: apply advanced AI and Machine Learning models to form prediction of future stock prices including Recurrent Neural Network (RNN),
