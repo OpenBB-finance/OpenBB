@@ -243,7 +243,6 @@ def get_address_info(address: str) -> pd.DataFrame:
         "0x0000000000000000000000000000000000000000",
         eth_balance,
     ]
-
     cols = [
         "tokenName",
         "tokenSymbol",
