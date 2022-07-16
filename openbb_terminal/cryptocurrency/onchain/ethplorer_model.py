@@ -212,7 +212,6 @@ def get_address_info(address: str) -> pd.DataFrame:
     tokens = []
     if "tokens" in response:
         tokens = response.pop("tokens")
-        print("Tokens:", tokens)
         for token in tokens:
             token_info = token.pop("tokenInfo")
             token.update(
