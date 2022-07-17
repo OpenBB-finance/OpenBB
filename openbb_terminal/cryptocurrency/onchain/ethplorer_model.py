@@ -253,7 +253,6 @@ def get_address_info(address: str) -> pd.DataFrame:
     eth_row_df = pd.DataFrame([eth_row], columns=cols)
     df = pd.concat([eth_row_df, df], ignore_index=True)
     df = df[df["tokenName"].notna()][cols]
-    # df = pd.DataFrame(tokens + [eth_row], columns=cols)
     create_df_index(df, "index")
     return df
 
