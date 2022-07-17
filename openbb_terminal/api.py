@@ -54,9 +54,23 @@ def copy_func(f: Callable) -> Callable:
     return g
 
 
+def change_docstring(api_callable, model: Callable, view: Callable = None):
+    if view is None:
+        api_callable.__doc__ = model.__doc__
+        api_callable.__name__ = model.__name__
+    else:
+        index = view.__doc__.find("Parameters")
+        all_parameters = "\nAPI function, use the chart kwarg for getting the view model and it's plot. See every parmater below:\n\n\t" + view.__doc__[index:] + """chart: bool
+    If the view and its chart shall be used"""
+        api_callable.__doc__ = all_parameters + "\n\nModel doc:\n" + model.__doc__ + "\n\nView doc:\n" + view.__doc__
+        api_callable.__name__ = model.__name__.replace("get_", "")
+
+    return api_callable
+
+
 class APIFactory:
     """The API Factory, which creates the callable instance"""
-    def __init__(self, model: Callable, view: Callable):
+    def __init__(self, model: Callable, view: Callable = None):
         """Initialises the APIFactory instance
 
         Parameters
@@ -70,13 +84,11 @@ class APIFactory:
         if view is None:
             self.model_only = True
             self.model = copy_func(model)
-            self.__doc__ = self.model.__doc__
         else:
             self.model = copy_func(model)
             self.view = copy_func(view)
-            self.__doc__ = self.model.__doc__ + "\n" + self.view.__doc__
 
-    def __call__(self, *args, **kwargs):
+    def api_callable(self, *args, **kwargs):
         """This returns the result of the command from the view or the model function based on the chart parameter
 
         Parameters
@@ -220,7 +232,9 @@ class APILoader:
             else:
                 view_function = None
 
-            mapping[shortcut] = APIFactory(model=model_function, view=view_function)
+            api_factory = APIFactory(model=model_function, view=view_function)
+            api_function = change_docstring(types.FunctionType(api_factory.api_callable.__code__, {}), model_function, view_function)
+            mapping[shortcut] = types.MethodType(api_function, api_factory)
 
         return mapping
 
