@@ -3,7 +3,6 @@
 # IMPORTATION THIRDPARTY
 import pandas as pd
 import pytest
-import requests_mock
 
 # IMPORTATION INTERNAL
 from openbb_terminal.cryptocurrency.onchain import ethplorer_model
@@ -70,16 +69,11 @@ def test_get_tx_info():
     assert not df.empty
 
 
+@pytest.mark.vcr
 def test_get_address_info_no_token_scenario():
     """Test the get_address_info scenario where the address returns no token data and only ETH balance."""
-    with requests_mock.Mocker() as http_mock:
-        mock_json = {"ETH": {"balance": 1.0}}
-        http_mock.get(
-            "https://api.ethplorer.io/getAddressInfo/0xb274827BCbB6c06527DDe24c1BC7147715b49415",
-            json=mock_json,
-        )
-        df = ethplorer_model.get_address_info(
-            address="0xb274827BCbB6c06527DDe24c1BC7147715b49415",
-        )
-        assert isinstance(df, pd.DataFrame)
-        assert not df.empty
+    df = ethplorer_model.get_address_info(
+        address="0xb274827BCbB6c06527DDe24c1BC7147715b49415",
+    )
+    assert isinstance(df, pd.DataFrame)
+    assert not df.empty
