@@ -1223,12 +1223,11 @@ class PortfolioModel:
         for ticker_type, data in self.tickers.items():
             self.itemized_value[ticker_type] = trade_data["End Value"][data].sum(axis=1)
 
-
         trade_data[
             pd.MultiIndex.from_product(
                 [["Initial Value"], self.tickers_list + ["Total"]]
             )
-        ] = 0        
+        ] = 0
 
         # Initial Value = Previous End Value + Investment changes
         trade_data["Initial Value"] = trade_data["End Value"].shift(1) + trade_data[
