@@ -1,26 +1,27 @@
 ```
-usage: cash [-l LIMIT] [-q] [-r] [-p PLOT [PLOT ...]] [-s {polygon,av,yf,fmp}] [-h] [--export EXPORT]
+usage: income [-q] [-r] [-p PLOT [PLOT ...]] [-h] [--export EXPORT] [-l LIMIT] [--source {yf,polygon,av,fmp}]
 ```
 
-Prints a complete cash flow statement over time. This can be either quarterly or annually. The following fields are expected: Accepted date, Accounts payables, Accounts
-receivables, Acquisitions net, Capital expenditure, Cash at beginning of period, Cash at end of period, Change in working capital, Common stock issued, Common stock
-repurchased, Debt repayment, Deferred income tax, Depreciation and amortization, Dividends paid, Effect of forex changes on cash, Filling date, Final link, Free cash
-flow, Inventory, Investments in property plant and equipment, Link, Net cash provided by operating activities, Net cash used for investing activities, Net cash used
-provided by financing activities, Net change in cash, Net income, Operating cash flow, Other financing activities, Other investing activities, Other non cash items, Other
-working capital, Period, Purchases of investments, Sales maturities of investments, Stock based compensation. [Source: Alpha Vantage]
+Prints a complete income statement over time. This can be either quarterly or annually. The following fields are
+expected: Accepted date, Cost and expenses, Cost of revenue, Depreciation and amortization, Ebitda, Ebitda Ratio, Eps,
+EPS Diluted, Filling date, Final link, General and administrative expenses, Gross profit, Gross profit ratio, Income
+before tax, Income before tax ratio, Income tax expense, Interest expense, Link, Net income, Net income ratio,
+Operating expenses, Operating income, Operating income ratio, Other expenses, Period, Research and development
+expenses, Revenue, Selling and marketing expenses, Total other income expenses net, Weighted average shs out, Weighted
+average shs out dil [Source: Alpha Vantage]
 
 ```
 optional arguments:
-  -l LIMIT, --limit LIMIT
-                        Number of latest years/quarters. (default: 1)
   -q, --quarter         Quarter fundamental data flag. (default: False)
   -r, --ratios          Shows percentage change of values. (default: False)
   -p PLOT [PLOT ...], --plot PLOT [PLOT ...]
-                        Rows to plot. (-1 represents invalid data) (default: [])
-  -s {polygon,av,yf,fmp}, --source {polygon,av,yf,fmp}
-                        The source to get the data from (default: av)
+                        Rows to plot. (-1 represents invalid data) (default: None)
   -h, --help            show this help message (default: False)
   --export EXPORT       Export raw data into csv, json, xlsx (default: )
+  -l LIMIT, --limit LIMIT
+                        Number of entries to show in data. (default: 5)
+  --source {yf,polygon,av,fmp}
+                        Data source to select from (default: yf)
 ```
 
 Example:
