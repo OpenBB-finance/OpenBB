@@ -1,11 +1,12 @@
-```
-usage: load [-f FUND [FUND ...]] [--name] [-s START] [-e END] [-h]
+```txt
+usage: load [--fund FUND [FUND ...]] [--name] [-s START] [-e END] [-h]
 ```
 
 Get historical data.
-```
+
+```txt
 optional arguments:
-  -f FUND [FUND ...], --fund FUND [FUND ...]
+  --fund FUND [FUND ...]
                         Fund string to search for (default: None)
   --name                Flag to indicate name provided instead of symbol. (default: False)
   -s START, --start START

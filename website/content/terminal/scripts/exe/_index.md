@@ -18,7 +18,7 @@ optional arguments:
 
 An example of a script can be the following (inside a `.openbb` file):
 
-```
+```txt
 # Go into the econometrics context
 econometrics
 
@@ -29,7 +29,7 @@ load wage_panel -a wp
 index wp -i nr,year
 
 # Change the type of the year column so it can be included as time effects within the regressions
-type wp.year -f category
+type wp.year --format category
 
 # Perform a Pooled OLS, Random Effects and Fixed Effects estimation
 panel -d wp.lwage -i wp.black,wp.hisp,wp.exper,wp.expersq,wp.married,wp.educ,wp.union,wp.year
