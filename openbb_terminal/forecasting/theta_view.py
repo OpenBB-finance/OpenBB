@@ -93,10 +93,8 @@ def display_theta_forecast(
         export,
         forecast_only=forecast_only,
     )
-    if residuals:  # TODO - Fix problem
+    if residuals:
+        # TODO: Figure out why residuals do not work with Theta
         console.print(
             "[red]Theta residual is currently not supported. Please stay tuned![/red]"
         )
-        # helpers.plot_residuals(
-        #     _model, None, ticker_series, forecast_horizon=forecast_horizon
-        # )
