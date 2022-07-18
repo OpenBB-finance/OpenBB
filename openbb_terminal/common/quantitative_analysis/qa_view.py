@@ -995,6 +995,7 @@ def display_var(
     adjusted_var: bool = False,
     student_t: bool = False,
     percentile: float = 0.999,
+    data_range: int = 0,
     portfolio: bool = False,
 ):
     """Displays VaR of dataframe
@@ -1013,12 +1014,20 @@ def display_var(
         If one should use the student-t distribution
     percentile: int
         var percentile
+    data_range: int
+        Number of rows you want to use VaR over
     portfolio: bool
         If the data is a portfolio
     """
-    var_list, hist_var_list = qa_model.get_var(
-        data, use_mean, adjusted_var, student_t, percentile, portfolio
-    )
+
+    if data_range > 0:
+        var_list, hist_var_list = qa_model.get_var(
+            data[-data_range:], use_mean, adjusted_var, student_t, percentile, portfolio
+        )
+    else:
+        var_list, hist_var_list = qa_model.get_var(
+            data, use_mean, adjusted_var, student_t, percentile, portfolio
+        )
 
     str_hist_label = "Historical VaR:"
 
