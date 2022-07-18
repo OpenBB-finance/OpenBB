@@ -145,6 +145,16 @@ class APILoader:
 
     def load_items(self):
         """Creates the API structure (see api.stocks.command) by setting attributes and saving the functions"""
+
+        def menu_message(menu: str, mapping: dict):
+            filtered_dict = {k: v for (k, v) in mapping.items() if menu in k}
+
+            def f():
+                print(menu.upper() + " Menu\n\nThe api commands of the the menu:")
+                for command in filtered_dict:
+                    print("\t<api>." + command)
+            return f
+
         mapping = self.__mapping
         for shortcut, function in mapping.items():
             shortcut_split = shortcut.split(".")
@@ -152,7 +162,7 @@ class APILoader:
 
             previous = self
             for item in shortcut_split[:-1]:
-                next_item = Item(function=item)
+                next_item = Item(function=menu_message(item, mapping))
                 previous.__setattr__(item, next_item)
                 previous = next_item
 
@@ -181,7 +191,7 @@ class APILoader:
 
             return module
 
-    @staticmethod
+    @classmethod
     def get_function(cls, function_path: str) -> Callable:
         """Get function from string path
 
@@ -223,12 +233,12 @@ class APILoader:
             view_path = shortcuts[shortcut].get("view")
 
             if model_path:
-                model_function = cls.get_function(cls, function_path=model_path)
+                model_function = cls.get_function(function_path=model_path)
             else:
                 model_function = None
 
             if view_path:
-                view_function = cls.get_function(cls, function_path=view_path)
+                view_function = cls.get_function(function_path=view_path)
             else:
                 view_function = None
 
