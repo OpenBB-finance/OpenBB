@@ -19,11 +19,11 @@ def tsla_csv():
     return df
 
 
-def test_model(model, data, **kwargs):
+def test_model(model, data, *args, **kwargs):
     try:
-        _, _, predict, MAPE, _ = model(data, **kwargs)
+        _, _, predict, MAPE, _ = model(data, *args, **kwargs)
     except ValueError:
-        _, _, predict, MAPE, _, _ = model(data, **kwargs)
+        _, _, predict, MAPE, _, _ = model(data, *args, **kwargs)
     try:
         predict_list = predict.pd_dataframe()["close"].tolist()
     except (AssertionError, KeyError):
