@@ -1173,7 +1173,7 @@ class FundamentalAnalysisController(StockBaseController):
         if ns_parser:
             av_view.display_fraud(
                 ticker=self.ticker,
-                export=ns_parser.exp,
+                export=ns_parser.export,
                 detail=ns_parser.detail,
             )
 
