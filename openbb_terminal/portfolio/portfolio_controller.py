@@ -319,6 +319,7 @@ class PortfolioController(BaseController):
                 str(file_location)
             )
             self.portfolio = portfolio_model.PortfolioModel(orderbook)
+            self.benchmark_name = ""
 
             if ns_parser.name:
                 self.portfolio_name = ns_parser.name
