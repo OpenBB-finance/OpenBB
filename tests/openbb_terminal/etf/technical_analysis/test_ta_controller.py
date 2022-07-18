@@ -578,8 +578,8 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             "call_adosc",
             [
                 "--open",
-                "--fast_length=1",
-                "--slow_length=2",
+                "--fast=1",
+                "--slow=2",
                 "--export=csv",
             ],
             "volume_view.display_adosc",

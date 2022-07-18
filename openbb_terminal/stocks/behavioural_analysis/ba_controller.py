@@ -411,7 +411,7 @@ class BehaviouralAnalysisController(StockBaseController):
             help="time period to get posts from -- all, year, month, week, or day; defaults to week",
         )
         parser.add_argument(
-            "--full_search",
+            "--full",
             action="store_true",
             dest="full_search",
             default=False,

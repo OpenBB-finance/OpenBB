@@ -684,7 +684,6 @@ class EconometricsController(BaseController):
             choices=self.choices["type"],
         )
         parser.add_argument(
-            "-f",
             "--format",
             type=str,
             choices=self.DATA_TYPES,
@@ -876,7 +875,6 @@ class EconometricsController(BaseController):
             choices=list(self.datasets.keys()),
         )
         parser.add_argument(
-            "-f",
             "--fill",
             help="The method of filling NaNs. This has options to fill rows (rfill, rbfill, rffill) or fill "
             "columns (cfill, cbfill, cffill). Furthermore, it has the option to forward fill and backward fill "

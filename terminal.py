@@ -777,7 +777,6 @@ if __name__ == "__main__":
         help="Whether to run in test mode.",
     )
     parser.add_argument(
-        "-f",
         "--filter",
         help="Send a keyword to filter in file name",
         dest="filtert",

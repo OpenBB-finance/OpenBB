@@ -1237,7 +1237,7 @@ class TechnicalAnalysisController(StockBaseController):
             help="uses open value of stock",
         )
         parser.add_argument(
-            "--fast_length",
+            "--fast",
             action="store",
             dest="n_length_fast",
             type=check_positive,
@@ -1245,7 +1245,7 @@ class TechnicalAnalysisController(StockBaseController):
             help="fast length",
         )
         parser.add_argument(
-            "--slow_length",
+            "--slow",
             action="store",
             dest="n_length_slow",
             type=check_positive,

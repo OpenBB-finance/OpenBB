@@ -184,7 +184,6 @@ class PortfolioAnalysisController(BaseController):
             description="Show available portfolios to load.",
         )
         parser.add_argument(
-            "-f",
             "-format",
             choices=["csv", "json", "xlsx", "all"],
             help="Format of portfolios to view.  'csv' will show all csv files available, etc.",
