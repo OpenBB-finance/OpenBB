@@ -1,5 +1,5 @@
 ```
-usage: ema [-d {f}] [-c TARGET_COLUMN] [--period PERIOD] [-h]
+usage: ema [-d {OPTIONS}] [-c TARGET_COLUMN] [--period PERIOD] [-h]
 ```
 
 Add exponential moving average to dataset based on specific column.
