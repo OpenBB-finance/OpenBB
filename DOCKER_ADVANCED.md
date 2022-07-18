@@ -74,7 +74,7 @@ This container will be able to display all the same plots as the terminal interf
 
 ### X-Server on Linux Desktop
 
-X-Server is default in Linux distribution, and it's no need to install any client in Desktop. 
+X-Server is default in Linux distribution, and it's no need to install any client in Desktop.
 
 #### Local docker container
 
