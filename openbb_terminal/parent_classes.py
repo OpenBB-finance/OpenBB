@@ -157,7 +157,21 @@ class BaseController(metaclass=ABCMeta):
     def load_class(self, class_ins, *args, **kwargs):
         """Checks for an existing instance of the controller before creating a new one"""
         self.save_class()
-        if class_ins.PATH in controllers and obbff.REMEMBER_CONTEXTS:
+        arguments = len(args) + len(kwargs)
+        # Due to the 'arguments == 1' condition, we actually NEVER load a class
+        # that has arguments (The 1 argument corresponds to self.queue)
+        # Advantage: If the user changes something on one controller and then goes to the
+        # controller below, it will create such class from scratch bringing all new variables
+        # in and considering latest changes.
+        # Disadvantage: If the user goes on a controller below and we have been there before
+        # it will not load that previous class, but create a new one from scratch.
+        # SCENARIO: If the user is in stocks and does load AAPL/ta the TA menu will get AAPL,
+        # and if then the user goes back to the stocks menu using .. that menu will have AAPL
+        # Now, if "arguments == 1" condition exists, if the user does "load TSLA" and then
+        # goes into "TA", the "TSLA" ticker will appear. If that condition doesn't exist
+        # the previous class will be loaded and even if the user changes the ticker on
+        # the stocks context it will not impact the one of TA menu - unless changes are done.
+        if class_ins.PATH in controllers and arguments == 1 and obbff.REMEMBER_CONTEXTS:
             old_class = controllers[class_ins.PATH]
             old_class.queue = self.queue
             return old_class.menu()
