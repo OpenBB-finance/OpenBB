@@ -23,7 +23,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 722d6a6a992a35f5-MAN
+      - 72ca0bf33ce09926-ARN
       Connection:
       - keep-alive
       Content-Encoding:
@@ -31,7 +31,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Wed, 29 Jun 2022 08:50:37 GMT
+      - Mon, 18 Jul 2022 09:03:52 GMT
       Expect-CT:
       - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
       Server:
