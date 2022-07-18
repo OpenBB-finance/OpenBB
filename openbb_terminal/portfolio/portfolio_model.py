@@ -1223,30 +1223,25 @@ class PortfolioModel:
         for ticker_type, data in self.tickers.items():
             self.itemized_value[ticker_type] = trade_data["End Value"][data].sum(axis=1)
 
+
         trade_data[
-            pd.MultiIndex.from_product([["Initial Value"], self.tickers_list])
-        ] = 0
+            pd.MultiIndex.from_product(
+                [["Initial Value"], self.tickers_list + ["Total"]]
+            )
+        ] = 0        
 
-        for i, date in enumerate(trade_data.index):
-            if i == 0:
-                for t in self.tickers_list:
-                    trade_data.at[date, ("Initial Value", t)] = trade_data.iloc[i][
-                        "Investment"
-                    ][t]
-            else:
-                for t in self.tickers_list:
-                    trade_data.at[date, ("Initial Value", t)] = (
-                        +trade_data.iloc[i - 1]["End Value"][t]
-                        + trade_data.iloc[i]["Investment"][t]
-                        - trade_data.iloc[i - 1]["Investment"][t]
-                    )
-            # To avoid filling users terminal with dots if orderbook is very old, used %40
-            if i % 50 == 0:
-                console.print(".", end="")
+        # Initial Value = Previous End Value + Investment changes
+        trade_data["Initial Value"] = trade_data["End Value"].shift(1) + trade_data[
+            "Investment"
+        ].diff(periods=1)
 
-        trade_data.loc[:, ("Initial Value", "Total")] = trade_data["Initial Value"][
-            self.tickers_list
-        ].sum(axis=1)
+        # Set first day Initial Value as the Investment (NaNs break first period)
+        for t in self.tickers_list + ["Total"]:
+            trade_data.at[trade_data.index[0], ("Initial Value", t)] = trade_data.iloc[
+                0
+            ]["Investment"][t]
+
+        console.print(".", end="")
 
         self.historical_trade_data = trade_data
 
