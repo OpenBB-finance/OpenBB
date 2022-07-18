@@ -133,7 +133,6 @@ types-six = "^1.16.12"
 
 [tool.poetry.extras]
 prediction = ["u8darts"]
-prediction-m1-mac = ["tensorflow-metal"]
 bots = ["boto3", "pyimgur", "fastapi", "uvicorn", "disnake", "PyNaCl", "pyTelegramBotAPI", "slack-bolt", "undetected-chromedriver", "natsort", "kaleido"]
 jupyterlab = ["jupyterlab-code-formatter", "jupyterlab-lsp", "jedi-language-server"]
 installer = ["pyinstaller"]

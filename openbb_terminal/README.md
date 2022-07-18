@@ -190,7 +190,7 @@ before you call `python terminal.py` again.
 ## Advanced User Install - Custom installation procedures
 
 By default we advice using `conda` and `poetry` for environment setup and dependency management.
-Conda ships binaries for packages like `numpy` and `tensorflow` so these dependencies are
+Conda ships binaries for packages like `numpy` so these dependencies are
 not built from source locally by `pip`.
 Poetry solves the dependency tree in a way that the dependencies of dependencies of dependencies
 use versions that are compatible with each other.
