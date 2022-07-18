@@ -10,3 +10,6 @@ The Forecaasting menu's purpose is to prove the user the ability to perform stat
 ## Accessing the Forecasting menu
 
 The Forecasting menu is called upon by typing `forecasting` which opens the following menu: TODO
+```
+(🦋) / $ forecasting
+```
