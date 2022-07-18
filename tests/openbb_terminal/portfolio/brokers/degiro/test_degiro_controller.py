@@ -289,6 +289,15 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [],
             dict(),
         ),
+        (
+            "call_paexport",
+            [
+                "--start=2022-01-01",
+            ],
+            "DegiroView.transactions_export",
+            [],
+            dict(),
+        ),
     ],
 )
 def test_call_func(

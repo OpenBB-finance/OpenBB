@@ -12,4 +12,5 @@
     companynews        view news about a company with it's isin
     lastnews           view latest news
     topnews            view top news preview
+    paexport           csv export for portfolio analysis
 

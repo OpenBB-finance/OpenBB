@@ -523,7 +523,8 @@ class OptionsController(BaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, sources=["tradier", "yf"]
+            parser,
+            other_args,
         )
         if ns_parser:
             self.ticker = ns_parser.ticker.upper()
@@ -637,7 +638,6 @@ class OptionsController(BaseController):
             EXPORT_BOTH_RAW_DATA_AND_FIGURES,
             raw=True,
             limit=10,
-            sources=["chartexchange", "tradier"],
         )
         if ns_parser:
             if self.ticker:
@@ -803,7 +803,6 @@ class OptionsController(BaseController):
             parser,
             other_args,
             EXPORT_BOTH_RAW_DATA_AND_FIGURES,
-            sources=["tradier", "yf"],
         )
         if ns_parser:
             if self.ticker:
@@ -873,7 +872,6 @@ class OptionsController(BaseController):
             parser,
             other_args,
             EXPORT_BOTH_RAW_DATA_AND_FIGURES,
-            sources=["tradier", "yf"],
         )
         if ns_parser:
             if self.ticker:
@@ -949,7 +947,6 @@ class OptionsController(BaseController):
             parser,
             other_args,
             EXPORT_BOTH_RAW_DATA_AND_FIGURES,
-            sources=["tradier", "yf"],
         )
         if ns_parser:
             if self.ticker:

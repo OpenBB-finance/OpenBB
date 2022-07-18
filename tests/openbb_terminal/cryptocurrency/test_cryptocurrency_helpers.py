@@ -81,47 +81,6 @@ def fixture_get_bitcoin(mocker):
     return df
 
 
-# pylint: disable=R0904
-
-
-# @pytest.mark.vcr
-# def test_coin_api_load(get_bitcoin):
-#    """
-#    Mock load function through get_coin_market_chart_by_id.
-#    Mock returns a dict saved as .json
-#    """
-#    df = get_bitcoin
-
-
-# @pytest.mark.vcr
-# def test_coin_api_load_df_for_ta(get_bitcoin, mocker):
-#    """
-#    Mock load function through get_coin_market_chart_by_id.
-#    Mock returns a dict saved as .json
-#    """
-#    mock_load = mocker.patch(
-#        base
-#        + "due_diligence.pycoingecko_model.CoinGeckoAPI.get_coin_market_chart_by_id"
-#    )
-#    df = get_bitcoin
-
-# with open(
-#    "tests/openbb_terminal/cryptocurrency/json/test_cryptocurrency_helpers/btc_usd_test_data.json",
-#    encoding="utf8",
-# ) as f:
-#    sample_return = json.load(f)
-#
-#    mock_load.return_value = sample_return
-#    mock_return, vs = load_ta_data(
-#        coin_map_df=coin_map_df,
-#        source="cg",
-#        currency="usd",
-#        days=30,
-#    )
-#    assert mock_return.shape == (31, 4)
-#   assert vs == "usd"
-
-
 @pytest.mark.record_stdout
 @pytest.mark.vcr
 def test_get_coins():
@@ -141,7 +100,7 @@ def test_coin_chart(get_bitcoin):
     # coin_map_df = prepare_all_coins_df().set_index("Symbol").loc[symbol.upper()].iloc[0]
 
     plot_chart(
-        "btc",
-        df,
-        "usd",
+        symbol="btc",
+        prices_df=df,
+        currency="usd",
     )

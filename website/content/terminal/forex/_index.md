@@ -7,7 +7,7 @@ geekdocCollapseSection: true
 ---
 The Forex menu enables you to <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/forex/load/" target="_blank">load</a> any combination of currencies (e.g. USDEUR or JPYGBP), show current <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/forex/quote/" target="_blank">quote</a> and historical data (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/forex/candle/" target="_blank">candle</a>) as well as
 forward rates (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/forex/fwd/" target="_blank">fwd</a>). Furthermore, the menu has the ability to also apply
-<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/common/technical_analysis/" target="_blank">Technical Analysis</a> and <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/common/prediction_techniques/" target="_blank">Prediction Techniques</a> while also having an integration with <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/forex/oanda/" target="_blank">Oanda</a>.
+<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/common/ta/" target="_blank">Technical Analysis</a> and <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/common/prediction_techniques/" target="_blank">Prediction Techniques</a> while also having an integration with <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/forex/oanda/" target="_blank">Oanda</a>.
 
 ## How to use
 
@@ -104,7 +104,7 @@ Lastly, insights in the forward valuations can also be given with <a href="https
 └───────────────┴────────┴────────┴────────┴───────────┘
 ```
 
-Furthermore, the ability exists to take the currency pair to the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/common/technical_analysis/" target="_blank">Technical Analysis</a> menu by typing `ta`:
+Furthermore, the ability exists to take the currency pair to the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/common/ta/" target="_blank">Technical Analysis</a> menu by typing `ta`:
 
 ![Technical Analysis for Forex](https://user-images.githubusercontent.com/46355364/176427913-ad960b1b-7a0d-4143-85d6-925e0d5797dd.png)
 
@@ -122,7 +122,7 @@ Then, let's see how this currency pair has changed over the last years with `can
 
 ![Candle with Moving Averages](https://user-images.githubusercontent.com/46355364/176427947-26346800-173b-4195-8a58-1add2a66ae31.png)
 
-Now it's time to take this to the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/common/quantitative_analysis/" target="_blank">Quantitative Analysis</a> menu by typing `qa`. This returns the following:
+Now it's time to take this to the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/common/qa/" target="_blank">Quantitative Analysis</a> menu by typing `qa`. This returns the following:
 
 ![Quantitative Analysis menu for Forex](https://user-images.githubusercontent.com/46355364/176427981-4157b6ef-5fea-4c02-a7a1-d34400b7cbc1.png)
 

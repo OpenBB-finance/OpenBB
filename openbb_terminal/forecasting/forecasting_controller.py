@@ -1084,6 +1084,7 @@ class ForecastingController(BaseController):
             # update forecast menu with new column on modified dataset
             self.refresh_datasets_on_menu()
 
+        self.update_runtime_choices()
         console.print()
 
     @log_start_end(log=logger)
@@ -1119,6 +1120,7 @@ class ForecastingController(BaseController):
             # update forecast menu with new column on modified dataset
             self.refresh_datasets_on_menu()
 
+        self.update_runtime_choices()
         console.print()
 
     @log_start_end(log=logger)
@@ -1200,6 +1202,7 @@ class ForecastingController(BaseController):
             # update forecast menu with new column on modified dataset
             self.refresh_datasets_on_menu()
 
+        self.update_runtime_choices()
         console.print()
 
     @log_start_end(log=logger)
@@ -1240,6 +1243,7 @@ class ForecastingController(BaseController):
             # update forecast menu with new column on modified dataset
             self.refresh_datasets_on_menu()
 
+        self.update_runtime_choices()
         console.print()
 
     @log_start_end(log=logger)
@@ -1280,6 +1284,7 @@ class ForecastingController(BaseController):
             # update forecast menu with new column on modified dataset
             self.refresh_datasets_on_menu()
 
+        self.update_runtime_choices()
         console.print()
 
     @log_start_end(log=logger)
@@ -1321,6 +1326,7 @@ class ForecastingController(BaseController):
             # update forecast menu with new column on modified dataset
             self.refresh_datasets_on_menu()
 
+        self.update_runtime_choices()
         console.print()
 
     @log_start_end(log=logger)
