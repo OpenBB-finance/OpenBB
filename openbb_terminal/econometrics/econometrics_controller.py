@@ -181,7 +181,6 @@ class EconometricsController(BaseController):
                 "root",
                 "granger",
                 "coint",
-                "regressions",
             ]:
                 choices[feature] = dict()
 
