@@ -8,17 +8,17 @@ dtype: float64"
 ytd,"TotalHoldings    0.759
 dtype: float64","Adj Close    0.722
 dtype: float64"
-3m,"TotalHoldings    0.652
-dtype: float64","Adj Close    0.577
+3m,"TotalHoldings    0.592
+dtype: float64","Adj Close    0.534
 dtype: float64"
-6m,"TotalHoldings    0.761
-dtype: float64","Adj Close    0.713
+6m,"TotalHoldings    0.752
+dtype: float64","Adj Close    0.661
 dtype: float64"
-1y,"TotalHoldings    0.597
-dtype: float64","Adj Close    0.489
+1y,"TotalHoldings    0.567
+dtype: float64","Adj Close    0.453
 dtype: float64"
-3y,"TotalHoldings   -1.113
-dtype: float64","Adj Close   -0.752
+3y,"TotalHoldings   -1.125
+dtype: float64","Adj Close   -0.773
 dtype: float64"
 5y,"TotalHoldings   -1.308
 dtype: float64","Adj Close   -1.483
