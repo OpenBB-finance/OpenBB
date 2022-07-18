@@ -8,9 +8,8 @@ import numpy as np
 import pandas as pd
 from sklearn import neighbors
 
-from openbb_terminal.common.prediction_techniques.pred_helper import (
-    prepare_scale_train_valid_test,
-)
+from openbb_terminal.forecasting.helpers import prepare_scale_train_valid_test
+
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import get_next_stock_market_days
 from openbb_terminal.rich_config import console

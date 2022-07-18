@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 from openbb_terminal.forecasting import arima_model, helpers
-from openbb_terminal.common.prediction_techniques.pred_helper import (
+from openbb_terminal.forecasting.helpers import (
     print_prediction_kpis,
     print_pretty_prediction,
 )

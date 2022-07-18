@@ -8,9 +8,9 @@ import pandas as pd
 from matplotlib import pyplot as plt
 
 from openbb_terminal.forecasting import knn_model
-from openbb_terminal.common.prediction_techniques.pred_helper import (
-    plot_data_predictions,
+from openbb_terminal.forecasting.helpers import (
     print_pretty_prediction,
+    plot_data_predictions,
 )
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
