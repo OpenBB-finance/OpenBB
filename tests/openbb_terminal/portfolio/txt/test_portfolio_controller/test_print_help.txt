@@ -16,7 +16,6 @@ Benchmark:
 Graphs:[unvl]
     holdv            holdings of assets (absolute value)
     holdp            portfolio holdings of assets (in percentage)
-    cret             cumulative returns
     yret             yearly returns
     mret             monthly returns
     dret             daily returns
