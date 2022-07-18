@@ -115,6 +115,7 @@ class FunctionFactory:
 
 
 class MenuFiller:
+    """Creates a filler callable for the menus"""
     def __init__(self, function: Callable):
         self.__function = function
 
@@ -133,11 +134,7 @@ class Loader:
         print("""This is the API of the OpenBB Terminal.
         
         Use the API to get data directly into your jupyter notebook or directly use it in your application.
-        For documentation use: 
-        - help(<api>.<menu>.<command>.<model or view>)
-        - or: <api>.<menu>.<command>.<model or view>.__doc__
         
-        Use <api>.settings() to change the settings of the api instance (for example: openbb.settings(bla bla)
         ...
         
         For more information see the official documentation at: https://openbb-finance.github.io/OpenBBTerminal/api/
@@ -148,9 +145,23 @@ class Loader:
         pass
 
     def load_menus(self):
-        """Creates the API structure (see api.stocks.command) by setting attributes and saving the functions"""
+        """Creates the API structure (see openbb.stocks.command) by setting attributes and saving the functions"""
 
         def menu_message(menu: str, function_map: dict):
+            """Creates a callable function, which prints a menus help message
+
+            Parameters
+            ----------
+            menu: str
+                Menu for which the help message is generated
+            function_map: dict
+                Dictionary with the functions and their shortcuts
+
+            Returns
+            -------
+            Callable:
+                Function which prints help message
+            """
             filtered_dict = {k: v for (k, v) in function_map.items() if menu in k}
 
             def f():
@@ -175,12 +186,16 @@ class Loader:
     @staticmethod
     def load_module(module_path: str) -> Optional[types.ModuleType]:
         """Load a module from a path.
-        Args:
-            module_path (str):
-                Module"s path.
-        Returns:
-            Optional[ModuleType]:
-                Loaded module or None.
+
+        Parameters
+        ----------
+        module_path: str
+            Module"s path.
+
+        Returns
+        -------
+        Optional[ModuleType]:
+            Loaded module or None.
         """
 
         try:
