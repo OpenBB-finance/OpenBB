@@ -66,7 +66,9 @@ class EconomyController(BaseController):
         "ecocal",
     ]
 
-    CHOICES_MENUS = ["pred", "qa"]
+    CHOICES_MENUS = [
+        "qa",
+    ]
 
     wsj_sortby_cols_dict = {c: None for c in ["ticker", "last", "change", "prevClose"]}
     map_period_list = ["1d", "1w", "1m", "3m", "6m", "1y"]
@@ -270,7 +272,6 @@ class EconomyController(BaseController):
         mt.add_raw("\n")
         mt.add_cmd("plot")
         mt.add_raw("\n")
-        mt.add_menu("pred")
         mt.add_menu("qa")
         console.print(text=mt.menu_text, menu="Economy")
 
@@ -1382,26 +1383,8 @@ class EconomyController(BaseController):
             os.remove(self.d_GROUPS[group] + ".jpg")
 
     @log_start_end(log=logger)
-    def call_pred(self, _):
-        """Process pred command"""
-        if not self.DATASETS:
-            console.print(
-                "There is no data stored yet. Please use either the 'macro', 'fred', 'index' and/or "
-                "'treasury' command in combination with the -st argument to be able to plot data.\n"
-            )
-            return
-
-        from openbb_terminal.economy.prediction.pred_controller import (
-            PredictionTechniquesController,
-        )
-
-        self.queue = self.load_class(
-            PredictionTechniquesController, self.DATASETS, self.queue
-        )
-
-    @log_start_end(log=logger)
     def call_qa(self, _):
-        """Process pred command"""
+        """Process qa command"""
         if not self.DATASETS:
             console.print(
                 "There is no data stored yet. Please use either the 'macro', 'fred', 'index' and/or "

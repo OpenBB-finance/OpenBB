@@ -49,7 +49,6 @@ class StocksController(StockBaseController):
         "ta",
         "ba",
         "qa",
-        "pred",
         "disc",
         "dps",
         "scr",
@@ -138,7 +137,6 @@ class StocksController(StockBaseController):
         mt.add_menu("bt", self.ticker)
         mt.add_menu("ta", self.ticker)
         mt.add_menu("qa", self.ticker)
-        mt.add_menu("pred", self.ticker)
         console.print(text=mt.menu_text, menu="Stocks")
 
     def custom_reset(self):
@@ -666,44 +664,3 @@ class StocksController(StockBaseController):
         # James: 5/27 I think it does now
         else:
             console.print("Use 'load <ticker>' prior to this command!", "\n")
-
-    @log_start_end(log=logger)
-    def call_pred(self, _):
-        """Process pred command"""
-        if obbff.ENABLE_PREDICT:
-            if self.ticker:
-                if self.interval == "1440min":
-                    try:
-                        from openbb_terminal.stocks.prediction_techniques import (
-                            pred_controller,
-                        )
-
-                        self.queue = self.load_class(
-                            pred_controller.PredictionTechniquesController,
-                            self.ticker,
-                            self.start,
-                            self.interval,
-                            self.stock,
-                            self.queue,
-                        )
-                    except ModuleNotFoundError as e:
-                        logger.exception(
-                            "One of the optional packages seems to be missing: %s",
-                            str(e),
-                        )
-                        console.print(
-                            "One of the optional packages seems to be missing: ",
-                            e,
-                            "\n",
-                        )
-
-                # TODO: This menu should work regardless of data being daily or not!
-                else:
-                    console.print("Load daily data to use this menu!", "\n")
-            else:
-                console.print("Use 'load <ticker>' prior to this command!", "\n")
-        else:
-            console.print(
-                "Predict is disabled. Check ENABLE_PREDICT flag on feature_flags.py",
-                "\n",
-            )

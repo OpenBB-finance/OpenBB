@@ -67,7 +67,6 @@ class CryptoController(CryptoBaseController):
         "defi",
         "tools",
         "nft",
-        "pred",
         "qa",
     ]
 
@@ -121,7 +120,6 @@ class CryptoController(CryptoBaseController):
         mt.add_menu("nft")
         mt.add_menu("dd", self.symbol)
         mt.add_menu("ta", self.symbol)
-        mt.add_menu("pred", self.symbol)
         mt.add_menu("qa", self.symbol)
         console.print(text=mt.menu_text, menu="Cryptocurrency")
 
@@ -329,7 +327,7 @@ class CryptoController(CryptoBaseController):
 
     @log_start_end(log=logger)
     def call_qa(self, _):
-        """Process pred command"""
+        """Process qa command"""
         if self.symbol:
             from openbb_terminal.cryptocurrency.quantitative_analysis import (
                 qa_controller,
@@ -344,39 +342,6 @@ class CryptoController(CryptoBaseController):
                     self.current_df,
                     self.queue,
                 )
-
-    @log_start_end(log=logger)
-    def call_pred(self, _):
-        """Process pred command"""
-        if obbff.ENABLE_PREDICT:
-            if self.symbol:
-                try:
-                    from openbb_terminal.cryptocurrency.prediction_techniques import (
-                        pred_controller,
-                    )
-
-                    if self.current_interval != "1day":
-                        console.print("Only interval `1day` is possible for now.\n")
-                    else:
-                        self.queue = self.load_class(
-                            pred_controller.PredictionTechniquesController,
-                            self.symbol,
-                            self.current_df,
-                            self.queue,
-                        )
-                except ImportError:
-                    logger.exception("Tensorflow not available")
-                    console.print("[red]Run pip install tensorflow to continue[/red]\n")
-
-            else:
-                console.print(
-                    "No coin selected. Use 'load' to load the coin you want to look at.\n"
-                )
-        else:
-            console.print(
-                "Predict is disabled. Check ENABLE_PREDICT flag on feature_flags.py",
-                "\n",
-            )
 
     @log_start_end(log=logger)
     def call_onchain(self, _):

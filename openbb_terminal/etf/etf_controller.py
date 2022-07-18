@@ -64,7 +64,6 @@ class ETFController(BaseController):
     ]
     CHOICES_MENUS = [
         "ta",
-        "pred",
         "ca",
         "scr",
         "disc",
@@ -114,7 +113,6 @@ class ETFController(BaseController):
         mt.add_cmd("compare", "StockAnalysis", self.etf_name)
         mt.add_raw("\n")
         mt.add_menu("ta", self.etf_name)
-        mt.add_menu("pred", self.etf_name)
         console.print(text=mt.menu_text, menu="ETF")
 
     def custom_reset(self):
@@ -644,42 +642,6 @@ class ETFController(BaseController):
             )
         else:
             console.print("Use 'load <ticker>' prior to this command!", "\n")
-
-    @log_start_end(log=logger)
-    def call_pred(self, _):
-        """Process pred command"""
-        if obbff.ENABLE_PREDICT:
-            if self.etf_name:
-                try:
-                    from openbb_terminal.etf.prediction_techniques import (
-                        pred_controller,
-                    )
-
-                    self.queue = self.load_class(
-                        pred_controller.PredictionTechniquesController,
-                        self.etf_name,
-                        self.etf_data.index[0],
-                        "1440min",
-                        self.etf_data,
-                        self.queue,
-                    )
-
-                except ModuleNotFoundError as e:
-                    logger.exception(
-                        "One of the optional packages seems to be missing: %s", str(e)
-                    )
-                    console.print(
-                        "One of the optional packages seems to be missing: ",
-                        e,
-                        "\n",
-                    )
-            else:
-                console.print("Use 'load <ticker>' prior to this command!", "\n")
-        else:
-            console.print(
-                "Predict is disabled. Check ENABLE_PREDICT flag on feature_flags.py",
-                "\n",
-            )
 
     @log_start_end(log=logger)
     def call_ca(self, _):
