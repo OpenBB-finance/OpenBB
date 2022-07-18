@@ -811,9 +811,9 @@ class PortfolioModel:
         self.portfolio_assets_allocation = pd.DataFrame()
         self.portfolio_regional_allocation = pd.DataFrame()
         self.portfolio_country_allocation = pd.DataFrame()
-
-        # Prices
         self.portfolio_historical_prices = pd.DataFrame()
+        self.empty = True
+
         self.risk_free_rate = float(0)
 
         # Benchmark
@@ -822,17 +822,18 @@ class PortfolioModel:
         self.benchmark_historical_prices = pd.DataFrame()
         self.benchmark_returns = pd.DataFrame()
         self.benchmark_trades = pd.DataFrame()
-
         self.benchmark_assets_allocation = pd.DataFrame()
         self.benchmark_regional_allocation = pd.DataFrame()
         self.benchmark_country_allocation = pd.DataFrame()
 
         # Set and preprocess orderbook
-        self.__set_orderbook(orderbook)
+        if not orderbook.empty:
+            self.__set_orderbook(orderbook)
 
     def __set_orderbook(self, orderbook):
         self.__orderbook = orderbook
         self.preprocess_orderbook()
+        self.empty = False
 
     def get_orderbook(self):
         return self.__orderbook
@@ -858,17 +859,21 @@ class PortfolioModel:
         # descrbibe outputs
 
         try:
+            console.print(" Preprocessing orderbook: ", end="")
             # Convert Date to datetime
             self.__orderbook["Date"] = pd.to_datetime(self.__orderbook["Date"])
+            console.print(".", end="")
 
             # Sort orderbook by date
             self.__orderbook = self.__orderbook.sort_values(by="Date")
+            console.print(".", end="")
 
             # Capitalize Ticker and Type [of instrument...]
             self.__orderbook["Ticker"] = self.__orderbook["Ticker"].map(
                 lambda x: x.upper()
             )
             self.__orderbook["Type"] = self.__orderbook["Type"].map(lambda x: x.upper())
+            console.print(".", end="")
 
             # Translate side: ["deposit", "buy"] -> 1 and ["withdrawal", "sell"] -> -1
             self.__orderbook["Side"] = self.__orderbook["Side"].map(
@@ -876,17 +881,20 @@ class PortfolioModel:
                 if x.lower() in ["deposit", "buy"]
                 else (-1 if x.lower() in ["withdrawal", "sell"] else 0)
             )
+            console.print(".", end="")
 
             # Convert quantity to signed integer
             self.__orderbook["Quantity"] = (
-                self.__orderbook["Quantity"] * self.__orderbook["Side"]
+                abs(self.__orderbook["Quantity"]) * self.__orderbook["Side"]
             )
+            console.print(".", end="")
 
             # Determining the investment/divestment value
             self.__orderbook["Investment"] = (
                 self.__orderbook["Quantity"] * self.__orderbook["Price"]
                 - self.__orderbook["Fees"]
             )
+            console.print(".", end="")
 
             # Reformat crypto tickers to yfinance format (e.g. BTC -> BTC-USD)
             crypto_trades = self.__orderbook[self.__orderbook.Type == "CRYPTO"]
@@ -896,6 +904,7 @@ class PortfolioModel:
                     crypto_trades.Ticker, crypto_trades.Currency
                 )
             ]
+            console.print(".", end="")
 
             # Create tickers dictionary with structure {'Type': [Ticker]}
             for ticker_type in set(self.__orderbook["Type"]):
@@ -906,22 +915,77 @@ class PortfolioModel:
                         ]
                     )
                 )
+            console.print(".", end="")
 
             # Create list with tickers except cash
             self.tickers_list = list(set(self.__orderbook["Ticker"]))
+            console.print(".", end="")
 
             # Save orderbook inception date
             self.inception_date = self.__orderbook["Date"][0]
+            console.print(".", end="")
 
-            # Save trades static data
-            self.static_data = self.__orderbook.pivot(
-                index="Ticker",
-                columns=[],
-                values=["Type", "Sector", "Industry", "Country"],
-            )
+            # Populate fields Sector, Industry and Country
+            if not (
+                {"Sector", "Industry", "Country", "Region"}.issubset(
+                    set(self.__orderbook.columns)
+                )
+            ):
+                # if fields not in the orderbook add missing
+                if "Sector" not in self.__orderbook.columns:
+                    self.__orderbook["Sector"] = np.nan
+                if "Industry" not in self.__orderbook.columns:
+                    self.__orderbook["Industry"] = np.nan
+                if "Country" not in self.__orderbook.columns:
+                    self.__orderbook["Country"] = np.nan
+                if "Region" not in self.__orderbook.columns:
+                    self.__orderbook["Region"] = np.nan
+
+                self.load_company_data()
+            elif (
+                self.__orderbook.loc[
+                    self.__orderbook["Type"] == "STOCK",
+                    ["Sector", "Industry", "Country", "Region"],
+                ]
+                .isnull()
+                .values.any()
+            ):
+                # if any fields is empty for Stocks (overwrites any info there)
+                self.load_company_data()
 
         except Exception:
-            console.print("Could not preprocess orderbook.")
+            console.print("\nCould not preprocess orderbook.")
+
+    def load_company_data(self):
+
+        console.print("\n    Loading company data: ", end="")
+
+        for ticker_type, ticker_list in self.tickers.items():
+
+            # yfinance only has sector, industry and country for stocks
+            if ticker_type == "STOCK":
+                for ticker in ticker_list:
+
+                    # Only gets fields for tickers with missing data
+                    # TODO: Should only get field missing for tickers with missing data
+                    # now it's taking the 4 of them
+                    if (
+                        self.__orderbook.loc[
+                            self.__orderbook["Ticker"] == ticker,
+                            ["Sector", "Industry", "Country", "Region"],
+                        ]
+                        .isnull()
+                        .values.any()
+                    ):
+                        ticker_info_list = portfolio_helper.get_info_from_ticker(ticker)
+
+                        # replace fields in orderbook
+                        self.__orderbook.loc[
+                            self.__orderbook.Ticker == ticker,
+                            ["Sector", "Industry", "Country", "Region"],
+                        ] = ticker_info_list
+                        # Display progress
+                        console.print(".", end="")
 
     def load_benchmark(self, ticker: str = "SPY", full_shares: bool = False):
         """Adds benchmark dataframe
@@ -1003,6 +1067,7 @@ class PortfolioModel:
 
     def generate_portfolio_data(self):
         """Generates portfolio data from orderbook"""
+
         self.load_portfolio_historical_prices()
         self.populate_historical_trade_data()
         self.calculate_value()
@@ -1061,6 +1126,8 @@ class PortfolioModel:
     def load_portfolio_historical_prices(self, use_close: bool = False):
         """Loads historical adj close prices for tickers in list of trades"""
 
+        console.print("\n      Loading price data: ", end="")
+
         for ticker_type, data in self.tickers.items():
             if ticker_type in ["STOCK", "ETF", "CRYPTO"]:
                 # Download yfinance data
@@ -1078,13 +1145,16 @@ class PortfolioModel:
                     [self.portfolio_historical_prices, price_data], axis=1
                 )
             else:
-                console.print("Type not supported in the orderbook.")
+                console.print(f"Type {ticker_type} not supported.")
+
+            console.print(".", end="")
 
             # Fill missing values with last known price
             self.portfolio_historical_prices.fillna(method="ffill", inplace=True)
 
     def populate_historical_trade_data(self):
         """Create a new dataframe to store historical prices by ticker"""
+
         trade_data = self.__orderbook.pivot(
             index="Date",
             columns="Ticker",
@@ -1130,6 +1200,9 @@ class PortfolioModel:
 
     def calculate_value(self):
         """Calculate value from historical data"""
+
+        console.print("\n     Calculating returns: ", end="")
+
         trade_data = self.historical_trade_data
 
         # For each type [STOCK, ETF, etc] calculate value value by trade date
@@ -1150,30 +1223,28 @@ class PortfolioModel:
         for ticker_type, data in self.tickers.items():
             self.itemized_value[ticker_type] = trade_data["End Value"][data].sum(axis=1)
 
-        # Initial Value = Cumulative Investment - (Previous End Value - Previous Initial Value)
         trade_data[
-            pd.MultiIndex.from_product([["Initial Value"], self.tickers_list])
+            pd.MultiIndex.from_product(
+                [["Initial Value"], self.tickers_list + ["Total"]]
+            )
         ] = 0
 
-        for i, date in enumerate(trade_data.index):
-            if i == 0:
-                for t in self.tickers_list:
-                    trade_data.at[date, ("Initial Value", t)] = trade_data.iloc[i][
-                        "Investment"
-                    ][t]
-            else:
-                for t in self.tickers_list:
-                    trade_data.at[date, ("Initial Value", t)] = (
-                        +trade_data.iloc[i - 1]["End Value"][t]
-                        + trade_data.iloc[i]["Investment"][t]
-                        - trade_data.iloc[i - 1]["Investment"][t]
-                    )
+        # Initial Value = Previous End Value + Investment changes
+        trade_data["Initial Value"] = trade_data["End Value"].shift(1) + trade_data[
+            "Investment"
+        ].diff(periods=1)
 
-        trade_data.loc[:, ("Initial Value", "Total")] = trade_data["Initial Value"][
-            self.tickers_list
-        ].sum(axis=1)
+        # Set first day Initial Value as the Investment (NaNs break first period)
+        for t in self.tickers_list + ["Total"]:
+            trade_data.at[trade_data.index[0], ("Initial Value", t)] = trade_data.iloc[
+                0
+            ]["Investment"][t]
+
+        console.print(".", end="")
 
         self.historical_trade_data = trade_data
+
+        console.print("\n")
 
     def calculate_reserves(self):
         """_summary_"""
