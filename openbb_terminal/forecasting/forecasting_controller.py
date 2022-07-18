@@ -588,7 +588,7 @@ class ForecastingController(BaseController):
             )
             # if user does not put in --target-dataset
         return super().parse_known_args_and_warn(
-            parser, other_args, export_allowed, raw, limit, sources
+            parser, other_args, export_allowed, raw, limit
         )
 
     @log_start_end(log=logger)
