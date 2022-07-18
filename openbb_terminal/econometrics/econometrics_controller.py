@@ -69,7 +69,9 @@ class EconometricsController(BaseController):
         "granger",
         "coint",
     ]
-    CHOICES_MENUS: List[str] = ["qa",]
+    CHOICES_MENUS: List[str] = [
+        "qa",
+    ]
     pandas_plot_choices = [
         "line",
         "scatter",
