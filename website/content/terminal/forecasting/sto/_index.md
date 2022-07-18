@@ -2,11 +2,9 @@
 uusage: sto [-d {OPTIONS}] [--period PERIOD] [-h] [-l LIMIT]
 ```
 
-Add exponential moving average to dataset based on specific column.
-
-```
 Add in Stochastic Oscillator %K and %D
 
+```
 optional arguments:
   -d {f,TSLA}, --target-dataset {f,TSLA}
                         The name of the dataset you want to select (default: None)

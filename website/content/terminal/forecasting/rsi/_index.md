@@ -2,11 +2,9 @@
 usage: rsi [-d {OPTIONS}] [-c TARGET_COLUMN] [--period PERIOD] [-h]
 ```
 
-Add exponential moving average to dataset based on specific column.
-
-```
 Add rsi to dataset based on specific column.
 
+```
 optional arguments:
   -d {TSLA}, --target-dataset {TSLA}
                         The name of the dataset you want to select (default: None)
