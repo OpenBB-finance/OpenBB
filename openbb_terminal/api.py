@@ -1,5 +1,5 @@
 """OpenBB Terminal API."""
-
+from inspect import signature, Parameter
 import types
 import functools
 import importlib
@@ -18,7 +18,7 @@ shortcuts = {
     },
 }
 """
-api = APILoader(shortcuts=shortcuts)
+api = Loader(shortcuts=shortcuts)
 api.stocks.get_news()
 api.economy.bigmac(chart=True)
 api.economy.bigmac(chart=False)
@@ -58,20 +58,24 @@ def change_docstring(api_callable, model: Callable, view: Callable = None):
     if view is None:
         api_callable.__doc__ = model.__doc__
         api_callable.__name__ = model.__name__
+        api_callable.__signature__ = signature(model)
     else:
         index = view.__doc__.find("Parameters")
         all_parameters = "\nAPI function, use the chart kwarg for getting the view model and it's plot. See every parmater below:\n\n\t" + view.__doc__[index:] + """chart: bool
     If the view and its chart shall be used"""
         api_callable.__doc__ = all_parameters + "\n\nModel doc:\n" + model.__doc__ + "\n\nView doc:\n" + view.__doc__
         api_callable.__name__ = model.__name__.replace("get_", "")
+        parameters = [param for param in signature(view).parameters.values()]
+        chart_parameter = [Parameter("chart", Parameter.POSITIONAL_OR_KEYWORD, annotation=bool, default=False)]
+        api_callable.__signature__ = signature(view).replace(parameters=parameters+chart_parameter)
 
     return api_callable
 
 
-class APIFactory:
-    """The API Factory, which creates the callable instance"""
+class FunctionFactory:
+    """The API Function Factory, which creates the callable instance"""
     def __init__(self, model: Callable, view: Callable = None):
-        """Initialises the APIFactory instance
+        """Initialises the FunctionFactory instance
 
         Parameters
         ----------
@@ -110,7 +114,7 @@ class APIFactory:
             return self.model(*args, **kwargs)
 
 
-class Item:
+class MenuFiller:
     def __init__(self, function: Callable):
         self.__function = function
 
@@ -118,11 +122,11 @@ class Item:
         self.__function(*args, **kwargs)
 
 
-class APILoader:
-    """The APILoader class"""
+class Loader:
+    """The Loader class"""
     def __init__(self, shortcuts: dict):
-        self.__mapping = self.build_mapping(shortcuts=shortcuts)
-        self.load_items()
+        self.__function_map = self.build_function_map(shortcuts=shortcuts)
+        self.load_menus()
 
     def __call__(self):
         """Prints help message"""
@@ -143,11 +147,11 @@ class APILoader:
     def settings(self):
         pass
 
-    def load_items(self):
+    def load_menus(self):
         """Creates the API structure (see api.stocks.command) by setting attributes and saving the functions"""
 
-        def menu_message(menu: str, mapping: dict):
-            filtered_dict = {k: v for (k, v) in mapping.items() if menu in k}
+        def menu_message(menu: str, function_map: dict):
+            filtered_dict = {k: v for (k, v) in function_map.items() if menu in k}
 
             def f():
                 print(menu.upper() + " Menu\n\nThe api commands of the the menu:")
@@ -155,18 +159,18 @@ class APILoader:
                     print("\t<api>." + command)
             return f
 
-        mapping = self.__mapping
-        for shortcut, function in mapping.items():
+        function_map = self.__function_map
+        for shortcut, function in function_map.items():
             shortcut_split = shortcut.split(".")
             last_shortcut = shortcut_split[-1]
 
-            previous = self
-            for item in shortcut_split[:-1]:
-                next_item = Item(function=menu_message(item, mapping))
-                previous.__setattr__(item, next_item)
-                previous = next_item
+            previous_menu = self
+            for menu in shortcut_split[:-1]:
+                next_menu = MenuFiller(function=menu_message(menu, function_map))
+                previous_menu.__setattr__(menu, next_menu)
+                previous_menu = next_menu
 
-            previous.__setattr__(last_shortcut, function)
+            previous_menu.__setattr__(last_shortcut, function)
 
     @staticmethod
     def load_module(module_path: str) -> Optional[types.ModuleType]:
@@ -213,8 +217,8 @@ class APILoader:
         return getattr(module, function_name)
 
     @classmethod
-    def build_mapping(cls, shortcuts: dict) -> dict:
-        """Builds dictionary with APIFactory instances as items
+    def build_function_map(cls, shortcuts: dict) -> dict:
+        """Builds dictionary with FunctionFactory instances as items
 
         Parameters
         ----------
@@ -224,9 +228,9 @@ class APILoader:
         Returns
         -------
         dict
-            Dictionary with APIFactory instances as items and string path as keys
+            Dictionary with FunctionFactory instances as items and string path as keys
         """
-        mapping = {}
+        function_map = {}
 
         for shortcut in shortcuts.keys():
             model_path = shortcuts[shortcut].get("model")
@@ -242,11 +246,11 @@ class APILoader:
             else:
                 view_function = None
 
-            api_factory = APIFactory(model=model_function, view=view_function)
-            api_function = change_docstring(types.FunctionType(api_factory.api_callable.__code__, {}), model_function, view_function)
-            mapping[shortcut] = types.MethodType(api_function, api_factory)
+            function_factory = FunctionFactory(model=model_function, view=view_function)
+            function_with_doc = change_docstring(types.FunctionType(function_factory.api_callable.__code__, {}), model_function, view_function)
+            function_map[shortcut] = types.MethodType(function_with_doc, function_factory)
 
-        return mapping
+        return function_map
 
 
-api = APILoader(shortcuts=shortcuts)
+openbb = Loader(shortcuts=shortcuts)
