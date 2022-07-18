@@ -80,7 +80,7 @@ X-Server is default in Linux distribution, and it's no need to install any clien
 
 We can use IPC socket to connect Desktop.
 
-Add this setting to 'setenv' file .
+Add this setting to your `.env` file.
 
 ```bash
 OPENBB_BACKEND=Qt5Agg
@@ -90,7 +90,7 @@ And run the following commands.
 
 ```bash
 xhost +local:
-docker run -it --rm --name openbb --env-file=./setenv -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix ghcr.io/openbb-finance/openbbterminal-poetry:latest
+docker run -it --rm --name openbb --env-file=./.env -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix ghcr.io/openbb-finance/openbbterminal-poetry:latest
 xhost -local:
 ```
 
