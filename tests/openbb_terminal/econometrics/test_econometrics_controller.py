@@ -30,7 +30,7 @@ def test_update_runtime_choices(controller):
         ["-f", "badpath.xlsx"],
         ["-f", "badpath.xlsx", "alias"],
         ["badpath.xlsx"],
-        ["cancer", "dataset"],
+        ["-f", "cancer", "-a", "dataset"],
         [],
         ["-ex"],
     ],
@@ -41,7 +41,7 @@ def test_call_load(controller, other):
 
 @pytest.mark.parametrize("other", [["dataset"], ["-n", "data"]])
 def test_call_export(controller, other):
-    controller.call_load(["cancer"])
+    controller.call_load(["-f", "cancer", "-a", "dataset"])
     controller.call_export(other)
 
 
@@ -49,7 +49,7 @@ def test_call_export(controller, other):
 @pytest.mark.record_stdout
 @pytest.mark.parametrize("other", [["data"], ["-n", "dataset"], []])
 def test_call_remove(controller, other):
-    controller.call_load(["cancer"])
+    controller.call_load(["-f", "cancer", "-a", "dataset"])
     controller.call_remove(other)
 
 
@@ -61,7 +61,7 @@ def test_call_options(controller, other):
 
 @pytest.mark.parametrize("other", [["cancer-dataset"], ["-c", "data"], []])
 def test_call_plot(controller, other):
-    controller.call_load(["cancer", "dataset"])
+    controller.call_load(["-f", "cancer", "-a", "dataset"])
     controller.call_plot(other)
 
 
@@ -76,7 +76,7 @@ def test_call_plot(controller, other):
     ],
 )
 def test_call_show(controller, other):
-    controller.call_load(["cancer", "dataset"])
+    controller.call_load(["-f", "cancer", "-a", "dataset"])
     controller.call_show(other)
     controller.datasets = {"dataset": pd.DataFrame()}
     controller.call_show(["dataset"])
@@ -85,10 +85,10 @@ def test_call_show(controller, other):
 @pytest.mark.record_stdout
 @pytest.mark.parametrize("other", [["data"], ["-n", "dataset"], []])
 def test_call_desc(controller, other):
-    controller.call_load(["cancer", "dataset"])
+    controller.call_load(["-f", "cancer", "-a", "dataset"])
     controller.call_desc(other)
     controller.datasets = {"dataset": pd.DataFrame()}
-    controller.call_desc(["dataset"])
+    controller.call_desc(["-n", "dataset"])
 
 
 @pytest.mark.record_stdout
@@ -104,13 +104,13 @@ def test_call_desc(controller, other):
     ],
 )
 def test_call_type(controller, other):
-    controller.call_load(["cancer", "dataset"])
+    controller.call_load(["-f", "cancer", "-a", "dataset"])
     controller.call_type(other)
 
 
 @pytest.mark.record_stdout
 def test_call_index(controller):
-    controller.call_load(["cancer", "dataset"])
+    controller.call_load(["-f", "cancer", "-a", "dataset"])
     controller.call_index(["dataset", "cancer", "-a"])
     controller.call_index(["dataset", "cancer", "-a"])
     controller.call_index(["dataset", "cancer", "-d"])
@@ -120,7 +120,7 @@ def test_call_index(controller):
 @pytest.mark.record_stdout
 @pytest.mark.parametrize("other", [["data"], ["-n", "dataset"], []])
 def test_call_ols(controller, other):
-    controller.call_load(["cancer", "dataset"])
+    controller.call_load(["-f", "cancer", "-a", "dataset"])
     controller.call_ols(other)
 
 
@@ -129,7 +129,7 @@ def test_call_ols(controller, other):
     "other", [["cancer-dataset"], ["cancer-datast"], ["-n", "dataset"], []]
 )
 def test_call_norm(controller, other):
-    controller.call_load(["cancer", "dataset"])
+    controller.call_load(["-f", "cancer", "-a", "dataset"])
     controller.call_norm(other)
 
 
@@ -138,7 +138,7 @@ def test_call_norm(controller, other):
     "other", [["cancer-dataset"], ["cancer-datast"], ["-n", "dataset"], []]
 )
 def test_call_root(controller, other):
-    controller.call_load(["cancer", "dataset"])
+    controller.call_load(["-f", "cancer", "-a", "dataset"])
     controller.call_root(other)
 
 
@@ -151,46 +151,46 @@ def test_call_root(controller, other):
     ],
 )
 def test_call_panel(controller, other):
-    controller.call_load(["cancer", "dataset"])
+    controller.call_load(["-f", "cancer", "-a", "dataset"])
     controller.call_panel(other)
 
 
 @pytest.mark.record_stdout
 def test_call_compare(controller):
-    controller.call_load(["cancer", "dataset"])
+    controller.call_load(["-f", "cancer", "-a", "dataset"])
     controller.call_compare([])
 
 
 @pytest.mark.record_stdout
 @pytest.mark.parametrize("other", [["data"], ["-n", "dataset"], []])
 def test_call_dwat(controller, other):
-    controller.call_load(["cancer", "dataset"])
+    controller.call_load(["-f", "cancer", "-a", "dataset"])
     controller.call_dwat(other)
 
 
 @pytest.mark.record_stdout
 @pytest.mark.parametrize("other", [["data"], ["-n", "dataset"], []])
 def test_call_bgod(controller, other):
-    controller.call_load(["cancer", "dataset"])
+    controller.call_load(["-f", "cancer", "-a", "dataset"])
     controller.call_bgod(other)
 
 
 @pytest.mark.record_stdout
 @pytest.mark.parametrize("other", [["data"], ["-n", "dataset"], []])
 def test_call_bpag(controller, other):
-    controller.call_load(["cancer", "dataset"])
+    controller.call_load(["-f", "cancer", "-a", "dataset"])
     controller.call_bpag(other)
 
 
 @pytest.mark.record_stdout
 @pytest.mark.parametrize("other", [["data"], ["-n", "dataset"], []])
 def test_call_granger(controller, other):
-    controller.call_load(["cancer", "dataset"])
+    controller.call_load(["-f", "cancer", "-a", "dataset"])
     controller.call_granger(other)
 
 
 @pytest.mark.record_stdout
 @pytest.mark.parametrize("other", [["data"], ["-n", "dataset"], []])
 def test_call_coint(controller, other):
-    controller.call_load(["cancer", "dataset"])
+    controller.call_load(["-f", "cancer", "-a", "dataset"])
     controller.call_coint(other)

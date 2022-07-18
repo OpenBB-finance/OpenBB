@@ -1,2 +1,5 @@
-The following args couldn't be interpreted: ['cancer', 'dataset']
+
+                  0
+cancer      float64
+population  float64
 

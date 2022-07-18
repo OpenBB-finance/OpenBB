@@ -650,20 +650,24 @@ class EconometricsController(BaseController):
                     df,
                 )
             else:
-                df = self.datasets[ns_parser.name].describe()
-                print_rich_table(
-                    df,
-                    headers=self.datasets[ns_parser.name].columns,
-                    show_index=True,
-                    title=f"Statistics for dataset: '{ns_parser.name}'",
-                )
+                df = self.datasets[ns_parser.name]
+                if not df.empty:
+                    df = df.describe()
+                    print_rich_table(
+                        df,
+                        headers=self.datasets[ns_parser.name].columns,
+                        show_index=True,
+                        title=f"Statistics for dataset: '{ns_parser.name}'",
+                    )
 
-                export_data(
-                    ns_parser.export,
-                    os.path.dirname(os.path.abspath(__file__)),
-                    f"{ns_parser.name}_desc",
-                    df,
-                )
+                    export_data(
+                        ns_parser.export,
+                        os.path.dirname(os.path.abspath(__file__)),
+                        f"{ns_parser.name}_desc",
+                        df,
+                    )
+                else:
+                    console.print("Empty dataset")
 
     @log_start_end(log=logger)
     def call_type(self, other_args: List[str]):
