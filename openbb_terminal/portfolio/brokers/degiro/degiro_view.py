@@ -21,7 +21,6 @@ from openbb_terminal.decorators import check_api_key
 
 # IMPORTATION INTERNAL
 from openbb_terminal.helper_funcs import (
-    export_data,
     print_rich_table,
 )
 from openbb_terminal.portfolio.brokers.degiro.degiro_model import DegiroModel
