@@ -153,8 +153,6 @@ class FundamentalAnalysisController(StockBaseController):
         mt.add_cmd("earnings", "Alpha Vantage")
         mt.add_cmd("fraud", "Alpha Vantage")
         mt.add_cmd("dupont", "Alpha Vantage")
-        mt.add_raw("\n")
-        mt.add_info("_sources_")
         console.print(text=mt.menu_text, menu="Stocks - Fundamental Analysis")
 
     def custom_reset(self):

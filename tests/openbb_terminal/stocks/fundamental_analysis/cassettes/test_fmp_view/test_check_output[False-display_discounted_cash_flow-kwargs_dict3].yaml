@@ -10,8 +10,8 @@ interactions:
     uri: https://financialmodelingprep.com/api/v3/discounted-cash-flow/PM?apikey=MOCK_API_KEY&limit=0&period=annual
   response:
     body:
-      string: "[ {\n  \"symbol\" : \"PM\",\n  \"date\" : \"2022-07-18\",\n  \"dcf\"
-        : 93.06760436737315,\n  \"Stock Price\" : 90.18\n} ]"
+      string: "[ {\n  \"symbol\" : \"PM\",\n  \"date\" : \"2022-07-19\",\n  \"dcf\"
+        : 93.84760436737315,\n  \"Stock Price\" : 90.96\n} ]"
     headers:
       Access-Control-Allow-Headers:
       - origin, content-type, accept, Authorization, authorization
@@ -26,13 +26,15 @@ interactions:
       Content-Type:
       - application/json;charset=UTF-8
       Date:
-      - Mon, 18 Jul 2022 09:04:41 GMT
+      - Tue, 19 Jul 2022 18:57:46 GMT
       Server:
       - nginx/1.14.0 (Ubuntu)
       Transfer-Encoding:
       - chunked
       Vary:
       - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
     status:
       code: 200
       message: ''
@@ -81,7 +83,7 @@ interactions:
       Content-Type:
       - application/json;charset=UTF-8
       Date:
-      - Mon, 18 Jul 2022 09:04:41 GMT
+      - Tue, 19 Jul 2022 18:57:46 GMT
       Server:
       - nginx/1.14.0 (Ubuntu)
       Transfer-Encoding:

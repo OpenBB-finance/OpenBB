@@ -14,7 +14,7 @@ Ticker: TSLA
     growth             growth of financial statement items and ratios                  [FMP]
     warnings           company warnings according to Sean Seah book                    [Market Watch]
     dcf                advanced Excel customizable discounted cash flow                [Stockanalysis]
-    dcfc               stocks/fa/dcfc                                                  [FMP]
+    dcfc               determine the (historical) discounted cash flow                 [FMP]
     info               information scope of the company                                [Yahoo Finance]
     mktcap             estimated market cap                                            [Yahoo Finance]
     shrs               shareholders (insiders, institutions and mutual funds)          [Yahoo Finance]
@@ -32,6 +32,4 @@ Ticker: TSLA
     earnings           earnings dates and reported EPS                                 [Alpha Vantage]
     fraud              key fraud ratios                                                [Alpha Vantage]
     dupont             detailed breakdown for return on equity                         [Alpha Vantage]
-
-Other sources:
 

@@ -153,11 +153,13 @@ def display_discounted_cash_flow(
     """
     dcf = fmp_model.get_dcf(ticker, number, quarterly)
     dcf = dcf[dcf.columns[::-1]]
+    dcf.columns = dcf.iloc[0].values
+    dcf = dcf.drop("Date")
     if dcf.empty:
         console.print("[red]No data available[/red]\n")
     else:
         print_rich_table(
-            dcf, headers=[""], title="Discounted Cash Flow", show_index=True
+            dcf, title="Discounted Cash Flow", show_index=True
         )
 
         export_data(export, os.path.dirname(os.path.abspath(__file__)), "dcf", dcf)
