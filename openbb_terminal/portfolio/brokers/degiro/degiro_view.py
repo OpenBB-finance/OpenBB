@@ -511,8 +511,6 @@ class DegiroView:
 
         if portfolio_df is not None:
 
-            now = datetime.now()
-
             # In this scenario the path was provided, e.g. --export pt.csv, pt.jpg
             if "." in ns_parser.export:
                 filename = ns_parser.export
