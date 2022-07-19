@@ -158,9 +158,7 @@ def display_discounted_cash_flow(
     if dcf.empty:
         console.print("[red]No data available[/red]\n")
     else:
-        print_rich_table(
-            dcf, title="Discounted Cash Flow", show_index=True
-        )
+        print_rich_table(dcf, title="Discounted Cash Flow", show_index=True)
 
         export_data(export, os.path.dirname(os.path.abspath(__file__)), "dcf", dcf)
 
