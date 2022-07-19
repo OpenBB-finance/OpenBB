@@ -52,6 +52,7 @@ def test_create_closet_match_df(recorder):
     recorder.capture(value)
 
 
+@pytest.mark.vcr
 @pytest.mark.parametrize(
     "coin, vs",
     [
