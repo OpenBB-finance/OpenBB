@@ -16,6 +16,7 @@ from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.economy import (
     alphavantage_view,
+    economy_helpers,
     finviz_view,
     nasdaq_model,
     nasdaq_view,
@@ -561,8 +562,8 @@ class EconomyController(BaseController):
                     "_".join(column) for column in self.DATASETS["macro"].columns
                 ]
 
-                self.stored_datasets += (
-                    f"\n  macro    : {self.DATASETS['macro'].columns[0]}"
+                self.stored_datasets = economy_helpers.update_stored_datasets_string(
+                    self.DATASETS
                 )
 
                 # Display data just loaded
@@ -577,6 +578,8 @@ class EconomyController(BaseController):
                 )
 
                 self.update_runtime_choices()
+                if obbff.ENABLE_EXIT_AUTO_HELP:
+                    self.print_help()
 
     @check_api_key(["API_FRED_KEY"])
     def call_fred(self, other_args: List[str]):
@@ -663,8 +666,8 @@ class EconomyController(BaseController):
                     series_dict, ns_parser.start_date, ns_parser.end_date
                 )
 
-                self.stored_datasets += (
-                    f"\n  fred     : {self.DATASETS['fred'].columns[0]}"
+                self.stored_datasets = economy_helpers.update_stored_datasets_string(
+                    self.DATASETS
                 )
 
                 fred_view.display_fred_series(
@@ -677,6 +680,8 @@ class EconomyController(BaseController):
                 )
 
                 self.update_runtime_choices()
+                if obbff.ENABLE_EXIT_AUTO_HELP:
+                    self.print_help()
 
     @log_start_end(log=logger)
     def call_index(self, other_args: List[str]):
@@ -799,8 +804,8 @@ class EconomyController(BaseController):
                         column=ns_parser.column,
                     )
 
-                self.stored_datasets += (
-                    f"\n  index    : {self.DATASETS['index'].columns[0]}"
+                self.stored_datasets = economy_helpers.update_stored_datasets_string(
+                    self.DATASETS
                 )
 
                 yfinance_view.show_indices(
@@ -815,6 +820,8 @@ class EconomyController(BaseController):
                 )
 
                 self.update_runtime_choices()
+                if obbff.ENABLE_EXIT_AUTO_HELP:
+                    self.print_help()
 
     @log_start_end(log=logger)
     def call_treasury(self, other_args: List[str]):
@@ -913,8 +920,8 @@ class EconomyController(BaseController):
                     "_".join(column) for column in self.DATASETS["treasury"].columns
                 ]
 
-                self.stored_datasets += (
-                    f"\n  treasury : {self.DATASETS['treasury'].columns[0]}"
+                self.stored_datasets = economy_helpers.update_stored_datasets_string(
+                    self.DATASETS
                 )
 
                 econdb_view.show_treasuries(
@@ -928,6 +935,8 @@ class EconomyController(BaseController):
                 )
 
             self.update_runtime_choices()
+            if obbff.ENABLE_EXIT_AUTO_HELP:
+                self.print_help()
 
     @log_start_end(log=logger)
     def call_ycrv(self, other_args: List[str]):
@@ -1068,11 +1077,11 @@ class EconomyController(BaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="plot",
             description="This command can plot any data on two y-axes obtained from the macro, fred, index and "
-            "treasury commands. To be able to use this data, use the -st argument available within these "
-            "commands. For example 'macro -p GDP -c Germany Netherlands -st' will store the data for usage "
-            "in this command. Therefore, it allows you to plot different time series in one graph. You can use "
-            "the 'options' command to show the required arguments to be entered. The example above could be plotted "
-            "the following way: 'plot --y1 Germany_GDP --y2 Netherlands_GDP' or 'plot --y1 Germany_GDP Netherlands_GDP'",
+            "treasury commands. To be able to use this data, just load the available series from the previous "
+            "commands. For example 'macro -p GDP -c Germany Netherlands' will store the data for usage "
+            "in this command. Therefore, it allows you to plot different time series in one graph. "
+            "The example above could be plotted the following way: 'plot --y1 Germany_GDP --y2 Netherlands_GDP' "
+            "or 'plot --y1 Germany_GDP Netherlands_GDP'",
         )
         parser.add_argument(
             "--y1",
