@@ -279,27 +279,6 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             dict(),
         ),
         (
-            "call_funding",
-            [],
-            "defirate_view.display_funding_rates",
-            [],
-            dict(),
-        ),
-        (
-            "call_borrow",
-            [],
-            "defirate_view.display_borrow_rates",
-            [],
-            dict(),
-        ),
-        (
-            "call_lending",
-            [],
-            "defirate_view.display_lending_rates",
-            [],
-            dict(),
-        ),
-        (
             "call_newsletter",
             [],
             "substack_view.display_newsletters",
