@@ -167,7 +167,7 @@ class EconometricsController(BaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
-            choices["load"] = {c: None for c in self.DATA_FILES.keys()}
+            choices["load"]["-f"] = {c: None for c in self.DATA_FILES.keys()}
             choices["show"] = {c: None for c in self.files}
 
             for feature in ["export", "show", "desc", "clear", "index"]:
@@ -285,7 +285,7 @@ class EconometricsController(BaseController):
     def custom_reset(self):
         """Class specific component of reset command"""
         if self.files:
-            load_files = [f"load {file}" for file in self.files]
+            load_files = [f"load -f {file}" for file in self.files]
             return ["econometrics"] + load_files
         return []
 
