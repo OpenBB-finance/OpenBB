@@ -8,7 +8,7 @@ from typing import Optional, Callable
 """
 THIS IS SOME EXAMPLE OF USAGE FOR USING IT DIRECTLY IN JUPYTER NOTEBOOK
 """
-shortcuts = {
+functions = {
     "stocks.get_news": {
         "model": "openbb_terminal.common.newsapi_model.get_news",
     },
@@ -31,7 +31,7 @@ shortcuts = {
     },
 }
 """
-api = Loader(shortcuts=shortcuts)
+api = Loader(functions=functions)
 api.stocks.get_news()
 api.economy.bigmac(chart=True)
 api.economy.bigmac(chart=False)
@@ -133,25 +133,31 @@ class MenuFiller:
         self.__function = function
 
     def __call__(self, *args, **kwargs):
-        self.__function(*args, **kwargs)
+        print(self.__function(*args, **kwargs))
+
+    def __repr__(self):
+        return self.__function()
 
 
 class Loader:
     """The Loader class"""
-    def __init__(self, shortcuts: dict):
-        self.__function_map = self.build_function_map(shortcuts=shortcuts)
+    def __init__(self, functions: dict):
+        self.__function_map = self.build_function_map(functions=functions)
         self.load_menus()
 
     def __call__(self):
         """Prints help message"""
-        print("""This is the API of the OpenBB Terminal.
+        print(self.__repr__())
+
+    def __repr__(self):
+        return """This is the API of the OpenBB Terminal.
         
         Use the API to get data directly into your jupyter notebook or directly use it in your application.
         
         ...
         
         For more information see the official documentation at: https://openbb-finance.github.io/OpenBBTerminal/api/
-        """)
+        """
 
     # TODO: Add settings
     def settings(self):
@@ -178,9 +184,11 @@ class Loader:
             filtered_dict = {k: v for (k, v) in function_map.items() if menu in k}
 
             def f():
-                print(menu.upper() + " Menu\n\nThe api commands of the the menu:")
+                string = menu.upper() + " Menu\n\nThe api commands of the the menu:"
                 for command in filtered_dict:
-                    print("\t<api>." + command)
+                    string += "\n\t<openbb>." + command
+                return string
+
             return f
 
         function_map = self.__function_map
@@ -247,12 +255,12 @@ class Loader:
         return getattr(module, function_name)
 
     @classmethod
-    def build_function_map(cls, shortcuts: dict) -> dict:
+    def build_function_map(cls, functions: dict) -> dict:
         """Builds dictionary with FunctionFactory instances as items
 
         Parameters
         ----------
-        shortcuts: dict
+        functions: dict
             Dictionary which has string path of view and model functions as keys. The items is dictionary with the view and model function as items of the respectivee "view" and "model" keys
 
         Returns
@@ -262,9 +270,9 @@ class Loader:
         """
         function_map = {}
 
-        for shortcut in shortcuts.keys():
-            model_path = shortcuts[shortcut].get("model")
-            view_path = shortcuts[shortcut].get("view")
+        for shortcut in functions.keys():
+            model_path = functions[shortcut].get("model")
+            view_path = functions[shortcut].get("view")
 
             if model_path:
                 model_function = cls.get_function(function_path=model_path)
@@ -283,4 +291,4 @@ class Loader:
         return function_map
 
 
-openbb = Loader(shortcuts=shortcuts)
+openbb = Loader(functions=functions)
