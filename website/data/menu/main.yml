@@ -1312,8 +1312,6 @@ main:
             ref: "/terminal/portfolio/holdv"
           - name: holdp
             ref: "/terminal/portfolio/holdp"
-          - name: cret
-            ref: "/terminal/portfolio/cret"
           - name: yret
             ref: "/terminal/portfolio/yret"
           - name: mret
