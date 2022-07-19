@@ -943,12 +943,6 @@ main:
                 ref: "/terminal/crypto/defi/newsletter"
               - name: dpi
                 ref: "/terminal/crypto/defi/dpi"
-              - name: funding
-                ref: "/terminal/crypto/defi/funding"
-              - name: borrow
-                ref: "/terminal/crypto/defi/borrow"
-              - name: lending
-                ref: "/terminal/crypto/defi/lending"
               - name: vaults
                 ref: "/terminal/crypto/defi/vaults"
               - name: tokens
@@ -1321,8 +1315,6 @@ main:
             ref: "/terminal/portfolio/holdv"
           - name: holdp
             ref: "/terminal/portfolio/holdp"
-          - name: cret
-            ref: "/terminal/portfolio/cret"
           - name: yret
             ref: "/terminal/portfolio/yret"
           - name: mret
