@@ -143,18 +143,9 @@ issues.
 
    To enable the `prediction` menu install additional dependencies after installing main dependencies:
 
-   - On M1 macs
-
-     ```bash
-     conda install -c apple tensorflow-deps
-     poetry install -E prediction-m1-mac
-     ```
-
-   - On all other systems
-
-     ```bash
-     poetry install -E prediction
-     ```
+   ```bash
+   conda install -c conda-forge tensorflow
+   ```
 
    If you are having trouble with Poetry (e.g. on a non-conda python), simply install requirements.txt with pip
 
