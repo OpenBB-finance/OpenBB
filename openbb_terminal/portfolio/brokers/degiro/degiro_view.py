@@ -1,9 +1,7 @@
 # IMPORTATION THIRDPARTY
 import logging
 from argparse import Namespace
-import os
 from pathlib import Path
-from datetime import datetime
 
 # IMPORTATION THIRDPARTY
 import pandas as pd
