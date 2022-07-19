@@ -1,7 +1,6 @@
 # IMPORTATION THIRDPARTY
 import logging
 from argparse import Namespace
-from pathlib import Path
 
 # IMPORTATION THIRDPARTY
 import pandas as pd
@@ -25,7 +24,6 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.portfolio.brokers.degiro.degiro_model import DegiroModel
 from openbb_terminal.rich_config import console, MenuText
-from openbb_terminal.portfolio import portfolio_helper
 
 # pylint: disable=no-member
 
@@ -508,22 +506,14 @@ class DegiroView:
 
         if portfolio_df is not None:
 
-            # In this scenario the path was provided, e.g. --export pt.csv, pt.jpg
-            if "." in ns_parser.export:
-                filename = ns_parser.export
-            # In this scenario we use the default filename
-            else:
-                filename = f"paexport_degiro.csv"
-
-            file_path = Path(str(portfolio_helper.DEFAULT_HOLDINGS_PATH), filename)
-
-            portfolio_df.to_csv(file_path)
-
             print_rich_table(
                 df=portfolio_df,
                 headers=list(portfolio_df.columns),
                 show_index=True,
                 title="Degiro Transactions",
             )
+
+            degiro_model.export_data(portfolio_df, ns_parser.export)
+
         else:
             console.print("Error while fetching or processing Transactions.")

@@ -318,8 +318,7 @@ class DegiroController(BaseController):
     def call_paexport(self, other_args: List[str]):
         """Export transactions for Portfolio menu into csv format. The transactions
         file is exported to the portfolio/holdings folder and can be loaded directly
-        in the Portfolio menu. If argument --export [file_name.csv] is provided,
-        file will be exported as file_name.csv. Otherwise, it will be named paexport_degiro.csv."""
+        in the Portfolio menu."""
 
         # PARSING ARGS
         parser = argparse.ArgumentParser(

@@ -3,6 +3,7 @@ import datetime
 import logging
 import math
 from typing import List, Union
+from pathlib import Path
 
 # IMPORTATION THIRDPARTY
 import pandas as pd
@@ -22,7 +23,9 @@ from degiro_connector.trading.models.trading_pb2 import (
 
 # IMPORTATION INTERNAL
 import openbb_terminal.config_terminal as config
+from openbb_terminal.rich_config import console
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.portfolio import portfolio_helper
 
 # pylint: disable=no-member
 # pylint: disable=no-else-return
@@ -438,3 +441,24 @@ class DegiroModel:
         portfolio_df = portfolio_df.set_index("Date")
 
         return portfolio_df
+
+    @staticmethod
+    @log_start_end(log=logger)
+    def export_data(portfolio_df: pd.DataFrame, export: str):
+        # In this scenario the path was provided, e.g. --export pt.csv, pt.jpg
+
+        if "." in export:
+            if export.endswith("csv"):
+                filename = export
+            # In this scenario we use the default filename
+            else:
+                console.print("Wrong export file specified.\n")
+        else:
+            now = datetime.datetime.now()
+            filename = f"{now.strftime('%Y%m%d_%H%M%S')}_paexport_degiro.csv"
+
+        file_path = Path(str(portfolio_helper.DEFAULT_HOLDINGS_PATH), filename)
+
+        portfolio_df.to_csv(file_path)
+
+        console.print(f"Saved file: {file_path}\n")
