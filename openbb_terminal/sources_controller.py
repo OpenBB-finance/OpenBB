@@ -43,7 +43,7 @@ class SourcesController(BaseController):
         super().__init__(queue)
 
         self.commands_with_sources = dict()
-        with open("data_sources_default.json") as f:
+        with open(obbff.PREFERRED_DATA_SOURCE_FILE) as f:
             self.json_doc = json.load(f)
             for context in self.json_doc:
                 for menu in self.json_doc[context]:
