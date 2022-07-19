@@ -12,6 +12,19 @@ shortcuts = {
     "stocks.get_news": {
         "model": "openbb_terminal.common.newsapi_model.get_news",
     },
+    "stocks.load": {
+        "model": "openbb_terminal.stocks.stocks_helper.load",
+    },
+    "stocks.candle": {
+        "model": "openbb_terminal.stocks.stocks_helper.load",
+        "view": "openbb_terminal.stocks.stocks_helper.display_candle"
+    },
+    "stocks.fa.info": {
+        "model": "openbb_terminal.stocks.fundamental_analysis.yahoo_finance_model.get_info"
+    },
+    "stocks.fa.income": {
+        "model": "openbb_terminal.stocks.fundamental_analysis.av_model.get_income_statements"
+    },
     "economy.bigmac": {
         "model": "openbb_terminal.economy.nasdaq_model.get_big_mac_index",
         "view": "openbb_terminal.economy.nasdaq_view.display_big_mac_index",
@@ -25,7 +38,7 @@ api.economy.bigmac(chart=False)
 
 
 TO USE THE API DIRECTLY JUST IMPORT IT:
-from openbb_terminal.api import api (or: from openbb_terminal.api import api as openbb)
+from openbb_terminal.api import openbb (or: from openbb_terminal.api import openbb as api)
 """
 
 
@@ -177,10 +190,12 @@ class Loader:
 
             previous_menu = self
             for menu in shortcut_split[:-1]:
-                next_menu = MenuFiller(function=menu_message(menu, function_map))
-                previous_menu.__setattr__(menu, next_menu)
-                previous_menu = next_menu
-
+                if not hasattr(previous_menu, menu):
+                    next_menu = MenuFiller(function=menu_message(menu, function_map))
+                    previous_menu.__setattr__(menu, next_menu)
+                    previous_menu = previous_menu.__getattribute__(menu)
+                else:
+                    previous_menu = previous_menu.__getattribute__(menu)
             previous_menu.__setattr__(last_shortcut, function)
 
     @staticmethod
