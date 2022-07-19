@@ -109,7 +109,7 @@ class TerminalController(BaseController):
     def print_help(self):
         """Print help"""
         mt = MenuText("")
-        mt.add_custom("_home_")
+        mt.add_info("_home_")
         mt.add_cmd("about")
         mt.add_cmd("support")
         mt.add_cmd("update")
