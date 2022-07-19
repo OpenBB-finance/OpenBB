@@ -118,17 +118,17 @@ issues.
 5. Create Environment
 
    You can name the environment whatever you want. Although you could use names such as: `welikethestock`, `thisistheway`
-   or `diamondhands`, we recommend something simple and intuitive like `gst`. This is because this name will be used
+   or `diamondhands`, we recommend something simple and intuitive like `obb`. This is because this name will be used
    from now onwards.
 
    ```bash
-   conda env create -n gst --file build/conda/conda-3-9-env.yaml
+   conda env create -n obb --file build/conda/conda-3-9-env.yaml
    ```
 
 6. Activate the virtual environment
 
    ```bash
-   conda activate gst
+   conda activate obb
    ```
 
    Note: At the end, you can deactivate it with: `conda deactivate`.
@@ -143,18 +143,9 @@ issues.
 
    To enable the `prediction` menu install additional dependencies after installing main dependencies:
 
-   - On M1 macs
-
-     ```bash
-     conda install -c apple tensorflow-deps
-     poetry install -E prediction-m1-mac
-     ```
-
-   - On all other systems
-
-     ```bash
-     poetry install -E prediction
-     ```
+   ```bash
+   conda install -c conda-forge tensorflow
+   ```
 
    If you are having trouble with Poetry (e.g. on a non-conda python), simply install requirements.txt with pip
 
