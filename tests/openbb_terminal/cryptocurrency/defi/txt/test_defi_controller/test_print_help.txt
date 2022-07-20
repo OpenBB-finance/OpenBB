@@ -1,8 +1,5 @@
     newsletter         recent DeFi related newsletters                                 [Substack]
     dpi                DeFi protocols listed on DefiPulse                              [Defipulse]
-    funding            funding rates - current or last 30 days average                 [Defirate]
-    borrow             DeFi borrow rates - current or last 30 days average             [Defirate]
-    lending            DeFi ending rates - current or last 30 days average             [Defirate]
     vaults             top DeFi Vaults on different blockchains                        [Coindix]
     tokens             tokens trade-able on Uniswap                                    [The Graph]
     stats              base statistics about Uniswap                                   [The Graph]

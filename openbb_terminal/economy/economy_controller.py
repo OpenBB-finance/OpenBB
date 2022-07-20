@@ -628,7 +628,7 @@ class EconomyController(BaseController):
             nargs="+",
             action="store",
             dest="query",
-            help="Query the FRED database to obtain Series IDs given the query seaarch term.",
+            help="Query the FRED database to obtain Series IDs given the query search term.",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
