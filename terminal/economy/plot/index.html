@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content="usage: plot [-y1 YAXIS1 [YAXIS1 ...]] [-y2 YAXIS2 [YAXIS2 ...]] [-h] [--export {csv,json,xlsx}] [--raw] [-l LIMIT] This command can plot any data on two y-axes obtained from the macro, fred, index and treasury commands. To be able to use this data, use the -st argument available within these commands. For example &lsquo;macro -p GDP -c Germany Netherlands -st&rsquo; will store the data for usage in this command. Therefore, it allows you to plot different time series in one graph.">
+    <meta name="description" content="usage: plot [-y1 YAXIS1 [YAXIS1 ...]] [-y2 YAXIS2 [YAXIS2 ...]] [-h] [--export {csv,json,xlsx}] [--raw] [-l LIMIT] This command can plot any data on two y-axes obtained from the macro, fred, index and treasury commands. To be able to use this data, just load the available series from the previous commands. For example &lsquo;macro -p GDP -c Germany Netherlands&rsquo; will store the data for usage in this command. Therefore, it allows you to plot different time series in one graph.">
 
 
 
@@ -29785,9 +29785,7 @@
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Plot</h1>
         <pre><code>usage: plot [-y1 YAXIS1 [YAXIS1 ...]] [-y2 YAXIS2 [YAXIS2 ...]] [-h] [--export {csv,json,xlsx}] [--raw] [-l LIMIT]
-</code></pre><p>This command can plot any data on two y-axes obtained from the macro, fred, index and treasury commands. To be able to use this data, use the -st argument available within these commands. For example &lsquo;macro -p GDP -c Germany
-Netherlands -st&rsquo; will store the data for usage in this command. Therefore, it allows you to plot different time series in one graph. You can use the &lsquo;options&rsquo; command to show the required arguments to be entered. The example above
-could be plotted the following way: &lsquo;plot -y1 Germany_GDP -y2 Netherlands_GDP&rsquo; or &lsquo;plot -y1 Germany_GDP Netherlands_GDP&rsquo;</p>
+</code></pre><p>This command can plot any data on two y-axes obtained from the macro, fred, index and treasury commands. To be able to use this data, just load the available series from the previous commands. For example &lsquo;macro -p GDP -c Germany Netherlands&rsquo; will store the data for usage in this command. Therefore, it allows you to plot different time series in one graph. The example above could be plotted the following way: &lsquo;plot &ndash;y1 Germany_GDP &ndash;y2 Netherlands_GDP&rsquo; or &lsquo;plot &ndash;y1 Germany_GDP Netherlands_GDP&rsquo;</p>
 <pre><code>optional arguments:
   -y1 YAXIS1 [YAXIS1 ...], --yaxis1 YAXIS1 [YAXIS1 ...]
                         Select the data you wish to plot on the first y-axis. You can select multiple variables here. (default: )
