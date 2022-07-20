@@ -144,6 +144,8 @@ class ForecastingController(BaseController):
             "pow": "**",
         }
         self.file_types = ["csv", "xlsx"]
+        for file_type in self.file_types:
+            print(list(Path("exports").rglob(f"*.{file_type}")))
         self.DATA_FILES = {
             filepath.name: filepath
             for file_type in self.file_types
