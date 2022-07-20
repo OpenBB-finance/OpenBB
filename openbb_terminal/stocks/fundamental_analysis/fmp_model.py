@@ -4,13 +4,13 @@ import logging
 from typing import Optional
 
 from datetime import datetime
+import warnings
 from requests.exceptions import HTTPError
 
 import fundamentalanalysis as fa  # Financial Modeling Prep
 import numpy as np
 import pandas as pd
 import valinvest
-import warnings
 
 from openbb_terminal.rich_config import console
 from openbb_terminal import config_terminal as cfg
