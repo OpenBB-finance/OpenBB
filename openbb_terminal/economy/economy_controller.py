@@ -560,35 +560,38 @@ class EconomyController(BaseController):
                     convert_currency=ns_parser.convert_currency,
                 )
 
-                df.columns = ["_".join(column) for column in df.columns]
+                
+                if not df.empty:
+                    df.columns = ["_".join(column) for column in df.columns]
 
-                self.DATASETS["macro"] = pd.concat([self.DATASETS["macro"], df])
+                    self.DATASETS["macro"] = pd.concat([self.DATASETS["macro"], df])
 
-                for country, data in units.items():
-                    if country not in self.UNITS.keys():
-                        self.UNITS[country] = {}
+                    # update units dict
+                    for country, data in units.items():
+                        if country not in self.UNITS:
+                            self.UNITS[country] = {}
 
-                    for key, value in data.items():
-                        self.UNITS[country][key] = value
+                        for key, value in data.items():
+                            self.UNITS[country][key] = value
 
-                self.stored_datasets = economy_helpers.update_stored_datasets_string(
-                    self.DATASETS
-                )
+                    self.stored_datasets = economy_helpers.update_stored_datasets_string(
+                        self.DATASETS
+                    )
 
-                # Display data just loaded
-                econdb_view.show_macro_data(
-                    parameters=ns_parser.parameters,
-                    countries=ns_parser.countries,
-                    start_date=ns_parser.start_date,
-                    end_date=ns_parser.end_date,
-                    convert_currency=ns_parser.convert_currency,
-                    raw=ns_parser.raw,
-                    export=ns_parser.export,
-                )
+                    # Display data just loaded
+                    econdb_view.show_macro_data(
+                        parameters=ns_parser.parameters,
+                        countries=ns_parser.countries,
+                        start_date=ns_parser.start_date,
+                        end_date=ns_parser.end_date,
+                        convert_currency=ns_parser.convert_currency,
+                        raw=ns_parser.raw,
+                        export=ns_parser.export,
+                    )
 
-                self.update_runtime_choices()
-                if obbff.ENABLE_EXIT_AUTO_HELP:
-                    self.print_help()
+                    self.update_runtime_choices()
+                    if obbff.ENABLE_EXIT_AUTO_HELP:
+                        self.print_help()
 
     @check_api_key(["API_FRED_KEY"])
     def call_fred(self, other_args: List[str]):
@@ -671,31 +674,34 @@ class EconomyController(BaseController):
                 for series_id, data in series_dict.items():
                     self.FRED_TITLES[series_id] = f"{data['title']} ({data['units']})"
 
-                self.DATASETS["fred"] = pd.concat(
-                    [
-                        self.DATASETS["fred"],
-                        fred_model.get_aggregated_series_data(
+                df = fred_model.get_aggregated_series_data(
                             series_dict, ns_parser.start_date, ns_parser.end_date
-                        ),
-                    ]
-                )
+                        )
 
-                self.stored_datasets = economy_helpers.update_stored_datasets_string(
-                    self.DATASETS
-                )
+                if not df.empty:
+                    self.DATASETS["fred"] = pd.concat(
+                        [
+                            self.DATASETS["fred"],
+                            df,
+                        ]
+                    )
 
-                fred_view.display_fred_series(
-                    d_series=series_dict,
-                    start_date=ns_parser.start_date,
-                    end_date=ns_parser.end_date,
-                    raw=ns_parser.raw,
-                    export=ns_parser.export,
-                    limit=ns_parser.limit,
-                )
+                    self.stored_datasets = economy_helpers.update_stored_datasets_string(
+                        self.DATASETS
+                    )
 
-                self.update_runtime_choices()
-                if obbff.ENABLE_EXIT_AUTO_HELP:
-                    self.print_help()
+                    fred_view.display_fred_series(
+                        d_series=series_dict,
+                        start_date=ns_parser.start_date,
+                        end_date=ns_parser.end_date,
+                        raw=ns_parser.raw,
+                        export=ns_parser.export,
+                        limit=ns_parser.limit,
+                    )
+
+                    self.update_runtime_choices()
+                    if obbff.ENABLE_EXIT_AUTO_HELP:
+                        self.print_help()
 
     @log_start_end(log=logger)
     def call_index(self, other_args: List[str]):
@@ -808,33 +814,38 @@ class EconomyController(BaseController):
                 return self.queue
 
             if ns_parser.indices:
-                for index in ns_parser.indices:
-                    self.DATASETS["index"][index] = yfinance_model.get_index(
-                        index,
-                        interval=ns_parser.interval,
-                        start_date=ns_parser.start_date,
-                        end_date=ns_parser.end_date,
-                        column=ns_parser.column,
-                    )
+                for i, index in enumerate(ns_parser.indices):
+                    df = yfinance_model.get_index(
+                                            index,
+                                            interval=ns_parser.interval,
+                                            start_date=ns_parser.start_date,
+                                            end_date=ns_parser.end_date,
+                                            column=ns_parser.column,
+                                        )
 
-                self.stored_datasets = economy_helpers.update_stored_datasets_string(
-                    self.DATASETS
-                )
+                    if not df.empty:
+                        self.DATASETS["index"][index] = df
 
-                yfinance_view.show_indices(
-                    indices=ns_parser.indices,
-                    interval=ns_parser.interval,
-                    start_date=ns_parser.start_date,
-                    end_date=ns_parser.end_date,
-                    column=ns_parser.column,
-                    raw=ns_parser.raw,
-                    export=ns_parser.export,
-                    returns=ns_parser.returns,
-                )
+                        self.stored_datasets = economy_helpers.update_stored_datasets_string(
+                            self.DATASETS
+                        )
 
-                self.update_runtime_choices()
-                if obbff.ENABLE_EXIT_AUTO_HELP:
-                    self.print_help()
+                        # display only once in the last iteration
+                        if i == len(ns_parser.indices) - 1:
+                            yfinance_view.show_indices(
+                                indices=ns_parser.indices,
+                                interval=ns_parser.interval,
+                                start_date=ns_parser.start_date,
+                                end_date=ns_parser.end_date,
+                                column=ns_parser.column,
+                                raw=ns_parser.raw,
+                                export=ns_parser.export,
+                                returns=ns_parser.returns,
+                            )
+
+                            self.update_runtime_choices()
+                            if obbff.ENABLE_EXIT_AUTO_HELP:
+                                self.print_help()
 
     @log_start_end(log=logger)
     def call_treasury(self, other_args: List[str]):
@@ -926,38 +937,40 @@ class EconomyController(BaseController):
                     .stack()
                     .to_frame()
                 )
-                self.DATASETS["treasury"] = pd.concat(
-                    [
-                        self.DATASETS["treasury"],
-                        pd.DataFrame(df[0].values.tolist(), index=df.index).T,
-                    ]
-                )
 
-                cols = []
-                for column in self.DATASETS["treasury"].columns:
-                    if isinstance(column, tuple):
-                        cols.append("_".join(column))
-                    else:
-                        cols.append(column)
-                self.DATASETS["treasury"].columns = cols
+                if not df.empty:
+                    self.DATASETS["treasury"] = pd.concat(
+                        [
+                            self.DATASETS["treasury"],
+                            pd.DataFrame(df[0].values.tolist(), index=df.index).T,
+                        ]
+                    )
 
-                self.stored_datasets = economy_helpers.update_stored_datasets_string(
-                    self.DATASETS
-                )
+                    cols = []
+                    for column in self.DATASETS["treasury"].columns:
+                        if isinstance(column, tuple):
+                            cols.append("_".join(column))
+                        else:
+                            cols.append(column)
+                    self.DATASETS["treasury"].columns = cols
 
-                econdb_view.show_treasuries(
-                    types=ns_parser.type,
-                    maturities=ns_parser.maturity,
-                    frequency=ns_parser.frequency,
-                    start_date=ns_parser.start_date,
-                    end_date=ns_parser.end_date,
-                    raw=ns_parser.raw,
-                    export=ns_parser.export,
-                )
+                    self.stored_datasets = economy_helpers.update_stored_datasets_string(
+                        self.DATASETS
+                    )
 
-            self.update_runtime_choices()
-            if obbff.ENABLE_EXIT_AUTO_HELP:
-                self.print_help()
+                    econdb_view.show_treasuries(
+                        types=ns_parser.type,
+                        maturities=ns_parser.maturity,
+                        frequency=ns_parser.frequency,
+                        start_date=ns_parser.start_date,
+                        end_date=ns_parser.end_date,
+                        raw=ns_parser.raw,
+                        export=ns_parser.export,
+                    )
+
+                    self.update_runtime_choices()
+                    if obbff.ENABLE_EXIT_AUTO_HELP:
+                        self.print_help()
 
     @log_start_end(log=logger)
     def call_ycrv(self, other_args: List[str]):
