@@ -1,3 +1,4 @@
+# pylint: disable=no-else-return
 """Forecasting Model"""
 __docformat__ = "numpy"
 
@@ -333,6 +334,29 @@ def add_delta(
     dataset[f"delta_{target_column}"] = dataset[target_column].pct_change().fillna(0)
 
     return dataset
+
+
+@log_start_end(log=logger)
+def add_atr(
+    dataset: pd.DataFrame,
+) -> pd.DataFrame:
+    """
+    Calculate the Average True Range of a variable based on a a specific stock ticker.
+    """
+
+    if "high" in dataset and "low" in dataset and "close" in dataset:
+        dataset["ATR1"] = abs(dataset["high"] - dataset["low"])
+        dataset["ATR2"] = abs(dataset["high"] - dataset["close"].shift())
+        dataset["ATR3"] = abs(dataset["low"] - dataset["close"].shift())
+        dataset["true_range"] = dataset[["ATR1", "ATR2", "ATR3"]].max(axis=1)
+
+        # drop ATR1, ATR2, ATR3
+        dataset = dataset.drop(["ATR1", "ATR2", "ATR3"], axis=1)
+
+        return dataset, True
+
+    else:
+        return dataset, False
 
 
 @log_start_end(log=logger)

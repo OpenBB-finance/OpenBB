@@ -95,6 +95,7 @@ class ForecastingController(BaseController):
         "roc",
         "mom",
         "delta",
+        "atr",
         "signal",
         "expo",
         "theta",
@@ -214,6 +215,7 @@ class ForecastingController(BaseController):
                 "roc",
                 "mom",
                 "delta",
+                "atr",
                 "signal",
                 # "index",
                 # "remove",
@@ -297,6 +299,7 @@ class ForecastingController(BaseController):
         mt.add_cmd("roc", "", self.files)
         mt.add_cmd("mom", "", self.files)
         mt.add_cmd("delta", "", self.files)
+        mt.add_cmd("atr", "", self.files)
         mt.add_cmd("signal", "", self.files)
         mt.add_info("_tsforecasting_")
         # mt.add_cmd("arima", "", self.files)
@@ -1333,6 +1336,51 @@ class ForecastingController(BaseController):
             console.print(
                 f"Successfully added 'Delta_{ns_parser.target_column}' to '{ns_parser.target_dataset}' dataset"
             )
+
+            # update forecast menu with new column on modified dataset
+            self.refresh_datasets_on_menu()
+
+        self.update_runtime_choices()
+        console.print()
+
+    @log_start_end(log=logger)
+    def call_atr(self, other_args: List[str]):
+        """Process Average True Range"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="atr",
+            description="Add Average True Range to dataset of specific stock ticker.",
+        )
+
+        # if user does not put in --target-dataset
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "--target-dataset")
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            NO_EXPORT,
+            target_dataset=True,
+            target_column=True,
+        )
+        if ns_parser:
+            # check proper file name is provided
+            if not helpers.check_parser_input(ns_parser, self.datasets):
+                return
+
+            check = False
+            self.datasets[ns_parser.target_dataset], check = forecasting_model.add_atr(
+                self.datasets[ns_parser.target_dataset]
+            )
+            if check:
+                console.print(
+                    f"Successfully added 'Average True Range' to '{ns_parser.target_dataset}' dataset"
+                )
+            else:
+                console.print(
+                    f"Could not add 'Average True Range' as it does not have one/all specific columns (low/close/high)"
+                )
 
             # update forecast menu with new column on modified dataset
             self.refresh_datasets_on_menu()

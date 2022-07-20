@@ -1100,6 +1100,7 @@ en:
   forecasting/roc: Add Rate of Change
   forecasting/mom: Add Momentum
   forecasting/delta: Add % Change
+  forecasting/atr: Add Average True Range
   forecasting/signal: Add Price Signal (short vs. long term)
   forecasting/_tsforecasting_: TimeSeries Forecasting
   forecasting/arima: Arima (Non-darts)
