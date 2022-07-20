@@ -560,7 +560,6 @@ class EconomyController(BaseController):
                     convert_currency=ns_parser.convert_currency,
                 )
 
-                
                 if not df.empty:
                     df.columns = ["_".join(column) for column in df.columns]
 
@@ -574,8 +573,8 @@ class EconomyController(BaseController):
                         for key, value in data.items():
                             self.UNITS[country][key] = value
 
-                    self.stored_datasets = economy_helpers.update_stored_datasets_string(
-                        self.DATASETS
+                    self.stored_datasets = (
+                        economy_helpers.update_stored_datasets_string(self.DATASETS)
                     )
 
                     # Display data just loaded
@@ -675,8 +674,8 @@ class EconomyController(BaseController):
                     self.FRED_TITLES[series_id] = f"{data['title']} ({data['units']})"
 
                 df = fred_model.get_aggregated_series_data(
-                            series_dict, ns_parser.start_date, ns_parser.end_date
-                        )
+                    series_dict, ns_parser.start_date, ns_parser.end_date
+                )
 
                 if not df.empty:
                     self.DATASETS["fred"] = pd.concat(
@@ -686,8 +685,8 @@ class EconomyController(BaseController):
                         ]
                     )
 
-                    self.stored_datasets = economy_helpers.update_stored_datasets_string(
-                        self.DATASETS
+                    self.stored_datasets = (
+                        economy_helpers.update_stored_datasets_string(self.DATASETS)
                     )
 
                     fred_view.display_fred_series(
@@ -816,18 +815,18 @@ class EconomyController(BaseController):
             if ns_parser.indices:
                 for i, index in enumerate(ns_parser.indices):
                     df = yfinance_model.get_index(
-                                            index,
-                                            interval=ns_parser.interval,
-                                            start_date=ns_parser.start_date,
-                                            end_date=ns_parser.end_date,
-                                            column=ns_parser.column,
-                                        )
+                        index,
+                        interval=ns_parser.interval,
+                        start_date=ns_parser.start_date,
+                        end_date=ns_parser.end_date,
+                        column=ns_parser.column,
+                    )
 
                     if not df.empty:
                         self.DATASETS["index"][index] = df
 
-                        self.stored_datasets = economy_helpers.update_stored_datasets_string(
-                            self.DATASETS
+                        self.stored_datasets = (
+                            economy_helpers.update_stored_datasets_string(self.DATASETS)
                         )
 
                         # display only once in the last iteration
@@ -954,8 +953,8 @@ class EconomyController(BaseController):
                             cols.append(column)
                     self.DATASETS["treasury"].columns = cols
 
-                    self.stored_datasets = economy_helpers.update_stored_datasets_string(
-                        self.DATASETS
+                    self.stored_datasets = (
+                        economy_helpers.update_stored_datasets_string(self.DATASETS)
                     )
 
                     econdb_view.show_treasuries(
