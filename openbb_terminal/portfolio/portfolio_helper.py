@@ -251,6 +251,10 @@ PERIODS_DAYS = {
     "10y": 10 * 12 * 21,
 }
 
+DEFAULT_HOLDINGS_PATH = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), "..", "..", "portfolio", "holdings")
+)
+
 
 def is_ticker(ticker: str) -> bool:
     """Determine whether a string is a valid ticker
@@ -425,13 +429,6 @@ def get_info_update_file(ticker: str, file_path: Path, writemode: str) -> list:
 def get_info_from_ticker(ticker: str) -> list:
 
     filename = "tickers_info.csv"
-
-    # Direct file to openbb_terminal\portfolio
-    DEFAULT_HOLDINGS_PATH = os.path.abspath(
-        os.path.join(
-            os.path.dirname(__file__), "..", "..", "openbb_terminal", "portfolio"
-        )
-    )
 
     file_path = Path(str(DEFAULT_HOLDINGS_PATH), filename)
 

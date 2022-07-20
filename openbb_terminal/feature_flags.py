@@ -114,6 +114,14 @@ PREFERRED_DATA_SOURCE_FILE = str(
     )
 )
 
+# Guess file
+GUESS_EASTER_EGG_FILE = str(
+    os.getenv(
+        "OPENBB_GUESS_EASTER_EGG_FILE",
+        os.getcwd() + os.path.sep + "guess_game.json",
+    )
+)
+
 try:
     version = pkg_resources.get_distribution("OpenBBTerminal").version
 except Exception:
