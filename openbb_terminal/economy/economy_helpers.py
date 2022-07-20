@@ -6,7 +6,7 @@ def update_stored_datasets_string(datasets) -> str:
     stored_datasets_string = ""
     for key in datasets:
         stored_datasets_string += (
-            "\n" + " " * (len("Stored datasets") - len(key)) + key + ": "
+            "\n" + " " * 2 + key + " " * (len("Stored datasets") - len(key) - 2) + ": "
         )
         for i, col in enumerate(datasets[key].columns):
             if i == 0:
