@@ -94,6 +94,7 @@ class ForecastingController(BaseController):
         "rsi",
         "roc",
         "mom",
+        "delta",
         "signal",
         "expo",
         "theta",
@@ -206,6 +207,7 @@ class ForecastingController(BaseController):
                 "rsi",
                 "roc",
                 "mom",
+                "delta",
                 "signal",
                 # "index",
                 # "remove",
@@ -285,6 +287,7 @@ class ForecastingController(BaseController):
         mt.add_cmd("rsi", "", self.files)
         mt.add_cmd("roc", "", self.files)
         mt.add_cmd("mom", "", self.files)
+        mt.add_cmd("delta", "", self.files)
         mt.add_cmd("signal", "", self.files)
         mt.add_info("_tsforecasting_")
         # mt.add_cmd("arima", "", self.files)
@@ -1290,6 +1293,46 @@ class ForecastingController(BaseController):
         console.print()
 
     @log_start_end(log=logger)
+    def call_delta(self, other_args: List[str]):
+        """Process %Change (Delta)"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="delta",
+            description="Add %Change (Delta) to dataset based on specific column.",
+        )
+
+        # if user does not put in --target-dataset
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "--target-dataset")
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            NO_EXPORT,
+            target_dataset=True,
+            target_column=True,
+        )
+        if ns_parser:
+            # check proper file name is provided
+            if not helpers.check_parser_input(ns_parser, self.datasets):
+                return
+
+            self.datasets[ns_parser.target_dataset] = forecasting_model.add_delta(
+                self.datasets[ns_parser.target_dataset],
+                ns_parser.target_column
+            )
+            console.print(
+                f"Successfully added 'Delta_{ns_parser.target_column}' to '{ns_parser.target_dataset}' dataset"
+            )
+
+            # update forecast menu with new column on modified dataset
+            self.refresh_datasets_on_menu()
+
+        self.update_runtime_choices()
+        console.print()
+
+    @log_start_end(log=logger)
     def call_signal(self, other_args: List[str]):
         """Process Price Signal"""
         parser = argparse.ArgumentParser(
@@ -1311,7 +1354,6 @@ class ForecastingController(BaseController):
             NO_EXPORT,
             target_dataset=True,
             target_column=True,
-            period=10,
         )
         if ns_parser:
             # check proper file name is provided

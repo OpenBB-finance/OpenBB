@@ -322,6 +322,22 @@ def add_momentum(
 
 
 @log_start_end(log=logger)
+def add_delta(
+    dataset: pd.DataFrame,
+    target_column: str = "close",
+) -> pd.DataFrame:
+    """
+    Calculate the %change of a variable based on a specific column
+    """
+
+    dataset[f"delta_{target_column}"] = (
+        dataset[target_column].div(dataset[target_column].iloc[0]).sub(1).mul(100)
+    )
+
+    return dataset
+
+
+@log_start_end(log=logger)
 def add_signal(dataset: pd.DataFrame) -> pd.DataFrame:
     """A price signal based on short/long term price.
 
