@@ -17,7 +17,7 @@ functions = {
     },
     "stocks.candle": {
         "model": "openbb_terminal.stocks.stocks_helper.load",
-        "view": "openbb_terminal.stocks.stocks_helper.display_candle"
+        "view": "openbb_terminal.stocks.stocks_helper.display_candle",
     },
     "stocks.fa.info": {
         "model": "openbb_terminal.stocks.fundamental_analysis.yahoo_finance_model.get_info"
@@ -74,19 +74,36 @@ def change_docstring(api_callable, model: Callable, view: Callable = None):
         api_callable.__signature__ = signature(model)
     else:
         index = view.__doc__.find("Parameters")
-        all_parameters = "\nAPI function, use the chart kwarg for getting the view model and it's plot. See every parmater below:\n\n\t" + view.__doc__[index:] + """chart: bool
+        all_parameters = (
+            "\nAPI function, use the chart kwarg for getting the view model and it's plot. See every parmater below:\n\n\t"
+            + view.__doc__[index:]
+            + """chart: bool
     If the view and its chart shall be used"""
-        api_callable.__doc__ = all_parameters + "\n\nModel doc:\n" + model.__doc__ + "\n\nView doc:\n" + view.__doc__
+        )
+        api_callable.__doc__ = (
+            all_parameters
+            + "\n\nModel doc:\n"
+            + model.__doc__
+            + "\n\nView doc:\n"
+            + view.__doc__
+        )
         api_callable.__name__ = model.__name__.replace("get_", "")
         parameters = [param for param in signature(view).parameters.values()]
-        chart_parameter = [Parameter("chart", Parameter.POSITIONAL_OR_KEYWORD, annotation=bool, default=False)]
-        api_callable.__signature__ = signature(view).replace(parameters=parameters+chart_parameter)
+        chart_parameter = [
+            Parameter(
+                "chart", Parameter.POSITIONAL_OR_KEYWORD, annotation=bool, default=False
+            )
+        ]
+        api_callable.__signature__ = signature(view).replace(
+            parameters=parameters + chart_parameter
+        )
 
     return api_callable
 
 
 class FunctionFactory:
     """The API Function Factory, which creates the callable instance"""
+
     def __init__(self, model: Callable, view: Callable = None):
         """Initialises the FunctionFactory instance
 
@@ -129,6 +146,7 @@ class FunctionFactory:
 
 class MenuFiller:
     """Creates a filler callable for the menus"""
+
     def __init__(self, function: Callable):
         self.__function = function
 
@@ -141,6 +159,7 @@ class MenuFiller:
 
 class Loader:
     """The Loader class"""
+
     def __init__(self, functions: dict):
         self.__function_map = self.build_function_map(functions=functions)
         self.load_menus()
@@ -285,8 +304,14 @@ class Loader:
                 view_function = None
 
             function_factory = FunctionFactory(model=model_function, view=view_function)
-            function_with_doc = change_docstring(types.FunctionType(function_factory.api_callable.__code__, {}), model_function, view_function)
-            function_map[shortcut] = types.MethodType(function_with_doc, function_factory)
+            function_with_doc = change_docstring(
+                types.FunctionType(function_factory.api_callable.__code__, {}),
+                model_function,
+                view_function,
+            )
+            function_map[shortcut] = types.MethodType(
+                function_with_doc, function_factory
+            )
 
         return function_map
 
