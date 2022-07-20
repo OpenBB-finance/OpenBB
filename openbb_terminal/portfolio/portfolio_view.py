@@ -1836,6 +1836,7 @@ def display_summary_portfolio_benchmark(
     summary = pd.DataFrame(
         metrics.values(), index=metrics.keys(), columns=["Portfolio", "Benchmark"]
     )
+    summary["Difference"] = summary["Portfolio"] - summary["Benchmark"]
 
     print_rich_table(
         summary,
