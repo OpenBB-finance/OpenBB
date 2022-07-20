@@ -123,6 +123,12 @@ class ForecastingController(BaseController):
         "pie",
         "hexbin",
     ]
+    disclaimer = """
+    All models are for educational purposes only. The techniques available in this menu are not
+    fine tuned or guarenteed to work. Backtesting results is not a guarentee of future accuracy.
+    Investing involves monetary risk that OpenBB does not take a role in. Please research any prediction techniques
+    fully before attempting to use. OpenBB is not liable for any loss or damages."""
+
     PATH = "/forecasting/"
 
     loaded_dataset_cols = "\n"
@@ -257,6 +263,9 @@ class ForecastingController(BaseController):
     def print_help(self):
         """Print help"""
         mt = MenuText("forecasting/")
+        mt.add_param("_disclaimer_", self.disclaimer)
+        mt.add_raw("\n")
+        mt.add_param("_loaded", self.loaded_dataset_cols)
         mt.add_param("_comp_device", self.device.upper())
         mt.add_param("_comp_ram", self.comp_ram)
         mt.add_param("_rec_data_size", self.rec_data_size)
@@ -1319,8 +1328,7 @@ class ForecastingController(BaseController):
                 return
 
             self.datasets[ns_parser.target_dataset] = forecasting_model.add_delta(
-                self.datasets[ns_parser.target_dataset],
-                ns_parser.target_column
+                self.datasets[ns_parser.target_dataset], ns_parser.target_column
             )
             console.print(
                 f"Successfully added 'Delta_{ns_parser.target_column}' to '{ns_parser.target_dataset}' dataset"

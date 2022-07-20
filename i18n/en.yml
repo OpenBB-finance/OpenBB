@@ -1074,6 +1074,7 @@ en:
   dashboards/shortdata: finra shortdata analysis
   dashboards/crypto: cryptocurrency exchange rates against USD
   reports/_reports_: Select one of the following report
+  forecasting/_disclaimer_: DISCLAIMER
   forecasting/_comp_device: Current Compute Device (CPU or GPU)
   forecasting/_comp_ram: Current RAM
   forecasting/_rec_data_size: Recommended Max dataset size based on current RAM
