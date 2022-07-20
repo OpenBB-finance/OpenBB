@@ -1379,7 +1379,7 @@ class ForecastingController(BaseController):
                 )
             else:
                 console.print(
-                    f"Could not add 'Average True Range' as it does not have one/all specific columns (low/close/high)"
+                    "Could not add 'Average True Range' as it does not have one/all specific columns (low/close/high)"
                 )
 
             # update forecast menu with new column on modified dataset
