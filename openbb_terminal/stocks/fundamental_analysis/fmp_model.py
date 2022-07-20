@@ -10,6 +10,7 @@ import fundamentalanalysis as fa  # Financial Modeling Prep
 import numpy as np
 import pandas as pd
 import valinvest
+import warnings
 
 from openbb_terminal.rich_config import console
 from openbb_terminal import config_terminal as cfg
@@ -39,7 +40,9 @@ def get_score(ticker: str) -> Optional[np.number]:
 
     try:
         valstock = valinvest.Fundamental(ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
+        warnings.filterwarnings("ignore", category=FutureWarning)
         value_score = 100 * (valstock.fscore() / 9)
+        warnings.filterwarnings("ignore", category=FutureWarning)
     except KeyError:
         console.print("[red]Invalid API Key[/red]\n")
     # Invalid ticker (Ticker should be a NASDAQ 100 ticker or SP 500 ticker)
