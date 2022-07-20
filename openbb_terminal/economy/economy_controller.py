@@ -160,6 +160,11 @@ class EconomyController(BaseController):
         self.UNITS: Dict[Any, Dict[Any, Any]] = dict()
         self.FRED_TITLES: Dict = dict()
 
+        self.DATASETS["macro"] = pd.DataFrame()
+        self.DATASETS["treasury"] = pd.DataFrame()
+        self.DATASETS["fred"] = pd.DataFrame()
+        self.DATASETS["index"] = pd.DataFrame()
+
         if session and obbff.USE_PROMPT_TOOLKIT:
             self.choices: dict = {c: {} for c in self.controller_choices}
             self.choices["overview"] = {c: None for c in self.overview_options}
@@ -547,10 +552,7 @@ class EconomyController(BaseController):
             if ns_parser.parameters and ns_parser.countries:
 
                 # Store data
-                (
-                    self.DATASETS["macro"],
-                    self.UNITS,
-                ) = econdb_model.get_aggregated_macro_data(
+                (df, units,) = econdb_model.get_aggregated_macro_data(
                     parameters=ns_parser.parameters,
                     countries=ns_parser.countries,
                     start_date=ns_parser.start_date,
@@ -558,9 +560,16 @@ class EconomyController(BaseController):
                     convert_currency=ns_parser.convert_currency,
                 )
 
-                self.DATASETS["macro"].columns = [
-                    "_".join(column) for column in self.DATASETS["macro"].columns
-                ]
+                df.columns = ["_".join(column) for column in df.columns]
+
+                self.DATASETS["macro"] = pd.concat([self.DATASETS["macro"], df])
+
+                for country, data in units.items():
+                    if country not in self.UNITS.keys():
+                        self.UNITS[country] = {}
+
+                    for key, value in data.items():
+                        self.UNITS[country][key] = value
 
                 self.stored_datasets = economy_helpers.update_stored_datasets_string(
                     self.DATASETS
@@ -662,8 +671,13 @@ class EconomyController(BaseController):
                 for series_id, data in series_dict.items():
                     self.FRED_TITLES[series_id] = f"{data['title']} ({data['units']})"
 
-                self.DATASETS["fred"] = fred_model.get_aggregated_series_data(
-                    series_dict, ns_parser.start_date, ns_parser.end_date
+                self.DATASETS["fred"] = pd.concat(
+                    [
+                        self.DATASETS["fred"],
+                        fred_model.get_aggregated_series_data(
+                            series_dict, ns_parser.start_date, ns_parser.end_date
+                        ),
+                    ]
                 )
 
                 self.stored_datasets = economy_helpers.update_stored_datasets_string(
@@ -794,7 +808,6 @@ class EconomyController(BaseController):
                 return self.queue
 
             if ns_parser.indices:
-                self.DATASETS["index"] = pd.DataFrame()
                 for index in ns_parser.indices:
                     self.DATASETS["index"][index] = yfinance_model.get_index(
                         index,
@@ -913,12 +926,20 @@ class EconomyController(BaseController):
                     .stack()
                     .to_frame()
                 )
-                self.DATASETS["treasury"] = pd.DataFrame(
-                    df[0].values.tolist(), index=df.index
-                ).T
-                self.DATASETS["treasury"].columns = [
-                    "_".join(column) for column in self.DATASETS["treasury"].columns
-                ]
+                self.DATASETS["treasury"] = pd.concat(
+                    [
+                        self.DATASETS["treasury"],
+                        pd.DataFrame(df[0].values.tolist(), index=df.index).T,
+                    ]
+                )
+
+                cols = []
+                for column in self.DATASETS["treasury"].columns:
+                    if isinstance(column, tuple):
+                        cols.append("_".join(column))
+                    else:
+                        cols.append(column)
+                self.DATASETS["treasury"].columns = cols
 
                 self.stored_datasets = economy_helpers.update_stored_datasets_string(
                     self.DATASETS
