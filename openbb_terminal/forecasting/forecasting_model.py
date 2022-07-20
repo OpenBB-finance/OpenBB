@@ -330,9 +330,7 @@ def add_delta(
     Calculate the %change of a variable based on a specific column
     """
 
-    dataset[f"delta_{target_column}"] = (
-        dataset[target_column].div(dataset[target_column].iloc[0]).sub(1).mul(100)
-    )
+    dataset[f"delta_{target_column}"] = dataset[target_column].pct_change().fillna(0)
 
     return dataset
 
