@@ -943,12 +943,6 @@ main:
                 ref: "/terminal/crypto/defi/newsletter"
               - name: dpi
                 ref: "/terminal/crypto/defi/dpi"
-              - name: funding
-                ref: "/terminal/crypto/defi/funding"
-              - name: borrow
-                ref: "/terminal/crypto/defi/borrow"
-              - name: lending
-                ref: "/terminal/crypto/defi/lending"
               - name: vaults
                 ref: "/terminal/crypto/defi/vaults"
               - name: tokens
