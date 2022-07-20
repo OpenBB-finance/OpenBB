@@ -1,6 +1,5 @@
 en:
-  _home_: >
-    [info]Information, guides and support for the OpenBB Terminal[/info]
+  _home_: Information, guides and support for the OpenBB Terminal
   about: discover the capabilities of the OpenBB Terminal (https://openbb.co/docs)
   support: pre-populate a support ticket for our team to evaluate
   update: attempt to update the terminal automatically (GitHub version)
@@ -557,9 +556,6 @@ en:
   crypto/onchain/tx: ethereum blockchain transaction info
   crypto/defi/newsletter: recent DeFi related newsletters
   crypto/defi/dpi: DeFi protocols listed on DefiPulse
-  crypto/defi/funding: funding rates - current or last 30 days average
-  crypto/defi/borrow: DeFi borrow rates - current or last 30 days average
-  crypto/defi/lending: DeFi ending rates - current or last 30 days average
   crypto/defi/vaults: top DeFi Vaults on different blockchains
   crypto/defi/tokens: tokens trade-able on Uniswap
   crypto/defi/stats: base statistics about Uniswap
