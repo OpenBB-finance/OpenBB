@@ -1,17 +1,27 @@
 ```
-usage: income [-l LIMIT] [-q] [-h] [--export {csv,json,xlsx}]
+usage: income [-q] [-r] [-p PLOT [PLOT ...]] [-h] [--export EXPORT] [-l LIMIT] [--source {yf,polygon,av,fmp}]
 ```
 
-Prints a complete income statement over time. This can be either quarterly or annually. [Source: Alpha Vantage]
+Prints a complete income statement over time. This can be either quarterly or annually. The following fields are
+expected: Accepted date, Cost and expenses, Cost of revenue, Depreciation and amortization, Ebitda, Ebitda Ratio, Eps,
+EPS Diluted, Filling date, Final link, General and administrative expenses, Gross profit, Gross profit ratio, Income
+before tax, Income before tax ratio, Income tax expense, Interest expense, Link, Net income, Net income ratio,
+Operating expenses, Operating income, Operating income ratio, Other expenses, Period, Research and development
+expenses, Revenue, Selling and marketing expenses, Total other income expenses net, Weighted average shs out, Weighted
+average shs out dil [Source: Alpha Vantage]
 
 ```
 optional arguments:
-  -l LIMIT, --limit LIMIT
-                        Number of latest years/quarters. (default: 1)
   -q, --quarter         Quarter fundamental data flag. (default: False)
+  -r, --ratios          Shows percentage change of values. (default: False)
+  -p PLOT [PLOT ...], --plot PLOT [PLOT ...]
+                        Rows to plot. (-1 represents invalid data) (default: None)
   -h, --help            show this help message (default: False)
-  --export {csv,json,xlsx}
-                        Export raw data into csv, json, xlsx (default: )
+  --export EXPORT       Export raw data into csv, json, xlsx (default: )
+  -l LIMIT, --limit LIMIT
+                        Number of entries to show in data. (default: 5)
+  --source {yf,polygon,av,fmp}
+                        Data source to select from (default: yf)
 ```
 
 Example:

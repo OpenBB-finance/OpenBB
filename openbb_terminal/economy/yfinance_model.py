@@ -531,12 +531,12 @@ def get_index(
             f"The chosen column is not available for {ticker}. Please choose "
             f"between: {', '.join(index_data.columns)}\n"
         )
-        return pd.Series()
+        return pd.Series(dtype="float64")
     if index_data.empty or len(index_data) < 2:
         console.print(
             f"The chosen index {ticker}, returns no data. Please check if "
             f"there is any data available.\n"
         )
-        return pd.Series()
+        return pd.Series(dtype="float64")
 
     return index_data[column]

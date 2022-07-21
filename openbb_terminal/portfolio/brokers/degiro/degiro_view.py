@@ -1,7 +1,6 @@
 # IMPORTATION THIRDPARTY
 import logging
 from argparse import Namespace
-from pathlib import Path
 
 # IMPORTATION THIRDPARTY
 import pandas as pd
@@ -21,7 +20,6 @@ from openbb_terminal.decorators import check_api_key
 
 # IMPORTATION INTERNAL
 from openbb_terminal.helper_funcs import (
-    export_data,
     print_rich_table,
 )
 from openbb_terminal.portfolio.brokers.degiro.degiro_model import DegiroModel
@@ -507,17 +505,15 @@ class DegiroView:
         )
 
         if portfolio_df is not None:
+
             print_rich_table(
                 df=portfolio_df,
                 headers=list(portfolio_df.columns),
                 show_index=True,
                 title="Degiro Transactions",
             )
-            export_data(
-                export_type=ns_parser.export,
-                dir_path=str(Path(__file__).parent.parent.parent.absolute()),
-                func_name="paexport",
-                df=portfolio_df,
-            )
+
+            degiro_model.export_data(portfolio_df, ns_parser.export)
+
         else:
             console.print("Error while fetching or processing Transactions.")

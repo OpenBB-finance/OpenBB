@@ -82,10 +82,11 @@ class ReportController(BaseController):
         d_params[report_to_run] = l_params
 
         # On the menu of choices add the parameters necessary for each template report
-        if len(l_params) > 1:
+        if len(l_params) > 1 or not l_params:
             args = f"<{'> <'.join(l_params)}>"
         else:
             args = f"<{l_params[0]}>"
+
         reports_opts += (
             f"    {k}. {report_to_run}"
             + f"{(max_len_name-len(report_to_run))*' '} "
