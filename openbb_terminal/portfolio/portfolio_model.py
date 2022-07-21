@@ -10,6 +10,7 @@ import pandas as pd
 import yfinance as yf
 from sklearn.metrics import r2_score
 from pycoingecko import CoinGeckoAPI
+import datetime
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.portfolio import portfolio_helper, allocation_model
@@ -960,11 +961,11 @@ class PortfolioModel:
 
         console.print("\n    Loading company data: ", end="")
 
-        for ticker_type, ticker_list in self.tickers.items():
+        for ticker_type, _ in self.tickers.items():
 
             # yfinance only has sector, industry and country for stocks
             if ticker_type == "STOCK":
-                for ticker in ticker_list:
+                for ticker in self.tickers[ticker_type]:
 
                     # Only gets fields for tickers with missing data
                     # TODO: Should only get field missing for tickers with missing data
@@ -977,6 +978,7 @@ class PortfolioModel:
                         .isnull()
                         .values.any()
                     ):
+                        # get ticker info in list ["Sector", "Industry", "Country", "Region"]
                         ticker_info_list = portfolio_helper.get_info_from_ticker(ticker)
 
                         # replace fields in orderbook
@@ -984,24 +986,59 @@ class PortfolioModel:
                             self.__orderbook.Ticker == ticker,
                             ["Sector", "Industry", "Country", "Region"],
                         ] = ticker_info_list
+
+                        # Display progress
+                        console.print(".", end="")
+
+            else:
+                for ticker in self.tickers[ticker_type]:
+                    if (
+                        self.__orderbook.loc[
+                            self.__orderbook["Ticker"] == ticker,
+                            ["Sector", "Industry", "Country", "Region"],
+                        ]
+                        .isnull()
+                        .values.any()
+                    ):
+                        # get ticker info in list ["Sector", "Industry", "Country", "Region"]
+                        ticker_info_list = ["-", "-", "-", "-"]
+
+                        # replace fields in orderbook
+                        self.__orderbook.loc[
+                            self.__orderbook.Ticker == ticker,
+                            ["Sector", "Industry", "Country", "Region"],
+                        ] = ticker_info_list
+
                         # Display progress
                         console.print(".", end="")
 
     def load_benchmark(self, ticker: str = "SPY", full_shares: bool = False):
         """Adds benchmark dataframe
 
-        Args:
+        Parameters:
             ticker (str): benchmark ticker to download data
             full_shares (bool): whether to mimic the portfolio trades exactly (partial shares) or round down the
             quantity to the nearest number.
         """
         self.benchmark_ticker = ticker
         self.benchmark_historical_prices = yf.download(
-            ticker, start=self.inception_date, threads=False, progress=False
+            ticker, start=self.inception_date - datetime.timedelta(days=1), threads=False, progress=False
         )["Adj Close"]
+
+        self.mimic_trades_for_benchmark(full_shares)
+
+        # merge benchmark and portfolio dates to ensure same length
+        self.benchmark_historical_prices = pd.merge(
+            self.portfolio_historical_prices["Close"],
+            self.benchmark_historical_prices,
+            how="outer",
+            left_index=True,
+            right_index=True,
+        )["Adj Close"]
+        self.benchmark_historical_prices.fillna(method="ffill", inplace=True)
+
         self.benchmark_returns = self.benchmark_historical_prices.pct_change().dropna()
         self.benchmark_info = yf.Ticker(ticker).info
-        self.mimic_trades_for_benchmark(full_shares)
 
     def mimic_trades_for_benchmark(self, full_shares: bool = False):
         """Mimic trades from the orderbook based on chosen benchmark assuming partial shares"""
@@ -1016,9 +1053,11 @@ class PortfolioModel:
         for index, trade in self.__orderbook.iterrows():
             # Select date to search (if not in historical prices, get closest value)
             if trade["Date"] not in self.benchmark_historical_prices.index:
-                date = self.benchmark_historical_prices.index.searchsorted(
-                    trade["Date"]
-                )
+                # search for closest date
+                date = self.benchmark_historical_prices.index[
+                    self.benchmark_historical_prices.index.searchsorted(trade["Date"])
+                ]
+
             else:
                 date = trade["Date"]
 
