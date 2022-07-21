@@ -180,7 +180,12 @@ def display_fred_series(
 
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
-def display_yield_curve(date: datetime, external_axes: Optional[List[plt.Axes]] = None):
+def display_yield_curve(
+    date: datetime,
+    external_axes: Optional[List[plt.Axes]] = None,
+    raw: bool = False,
+    export: str = "",
+):
     """Display yield curve based on US Treasury rates for a specified date.
 
     Parameters
@@ -203,10 +208,35 @@ def display_yield_curve(date: datetime, external_axes: Optional[List[plt.Axes]] 
     else:
         return
 
-    ax.plot(rates.Maturity, rates.Rate, "-o")
+    tenors = []
+    for i, row in rates.iterrows():
+        t = row["Maturity"][-3:].strip()
+        rates.at[i, "Maturity"] = t
+        if t[-1] == "M":
+            tenors.append(int(t[:-1]) / 12)
+        elif t[-1] == "Y":
+            tenors.append(int(t[:-1]))
+
+    ax.plot(tenors, rates.Rate, "-o")
     ax.set_xlabel("Maturity")
     ax.set_ylabel("Rate (%)")
     theme.style_primary_axis(ax)
     if external_axes is None:
         ax.set_title(f"US Yield Curve for {date_of_yield.strftime('%Y-%m-%d')} ")
         theme.visualize_output()
+
+    if raw:
+        print_rich_table(
+            rates,
+            headers=list(rates.columns),
+            show_index=False,
+            title=f"US Yield Curve for {date_of_yield.strftime('%Y-%m-%d')}",
+            floatfmt=".3f",
+        )
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "ycrv",
+        rates,
+    )

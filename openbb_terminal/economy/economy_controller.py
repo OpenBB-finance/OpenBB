@@ -1011,7 +1011,11 @@ class EconomyController(BaseController):
             investingcom_model.check_correct_country(ns_parser.country)
 
             if ns_parser.source == "FRED":
-                fred_view.display_yield_curve(ns_parser.date)
+                fred_view.display_yield_curve(
+                    ns_parser.date,
+                    raw=ns_parser.raw,
+                    export=ns_parser.export,
+                )
             elif ns_parser.source == "investpy":
                 investingcom_view.display_yieldcurve(
                     country=ns_parser.country,
