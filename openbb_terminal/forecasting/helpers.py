@@ -348,8 +348,8 @@ def prepare_scale_train_valid_test(
 def lambda_price_prediction_color(val: float, last_val: float) -> str:
     """Set prediction to be a colored string"""
     if float(val) > last_val:
-        return f"[green]{val:.2f} $[/green]"
-    return f"[red]{val:.2f} $[/red]"
+        return f"[green]$ {val:.2f} [/green]"
+    return f"[red]$ {val:.2f} [/red]"
 
 
 def print_pretty_prediction(df_pred: pd.DataFrame, last_price: float):

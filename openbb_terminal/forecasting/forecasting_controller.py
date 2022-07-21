@@ -5,6 +5,7 @@ __docformat__ = "numpy"
 # pylint: disable=too-many-arguments
 
 import argparse
+from dataclasses import dataclass
 import logging
 from itertools import chain
 import os
@@ -94,6 +95,8 @@ class ForecastingController(BaseController):
         "rsi",
         "roc",
         "mom",
+        "delta",
+        "atr",
         "signal",
         "expo",
         "theta",
@@ -122,16 +125,40 @@ class ForecastingController(BaseController):
         "pie",
         "hexbin",
     ]
+    disclaimer = """
+    All models are for educational purposes only. The techniques available in this menu are not
+    fine tuned or guarenteed to work. Backtesting results is not a guarentee of future accuracy.
+    Investing involves monetary risk that OpenBB does not take a role in. Please research any prediction techniques
+    fully before attempting to use. OpenBB is not liable for any loss or damages."""
+
     PATH = "/forecasting/"
 
     loaded_dataset_cols = "\n"
     list_dataset_cols: List = list()
 
-    def __init__(self, queue: List[str] = None):
+    def __init__(
+        self, ticker: str = "", data: pd.DataFrame = None, queue: List[str] = None
+    ):
         """Constructor"""
         super().__init__(queue)
         self.files: List[str] = list()
         self.datasets: Dict[str, pd.DataFrame] = dict()
+
+        if ticker and not data.empty:
+            data["date"] = data.index
+            data.columns = data.columns.map(lambda x: x.lower().replace(" ", "_"))
+
+            self.files.append(ticker)
+            self.datasets[ticker] = data
+            self.loaded_dataset_cols = "\n"
+
+            self.loaded_dataset_cols += (
+                f"  {ticker} {(20 - len(ticker)) * ' '}: "
+                f"{', '.join(data.columns)}\n"
+            )
+
+            for col in data.columns:
+                self.list_dataset_cols.append(f"{ticker}.{col}")
 
         self.DATA_TYPES: List[str] = ["int", "float", "str", "bool", "category", "date"]
 
@@ -206,6 +233,8 @@ class ForecastingController(BaseController):
                 "rsi",
                 "roc",
                 "mom",
+                "delta",
+                "atr",
                 "signal",
                 # "index",
                 # "remove",
@@ -255,6 +284,9 @@ class ForecastingController(BaseController):
     def print_help(self):
         """Print help"""
         mt = MenuText("forecasting/")
+        mt.add_param("_disclaimer_", self.disclaimer)
+        mt.add_raw("\n")
+        mt.add_param("_loaded", self.loaded_dataset_cols)
         mt.add_param("_comp_device", self.device.upper())
         mt.add_param("_comp_ram", self.comp_ram)
         mt.add_param("_rec_data_size", self.rec_data_size)
@@ -285,6 +317,8 @@ class ForecastingController(BaseController):
         mt.add_cmd("rsi", "", self.files)
         mt.add_cmd("roc", "", self.files)
         mt.add_cmd("mom", "", self.files)
+        mt.add_cmd("delta", "", self.files)
+        mt.add_cmd("atr", "", self.files)
         mt.add_cmd("signal", "", self.files)
         mt.add_info("_tsforecasting_")
         # mt.add_cmd("arima", "", self.files)
@@ -1291,6 +1325,90 @@ class ForecastingController(BaseController):
         console.print()
 
     @log_start_end(log=logger)
+    def call_delta(self, other_args: List[str]):
+        """Process %Change (Delta)"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="delta",
+            description="Add %Change (Delta) to dataset based on specific column.",
+        )
+
+        # if user does not put in --target-dataset
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "--target-dataset")
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            NO_EXPORT,
+            target_dataset=True,
+            target_column=True,
+        )
+        if ns_parser:
+            # check proper file name is provided
+            if not helpers.check_parser_input(ns_parser, self.datasets):
+                return
+
+            self.datasets[ns_parser.target_dataset] = forecasting_model.add_delta(
+                self.datasets[ns_parser.target_dataset], ns_parser.target_column
+            )
+            console.print(
+                f"Successfully added 'Delta_{ns_parser.target_column}' to '{ns_parser.target_dataset}' dataset"
+            )
+
+            # update forecast menu with new column on modified dataset
+            self.refresh_datasets_on_menu()
+
+        self.update_runtime_choices()
+        console.print()
+
+    @log_start_end(log=logger)
+    def call_atr(self, other_args: List[str]):
+        """Process Average True Range"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="atr",
+            description="Add Average True Range to dataset of specific stock ticker.",
+        )
+
+        # if user does not put in --target-dataset
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "--target-dataset")
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            NO_EXPORT,
+            target_dataset=True,
+            target_column=True,
+        )
+        if ns_parser:
+            # check proper file name is provided
+            if not helpers.check_parser_input(ns_parser, self.datasets):
+                return
+
+            check = False
+            self.datasets[ns_parser.target_dataset], check = forecasting_model.add_atr(
+                self.datasets[ns_parser.target_dataset]
+            )
+            if check:
+                console.print(
+                    f"Successfully added 'Average True Range' to '{ns_parser.target_dataset}' dataset"
+                )
+            else:
+                console.print(
+                    "Could not add 'Average True Range' as it does not have one/all specific columns (low/close/high)"
+                )
+
+            # update forecast menu with new column on modified dataset
+            self.refresh_datasets_on_menu()
+
+        self.update_runtime_choices()
+        console.print()
+
+    @log_start_end(log=logger)
     def call_signal(self, other_args: List[str]):
         """Process Price Signal"""
         parser = argparse.ArgumentParser(
@@ -1312,7 +1430,6 @@ class ForecastingController(BaseController):
             NO_EXPORT,
             target_dataset=True,
             target_column=True,
-            period=10,
         )
         if ns_parser:
             # check proper file name is provided
