@@ -845,22 +845,22 @@ class ForecastingController(BaseController):
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
+        if not ns_parser:
+            return
 
-        if ns_parser and ns_parser.values:
-            # check proper file name is provided
-            if not ns_parser.values:
-                console.print("[red]Please enter valid dataset.\n[/red]")
-                return
+        if not ns_parser.values:
+            console.print("[red]Please enter valid dataset.\n[/red]")
+            return
 
-            data: Dict = {}
-            for datasetcol in ns_parser.values:
-                dataset, col = datasetcol.split(".")
-                data[datasetcol] = self.datasets[dataset][col]
+        data: Dict = {}
+        for datasetcol in ns_parser.values:
+            dataset, col = datasetcol.split(".")
+            data[datasetcol] = self.datasets[dataset][col]
 
-            forecasting_view.display_plot(
-                data,
-                ns_parser.export,
-            )
+        forecasting_view.display_plot(
+            data,
+            ns_parser.export,
+        )
 
     @log_start_end(log=logger)
     def call_season(self, other_args: List[str]):

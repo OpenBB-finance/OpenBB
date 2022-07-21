@@ -1,3 +1,4 @@
+from datetime import datetime
 from mock import PropertyMock
 from typing import List
 import argparse
@@ -7,7 +8,7 @@ from prompt_toolkit.completion import NestedCompleter
 from openbb_terminal.forecasting import forecasting_controller as fc
 
 base = "openbb_terminal.forecasting.forecasting_controller."
-df = pd.DataFrame([[1, 2, 3], [2, 3, 4], [3, 4, 5]], columns=["first", "date", "third"])
+df = pd.DataFrame([[1, 2, 3], [2, 3, 4], [3, 4, 5]], columns=["first", "date", "close"])
 
 
 class Thing:
@@ -33,7 +34,7 @@ def test_check_greater_than_one_invalid():
 def test_forecasting_controller(mocker):
     mocker.patch(base + "session", True)
     mocker.patch(base + "obbff.USE_PROMPT_TOOLKIT", True)
-    cont = fc.ForecastingController()
+    cont = fc.ForecastingController(data=df, ticker="TSLA")
     assert isinstance(cont.files, List)
 
 
@@ -174,6 +175,28 @@ def test_call_plot(mocker):
     cont.call_plot(["data.first"])
 
 
+def test_call_plot_no_parser(mocker):
+    mocker.patch(
+        base + "ForecastingController.parse_known_args_and_warn", return_value=None
+    )
+    cont = fc.ForecastingController()
+    cont.choices = {"plot": ["data.first", "data.second", "data.third"]}
+    cont.datasets = {"data": df}
+    cont.call_plot(["data.first"])
+
+
+def test_call_plot_no_values(mocker):
+    mock = mocker.MagicMock()
+    mock.values = None
+    mocker.patch(
+        base + "ForecastingController.parse_known_args_and_warn", return_value=mock
+    )
+    cont = fc.ForecastingController()
+    cont.choices = {"plot": ["data.first", "data.second", "data.third"]}
+    cont.datasets = {"data": df}
+    cont.call_plot(["data.first"])
+
+
 def test_call_season():
     cont = fc.ForecastingController()
     cont.datasets = {"data": df}
@@ -271,10 +294,47 @@ def test_call_clean_bad(mocker):
     cont.call_clean(["data"])
 
 
-def test_call_ema_invalid():
+@pytest.mark.parametrize(
+    "feature", ["ema", "sto", "rsi", "roc", "mom", "delta", "atr", "signal", "delete"]
+)
+def test_call_feat_eng_invalid(feature):
     cont = fc.ForecastingController()
     cont.datasets = {"data": df}
-    cont.call_ema(["data"])
+    cont.files = ["file.csv", "fiile.csv"]
+    cont.choices = {
+        "combine": ["data.first", "data.second", "data.third"],
+        "delete": ["data.first", "data.second", "data.third"],
+    }
+    the_list = ["data"]
+    if feature == "rsi":
+        the_list.append("--period")
+        the_list.append("2")
+    getattr(cont, f"call_{feature}")(the_list)
+
+
+@pytest.mark.parametrize(
+    "feature",
+    ["ema", "sto", "rsi", "roc", "mom", "delta", "atr", "signal", "delete", "export"],
+)
+def test_call_feat_eng_invalid_parser(feature, mocker):
+    mocker.patch(base + "helpers.check_parser_input", return_value=None)
+    mock = mocker.MagicMock()
+    mock.target_dataset = None
+    mocker.patch(
+        base + "ForecastingController.parse_known_args_and_warn", return_value=mock
+    )
+    cont = fc.ForecastingController()
+    cont.datasets = {"data": df}
+    cont.files = ["file.csv", "fiile.csv"]
+    cont.choices = {
+        "combine": ["data.first", "data.second", "data.third"],
+        "delete": ["data.first", "data.second", "data.third"],
+    }
+    the_list = ["data"]
+    if feature == "rsi":
+        the_list.append("--period")
+        the_list.append("2")
+    getattr(cont, f"call_{feature}")(the_list)
 
 
 def test_call_ema(mocker):
@@ -287,3 +347,155 @@ def test_call_ema(mocker):
     cont = fc.ForecastingController()
     cont.datasets = {"data": df}
     cont.call_ema(["data"])
+
+
+@pytest.mark.parametrize("datasets", [[], ["data"], ["bad"]])
+def test_call_delete(mocker, datasets):
+    cont = fc.ForecastingController()
+    mock = mocker.MagicMock()
+    if datasets == ["bad"]:
+        mock.delete = ["data.lose"]
+    else:
+        mock.delete = ["data.close"]
+    mocker.patch(
+        base + "ForecastingController.parse_known_args_and_warn", return_value=mock
+    )
+    if datasets == ["data"]:
+        cont.datasets = {"data": df}
+    cont.choices = {
+        "combine": ["data.first", "data.second", "data.third"],
+        "delete": ["data.first", "data.second", "data.third"],
+    }
+    cont.call_delete([])
+
+
+def test_call_export(mocker):
+    mock = mocker.MagicMock()
+    mock.target_dataset = "data"
+    mock.columns = ["data.first", "data.second"]
+    mocker.patch(
+        base + "ForecastingController.parse_known_args_and_warn", return_value=mock
+    )
+    cont = fc.ForecastingController()
+    cont.datasets = {"data": df}
+    cont.call_export(["data"])
+
+
+@pytest.mark.parametrize(
+    "opt, func",
+    [
+        ("expo", "expo_view.display_expo_forecast"),
+        ("theta", "theta_view.display_theta_forecast"),
+        ("rnn", "rnn_view.display_rnn_forecast"),
+        ("nbeats", "nbeats_view.display_nbeats_forecast"),
+        ("tcn", "tcn_view.display_tcn_forecast"),
+        ("regr", "regr_view.display_regression"),
+        ("linregr", "linregr_view.display_linear_regression"),
+        ("brnn", "brnn_view.display_brnn_forecast"),
+        ("trans", "trans_view.display_trans_forecast"),
+        ("tft", "tft_view.display_tft_forecast"),
+        ("arima", "arima_view.display_arima"),
+    ],
+)
+def test_models(mocker, opt, func):
+    mocker.patch(base + "helpers.check_parser_input", return_value=True)
+    mocker.patch(base + func)
+    cont = fc.ForecastingController()
+    cont.datasets = {"data": df}
+    print(df.columns)
+
+    getattr(cont, f"call_{opt}")(["data"])
+
+
+@pytest.mark.parametrize(
+    "opt",
+    [
+        "expo",
+        "theta",
+        "rnn",
+        "nbeats",
+        "tcn",
+        "regr",
+        "linregr",
+        "brnn",
+        "trans",
+        "tft",
+        "arima",
+        "knn",
+        "mc",
+    ],
+)
+def test_models_bad(opt):
+    cont = fc.ForecastingController()
+    cont.datasets = {"data": df}
+    getattr(cont, f"call_{opt}")(["data"])
+
+
+@pytest.mark.parametrize("end_date", [datetime(2020, 1, 1), datetime(2022, 7, 21)])
+def test_call_arima(mocker, end_date):
+    mocker.patch(
+        base + "get_next_stock_market_days", return_value=[datetime(2021, 1, 1)]
+    )
+    mocker.patch(base + "helpers.check_parser_input", return_value=True)
+    mocker.patch(base + "arima_view.display_arima")
+    mock = mocker.MagicMock()
+    mock.s_end_date = end_date
+    mock.target_dataset = "data"
+    mocker.patch(
+        base + "ForecastingController.parse_known_args_and_warn", return_value=mock
+    )
+    cont = fc.ForecastingController()
+    cont.datasets = {"data": [datetime(2021, 1, 1)]}
+    cont.call_arima(["data"])
+
+
+def test_call_knn(mocker):
+    mocker.patch(base + "knn_view.display_k_nearest_neighbors")
+    mocker.patch(base + "helpers.check_parser_input", return_value=True)
+    mock = mocker.MagicMock()
+    mock.target_dataset = "data"
+    mocker.patch(
+        base + "ForecastingController.parse_known_args_and_warn", return_value=mock
+    )
+    cont = fc.ForecastingController()
+    cont.datasets = {"data": df}
+    cont.call_knn(["data"])
+
+
+def test_call_knn_key_error(mocker):
+    mocker.patch(base + "knn_view.display_k_nearest_neighbors")
+    mocker.patch(base + "helpers.check_parser_input", return_value=True)
+    mock = mocker.MagicMock()
+    mock.target_dataset = "data"
+    mocker.patch(
+        base + "ForecastingController.parse_known_args_and_warn", return_value=mock
+    )
+    cont = fc.ForecastingController()
+    cont.datasets = {"data": pd.DataFrame()}
+    cont.call_knn(["data"])
+
+
+def test_call_mc(mocker):
+    mocker.patch(base + "mc_view.display_mc_forecast")
+    mocker.patch(base + "helpers.check_parser_input", return_value=True)
+    mock = mocker.MagicMock()
+    mock.target_dataset = "data"
+    mocker.patch(
+        base + "ForecastingController.parse_known_args_and_warn", return_value=mock
+    )
+    cont = fc.ForecastingController()
+    cont.datasets = {"data": df}
+    cont.call_mc(["data"])
+
+
+def test_call_mc_key_error(mocker):
+    mocker.patch(base + "mc_view.display_mc_forecast")
+    mocker.patch(base + "helpers.check_parser_input", return_value=True)
+    mock = mocker.MagicMock()
+    mock.target_dataset = "data"
+    mocker.patch(
+        base + "ForecastingController.parse_known_args_and_warn", return_value=mock
+    )
+    cont = fc.ForecastingController()
+    cont.datasets = {"data": pd.DataFrame()}
+    cont.call_mc(["data"])
