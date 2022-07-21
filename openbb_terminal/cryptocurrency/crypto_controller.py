@@ -369,7 +369,6 @@ class CryptoController(CryptoBaseController):
         else:
             console.print(
                 "Predict is disabled. Check ENABLE_PREDICT flag on feature_flags.py",
-                "Note for Mac releases users: prediction are not available...coming soon.",
                 "\n",
             )
 
