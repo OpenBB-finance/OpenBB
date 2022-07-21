@@ -8,7 +8,7 @@ geekdocCollapseSection: true
 The Portfolio menu, and its sub-menus, are dedicated to properly explaining and optimizing your own portfolio. With
 features to load your own orderbook (transactions) it is possible to compare your results to that of a <a href="https://www.investopedia.com/terms/b/benchmark.asp" target="_blank">benchmark</a>.
 For example, you are able to load both your portfolio and a benchmark (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/portfolio/load/" target="_blank">load</a> and <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/portfolio/bench/" target="_blank">bench</a>),
-then have the option to look into the performance compared to the benchmark asking the question "What if I invested all my money in the benchmark?" (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/portfolio/perf/" target="_blank">perf</a>)
+then have the option to look into the performance compared to the benchmark asking the question "_What if I invested all my money in the benchmark instead?_" (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/portfolio/perf/" target="_blank">perf</a>)
 as well as see a wide variety of statistics and metrics (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/portfolio/rsharpe/" target="_blank">rsharpe</a>, <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/portfolio/distr/" target="_blank">distr</a>, <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/portfolio/var/" target="_blank">var</a> and <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/portfolio/metric/" target="_blank">metric</a>).
 Next to that, with these findings you can apply optimization techniques to your portfolio through the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/portfolio/po/" target="_blank">Portfolio Optimization menu</a>.
 
@@ -39,7 +39,7 @@ Note that the Excel sheet requires the following columns:
 - **Type** - The type of the security. Use Cash/Stock/Crypto/ETF as appropriate
 - **Price** - The price the security was added or removed at, on a per-unit basis
 - **Quantity** - How much of the security in question was added or removed
-- **Side** - Whether or not you bought or sold. Use Buy/Deposit/1 to add to the portfolio or Sell/Withdrawal/0 to remove from the portfolio
+- **Side** - Whether you bought or sold. Use Buy/Deposit/1 to add to the portfolio or Sell/Withdrawal/0 to remove from the portfolio
 a search criteria, country, sector or industry.
 
 Furthermore, the chosen Excel sheet above also has additional columns but these are _optional_. The OpenBB Terminal
@@ -149,7 +149,7 @@ Volatility for Portfolio and Benchmark
 ## Examples
 
 Instead of loading the "Public_Equity_Orderbook.xlsx" file, we now load in
-"Public_Equity_Orderbook_No_Categorization.xlsx" which does not include categorisation of the stocks
+"Public_Equity_Orderbook_No_Categorization.xlsx" which does not include categorization of the stocks
 by industry, sector, country and region. Therefore, we let the OpenBB Terminal figure this out. This
 takes a bit longer to load.
 
@@ -165,7 +165,7 @@ Portfolio: Public_Equity_Orderbook_No_Categorization.xlsx
 Risk Free Rate: 0
 ```
 
-Then we load in a benchmark again with `bench`. Here we take the <a href="https://investor.vanguard.com/investment-products/etfs/profile/vti" target="_blank">Vanguard Total Stock Market ETF (VTI)</a>.
+Then we load in a benchmark again with `bench` where we select the <a href="https://investor.vanguard.com/investment-products/etfs/profile/vti" target="_blank">Vanguard Total Stock Market ETF (VTI)</a>.
 
 ```
 2022 Jul 21, 04:44 (🦋) /portfolio/ $ bench Vanguard Total Stock Market ETF (VTI)
@@ -198,8 +198,8 @@ beta with `rbeta`.
 ![Rolling Beta of the Portfolio](https://user-images.githubusercontent.com/46355364/180178392-96efb6e1-60a1-4f76-92d8-434fb3637c21.png)
 
 This helps in understanding that, even though you achieved a superior return, this also came at a
-greater risk compared to that of the benchmark. With the available functionalities you can deep dive
-further in these results, e.g. by looking at the `summary` statistics:
+greater risk compared to that of the benchmark. With the available functionalities you can further look
+into these results, e.g. by looking at the `summary` statistics:
 
 ```
 2022 Jul 21, 04:46 (🦋) /portfolio/ $ summary
@@ -225,7 +225,7 @@ Summary of Portfolio vs Benchmark for all period
 ```
 
 As well as look into how the allocations differ per sector and country with `alloc`. This shows that
-is a clear difference in how the benchmark is constructed and that of the portfolio implying it might
+there is a clear difference in how the benchmark and the portfolio are constructed implying the Total Market ETF might
 not be the best benchmark for your portfolio.
 
 ```
