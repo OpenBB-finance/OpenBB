@@ -16,7 +16,7 @@ Next to that, with these findings you can apply optimization techniques to your 
 
 The Portfolio menu is called upon by typing `portfolio` which opens the following menu:
 
-![img.png](img.png)
+![Portfolio Menu](https://user-images.githubusercontent.com/46355364/180178234-0cb80009-74d8-41fb-9f4c-fa393361903a.png)
 
 The first step in using this menu is loading a portfolio with <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/portfolio/load/" target="_blank">load</a>.
 Here, we provide an example titled "Public_Equity_Orderbook.xlsx" which can be loaded in. This file also serves as a template when you wish to fill in your own orders. This results
@@ -89,11 +89,11 @@ Benchmark: SPDR S&P 500 ETF Trust (SPY) (SPY)
 Note that the `bench` command has a large selection of products you can choose from. Instead of taking the index directly, an ETF product is used to represent something
 that you could have actually invested in. By using the `DOWN` (⌄) arrow and pressing `ENTER` (⏎) you can select a different benchmark.
 
-![img_1.png](img_1.png)
+![Benchmark Selection](https://user-images.githubusercontent.com/46355364/180178291-eacebad5-79be-4c57-85a2-c75d88b0470c.png)
 
 After defining both the portfolio and the benchmark, a lot more options become available:
 
-![img_2.png](img_2.png)
+![Portfolio Menu after loading Portfolio and Benchmark](https://user-images.githubusercontent.com/46355364/180178329-0aca57bf-ad29-47cc-a787-298a4de4070a.png)
 
 For example, with `perf`, we can see how the portfolio performed compared to if you invested the same amount of money into the
 benchmark instead. This reflects the capabilities of you, as an investor, to outperform a passive strategy.
@@ -195,7 +195,7 @@ beta with `rbeta`.
 2022 Jul 21, 04:46 (🦋) /portfolio/ $ rbeta
 ```
 
-![Figure_1](Figure_1.png)
+![Rolling Beta of the Portfolio](https://user-images.githubusercontent.com/46355364/180178392-96efb6e1-60a1-4f76-92d8-434fb3637c21.png)
 
 This helps in understanding that, even though you achieved a superior return, this also came at a
 greater risk compared to that of the benchmark. With the available functionalities you can deep dive
