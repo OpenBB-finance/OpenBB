@@ -1,6 +1,9 @@
 from datetime import datetime
+import pytest
 import pandas as pd
 from openbb_terminal.forecasting import arima_view as av
+
+base = "openbb_terminal.forecasting.arima_view."
 
 
 def test_display_arima(tsla_csv):

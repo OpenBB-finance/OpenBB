@@ -89,7 +89,7 @@ def display_plot(
         External axes to plot on
     """
 
-    for dataset_col in data:
+    for dataset_col in list(data):
         if isinstance(data[dataset_col].index, pd.MultiIndex):
             console.print(
                 "The index appears to be a multi-index. "
