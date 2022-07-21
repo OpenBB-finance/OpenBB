@@ -106,7 +106,11 @@ LOGGING_COMMIT_HASH = str(os.getenv("OPENBB_LOGGING_COMMIT_HASH", "REPLACE_ME"))
 PREFERRED_DATA_SOURCE_FILE = str(
     os.getenv(
         "OPENBB_PREFERRED_DATA_SOURCE_FILE",
-        os.getcwd() + os.path.sep + "data_sources_default.json",
+        os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            "..",
+            "data_sources_default.json",
+        ),
     )
 )
 
@@ -121,5 +125,5 @@ GUESS_EASTER_EGG_FILE = str(
 try:
     version = pkg_resources.get_distribution("OpenBBTerminal").version
 except Exception:
-    version = "1.5.0m"
+    version = "1.6.0m"
 VERSION = str(os.getenv("OPENBB_VERSION", version))
