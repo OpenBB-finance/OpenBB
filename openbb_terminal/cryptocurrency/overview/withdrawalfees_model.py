@@ -146,7 +146,7 @@ def get_overall_withdrawal_fees(top: int = 100) -> pd.DataFrame:
     df = pd.read_html(str(table))[0]
 
     df["Coin"] = [ticker.text for ticker in tickers_html]
-    df["Highest"] = df["Highest"].apply(
+    df["Lowest"] = df["Lowest"].apply(
         lambda x: f'{x[:x.index(".")+3]} ({x[x.index(".")+3:]})'
         if "." in x and isinstance(x, str)
         else x
