@@ -297,7 +297,7 @@ def get_splits(ticker: str) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_financials(ticker: str, financial: str) -> pd.DataFrame:
+def get_financials(ticker: str, financial: str, ratios: bool = False) -> pd.DataFrame:
     """Get cashflow statement for company
 
     Parameters
@@ -309,6 +309,8 @@ def get_financials(ticker: str, financial: str) -> pd.DataFrame:
             cash-flow
             financials for Income
             balance-sheet
+    ratios: bool
+        Shows percentage change
 
     Returns
     -------
@@ -380,4 +382,25 @@ def get_financials(ticker: str, financial: str) -> pd.DataFrame:
         df.columns = new_headers
         df.set_index("Breakdown", inplace=True)
     df.replace("", np.nan, inplace=True)
+
+    if ratios:
+        df = df.replace(",", "", regex=True)
+        df = df.replace("-", "0")
+        df = df.astype(float)
+        types = df.copy().applymap(lambda x: isinstance(x, (float, int)))
+        types = types.all(axis=1)
+
+        # For rows with complete data
+        valid = []
+        i = 0
+        for row in types:
+            if row:
+                valid.append(i)
+            i += 1
+        df_fa_pc = df.iloc[valid].pct_change(axis="columns", periods=-1).fillna(0)
+        j = 0
+        for i in valid:
+            df.iloc[i] = df_fa_pc.iloc[j]
+            j += 1
+
     return df.dropna(how="all")

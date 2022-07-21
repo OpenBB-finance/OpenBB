@@ -28,6 +28,7 @@ set_key(default_env_file, "OPENBB_LOGGING_COMMIT_HASH", str(commit_hash))
 # Files that are explicitly pulled into the bundle
 added_files = [
     (os.path.join(os.getcwd(), "openbb_terminal"), "openbb_terminal"),
+    (os.path.join(os.getcwd(), "data_sources_default.json"), "."),
     (os.path.join(os.getcwd(), "routines"), "routines"),
     (os.path.join(os.getcwd(), "portfolio"), "portfolio"),
     (os.path.join(os.getcwd(), "i18n"), "i18n"),

@@ -76,7 +76,7 @@ def display_orderbook(portfolio=None, show_index=False):
         Defaults to False.
     """
 
-    if portfolio is None:
+    if portfolio.empty:
         logger.warning("No orderbook loaded")
         console.print("[red]No orderbook loaded.[/red]\n")
     else:
@@ -348,76 +348,6 @@ def display_performance_vs_benchmark(
             headers=list(totals.columns),
             show_index=True,
         )
-
-
-@log_start_end(log=logger)
-def display_cumulative_returns(
-    portfolio_returns: pd.Series,
-    benchmark_returns: pd.Series,
-    period: str = "all",
-    raw: bool = False,
-    limit: int = 10,
-    export: str = "",
-    external_axes: Optional[plt.Axes] = None,
-):
-    """Display portfolio returns vs benchmark
-
-    Parameters
-    ----------
-    portfolio_returns : pd.Series
-        Returns of the portfolio
-    benchmark_returns : pd.Series
-        Returns of the benchmark
-    period : str
-        Period to compare cumulative returns and benchmark
-    raw : False
-        Display raw data from cumulative return
-    limit : int
-        Last cumulative returns to display
-    export : str
-        Export certain type of data
-    external_axes: plt.Axes
-        Optional axes to display plot on
-    """
-
-    portfolio_returns = portfolio_helper.filter_df_by_period(portfolio_returns, period)
-    benchmark_returns = portfolio_helper.filter_df_by_period(benchmark_returns, period)
-
-    cumulative_returns = 100 * portfolio_model.cumulative_returns(portfolio_returns)
-    benchmark_c_returns = 100 * portfolio_model.cumulative_returns(benchmark_returns)
-
-    if raw:
-        last_cumulative_returns = cumulative_returns.to_frame()
-        last_cumulative_returns = last_cumulative_returns.join(benchmark_c_returns)
-        last_cumulative_returns.index = last_cumulative_returns.index.date
-        print_rich_table(
-            last_cumulative_returns.tail(limit),
-            title="Cumulative Portfolio and Benchmark returns",
-            headers=["Portfolio [%]", "Benchmark [%]"],
-            show_index=True,
-        )
-    else:
-        if external_axes is None:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        else:
-            ax = external_axes
-
-        ax.plot(cumulative_returns.index, cumulative_returns, label="Portfolio")
-        ax.plot(benchmark_c_returns.index, benchmark_c_returns, label="Benchmark")
-
-        ax.legend(loc="upper left")
-        ax.set_ylabel("Cumulative Returns [%]")
-        theme.style_primary_axis(ax)
-
-        if not external_axes:
-            theme.visualize_output()
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "cret",
-        cumulative_returns.to_frame().join(benchmark_c_returns),
-    )
 
 
 @log_start_end(log=logger)

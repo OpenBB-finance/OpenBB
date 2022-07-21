@@ -95,8 +95,8 @@ or visit our <a href="https://openbb.co/contact" target="_blank">contact page</a
 
 The process starts off by downloading the installer, see below for how to download the most recent release:
 
-1. Go to [the openbb.co website](https://www.openbb.co/products/terminal#get-started)
-2. Click on the `Download` button in the Windows Installer section
+1. Go to <a href="https://www.openbb.co/products/terminal#get-started" target="_blank">OpenBB website</a>.
+2. Click on the `Download` button in the Windows Installer section.
 
 When the file is downloaded, use the following steps to run the OpenBB Terminal:
 
@@ -131,8 +131,8 @@ The first time this takes a bit longer to load, this can take up to a few minute
 
 The process starts off by downloading the installer, see below for how to download the most recent release:
 
-1. Go to [the openbb.co website](https://www.openbb.co/products/terminal#get-started)
-2. Click on the `Download` button in the macOS Installer section
+1. Go to <a href="https://www.openbb.co/products/terminal#get-started" target="_blank">OpenBB website</a>.
+2. Click on the `Download` button in the macOS Installer section.
 
 When the DMG file is downloaded, use the following steps to run the OpenBB Terminal:
 
@@ -358,6 +358,7 @@ To figure out where you can obtain the API key, you can enter the command (e.g. 
 | ethplorer  | Ethplorer                                | https://github.com/EverexIO/Ethplorer/wiki/Ethplorer-API                           |
 | smartstake | Smartstake                               | https://www.smartstake.io                                                          |
 | github     | GitHub                                   | https://docs.github.com/en/rest/guides/getting-started-with-the-rest-api           |
+| messari    | messari                                  | https://messari.io/api/docs                                                        |
 
 ## Available menus within the OpenBB Terminal
 
@@ -367,7 +368,7 @@ The asset class menus are as follows:
 
 - <a href="terminal/stocks" target="_blank">Introduction to Stocks</a>: access historical pricing data, options, sector and
 industry analysis, and overall due diligence.
-- <a href="terminal/cryptocurrency" target="_blank">Introduction to Crypto</a>: dive into onchain data, tokenomics, circulation supply,
+- <a href="terminal/crypto" target="_blank">Introduction to Crypto</a>: dive into onchain data, tokenomics, circulation supply,
 nfts and more.
 - <a href="terminal/etf" target="_blank">Introduction to ETF</a>: explore exchange traded funds, historical pricing, holdings
 and screeners.

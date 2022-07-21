@@ -34,7 +34,7 @@ from openbb_terminal.helper_funcs import (
     support_message,
     check_file_type_saved,
     check_positive,
-    get_preferred_source,
+    get_ordered_list_sources,
 )
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.rich_config import console
@@ -158,6 +158,19 @@ class BaseController(metaclass=ABCMeta):
         """Checks for an existing instance of the controller before creating a new one"""
         self.save_class()
         arguments = len(args) + len(kwargs)
+        # Due to the 'arguments == 1' condition, we actually NEVER load a class
+        # that has arguments (The 1 argument corresponds to self.queue)
+        # Advantage: If the user changes something on one controller and then goes to the
+        # controller below, it will create such class from scratch bringing all new variables
+        # in and considering latest changes.
+        # Disadvantage: If the user goes on a controller below and we have been there before
+        # it will not load that previous class, but create a new one from scratch.
+        # SCENARIO: If the user is in stocks and does load AAPL/ta the TA menu will get AAPL,
+        # and if then the user goes back to the stocks menu using .. that menu will have AAPL
+        # Now, if "arguments == 1" condition exists, if the user does "load TSLA" and then
+        # goes into "TA", the "TSLA" ticker will appear. If that condition doesn't exist
+        # the previous class will be loaded and even if the user changes the ticker on
+        # the stocks context it will not impact the one of TA menu - unless changes are done.
         if class_ins.PATH in controllers and arguments == 1 and obbff.REMEMBER_CONTEXTS:
             old_class = controllers[class_ins.PATH]
             old_class.queue = self.queue
@@ -322,6 +335,7 @@ class BaseController(metaclass=ABCMeta):
     def call_exit(self, _) -> None:
         # Not sure how to handle controller loading here
         """Process exit terminal command"""
+        self.save_class()
         console.print("")
         for _ in range(self.PATH.count("/")):
             self.queue.insert(0, "quit")
@@ -331,6 +345,7 @@ class BaseController(metaclass=ABCMeta):
         """Process reset command. If you would like to have customization in the
         reset process define a method `custom_reset` in the child class.
         """
+        self.save_class()
         if self.PATH != "/":
             if self.custom_reset():
                 self.queue = self.custom_reset() + self.queue
@@ -422,7 +437,6 @@ class BaseController(metaclass=ABCMeta):
         export_allowed: int = NO_EXPORT,
         raw: bool = False,
         limit: int = 0,
-        sources: List[str] = None,
     ):
         """Parses list of arguments into the supplied parser
 
@@ -439,8 +453,6 @@ class BaseController(metaclass=ABCMeta):
             Add the --raw flag
         limit: int
             Add a --limit flag with this number default
-        sources: List[str]
-            Data sources from where to select from
 
         Returns
         -------
@@ -489,13 +501,15 @@ class BaseController(metaclass=ABCMeta):
                 help="Number of entries to show in data.",
                 type=check_positive,
             )
+
+        sources = get_ordered_list_sources(f"{self.PATH}{parser.prog}")
         if sources:
             parser.add_argument(
                 "--source",
                 action="store",
                 dest="source",
                 choices=sources,
-                default=get_preferred_source(f"{self.PATH}{parser.prog}"),
+                default=sources[0],  # the first source from the list is the default
                 help="Data source to select from",
             )
 
@@ -750,7 +764,8 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
             other_args.insert(0, "-t")
 
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, sources=["yf", "av", "iex", "polygon"]
+            parser,
+            other_args,
         )
 
         if ns_parser:

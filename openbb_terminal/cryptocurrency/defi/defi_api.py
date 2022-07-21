@@ -18,9 +18,6 @@ from .llama_view import display_grouped_defi_protocols as gdapps
 from .llama_view import display_historical_tvl as dtvl
 from .llama_view import display_defi_protocols as ldapps
 from .llama_view import display_defi_tvl as stvl
-from .defirate_view import display_funding_rates as funding
-from .defirate_view import display_borrow_rates as borrow
-from .defirate_view import display_lending_rates as lending
 from .substack_view import display_newsletters as newsletter
 from .graph_view import display_uni_tokens as tokens
 from .graph_view import display_uni_stats as stats

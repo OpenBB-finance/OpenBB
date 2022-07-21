@@ -1,7 +1,6 @@
-Could not preprocess orderbook.
 
 >   bro              brokers holdings, 		 supports: robinhood, ally, degiro, coinbase
->   po               portfolio optimization, 	 optimal your portfolio weights efficiently
+>   po               portfolio optimization, 	 optimize your portfolio weights efficiently
 
     load             load data into the portfolio
 
@@ -17,7 +16,6 @@ Benchmark:
 Graphs:[unvl]
     holdv            holdings of assets (absolute value)
     holdp            portfolio holdings of assets (in percentage)
-    cret             cumulative returns
     yret             yearly returns
     mret             monthly returns
     dret             daily returns

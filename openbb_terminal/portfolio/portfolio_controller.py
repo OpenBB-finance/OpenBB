@@ -44,7 +44,6 @@ class PortfolioController(BaseController):
         "bench",
         "alloc",
         "perf",
-        "cret",
         "yret",
         "mret",
         "dret",
@@ -97,9 +96,7 @@ class PortfolioController(BaseController):
         super().__init__(queue)
         self.file_types = ["xlsx", "csv"]
 
-        self.DEFAULT_HOLDINGS_PATH = os.path.abspath(
-            os.path.join(os.path.dirname(__file__), "..", "..", "portfolio", "holdings")
-        )
+        self.DEFAULT_HOLDINGS_PATH = portfolio_helper.DEFAULT_HOLDINGS_PATH
 
         self.DATA_HOLDINGS_FILES = {
             filepath.name: filepath
@@ -136,17 +133,30 @@ class PortfolioController(BaseController):
         )
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
-            choices["load"] = {c: None for c in self.DATA_HOLDINGS_FILES}
-            choices["bench"] = {c: None for c in portfolio_helper.BENCHMARK_LIST}
-            choices["alloc"] = {c: None for c in self.AGGREGATION_METRICS}
-            choices["metric"] = {c: None for c in self.VALID_METRICS}
-            self.choices = choices
+            self.update_choices()
 
-            choices["support"] = self.SUPPORT_CHOICES
-            choices["about"] = self.ABOUT_CHOICES
+    def update_choices(self):
 
-            self.completer = NestedCompleter.from_nested_dict(choices)
+        self.DEFAULT_HOLDINGS_PATH = portfolio_helper.DEFAULT_HOLDINGS_PATH
+
+        self.DATA_HOLDINGS_FILES = {
+            filepath.name: filepath
+            for file_type in self.file_types
+            for filepath in Path(self.DEFAULT_HOLDINGS_PATH).rglob(f"*.{file_type}")
+            if filepath.is_file()
+        }
+
+        choices: dict = {c: {} for c in self.controller_choices}
+        choices["load"] = {c: None for c in self.DATA_HOLDINGS_FILES}
+        choices["bench"] = {c: None for c in portfolio_helper.BENCHMARK_LIST}
+        choices["alloc"] = {c: None for c in self.AGGREGATION_METRICS}
+        choices["metric"] = {c: None for c in self.VALID_METRICS}
+        self.choices = choices
+
+        choices["support"] = self.SUPPORT_CHOICES
+        choices["about"] = self.ABOUT_CHOICES
+
+        self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
         """Print help"""
@@ -170,7 +180,6 @@ class PortfolioController(BaseController):
         mt.add_info("_graphs_")
         mt.add_cmd("holdv", self.portfolio_name and self.benchmark_name)
         mt.add_cmd("holdp", self.portfolio_name and self.benchmark_name)
-        mt.add_cmd("cret", self.portfolio_name and self.benchmark_name)
         mt.add_cmd("yret", self.portfolio_name and self.benchmark_name)
         mt.add_cmd("mret", self.portfolio_name and self.benchmark_name)
         mt.add_cmd("dret", self.portfolio_name and self.benchmark_name)
@@ -197,7 +206,7 @@ class PortfolioController(BaseController):
 
         help_text = f"""[menu]
 >   bro              brokers holdings, \t\t supports: robinhood, ally, degiro, coinbase
->   po               portfolio optimization, \t optimal your portfolio weights efficiently[/menu]
+>   po               portfolio optimization, \t optimize your portfolio weights efficiently[/menu]
 [cmds]
     load             load data into the portfolio[/cmds]
 
@@ -213,7 +222,6 @@ class PortfolioController(BaseController):
 [info]Graphs:[/info]{("[unvl]", "[cmds]")[port_bench]}
     holdv            holdings of assets (absolute value)
     holdp            portfolio holdings of assets (in percentage)
-    cret             cumulative returns
     yret             yearly returns
     mret             monthly returns
     dret             daily returns
@@ -240,6 +248,7 @@ class PortfolioController(BaseController):
         # [info]Reports:[/info]
         #    ar          annual report for performance of a given portfolio
         console.print(text=help_text, menu="Portfolio")
+        self.update_choices()
 
     def custom_reset(self):
         """Class specific component of reset command"""
@@ -287,7 +296,6 @@ class PortfolioController(BaseController):
             "-f",
             "--file",
             type=str,
-            choices=self.DATA_HOLDINGS_FILES,
             dest="file",
             required="-h" not in other_args,
             help="The file to be loaded",
@@ -322,6 +330,7 @@ class PortfolioController(BaseController):
                 str(file_location)
             )
             self.portfolio = portfolio_model.PortfolioModel(orderbook)
+            self.benchmark_name = ""
 
             if ns_parser.name:
                 self.portfolio_name = ns_parser.name
@@ -338,7 +347,6 @@ class PortfolioController(BaseController):
             console.print(
                 f"[bold]Risk Free Rate:[/bold] {self.portfolio.risk_free_rate}"
             )
-
             console.print()
 
     @log_start_end(log=logger)
@@ -781,47 +789,6 @@ class PortfolioController(BaseController):
             else:
                 console.print(
                     "[red]Please first define the portfolio (via 'load')[/red]\n"
-                )
-
-    @log_start_end(log=logger)
-    def call_cret(self, other_args: List[str]):
-        """Process cret command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="cret",
-            description="Graph of cumulative returns against benchmark",
-        )
-        parser.add_argument(
-            "-p",
-            "--period",
-            type=str,
-            dest="period",
-            default="all",
-            choices=list(portfolio_helper.PERIODS_DAYS.keys()),
-            help="Period to select start of cumulative returns",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-p")
-        ns_parser = self.parse_known_args_and_warn(
-            parser,
-            other_args,
-            raw=True,
-            limit=10,
-            export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
-        )
-
-        if ns_parser and self.portfolio is not None:
-            if check_portfolio_benchmark_defined(
-                self.portfolio_name, self.benchmark_name
-            ):
-                portfolio_view.display_cumulative_returns(
-                    self.portfolio.returns,
-                    self.portfolio.benchmark_returns,
-                    ns_parser.period,
-                    ns_parser.raw,
-                    ns_parser.limit,
-                    ns_parser.export,
                 )
 
     @log_start_end(log=logger)
