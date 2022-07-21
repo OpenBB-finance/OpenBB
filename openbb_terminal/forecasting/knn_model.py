@@ -20,12 +20,12 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 def get_knn_model_data(
     data: Union[pd.Series, pd.DataFrame],
-    n_input_days: int,
-    n_predict_days: int,
-    n_neighbors: int,
-    test_size: float,
-    end_date: str,
-    no_shuffle: bool,
+    n_input_days: int = 14,
+    n_predict_days: int = 5,
+    n_neighbors: int = 20,
+    test_size: float = 0.15,
+    end_date: str = None,
+    no_shuffle: bool = True,
 ) -> Tuple[pd.DataFrame, np.ndarray, np.ndarray, np.ndarray, Any]:
     """Perform knn model fitting and predicting on data
 
