@@ -366,7 +366,7 @@ def print_pretty_prediction(df_pred: pd.DataFrame, last_price: float):
             index_name="Datetime",
             headers=["Prediction"],
             floatfmt=".2f",
-            title=f"Actual price: [yellow]{last_price:.2f} $[/yellow]",
+            title=f"Actual price: [yellow]$ {last_price:.2f} [/yellow]",
         )
 
 
