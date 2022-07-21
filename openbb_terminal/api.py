@@ -75,7 +75,8 @@ def change_docstring(api_callable, model: Callable, view: Callable = None):
     else:
         index = view.__doc__.find("Parameters")
         all_parameters = (
-            "\nAPI function, use the chart kwarg for getting the view model and it's plot. See every parmater below:\n\n\t"
+            "\nAPI function, use the chart kwarg for getting the view model and it's plot. "
+            "See every parmater below:\n\n\t"
             + view.__doc__[index:]
             + """chart: bool
     If the view and its chart shall be used"""
@@ -170,11 +171,11 @@ class Loader:
 
     def __repr__(self):
         return """This is the API of the OpenBB Terminal.
-        
+
         Use the API to get data directly into your jupyter notebook or directly use it in your application.
-        
+
         ...
-        
+
         For more information see the official documentation at: https://openbb-finance.github.io/OpenBBTerminal/api/
         """
 
@@ -280,7 +281,8 @@ class Loader:
         Parameters
         ----------
         functions: dict
-            Dictionary which has string path of view and model functions as keys. The items is dictionary with the view and model function as items of the respectivee "view" and "model" keys
+            Dictionary which has string path of view and model functions as keys. The items is dictionary with
+            the view and model function as items of the respectivee "view" and "model" keys
 
         Returns
         -------
