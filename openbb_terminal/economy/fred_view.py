@@ -230,7 +230,7 @@ def display_yield_curve(
             rates,
             headers=list(rates.columns),
             show_index=False,
-            title=f"US Yield Curve for {date_of_yield.strftime('%Y-%m-%d')}",
+            title=f"United States Yield Curve for {date_of_yield.strftime('%Y-%m-%d')}",
             floatfmt=".3f",
         )
 
