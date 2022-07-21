@@ -145,7 +145,8 @@ class ForecastingController(BaseController):
         self.datasets: Dict[str, pd.DataFrame] = dict()
 
         if ticker and not data.empty:
-            data["date"] = data.index
+            # data["date"] = data.index
+            data = data.reset_index()  # convert date from index to column
             data.columns = data.columns.map(lambda x: x.lower().replace(" ", "_"))
 
             self.files.append(ticker)
@@ -286,7 +287,6 @@ class ForecastingController(BaseController):
         mt = MenuText("forecasting/")
         mt.add_param("_disclaimer_", self.disclaimer)
         mt.add_raw("\n")
-        mt.add_param("_loaded", self.loaded_dataset_cols)
         mt.add_param("_comp_device", self.device.upper())
         mt.add_param("_comp_ram", self.comp_ram)
         mt.add_param("_rec_data_size", self.rec_data_size)
