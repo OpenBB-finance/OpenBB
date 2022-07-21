@@ -1,12 +1,1 @@
-                                               2009-07-22
-Commitments And Contingencies                           0
-Current Assets                                   35.170 B
-Equity Attributable To Parent                    25.888 B
-Equity                                           25.888 B
-Assets                                           48.140 B
-Current Liabilities                              16.661 B
-Noncurrent Assets                                12.970 B
-Equity Attributable To Noncontrolling Interest          0
-Liabilities                                      22.252 B
-Liabilities And Equity                           48.140 B
-Noncurrent Liabilities                            5.591 B
+ERROR

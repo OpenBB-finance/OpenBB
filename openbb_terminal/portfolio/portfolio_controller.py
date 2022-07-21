@@ -96,9 +96,7 @@ class PortfolioController(BaseController):
         super().__init__(queue)
         self.file_types = ["xlsx", "csv"]
 
-        self.DEFAULT_HOLDINGS_PATH = os.path.abspath(
-            os.path.join(os.path.dirname(__file__), "..", "..", "portfolio", "holdings")
-        )
+        self.DEFAULT_HOLDINGS_PATH = portfolio_helper.DEFAULT_HOLDINGS_PATH
 
         self.DATA_HOLDINGS_FILES = {
             filepath.name: filepath
@@ -135,17 +133,30 @@ class PortfolioController(BaseController):
         )
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
-            choices["load"] = {c: None for c in self.DATA_HOLDINGS_FILES}
-            choices["bench"] = {c: None for c in portfolio_helper.BENCHMARK_LIST}
-            choices["alloc"] = {c: None for c in self.AGGREGATION_METRICS}
-            choices["metric"] = {c: None for c in self.VALID_METRICS}
-            self.choices = choices
+            self.update_choices()
 
-            choices["support"] = self.SUPPORT_CHOICES
-            choices["about"] = self.ABOUT_CHOICES
+    def update_choices(self):
 
-            self.completer = NestedCompleter.from_nested_dict(choices)
+        self.DEFAULT_HOLDINGS_PATH = portfolio_helper.DEFAULT_HOLDINGS_PATH
+
+        self.DATA_HOLDINGS_FILES = {
+            filepath.name: filepath
+            for file_type in self.file_types
+            for filepath in Path(self.DEFAULT_HOLDINGS_PATH).rglob(f"*.{file_type}")
+            if filepath.is_file()
+        }
+
+        choices: dict = {c: {} for c in self.controller_choices}
+        choices["load"] = {c: None for c in self.DATA_HOLDINGS_FILES}
+        choices["bench"] = {c: None for c in portfolio_helper.BENCHMARK_LIST}
+        choices["alloc"] = {c: None for c in self.AGGREGATION_METRICS}
+        choices["metric"] = {c: None for c in self.VALID_METRICS}
+        self.choices = choices
+
+        choices["support"] = self.SUPPORT_CHOICES
+        choices["about"] = self.ABOUT_CHOICES
+
+        self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
         """Print help"""
@@ -237,6 +248,7 @@ class PortfolioController(BaseController):
         # [info]Reports:[/info]
         #    ar          annual report for performance of a given portfolio
         console.print(text=help_text, menu="Portfolio")
+        self.update_choices()
 
     def custom_reset(self):
         """Class specific component of reset command"""
@@ -284,7 +296,6 @@ class PortfolioController(BaseController):
             "-f",
             "--file",
             type=str,
-            choices=self.DATA_HOLDINGS_FILES,
             dest="file",
             required="-h" not in other_args,
             help="The file to be loaded",
@@ -336,7 +347,6 @@ class PortfolioController(BaseController):
             console.print(
                 f"[bold]Risk Free Rate:[/bold] {self.portfolio.risk_free_rate}"
             )
-
             console.print()
 
     @log_start_end(log=logger)

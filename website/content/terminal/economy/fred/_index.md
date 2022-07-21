@@ -13,7 +13,7 @@ optional arguments:
   -e END_DATE, --end_date END_DATE
                         Ending date (YYYY-MM-DD) of data (default: None)
   -q QUERY [QUERY ...], --query QUERY [QUERY ...]
-                        Query the FRED database to obtain Series IDs given the query seaarch term. (default: None)
+                        Query the FRED database to obtain Series IDs given the query search term. (default: None)
   -st, --store          Store the data to be used for plotting with the 'plot' command. (default: False)
   -h, --help            show this help message (default: False)
   --export {csv,json,xlsx,png,jpg,pdf,svg}

@@ -16,12 +16,20 @@
             "income": [
                 "yf",
                 "polygon",
-                "av"
+                "av",
+                "fmp"
             ],
             "balance": [
                 "yf",
                 "polygon",
-                "av"
+                "av",
+                "fmp"
+            ],
+            "cash": [
+                "yf",
+                "polygon",
+                "av",
+                "fmp"
             ]
         },
         "options": {
