@@ -95,7 +95,7 @@ or visit our <a href="https://openbb.co/contact" target="_blank">contact page</a
 
 The process starts off by downloading the installer, see below for how to download the most recent release:
 
-1. Go to <a href="https://www.openbb.co/products/terminal#get-started" target="_blank">OpenBB website</a>.
+1. Go to the <a href="https://www.openbb.co/products/terminal#get-started" target="_blank">OpenBB website</a>.
 2. Click on the `Download` button in the Windows Installer section.
 
 When the file is downloaded, use the following steps to run the OpenBB Terminal:
@@ -131,7 +131,7 @@ The first time this takes a bit longer to load, this can take up to a few minute
 
 The process starts off by downloading the installer, see below for how to download the most recent release:
 
-1. Go to <a href="https://www.openbb.co/products/terminal#get-started" target="_blank">OpenBB website</a>.
+1. Go to the <a href="https://www.openbb.co/products/terminal#get-started" target="_blank">OpenBB website</a>.
 2. Click on the `Download` button in the macOS Installer section.
 
 When the DMG file is downloaded, use the following steps to run the OpenBB Terminal:
