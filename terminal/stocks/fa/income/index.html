@@ -9,9 +9,7 @@
 
 
 
-    <meta name="description" content="usage: income [-l LIMIT] [-q] [-h] [--export {csv,json,xlsx}] Prints a complete income statement over time. This can be either quarterly or annually. [Source: Alpha Vantage]
-optional arguments: -l LIMIT, --limit LIMIT Number of latest years/quarters. (default: 1) -q, --quarter Quarter fundamental data flag. (default: False) -h, --help show this help message (default: False) --export {csv,json,xlsx} Export raw data into csv, json, xlsx (default: ) Example:
-2022 Feb 16, 06:23 (✨) /stocks/fa/ $ income -l 5 MSFT Income Statement ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━┓ ┃ ┃ 2017-06-30 ┃ 2018-06-30 ┃ 2019-06-30 ┃ 2020-06-30 ┃ 2021-06-30 ┃ ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━┩ │ reportedCurrency │ USD │ USD │ USD │ USD │ USD │ ├───────────────────────────────────┼────────────┼────────────┼────────────┼────────────┼────────────┤ │ grossProfit │ 62.">
+    <meta name="description" content="usage: income [-q] [-r] [-p PLOT [PLOT ...]] [-h] [--export EXPORT] [-l LIMIT] [--source {yf,polygon,av,fmp}] Prints a complete income statement over time. This can be either quarterly or annually. The following fields are expected: Accepted date, Cost and expenses, Cost of revenue, Depreciation and amortization, Ebitda, Ebitda Ratio, Eps, EPS Diluted, Filling date, Final link, General and administrative expenses, Gross profit, Gross profit ratio, Income before tax, Income before tax ratio, Income tax expense, Interest expense, Link, Net income, Net income ratio, Operating expenses, Operating income, Operating income ratio, Other expenses, Period, Research and development expenses, Revenue, Selling and marketing expenses, Total other income expenses net, Weighted average shs out, Weighted average shs out dil [Source: Alpha Vantage]">
 
 
 
@@ -4339,50 +4337,9 @@ optional arguments: -l LIMIT, --limit LIMIT Number of latest years/quarters. (de
             
 
             
-            <input type="checkbox" id="navtree-a43a3169" class="gdoc-nav__toggle" >
-            <label for="navtree-a43a3169" class="flex justify-between">
-            
             <span class="flex">
                 
-                <a href="/OpenBBTerminal/terminal/stocks/fa/fmp/"
-                    class="gdoc-nav__entry ">
-                    financial modeling prep
-                </a>
-            </span>
-            
-            <svg class="icon gdoc_keyborad_arrow_left"><use xlink:href="#gdoc_keyborad_arrow_left"></use></svg>
-            <svg class="icon gdoc_keyborad_arrow_down hidden"><use xlink:href="#gdoc_keyborad_arrow_down"></use></svg>
-            </label>
-            
-        
-
-        
-            
-
-
-
-<ul class="gdoc-nav__list">
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/OpenBBTerminal/terminal/stocks/fa/fmp/profile/"
+                <a href="/OpenBBTerminal/terminal/stocks/fa/profile/"
                     class="gdoc-nav__entry ">
                     profile
                 </a>
@@ -4413,7 +4370,7 @@ optional arguments: -l LIMIT, --limit LIMIT Number of latest years/quarters. (de
             
             <span class="flex">
                 
-                <a href="/OpenBBTerminal/terminal/stocks/fa/fmp/quote/"
+                <a href="/OpenBBTerminal/terminal/stocks/fa/quote/"
                     class="gdoc-nav__entry ">
                     quote
                 </a>
@@ -4444,7 +4401,7 @@ optional arguments: -l LIMIT, --limit LIMIT Number of latest years/quarters. (de
             
             <span class="flex">
                 
-                <a href="/OpenBBTerminal/terminal/stocks/fa/fmp/enterprise/"
+                <a href="/OpenBBTerminal/terminal/stocks/fa/enterprise/"
                     class="gdoc-nav__entry ">
                     enterprise
                 </a>
@@ -4475,9 +4432,9 @@ optional arguments: -l LIMIT, --limit LIMIT Number of latest years/quarters. (de
             
             <span class="flex">
                 
-                <a href="/OpenBBTerminal/terminal/stocks/fa/fmp/dcf/"
+                <a href="/OpenBBTerminal/terminal/stocks/fa/dcfc/"
                     class="gdoc-nav__entry ">
-                    dcf
+                    dcfc
                 </a>
             </span>
             
@@ -4506,100 +4463,7 @@ optional arguments: -l LIMIT, --limit LIMIT Number of latest years/quarters. (de
             
             <span class="flex">
                 
-                <a href="/OpenBBTerminal/terminal/stocks/fa/fmp/income/"
-                    class="gdoc-nav__entry ">
-                    income
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/OpenBBTerminal/terminal/stocks/fa/fmp/balance/"
-                    class="gdoc-nav__entry ">
-                    balance
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/OpenBBTerminal/terminal/stocks/fa/fmp/cash/"
-                    class="gdoc-nav__entry ">
-                    cash
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/OpenBBTerminal/terminal/stocks/fa/fmp/metrics/"
+                <a href="/OpenBBTerminal/terminal/stocks/fa/metrics/"
                     class="gdoc-nav__entry ">
                     metrics
                 </a>
@@ -4630,7 +4494,7 @@ optional arguments: -l LIMIT, --limit LIMIT Number of latest years/quarters. (de
             
             <span class="flex">
                 
-                <a href="/OpenBBTerminal/terminal/stocks/fa/fmp/ratios/"
+                <a href="/OpenBBTerminal/terminal/stocks/fa/ratios/"
                     class="gdoc-nav__entry ">
                     ratios
                 </a>
@@ -4661,19 +4525,13 @@ optional arguments: -l LIMIT, --limit LIMIT Number of latest years/quarters. (de
             
             <span class="flex">
                 
-                <a href="/OpenBBTerminal/terminal/stocks/fa/fmp/growth/"
+                <a href="/OpenBBTerminal/terminal/stocks/fa/growth/"
                     class="gdoc-nav__entry ">
                     growth
                 </a>
             </span>
             
         
-
-        
-    </li>
-
-
-</ul>
 
         
     </li>
@@ -29794,15 +29652,25 @@ optional arguments: -l LIMIT, --limit LIMIT Number of latest years/quarters. (de
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Income</h1>
-        <pre><code>usage: income [-l LIMIT] [-q] [-h] [--export {csv,json,xlsx}]
-</code></pre><p>Prints a complete income statement over time. This can be either quarterly or annually. [Source: Alpha Vantage]</p>
+        <pre><code>usage: income [-q] [-r] [-p PLOT [PLOT ...]] [-h] [--export EXPORT] [-l LIMIT] [--source {yf,polygon,av,fmp}]
+</code></pre><p>Prints a complete income statement over time. This can be either quarterly or annually. The following fields are
+expected: Accepted date, Cost and expenses, Cost of revenue, Depreciation and amortization, Ebitda, Ebitda Ratio, Eps,
+EPS Diluted, Filling date, Final link, General and administrative expenses, Gross profit, Gross profit ratio, Income
+before tax, Income before tax ratio, Income tax expense, Interest expense, Link, Net income, Net income ratio,
+Operating expenses, Operating income, Operating income ratio, Other expenses, Period, Research and development
+expenses, Revenue, Selling and marketing expenses, Total other income expenses net, Weighted average shs out, Weighted
+average shs out dil [Source: Alpha Vantage]</p>
 <pre><code>optional arguments:
-  -l LIMIT, --limit LIMIT
-                        Number of latest years/quarters. (default: 1)
   -q, --quarter         Quarter fundamental data flag. (default: False)
+  -r, --ratios          Shows percentage change of values. (default: False)
+  -p PLOT [PLOT ...], --plot PLOT [PLOT ...]
+                        Rows to plot. (-1 represents invalid data) (default: None)
   -h, --help            show this help message (default: False)
-  --export {csv,json,xlsx}
-                        Export raw data into csv, json, xlsx (default: )
+  --export EXPORT       Export raw data into csv, json, xlsx (default: )
+  -l LIMIT, --limit LIMIT
+                        Number of entries to show in data. (default: 5)
+  --source {yf,polygon,av,fmp}
+                        Data source to select from (default: yf)
 </code></pre><p>Example:</p>
 <pre><code>2022 Feb 16, 06:23 (✨) /stocks/fa/ $ income -l 5
                                         MSFT Income Statement
@@ -32403,10 +32271,6 @@ optional arguments: -l LIMIT, --limit LIMIT Number of latest years/quarters. (de
 
         
         
-            
-    
-    
-
     
         
         
@@ -32520,85 +32384,6 @@ optional arguments: -l LIMIT, --limit LIMIT Number of latest years/quarters. (de
         
 
         
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-
         
     
 

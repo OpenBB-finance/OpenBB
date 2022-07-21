@@ -9,9 +9,7 @@
 
 
 
-    <meta name="description" content="usage: balance [-l LIMIT] [-q] [-h] [--export {csv,json,xlsx}] Prints a complete balance sheet statement over time. This can be either quarterly or annually. [Source: Alpha Vantage]
-optional arguments: -l LIMIT, --limit LIMIT Number of latest years/quarters. (default: 1) -q, --quarter Quarter fundamental data flag. (default: False) -h, --help show this help message (default: False) --export {csv,json,xlsx} Export raw data into csv, json, xlsx (default: ) Example:
-2022 Feb 16, 04:44 (✨) /stocks/fa/ $ balance -l 4 MU Balance Sheet ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━┓ ┃ ┃ 2018-08-30 ┃ 2019-08-29 ┃ 2020-09-03 ┃ 2021-09-02 ┃ ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━┩ │ reportedCurrency │ USD │ USD │ USD │ USD │ ├────────────────────────────────────────┼────────────┼────────────┼────────────┼────────────┤ │ totalAssets │ 43.">
+    <meta name="description" content="usage: balance [-q] [-r] [-p PLOT [PLOT ...]] [-s {polygon,av,yf,fmp}] [-h] [--export EXPORT] [-l LIMIT] Prints a complete balance sheet statement over time. This can be either quarterly or annually. The following fields are expected: Accepted date, Account payables, Accumulated other comprehensive income loss, Cash and cash equivalents, Cash and short term investments, Common stock, Deferred revenue, Deferred revenue non current, Deferred tax liabilities non current, Filling date, Final link, Goodwill, Goodwill and intangible assets, Intangible assets, Inventory, Link, Long term debt, Long term investments, Net debt, Net receivables, Other assets, Other current assets, Other current liabilities, Other liabilities, Other non current assets, Other non current liabilities, Othertotal stockholders equity, Period, Property plant equipment net, Retained earnings, Short term debt, Short term investments, Tax assets, Tax payables, Total assets, Total current assets, Total current liabilities, Total debt, Total investments, Total liabilities, Total liabilities and stockholders equity, Total non current assets, Total non current liabilities, and Total stockholders equity.">
 
 
 
@@ -4339,50 +4337,9 @@ optional arguments: -l LIMIT, --limit LIMIT Number of latest years/quarters. (de
             
 
             
-            <input type="checkbox" id="navtree-a43a3169" class="gdoc-nav__toggle" >
-            <label for="navtree-a43a3169" class="flex justify-between">
-            
             <span class="flex">
                 
-                <a href="/OpenBBTerminal/terminal/stocks/fa/fmp/"
-                    class="gdoc-nav__entry ">
-                    financial modeling prep
-                </a>
-            </span>
-            
-            <svg class="icon gdoc_keyborad_arrow_left"><use xlink:href="#gdoc_keyborad_arrow_left"></use></svg>
-            <svg class="icon gdoc_keyborad_arrow_down hidden"><use xlink:href="#gdoc_keyborad_arrow_down"></use></svg>
-            </label>
-            
-        
-
-        
-            
-
-
-
-<ul class="gdoc-nav__list">
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/OpenBBTerminal/terminal/stocks/fa/fmp/profile/"
+                <a href="/OpenBBTerminal/terminal/stocks/fa/profile/"
                     class="gdoc-nav__entry ">
                     profile
                 </a>
@@ -4413,7 +4370,7 @@ optional arguments: -l LIMIT, --limit LIMIT Number of latest years/quarters. (de
             
             <span class="flex">
                 
-                <a href="/OpenBBTerminal/terminal/stocks/fa/fmp/quote/"
+                <a href="/OpenBBTerminal/terminal/stocks/fa/quote/"
                     class="gdoc-nav__entry ">
                     quote
                 </a>
@@ -4444,7 +4401,7 @@ optional arguments: -l LIMIT, --limit LIMIT Number of latest years/quarters. (de
             
             <span class="flex">
                 
-                <a href="/OpenBBTerminal/terminal/stocks/fa/fmp/enterprise/"
+                <a href="/OpenBBTerminal/terminal/stocks/fa/enterprise/"
                     class="gdoc-nav__entry ">
                     enterprise
                 </a>
@@ -4475,9 +4432,9 @@ optional arguments: -l LIMIT, --limit LIMIT Number of latest years/quarters. (de
             
             <span class="flex">
                 
-                <a href="/OpenBBTerminal/terminal/stocks/fa/fmp/dcf/"
+                <a href="/OpenBBTerminal/terminal/stocks/fa/dcfc/"
                     class="gdoc-nav__entry ">
-                    dcf
+                    dcfc
                 </a>
             </span>
             
@@ -4506,100 +4463,7 @@ optional arguments: -l LIMIT, --limit LIMIT Number of latest years/quarters. (de
             
             <span class="flex">
                 
-                <a href="/OpenBBTerminal/terminal/stocks/fa/fmp/income/"
-                    class="gdoc-nav__entry ">
-                    income
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/OpenBBTerminal/terminal/stocks/fa/fmp/balance/"
-                    class="gdoc-nav__entry ">
-                    balance
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/OpenBBTerminal/terminal/stocks/fa/fmp/cash/"
-                    class="gdoc-nav__entry ">
-                    cash
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/OpenBBTerminal/terminal/stocks/fa/fmp/metrics/"
+                <a href="/OpenBBTerminal/terminal/stocks/fa/metrics/"
                     class="gdoc-nav__entry ">
                     metrics
                 </a>
@@ -4630,7 +4494,7 @@ optional arguments: -l LIMIT, --limit LIMIT Number of latest years/quarters. (de
             
             <span class="flex">
                 
-                <a href="/OpenBBTerminal/terminal/stocks/fa/fmp/ratios/"
+                <a href="/OpenBBTerminal/terminal/stocks/fa/ratios/"
                     class="gdoc-nav__entry ">
                     ratios
                 </a>
@@ -4661,19 +4525,13 @@ optional arguments: -l LIMIT, --limit LIMIT Number of latest years/quarters. (de
             
             <span class="flex">
                 
-                <a href="/OpenBBTerminal/terminal/stocks/fa/fmp/growth/"
+                <a href="/OpenBBTerminal/terminal/stocks/fa/growth/"
                     class="gdoc-nav__entry ">
                     growth
                 </a>
             </span>
             
         
-
-        
-    </li>
-
-
-</ul>
 
         
     </li>
@@ -29794,15 +29652,25 @@ optional arguments: -l LIMIT, --limit LIMIT Number of latest years/quarters. (de
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Balance</h1>
-        <pre><code>usage: balance [-l LIMIT] [-q] [-h] [--export {csv,json,xlsx}]
-</code></pre><p>Prints a complete balance sheet statement over time. This can be either quarterly or annually. [Source: Alpha Vantage]</p>
+        <pre><code>usage: balance [-q] [-r] [-p PLOT [PLOT ...]] [-s {polygon,av,yf,fmp}] [-h] [--export EXPORT] [-l LIMIT]
+</code></pre><p>Prints a complete balance sheet statement over time. This can be either quarterly or annually. The following fields are expected: Accepted date, Account payables,
+Accumulated other comprehensive income loss, Cash and cash equivalents, Cash and short term investments, Common stock, Deferred revenue, Deferred revenue non current,
+Deferred tax liabilities non current, Filling date, Final link, Goodwill, Goodwill and intangible assets, Intangible assets, Inventory, Link, Long term debt, Long term
+investments, Net debt, Net receivables, Other assets, Other current assets, Other current liabilities, Other liabilities, Other non current assets, Other non current
+liabilities, Othertotal stockholders equity, Period, Property plant equipment net, Retained earnings, Short term debt, Short term investments, Tax assets, Tax payables,
+Total assets, Total current assets, Total current liabilities, Total debt, Total investments, Total liabilities, Total liabilities and stockholders equity, Total non
+current assets, Total non current liabilities, and Total stockholders equity. [Source: Alpha Vantage]</p>
 <pre><code>optional arguments:
-  -l LIMIT, --limit LIMIT
-                        Number of latest years/quarters. (default: 1)
   -q, --quarter         Quarter fundamental data flag. (default: False)
+  -r, --ratios          Shows percentage change of values. (default: False)
+  -p PLOT [PLOT ...], --plot PLOT [PLOT ...]
+                        Rows to plot. (-1 represents invalid data) (default: [])
+  -s {polygon,av,yf,fmp}, --source {polygon,av,yf,fmp}
+                        The source to get the data from (default: av)
   -h, --help            show this help message (default: False)
-  --export {csv,json,xlsx}
-                        Export raw data into csv, json, xlsx (default: )
+  --export EXPORT       Export raw data into csv, json, xlsx (default: )
+  -l LIMIT, --limit LIMIT
+                        Number of entries to show in data. (default: 5)
 </code></pre><p>Example:</p>
 <pre><code>2022 Feb 16, 04:44 (✨) /stocks/fa/ $ balance -l 4
                                        MU Balance Sheet
@@ -32507,10 +32375,6 @@ optional arguments: -l LIMIT, --limit LIMIT Number of latest years/quarters. (de
 
         
         
-            
-    
-    
-
     
         
         
@@ -32624,85 +32488,6 @@ optional arguments: -l LIMIT, --limit LIMIT Number of latest years/quarters. (de
         
 
         
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-
         
     
 
