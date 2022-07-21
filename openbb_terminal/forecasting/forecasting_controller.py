@@ -872,27 +872,28 @@ class ForecastingController(BaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
 
-        if ns_parser and ns_parser.values:
-            # check proper file name is provided
-            if not ns_parser.values:
-                console.print("[red]Please enter valid dataset.\n[/red]")
-                return
+        if not ns_parser:
+            return
 
-            try:
-                dataset, col = ns_parser.values.split(".")
-                data = self.datasets[dataset]
-            except ValueError:
-                console.print("[red]Please enter 'dataset'.'column'.[/red]\n")
-                return
+        if not ns_parser.values:
+            console.print("[red]Please enter valid dataset.\n[/red]")
+            return
 
-            forecasting_view.display_seasonality(
-                data=data,
-                column=col,
-                export=ns_parser.export,
-                m=ns_parser.m,
-                max_lag=ns_parser.max_lag,
-                alpha=ns_parser.alpha,
-            )
+        try:
+            dataset, col = ns_parser.values.split(".")
+            data = self.datasets[dataset]
+        except ValueError:
+            console.print("[red]Please enter 'dataset'.'column'.[/red]\n")
+            return
+
+        forecasting_view.display_seasonality(
+            data=data,
+            column=col,
+            export=ns_parser.export,
+            m=ns_parser.m,
+            max_lag=ns_parser.max_lag,
+            alpha=ns_parser.alpha,
+        )
 
     @log_start_end(log=logger)
     def call_corr(self, other_args: List[str]):

@@ -12,3 +12,4 @@ dependencies:
   - sphinx=4.5.0
   - charset-normalizer=2.1.0
   - rich=10.16.2
+  - u8darts-torch=0.20.0
