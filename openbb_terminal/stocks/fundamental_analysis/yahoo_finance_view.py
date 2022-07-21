@@ -402,9 +402,11 @@ def display_fundamentals(
     ticker: str,
     financial: str,
     limit: int = 120,
+    ratios: bool = False,
+    plot: list = None,
     export: str = "",
 ):
-    """Display tickers balance sheet or income statement
+    """Display tickers balance sheet, income statement or cash-flow
 
     Parameters
     ----------
@@ -413,35 +415,86 @@ def display_fundamentals(
     financial:str
         Either balance or financials for income or cash-flow
     limit : int
+    ratios: bool
+        Shows percentage change
+    plot: list
+        List of row labels to plot
     export: str
         Format to export data
     """
     if financial == "balance-sheet":
-        fundamentals = yahoo_finance_model.get_financials(ticker, financial)
+        fundamentals = yahoo_finance_model.get_financials(ticker, financial, ratios)
         title_str = "Balance Sheet"
     elif financial == "financials":
-        fundamentals = yahoo_finance_model.get_financials(ticker, financial)
+        fundamentals = yahoo_finance_model.get_financials(ticker, financial, ratios)
         title_str = "Income Statement"
     elif financial == "cash-flow":
-        fundamentals = yahoo_finance_model.get_financials(ticker, financial)
+        fundamentals = yahoo_finance_model.get_financials(ticker, financial, ratios)
         title_str = "Cash Flow Statement"
 
     if fundamentals.empty:
         # The empty data frame error handling done in model
         return
+    if plot:
+        rows_plot = len(plot)
+        fundamentals_plot_data = fundamentals.transpose().fillna(-1)
+        fundamentals_plot_data.columns = fundamentals_plot_data.columns.str.lower()
+        fundamentals_plot_data = fundamentals_plot_data.replace(",", "", regex=True)
+        fundamentals_plot_data = fundamentals_plot_data.replace("-", "-1")
+        fundamentals_plot_data = fundamentals_plot_data.astype(float)
 
-    # Snake case to english
-    fundamentals.index = fundamentals.index.to_series().apply(
-        lambda x: x.replace("_", " ").title()
-    )
+        if not ratios:
+            maximum_value = fundamentals_plot_data.max().max()
+            if maximum_value > 1_000_000_000_000:
+                df_rounded = fundamentals_plot_data / 1_000_000_000_000
+                denomination = " in Trillions"
+            elif maximum_value > 1_000_000_000:
+                df_rounded = fundamentals_plot_data / 1_000_000_000
+                denomination = " in Billions"
+            elif maximum_value > 1_000_000:
+                df_rounded = fundamentals_plot_data / 1_000_000
+                denomination = " in Millions"
+            elif maximum_value > 1_000:
+                df_rounded = fundamentals_plot_data / 1_000
+                denomination = " in Thousands"
+            else:
+                df_rounded = fundamentals_plot_data
+                denomination = ""
+        else:
+            df_rounded = fundamentals_plot_data
+            denomination = ""
 
-    # Readable numbers
-    fundamentals = fundamentals.applymap(lambda_long_number_format).fillna("-")
-    print_rich_table(
-        fundamentals.iloc[:, :limit].applymap(lambda x: "-" if x == "nan" else x),
-        show_index=True,
-        title=f"{ticker} {title_str}",
-    )
+        if rows_plot == 1:
+            fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+            df_rounded[plot[0].replace("_", " ")].plot()
+            title = (
+                f"{plot[0].replace('_', ' ').lower()} QoQ Growth of {ticker.upper()}"
+                if ratios
+                else f"{plot[0].replace('_', ' ')} of {ticker.upper()} {denomination}"
+            )
+            plt.title(title)
+            theme.style_primary_axis(ax)
+            theme.visualize_output()
+        else:
+            fig, axes = plt.subplots(rows_plot)
+            for i in range(rows_plot):
+                axes[i].plot(df_rounded[plot[i].replace("_", " ")])
+                axes[i].set_title(f"{plot[i].replace('_', ' ')} {denomination}")
+            theme.style_primary_axis(axes[0])
+            fig.autofmt_xdate()
+    else:
+        # Snake case to english
+        fundamentals.index = fundamentals.index.to_series().apply(
+            lambda x: x.replace("_", " ").title()
+        )
+
+        # Readable numbers
+        fundamentals = fundamentals.applymap(lambda_long_number_format).fillna("-")
+        print_rich_table(
+            fundamentals.iloc[:, :limit].applymap(lambda x: "-" if x == "nan" else x),
+            show_index=True,
+            title=f"{ticker} {title_str}",
+        )
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), financial, fundamentals
     )

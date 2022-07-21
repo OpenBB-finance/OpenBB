@@ -95,6 +95,8 @@ jobs:
           pip list
 
       - name: Run tests (Bash)
+        env:
+            MPLBACKEND: Agg
         shell: bash -l {0}
         run: pytest tests/ -m "not bots and not linux"
 
