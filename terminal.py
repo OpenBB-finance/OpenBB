@@ -364,7 +364,7 @@ class TerminalController(BaseController):
             ForecastingController,
         )
 
-        self.queue = ForecastingController(self.queue).menu()
+        self.queue = ForecastingController(queue=self.queue).menu()
 
     def call_portfolio(self, _):
         """Process portfolio command"""

@@ -68,6 +68,7 @@ class CryptoController(CryptoBaseController):
         "tools",
         "nft",
         "qa",
+        "forecast",
     ]
 
     DD_VIEWS_MAPPING = {
@@ -121,6 +122,7 @@ class CryptoController(CryptoBaseController):
         mt.add_menu("dd", self.symbol)
         mt.add_menu("ta", self.symbol)
         mt.add_menu("qa", self.symbol)
+        mt.add_menu("forecast", self.symbol)
         console.print(text=mt.menu_text, menu="Cryptocurrency")
 
     @log_start_end(log=logger)
@@ -448,3 +450,16 @@ class CryptoController(CryptoBaseController):
                 show_all=bool("ALL" in other_args),
                 export=ns_parser.export,
             )
+
+    @log_start_end(log=logger)
+    def call_forecast(self, _):
+        """Process forecast command"""
+        from openbb_terminal.forecasting import forecasting_controller
+
+        console.print(self.symbol)
+        self.queue = self.load_class(
+            forecasting_controller.ForecastingController,
+            self.symbol,
+            self.current_df,
+            self.queue,
+        )

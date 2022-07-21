@@ -5,6 +5,7 @@ __docformat__ = "numpy"
 # pylint: disable=too-many-arguments
 
 import argparse
+from dataclasses import dataclass
 import logging
 from itertools import chain
 import os
@@ -135,11 +136,29 @@ class ForecastingController(BaseController):
     loaded_dataset_cols = "\n"
     list_dataset_cols: List = list()
 
-    def __init__(self, queue: List[str] = None):
+    def __init__(
+        self, ticker: str = "", data: pd.DataFrame = None, queue: List[str] = None
+    ):
         """Constructor"""
         super().__init__(queue)
         self.files: List[str] = list()
         self.datasets: Dict[str, pd.DataFrame] = dict()
+
+        if ticker and not data.empty:
+            data["date"] = data.index
+            data.columns = data.columns.map(lambda x: x.lower().replace(" ", "_"))
+
+            self.files.append(ticker)
+            self.datasets[ticker] = data
+            self.loaded_dataset_cols = "\n"
+
+            self.loaded_dataset_cols += (
+                f"  {ticker} {(20 - len(ticker)) * ' '}: "
+                f"{', '.join(data.columns)}\n"
+            )
+
+            for col in data.columns:
+                self.list_dataset_cols.append(f"{ticker}.{col}")
 
         self.DATA_TYPES: List[str] = ["int", "float", "str", "bool", "category", "date"]
 

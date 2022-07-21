@@ -62,6 +62,7 @@ class StocksController(StockBaseController):
         "ca",
         "options",
         "th",
+        "forecast",
     ]
 
     PATH = "/stocks/"
@@ -137,6 +138,7 @@ class StocksController(StockBaseController):
         mt.add_menu("bt", self.ticker)
         mt.add_menu("ta", self.ticker)
         mt.add_menu("qa", self.ticker)
+        mt.add_menu("forecast", self.ticker)
         console.print(text=mt.menu_text, menu="Stocks")
 
     def custom_reset(self):
@@ -664,3 +666,15 @@ class StocksController(StockBaseController):
         # James: 5/27 I think it does now
         else:
             console.print("Use 'load <ticker>' prior to this command!", "\n")
+
+    @log_start_end(log=logger)
+    def call_forecast(self, _):
+        """Process forecast command"""
+        from openbb_terminal.forecasting import forecasting_controller
+
+        self.queue = self.load_class(
+            forecasting_controller.ForecastingController,
+            self.ticker,
+            self.stock,
+            self.queue,
+        )
