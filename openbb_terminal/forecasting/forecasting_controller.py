@@ -145,7 +145,8 @@ class ForecastingController(BaseController):
         self.datasets: Dict[str, pd.DataFrame] = dict()
 
         if ticker and not data.empty:
-            data["date"] = data.index
+            # data["date"] = data.index
+            data = data.reset_index()  # convert date from index to column
             data.columns = data.columns.map(lambda x: x.lower().replace(" ", "_"))
 
             self.files.append(ticker)
