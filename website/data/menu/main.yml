@@ -267,29 +267,20 @@ main:
                 ref: "/terminal/stocks/fa/fraud"
               - name: dupont
                 ref: "/terminal/stocks/fa/dupont"
-              - name: financial modeling prep
-                ref: "/terminal/stocks/fa/fmp"
-                sub:
-                  - name: profile
-                    ref: "/terminal/stocks/fa/fmp/profile"
-                  - name: quote
-                    ref: "/terminal/stocks/fa/fmp/quote"
-                  - name: enterprise
-                    ref: "/terminal/stocks/fa/fmp/enterprise"
-                  - name: dcf
-                    ref: "/terminal/stocks/fa/fmp/dcf"
-                  - name: income
-                    ref: "/terminal/stocks/fa/fmp/income"
-                  - name: balance
-                    ref: "/terminal/stocks/fa/fmp/balance"
-                  - name: cash
-                    ref: "/terminal/stocks/fa/fmp/cash"
-                  - name: metrics
-                    ref: "/terminal/stocks/fa/fmp/metrics"
-                  - name: ratios
-                    ref: "/terminal/stocks/fa/fmp/ratios"
-                  - name: growth
-                    ref: "/terminal/stocks/fa/fmp/growth"
+              - name: profile
+                ref: "/terminal/stocks/fa/profile"
+              - name: quote
+                ref: "/terminal/stocks/fa/quote"
+              - name: enterprise
+                ref: "/terminal/stocks/fa/enterprise"
+              - name: dcfc
+                ref: "/terminal/stocks/fa/dcfc"
+              - name: metrics
+                ref: "/terminal/stocks/fa/metrics"
+              - name: ratios
+                ref: "/terminal/stocks/fa/ratios"
+              - name: growth
+                ref: "/terminal/stocks/fa/growth"
           - name: research
             ref: "/terminal/stocks/res"
             sub:

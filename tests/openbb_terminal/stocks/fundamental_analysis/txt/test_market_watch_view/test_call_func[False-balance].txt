@@ -2,7 +2,7 @@
        Cash & Short Term Investments   3.52B   3.88B  6.51B  19.62B 18.05B
 Cash & Short Term Investments Growth       -  10.07% 67.97% 201.23% -8.00%
                            Cash Only   3.52B   3.88B  6.51B  19.62B 17.92B
-              Short-Term Investments       -       -      -       -   131M
+              Short-Term Investments       -       -      -       -      -
 Cash & ST Investments / Total Assets  12.30%  13.04% 18.99%  37.63% 29.05%
            Total Accounts Receivable 515.38M 949.02M  1.32B   1.89B  1.91B
     Total Accounts Receivable Growth       -  84.14% 39.51%  42.45%  1.43%
