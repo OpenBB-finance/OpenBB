@@ -32,6 +32,8 @@ from .econdb_view import show_treasuries as treasury
 from .econdb_view import show_treasury_maturities as maturities
 from .yfinance_view import show_indices as index
 from .yfinance_view import search_indices as search_index
+from .fred_view import display_yield_curve as ycrv
+from .investingcom_view import display_yieldcurve as ycrv2
 
 # Models
 models = _models(os.path.abspath(os.path.dirname(__file__)))

@@ -20,9 +20,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def load(
-    file: str,
-    file_types: list,
-    data_files: Dict[Any, Any],
+    file: str, file_types: list, data_files: Dict[Any, Any], add_extension: bool = False
 ) -> pd.DataFrame:
     """Load custom file into dataframe.
 
@@ -34,6 +32,8 @@ def load(
         Supported file types
     data_files: dict
         Contains all available data files within the Export folder
+    add_extension:
+        Takes a file name and tries loading with csv or xlsx extension
 
     Returns
     -------
@@ -44,8 +44,15 @@ def load(
     if file in data_files:
         file = data_files[file]
 
+    if add_extension:
+        for ext in ["xlsx", "csv"]:
+            tmp = f"{file}.{ext}"
+            if tmp in data_files:
+                file = data_files[tmp]
+
     if not Path(file).exists():
         console.print(f"[red]Cannot find the file {file}[/red]\n")
+
         return pd.DataFrame()
 
     file_type = Path(file).suffix

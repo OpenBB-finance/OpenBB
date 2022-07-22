@@ -127,7 +127,7 @@ class ForecastingController(BaseController):
     ]
     disclaimer = """
     All models are for educational purposes only. The techniques available in this menu are not
-    fine tuned or guarenteed to work. Backtesting results is not a guarentee of future accuracy.
+    fine tuned or guaranteed to work. Backtesting results is not a guarantee of future accuracy.
     Investing involves monetary risk that OpenBB does not take a role in. Please research any prediction techniques
     fully before attempting to use. OpenBB is not liable for any loss or damages."""
 
@@ -342,7 +342,7 @@ class ForecastingController(BaseController):
     def custom_reset(self):
         """Class specific component of reset command"""
         if self.files:
-            load_files = [f"load {file}" for file in self.files]
+            load_files = [f"load {file} --search-file-types" for file in self.files]
             return ["forecasting"] + load_files
         return []
 
@@ -648,6 +648,12 @@ class ForecastingController(BaseController):
             help="Alias name to give to the dataset",
             type=str,
         )
+        parser.add_argument(
+            "--search-file-types",
+            action="store_true",
+            default=False,
+            dest="search_file_types",
+        )
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-f")
@@ -671,7 +677,9 @@ class ForecastingController(BaseController):
                     )
                     return
 
-                data = forecasting_model.load(file, self.file_types, self.DATA_FILES)
+                data = forecasting_model.load(
+                    file, self.file_types, self.DATA_FILES, ns_parser.search_file_types
+                )
 
                 if not data.empty:
                     data.columns = data.columns.map(
