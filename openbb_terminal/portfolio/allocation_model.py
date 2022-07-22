@@ -158,9 +158,13 @@ def obtain_sector_allocation(benchmark_info: Dict, portfolio_trades: pd.DataFram
         right_index=True,
     ).sum(axis=1)
 
+    portfolio_sectors_allocation = pd.DataFrame(
+        portfolio_sectors_allocation, columns=["Portfolio Value"]
+    )
+
     portfolio_sectors_allocation = (
         portfolio_sectors_allocation.div(portfolio_trades["Portfolio Value"].sum())
-        .squeeze()
+        .squeeze(axis=1)
         .sort_values(ascending=False)
     )
 
@@ -357,15 +361,22 @@ def obtain_portfolio_region_country_allocation(portfolio_trades: pd.DataFrame):
         right_index=True,
     ).sum(axis=1)
 
+    portfolio_region_allocation = pd.DataFrame(
+        portfolio_region_allocation, columns=["Portfolio Value"]
+    )
+    portfolio_country_allocation = pd.DataFrame(
+        portfolio_country_allocation, columns=["Portfolio Value"]
+    )
+
     portfolio_region_allocation = (
         portfolio_region_allocation.div(portfolio_trades["Portfolio Value"].sum())
-        .squeeze()
+        .squeeze(axis=1)
         .sort_values(ascending=False)
     )
 
     portfolio_country_allocation = (
         portfolio_country_allocation.div(portfolio_trades["Portfolio Value"].sum())
-        .squeeze()
+        .squeeze(axis=1)
         .sort_values(ascending=False)
     )
 

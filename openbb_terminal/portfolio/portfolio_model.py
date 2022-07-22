@@ -839,8 +839,8 @@ class PortfolioModel:
     def get_orderbook(self):
         return self.__orderbook
 
-    @log_start_end(log=logger)
     @staticmethod
+    @log_start_end(log=logger)
     def read_orderbook(path: str) -> pd.DataFrame:
         """Class method to read orderbook from file
 
