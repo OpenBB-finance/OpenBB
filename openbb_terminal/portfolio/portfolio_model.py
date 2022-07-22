@@ -990,6 +990,33 @@ class PortfolioModel:
                         # Display progress
                         console.print(".", end="")
 
+            elif ticker_type == "CRYPTO":
+                for ticker in self.tickers[ticker_type]:
+                    if (
+                        self.__orderbook.loc[
+                            self.__orderbook["Ticker"] == ticker,
+                            ["Sector", "Industry", "Country", "Region"],
+                        ]
+                        .isnull()
+                        .values.any()
+                    ):
+                        # get ticker info in list ["Sector", "Industry", "Country", "Region"]
+                        ticker_info_list = ["Crypto", "Crypto", "Crypto", "Crypto"]
+
+                        #possible solution for etf
+                        # each trade has a dictionary with sector, region, country allocs
+                        # for stocks is just 100% the same. for etf we multiply the value by % alloc
+
+                        # replace fields in orderbook
+                        self.__orderbook.loc[
+                            self.__orderbook.Ticker == ticker,
+                            ["Sector", "Industry", "Country", "Region"],
+                        ] = ticker_info_list
+
+                        # Display progress
+                        console.print(".", end="")
+            
+
             else:
                 for ticker in self.tickers[ticker_type]:
                     if (
@@ -1002,6 +1029,10 @@ class PortfolioModel:
                     ):
                         # get ticker info in list ["Sector", "Industry", "Country", "Region"]
                         ticker_info_list = ["-", "-", "-", "-"]
+
+                        #possible solution for etf
+                        # each trade has a dictionary with sector, region, country allocs
+                        # for stocks is just 100% the same. for etf we multiply the value by % alloc
 
                         # replace fields in orderbook
                         self.__orderbook.loc[
@@ -1310,19 +1341,19 @@ class PortfolioModel:
         )
 
         # Determine regional and country allocations
-        (
-            self.benchmark_regional_allocation,
-            self.benchmark_country_allocation,
-        ) = allocation_model.obtain_benchmark_regional_and_country_allocation(
-            self.benchmark_ticker
-        )
+        # (
+        #     self.benchmark_regional_allocation,
+        #     self.benchmark_country_allocation,
+        # ) = allocation_model.obtain_benchmark_regional_and_country_allocation(
+        #     self.benchmark_ticker
+        # )
 
-        (
-            self.portfolio_regional_allocation,
-            self.portfolio_country_allocation,
-        ) = allocation_model.obtain_portfolio_regional_and_country_allocation(
-            self.portfolio_trades
-        )
+        # (
+        #     self.portfolio_regional_allocation,
+        #     self.portfolio_country_allocation,
+        # ) = allocation_model.obtain_portfolio_regional_and_country_allocation(
+        #     self.portfolio_trades
+        # )
 
     def set_risk_free_rate(self, risk_free_rate: float):
         """Sets risk free rate

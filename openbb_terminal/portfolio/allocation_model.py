@@ -5,6 +5,8 @@ import pandas as pd
 import requests
 from openbb_terminal.decorators import log_start_end
 
+import yfinance as yf
+
 logger = logging.getLogger(__name__)
 
 
@@ -37,6 +39,8 @@ def obtain_assets_allocation(benchmark_info: Dict, portfolio_trades: pd.DataFram
         .squeeze()
         .sort_values(ascending=False)
     )
+
+    portfolio_assets_allocation.fillna(0, inplace=True)
 
     return benchmark_assets_allocation, portfolio_assets_allocation
 
@@ -81,15 +85,76 @@ def obtain_sector_allocation(benchmark_info: Dict, portfolio_trades: pd.DataFram
 
     # Define portfolio sector allocation
     portfolio_sectors_allocation = (
-        (
-            portfolio_trades[portfolio_trades["Type"] != "CASH"]
-            .groupby(by="Sector")
-            .agg({"Portfolio Value": "sum"})
+        portfolio_trades[portfolio_trades["Type"].isin(["STOCK", "CRYPTO"])]
+        .groupby(by="Sector")
+        .agg({"Portfolio Value": "sum"})
+    )
+
+    etf_ticker_value = (
+        portfolio_trades[portfolio_trades["Type"].isin(["ETF"])]
+        .groupby(by="Ticker")
+        .agg({"Portfolio Value": "sum"})
+    )
+    etf_global_sector_alloc = pd.DataFrame()
+
+    for item in etf_ticker_value.index.values:
+
+        etf_info = yf.Ticker(item).info
+
+        try:
+            etf_sector_weight = pd.DataFrame.from_dict(
+                data={
+                    sector_name: allocation
+                    for sector in etf_info["sectorWeightings"]
+                    for sector_name, allocation in sector.items()
+                },
+                orient="index",
+                columns=["Portfolio Value"],
+            )
+
+        except Exception:
+            etf_sector_weight = pd.DataFrame.from_dict(
+                data={"Other": 1}, orient="index", columns=["Portfolio Value"]
+            )
+
+        etf_value = etf_ticker_value["Portfolio Value"][item]
+
+        etf_ticker_sector_alloc = etf_sector_weight * etf_value
+
+        etf_global_sector_alloc = pd.concat(
+            [etf_global_sector_alloc, etf_ticker_sector_alloc], axis=1
         )
-        .div(portfolio_trades["Portfolio Value"].sum())
+
+        etf_global_sector_alloc.fillna(0, inplace=True)
+
+        etf_global_sector_alloc = etf_global_sector_alloc.sum(axis=1)
+
+    etf_global_sector_alloc = pd.DataFrame(
+        etf_global_sector_alloc, columns=["Portfolio Value"]
+    )
+
+    prettified = []
+    for sector in etf_global_sector_alloc.index:
+        prettified.append(sector.replace("_", " ").title())
+
+    etf_global_sector_alloc.index = prettified
+    etf_global_sector_alloc.index.name = "Sector"
+    etf_global_sector_alloc
+
+    portfolio_sectors_allocation = pd.merge(
+        portfolio_sectors_allocation,
+        etf_global_sector_alloc,
+        how="outer",
+        left_index=True,
+        right_index=True,
+    ).sum(axis=1)
+    portfolio_sectors_allocation = (
+        portfolio_sectors_allocation.div(portfolio_trades["Portfolio Value"].sum())
         .squeeze()
         .sort_values(ascending=False)
     )
+
+    portfolio_sectors_allocation.fillna(0, inplace=True)
 
     return benchmark_sectors_allocation, portfolio_sectors_allocation
 
