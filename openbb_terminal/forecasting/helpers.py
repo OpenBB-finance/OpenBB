@@ -561,6 +561,13 @@ def get_series(data, target_col: str = None, is_scaler: bool = True):
         # remove business days to allow base lib to assume freq
         filler_kwargs.pop("freq")
         ticker_series = TimeSeries.from_dataframe(**filler_kwargs)
+    except AttributeError:
+        # Uses index if no date column
+        console.print(
+            "[red]Warning: no date found, assuming items evenly spaced.[/red]\n"
+        )
+        filler_kwargs.pop("time_col")
+        ticker_series = TimeSeries.from_dataframe(**filler_kwargs)
 
     if is_scaler:
         scaler = Scaler()
@@ -703,3 +710,22 @@ def plot_residuals(
             series=series, forecast_horizon=forecast_horizon, verbose=True
         )
         plot_residuals_analysis(residuals=residuals, num_bins=num_bins, fill_nan=True)
+
+
+def check_data_length(
+    train, test, input_chunk_length: int, output_chunk_length: int
+) -> bool:
+    if input_chunk_length + output_chunk_length > len(train):
+        base = "[red]Not enough train data. Please increase the "
+        console.print(
+            base + "train test split or decrease input or output chunk length.[/red]\n"
+        )
+        return False
+    if input_chunk_length + output_chunk_length > len(test):
+        base = "[red]Not enough test data. Please decrease the "
+        console.print(
+            base
+            + "train test split or decrease the input or output chunk length.[/red]\n"
+        )
+        return False
+    return True

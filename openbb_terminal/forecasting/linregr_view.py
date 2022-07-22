@@ -57,7 +57,8 @@ def display_linear_regression(
         forecast_only: bool
             Whether to only show dates in the forecasting range. Defaults to False.
     """
-    data["date"] = data["date"].apply(helpers.dt_format)
+    if "date" in data.columns:
+        data["date"] = data["date"].apply(helpers.dt_format)
     (
         ticker_series,
         historical_fcast,

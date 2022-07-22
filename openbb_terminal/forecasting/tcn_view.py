@@ -91,7 +91,8 @@ def display_tcn_forecast(
     """
 
     # reformat the date column to remove any hour/min/sec
-    data["date"] = data["date"].apply(helpers.dt_format)
+    if "date" in data.columns:
+        data["date"] = data["date"].apply(helpers.dt_format)
 
     (
         ticker_series,
@@ -120,6 +121,9 @@ def display_tcn_forecast(
         force_reset=force_reset,
         save_checkpoints=save_checkpoints,
     )
+    if ticker_series == []:
+        return
+
     probabilistic = False
     helpers.plot_forecast(
         "TCN",
