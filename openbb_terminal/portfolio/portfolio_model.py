@@ -809,9 +809,13 @@ class PortfolioModel:
         self.itemized_value = pd.DataFrame()
         self.portfolio_trades = pd.DataFrame()
         self.portfolio_value = None
+
+        # Allocations
         self.portfolio_assets_allocation = pd.DataFrame()
+        self.portfolio_sectors_allocation = pd.DataFrame()
         self.portfolio_regional_allocation = pd.DataFrame()
         self.portfolio_country_allocation = pd.DataFrame()
+        
         self.portfolio_historical_prices = pd.DataFrame()
         self.empty = True
 
@@ -1321,39 +1325,40 @@ class PortfolioModel:
         # TODO: Add back cash dividends and deduct exchange costs
         console.print("Still has to be build.")
 
-    def calculate_allocations(self):
+    def calculate_allocations(self, category: str):
         """Determine allocations based on assets, sectors, countries and regional."""
 
-        # Determine asset allocation
-        (
-            self.benchmark_assets_allocation,
-            self.portfolio_assets_allocation,
-        ) = allocation_model.obtain_assets_allocation(
-            self.benchmark_info, self.portfolio_trades
-        )
+        if category == "asset":
+            # Determine asset allocation
+            (
+                self.benchmark_assets_allocation,
+                self.portfolio_assets_allocation,
+            ) = allocation_model.obtain_assets_allocation(
+                self.benchmark_info, self.portfolio_trades
+            )
+        elif category == "sector":
+            # Determine sector allocation
+            (
+                self.benchmark_sectors_allocation,
+                self.portfolio_sectors_allocation,
+            ) = allocation_model.obtain_sector_allocation(
+                self.benchmark_info, self.portfolio_trades
+            )
+        elif category == "country" or category == "region":
+            # Determine regional and country allocations
+            (
+                self.benchmark_regional_allocation,
+                self.benchmark_country_allocation,
+            ) = allocation_model.obtain_benchmark_regional_and_country_allocation(
+                self.benchmark_ticker
+            )
 
-        # Determine sector allocation
-        (
-            self.benchmark_sectors_allocation,
-            self.portfolio_sectors_allocation,
-        ) = allocation_model.obtain_sector_allocation(
-            self.benchmark_info, self.portfolio_trades
-        )
-
-        # Determine regional and country allocations
-        # (
-        #     self.benchmark_regional_allocation,
-        #     self.benchmark_country_allocation,
-        # ) = allocation_model.obtain_benchmark_regional_and_country_allocation(
-        #     self.benchmark_ticker
-        # )
-
-        # (
-        #     self.portfolio_regional_allocation,
-        #     self.portfolio_country_allocation,
-        # ) = allocation_model.obtain_portfolio_regional_and_country_allocation(
-        #     self.portfolio_trades
-        # )
+            (
+                self.portfolio_regional_allocation,
+                self.portfolio_country_allocation,
+            ) = allocation_model.obtain_portfolio_regional_and_country_allocation(
+                self.portfolio_trades
+            )
 
     def set_risk_free_rate(self, risk_free_rate: float):
         """Sets risk free rate
