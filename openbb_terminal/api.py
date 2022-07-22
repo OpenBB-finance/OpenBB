@@ -5,6 +5,9 @@ import functools
 import importlib
 from typing import Optional, Callable
 
+from openbb_terminal.helper_classes import TerminalStyle
+from .reports import widget_helpers as widgets
+
 """
 THIS IS SOME EXAMPLE OF USAGE FOR USING IT DIRECTLY IN JUPYTER NOTEBOOK
 """
@@ -19,15 +22,70 @@ functions = {
         "model": "openbb_terminal.stocks.stocks_helper.load",
         "view": "openbb_terminal.stocks.stocks_helper.display_candle",
     },
+    "stocks.process_candle": {
+        "model": "openbb_terminal.stocks.stocks_helper.process_candle"
+    },
     "stocks.fa.info": {
         "model": "openbb_terminal.stocks.fundamental_analysis.yahoo_finance_model.get_info"
     },
     "stocks.fa.income": {
         "model": "openbb_terminal.stocks.fundamental_analysis.av_model.get_income_statements"
     },
+    "stocks.dd.estimates": {
+        "model": "openbb_terminal.stocks.due_diligence.business_insider_model.get_estimates"
+    },
+    "stocks.dd.sec_filings": {
+        "model": "openbb_terminal.stocks.due_diligence.marketwatch_model.get_sec_filings"
+    },
+    "stocks.dd.analyst_data": {
+        "model": "openbb_terminal.stocks.due_diligence.finviz_model.get_analyst_data"
+    },
+    "stocks.dd.price_target": {
+        "model": "openbb_terminal.stocks.due_diligence.business_insider_model.get_price_target_from_analysts",
+        "view": "openbb_terminal.stocks.due_diligence.business_insider_view.price_target_from_analysts"
+    },
+    "stocks.dd.rating_over_time": {
+        "model": "openbb_terminal.stocks.due_diligence.finnhub_model.get_rating_over_time",
+        "view": "openbb_terminal.stocks.due_diligence.finnhub_view.rating_over_time"
+    },
+    "stocks.dps.spos": {
+        "model": "openbb_terminal.stocks.dark_pool_shorts.stockgrid_model.get_net_short_position",
+        "view": "openbb_terminal.stocks.dark_pool_shorts.stockgrid_view.net_short_position"
+    },
+    "stocks.dps.dpotc": {
+        "model": "openbb_terminal.stocks.dark_pool_shorts.finra_model.getTickerFINRAdata",
+        "view": "openbb_terminal.stocks.dark_pool_shorts.finra_view.darkpool_ats_otc"
+    },
+    "stocks.dps.short_interest_volume": {
+        "model": "openbb_terminal.stocks.dark_pool_shorts.stockgrid_model.get_short_interest_volume",
+        "view": "openbb_terminal.stocks.dark_pool_shorts.stockgrid_view.short_interest_volume"
+    },
+    "stocks.ta.rsi": {
+        "model": "openbb_terminal.common.technical_analysis.momentum_model.rsi",
+        "view": "openbb_terminal.common.technical_analysis.momentum_view.display_rsi"
+    },
+    "stocks.ins.lins": {
+        "model": "openbb_terminal.stocks.insider.finviz_model.get_last_insider_activity"
+    },
+    "stocks.ba.headlines": {
+        "model": "openbb_terminal.common.behavioural_analysis.finbrain_model.get_sentiment",
+        "view": "openbb_terminal.common.behavioural_analysis.finbrain_view.display_sentiment_analysis"
+    },
+    "stocks.ba.bullbear": {
+        "model": "openbb_terminal.common.behavioural_analysis.stocktwits_model.get_bullbear",
+        "view": "openbb_terminal.common.behavioural_analysis.stocktwits_view.display_bullbear"
+    },
+    "stocks.ba.snews": {
+        "model": "openbb_terminal.stocks.behavioural_analysis.finnhub_model.get_company_news",
+        "view": "openbb_terminal.stocks.behavioural_analysis.finnhub_view.display_stock_price_headlines_sentiment"
+    },
+    "stocks.qa.bw": {
+        "model": "openbb_terminal.stocks.stocks_helper.load",
+        "view": "openbb_terminal.common.quantitative_analysis.qa_view.display_bw"
+    },
     "economy.bigmac": {
         "model": "openbb_terminal.economy.nasdaq_model.get_big_mac_index",
-        "view": "openbb_terminal.economy.nasdaq_view.display_big_mac_index",
+        "view": "openbb_terminal.economy.nasdaq_view.display_big_mac_index"
     },
 }
 """
