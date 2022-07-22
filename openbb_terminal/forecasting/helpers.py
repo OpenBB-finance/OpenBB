@@ -386,7 +386,7 @@ def past_covs(past_covariates, filler, data, train_split, is_scaler=True):
             for i, column in enumerate(target_covariates_names[1:]):
                 console.print(f"[green]Covariate #{i+1}: {column}[/green]")
                 filler, scaler, _temp_new_covariate = get_series(
-                    data, target_col=target_covariates_names[i], is_scaler=is_scaler
+                    data, target_col=target_covariates_names[i + 1], is_scaler=is_scaler
                 )
 
                 # continually stack covariates based on column names
