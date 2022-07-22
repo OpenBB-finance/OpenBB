@@ -497,7 +497,8 @@ def get_macro_data(
     units
         The units of the macro data, e.g. 'Bbl/day" for oil.
     """
-    country = country[0].upper()+country[1:]
+    country = country.replace(" ", "_")
+    country[0] = country[0].upper() + country[1:]
     parameter = parameter.upper()
 
     if country not in COUNTRY_CODES:
