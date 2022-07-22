@@ -103,6 +103,7 @@ def obtain_sector_allocation(benchmark_info: Dict, portfolio_trades: pd.DataFram
     # Loop through each etf and multiply sector weights by current value
     for item in etf_ticker_value.index.values:
 
+        # TODO: This can be improved by caching this info similar to what is done in stocks
         etf_info = yf.Ticker(item).info
 
         try:
@@ -305,13 +306,13 @@ def obtain_portfolio_region_country_allocation(portfolio_trades: pd.DataFrame):
         if etf_region_weight.empty:
             # If ETF has no sectors like VIX for example or it was not found, add to Other
             etf_region_weight = pd.DataFrame.from_dict(
-                    data={"Other": 1}, orient="index", columns=["Portfolio Value"]
-                )
+                data={"Other": 1}, orient="index", columns=["Portfolio Value"]
+            )
 
         if etf_country_weight.empty:
             etf_country_weight = pd.DataFrame.from_dict(
-                    data={"Other": 1}, orient="index", columns=["Portfolio Value"]
-                )
+                data={"Other": 1}, orient="index", columns=["Portfolio Value"]
+            )
 
         etf_value = etf_ticker_value["Portfolio Value"][item]
 

@@ -1007,7 +1007,7 @@ class PortfolioModel:
                         # get ticker info in list ["Sector", "Industry", "Country", "Region"]
                         ticker_info_list = ["Crypto", "Crypto", "Crypto", "Crypto"]
 
-                        #possible solution for etf
+                        # possible solution for etf
                         # each trade has a dictionary with sector, region, country allocs
                         # for stocks is just 100% the same. for etf we multiply the value by % alloc
 
@@ -1019,7 +1019,6 @@ class PortfolioModel:
 
                         # Display progress
                         console.print(".", end="")
-            
 
             else:
                 for ticker in self.tickers[ticker_type]:
@@ -1034,7 +1033,7 @@ class PortfolioModel:
                         # get ticker info in list ["Sector", "Industry", "Country", "Region"]
                         ticker_info_list = ["-", "-", "-", "-"]
 
-                        #possible solution for etf
+                        # possible solution for etf
                         # each trade has a dictionary with sector, region, country allocs
                         # for stocks is just 100% the same. for etf we multiply the value by % alloc
 
@@ -1057,7 +1056,10 @@ class PortfolioModel:
         """
         self.benchmark_ticker = ticker
         self.benchmark_historical_prices = yf.download(
-            ticker, start=self.inception_date - datetime.timedelta(days=1), threads=False, progress=False
+            ticker,
+            start=self.inception_date - datetime.timedelta(days=1),
+            threads=False,
+            progress=False,
         )["Adj Close"]
 
         self.mimic_trades_for_benchmark(full_shares)
@@ -1349,9 +1351,7 @@ class PortfolioModel:
             (
                 self.benchmark_regional_allocation,
                 self.benchmark_country_allocation,
-            ) = allocation_model.get_region_country_allocation(
-                self.benchmark_ticker
-            )
+            ) = allocation_model.get_region_country_allocation(self.benchmark_ticker)
 
             (
                 self.portfolio_regional_allocation,
