@@ -36,7 +36,7 @@ def obtain_assets_allocation(benchmark_info: Dict, portfolio_trades: pd.DataFram
             .agg({"Portfolio Value": "sum"})
             .div(portfolio_trades["Portfolio Value"].sum())
         )
-        .squeeze()
+        .squeeze(axis=1)
         .sort_values(ascending=False)
     )
 
