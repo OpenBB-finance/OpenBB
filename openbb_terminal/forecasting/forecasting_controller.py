@@ -2101,7 +2101,7 @@ class ForecastingController(BaseController):
             target_dataset=True,
             n_days=True,
             target_column=True,
-            hidden_size=10,
+            hidden_size=20,
             residuals=True,
             forecast_only=True,
         )
