@@ -84,12 +84,16 @@ def obtain_sector_allocation(benchmark_info: Dict, portfolio_trades: pd.DataFram
     benchmark_sectors_allocation.index = prettified
 
     # Define portfolio sector allocation
+    # Aggregate sector value for stocks and crypto
     portfolio_sectors_allocation = (
         portfolio_trades[portfolio_trades["Type"].isin(["STOCK", "CRYPTO"])]
         .groupby(by="Sector")
         .agg({"Portfolio Value": "sum"})
     )
 
+
+    # Aggregate sector value for ETFs
+    # Start by getting value by ticker
     etf_ticker_value = (
         portfolio_trades[portfolio_trades["Type"].isin(["ETF"])]
         .groupby(by="Ticker")
@@ -97,6 +101,7 @@ def obtain_sector_allocation(benchmark_info: Dict, portfolio_trades: pd.DataFram
     )
     etf_global_sector_alloc = pd.DataFrame()
 
+    # Loop through each etf a multiply weights by current value
     for item in etf_ticker_value.index.values:
 
         etf_info = yf.Ticker(item).info
@@ -113,6 +118,7 @@ def obtain_sector_allocation(benchmark_info: Dict, portfolio_trades: pd.DataFram
             )
 
         except Exception:
+            # If ETF has no sectors like VIX for example, add to Other
             etf_sector_weight = pd.DataFrame.from_dict(
                 data={"Other": 1}, orient="index", columns=["Portfolio Value"]
             )
@@ -121,6 +127,7 @@ def obtain_sector_allocation(benchmark_info: Dict, portfolio_trades: pd.DataFram
 
         etf_ticker_sector_alloc = etf_sector_weight * etf_value
 
+        # Aggregate etf sector allocation by value
         etf_global_sector_alloc = pd.concat(
             [etf_global_sector_alloc, etf_ticker_sector_alloc], axis=1
         )
@@ -133,6 +140,7 @@ def obtain_sector_allocation(benchmark_info: Dict, portfolio_trades: pd.DataFram
         etf_global_sector_alloc, columns=["Portfolio Value"]
     )
 
+    # Rename columns to match stock and crypto classification
     prettified = []
     for sector in etf_global_sector_alloc.index:
         prettified.append(sector.replace("_", " ").title())
@@ -141,6 +149,7 @@ def obtain_sector_allocation(benchmark_info: Dict, portfolio_trades: pd.DataFram
     etf_global_sector_alloc.index.name = "Sector"
     etf_global_sector_alloc
 
+    # Aggregate sector allocation for stocks and crypto with ETFs
     portfolio_sectors_allocation = pd.merge(
         portfolio_sectors_allocation,
         etf_global_sector_alloc,
