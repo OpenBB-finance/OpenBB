@@ -536,7 +536,7 @@ class ForecastingController(BaseController):
                 "--n-epochs",
                 action="store",
                 dest="n_epochs",
-                default=100,
+                default=300,
                 type=check_positive,
                 help="Number of epochs over which to train the model.",
             )
