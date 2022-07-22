@@ -271,6 +271,36 @@ def get_rolling_beta(
 
 
 @log_start_end(log=logger)
+def calculate_beta(
+    returns: pd.DataFrame, benchmark_returns: pd.DataFrame
+):
+    """Calculates the beta
+
+    Parameters
+    ----------
+    returns: pd.DataFrame
+        Series of portfolio returns
+    benchmark_returns: pd.DataFrame
+        Series of benchmark returns
+
+    Returns
+    -------
+    float
+        The beta value
+    """
+    axis_diff = len(returns) - len(benchmark_returns)
+    axis_diff_bench = 0
+    if axis_diff < 0:
+        axis_diff_bench = -axis_diff
+        axis_diff = 0
+
+    covariance = np.cov(returns[axis_diff:], benchmark_returns[axis_diff_bench:])[0][1]
+    variance = returns.var()
+
+    return covariance/variance
+
+
+@log_start_end(log=logger)
 def get_tracking_error(
     returns: pd.DataFrame, benchmark_returns: pd.DataFrame, period: int = 252
 ):
@@ -575,43 +605,39 @@ def get_jensens_alpha(
             benchmark_trades, periods
         )
         if not period_return.empty:
-            beta = get_rolling_beta(returns, benchmark_returns, periods_d[periods])
-            if not beta.empty:
-                beta = beta.iloc[-1]
-                period_cum_returns = (
-                    period_historical_trade_data["End Value"]["Total"].iloc[-1]
-                    / (
-                        period_historical_trade_data["Initial Value"]["Total"].iloc[0]
-                        + period_historical_trade_data["Investment"]["Total"].iloc[-1]
-                        - period_historical_trade_data["Investment"]["Total"].iloc[0]
-                    )
+            beta = calculate_beta(period_return, period_bench_return)
+            period_cum_returns = (
+                period_historical_trade_data["End Value"]["Total"].iloc[-1]
+                / (
+                    period_historical_trade_data["Initial Value"]["Total"].iloc[0]
+                    + period_historical_trade_data["Investment"]["Total"].iloc[-1]
+                    - period_historical_trade_data["Investment"]["Total"].iloc[0]
+                )
+                - 1
+            )
+            if not period_bench_trades.empty:
+                period_bench_total_return = (
+                    period_bench_trades["Benchmark Value"].sum()
+                    / period_bench_trades["Benchmark Investment"].sum()
                     - 1
                 )
-                if not period_bench_trades.empty:
-                    period_bench_total_return = (
-                        period_bench_trades["Benchmark Value"].sum()
-                        / period_bench_trades["Benchmark Investment"].sum()
-                        - 1
-                    )
-                else:
-                    period_bench_total_return = (
-                        (1 + period_bench_return).cumprod() - 1
-                    ).iloc[-1]
-                rfr_cum_returns = rf * periods_d[periods] / 252
-                vals.append(
-                    [
-                        round(
-                            period_cum_returns
-                            - (
-                                rfr_cum_returns
-                                + beta * (period_bench_total_return - rfr_cum_returns)
-                            ),
-                            3,
-                        )
-                    ]
-                )
             else:
-                vals.append(["-"])
+                period_bench_total_return = (
+                    (1 + period_bench_return).cumprod() - 1
+                ).iloc[-1]
+            rfr_cum_returns = rf * periods_d[periods] / 252
+            vals.append(
+                [
+                    round(
+                        period_cum_returns
+                        - (
+                            rfr_cum_returns
+                            + beta * (period_bench_total_return - rfr_cum_returns)
+                        ),
+                        3,
+                    )
+                ]
+            )
         else:
             vals.append(["-"])
 
