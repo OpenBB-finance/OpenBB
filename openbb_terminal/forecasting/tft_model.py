@@ -127,14 +127,6 @@ def get_tft_data(
         past_covariate_val,
     ) = helpers.past_covs(past_covariates, filler, data, train_split, use_scalers)
 
-    my_stopper = helpers.early_stopper(15)
-
-    pl_trainer_kwargs = {
-        "callbacks": [my_stopper],
-        "accelerator": "cpu",
-        "gradient_clip_val": 0.5,  # TODO - experiment with this more
-    }
-
     quantiles = [
         0.01,
         0.05,
@@ -170,7 +162,9 @@ def get_tft_data(
         random_state=42,
         n_epochs=n_epochs,
         batch_size=batch_size,
-        pl_trainer_kwargs=pl_trainer_kwargs,
+        pl_trainer_kwargs=helpers.get_pl_kwargs(
+            patience=5, monitor="val_loss", accelerator="cpu"
+        ),
         likelihood=QuantileRegression(
             quantiles=quantiles
         ),  # QuantileRegression is set per default

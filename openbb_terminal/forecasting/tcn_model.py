@@ -126,7 +126,9 @@ def get_tcn_data(
         force_reset=force_reset,
         save_checkpoints=save_checkpoints,
         random_state=42,
-        pl_trainer_kwargs=helpers.get_pl_kwargs(5),
+        pl_trainer_kwargs=helpers.get_pl_kwargs(
+            patience=5, monitor="val_loss", accelerator="cpu"
+        ),
     )
 
     # fit model on train series for historical forecasting

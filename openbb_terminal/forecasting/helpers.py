@@ -7,6 +7,7 @@ import logging
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+from requests import get
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler, MinMaxScaler, Normalizer
 from sklearn.metrics import (
@@ -446,21 +447,21 @@ def past_covs(past_covariates, filler, data, train_split, is_scaler=True):
         return None, None, None
 
 
-def early_stopper(patience: int, monitor: str = "train_loss"):
+def early_stopper(patience: int, monitor: str = "val_loss"):
     my_stopper = EarlyStopping(
         monitor=monitor,
         patience=patience,
-        min_delta=0,
+        min_delta=0.01,
         mode="min",
     )
     return my_stopper
 
 
 def get_pl_kwargs(
-    patience: int, monitor: str = "train_loss", accelerator: str = "cpu"
+    patience: int, monitor: str = "val_loss", accelerator: str = "cpu"
 ) -> Dict[str, Any]:
-    my_stopper = early_stopper(5, "train_loss")
-    pl_trainer_kwargs = {"callbacks": [my_stopper], "accelerator": "cpu"}
+    my_stopper = early_stopper(patience, monitor)
+    pl_trainer_kwargs = {"callbacks": [my_stopper], "accelerator": accelerator}
     return pl_trainer_kwargs
 
 
@@ -695,7 +696,7 @@ def plot_residuals(
         console.print(
             "[green]Calculating and plotting residuals... This may take a few moments.[/green]"
         )
-        my_stopper = early_stopper(5, "train_loss")
+        my_stopper = early_stopper(5, "val_loss")
         pl_trainer_kwargs = {"callbacks": [my_stopper], "accelerator": "cpu"}
         model.pl_trainer_kwargs = pl_trainer_kwargs
         residuals = model.residuals(
