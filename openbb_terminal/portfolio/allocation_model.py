@@ -6,6 +6,7 @@ import requests
 from openbb_terminal.decorators import log_start_end
 
 import yfinance as yf
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -93,6 +94,7 @@ def obtain_sector_allocation(benchmark_info: Dict, portfolio_trades: pd.DataFram
 
     # Aggregate sector value for ETFs
     # Start by getting value by ticker
+    console.print(" Loading ETF sector data: ", end="")
     etf_ticker_value = (
         portfolio_trades[portfolio_trades["Type"].isin(["ETF"])]
         .groupby(by="Ticker")
@@ -135,6 +137,9 @@ def obtain_sector_allocation(benchmark_info: Dict, portfolio_trades: pd.DataFram
         etf_global_sector_alloc.fillna(0, inplace=True)
 
         etf_global_sector_alloc = etf_global_sector_alloc.sum(axis=1)
+
+        console.print(".", end="")
+    console.print("\n")
 
     etf_global_sector_alloc = pd.DataFrame(
         etf_global_sector_alloc, columns=["Portfolio Value"]
@@ -278,6 +283,7 @@ def obtain_portfolio_region_country_allocation(portfolio_trades: pd.DataFrame):
     portfolio_country_allocation: pd.DataFrame
         Dictionary with country allocations
     """
+
     # Define portfolio regional allocation
     portfolio_region_allocation = (
         portfolio_trades[portfolio_trades["Type"].isin(["STOCK", "CRYPTO"])]
@@ -292,6 +298,7 @@ def obtain_portfolio_region_country_allocation(portfolio_trades: pd.DataFrame):
         .agg({"Portfolio Value": "sum"})
     )
 
+    console.print(" Loading ETF country/region data: ", end="")
     # Aggregate sector value for ETFs
     # Start by getting value by ticker
     etf_ticker_value = (
@@ -335,6 +342,9 @@ def obtain_portfolio_region_country_allocation(portfolio_trades: pd.DataFrame):
         )
         etf_global_country_alloc.fillna(0, inplace=True)
         etf_global_country_alloc = etf_global_country_alloc.sum(axis=1)
+
+        console.print(".", end="")
+    console.print("\n")
 
     etf_global_region_alloc = pd.DataFrame(
         etf_global_region_alloc, columns=["Portfolio Value"]
