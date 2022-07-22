@@ -271,9 +271,7 @@ def get_rolling_beta(
 
 
 @log_start_end(log=logger)
-def calculate_beta(
-    returns: pd.DataFrame, benchmark_returns: pd.DataFrame
-):
+def calculate_beta(returns: pd.DataFrame, benchmark_returns: pd.DataFrame):
     """Calculates the beta
 
     Parameters
@@ -297,7 +295,7 @@ def calculate_beta(
     covariance = np.cov(returns[axis_diff:], benchmark_returns[axis_diff_bench:])[0][1]
     variance = returns.var()
 
-    return covariance/variance
+    return covariance / variance
 
 
 @log_start_end(log=logger)
