@@ -111,7 +111,7 @@ For a 1 hour coding session where the architecture of the repo is explained whil
 
 **Become a Contributor 🦍**
 
-Recommended if you bought the dip, and the share price keeps dipping. You may as well keep yourself busy while stonks
+Recommended if you bought the dip, and the share price keeps dipping. You may as well keep yourself busy while stocks
 go up.
 
 1. Fork the Project
