@@ -286,4 +286,7 @@ def obtain_portfolio_regional_and_country_allocation(portfolio_trades: pd.DataFr
         .sort_values(ascending=False)
     )
 
+    portfolio_regional_allocation.fillna(0, inplace=True)
+    portfolio_country_allocation.fillna(0, inplace=True)
+
     return portfolio_regional_allocation, portfolio_country_allocation
