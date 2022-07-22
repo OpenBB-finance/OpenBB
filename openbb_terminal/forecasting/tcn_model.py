@@ -3,7 +3,7 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Any, Tuple, Union, List
+from typing import Any, Tuple, Union, List, Optional
 
 
 # import torch
@@ -39,7 +39,7 @@ def get_tcn_data(
     model_save_name: str = "tcn_model",
     force_reset: bool = True,
     save_checkpoints: bool = True,
-) -> Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], float, Any]:
+) -> Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], Optional[float], Any]:
     """Perform TCN forecasting
 
     Args:
@@ -89,7 +89,7 @@ def get_tcn_data(
             Historical forecast by best RNN model
         List[TimeSeries]
             list of Predictions
-        float
+        Optional[float]
             Mean average precision error
         Any
             Best TCN Model
@@ -104,6 +104,11 @@ def get_tcn_data(
         data, target_col, is_scaler=use_scalers
     )
     train, val = ticker_series.split_before(train_split)
+    valid = helpers.check_data_length(
+        train, val, input_chunk_length, output_chunk_length
+    )
+    if not valid:
+        return [], [], [], None, None
 
     (
         past_covariate_whole,

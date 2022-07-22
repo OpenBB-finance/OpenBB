@@ -3,7 +3,7 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Any, Tuple, Union, List
+from typing import Any, Tuple, Union, List, Optional
 
 
 # import torch
@@ -38,7 +38,7 @@ def get_rnn_data(
     input_chunk_size: int = 14,
     force_reset: bool = True,
     save_checkpoints: bool = True,
-) -> Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], float, Any]:
+) -> Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], Optional[float], Any]:
     """Perform RNN forecasting
 
     Args:
@@ -105,6 +105,9 @@ def get_rnn_data(
         data, target_col, is_scaler=use_scalers
     )
     train, val = ticker_series.split_before(train_split)
+    valid = helpers.check_data_length(train, val, input_chunk_size, 0)
+    if not valid:
+        return [], [], [], None, None
 
     rnn_model = RNNModel(
         model=model_type,

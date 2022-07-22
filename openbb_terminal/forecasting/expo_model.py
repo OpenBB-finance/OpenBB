@@ -3,7 +3,7 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Any, Tuple, Union, List
+from typing import Any, Tuple, Union, List, Optional
 
 import warnings
 from statsmodels.tools.sm_exceptions import ConvergenceWarning
@@ -40,7 +40,7 @@ def get_expo_data(
     target_col: str = "close",
     start_window: float = 0.85,
     forecast_horizon: int = 5,
-) -> Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], float, Any]:
+) -> Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], Optional[float], Any]:
 
     """Performs Probabilistic Exponential Smoothing forecasting
     This is a wrapper around statsmodels Holt-Winters' Exponential Smoothing;
@@ -78,16 +78,14 @@ def get_expo_data(
         List of historical fcast values
     List[float]
         List of predicted fcast values
-    float
+    Optional[float]
         precision
     Any
         Fit Prob. Expo model object.
     """
 
     use_scalers = False
-    _, _, ticker_series = helpers.get_series(
-        data, target_col, is_scaler=use_scalers
-    )
+    _, _, ticker_series = helpers.get_series(data, target_col, is_scaler=use_scalers)
 
     if trend == "M":
         trend = ModelMode.MULTIPLICATIVE

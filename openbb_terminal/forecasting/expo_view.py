@@ -63,7 +63,8 @@ def display_expo_forecast(
         Whether to only show dates in the forecasting range. Defaults to False.
     """
     # reformat the date column to remove any hour/min/sec
-    data["date"] = data["date"].apply(helpers.dt_format)
+    if "date" in data.columns:
+        data["date"] = data["date"].apply(helpers.dt_format)
 
     (
         ticker_series,

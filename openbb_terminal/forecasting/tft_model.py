@@ -3,7 +3,7 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Any, Tuple, Union, List
+from typing import Any, Tuple, Union, List, Optional
 
 import warnings
 from statsmodels.tools.sm_exceptions import ConvergenceWarning
@@ -43,7 +43,7 @@ def get_tft_data(
     model_save_name: str = "tft_model",
     force_reset: bool = True,
     save_checkpoints: bool = True,
-) -> Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], float, Any]:
+) -> Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], Optional[float], Any]:
 
     """Performs Temporal Fusion Transformer forecasting
     The TFT applies multi-head attention queries on future inputs from mandatory future_covariates.
@@ -107,7 +107,7 @@ def get_tft_data(
         List of historical fcast values
     List[float]
         List of predicted fcast values
-    float
+    Optional[float]
         precision
     Any
         Fit Prob. TFT model object.
@@ -120,6 +120,11 @@ def get_tft_data(
         data, target_col, is_scaler=use_scalers
     )
     train, val = ticker_series.split_before(train_split)
+    valid = helpers.check_data_length(
+        train, val, input_chunk_length, output_chunk_length
+    )
+    if not valid:
+        return [], [], [], None, None
 
     (
         past_covariate_whole,
