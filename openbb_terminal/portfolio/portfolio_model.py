@@ -815,7 +815,7 @@ class PortfolioModel:
         self.portfolio_sectors_allocation = pd.DataFrame()
         self.portfolio_regional_allocation = pd.DataFrame()
         self.portfolio_country_allocation = pd.DataFrame()
-        
+
         self.portfolio_historical_prices = pd.DataFrame()
         self.empty = True
 
@@ -1349,14 +1349,14 @@ class PortfolioModel:
             (
                 self.benchmark_regional_allocation,
                 self.benchmark_country_allocation,
-            ) = allocation_model.obtain_benchmark_regional_and_country_allocation(
+            ) = allocation_model.get_region_country_allocation(
                 self.benchmark_ticker
             )
 
             (
                 self.portfolio_regional_allocation,
                 self.portfolio_country_allocation,
-            ) = allocation_model.obtain_portfolio_regional_and_country_allocation(
+            ) = allocation_model.obtain_portfolio_region_country_allocation(
                 self.portfolio_trades
             )
 
