@@ -768,10 +768,6 @@ class PortfolioModel:
     Class for portfolio analysis in OpenBB
     Implements a Portfolio and related methods.
 
-    Attributes
-    -------
-
-
     Methods
     -------
     read_orderbook: Class method to read orderbook from file
@@ -785,20 +781,20 @@ class PortfolioModel:
     generate_portfolio_data: Generates portfolio data from orderbook
         load_portfolio_historical_prices: Loads historical adj close prices for tickers in list of trades
         populate_historical_trade_data: Create a new dataframe to store historical prices by ticker
-        calculate_value: Calculate value from historical data
+        calculate_value: Calculate value end of day from historical data
 
-    calculate_reserves:
+    calculate_reserves: Takes dividends into account for returns calculation
 
-    calculate_allocations:
+    calculate_allocations: Determine allocations based on assets, sectors, countries and region
 
     set_risk_free_rate: Sets risk free rate
 
-    calculate_metrics:
-
     """
 
+    @log_start_end(log=logger)
     def __init__(self, orderbook: pd.DataFrame = pd.DataFrame()):
-        """Initialize Portfolio class"""
+        """Initialize PortfolioModel class"""
+
         # Portfolio
         self.tickers_list = None
         self.tickers: Dict[Any, Any] = {}
@@ -809,16 +805,8 @@ class PortfolioModel:
         self.itemized_value = pd.DataFrame()
         self.portfolio_trades = pd.DataFrame()
         self.portfolio_value = None
-
-        # Allocations
-        self.portfolio_assets_allocation = pd.DataFrame()
-        self.portfolio_sectors_allocation = pd.DataFrame()
-        self.portfolio_regional_allocation = pd.DataFrame()
-        self.portfolio_country_allocation = pd.DataFrame()
-
         self.portfolio_historical_prices = pd.DataFrame()
         self.empty = True
-
         self.risk_free_rate = float(0)
 
         # Benchmark
@@ -827,8 +815,16 @@ class PortfolioModel:
         self.benchmark_historical_prices = pd.DataFrame()
         self.benchmark_returns = pd.DataFrame()
         self.benchmark_trades = pd.DataFrame()
+
+        # Allocations
+        self.portfolio_assets_allocation = pd.DataFrame()
+        self.portfolio_sectors_allocation = pd.DataFrame()
+        self.portfolio_region_allocation = pd.DataFrame()
+        self.portfolio_country_allocation = pd.DataFrame()
+
         self.benchmark_assets_allocation = pd.DataFrame()
-        self.benchmark_regional_allocation = pd.DataFrame()
+        self.benchmark_sectors_allocation = pd.DataFrame()
+        self.benchmark_region_allocation = pd.DataFrame()
         self.benchmark_country_allocation = pd.DataFrame()
 
         # Set and preprocess orderbook
@@ -843,12 +839,16 @@ class PortfolioModel:
     def get_orderbook(self):
         return self.__orderbook
 
+    @log_start_end(log=logger)
     @staticmethod
     def read_orderbook(path: str) -> pd.DataFrame:
         """Class method to read orderbook from file
 
-        Args:
-            path (str): path to orderbook file
+        Parameters
+        ----------
+        path: str
+            path to orderbook file
+
         """
         # Load orderbook from file
         if path.endswith(".xlsx"):
@@ -858,29 +858,41 @@ class PortfolioModel:
 
         return orderbook
 
+    @log_start_end(log=logger)
     def preprocess_orderbook(self):
         """Method to preprocess, format and compute auxiliary fields"""
 
-        # descrbibe outputs
+        # Preprocessing steps:
+        # 1. Convert Date to datetime
+        # 2. Sort orderbook by date
+        # 3. Capitalize Ticker and Type [of instrument...]
+        # 4. Translate side: ["deposit", "buy"] -> 1 and ["withdrawal", "sell"] -> -1
+        # 5. Convert quantity to signed integer
+        # 6. Determining the investment/divestment value
+        # 7. Reformat crypto tickers to yfinance format (e.g. BTC -> BTC-USD)
+        # 8. Create tickers dictionary with structure {'Type': [Ticker]}
+        # 9. Create list with tickers except cash
+        # 10. Save orderbook inception date
+        # 11. Populate fields Sector, Industry and Country
 
         try:
             console.print(" Preprocessing orderbook: ", end="")
-            # Convert Date to datetime
+            # 1. Convert Date to datetime
             self.__orderbook["Date"] = pd.to_datetime(self.__orderbook["Date"])
             console.print(".", end="")
 
-            # Sort orderbook by date
+            # 2. Sort orderbook by date
             self.__orderbook = self.__orderbook.sort_values(by="Date")
             console.print(".", end="")
 
-            # Capitalize Ticker and Type [of instrument...]
+            # 3. Capitalize Ticker and Type [of instrument...]
             self.__orderbook["Ticker"] = self.__orderbook["Ticker"].map(
                 lambda x: x.upper()
             )
             self.__orderbook["Type"] = self.__orderbook["Type"].map(lambda x: x.upper())
             console.print(".", end="")
 
-            # Translate side: ["deposit", "buy"] -> 1 and ["withdrawal", "sell"] -> -1
+            # 4. Translate side: ["deposit", "buy"] -> 1 and ["withdrawal", "sell"] -> -1
             self.__orderbook["Side"] = self.__orderbook["Side"].map(
                 lambda x: 1
                 if x.lower() in ["deposit", "buy"]
@@ -888,20 +900,20 @@ class PortfolioModel:
             )
             console.print(".", end="")
 
-            # Convert quantity to signed integer
+            # 5. Convert quantity to signed integer
             self.__orderbook["Quantity"] = (
                 abs(self.__orderbook["Quantity"]) * self.__orderbook["Side"]
             )
             console.print(".", end="")
 
-            # Determining the investment/divestment value
+            # 6. Determining the investment/divestment value
             self.__orderbook["Investment"] = (
                 self.__orderbook["Quantity"] * self.__orderbook["Price"]
                 - self.__orderbook["Fees"]
             )
             console.print(".", end="")
 
-            # Reformat crypto tickers to yfinance format (e.g. BTC -> BTC-USD)
+            # 7. Reformat crypto tickers to yfinance format (e.g. BTC -> BTC-USD)
             crypto_trades = self.__orderbook[self.__orderbook.Type == "CRYPTO"]
             self.__orderbook.loc[(self.__orderbook.Type == "CRYPTO"), "Ticker"] = [
                 f"{crypto}-{currency}"
@@ -911,7 +923,7 @@ class PortfolioModel:
             ]
             console.print(".", end="")
 
-            # Create tickers dictionary with structure {'Type': [Ticker]}
+            # 8. Create tickers dictionary with structure {'Type': [Ticker]}
             for ticker_type in set(self.__orderbook["Type"]):
                 self.tickers[ticker_type] = list(
                     set(
@@ -922,15 +934,15 @@ class PortfolioModel:
                 )
             console.print(".", end="")
 
-            # Create list with tickers except cash
+            # 9. Create list with tickers except cash
             self.tickers_list = list(set(self.__orderbook["Ticker"]))
             console.print(".", end="")
 
-            # Save orderbook inception date
+            # 10. Save orderbook inception date
             self.inception_date = self.__orderbook["Date"][0]
             console.print(".", end="")
 
-            # Populate fields Sector, Industry and Country
+            # 11. Populate fields Sector, Industry and Country
             if not (
                 {"Sector", "Industry", "Country", "Region"}.issubset(
                     set(self.__orderbook.columns)
@@ -961,16 +973,16 @@ class PortfolioModel:
         except Exception:
             console.print("\nCould not preprocess orderbook.")
 
+    @log_start_end(log=logger)
     def load_company_data(self):
+        """Method to populate company data for stocks such as sector, industry and country"""
 
         console.print("\n    Loading company data: ", end="")
 
         for ticker_type, _ in self.tickers.items():
-
             # yfinance only has sector, industry and country for stocks
             if ticker_type == "STOCK":
                 for ticker in self.tickers[ticker_type]:
-
                     # Only gets fields for tickers with missing data
                     # TODO: Should only get field missing for tickers with missing data
                     # now it's taking the 4 of them
@@ -1046,13 +1058,18 @@ class PortfolioModel:
                         # Display progress
                         console.print(".", end="")
 
+    @log_start_end(log=logger)
     def load_benchmark(self, ticker: str = "SPY", full_shares: bool = False):
         """Adds benchmark dataframe
 
-        Parameters:
-            ticker (str): benchmark ticker to download data
-            full_shares (bool): whether to mimic the portfolio trades exactly (partial shares) or round down the
+        Parameters
+        ----------
+        ticker: str
+            benchmark ticker to download data
+        full_shares: bool
+            whether to mimic the portfolio trades exactly (partial shares) or round down the
             quantity to the nearest number.
+
         """
         self.benchmark_ticker = ticker
         self.benchmark_historical_prices = yf.download(
@@ -1077,8 +1094,18 @@ class PortfolioModel:
         self.benchmark_returns = self.benchmark_historical_prices.pct_change().dropna()
         self.benchmark_info = yf.Ticker(ticker).info
 
+    @log_start_end(log=logger)
     def mimic_trades_for_benchmark(self, full_shares: bool = False):
-        """Mimic trades from the orderbook based on chosen benchmark assuming partial shares"""
+        """Mimic trades from the orderbook based on chosen benchmark assuming partial shares
+
+        Parameters
+        ----------
+        full_shares: bool
+            whether to mimic the portfolio trades exactly (partial shares) or round down the
+            quantity to the nearest number.
+
+        """
+
         # Create dataframe to store benchmark trades
         self.benchmark_trades = self.__orderbook[["Date", "Type", "Investment"]].copy()
 
@@ -1141,6 +1168,7 @@ class PortfolioModel:
                 f" in the benchmark ({round(sum(self.benchmark_trades['Benchmark Investment']), 2)})."
             )
 
+    @log_start_end(log=logger)
     def generate_portfolio_data(self):
         """Generates portfolio data from orderbook"""
 
@@ -1173,6 +1201,7 @@ class PortfolioModel:
 
         self.portfolio_returns = pd.DataFrame(self.__orderbook["Date"])
 
+        # Save portfolio trades to compute allocations later
         self.portfolio_trades = self.__orderbook.copy()
         self.portfolio_trades[
             [
@@ -1199,8 +1228,16 @@ class PortfolioModel:
                 - self.portfolio_trades["Portfolio Investment"][index]
             )
 
+    @log_start_end(log=logger)
     def load_portfolio_historical_prices(self, use_close: bool = False):
-        """Loads historical adj close prices for tickers in list of trades"""
+        """Loads historical adj close/close prices for tickers in list of trades
+
+        Parameters
+        ----------
+        use_close: bool
+            whether to use close or adjusted close prices
+
+        """
 
         console.print("\n      Loading price data: ", end="")
 
@@ -1228,6 +1265,7 @@ class PortfolioModel:
             # Fill missing values with last known price
             self.portfolio_historical_prices.fillna(method="ffill", inplace=True)
 
+    @log_start_end(log=logger)
     def populate_historical_trade_data(self):
         """Create a new dataframe to store historical prices by ticker"""
 
@@ -1274,8 +1312,9 @@ class PortfolioModel:
 
         self.historical_trade_data = trade_data
 
+    @log_start_end(log=logger)
     def calculate_value(self):
-        """Calculate value from historical data"""
+        """Calculate end of day value from historical data"""
 
         console.print("\n     Calculating returns: ", end="")
 
@@ -1322,13 +1361,22 @@ class PortfolioModel:
 
         console.print("\n")
 
+    @log_start_end(log=logger)
     def calculate_reserves(self):
-        """_summary_"""
+        """Takes dividends into account for returns calculation"""
         # TODO: Add back cash dividends and deduct exchange costs
         console.print("Still has to be build.")
 
+    @log_start_end(log=logger)
     def calculate_allocations(self, category: str):
-        """Determine allocations based on assets, sectors, countries and regional."""
+        """Determine allocations based on assets, sectors, countries and region.
+
+        Parameters
+        ----------
+        category: str
+            chosen allocation category from asset, sector, country or region
+
+        """
 
         if category == "asset":
             # Determine asset allocation
@@ -1349,26 +1397,29 @@ class PortfolioModel:
         elif category == "country" or category == "region":
             # Determine regional and country allocations
             (
-                self.benchmark_regional_allocation,
+                self.benchmark_region_allocation,
                 self.benchmark_country_allocation,
             ) = allocation_model.get_region_country_allocation(self.benchmark_ticker)
 
             (
-                self.portfolio_regional_allocation,
+                self.portfolio_region_allocation,
                 self.portfolio_country_allocation,
             ) = allocation_model.obtain_portfolio_region_country_allocation(
                 self.portfolio_trades
             )
 
+    @log_start_end(log=logger)
     def set_risk_free_rate(self, risk_free_rate: float):
         """Sets risk free rate
 
         Parameters
         ----------
-        risk_free (float): risk free rate in decimal format
+        risk_free (float): risk free rate in float format
+
         """
         self.risk_free_rate = risk_free_rate
 
+    # Metrics
     @log_start_end(log=logger)
     def get_r2_score(self) -> pd.DataFrame:
         """Class method that retrieves R2 Score for portfolio and benchmark selected

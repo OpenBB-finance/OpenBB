@@ -487,12 +487,12 @@ class PortfolioController(BaseController):
                         ns_parser.tables,
                     )
                 elif ns_parser.agg == "regions":
-                    if self.portfolio.portfolio_regional_allocation.empty:
+                    if self.portfolio.portfolio_region_allocation.empty:
                         self.portfolio.calculate_allocations("region")
                     portfolio_view.display_category_allocation(
                         ns_parser.agg,
-                        self.portfolio.portfolio_regional_allocation,
-                        self.portfolio.benchmark_regional_allocation,
+                        self.portfolio.portfolio_region_allocation,
+                        self.portfolio.benchmark_region_allocation,
                         ns_parser.limit,
                         ns_parser.tables,
                     )
