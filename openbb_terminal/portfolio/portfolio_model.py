@@ -948,7 +948,7 @@ class PortfolioModel:
                     set(self.__orderbook.columns)
                 )
             ):
-                # if fields not in the orderbook add missing
+                # If fields not in the orderbook add missing
                 if "Sector" not in self.__orderbook.columns:
                     self.__orderbook["Sector"] = np.nan
                 if "Industry" not in self.__orderbook.columns:
@@ -967,7 +967,7 @@ class PortfolioModel:
                 .isnull()
                 .values.any()
             ):
-                # if any fields is empty for Stocks (overwrites any info there)
+                # If any fields is empty for stocks (overwrites any info there)
                 self.load_company_data()
 
         except Exception:
@@ -994,10 +994,10 @@ class PortfolioModel:
                         .isnull()
                         .values.any()
                     ):
-                        # get ticker info in list ["Sector", "Industry", "Country", "Region"]
+                        # Get ticker info in list ["Sector", "Industry", "Country", "Region"]
                         ticker_info_list = portfolio_helper.get_info_from_ticker(ticker)
 
-                        # replace fields in orderbook
+                        # Replace fields in orderbook
                         self.__orderbook.loc[
                             self.__orderbook.Ticker == ticker,
                             ["Sector", "Industry", "Country", "Region"],
@@ -1016,14 +1016,10 @@ class PortfolioModel:
                         .isnull()
                         .values.any()
                     ):
-                        # get ticker info in list ["Sector", "Industry", "Country", "Region"]
+                        # Get ticker info in list ["Sector", "Industry", "Country", "Region"]
                         ticker_info_list = ["Crypto", "Crypto", "Crypto", "Crypto"]
 
-                        # possible solution for etf
-                        # each trade has a dictionary with sector, region, country allocs
-                        # for stocks is just 100% the same. for etf we multiply the value by % alloc
-
-                        # replace fields in orderbook
+                        # Replace fields in orderbook
                         self.__orderbook.loc[
                             self.__orderbook.Ticker == ticker,
                             ["Sector", "Industry", "Country", "Region"],
@@ -1042,14 +1038,10 @@ class PortfolioModel:
                         .isnull()
                         .values.any()
                     ):
-                        # get ticker info in list ["Sector", "Industry", "Country", "Region"]
+                        # Get ticker info in list ["Sector", "Industry", "Country", "Region"]
                         ticker_info_list = ["-", "-", "-", "-"]
 
-                        # possible solution for etf
-                        # each trade has a dictionary with sector, region, country allocs
-                        # for stocks is just 100% the same. for etf we multiply the value by % alloc
-
-                        # replace fields in orderbook
+                        # Replace fields in orderbook
                         self.__orderbook.loc[
                             self.__orderbook.Ticker == ticker,
                             ["Sector", "Industry", "Country", "Region"],
@@ -1081,7 +1073,7 @@ class PortfolioModel:
 
         self.mimic_trades_for_benchmark(full_shares)
 
-        # merge benchmark and portfolio dates to ensure same length
+        # Merge benchmark and portfolio dates to ensure same length
         self.benchmark_historical_prices = pd.merge(
             self.portfolio_historical_prices["Close"],
             self.benchmark_historical_prices,
@@ -1117,7 +1109,7 @@ class PortfolioModel:
         for index, trade in self.__orderbook.iterrows():
             # Select date to search (if not in historical prices, get closest value)
             if trade["Date"] not in self.benchmark_historical_prices.index:
-                # search for closest date
+                # Search for closest date
                 date = self.benchmark_historical_prices.index[
                     self.benchmark_historical_prices.index.searchsorted(trade["Date"])
                 ]
@@ -1395,7 +1387,7 @@ class PortfolioModel:
                 self.benchmark_info, self.portfolio_trades
             )
         elif category == "country" or category == "region":
-            # Determine regional and country allocations
+            # Determine region and country allocations
             (
                 self.benchmark_region_allocation,
                 self.benchmark_country_allocation,
@@ -1419,7 +1411,7 @@ class PortfolioModel:
         """
         self.risk_free_rate = risk_free_rate
 
-    # Metrics
+    ### Metrics ###
     @log_start_end(log=logger)
     def get_r2_score(self) -> pd.DataFrame:
         """Class method that retrieves R2 Score for portfolio and benchmark selected
