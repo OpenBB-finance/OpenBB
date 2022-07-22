@@ -38,7 +38,7 @@
 
 <p align="center">
    <a href="https://www.youtube.com/watch?v=fqGPK8OVHLk" rel="OpenBB Terminal Demo">
-      <img src="images/openbb_terminal_illustration.gif" alt="OpenBB Terminal Illustration" width="1000"/>
+      <img src="images/openbb_terminal_illustration.gif" alt="OpenBB Terminal Illustration" width="100%"/>
    </a>
 </p>
 

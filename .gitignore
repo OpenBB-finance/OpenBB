@@ -40,6 +40,7 @@ DMG/*
 *.dmg
 
 # Jupyter Lab Extension build files
+jupyterlab/**/build
 jupyterlab/*/*.bundle.*
 jupyterlab/*/lib/
 jupyterlab/*/*/labextension/
