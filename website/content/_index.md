@@ -1,6 +1,6 @@
 ---
 title: Getting Started
-keywords: "getting started, openbb, bots, api, beginner guide, how to use openbb, openbb keys, openbb terminal, openbb"
+keywords: "getting started, openbb, bots, api, beginner guide, how to use openbb, openbb keys, openbb terminal, openbb, terminal"
 excerpt: "This page guides you how to use the OpenBB terminal, developed by OpenBB."
 description: "The OpenBB Documentation provides guidance on how to use the OpenBB Terminal, a free, custom built
 financial terminal that will help you make more informed decisions, faster."
@@ -8,9 +8,9 @@ geekdocCollapseSection: true
 ---
 ## Introduction
 
-OpenBB is a leading open source investment analysis company. We represent millions of investors who want to leverage
-state-of-the-art data science and machine learning technologies to make sense of raw unrefined data. Our mission
-is to make investment research effective, powerful and accessible to everyone.
+OpenBB is a leading open source investment research software platform for accessing and analyzing financial market data.
+We represent millions of investors who want to leverage state-of-the-art data science and machine learning technologies
+to make sense of raw unrefined data. Our mission is to make investment research effective, powerful and accessible to everyone.
 
 **All our products are Free and Open-Source (FOSS).**
 
@@ -57,17 +57,22 @@ needs or even build proprietary features on top of our infrastructure - which ul
 
 <--->
 
-### Importing and Exporting data
+### Why Free?
 
-The terminal allows for users to import their own proprietary datasets to use on our econometrics menu. In addition, users are allowed to export any type of data to any type of format whether that is raw data in Excel or an image in PNG. This is also ideal for finance content creation.
+We believe that the tools used to do investment research should be democratized for all for free or at a very low
+cost. We believe there is no point in re-inventing the wheel for financial theory that has been around for decades. Being
+an open source product combats exactly this issue as any type of calculation or method used is directly visible for
+anyone and can be fully customized. Of course, data comes at a price but by leveraging free-tiers from a large selection of
+APIs we can provide users with plentiful sources of information at little to no cost.
+
 
 {{< /columns >}}
 
 {{< columns >}}
 
-### Automatic notebook reports
+### Importing and Exporting data
 
-Create notebook templates (through papermill) which can be run on different tickers. This level of automation allows speeding up the development of your investment thesis and reduce human error.
+The terminal allows for users to import their own proprietary datasets to use on our econometrics menu. In addition, users are allowed to export any type of data to any type of format whether that is raw data in Excel or an image in PNG. This is also ideal for finance content creation.
 
 <--->
 
@@ -273,7 +278,7 @@ decide to change these default values by calling the argument and inputting a di
 
 Whenever you wish to apply an optional argument, you use the related shortcode, e.g. `-s` or `--start`. Then, if there
 is an additional word behind the argument (in this case there is, which is `START`) it implies the argument expects you
-to define a value. Within the documentation you can read that the format must b `YYYY-MM-DD` implying that `2010-01-01`
+to define a value. Within the documentation you can read that the format must be `YYYY-MM-DD` implying that `2010-01-01`
 will be valid. If there is not an additional word behind it, it is enough to write down `load AMZN -p` (which refers to
 the prepost optional argument)
 
