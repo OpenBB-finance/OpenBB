@@ -1058,6 +1058,7 @@ en:
   forecasting/season: Plot the seasonality for a dataset column
   forecasting/combine: Combine columns from different datasets
   forecasting/delete: Delete columns from dataset
+  forecasting/rename: Rename columns from dataset
   forecasting/export: Export a processed dataset
   forecasting/_feateng_: Feature Engineering
   forecasting/ema: Add Exponentially Weighted Moving Average

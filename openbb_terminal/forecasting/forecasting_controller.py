@@ -5,7 +5,6 @@ __docformat__ = "numpy"
 # pylint: disable=too-many-arguments
 
 import argparse
-from dataclasses import dataclass
 import logging
 from itertools import chain
 import os
@@ -88,6 +87,7 @@ class ForecastingController(BaseController):
         "combine",
         "desc",
         "corr",
+        "rename",
         "delete",
         "export",
         "ema",
@@ -240,7 +240,7 @@ class ForecastingController(BaseController):
                 # "index",
                 # "remove",
                 "combine",
-                # "rename",
+                "rename",
                 "expo",
                 "theta",
                 "rnn",
@@ -310,6 +310,7 @@ class ForecastingController(BaseController):
         mt.add_cmd("corr", "", self.files)
         mt.add_cmd("season", "", self.files)
         mt.add_cmd("delete", "", self.files)
+        mt.add_cmd("rename", "", self.files)
         mt.add_cmd("export", "", self.files)
         mt.add_info("_feateng_")
         mt.add_cmd("ema", "", self.files)
@@ -352,7 +353,6 @@ class ForecastingController(BaseController):
         export_allowed: int = NO_EXPORT,
         raw: bool = False,
         limit: int = 0,
-        sources: List[str] = None,
         # Custom items
         target_dataset: bool = False,
         target_column: bool = False,
@@ -779,6 +779,67 @@ class ForecastingController(BaseController):
                     f"{ns_parser.name}_show",
                     df.head(ns_parser.limit),
                 )
+
+    @log_start_end(log=logger)
+    def call_rename(self, other_args: List[str]):
+        """Process rename"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="rename",
+            description="The column you want to rename from a dataset.",
+        )
+        parser.add_argument(
+            "-d",
+            "--dataset",
+            help="Dataset that will get a column renamed",
+            dest="dataset",
+            choices=self.choices["rename"],
+            type=str,
+        )
+        parser.add_argument(
+            "-o",
+            "--oldcol",
+            help="Old column from dataset to be renamed",
+            dest="oldcol",
+            type=str,
+            required="-h" not in other_args,
+        )
+        parser.add_argument(
+            "-n",
+            "--newcol",
+            help="New column from dataset to be renamed",
+            dest="newcol",
+            type=str,
+            required="-h" not in other_args,
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-d")
+        ns_parser = self.parse_known_args_and_warn(parser, other_args, NO_EXPORT)
+
+        if ns_parser:
+            dataset = ns_parser.dataset
+            column_old = ns_parser.oldcol
+            column_new = ns_parser.newcol
+
+            if dataset not in self.datasets:
+                console.print(
+                    f"Not able to find the dataset {dataset}. Please choose one of "
+                    f"the following: {', '.join(self.datasets)}"
+                )
+            elif column_old not in self.datasets[dataset]:
+                console.print(
+                    f"Not able to find the column {column_old}. Please choose one of "
+                    f"the following: {', '.join(self.datasets[dataset].columns)}"
+                )
+            else:
+                self.datasets[dataset] = self.datasets[dataset].rename(
+                    columns={column_old: column_new}
+                )
+
+            self.update_runtime_choices()
+
+        console.print()
 
     # Show selected dataframe on console
     @log_start_end(log=logger)
