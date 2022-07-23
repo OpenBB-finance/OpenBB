@@ -5,6 +5,7 @@ from typing import List, Optional
 
 import matplotlib
 import numpy as np
+import pandas as pd
 from matplotlib import dates as mdates
 from matplotlib import pyplot as plt
 from matplotlib import ticker
@@ -68,7 +69,9 @@ def display_btc_rainbow(
         return
 
     d0 = datetime.strptime("2012-01-01", "%Y-%m-%d")
-    x = range((df_data.index[0] - d0).days, (df_data.index[-1] - d0).days + 1)
+    dend = datetime.fromtimestamp(until)
+
+    x = range((df_data.index[0] - d0).days, (dend - d0).days + 1)
 
     y0 = [10 ** ((2.90 * ln_x) - 19.463) for ln_x in [np.log(val + 1400) for val in x]]
     y1 = [10 ** ((2.886 * ln_x) - 19.463) for ln_x in [np.log(val + 1375) for val in x]]
@@ -84,17 +87,19 @@ def display_btc_rainbow(
     y7 = [10 ** ((2.801 * ln_x) - 19.463) for ln_x in [np.log(val + 1225) for val in x]]
     y8 = [10 ** ((2.788 * ln_x) - 19.463) for ln_x in [np.log(val + 1200) for val in x]]
 
-    ax.fill_between(df_data.index, y0, y1, color="red", alpha=0.7)
-    ax.fill_between(df_data.index, y1, y2, color="orange", alpha=0.7)
-    ax.fill_between(df_data.index, y2, y3, color="yellow", alpha=0.7)
-    ax.fill_between(df_data.index, y3, y4, color="green", alpha=0.7)
-    ax.fill_between(df_data.index, y4, y5, color="blue", alpha=0.7)
-    ax.fill_between(df_data.index, y5, y6, color="violet", alpha=0.7)
-    ax.fill_between(df_data.index, y6, y7, color="indigo", alpha=0.7)
-    ax.fill_between(df_data.index, y7, y8, color="purple", alpha=0.7)
+    x_dates = pd.date_range(df_data.index[0], dend, freq="d")
+
+    ax.fill_between(x_dates, y0, y1, color="red", alpha=0.7)
+    ax.fill_between(x_dates, y1, y2, color="orange", alpha=0.7)
+    ax.fill_between(x_dates, y2, y3, color="yellow", alpha=0.7)
+    ax.fill_between(x_dates, y3, y4, color="green", alpha=0.7)
+    ax.fill_between(x_dates, y4, y5, color="blue", alpha=0.7)
+    ax.fill_between(x_dates, y5, y6, color="violet", alpha=0.7)
+    ax.fill_between(x_dates, y6, y7, color="indigo", alpha=0.7)
+    ax.fill_between(x_dates, y7, y8, color="purple", alpha=0.7)
 
     ax.semilogy(df_data.index, df_data["v"].values)
-    ax.set_xlim(df_data.index[0], df_data.index[-1])
+    ax.set_xlim(df_data.index[0], dend)
     ax.set_title("Bitcoin Rainbow Chart")
     ax.set_ylabel("Price ($)")
 
