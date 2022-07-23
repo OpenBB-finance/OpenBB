@@ -488,7 +488,7 @@ en:
   crypto/_symbol: Coin
   crypto/_source: Source
   crypto/headlines: crypto sentiment from 15+ major news headlines
-  crypto/chart: view a candle chart for a specific cryptocurrency
+  crypto/candle: view a candle chart for a specific cryptocurrency
   crypto/prt: potential returns tool - check how much upside if ETH reaches BTC market cap
   crypto/disc: discover trending cryptocurrencies,     top gainers, losers, top sentiment
   crypto/ov: overview of the cryptocurrencies,       market cap, DeFi, latest news, top exchanges, stables
