@@ -159,6 +159,12 @@ issues.
    python terminal.py
    ```
 
+    If you are using macOS and if you get SyntaxError, you might need to run this instead
+
+    ```bash
+   python3 terminal.py
+   ```
+
 9. (Windows - Optional and **only if you are not using WSL**) Speeding up opening process in the future
 
    After you've installed OpenBB Terminal, you'll find a file named "OpenBB Terminal.bat". You can use this file
