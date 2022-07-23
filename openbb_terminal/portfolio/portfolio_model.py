@@ -1411,7 +1411,7 @@ class PortfolioModel:
         """
         self.risk_free_rate = risk_free_rate
 
-    ### Metrics ###
+    # Metrics
     @log_start_end(log=logger)
     def get_r2_score(self) -> pd.DataFrame:
         """Class method that retrieves R2 Score for portfolio and benchmark selected
