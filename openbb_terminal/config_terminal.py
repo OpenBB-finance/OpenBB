@@ -58,7 +58,7 @@ LOGGING_VERBOSITY = int(os.getenv("OPENBB_LOGGING_VERBOSITY") or 20)
 # API Keys section
 
 # https://www.alphavantage.co
-API_KEY_ALPHAVANTAGE = os.getenv("OPENBB_API_KEY_ALPHAVANTAGE") or "REPLACE_ME"
+API_KEY_ALPHAVANTAGE = os.getenv("OPENBB_API_KEY_ALPHAVANTAGE") or "NRQ3COZPF70HBDSO"
 
 # https://financialmodelingprep.com/developer
 API_KEY_FINANCIALMODELINGPREP = (
