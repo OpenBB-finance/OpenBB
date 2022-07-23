@@ -1448,7 +1448,7 @@ class EconomyController(BaseController):
         )
 
         data: Dict = {}
-        for source in self.DATASETS:
+        for source, _ in self.DATASETS.items():
             if not self.DATASETS[source].empty:
                 if len(self.DATASETS[source].columns) == 1:
                     data[self.DATASETS[source].columns[0]] = self.DATASETS[source]
@@ -1475,7 +1475,7 @@ class EconomyController(BaseController):
         )
 
         data: Dict = {}
-        for source in self.DATASETS:
+        for source, _ in self.DATASETS.items():
             if not self.DATASETS[source].empty:
                 if len(self.DATASETS[source].columns) == 1:
                     data[self.DATASETS[source].columns[0]] = self.DATASETS[source]
