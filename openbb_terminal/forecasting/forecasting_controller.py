@@ -60,6 +60,7 @@ from openbb_terminal.forecasting import (
 )
 
 logger = logging.getLogger(__name__)
+empty_df = pd.DataFrame()
 
 # pylint: disable=R0902
 
@@ -137,7 +138,7 @@ class ForecastingController(BaseController):
     list_dataset_cols: List = list()
 
     def __init__(
-        self, ticker: str = "", data: pd.DataFrame = None, queue: List[str] = None
+        self, ticker: str = "", data: pd.DataFrame = empty_df, queue: List[str] = None
     ):
         """Constructor"""
         super().__init__(queue)

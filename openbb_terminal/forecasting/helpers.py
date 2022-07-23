@@ -7,7 +7,6 @@ import logging
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-from requests import get
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler, MinMaxScaler, Normalizer
 from sklearn.metrics import (
@@ -171,7 +170,7 @@ def plot_data_predictions(
             forecast_data.quantile(0.75, axis=1).values,
             alpha=0.3,
         )
-    # Subtracting 1 day only works nicely for daily data.  For now if not daily, then start line on last point
+    # Subtracting 1 day only for daily data.  For now if not daily, then start line on last point
     if not time_str or time_str == "1D":
         ax.axvspan(
             forecast_data.index[0] - timedelta(days=1),
@@ -202,7 +201,7 @@ def prepare_scale_train_valid_test(
     n_input_days: int,
     n_predict_days: int,
     test_size: float,
-    s_end_date: str,
+    s_end_date: Optional[str],
     no_shuffle: bool,
 ):
     """

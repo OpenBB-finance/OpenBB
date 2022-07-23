@@ -1,5 +1,4 @@
 from datetime import datetime
-from mock import PropertyMock
 from typing import List
 import argparse
 import pandas as pd
