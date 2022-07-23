@@ -28,3 +28,4 @@ Example:
 
 2022 Jul 23, 10:37 (🦋) /forecasting/ $ mc GME
 ```
+![mc](https://user-images.githubusercontent.com/72827203/180615284-f69c331c-1bf1-4b9b-9a57-a5ec1ac4f12f.png)

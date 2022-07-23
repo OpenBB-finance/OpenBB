@@ -55,3 +55,4 @@ Regression model obtains MAPE: 12.34%
 │ 2022-07-25 00:00:00 │ $ 134.24   │
 └─────────────────────┴────────────┘
 ```
+![regr](https://user-images.githubusercontent.com/72827203/180615346-82fae367-d0cc-4d78-be30-b947a83df909.png)

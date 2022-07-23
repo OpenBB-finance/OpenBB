@@ -54,3 +54,4 @@ Theta Model obtains MAPE: 12.71%
 │ 2022-07-25 00:00:00 │ $ 147.18   │
 └─────────────────────┴────────────┘
 ```
+![theta](https://user-images.githubusercontent.com/72827203/180615324-5b50445c-cc95-4efa-84a6-85e85ddc2d28.png)

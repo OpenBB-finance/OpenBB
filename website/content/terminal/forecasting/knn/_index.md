@@ -54,3 +54,4 @@ Training on 628 sequences of length 14.  Using 112 sequences  of length 14 for v
 │ 2022-07-25 00:00:00 │ $ 125.22   │
 └─────────────────────┴────────────┘
 ```
+![knn](https://user-images.githubusercontent.com/72827203/180615274-eb721541-ea32-4506-8cf5-3e555ca5cb62.png)

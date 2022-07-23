@@ -56,3 +56,4 @@ Exponential smoothing obtains MAPE: 12.88%
 │ 2022-07-25 00:00:00 │ $ 149.74   │
 └─────────────────────┴────────────┘
 ```
+![expo](https://user-images.githubusercontent.com/72827203/180615313-e45d6cb3-06a8-45aa-ae4e-505df07e7210.png)

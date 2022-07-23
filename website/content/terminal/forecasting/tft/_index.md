@@ -77,3 +77,4 @@ TFT model obtains MAPE: 44.60%
 │ 2022-07-25 00:00:00 │ $ 165.82   │
 └─────────────────────┴────────────┘
 ```
+![tft](https://user-images.githubusercontent.com/72827203/180615444-47bcdd54-0693-4415-9617-ed3a571b26c6.png)

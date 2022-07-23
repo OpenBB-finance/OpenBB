@@ -73,3 +73,4 @@ RNN model obtains MAPE: 14.67%
 │ 2022-07-25 00:00:00 │ $ 152.29   │
 └─────────────────────┴────────────┘
 ```
+![rnn](https://user-images.githubusercontent.com/72827203/180615355-5c30635a-be63-4b9a-836d-9feb3d3ac263.png)

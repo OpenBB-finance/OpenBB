@@ -55,3 +55,4 @@ Logistic Regression model obtains MAPE: 10.85%
 │ 2022-07-25 00:00:00 │ $ 136.04   │
 └─────────────────────┴────────────┘
 ```
+![linregr](https://user-images.githubusercontent.com/72827203/180615335-26395da8-3848-40f4-a68b-d2c14475db95.png)

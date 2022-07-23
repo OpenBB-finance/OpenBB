@@ -78,3 +78,5 @@ Transformer model obtains MAPE: 13.11%
 │ 2022-07-25 00:00:00 │ $ 130.62   │
 └─────────────────────┴────────────┘
 ```
+![trans](https://user-images.githubusercontent.com/72827203/180615423-948cc67c-cead-4e13-9cab-c348bc4c86ab.png)
+

@@ -76,3 +76,4 @@ TCN model obtains MAPE: 19.12%
 │ 2022-07-25 00:00:00 │ $ 154.55   │
 └─────────────────────┴────────────┘
 ```
+![tcn](https://user-images.githubusercontent.com/72827203/180615408-ac6f9289-c3e9-486f-b262-701ef1906373.png)

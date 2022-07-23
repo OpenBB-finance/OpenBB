@@ -76,3 +76,4 @@ Block RNN model obtains MAPE: 17.09%
 │ 2022-07-25 00:00:00 │ $ 144.99   │
 └─────────────────────┴────────────┘
 ```
+![brnn](https://user-images.githubusercontent.com/72827203/180615365-1644ce7a-050e-4ee1-92c2-4518db14f53d.png)
