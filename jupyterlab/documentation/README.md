@@ -1,4 +1,4 @@
-# OpenBB Teminal Documentation
+# OpenBB Terminal Documentation
 
 This extensions adds a button into the OpenBB Terminal category of the Jupyter Lab launcher panel.
 
