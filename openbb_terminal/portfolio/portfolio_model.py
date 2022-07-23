@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 from typing import Dict, Any
+import datetime
 
 import numpy as np
 import scipy
@@ -10,7 +11,6 @@ import pandas as pd
 import yfinance as yf
 from sklearn.metrics import r2_score
 from pycoingecko import CoinGeckoAPI
-import datetime
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.portfolio import portfolio_helper, allocation_model
@@ -978,10 +978,10 @@ class PortfolioModel:
 
         console.print("\n    Loading company data: ", end="")
 
-        for ticker_type, _ in self.tickers.items():
+        for ticker_type, ticker_list in self.tickers.items():
             # yfinance only has sector, industry and country for stocks
             if ticker_type == "STOCK":
-                for ticker in self.tickers[ticker_type]:
+                for ticker in ticker_list:
                     # Only gets fields for tickers with missing data
                     # TODO: Should only get field missing for tickers with missing data
                     # now it's taking the 4 of them
@@ -1006,7 +1006,7 @@ class PortfolioModel:
                         console.print(".", end="")
 
             elif ticker_type == "CRYPTO":
-                for ticker in self.tickers[ticker_type]:
+                for ticker in ticker_list:
                     if (
                         self.__orderbook.loc[
                             self.__orderbook["Ticker"] == ticker,
@@ -1028,7 +1028,7 @@ class PortfolioModel:
                         console.print(".", end="")
 
             else:
-                for ticker in self.tickers[ticker_type]:
+                for ticker in ticker_list:
                     if (
                         self.__orderbook.loc[
                             self.__orderbook["Ticker"] == ticker,
@@ -1386,7 +1386,7 @@ class PortfolioModel:
             ) = allocation_model.obtain_sector_allocation(
                 self.benchmark_info, self.portfolio_trades
             )
-        elif category == "country" or category == "region":
+        elif category in ("country", "region"):
             # Determine region and country allocations
             (
                 self.benchmark_region_allocation,

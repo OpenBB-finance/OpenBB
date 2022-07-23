@@ -3,9 +3,8 @@ from typing import Dict
 
 import pandas as pd
 import requests
-from openbb_terminal.decorators import log_start_end
-
 import yfinance as yf
+from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
