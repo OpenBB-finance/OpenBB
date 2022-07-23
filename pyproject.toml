@@ -102,8 +102,10 @@ jupyterlab-lsp = {version = "^3.10.1", optional = true}
 jedi-language-server = {version = "^0.35.1", optional = true}
 kaleido = {version = "<=0.2.1", optional = true}
 html5lib = "^1.1"
-# u8darts = {extras = ["prediction"], version = "^0.20.0"}
-# pytorch-lightning = {version = "^1.6.4", extras = ["prediction"]}
+torch = {version = "1.11.0", optional=true}
+pytorch-lightning = {version = "1.6.5", optional = true}
+torchmetrics = {version = "0.9.2", optional=true}
+u8darts = {version = "^0.20.0", optional = true}
 
 
 [tool.poetry.dev-dependencies]
@@ -132,7 +134,7 @@ pytest-cov = "^3.0.0"
 types-six = "^1.16.12"
 
 [tool.poetry.extras]
-prediction = ["u8darts"]
+prediction = ["torch", "pytorch-lightning", "torchmetrics", "u8darts"]
 bots = ["boto3", "pyimgur", "fastapi", "uvicorn", "disnake", "PyNaCl", "pyTelegramBotAPI", "slack-bolt", "undetected-chromedriver", "natsort", "kaleido"]
 jupyterlab = ["jupyterlab-code-formatter", "jupyterlab-lsp", "jedi-language-server"]
 installer = ["pyinstaller"]

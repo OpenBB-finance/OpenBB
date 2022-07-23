@@ -3,6 +3,72 @@ main:
   - name: OpenBB Terminal
     ref: "/"
     sub:
+      - name: forecasting
+        ref: "/terminal/forecasting/"
+        sub:
+          - name: atr
+            ref: "terminal/forecasting/atr"
+          - name: brnn
+            ref: "terminal/forecasting/brnn"
+          - name: clean
+            ref: "terminal/forecasting/clean"
+          - name: combine
+            ref: "terminal/forecasting/combine"
+          - name: corr
+            ref: "terminal/forecasting/corr"
+          - name: delete
+            ref: "terminal/forecasting/delete"
+          - name: delta
+            ref: "terminal/forecasting/delta"
+          - name: desc
+            ref: "terminal/forecasting/desc"
+          - name: ema
+            ref: "terminal/forecasting/ema"
+          - name: expo
+            ref: "terminal/forecasting/expo"
+          - name: export
+            ref: "terminal/forecasting/export"
+          - name: knn
+            ref: "terminal/forecasting/knn"
+          - name: linregr
+            ref: "terminal/forecasting/linregr"
+          - name: load
+            ref: "terminal/forecasting/load"
+          - name: mc
+            ref: "terminal/forecasting/mc"
+          - name: mom
+            ref: "terminal/forecasting/mom"
+          - name: nbeats
+            ref: "terminal/forecasting/nbeats"
+          - name: plot
+            ref: "terminal/forecasting/plot"
+          - name: regr
+            ref: "terminal/forecasting/regr"
+          - name: rename
+            ref: "terminal/forecasting/rename"
+          - name: rnn
+            ref: "terminal/forecasting/rnn"
+          - name: roc
+            ref: "terminal/forecasting/roc"
+          - name: rsi
+            ref: "terminal/forecasting/rsi"
+          - name: season
+            ref: "terminal/forecasting/season"
+          - name: show
+            ref: "terminal/forecasting/show"
+          - name: signal
+            ref: "terminal/forecasting/signal"
+          - name: sto
+            ref: "terminal/forecasting/sto"
+          - name: tcn
+            ref: "terminal/forecasting/tcn"
+          - name: tft
+            ref: "terminal/forecasting/tft"
+          - name: theta
+            ref: "terminal/forecasting/theta"
+          - name: trans
+            ref: "terminal/forecasting/trans"
+
       - name: stocks
         ref: "/terminal/stocks"
         sub:
