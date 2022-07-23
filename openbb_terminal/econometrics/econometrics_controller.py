@@ -38,7 +38,7 @@ from openbb_terminal.econometrics import econometrics_model, econometrics_view
 
 logger = logging.getLogger(__name__)
 
-# pylint: disable=R0902
+# pylint: disable=R0902,C0302
 
 
 class EconometricsController(BaseController):
@@ -181,13 +181,13 @@ class EconometricsController(BaseController):
                 "root",
                 "granger",
                 "coint",
-                "regressions",
             ]:
                 choices[feature] = dict()
 
             self.choices = choices
 
             choices["support"] = self.SUPPORT_CHOICES
+            choices["about"] = self.ABOUT_CHOICES
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 

@@ -392,7 +392,7 @@ def create_dataframe(ticker: str, statement: str, period: str = "annual"):
         The currency the financial statements are reported in
     """
     if statement not in ["BS", "CF", "IS"]:
-        raise ValueError("statement variable must be 'BS','CF', or 'IS'")
+        raise ValueError("statement variable must be 'BS', 'CF' or 'IS'")
     if period not in ["annual", "quarterly", "trailing"]:
         raise ValueError(
             "statement variable must be 'annual','quarterly', or 'trailing'"
@@ -431,7 +431,12 @@ def create_dataframe(ticker: str, statement: str, period: str = "annual"):
             statement_currency = currency
             break
 
-    df = df.set_index("Year")
+    if "Quarter Ended" in df.columns:
+        df = df.set_index("Quarter Ended")
+    elif "Quarter Ending" in df.columns:
+        df = df.set_index("Quarter Ending")
+    else:
+        df = df.set_index("Year")
     df = df.loc[:, ~(df == "Upgrade").any()]
 
     for ignore in ignores:

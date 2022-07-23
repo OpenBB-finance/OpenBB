@@ -1,5 +1,2 @@
-
-1 Failed download:
-- BTC-USD: No data found for this date range, symbol may be delisted
 There is not data to plot chart
 

@@ -94,6 +94,7 @@ class StocksController(StockBaseController):
             }
 
             choices["support"] = self.SUPPORT_CHOICES
+            choices["about"] = self.ABOUT_CHOICES
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -355,6 +356,21 @@ class StocksController(StockBaseController):
                     self.stock,
                 )
 
+                if ns_parser.sort and not self.stock.empty:
+                    sort = (
+                        ns_parser.sort if ns_parser.sort != "AdjClose" else "Adj Close"
+                    )
+                    if sort not in self.stock.columns:
+                        col_names_no_spaces = [
+                            "'" + col.replace(" ", "") + "'"
+                            for col in self.stock.columns
+                        ]
+                        console.print(
+                            f"candle: error: argument --sort: invalid choice: '{sort}' for the source chosen "
+                            f"(choose from {(', '.join(list(col_names_no_spaces)))})"
+                        )
+                        return
+
                 if ns_parser.raw:
                     qa_view.display_raw(
                         df=self.stock,
@@ -427,7 +443,7 @@ class StocksController(StockBaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
-        ns_parser = self.parse_known_args_and_warn(parser, other_args, limit=5)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args, limit=3)
         if ns_parser:
             sources = ns_parser.sources
             for idx, source in enumerate(sources):
@@ -521,11 +537,13 @@ class StocksController(StockBaseController):
     @log_start_end(log=logger)
     def call_th(self, _):
         """Process th command"""
-        from openbb_terminal.stocks.tradinghours.tradinghours_controller import (
-            TradingHoursController,
-        )
+        from openbb_terminal.stocks.tradinghours import tradinghours_controller
 
-        self.queue = self.load_class(TradingHoursController, self.queue)
+        self.queue = self.load_class(
+            tradinghours_controller.TradingHoursController,
+            self.ticker,
+            self.queue,
+        )
 
     @log_start_end(log=logger)
     def call_res(self, _):

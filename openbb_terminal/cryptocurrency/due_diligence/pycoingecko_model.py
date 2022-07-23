@@ -5,6 +5,7 @@ __docformat__ = "numpy"
 import logging
 from typing import Any, Dict, List, Optional, Tuple, Union
 
+import numpy as np
 import pandas as pd
 import regex as re
 from pycoingecko import CoinGeckoAPI
@@ -23,7 +24,6 @@ from openbb_terminal.cryptocurrency.pycoingecko_helpers import (
     rename_columns_in_dct,
 )
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -590,13 +590,16 @@ class Coin:
             single_stats[col] = market_data.get(col)
         single_stats.update(denominated_data)
 
-        try:
+        if (
+            (single_stats["total_supply"] is not None)
+            and (single_stats["circulating_supply"] is not None)
+            and (single_stats["total_supply"] != 0)
+        ):
             single_stats["circulating_supply_to_total_supply_ratio"] = (
                 single_stats["circulating_supply"] / single_stats["total_supply"]
             )
-        except (ZeroDivisionError, TypeError) as e:
-            logger.exception(str(e))
-            console.print(e)
+        else:
+            single_stats["circulating_supply_to_total_supply_ratio"] = np.nan
         df = pd.Series(single_stats).to_frame().reset_index()
         df.columns = ["Metric", "Value"]
         df["Metric"] = df["Metric"].apply(

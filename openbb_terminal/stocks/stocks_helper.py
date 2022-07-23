@@ -5,7 +5,6 @@ import logging
 import os
 from datetime import datetime, timedelta, date
 from typing import List, Union, Optional, Iterable
-import warnings
 
 import financedatabase as fd
 import matplotlib.pyplot as plt
@@ -13,7 +12,6 @@ from matplotlib.lines import Line2D
 import mplfinance as mpf
 import numpy as np
 import pandas as pd
-import pandas_market_calendars as mcal
 import plotly.graph_objects as go
 import pyEX
 import pytz
@@ -29,7 +27,6 @@ from openbb_terminal import config_terminal as cfg
 from openbb_terminal.helper_funcs import (
     export_data,
     plot_autoscale,
-    get_user_timezone_or_invalid,
     print_rich_table,
     lambda_long_number_format_y_axis,
 )
@@ -43,7 +40,7 @@ INTERVALS = [1, 5, 15, 30, 60]
 SOURCES = ["yf", "av", "iex"]
 
 market_coverage_suffix = {
-    "USA": ["CBT", "CME", "NYB", "CMX", "NYM", ""],
+    "USA": ["CBT", "CME", "NYB", "CMX", "NYM", "US", ""],
     "Argentina": ["BA"],
     "Austria": ["VI"],
     "Australia": ["AX"],
@@ -93,6 +90,384 @@ market_coverage_suffix = {
     "United-Kingdom": ["L", "IL"],
     "Venezuela": ["CR"],
 }
+
+INCOME_PLOT = {
+    "av": [
+        "reported_currency",
+        "gross_profit",
+        "total_revenue",
+        "cost_of_revenue",
+        "cost_of_goods_and_services_sold",
+        "operating_income",
+        "selling_general_and_administrative",
+        "research_and_development",
+        "operating_expenses",
+        "investment_income_net",
+        "net_interest_income",
+        "interest_income",
+        "interest_expense",
+        "non_interest_income",
+        "other_non_operating_income",
+        "depreciation",
+        "depreciation_and_amortization",
+        "income_before_tax",
+        "income_tax_expense",
+        "interest_and_debt_expense",
+        "net_income_from_continuing_operations",
+        "comprehensive_income_net_of_tax",
+        "ebit",
+        "ebitda",
+        "net_income",
+    ],
+    "polygon": [
+        "cost_of_revenue",
+        "diluted_earnings_per_share",
+        "costs_and_expenses",
+        "gross_profit",
+        "non_operating_income_loss",
+        "operating_income_loss",
+        "participating_securities_distributed_and_undistributed_earnings_loss_basic",
+        "income_tax_expense_benefit",
+        "net_income_loss_attributable_to_parent",
+        "net_income_loss",
+        "income_tax_expense_benefit_deferred",
+        "preferred_stock_dividends_and_other_adjustments",
+        "operating_expenses",
+        "income_loss_from_continuing_operations_before_tax",
+        "net_income_loss_attributable_to_non_controlling_interest",
+        "income_loss_from_continuing_operations_after_tax",
+        "revenues",
+        "net_income_loss_available_to_common_stockholders_basic",
+        "benefits_costs_expenses",
+        "basic_earnings_per_share",
+        "interest_expense_operating",
+        "income_loss_before_equity_method_investments",
+    ],
+    "yf": [
+        "total_revenue",
+        "cost_of_revenue",
+        "gross_profit",
+        "research_development",
+        "selling_general_and_administrative",
+        "total_operating_expenses",
+        "operating_income_or_loss",
+        "interest_expense",
+        "total_other_income/expenses_net",
+        "income_before_tax",
+        "income_tax_expense",
+        "income_from_continuing_operations",
+        "net_income",
+        "net_income_available_to_common_shareholders",
+        "basic_eps",
+        "diluted_eps",
+        "basic_average_shares",
+        "diluted_average_shares",
+        "ebitda",
+    ],
+    "fmp": [
+        "reported_currency",
+        "cik",
+        "filling_date",
+        "accepted_date",
+        "calendar_year",
+        "period",
+        "revenue",
+        "cost_of_revenue",
+        "gross_profit",
+        "gross_profit_ratio",
+        "research_and_development_expenses",
+        "general_and_administrative_expenses",
+        "selling_and_marketing_expenses",
+        "selling_general_and_administrative_expenses",
+        "other_expenses",
+        "operating_expenses",
+        "cost_and_expenses",
+        "interest_income",
+        "interest_expense",
+        "depreciation_and_amortization",
+        "ebitda",
+        "ebitda_ratio",
+        "operating_income",
+        "operating_income_ratio",
+        "total_other_income_expenses_net",
+        "income_before_tax",
+        "income_before_tax_ratio",
+        "income_tax_expense",
+        "net_income",
+        "net_income_ratio",
+        "eps",
+        "eps_diluted",
+        "weighted_average_shs_out",
+        "weighted_average_shs_out_dil",
+        "link",
+        "final_link",
+    ],
+}
+BALANCE_PLOT = {
+    "av": [
+        "reported_currency",
+        "total_assets",
+        "total_current_assets",
+        "cash_and_cash_equivalents_at_carrying_value",
+        "cash_and_short_term_investments",
+        "inventory",
+        "current_net_receivables",
+        "total_non_current_assets",
+        "property_plant_equipment",
+        "accumulated_depreciation_amortization_ppe",
+        "intangible_assets",
+        "intangible_assets_excluding_goodwill",
+        "goodwill",
+        "investments",
+        "long_term_investments",
+        "short_term_investments",
+        "other_current_assets",
+        "other_non_currrent_assets",
+        "total_liabilities",
+        "total_current_liabilities",
+        "current_accounts_payable",
+        "deferred_revenue",
+        "current_debt",
+        "short_term_debt",
+        "total_non_current_liabilities",
+        "capital_lease_obligations",
+        "long_term_debt",
+        "current_long_term_debt",
+        "long_term_debt_non_current",
+        "short_long_term_debt_total",
+        "other_current_liabilities",
+        "other_non_current_liabilities",
+        "total_shareholder_equity",
+        "treasury_stock",
+        "retained_earnings",
+        "common_stock",
+        "common_stock_shares_outstanding",
+    ],
+    "polygon": [
+        "equity_attributable_to_non_controlling_interest",
+        "liabilities",
+        "non_current_assets",
+        "equity",
+        "assets",
+        "current_assets",
+        "equity_attributable_to_parent",
+        "current_liabilities",
+        "non_current_liabilities",
+        "fixed_assets",
+        "other_than_fixed_non_current_assets",
+        "liabilities_and_equity",
+    ],
+    "yf": [
+        "cash_and_cash_equivalents",
+        "other_short-term_investments",
+        "total_cash",
+        "net_receivables",
+        "inventory",
+        "other_current_assets",
+        "total_current_assets",
+        "gross_property, plant_and_equipment",
+        "accumulated_depreciation",
+        "net_property, plant_and_equipment",
+        "equity_and_other_investments",
+        "other_long-term_assets",
+        "total_non-current_assets",
+        "total_assets",
+        "current_debt",
+        "accounts_payable",
+        "deferred_revenues",
+        "other_current_liabilities",
+        "total_current_liabilities",
+        "long-term_debt",
+        "deferred_tax_liabilities",
+        "deferred_revenues",
+        "other_long-term_liabilities",
+        "total_non-current_liabilities",
+        "total_liabilities",
+        "common_stock",
+        "retained_earnings",
+        "accumulated_other_comprehensive_income",
+        "total_stockholders'_equity",
+        "total_liabilities_and_stockholders'_equity",
+    ],
+    "fmp": [
+        "reported_currency",
+        "cik",
+        "filling_date",
+        "accepted_date",
+        "calendar_year",
+        "period",
+        "cash_and_cash_equivalents",
+        "short_term_investments",
+        "cash_and_short_term_investments",
+        "net_receivables",
+        "inventory",
+        "other_current_assets",
+        "total_current_assets",
+        "property_plant_equipment_net",
+        "goodwill",
+        "intangible_assets",
+        "goodwill_and_intangible_assets",
+        "long_term_investments",
+        "tax_assets",
+        "other_non_current_assets",
+        "total_non_current_assets",
+        "other_assets",
+        "total_assets",
+        "account_payables",
+        "short_term_debt",
+        "tax_payables",
+        "deferred_revenue",
+        "other_current_liabilities",
+        "total_current_liabilities",
+        "long_term_debt",
+        "deferred_revenue_non_current",
+        "deferred_tax_liabilities_non_current",
+        "other_non_current_liabilities",
+        "total_non_current_liabilities",
+        "other_liabilities",
+        "capital_lease_obligations",
+        "total_liabilities",
+        "preferred_stock",
+        "common_stock",
+        "retained_earnings",
+        "accumulated_other_comprehensive_income_loss",
+        "other_total_stockholders_equity",
+        "total_stockholders_equity",
+        "total_liabilities_and_stockholders_equity",
+        "minority_interest",
+        "total_equity",
+        "total_liabilities_and_total_equity",
+        "total_investments",
+        "total_debt",
+        "net_debt",
+        "link",
+        "final_link",
+    ],
+}
+CASH_PLOT = {
+    "av": [
+        "reported_currency",
+        "operating_cash_flow",
+        "payments_for_operating_activities",
+        "proceeds_from_operating_activities",
+        "change_in_operating_liabilities",
+        "change_in_operating_assets",
+        "depreciation_depletion_and_amortization",
+        "capital_expenditures",
+        "change_in_receivables",
+        "change_in_inventory",
+        "profit_loss",
+        "cash_flow_from_investment",
+        "cash_flow_from_financing",
+        "proceeds_from_repayments_of_short_term_debt",
+        "payments_for_repurchase_of_common_stock",
+        "payments_for_repurchase_of_equity",
+        "payments_for_repurchase_of_preferred_stock",
+        "dividend_payout",
+        "dividend_payout_common_stock",
+        "dividend_payout_preferred_stock",
+        "proceeds_from_issuance_of_common_stock",
+        "proceeds_from_issuance_of_long_term_debt_and_capital_securities_net",
+        "proceeds_from_issuance_of_preferred_stock",
+        "proceeds_from_repurchase_of_equity",
+        "proceeds_from_sale_of_treasury_stock",
+        "change_in_cash_and_cash_equivalents",
+        "change_in_exchange_rate",
+        "net_income",
+    ],
+    "polygon": [
+        "net_cash_flow_from_financing_activities_continuing",
+        "net_cash_flow_continuing",
+        "net_cash_flow_from_investing_activities",
+        "net_cash_flow",
+        "net_cash_flow_from_operating_activities",
+        "net_cash_flow_from_financing_activities",
+        "net_cash_flow_from_operating_activities_continuing",
+        "net_cash_flow_from_investing_activities_continuing",
+    ],
+    "yf": [
+        "net_income",
+        "depreciation_&_amortisation",
+        "deferred_income_taxes",
+        "stock-based_compensation",
+        "change_in working_capital",
+        "accounts_receivable",
+        "inventory",
+        "accounts_payable",
+        "other_working_capital",
+        "other_non-cash_items",
+        "net_cash_provided_by_operating_activities",
+        "investments_in_property, plant_and_equipment",
+        "acquisitions, net",
+        "purchases_of_investments",
+        "sales/maturities_of_investments",
+        "other_investing_activities",
+        "net_cash_used_for_investing_activities",
+        "debt_repayment",
+        "common_stock_issued",
+        "common_stock_repurchased",
+        "dividends_paid",
+        "other_financing_activities",
+        "net_cash_used_provided_by_(used_for)_financing_activities",
+        "net_change_in_cash",
+        "cash_at_beginning_of_period",
+        "cash_at_end_of_period",
+        "operating_cash_flow",
+        "capital_expenditure",
+        "free_cash_flow",
+    ],
+    "fmp": [
+        "reported_currency",
+        "cik",
+        "filling_date",
+        "accepted_date",
+        "calendar_year",
+        "period",
+        "net_income",
+        "depreciation_and_amortization",
+        "deferred_income_tax",
+        "stock_based_compensation",
+        "change_in_working_capital",
+        "accounts_receivables",
+        "inventory",
+        "accounts_payables",
+        "other_working_capital",
+        "other_non_cash_items",
+        "net_cash_provided_by_operating_activities",
+        "investments_in_property_plant_and_equipment",
+        "acquisitions_net",
+        "purchases_of_investments",
+        "sales_maturities_of_investments",
+        "other_investing_activites",
+        "net_cash_used_for_investing_activites",
+        "debt_repayment",
+        "common_stock_issued",
+        "common_stock_repurchased",
+        "dividends_paid",
+        "other_financing_activites",
+        "net_cash_used_provided_by_financing_activities",
+        "effect_of_forex_changes_on_cash",
+        "net_change_in_cash",
+        "cash_at_end_of_period",
+        "cash_at_beginning_of_period",
+        "operating_cash_flow",
+        "capital_expenditure",
+        "free_cash_flow",
+        "link",
+        "final_link",
+    ],
+}
+exchange_mappings = (
+    pd.read_csv(
+        os.path.join(
+            os.path.dirname(os.path.abspath(__file__)), "mappings", "Mic_Codes.csv"
+        ),
+        index_col=0,
+        header=None,
+    )
+    .squeeze("columns")
+    .to_dict()
+)
 
 
 def search(
@@ -356,6 +731,12 @@ def load(
                 int_ = "1mo"
                 int_string = "Monthly"
 
+            # Win10 version of mktime cannot cope with dates before 1970
+            if os.name == "nt" and start < datetime(1970, 1, 1):
+                start = datetime(
+                    1970, 1, 2
+                )  # 1 day buffer in case of timezone adjustments
+
             # Adding a dropna for weekly and monthly because these include weird NaN columns.
             df_stock_candidate = yf.download(
                 ticker, start=start, end=end, progress=False, interval=int_
@@ -409,9 +790,15 @@ def load(
         # Polygon source
         elif source == "polygon":
 
+            # Polygon allows: day, minute, hour, day, week, month, quarter, year
+            timespan = "day"
+            if weekly or monthly:
+                timespan = "week" if weekly else "month"
+
             request_url = (
                 f"https://api.polygon.io/v2/aggs/ticker/"
-                f"{ticker.upper()}/range/1/day/{start.strftime('%Y-%m-%d')}/{end.strftime('%Y-%m-%d')}?adjusted=true"
+                f"{ticker.upper()}/range/1/{timespan}/"
+                f"{start.strftime('%Y-%m-%d')}/{end.strftime('%Y-%m-%d')}?adjusted=true"
                 f"&sort=desc&limit=49999&apiKey={cfg.API_POLYGON_KEY}"
             )
             r = requests.get(request_url)
@@ -988,7 +1375,7 @@ def find_trendline(
 
 
 def additional_info_about_ticker(ticker: str) -> str:
-    """Additional information about trading the ticker such as exchange, currency, timezone and market status
+    """Information about trading the ticker such as exchange, currency, timezone and market status
 
     Parameters
     ----------
@@ -1001,97 +1388,32 @@ def additional_info_about_ticker(ticker: str) -> str:
         Additional information about trading the ticker
     """
     extra_info = ""
+
     if ticker:
+        if ".US" in ticker.upper():
+            ticker = ticker.rstrip(".US")
+            ticker = ticker.rstrip(".us")
         ticker_info = yf.Ticker(ticker).info
-        # outside US exchange
-        if "." in ticker:
-            extra_info += "\n[param]Datetime: [/param]"
-            if (
-                "exchangeTimezoneName" in ticker_info
-                and ticker_info["exchangeTimezoneName"]
-            ):
-                dtime = datetime.now(
-                    pytz.timezone(ticker_info["exchangeTimezoneName"])
-                ).strftime("%Y %b %d %H:%M")
-                extra_info += dtime
-                extra_info += "\n[param]Timezone: [/param]"
-                extra_info += ticker_info["exchangeTimezoneName"]
-            else:
-                extra_info += "\n[param]Datetime: [/param]"
-                extra_info += "\n[param]Timezone: [/param]"
-
-            extra_info += "\n[param]Exchange: [/param]"
-            if "exchange" in ticker_info and ticker_info["exchange"]:
-                exchange_name = ticker_info["exchange"]
-                extra_info += exchange_name
-
-            extra_info += "\n[param]Currency: [/param]"
-            if "currency" in ticker_info and ticker_info["currency"]:
-                extra_info += ticker_info["currency"]
-
-            extra_info += "\n[param]Market:   [/param]"
-            if "exchange" in ticker_info and ticker_info["exchange"]:
-                if exchange_name in mcal.get_calendar_names():
-                    calendar = mcal.get_calendar(exchange_name)
-                    sch = calendar.schedule(
-                        start_date=(datetime.now() - timedelta(days=3)).strftime(
-                            "%Y-%m-%d"
-                        ),
-                        end_date=(datetime.now() + timedelta(days=3)).strftime(
-                            "%Y-%m-%d"
-                        ),
-                    )
-                    user_tz = get_user_timezone_or_invalid()
-                    if user_tz != "INVALID":
-                        is_market_open = calendar.open_at_time(
-                            sch,
-                            pd.Timestamp(
-                                datetime.now().strftime("%Y-%m-%d %H:%M"), tz=user_tz
-                            ),
-                        )
-                        if is_market_open:
-                            extra_info += "OPEN"
-                        else:
-                            extra_info += "CLOSED"
-
-            if "shortName" in ticker_info and ticker_info["shortName"]:
-                extra_info += ticker_info["shortName"]
-        else:
-            extra_info += "\n[param]Datetime: [/param]"
-            dtime = datetime.now(pytz.timezone("America/New_York")).strftime(
-                "%Y %b %d %H:%M"
-            )
-            extra_info += dtime
-            extra_info += "\n[param]Timezone: [/param]America/New_York"
-            extra_info += "\n[param]Currency: [/param]USD"
-            extra_info += "\n[param]Market:   [/param]"
-            calendar = mcal.get_calendar("NYSE")
-            warnings.filterwarnings("ignore")
-            sch = calendar.schedule(
-                start_date=(datetime.now() - timedelta(days=3)).strftime("%Y-%m-%d"),
-                end_date=(datetime.now() + timedelta(days=3)).strftime("%Y-%m-%d"),
-            )
-            user_tz = get_user_timezone_or_invalid()
-            if user_tz != "INVALID":
-                is_market_open = calendar.open_at_time(
-                    sch,
-                    pd.Timestamp(datetime.now().strftime("%Y-%m-%d %H:%M"), tz=user_tz),
-                )
-                if is_market_open:
-                    extra_info += "OPEN"
-                else:
-                    extra_info += "CLOSED"
-
-            extra_info += "\n[param]Company:  [/param]"
-            if "shortName" in ticker_info and ticker_info["shortName"]:
-                extra_info += ticker_info["shortName"]
-    else:
-        extra_info += "\n[param]Datetime: [/param]"
-        extra_info += "\n[param]Timezone: [/param]"
+        extra_info += "\n[param]Company:  [/param]"
+        if "shortName" in ticker_info and ticker_info["shortName"]:
+            extra_info += ticker_info["shortName"]
         extra_info += "\n[param]Exchange: [/param]"
-        extra_info += "\n[param]Market: [/param]"
+        if "exchange" in ticker_info and ticker_info["exchange"]:
+            exchange_name = ticker_info["exchange"]
+            extra_info += (
+                exchange_mappings["X" + exchange_name]
+                if "X" + exchange_name in exchange_mappings
+                else exchange_name
+            )
+
         extra_info += "\n[param]Currency: [/param]"
+        if "currency" in ticker_info and ticker_info["currency"]:
+            extra_info += ticker_info["currency"]
+
+    else:
         extra_info += "\n[param]Company: [/param]"
+        extra_info += "\n[param]Exchange: [/param]"
+        extra_info += "\n[param]Currency: [/param]"
 
     return extra_info + "\n"
 

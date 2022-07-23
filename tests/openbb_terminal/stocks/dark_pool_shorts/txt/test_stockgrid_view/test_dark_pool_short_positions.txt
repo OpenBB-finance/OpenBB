@@ -1,4 +1,4 @@
-  Ticker  Short Vol. (1M)  Short Vol. %  Net Short Vol. (1M)  Net Short Vol. ($100M)  DP Position (1M)  DP Position ($1B)
+  Ticker  Short Vol. [1M]  Short Vol. %  Net Short Vol. [1M]  Net Short Vol. ($100M)  DP Position [1M]  DP Position ($1B)
 0   LCAP         0.000001      0.000152            -0.656175               -0.065224         -1.410044          -0.014024
 1  GGAAU         0.000001      0.000294            -0.340320               -0.034134         -1.758678          -0.017667
 

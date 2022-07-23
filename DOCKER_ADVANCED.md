@@ -42,10 +42,10 @@ docker run -it --rm --env-file=path/to/setenv ghcr.io/openbb-finance/openbbtermi
 
 In order to display plots in the docker container, we can configure our XServer.
 
+### X-Server on macOS
+
 Users familiar with Docker and X-Server can set the `DISPLAY` variable in the file [setenv](/docker/setenv) described
 above. If you use this approach remember to add `:0` at the end of your inet address. E.g. `DISPLAY=192.168.1.155:0`.
-
-### X-Server
 
 For help setting up the X-Server, I will go through this now:
 
@@ -71,3 +71,29 @@ docker run -it --rm --env-file=path/to/setenv -e DISPLAY=$IP:0 ghcr.io/OpenBBTer
 ```
 
 This container will be able to display all the same plots as the terminal interface.
+
+### X-Server on Linux Desktop
+
+X-Server is default in Linux distribution, and it's no need to install any client in Desktop.
+
+#### Local docker container
+
+We can use IPC socket to connect Desktop.
+
+Add this setting to your `.env` file.
+
+```bash
+OPENBB_BACKEND=Qt5Agg
+```
+
+And run the following commands.
+
+```bash
+xhost +local:
+docker run -it --rm --name openbb --env-file=./.env -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix ghcr.io/openbb-finance/openbbterminal-poetry:latest
+xhost -local:
+```
+
+If you're using remote docker host, you can connect with "ssh -X <FQDN/IP>".
+
+Then run the previous docker command.

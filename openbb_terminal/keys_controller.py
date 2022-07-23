@@ -8,6 +8,8 @@ import logging
 import os
 from typing import Dict, List
 
+import hmac
+import hashlib
 import dotenv
 import praw
 import pyEX
@@ -65,7 +67,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         "ethplorer",
         "smartstake",
         "github",
-        "mesari",
+        "messari",
     ]
     PATH = "/keys/"
     key_dict: Dict = {}
@@ -451,9 +453,24 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             logger.info("Binance key not defined")
             self.key_dict["BINANCE"] = "not defined"
         else:
-            logger.info("Binance key defined, not tested")
-            self.key_dict["BINANCE"] = "defined, not tested"
-
+            headers = {"X-MBX-APIKEY": bn_keys[0]}
+            timestamp = 16566804453565
+            msg = f"timestamp={timestamp}"
+            msg_hash = hmac.new(
+                bn_keys[1].encode("utf-8"), msg.encode("utf-8"), hashlib.sha256
+            ).hexdigest()
+            params = {"timestamp": timestamp, "signature": msg_hash}  # type: ignore
+            r = requests.get(
+                "https://api.binance.com/sapi/v1/capital/config/getall",
+                params=params,  # type: ignore
+                headers=headers,
+            )
+            if r.status_code == 200:
+                logger.info("Binance key defined, test passed")
+                self.key_dict["BINANCE"] = "defined, test passed"
+            else:
+                logger.info("Binance key defined, test failed")
+                self.key_dict["BINANCE"] = "defined, test failed"
         if show_output:
             console.print(self.key_dict["BINANCE"] + "\n")
 
@@ -1366,22 +1383,24 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             console.print("For your API Key, visit: https://developer.oanda.com\n")
             return
         ns_parser = parse_simple_args(parser, other_args)
-        if ns_parser:
+        if not ns_parser:
+            return
+        if ns_parser.account:
             os.environ["OPENBB_OANDA_ACCOUNT"] = ns_parser.account
             dotenv.set_key(self.env_file, "OPENBB_OANDA_ACCOUNT", ns_parser.account)
             cfg.OANDA_ACCOUNT = ns_parser.account
-
+        if ns_parser.token:
             os.environ["OPENBB_OANDA_TOKEN"] = ns_parser.token
             dotenv.set_key(self.env_file, "OPENBB_OANDA_TOKEN", ns_parser.token)
             cfg.OANDA_TOKEN = ns_parser.token
-
+        if ns_parser.account_type:
             os.environ["OPENBB_OANDA_ACCOUNT_TYPE"] = ns_parser.account_type
             dotenv.set_key(
                 self.env_file, "OPENBB_OANDA_ACCOUNT_TYPE", ns_parser.account_type
             )
             cfg.OANDA_ACCOUNT_TYPE = ns_parser.account_type
 
-            self.check_oanda_key(show_output=True)
+        self.check_oanda_key(show_output=True)
 
     @log_start_end(log=logger)
     def call_binance(self, other_args: List[str]):

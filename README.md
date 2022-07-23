@@ -38,7 +38,7 @@
 
 <p align="center">
    <a href="https://www.youtube.com/watch?v=fqGPK8OVHLk" rel="OpenBB Terminal Demo">
-      <img src="images/openbb_terminal_illustration.gif" alt="OpenBB Terminal Illustration" width="1000"/>
+      <img src="images/openbb_terminal_illustration.gif" alt="OpenBB Terminal Illustration" width="100%"/>
    </a>
 </p>
 
@@ -46,7 +46,7 @@
     Investment research for everyone.
     <br />
     <a href="https://github.com/OpenBB-finance/OpenBBTerminal/tree/master/openbb_terminal/README.md"><strong>≪  GETTING STARTED</strong></a>
-    &nbsp · &nbsp <a href="https://github.com/OpenBB-finance/OpenBBTerminal/tree/master/openbb_terminal/CONTRIBUTING.md"><strong>CONTRIBUTING</strong></a> &nbsp · &nbsp
+    &nbsp · &nbsp <a href="https://github.com/OpenBB-finance/OpenBBTerminal/tree/master/CONTRIBUTING.md"><strong>CONTRIBUTING</strong></a> &nbsp · &nbsp
     <a href="https://openbb-finance.github.io/OpenBBTerminal/">
     <strong>SEE FEATURES »</strong></a>
     <br />

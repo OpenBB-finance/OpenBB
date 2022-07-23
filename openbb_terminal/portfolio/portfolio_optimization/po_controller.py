@@ -530,7 +530,6 @@ class PortfolioOptimizationController(BaseController):
             self.params,
             self.current_model,
         )
-
         self.current_file = parent_classes.controllers[
             "/portfolio/po/params/"
         ].current_file

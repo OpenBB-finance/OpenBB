@@ -56,7 +56,7 @@ jobs:
       - name: Install Poetry
         uses: snok/install-poetry@v1
         with:
-          version: 1.1.11
+          version: 1.1.13
           virtualenvs-create: true
           virtualenvs-in-project: true
 
@@ -122,7 +122,7 @@ jobs:
       - name: Install Poetry
         uses: snok/install-poetry@v1
         with:
-          version: 1.1.11
+          version: 1.1.13
           virtualenvs-create: true
           virtualenvs-in-project: true
 
@@ -166,13 +166,13 @@ jobs:
       fail-fast: false
       matrix:
         os: ["ubuntu", "windows"]
-        python-version: ["3.8"]
+        python-version: ["3.9"]
         dependencies: [""]
         include:
           - os: ubuntu
-            python: 3.8
+            python: 3.9
           - os: windows
-            python: 3.8
+            python: 3.9
     env:
       OS: ${{ matrix.os }}
       PYTHON: ${{ matrix.python }}
@@ -200,7 +200,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/conda_pkgs_dir
-          key: conda-${{ runner.os }}-v1-${{ matrix.python }}-${{ hashFiles('build/conda/conda-3-8-env.yaml') }}
+          key: conda-${{ runner.os }}-v1-${{ matrix.python }}-${{ hashFiles('build/conda/conda-3-9-env.yaml') }}
 
       - name: Setup Miniconda
         uses: conda-incubator/setup-miniconda@v2
@@ -211,7 +211,7 @@ jobs:
           channels: conda-forge,defaults
           show-channel-urls: true
           channel-priority: flexible
-          environment-file: build/conda/conda-3-8-env.yaml
+          environment-file: build/conda/conda-3-9-env.yaml
           activate-environment: testing
           # Needed for caching
           use-only-tar-bz2: true
@@ -232,7 +232,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ${{ steps.pip-cache.outputs.dir }}
-          key: ${{ runner.os }}-v1-3-8-pip-${{ hashFiles('requirements.txt') }}
+          key: ${{ runner.os }}-v1-3-9-pip-${{ hashFiles('requirements.txt') }}
           restore-keys: |
             ${{ runner.os }}-v1-pip-
 
@@ -253,6 +253,8 @@ jobs:
           pip list
 
       - name: Run tests (Bash)
+        env:
+            MPLBACKEND: Agg
         shell: bash -l {0}
         run: pytest tests/ -m "not bots and not linux"
 

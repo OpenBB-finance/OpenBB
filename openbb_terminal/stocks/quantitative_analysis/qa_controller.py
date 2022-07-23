@@ -25,6 +25,8 @@ from openbb_terminal.parent_classes import StockBaseController
 from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.stocks.quantitative_analysis.factors_view import capm_view
 
+# pylint: disable=C0302
+
 logger = logging.getLogger(__name__)
 
 
@@ -800,6 +802,18 @@ class QaController(StockBaseController):
                 Percentile used for VaR calculations, for example input 99.9 equals a 99.9 Percent VaR
             """,
         )
+        parser.add_argument(
+            "-d",
+            "--datarange",
+            action="store",
+            dest="data_range",
+            type=int,
+            default=0,
+            help="""
+                Number of rows you want to use VaR over,
+                ex: if you are using days, 30 would show VaR for the last 30 TRADING days
+            """,
+        )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if ns_parser.adjusted and ns_parser.student_t:
@@ -812,6 +826,7 @@ class QaController(StockBaseController):
                     ns_parser.adjusted,
                     ns_parser.student_t,
                     ns_parser.percentile / 100,
+                    ns_parser.data_range,
                     False,
                 )
 

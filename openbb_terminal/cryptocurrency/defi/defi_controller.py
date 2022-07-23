@@ -15,7 +15,6 @@ from openbb_terminal.cryptocurrency.defi import (
     coindix_view,
     cryptosaurio_view,
     defipulse_view,
-    defirate_view,
     graph_model,
     graph_view,
     llama_model,
@@ -46,9 +45,6 @@ class DefiController(BaseController):
 
     CHOICES_COMMANDS = [
         "dpi",
-        "funding",
-        "lending",
-        "borrow",
         "ldapps",
         "gdapps",
         "stvl",
@@ -94,6 +90,7 @@ class DefiController(BaseController):
             }
 
             choices["support"] = self.SUPPORT_CHOICES
+            choices["about"] = self.ABOUT_CHOICES
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -102,9 +99,6 @@ class DefiController(BaseController):
         mt = MenuText("crypto/defi/")
         mt.add_cmd("newsletter", "Substack")
         mt.add_cmd("dpi", "Defipulse")
-        mt.add_cmd("funding", "Defirate")
-        mt.add_cmd("borrow", "Defirate")
-        mt.add_cmd("lending", "Defirate")
         mt.add_cmd("vaults", "Coindix")
         mt.add_cmd("tokens", "The Graph")
         mt.add_cmd("stats", "The Graph")
@@ -320,63 +314,6 @@ class DefiController(BaseController):
 
         if ns_parser:
             terramoney_fcd_view.display_validators(
-                export=ns_parser.export,
-                sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
-                top=ns_parser.limit,
-            )
-
-    @log_start_end(log=logger)
-    def call_govp(self, other_args: List[str]):
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="govp",
-            description="""
-                Displays terra blockchain governance proposals list.
-                [Source: https://fcd.terra.dev/swagger]
-            """,
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            dest="limit",
-            type=check_positive,
-            help="Number of proposals to show",
-            default=10,
-        )
-        parser.add_argument(
-            "-s",
-            "--sort",
-            dest="sortby",
-            type=str,
-            help="Sort by given column. Default: id",
-            default="id",
-            choices=terramoney_fcd_model.GOV_COLUMNS,
-        )
-        parser.add_argument(
-            "--status",
-            dest="status",
-            type=str,
-            help="Status of proposal. Default: all",
-            default="all",
-            choices=terramoney_fcd_model.GOV_STATUSES,
-        )
-        parser.add_argument(
-            "--descend",
-            action="store_false",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
-            default=False,
-        )
-
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-
-        if ns_parser:
-            terramoney_fcd_view.display_gov_proposals(
-                status=ns_parser.status,
                 export=ns_parser.export,
                 sortby=ns_parser.sortby,
                 descend=ns_parser.descend,
@@ -695,123 +632,6 @@ class DefiController(BaseController):
 
         if ns_parser:
             llama_view.display_defi_tvl(top=ns_parser.limit, export=ns_parser.export)
-
-    @log_start_end(log=logger)
-    def call_funding(self, other_args: List[str]):
-        """Process funding command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="funding",
-            description="""
-                Display Funding rates.
-                [Source: https://defirate.com/]
-            """,
-        )
-
-        parser.add_argument(
-            "-l",
-            "--limit",
-            dest="limit",
-            type=check_positive,
-            help="Number of records to display",
-            default=10,
-        )
-
-        parser.add_argument(
-            "--current",
-            action="store_false",
-            default=True,
-            dest="current",
-            help="Show Current Funding Rates or Last 30 Days Average",
-        )
-
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-
-        if ns_parser:
-            defirate_view.display_funding_rates(
-                top=ns_parser.limit, current=ns_parser.current, export=ns_parser.export
-            )
-
-    @log_start_end(log=logger)
-    def call_borrow(self, other_args: List[str]):
-        """Process borrow command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="borrow",
-            description="""
-                 Display DeFi borrow rates.
-                 [Source: https://defirate.com/]
-             """,
-        )
-
-        parser.add_argument(
-            "-l",
-            "--limit",
-            dest="limit",
-            type=check_positive,
-            help="Number of records to display",
-            default=10,
-        )
-
-        parser.add_argument(
-            "--current",
-            action="store_false",
-            default=True,
-            dest="current",
-            help="Show Current Borrow Rates or Last 30 Days Average",
-        )
-
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-
-        if ns_parser:
-            defirate_view.display_borrow_rates(
-                top=ns_parser.limit, current=ns_parser.current, export=ns_parser.export
-            )
-
-    @log_start_end(log=logger)
-    def call_lending(self, other_args: List[str]):
-        """Process lending command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="lending",
-            description="""
-                 Display DeFi lending rates.
-                 [Source: https://defirate.com/]
-             """,
-        )
-
-        parser.add_argument(
-            "-l",
-            "--limit",
-            dest="limit",
-            type=check_positive,
-            help="Number of records to display",
-            default=15,
-        )
-
-        parser.add_argument(
-            "--current",
-            action="store_false",
-            default=True,
-            dest="current",
-            help="Show Current Lending Rates or Last 30 Days Average",
-        )
-
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-
-        if ns_parser:
-            defirate_view.display_lending_rates(
-                top=ns_parser.limit, current=ns_parser.current, export=ns_parser.export
-            )
 
     @log_start_end(log=logger)
     def call_newsletter(self, other_args: List[str]):

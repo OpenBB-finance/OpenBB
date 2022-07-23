@@ -85,6 +85,7 @@ class ETFController(BaseController):
             choices: dict = {c: {} for c in self.controller_choices}
 
             choices["support"] = self.SUPPORT_CHOICES
+            choices["about"] = self.ABOUT_CHOICES
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -149,7 +150,6 @@ class ETFController(BaseController):
             other_args,
             limit=5,
             export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
-            sources=["sa", "fd"],
         )
         if ns_parser:
             name_to_search = " ".join(ns_parser.name)

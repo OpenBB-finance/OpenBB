@@ -84,6 +84,7 @@ class PredictionTechniquesController(CryptoBaseController):
             choices["mc"]["--dist"] = {c: {} for c in mc_model.DISTRIBUTIONS}
 
             choices["support"] = self.SUPPORT_CHOICES
+            choices["about"] = self.ABOUT_CHOICES
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 

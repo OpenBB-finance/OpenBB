@@ -79,6 +79,7 @@ class QaController(CryptoBaseController):
             choices["load"]["-r"] = {c: {} for c in c_help.INTERVALS}
 
             choices["support"] = self.SUPPORT_CHOICES
+            choices["about"] = self.ABOUT_CHOICES
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 

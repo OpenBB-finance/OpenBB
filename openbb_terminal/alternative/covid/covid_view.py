@@ -62,7 +62,7 @@ def display_covid_ov(
 
     ax1.plot(cases.index, cases, color=theme.up_color, alpha=0.2)
     ax1.plot(cases.index, cases.rolling(7).mean(), color=theme.up_color)
-    ax1.set_ylabel("Cases (1k)")
+    ax1.set_ylabel("Cases [1k]")
     theme.style_primary_axis(ax1)
     ax1.yaxis.set_label_position("left")
 
@@ -144,7 +144,7 @@ def display_covid_stat(
         return
 
     if stat == "cases":
-        ax.set_ylabel(stat.title() + " (1k)")
+        ax.set_ylabel(stat.title() + " [1k]")
         color = theme.up_color
     elif stat == "deaths":
         ax.set_ylabel(stat.title())

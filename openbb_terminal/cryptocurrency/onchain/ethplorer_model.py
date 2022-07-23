@@ -209,10 +209,9 @@ def get_address_info(address: str) -> pd.DataFrame:
     """
 
     response = make_request("getAddressInfo", address)
-
+    tokens = []
     if "tokens" in response:
         tokens = response.pop("tokens")
-
         for token in tokens:
             token_info = token.pop("tokenInfo")
             token.update(
@@ -224,7 +223,7 @@ def get_address_info(address: str) -> pd.DataFrame:
                     / (10 ** int(token_info.get("decimals"))),
                 }
             )
-    else:
+    elif "token_info" in response:
         token_info = response.get("tokenInfo") or {}
         tokens = [
             {
@@ -236,7 +235,7 @@ def get_address_info(address: str) -> pd.DataFrame:
             }
         ]
 
-    eth = response["ETH"] or {}
+    eth = response.get("ETH") or {}
     eth_balance = eth.get("balance")
     eth_row = [
         "Ethereum",
@@ -244,17 +243,16 @@ def get_address_info(address: str) -> pd.DataFrame:
         "0x0000000000000000000000000000000000000000",
         eth_balance,
     ]
-
     cols = [
         "tokenName",
         "tokenSymbol",
         "tokenAddress",
         "balance",
     ]
-    df = pd.DataFrame(tokens)[cols]
+    df = pd.DataFrame(tokens)
     eth_row_df = pd.DataFrame([eth_row], columns=cols)
     df = pd.concat([eth_row_df, df], ignore_index=True)
-    df = df[df["tokenName"].notna()]
+    df = df[df["tokenName"].notna()][cols]
     create_df_index(df, "index")
     return df
 

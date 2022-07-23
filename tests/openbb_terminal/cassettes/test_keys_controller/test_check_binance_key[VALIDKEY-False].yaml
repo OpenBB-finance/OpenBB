@@ -1,0 +1,62 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+      X-MBX-APIKEY:
+      - VALIDKEY
+    method: GET
+    uri: https://api.binance.com/sapi/v1/capital/config/getall?timestamp=16566804453565&signature=36f672c3fc317058224ad0dc0c657a54e018b1960e89b01a204d5b27422bfdad
+  response:
+    body:
+      string: '{"code":-2008,"msg":"Invalid Api-Key ID."}'
+    headers:
+      Cache-Control:
+      - no-cache, no-store, must-revalidate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '42'
+      Content-Security-Policy:
+      - default-src 'self'
+      Content-Type:
+      - application/json;charset=UTF-8
+      Date:
+      - Fri, 01 Jul 2022 13:03:15 GMT
+      Expires:
+      - '0'
+      Pragma:
+      - no-cache
+      Server:
+      - nginx
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains
+      Via:
+      - 1.1 a81d70097c26619d0483c0496b627838.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id:
+      - EiGgfvW7wEfsCfE5bMeQRHcKYcY48IN_zPEeP_yo3-nyjye-bUedsA==
+      X-Amz-Cf-Pop:
+      - FJR50-C1
+      X-Cache:
+      - Error from cloudfront
+      X-Content-Security-Policy:
+      - default-src 'self'
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-WebKit-CSP:
+      - default-src 'self'
+      X-Xss-Protection:
+      - 1; mode=block
+    status:
+      code: 400
+      message: ''
+version: 1

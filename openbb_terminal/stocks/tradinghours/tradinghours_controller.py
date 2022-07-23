@@ -37,7 +37,7 @@ class TradingHoursController(BaseController):
     PATH = "/stocks/th/"
     FILE_PATH = os.path.join(os.path.dirname(__file__), "README.md")
 
-    def __init__(self, queue: List[str] = None):
+    def __init__(self, ticker: str = "", queue: List[str] = None):
         """Construct Data."""
         super().__init__(queue)
 
@@ -49,10 +49,24 @@ class TradingHoursController(BaseController):
         all_short_names = list(short_names) + list(short_names_index)
         self.all_exchange_short_names = sorted(list(all_short_names))
 
-        self.exchange = None
         self.symbol = None
         self.symbol_name = None
         self.symbol_market_open = False
+        self.exchange = None
+
+        if ticker:
+            if ticker in self.equities:
+                self.symbol = ticker
+                self.symbol_name = self.equities[ticker]["short_name"]
+                self.exchange = self.equities[ticker]["exchange"]
+                open_ex = get_open()
+                if self.exchange in open_ex.index:
+                    self.symbol_market_open = True
+                else:
+                    self.symbol_market_open = False
+            else:
+                console.print(f"The ticker {ticker} was not find in the database.")
+
         self.source = "yf"
         self.data = pd.DataFrame()
         self.timezone = get_user_timezone_or_invalid()
@@ -76,16 +90,17 @@ class TradingHoursController(BaseController):
             exchange_opened = ""
 
         mt = MenuText("stocks/th/")
+        mt.add_cmd("open")
+        mt.add_cmd("closed")
+        mt.add_cmd("all")
+        mt.add_cmd("exchange")
+        mt.add_raw("\n")
         mt.add_cmd("symbol")
         mt.add_raw("\n")
         mt.add_param("_symbol_name", self.symbol_name or "")
         mt.add_param("_symbol", self.symbol_name or "")
         mt.add_param("_exchange", exchange_opened)
-        mt.add_raw("\n")
-        mt.add_cmd("open")
-        mt.add_cmd("closed")
-        mt.add_cmd("all")
-        mt.add_cmd("exchange")
+
         console.print(text=mt.menu_text, menu="Stocks - Trading Hours")
 
     @log_start_end(log=logger)
@@ -116,19 +131,22 @@ class TradingHoursController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             self.symbol = ns_parser.symbol
-            self.symbol_name = self.equities[self.symbol]["short_name"]  #
-            self.exchange = self.equities[self.symbol]["exchange"]
-            open_ex = get_open()
-            if self.exchange in open_ex.index:
-                self.symbol_market_open = True
+            if ns_parser.symbol in self.equities:
+                self.symbol_name = self.equities[self.symbol]["short_name"]
+                self.exchange = self.equities[self.symbol]["exchange"]
+                open_ex = get_open()
+                if self.exchange in open_ex.index:
+                    self.symbol_market_open = True
+                else:
+                    self.symbol_market_open = False
+                # add currency
+                console.print(
+                    f"\nSelected symbol\nSymbol:        {self.symbol}\n"
+                    f"Name:          {self.symbol_name}\n"
+                    f"Market open:   {self.symbol_market_open}\n"
+                )
             else:
-                self.symbol_market_open = False
-            # add currency
-            console.print(
-                f"\nSelected symbol\nSymbol:        {self.symbol}\n"
-                f"Name:          {self.symbol_name}\n"
-                f"Market open:   {self.symbol_market_open}\n"
-            )
+                console.print("[red]Symbol not found on database.[/red]\n")
 
     @log_start_end(log=logger)
     def call_exchange(self, other_args: List[str]):
@@ -171,14 +189,13 @@ class TradingHoursController(BaseController):
             prog="exchange",
             description="Show currently open exchanges",
         )
-
         if other_args and "-h" not in other_args:
             other_args.insert(0, "-n")
 
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             bursa_view.display_open()
-        else:
+
             logger.error("No open exchanges right now.")
             console.print("[red]No open exchanges right now.[/red]\n")
 
