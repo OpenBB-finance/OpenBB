@@ -152,7 +152,9 @@ def send_command(message):
     non_slash(
         message.text,
         lambda text: bot.reply_to(message, text),
-        lambda func, cmd, kwargs: ShowView().telegram(func, message, bot, cmd, **kwargs),
+        lambda func, cmd, kwargs: ShowView().telegram(
+            func, message, bot, cmd, **kwargs
+        ),
     )
 
 
