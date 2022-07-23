@@ -373,62 +373,21 @@ def print_pretty_prediction(df_pred: pd.DataFrame, last_price: float):
 
 def past_covs(past_covariates, filler, data, train_split, is_scaler=True):
     if past_covariates is not None:
-        covariates_scalers = []  # to hold all temp scalers in case we need them
+
         target_covariates_names = past_covariates.split(",")
 
-        # create first covariate to then stack onto
+        # create first covariate to then stack
         console.print(f"[green]Covariate #0: {target_covariates_names[0]}[/green]")
-        if is_scaler:
-            past_covariate_scaler = Scaler()
-            past_covariate_whole = past_covariate_scaler.fit_transform(
-                filler.transform(
-                    TimeSeries.from_dataframe(
-                        data,
-                        time_col="date",
-                        value_cols=target_covariates_names[0],
-                        freq="B",
-                        fill_missing_dates=True,
-                    )
-                )
-            ).astype(np.float32)
-        else:
-            past_covariate_whole = filler.transform(
-                TimeSeries.from_dataframe(
-                    data,
-                    time_col="date",
-                    value_cols=target_covariates_names[0],
-                    freq="B",
-                    fill_missing_dates=True,
-                )
-            ).astype(np.float32)
+        filler, scaler, past_covariate_whole = get_series(
+            data, target_col=target_covariates_names[0], is_scaler=is_scaler
+        )
 
         if len(target_covariates_names) > 1:
             for i, column in enumerate(target_covariates_names[1:]):
                 console.print(f"[green]Covariate #{i+1}: {column}[/green]")
-                if is_scaler:
-                    _temp_scaler = Scaler()
-                    covariates_scalers.append(_temp_scaler)
-                    _temp_new_covariate = _temp_scaler.fit_transform(
-                        filler.transform(
-                            TimeSeries.from_dataframe(
-                                data,
-                                time_col="date",
-                                value_cols=[column],
-                                freq="B",
-                                fill_missing_dates=True,
-                            )
-                        )
-                    ).astype(np.float32)
-                else:
-                    _temp_new_covariate = filler.transform(
-                        TimeSeries.from_dataframe(
-                            data,
-                            time_col="date",
-                            value_cols=[column],
-                            freq="B",
-                            fill_missing_dates=True,
-                        )
-                    ).astype(np.float32)
+                filler, scaler, _temp_new_covariate = get_series(
+                    data, target_col=target_covariates_names[i + 1], is_scaler=is_scaler
+                )
 
                 # continually stack covariates based on column names
                 past_covariate_whole = past_covariate_whole.stack(_temp_new_covariate)

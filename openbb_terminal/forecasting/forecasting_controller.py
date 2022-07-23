@@ -536,7 +536,7 @@ class ForecastingController(BaseController):
                 "--n-epochs",
                 action="store",
                 dest="n_epochs",
-                default=100,
+                default=300,
                 type=check_positive,
                 help="Number of epochs over which to train the model.",
             )
@@ -2101,7 +2101,7 @@ class ForecastingController(BaseController):
             target_dataset=True,
             n_days=True,
             target_column=True,
-            hidden_size=10,
+            hidden_size=20,
             residuals=True,
             forecast_only=True,
         )
