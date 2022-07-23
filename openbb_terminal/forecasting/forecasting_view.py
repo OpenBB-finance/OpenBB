@@ -163,7 +163,11 @@ def display_seasonality(
         # TODO: Add darts check_seasonality here
         # TODO: Add default formatting back once my PR makes it into the pip package
         plot_acf(
-            series, m=m, max_lag=max_lag, alpha=alpha, axis=ax, # default_formatting=False
+            series,
+            m=m,
+            max_lag=max_lag,
+            alpha=alpha,
+            axis=ax,  # default_formatting=False
         )
 
         theme.style_primary_axis(ax)
