@@ -146,13 +146,12 @@ def obtain_sector_allocation(benchmark_info: Dict, portfolio_trades: pd.DataFram
     )
 
     # Rename columns to match stock and crypto classification
+    etf_global_sector_alloc.index.name = "Sector"
     prettified = []
     for sector in etf_global_sector_alloc.index:
         prettified.append(sector.replace("_", " ").title())
 
     etf_global_sector_alloc.index = prettified
-    etf_global_sector_alloc.index.name = "Sector"
-    etf_global_sector_alloc
 
     # Aggregate sector allocation for stocks and crypto with ETFs
     portfolio_sectors_allocation = pd.merge(
