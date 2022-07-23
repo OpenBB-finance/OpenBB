@@ -151,8 +151,8 @@ def send_command(message):
     bot.send_chat_action(message.chat.id, action="typing")
     non_slash(
         message.text,
-        lambda x: bot.reply_to(message, x),
-        lambda x, y, z: ShowView().telegram(x, message, bot, y, **z),
+        lambda text: bot.reply_to(message, text),
+        lambda func, cmd, kwargs: ShowView().telegram(func, message, bot, cmd, **kwargs),
     )
 
 
