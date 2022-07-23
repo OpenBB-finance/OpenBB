@@ -5,9 +5,9 @@ from openbb_terminal.stocks import stocks_helper
 def process_beta(stock_ticker, ref_ticker):
     stock = stocks_helper.load(stock_ticker)
     ref = stocks_helper.load(ref_ticker)
-    sr = stock["Close"].pct_change().to_frame()
+    sr = 100 * stock["Close"].pct_change().to_frame()
     sr = sr.rename({"Close": "Stock Pct Ret"}, axis=1)
-    rr = ref["Close"].pct_change().to_frame()
+    rr = 100 * ref["Close"].pct_change().to_frame()
     rr = rr.rename({"Close": "Ref Pct Ret"}, axis=1)
     df = sr.merge(rr, how="outer", left_index=True, right_index=True)
     df = df.dropna()
