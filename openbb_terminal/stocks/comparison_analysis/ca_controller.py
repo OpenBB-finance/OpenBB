@@ -34,6 +34,8 @@ from openbb_terminal.stocks.comparison_analysis import (
     yahoo_finance_model,
     yahoo_finance_view,
 )
+from openbb_terminal.stocks.comparison_analysis.beta_model import process_beta
+from openbb_terminal.stocks.comparison_analysis.beta_view import display_beta
 
 # pylint: disable=E1121,C0302,R0904
 
@@ -71,6 +73,7 @@ class ComparisonAnalysisController(BaseController):
         "performance",
         "technical",
         "tsne",
+        "beta",
     ]
     CHOICES_MENUS = [
         "po",
@@ -129,6 +132,7 @@ class ComparisonAnalysisController(BaseController):
         mt.add_cmd("ownership", "Finviz", self.similar and len(self.similar) > 1)
         mt.add_cmd("performance", "Finviz", self.similar and len(self.similar) > 1)
         mt.add_cmd("technical", "Finviz", self.similar and len(self.similar) > 1)
+        mt.add_cmd("beta", "Yahoo Finance", self.similar and len(self.similar) >= 1)
         mt.add_raw("\n")
         mt.add_menu("po", self.similar and len(self.similar) > 1)
         console.print(text=mt.menu_text, menu="Stocks - Comparison Analysis")
@@ -970,6 +974,36 @@ class ComparisonAnalysisController(BaseController):
             else:
                 console.print(
                     "Please make sure there are more than 1 similar tickers selected. \n"
+                )
+
+    @log_start_end(log=logger)
+    def call_beta(self, _):
+        """Call the beta menu with selected ticker"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="technical",
+            description="""
+                Prints screener data of similar companies. [Source: Finviz]
+            """,
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser, _, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            if self.similar and len(self.similar) == 1:
+                ref_ticker = "SPY"
+                stock_ticker = self.similar[0]
+                sr, rr, beta, alpha = process_beta(stock_ticker, ref_ticker)
+                display_beta(ref_ticker, stock_ticker, rr, sr, beta, alpha)
+            elif self.similar and len(self.similar) == 2:
+                stock_ticker, ref_ticker = self.similar[1], self.similar[0]
+                sr, rr, beta, alpha = process_beta(stock_ticker, ref_ticker)
+                display_beta(ref_ticker, stock_ticker, rr, sr, beta, alpha)
+
+            else:
+                console.print(
+                    "Please make sure there are exactly one or two similar tickers selected. \n"
                 )
 
     @log_start_end(log=logger)
