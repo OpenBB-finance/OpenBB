@@ -75,7 +75,7 @@ def get_theta_data(
     """
 
     use_scalers = False
-    _, _, ticker_series = helpers.get_series(data, target_col, is_scaler=use_scalers)
+    _, ticker_series = helpers.get_series(data, target_col, is_scaler=use_scalers)
     train, val = ticker_series.split_before(start_window)
 
     if seasonal == "A":

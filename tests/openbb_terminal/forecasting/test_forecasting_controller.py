@@ -6,6 +6,7 @@ import pytest
 from prompt_toolkit.completion import NestedCompleter
 from openbb_terminal.forecasting import forecasting_controller as fc
 
+# pylint: disable=E1121
 base = "openbb_terminal.forecasting.forecasting_controller."
 df = pd.DataFrame([[1, 2, 3], [2, 3, 4], [3, 4, 5]], columns=["first", "date", "close"])
 

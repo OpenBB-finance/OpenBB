@@ -1,7 +1,7 @@
 # pylint: disable=too-many-arguments
 import os
 import argparse
-from typing import Dict, Any, Union, Optional, List
+from typing import Dict, Any, Union, Optional, List, Tuple
 from datetime import timedelta
 import logging
 import pandas as pd
@@ -370,21 +370,21 @@ def print_pretty_prediction(df_pred: pd.DataFrame, last_price: float):
         )
 
 
-def past_covs(past_covariates, filler, data, train_split, is_scaler=True):
+def past_covs(past_covariates, data, train_split, is_scaler=True):
     if past_covariates is not None:
 
         target_covariates_names = past_covariates.split(",")
 
         # create first covariate to then stack
         console.print(f"[green]Covariate #0: {target_covariates_names[0]}[/green]")
-        filler, scaler, past_covariate_whole = get_series(
+        _, past_covariate_whole = get_series(
             data, target_col=target_covariates_names[0], is_scaler=is_scaler
         )
 
         if len(target_covariates_names) > 1:
             for i, column in enumerate(target_covariates_names[1:]):
                 console.print(f"[green]Covariate #{i+1}: {column}[/green]")
-                filler, scaler, _temp_new_covariate = get_series(
+                _, _temp_new_covariate = get_series(
                     data, target_col=target_covariates_names[i + 1], is_scaler=is_scaler
                 )
 
@@ -401,8 +401,7 @@ def past_covs(past_covariates, filler, data, train_split, is_scaler=True):
             past_covariate_train,
             past_covariate_val,
         )
-    else:
-        return None, None, None
+    return None, None, None
 
 
 def early_stopper(patience: int, monitor: str = "val_loss"):
@@ -492,7 +491,7 @@ def plot_forecast(
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "expo")
 
 
-def dt_format(x):
+def dt_format(x) -> str:
     """Convert any Timestamp to YYYY-MM-DD
     Args:
         x: Pandas Timestamp of any length
@@ -504,7 +503,9 @@ def dt_format(x):
     return x
 
 
-def get_series(data, target_col: str = None, is_scaler: bool = True):
+def get_series(
+    data, target_col: str = None, is_scaler: bool = True
+) -> Tuple[Optional[Scaler], TimeSeries]:
     filler = MissingValuesFiller()
     filler_kwargs = dict(
         df=data,
@@ -532,10 +533,10 @@ def get_series(data, target_col: str = None, is_scaler: bool = True):
         scaled_ticker_series = scaler.fit_transform(
             filler.transform(ticker_series)
         ).astype(np.float32)
-        return filler, scaler, scaled_ticker_series
+        return scaler, scaled_ticker_series
     ticker_series = filler.transform(ticker_series).astype(np.float32)
     scaler = None
-    return filler, scaler, ticker_series
+    return scaler, ticker_series
 
 
 def fit_model(

@@ -2,7 +2,7 @@
 __docformat__ = "numpy"
 
 # pylint: disable=too-many-lines, too-many-branches, inconsistent-return-statements
-# pylint: disable=too-many-arguments
+# pylint: disable=too-many-arguments, R0904
 
 import argparse
 import logging

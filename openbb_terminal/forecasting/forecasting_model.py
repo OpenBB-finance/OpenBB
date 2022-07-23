@@ -384,8 +384,8 @@ def add_signal(dataset: pd.DataFrame) -> pd.DataFrame:
         Dataframe with added signal column
     """
 
-    """Create short simple moving average over the short window
-    > Create long simple moving average over the long window"""
+    # Create short simple moving average over the short window
+    # > Create long simple moving average over the long window
 
     # Create signals
     dataset["signal"] = np.where(

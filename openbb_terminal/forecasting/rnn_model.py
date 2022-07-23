@@ -86,14 +86,6 @@ def get_rnn_data(
             Best RNN Model
     """
 
-    # TODO add proper doc string
-    # TODO Check if torch GPU AVAILABLE
-    # TODO add in covariates
-    # todo add in all possible parameters for training - RNN does not take past covariates
-    # Export model / save
-    # load trained model
-
-    # Target Timeseries
     # TODO Check if torch GPU AVAILABLE
 
     use_scalers = True
@@ -101,9 +93,7 @@ def get_rnn_data(
     past_covariates = None
     past_covariate_whole = None
 
-    _, scaler, ticker_series = helpers.get_series(
-        data, target_col, is_scaler=use_scalers
-    )
+    scaler, ticker_series = helpers.get_series(data, target_col, is_scaler=use_scalers)
     train, val = ticker_series.split_before(train_split)
     valid = helpers.check_data_length(train, val, input_chunk_size, 0)
     if not valid:
