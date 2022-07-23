@@ -798,8 +798,7 @@ class PortfolioModel:
         # Portfolio
         self.tickers_list = None
         self.tickers: Dict[Any, Any] = {}
-        self.inception_date = None
-        self.static_data = pd.DataFrame()
+        self.inception_date = datetime.date(1900, 1, 1)
         self.historical_trade_data = pd.DataFrame()
         self.returns = pd.DataFrame()
         self.itemized_value = pd.DataFrame()
@@ -1064,6 +1063,7 @@ class PortfolioModel:
 
         """
         self.benchmark_ticker = ticker
+
         self.benchmark_historical_prices = yf.download(
             ticker,
             start=self.inception_date - datetime.timedelta(days=1),
