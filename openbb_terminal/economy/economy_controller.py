@@ -1,6 +1,6 @@
 """ Econ Controller """
 __docformat__ = "numpy"
-# pylint:disable=too-many-lines,R1710,R0904,C0415,too-many-branches
+# pylint:disable=too-many-lines,R1710,R0904,C0415,too-many-branches,unnecessary-dict-index-lookup
 
 import argparse
 import logging
@@ -1447,6 +1447,15 @@ class EconomyController(BaseController):
             PredictionTechniquesController,
         )
 
+        data: Dict = {}
+        for source, _ in self.DATASETS.items():
+            if not self.DATASETS[source].empty:
+                if len(self.DATASETS[source].columns) == 1:
+                    data[self.DATASETS[source].columns[0]] = self.DATASETS[source]
+                else:
+                    for col in list(self.DATASETS[source].columns):
+                        data[col] = self.DATASETS[source][col].to_frame()
+
         self.queue = self.load_class(
             PredictionTechniquesController, self.DATASETS, self.queue
         )
@@ -1465,4 +1474,13 @@ class EconomyController(BaseController):
             QaController,
         )
 
-        self.queue = self.load_class(QaController, self.DATASETS, self.queue)
+        data: Dict = {}
+        for source, _ in self.DATASETS.items():
+            if not self.DATASETS[source].empty:
+                if len(self.DATASETS[source].columns) == 1:
+                    data[self.DATASETS[source].columns[0]] = self.DATASETS[source]
+                else:
+                    for col in list(self.DATASETS[source].columns):
+                        data[col] = self.DATASETS[source][col].to_frame()
+
+        self.queue = self.load_class(QaController, data, self.queue)
