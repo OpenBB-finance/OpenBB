@@ -612,6 +612,7 @@ en:
   crypto/dd/change: 30d change of supply held on exchange wallets
   crypto/dd/eb: total balance held on exchanges (in percentage and units)
   crypto/dd/oi: open interest per exchange
+  crypto/dd/fundrate: funding rate per exchange
   crypto/dd/basic: basic information about loaded coin
   crypto/dd/ps: price and supply related metrics for loaded coin
   crypto/dd/mkt: all markets for loaded coin

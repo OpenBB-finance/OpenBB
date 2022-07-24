@@ -748,6 +748,8 @@ main:
                 ref: "/terminal/crypto/dd/change"
               - name: eb
                 ref: "/terminal/crypto/dd/eb"
+              - name: fundrate
+                ref: "/terminal/crypto/dd/fundrate"
               - name: oi
                 ref: "/terminal/crypto/dd/oi"
               - name: info
