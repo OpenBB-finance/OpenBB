@@ -357,7 +357,7 @@ def show_quick_performance(crypto_df: pd.DataFrame, symbol: str, current_currenc
     df = df.applymap(lambda x: f"[red]{x}[/red]" if "-" in x else f"[green]{x}[/green]")
     if len(closes) > 365:
         df["Volatility (1Y)"] = (
-            str(round(100 * np.sqrt(365) * closes[:365].pct_change().std(), 2)) + " %"
+            str(round(100 * np.sqrt(365) * closes[-365:].pct_change().std(), 2)) + " %"
         )
     else:
         df["Volatility (Ann)"] = (
