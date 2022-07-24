@@ -2243,8 +2243,7 @@ def display_ef(
                 risk = risk * time_factor[freq.upper()] ** 0.5
 
             ticker_plot = ticker_plot.append(
-                {"ticker": ticker, "var": risk * time_factor[freq.upper()] ** 0.5},
-                ignore_index=True,
+                {"ticker": ticker, "var": risk}, ignore_index=True
             )
         ticker_plot = ticker_plot.set_index("ticker")
         ticker_plot = ticker_plot.merge(

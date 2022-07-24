@@ -1,13 +1,13 @@
 ```
-usage: metric [-m {volatility,sharpe,sortino,maxdrawdown,rsquare,skew,kurtosis}] [-r RISK_FREE_RATE] [-h] [--export EXPORT]
+usage: metric [-m {volatility,sharpe,sortino,maxdrawdown,rsquare,skew,kurtosis,gaintopain,trackerr,information,tail,commonsense,jensens,calmar,kelly,payoff,profitfactor}] [-r RISK_FREE_RATE] [-h] [--export EXPORT]
 ```
 
 Display metric of choice for different periods
 
 ```
 optional arguments:
-  -m {volatility,sharpe,sortino,maxdrawdown,rsquare,skew,kurtosis}, --metric {volatility,sharpe,sortino,maxdrawdown,rsquare,skew,kurtosis}
-                        Period to apply rolling window (default: False)
+  -m {volatility,sharpe,sortino,maxdrawdown,rsquare,skew,kurtosis,gaintopain,trackerr,information,tail,commonsense,jensens,calmar,kelly,payoff,profitfactor}, --metric {volatility,sharpe,sortino,maxdrawdown,rsquare,skew,kurtosis,gaintopain,trackerr,information,tail,commonsense,jensens,calmar,kelly,payoff,profitfactor}
+                        Set metric of choice (default: False)
   -r RISK_FREE_RATE, --rfr RISK_FREE_RATE
                         Set risk free rate for calculations. (default: 0.0)
   -h, --help            show this help message (default: False)

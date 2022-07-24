@@ -50,16 +50,33 @@ def get_historical(
     pd.DataFrame
         Dataframe containing candle type variable for each ticker
     """
+
+    use_returns = False
+    if candle_type.lower() == "r":
+        # Calculate returns based off of adjusted close
+        use_returns = True
+        candle_type = "a"
+
     # To avoid having to recursively append, just do a single yfinance call.  This will give dataframe
     # where all tickers are columns.
     similar_tickers_dataframe = yf.download(
         similar_tickers, start=start, progress=False, threads=False
     )[d_candle_types[candle_type]]
-    return (
+
+    returnable = (
         similar_tickers_dataframe
         if similar_tickers_dataframe.empty
         else similar_tickers_dataframe[similar_tickers]
     )
+
+    if use_returns:
+        # To calculate the period to period return,
+        # shift the dataframe by one row, then divide it into
+        # the other, then subtract 1 to get a percentage, which is the return.
+        shifted = returnable.shift(1)[1:]
+        returnable = returnable.div(shifted) - 1
+
+    return returnable
 
 
 @log_start_end(log=logger)

@@ -10,16 +10,15 @@ from prompt_toolkit.completion import NestedCompleter
 
 from openbb_terminal.cryptocurrency import cryptocurrency_helpers
 from openbb_terminal import feature_flags as obbff
-from openbb_terminal.cryptocurrency.crypto_controller import CRYPTO_SOURCES
 from openbb_terminal.cryptocurrency.overview import cryptopanic_model
 from openbb_terminal.cryptocurrency.due_diligence import (
     binance_model,
     binance_view,
     ccxt_model,
     ccxt_view,
-    coinbase_model,
     coinbase_view,
     coinglass_model,
+    coinbase_model,
     coinglass_view,
     coinpaprika_view,
     glassnode_model,
@@ -35,7 +34,6 @@ from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
-    parse_known_args_and_warn,
     valid_date,
 )
 from openbb_terminal.menu import session
@@ -61,11 +59,30 @@ class DueDiligenceController(CryptoBaseController):
     CHOICES_COMMANDS = ["load", "oi", "active", "change", "nonzero", "eb"]
 
     SPECIFIC_CHOICES = {
-        "cp": ["events", "twitter", "ex", "mkt", "ps", "basic",],
-        "cg": ["info", "market", "ath", "atl", "score", "web", "social", "bc", "dev",],
-        "bin": ["binbook", "balance",],
-        "ccxt": ["ob"],
-        "cb": ["cbbook", "trades", "stats"],
+        "cp": [
+            "events",
+            "twitter",
+            "ex",
+            "mkt",
+            "ps",
+            "basic",
+        ],
+        "cg": [
+            "info",
+            "market",
+            "ath",
+            "atl",
+            "score",
+            "web",
+            "social",
+            "bc",
+            "dev",
+        ],
+        "bin": [
+            "balance",
+        ],
+        "ccxt": ["ob", "trades"],
+        "cb": ["stats"],
         "mes": ["mcapdom", "links", "rm", "tk", "pi", "mt", "team", "gov", "fr", "inv"],
         "san": ["gh"],
         "cpanic": ["news"],
@@ -83,7 +100,10 @@ class DueDiligenceController(CryptoBaseController):
     PATH = "/crypto/dd/"
 
     def __init__(
-        self, symbol=None, source=None, queue: List[str] = None,
+        self,
+        symbol=None,
+        source=None,
+        queue: List[str] = None,
     ):
         """Constructor"""
         super().__init__(queue)
@@ -108,18 +128,8 @@ class DueDiligenceController(CryptoBaseController):
             choices["change"] = {
                 c: None for c in glassnode_model.GLASSNODE_SUPPORTED_EXCHANGES
             }
-            choices["change"]["-i"] = {
-                c: None
-                for c in glassnode_model.INTERVALS_DISPLAY_EXCHANGE_NET_POSITION_CHANGE
-            }
-            choices["nonzero"]["-i"] = {
-                c: None for c in glassnode_model.INTERVALS_NON_ZERO_ADDRESSES
-            }
             choices["eb"] = {
                 c: None for c in glassnode_model.GLASSNODE_SUPPORTED_EXCHANGES
-            }
-            choices["eb"]["-i"] = {
-                c: None for c in glassnode_model.INTERVALS_EXCHANGE_BALANCES
             }
             choices["oi"]["-i"] = {c: None for c in coinglass_model.INTERVALS}
             choices["atl"]["--vs"] = {c: None for c in FILTERS_VS_USD_BTC}
@@ -143,6 +153,7 @@ class DueDiligenceController(CryptoBaseController):
             choices["news"]["-s"] = {c: None for c in cryptopanic_model.SORT_FILTERS}
 
             choices["support"] = self.SUPPORT_CHOICES
+            choices["about"] = self.ABOUT_CHOICES
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -169,13 +180,12 @@ class DueDiligenceController(CryptoBaseController):
         mt.add_info("_market_")
         mt.add_cmd("market", "CoinGecko")
         mt.add_cmd("mkt", "CoinPaprika")
-        mt.add_cmd("binbook", "Binance")
         mt.add_cmd("balance", "Binance")
-        mt.add_cmd("cbbook", "Coinbase")
-        mt.add_cmd("trades", "Coinbase")
         mt.add_cmd("ex", "CoinPaprika")
         mt.add_cmd("oi", "Coinglass")
         mt.add_cmd("eb", "Glassnode")
+        mt.add_cmd("trades", "CCXT")
+        mt.add_cmd("ob", "CCXT")
 
         mt.add_info("_metrics_")
         mt.add_cmd("mcapdom", "Messari")
@@ -225,26 +235,16 @@ class DueDiligenceController(CryptoBaseController):
                 description="""
                     Display addresses with nonzero assets in a certain blockchain
                     [Source: https://glassnode.org]
+                    Note that free api keys only allow fetching data with a 1y lag
                 """,
             )
 
-            parser.add_argument(
-                "-i",
-                "--interval",
-                dest="interval",
-                type=str,
-                help="Frequency interval. Default: 24h",
-                default="24h",
-                choices=glassnode_model.INTERVALS_NON_ZERO_ADDRESSES,
-            )
-
-            # TODO: tell users that free api key only data with 1y lag
             parser.add_argument(
                 "-s",
                 "--since",
                 dest="since",
                 type=valid_date,
-                help="Initial date. Default: 2020-01-01",
+                help="Initial date. Default: 2 years ago",
                 default=(datetime.now() - timedelta(days=365 * 2)).strftime("%Y-%m-%d"),
             )
 
@@ -253,18 +253,17 @@ class DueDiligenceController(CryptoBaseController):
                 "--until",
                 dest="until",
                 type=valid_date,
-                help="Final date. Default: 2021-01-01",
+                help="Final date. Default: 1 year ago",
                 default=(datetime.now() - timedelta(days=367)).strftime("%Y-%m-%d"),
             )
 
-            ns_parser = parse_known_args_and_warn(
+            ns_parser = self.parse_known_args_and_warn(
                 parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
             )
 
             if ns_parser:
                 glassnode_view.display_non_zero_addresses(
                     asset=self.symbol.upper(),
-                    interval=ns_parser.interval,
                     since=int(datetime.timestamp(ns_parser.since)),
                     until=int(datetime.timestamp(ns_parser.until)),
                     export=ns_parser.export,
@@ -272,6 +271,36 @@ class DueDiligenceController(CryptoBaseController):
 
         else:
             console.print("Glassnode source does not support this symbol\n")
+
+    @log_start_end(log=logger)
+    def call_stats(self, other_args):
+        """Process stats command"""
+        coin = self.symbol.upper()
+        _, quotes = coinbase_model.show_available_pairs_for_given_symbol(coin)
+
+        parser = argparse.ArgumentParser(
+            prog="stats",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="Display coin stats",
+        )
+
+        parser.add_argument(
+            "--vs",
+            help="Quote currency (what to view coin vs)",
+            dest="vs",
+            type=str,
+            default="USDT" if "USDT" in quotes else quotes[0],
+            choices=quotes,
+        )
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        if ns_parser:
+            pair = f"{coin}-{ns_parser.vs.upper()}"
+            coinbase_view.display_stats(pair, ns_parser.export)
 
     @log_start_end(log=logger)
     def call_active(self, other_args: List[str]):
@@ -303,7 +332,7 @@ class DueDiligenceController(CryptoBaseController):
                 "--since",
                 dest="since",
                 type=valid_date,
-                help="Initial date. Default: 2020-01-01",
+                help="Initial date. Default: 1 year ago",
                 default=(datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d"),
             )
 
@@ -312,11 +341,11 @@ class DueDiligenceController(CryptoBaseController):
                 "--until",
                 dest="until",
                 type=valid_date,
-                help="Final date. Default: 2021-01-01",
+                help="Final date. Default: Today",
                 default=(datetime.now()).strftime("%Y-%m-%d"),
             )
 
-            ns_parser = parse_known_args_and_warn(
+            ns_parser = self.parse_known_args_and_warn(
                 parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
             )
 
@@ -344,6 +373,7 @@ class DueDiligenceController(CryptoBaseController):
                 description="""
                     Display active blockchain addresses over time
                     [Source: https://glassnode.org]
+                    Note that free api keys only allow fetching data with a 1y lag
                 """,
             )
 
@@ -358,22 +388,12 @@ class DueDiligenceController(CryptoBaseController):
             )
 
             parser.add_argument(
-                "-i",
-                "--interval",
-                dest="interval",
-                type=str,
-                help="Frequency interval. Default: 24h",
-                default="24h",
-                choices=glassnode_model.INTERVALS_DISPLAY_EXCHANGE_NET_POSITION_CHANGE,
-            )
-
-            parser.add_argument(
                 "-s",
                 "--since",
                 dest="since",
                 type=valid_date,
-                help="Initial date. Default: 2019-01-01",
-                default="2019-01-01",
+                help="Initial date. Default: 2 years ago",
+                default=(datetime.now() - timedelta(days=365 * 2)).strftime("%Y-%m-%d"),
             )
 
             parser.add_argument(
@@ -381,22 +401,21 @@ class DueDiligenceController(CryptoBaseController):
                 "--until",
                 dest="until",
                 type=valid_date,
-                help="Final date. Default: 2020-01-01",
-                default="2020-01-01",
+                help="Final date. Default: 1 year ago",
+                default=(datetime.now() - timedelta(days=367)).strftime("%Y-%m-%d"),
             )
 
             if other_args:
                 if not other_args[0][0] == "-":
                     other_args.insert(0, "-e")
 
-            ns_parser = parse_known_args_and_warn(
+            ns_parser = self.parse_known_args_and_warn(
                 parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
             )
 
             if ns_parser:
                 glassnode_view.display_exchange_net_position_change(
                     asset=self.symbol.upper(),
-                    interval=ns_parser.interval,
                     exchange=ns_parser.exchange,
                     since=int(datetime.timestamp(ns_parser.since)),
                     until=int(datetime.timestamp(ns_parser.until)),
@@ -417,6 +436,7 @@ class DueDiligenceController(CryptoBaseController):
                 description="""
                     Display active blockchain addresses over time
                     [Source: https://glassnode.org]
+                    Note that free api keys only allow fetching data with a 1y lag
                 """,
             )
 
@@ -439,22 +459,12 @@ class DueDiligenceController(CryptoBaseController):
             )
 
             parser.add_argument(
-                "-i",
-                "--interval",
-                dest="interval",
-                type=str,
-                help="Frequency interval. Default: 24h",
-                default="24h",
-                choices=glassnode_model.INTERVALS_EXCHANGE_BALANCES,
-            )
-
-            parser.add_argument(
                 "-s",
                 "--since",
                 dest="since",
                 type=valid_date,
-                help="Initial date. Default: 2019-01-01",
-                default="2019-01-01",
+                help="Initial date. Default: 2 years ago",
+                default=(datetime.now() - timedelta(days=365 * 2)).strftime("%Y-%m-%d"),
             )
 
             parser.add_argument(
@@ -462,21 +472,20 @@ class DueDiligenceController(CryptoBaseController):
                 "--until",
                 dest="until",
                 type=valid_date,
-                help="Final date. Default: 2020-01-01",
-                default="2020-01-01",
+                help="Final date. Default: 1 year ago",
+                default=(datetime.now() - timedelta(days=367)).strftime("%Y-%m-%d"),
             )
 
             if other_args and not other_args[0][0] == "-":
                 other_args.insert(0, "-e")
 
-            ns_parser = parse_known_args_and_warn(
+            ns_parser = self.parse_known_args_and_warn(
                 parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
             )
 
             if ns_parser:
                 glassnode_view.display_exchange_balances(
                     asset=self.symbol.upper(),
-                    interval=ns_parser.interval,
                     exchange=ns_parser.exchange,
                     since=int(datetime.timestamp(ns_parser.since)),
                     until=int(datetime.timestamp(ns_parser.until)),
@@ -511,7 +520,7 @@ class DueDiligenceController(CryptoBaseController):
             choices=coinglass_model.INTERVALS,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
 
@@ -535,15 +544,15 @@ class DueDiligenceController(CryptoBaseController):
                     """,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
         if ns_parser:
-            cg_id = check_cg_id(self.symbol)
-            if cg_id:
+            if self.symbol:
                 pycoingecko_view.display_info(
-                    symbol=cg_id, export=ns_parser.export,
+                    symbol=self.symbol,
+                    export=ns_parser.export,
                 )
 
     @log_start_end(log=logger)
@@ -557,7 +566,7 @@ class DueDiligenceController(CryptoBaseController):
             Market data for loaded coin. There you find metrics like:
             Market Cap, Supply, Circulating Supply, Price, Volume and many others.""",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -576,15 +585,15 @@ class DueDiligenceController(CryptoBaseController):
                                 homepage, forum, announcement site and others.""",
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
         if ns_parser:
-            cg_id = check_cg_id(self.symbol)
-            if cg_id:
+            if self.symbol:
                 pycoingecko_view.display_web(
-                    cg_id, export=ns_parser.export,
+                    self.symbol,
+                    export=ns_parser.export,
                 )
 
     @log_start_end(log=logger)
@@ -597,7 +606,7 @@ class DueDiligenceController(CryptoBaseController):
             description="""Shows social media corresponding to loaded coin. You can find there name of
             telegram channel, urls to twitter, reddit, bitcointalk, facebook and discord.""",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -619,7 +628,7 @@ class DueDiligenceController(CryptoBaseController):
             There are some statistics that shows number of stars, forks, subscribers, pull requests,
             commits, merges, contributors on github.""",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -646,7 +655,7 @@ class DueDiligenceController(CryptoBaseController):
             choices=FILTERS_VS_USD_BTC,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -672,7 +681,7 @@ class DueDiligenceController(CryptoBaseController):
             default="usd",
             choices=FILTERS_VS_USD_BTC,
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -695,7 +704,7 @@ class DueDiligenceController(CryptoBaseController):
             and many others.""",
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -716,7 +725,7 @@ class DueDiligenceController(CryptoBaseController):
             in which you can see all blockchain data e.g. all txs, all tokens, all contracts...
                                 """,
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -749,98 +758,63 @@ class DueDiligenceController(CryptoBaseController):
             "--vs",
             help="Quote currency (what to view coin vs)",
             dest="vs",
-            type=str,
-            default="USDT",
-            choices=["USDT"],
+            type=str.lower,
+            default="usdt",
+            choices=["usdt", "usdc", "btc"],
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
 
         if ns_parser:
             ccxt_view.display_order_book(
                 ns_parser.exchange,
-                # coin=coin,
-                # limit=ns_parser.limit,
-                # currency=ns_parser.vs,
+                coin=self.symbol,
+                vs=ns_parser.vs,
                 export=ns_parser.export,
             )
 
     @log_start_end(log=logger)
-    def call_binbook(self, other_args):
-        """Process book command"""
+    def call_trades(self, other_args):
+        """Process trades command"""
         parser = argparse.ArgumentParser(
-            prog="binbook",
+            prog="trades",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            description="Get the order book for selected coin",
+            description="Get the latest trades for selected coin",
         )
 
-        limit_list = [5, 10, 20, 50, 100, 500, 1000, 5000]
-        coin = self.symbol.upper()
-        _, quotes = binance_model.show_available_pairs_for_given_symbol(coin)
         parser.add_argument(
-            "-l",
-            "--limit",
-            dest="limit",
-            help="Limit parameter.  Adjusts the weight",
-            default=100,
-            type=int,
-            choices=limit_list,
+            "-e",
+            "--exchange",
+            help="Exchange to search for order book",
+            dest="exchange",
+            type=str,
+            default="binance",
+            choices=self.ccxt_exchanges,
         )
 
         parser.add_argument(
             "--vs",
             help="Quote currency (what to view coin vs)",
             dest="vs",
-            type=str,
-            default="USDT",
-            choices=quotes,
+            type=str.lower,
+            default="usdt",
+            choices=["usdt", "usdc", "btc"],
         )
 
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, limit=10
         )
+
         if ns_parser:
-            binance_view.display_order_book(
-                coin=coin,
-                limit=ns_parser.limit,
-                currency=ns_parser.vs,
+            ccxt_view.display_trades(
+                ns_parser.exchange,
+                coin=self.symbol,
+                vs=ns_parser.vs,
                 export=ns_parser.export,
-            )
-
-    @log_start_end(log=logger)
-    def call_cbbook(self, other_args):
-        """Process cbbook command"""
-        coin = self.symbol.upper()
-        parser = argparse.ArgumentParser(
-            prog="cbbook",
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            description="Get the order book for selected coin",
-        )
-
-        _, quotes = coinbase_model.show_available_pairs_for_given_symbol(coin)
-        if len(quotes) < 0:
-            console.print(f"Couldn't find any quoted coins for provided symbol {coin}")
-
-        parser.add_argument(
-            "--vs",
-            help="Quote currency (what to view coin vs)",
-            dest="vs",
-            type=str,
-            default="USDT" if "USDT" in quotes else quotes[0],
-            choices=quotes,
-        )
-
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-        if ns_parser:
-            pair = f"{coin}-{ns_parser.vs.upper()}"
-            coinbase_view.display_order_book(
-                product_id=pair, export=ns_parser.export,
+                top=ns_parser.limit,
             )
 
     @log_start_end(log=logger)
@@ -865,7 +839,7 @@ class DueDiligenceController(CryptoBaseController):
             choices=quotes,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -873,94 +847,6 @@ class DueDiligenceController(CryptoBaseController):
             binance_view.display_balance(
                 coin=coin, currency=ns_parser.vs, export=ns_parser.export
             )
-
-    @log_start_end(log=logger)
-    def call_trades(self, other_args):
-        """Process trades command"""
-        parser = argparse.ArgumentParser(
-            prog="trades",
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            description="Show last trades on Coinbase",
-        )
-        coin = self.symbol.upper()
-        _, quotes = coinbase_model.show_available_pairs_for_given_symbol(coin)
-        if len(quotes) < 0:
-            console.print(
-                f"Couldn't find any quoted coins for provided symbol {self.symbol}"
-            )
-
-        parser.add_argument(
-            "--vs",
-            help="Quote currency (what to view coin vs)",
-            dest="vs",
-            type=str,
-            default="USDT" if "USDT" in quotes else quotes[0],
-            choices=quotes,
-        )
-
-        parser.add_argument(
-            "--side",
-            help="Side of trade: buy, sell, all",
-            dest="side",
-            type=str,
-            default="all",
-            choices=["all", "buy", "sell"],
-        )
-
-        parser.add_argument(
-            "-t",
-            "--top",
-            default=15,
-            dest="top",
-            help="Limit of records",
-            type=check_positive,
-        )
-
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-
-        if ns_parser:
-            pair = f"{coin}-{ns_parser.vs.upper()}"
-            if ns_parser.side.upper() == "all":
-                side = None
-            else:
-                side = ns_parser.side
-
-            coinbase_view.display_trades(
-                product_id=pair, limit=ns_parser.top, side=side, export=ns_parser.export
-            )
-
-    @log_start_end(log=logger)
-    def call_stats(self, other_args):
-        """Process stats command"""
-        coin = self.symbol.upper()
-        _, quotes = coinbase_model.show_available_pairs_for_given_symbol(coin)
-
-        parser = argparse.ArgumentParser(
-            prog="stats",
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            description="Display coin stats",
-        )
-
-        parser.add_argument(
-            "--vs",
-            help="Quote currency (what to view coin vs)",
-            dest="vs",
-            type=str,
-            default="USDT" if "USDT" in quotes else quotes[0],
-            choices=quotes,
-        )
-
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-
-        if ns_parser:
-            pair = f"{coin}-{ns_parser.vs.upper()}"
-            coinbase_view.display_stats(pair, ns_parser.export)
 
     @log_start_end(log=logger)
     def call_ps(self, other_args):
@@ -980,14 +866,15 @@ class DueDiligenceController(CryptoBaseController):
             type=str,
             choices=coinpaprika_view.CURRENCIES,
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            cp_id = cryptocurrency_helpers.get_coinpaprika_id(self.symbol)
-            if cp_id:
+            if self.symbol:
                 coinpaprika_view.display_price_supply(
-                    cp_id, ns_parser.vs, ns_parser.export,
+                    self.symbol,
+                    ns_parser.vs,
+                    ns_parser.export,
                 )
 
     @log_start_end(log=logger)
@@ -1001,14 +888,14 @@ class DueDiligenceController(CryptoBaseController):
                 name, symbol, rank, type, description, platform, proof_type,
                 contract, tags, parent""",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            cp_id = cryptocurrency_helpers.get_coinpaprika_id(self.symbol)
-            if cp_id:
+            if self.symbol:
                 coinpaprika_view.display_basic(
-                    cp_id, ns_parser.export,
+                    self.symbol,
+                    ns_parser.export,
                 )
 
     @log_start_end(log=logger)
@@ -1072,14 +959,13 @@ class DueDiligenceController(CryptoBaseController):
                 exchange, pair, trust_score, market_url columns""",
             default=False,
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            cp_id = cryptocurrency_helpers.get_coinpaprika_id(self.symbol)
-            if cp_id:
+            if self.symbol:
                 coinpaprika_view.display_markets(
-                    coin_id=cp_id,
+                    symbol=self.symbol,
                     currency=ns_parser.vs,
                     top=ns_parser.limit,
                     sortby=ns_parser.sortby,
@@ -1130,14 +1016,13 @@ class DueDiligenceController(CryptoBaseController):
             default=False,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            cp_id = cryptocurrency_helpers.get_coinpaprika_id(self.symbol)
-            if cp_id:
+            if self.symbol:
                 coinpaprika_view.display_exchanges(
-                    coin_id=cp_id,
+                    symbol=self.symbol,
                     top=ns_parser.limit,
                     sortby=ns_parser.sortby,
                     descend=ns_parser.descend,
@@ -1197,14 +1082,13 @@ class DueDiligenceController(CryptoBaseController):
             default=False,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            cp_id = cryptocurrency_helpers.get_coinpaprika_id(self.symbol)
-            if cp_id:
+            if self.symbol:
                 coinpaprika_view.display_events(
-                    coin_id=cp_id,
+                    symbol=self.symbol,
                     top=ns_parser.limit,
                     sortby=ns_parser.sortby,
                     descend=ns_parser.descend,
@@ -1255,14 +1139,13 @@ class DueDiligenceController(CryptoBaseController):
             default=False,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            cp_id = cryptocurrency_helpers.get_coinpaprika_id(self.symbol)
-            if cp_id:
+            if self.symbol:
                 coinpaprika_view.display_twitter(
-                    coin_id=cp_id,
+                    symbol=self.symbol,
                     top=ns_parser.limit,
                     sortby=ns_parser.sortby,
                     descend=ns_parser.descend,
@@ -1311,7 +1194,7 @@ class DueDiligenceController(CryptoBaseController):
             default=datetime.now().strftime("%Y-%m-%d"),
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
 
@@ -1337,13 +1220,14 @@ class DueDiligenceController(CryptoBaseController):
             """,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
         if ns_parser:
             messari_view.display_links(
-                coin=self.symbol.upper(), export=ns_parser.export,
+                coin=self.symbol.upper(),
+                export=ns_parser.export,
             )
 
     @log_start_end(log=logger)
@@ -1369,7 +1253,7 @@ class DueDiligenceController(CryptoBaseController):
             dest="interval",
             type=str,
             help="Frequency interval. Default: 1d",
-            default="1w",
+            default="1d",
         )
 
         parser.add_argument(
@@ -1399,7 +1283,7 @@ class DueDiligenceController(CryptoBaseController):
             default=datetime.now().strftime("%Y-%m-%d"),
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
 
@@ -1433,7 +1317,7 @@ class DueDiligenceController(CryptoBaseController):
             default=False,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED, limit=5
         )
 
@@ -1459,16 +1343,14 @@ class DueDiligenceController(CryptoBaseController):
             """,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
         if ns_parser:
-            cg_id = check_cg_id(self.symbol)
-            if cg_id:
+            if self.symbol:
                 messari_view.display_tokenomics(
                     coin=self.symbol.upper(),
-                    coingecko_symbol=cg_id,
                     export=ns_parser.export,
                 )
 
@@ -1486,13 +1368,14 @@ class DueDiligenceController(CryptoBaseController):
             """,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
         if ns_parser:
             messari_view.display_project_info(
-                coin=self.symbol.upper(), export=ns_parser.export,
+                coin=self.symbol.upper(),
+                export=ns_parser.export,
             )
 
     @log_start_end(log=logger)
@@ -1509,13 +1392,14 @@ class DueDiligenceController(CryptoBaseController):
             """,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
         if ns_parser:
             messari_view.display_team(
-                coin=self.symbol.upper(), export=ns_parser.export,
+                coin=self.symbol.upper(),
+                export=ns_parser.export,
             )
 
     @log_start_end(log=logger)
@@ -1532,13 +1416,14 @@ class DueDiligenceController(CryptoBaseController):
             """,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
         if ns_parser:
             messari_view.display_investors(
-                coin=self.symbol.upper(), export=ns_parser.export,
+                coin=self.symbol.upper(),
+                export=ns_parser.export,
             )
 
     @log_start_end(log=logger)
@@ -1555,13 +1440,14 @@ class DueDiligenceController(CryptoBaseController):
             """,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
         if ns_parser:
             messari_view.display_fundraising(
-                coin=self.symbol.upper(), export=ns_parser.export,
+                coin=self.symbol.upper(),
+                export=ns_parser.export,
             )
 
     @log_start_end(log=logger)
@@ -1578,13 +1464,14 @@ class DueDiligenceController(CryptoBaseController):
             """,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
         if ns_parser:
             messari_view.display_governance(
-                coin=self.symbol.upper(), export=ns_parser.export,
+                coin=self.symbol.upper(),
+                export=ns_parser.export,
             )
 
     @log_start_end(log=logger)
@@ -1665,7 +1552,7 @@ class DueDiligenceController(CryptoBaseController):
         if other_args and not other_args[0][0] == "-":
             other_args.insert(0, "-t")
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, limit=10
         )
 
@@ -1772,7 +1659,7 @@ class DueDiligenceController(CryptoBaseController):
             default=True,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 

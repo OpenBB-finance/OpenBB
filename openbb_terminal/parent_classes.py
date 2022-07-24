@@ -28,18 +28,26 @@ from openbb_terminal.helper_funcs import (
     system_clear,
     get_flair,
     valid_date,
-    parse_known_args_and_warn,
+    parse_simple_args,
     set_command_location,
     prefill_form,
     support_message,
+    check_file_type_saved,
+    check_positive,
+    get_ordered_list_sources,
 )
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks import stocks_helper
+from openbb_terminal.terminal_helper import open_openbb_documentation
 from openbb_terminal.cryptocurrency import cryptocurrency_helpers
 
 logger = logging.getLogger(__name__)
 
+NO_EXPORT = 0
+EXPORT_ONLY_RAW_DATA_ALLOWED = 1
+EXPORT_ONLY_FIGURES_ALLOWED = 2
+EXPORT_BOTH_RAW_DATA_AND_FIGURES = 3
 
 controllers: Dict[str, Any] = {}
 
@@ -55,10 +63,10 @@ SUPPORT_TYPE = ["bug", "suggestion", "question", "generic"]
 
 
 class BaseController(metaclass=ABCMeta):
-
     CHOICES_COMMON = [
         "cls",
         "home",
+        "about",
         "h",
         "?",
         "help",
@@ -74,6 +82,7 @@ class BaseController(metaclass=ABCMeta):
     CHOICES_COMMANDS: List[str] = []
     CHOICES_MENUS: List[str] = []
     SUPPORT_CHOICES: Dict = {}
+    ABOUT_CHOICES: Dict = {}
     COMMAND_SEPARATOR = "/"
     KEYS_MENU = "keys" + COMMAND_SEPARATOR
     TRY_RELOAD = False
@@ -110,7 +119,10 @@ class BaseController(metaclass=ABCMeta):
 
         theme.applyMPLstyle()
 
-        # Terminal-wide support command auto-completion
+        # Add in about options
+        self.ABOUT_CHOICES = {
+            c: None for c in self.CHOICES_COMMANDS + self.CHOICES_MENUS
+        }
 
         # Remove common choices from list of support commands
         self.support_commands = [
@@ -146,6 +158,19 @@ class BaseController(metaclass=ABCMeta):
         """Checks for an existing instance of the controller before creating a new one"""
         self.save_class()
         arguments = len(args) + len(kwargs)
+        # Due to the 'arguments == 1' condition, we actually NEVER load a class
+        # that has arguments (The 1 argument corresponds to self.queue)
+        # Advantage: If the user changes something on one controller and then goes to the
+        # controller below, it will create such class from scratch bringing all new variables
+        # in and considering latest changes.
+        # Disadvantage: If the user goes on a controller below and we have been there before
+        # it will not load that previous class, but create a new one from scratch.
+        # SCENARIO: If the user is in stocks and does load AAPL/ta the TA menu will get AAPL,
+        # and if then the user goes back to the stocks menu using .. that menu will have AAPL
+        # Now, if "arguments == 1" condition exists, if the user does "load TSLA" and then
+        # goes into "TA", the "TSLA" ticker will appear. If that condition doesn't exist
+        # the previous class will be loaded and even if the user changes the ticker on
+        # the stocks context it will not impact the one of TA menu - unless changes are done.
         if class_ins.PATH in controllers and arguments == 1 and obbff.REMEMBER_CONTEXTS:
             old_class = controllers[class_ins.PATH]
             old_class.queue = self.queue
@@ -258,6 +283,8 @@ class BaseController(metaclass=ABCMeta):
         """Process home command"""
         self.save_class()
         console.print("")
+        if self.PATH.count("/") == 1 and obbff.ENABLE_EXIT_AUTO_HELP:
+            self.print_help()
         for _ in range(self.PATH.count("/") - 1):
             self.queue.insert(0, "quit")
 
@@ -265,6 +292,37 @@ class BaseController(metaclass=ABCMeta):
     def call_help(self, _) -> None:
         """Process help command"""
         self.print_help()
+
+    @log_start_end(log=logger)
+    def call_about(self, other_args: List[str]) -> None:
+        """Process about command"""
+        description = "Display the documentation of the menu or command."
+        if self.CHOICES_COMMANDS and self.CHOICES_MENUS:
+            description += (
+                f" E.g. 'about {self.CHOICES_COMMANDS[0]}' opens a guide about the command "
+                f"{self.CHOICES_COMMANDS[0]} and 'about {self.CHOICES_MENUS[0]}' opens a guide about the "
+                f"menu {self.CHOICES_MENUS[0]}."
+            )
+
+        parser = argparse.ArgumentParser(
+            add_help=False, prog="about", description=description
+        )
+        parser.add_argument(
+            "-c",
+            "--command",
+            type=str,
+            dest="command",
+            default=None,
+            help="Obtain documentation on the given command or menu",
+            choices=self.CHOICES_COMMANDS + self.CHOICES_MENUS,
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-c")
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
+
+        if ns_parser:
+            open_openbb_documentation(self.PATH, command=ns_parser.command)
 
     @log_start_end(log=logger)
     def call_quit(self, _) -> None:
@@ -277,6 +335,7 @@ class BaseController(metaclass=ABCMeta):
     def call_exit(self, _) -> None:
         # Not sure how to handle controller loading here
         """Process exit terminal command"""
+        self.save_class()
         console.print("")
         for _ in range(self.PATH.count("/")):
             self.queue.insert(0, "quit")
@@ -286,6 +345,7 @@ class BaseController(metaclass=ABCMeta):
         """Process reset command. If you would like to have customization in the
         reset process define a method `custom_reset` in the child class.
         """
+        self.save_class()
         if self.PATH != "/":
             if self.custom_reset():
                 self.queue = self.custom_reset() + self.queue
@@ -359,7 +419,7 @@ class BaseController(metaclass=ABCMeta):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-c")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
 
         if ns_parser:
             prefill_form(
@@ -369,6 +429,116 @@ class BaseController(metaclass=ABCMeta):
                 message=" ".join(ns_parser.msg),
                 path=self.PATH,
             )
+
+    def parse_known_args_and_warn(
+        self,
+        parser: argparse.ArgumentParser,
+        other_args: List[str],
+        export_allowed: int = NO_EXPORT,
+        raw: bool = False,
+        limit: int = 0,
+    ):
+        """Parses list of arguments into the supplied parser
+
+        Parameters
+        ----------
+        parser: argparse.ArgumentParser
+            Parser with predefined arguments
+        other_args: List[str]
+            List of arguments to parse
+        export_allowed: int
+            Choose from NO_EXPORT, EXPORT_ONLY_RAW_DATA_ALLOWED,
+            EXPORT_ONLY_FIGURES_ALLOWED and EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        raw: bool
+            Add the --raw flag
+        limit: int
+            Add a --limit flag with this number default
+
+        Returns
+        -------
+        ns_parser:
+            Namespace with parsed arguments
+        """
+        parser.add_argument(
+            "-h", "--help", action="store_true", help="show this help message"
+        )
+        if export_allowed > NO_EXPORT:
+            choices_export = []
+            help_export = "Does not export!"
+
+            if export_allowed == EXPORT_ONLY_RAW_DATA_ALLOWED:
+                choices_export = ["csv", "json", "xlsx"]
+                help_export = "Export raw data into csv, json, xlsx"
+            elif export_allowed == EXPORT_ONLY_FIGURES_ALLOWED:
+                choices_export = ["png", "jpg", "pdf", "svg"]
+                help_export = "Export figure into png, jpg, pdf, svg "
+            else:
+                choices_export = ["csv", "json", "xlsx", "png", "jpg", "pdf", "svg"]
+                help_export = "Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg "
+
+            parser.add_argument(
+                "--export",
+                default="",
+                type=check_file_type_saved(choices_export),
+                dest="export",
+                help=help_export,
+            )
+
+        if raw:
+            parser.add_argument(
+                "--raw",
+                dest="raw",
+                action="store_true",
+                default=False,
+                help="Flag to display raw data",
+            )
+        if limit > 0:
+            parser.add_argument(
+                "-l",
+                "--limit",
+                dest="limit",
+                default=limit,
+                help="Number of entries to show in data.",
+                type=check_positive,
+            )
+
+        sources = get_ordered_list_sources(f"{self.PATH}{parser.prog}")
+        if sources:
+            parser.add_argument(
+                "--source",
+                action="store",
+                dest="source",
+                choices=sources,
+                default=sources[0],  # the first source from the list is the default
+                help="Data source to select from",
+            )
+
+        if obbff.USE_CLEAR_AFTER_CMD:
+            system_clear()
+
+        try:
+            (ns_parser, l_unknown_args) = parser.parse_known_args(other_args)
+        except SystemExit:
+            # In case the command has required argument that isn't specified
+            console.print("")
+            return None
+
+        if ns_parser.help:
+            txt_help = parser.format_help() + "\n"
+            if parser.prog != "about":
+                txt_help += (
+                    f"For more information and examples, use 'about {parser.prog}' "
+                    f"to access the related guide.\n"
+                )
+            console.print(f"[help]{txt_help}[/help]")
+            return None
+
+        if l_unknown_args:
+            console.print(
+                f"The following args couldn't be interpreted: {l_unknown_args}"
+            )
+
+        return ns_parser
 
     def menu(self, custom_path_menu_above: str = ""):
         an_input = "HELP_ME"
@@ -398,6 +568,7 @@ class BaseController(metaclass=ABCMeta):
                 if (
                     an_input
                     and an_input != "home"
+                    and an_input != "help"
                     and an_input.split(" ")[0] in self.controller_choices
                 ):
                     console.print(f"{get_flair()} {self.PATH} $ {an_input}")
@@ -420,9 +591,10 @@ class BaseController(metaclass=ABCMeta):
                                     '<style bg="ansiblack" fg="ansiwhite">[h]</style> help menu    '
                                     '<style bg="ansiblack" fg="ansiwhite">[q]</style> return to previous menu    '
                                     '<style bg="ansiblack" fg="ansiwhite">[e]</style> exit terminal    '
-                                    '<style bg="ansiblack" fg="ansiwhite">[cmd -h]</style>'
-                                    ' see usage and available options         <style bg="#0000EE">'
-                                    f"https://openbb-finance.github.io/OpenBBTerminal/terminal{self.PATH}</style>"
+                                    '<style bg="ansiblack" fg="ansiwhite">[cmd -h]</style> '
+                                    "see usage and available options    "
+                                    f'<style bg="ansiblack" fg="ansiwhite">[about (cmd/menu)]</style> '
+                                    f"{self.path[-1].capitalize()} (cmd/menu) Documentation"
                                 ),
                                 style=Style.from_dict(
                                     {
@@ -439,7 +611,7 @@ class BaseController(metaclass=ABCMeta):
                     # Get input from user without auto-completion
                     else:
                         an_input = input(f"{get_flair()} {self.PATH} $ ")
-                except KeyboardInterrupt:
+                except (KeyboardInterrupt, EOFError):
                     # Exit in case of keyboard interrupt
                     an_input = "exit"
 
@@ -548,16 +720,6 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
             help="Intraday stock minutes",
         )
         parser.add_argument(
-            "--source",
-            action="store",
-            dest="source",
-            choices=["yf", "av", "iex", "polygon"]
-            if "-i" not in other_args or "--interval" not in other_args
-            else ["yf", "polygon"],
-            default="yf",
-            help="Source of historical data.",
-        )
-        parser.add_argument(
             "-p",
             "--prepost",
             action="store_true",
@@ -601,7 +763,10 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+        )
 
         if ns_parser:
             if ns_parser.weekly and ns_parser.monthly:
@@ -733,7 +898,7 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-c")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
 
         if ns_parser:
             (self.current_df) = cryptocurrency_helpers.load(
@@ -750,5 +915,6 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
                 )
             else:
                 console.print(
-                    f"\n[red]Could not find [bold]{ns_parser.coin}[/bold] in [bold]CoinGecko[/bold]. Make sure you search for symbol (e.g., btc) and not full name (e.g., bitcoin)[/red]\n"  # noqa: E501
+                    f"\n[red]Could not find [bold]{ns_parser.coin}[/bold] in [bold]yfinance[/bold]."
+                    f"Make sure you search for symbol (e.g., btc) and not full name (e.g., bitcoin)[/red]\n"  # noqa: E501
                 )

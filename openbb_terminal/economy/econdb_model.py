@@ -498,6 +498,8 @@ def get_macro_data(
         The units of the macro data, e.g. 'Bbl/day" for oil.
     """
     country = country.replace(" ", "_")
+    country = country[0].upper() + country[1:]
+    parameter = parameter.upper()
 
     if country not in COUNTRY_CODES:
         console.print(f"No data available for the country {country}.")
@@ -708,7 +710,10 @@ def get_treasuries(
 
                     for column in df.columns:
                         # check if type inside the name and maturity inside the maturity string
-                        if type_string in column[2] and maturity_string in column[3]:
+                        if (
+                            type_string.lower() in column[2].lower()
+                            and maturity_string in column[3]
+                        ):
                             treasury_data[type_string][maturity_string] = df[
                                 column
                             ].dropna()

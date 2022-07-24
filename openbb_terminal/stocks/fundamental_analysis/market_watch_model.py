@@ -89,9 +89,14 @@ def prepare_df_financials(
     if s_header_end_trend not in a_financials_header:
         return pd.DataFrame()
 
-    df_financials = pd.DataFrame(
-        columns=a_financials_header[0 : a_financials_header.index(s_header_end_trend)]
-    )
+    if s_header_end_trend in a_financials_header:
+        df_financials = pd.DataFrame(
+            columns=a_financials_header[
+                0 : a_financials_header.index(s_header_end_trend)
+            ]
+        )
+    else:
+        return pd.DataFrame()
 
     find_table = text_soup_financials.findAll(
         "div", {"class": "element element--table table--fixed financials"}

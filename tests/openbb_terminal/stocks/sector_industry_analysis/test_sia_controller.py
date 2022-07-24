@@ -57,7 +57,7 @@ def vcr_config():
 @pytest.mark.parametrize(
     "queue, expected",
     [
-        (["load", "help"], []),
+        (["load", "help"], ["help"]),
         (["quit", "help"], ["help"]),
     ],
 )
@@ -111,7 +111,7 @@ def test_menu_without_queue_completion(mocker):
         ticker=None, queue=None
     ).menu()
 
-    assert result_menu == []
+    assert result_menu == ["help"]
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -157,7 +157,7 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
         ticker=None, queue=None
     ).menu()
 
-    assert result_menu == []
+    assert result_menu == ["help"]
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -485,7 +485,8 @@ def test_call_func(
 )
 def test_call_func_no_parser(func, mocker):
     mocker.patch(
-        target="openbb_terminal.stocks.sector_industry_analysis.sia_controller.parse_known_args_and_warn",
+        target="openbb_terminal.stocks.sector_industry_analysis.sia_controller"
+        ".SectorIndustryAnalysisController.parse_known_args_and_warn",
         return_value=None,
     )
     controller = sia_controller.SectorIndustryAnalysisController(
@@ -495,7 +496,7 @@ def test_call_func_no_parser(func, mocker):
     func_result = getattr(controller, func)(other_args=list())
     assert func_result is None
     assert controller.queue == []
-    getattr(sia_controller, "parse_known_args_and_warn").assert_called_once()
+    controller.parse_known_args_and_warn.assert_called_once()
 
 
 @pytest.mark.vcr(record_mode="none")

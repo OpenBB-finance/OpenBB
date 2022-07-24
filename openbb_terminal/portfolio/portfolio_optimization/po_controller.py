@@ -17,7 +17,6 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     check_non_negative,
     get_rf,
-    parse_known_args_and_warn,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
@@ -509,7 +508,7 @@ class PortfolioOptimizationController(BaseController):
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-f")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
             self.current_file = " ".join(ns_parser.file)
@@ -531,7 +530,6 @@ class PortfolioOptimizationController(BaseController):
             self.params,
             self.current_model,
         )
-
         self.current_file = parent_classes.controllers[
             "/portfolio/po/params/"
         ].current_file
@@ -568,7 +566,7 @@ class PortfolioOptimizationController(BaseController):
             if "-" not in other_args[0]:
                 other_args.insert(0, "-pf")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             portfolios = set(self.portfolios.keys())
             if not ns_parser.categories:
@@ -622,7 +620,7 @@ class PortfolioOptimizationController(BaseController):
             if "-" not in other_args[0]:
                 other_args.insert(0, "-pf")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             portfolios = set(self.portfolios.keys())
             for portfolio in ns_parser.portfolios:
@@ -656,7 +654,7 @@ class PortfolioOptimizationController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-f")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
             filename = " ".join(ns_parser.file)
@@ -882,7 +880,7 @@ class PortfolioOptimizationController(BaseController):
             if "-" not in other_args[0]:
                 other_args.insert(0, "-pf")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if len(self.tickers) < 2:
                 console.print(
@@ -1132,7 +1130,7 @@ class PortfolioOptimizationController(BaseController):
             default="EQUAL_" + str(self.count),
             help="Save portfolio with personalized or default name",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if len(self.tickers) < 2:
                 console.print(
@@ -1328,7 +1326,7 @@ class PortfolioOptimizationController(BaseController):
             default="MKTCAP_" + str(self.count),
             help="Save portfolio with personalized or default name",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if len(self.tickers) < 2:
                 console.print(
@@ -1525,7 +1523,7 @@ class PortfolioOptimizationController(BaseController):
             default="DIVIDEND_" + str(self.count),
             help="Save portfolio with personalized or default name",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if len(self.tickers) < 2:
                 console.print(
@@ -1731,7 +1729,7 @@ class PortfolioOptimizationController(BaseController):
             default="PROPERTY_" + str(self.count),
             help="Save portfolio with personalized or default name",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if len(self.tickers) < 2:
                 console.print(
@@ -2034,7 +2032,7 @@ class PortfolioOptimizationController(BaseController):
             default=[],
             help="Show selected categories",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if len(self.tickers) < 2:
                 console.print(
@@ -2389,7 +2387,7 @@ class PortfolioOptimizationController(BaseController):
             default=[],
             help="Show selected categories",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if len(self.tickers) < 2:
                 console.print(
@@ -2756,7 +2754,7 @@ class PortfolioOptimizationController(BaseController):
             default=[],
             help="Show selected categories",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if len(self.tickers) < 2:
                 console.print(
@@ -3115,7 +3113,7 @@ class PortfolioOptimizationController(BaseController):
             default=[],
             help="Show selected categories",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if len(self.tickers) < 2:
                 console.print(
@@ -3401,7 +3399,7 @@ class PortfolioOptimizationController(BaseController):
             default=[],
             help="Show selected categories",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if len(self.tickers) < 2:
                 console.print(
@@ -3675,7 +3673,7 @@ class PortfolioOptimizationController(BaseController):
             default=[],
             help="Show selected categories",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if len(self.tickers) < 2:
                 console.print(
@@ -4020,7 +4018,7 @@ class PortfolioOptimizationController(BaseController):
             default="",
             help="Create a template to design Black Litterman model views",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if len(self.tickers) < 2:
                 console.print(
@@ -4353,7 +4351,7 @@ class PortfolioOptimizationController(BaseController):
             default=True,
             help="Whether or not to plot the tickers for the assets provided",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
             if len(self.tickers) < 2:
@@ -4615,7 +4613,7 @@ class PortfolioOptimizationController(BaseController):
             default=[],
             help="Show selected categories",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if len(self.tickers) < 2:
                 console.print(
@@ -4903,7 +4901,7 @@ class PortfolioOptimizationController(BaseController):
             default=[],
             help="Show selected categories",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if len(self.tickers) < 2:
                 console.print(
@@ -5336,7 +5334,7 @@ class PortfolioOptimizationController(BaseController):
             default=[],
             help="Show selected categories",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if len(self.tickers) < 2:
                 console.print(
@@ -5787,7 +5785,7 @@ class PortfolioOptimizationController(BaseController):
             default=[],
             help="Show selected categories",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if len(self.tickers) < 2:
                 console.print(
@@ -6214,7 +6212,7 @@ class PortfolioOptimizationController(BaseController):
             default=[],
             help="Show selected categories",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if len(self.tickers) < 2:
                 console.print(

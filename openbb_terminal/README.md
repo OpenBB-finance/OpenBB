@@ -4,8 +4,8 @@
 <details open="open">
   <summary><h2 style="display: inline-block">Table of Contents</h2></summary>
     <ol>
-      <li><a href="#Anaconda---Python">Anaconda & Python Installation</a></li>
-      <li><a href="#Docker-Installation">Docker Installation</a></li>
+      <li><a href="#anaconda--python">Anaconda & Python Installation</a></li>
+      <li><a href="#docker-installation">Docker Installation</a></li>
       <li><a href="#web-ui---docker">Docker Web UI Installation</a></li>
       <li><a href="#local-installation-of-gst-on-raspberry-pi">Raspberry-Pi-Installation - Portable GST</a></li>
       <li><a href="#api-keys">API Keys</a></li>
@@ -16,14 +16,15 @@
 
 There are currently four options to install the terminal:
 
-- using Installer: recommended if you just want to use the terminal
-- using Python: recommended if you want to develop new features
-- using Docker: alternative option to the installer if preferred
-- using Docker Web UI: if you want to deploy the web UI for users to access over your LAN
+- [Using the Installer](https://openbb-finance.github.io/OpenBBTerminal/#accessing-the-openbb-terminal) (recommended if you just want to use the terminal)
+- [Using Python](#anaconda--python) (recommended if you want to develop new features)
+- [Using Docker](#docker-installation) (alternative option to the installer if preferred)
+- [Using Docker Web UI](#web-ui---docker) (if you want to deploy the web UI for users to access
+  over your LAN)
 
 First step in all options is to star the project
 
-<img width="1272" alt="Github starts" src="https://user-images.githubusercontent.com/25267873/115989986-e20cfe80-a5b8-11eb-8182-d6d87d092252.png">
+<img width="1512" alt="OpenBB Terminal GitHub Stars" src="https://user-images.githubusercontent.com/46355364/176408138-771ec9ae-c873-4406-b964-939b8e433c15.png">
 
 ## Anaconda & Python
 
@@ -65,13 +66,17 @@ installation on Windows without WSL, @JohnnyDankseed has made one available [her
 
 These steps are common in all operating systems (Windows with or without WSL, MacOS or Linux).
 
-This project supports Python 3.8 and 3.9. By default, the newly created virtual environment will use Python 3.8.13
+This project supports Python 3.8 and 3.9. By default, the newly created virtual environment will use Python 3.9.13
 
 Our current recommendation is to use this project with Anaconda's Python distribution - either full
 [**Anaconda3 Latest**](https://www.anaconda.com/products/distribution) or
 [**Miniconda3 Latest**](https://docs.conda.io/en/latest/miniconda.html) (recommended).
 Several features in this project utilize Machine Learning. Machine Learning Python dependencies are optional. For MacOS systems, the "Miniconda3 MacOSX 64-bit" version that works on both Intel and M1
 macs is recommended.
+
+**NOTE:** We recommend using `conda` and `poetry` because it just works. You can use other python
+distributions and use raw `pip` instead of `poetry` but you will very likely bump into installation
+issues.
 
 1. [Install Anaconda](https://docs.anaconda.com/anaconda/install/index.html) (It's on the AUR as anaconda or miniconda3!)
 
@@ -113,17 +118,17 @@ macs is recommended.
 5. Create Environment
 
    You can name the environment whatever you want. Although you could use names such as: `welikethestock`, `thisistheway`
-   or `diamondhands`, we recommend something simple and intuitive like `gst`. This is because this name will be used
+   or `diamondhands`, we recommend something simple and intuitive like `obb`. This is because this name will be used
    from now onwards.
 
    ```bash
-   conda env create -n gst --file build/conda/conda-3-8-env.yaml
+   conda env create -n obb --file build/conda/conda-3-9-env.yaml
    ```
 
 6. Activate the virtual environment
 
    ```bash
-   conda activate gst
+   conda activate obb
    ```
 
    Note: At the end, you can deactivate it with: `conda deactivate`.
@@ -138,22 +143,11 @@ macs is recommended.
 
    To enable the `prediction` menu install additional dependencies after installing main dependencies:
 
-   - On Intel and M1 macs
+   ```bash
+   conda install -c conda-forge tensorflow
+   ```
 
-     ```bash
-     conda install -c conda-forge tensorflow==2.7.1
-     conda install -c pytorch u8darts-torch
-     poetry install -E prediction
-     ```
-
-   - On all other systems
-
-     ```bash
-     conda install -c pytorch u8darts-torch
-     poetry install -E prediction
-     ```
-
-   If you are having trouble with Poetry (e.g. on a Windows system), simply install requirements.txt with pip
+   If you are having trouble with Poetry (e.g. on a non-conda python), simply install requirements.txt with pip
 
    ```bash
    pip install -r requirements.txt
@@ -163,6 +157,12 @@ macs is recommended.
 
    ```bash
    python terminal.py
+   ```
+
+    If you are using macOS and if you get SyntaxError, you might need to run this instead
+
+    ```bash
+   python3 terminal.py
    ```
 
 9. (Windows - Optional and **only if you are not using WSL**) Speeding up opening process in the future
@@ -184,43 +184,31 @@ before you call `python terminal.py` again.
 <a href="https://github.com/OpenBB-finance/OpenBBTerminal/blob/master/TROUBLESHOOT.md">
 <strong>troubleshoot page</strong></a>. You can also reach for help on our [discord](https://discord.gg/Up2QGbMKHY).
 
-## Advanced User Install - Machine Learning
+## Advanced User Install - Custom installation procedures
 
-If you are an advanced user and use other Python distributions, we have several requirements.txt documents that you can
-pick from to download project dependencies.
+By default we advice using `conda` and `poetry` for environment setup and dependency management.
+Conda ships binaries for packages like `numpy` and `tensorflow` so these dependencies are
+not built from source locally by `pip`.
+Poetry solves the dependency tree in a way that the dependencies of dependencies of dependencies
+use versions that are compatible with each other.
 
-If you are using conda instead of build/conda/conda-3-8-env.yaml configuration file in Step 5, use build/conda/conda-3-8-env-full.
+If you are using a conda environment the `build/conda` folder contains multiple `.yaml` configuration
+files that you can choose from.
 
-Note: The libraries specified in the [requirements.txt](/requirements.txt) file have been tested and work for
-the purpose of this project, however, these may be older versions. Hence, it is recommended for the user to set up
-a virtual python environment prior to installing these. This allows to keep dependencies required by different projects
-in separate places.
+If you are using other python distributions we highly recommend that you use some virtual
+environment like `virtualenv` or `pyenv` for installing the terminal dependency libraries.
 
-_If you would like to use optional Machine Learning features:_
+Requirements files that you can find in the project root:
 
-- Update your [feature_flags.py](/openbb_terminal/feature_flags.py) with:
+- `requirements.txt` list all the dependencies without Machine Learning libraries
+- `requirements-full.txt` list all the dependencies without Machine Learning libraries
 
-```bash
-ENABLE_PREDICT = os.getenv("OPENBB_ENABLE_PREDICT") or True
-```
+The dependency tree is solved by poetry.
 
-- Install optional ML features dependencies:
-
-```bash
-poetry install -E prediction
-```
-
-\*\*NOTE: For MacOS users should use this method instead of the poetry command
-
-```bash
-conda install -c conda-forge tensorflow==2.7.0
-```
-
-- Ready to launch:
-
-  ```python
-  python terminal.py
-  ```
+Note: The libraries specified in the requirements files have been tested and work for
+the purpose of this project, however, these may be older versions. Hence, it is recommended
+for the user to set up a virtual python environment prior to installing these. This allows
+to keep dependencies required by different projects in separate places.
 
 ## Update Terminal
 

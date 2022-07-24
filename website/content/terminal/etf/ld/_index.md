@@ -1,10 +1,11 @@
-Search for an ETF by description using either FinanceDatabase or StockAnalysis as the source.
 
 ```text
 usage: ld [-d DESCRIPTION [DESCRIPTION ...]] [-l LIMIT] [-h] [--export {csv,json,xlsx}]
+```
 
-Lookup by description [Source: FinanceDatabase/StockAnalysis.com]
+Search for an ETF by description using either FinanceDatabase or StockAnalysis as the source. [Source: FinanceDatabase/StockAnalysis.com]
 
+```
 optional arguments:
   -d DESCRIPTION [DESCRIPTION ...], --description DESCRIPTION [DESCRIPTION ...]
                         Name to look for ETFs (default: None)

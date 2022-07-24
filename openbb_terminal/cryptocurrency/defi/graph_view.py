@@ -168,11 +168,10 @@ def display_uni_pools(
     top: int
         Number of records to display
     sortby: str
-        Key by which to sort data
+        Key by which to sort data. The table can be sorted by every of its columns
+        (see https://bit.ly/3ORagr1 then press ctrl-enter or execute the query).
     descend: bool
         Flag to sort data descending
-    export : str
-        Export dataframe data to csv,json,xlsx file
     export : str
         Export dataframe data to csv,json,xlsx file
     """
@@ -197,7 +196,7 @@ def display_uni_pools(
 
 @log_start_end(log=logger)
 def display_last_uni_swaps(
-    top: int = 20, sortby: str = "timestamp", descend: bool = False, export: str = ""
+    top: int = 10, sortby: str = "timestamp", descend: bool = False, export: str = ""
 ) -> None:
     """Displays last swaps done on Uniswap
     [Source: https://thegraph.com/en/]
@@ -207,11 +206,10 @@ def display_last_uni_swaps(
     top: int
         Number of records to display
     sortby: str
-        Key by which to sort data
+        Key by which to sort data. The table can be sorted by every of its columns
+        (see https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2).
     descend: bool
         Flag to sort data descending
-    export : str
-        Export dataframe data to csv,json,xlsx file
     export : str
         Export dataframe data to csv,json,xlsx file
     """

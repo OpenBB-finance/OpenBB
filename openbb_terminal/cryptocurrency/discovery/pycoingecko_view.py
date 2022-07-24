@@ -25,7 +25,7 @@ COINS_COLUMNS = [
     "Symbol",
     "Name",
     "Volume [$]",
-    "Market Cap [$]",
+    "Market Cap",
     "Market Cap Rank",
     "7D Change [%]",
     "24H Change [%]",
@@ -69,9 +69,9 @@ def display_coins(
         )
         if sortby in COINS_COLUMNS:
             df = df[
-                (df["Volume [$]"].notna()) & (df["Market Cap [$]"].notna())
+                (df["Volume [$]"].notna()) & (df["Market Cap"].notna())
             ].sort_values(by=sortby, ascending=False)
-        for col in ["Volume [$]", "Market Cap [$]"]:
+        for col in ["Volume [$]", "Market Cap"]:
             if col in df.columns:
                 df[col] = df[col].apply(lambda x: lambda_very_long_number_formatter(x))
         print_rich_table(
@@ -92,7 +92,7 @@ def display_coins(
 
 @log_start_end(log=logger)
 def display_gainers(
-    period: str = "1h", top: int = 20, sortby: str = "Symbol", export: str = ""
+    period: str = "1h", top: int = 20, sortby: str = "Market Cap Rank", export: str = ""
 ) -> None:
     """Shows Largest Gainers - coins which gain the most in given period. [Source: CoinGecko]
 
@@ -103,7 +103,8 @@ def display_gainers(
     top: int
         Number of records to display
     sortby: str
-        Key to sort data
+        Key to sort data. The table can be sorted by every of its columns. Refer to
+        Coin Geckos API documentation (see /coins/markets part in https://www.coingecko.com/en/api/documentation)
     export : str
         Export dataframe data to csv,json,xlsx file
     """
@@ -112,9 +113,9 @@ def display_gainers(
     if not df.empty:
         if sortby in COINS_COLUMNS:
             df = df[
-                (df["Volume [$]"].notna()) & (df["Market Cap [$]"].notna())
-            ].sort_values(by=sortby, ascending=False)
-        for col in ["Volume [$]", "Market Cap [$]"]:
+                (df["Volume [$]"].notna()) & (df["Market Cap"].notna())
+            ].sort_values(by=sortby, ascending=True)
+        for col in ["Volume [$]", "Market Cap"]:
             if col in df.columns:
                 df[col] = df[col].apply(lambda x: lambda_very_long_number_formatter(x))
         print_rich_table(
@@ -135,7 +136,7 @@ def display_gainers(
 
 @log_start_end(log=logger)
 def display_losers(
-    period: str = "1h", top: int = 20, export: str = "", sortby: str = "Symbol"
+    period: str = "1h", top: int = 20, export: str = "", sortby: str = "Market Cap Rank"
 ) -> None:
     """Shows Largest Losers - coins which lost the most in given period of time. [Source: CoinGecko]
 
@@ -146,7 +147,8 @@ def display_losers(
     top: int
         Number of records to display
     sortby: str
-        Key to sort data
+        Key to sort data. The table can be sorted by every of its columns. Refer to
+        Coin Geckos API documentation (see /coins/markets part in https://www.coingecko.com/en/api/documentation)
     export : str
         Export dataframe data to csv,json,xlsx file
     """
@@ -155,9 +157,9 @@ def display_losers(
     if not df.empty:
         if sortby in COINS_COLUMNS:
             df = df[
-                (df["Volume [$]"].notna()) & (df["Market Cap [$]"].notna())
-            ].sort_values(by=sortby, ascending=False)
-        for col in ["Volume [$]", "Market Cap [$]"]:
+                (df["Volume [$]"].notna()) & (df["Market Cap"].notna())
+            ].sort_values(by=sortby, ascending=True)
+        for col in ["Volume [$]", "Market Cap"]:
             if col in df.columns:
                 df[col] = df[col].apply(lambda x: lambda_very_long_number_formatter(x))
         print_rich_table(

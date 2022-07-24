@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 # IMPORTATION STANDARD
 import os
+import os.path
 import argparse
 import logging
 from typing import List
@@ -18,7 +19,7 @@ from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     get_flair,
-    parse_known_args_and_warn,
+    parse_simple_args,
     get_user_timezone_or_invalid,
     replace_user_timezone,
     set_export_folder,
@@ -49,6 +50,8 @@ class SettingsController(BaseController):
         "lang",
         "tz",
         "export",
+        "source",
+        "flair",
     ]
     PATH = "/settings/"
 
@@ -77,6 +80,7 @@ class SettingsController(BaseController):
         mt.add_info("_info_")
         mt.add_raw("\n")
         mt.add_setting("dt", obbff.USE_DATETIME)
+        mt.add_cmd("flair")
         mt.add_raw("\n")
         mt.add_param("_flair", get_flair())
         mt.add_raw("\n")
@@ -122,6 +126,11 @@ class SettingsController(BaseController):
         mt.add_cmd("monitor")
         mt.add_raw("\n")
         mt.add_param("_monitor", cfg_plot.MONITOR)
+        mt.add_raw("\n")
+        mt.add_cmd("source")
+        mt.add_raw("\n")
+        mt.add_param("_data_source", obbff.PREFERRED_DATA_SOURCE_FILE)
+        mt.add_raw("\n")
 
         console.print(text=mt.menu_text, menu="Settings")
 
@@ -131,6 +140,46 @@ class SettingsController(BaseController):
         obbff.USE_DATETIME = not obbff.USE_DATETIME
         set_key(obbff.ENV_FILE, "OPENBB_USE_DATETIME", str(obbff.USE_DATETIME))
         console.print("")
+
+    @log_start_end(log=logger)
+    def call_source(self, other_args: List[str]):
+        """Process source command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="source",
+            description="Preferred data source file.",
+        )
+        parser.add_argument(
+            "-v",
+            "--value",
+            type=str,
+            default=os.getcwd() + os.path.sep + "sources.json.default",
+            dest="value",
+            help="value",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-v")
+        ns_parser = parse_simple_args(parser, other_args)
+        if ns_parser:
+            try:
+
+                the_path = os.getcwd() + os.path.sep + ns_parser.value
+                console.print("Loading sources from " + the_path)
+                with open(the_path):
+                    # Try to open the file to get an exception if the file doesn't exist
+                    pass
+
+            except Exception as e:
+                console.print("Couldn't open the sources file!")
+                console.print(e)
+            obbff.PREFERRED_DATA_SOURCE_FILE = ns_parser.value
+            set_key(
+                obbff.ENV_FILE,
+                "OPENBB_PREFERRED_DATA_SOURCE_FILE",
+                str(ns_parser.value),
+            )
+            console.print("")
 
     @log_start_end(log=logger)
     def call_autoscaling(self, _):
@@ -161,7 +210,7 @@ class SettingsController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-v")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             set_key(obbff.ENV_FILE, "OPENBB_PLOT_DPI", str(ns_parser.value))
             cfg_plot.PLOT_DPI = ns_parser.value
@@ -185,7 +234,7 @@ class SettingsController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-v")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             set_key(obbff.ENV_FILE, "OPENBB_PLOT_HEIGHT", str(ns_parser.value))
             cfg_plot.PLOT_HEIGHT = ns_parser.value
@@ -209,7 +258,7 @@ class SettingsController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-v")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             set_key(obbff.ENV_FILE, "OPENBB_PLOT_WIDTH", str(ns_parser.value))
             cfg_plot.PLOT_WIDTH = ns_parser.value
@@ -233,7 +282,7 @@ class SettingsController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-v")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             set_key(
                 obbff.ENV_FILE,
@@ -261,7 +310,7 @@ class SettingsController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-v")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             set_key(
                 obbff.ENV_FILE,
@@ -289,7 +338,7 @@ class SettingsController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-v")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             set_key(obbff.ENV_FILE, "OPENBB_MONITOR", str(ns_parser.value))
             cfg_plot.MONITOR = ns_parser.value
@@ -313,7 +362,7 @@ class SettingsController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-v")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             set_key(obbff.ENV_FILE, "OPENBB_BACKEND", str(ns_parser.value))
             if ns_parser.value == "None":
@@ -342,7 +391,7 @@ class SettingsController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-v")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             if ns_parser.value:
                 set_key(obbff.ENV_FILE, "OPENBB_USE_LANGUAGE", str(ns_parser.value))
@@ -353,6 +402,7 @@ class SettingsController(BaseController):
                 )
             console.print("")
 
+    @log_start_end(log=logger)
     def call_tz(self, other_args: List[str]):
         """Process tz command"""
         parser = argparse.ArgumentParser(
@@ -373,11 +423,41 @@ class SettingsController(BaseController):
         if other_args and "-t" not in other_args[0]:
             other_args.insert(0, "-t")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             if ns_parser.timezone:
                 replace_user_timezone(ns_parser.timezone.replace("_", "/", 1))
 
+    @log_start_end(log=logger)
+    def call_flair(self, other_args: List[str]):
+        """Process flair command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="flair",
+            description="set the flair emoji to be used",
+        )
+        parser.add_argument(
+            "-e",
+            "--emoji",
+            type=str,
+            dest="emoji",
+            help="flair emoji to be used",
+            nargs="+",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-e")
+        ns_parser = parse_simple_args(parser, other_args)
+        if ns_parser:
+            if not ns_parser.emoji:
+                ns_parser.emoji = ""
+            else:
+                ns_parser.emoji = " ".join(ns_parser.emoji)
+            set_key(obbff.ENV_FILE, "OPENBB_USE_FLAIR", str(ns_parser.emoji))
+            obbff.USE_FLAIR = ns_parser.emoji
+            console.print("")
+
+    @log_start_end(log=logger)
     def call_export(self, other_args: List[str]):
         """Process export command"""
         parser = argparse.ArgumentParser(
@@ -396,7 +476,7 @@ class SettingsController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-f")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
 
         if ns_parser:
             if other_args or self.queue:

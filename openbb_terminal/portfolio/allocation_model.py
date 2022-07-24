@@ -30,7 +30,7 @@ def obtain_assets_allocation(benchmark_info: Dict, portfolio_trades: pd.DataFram
     portfolio_assets_allocation = (
         (
             portfolio_trades[portfolio_trades["Type"] != "CASH"]
-            .groupby(by="Name")
+            .groupby(by="Ticker")
             .agg({"Portfolio Value": "sum"})
             .div(portfolio_trades["Portfolio Value"].sum())
         )

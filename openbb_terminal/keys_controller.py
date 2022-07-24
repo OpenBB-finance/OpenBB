@@ -8,6 +8,8 @@ import logging
 import os
 from typing import Dict, List
 
+import hmac
+import hashlib
 import dotenv
 import praw
 import pyEX
@@ -26,7 +28,7 @@ from openbb_terminal.cryptocurrency.coinbase_helpers import (
     make_coinbase_request,
 )
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import parse_known_args_and_warn
+from openbb_terminal.helper_funcs import parse_simple_args
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console, MenuText, translate
@@ -65,7 +67,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         "ethplorer",
         "smartstake",
         "github",
-        "mesari",
+        "messari",
     ]
     PATH = "/keys/"
     key_dict: Dict = {}
@@ -451,9 +453,24 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             logger.info("Binance key not defined")
             self.key_dict["BINANCE"] = "not defined"
         else:
-            logger.info("Binance key defined, not tested")
-            self.key_dict["BINANCE"] = "defined, not tested"
-
+            headers = {"X-MBX-APIKEY": bn_keys[0]}
+            timestamp = 16566804453565
+            msg = f"timestamp={timestamp}"
+            msg_hash = hmac.new(
+                bn_keys[1].encode("utf-8"), msg.encode("utf-8"), hashlib.sha256
+            ).hexdigest()
+            params = {"timestamp": timestamp, "signature": msg_hash}  # type: ignore
+            r = requests.get(
+                "https://api.binance.com/sapi/v1/capital/config/getall",
+                params=params,  # type: ignore
+                headers=headers,
+            )
+            if r.status_code == 200:
+                logger.info("Binance key defined, test passed")
+                self.key_dict["BINANCE"] = "defined, test passed"
+            else:
+                logger.info("Binance key defined, test failed")
+                self.key_dict["BINANCE"] = "defined, test failed"
         if show_output:
             console.print(self.key_dict["BINANCE"] + "\n")
 
@@ -638,7 +655,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
                 self.key_dict["CRYPTO_PANIC"] = "defined, test unsuccessful"
 
         if show_output:
-            console.print(self.key_dict["COINGLASS"] + "\n")
+            console.print(self.key_dict["CRYPTO_PANIC"] + "\n")
 
     def check_ethplorer_key(self, show_output: bool = False) -> None:
         """Check ethplorer key"""
@@ -797,7 +814,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-k")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             os.environ["OPENBB_API_GITHUB_KEY"] = ns_parser.key
             dotenv.set_key(self.env_file, "OPENBB_API_GITHUB_KEY", ns_parser.key)
@@ -828,7 +845,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-k")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             os.environ["OPENBB_API_KEY_ALPHAVANTAGE"] = ns_parser.key
             dotenv.set_key(self.env_file, "OPENBB_API_KEY_ALPHAVANTAGE", ns_parser.key)
@@ -859,7 +876,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-k")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             os.environ["OPENBB_API_KEY_FINANCIALMODELINGPREP"] = ns_parser.key
             dotenv.set_key(
@@ -890,7 +907,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-k")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             os.environ["OPENBB_API_KEY_QUANDL"] = ns_parser.key
             dotenv.set_key(self.env_file, "OPENBB_API_KEY_QUANDL", ns_parser.key)
@@ -919,7 +936,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-k")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             os.environ["OPENBB_API_POLYGON_KEY"] = ns_parser.key
             dotenv.set_key(self.env_file, "OPENBB_API_POLYGON_KEY", ns_parser.key)
@@ -948,7 +965,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-k")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             os.environ["OPENBB_API_FRED_KEY"] = ns_parser.key
             dotenv.set_key(self.env_file, "OPENBB_API_FRED_KEY", ns_parser.key)
@@ -977,7 +994,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-k")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             os.environ["OPENBB_API_NEWS_TOKEN"] = ns_parser.key
             dotenv.set_key(self.env_file, "OPENBB_API_NEWS_TOKEN", ns_parser.key)
@@ -1006,7 +1023,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-k")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             os.environ["OPENBB_API_TRADIER_TOKEN"] = ns_parser.key
             dotenv.set_key(self.env_file, "OPENBB_API_TRADIER_TOKEN", ns_parser.key)
@@ -1034,7 +1051,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             return
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-k")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             os.environ["OPENBB_API_CMC_KEY"] = ns_parser.key
             dotenv.set_key(self.env_file, "OPENBB_API_CMC_KEY", ns_parser.key)
@@ -1062,7 +1079,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             return
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-k")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             os.environ["OPENBB_API_FINNHUB_KEY"] = ns_parser.key
             dotenv.set_key(self.env_file, "OPENBB_API_FINNHUB_KEY", ns_parser.key)
@@ -1090,7 +1107,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             return
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-k")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             os.environ["OPENBB_API_IEX_KEY"] = ns_parser.key
             dotenv.set_key(self.env_file, "OPENBB_API_IEX_KEY", ns_parser.key)
@@ -1150,7 +1167,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         if not other_args:
             console.print("For your API Key, visit: https://www.reddit.com\n")
             return
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             os.environ["OPENBB_API_REDDIT_CLIENT_ID"] = ns_parser.client_id
             dotenv.set_key(
@@ -1225,7 +1242,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         if not other_args:
             console.print("For your API Key, visit: https://developer.twitter.com\n")
             return
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             os.environ["OPENBB_API_TWITTER_KEY"] = ns_parser.key
             dotenv.set_key(self.env_file, "OPENBB_API_TWITTER_KEY", ns_parser.key)
@@ -1271,7 +1288,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         if not other_args:
             console.print("For your API Key, visit: https://robinhood.com/us/en/\n")
             return
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             os.environ["OPENBB_RH_USERNAME"] = ns_parser.username
             dotenv.set_key(self.env_file, "OPENBB_RH_USERNAME", ns_parser.username)
@@ -1316,7 +1333,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         if not other_args:
             console.print("For your API Key, visit: https://www.degiro.fr\n")
             return
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             os.environ["OPENBB_DG_USERNAME"] = ns_parser.username
             dotenv.set_key(self.env_file, "OPENBB_DG_USERNAME", ns_parser.username)
@@ -1365,23 +1382,25 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         if not other_args:
             console.print("For your API Key, visit: https://developer.oanda.com\n")
             return
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
+        ns_parser = parse_simple_args(parser, other_args)
+        if not ns_parser:
+            return
+        if ns_parser.account:
             os.environ["OPENBB_OANDA_ACCOUNT"] = ns_parser.account
             dotenv.set_key(self.env_file, "OPENBB_OANDA_ACCOUNT", ns_parser.account)
             cfg.OANDA_ACCOUNT = ns_parser.account
-
+        if ns_parser.token:
             os.environ["OPENBB_OANDA_TOKEN"] = ns_parser.token
             dotenv.set_key(self.env_file, "OPENBB_OANDA_TOKEN", ns_parser.token)
             cfg.OANDA_TOKEN = ns_parser.token
-
+        if ns_parser.account_type:
             os.environ["OPENBB_OANDA_ACCOUNT_TYPE"] = ns_parser.account_type
             dotenv.set_key(
                 self.env_file, "OPENBB_OANDA_ACCOUNT_TYPE", ns_parser.account_type
             )
             cfg.OANDA_ACCOUNT_TYPE = ns_parser.account_type
 
-            self.check_oanda_key(show_output=True)
+        self.check_oanda_key(show_output=True)
 
     @log_start_end(log=logger)
     def call_binance(self, other_args: List[str]):
@@ -1409,7 +1428,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         if not other_args:
             console.print("For your API Key, visit: https://binance.com\n")
             return
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             os.environ["OPENBB_API_BINANCE_KEY"] = ns_parser.key
             dotenv.set_key(self.env_file, "OPENBB_API_BINANCE_KEY", ns_parser.key)
@@ -1444,7 +1463,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             return
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-k")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             os.environ["OPENBB_API_BITQUERY_KEY"] = ns_parser.key
             dotenv.set_key(self.env_file, "OPENBB_API_BITQUERY_KEY", ns_parser.key)
@@ -1473,7 +1492,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             return
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-k")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             os.environ["OPENBB_API_SENTIMENTINVESTOR_TOKEN"] = ns_parser.key
             dotenv.set_key(
@@ -1516,7 +1535,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         if not other_args:
             console.print("For your API Key, visit: https://docs.pro.coinbase.com/\n")
             return
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             os.environ["OPENBB_API_COINBASE_KEY"] = ns_parser.key
             dotenv.set_key(self.env_file, "OPENBB_API_COINBASE_KEY", ns_parser.key)
@@ -1557,7 +1576,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             return
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-k")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             os.environ["OPENBB_API_WHALE_ALERT_KEY"] = ns_parser.key
             dotenv.set_key(self.env_file, "OPENBB_API_WHALE_ALERT_KEY", ns_parser.key)
@@ -1588,7 +1607,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             return
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-k")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             os.environ["OPENBB_API_GLASSNODE_KEY"] = ns_parser.key
             dotenv.set_key(self.env_file, "OPENBB_API_GLASSNODE_KEY", ns_parser.key)
@@ -1619,7 +1638,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             return
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-k")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             os.environ["OPENBB_API_COINGLASS_KEY"] = ns_parser.key
             dotenv.set_key(self.env_file, "OPENBB_API_COINGLASS_KEY", ns_parser.key)
@@ -1650,7 +1669,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             return
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-k")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             os.environ["OPENBB_API_CRYPTO_PANIC_KEY"] = ns_parser.key
             dotenv.set_key(self.env_file, "OPENBB_API_CRYPTO_PANIC_KEY", ns_parser.key)
@@ -1681,7 +1700,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             return
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-k")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             os.environ["OPENBB_API_ETHPLORER_KEY"] = ns_parser.key
             dotenv.set_key(self.env_file, "OPENBB_API_ETHPLORER_KEY", ns_parser.key)
@@ -1714,7 +1733,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         if not other_args:
             console.print("For your API Key, visit: https://www.smartstake.io\n")
             return
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
 
         if ns_parser:
             os.environ["OPENBB_API_SMARTSTAKE_TOKEN"] = ns_parser.token
@@ -1751,7 +1770,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-k")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             os.environ["OPENBB_API_MESSARI_KEY"] = ns_parser.key
             dotenv.set_key(self.env_file, "OPENBB_API_MESSARI_KEY", ns_parser.key)

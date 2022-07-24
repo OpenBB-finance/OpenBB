@@ -15,6 +15,7 @@ import sys
 from difflib import SequenceMatcher
 import webbrowser
 import urllib.parse
+import json
 
 import pytz
 import pandas as pd
@@ -30,6 +31,7 @@ import pandas.io.formats.format
 import requests
 from screeninfo import get_monitors
 import yfinance as yf
+import numpy as np
 
 from openbb_terminal.rich_config import console
 from openbb_terminal import feature_flags as obbff
@@ -515,7 +517,7 @@ def plot_view_stock(df: pd.DataFrame, symbol: str, interval: str):
     ax[1].set_xlim(df.index[0], df.index[-1])
     ax[1].yaxis.tick_right()
     ax[1].yaxis.set_label_position("right")
-    ax[1].set_ylabel("Volume (1M)")
+    ax[1].set_ylabel("Volume [1M]")
     ax[1].grid(axis="y", color="gainsboro", linestyle="-", linewidth=0.5)
     ax[1].spines["top"].set_visible(False)
     ax[1].spines["left"].set_visible(False)
@@ -672,6 +674,10 @@ def lambda_clean_data_values_to_float(val: str) -> float:
 
 def lambda_int_or_round_float(x) -> str:
     """Format int or round float"""
+    # If the data is inf, -inf, or NaN then simply return '~' because it is either too
+    # large, too small, or we do not have data to display for it
+    if x in (np.inf, -np.inf, np.nan):
+        return " " + "~"
     if (x - int(x) < -sys.float_info.epsilon) or (x - int(x) > sys.float_info.epsilon):
         return " " + str(round(x, 2))
 
@@ -873,13 +879,7 @@ def patch_pandas_text_adjustment():
     pandas.io.formats.format.TextAdjustment.adjoin = text_adjustment_adjoin
 
 
-def parse_known_args_and_warn(
-    parser: argparse.ArgumentParser,
-    other_args: List[str],
-    export_allowed: int = NO_EXPORT,
-    raw: bool = False,
-    limit: int = 0,
-):
+def parse_simple_args(parser: argparse.ArgumentParser, other_args: List[str]):
     """Parses list of arguments into the supplied parser
 
     Parameters
@@ -888,13 +888,7 @@ def parse_known_args_and_warn(
         Parser with predefined arguments
     other_args: List[str]
         List of arguments to parse
-    export_allowed: int
-        Choose from NO_EXPORT, EXPORT_ONLY_RAW_DATA_ALLOWED,
-        EXPORT_ONLY_FIGURES_ALLOWED and EXPORT_BOTH_RAW_DATA_AND_FIGURES
-    raw: bool
-        Add the --raw flag
-    limit: int
-        Add a --limit flag with this number default
+
     Returns
     -------
     ns_parser:
@@ -903,45 +897,6 @@ def parse_known_args_and_warn(
     parser.add_argument(
         "-h", "--help", action="store_true", help="show this help message"
     )
-    if export_allowed > NO_EXPORT:
-        choices_export = []
-        help_export = "Does not export!"
-
-        if export_allowed == EXPORT_ONLY_RAW_DATA_ALLOWED:
-            choices_export = ["csv", "json", "xlsx"]
-            help_export = "Export raw data into csv, json, xlsx"
-        elif export_allowed == EXPORT_ONLY_FIGURES_ALLOWED:
-            choices_export = ["png", "jpg", "pdf", "svg"]
-            help_export = "Export figure into png, jpg, pdf, svg "
-        else:
-            choices_export = ["csv", "json", "xlsx", "png", "jpg", "pdf", "svg"]
-            help_export = "Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg "
-
-        parser.add_argument(
-            "--export",
-            default="",
-            type=check_file_type_saved(choices_export),
-            dest="export",
-            help=help_export,
-        )
-
-    if raw:
-        parser.add_argument(
-            "--raw",
-            dest="raw",
-            action="store_true",
-            default=False,
-            help="Flag to display raw data",
-        )
-    if limit > 0:
-        parser.add_argument(
-            "-l",
-            "--limit",
-            dest="limit",
-            default=limit,
-            help="Number of entries to show in data.",
-            type=check_positive,
-        )
 
     if obbff.USE_CLEAR_AFTER_CMD:
         system_clear()
@@ -995,8 +950,8 @@ def get_flair() -> str:
     """Get a flair icon"""
     flairs = {
         ":openbb": "(🦋)",
-        ":rocket": "(🚀🚀)",
-        ":diamond": "(💎💎)",
+        ":rocket": "(🚀)",
+        ":diamond": "(💎)",
         ":stars": "(✨)",
         ":baseball": "(⚾)",
         ":boat": "(⛵)",
@@ -1609,3 +1564,69 @@ def check_list_values(valid_values: List[str]):
 
     # Return function handle to checking function
     return check_list_values_from_valid_values_list
+
+
+def get_ordered_list_sources(command_path: str):
+    """
+    Returns the preferred source for the given command. If a value is not available for the specific
+    command, returns the most specific source, eventually returning the overall default source.
+
+    Parameters
+    ----------
+    command_path: str
+        The command to find the source for. Example would be "stocks/load" to return the value
+        for stocks.load first, then stocks, then the default value.
+
+    Returns
+    -------
+    str:
+        The preferred source for the given command
+    """
+    try:
+        with open(obbff.PREFERRED_DATA_SOURCE_FILE) as f:
+            # Load the file as a JSON document
+            json_doc = json.load(f)
+
+            # We are going to iterate through each command as if it is broken up by period characters (.)
+            path_objects = command_path.split("/")[1:]
+
+            # Start iterating through the top-level JSON doc to start
+            deepest_level = json_doc
+
+            # If we still have entries in path_objects, continue to go deeper
+            while len(path_objects) > 0:
+                # Is this path object in the JSON doc? If so, go into that for our next iteration.
+                if path_objects[0] in deepest_level:
+                    # We found the element, so go one level deeper
+                    deepest_level = deepest_level[path_objects[0]]
+
+                else:
+                    # If we have not find the `load` on the deepest level it means we may be in a sub-menu
+                    # and we can use the load from the Base class
+                    if path_objects[0] == "load":
+
+                        # Get the context associated with the sub-menu (e.g. stocks, crypto, ...)
+                        context = command_path.split("/")[1]
+
+                        # Grab the load source from that context if it exists, otherwise throws an error
+                        if context in json_doc:
+                            if "load" in json_doc[context]:
+                                return json_doc[context]["load"]
+
+                    # We didn't find the next level, so flag that that command default source is missing
+                    # Which means that there aren't more than 1 source and therefore no selection is necessary
+                    return []
+
+                # Go one level deeper into the path
+                path_objects = path_objects[1:]
+
+            # We got through all values, so return this as the final value
+            return deepest_level
+
+    except Exception as e:
+        console.print(
+            f"[red]Failed to load preferred source from file: "
+            f"{obbff.PREFERRED_DATA_SOURCE_FILE}[/red]"
+        )
+        console.print(f"[red]{e}[/red]")
+        return None

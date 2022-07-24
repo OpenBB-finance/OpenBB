@@ -1,6 +1,6 @@
 """ Econ Controller """
 __docformat__ = "numpy"
-# pylint:disable=too-many-lines,R1710,R0904,C0415,too-many-branches
+# pylint:disable=too-many-lines,R1710,R0904,C0415,too-many-branches,unnecessary-dict-index-lookup
 
 import argparse
 import logging
@@ -16,6 +16,7 @@ from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.economy import (
     alphavantage_view,
+    economy_helpers,
     finviz_view,
     nasdaq_model,
     nasdaq_view,
@@ -34,7 +35,6 @@ from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_FIGURES_ALLOWED,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
-    parse_known_args_and_warn,
     print_rich_table,
     valid_date,
 )
@@ -56,7 +56,6 @@ class EconomyController(BaseController):
         "index",
         "treasury",
         "plot",
-        "options",
         "valuation",
         "performance",
         "spectrum",
@@ -65,6 +64,7 @@ class EconomyController(BaseController):
         "industry",
         "bigmac",
         "ycrv",
+        "ecocal",
     ]
 
     CHOICES_MENUS = ["pred", "qa"]
@@ -144,8 +144,10 @@ class EconomyController(BaseController):
         "country": "Country (U.S. listed stocks only)",
         "capitalization": "Capitalization",
     }
-    ycrv_sources = ["FRED", "investpy"]
     PATH = "/economy/"
+
+    stored_datasets = ""
+
     FILE_PATH = os.path.join(os.path.dirname(__file__), "README.md")
 
     def __init__(self, queue: List[str] = None):
@@ -157,6 +159,11 @@ class EconomyController(BaseController):
         self.DATASETS: Dict[Any, pd.DataFrame] = dict()
         self.UNITS: Dict[Any, Dict[Any, Any]] = dict()
         self.FRED_TITLES: Dict = dict()
+
+        self.DATASETS["macro"] = pd.DataFrame()
+        self.DATASETS["treasury"] = pd.DataFrame()
+        self.DATASETS["fred"] = pd.DataFrame()
+        self.DATASETS["index"] = pd.DataFrame()
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             self.choices: dict = {c: {} for c in self.controller_choices}
@@ -180,6 +187,27 @@ class EconomyController(BaseController):
                 c: None for c in investingcom_model.COUNTRIES
             }
 
+            self.choices["ecocal"]["-c"] = {
+                c: None for c in investingcom_model.COUNTRIES
+            }
+            self.choices["ecocal"]["--countries"] = {
+                c: None for c in investingcom_model.COUNTRIES
+            }
+
+            self.choices["ecocal"]["-i"] = {
+                c: None for c in investingcom_model.IMPORTANCES
+            }
+            self.choices["ecocal"]["--importances"] = {
+                c: None for c in investingcom_model.IMPORTANCES
+            }
+
+            self.choices["ecocal"]["-cat"] = {
+                c: None for c in investingcom_model.CATEGORIES
+            }
+            self.choices["ecocal"]["--categories"] = {
+                c: None for c in investingcom_model.CATEGORIES
+            }
+
             self.choices["valuation"]["-s"] = {
                 c: None for c in self.valuation_sort_cols
             }
@@ -198,6 +226,7 @@ class EconomyController(BaseController):
             self.choices["map"]["--period"] = {c: None for c in self.map_period_list}
 
             self.choices["support"] = self.SUPPORT_CHOICES
+            self.choices["about"] = self.ABOUT_CHOICES
 
             self.completer = NestedCompleter.from_nested_dict(self.choices)
 
@@ -212,7 +241,10 @@ class EconomyController(BaseController):
                     for option in values.keys()
                 ]
 
-                for argument in ["-y1", "--yaxis1", "-y2", "--yaxis2"]:
+                for argument in [
+                    "--y1",
+                    "--y2",
+                ]:
                     self.choices["plot"][argument] = {
                         option: None for option in options
                     }
@@ -222,24 +254,27 @@ class EconomyController(BaseController):
     def print_help(self):
         """Print help"""
         mt = MenuText("economy/")
-        mt.add_cmd("macro", "EconDB")
-        mt.add_cmd("fred", "FRED")
-        mt.add_cmd("index", "Yahoo Finance")
-        mt.add_cmd("treasury", "EconDB")
-        mt.add_raw("\n")
-        mt.add_cmd("options")
-        mt.add_cmd("plot")
-        mt.add_raw("\n")
         mt.add_cmd("overview", "Wall St. Journal")
         mt.add_cmd("futures", "Wall St. Journal / Finviz")
         mt.add_cmd("map", "Finviz")
         mt.add_cmd("bigmac", "NASDAQ Datalink")
-        mt.add_cmd("ycrv", "Investing / FRED")
+        mt.add_cmd("ycrv", "Investing.com / FRED")
+        mt.add_cmd("ecocal", "Investing.com")
         mt.add_raw("\n")
         mt.add_cmd("rtps", "Alpha Vantage")
         mt.add_cmd("valuation", "Finviz")
         mt.add_cmd("performance", "Finviz")
         mt.add_cmd("spectrum", "Finviz")
+        mt.add_raw("\n")
+        mt.add_info("_database_")
+        mt.add_cmd("macro", "EconDB")
+        mt.add_cmd("treasury", "EconDB")
+        mt.add_cmd("fred", "FRED")
+        mt.add_cmd("index", "Yahoo Finance")
+        mt.add_raw("\n")
+        mt.add_param("_stored", self.stored_datasets)
+        mt.add_raw("\n")
+        mt.add_cmd("plot")
         mt.add_raw("\n")
         mt.add_menu("pred")
         mt.add_menu("qa")
@@ -270,7 +305,7 @@ class EconomyController(BaseController):
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -334,7 +369,7 @@ class EconomyController(BaseController):
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-c")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -382,7 +417,7 @@ class EconomyController(BaseController):
             choices=self.map_type_list,
             help="Map filter type.",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             finviz_view.map_sp500_view(
                 period=ns_parser.s_period,
@@ -416,7 +451,7 @@ class EconomyController(BaseController):
             type=nasdaq_model.check_country_code_type,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -449,7 +484,6 @@ class EconomyController(BaseController):
             "Employment figures (URATE, EMP, AC0I0 and EMRATIO), Government components (e.g. GBAL & GREV), "
             "Consumer and Producer Indices (CPI & PPI) and a variety of other indicators. [Source: EconDB]",
         )
-
         parser.add_argument(
             "-p",
             "--parameters",
@@ -458,7 +492,6 @@ class EconomyController(BaseController):
             help="Abbreviation(s) of the Macro Economic data",
             default=["CPI"],
         )
-
         parser.add_argument(
             "-c",
             "--countries",
@@ -467,93 +500,84 @@ class EconomyController(BaseController):
             help="The country or countries you wish to show data for",
             default=["United_States"],
         )
-
         parser.add_argument(
-            "-sp",
-            "--show_parameters",
-            dest="show_parameters",
-            help="Show all parameters and what they represent",
-            action="store_true",
-            default=False,
+            "--show",
+            dest="show",
+            help="Show parameters and what they represent using 'parameters'"
+            " or countries and their currencies using 'countries'",
+            choices=["parameters", "countries"],
+            default=None,
         )
-
-        parser.add_argument(
-            "-sc",
-            "--show_countries",
-            dest="show_countries",
-            help="Show all countries and their currencies",
-            action="store_true",
-            default=False,
-        )
-
         parser.add_argument(
             "-s",
-            "--start_date",
+            "--start",
             dest="start_date",
             help="The start date of the data (format: YEAR-MONTH-DAY, i.e. 2010-12-31)",
             default=None,
         )
-
         parser.add_argument(
             "-e",
-            "--end_date",
+            "--end",
             dest="end_date",
             help="The end date of the data (format: YEAR-MONTH-DAY, i.e. 2021-06-20)",
             default=None,
         )
-
         parser.add_argument(
-            "-cc",
-            "--convert_currency",
+            "--convert",
             dest="convert_currency",
             help="Convert the currency of the chosen country to a specified currency. To find the "
-            "currency symbols use the argument -sc",
+            "currency symbols use '--show countries'",
             default=False,
         )
-
-        parser.add_argument(
-            "-st",
-            "--store",
-            dest="store",
-            help="Store the data to be used for plotting with the 'plot' command.",
-            action="store_true",
-            default=False,
-        )
-
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED, raw=True
         )
         if ns_parser:
-            if ns_parser.show_parameters:
-                print_rich_table(
-                    pd.DataFrame.from_dict(econdb_model.PARAMETERS, orient="index"),
-                    show_index=True,
-                    index_name="Parameter",
-                    headers=["Name", "Period", "Description"],
+            if ns_parser.show:
+                if ns_parser.show == "parameters":
+                    print_rich_table(
+                        pd.DataFrame.from_dict(econdb_model.PARAMETERS, orient="index"),
+                        show_index=True,
+                        index_name="Parameter",
+                        headers=["Name", "Period", "Description"],
+                    )
+                elif ns_parser.show == "countries":
+                    print_rich_table(
+                        pd.DataFrame(econdb_model.COUNTRY_CURRENCIES.items()),
+                        show_index=False,
+                        headers=["Country", "Currency"],
+                    )
+                return self.queue
+
+            if ns_parser.parameters and ns_parser.countries:
+
+                # Store data
+                (df, units,) = econdb_model.get_aggregated_macro_data(
+                    parameters=ns_parser.parameters,
+                    countries=ns_parser.countries,
+                    start_date=ns_parser.start_date,
+                    end_date=ns_parser.end_date,
+                    convert_currency=ns_parser.convert_currency,
                 )
-            elif ns_parser.show_countries:
-                print_rich_table(
-                    pd.DataFrame(econdb_model.COUNTRY_CURRENCIES.items()),
-                    show_index=False,
-                    headers=["Country", "Currency"],
-                )
-            elif ns_parser.parameters and ns_parser.countries:
-                if ns_parser.store:
-                    (
-                        self.DATASETS["macro"],
-                        self.UNITS,
-                    ) = econdb_model.get_aggregated_macro_data(
-                        parameters=ns_parser.parameters,
-                        countries=ns_parser.countries,
-                        start_date=ns_parser.start_date,
-                        end_date=ns_parser.end_date,
-                        convert_currency=ns_parser.convert_currency,
+
+                if not df.empty:
+                    df.columns = ["_".join(column) for column in df.columns]
+
+                    self.DATASETS["macro"] = pd.concat([self.DATASETS["macro"], df])
+
+                    # update units dict
+                    for country, data in units.items():
+                        if country not in self.UNITS:
+                            self.UNITS[country] = {}
+
+                        for key, value in data.items():
+                            self.UNITS[country][key] = value
+
+                    self.stored_datasets = (
+                        economy_helpers.update_stored_datasets_string(self.DATASETS)
                     )
 
-                    self.DATASETS["macro"].columns = [
-                        "_".join(column) for column in self.DATASETS["macro"].columns
-                    ]
-                else:
+                    # Display data just loaded
                     econdb_view.show_macro_data(
                         parameters=ns_parser.parameters,
                         countries=ns_parser.countries,
@@ -564,7 +588,9 @@ class EconomyController(BaseController):
                         export=ns_parser.export,
                     )
 
-                self.update_runtime_choices()
+                    self.update_runtime_choices()
+                    if obbff.ENABLE_EXIT_AUTO_HELP:
+                        self.print_help()
 
     @check_api_key(["API_FRED_KEY"])
     def call_fred(self, other_args: List[str]):
@@ -575,7 +601,6 @@ class EconomyController(BaseController):
             prog="fred",
             description="Query the FRED database and plot data based on the Series ID. [Source: FRED]",
         )
-
         parser.add_argument(
             "-p",
             "--parameter",
@@ -583,46 +608,33 @@ class EconomyController(BaseController):
             dest="parameter",
             help="Series ID of the Macro Economic data from FRED",
         )
-
         parser.add_argument(
             "-s",
-            "--start_date",
+            "--start",
             dest="start_date",
             type=valid_date,
             help="Starting date (YYYY-MM-DD) of data",
             default=None,
         )
-
         parser.add_argument(
             "-e",
-            "--end_date",
+            "--end",
             dest="end_date",
             type=valid_date,
             help="Ending date (YYYY-MM-DD) of data",
             default=None,
         )
-
         parser.add_argument(
             "-q",
             "--query",
             nargs="+",
             action="store",
             dest="query",
-            help="Query the FRED database to obtain Series IDs given the query seaarch term.",
+            help="Query the FRED database to obtain Series IDs given the query search term.",
         )
-
-        parser.add_argument(
-            "-st",
-            "--store",
-            dest="store",
-            help="Store the data to be used for plotting with the 'plot' command.",
-            action="store_true",
-            default=False,
-        )
-
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -640,6 +652,8 @@ class EconomyController(BaseController):
                     self.fred_query = df_search["id"].head(ns_parser.limit)
                     self.update_runtime_choices()
 
+                return self.queue
+
             if ns_parser.parameter:
                 series_dict = {}
                 for series in ns_parser.parameter:
@@ -653,16 +667,28 @@ class EconomyController(BaseController):
 
                         self.current_series = {series: series_dict[series]}
 
-                if ns_parser.store:
-                    for series_id, data in series_dict.items():
-                        self.FRED_TITLES[
-                            series_id
-                        ] = f"{data['title']} ({data['units']})"
+                if not series_dict:
+                    return self.queue
 
-                    self.DATASETS["fred"] = fred_model.get_aggregated_series_data(
-                        series_dict, ns_parser.start_date, ns_parser.end_date
+                for series_id, data in series_dict.items():
+                    self.FRED_TITLES[series_id] = f"{data['title']} ({data['units']})"
+
+                df = fred_model.get_aggregated_series_data(
+                    series_dict, ns_parser.start_date, ns_parser.end_date
+                )
+
+                if not df.empty:
+                    self.DATASETS["fred"] = pd.concat(
+                        [
+                            self.DATASETS["fred"],
+                            df,
+                        ]
                     )
-                else:
+
+                    self.stored_datasets = (
+                        economy_helpers.update_stored_datasets_string(self.DATASETS)
+                    )
+
                     fred_view.display_fred_series(
                         d_series=series_dict,
                         start_date=ns_parser.start_date,
@@ -672,7 +698,9 @@ class EconomyController(BaseController):
                         limit=ns_parser.limit,
                     )
 
-                self.update_runtime_choices()
+                    self.update_runtime_choices()
+                    if obbff.ENABLE_EXIT_AUTO_HELP:
+                        self.print_help()
 
     @log_start_end(log=logger)
     def call_index(self, other_args: List[str]):
@@ -685,7 +713,6 @@ class EconomyController(BaseController):
             "shown. By using the arguments (for example 'nasdaq' and 'sp500') you can collect data and "
             "plot the graphs together. [Source: Yahoo finance / FinanceDatabase]",
         )
-
         parser.add_argument(
             "-i",
             "--indices",
@@ -693,18 +720,14 @@ class EconomyController(BaseController):
             dest="indices",
             help="One or multiple indices",
         )
-
         parser.add_argument(
-            "-si",
-            "--show_indices",
+            "--show",
             dest="show_indices",
             help="Show the major indices, their arguments and ticker",
             action="store_true",
             default=False,
         )
-
         parser.add_argument(
-            "-iv",
             "--interval",
             type=str,
             dest="interval",
@@ -727,23 +750,20 @@ class EconomyController(BaseController):
             ],
             default="1d",
         )
-
         parser.add_argument(
             "-s",
-            "--start_date",
+            "--start",
             dest="start_date",
             help="The start date of the data (format: YEAR-MONTH-DAY, i.e. 2010-12-31)",
             default="2000-01-01",
         )
-
         parser.add_argument(
             "-e",
-            "--end_date",
+            "--end",
             dest="end_date",
             help="The end date of the data (format: YEAR-MONTH-DAY, i.e. 2021-06-20)",
             default=None,
         )
-
         parser.add_argument(
             "-c",
             "--column",
@@ -752,7 +772,6 @@ class EconomyController(BaseController):
             help="The column you wish to load in, by default this is the Adjusted Close column",
             default="Adj Close",
         )
-
         parser.add_argument(
             "-q",
             "--query",
@@ -761,16 +780,6 @@ class EconomyController(BaseController):
             dest="query",
             help="Search for indices with given keyword",
         )
-
-        parser.add_argument(
-            "-st",
-            "--store",
-            dest="store",
-            help="Store the data to be used for plotting with the 'plot' command.",
-            action="store_true",
-            default=False,
-        )
-
         parser.add_argument(
             "-r",
             "--returns",
@@ -779,10 +788,9 @@ class EconomyController(BaseController):
             action="store_true",
             default=False,
         )
-
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-i")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
@@ -792,6 +800,8 @@ class EconomyController(BaseController):
         if ns_parser:
             if ns_parser.query and ns_parser.limit:
                 yfinance_view.search_indices(ns_parser.query, ns_parser.limit)
+                return self.queue
+
             if ns_parser.show_indices:
                 print_rich_table(
                     pd.DataFrame.from_dict(yfinance_model.INDICES, orient="index"),
@@ -800,31 +810,41 @@ class EconomyController(BaseController):
                     headers=["Name", "Ticker"],
                     title="Major Indices",
                 )
-            elif ns_parser.indices:
-                if ns_parser.store:
-                    self.DATASETS["index"] = pd.DataFrame()
-                    for index in ns_parser.indices:
-                        self.DATASETS["index"][index] = yfinance_model.get_index(
-                            index,
-                            interval=ns_parser.interval,
-                            start_date=ns_parser.start_date,
-                            end_date=ns_parser.end_date,
-                            column=ns_parser.column,
-                        )
-                else:
-                    yfinance_view.show_indices(
-                        indices=ns_parser.indices,
+                return self.queue
+
+            if ns_parser.indices:
+                for i, index in enumerate(ns_parser.indices):
+                    df = yfinance_model.get_index(
+                        index,
                         interval=ns_parser.interval,
                         start_date=ns_parser.start_date,
                         end_date=ns_parser.end_date,
                         column=ns_parser.column,
-                        store=ns_parser.store,
-                        raw=ns_parser.raw,
-                        export=ns_parser.export,
-                        returns=ns_parser.returns,
                     )
 
-                self.update_runtime_choices()
+                    if not df.empty:
+                        self.DATASETS["index"][index] = df
+
+                        self.stored_datasets = (
+                            economy_helpers.update_stored_datasets_string(self.DATASETS)
+                        )
+
+                        # display only once in the last iteration
+                        if i == len(ns_parser.indices) - 1:
+                            yfinance_view.show_indices(
+                                indices=ns_parser.indices,
+                                interval=ns_parser.interval,
+                                start_date=ns_parser.start_date,
+                                end_date=ns_parser.end_date,
+                                column=ns_parser.column,
+                                raw=ns_parser.raw,
+                                export=ns_parser.export,
+                                returns=ns_parser.returns,
+                            )
+
+                            self.update_runtime_choices()
+                            if obbff.ENABLE_EXIT_AUTO_HELP:
+                                self.print_help()
 
     @log_start_end(log=logger)
     def call_treasury(self, other_args: List[str]):
@@ -838,7 +858,6 @@ class EconomyController(BaseController):
             "markets over a lengthy period. Note: 3-month and 10-year treasury yields for other countries "
             "are available via the command 'macro' and parameter 'M3YD' and 'Y10YD'. [Source: EconDB / FED]",
         )
-
         parser.add_argument(
             "-m",
             "--maturity",
@@ -848,16 +867,13 @@ class EconomyController(BaseController):
             help="The preferred maturity which is dependent on the type of the treasury",
             default=["1y"],
         )
-
         parser.add_argument(
-            "-sm",
-            "--show_maturities",
+            "--show",
             dest="show_maturities",
             help="Show the maturities available for every instrument.",
             action="store_true",
             default=False,
         )
-
         parser.add_argument(
             "-f",
             "--frequency",
@@ -867,7 +883,6 @@ class EconomyController(BaseController):
             help="The frequency, this can be annually, monthly, weekly or daily",
             default="monthly",
         )
-
         parser.add_argument(
             "-t",
             "--type",
@@ -879,67 +894,69 @@ class EconomyController(BaseController):
             "secondary market treasury rates",
             default=["nominal"],
         )
-
         parser.add_argument(
             "-s",
-            "--start_date",
+            "--start",
             dest="start_date",
             help="The start date of the data (format: YEAR-MONTH-DAY, i.e. 2010-12-31)",
             default="1934-01-31",
         )
-
         parser.add_argument(
             "-e",
-            "--end_date",
+            "--end",
             dest="end_date",
             help="The end date of the data (format: YEAR-DAY-MONTH, i.e. 2021-06-02)",
             default=date.today(),
         )
-
-        parser.add_argument(
-            "-st",
-            "--store",
-            dest="store",
-            help="Store the data to be used for plotting with the 'plot' command.",
-            action="store_true",
-            default=False,
-        )
-
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-m")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
             raw=True,
             limit=10,
         )
-
         if ns_parser:
             if ns_parser.show_maturities:
                 econdb_view.show_treasury_maturities(econdb_model.TREASURIES)
-            elif ns_parser.maturity and ns_parser.type:
-                if ns_parser.store:
-                    treasury_data = econdb_model.get_treasuries(
-                        instruments=ns_parser.type,
-                        maturities=ns_parser.maturity,
-                        frequency=ns_parser.frequency,
-                        start_date=ns_parser.start_date,
-                        end_date=ns_parser.end_date,
+                return self.queue
+
+            if ns_parser.maturity and ns_parser.type:
+                treasury_data = econdb_model.get_treasuries(
+                    instruments=ns_parser.type,
+                    maturities=ns_parser.maturity,
+                    frequency=ns_parser.frequency,
+                    start_date=ns_parser.start_date,
+                    end_date=ns_parser.end_date,
+                )
+
+                df = (
+                    pd.DataFrame.from_dict(treasury_data, orient="index")
+                    .stack()
+                    .to_frame()
+                )
+
+                if not df.empty:
+                    self.DATASETS["treasury"] = pd.concat(
+                        [
+                            self.DATASETS["treasury"],
+                            pd.DataFrame(df[0].values.tolist(), index=df.index).T,
+                        ]
                     )
 
-                    df = (
-                        pd.DataFrame.from_dict(treasury_data, orient="index")
-                        .stack()
-                        .to_frame()
+                    cols = []
+                    for column in self.DATASETS["treasury"].columns:
+                        if isinstance(column, tuple):
+                            cols.append("_".join(column))
+                        else:
+                            cols.append(column)
+                    self.DATASETS["treasury"].columns = cols
+
+                    self.stored_datasets = (
+                        economy_helpers.update_stored_datasets_string(self.DATASETS)
                     )
-                    self.DATASETS["treasury"] = pd.DataFrame(
-                        df[0].values.tolist(), index=df.index
-                    ).T
-                    self.DATASETS["treasury"].columns = [
-                        "_".join(column) for column in self.DATASETS["treasury"].columns
-                    ]
-                else:
+
                     econdb_view.show_treasuries(
                         types=ns_parser.type,
                         maturities=ns_parser.maturity,
@@ -950,7 +967,9 @@ class EconomyController(BaseController):
                         export=ns_parser.export,
                     )
 
-            self.update_runtime_choices()
+                    self.update_runtime_choices()
+                    if obbff.ENABLE_EXIT_AUTO_HELP:
+                        self.print_help()
 
     @log_start_end(log=logger)
     def call_ycrv(self, other_args: List[str]):
@@ -961,16 +980,6 @@ class EconomyController(BaseController):
             prog="ycrv",
             description="Generate country yield curve. The yield curve shows the bond rates"
             " at different maturities.",
-        )
-        parser.add_argument(
-            "-s",
-            "--source",
-            action="store",
-            dest="source",
-            choices=self.ycrv_sources,
-            type=str,
-            default="investpy",
-            help="Source for the data. If not supplied, the most recent entry from investpy will be used.",
         )
         parser.add_argument(
             "-c",
@@ -989,7 +998,7 @@ class EconomyController(BaseController):
             dest="date",
             default=None,
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
@@ -999,16 +1008,109 @@ class EconomyController(BaseController):
             if isinstance(ns_parser.country, list):
                 ns_parser.country = " ".join(ns_parser.country)
 
-            investingcom_model.check_correct_country(ns_parser.country)
-
             if ns_parser.source == "FRED":
-                fred_view.display_yield_curve(ns_parser.date)
+
+                if ns_parser.country == "united states":
+                    fred_view.display_yield_curve(
+                        ns_parser.date,
+                        raw=ns_parser.raw,
+                        export=ns_parser.export,
+                    )
+                else:
+                    console.print("Source FRED is only available for united states.\n")
+
             elif ns_parser.source == "investpy":
+
+                investingcom_model.check_correct_country(ns_parser.country)
+
                 investingcom_view.display_yieldcurve(
                     country=ns_parser.country,
                     raw=ns_parser.raw,
                     export=ns_parser.export,
                 )
+
+    @log_start_end(log=logger)
+    def call_ecocal(self, other_args: List[str]):
+        """Process ecocal command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="ecocal",
+            description="Economic calendar.",
+        )
+        parser.add_argument(
+            "-c",
+            "--country",
+            action="store",
+            dest="country",
+            nargs="+",
+            default="united states",
+            help="Display calendar for specific country.",
+        )
+        parser.add_argument(
+            "-i",
+            "--importances",
+            action="store",
+            dest="importances",
+            choices=investingcom_model.IMPORTANCES,
+            default="all",
+            help="Event importance classified as high, medium, low or all.",
+        )
+        parser.add_argument(
+            "-cat",
+            "--categories",
+            action="store",
+            dest="categories",
+            choices=investingcom_model.CATEGORIES,
+            nargs="+",
+            default=None,
+            help="Event category.",
+        )
+        parser.add_argument(
+            "-s",
+            "--start_date",
+            dest="start_date",
+            type=valid_date,
+            help="The start date of the data (format: YEAR-MONTH-DAY, i.e. 2010-12-31)",
+            default=None,
+        )
+
+        parser.add_argument(
+            "-e",
+            "--end_date",
+            dest="end_date",
+            type=valid_date,
+            help="The start date of the data (format: YEAR-MONTH-DAY, i.e. 2010-12-31)",
+            default=None,
+        )
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
+            raw=True,
+            limit=10,
+        )
+
+        if ns_parser:
+
+            if isinstance(ns_parser.country, list):
+                ns_parser.country = " ".join(ns_parser.country)
+
+            if isinstance(ns_parser.categories, list):
+                ns_parser.categories = " ".join(ns_parser.categories)
+
+            investingcom_model.check_correct_country(ns_parser.country)
+
+            investingcom_view.display_economic_calendar(
+                countries=ns_parser.country,
+                importances=ns_parser.importances,
+                categories=ns_parser.categories,
+                from_date=ns_parser.start_date,
+                to_date=ns_parser.end_date,
+                limit=ns_parser.limit,
+                export=ns_parser.export,
+            )
 
     @log_start_end(log=logger)
     def call_plot(self, other_args: List[str]):
@@ -1018,25 +1120,21 @@ class EconomyController(BaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="plot",
             description="This command can plot any data on two y-axes obtained from the macro, fred, index and "
-            "treasury commands. To be able to use this data, use the -st argument available within these "
-            "commands. For example 'macro -p GDP -c Germany Netherlands -st' will store the data for usage "
-            "in this command. Therefore, it allows you to plot different time series in one graph. You can use "
-            "the 'options' command to show the required arguments to be entered. The example above could be plotted "
-            "the following way: 'plot -y1 Germany_GDP -y2 Netherlands_GDP' or 'plot -y1 Germany_GDP Netherlands_GDP'",
+            "treasury commands. To be able to use this data, just load the available series from the previous "
+            "commands. For example 'macro -p GDP -c Germany Netherlands' will store the data for usage "
+            "in this command. Therefore, it allows you to plot different time series in one graph. "
+            "The example above could be plotted the following way: 'plot --y1 Germany_GDP --y2 Netherlands_GDP' "
+            "or 'plot --y1 Germany_GDP Netherlands_GDP'",
         )
-
         parser.add_argument(
-            "-y1",
-            "--yaxis1",
+            "--y1",
             nargs="+",
             dest="yaxis1",
             help="Select the data you wish to plot on the first y-axis. You can select multiple variables here.",
             default="",
         )
-
         parser.add_argument(
-            "-y2",
-            "--yaxis2",
+            "--y2",
             nargs="+",
             dest="yaxis2",
             help="Select the data you wish to plot on the second y-axis. You can select multiple variables here.",
@@ -1044,8 +1142,8 @@ class EconomyController(BaseController):
         )
 
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-y1")
-        ns_parser = parse_known_args_and_warn(
+            other_args.insert(0, "--y1")
+        ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
@@ -1057,7 +1155,7 @@ class EconomyController(BaseController):
             if not self.DATASETS:
                 console.print(
                     "There is no data stored yet. Please use either the 'macro', 'fred', 'index' and/or "
-                    "'treasury' command in combination with the -st argument to be able to plot data."
+                    "'treasury' command."
                 )
             else:
                 dataset_yaxis1 = pd.DataFrame()
@@ -1105,8 +1203,8 @@ class EconomyController(BaseController):
                                 break
                     if dataset_yaxis1.empty:
                         return console.print(
-                            f"Not able to find any data for the -y1 argument. The currently available "
-                            f"options are: {', '.join(self.choices['plot']['-y1'])}"
+                            f"Not able to find any data for the --y1 argument. The currently available "
+                            f"options are: {', '.join(self.choices['plot']['--y1'])}"
                         )
 
                 if ns_parser.yaxis2:
@@ -1151,54 +1249,16 @@ class EconomyController(BaseController):
                                 break
                     if dataset_yaxis2.empty:
                         return console.print(
-                            f"Not able to find any data for the -y2 argument. The currently available "
-                            f"options are: {', '.join(self.choices['plot']['-y2'])}"
+                            f"Not able to find any data for the --y2 argument. The currently available "
+                            f"options are: {', '.join(self.choices['plot']['--y2'])}"
                         )
 
                 if ns_parser.yaxis1 or ns_parser.yaxis2:
-                    return plot_view.show_plot(
+                    plot_view.show_plot(
                         dataset_yaxis_1=dataset_yaxis1,
                         dataset_yaxis_2=dataset_yaxis2,
                         export=ns_parser.export,
                     )
-
-            console.print()
-
-    @log_start_end(log=logger)
-    def call_options(self, other_args: List[str]):
-        """Process options command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="options",
-            description="Show the available options for the 'plot' command. To save data, use the command -st on "
-            "'macro', 'fred', 'index' and 'treasury'. You can use these commands to plot data on a multi-"
-            "axes graph. Furthermore, this command also allows you to see and export all stored data.",
-        )
-
-        ns_parser = parse_known_args_and_warn(
-            parser,
-            other_args,
-            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
-            raw=True,
-            limit=10,
-        )
-
-        if ns_parser:
-            if not self.DATASETS:
-                console.print(
-                    "There is no data stored yet. Please use either the 'macro', 'fred', 'index' and/or "
-                    "'treasury' command in combination with the -st argument to be able to plot data."
-                )
-            else:
-                plot_view.show_options(
-                    datasets=self.DATASETS,
-                    raw=ns_parser.raw,
-                    limit=ns_parser.limit,
-                    export=ns_parser.export,
-                )
-
-            console.print()
 
     @log_start_end(log=logger)
     def call_rtps(self, other_args: List[str]):
@@ -1213,7 +1273,7 @@ class EconomyController(BaseController):
             """,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -1265,7 +1325,7 @@ class EconomyController(BaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-g")
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -1319,7 +1379,7 @@ class EconomyController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-g")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -1358,7 +1418,7 @@ class EconomyController(BaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-g")
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
         if ns_parser:
@@ -1387,6 +1447,15 @@ class EconomyController(BaseController):
             PredictionTechniquesController,
         )
 
+        data: Dict = {}
+        for source, _ in self.DATASETS.items():
+            if not self.DATASETS[source].empty:
+                if len(self.DATASETS[source].columns) == 1:
+                    data[self.DATASETS[source].columns[0]] = self.DATASETS[source]
+                else:
+                    for col in list(self.DATASETS[source].columns):
+                        data[col] = self.DATASETS[source][col].to_frame()
+
         self.queue = self.load_class(
             PredictionTechniquesController, self.DATASETS, self.queue
         )
@@ -1405,4 +1474,13 @@ class EconomyController(BaseController):
             QaController,
         )
 
-        self.queue = self.load_class(QaController, self.DATASETS, self.queue)
+        data: Dict = {}
+        for source, _ in self.DATASETS.items():
+            if not self.DATASETS[source].empty:
+                if len(self.DATASETS[source].columns) == 1:
+                    data[self.DATASETS[source].columns[0]] = self.DATASETS[source]
+                else:
+                    for col in list(self.DATASETS[source].columns):
+                        data[col] = self.DATASETS[source][col].to_frame()
+
+        self.queue = self.load_class(QaController, data, self.queue)

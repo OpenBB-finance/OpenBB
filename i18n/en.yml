@@ -1,46 +1,24 @@
 en:
-  _home_: >
-    [info]Get API keys from data providers to access more features.[/info]
-        For more instructions use: 'keys'.
-        To see all features follow: https://openbb-finance.github.io/OpenBBTerminal/
-
-    [info]Multiple jobs queue (where each '/' denotes a new command).[/info]
-        E.g. '/stocks $ disc/ugs -n 3/../load tsla/candle'
-
-    [info]If you want to jump from crypto/ta to stocks you can use an absolute path that starts with a slash (/).[/info]
-        E.g. '/crypto/ta $ /stocks'
-
-    [info]You can run a standalone .openbb routine file with:[/info]
-        E.g. '/ $ exe routines/example.openbb'
-
-    [info]You can run a .openbb routine file with variable inputs:[/info]
-        E.g. '/ $ exe routines/example_with_inputs.openbb --input pltr,tsla,nio'
-
-
-    [info]The main commands you should be aware when navigating through the terminal are:[/info]
-  cls: clear the screen
-  help: help menu ('h' or '?' also works)
-  quit: quit this menu and go one menu above ('q' or '..' also works)
-  exit: exit the terminal
-  reset: reset the terminal and reload configs from the current location ('r' also works)
-  resources: only available on main contexts (not sub-menus)
-  support: pre-populate support ticket for our team to evaluate
-  about: amore information about OpenBB
-  update: update terminal automatically (when using GitHub)
-  tz: set different timezone
-  export: select export folder to output data
+  _home_: Information, guides and support for the OpenBB Terminal
+  about: discover the capabilities of the OpenBB Terminal (https://openbb.co/docs)
+  support: pre-populate a support ticket for our team to evaluate
+  update: attempt to update the terminal automatically (GitHub version)
   exe: execute automated routine script
   settings: tune settings (export folder, timezone, language, plot size)
   featflags: enable and disable feature flags
+  sources: select your preferred data sources
   keys: set API keys and check their validity
   _configure_: Configure your own terminal
   _main_menu_: Main menu
-  keys/_keys_: Set API keys through environment variables
+  keys/_keys_: This menu allows you to set your own API keys. Type 'about' for more information
   defined, test passed: defined, test passed
   defined, test failed: defined, test failed
   not defined: not defined
   defined, not tested: defined, not tested
   defined, test unsuccessful: defined, test unsuccessful
+  sources/_info_: Get and set default data sources
+  sources/get: get available data sources associated with command
+  sources/set: set default data source for a command
   featflags/_info_: Feature flags through environment variables
   featflags/logcollection: allow logs to be sent to help OpenBB team
   featflags/retryload: retry misspelled commands with load first
@@ -62,12 +40,16 @@ en:
   settings/_info_: Settings through environment variables
   settings/autoscaling: plot autoscaling
   settings/dt: add or remove datetime from flair
+  settings/flair: set the flair emoji to be used
   settings/_flair: Flair
   settings/lang: terminal language
   settings/_language: Language
+  settings/export: select export folder to output data
+  settings/tz: set different timezone
   settings/dpi: dots per inch
   settings/backend: plotting backend (None, tkAgg, MacOSX, Qt5Agg)
   settings/height: select plot height
+  settings/_preferred_data_source_file: Preferred data source file
   settings/width: select plot width
   settings/pheight: select plot percentage height
   settings/pwidth: select plot percentage width
@@ -81,6 +63,8 @@ en:
   settings/_monitor: Monitor
   settings/_export_folder: Export Folder
   settings/_timezone: Timezone
+  settings/source: specify data source file
+  settings/_data_source: Data sources
   _others_: Others
   stocks: access historical pricing data, options, sector and industry, and overall due diligence
   crypto: dive into onchain data, tokenomics, circulation supply, nfts and more
@@ -108,9 +92,9 @@ en:
   stocks/candle: view a candle chart for a specific stock ticker
   stocks/CANDLE: Shows historic data for a stock
   stocks/CANDLE_plotly: Flag to show interactive plotly chart
-  stocks/CANDLE_sort: Choose a column to sort by
-  stocks/CANDLE_descending: Sort selected column descending
-  stocks/CANDLE_raw: Shows raw data instead of chart
+  stocks/CANDLE_sort: Choose a column to sort by. Only works when raw data is displayed.
+  stocks/CANDLE_descending: Sort selected column descending. Only works when raw data is displayed.
+  stocks/CANDLE_raw: Shows raw data instead of chart. If sort is set those are the top ones, otherwise we grab latest data to date
   stocks/CANDLE_trend: Flag to add high and low trends to candle
   stocks/CANDLE_mov_avg: Add moving average in number of days to plot and separate by a comma
   stocks/news: latest news of the company
@@ -379,8 +363,13 @@ en:
   stocks/fa/earnings: earnings dates and reported EPS
   stocks/fa/fraud: key fraud ratios
   stocks/fa/dupont: detailed breakdown for return on equity
-  stocks/fa/_sources_: Other sources
-  stocks/fa/fmp: profile,quote,enterprise,dcf,income,ratios,growth from FMP
+  stocks/fa/profile: company profile
+  stocks/fa/quote: detailed stock quote information
+  stocks/fa/enterprise: company enterprise value
+  stocks/fa/metrics: key metrics over time
+  stocks/fa/ratios: in-depth ratios over time
+  stocks/fa/growth: growth of financial statement items and ratios
+  stocks/fa/dcfc: determine the (historical) discounted cash flow
   stocks/res/_ticker: Ticker
   stocks/res/macroaxis: www.macroaxis.com
   stocks/res/yahoo: www.finance.yahoo.com
@@ -499,7 +488,7 @@ en:
   crypto/_symbol: Coin
   crypto/_source: Source
   crypto/headlines: crypto sentiment from 15+ major news headlines
-  crypto/chart: view a candle chart for a specific cryptocurrency
+  crypto/candle: view a candle chart for a specific cryptocurrency
   crypto/prt: potential returns tool - check how much upside if ETH reaches BTC market cap
   crypto/disc: discover trending cryptocurrencies,     top gainers, losers, top sentiment
   crypto/ov: overview of the cryptocurrencies,       market cap, DeFi, latest news, top exchanges, stables
@@ -572,9 +561,6 @@ en:
   crypto/onchain/tx: ethereum blockchain transaction info
   crypto/defi/newsletter: recent DeFi related newsletters
   crypto/defi/dpi: DeFi protocols listed on DefiPulse
-  crypto/defi/funding: funding rates - current or last 30 days average
-  crypto/defi/borrow: DeFi borrow rates - current or last 30 days average
-  crypto/defi/lending: DeFi ending rates - current or last 30 days average
   crypto/defi/vaults: top DeFi Vaults on different blockchains
   crypto/defi/tokens: tokens trade-able on Uniswap
   crypto/defi/stats: base statistics about Uniswap
@@ -785,6 +771,8 @@ en:
   etf/pred/lstm: Long-Short Term Memory
   etf/pred/conv1d: 1D Convolutional Neural Network
   etf/pred/mc: Monte-Carlo simulations
+  economy/_database_: Databases
+  economy/_stored: Stored datasets
   economy/overview: show a market overview of either indices, bonds or currencies
   economy/futures: display a futures and commodities overview
   economy/map: S&P500 index stocks map
@@ -794,8 +782,8 @@ en:
   economy/index: find and plot any (major) index on the market
   economy/treasury: obtain U.S. treasury rates
   economy/ycrv: show sovereign yield curves
+  economy/ecocal: display economic calendar
   economy/plot: plot data from the above commands together
-  economy/options: show the available options for 'plot' or show/export the data
   economy/rtps: real-time performance sectors
   economy/valuation: valuation of sectors, industry, country
   economy/performance: performance of sectors, industry, country
@@ -984,7 +972,7 @@ en:
   econometrics/granger: Granger causality tests on two columns
   econometrics/coint: co-integration test on a multitude of columns
   portfolio/bro: brokers holdings,   supports robinhood, ally, degiro, coinbase
-  portfolio/po: portfolio optimization,  optimal your portfolio weights efficiently
+  portfolio/po: portfolio optimization,  optimize your portfolio weights efficiently
   portfolio/load: load data into the portfolio
   portfolio/_loaded: Loaded orderbook
   portfolio/_riskfreerate: Risk Free Rate
@@ -1034,6 +1022,7 @@ en:
   portfolio/bro/degiro/companynews: view news about a company with it's isin
   portfolio/bro/degiro/lastnews: view latest news
   portfolio/bro/degiro/topnews: view top news preview
+  portfolio/bro/degiro/paexport: csv export for portfolio analysis
   portfolio/bro/rh/login: login to robinhood
   portfolio/bro/rh/holdings: show account holdings in stocks
   portfolio/bro/rh/history: show equity history of your account

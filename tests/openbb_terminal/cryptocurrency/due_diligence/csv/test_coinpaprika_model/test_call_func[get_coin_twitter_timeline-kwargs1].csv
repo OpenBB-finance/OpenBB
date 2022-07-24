@@ -1,211 +1,212 @@
 ,date,user_name,status,retweet_count,like_count
-0,"2022-04-18
-14:30:27",EFDevconnect,"At one venue but want to listen to a talk in another venue?OR missed a talk
-like @AyaMiyagotchi’s talk on Devconnect or @trent_vanepps on publicly funded
-goods?https://t.co/b5FAueUKq4",27,0
-1,"2022-04-18
-07:11:05",AyaMiyagotchi,"1. Today we’re publishing the EF report! We hope it helps the community
-understand what the Ethereum Foundation is, our core principles, and our vision
-of Ethereum as an infinite garden. Read it here: https://t.co/jpUzvKS8F0",107,0
-2,"2022-04-18
-07:09:28",ethereum,"Today we’re publishing the EF report! This is a new way to communicate our
-core values, explain what makes the EF unique, and share information about all
-of the ways that EF teams contribute to our vision of Ethereum as an Infinite
-Garden.Read it here: https://t.co/dW41XUJo1y https://t.co/1OK8L8YHoM",548,2282
-3,"2022-04-16
-20:53:31",WeekInEthNews,"⟠ Latest Week in Ethereum News!🧪 @parithosh_j mainnet shadow fork successful 🐼
-@timbeiko the merge likely won’t be June 🏆 @solidity_lang Underhanded Solidity
-Contest winnershttps://t.co/NKRWjSmD3bThanks to @uniswapgrants for making
-this issue possible 🙏",31,0
-4,"2022-04-16
-13:53:00",0xstark,"0. Atoms, Institutions, BlockchainsThis is my answer to why crypto matters,
-what problem blockchains solve, and how Ethereum can change the world.
-https://t.co/ywNCuktLOP",91,0
-5,"2022-04-15
-23:46:08",BLulinski,"Some of my friends have started spending more time learning about Ethereum, and
-many have asked me similar questions - What's a node? Why are gas fees high? How
-does Uniswap work? These questions inspired me to write ""A Simpler Guide to
-Ethereum.""https://t.co/D5gsZoMKIp",98,0
-6,"2022-04-14
-21:57:24",gballet,"The Condrieu #verkle testnet is now open to the public. Landing page at
-https://t.co/VcXqNt7nrY",25,0
-7,"2022-04-14
-20:57:29",fredriksvantes,"Interested in learning more about what the EF security research team has been up
-to? We've got updates on audits, fuzzing, bug bounties, threat analysis, and
-more! Details to be found in Secured #3:https://t.co/sSPLCWVvlA",40,0
-8,"2022-04-14
-01:28:13",yAcademyDAO,"We are excited to announce that the third block of yAcademy's fellowship program
-will be starting in June.If you or someone you know wants to test their
-auditing skills and learn from the best security minds in the industry apply
-here: https://t.co/W5SxeDKPIH",27,0
-9,"2022-04-12
-18:58:39",terencechain,"Consensus client diversity has been improving a ton over the last few weeks.
-It's still not perfect, but we'll get there 💪https://t.co/1PP1DihyAS
-https://t.co/SVk9ule1vz",48,0
-10,"2022-04-12
-12:58:57",EF_ESP,"TEN DAYS LEFT! Apply by April 22nd to the Academic Grants Round! 🤓📚 Calling
-all academics, research centers, PhD students and others interested in
-researching Ethereum. There's up to a total of $750k available, so submit your
-project proposals today!https://t.co/meo0hMZA4J",40,0
-11,"2022-04-10
-18:54:19",WeekInEthNews,"⟠ Latest Week in Ethereum News!🆙 @timbeiko Core Devs to decide Apr 29 when to
-fork testnets ⚠️ @etheralphateam client diversity: Prysm 56%, Geth 87% 🗳️
-@vitalikbuterin simplified SSLEhttps://t.co/fTvEBsxNjEThanks to
-@StarbloomVent for making this issue possible 🙏",52,0
-12,"2022-04-10
-01:30:03",benjaminion_xyz,"Your favourite regular update on the future of Ethereum is here:
-https://t.co/97X85jdCzM!#Ethereum #Eth2",106,0
-13,"2022-04-08
-21:09:14",SomerEsat,"Ethereum Staking Guides have been updated.- Added info for fallback Eth1 nodes
-for Prysm, Teku, and Nimbus.- Added steps for pruning Geth (Appendix D)-
-Added steps to clean up systemd logs (Appendix E)Guides:
-https://t.co/jBi4juR80O",63,0
-14,"2022-04-08
-17:02:50",EthPrague,"""Oh, I love Prague!"" ~Everyone who's ever been to PragueIf you've never been,
-or even if you have, why not sign up to hack or speak @EthPrague?It's 10-12
-June 2022!Find out more at https://t.co/AZFGf8sOXs#hackathons
-https://t.co/zqmgdMcUmU",36,0
-15,"2022-04-08
-17:01:43",ETHIndiaco,"We recently launched ETHIndia Grants 🇮🇳 to provide equity-free grants to
-builders building on @ethereumSince inception we’ve deployed $15k+ to teams
-building incredible projects 👇🏻https://t.co/M1WufWHAM3 https://t.co/6UWolPQNj4",54,0
-16,"2022-04-06
-10:08:17",EF_ESP,"We're hiring! Interested in joining a dynamic team committed to supporting
-Ethereum's builders? Check out these open positions:",79,0
-17,"2022-04-04
-16:26:48",dannyryan,"Ever wondered how the EF’s Client Incentive Program works?Full (technical!)
-details have just been added to the original blog post 🔬
-https://t.co/jFrDr1N3l8tl;dr below1/x",69,0
-18,"2022-04-04
-11:30:59",WeekInEthNews,"⟠ Latest Week in Ethereum News!🎉 @superphiz no more supermajority staking
-client ⚒️ @gakonst Foundry v0.2.0 ✂️ @HyperledgerBesu bonsai tries (“super
-pruning”) livehttps://t.co/Vmah7xEf1cThanks to https://t.co/eRZA5rcSMX for
-making this issue possible 🙏",44,0
-19,"2022-04-01
-12:01:42",ethdotorg,#L222 Learn more: https://t.co/0MNAEuPOLB,131,0
-20,"2022-03-29
-21:19:44",go_ethereum,"Geth v1.10.17 (Ploitari) is out! This release contains a lot of work in
-preparation for The Merge, and work for an upcoming change to the way state is
-stored in go-ethereum. As always, please update your nodes.
-https://t.co/vnaezln7qK",79,0
-21,"2022-03-28
-19:29:48",dankrad,"If you are staking on Ethereum and currently running Prysm, this is for you: Run
-the majority client at your own peril! https://t.co/6XWfSTJWqS In this post I
-detail the enormous risks that staking with the majority client incurs.",133,0
-22,"2022-03-28
-12:36:58",TimBeiko,"Later than expected, here is another ACD update, fresh off the press 🔥 2500
-words to cover the latest Merge updates ⛓, Shanghai highlights 🌃, harmonizing EL
-&amp; CL governance processes📜 and Protocol Guild 💰https://t.co/jImlU7tft4",141,0
-23,"2022-03-27
-18:44:50",WeekInEthNews,"⟠ Latest Week in Ethereum News!⚠️ @dankrad running majority client puts you at
-risk 🐼 @dannyryan help test #TheMerge 🕹️ @GameStop NFT marketplace on
-@loopringorg &amp; @Immutable opens for signupshttps://t.co/aI54jOrFq4Thanks
-to @NexusMutual for making this issue possible 🙏",70,0
-24,"2022-03-26
-14:07:44",benjaminion_xyz,"What's new in #Eth2?It's been another busy couple of weeks! - Kiln testnet
-launch- Teku incident review- Shadow forks- 🐼s- Beyond the merge-
-Explainers- Podcasts- Research- Events...and more. All at
-https://t.co/97X85jdCzM#Ethereum",65,0
-25,"2022-03-25
-18:24:19",ethereum,"Looking for information on The Merge and beyond?@TimBeiko's newest All Core
-Developer's (ACD) update includes the latest on Ethereum's (big) next upgrades.
-https://t.co/vmQjwre0IK https://t.co/ZDNicXmkiy",85,280
-26,"2022-03-24
-01:05:31",austingriffith,"🏃‍♀️ https://t.co/Tuhv0qKkIX is a great place for good coders to get started
-building decentralized applications.🎥Catch the intro.🛠Then, test your
-skills:🚩 Challenge 0: 🎟 Simple NFT Example🚩 Challenge 1: 🥩 Decentralized
-Staking App🚩 Challenge 2: 🏵 Token Vendor",86,0
-27,"2022-03-23
-14:17:07",dannyryan,"Finalized no. 34https://t.co/3IY87ExIE9Kiln🧱🔥 testnet is live, and the word
-of the month is Testing, Testing, Testing.tl;dr below",123,0
-28,"2022-03-22
-15:10:12",EF_ESP,"Don't be a last-minute submitter! There is exactly one month left to apply for
-the Academic Grants Round! 🤓📚 🚀 Boost Ethereum-related research! 🥳 Up to a
-total of $750k for this round! https://t.co/meo0hMZA4J",51,0
-29,"2022-03-22
-13:13:47",yoavw,"Optimistic Time Traveling for fun and profit!New classes of attacks against
-optimistic rollups, demonstrated on Optimism's old OVM 1.Bridge projects, this
-should be part of your risk model.https://t.co/WkTeFlPIdQ",54,0
-30,"2022-03-22
-11:02:20",EF_ESP,"ICYMI: check out our recent Allocation Update covering Q3/Q4 2021!
-https://t.co/asbcO7Yf2WIn the second half of 2021 we awarded over $13.8
-million to 50+ recipients, including...",48,0
-31,"2022-03-20
-13:56:14",Gigaglobal,"🚀 Our Patchwork Kingdom #NFTs have raised over $700,000 and built a community of
-advocates for school connectivity. Read our blog post about using NFT artworks
-for philanthropy: https://t.co/gNLzlKMxzF@PatchworkGiga @NadiehBremer
-@SnowcrashNFT https://t.co/9eMIfrqjaM",97,0
-32,"2022-03-19
-17:26:45",WeekInEthNews,"⟠ Latest Week in Ethereum News!🐼 @timbeiko Kiln testnet successfully switched
-off PoW 📰 @Time puts @VitalikButerin on the cover 🖊️ @signinwitheth @discourse
-pluginhttps://t.co/SmB3AaWDY6Thanks to @uniswapgrants for making this issue
-possible 🙏",51,0
-33,"2022-03-18
-10:16:05",benjaminion_xyz,"Enough proof-reading, I'm going cross-eyed. Here you go:✅ BLS Signatures
-First cut done.https://t.co/i422MoZiwR",70,0
-34,"2022-03-18
-10:11:36",TIME,".@VitalikButerin co-founded Ethereum. Now he's fighting for crypto's future
-https://t.co/b90AaKXM51 https://t.co/gUz2Vnm35F",8185,0
-35,"2022-03-17
-12:10:32",gballet,"I'm starting a series of threads to highlight some of the changes that come with
-stateless #Ethereumand #Verkle trees. Today, I'm going to talk about the
-changes to the block format.",69,0
-36,"2022-03-16
-13:12:43",PrivacyScaling,"Do you have a passion for Ethereum and applications of ZKPs, as well as
-leadership experience? Apply for the Technical Project Coordinator role in our
-growing team:https://t.co/0NSdRR8QCE",39,0
-37,"2022-03-15
-21:34:41",AyaMiyagotchi,"I wrote a blog about the challenges of ESG systems, and how the Ethereum
-ecosystem can inspire them to improve. Thanks @Vitalikbuterin and others for the
-feedback! https://t.co/IgEqGTpvc2",50,0
-38,"2022-03-14
-19:12:19",ethdotorg,"(1/15) https://t.co/v9gxnMUQFz has the best POAPs ☺️  want one? 🧵
-https://t.co/ysJ3xeEHko",53,0
-39,"2022-03-14
-16:20:26",TimBeiko,"Kiln, the next iteration of Ethereum merge testnets, is now live 🔥🧱Highly
-recommended that node operators, application developers, stakers, tooling/infra
-providers test their setups on the network. Blog post has all the info to get
-started 😁https://t.co/TCHBZxcFlt",281,0
-40,"2022-03-12
-20:40:16",benjaminion_xyz,"It's that What's New in Eth2 time of the week 🥳Always available at
-https://t.co/97X85jdCzMCatch up with the latest on the Kiln testnet,
-#TestingTheMerge, and a whole bunch of less important stuff.#Ethereum #Eth2",62,0
-41,"2022-03-12
-17:07:20",WeekInEthNews,"⟠ Latest Week in Ethereum News!🧱 @parithosh_j Kiln testnet launched to test
-PoW switch off 🇫🇷 @timbeiko Execution Layer PoW switch off named Paris 🧷
-@yugalabs acquires CryptoPunks &amp; Meebitshttps://t.co/uUTyyfmKEHThanks to
-@StarbloomVent for making this issue possible 🙏",55,0
-42,"2022-03-11
-17:14:22",gballet,"A demo video of the Condrieu #verkle tree testnet. This is a single-client
-testnet, producing blocks with proofs of the prestate. This means clients won't
-need to sync the entire state to participate in the #Ethereum network.",47,0
-43,"2022-03-10
-20:11:43",vdWijden,"It's time to get #TestingTheMerge going again! We spun up the Kiln 🧱🔥 testnet to
-test #Ethereum's upcoming move to proof-of-stake (this should be the final
-testnet before we start merging Ropsten, Rinkeby, Goerli, etc).This thread
-explains how *YOU* can get involved 🚀🚀🚀 https://t.co/XthSZN8L2e",200,0
-44,"2022-03-09
-16:11:37",EF_ESP,"Are you interested in (or already) contributing to #Ethereum research, and
-excited about the creation of knowledge? NOW is the time to put your research
-passion into practice by submitting a project proposal!👉 Apply to the Academic
-Grants Round: https://t.co/meo0hMZA4J",50,0
-45,"2022-03-09
-13:10:39",fredriksvantes,"""Secured #2: Public Vulnerability Disclosures"" is now live at
-https://t.co/ZGH1K5TpPb! This is the first public disclosure of many of the
-vulnerabilities received through the Ethereum Foundation's Bug Bounty Programs.",71,0
-46,"2022-03-07
-03:38:44",fvictorio_nan,"I wanted to make some small improvements to evm-puzzles but... I ended up re-
-writing the whole thing. Now it's 100x better:- Interactive - Show bytecode in
-a nicer way - Link to pre-filled https://t.co/sbGLPyZloz's playground
-Before/After: https://t.co/kQrNuuqbc5",91,0
-47,"2022-03-04
-22:27:48",TimBeiko,".@ethereum #AllCoreDevs today was packed with Merge &amp; Shanghai updates 👀
-Agenda: https://t.co/EPKmTOmed8 Stream:Recap below 👇🏻
-https://t.co/dzCXukuiGm",86,0
-48,"2022-03-04
-12:59:50",UNICEFinnovate,"The @UNICEF Venture Fund and @Gigaconnect are making equity-free investments in
-#blockchain solutions that build capacity and empower communities.Join us
-toward #techforgood. Read more and apply: https://t.co/imgtjIbLW1
-https://t.co/qcuNvM8c4T",83,0
-49,"2022-03-04
-01:49:36",AttestantIO,Evaluating Beacon Nodes 2022https://t.co/5st8VrWDfv,37,0
+0,"2022-06-19
+20:09:57",WeekInEthNews,"Latest Week in Ethereum News🧊 Update your nodes for the Gray Glacier upgrade
+https://t.co/KjaMV4U5rSThanks to @NexusMutual for making this issue possible 🙏",45,0
+1,"2022-06-18
+20:26:57",benjaminion_xyz,"Amidst all the reckage and misery, here's your little ray of sunshiny good news
+for the weekend: What's New in #Eth2.All your #Ethereum Merge updates and
+everything else right here: https://t.co/97X85jvdrk🌞 Enjoy! 🌞",85,0
+2,"2022-06-17
+15:50:00",evan_van_ness,"Something that has long irked me:People asking for ""official"" news about
+Ethereum.There is no such thing.",40,0
+3,"2022-06-16
+21:34:12",TimBeiko,"🧊 Gray Glacier Upgrade Announcement 🧊At block 15,050,000, the Ethereum network
+will undergo the Gray Glacier fork to push back the difficulty bomb, *hopefully*
+for the last time ever 😁 If you run a node or validator, make sure to upgrade
+🔜!https://t.co/wmPqzQSgL7",223,0
+4,"2022-06-15
+20:38:54",ETHGlobal,"We've got a special announcement... 🥳#ETHNewYork is already set to be our
+largest in-person event, but we found a little more space!If you're on the
+waitlist, check your emails—but if you haven't applied, Friday is your last
+chance!👇https://t.co/0MiCarFqjg",58,0
+5,"2022-06-14
+10:30:53",ethdotorg,"Lots of very exciting changes after deploying v4.2.0 of https://t.co/v9gxnNcrx7
+😎🧵 https://t.co/FUibj8wJUk",80,0
+6,"2022-06-11
+19:52:20",WeekInEthNews,"Latest Week in Ethereum News🎉 Ropsten testnet merged successfully! 🎉 💣
+Difficulty bomb to be delayed several monthshttps://t.co/SbiGqoVXcxThanks to
+@showkarma_xyzfor making this issue possible 🙏",57,0
+7,"2022-06-10
+22:55:26",TimBeiko,"We just wrapped up a *very* eventful @ethereum #AllCoreDevs Agenda:
+https://t.co/NFEtHndQg3 Stream: Will recap here, but IMO if you only listen to
+a handful of calls per year, this one should be on your list 🎧
+https://t.co/imJBjEYeXE",180,0
+8,"2022-06-09
+00:42:38",parithosh_j,Summary of the Ropsten testnet merge: 🧵 https://t.co/xHBManCuru,314,0
+9,"2022-06-08
+16:13:11",lightclients,Ropsten has activated proof-of-stake! https://t.co/TKQ8LSJGt6,849,0
+10,"2022-06-07
+22:01:01",chuycepeda,"Our identities hold immense power. At @oscitylatam, we are working to onboard
+#government services into the world of #web3. As an @Ethereum Foundation fellow,
+here are my thoughts on #digitalidentity:https://t.co/yJIcpMXwuq",54,0
+11,"2022-06-07
+20:41:09",TimBeiko,"Reminder - we’ll be hitting TTD on Ropsten later this week. If you run a node or
+validator on the network, you must override it 🤖The blog post quoted here
+explains how to do so 👇 https://t.co/4CyxHxIgBm",61,0
+12,"2022-06-07
+20:40:54",ethdotorg,"Calling all Ethereum wallets - we need your help updating your product
+information &amp; features!We're shipping updates to our wallet listing tools,
+so in order to be fully visible on feature filters, please add you information /
+confirm it's accurate! 🙏https://t.co/qLEv007Jf3",50,0
+13,"2022-06-07
+04:54:01",peter_szilagyi,"This is your periodic reminder that post-merge, #Ethereum execution clients will
+not guarantee the availability of all the chain history indefinitely.
+Practically, nothing will change in the short term, but consider the invariant
+broken long term.https://t.co/yYv3j1XvG6",130,0
+14,"2022-06-06
+19:42:43",EFDevcon,"🥁📢 Ready, set and GO: We have embarked on the #RoadToDevcon! 🚨 Applications
+are open TODAY 🚨Apply as a 🧱 Builder 📚 Student 🗣 Speaker 🌳 Supporter 🦄
+VolunteerPS: Ticket sales begin soon™️Check the #Devcon blog for exact
+dates, forms &amp; more:https://t.co/95Ec05OcK1",210,0
+15,"2022-06-06
+12:46:07",EthereumOnARM,"If you are joining the #Ethereum Ropsten fork don't forget to update the clients
+TTD to 50000000000000000.",40,0
+16,"2022-06-05
+21:15:54",WeekInEthNews,"Latest Week in Ethereum News🐼 @TimBeiko Ropsten testnet to Merge
+📧@skiffprivacy e2e encrypted email using Eth wallet &amp; @ensdomains ☠️
+@dannyryan liquid staking derivatives dangerous at 25%https://t.co/VdFuCRPgfg
+Thanks to @StarbloomVent🌌 for making this issue possible🙏",52,0
+17,"2022-06-04
+16:28:22",benjaminion_xyz,"The latest What's New in Eth2 is out!Reorgs, Ropsten, research, regular
+recordings - and lots of other stuff that doesn't alliterate, all in the usual
+place: https://t.co/97X85jdCzM#Ethereum",102,0
+18,"2022-06-03
+18:59:02",skiffprivacy,"End-to-end encrypted, private email - powered by your @ethereum wallet.10 GB
+storage, fast + free search, @ensdomains integration, and optional decentralized
+storage with @IPFS https://t.co/W4cXpW4DvN https://t.co/EQMT0hEcJe",72,0
+19,"2022-06-03
+13:44:00",TimBeiko,"📣 Ropsten Merge Update 📣As mentioned in the Ropsten Merge Announcement, the
+terminal total difficulty (TTD) at which The Merge happens on Ropsten must be
+overridden by node operators &amp; stakers. The correct TTD value is
+50000000000000000 👀https://t.co/aPAWNJfDYh",146,0
+20,"2022-06-02
+01:43:25",EF_ESP,"Our latest Grantee Roundup is out!https://t.co/ABRbv82x3SFeaturing
+@ethnimbus for their Fluffy client and Portal Network development, and
+@paulmillr for improvements to the ethereum-cryptography library 🦄",65,0
+21,"2022-05-31
+16:36:57",PrivacyScaling,"Quadratic Funding is coming to a hackathon near you🥳https://t.co/AQd48XiZQd
+@EthPrague attendees will vote in person on how funds are distributed among
+local public goods projects. If you're working on public goods in or around
+Prague, sign up as a recipient by Monday 6/6!",47,0
+22,"2022-05-31
+00:04:17",sreeramkannan,"This is a post in appreciation of the Ethereum PoS protocol, in the context of
+recently raised questions. @VitalikButerin @dannyryan@drakefjustin @dankrad
+@casparschwa @zmanian @barnabemonnot https://t.co/NDeb6TQ65v",271,0
+23,"2022-05-30
+20:19:28",TimBeiko,"📣 Ropsten Merge Announcement 📣Ethereum's longest lived PoW testnet is moving
+to Proof of Stake! A new beacon chain has been launched today, and The Merge is
+expected around June 8th on the network. Node Operators: this is the first
+dress rehearsal💃https://t.co/0fDHObLOmn",999,0
+24,"2022-05-28
+20:30:25",WeekInEthNews,"⟠ Latest Week in Ethereum News!🦄 @Uniswap $1 trillion cumulative trading
+volume 🤿 @jon_charb Ethereum roadmap deep dive 🕹️ @GameStop L1 &amp;
+@loopringorg L2 wallethttps://t.co/2c16LLpEiyThanks to
+https://t.co/eRZA5rcSMX for making this issue possible 🙏",94,0
+25,"2022-05-27
+19:40:51",TimBeiko,"Another merge-heavy @ethereum #allcoredevs today 😁 TTD, beacon chains, Ropsten,
+difficulty bomb, we covered it all!Agenda: https://t.co/ei00nskBFg Stream:
+Recap below ⤵️ https://t.co/yeGVLIuhX4",135,0
+26,"2022-05-27
+19:11:03",JBSchweitzer,"The @Ethereum Foundation is searching for a Hiring Coordinator to help find
+great people for our community of teams &amp; projects.Ready to support hiring
+efforts, and to add value to the Ethereum ecosystem? Find a full description
+below, and apply today!https://t.co/UqyGZf2NwN",55,0
+27,"2022-05-27
+15:16:18",jon_charb,"This is THE definitive deep dive on Ethereum’s ambitious roadmap.Special
+thanks to @dankrad for your insights and review!AND we made an exception to
+open-source this Give me an hour of your time, and I’ll save you months of
+work Enjoyhttps://t.co/qwR2iRltwp",730,0
+28,"2022-05-23
+15:44:30",WeekInEthNews,"⟠ Latest Week in Ethereum News!⛅ @Cloudflare to stake their $ETH to support
+the Merge 🐼 @dannyryan mainnet-shadow-fork-5 went exceedingly well 🛡️
+@fredriksvantes client bug bounties now $250khttps://t.co/R7pG1B1gLYThanks
+to @NexusMutual for making this issue possible 🙏",84,0
+29,"2022-05-21
+20:47:43",benjaminion_xyz,"Get your #EthereumMerge alpha here!https://t.co/BsoMObHv9pAll your regular
+updates on What's New in #Eth2 in one handy place.Bullish Merge! 🐼",96,0
+30,"2022-05-21
+20:47:21",superphiz,"Today is the day to turn up the volume on the clr fund matching round hosted by
+@ethStaker, the EF, and @clrfund! What can you do to get this opportunity in
+front of the right eyes? https://t.co/z9v3K4aMyO https://t.co/TQdmdAoMUR",61,0
+31,"2022-05-19
+15:56:44",dannyryan,Finalized no. 35https://t.co/676ZgSZquQtl;dr below,80,0
+32,"2022-05-19
+01:08:03",dannyryan,"EF Data Availability Sampling (DAS) RFP just releasedhttps://t.co/N5Mq1XnvjB
+DAS is a hard but critical problem to solve in order to take us from EIP 4844 to
+our fully scalable future.$1.5M in funding earmarked for proposals!We're
+happy to chat to help get you up to speed",171,0
+33,"2022-05-18
+06:26:28",gballet,What does using the Condrieu #verkle testnet look like? A thread.,45,0
+34,"2022-05-18
+03:21:04",0xPARC,"[New Post] zkPairing: zkSNARKs for Elliptic Curve Pairings@jonathanpwang,
+@vvhuang_, and @theyisun present elliptic curve pairings in circom--unlocking
+BLS signatures, recursive verification, polynomial commitment verification, and
+more in groth16 (1/n)https://t.co/3ho1HvjAjb",204,0
+35,"2022-05-16
+16:45:11",fredriksvantes,"Secured #4 is out with major Bug Bounty Program updates! One highlight: a
+*substantial* reward increase of up to $250,000, and doubled to $500,000(!) for
+mainnet-targeted upgrades that are live on public testnets. Happy bug hunting! 🐛
+https://t.co/fkt23FmarF",315,0
+36,"2022-05-16
+00:43:09",SomerEsat,"Please to share my first guide in the series of migration guides ""Migrating from
+Prysm to Nimbus"" is complete! https://t.co/FNEYpgvAiLcc:@dannyryan
+@ethereum @ethStaker @ethnimbus @Teku_ConsenSys @sigp_io @ChainSafeth @prylabs
+@superphiz",86,0
+37,"2022-05-14
+19:09:14",WeekInEthNews,"⟠ Latest Week in Ethereum News!🐼 @trent_vanepps Ropsten testnet to upgrade to
+PoS around June 8 🚂 @parithosh_j mainnet shadow fork 4 looked perfect ⏩
+@nethermindeth beta snap synchttps://t.co/8toHchsDJuThanks to @clrfund for
+making this issue possible 🙏",66,0
+38,"2022-05-14
+00:05:38",TimBeiko,"Better late than never, another @ethereum #AllCoreDevs recap. Tons of Merge
+updates on today's call! Agenda: https://t.co/RsvLHQQXHu Stream: Recap below
+👇🏻 https://t.co/Vhod0Jx8wr",88,0
+39,"2022-05-13
+19:01:19",sproulM_,"I *think* this is a more accurate picture of Ethereum consensus client diversity
+recently https://t.co/0QsocORx1y",94,0
+40,"2022-05-12
+16:48:49",parithosh_j,"Mainnet-Shadow-Fork-4 looks perfect! All clients went through the transition
+without a hitch. Only erigon missing (unrelated sync issues, we'll know in a bit
+if its synced to head as expected)We finalized and just keep chugging!
+#TestingTheMerge",125,0
+41,"2022-05-11
+06:10:46",_D4nie1_,"Beta version of Snap Sync in @nethermindeth is ready ! Reducing #Ethereum
+mainnet state sync even to 2h on a very fast machine 🔥 https://t.co/16eewqnA47
+https://t.co/k67CGTXe43",73,0
+42,"2022-05-11
+05:55:46",TimBeiko,"With the @nethermindeth snap sync support announcement, now's a good time to
+remind folks that, post-merge, EL client diversity matters just as much as CL,
+and is currently much worse. If a supermajority client on the EL has a bug, it
+*will* lead to a massive slashing event! https://t.co/gwT22lc7U8",109,0
+43,"2022-05-10
+23:40:35",_SamWilsn_,"Tentatively scheduled the first AllWalletDevs call for May 11th!If you aren't
+in the Discord, but think you should be, let me know.See you then!",43,0
+44,"2022-05-08
+20:04:50",WeekInEthNews,"⟠ Latest Week in Ethereum News!🐼 @parithosh_j mainnet shadow fork 3 almost
+perfect 📛 @ensdomains one million names created 🔨 @gakonst Foundry Anvil local
+testnet nodehttps://t.co/6GRBRdAOqxThanks to @StarbloomVent for making this
+issue possible 🙏",68,0
+45,"2022-05-08
+04:21:27",benjaminion_xyz,"It's been a minute frens.But https://t.co/LeRPRKrtQP is back, and it's a
+mahousive edition!So plan a nice long coffee break over the weekend and clear
+out some browser tabs ready to get up to speed with all the latest in the run-up
+to the Merge.#Ethereum #Eth2",87,0
+46,"2022-05-06
+06:55:07",yAcademyDAO,"Dearest shadowy super coders, builders, and degens:With our 3rd block slated
+for June, we'd like to formally introduce yAcademy: https://t.co/t4IJBCUbNb
+Let's learn, teach, and protect our ecosystem together 🤝 💪",65,0
+47,"2022-05-04
+20:33:36",TimBeiko,"AllCoreDevs Update 011 out now 💫Entirely focused on The Merge, I walk through
+what we're expecting across shadow forks, testing efforts, and testnet
+deployment...... in other words, everything we need to do before we're ready
+for mainnet! Enjoy 😁https://t.co/UKU4ELVniY",145,0
+48,"2022-05-03
+17:42:14",JBSchweitzer,"The @Ethereum Foundation is hiring a People Operations Lead!If you're
+passionate about open source collaboration, decentralization, playing positive-
+sum games, and truly want to see Ethereum succeed, apply to join the EF team:
+https://t.co/pkykODJJiz",84,0
+49,"2022-04-30
+18:03:36",WeekInEthNews,"⟠ Latest Week in Ethereum News!⛵ @parithosh_j mainnet shadow fork 2 smooth
+sailing 🔴 @optimismPBC $OP governance token, first airdrop Q2 🦇 @ultrasoundmoney
+12 million ETH depositedhttps://t.co/LHT3rT6oF4Thanks to
+https://t.co/eRZA5qUJyP for making this issue possible 🙏",68,0

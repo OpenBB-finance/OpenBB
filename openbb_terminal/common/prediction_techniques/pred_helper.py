@@ -22,7 +22,7 @@ from tensorflow.keras.models import Sequential
 from openbb_terminal.helper_funcs import (
     check_positive,
     check_positive_float,
-    parse_known_args_and_warn,
+    parse_simple_args,
     valid_date,
     plot_autoscale,
     print_rich_table,
@@ -195,7 +195,7 @@ def parse_args(prog: str, description: str, other_args: List[str]):
     )
 
     try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
         if not ns_parser:
             return None
 

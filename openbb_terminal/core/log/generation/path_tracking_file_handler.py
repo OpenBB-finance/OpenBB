@@ -165,12 +165,14 @@ class PathTrackingFileHandler(TimedRotatingFileHandler):
     def doRollover(self) -> None:
         log_sender = self.__log_sender
 
-        super().doRollover()
+        if self.lock:
+            with self.lock:
+                super().doRollover()
 
-        if log_sender.check_sending_conditions():
-            to_delete_path_list = self.getFilesToDelete()
-            for path in to_delete_path_list:
-                log_sender.send_path(path=Path(path))
+                if log_sender.check_sending_conditions():
+                    to_delete_path_list = self.getFilesToDelete()
+                    for path in to_delete_path_list:
+                        log_sender.send_path(path=Path(path))
 
     # OVERRIDE
     def close(self):

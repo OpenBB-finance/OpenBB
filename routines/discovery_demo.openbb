@@ -4,13 +4,26 @@ stocks/disc
 # Show a dividend calendar
 divcal -l 25
 
-# Show Ark trades
-arkord
 # Show upcoming earnings
 upcoming
 
+# Show Ark trades
+arkord
+
 # See news from Alpha Vantage
 cnews -t issuance
+cnews -t m-a
 
-# Return to home
-/
+# Gainers and Losers from Yahoo
+gainers
+losers
+active
+
+# Fidelity Order Flow
+ford -l 25
+
+# Next IPOs scheduled
+fipo
+
+# Hot Penny Stocks
+hotpenny -l 25

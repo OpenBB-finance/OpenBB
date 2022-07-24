@@ -16,7 +16,7 @@ from openbb_terminal.cryptocurrency.onchain import onchain_controller
 @pytest.mark.parametrize(
     "queue, expected",
     [
-        (["load", "help"], []),
+        (["load", "help"], ["help"]),
         (["quit", "help"], ["help"]),
     ],
 )
@@ -66,7 +66,7 @@ def test_menu_without_queue_completion(mocker):
 
     result_menu = onchain_controller.OnchainController(queue=None).menu()
 
-    assert result_menu == []
+    assert result_menu == ["help"]
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -110,7 +110,7 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
 
     result_menu = onchain_controller.OnchainController(queue=None).menu()
 
-    assert result_menu == []
+    assert result_menu == ["help"]
 
 
 @pytest.mark.vcr(record_mode="none")

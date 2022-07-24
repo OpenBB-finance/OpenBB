@@ -30,7 +30,7 @@ poetry install -E bots
 2. On the "Applications" tab, select "New Application" and name it something like "GST Bot". This will create a new application.
 3. For creating a bot, we need to go into the "GST Bot" application previously created, and on the "Bot" tab select
    "Add Bot".
-4. Allow privileged gateway intents by enabling MESSAGE CONTENT INTENT under the bot tab.
+4. Allow privileged gateway intents by enabling PRESENCE INTENT, SERVER MEMBERS INTENT, and MESSAGE CONTENT INTENT under the bot tab. Save your bot's TOKEN located here as well, we'll be using it later.
 5. Next we need to obtain the "Client ID". For that we choose the "OAuth2" tab and copy our "Client ID" under "Client".
 6. At this stage the bot is created and we are ready to invite it to one of our servers. To do so we need to access:
 <https://discord.com/oauth2/authorize?client_id=CLIENTID&scope=bot%20applications.commands>, where **CLIENTID** is replaced by the value copied above.
@@ -77,9 +77,11 @@ In order to config the discord bot you will need to edit the
    sys.path.append(GST_PATH)
    ```
 
-2. Update `DISCORD_BOT_TOKEN` using discord bot CLIENT ID obtained previously in [discord](#discord).
+2. Update `DISCORD_BOT_TOKEN` using discord bot TOKEN obtained previously in [discord](#discord).
 
 3. Update `IMGUR_CLIENT_ID` using imgur application CLIENT ID obtained previously in [imgur](#imgur).
+
+4. Copy your .env file to the bots root folder as this is where the bot will be searching it for the API keys. `./OpenBBTerminal/bots/.env`
 
 ### Advanced
 

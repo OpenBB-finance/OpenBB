@@ -32,9 +32,9 @@ def dark_pool_short_positions(num: int, sort_field: str, ascending: bool, export
     num : int
         Number of top tickers to show
     sort_field : str
-        Field for which to sort by, where 'sv': Short Vol. (1M),
-        'sv_pct': Short Vol. %%, 'nsv': Net Short Vol. (1M),
-        'nsv_dollar': Net Short Vol. ($100M), 'dpp': DP Position (1M),
+        Field for which to sort by, where 'sv': Short Vol. [1M],
+        'sv_pct': Short Vol. %%, 'nsv': Net Short Vol. [1M],
+        'nsv_dollar': Net Short Vol. ($100M), 'dpp': DP Position [1M],
         'dpp_dollar': DP Position ($1B)
     ascending : bool
         Data in ascending order
@@ -53,11 +53,11 @@ def dark_pool_short_positions(num: int, sort_field: str, ascending: bool, export
     df["Dark Pools Position"] = df["Dark Pools Position"] / 1_000_000
     df.columns = [
         "Ticker",
-        "Short Vol. (1M)",
+        "Short Vol. [1M]",
         "Short Vol. %",
-        "Net Short Vol. (1M)",
+        "Net Short Vol. [1M]",
         "Net Short Vol. ($100M)",
-        "DP Position (1M)",
+        "DP Position [1M]",
         "DP Position ($1B)",
     ]
 
@@ -101,7 +101,7 @@ def short_interest_days_to_cover(num: int, sort_field: str, export: str):
         "Ticker",
         "Float Short %",
         "Days to Cover",
-        "Short Interest (1M)",
+        "Short Interest [1M]",
     ]
 
     # Assuming that the datetime is the same, which from my experiments seems to be the case
@@ -149,18 +149,18 @@ def short_interest_volume(
     if raw:
         df = df.sort_values(by="date", ascending=False)
 
-        df["Short Vol. (1M)"] = df["short_volume"] / 1_000_000
+        df["Short Vol. [1M]"] = df["short_volume"] / 1_000_000
         df["Short Vol. %"] = df["short_volume%"] * 100
-        df["Short Exempt Vol. (1K)"] = df["short_exempt_volume"] / 1_000
-        df["Total Vol. (1M)"] = df["total_volume"] / 1_000_000
+        df["Short Exempt Vol. [1k]"] = df["short_exempt_volume"] / 1_000
+        df["Total Vol. [1M]"] = df["total_volume"] / 1_000_000
 
         df = df[
             [
                 "date",
-                "Short Vol. (1M)",
+                "Short Vol. [1M]",
                 "Short Vol. %",
-                "Short Exempt Vol. (1K)",
-                "Total Vol. (1M)",
+                "Short Exempt Vol. [1k]",
+                "Total Vol. [1M]",
             ]
         ]
 
@@ -206,7 +206,7 @@ def short_interest_volume(
             label="Short Volume",
         )
 
-        ax.set_ylabel("Volume (1M)")
+        ax.set_ylabel("Volume [1M]")
 
         ax2.plot(
             df["date"].values,

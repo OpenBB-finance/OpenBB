@@ -49,7 +49,7 @@ def display_order_book(
 
 @log_start_end(log=logger)
 def display_trades(
-    product_id: str, limit: int = 1000, side: Optional[str] = None, export: str = ""
+    product_id: str, limit: int = 20, side: Optional[str] = None, export: str = ""
 ) -> None:
     """Display last N trades for chosen trading pair. [Source: Coinbase]
 

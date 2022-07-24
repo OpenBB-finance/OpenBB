@@ -16,7 +16,7 @@ from openbb_terminal.cryptocurrency.defi import defi_controller
 @pytest.mark.parametrize(
     "queue, expected",
     [
-        (["load", "help"], []),
+        (["load", "help"], ["help"]),
         (["quit", "help"], ["help"]),
     ],
 )
@@ -66,7 +66,7 @@ def test_menu_without_queue_completion(mocker):
 
     result_menu = defi_controller.DefiController(queue=None).menu()
 
-    assert result_menu == []
+    assert result_menu == ["help"]
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -110,7 +110,7 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
 
     result_menu = defi_controller.DefiController(queue=None).menu()
 
-    assert result_menu == []
+    assert result_menu == ["help"]
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -223,13 +223,6 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             dict(),
         ),
         (
-            "call_govp",
-            [],
-            "terramoney_fcd_view.display_gov_proposals",
-            [],
-            dict(),
-        ),
-        (
             "call_gacc",
             [],
             "terramoney_fcd_view.display_account_growth",
@@ -282,27 +275,6 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             "call_stvl",
             [],
             "llama_view.display_defi_tvl",
-            [],
-            dict(),
-        ),
-        (
-            "call_funding",
-            [],
-            "defirate_view.display_funding_rates",
-            [],
-            dict(),
-        ),
-        (
-            "call_borrow",
-            [],
-            "defirate_view.display_borrow_rates",
-            [],
-            dict(),
-        ),
-        (
-            "call_lending",
-            [],
-            "defirate_view.display_lending_rates",
             [],
             dict(),
         ),

@@ -15,6 +15,42 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
+def catching_diff_url_formats(ftd_urls: list) -> list:
+    """Catches if URL for SEC data is one of the few URLS that are not in the
+    standard format. Catches are for either specific date ranges that have a different
+    format or singular URLs that have a different format.
+
+    Parameters
+    ----------
+    ftd_urls : list
+        list of urls of sec data
+    """
+    feb_mar_apr_catch = ["202002", "202003", "202004"]
+    for i, ftd_url in enumerate(ftd_urls):
+        # URLs with dates prior to the first half of June 2017 have different formats
+        if int(ftd_url[58:64]) < 201706 or "201706a" in ftd_url:
+            ftd_urls[i] = ftd_url.replace(
+                "fails-deliver-data",
+                "frequently-requested-foia-document-fails-deliver-data",
+            )
+        # URLs between february, march, and april of 2020 have different formats
+        elif any(x in ftd_urls[i] for x in feb_mar_apr_catch):
+            ftd_urls[i] = ftd_url.replace(
+                "data/fails-deliver-data", "node/add/data_distribution"
+            )
+        # First half of october 2019 has a different format
+        elif (
+            ftd_url
+            == "https://www.sec.gov/files/data/fails-deliver-data/cnsfails201910a.zip"
+        ):
+            ftd_urls[
+                i
+            ] = "https://www.sec.gov/files/data/fails-deliver-data/cnsfails201910a_0.zip"
+
+    return ftd_urls
+
+
+@log_start_end(log=logger)
 def get_fails_to_deliver(
     ticker: str,
     start: datetime,
@@ -109,6 +145,10 @@ def get_fails_to_deliver(
 
         ftd_urls = [base_url + ftd_date + ".zip" for ftd_date in ftd_dates]
 
+        # Calling function that catches a handful of urls that are slightly
+        # different than the standard format
+        ftd_urls = catching_diff_url_formats(ftd_urls)
+
         for ftd_link in ftd_urls:
             all_ftds = pd.read_csv(
                 ftd_link,
@@ -117,7 +157,7 @@ def get_fails_to_deliver(
                 engine="python",
                 skipfooter=2,
                 usecols=[0, 2, 3, 5],
-                dtype={"QUANTITY (FAILS)": "int"},
+                dtype={"QUANTITY (FAILS)": "Int64"},
                 encoding="iso8859",
             )
             tmp_ftds = all_ftds[all_ftds["SYMBOL"] == ticker]

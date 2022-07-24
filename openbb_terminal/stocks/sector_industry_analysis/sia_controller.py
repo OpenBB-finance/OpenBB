@@ -15,7 +15,6 @@ from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     check_positive,
     check_proportion_range,
-    parse_known_args_and_warn,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
@@ -239,6 +238,7 @@ class SectorIndustryAnalysisController(BaseController):
             choices["clear"] = {c: None for c in self.clear_choices}
             choices["metric"] = {c: None for c in self.metric_choices}
             choices["support"] = self.SUPPORT_CHOICES
+            choices["about"] = self.ABOUT_CHOICES
             # This menu contains dynamic choices that may change during runtime
             self.choices = choices
             self.completer = NestedCompleter.from_nested_dict(choices)
@@ -333,7 +333,7 @@ class SectorIndustryAnalysisController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             df_stock_candidate = stocks_helper.load(
                 ns_parser.ticker,
@@ -419,7 +419,7 @@ class SectorIndustryAnalysisController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             possible_industries = financedatabase_model.get_industries(
                 country=self.country,
@@ -486,7 +486,7 @@ class SectorIndustryAnalysisController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             possible_sectors = financedatabase_model.get_sectors(
                 self.industry, self.country
@@ -547,7 +547,7 @@ class SectorIndustryAnalysisController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             possible_countries = financedatabase_model.get_countries(
                 industry=self.industry, sector=self.sector
@@ -605,7 +605,7 @@ class SectorIndustryAnalysisController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if ns_parser.name:
                 self.mktcap = ns_parser.name.capitalize()
@@ -627,7 +627,7 @@ class SectorIndustryAnalysisController(BaseController):
             prog="exchange",
             description="Swap exclude international exchanges flag",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             self.exclude_exchanges = not self.exclude_exchanges
             console.print(
@@ -657,7 +657,7 @@ class SectorIndustryAnalysisController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if ns_parser.parameter == "industry":
                 self.industry = ""
@@ -698,7 +698,7 @@ class SectorIndustryAnalysisController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if ns_parser.name:
                 self.period = ns_parser.name.capitalize()
@@ -717,7 +717,7 @@ class SectorIndustryAnalysisController(BaseController):
             prog="sama",
             description="See all metrics available",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             help_text = """
         roa           return on assets
@@ -792,7 +792,7 @@ class SectorIndustryAnalysisController(BaseController):
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-m")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
@@ -833,7 +833,7 @@ class SectorIndustryAnalysisController(BaseController):
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-s")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         help_text = ""
         statement_string = {
@@ -898,7 +898,7 @@ class SectorIndustryAnalysisController(BaseController):
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-m")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, limit=10, raw=True
         )
         if ns_parser:
@@ -960,7 +960,7 @@ class SectorIndustryAnalysisController(BaseController):
             default=False,
             help="Output all raw data",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
@@ -1011,7 +1011,7 @@ class SectorIndustryAnalysisController(BaseController):
             default=False,
             help="Output all raw data",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
@@ -1062,7 +1062,7 @@ class SectorIndustryAnalysisController(BaseController):
             default=False,
             help="Output all raw data",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
@@ -1113,7 +1113,7 @@ class SectorIndustryAnalysisController(BaseController):
             default=False,
             help="Output all raw data",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
@@ -1164,7 +1164,7 @@ class SectorIndustryAnalysisController(BaseController):
             default=False,
             help="Output all raw data",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:

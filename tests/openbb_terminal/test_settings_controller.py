@@ -17,6 +17,13 @@ def controller(mocker):
     return SettingsController()
 
 
+@pytest.mark.parametrize(
+    "other", [["sources.json.default"], ["-v", "sources.json.default"]]
+)
+def test_source(controller, other):
+    controller.call_source(other)
+
+
 def test_print_help(controller):
     controller.print_help()
 

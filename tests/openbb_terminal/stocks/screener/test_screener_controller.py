@@ -20,7 +20,7 @@ PRICES = pd.DataFrame(data={"Price": [11.0, 12.0], "Chance": [0.2, 0.8]})
 @pytest.mark.parametrize(
     "queue, expected",
     [
-        (["load", "help"], []),
+        (["load", "help"], ["help"]),
         (["quit", "help"], ["help"]),
     ],
 )
@@ -70,7 +70,7 @@ def test_menu_without_queue_completion(mocker):
 
     result_menu = screener_controller.ScreenerController(queue=None).menu()
 
-    assert result_menu == []
+    assert result_menu == ["help"]
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -114,7 +114,7 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
 
     result_menu = screener_controller.ScreenerController(queue=None).menu()
 
-    assert result_menu == []
+    assert result_menu == ["help"]
 
 
 @pytest.mark.vcr(record_mode="none")

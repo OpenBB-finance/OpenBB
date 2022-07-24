@@ -1,13 +1,2 @@
-                                  0
-Market capitalization     734.966 B
-EBITDA                     12.702 B
-EPS                             7.4
-PE ratio                      95.87
-PEG ratio                     1.654
-Price to book ratio           21.57
-Return on equity TTM          0.283
-Price to sales ratio TTM      11.82
-Dividend yield                    0
-50 day moving average        925.93
-Analyst target price         961.82
-Beta                          2.119
+No data found from Alpha Vantage
+

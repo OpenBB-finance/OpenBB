@@ -6,7 +6,6 @@ from openbb_terminal.helper_classes import ModelsNamespace as _models
 # pylint: disable=unused-import
 
 # Context root level functions
-from .cryptocurrency_helpers import display_all_coins as coins
 from .cryptocurrency_helpers import load
 from .cryptocurrency_helpers import find
 from .cryptocurrency_helpers import plot_chart as chart
