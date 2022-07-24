@@ -1,2 +1,4 @@
-There is not data to plot chart
+
+Loading Daily BTC crypto with starting period 2021-07-24 for analysis.
+
 
