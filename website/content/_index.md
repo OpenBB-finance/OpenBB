@@ -51,19 +51,13 @@ of their background - can so easily add features to an investment research platf
 
 ### Why Open Source?
 
-An open source product allows for higher quality, greater reproducibility, lower costs, more transparency,
-and faster go-to-market due to the strong community created. In addition, users can adapt the platform to their
-needs or even build proprietary features on top of our infrastructure - which ultimately can result in a marketplace.
+An open source product allows for higher quality, lower costs, more transparency, and faster go-to-market due to the strong community created. There is no point in re-inventing the wheel for financial theory that has been around for decades, thus users can adapt the platform to their needs or even build proprietary features on top of our infrastructure.
 
 <--->
 
 ### Why Free?
 
-We believe that the tools used to do investment research should be democratized for all for free or at a very low
-cost. We believe there is no point in re-inventing the wheel for financial theory that has been around for decades. Being
-an open source product combats exactly this issue as any type of calculation or method used is directly visible for
-anyone and can be fully customized. Of course, data comes at a price but by leveraging free-tiers from a large selection of
-APIs we can provide users with plentiful sources of information at little to no cost.
+We believe that everyone should be able to have the same tooling to do investment research. By leveraging free API tiers, we can allow users to have access to a vast range of information for free. On the other hand, we want users that are willing to subscribe to premium API keys from certain data providers to be able to take advantage of that on OpenBB Terminal - this is where we see a monetization opportunity, a revenue share with data providers for connecting our users to their resources.
 
 
 {{< /columns >}}
