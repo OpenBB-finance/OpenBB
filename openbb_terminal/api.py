@@ -220,6 +220,8 @@ class Loader:
     """The Loader class"""
 
     def __init__(self, functions: dict):
+        print("WARNING! Breaking changes incoming! Especially avoid using kwargs, since some of them will change.\n"
+              "You can try <link> branch with the latest changes.")
         self.__function_map = self.build_function_map(functions=functions)
         self.load_menus()
 
