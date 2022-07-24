@@ -8,7 +8,7 @@ The OpenBB API can simply be imported with:
 from openbb_terminal.api import openbb
 ```
 
-This imports all the commands at once. Now you can directly begin to use it. The api function is structured 
+This imports all the commands at once. Now you can directly begin to use it. The api function is structured
 in the way that it always retrieves the underlying data. For charts add the `chart=True` parameter.
 
 For example see:
