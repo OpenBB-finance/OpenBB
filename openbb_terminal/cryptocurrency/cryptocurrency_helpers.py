@@ -273,7 +273,7 @@ def get_coingecko_id(symbol: str):
     client = CoinGeckoAPI()
     coin_list = client.get_coins_list()
     for coin in coin_list:
-        if coin["symbol"] == symbol:
+        if coin["symbol"] == symbol.lower():
             return coin["id"]
     return None
 
