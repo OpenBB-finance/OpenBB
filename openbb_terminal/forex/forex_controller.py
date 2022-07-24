@@ -67,6 +67,8 @@ class ForexController(BaseController):
     def print_help(self):
         """Print help."""
         mt = MenuText("forex/", 80)
+        mt.add_cmd("load")
+        mt.add_raw("\n")
         mt.add_param("_ticker", self.fx_pair)
         mt.add_param("_source", FOREX_SOURCES[self.source])
         mt.add_raw("\n")

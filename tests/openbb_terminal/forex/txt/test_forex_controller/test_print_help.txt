@@ -1,3 +1,5 @@
+    load               get historical data
+
 Ticker: 
 Source: YahooFinance
 
