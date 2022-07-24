@@ -418,7 +418,7 @@ def display_tokenomics(
         color_palette = theme.get_colors()
         ax.plot(
             merged_df.index,
-            merged_df["values"],
+            merged_df["circulating_supply"],
             color=color_palette[0],
             label="Circ Supply",
         )
