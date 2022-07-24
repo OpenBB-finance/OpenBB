@@ -238,9 +238,7 @@ def get_roadmap(symbol: str) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_tokenomics(
-    symbol: str, coingecko_id: str
-) -> Tuple[pd.DataFrame, pd.DataFrame]:
+def get_tokenomics(symbol: str, coingecko_id: str) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """Returns coin tokenomics
     [Source: https://messari.io/]
 
