@@ -173,8 +173,6 @@ class ForecastingController(BaseController):
             "pow": "**",
         }
         self.file_types = ["csv", "xlsx"]
-        for file_type in self.file_types:
-            print(list(Path("exports").rglob(f"*.{file_type}")))
         self.DATA_FILES = {
             filepath.name: filepath
             for file_type in self.file_types
@@ -343,7 +341,7 @@ class ForecastingController(BaseController):
     def custom_reset(self):
         """Class specific component of reset command"""
         if self.files:
-            load_files = [f"load {file} --search-file-types" for file in self.files]
+            load_files = [f"load {file}" for file in self.files]
             return ["forecasting"] + load_files
         return []
 
@@ -649,12 +647,6 @@ class ForecastingController(BaseController):
             help="Alias name to give to the dataset",
             type=str,
         )
-        parser.add_argument(
-            "--search-file-types",
-            action="store_true",
-            default=False,
-            dest="search_file_types",
-        )
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-f")
@@ -678,9 +670,7 @@ class ForecastingController(BaseController):
                     )
                     return
 
-                data = forecasting_model.load(
-                    file, self.file_types, self.DATA_FILES, ns_parser.search_file_types
-                )
+                data = forecasting_model.load(file, self.file_types, self.DATA_FILES)
 
                 if not data.empty:
                     data.columns = data.columns.map(

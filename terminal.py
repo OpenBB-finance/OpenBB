@@ -511,6 +511,7 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
         logger.info("INPUT: %s", "/".join(jobs_cmds))
 
     export_path = ""
+    # TODO: This causes an issue if export is in the load function
     if jobs_cmds and "export" in jobs_cmds[0]:
         export_path = jobs_cmds[0].split("/")[0].split(" ")[1]
         jobs_cmds = ["/".join(jobs_cmds[0].split("/")[1:])]
@@ -520,7 +521,7 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
     an_input = ""
 
     if export_path:
-        # If the path selected does not start from the user root, give relative location from terminal root
+        # If the path does not start from the user root, give relative location from terminal root
         if export_path[0] == "~":
             export_path = export_path.replace("~", USER_HOME.as_posix())
         elif export_path[0] != "/":
