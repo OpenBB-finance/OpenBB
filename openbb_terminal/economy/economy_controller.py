@@ -1,6 +1,6 @@
 """ Econ Controller """
 __docformat__ = "numpy"
-# pylint:disable=too-many-lines,R1710,R0904,C0415,too-many-branches
+# pylint:disable=too-many-lines,R1710,R0904,C0415,too-many-branches,unnecessary-dict-index-lookup
 
 import argparse
 import logging
@@ -1435,6 +1435,33 @@ class EconomyController(BaseController):
             os.remove(self.d_GROUPS[group] + ".jpg")
 
     @log_start_end(log=logger)
+    def call_pred(self, _):
+        """Process pred command"""
+        if not self.DATASETS:
+            console.print(
+                "There is no data stored yet. Please use either the 'macro', 'fred', 'index' and/or "
+                "'treasury' command in combination with the -st argument to be able to plot data.\n"
+            )
+            return
+
+        from openbb_terminal.economy.prediction.pred_controller import (
+            PredictionTechniquesController,
+        )
+
+        data: Dict = {}
+        for source, _ in self.DATASETS.items():
+            if not self.DATASETS[source].empty:
+                if len(self.DATASETS[source].columns) == 1:
+                    data[self.DATASETS[source].columns[0]] = self.DATASETS[source]
+                else:
+                    for col in list(self.DATASETS[source].columns):
+                        data[col] = self.DATASETS[source][col].to_frame()
+
+        self.queue = self.load_class(
+            PredictionTechniquesController, self.DATASETS, self.queue
+        )
+
+    @log_start_end(log=logger)
     def call_qa(self, _):
         """Process qa command"""
         if not self.DATASETS:
@@ -1448,4 +1475,13 @@ class EconomyController(BaseController):
             QaController,
         )
 
-        self.queue = self.load_class(QaController, self.DATASETS, self.queue)
+        data: Dict = {}
+        for source, _ in self.DATASETS.items():
+            if not self.DATASETS[source].empty:
+                if len(self.DATASETS[source].columns) == 1:
+                    data[self.DATASETS[source].columns[0]] = self.DATASETS[source]
+                else:
+                    for col in list(self.DATASETS[source].columns):
+                        data[col] = self.DATASETS[source][col].to_frame()
+
+        self.queue = self.load_class(QaController, data, self.queue)
