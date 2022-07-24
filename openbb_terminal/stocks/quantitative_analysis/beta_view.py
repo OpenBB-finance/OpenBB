@@ -1,20 +1,30 @@
+"""Beta view"""
+__docformat__ = "numpy"
+
+import logging
+
 import matplotlib.pyplot as plt
+from openbb_terminal.decorators import log_start_end
+from openbb_terminal.stocks.quantitative_analysis.beta_model import beta_model
+
+logger = logging.getLogger(__name__)
 
 
-def display_beta(ref_ticker, stock_ticker, rr, sr, beta, alpha):
+@log_start_end(log=logger)
+def beta_view(stock_ticker, ref_ticker, stock=None, ref=None):
     """Display the beta scatterplot + linear regression.
 
     Parameters
     ----------
-    ref_ticker : str
     stock_ticker : str
-    rr : pd.Series
-        ref_ticker returns
-    sr : pd.Series
-        stock_ticker returns
-    beta : float
-    alpha : float
+    ref_ticker : str
+    stock : pd.DataFrame
+        stock_ticker price data
+    ref : pd.DataFrame
+        ref_ticker price data
     """
+    sr, rr, beta, alpha = beta_model(stock_ticker, ref_ticker, stock, ref)
+
     fig, ax = plt.subplots()
     ax.scatter(rr, sr)  # plot returns
     ax.plot(ax.get_xlim(), [x * beta + alpha for x in ax.get_xlim()])  # plot lin reg

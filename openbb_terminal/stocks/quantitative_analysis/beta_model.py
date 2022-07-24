@@ -2,17 +2,17 @@ from scipy import stats
 from openbb_terminal.stocks import stocks_helper
 
 
-def process_beta(stock_ticker, ref_ticker, stock=None, ref=None):
+def beta_model(stock_ticker, ref_ticker, stock=None, ref=None):
     """Calculate beta for a ticker and a reference ticker.
 
     Parameters
     ----------
-    stock_ticker : string
-    ref_ticker : string
+    stock_ticker : str
+    ref_ticker : str
     stock : pd.DataFrame
-        A df of price data for stock_ticker with column 'Close'
+        stock_ticker price data
     ref : pd.DataFrame
-        A df of price data for ref_ticker with column 'Close'
+        ref_ticker price data
 
     Returns
     -------
@@ -25,7 +25,6 @@ def process_beta(stock_ticker, ref_ticker, stock=None, ref=None):
     """
     if stock is None:
         stock = stocks_helper.load(stock_ticker)
-        stock = stock.rename()
     else:
         # TODO: When loaded in the stocks menu, the stock df columns are all
         # lowercase but when loaded via stocks_helper.load(ticker) they start
