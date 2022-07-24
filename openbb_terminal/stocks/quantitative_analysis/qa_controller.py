@@ -23,6 +23,8 @@ from openbb_terminal.helper_funcs import (
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
 from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.stocks.quantitative_analysis.beta_model import process_beta
+from openbb_terminal.stocks.quantitative_analysis.beta_view import display_beta
 from openbb_terminal.stocks.quantitative_analysis.factors_view import capm_view
 
 # pylint: disable=C0302
@@ -56,6 +58,7 @@ class QaController(StockBaseController):
         "goodness",
         "unitroot",
         "capm",
+        "beta",
         "var",
         "es",
         "sh",
@@ -148,6 +151,7 @@ class QaController(StockBaseController):
         mt.add_cmd("decompose")
         mt.add_cmd("cusum")
         mt.add_cmd("capm")
+        mt.add_cmd("beta")
         console.print(text=mt.menu_text, menu="Stocks - Quantitative Analysis")
 
     def custom_reset(self):
@@ -751,6 +755,37 @@ class QaController(StockBaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             capm_view(self.ticker)
+
+    @log_start_end(log=logger)
+    def call_beta(self, _):
+        """Call the beta command on loaded ticker"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="beta",
+            description="""
+                Displays a scatter plot demonstrating the beta of two stocks or ETFs.
+            """,
+        )
+        parser.add_argument(
+            "-r",
+            "--ref",
+            action="store",
+            dest="ref",
+            type=str,
+            default="SPY",
+            help="""
+                Reference ticker used for beta calculation.
+            """,
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser, _, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            sr, rr, beta, alpha = process_beta(
+                self.ticker, ns_parser.ref, stock=self.stock
+            )
+            display_beta(ns_parser.ref, self.ticker, rr, sr, beta, alpha)
 
     @log_start_end(log=logger)
     def call_var(self, other_args: List[str]):
