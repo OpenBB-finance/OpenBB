@@ -1,14 +1,18 @@
 # OpenBB API
 
-## Usage:
+## Usage
+
 The OpenBB API can simply be imported with:
+
 ```python
 from openbb_terminal.api import openbb
 ```
+
 This imports all the commands at once. Now you can directly begin to use it. The api function is structured 
 in the way that it always retrieves the underlying data. For charts add the `chart=True` parameter.
 
 For example see:
+
 ```python
 # Returns data:
 openbb.stocks.ba.snews("aapl")
@@ -24,10 +28,12 @@ you can develop new functionalities and avoid copy-pasting the code from the rep
 **Note:**\
 API keys for data fetching still have to be entered
 
-### Jupyter Notebook Tricks:
+### Jupyter Notebook Tricks
+
 **Get  matplotlib charts in the output cells**\
 If you copy-paste the code below and use it as your initialization then you're matplotlib graphs will be inside
 the result cell.
+
 ```python
 import matplotlib.pyplot as plt
 import matplotlib_inline.backend_inline
@@ -37,15 +43,18 @@ from openbb_terminal.api import openbb
 %matplotlib inline
 matplotlib_inline.backend_inline.set_matplotlib_formats("svg")
 ```
+
 **Get function signature and docstring**\
 When you press `shift + tab` in jupyter notebook while having the mouse parser in an API function, you get the
 signature and docstring of the function.
 
-## Code Examples:
+## Code Examples
+
 Just copy-paste the code examples below into a python script or jupyter notebook, and you're ready to go.
 
 **Basic Stock Information**\
 Prints general information about the selected stock (in this case Gamsetop)
+
 ```python
 from openbb_terminal.api import openbb
 
@@ -68,6 +77,7 @@ print(f"Target low price: {gme_info['Target low price'].iloc[0]}")
 
 **Use external axis**\
 The code below utilises the `external_axes` parameter to get two axis in one chart
+
 ```python
 import matplotlib.pyplot as plt
 from openbb_terminal.api import openbb
@@ -84,6 +94,7 @@ fig.tight_layout()
 **Stocks Return Distribution** \
 Fetches data from the OpenBB API and then plots the return distribution. This is a good example, where the data from
 the API is leveraged to build a new feature on top of the API.
+
 ```python
 import numpy as np
 import matplotlib.pyplot as plt
