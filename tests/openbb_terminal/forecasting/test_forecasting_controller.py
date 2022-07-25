@@ -64,7 +64,7 @@ def test_fc_print_help(capsys):
 def test_fc_custom_reset():
     cont = fc.ForecastingController()
     val = cont.custom_reset()
-    assert val == []
+    assert not val
 
 
 def test_fc_custom_reset_with_files():

@@ -140,7 +140,7 @@ class ForecastingController(BaseController):
         super().__init__(queue)
         self.files: List[str] = []
         # The full file name with extension, this allows the rest command to work
-        self.files_full: List[str] = []
+        self.files_full: List[List[str]] = []
         self.datasets: Dict[str, pd.DataFrame] = dict()
 
         if ticker and not data.empty:
@@ -338,8 +338,15 @@ class ForecastingController(BaseController):
     def custom_reset(self):
         """Class specific component of reset command"""
         if self.files_full:
-            load_files = [f"load {file}" for file in self.files_full]
-            return ["forecasting"] + load_files
+            queue = ["forecasting"]
+            for file, alias in self.files_full:
+                load = f"'load {file}"
+                if alias:
+                    load += f" -a {alias}'"
+                else:
+                    load += "'"
+                queue.append(load)
+            return queue
         return []
 
     def parse_known_args_and_warn(
@@ -677,7 +684,7 @@ class ForecastingController(BaseController):
                     return
 
                 data = forecasting_model.load(file, self.file_types, self.DATA_FILES)
-                self.files_full.append(ns_parser.file)
+                self.files_full.append([ns_parser.file, ns_parser.alias])
 
                 if not data.empty:
                     data.columns = data.columns.map(
