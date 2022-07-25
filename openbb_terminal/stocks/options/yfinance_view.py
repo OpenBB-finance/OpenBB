@@ -46,6 +46,200 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
+def display_chains(
+    ticker: str,
+    expiry: str,
+    min_sp: float = 0.0,
+    max_sp: float = np.inf,
+    calls_only: bool = False,
+    puts_only: bool = False,
+    export: str = "",
+):
+    """Display option chains for given ticker and expiration
+
+    Parameters
+    ----------
+    ticker: str
+        Stock ticker
+    expiry: str
+        Expiration for option chain
+    min_sp: float
+        Min strike
+    max_sp: float
+        Max strike
+    calls_only: bool
+        Flag to get calls only
+    puts_only: bool
+        Flag to get puts only
+    export: str
+        Format to export data
+
+    """
+    # Logic for converting calls/puts into "get calls/puts"
+    call_bool = True
+    put_bool = True
+    if calls_only:
+        call_bool = True
+        put_bool = False
+    if puts_only:
+        call_bool = False
+        put_bool = True
+
+    option_chains = yfinance_model.get_full_option_chain(
+        ticker=ticker, expiration=expiry, calls=call_bool, puts=put_bool
+    ).fillna("-")
+    if option_chains.empty:
+        console.print("[red]Option chains not found.[/red]")
+        return
+
+    # If min/max strike aren't provided, just get the middle 50% of strikes
+    if min_sp == -1:
+        min_strike = np.percentile(option_chains["strike"], 25)
+    else:
+        min_strike = min_sp
+
+    if max_sp == -1:
+        max_strike = np.percentile(option_chains["strike"], 75)
+    else:
+        max_strike = max_sp
+
+    option_chains = option_chains[
+        (option_chains.strike >= min_strike) & (option_chains.strike <= max_strike)
+    ]
+
+    # There are 3 possibilities.  Calls only, puts only or both.  If calls only or puts only, we are actually set
+    # because the columns are nicely named
+    if calls_only or puts_only:
+        title = "Call " if calls_only else "Put "
+        print_rich_table(
+            option_chains,
+            title=title + "Option Chain (15 min delayed) (Greeks calculated by OpenBB)",
+            floatfmt=[
+                ".2f",
+                ".2f",
+                ".2f",
+                ".2f",
+                ".0f",
+                ".0f",
+                ".3f",
+                ".3f",
+                ".3f",
+                ".3f",
+            ],
+            headers=[
+                "Strike",
+                "Last Price",
+                "Bid",
+                "Ask",
+                "Volume",
+                "Open Interest",
+                "IV",
+                "Delta",
+                "Gamma",
+                "Theta",
+            ],
+        )
+
+    # Put the columns into the order for showing them
+    option_chains = option_chains[
+        [
+            "impliedVolatility_call",
+            "Theta_call",
+            "Gamma_call",
+            "Delta_call",
+            "volume_call",
+            "openInterest_call",
+            "bid_call",
+            "ask_call",
+            "lastPrice_call",
+            "strike",
+            "lastPrice_put",
+            "ask_put",
+            "bid_put",
+            "openInterest_put",
+            "volume_put",
+            "Delta_put",
+            "Gamma_put",
+            "Theta_put",
+            "impliedVolatility_put",
+        ]
+    ]
+
+    # In order to add color to call/put, the numbers will have to be strings.  So floatfmt will not work in
+    # print_rich_table, so lets format them now.
+
+    float_fmt = [
+        ".3f",
+        ".3f",
+        ".3f",
+        ".3f",
+        ".0f",
+        ".0f",
+        ".2f",
+        ".2f",
+        ".2f",
+        ".2f",
+        ".2f",
+        ".2f",
+        ".2f",
+        ".0f",
+        ".0f",
+        ".3f",
+        ".3f",
+        ".3f",
+        ".3f",
+    ]
+    # pylint: disable=W0640
+
+    for idx, fmt in enumerate(float_fmt):
+        option_chains.iloc[:, idx] = option_chains.iloc[:, idx].apply(
+            lambda x: str("{:" + fmt + "}").format(float(x)) if x != "-" else x
+        )
+    # pylint: enable=W0640
+
+    # Make anything _call green and anything _put red
+    for col in option_chains.columns:
+        if col.endswith("_call"):
+            option_chains[col] = option_chains[col].apply(
+                lambda x: f"[green]{x}[/green]"
+            )
+        if col.endswith("_put"):
+            option_chains[col] = option_chains[col].apply(lambda x: f"[red]{x}[/red]")
+
+    print_rich_table(
+        option_chains,
+        title=f"Yahoo Option Chain (15 min delayed) for {expiry} (Greeks calculated by OpenBB)",
+        headers=[
+            "IV",
+            "Theta",
+            "Gamma",
+            "Delta",
+            "Volume",
+            "OI",
+            "Bid",
+            "Ask",
+            "Last",
+            "Strike",
+            "Last",
+            "Ask",
+            "Bid",
+            "OI",
+            "Volume",
+            "Delta",
+            "Gamma",
+            "Theta",
+            "IV",
+        ],
+    )
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "chains_yf",
+        option_chains,
+    )
+
+
+@log_start_end(log=logger)
 def plot_oi(
     ticker: str,
     expiry: str,

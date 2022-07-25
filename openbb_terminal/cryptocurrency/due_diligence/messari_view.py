@@ -389,8 +389,8 @@ def display_tokenomics(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
     """
-    coingecko_symbol = cryptocurrency_helpers.check_cg_id(coin)
-    df, circ_df = get_tokenomics(coin, coingecko_symbol)
+    coingecko_id = cryptocurrency_helpers.get_coingecko_id(coin)
+    df, circ_df = get_tokenomics(coin, coingecko_id)
 
     if not df.empty and not circ_df.empty:
         df = df.applymap(lambda x: lambda_long_number_format(x, 2))
@@ -418,7 +418,7 @@ def display_tokenomics(
         color_palette = theme.get_colors()
         ax.plot(
             merged_df.index,
-            merged_df["values"],
+            merged_df["circulating_supply"],
             color=color_palette[0],
             label="Circ Supply",
         )
