@@ -613,6 +613,7 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
             [
                 "--calls",
                 "--puts",
+                "--source=tradier",
                 "--min=1",
                 "--max=2",
                 "--display=volume",
