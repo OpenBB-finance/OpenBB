@@ -13,7 +13,7 @@ Ticker:
 [unvl]    lins               last insider trading of the company[/unvl]         [Finviz]
 
 Last Insiders:
-    lcb                latest cluster boys                         [Open Insider]
+    lcb                latest cluster buys                         [Open Insider]
     lpsb               latest penny stock buys                     [Open Insider]
     lit                latest insider trading (all filings)        [Open Insider]
     lip                latest insider purchases                    [Open Insider]
