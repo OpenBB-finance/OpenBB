@@ -1725,13 +1725,8 @@ class PortfolioModel:
         return trackr_period_df, trackr_rolling
 
     @log_start_end(log=logger)
-    def get_information_ratio(self, period: int = 252):
-        """
-
-        Parameters
-        ----------
-        period: int
-            Interval used for rolling values
+    def get_information_ratio(self):
+        """Get information ratio
 
         Returns
         -------
@@ -1751,7 +1746,7 @@ class PortfolioModel:
 
     @log_start_end(log=logger)
     def get_tail_ratio(self, period: int = 252):
-        """
+        """Get tail ratio
 
         Parameters
         ----------
