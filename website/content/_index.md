@@ -1,6 +1,6 @@
 ---
 title: Getting Started
-keywords: "getting started, openbb, bots, api, beginner guide, how to use openbb, openbb keys, openbb terminal, openbb"
+keywords: "getting started, openbb, bots, api, beginner guide, how to use openbb, openbb keys, openbb terminal, openbb, terminal"
 excerpt: "This page guides you how to use the OpenBB terminal, developed by OpenBB."
 description: "The OpenBB Documentation provides guidance on how to use the OpenBB Terminal, a free, custom built
 financial terminal that will help you make more informed decisions, faster."
@@ -8,9 +8,9 @@ geekdocCollapseSection: true
 ---
 ## Introduction
 
-OpenBB is a leading open source investment analysis company. We represent millions of investors who want to leverage
-state-of-the-art data science and machine learning technologies to make sense of raw unrefined data. Our mission
-is to make investment research effective, powerful and accessible to everyone.
+OpenBB is a leading open source investment research software platform for accessing and analyzing financial market data.
+We represent millions of investors who want to leverage state-of-the-art data science and machine learning technologies
+to make sense of raw unrefined data. Our mission is to make investment research effective, powerful and accessible to everyone.
 
 **All our products are Free and Open-Source (FOSS).**
 
@@ -51,23 +51,22 @@ of their background - can so easily add features to an investment research platf
 
 ### Why Open Source?
 
-An open source product allows for higher quality, greater reproducibility, lower costs, more transparency,
-and faster go-to-market due to the strong community created. In addition, users can adapt the platform to their
-needs or even build proprietary features on top of our infrastructure - which ultimately can result in a marketplace.
+An open source product allows for higher quality, lower costs, more transparency, and faster go-to-market due to the strong community created. There is no point in re-inventing the wheel for financial theory that has been around for decades, thus users can adapt the platform to their needs or even build proprietary features on top of our infrastructure.
 
 <--->
 
-### Importing and Exporting data
+### Why Free?
 
-The terminal allows for users to import their own proprietary datasets to use on our econometrics menu. In addition, users are allowed to export any type of data to any type of format whether that is raw data in Excel or an image in PNG. This is also ideal for finance content creation.
+We believe that everyone should be able to have the same tooling to do investment research. By leveraging free API tiers, we can allow users to have access to a vast range of information for free. On the other hand, we want users that are willing to subscribe to premium API keys from certain data providers to be able to take advantage of that on OpenBB Terminal - this is where we see a monetization opportunity, a revenue share with data providers for connecting our users to their resources.
+
 
 {{< /columns >}}
 
 {{< columns >}}
 
-### Automatic notebook reports
+### Importing and Exporting data
 
-Create notebook templates (through papermill) which can be run on different tickers. This level of automation allows speeding up the development of your investment thesis and reduce human error.
+The terminal allows for users to import their own proprietary datasets to use on our econometrics menu. In addition, users are allowed to export any type of data to any type of format whether that is raw data in Excel or an image in PNG. This is also ideal for finance content creation.
 
 <--->
 
@@ -95,7 +94,7 @@ or visit our <a href="https://openbb.co/contact" target="_blank">contact page</a
 
 The process starts off by downloading the installer, see below for how to download the most recent release:
 
-1. Go to <a href="https://www.openbb.co/products/terminal#get-started" target="_blank">OpenBB website</a>.
+1. Go to the <a href="https://www.openbb.co/products/terminal#get-started" target="_blank">OpenBB website</a>.
 2. Click on the `Download` button in the Windows Installer section.
 
 When the file is downloaded, use the following steps to run the OpenBB Terminal:
@@ -131,7 +130,7 @@ The first time this takes a bit longer to load, this can take up to a few minute
 
 The process starts off by downloading the installer, see below for how to download the most recent release:
 
-1. Go to <a href="https://www.openbb.co/products/terminal#get-started" target="_blank">OpenBB website</a>.
+1. Go to the <a href="https://www.openbb.co/products/terminal#get-started" target="_blank">OpenBB website</a>.
 2. Click on the `Download` button in the macOS Installer section.
 
 When the DMG file is downloaded, use the following steps to run the OpenBB Terminal:
@@ -273,7 +272,7 @@ decide to change these default values by calling the argument and inputting a di
 
 Whenever you wish to apply an optional argument, you use the related shortcode, e.g. `-s` or `--start`. Then, if there
 is an additional word behind the argument (in this case there is, which is `START`) it implies the argument expects you
-to define a value. Within the documentation you can read that the format must b `YYYY-MM-DD` implying that `2010-01-01`
+to define a value. Within the documentation you can read that the format must be `YYYY-MM-DD` implying that `2010-01-01`
 will be valid. If there is not an additional word behind it, it is enough to write down `load AMZN -p` (which refers to
 the prepost optional argument)
 
