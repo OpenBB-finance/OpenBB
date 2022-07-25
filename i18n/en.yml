@@ -251,7 +251,7 @@ en:
   stocks/ins/stats: insider stats of the company
   stocks/ins/act: insider activity over time
   stocks/ins/lins: last insider trading of the company
-  stocks/ins/lcb: latest cluster boys
+  stocks/ins/lcb: latest cluster buys
   stocks/ins/lpsb: latest penny stock buys
   stocks/ins/lit: latest insider trading (all filings)
   stocks/ins/lip: latest insider purchases
