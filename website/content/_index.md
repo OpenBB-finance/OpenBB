@@ -407,7 +407,7 @@ tweak how the terminal behaves. This includes the following:
 - `monitor` choose which monitors to scale the plot (graphs) to if applicable
 - `source` allows you to select a different source file in which the default data sources are written down
 
-Next to that, to enable or disable certain functionalities of the terminal. This can be done with `featflags` and
+Next to that, to enable or disable certain functionalities of the terminal you can use the `featflags` menu which
 includes the following:
 - `logcollection` whether you wish to enable logging to help the OpenBB team improve functionalities (default is yes).
 - `retryload` whenever you misspell commands, try to use the `load` command with it first (default is no).
