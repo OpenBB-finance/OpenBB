@@ -1516,7 +1516,7 @@ def show_quick_performance(stock_df: pd.DataFrame, ticker: str):
     df = df.applymap(lambda x: f"[red]{x}[/red]" if "-" in x else f"[green]{x}[/green]")
     if len(closes) > 252:
         df["Volatility (1Y)"] = (
-            str(round(100 * np.sqrt(252) * closes[:-252].pct_change().std(), 2)) + " %"
+            str(round(100 * np.sqrt(252) * closes[-252:].pct_change().std(), 2)) + " %"
         )
     else:
         df["Volatility (Ann)"] = (
