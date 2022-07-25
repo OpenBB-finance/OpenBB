@@ -2,6 +2,7 @@ en:
   _home_: Information, guides and support for the OpenBB Terminal
   about: discover the capabilities of the OpenBB Terminal (https://openbb.co/docs)
   support: pre-populate a support ticket for our team to evaluate
+  survey: fill in our survey so we better understand how we can improve the terminal
   update: attempt to update the terminal automatically (GitHub version)
   exe: execute automated routine script
   settings: tune settings (export folder, timezone, language, plot size)
