@@ -18,6 +18,7 @@ from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_FIGURES_ALLOWED,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     valid_date,
+    get_ordered_list_sources,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
@@ -125,6 +126,8 @@ class OptionsController(BaseController):
                 self.expiry_dates = tradier_model.option_expirations(self.ticker)
         else:
             self.expiry_dates = []
+
+        self.default_chain = get_ordered_list_sources(f"{self.PATH}chains")[0]
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
@@ -731,8 +734,8 @@ class OptionsController(BaseController):
             dest="to_display",
             default=tradier_model.default_columns,
             type=tradier_view.check_valid_option_chains_headers,
-            help="Columns to look at.  Columns can be: bid, ask, strike, bidsize, asksize, volume, open_interest, "
-            "delta, gamma, theta, vega, ask_iv, bid_iv, mid_iv. E.g. 'bid,ask,strike' ",
+            help="(tradier only) Columns to look at.  Columns can be: bid, ask, strike, bidsize, asksize, "
+            "volume, open_interest, delta, gamma, theta, vega, ask_iv, bid_iv, mid_iv. E.g. 'bid,ask,strike' ",
         )
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -740,19 +743,30 @@ class OptionsController(BaseController):
         if ns_parser:
             if self.ticker:
                 if self.selected_date:
-                    if TRADIER_TOKEN != "REPLACE_ME":  # nosec
-                        tradier_view.display_chains(
+                    if ns_parser.source == "tradier":
+                        if TRADIER_TOKEN != "REPLACE_ME":  # nosec
+                            tradier_view.display_chains(
+                                ticker=self.ticker,
+                                expiry=self.selected_date,
+                                to_display=ns_parser.to_display,
+                                min_sp=ns_parser.min_sp,
+                                max_sp=ns_parser.max_sp,
+                                calls_only=ns_parser.calls,
+                                puts_only=ns_parser.puts,
+                                export=ns_parser.export,
+                            )
+                        else:
+                            console.print("TRADIER TOKEN not supplied. \n")
+                    if ns_parser.source == "yf":
+                        yfinance_view.display_chains(
                             ticker=self.ticker,
                             expiry=self.selected_date,
-                            to_display=ns_parser.to_display,
                             min_sp=ns_parser.min_sp,
                             max_sp=ns_parser.max_sp,
                             calls_only=ns_parser.calls,
                             puts_only=ns_parser.puts,
                             export=ns_parser.export,
                         )
-                    else:
-                        console.print("TRADIER TOKEN not supplied. \n")
                 else:
                     console.print("No expiry loaded. First use `exp {expiry date}`\n")
             else:
