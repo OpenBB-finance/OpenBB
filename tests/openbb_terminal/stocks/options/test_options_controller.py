@@ -632,7 +632,7 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
                 export="csv",
             ),
         ),
-(
+        (
             "call_chains",
             [
                 "--min=1",
