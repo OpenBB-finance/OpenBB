@@ -142,7 +142,9 @@ class ForecastingController(BaseController):
     ):
         """Constructor"""
         super().__init__(queue)
-        self.files: List[str] = list()
+        self.files: List[str] = []
+        # The full file name with extension, this allows the rest command to work
+        self.files_full: List[str] = []
         self.datasets: Dict[str, pd.DataFrame] = dict()
 
         if ticker and not data.empty:
@@ -340,8 +342,8 @@ class ForecastingController(BaseController):
 
     def custom_reset(self):
         """Class specific component of reset command"""
-        if self.files:
-            load_files = [f"load {file}" for file in self.files]
+        if self.files_full:
+            load_files = [f"load {file}" for file in self.files_full]
             return ["forecasting"] + load_files
         return []
 
@@ -671,6 +673,7 @@ class ForecastingController(BaseController):
                     return
 
                 data = forecasting_model.load(file, self.file_types, self.DATA_FILES)
+                self.files_full.append(ns_parser.file)
 
                 if not data.empty:
                     data.columns = data.columns.map(
