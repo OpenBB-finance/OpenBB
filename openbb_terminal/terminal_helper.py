@@ -53,6 +53,11 @@ def print_goodbye():
         "or even request a feature on [cmds]https://openbb.co/request-a-feature[/cmds]\n"
     )
 
+    console.print(
+        "[bold]Fill in our survey so we get better understand how we can improve "
+        "the terminal at [cmds]https://openbb.co/survey[/cmds][/bold]\n"
+    )
+
     logger.info("END")
 
 
