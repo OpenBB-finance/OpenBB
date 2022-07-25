@@ -70,7 +70,7 @@ def test_fc_custom_reset():
 
 def test_fc_custom_reset_with_files():
     cont = fc.ForecastingController()
-    cont.files = ["file1"]
+    cont.files_full = ["file1"]
     val = cont.custom_reset()
     assert val == ["forecasting", "load file1"]
 
@@ -83,38 +83,37 @@ def test_fc_parse_known_args_and_warn(mocker):
     mock.add_argument = mock2
     cont = fc.ForecastingController()
     cont.parse_known_args_and_warn(
-        mock,
-        [],
-        0,
-        True,
-        1,
-        [],
-        True,
-        True,
-        5,
-        True,
-        True,
-        "weekly",
-        True,
-        True,
-        True,
-        True,
-        True,
-        True,
-        True,
-        "the_models",
-        True,
-        True,
-        0.05,
-        3,
-        True,
-        True,
-        True,
-        4,
-        True,
-        True,
-        True,
-        True,
+        parser=mock,
+        other_args=[],
+        export_allowed=0,
+        raw=True,
+        limit=1,
+        target_dataset=True,
+        target_column=True,
+        period=5,
+        n_days=True,
+        forecast_horizon=True,
+        seasonal="weekly",
+        periods=True,
+        window=True,
+        train_split=True,
+        input_chunk_length=True,
+        output_chunk_length=True,
+        force_reset=True,
+        save_checkpoints=True,
+        model_save_name="the_models",
+        n_epochs=True,
+        model_type=True,
+        dropout=0.05,
+        batch_size=3,
+        learning_rate=True,
+        past_covariates=True,
+        lags=True,
+        hidden_size=4,
+        n_jumps=True,
+        end=True,
+        residuals=True,
+        forecast_only=True,
     )
     assert mock2.call_count == 29
 
