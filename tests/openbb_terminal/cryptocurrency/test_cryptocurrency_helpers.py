@@ -7,7 +7,6 @@ from pycoingecko import CoinGeckoAPI
 from openbb_terminal.cryptocurrency.cryptocurrency_helpers import (
     read_data_file,
     _load_coin_map,
-    plot_chart,
     load,
     load_coins_list,
     _create_closest_match_df,
@@ -91,17 +90,3 @@ def test_get_coins():
     test_coins = ["bitcoin", "ethereum", "dogecoin"]
     for test in test_coins:
         assert test in bitcoin_list
-
-
-@pytest.mark.vcr
-@pytest.mark.record_stdout
-def test_coin_chart(get_bitcoin):
-    # pylint: disable=unused-argument
-    df = get_bitcoin
-    # coin_map_df = prepare_all_coins_df().set_index("Symbol").loc[symbol.upper()].iloc[0]
-
-    plot_chart(
-        symbol="btc",
-        prices_df=df,
-        currency="usd",
-    )

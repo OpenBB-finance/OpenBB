@@ -238,9 +238,7 @@ def get_roadmap(symbol: str) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_tokenomics(
-    symbol: str, coingecko_symbol: str
-) -> Tuple[pd.DataFrame, pd.DataFrame]:
+def get_tokenomics(symbol: str, coingecko_id: str) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """Returns coin tokenomics
     [Source: https://messari.io/]
 
@@ -248,7 +246,7 @@ def get_tokenomics(
     ----------
     symbol : str
         Crypto symbol to check tokenomics
-    coingecko_symbol : str
+    coingecko_id : str
         ID from coingecko
     Returns
     -------
@@ -290,7 +288,7 @@ def get_tokenomics(
             }
         )
         df["Value"] = df["Value"].str.replace("n/a", "-")
-        cg_df = get_coin_tokenomics(coingecko_symbol)
+        cg_df = get_coin_tokenomics(coingecko_id)
         df = pd.concat([df, cg_df], ignore_index=True, sort=False)
         df.fillna("-", inplace=True)
         circ_df, _ = get_messari_timeseries(
