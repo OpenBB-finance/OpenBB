@@ -1,4 +1,5 @@
 channels:
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
   - conda-forge
   - defaults
 dependencies:
