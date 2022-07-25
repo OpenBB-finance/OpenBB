@@ -632,6 +632,25 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
                 export="csv",
             ),
         ),
+(
+            "call_chains",
+            [
+                "--min=1",
+                "--max=2",
+                "--export=csv",
+            ],
+            "yfinance_view.display_chains",
+            [],
+            dict(
+                ticker="MOCK_TICKER",
+                expiry="2022-01-07",
+                min_sp=1.0,
+                max_sp=2.0,
+                calls_only=False,
+                puts_only=False,
+                export="csv",
+            ),
+        ),
         (
             # SOURCE: YFINANCE
             "call_vol",
