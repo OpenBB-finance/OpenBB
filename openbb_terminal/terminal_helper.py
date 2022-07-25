@@ -119,6 +119,9 @@ def open_openbb_documentation(
     elif "keys" in path:
         path = "#accessing-other-sources-of-data-via-api-keys"
         command = ""
+    elif "settings" in path or "featflags" in path or "sources" in path:
+        path = "#customizing-the-terminal"
+        command = ""
     else:
         path = f"terminal/{path}"
 
@@ -131,10 +134,15 @@ def open_openbb_documentation(
         elif "exe" == command:
             path = "/terminal/scripts/"
             command = ""
+        elif command in ["settings", "featflags", "sources"]:
+            path = "#customizing-the-terminal"
+            command = ""
 
         path += command
 
-    webbrowser.open(f"{url}{path}")
+    full_url = f"{url}{path}".replace("//", "/")
+
+    webbrowser.open(full_url)
     console.print("")
 
 
