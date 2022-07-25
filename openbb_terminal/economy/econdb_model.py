@@ -354,7 +354,7 @@ PARAMETERS = {
         "period": "Monthly",
         "description": "A record of a country's international transactions with the rest of the world",
     },
-    "TBFR": {
+    "TB": {
         "name": "Trade balance",
         "period": "Monthly",
         "description": "The difference between the monetary value of a nation's exports and imports over a "
