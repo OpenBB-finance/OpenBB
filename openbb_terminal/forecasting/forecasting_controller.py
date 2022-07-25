@@ -1618,6 +1618,15 @@ class ForecastingController(BaseController):
             if not helpers.check_parser_input(ns_parser, self.datasets):
                 return
 
+            if ns_parser.n_days != ns_parser.forecast_horizon:
+                console.print(
+                    f"[red]n_days={ns_parser.n_days} is not equivalent to fcast-horizon={ns_parser.forecast_horizon}[/red]"
+                )
+                console.print(
+                    "[red]Please set both to the same value to continue.[/red]"
+                )
+                return
+
             expo_view.display_expo_forecast(
                 data=self.datasets[ns_parser.target_dataset],
                 ticker_name=ns_parser.target_dataset,
@@ -1670,6 +1679,15 @@ class ForecastingController(BaseController):
 
         if ns_parser:
             if not helpers.check_parser_input(ns_parser, self.datasets):
+                return
+
+            if ns_parser.n_days != ns_parser.forecast_horizon:
+                console.print(
+                    f"[red]n_days={ns_parser.n_days} is not equivalent to fcast-horizon={ns_parser.forecast_horizon}[/red]"
+                )
+                console.print(
+                    "[red]Please set both to the same value to continue.[/red]"
+                )
                 return
 
             theta_view.display_theta_forecast(
@@ -1749,6 +1767,15 @@ class ForecastingController(BaseController):
 
         if ns_parser:
             if not helpers.check_parser_input(ns_parser, self.datasets):
+                return
+
+            if ns_parser.n_days != ns_parser.forecast_horizon:
+                console.print(
+                    f"[red]n_days={ns_parser.n_days} is not equivalent to fcast-horizon={ns_parser.forecast_horizon}[/red]"
+                )
+                console.print(
+                    "[red]Please set both to the same value to continue.[/red]"
+                )
                 return
 
             rnn_view.display_rnn_forecast(
@@ -1855,6 +1882,15 @@ class ForecastingController(BaseController):
             if not helpers.check_parser_input(ns_parser, self.datasets):
                 return
 
+            if ns_parser.n_days != ns_parser.forecast_horizon:
+                console.print(
+                    f"[red]n_days={ns_parser.n_days} is not equivalent to fcast-horizon={ns_parser.forecast_horizon}[/red]"
+                )
+                console.print(
+                    "[red]Please set both to the same value to continue.[/red]"
+                )
+                return
+
             nbeats_view.display_nbeats_forecast(
                 data=self.datasets[ns_parser.target_dataset],
                 ticker_name=ns_parser.target_dataset,
@@ -1953,6 +1989,15 @@ class ForecastingController(BaseController):
             if not helpers.check_parser_input(ns_parser, self.datasets):
                 return
 
+            if ns_parser.n_days != ns_parser.forecast_horizon:
+                console.print(
+                    f"[red]n_days={ns_parser.n_days} is not equivalent to fcast-horizon={ns_parser.forecast_horizon}[/red]"
+                )
+                console.print(
+                    "[red]Please set both to the same value to continue.[/red]"
+                )
+                return
+
             tcn_view.display_tcn_forecast(
                 data=self.datasets[ns_parser.target_dataset],
                 ticker_name=ns_parser.target_dataset,
@@ -2019,6 +2064,15 @@ class ForecastingController(BaseController):
             if not helpers.check_parser_input(ns_parser, self.datasets):
                 return
 
+            if ns_parser.n_days != ns_parser.forecast_horizon:
+                console.print(
+                    f"[red]n_days={ns_parser.n_days} is not equivalent to fcast-horizon={ns_parser.forecast_horizon}[/red]"
+                )
+                console.print(
+                    "[red]Please set both to the same value to continue.[/red]"
+                )
+                return
+
             regr_view.display_regression(
                 data=self.datasets[ns_parser.target_dataset],
                 ticker_name=ns_parser.target_dataset,
@@ -2071,6 +2125,15 @@ class ForecastingController(BaseController):
 
         if ns_parser:
             if not helpers.check_parser_input(ns_parser, self.datasets):
+                return
+
+            if ns_parser.n_days != ns_parser.forecast_horizon:
+                console.print(
+                    f"[red]n_days={ns_parser.n_days} is not equivalent to fcast-horizon={ns_parser.forecast_horizon}[/red]"
+                )
+                console.print(
+                    "[red]Please set both to the same value to continue.[/red]"
+                )
                 return
 
             linregr_view.display_linear_regression(
@@ -2143,6 +2206,15 @@ class ForecastingController(BaseController):
 
         if ns_parser:
             if not helpers.check_parser_input(ns_parser, self.datasets):
+                return
+
+            if ns_parser.n_days != ns_parser.forecast_horizon:
+                console.print(
+                    f"[red]n_days={ns_parser.n_days} is not equivalent to fcast-horizon={ns_parser.forecast_horizon}[/red]"
+                )
+                console.print(
+                    "[red]Please set both to the same value to continue.[/red]"
+                )
                 return
 
             brnn_view.display_brnn_forecast(
@@ -2261,6 +2333,15 @@ class ForecastingController(BaseController):
             if not helpers.check_parser_input(ns_parser, self.datasets):
                 return
 
+            if ns_parser.n_days != ns_parser.forecast_horizon:
+                console.print(
+                    f"[red]n_days={ns_parser.n_days} is not equivalent to fcast-horizon={ns_parser.forecast_horizon}[/red]"
+                )
+                console.print(
+                    "[red]Please set both to the same value to continue.[/red]"
+                )
+                return
+
             trans_view.display_trans_forecast(
                 data=self.datasets[ns_parser.target_dataset],
                 ticker_name=ns_parser.target_dataset,
@@ -2366,6 +2447,15 @@ class ForecastingController(BaseController):
 
         if ns_parser:
             if not helpers.check_parser_input(ns_parser, self.datasets):
+                return
+
+            if ns_parser.n_days != ns_parser.forecast_horizon:
+                console.print(
+                    f"[red]n_days={ns_parser.n_days} is not equivalent to fcast-horizon={ns_parser.forecast_horizon}[/red]"
+                )
+                console.print(
+                    "[red]Please set both to the same value to continue.[/red]"
+                )
                 return
 
             tft_view.display_tft_forecast(
