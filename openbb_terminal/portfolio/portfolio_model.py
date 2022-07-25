@@ -1741,7 +1741,7 @@ class PortfolioModel:
             Series of rolling information ratio
         """
         ir_period_df, ir_rolling = get_information_ratio(
-            self.returns, self.benchmark_returns, period
+            self.returns, self.historical_trade_data, self.benchmark_trades, self.benchmark_returns
         )
 
         return ir_period_df, ir_rolling
