@@ -205,6 +205,7 @@ class ForecastingController(BaseController):
             choices["support"] = self.SUPPORT_CHOICES
 
             self.completer = NestedCompleter.from_nested_dict(choices)
+            self.update_runtime_choices()
 
     def update_runtime_choices(self):
         if session and obbff.USE_PROMPT_TOOLKIT:
