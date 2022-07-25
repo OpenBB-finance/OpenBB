@@ -1,0 +1,10 @@
+stocks
+load GME
+forecast
+q
+load TSLA
+forecast
+q
+load AMC
+forecast
+brnn GME --past-covariates=GME.volume,TSLA.close,AMC.close

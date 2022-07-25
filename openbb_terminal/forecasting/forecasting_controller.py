@@ -640,6 +640,29 @@ class ForecastingController(BaseController):
             parser, other_args, export_allowed, raw, limit
         )
 
+    def load(self, ticker: str, data: pd.DataFrame):
+        """Loads news dataframes into memory"""
+        if not data.empty:
+            data.columns = data.columns.map(lambda x: x.lower().replace(" ", "_"))
+
+            self.files.append(ticker)
+            self.datasets[ticker] = data
+
+            self.update_runtime_choices()
+
+            # Process new datasets to be updated
+            self.list_dataset_cols = list()
+            maxfile = max(len(file) for file in self.files)
+            self.loaded_dataset_cols = "\n"
+            for dataset, x_data in self.datasets.items():
+                self.loaded_dataset_cols += (
+                    f"  {dataset} {(maxfile - len(dataset)) * ' '}: "
+                    f"{', '.join(x_data.columns)}\n"
+                )
+
+                for col in data.columns:
+                    self.list_dataset_cols.append(f"{dataset}.{col}")
+
     @log_start_end(log=logger)
     def call_load(self, other_args: List[str]):
         """Process load"""
@@ -687,30 +710,8 @@ class ForecastingController(BaseController):
                 data = forecasting_model.load(file, self.file_types, self.DATA_FILES)
                 self.files_full.append([ns_parser.file, ns_parser.alias])
 
-                if not data.empty:
-                    data.columns = data.columns.map(
-                        lambda x: x.lower().replace(" ", "_")
-                    )
-
-                    self.files.append(alias)
-                    self.datasets[alias] = data
-
-                    self.update_runtime_choices()
-
-                    # Process new datasets to be updated
-                    self.list_dataset_cols = list()
-                    maxfile = max(len(file) for file in self.files)
-                    self.loaded_dataset_cols = "\n"
-                    for dataset, data in self.datasets.items():
-                        self.loaded_dataset_cols += (
-                            f"  {dataset} {(maxfile - len(dataset)) * ' '}: "
-                            f"{', '.join(data.columns)}\n"
-                        )
-
-                        for col in data.columns:
-                            self.list_dataset_cols.append(f"{dataset}.{col}")
-
-                    console.print()
+                self.load(alias, data)
+                console.print()
 
     # Show selected dataframe on console
     @log_start_end(log=logger)

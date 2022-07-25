@@ -364,7 +364,7 @@ class TerminalController(BaseController):
             ForecastingController,
         )
 
-        self.queue = ForecastingController(queue=self.queue).menu()
+        self.queue = self.load_class(ForecastingController, self.queue)
 
     def call_portfolio(self, _):
         """Process portfolio command"""
@@ -802,7 +802,7 @@ def main(
     if test:
         os.environ["DEBUG_MODE"] = "true"
 
-        if paths == []:
+        if not paths:
             console.print("Please send a path when using test mode")
             return
         test_files = []
