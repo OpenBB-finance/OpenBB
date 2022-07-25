@@ -400,8 +400,10 @@ tweak how the terminal behaves. This includes the following:
 - `export` defines the folder you wish to export data to you acquire from the terminal.
 - `tz` allows you to change the timezone if this is incorrectly displayed for you.
 - `autoscaling` automatically scales plots for you if enabled (when green).
-- `pheight` sets the height of the plot (graphs) displayed.
-- `pwidth` sets the width of the plot (graphs) displayed.
+- `pheight` sets the percentage height of the plot (graphs) displayed (if autoscaling is enabled).
+- `pwidth` sets the percentage width of the plot (graphs) displayed (if autoscaling is enabled).
+- `height` sets the height of the plot (graphs) displayed (if autoscaling is disabled).
+- `width` sets the width of the plot (graphs) displayed (if autoscaling is disabled).
 - `dpi` refers to the resolution that is used for the plot (graphs)
 - `backend` allows you to change the backend that is used for the graphs
 - `monitor` choose which monitors to scale the plot (graphs) to if applicable
