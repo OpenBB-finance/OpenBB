@@ -110,7 +110,7 @@ def open_openbb_documentation(
     that are considered 'common' by adjusting the path accordingly."""
     if "ta" in path:
         path = "terminal/common/ta/"
-    if "ba" in path:
+    elif "ba" in path:
         path = "terminal/common/ba/"
     elif "qa" in path:
         path = "terminal/common/qa/"
