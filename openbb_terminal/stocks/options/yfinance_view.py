@@ -51,8 +51,8 @@ def display_chains(
     expiry: str,
     min_sp: float = 0.0,
     max_sp: float = np.inf,
-    calls_only: bool = True,
-    puts_only: bool = True,
+    calls_only: bool = False,
+    puts_only: bool = False,
     export: str = "",
 ):
     """Display option chains for given ticker and expiration
