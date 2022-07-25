@@ -1,6 +1,6 @@
 """ Econ Controller """
 __docformat__ = "numpy"
-# pylint:disable=too-many-lines,R1710,R0904,C0415,too-many-branches
+# pylint:disable=too-many-lines,R1710,R0904,C0415,too-many-branches,unnecessary-dict-index-lookup
 
 import argparse
 import logging
@@ -1008,11 +1008,21 @@ class EconomyController(BaseController):
             if isinstance(ns_parser.country, list):
                 ns_parser.country = " ".join(ns_parser.country)
 
-            investingcom_model.check_correct_country(ns_parser.country)
-
             if ns_parser.source == "FRED":
-                fred_view.display_yield_curve(ns_parser.date)
+
+                if ns_parser.country == "united states":
+                    fred_view.display_yield_curve(
+                        ns_parser.date,
+                        raw=ns_parser.raw,
+                        export=ns_parser.export,
+                    )
+                else:
+                    console.print("Source FRED is only available for united states.\n")
+
             elif ns_parser.source == "investpy":
+
+                investingcom_model.check_correct_country(ns_parser.country)
+
                 investingcom_view.display_yieldcurve(
                     country=ns_parser.country,
                     raw=ns_parser.raw,
@@ -1437,6 +1447,15 @@ class EconomyController(BaseController):
             PredictionTechniquesController,
         )
 
+        data: Dict = {}
+        for source, _ in self.DATASETS.items():
+            if not self.DATASETS[source].empty:
+                if len(self.DATASETS[source].columns) == 1:
+                    data[self.DATASETS[source].columns[0]] = self.DATASETS[source]
+                else:
+                    for col in list(self.DATASETS[source].columns):
+                        data[col] = self.DATASETS[source][col].to_frame()
+
         self.queue = self.load_class(
             PredictionTechniquesController, self.DATASETS, self.queue
         )
@@ -1455,4 +1474,13 @@ class EconomyController(BaseController):
             QaController,
         )
 
-        self.queue = self.load_class(QaController, self.DATASETS, self.queue)
+        data: Dict = {}
+        for source, _ in self.DATASETS.items():
+            if not self.DATASETS[source].empty:
+                if len(self.DATASETS[source].columns) == 1:
+                    data[self.DATASETS[source].columns[0]] = self.DATASETS[source]
+                else:
+                    for col in list(self.DATASETS[source].columns):
+                        data[col] = self.DATASETS[source][col].to_frame()
+
+        self.queue = self.load_class(QaController, data, self.queue)

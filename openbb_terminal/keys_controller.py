@@ -655,7 +655,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
                 self.key_dict["CRYPTO_PANIC"] = "defined, test unsuccessful"
 
         if show_output:
-            console.print(self.key_dict["COINGLASS"] + "\n")
+            console.print(self.key_dict["CRYPTO_PANIC"] + "\n")
 
     def check_ethplorer_key(self, show_output: bool = False) -> None:
         """Check ethplorer key"""
