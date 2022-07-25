@@ -303,6 +303,13 @@ def test_call_func_expect_queue(expected_queue, func, queue, mocker):
             dict(),
         ),
         (
+            "call_fundrate",
+            [],
+            "coinglass_view.display_funding_rate",
+            [],
+            dict(),
+        ),
+        (
             "call_oi",
             [],
             "coinglass_view.display_open_interest",
