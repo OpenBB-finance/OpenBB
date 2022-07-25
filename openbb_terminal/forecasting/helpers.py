@@ -2,7 +2,7 @@
 import os
 import argparse
 from typing import Dict, Any, Union, Optional, List, Tuple
-from datetime import timedelta
+from datetime import timedelta, datetime
 import logging
 import pandas as pd
 import numpy as np
@@ -201,11 +201,14 @@ def prepare_scale_train_valid_test(
     n_input_days: int,
     n_predict_days: int,
     test_size: float,
-    s_end_date: Optional[str],
-    no_shuffle: bool,
+    s_start_date: Optional[datetime] = None,
+    s_end_date: Optional[datetime] = None,
+    no_shuffle: bool = True,
 ):
     """
-    Prepare and scale train, validate and test data.
+    Prepare and scale train, validate and test data. This is an old function for models
+    imported from the previous pred menu
+
     Parameters
     ----------
     data: pd.DataFrame
@@ -255,6 +258,26 @@ def prepare_scale_train_valid_test(
 
     if s_end_date:
         data = data[data.index <= s_end_date]
+        if n_input_days + n_predict_days > data.shape[0]:
+            console.print(
+                "Cannot train enough input days to predict with loaded dataframe\n"
+            )
+            return (
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                True,
+            )
+    if s_start_date:
+        data = data[data.index >= s_start_date]
         if n_input_days + n_predict_days > data.shape[0]:
             console.print(
                 "Cannot train enough input days to predict with loaded dataframe\n"
@@ -642,7 +665,7 @@ def check_parser_input(parser: argparse.ArgumentParser, datasets, *args) -> bool
     if not hasattr(parser, "target_column"):
         return False
 
-    # must check that target col is within target series
+    # must check that data["date"] col is within target series
     if parser.target_column not in datasets[parser.target_dataset].columns:  # type: ignore
         console.print(
             f"[red]The column {parser.target_column} does not exist.\n[/red]"  # type: ignore
@@ -688,3 +711,42 @@ def check_data_length(
         )
         return False
     return True
+
+
+def filter_dates(
+    data: Union[pd.DataFrame, pd.Series],
+    start_date: Optional[datetime],
+    end_date: Optional[datetime],
+) -> Union[pd.DataFrame, pd.Series]:
+    if start_date and end_date and start_date >= end_date:
+        console.print("[red]The start date must be before the end date.[/red]\n")
+        return data
+    if end_date:
+        data = data[data["date"] <= end_date]
+    if start_date:
+        data = data[data["date"] >= start_date]
+    return data
+
+
+def clean_data(
+    data: Union[pd.DataFrame, pd.Series],
+    start_date: Optional[datetime],
+    end_date: Optional[datetime],
+) -> Union[pd.DataFrame, pd.Series]:
+    if isinstance(data, pd.Series):
+        col = data.name
+        columns = ["date", col]
+        data = pd.DataFrame(data).reset_index()
+        data.columns = columns
+        data = filter_dates(data, start_date, end_date)
+        data = data.set_index("date")
+        data = data[col]
+    elif "date" in data.columns:
+        data["date"] = data["date"].apply(dt_format)
+        data["date"] = pd.to_datetime(data["date"])
+        data = filter_dates(data, start_date, end_date)
+    elif end_date or start_date:
+        console.print(
+            "[red]No 'date' column specified, ignoring start end end date[/red]\n"
+        )
+    return data

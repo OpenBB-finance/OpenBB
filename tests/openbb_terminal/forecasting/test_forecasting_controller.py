@@ -1,4 +1,3 @@
-from datetime import datetime
 from typing import List
 import argparse
 import pandas as pd
@@ -428,24 +427,6 @@ def test_models_bad(opt):
     cont = fc.ForecastingController()
     cont.datasets = {"data": df}
     getattr(cont, f"call_{opt}")(["data"])
-
-
-@pytest.mark.parametrize("end_date", [datetime(2020, 1, 1), datetime(2022, 7, 21)])
-def test_call_arima(mocker, end_date):
-    mocker.patch(
-        base + "get_next_stock_market_days", return_value=[datetime(2021, 1, 1)]
-    )
-    mocker.patch(base + "helpers.check_parser_input", return_value=True)
-    mocker.patch(base + "arima_view.display_arima")
-    mock = mocker.MagicMock()
-    mock.s_end_date = end_date
-    mock.target_dataset = "data"
-    mocker.patch(
-        base + "ForecastingController.parse_known_args_and_warn", return_value=mock
-    )
-    cont = fc.ForecastingController()
-    cont.datasets = {"data": [datetime(2021, 1, 1)]}
-    cont.call_arima(["data"])
 
 
 def test_call_knn(mocker):

@@ -2,7 +2,8 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Union
+from typing import Union, Optional
+from datetime import datetime
 
 import pandas as pd
 
@@ -36,6 +37,8 @@ def display_rnn_forecast(
     export: str = "",
     residuals: bool = False,
     forecast_only: bool = False,
+    start_date: Optional[datetime] = None,
+    end_date: Optional[datetime] = None,
 ):
     """Display RNN forecast
 
@@ -78,12 +81,13 @@ def display_rnn_forecast(
             Format to export data
         residuals: bool
             Whether to show residuals for the model. Defaults to False.
+        start_date: Optional[datetime]
+            The starting date to perform analysis, data before this is trimmed. Defaults to None.
+        end_date: Optional[datetime]
+            The ending date to perform analysis, data after this is trimmed. Defaults to None.
     """
 
-    # reformat the date column to remove any hour/min/sec
-    if "date" in data.columns:
-        data["date"] = data["date"].apply(helpers.dt_format)
-
+    data = helpers.clean_data(data, start_date, end_date)
     (
         ticker_series,
         historical_fcast,

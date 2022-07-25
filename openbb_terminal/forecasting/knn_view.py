@@ -3,11 +3,12 @@ __docformat__ = "numpy"
 
 import logging
 from typing import Union, Optional, List
+from datetime import datetime
 
 import pandas as pd
 from matplotlib import pyplot as plt
 
-from openbb_terminal.forecasting import knn_model
+from openbb_terminal.forecasting import knn_model, helpers
 from openbb_terminal.forecasting.helpers import (
     print_pretty_prediction,
     plot_data_predictions,
@@ -28,7 +29,8 @@ def display_k_nearest_neighbors(
     n_input_days: int = 14,
     n_predict_days: int = 5,
     test_size: float = 0.15,
-    end_date: str = "",
+    start_date: Optional[datetime] = None,
+    end_date: Optional[datetime] = None,
     no_shuffle: bool = True,
     time_res: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -51,8 +53,10 @@ def display_k_nearest_neighbors(
         Number of days to predict
     test_size : float
         Fraction of data for testing
-    end_date : str, optional
-        End date for backtesting, by default ""
+    start_date: Optional[datetime]
+        The starting date to perform analysis, data before this is trimmed. Defaults to None.
+    end_date: Optional[datetime]
+        The ending date to perform analysis, data after this is trimmed. Defaults to None.
     no_shuffle : bool, optional
         Flag to shuffle data randomly, by default True
     time_res : str
@@ -60,6 +64,7 @@ def display_k_nearest_neighbors(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
+    data = helpers.clean_data(data, start_date, end_date)
     (
         forecast_data_df,
         preds,
@@ -67,7 +72,12 @@ def display_k_nearest_neighbors(
         y_dates_valid,
         scaler,
     ) = knn_model.get_knn_model_data(
-        data, n_input_days, n_predict_days, n_neighbors, test_size, end_date, no_shuffle
+        data,
+        n_input_days,
+        n_predict_days,
+        n_neighbors,
+        test_size,
+        no_shuffle=no_shuffle,
     )
 
     if forecast_data_df.empty:

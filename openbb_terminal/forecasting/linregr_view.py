@@ -2,7 +2,8 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Union, List
+from typing import Union, List, Optional
+from datetime import datetime
 
 import pandas as pd
 
@@ -28,6 +29,8 @@ def display_linear_regression(
     export: str = "",
     residuals: bool = False,
     forecast_only: bool = False,
+    start_date: Optional[datetime] = None,
+    end_date: Optional[datetime] = None,
 ):
     """Display Linear Regression Forecasting
 
@@ -56,9 +59,12 @@ def display_linear_regression(
             Whether to show residuals for the model. Defaults to False.
         forecast_only: bool
             Whether to only show dates in the forecasting range. Defaults to False.
+        start_date: Optional[datetime]
+            The starting date to perform analysis, data before this is trimmed. Defaults to None.
+        end_date: Optional[datetime]
+            The ending date to perform analysis, data after this is trimmed. Defaults to None.
     """
-    if "date" in data.columns:
-        data["date"] = data["date"].apply(helpers.dt_format)
+    data = helpers.clean_data(data, start_date, end_date)
     (
         ticker_series,
         historical_fcast,

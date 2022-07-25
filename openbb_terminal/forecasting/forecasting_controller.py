@@ -27,7 +27,6 @@ from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     export_data,
     log_and_raise,
-    get_next_stock_market_days,
     valid_date,
 )
 from openbb_terminal.helper_funcs import (
@@ -50,8 +49,6 @@ from openbb_terminal.forecasting import (
     rnn_view,
     brnn_view,
     tft_view,
-    arima_view,
-    arima_model,
     knn_view,
     helpers,
     trans_view,
@@ -109,7 +106,6 @@ class ForecastingController(BaseController):
         "linregr",
         "trans",
         "tft",
-        # "arima",
         "knn",
         "mc",
         "season",
@@ -323,7 +319,6 @@ class ForecastingController(BaseController):
         mt.add_cmd("atr", "", self.files)
         mt.add_cmd("signal", "", self.files)
         mt.add_info("_tsforecasting_")
-        # mt.add_cmd("arima", "", self.files)
         mt.add_cmd("knn", "", self.files)
         mt.add_cmd("mc", "", self.files)
         mt.add_cmd("expo", "", self.files)
@@ -379,6 +374,7 @@ class ForecastingController(BaseController):
         hidden_size: int = None,
         n_jumps: bool = False,
         end: bool = False,
+        start: bool = False,
         residuals: bool = False,
         forecast_only: bool = False,
     ):
@@ -570,13 +566,21 @@ class ForecastingController(BaseController):
             )
         if end:
             parser.add_argument(
-                "-e",
                 "--end",
                 action="store",
                 type=valid_date,
                 dest="s_end_date",
                 default=None,
                 help="The end date (format YYYY-MM-DD) to select for testing",
+            )
+        if start:
+            parser.add_argument(
+                "--start",
+                action="store",
+                type=valid_date,
+                dest="s_start_date",
+                default=None,
+                help="The start date (format YYYY-MM-DD) to select for testing",
             )
         if learning_rate:
             parser.add_argument(
@@ -1599,6 +1603,8 @@ class ForecastingController(BaseController):
             window=True,
             residuals=True,
             forecast_only=True,
+            start=True,
+            end=True,
         )
         # TODO Convert this to multi series
         if ns_parser:
@@ -1619,6 +1625,8 @@ class ForecastingController(BaseController):
                 export=ns_parser.export,
                 residuals=ns_parser.residuals,
                 forecast_only=ns_parser.forecast_only,
+                start_date=ns_parser.s_start_date,
+                end_date=ns_parser.s_end_date,
             )
 
     @log_start_end(log=logger)
@@ -1649,6 +1657,8 @@ class ForecastingController(BaseController):
             forecast_horizon=True,
             residuals=True,
             forecast_only=True,
+            start=True,
+            end=True,
         )
 
         if ns_parser:
@@ -1667,6 +1677,8 @@ class ForecastingController(BaseController):
                 export=ns_parser.export,
                 residuals=ns_parser.residuals,
                 forecast_only=ns_parser.forecast_only,
+                start_date=ns_parser.s_start_date,
+                end_date=ns_parser.s_end_date,
             )
 
     @log_start_end(log=logger)
@@ -1724,6 +1736,8 @@ class ForecastingController(BaseController):
             learning_rate=True,
             residuals=True,
             forecast_only=True,
+            start=True,
+            end=True,
         )
 
         if ns_parser:
@@ -1751,6 +1765,8 @@ class ForecastingController(BaseController):
                 export=ns_parser.export,
                 residuals=ns_parser.residuals,
                 forecast_only=ns_parser.forecast_only,
+                start_date=ns_parser.s_start_date,
+                end_date=ns_parser.s_end_date,
             )
 
     @log_start_end(log=logger)
@@ -1824,6 +1840,8 @@ class ForecastingController(BaseController):
             past_covariates=True,
             residuals=True,
             forecast_only=True,
+            start=True,
+            end=True,
         )
 
         if ns_parser:
@@ -1853,6 +1871,8 @@ class ForecastingController(BaseController):
                 export=ns_parser.export,
                 residuals=ns_parser.residuals,
                 forecast_only=ns_parser.forecast_only,
+                start_date=ns_parser.s_start_date,
+                end_date=ns_parser.s_end_date,
             )
 
     @log_start_end(log=logger)
@@ -1917,6 +1937,8 @@ class ForecastingController(BaseController):
             output_chunk_length=True,
             residuals=True,
             forecast_only=True,
+            start=True,
+            end=True,
         )
 
         if ns_parser:
@@ -1947,6 +1969,8 @@ class ForecastingController(BaseController):
                 export=ns_parser.export,
                 residuals=ns_parser.residuals,
                 forecast_only=ns_parser.forecast_only,
+                start_date=ns_parser.s_start_date,
+                end_date=ns_parser.s_end_date,
             )
 
     @log_start_end(log=logger)
@@ -1979,6 +2003,8 @@ class ForecastingController(BaseController):
             lags=True,
             residuals=True,
             forecast_only=True,
+            start=True,
+            end=True,
         )
 
         if ns_parser:
@@ -1999,6 +2025,8 @@ class ForecastingController(BaseController):
                 export=ns_parser.export,
                 residuals=ns_parser.residuals,
                 forecast_only=ns_parser.forecast_only,
+                start_date=ns_parser.s_start_date,
+                end_date=ns_parser.s_end_date,
             )
 
     @log_start_end(log=logger)
@@ -2030,6 +2058,8 @@ class ForecastingController(BaseController):
             target_dataset=True,
             residuals=True,
             forecast_only=True,
+            start=True,
+            end=True,
         )
 
         if ns_parser:
@@ -2049,6 +2079,8 @@ class ForecastingController(BaseController):
                 export=ns_parser.export,
                 residuals=ns_parser.residuals,
                 forecast_only=ns_parser.forecast_only,
+                start_date=ns_parser.s_start_date,
+                end_date=ns_parser.s_end_date,
             )
 
     @log_start_end(log=logger)
@@ -2098,6 +2130,8 @@ class ForecastingController(BaseController):
             hidden_size=20,
             residuals=True,
             forecast_only=True,
+            start=True,
+            end=True,
         )
 
         if ns_parser:
@@ -2127,6 +2161,8 @@ class ForecastingController(BaseController):
                 export=ns_parser.export,
                 residuals=ns_parser.residuals,
                 forecast_only=ns_parser.forecast_only,
+                start_date=ns_parser.s_start_date,
+                end_date=ns_parser.s_end_date,
             )
 
     @log_start_end(log=logger)
@@ -2211,6 +2247,8 @@ class ForecastingController(BaseController):
             save_checkpoints=True,
             residuals=True,
             forecast_only=True,
+            start=True,
+            end=True,
         )
         if ns_parser:
             if not helpers.check_parser_input(ns_parser, self.datasets):
@@ -2241,6 +2279,8 @@ class ForecastingController(BaseController):
                 export=ns_parser.export,
                 residuals=ns_parser.residuals,
                 forecast_only=ns_parser.forecast_only,
+                start_date=ns_parser.s_start_date,
+                end_date=ns_parser.s_end_date,
             )
 
     # Below this is ports to the old pred menu
@@ -2313,6 +2353,8 @@ class ForecastingController(BaseController):
             target_column=True,
             residuals=True,
             forecast_only=True,
+            start=True,
+            end=True,
         )
 
         if ns_parser:
@@ -2343,109 +2385,11 @@ class ForecastingController(BaseController):
                 export=ns_parser.export,
                 residuals=ns_parser.residuals,
                 forecast_only=ns_parser.forecast_only,
+                start_date=ns_parser.s_start_date,
+                end_date=ns_parser.s_end_date,
             )
 
     # Below this is ports to the old pred menu
-    @log_start_end(log=logger)
-    def call_arima(self, other_args: List[str]):
-        """Process arima command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="arima",
-            description="""
-                In statistics and econometrics, and in particular in time series analysis, an
-                autoregressive integrated moving average (ARIMA) model is a generalization of an
-                autoregressive moving average (ARMA) model. Both of these models are fitted to time
-                series data either to better understand the data or to predict future points in the
-                series (forecasting). ARIMA(p,d,q) where parameters p, d, and q are non-negative
-                integers, p is the order (number of time lags) of the autoregressive model, d is the
-                degree of differencing (the number of times the data have had past values subtracted),
-                and q is the order of the moving-average model.
-            """,
-        )
-        parser.add_argument(
-            "-i",
-            "--ic",
-            action="store",
-            dest="s_ic",
-            type=str,
-            default="aic",
-            choices=arima_model.ICS,
-            help="information criteria.",
-        )
-        parser.add_argument(
-            "-s",
-            "--seasonal",
-            action="store_true",
-            default=False,
-            dest="b_seasonal",
-            help="Use weekly seasonal data.",
-        )
-        parser.add_argument(
-            "-o",
-            "--order",
-            action="store",
-            dest="s_order",
-            default="",
-            type=str,
-            help="arima model order (p,d,q) in format: p,d,q.",
-        )
-        parser.add_argument(
-            "-r",
-            "--results",
-            action="store_true",
-            dest="b_results",
-            default=False,
-            help="results about ARIMA summary flag.",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "--target-dataset")
-        ns_parser = self.parse_known_args_and_warn(
-            parser,
-            other_args,
-            export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
-            target_column=True,
-            target_dataset=True,
-            n_days=True,
-            end=True,
-        )
-        if ns_parser:
-            if not helpers.check_parser_input(ns_parser, self.datasets):
-                return
-
-            # BACKTESTING CHECK
-            if ns_parser.s_end_date:
-
-                if ns_parser.s_end_date < self.datasets[ns_parser.target_dataset][0]:
-                    console.print(
-                        "Backtesting not allowed, End Date is older than Start Date of data\n"
-                    )
-
-                if (
-                    ns_parser.s_end_date
-                    < get_next_stock_market_days(
-                        last_stock_day=self.datasets[ns_parser.target_dataset][0],
-                        n_next_days=5 + ns_parser.n_days,
-                    )[-1]
-                ):
-                    console.print(
-                        "Backtesting not allowed, End Date is too close to Start Date \n"
-                    )
-
-            arima_view.display_arima(
-                dataset=ns_parser.target_dataset,
-                values=self.datasets[ns_parser.target_dataset],
-                target_column=ns_parser.target_column,
-                arima_order=ns_parser.s_order,
-                n_predict=ns_parser.n_days,
-                seasonal=ns_parser.b_seasonal,
-                ic=ns_parser.s_ic,
-                results=ns_parser.b_results,
-                s_end_date=ns_parser.s_end_date,
-                export=ns_parser.export,
-            )
-
     def call_knn(self, other_args: List[str]):
         """Process knn command"""
         parser = argparse.ArgumentParser(
@@ -2485,6 +2429,7 @@ class ForecastingController(BaseController):
             train_split=True,
             target_dataset=True,
             target_column=True,
+            start=True,
             end=True,
         )
         if ns_parser:
@@ -2508,8 +2453,9 @@ class ForecastingController(BaseController):
                     n_input_days=ns_parser.input_chunk_length,
                     n_predict_days=ns_parser.n_days,
                     test_size=1 - ns_parser.train_split,
-                    end_date=ns_parser.s_end_date,
                     no_shuffle=ns_parser.no_shuffle,
+                    start_date=ns_parser.s_start_date,
+                    end_date=ns_parser.s_end_date,
                 )
 
     @log_start_end(log=logger)
@@ -2540,6 +2486,8 @@ class ForecastingController(BaseController):
             target_dataset=True,
             target_column=True,
             n_epochs=True,
+            start=True,
+            end=True,
         )
         if ns_parser:
             if not helpers.check_parser_input(ns_parser, self.datasets):
@@ -2561,4 +2509,6 @@ class ForecastingController(BaseController):
                 n_sims=ns_parser.n_epochs,
                 use_log=ns_parser.dist == "lognormal",
                 export=ns_parser.export,
+                start_date=ns_parser.s_start_date,
+                end_date=ns_parser.s_end_date,
             )

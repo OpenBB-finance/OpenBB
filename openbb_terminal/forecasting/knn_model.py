@@ -2,7 +2,8 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Any, Tuple, Union
+from typing import Any, Tuple, Union, Optional
+from datetime import datetime
 
 import numpy as np
 import pandas as pd
@@ -24,7 +25,8 @@ def get_knn_model_data(
     n_predict_days: int = 5,
     n_neighbors: int = 20,
     test_size: float = 0.15,
-    end_date: str = None,
+    start_date: Optional[datetime] = None,
+    end_date: Optional[datetime] = None,
     no_shuffle: bool = True,
 ) -> Tuple[pd.DataFrame, np.ndarray, np.ndarray, np.ndarray, Any]:
     """Perform knn model fitting and predicting on data
@@ -41,8 +43,10 @@ def get_knn_model_data(
         Number of neighbors for nn
     test_size : float
         Fraction of data for testing
-    end_date : str
-        End date for backtesting
+    start_date: Optional[datetime]
+        The starting date to perform analysis, data before this is trimmed. Defaults to None.
+    end_date: Optional[datetime]
+        The ending date to perform analysis, data after this is trimmed. Defaults to None.
     no_shuffle : bool
         Flag to not shuffle train/test data
 
@@ -73,7 +77,7 @@ def get_knn_model_data(
         scaler,
         is_error,
     ) = prepare_scale_train_valid_test(
-        data, n_input_days, n_predict_days, test_size, end_date, no_shuffle
+        data, n_input_days, n_predict_days, test_size, start_date, end_date, no_shuffle
     )
     if is_error:
         return pd.DataFrame(), np.array(0), np.array(0), np.array(0), None

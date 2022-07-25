@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 import logging
 import os
 from typing import List, Optional, Union
+from datetime import datetime
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -11,7 +12,7 @@ import pandas as pd
 import seaborn as sns
 
 from openbb_terminal.config_terminal import theme
-from openbb_terminal.forecasting import mc_model
+from openbb_terminal.forecasting import mc_model, helpers
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
@@ -20,6 +21,8 @@ from openbb_terminal.helper_funcs import (
     plot_autoscale,
     is_valid_axes_count,
 )
+
+# pylint: disable=R0913
 
 logger = logging.getLogger(__name__)
 
@@ -34,6 +37,8 @@ def display_mc_forecast(
     export: str = "",
     time_res: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
+    start_date: Optional[datetime] = None,
+    end_date: Optional[datetime] = None,
 ):
     """Display monte carlo forecasting
 
@@ -55,7 +60,12 @@ def display_mc_forecast(
         Resolution for data, allowing for predicting outside of standard market days
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
+    start_date: Optional[datetime]
+        The starting date to perform analysis, data before this is trimmed. Defaults to None.
+    end_date: Optional[datetime]
+        The ending date to perform analysis, data after this is trimmed. Defaults to None.
     """
+    data = helpers.clean_data(data, start_date, end_date)
     predicted_values = mc_model.get_mc_brownian(data, n_future, n_sims, use_log)
     if not time_res or time_res == "1D":
         future_index = get_next_stock_market_days(data.index[-1], n_next_days=n_future)  # type: ignore
