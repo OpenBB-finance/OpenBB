@@ -565,14 +565,14 @@ def display_clenow_momentum(
 
     df = pd.DataFrame.from_dict(
         {
-            "R^2": "{:.5f}".format(r2),
-            "Fit Coef": "{:.5f}".format(coef),
-            "Factor": "{:.5f}".format(coef * r2),
+            "R^2": f"{r2:.5f}",
+            "Fit Coef": f"{coef:.5f}",
+            "Factor": f"{coef * r2:.5f}",
         },
         orient="index",
     )
     print_rich_table(
-        df, show_index=True, headers=[""], title="Clenow Expoential Regression Factor"
+        df, show_index=True, headers=[""], title="Clenow Exponential Regression Factor"
     )
 
     # This plot has 2 axes
@@ -587,7 +587,7 @@ def display_clenow_momentum(
     ax1.plot(series.index, np.log(series.values))
     ax1.plot(series.index[-length:], fit_data, linewidth=2)
 
-    ax1.set_title(f"Clenow Momentum Exponential Regression")
+    ax1.set_title("Clenow Momentum Exponential Regression")
     ax1.set_xlim(series.index[0], series.index[-1])
     ax1.set_ylabel("Log Price")
     theme.style_primary_axis(

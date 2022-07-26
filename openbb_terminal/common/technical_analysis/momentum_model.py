@@ -192,7 +192,9 @@ def cg(values: pd.Series, length: int) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def clenow_momentum(values: pd.Series, length: int = 90) -> Tuple[float, pd.Series]:
+def clenow_momentum(
+    values: pd.Series, length: int = 90
+) -> Tuple[float, float, pd.Series]:
     """Gets the Clenow Volatility Adjusted Momentum.  this is defined as the regression coefficient on log prices
     multiplied by the R^2 value of the regression
 
