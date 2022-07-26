@@ -18,7 +18,7 @@ For more information and examples, use 'about rsi' to access the related guide.
 
 Example:
 ```
-(🦋) /forecasting/ $ show TSLA
+(🦋) /forecast/ $ show TSLA
 TSLA has following shape (rowxcolumn): (611, 7)
 
                     Dataset TSLA | Showing 10 of 611 rows
@@ -46,10 +46,10 @@ TSLA has following shape (rowxcolumn): (611, 7)
 │ 9 │ 2020-01-15 │ 105.95 │ 107.57 │ 103.36 │ 103.70 │ 103.70    │ 86844000  │
 └───┴────────────┴────────┴────────┴────────┴────────┴───────────┴───────────┘
 
-(🦋) /forecasting/ $ rsi TSLA
+(🦋) /forecast/ $ rsi TSLA
 Successfully added 'RSI_10' to 'TSLA' dataset
 
-(🦋) /forecasting/ $ show TSLA
+(🦋) /forecast/ $ show TSLA
 TSLA has following shape (rowxcolumn): (611, 8)
 
                          Dataset TSLA | Showing 10 of 611 rows
@@ -77,11 +77,11 @@ TSLA has following shape (rowxcolumn): (611, 8)
 │ 9 │ 2020-01-15 │ 105.95 │ 107.57 │ 103.36 │ 103.70 │ 103.70    │ 86844000  │ nan    │
 └───┴────────────┴────────┴────────┴────────┴────────┴───────────┴───────────┴────────┘
 
-(🦋) /forecasting/ $ clean TSLA
+(🦋) /forecast/ $ clean TSLA
 Namespace(drop='', fill='', help=False, limit=5, target_dataset='TSLA')
 Successfully cleaned 'TSLA' dataset
 
-(🦋) /forecasting/ $ show TSLA
+(🦋) /forecast/ $ show TSLA
 TSLA has following shape (rowxcolumn): (601, 8)
 
                          Dataset TSLA | Showing 10 of 601 rows

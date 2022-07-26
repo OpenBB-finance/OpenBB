@@ -24,8 +24,8 @@ For more information and examples, use 'about export' to access the related guid
 
 Example:
 ```
-2022 Jul 23, 10:36 (🦋) /forecasting/ $ load GME_20220719_123734.csv -a GME
+2022 Jul 23, 10:36 (🦋) /forecast/ $ load GME_20220719_123734.csv -a GME
 
-2022 Jul 23, 10:37 (🦋) /forecasting/ $ mc GME
+2022 Jul 23, 10:37 (🦋) /forecast/ $ mc GME
 ```
 ![mc](https://user-images.githubusercontent.com/72827203/180615284-f69c331c-1bf1-4b9b-9a57-a5ec1ac4f12f.png)

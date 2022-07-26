@@ -20,9 +20,9 @@ For more information and examples, use 'about season' to access the related guid
 
 Example:
 ```
-(🦋) /forecasting/ $ load TSLA.csv
+(🦋) /forecast/ $ load TSLA.csv
 
-(🦋) /forecasting/ $ season TSLA.volume
+(🦋) /forecast/ $ season TSLA.volume
 TODO: screen shot
 
 ```

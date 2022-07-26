@@ -19,9 +19,9 @@ optional arguments:
 
 Example:
 ```
-(🦋) /forecasting/ $ load aapl.csv
+(🦋) /forecast/ $ load aapl.csv
 
-(🦋) /forecasting/ $ show aapl
+(🦋) /forecast/ $ show aapl
 
 aapl has following shape (rowxcolumn): (759, 7)
 

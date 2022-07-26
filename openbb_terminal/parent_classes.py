@@ -175,7 +175,7 @@ class BaseController(metaclass=ABCMeta):
         # the stocks context it will not impact the one of TA menu - unless changes are done.
         # An exception is made for forecasting because it is built to handle multiple loaded
         # tickers.
-        if class_ins.PATH in controllers and class_ins.PATH == "/forecasting/":
+        if class_ins.PATH in controllers and class_ins.PATH == "/forecast/":
             old_class = controllers[class_ins.PATH]
             old_class.queue = self.queue
             old_class.load(*args[:-1], **kwargs)

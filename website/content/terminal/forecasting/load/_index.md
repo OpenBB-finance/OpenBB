@@ -17,9 +17,9 @@ optional arguments:
 
 Example:
 ```
-(🦋) /forecasting/ $ load aapl.csv
+(🦋) /forecast/ $ load aapl.csv
 
-(🦋) /forecasting/ $ show aapl
+(🦋) /forecast/ $ show aapl
                   Dataset aapl | Showing 10 of 759 rows
 ┏━━━┳━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┓
 ┃   ┃ date       ┃ open  ┃ high  ┃ low   ┃ close ┃ adj_close ┃ volume    ┃

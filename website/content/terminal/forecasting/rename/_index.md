@@ -16,7 +16,7 @@ optional arguments:
 
 Example:
 ```
-2022 Jul 23, 10:16 (🦋) /forecasting/ $ show AAPL
+2022 Jul 23, 10:16 (🦋) /forecast/ $ show AAPL
 AAPL has following shape (rowxcolumn): (759, 7)
 
                   Dataset AAPL | Showing 10 of 759 rows
@@ -44,9 +44,9 @@ AAPL has following shape (rowxcolumn): (759, 7)
 │ 9 │ 2019-07-26 │ 51.87 │ 52.43 │ 51.78 │ 51.94 │ 50.69     │ 70475600 │
 └───┴────────────┴───────┴───────┴───────┴───────┴───────────┴──────────┘
 
-2022 Jul 23, 10:16 (🦋) /forecasting/ $ rename AAPL -o close -n new_name
+2022 Jul 23, 10:16 (🦋) /forecast/ $ rename AAPL -o close -n new_name
 
-2022 Jul 23, 10:16 (🦋) /forecasting/ $ show AAPL
+2022 Jul 23, 10:16 (🦋) /forecast/ $ show AAPL
 AAPL has following shape (rowxcolumn): (759, 7)
 
                    Dataset AAPL | Showing 10 of 759 rows

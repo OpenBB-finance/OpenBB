@@ -15,8 +15,8 @@ optional arguments:
 
 Example:
 ```
-(🦋) /forecasting/ $ load aapl.csv
+(🦋) /forecast/ $ load aapl.csv
 
-(🦋) /forecasting/ $ plot appl.close
+(🦋) /forecast/ $ plot appl.close
 ```
 ![close](TODO)

@@ -14,9 +14,9 @@ optional arguments:
 
 Example:
 ```
-(🦋) /forecasting/ $ load TSLA.csv
+(🦋) /forecast/ $ load TSLA.csv
 
-(🦋) /forecasting/ $ desc TSLA
+(🦋) /forecast/ $ desc TSLA
 
               Showing Descriptive Statistics for Dataset TSLA
 ┏━━━━━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━┓

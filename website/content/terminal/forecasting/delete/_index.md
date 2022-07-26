@@ -13,12 +13,12 @@ optional arguments:
 
 Example:
 ```
-(🦋) /forecasting/ $ load TSLA.csv
+(🦋) /forecast/ $ load TSLA.csv
 
-(🦋) /forecasting/ $ roc TSLA
+(🦋) /forecast/ $ roc TSLA
 Successfully added 'ROC_10' to 'TSLA' dataset
 
-(🦋) /forecasting/ $ show
+(🦋) /forecast/ $ show
 TSLA has following shape (rowxcolumn): (611, 8)
 
                          Dataset TSLA | Showing 10 of 611 rows
@@ -46,9 +46,9 @@ TSLA has following shape (rowxcolumn): (611, 8)
 │ 9 │ 2020-01-15 │ 105.95 │ 107.57 │ 103.36 │ 103.70 │ 103.70    │ 86844000  │ 20.51  │
 └───┴────────────┴────────┴────────┴────────┴────────┴───────────┴───────────┴────────┘
 
-(🦋) /forecasting/ $ delete TSLA.ROC_10
+(🦋) /forecast/ $ delete TSLA.ROC_10
 
-(🦋) /forecasting/ $ show TSLA
+(🦋) /forecast/ $ show TSLA
 TSLA has following shape (rowxcolumn): (611, 7)
 
                     Dataset TSLA | Showing 10 of 611 rows

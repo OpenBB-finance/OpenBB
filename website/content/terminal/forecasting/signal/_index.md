@@ -18,7 +18,7 @@ For more information and examples, use 'about signal' to access the related guid
 
 Example:
 ```
-(🦋) /forecasting/ $ show TSLA
+(🦋) /forecast/ $ show TSLA
 TSLA has following shape (rowxcolumn): (611, 7)
 
                     Dataset TSLA | Showing 10 of 611 rows
@@ -46,10 +46,10 @@ TSLA has following shape (rowxcolumn): (611, 7)
 │ 9 │ 2020-01-15 │ 105.95 │ 107.57 │ 103.36 │ 103.70 │ 103.70    │ 86844000  │
 └───┴────────────┴────────┴────────┴────────┴────────┴───────────┴───────────┘
 
-(🦋) /forecasting/ $ signal TSLA
+(🦋) /forecast/ $ signal TSLA
 Successfully added 'Price Signal' to 'TSLA' dataset
 
-(🦋) /forecasting/ $ show TSLA -l 30
+(🦋) /forecast/ $ show TSLA -l 30
 TSLA has following shape (rowxcolumn): (611, 8)
 
                          Dataset TSLA | Showing 30 of 611 rows

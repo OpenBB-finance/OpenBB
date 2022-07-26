@@ -17,11 +17,11 @@ For more information and examples, use 'about export' to access the related guid
 
 Example:
 ```
-(🦋) /forecasting/ $ load aapl
+(🦋) /forecast/ $ load aapl
 
-(🦋) /forecasting/ $ ema aapl
+(🦋) /forecast/ $ ema aapl
 Successfully added 'EMA_10' to 'aapl' dataset
 
-(🦋) /forecasting/ $ export aapl
-Saved file: .../OpenBBTerminal/exports/forecasting/aapl_20220711_151219.xlsx
+(🦋) /forecast/ $ export aapl
+Saved file: .../OpenBBTerminal/exports/forecast/aapl_20220711_151219.xlsx
 ```

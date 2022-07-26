@@ -74,7 +74,7 @@ class TerminalController(BaseController):
         "funds",
         "alternative",
         "econometrics",
-        "forecasting",
+        "forecast",
         "sources",
     ]
 
@@ -138,7 +138,7 @@ class TerminalController(BaseController):
         mt.add_raw("\n")
         mt.add_info("_others_")
         mt.add_menu("econometrics")
-        mt.add_menu("forecasting")
+        mt.add_menu("forecast")
         mt.add_menu("portfolio")
         mt.add_menu("dashboards")
         mt.add_menu("reports")
@@ -367,15 +367,13 @@ class TerminalController(BaseController):
 
         self.queue = EconometricsController(self.queue).menu()
 
-    def call_forecasting(self, _):
-        """Process forecasting command"""
-        from openbb_terminal.forecasting.forecasting_controller import (
-            ForecastingController,
+    def call_forecast(self, _):
+        """Process forecast command"""
+        from openbb_terminal.forecast.forecast_controller import (
+            ForecastController,
         )
 
-        self.queue = self.load_class(
-            ForecastingController, "", pd.DataFrame(), self.queue
-        )
+        self.queue = self.load_class(ForecastController, "", pd.DataFrame(), self.queue)
 
     def call_portfolio(self, _):
         """Process portfolio command"""

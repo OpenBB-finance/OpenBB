@@ -18,9 +18,9 @@ For more information and examples, use 'about sto' to access the related guide.
 
 Example:
 ```
-(🦋) /forecasting/ $ load TSLA.csv
+(🦋) /forecast/ $ load TSLA.csv
 
-(🦋) /forecasting/ $ show TSLA
+(🦋) /forecast/ $ show TSLA
 TSLA has following shape (rowxcolumn): (611, 7)
 
                     Dataset TSLA | Showing 10 of 611 rows
@@ -48,10 +48,10 @@ TSLA has following shape (rowxcolumn): (611, 7)
 │ 9 │ 2020-01-15 │ 105.95 │ 107.57 │ 103.36 │ 103.70 │ 103.70    │ 86844000  │
 └───┴────────────┴────────┴────────┴────────┴────────┴───────────┴───────────┘
 
-(🦋) /forecasting/ $ sto TSLA
+(🦋) /forecast/ $ sto TSLA
 Successfully added 'STOK&D_10' to 'TSLA' dataset
 
-(🦋) /forecasting/ $ show TSLA
+(🦋) /forecast/ $ show TSLA
 TSLA has following shape (rowxcolumn): (611, 9)
 
                               Dataset TSLA | Showing 10 of 611 rows
@@ -79,7 +79,7 @@ TSLA has following shape (rowxcolumn): (611, 9)
 │ 9 │ 2020-01-15 │ 105.95 │ 107.57 │ 103.36 │ 103.70 │ 103.70    │ 86844000  │ 77.00   │ nan     │
 └───┴────────────┴────────┴────────┴────────┴────────┴───────────┴───────────┴─────────┴─────────┘
 
-(🦋) /forecasting/ $ clean TSLA
+(🦋) /forecast/ $ clean TSLA
 Namespace(drop='', fill='', help=False, limit=5, target_dataset='TSLA')
 Successfully cleaned 'TSLA' dataset
 ```

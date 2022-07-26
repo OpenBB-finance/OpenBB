@@ -16,9 +16,9 @@ For more information and examples, use 'about corr' to access the related guide.
 
 Example:
 ```
-(🦋) /forecasting/ $ load TSLA.csv
+(🦋) /forecast/ $ load TSLA.csv
 
-(🦋) /forecasting/ $ corr TSLA
+(🦋) /forecast/ $ corr TSLA
 TODO: screen shot
 
 ```

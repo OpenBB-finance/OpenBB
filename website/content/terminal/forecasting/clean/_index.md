@@ -23,7 +23,7 @@ For more information and examples, use 'about clean' to access the related guide
 
 Example:
 ```
-(🦋) /forecasting/ $ show TSLA
+(🦋) /forecast/ $ show TSLA
 
 TSLA has following shape (rowxcolumn): (611, 7)
 
@@ -54,10 +54,10 @@ TSLA has following shape (rowxcolumn): (611, 7)
 
 ```
 ```
-(🦋) /forecasting/ $ rsi TSLA --period 30
+(🦋) /forecast/ $ rsi TSLA --period 30
 Successfully added 'RSI_30' to 'TSLA' dataset
 
-(🦋) /forecasting/ $ show TSLA
+(🦋) /forecast/ $ show TSLA
 TSLA has following shape (rowxcolumn): (611, 8)
 
                          Dataset TSLA | Showing 10 of 611 rows
@@ -85,12 +85,12 @@ TSLA has following shape (rowxcolumn): (611, 8)
 │ 9 │ 2020-01-15 │ 105.95 │ 107.57 │ 103.36 │ 103.70 │ 103.70    │ 86844000  │ nan    │
 └───┴────────────┴────────┴────────┴────────┴────────┴───────────┴───────────┴────────┘
 
-(🦋) /forecasting/ $ clean TSLA -f rfill
+(🦋) /forecast/ $ clean TSLA -f rfill
 Namespace(drop='', fill='rfill', help=False, limit=5, target_dataset='TSLA')
 Successfully cleaned 'TSLA' dataset
 
-(🦋) /forecasting/ $ show TSLA
-2022 Jul 11, 14:20 (🦋) /forecasting/ $ show TSLA
+(🦋) /forecast/ $ show TSLA
+2022 Jul 11, 14:20 (🦋) /forecast/ $ show TSLA
 TSLA has following shape (rowxcolumn): (611, 8)
 
                          Dataset TSLA | Showing 10 of 611 rows

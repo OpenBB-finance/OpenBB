@@ -75,7 +75,7 @@ en:
   funds: mutual funds search, overview, holdings and sector weights
   alternative: alternative datasets, such as COVID and open source metrics
   econometrics: statistical and quantitative methods for relationships between datasets
-  forecasting: timeseries forecasting with machine learning
+  forecast: timeseries forecasting with machine learning
   portfolio: perform portfolio optimization and look at portfolio performance and attribution
   dashboards: interactive dashboards using voila and jupyter notebooks
   reports: customizable research reports through jupyter notebooks
@@ -121,7 +121,7 @@ en:
   stocks/bt: strategy backtester,          simple ema, ema cross, rsi strategies
   stocks/ta: technical analysis,           ema, macd, rsi, adx, bbands, obv
   stocks/qa: quantitative analysis,        decompose, cusum, residuals analysis
-  stocks/forecast: forecasting techniques,       rnn, nbeats, transformer, block rnn
+  stocks/forecast: forecast techniques,       rnn, nbeats, transformer, block rnn
   stocks/options/unu: show unusual options activity
   stocks/options/calc: basic call/put PnL calculator
   stocks/options/screen: screens tickers based on preset
@@ -488,7 +488,7 @@ en:
   crypto/nft: non-fungible tokens,                    today drops
   crypto/dd: due-diligence for loaded coin,          coin information, social media, market stats
   crypto/ta: technical analysis for loaded coin,     ema, macd, rsi, adx, bbands, obv
-  crypto/forecast: forecasting techniques,                 rnn, nbeats, transformer, block rnn
+  crypto/forecast: forecast techniques,                 rnn, nbeats, transformer, block rnn
   crypto/qa: quantitative analysis                   decompose, cusum, residuals analysis
   crypto/disc/cgtop: top coins (with or without category)
   crypto/disc/cgtrending: trending coins
@@ -749,7 +749,7 @@ en:
   economy/valuation: valuation of sectors, industry, country
   economy/performance: performance of sectors, industry, country
   economy/spectrum: spectrum of sectors, industry, country
-  economy/forecast: forecasting techniques; rnn, nbeats, transformer, block rnn
+  economy/forecast: forecast techniques; rnn, nbeats, transformer, block rnn
   economy/qa: Open quantitative analysis menu with stored data
   economy/qa/pick: pick new series from stored economy data
   economy/qa/_series: Selected series
@@ -1012,47 +1012,47 @@ en:
   dashboards/shortdata: finra shortdata analysis
   dashboards/crypto: cryptocurrency exchange rates against USD
   reports/_reports_: Select one of the following report
-  forecasting/_disclaimer_: DISCLAIMER
-  forecasting/_comp_device: Current Compute Device (CPU or GPU)
-  forecasting/_comp_ram: Current RAM
-  forecasting/_rec_data_size: Recommended Max dataset size based on current RAM
-  forecasting/_torch_ver: Torch version
-  forecasting/_darts_ver: Darts version
-  forecasting/_data_loc: Looking for data in
-  forecasting/load: load a dataset from csv
-  forecasting/_loaded: Loaded files and data columns
-  forecasting/_exploration_: Exploration
-  forecasting/show: Show a portion of a loaded dataset
-  forecasting/plot: Plot a specific column of a loaded dataset
-  forecasting/clean: Clean a dataset by filling or dropping NaNs
-  forecasting/desc: Show descriptive statistics of a dataset
-  forecasting/corr: Plot the correlation coefficients for dataset features
-  forecasting/season: Plot the seasonality for a dataset column
-  forecasting/combine: Combine columns from different datasets
-  forecasting/delete: Delete columns from dataset
-  forecasting/rename: Rename columns from dataset
-  forecasting/export: Export a processed dataset
-  forecasting/_feateng_: Feature Engineering
-  forecasting/ema: Add Exponentially Weighted Moving Average
-  forecasting/sto: Add Stochastic Oscillator %K and %D
-  forecasting/rsi: Add Relative Strength Index
-  forecasting/roc: Add Rate of Change
-  forecasting/mom: Add Momentum
-  forecasting/delta: Add % Change
-  forecasting/atr: Add Average True Range
-  forecasting/signal: Add Price Signal (short vs. long term)
-  forecasting/_tsforecasting_: TimeSeries Forecasting
-  forecasting/arima: Arima (Non-darts)
-  forecasting/knn: KNN (Non-darts)
-  forecasting/mc: Monte Carlo Simulation (Non-darts)
-  forecasting/expo: Probabilistic Exponential Smoothing
-  forecasting/theta: Theta Method
-  forecasting/linregr: Probabilistic Linear Regression
-  forecasting/regr: Regression
-  forecasting/rnn: Probabilistic Recurrent Neural Network (RNN, LSTM, GRU)
-  forecasting/brnn: Block Recurrent Neural Network (RNN, LSTM, GRU) (feat. Past covariates)
-  forecasting/nbeats: Neural Bayesian Estimation (feat. Past covariates)
-  forecasting/tcn: Temporal Convolutional Neural Network (feat. Past covariates)
-  forecasting/trans: Transformer model (feat. Past covariates)
-  forecasting/tft: Temporal Fusion Transformer (feat. Past covariates)
-  forecasting/_comingsoon_: Coming Soon
+  forecast/_disclaimer_: DISCLAIMER
+  forecast/_comp_device: Current Compute Device (CPU or GPU)
+  forecast/_comp_ram: Current RAM
+  forecast/_rec_data_size: Recommended Max dataset size based on current RAM
+  forecast/_torch_ver: Torch version
+  forecast/_darts_ver: Darts version
+  forecast/_data_loc: Looking for data in
+  forecast/load: load a dataset from csv
+  forecast/_loaded: Loaded files and data columns
+  forecast/_exploration_: Exploration
+  forecast/show: Show a portion of a loaded dataset
+  forecast/plot: Plot a specific column of a loaded dataset
+  forecast/clean: Clean a dataset by filling or dropping NaNs
+  forecast/desc: Show descriptive statistics of a dataset
+  forecast/corr: Plot the correlation coefficients for dataset features
+  forecast/season: Plot the seasonality for a dataset column
+  forecast/combine: Combine columns from different datasets
+  forecast/delete: Delete columns from dataset
+  forecast/rename: Rename columns from dataset
+  forecast/export: Export a processed dataset
+  forecast/_feateng_: Feature Engineering
+  forecast/ema: Add Exponentially Weighted Moving Average
+  forecast/sto: Add Stochastic Oscillator %K and %D
+  forecast/rsi: Add Relative Strength Index
+  forecast/roc: Add Rate of Change
+  forecast/mom: Add Momentum
+  forecast/delta: Add % Change
+  forecast/atr: Add Average True Range
+  forecast/signal: Add Price Signal (short vs. long term)
+  forecast/_tsforecasting_: TimeSeries Forecasting
+  forecast/arima: Arima (Non-darts)
+  forecast/knn: KNN (Non-darts)
+  forecast/mc: Monte Carlo Simulation (Non-darts)
+  forecast/expo: Probabilistic Exponential Smoothing
+  forecast/theta: Theta Method
+  forecast/linregr: Probabilistic Linear Regression
+  forecast/regr: Regression
+  forecast/rnn: Probabilistic Recurrent Neural Network (RNN, LSTM, GRU)
+  forecast/brnn: Block Recurrent Neural Network (RNN, LSTM, GRU) (feat. Past covariates)
+  forecast/nbeats: Neural Bayesian Estimation (feat. Past covariates)
+  forecast/tcn: Temporal Convolutional Neural Network (feat. Past covariates)
+  forecast/trans: Transformer model (feat. Past covariates)
+  forecast/tft: Temporal Fusion Transformer (feat. Past covariates)
+  forecast/_comingsoon_: Coming Soon

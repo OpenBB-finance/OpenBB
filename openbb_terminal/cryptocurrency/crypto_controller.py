@@ -454,11 +454,11 @@ class CryptoController(CryptoBaseController):
     @log_start_end(log=logger)
     def call_forecast(self, _):
         """Process forecast command"""
-        from openbb_terminal.forecasting import forecasting_controller
+        from openbb_terminal.forecast import forecast_controller
 
         console.print(self.symbol)
         self.queue = self.load_class(
-            forecasting_controller.ForecastingController,
+            forecast_controller.ForecastController,
             self.symbol,
             self.current_df,
             self.queue,

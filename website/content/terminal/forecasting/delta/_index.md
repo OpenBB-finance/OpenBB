@@ -17,15 +17,15 @@ For more information and examples, use 'about rsi' to access the related guide.
 
 Example:
 ```
-(🦋) /forecasting/ $ load aapl_20220628_113243.csv
+(🦋) /forecast/ $ load aapl_20220628_113243.csv
 
-(🦋) /forecasting/ $ delta aapl_20220628_113243
+(🦋) /forecast/ $ delta aapl_20220628_113243
 Successfully added 'Delta_close' to 'aapl_20220628_113243' dataset
 
-(🦋) /forecasting/ $ delta aapl_20220628_113243 -c volume
+(🦋) /forecast/ $ delta aapl_20220628_113243 -c volume
 Successfully added 'Delta_volume' to 'aapl_20220628_113243' dataset
 
-(🦋) /forecasting/ $ show aapl_20220628_113243
+(🦋) /forecast/ $ show aapl_20220628_113243
 aapl_20220628_113243 has following shape (rowxcolumn): (759, 10)
 
                                Dataset aapl_20220628_113243 | Showing 10 of 759 rows

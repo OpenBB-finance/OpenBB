@@ -34,9 +34,9 @@ For more information and examples, use 'about export' to access the related guid
 
 Example:
 ```
-2022 Jul 23, 10:36 (🦋) /forecasting/ $ load GME_20220719_123734.csv -a GME
+2022 Jul 23, 10:36 (🦋) /forecast/ $ load GME_20220719_123734.csv -a GME
 
-2022 Jul 23, 10:37 (🦋) /forecasting/ $ mc GME
+2022 Jul 23, 10:37 (🦋) /forecast/ $ mc GME
 Training on 628 sequences of length 14.  Using 112 sequences  of length 14 for validation
 
        Actual price: $ 146.64

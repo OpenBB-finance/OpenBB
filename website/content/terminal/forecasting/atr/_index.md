@@ -17,12 +17,12 @@ For more information and examples, use 'about rsi' to access the related guide.
 
 Example:
 ```
-(🦋) /forecasting/ $ load aapl_20220628_113243.csv
+(🦋) /forecast/ $ load aapl_20220628_113243.csv
 
-(🦋) /forecasting/ $ atr aapl_20220628_113243
+(🦋) /forecast/ $ atr aapl_20220628_113243
 Successfully added 'Average True Range' to 'aapl_20220628_113243' dataset
 
-(🦋) /forecasting/ $ show aapl_20220628_113243
+(🦋) /forecast/ $ show aapl_20220628_113243
 aapl_20220628_113243 has following shape (rowxcolumn): (759, 9)
 
                        Dataset aapl_20220628_113243 | Showing 10 of 759 rows

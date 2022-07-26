@@ -16,13 +16,13 @@ For more information and examples, use 'about combine' to access the related gui
 
 Example:
 ```
-(🦋) /forecasting/ $ load TSLA.csv
+(🦋) /forecast/ $ load TSLA.csv
 
-(🦋) /forecasting/ $ load MSFT.csv
+(🦋) /forecast/ $ load MSFT.csv
 
-(🦋) /forecasting/ $ combine --dataset TSLA --columns MSFT.volume
+(🦋) /forecast/ $ combine --dataset TSLA --columns MSFT.volume
 
-(🦋) /forecasting/ $ show TSLA
+(🦋) /forecast/ $ show TSLA
 TSLA has following shape (rowxcolumn): (611, 8)
 
                             Dataset TSLA | Showing 10 of 611 rows

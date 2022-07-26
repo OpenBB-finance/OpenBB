@@ -18,9 +18,9 @@ For more information and examples, use 'about ema' to access the related guide.
 
 Example:
 ```
-(🦋) /forecasting/ $ load TSLA.csv
+(🦋) /forecast/ $ load TSLA.csv
 
-(🦋) /forecasting/ $ show TSLA
+(🦋) /forecast/ $ show TSLA
 TSLA has following shape (rowxcolumn): (611, 7)
 
                     Dataset TSLA | Showing 10 of 611 rows
@@ -48,10 +48,10 @@ TSLA has following shape (rowxcolumn): (611, 7)
 │ 9 │ 2020-01-15 │ 105.95 │ 107.57 │ 103.36 │ 103.70 │ 103.70    │ 86844000  │
 └───┴────────────┴────────┴────────┴────────┴────────┴───────────┴───────────┘
 
-(🦋) /forecasting/ $ ema TSLA
+(🦋) /forecast/ $ ema TSLA
 Successfully added 'EMA_10' to 'TSLA' dataset
 
-(🦋) /forecasting/ $ show TSLA
+(🦋) /forecast/ $ show TSLA
 TSLA has following shape (rowxcolumn): (611, 8)
 
                          Dataset TSLA | Showing 10 of 611 rows
