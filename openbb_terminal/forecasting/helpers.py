@@ -759,18 +759,24 @@ def check_n_days(n_days: int, forecast_horizon: int) -> bool:
     return True
 
 
-def check_target_covariates(forecast_column: str, covariates: Optional[str]) -> bool:
+def clean_covariates(parser, dataset: pd.DataFrame) -> Optional[str]:
+    forecast_column: str = parser.target_column
+    if parser.all_past_covariates:
+        data = dataset
+        covs = [x for x in data.columns if x not in ["date", parser.target_column]]
+        return ",".join(covs)
+    covariates = parser.past_covariates
     if not covariates:
-        return True
+        return covariates
     covs_list = covariates.split(",")
     for covariate in covs_list:
         if covariate == forecast_column:
+            covs_list.remove(covariate)
             console.print(
                 f"[red]Forecast target '{forecast_column}' cannot be within the past"
-                " covariates.[/red]"
+                " covariates. Removed the covariates from analysis[/red]\n"
             )
-            console.print(
-                f"[red]Please remove '{forecast_column}' from covariates to continue.[/red]"
-            )
-            return False
-    return True
+    if len(covariates) == 0:
+        return None
+    covariates = ",".join(covs_list)
+    return covariates

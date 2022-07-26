@@ -378,6 +378,7 @@ class ForecastingController(BaseController):
         batch_size: Optional[int] = None,
         learning_rate: bool = False,
         past_covariates: bool = False,
+        all_past_covariates: bool = False,
         lags: bool = False,
         hidden_size: int = None,
         n_jumps: bool = False,
@@ -403,6 +404,14 @@ class ForecastingController(BaseController):
                 default=None,
                 type=str,
                 help="Past covariates(columns/features) in same dataset. Comma separated.",
+            )
+        if all_past_covariates:
+            parser.add_argument(
+                "--all-past-covariates",
+                action="store_true",
+                dest="all_past_covariates",
+                default=False,
+                help="Adds all rows as past covariates except for date and the target column.",
             )
         if target_dataset:
             parser.add_argument(
@@ -1887,6 +1896,7 @@ class ForecastingController(BaseController):
             n_epochs=True,
             batch_size=800,
             past_covariates=True,
+            all_past_covariates=True,
             residuals=True,
             forecast_only=True,
             start=True,
@@ -1900,17 +1910,16 @@ class ForecastingController(BaseController):
             if not helpers.check_n_days(ns_parser.n_days, ns_parser.forecast_horizon):
                 return
 
-            if not helpers.check_target_covariates(
-                ns_parser.target_column, ns_parser.past_covariates
-            ):
-                return
+            covariates = helpers.clean_covariates(
+                ns_parser, self.datasets[ns_parser.target_dataset]
+            )
 
             nbeats_view.display_nbeats_forecast(
                 data=self.datasets[ns_parser.target_dataset],
                 ticker_name=ns_parser.target_dataset,
                 n_predict=ns_parser.n_days,
                 target_col=ns_parser.target_column,
-                past_covariates=ns_parser.past_covariates,
+                past_covariates=covariates,
                 train_split=ns_parser.train_split,
                 forecast_horizon=ns_parser.forecast_horizon,
                 input_chunk_length=ns_parser.input_chunk_length,
@@ -1982,6 +1991,7 @@ class ForecastingController(BaseController):
             target_column=True,
             train_split=True,
             past_covariates=True,
+            all_past_covariates=True,
             forecast_horizon=True,
             save_checkpoints=True,
             force_reset=True,
@@ -2006,17 +2016,16 @@ class ForecastingController(BaseController):
             if not helpers.check_n_days(ns_parser.n_days, ns_parser.forecast_horizon):
                 return
 
-            if not helpers.check_target_covariates(
-                ns_parser.target_column, ns_parser.past_covariates
-            ):
-                return
+            covariates = helpers.clean_covariates(
+                ns_parser, self.datasets[ns_parser.target_dataset]
+            )
 
             tcn_view.display_tcn_forecast(
                 data=self.datasets[ns_parser.target_dataset],
                 ticker_name=ns_parser.target_dataset,
                 n_predict=ns_parser.n_days,
                 target_col=ns_parser.target_column,
-                past_covariates=ns_parser.past_covariates,
+                past_covariates=covariates,
                 train_split=ns_parser.train_split,
                 forecast_horizon=ns_parser.forecast_horizon,
                 input_chunk_length=ns_parser.input_chunk_length,
@@ -2062,6 +2071,7 @@ class ForecastingController(BaseController):
             forecast_horizon=True,
             train_split=True,
             past_covariates=True,
+            all_past_covariates=True,
             n_days=True,
             target_dataset=True,
             target_column=True,
@@ -2080,17 +2090,16 @@ class ForecastingController(BaseController):
             if not helpers.check_n_days(ns_parser.n_days, ns_parser.forecast_horizon):
                 return
 
-            if not helpers.check_target_covariates(
-                ns_parser.target_column, ns_parser.past_covariates
-            ):
-                return
+            covariates = helpers.clean_covariates(
+                ns_parser, self.datasets[ns_parser.target_dataset]
+            )
 
             regr_view.display_regression(
                 data=self.datasets[ns_parser.target_dataset],
                 ticker_name=ns_parser.target_dataset,
                 n_predict=ns_parser.n_days,
                 target_col=ns_parser.target_column,
-                past_covariates=ns_parser.past_covariates,
+                past_covariates=covariates,
                 train_split=ns_parser.train_split,
                 forecast_horizon=ns_parser.forecast_horizon,
                 output_chunk_length=ns_parser.output_chunk_length,
@@ -2126,6 +2135,7 @@ class ForecastingController(BaseController):
             forecast_horizon=True,
             train_split=True,
             past_covariates=True,
+            all_past_covariates=True,
             target_column=True,
             n_days=True,
             target_dataset=True,
@@ -2142,17 +2152,16 @@ class ForecastingController(BaseController):
             if not helpers.check_n_days(ns_parser.n_days, ns_parser.forecast_horizon):
                 return
 
-            if not helpers.check_target_covariates(
-                ns_parser.target_column, ns_parser.past_covariates
-            ):
-                return
+            covariates = helpers.clean_covariates(
+                ns_parser, self.datasets[ns_parser.target_dataset]
+            )
 
             linregr_view.display_linear_regression(
                 data=self.datasets[ns_parser.target_dataset],
                 ticker_name=ns_parser.target_dataset,
                 n_predict=ns_parser.n_days,
                 target_col=ns_parser.target_column,
-                past_covariates=ns_parser.past_covariates,
+                past_covariates=covariates,
                 train_split=ns_parser.train_split,
                 forecast_horizon=ns_parser.forecast_horizon,
                 output_chunk_length=ns_parser.output_chunk_length,
@@ -2205,6 +2214,7 @@ class ForecastingController(BaseController):
             forecast_horizon=True,
             train_split=True,
             past_covariates=True,
+            all_past_covariates=True,
             target_dataset=True,
             n_days=True,
             target_column=True,
@@ -2222,17 +2232,16 @@ class ForecastingController(BaseController):
             if not helpers.check_n_days(ns_parser.n_days, ns_parser.forecast_horizon):
                 return
 
-            if not helpers.check_target_covariates(
-                ns_parser.target_column, ns_parser.past_covariates
-            ):
-                return
+            covariates = helpers.clean_covariates(
+                ns_parser, self.datasets[ns_parser.target_dataset]
+            )
 
             brnn_view.display_brnn_forecast(
                 data=self.datasets[ns_parser.target_dataset],
                 ticker_name=ns_parser.target_dataset,
                 n_predict=ns_parser.n_days,
                 target_col=ns_parser.target_column,
-                past_covariates=ns_parser.past_covariates,
+                past_covariates=covariates,
                 train_split=ns_parser.train_split,
                 forecast_horizon=ns_parser.forecast_horizon,
                 input_chunk_length=ns_parser.input_chunk_length,
@@ -2324,6 +2333,7 @@ class ForecastingController(BaseController):
             target_column=True,
             target_dataset=True,
             past_covariates=True,
+            all_past_covariates=True,
             train_split=True,
             forecast_horizon=True,
             input_chunk_length=True,
@@ -2346,17 +2356,16 @@ class ForecastingController(BaseController):
             if not helpers.check_n_days(ns_parser.n_days, ns_parser.forecast_horizon):
                 return
 
-            if not helpers.check_target_covariates(
-                ns_parser.target_column, ns_parser.past_covariates
-            ):
-                return
+            covariates = helpers.clean_covariates(
+                ns_parser, self.datasets[ns_parser.target_dataset]
+            )
 
             trans_view.display_trans_forecast(
                 data=self.datasets[ns_parser.target_dataset],
                 ticker_name=ns_parser.target_dataset,
                 n_predict=ns_parser.n_days,
                 target_col=ns_parser.target_column,
-                past_covariates=ns_parser.past_covariates,
+                past_covariates=covariates,
                 train_split=ns_parser.train_split,
                 forecast_horizon=ns_parser.forecast_horizon,
                 input_chunk_length=ns_parser.input_chunk_length,
@@ -2447,6 +2456,7 @@ class ForecastingController(BaseController):
             input_chunk_length=True,
             output_chunk_length=True,
             past_covariates=True,
+            all_past_covariates=True,
             target_column=True,
             residuals=True,
             forecast_only=True,
@@ -2461,17 +2471,16 @@ class ForecastingController(BaseController):
             if not helpers.check_n_days(ns_parser.n_days, ns_parser.forecast_horizon):
                 return
 
-            if not helpers.check_target_covariates(
-                ns_parser.target_column, ns_parser.past_covariates
-            ):
-                return
+            covariates = helpers.clean_covariates(
+                ns_parser, self.datasets[ns_parser.target_dataset]
+            )
 
             tft_view.display_tft_forecast(
                 data=self.datasets[ns_parser.target_dataset],
                 ticker_name=ns_parser.target_dataset,
                 n_predict=ns_parser.n_days,
                 target_col=ns_parser.target_column,
-                past_covariates=ns_parser.past_covariates,
+                past_covariates=covariates,
                 train_split=ns_parser.train_split,
                 forecast_horizon=ns_parser.forecast_horizon,
                 input_chunk_length=ns_parser.input_chunk_length,
