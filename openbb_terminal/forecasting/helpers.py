@@ -538,6 +538,10 @@ def get_series(
         fill_missing_dates=True,
     )
     try:
+
+        if target_col and "." in target_col:
+            target_col = target_col.split(".")[1]
+            filler_kwargs["value_cols"] = target_col
         ticker_series = TimeSeries.from_dataframe(**filler_kwargs)
     except ValueError:
         # remove business days to allow base lib to assume freq
@@ -750,3 +754,12 @@ def clean_data(
             "[red]No 'date' column specified, ignoring start end end date[/red]\n"
         )
     return data
+
+
+def check_n_days(n_days: int, forecast_horizon: int) -> bool:
+    if n_days != forecast_horizon:
+        text = " is not equivalent to fcast-horizon="
+        console.print(f"[red]n_days={n_days}{text}{forecast_horizon}[/red]")
+        console.print("[red]Please set both to the same value to continue.[/red]")
+        return False
+    return True

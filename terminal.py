@@ -12,6 +12,7 @@ from typing import List
 from pathlib import Path
 import dotenv
 
+import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 from prompt_toolkit.styles import Style
 from prompt_toolkit.formatted_text import HTML
@@ -364,7 +365,9 @@ class TerminalController(BaseController):
             ForecastingController,
         )
 
-        self.queue = self.load_class(ForecastingController, self.queue)
+        self.queue = self.load_class(
+            ForecastingController, "", pd.DataFrame(), self.queue
+        )
 
     def call_portfolio(self, _):
         """Process portfolio command"""

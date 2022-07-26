@@ -173,14 +173,13 @@ class BaseController(metaclass=ABCMeta):
         # goes into "TA", the "TSLA" ticker will appear. If that condition doesn't exist
         # the previous class will be loaded and even if the user changes the ticker on
         # the stocks context it will not impact the one of TA menu - unless changes are done.
-        # An exception is made for forecasting becuase it is built to handle multiple loaded
+        # An exception is made for forecasting because it is built to handle multiple loaded
         # tickers.
         if class_ins.PATH in controllers and class_ins.PATH == "/forecasting/":
             old_class = controllers[class_ins.PATH]
             old_class.queue = self.queue
-            if len(args) == 3:
-                old_class.load(*args[:-1], **kwargs)
-                return old_class.menu()
+            old_class.load(*args[:-1], **kwargs)
+            return old_class.menu()
         if class_ins.PATH in controllers and arguments == 1 and obbff.REMEMBER_CONTEXTS:
             old_class = controllers[class_ins.PATH]
             old_class.queue = self.queue
@@ -594,6 +593,7 @@ class BaseController(metaclass=ABCMeta):
             if self.queue and len(self.queue) > 0:
                 # If the command is quitting the menu we want to return in here
                 if self.queue[0] in ("q", "..", "quit"):
+                    self.save_class()
                     # Go back to the root in order to go to the right directory because
                     # there was a jump between indirect menus
                     if custom_path_menu_above:
@@ -663,6 +663,7 @@ class BaseController(metaclass=ABCMeta):
 
             try:
                 # Process the input command
+                print(an_input)
                 self.queue = self.switch(an_input)
 
             except SystemExit:
