@@ -4,6 +4,10 @@ more:
     ref: "https://www.openbb.co/products/terminal"
     external: true
     icon: "gdoc_download"
+  - name: "Fill in the Survey"
+    ref: "https://www.openbb.co/survey"
+    external: true
+    icon: "gdoc_bookmark"
   - name: "View Source"
     ref: "https://github.com/OpenBB-finance/OpenBBTerminal"
     external: true
