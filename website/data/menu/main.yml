@@ -522,6 +522,8 @@ main:
                 ref: "/terminal/common/ta/obv"
               - name: fib
                 ref: "/terminal/common/ta/fib"
+              - name: clenow
+                ref: "/terminal/common/ta/clenow"
           - name: behavioural analysis
             ref: "/terminal/common/ba"
             sub:
@@ -913,6 +915,8 @@ main:
                 ref: "/terminal/common/ta/obv"
               - name: fib
                 ref: "/terminal/common/ta/fib"
+              - name: clenow
+                ref: "/terminal/common/ta/clenow"
           - name: defi
             ref: "/terminal/crypto/defi"
             sub:
@@ -1153,6 +1157,8 @@ main:
                 ref: "/terminal/common/ta/obv"
               - name: fib
                 ref: "/terminal/common/ta/fib"
+              - name: clenow
+                ref: "/terminal/common/ta/clenow"
           - name: prediction techniques
             ref: "/terminal/common/pred"
             sub:

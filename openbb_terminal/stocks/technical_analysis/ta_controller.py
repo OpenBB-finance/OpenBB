@@ -1356,9 +1356,25 @@ class TechnicalAnalysisController(StockBaseController):
             prog="clenow",
             description="Calculates the Clenow Volatility Adjusted Momentum.",
         )
+        parser.add_argument(
+            "-p",
+            "--period",
+            dest="period",
+            help="Lookback period for regression",
+            default=90,
+            type=check_positive,
+        )
+
+        if self.interval != "1440min":
+            console.print(
+                "[red]This regression should be performed with daily data and at least 90 days.[/red]"
+            )
+            return
 
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_FIGURES_ALLOWED
         )
         if ns_parser:
-            momentum_view.display_clenow_momentum(self.stock["Adj Close"])
+            momentum_view.display_clenow_momentum(
+                self.stock["Adj Close"], ns_parser.period, ns_parser.export
+            )
