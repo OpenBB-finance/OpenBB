@@ -1,3 +1,4 @@
+aiodns==3.0.0; python_version >= "3.5.2"
 aiohttp==3.8.1; python_version >= "3.6"
 aiosignal==1.2.0; python_version >= "3.6"
 alpha-vantage==2.3.1
@@ -23,6 +24,7 @@ black==22.6.0; python_full_version >= "3.6.2"
 bleach==5.0.1; python_version >= "3.7"
 bs4==0.0.1
 bt==0.2.9; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.6.0")
+ccxt==1.86.3
 certifi==2022.6.15; python_version >= "3.8" and python_version < "4" and (python_version >= "3.7" and python_full_version < "3.0.0" and python_version < "4" or python_full_version >= "3.6.0" and python_version < "4" and python_version >= "3.7") and python_full_version >= "3.7.1" and python_full_version < "4.0.0"
 cffi==1.15.1; python_version >= "3.7"
 charset-normalizer==2.1.0; python_version >= "3.8" and python_version < "4" and python_full_version >= "3.7.1" and python_full_version < "4.0.0"
@@ -152,6 +154,7 @@ ptyprocess==0.7.0; os_name != "nt" and python_version >= "3.8" and sys_platform 
 pure-eval==0.2.2; python_full_version >= "3.6.2" and python_version >= "3.8"
 py==1.11.0; implementation_name == "pypy" and python_version >= "3.7" and python_full_version >= "3.7.0"
 pyally==1.1.2
+pycares==4.1.2; python_version >= "3.5.2"
 pycoingecko==2.2.0
 pycparser==2.21; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.4.0"
 pyerfa==2.0.0.1; python_version >= "3.8"

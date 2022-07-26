@@ -9,6 +9,7 @@ from matplotlib import ticker
 from openbb_terminal.config_terminal import theme
 from openbb_terminal import config_plot as cfgPlot
 from openbb_terminal.cryptocurrency.due_diligence.coinglass_model import (
+    get_funding_rate,
     get_open_interest_per_exchange,
 )
 from openbb_terminal.decorators import check_api_key
@@ -22,6 +23,33 @@ from openbb_terminal.helper_funcs import (
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
+
+
+@log_start_end(log=logger)
+@check_api_key(["API_COINGLASS_KEY"])
+def display_funding_rate(symbol: str, export: str = "") -> None:
+    """Displays funding rate by exchange for a certain cryptocurrency
+    [Source: https://coinglass.github.io/API-Reference/]
+
+    Parameters
+    ----------
+    symbol : str
+        Crypto symbol to search funding rate (e.g., BTC)
+    export : str
+        Export dataframe data to csv,json,xlsx file"""
+    df = get_funding_rate(symbol)
+    if df.empty:
+        return
+
+    plot_data(df, symbol, f"Exchange {symbol} Funding Rate", "Funding Rate [%]")
+    console.print("")
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "fundrate",
+        df,
+    )
 
 
 @log_start_end(log=logger)
@@ -42,7 +70,12 @@ def display_open_interest(symbol: str, interval: int = 0, export: str = "") -> N
     if df.empty:
         return
 
-    plot_data(df, symbol)
+    plot_data(
+        df,
+        symbol,
+        f"Exchange {symbol} Futures Open Interest",
+        "Open futures value [$B]",
+    )
     console.print("")
 
     export_data(
@@ -57,6 +90,8 @@ def display_open_interest(symbol: str, interval: int = 0, export: str = "") -> N
 def plot_data(
     df: pd.DataFrame,
     symbol: str,
+    title: str,
+    ylabel: str,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
 
@@ -84,8 +119,8 @@ def plot_data(
         ticker.FuncFormatter(lambda x, _: lambda_long_number_format(x))
     )
     ax1.legend(df_without_price.columns, fontsize="x-small", ncol=2)
-    ax1.set_title(f"Exchange {symbol} Futures Open Interest")
-    ax1.set_ylabel("Open futures value[$B]")
+    ax1.set_title(title)
+    ax1.set_ylabel(ylabel)
 
     ax2.plot(df_price.index, df_price)
     ax2.legend([f"{symbol} price"])

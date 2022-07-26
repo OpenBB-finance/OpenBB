@@ -252,7 +252,7 @@ en:
   stocks/ins/stats: insider stats of the company
   stocks/ins/act: insider activity over time
   stocks/ins/lins: last insider trading of the company
-  stocks/ins/lcb: latest cluster boys
+  stocks/ins/lcb: latest cluster buys
   stocks/ins/lpsb: latest penny stock buys
   stocks/ins/lit: latest insider trading (all filings)
   stocks/ins/lip: latest insider purchases
@@ -613,16 +613,16 @@ en:
   crypto/dd/change: 30d change of supply held on exchange wallets
   crypto/dd/eb: total balance held on exchanges (in percentage and units)
   crypto/dd/oi: open interest per exchange
+  crypto/dd/fundrate: funding rate per exchange
   crypto/dd/basic: basic information about loaded coin
   crypto/dd/ps: price and supply related metrics for loaded coin
   crypto/dd/mkt: all markets for loaded coin
   crypto/dd/ex: all exchanges where loaded coin is listed
   crypto/dd/twitter: tweets for loaded coin
   crypto/dd/events: events related to loaded coin
-  crypto/dd/binbook: order book
   crypto/dd/balance: coin balance
-  crypto/dd/cbbook: order book
   crypto/dd/trades: last trades
+  crypto/dd/ob: order book
   crypto/dd/stats: coin stats
   crypto/dd/mcapdom: market cap dominance
   crypto/dd/mt: messari timeseries e.g. twitter followers, circ supply, etc
