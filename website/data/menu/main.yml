@@ -754,6 +754,8 @@ main:
                 ref: "/terminal/crypto/dd/fundrate"
               - name: oi
                 ref: "/terminal/crypto/dd/oi"
+              - name: ob
+                ref: "/terminal/crypto/dd/ob"
               - name: info
                 ref: "/terminal/crypto/dd/info"
               - name: market
@@ -784,8 +786,6 @@ main:
                 ref: "/terminal/crypto/dd/twitter"
               - name: events
                 ref: "/terminal/crypto/dd/events"
-              - name: cbbook
-                ref: "/terminal/crypto/dd/cbbook"
               - name: balance
                 ref: "/terminal/crypto/dd/balance"
               - name: trades
