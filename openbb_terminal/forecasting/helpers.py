@@ -763,3 +763,15 @@ def check_n_days(n_days: int, forecast_horizon: int) -> bool:
         console.print("[red]Please set both to the same value to continue.[/red]")
         return False
     return True
+
+
+def check_target_covariates(forecast_column: str, covariates: list) -> bool:
+    if forecast_column in covariates:
+        console.print(
+            f"[red]Forecast target '{forecast_column}' cannot be within the past covariates.[/red]"
+        )
+        console.print(
+            f"[red]Please remove '{forecast_column}' from covariates to continue.[/red]"
+        )
+        return False
+    return True

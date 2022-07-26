@@ -1869,6 +1869,11 @@ class ForecastingController(BaseController):
             if not helpers.check_n_days(ns_parser.n_days, ns_parser.forecast_horizon):
                 return
 
+            if not helpers.check_target_covariates(
+                ns_parser.target_column, ns_parser.past_covariates
+            ):
+                return
+
             nbeats_view.display_nbeats_forecast(
                 data=self.datasets[ns_parser.target_dataset],
                 ticker_name=ns_parser.target_dataset,
@@ -1970,6 +1975,11 @@ class ForecastingController(BaseController):
             if not helpers.check_n_days(ns_parser.n_days, ns_parser.forecast_horizon):
                 return
 
+            if not helpers.check_target_covariates(
+                ns_parser.target_column, ns_parser.past_covariates
+            ):
+                return
+
             tcn_view.display_tcn_forecast(
                 data=self.datasets[ns_parser.target_dataset],
                 ticker_name=ns_parser.target_dataset,
@@ -2039,6 +2049,11 @@ class ForecastingController(BaseController):
             if not helpers.check_n_days(ns_parser.n_days, ns_parser.forecast_horizon):
                 return
 
+            if not helpers.check_target_covariates(
+                ns_parser.target_column, ns_parser.past_covariates
+            ):
+                return
+
             regr_view.display_regression(
                 data=self.datasets[ns_parser.target_dataset],
                 ticker_name=ns_parser.target_dataset,
@@ -2094,6 +2109,11 @@ class ForecastingController(BaseController):
                 return
 
             if not helpers.check_n_days(ns_parser.n_days, ns_parser.forecast_horizon):
+                return
+
+            if not helpers.check_target_covariates(
+                ns_parser.target_column, ns_parser.past_covariates
+            ):
                 return
 
             linregr_view.display_linear_regression(
@@ -2169,6 +2189,11 @@ class ForecastingController(BaseController):
                 return
 
             if not helpers.check_n_days(ns_parser.n_days, ns_parser.forecast_horizon):
+                return
+
+            if not helpers.check_target_covariates(
+                ns_parser.target_column, ns_parser.past_covariates
+            ):
                 return
 
             brnn_view.display_brnn_forecast(
@@ -2290,6 +2315,11 @@ class ForecastingController(BaseController):
             if not helpers.check_n_days(ns_parser.n_days, ns_parser.forecast_horizon):
                 return
 
+            if not helpers.check_target_covariates(
+                ns_parser.target_column, ns_parser.past_covariates
+            ):
+                return
+
             trans_view.display_trans_forecast(
                 data=self.datasets[ns_parser.target_dataset],
                 ticker_name=ns_parser.target_dataset,
@@ -2398,6 +2428,11 @@ class ForecastingController(BaseController):
                 return
 
             if not helpers.check_n_days(ns_parser.n_days, ns_parser.forecast_horizon):
+                return
+
+            if not helpers.check_target_covariates(
+                ns_parser.target_column, ns_parser.past_covariates
+            ):
                 return
 
             tft_view.display_tft_forecast(
