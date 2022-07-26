@@ -29514,6 +29514,37 @@
 
             
             <span class="flex">
+                <svg class="icon gdoc_bookmark"><use xlink:href="#gdoc_bookmark"></use></svg>
+                <a href="https://www.openbb.co/survey"
+                    class="gdoc-nav__entry ">
+                    Fill in the Survey
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
                 <svg class="icon gdoc_github"><use xlink:href="#gdoc_github"></use></svg>
                 <a href="https://github.com/OpenBB-finance/OpenBBTerminal"
                     class="gdoc-nav__entry ">
@@ -29702,6 +29733,7 @@ please refer to the <a href="api">OpenBB Python API</a> or the
         </li>
         <li><a href="#accessing-other-sources-of-data-via-api-keys">Accessing other sources of data via API keys</a></li>
         <li><a href="#available-menus-within-the-openbb-terminal">Available menus within the OpenBB Terminal</a></li>
+        <li><a href="#customizing-the-terminal">Customizing the terminal</a></li>
         <li><a href="#obtaining-support-andor-giving-feedback">Obtaining support and/or giving feedback</a></li>
       </ul></nav><hr></div>
 
@@ -30208,10 +30240,69 @@ optimization techniques.</li>
 jupyter notebooks.</li>
 <li>Introduction to Reports <b>(Work in Progress)</b>: create customizable research reports through jupyter notebooks.</li>
 </ul>
-<p>To adjust the lay-out and settings of the OpenBB Terminal you can access the <code>settings</code> menu. This menu allows you to
-tweak how the terminal behaves. For example, you are able to define the coloring, interactive graphs and whether to use
-pretty tables.</p>
 <div class="gdoc-page__anchorwrap">
+    <h2 id="customizing-the-terminal">
+        Customizing the terminal
+        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/#customizing-the-terminal" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Customizing the terminal" href="#customizing-the-terminal">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h2>
+</div><p>To adjust the lay-out and settings of the OpenBB Terminal you can access the <code>settings</code> menu. This menu allows you to
+tweak how the terminal behaves. This includes the following:</p>
+<ul>
+<li><code>dt</code> adds or removes the datetime from the flair (which is next to the emoji).</li>
+<li><code>flair</code> allows you to change the emoji that is used.</li>
+<li><code>lang</code> gives the ability to change the terminal language. At this moment, the terminal is only available in English.</li>
+<li><code>export</code> defines the folder you wish to export data to you acquire from the terminal.</li>
+<li><code>tz</code> allows you to change the timezone if this is incorrectly displayed for you.</li>
+<li><code>autoscaling</code> automatically scales plots for you if enabled (when green).</li>
+<li><code>pheight</code> sets the percentage height of the plot (graphs) displayed (if autoscaling is enabled).</li>
+<li><code>pwidth</code> sets the percentage width of the plot (graphs) displayed (if autoscaling is enabled).</li>
+<li><code>height</code> sets the height of the plot (graphs) displayed (if autoscaling is disabled).</li>
+<li><code>width</code> sets the width of the plot (graphs) displayed (if autoscaling is disabled).</li>
+<li><code>dpi</code> refers to the resolution that is used for the plot (graphs)</li>
+<li><code>backend</code> allows you to change the backend that is used for the graphs</li>
+<li><code>monitor</code> choose which monitors to scale the plot (graphs) to if applicable</li>
+<li><code>source</code> allows you to select a different source file in which the default data sources are written down</li>
+</ul>
+<p>Next to that, to enable or disable certain functionalities of the terminal you can use the <code>featflags</code> menu which
+includes the following:</p>
+<ul>
+<li><code>logcollection</code> whether you wish to enable logging to help the OpenBB team improve functionalities (default is yes).</li>
+<li><code>retryload</code> whenever you misspell commands, try to use the <code>load</code> command with it first (default is no).</li>
+<li><code>tab</code> whether to use tabulate to print DataFrames, to prettify these DataFrames (default is yes).</li>
+<li><code>cls</code> whether to clear the command window after each command (default is no).</li>
+<li><code>color</code> whether to use colors within the terminal (default is yes).</li>
+<li><code>promptkit</code> whether you wish to enable autocomplete and history (default is yes).</li>
+<li><code>predict</code> whether you would like to enable prediction features (default is yes).</li>
+<li><code>thoughts</code> whether to receive a thought of the day (default is no).</li>
+<li><code>reporthtml</code> whether to open reports as HTML instead of Jupyter Notebooks (default is yes).</li>
+<li><code>exithelp</code> whether to automatically print the help message when you use <code>q</code> (default is yes).</li>
+<li><code>rcontext</code> whether to remember loaded tickers and similar while switching menus (default is yes).</li>
+<li><code>rich</code> whether to apply a colorful rich terminal (default is yes).</li>
+<li><code>richpanel</code> whether to apply a colorful rich terminal panel (default is yes).</li>
+<li><code>ion</code> whether to enable interactive mode of MATPLOTLIB (default is yes).</li>
+<li><code>watermark</code> whether to include the watermark of OpenBB Terminal in figures (default is yes).</li>
+<li><code>cmdloc</code> whether the location of the command is displayed in figures (default is yes).</li>
+<li><code>tbhint</code> whether usage hints are displayed in the bottom toolbar (default is yes).</li>
+</ul>
+<p>Lastly, you can also change the default sources of each command via the <code>sources</code> menu. For example, if you would
+like to change the default data provider from the <code>load</code> command from the <code>stocks</code> menu you can first run the command
+<code>get</code> following by <code>stocks_load</code>. This returns the following:</p>
+<pre><code>2022 Jul 25, 16:52 (🦋) /sources/ $ get stocks_load
+
+Default   : yf
+Available : yf, iex, av, polygon
+</code></pre><p>Then, with <code>set</code> you can change the default data provider. For example, we can change the data provider to iex with
+the following:</p>
+<pre><code>2022 Jul 25, 16:55 (🦋) /sources/ $ set stocks_load iex
+The data source was specified successfully.
+
+2022 Jul 25, 16:55 (🦋) /sources/ $ get stocks_load
+
+Default   : iex
+Available : iex, yf, av, polygon
+</code></pre><div class="gdoc-page__anchorwrap">
     <h2 id="obtaining-support-andor-giving-feedback">
         Obtaining support and/or giving feedback
         <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/#obtaining-support-andor-giving-feedback" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Obtaining support and/or giving feedback" href="#obtaining-support-andor-giving-feedback">
