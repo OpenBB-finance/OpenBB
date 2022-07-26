@@ -760,7 +760,7 @@ def check_n_days(n_days: int, forecast_horizon: int) -> bool:
 
 
 def check_target_covariates(forecast_column: str, covariates: list) -> bool:
-    if forecast_column in covariates:
+    if covariates and forecast_column in covariates:
         console.print(
             f"[red]Forecast target '{forecast_column}' cannot be within the past covariates.[/red]"
         )

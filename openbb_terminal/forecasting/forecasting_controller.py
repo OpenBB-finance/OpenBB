@@ -1112,7 +1112,7 @@ class ForecastingController(BaseController):
                         data = data.merge(selected, on="date", how="left")
                     else:
                         console.print(
-                            "[red]Not all columns have a date column so we are combining"
+                            "[red]Not all dataframes have a date column so we are combining"
                             " on index, this may results in data mismatching.[/red]\n"
                         )
                         selected = self.datasets[dataset][[column]]
