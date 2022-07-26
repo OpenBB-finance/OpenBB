@@ -759,7 +759,9 @@ def check_n_days(n_days: int, forecast_horizon: int) -> bool:
     return True
 
 
-def check_target_covariates(forecast_column: str, covariates: str) -> bool:
+def check_target_covariates(forecast_column: str, covariates: Optional[str]) -> bool:
+    if not covariates:
+        return True
     covs_list = covariates.split(",")
     for covariate in covs_list:
         if covariate == forecast_column:
