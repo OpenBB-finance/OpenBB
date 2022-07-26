@@ -399,8 +399,6 @@ def test_models(mocker, opt, func):
     mocker.patch(base + func)
     cont = fc.ForecastController()
     cont.datasets = {"data": df}
-    print(df.columns)
-
     getattr(cont, f"call_{opt}")(["data"])
 
 

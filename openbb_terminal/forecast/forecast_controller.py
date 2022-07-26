@@ -2,7 +2,7 @@
 __docformat__ = "numpy"
 
 # pylint: disable=too-many-lines, too-many-branches, inconsistent-return-statements
-# pylint: disable=too-many-arguments, R0904
+# pylint: disable=too-many-arguments, R0904,R0902
 
 import argparse
 import logging
@@ -58,8 +58,6 @@ from openbb_terminal.forecast import (
 
 logger = logging.getLogger(__name__)
 empty_df = pd.DataFrame()
-
-# pylint: disable=R0902
 
 
 def check_greater_than_one(value) -> int:
@@ -1078,7 +1076,10 @@ class ForecastController(BaseController):
             "--columns",
             help="The columns we want to add <dataset.column>,<datasetb.column2>",
             dest="columns",
-            type=check_list_values(self.choices["delete"]),
+            type=check_list_values(
+                list(self.choices["delete"].keys())
+                + list(self.choices["combine"].keys())
+            ),
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "--dataset")
@@ -1095,41 +1096,48 @@ class ForecastController(BaseController):
             data = self.datasets[ns_parser.dataset]
 
             for option in ns_parser.columns:
-                dataset, column = option.split(".")
+                if "." in option:
+                    dataset, col = option.split(".")
+                    columns = [col]
+                else:
+                    dataset = option
+                    columns = [x for x in self.datasets[dataset].columns if x != "date"]
 
                 if dataset not in self.datasets:
                     console.print(
                         f"Not able to find the dataset {dataset}. Please choose one of "
                         f"the following: {', '.join(self.datasets)}"
                     )
-                elif column not in self.datasets[dataset]:
-                    console.print(
-                        f"Not able to find the column {column}. Please choose one of "
-                        f"the following: {', '.join(self.datasets[dataset].columns)}"
-                    )
-                else:
-                    if (
-                        "date" in data.columns
-                        and "date" in self.datasets[dataset].columns
-                    ):
-                        selected = self.datasets[dataset][[column, "date"]]
-                        new_cols = [
-                            f"{dataset}_{x}" if x != "date" else "date"
-                            for x in selected
-                        ]
-                        selected.columns = new_cols
-                        data = data.merge(selected, on="date", how="left")
-                    else:
+                    continue
+                for column in columns:
+                    if column not in self.datasets[dataset]:
                         console.print(
-                            "[red]Not all dataframes have a date column so we are combining"
-                            " on index, this may results in data mismatching.[/red]\n"
+                            f"Not able to find the column {column}. Please choose one of "
+                            f"the following: {', '.join(self.datasets[dataset].columns)}"
                         )
-                        selected = self.datasets[dataset][[column]]
-                        new_cols = [f"{dataset}_{x}" for x in selected]
-                        selected.columns = new_cols
-                        data = data.merge(
-                            selected, left_index=True, right_index=True, how="left"
-                        )
+                    else:
+                        if (
+                            "date" in data.columns
+                            and "date" in self.datasets[dataset].columns
+                        ):
+                            selected = self.datasets[dataset][[column, "date"]]
+                            new_cols = [
+                                f"{dataset}_{x}" if x != "date" else "date"
+                                for x in selected
+                            ]
+                            selected.columns = new_cols
+                            data = data.merge(selected, on="date", how="left")
+                        else:
+                            console.print(
+                                "[red]Not all dataframes have a date column so we are combining"
+                                " on index, this may results in data mismatching.[/red]\n"
+                            )
+                            selected = self.datasets[dataset][[column]]
+                            new_cols = [f"{dataset}_{x}" for x in selected]
+                            selected.columns = new_cols
+                            data = data.merge(
+                                selected, left_index=True, right_index=True, how="left"
+                            )
 
             self.datasets[ns_parser.dataset] = data
             self.update_runtime_choices()
