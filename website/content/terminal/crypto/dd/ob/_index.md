@@ -1,6 +1,6 @@
-`usage: trades [-e EXCHANGE] [--vs {usdt,usdc,btc}] [-h] [--export EXPORT] [-l LIMIT]`
+`usage: ob [-e EXCHANGE] [--vs {usdt,usdc,btc}] [-h] [--export EXPORT]`
 
-Get the latest trades for selected coin
+Get the order book for selected coin
 
 ```
 optional arguments:
@@ -9,6 +9,4 @@ optional arguments:
   --vs {usdt,usdc,btc}  Quote currency (what to view coin vs) (default: usdt)
   -h, --help            show this help message (default: False)
   --export EXPORT       Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg (default: )
-  -l LIMIT, --limit LIMIT
-                        Number of entries to show in data. (default: 10)
 ```
