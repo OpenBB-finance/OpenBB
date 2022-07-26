@@ -471,6 +471,21 @@ en:
   stocks/qa/decompose: decomposition in cyclic-trend, season, and residuals of prices
   stocks/qa/cusum: detects abrupt changes using cumulative sum algorithm of prices
   stocks/qa/capm: capital asset pricing model
+  stocks/qa/beta: display beta w.r.t to any reference ticker
+  stocks/pred/load: load new ticker
+  stocks/pred/pick: pick target column for analysis
+  stocks/pred/_ticker: Ticker
+  stocks/pred/_target: Target Column
+  stocks/pred/_models_: Models
+  stocks/pred/ets: exponential smoothing (e.g. Holt-Winters)
+  stocks/pred/knn: k-Nearest Neighbors
+  stocks/pred/regression: polynomial regression
+  stocks/pred/arima: autoregressive integrated moving average
+  stocks/pred/mlp: MultiLayer Perceptron
+  stocks/pred/rnn: Recurrent Neural Network
+  stocks/pred/lstm: Long-Short Term Memory
+  stocks/pred/conv1d: 1D Convolutional Neural Network
+  stocks/pred/mc: Monte-Carlo simulations
   crypto/load: load a specific cryptocurrency for analysis
   crypto/find: find coins
   crypto/_symbol: Coin
