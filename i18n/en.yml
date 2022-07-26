@@ -426,6 +426,7 @@ en:
   stocks/ta/stoch: stochastic oscillator
   stocks/ta/fisher: fisher transform
   stocks/ta/cg: centre of gravity
+  stocks/ta/clenow: clenow volatility adjusted momentum
   stocks/ta/_trend_: Trend
   stocks/ta/adx: average directional movement index
   stocks/ta/aroon: aroon indicator
