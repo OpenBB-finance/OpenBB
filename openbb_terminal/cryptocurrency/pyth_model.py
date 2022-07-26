@@ -76,20 +76,22 @@ ASSETS = {
 
 @log_start_end(log=logger)
 async def get_price(symbol: str):
-    """Returns open interest by exchange for a certain symbol
-    [Source: https://coinglass.github.io/API-Reference/]
+    """Returns price from pyth live feed
+    [Source: https://pyth.network/]
 
     Parameters
     ----------
     symbol : str
-        Crypto Symbol to search open interest futures (e.g., BTC)
-    interval : int
-        Interval frequency (e.g., 0)
+        Symbol of the asset to get price for
 
     Returns
     -------
-    pd.DataFrame
-        open interest by exchange and price
+    float
+        Price of the asset
+    float
+        Confidence level
+    float
+        Previous price of the asset
     """
 
     account_key = SolanaPublicKey(ASSETS[symbol]["feedID"])

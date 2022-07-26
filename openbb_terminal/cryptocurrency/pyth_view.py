@@ -18,15 +18,13 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 @check_api_key(["API_COINGLASS_KEY"])
 def display_price(symbol: str, export: str = "") -> None:
-    """Displays open interest by exchange for a certain cryptocurrency
-    [Source: https://coinglass.github.io/API-Reference/]
+    """Displays live price from pyth live feed
+    [Source: https://pyth.network/]
 
     Parameters
     ----------
     symbol : str
-        Crypto symbol to search open interest (e.g., BTC)
-    interval : int
-        Interval frequency (possible values are: 0 for ALL, 2 for 1H, 1 for 4H, 4 for 12H), by default 0
+        Symbol of the asset to get price for
     export : str
         Export dataframe data to csv,json,xlsx file"""
 
