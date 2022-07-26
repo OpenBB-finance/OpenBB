@@ -1062,8 +1062,8 @@ class ForecastController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="combine",
-            description="The columns you want to add to a dataset. The first argument is the dataset to add columns in"
-            "and the remaining could be: <datasetX.column2>,<datasetY.column3>",
+            description="Combine two entire datasets, or add specific columns. Add specific"
+            "columns with the syntax: <datasetX.column2>,<datasetY.column3>",
         )
         parser.add_argument(
             "--dataset",
