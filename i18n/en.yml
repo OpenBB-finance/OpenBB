@@ -2,6 +2,7 @@ en:
   _home_: Information, guides and support for the OpenBB Terminal
   about: discover the capabilities of the OpenBB Terminal (https://openbb.co/docs)
   support: pre-populate a support ticket for our team to evaluate
+  survey: fill in our 2-minute survey so we better understand how we can improve the terminal
   update: attempt to update the terminal automatically (GitHub version)
   exe: execute automated routine script
   settings: tune settings (export folder, timezone, language, plot size)
@@ -619,10 +620,9 @@ en:
   crypto/dd/ex: all exchanges where loaded coin is listed
   crypto/dd/twitter: tweets for loaded coin
   crypto/dd/events: events related to loaded coin
-  crypto/dd/binbook: order book
   crypto/dd/balance: coin balance
-  crypto/dd/cbbook: order book
   crypto/dd/trades: last trades
+  crypto/dd/ob: order book
   crypto/dd/stats: coin stats
   crypto/dd/mcapdom: market cap dominance
   crypto/dd/mt: messari timeseries e.g. twitter followers, circ supply, etc
