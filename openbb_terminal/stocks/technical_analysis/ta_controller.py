@@ -136,6 +136,7 @@ class TechnicalAnalysisController(StockBaseController):
         mt.add_cmd("stoch")
         mt.add_cmd("fisher")
         mt.add_cmd("cg")
+        mt.add_cmd("clenow")
         mt.add_info("_trend_")
         mt.add_cmd("adx")
         mt.add_cmd("aroon")

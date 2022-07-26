@@ -572,7 +572,11 @@ def display_clenow_momentum(
         orient="index",
     )
     print_rich_table(
-        df, show_index=True, headers=[""], title="Clenow Exponential Regression Factor"
+        df,
+        show_index=True,
+        headers=[""],
+        title="Clenow Exponential Regression Factor",
+        show_header=False,
     )
 
     # This plot has 2 axes
