@@ -249,7 +249,7 @@ class TerminalController(BaseController):
             )
             console.print(f"[red]{e}[/red]")
 
-    def call_survey(self) -> None:
+    def call_survey(self, _) -> None:
         """Process survey command"""
         webbrowser.open("https://openbb.co/survey")
 
