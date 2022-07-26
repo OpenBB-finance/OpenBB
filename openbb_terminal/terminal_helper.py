@@ -54,7 +54,7 @@ def print_goodbye():
     )
 
     console.print(
-        "[bold]Fill in our survey so we better understand how we can improve the terminal "
+        "[bold]Fill in our 2-minute survey so we better understand how we can improve the terminal "
         "at [cmds]https://openbb.co/survey[/cmds][/bold]\n"
     )
 

@@ -249,7 +249,8 @@ class TerminalController(BaseController):
             )
             console.print(f"[red]{e}[/red]")
 
-    def call_survey(self, _) -> None:
+    @staticmethod
+    def call_survey(_) -> None:
         """Process survey command"""
         webbrowser.open("https://openbb.co/survey")
 
