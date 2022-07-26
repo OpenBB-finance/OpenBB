@@ -121,7 +121,10 @@ class DueDiligenceController(CryptoBaseController):
             self.messari_timeseries = df_mt.index.to_list()
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
+            choices["ob"] = {c: None for c in self.ccxt_exchanges}
             choices["ob"]["-e"] = {c: None for c in self.ccxt_exchanges}
+            choices["trades"] = {c: None for c in self.ccxt_exchanges}
+            choices["trades"]["-e"] = {c: None for c in self.ccxt_exchanges}
             choices["active"]["-i"] = {
                 c: None for c in glassnode_model.INTERVALS_ACTIVE_ADDRESSES
             }
@@ -788,6 +791,9 @@ class DueDiligenceController(CryptoBaseController):
             choices=["usdt", "usdc", "btc"],
         )
 
+        if other_args and not other_args[0][0] == "-":
+            other_args.insert(0, "-e")
+
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
@@ -828,6 +834,9 @@ class DueDiligenceController(CryptoBaseController):
             default="usdt",
             choices=["usdt", "usdc", "btc"],
         )
+
+        if other_args and not other_args[0][0] == "-":
+            other_args.insert(0, "-e")
 
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, limit=10

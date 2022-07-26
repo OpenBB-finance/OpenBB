@@ -1,6 +1,7 @@
 """Ccxt model"""
 __docformat__ = "numpy"
 
+from typing import Dict
 import ccxt
 import pandas as pd
 
@@ -20,7 +21,7 @@ def get_exchanges():
     return ccxt.exchanges
 
 
-def get_orderbook(exchange_id: str, coin: str, vs: str):
+def get_orderbook(exchange_id: str, coin: str, vs: str) -> Dict:
     """Returns orderbook for a coin in a given exchange
     [Source: https://docs.ccxt.com/en/latest/manual.html]
 

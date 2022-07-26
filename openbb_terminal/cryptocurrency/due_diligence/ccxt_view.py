@@ -31,7 +31,8 @@ def display_order_book(
     vs : str
         currency to compare coin against
     export : str
-        Export dataframe data to csv,json,xlsx file"""
+        Export dataframe data to csv,json,xlsx file
+    """
     market_book = ccxt_model.get_orderbook(exchange_id=exchange, coin=coin, vs=vs)
     bids = np.asarray(market_book["bids"], dtype=float)
     asks = np.asarray(market_book["asks"], dtype=float)
@@ -64,7 +65,8 @@ def display_trades(exchange: str, coin: str, vs: str, top: int = 10, export: str
     top : int
         number of trades to display
     export : str
-        Export dataframe data to csv,json,xlsx file"""
+        Export dataframe data to csv,json,xlsx file
+    """
     df = ccxt_model.get_trades(exchange_id=exchange, coin=coin, vs=vs)
     df.rename(columns={"datetime": "date"}, inplace=True)
 
