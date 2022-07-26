@@ -830,7 +830,7 @@ def get_payoff_ratio(portfolio_trades: pd.DataFrame):
                 continue
             avg_w = portfolio_wins["Abs Portfolio Return"].mean()
             avg_l = portfolio_loses["Abs Portfolio Return"].mean()
-            vals.append([round(avg_w / abs(avg_l), 3)] if avg_w is not np.nan else [0])
+            vals.append([round(avg_w / abs(avg_l), 3)] if avg_w is not np.nan else ["0"])
         else:
             vals.append(["-"])
 
