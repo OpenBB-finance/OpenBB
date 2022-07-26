@@ -472,20 +472,6 @@ en:
   stocks/qa/cusum: detects abrupt changes using cumulative sum algorithm of prices
   stocks/qa/capm: capital asset pricing model
   stocks/qa/beta: display beta w.r.t to any reference ticker
-  stocks/pred/load: load new ticker
-  stocks/pred/pick: pick target column for analysis
-  stocks/pred/_ticker: Ticker
-  stocks/pred/_target: Target Column
-  stocks/pred/_models_: Models
-  stocks/pred/ets: exponential smoothing (e.g. Holt-Winters)
-  stocks/pred/knn: k-Nearest Neighbors
-  stocks/pred/regression: polynomial regression
-  stocks/pred/arima: autoregressive integrated moving average
-  stocks/pred/mlp: MultiLayer Perceptron
-  stocks/pred/rnn: Recurrent Neural Network
-  stocks/pred/lstm: Long-Short Term Memory
-  stocks/pred/conv1d: 1D Convolutional Neural Network
-  stocks/pred/mc: Monte-Carlo simulations
   crypto/load: load a specific cryptocurrency for analysis
   crypto/find: find coins
   crypto/_symbol: Coin
@@ -501,7 +487,6 @@ en:
   crypto/nft: non-fungible tokens,                    today drops
   crypto/dd: due-diligence for loaded coin,          coin information, social media, market stats
   crypto/ta: technical analysis for loaded coin,     ema, macd, rsi, adx, bbands, obv
-  crypto/pred: prediction techniques,                  regression, arima, rnn, lstm, conv1d, monte carlo
   crypto/forecast: forecasting techniques,                 rnn, nbeats, transformer, block rnn
   crypto/qa: quantitative analysis                   decompose, cusum, residuals analysis
   crypto/disc/cgtop: top coins (with or without category)
@@ -710,7 +695,6 @@ en:
   etf/pir: create (multiple) passive investor excel report(s)
   etf/compare: compare multiple different ETFs
   etf/ta: technical analysis,           ema, macd, rsi, adx, bbands, obv
-  etf/pred: prediction techniques,        regression, arima, rnn, lstm
   etf/disc/gainers: top gainers
   etf/disc/decliners: top decliners
   etf/disc/active: most active
@@ -747,20 +731,6 @@ en:
   etf/ta/obv: on balance volume
   etf/ta/_custom_: Custom
   etf/ta/fib: fibonacci retracement
-  etf/pred/load: load new ticker
-  etf/pred/pick: pick target column for analysis
-  etf/pred/_ticker: Ticker loaded
-  etf/pred/_target: Target column
-  etf/pred/_models_: Models
-  etf/pred/ets: exponential smoothing (e.g. Holt-Winters)
-  etf/pred/knn: k-Nearest Neighbors
-  etf/pred/regression: polynomial regression
-  etf/pred/arima: autoregressive integrated moving average
-  etf/pred/mlp: MultiLayer Perceptron
-  etf/pred/rnn: Recurrent Neural Network
-  etf/pred/lstm: Long-Short Term Memory
-  etf/pred/conv1d: 1D Convolutional Neural Network
-  etf/pred/mc: Monte-Carlo simulations
   economy/_database_: Databases
   economy/_stored: Stored datasets
   economy/overview: show a market overview of either indices, bonds or currencies
@@ -778,7 +748,6 @@ en:
   economy/valuation: valuation of sectors, industry, country
   economy/performance: performance of sectors, industry, country
   economy/spectrum: spectrum of sectors, industry, country
-  economy/pred: Open the prediction menu to analyse stored data
   economy/forecast: forecasting techniques; rnn, nbeats, transformer, block rnn
   economy/qa: Open quantitative analysis menu with stored data
   economy/qa/pick: pick new series from stored economy data
@@ -814,7 +783,6 @@ en:
   forex/fwd: get forward rates for loaded pair
   forex/ta: technical analysis,          ema, macd, rsi, adx, bbands, obv
   forex/qa: quantitative analysis,       decompose, cusum, residuals analysis
-  forex/pred: prediction techniques        regression, arima, rnn, lstm, conv1d, monte carlo
   forex/forex: Forex brokerages
   forex/oanda: Oanda menu
   forex/ta/_currency: Currency pair loaded
@@ -862,19 +830,6 @@ en:
   forex/qa/raw: print raw data
   forex/qa/decompose: decomposition in cyclic-trend, season, and residuals of prices
   forex/qa/cusum: detects abrupt changes using cumulative sum algorithm of prices
-  forex/pred/pick: pick new target variable
-  forex/pred/_pair: Pair loaded
-  forex/pred/_target: Target column
-  forex/pred/_models_: Models
-  forex/pred/ets: exponential smoothing (e.g. Holt-Winters)
-  forex/pred/knn: k-Nearest Neighbors
-  forex/pred/regression: polynomial regression
-  forex/pred/arima: autoregressive integrated moving average
-  forex/pred/mlp: MultiLayer Perceptron
-  forex/pred/rnn: Recurrent Neural Network
-  forex/pred/lstm: Long-Short Term Memory
-  forex/pred/conv1d: 1D Convolutional Neural Network
-  forex/pred/mc: Monte-Carlo simulations
   forex/oanda/summary: shows account summary
   forex/oanda/calendar: show calendar
   forex/oanda/list: list order history
