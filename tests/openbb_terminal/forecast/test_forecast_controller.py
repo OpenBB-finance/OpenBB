@@ -392,7 +392,6 @@ def test_call_export(mocker):
         ("brnn", "brnn_view.display_brnn_forecast"),
         ("trans", "trans_view.display_trans_forecast"),
         ("tft", "tft_view.display_tft_forecast"),
-        ("arima", "arima_view.display_arima"),
     ],
 )
 def test_models(mocker, opt, func):
@@ -418,7 +417,6 @@ def test_models(mocker, opt, func):
         "brnn",
         "trans",
         "tft",
-        "arima",
         "knn",
         "mc",
     ],

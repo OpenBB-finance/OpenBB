@@ -1,5 +1,5 @@
 from openbb_terminal.forecast import trans_model
-from tests.openbb_terml.forecast import conftest
+from tests.openbb_terminal.forecast import conftest
 
 
 def test_get_trans_model(tsla_csv):

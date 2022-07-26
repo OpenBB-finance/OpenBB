@@ -686,27 +686,6 @@ main:
                 ref: "/terminal/common/qa/line"
               - name: raw
                 ref: "/terminal/common/qa/raw"
-          - name: prediction techniques
-            ref: "/terminal/common/pred"
-            sub:
-              - name: ets
-                ref: "/terminal/common/pred/ets"
-              - name: knn
-                ref: "/terminal/common/pred/knn"
-              - name: regression
-                ref: "/terminal/common/pred/regression"
-              - name: arima
-                ref: "/terminal/common/pred/arima"
-              - name: mlp
-                ref: "/terminal/common/pred/mlp"
-              - name: rnn
-                ref: "/terminal/common/pred/rnn"
-              - name: lstm
-                ref: "/terminal/common/pred/lstm"
-              - name: conv1d
-                ref: "/terminal/common/pred/conv1d"
-              - name: mc
-                ref: "/terminal/common/pred/mc"
       - name: Cryptocurrency
         ref: "/terminal/crypto"
         sub:
@@ -1067,27 +1046,6 @@ main:
             ref: "/terminal/economy/performance"
           - name: spectrum
             ref: "/terminal/economy/spectrum"
-          - name: prediction techniques
-            ref: "/terminal/common/pred"
-            sub:
-              - name: ets
-                ref: "/terminal/common/pred/ets"
-              - name: knn
-                ref: "/terminal/common/pred/knn"
-              - name: regression
-                ref: "/terminal/common/pred/regression"
-              - name: arima
-                ref: "/terminal/common/pred/arima"
-              - name: mlp
-                ref: "/terminal/common/pred/mlp"
-              - name: rnn
-                ref: "/terminal/common/pred/rnn"
-              - name: lstm
-                ref: "/terminal/common/pred/lstm"
-              - name: conv1d
-                ref: "/terminal/common/pred/conv1d"
-              - name: mc
-                ref: "/terminal/common/pred/mc"
           - name: quantitative analysis
             ref: "/terminal/common/qa"
             sub:
@@ -1227,27 +1185,6 @@ main:
                 ref: "/terminal/common/ta/fib"
               - name: clenow
                 ref: "/terminal/common/ta/clenow"
-          - name: prediction techniques
-            ref: "/terminal/common/pred"
-            sub:
-              - name: ets
-                ref: "/terminal/common/pred/ets"
-              - name: knn
-                ref: "/terminal/common/pred/knn"
-              - name: regression
-                ref: "/terminal/common/pred/regression"
-              - name: arima
-                ref: "/terminal/common/pred/arima"
-              - name: mlp
-                ref: "/terminal/common/pred/mlp"
-              - name: rnn
-                ref: "/terminal/common/pred/rnn"
-              - name: lstm
-                ref: "/terminal/common/pred/lstm"
-              - name: conv1d
-                ref: "/terminal/common/pred/conv1d"
-              - name: mc
-                ref: "/terminal/common/pred/mc"
       - name: funds
         ref: "/terminal/funds"
         sub:
@@ -1688,27 +1625,6 @@ main:
                 ref: "/terminal/common/qa/line"
               - name: raw
                 ref: "/terminal/common/qa/raw"
-          - name: prediction techniques
-            ref: "/terminal/common/pred"
-            sub:
-              - name: ets
-                ref: "/terminal/common/pred/ets"
-              - name: knn
-                ref: "/terminal/common/pred/knn"
-              - name: regression
-                ref: "/terminal/common/pred/regression"
-              - name: arima
-                ref: "/terminal/common/pred/arima"
-              - name: mlp
-                ref: "/terminal/common/pred/mlp"
-              - name: rnn
-                ref: "/terminal/common/pred/rnn"
-              - name: lstm
-                ref: "/terminal/common/pred/lstm"
-              - name: conv1d
-                ref: "/terminal/common/pred/conv1d"
-              - name: mc
-                ref: "/terminal/common/pred/mc"
       - name: scripts
         ref: "/terminal/scripts"
         sub:

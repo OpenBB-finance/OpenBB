@@ -10,7 +10,6 @@ from .forecast_model import load
 from .forecast_model import clean
 from .forecast_view import show_options as options
 from .forecast_view import display_plot as plot
-from .arima_view import display_arima as arima
 from .brnn_view import display_brnn_forecast as brnn
 from .expo_view import display_expo_forecast as expo
 from .knn_view import display_k_nearest_neighbors as knn
