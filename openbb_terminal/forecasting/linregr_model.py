@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 
 import logging
 from typing import Any, Tuple, Union, List, Optional
+import warnings
 
 
 import pandas as pd
@@ -86,7 +87,9 @@ def get_linear_regression_data(
         random_state=random_state,
     )
 
-    lin_reg_model.fit(ticker_series, past_covariate_whole)
+    with warnings.catch_warnings():
+        warnings.simplefilter(action="ignore", category=FutureWarning)
+        lin_reg_model.fit(ticker_series, past_covariate_whole)
 
     return helpers.get_prediction(
         "Logistic Regression",

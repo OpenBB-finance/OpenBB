@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 
 import logging
 from typing import Any, Tuple, Union, List
+import warnings
 
 
 import pandas as pd
@@ -81,7 +82,9 @@ def get_regression_data(
         lags_past_covariates=lags_past_covariates,
     )
 
-    reg_model.fit(ticker_series, past_covariate_whole)
+    with warnings.catch_warnings():
+        warnings.simplefilter(action="ignore", category=FutureWarning)
+        reg_model.fit(ticker_series, past_covariate_whole)
 
     # Showing historical backtesting without retraining model (too slow)
     return helpers.get_prediction(
