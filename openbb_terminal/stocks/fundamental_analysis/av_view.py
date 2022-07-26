@@ -50,7 +50,7 @@ def display_overview(ticker: str):
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
-def display_key(ticker: str):
+def display_key(ticker: str, export: str = ""):
     """Alpha Vantage key metrics
 
     Parameters
@@ -66,6 +66,8 @@ def display_key(ticker: str):
     print_rich_table(
         df_key, headers=[""], title=f"{ticker} Key Metrics", show_index=True
     )
+
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), "key", df_key)
 
 
 @log_start_end(log=logger)
