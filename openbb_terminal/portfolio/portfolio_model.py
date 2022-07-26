@@ -810,6 +810,8 @@ def get_payoff_ratio(portfolio_trades: pd.DataFrame):
     portfolio_trades["Date"] = pd.to_datetime(portfolio_trades["Date"])
     portfolio_trades = portfolio_trades.set_index("Date")
 
+    no_losses = False
+
     vals = list()
     for period in portfolio_helper.PERIODS:
         period_portfolio_tr = portfolio_helper.filter_df_by_period(
@@ -822,15 +824,24 @@ def get_payoff_ratio(portfolio_trades: pd.DataFrame):
             portfolio_loses = period_portfolio_tr[
                 period_portfolio_tr["% Portfolio Return"] < 0
             ]
+            if portfolio_loses.empty:
+                vals.append(["-"])
+                no_losses = True
+                continue
             avg_w = portfolio_wins["Abs Portfolio Return"].mean()
             avg_l = portfolio_loses["Abs Portfolio Return"].mean()
             vals.append([round(avg_w / abs(avg_l), 3)] if avg_w is not np.nan else [0])
         else:
             vals.append(["-"])
 
+    if no_losses:
+        console.print(
+            "During some time periods there were no losing trades. Thus some values could not be calculated."
+        )
+
     pr_period_ratio = pd.DataFrame(
         vals, index=portfolio_helper.PERIODS, columns=["Payoff Ratio"]
-    )
+    ).fillna("-")
 
     return pr_period_ratio
 
@@ -852,6 +863,8 @@ def get_profit_factor(portfolio_trades: pd.DataFrame):
     portfolio_trades["Date"] = pd.to_datetime(portfolio_trades["Date"])
     portfolio_trades = portfolio_trades.set_index("Date")
 
+    no_losses = False
+
     vals = list()
     for period in portfolio_helper.PERIODS:
         period_portfolio_tr = portfolio_helper.filter_df_by_period(
@@ -864,15 +877,24 @@ def get_profit_factor(portfolio_trades: pd.DataFrame):
             portfolio_loses = period_portfolio_tr[
                 period_portfolio_tr["% Portfolio Return"] < 0
             ]
+            if portfolio_loses.empty:
+                vals.append(["-"])
+                no_losses = True
+                continue
             gross_profit = portfolio_wins["Abs Portfolio Return"].sum()
             gross_loss = portfolio_loses["Abs Portfolio Return"].sum()
             vals.append([round(gross_profit / abs(gross_loss), 3)])
         else:
             vals.append(["-"])
 
+    if no_losses:
+        console.print(
+            "During some time periods there were no losing trades. Thus some values could not be calculated."
+        )
+
     pf_period_df = pd.DataFrame(
         vals, index=portfolio_helper.PERIODS, columns=["Profit Factor"]
-    )
+    ).fillna("-")
 
     return pf_period_df
 
@@ -1732,17 +1754,15 @@ class PortfolioModel:
         -------
         pd.DataFrame
             DataFrame of the information ratio during different time periods
-        pd.Series
-            Series of rolling information ratio
         """
-        ir_period_df, ir_rolling = get_information_ratio(
+        ir_period_df = get_information_ratio(
             self.returns,
             self.historical_trade_data,
             self.benchmark_trades,
             self.benchmark_returns,
         )
 
-        return ir_period_df, ir_rolling
+        return ir_period_df
 
     @log_start_end(log=logger)
     def get_tail_ratio(self, period: int = 252):

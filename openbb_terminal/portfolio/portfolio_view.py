@@ -1508,7 +1508,7 @@ def display_information_ratio(
     export : str
         Export data format
     """
-    df, _ = portfolio.get_information_ratio()
+    df = portfolio.get_information_ratio()
     print_rich_table(
         df,
         title="Information ratio for portfolio",
