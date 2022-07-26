@@ -32,4 +32,5 @@ Other:
     decompose          decomposition in cyclic-trend, season, and residuals of prices
     cusum              detects abrupt changes using cumulative sum algorithm of prices
     capm               capital asset pricing model
+    beta               display beta w.r.t to any reference ticker
 
