@@ -75,6 +75,7 @@ class TechnicalAnalysisController(StockBaseController):
         "obv",
         "fib",
         "tv",
+        "clenow",
     ]
     PATH = "/stocks/ta/"
 
@@ -1345,3 +1346,19 @@ class TechnicalAnalysisController(StockBaseController):
                 end_date=ns_parser.end,
                 export=ns_parser.export,
             )
+
+    @log_start_end(log=logger)
+    def call_clenow(self, other_args: List[str]):
+        """Process clenow command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="clenow",
+            description="Calculates the Clenow Volatility Adjusted Momentum.",
+        )
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_FIGURES_ALLOWED
+        )
+        if ns_parser:
+            momentum_view.display_clenow_momentum(self.stock["Adj Close"])

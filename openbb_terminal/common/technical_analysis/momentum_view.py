@@ -19,6 +19,7 @@ from openbb_terminal.helper_funcs import (
     plot_autoscale,
     reindex_dates,
     is_valid_axes_count,
+    print_rich_table,
 )
 
 logger = logging.getLogger(__name__)
@@ -538,4 +539,65 @@ def display_cg(
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "cg",
         df_ta,
+    )
+
+
+@log_start_end(log=logger)
+def display_clenow_momentum(
+    series: pd.Series,
+    length: int = 90,
+    export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
+):
+    """
+
+    Parameters
+    ----------
+    series
+    length
+    export
+
+    Returns
+    -------
+
+    """
+    r2, coef, fit_data = momentum_model.clenow_momentum(series, length)
+
+    df = pd.DataFrame.from_dict(
+        {
+            "R^2": "{:.5f}".format(r2),
+            "Fit Coef": "{:.5f}".format(coef),
+            "Factor": "{:.5f}".format(coef * r2),
+        },
+        orient="index",
+    )
+    print_rich_table(
+        df, show_index=True, headers=[""], title="Clenow Expoential Regression Factor"
+    )
+
+    # This plot has 2 axes
+    if external_axes is None:
+        _, ax1 = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+
+    elif is_valid_axes_count(external_axes, 1):
+        ax1 = external_axes
+    else:
+        return
+
+    ax1.plot(series.index, np.log(series.values))
+    ax1.plot(series.index[-length:], fit_data, linewidth=2)
+
+    ax1.set_title(f"Clenow Momentum Exponential Regression")
+    ax1.set_xlim(series.index[0], series.index[-1])
+    ax1.set_ylabel("Log Price")
+    theme.style_primary_axis(
+        ax1,
+    )
+    if external_axes is None:
+        theme.visualize_output()
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
+        "clenow",
     )
