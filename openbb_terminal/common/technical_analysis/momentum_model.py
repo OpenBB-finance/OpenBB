@@ -218,7 +218,7 @@ def clenow_momentum(
         console.print(
             f"[red]Calculation asks for at least last {length} days of data[/red]"
         )
-        return np.nan, pd.Series()
+        return np.nan, np.nan, pd.Series()
 
     values = values[-length:]
 
