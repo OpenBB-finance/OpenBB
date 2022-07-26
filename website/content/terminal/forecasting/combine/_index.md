@@ -2,8 +2,7 @@
 usage: combine [--dataset {TSLA}] [-c COLUMNS] [-h]
 ```
 
-The columns you want to add to a dataset. The first argument is the dataset to add columns inand the remaining could be:
-<datasetX.column2>,<datasetY.column3>
+The columns you want to add to a dataset. The first argument is the dataset to add columns in, the remaining could be: <datasetX.column2>,<datasetY.column3>
 
 ```
 optional arguments:

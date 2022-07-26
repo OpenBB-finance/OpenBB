@@ -645,6 +645,15 @@ class ForecastingController(BaseController):
         if not data.empty:
             data.columns = data.columns.map(lambda x: x.lower().replace(" ", "_"))
 
+            # If the index is a date, move this into a normal column
+            if data.index.name == "date":
+                data = data.reset_index()
+            # Convert date to datetime
+            # TODO: for now we drop time, once we add handling for time remove this
+            if "date" in data.columns:
+                data["date"] = data["date"].apply(helpers.dt_format)
+                data["date"] = pd.to_datetime(data["date"])
+
             self.files.append(ticker)
             self.datasets[ticker] = data
 
@@ -1090,8 +1099,30 @@ class ForecastingController(BaseController):
                         f"the following: {', '.join(self.datasets[dataset].columns)}"
                     )
                 else:
-                    data[f"{dataset}_{column}"] = self.datasets[dataset][column]
+                    if (
+                        "date" in data.columns
+                        and "date" in self.datasets[dataset].columns
+                    ):
+                        selected = self.datasets[dataset][[column, "date"]]
+                        new_cols = [
+                            f"{dataset}_{x}" if x != "date" else "date"
+                            for x in selected
+                        ]
+                        selected.columns = new_cols
+                        data = data.merge(selected, on="date", how="left")
+                    else:
+                        console.print(
+                            "[red]Not all columns have a date column so we are combining"
+                            " on index, this may results in data mismatching.[/red]\n"
+                        )
+                        selected = self.datasets[dataset][[column]]
+                        new_cols = [f"{dataset}_{x}" for x in selected]
+                        selected.columns = new_cols
+                        data = data.merge(
+                            selected, left_index=True, right_index=True, how="left"
+                        )
 
+            self.datasets[ns_parser.dataset] = data
             self.update_runtime_choices()
         console.print()
 

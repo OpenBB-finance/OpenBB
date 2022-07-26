@@ -538,10 +538,6 @@ def get_series(
         fill_missing_dates=True,
     )
     try:
-
-        if target_col and "." in target_col:
-            target_col = target_col.split(".")[1]
-            filler_kwargs["value_cols"] = target_col
         ticker_series = TimeSeries.from_dataframe(**filler_kwargs)
     except ValueError:
         # remove business days to allow base lib to assume freq
@@ -746,8 +742,6 @@ def clean_data(
         data = data.set_index("date")
         data = data[col]
     elif "date" in data.columns:
-        data["date"] = data["date"].apply(dt_format)
-        data["date"] = pd.to_datetime(data["date"])
         data = filter_dates(data, start_date, end_date)
     elif end_date or start_date:
         console.print(
