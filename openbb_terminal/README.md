@@ -125,6 +125,12 @@ issues.
    conda env create -n obb --file build/conda/conda-3-9-env.yaml
    ```
 
+   Or, to include machine learning type:
+
+   ```bash
+   conda env create -n t6 --file build/conda/conda-3-9-env-full.yaml
+   ```
+
 6. Activate the virtual environment
 
    ```bash
@@ -141,10 +147,10 @@ issues.
    poetry install
    ```
 
-   To enable the `prediction` menu install additional dependencies after installing main dependencies:
+   For machine learning instead type:
 
    ```bash
-   conda install -c conda-forge tensorflow
+   poetry install -E prediction
    ```
 
    If you are having trouble with Poetry (e.g. on a non-conda python), simply install requirements.txt with pip

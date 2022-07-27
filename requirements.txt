@@ -24,7 +24,7 @@ black==22.6.0; python_full_version >= "3.6.2"
 bleach==5.0.1; python_version >= "3.7"
 bs4==0.0.1
 bt==0.2.9; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.6.0")
-ccxt==1.86.3
+ccxt==1.91.39
 certifi==2022.6.15; python_version >= "3.8" and python_version < "4" and (python_version >= "3.7" and python_full_version < "3.0.0" and python_version < "4" or python_full_version >= "3.6.0" and python_version < "4" and python_version >= "3.7") and python_full_version >= "3.7.1" and python_full_version < "4.0.0"
 cffi==1.15.1; python_version >= "3.7"
 charset-normalizer==2.1.0; python_version >= "3.8" and python_version < "4" and python_full_version >= "3.7.1" and python_full_version < "4.0.0"
@@ -50,7 +50,7 @@ ecos==2.0.10; python_version >= "3.8" and python_version < "3.11"
 entrypoints==0.4; python_full_version >= "3.7.0" and python_version >= "3.7"
 et-xmlfile==1.1.0; python_version >= "3.6"
 exchange-calendars==4.1.1; python_version >= "3.8" and python_version < "4.0" and python_full_version >= "3.7.0"
-executing==0.8.3; python_full_version >= "3.6.2" and python_version >= "3.8"
+executing==0.9.1; python_full_version >= "3.6.2" and python_version >= "3.8"
 fastjsonschema==2.16.1; python_full_version >= "3.7.0" and python_version >= "3.7"
 ffn==0.3.6; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0"
 financedatabase==1.0.2
@@ -154,7 +154,7 @@ ptyprocess==0.7.0; os_name != "nt" and python_version >= "3.8" and sys_platform 
 pure-eval==0.2.2; python_full_version >= "3.6.2" and python_version >= "3.8"
 py==1.11.0; implementation_name == "pypy" and python_version >= "3.7" and python_full_version >= "3.7.0"
 pyally==1.1.2
-pycares==4.1.2; python_version >= "3.5.2"
+pycares==4.2.1; python_version >= "3.5.2"
 pycoingecko==2.2.0
 pycparser==2.21; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.4.0"
 pyerfa==2.0.0.1; python_version >= "3.8"
@@ -238,7 +238,7 @@ tzlocal==4.2; python_version >= "3.6"
 ujson==5.4.0; python_version >= "3.7"
 unidecode==1.3.4; python_version >= "3.7"
 update-checker==0.18.0; python_version >= "3.7" and python_version < "4.0"
-urllib3==1.26.10; python_full_version >= "3.7.1" and python_version < "4" and python_version >= "3.8" and python_full_version < "4.0.0"
+urllib3==1.26.11; python_full_version >= "3.7.1" and python_version < "4" and python_version >= "3.8" and python_full_version < "4.0.0"
 user-agent==0.1.10
 vadersentiment==3.3.2
 valinvest==0.0.2; python_version >= "3.6"
