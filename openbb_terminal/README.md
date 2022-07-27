@@ -128,7 +128,7 @@ issues.
    Or, to include machine learning type:
 
    ```bash
-   conda env create -n t6 --file build/conda/conda-3-9-env-full.yaml
+   conda env create -n obb --file build/conda/conda-3-9-env-full.yaml
    ```
 
 6. Activate the virtual environment
