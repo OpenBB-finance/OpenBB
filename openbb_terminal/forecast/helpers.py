@@ -20,7 +20,6 @@ from darts import TimeSeries
 from darts.metrics import mape
 from pytorch_lightning.callbacks.early_stopping import EarlyStopping
 from openbb_terminal.rich_config import console
-from openbb_terminal import config_neural_network_models as cfg
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.helper_funcs import (
     export_data,
@@ -204,6 +203,7 @@ def prepare_scale_train_valid_test(
     s_start_date: Optional[datetime] = None,
     s_end_date: Optional[datetime] = None,
     no_shuffle: bool = True,
+    Preprocess: Optional[str] = "standardization",
 ):
     """
     Prepare and scale train, validate and test data. This is an old function for models
@@ -239,22 +239,20 @@ def prepare_scale_train_valid_test(
         Array of dates after specified end date
     scaler:
         Fitted PREPROCESSOR
+    Preprocess: Optional[str]
+        The method to preprocess data. Choose: standardization, minmax, normalization, or None.
+        Default is standardization.
     """
 
-    # Pre-process data
-    if cfg.Preprocess == "standardization":
-        scaler = StandardScaler()
-
-    elif cfg.Preprocess == "minmax":
-        scaler = MinMaxScaler()
-
-    elif cfg.Preprocess == "normalization":
-        scaler = Normalizer()
-
-    elif (cfg.Preprocess == "none") or (cfg.Preprocess is None):
+    pre_dict = {
+        "standardization": StandardScaler(),
+        "minmax": MinMaxScaler(),
+        "normalization": Normalizer(),
+    }
+    if Preprocess is None:
         scaler = None
-    # Test data is used for forecasting.  Takes the last n_input_days data points.
-    # These points are not fed into training
+    else:
+        scaler = pre_dict.get(Preprocess, None)
 
     if s_end_date:
         data = data[data.index <= s_end_date]
