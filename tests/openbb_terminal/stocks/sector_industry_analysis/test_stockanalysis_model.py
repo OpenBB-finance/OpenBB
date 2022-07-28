@@ -11,28 +11,25 @@ from openbb_terminal.stocks.sector_industry_analysis import stockanalysis_model
 
 @pytest.mark.vcr
 @pytest.mark.parametrize(
-    "stocks, finance_key, sa_keys, period, statement",
+    "stocks, finance_key, period, statement",
     [
-        (["AAPL"], "re", stockanalysis_model.sa_keys, "annual", "IS"),
-        (["AAPL"], "rec", stockanalysis_model.sa_keys, "quarterly", "BS"),
+        (["AAPL"], "re", "annual", "IS"),
+        (["AAPL"], "rec", "quarterly", "BS"),
         (
             ["FB", "TSLA", "MSFT"],
             "ncf",
-            stockanalysis_model.sa_keys,
             "annual",
             "CF",
         ),
         (
             ["FB", "TSLA", "MSFT"],
             "ni",
-            stockanalysis_model.sa_keys,
             "quarterly",
             "IS",
         ),
         (
             ["FB", "TSLA", "MSFT"],
             "tle",
-            stockanalysis_model.sa_keys,
             "trailing",
             "BS",
         ),

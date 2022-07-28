@@ -2,7 +2,6 @@ import logging
 import os
 from datetime import datetime, timedelta
 
-import pandas as pd
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.decorators import check_api_key

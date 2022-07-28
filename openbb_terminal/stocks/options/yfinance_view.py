@@ -2,7 +2,6 @@
 __docformat__ = "numpy"
 
 import logging
-import math
 import os
 from bisect import bisect_left
 from datetime import date, datetime, timedelta
@@ -32,7 +31,6 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.options import op_helpers, yfinance_model
-from openbb_terminal.stocks.options.op_helpers import Option
 from openbb_terminal.stocks.options.yfinance_model import (
     generate_data,
     get_option_chain,

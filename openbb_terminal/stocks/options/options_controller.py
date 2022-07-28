@@ -895,7 +895,7 @@ class OptionsController(BaseController):
                         and TRADIER_TOKEN != "REPLACE_ME"  # nosec
                     ):
                         tradier_view.plot_volume_open_interest(
-                            symbolself.ticker,
+                            symbol=self.ticker,
                             expiry=self.selected_date,
                             min_sp=ns_parser.min_sp,
                             max_sp=ns_parser.max_sp,

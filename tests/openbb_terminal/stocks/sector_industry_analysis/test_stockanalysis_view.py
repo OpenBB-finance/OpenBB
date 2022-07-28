@@ -13,11 +13,10 @@ from openbb_terminal.stocks.sector_industry_analysis import (
 @pytest.mark.skip
 @pytest.mark.vcr
 @pytest.mark.parametrize(
-    "finance_key, sa_keys, country, sector, industry, period, period_length, marketcap, statement",
+    "finance_key, country, sector, industry, period, period_length, marketcap, statement",
     [
         (
             "re",
-            stockanalysis_model.sa_keys,
             "United States",
             None,
             "Credit Services",
@@ -28,7 +27,6 @@ from openbb_terminal.stocks.sector_industry_analysis import (
         ),
         (
             "rec",
-            stockanalysis_model.sa_keys,
             "Germany",
             "Technology",
             None,
@@ -39,7 +37,6 @@ from openbb_terminal.stocks.sector_industry_analysis import (
         ),
         (
             "ncf",
-            stockanalysis_model.sa_keys,
             "Netherlands",
             "Technology",
             None,

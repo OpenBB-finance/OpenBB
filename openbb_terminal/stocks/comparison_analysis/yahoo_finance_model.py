@@ -3,18 +3,14 @@ __docformat__ = "numpy"
 
 import logging
 from datetime import datetime, timedelta
-from typing import List, Optional
+from typing import List
 
-import matplotlib.pyplot as plt
 import pandas as pd
 import yfinance as yf
 from sklearn.manifold import TSNE
 from sklearn.preprocessing import normalize
 
-from openbb_terminal.config_terminal import theme
-from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import plot_autoscale, is_valid_axes_count
 
 logger = logging.getLogger(__name__)
 

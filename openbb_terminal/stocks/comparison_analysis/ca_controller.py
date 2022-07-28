@@ -31,7 +31,6 @@ from openbb_terminal.stocks.comparison_analysis import (
     finviz_compare_view,
     marketwatch_view,
     polygon_model,
-    yahoo_finance_model,
     yahoo_finance_view,
 )
 

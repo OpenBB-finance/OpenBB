@@ -1,5 +1,4 @@
 # IMPORTATION STANDARD
-from datetime import datetime
 
 # IMPORTATION THIRDPARTY
 import pytest
