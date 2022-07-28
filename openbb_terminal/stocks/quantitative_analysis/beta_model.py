@@ -1,6 +1,6 @@
+from typing import Tuple
 import pandas as pd
 from scipy import stats
-from typing import Tuple
 from openbb_terminal.stocks import stocks_helper
 
 
