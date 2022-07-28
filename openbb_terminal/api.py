@@ -5,8 +5,8 @@ import functools
 import importlib
 from typing import Optional, Callable
 
-from openbb_terminal.helper_classes import TerminalStyle
-from .reports import widget_helpers as widgets
+from openbb_terminal.helper_classes import TerminalStyle  # noqa: F401
+from .reports import widget_helpers as widgets  # noqa: F401
 
 """
 THIS IS SOME EXAMPLE OF USAGE FOR USING IT DIRECTLY IN JUPYTER NOTEBOOK
@@ -1157,16 +1157,20 @@ functions = {
     #     "model": "openbb_terminal.stocks.fundamental_analysis.financial_modeling_prep.fmp_view.display_cash_flow"
     # },
     # "stocks.fundamental_analysis.financial_modeling_prep.discounted_cash_flow": {
-    #     "model": "openbb_terminal.stocks.fundamental_analysis.financial_modeling_prep.fmp_view.display_discounted_cash_flow"
+    #     "model": "openbb_terminal.stocks.fundamental_analysis.
+    #     financial_modeling_prep.fmp_view.display_discounted_cash_flow"
     # },
     # "stocks.fundamental_analysis.financial_modeling_prep.financial_ratios": {
-    #     "model": "openbb_terminal.stocks.fundamental_analysis.financial_modeling_prep.fmp_view.display_financial_ratios"
+    #     "model": "openbb_terminal.stocks.fundamental_analysis.
+    #     financial_modeling_prep.fmp_view.display_financial_ratios"
     # },
     # "stocks.fundamental_analysis.financial_modeling_prep.financial_statement_growth": {
-    #     "model": "openbb_terminal.stocks.fundamental_analysis.financial_modeling_prep.fmp_view.display_financial_statement_growth"
+    #     "model": "openbb_terminal.stocks.fundamental_analysis.
+    #     financial_modeling_prep.fmp_view.display_financial_statement_growth"
     # },
     # "stocks.fundamental_analysis.financial_modeling_prep.income_statement": {
-    #     "model": "openbb_terminal.stocks.fundamental_analysis.financial_modeling_prep.fmp_view.display_income_statement"
+    #     "model": "openbb_terminal.stocks.
+    #     fundamental_analysis.financial_modeling_prep.fmp_view.display_income_statement"
     # },
     # "stocks.fundamental_analysis.financial_modeling_prep.valinvest_score": {
     #     "model": "openbb_terminal.stocks.fundamental_analysis.financial_modeling_prep.fmp_view.valinvest_score"
@@ -1332,24 +1336,34 @@ functions = {
         "model": "openbb_terminal.stocks.sector_industry_analysis.financedatabase_model.filter_stocks"
     },
     "stocks.sector_industry_analysis.companies_per_country_in_industry": {
-        "model": "openbb_terminal.stocks.sector_industry_analysis.financedatabase_model.get_companies_per_country_in_industry",
-        "view": "openbb_terminal.stocks.sector_industry_analysis.financedatabase_view.display_companies_per_country_in_industry",
+        "model": "openbb_terminal.stocks.sector_industry_analysis."
+                 "financedatabase_model.get_companies_per_country_in_industry",
+        "view": "openbb_terminal.stocks.sector_industry_analysis."
+                "financedatabase_view.display_companies_per_country_in_industry",
     },
     "stocks.sector_industry_analysis.companies_per_country_in_sector": {
-        "model": "openbb_terminal.stocks.sector_industry_analysis.financedatabase_model.get_companies_per_country_in_sector",
-        "view": "openbb_terminal.stocks.sector_industry_analysis.financedatabase_view.display_companies_per_country_in_sector",
+        "model": "openbb_terminal.stocks.sector_industry_analysis."
+                 "financedatabase_model.get_companies_per_country_in_sector",
+        "view": "openbb_terminal.stocks.sector_industry_analysis."
+                "financedatabase_view.display_companies_per_country_in_sector",
     },
     "stocks.sector_industry_analysis.companies_per_industry_in_country": {
-        "model": "openbb_terminal.stocks.sector_industry_analysis.financedatabase_model.get_companies_per_industry_in_country",
-        "view": "openbb_terminal.stocks.sector_industry_analysis.financedatabase_view.display_companies_per_industry_in_country",
+        "model": "openbb_terminal.stocks.sector_industry_analysis."
+                 "financedatabase_model.get_companies_per_industry_in_country",
+        "view": "openbb_terminal.stocks.sector_industry_analysis."
+                "financedatabase_view.display_companies_per_industry_in_country",
     },
     "stocks.sector_industry_analysis.companies_per_industry_in_sector": {
-        "model": "openbb_terminal.stocks.sector_industry_analysis.financedatabase_model.get_companies_per_industry_in_sector",
-        "view": "openbb_terminal.stocks.sector_industry_analysis.financedatabase_view.display_companies_per_industry_in_sector",
+        "model": "openbb_terminal.stocks.sector_industry_analysis."
+                 "financedatabase_model.get_companies_per_industry_in_sector",
+        "view": "openbb_terminal.stocks.sector_industry_analysis."
+                "financedatabase_view.display_companies_per_industry_in_sector",
     },
     "stocks.sector_industry_analysis.companies_per_sector_in_country": {
-        "model": "openbb_terminal.stocks.sector_industry_analysis.financedatabase_model.get_companies_per_sector_in_country",
-        "view": "openbb_terminal.stocks.sector_industry_analysis.financedatabase_view.display_companies_per_sector_in_country",
+        "model": "openbb_terminal.stocks.sector_industry_analysis."
+                 "financedatabase_model.get_companies_per_sector_in_country",
+        "view": "openbb_terminal.stocks.sector_industry_analysis."
+                "financedatabase_view.display_companies_per_sector_in_country",
     },
     "stocks.sector_industry_analysis.countries": {
         "model": "openbb_terminal.stocks.sector_industry_analysis.financedatabase_model.get_countries"
