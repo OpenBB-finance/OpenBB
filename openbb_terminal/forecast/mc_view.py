@@ -30,6 +30,7 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 def display_mc_forecast(
     data: Union[pd.DataFrame, pd.Series],
+    target_column: str,
     n_future: int,
     n_sims: int,
     use_log=True,
@@ -46,6 +47,8 @@ def display_mc_forecast(
     ----------
     data : Union[pd.Series, np.array]
         Data to forecast
+    target_column: str, optional
+        The column to select if a dataframe is sent
     n_future : int
         Number of days to forecast
     n_sims : int
@@ -66,6 +69,9 @@ def display_mc_forecast(
         The ending date to perform analysis, data after this is trimmed. Defaults to None.
     """
     data = helpers.clean_data(data, start_date, end_date)
+    if "date" in data.columns:
+        data = data.set_index("date")
+    data = data[target_column]
     predicted_values = mc_model.get_mc_brownian(data, n_future, n_sims, use_log)
     if not time_res or time_res == "1D":
         future_index = get_next_stock_market_days(data.index[-1], n_next_days=n_future)  # type: ignore

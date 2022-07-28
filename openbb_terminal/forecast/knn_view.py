@@ -25,6 +25,7 @@ logger = logging.getLogger(__name__)
 def display_k_nearest_neighbors(
     ticker: str,
     data: Union[pd.DataFrame, pd.Series],
+    target_column: str,
     n_neighbors: int = 20,
     n_input_days: int = 14,
     n_predict_days: int = 5,
@@ -65,6 +66,9 @@ def display_k_nearest_neighbors(
         External axes (1 axis is expected in the list), by default None
     """
     data = helpers.clean_data(data, start_date, end_date)
+    if "date" in data.columns:
+        data = data.set_index("date")
+    data = data[target_column]
     (
         forecast_data_df,
         preds,

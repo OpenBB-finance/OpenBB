@@ -2568,19 +2568,11 @@ class ForecastController(BaseController):
             if not helpers.check_parser_input(ns_parser, self.datasets):
                 return
             data = self.datasets[ns_parser.target_dataset]
-            try:
-                data["date"] = data["date"].apply(helpers.dt_format)
-                data["date"] = data["date"].apply(lambda x: pd.to_datetime(x))
-                data = data.set_index("date")
-            except (KeyError, ValueError):
-                if data.index.name != "date":
-                    console.print("[red]Dataframe must have 'date' column.[/red]\n")
-                    return
-            data = data[ns_parser.target_column]
             if ns_parser:
                 knn_view.display_k_nearest_neighbors(
                     ticker=ns_parser.target_dataset,
                     data=data,
+                    target_column=ns_parser.target_column,
                     n_neighbors=ns_parser.n_neighbors,
                     n_input_days=ns_parser.input_chunk_length,
                     n_predict_days=ns_parser.n_days,
@@ -2625,18 +2617,10 @@ class ForecastController(BaseController):
             if not helpers.check_parser_input(ns_parser, self.datasets):
                 return
             data = self.datasets[ns_parser.target_dataset]
-            try:
-                data["date"] = data["date"].apply(helpers.dt_format)
-                data["date"] = data["date"].apply(lambda x: pd.to_datetime(x))
-                data = data.set_index("date")
-            except (KeyError, ValueError):
-                if data.index.name != "date":
-                    console.print("[red]Dataframe must have 'date' column.[/red]\n")
-                    return
-            data = data[ns_parser.target_column]
 
             mc_view.display_mc_forecast(
                 data=data,
+                target_column=ns_parser.target_column,
                 n_future=ns_parser.n_days,
                 n_sims=ns_parser.n_epochs,
                 use_log=ns_parser.dist == "lognormal",

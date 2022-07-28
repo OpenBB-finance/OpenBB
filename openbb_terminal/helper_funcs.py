@@ -701,21 +701,26 @@ def get_next_stock_market_days(last_stock_day, n_next_days) -> list:
     l_pred_days = []
     years: list = []
     holidays: list = []
-    while n_days < n_next_days:
-        last_stock_day += timedelta(hours=24)
-        year = last_stock_day.date().year
-        if year not in years:
-            years.append(year)
-            holidays += us_market_holidays(year)
-        # Check if it is a weekend
-        if last_stock_day.date().weekday() > 4:
-            continue
-        # Check if it is a holiday
-        if last_stock_day.strftime("%Y-%m-%d") in holidays:
-            continue
-        # Otherwise stock market is open
-        n_days += 1
-        l_pred_days.append(last_stock_day)
+    if isinstance(last_stock_day, datetime):
+        while n_days < n_next_days:
+            last_stock_day += timedelta(hours=24)
+            year = last_stock_day.date().year
+            if year not in years:
+                years.append(year)
+                holidays += us_market_holidays(year)
+            # Check if it is a weekend
+            if last_stock_day.date().weekday() > 4:
+                continue
+            # Check if it is a holiday
+            if last_stock_day.strftime("%Y-%m-%d") in holidays:
+                continue
+            # Otherwise stock market is open
+            n_days += 1
+            l_pred_days.append(last_stock_day)
+    else:
+        while n_days < n_next_days:
+            l_pred_days.append(last_stock_day + 1 + n_days)
+            n_days += 1
 
     return l_pred_days
 
