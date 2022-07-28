@@ -354,7 +354,7 @@ PARAMETERS = {
         "period": "Monthly",
         "description": "A record of a country's international transactions with the rest of the world",
     },
-    "TBFR": {
+    "TB": {
         "name": "Trade balance",
         "period": "Monthly",
         "description": "The difference between the monetary value of a nation's exports and imports over a "
@@ -515,18 +515,20 @@ def get_macro_data(
         r = requests.get(
             f"https://www.econdb.com/series/context/?tickers={parameter}{country_code}"
         )
-        data = r.json()[0]
-        scale = data["td"]["scale"]
-        units = data["td"]["units"]
+        res_json = r.json()
+        if res_json:
+            data = res_json[0]
+            scale = data["td"]["scale"]
+            units = data["td"]["units"]
 
-        df = pd.DataFrame(data["dataarray"])
-        df = (
-            df.set_index(pd.to_datetime(df["date"]))[f"{parameter}{country_code}"]
-            * SCALES[scale]
-        )
-        df = df.sort_index().dropna()
+            df = pd.DataFrame(data["dataarray"])
+            df = (
+                df.set_index(pd.to_datetime(df["date"]))[f"{parameter}{country_code}"]
+                * SCALES[scale]
+            )
+            df = df.sort_index().dropna()
 
-        if df.empty:
+        if not res_json or df.empty:
             console.print(
                 f"No data available for {parameter} ({PARAMETERS[parameter]['name']}) "
                 f"of country {country.replace('_', ' ')}"

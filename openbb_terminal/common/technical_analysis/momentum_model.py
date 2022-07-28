@@ -2,10 +2,14 @@
 __docformat__ = "numpy"
 
 import logging
+from typing import Tuple
 
+import numpy as np
 import pandas as pd
 import pandas_ta as ta
+from sklearn.linear_model import LinearRegression
 
+from openbb_terminal.rich_config import console
 from openbb_terminal.decorators import log_start_end
 
 logger = logging.getLogger(__name__)
@@ -185,3 +189,46 @@ def cg(values: pd.Series, length: int) -> pd.DataFrame:
         Dataframe of technical indicator
     """
     return pd.DataFrame(ta.cg(close=values, length=length).dropna())
+
+
+@log_start_end(log=logger)
+def clenow_momentum(
+    values: pd.Series, length: int = 90
+) -> Tuple[float, float, pd.Series]:
+    """Gets the Clenow Volatility Adjusted Momentum.  this is defined as the regression coefficient on log prices
+    multiplied by the R^2 value of the regression
+
+    Parameters
+    ----------
+    values:pd.Series
+        Values to perform regression for
+    length: int
+        Length of lookback period
+
+    Returns
+    -------
+    float:
+        R2 of fit to log data
+    float:
+        Coefficient of linear regression
+    pd.Series:
+        Values for best fit line
+    """
+    if len(values) < length:
+        console.print(
+            f"[red]Calculation asks for at least last {length} days of data[/red]"
+        )
+        return np.nan, np.nan, pd.Series()
+
+    values = values[-length:]
+
+    y = np.log(values)
+    X = np.arange(len(y)).reshape(-1, 1)
+
+    lr = LinearRegression()
+    lr.fit(X, y)
+
+    r2 = lr.score(X, y)
+    coef = lr.coef_[0]
+
+    return r2, coef, pd.Series(lr.predict(X))

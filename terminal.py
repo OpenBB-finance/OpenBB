@@ -8,6 +8,7 @@ import logging
 import os
 import platform
 import sys
+import webbrowser
 from typing import List
 from pathlib import Path
 import dotenv
@@ -54,6 +55,7 @@ class TerminalController(BaseController):
     CHOICES_COMMANDS = [
         "keys",
         "settings",
+        "survey",
         "update",
         "featflags",
         "exe",
@@ -112,6 +114,7 @@ class TerminalController(BaseController):
         mt.add_info("_home_")
         mt.add_cmd("about")
         mt.add_cmd("support")
+        mt.add_cmd("survey")
         mt.add_cmd("update")
         mt.add_raw("\n")
         mt.add_info("_configure_")
@@ -245,6 +248,11 @@ class TerminalController(BaseController):
                 f"{obbff.GUESS_EASTER_EGG_FILE}[/red]"
             )
             console.print(f"[red]{e}[/red]")
+
+    @staticmethod
+    def call_survey(_) -> None:
+        """Process survey command"""
+        webbrowser.open("https://openbb.co/survey")
 
     def call_update(self, _):
         """Process update command"""

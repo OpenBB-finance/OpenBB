@@ -1,4 +1,5 @@
 absl-py==1.1.0; python_version >= "3.7"
+aiodns==3.0.0; python_version >= "3.5.2"
 aiohttp==3.8.1; python_version >= "3.6"
 aiosignal==1.2.0; python_version >= "3.6"
 alabaster==0.7.12; python_version >= "3.6"
@@ -30,6 +31,7 @@ bleach==5.0.1; python_version >= "3.7"
 bs4==0.0.1
 bt==0.2.9; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.6.0")
 cachetools==5.2.0; python_version >= "3.7" and python_version < "4.0" and (python_version >= "3.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.7")
+ccxt==1.86.3
 certifi==2022.6.15; python_version >= "3.8" and python_version < "4" and (python_version >= "3.7" and python_full_version < "3.0.0" and python_version < "4" or python_full_version >= "3.6.0" and python_version < "4" and python_version >= "3.7") and python_full_version >= "3.7.1" and python_full_version < "4.0.0"
 cffi==1.15.1; python_version >= "3.7"
 cfgv==3.3.1; python_full_version >= "3.6.1" and python_version >= "3.7"
@@ -194,6 +196,7 @@ py==1.11.0; python_full_version >= "3.7.0" and python_version >= "3.7" and imple
 pyally==1.1.2
 pyasn1-modules==0.2.8; python_version >= "3.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.7"
 pyasn1==0.4.8; python_version >= "3.7" and python_full_version < "3.0.0" and python_version < "4" and (python_version >= "3.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.7") or python_full_version >= "3.6.0" and python_version >= "3.7" and python_version < "4" and (python_version >= "3.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.7")
+pycares==4.1.2; python_version >= "3.5.2"
 pycodestyle==2.7.0; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.5.0"
 pycoingecko==2.2.0
 pycparser==2.21; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.4.0"

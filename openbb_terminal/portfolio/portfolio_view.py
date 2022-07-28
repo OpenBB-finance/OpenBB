@@ -1508,7 +1508,7 @@ def display_information_ratio(
     export : str
         Export data format
     """
-    df, _ = portfolio.get_information_ratio()
+    df = portfolio.get_information_ratio()
     print_rich_table(
         df,
         title="Information ratio for portfolio",
@@ -1766,6 +1766,7 @@ def display_summary_portfolio_benchmark(
     summary = pd.DataFrame(
         metrics.values(), index=metrics.keys(), columns=["Portfolio", "Benchmark"]
     )
+    summary["Difference"] = summary["Portfolio"] - summary["Benchmark"]
 
     print_rich_table(
         summary,

@@ -16,13 +16,13 @@ Overview:
 Market:
     market             market stats about loaded coin                                                      [CoinGecko]
     mkt                all markets for loaded coin                                                         [CoinPaprika]
-    binbook            order book                                                                          [Binance]
     balance            coin balance                                                                        [Binance]
-    cbbook             order book                                                                          [Coinbase]
-    trades             last trades                                                                         [Coinbase]
     ex                 all exchanges where loaded coin is listed                                           [CoinPaprika]
     oi                 open interest per exchange                                                          [Coinglass]
+    fundrate           funding rate per exchange                                                           [Coinglass]
     eb                 total balance held on exchanges (in percentage and units)                           [Glassnode]
+    trades             last trades                                                                         [CCXT]
+    ob                 order book                                                                          [CCXT]
 Metrics:
     mcapdom            market cap dominance                                                                [Messari]
     active             active addresses                                                                    [Glassnode]
