@@ -106,6 +106,7 @@ ccxt = "^1.86.3"
 html5lib = "^1.1"
 tensorflow-macos = {version = "^2.9.2", optional = true}
 tensorflow-metal = {version = "^0.5.0", optional = true}
+feedparser = "^6.0.10"
 
 
 [tool.poetry.dev-dependencies]
