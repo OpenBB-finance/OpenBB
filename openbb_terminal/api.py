@@ -1337,33 +1337,33 @@ functions = {
     },
     "stocks.sector_industry_analysis.companies_per_country_in_industry": {
         "model": "openbb_terminal.stocks.sector_industry_analysis."
-                 "financedatabase_model.get_companies_per_country_in_industry",
+        "financedatabase_model.get_companies_per_country_in_industry",
         "view": "openbb_terminal.stocks.sector_industry_analysis."
-                "financedatabase_view.display_companies_per_country_in_industry",
+        "financedatabase_view.display_companies_per_country_in_industry",
     },
     "stocks.sector_industry_analysis.companies_per_country_in_sector": {
         "model": "openbb_terminal.stocks.sector_industry_analysis."
-                 "financedatabase_model.get_companies_per_country_in_sector",
+        "financedatabase_model.get_companies_per_country_in_sector",
         "view": "openbb_terminal.stocks.sector_industry_analysis."
-                "financedatabase_view.display_companies_per_country_in_sector",
+        "financedatabase_view.display_companies_per_country_in_sector",
     },
     "stocks.sector_industry_analysis.companies_per_industry_in_country": {
         "model": "openbb_terminal.stocks.sector_industry_analysis."
-                 "financedatabase_model.get_companies_per_industry_in_country",
+        "financedatabase_model.get_companies_per_industry_in_country",
         "view": "openbb_terminal.stocks.sector_industry_analysis."
-                "financedatabase_view.display_companies_per_industry_in_country",
+        "financedatabase_view.display_companies_per_industry_in_country",
     },
     "stocks.sector_industry_analysis.companies_per_industry_in_sector": {
         "model": "openbb_terminal.stocks.sector_industry_analysis."
-                 "financedatabase_model.get_companies_per_industry_in_sector",
+        "financedatabase_model.get_companies_per_industry_in_sector",
         "view": "openbb_terminal.stocks.sector_industry_analysis."
-                "financedatabase_view.display_companies_per_industry_in_sector",
+        "financedatabase_view.display_companies_per_industry_in_sector",
     },
     "stocks.sector_industry_analysis.companies_per_sector_in_country": {
         "model": "openbb_terminal.stocks.sector_industry_analysis."
-                 "financedatabase_model.get_companies_per_sector_in_country",
+        "financedatabase_model.get_companies_per_sector_in_country",
         "view": "openbb_terminal.stocks.sector_industry_analysis."
-                "financedatabase_view.display_companies_per_sector_in_country",
+        "financedatabase_view.display_companies_per_sector_in_country",
     },
     "stocks.sector_industry_analysis.countries": {
         "model": "openbb_terminal.stocks.sector_industry_analysis.financedatabase_model.get_countries"
