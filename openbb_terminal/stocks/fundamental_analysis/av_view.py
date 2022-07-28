@@ -24,15 +24,15 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
-def display_overview(ticker: str):
+def display_overview(symbol: str):
     """Alpha Vantage stock ticker overview
 
     Parameters
     ----------
-    ticker : str
+    symbol : str
         Fundamental analysis ticker symbol
     """
-    df_fa = av_model.get_overview(ticker)
+    df_fa = av_model.get_overview(symbol)
     if df_fa.empty:
         console.print("No API calls left. Try me later", "\n")
         return
@@ -40,7 +40,7 @@ def display_overview(ticker: str):
     print_rich_table(
         df_fa.drop(index=["Description"]),
         headers=[""],
-        title=f"{ticker} Overview",
+        title=f"{symbol} Overview",
         show_index=True,
     )
 
@@ -50,28 +50,28 @@ def display_overview(ticker: str):
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
-def display_key(ticker: str):
+def display_key(symbol: str):
     """Alpha Vantage key metrics
 
     Parameters
     ----------
-    ticker : str
+    symbol : str
         Fundamental analysis ticker symbol
     """
-    df_key = av_model.get_key_metrics(ticker)
+    df_key = av_model.get_key_metrics(symbol)
 
     if df_key.empty:
         return
 
     print_rich_table(
-        df_key, headers=[""], title=f"{ticker} Key Metrics", show_index=True
+        df_key, headers=[""], title=f"{symbol} Key Metrics", show_index=True
     )
 
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
 def display_income_statement(
-    ticker: str,
+    symbol: str,
     limit: int = 5,
     quarterly: bool = False,
     ratios: bool = False,
@@ -82,7 +82,7 @@ def display_income_statement(
 
     Parameters
     ----------
-    ticker : str
+    symbol : str
         Fundamental analysis ticker symbol
     limit: int
         Number of past statements, by default 5
@@ -96,7 +96,7 @@ def display_income_statement(
         Format to export data
     """
     df_income = av_model.get_income_statements(
-        ticker, limit, quarterly, ratios, bool(plot)
+        symbol, limit, quarterly, ratios, bool(plot)
     )
 
     if df_income.empty:
@@ -132,9 +132,9 @@ def display_income_statement(
             fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
             df_rounded[plot[0].replace("_", "")].plot()
             title = (
-                f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {ticker.upper()}"
+                f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {symbol.upper()}"
                 if ratios
-                else f"{plot[0].replace('_', ' ')} of {ticker.upper()} {denomination}"
+                else f"{plot[0].replace('_', ' ')} of {symbol.upper()} {denomination}"
             )
             plt.title(title)
             theme.style_primary_axis(ax)
@@ -154,9 +154,9 @@ def display_income_statement(
         print_rich_table(
             df_income,
             headers=list(df_income.columns),
-            title=f"{ticker} Income Statement"
+            title=f"{symbol} Income Statement"
             if not ratios
-            else f"{'QoQ' if quarterly else 'YoY'} Change of {ticker} Income Statement",
+            else f"{'QoQ' if quarterly else 'YoY'} Change of {symbol} Income Statement",
             show_index=True,
         )
 
@@ -166,7 +166,7 @@ def display_income_statement(
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
 def display_balance_sheet(
-    ticker: str,
+    symbol: str,
     limit: int = 5,
     quarterly: bool = False,
     ratios: bool = False,
@@ -177,7 +177,7 @@ def display_balance_sheet(
 
     Parameters
     ----------
-    ticker : str
+    symbol : str
         Fundamental analysis ticker symbol
     limit: int
         Number of past statements, by default 5
@@ -191,7 +191,7 @@ def display_balance_sheet(
         Format to export data
     """
     df_balance = av_model.get_balance_sheet(
-        ticker, limit, quarterly, ratios, bool(plot)
+        symbol, limit, quarterly, ratios, bool(plot)
     )
 
     if df_balance.empty:
@@ -227,9 +227,9 @@ def display_balance_sheet(
             fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
             df_rounded[plot[0].replace("_", "")].plot()
             title = (
-                f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {ticker.upper()}"
+                f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {symbol.upper()}"
                 if ratios
-                else f"{plot[0].replace('_', ' ')} of {ticker.upper()} {denomination}"
+                else f"{plot[0].replace('_', ' ')} of {symbol.upper()} {denomination}"
             )
             plt.title(title)
             theme.style_primary_axis(ax)
@@ -251,9 +251,9 @@ def display_balance_sheet(
         print_rich_table(
             df_balance,
             headers=list(df_balance.columns),
-            title=f"{ticker} Balance Sheet"
+            title=f"{symbol} Balance Sheet"
             if not ratios
-            else f"{'QoQ' if quarterly else 'YoY'} Change of {ticker} Balance Sheet",
+            else f"{'QoQ' if quarterly else 'YoY'} Change of {symbol} Balance Sheet",
             show_index=True,
         )
 
@@ -265,7 +265,7 @@ def display_balance_sheet(
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
 def display_cash_flow(
-    ticker: str,
+    symbol: str,
     limit: int = 5,
     quarterly: bool = False,
     ratios: bool = False,
@@ -276,7 +276,7 @@ def display_cash_flow(
 
     Parameters
     ----------
-    ticker : str
+    symbol : str
         Fundamental analysis ticker symbol
     limit: int
         Number of past statements, by default 5
@@ -289,7 +289,7 @@ def display_cash_flow(
     export: str
         Format to export data
     """
-    df_cash = av_model.get_cash_flow(ticker, limit, quarterly, ratios, bool(plot))
+    df_cash = av_model.get_cash_flow(symbol, limit, quarterly, ratios, bool(plot))
 
     if df_cash.empty:
         return
@@ -324,9 +324,9 @@ def display_cash_flow(
             fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
             df_rounded[plot[0].replace("_", "")].plot()
             title = (
-                f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {ticker.upper()}"
+                f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {symbol.upper()}"
                 if ratios
-                else f"{plot[0].replace('_', ' ')} of {ticker.upper()} {denomination}"
+                else f"{plot[0].replace('_', ' ')} of {symbol.upper()} {denomination}"
             )
             plt.title(title)
             theme.style_primary_axis(ax)
@@ -348,9 +348,9 @@ def display_cash_flow(
         print_rich_table(
             df_cash,
             headers=list(df_cash.columns),
-            title=f"{ticker} Cash flow"
+            title=f"{symbol} Cash flow"
             if not ratios
-            else f"{'QoQ' if quarterly else 'YoY'} Change of {ticker} Cash flow",
+            else f"{'QoQ' if quarterly else 'YoY'} Change of {symbol} Cash flow",
             show_index=True,
         )
 
@@ -360,13 +360,13 @@ def display_cash_flow(
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
 def display_earnings(
-    ticker: str, limit: int, quarterly: bool = False, export: str = ""
+    symbol: str, limit: int, quarterly: bool = False, export: str = ""
 ):
     """Alpha Vantage earnings
 
     Parameters
     ----------
-    ticker : str
+    symbol : str
         Fundamental analysis ticker symbol
     limit:int
         Number of events to show
@@ -375,7 +375,7 @@ def display_earnings(
     export: str
         Format to export data
     """
-    df_fa = av_model.get_earnings(ticker, quarterly)
+    df_fa = av_model.get_earnings(symbol, quarterly)
 
     if df_fa.empty:
         return
@@ -384,7 +384,7 @@ def display_earnings(
         df_fa.head(limit),
         headers=list(df_fa.columns),
         show_index=False,
-        title=f"{ticker} Earnings",
+        title=f"{symbol} Earnings",
     )
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "earnings", df_fa)
@@ -393,7 +393,7 @@ def display_earnings(
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
 def display_fraud(
-    ticker: str,
+    symbol: str,
     export: str = "",
     help_text: bool = False,
     color: bool = True,
@@ -402,7 +402,7 @@ def display_fraud(
     """Fraud indicators for given ticker
     Parameters
     ----------
-    ticker : str
+    symbol : str
         Fundamental analysis ticker symbol
     export : str
         Whether to export the dupont breakdown
@@ -413,7 +413,7 @@ def display_fraud(
     detail : bool
         Whether to show the details for the mscore
     """
-    df = av_model.get_fraud_ratios(ticker, detail=detail)
+    df = av_model.get_fraud_ratios(symbol, detail=detail)
 
     if df.empty:
         console.print("")
@@ -452,7 +452,7 @@ A mckee less than 0.5 indicates a high risk of fraud.
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
 def display_dupont(
-    ticker: str,
+    symbol: str,
     raw: bool = False,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -461,7 +461,7 @@ def display_dupont(
 
     Parameters
     ----------
-    ticker : str
+    symbol : str
         Fundamental analysis ticker symbol
     raw : str
         Show raw data instead of a graph
@@ -470,7 +470,7 @@ def display_dupont(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    df = av_model.get_dupont(ticker)
+    df = av_model.get_dupont(symbol)
     if df.empty:
         console.print("[red]Invalid response from AlphaVantage[/red]\n")
         return

@@ -30,9 +30,9 @@ logger = logging.getLogger(__name__)
 def display_bars_financials(
     finance_key: str,
     finance_metric: str,
-    country: str,
-    sector: str,
-    industry: str,
+    country: str = None,
+    sector: str = None,
+    industry: str = None,
     marketcap: str = "",
     exclude_exchanges: bool = True,
     limit: int = 10,
@@ -687,8 +687,8 @@ def display_companies_per_country_in_sector(
 
     Parameters
     ----------
-    country: str
-        Select country to get number of companies by each country
+    sector: str
+        Select sector to get number of companies by each sector
     mktcap: str
         Select market cap of companies to consider from Small, Mid and Large
     exclude_exchanges : bool
@@ -831,8 +831,8 @@ def display_companies_per_country_in_industry(
 
     Parameters
     ----------
-    country: str
-        Select country to get number of companies by each country
+    industry: str
+        Select industry to get number of companies by each industry
     mktcap: str
         Select market cap of companies to consider from Small, Mid and Large
     exclude_exchanges : bool

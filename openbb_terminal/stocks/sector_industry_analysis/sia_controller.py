@@ -909,7 +909,6 @@ class SectorIndustryAnalysisController(BaseController):
                 self.tickers,
             ) = stockanalysis_view.display_plots_financials(
                 finance_key=ns_parser.metric,
-                sa_dict=stockanalysis_model.sa_keys,
                 country=self.country,
                 sector=self.sector,
                 industry=self.industry,

@@ -128,7 +128,7 @@ def screener(
     loaded_preset: str,
     data_type: str,
     limit: int = 10,
-    ascend: bool = False,
+    ascending: bool = False,
     sort: str = "",
     export: str = "",
 ) -> List[str]:
@@ -142,7 +142,7 @@ def screener(
         Data type string between: overview, valuation, financial, ownership, performance, technical
     limit : int
         Limit of stocks to display
-    ascend : bool
+    ascending : bool
         Order of table to ascend or descend
     sort: str
         Column to sort table by
@@ -159,7 +159,7 @@ def screener(
             preset_loaded=loaded_preset,
             data_type=data_type,
             limit=10,
-            ascend=ascend,
+            ascend=ascending,
         )
 
     if isinstance(df_screen, pd.DataFrame):
@@ -172,7 +172,7 @@ def screener(
             if sort in d_cols_to_sort[data_type]:
                 df_screen = df_screen.sort_values(
                     by=[sort],
-                    ascending=ascend,
+                    ascending=ascending,
                     na_position="last",
                 )
             else:
@@ -188,7 +188,7 @@ def screener(
                     )
                     df_screen = df_screen.sort_values(
                         by=[similar_cmd[0]],
-                        ascending=ascend,
+                        ascending=ascending,
                         na_position="last",
                     )
                 else:

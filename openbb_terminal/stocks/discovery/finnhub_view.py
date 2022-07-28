@@ -16,29 +16,23 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 @check_api_key(["API_FINNHUB_KEY"])
 def past_ipo(
-    num_days_behind: int,
-    limit: int,
+    num_days_behind: int = 5,
+    start_date: str = None,
+    limit: int = 20,
     export: str = "",
-    start_date: datetime = None,
-) -> pd.DataFrame:
+):
     """Past IPOs dates. [Source: Finnhub]
 
     Parameters
     ----------
     num_days_behind: int
         Number of days to look behind for IPOs dates
-    starting_day: str
+    start_date: str
         The starting date (format YYYY-MM-DD) to look for IPOs
-    export : str
-        Export dataframe data to csv,json,xlsx file
     limit: int
         Limit number of IPOs to display. Default is 20
-
-
-    Returns
-    -------
-    df_past_ipo : pd.DataFrame
-        Past IPOs dates
+    export : str
+        Export dataframe data to csv,json,xlsx file
     """
     today = datetime.now()
 
@@ -74,8 +68,8 @@ def past_ipo(
 @log_start_end(log=logger)
 @check_api_key(["API_FINNHUB_KEY"])
 def future_ipo(
-    num_days_ahead: int, limit: int, export: str = "", end_date: datetime = None
-) -> pd.DataFrame:
+    num_days_ahead: int = 5, end_date: datetime = None, limit: int = 20, export: str = ""
+):
     """Future IPOs dates. [Source: Finnhub]
 
     Parameters
@@ -84,15 +78,10 @@ def future_ipo(
         Number of days to look ahead for IPOs dates
     end_date: datetime
         The end date (format YYYY-MM-DD) to look for IPOs from today onwards
-    export : str
-        Export dataframe data to csv,json,xlsx file
     limit: int
         Limit number of IPOs to display. Default is 20
-
-    Returns
-    -------
-    df_future_ipo : pd.DataFrame
-        Future IPOs dates
+    export : str
+        Export dataframe data to csv,json,xlsx file
     """
     today = datetime.now()
 

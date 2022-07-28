@@ -49,7 +49,7 @@ def test_view_screener_output(mocker):
     syncretism_view.view_screener_output(
         preset="high_IV",
         presets_path=presets_path,
-        n_show=5,
+        limit=5,
         export="",
     )
 
@@ -67,7 +67,7 @@ def test_view_screener_output_error(mocker):
     syncretism_view.view_screener_output(
         preset="high_IV",
         presets_path=presets_path,
-        n_show=5,
+        limit=5,
         export="",
     )
 
@@ -85,6 +85,6 @@ def test_view_historical_greeks(mocker):
         greek="theta",
         put=True,
         raw=True,
-        n_show=5,
+        limit=5,
         export="",
     )

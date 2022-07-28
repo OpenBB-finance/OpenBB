@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def screener(similar: List[str], data_type: str, export: str = ""):
+def screener(similar: List[str], data_type: str = "overview", export: str = ""):
     """Screener
 
     Parameters

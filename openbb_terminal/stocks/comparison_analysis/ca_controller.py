@@ -209,11 +209,11 @@ class ComparisonAnalysisController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if self.ticker:
-                self.similar = yahoo_finance_model.get_sp500_comps_tsne(
+                self.similar = yahoo_finance_view.display_sp500_comps_tsne(
                     self.ticker,
                     lr=ns_parser.lr,
                     no_plot=ns_parser.no_plot,
-                    num_tickers=ns_parser.limit,
+                    limit=ns_parser.limit,
                 )
 
                 self.similar = [self.ticker] + self.similar
@@ -223,7 +223,8 @@ class ComparisonAnalysisController(BaseController):
 
             else:
                 console.print(
-                    "You need to 'set' a ticker to get similar companies from first!"
+                    "You need to 'set' a ticker to get similar companies from first! This is "
+                    "for example done by running 'ticker gme'"
                 )
 
     @log_start_end(log=logger)

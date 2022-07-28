@@ -144,11 +144,11 @@ class DueDiligenceController(StockBaseController):
         )
         if ns_parser:
             business_insider_view.price_target_from_analysts(
-                ticker=self.ticker,
-                start=self.start,
+                symbol=self.ticker,
+                start_date=self.start,
                 interval=self.interval,
-                stock=self.stock,
-                num=ns_parser.limit,
+                data=self.stock,
+                limit=ns_parser.limit,
                 raw=ns_parser.raw,
                 export=ns_parser.export,
             )
@@ -167,7 +167,7 @@ class DueDiligenceController(StockBaseController):
         )
         if ns_parser:
             business_insider_view.estimates(
-                ticker=self.ticker,
+                symbol=self.ticker,
                 export=ns_parser.export,
             )
 
@@ -205,8 +205,8 @@ class DueDiligenceController(StockBaseController):
         )
         if ns_parser:
             finnhub_view.rating_over_time(
-                ticker=self.ticker,
-                num=ns_parser.limit,
+                symbol=self.ticker,
+                limit=ns_parser.limit,
                 raw=ns_parser.raw,
                 export=ns_parser.export,
             )
@@ -241,8 +241,8 @@ class DueDiligenceController(StockBaseController):
         )
         if ns_parser:
             fmp_view.rating(
-                ticker=self.ticker,
-                num=ns_parser.limit,
+                symbol=self.ticker,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -275,8 +275,8 @@ class DueDiligenceController(StockBaseController):
         )
         if ns_parser:
             marketwatch_view.sec_filings(
-                ticker=self.ticker,
-                num=ns_parser.limit,
+                symbol=self.ticker,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -294,7 +294,7 @@ class DueDiligenceController(StockBaseController):
         )
         if ns_parser:
             csimarket_view.suppliers(
-                ticker=self.ticker,
+                symbol=self.ticker,
                 export=ns_parser.export,
             )
 
@@ -312,7 +312,7 @@ class DueDiligenceController(StockBaseController):
         )
         if ns_parser:
             csimarket_view.customers(
-                ticker=self.ticker,
+                symbol=self.ticker,
                 export=ns_parser.export,
             )
 
@@ -349,8 +349,8 @@ class DueDiligenceController(StockBaseController):
         )
         if ns_parser:
             ark_view.display_ark_trades(
-                ticker=self.ticker,
-                num=ns_parser.limit,
+                symbol=self.ticker,
+                limit=ns_parser.limit,
+                show_symbol=ns_parser.show_ticker,
                 export=ns_parser.export,
-                show_ticker=ns_parser.show_ticker,
             )

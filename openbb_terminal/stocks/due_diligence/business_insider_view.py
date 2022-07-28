@@ -28,12 +28,12 @@ register_matplotlib_converters()
 
 @log_start_end(log=logger)
 def price_target_from_analysts(
-    ticker: str,
-    start: str,
+    symbol: str,
+    data: DataFrame,
+    start_date: str,
     interval: str,
-    stock: DataFrame,
-    num: int,
-    raw: bool,
+    limit: int = 10,
+    raw: bool = False,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -41,30 +41,30 @@ def price_target_from_analysts(
 
     Parameters
     ----------
-    ticker : str
+    symbol: str
         Due diligence ticker symbol
-    start : str
+    start_date: str
         Start date of the stock data
-    interval : str
+    interval: str
         Stock data interval
-    stock : DataFrame
+    data: DataFrame
         Due diligence stock dataframe
-    num : int
+    limit: int
         Number of latest price targets from analysts to print
-    raw : bool
+    raw: bool
         Display raw data only
-    export : str
+    export: str
         Export dataframe data to csv,json,xlsx file
-    external_axes : Optional[List[plt.Axes]], optional
+    external_axes: Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
 
-    df_analyst_data = business_insider_model.get_price_target_from_analysts(ticker)
+    df_analyst_data = business_insider_model.get_price_target_from_analysts(symbol)
 
     if raw:
         df_analyst_data.index = df_analyst_data.index.strftime("%Y-%m-%d")
         print_rich_table(
-            df_analyst_data.sort_index(ascending=False).head(num),
+            df_analyst_data.sort_index(ascending=False).head(limit),
             headers=list(df_analyst_data.columns),
             show_index=True,
             title="Analyst Price Targets",
@@ -81,19 +81,19 @@ def price_target_from_analysts(
             return
 
         # Slice start of ratings
-        if start:
-            df_analyst_data = df_analyst_data[start:]  # type: ignore
+        if start_date:
+            df_analyst_data = df_analyst_data[start_date:]  # type: ignore
 
         if interval == "1440min":
-            ax.plot(stock.index, stock["Adj Close"].values)
+            ax.plot(data.index, data["Adj Close"].values)
             legend_price_label = "Adjusted closing price"
         # Intraday
         else:
-            ax.plot(stock.index, stock["Close"].values)
+            ax.plot(data.index, data["Close"].values)
             legend_price_label = "Closing price"
 
-        if start:
-            ax.plot(df_analyst_data.groupby(by=["Date"]).mean()[start:])  # type: ignore
+        if start_date:
+            ax.plot(df_analyst_data.groupby(by=["Date"]).mean()[start_date:])  # type: ignore
         else:
             ax.plot(df_analyst_data.groupby(by=["Date"]).mean())
 
@@ -107,8 +107,8 @@ def price_target_from_analysts(
 
         ax.legend([legend_price_label, "Average Price Target", "Price Target"])
 
-        ax.set_title(f"{ticker} (Time Series) and Price Target")
-        ax.set_xlim(stock.index[0], stock.index[-1])
+        ax.set_title(f"{symbol} (Time Series) and Price Target")
+        ax.set_xlim(data.index[0], data.index[-1])
         ax.set_ylabel("Share Price")
 
         theme.style_primary_axis(ax)
@@ -127,12 +127,12 @@ def price_target_from_analysts(
 
 
 @log_start_end(log=logger)
-def estimates(ticker: str, export: str):
+def estimates(symbol: str, export: str = ""):
     """Display analysts' estimates for a given ticker. [Source: Business Insider]
 
     Parameters
     ----------
-    ticker : str
+    symbol : str
         Ticker to get analysts' estimates
     export : str
         Export dataframe data to csv,json,xlsx file
@@ -141,7 +141,7 @@ def estimates(ticker: str, export: str):
         df_year_estimates,
         df_quarter_earnings,
         df_quarter_revenues,
-    ) = business_insider_model.get_estimates(ticker)
+    ) = business_insider_model.get_estimates(symbol)
 
     print_rich_table(
         df_year_estimates,

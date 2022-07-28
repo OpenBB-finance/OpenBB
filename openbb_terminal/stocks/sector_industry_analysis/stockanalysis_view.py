@@ -32,7 +32,6 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 def display_plots_financials(
     finance_key: str,
-    sa_dict: dict,
     country: str,
     sector: str,
     industry: str,
@@ -53,23 +52,21 @@ def display_plots_financials(
     ----------
     finance_key: str
         Select finance key from StockAnalysis (e.g. re (Revenue), ce (Cash & Equivalents) and inv (Inventory)
-    sa_dict: str
-        The entire collection of options for StockAnalysis separated by statement (BS, IS and CF)
     country: str
         Search by country to find stocks matching the criteria.
-    sector : str
+    sector: str
         Search by sector to find stocks matching the criteria.
-    industry : str
+    industry: str
         Search by industry to find stocks matching the criteria.
-    period : str
+    period: str
         Collect either annual, quarterly or trailing financial statements.
-    period_length : int
+    period_length: int
         Determines how far you wish to look to the past (default is 12 quarters or years)
-    marketcap : str
+    marketcap: str
         Select stocks based on the market cap.
     exclude_exchanges: bool
         When you wish to include different exchanges use this boolean.
-    convert_currency : str
+    convert_currency: str
         Choose in what currency you wish to convert each company's financial statement. Default is USD (US Dollars).
     limit: int
         Limit amount of companies displayed (default is 10)
@@ -93,7 +90,7 @@ def display_plots_financials(
         already_loaded_stocks_data = {}
 
     used_statement = [
-        statement for statement in sa_dict if finance_key in sa_dict[statement]
+        statement for statement in stockanalysis_model.sa_keys if finance_key in stockanalysis_model.sa_keys[statement]
     ][0]
 
     if used_statement in already_loaded_stocks_data:
@@ -110,7 +107,6 @@ def display_plots_financials(
         stocks_data = stockanalysis_model.get_stocks_data(
             company_tickers,
             finance_key,
-            sa_dict,
             already_loaded_stocks_data,
             period,
             convert_currency,
@@ -136,7 +132,7 @@ def display_plots_financials(
                 stocks_data_statement[company].columns[-period_length:]
             ]
 
-    item_name = sa_dict[used_statement][finance_key]
+    item_name = stockanalysis_model.sa_keys[used_statement][finance_key]
 
     df = pd.DataFrame(
         np.nan,

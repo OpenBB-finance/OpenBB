@@ -422,7 +422,7 @@ class GovController(StockBaseController):
         if ns_parser:
             if self.ticker:
                 quiverquant_view.display_government_trading(
-                    ticker=self.ticker,
+                    symbol=self.ticker,
                     gov_type=ns_parser.gov,
                     past_transactions_months=ns_parser.past_transactions_months,
                     raw=ns_parser.raw,
@@ -464,7 +464,7 @@ class GovController(StockBaseController):
         if ns_parser:
             if self.ticker:
                 quiverquant_view.display_contracts(
-                    ticker=self.ticker,
+                    symbol=self.ticker,
                     past_transaction_days=ns_parser.past_transaction_days,
                     raw=ns_parser.raw,
                     export=ns_parser.export,
@@ -494,7 +494,7 @@ class GovController(StockBaseController):
         if ns_parser:
             if self.ticker:
                 quiverquant_view.display_hist_contracts(
-                    ticker=self.ticker, raw=ns_parser.raw, export=ns_parser.export
+                    symbol=self.ticker, raw=ns_parser.raw, export=ns_parser.export
                 )
             else:
                 console.print("No ticker loaded. Use `load <ticker>` first.\n")
@@ -523,7 +523,7 @@ class GovController(StockBaseController):
         if ns_parser:
             if self.ticker:
                 quiverquant_view.display_lobbying(
-                    ticker=self.ticker,
+                    symbol=self.ticker,
                     num=ns_parser.limit,
                 )
             else:

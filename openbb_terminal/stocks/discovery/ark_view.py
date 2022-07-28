@@ -32,8 +32,8 @@ def lambda_direction_color_red_green(val: str) -> str:
 
 @log_start_end(log=logger)
 def ark_orders_view(
-    num: int,
-    sort_col: str = "",
+    limit: int,
+    sortby: str = "",
     ascending: bool = False,
     buys_only: bool = False,
     sells_only: bool = False,
@@ -44,19 +44,19 @@ def ark_orders_view(
 
     Parameters
     ----------
-    num: int
+    limit: int
         Number of stocks to display
-    sort_col : str
+    sortby: str
         Column to sort on
-    ascending : bool
+    ascending: bool
         Flag to sort in ascending order
-    buys_only : bool
+    buys_only: bool
         Flag to filter on buys only
-    sells_only : bool
+    sells_only: bool
         Flag to sort on sells only
-    fund : str
+    fund: str
         Optional filter by fund
-    export : str
+    export: str
         Export dataframe data to csv,json,xlsx file
     """
     df_orders = ark_model.get_ark_orders()
@@ -70,10 +70,10 @@ def ark_orders_view(
         df_orders = df_orders[df_orders.direction == "Buy"]
     if sells_only:
         df_orders = df_orders[df_orders.direction == "Sell"]
-    df_orders = ark_model.add_order_total(df_orders.head(num))
+    df_orders = ark_model.add_order_total(df_orders.head(limit))
 
-    if sort_col:
-        df_orders = df_orders.sort_values(by=sort_col, ascending=ascending)
+    if sortby:
+        df_orders = df_orders.sort_values(by=sortby, ascending=ascending)
     if rich_config.USE_COLOR:
         df_orders["direction"] = df_orders["direction"].apply(
             lambda_direction_color_red_green

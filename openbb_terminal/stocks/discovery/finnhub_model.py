@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime, timedelta
 
 import pandas as pd
 import requests
@@ -11,15 +12,15 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def get_ipo_calendar(from_date: str, to_date: str) -> pd.DataFrame:
+def get_ipo_calendar(start_date: str = (datetime.now() - timedelta(days=5)).strftime("%Y-%m-%d"), end_date: str = datetime.now().strftime("%Y-%m-%d")) -> pd.DataFrame:
     """Get IPO calendar
 
     Parameters
     ----------
-    from_date : str
-        from date (%Y-%m-%d) to get IPO calendar
-    to_date : str
-        to date (%Y-%m-%d) to get IPO calendar
+    start_date : str
+        start date (%Y-%m-%d) to get IPO calendar
+    end_date : str
+        end date (%Y-%m-%d) to get IPO calendar
 
     Returns
     -------
@@ -27,7 +28,7 @@ def get_ipo_calendar(from_date: str, to_date: str) -> pd.DataFrame:
         Get dataframe with economic calendar events
     """
     response = requests.get(
-        f"https://finnhub.io/api/v1/calendar/ipo?from={from_date}&to={to_date}&token={cfg.API_FINNHUB_KEY}"
+        f"https://finnhub.io/api/v1/calendar/ipo?from={start_date}&to={end_date}&token={cfg.API_FINNHUB_KEY}"
     )
 
     df = pd.DataFrame()

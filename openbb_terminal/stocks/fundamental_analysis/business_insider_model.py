@@ -16,13 +16,13 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def get_management(ticker: str) -> pd.DataFrame:
+def get_management(symbol: str) -> pd.DataFrame:
     """Get company managers from Business Insider
 
     Parameters
     ----------
-    ticker : str
-        Stock ticker
+    symbol : str
+        Stock ticker symbol
 
     Returns
     -------
@@ -30,7 +30,7 @@ def get_management(ticker: str) -> pd.DataFrame:
         Dataframe of managers
     """
     url_market_business_insider = (
-        f"https://markets.businessinsider.com/stocks/{ticker.lower()}-stock"
+        f"https://markets.businessinsider.com/stocks/{symbol.lower()}-stock"
     )
     text_soup_market_business_insider = BeautifulSoup(
         requests.get(
@@ -65,7 +65,7 @@ def get_management(ticker: str) -> pd.DataFrame:
 
     if found_h2s.get("Management") is None:
         console.print(
-            f"[red]No management information in Business Insider for {ticker}[/red]"
+            f"[red]No management information in Business Insider for {symbol}[/red]"
         )
         console.print("")
         return pd.DataFrame()
@@ -97,7 +97,7 @@ def get_management(ticker: str) -> pd.DataFrame:
     for s_name in df_management.index:
         df_management.loc[s_name][
             "Info"
-        ] = f"http://www.google.com/search?q={s_name} {ticker.upper()}".replace(
+        ] = f"http://www.google.com/search?q={s_name} {symbol.upper()}".replace(
             " ", "%20"
         )
 

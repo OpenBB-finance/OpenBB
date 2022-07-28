@@ -340,8 +340,8 @@ class OptionsController(BaseController):
                 )
             else:
                 fdscanner_view.display_options(
-                    num=ns_parser.limit,
-                    sort_column=ns_parser.sortby,
+                    limit=ns_parser.limit,
+                    sortby=ns_parser.sortby,
                     export=ns_parser.export,
                     ascending=ns_parser.ascend,
                     calls_only=ns_parser.calls_only,
@@ -380,7 +380,7 @@ class OptionsController(BaseController):
         if ns_parser:
             if self.ticker:
                 alphaquery_view.display_put_call_ratio(
-                    ticker=self.ticker,
+                    symbol=self.ticker,
                     window=ns_parser.length,
                     start_date=ns_parser.start.strftime("%Y-%m-%d"),
                     export=ns_parser.export,
@@ -403,7 +403,7 @@ class OptionsController(BaseController):
         if ns_parser:
             if self.ticker:
                 barchart_view.print_options_data(
-                    ticker=self.ticker, export=ns_parser.export
+                    symbol=self.ticker, export=ns_parser.export
                 )
             else:
                 console.print("No ticker loaded.\n")
@@ -493,7 +493,7 @@ class OptionsController(BaseController):
                             chain_id=ns_parser.chain_id,
                             put=ns_parser.put,
                             raw=ns_parser.raw,
-                            n_show=ns_parser.limit,
+                            limit=ns_parser.limit,
                             export=ns_parser.export,
                         )
                     else:
@@ -667,7 +667,7 @@ class OptionsController(BaseController):
                         else:
                             if TRADIER_TOKEN != "REPLACE_ME":  # nosec
                                 tradier_view.display_historical(
-                                    ticker=self.ticker,
+                                    symbol=self.ticker,
                                     expiry=self.selected_date,
                                     strike=ns_parser.strike,
                                     put=ns_parser.put,
@@ -742,7 +742,7 @@ class OptionsController(BaseController):
                 if self.selected_date:
                     if TRADIER_TOKEN != "REPLACE_ME":  # nosec
                         tradier_view.display_chains(
-                            ticker=self.ticker,
+                            symbol=self.ticker,
                             expiry=self.selected_date,
                             to_display=ns_parser.to_display,
                             min_sp=ns_parser.min_sp,
@@ -812,7 +812,7 @@ class OptionsController(BaseController):
                         and TRADIER_TOKEN != "REPLACE_ME"  # nosec
                     ):
                         tradier_view.plot_vol(
-                            ticker=self.ticker,
+                            symbol=self.ticker,
                             expiry=self.selected_date,
                             min_sp=ns_parser.min,
                             max_sp=ns_parser.max,
@@ -881,7 +881,7 @@ class OptionsController(BaseController):
                         and TRADIER_TOKEN != "REPLACE_ME"  # nosec
                     ):
                         tradier_view.plot_volume_open_interest(
-                            ticker=self.ticker,
+                            symbolself.ticker,
                             expiry=self.selected_date,
                             min_sp=ns_parser.min_sp,
                             max_sp=ns_parser.max_sp,
@@ -956,7 +956,7 @@ class OptionsController(BaseController):
                         and TRADIER_TOKEN != "REPLACE_ME"  # nosec
                     ):
                         tradier_view.plot_oi(
-                            ticker=self.ticker,
+                            symbol=self.ticker,
                             expiry=self.selected_date,
                             min_sp=ns_parser.min,
                             max_sp=ns_parser.max,
@@ -966,7 +966,7 @@ class OptionsController(BaseController):
                         )
                     else:
                         yfinance_view.plot_oi(
-                            ticker=self.ticker,
+                            symbol=self.ticker,
                             expiry=self.selected_date,
                             min_sp=ns_parser.min,
                             max_sp=ns_parser.max,

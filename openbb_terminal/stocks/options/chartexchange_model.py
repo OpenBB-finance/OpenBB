@@ -16,13 +16,13 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def get_option_history(ticker: str, date: str, call: bool, price: str) -> pd.DataFrame:
+def get_option_history(symbol: str, date: str, call: bool, price: str) -> pd.DataFrame:
     """Historic prices for a specific option [chartexchange]
 
     Parameters
     ----------
-    ticker : str
-        Ticker to get historical data from
+    symbol : str
+        Ticker symbol to get historical data from
     date : str
         Date as a string YYYYMMDD
     call : bool
@@ -36,7 +36,7 @@ def get_option_history(ticker: str, date: str, call: bool, price: str) -> pd.Dat
         Historic information for an option
     """
     url = (
-        f"https://chartexchange.com/symbol/opra-{ticker.lower()}{date.replace('-', '')}"
+        f"https://chartexchange.com/symbol/opra-{symbol.lower()}{date.replace('-', '')}"
     )
     url += f"{'c' if call else 'p'}{float(price):g}/historical/"
 

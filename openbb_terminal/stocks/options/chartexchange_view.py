@@ -28,11 +28,11 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_raw(
-    ticker: str,
+    symbol: str,
     date: str,
     call: bool,
-    price: str,
-    num: int = 5,
+    price: str = 0,
+    limit: int = 10,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
@@ -40,21 +40,23 @@ def display_raw(
 
     Parameters
     ----------
-    ticker : str
-        Ticker for the given option
+    symbol : str
+        Ticker symbol for the given option
     date : str
         Date of expiration for the option
     call : bool
         Whether the underlying asset should be a call or a put
     price : float
         The strike of the expiration
-    num : int
+    limit : int
         Number of rows to show
     export : str
         Export data as CSV, JSON, XLSX
+    external_axes: Optional[List[plt.Axes]]
+        External axes (1 axis is expected in the list), by default None
     """
 
-    df = chartexchange_model.get_option_history(ticker, date, call, price)[::-1]
+    df = chartexchange_model.get_option_history(symbol, date, call, price)[::-1]
     df["Date"] = pd.to_datetime(df["Date"])
     df = df.set_index("Date")
 
@@ -83,7 +85,7 @@ def display_raw(
         candle_chart_kwargs["figsize"] = plot_autoscale()
         fig, ax = mpf.plot(df, **candle_chart_kwargs)
         fig.suptitle(
-            f"Historical quotes for {ticker} {option_type}",
+            f"Historical quotes for {symbol} {option_type}",
             x=0.055,
             y=0.965,
             horizontalalignment="left",
@@ -105,8 +107,8 @@ def display_raw(
         df,
     )
     print_rich_table(
-        df.head(num),
+        df.head(limit),
         headers=list(df.columns),
         show_index=True,
-        title=f"{ticker.upper()} raw data",
+        title=f"{symbol.upper()} raw data",
     )

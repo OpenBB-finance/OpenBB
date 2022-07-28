@@ -32,7 +32,7 @@ def display_income_comparison(
     similar : List[str]
         List of tickers to compare
     timeframe : str
-        Whether to use quarterly or annual
+        Column header to compare
     quarter : bool, optional
         Whether to use quarterly statements, by default False
     export : str, optional
@@ -84,7 +84,7 @@ def display_balance_comparison(
     similar : List[str]
         Similar companies to compare income with
     timeframe : str
-        Whether to use quarterly or annual
+        Column header to compare
     quarter : bool, optional
         Whether to use quarterly statements, by default False
     export : str, optional
@@ -133,12 +133,10 @@ def display_cashflow_comparison(
 
     Parameters
     ----------
-    ticker : str
-        Main ticker to compare income
     similar : List[str]
         Similar companies to compare income with
     timeframe : str
-        Whether to use quarterly or annual
+        Column header to compare
     quarter : bool, optional
         Whether to use quarterly statements, by default False
     export : str, optional

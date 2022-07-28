@@ -1,13 +1,10 @@
 import itertools
 import logging
 import os
-import textwrap
 from typing import List
 
 import numpy as np
 import pandas as pd
-import requests
-from bs4 import BeautifulSoup
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
@@ -19,33 +16,11 @@ from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.insider.openinsider_model import (
     get_open_insider_data,
     get_open_insider_link,
+    get_print_insider_data,
 )
 from openbb_terminal import rich_config
 
 logger = logging.getLogger(__name__)
-
-d_open_insider = {
-    "lcb": "latest-cluster-buys",
-    "lpsb": "latest-penny-stock-buys",
-    "lit": "latest-insider-trading",
-    "lip": "insider-purchases",
-    "blip": "latest-insider-purchases-25k",
-    "blop": "latest-officer-purchases-25k",
-    "blcp": "latest-ceo-cfo-purchases-25k",
-    "lis": "insider-sales",
-    "blis": "latest-insider-sales-100k",
-    "blos": "latest-officer-sales-100k",
-    "blcs": "latest-ceo-cfo-sales-100k",
-    "topt": "top-officer-purchases-of-the-day",
-    "toppw": "top-officer-purchases-of-the-week",
-    "toppm": "top-officer-purchases-of-the-month",
-    "tipt": "top-insider-purchases-of-the-day",
-    "tippw": "top-insider-purchases-of-the-week",
-    "tippm": "top-insider-purchases-of-the-month",
-    "tist": "top-insider-sales-of-the-day",
-    "tispw": "top-insider-sales-of-the-week",
-    "tispm": "top-insider-sales-of-the-month",
-}
 
 d_notes = {
     "A": "A: Amended filing",
@@ -142,61 +117,7 @@ def print_insider_data(type_insider: str, limit: int = 10, export: str = ""):
     export: str
         Export data format
     """
-    response = requests.get(f"http://openinsider.com/{d_open_insider[type_insider]}")
-    soup = BeautifulSoup(response.text, "html.parser")
-    table = soup.find("table", {"class": "tinytable"})
-
-    if not table:
-        console.print("No insider information found", "\n")
-        return
-
-    table_rows = table.find_all("tr")
-
-    res = []
-    for tr in table_rows:
-        td = tr.find_all("td")
-        row = [tr.text.strip() for tr in td if tr.text.strip()]
-        res.append(row)
-
-    df = pd.DataFrame(res).dropna().head(n=limit)
-    columns = [
-        "X",
-        "Filing Date",
-        "Trade Date",
-        "Ticker",
-        "Company Name",
-        "Industry" if type_insider == "lcb" else "Insider Name",
-        "Title",
-        "Trade Type",
-        "Price",
-        "Qty",
-        "Owned",
-        "Diff Own",
-        "Value",
-    ]
-
-    if df.shape[1] == 13:
-        df.columns = columns
-    else:
-        df.columns = columns[1:]
-
-    df["Filing Date"] = df["Filing Date"].apply(
-        lambda x: "\n".join(textwrap.wrap(x, width=10)) if isinstance(x, str) else x
-    )
-    df["Company Name"] = df["Company Name"].apply(
-        lambda x: "\n".join(textwrap.wrap(x, width=20)) if isinstance(x, str) else x
-    )
-    df["Title"] = df["Title"].apply(
-        lambda x: "\n".join(textwrap.wrap(x, width=10)) if isinstance(x, str) else x
-    )
-    if type_insider == "lcb":
-        df["Industry"] = df["Industry"].apply(
-            lambda x: "\n".join(textwrap.wrap(x, width=20)) if isinstance(x, str) else x
-        )
-    else:
-        df["Insider Name"] = df["Insider Name"].apply(
-            lambda x: "\n".join(textwrap.wrap(x, width=20)) if isinstance(x, str) else x
-        )
+    df = get_print_insider_data(type_insider, limit)
 
     print_rich_table(
         df,
@@ -218,7 +139,7 @@ def print_insider_data(type_insider: str, limit: int = 10, export: str = ""):
 @log_start_end(log=logger)
 def print_insider_filter(
     preset_loaded: str,
-    ticker: str,
+    symbol: str,
     limit: int = 10,
     links: bool = False,
     export: str = "",
@@ -229,8 +150,8 @@ def print_insider_filter(
     ----------
     preset_loaded : str
         Loaded preset filter
-    ticker : str
-        Stock ticker
+    symbol : str
+        Stock ticker symbol
     limit : int
         Limit of rows of data to display
     links : bool
@@ -238,8 +159,8 @@ def print_insider_filter(
     export : str
         Format to export data
     """
-    if ticker:
-        link = f"http://openinsider.com/screener?s={ticker}"
+    if symbol:
+        link = f"http://openinsider.com/screener?s={symbol}"
     else:
         link = get_open_insider_link(preset_loaded)
 
@@ -247,7 +168,7 @@ def print_insider_filter(
         console.print("")
         return
 
-    df_insider = get_open_insider_data(link, has_company_name=bool(not ticker))
+    df_insider = get_open_insider_data(link, has_company_name=bool(not symbol))
     df_insider_orig = df_insider.copy()
 
     if df_insider.empty:
@@ -301,7 +222,7 @@ def print_insider_filter(
     if export:
         if preset_loaded:
             cmd = "filter"
-        if ticker:
+        if symbol:
             cmd = "lis"
 
         export_data(export, os.path.dirname(os.path.abspath(__file__)), cmd, df_insider)

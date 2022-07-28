@@ -196,7 +196,7 @@ class FundamentalAnalysisController(StockBaseController):
         )
         if ns_parser:
             business_insider_view.display_management(
-                ticker=self.ticker, export=ns_parser.export
+                symbol=self.ticker, export=ns_parser.export
             )
 
     @log_start_end(log=logger)
@@ -321,8 +321,8 @@ class FundamentalAnalysisController(StockBaseController):
         )
         if ns_parser:
             fmp_view.display_enterprise(
-                ticker=self.ticker,
-                number=ns_parser.limit,
+                symbol=self.ticker,
+                limit=ns_parser.limit,
                 quarterly=ns_parser.b_quarter,
                 export=ns_parser.export,
             )
@@ -376,8 +376,8 @@ class FundamentalAnalysisController(StockBaseController):
         )
         if ns_parser:
             fmp_view.display_key_metrics(
-                ticker=self.ticker,
-                number=ns_parser.limit,
+                symbol=self.ticker,
+                limit=ns_parser.limit,
                 quarterly=ns_parser.b_quarter,
                 export=ns_parser.export,
             )
@@ -432,8 +432,8 @@ class FundamentalAnalysisController(StockBaseController):
         )
         if ns_parser:
             fmp_view.display_financial_ratios(
-                ticker=self.ticker,
-                number=ns_parser.limit,
+                symbol=self.ticker,
+                limit=ns_parser.limit,
                 quarterly=ns_parser.b_quarter,
                 export=ns_parser.export,
             )
@@ -484,8 +484,8 @@ class FundamentalAnalysisController(StockBaseController):
         )
         if ns_parser:
             fmp_view.display_financial_statement_growth(
-                ticker=self.ticker,
-                number=ns_parser.limit,
+                symbol=self.ticker,
+                limit=ns_parser.limit,
                 quarterly=ns_parser.b_quarter,
                 export=ns_parser.export,
             )
@@ -823,7 +823,7 @@ class FundamentalAnalysisController(StockBaseController):
                 console.print(f"[red]{text}, showing yearly.[/red]\n")
             if ns_parser.source == "av":
                 av_view.display_income_statement(
-                    ticker=self.ticker,
+                    symbol=self.ticker,
                     limit=ns_parser.limit,
                     quarterly=ns_parser.b_quarter,
                     ratios=ns_parser.ratios,
@@ -842,8 +842,8 @@ class FundamentalAnalysisController(StockBaseController):
                 )
             elif ns_parser.source == "fmp":
                 fmp_view.display_income_statement(
-                    ticker=self.ticker,
-                    number=ns_parser.limit,
+                    symbol=self.ticker,
+                    limit=ns_parser.limit,
                     quarterly=ns_parser.b_quarter,
                     ratios=ns_parser.ratios,
                     plot=ns_parser.plot,
@@ -921,7 +921,7 @@ class FundamentalAnalysisController(StockBaseController):
                 console.print(f"[red]{text}, showing yearly.[/red]\n")
             if ns_parser.source == "av":
                 av_view.display_balance_sheet(
-                    ticker=self.ticker,
+                    symbol=self.ticker,
                     limit=ns_parser.limit,
                     quarterly=ns_parser.b_quarter,
                     ratios=ns_parser.ratios,
@@ -940,8 +940,8 @@ class FundamentalAnalysisController(StockBaseController):
                 )
             elif ns_parser.source == "fmp":
                 fmp_view.display_balance_sheet(
-                    ticker=self.ticker,
-                    number=ns_parser.limit,
+                    symbol=self.ticker,
+                    limit=ns_parser.limit,
                     quarterly=ns_parser.b_quarter,
                     ratios=ns_parser.ratios,
                     plot=ns_parser.plot,
@@ -1025,7 +1025,7 @@ class FundamentalAnalysisController(StockBaseController):
                 console.print(f"[red]{text}, showing yearly.[/red]\n")
             if ns_parser.source == "av":
                 av_view.display_cash_flow(
-                    ticker=self.ticker,
+                    symbol=self.ticker,
                     limit=ns_parser.limit,
                     quarterly=ns_parser.b_quarter,
                     ratios=ns_parser.ratios,
@@ -1034,8 +1034,8 @@ class FundamentalAnalysisController(StockBaseController):
                 )
             elif ns_parser.source == "fmp":
                 fmp_view.display_cash_flow(
-                    ticker=self.ticker,
-                    number=ns_parser.limit,
+                    symbol=self.ticker,
+                    limit=ns_parser.limit,
                     quarterly=ns_parser.b_quarter,
                     ratios=ns_parser.ratios,
                     plot=ns_parser.plot,
@@ -1096,7 +1096,7 @@ class FundamentalAnalysisController(StockBaseController):
         )
         if ns_parser:
             av_view.display_earnings(
-                ticker=self.ticker,
+                symbol=self.ticker,
                 limit=ns_parser.limit,
                 quarterly=ns_parser.b_quarter,
                 export=ns_parser.export,
@@ -1170,7 +1170,7 @@ class FundamentalAnalysisController(StockBaseController):
         )
         if ns_parser:
             av_view.display_fraud(
-                ticker=self.ticker,
+                symbol=self.ticker,
                 export=ns_parser.export,
                 detail=ns_parser.detail,
             )
@@ -1311,8 +1311,8 @@ class FundamentalAnalysisController(StockBaseController):
         )
         if ns_parser:
             fmp_view.display_discounted_cash_flow(
-                ticker=self.ticker,
-                number=ns_parser.limit,
+                symbol=self.ticker,
+                limit=ns_parser.limit,
                 quarterly=ns_parser.b_quarter,
                 export=ns_parser.export,
             )

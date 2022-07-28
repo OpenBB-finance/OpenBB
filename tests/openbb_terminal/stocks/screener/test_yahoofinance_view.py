@@ -55,7 +55,7 @@ def test_historical(mocker):
     yahoofinance_view.historical(
         preset_loaded="top_gainers",
         limit=2,
-        start=datetime.strptime("2022-01-03", "%Y-%m-%d"),
+        start_date="2022-01-03",
         type_candle="a",
         normalize=True,
         export="",
@@ -105,7 +105,7 @@ def test_historical_no_d_signals(mocker):
     yahoofinance_view.historical(
         preset_loaded="oversold",
         limit=2,
-        start=datetime.strptime("2022-01-03", "%Y-%m-%d"),
+        start_date="2022-01-03",
         type_candle="a",
         normalize=True,
         export="",

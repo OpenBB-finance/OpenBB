@@ -37,7 +37,7 @@ def test_plot_oi(calls_only, max_sp, min_sp, mocker, puts_only):
     mocker.patch(target="openbb_terminal.stocks.options.yfinance_view.export_data")
 
     yfinance_view.plot_oi(
-        ticker="PM",
+        symbol="PM",
         expiry="2022-01-07",
         min_sp=min_sp,
         max_sp=max_sp,
@@ -66,7 +66,7 @@ def test_plot_vol(calls_only, max_sp, min_sp, mocker, puts_only):
     mocker.patch(target="openbb_terminal.stocks.options.yfinance_view.export_data")
 
     yfinance_view.plot_vol(
-        ticker="PM",
+        symbol="PM",
         expiry="2022-01-07",
         min_sp=min_sp,
         max_sp=max_sp,
@@ -95,7 +95,7 @@ def test_plot_volume_open_interest(max_sp, min_sp, min_vol, mocker):
     mocker.patch(target="openbb_terminal.stocks.options.yfinance_view.export_data")
 
     yfinance_view.plot_volume_open_interest(
-        ticker="PM",
+        symbol="PM",
         expiry="2022-01-07",
         min_sp=min_sp,
         max_sp=max_sp,
@@ -116,7 +116,7 @@ def test_plot_plot(mocker):
     mocker.patch(target="openbb_terminal.stocks.options.yfinance_view.export_data")
 
     yfinance_view.plot_plot(
-        ticker="PM",
+        symbol="PM",
         expiration="2022-01-07",
         put=True,
         x="c",
@@ -141,7 +141,7 @@ def test_plot_payoff(mocker):
         current_price=95.0,
         options=[],
         underlying=0,
-        ticker="PM",
+        symbol="PM",
         expiration="2022-01-07",
     )
 
@@ -158,7 +158,7 @@ def test_show_parity(mocker):
     mocker.patch(target="openbb_terminal.stocks.options.yfinance_view.export_data")
 
     yfinance_view.show_parity(
-        ticker="PM",
+        symbol="PM",
         exp="2022-01-07",
         put=True,
         ask=True,
@@ -180,10 +180,10 @@ def test_risk_neutral_vals(mocker):
     mocker.patch(target="openbb_terminal.stocks.options.yfinance_view.export_data")
 
     yfinance_view.risk_neutral_vals(
-        ticker="PM",
+        symbol="PM",
         exp="2022-01-07",
         put=True,
-        df=pd.DataFrame(columns=["Price", "Chance"]),
+        data=pd.DataFrame(columns=["Price", "Chance"]),
         mini=None,
         maxi=None,
         risk=None,
@@ -205,7 +205,7 @@ def test_show_binom(mocker):
     mocker.patch(target="openbb_terminal.stocks.options.yfinance_view.Workbook.save")
 
     yfinance_view.show_binom(
-        ticker="PM",
+        symbol="PM",
         expiration="2022-01-07",
         strike=90.0,
         put=True,
@@ -219,4 +219,4 @@ def test_show_binom(mocker):
 @pytest.mark.default_cassette("test_show_greeks")
 @pytest.mark.vcr
 def test_show_greeks():
-    yfinance_view.show_greeks(ticker="AAPL", expire="2022-01-28", div_cont=0)
+    yfinance_view.show_greeks(symbol="AAPL", expire="2022-01-28", div_cont=0)

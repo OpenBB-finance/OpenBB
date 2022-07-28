@@ -84,7 +84,6 @@ sa_keys = {
 def get_stocks_data(
     stocks: list,
     finance_key: str,
-    sa_dict: dict,
     stocks_data: dict,
     period: str,
     convert_currency: str = "USD",
@@ -99,9 +98,6 @@ def get_stocks_data(
     finance_key: str
         The finance key used to search within the sa_dict for the correct name of item
         on the financial statement
-    sa_dict: dict
-        A dictionary that includes BS, IS and CF, the abbreviations and names of items
-        on the financial statements. I.e: {"BS": {"ce": "Cash & Equivalents"}}
     stocks_data : dict
         A dictionary that is empty on initialisation but filled once data is collected
         for the first time.
@@ -117,8 +113,8 @@ def get_stocks_data(
     """
     no_data = []
     for symbol in tqdm(stocks):
-        for statement in sa_dict.keys():
-            if finance_key in sa_dict[statement]:
+        for statement in sa_keys.keys():
+            if finance_key in sa_keys[statement]:
                 if statement not in stocks_data:
                     stocks_data[statement] = {}
                 used_statement = statement
@@ -202,21 +198,21 @@ def match_length_dataframes(dataframes: Dict[pd.DataFrame, Any]):
     return dataframes
 
 
-def change_type_dataframes(dataframe) -> pd.DataFrame:
+def change_type_dataframes(data: pd.DataFrame) -> pd.DataFrame:
     """
     Adjusts comma-seperated strings to floats
 
     Parameters
     ----------
-    dataframe : pd.DataFrame
+    data : pd.DataFrame
         DataFrame with comma-seperated strings
 
     Returns
     -------
-    dataframe : pd.DataFrame
+    pd.DataFrame
         Adjusted DataFrame
     """
-    dataframe = dataframe.apply(
+    dataframe = data.apply(
         lambda x: x.astype(str).str.replace(",", "").astype(float), axis=1
     )
 

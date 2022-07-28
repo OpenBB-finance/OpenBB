@@ -13,12 +13,12 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def get_dark_pool_short_positions(sort_field: str, ascending: bool) -> pd.DataFrame:
+def get_dark_pool_short_positions(sortby: str = "dpp_dollar", ascending: bool = False) -> pd.DataFrame:
     """Get dark pool short positions. [Source: Stockgrid]
 
     Parameters
     ----------
-    sort_field : str
+    sortby : str
         Field for which to sort by, where 'sv': Short Vol. [1M],
         'sv_pct': Short Vol. %%, 'nsv': Net Short Vol. [1M],
         'nsv_dollar': Net Short Vol. ($100M), 'dpp': DP Position [1M],
@@ -40,7 +40,7 @@ def get_dark_pool_short_positions(sort_field: str, ascending: bool) -> pd.DataFr
         "dpp_dollar": "Dark+Pools+Position+$",
     }
 
-    field = d_fields_endpoints[sort_field]
+    field = d_fields_endpoints[sortby]
 
     if ascending:
         order = "asc"
@@ -69,12 +69,12 @@ def get_dark_pool_short_positions(sort_field: str, ascending: bool) -> pd.DataFr
 
 
 @log_start_end(log=logger)
-def get_short_interest_days_to_cover(sort_field: str) -> pd.DataFrame:
+def get_short_interest_days_to_cover(sortby: str = "dpp_dollar") -> pd.DataFrame:
     """Get short interest and days to cover. [Source: Stockgrid]
 
     Parameters
     ----------
-    sort_field : str
+    sortby : str
         Field for which to sort by, where 'float': Float Short %%,
         'dtc': Days to Cover, 'si': Short Interest
 
@@ -96,20 +96,20 @@ def get_short_interest_days_to_cover(sort_field: str) -> pd.DataFrame:
     df = df[
         ["Ticker", "Date", "%Float Short", "Days To Cover", "Short Interest"]
     ].sort_values(
-        by=d_fields[sort_field],
-        ascending=bool(sort_field == "dtc"),
+        by=d_fields[sortby],
+        ascending=bool(sortby == "dtc"),
     )
 
     return df
 
 
 @log_start_end(log=logger)
-def get_short_interest_volume(ticker: str) -> Tuple[pd.DataFrame, List]:
+def get_short_interest_volume(symbol: str) -> Tuple[pd.DataFrame, List]:
     """Get price vs short interest volume. [Source: Stockgrid]
 
     Parameters
     ----------
-    ticker : str
+    symbol : str
         Stock to get data from
 
     Returns
@@ -119,7 +119,7 @@ def get_short_interest_volume(ticker: str) -> Tuple[pd.DataFrame, List]:
     List
         Price data
     """
-    link = f"https://stockgridapp.herokuapp.com/get_dark_pool_individual_data?ticker={ticker}"
+    link = f"https://stockgridapp.herokuapp.com/get_dark_pool_individual_data?ticker={symbol}"
     response = requests.get(link)
     response_json = response.json()
 
@@ -130,12 +130,12 @@ def get_short_interest_volume(ticker: str) -> Tuple[pd.DataFrame, List]:
 
 
 @log_start_end(log=logger)
-def get_net_short_position(ticker: str) -> pd.DataFrame:
+def get_net_short_position(symbol: str) -> pd.DataFrame:
     """Get net short position. [Source: Stockgrid]
 
     Parameters
     ----------
-    ticker: str
+    symbol: str
         Stock to get data from
 
     Returns
@@ -143,7 +143,7 @@ def get_net_short_position(ticker: str) -> pd.DataFrame:
     pd.DataFrame
         Net short position
     """
-    link = f"https://stockgridapp.herokuapp.com/get_dark_pool_individual_data?ticker={ticker}"
+    link = f"https://stockgridapp.herokuapp.com/get_dark_pool_individual_data?ticker={symbol}"
     response = requests.get(link)
 
     df = pd.DataFrame(response.json()["individual_dark_pool_position_data"])

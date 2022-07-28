@@ -76,13 +76,13 @@ def get_ark_orders() -> DataFrame:
 
 
 @log_start_end(log=logger)
-def add_order_total(df_orders: DataFrame) -> DataFrame:
+def add_order_total(data: DataFrame) -> DataFrame:
     """Takes an ARK orders dataframe and pulls data from Yahoo Finance to add
     volume, open, close, high, low, and total columns
 
     Parameters
     ----------
-    df_orders : DataFrame
+    data: DataFrame
         ARK orders data frame with the following columns:
         ticker, date, shares, weight, fund, direction
 
@@ -92,37 +92,37 @@ def add_order_total(df_orders: DataFrame) -> DataFrame:
         ARK orders data frame with the following columns:
         ticker, date, shares, volume, open, close, high, low, total, weight, fund, direction
     """
-    start_date = df_orders["date"].iloc[-1] - timedelta(days=1)
+    start_date = data["date"].iloc[-1] - timedelta(days=1)
 
-    tickers = " ".join(df_orders["ticker"].unique())
+    tickers = " ".join(data["ticker"].unique())
 
     console.print("")
 
     prices = yf.download(tickers, start=start_date, progress=False)
 
     for i, candle in enumerate(["Volume", "Open", "Close", "High", "Low", "Total"]):
-        df_orders.insert(i + 3, candle.lower(), 0)
+        data.insert(i + 3, candle.lower(), 0)
 
     pd.options.mode.chained_assignment = None
-    for i, _ in df_orders.iterrows():
+    for i, _ in data.iterrows():
         if np.isnan(
-            prices["Open"][df_orders.loc[i, "ticker"]][
-                df_orders.loc[i, "date"].strftime("%Y-%m-%d")
+            prices["Open"][data.loc[i, "ticker"]][
+                data.loc[i, "date"].strftime("%Y-%m-%d")
             ]
         ):
             for candle in ["Volume", "Open", "Close", "High", "Low", "Total"]:
-                df_orders.loc[i, candle.lower()] = 0
+                data.loc[i, candle.lower()] = 0
             continue
 
         for candle in ["Volume", "Open", "Close", "High", "Low"]:
-            df_orders.loc[i, candle.lower()] = prices[candle][
-                df_orders.loc[i, "ticker"]
-            ][df_orders.loc[i, "date"].strftime("%Y-%m-%d")]
+            data.loc[i, candle.lower()] = prices[candle][
+                data.loc[i, "ticker"]
+            ][data.loc[i, "date"].strftime("%Y-%m-%d")]
 
-        df_orders.loc[i, "total"] = (
-            df_orders.loc[i, "close"] * df_orders.loc[i, "shares"]
+        data.loc[i, "total"] = (
+            data.loc[i, "close"] * data.loc[i, "shares"]
         )
 
     pd.options.mode.chained_assignment = "warn"
 
-    return df_orders
+    return data

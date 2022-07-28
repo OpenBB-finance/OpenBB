@@ -40,11 +40,11 @@ def test_insider_activity(mocker, raw):
     ticker = "AAPL"
     stock = stocks_helper.load(ticker=ticker)
     businessinsider_view.insider_activity(
-        stock=stock,
-        ticker=ticker,
-        start=None,
+        data=stock,
+        symbol=ticker,
+        start_date=None,
         interval="1440min",
-        num=5,
+        limit=5,
         raw=raw,
         export="",
     )

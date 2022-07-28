@@ -27,7 +27,7 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 @check_api_key(["API_FINNHUB_KEY"])
 def display_stock_price_headlines_sentiment(
-    ticker: str,
+    symbol: str,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -35,7 +35,7 @@ def display_stock_price_headlines_sentiment(
 
     Parameters
     ----------
-    ticker : str
+    symbol : str
         Ticker of company
     export: str
         Format to export data
@@ -44,7 +44,7 @@ def display_stock_price_headlines_sentiment(
     """
     start = datetime.now() - timedelta(days=30)
     articles = finnhub_model.get_company_news(
-        ticker.upper(),
+        symbol.upper(),
         s_start=start.strftime("%Y-%m-%d"),
         s_end=datetime.now().strftime("%Y-%m-%d"),
     )
@@ -54,7 +54,7 @@ def display_stock_price_headlines_sentiment(
         sentiment_data = [item for sublist in sentiment.values for item in sublist]
 
         df_stock = yf.download(
-            ticker,
+            symbol,
             start=min(sentiment.index).to_pydatetime().date(),
             interval="15m",
             prepost=True,
@@ -79,7 +79,7 @@ def display_stock_price_headlines_sentiment(
             else:
                 return
 
-            ax1.set_title(f"Headlines sentiment and {ticker} price")
+            ax1.set_title(f"Headlines sentiment and {symbol} price")
             for uniquedate in np.unique(df_stock.index.date):
                 ax1.plot(
                     df_stock[df_stock.index.date == uniquedate].index,

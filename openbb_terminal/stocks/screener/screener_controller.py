@@ -242,7 +242,7 @@ class ScreenerController(BaseController):
             "-s",
             "--start",
             type=valid_date,
-            default=datetime.datetime.now() - datetime.timedelta(days=6 * 30),
+            default=(datetime.datetime.now() - datetime.timedelta(days=6 * 30)).strftime("%Y-%m-%d"),
             dest="start",
             help="The starting date (format YYYY-MM-DD) of the historical price to plot",
         )

@@ -33,7 +33,7 @@ def test_print_insider_filter(mocker):
 
     openinsider_view.print_insider_filter(
         preset_loaded="whales",
-        ticker="PM",
+        symbol="PM",
         limit=5,
         links=False,
         export="csv",
@@ -50,7 +50,7 @@ def test_print_insider_filter_no_table(mocker):
 
     openinsider_view.print_insider_filter(
         preset_loaded="whales",
-        ticker="",
+        symbol="",
         limit=10,
         links=False,
         export="",

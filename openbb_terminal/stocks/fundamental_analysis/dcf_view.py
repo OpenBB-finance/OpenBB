@@ -28,7 +28,7 @@ class CreateExcelFA:
     @log_start_end(log=logger)
     def __init__(
         self,
-        ticker: str,
+        symbol: str,
         audit: bool = False,
         ratios: bool = True,
         len_pred: int = 10,
@@ -40,8 +40,8 @@ class CreateExcelFA:
 
         Parameters
         ----------
-        ticker : str
-            The ticker to create a DCF for
+        symbol : str
+            The ticker symbol to create a DCF for
         audit : bool
             Whether or not to show that the balance sheet and income statement tie-out
         ratios : bool
@@ -58,7 +58,7 @@ class CreateExcelFA:
             "len_pred": len_pred,
             "max_similars": max_similars,
             "rounding": 0,
-            "ticker": ticker,
+            "symbol": symbol,
             "audit": audit,
             "ratios": ratios,
             "no_filter": no_filter,
@@ -78,9 +78,9 @@ class CreateExcelFA:
         }
         self.data: Dict[str, Any] = {
             "now": datetime.now().strftime("%Y-%m-%d"),
-            "info": yf.Ticker(ticker).info,
+            "info": yf.Ticker(symbol).info,
             "t_bill": get_rf(),
-            "r_ff": dcf_model.get_fama_coe(self.info["ticker"]),
+            "r_ff": dcf_model.get_fama_coe(self.info["symbol"]),
         }
 
     @log_start_end(log=logger)
@@ -109,19 +109,19 @@ class CreateExcelFA:
 
         i = 0
         while True:
-            path = dcf_model.generate_path(i, self.info["ticker"], self.data["now"])
+            path = dcf_model.generate_path(i, self.info["symbol"], self.data["now"])
 
             if not path.is_file():
                 self.wb.save(path)
-                console.print(f"Analysis for {self.info['ticker']} At:\n{path}.\n")
+                console.print(f"Analysis for {self.info['symbol']} At:\n{path}.\n")
                 break
             i += 1
 
     @log_start_end(log=logger)
     def get_data(self, statement: str, row: int, header: bool) -> pd.DataFrame:
-        df, rounding, _ = dcf_model.create_dataframe(self.info["ticker"], statement)
+        df, rounding, _ = dcf_model.create_dataframe(self.info["symbol"], statement)
         if df.empty:
-            raise ValueError("Could generate a dataframe for the ticker")
+            raise ValueError("Could generate a dataframe for the ticker symbol")
         self.info["rounding"] = rounding
         if not self.info["len_data"]:
             self.info["len_data"] = len(df.columns)
@@ -612,13 +612,13 @@ class CreateExcelFA:
         dcf_model.set_cell(
             ws,
             "A1",
-            f"OpenBB Terminal Analysis: {self.info['ticker'].upper()}",
+            f"OpenBB Terminal Analysis: {self.info['symbol'].upper()}",
             font=Font(color="04cca8", size=20),
             border=dcf_static.thin_border,
             alignment=dcf_static.center,
         )
         dcf_model.set_cell(
-            ws, "A2", f"DCF for {self.info['ticker']} generated on {self.data['now']}"
+            ws, "A2", f"DCF for {self.info['symbol']} generated on {self.data['now']}"
         )
 
     @log_start_end(log=logger)
@@ -950,13 +950,13 @@ class CreateExcelFA:
         dcf_model.set_cell(self.ws[4], "B4", "Sector:")
         dcf_model.set_cell(self.ws[4], "C4", self.data["info"]["sector"])
         similar_data = dcf_model.get_similar_dfs(
-            self.info["ticker"],
+            self.info["symbol"],
             self.data["info"],
             self.info["max_similars"],
             self.info["no_filter"],
         )
         similar_data.insert(
-            0, [self.info["ticker"], [self.df["BS"], self.df["IS"], self.df["CF"]]]
+            0, [self.info["symbol"], [self.df["BS"], self.df["IS"], self.df["CF"]]]
         )
         row = 6
         for val in similar_data:
