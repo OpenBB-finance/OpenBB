@@ -947,7 +947,10 @@ class ForecastController(BaseController):
         data: Dict = {}
         for datasetcol in ns_parser.values:
             dataset, col = datasetcol.split(".")
-            data[datasetcol] = self.datasets[dataset][col]
+            df = self.datasets[dataset]
+            if "date" in df.columns:
+                df = df.set_index("date")
+            data[datasetcol] = df[col]
 
         forecast_view.display_plot(
             data,
