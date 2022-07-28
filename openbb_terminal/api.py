@@ -125,39 +125,39 @@ functions = {
     "common.behavioural_analysis.load_analyze_tweets": {
         "model": "openbb_terminal.common.behavioural_analysis.twitter_model.load_analyze_tweets"
     },
-    "common.prediction_techniques.arima_model": {
-        "model": "openbb_terminal.common.prediction_techniques.arima_model.get_arima_model"
-    },
-    "common.prediction_techniques.exponential_smoothing_model": {
-        "model": "openbb_terminal.common.prediction_techniques.ets_model.get_exponential_smoothing_model"
-    },
-    "common.prediction_techniques.knn_model_data": {
-        "model": "openbb_terminal.common.prediction_techniques.knn_model.get_knn_model_data"
-    },
-    "common.prediction_techniques.mc_brownian": {
-        "model": "openbb_terminal.common.prediction_techniques.mc_model.get_mc_brownian"
-    },
-    "common.prediction_techniques.build_neural_network_model": {
-        "model": "openbb_terminal.common.prediction_techniques.neural_networks_model.build_neural_network_model"
-    },
-    "common.prediction_techniques.conv1d_model": {
-        "model": "openbb_terminal.common.prediction_techniques.neural_networks_model.conv1d_model"
-    },
-    "common.prediction_techniques.lstm_model": {
-        "model": "openbb_terminal.common.prediction_techniques.neural_networks_model.lstm_model"
-    },
-    "common.prediction_techniques.mlp_model": {
-        "model": "openbb_terminal.common.prediction_techniques.neural_networks_model.mlp_model"
-    },
-    "common.prediction_techniques.rnn_model": {
-        "model": "openbb_terminal.common.prediction_techniques.neural_networks_model.rnn_model"
-    },
-    "common.prediction_techniques.regression_model": {
-        "model": "openbb_terminal.common.prediction_techniques.regression_model.get_regression_model"
-    },
-    "common.prediction_techniques.split_train": {
-        "model": "openbb_terminal.common.prediction_techniques.regression_model.split_train"
-    },
+    # "common.prediction_techniques.arima_model": {
+    #     "model": "openbb_terminal.common.prediction_techniques.arima_model.get_arima_model"
+    # },
+    # "common.prediction_techniques.exponential_smoothing_model": {
+    #     "model": "openbb_terminal.common.prediction_techniques.ets_model.get_exponential_smoothing_model"
+    # },
+    # "common.prediction_techniques.knn_model_data": {
+    #     "model": "openbb_terminal.common.prediction_techniques.knn_model.get_knn_model_data"
+    # },
+    # "common.prediction_techniques.mc_brownian": {
+    #     "model": "openbb_terminal.common.prediction_techniques.mc_model.get_mc_brownian"
+    # },
+    # "common.prediction_techniques.build_neural_network_model": {
+    #     "model": "openbb_terminal.common.prediction_techniques.neural_networks_model.build_neural_network_model"
+    # },
+    # "common.prediction_techniques.conv1d_model": {
+    #     "model": "openbb_terminal.common.prediction_techniques.neural_networks_model.conv1d_model"
+    # },
+    # "common.prediction_techniques.lstm_model": {
+    #     "model": "openbb_terminal.common.prediction_techniques.neural_networks_model.lstm_model"
+    # },
+    # "common.prediction_techniques.mlp_model": {
+    #     "model": "openbb_terminal.common.prediction_techniques.neural_networks_model.mlp_model"
+    # },
+    # "common.prediction_techniques.rnn_model": {
+    #     "model": "openbb_terminal.common.prediction_techniques.neural_networks_model.rnn_model"
+    # },
+    # "common.prediction_techniques.regression_model": {
+    #     "model": "openbb_terminal.common.prediction_techniques.regression_model.get_regression_model"
+    # },
+    # "common.prediction_techniques.split_train": {
+    #     "model": "openbb_terminal.common.prediction_techniques.regression_model.split_train"
+    # },
     "common.quantitative_analysis.calculate_adjusted_var": {
         "model": "openbb_terminal.common.quantitative_analysis.qa_model.calculate_adjusted_var"
     },
