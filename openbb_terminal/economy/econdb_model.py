@@ -411,6 +411,7 @@ SCALES = {
     "Thousands": 1_000,
     "Millions": 1_000_000,
     "Hundreds of millions": 100_000_000,
+    "Billions": 1_000_000_000,
     "Units": 1,
 }
 
