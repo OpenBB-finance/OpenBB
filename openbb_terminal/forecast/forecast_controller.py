@@ -2,7 +2,7 @@
 __docformat__ = "numpy"
 
 # pylint: disable=too-many-lines, too-many-branches, inconsistent-return-statements
-# pylint: disable=too-many-arguments, R0904,R0902
+# pylint: disable=too-many-arguments, R0904,R0902,W0707
 
 import argparse
 import logging
@@ -11,8 +11,15 @@ import os
 from pathlib import Path
 from typing import List, Dict, Any, Optional
 
-import torch
-import darts
+try:
+    import torch
+    import darts
+except ModuleNotFoundError:
+    raise ModuleNotFoundError(
+        "Please install the forecast version of the terminal. Instructions "
+        "are here: https://github.com/OpenBB-finance/OpenBBTerminal/"
+        "blob/main/openbb_terminal/README.md#anaconda--python"
+    )
 import pandas as pd
 import psutil
 from prompt_toolkit.completion import NestedCompleter
