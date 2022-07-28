@@ -1526,7 +1526,7 @@ class Loader:
             "You can try <link> branch with the latest changes."
         )
         self.__function_map = self.build_function_map(functions=functions)
-        # self.load_menus()
+        self.load_menus()
 
     def __call__(self):
         """Prints help message"""
