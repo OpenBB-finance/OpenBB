@@ -2,6 +2,7 @@ en:
   _home_: Information, guides and support for the OpenBB Terminal
   about: discover the capabilities of the OpenBB Terminal (https://openbb.co/docs)
   support: pre-populate a support ticket for our team to evaluate
+  survey: fill in our 2-minute survey so we better understand how we can improve the terminal
   update: attempt to update the terminal automatically (GitHub version)
   exe: execute automated routine script
   settings: tune settings (export folder, timezone, language, plot size)
@@ -251,7 +252,7 @@ en:
   stocks/ins/stats: insider stats of the company
   stocks/ins/act: insider activity over time
   stocks/ins/lins: last insider trading of the company
-  stocks/ins/lcb: latest cluster boys
+  stocks/ins/lcb: latest cluster buys
   stocks/ins/lpsb: latest penny stock buys
   stocks/ins/lit: latest insider trading (all filings)
   stocks/ins/lip: latest insider purchases
@@ -424,6 +425,7 @@ en:
   stocks/ta/stoch: stochastic oscillator
   stocks/ta/fisher: fisher transform
   stocks/ta/cg: centre of gravity
+  stocks/ta/clenow: clenow volatility adjusted momentum
   stocks/ta/_trend_: Trend
   stocks/ta/adx: average directional movement index
   stocks/ta/aroon: aroon indicator
@@ -469,6 +471,7 @@ en:
   stocks/qa/decompose: decomposition in cyclic-trend, season, and residuals of prices
   stocks/qa/cusum: detects abrupt changes using cumulative sum algorithm of prices
   stocks/qa/capm: capital asset pricing model
+  stocks/qa/beta: display beta w.r.t to any reference ticker
   stocks/pred/load: load new ticker
   stocks/pred/pick: pick target column for analysis
   stocks/pred/_ticker: Ticker
@@ -612,16 +615,16 @@ en:
   crypto/dd/change: 30d change of supply held on exchange wallets
   crypto/dd/eb: total balance held on exchanges (in percentage and units)
   crypto/dd/oi: open interest per exchange
+  crypto/dd/fundrate: funding rate per exchange
   crypto/dd/basic: basic information about loaded coin
   crypto/dd/ps: price and supply related metrics for loaded coin
   crypto/dd/mkt: all markets for loaded coin
   crypto/dd/ex: all exchanges where loaded coin is listed
   crypto/dd/twitter: tweets for loaded coin
   crypto/dd/events: events related to loaded coin
-  crypto/dd/binbook: order book
   crypto/dd/balance: coin balance
-  crypto/dd/cbbook: order book
   crypto/dd/trades: last trades
+  crypto/dd/ob: order book
   crypto/dd/stats: coin stats
   crypto/dd/mcapdom: market cap dominance
   crypto/dd/mt: messari timeseries e.g. twitter followers, circ supply, etc

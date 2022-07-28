@@ -146,6 +146,7 @@ def print_rich_table(
     index_name: str = "",
     headers: Union[List[str], pd.Index] = None,
     floatfmt: Union[str, List[str]] = ".2f",
+    show_header: bool = True,
 ):
     """Prepare a table from df in rich
 
@@ -163,10 +164,12 @@ def print_rich_table(
         Titles for columns
     floatfmt: Union[str, List[str]]
         Float number formatting specs as string or list of strings. Defaults to ".2f"
+    show_header: bool
+        Whether to show the header row.
     """
 
     if obbff.USE_TABULATE_DF:
-        table = Table(title=title, show_lines=True)
+        table = Table(title=title, show_lines=True, show_header=show_header)
 
         if show_index:
             table.add_column(index_name)

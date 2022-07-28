@@ -764,7 +764,7 @@ class FundamentalAnalysisController(StockBaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            av_view.display_key(self.ticker)
+            av_view.display_key(ticker=self.ticker, export=ns_parser.export)
 
     @log_start_end(log=logger)
     def call_income(self, other_args: List[str]):

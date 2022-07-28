@@ -507,6 +507,13 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             [QA_CONTROLLER.ticker],
             dict(),
         ),
+        (
+            "call_beta",
+            ["--ref=XLK"],
+            "beta_view",
+            [QA_CONTROLLER.ticker, "XLK"],
+            {"stock": QA_CONTROLLER.stock},
+        ),
     ],
 )
 def test_call_func(

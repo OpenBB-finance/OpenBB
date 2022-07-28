@@ -1,6 +1,8 @@
 crypto
 load btc
 dd
+fundrate
+oi
 nonzero
 info
 market
@@ -23,4 +25,6 @@ fr
 links
 gh
 news
+ob
+trades
 exit
