@@ -781,7 +781,7 @@ class QaController(StockBaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            beta_view(self.ticker, ns_parser.ref, stock=self.stock)
+            beta_view(self.ticker, ns_parser.ref, data=self.stock)
 
     @log_start_end(log=logger)
     def call_var(self, other_args: List[str]):

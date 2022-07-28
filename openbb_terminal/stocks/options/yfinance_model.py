@@ -21,14 +21,14 @@ logger = logging.getLogger(__name__)
 # pylint: disable=W0640
 @log_start_end(log=logger)
 def get_full_option_chain(
-    ticker: str, expiration: str, calls: bool = True, puts: bool = True
+    symbol: str, expiration: str, calls: bool = True, puts: bool = True
 ) -> pd.DataFrame:
     """Get full option chains with calculated greeks
 
     Parameters
     ----------
-    ticker: str
-        Stock ticker
+    symbol: str
+        Stock ticker symbol
     expiration: str
         Expiration date for chain in format YYY-mm-dd
     calls: bool
@@ -42,10 +42,10 @@ def get_full_option_chain(
         DataFrame of option chain.  If both calls and puts
     """
     try:
-        yf_ticker = yf.Ticker(ticker)
+        yf_ticker = yf.Ticker(symbol)
         options = yf_ticker.option_chain(expiration)
     except ValueError:
-        console.print(f"[red]{ticker} options for {expiration} not found.[/red]")
+        console.print(f"[red]{symbol} options for {expiration} not found.[/red]")
         return pd.DataFrame()
 
     last_price = yf_ticker.info["regularMarketPrice"]

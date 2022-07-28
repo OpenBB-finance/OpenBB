@@ -48,7 +48,7 @@ def test_get_full_option_chain(mocker, recorder):
     mocker.patch("yfinance.download", side_effect=mock_yf_download)
 
     result_df = yfinance_model.get_full_option_chain(
-        ticker="AAPL",
+        symbol="AAPL",
         expiration="2022-07-29",
     )
 

@@ -47,7 +47,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_chains(
-    ticker: str,
+    symbol: str,
     expiry: str,
     min_sp: float = 0.0,
     max_sp: float = np.inf,
@@ -59,8 +59,8 @@ def display_chains(
 
     Parameters
     ----------
-    ticker: str
-        Stock ticker
+    symbol: str
+        Stock ticker symbol
     expiry: str
         Expiration for option chain
     min_sp: float
@@ -86,7 +86,7 @@ def display_chains(
         put_bool = True
 
     option_chains = yfinance_model.get_full_option_chain(
-        ticker=ticker, expiration=expiry, calls=call_bool, puts=put_bool
+        symbol=symbol, expiration=expiry, calls=call_bool, puts=put_bool
     ).fillna("-")
     if option_chains.empty:
         console.print("[red]Option chains not found.[/red]")

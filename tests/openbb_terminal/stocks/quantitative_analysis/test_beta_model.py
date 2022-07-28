@@ -14,6 +14,6 @@ def test_beta_model(recorder):
     ref = pd.DataFrame.from_dict({"close": [2, 3, 5, 7, 7, 9, 20, -2, -5, 0]})
 
     result_tuple = beta_model(
-        stock_ticker="TSLA", ref_ticker="XLK", stock=stock, ref=ref
+        symbol="TSLA", ref_symbol="XLK", data=stock, ref_data=ref
     )
     recorder.capture(result_tuple)
