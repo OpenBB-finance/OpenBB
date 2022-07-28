@@ -42,7 +42,11 @@ default_columns = [
 
 @log_start_end(log=logger)
 def get_historical_options(
-    symbol: str, expiry: str, strike: float = 0, put: bool = False, chain_id: Optional[str] = None
+    symbol: str,
+    expiry: str,
+    strike: float = 0,
+    put: bool = False,
+    chain_id: Optional[str] = None,
 ) -> pd.DataFrame:
     """
     Gets historical option pricing.  This inputs either ticker, expiration, strike or the OCC chain ID and processes

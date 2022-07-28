@@ -23,7 +23,9 @@ API_QUIVERQUANT_KEY = (
 
 
 @log_start_end(log=logger)
-def get_government_trading(gov_type: str = "congress", symbol: str = "") -> pd.DataFrame:
+def get_government_trading(
+    gov_type: str = "congress", symbol: str = ""
+) -> pd.DataFrame:
     """Returns the most recent transactions by members of government
 
     Parameters
@@ -156,9 +158,7 @@ def get_last_government(
         ].rename(columns={"TransactionDate": "Transaction Date"})
 
     if representative:
-        df_gov = df_gov[
-            df_gov["Representative"].str.split().str[0] == representative
-            ]
+        df_gov = df_gov[df_gov["Representative"].str.split().str[0] == representative]
 
     return df_gov
 

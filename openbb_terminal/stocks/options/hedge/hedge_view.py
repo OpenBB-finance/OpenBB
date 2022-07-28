@@ -14,7 +14,9 @@ from openbb_terminal.stocks.options.hedge import hedge_model
 logger = logging.getLogger(__name__)
 
 
-def add_and_show_greeks(price: float, implied_volatility: float, strike: float, days: float, sign: int = 1):
+def add_and_show_greeks(
+    price: float, implied_volatility: float, strike: float, days: float, sign: int = 1
+):
     """Determine the delta, gamma and vega value of the portfolio and/or options and show them.
 
     Parameters
@@ -55,7 +57,9 @@ def add_and_show_greeks(price: float, implied_volatility: float, strike: float, 
     return delta, gamma, vega
 
 
-def show_calculated_hedge(portfolio_option_amount: float, side: str, greeks: dict, sign: int = 1):
+def show_calculated_hedge(
+    portfolio_option_amount: float, side: str, greeks: dict, sign: int = 1
+):
     """Determine the hedge position and the weights within each option and
     underlying asset to hold a neutral portfolio and show them
 

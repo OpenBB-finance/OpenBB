@@ -30,7 +30,9 @@ presets_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets
 def historical(
     preset_loaded: str,
     limit: int = 10,
-    start_date: str = (datetime.datetime.now() - datetime.timedelta(days=6 * 30)).strftime("%Y-%m-%d"),
+    start_date: str = (
+        datetime.datetime.now() - datetime.timedelta(days=6 * 30)
+    ).strftime("%Y-%m-%d"),
     type_candle: str = "a",
     normalize: bool = True,
     export: str = "",
@@ -60,7 +62,9 @@ def historical(
     list[str]
         List of stocks
     """
-    df_screener, l_stocks, limit_random_stocks = yahoofinance_model.historical(preset_loaded, limit, start_date, type_candle, normalize)
+    df_screener, l_stocks, limit_random_stocks = yahoofinance_model.historical(
+        preset_loaded, limit, start_date, type_candle, normalize
+    )
 
     if l_stocks:
         # This plot has 1 axis

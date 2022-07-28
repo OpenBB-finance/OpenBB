@@ -38,7 +38,9 @@ d_candle_types = {
 def historical(
     preset_loaded: str,
     limit: int = 10,
-    start_date: str = (datetime.datetime.now() - datetime.timedelta(days=6 * 30)).strftime("%Y-%m-%d"),
+    start_date: str = (
+        datetime.datetime.now() - datetime.timedelta(days=6 * 30)
+    ).strftime("%Y-%m-%d"),
     type_candle: str = "a",
     normalize: bool = True,
 ):
@@ -104,9 +106,9 @@ def historical(
             )
             limit_random_stocks = True
 
-        df_screener = yf.download(l_stocks, start=start_date, progress=False, threads=False)[
-            d_candle_types[type_candle]
-        ][l_stocks]
+        df_screener = yf.download(
+            l_stocks, start=start_date, progress=False, threads=False
+        )[d_candle_types[type_candle]][l_stocks]
         df_screener = df_screener[l_stocks]
 
         if np.any(df_screener.isna()):

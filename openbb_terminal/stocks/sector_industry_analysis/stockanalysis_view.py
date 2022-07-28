@@ -90,7 +90,9 @@ def display_plots_financials(
         already_loaded_stocks_data = {}
 
     used_statement = [
-        statement for statement in stockanalysis_model.sa_keys if finance_key in stockanalysis_model.sa_keys[statement]
+        statement
+        for statement in stockanalysis_model.sa_keys
+        if finance_key in stockanalysis_model.sa_keys[statement]
     ][0]
 
     if used_statement in already_loaded_stocks_data:

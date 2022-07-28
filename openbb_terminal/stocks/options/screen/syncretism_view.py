@@ -24,7 +24,12 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def view_available_presets(preset: str = "high_IV", presets_path: str = os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "presets/")):
+def view_available_presets(
+    preset: str = "high_IV",
+    presets_path: str = os.path.join(
+        os.path.abspath(os.path.dirname(__file__)), "..", "presets/"
+    ),
+):
     """View available presets.
 
     Parameters
@@ -58,7 +63,12 @@ def view_available_presets(preset: str = "high_IV", presets_path: str = os.path.
 
 @log_start_end(log=logger)
 def view_screener_output(
-    preset: str = "high_IV", presets_path: str = os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "presets/"), limit: int = 20, export: str = ""
+    preset: str = "high_IV",
+    presets_path: str = os.path.join(
+        os.path.abspath(os.path.dirname(__file__)), "..", "presets/"
+    ),
+    limit: int = 20,
+    export: str = "",
 ) -> List:
     """Print the output of screener
 

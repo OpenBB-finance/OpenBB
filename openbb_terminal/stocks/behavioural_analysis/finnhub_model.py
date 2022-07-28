@@ -40,7 +40,9 @@ def get_company_news(
     """
     try:
         finnhub_client = finnhub.Client(api_key=cfg.API_FINNHUB_KEY)
-        articles = finnhub_client.company_news(symbol.upper(), _from=start_date, to=end_date)
+        articles = finnhub_client.company_news(
+            symbol.upper(), _from=start_date, to=end_date
+        )
         return articles
 
     except Exception as e:

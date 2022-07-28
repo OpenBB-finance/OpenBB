@@ -13,7 +13,11 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def print_recommendation(
-    symbol: str, screener: str = "america", exchange: str = "", interval: str = "", export: str = ""
+    symbol: str,
+    screener: str = "america",
+    exchange: str = "",
+    interval: str = "",
+    export: str = "",
 ):
     """Print tradingview recommendation based on technical indicators
 

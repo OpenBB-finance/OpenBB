@@ -63,7 +63,11 @@ def getFINRAweeks(tier: str = "T1", is_ats: bool = True) -> List:
 
 @log_start_end(log=logger)
 def getFINRAdata_offset(
-        start_date: str, symbol: str = "", tier: str = "T1", is_ats: bool = True, offset: int = 0
+    start_date: str,
+    symbol: str = "",
+    tier: str = "T1",
+    is_ats: bool = True,
+    offset: int = 0,
 ) -> requests.Response:
     """Get FINRA data. [Source: FINRA]
 
@@ -260,9 +264,7 @@ def getATSdata(limit: int = 1000, tier_ats: str = "T1") -> Tuple[pd.DataFrame, D
         lambda x: x.timestamp()
     )
 
-    console.print(
-        f"Processing regression on {limit} promising tickers ..."
-    )
+    console.print(f"Processing regression on {limit} promising tickers ...")
 
     d_ats_reg = {}
     # set(df_ats['issueSymbolIdentifier'].values) this would be iterating through all tickers

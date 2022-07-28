@@ -115,13 +115,11 @@ def add_order_total(data: DataFrame) -> DataFrame:
             continue
 
         for candle in ["Volume", "Open", "Close", "High", "Low"]:
-            data.loc[i, candle.lower()] = prices[candle][
-                data.loc[i, "ticker"]
-            ][data.loc[i, "date"].strftime("%Y-%m-%d")]
+            data.loc[i, candle.lower()] = prices[candle][data.loc[i, "ticker"]][
+                data.loc[i, "date"].strftime("%Y-%m-%d")
+            ]
 
-        data.loc[i, "total"] = (
-            data.loc[i, "close"] * data.loc[i, "shares"]
-        )
+        data.loc[i, "total"] = data.loc[i, "close"] * data.loc[i, "shares"]
 
     pd.options.mode.chained_assignment = "warn"
 

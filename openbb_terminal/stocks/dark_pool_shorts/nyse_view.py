@@ -63,7 +63,9 @@ def display_short_by_exchange(
 
     if sortby:
         if sortby in volume_by_exchange.columns:
-            volume_by_exchange = volume_by_exchange.sort_values(by=sortby, ascending=ascending)
+            volume_by_exchange = volume_by_exchange.sort_values(
+                by=sortby, ascending=ascending
+            )
         else:
             console.print(
                 f"{sortby} not a valid option. Selectone of {list(volume_by_exchange.columns)}. Not sorting."

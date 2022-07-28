@@ -59,7 +59,9 @@ d_signals = {
 
 
 @log_start_end(log=logger)
-def get_screener_data(preset_loaded: str, data_type: str, limit: int = 10, ascending: bool = False):
+def get_screener_data(
+    preset_loaded: str, data_type: str, limit: int = 10, ascending: bool = False
+):
     """Screener Overview
 
     Parameters

@@ -82,9 +82,7 @@ def fails_to_deliver(
         data_ftd = data[data.index > start_date]
         data_ftd = data_ftd[data_ftd.index < end_date]
 
-    ax2.plot(
-        data_ftd.index, data_ftd["Adj Close"], color="orange", label="Share Price"
-    )
+    ax2.plot(data_ftd.index, data_ftd["Adj Close"], color="orange", label="Share Price")
     ax2.set_ylabel("Share Price [$]")
     ax2.legend(loc="upper right")
 

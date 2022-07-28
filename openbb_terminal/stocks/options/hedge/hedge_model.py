@@ -119,7 +119,9 @@ def calc_hedge(portfolio_option_amount: float, side: str, greeks: dict, sign: in
     return weights[0][0], weights[1][0], neutral[0][0], singular
 
 
-def add_hedge_option(price: float, implied_volatility: float, strike: float, days: float, sign: int = 1):
+def add_hedge_option(
+    price: float, implied_volatility: float, strike: float, days: float, sign: int = 1
+):
     """Determine the delta, gamma and vega value of the portfolio and/or options.
 
     Parameters
@@ -202,7 +204,11 @@ def calc_delta(
 
 
 def calc_gamma(
-    asset_price: int, asset_volatility: float, strike_price: float, time_to_expiration: float, risk_free_rate: float = 0
+    asset_price: int,
+    asset_volatility: float,
+    strike_price: float,
+    time_to_expiration: float,
+    risk_free_rate: float = 0,
 ):
     """The second-order partial-derivative with respect to the underlying asset of the Black-Scholes equation
     is known as gamma. Gamma refers to how the option’s delta changes when there is a change in the underlying
@@ -242,7 +248,11 @@ def calc_gamma(
 
 
 def calc_vega(
-    asset_price: int, asset_volatility: float, strike_price: float, time_to_expiration: float, risk_free_rate: float = 0
+    asset_price: int,
+    asset_volatility: float,
+    strike_price: float,
+    time_to_expiration: float,
+    risk_free_rate: float = 0,
 ):
     """The first-order partial-derivative with respect to the underlying asset volatility of
     the Black-Scholes equation is known as vega. Vega refers to how the option value

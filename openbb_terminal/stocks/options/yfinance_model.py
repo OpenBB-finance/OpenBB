@@ -325,12 +325,12 @@ def get_iv_surface(symbol: str) -> pd.DataFrame:
 
 @log_start_end(log=logger)
 def get_binom(
-        symbol: str,
-        expiration: str,
-        strike: float = 0,
-        put: bool = False,
-        europe: bool = False,
-        vol: float = None,
+    symbol: str,
+    expiration: str,
+    strike: float = 0,
+    put: bool = False,
+    europe: bool = False,
+    vol: float = None,
 ):
     """Gets binomial pricing for options
 

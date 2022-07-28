@@ -263,7 +263,8 @@ def get_dividends(symbol: str) -> pd.DataFrame:
 
 @log_start_end(log=logger)
 def get_mktcap(
-    symbol: str, start_date: str = (datetime.now() - timedelta(days=3 * 366)).strftime("%Y-%m-%d")
+    symbol: str,
+    start_date: str = (datetime.now() - timedelta(days=3 * 366)).strftime("%Y-%m-%d"),
 ) -> Tuple[pd.DataFrame, str]:
     """Get market cap over time for ticker. [Source: Yahoo Finance]
 

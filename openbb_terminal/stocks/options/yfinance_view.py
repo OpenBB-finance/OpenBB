@@ -757,7 +757,13 @@ def plot_payoff(
 
 @log_start_end(log=logger)
 def show_parity(
-    symbol: str, exp: str, put: bool = False, ask: bool = False, mini: float = None, maxi: float = None, export: str = ""
+    symbol: str,
+    exp: str,
+    put: bool = False,
+    ask: bool = False,
+    mini: float = None,
+    maxi: float = None,
+    export: str = "",
 ) -> None:
     """Prints options and whether they are under or over priced [Source: Yahoo Finance]
 
@@ -1066,7 +1072,9 @@ def show_binom(
     vol : float
         The annualized volatility for the underlying asset
     """
-    up, prob_up, discount, und_vals, opt_vals, days = yfinance_model.get_binom(symbol, expiration, strike, put, europe, vol)
+    up, prob_up, discount, und_vals, opt_vals, days = yfinance_model.get_binom(
+        symbol, expiration, strike, put, europe, vol
+    )
 
     if export:
         export_binomial_calcs(up, prob_up, discount, und_vals, opt_vals, days, symbol)
@@ -1171,7 +1179,9 @@ def show_greeks(
         Whether to show all greeks
     """
 
-    df = yfinance_model.get_greeks(symbol, expire, div_cont, rf, opt_type, mini, maxi, show_all)
+    df = yfinance_model.get_greeks(
+        symbol, expire, div_cont, rf, opt_type, mini, maxi, show_all
+    )
 
     column_formatting = [
         ".1f",

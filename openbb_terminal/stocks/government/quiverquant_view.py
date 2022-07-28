@@ -33,7 +33,10 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_last_government(
-    gov_type: str = "congress", limit: int = 5, representative: str = "", export: str = ""
+    gov_type: str = "congress",
+    limit: int = 5,
+    representative: str = "",
+    export: str = "",
 ):
     """Display last government trading [Source: quiverquant.com]
 
@@ -242,7 +245,9 @@ def display_last_contracts(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    df_contracts, df = quiverquant_model.get_last_contracts(past_transaction_days, limit)
+    df_contracts, df = quiverquant_model.get_last_contracts(
+        past_transaction_days, limit
+    )
 
     if df_contracts.empty:
         console.print("No government contracts found\n")
@@ -352,7 +357,9 @@ def display_government_trading(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    df_gov = quiverquant_model.get_cleaned_government_trading(gov_type, symbol, past_transactions_months)
+    df_gov = quiverquant_model.get_cleaned_government_trading(
+        gov_type, symbol, past_transactions_months
+    )
 
     if df_gov.empty:
         console.print(f"No {gov_type} trading data found\n")

@@ -12,7 +12,10 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def get_ipo_calendar(start_date: str = (datetime.now() - timedelta(days=5)).strftime("%Y-%m-%d"), end_date: str = datetime.now().strftime("%Y-%m-%d")) -> pd.DataFrame:
+def get_ipo_calendar(
+    start_date: str = (datetime.now() - timedelta(days=5)).strftime("%Y-%m-%d"),
+    end_date: str = datetime.now().strftime("%Y-%m-%d"),
+) -> pd.DataFrame:
     """Get IPO calendar
 
     Parameters

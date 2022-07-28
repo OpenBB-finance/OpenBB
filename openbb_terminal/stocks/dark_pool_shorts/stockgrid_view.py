@@ -24,7 +24,12 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def dark_pool_short_positions(limit: int = 10, sortby: str = "dpp_dollar", ascending: bool = False, export: str = ""):
+def dark_pool_short_positions(
+    limit: int = 10,
+    sortby: str = "dpp_dollar",
+    ascending: bool = False,
+    export: str = "",
+):
     """Get dark pool short positions. [Source: Stockgrid]
 
     Parameters
@@ -78,7 +83,9 @@ def dark_pool_short_positions(limit: int = 10, sortby: str = "dpp_dollar", ascen
 
 
 @log_start_end(log=logger)
-def short_interest_days_to_cover(limit: int = 10, sortby: str = "float", export: str = ""):
+def short_interest_days_to_cover(
+    limit: int = 10, sortby: str = "float", export: str = ""
+):
     """Print short interest and days to cover. [Source: Stockgrid]
 
     Parameters

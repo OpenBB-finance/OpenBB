@@ -68,7 +68,10 @@ def past_ipo(
 @log_start_end(log=logger)
 @check_api_key(["API_FINNHUB_KEY"])
 def future_ipo(
-    num_days_ahead: int = 5, end_date: datetime = None, limit: int = 20, export: str = ""
+    num_days_ahead: int = 5,
+    end_date: datetime = None,
+    limit: int = 20,
+    export: str = "",
 ):
     """Future IPOs dates. [Source: Finnhub]
 

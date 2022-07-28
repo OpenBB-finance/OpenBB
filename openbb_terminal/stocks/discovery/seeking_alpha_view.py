@@ -16,7 +16,9 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def upcoming_earning_release_dates(num_pages: int = 5, limit: int = 1, export: str = ""):
+def upcoming_earning_release_dates(
+    num_pages: int = 5, limit: int = 1, export: str = ""
+):
     """Displays upcoming earnings release dates
 
     Parameters

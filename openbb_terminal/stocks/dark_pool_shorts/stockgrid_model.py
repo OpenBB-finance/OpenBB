@@ -13,7 +13,9 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def get_dark_pool_short_positions(sortby: str = "dpp_dollar", ascending: bool = False) -> pd.DataFrame:
+def get_dark_pool_short_positions(
+    sortby: str = "dpp_dollar", ascending: bool = False
+) -> pd.DataFrame:
     """Get dark pool short positions. [Source: Stockgrid]
 
     Parameters

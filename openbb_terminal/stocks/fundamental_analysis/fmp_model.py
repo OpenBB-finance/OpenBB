@@ -125,7 +125,9 @@ def get_quote(symbol: str) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_enterprise(symbol: str, limit: int = 5, quarterly: bool = False) -> pd.DataFrame:
+def get_enterprise(
+    symbol: str, limit: int = 5, quarterly: bool = False
+) -> pd.DataFrame:
     """Financial Modeling Prep ticker enterprise
 
     Parameters
@@ -402,7 +404,9 @@ def get_cash(
 
 
 @log_start_end(log=logger)
-def get_key_metrics(symbol: str, limit: int = 5, quarterly: bool = False) -> pd.DataFrame:
+def get_key_metrics(
+    symbol: str, limit: int = 5, quarterly: bool = False
+) -> pd.DataFrame:
     """Get key metrics
 
     Parameters
@@ -441,7 +445,9 @@ def get_key_metrics(symbol: str, limit: int = 5, quarterly: bool = False) -> pd.
 
 
 @log_start_end(log=logger)
-def get_key_ratios(symbol: str, limit: int = 5, quarterly: bool = False) -> pd.DataFrame:
+def get_key_ratios(
+    symbol: str, limit: int = 5, quarterly: bool = False
+) -> pd.DataFrame:
     """Get key ratios
 
     Parameters

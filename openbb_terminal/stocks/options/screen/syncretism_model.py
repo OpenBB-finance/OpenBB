@@ -113,7 +113,12 @@ def get_historical_greeks(
 
 
 @log_start_end(log=logger)
-def get_screener_output(preset: str = "high_IV", presets_path: str = os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "presets/")) -> Tuple[pd.DataFrame, str]:
+def get_screener_output(
+    preset: str = "high_IV",
+    presets_path: str = os.path.join(
+        os.path.abspath(os.path.dirname(__file__)), "..", "presets/"
+    ),
+) -> Tuple[pd.DataFrame, str]:
     """Screen options based on preset filters
 
     Parameters

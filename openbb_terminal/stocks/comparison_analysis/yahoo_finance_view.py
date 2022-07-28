@@ -284,7 +284,7 @@ def display_sp500_comps_tsne(
     """
     data = yahoo_finance_model.get_sp500_comps_tsne(symbol, lr)
 
-    top_n = data.iloc[1: (limit + 1)]
+    top_n = data.iloc[1 : (limit + 1)]
     top_n_name = top_n.index.to_list()
 
     if not no_plot:
@@ -296,7 +296,7 @@ def display_sp500_comps_tsne(
         else:
             return []
 
-        top_100 = data[(limit + 1): 101]
+        top_100 = data[(limit + 1) : 101]
         symbol_df = data[data.index == symbol]
 
         ax.scatter(
