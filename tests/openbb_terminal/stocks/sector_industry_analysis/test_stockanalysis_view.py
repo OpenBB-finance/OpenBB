@@ -6,7 +6,6 @@ import pytest
 # IMPORTATION INTERNAL
 from openbb_terminal.stocks.sector_industry_analysis import (
     stockanalysis_view,
-    stockanalysis_model,
 )
 
 

@@ -13,7 +13,6 @@ from openbb_terminal.stocks.options.op_helpers import Option
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import get_rf
 from openbb_terminal.rich_config import console
-from openbb_terminal.stocks.options.op_helpers import Option
 
 logger = logging.getLogger(__name__)
 
@@ -313,12 +312,12 @@ def get_iv_surface(symbol: str) -> pd.DataFrame:
     dates = stock.options
     vol_df = pd.DataFrame()
     columns = ["strike", "impliedVolatility", "openInterest", "lastPrice"]
-    for date in dates:
-        df = stock.option_chain(date).calls[columns]
-        df["dte"] = get_dte(date)
+    for date_value in dates:
+        df = stock.option_chain(date_value).calls[columns]
+        df["dte"] = get_dte(date_value)
         vol_df = pd.concat([vol_df, df], axis=0)
-        df = stock.option_chain(date).puts[columns]
-        df["dte"] = get_dte(date)
+        df = stock.option_chain(date_value).puts[columns]
+        df["dte"] = get_dte(date_value)
         vol_df = pd.concat([vol_df, df], axis=0)
     return vol_df
 
