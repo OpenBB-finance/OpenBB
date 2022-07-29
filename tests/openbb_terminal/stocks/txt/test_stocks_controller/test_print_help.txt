@@ -1,4 +1,4 @@
-    news               latest news of the company                  [Feedparser/News API]
+    news               stocks/news                                 [Feedparser/News API]
     search             search a specific stock ticker for analysis
     load               load a specific stock ticker and additional info for analysis
 
