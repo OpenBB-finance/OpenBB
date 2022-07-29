@@ -634,10 +634,10 @@ def plot_volume_open_interest(
 def plot_plot(
     symbol: str,
     expiration: str,
+    x: str,
+    y: str,
+    custom: str,
     put: bool = False,
-    x: str = None,
-    y: str = None,
-    custom: str = "Custom",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
@@ -649,14 +649,14 @@ def plot_plot(
         Stock ticker symbol
     expiration: str
         Option expiration
-    put: bool
-        put option instead of call
     x: str
         variable to display in x axis
     y: str
         variable to display in y axis
     custom: str
         type of plot
+    put: bool
+        put option instead of call
     export: str
         type of data to export
     external_axes : Optional[List[plt.Axes]], optional
@@ -1045,7 +1045,7 @@ def show_binom(
     strike: float = 0,
     put: bool = False,
     europe: bool = False,
-    export: bool = "",
+    export: str = "",
     plot: bool = False,
     vol: float = None,
 ) -> None:
@@ -1063,7 +1063,7 @@ def show_binom(
         Value a put instead of a call
     europe : bool
         Value a European option instead of an American option
-    export : bool
+    export : str
         Export the options data to an excel spreadsheet
     plot : bool
         Show a graph of expected ending prices

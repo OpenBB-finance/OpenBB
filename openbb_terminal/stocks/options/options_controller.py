@@ -1060,10 +1060,10 @@ class OptionsController(BaseController):
                         yfinance_view.plot_plot(
                             self.ticker,
                             self.selected_date,
-                            ns_parser.put,
                             ns_parser.x,
                             ns_parser.y,
                             ns_parser.custom,
+                            ns_parser.put,
                             ns_parser.export,
                         )
                 else:

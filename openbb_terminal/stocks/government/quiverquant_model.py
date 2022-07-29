@@ -5,7 +5,7 @@ __docformat__ = "numpy"
 import logging
 import textwrap
 from datetime import datetime, timedelta
-from typing import Any, Union
+from typing import Any, Union, Tuple
 
 import numpy as np
 import pandas as pd
@@ -298,7 +298,7 @@ def get_government_sells(
 def get_last_contracts(
     past_transaction_days: int = -1,
     limit: int = -1,
-) -> Union[tuple[pd.DataFrame, pd.DataFrame], tuple[Any, pd.DataFrame]]:
+) -> Union[Tuple[pd.DataFrame, pd.DataFrame], Tuple[Any, pd.DataFrame]]:
     """Get last government contracts [Source: quiverquant.com]
 
     Parameters

@@ -1,3 +1,8 @@
+"""Beta model"""
+__docformat__ = "numpy"
+
+from typing import Tuple
+
 import pandas as pd
 from scipy import stats
 from openbb_terminal.stocks import stocks_helper
@@ -8,28 +13,28 @@ def beta_model(
     ref_symbol: str,
     data: pd.DataFrame = None,
     ref_data: pd.DataFrame = None,
-) -> tuple[pd.Series, pd.Series, float, float]:
+) -> Tuple[pd.Series, pd.Series, float, float]:
     """Calculate beta for a ticker and a reference ticker.
 
     Parameters
     ----------
-    symbol : str
+    symbol: str
         A ticker to calculate beta for
-    ref_symbol : str
+    ref_symbol: str
         A reference ticker symbol for the beta calculation (default in terminal is SPY)
-    data : pd.DataFrame
+    data: pd.DataFrame
         The selected ticker symbols price data
-    ref_data : pd.DataFrame
+    ref_data: pd.DataFrame
         The reference ticker symbols price data
 
     Returns
     -------
-    sr : pd.Series
+    sr: pd.Series
         Stock ticker symbols close-to-close returns
-    rr : pd.Series
+    rr: pd.Series
         Reference ticker symbols close-to-close returns
-    beta : float
-    alpha : float
+    beta: float
+    alpha: float
     """
     if data is None:
         data = stocks_helper.load(symbol)

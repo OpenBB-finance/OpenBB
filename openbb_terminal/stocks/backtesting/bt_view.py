@@ -34,7 +34,7 @@ np.seterr(divide="ignore")
 @log_start_end(log=logger)
 def display_whatif_scenario(
     symbol: str,
-    date_shares_acquired: datetime = None,
+    date_shares_acquired: Optional[datetime] = None,
     num_shares_acquired: float = 1,
 ):
     """Display what if scenario
@@ -57,22 +57,24 @@ def display_whatif_scenario(
     last_date = data.index[-1]
 
     if not date_shares_acquired:
-        date_shares_acquired = ipo_date
+        date_shares_ac = ipo_date
         console.print("IPO date selected by default.")
+    else:
+        date_shares_ac = date_shares_acquired
 
-    if date_shares_acquired > last_date:
+    if date_shares_ac > last_date:
         console.print("The date selected is in the future. Select a valid date.", "\n")
         return
 
-    if date_shares_acquired < ipo_date:
+    if date_shares_ac < ipo_date:
         console.print(
             f"{symbol} had not IPO at that date. Thus, changing the date to IPO on the {ipo_date.strftime('%Y-%m-%d')}",
             "\n",
         )
-        date_shares_acquired = ipo_date
+        date_shares_ac = ipo_date
 
     initial_shares_value = (
-        data[data.index > date_shares_acquired].values[0] * num_shares_acquired
+        data[data.index > date_shares_ac].values[0] * num_shares_acquired
     )
 
     if (num_shares_acquired - int(num_shares_acquired)) > 0:
@@ -88,11 +90,11 @@ def display_whatif_scenario(
 
     console.print(
         f"If you had acquired {nshares} {shares} of {symbol} on "
-        f"{date_shares_acquired.strftime('%Y-%m-%d')} with a cost of {initial_shares_value:.2f}."
+        f"{date_shares_ac.strftime('%Y-%m-%d')} with a cost of {initial_shares_value:.2f}."
     )
 
     current_shares_value = (
-        data[data.index > date_shares_acquired].values[-1] * num_shares_acquired
+        data[data.index > date_shares_ac].values[-1] * num_shares_acquired
     )
     if current_shares_value > initial_shares_value:
         pct = 100 * (

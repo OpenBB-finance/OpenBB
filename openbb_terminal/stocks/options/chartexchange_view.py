@@ -31,7 +31,7 @@ def display_raw(
     symbol: str,
     date: str,
     call: bool,
-    price: str = 0,
+    price: float = 0,
     limit: int = 10,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,

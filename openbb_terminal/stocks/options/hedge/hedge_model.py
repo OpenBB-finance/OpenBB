@@ -156,7 +156,7 @@ def add_hedge_option(
 
 
 def calc_delta(
-    asset_price: int,
+    asset_price: float,
     asset_volatility: float,
     strike_price: float,
     time_to_expiration: float,
@@ -204,7 +204,7 @@ def calc_delta(
 
 
 def calc_gamma(
-    asset_price: int,
+    asset_price: float,
     asset_volatility: float,
     strike_price: float,
     time_to_expiration: float,
@@ -248,7 +248,7 @@ def calc_gamma(
 
 
 def calc_vega(
-    asset_price: int,
+    asset_price: float,
     asset_volatility: float,
     strike_price: float,
     time_to_expiration: float,

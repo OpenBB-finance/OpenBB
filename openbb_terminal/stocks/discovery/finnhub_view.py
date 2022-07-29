@@ -1,7 +1,7 @@
 import logging
 import os
 from datetime import datetime, timedelta
-
+from typing import Optional
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.decorators import check_api_key
@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 @check_api_key(["API_FINNHUB_KEY"])
 def past_ipo(
     num_days_behind: int = 5,
-    start_date: str = None,
+    start_date: Optional[str] = None,
     limit: int = 20,
     export: str = "",
 ):
@@ -36,11 +36,12 @@ def past_ipo(
     today = datetime.now()
 
     if start_date is None:
-
-        start_date = today - timedelta(days=num_days_behind)
+        start = (today - timedelta(days=num_days_behind)).strftime("%Y-%m-%d")
+    else:
+        start = start_date
 
     df_past_ipo = (
-        finnhub_model.get_ipo_calendar(start_date, today.strftime("%Y-%m-%d"))
+        finnhub_model.get_ipo_calendar(start, today.strftime("%Y-%m-%d"))
         .rename(columns={"Date": "Past"})
         .fillna("")
     )

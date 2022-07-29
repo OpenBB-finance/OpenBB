@@ -122,8 +122,8 @@ def view_ma(
 def view_vwap(
     symbol: str,
     data: pd.DataFrame,
-    start_date: datetime = None,
-    end_date: datetime = None,
+    start_date: Optional[datetime] = None,
+    end_date: Optional[datetime] = None,
     offset: int = 0,
     s_interval: str = "",
     export: str = "",
@@ -154,18 +154,18 @@ def view_vwap(
     data.index = data.index.tz_localize(None)
 
     if start_date and end_date:
-        start_date = start_date.date()
-        end_date = end_date.date()
+        start = start_date.date()
+        end = end_date.date()
     else:
-        start_date = end_date = data.index[-1].date()
+        start = end = data.index[-1].date()
         console.print(
-            f"No Specified date range. load most recent trading data: {start_date.strftime('%Y-%m-%d')}"
+            f"No Specified date range. load most recent trading data: {start.strftime('%Y-%m-%d')}"
         )
 
-    day_df = data[(start_date <= data.index.date) & (data.index.date <= end_date)]
+    day_df = data[(start <= data.index.date) & (data.index.date <= end)]
     if len(day_df) == 0:
         console.print(
-            f"[red]No data found between {start_date.strftime('%Y-%m-%d')} and {end_date.strftime('%Y-%m-%d')}\n[/red]"
+            f"[red]No data found between {start.strftime('%Y-%m-%d')} and {end.strftime('%Y-%m-%d')}\n[/red]"
         )
         return
 

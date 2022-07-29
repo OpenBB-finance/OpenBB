@@ -27,6 +27,7 @@ from openbb_terminal.stocks.fundamental_analysis import (
     dcf_view,
     eclect_us_view,
     finviz_view,
+    market_watch_view,
     yahoo_finance_view,
     polygon_view,
     fmp_view,

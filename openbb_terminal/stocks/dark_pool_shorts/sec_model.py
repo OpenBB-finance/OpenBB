@@ -81,8 +81,8 @@ def get_fails_to_deliver(
         Fail to deliver data
     """
     ftds_data = pd.DataFrame()
-    start_date = datetime.strptime(start_date, "%Y-%m-%d")
-    end_date = datetime.strptime(end_date, "%Y-%m-%d")
+    start = datetime.strptime(start_date, "%Y-%m-%d")
+    end = datetime.strptime(end_date, "%Y-%m-%d")
 
     # Filter by number of last FTD
     if limit > 0:
@@ -130,13 +130,13 @@ def get_fails_to_deliver(
         base_url = "https://www.sec.gov/files/data/fails-deliver-data/cnsfails"
         ftd_dates = []
 
-        for y in range(start_date.year, end_date.year + 1):
-            if y < end_date.year:
-                for a_month in range(start_date.month, 13):
+        for y in range(start.year, end.year + 1):
+            if y < end.year:
+                for a_month in range(start.month, 13):
                     formatted_month = f"{a_month:02d}"
 
-                    if a_month == start_date.month and y == start_date.year:
-                        if start_date.day < 16:
+                    if a_month == start.month and y == start.year:
+                        if start.day < 16:
                             ftd_dates.append(str(y) + formatted_month + "a")
                         ftd_dates.append(str(y) + formatted_month + "b")
                     else:
@@ -144,12 +144,12 @@ def get_fails_to_deliver(
                         ftd_dates.append(str(y) + formatted_month + "b")
 
             else:
-                for a_month in range(1, end_date.month):
+                for a_month in range(1, end.month):
                     formatted_month = f"{a_month:02d}"
 
-                    if a_month == end_date.month - 1:
+                    if a_month == end.month - 1:
                         ftd_dates.append(str(y) + formatted_month + "a")
-                        if end_date.day > 15:
+                        if end.day > 15:
                             ftd_dates.append(str(y) + formatted_month + "b")
                     else:
                         ftd_dates.append(str(y) + formatted_month + "a")
@@ -182,7 +182,7 @@ def get_fails_to_deliver(
             lambda x: datetime.strptime(str(x), "%Y%m%d")
         )
 
-        ftds_data = ftds_data[ftds_data["SETTLEMENT DATE"] > start_date]
-        ftds_data = ftds_data[ftds_data["SETTLEMENT DATE"] < end_date]
+        ftds_data = ftds_data[ftds_data["SETTLEMENT DATE"] > start]
+        ftds_data = ftds_data[ftds_data["SETTLEMENT DATE"] < end]
 
     return ftds_data
