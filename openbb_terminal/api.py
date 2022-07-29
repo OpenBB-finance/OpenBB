@@ -1464,6 +1464,22 @@ def copy_func(f) -> Callable:
 
 
 def change_docstring(api_callable, model: Callable, view=None):
+    """Changes docstring of the entered api_callable
+
+    Parameters
+    ----------
+    api_callable: Callable
+        Function whose docstring shall be changed
+    model: Callable
+        model function with docstring
+    view: Callable
+        view function with docstring, can also be None if no docstring from it shall be added
+
+    Returns
+    -------
+    Callable
+        api_callable with changed docstring
+    """
     if view is not None:
         index = view.__doc__.find("Parameters")
         all_parameters = (
