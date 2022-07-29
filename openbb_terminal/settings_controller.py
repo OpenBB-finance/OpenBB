@@ -202,16 +202,12 @@ class SettingsController(BaseController):
             description="Dots per inch.",
         )
         parser.add_argument(
-            "-v",
-            "--value",
-            type=int,
-            dest="value",
-            help="value",
+            "-v", "--value", type=int, dest="value", help="value", reuqired=True
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-v")
         ns_parser = parse_simple_args(parser, other_args)
-        if ns_parser:
+        if ns_parser and ns_parser.value:
             set_key(obbff.ENV_FILE, "OPENBB_PLOT_DPI", str(ns_parser.value))
             cfg_plot.PLOT_DPI = ns_parser.value
             console.print("")
@@ -226,11 +222,7 @@ class SettingsController(BaseController):
             description="select plot height (autoscaling disabled)",
         )
         parser.add_argument(
-            "-v",
-            "--value",
-            type=int,
-            dest="value",
-            help="value",
+            "-v", "--value", type=int, dest="value", help="value", required=True
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-v")
@@ -250,11 +242,7 @@ class SettingsController(BaseController):
             description="select plot width (autoscaling disabled)",
         )
         parser.add_argument(
-            "-v",
-            "--value",
-            type=int,
-            dest="value",
-            help="value",
+            "-v", "--value", type=int, dest="value", help="value", required=True
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-v")
