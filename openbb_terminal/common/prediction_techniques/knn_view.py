@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_k_nearest_neighbors(
-    ticker: str,
+    dataset: str,
     data: Union[pd.DataFrame, pd.Series],
     n_neighbors: int,
     n_input_days: int,
@@ -37,8 +37,8 @@ def display_k_nearest_neighbors(
 
     Parameters
     ----------
-    ticker : str
-        Stock data
+    dataset : str
+        Dataset label
     data : Union[pd.DataFrame, pd.Series]
         Data to use for ML
     n_neighbors : int
@@ -83,7 +83,7 @@ def display_k_nearest_neighbors(
         y_valid=y_valid,
         y_dates_valid=y_dates_valid,
         scaler=scaler,
-        title=f"KNN Model with {n_neighbors} Neighbors on {ticker}",
+        title=f"KNN Model with {n_neighbors} Neighbors on {dataset}",
         forecast_data=forecast_data_df,
         n_loops=1,
         time_str=time_res,

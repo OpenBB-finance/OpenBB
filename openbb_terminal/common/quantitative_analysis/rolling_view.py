@@ -26,9 +26,9 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 def display_mean_std(
     name: str,
-    df: pd.DataFrame,
+    data: pd.DataFrame,
     target: str,
-    window: int,
+    window: int = 14,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -36,20 +36,20 @@ def display_mean_std(
 
     Parameters
     ----------
-    name : str
+    name: str
         Stock ticker
-    df : pd.DataFrame
+    data: pd.DataFrame
         Dataframe
-    target : str
+    target: str
         Column in data to look at
-    window : int
+    window: int
         Length of window
-    export : str
+    export: str
         Format to export data
-    external_axes : Optional[List[plt.Axes]], optional
+    external_axes: Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
     """
-    data = df[target]
+    data = data[target]
     rolling_mean, rolling_std = rolling_model.get_rolling_avg(data, window)
     plot_data = pd.merge(
         data,
@@ -135,9 +135,9 @@ def display_mean_std(
 @log_start_end(log=logger)
 def display_spread(
     name: str,
-    df: pd.DataFrame,
+    data: pd.DataFrame,
     target: str,
-    window: int,
+    window: int = 14,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -145,20 +145,20 @@ def display_spread(
 
     Parameters
     ----------
-    name : str
+    name: str
         Stock ticker
-    df : pd.DataFrame
+    data: pd.DataFrame
         Dataframe
     target: str
         Column in data to look at
-    window : int
+    window: int
         Length of window
-    export : str
+    export: str
         Format to export data
-    external_axes : Optional[List[plt.Axes]], optional
+    external_axes: Optional[List[plt.Axes]], optional
         External axes (3 axes are expected in the list), by default None
     """
-    data = df[target]
+    data = data[target]
     df_sd, df_var = rolling_model.get_spread(data, window)
 
     plot_data = pd.merge(
@@ -243,10 +243,10 @@ def display_spread(
 @log_start_end(log=logger)
 def display_quantile(
     name: str,
-    df: pd.DataFrame,
+    data: pd.DataFrame,
     target: str,
-    window: int,
-    quantile: float,
+    window: int = 14,
+    quantile: float = 0.5,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -254,22 +254,22 @@ def display_quantile(
 
     Parameters
     ----------
-    name : str
+    name: str
         Stock ticker
-    df : pd.DataFrame
+    data: pd.DataFrame
         Dataframe
-    target : str
+    target: str
         Column in data to look at
-    window : int
+    window: int
         Length of window
-    quantile : float
+    quantile: float
         Quantile to get
-    export : str
+    export: str
         Format to export data
-    external_axes : Optional[List[plt.Axes]], optional
+    external_axes: Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    data = df[target]
+    data = data[target]
     df_med, df_quantile = rolling_model.get_quantile(data, window, quantile)
 
     plot_data = pd.merge(
@@ -339,9 +339,9 @@ def display_quantile(
 @log_start_end(log=logger)
 def display_skew(
     name: str,
-    df: pd.DataFrame,
+    data: pd.DataFrame,
     target: str,
-    window: int,
+    window: int = 14,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -349,20 +349,20 @@ def display_skew(
 
     Parameters
     ----------
-    name : str
+    name: str
         Stock ticker
-    df : pd.DataFrame
+    data: pd.DataFrame
         Dataframe
-    target : str
+    target: str
         Column in data to look at
-    window : int
+    window: int
         Length of window
-    export : str
+    export: str
         Format to export data
-    external_axes : Optional[List[plt.Axes]], optional
+    external_axes: Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
     """
-    data = df[target]
+    data = data[target]
     df_skew = rolling_model.get_skew(data, window)
 
     plot_data = pd.merge(
@@ -423,9 +423,9 @@ def display_skew(
 @log_start_end(log=logger)
 def display_kurtosis(
     name: str,
-    df: pd.DataFrame,
+    data: pd.DataFrame,
     target: str,
-    window: int,
+    window: int = 14,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -433,18 +433,20 @@ def display_kurtosis(
 
     Parameters
     ----------
-    name : str
+    name: str
         Ticker
-    df : pd.DataFrame
+    data: pd.DataFrame
         Dataframe of stock prices
-    window : int
+    target: str
+        Column in data to look at
+    window: int
         Length of window
-    export : str
+    export: str
         Format to export data
-    external_axes : Optional[List[plt.Axes]], optional
+    external_axes: Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
     """
-    data = df[target]
+    data = data[target]
     df_kurt = rolling_model.get_kurtosis(data, window)
 
     plot_data = pd.merge(

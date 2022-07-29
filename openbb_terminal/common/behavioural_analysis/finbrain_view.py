@@ -34,7 +34,7 @@ def lambda_sentiment_coloring(val: float, last_val: float) -> str:
 
 @log_start_end(log=logger)
 def display_sentiment_analysis(
-    ticker: str,
+    symbol: str,
     raw: bool = False,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -43,16 +43,16 @@ def display_sentiment_analysis(
 
     Parameters
     ----------
-    ticker : str
-        Ticker to get the sentiment analysis from
-    raw : False
+    symbol: str
+        Ticker symbol to get the sentiment analysis from
+    raw: False
         Display raw table data
-    export : str
+    export: str
         Format to export data
-    external_axes : Optional[List[plt.Axes]], optional
+    external_axes: Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    sentiment = finbrain_model.get_sentiment(ticker)
+    sentiment = finbrain_model.get_sentiment(symbol)
     if sentiment.empty:
         console.print("No sentiment data found.\n")
         return
@@ -83,7 +83,7 @@ def display_sentiment_analysis(
         ax.set_ylabel("Sentiment")
         start_date = sentiment.index[-1].strftime("%Y/%m/%d")
         ax.set_title(
-            f"FinBrain's Sentiment Analysis for {ticker.upper()} since {start_date}"
+            f"FinBrain's Sentiment Analysis for {symbol.upper()} since {start_date}"
         )
         ax.set_ylim([-1.1, 1.1])
         senValues = np.array(pd.to_numeric(sentiment["Sentiment Analysis"].values))

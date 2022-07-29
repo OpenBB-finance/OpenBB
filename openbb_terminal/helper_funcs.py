@@ -778,16 +778,16 @@ def get_data(tweet):
     return {"created_at": s_datetime, "text": s_text}
 
 
-def clean_tweet(tweet: str, s_ticker: str) -> str:
+def clean_tweet(tweet: str, symbol: str) -> str:
     """Cleans tweets to be fed to sentiment model"""
     whitespace = re.compile(r"\s+")
     web_address = re.compile(r"(?i)http(s):\/\/[a-z0-9.~_\-\/]+")
-    ticker = re.compile(rf"(?i)@{s_ticker}(?=\b)")
+    ticker = re.compile(rf"(?i)@{symbol}(?=\b)")
     user = re.compile(r"(?i)@[a-z0-9_]+")
 
     tweet = whitespace.sub(" ", tweet)
     tweet = web_address.sub("", tweet)
-    tweet = ticker.sub(s_ticker, tweet)
+    tweet = ticker.sub(symbol, tweet)
     tweet = user.sub("", tweet)
 
     return tweet

@@ -27,19 +27,19 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_inference(ticker: str, num: int = 100, export: str = ""):
+def display_inference(symbol: str, limit: int = 100, export: str = ""):
     """Infer sentiment from past n tweets
 
     Parameters
     ----------
-    ticker: str
-        Stock ticker
-    num: int
+    symbol: str
+        Stock ticker symbol
+    limit: int
         Number of tweets to analyze
     export: str
         Format to export tweet dataframe
     """
-    df_tweets = twitter_model.load_analyze_tweets(ticker, num)
+    df_tweets = twitter_model.load_analyze_tweets(symbol, limit)
 
     if df_tweets.empty:
         return
@@ -62,8 +62,8 @@ def display_inference(ticker: str, num: int = 100, export: str = ""):
     percent_neg = len(np.where(pos < neg)[0]) / len(df_tweets)
     total_sent = np.round(np.sum(df_tweets["sentiment"]), 2)
     mean_sent = np.round(np.mean(df_tweets["sentiment"]), 2)
-    console.print(f"The summed compound sentiment of {ticker} is: {total_sent}")
-    console.print(f"The average compound sentiment of {ticker} is: {mean_sent}")
+    console.print(f"The summed compound sentiment of {symbol} is: {total_sent}")
+    console.print(f"The average compound sentiment of {symbol} is: {mean_sent}")
     console.print(
         f"Of the last {len(df_tweets)} tweets, {100*percent_pos:.2f} % had a higher positive sentiment"
     )
@@ -76,19 +76,19 @@ def display_inference(ticker: str, num: int = 100, export: str = ""):
 
 @log_start_end(log=logger)
 def display_sentiment(
-    ticker: str,
+    symbol: str,
     n_tweets: int = 15,
     n_days_past: int = 6,
     compare: bool = False,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Plot sentiments from ticker
+    """Plot sentiments from symbol
 
     Parameters
     ----------
-    ticker: str
-        Stock to get sentiment for
+    symbol: str
+        Stock ticker symbol to get sentiment for
     n_tweets: int
         Number of tweets to get per hour
     n_days_past: int
@@ -97,6 +97,8 @@ def display_sentiment(
         Show corresponding change in stock price
     export: str
         Format to export tweet dataframe
+    external_axes: Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
     # Date format string required by twitter
     dt_format = "%Y-%m-%dT%H:%M:%SZ"
@@ -126,7 +128,7 @@ def display_sentiment(
         dt_past = dt_recent - timedelta(minutes=60)
 
         temp = twitter_model.load_analyze_tweets(
-            ticker,
+            symbol,
             n_tweets,
             start_time=dt_past.strftime(dt_format),
             end_time=dt_recent.strftime(dt_format),
@@ -211,7 +213,7 @@ def display_sentiment(
         width=theme.volume_bar_width / 100,
     )
     ax1.set_title(
-        f"Twitter's {ticker} total compound sentiment over time is {round(np.sum(df_tweets['sentiment']), 2)}"
+        f"Twitter's {symbol} total compound sentiment over time is {round(np.sum(df_tweets['sentiment']), 2)}"
     )
 
     theme.style_primary_axis(ax1)
@@ -221,7 +223,7 @@ def display_sentiment(
 
     if compare:
         # get stock end price for each corresponding day if compare == True
-        closing_price_df = get_closing_price(ticker, n_days_past)
+        closing_price_df = get_closing_price(symbol, n_days_past)
         if ax3:
             ax3.plot(
                 closing_price_df["Date"],

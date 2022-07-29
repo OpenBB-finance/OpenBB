@@ -38,13 +38,13 @@ l_sub_reddits = [
 
 @log_start_end(log=logger)
 def get_watchlists(
-    n_to_get: int,
+    limit: int,
 ) -> Tuple[List[praw.models.reddit.submission.Submission], Dict, int]:
     """Get reddit users watchlists [Source: reddit]
 
     Parameters
     ----------
-    n_to_get : int
+    limit : int
         Number of posts to look through
 
     Returns
@@ -120,7 +120,7 @@ def get_watchlists(
                     # Increment count of valid posts found
                     n_flair_posts_found += 1
                     subs.append(submission)
-            if n_flair_posts_found > n_to_get - 1:
+            if n_flair_posts_found > limit - 1:
                 break
 
     except ResponseException as e:
@@ -136,13 +136,13 @@ def get_watchlists(
 
 @log_start_end(log=logger)
 def get_popular_tickers(
-    n_top: int, posts_to_look_at: int, subreddits: str = ""
+    limit: int, posts_to_look_at: int, subreddits: str = ""
 ) -> pd.DataFrame:
     """Get popular tickers from list of subreddits [Source: reddit]
 
     Parameters
     ----------
-    n_top : int
+    limit : int
         Number of top tickers to get
     posts_to_look_at : int
         How many posts to analyze in each subreddit
@@ -249,7 +249,7 @@ def get_popular_tickers(
         # pylint: disable=redefined-outer-name
         popular_tickers = []
         for t_ticker in lt_watchlist_sorted:
-            if n_top_stocks > n_top:
+            if n_top_stocks > limit:
                 break
             try:
                 # If try doesn't trigger exception, it means that this stock exists on finviz
@@ -680,9 +680,9 @@ def get_due_dilligence(
 
 @log_start_end(log=logger)
 def get_posts_about(
-    ticker: str,
+    symbol: str,
     limit: int = 100,
-    sort: str = "relevance",
+    sortby: str = "relevance",
     time_frame: str = "week",
     subreddits: str = "all",
 ) -> List[praw.models.reddit.submission.Submission]:
@@ -690,11 +690,11 @@ def get_posts_about(
 
     Parameters
     ----------
-    ticker: str
-        Ticker to search for
+    symbol: str
+        Ticker symbol to search for
     limit: int
         Number of posts to get per subreddit
-    sort: str
+    sortby: str
         Search type
         Possibilities: "relevance", "hot", "top", "new", or "comments"
     time_frame: str
@@ -745,9 +745,9 @@ def get_posts_about(
             console.print("Invalid subreddit name {sub_str}, skipping")
             continue
         submissions = subreddit.search(
-            query=ticker,
+            query=symbol,
             limit=limit,
-            sort=sort,
+            sort=sortby,
             time_filter=time_frame,
         )
         for sub in submissions:
