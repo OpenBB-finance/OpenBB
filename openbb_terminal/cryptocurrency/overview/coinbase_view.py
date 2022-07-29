@@ -9,7 +9,6 @@ from openbb_terminal.decorators import check_api_key
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
-    lambda_long_number_format,
     print_rich_table,
 )
 
@@ -34,16 +33,6 @@ def display_trading_pairs(top: int, sortby: str, descend: bool, export: str) -> 
     """
 
     df = coinbase_model.get_trading_pairs()
-    df_data = df.copy()
-
-    for col in [
-        "base_min_size",
-        "base_max_size",
-        "min_market_funds",
-        "max_market_funds",
-    ]:
-        df[col] = df[col].apply(lambda x: lambda_long_number_format(x))
-
     df = df.sort_values(by=sortby, ascending=descend).head(top)
 
     print_rich_table(
@@ -56,6 +45,6 @@ def display_trading_pairs(top: int, sortby: str, descend: bool, export: str) -> 
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "pairs",
-        df_data,
+        "cbpairs",
+        df,
     )
