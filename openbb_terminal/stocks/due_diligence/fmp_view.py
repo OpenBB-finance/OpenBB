@@ -11,6 +11,14 @@ from openbb_terminal.stocks.due_diligence import fmp_model
 logger = logging.getLogger(__name__)
 
 
+def add_color(value: str) -> str:
+    if "buy" in value.lower():
+        value = f"[green]{value}[/green]"
+    elif "sell" in value.lower():
+        value = f"[red]{value}[/red]"
+    return value
+
+
 @log_start_end(log=logger)
 def rating(ticker: str, num: int, export: str):
     """Display ratings for a given ticker. [Source: Financial Modeling Prep]
@@ -25,12 +33,11 @@ def rating(ticker: str, num: int, export: str):
         Export dataframe data to csv,json,xlsx file
     """
     df = fmp_model.get_rating(ticker)
-    print(df)
 
     # TODO: This could be displayed in a nice rating plot over time
-    # TODO: Add coloring to table
 
     if not df.empty:
+        df = df.astype(str).applymap(lambda x: add_color(x))
         l_recoms = [col for col in df.columns if "Recommendation" in col]
         l_recoms_show = [
             recom.replace("rating", "")
