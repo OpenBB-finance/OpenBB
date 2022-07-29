@@ -795,7 +795,8 @@ class ForecastController(BaseController):
                     sort_column = " ".join(ns_parser.sortcol)
                     if sort_column not in self.datasets[name].columns:
                         console.print(
-                            f"[red]{sort_column} not a valid column. Showing without sorting.\n[/red]"
+                            f"[red]{sort_column} not a valid column."
+                            "Showing without sorting.\n[/red]"
                         )
                     else:
                         df = df.sort_values(by=sort_column, ascending=ns_parser.ascend)
@@ -804,6 +805,12 @@ class ForecastController(BaseController):
                 console.print(
                     f"[green]{name} has following shape (rowxcolumn): {df.shape}[/green]"
                 )
+                if len(df.columns) > 10:
+                    console.print(
+                        "[red]Dataframe has more than 10 columns. Please export"
+                        " to see all of the data.[/red]\n"
+                    )
+                    df = df.iloc[:, :10]
                 print_rich_table(
                     df.head(ns_parser.limit),
                     headers=list(df.columns),
