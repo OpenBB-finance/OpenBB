@@ -25,6 +25,7 @@ def rating(ticker: str, num: int, export: str):
         Export dataframe data to csv,json,xlsx file
     """
     df = fmp_model.get_rating(ticker)
+    print(df)
 
     # TODO: This could be displayed in a nice rating plot over time
     # TODO: Add coloring to table
