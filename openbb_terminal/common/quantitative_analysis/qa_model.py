@@ -129,7 +129,9 @@ def get_normality(data: pd.DataFrame) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_unitroot(data: pd.DataFrame, fuller_reg: str = "c", kpss_reg: str = "c") -> pd.DataFrame:
+def get_unitroot(
+    data: pd.DataFrame, fuller_reg: str = "c", kpss_reg: str = "c"
+) -> pd.DataFrame:
     """Calculate test statistics for unit roots
 
     Parameters

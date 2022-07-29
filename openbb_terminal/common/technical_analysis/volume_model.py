@@ -104,6 +104,4 @@ def obv(data: pd.DataFrame) -> pd.DataFrame:
     pd.DataFrame
         Dataframe with technical indicator
     """
-    return pd.DataFrame(
-        ta.obv(close=data["Adj Close"], volume=data["Volume"]).dropna()
-    )
+    return pd.DataFrame(ta.obv(close=data["Adj Close"], volume=data["Volume"]).dropna())

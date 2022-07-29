@@ -581,7 +581,9 @@ class BehaviouralAnalysisController(StockBaseController):
         if ns_parser:
             if self.ticker:
                 google_view.display_mentions(
-                    symbol=self.ticker, start_date=ns_parser.start, export=ns_parser.export
+                    symbol=self.ticker,
+                    start_date=ns_parser.start,
+                    export=ns_parser.export,
                 )
             else:
                 console.print("No ticker loaded. Please load using 'load <ticker>'\n")
@@ -769,7 +771,9 @@ class BehaviouralAnalysisController(StockBaseController):
         )
         if ns_parser:
             if self.ticker:
-                twitter_view.display_inference(symbol=self.ticker, limit=ns_parser.limit)
+                twitter_view.display_inference(
+                    symbol=self.ticker, limit=ns_parser.limit
+                )
             else:
                 console.print("No ticker loaded. Please load using 'load <ticker>'\n")
 

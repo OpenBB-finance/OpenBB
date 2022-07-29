@@ -796,7 +796,11 @@ def display_normality(data: pd.DataFrame, target: str, export: str = ""):
 
 @log_start_end(log=logger)
 def display_unitroot(
-    data: pd.DataFrame, target: str, fuller_reg: str = "c", kpss_reg: str = "c", export: str = ""
+    data: pd.DataFrame,
+    target: str,
+    fuller_reg: str = "c",
+    kpss_reg: str = "c",
+    export: str = "",
 ):
     """Show unit root test calculations
 
@@ -833,7 +837,11 @@ def display_unitroot(
 
 @log_start_end(log=logger)
 def display_raw(
-    data: pd.DataFrame, sort: str = "", des: bool = False, num: int = 20, export: str = ""
+    data: pd.DataFrame,
+    sort: str = "",
+    des: bool = False,
+    num: int = 20,
+    export: str = "",
 ) -> None:
     """Return raw stock data
 

@@ -13,7 +13,9 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def get_rolling_avg(data: pd.DataFrame, window: int = 14) -> Tuple[pd.DataFrame, pd.DataFrame]:
+def get_rolling_avg(
+    data: pd.DataFrame, window: int = 14
+) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """Return rolling mean and standard deviation
 
     Parameters
@@ -37,7 +39,9 @@ def get_rolling_avg(data: pd.DataFrame, window: int = 14) -> Tuple[pd.DataFrame,
 
 
 @log_start_end(log=logger)
-def get_spread(data: pd.DataFrame, window: int = 14) -> Tuple[pd.DataFrame, pd.DataFrame]:
+def get_spread(
+    data: pd.DataFrame, window: int = 14
+) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """Standard Deviation and Variance
 
     Parameters
