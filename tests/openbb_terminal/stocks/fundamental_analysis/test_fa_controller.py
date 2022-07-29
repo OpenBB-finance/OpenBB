@@ -301,6 +301,12 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             {"TSLA"},
         ),
         (
+            "call_key",
+            "av_view.display_key",
+            ["--export=xlsx"],
+            dict(ticker="TSLA", export="xlsx"),
+        ),
+        (
             "call_income",
             "av_view.display_income_statement",
             ["--source=av", "--export=csv", "--limit=5"],

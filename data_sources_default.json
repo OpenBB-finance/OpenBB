@@ -34,24 +34,28 @@
         },
         "options": {
             "load": [
-                "tradier",
-                "yf"
+                "yf",
+                "tradier"
             ],
             "hist": [
                 "chartexchange",
                 "tradier"
             ],
             "vol": [
-                "tradier",
-                "yf"
+                "yf",
+                "tradier"
             ],
             "voi": [
-                "tradier",
-                "yf"
+                "yf",
+                "tradier"
             ],
             "oi": [
-                "tradier",
-                "yf"
+                "yf",
+                "tradier"
+            ],
+            "chains": [
+                "yf",
+                "tradier"
             ]
         },
         "disc": {

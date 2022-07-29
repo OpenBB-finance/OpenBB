@@ -522,6 +522,8 @@ main:
                 ref: "/terminal/common/ta/obv"
               - name: fib
                 ref: "/terminal/common/ta/fib"
+              - name: clenow
+                ref: "/terminal/common/ta/clenow"
           - name: behavioural analysis
             ref: "/terminal/common/ba"
             sub:
@@ -748,8 +750,12 @@ main:
                 ref: "/terminal/crypto/dd/change"
               - name: eb
                 ref: "/terminal/crypto/dd/eb"
+              - name: fundrate
+                ref: "/terminal/crypto/dd/fundrate"
               - name: oi
                 ref: "/terminal/crypto/dd/oi"
+              - name: ob
+                ref: "/terminal/crypto/dd/ob"
               - name: info
                 ref: "/terminal/crypto/dd/info"
               - name: market
@@ -780,8 +786,6 @@ main:
                 ref: "/terminal/crypto/dd/twitter"
               - name: events
                 ref: "/terminal/crypto/dd/events"
-              - name: cbbook
-                ref: "/terminal/crypto/dd/cbbook"
               - name: balance
                 ref: "/terminal/crypto/dd/balance"
               - name: trades
@@ -913,6 +917,8 @@ main:
                 ref: "/terminal/common/ta/obv"
               - name: fib
                 ref: "/terminal/common/ta/fib"
+              - name: clenow
+                ref: "/terminal/common/ta/clenow"
           - name: defi
             ref: "/terminal/crypto/defi"
             sub:
@@ -1153,6 +1159,8 @@ main:
                 ref: "/terminal/common/ta/obv"
               - name: fib
                 ref: "/terminal/common/ta/fib"
+              - name: clenow
+                ref: "/terminal/common/ta/clenow"
           - name: prediction techniques
             ref: "/terminal/common/pred"
             sub:
