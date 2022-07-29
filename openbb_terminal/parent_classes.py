@@ -501,7 +501,6 @@ class BaseController(metaclass=ABCMeta):
                 help="Number of entries to show in data.",
                 type=check_positive,
             )
-
         sources = get_ordered_list_sources(f"{self.PATH}{parser.prog}")
         if sources:
             parser.add_argument(
