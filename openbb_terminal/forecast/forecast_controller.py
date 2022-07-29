@@ -391,6 +391,7 @@ class ForecastController(BaseController):
         start: bool = False,
         residuals: bool = False,
         forecast_only: bool = False,
+        naive: bool = False,
     ):
         if hidden_size:
             parser.add_argument(
@@ -417,6 +418,14 @@ class ForecastController(BaseController):
                 dest="all_past_covariates",
                 default=False,
                 help="Adds all rows as past covariates except for date and the target column.",
+            )
+        if naive:
+            parser.add_argument(
+                "--naive",
+                action="store_true",
+                dest="naive",
+                default=False,
+                help="Show the naive baseline for a model.",
             )
         if target_dataset:
             parser.add_argument(
@@ -1679,6 +1688,7 @@ class ForecastController(BaseController):
             forecast_only=True,
             start=True,
             end=True,
+            naive=True,
         )
         # TODO Convert this to multi series
         if ns_parser:
@@ -1704,6 +1714,7 @@ class ForecastController(BaseController):
                 forecast_only=ns_parser.forecast_only,
                 start_date=ns_parser.s_start_date,
                 end_date=ns_parser.s_end_date,
+                naive=ns_parser.naive,
             )
 
     @log_start_end(log=logger)
@@ -1736,6 +1747,7 @@ class ForecastController(BaseController):
             forecast_only=True,
             start=True,
             end=True,
+            naive=True,
         )
 
         if ns_parser:
@@ -1759,6 +1771,7 @@ class ForecastController(BaseController):
                 forecast_only=ns_parser.forecast_only,
                 start_date=ns_parser.s_start_date,
                 end_date=ns_parser.s_end_date,
+                naive=ns_parser.naive,
             )
 
     @log_start_end(log=logger)
@@ -1818,6 +1831,7 @@ class ForecastController(BaseController):
             forecast_only=True,
             start=True,
             end=True,
+            naive=True,
         )
 
         if ns_parser:
@@ -1850,6 +1864,7 @@ class ForecastController(BaseController):
                 forecast_only=ns_parser.forecast_only,
                 start_date=ns_parser.s_start_date,
                 end_date=ns_parser.s_end_date,
+                naive=ns_parser.naive,
             )
 
     @log_start_end(log=logger)
@@ -1926,6 +1941,7 @@ class ForecastController(BaseController):
             forecast_only=True,
             start=True,
             end=True,
+            naive=True,
         )
 
         if ns_parser:
@@ -1964,6 +1980,7 @@ class ForecastController(BaseController):
                 forecast_only=ns_parser.forecast_only,
                 start_date=ns_parser.s_start_date,
                 end_date=ns_parser.s_end_date,
+                naive=ns_parser.naive,
             )
 
     @log_start_end(log=logger)
@@ -2031,6 +2048,7 @@ class ForecastController(BaseController):
             forecast_only=True,
             start=True,
             end=True,
+            naive=True,
         )
 
         if ns_parser:
@@ -2070,6 +2088,7 @@ class ForecastController(BaseController):
                 forecast_only=ns_parser.forecast_only,
                 start_date=ns_parser.s_start_date,
                 end_date=ns_parser.s_end_date,
+                naive=ns_parser.naive,
             )
 
     @log_start_end(log=logger)
@@ -2105,6 +2124,7 @@ class ForecastController(BaseController):
             forecast_only=True,
             start=True,
             end=True,
+            naive=True,
         )
 
         if ns_parser:
@@ -2134,6 +2154,7 @@ class ForecastController(BaseController):
                 forecast_only=ns_parser.forecast_only,
                 start_date=ns_parser.s_start_date,
                 end_date=ns_parser.s_end_date,
+                naive=ns_parser.naive,
             )
 
     @log_start_end(log=logger)
@@ -2168,6 +2189,7 @@ class ForecastController(BaseController):
             forecast_only=True,
             start=True,
             end=True,
+            naive=True,
         )
 
         if ns_parser:
@@ -2196,6 +2218,7 @@ class ForecastController(BaseController):
                 forecast_only=ns_parser.forecast_only,
                 start_date=ns_parser.s_start_date,
                 end_date=ns_parser.s_end_date,
+                naive=ns_parser.naive,
             )
 
     @log_start_end(log=logger)
@@ -2248,6 +2271,7 @@ class ForecastController(BaseController):
             forecast_only=True,
             start=True,
             end=True,
+            naive=True,
         )
 
         if ns_parser:
@@ -2286,6 +2310,7 @@ class ForecastController(BaseController):
                 forecast_only=ns_parser.forecast_only,
                 start_date=ns_parser.s_start_date,
                 end_date=ns_parser.s_end_date,
+                naive=ns_parser.naive,
             )
 
     @log_start_end(log=logger)
@@ -2373,6 +2398,7 @@ class ForecastController(BaseController):
             forecast_only=True,
             start=True,
             end=True,
+            naive=True,
         )
         if ns_parser:
             if not helpers.check_parser_input(ns_parser, self.datasets):
@@ -2412,6 +2438,7 @@ class ForecastController(BaseController):
                 forecast_only=ns_parser.forecast_only,
                 start_date=ns_parser.s_start_date,
                 end_date=ns_parser.s_end_date,
+                naive=ns_parser.naive,
             )
 
     # Below this is ports to the old pred menu
@@ -2487,6 +2514,7 @@ class ForecastController(BaseController):
             forecast_only=True,
             start=True,
             end=True,
+            naive=True,
         )
 
         if ns_parser:
@@ -2526,6 +2554,7 @@ class ForecastController(BaseController):
                 forecast_only=ns_parser.forecast_only,
                 start_date=ns_parser.s_start_date,
                 end_date=ns_parser.s_end_date,
+                naive=ns_parser.naive,
             )
 
     # Below this is ports to the old pred menu

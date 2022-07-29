@@ -41,6 +41,7 @@ def display_nbeats_forecast(
     forecast_only: bool = False,
     start_date: Optional[datetime] = None,
     end_date: Optional[datetime] = None,
+    naive: bool = False,
 ):
     """Display NBEATS forecast
 
@@ -99,6 +100,9 @@ def display_nbeats_forecast(
             The starting date to perform analysis, data before this is trimmed. Defaults to None.
         end_date: Optional[datetime]
             The ending date to perform analysis, data after this is trimmed. Defaults to None.
+        naive: bool
+            Whether to show the naive baseline. This just assumes the closing price will be the same
+            as the previous day's closing price. Defaults to False.
     """
 
     data = helpers.clean_data(data, start_date, end_date)
@@ -147,6 +151,7 @@ def display_nbeats_forecast(
         probabilistic,
         export,
         forecast_only=forecast_only,
+        naive=naive,
     )
     if residuals:
         helpers.plot_residuals(

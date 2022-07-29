@@ -464,6 +464,7 @@ def plot_forecast(
     low_quantile: float = None,
     high_quantile: float = None,
     forecast_only: bool = False,
+    naive: bool = False,
 ):
     quant_kwargs = {}
     if low_quantile:
@@ -481,6 +482,7 @@ def plot_forecast(
         ax = external_axes
 
     # ax = fig.get_axes()[0] # fig gives list of axes (only one for this case)
+    naive_fcast = ticker_series.shift(1)
     if forecast_only:
         ticker_series = ticker_series.drop_before(historical_fcast.start_time())
     ticker_series.plot(label=target_col, figure=fig)
@@ -490,15 +492,16 @@ def plot_forecast(
         **quant_kwargs,
     )
 
-    # show naive forecast shift timeseries by 1
-    naive_fcast = ticker_series.shift(1)
-    naive_precision = mape(ticker_series, naive_fcast)
+    if naive:
+        # show naive forecast shift timeseries by 1
+        naive_fcast = naive_fcast.drop_before(historical_fcast.start_time())
+        naive_precision = mape(ticker_series, naive_fcast)
 
-    naive_fcast.plot(
-        label=f"Naive+1: {naive_precision:.2f}%",
-        figure=fig,
-        **quant_kwargs,
-    )
+        naive_fcast.plot(
+            label=f"Naive+1: {naive_precision:.2f}%",
+            figure=fig,
+            **quant_kwargs,
+        )
 
     pred_label = f"{name} Forecast"
     if past_covariates:
