@@ -425,7 +425,7 @@ class StocksController(StockBaseController):
                 dest="article",
                 default="bloomberg",
                 nargs="+",
-                help=translate("stocks/NEWS_data"),
+                help=translate("stocks/NEWS_article"),
             )
         # source is News API
         else:
