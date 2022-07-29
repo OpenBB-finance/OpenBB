@@ -1422,7 +1422,7 @@ from openbb_terminal.api import openbb (or: from openbb_terminal.api import open
 """
 
 
-def copy_func(f: Callable) -> Callable:
+def copy_func(f) -> Callable:
     """Copies the contents and attributes of the entered function. Based on https://stackoverflow.com/a/13503277
 
     Parameters
@@ -1447,12 +1447,8 @@ def copy_func(f: Callable) -> Callable:
     return g
 
 
-def change_docstring(api_callable, model: Callable, view: Optional[Callable] = None):
-    if view is None:
-        api_callable.__doc__ = model.__doc__
-        api_callable.__name__ = model.__name__
-        api_callable.__signature__ = signature(model)
-    else:
+def change_docstring(api_callable, model: Callable, view=None):
+    if view is not None:
         index = view.__doc__.find("Parameters")
         all_parameters = (
             "\nAPI function, use the chart kwarg for getting the view model and it's plot. "
@@ -1478,6 +1474,10 @@ def change_docstring(api_callable, model: Callable, view: Optional[Callable] = N
         api_callable.__signature__ = signature(view).replace(
             parameters=parameters + chart_parameter
         )
+    else:
+        api_callable.__doc__ = model.__doc__
+        api_callable.__name__ = model.__name__
+        api_callable.__signature__ = signature(model)
 
     return api_callable
 
@@ -1578,7 +1578,7 @@ class Loader:
             menu: str
                 Menu for which the help message is generated
             function_map: dict
-                Dictionary with the functions and their shortcuts
+                Dictionary with the functions and their virtual paths
 
             Returns
             -------
@@ -1596,19 +1596,19 @@ class Loader:
             return f
 
         function_map = self.__function_map
-        for shortcut, function in function_map.items():
-            shortcut_split = shortcut.split(".")
-            last_shortcut = shortcut_split[-1]
+        for virtual_path, function in function_map.items():
+            virtual_path_split = virtual_path.split(".")
+            last_virtual_path = virtual_path_split[-1]
 
             previous_menu = self
-            for menu in shortcut_split[:-1]:
+            for menu in virtual_path_split[:-1]:
                 if not hasattr(previous_menu, menu):
                     next_menu = MenuFiller(function=menu_message(menu, function_map))
                     previous_menu.__setattr__(menu, next_menu)
                     previous_menu = previous_menu.__getattribute__(menu)
                 else:
                     previous_menu = previous_menu.__getattribute__(menu)
-            previous_menu.__setattr__(last_shortcut, function)
+            previous_menu.__setattr__(last_virtual_path, function)
 
     @staticmethod
     def load_module(module_path: str) -> Optional[types.ModuleType]:
@@ -1675,9 +1675,9 @@ class Loader:
         """
         function_map = {}
 
-        for shortcut in functions.keys():
-            model_path = functions[shortcut].get("model")
-            view_path = functions[shortcut].get("view")
+        for virtual_path in functions.keys():
+            model_path = functions[virtual_path].get("model")
+            view_path = functions[virtual_path].get("view")
 
             if model_path:
                 model_function = cls.get_function(function_path=model_path)
@@ -1689,20 +1689,20 @@ class Loader:
             else:
                 view_function = None
 
-            if model_function is None and view_function is not None:
+            if model_function is not None:
+                function_factory = FunctionFactory(model=model_function, view=view_function)
+                function_with_doc = change_docstring(
+                    types.FunctionType(function_factory.api_callable.__code__, {}),
+                    model_function,
+                    view_function,
+                )
+                function_map[virtual_path] = types.MethodType(
+                    function_with_doc, function_factory
+                )
+            elif view_function is not None:
                 raise Exception(
                     "View function without model function : %s", view_function
                 )
-
-            function_factory = FunctionFactory(model=model_function, view=view_function)
-            function_with_doc = change_docstring(
-                types.FunctionType(function_factory.api_callable.__code__, {}),
-                model_function,
-                view_function,
-            )
-            function_map[shortcut] = types.MethodType(
-                function_with_doc, function_factory
-            )
 
         return function_map
 
