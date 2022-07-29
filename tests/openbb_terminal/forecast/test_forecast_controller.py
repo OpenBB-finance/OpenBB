@@ -69,9 +69,9 @@ def test_fc_custom_reset():
 
 def test_fc_custom_reset_with_files():
     cont = fc.ForecastController()
-    cont.files_full = ["file1"]
+    cont.files_full = [["file1", "file1"]]
     val = cont.custom_reset()
-    assert val == ["forecast", "load file1"]
+    assert val == ["forecast", "'load file1 -a file1'"]
 
 
 def test_fc_parse_known_args_and_warn(mocker):
@@ -195,10 +195,10 @@ def test_call_plot_no_values(mocker):
     cont.call_plot(["data.first"])
 
 
-def test_call_season():
+def test_call_season(tsla_csv):
     cont = fc.ForecastController()
-    cont.datasets = {"data": df}
-    cont.call_season(["data.first", "--max_lag", "1"])
+    cont.datasets = {"data": tsla_csv}
+    cont.call_season(["data.close", "--max_lag", "1"])
 
 
 def test_call_season_error():
@@ -253,8 +253,8 @@ def test_call_comb_not_in(mocker):
     cont = fc.ForecastController()
     cont.datasets = {"data": df}
     cont.choices = {
-        "combine": ["data.first", "data.second", "data.third"],
-        "delete": ["data.first", "data.second", "data.third"],
+        "combine": {"data.first": 1, "data.second": 2, "data.third": 3},
+        "delete": {"data.first": 1, "data.second": 2, "data.third": 3},
     }
     cont.call_combine(["data"])
 
@@ -269,8 +269,8 @@ def test_call_comb(mocker):
     cont = fc.ForecastController()
     cont.datasets = {"data": df}
     cont.choices = {
-        "combine": ["data.first", "data.second", "data.third"],
-        "delete": ["data.first", "data.second", "data.third"],
+        "combine": {"data.first": 1, "data.second": 2, "data.third": 3},
+        "delete": {"data.first": 1, "data.second": 2, "data.third": 3},
     }
     cont.call_combine(["data"])
 
@@ -300,8 +300,8 @@ def test_call_feat_eng_invalid(feature):
     cont.datasets = {"data": df}
     cont.files = ["file.csv", "fiile.csv"]
     cont.choices = {
-        "combine": ["data.first", "data.second", "data.third"],
-        "delete": ["data.first", "data.second", "data.third"],
+        "combine": {"data.first": 1, "data.second": 2, "data.third": 3},
+        "delete": {"data.first": 1, "data.second": 2, "data.third": 3},
     }
     the_list = ["data"]
     if feature == "rsi":
@@ -325,8 +325,8 @@ def test_call_feat_eng_invalid_parser(feature, mocker):
     cont.datasets = {"data": df}
     cont.files = ["file.csv", "fiile.csv"]
     cont.choices = {
-        "combine": ["data.first", "data.second", "data.third"],
-        "delete": ["data.first", "data.second", "data.third"],
+        "combine": {"data.first": 1, "data.second": 2, "data.third": 3},
+        "delete": {"data.first": 1, "data.second": 2, "data.third": 3},
     }
     the_list = ["data"]
     if feature == "rsi":

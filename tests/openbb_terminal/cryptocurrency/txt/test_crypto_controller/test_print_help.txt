@@ -17,4 +17,5 @@ Source:
 [unvl]>   dd                 due-diligence for loaded coin,          coin information, social media, market stats[/unvl]
 [unvl]>   ta                 technical analysis for loaded coin,     ema, macd, rsi, adx, bbands, obv[/unvl]
 [unvl]>   qa                 quantitative analysis                   decompose, cusum, residuals analysis[/unvl]
+[unvl]>   forecast           forecast techniques,                 rnn, nbeats, transformer, block rnn[/unvl]
 
