@@ -85,7 +85,7 @@ def display_regression(
             )[1:]
 
         df_future = values[future_index[0] : future_index[-1]]  # noqa: E203
-        values = values[:s_end_date]  # type: ignore
+        values = values[:end_date]  # type: ignore
 
     l_predictions, _ = regression_model.get_regression_model(
         list(values.values), poly_order, n_input, n_predict, n_jumps
@@ -111,14 +111,14 @@ def display_regression(
     elif end_date and not is_valid_axes_count(
         external_axes,
         3,
-        prefix_text="If there is s_end_date",
+        prefix_text="If there is end_date",
         suffix_text="when backtesting",
     ):
         return
     elif not end_date and not is_valid_axes_count(
         external_axes,
         1,
-        prefix_text="If there is no s_end_date",
+        prefix_text="If there is no end_date",
         suffix_text="when backtesting",
     ):
         return
