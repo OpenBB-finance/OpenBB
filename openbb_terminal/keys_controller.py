@@ -26,6 +26,7 @@ from openbb_terminal import feature_flags as obbff
 from openbb_terminal.cryptocurrency.coinbase_helpers import (
     CoinbaseProAuth,
     make_coinbase_request,
+    CoinbaseApiException,
 )
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import parse_simple_args
@@ -59,7 +60,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         "binance",
         "bitquery",
         "si",
-        "cb",
+        "coinbase",
         "walert",
         "glassnode",
         "coinglass",
@@ -532,7 +533,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
 
     def check_coinbase_key(self, show_output: bool = False) -> None:
         """Check Coinbase key"""
-        self.cfg_dict["COINBASE"] = "cb"
+        self.cfg_dict["COINBASE"] = "coinbase"
         if "REPLACE_ME" in [
             cfg.API_COINBASE_KEY,
             cfg.API_COINBASE_SECRET,
@@ -546,7 +547,10 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
                 cfg.API_COINBASE_SECRET,
                 cfg.API_COINBASE_PASS_PHRASE,
             )
-            resp = make_coinbase_request("/accounts", auth=auth)
+            try:
+                resp = make_coinbase_request("/accounts", auth=auth)
+            except CoinbaseApiException:
+                resp = None
             if not resp:
                 logger.warning("Coinbase key defined, test failed")
                 self.key_dict["COINBASE"] = "defined, test unsuccessful"
