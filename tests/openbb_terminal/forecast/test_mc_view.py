@@ -6,7 +6,7 @@ base = "openbb_terminal.forecast.mc_view."
 
 def test_display_mc_forecast(tsla_csv):
     tsla_csv = tsla_csv.set_index("date")
-    mc_view.display_mc_forecast(tsla_csv, "close",  1, 2)
+    mc_view.display_mc_forecast(tsla_csv, "close", 1, 2)
 
 
 def test_display_mc_forecast_external_axis_valid(tsla_csv, mocker):
