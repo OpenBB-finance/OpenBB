@@ -207,11 +207,12 @@ class SettingsController(BaseController):
             type=int,
             dest="value",
             help="value",
+            required="-h" not in other_args,
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-v")
         ns_parser = parse_simple_args(parser, other_args)
-        if ns_parser:
+        if ns_parser and ns_parser.value:
             set_key(obbff.ENV_FILE, "OPENBB_PLOT_DPI", str(ns_parser.value))
             cfg_plot.PLOT_DPI = ns_parser.value
             console.print("")
@@ -231,6 +232,7 @@ class SettingsController(BaseController):
             type=int,
             dest="value",
             help="value",
+            required="-h" not in other_args,
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-v")
@@ -255,6 +257,7 @@ class SettingsController(BaseController):
             type=int,
             dest="value",
             help="value",
+            required="-h" not in other_args,
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-v")
