@@ -832,6 +832,10 @@ functions = {
     "stocks.behavioural_analysis.process_news_headlines_sentiment": {
         "model": "openbb_terminal.stocks.behavioural_analysis.finnhub_model.process_news_headlines_sentiment"
     },
+    "stocks.candle": {
+        "model": "openbb_terminal.stocks.stocks_helper.load",
+        "view": "openbb_terminal.stocks.stocks_helper.display_candle"
+    },
     "stocks.comparison_analysis.find_smallest_num_data_point": {
         "model": "openbb_terminal.stocks.comparison_analysis.finbrain_model.find_smallest_num_data_point"
     },
@@ -1238,6 +1242,9 @@ functions = {
     "stocks.insider.open_insider_link": {
         "model": "openbb_terminal.stocks.insider.openinsider_model.get_open_insider_link"
     },
+    "stocks.load": {
+        "model": "openbb_terminal.stocks.stocks_helper.load"
+    },
     "stocks.options.put_call_ratio": {
         "model": "openbb_terminal.stocks.options.alphaquery_model.get_put_call_ratio",
         "view": "openbb_terminal.stocks.options.alphaquery_view.display_put_call_ratio",
@@ -1440,7 +1447,7 @@ def copy_func(f: Callable) -> Callable:
     return g
 
 
-def change_docstring(api_callable, model: Callable, view: Callable = None):
+def change_docstring(api_callable, model: Callable, view: Optional[Callable] = None):
     if view is None:
         api_callable.__doc__ = model.__doc__
         api_callable.__name__ = model.__name__
@@ -1478,7 +1485,7 @@ def change_docstring(api_callable, model: Callable, view: Callable = None):
 class FunctionFactory:
     """The API Function Factory, which creates the callable instance"""
 
-    def __init__(self, model: Callable, view: Callable = None):
+    def __init__(self, model: Callable, view: Optional[Callable] = None):
         """Initialises the FunctionFactory instance
 
         Parameters
