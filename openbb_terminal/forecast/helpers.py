@@ -490,6 +490,16 @@ def plot_forecast(
         **quant_kwargs,
     )
 
+    # show naive forecast shift historical_fcast_df by 1
+    naive_fcast = ticker_series.shift(1)
+    naive_precision = mape(ticker_series, naive_fcast)
+
+    naive_fcast.plot(
+        label=f"Naive+1: {naive_precision:.2f}%",
+        figure=fig,
+        **quant_kwargs,
+    )
+
     pred_label = f"{name} Forecast"
     if past_covariates:
         pred_label += " w/ past covs"
