@@ -490,7 +490,7 @@ def plot_forecast(
         **quant_kwargs,
     )
 
-    # show naive forecast shift historical_fcast_df by 1
+    # show naive forecast shift timeseries by 1
     naive_fcast = ticker_series.shift(1)
     naive_precision = mape(ticker_series, naive_fcast)
 
