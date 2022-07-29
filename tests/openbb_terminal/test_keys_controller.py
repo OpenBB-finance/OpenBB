@@ -1,5 +1,4 @@
 import pytest
-from openbb_terminal.cryptocurrency.coinbase_helpers import CoinbaseApiException
 
 from openbb_terminal.keys_controller import KeysController
 
@@ -198,11 +197,7 @@ def test_check_si_key(key, output, mocker):
 @pytest.mark.parametrize("key, output", [("REPLACE_ME", True), ("VALIDKEY", False)])
 def test_check_coinbase_key(key, output, mocker):
     mocker.patch("openbb_terminal.keys_controller.cfg", MockCFG(COINBASE=key))
-    if key == "REPLACE_ME":
-        controller.check_coinbase_key(output)
-    else:
-        with pytest.raises(CoinbaseApiException):
-            controller.check_coinbase_key(output)
+    controller.check_coinbase_key(output)
 
 
 @pytest.mark.vcr
@@ -352,11 +347,7 @@ def test_call_si(other):
 
 @pytest.mark.parametrize("other", [[], ["-k", "1234", "-s", "4567", "-p" "890"]])
 def test_call_coinbase(other):
-    if not other:
-        controller.call_coinbase(other)
-    else:
-        with pytest.raises(CoinbaseApiException):
-            controller.call_coinbase(other)
+    controller.call_coinbase(other)
 
 
 @pytest.mark.parametrize("other", [[], ["-k", "1234"], ["1234"]])
