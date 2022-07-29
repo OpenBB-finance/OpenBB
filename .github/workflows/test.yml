@@ -72,7 +72,10 @@ jobs:
         run: poetry install --no-interaction --no-root -E bots -E prediction
 
       - name: Install Package
-        run: poetry install --no-interaction -E bots
+        run: poetry install --no-interaction -E bots -E prediction
+
+      - name: Install Darts
+        run: pip install "u8darts[torch]"
 
       - name: Run tests
         env:
