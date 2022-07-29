@@ -75,6 +75,21 @@ def load(
     start_date: str,
     source: str = "yf",
 ):
+    """Load forex data
+
+    Parameters
+    ----------
+    to_symbol: str
+    from_symbol: str
+    resolution: str
+    interval: str
+    start_date: str
+    source: str
+
+    Returns
+    -------
+    pd.DataFrame
+    """
     if source in ["yf", "av"]:
         interval_map = INTERVAL_MAPS[source]
 

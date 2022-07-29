@@ -174,7 +174,8 @@ functions = {
         "view": "openbb_terminal.common.quantitative_analysis.qa_view.display_omega",
     },
     "common.quantitative_analysis.seasonal_decomposition": {
-        "model": "openbb_terminal.common.quantitative_analysis.qa_model.get_seasonal_decomposition"
+        "model": "openbb_terminal.common.quantitative_analysis.qa_model.get_seasonal_decomposition",
+        "view": "openbb_terminal.common.quantitative_analysis.qa_view.display_seasonal",
     },
     "common.quantitative_analysis.sharpe": {
         "model": "openbb_terminal.common.quantitative_analysis.qa_model.get_sharpe",
@@ -509,6 +510,7 @@ functions = {
     "crypto.due_diligence.slug": {
         "model": "openbb_terminal.cryptocurrency.due_diligence.santiment_model.get_slug"
     },
+
     "crypto.nft.nft_drops": {
         "model": "openbb_terminal.cryptocurrency.nft.nftcalendar_model.get_nft_drops"
     },
@@ -678,6 +680,13 @@ functions = {
     "etf.screener.etf_screener": {
         "model": "openbb_terminal.etf.screener.screener_model.etf_screener"
     },
+    "forex.candle": {
+        "model": "openbb_terminal.forex.forex_helper.load",
+        "view": "openbb_terminal.forex.forex_helper.display_candle",
+    },
+    "forex.load": {
+        "model": "openbb_terminal.forex.forex_helper.load"
+    },
     "forex.oanda.account_summary_request": {
         "model": "openbb_terminal.forex.oanda.oanda_model.account_summary_request"
     },
@@ -716,6 +725,12 @@ functions = {
     },
     "forex.oanda.positionbook_plot_data_request": {
         "model": "openbb_terminal.forex.oanda.oanda_model.positionbook_plot_data_request"
+    },
+    "forex.quote": {
+        "model": "openbb_terminal.forex.av_model.get_quote"
+    },
+    "forex.forward_rates": {
+        "model": "openbb_terminal.forex.fxempire_model.get_forward_rates"
     },
     "portfolio.brokers.ally.ally_positions_to_df": {
         "model": "openbb_terminal.portfolio.brokers.ally.ally_model.ally_positions_to_df"
@@ -835,6 +850,9 @@ functions = {
     "stocks.candle": {
         "model": "openbb_terminal.stocks.stocks_helper.load",
         "view": "openbb_terminal.stocks.stocks_helper.display_candle",
+    },
+    "stocks.process_candle": {
+        "model": "openbb_terminal.stocks.stocks_helper.process_candle"
     },
     "stocks.comparison_analysis.find_smallest_num_data_point": {
         "model": "openbb_terminal.stocks.comparison_analysis.finbrain_model.find_smallest_num_data_point"
