@@ -834,7 +834,7 @@ functions = {
     },
     "stocks.candle": {
         "model": "openbb_terminal.stocks.stocks_helper.load",
-        "view": "openbb_terminal.stocks.stocks_helper.display_candle"
+        "view": "openbb_terminal.stocks.stocks_helper.display_candle",
     },
     "stocks.comparison_analysis.find_smallest_num_data_point": {
         "model": "openbb_terminal.stocks.comparison_analysis.finbrain_model.find_smallest_num_data_point"
@@ -1242,9 +1242,7 @@ functions = {
     "stocks.insider.open_insider_link": {
         "model": "openbb_terminal.stocks.insider.openinsider_model.get_open_insider_link"
     },
-    "stocks.load": {
-        "model": "openbb_terminal.stocks.stocks_helper.load"
-    },
+    "stocks.load": {"model": "openbb_terminal.stocks.stocks_helper.load"},
     "stocks.options.put_call_ratio": {
         "model": "openbb_terminal.stocks.options.alphaquery_model.get_put_call_ratio",
         "view": "openbb_terminal.stocks.options.alphaquery_view.display_put_call_ratio",
@@ -1690,7 +1688,9 @@ class Loader:
                 view_function = None
 
             if model_function is not None:
-                function_factory = FunctionFactory(model=model_function, view=view_function)
+                function_factory = FunctionFactory(
+                    model=model_function, view=view_function
+                )
                 function_with_doc = change_docstring(
                     types.FunctionType(function_factory.api_callable.__code__, {}),
                     model_function,
