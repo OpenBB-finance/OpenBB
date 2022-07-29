@@ -202,7 +202,7 @@ class SettingsController(BaseController):
             description="Dots per inch.",
         )
         parser.add_argument(
-            "-v", "--value", type=int, dest="value", help="value", reuqired=True
+            "-v", "--value", type=int, dest="value", help="value", required="-h" not in other_args
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-v")
@@ -222,7 +222,7 @@ class SettingsController(BaseController):
             description="select plot height (autoscaling disabled)",
         )
         parser.add_argument(
-            "-v", "--value", type=int, dest="value", help="value", required=True
+            "-v", "--value", type=int, dest="value", help="value", required="-h" not in other_args
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-v")
@@ -242,7 +242,7 @@ class SettingsController(BaseController):
             description="select plot width (autoscaling disabled)",
         )
         parser.add_argument(
-            "-v", "--value", type=int, dest="value", help="value", required=True
+            "-v", "--value", type=int, dest="value", help="value", required="-h" not in other_args
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-v")
