@@ -71,15 +71,15 @@ def get_historical(ticker: str, start: str, end: str, number: int) -> pd.DataFra
     return df
 
 
-def check_supported_ticker(ticker: str) -> bool:
+def check_supported_ticker(symbol: str) -> bool:
     """Check if the ticker is supported
 
     Source: [Sentiment Investor]
 
     Parameters
     ----------
-    ticker: str
-        Ticker to view sentiment data
+    symbol: str
+        Ticker symbol to view sentiment data
 
     Returns
     -------
@@ -89,7 +89,7 @@ def check_supported_ticker(ticker: str) -> bool:
 
     payload: Dict[str, str] = {
         "token": cfg.API_SENTIMENTINVESTOR_TOKEN,
-        "symbol": ticker,
+        "symbol": symbol,
     }
 
     response = requests.get(
@@ -105,7 +105,7 @@ def check_supported_ticker(ticker: str) -> bool:
             result = response_json["result"]
         else:
             console.print(
-                f"[red]Ticker {ticker} not supported. Please try another one![/red]\n"
+                f"[red]Ticker {symbol} not supported. Please try another one![/red]\n"
             )
 
     elif "error" in response_json:
@@ -117,7 +117,7 @@ def check_supported_ticker(ticker: str) -> bool:
     return result
 
 
-def get_trending(start: datetime, hour: int, number: int) -> pd.DataFrame:
+def get_trending(start_date: datetime, hour: int, number: int) -> pd.DataFrame:
     """Get sentiment data on the most talked about tickers
     within the last hour
 
@@ -125,7 +125,7 @@ def get_trending(start: datetime, hour: int, number: int) -> pd.DataFrame:
 
     Parameters
     ----------
-    start: datetime
+    start_date: datetime
         Datetime object (e.g. datetime(2021, 12, 21)
     hour: int
         Hour of the day in 24-hour notation (e.g. 14)
@@ -140,7 +140,7 @@ def get_trending(start: datetime, hour: int, number: int) -> pd.DataFrame:
     """
 
     # type is datetime
-    start_timestamp = start + timedelta(hours=hour)
+    start_timestamp = start_date + timedelta(hours=hour)
 
     payload: Dict[str, Union[int, str]] = {
         "token": cfg.API_SENTIMENTINVESTOR_TOKEN,

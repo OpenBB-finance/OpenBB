@@ -51,17 +51,17 @@ def lambda_color_red(val: Any) -> str:
 
 
 @log_start_end(log=logger)
-def display_summary(df: pd.DataFrame, export: str):
+def display_summary(data: pd.DataFrame, export: str = ""):
     """Show summary statistics
 
     Parameters
     ----------
-    df : pd.DataFrame
+    data : pd.DataFrame
         DataFrame to get statistics of
     export : str
         Format to export data
     """
-    summary = qa_model.get_summary(df)
+    summary = qa_model.get_summary(data)
 
     print_rich_table(
         summary,
@@ -82,9 +82,9 @@ def display_summary(df: pd.DataFrame, export: str):
 @log_start_end(log=logger)
 def display_hist(
     name: str,
-    df: pd.DataFrame,
+    data: pd.DataFrame,
     target: str,
-    bins: int,
+    bins: int = 15,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Generate of histogram of data
@@ -93,7 +93,7 @@ def display_hist(
     ----------
     name : str
         Name of dataset
-    df : pd.DataFrame
+    data : pd.DataFrame
         Dataframe to look at
     target : str
         Data column to get histogram of the dataframe
@@ -102,7 +102,7 @@ def display_hist(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    data = df[target]
+    data = data[target]
 
     # This plot has 1 axis
     if external_axes is None:
@@ -126,8 +126,8 @@ def display_hist(
     )
     sns.rugplot(data, color=theme.down_color, ax=ax, legend=True)
 
-    if isinstance(df.index[0], datetime):
-        start = df.index[0]
+    if isinstance(data.index[0], datetime):
+        start = data.index[0]
         ax.set_title(f"Histogram of {name} {target} from {start.strftime('%Y-%m-%d')}")
     else:
         ax.set_title(f"Histogram of {name} {target}")
@@ -151,7 +151,7 @@ def display_hist(
 @log_start_end(log=logger)
 def display_cdf(
     name: str,
-    df: pd.DataFrame,
+    data: pd.DataFrame,
     target: str,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -162,7 +162,7 @@ def display_cdf(
     ----------
     name : str
         Name of dataset
-    df : pd.DataFrame
+    data : pd.DataFrame
         Dataframe to look at
     target : str
         Data column
@@ -171,8 +171,8 @@ def display_cdf(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    data = df[target]
-    start = df.index[0]
+    data = data[target]
+    start = data.index[0]
     cdf = data.value_counts().sort_index().div(len(data)).cumsum()
 
     # This plot has 1 axis
@@ -256,9 +256,9 @@ def display_cdf(
 @log_start_end(log=logger)
 def display_bw(
     name: str,
-    df: pd.DataFrame,
+    data: pd.DataFrame,
     target: str,
-    yearly: bool,
+    yearly: bool = False,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Show box and whisker plots
@@ -267,7 +267,7 @@ def display_bw(
     ----------
     name : str
         Name of dataset
-    df : pd.DataFrame
+    data : pd.DataFrame
         Dataframe to look at
     target : str
         Data column to look at
@@ -276,8 +276,8 @@ def display_bw(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    data = df[target]
-    start = df.index[0]
+    data = data[target]
+    start = data.index[0]
 
     # This plot has 1 axis
     if external_axes is None:
@@ -352,9 +352,9 @@ def display_bw(
 @log_start_end(log=logger)
 def display_acf(
     name: str,
-    df: pd.DataFrame,
+    data: pd.DataFrame,
     target: str,
-    lags: int,
+    lags: int = 15,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Show Auto and Partial Auto Correlation of returns and change in returns
@@ -363,7 +363,7 @@ def display_acf(
     ----------
     name : str
         Name of dataset
-    df : pd.DataFrame
+    data : pd.DataFrame
         Dataframe to look at
     target : str
         Data column to look at
@@ -372,8 +372,8 @@ def display_acf(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (4 axes are expected in the list), by default None
     """
-    df = df[target]
-    start = df.index[0]
+    data = data[target]
+    start = data.index[0]
 
     # This plot has 4 axes
     if external_axes is None:
@@ -390,23 +390,23 @@ def display_acf(
         return
 
     # Diff Auto-correlation function for original time series
-    sm.graphics.tsa.plot_acf(np.diff(np.diff(df.values)), lags=lags, ax=ax1)
+    sm.graphics.tsa.plot_acf(np.diff(np.diff(data.values)), lags=lags, ax=ax1)
     ax1.set_title(f"{name} Returns Auto-Correlation", fontsize=9)
     # Diff Partial auto-correlation function for original time series
-    sm.graphics.tsa.plot_pacf(np.diff(np.diff(df.values)), lags=lags, ax=ax2)
+    sm.graphics.tsa.plot_pacf(np.diff(np.diff(data.values)), lags=lags, ax=ax2)
     ax2.set_title(
         f"{name} Returns Partial Auto-Correlation",
         fontsize=9,
     )
 
     # Diff Diff Auto-correlation function for original time series
-    sm.graphics.tsa.plot_acf(np.diff(np.diff(df.values)), lags=lags, ax=ax3)
+    sm.graphics.tsa.plot_acf(np.diff(np.diff(data.values)), lags=lags, ax=ax3)
     ax3.set_title(
         f"Change in {name} Returns Auto-Correlation",
         fontsize=9,
     )
     # Diff Diff Partial auto-correlation function for original time series
-    sm.graphics.tsa.plot_pacf(np.diff(np.diff(df.values)), lags=lags, ax=ax4)
+    sm.graphics.tsa.plot_pacf(np.diff(np.diff(data.values)), lags=lags, ax=ax4)
     ax4.set_title(
         f"Change in {name} Returns Partial Auto-Correlation",
         fontsize=9,
@@ -432,7 +432,7 @@ def display_acf(
 @log_start_end(log=logger)
 def display_qqplot(
     name: str,
-    df: pd.DataFrame,
+    data: pd.DataFrame,
     target: str,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -442,7 +442,7 @@ def display_qqplot(
     ----------
     name : str
         Stock ticker
-    df : pd.DataFrame
+    data : pd.DataFrame
         Dataframe
     target : str
         Column in data to look at
@@ -451,7 +451,7 @@ def display_qqplot(
     """
     # Statsmodels has a UserWarning for marker kwarg-- which we don't use
     warnings.filterwarnings(category=UserWarning, action="ignore")
-    data = df[target]
+    data = data[target]
 
     # This plot has 1 axis
     if external_axes is None:
@@ -486,7 +486,7 @@ def display_qqplot(
 
 @log_start_end(log=logger)
 def display_cusum(
-    df: pd.DataFrame,
+    data: pd.DataFrame,
     target: str,
     threshold: float,
     drift: float,
@@ -496,7 +496,7 @@ def display_cusum(
 
     Parameters
     ----------
-    df : pd.DataFrame
+    data : pd.DataFrame
         Dataframe
     target : str
         Column of data to look at
@@ -507,7 +507,7 @@ def display_cusum(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
     """
-    target_series = df[target].values
+    target_series = data[target].values
 
     # The code for this plot was adapted from detecta's sources because at the
     # time of writing this detect_cusum had a bug related to external axes support.
@@ -549,7 +549,7 @@ def display_cusum(
     else:
         return
 
-    target_series_indexes = range(df[target].size)
+    target_series_indexes = range(data[target].size)
     ax1.plot(target_series_indexes, target_series)
     if len(ta):
         ax1.plot(
@@ -615,7 +615,7 @@ def display_cusum(
 @log_start_end(log=logger)
 def display_seasonal(
     name: str,
-    df: pd.DataFrame,
+    data: pd.DataFrame,
     target: str,
     multiplicative: bool = False,
     export: str = "",
@@ -627,18 +627,18 @@ def display_seasonal(
     ----------
     name : str
         Name of dataset
-    df : pd.DataFrame
+    data : pd.DataFrame
         DataFrame
     target : str
         Column of data to look at
     multiplicative : bool
         Boolean to indicate multiplication instead of addition
     export : str
-        Format to export trend and cycle df
+        Format to export trend and cycle data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (6 axes are expected in the list), by default None
     """
-    data = df[target]
+    data = data[target]
     result, cycle, trend = qa_model.get_seasonal_decomposition(data, multiplicative)
 
     plot_data = pd.merge(
@@ -761,19 +761,19 @@ def display_seasonal(
 
 
 @log_start_end(log=logger)
-def display_normality(df: pd.DataFrame, target: str, export: str = ""):
+def display_normality(data: pd.DataFrame, target: str, export: str = ""):
     """View normality statistics
 
     Parameters
     ----------
-    df : pd.DataFrame
+    data : pd.DataFrame
         DataFrame
     target : str
         Column in data to look at
     export : str
         Format to export data
     """
-    data = df[target]
+    data = data[target]
     normal = qa_model.get_normality(data)
     stats1 = normal.copy().T
     stats1.iloc[:, 1] = stats1.iloc[:, 1].apply(lambda x: lambda_color_red(x))
@@ -796,25 +796,25 @@ def display_normality(df: pd.DataFrame, target: str, export: str = ""):
 
 @log_start_end(log=logger)
 def display_unitroot(
-    df: pd.DataFrame, target: str, fuller_reg: str, kpss_reg: str, export: str = ""
+    data: pd.DataFrame, target: str, fuller_reg: str = "c", kpss_reg: str = "c", export: str = ""
 ):
     """Show unit root test calculations
 
     Parameters
     ----------
-    df : pd.DataFrame
+    data : pd.DataFrame
         DataFrame
     target : str
         Column of data to look at
     fuller_reg : str
-        Type of regression of ADF test
+        Type of regression of ADF test. Can be ‘c’,’ct’,’ctt’,’nc’ 'c' - Constant and t - trend order
     kpss_reg : str
-        Type of regression for KPSS test
+        Type of regression for KPSS test. Can be ‘c’,’ct'
     export : str
         Format for exporting data
     """
-    df = df[target]
-    data = qa_model.get_unitroot(df, fuller_reg, kpss_reg)
+    data = data[target]
+    data = qa_model.get_unitroot(data, fuller_reg, kpss_reg)
     print_rich_table(
         data,
         show_index=True,
@@ -833,13 +833,13 @@ def display_unitroot(
 
 @log_start_end(log=logger)
 def display_raw(
-    df: pd.DataFrame, sort: str = "", des: bool = False, num: int = 20, export: str = ""
+    data: pd.DataFrame, sort: str = "", des: bool = False, num: int = 20, export: str = ""
 ) -> None:
     """Return raw stock data
 
     Parameters
     ----------
-    df : DataFrame
+    data : DataFrame
         DataFrame with historical information
     sort : str
         The column to sort by
@@ -855,16 +855,16 @@ def display_raw(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "history",
-        df,
+        data,
     )
 
-    if isinstance(df, pd.Series):
-        df1 = pd.DataFrame(df)
+    if isinstance(data, pd.Series):
+        df1 = pd.DataFrame(data)
     else:
-        df1 = df.copy()
+        df1 = data.copy()
 
     if sort:
-        df1 = df.sort_values(
+        df1 = data.sort_values(
             by=sort if sort != "AdjClose" else "Adj Close", ascending=des
         )
     df1.index = [x.strftime("%Y-%m-%d") for x in df1.index]
@@ -990,7 +990,7 @@ def display_line(
 
 def display_var(
     data: pd.DataFrame,
-    ticker: str = "",
+    name: str = "",
     use_mean: bool = False,
     adjusted_var: bool = False,
     student_t: bool = False,
@@ -1003,11 +1003,11 @@ def display_var(
     Parameters
     ----------
     data: pd.Dataframe
-        stock dataframe
+        Data dataframe
     use_mean: bool
-        if one should use the stocks mean return
-    ticker: str
-        ticker of the stock
+        if one should use the data mean return
+    name: str
+        name of the data
     adjusted_var: bool
         if one should have VaR adjusted for skew and kurtosis (Cornish-Fisher-Expansion)
     student_t: bool
@@ -1041,8 +1041,8 @@ def display_var(
         str_var_label = "VaR:"
         str_title = ""
 
-    if ticker != "":
-        ticker += " "
+    if name != "":
+        name += " "
 
     data_dictionary = {str_var_label: var_list, str_hist_label: hist_var_list}
     data = pd.DataFrame(
@@ -1053,14 +1053,14 @@ def display_var(
         data,
         show_index=True,
         headers=list(data.columns),
-        title=f"[bold]{ticker}{str_title}Value at Risk[/bold]",
+        title=f"[bold]{name}{str_title}Value at Risk[/bold]",
         floatfmt=".4f",
     )
 
 
 def display_es(
     data: pd.DataFrame,
-    ticker: str = "",
+    name: str = "",
     use_mean: bool = False,
     distribution: str = "normal",
     percentile: float = 0.999,
@@ -1071,11 +1071,11 @@ def display_es(
     Parameters
     ----------
     data: pd.DataFrame
-        stock dataframe
+        Data dataframe
     use_mean:
-        if one should use the stocks mean return
-    ticker: str
-        ticker of the stock
+        if one should use the data mean return
+    name: str
+        name of the data
     distribution: str
         choose distribution to use: logistic, laplace, normal
     percentile: int
@@ -1102,8 +1102,8 @@ def display_es(
         str_es_label = "ES:"
         str_title = ""
 
-    if ticker != "":
-        ticker += " "
+    if name != "":
+        name += " "
 
     data_dictionary = {str_es_label: es_list, str_hist_label: hist_es_list}
     data = pd.DataFrame(
@@ -1114,12 +1114,12 @@ def display_es(
         data,
         show_index=True,
         headers=list(data.columns),
-        title=f"[bold]{ticker}{str_title}Expected Shortfall[/bold]",
+        title=f"[bold]{name}{str_title}Expected Shortfall[/bold]",
         floatfmt=".4f",
     )
 
 
-def display_sharpe(data: pd.DataFrame, rfr: float, window: float):
+def display_sharpe(data: pd.DataFrame, rfr: float = 0, window: float = 252):
     """Calculates the sharpe ratio
     Parameters
     ----------

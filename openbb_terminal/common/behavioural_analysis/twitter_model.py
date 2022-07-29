@@ -20,22 +20,22 @@ analyzer = SentimentIntensityAnalyzer()
 
 @log_start_end(log=logger)
 def load_analyze_tweets(
-    ticker: str,
-    count: int = 100,
-    start_time: Optional[str] = "",
-    end_time: Optional[str] = "",
+    symbol: str,
+    limit: int = 100,
+    start_date: Optional[str] = "",
+    end_date: Optional[str] = "",
 ) -> pd.DataFrame:
     """Load tweets from twitter API and analyzes using VADER
 
     Parameters
     ----------
-    ticker: str
-        Ticker to search twitter for
-    count: int
+    symbol: str
+        Ticker symbol to search twitter for
+    limit: int
         Number of tweets to analyze
-    start : Optional[str]
+    start_date: Optional[str]
         If given, the start time to get tweets from
-    end : Optional[str]
+    end_date: Optional[str]
         If given, the end time to get tweets from
 
     Returns
@@ -44,16 +44,16 @@ def load_analyze_tweets(
         Dataframe of tweets and sentiment
     """
     params = {
-        "query": rf"(\${ticker}) (lang:en)",
-        "max_results": str(count),
+        "query": rf"(\${symbol}) (lang:en)",
+        "max_results": str(limit),
         "tweet.fields": "created_at,lang",
     }
 
-    if start_time:
+    if start_date:
         # Assign from and to datetime parameters for the API
-        params["start_time"] = start_time
-    if end_time:
-        params["end_time"] = end_time
+        params["start_time"] = start_date
+    if end_date:
+        params["end_time"] = end_date
 
     # Request Twitter API
     response = requests.get(
@@ -103,7 +103,7 @@ def load_analyze_tweets(
     neu = []
 
     for s_tweet in df_tweets["text"].to_list():
-        tweet = clean_tweet(s_tweet, ticker)
+        tweet = clean_tweet(s_tweet, symbol)
         sentiments.append(analyzer.polarity_scores(tweet)["compound"])
         pos.append(analyzer.polarity_scores(tweet)["pos"])
         neg.append(analyzer.polarity_scores(tweet)["neg"])

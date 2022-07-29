@@ -62,7 +62,7 @@ def test_get_trending_status_400(mocker):
     mocker.patch(target="requests.get", new=mocker.Mock(return_value=mock_response))
 
     df = sentimentinvestor_model.get_trending(
-        start=datetime(2021, 12, 21),
+        start_date=datetime(2021, 12, 21),
         hour=9,
         number=10,
     )

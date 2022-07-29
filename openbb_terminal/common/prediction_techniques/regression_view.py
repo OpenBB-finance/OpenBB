@@ -43,7 +43,7 @@ def display_regression(
     n_input: int,
     n_predict: int,
     n_jumps: int,
-    s_end_date: str = "",
+    end_date: str = "",
     export: str = "",
     time_res: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -64,7 +64,7 @@ def display_regression(
         Length of prediction sequence
     n_jumps : int
         Number of jumps in data
-    s_end_date : str, optional
+    end_date : str, optional
         Start date for backtesting
     export : str, optional
         Format for exporting figures
@@ -74,14 +74,14 @@ def display_regression(
         External axes (1 axis is expected in the list), by default None
     """
     # BACKTESTING
-    if s_end_date:
+    if end_date:
         if not time_res:
             future_index = get_next_stock_market_days(
-                last_stock_day=s_end_date, n_next_days=n_predict
+                last_stock_day=end_date, n_next_days=n_predict
             )
         else:
             future_index = pd.date_range(
-                s_end_date, periods=n_predict + 1, freq=time_res
+                end_date, periods=n_predict + 1, freq=time_res
             )[1:]
 
         df_future = values[future_index[0] : future_index[-1]]  # noqa: E203
@@ -108,14 +108,14 @@ def display_regression(
     # This plot has 1 axis
     if external_axes is None:
         _, ax1 = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif s_end_date and not is_valid_axes_count(
+    elif end_date and not is_valid_axes_count(
         external_axes,
         3,
         prefix_text="If there is s_end_date",
         suffix_text="when backtesting",
     ):
         return
-    elif not s_end_date and not is_valid_axes_count(
+    elif not end_date and not is_valid_axes_count(
         external_axes,
         1,
         prefix_text="If there is no s_end_date",
@@ -127,7 +127,7 @@ def display_regression(
 
     ax1.plot(values.index, values)
     # BACKTESTING
-    if s_end_date:
+    if end_date:
         ax1.set_title(
             f"BACKTESTING: Regression (polynomial {poly_order}) on {dataset} - {n_predict} step prediction",
             fontsize=12,
@@ -150,7 +150,7 @@ def display_regression(
     ax1.vlines(values.index[-1], ymin, ymax, linestyle="--")
 
     # BACKTESTING
-    if s_end_date:
+    if end_date:
         ax1.plot(
             df_future.index,
             df_future,
@@ -175,7 +175,7 @@ def display_regression(
     console.print("")
 
     # BACKTESTING
-    if s_end_date:
+    if end_date:
         # This plot has 3 axes
         if external_axes is None:
             _, axes = plt.subplots(
