@@ -506,7 +506,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
     def check_si_key(self, show_output: bool = False) -> None:
         """Check Sentiment Investor key"""
         self.cfg_dict["SENTIMENT_INVESTOR"] = "si"
-        si_keys = [cfg.API_SENTIMENTINVESTOR_TOKEN]
+        si_keys = [cfg.API_SENTIMENT_INVESTOR_TOKEN]
         if "REPLACE_ME" in si_keys:
             logger.info("Sentiment Investor key not defined")
             self.key_dict["SENTIMENT_INVESTOR"] = "not defined"
@@ -514,7 +514,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             try:
                 account = requests.get(
                     f"https://api.sentimentinvestor.com/v1/trending"
-                    f"?token={cfg.API_SENTIMENTINVESTOR_TOKEN}"
+                    f"?token={cfg.API_SENTIMENT_INVESTOR_TOKEN}"
                 )
                 if account.ok and account.json().get("success", False):
                     logger.info("Sentiment Investor key defined, test passed")
