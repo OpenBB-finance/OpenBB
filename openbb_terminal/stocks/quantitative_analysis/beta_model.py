@@ -42,7 +42,7 @@ def beta_model(
     if ref is None:
         ref = stocks_helper.load(ref_ticker)
         if ref.empty:
-            raise Exception("Invalid ref ticker")
+            return pd.Series(), pd.Series(), 0, 0
     else:
         ref = ref.rename({"close": "Close"}, axis=1)
 
