@@ -5,6 +5,7 @@ en:
   survey: fill in our 2-minute survey so we better understand how we can improve the terminal
   update: attempt to update the terminal automatically (GitHub version)
   exe: execute automated routine script
+  news: display news articles based on term and data sources
   settings: tune settings (export folder, timezone, language, plot size)
   featflags: enable and disable feature flags
   sources: select your preferred data sources
@@ -98,12 +99,11 @@ en:
   stocks/CANDLE_raw: Shows raw data instead of chart. If sort is set those are the top ones, otherwise we grab latest data to date
   stocks/CANDLE_trend: Flag to add high and low trends to candle
   stocks/CANDLE_mov_avg: Add moving average in number of days to plot and separate by a comma
-  stocks/news: latest news of the company
+  stocks/NEWS: latest news of the company
   stocks/codes: FIGI, SIK and SIC codes codes
-  stocks/NEWS: Prints latest news about company, including date, title and web link. [News API]
   stocks/NEWS_date: The starting date (format YYYY-MM-DD) to search articles from
   stocks/NEWS_oldest: Show oldest articles first
-  stocks/NEWS_sources: Show news only from the sources specified (e.g bbc yahoo.com)
+  stocks/NEWS_article: Show news only from the sources specified (e.g bbc yahoo.com)
   stocks/th: trading hours,                check open markets
   stocks/options: options menu,                 chains, open interest, greeks, parity
   stocks/disc: discover trending stocks,     map, sectors, high short interest
