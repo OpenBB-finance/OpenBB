@@ -721,6 +721,7 @@ class PredictionTechniquesController(BaseController):
             help="Number of simulations to perform",
             dest="n_sims",
             default=100,
+            type=check_positive,
         )
         parser.add_argument(
             "--dist",

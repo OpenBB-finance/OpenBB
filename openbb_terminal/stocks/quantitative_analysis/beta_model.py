@@ -1,3 +1,4 @@
+from typing import Tuple
 import pandas as pd
 from scipy import stats
 from openbb_terminal.stocks import stocks_helper
@@ -8,7 +9,7 @@ def beta_model(
     ref_ticker: str,
     stock: pd.DataFrame = None,
     ref: pd.DataFrame = None,
-) -> tuple[pd.Series, pd.Series, float, float]:
+) -> Tuple[pd.Series, pd.Series, float, float]:
     """Calculate beta for a ticker and a reference ticker.
 
     Parameters
@@ -41,7 +42,7 @@ def beta_model(
     if ref is None:
         ref = stocks_helper.load(ref_ticker)
         if ref.empty:
-            raise Exception("Invalid ref ticker")
+            return pd.Series(), pd.Series(), 0, 0
     else:
         ref = ref.rename({"close": "Close"}, axis=1)
 

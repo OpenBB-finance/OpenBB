@@ -411,6 +411,7 @@ SCALES = {
     "Thousands": 1_000,
     "Millions": 1_000_000,
     "Hundreds of millions": 100_000_000,
+    "Billions": 1_000_000_000,
     "Units": 1,
 }
 
@@ -503,10 +504,10 @@ def get_macro_data(
 
     if country not in COUNTRY_CODES:
         console.print(f"No data available for the country {country}.")
-        return pd.Series(), ""
+        return pd.Series(dtype=float), ""
     if parameter not in PARAMETERS:
         console.print(f"The parameter {parameter} is not an option for {country}.")
-        return pd.Series(), ""
+        return pd.Series(dtype=float), ""
 
     country_code = COUNTRY_CODES[country]
     country_currency = COUNTRY_CURRENCIES[country]
@@ -533,7 +534,7 @@ def get_macro_data(
                 f"No data available for {parameter} ({PARAMETERS[parameter]['name']}) "
                 f"of country {country.replace('_', ' ')}"
             )
-            return pd.Series(), ""
+            return pd.Series(dtype=float), ""
 
         if start_date or end_date:
             df = df.loc[start_date:end_date]
