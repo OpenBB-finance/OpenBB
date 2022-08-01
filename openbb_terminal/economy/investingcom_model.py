@@ -125,9 +125,8 @@ def get_economic_calendar(
         from_date_string = format_date(from_date)
         to_date_string = format_date(to_date)
     else:
-        today = datetime.date.today()
-        from_date_string = format_date(today)
-        to_date_string = format_date(today + datetime.timedelta(days=7))
+        from_date_string = None
+        to_date_string = None
 
     # Get user time zone in GMT offset format
     user_time_zone = pytz.timezone(helper_funcs.get_user_timezone())
