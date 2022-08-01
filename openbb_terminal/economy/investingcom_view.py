@@ -173,6 +173,7 @@ def display_economic_calendar(
     else:
         df.fillna(value="", inplace=True)
         del df["zone"]
+        df.columns = df.columns.str.title()
 
         print_rich_table(
             df[:limit],
