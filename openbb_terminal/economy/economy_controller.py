@@ -1048,7 +1048,7 @@ class EconomyController(BaseController):
             action="store",
             dest="country",
             nargs="+",
-            default="united states",
+            default="all",
             help="Display calendar for specific country.",
         )
         parser.add_argument(
@@ -1057,7 +1057,6 @@ class EconomyController(BaseController):
             action="store",
             dest="importances",
             choices=investingcom_model.IMPORTANCES,
-            default="all",
             help="Event importance classified as high, medium, low or all.",
         )
         parser.add_argument(
@@ -1093,7 +1092,7 @@ class EconomyController(BaseController):
             other_args,
             export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
             raw=True,
-            limit=10,
+            limit=100,
         )
 
         if ns_parser:

@@ -18,7 +18,7 @@ from openbb_terminal import helper_funcs
 logger = logging.getLogger(__name__)
 
 BOND_COUNTRIES = investpy.bonds.get_bond_countries()
-CALENDAR_COUNTRIES = list(investpy.utils.constant.COUNTRY_ID_FILTERS.keys())
+CALENDAR_COUNTRIES = list(investpy.utils.constant.COUNTRY_ID_FILTERS.keys()) + ["all"]
 CATEGORIES = [
     "employment",
     "credit",
@@ -114,6 +114,13 @@ def get_economic_calendar(
             day = str(date.day)
 
         return day + "/" + month + "/" + year
+
+    # Joint default for countries and importances
+    if countries == ["all"] and len(importances) == 0:
+        countries = CALENDAR_COUNTRIES[:-1]
+        importances = ["high"]
+    elif importances is None:
+        importances = ["all"]
 
     if from_date and not to_date:
         to_date_string = format_date(from_date + datetime.timedelta(days=7))
