@@ -172,12 +172,13 @@ def display_economic_calendar(
         console.print("[red]No data.[/red]\n")
     else:
         df.fillna(value="", inplace=True)
+        del df["zone"]
 
         print_rich_table(
             df[:limit],
             headers=list(df.columns),
             show_index=False,
-            title=f"Economic Calendar ({time_zone})",
+            title=f"{countries.title()} economic calendar ({time_zone})",
         )
 
         export_data(
