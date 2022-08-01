@@ -170,8 +170,11 @@ def get_economic_calendar(
 
     if not data.empty:
         data.drop(columns=data.columns[0], axis=1, inplace=True)
-        data.sort_values(by="date", inplace=True)
         data.drop_duplicates(keep="first", inplace=True)
+        data["date"] = data["date"].apply(
+            lambda date: date[-4:] + "/" + date[3:5] + "/" + date[:2]
+        )
+        data.sort_values(by=data.columns[0], inplace=True)
 
         if importances:
             if importances == ["all"]:

@@ -173,13 +173,14 @@ def display_economic_calendar(
     else:
         df.fillna(value="", inplace=True)
         df.columns = df.columns.str.title()
-        if df['Zone'].eq(df['Zone'].iloc[0]).all():
+        if df["Zone"].eq(df["Zone"].iloc[0]).all():
             del df["Zone"]
             title = f"{countries.title()} economic calendar ({time_zone})"
         else:
             title = f"Economic Calendar ({time_zone})"
             df["Zone"] = df["Zone"].str.title()
-            df["Importance"] = df["Importance"].str.title()
+
+        df["Importance"] = df["Importance"].str.title()
 
         print_rich_table(
             df[:limit],
