@@ -12,6 +12,7 @@ packages = [
 openbb = 'terminal:terminal'
 
 [tool.poetry.dependencies]
+scipy = "1.8.1"
 python = "^3.8,<3.10"
 iso8601 = "^0.1.14"
 FundamentalAnalysis = "^0.2.6"
