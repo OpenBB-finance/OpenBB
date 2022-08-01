@@ -17,7 +17,8 @@ from openbb_terminal import helper_funcs
 
 logger = logging.getLogger(__name__)
 
-COUNTRIES = investpy.bonds.get_bond_countries()
+BOND_COUNTRIES = investpy.bonds.get_bond_countries()
+CALENDAR_COUNTRIES = list(investpy.utils.constant.COUNTRY_ID_FILTERS.keys())
 CATEGORIES = [
     "employment",
     "credit",
@@ -31,13 +32,13 @@ CATEGORIES = [
 IMPORTANCES = ["high", "medium", "low", "all"]
 
 
-def check_correct_country(country):
+def check_correct_country(country, countries):
     """Argparse type to check that correct country is inserted"""
-    if country.lower() not in investpy.bonds.get_bond_countries():
+    if country.lower() not in countries:
         log_and_raise(
             argparse.ArgumentTypeError(
                 f"{country} is an invalid country. Choose from \
-                    {', '.join(investpy.bonds.get_bond_countries())}"
+                    {', '.join(countries)}"
             )
         )
     return country
