@@ -1,4 +1,4 @@
-name: Windows Build Automation
+name: Windows10 Build
 env:
   OPENBB_ENABLE_QUICK_EXIT: true
   OPENBB_LOG_COLLECTION: false
@@ -9,7 +9,7 @@ env:
 on: workflow_dispatch
 jobs:
   Windows-Build:
-    name: Windows Build
+    name: Windows10 Build
     runs-on: [self-hosted, Windows, windows_automation]
     # Configuring -------------
     steps:
