@@ -1329,6 +1329,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             "-s",
             "--secret",
             type=str,
+            default=None,
             dest="secret",
             help="TOPT Secret",
         )
