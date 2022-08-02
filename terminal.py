@@ -17,6 +17,7 @@ from prompt_toolkit.completion import NestedCompleter
 from prompt_toolkit.styles import Style
 from prompt_toolkit.formatted_text import HTML
 
+from openbb_terminal.common import feedparser_view
 from openbb_terminal.core.config.constants import REPO_DIR, ENV_FILE, USER_HOME
 from openbb_terminal.core.log.generation.path_tracking_file_handler import (
     PathTrackingFileHandler,
@@ -26,11 +27,12 @@ from openbb_terminal.helper_funcs import (
     check_positive,
     get_flair,
     parse_simple_args,
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
 )
 from openbb_terminal.loggers import setup_logging
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import console, MenuText, translate
 from openbb_terminal.terminal_helper import (
     bootup,
     check_for_updates,
@@ -60,6 +62,7 @@ class TerminalController(BaseController):
         "featflags",
         "exe",
         "guess",
+        "news",
     ]
     CHOICES_MENUS = [
         "stocks",
@@ -123,6 +126,7 @@ class TerminalController(BaseController):
         mt.add_menu("sources")
         mt.add_menu("settings")
         mt.add_raw("\n")
+        mt.add_cmd("news")
         mt.add_cmd("exe")
         mt.add_raw("\n")
         mt.add_info("_main_menu_")
@@ -140,6 +144,42 @@ class TerminalController(BaseController):
         mt.add_menu("dashboards")
         mt.add_menu("reports")
         console.print(text=mt.menu_text, menu="Home")
+
+    def call_news(self, other_args: List[str]) -> None:
+        """Process news command"""
+        parse = argparse.ArgumentParser(
+            add_help=False,
+            prog="news",
+            description=translate("news"),
+        )
+        parse.add_argument(
+            "-t",
+            "--term",
+            dest="term",
+            default="",
+            nargs="+",
+            help="search for a term on the news",
+        )
+        parse.add_argument(
+            "-a",
+            "--article",
+            dest="article",
+            default="bloomberg",
+            nargs="+",
+            help="articles from where to get news from",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-t")
+        news_parser = self.parse_known_args_and_warn(
+            parse, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED, limit=5
+        )
+        if news_parser:
+            feedparser_view.display_news(
+                " ".join(news_parser.term),
+                " ".join(news_parser.article),
+                news_parser.limit,
+                news_parser.export,
+            )
 
     def call_guess(self, other_args: List[str]) -> None:
         """Process guess command"""
