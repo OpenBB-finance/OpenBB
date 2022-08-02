@@ -53,4 +53,3 @@ Last transactions for CONGRESS
 38        2022-01-26    WIW           Thomas R. Carper    Purchase  $1,001 - $15,000           Senate  2022-02-03
 31        2022-01-26    FDN           Thomas R. Carper        Sale  $1,001 - $15,000           Senate  2022-02-03
 33        2022-01-26    GLD           Thomas R. Carper        Sale  $1,001 - $15,000           Senate  2022-02-03
-
