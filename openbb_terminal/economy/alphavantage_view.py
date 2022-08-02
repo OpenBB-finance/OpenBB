@@ -61,7 +61,8 @@ def realtime_performance_sector(
         )
 
     else:
-        ax = df_rtp.plot(kind="barh")
+        colors = [theme.up_color if x > 0 else theme.down_color for x in df_rtp.values]
+        ax = df_rtp.plot(kind="barh", color=colors)
         theme.style_primary_axis(ax)
         ax.set_title("Real Time Performance (%) per Sector")
         ax.tick_params(axis="x", labelrotation=90)

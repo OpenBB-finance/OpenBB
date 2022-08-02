@@ -62,7 +62,7 @@ Press Ctrl+C to stop
 
 And you should be able to access your local version at http://localhost:1313/.
 
-This will be important for the addiiton of features to the Hugo Server.
+This will be important for the addition of features to the Hugo Server.
 
 ## Adding Features
 

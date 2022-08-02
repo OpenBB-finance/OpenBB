@@ -1,6 +1,6 @@
 """ Econ Controller """
 __docformat__ = "numpy"
-# pylint:disable=too-many-lines,R1710,R0904,C0415,too-many-branches
+# pylint:disable=too-many-lines,R1710,R0904,C0415,too-many-branches,unnecessary-dict-index-lookup
 
 import argparse
 import logging
@@ -16,6 +16,7 @@ from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.economy import (
     alphavantage_view,
+    economy_helpers,
     finviz_view,
     nasdaq_model,
     nasdaq_view,
@@ -158,6 +159,11 @@ class EconomyController(BaseController):
         self.DATASETS: Dict[Any, pd.DataFrame] = dict()
         self.UNITS: Dict[Any, Dict[Any, Any]] = dict()
         self.FRED_TITLES: Dict = dict()
+
+        self.DATASETS["macro"] = pd.DataFrame()
+        self.DATASETS["treasury"] = pd.DataFrame()
+        self.DATASETS["fred"] = pd.DataFrame()
+        self.DATASETS["index"] = pd.DataFrame()
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             self.choices: dict = {c: {} for c in self.controller_choices}
@@ -546,10 +552,7 @@ class EconomyController(BaseController):
             if ns_parser.parameters and ns_parser.countries:
 
                 # Store data
-                (
-                    self.DATASETS["macro"],
-                    self.UNITS,
-                ) = econdb_model.get_aggregated_macro_data(
+                (df, units,) = econdb_model.get_aggregated_macro_data(
                     parameters=ns_parser.parameters,
                     countries=ns_parser.countries,
                     start_date=ns_parser.start_date,
@@ -557,26 +560,37 @@ class EconomyController(BaseController):
                     convert_currency=ns_parser.convert_currency,
                 )
 
-                self.DATASETS["macro"].columns = [
-                    "_".join(column) for column in self.DATASETS["macro"].columns
-                ]
+                if not df.empty:
+                    df.columns = ["_".join(column) for column in df.columns]
 
-                self.stored_datasets += (
-                    f"\n  macro    : {self.DATASETS['macro'].columns[0]}"
-                )
+                    self.DATASETS["macro"] = pd.concat([self.DATASETS["macro"], df])
 
-                # Display data just loaded
-                econdb_view.show_macro_data(
-                    parameters=ns_parser.parameters,
-                    countries=ns_parser.countries,
-                    start_date=ns_parser.start_date,
-                    end_date=ns_parser.end_date,
-                    convert_currency=ns_parser.convert_currency,
-                    raw=ns_parser.raw,
-                    export=ns_parser.export,
-                )
+                    # update units dict
+                    for country, data in units.items():
+                        if country not in self.UNITS:
+                            self.UNITS[country] = {}
 
-                self.update_runtime_choices()
+                        for key, value in data.items():
+                            self.UNITS[country][key] = value
+
+                    self.stored_datasets = (
+                        economy_helpers.update_stored_datasets_string(self.DATASETS)
+                    )
+
+                    # Display data just loaded
+                    econdb_view.show_macro_data(
+                        parameters=ns_parser.parameters,
+                        countries=ns_parser.countries,
+                        start_date=ns_parser.start_date,
+                        end_date=ns_parser.end_date,
+                        convert_currency=ns_parser.convert_currency,
+                        raw=ns_parser.raw,
+                        export=ns_parser.export,
+                    )
+
+                    self.update_runtime_choices()
+                    if obbff.ENABLE_EXIT_AUTO_HELP:
+                        self.print_help()
 
     @check_api_key(["API_FRED_KEY"])
     def call_fred(self, other_args: List[str]):
@@ -659,24 +673,34 @@ class EconomyController(BaseController):
                 for series_id, data in series_dict.items():
                     self.FRED_TITLES[series_id] = f"{data['title']} ({data['units']})"
 
-                self.DATASETS["fred"] = fred_model.get_aggregated_series_data(
+                df = fred_model.get_aggregated_series_data(
                     series_dict, ns_parser.start_date, ns_parser.end_date
                 )
 
-                self.stored_datasets += (
-                    f"\n  fred     : {self.DATASETS['fred'].columns[0]}"
-                )
+                if not df.empty:
+                    self.DATASETS["fred"] = pd.concat(
+                        [
+                            self.DATASETS["fred"],
+                            df,
+                        ]
+                    )
 
-                fred_view.display_fred_series(
-                    d_series=series_dict,
-                    start_date=ns_parser.start_date,
-                    end_date=ns_parser.end_date,
-                    raw=ns_parser.raw,
-                    export=ns_parser.export,
-                    limit=ns_parser.limit,
-                )
+                    self.stored_datasets = (
+                        economy_helpers.update_stored_datasets_string(self.DATASETS)
+                    )
 
-                self.update_runtime_choices()
+                    fred_view.display_fred_series(
+                        d_series=series_dict,
+                        start_date=ns_parser.start_date,
+                        end_date=ns_parser.end_date,
+                        raw=ns_parser.raw,
+                        export=ns_parser.export,
+                        limit=ns_parser.limit,
+                    )
+
+                    self.update_runtime_choices()
+                    if obbff.ENABLE_EXIT_AUTO_HELP:
+                        self.print_help()
 
     @log_start_end(log=logger)
     def call_index(self, other_args: List[str]):
@@ -789,9 +813,8 @@ class EconomyController(BaseController):
                 return self.queue
 
             if ns_parser.indices:
-                self.DATASETS["index"] = pd.DataFrame()
-                for index in ns_parser.indices:
-                    self.DATASETS["index"][index] = yfinance_model.get_index(
+                for i, index in enumerate(ns_parser.indices):
+                    df = yfinance_model.get_index(
                         index,
                         interval=ns_parser.interval,
                         start_date=ns_parser.start_date,
@@ -799,22 +822,29 @@ class EconomyController(BaseController):
                         column=ns_parser.column,
                     )
 
-                self.stored_datasets += (
-                    f"\n  index    : {self.DATASETS['index'].columns[0]}"
-                )
+                    if not df.empty:
+                        self.DATASETS["index"][index] = df
 
-                yfinance_view.show_indices(
-                    indices=ns_parser.indices,
-                    interval=ns_parser.interval,
-                    start_date=ns_parser.start_date,
-                    end_date=ns_parser.end_date,
-                    column=ns_parser.column,
-                    raw=ns_parser.raw,
-                    export=ns_parser.export,
-                    returns=ns_parser.returns,
-                )
+                        self.stored_datasets = (
+                            economy_helpers.update_stored_datasets_string(self.DATASETS)
+                        )
 
-                self.update_runtime_choices()
+                        # display only once in the last iteration
+                        if i == len(ns_parser.indices) - 1:
+                            yfinance_view.show_indices(
+                                indices=ns_parser.indices,
+                                interval=ns_parser.interval,
+                                start_date=ns_parser.start_date,
+                                end_date=ns_parser.end_date,
+                                column=ns_parser.column,
+                                raw=ns_parser.raw,
+                                export=ns_parser.export,
+                                returns=ns_parser.returns,
+                            )
+
+                            self.update_runtime_choices()
+                            if obbff.ENABLE_EXIT_AUTO_HELP:
+                                self.print_help()
 
     @log_start_end(log=logger)
     def call_treasury(self, other_args: List[str]):
@@ -905,28 +935,40 @@ class EconomyController(BaseController):
                     .stack()
                     .to_frame()
                 )
-                self.DATASETS["treasury"] = pd.DataFrame(
-                    df[0].values.tolist(), index=df.index
-                ).T
-                self.DATASETS["treasury"].columns = [
-                    "_".join(column) for column in self.DATASETS["treasury"].columns
-                ]
 
-                self.stored_datasets += (
-                    f"\n  treasury : {self.DATASETS['treasury'].columns[0]}"
-                )
+                if not df.empty:
+                    self.DATASETS["treasury"] = pd.concat(
+                        [
+                            self.DATASETS["treasury"],
+                            pd.DataFrame(df[0].values.tolist(), index=df.index).T,
+                        ]
+                    )
 
-                econdb_view.show_treasuries(
-                    types=ns_parser.type,
-                    maturities=ns_parser.maturity,
-                    frequency=ns_parser.frequency,
-                    start_date=ns_parser.start_date,
-                    end_date=ns_parser.end_date,
-                    raw=ns_parser.raw,
-                    export=ns_parser.export,
-                )
+                    cols = []
+                    for column in self.DATASETS["treasury"].columns:
+                        if isinstance(column, tuple):
+                            cols.append("_".join(column))
+                        else:
+                            cols.append(column)
+                    self.DATASETS["treasury"].columns = cols
 
-            self.update_runtime_choices()
+                    self.stored_datasets = (
+                        economy_helpers.update_stored_datasets_string(self.DATASETS)
+                    )
+
+                    econdb_view.show_treasuries(
+                        types=ns_parser.type,
+                        maturities=ns_parser.maturity,
+                        frequency=ns_parser.frequency,
+                        start_date=ns_parser.start_date,
+                        end_date=ns_parser.end_date,
+                        raw=ns_parser.raw,
+                        export=ns_parser.export,
+                    )
+
+                    self.update_runtime_choices()
+                    if obbff.ENABLE_EXIT_AUTO_HELP:
+                        self.print_help()
 
     @log_start_end(log=logger)
     def call_ycrv(self, other_args: List[str]):
@@ -965,11 +1007,21 @@ class EconomyController(BaseController):
             if isinstance(ns_parser.country, list):
                 ns_parser.country = " ".join(ns_parser.country)
 
-            investingcom_model.check_correct_country(ns_parser.country)
-
             if ns_parser.source == "FRED":
-                fred_view.display_yield_curve(ns_parser.date)
+
+                if ns_parser.country == "united states":
+                    fred_view.display_yield_curve(
+                        ns_parser.date,
+                        raw=ns_parser.raw,
+                        export=ns_parser.export,
+                    )
+                else:
+                    console.print("Source FRED is only available for united states.\n")
+
             elif ns_parser.source == "investpy":
+
+                investingcom_model.check_correct_country(ns_parser.country)
+
                 investingcom_view.display_yieldcurve(
                     country=ns_parser.country,
                     raw=ns_parser.raw,
@@ -1067,12 +1119,11 @@ class EconomyController(BaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="plot",
             description="This command can plot any data on two y-axes obtained from the macro, fred, index and "
-            "treasury commands. To be able to use this data, use the -st argument available within these "
-            "commands. For example 'macro -p GDP -c Germany Netherlands -st' will store the data for usage "
-            "in this command. Therefore, it allows you to plot different time series in one graph. You can use "
-            "the 'options' command to show the required arguments to be entered. The example above could be plotted "
-            "the following way: "
-            "'plot --y1 Germany_GDP --y2 Netherlands_GDP' or 'plot --y1 Germany_GDP Netherlands_GDP'",
+            "treasury commands. To be able to use this data, just load the available series from the previous "
+            "commands. For example 'macro -p GDP -c Germany Netherlands' will store the data for usage "
+            "in this command. Therefore, it allows you to plot different time series in one graph. "
+            "The example above could be plotted the following way: 'plot --y1 Germany_GDP --y2 Netherlands_GDP' "
+            "or 'plot --y1 Germany_GDP Netherlands_GDP'",
         )
         parser.add_argument(
             "--y1",
@@ -1395,6 +1446,15 @@ class EconomyController(BaseController):
             PredictionTechniquesController,
         )
 
+        data: Dict = {}
+        for source, _ in self.DATASETS.items():
+            if not self.DATASETS[source].empty:
+                if len(self.DATASETS[source].columns) == 1:
+                    data[self.DATASETS[source].columns[0]] = self.DATASETS[source]
+                else:
+                    for col in list(self.DATASETS[source].columns):
+                        data[col] = self.DATASETS[source][col].to_frame()
+
         self.queue = self.load_class(
             PredictionTechniquesController, self.DATASETS, self.queue
         )
@@ -1413,4 +1473,13 @@ class EconomyController(BaseController):
             QaController,
         )
 
-        self.queue = self.load_class(QaController, self.DATASETS, self.queue)
+        data: Dict = {}
+        for source, _ in self.DATASETS.items():
+            if not self.DATASETS[source].empty:
+                if len(self.DATASETS[source].columns) == 1:
+                    data[self.DATASETS[source].columns[0]] = self.DATASETS[source]
+                else:
+                    for col in list(self.DATASETS[source].columns):
+                        data[col] = self.DATASETS[source][col].to_frame()
+
+        self.queue = self.load_class(QaController, data, self.queue)

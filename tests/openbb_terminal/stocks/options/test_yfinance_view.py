@@ -220,3 +220,11 @@ def test_show_binom(mocker):
 @pytest.mark.vcr
 def test_show_greeks():
     yfinance_view.show_greeks(ticker="AAPL", expire="2022-01-28", div_cont=0)
+
+
+@pytest.mark.default_cassette("test_display_chains")
+@pytest.mark.vcr
+def test_display_chains():
+    yfinance_view.display_chains(
+        ticker="AAPL", expiry="2022-07-29", min_sp=-1, max_sp=-1
+    )

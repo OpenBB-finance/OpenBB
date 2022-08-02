@@ -2,8 +2,10 @@ en:
   _home_: Information, guides and support for the OpenBB Terminal
   about: discover the capabilities of the OpenBB Terminal (https://openbb.co/docs)
   support: pre-populate a support ticket for our team to evaluate
+  survey: fill in our 2-minute survey so we better understand how we can improve the terminal
   update: attempt to update the terminal automatically (GitHub version)
   exe: execute automated routine script
+  news: display news articles based on term and data sources
   settings: tune settings (export folder, timezone, language, plot size)
   featflags: enable and disable feature flags
   sources: select your preferred data sources
@@ -97,12 +99,11 @@ en:
   stocks/CANDLE_raw: Shows raw data instead of chart. If sort is set those are the top ones, otherwise we grab latest data to date
   stocks/CANDLE_trend: Flag to add high and low trends to candle
   stocks/CANDLE_mov_avg: Add moving average in number of days to plot and separate by a comma
-  stocks/news: latest news of the company
+  stocks/NEWS: latest news of the company
   stocks/codes: FIGI, SIK and SIC codes codes
-  stocks/NEWS: Prints latest news about company, including date, title and web link. [News API]
   stocks/NEWS_date: The starting date (format YYYY-MM-DD) to search articles from
   stocks/NEWS_oldest: Show oldest articles first
-  stocks/NEWS_sources: Show news only from the sources specified (e.g bbc yahoo.com)
+  stocks/NEWS_article: Show news only from the sources specified (e.g bbc yahoo.com)
   stocks/th: trading hours,                check open markets
   stocks/options: options menu,                 chains, open interest, greeks, parity
   stocks/disc: discover trending stocks,     map, sectors, high short interest
@@ -251,7 +252,7 @@ en:
   stocks/ins/stats: insider stats of the company
   stocks/ins/act: insider activity over time
   stocks/ins/lins: last insider trading of the company
-  stocks/ins/lcb: latest cluster boys
+  stocks/ins/lcb: latest cluster buys
   stocks/ins/lpsb: latest penny stock buys
   stocks/ins/lit: latest insider trading (all filings)
   stocks/ins/lip: latest insider purchases
@@ -363,8 +364,13 @@ en:
   stocks/fa/earnings: earnings dates and reported EPS
   stocks/fa/fraud: key fraud ratios
   stocks/fa/dupont: detailed breakdown for return on equity
-  stocks/fa/_sources_: Other sources
-  stocks/fa/fmp: profile,quote,enterprise,dcf,income,ratios,growth from FMP
+  stocks/fa/profile: company profile
+  stocks/fa/quote: detailed stock quote information
+  stocks/fa/enterprise: company enterprise value
+  stocks/fa/metrics: key metrics over time
+  stocks/fa/ratios: in-depth ratios over time
+  stocks/fa/growth: growth of financial statement items and ratios
+  stocks/fa/dcfc: determine the (historical) discounted cash flow
   stocks/res/_ticker: Ticker
   stocks/res/macroaxis: www.macroaxis.com
   stocks/res/yahoo: www.finance.yahoo.com
@@ -419,6 +425,7 @@ en:
   stocks/ta/stoch: stochastic oscillator
   stocks/ta/fisher: fisher transform
   stocks/ta/cg: centre of gravity
+  stocks/ta/clenow: clenow volatility adjusted momentum
   stocks/ta/_trend_: Trend
   stocks/ta/adx: average directional movement index
   stocks/ta/aroon: aroon indicator
@@ -464,6 +471,7 @@ en:
   stocks/qa/decompose: decomposition in cyclic-trend, season, and residuals of prices
   stocks/qa/cusum: detects abrupt changes using cumulative sum algorithm of prices
   stocks/qa/capm: capital asset pricing model
+  stocks/qa/beta: display beta w.r.t to any reference ticker
   stocks/pred/load: load new ticker
   stocks/pred/pick: pick target column for analysis
   stocks/pred/_ticker: Ticker
@@ -483,7 +491,7 @@ en:
   crypto/_symbol: Coin
   crypto/_source: Source
   crypto/headlines: crypto sentiment from 15+ major news headlines
-  crypto/chart: view a candle chart for a specific cryptocurrency
+  crypto/candle: view a candle chart for a specific cryptocurrency
   crypto/prt: potential returns tool - check how much upside if ETH reaches BTC market cap
   crypto/disc: discover trending cryptocurrencies,     top gainers, losers, top sentiment
   crypto/ov: overview of the cryptocurrencies,       market cap, DeFi, latest news, top exchanges, stables
@@ -607,16 +615,16 @@ en:
   crypto/dd/change: 30d change of supply held on exchange wallets
   crypto/dd/eb: total balance held on exchanges (in percentage and units)
   crypto/dd/oi: open interest per exchange
+  crypto/dd/fundrate: funding rate per exchange
   crypto/dd/basic: basic information about loaded coin
   crypto/dd/ps: price and supply related metrics for loaded coin
   crypto/dd/mkt: all markets for loaded coin
   crypto/dd/ex: all exchanges where loaded coin is listed
   crypto/dd/twitter: tweets for loaded coin
   crypto/dd/events: events related to loaded coin
-  crypto/dd/binbook: order book
   crypto/dd/balance: coin balance
-  crypto/dd/cbbook: order book
   crypto/dd/trades: last trades
+  crypto/dd/ob: order book
   crypto/dd/stats: coin stats
   crypto/dd/mcapdom: market cap dominance
   crypto/dd/mt: messari timeseries e.g. twitter followers, circ supply, etc
