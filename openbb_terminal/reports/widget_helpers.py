@@ -229,7 +229,8 @@ def tab_clickable_evt() -> str:
 
 
 def tablinks(tabs: List[str]) -> str:
-    """Adds list of tabs/sections for the reports that are able to be clicked. For every 6 tabs we push them onto a new line.
+    """Adds list of tabs/sections for the reports that are able to be clicked. For every
+    6 tabs we push them onto a new line.
 
     Parameters
     ----------
