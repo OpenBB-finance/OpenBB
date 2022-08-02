@@ -1079,4 +1079,5 @@ en:
   dashboards/chains: options chain analysis
   dashboards/shortdata: finra shortdata analysis
   dashboards/crypto: cryptocurrency exchange rates against USD
+  dashboards/futures: historical futures performance
   reports/_reports_: Select one of the following report
