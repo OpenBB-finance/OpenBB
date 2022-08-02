@@ -10,7 +10,7 @@ on: workflow_dispatch
 jobs:
   Build:
     name: Intel MacOS Build
-    runs-on: [self-hosted, macos, x86]
+    runs-on: [self-hosted, macos, x64]
     steps:
       # Checkout repository main branch. this allows for the commit hashes to line up
       - name: Checkout
