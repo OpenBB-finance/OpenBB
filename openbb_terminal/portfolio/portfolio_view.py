@@ -730,25 +730,19 @@ def display_distribution_returns(
     else:
         if external_axes is None:
             _, ax = plt.subplots(
-                1,
-                2,
                 figsize=plot_autoscale(),
                 dpi=PLOT_DPI,
             )
         else:
             ax = external_axes
 
-        ax[0].set_title("Portfolio distribution")
-        sns.kdeplot(portfolio_returns.values, ax=ax[0])
-        ax[0].set_ylabel("Density")
-        ax[0].set_xlabel("Daily return [%]")
-        theme.style_primary_axis(ax[0])
-
-        ax[1].set_title("Benchmark distribution")
-        sns.kdeplot(benchmark_returns.values, ax=ax[1])
-        ax[1].set_ylabel("Density")
-        ax[1].set_xlabel("Daily return [%]")
-        theme.style_primary_axis(ax[1])
+        ax.set_title("Returns distribution")
+        sns.kdeplot(portfolio_returns.values, label="portfolio")
+        sns.kdeplot(benchmark_returns.values, label="benchmark")
+        ax.set_ylabel("Density")
+        ax.set_xlabel("Daily return [%]")
+        theme.style_primary_axis(ax)
+        ax.legend()
 
         if not external_axes:
             theme.visualize_output()
