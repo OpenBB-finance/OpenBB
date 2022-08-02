@@ -19,4 +19,3 @@
 17 2022-02-04    JLL    99604.14                         MOAKLEY FEDERAL COURTHOUSE, BOSTON, MA VFD (X7)\nREPLACEMENTS FY 2022          GENERAL SERVICES ADMINISTRATION (GSA)
 18 2022-02-04   INTL  5185494.09                                                                              RAW GOLD BULLION             DEPARTMENT OF THE TREASURY (TREAS)
 19 2022-02-04   INTL  5195442.40                                                                              RAW GOLD BULLION             DEPARTMENT OF THE TREASURY (TREAS)
-
