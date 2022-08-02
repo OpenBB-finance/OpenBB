@@ -116,7 +116,7 @@ def get_economic_calendar(
         return day + "/" + month + "/" + year
 
     # Joint default for countries and importances
-    if countries == ["all"] and len(importances) == 0:
+    if countries == ["all"] and importances == []:
         countries = CALENDAR_COUNTRIES[:-1]
         importances = ["high"]
     elif importances is None:
