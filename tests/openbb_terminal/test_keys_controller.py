@@ -54,8 +54,9 @@ class MockCFG:
         self.API_ETHPLORER_KEY = kwargs.get("ETHPLOR", None)
         self.API_SMARTSTAKE_TOKEN = kwargs.get("SMARTSTAKE", None)
         self.API_SMARTSTAKE_KEY = kwargs.get("SMARTSTAKE", None)
-        self.API_SANTIMENT_KEY= kwargs.get("SANTIMENT", None)
-        self.API_MESSARI_KEY= kwargs.get("MESSARI", None)
+        self.API_SANTIMENT_KEY = kwargs.get("SANTIMENT", None)
+        self.API_MESSARI_KEY = kwargs.get("MESSARI", None)
+
 
 @pytest.mark.vcr
 @pytest.mark.parametrize("key, output", [("REPLACE_ME", True), ("VALIDKEY", False)])
@@ -242,11 +243,13 @@ def test_check_smartstake_key(key, output, mocker):
     mocker.patch("openbb_terminal.keys_controller.cfg", MockCFG(SMARTSTAKE=key))
     controller.check_smartstake_key(output)
 
+
 @pytest.mark.vcr
 @pytest.mark.parametrize("key, output", [("REPLACE_ME", True), ("VALIDKEY", False)])
 def test_check_santiment_key(key, output, mocker):
     mocker.patch("openbb_terminal.keys_controller.cfg", MockCFG(SANTIMENT=key))
     controller.check_santiment_key(output)
+
 
 @pytest.mark.vcr
 @pytest.mark.parametrize("key, output", [("REPLACE_ME", True), ("VALIDKEY", False)])
