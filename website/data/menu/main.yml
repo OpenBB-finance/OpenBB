@@ -344,8 +344,8 @@ main:
           - name: comparison analysis
             ref: "/terminal/stocks/ca"
             sub:
-              - name: add
-                ref: "/terminal/stocks/ca/add"
+              - name: ticker
+                ref: "/terminal/stocks/ca/ticker"
               - name: tsne
                 ref: "/terminal/stocks/ca/tsne"
               - name: getpoly
