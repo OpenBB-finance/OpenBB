@@ -752,7 +752,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             }
 
             # pylint: disable=line-too-long
-            data = f'\n{{ getMetric(metric: "dev_activity"){{ timeseriesData( slug: "ethereum" from: ""2020-02-10T07:00:00Z"" to: "2020-03-10T07:00:00Z" interval: "1w"){{ datetime value }} }} }}'  # noqa: E501
+            data = '\n{{ getMetric(metric: "dev_activity"){{ timeseriesData( slug: "ethereum" from: ""2020-02-10T07:00:00Z"" to: "2020-03-10T07:00:00Z" interval: "1w"){{ datetime value }} }} }}'  # noqa: E501
 
             response = requests.post(
                 "https://api.santiment.net/graphql", headers=headers, data=data
