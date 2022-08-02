@@ -1040,7 +1040,7 @@ class EconomyController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="ecocal",
-            description="Economic calendar.",
+            description="Economic calendar. If no start or end dates, default is the current day.",
         )
         parser.add_argument(
             "-c",
