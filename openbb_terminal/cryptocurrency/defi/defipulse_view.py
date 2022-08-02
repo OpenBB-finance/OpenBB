@@ -7,13 +7,14 @@ import os
 from openbb_terminal.cryptocurrency.defi import defipulse_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
-from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_defipulse(top: int, sortby: str, descend: bool, export: str = "") -> None:
+def display_defipulse(
+    top: int = 10, sortby: str = "TVL", descend: bool = True, export: str = ""
+) -> None:
     """Displays all DeFi Pulse crypto protocols.
     [Source: https://defipulse.com/]
 
@@ -22,11 +23,12 @@ def display_defipulse(top: int, sortby: str, descend: bool, export: str = "") ->
     top: int
         Number of records to display
     sortby: str
-        Key by which to sort data
+        Key by which to sort data (Possible values are: "Rank", "Name", "Chain", "Sector",
+        "TVL", "1 Day (%)"), by default TVL
     descend: bool
-        Flag to sort data descending
+        Flag to sort data descending, by default True
     export : str
-        Export dataframe data to csv,json,xlsx file
+        Export dataframe data to csv,json,xlsx file, by default False
     """
 
     df = defipulse_model.get_defipulse_index()
@@ -40,7 +42,6 @@ def display_defipulse(top: int, sortby: str, descend: bool, export: str = "") ->
         show_index=False,
         title="DeFi Pulse Crypto Protocols",
     )
-    console.print("")
 
     export_data(
         export,

@@ -34,7 +34,6 @@ def display_cost_to_borrow(num_stocks: int, export: str):
             show_index=False,
             title="Highest Cost to Borrow",
         )
-    console.print("")
 
     export_data(
         export,

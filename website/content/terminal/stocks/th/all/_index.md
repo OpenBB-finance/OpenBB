@@ -1,0 +1,3 @@
+usage: `all`
+
+All markets

@@ -14,8 +14,7 @@ from sklearn.preprocessing import normalize
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import plot_autoscale
-from openbb_terminal.rich_config import console
+from openbb_terminal.helper_funcs import plot_autoscale, is_valid_axes_count
 
 logger = logging.getLogger(__name__)
 
@@ -51,16 +50,33 @@ def get_historical(
     pd.DataFrame
         Dataframe containing candle type variable for each ticker
     """
+
+    use_returns = False
+    if candle_type.lower() == "r":
+        # Calculate returns based off of adjusted close
+        use_returns = True
+        candle_type = "a"
+
     # To avoid having to recursively append, just do a single yfinance call.  This will give dataframe
     # where all tickers are columns.
     similar_tickers_dataframe = yf.download(
         similar_tickers, start=start, progress=False, threads=False
     )[d_candle_types[candle_type]]
-    return (
+
+    returnable = (
         similar_tickers_dataframe
         if similar_tickers_dataframe.empty
         else similar_tickers_dataframe[similar_tickers]
     )
+
+    if use_returns:
+        # To calculate the period to period return,
+        # shift the dataframe by one row, then divide it into
+        # the other, then subtract 1 to get a percentage, which is the return.
+        shifted = returnable.shift(1)[1:]
+        returnable = returnable.div(shifted) - 1
+
+    return returnable
 
 
 @log_start_end(log=logger)
@@ -120,9 +136,10 @@ def get_sp500_comps_tsne(
             "Adj Close"
         ].to_frame()
         df_ticker.columns = [ticker]
-        close_vals = close_vals.join(df_ticker, how="inner")
+        df_ticker.index = df_ticker.index.astype(str)
+        close_vals = close_vals.join(df_ticker)
 
-    close_vals = close_vals.dropna(how="all").fillna(method="bfill")
+    close_vals = close_vals.fillna(method="bfill")
     rets = close_vals.pct_change()[1:].T
 
     model = TSNE(learning_rate=lr)
@@ -133,12 +150,10 @@ def get_sp500_comps_tsne(
         # This plot has 1 axis
         if not external_axes:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        else:
-            if len(external_axes) != 1:
-                logger.error("Expected list of one axis item.")
-                console.print("[red]Expected list of one axis item.\n[/red]")
-                return []
+        elif is_valid_axes_count(external_axes, 1):
             (ax,) = external_axes
+        else:
+            return []
 
         data = pd.DataFrame({"X": xs, "Y": ys}, index=rets.index)
         x0, y0 = data.loc[ticker]

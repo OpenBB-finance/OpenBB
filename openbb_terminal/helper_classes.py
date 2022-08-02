@@ -17,15 +17,20 @@ class LineAnnotateDrawer:
     def __init__(self, ax: matplotlib.axes = None):
         self.ax = ax
 
+    # pylint: disable=import-outside-toplevel
     def draw_lines_and_annotate(self):
         """Draw lines."""
-        print("Click twice for annotation.\nClose window to keep using terminal.\n")
+        from openbb_terminal.rich_config import console
+
+        console.print(
+            "Click twice for annotation.\nClose window to keep using terminal.\n"
+        )
 
         while True:
             xy = plt.ginput(2)
             # Check whether the user has closed the window or not
             if not plt.get_fignums():
-                print("")
+                console.print("")
                 return
 
             if len(xy) == 2:

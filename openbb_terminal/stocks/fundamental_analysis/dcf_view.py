@@ -163,7 +163,10 @@ class CreateExcelFA:
                 )
             for item in value:
                 rowI += 1
-                m = 0 if item is None else float(item.replace(",", ""))
+                try:
+                    m = 0 if item is None else float(item.replace(",", ""))
+                except ValueError:
+                    m = 0
                 dcf_model.set_cell(
                     self.ws[1],
                     f"{dcf_static.letters[column]}{rowI}",

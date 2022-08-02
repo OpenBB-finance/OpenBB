@@ -17,11 +17,10 @@ from openbb_terminal.etf.screener import screener_view
 from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
-    parse_known_args_and_warn,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 
 logger = logging.getLogger(__name__)
 
@@ -76,21 +75,24 @@ class ScreenerController(BaseController):
             choices["sbc"] = {
                 c: None for c in financedatabase_model.get_etfs_categories()
             }
+
+            choices["support"] = self.SUPPORT_CHOICES
+            choices["about"] = self.ABOUT_CHOICES
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
         """Print help"""
-        help_text = f"""[cmds]
-    view        view available presets
-    set         set one of the available presets[/cmds]
-
-[param]PRESET: [/param]{self.preset}[cmds]
-
-    screen      screen ETF using preset selected [src][StockAnalysis][/src]
-
-    sbc         screen by category [src][FinanceDatabase][/src][/cmds]
-"""
-        console.print(text=help_text, menu="ETF - Screener")
+        mt = MenuText("etf/scr/", 70)
+        mt.add_cmd("view")
+        mt.add_cmd("set")
+        mt.add_raw("\n")
+        mt.add_param("_preset", self.preset)
+        mt.add_raw("\n")
+        mt.add_cmd("screen", "StockAnalysis")
+        mt.add_raw("\n")
+        mt.add_cmd("sbc", "FinanceDatabase")
+        console.print(text=mt.menu_text, menu="ETF - Screener")
 
     @log_start_end(log=logger)
     def call_view(self, other_args: List[str]):
@@ -112,7 +114,7 @@ class ScreenerController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if ns_parser.preset:
                 preset_filter = configparser.RawConfigParser()
@@ -183,7 +185,7 @@ class ScreenerController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             self.preset = ns_parser.preset
         console.print("")
@@ -223,7 +225,7 @@ class ScreenerController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -265,7 +267,7 @@ class ScreenerController(BaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-c")
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:

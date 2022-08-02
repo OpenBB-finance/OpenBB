@@ -14,12 +14,12 @@ from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
-    parse_known_args_and_warn,
     valid_date,
+    get_ordered_list_sources,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.stocks.fundamental_analysis import (
     av_view,
@@ -29,13 +29,11 @@ from openbb_terminal.stocks.fundamental_analysis import (
     finviz_view,
     market_watch_view,
     yahoo_finance_view,
-)
-from openbb_terminal.stocks.fundamental_analysis.financial_modeling_prep import (
-    fmp_controller,
+    polygon_view,
     fmp_view,
 )
 
-# pylint: disable=inconsistent-return-statements
+# pylint: disable=inconsistent-return-statements,C0302,R0904
 
 
 logger = logging.getLogger(__name__)
@@ -48,6 +46,12 @@ class FundamentalAnalysisController(StockBaseController):
         "load",
         "analysis",
         "score",
+        "profile",
+        "quote",
+        "enterprise",
+        "metrics",
+        "ratios",
+        "growth",
         "warnings",
         "data",
         "income",
@@ -70,13 +74,11 @@ class FundamentalAnalysisController(StockBaseController):
         "earnings",
         "fraud",
         "dcf",
+        "dcfc",
         "mktcap",
         "dupont",
     ]
 
-    CHOICES_MENUS = [
-        "fmp",
-    ]
     PATH = "/stocks/fa/"
 
     def __init__(
@@ -95,52 +97,69 @@ class FundamentalAnalysisController(StockBaseController):
         self.interval = interval
         self.suffix = suffix
 
+        self.default_income = get_ordered_list_sources(f"{self.PATH}income")[0]
+        self.default_balance = get_ordered_list_sources(f"{self.PATH}balance")[0]
+        self.default_cash = get_ordered_list_sources(f"{self.PATH}cash")[0]
+
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             choices["load"]["-i"] = {c: {} for c in stocks_helper.INTERVALS}
             choices["load"]["-s"] = {c: {} for c in stocks_helper.SOURCES}
+            choices["income"]["-p"] = {
+                c: {} for c in stocks_helper.INCOME_PLOT[self.default_income]
+            }
+            choices["balance"]["-p"] = {
+                c: {} for c in stocks_helper.BALANCE_PLOT[self.default_balance]
+            }
+            choices["cash"]["-p"] = {
+                c: {} for c in stocks_helper.CASH_PLOT[self.default_cash]
+            }
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
         """Print help."""
-        is_foreign_start = "" if not self.suffix else "[unvl]"
-        is_foreign_end = "" if not self.suffix else "[/unvl]"
-        help_text = f"""[param]
-Ticker: [/param] {self.ticker} [cmds]
-
-[cmds]    data          fundamental and technical data of company [src][FinViz][/src]
-    mgmt          management team of the company [src][Business Insider][/src]
-    analysis      analyse SEC filings with the help of machine learning [src][Eclect.us][/src]
-    score         investing score from Warren Buffett, Joseph Piotroski and Benjamin Graham [src][FMP][/src]
-    warnings      company warnings according to Sean Seah book [src][Market Watch][/src]
-    dcf           advanced Excel customizable discounted cash flow [src][Stockanalysis][/src][/cmds]
-[src][Yahoo Finance][/src]
-    info          information scope of the company
-    mktcap        estimated market cap{is_foreign_start}
-    shrs          shareholders (insiders, institutions and mutual funds)
-    sust          sustainability values (environment, social and governance)
-    cal           calendar earnings and estimates of the company
-    divs          show historical dividends for company
-    splits        stock split and reverse split events since IPO
-    web           open web browser of the company
-    hq            open HQ location of the company{is_foreign_end}
-[src][Alpha Vantage][/src]
-    overview      overview of the company
-    key           company key metrics
-    income        income statements of the company
-    balance       balance sheet of the company
-    cash          cash flow of the company
-    earnings      earnings dates and reported EPS
-    fraud         key fraud ratios
-    dupont        detailed breakdown for return on equity[/cmds]
-[info]Other Sources:[/info][menu]
->   fmp           profile,quote,enterprise,dcf,income,ratios,growth from FMP[/menu]
-        """
-        console.print(text=help_text, menu="Stocks - Fundamental Analysis")
+        mt = MenuText("stocks/fa/")
+        mt.add_cmd("load")
+        mt.add_raw("\n")
+        mt.add_param("_ticker", self.ticker.upper())
+        mt.add_raw("\n")
+        mt.add_cmd("data", "Finviz")
+        mt.add_cmd("mgmt", "Business Insider")
+        mt.add_cmd("analysis", "Elect")
+        mt.add_cmd("score", "FMP")
+        mt.add_cmd("profile", "FMP")
+        mt.add_cmd("quote", "FMP")
+        mt.add_cmd("enterprise", "FMP")
+        mt.add_cmd("metrics", "FMP")
+        mt.add_cmd("ratios", "FMP")
+        mt.add_cmd("growth", "FMP")
+        mt.add_cmd("warnings", "Market Watch")
+        mt.add_cmd("dcf", "Stockanalysis")
+        mt.add_cmd("dcfc", "FMP")
+        mt.add_cmd("info", "Yahoo Finance")
+        mt.add_cmd("mktcap", "Yahoo Finance")
+        mt.add_cmd("shrs", "Yahoo Finance", not self.suffix)
+        mt.add_cmd("sust", "Yahoo Finance", not self.suffix)
+        mt.add_cmd("cal", "Yahoo Finance", not self.suffix)
+        mt.add_cmd("divs", "Yahoo Finance", not self.suffix)
+        mt.add_cmd("splits", "Yahoo Finance", not self.suffix)
+        mt.add_cmd("web", "Yahoo Finance", not self.suffix)
+        mt.add_cmd("hq", "Yahoo Finance", not self.suffix)
+        mt.add_cmd("income", "Alpha Vantage / Polygon / Yahoo Finance / FMP")
+        mt.add_cmd("balance", "Alpha Vantage / Polygon / Yahoo Finance / FMP")
+        mt.add_cmd("overview", "Alpha Vantage")
+        mt.add_cmd("key", "Alpha Vantage")
+        mt.add_cmd("cash", "Alpha Vantage / Yahoo Finance / FMP")
+        mt.add_cmd("earnings", "Alpha Vantage")
+        mt.add_cmd("fraud", "Alpha Vantage")
+        mt.add_cmd("dupont", "Alpha Vantage")
+        console.print(text=mt.menu_text, menu="Stocks - Fundamental Analysis")
 
     def custom_reset(self):
         """Class specific component of reset command"""
         if self.ticker:
+            if self.suffix:
+                return ["stocks", f"load {self.ticker}.{self.suffix}", "fa"]
             return ["stocks", f"load {self.ticker}", "fa"]
         return []
 
@@ -153,7 +172,7 @@ Ticker: [/param] {self.ticker} [cmds]
             prog="analysis",
             description="""Display analysis of SEC filings based on NLP model. [Source: https://eclect.us]""",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -172,7 +191,7 @@ Ticker: [/param] {self.ticker} [cmds]
             """,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -182,7 +201,7 @@ Ticker: [/param] {self.ticker} [cmds]
 
     @log_start_end(log=logger)
     def call_data(self, other_args: List[str]):
-        """Process screener command."""
+        """Process data command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -197,12 +216,12 @@ Ticker: [/param] {self.ticker} [cmds]
                 ROI, 52W High, Beta, Quick Ratio, Sales past 5Y, Gross Margin, 52W Low, ATR,
                 Employees, Current Ratio, Sales Q/Q, Operating Margin, RSI (14), Volatility, Optionable,
                 Debt/Eq, EPS Q/Q, Profit Margin, Rel Volume, Prev Close, Shortable, LT Debt/Eq,
-                Earnings, Payout, Avg Volume, Price, Recomendation, SMA20, SMA50, SMA200, Volume, Change.
+                Earnings, Payout, Avg Volume, Price, Recommendation, SMA20, SMA50, SMA200, Volume, Change.
                 [Source: Finviz]
             """,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -220,11 +239,256 @@ Ticker: [/param] {self.ticker} [cmds]
                 and Benjamin Graham thoughts [Source: FMP]
                 """,
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
             fmp_view.valinvest_score(self.ticker)
+
+    @log_start_end(log=logger)
+    def call_profile(self, other_args: List[str]):
+        """Process profile command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="profile",
+            description="""
+                    Prints information about, among other things, the industry, sector exchange and company
+                    description. The following fields are expected: Address, Beta, Ceo, Changes, Cik, City
+                    Company name, Country, Currency, Cusip, Dcf, Dcf diff, Default image, Description,
+                    Exchange, Exchange short name, Full time employees, Image, Industry, Ipo date, Isin,
+                    Last div, Mkt cap, Phone, Price, Range, Sector, State, Symbol, Vol avg, Website, Zip.
+                    [Source: Financial Modeling Prep]
+                """,
+        )
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            fmp_view.display_profile(self.ticker)
+
+    @log_start_end(log=logger)
+    def call_quote(self, other_args: List[str]):
+        """Process quote command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="quote",
+            description="""
+                    Prints actual information about the company which is, among other things, the day high,
+                    market cap, open and close price and price-to-equity ratio. The following fields are
+                    expected: Avg volume, Change, Changes percentage, Day high, Day low, Earnings
+                    announcement, Eps, Exchange, Market cap, Name, Open, Pe, Previous close, Price, Price
+                    avg200, Price avg50, Shares outstanding, Symbol, Timestamp, Volume, Year high, and Year
+                    low. [Source: Financial Modeling Prep]
+                """,
+        )
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            fmp_view.display_quote(self.ticker)
+
+    @log_start_end(log=logger)
+    def call_enterprise(self, other_args: List[str]):
+        """Process enterprise command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="enterprise",
+            description="""
+                    Prints stock price, number of shares, market capitalization and
+                    enterprise value over time. The following fields are expected: Add total debt,
+                    Enterprise value, Market capitalization, Minus cash and cash equivalents, Number
+                    of shares, Stock price, and Symbol. [Source: Financial Modeling Prep]
+                """,
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            action="store",
+            dest="limit",
+            type=check_positive,
+            default=5,
+            help="Limit of latest years/quarters.",
+        )
+        parser.add_argument(
+            "-q",
+            "--quarter",
+            action="store_true",
+            default=False,
+            dest="b_quarter",
+            help="Quarter fundamental data flag.",
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            fmp_view.display_enterprise(
+                ticker=self.ticker,
+                number=ns_parser.limit,
+                quarterly=ns_parser.b_quarter,
+                export=ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
+    def call_metrics(self, other_args: List[str]):
+        """Process metrics command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="metrics",
+            description="""
+                    Prints a list of the key metrics of a company over time. This can be either
+                    quarterly or annually. This includes, among other things, Return on Equity (ROE),
+                    Working Capital, Current Ratio and Debt to Assets. The following fields are expected:
+                    Average inventory, Average payables, Average receivables, Book value per share, Capex
+                    per share, Capex to depreciation, Capex to operating cash flow, Capex to revenue, Cash
+                    per share, Current ratio, Days of inventory on hand, Days payables outstanding, Days
+                    sales outstanding, Debt to assets, Debt to equity, Dividend yield, Earnings yield,
+                    Enterprise value, Enterprise value over EBITDA, Ev to free cash flow, Ev to operating
+                    cash flow, Ev to sales, Free cash flow per share, Free cash flow yield, Graham net net,
+                    Graham number, Income quality, Intangibles to total assets, Interest debt per share,
+                    Inventory turnover, Market cap, Net current asset value, Net debt to EBITDA, Net income
+                    per share, Operating cash flow per share, Payables turnover, Payout ratio, Pb ratio, Pe
+                    ratio, Pfcf ratio, Pocf ratio, Price to sales ratio, Ptb ratio, Receivables turnover,
+                    Research and development to revenue, Return on tangible assets, Revenue per share,
+                    Roe, Roic, Sales general and administrative to revenue, Shareholders equity per
+                    share, Stock based compensation to revenue, Tangible book value per share, and Working
+                    capital. [Source: Financial Modeling Prep]
+                """,
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            action="store",
+            dest="limit",
+            type=check_positive,
+            default=5,
+            help="Limit of latest years/quarters.",
+        )
+        parser.add_argument(
+            "-q",
+            "--quarter",
+            action="store_true",
+            default=False,
+            dest="b_quarter",
+            help="Quarter fundamental data flag.",
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            fmp_view.display_key_metrics(
+                ticker=self.ticker,
+                number=ns_parser.limit,
+                quarterly=ns_parser.b_quarter,
+                export=ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
+    def call_ratios(self, other_args: List[str]):
+        """Process ratios command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="ratios",
+            description="""
+                    Prints in-depth ratios of a company over time. This can be either quarterly or
+                    annually. This contains, among other things, Price-to-Book Ratio, Payout Ratio and
+                    Operating Cycle. The following fields are expected: Asset turnover, Capital expenditure
+                    coverage ratio, Cash conversion cycle, Cash flow coverage ratios, Cash flow to debt
+                    ratio, Cash per share, Cash ratio, Company equity multiplier, Current ratio, Days of
+                    inventory outstanding, Days of payables outstanding, Days of sales outstanding, Debt
+                    equity ratio, Debt ratio, Dividend paid and capex coverage ratio, Dividend payout ratio,
+                    Dividend yield, Ebit per revenue, Ebt per ebit, Effective tax rate, Enterprise value
+                    multiple, Fixed asset turnover, Free cash flow operating cash flow ratio, Free cash
+                    flow per share, Gross profit margin, Inventory turnover, Long term debt to
+                    capitalization, Net income per EBT, Net profit margin, Operating cash flow per share,
+                    Operating cash flow sales ratio, Operating cycle, Operating profit margin, Payables
+                    turnover, Payout ratio, Pretax profit margin, Price book value ratio, Price cash flow
+                    ratio, Price earnings ratio, Price earnings to growth ratio, Price fair value,
+                    Price sales ratio, Price to book ratio, Price to free cash flows ratio, Price to
+                    operating cash flows ratio, Price to sales ratio, Quick ratio, Receivables turnover,
+                    Return on assets, Return on capital employed, Return on equity, Short term coverage
+                    ratios, and Total debt to capitalization. [Source: Financial Modeling Prep]
+                """,
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            action="store",
+            dest="limit",
+            type=check_positive,
+            default=5,
+            help="Limit of latest years/quarters.",
+        )
+        parser.add_argument(
+            "-q",
+            "--quarter",
+            action="store_true",
+            default=False,
+            dest="b_quarter",
+            help="Quarter fundamental data flag.",
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            fmp_view.display_financial_ratios(
+                ticker=self.ticker,
+                number=ns_parser.limit,
+                quarterly=ns_parser.b_quarter,
+                export=ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
+    def call_growth(self, other_args: List[str]):
+        """Process growth command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="growth",
+            description=""" Prints the growth of several financial statement items and ratios over
+                time. This can be either annually and quarterly. These are, among other things, Revenue
+                Growth (3, 5 and 10 years), inventory growth and operating cash flow growth (3, 5 and 10
+                years). The following fields are expected: Asset growth, Book valueper share growth, Debt
+                growth, Dividendsper share growth, Ebit growth, Eps diluted growth, Eps growth, Five y
+                dividendper share growth per share, Five y net income growth per share, Five y operating c
+                f growth per share, Five y revenue growth per share, Five y shareholders equity growth per
+                share, Free cash flow growth, Gross profit growth, Inventory growth, Net income growth,
+                Operating cash flow growth, Operating income growth, Rd expense growth, Receivables growth,
+                Revenue growth, Sga expenses growth, Ten y dividendper share growth per share, Ten y net
+                income growth per share, Ten y operating c f growth per share, Ten y revenue growth per
+                share, Ten y shareholders equity growth per share, Three y dividendper share growth per
+                share, Three y net income growth per share, Three y operating c f growth per share, Three y
+                revenue growth per share, Three y shareholders equity growth per share, Weighted average
+                shares diluted growth, and Weighted average shares growth [Source: Financial Modeling Prep]
+                """,
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            action="store",
+            dest="limit",
+            type=check_positive,
+            default=5,
+            help="Limit of latest years/quarters.",
+        )
+        parser.add_argument(
+            "-q",
+            "--quarter",
+            action="store_true",
+            default=False,
+            dest="b_quarter",
+            help="Quarter fundamental data flag.",
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            fmp_view.display_financial_statement_growth(
+                ticker=self.ticker,
+                number=ns_parser.limit,
+                quarterly=ns_parser.b_quarter,
+                export=ns_parser.export,
+            )
 
     @log_start_end(log=logger)
     def call_info(self, other_args: List[str]):
@@ -254,7 +518,7 @@ Ticker: [/param] {self.ticker} [cmds]
                 Regular market price, Logo_url. [Source: Yahoo Finance]
             """,
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -277,7 +541,7 @@ Ticker: [/param] {self.ticker} [cmds]
             dest="start",
             help="The starting date (format YYYY-MM-DD) of the market cap display",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
@@ -294,7 +558,7 @@ Ticker: [/param] {self.ticker} [cmds]
             prog="splits",
             description="""Stock splits and reverse split events since IPO [Source: Yahoo Finance]""",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
@@ -310,7 +574,7 @@ Ticker: [/param] {self.ticker} [cmds]
             description="""Print Major, institutional and mutualfunds shareholders.
             [Source: Yahoo Finance]""",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if not self.suffix:
@@ -337,7 +601,7 @@ Ticker: [/param] {self.ticker} [cmds]
                 Militarycontract. [Source: Yahoo Finance]
             """,
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if not self.suffix:
@@ -360,7 +624,7 @@ Ticker: [/param] {self.ticker} [cmds]
                 [Source: Yahoo Finance]
             """,
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if not self.suffix:
@@ -382,7 +646,7 @@ Ticker: [/param] {self.ticker} [cmds]
                 Opens company's website. [Source: Yahoo Finance]
             """,
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if not self.suffix:
@@ -402,7 +666,7 @@ Ticker: [/param] {self.ticker} [cmds]
                 Opens in Google Maps HQ location of the company. [Source: Yahoo Finance]
             """,
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if not self.suffix:
@@ -436,7 +700,7 @@ Ticker: [/param] {self.ticker} [cmds]
             action="store_true",
             help="Plots changes in dividend over time",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if not self.suffix:
@@ -475,7 +739,7 @@ Ticker: [/param] {self.ticker} [cmds]
                 https://www.sec.gov/edgar/searchedgar/cik.htm [Source: Alpha Vantage]
             """,
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -483,7 +747,7 @@ Ticker: [/param] {self.ticker} [cmds]
 
     @log_start_end(log=logger)
     def call_key(self, other_args: List[str]):
-        """Process overview command."""
+        """Process key command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -496,11 +760,11 @@ Ticker: [/param] {self.ticker} [cmds]
                 [Source: Alpha Vantage API]
             """,
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            av_view.display_key(self.ticker)
+            av_view.display_key(ticker=self.ticker, export=ns_parser.export)
 
     @log_start_end(log=logger)
     def call_income(self, other_args: List[str]):
@@ -521,15 +785,6 @@ Ticker: [/param] {self.ticker} [cmds]
                 average shs out dil [Source: Alpha Vantage]""",
         )
         parser.add_argument(
-            "-l",
-            "--limit",
-            action="store",
-            dest="limit",
-            type=check_positive,
-            default=1,
-            help="Number of latest years/quarters.",
-        )
-        parser.add_argument(
             "-q",
             "--quarter",
             action="store_true",
@@ -537,16 +792,71 @@ Ticker: [/param] {self.ticker} [cmds]
             dest="b_quarter",
             help="Quarter fundamental data flag.",
         )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        parser.add_argument(
+            "-r",
+            "--ratios",
+            action="store_true",
+            default=False,
+            dest="ratios",
+            help="Shows percentage change of values.",
+        )
+        parser.add_argument(
+            "-p",
+            "--plot",
+            action="store",
+            nargs="+",
+            type=str,
+            default=None,
+            dest="plot",
+            help="Rows to plot. (-1 represents invalid data)",
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
+            limit=5,
         )
         if ns_parser:
-            av_view.display_income_statement(
-                ticker=self.ticker,
-                limit=ns_parser.limit,
-                quarterly=ns_parser.b_quarter,
-                export=ns_parser.export,
-            )
+            # TODO: Switch to actually getting data
+            if ns_parser.source == "yf" and ns_parser.b_quarter:
+                text = "Quarterly data currently unavailable for yfinance"
+                console.print(f"[red]{text}, showing yearly.[/red]\n")
+            if ns_parser.source == "av":
+                av_view.display_income_statement(
+                    ticker=self.ticker,
+                    limit=ns_parser.limit,
+                    quarterly=ns_parser.b_quarter,
+                    ratios=ns_parser.ratios,
+                    plot=ns_parser.plot,
+                    export=ns_parser.export,
+                )
+            elif ns_parser.source == "polygon":
+                polygon_view.display_fundamentals(
+                    ticker=self.ticker,
+                    financial="income",
+                    limit=ns_parser.limit,
+                    quarterly=ns_parser.b_quarter,
+                    ratios=ns_parser.ratios,
+                    plot=ns_parser.plot,
+                    export=ns_parser.export,
+                )
+            elif ns_parser.source == "fmp":
+                fmp_view.display_income_statement(
+                    ticker=self.ticker,
+                    number=ns_parser.limit,
+                    quarterly=ns_parser.b_quarter,
+                    ratios=ns_parser.ratios,
+                    plot=ns_parser.plot,
+                    export=ns_parser.export,
+                )
+            elif ns_parser.source == "yf":
+                yahoo_finance_view.display_fundamentals(
+                    ticker=self.ticker,
+                    financial="financials",
+                    ratios=ns_parser.ratios,
+                    plot=ns_parser.plot,
+                    export=ns_parser.export,
+                )
 
     @log_start_end(log=logger)
     def call_balance(self, other_args: List[str]):
@@ -573,15 +883,6 @@ Ticker: [/param] {self.ticker} [cmds]
             """,
         )
         parser.add_argument(
-            "-l",
-            "--limit",
-            action="store",
-            dest="limit",
-            type=check_positive,
-            default=1,
-            help="Number of latest years/quarters.",
-        )
-        parser.add_argument(
             "-q",
             "--quarter",
             action="store_true",
@@ -589,16 +890,71 @@ Ticker: [/param] {self.ticker} [cmds]
             dest="b_quarter",
             help="Quarter fundamental data flag.",
         )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        parser.add_argument(
+            "-r",
+            "--ratios",
+            action="store_true",
+            default=False,
+            dest="ratios",
+            help="Shows percentage change of values.",
+        )
+        parser.add_argument(
+            "-p",
+            "--plot",
+            action="store",
+            nargs="+",
+            type=str,
+            default=None,
+            dest="plot",
+            help="Rows to plot. (-1 represents invalid data)",
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
+            limit=5,
         )
         if ns_parser:
-            av_view.display_balance_sheet(
-                ticker=self.ticker,
-                limit=ns_parser.limit,
-                quarterly=ns_parser.b_quarter,
-                export=ns_parser.export,
-            )
+            # TODO: Switch to actually getting data
+            if ns_parser.source == "yf" and ns_parser.b_quarter:
+                text = "Quarterly data currently unavailable for yfinance"
+                console.print(f"[red]{text}, showing yearly.[/red]\n")
+            if ns_parser.source == "av":
+                av_view.display_balance_sheet(
+                    ticker=self.ticker,
+                    limit=ns_parser.limit,
+                    quarterly=ns_parser.b_quarter,
+                    ratios=ns_parser.ratios,
+                    plot=ns_parser.plot,
+                    export=ns_parser.export,
+                )
+            elif ns_parser.source == "polygon":
+                polygon_view.display_fundamentals(
+                    ticker=self.ticker,
+                    financial="balance",
+                    limit=ns_parser.limit,
+                    quarterly=ns_parser.b_quarter,
+                    ratios=ns_parser.ratios,
+                    plot=ns_parser.plot,
+                    export=ns_parser.export,
+                )
+            elif ns_parser.source == "fmp":
+                fmp_view.display_balance_sheet(
+                    ticker=self.ticker,
+                    number=ns_parser.limit,
+                    quarterly=ns_parser.b_quarter,
+                    ratios=ns_parser.ratios,
+                    plot=ns_parser.plot,
+                    export=ns_parser.export,
+                )
+            elif ns_parser.source == "yf":
+                yahoo_finance_view.display_fundamentals(
+                    ticker=self.ticker,
+                    financial="balance-sheet",
+                    ratios=ns_parser.ratios,
+                    plot=ns_parser.plot,
+                    export=ns_parser.export,
+                )
 
     @log_start_end(log=logger)
     def call_cash(self, other_args: List[str]):
@@ -628,7 +984,7 @@ Ticker: [/param] {self.ticker} [cmds]
             action="store",
             dest="limit",
             type=check_positive,
-            default=1,
+            default=5,
             help="Number of latest years/quarters.",
         )
         parser.add_argument(
@@ -639,16 +995,70 @@ Ticker: [/param] {self.ticker} [cmds]
             dest="b_quarter",
             help="Quarter fundamental data flag.",
         )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        parser.add_argument(
+            "-r",
+            "--ratios",
+            action="store_true",
+            default=False,
+            dest="ratios",
+            help="Shows percentage change of values.",
+        )
+        parser.add_argument(
+            "-p",
+            "--plot",
+            action="store",
+            nargs="+",
+            type=str,
+            default=None,
+            dest="plot",
+            help="Rows to plot. (-1 represents invalid data)",
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
         )
         if ns_parser:
-            av_view.display_cash_flow(
-                ticker=self.ticker,
-                limit=ns_parser.limit,
-                quarterly=ns_parser.b_quarter,
-                export=ns_parser.export,
-            )
+            # TODO: Switch to actually getting data
+            if ns_parser.source == "yf" and ns_parser.b_quarter:
+                text = "Quarterly data currently unavailable for yfinance"
+                console.print(f"[red]{text}, showing yearly.[/red]\n")
+            if ns_parser.source == "av":
+                av_view.display_cash_flow(
+                    ticker=self.ticker,
+                    limit=ns_parser.limit,
+                    quarterly=ns_parser.b_quarter,
+                    ratios=ns_parser.ratios,
+                    plot=ns_parser.plot,
+                    export=ns_parser.export,
+                )
+            elif ns_parser.source == "fmp":
+                fmp_view.display_cash_flow(
+                    ticker=self.ticker,
+                    number=ns_parser.limit,
+                    quarterly=ns_parser.b_quarter,
+                    ratios=ns_parser.ratios,
+                    plot=ns_parser.plot,
+                    export=ns_parser.export,
+                )
+            elif ns_parser.source == "polygon":
+                polygon_view.display_fundamentals(
+                    ticker=self.ticker,
+                    financial="cash",
+                    limit=ns_parser.limit,
+                    quarterly=ns_parser.b_quarter,
+                    ratios=ns_parser.ratios,
+                    plot=ns_parser.plot,
+                    export=ns_parser.export,
+                )
+            elif ns_parser.source == "yf":
+                yahoo_finance_view.display_fundamentals(
+                    ticker=self.ticker,
+                    financial="cash-flow",
+                    ratios=ns_parser.ratios,
+                    plot=ns_parser.plot,
+                    export=ns_parser.export,
+                )
 
     @log_start_end(log=logger)
     def call_earnings(self, other_args: List[str]):
@@ -679,8 +1089,10 @@ Ticker: [/param] {self.ticker} [cmds]
             default=5,
             help="Number of latest info",
         )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            EXPORT_ONLY_RAW_DATA_ALLOWED,
         )
         if ns_parser:
             av_view.display_earnings(
@@ -731,7 +1143,7 @@ Ticker: [/param] {self.ticker} [cmds]
                 " higher probability of default. One of the criticisms that Zmijewski made was that"
                 " other bankruptcy scoring models oversampled distressed firms and favored situations"
                 " with more complete data.[Source: YCharts]"
-                "McKee-score:\n------------------------------------------------\n"
+                "\n\nMcKee-score:\n------------------------------------------------\n"
                 "The McKee Score is a bankruptcy model used to predict a firm's bankruptcy in one year"
                 "It looks at a company's size, profitability, and liquidity to determine the probability."
                 "This model is 80% accurate in predicting bankruptcy."
@@ -745,11 +1157,23 @@ Ticker: [/param] {self.ticker} [cmds]
             default=False,
             help="Shows an explanation for the metrics",
         )
-        ns_parser = parse_known_args_and_warn(
+        parser.add_argument(
+            "-d",
+            "--detail",
+            action="store_true",
+            dest="detail",
+            default=False,
+            help="Shows the details for calculating the mscore",
+        )
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            av_view.display_fraud(self.ticker, ns_parser.exp)
+            av_view.display_fraud(
+                ticker=self.ticker,
+                export=ns_parser.export,
+                detail=ns_parser.detail,
+            )
 
     @log_start_end(log=logger)
     def call_dupont(self, other_args: List[str]):
@@ -767,7 +1191,7 @@ Ticker: [/param] {self.ticker} [cmds]
             dest="raw",
             help="Print raw data.",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -838,7 +1262,7 @@ Ticker: [/param] {self.ticker} [cmds]
             default=6,
             help="Number of similar companies to generate ratios for.",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -851,6 +1275,47 @@ Ticker: [/param] {self.ticker} [cmds]
                 ns_parser.similar,
             )
             dcf.create_workbook()
+
+    @log_start_end(log=logger)
+    def call_dcfc(self, other_args: List[str]):
+        """Process dcfc command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="dcfc",
+            description="""
+                    Prints the discounted cash flow of a company over time including the DCF of today. The
+                    following fields are expected: DCF, Stock price, and Date. [Source: Financial Modeling
+                    Prep]
+                """,
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            action="store",
+            dest="limit",
+            type=check_positive,
+            default=5,
+            help="Limit of latest years/quarters.",
+        )
+        parser.add_argument(
+            "-q",
+            "--quarter",
+            action="store_true",
+            default=False,
+            dest="b_quarter",
+            help="Quarter fundamental data flag.",
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            fmp_view.display_discounted_cash_flow(
+                ticker=self.ticker,
+                number=ns_parser.limit,
+                quarterly=ns_parser.b_quarter,
+                export=ns_parser.export,
+            )
 
     @log_start_end(log=logger)
     def call_warnings(self, other_args: List[str]):
@@ -874,7 +1339,7 @@ Ticker: [/param] {self.ticker} [cmds]
             dest="b_debug",
             help="print insights into warnings calculation.",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -883,42 +1348,25 @@ Ticker: [/param] {self.ticker} [cmds]
             )
 
     @log_start_end(log=logger)
-    def call_fmp(self, _):
-        """Process fmp command."""
-        self.queue = self.load_class(
-            fmp_controller.FinancialModelingPrepController,
-            self.ticker,
-            self.start,
-            self.interval,
-            self.queue,
+    def key_metrics_explained(self, other_args: List[str]):
+        """Key metrics explained."""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="info",
+            description="""
+                Provides information about main key metrics. Namely: EBITDA,
+                EPS, P/E, PEG, FCF, P/B, ROE, DPR, P/S, Dividend Yield Ratio, D/E, and Beta.
+            """,
         )
-
-
-def key_metrics_explained(other_args: List[str]):
-    """Key metrics explained.
-
-    Parameters
-    ----------
-    other_args : List[str]
-        argparse other args
-    """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="info",
-        description="""
-            Provides information about main key metrics. Namely: EBITDA,
-            EPS, P/E, PEG, FCF, P/B, ROE, DPR, P/S, Dividend Yield Ratio, D/E, and Beta.
-        """,
-    )
-    ns_parser = parse_known_args_and_warn(
-        parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-    )
-    if ns_parser:
-        filepath = "fundamental_analysis/key_metrics_explained.txt"
-        with open(filepath) as fp:
-            line = fp.readline()
-            while line:
-                console.print(f"{line.strip()}")
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            filepath = "fundamental_analysis/key_metrics_explained.txt"
+            with open(filepath) as fp:
                 line = fp.readline()
-            console.print("")
+                while line:
+                    console.print(f"{line.strip()}")
+                    line = fp.readline()
+                console.print("")

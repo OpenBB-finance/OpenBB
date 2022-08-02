@@ -17,12 +17,11 @@ from openbb_terminal.helper_funcs import (
     check_percentage_range,
     check_positive,
     check_positive_float,
-    parse_known_args_and_warn,
 )
 from openbb_terminal.cryptocurrency.tools import tools_view
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 
 logger = logging.getLogger(__name__)
 
@@ -40,16 +39,18 @@ class ToolsController(BaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
+
+            choices["support"] = self.SUPPORT_CHOICES
+            choices["about"] = self.ABOUT_CHOICES
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
         """Print help"""
-
-        help_text = """[cmds]
-    aprtoapy         convert apr to apy
-    il               calculate impermanent loss[/cmds]
-"""
-        console.print(text=help_text, menu="Cryptocurrency - Tools")
+        mt = MenuText("crypto/tools/")
+        mt.add_cmd("aprtoapy")
+        mt.add_cmd("il")
+        console.print(text=mt.menu_text, menu="Cryptocurrency - Tools")
 
     @log_start_end(log=logger)
     def call_il(self, other_args: List[str]):
@@ -111,7 +112,7 @@ class ToolsController(BaseController):
         if other_args and not other_args[0][0] == "-":
             other_args.insert(0, "-pcA")
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -167,7 +168,7 @@ class ToolsController(BaseController):
         if other_args and not other_args[0][0] == "-":
             other_args.insert(0, "--apr")
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 

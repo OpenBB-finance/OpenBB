@@ -19,8 +19,11 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.decorators import check_api_key
 
 # IMPORTATION INTERNAL
+from openbb_terminal.helper_funcs import (
+    print_rich_table,
+)
 from openbb_terminal.portfolio.brokers.degiro.degiro_model import DegiroModel
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 
 # pylint: disable=no-member
 
@@ -53,23 +56,23 @@ class DegiroView:
     @staticmethod
     @log_start_end(log=logger)
     def help_display():
-        console.print(
-            "\n[cmds]"
-            "   login        connect to degiro's api\n"
-            "   logout       disconnect from degiro's api\n"
-            "\n"
-            "   hold         view holdings\n"
-            "   lookup       view search for a product by name\n"
-            "\n"
-            "   create       create an order\n"
-            "   update       update an order\n"
-            "   cancel       cancel an order using the id\n"
-            "   pending      view pending orders\n"
-            "\n"
-            "   companynews  view news about a company with it's isin\n"
-            "   lastnews     view latest news\n"
-            "   topnews      view top news preview[/cmds]\n"
-        )
+        mt = MenuText("portfolio/bro/degiro/")
+        mt.add_cmd("login")
+        mt.add_cmd("logout")
+        mt.add_raw("\n")
+        mt.add_cmd("hold")
+        mt.add_cmd("lookup")
+        mt.add_raw("\n")
+        mt.add_cmd("create")
+        mt.add_cmd("update")
+        mt.add_cmd("cancel")
+        mt.add_cmd("pending")
+        mt.add_raw("\n")
+        mt.add_cmd("companynews")
+        mt.add_cmd("lastnews")
+        mt.add_cmd("topnews")
+        mt.add_cmd("paexport")
+        console.print(text=mt.menu_text, menu="Portfolio - Brokers - Degiro")
 
     @log_start_end(log=logger)
     def cancel(self, ns_parser: Namespace):
@@ -490,3 +493,27 @@ class DegiroView:
     @log_start_end(log=logger)
     def __update_display_success():
         console.print("`Order` updated .")
+
+    @log_start_end(log=logger)
+    def transactions_export(self, ns_parser: Namespace):
+        degiro_model = self.__degiro_model
+
+        portfolio_df = degiro_model.get_transactions_export(
+            start=ns_parser.start.date(),
+            end=ns_parser.end.date(),
+            currency=ns_parser.currency,
+        )
+
+        if portfolio_df is not None:
+
+            print_rich_table(
+                df=portfolio_df,
+                headers=list(portfolio_df.columns),
+                show_index=True,
+                title="Degiro Transactions",
+            )
+
+            degiro_model.export_data(portfolio_df, ns_parser.export)
+
+        else:
+            console.print("Error while fetching or processing Transactions.")

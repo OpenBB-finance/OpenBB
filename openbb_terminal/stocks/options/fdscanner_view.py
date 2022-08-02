@@ -8,7 +8,6 @@ import pandas as pd
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
-from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.options import fdscanner_model
 
 logger = logging.getLogger(__name__)
@@ -52,7 +51,6 @@ def display_options(
         show_index=False,
         title=f"Last Updated: {last_update} (EST)",
     )
-    console.print("")
 
     if export:
         export_data(

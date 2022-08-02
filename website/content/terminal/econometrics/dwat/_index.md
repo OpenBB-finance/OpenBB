@@ -16,7 +16,7 @@ optional arguments:
 
 Example:
 ```
-2022 Feb 24, 05:59 (✨) /econometrics/ $ ols adj_close-msft adj_close-aapl adj_close-googl adj_close-tsla
+2022 Feb 24, 05:59 (✨) /econometrics/ $ ols -d adj_close-msft -i adj_close-aapl -i adj_close-googl -i adj_close-tsla
                             OLS Regression Results                            
 ==============================================================================
 Dep. Variable:         adj_close_msft   R-squared:                       0.977

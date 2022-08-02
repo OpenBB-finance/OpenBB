@@ -52,7 +52,6 @@ def last_insider_activity(ticker: str, num: int = 10, export: str = ""):
         show_index=True,
         title="Insider Activity",
     )
-    console.print("")
 
     export_data(
         export,

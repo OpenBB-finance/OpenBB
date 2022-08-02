@@ -1,5 +1,5 @@
 ,0
-0,"    TOTEMP_longley  GNP_longley  ARMED_longley  POP_longley
+0,"    longley.TOTEMP  longley.GNP  longley.ARMED  longley.POP
 0          60323.0     234289.0         1590.0     107608.0
 1          61122.0     259426.0         1456.0     108632.0
 2          60171.0     258054.0         1616.0     109773.0
@@ -16,5 +16,5 @@
 13         69564.0     502601.0         2514.0     125368.0
 14         69331.0     518173.0         2572.0     127852.0
 15         70551.0     554894.0         2827.0     130081.0"
-1,TOTEMP_longley
-2,['GNP_longley' 'ARMED_longley' 'POP_longley']
+1,longley.TOTEMP
+2,['longley.GNP' 'longley.ARMED' 'longley.POP']

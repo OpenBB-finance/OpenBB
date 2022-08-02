@@ -7,7 +7,6 @@ import textwrap
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
-from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.fundamental_analysis import business_insider_model
 
 logger = logging.getLogger(__name__)
@@ -39,10 +38,8 @@ def display_management(ticker: str, export: str = ""):
             index_name="Name",
         )
 
-        console.print()
         export_data(
             export, os.path.dirname(os.path.abspath(__file__)), "mgmt", df_management
         )
     else:
         logger.error("Data not available")
-        console.print("[red]Data not available[/red]\n")

@@ -9,6 +9,7 @@ import pandas_ta as ta
 import yfinance as yf
 
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.helper_funcs import is_intraday
 
 logger = logging.getLogger(__name__)
 
@@ -94,6 +95,13 @@ def ema_strategy(
     bt.backtest.Result
         Backtest results
     """
+
+    # TODO: Help Wanted!
+    # Implement support for backtesting on intraday data
+    if is_intraday(df_stock):
+        return None
+    df_stock.index = pd.to_datetime(df_stock.index.date)
+
     ticker = ticker.lower()
     ema = pd.DataFrame()
     start_date = df_stock.index[0]

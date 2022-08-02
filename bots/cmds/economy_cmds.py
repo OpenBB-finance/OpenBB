@@ -7,7 +7,6 @@ from bots.common import commands_dict
 from bots.economy.cpi import cpi_command
 from bots.economy.currencies import currencies_command
 from bots.economy.energy import energy_command
-from bots.economy.feargreed import feargreed_command
 from bots.economy.futures import futures_command
 from bots.economy.futures_coms import futures_coms_command
 from bots.economy.glbonds import glbonds_command
@@ -33,20 +32,6 @@ class EconomyCommands(commands.Cog):
     @commands.slash_command(name="econ")
     async def econ(self, inter):
         pass
-
-    @econ.sub_command()
-    async def feargreed(
-        self,
-        inter: disnake.AppCmdInter,
-        indicator: str = commands.Param(choices=commands_dict.econ_fgind),
-    ):
-        """CNN Fear and Greed Index [CNN]
-
-        Parameters
-        ----------
-        indicator: Select an Indicator
-        """
-        await ShowView().discord(feargreed_command, inter, "econ feargreed", indicator)
 
     @econ.sub_command()
     async def overview(self, inter: disnake.AppCmdInter):

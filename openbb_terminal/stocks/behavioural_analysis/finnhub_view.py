@@ -17,8 +17,8 @@ from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.helper_funcs import (
     export_data,
     plot_autoscale,
+    is_valid_axes_count,
 )
-from openbb_terminal.rich_config import console
 from openbb_terminal.decorators import check_api_key
 
 logger = logging.getLogger(__name__)
@@ -40,7 +40,7 @@ def display_stock_price_headlines_sentiment(
     export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+        External axes (2 axes are expected in the list), by default None
     """
     start = datetime.now() - timedelta(days=30)
     articles = finnhub_model.get_company_news(
@@ -63,7 +63,7 @@ def display_stock_price_headlines_sentiment(
 
         if not df_stock.empty:
 
-            # This plot has 2 axis
+            # This plot has 2 axes
             if external_axes is None:
                 _, axes = plt.subplots(
                     figsize=plot_autoscale(),
@@ -74,12 +74,10 @@ def display_stock_price_headlines_sentiment(
                     gridspec_kw={"height_ratios": [2, 1]},
                 )
                 (ax1, ax2) = axes
-            else:
-                if len(external_axes) != 2:
-                    logger.error("Expected list of two axis item.")
-                    console.print("[red]Expected list of two axis item.\n[/red]")
-                    return
+            elif is_valid_axes_count(external_axes, 2):
                 (ax1, ax2) = external_axes
+            else:
+                return
 
             ax1.set_title(f"Headlines sentiment and {ticker} price")
             for uniquedate in np.unique(df_stock.index.date):

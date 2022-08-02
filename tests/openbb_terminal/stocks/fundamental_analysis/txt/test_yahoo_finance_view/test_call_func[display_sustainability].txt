@@ -9,7 +9,7 @@ Alcoholic                       False
 Gmo                             False
 Catholic                        False
 Social percentile                None
-Peer count                         94
+Peer count                         92
 Governance score                 8.72
 Environment percentile           None
 Animal testing                   True
@@ -20,10 +20,9 @@ Esg performance              AVG_PERF
 Coal                            False
 Pesticides                      False
 Adult                           False
-Percentile                      34.15
+Percentile                      34.73
 Peer group              Food Products
 Small arms                      False
 Environment score                3.65
 Governance percentile            None
 Military contract               False
-

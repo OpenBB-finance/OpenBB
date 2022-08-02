@@ -140,7 +140,11 @@ def get_coin_exchanges_by_id(coin_id: str = "eth-ethereum") -> pd.DataFrame:
     session = PaprikaSession()
     res = session.make_request(session.ENDPOINTS["coin_exchanges"].format(coin_id))
     df = pd.DataFrame(res)
-    df["fiats"] = df["fiats"].copy().apply(lambda x: len([i["symbol"] for i in x if x]))
+
+    if "fiats" in df.columns.tolist():
+        df["fiats"] = (
+            df["fiats"].copy().apply(lambda x: len([i["symbol"] for i in x if x]))
+        )
     return df
 
 

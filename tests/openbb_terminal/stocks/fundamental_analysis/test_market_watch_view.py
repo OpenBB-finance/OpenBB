@@ -30,13 +30,13 @@ def vcr_config():
 )
 def test_call_func_no_parser(func, mocker):
     mocker.patch(
-        "openbb_terminal.stocks.fundamental_analysis.market_watch_view.parse_known_args_and_warn",
+        "openbb_terminal.stocks.fundamental_analysis.market_watch_view.parse_simple_args",
         return_value=None,
     )
 
     func_result = getattr(market_watch_view, func)(other_args=list(), ticker="TSLA")
     assert func_result is None
-    getattr(market_watch_view, "parse_known_args_and_warn").assert_called_once()
+    getattr(market_watch_view, "parse_simple_args").assert_called_once()
 
 
 @pytest.mark.vcr

@@ -21,6 +21,7 @@ from openbb_terminal.helper_funcs import (
     export_data,
     plot_autoscale,
     print_rich_table,
+    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
 
@@ -69,14 +70,13 @@ def display_crypto_heatmap(
             else:
                 colors.append(cmapred(-round(val * 100)))
 
-        # This plot has 2 axes
+        # This plot has 1 axis
         if external_axes is None:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        else:
-            if len(external_axes) != 1:
-                console.print("[red]Expected list of 1 axis item.\n[/red]")
-                return
+        elif is_valid_axes_count(external_axes, 1):
             (ax,) = external_axes
+        else:
+            return
 
         category_str = f"[{category}]" if category else ""
         df_copy = df
@@ -153,7 +153,6 @@ def display_holdings_overview(coin: str, show_bar: bool, export: str, top: int) 
             show_index=False,
             title="Public Companies Holding BTC or ETH",
         )
-        console.print("")
 
         export_data(
             export,
@@ -188,7 +187,6 @@ def display_exchange_rates(sortby: str, descend: bool, top: int, export: str) ->
             show_index=False,
             title="Exchange Rates",
         )
-        console.print("")
 
         export_data(
             export,
@@ -252,7 +250,6 @@ def display_global_market_info(pie: bool, export: str) -> None:
         print_rich_table(
             df, headers=list(df.columns), show_index=False, title="Global Statistics"
         )
-        console.print("")
 
         export_data(
             export,
@@ -285,7 +282,6 @@ def display_global_defi_info(export: str) -> None:
             show_index=False,
             title="Global DEFI Statistics",
         )
-        console.print("")
 
         export_data(
             export,
@@ -373,7 +369,6 @@ First {top} stablecoins have a total {lambda_long_number_format_with_type_check(
             show_index=False,
             title="Stablecoin Data",
         )
-        console.print("")
 
         export_data(
             export,
@@ -433,7 +428,6 @@ def display_categories(sortby: str, top: int, export: str, pie: bool) -> None:
             floatfmt=".2f",
             show_index=False,
         )
-        console.print("")
 
         export_data(
             export,
@@ -481,7 +475,6 @@ def display_exchanges(
             show_index=False,
             title="Top CoinGecko Exchanges",
         )
-        console.print("")
 
         export_data(
             export,
@@ -522,7 +515,6 @@ def display_platforms(sortby: str, descend: bool, top: int, export: str) -> None
             show_index=False,
             title="Financial Platforms",
         )
-        console.print("")
 
         export_data(
             export,
@@ -563,7 +555,6 @@ def display_products(sortby: str, descend: bool, top: int, export: str) -> None:
             show_index=False,
             title="Financial Products",
         )
-        console.print("")
 
         export_data(
             export,
@@ -603,7 +594,6 @@ def display_indexes(sortby: str, descend: bool, top: int, export: str) -> None:
             show_index=False,
             title="Crypto Indexes",
         )
-        console.print("")
 
         export_data(
             export,
@@ -644,7 +634,6 @@ def display_derivatives(sortby: str, descend: bool, top: int, export: str) -> No
             show_index=False,
             title="Crypto Derivatives",
         )
-        console.print("")
 
         export_data(
             export,

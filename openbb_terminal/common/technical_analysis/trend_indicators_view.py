@@ -13,8 +13,12 @@ from openbb_terminal.config_terminal import theme
 from openbb_terminal.common.technical_analysis import trend_indicators_model
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import export_data, plot_autoscale, reindex_dates
-from openbb_terminal.rich_config import console
+from openbb_terminal.helper_funcs import (
+    export_data,
+    plot_autoscale,
+    reindex_dates,
+    is_valid_axes_count,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -67,12 +71,10 @@ def display_adx(
             2, 1, sharex=True, figsize=plot_autoscale(), dpi=PLOT_DPI
         )
         ax1, ax2 = axes
+    elif is_valid_axes_count(external_axes, 2):
+        (ax1, ax2) = external_axes
     else:
-        if len(external_axes) != 2:
-            logger.error("Expected list of two axis items.")
-            console.print("[red]Expected list of 2 axis items.\n[/red]")
-            return
-        ax1, ax2 = external_axes
+        return
 
     ax1.plot(plot_data.index, plot_data["Close"].values)
     ax1.set_title(f"Average Directional Movement Index (ADX) on {s_ticker}")
@@ -157,12 +159,10 @@ def display_aroon(
             3, 1, sharex=True, figsize=plot_autoscale(), dpi=PLOT_DPI
         )
         ax1, ax2, ax3 = axes
+    elif is_valid_axes_count(external_axes, 3):
+        (ax1, ax2, ax3) = external_axes
     else:
-        if len(external_axes) != 3:
-            logger.error("Expected list of three axis items.")
-            console.print("[red]Expected list of 3 axis items.\n[/red]")
-            return
-        ax1, ax2, ax3 = external_axes
+        return
 
     ax1.plot(plot_data.index, plot_data["Adj Close"].values)
     ax1.set_title(f"Aroon on {s_ticker}")

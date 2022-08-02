@@ -6,7 +6,7 @@ from matplotlib import pyplot as plt
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import plot_autoscale
+from openbb_terminal.helper_funcs import plot_autoscale, is_valid_axes_count
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.options import calculator_model
 
@@ -45,12 +45,10 @@ def view_calculator(
 
     if not external_axes:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of one axis item.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
+    else:
+        return
 
     ax.plot(price_at_expiry, pnl, alpha=0.1, c="k")
     ax.fill_between(

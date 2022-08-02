@@ -34,7 +34,6 @@ def display_collection_stats(slug: str, export: str):
             show_index=False,
             title="Collection Stats",
         )
-        console.print("")
 
     export_data(
         export,

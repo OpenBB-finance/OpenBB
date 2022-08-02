@@ -12,7 +12,12 @@ from openbb_terminal.config_terminal import theme
 from openbb_terminal.common.quantitative_analysis import rolling_model
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import export_data, plot_autoscale, reindex_dates
+from openbb_terminal.helper_funcs import (
+    export_data,
+    plot_autoscale,
+    reindex_dates,
+    is_valid_axes_count,
+)
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -74,12 +79,10 @@ def display_mean_std(
             dpi=PLOT_DPI,
         )
         ax1, ax2 = axes
-    else:
-        if len(external_axes) != 2:
-            logger.error("Expected list of two axis items.")
-            console.print("[red]Expected list of 2 axis items.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 2):
         (ax1, ax2) = external_axes
+    else:
+        return
 
     ax1.plot(
         plot_data.index,
@@ -186,12 +189,10 @@ def display_spread(
             dpi=PLOT_DPI,
         )
         (ax1, ax2, ax3) = axes
-    else:
-        if len(external_axes) != 3:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of 1 axis items.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 3):
         (ax1, ax2, ax3) = external_axes
+    else:
+        return
 
     ax1.plot(plot_data.index, plot_data[target].values)
     ax1.set_xlim(plot_data.index[0], plot_data.index[-1])
@@ -295,12 +296,10 @@ def display_quantile(
             figsize=plot_autoscale(),
             dpi=PLOT_DPI,
         )
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of 1 axis items.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
+    else:
+        return
 
     ax.set_title(f"{name} {target} Median & Quantile")
     ax.plot(plot_data.index, plot_data[target].values, label=target)
@@ -385,12 +384,10 @@ def display_skew(
             dpi=PLOT_DPI,
         )
         (ax1, ax2) = axes
-    else:
-        if len(external_axes) != 2:
-            logger.error("Expected list of two axis items.")
-            console.print("[red]Expected list of 2 axis items.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 2):
         (ax1, ax2) = external_axes
+    else:
+        return
 
     ax1.set_title(f"{name} Skewness Indicator")
     ax1.plot(plot_data.index, plot_data[target].values)
@@ -469,12 +466,10 @@ def display_kurtosis(
             dpi=PLOT_DPI,
         )
         (ax1, ax2) = axes
-    else:
-        if len(external_axes) != 2:
-            logger.error("Expected list of two axis items.")
-            console.print("[red]Expected list of 2 axis items.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 2):
         (ax1, ax2) = external_axes
+    else:
+        return
 
     ax1.set_title(f"{name} {target} Kurtosis Indicator (window {str(window)})")
     ax1.plot(plot_data.index, plot_data[target].values)

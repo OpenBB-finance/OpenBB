@@ -113,12 +113,12 @@ def get_regression_data(
 
     for variable in regression_variables:
         column, dataset = datasets[variable].keys()
-        regression[f"{column}_{dataset}"] = data[dataset][column]
+        regression[f"{dataset}.{column}"] = data[dataset][column]
 
         if variable == regression_variables[0]:
-            dependent_variable = f"{column}_{dataset}"
+            dependent_variable = f"{dataset}.{column}"
         elif variable in regression_variables[1:]:
-            independent_variables.append(f"{column}_{dataset}")
+            independent_variables.append(f"{dataset}.{column}")
 
     regression_df = pd.DataFrame(regression)
     nan_values = regression_df.isnull().sum().sum()

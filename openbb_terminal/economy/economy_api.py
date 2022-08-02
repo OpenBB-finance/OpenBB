@@ -6,7 +6,6 @@ from openbb_terminal.helper_classes import ModelsNamespace as _models
 # pylint: disable=unused-import
 
 # Context menus
-from .cnn_view import fear_and_greed_index as feargreed
 from .wsj_view import display_overview as overview
 from .wsj_view import display_indices as indices
 from .wsj_view import display_futures as futures
@@ -33,6 +32,7 @@ from .econdb_view import show_treasuries as treasury
 from .econdb_view import show_treasury_maturities as maturities
 from .yfinance_view import show_indices as index
 from .yfinance_view import search_indices as search_index
+from .investingcom_view import display_yieldcurve as ycrv
 
 # Models
 models = _models(os.path.abspath(os.path.dirname(__file__)))

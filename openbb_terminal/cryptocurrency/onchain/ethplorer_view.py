@@ -57,7 +57,6 @@ def display_address_info(
         show_index=False,
         title="Blockchain Token Information",
     )
-    console.print("")
 
     export_data(
         export,
@@ -103,7 +102,6 @@ def display_top_tokens(
         show_index=False,
         title="Top ERC20 Tokens",
     )
-    console.print("")
 
     export_data(
         export,
@@ -149,7 +147,6 @@ def display_top_token_holders(
         show_index=False,
         title="ERC20 Token Holder Info",
     )
-    console.print("")
 
     export_data(
         export,
@@ -199,7 +196,6 @@ def display_address_history(
         show_index=False,
         title="Historical Transactions Information",
     )
-    console.print("")
 
     export_data(
         export,
@@ -230,7 +226,9 @@ def display_token_info(
 
     df = ethplorer_model.get_token_info(address)
     df_data = df.copy()
-    df["Value"] = df["Value"].apply(lambda x: lambda_very_long_number_formatter(x))
+    df.loc[:, "Value"] = df["Value"].apply(
+        lambda x: lambda_very_long_number_formatter(x)
+    )
 
     socials = ["website", "telegram", "reddit", "twitter", "coingecko"]
     if social:
@@ -241,7 +239,6 @@ def display_token_info(
     print_rich_table(
         df, headers=list(df.columns), show_index=False, title="ERC20 Token Information"
     )
-    console.print("")
 
     export_data(
         export,
@@ -275,7 +272,6 @@ def display_tx_info(
         show_index=False,
         title="Information About Transactions",
     )
-    console.print("")
 
     export_data(
         export,
@@ -319,7 +315,9 @@ def display_token_history(
         console.print(f"No results found for balance: {address}\n")
         return
 
-    df["value"] = df["value"].apply(lambda x: lambda_very_long_number_formatter(x))
+    df.loc[:, "value"] = df["value"].apply(
+        lambda x: lambda_very_long_number_formatter(x)
+    )
     df = df.sort_values(by=sortby, ascending=descend)
 
     if hash_:
@@ -333,7 +331,6 @@ def display_token_history(
         show_index=False,
         title="Token History Information",
     )
-    console.print("")
 
     export_data(
         export,
@@ -378,7 +375,7 @@ def display_token_historical_prices(
     df["volumeConverted"] = df["volumeConverted"].apply(
         lambda x: lambda_very_long_number_formatter(x)
     )
-    df["cap"] = df["cap"].apply(lambda x: lambda_very_long_number_formatter(x))
+    df.loc[:, "cap"] = df["cap"].apply(lambda x: lambda_very_long_number_formatter(x))
     df = df.sort_values(by=sortby, ascending=descend)
 
     print_rich_table(
@@ -387,7 +384,6 @@ def display_token_historical_prices(
         show_index=False,
         title="Historical Token Prices",
     )
-    console.print("")
 
     export_data(
         export,

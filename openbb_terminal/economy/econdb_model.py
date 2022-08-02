@@ -354,7 +354,7 @@ PARAMETERS = {
         "period": "Monthly",
         "description": "A record of a country's international transactions with the rest of the world",
     },
-    "TBFR": {
+    "TB": {
         "name": "Trade balance",
         "period": "Monthly",
         "description": "The difference between the monetary value of a nation's exports and imports over a "
@@ -411,6 +411,7 @@ SCALES = {
     "Thousands": 1_000,
     "Millions": 1_000_000,
     "Hundreds of millions": 100_000_000,
+    "Billions": 1_000_000_000,
     "Units": 1,
 }
 
@@ -498,13 +499,15 @@ def get_macro_data(
         The units of the macro data, e.g. 'Bbl/day" for oil.
     """
     country = country.replace(" ", "_")
+    country = country[0].upper() + country[1:]
+    parameter = parameter.upper()
 
     if country not in COUNTRY_CODES:
         console.print(f"No data available for the country {country}.")
-        return pd.Series(), ""
+        return pd.Series(dtype=float), ""
     if parameter not in PARAMETERS:
         console.print(f"The parameter {parameter} is not an option for {country}.")
-        return pd.Series(), ""
+        return pd.Series(dtype=float), ""
 
     country_code = COUNTRY_CODES[country]
     country_currency = COUNTRY_CURRENCIES[country]
@@ -513,23 +516,25 @@ def get_macro_data(
         r = requests.get(
             f"https://www.econdb.com/series/context/?tickers={parameter}{country_code}"
         )
-        data = r.json()[0]
-        scale = data["td"]["scale"]
-        units = data["td"]["units"]
+        res_json = r.json()
+        if res_json:
+            data = res_json[0]
+            scale = data["td"]["scale"]
+            units = data["td"]["units"]
 
-        df = pd.DataFrame(data["dataarray"])
-        df = (
-            df.set_index(pd.to_datetime(df["date"]))[f"{parameter}{country_code}"]
-            * SCALES[scale]
-        )
-        df = df.sort_index().dropna()
+            df = pd.DataFrame(data["dataarray"])
+            df = (
+                df.set_index(pd.to_datetime(df["date"]))[f"{parameter}{country_code}"]
+                * SCALES[scale]
+            )
+            df = df.sort_index().dropna()
 
-        if df.empty:
+        if not res_json or df.empty:
             console.print(
                 f"No data available for {parameter} ({PARAMETERS[parameter]['name']}) "
                 f"of country {country.replace('_', ' ')}"
             )
-            return pd.Series(), ""
+            return pd.Series(dtype=float), ""
 
         if start_date or end_date:
             df = df.loc[start_date:end_date]
@@ -708,7 +713,10 @@ def get_treasuries(
 
                     for column in df.columns:
                         # check if type inside the name and maturity inside the maturity string
-                        if type_string in column[2] and maturity_string in column[3]:
+                        if (
+                            type_string.lower() in column[2].lower()
+                            and maturity_string in column[3]
+                        ):
                             treasury_data[type_string][maturity_string] = df[
                                 column
                             ].dropna()

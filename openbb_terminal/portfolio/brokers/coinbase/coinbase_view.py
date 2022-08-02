@@ -8,7 +8,6 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.decorators import check_api_key
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.portfolio.brokers.coinbase import coinbase_model
-from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -73,7 +72,6 @@ def display_history(account: str, export: str = "", limit: int = 20) -> None:
         show_index=False,
         title="Account History",
     )
-    console.print("")
 
     export_data(
         export,
@@ -114,7 +112,6 @@ def display_orders(limit: int, sortby: str, descend: bool, export: str = "") -> 
         show_index=False,
         title="Current Open Doors",
     )
-    console.print("")
 
     export_data(
         export,
@@ -157,7 +154,6 @@ def display_deposits(
     print_rich_table(
         df, headers=list(df.columns), show_index=False, title="Account Deposits"
     )
-    console.print("")
 
     export_data(
         export,

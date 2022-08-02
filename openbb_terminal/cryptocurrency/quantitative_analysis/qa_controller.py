@@ -18,12 +18,11 @@ from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
     check_proportion_range,
-    parse_known_args_and_warn,
     check_list_dates,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import CryptoBaseController
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 
 logger = logging.getLogger(__name__)
 
@@ -59,7 +58,7 @@ class QaController(CryptoBaseController):
 
     def __init__(
         self,
-        coin: str,
+        symbol: str,
         data: pd.DataFrame,
         queue: List[str] = None,
     ):
@@ -71,55 +70,55 @@ class QaController(CryptoBaseController):
         data = data.dropna()
 
         self.data = data
-        self.coin = coin
+        self.symbol = symbol
         self.target = "Close"
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             choices["pick"] = {c: None for c in list(data.columns)}
             choices["load"]["-r"] = {c: {} for c in c_help.INTERVALS}
+
+            choices["support"] = self.SUPPORT_CHOICES
+            choices["about"] = self.ABOUT_CHOICES
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
         """Print help"""
-        help_text = f"""[cmds]
-   load        load new coin
-   pick        pick target column for analysis[/cmds]
-
-[param]Coin: [/param]{self.coin}
-[param]Target Column: [/param]{self.target}
-[cmds]
-[info]Statistics:[/info]
-    summary     brief summary statistics of loaded coin.
-    normality   normality statistics and tests
-    unitroot    unit root test for stationarity (ADF, KPSS)
-[info]Plots:[/info]
-    line        line plot of selected target
-    hist        histogram with density plot
-    cdf         cumulative distribution function
-    bw          box and whisker plot
-    acf         (partial) auto-correlation function differentials of prices
-    qqplot      residuals against standard normal curve
-[info]Rolling Metrics:[/info]
-    rolling     rolling mean and std deviation of prices
-    spread      rolling variance and std deviation of prices
-    quantile    rolling median and quantile of prices
-    skew        rolling skewness of distribution of prices
-    kurtosis    rolling kurtosis of distribution of prices
-[info]Risk:[/info]
-    var         display value at risk
-    es          display expected shortfall
-[info]Other:[/info]
-    raw         print raw data
-    decompose   decomposition in cyclic-trend, season, and residuals of prices
-    cusum       detects abrupt changes using cumulative sum algorithm of prices[/cmds]
-        """
-        console.print(text=help_text, menu="Crypto - Quantitative Analysis")
+        mt = MenuText("crypto/qa/")
+        mt.add_cmd("load")
+        mt.add_cmd("pick")
+        mt.add_raw("\n")
+        mt.add_param("_ticker", self.symbol)
+        mt.add_param("_target", self.target)
+        mt.add_raw("\n")
+        mt.add_info("_statistics_")
+        mt.add_cmd("summary")
+        mt.add_cmd("normality")
+        mt.add_cmd("unitroot")
+        mt.add_info("_plots_")
+        mt.add_cmd("line")
+        mt.add_cmd("hist")
+        mt.add_cmd("cdf")
+        mt.add_cmd("bw")
+        mt.add_cmd("acf")
+        mt.add_cmd("qqplot")
+        mt.add_info("_rolling_metrics_")
+        mt.add_cmd("rolling")
+        mt.add_cmd("spread")
+        mt.add_cmd("quantile")
+        mt.add_cmd("skew")
+        mt.add_cmd("kurtosis")
+        mt.add_info("_other_")
+        mt.add_cmd("raw")
+        mt.add_cmd("decompose")
+        mt.add_cmd("cusum")
+        console.print(text=mt.menu_text, menu="Cryptocurrency - Quantitative Analysis")
 
     def custom_reset(self):
         """Class specific component of reset command"""
-        if self.coin:
-            return ["crypto", f"load {self.coin}", "qa"]
+        if self.symbol:
+            return ["crypto", f"load {self.symbol}", "qa"]
         return []
 
     @log_start_end(log=logger)
@@ -143,7 +142,7 @@ class QaController(CryptoBaseController):
         if other_args and "-t" not in other_args and "-h" not in other_args:
             other_args.insert(0, "-t")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             self.target = ns_parser.target
             console.print("")
@@ -175,7 +174,7 @@ class QaController(CryptoBaseController):
             help="Sort in descending order",
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -198,7 +197,7 @@ class QaController(CryptoBaseController):
                 Summary statistics
             """,
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -243,13 +242,13 @@ class QaController(CryptoBaseController):
             default="",
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
         if ns_parser:
             qa_view.display_line(
                 self.data[self.target],
-                title=f"{self.coin} {self.target}",
+                title=f"{self.symbol} {self.target}",
                 log_y=ns_parser.log,
                 draw=ns_parser.draw,
                 markers_lines=ns_parser.ml,
@@ -270,10 +269,10 @@ class QaController(CryptoBaseController):
         parser.add_argument(
             "-b", "--bins", type=check_positive, default=15, dest="n_bins"
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             qa_view.display_hist(
-                name=self.coin,
+                name=self.symbol,
                 df=self.data,
                 target=self.target,
                 bins=ns_parser.n_bins,
@@ -290,12 +289,12 @@ class QaController(CryptoBaseController):
                 Cumulative distribution function
             """,
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
             qa_view.display_cdf(
-                name=self.coin,
+                name=self.symbol,
                 df=self.data,
                 target=self.target,
                 export=ns_parser.export,
@@ -320,10 +319,10 @@ class QaController(CryptoBaseController):
             dest="year",
             help="Flag to show yearly bw plot",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             qa_view.display_bw(
-                name=self.coin,
+                name=self.symbol,
                 df=self.data,
                 target=self.target,
                 yearly=ns_parser.year,
@@ -350,12 +349,12 @@ class QaController(CryptoBaseController):
             dest="multiplicative",
             help="decompose using multiplicative model instead of additive",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
             qa_view.display_seasonal(
-                name=self.coin,
+                name=self.symbol,
                 df=self.data,
                 target=self.target,
                 multiplicative=ns_parser.multiplicative,
@@ -395,7 +394,7 @@ class QaController(CryptoBaseController):
             / 80,
             help="drift",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             qa_view.display_cusum(
                 df=self.data,
@@ -423,7 +422,7 @@ class QaController(CryptoBaseController):
             default=15,
             help="maximum lags to display in plots",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if self.target != "Close":
                 console.print(
@@ -431,7 +430,7 @@ class QaController(CryptoBaseController):
                 )
 
             qa_view.display_acf(
-                name=self.coin,
+                name=self.symbol,
                 df=self.data,
                 target=self.target,
                 lags=ns_parser.lags,
@@ -457,12 +456,12 @@ class QaController(CryptoBaseController):
             default=14,
             help="Window length",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
             rolling_view.display_mean_std(
-                name=self.coin,
+                name=self.symbol,
                 df=self.data,
                 target=self.target,
                 window=ns_parser.n_window,
@@ -488,12 +487,12 @@ class QaController(CryptoBaseController):
             default=14,
             help="Window length",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
             rolling_view.display_spread(
-                name=self.coin,
+                name=self.symbol,
                 df=self.data,
                 target=self.target,
                 window=ns_parser.n_window,
@@ -536,12 +535,12 @@ class QaController(CryptoBaseController):
             default=0.5,
             help="quantile",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
             rolling_view.display_quantile(
-                name=self.coin,
+                name=self.symbol,
                 df=self.data,
                 target=self.target,
                 window=ns_parser.n_window,
@@ -574,12 +573,12 @@ class QaController(CryptoBaseController):
             default=14,
             help="window length",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
             rolling_view.display_skew(
-                name=self.coin,
+                name=self.symbol,
                 df=self.data,
                 target=self.target,
                 window=ns_parser.n_window,
@@ -611,12 +610,12 @@ class QaController(CryptoBaseController):
             default=14,
             help="window length",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
             rolling_view.display_kurtosis(
-                name=self.coin,
+                name=self.symbol,
                 df=self.data,
                 target=self.target,
                 window=ns_parser.n_window,
@@ -634,7 +633,7 @@ class QaController(CryptoBaseController):
                 Normality tests
             """,
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -653,9 +652,9 @@ class QaController(CryptoBaseController):
                 Display QQ plot vs normal quantiles
             """,
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            qa_view.display_qqplot(name=self.coin, df=self.data, target=self.target)
+            qa_view.display_qqplot(name=self.symbol, df=self.data, target=self.target)
 
     @log_start_end(log=logger)
     def call_unitroot(self, other_args: List[str]):
@@ -686,7 +685,7 @@ class QaController(CryptoBaseController):
             dest="kpss_reg",
             default="c",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:

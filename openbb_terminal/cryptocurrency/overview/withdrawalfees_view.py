@@ -40,7 +40,6 @@ def display_overall_withdrawal_fees(top: int, export: str = "") -> None:
             show_index=False,
             title="Top Withdrawal Fees",
         )
-        console.print("")
 
         export_data(
             export,
@@ -74,7 +73,6 @@ def display_overall_exchange_withdrawal_fees(export: str) -> None:
             show_index=False,
             title="Withdrawal Fees",
         )
-        console.print("")
 
         export_data(
             export,
@@ -113,7 +111,6 @@ def display_crypto_withdrawal_fees(symbol: str, export: str = "") -> None:
             show_index=False,
             title="Withdrawal Fees per Exchange",
         )
-        console.print("")
 
         export_data(
             export,

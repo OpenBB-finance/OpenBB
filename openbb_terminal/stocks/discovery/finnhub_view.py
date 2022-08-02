@@ -62,7 +62,6 @@ def past_ipo(
             show_index=False,
             title="IPO Dates",
         )
-    console.print("")
 
     export_data(
         export,
@@ -118,7 +117,6 @@ def future_ipo(
             show_index=False,
             title="Future IPO Dates",
         )
-    console.print("")
 
     export_data(
         export,

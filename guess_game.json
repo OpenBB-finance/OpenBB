@@ -1,0 +1,11 @@
+{
+    "load AAPL and display its exponential moving average": "stocks/load AAPL/ta/ema",
+    "get analyst prices from AAPL": "stocks/load AAPL/dd/analyst",
+    "get management team from AAPL": "stocks/load AAPL/fa/mgmt",
+    "check future IPOs": "stocks/disc/fipo",
+    "search tickers with word 'Technology' from India": "stocks/search Technology -c India",
+    "get consumer price index for Portugal": "economy/macro -p CPI -c Portugal",
+    "load in SPY etf and get top holdings": "etf/load SPY/holdings",
+    "get forward rates for Euro to USD": "forex/load EURUSD/fwd",
+    "load AAPL and compare the balance sheet with microsofts" : "stocks/load AAPL/ca/add MSFT/balance"
+}

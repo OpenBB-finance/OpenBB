@@ -16,6 +16,7 @@ from openbb_terminal.helper_funcs import (
     export_data,
     plot_autoscale,
     print_rich_table,
+    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
 
@@ -63,7 +64,6 @@ def display_etf_weightings(
             show_index=True,
             title="Sector Weightings Allocation",
         )
-        console.print("")
 
     else:
         main_holdings = holdings[holdings.values > min_pct_to_display].to_dict()[
@@ -77,13 +77,10 @@ def display_etf_weightings(
 
         if external_axes is None:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-
-        else:
-            if len(external_axes) != 1:
-                logger.error("Expected list of 1 axis items.")
-                console.print("[red]Expected list of 1 axis items.\n[/red]")
-                return
+        elif is_valid_axes_count(external_axes, 1):
             (ax,) = external_axes
+        else:
+            return
 
         ax.pie(
             values,

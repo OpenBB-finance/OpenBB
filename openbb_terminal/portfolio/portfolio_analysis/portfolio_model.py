@@ -9,7 +9,6 @@ import yfinance as yf
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import print_rich_table
 from openbb_terminal.portfolio.portfolio_analysis import yfinance_model
-from openbb_terminal.rich_config import console
 
 # pylint: disable=no-member,unsupported-assignment-operation,unsubscriptable-object
 
@@ -81,5 +80,5 @@ def load_portfolio(
         df = df.dropna(axis=1)
 
     print_rich_table(df, title="Portfolio", headers=list(df.columns))
-    console.print("")
+
     return df

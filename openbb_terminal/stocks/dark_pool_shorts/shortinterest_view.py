@@ -37,7 +37,6 @@ def high_short_interest(num: int, export: str):
         show_index=False,
         title="Top Interest Stocks",
     )
-    console.print("")
 
     export_data(
         export,

@@ -17,7 +17,7 @@ from openbb_terminal.economy import economy_controller
 @pytest.mark.parametrize(
     "queue, expected",
     [
-        (["load", "help"], []),
+        (["load", "help"], ["help"]),
         (["quit", "help"], ["help"]),
     ],
 )
@@ -67,7 +67,7 @@ def test_menu_without_queue_completion(mocker):
 
     result_menu = economy_controller.EconomyController(queue=None).menu()
 
-    assert result_menu == []
+    assert result_menu == ["help"]
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -111,7 +111,7 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
 
     result_menu = economy_controller.EconomyController(queue=None).menu()
 
-    assert result_menu == []
+    assert result_menu == ["help"]
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -205,19 +205,6 @@ def test_call_func_expect_queue(expected_queue, func, queue):
 @pytest.mark.parametrize(
     "tested_func, other_args, mocked_func, called_args, called_kwargs",
     [
-        (
-            "call_feargreed",
-            [
-                "jbd",
-                "--export=png",
-            ],
-            "cnn_view.fear_and_greed_index",
-            [],
-            dict(
-                indicator="jbd",
-                export="png",
-            ),
-        ),
         (
             "call_overview",
             [
@@ -442,6 +429,16 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 period="1w",
                 map_type="world",
             ),
+        ),
+        (
+            "call_ycrv",
+            [
+                "--country=portugal",
+                "--export=csv",
+            ],
+            "investingcom_view.display_yieldcurve",
+            [],
+            dict(country="portugal", export="csv", raw=False),
         ),
     ],
 )

@@ -16,7 +16,6 @@ Economy commands, start with `/Econ`.
 - [Global Bonds](/OpenBBTerminal/bots/discord/econ/glbonds/)
 - [Indices](/OpenBBTerminal/bots/discord/econ/indices/)
 - [Overview](/OpenBBTerminal/bots/discord/econ/overview/)
-- [Fear & Greed](/OpenBBTerminal/bots/discord/econ/feargreed/)
 - [Consumer Price Index](/OpenBBTerminal/bots/discord/econ/cpi/)
 - [Currencies](/OpenBBTerminal/bots/discord/econ/currencies/)
 - [Valuation](/OpenBBTerminal/bots/discord/econ/valuation/)

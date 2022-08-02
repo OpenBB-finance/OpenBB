@@ -7,7 +7,6 @@ import os
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.portfolio.brokers.ally import ally_model
-from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -22,7 +21,7 @@ def display_history(n_to_show: int = 15, export: str = "") -> None:
         show_index=False,
         title="Ally History",
     )
-    console.print("")
+
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "ally_history", history
     )
@@ -42,7 +41,7 @@ def display_holdings(export: str = "") -> None:
     print_rich_table(
         holdings, headers=list(holdings.columns), show_index=True, title="Ally Holdings"
     )
-    console.print("")
+
     export_data(
         export,
         os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
@@ -84,7 +83,6 @@ def display_balances(export: str = "") -> None:
         show_index=False,
         title="Ally Balances",
     )
-    console.print("")
 
 
 @log_start_end(log=logger)
@@ -100,7 +98,6 @@ def display_stock_quote(ticker: str) -> None:
     print_rich_table(
         quote, headers=list(quote.columns), show_index=True, title="Stock Quote"
     )
-    console.print("")
 
 
 @log_start_end(log=logger)
@@ -129,7 +126,7 @@ def display_top_lists(
         show_index=True,
         title="Ally Top Lists",
     )
-    console.print("")
+
     export_data(
         export,
         os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),

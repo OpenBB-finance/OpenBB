@@ -28,7 +28,6 @@ from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_FIGURES_ALLOWED,
     check_positive,
     get_next_stock_market_days,
-    parse_known_args_and_warn,
     valid_date,
 )
 from openbb_terminal.menu import session
@@ -83,6 +82,10 @@ class PredictionTechniquesController(BaseController):
             choices["arima"]["-i"] = {c: {} for c in arima_model.ICS}
             choices["mc"]["--dist"] = {c: {} for c in mc_model.DISTRIBUTIONS}
             self.choices = choices
+
+            choices["support"] = self.SUPPORT_CHOICES
+            choices["about"] = self.ABOUT_CHOICES
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
@@ -139,7 +142,7 @@ class PredictionTechniquesController(BaseController):
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-f")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             file = Path("custom_imports") / ns_parser.file
             self.df = custom_model.load(file)
@@ -173,7 +176,7 @@ class PredictionTechniquesController(BaseController):
         if other_args and "-t" not in other_args and "-h" not in other_args:
             other_args.insert(0, "-t")
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_FIGURES_ALLOWED
         )
         if ns_parser:
@@ -248,7 +251,7 @@ class PredictionTechniquesController(BaseController):
             default=None,
             help="The end date (format YYYY-MM-DD) to select - Backtesting",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
         if ns_parser:
@@ -355,7 +358,7 @@ class PredictionTechniquesController(BaseController):
             default=True,
             help="Specify if shuffling validation inputs.",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_FIGURES_ALLOWED
         )
         if ns_parser:
@@ -435,7 +438,7 @@ class PredictionTechniquesController(BaseController):
             and ("-p" not in other_args or "--polynomial" not in other_args)
         ):
             other_args.insert(0, "-p")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
         if ns_parser:
@@ -539,7 +542,7 @@ class PredictionTechniquesController(BaseController):
             default=None,
             help="The end date (format YYYY-MM-DD) to select - Backtesting",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
         if ns_parser:
@@ -718,6 +721,7 @@ class PredictionTechniquesController(BaseController):
             help="Number of simulations to perform",
             dest="n_sims",
             default=100,
+            type=check_positive,
         )
         parser.add_argument(
             "--dist",
@@ -727,7 +731,7 @@ class PredictionTechniquesController(BaseController):
             help="Whether to model returns or log returns",
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
         if ns_parser:

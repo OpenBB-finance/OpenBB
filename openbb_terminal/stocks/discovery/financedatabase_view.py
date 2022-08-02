@@ -106,4 +106,3 @@ def show_equities(
         ],
         title="Equities",
     )
-    console.print("")

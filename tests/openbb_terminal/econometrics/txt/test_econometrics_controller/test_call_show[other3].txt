@@ -1,3 +1,4 @@
+The following args couldn't be interpreted: ['dataset']
 
    cancer  population
 0     1.0       445.0
@@ -10,6 +11,4 @@
 7     5.0       976.0
 8     5.0      1096.0
 9     5.0      1098.0
-
-[red]No data available for dataset.[/red]
 

@@ -1,0 +1,4 @@
+         date   time           zone currency importance                     event actual forecast previous
+0  08/07/2022  08:30  united states      USD       high   Nonfarm Payrolls  (Jun)   372K     268K     384K
+1  08/07/2022  08:30  united states      USD       high  Unemployment Rate  (Jun)   3.6%     3.6%     3.6%
+2  14/07/2022  08:30  united states      USD       high    Initial Jobless Claims            240K     235K

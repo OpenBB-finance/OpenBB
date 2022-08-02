@@ -14,6 +14,8 @@ from typing import Union, List, Dict, Any
 from datetime import datetime, timedelta
 
 from prompt_toolkit.completion import NestedCompleter
+from prompt_toolkit.styles import Style
+from prompt_toolkit.formatted_text import HTML
 from rich.markdown import Markdown
 import pandas as pd
 import numpy as np
@@ -26,18 +28,26 @@ from openbb_terminal.helper_funcs import (
     system_clear,
     get_flair,
     valid_date,
-    parse_known_args_and_warn,
-    valid_date_in_past,
+    parse_simple_args,
     set_command_location,
+    prefill_form,
+    support_message,
+    check_file_type_saved,
+    check_positive,
+    get_ordered_list_sources,
 )
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks import stocks_helper
+from openbb_terminal.terminal_helper import open_openbb_documentation
 from openbb_terminal.cryptocurrency import cryptocurrency_helpers
-from openbb_terminal.cryptocurrency.pycoingecko_helpers import calc_change
 
 logger = logging.getLogger(__name__)
 
+NO_EXPORT = 0
+EXPORT_ONLY_RAW_DATA_ALLOWED = 1
+EXPORT_ONLY_FIGURES_ALLOWED = 2
+EXPORT_BOTH_RAW_DATA_AND_FIGURES = 3
 
 controllers: Dict[str, Any] = {}
 
@@ -49,12 +59,14 @@ CRYPTO_SOURCES = {
     "yf": "YahooFinance",
 }
 
+SUPPORT_TYPE = ["bug", "suggestion", "question", "generic"]
+
 
 class BaseController(metaclass=ABCMeta):
-
     CHOICES_COMMON = [
         "cls",
         "home",
+        "about",
         "h",
         "?",
         "help",
@@ -64,13 +76,16 @@ class BaseController(metaclass=ABCMeta):
         "exit",
         "r",
         "reset",
+        "support",
     ]
 
     CHOICES_COMMANDS: List[str] = []
     CHOICES_MENUS: List[str] = []
+    SUPPORT_CHOICES: Dict = {}
+    ABOUT_CHOICES: Dict = {}
     COMMAND_SEPARATOR = "/"
     KEYS_MENU = "keys" + COMMAND_SEPARATOR
-
+    TRY_RELOAD = False
     PATH: str = ""
     FILE_PATH: str = ""
 
@@ -99,9 +114,34 @@ class BaseController(metaclass=ABCMeta):
         self.parser = argparse.ArgumentParser(
             add_help=False, prog=self.path[-1] if self.PATH != "/" else "terminal"
         )
+
         self.parser.add_argument("cmd", choices=self.controller_choices)
 
         theme.applyMPLstyle()
+
+        # Add in about options
+        self.ABOUT_CHOICES = {
+            c: None for c in self.CHOICES_COMMANDS + self.CHOICES_MENUS
+        }
+
+        # Remove common choices from list of support commands
+        self.support_commands = [
+            c for c in self.controller_choices if c not in self.CHOICES_COMMON
+        ]
+
+        support_choices: dict = {c: {} for c in self.controller_choices}
+
+        support_choices = {c: None for c in (["generic"] + self.support_commands)}
+
+        support_choices["--command"] = {
+            c: None for c in (["generic"] + self.support_commands)
+        }
+
+        support_choices["-c"] = {c: None for c in (["generic"] + self.support_commands)}
+
+        support_choices["--type"] = {c: None for c in (SUPPORT_TYPE)}
+
+        self.SUPPORT_CHOICES = support_choices
 
     def check_path(self) -> None:
         path = self.PATH
@@ -118,6 +158,19 @@ class BaseController(metaclass=ABCMeta):
         """Checks for an existing instance of the controller before creating a new one"""
         self.save_class()
         arguments = len(args) + len(kwargs)
+        # Due to the 'arguments == 1' condition, we actually NEVER load a class
+        # that has arguments (The 1 argument corresponds to self.queue)
+        # Advantage: If the user changes something on one controller and then goes to the
+        # controller below, it will create such class from scratch bringing all new variables
+        # in and considering latest changes.
+        # Disadvantage: If the user goes on a controller below and we have been there before
+        # it will not load that previous class, but create a new one from scratch.
+        # SCENARIO: If the user is in stocks and does load AAPL/ta the TA menu will get AAPL,
+        # and if then the user goes back to the stocks menu using .. that menu will have AAPL
+        # Now, if "arguments == 1" condition exists, if the user does "load TSLA" and then
+        # goes into "TA", the "TSLA" ticker will appear. If that condition doesn't exist
+        # the previous class will be loaded and even if the user changes the ticker on
+        # the stocks context it will not impact the one of TA menu - unless changes are done.
         if class_ins.PATH in controllers and arguments == 1 and obbff.REMEMBER_CONTEXTS:
             old_class = controllers[class_ins.PATH]
             old_class.queue = self.queue
@@ -135,7 +188,7 @@ class BaseController(metaclass=ABCMeta):
 
     @abstractmethod
     def print_help(self) -> None:
-        raise NotImplementedError("Must override print_help")
+        raise NotImplementedError("Must override print_help.")
 
     def contains_keys(self, string_to_check: str) -> bool:
         if self.KEYS_MENU in string_to_check or self.KEYS_MENU in self.PATH:
@@ -230,6 +283,8 @@ class BaseController(metaclass=ABCMeta):
         """Process home command"""
         self.save_class()
         console.print("")
+        if self.PATH.count("/") == 1 and obbff.ENABLE_EXIT_AUTO_HELP:
+            self.print_help()
         for _ in range(self.PATH.count("/") - 1):
             self.queue.insert(0, "quit")
 
@@ -237,6 +292,37 @@ class BaseController(metaclass=ABCMeta):
     def call_help(self, _) -> None:
         """Process help command"""
         self.print_help()
+
+    @log_start_end(log=logger)
+    def call_about(self, other_args: List[str]) -> None:
+        """Process about command"""
+        description = "Display the documentation of the menu or command."
+        if self.CHOICES_COMMANDS and self.CHOICES_MENUS:
+            description += (
+                f" E.g. 'about {self.CHOICES_COMMANDS[0]}' opens a guide about the command "
+                f"{self.CHOICES_COMMANDS[0]} and 'about {self.CHOICES_MENUS[0]}' opens a guide about the "
+                f"menu {self.CHOICES_MENUS[0]}."
+            )
+
+        parser = argparse.ArgumentParser(
+            add_help=False, prog="about", description=description
+        )
+        parser.add_argument(
+            "-c",
+            "--command",
+            type=str,
+            dest="command",
+            default=None,
+            help="Obtain documentation on the given command or menu",
+            choices=self.CHOICES_COMMANDS + self.CHOICES_MENUS,
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-c")
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
+
+        if ns_parser:
+            open_openbb_documentation(self.PATH, command=ns_parser.command)
 
     @log_start_end(log=logger)
     def call_quit(self, _) -> None:
@@ -249,6 +335,7 @@ class BaseController(metaclass=ABCMeta):
     def call_exit(self, _) -> None:
         # Not sure how to handle controller loading here
         """Process exit terminal command"""
+        self.save_class()
         console.print("")
         for _ in range(self.PATH.count("/")):
             self.queue.insert(0, "quit")
@@ -258,6 +345,7 @@ class BaseController(metaclass=ABCMeta):
         """Process reset command. If you would like to have customization in the
         reset process define a method `custom_reset` in the child class.
         """
+        self.save_class()
         if self.PATH != "/":
             if self.custom_reset():
                 self.queue = self.custom_reset() + self.queue
@@ -277,6 +365,179 @@ class BaseController(metaclass=ABCMeta):
             console.print("")
         else:
             console.print("No resources available.\n")
+
+    @log_start_end(log=logger)
+    def call_support(self, other_args: List[str]) -> None:
+        """Process support command"""
+
+        self.save_class()
+        console.print("")
+
+        path_split = [x for x in self.PATH.split("/") if x != ""]
+        main_menu = path_split[0] if len(path_split) else "home"
+
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="support",
+            description="Submit your support request",
+        )
+
+        parser.add_argument(
+            "-c",
+            "--command",
+            action="store",
+            dest="command",
+            required="-h" not in other_args,
+            choices=["generic"] + self.support_commands,
+            help="Command that needs support",
+        )
+
+        parser.add_argument(
+            "--msg",
+            "-m",
+            action="store",
+            type=support_message,
+            nargs="+",
+            dest="msg",
+            required=False,
+            default="",
+            help="Message to send. Enclose it with double quotes",
+        )
+
+        parser.add_argument(
+            "--type",
+            "-t",
+            action="store",
+            dest="type",
+            required=False,
+            choices=SUPPORT_TYPE,
+            default="generic",
+            help="Support ticket type",
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-c")
+
+        ns_parser = parse_simple_args(parser, other_args)
+
+        if ns_parser:
+            prefill_form(
+                ticket_type=ns_parser.type,
+                menu=main_menu,
+                command=ns_parser.command,
+                message=" ".join(ns_parser.msg),
+                path=self.PATH,
+            )
+
+    def parse_known_args_and_warn(
+        self,
+        parser: argparse.ArgumentParser,
+        other_args: List[str],
+        export_allowed: int = NO_EXPORT,
+        raw: bool = False,
+        limit: int = 0,
+    ):
+        """Parses list of arguments into the supplied parser
+
+        Parameters
+        ----------
+        parser: argparse.ArgumentParser
+            Parser with predefined arguments
+        other_args: List[str]
+            List of arguments to parse
+        export_allowed: int
+            Choose from NO_EXPORT, EXPORT_ONLY_RAW_DATA_ALLOWED,
+            EXPORT_ONLY_FIGURES_ALLOWED and EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        raw: bool
+            Add the --raw flag
+        limit: int
+            Add a --limit flag with this number default
+
+        Returns
+        -------
+        ns_parser:
+            Namespace with parsed arguments
+        """
+        parser.add_argument(
+            "-h", "--help", action="store_true", help="show this help message"
+        )
+        if export_allowed > NO_EXPORT:
+            choices_export = []
+            help_export = "Does not export!"
+
+            if export_allowed == EXPORT_ONLY_RAW_DATA_ALLOWED:
+                choices_export = ["csv", "json", "xlsx"]
+                help_export = "Export raw data into csv, json, xlsx"
+            elif export_allowed == EXPORT_ONLY_FIGURES_ALLOWED:
+                choices_export = ["png", "jpg", "pdf", "svg"]
+                help_export = "Export figure into png, jpg, pdf, svg "
+            else:
+                choices_export = ["csv", "json", "xlsx", "png", "jpg", "pdf", "svg"]
+                help_export = "Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg "
+
+            parser.add_argument(
+                "--export",
+                default="",
+                type=check_file_type_saved(choices_export),
+                dest="export",
+                help=help_export,
+            )
+
+        if raw:
+            parser.add_argument(
+                "--raw",
+                dest="raw",
+                action="store_true",
+                default=False,
+                help="Flag to display raw data",
+            )
+        if limit > 0:
+            parser.add_argument(
+                "-l",
+                "--limit",
+                dest="limit",
+                default=limit,
+                help="Number of entries to show in data.",
+                type=check_positive,
+            )
+        sources = get_ordered_list_sources(f"{self.PATH}{parser.prog}")
+        if sources:
+            parser.add_argument(
+                "--source",
+                action="store",
+                dest="source",
+                choices=sources,
+                default=sources[0],  # the first source from the list is the default
+                help="Data source to select from",
+            )
+
+        if obbff.USE_CLEAR_AFTER_CMD:
+            system_clear()
+
+        try:
+            (ns_parser, l_unknown_args) = parser.parse_known_args(other_args)
+        except SystemExit:
+            # In case the command has required argument that isn't specified
+            console.print("")
+            return None
+
+        if ns_parser.help:
+            txt_help = parser.format_help() + "\n"
+            if parser.prog != "about":
+                txt_help += (
+                    f"For more information and examples, use 'about {parser.prog}' "
+                    f"to access the related guide.\n"
+                )
+            console.print(f"[help]{txt_help}[/help]")
+            return None
+
+        if l_unknown_args:
+            console.print(
+                f"The following args couldn't be interpreted: {l_unknown_args}"
+            )
+
+        return ns_parser
 
     def menu(self, custom_path_menu_above: str = ""):
         an_input = "HELP_ME"
@@ -306,6 +567,7 @@ class BaseController(metaclass=ABCMeta):
                 if (
                     an_input
                     and an_input != "home"
+                    and an_input != "help"
                     and an_input.split(" ")[0] in self.controller_choices
                 ):
                     console.print(f"{get_flair()} {self.PATH} $ {an_input}")
@@ -319,15 +581,36 @@ class BaseController(metaclass=ABCMeta):
                 try:
                     # Get input from user using auto-completion
                     if session and obbff.USE_PROMPT_TOOLKIT:
-                        an_input = session.prompt(
-                            f"{get_flair()} {self.PATH} $ ",
-                            completer=self.completer,
-                            search_ignore_case=True,
-                        )
+                        if bool(obbff.TOOLBAR_HINT):
+                            an_input = session.prompt(
+                                f"{get_flair()} {self.PATH} $ ",
+                                completer=self.completer,
+                                search_ignore_case=True,
+                                bottom_toolbar=HTML(
+                                    '<style bg="ansiblack" fg="ansiwhite">[h]</style> help menu    '
+                                    '<style bg="ansiblack" fg="ansiwhite">[q]</style> return to previous menu    '
+                                    '<style bg="ansiblack" fg="ansiwhite">[e]</style> exit terminal    '
+                                    '<style bg="ansiblack" fg="ansiwhite">[cmd -h]</style> '
+                                    "see usage and available options    "
+                                    f'<style bg="ansiblack" fg="ansiwhite">[about (cmd/menu)]</style> '
+                                    f"{self.path[-1].capitalize()} (cmd/menu) Documentation"
+                                ),
+                                style=Style.from_dict(
+                                    {
+                                        "bottom-toolbar": "#ffffff bg:#333333",
+                                    }
+                                ),
+                            )
+                        else:
+                            an_input = session.prompt(
+                                f"{get_flair()} {self.PATH} $ ",
+                                completer=self.completer,
+                                search_ignore_case=True,
+                            )
                     # Get input from user without auto-completion
                     else:
                         an_input = input(f"{get_flair()} {self.PATH} $ ")
-                except KeyboardInterrupt:
+                except (KeyboardInterrupt, EOFError):
                     # Exit in case of keyboard interrupt
                     an_input = "exit"
 
@@ -370,7 +653,7 @@ class BaseController(metaclass=ABCMeta):
                     console.print(f" Replacing by '{an_input}'.")
                     self.queue.insert(0, an_input)
                 else:
-                    if "load" in self.controller_choices:
+                    if self.TRY_RELOAD and obbff.RETRY_WITH_LOAD:
                         console.print(f"Trying `load {an_input}`")
                         self.queue.insert(0, "load " + an_input)
                     console.print("")
@@ -388,6 +671,7 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
         self.start = ""
         self.suffix = ""  # To hold suffix for Yahoo Finance
         self.add_info = stocks_helper.additional_info_about_ticker("")
+        self.TRY_RELOAD = True
 
     def call_load(self, other_args: List[str]):
         """Process load command"""
@@ -435,16 +719,6 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
             help="Intraday stock minutes",
         )
         parser.add_argument(
-            "--source",
-            action="store",
-            dest="source",
-            choices=["yf", "av", "iex", "polygon"]
-            if "-i" not in other_args or "--interval" not in other_args
-            else ["yf", "polygon"],
-            default="yf",
-            help="Source of historical data.",
-        )
-        parser.add_argument(
             "-p",
             "--prepost",
             action="store_true",
@@ -488,7 +762,10 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+        )
 
         if ns_parser:
             if ns_parser.weekly and ns_parser.monthly:
@@ -536,7 +813,11 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                     ns_parser.ticker
                 )
                 console.print(self.add_info)
-                if ns_parser.interval == 1440 and ns_parser.filepath is None:
+                if (
+                    ns_parser.interval == 1440
+                    and ns_parser.filepath is None
+                    and self.PATH == "/stocks/"
+                ):
                     stocks_helper.show_quick_performance(self.stock, ns_parser.ticker)
                 if "." in ns_parser.ticker:
                     self.ticker, self.suffix = ns_parser.ticker.upper().split(".")
@@ -545,7 +826,7 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                     self.suffix = ""
 
                 if ns_parser.source == "iex":
-                    self.start = self.stock.index[0].strftime("%Y-%m-%d")
+                    self.start = self.stock.index[0].to_pydatetime()
                 else:
                     self.start = ns_parser.start
                 self.interval = f"{ns_parser.interval}min"
@@ -573,11 +854,10 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
         self.current_df = pd.DataFrame()
         self.current_currency = ""
         self.source = ""
-        self.coin_map_df = pd.DataFrame()
         self.current_interval = ""
         self.price_str = ""
         self.resolution = "1D"
-        self.coin = ""
+        self.TRY_RELOAD = True
 
     def call_load(self, other_args):
         """Process load command"""
@@ -586,32 +866,24 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="load",
             description="Load crypto currency to perform analysis on."
-            "Available data sources are CoinGecko, CoinPaprika, Binance, Coinbase"
-            "By default main source used for analysis is CoinGecko (cg). To change it use --source flag",
+            "CoinGecko is used as source for price and YahooFinance for volume.",
         )
         parser.add_argument(
             "-c",
             "--coin",
-            help="Coin to get",
+            help="Coin to get. Must be coin symbol (e.g., btc, eth)",
             dest="coin",
             type=str,
             required="-h" not in other_args,
         )
+
         parser.add_argument(
-            "--source",
-            help="Source of data",
-            dest="source",
-            choices=("cp", "cg", "bin", "cb", "yf"),
-            default="cp",
-            required=False,
-        )
-        parser.add_argument(
-            "-s",
-            "--start",
-            type=valid_date_in_past,
-            default=(datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
-            dest="start",
-            help="The starting date (format YYYY-MM-DD) of the crypto",
+            "-d",
+            "--days",
+            default="365",
+            dest="days",
+            help="Data up to number of days ago",
+            choices=["1", "7", "14", "30", "90", "180", "365"],
         )
         parser.add_argument(
             "--vs",
@@ -619,77 +891,29 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
             dest="vs",
             default="usd",
             type=str,
-        )
-        parser.add_argument(
-            "-i",
-            "--interval",
-            help="Interval to get data (Only available on binance/coinbase)",
-            dest="interval",
-            default="1day",
-            type=str,
+            choices=["usd", "eur"],
         )
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-c")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_simple_args(parser, other_args)
 
         if ns_parser:
-            delta = (datetime.now() - ns_parser.start).days
-            source = ns_parser.source
-            for arg in ["--source", source]:
-                if arg in other_args:
-                    other_args.remove(arg)
-
-            res = ns_parser.resolution if delta < 90 else "1D"
-            self.resolution = res
-
-            # TODO: protections in case None is returned
-            (
-                self.coin,
-                self.source,
-                self.symbol,
-                self.coin_map_df,
-                self.current_df,
-                self.current_currency,
-            ) = cryptocurrency_helpers.load(
-                coin=ns_parser.coin,
-                source=ns_parser.source,
-                should_load_ta_data=True,
-                days=delta,
-                interval=ns_parser.interval,
+            (self.current_df) = cryptocurrency_helpers.load(
+                symbol_search=ns_parser.coin.lower(),
+                days=int(ns_parser.days),
                 vs=ns_parser.vs,
             )
-            if (
-                self.symbol
-                and self.current_df is not None
-                and not self.current_df.empty
-            ):
-                self.current_interval = ns_parser.interval
-                first_price = self.current_df["Close"].iloc[0]
-                last_price = self.current_df["Close"].iloc[-1]
-                second_last_price = self.current_df["Close"].iloc[-2]
-                interval_change = calc_change(last_price, second_last_price)
-                since_start_change = calc_change(last_price, first_price)
-                if isinstance(self.current_currency, str) and self.PATH == "/crypto/":
-                    col1 = "green" if interval_change > 0 else "red"
-                    col2 = "green" if since_start_change > 0 else "red"
-                    self.price_str = f"""Current Price: {round(last_price,2)} {self.current_currency.upper()}
-Performance in interval ({self.current_interval}): [{col1}]{round(interval_change,2)}%[/{col1}]
-Performance since {ns_parser.start.strftime('%Y-%m-%d')}: [{col2}]{round(since_start_change,2)}%[/{col2}]"""  # noqa
-
-                    console.print(
-                        f"""
-Loaded {self.coin} against {self.current_currency} from {CRYPTO_SOURCES[self.source]} source
-
-{self.price_str}
-"""
-                    )  # noqa
-                else:
-                    console.print(
-                        f"{delta} Days of {self.coin} vs {self.current_currency} loaded with {res} resolution.\n"
-                    )
+            if not self.current_df.empty:
+                self.current_interval = "1day"
+                self.current_currency = ns_parser.vs
+                self.symbol = ns_parser.coin.lower()
+                cryptocurrency_helpers.show_quick_performance(
+                    self.current_df, self.symbol, self.current_currency
+                )
             else:
                 console.print(
-                    f"\n[red]Could not find [bold]{ns_parser.coin}[/bold] in [bold]{CRYPTO_SOURCES[ns_parser.source]}[/bold]. Make sure you search for symbol (e.g., btc) or try another source[/red]\n"  # noqa: E501
+                    f"\n[red]Could not find [bold]{ns_parser.coin}[/bold] in [bold]yfinance[/bold]."
+                    f"Make sure you search for symbol (e.g., btc) and not full name (e.g., bitcoin)[/red]\n"  # noqa: E501
                 )

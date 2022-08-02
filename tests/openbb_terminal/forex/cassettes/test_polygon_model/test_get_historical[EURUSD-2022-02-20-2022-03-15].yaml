@@ -1,0 +1,38 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.10; rv:83.0) Gecko/20100101 Firefox/83.0
+    method: GET
+    uri: https://api.polygon.io/v2/aggs/ticker/C:EURUSD/range/1/day/2022-02-20/2022-03-15?adjusted=true&apiKey=MOCK_API_KEY&limit=50000&sort=desc
+  response:
+    body:
+      string: '{"status":"ERROR","request_id":"a4d878029726bad13fa1d34ddb9ab8b7","error":"You''ve
+        exceeded the maximum requests per minute, please wait or upgrade your subscription
+        to continue. https://polygon.io/pricing"}'
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '206'
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 31 May 2022 10:55:47 GMT
+      Server:
+      - nginx/1.19.2
+      Strict-Transport-Security:
+      - max-age=15724800; includeSubDomains
+      X-Request-Id:
+      - a4d878029726bad13fa1d34ddb9ab8b7
+    status:
+      code: 429
+      message: Too Many Requests
+version: 1

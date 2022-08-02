@@ -19,7 +19,7 @@ optional arguments:
 
 Example:
 ```
-2022 Feb 28, 04:19 (✨) /econometrics/ $ load MSFT_20220221_140503.xlsx msft
+2022 Feb 28, 04:19 (✨) /econometrics/ $ load MSFT_20220221_140503.xlsx -a msft
 
 2022 Feb 28, 04:20 (✨) /econometrics/ $ show msft
                                          msft
@@ -48,7 +48,7 @@ Example:
 └───┴─────────────────────┴────────┴────────┴────────┴────────┴───────────┴──────────┘
 ```
 ```
-2022 Feb 28, 04:16 (✨) /econometrics/ $ load --ex
+2022 Feb 28, 04:16 (✨) /econometrics/ $ load -e
                             Examples from Statsmodels
 ┏━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃ file name          ┃ description                                               ┃
@@ -112,9 +112,9 @@ Example:
 │ wage_panel         │ Veila and M. Verbeek (1998): Whose Wages Do Unions Raise? │
 └────────────────────┴───────────────────────────────────────────────────────────┘
 
-2022 Feb 28, 04:17 (✨) /econometrics/ $ load grunfeld gf
+2022 Feb 28, 04:17 (✨) /econometrics/ $ load grunfeld -a gf
 
-2022 Feb 28, 04:20 (✨) /econometrics/ $ desc gf
+2022 Feb 28, 04:20 (✨) /econometrics/ $ desc -a gf
                        gf
 ┏━━━━━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━┓
 ┃       ┃ invest  ┃ value   ┃ capital ┃ year    ┃

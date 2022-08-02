@@ -1,0 +1,3 @@
+usage: `closed`
+
+Closed markets

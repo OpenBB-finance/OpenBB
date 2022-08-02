@@ -4,13 +4,19 @@ __docformat__ = "numpy"
 import argparse
 import logging
 from pathlib import Path
-from typing import List, Tuple, Union
+from typing import List, Tuple, Union, Optional
 from datetime import datetime, timedelta, date as d
+import types
+from collections.abc import Iterable
 import os
 import random
 import re
 import sys
 from difflib import SequenceMatcher
+import webbrowser
+import urllib.parse
+import json
+
 import pytz
 import pandas as pd
 from rich.table import Table
@@ -25,6 +31,7 @@ import pandas.io.formats.format
 import requests
 from screeninfo import get_monitors
 import yfinance as yf
+import numpy as np
 
 from openbb_terminal.rich_config import console
 from openbb_terminal import feature_flags as obbff
@@ -139,6 +146,7 @@ def print_rich_table(
     index_name: str = "",
     headers: Union[List[str], pd.Index] = None,
     floatfmt: Union[str, List[str]] = ".2f",
+    show_header: bool = True,
 ):
     """Prepare a table from df in rich
 
@@ -154,12 +162,14 @@ def print_rich_table(
         Title for index column
     headers: List[str]
         Titles for columns
-    floatfmt: str
-        String to
+    floatfmt: Union[str, List[str]]
+        Float number formatting specs as string or list of strings. Defaults to ".2f"
+    show_header: bool
+        Whether to show the header row.
     """
 
     if obbff.USE_TABULATE_DF:
-        table = Table(title=title, show_lines=True)
+        table = Table(title=title, show_lines=True, show_header=show_header)
 
         if show_index:
             table.add_column(index_name)
@@ -190,11 +200,19 @@ def print_rich_table(
         for idx, values in zip(df.index.tolist(), df.values.tolist()):
             row = [str(idx)] if show_index else []
             row += [
-                str(x) if not isinstance(x, float) else f"{x:{floatfmt[idx]}}"
+                str(x)
+                if not isinstance(x, float)
+                else (
+                    f"{x:{floatfmt[idx]}}"
+                    if isinstance(floatfmt, list)
+                    else (f"{x:.2e}" if 0 < abs(x) <= 0.0001 else f"{x:floatfmt}")
+                )
                 for idx, x in enumerate(values)
             ]
             table.add_row(*row)
+        console.print()
         console.print(table)
+        console.print()
     else:
         console.print(df.to_string(col_space=0))
 
@@ -502,7 +520,7 @@ def plot_view_stock(df: pd.DataFrame, symbol: str, interval: str):
     ax[1].set_xlim(df.index[0], df.index[-1])
     ax[1].yaxis.tick_right()
     ax[1].yaxis.set_label_position("right")
-    ax[1].set_ylabel("Volume (1M)")
+    ax[1].set_ylabel("Volume [1M]")
     ax[1].grid(axis="y", color="gainsboro", linestyle="-", linewidth=0.5)
     ax[1].spines["top"].set_visible(False)
     ax[1].spines["left"].set_visible(False)
@@ -599,7 +617,7 @@ def lambda_long_number_format(num, round_decimal=3) -> str:
         return f"{num_str} {' KMBTP'[magnitude]}".strip()
     if isinstance(num, int):
         num = str(num)
-    if num.lstrip("-").isdigit():
+    if isinstance(num, str) and num.lstrip("-").isdigit():
         num = int(num)
         num /= 1.0
         magnitude = 0
@@ -659,6 +677,10 @@ def lambda_clean_data_values_to_float(val: str) -> float:
 
 def lambda_int_or_round_float(x) -> str:
     """Format int or round float"""
+    # If the data is inf, -inf, or NaN then simply return '~' because it is either too
+    # large, too small, or we do not have data to display for it
+    if x in (np.inf, -np.inf, np.nan):
+        return " " + "~"
     if (x - int(x) < -sys.float_info.epsilon) or (x - int(x) > sys.float_info.epsilon):
         return " " + str(round(x, 2))
 
@@ -860,13 +882,7 @@ def patch_pandas_text_adjustment():
     pandas.io.formats.format.TextAdjustment.adjoin = text_adjustment_adjoin
 
 
-def parse_known_args_and_warn(
-    parser: argparse.ArgumentParser,
-    other_args: List[str],
-    export_allowed: int = NO_EXPORT,
-    raw: bool = False,
-    limit: int = 0,
-):
+def parse_simple_args(parser: argparse.ArgumentParser, other_args: List[str]):
     """Parses list of arguments into the supplied parser
 
     Parameters
@@ -875,13 +891,7 @@ def parse_known_args_and_warn(
         Parser with predefined arguments
     other_args: List[str]
         List of arguments to parse
-    export_allowed: int
-        Choose from NO_EXPORT, EXPORT_ONLY_RAW_DATA_ALLOWED,
-        EXPORT_ONLY_FIGURES_ALLOWED and EXPORT_BOTH_RAW_DATA_AND_FIGURES
-    raw: bool
-        Add the --raw flag
-    limit: int
-        Add a --limit flag with this number default
+
     Returns
     -------
     ns_parser:
@@ -890,45 +900,6 @@ def parse_known_args_and_warn(
     parser.add_argument(
         "-h", "--help", action="store_true", help="show this help message"
     )
-    if export_allowed > NO_EXPORT:
-        choices_export = []
-        help_export = "Does not export!"
-
-        if export_allowed == EXPORT_ONLY_RAW_DATA_ALLOWED:
-            choices_export = ["csv", "json", "xlsx"]
-            help_export = "Export raw data into csv, json, xlsx"
-        elif export_allowed == EXPORT_ONLY_FIGURES_ALLOWED:
-            choices_export = ["png", "jpg", "pdf", "svg"]
-            help_export = "Export figure into png, jpg, pdf, svg "
-        else:
-            choices_export = ["csv", "json", "xlsx", "png", "jpg", "pdf", "svg"]
-            help_export = "Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg "
-
-        parser.add_argument(
-            "--export",
-            default="",
-            type=check_file_type_saved(choices_export),
-            dest="export",
-            help=help_export,
-        )
-
-    if raw:
-        parser.add_argument(
-            "--raw",
-            dest="raw",
-            action="store_true",
-            default=False,
-            help="Flag to display raw data",
-        )
-    if limit > 0:
-        parser.add_argument(
-            "-l",
-            "--limit",
-            dest="limit",
-            default=limit,
-            help="Number of entries to show in data.",
-            type=int,
-        )
 
     if obbff.USE_CLEAR_AFTER_CMD:
         system_clear()
@@ -982,8 +953,8 @@ def get_flair() -> str:
     """Get a flair icon"""
     flairs = {
         ":openbb": "(🦋)",
-        ":rocket": "(🚀🚀)",
-        ":diamond": "(💎💎)",
+        ":rocket": "(🚀)",
+        ":diamond": "(💎)",
         ":stars": "(✨)",
         ":baseball": "(⚾)",
         ":boat": "(⛵)",
@@ -1219,7 +1190,11 @@ def compose_export_path(func_name: str, dir_path: str) -> Tuple[str, str]:
     # Resolving all symlinks and also normalizing path.
     resolve_path = Path(dir_path).resolve()
     # Getting the directory names from the path. Instead of using split/replace (Windows doesn't like that)
-    path_cmd = f"{resolve_path.parts[-2]}_{resolve_path.parts[-1]}"
+    # check if this is done in a main context to avoid saving with openbb_terminal
+    if resolve_path.parts[-2] == "openbb_terminal":
+        path_cmd = f"{resolve_path.parts[-1]}"
+    else:
+        path_cmd = f"{resolve_path.parts[-2]}_{resolve_path.parts[-1]}"
 
     default_filename = f"{now.strftime('%Y%m%d_%H%M%S')}_{path_cmd}_{func_name}"
     if obbff.EXPORT_FOLDER_PATH:
@@ -1314,49 +1289,6 @@ def get_rf() -> float:
         return 0.02
 
 
-class LineAnnotateDrawer:
-    """Line drawing class."""
-
-    def __init__(self, ax: matplotlib.axes = None):
-        self.ax = ax
-
-    def draw_lines_and_annotate(self):
-        # ymin, _ = self.ax.get_ylim()
-        # xmin, _ = self.ax.get_xlim()
-        # self.ax.plot(
-        #     [xmin, xmin],
-        #     [ymin, ymin],
-        #     lw=0,
-        #     color="white",
-        #     label="X - leave interactive mode\nClick twice for annotation",
-        # )
-        # self.ax.legend(handlelength=0, handletextpad=0, fancybox=True, loc=2)
-        # self.ax.figure.canvas.draw()
-        """Draw lines."""
-        console.print(
-            "Click twice for annotation.\nClose window to keep using terminal.\n"
-        )
-
-        while True:
-            xy = plt.ginput(2)
-            # Check whether the user has closed the window or not
-            if not plt.get_fignums():
-                console.print("")
-                return
-
-            if len(xy) == 2:
-                x = [p[0] for p in xy]
-                y = [p[1] for p in xy]
-
-                if (x[0] == x[1]) and (y[0] == y[1]):
-                    txt = input("Annotation: ")
-                    self.ax.annotate(txt, (x[0], y[1]), ha="center", va="center")
-                else:
-                    self.ax.plot(x, y)
-
-                self.ax.figure.canvas.draw()
-
-
 def system_clear():
     """Clear screen"""
     os.system("cls||clear")  # nosec
@@ -1397,6 +1329,23 @@ def handle_error_code(requests_obj, error_code_map):
     for error_code, error_msg in error_code_map.items():
         if requests_obj.status_code == error_code:
             console.print(error_msg)
+
+
+def prefill_form(ticket_type, menu, path, command, message):
+    """Pre-fille Google Form and open it in the browser"""
+    form_url = "https://openbb.co/support?"
+
+    params = {
+        "type": ticket_type,
+        "menu": menu,
+        "path": path,
+        "command": command,
+        "message": message,
+    }
+
+    url_params = urllib.parse.urlencode(params)
+
+    webbrowser.open(form_url + url_params)
 
 
 def get_closing_price(ticker, days):
@@ -1450,3 +1399,237 @@ def camel_case_split(string: str) -> str:
 
     results = ["".join(word) for word in words]
     return " ".join(results).title()
+
+
+def choice_check_after_action(action=None, choices=None):
+    """return an action class that checks choice after action call
+    for argument of argparse.ArgumentParser.add_argument function
+
+    Parameters
+    ----------
+    action : Union[class, function]
+        Action for set args before check choices.
+        If action is class, it must implement argparse.Action methods
+        If action is function, it takes 4 args(parser, namespace, values, option_string)
+        and needs to return value to set dest
+
+    choices : Union[Iterable, function]
+        A container of values that should be allowed.
+        If choices is function, it takes 1 args(value) to check and
+        return bool that value is allowed or not
+
+    Returns
+    -------
+    Class
+        Class extended argparse.Action
+    """
+
+    if isinstance(choices, Iterable):
+
+        def choice_checker(value):
+            return value in choices
+
+    elif isinstance(choices, types.FunctionType):
+        choice_checker = choices
+    else:
+        raise NotImplementedError("choices argument must be iterable or function")
+
+    if isinstance(action, type):
+
+        class ActionClass(action):
+            def __call__(self, parser, namespace, values, option_string=None):
+                super().__call__(parser, namespace, values, option_string)
+                if not choice_checker(getattr(namespace, self.dest)):
+                    raise ValueError(
+                        f"{getattr(namespace, self.dest)} is not in {choices}"
+                    )
+
+    elif isinstance(action, types.FunctionType):
+
+        class ActionClass(argparse.Action):
+            def __call__(self, parser, namespace, values, option_string=None):
+                setattr(
+                    namespace,
+                    self.dest,
+                    action(parser, namespace, values, option_string),
+                )
+                if not choice_checker(getattr(namespace, self.dest)):
+                    raise ValueError(
+                        f"{getattr(namespace, self.dest)} is not in {choices}"
+                    )
+
+    else:
+        raise NotImplementedError("action argument must be class or function")
+
+    return ActionClass
+
+
+def is_valid_axes_count(
+    axes: List[plt.Axes],
+    n: int,
+    custom_text: Optional[str] = None,
+    prefix_text: Optional[str] = None,
+    suffix_text: Optional[str] = None,
+):
+    """Check if axes list length is equal to n
+    and log text if check result is false
+
+    Parameters
+    ----------
+
+    axes: List[plt.Axes]
+        External axes (2 axes are expected in the list)
+    n: int
+        number of expected axes
+    custom_text: Optional[str] = None
+        custom text to log
+    prefix_text: Optional[str] = None
+        prefix text to add before text to log
+    suffix_text: Optional[str] = None
+        suffix text to add after text to log
+    """
+
+    if len(axes) == n:
+        return True
+
+    if custom_text:
+        print_text = custom_text
+    else:
+        print_text = f"Expected list of {n} axis item{'s' if n>1 else ''}."
+
+    if prefix_text:
+        print_text = f"{prefix_text} {print_text}"
+    if suffix_text:
+        print_text = f"{suffix_text} {print_text}"
+
+    logger.error(print_text)
+    console.print(f"[red]{print_text}\n[/red]")
+    return False
+
+
+def support_message(s: str) -> str:
+    """Argparse type to check string is in valid format
+    for the support command
+    """
+    return s.replace('"', "")
+
+
+def check_list_values(valid_values: List[str]):
+    """
+    Get valid values to test arguments given by user
+
+    Parameters
+    ----------
+    valid_values: List[str]
+        List of valid values to be checked
+
+    Returns
+    -------
+    check_list_values_from_valid_values_list:
+        Function that ensures that the valid values go through and notifies user when value is not valid.
+    """
+
+    # Define the function with default arguments
+    def check_list_values_from_valid_values_list(given_values: str) -> List[str]:
+        """
+        Checks if argparse argument is an str with format: value1,value2,value3 and that
+        the values value1, value2 and value3 are valid.
+
+        Parameters
+        ----------
+        given_values: str
+            values provided by the user
+
+        Raises
+        -------
+        argparse.ArgumentTypeError
+            Input number not between min and max values
+        """
+        success_values = list()
+
+        if "," in given_values:
+            values_found = [val.strip() for val in given_values.split(",")]
+        else:
+            values_found = [given_values]
+
+        for value in values_found:
+            # check if the value is valid
+            if value in valid_values:
+                success_values.append(value)
+            else:
+                console.print(f"[red]'{value}' is not valid.[/red]")
+
+        if not success_values:
+            log_and_raise(
+                argparse.ArgumentTypeError("No correct arguments have been found")
+            )
+        return success_values
+
+    # Return function handle to checking function
+    return check_list_values_from_valid_values_list
+
+
+def get_ordered_list_sources(command_path: str):
+    """
+    Returns the preferred source for the given command. If a value is not available for the specific
+    command, returns the most specific source, eventually returning the overall default source.
+
+    Parameters
+    ----------
+    command_path: str
+        The command to find the source for. Example would be "stocks/load" to return the value
+        for stocks.load first, then stocks, then the default value.
+
+    Returns
+    -------
+    str:
+        The preferred source for the given command
+    """
+    try:
+        with open(obbff.PREFERRED_DATA_SOURCE_FILE) as f:
+            # Load the file as a JSON document
+            json_doc = json.load(f)
+
+            # We are going to iterate through each command as if it is broken up by period characters (.)
+            path_objects = command_path.split("/")[1:]
+
+            # Start iterating through the top-level JSON doc to start
+            deepest_level = json_doc
+
+            # If we still have entries in path_objects, continue to go deeper
+            while len(path_objects) > 0:
+                # Is this path object in the JSON doc? If so, go into that for our next iteration.
+                if path_objects[0] in deepest_level:
+                    # We found the element, so go one level deeper
+                    deepest_level = deepest_level[path_objects[0]]
+
+                else:
+                    # If we have not find the `load` on the deepest level it means we may be in a sub-menu
+                    # and we can use the load from the Base class
+                    if path_objects[0] == "load":
+
+                        # Get the context associated with the sub-menu (e.g. stocks, crypto, ...)
+                        context = command_path.split("/")[1]
+
+                        # Grab the load source from that context if it exists, otherwise throws an error
+                        if context in json_doc:
+                            if "load" in json_doc[context]:
+                                return json_doc[context]["load"]
+
+                    # We didn't find the next level, so flag that that command default source is missing
+                    # Which means that there aren't more than 1 source and therefore no selection is necessary
+                    return []
+
+                # Go one level deeper into the path
+                path_objects = path_objects[1:]
+
+            # We got through all values, so return this as the final value
+            return deepest_level
+
+    except Exception as e:
+        console.print(
+            f"[red]Failed to load preferred source from file: "
+            f"{obbff.PREFERRED_DATA_SOURCE_FILE}[/red]"
+        )
+        console.print(f"[red]{e}[/red]")
+        return None

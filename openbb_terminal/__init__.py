@@ -6,6 +6,6 @@ from . import (
     etf,
     forex,
     portfolio,
-    jupyter,
+    reports,
     stocks,
 )

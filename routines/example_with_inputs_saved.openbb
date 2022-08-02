@@ -1,3 +1,6 @@
+# This script requires you to use an argument. This can be done with the following:
+# exe routines/example_with_inputs_saved.openbb -i AMZN
+
 # Select location folder to export data to (if doesn't exist, will be created by default)
 export didier_analysis_on_$ARGV[0]
 
@@ -72,3 +75,6 @@ pt --export jpg
 
 # Compare their volume
 volume  --export jpg
+
+# Return to home
+/

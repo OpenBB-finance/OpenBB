@@ -18,8 +18,8 @@ from openbb_terminal.helper_funcs import (
     export_data,
     get_next_stock_market_days,
     plot_autoscale,
+    is_valid_axes_count,
 )
-from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -54,7 +54,7 @@ def display_mc_forecast(
     time_res : str
         Resolution for data, allowing for predicting outside of standard market days
     external_axes : Optional[List[plt.Axes]], optional
-        External axes (2 axis is expected in the list), by default None
+        External axes (2 axes are expected in the list), by default None
     """
     predicted_values = mc_model.get_mc_brownian(data, n_future, n_sims, use_log)
     if not time_res or time_res == "1D":
@@ -62,15 +62,14 @@ def display_mc_forecast(
     else:
         future_index = pd.date_range(data.index[-1], periods=n_future + 1, freq=time_res)[1:]  # type: ignore
 
-    # This plot has 1 axis
+    # This plot has 2 axes
     if external_axes is None:
-        _, (ax1, ax2) = plt.subplots(1, 2, figsize=plot_autoscale(), dpi=PLOT_DPI)
-    else:
-        if len(external_axes) != 2:
-            logger.error("Expected list of two axis items")
-            console.print("[red]Expected list of two axis items.\n[/red]")
-            return
+        _, axes = plt.subplots(1, 2, figsize=plot_autoscale(), dpi=PLOT_DPI)
+        (ax1, ax2) = axes
+    elif is_valid_axes_count(external_axes, 2):
         (ax1, ax2) = external_axes
+    else:
+        return
 
     ax1.plot(data)
     ax1.plot(future_index, predicted_values, alpha=0.3)

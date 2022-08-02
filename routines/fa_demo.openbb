@@ -1,0 +1,46 @@
+# Demonstration of the Fundamental Analysis features, using Coca-Cola. No arguments are required to run this routine.
+
+# Enter stocks menu, load KO, enter the Fundamental Analysis submenu.
+stocks
+load ko
+fa
+
+# NLP analysis of SEC filings
+analysis
+
+# Table of the corporate executives with links to their recent trading activity.
+mgmt
+
+# Sean Seah Warnings
+warnings
+
+# Major shareholders
+shrs
+
+# Sustainability Metrics
+sust
+
+# Performance ratios
+key
+fmp
+ratios
+growth
+..
+
+# Financial Statements
+income --source polygon
+income -q -l 8 --source polygon
+balance --source polygon
+balance -q -l 8 --source polygon
+cash
+cash -q -l 8
+data
+
+# Charts
+dupont
+divs -p
+splits
+mktcap -s 1962-01-01
+
+# Discount Cash Flow
+dcf

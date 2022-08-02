@@ -16,6 +16,7 @@ from openbb_terminal.helper_funcs import (
     print_rich_table,
     export_data,
     plot_autoscale,
+    is_valid_axes_count,
 )
 from openbb_terminal.stocks.behavioural_analysis import cramer_model
 from openbb_terminal.rich_config import console
@@ -42,9 +43,9 @@ def display_cramer_daily(inverse: bool = True, export: str = ""):
         return
     date = recs.Date[0]
     recs = recs.drop(columns=["Date"])
-    console.print()
+
     print_rich_table(recs, title=f"Jim Cramer Recommendations for {date}")
-    console.print()
+
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "cramer", recs)
 
 
@@ -78,13 +79,10 @@ def display_cramer_ticker(
 
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of one axis item.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
+    else:
+        return
 
     close_prices = yfinance.download(ticker, start="2022-01-01", progress=False)[
         "Adj Close"
@@ -109,5 +107,5 @@ def display_cramer_ticker(
     if raw:
         df["Date"] = df["Date"].apply(lambda x: x.strftime("%Y-%m-%d"))
         print_rich_table(df, title=f"Jim Cramer Recommendations for {ticker}")
-        console.print()
+
     export_data(export, os.path.dirname(os.path.abspath(__file__)), df, "jctr")

@@ -1,4 +1,0 @@
-Name,Type,Quantity,Date,Price,Fees,Premium,Side
-spy,etf,1.0,2019/10/21,200.0,,,Buy
-cash,cash,1.0,2019/10/21,200.0,,,deposit
-cash,cash,1.0,2021/6/21,200.0,,,withdrawal

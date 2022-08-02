@@ -32,7 +32,7 @@ def vcr_config():
 @pytest.mark.parametrize(
     "queue, expected",
     [
-        (["load", "help"], []),
+        (["load", "help"], ["help"]),
         (["quit", "help"], ["help"]),
     ],
 )
@@ -90,7 +90,7 @@ def test_menu_without_queue_completion(mocker):
         queue=None,
     ).menu()
 
-    assert result_menu == []
+    assert result_menu == ["help"]
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -140,7 +140,7 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
         queue=None,
     ).menu()
 
-    assert result_menu == []
+    assert result_menu == ["help"]
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -315,7 +315,8 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             [
                 "quandl",
                 "--nyse",
-                "--number=1",
+                "--source=quandl",
+                "--limit=1",
                 "--raw",
                 "--export=csv",
             ],
@@ -331,7 +332,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "call_psi",
             "stockgrid_view.short_interest_volume",
             [
-                "--number=1",
+                "--limit=1",
                 "--source=stockgrid",
                 "--raw",
                 "--export=csv",
@@ -389,25 +390,25 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 export="csv",
             ),
         ),
-        (
-            "call_volexch",
-            "nyse_view.display_short_by_exchange",
-            [
-                "--raw",
-                "--sort=Date",
-                "--asc",
-                "--mpl",
-                "--export=csv",
-            ],
-            dict(
-                ticker="MOCK_TICKER",
-                raw=True,
-                sort="Date",
-                asc=True,
-                mpl=True,
-                export="csv",
-            ),
-        ),
+        # (
+        #     "call_volexch",
+        #     "nyse_view.display_short_by_exchange",
+        #     [
+        #         "--raw",
+        #         "--sort=Date",
+        #         "--asc",
+        #         "--mpl",
+        #         "--export=csv",
+        #     ],
+        #     dict(
+        #         ticker="MOCK_TICKER",
+        #         raw=True,
+        #         sort="Date",
+        #         asc=True,
+        #         mpl=True,
+        #         export="csv",
+        #     ),
+        # ),
     ],
 )
 def test_call_func(tested_func, mocked_func, other_args, called_with, mocker):
@@ -445,12 +446,12 @@ def test_call_func(tested_func, mocked_func, other_args, called_with, mocker):
         "call_dpotc",
         "call_ftd",
         "call_spos",
-        "call_volexch",
+        #        "call_volexch",
     ],
 )
 def test_call_func_no_parser(func, mocker):
     mocker.patch(
-        "openbb_terminal.stocks.dark_pool_shorts.dps_controller.parse_known_args_and_warn",
+        "openbb_terminal.stocks.dark_pool_shorts.dps_controller.DarkPoolShortsController.parse_known_args_and_warn",
         return_value=None,
     )
     controller = dps_controller.DarkPoolShortsController(
@@ -462,7 +463,7 @@ def test_call_func_no_parser(func, mocker):
     func_result = getattr(controller, func)(other_args=list())
     assert func_result is None
     assert controller.queue == []
-    getattr(dps_controller, "parse_known_args_and_warn").assert_called_once()
+    controller.parse_known_args_and_warn.assert_called_once()
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -473,12 +474,12 @@ def test_call_func_no_parser(func, mocker):
         "call_ftd",
         "call_spos",
         "call_psi",
-        "call_volexch",
+        #        "call_volexch",
     ],
 )
 def test_call_func_no_ticker(func, mocker):
     mocker.patch(
-        "openbb_terminal.stocks.dark_pool_shorts.dps_controller.parse_known_args_and_warn",
+        "openbb_terminal.stocks.dark_pool_shorts.dps_controller.DarkPoolShortsController.parse_known_args_and_warn",
         return_value=True,
     )
     controller = dps_controller.DarkPoolShortsController(
@@ -490,7 +491,7 @@ def test_call_func_no_ticker(func, mocker):
     func_result = getattr(controller, func)(other_args=list())
     assert func_result is None
     assert controller.queue == []
-    getattr(dps_controller, "parse_known_args_and_warn").assert_called_once()
+    controller.parse_known_args_and_warn.assert_called_once()
 
 
 @pytest.mark.vcr

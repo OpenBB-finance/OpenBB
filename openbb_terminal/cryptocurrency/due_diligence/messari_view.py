@@ -5,6 +5,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from datetime import datetime, timedelta
 from typing import List, Optional
 import pandas as pd
 import numpy as np
@@ -36,6 +37,7 @@ from openbb_terminal.helper_funcs import (
     lambda_long_number_format,
     plot_autoscale,
     print_rich_table,
+    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
 from openbb_terminal.cryptocurrency.dataframe_helpers import prettify_paragraph
@@ -104,9 +106,9 @@ def display_messari_timeseries_list(
 def display_messari_timeseries(
     coin: str,
     timeseries_id: str,
-    start: str,
-    end: str,
-    interval: str,
+    start: str = (datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d"),
+    end: str = datetime.now().strftime("%Y-%m-%d"),
+    interval: str = "1d",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
@@ -117,19 +119,21 @@ def display_messari_timeseries(
     ----------
     coin : str
         Crypto symbol to check market cap dominance
+    timeseries_id: str
+        Obtained by api.crypto.dd.get_mt command
     start : int
         Initial date like string (e.g., 2021-10-01)
     end : int
         End date like string (e.g., 2021-10-01)
     interval : str
-        Interval frequency (e.g., 1d)
+        Interval frequency (possible values are: 5m, 15m, 30m, 1h, 1d, 1w)
     export : str
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
 
-    df, title, _ = get_messari_timeseries(
+    df, title = get_messari_timeseries(
         coin=coin, timeseries_id=timeseries_id, start=start, end=end, interval=interval
     )
 
@@ -137,18 +141,16 @@ def display_messari_timeseries(
         # This plot has 1 axis
         if not external_axes:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
-        else:
-            if len(external_axes) != 1:
-                logger.error("Expected list of one axis item.")
-                console.print("[red]Expected list of one axis item./n[/red]")
-                return
+        elif is_valid_axes_count(external_axes, 1):
             (ax,) = external_axes
+        else:
+            return
 
         ax.get_yaxis().set_major_formatter(
             ticker.FuncFormatter(lambda x, _: lambda_long_number_format(x))
         )
 
-        ax.plot(df.index, df["values"])
+        ax.plot(df.index, df[df.columns[0]])
 
         ax.set_title(f"{coin}'s {title}")
         ax.set_ylabel(title)
@@ -171,9 +173,9 @@ def display_messari_timeseries(
 @check_api_key(["API_MESSARI_KEY"])
 def display_marketcap_dominance(
     coin: str,
-    start: str,
-    end: str,
-    interval: str,
+    start: str = (datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d"),
+    end: str = datetime.now().strftime("%Y-%m-%d"),
+    interval: str = "1d",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
@@ -189,7 +191,7 @@ def display_marketcap_dominance(
     end : int
         End date like string (e.g., 2021-10-01)
     interval : str
-        Interval frequency (e.g., 1d)
+        Interval frequency (possible values are: 5m, 15m, 30m, 1h, 1d, 1w)
     export : str
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
@@ -203,14 +205,12 @@ def display_marketcap_dominance(
         # This plot has 1 axis
         if not external_axes:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
-        else:
-            if len(external_axes) != 1:
-                logger.error("Expected list of one axis item.")
-                console.print("[red]Expected list of one axis item./n[/red]")
-                return
+        elif is_valid_axes_count(external_axes, 1):
             (ax,) = external_axes
+        else:
+            return
 
-        ax.plot(df.index, df["values"])
+        ax.plot(df.index, df["marketcap_dominance"])
 
         ax.set_title(f"{coin}'s Market Cap Dominance over time")
         ax.set_ylabel(f"{coin} Percentage share")
@@ -268,8 +268,8 @@ def display_links(coin: str, export: str = "") -> None:
 @check_api_key(["API_MESSARI_KEY"])
 def display_roadmap(
     coin: str,
-    descend: bool,
-    limit: int,
+    descend: bool = False,
+    limit: int = 5,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
@@ -311,12 +311,10 @@ def display_roadmap(
         if not df_prices.empty:
             if not external_axes:
                 _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
-            else:
-                if len(external_axes) != 1:
-                    logger.error("Expected list of one axis item.")
-                    console.print("[red]Expected list of one axis item./n[/red]")
-                    return
+            elif is_valid_axes_count(external_axes, 1):
                 (ax,) = external_axes
+            else:
+                return
 
             roadmap_dates = np.array(
                 pd.to_datetime(df["Date"], format="%Y-%m-%d", errors="coerce")
@@ -376,7 +374,6 @@ def display_roadmap(
 @check_api_key(["API_MESSARI_KEY"])
 def display_tokenomics(
     coin: str,
-    coingecko_symbol: str,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
@@ -387,14 +384,13 @@ def display_tokenomics(
     ----------
     coin : str
         Crypto symbol to check tokenomics
-    coingecko_symbol : str
-        Coingecko crypto symbol to check tokenomics
     export : str
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+        External axes (2 axes are expected in the list), by default None
     """
-    df, circ_df = get_tokenomics(coin, coingecko_symbol)
+    coingecko_id = cryptocurrency_helpers.get_coingecko_id(coin)
+    df, circ_df = get_tokenomics(coin, coingecko_id)
 
     if not df.empty and not circ_df.empty:
         df = df.applymap(lambda x: lambda_long_number_format(x, 2))
@@ -407,12 +403,10 @@ def display_tokenomics(
         if not external_axes:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
             ax2 = ax.twinx()
-        else:
-            if len(external_axes) != 1:
-                logger.error("Expected list of one axis item.")
-                console.print("[red]Expected list of one axis item./n[/red]")
-                return
+        elif is_valid_axes_count(external_axes, 2):
             (ax, ax2) = external_axes
+        else:
+            return
         df_prices, _ = cryptocurrency_helpers.load_yf_data(
             symbol=coin,
             currency="USD",
@@ -424,7 +418,7 @@ def display_tokenomics(
         color_palette = theme.get_colors()
         ax.plot(
             merged_df.index,
-            merged_df["values"],
+            merged_df["circulating_supply"],
             color=color_palette[0],
             label="Circ Supply",
         )

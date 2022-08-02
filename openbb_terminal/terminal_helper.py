@@ -2,17 +2,17 @@
 __docformat__ = "numpy"
 
 # IMPORTATION STANDARD
+import webbrowser
 from contextlib import contextmanager
 import hashlib
 import logging
 import os
-import random
 import subprocess  # nosec
 import sys
-from datetime import datetime
 from typing import List
 
 # IMPORTATION THIRDPARTY
+import requests
 import matplotlib.pyplot as plt
 
 # IMPORTATION INTERNAL
@@ -33,31 +33,29 @@ logger = logging.getLogger(__name__)
 
 def print_goodbye():
     """Prints a goodbye message when quitting the terminal"""
-    goodbye_msg = [
-        "An informed ape, is a strong ape. ",
-        "Remember that stonks only go up. ",
-        "Diamond hands. ",
-        "Apes together strong. ",
-        "This is our way. ",
-        "Keep the spacesuit ape, we haven't reached the moon yet. ",
-        "I am not a cat. I'm an ape. ",
-        "We like the terminal. ",
-    ]
+    # LEGACY GOODBYE MESSAGES - You'll live in our hearts forever.
+    # "An informed ape, is a strong ape."
+    # "Remember that stonks only go up."
+    # "Diamond hands."
+    # "Apes together strong."
+    # "This is our way."
+    # "Keep the spacesuit ape, we haven't reached the moon yet."
+    # "I am not a cat. I'm an ape."
+    # "We like the terminal."
+    # "...when offered a flight to the moon, nobody asks about what seat."
 
-    goodbye_hr = datetime.now().hour
-    if goodbye_hr < 5:
-        goodbye_msg_time = "Go get some rest soldier!"
-    elif goodbye_hr < 11:
-        goodbye_msg_time = "Rise and shine baby!"
-    elif goodbye_hr < 17:
-        goodbye_msg_time = "Enjoy your day!"
-    elif goodbye_hr < 23:
-        goodbye_msg_time = "Tomorrow's another day!"
-    else:
-        goodbye_msg_time = "Go get some rest soldier!"
+    console.print(
+        "OpenBB Terminal is the result of a strong community building an "
+        "[param]investment research platform for everyone.[/param]\n\n"
+        "Join us on [cmds]https://openbb.co/discord[/cmds], "
+        "show your appreciation on [cmds]https://twitter.com/openbb_finance[/cmds],\n"
+        "ask support on [cmds]https://openbb.co/support[/cmds], "
+        "or even request a feature on [cmds]https://openbb.co/request-a-feature[/cmds]\n"
+    )
 
-    console.print(  # nosec
-        goodbye_msg[random.randint(0, len(goodbye_msg) - 1)] + goodbye_msg_time + "\n"
+    console.print(
+        "[bold]Fill in our 2-minute survey so we better understand how we can improve the terminal "
+        "at [cmds]https://openbb.co/survey[/cmds][/bold]\n"
     )
 
     logger.info("END")
@@ -77,9 +75,8 @@ def update_terminal():
     """Updates the terminal by running git pull in the directory.
     Runs poetry install if needed.
     """
-
     if not WITH_GIT or obbff.LOGGING_COMMIT_HASH != "REPLACE_ME":
-        console.print("This feature is not available : Git dependencies not installed.")
+        console.print("This feature is not available: Git dependencies not installed.")
         return 0
 
     poetry_hash = sha256sum("poetry.lock")
@@ -106,29 +103,47 @@ def update_terminal():
     return 0
 
 
-def about_us():
-    """Prints an about us section"""
-    console.print(
-        "\n[green]Thanks for using OpenBB Terminal. This is our way![/green]\n"
-        + "\n"
-        + "[cyan]Join our community on discord: [/cyan]https://discord.gg/Up2QGbMKHY\n"
-        + "[cyan]Follow our twitter for updates: [/cyan]https://twitter.com/openbb_finance\n"
-        + "[cyan]Access our landing page: [/cyan]https://openbb-finance.github.io/OpenBBTerminal/\n"
-        + "\n"
-        + "[yellow]Partnerships:[/yellow]\n"
-        + "[cyan]FinBrain: [/cyan]https://finbrain.tech\n"
-        + "[cyan]Quiver Quantitative: [/cyan]https://www.quiverquant.com\n"
-        + "[cyan]SentimentInvestor: [/cyan]https://sentimentinvestor.com\n"
-        + "\n[red]"
-        + "DISCLAIMER: Trading in financial instruments involves high risks including the risk of losing some, "
-        + "or all, of your investment amount, and may not be suitable for all investors. Before deciding to "
-        + "trade in financial instrument you should be fully informed of the risks and costs associated with "
-        + "trading the financial markets, carefully consider your investment objectives, level of experience, "
-        + "and risk appetite, and seek professional advice where needed.\n"
-        + "The data contained in OpenBB Terminal is not necessarily accurate. OpenBB and any provider "
-        + "of the data contained in this software will not accept liability for any loss or damage "
-        + "as a result of your trading, or your reliance on the information displayed.[/red]\n"
-    )
+def open_openbb_documentation(
+    path, url="https://openbb-finance.github.io/OpenBBTerminal/", command=None
+):
+    """Opens the documentation page based on your current location within the terminal. Make exceptions for menus
+    that are considered 'common' by adjusting the path accordingly."""
+    if "ta" in path:
+        path = "terminal/common/ta/"
+    elif "ba" in path:
+        path = "terminal/common/ba/"
+    elif "qa" in path:
+        path = "terminal/common/qa/"
+    elif "pred" in path:
+        path = "terminal/common/pred/"
+    elif "keys" in path:
+        path = "#accessing-other-sources-of-data-via-api-keys"
+        command = ""
+    elif "settings" in path or "featflags" in path or "sources" in path:
+        path = "#customizing-the-terminal"
+        command = ""
+    else:
+        path = f"terminal/{path}"
+
+    if command:
+        if command in ["ta", "ba", "qa", "pred"]:
+            path = "terminal/common/"
+        elif "keys" == command:
+            path = "#accessing-other-sources-of-data-via-api-keys"
+            command = ""
+        elif "exe" == command:
+            path = "/terminal/scripts/"
+            command = ""
+        elif command in ["settings", "featflags", "sources"]:
+            path = "#customizing-the-terminal"
+            command = ""
+
+        path += command
+
+    full_url = f"{url}{path}".replace("//", "/")
+
+    webbrowser.open(full_url)
+    console.print("")
 
 
 def hide_splashscreen():
@@ -168,12 +183,44 @@ def bootup():
         console.print(e, "\n")
 
 
-def welcome_message():
-    # Print first welcome message and help
-    console.print("\nWelcome to OpenBB Terminal 1.0\n")
+def check_for_updates() -> None:
+    """Check if the latest version is running.
 
+    Checks github for the latest release version and compares it to obbff.VERSION.
+    """
     # The commit has was commented out because the terminal was crashing due to git import for multiple users
     # ({str(git.Repo('.').head.commit)[:7]})
+    try:
+        r = requests.get(
+            "https://api.github.com/repos/openbb-finance/openbbterminal/releases/latest",
+            timeout=1,
+        )
+    except Exception:
+        r = None
+
+    if r is not None and r.status_code == 200:
+        release = r.json()["html_url"].split("/")[-1].replace("v", "")
+        if obbff.VERSION == release:
+            console.print("[green]You are using the latest version[/green]")
+        else:
+            console.print("[red]You are not using the latest version[/red]")
+            console.print(
+                "[yellow]Check for updates at https://openbb.co/products/terminal#get-started[/yellow]"
+            )
+    else:
+        console.print(
+            "[yellow]Unable to check for updates... "
+            + "Check your internet connection and try again...[/yellow]"
+        )
+    console.print("")
+
+
+def welcome_message():
+    """Print the welcome message
+
+    Prints first welcome message, help and a notification if updates are available.
+    """
+    console.print(f"\nWelcome to OpenBB Terminal v{obbff.VERSION}")
 
     if obbff.ENABLE_THOUGHTS_DAY:
         console.print("-------------------")
@@ -182,7 +229,7 @@ def welcome_message():
         except Exception as e:
             logger.exception("Exception: %s", str(e))
             console.print(e)
-        console.print("")
+    console.print("")
 
 
 def reset(queue: List[str] = None):

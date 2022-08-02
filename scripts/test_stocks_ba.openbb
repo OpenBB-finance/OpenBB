@@ -2,30 +2,27 @@ stocks
 ba
 load aapl
 headlines
-stats
 wsb
 watchlist
-popular
+popular -l 5 -n 10
 spac_c
 spac
 getdd
-bullbear
-messages
+reddit_sent
 trending
 stalker
+bullbear
+messages
 infer
-sentiment
+sentiment -d 3
 mentions
 regions
+interest -w yolo
 queries
 rise
-popularsi
-emerging
-metrics
-social
-historical
-interest
+hist
+trend
 jcdr
-load aapl
-jdtr
+load tsla
+jctr
 exit

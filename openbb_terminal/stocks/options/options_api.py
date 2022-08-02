@@ -10,7 +10,7 @@ from .calculator_view import view_calculator as calc
 from .fdscanner_view import display_options as unu
 from .alphaquery_view import display_put_call_ratio as pcr
 from .barchart_view import print_options_data as info
-from .syncretism_view import view_historical_greeks as grhist
+from .screen.syncretism_view import view_historical_greeks as grhist
 from .chartexchange_view import display_raw as hist_ce
 from .tradier_view import display_historical as hist_tr
 from .tradier_view import display_chains as chains
@@ -23,6 +23,7 @@ from .yfinance_view import plot_oi as oi_yf
 from .yfinance_view import plot_plot as plot
 from .yfinance_view import show_parity as parity
 from .yfinance_view import show_binom as binom
+from .yfinance_view import show_greeks as greeks
 from .yfinance_view import display_vol_surface as vsurf
 
 

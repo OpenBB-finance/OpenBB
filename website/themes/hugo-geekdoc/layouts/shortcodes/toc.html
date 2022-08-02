@@ -1,5 +1,6 @@
 {{ $tocLevels := default (default 6 .Site.Params.GeekdocToC) .Page.Params.GeekdocToC }}
 
 {{ if and $tocLevels .Page.TableOfContents }}
+  <h2>Table of Contents</h2>
   <div class="gdoc-toc gdoc-toc__level--{{$tocLevels}}">{{ .Page.TableOfContents }}<hr></div>
 {{ end }}

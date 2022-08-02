@@ -25,12 +25,11 @@ from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_FIGURES_ALLOWED,
     check_positive,
     get_next_stock_market_days,
-    parse_known_args_and_warn,
     valid_date,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 
 logger = logging.getLogger(__name__)
 
@@ -80,27 +79,30 @@ class PredictionTechniquesController(BaseController):
             choices["mc"]["--dist"] = {c: {} for c in mc_model.DISTRIBUTIONS}
             choices["pick"] = {c: {} for c in self.options}
             choices["pick"]["-c"] = {c: {} for c in self.options}
+
+            choices["support"] = self.SUPPORT_CHOICES
+            choices["about"] = self.ABOUT_CHOICES
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
         """Print help"""
-        help_string = f"""[cmds]
-    pick        pick new series from stored economy data[/cmds]
-
-[param]Selected Series[/param]: {self.current_id}
-
-[info]Models:[/info][cmds]
-    ets         exponential smoothing (e.g. Holt-Winters)
-    knn         k-Nearest Neighbors
-    regression  polynomial regression
-    arima       autoregressive integrated moving average
-    mlp         MultiLayer Perceptron
-    rnn         Recurrent Neural Network
-    lstm        Long-Short Term Memory
-    conv1d      1D Convolutional Neural Network
-    mc          Monte-Carlo simulations[/cmds]
-        """
-        console.print(help_string)
+        mt = MenuText("economy/pred/")
+        mt.add_cmd("pick")
+        mt.add_raw("\n")
+        mt.add_param("_series", self.current_id)
+        mt.add_raw("\n")
+        mt.add_info("_models_")
+        mt.add_cmd("ets")
+        mt.add_cmd("knn")
+        mt.add_cmd("regression")
+        mt.add_cmd("arima")
+        mt.add_cmd("mlp")
+        mt.add_cmd("rnn")
+        mt.add_cmd("lstm")
+        mt.add_cmd("conv1d")
+        mt.add_cmd("mc")
+        console.print(text=mt.menu_text, menu="Economy - Prediction Techniques")
 
     def custom_reset(self):
         """Class specific component of reset command"""
@@ -124,7 +126,7 @@ class PredictionTechniquesController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-c")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             for source, sub_df in self.datasets.items():
                 if ns_parser.column in sub_df.columns:
@@ -203,7 +205,7 @@ class PredictionTechniquesController(BaseController):
             default=None,
             help="The end date (format YYYY-MM-DD) to select - Backtesting",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
         if ns_parser:
@@ -309,7 +311,7 @@ class PredictionTechniquesController(BaseController):
             default=True,
             help="Specify if shuffling validation inputs.",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_FIGURES_ALLOWED
         )
         if ns_parser:
@@ -402,7 +404,7 @@ class PredictionTechniquesController(BaseController):
             and "--polynomial" not in other_args
         ):
             other_args.insert(0, "-p")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
         if ns_parser:
@@ -521,7 +523,7 @@ class PredictionTechniquesController(BaseController):
             default=None,
             help="The end date (format YYYY-MM-DD) to select - Backtesting",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
         if ns_parser:
@@ -748,7 +750,7 @@ class PredictionTechniquesController(BaseController):
             help="Whether to model returns or log returns",
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
 

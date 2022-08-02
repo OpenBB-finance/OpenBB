@@ -9,7 +9,7 @@ from openbb_terminal.helper_classes import ModelsNamespace as _models
 from .econometrics_model import load
 from .econometrics_model import clean
 from .econometrics_view import show_options as options
-from .econometrics_view import get_plot as plot
+from .econometrics_view import display_plot as plot
 from .regression_model import get_ols as ols
 from .econometrics_view import display_norm as norm
 from .econometrics_view import display_root as root

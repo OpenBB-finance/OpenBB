@@ -14,7 +14,11 @@ from matplotlib import pyplot as plt
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import check_api_key
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import export_data, plot_autoscale
+from openbb_terminal.helper_funcs import (
+    export_data,
+    plot_autoscale,
+    is_valid_axes_count,
+)
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.technical_analysis import finnhub_model
 
@@ -128,7 +132,7 @@ def plot_pattern_recognition(
         },
         "warn_too_much_data": 10000,
     }
-    # This plot has 2 axes
+    # This plot has 1 axis
     if not external_axes:
         candle_chart_kwargs["returnfig"] = True
         candle_chart_kwargs["figratio"] = (10, 7)
@@ -144,14 +148,12 @@ def plot_pattern_recognition(
 
         theme.visualize_output(force_tight_layout=False)
 
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of 1 axis items.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
         candle_chart_kwargs["ax"] = ax
         mpf.plot(df_stock, **candle_chart_kwargs)
+    else:
+        return
 
     for ix in range(len(pattern.columns)):
         console.print(f"From {l_segments[ix][0][0]} to {l_segments[ix][-1][0]}")

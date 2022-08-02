@@ -54,7 +54,7 @@ COINBASE_SHOW_AVAILABLE_PAIRS_OF_GIVEN_SYMBOL = (
 @pytest.mark.parametrize(
     "queue, expected",
     [
-        (["load", "help"], []),
+        (["load", "help"], ["help"]),
         (["quit", "help"], ["help"]),
     ],
 )
@@ -114,7 +114,7 @@ def test_menu_without_queue_completion(mocker):
 
     result_menu = dd_controller.DueDiligenceController(queue=None).menu()
 
-    assert result_menu == []
+    assert result_menu == ["help"]
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -164,7 +164,7 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
 
     result_menu = dd_controller.DueDiligenceController(queue=None).menu()
 
-    assert result_menu == []
+    assert result_menu == ["help"]
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -303,6 +303,13 @@ def test_call_func_expect_queue(expected_queue, func, queue, mocker):
             dict(),
         ),
         (
+            "call_fundrate",
+            [],
+            "coinglass_view.display_funding_rate",
+            [],
+            dict(),
+        ),
+        (
             "call_oi",
             [],
             "coinglass_view.display_open_interest",
@@ -366,16 +373,16 @@ def test_call_func_expect_queue(expected_queue, func, queue, mocker):
             dict(),
         ),
         (
-            "call_binbook",
+            "call_ob",
             [],
-            "binance_view.display_order_book",
+            "ccxt_view.display_order_book",
             [],
             dict(),
         ),
         (
-            "call_cbbook",
+            "call_trades",
             [],
-            "coinbase_view.display_order_book",
+            "ccxt_view.display_trades",
             [],
             dict(),
         ),
@@ -383,13 +390,6 @@ def test_call_func_expect_queue(expected_queue, func, queue, mocker):
             "call_balance",
             [],
             "binance_view.display_balance",
-            [],
-            dict(),
-        ),
-        (
-            "call_trades",
-            [],
-            "coinbase_view.display_trades",
             [],
             dict(),
         ),
@@ -448,6 +448,18 @@ def test_call_func(
     tested_func, mocked_func, other_args, called_args, called_kwargs, mocker
 ):
     path_controller = "openbb_terminal.cryptocurrency.due_diligence.dd_controller"
+
+    # MOCK GET_COINGECKO_ID
+    mocker.patch(
+        target=f"{path_controller}.cryptocurrency_helpers.get_coingecko_id",
+        return_value=True,
+    )
+
+    # MOCK GET_COINPAPRIKA_ID
+    mocker.patch(
+        target=f"{path_controller}.cryptocurrency_helpers.get_coinpaprika_id",
+        return_value=True,
+    )
 
     # MOCK SHOW_AVAILABLE_PAIRS_FOR_GIVEN_SYMBOL
     mocker.patch(

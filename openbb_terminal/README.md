@@ -4,9 +4,8 @@
 <details open="open">
   <summary><h2 style="display: inline-block">Table of Contents</h2></summary>
     <ol>
-      <li><a href="#user">General Installation Process</a></li>
-      <li><a href="#Anaconda---Python">Anaconda & Python Installation</a></li>
-      <li><a href="#Docker-Installation">Docker Installation</a></li>
+      <li><a href="#anaconda--python">Anaconda & Python Installation</a></li>
+      <li><a href="#docker-installation">Docker Installation</a></li>
       <li><a href="#web-ui---docker">Docker Web UI Installation</a></li>
       <li><a href="#local-installation-of-gst-on-raspberry-pi">Raspberry-Pi-Installation - Portable GST</a></li>
       <li><a href="#api-keys">API Keys</a></li>
@@ -17,65 +16,17 @@
 
 There are currently four options to install the terminal:
 
-- using Installer: recommended if you just want to use the terminal
-- using Python: recommended if you want to develop new features
-- using Docker: alternative option to the installer if preferred
-- using Docker Web UI: if you want to deploy the web UI for users to access over your LAN
+- [Using the Installer](https://openbb-finance.github.io/OpenBBTerminal/#accessing-the-openbb-terminal) (recommended if you just want to use the terminal)
+- [Using Python](#anaconda--python) (recommended if you want to develop new features)
+- [Using Docker](#docker-installation) (alternative option to the installer if preferred)
+- [Using Docker Web UI](#web-ui---docker) (if you want to deploy the web UI for users to access
+  over your LAN)
 
 First step in all options is to star the project
 
-<img width="1272" alt="Github starts" src="https://user-images.githubusercontent.com/25267873/115989986-e20cfe80-a5b8-11eb-8182-d6d87d092252.png">
+<img width="1512" alt="OpenBB Terminal GitHub Stars" src="https://user-images.githubusercontent.com/46355364/176408138-771ec9ae-c873-4406-b964-939b8e433c15.png">
 
-If you want to install the terminal using Python ignore the User section and jump to <a href="#Anaconda & Python">
-Anaconda & Python</a> section.
-
-## User
-
-If you are interested in running the terminal via the installer, these steps will guide you through the installation
-process and explain to you what each message means.
-
-### Windows
-
-The process starts off by downloading the installer, see below for how to download the most recent release:
-
-- Go to [the following link](https://github.com/OpenBB-finance/OpenBBTerminal/releases)
-- Click on the most recent release
-- Click on the ".exe" file:
-
-Then follow these steps:
-
-| Installation instructions                                                                                                                                                                                                                                                                                               | Illustration                                                                                                                                |
-|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:--------------------------------------------------------------------------------------------------------------------------------------------|
-| <div style="width:300px">Double click the .exe file that got downloaded to your "Downloads" folder. You will most likely receive the error on the right stating "Windows protected your PC". This is because the installer is still in beta phase, and the team has not yet requested verification from Windows. </div> | <p align="center"><img src="../images/installation/windows/windows_protected_your_pc.png" alt="Windows protected your PC" width="500"/></p> |
-| <div style="width:300px">Click on "More info" and select "Run anyway" to start the installation process. Proceed by following the steps. Do note that if you wish to install the application to 'Program Files' that you will have to run the resulting application as Administrator.                                   | <p align="center"><img src="../images/installation/windows/run_anyway.png" alt="Run anyway" width="500"/></p>                               |
- | <div style="width:300px">By clicking on the application that appeared on your Desktop, you are able to run the Terminal. The first time this takes a bit longer to load.                                                                                                                                                | <p align="center"><img src="../images/installation/windows/run_the_terminal.png" alt="Run the terminal" width="500"/></p>                   |
-
-### macOS
-
-The process starts off by downloading the installer, see below for how to download the most recent release:
-
-- Go to [the following link](https://github.com/OpenBB-finance/OpenBBTerminal/releases)
-- Click on the most recent release
-- Click on the ".dmg" file:
-
-Installation instructions:
-
-1. Open the .dmg file that got downloaded to your "Downloads" folder.
-2. Drag the folder into your "Applications" folder. This should take some time as it is extracting the
-files from the .dmg file.
-3. Open the folder and click on the "OpenBB Terminal" file, this should run the application.
-
-<img src="../images/installation/macos/mac_os_installation.png" alt="mac os installation" width=800/>
-
-| Note about "Cannot check it for malicious software" warning                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | Illustration                                                                                                                      |
-|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:----------------------------------------------------------------------------------------------------------------------------------|
-| <div style="width:300px">It is possible you will see the image displayed on the right. This is because the installer is still in beta phase, and the team has not yet requested verification from Apple. Please see below how to correct for this.</div>                                                                                                                                                                                                                                                                                                                                                                                                                                               | <p align="center"><img src="../images/installation/macos/malicious_software_warning.png" alt="software warning" width="500"/></p> |
-| <div style="width:300px">**Option 1 (via MacOS settings):** <br><br> 1) Run the file. You will most likely receive a message that macOS was not able to check whether the application contains malicious software. The reasoning for this is described above. <br> 2) Go to System Preferences > Security & Privacy > General. You should see a message at the bottom that says that the file "was blocked from use because it is not from an identified developer". Click on “Allow anyway” or "Open anyway".<br> 3) If you receive the above message multiple times on different files, keep allowing the files via Step 2 or use Option 2.<br> 4) You should now be able to launch the application. | <p align="center"><img src="../images/installation/macos/option_one_warning_fix.png" alt="option 1 warning fix" width="500"/></p> |
- | <div style="width:300px">**Option 2 (via Terminal):** <br><br> 1) Run the file. You will most likely receive a message that macOS was not able to check whether the application contains malicious software. The reasoning for this is described in the note above. <br> 2) Open the "Terminal" application. This can be done by using Command (⌘) + Space and typing "terminal". <br> 3) Within this "Terminal" application, assuming you moved the file to the Applications folder, enter the following command: `xattr -r -d com.apple.quarantine "/Applications/OpenBB Terminal"`<br> 4) You should now be able to launch the application.                                                         | <p align="center"><img src="../images/installation/macos/option_two_warning_fix.png" alt="option 2 warning fix" width="500"/></p> |
-
-## Developer
-
-### Anaconda & Python
+## Anaconda & Python
 
 This installation type supports both Windows and Unix systems (Linux + MacOS). However, on Windows it can become messy
 so it is easier to use Windows Subsystem Linux (WSL) on this operating system. WSL emulates a Linux machine inside your
@@ -84,7 +35,7 @@ Windows system.
 If you are using macOS or other Linux operating systems you can jump the next section
 <a href="#installing-the-terminal">Installing the terminal</a>.
 
-#### Installing WSL (Only for Windows users)
+### Installing WSL (Only for Windows users)
 
 If you are using Windows you first you need to install WSL. The process is simple and a tutorial can be found [here](https://www.sitepoint.com/wsl2/).
 Once you reach the section **Update Linux** on that tutorial, you should have a linux machine installed and can proceed
@@ -111,15 +62,21 @@ Although we **extremely** recommend using WSL to run the terminal on windows, if
 you can try install the terminal directly on Windows without WSL. If you'd like to see a video recording of the
 installation on Windows without WSL, @JohnnyDankseed has made one available [here](https://www.youtube.com/watch?v=-DJJ-cfquDA).
 
-#### Installing the terminal
+### Installing the terminal
 
 These steps are common in all operating systems (Windows with or without WSL, MacOS or Linux).
 
-This project supports Python 3.8 and 3.9. By default, the newly created virtual environment will use Python 3.8.13
+This project supports Python 3.8 and 3.9. By default, the newly created virtual environment will use Python 3.9.13
 
 Our current recommendation is to use this project with Anaconda's Python distribution - either full
-[**Anaconda3 Latest**](https://www.anaconda.com/products/distribution) or [**Miniconda3 Latest**](https://docs.conda.io/en/latest/miniconda.html).
-Several features in this project utilize Machine Learning. Machine Learning Python dependencies are optional. For MacOS systems, Miniconda3 is recommended.
+[**Anaconda3 Latest**](https://www.anaconda.com/products/distribution) or
+[**Miniconda3 Latest**](https://docs.conda.io/en/latest/miniconda.html) (recommended).
+Several features in this project utilize Machine Learning. Machine Learning Python dependencies are optional. For MacOS systems, the "Miniconda3 MacOSX 64-bit" version that works on both Intel and M1
+macs is recommended.
+
+**NOTE:** We recommend using `conda` and `poetry` because it just works. You can use other python
+distributions and use raw `pip` instead of `poetry` but you will very likely bump into installation
+issues.
 
 1. [Install Anaconda](https://docs.anaconda.com/anaconda/install/index.html) (It's on the AUR as anaconda or miniconda3!)
 
@@ -128,10 +85,10 @@ Several features in this project utilize Machine Learning. Machine Learning Pyth
      - If you are using macOS click [Installing on MacOS](https://docs.anaconda.com/anaconda/install/mac-os/)
      - If you are using WSL or Linux click [Installing on Linux](https://docs.anaconda.com/anaconda/install/linux/)
      - If you are using Windows click [Installing on Windows](https://docs.anaconda.com/anaconda/install/windows/).
-     **ONLY REQUIRED IF NOT USING WSL**, you also need to install/update Microsoft C++ Build Tools from here: <https://visualstudio.microsoft.com/visual-cpp-build-tools/>
+       **ONLY REQUIRED IF NOT USING WSL**, you also need to install/update Microsoft C++ Build Tools from here: <https://visualstudio.microsoft.com/visual-cpp-build-tools/>
 
    - After following the steps, confirm that you have it by opening a terminal and running: `conda -V`. The output
-   should be something along the lines of: `conda 4.11.0`
+     should be something along the lines of: `conda 4.11.0`
 
 2. Install git
 
@@ -139,13 +96,13 @@ Several features in this project utilize Machine Learning. Machine Learning Pyth
    conda install -c anaconda git
    ```
 
-    **For Linux users only, run these additional commands:**
+   **For Linux users only, run these additional commands:**
 
-    ```bash
-    sudo apt update
-    sudo apt install -y cmake gcc
-    pip install cmake
-    ```
+   ```bash
+   sudo apt update
+   sudo apt install -y cmake gcc
+   pip install cmake
+   ```
 
 3. Clone the Project
 
@@ -161,17 +118,17 @@ Several features in this project utilize Machine Learning. Machine Learning Pyth
 5. Create Environment
 
    You can name the environment whatever you want. Although you could use names such as: `welikethestock`, `thisistheway`
-   or `diamondhands`, we recommend something simple and intuitive like `gst`. This is because this name will be used
+   or `diamondhands`, we recommend something simple and intuitive like `obb`. This is because this name will be used
    from now onwards.
 
    ```bash
-   conda env create -n gst --file build/conda/conda-3-8-env.yaml
+   conda env create -n obb --file build/conda/conda-3-9-env.yaml
    ```
 
 6. Activate the virtual environment
 
    ```bash
-   conda activate gst
+   conda activate obb
    ```
 
    Note: At the end, you can deactivate it with: `conda deactivate`.
@@ -186,20 +143,11 @@ Several features in this project utilize Machine Learning. Machine Learning Pyth
 
    To enable the `prediction` menu install additional dependencies after installing main dependencies:
 
-   - On M1 mac
+   ```bash
+   conda install -c conda-forge tensorflow
+   ```
 
-      ```bash
-      conda install -c conda-forge tensorflow==2.7.0
-      poetry install -E prediction
-      ```
-
-   - On all other systems
-
-      ```bash
-      poetry install -E prediction
-      ```
-
-   If you are having trouble with Poetry (e.g. on a Windows system), simply install requirements.txt with pip
+   If you are having trouble with Poetry (e.g. on a non-conda python), simply install requirements.txt with pip
 
    ```bash
    pip install -r requirements.txt
@@ -209,6 +157,12 @@ Several features in this project utilize Machine Learning. Machine Learning Pyth
 
    ```bash
    python terminal.py
+   ```
+
+    If you are using macOS and if you get SyntaxError, you might need to run this instead
+
+    ```bash
+   python3 terminal.py
    ```
 
 9. (Windows - Optional and **only if you are not using WSL**) Speeding up opening process in the future
@@ -221,7 +175,7 @@ Several features in this project utilize Machine Learning. Machine Learning Pyth
 10. Jupyter Lab (Optional. Early alpha). User the Terminal from Jupyter Lab
 
     You can install Jupyter Lab extensions that help you manage settings and launch the terminal in a JL bash console
-    using the commands in the [jupyterlab/README.md](jupyterlab/README.md)
+    using the commands in the [jupyterlab/README.md](../jupyterlab/README.md)
 
 **NOTE:** When you close the terminal and re-open it, the only command you need to re-call is `conda activate gst`
 before you call `python terminal.py` again.
@@ -230,45 +184,33 @@ before you call `python terminal.py` again.
 <a href="https://github.com/OpenBB-finance/OpenBBTerminal/blob/master/TROUBLESHOOT.md">
 <strong>troubleshoot page</strong></a>. You can also reach for help on our [discord](https://discord.gg/Up2QGbMKHY).
 
-### Advanced User Install - Machine Learning
+## Advanced User Install - Custom installation procedures
 
-If you are an advanced user and use other Python distributions, we have several requirements.txt documents that you can
-pick from to download project dependencies.
+By default we advice using `conda` and `poetry` for environment setup and dependency management.
+Conda ships binaries for packages like `numpy` and `tensorflow` so these dependencies are
+not built from source locally by `pip`.
+Poetry solves the dependency tree in a way that the dependencies of dependencies of dependencies
+use versions that are compatible with each other.
 
-If you are using conda instead of build/conda/conda-3-8-env.yaml configuration file in Step 5, use build/conda/conda-3-8-env-full.
+If you are using a conda environment the `build/conda` folder contains multiple `.yaml` configuration
+files that you can choose from.
 
-Note: The libraries specified in the [requirements.txt](/requirements.txt) file have been tested and work for
-the purpose of this project, however, these may be older versions. Hence, it is recommended for the user to set up
-a virtual python environment prior to installing these. This allows to keep dependencies required by different projects
-in separate places.
+If you are using other python distributions we highly recommend that you use some virtual
+environment like `virtualenv` or `pyenv` for installing the terminal dependency libraries.
 
-_If you would like to use optional Machine Learning features:_
+Requirements files that you can find in the project root:
 
-- Update your [feature_flags.py](/openbb_terminal/feature_flags.py) with:
+- `requirements.txt` list all the dependencies without Machine Learning libraries
+- `requirements-full.txt` list all the dependencies without Machine Learning libraries
 
-```bash
-ENABLE_PREDICT = os.getenv("OPENBB_ENABLE_PREDICT") or True
-```
+The dependency tree is solved by poetry.
 
-- Install optional ML features dependencies:
+Note: The libraries specified in the requirements files have been tested and work for
+the purpose of this project, however, these may be older versions. Hence, it is recommended
+for the user to set up a virtual python environment prior to installing these. This allows
+to keep dependencies required by different projects in separate places.
 
-```bash
-poetry install -E prediction
-```
-
-  **NOTE: For MacOS users should use this method instead of the poetry command
-
-  ```bash
-  conda install -c conda-forge tensorflow==2.7.0
-  ```
-
-- Ready to launch:
-
-  ```python
-  python terminal.py
-  ```
-
-### Update Terminal
+## Update Terminal
 
 The terminal is constantly being updated with new features and bug fixes, hence, for your terminal to be update,
 you can run:
@@ -295,7 +237,7 @@ If you `stashed` your changes previously, you can un-stash them with:
 git stash pop
 ```
 
-### Docker Installation
+## Docker Installation
 
 1. Make sure docker desktop is installed. Install links can be found [here](https://www.docker.com/products/docker-desktop).
    To confirm that your docker desktop is downloaded and running, open a command prompt or terminal and enter
@@ -342,7 +284,7 @@ git stash pop
    environment keys and how to configure your X-server to show plots, hop over to the
    [Advanced Docker Setup](/DOCKER_ADVANCED.md).
 
-### Web UI - Docker
+## Web UI - Docker
 
 1. Ensure Docker is installed.
 2. Navigate to the location of the Dockerfile in the repo (`cd openbb_terminal_web`)
@@ -357,7 +299,7 @@ Set the API keys [as explained here](https://github.com/OpenBB-finance/OpenBBTer
 Once you've put the API keys in that file, re-run the launch script, and it will use your API keys.
 There are a few things that still don't work, and you can see what works and what doesn't [here](https://github.com/CoconutMacaroon/OpenBBTerminal/blob/main/openbb_terminal_web/README.md#todo).
 
-### Local Installation of GST on Raspberry Pi
+## Local Installation of GST on Raspberry Pi
 
 1. Running raspbian lite(headless) or desktop (both 64bit) we should first start off with an update/upgrade.
 
@@ -377,7 +319,7 @@ There are a few things that still don't work, and you can see what works and wha
    ```
 
    - After following the steps, confirm that you have it by opening a terminal and running: `conda -V`. The output
-   should be something along the lines of: `conda 4.9.2`
+     should be something along the lines of: `conda 4.9.2`
 
 3. Install git
 
@@ -446,8 +388,8 @@ There are a few things that still don't work, and you can see what works and wha
 
 12. Jupyter Lab (Optional. Early alpha). User the Terminal from Jupyter Lab
 
-   You can install Jupyter Lab extensions that help you manage settings and launch the terminal in a JL bash console
-   using the commands in the [jupyterlab/README.md](jupyterlab/README.md)
+You can install Jupyter Lab extensions that help you manage settings and launch the terminal in a JL bash console
+using the commands in the [jupyterlab/README.md](jupyterlab/README.md)
 
 **NOTE:** When you close the terminal and re-open it, the only command you need to re-call is `conda activate gst`
 before you call `python terminal.py` again.
@@ -455,46 +397,37 @@ before you call `python terminal.py` again.
 ### API Keys
 
 The project is build around several different API calls, whether it is to access historical data or financials.
-The table below shows the ones where a key is necessary.
+The table below shows the ones where a key is necessary. The easiest way is of updating the keys is by using the
+terminal, see [this guide](https://openbb-finance.github.io/OpenBBTerminal/terminal/#accessing-other-sources-of-data-via-api-keys).
 
-The easiest way is of updating the keys is by using the terminal. You are able to directly set these variables from
-within the "keys" menu. This menu can be found on the first menu you see when opening the terminal.
+You can also use the environment variable to set your API Keys directly instead of using the Terminal, for the variable
+name in the code one just needs to remove the "GT\_", this can be found in [config_terminal.py](/openbb_terminal/config_terminal.py).
 
-<img src="../images/installation/api_keys_part_1.png" alt="API Keys 1" width="800"/>
-
-Then, by typing the command on the left-hand side, followed by your API Key, you can set the key and use the commands
-attached to it.
-
-<img src="../images/installation/api_keys_part_2.png" alt="API Keys 2" width="800"/>
-
-When you have installed the terminal through Anaconda & Python, you can use the environment variable to set your
-API Keys directly instead of using the Terminal, for the variable name in the code one just needs to
-remove the "GT\_", this can be found in [config_terminal.py](/openbb_terminal/config_terminal.py).
-
-| Website                                                                         | Environment Variables                                                                                                                                                 |
-| :------------------------------------------------------------------------------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [Alpha Vantage](https://www.alphavantage.co)                                    | OPENBB_API_KEY_ALPHAVANTAGE                                                                                                                                           |
-| [Binance](https://binance.com)                                                  | OPENBB_API_BINANCE_KEY <br/> OPENBB_API_BINANCE_SECRET                                                                                                                |
-| [CoinMarketCap](https://coinmarketcap.com)                                      | OPENBB_API_CMC_KEY <br/>                                                                                                                                              |
-| [DEGIRO](https://www.degiro.fr)                                                 | OPENBB_DG_USERNAME <br/> OPENBB_DG_PASSWORD <br/> OPENBB_DG_TOTP_SECRET                                                                                               |
-| [FRED](https://fred.stlouisfed.org)                                             | OPENBB_API_FRED_KEY                                                                                                                                                   |
-| [Financial Modeling Prep](https://financialmodelingprep.com)                    | OPENBB_API_KEY_FINANCIALMODELINGPREP                                                                                                                                  |
-| [Finnhub](https://finnhub.io)                                                   | OPENBB_API_FINNHUB_KEY                                                                                                                                                |
-| [News](https://newsapi.org)                                                     | OPENBB_API_NEWS_TOKEN                                                                                                                                                 |
-| [Oanda](https://developer.oanda.com)                                            | OPENBB_OANDA_TOKEN <br/> OPENBB_OANDA_ACCOUNT                                                                                                                         |
-| [Polygon](https://polygon.io)                                                   | OPENBB_API_POLYGON_KEY                                                                                                                                                |
-| [Quandl](https://www.quandl.com)                                                | OPENBB_API_KEY_QUANDL                                                                                                                                                 |
-| [Reddit](https://www.reddit.com)                                                | OPENBB_API_REDDIT_CLIENT_ID <br> OPENBB_API_REDDIT_CLIENT_SECRET <br/> OPENBB_API_REDDIT_USERNAME <br/> OPENBB_API_REDDIT_USER_AGENT <br/> OPENBB_API_REDDIT_PASSWORD |
-| [SentimentInvestor](https://sentimentinvestor.com)                              | OPENBB_API_SENTIMENTINVESTOR_TOKEN <br> OPENBB_API_SENTIMENTINVESTOR_KEY                                                                                              |
-| [Tradier](https://developer.tradier.com)                                        | OPENBB_TRADIER_TOKEN                                                                                                                                                  |
-| [Twitter](https://developer.twitter.com)                                        | OPENBB_API_TWITTER_KEY <br/> OPENBB_API_TWITTER_SECRET_KEY <br/> OPENBB_API_TWITTER_BEARER_TOKEN                                                                      |
-| [Coinbase](https://docs.pro.coinbase.com/)                                      | OPENBB_API_COINBASE_KEY <br/> OPENBB_API_COINBASE_SECRET <br/> OPENBB_API_COINBASE_PASS_PHRASE                                                                        |
-| [Whale Alert](https://docs.whale-alert.io/)                                     | OPENBB_API_WHALE_ALERT_KEY                                                                                                                                            |
-| [Ethplorer](https://github.com/EverexIO/Ethplorer/wiki/Ethplorer-API)           | OPENBB_API_ETHPLORER_KEY                                                                                                                                              |
-| [Cryptopanic](https://cryptopanic.com/developers/api/)                          | OPENBB_API_CRYPTO_PANIC_KEY                                                                                                                                           |
-| [Glassnode](https://docs.glassnode.com/basic-api/api-key#how-to-get-an-api-key) | OPENBB_API_GLASSNODE_KEY                                                                                                                                              |
-| [Coinglass](https://coinglass.github.io/API-Reference/#api-key)                 | OPENBB_API_COINGLASS_KEY                                                                                                                                              |
-| [BitQuery](https://bitquery.io/pricing)                                         | OPENBB_API_BITQUERY_KEY                                                                                                                                               |
+| Website                                                                            | Environment Variables                                                                                                                                                 |
+| :--------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [Alpha Vantage](https://www.alphavantage.co)                                       | OPENBB_API_KEY_ALPHAVANTAGE                                                                                                                                           |
+| [Binance](https://binance.com)                                                     | OPENBB_API_BINANCE_KEY <br/> OPENBB_API_BINANCE_SECRET                                                                                                                |
+| [BitQuery](https://bitquery.io/pricing)                                            | OPENBB_API_BITQUERY_KEY                                                                                                                                               |
+| [Coinbase](https://docs.pro.coinbase.com/)                                         | OPENBB_API_COINBASE_KEY <br/> OPENBB_API_COINBASE_SECRET <br/> OPENBB_API_COINBASE_PASS_PHRASE                                                                        |
+| [Coinglass](https://coinglass.github.io/API-Reference/#api-key)                    | OPENBB_API_COINGLASS_KEY                                                                                                                                              |
+| [CoinMarketCap](https://coinmarketcap.com)                                         | OPENBB_API_CMC_KEY <br/>                                                                                                                                              |
+| [Cryptopanic](https://cryptopanic.com/developers/api/)                             | OPENBB_API_CRYPTO_PANIC_KEY                                                                                                                                           |
+| [DEGIRO](https://www.degiro.fr)                                                    | OPENBB_DG_USERNAME <br/> OPENBB_DG_PASSWORD <br/> OPENBB_DG_TOTP_SECRET                                                                                               |
+| [Ethplorer](https://github.com/EverexIO/Ethplorer/wiki/Ethplorer-API)              | OPENBB_API_ETHPLORER_KEY                                                                                                                                              |
+| [Financial Modeling Prep](https://financialmodelingprep.com)                       | OPENBB_API_KEY_FINANCIALMODELINGPREP                                                                                                                                  |
+| [Finnhub](https://finnhub.io)                                                      | OPENBB_API_FINNHUB_KEY                                                                                                                                                |
+| [FRED](https://fred.stlouisfed.org)                                                | OPENBB_API_FRED_KEY                                                                                                                                                   |
+| [GitHub](https://docs.github.com/en/rest/guides/getting-started-with-the-rest-api) | OPENBB_API_GITHUB_KEY                                                                                                                                                 |
+| [Glassnode](https://docs.glassnode.com/basic-api/api-key#how-to-get-an-api-key)    | OPENBB_API_GLASSNODE_KEY                                                                                                                                              |
+| [News](https://newsapi.org)                                                        | OPENBB_API_NEWS_TOKEN                                                                                                                                                 |
+| [Oanda](https://developer.oanda.com)                                               | OPENBB_OANDA_TOKEN <br/> OPENBB_OANDA_ACCOUNT                                                                                                                         |
+| [Polygon](https://polygon.io)                                                      | OPENBB_API_POLYGON_KEY                                                                                                                                                |
+| [Quandl](https://www.quandl.com)                                                   | OPENBB_API_KEY_QUANDL                                                                                                                                                 |
+| [Reddit](https://www.reddit.com)                                                   | OPENBB_API_REDDIT_CLIENT_ID <br> OPENBB_API_REDDIT_CLIENT_SECRET <br/> OPENBB_API_REDDIT_USERNAME <br/> OPENBB_API_REDDIT_USER_AGENT <br/> OPENBB_API_REDDIT_PASSWORD |
+| [SentimentInvestor](https://sentimentinvestor.com)                                 | OPENBB_API_SENTIMENTINVESTOR_TOKEN <br> OPENBB_API_SENTIMENTINVESTOR_KEY                                                                                              |
+| [Tradier](https://developer.tradier.com)                                           | OPENBB_TRADIER_TOKEN                                                                                                                                                  |
+| [Twitter](https://developer.twitter.com)                                           | OPENBB_API_TWITTER_KEY <br/> OPENBB_API_TWITTER_SECRET_KEY <br/> OPENBB_API_TWITTER_BEARER_TOKEN                                                                      |
+| [Whale Alert](https://docs.whale-alert.io/)                                        | OPENBB_API_WHALE_ALERT_KEY                                                                                                                                            |
 
 Example:
 

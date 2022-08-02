@@ -21,6 +21,7 @@ from openbb_terminal.helper_funcs import (
     export_data,
     plot_autoscale,
     print_rich_table,
+    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
 
@@ -74,7 +75,6 @@ def notes(series_term: str, num: int) -> pd.DataFrame:
         show_index=False,
         headers=["Series ID", "Title", "Description"],
     )
-    console.print("")
 
 
 @log_start_end(log=logger)
@@ -107,7 +107,7 @@ def display_fred_series(
     limit: int
         Number of raw data rows to show
     external_axes : Optional[List[plt.Axes]], optional
-        External axes (3 axes are expected in the list), by default None
+        External axes (1 axis is expected in the list), by default None
     """
     series_ids = list(d_series.keys())
     data = fred_model.get_aggregated_series_data(d_series, start_date, end_date)
@@ -120,19 +120,18 @@ def display_fred_series(
         # To do so, think in scientific notation.  Divide the data by whatever the E would be
         if external_axes is None:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-
-        else:
-            if len(external_axes) != 3:
-                logger.error("Expected list of 3 axis items")
-                console.print("[red]Expected list of 3 axis items.\n[/red]")
-                return
+        elif is_valid_axes_count(external_axes, 1):
             (ax,) = external_axes
+        else:
+            return
 
         if len(series_ids) == 1:
             s_id = series_ids[0]
             sub_dict: Dict = d_series[s_id]
             title = f"{sub_dict['title']} ({sub_dict['units']})"
-            ax.plot(data.index, data, label="\n".join(textwrap.wrap(title, 80)))
+            ax.plot(
+                data.index, data.iloc[:, 0], label="\n".join(textwrap.wrap(title, 80))
+            )
         else:
             for s_id, sub_dict in d_series.items():
                 data_to_plot = data[s_id].dropna()
@@ -170,7 +169,6 @@ def display_fred_series(
                 show_index=True,
                 index_name="Date",
             )
-            console.print("")
 
         export_data(
             export,
@@ -182,7 +180,12 @@ def display_fred_series(
 
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
-def display_yield_curve(date: datetime, external_axes: Optional[List[plt.Axes]] = None):
+def display_yield_curve(
+    date: datetime,
+    external_axes: Optional[List[plt.Axes]] = None,
+    raw: bool = False,
+    export: str = "",
+):
     """Display yield curve based on US Treasury rates for a specified date.
 
     Parameters
@@ -200,18 +203,40 @@ def display_yield_curve(date: datetime, external_axes: Optional[List[plt.Axes]] 
         return
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of 3 axis items")
-            console.print("[red]Expected list of 3 axis items.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
+    else:
+        return
 
-    ax.plot(rates.Maturity, rates.Rate, "-o")
+    tenors = []
+    for i, row in rates.iterrows():
+        t = row["Maturity"][-3:].strip()
+        rates.at[i, "Maturity"] = t
+        if t[-1] == "M":
+            tenors.append(int(t[:-1]) / 12)
+        elif t[-1] == "Y":
+            tenors.append(int(t[:-1]))
+
+    ax.plot(tenors, rates.Rate, "-o")
     ax.set_xlabel("Maturity")
     ax.set_ylabel("Rate (%)")
     theme.style_primary_axis(ax)
     if external_axes is None:
         ax.set_title(f"US Yield Curve for {date_of_yield.strftime('%Y-%m-%d')} ")
         theme.visualize_output()
+
+    if raw:
+        print_rich_table(
+            rates,
+            headers=list(rates.columns),
+            show_index=False,
+            title=f"United States Yield Curve for {date_of_yield.strftime('%Y-%m-%d')}",
+            floatfmt=".3f",
+        )
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "ycrv",
+        rates,
+    )

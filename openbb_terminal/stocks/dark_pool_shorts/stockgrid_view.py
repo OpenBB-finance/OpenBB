@@ -15,6 +15,7 @@ from openbb_terminal.helper_funcs import (
     export_data,
     plot_autoscale,
     print_rich_table,
+    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.dark_pool_shorts import stockgrid_model
@@ -31,9 +32,9 @@ def dark_pool_short_positions(num: int, sort_field: str, ascending: bool, export
     num : int
         Number of top tickers to show
     sort_field : str
-        Field for which to sort by, where 'sv': Short Vol. (1M),
-        'sv_pct': Short Vol. %%, 'nsv': Net Short Vol. (1M),
-        'nsv_dollar': Net Short Vol. ($100M), 'dpp': DP Position (1M),
+        Field for which to sort by, where 'sv': Short Vol. [1M],
+        'sv_pct': Short Vol. %%, 'nsv': Net Short Vol. [1M],
+        'nsv_dollar': Net Short Vol. ($100M), 'dpp': DP Position [1M],
         'dpp_dollar': DP Position ($1B)
     ascending : bool
         Data in ascending order
@@ -52,11 +53,11 @@ def dark_pool_short_positions(num: int, sort_field: str, ascending: bool, export
     df["Dark Pools Position"] = df["Dark Pools Position"] / 1_000_000
     df.columns = [
         "Ticker",
-        "Short Vol. (1M)",
+        "Short Vol. [1M]",
         "Short Vol. %",
-        "Net Short Vol. (1M)",
+        "Net Short Vol. [1M]",
         "Net Short Vol. ($100M)",
-        "DP Position (1M)",
+        "DP Position [1M]",
         "DP Position ($1B)",
     ]
 
@@ -67,7 +68,6 @@ def dark_pool_short_positions(num: int, sort_field: str, ascending: bool, export
         show_index=False,
         title=f"Data for: {dp_date}",
     )
-    console.print("")
 
     export_data(
         export,
@@ -101,7 +101,7 @@ def short_interest_days_to_cover(num: int, sort_field: str, export: str):
         "Ticker",
         "Float Short %",
         "Days to Cover",
-        "Short Interest (1M)",
+        "Short Interest [1M]",
     ]
 
     # Assuming that the datetime is the same, which from my experiments seems to be the case
@@ -111,7 +111,6 @@ def short_interest_days_to_cover(num: int, sort_field: str, export: str):
         show_index=False,
         title=f"Data for: {dp_date}",
     )
-    console.print("")
 
     export_data(
         export,
@@ -142,7 +141,7 @@ def short_interest_volume(
     export : str
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
-        External axes (3 axis is expected in the list), by default None
+        External axes (3 axes are expected in the list), by default None
 
     """
     df, prices = stockgrid_model.get_short_interest_volume(ticker)
@@ -150,18 +149,18 @@ def short_interest_volume(
     if raw:
         df = df.sort_values(by="date", ascending=False)
 
-        df["Short Vol. (1M)"] = df["short_volume"] / 1_000_000
+        df["Short Vol. [1M]"] = df["short_volume"] / 1_000_000
         df["Short Vol. %"] = df["short_volume%"] * 100
-        df["Short Exempt Vol. (1K)"] = df["short_exempt_volume"] / 1_000
-        df["Total Vol. (1M)"] = df["total_volume"] / 1_000_000
+        df["Short Exempt Vol. [1k]"] = df["short_exempt_volume"] / 1_000
+        df["Total Vol. [1M]"] = df["total_volume"] / 1_000_000
 
         df = df[
             [
                 "date",
-                "Short Vol. (1M)",
+                "Short Vol. [1M]",
                 "Short Vol. %",
-                "Short Exempt Vol. (1K)",
-                "Total Vol. (1M)",
+                "Short Exempt Vol. [1k]",
+                "Total Vol. [1M]",
             ]
         ]
 
@@ -175,9 +174,9 @@ def short_interest_volume(
         )
     else:
 
-        # This plot has 3 axis
+        # This plot has 3 axes
         if not external_axes:
-            _, (ax, ax1) = plt.subplots(
+            _, axes = plt.subplots(
                 2,
                 1,
                 sharex=True,
@@ -185,13 +184,12 @@ def short_interest_volume(
                 dpi=PLOT_DPI,
                 gridspec_kw={"height_ratios": [2, 1]},
             )
+            (ax, ax1) = axes
             ax2 = ax.twinx()
-        else:
-            if len(external_axes) != 3:
-                logger.error("Expected list of three axis items.")
-                console.print("[red]Expected list of three axis items.\n[/red]")
-                return
+        elif is_valid_axes_count(external_axes, 3):
             (ax, ax1, ax2) = external_axes
+        else:
+            return
 
         ax.bar(
             df["date"],
@@ -208,7 +206,7 @@ def short_interest_volume(
             label="Short Volume",
         )
 
-        ax.set_ylabel("Volume (1M)")
+        ax.set_ylabel("Volume [1M]")
 
         ax2.plot(
             df["date"].values,
@@ -282,7 +280,7 @@ def net_short_position(
     export : str
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
-        External axes (2 axis is expected in the list), by default None
+        External axes (2 axes are expected in the list), by default None
 
     """
     df = stockgrid_model.get_net_short_position(ticker)
@@ -312,16 +310,14 @@ def net_short_position(
 
     else:
 
-        # This plot has 2 axis
+        # This plot has 2 axes
         if not external_axes:
             _, ax1 = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
             ax2 = ax1.twinx()
-        else:
-            if len(external_axes) != 2:
-                logger.error("Expected list of one axis item.")
-                console.print("[red]Expected list of one axis item.\n[/red]")
-                return
+        elif is_valid_axes_count(external_axes, 2):
             (ax1, ax2) = external_axes
+        else:
+            return
 
         ax1.bar(
             df["dates"],

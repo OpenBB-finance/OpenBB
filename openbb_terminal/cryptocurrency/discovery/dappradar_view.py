@@ -50,7 +50,6 @@ def display_top_nfts(top: int = 10, sortby: str = "", export: str = "") -> None:
             show_index=False,
             title="Top NFT collections",
         )
-        console.print("")
 
         export_data(
             export,
@@ -89,7 +88,6 @@ def display_top_games(top: int = 10, export: str = "", sortby: str = "") -> None
         show_index=False,
         title="Top Blockchain Games",
     )
-    console.print("")
 
     export_data(
         export,
@@ -128,7 +126,6 @@ def display_top_dexes(top: int = 10, export: str = "", sortby: str = "") -> None
         show_index=False,
         title="Top Decentralized Exchanges",
     )
-    console.print("")
 
     export_data(
         export,
@@ -167,7 +164,6 @@ def display_top_dapps(top: int = 10, export: str = "", sortby: str = "") -> None
         show_index=False,
         title="Top Decentralized Applications",
     )
-    console.print("")
 
     export_data(
         export,

@@ -24,3 +24,9 @@ def vcr_config():
 def test_display_management(monkeypatch, use_tab):
     monkeypatch.setattr(helper_funcs.obbff, "USE_TABULATE_DF", use_tab)
     business_insider_view.display_management(ticker="TSLA", export="")
+
+
+@pytest.mark.vcr
+@pytest.mark.record_stdout
+def test_display_management_nodata():
+    business_insider_view.display_management(ticker="GH", export="")

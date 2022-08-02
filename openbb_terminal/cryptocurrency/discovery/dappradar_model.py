@@ -52,9 +52,12 @@ def _make_request(url: str) -> Optional[dict]:
         dictionary with response data
     """
 
-    response = requests.get(
-        url, headers={"Accept": "application/json", "User-Agent": get_user_agent()}
-    )
+    headers = {
+        "Accept": "application/json",
+        "User-Agent": get_user_agent(),
+        "referer": "https://dappradar.com/",
+    }
+    response = requests.get(url, headers=headers)
     if not 200 <= response.status_code < 300:
         console.print(f"[red]dappradar api exception: {response.text}[/red]")
         return None

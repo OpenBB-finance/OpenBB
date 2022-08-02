@@ -60,7 +60,6 @@ def display_indices(export: str):
     print_rich_table(
         df_data, show_index=False, headers=list(df_data.columns), title="US Indices"
     )
-    console.print("")
 
     export_data(
         export,
@@ -90,7 +89,6 @@ def display_futures(export: str):
         headers=list(df_data.columns),
         title="Futures/Commodities [Source: Wall St. Journal]",
     )
-    console.print("")
 
     export_data(
         export,
@@ -117,7 +115,6 @@ def display_usbonds(export: str):
     print_rich_table(
         df_data, show_index=False, headers=list(df_data.columns), title="US Bonds"
     )
-    console.print("")
 
     export_data(
         export,
@@ -144,7 +141,6 @@ def display_glbonds(export: str):
     print_rich_table(
         df_data, show_index=False, headers=list(df_data.columns), title="Global Bonds"
     )
-    console.print("")
 
     export_data(
         export,
@@ -171,7 +167,6 @@ def display_currencies(export: str):
     print_rich_table(
         df_data, show_index=False, headers=list(df_data.columns), title="Currencies"
     )
-    console.print("")
 
     export_data(
         export,

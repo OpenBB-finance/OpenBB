@@ -34,6 +34,7 @@ from openbb_terminal.helper_funcs import (
     print_rich_table,
     reindex_dates,
     lambda_long_number_format,
+    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
 
@@ -69,7 +70,7 @@ def display_summary(df: pd.DataFrame, export: str):
         show_index=True,
         title="[bold]Summary Statistics[/bold]",
     )
-    console.print("")
+
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
@@ -109,12 +110,10 @@ def display_hist(
             figsize=plot_autoscale(),
             dpi=PLOT_DPI,
         )
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of 1 axis items.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
+    else:
+        return
 
     sns.histplot(
         data,
@@ -182,12 +181,10 @@ def display_cdf(
             figsize=plot_autoscale(),
             dpi=PLOT_DPI,
         )
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of 1 axis items.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
+    else:
+        return
 
     cdf.plot(ax=ax)
     ax.set_title(
@@ -288,12 +285,10 @@ def display_bw(
             figsize=plot_autoscale(),
             dpi=PLOT_DPI,
         )
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of 1 axis items.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
+    else:
+        return
 
     theme.style_primary_axis(ax)
     color = theme.get_colors()[0]
@@ -389,12 +384,10 @@ def display_acf(
             dpi=PLOT_DPI,
         )
         (ax1, ax2), (ax3, ax4) = axes
-    else:
-        if len(external_axes) != 4:
-            logger.error("Expected list of four axis items.")
-            console.print("[red]Expected list of 4 axis items.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 4):
         (ax1, ax2, ax3, ax4) = external_axes
+    else:
+        return
 
     # Diff Auto-correlation function for original time series
     sm.graphics.tsa.plot_acf(np.diff(np.diff(df.values)), lags=lags, ax=ax1)
@@ -466,12 +459,10 @@ def display_qqplot(
             figsize=plot_autoscale(),
             dpi=PLOT_DPI,
         )
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of 1 axis items.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
+    else:
+        return
 
     qqplot(
         data,
@@ -553,12 +544,10 @@ def display_cusum(
             dpi=PLOT_DPI,
         )
         (ax1, ax2) = axes
-    else:
-        if len(external_axes) != 2:
-            logger.error("Expected list of two axis items.")
-            console.print("[red]Expected list of 2 axis items.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 2):
         (ax1, ax2) = external_axes
+    else:
+        return
 
     target_series_indexes = range(df[target].size)
     ax1.plot(target_series_indexes, target_series)
@@ -704,12 +693,10 @@ def display_seasonal(
             dpi=PLOT_DPI,
         )
         (ax1, ax2, ax3, ax4) = axes
-    else:
-        if len(external_axes) != 4:
-            logger.error("Expected list of four axis items.")
-            console.print("[red]Expected list of 4 axis items.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 4):
         (ax1, ax2, ax3, ax4) = external_axes
+    else:
+        return
 
     colors = iter(theme.get_colors())
 
@@ -798,7 +785,6 @@ def display_normality(df: pd.DataFrame, target: str, export: str = ""):
         floatfmt=".4f",
         title="[bold]Normality Statistics[/bold]",
     )
-    console.print("")
 
     export_data(
         export,
@@ -836,7 +822,7 @@ def display_unitroot(
         title="[bold]Unit Root Calculation[/bold]",
         floatfmt=".4f",
     )
-    console.print("")
+
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
@@ -878,17 +864,18 @@ def display_raw(
         df1 = df.copy()
 
     if sort:
-        df1 = df.sort_values(by=sort, ascending=des)
-    df1.index = [x.strftime("%Y-%m-%d") for x in df.index]
+        df1 = df.sort_values(
+            by=sort if sort != "AdjClose" else "Adj Close", ascending=des
+        )
+    df1.index = [x.strftime("%Y-%m-%d") for x in df1.index]
+
     print_rich_table(
-        df1.tail(num),
+        df1.head(num) if sort else df1.tail(num),
         headers=[x.title() if x != "" else "Date" for x in df1.columns],
         title="[bold]Raw Data[/bold]",
         show_index=True,
         floatfmt=".3f",
     )
-
-    console.print("")
 
 
 @log_start_end(log=logger)
@@ -929,12 +916,10 @@ def display_line(
             figsize=plot_autoscale(),
             dpi=PLOT_DPI,
         )
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of 1 axis items.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
+    else:
+        return
 
     if log_y:
         ax.semilogy(data.index, data.values)
@@ -1010,6 +995,7 @@ def display_var(
     adjusted_var: bool = False,
     student_t: bool = False,
     percentile: float = 0.999,
+    data_range: int = 0,
     portfolio: bool = False,
 ):
     """Displays VaR of dataframe
@@ -1028,12 +1014,20 @@ def display_var(
         If one should use the student-t distribution
     percentile: int
         var percentile
+    data_range: int
+        Number of rows you want to use VaR over
     portfolio: bool
         If the data is a portfolio
     """
-    var_list, hist_var_list = qa_model.get_var(
-        data, use_mean, adjusted_var, student_t, percentile, portfolio
-    )
+
+    if data_range > 0:
+        var_list, hist_var_list = qa_model.get_var(
+            data[-data_range:], use_mean, adjusted_var, student_t, percentile, portfolio
+        )
+    else:
+        var_list, hist_var_list = qa_model.get_var(
+            data, use_mean, adjusted_var, student_t, percentile, portfolio
+        )
 
     str_hist_label = "Historical VaR:"
 
@@ -1062,7 +1056,6 @@ def display_var(
         title=f"[bold]{ticker}{str_title}Value at Risk[/bold]",
         floatfmt=".4f",
     )
-    console.print("")
 
 
 def display_es(
@@ -1124,7 +1117,6 @@ def display_es(
         title=f"[bold]{ticker}{str_title}Expected Shortfall[/bold]",
         floatfmt=".4f",
     )
-    console.print("")
 
 
 def display_sharpe(data: pd.DataFrame, rfr: float, window: float):

@@ -19,7 +19,6 @@ from openbb_terminal.helper_funcs import (
     print_rich_table,
     export_data,
 )
-from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -257,5 +256,3 @@ def show_treasury_maturities(treasuries: Dict):
         index_name="Instrument",
         title="Maturity options per instrument",
     )
-
-    console.print()

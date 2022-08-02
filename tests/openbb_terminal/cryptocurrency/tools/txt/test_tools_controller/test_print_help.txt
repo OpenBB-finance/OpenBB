@@ -1,4 +1,3 @@
-
-    aprtoapy         convert apr to apy
-    il               calculate impermanent loss
+    aprtoapy           convert apr to apy
+    il                 crypto/tools/il
 

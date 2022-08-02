@@ -53,7 +53,8 @@
     "@jupyterlab/launcher": "^3.2.8",
     "@jupyterlab/mainmenu": "^3.2.8",
     "@jupyterlab/settingregistry": "^3.2.8",
-    "@jupyterlab/ui-components": "^3.2.8"
+    "@jupyterlab/ui-components": "^3.2.8",
+    "marked": "^4.0.10"
   },
   "devDependencies": {
     "@jupyterlab/builder": "^3.2.8",
@@ -71,7 +72,9 @@
   },
   "resolutions": {
     "json-schema": "^0.4.0",
-    "marked": "^4.0.10"
+    "marked": "^4.0.10",
+    "got": "^11.8.5",
+    "jpeg-js": "^0.4.4"
   },
   "sideEffects": [
     "style/*.css",

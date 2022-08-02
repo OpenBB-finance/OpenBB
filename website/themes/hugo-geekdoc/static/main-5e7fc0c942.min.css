@@ -735,7 +735,10 @@ code {
   h1,
   h2,
   h3,
-  p {
+  p,
+  tr,
+  li,
+  svg {
     color: white;
   }
   .gdoc-brand__title,

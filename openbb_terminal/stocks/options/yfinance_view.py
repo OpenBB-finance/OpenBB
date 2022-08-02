@@ -19,6 +19,7 @@ from openpyxl import Workbook
 from scipy.stats import binom
 
 from openbb_terminal.config_terminal import theme
+from openbb_terminal.config_plot import PLOT_DPI
 import openbb_terminal.config_plot as cfp
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
@@ -27,6 +28,7 @@ from openbb_terminal.helper_funcs import (
     get_rf,
     plot_autoscale,
     print_rich_table,
+    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.options import op_helpers, yfinance_model
@@ -41,6 +43,200 @@ from openbb_terminal.stocks.options.yfinance_model import (
 
 
 logger = logging.getLogger(__name__)
+
+
+@log_start_end(log=logger)
+def display_chains(
+    ticker: str,
+    expiry: str,
+    min_sp: float = 0.0,
+    max_sp: float = np.inf,
+    calls_only: bool = False,
+    puts_only: bool = False,
+    export: str = "",
+):
+    """Display option chains for given ticker and expiration
+
+    Parameters
+    ----------
+    ticker: str
+        Stock ticker
+    expiry: str
+        Expiration for option chain
+    min_sp: float
+        Min strike
+    max_sp: float
+        Max strike
+    calls_only: bool
+        Flag to get calls only
+    puts_only: bool
+        Flag to get puts only
+    export: str
+        Format to export data
+
+    """
+    # Logic for converting calls/puts into "get calls/puts"
+    call_bool = True
+    put_bool = True
+    if calls_only:
+        call_bool = True
+        put_bool = False
+    if puts_only:
+        call_bool = False
+        put_bool = True
+
+    option_chains = yfinance_model.get_full_option_chain(
+        ticker=ticker, expiration=expiry, calls=call_bool, puts=put_bool
+    ).fillna("-")
+    if option_chains.empty:
+        console.print("[red]Option chains not found.[/red]")
+        return
+
+    # If min/max strike aren't provided, just get the middle 50% of strikes
+    if min_sp == -1:
+        min_strike = np.percentile(option_chains["strike"], 25)
+    else:
+        min_strike = min_sp
+
+    if max_sp == -1:
+        max_strike = np.percentile(option_chains["strike"], 75)
+    else:
+        max_strike = max_sp
+
+    option_chains = option_chains[
+        (option_chains.strike >= min_strike) & (option_chains.strike <= max_strike)
+    ]
+
+    # There are 3 possibilities.  Calls only, puts only or both.  If calls only or puts only, we are actually set
+    # because the columns are nicely named
+    if calls_only or puts_only:
+        title = "Call " if calls_only else "Put "
+        print_rich_table(
+            option_chains,
+            title=title + "Option Chain (15 min delayed) (Greeks calculated by OpenBB)",
+            floatfmt=[
+                ".2f",
+                ".2f",
+                ".2f",
+                ".2f",
+                ".0f",
+                ".0f",
+                ".3f",
+                ".3f",
+                ".3f",
+                ".3f",
+            ],
+            headers=[
+                "Strike",
+                "Last Price",
+                "Bid",
+                "Ask",
+                "Volume",
+                "Open Interest",
+                "IV",
+                "Delta",
+                "Gamma",
+                "Theta",
+            ],
+        )
+
+    # Put the columns into the order for showing them
+    option_chains = option_chains[
+        [
+            "impliedVolatility_call",
+            "Theta_call",
+            "Gamma_call",
+            "Delta_call",
+            "volume_call",
+            "openInterest_call",
+            "bid_call",
+            "ask_call",
+            "lastPrice_call",
+            "strike",
+            "lastPrice_put",
+            "ask_put",
+            "bid_put",
+            "openInterest_put",
+            "volume_put",
+            "Delta_put",
+            "Gamma_put",
+            "Theta_put",
+            "impliedVolatility_put",
+        ]
+    ]
+
+    # In order to add color to call/put, the numbers will have to be strings.  So floatfmt will not work in
+    # print_rich_table, so lets format them now.
+
+    float_fmt = [
+        ".3f",
+        ".3f",
+        ".3f",
+        ".3f",
+        ".0f",
+        ".0f",
+        ".2f",
+        ".2f",
+        ".2f",
+        ".2f",
+        ".2f",
+        ".2f",
+        ".2f",
+        ".0f",
+        ".0f",
+        ".3f",
+        ".3f",
+        ".3f",
+        ".3f",
+    ]
+    # pylint: disable=W0640
+
+    for idx, fmt in enumerate(float_fmt):
+        option_chains.iloc[:, idx] = option_chains.iloc[:, idx].apply(
+            lambda x: str("{:" + fmt + "}").format(float(x)) if x != "-" else x
+        )
+    # pylint: enable=W0640
+
+    # Make anything _call green and anything _put red
+    for col in option_chains.columns:
+        if col.endswith("_call"):
+            option_chains[col] = option_chains[col].apply(
+                lambda x: f"[green]{x}[/green]"
+            )
+        if col.endswith("_put"):
+            option_chains[col] = option_chains[col].apply(lambda x: f"[red]{x}[/red]")
+
+    print_rich_table(
+        option_chains,
+        title=f"Yahoo Option Chain (15 min delayed) for {expiry} (Greeks calculated by OpenBB)",
+        headers=[
+            "IV",
+            "Theta",
+            "Gamma",
+            "Delta",
+            "Volume",
+            "OI",
+            "Bid",
+            "Ask",
+            "Last",
+            "Strike",
+            "Last",
+            "Ask",
+            "Bid",
+            "OI",
+            "Volume",
+            "Delta",
+            "Gamma",
+            "Theta",
+            "IV",
+        ],
+    )
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "chains_yf",
+        option_chains,
+    )
 
 
 @log_start_end(log=logger)
@@ -111,12 +307,10 @@ def plot_oi(
     max_pain = op_helpers.calculate_max_pain(df_opt)
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of one axis item.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
+    else:
+        return
 
     if not calls_only:
         put_oi.plot(
@@ -139,7 +333,7 @@ def plot_oi(
     ax.axvline(current_price, lw=2, ls="--", label="Current Price", alpha=0.7)
     ax.axvline(max_pain, lw=3, label=f"Max Pain: {max_pain}", alpha=0.7)
     ax.set_xlabel("Strike Price")
-    ax.set_ylabel("Open Interest (1k) ")
+    ax.set_ylabel("Open Interest [1k] ")
     ax.set_xlim(min_strike, max_strike)
     ax.legend()
     ax.set_title(f"Open Interest for {ticker.upper()} expiring {expiry}")
@@ -205,12 +399,10 @@ def plot_vol(
     put_v = puts.set_index("strike")["volume"] / 1000
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of one axis item.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
+    else:
+        return
 
     if not calls_only:
         put_v.plot(
@@ -232,7 +424,7 @@ def plot_vol(
         )
     ax.axvline(current_price, lw=2, ls="--", label="Current Price", alpha=0.7)
     ax.set_xlabel("Strike Price")
-    ax.set_ylabel("Volume (1k) ")
+    ax.set_ylabel("Volume [1k] ")
     ax.set_xlim(min_strike, max_strike)
     ax.legend()
     ax.set_title(f"Volume for {ticker.upper()} expiring {expiry}")
@@ -346,12 +538,10 @@ def plot_volume_open_interest(
     # Initialize the matplotlib figure
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of one axis item.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
+    else:
+        return
 
     # make x axis symmetric
     axis_origin = max(abs(max(df_puts["oi+v"])), abs(max(df_calls["oi+v"])))
@@ -500,12 +690,10 @@ def plot_plot(
 
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of one axis item.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
+    else:
+        return
 
     x_data = values[x]
     y_data = values[y]
@@ -537,7 +725,7 @@ def plot_plot(
 def plot_payoff(
     current_price: float,
     options: List[Dict[Any, Any]],
-    underlying: int,
+    underlying: float,
     ticker: str,
     expiration: str,
     external_axes: Optional[List[plt.Axes]] = None,
@@ -547,12 +735,10 @@ def plot_payoff(
 
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of one axis item.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
+    else:
+        return
 
     if ya:
         ax.plot(x, yb, label="Payoff Before Premium")
@@ -562,6 +748,7 @@ def plot_payoff(
     ax.set_title(f"Option Payoff Diagram for {ticker} on {expiration}")
     ax.set_ylabel("Profit")
     ax.set_xlabel("Underlying Asset Price at Expiration")
+    ax.legend()
     ax.xaxis.set_major_formatter("${x:.2f}")
     ax.yaxis.set_major_formatter("${x:.2f}")
     theme.style_primary_axis(ax)
@@ -671,7 +858,6 @@ def show_parity(
         "parity",
         show,
     )
-    console.print()
 
 
 @log_start_end(log=logger)
@@ -738,7 +924,6 @@ def risk_neutral_vals(
         show_index=False,
         title="Risk Neutral Values",
     )
-    console.print()
 
 
 @log_start_end(log=logger)
@@ -769,12 +954,10 @@ def plot_expected_prices(
     probs = [100 * binom.pmf(r, len(up_moves), p) for r in up_moves]
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of one axis item.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
+    else:
+        return
 
     ax.set_title(f"Probabilities for ending prices of {ticker} on {expiration}")
     ax.xaxis.set_major_formatter("${x:1.2f}")
@@ -997,7 +1180,7 @@ def display_vol_surface(
         Z = data.lastPrice
         label = "Last Price"
     if external_axes is None:
-        fig = plt.figure()
+        fig = plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
         ax = plt.axes(projection="3d")
     else:
         ax = external_axes[0]
@@ -1021,8 +1204,8 @@ def display_vol_surface(
 @log_start_end(log=logger)
 def show_greeks(
     ticker: str,
-    div_cont: float,
     expire: str,
+    div_cont: float = 0,
     rf: float = None,
     opt_type: int = 1,
     mini: float = None,
@@ -1098,9 +1281,25 @@ def show_greeks(
         "Vega",
         "Theta",
     ]
+    column_formatting = [
+        ".1f",
+        ".4f",
+        ".6f",
+        ".6f",
+        ".6f",
+        ".6f",
+    ]
     if show_all:
-        columns += ["Rho", "Phi", "Charm", "Vanna", "Vomma"]
+        additional_columns = ["Rho", "Phi", "Charm", "Vanna", "Vomma"]
+        columns += additional_columns
+        column_formatting += [".6f"] * len(additional_columns)
     df = pd.DataFrame(strikes, columns=columns)
-    print_rich_table(df, headers=list(df.columns), show_index=False, title="Greeks")
-    console.print()
+    print_rich_table(
+        df,
+        headers=list(df.columns),
+        show_index=False,
+        title="Greeks",
+        floatfmt=column_formatting,
+    )
+
     return None

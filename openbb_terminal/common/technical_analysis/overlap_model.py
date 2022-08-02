@@ -120,13 +120,13 @@ def zlma(values: pd.DataFrame, length: int, offset: int) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def vwap(day_df: pd.DataFrame, offset: int) -> pd.DataFrame:
+def vwap(df: pd.DataFrame, offset: int) -> pd.DataFrame:
     """Gets volume weighted average price (VWAP)
 
     Parameters
     ----------
-    day_df: pd.DataFrame
-        Dataframe of dates and prices for the last trading day
+    df: pd.DataFrame
+        Dataframe of dates and prices
     offset: int
         Length of offset
     Returns
@@ -136,10 +136,10 @@ def vwap(day_df: pd.DataFrame, offset: int) -> pd.DataFrame:
     """
 
     df_vwap = ta.vwap(
-        high=day_df["High"],
-        low=day_df["Low"],
-        close=day_df["Close"],
-        volume=day_df["Volume"],
+        high=df["High"],
+        low=df["Low"],
+        close=df["Close"],
+        volume=df["Volume"],
         offset=offset,
     )
 

@@ -6,10 +6,17 @@ import os
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
-from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.due_diligence import fmp_model
 
 logger = logging.getLogger(__name__)
+
+
+def add_color(value: str) -> str:
+    if "buy" in value.lower():
+        value = f"[green]{value}[/green]"
+    elif "sell" in value.lower():
+        value = f"[red]{value}[/red]"
+    return value
 
 
 @log_start_end(log=logger)
@@ -28,9 +35,9 @@ def rating(ticker: str, num: int, export: str):
     df = fmp_model.get_rating(ticker)
 
     # TODO: This could be displayed in a nice rating plot over time
-    # TODO: Add coloring to table
 
     if not df.empty:
+        df = df.astype(str).applymap(lambda x: add_color(x))
         l_recoms = [col for col in df.columns if "Recommendation" in col]
         l_recoms_show = [
             recom.replace("rating", "")
@@ -45,7 +52,6 @@ def rating(ticker: str, num: int, export: str):
             show_index=True,
             title="Rating",
         )
-    console.print("")
 
     export_data(
         export,

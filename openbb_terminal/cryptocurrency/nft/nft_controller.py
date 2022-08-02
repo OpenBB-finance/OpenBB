@@ -10,11 +10,10 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
-    parse_known_args_and_warn,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 
 logger = logging.getLogger(__name__)
 
@@ -31,21 +30,21 @@ class NFTController(BaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
+
+            choices["support"] = self.SUPPORT_CHOICES
+            choices["about"] = self.ABOUT_CHOICES
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
         """Print help"""
-
-        help_text = """[cmds]
-[src][Nftcalendar.io][/src]
-    today       today's NFT drops
-    upcoming    upcoming NFT drops
-    ongoing     Ongoing NFT drops
-    newest      Recently NFTs added
-[src][Opensea.io][/src]
-    stats       check open sea collection stats[/cmds]
-"""
-        console.print(text=help_text, menu="Cryptocurrency - Non Fungible Token")
+        mt = MenuText("crypto/nft/", 70)
+        mt.add_cmd("today", "Nftcalendar")
+        mt.add_cmd("upcoming", "Nftcalendar")
+        mt.add_cmd("ongoing", "Nftcalendar")
+        mt.add_cmd("newest", "Nftcalendar")
+        mt.add_cmd("stats", "Opensea")
+        console.print(text=mt.menu_text, menu="Cryptocurrency - Non Fungible Token")
 
     @log_start_end(log=logger)
     def call_stats(self, other_args: List[str]):
@@ -71,7 +70,7 @@ class NFTController(BaseController):
         if other_args and not other_args[0][0] == "-":
             other_args.insert(0, "--slug")
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
@@ -98,7 +97,7 @@ class NFTController(BaseController):
             dest="limit",
             default=5,
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -124,7 +123,7 @@ class NFTController(BaseController):
             dest="limit",
             default=5,
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -150,7 +149,7 @@ class NFTController(BaseController):
             dest="limit",
             default=5,
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -176,7 +175,7 @@ class NFTController(BaseController):
             dest="limit",
             default=5,
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:

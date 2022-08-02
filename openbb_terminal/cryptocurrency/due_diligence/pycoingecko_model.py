@@ -1,9 +1,11 @@
 """CoinGecko model"""
 __docformat__ = "numpy"
+# pylint:disable=unsupported-assignment-operation
 
 import logging
 from typing import Any, Dict, List, Optional, Tuple, Union
 
+import numpy as np
 import pandas as pd
 import regex as re
 from pycoingecko import CoinGeckoAPI
@@ -22,7 +24,6 @@ from openbb_terminal.cryptocurrency.pycoingecko_helpers import (
     rename_columns_in_dct,
 )
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -589,13 +590,16 @@ class Coin:
             single_stats[col] = market_data.get(col)
         single_stats.update(denominated_data)
 
-        try:
+        if (
+            (single_stats["total_supply"] is not None)
+            and (single_stats["circulating_supply"] is not None)
+            and (single_stats["total_supply"] != 0)
+        ):
             single_stats["circulating_supply_to_total_supply_ratio"] = (
                 single_stats["circulating_supply"] / single_stats["total_supply"]
             )
-        except (ZeroDivisionError, TypeError) as e:
-            logger.exception(str(e))
-            console.print(e)
+        else:
+            single_stats["circulating_supply_to_total_supply_ratio"] = np.nan
         df = pd.Series(single_stats).to_frame().reset_index()
         df.columns = ["Metric", "Value"]
         df["Metric"] = df["Metric"].apply(
@@ -778,3 +782,29 @@ class Coin:
         df = df.set_index("time")
         df["currency"] = vs_currency
         return df
+
+
+@log_start_end(log=logger)
+def get_ohlc(symbol: str, vs_currency: str = "usd", days: int = 90) -> pd.DataFrame:
+    """Get Open, High, Low, Close prices for given coin. [Source: CoinGecko]
+
+    Parameters
+    ----------
+    vs_currency: str
+        currency vs which display data
+    days: int
+        number of days to display the data
+        on from (1/7/14/30/90/180/365, max)
+
+    Returns
+    -------
+    pandas.DataFrame
+        OHLC data for coin
+        Columns: time, price, currency
+    """
+    client = CoinGeckoAPI()
+    prices = client.get_coin_ohlc_by_id(symbol, vs_currency, days)
+    df = pd.DataFrame(data=prices, columns=["date", "Open", "High", "Low", "Close"])
+    df["date"] = pd.to_datetime(df.date, unit="ms")
+    df = df.set_index("date")
+    return df

@@ -29,12 +29,11 @@ from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
     check_positive_list,
-    parse_known_args_and_warn,
     valid_date,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.stocks.technical_analysis import (
     finbrain_view,
@@ -76,6 +75,7 @@ class TechnicalAnalysisController(StockBaseController):
         "obv",
         "fib",
         "tv",
+        "clenow",
     ]
     PATH = "/stocks/ta/"
 
@@ -114,43 +114,43 @@ class TechnicalAnalysisController(StockBaseController):
         else:
             stock_str = f"{s_intraday} {self.ticker}"
 
-        help_text = f"""
-[param]Stock: [/param]{stock_str}[cmds]
-
-    tv          open interactive chart on [src][TradingView][/src]
-    view        view historical data and trendlines [src][Finviz][/src]
-    summary     technical summary report [src][FinBrain][/src]
-    recom       recommendation based on Technical Indicators [src][Tradingview][/src]
-
-[info]Overlap:[/info]
-    ema         exponential moving average
-    sma         simple moving average
-    wma         weighted moving average
-    hma         hull moving average
-    zlma        zero lag moving average
-    vwap        volume weighted average price
-[info]Momentum:[/info]
-    cci         commodity channel index
-    macd        moving average convergence/divergence
-    rsi         relative strength index
-    stoch       stochastic oscillator
-    fisher      fisher transform
-    cg          centre of gravity
-[info]Trend:[/info]
-    adx         average directional movement index
-    aroon       aroon indicator
-[info]Volatility:[/info]
-    bbands      bollinger bands
-    donchian    donchian channels
-    kc          keltner channels
-[info]Volume:[/info]
-    ad          accumulation/distribution line
-    adosc       chaikin oscillator
-    obv         on balance volume
-[info]Custom:[/info]
-    fib         fibonacci retracement[/cmds]
-"""
-        console.print(text=help_text, menu="Stocks - Technical Analysis")
+        mt = MenuText("stocks/ta/", 90)
+        mt.add_param("_ticker", stock_str)
+        mt.add_raw("\n")
+        mt.add_cmd("tv", "TradingView")
+        mt.add_cmd("view", "Finviz")
+        mt.add_cmd("summary", "FinBrain")
+        mt.add_cmd("recom", "TradingView")
+        mt.add_raw("\n")
+        mt.add_info("_overlap_")
+        mt.add_cmd("ema")
+        mt.add_cmd("sma")
+        mt.add_cmd("wma")
+        mt.add_cmd("hma")
+        mt.add_cmd("zlma")
+        mt.add_cmd("vwap")
+        mt.add_info("_momentum_")
+        mt.add_cmd("cci")
+        mt.add_cmd("macd")
+        mt.add_cmd("rsi")
+        mt.add_cmd("stoch")
+        mt.add_cmd("fisher")
+        mt.add_cmd("cg")
+        mt.add_cmd("clenow")
+        mt.add_info("_trend_")
+        mt.add_cmd("adx")
+        mt.add_cmd("aroon")
+        mt.add_info("_volatility_")
+        mt.add_cmd("bbands")
+        mt.add_cmd("donchian")
+        mt.add_cmd("kc")
+        mt.add_info("_volume_")
+        mt.add_cmd("ad")
+        mt.add_cmd("adosc")
+        mt.add_cmd("obv")
+        mt.add_info("_custom_")
+        mt.add_cmd("fib")
+        console.print(text=mt.menu_text, menu="Stocks - Technical Analysis")
 
     def custom_reset(self):
         """Class specific component of reset command"""
@@ -169,7 +169,7 @@ class TechnicalAnalysisController(StockBaseController):
             prog="tv",
             description="""View TradingView for technical analysis. [Source: TradingView]""",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             webbrowser.open(f"https://www.tradingview.com/chart/?symbol={self.ticker}")
             console.print("")
@@ -183,7 +183,7 @@ class TechnicalAnalysisController(StockBaseController):
             prog="view",
             description="""View historical price with trendlines. [Source: Finviz]""",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_FIGURES_ALLOWED
         )
         if ns_parser:
@@ -203,7 +203,7 @@ class TechnicalAnalysisController(StockBaseController):
             all around the world. [Source:  Finbrain]
         """,
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -253,7 +253,7 @@ class TechnicalAnalysisController(StockBaseController):
             help="""Interval, that corresponds to the recommendation given by tradingview based on technical indicators.
             See https://python-tradingview-ta.readthedocs.io/en/latest/usage.html""",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -308,7 +308,7 @@ class TechnicalAnalysisController(StockBaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
@@ -360,7 +360,7 @@ class TechnicalAnalysisController(StockBaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
@@ -409,7 +409,7 @@ class TechnicalAnalysisController(StockBaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
@@ -458,7 +458,7 @@ class TechnicalAnalysisController(StockBaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
@@ -510,7 +510,7 @@ class TechnicalAnalysisController(StockBaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
@@ -544,20 +544,42 @@ class TechnicalAnalysisController(StockBaseController):
             default=0,
             help="offset",
         )
+        parser.add_argument(
+            "--start",
+            dest="start",
+            type=valid_date,
+            help="Starting date to select",
+            required="--end" in other_args,
+        )
+        parser.add_argument(
+            "--end",
+            dest="end",
+            type=valid_date,
+            help="Ending date to select",
+            required="--start" in other_args,
+        )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
             # Daily
             if self.interval == "1440min":
-                console.print("VWAP should be used with intraday data. \n")
-                return
+                if not ns_parser.start:
+                    console.print(
+                        "If no date conditions, VWAP should be used with intraday data. \n"
+                    )
+                    return
+                interval_text = "Daily"
+            else:
+                interval_text = self.interval
 
             overlap_view.view_vwap(
                 s_ticker=self.ticker,
-                s_interval=self.interval,
+                s_interval=interval_text,
                 ohlc=self.stock,
+                start=ns_parser.start,
+                end=ns_parser.end,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
             )
@@ -598,7 +620,7 @@ class TechnicalAnalysisController(StockBaseController):
             help="scalar",
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
@@ -656,7 +678,7 @@ class TechnicalAnalysisController(StockBaseController):
             help="The signal period.",
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
@@ -716,7 +738,7 @@ class TechnicalAnalysisController(StockBaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
@@ -772,7 +794,7 @@ class TechnicalAnalysisController(StockBaseController):
             help="The time period of the slowk moving average",
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
@@ -813,7 +835,7 @@ class TechnicalAnalysisController(StockBaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
@@ -852,7 +874,7 @@ class TechnicalAnalysisController(StockBaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
@@ -907,7 +929,7 @@ class TechnicalAnalysisController(StockBaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
@@ -963,7 +985,7 @@ class TechnicalAnalysisController(StockBaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
@@ -1026,7 +1048,7 @@ class TechnicalAnalysisController(StockBaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
@@ -1074,7 +1096,7 @@ class TechnicalAnalysisController(StockBaseController):
             help="length",
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
@@ -1141,7 +1163,7 @@ class TechnicalAnalysisController(StockBaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
@@ -1183,7 +1205,7 @@ class TechnicalAnalysisController(StockBaseController):
             help="uses open value of stock",
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
@@ -1237,7 +1259,7 @@ class TechnicalAnalysisController(StockBaseController):
             help="slow length",
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
@@ -1268,7 +1290,7 @@ class TechnicalAnalysisController(StockBaseController):
             """,
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
@@ -1313,7 +1335,7 @@ class TechnicalAnalysisController(StockBaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
@@ -1324,4 +1346,36 @@ class TechnicalAnalysisController(StockBaseController):
                 start_date=ns_parser.start,
                 end_date=ns_parser.end,
                 export=ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
+    def call_clenow(self, other_args: List[str]):
+        """Process clenow command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="clenow",
+            description="Calculates the Clenow Volatility Adjusted Momentum.",
+        )
+        parser.add_argument(
+            "-p",
+            "--period",
+            dest="period",
+            help="Lookback period for regression",
+            default=90,
+            type=check_positive,
+        )
+
+        if self.interval != "1440min":
+            console.print(
+                "[red]This regression should be performed with daily data and at least 90 days.[/red]"
+            )
+            return
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_FIGURES_ALLOWED
+        )
+        if ns_parser:
+            momentum_view.display_clenow_momentum(
+                self.stock["Adj Close"], ns_parser.period, ns_parser.export
             )

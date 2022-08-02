@@ -1,9 +1,12 @@
 ```
-usage: al [-h] [--export {png,jpg,pdf,svg}]
+usage: al [-s] [-h] [--export {png,jpg,pdf,svg}]
 ```
+
 Display allocation
+
 ```
 optional arguments:
+  -s, --sum        Sum all assets value over time (default: False)
   -h, --help            show this help message (default: False)
   --export {png,jpg,pdf,svg}
                         Export figure into png, jpg, pdf, svg (default: )

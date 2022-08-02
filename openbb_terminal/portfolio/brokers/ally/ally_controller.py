@@ -11,12 +11,11 @@ from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
-    parse_known_args_and_warn,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.portfolio.brokers.ally import ally_view
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 
 logger = logging.getLogger(__name__)
 
@@ -47,16 +46,15 @@ class AllyController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = """[cmds]
-    holdings    show account holdings
-    history     show history of your account
-    balances    show balance details of account
-
-[info]Stock Information:[/info]
-    quote       get stock quote
-    movers      get ranked lists of movers[/cmds]
-"""
-        console.print(text=help_text, menu="Portfolio - Brokers")
+        mt = MenuText("portfolio/bro/ally/")
+        mt.add_cmd("holdings")
+        mt.add_cmd("history")
+        mt.add_cmd("balances")
+        mt.add_raw("\n")
+        mt.add_info("_info_")
+        mt.add_cmd("quote")
+        mt.add_cmd("movers")
+        console.print(text=mt.menu_text, menu="Portfolio - Brokers - Ally")
 
     @log_start_end(log=logger)
     def call_holdings(self, other_args: List[str]):
@@ -67,7 +65,7 @@ class AllyController(BaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="Display info about your trading accounts on Ally",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -90,7 +88,7 @@ class AllyController(BaseController):
             type=int,
             help="Number of recent transactions to show",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -107,7 +105,7 @@ class AllyController(BaseController):
             prog="balances",
             description="""Account balance details""",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -132,7 +130,7 @@ class AllyController(BaseController):
             dest="ticker",
         )
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             ally_view.display_stock_quote(ns_parser.ticker)
 
@@ -169,7 +167,7 @@ class AllyController(BaseController):
         parser.add_argument(
             "-l", "--limit", help="Number to show", type=int, default=15, dest="limit"
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:

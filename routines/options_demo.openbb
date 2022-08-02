@@ -1,0 +1,58 @@
+# This script does not require you to use arguments.
+
+# Go to the Options menu and load SPY with an expiry that is the second closest date.
+stocks
+options
+load SPY
+exp 0
+
+# Show the chain's info
+info
+
+# Show the Put/Call Ratio with a 10, 30, and 90 day window.
+pcr -l 10
+pcr -l 30
+pcr -l 90
+
+# Show Open Interest and Volume
+vol
+oi
+
+# Plot strike vs last trade date of puts and calls.
+plot -p -x s -y ltd
+plot -x s -y ltd
+
+# Plot the volatility smile of puts and calls.
+plot -c smile
+plot -p -c smile
+
+# Get chains and greeks data and export to spreadsheet.
+
+chains --export xlsx
+greeks -a -d 1.4 -r 1
+greeks -p -a -d 1.4 -r 1
+
+# Binomial pricing for $400 strike put and call.
+binom -s 400
+binom -p -s 400
+
+# Run screeners
+
+screen
+set Highest_OI
+scr
+set Highest_Volume
+scr
+set Highest_IV
+scr
+set SPY_ATM_Calls
+scr
+set SPY_ATM_Poots
+
+# Show unusual options list and export to a spreadsheet
+..
+unu -l 500 --export xlsx
+
+
+
+

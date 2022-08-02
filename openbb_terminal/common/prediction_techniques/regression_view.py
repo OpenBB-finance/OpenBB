@@ -23,6 +23,7 @@ from openbb_terminal.helper_funcs import (
     get_next_stock_market_days,
     patch_pandas_text_adjustment,
     plot_autoscale,
+    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
 from openbb_terminal import rich_config
@@ -104,18 +105,24 @@ def display_regression(
 
     # Plotting
 
-    # This plot has 1 axes
+    # This plot has 1 axis
     if external_axes is None:
         _, ax1 = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    elif s_end_date and not is_valid_axes_count(
+        external_axes,
+        3,
+        prefix_text="If there is s_end_date",
+        suffix_text="when backtesting",
+    ):
+        return
+    elif not s_end_date and not is_valid_axes_count(
+        external_axes,
+        1,
+        prefix_text="If there is no s_end_date",
+        suffix_text="when backtesting",
+    ):
+        return
     else:
-        if (not s_end_date and len(external_axes) != 1) or (
-            s_end_date and len(external_axes) != 3
-        ):
-            logger.error("Expected list of 1 axis or 3 axes when backtesting.")
-            console.print(
-                "[red]Expected list of 1 axis or 3 axes when backtesting.\n[/red]"
-            )
-            return
         ax1 = external_axes[0]
 
     ax1.plot(values.index, values)
@@ -169,18 +176,16 @@ def display_regression(
 
     # BACKTESTING
     if s_end_date:
-        # This plot has 1 axes
+        # This plot has 3 axes
         if external_axes is None:
             _, axes = plt.subplots(
                 2, 1, sharex=True, figsize=plot_autoscale(), dpi=PLOT_DPI
             )
             (ax2, ax3) = axes
-        else:
-            if len(external_axes) != 3:
-                logger.error("Expected list of three axis items.")
-                console.print("[red]Expected list of 3 axis items.\n[/red]")
-                return
+        elif is_valid_axes_count(external_axes, 3):
             (_, ax2, ax3) = external_axes
+        else:
+            return
 
         ax2.plot(
             df_future.index,

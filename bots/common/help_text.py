@@ -118,7 +118,6 @@ cmds_text = {
         "[econ indices]()\n"
         "[econ repo](DAYS)\n"
         "[econ overview]()\n"
-        "[econ feargreed]()\n"
         "[econ currencies]()\n"
         "[econ valuation]() <GROUP>\n"
         "[econ performance]() <GROUP>\n"

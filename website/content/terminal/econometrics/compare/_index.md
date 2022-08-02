@@ -14,6 +14,8 @@ optional arguments:
 
 Below you can find a comparison of the regression estimates based on the dataset from Vella and M. Verbeek (1998), “Whose Wages Do Unions Raise? A Dynamic Model of Unionism and Wage Rate Determination for Young Men,” Journal of Applied Econometrics 13, 163-183. This is a well-known dataset also used within Chapter 14 of Introduction to Econometrics by Jeffrey Wooldridge.
 
+To replicate this result, please have a look at [panel](https://openbb-finance.github.io/OpenBBTerminal/terminal/econometrics/panel/).
+
 ```
 2022 Feb 25, 08:56 (✨) /econometrics/ $ compare
                                                                      Model Comparison

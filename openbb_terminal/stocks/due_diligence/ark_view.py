@@ -57,7 +57,6 @@ def display_ark_trades(
         title="ARK Trades",
     )
 
-    console.print("")
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "arktrades", ark_holdings
     )

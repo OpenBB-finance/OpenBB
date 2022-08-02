@@ -40,10 +40,9 @@ def get_trading_pairs() -> pd.DataFrame:
         "display_name",
         "base_currency",
         "quote_currency",
-        "base_min_size",
-        "base_max_size",
+        "quote_increment",
+        "base_increment",
         "min_market_funds",
-        "max_market_funds",
     ]
     pairs = make_coinbase_request("/products")
     return pd.DataFrame(pairs)[columns]

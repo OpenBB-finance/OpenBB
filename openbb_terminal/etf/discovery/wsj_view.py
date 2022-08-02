@@ -36,7 +36,7 @@ def show_top_mover(sort_type: str, limit: int = 10, export=""):
         headers=list(data.columns),
         title="ETF Movers",
     )
-    console.print("")
+
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),

@@ -18,7 +18,7 @@ optional arguments:
 
 Example for stock data (which is not normally distributed):
 ```
-2022 Feb 24, 05:31 (✨) /econometrics/ $ norm adj_close-tsla -p
+2022 Feb 24, 05:31 (✨) /econometrics/ $ norm tsla.adj_close -p
                  Normality Test [Column: adj_close | Dataset: tsla]                  
 ┏━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┓
 ┃           ┃ Kurtosis ┃ Skewness ┃ Jarque-Bera ┃ Shapiro-Wilk ┃ Kolmogorov-Smirnov ┃
@@ -34,7 +34,7 @@ Example for stock data (which is not normally distributed):
 
 Example for returns (which is usually normally distributed):
 ```
-2022 Feb 24, 05:36 (✨) /econometrics/ $ norm return-msft -p
+2022 Feb 24, 05:36 (✨) /econometrics/ $ norm msft.return -p
                    Normality Test [Column: return | Dataset: msft]                   
 ┏━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┓
 ┃           ┃ Kurtosis ┃ Skewness ┃ Jarque-Bera ┃ Shapiro-Wilk ┃ Kolmogorov-Smirnov ┃

@@ -3,10 +3,12 @@ __docformat__ = "numpy"
 
 import logging
 
+import pandas as pd
+
 from openbb_terminal.decorators import check_api_key
 from openbb_terminal.common import newsapi_model
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.rich_config import console
+from openbb_terminal.helper_funcs import print_rich_table
 
 logger = logging.getLogger(__name__)
 
@@ -16,7 +18,7 @@ logger = logging.getLogger(__name__)
 def display_news(
     term: str,
     s_from: str,
-    num: int = 5,
+    num: int = 3,
     show_newest: bool = True,
     sources: str = "",
 ):
@@ -39,13 +41,17 @@ def display_news(
 
     if articles:
         for idx, article in enumerate(articles):
-            console.print(
-                article["publishedAt"].replace("T", " ").replace("Z", ""),
-                " ",
-                article["title"],
-            )
             # Unnecessary to use name of the source because contained in link article["source"]["name"]
-            console.print(article["url"], "\n")
+            data = [
+                [article["publishedAt"].replace("T", " ").replace("Z", "")],
+                [f"{article['description']}"],
+                [article["url"]],
+            ]
+
+            table = pd.DataFrame(
+                data, index=["published", "content", "link"], columns=["Content"]
+            )
+            print_rich_table(table, title=article["title"])
 
             if idx >= num - 1:
                 break

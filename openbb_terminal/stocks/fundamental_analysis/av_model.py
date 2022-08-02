@@ -12,6 +12,7 @@ from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import lambda_long_number_format
 from openbb_terminal.rich_config import console
+from openbb_terminal.stocks.fundamental_analysis import yahoo_finance_model
 from openbb_terminal.stocks.stocks_helper import clean_fraction
 from openbb_terminal.stocks.fundamental_analysis.fa_helper import clean_df_index
 
@@ -45,7 +46,7 @@ def get_overview(ticker: str) -> pd.DataFrame:
     else:
         # check if json is empty
         if not result_json:
-            console.print("No data found")
+            console.print("No data found from Alpha Vantage\n")
         # Parse json data to dataframe
         elif "Note" in result_json:
             console.print(result_json["Note"], "\n")
@@ -108,7 +109,7 @@ def get_key_metrics(ticker: str) -> pd.DataFrame:
     else:
         # check if json is empty
         if not result_json or len(result_json) < 2:
-            console.print("No data found")
+            console.print("No data found from Alpha Vantage\n")
             return pd.DataFrame()
 
         df_fa = pd.json_normalize(result_json)
@@ -146,7 +147,11 @@ def get_key_metrics(ticker: str) -> pd.DataFrame:
 
 @log_start_end(log=logger)
 def get_income_statements(
-    ticker: str, number: int, quarterly: bool = False
+    ticker: str,
+    number: int,
+    quarterly: bool = False,
+    ratios: bool = False,
+    plot: bool = False,
 ) -> pd.DataFrame:
     """Get income statements for company
 
@@ -158,11 +163,15 @@ def get_income_statements(
         Number of past to get
     quarterly : bool, optional
         Flag to get quarterly instead of annual, by default False
+    ratios: bool
+        Shows percentage change, by default False
+    plot: bool
+        If the data shall be formatted ready to plot
 
     Returns
     -------
     pd.DataFrame
-        Dataframe of income statements
+        DataFrame of income statements
     """
     url = (
         f"https://www.alphavantage.co/query?function=INCOME_STATEMENT&symbol={ticker}"
@@ -177,7 +186,16 @@ def get_income_statements(
     else:
         # check if json is empty
         if not response_json:
-            console.print("No data found")
+            console.print(
+                "No data found from Alpha Vantage, looking in Yahoo Finance\n"
+            )
+            if (
+                yahoo_finance_model.get_financials(ticker, financial="financials")
+                is not None
+            ):
+                return yahoo_finance_model.get_financials(
+                    ticker, financial="financials"
+                )
         else:
             statements = response_json
             df_fa = pd.DataFrame()
@@ -190,19 +208,39 @@ def get_income_statements(
                     df_fa = pd.DataFrame(statements["annualReports"])
 
             if df_fa.empty:
-                console.print("No data found")
+                console.print("No data found from Alpha Vantage\n")
                 return pd.DataFrame()
 
             df_fa = df_fa.set_index("fiscalDateEnding")
-            df_fa = df_fa.head(number)
-            df_fa = df_fa.applymap(lambda x: lambda_long_number_format(x))
-            return df_fa[::-1].T
+            df_fa = df_fa[::-1].T
+
+            df_fa = df_fa.replace("None", "0")
+            df_fa.iloc[1:] = df_fa.iloc[1:].astype("float")
+
+            df_fa_c = df_fa.iloc[:, -number:].applymap(
+                lambda x: lambda_long_number_format(x)
+            )
+
+            if ratios:
+                df_fa_pc = df_fa.iloc[1:].pct_change(axis="columns").fillna(0)
+                j = 0
+                for i in list(range(1, 25)):
+                    df_fa.iloc[i] = df_fa_pc.iloc[j]
+                    j += 1
+
+            df_fa = df_fa.iloc[:, 0:number]
+
+            return df_fa_c if not plot else df_fa
     return pd.DataFrame()
 
 
 @log_start_end(log=logger)
 def get_balance_sheet(
-    ticker: str, number: int, quarterly: bool = False
+    ticker: str,
+    number: int,
+    quarterly: bool = False,
+    ratios: bool = False,
+    plot: bool = False,
 ) -> pd.DataFrame:
     """Get balance sheets for company
 
@@ -214,11 +252,15 @@ def get_balance_sheet(
         Number of past to get
     quarterly : bool, optional
         Flag to get quarterly instead of annual, by default False
+    ratios: bool
+        Shows percentage change, by default False
+    plot: bool
+        If the data shall be formatted ready to plot
 
     Returns
     -------
     pd.DataFrame
-        Dataframe of income statements
+        DataFrame of the balance sheet
     """
     url = f"https://www.alphavantage.co/query?function=BALANCE_SHEET&symbol={ticker}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
     r = requests.get(url)
@@ -227,34 +269,65 @@ def get_balance_sheet(
     # If the returned data was unsuccessful
     if "Error Message" in response_json:
         console.print(response_json["Error Message"])
+
+    # check if json is empty
+    if not response_json:
+        console.print("No data found from Alpha Vantage, looking in Yahoo Finance\n")
+        if (
+            yahoo_finance_model.get_financials(ticker, financial="balance-sheet")
+            is not None
+        ):
+            return yahoo_finance_model.get_financials(ticker, financial="balance-sheet")
     else:
-        # check if json is empty
-        if not response_json:
-            console.print("No data found")
+        statements = response_json
+        df_fa = pd.DataFrame()
+
+        if quarterly:
+            if "quarterlyReports" in statements:
+                df_fa = pd.DataFrame(statements["quarterlyReports"])
         else:
-            statements = response_json
-            df_fa = pd.DataFrame()
+            if "annualReports" in statements:
+                df_fa = pd.DataFrame(statements["annualReports"])
 
-            if quarterly:
-                if "quarterlyReports" in statements:
-                    df_fa = pd.DataFrame(statements["quarterlyReports"])
-            else:
-                if "annualReports" in statements:
-                    df_fa = pd.DataFrame(statements["annualReports"])
+        if df_fa.empty:
+            console.print("No data found from Alpha Vantage\n")
+            return pd.DataFrame()
 
-            if df_fa.empty:
-                console.print("No data found")
-                return pd.DataFrame()
+        df_fa = df_fa.set_index("fiscalDateEnding")
+        df_fa = df_fa[::-1].T
 
-            df_fa = df_fa.set_index("fiscalDateEnding")
-            df_fa = df_fa.head(number)
-            df_fa = df_fa.applymap(lambda x: lambda_long_number_format(x))
-            return df_fa[::-1].T
+        df_fa = df_fa.replace("None", "0")
+        df_fa.iloc[1:] = df_fa.iloc[1:].astype("float")
+
+        df_fa_c = df_fa.iloc[:, -number:].applymap(
+            lambda x: lambda_long_number_format(x)
+        )
+
+        if ratios:
+            df_fa_pc = df_fa.iloc[1:].pct_change(axis="columns").fillna(0)
+            j = 0
+            for i in list(range(1, 37)):
+                df_fa.iloc[i] = df_fa_pc.iloc[j]
+                j += 1
+
+            df_fa_c = df_fa.iloc[:, 0:number].applymap(
+                lambda x: lambda_long_number_format(x)
+            )
+
+        df_fa = df_fa.iloc[:, 0:number]
+
+        return df_fa_c if not plot else df_fa
     return pd.DataFrame()
 
 
 @log_start_end(log=logger)
-def get_cash_flow(ticker: str, number: int, quarterly: bool = False) -> pd.DataFrame:
+def get_cash_flow(
+    ticker: str,
+    number: int,
+    quarterly: bool = False,
+    ratios: bool = False,
+    plot: bool = False,
+) -> pd.DataFrame:
     """Get cash flows for company
 
     Parameters
@@ -265,11 +338,15 @@ def get_cash_flow(ticker: str, number: int, quarterly: bool = False) -> pd.DataF
         Number of past to get
     quarterly : bool, optional
         Flag to get quarterly instead of annual, by default False
+    ratios: bool
+        Shows percentage change, by default False
+    plot: bool
+        If the data shall be formatted ready to plot
 
     Returns
     -------
     pd.DataFrame
-        Dataframe of income statements
+        Dataframe of cash flow statements
     """
     url = f"https://www.alphavantage.co/query?function=CASH_FLOW&symbol={ticker}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
     r = requests.get(url)
@@ -281,7 +358,15 @@ def get_cash_flow(ticker: str, number: int, quarterly: bool = False) -> pd.DataF
     else:
         # check if json is empty
         if not response_json:
-            console.print("No data found")
+            console.print(
+                "No data found from Alpha Vantage, looking in Yahoo Finance\n"
+            )
+
+            if (
+                yahoo_finance_model.get_financials(ticker, financial="cash-flow")
+                is not None
+            ):
+                return yahoo_finance_model.get_financials(ticker, financial="cash-flow")
         else:
             statements = response_json
             df_fa = pd.DataFrame()
@@ -294,13 +379,33 @@ def get_cash_flow(ticker: str, number: int, quarterly: bool = False) -> pd.DataF
                     df_fa = pd.DataFrame(statements["annualReports"])
 
             if df_fa.empty:
-                console.print("No data found")
+                console.print("No data found from Alpha Vantage\n")
                 return pd.DataFrame()
 
             df_fa = df_fa.set_index("fiscalDateEnding")
-            df_fa = df_fa.head(number)
-            df_fa = df_fa.applymap(lambda x: lambda_long_number_format(x))
-            return df_fa[::-1].T
+            df_fa = df_fa[::-1].T
+
+            df_fa = df_fa.replace("None", "0")
+            df_fa.iloc[1:] = df_fa.iloc[1:].astype("float")
+
+            df_fa_c = df_fa.iloc[:, -number:].applymap(
+                lambda x: lambda_long_number_format(x)
+            )
+
+            if ratios:
+                df_fa_pc = df_fa.iloc[1:].pct_change(axis="columns").fillna(0)
+                j = 0
+                for i in list(range(1, 37)):
+                    df_fa.iloc[i] = df_fa_pc.iloc[j]
+                    j += 1
+
+                df_fa_c = df_fa.iloc[:, 0:number].applymap(
+                    lambda x: lambda_long_number_format(x)
+                )
+
+            df_fa = df_fa.iloc[:, 0:number]
+
+            return df_fa_c if not plot else df_fa
     return pd.DataFrame()
 
 
@@ -335,7 +440,7 @@ def get_earnings(ticker: str, quarterly: bool = False) -> pd.DataFrame:
     else:
         # check if json is empty
         if not result_json or len(result_json) < 2:
-            console.print("No data found")
+            console.print("No data found from Alpha Vantage\n")
         else:
 
             df_fa = pd.json_normalize(result_json)
@@ -403,14 +508,81 @@ def df_values(
     return values.tolist()
 
 
+def replace_df(name: str, row: pd.Series) -> pd.Series:
+    """Replaces text in pandas row based on color functions
+
+    Return
+    ----------
+    name : str
+        The name of the row
+    row : pd.Series
+        The original row
+
+    Parameters
+    ----------
+    new_row : pd.Series
+        The new formatted row
+    """
+    for i, item in enumerate(row):
+        if name == "Mscore":
+            row[i] = color_mscore(item)
+        elif name in ["Zscore", "McKee"]:
+            row[i] = color_zscore_mckee(item)
+        else:
+            row[i] = str(round(float(item), 2))
+
+    return row
+
+
+def color_mscore(value: str) -> str:
+    """Adds color to mscore dataframe values
+
+    Parameters
+    ----------
+    value : str
+        The string value
+
+    Returns
+    ----------
+    new_value : str
+        The string formatted with rich color
+    """
+    value_float = float(value)
+    if value_float <= -2.22:
+        return f"[green]{value_float:.2f}[/green]"
+    if value_float <= -1.78:
+        return f"[yellow]{value_float:.2f}[/yellow]"
+    return f"[red]{value_float:.2f}[/red]"
+
+
+def color_zscore_mckee(value: str) -> str:
+    """Adds color to mckee or zscore dataframe values
+    Parameters
+    ----------
+    value : str
+        The string value
+
+    Returns
+    ----------
+    new_value : str
+        The string formatted with rich color
+    """
+    value_float = float(value)
+    if value_float < 0.5:
+        return f"[red]{value_float:.2f}[/red]"
+    return f"[green]{value_float:.2f}[/green]"
+
+
 @log_start_end(log=logger)
-def get_fraud_ratios(ticker: str) -> pd.DataFrame:
+def get_fraud_ratios(ticker: str, detail: bool = False) -> pd.DataFrame:
     """Get fraud ratios based on fundamentals
 
     Parameters
     ----------
     ticker : str
         Stock ticker
+    detail : bool
+        Whether to provide extra m-score details
 
     Returns
     -------
@@ -466,7 +638,7 @@ def get_fraud_ratios(ticker: str) -> pd.DataFrame:
             ratios["SGAI"] = (sga[0] / sales[0]) / (sga[1] / sales[1])
             ratios["LVGI"] = (tl[0] / ta[0]) / (tl[1] / ta[1])
             ratios["TATA"] = (icfo[0] - cfo[0]) / ta[0]
-            ratios["MSCORE"] = (
+            ratios["Mscore"] = (
                 -4.84
                 + (0.92 * ratios["DSRI"])
                 + (0.58 * ratios["GMI"])
@@ -492,7 +664,7 @@ def get_fraud_ratios(ticker: str) -> pd.DataFrame:
 
             mckee = x**2 / (x**2 + y**2)
             ratios["Zscore"] = zscore
-            ratios["Mscore"] = mckee
+            ratios["McKee"] = mckee
         except ZeroDivisionError:
             for item in [
                 "DSRI",
@@ -503,15 +675,19 @@ def get_fraud_ratios(ticker: str) -> pd.DataFrame:
                 "SGAI",
                 "LVGI",
                 "TATA",
-                "MSCORE",
-                "Zscore",
                 "Mscore",
+                "Zscore",
+                "Mckee",
             ]:
                 ratios[item] = "N/A"
         if fraud_years.empty:
             fraud_years.index = ratios.keys()
         fraud_years[df_cf.index[i]] = ratios.values()
     fraud_years = fraud_years[sorted(fraud_years)]
+    if not detail:
+        details = ["DSRI", "GMI", "AQI", "SGI", "DEPI", "SGAI", "LVGI", "TATA"]
+        fraud_years = fraud_years.drop(details)
+
     return fraud_years
 
 

@@ -16,7 +16,11 @@ from openbb_terminal.common.behavioural_analysis.finbrain_view import (
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.helper_funcs import export_data, plot_autoscale
+from openbb_terminal.helper_funcs import (
+    export_data,
+    plot_autoscale,
+    is_valid_axes_count,
+)
 from openbb_terminal.rich_config import console
 from openbb_terminal import rich_config
 
@@ -69,29 +73,18 @@ def display_crypto_sentiment_analysis(
         # This plot has 1 axis
         if external_axes is None:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        else:
-            if len(external_axes) != 1:
-                logger.error("Expected list of one axis item.")
-                console.print("[red]Expected list of one axis item.\n[/red]")
-                return
+        elif is_valid_axes_count(external_axes, 1):
             (ax,) = external_axes
-
+        else:
+            return
         for index, row in sentiment.iterrows():
-            if float(row["Sentiment Analysis"]) >= 0:
-                ax.scatter(
-                    index, float(row["Sentiment Analysis"]), s=100, color=theme.up_color
-                )
-            else:
-                ax.scatter(
-                    index,
-                    float(row["Sentiment Analysis"]),
-                    s=100,
-                    color=theme.down_color,
-                )
+            ax.scatter(
+                index, float(row["Sentiment Analysis"]), s=75, color="white", zorder=3
+            )
         ax.axhline(y=0, linestyle="--")
         ax.set_xlabel("Time")
-        ax.set_ylabel("Sentiment")
-        start_date = sentiment.index[-1].strftime("%Y/%m/%d")
+        ax.set_ylabel("Finbrain's Sentiment Score")
+        start_date = sentiment.index[0].strftime("%Y/%m/%d")
         ax.set_title(f"FinBrain's Sentiment Analysis for {coin}-USD since {start_date}")
         ax.set_ylim([-1.1, 1.1])
         senValues = np.array(pd.to_numeric(sentiment["Sentiment Analysis"].values))
@@ -115,7 +108,6 @@ def display_crypto_sentiment_analysis(
             interpolate=True,
         )
         theme.style_primary_axis(ax)
-
         if external_axes is None:
             theme.visualize_output()
 

@@ -14,6 +14,7 @@ from openbb_terminal.helper_funcs import (
     print_rich_table,
     plot_autoscale,
     camel_case_split,
+    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.fundamental_analysis import av_model
@@ -43,13 +44,13 @@ def display_overview(ticker: str):
         show_index=True,
     )
 
-    console.print(f"\nCompany Description:\n\n{df_fa.loc['Description'][0]}")
+    console.print(f"Company Description:\n\n{df_fa.loc['Description'][0]}")
     console.print("")
 
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
-def display_key(ticker: str):
+def display_key(ticker: str, export: str = ""):
     """Alpha Vantage key metrics
 
     Parameters
@@ -66,13 +67,18 @@ def display_key(ticker: str):
         df_key, headers=[""], title=f"{ticker} Key Metrics", show_index=True
     )
 
-    console.print("")
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), "key", df_key)
 
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
 def display_income_statement(
-    ticker: str, limit: int, quarterly: bool = False, export: str = ""
+    ticker: str,
+    limit: int = 5,
+    quarterly: bool = False,
+    ratios: bool = False,
+    plot: list = None,
+    export: str = "",
 ):
     """Alpha Vantage income statement
 
@@ -81,67 +87,178 @@ def display_income_statement(
     ticker : str
         Fundamental analysis ticker symbol
     limit: int
-        Number of past statements
+        Number of past statements, by default 5
     quarterly: bool
-        Flag to get quarterly instead of annual
+        Flag to get quarterly instead of annual, by default False
+    ratios: bool
+        Shows percentage change, by default False
+    plot: list
+        List of row labels to plot
     export: str
         Format to export data
     """
-    df_income = av_model.get_income_statements(ticker, limit, quarterly)
+    df_income = av_model.get_income_statements(
+        ticker, limit, quarterly, ratios, bool(plot)
+    )
 
     if df_income.empty:
         return
 
-    indexes = df_income.index
-    new_indexes = [camel_case_split(ind) for ind in indexes]
-    df_income.index = new_indexes
+    if plot:
+        rows_plot = len(plot)
+        maximum_value = df_income.max().max()
+        income_plot_data = df_income.transpose()
+        income_plot_data.columns = income_plot_data.columns.str.lower()
 
-    print_rich_table(
-        df_income,
-        headers=list(df_income.columns),
-        title=f"{ticker} Income Statement",
-        show_index=True,
-    )
+        if not ratios:
+            if maximum_value > 1_000_000_000_000:
+                df_rounded = income_plot_data / 1_000_000_000_000
+                denomination = " in Trillions"
+            elif maximum_value > 1_000_000_000:
+                df_rounded = income_plot_data / 1_000_000_000
+                denomination = " in Billions"
+            elif maximum_value > 1_000_000:
+                df_rounded = income_plot_data / 1_000_000
+                denomination = " in Millions"
+            elif maximum_value > 1_000:
+                df_rounded = income_plot_data / 1_000
+                denomination = " in Thousands"
+            else:
+                df_rounded = income_plot_data
+                denomination = ""
+        else:
+            df_rounded = income_plot_data
+            denomination = ""
 
-    console.print("")
+        if rows_plot == 1:
+            fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+            df_rounded[plot[0].replace("_", "")].plot()
+            title = (
+                f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {ticker.upper()}"
+                if ratios
+                else f"{plot[0].replace('_', ' ')} of {ticker.upper()} {denomination}"
+            )
+            plt.title(title)
+            theme.style_primary_axis(ax)
+            theme.visualize_output()
+        else:
+            fig, axes = plt.subplots(rows_plot)
+            for i in range(rows_plot):
+                axes[i].plot(df_rounded[plot[i].replace("_", "")])
+                axes[i].set_title(f"{plot[i].replace('_', ' ')} {denomination}")
+            theme.style_primary_axis(axes[0])
+            fig.autofmt_xdate()
+    else:
+        indexes = df_income.index
+        new_indexes = [camel_case_split(ind) for ind in indexes]
+        df_income.index = new_indexes
+
+        print_rich_table(
+            df_income,
+            headers=list(df_income.columns),
+            title=f"{ticker} Income Statement"
+            if not ratios
+            else f"{'QoQ' if quarterly else 'YoY'} Change of {ticker} Income Statement",
+            show_index=True,
+        )
+
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "income", df_income)
 
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
 def display_balance_sheet(
-    ticker: str, limit: int, quarterly: bool = False, export: str = ""
+    ticker: str,
+    limit: int = 5,
+    quarterly: bool = False,
+    ratios: bool = False,
+    plot: list = None,
+    export: str = "",
 ):
-    """Alpha Vantage income statement
+    """Alpha Vantage balance sheet statement
 
     Parameters
     ----------
     ticker : str
         Fundamental analysis ticker symbol
     limit: int
-        Number of past statements
+        Number of past statements, by default 5
     quarterly: bool
-        Flag to get quarterly instead of annual
+        Flag to get quarterly instead of annual, by default False
+    ratios: bool
+        Shows percentage change, by default False
+    plot: list
+        List of row labels to plot
     export: str
         Format to export data
     """
-    df_balance = av_model.get_balance_sheet(ticker, limit, quarterly)
+    df_balance = av_model.get_balance_sheet(
+        ticker, limit, quarterly, ratios, bool(plot)
+    )
 
     if df_balance.empty:
         return
 
-    indexes = df_balance.index
-    new_indexes = [camel_case_split(ind) for ind in indexes]
-    df_balance.index = new_indexes
+    if plot:
+        rows_plot = len(plot)
+        maximum_value = df_balance.max().max()
+        balance_plot_data = df_balance.transpose()
+        balance_plot_data.columns = balance_plot_data.columns.str.lower()
 
-    print_rich_table(
-        df_balance,
-        headers=list(df_balance.columns),
-        title=f"{ticker} Balance Sheet",
-        show_index=True,
-    )
+        if not ratios:
+            if maximum_value > 1_000_000_000_000:
+                df_rounded = balance_plot_data / 1_000_000_000_000
+                denomination = " in Trillions"
+            elif maximum_value > 1_000_000_000:
+                df_rounded = balance_plot_data / 1_000_000_000
+                denomination = " in Billions"
+            elif maximum_value > 1_000_000:
+                df_rounded = balance_plot_data / 1_000_000
+                denomination = " in Millions"
+            elif maximum_value > 1_000:
+                df_rounded = balance_plot_data / 1_000
+                denomination = " in Thousands"
+            else:
+                df_rounded = balance_plot_data
+                denomination = ""
+        else:
+            df_rounded = balance_plot_data
+            denomination = ""
 
-    console.print("")
+        if rows_plot == 1:
+            fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+            df_rounded[plot[0].replace("_", "")].plot()
+            title = (
+                f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {ticker.upper()}"
+                if ratios
+                else f"{plot[0].replace('_', ' ')} of {ticker.upper()} {denomination}"
+            )
+            plt.title(title)
+            theme.style_primary_axis(ax)
+            theme.visualize_output()
+        else:
+            fig, axes = plt.subplots(rows_plot)
+            for i in range(rows_plot):
+                axes[i].plot(df_rounded[plot[i].replace("_", "")])
+                axes[i].set_title(f"{plot[i].replace('_', ' ')} {denomination}")
+            theme.style_primary_axis(axes[0])
+            fig.autofmt_xdate()
+
+    else:
+
+        indexes = df_balance.index
+        new_indexes = [camel_case_split(ind) for ind in indexes]
+        df_balance.index = new_indexes
+
+        print_rich_table(
+            df_balance,
+            headers=list(df_balance.columns),
+            title=f"{ticker} Balance Sheet"
+            if not ratios
+            else f"{'QoQ' if quarterly else 'YoY'} Change of {ticker} Balance Sheet",
+            show_index=True,
+        )
+
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "balance", df_balance
     )
@@ -150,7 +267,12 @@ def display_balance_sheet(
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
 def display_cash_flow(
-    ticker: str, limit: int, quarterly: bool = False, export: str = ""
+    ticker: str,
+    limit: int = 5,
+    quarterly: bool = False,
+    ratios: bool = False,
+    plot: list = None,
+    export: str = "",
 ):
     """Alpha Vantage income statement
 
@@ -159,29 +281,81 @@ def display_cash_flow(
     ticker : str
         Fundamental analysis ticker symbol
     limit: int
-        Number of past statements
+        Number of past statements, by default 5
     quarterly: bool
-        Flag to get quarterly instead of annual
+        Flag to get quarterly instead of annual, by default False
+    ratios: bool
+        Shows percentage change, by default False
+    plot: list
+        List of row labels to plot
     export: str
         Format to export data
     """
-    df_cash = av_model.get_cash_flow(ticker, limit, quarterly)
+    df_cash = av_model.get_cash_flow(ticker, limit, quarterly, ratios, bool(plot))
 
     if df_cash.empty:
         return
 
-    indexes = df_cash.index
-    new_indexes = [camel_case_split(ind) for ind in indexes]
-    df_cash.index = new_indexes
+    if plot:
+        rows_plot = len(plot)
+        maximum_value = df_cash.max().max()
+        cash_plot_data = df_cash.transpose()
+        cash_plot_data.columns = cash_plot_data.columns.str.lower()
 
-    print_rich_table(
-        df_cash,
-        headers=list(df_cash.columns),
-        title=f"{ticker} Balance Sheet",
-        show_index=True,
-    )
+        if not ratios:
+            if maximum_value > 1_000_000_000_000:
+                df_rounded = cash_plot_data / 1_000_000_000_000
+                denomination = " in Trillions"
+            elif maximum_value > 1_000_000_000:
+                df_rounded = cash_plot_data / 1_000_000_000
+                denomination = " in Billions"
+            elif maximum_value > 1_000_000:
+                df_rounded = cash_plot_data / 1_000_000
+                denomination = " in Millions"
+            elif maximum_value > 1_000:
+                df_rounded = cash_plot_data / 1_000
+                denomination = " in Thousands"
+            else:
+                df_rounded = cash_plot_data
+                denomination = ""
+        else:
+            df_rounded = cash_plot_data
+            denomination = ""
 
-    console.print("")
+        if rows_plot == 1:
+            fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+            df_rounded[plot[0].replace("_", "")].plot()
+            title = (
+                f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {ticker.upper()}"
+                if ratios
+                else f"{plot[0].replace('_', ' ')} of {ticker.upper()} {denomination}"
+            )
+            plt.title(title)
+            theme.style_primary_axis(ax)
+            theme.visualize_output()
+        else:
+            fig, axes = plt.subplots(rows_plot)
+            for i in range(rows_plot):
+                axes[i].plot(df_rounded[plot[i].replace("_", "")])
+                axes[i].set_title(f"{plot[i].replace('_', ' ')} {denomination}")
+            theme.style_primary_axis(axes[0])
+            fig.autofmt_xdate()
+
+    else:
+
+        indexes = df_cash.index
+        new_indexes = [camel_case_split(ind) for ind in indexes]
+        df_cash.index = new_indexes
+
+        print_rich_table(
+            df_cash,
+            headers=list(df_cash.columns),
+            title=f"{ticker} Cash flow"
+            if not ratios
+            else f"{'QoQ' if quarterly else 'YoY'} Change of {ticker} Cash flow",
+            show_index=True,
+        )
+
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "cash", df_cash)
 
 
@@ -214,13 +388,19 @@ def display_earnings(
         show_index=False,
         title=f"{ticker} Earnings",
     )
-    console.print("")
+
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "earnings", df_fa)
 
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
-def display_fraud(ticker: str, export: str = "", help_text: bool = False):
+def display_fraud(
+    ticker: str,
+    export: str = "",
+    help_text: bool = False,
+    color: bool = True,
+    detail: bool = False,
+):
     """Fraud indicators for given ticker
     Parameters
     ----------
@@ -230,18 +410,31 @@ def display_fraud(ticker: str, export: str = "", help_text: bool = False):
         Whether to export the dupont breakdown
     help_text : bool
         Whether to show help text
+    color : bool
+        Whether to show color in the dataframe
+    detail : bool
+        Whether to show the details for the mscore
     """
-    df = av_model.get_fraud_ratios(ticker)
-    if df.empty:
-        console.print(
-            "[red]AlphaVantage API limit reached, please wait one minute[/red]\n"
-        )
-    else:
-        print_rich_table(
-            df, headers=list(df.columns), show_index=True, title="Fraud Risk Statistics"
-        )
+    df = av_model.get_fraud_ratios(ticker, detail=detail)
 
-        help_message = """
+    if df.empty:
+        console.print("")
+        return
+
+    df_color = df.copy()
+    if color:
+        for column in df_color:
+            df_color[column] = df_color[column].astype(str)
+        df_color = df_color.apply(lambda x: av_model.replace_df(x.name, x), axis=1)
+
+    print_rich_table(
+        df_color,
+        headers=list(df_color.columns),
+        show_index=True,
+        title="Fraud Risk Statistics",
+    )
+
+    help_message = """
 MSCORE:
 An mscore above -1.78 indicates a high risk of fraud, and one above  -2.22 indicates a medium risk of fraud.
 
@@ -255,6 +448,7 @@ A mckee less than 0.5 indicates a high risk of fraud.
     if help_text:
         console.print(help_message)
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "dupont", df)
+    return
 
 
 @log_start_end(log=logger)
@@ -289,12 +483,10 @@ def display_dupont(
         return
     if not external_axes:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of one axis item.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
+    else:
+        return
 
     colors = theme.get_colors()
     df.transpose().plot(kind="line", ax=ax, color=colors)
@@ -304,5 +496,4 @@ def display_dupont(
     if not external_axes:
         theme.visualize_output()
 
-    console.print("")
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "dupont", df)

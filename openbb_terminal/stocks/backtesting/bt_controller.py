@@ -13,12 +13,11 @@ from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_non_negative_float,
     check_positive,
-    parse_known_args_and_warn,
     valid_date,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.decorators import log_start_end
 
 # This code below aims to fix an issue with the fnn module, used by bt module
@@ -54,16 +53,15 @@ class BacktestingController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = f"""
-[param]Ticker: [/param]{self.ticker.upper()}[cmds]
-
-    whatif      what if you had bought X shares on day Y
-
-    ema         buy when price exceeds EMA(l)
-    ema_cross   buy when EMA(short) > EMA(long)
-    rsi         buy when RSI < low and sell when RSI > high[/cmds]
-        """
-        console.print(text=help_text, menu="Stocks - Backtesting")
+        mt = MenuText("stocks/bt/")
+        mt.add_param("_ticker", self.ticker.upper())
+        mt.add_raw("\n")
+        mt.add_cmd("whatif")
+        mt.add_raw("\n")
+        mt.add_cmd("ema")
+        mt.add_cmd("ema_cross")
+        mt.add_cmd("rsi")
+        console.print(text=mt.menu_text, menu="Stocks - Backtesting")
 
     def custom_reset(self):
         """Class specific component of reset command"""
@@ -98,7 +96,7 @@ class BacktestingController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-d")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             bt_view.display_whatif_scenario(
                 ticker=self.ticker,
@@ -136,7 +134,7 @@ class BacktestingController(BaseController):
             help="Flag to not show buy and hold comparison",
             dest="no_bench",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -197,7 +195,7 @@ class BacktestingController(BaseController):
             help="Flag that disables the short sell",
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
@@ -271,7 +269,7 @@ class BacktestingController(BaseController):
             dest="shortable",
             help="Flag that disables the short sell",
         )
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:

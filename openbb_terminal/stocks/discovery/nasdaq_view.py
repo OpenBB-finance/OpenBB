@@ -43,7 +43,6 @@ def display_top_retail(n_days: int = 3, export: str = ""):
             title=f"[bold]{date} Top Retail:[/bold]",
         )
 
-        console.print("")
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "rtat", retails)
 
 
@@ -95,5 +94,4 @@ def display_dividend_calendar(
         headers=[x.title() for x in calendar.columns],
         title=f"[bold]Dividend Calendar for {date}[/bold]",
     )
-    console.print("")
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "divcal", calendar)

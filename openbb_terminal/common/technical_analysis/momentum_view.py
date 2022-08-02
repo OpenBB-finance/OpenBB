@@ -14,8 +14,13 @@ from openbb_terminal.config_terminal import theme
 from openbb_terminal.common.technical_analysis import momentum_model
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import export_data, plot_autoscale, reindex_dates
-from openbb_terminal.rich_config import console
+from openbb_terminal.helper_funcs import (
+    export_data,
+    plot_autoscale,
+    reindex_dates,
+    is_valid_axes_count,
+    print_rich_table,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -57,15 +62,14 @@ def display_cci(
 
     # This plot has 2 axes
     if external_axes is None:
-        _, (ax1, ax2) = plt.subplots(
+        _, axes = plt.subplots(
             2, 1, figsize=plot_autoscale(), sharex=True, dpi=PLOT_DPI
         )
+        (ax1, ax2) = axes
+    elif is_valid_axes_count(external_axes, 2):
+        (ax1, ax2) = external_axes
     else:
-        if len(external_axes) != 2:
-            logger.error("Expected list of two axis items.")
-            console.print("[red]Expected list of 2 axis items.\n[/red]")
-            return
-        ax1, ax2 = external_axes
+        return
 
     ax1.set_title(f"{s_ticker} CCI")
     ax1.plot(
@@ -148,15 +152,14 @@ def display_macd(
 
     # This plot has 2 axes
     if external_axes is None:
-        _, (ax1, ax2) = plt.subplots(
+        _, axes = plt.subplots(
             2, 1, figsize=plot_autoscale(), sharex=True, dpi=PLOT_DPI
         )
+        (ax1, ax2) = axes
+    elif is_valid_axes_count(external_axes, 2):
+        (ax1, ax2) = external_axes
     else:
-        if len(external_axes) != 2:
-            logger.error("Expected list of two axis items.")
-            console.print("[red]Expected list of 2 axis items.\n[/red]")
-            return
-        ax1, ax2 = external_axes
+        return
 
     ax1.set_title(f"{s_ticker} MACD")
     ax1.plot(plot_data.index, plot_data.iloc[:, 1].values)
@@ -234,15 +237,14 @@ def display_rsi(
 
     # This plot has 2 axes
     if external_axes is None:
-        _, (ax1, ax2) = plt.subplots(
+        _, axes = plt.subplots(
             2, 1, figsize=plot_autoscale(), sharex=True, dpi=PLOT_DPI
         )
+        (ax1, ax2) = axes
+    elif is_valid_axes_count(external_axes, 2):
+        (ax1, ax2) = external_axes
     else:
-        if len(external_axes) != 2:
-            logger.error("Expected list of two axis items.")
-            console.print("[red]Expected list of 2 axis items.\n[/red]")
-            return
-        ax1, ax2 = external_axes
+        return
 
     plot_data = pd.merge(series, df_ta, how="outer", left_index=True, right_index=True)
     plot_data = reindex_dates(plot_data)
@@ -331,12 +333,10 @@ def display_stoch(
         )
         ax1, ax2 = axes
         ax3 = ax2.twinx()
+    elif is_valid_axes_count(external_axes, 3):
+        (ax1, ax2, ax3) = external_axes
     else:
-        if len(external_axes) != 3:
-            logger.error("Expected list of three axis items.")
-            console.print("[red]Expected list of 3 axis items.\n[/red]")
-            return
-        ax1, ax2, ax3 = external_axes
+        return
 
     plot_data = pd.merge(ohlc, df_ta, how="outer", left_index=True, right_index=True)
     plot_data = reindex_dates(plot_data)
@@ -417,12 +417,10 @@ def display_fisher(
         )
         ax1, ax2 = axes
         ax3 = ax2.twinx()
+    elif is_valid_axes_count(external_axes, 3):
+        (ax1, ax2, ax3) = external_axes
     else:
-        if len(external_axes) != 3:
-            logger.error("Expected list of three axis items.")
-            console.print("[red]Expected list of 3 axis items.\n[/red]")
-            return
-        ax1, ax2, ax3 = external_axes
+        return
 
     ax1.set_title(f"{s_ticker} Fisher Transform")
     ax1.plot(plot_data.index, plot_data["Adj Close"].values)
@@ -502,15 +500,14 @@ def display_cg(
 
     # This plot has 2 axes
     if external_axes is None:
-        _, (ax1, ax2) = plt.subplots(
+        _, axes = plt.subplots(
             2, 1, figsize=plot_autoscale(), sharex=True, dpi=PLOT_DPI
         )
+        (ax1, ax2) = axes
+    elif is_valid_axes_count(external_axes, 2):
+        (ax1, ax2) = external_axes
     else:
-        if len(external_axes) != 2:
-            logger.error("Expected list of two axis items.")
-            console.print("[red]Expected list of 2 axis items.\n[/red]")
-            return
-        ax1, ax2 = external_axes
+        return
 
     ax1.set_title(f"{s_ticker} Centre of Gravity")
     ax1.plot(plot_data.index, plot_data[series.name].values)
@@ -542,4 +539,69 @@ def display_cg(
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "cg",
         df_ta,
+    )
+
+
+@log_start_end(log=logger)
+def display_clenow_momentum(
+    series: pd.Series,
+    length: int = 90,
+    export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
+):
+    """
+
+    Parameters
+    ----------
+    series
+    length
+    export
+
+    Returns
+    -------
+
+    """
+    r2, coef, fit_data = momentum_model.clenow_momentum(series, length)
+
+    df = pd.DataFrame.from_dict(
+        {
+            "R^2": f"{r2:.5f}",
+            "Fit Coef": f"{coef:.5f}",
+            "Factor": f"{coef * r2:.5f}",
+        },
+        orient="index",
+    )
+    print_rich_table(
+        df,
+        show_index=True,
+        headers=[""],
+        title="Clenow Exponential Regression Factor",
+        show_header=False,
+    )
+
+    # This plot has 2 axes
+    if external_axes is None:
+        _, ax1 = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+
+    elif is_valid_axes_count(external_axes, 1):
+        ax1 = external_axes
+    else:
+        return
+
+    ax1.plot(series.index, np.log(series.values))
+    ax1.plot(series.index[-length:], fit_data, linewidth=2)
+
+    ax1.set_title("Clenow Momentum Exponential Regression")
+    ax1.set_xlim(series.index[0], series.index[-1])
+    ax1.set_ylabel("Log Price")
+    theme.style_primary_axis(
+        ax1,
+    )
+    if external_axes is None:
+        theme.visualize_output()
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
+        "clenow",
     )

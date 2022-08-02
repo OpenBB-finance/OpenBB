@@ -97,7 +97,7 @@ def vcr_config():
 @pytest.mark.parametrize(
     "queue, expected",
     [
-        (["load", "help"], []),
+        (["load", "help"], ["help"]),
         (["quit", "help"], ["help"]),
     ],
 )
@@ -187,7 +187,7 @@ def test_menu_without_queue_completion(mocker):
         queue=None,
     ).menu()
 
-    assert result_menu == []
+    assert result_menu == ["help"]
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -248,7 +248,7 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
         queue=None,
     ).menu()
 
-    assert result_menu == []
+    assert result_menu == ["help"]
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -553,7 +553,7 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
                 "--put",
                 "--chain=MOCK_CHAIN_ID",
                 "--raw",
-                "--source=ce",
+                "--source=chartexchange",
                 "--limit=2",
                 "--export=csv",
             ],
@@ -576,7 +576,7 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
                 "--put",
                 "--chain=MOCK_CHAIN_ID",
                 "--raw",
-                "--source=td",
+                "--source=tradier",
                 "--limit=2",
                 "--export=csv",
             ],
@@ -613,6 +613,7 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
             [
                 "--calls",
                 "--puts",
+                "--source=tradier",
                 "--min=1",
                 "--max=2",
                 "--display=volume",
@@ -628,6 +629,25 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
                 max_sp=2.0,
                 calls_only=True,
                 puts_only=True,
+                export="csv",
+            ),
+        ),
+        (
+            "call_chains",
+            [
+                "--min=1",
+                "--max=2",
+                "--export=csv",
+            ],
+            "yfinance_view.display_chains",
+            [],
+            dict(
+                ticker="MOCK_TICKER",
+                expiry="2022-01-07",
+                min_sp=1.0,
+                max_sp=2.0,
+                calls_only=False,
+                puts_only=False,
                 export="csv",
             ),
         ),
@@ -662,7 +682,7 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
                 "--max=2",
                 "--calls",
                 "--puts",
-                "--source=tr",
+                "--source=tradier",
                 "--export=csv",
             ],
             "tradier_view.plot_vol",
@@ -705,7 +725,7 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
                 "--minv=1",
                 "--min=2",
                 "--max=3",
-                "--source=tr",
+                "--source=tradier",
                 "--export=csv",
             ],
             "tradier_view.plot_volume_open_interest",
@@ -750,7 +770,7 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
                 "--max=2",
                 "--calls",
                 "--puts",
-                "--source=tr",
+                "--source=tradier",
                 "--export=csv",
             ],
             "tradier_view.plot_oi",
@@ -832,17 +852,6 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
             dict(),
         ),
         (
-            "call_payoff",
-            [],
-            "payoff_controller.PayoffController",
-            [
-                "MOCK_TICKER",
-                "2022-01-07",
-                [],
-            ],
-            dict(),
-        ),
-        (
             "call_pricing",
             [],
             "pricing_controller.PricingController",
@@ -858,7 +867,7 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
         ),
     ],
 )
-def test_call_func_test(
+def test_call_func(
     tested_func, mocked_func, other_args, called_args, called_kwargs, mocker
 ):
     path_controller = "openbb_terminal.stocks.options.options_controller"
@@ -921,13 +930,12 @@ def test_call_func_test(
         "call_plot",
         "call_parity",
         "call_binom",
-        "call_payoff",
         "call_pricing",
     ],
 )
 def test_call_func_no_ticker(func, mocker):
     mocker.patch(
-        "openbb_terminal.stocks.options.options_controller.parse_known_args_and_warn",
+        "openbb_terminal.stocks.options.options_controller.OptionsController.parse_known_args_and_warn",
         return_value=True,
     )
     controller = options_controller.OptionsController(ticker=None)
@@ -950,7 +958,6 @@ def test_call_func_no_ticker(func, mocker):
         "call_plot",
         "call_parity",
         "call_binom",
-        "call_payoff",
         "call_pricing",
     ],
 )
@@ -973,7 +980,7 @@ def test_call_func_no_selected_date(func, mocker):
 
     # MOCK PARSE_KNOWN_ARGS_AND_WARN
     mocker.patch(
-        "openbb_terminal.stocks.options.options_controller.parse_known_args_and_warn",
+        "openbb_terminal.stocks.options.options_controller.OptionsController.parse_known_args_and_warn",
         return_value=True,
     )
 

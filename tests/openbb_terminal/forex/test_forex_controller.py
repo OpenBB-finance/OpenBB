@@ -37,6 +37,7 @@ def vcr_config():
             ("period1", "MOCK_PERIOD_1"),
             ("period2", "MOCK_PERIOD_2"),
             ("date", "MOCK_DATE"),
+            ("apiKey", "MOCK_API_KEY"),
         ],
     }
 
@@ -45,7 +46,7 @@ def vcr_config():
 @pytest.mark.parametrize(
     "queue, expected",
     [
-        (["load", "help"], []),
+        (["load", "help"], ["help"]),
         (["quit", "help"], ["help"]),
     ],
 )
@@ -95,7 +96,7 @@ def test_menu_without_queue_completion(mocker):
 
     result_menu = forex_controller.ForexController(queue=None).menu()
 
-    assert result_menu == []
+    assert result_menu == ["help"]
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -139,7 +140,7 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
 
     result_menu = forex_controller.ForexController(queue=None).menu()
 
-    assert result_menu == []
+    assert result_menu == ["help"]
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -232,8 +233,6 @@ def test_call_func_expect_queue(expected_queue, func, queue):
 @pytest.mark.parametrize(
     "tested_func, other_args, mocked_func, called_args, called_kwargs",
     [
-        ("call_to", ["GBP"], None, [], dict()),
-        ("call_from", ["EUR"], None, [], dict()),
         (
             "call_ta",
             None,
@@ -278,8 +277,10 @@ def test_call_func(
 
         controller = forex_controller.ForexController(queue=None)
         controller.data = NON_EMPTY_DF
+        controller.fx_pair = "MOCK_TICKER"
         controller.to_symbol = "MOCK_TICKER"
         controller.from_symbol = "MOCK_TICKER"
+        controller.source = "yf"
         controller.interval = ""
 
         getattr(controller, tested_func)(other_args)
@@ -303,8 +304,6 @@ def test_call_func(
 @pytest.mark.parametrize(
     "func",
     [
-        "call_from",
-        "call_to",
         "call_load",
         "call_candle",
     ],
@@ -312,7 +311,7 @@ def test_call_func(
 def test_call_func_no_parser(func, mocker):
     # MOCK PARSE_KNOWN_ARGS_AND_WARN
     mocker.patch(
-        target="openbb_terminal.forex.forex_controller.parse_known_args_and_warn",
+        target="openbb_terminal.forex.forex_controller.ForexController.parse_known_args_and_warn",
         return_value=None,
     )
     controller = forex_controller.ForexController(queue=None)
@@ -320,7 +319,7 @@ def test_call_func_no_parser(func, mocker):
     func_result = getattr(controller, func)(other_args=list())
     assert func_result is None
     assert controller.queue == []
-    getattr(forex_controller, "parse_known_args_and_warn").assert_called_once()
+    controller.parse_known_args_and_warn.assert_called_once()
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -336,7 +335,7 @@ def test_call_func_no_parser(func, mocker):
 def test_call_func_no_ticker(func, mocker):
     # MOCK PARSE_KNOWN_ARGS_AND_WARN
     mocker.patch(
-        "openbb_terminal.forex.forex_controller.parse_known_args_and_warn",
+        target="openbb_terminal.forex.forex_controller.ForexController.parse_known_args_and_warn",
         return_value=True,
     )
 
@@ -349,18 +348,15 @@ def test_call_func_no_ticker(func, mocker):
 
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.parametrize(
-    "from_symbol, to_symbol, expected",
+    "fx_pair, expected",
     [
-        (None, None, []),
-        ("MOCK_FROM", None, []),
-        (None, "MOCK_TO", []),
-        ("MOCK_FROM", "MOCK_TO", ["forex", "from MOCK_FROM", "to MOCK_TO"]),
+        (None, []),
+        ("MOCK_FX_PAIR", ["forex", "load MOCK_FX_PAIR"]),
     ],
 )
-def test_custom_reset(from_symbol, to_symbol, expected):
+def test_custom_reset(fx_pair, expected):
     controller = forex_controller.ForexController(queue=None)
-    controller.from_symbol = from_symbol
-    controller.to_symbol = to_symbol
+    controller.fx_pair = fx_pair
 
     result = controller.custom_reset()
 

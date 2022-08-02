@@ -12,7 +12,11 @@ from matplotlib import pyplot as plt
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import export_data, plot_autoscale
+from openbb_terminal.helper_funcs import (
+    export_data,
+    plot_autoscale,
+    is_valid_axes_count,
+)
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.dark_pool_shorts import finra_model
 
@@ -32,24 +36,23 @@ def darkpool_ats_otc(
     export : str
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
-        External axes (2 axis is expected in the list), by default None
+        External axes (2 axes are expected in the list), by default None
     """
     ats, otc = finra_model.getTickerFINRAdata(ticker)
 
     if ats.empty and otc.empty:
         console.print("No ticker data found!")
 
-        # This plot has 1 axis
+    # This plot has 2 axes
     if not external_axes:
-        _, (ax1, ax2) = plt.subplots(
+        _, axes = plt.subplots(
             2, 1, sharex=True, figsize=plot_autoscale(), dpi=PLOT_DPI
         )
-    else:
-        if len(external_axes) != 2:
-            logger.error("Expected list of two axis item.")
-            console.print("[red]Expected list of two axis item.\n[/red]")
-            return
+        (ax1, ax2) = axes
+    elif is_valid_axes_count(external_axes, 2):
         (ax1, ax2) = external_axes
+    else:
+        return
 
     if not ats.empty and not otc.empty:
         ax1.bar(
@@ -153,12 +156,10 @@ def plot_dark_pools_ats(
     # This plot has 1 axis
     if not external_axes:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of one axis item.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
+    else:
+        return
 
     for symbol in top_ats_tickers:
         ax.plot(

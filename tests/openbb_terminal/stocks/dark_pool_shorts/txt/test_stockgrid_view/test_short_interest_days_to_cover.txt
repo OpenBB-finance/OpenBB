@@ -1,4 +1,4 @@
-    Ticker  Float Short %  Days to Cover  Short Interest (1M)
+    Ticker  Float Short %  Days to Cover  Short Interest [1M]
 163   COWN      13.277242        12.7031             3.432167
 162   FOLD      10.004660        12.7210            25.077682
 

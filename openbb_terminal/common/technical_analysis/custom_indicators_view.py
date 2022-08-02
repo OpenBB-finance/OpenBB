@@ -18,8 +18,8 @@ from openbb_terminal.helper_funcs import (
     print_rich_table,
     reindex_dates,
     is_intraday,
+    is_valid_axes_count,
 )
-from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -51,7 +51,7 @@ def fibonacci_retracement(
     export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
-        External axes (2 axis is expected in the list), by default None
+        External axes (2 axes are expected in the list), by default None
     """
     (
         df_fib,
@@ -65,19 +65,17 @@ def fibonacci_retracement(
 
     plot_data = reindex_dates(ohlc)
 
-    # This plot has 1 axes
+    # This plot has 2 axes
     if external_axes is None:
         _, ax1 = plt.subplots(
             figsize=plot_autoscale(),
             dpi=PLOT_DPI,
         )
         ax2 = ax1.twinx()
+    elif is_valid_axes_count(external_axes, 2):
+        (ax1, ax2) = external_axes
     else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of 1 axis item.\n[/red]")
-            return
-        ax1, ax2 = external_axes
+        return
 
     ax1.plot(plot_data["Adj Close"])
 
@@ -124,7 +122,6 @@ def fibonacci_retracement(
             show_index=False,
             title="Fibonacci retracement levels",
         )
-        console.print("")
 
     export_data(
         export,

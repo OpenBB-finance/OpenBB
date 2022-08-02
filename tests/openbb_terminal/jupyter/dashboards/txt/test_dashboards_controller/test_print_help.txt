@@ -1,8 +1,0 @@
-
-   stocks        historic stock information
-   correlation   stock correlations
-   vsurf         options volatility surface
-   chains        options chain analysis
-   shortdata     finra shortdata analysis
-   crypto        cryptocurrency exchange rates against USD
-        

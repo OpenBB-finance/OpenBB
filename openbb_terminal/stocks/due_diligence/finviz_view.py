@@ -81,7 +81,6 @@ def analyst(ticker: str, export: str = ""):
         df, headers=list(df.columns), show_index=True, title="Display Analyst Ratings"
     )
 
-    console.print("")
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),

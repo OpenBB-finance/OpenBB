@@ -1,0 +1,21 @@
+portfolio
+load Public_Equity_Orderbook.xlsx
+show
+bench SPDR S&P 500 ETF Trust (SPY)
+alloc assets
+alloc sectors
+alloc countries
+alloc regions
+perf
+perf -t
+rolling
+rmr
+dd
+al
+var
+es
+sh
+so
+om
+q
+exit

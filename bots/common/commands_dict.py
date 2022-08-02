@@ -6,7 +6,6 @@ import pandas as pd
 
 from bots.economy.currencies import currencies_command
 from bots.economy.energy import energy_command
-from bots.economy.feargreed import feargreed_command
 from bots.economy.futures import futures_command
 from bots.economy.futures_coms import futures_coms_command
 from bots.economy.glbonds import glbonds_command
@@ -420,9 +419,6 @@ commands = {
     },
     "dps_spos": {"function": spos_command, "required": {"ticker": tickers}},
     "dps_psi": {"function": psi_command, "required": {"ticker": tickers}},
-    "econ_feargreed": {
-        "function": feargreed_command,
-    },
     "econ_overview": {
         "function": overview_command,
     },

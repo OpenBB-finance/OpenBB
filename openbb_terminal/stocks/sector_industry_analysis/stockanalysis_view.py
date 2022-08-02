@@ -18,6 +18,7 @@ from openbb_terminal.helper_funcs import (
     export_data,
     plot_autoscale,
     print_rich_table,
+    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.sector_industry_analysis import stockanalysis_model
@@ -184,11 +185,10 @@ def display_plots_financials(
         # This plot has 1 axis
         if external_axes is None:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        else:
-            if len(external_axes) != 1:
-                console.print("[red]Expected list of one axis item.\n[/red]")
-                return stocks_data, company_tickers
+        elif is_valid_axes_count(external_axes, 1):
             (ax,) = external_axes
+        else:
+            return stocks_data, company_tickers
 
         for company in df.columns:
             ax.plot(df[company], ls="-", marker="o", label=company)

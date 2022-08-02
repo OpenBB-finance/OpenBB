@@ -11,7 +11,6 @@ from prompt_toolkit.completion import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import parse_known_args_and_warn
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.portfolio.portfolio_analysis import (
@@ -49,6 +48,10 @@ class PortfolioAnalysisController(BaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
+
+            choices["support"] = self.SUPPORT_CHOICES
+            choices["about"] = self.ABOUT_CHOICES
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
@@ -116,7 +119,7 @@ class PortfolioAnalysisController(BaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             self.portfolio_name = ns_parser.path
             self.portfolio = portfolio_model.load_portfolio(
@@ -173,7 +176,7 @@ class PortfolioAnalysisController(BaseController):
         #                     help = "Columns to display",
         #                     dest="cols")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if "value" in self.portfolio.columns:
                 portfolio_view.display_group_holdings(
@@ -204,7 +207,7 @@ class PortfolioAnalysisController(BaseController):
             dest="file_format",
         )
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             available_ports = os.listdir(portfolios_path)
             if ns_parser.file_format != "all":

@@ -27,6 +27,7 @@ def test_show_options(datasets, dataset_name):
     econometrics_view.show_options(datasets=datasets, dataset_name=dataset_name)
 
 
+@pytest.mark.skip
 @pytest.mark.vcr()
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(

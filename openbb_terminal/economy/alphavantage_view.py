@@ -16,6 +16,7 @@ from openbb_terminal.helper_funcs import (
     export_data,
     plot_autoscale,
     print_rich_table,
+    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
 
@@ -60,7 +61,8 @@ def realtime_performance_sector(
         )
 
     else:
-        ax = df_rtp.plot(kind="barh")
+        colors = [theme.up_color if x > 0 else theme.down_color for x in df_rtp.values]
+        ax = df_rtp.plot(kind="barh", color=colors)
         theme.style_primary_axis(ax)
         ax.set_title("Real Time Performance (%) per Sector")
         ax.tick_params(axis="x", labelrotation=90)
@@ -111,13 +113,10 @@ def display_real_gdp(
 
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of 1 axis items.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
+    else:
+        return
 
     ax.plot(gdp.date, gdp.GDP, marker="o")
     ax.set_title(f"{int_string} US GDP ($B) from {year_str}")
@@ -168,12 +167,10 @@ def display_gdp_capita(
     # This plot has 1 axis
     if not external_axes:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of one axis item.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
+    else:
+        return
 
     ax.plot(gdp.date, gdp.GDP, marker="o")
     ax.set_title(f"US GDP per Capita (Chained 2012 USD) from {start_year}")
@@ -195,7 +192,6 @@ def display_gdp_capita(
             show_index=False,
             title="US GDP Per Capita",
         )
-        console.print("")
 
 
 @log_start_end(log=logger)
@@ -227,13 +223,10 @@ def display_inflation(
 
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of 1 axis item.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
+    else:
+        return
 
     ax.plot(inf.date, inf.Inflation, marker="o")
     ax.set_title(f"US Inflation from {list(inf.date)[-1].year}")
@@ -255,7 +248,6 @@ def display_inflation(
             show_index=False,
             title="US Inflation",
         )
-        console.print("")
 
 
 @log_start_end(log=logger)
@@ -292,13 +284,10 @@ def display_cpi(
 
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of 1 axis item.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
+    else:
+        return
 
     ax.plot(cpi.date, cpi.CPI, marker="o")
     ax.set_title(f"{int_string} Consumer Price Index from {year_str}")
@@ -317,7 +306,6 @@ def display_cpi(
         print_rich_table(
             cpi.head(20), headers=["Date", "CPI"], show_index=False, title="US CPI"
         )
-        console.print("")
 
 
 @log_start_end(log=logger)
@@ -356,12 +344,10 @@ def display_treasury_yield(
 
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of 1 axis item.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
+    else:
+        return
 
     ax.plot(yld.date, yld.Yield, marker="o")
     ax.set_title(f"{d_maturity[maturity]} Treasury Yield")
@@ -383,7 +369,6 @@ def display_treasury_yield(
             title="Historical Treasurey Yield",
             show_index=False,
         )
-        console.print("")
 
 
 @log_start_end(log=logger)
@@ -418,13 +403,10 @@ def display_unemployment(
 
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of 1 axis item.\n[/red]")
-            return
+    elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
+    else:
+        return
 
     ax.plot(un.date, un.unemp, marker="o")
     ax.set_title(f"US Unemployment from {start_year}")
@@ -447,5 +429,3 @@ def display_unemployment(
             title="US Unemployment",
             show_index=False,
         )
-
-    console.print("")

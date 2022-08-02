@@ -65,7 +65,6 @@ def display_crypto_hacks(
                 show_index=False,
                 title="Major Crypto Hacks",
             )
-            console.print("")
 
             export_data(
                 export,

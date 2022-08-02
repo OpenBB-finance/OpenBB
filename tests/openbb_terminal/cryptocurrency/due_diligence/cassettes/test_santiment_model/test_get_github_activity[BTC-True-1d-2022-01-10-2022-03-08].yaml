@@ -35,7 +35,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 702001ec2c303291-HKG
+      - 71e39aae7f6903f2-LIS
       Cache-Control:
       - max-age=0, private, must-revalidate
       Connection:
@@ -45,13 +45,13 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Tue, 26 Apr 2022 14:28:54 GMT
+      - Mon, 20 Jun 2022 09:51:08 GMT
       Expect-CT:
       - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
       NEL:
       - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
       Report-To:
-      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=pYjvuqWyImKXKzfNa7qPFWyvuYTVM14FqNyrCmtDV%2FZ7uPbbCXMcSwv76eWS7CGpjxZiRAcsxpby45TmNNjUTlWJAdsgHXXh8AByhi1%2Bd5hQgXgE6fiFHHcbrAyIPRWNyI2HpbqAUHryIjq0Tykt"}],"group":"cf-nel","max_age":604800}'
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=Mxl4nJR4fQAMRjJkSEmsV3AhReGhXh0zM2rg3yevOsXPdPWNesXAzQPuh2b8b1ZD%2FypUkj3FBVzEWs2J%2FkKmoMBXNYuZ6RbisebIxDt5Sn40is48ZPL27WWS%2BBH2PmWYV6rp56Z2rwdTmRh0hdMj"}],"group":"cf-nel","max_age":604800}'
       Server:
       - cloudflare
       Transfer-Encoding:
@@ -63,7 +63,7 @@ interactions:
       access-control-allow-methods:
       - GET, POST, OPTIONS
       set-cookie:
-      - INGRESSCOOKIE=1650983335.46.3126.217851; Path=/.+; Secure; HttpOnly
+      - INGRESSCOOKIE=1655718669.848.1585.311039; Path=/.+; Secure; HttpOnly
       vary:
       - Accept-Encoding
       x-ratelimit-limit:
@@ -75,15 +75,15 @@ interactions:
       x-ratelimit-limit-month:
       - '1000'
       x-ratelimit-remaining:
-      - '99'
+      - '100'
       x-ratelimit-remaining-hour:
-      - '498'
+      - '500'
       x-ratelimit-remaining-minute:
-      - '99'
+      - '100'
       x-ratelimit-remaining-month:
-      - '986'
+      - '985'
       x-request-id:
-      - 96dfe9911ece54e930ed1caf56d9a0e2
+      - 1137a5bb4cc77b1a2978ec4998b4af6e
     status:
       code: 200
       message: OK

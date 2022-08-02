@@ -15,12 +15,11 @@ from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     log_and_raise,
-    parse_known_args_and_warn,
     valid_repo,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, MenuText
 
 logger = logging.getLogger(__name__)
 
@@ -44,15 +43,12 @@ class OSSController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = """[cmds]
-[src][Runa][/src]
-        rossidx     the fastest-growing open-source startups
-[src][GitHub][/src]
-        rs          repo summary
-        sh          repo star history
-        tr          top starred repos[/cmds]
-        """
-        console.print(text=help_text, menu="Alternative - Open Source")
+        mt = MenuText("alternative/oss/", 80)
+        mt.add_cmd("rossidx", "Runa")
+        mt.add_cmd("rs", "GitHub")
+        mt.add_cmd("sh", "GitHub")
+        mt.add_cmd("tr", "GitHub")
+        console.print(text=mt.menu_text, menu="Alternative - Open Source")
 
     @log_start_end(log=logger)
     def call_sh(self, other_args: List[str]):
@@ -73,7 +69,7 @@ class OSSController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-r")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -110,7 +106,7 @@ class OSSController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-r")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED, raw=True
         )
         if ns_parser:
@@ -181,7 +177,7 @@ class OSSController(BaseController):
             choices=["stars", "forks"],
         )
 
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
@@ -228,7 +224,7 @@ class OSSController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-c")
-        ns_parser = parse_known_args_and_warn(
+        ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,

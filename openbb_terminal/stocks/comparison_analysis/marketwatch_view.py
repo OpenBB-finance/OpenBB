@@ -12,7 +12,6 @@ from openbb_terminal.helper_funcs import (
     patch_pandas_text_adjustment,
     print_rich_table,
 )
-from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.comparison_analysis import marketwatch_model
 from openbb_terminal import rich_config
 
@@ -42,6 +41,10 @@ def display_income_comparison(
     df_financials_compared = marketwatch_model.get_financial_comparisons(
         similar, "income", timeframe, quarter
     )
+
+    if len(df_financials_compared) == 0 or df_financials_compared.empty:
+        return
+
     # Export data before the color
     export_data(
         export,
@@ -65,7 +68,6 @@ def display_income_comparison(
         show_index=True,
         title="Income Data",
     )
-    console.print("")
 
 
 @log_start_end(log=logger)
@@ -91,6 +93,10 @@ def display_balance_comparison(
     df_financials_compared = marketwatch_model.get_financial_comparisons(
         similar, "balance", timeframe, quarter
     )
+
+    if len(df_financials_compared) == 0 or df_financials_compared.empty:
+        return
+
     # Export data before the color
     export_data(
         export,
@@ -114,7 +120,6 @@ def display_balance_comparison(
         show_index=True,
         title="Company Comparison",
     )
-    console.print("")
 
 
 @log_start_end(log=logger)
@@ -143,6 +148,9 @@ def display_cashflow_comparison(
         similar, "cashflow", timeframe, quarter
     )
 
+    if len(df_financials_compared) == 0 or df_financials_compared.empty:
+        return
+
     # Export data before the color
     export_data(
         export,
@@ -166,4 +174,3 @@ def display_cashflow_comparison(
         show_index=True,
         title="Cashflow Comparison",
     )
-    console.print("")
