@@ -1329,7 +1329,6 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             "-s",
             "--secret",
             type=str,
-            default=None,
             dest="secret",
             help="TOPT Secret",
         )
@@ -1346,9 +1345,10 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             dotenv.set_key(self.env_file, "OPENBB_DG_PASSWORD", ns_parser.password)
             cfg.DG_PASSWORD = ns_parser.password
 
-            os.environ["OPENBB_DG_TOTP_SECRET"] = ns_parser.secret
-            dotenv.set_key(self.env_file, "OPENBB_DG_TOTP_SECRET", ns_parser.secret)
-            cfg.DG_TOTP_SECRET = ns_parser.secret
+            if ns_parser.secret:
+                os.environ["OPENBB_DG_TOTP_SECRET"] = ns_parser.secret
+                dotenv.set_key(self.env_file, "OPENBB_DG_TOTP_SECRET", ns_parser.secret)
+                cfg.DG_TOTP_SECRET = ns_parser.secret
 
             self.check_degiro_key(show_output=True)
 

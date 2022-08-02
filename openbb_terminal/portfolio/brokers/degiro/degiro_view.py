@@ -315,7 +315,9 @@ class DegiroView:
         degiro_model = self.__degiro_model
         credentials = degiro_model.login_default_credentials()
 
-        credentials.one_time_password = otp
+        if otp is not None:
+            credentials.one_time_password = otp
+            
         degiro_model.login()
 
         DegiroView.__login_display_success()
