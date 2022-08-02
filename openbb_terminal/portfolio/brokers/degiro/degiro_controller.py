@@ -212,10 +212,18 @@ class DegiroController(BaseController):
             add_help=False,
             prog="login",
         )
+        parser.add_argument(
+            "-otp",
+            "--one-time-password",
+            default=None,
+            help="One-time-password for 2FA.",
+            required=False,
+            type=int,
+        )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
-            self.__degiro_view.login()
+            self.__degiro_view.login(otp=ns_parser.one_time_password)
 
     @log_start_end(log=logger)
     def call_logout(self, other_args: List[str]):

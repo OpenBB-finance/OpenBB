@@ -310,13 +310,12 @@ class DegiroView:
 
     @log_start_end(log=logger)
     @check_api_key(["DG_USERNAME", "DG_PASSWORD"])
-    def login(self):
+    def login(self, otp : int = None):
         # GET ATTRIBUTES
         degiro_model = self.__degiro_model
-        default_credentials = degiro_model.login_default_credentials()
+        credentials = degiro_model.login_default_credentials()
 
-        credentials = Credentials()
-        credentials.CopyFrom(default_credentials)
+        credentials.one_time_password = otp
         degiro_model.login()
 
         DegiroView.__login_display_success()
