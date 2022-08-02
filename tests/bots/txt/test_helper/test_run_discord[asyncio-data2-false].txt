@@ -1,5 +1,0 @@
-()
-{}
-<class 'disnake.embeds.Embed'>
-<class 'disnake.file.File'>
-None
