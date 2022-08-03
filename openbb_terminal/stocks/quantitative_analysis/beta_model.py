@@ -8,8 +8,8 @@ def beta_model(
     stock_ticker: str,
     ref_ticker: str,
     stock: pd.DataFrame = None,
-    ref: pd.DataFrame = None,
-) -> Tuple[pd.Series, pd.Series, float, float]:
+    ref: pd.DataFrame = None):,
+# -> Tuple[pd.Series, pd.Series, float, float]:
     """Calculate beta for a ticker and a reference ticker.
 
     Parameters
