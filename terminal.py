@@ -219,7 +219,7 @@ class TerminalController(BaseController):
                 # Load the file as a JSON document
                 json_doc = json.load(f)
 
-                task = random.choice(list(json_doc.keys()))
+                task = random.choice(list(json_doc.keys()))  # nosec
                 solution = json_doc[task]
 
                 start = time.time()
