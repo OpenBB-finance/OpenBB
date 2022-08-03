@@ -57,6 +57,9 @@ def display_crypto_heatmap(
     if df.empty:
         console.print("\nNo cryptocurrencies found\n")
     else:
+        df = df.fillna(
+            0
+        )  # to prevent errors with rounding when values aren't available
         max_abs = max(
             -df.price_change_percentage_24h_in_currency.min(),
             df.price_change_percentage_24h_in_currency.max(),
