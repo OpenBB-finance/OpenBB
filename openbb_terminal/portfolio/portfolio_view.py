@@ -737,12 +737,32 @@ def display_distribution_returns(
             ax = external_axes
 
         ax.set_title("Returns distribution")
-        sns.kdeplot(portfolio_returns.values, label="portfolio")
-        sns.kdeplot(benchmark_returns.values, label="benchmark")
         ax.set_ylabel("Density")
         ax.set_xlabel("Daily return [%]")
+
+        ax = sns.kdeplot(portfolio_returns.values, label="portfolio")
+        kdeline = ax.lines[0]
+        mean = portfolio_returns.values.mean()
+        xs = kdeline.get_xdata()
+        ys = kdeline.get_ydata()
+        height = np.interp(mean, xs, ys)
+        ax.vlines(mean, 0, height, color='yellow', ls=':')
+        
+        ax = sns.kdeplot(benchmark_returns.values, label="benchmark")
+        kdeline = ax.lines[1]
+        mean = benchmark_returns.values.mean()
+        xs = kdeline.get_xdata()
+        ys = kdeline.get_ydata()
+        height = np.interp(mean, xs, ys)
+        ax.vlines(mean, 0, height, color='orange', ls=':')
+
         theme.style_primary_axis(ax)
         ax.legend()
+
+        portfolio = pd.DataFrame(portfolio_returns.values)
+        benchmark = pd.DataFrame(benchmark_returns.values)
+        df = pd.concat([portfolio, benchmark], axis=1)
+        ax.text(0.2, 0.5, str(df.describe()), color="white")
 
         if not external_axes:
             theme.visualize_output()
