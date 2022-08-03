@@ -6,7 +6,6 @@ from argparse import Namespace
 import pandas as pd
 from degiro_connector.core.helpers import pb_handler
 from degiro_connector.trading.models.trading_pb2 import (
-    Credentials,
     LatestNews,
     NewsByCompany,
     Order,
@@ -310,13 +309,14 @@ class DegiroView:
 
     @log_start_end(log=logger)
     @check_api_key(["DG_USERNAME", "DG_PASSWORD"])
-    def login(self):
+    def login(self, otp: int = None):
         # GET ATTRIBUTES
         degiro_model = self.__degiro_model
-        default_credentials = degiro_model.login_default_credentials()
+        credentials = degiro_model.login_default_credentials()
 
-        credentials = Credentials()
-        credentials.CopyFrom(default_credentials)
+        if otp is not None:
+            credentials.one_time_password = otp
+
         degiro_model.login()
 
         DegiroView.__login_display_success()
