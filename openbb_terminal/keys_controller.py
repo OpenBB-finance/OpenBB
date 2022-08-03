@@ -1833,7 +1833,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         )
         if not other_args:
             console.print(
-                "For your API Key, visit: https://academy.santiment.net/products-and-plans/create-an-api-key/n"
+                "For your API Key, visit: https://academy.santiment.net/products-and-plans/create-an-api-key\n"
             )
             return
         if other_args and "-" not in other_args[0][0]:
