@@ -102,7 +102,11 @@ class BaseController(metaclass=ABCMeta):
         self.check_path()
         self.path = [x for x in self.PATH.split("/") if x != ""]
 
-        self.queue = queue if (queue and self.PATH != "/") else list()
+        self.queue = (
+            self.parse_input(an_input="/".join(queue))
+            if (queue and self.PATH != "/")
+            else list()
+        )
 
         controller_choices = self.CHOICES_COMMANDS + self.CHOICES_MENUS
         if controller_choices:
