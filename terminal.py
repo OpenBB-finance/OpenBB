@@ -932,8 +932,8 @@ if __name__ == "__main__":
         help="Runs the terminal in debug mode.",
     )
     parser.add_argument(
-        "-p",
-        "--path",
+        "-f",
+        "--file",
         help="The path or .openbb file to run.",
         dest="path",
         nargs="+",
@@ -968,7 +968,7 @@ if __name__ == "__main__":
     )
 
     if sys.argv[1:] and "-" not in sys.argv[1][0]:
-        sys.argv.insert(1, "-p")
+        sys.argv.insert(1, "-f")
     ns_parser = parser.parse_args()
     main(
         ns_parser.debug,
