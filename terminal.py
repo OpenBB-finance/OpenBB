@@ -43,6 +43,7 @@ from openbb_terminal.terminal_helper import (
     update_terminal,
     welcome_message,
 )
+from openbb_terminal.helper_funcs import parse_and_split_input
 
 # pylint: disable=too-many-public-methods,import-outside-toplevel,too-many-branches,no-member
 
@@ -107,7 +108,9 @@ class TerminalController(BaseController):
         self.queue: List[str] = list()
 
         if jobs_cmds:
-            self.queue = " ".join(jobs_cmds).split("/")
+            self.queue = parse_and_split_input(
+                an_input=" ".join(jobs_cmds), custom_filters=[]
+            )
 
         self.update_success = False
 
@@ -442,7 +445,7 @@ class TerminalController(BaseController):
             if path_dir in ("-i", "--input"):
                 args = [path_routine[1:]] + other_args_processed[idx:]
                 break
-            if path_dir not in ("-p", "--path"):
+            if path_dir not in ("-f", "--file"):
                 path_routine += f"/{path_dir}"
 
         if not args:
@@ -455,8 +458,8 @@ class TerminalController(BaseController):
             description="Execute automated routine script.",
         )
         parser_exe.add_argument(
-            "-p",
-            "--path",
+            "-f",
+            "--file",
             help="The path or .openbb file to run.",
             dest="path",
             default="",
@@ -470,7 +473,7 @@ class TerminalController(BaseController):
             type=lambda s: [str(item) for item in s.split(",")],
         )
         if args and "-" not in args[0][0]:
-            args.insert(0, "-p")
+            args.insert(0, "-f")
         ns_parser_exe = parse_simple_args(parser_exe, args)
         if ns_parser_exe:
             if ns_parser_exe.path:
@@ -508,7 +511,13 @@ class TerminalController(BaseController):
                         insert_start_slash(file_cmds) if file_cmds else file_cmds
                     )
                     cmds_with_params = " ".join(file_cmds)
-                    self.queue = [val for val in cmds_with_params.split("/") if val]
+                    self.queue = [
+                        val
+                        for val in parse_and_split_input(
+                            an_input=cmds_with_params, custom_filters=[]
+                        )
+                        if val
+                    ]
 
                     if "export" in self.queue[0]:
                         export_path = self.queue[0].split(" ")[1]

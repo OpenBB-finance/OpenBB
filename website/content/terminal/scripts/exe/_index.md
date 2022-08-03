@@ -1,5 +1,5 @@
 ```
-usage: exe [-p PATH] [-i ROUTINE_ARGS] [-h]
+usage: exe [-f PATH] [-i ROUTINE_ARGS] [-h]
 ```
 
 The .openbb scripts offer the ability to automatically run a set of commands in the form of a **routine**. Furthermore,
@@ -9,7 +9,7 @@ doing advanced statistical/econometric research.
 
 ```
 optional arguments:
-  -p PATH, --path PATH  The path or .openbb file to run. (default: )
+  -f PATH, --file PATH  The path or .openbb file to run. (default: )
   -i ROUTINE_ARGS, --input ROUTINE_ARGS
                         Select multiple inputs to be replaced in the routine and separated by commas. E.g. GME,AMC,BTC-USD (default: None)
   -h, --help            show this help message (default: False)
