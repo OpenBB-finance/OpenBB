@@ -229,7 +229,7 @@ class TerminalController(BaseController):
 
                 # When there are multiple paths to same solution
                 if isinstance(solution, List):
-                    if an_input in solution:
+                    if an_input.lower() in [s.lower() for s in solution]:
                         self.queue = an_input.split("/") + ["home"]
                         console.print(
                             f"\n[green]You guessed correctly in {round(time_dif, 2)} seconds![green]\n"
@@ -246,7 +246,7 @@ class TerminalController(BaseController):
 
                 # When there is a single path to the solution
                 else:
-                    if an_input == solution:
+                    if an_input.lower() == solution.lower():
                         self.queue = an_input.split("/") + ["home"]
                         console.print(
                             f"\n[green]You guessed correctly in {round(time_dif, 2)} seconds![green]\n"
