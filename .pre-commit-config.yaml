@@ -53,6 +53,13 @@ repos:
     hooks:
       - id: nbstripout
         name: Strip notebooks output
+  - repo: local
+    hooks:
+      - id: pylint
+        name: pylint
+        entry: pylint openbb_terminal terminal.py tests
+        language: system
+        types: [python]
   - repo: https://github.com/Yelp/detect-secrets
     rev: v1.2.0
     hooks:

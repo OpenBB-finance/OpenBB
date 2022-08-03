@@ -500,7 +500,6 @@ class StocksController(StockBaseController):
                     num=ns_parser.limit,
                     s_from=ns_parser.n_start_date.strftime("%Y-%m-%d"),
                     show_newest=ns_parser.n_oldest,
-                    articles=",".join(articles),
                 )
 
     @log_start_end(log=logger)
