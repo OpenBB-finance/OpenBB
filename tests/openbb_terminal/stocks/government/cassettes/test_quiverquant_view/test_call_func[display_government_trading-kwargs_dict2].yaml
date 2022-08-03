@@ -15,22 +15,23 @@ interactions:
       accept:
       - application/json
     method: GET
-    uri: https://api.quiverquant.com/beta/historical/govcontracts/SSTK
+    uri: https://api.quiverquant.com/beta/historical/congresstrading/AMRC
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA3zUvUpEMRCG4VsJqQ9h/ifZzkuwFLGwsFRB1kq8d9lC2O9ApjvFS3hOMsnzT3+8
-        fvVL06P1p7fX26eQ8NH6w/vn98e1XxoLiQ/6Pdp/bBATxBxiE2otaiPXfczrPp6uC1eWfcxMs0Dz
-        vI9DLL1gQKxrkRcMiJ01GGLex2KxrDAnngqz65AtOnHvpDJDK7zWKszImCFamAPNQjRHxhYdCEmn
-        Qn1aO2cWaoincbXRftronDHYt2hHdLAO3aJxbfacBRpi09OxINpgos2iuliGc8dRTQfGJFExFO4K
-        LZYhuv1BqFPMCrMAY2V1veEBE8+zAmrCl0Mpc88guLLscZvQlz8AAAD//wMA5efr5kgFAAA=
+        H4sIAAAAAAAAA9zWz2+CMBQH8H+laTzylvfKAPVmtsMOM1nQ27JDQ5qtUamhZTss+98XunjQKOoC
+        Ebi+/oBPvvTR12+eqq0p3KN0ik8ZFygIMAEKecD4spC5lZnTJt+fEAMlfoLOVqqo6rN5+lBVUrUt
+        lFW5k05/+hVsUVqt2LNSB1tWgwu59uXZxpS541NGiHSHAeNPprR+/f6O1j9E5u9+bEQBIsGIogAR
+        +U/AjoNiEPWgCER8MWhpNmwu1zo3X3alb6ca7176lCoEnDSneimL7EPaA1l0JS36s0VYbwsB620C
+        MGozsZZcZzOr5gzUlfTuhIW7j6xGFfcwLQKi0y4EEiAmjTT4403jBu3wWtQ/22ErskviEgOMi8a9
+        jOusjIBwYLeNxlVdyguB+nc7rP93IeB9o7fDrqhCCLt7tt5+AQAA//8DABQosNdxDQAA
     headers:
       Allow:
       - GET, HEAD, OPTIONS
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 734981cbec0abbef-FRA
+      - 7349812afa549a21-FRA
       Connection:
       - keep-alive
       Content-Encoding:
@@ -38,7 +39,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 02 Aug 2022 20:19:11 GMT
+      - Tue, 02 Aug 2022 20:18:46 GMT
       Expect-CT:
       - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
       NEL:
@@ -46,7 +47,7 @@ interactions:
       Referrer-Policy:
       - same-origin
       Report-To:
-      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=7PmhwCQd6yGGbIGoJ9GkHd2dHsVBNWaOV2YQulJrkVtKbYy4cf716MY6UDsN%2BNizbc4EziJK3ppNHK4XshXXqWdqSr4%2FlD7c%2FTtgyLUeaMvbo8ddb3rUZmBKi4aFmvUN0hZdFj4%3D"}],"group":"cf-nel","max_age":604800}'
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=Fvp35WmzSw3rW8rtNnT7618aQ7GBp4hBCGXzvrBgBwNOwZ%2Btz%2F6qH4R9b410d2hNCBVewoHXJ01jrLcsVm8QYF%2FjrfP4JacOvW%2BjONA%2F4M1rTPQq%2Bt3%2F3ugIUFXbkIROGzt940w%3D"}],"group":"cf-nel","max_age":604800}'
       Server:
       - cloudflare
       Transfer-Encoding:
