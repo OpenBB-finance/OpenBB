@@ -5,15 +5,5 @@
     <link>https://openbb-finance.github.io/OpenBBTerminal/</link>
     <description>Recent content in Getting Started on OpenBB Documentation</description>
     <generator>Hugo -- gohugo.io</generator><atom:link href="https://openbb-finance.github.io/OpenBBTerminal/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title></title>
-      <link>https://openbb-finance.github.io/OpenBBTerminal/bots/discord/gov/toplobbying/_index./</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://openbb-finance.github.io/OpenBBTerminal/bots/discord/gov/toplobbying/_index./</guid>
-      <description>gov toplobbying - Displays the most active lobbyists in America.
-/gov toplobbying num: 10 </description>
-    </item>
-    
   </channel>
 </rss>
