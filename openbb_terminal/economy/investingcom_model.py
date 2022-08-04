@@ -17,7 +17,8 @@ from openbb_terminal import helper_funcs
 
 logger = logging.getLogger(__name__)
 
-COUNTRIES = investpy.bonds.get_bond_countries()
+BOND_COUNTRIES = investpy.bonds.get_bond_countries()
+CALENDAR_COUNTRIES = list(investpy.utils.constant.COUNTRY_ID_FILTERS.keys()) + ["all"]
 CATEGORIES = [
     "employment",
     "credit",
@@ -31,13 +32,13 @@ CATEGORIES = [
 IMPORTANCES = ["high", "medium", "low", "all"]
 
 
-def check_correct_country(country):
+def check_correct_country(country, countries):
     """Argparse type to check that correct country is inserted"""
-    if country.lower() not in investpy.bonds.get_bond_countries():
+    if country.lower() not in countries:
         log_and_raise(
             argparse.ArgumentTypeError(
                 f"{country} is an invalid country. Choose from \
-                    {', '.join(investpy.bonds.get_bond_countries())}"
+                    {', '.join(countries)}"
             )
         )
     return country
@@ -114,6 +115,13 @@ def get_economic_calendar(
 
         return day + "/" + month + "/" + year
 
+    # Joint default for countries and importances
+    if countries == ["all"] and importances == []:
+        countries = CALENDAR_COUNTRIES[:-1]
+        importances = ["high"]
+    elif importances is None:
+        importances = ["all"]
+
     if from_date and not to_date:
         to_date_string = format_date(from_date + datetime.timedelta(days=7))
         from_date_string = format_date(from_date)
@@ -124,9 +132,8 @@ def get_economic_calendar(
         from_date_string = format_date(from_date)
         to_date_string = format_date(to_date)
     else:
-        today = datetime.date.today()
-        from_date_string = format_date(today)
-        to_date_string = format_date(today + datetime.timedelta(days=7))
+        from_date_string = None
+        to_date_string = None
 
     # Get user time zone in GMT offset format
     user_time_zone = pytz.timezone(helper_funcs.get_user_timezone())
@@ -163,8 +170,11 @@ def get_economic_calendar(
 
     if not data.empty:
         data.drop(columns=data.columns[0], axis=1, inplace=True)
-        data.sort_values(by="date", inplace=True)
         data.drop_duplicates(keep="first", inplace=True)
+        data["date"] = data["date"].apply(
+            lambda date: date[-4:] + "-" + date[3:5] + "-" + date[:2]
+        )
+        data.sort_values(by=data.columns[0], inplace=True)
 
         if importances:
             if importances == ["all"]:
