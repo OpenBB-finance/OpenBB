@@ -1023,10 +1023,6 @@ class EconomyController(BaseController):
 
             elif ns_parser.source == "investpy":
 
-                investingcom_model.check_correct_country(
-                    ns_parser.country, investingcom_model.BOND_COUNTRIES
-                )
-
                 investingcom_view.display_yieldcurve(
                     country=ns_parser.country,
                     raw=ns_parser.raw,

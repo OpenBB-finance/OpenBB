@@ -7,6 +7,7 @@ from typing import Optional, List
 
 import datetime
 import matplotlib.pyplot as plt
+from matplotlib.ticker import FormatStrFormatter
 from pandas.plotting import register_matplotlib_converters
 
 from openbb_terminal.config_plot import PLOT_DPI
@@ -24,28 +25,6 @@ logger = logging.getLogger(__name__)
 
 register_matplotlib_converters()
 
-tenors_dict = {
-    "1M": 1 / 12,
-    "3M": 0.25,
-    "6M": 0.5,
-    "9M": 0.75,
-    "1Y": 1,
-    "2Y": 2,
-    "3Y": 3,
-    "4Y": 4,
-    "5Y": 5,
-    "6Y": 6,
-    "7Y": 7,
-    "8Y": 8,
-    "9Y": 9,
-    "10Y": 10,
-    "15Y": 15,
-    "20Y": 20,
-    "25Y": 25,
-    "30Y": 30,
-    "50Y": 50,
-}
-
 
 @log_start_end(log=logger)
 def display_yieldcurve(
@@ -54,26 +33,19 @@ def display_yieldcurve(
     raw: bool = False,
     export: str = "",
 ):
-    """Display yield curve. [Source: Investing.com]
+    """Display yield curve for specified country. [Source: Investing.com]
 
     Parameters
     ----------
     country: str
-        Country to display
+        Country to display yield curve. List of available countries is accessible through get_ycrv_countries().
     export : str
         Export dataframe data to csv,json,xlsx file
     """
 
     df = investingcom_model.get_yieldcurve(country)
-    if df is not None:
-        df = df.replace(float("NaN"), "")
 
-        if df.empty:
-            console.print(
-                f"[red]Yield data not found for \
-                          {country.title()}[/red].\n"
-            )
-            return
+    if not df.empty:
         if external_axes is None:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
@@ -84,19 +56,11 @@ def display_yieldcurve(
                 return
             (ax,) = external_axes
 
-        tenors = []
-        for i, row in df.iterrows():
-            t = row["Tenor"][-3:].strip()
-            df.at[i, "Tenor"] = t
-            if t[-1] == "M":
-                tenors.append(int(t[:-1]) / 12)
-            elif t[-1] == "Y":
-                tenors.append(int(t[:-1]))
-
-        ax.plot(tenors, df["Current"], "-o")
+        ax.plot(df["Tenor"], df["Current"], "-o")
         ax.set_xlabel("Maturity")
         ax.set_ylabel("Rate (%)")
         theme.style_primary_axis(ax)
+        ax.yaxis.set_major_formatter(FormatStrFormatter("%.2f"))
         if external_axes is None:
             ax.set_title(f"Yield Curve for {country.title()} ")
             theme.visualize_output()

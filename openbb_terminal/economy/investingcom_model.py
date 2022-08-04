@@ -14,6 +14,7 @@ import investpy
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import log_and_raise
 from openbb_terminal import helper_funcs
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -32,21 +33,36 @@ CATEGORIES = [
 IMPORTANCES = ["high", "medium", "low", "all"]
 
 
-def check_correct_country(country, countries):
-    """Argparse type to check that correct country is inserted"""
+@log_start_end(log=logger)
+def get_ycrv_countries() -> list:
+    """Get avaiable countries for ycrv command.
+
+    Returns:
+        list: List of available countries.
+    """
+    return BOND_COUNTRIES
+
+
+@log_start_end(log=logger)
+def check_correct_country(country: str, countries: list) -> str:
+    """Check if country is in list and warn if not."""
     if country.lower() not in countries:
-        log_and_raise(
+       log_and_raise(
             argparse.ArgumentTypeError(
-                f"{country} is an invalid country. Choose from \
-                    {', '.join(countries)}"
+                f"{country} is an invalid country. Choose from {', '.join(countries)}"
             )
         )
     return country
 
 
 @log_start_end(log=logger)
-def get_yieldcurve(country) -> pd.DataFrame:
-    """Get country yield curve [Source: Investing.com]
+def get_yieldcurve(country: str) -> pd.DataFrame:
+    """Get yield curve for specified country. [Source: Investing.com]
+
+    Parameters
+    ----------
+    country: str
+        Country to display yield curve. List of available countries is accessible through get_ycrv_countries().
 
     Returns
     -------
@@ -54,7 +70,15 @@ def get_yieldcurve(country) -> pd.DataFrame:
         Country yield curve
     """
 
-    data = investpy.bonds.get_bonds_overview(country)
+    if check_correct_country(country, BOND_COUNTRIES) != country:
+        return pd.DataFrame()
+
+    try:
+        data = investpy.bonds.get_bonds_overview(country)
+    except Exception:
+        console.print(f"[red]Yield curve data not found for {country}.[/red]\n")
+        return pd.DataFrame()
+
     data.drop(columns=data.columns[0], axis=1, inplace=True)
     data.rename(
         columns={
@@ -68,6 +92,17 @@ def get_yieldcurve(country) -> pd.DataFrame:
         },
         inplace=True,
     )
+
+    data = data.replace(float("NaN"), "")
+
+    for i, row in data.iterrows():
+        t = row["Tenor"][-3:].strip()
+        data.at[i, "Tenor"] = t
+        if t[-1] == "M":
+            data.at[i, "Tenor"] = int(t[:-1]) / 12
+        elif t[-1] == "Y":
+            data.at[i, "Tenor"] = int(t[:-1])
+
     return data
 
 
