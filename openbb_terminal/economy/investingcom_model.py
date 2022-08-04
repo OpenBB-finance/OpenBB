@@ -47,7 +47,7 @@ def get_ycrv_countries() -> list:
 def check_correct_country(country: str, countries: list) -> str:
     """Check if country is in list and warn if not."""
     if country.lower() not in countries:
-       log_and_raise(
+        log_and_raise(
             argparse.ArgumentTypeError(
                 f"{country} is an invalid country. Choose from {', '.join(countries)}"
             )
