@@ -44,6 +44,26 @@ def get_ycrv_countries() -> list:
 
 
 @log_start_end(log=logger)
+def get_ecocal_countries() -> list:
+    """Get avaiable countries for ecocal command.
+
+    Returns:
+        list: List of available countries.
+    """
+    return CALENDAR_COUNTRIES
+
+
+@log_start_end(log=logger)
+def get_ecocal_categories() -> list:
+    """Get avaiable event categories for ecocal command.
+
+    Returns:
+        list: List of available event categories.
+    """
+    return CATEGORIES
+
+
+@log_start_end(log=logger)
 def check_correct_country(country: str, countries: list) -> str:
     """Check if country is in list and warn if not."""
     if country.lower() not in countries:
@@ -106,56 +126,72 @@ def get_yieldcurve(country: str) -> pd.DataFrame:
     return data
 
 
+def format_date(date: datetime.date) -> str:
+    year = str(date.year)
+    if date.month < 10:
+        month = "0" + str(date.month)
+    else:
+        month = str(date.month)
+    if date.day < 10:
+        day = "0" + str(date.day)
+    else:
+        day = str(date.day)
+
+    return day + "/" + month + "/" + year
+
+
 @log_start_end(log=logger)
 def get_economic_calendar(
-    countries: list = None,
-    importances: list = None,
-    categories: list = None,
+    country: str = "all",
+    importance: str = "",
+    category: str = "",
     from_date: datetime.date = None,
     to_date: datetime.date = None,
+    limit=100,
 ) -> pd.DataFrame:
     """Get economic calendar [Source: Investing.com]
 
     Parameters
     ----------
-    countries: list
-        Country selected from allowed list
-    importances: list
+    country: str
+        Country selected. List of available countries is accessible through get_ecocal_countries().
+    importance: str
         Importance selected from high, medium, low or all
-    categories: list
-        Event category. E.g. Employment, Inflation, among others
+    category: str
+        Event category. List of available categories is accessible through get_ecocal_categories().
     from_date: datetime.date
-        First date to get events if applicable
+        First date to get events.
     to_date: datetime.date
-        Last date to get events if applicable
+        Last date to get events.
 
     Returns
     -------
     pd.DataFrame
-        Economic calendar
+        Economic calendar.
     """
+
+    if check_correct_country(country, CALENDAR_COUNTRIES) != country:
+        return pd.DataFrame(), ""
 
     time_filter = "time_only"
 
-    def format_date(date: datetime.date) -> str:
-        year = str(date.year)
-        if date.month < 10:
-            month = "0" + str(date.month)
-        else:
-            month = str(date.month)
-        if date.day < 10:
-            day = "0" + str(date.day)
-        else:
-            day = str(date.day)
+    countries_list = []
+    importances_list = []
+    categories_list = []
 
-        return day + "/" + month + "/" + year
+    if country:
+        countries_list = [country.lower()]
+    if importance:
+        importances_list = [importance.lower()]
+    if category:
+        categories_list = [category.title()]
 
     # Joint default for countries and importances
-    if countries == ["all"] and importances == []:
-        countries = CALENDAR_COUNTRIES[:-1]
-        importances = ["high"]
-    elif importances is None:
-        importances = ["all"]
+    if countries_list == ["all"] and importances_list == []:
+        countries_list = CALENDAR_COUNTRIES[:-1]
+        importances_list = ["high"]
+    elif importances_list is None:
+        importances_list = ["all"]
 
     if from_date and not to_date:
         to_date_string = format_date(from_date + datetime.timedelta(days=7))
@@ -186,9 +222,9 @@ def get_economic_calendar(
         data = investpy.news.economic_calendar(
             time_zone,
             time_filter,
-            countries,
-            importances,
-            categories,
+            countries_list,
+            importances_list,
+            categories_list,
             from_date_string,
             to_date_string,
         )
@@ -196,14 +232,18 @@ def get_economic_calendar(
         data = investpy.news.economic_calendar(
             None,
             time_filter,
-            countries,
-            importances,
-            categories,
+            countries_list,
+            importances_list,
+            categories_list,
             from_date_string,
             to_date_string,
         )
 
-    if not data.empty:
+    if data.empty:
+        logger.error("No data")
+        console.print("[red]No data.[/red]\n")
+        return pd.DataFrame(), ""
+    else:
         data.drop(columns=data.columns[0], axis=1, inplace=True)
         data.drop_duplicates(keep="first", inplace=True)
         data["date"] = data["date"].apply(
@@ -211,9 +251,26 @@ def get_economic_calendar(
         )
         data.sort_values(by=data.columns[0], inplace=True)
 
-        if importances:
-            if importances == ["all"]:
-                importances = IMPORTANCES
-            data = data[data["importance"].isin(importances)]
+        if importances_list:
+            if importances_list == ["all"]:
+                importances_list = IMPORTANCES
+            data = data[data["importance"].isin(importances_list)]
 
-    return data, time_zone
+        if time_zone is None:
+            time_zone = "GMT"
+            console.print("[red]Error on timezone, default was used.[/red]\n")
+
+        data.fillna(value="", inplace=True)
+        data.columns = data.columns.str.title()
+        if data["Zone"].eq(data["Zone"].iloc[0]).all():
+            del data["Zone"]
+            detail = f"{country.title()} economic calendar ({time_zone})"
+        else:
+            detail = f"Economic Calendar ({time_zone})"
+            data["Zone"] = data["Zone"].str.title()
+
+        data["Importance"] = data["Importance"].str.title()
+
+        data = data[:limit]
+
+    return data, detail

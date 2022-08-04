@@ -192,21 +192,21 @@ class EconomyController(BaseController):
             self.choices["ecocal"]["-c"] = {
                 c: None for c in investingcom_model.CALENDAR_COUNTRIES
             }
-            self.choices["ecocal"]["--countries"] = {
+            self.choices["ecocal"]["--country"] = {
                 c: None for c in investingcom_model.CALENDAR_COUNTRIES
             }
 
             self.choices["ecocal"]["-i"] = {
                 c: None for c in investingcom_model.IMPORTANCES
             }
-            self.choices["ecocal"]["--importances"] = {
+            self.choices["ecocal"]["--importance"] = {
                 c: None for c in investingcom_model.IMPORTANCES
             }
 
             self.choices["ecocal"]["-cat"] = {
                 c: None for c in investingcom_model.CATEGORIES
             }
-            self.choices["ecocal"]["--categories"] = {
+            self.choices["ecocal"]["--category"] = {
                 c: None for c in investingcom_model.CATEGORIES
             }
 
@@ -1049,17 +1049,17 @@ class EconomyController(BaseController):
         )
         parser.add_argument(
             "-i",
-            "--importances",
+            "--importance",
             action="store",
-            dest="importances",
+            dest="importance",
             choices=investingcom_model.IMPORTANCES,
             help="Event importance classified as high, medium, low or all.",
         )
         parser.add_argument(
             "-cat",
-            "--categories",
+            "--category",
             action="store",
-            dest="categories",
+            dest="category",
             choices=investingcom_model.CATEGORIES,
             nargs="+",
             default=None,
@@ -1096,17 +1096,13 @@ class EconomyController(BaseController):
             if isinstance(ns_parser.country, list):
                 ns_parser.country = " ".join(ns_parser.country)
 
-            if isinstance(ns_parser.categories, list):
-                ns_parser.categories = " ".join(ns_parser.categories)
-
-            investingcom_model.check_correct_country(
-                ns_parser.country, investingcom_model.CALENDAR_COUNTRIES
-            )
+            if isinstance(ns_parser.category, list):
+                ns_parser.category = " ".join(ns_parser.category)
 
             investingcom_view.display_economic_calendar(
-                countries=ns_parser.country,
-                importances=ns_parser.importances,
-                categories=ns_parser.categories,
+                country=ns_parser.country,
+                importance=ns_parser.importance,
+                category=ns_parser.category,
                 from_date=ns_parser.start_date,
                 to_date=ns_parser.end_date,
                 limit=ns_parser.limit,

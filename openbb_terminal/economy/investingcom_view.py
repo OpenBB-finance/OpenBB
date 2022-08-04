@@ -84,73 +84,45 @@ def display_yieldcurve(
 
 @log_start_end(log=logger)
 def display_economic_calendar(
-    countries: str,
-    importances: str,
-    categories: str,
-    from_date: datetime.date,
-    to_date: datetime.date,
-    limit=10,
+    country: str = "all",
+    importance: str = "",
+    category: str = "",
+    from_date: datetime.date = None,
+    to_date: datetime.date = None,
+    limit=100,
     export: str = "",
 ):
     """Display economic calendar. [Source: Investing.com]
 
     Parameters
     ----------
-    countries: str
-        Country selected from allowed list
+    country: str
+        Country selected. List of available countries is accessible through get_ecocal_countries().
     importances: str
-        Importance selected from high, medium, low or all
+        Importance selected from high, medium, low or all.
     categories: str
-        Event category. E.g. Employment, Inflation, among others
+        Event category. List of available categories is accessible through get_ecocal_categories().
     from_date: datetime.date
-        First date to get events if applicable
+        First date to get events.
     to_date: datetime.date
-        Last date to get events if applicable
+        Last date to get events.
     limit: int
-        The maximum number of events to show, default is 10.
+        The maximum number of events to show, default is 100.
     export : str
         Export dataframe data to csv,json,xlsx file
     """
 
-    countries_list = []
-    importances_list = []
-    categories_list = []
-
-    if countries:
-        countries_list = [countries.lower()]
-    if importances:
-        importances_list = [importances.lower()]
-    if categories:
-        categories_list = [categories.title()]
-
-    df, time_zone = investingcom_model.get_economic_calendar(
-        countries_list, importances_list, categories_list, from_date, to_date
+    df, detail = investingcom_model.get_economic_calendar(
+        country, importance, category, from_date, to_date, limit
     )
 
-    if time_zone is None:
-        time_zone = "GMT"
-        console.print("[red]Error on timezone, default was used.[/red]\n")
-
-    if df.empty:
-        logger.error("No data")
-        console.print("[red]No data.[/red]\n")
-    else:
-        df.fillna(value="", inplace=True)
-        df.columns = df.columns.str.title()
-        if df["Zone"].eq(df["Zone"].iloc[0]).all():
-            del df["Zone"]
-            title = f"{countries.title()} economic calendar ({time_zone})"
-        else:
-            title = f"Economic Calendar ({time_zone})"
-            df["Zone"] = df["Zone"].str.title()
-
-        df["Importance"] = df["Importance"].str.title()
+    if not df.empty:
 
         print_rich_table(
-            df[:limit],
+            df,
             headers=list(df.columns),
             show_index=False,
-            title=title,
+            title=detail,
         )
 
         export_data(
