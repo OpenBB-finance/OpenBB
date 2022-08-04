@@ -182,16 +182,18 @@ class EconomyController(BaseController):
                 c: None for c in econdb_model.COUNTRY_CODES
             }
 
-            self.choices["ycrv"]["-c"] = {c: None for c in investingcom_model.COUNTRIES}
+            self.choices["ycrv"]["-c"] = {
+                c: None for c in investingcom_model.BOND_COUNTRIES
+            }
             self.choices["ycrv"]["--countries"] = {
-                c: None for c in investingcom_model.COUNTRIES
+                c: None for c in investingcom_model.BOND_COUNTRIES
             }
 
             self.choices["ecocal"]["-c"] = {
-                c: None for c in investingcom_model.COUNTRIES
+                c: None for c in investingcom_model.CALENDAR_COUNTRIES
             }
             self.choices["ecocal"]["--countries"] = {
-                c: None for c in investingcom_model.COUNTRIES
+                c: None for c in investingcom_model.CALENDAR_COUNTRIES
             }
 
             self.choices["ecocal"]["-i"] = {
@@ -1021,7 +1023,9 @@ class EconomyController(BaseController):
 
             elif ns_parser.source == "investpy":
 
-                investingcom_model.check_correct_country(ns_parser.country)
+                investingcom_model.check_correct_country(
+                    ns_parser.country, investingcom_model.BOND_COUNTRIES
+                )
 
                 investingcom_view.display_yieldcurve(
                     country=ns_parser.country,
@@ -1036,7 +1040,7 @@ class EconomyController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="ecocal",
-            description="Economic calendar.",
+            description="Economic calendar. If no start or end dates, default is the current day.",
         )
         parser.add_argument(
             "-c",
@@ -1044,7 +1048,7 @@ class EconomyController(BaseController):
             action="store",
             dest="country",
             nargs="+",
-            default="united states",
+            default="all",
             help="Display calendar for specific country.",
         )
         parser.add_argument(
@@ -1053,7 +1057,6 @@ class EconomyController(BaseController):
             action="store",
             dest="importances",
             choices=investingcom_model.IMPORTANCES,
-            default="all",
             help="Event importance classified as high, medium, low or all.",
         )
         parser.add_argument(
@@ -1089,7 +1092,7 @@ class EconomyController(BaseController):
             other_args,
             export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
             raw=True,
-            limit=10,
+            limit=100,
         )
 
         if ns_parser:
@@ -1100,7 +1103,9 @@ class EconomyController(BaseController):
             if isinstance(ns_parser.categories, list):
                 ns_parser.categories = " ".join(ns_parser.categories)
 
-            investingcom_model.check_correct_country(ns_parser.country)
+            investingcom_model.check_correct_country(
+                ns_parser.country, investingcom_model.CALENDAR_COUNTRIES
+            )
 
             investingcom_view.display_economic_calendar(
                 countries=ns_parser.country,
