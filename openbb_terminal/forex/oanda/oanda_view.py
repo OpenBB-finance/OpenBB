@@ -256,9 +256,6 @@ def get_pending_orders(accountID: str):
         console.print("No data was returned from Oanda.\n")
 
 
-# Pylint raises no-member error because the df_trades can be either
-# a dataframe or a boolean (False) value that has no .empty and no .to_string
-# pylint: disable=no-member
 @log_start_end(log=logger)
 @check_api_key(["OANDA_ACCOUNT", "OANDA_TOKEN", "OANDA_ACCOUNT_TYPE"])
 def get_open_trades(accountID: str):
@@ -270,7 +267,7 @@ def get_open_trades(accountID: str):
         Oanda user account ID
     """
     df_trades = open_trades_request(accountID)
-    if df_trades is not False and not df_trades.empty:
+    if isinstance(df_trades, pd.DataFrame) and not df_trades.empty:
         console.print(df_trades.to_string(index=False))
         console.print("")
     elif df_trades is not False and df_trades.empty:
@@ -307,8 +304,8 @@ def close_trade(accountID: str, orderID: str, units: Union[int, None]):
 @check_api_key(["OANDA_ACCOUNT", "OANDA_TOKEN", "OANDA_ACCOUNT_TYPE"])
 def show_candles(
     instrument: str,
-    granularity: str,
-    candlecount: int,
+    granularity: str = "D",
+    candlecount: int = 180,
     additional_charts: Optional[Dict[str, bool]] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -392,7 +389,7 @@ def show_candles(
 
 @log_start_end(log=logger)
 @check_api_key(["OANDA_ACCOUNT", "OANDA_TOKEN", "OANDA_ACCOUNT_TYPE"])
-def calendar(instrument: str, days: int):
+def calendar(instrument: str, days: int = 7):
     """View calendar of significant events.
 
     Parameters
