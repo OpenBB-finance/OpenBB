@@ -109,7 +109,7 @@ def display_top_dexes(top: int = 10, export: str = "", sortby: str = "") -> None
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = dappradar_model.get_top_dexes()
+    df = dappradar_model.get_top_dexes(sortby)
     if df.empty:
         console.print("Failed to fetch data from DappRadar\n")
         return

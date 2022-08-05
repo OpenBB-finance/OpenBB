@@ -82,7 +82,12 @@ def make_request(params: Optional[dict] = None) -> Tuple[Optional[int], Any]:
 
 
 @log_start_end(log=logger)
-def get_whales_transactions(min_value: int = 800000, limit: int = 100) -> pd.DataFrame:
+def get_whales_transactions(
+    min_value: int = 800000,
+    limit: int = 100,
+    sortby: str = "date",
+    ascending: bool = False,
+) -> pd.DataFrame:
     """Whale Alert's API allows you to retrieve live and historical transaction data from major blockchains.
     Supported blockchain: Bitcoin, Ethereum, Ripple, NEO, EOS, Stellar and Tron. [Source: https://docs.whale-alert.io/]
 
@@ -92,6 +97,10 @@ def get_whales_transactions(min_value: int = 800000, limit: int = 100) -> pd.Dat
         Minimum value of trade to track.
     limit: int
         Limit of transactions. Max 100
+    sortby: str
+        Key to sort by.
+    ascending: str
+        Sort in ascending order.
 
     Returns
     -------
@@ -150,7 +159,7 @@ def get_whales_transactions(min_value: int = 800000, limit: int = 100) -> pd.Dat
         inplace=True,
     )
 
-    return data[
+    df = data[
         [
             "date",
             "symbol",
@@ -163,3 +172,5 @@ def get_whales_transactions(min_value: int = 800000, limit: int = 100) -> pd.Dat
             "to_address",
         ]
     ]
+    df = df.sort_values(by=sortby, ascending=ascending)
+    return df

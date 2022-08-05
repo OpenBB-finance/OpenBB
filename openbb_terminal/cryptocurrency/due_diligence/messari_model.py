@@ -305,7 +305,7 @@ def get_tokenomics(symbol: str, coingecko_id: str) -> Tuple[pd.DataFrame, pd.Dat
         df = pd.concat([df, cg_df], ignore_index=True, sort=False)
         df.fillna("-", inplace=True)
         circ_df, _ = get_messari_timeseries(
-            coin=symbol,
+            symbol=symbol,
             timeseries_id="sply.circ",
             interval="1d",
             start="",

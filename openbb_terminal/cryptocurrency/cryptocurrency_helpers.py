@@ -993,7 +993,7 @@ def load_ta_data(
             # console.print(f"{coin} loaded vs {currency}")
 
             df = coinbase_model.get_candles(
-                product_id=pair,
+                symbol=pair,
                 interval=interval or "24hour",
             ).head(limit)
 

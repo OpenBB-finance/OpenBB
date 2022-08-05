@@ -217,7 +217,7 @@ def display_exchanges(
     # get coinpaprika id using crypto symbol
     cp_id = cryptocurrency_helpers.get_coinpaprika_id(symbol)
 
-    df = coinpaprika_model.get_coin_exchanges_by_id(cp_id)
+    df = coinpaprika_model.get_coin_exchanges_by_id(cp_id, sortby, ascending)
 
     if df.empty:
         console.print("No data found", "\n")

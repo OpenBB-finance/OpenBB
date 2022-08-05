@@ -267,7 +267,7 @@ class DueDiligenceController(CryptoBaseController):
 
             if ns_parser:
                 glassnode_view.display_non_zero_addresses(
-                    asset=self.symbol.upper(),
+                    symbol=self.symbol.upper(),
                     since=int(datetime.timestamp(ns_parser.since)),
                     until=int(datetime.timestamp(ns_parser.until)),
                     export=ns_parser.export,
@@ -355,7 +355,7 @@ class DueDiligenceController(CryptoBaseController):
 
             if ns_parser:
                 glassnode_view.display_active_addresses(
-                    asset=self.symbol.upper(),
+                    symbol=self.symbol.upper(),
                     interval=ns_parser.interval,
                     since=int(datetime.timestamp(ns_parser.since)),
                     until=int(datetime.timestamp(ns_parser.until)),
@@ -419,7 +419,7 @@ class DueDiligenceController(CryptoBaseController):
 
             if ns_parser:
                 glassnode_view.display_exchange_net_position_change(
-                    asset=self.symbol.upper(),
+                    symbol=self.symbol.upper(),
                     exchange=ns_parser.exchange,
                     since=int(datetime.timestamp(ns_parser.since)),
                     until=int(datetime.timestamp(ns_parser.until)),
@@ -489,7 +489,7 @@ class DueDiligenceController(CryptoBaseController):
 
             if ns_parser:
                 glassnode_view.display_exchange_balances(
-                    asset=self.symbol.upper(),
+                    symbol=self.symbol.upper(),
                     exchange=ns_parser.exchange,
                     since=int(datetime.timestamp(ns_parser.since)),
                     until=int(datetime.timestamp(ns_parser.until)),
@@ -801,7 +801,7 @@ class DueDiligenceController(CryptoBaseController):
         if ns_parser:
             ccxt_view.display_order_book(
                 ns_parser.exchange,
-                coin=self.symbol,
+                symbol=self.symbol,
                 vs=ns_parser.vs,
                 export=ns_parser.export,
             )
@@ -845,7 +845,7 @@ class DueDiligenceController(CryptoBaseController):
         if ns_parser:
             ccxt_view.display_trades(
                 ns_parser.exchange,
-                coin=self.symbol,
+                symbol=self.symbol,
                 vs=ns_parser.vs,
                 export=ns_parser.export,
                 top=ns_parser.limit,
@@ -879,7 +879,7 @@ class DueDiligenceController(CryptoBaseController):
 
         if ns_parser:
             binance_view.display_balance(
-                coin=coin, currency=ns_parser.vs, export=ns_parser.export
+                to_symbol=coin, from_symbol=ns_parser.vs, export=ns_parser.export
             )
 
     @log_start_end(log=logger)
@@ -1234,7 +1234,7 @@ class DueDiligenceController(CryptoBaseController):
 
         if ns_parser:
             messari_view.display_marketcap_dominance(
-                coin=self.symbol.upper(),
+                symbol=self.symbol.upper(),
                 interval=ns_parser.interval,
                 start=ns_parser.start,
                 end=ns_parser.end,
@@ -1260,7 +1260,7 @@ class DueDiligenceController(CryptoBaseController):
 
         if ns_parser:
             messari_view.display_links(
-                coin=self.symbol.upper(),
+                symbol=self.symbol.upper(),
                 export=ns_parser.export,
             )
 
@@ -1323,7 +1323,7 @@ class DueDiligenceController(CryptoBaseController):
 
         if ns_parser:
             santiment_view.display_github_activity(
-                coin=self.symbol.upper(),
+                symbol=self.symbol.upper(),
                 interval=ns_parser.interval,
                 dev_activity=ns_parser.dev,
                 start=ns_parser.start.strftime("%Y-%m-%dT%H:%M:%SZ"),
@@ -1358,7 +1358,7 @@ class DueDiligenceController(CryptoBaseController):
         if ns_parser:
             messari_view.display_roadmap(
                 ascending=not ns_parser.descend,
-                coin=self.symbol.upper(),
+                symbol=self.symbol.upper(),
                 limit=ns_parser.limit,
                 export=ns_parser.export,
             )
@@ -1384,7 +1384,7 @@ class DueDiligenceController(CryptoBaseController):
         if ns_parser:
             if self.symbol:
                 messari_view.display_tokenomics(
-                    coin=self.symbol.upper(),
+                    symbol=self.symbol.upper(),
                     export=ns_parser.export,
                 )
 
@@ -1408,7 +1408,7 @@ class DueDiligenceController(CryptoBaseController):
 
         if ns_parser:
             messari_view.display_project_info(
-                coin=self.symbol.upper(),
+                symbol=self.symbol.upper(),
                 export=ns_parser.export,
             )
 
@@ -1432,7 +1432,7 @@ class DueDiligenceController(CryptoBaseController):
 
         if ns_parser:
             messari_view.display_team(
-                coin=self.symbol.upper(),
+                symbol=self.symbol.upper(),
                 export=ns_parser.export,
             )
 
@@ -1456,7 +1456,7 @@ class DueDiligenceController(CryptoBaseController):
 
         if ns_parser:
             messari_view.display_investors(
-                coin=self.symbol.upper(),
+                symbol=self.symbol.upper(),
                 export=ns_parser.export,
             )
 
@@ -1480,7 +1480,7 @@ class DueDiligenceController(CryptoBaseController):
 
         if ns_parser:
             messari_view.display_fundraising(
-                coin=self.symbol.upper(),
+                symbol=self.symbol.upper(),
                 export=ns_parser.export,
             )
 
@@ -1504,7 +1504,7 @@ class DueDiligenceController(CryptoBaseController):
 
         if ns_parser:
             messari_view.display_governance(
-                coin=self.symbol.upper(),
+                symbol=self.symbol.upper(),
                 export=ns_parser.export,
             )
 
@@ -1607,7 +1607,7 @@ class DueDiligenceController(CryptoBaseController):
             else:
                 messari_view.display_messari_timeseries(
                     timeseries_id=ns_parser.timeseries,
-                    coin=self.symbol.upper(),
+                    symbol=self.symbol.upper(),
                     interval=ns_parser.interval,
                     start=ns_parser.start,
                     end=ns_parser.end,

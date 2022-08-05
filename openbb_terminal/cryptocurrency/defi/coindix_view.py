@@ -58,7 +58,9 @@ def display_defi_vaults(
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = coindix_model.get_defi_vaults(chain=chain, protocol=protocol, kind=kind)
+    df = coindix_model.get_defi_vaults(
+        chain=chain, protocol=protocol, kind=kind, sortby=sortby, ascending=ascending
+    )
     if df.empty:
         print(
             f"Couldn't find any vaults for "
