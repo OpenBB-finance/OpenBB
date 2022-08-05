@@ -160,6 +160,7 @@ def get_news(
     region: str = "en",
     source: str = "cp",
     currency: str = None,
+    sortby: str = "published_at",
     ascending: bool = True,
 ) -> pd.DataFrame:
     """Get recent posts from CryptoPanic news aggregator platform. [Source: https://cryptopanic.com/]
@@ -175,6 +176,8 @@ def get_news(
     region: str
         Filter news by regions. Available regions are: en (English), de (Deutsch), nl (Dutch),
         es (Español), fr (Français), it (Italiano), pt (Português), ru (Русский)
+    sortby: str
+        Key to sort by.
     ascending: bool
         Sort in ascending order.
 
@@ -233,6 +236,7 @@ def get_news(
             )
             df = df.sort_values(by="published_at", ascending=ascending)
             df["published_at"] = pd.to_datetime(df["published_at"]).dt.date
+            df = df.sort_values(by=sortby, ascending=ascending)
             return df
         except Exception as e:  # noqa: F841
             logger.exception(str(e))

@@ -15,7 +15,7 @@ class TestCoinGeckoAPI(TestCase):
     @pytest.mark.vcr()
     def test_coin_holdings_overview(self):
         ov_pycoingecko_view.display_holdings_overview(
-            coin="bitcoin", show_bar=False, export="", top=20
+            symbol="bitcoin", show_bar=False, export="", top=20
         )
 
     @pytest.mark.record_stdout
