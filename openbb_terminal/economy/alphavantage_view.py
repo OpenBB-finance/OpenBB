@@ -155,11 +155,11 @@ def display_gdp_capita(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    gdp_capita = alphavantage_model.get_gdp_capita()
-    if gdp_capita.empty:
+    gdp = alphavantage_model.get_gdp_capita()
+    if gdp.empty:
         console.print("Error getting data.  Check API Key")
         return
-    gdp = gdp_capita[gdp_capita.date >= f"{start_year}-01-01"]
+    
 
     # This plot has 1 axis
     if not external_axes:
@@ -180,7 +180,7 @@ def display_gdp_capita(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "gdpc",
-        gdp_capita,
+        gdp,
     )
     if raw:
         print_rich_table(

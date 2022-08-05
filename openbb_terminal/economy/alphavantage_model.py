@@ -90,8 +90,13 @@ def get_real_gdp(interval: str = "a", start_year: int = 2010,) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_gdp_capita() -> pd.DataFrame:
+def get_gdp_capita(start_year: int = 2010) -> pd.DataFrame:
     """Real GDP per Capita for United States
+
+    Parameters
+    ----------
+    start_year : int, optional
+        Start year for plot, by default 2010
 
     Returns
     -------
@@ -121,7 +126,9 @@ def get_gdp_capita() -> pd.DataFrame:
     elif "Information" in payload:
         console.print(payload["Information"])
 
-    return data
+    gdp = data[data.date >= f"{start_year}-01-01"]
+
+    return gdp
 
 
 @log_start_end(log=logger)
