@@ -6,6 +6,7 @@
 
 import datetime
 import pytest
+from pytz import country_names
 
 # IMPORTATION INTERNAL
 from openbb_terminal.economy import investingcom_view
@@ -21,9 +22,9 @@ def test_display_yieldcurve():
 @pytest.mark.record_stdout
 def test_display_economic_calendar():
     investingcom_view.display_economic_calendar(
-        countries="united states",
-        importances="high",
-        categories="Employment",
+        country="united states",
+        importance="high",
+        category="Employment",
         from_date=datetime.date(2022, 7, 7),
         to_date=datetime.date(2022, 7, 8),
     )
