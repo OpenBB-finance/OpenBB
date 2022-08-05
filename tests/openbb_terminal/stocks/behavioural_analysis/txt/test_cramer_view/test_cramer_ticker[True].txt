@@ -8,4 +8,3 @@
 6  Apple   2022-01-28  170.33   AAPL            Buy          Sell
 7  Apple   2022-01-31  174.78   AAPL            Buy          Sell
 8  Apple   2022-02-03  172.90   AAPL            Buy          Sell
-

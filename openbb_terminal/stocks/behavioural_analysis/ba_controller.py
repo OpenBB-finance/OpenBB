@@ -141,7 +141,7 @@ class BehaviouralAnalysisController(StockBaseController):
             dest="limit",
             type=check_positive,
             default=5,
-            help="limit of posts with watchlists retrieved.",
+            help="limit of posts with watch lists retrieved.",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
@@ -291,7 +291,7 @@ class BehaviouralAnalysisController(StockBaseController):
             dest="s_subreddit",
             type=str,
             help="""
-                subreddits to look for tickers, e.g. pennystocks,stocks.
+                Subreddits to look for tickers, e.g. pennystocks,stocks.
                 Default: pennystocks, RobinHoodPennyStocks, Daytrading, StockMarket, stocks, investing,
                 wallstreetbets
             """,
@@ -411,8 +411,7 @@ class BehaviouralAnalysisController(StockBaseController):
             help="time period to get posts from -- all, year, month, week, or day; defaults to week",
         )
         parser.add_argument(
-            "-f",
-            "--full_search",
+            "--full",
             action="store_true",
             dest="full_search",
             default=False,

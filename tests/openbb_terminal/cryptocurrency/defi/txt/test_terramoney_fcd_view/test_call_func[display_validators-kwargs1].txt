@@ -9,4 +9,3 @@
 7  terra15cupwhpnxhgylxa8n4ufyvux05xu864jcrrkqa              Figment            7M            2.25               10.0  active     99.99
 8  terra1va2ew92dtkhffduswr83elf3nfvl4xg48rguwl            NOD Games            7M            2.24                0.0  active    100.00
 9  terra1kprce6kc08a6l03gzzh99hfpazfjeczfpd6td0           Certus One            7M            2.23               10.0  active    100.00
-
