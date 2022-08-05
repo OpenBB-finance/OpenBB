@@ -185,7 +185,7 @@ class OverviewController(BaseController):
             prog="hm",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            description="""Display cryptocurrencies heatmap [Source: https://coingecko.com]
+            description="""Display cryptocurrencies heatmap with daily percentage change [Source: https://coingecko.com]
             Accepts --category or -c to display only coins of a certain category
             (default no category to display all coins ranked by market cap).
             You can look on only top N number of records with --limit.

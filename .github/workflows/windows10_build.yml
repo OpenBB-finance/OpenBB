@@ -1,0 +1,77 @@
+name: Windows10 Build
+env:
+  OPENBB_ENABLE_QUICK_EXIT: true
+  OPENBB_LOG_COLLECTION: false
+  OPENBB_USE_ION: false
+  OPENBB_USE_PROMPT_TOOLKIT: false
+  PIP_DEFAULT_TIMEOUT: 100
+  PYTHONNOUSERSITE: 1
+on: workflow_dispatch
+jobs:
+  Windows-Build:
+    name: Windows10 Build
+    runs-on: [self-hosted, Windows, x64]
+    # Configuring -------------
+    steps:
+      - name: Setup Windows Git Configuration # This is under the assumption that git is already installed on the system
+        run: |
+           Set-ItemProperty 'HKLM:\System\CurrentControlSet\Control\FileSystem' -Name 'LongPathsEnabled' -value 1
+           git config --system core.longpaths true
+      - name: Checkout
+        uses: actions/checkout@v2.4.2
+      - name: Activate Base & Create OpenBB Environment
+        run: |
+          conda activate base
+          conda env create -n obb --file build/conda/conda-3-9-env.yaml
+          conda init
+          conda activate obb
+          conda env list
+      - name: Poetry Install
+        # Conda activate needs to be run every time because of the way that the workflow steps work
+        # on powershell where it creates a new shell every time for every step
+        run: |
+          conda activate obb
+          poetry install
+      - name: Poetry Install Predictions
+        run: |
+          conda activate obb
+          poetry install -E prediction
+      - name: Poetry Install Installer
+        run: |
+          conda activate obb
+          poetry install -E installer
+      # Building ------------
+      - name: Build Terminal.spec file
+        run: |
+          conda activate obb
+          pyinstaller build/pyinstaller/terminal.spec
+      - name: Move Files into App Folder
+        run: cp -r .\dist\OpenBBTerminal\ .\build\nsis\app\
+      # dont need this because log collection is turned off
+      # - name: Remove Log Data
+      #   run: Remove-Item .\build\nsis\app\openbb_terminal\logs\ -Recurse
+      - name: Build Exe File
+        run: |
+          conda activate obb
+          C:\'.\Program Files (x86)\'\nsis\makensis.exe .\build\nsis\setup.nsi
+      - name: Save Build Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: Windows EXE Artifact
+          path: '.\build\nsis\OpenBB Terminal Setup.exe'
+      - name: Run Integration Tests
+        run: dist\OpenBBTerminal\OpenBBTerminal.exe C:\Users\Administrator\actions-runner\_work\OpenBBTerminal\OpenBBTerminal\scripts -t
+      # Cleaning ------------------------
+      # Make sure to add Remove-Item C:\Users\Administrator\Desktop\OPENBB-exports -Recurse whenever integration tests get fixed
+      - name: Remove Previous Build
+        run: |
+          Remove-Item '.\build\nsis\OpenBB Terminal Setup.exe' -Recurse
+          Remove-Item .\build\nsis\app\ -Recurse
+          Remove-Item .\dist\ -Recurse
+          Remove-Item .\build\terminal\ -Recurse
+      - name: Deactivate & Remove Conda Environment
+        run: |
+          conda deactivate obb
+          conda deactivate base
+          conda env remove -n obb
+          Remove-Item C:\Users\Administrator\miniconda3\envs\obb\ -Recurse
