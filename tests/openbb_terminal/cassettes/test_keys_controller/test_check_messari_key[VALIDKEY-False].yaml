@@ -1,0 +1,47 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.28.1
+      x-messari-api-key:
+      - VALIDKEY
+    method: GET
+    uri: https://data.messari.io/api/v2/assets/bitcoin/profile?fields=profile%2Fgeneral%2Foverview%2Fofficial_links
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAA/zTIsQrCMBAG4N2nKP/cyjWtNN4buDu5yGFPCTYm5KIgpe/u5PqtsCr1beAVukg2
+        ncHUooaoViVmMBw515HvyJ17z4eeh2F/9MM4Tn5yF7TQUlK53tKs4JHoD1HN5KFgnF4fWcLcSA7N
+        U7/NPZUoFdu2+wUAAP//5ua/OYAAAAA=
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 73490170cf55b40d-HKG
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '137'
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Tue, 02 Aug 2022 18:51:34 GMT
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      content-encoding:
+      - gzip
+      vary:
+      - Accept-Encoding,Origin
+    status:
+      code: 400
+      message: Bad Request
+version: 1
