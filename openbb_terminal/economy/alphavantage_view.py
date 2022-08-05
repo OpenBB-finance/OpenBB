@@ -100,7 +100,7 @@ def display_real_gdp(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    gdp = alphavantage_model.get_real_gdp(interval)
+    gdp = alphavantage_model.get_real_gdp(interval, start_year)
 
     if gdp.empty:
         return
@@ -155,7 +155,7 @@ def display_gdp_capita(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    gdp = alphavantage_model.get_gdp_capita()
+    gdp = alphavantage_model.get_gdp_capita(start_year)
     if gdp.empty:
         console.print("Error getting data.  Check API Key")
         return
@@ -250,7 +250,7 @@ def display_inflation(
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
 def display_cpi(
-    interval: str,
+    interval: str = "m",
     start_year: int = 2010,
     raw: bool = False,
     export: str = "",
@@ -271,11 +271,11 @@ def display_cpi(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    cpi_full = alphavantage_model.get_cpi(interval)
-    if cpi_full.empty:
+    cpi = alphavantage_model.get_cpi(interval, start_year)
+    if cpi.empty:
         console.print("Error getting data.  Check API Key")
         return
-    cpi = cpi_full[cpi_full.date >= f"{start_year}-01-01"]
+    
     int_string = "Semi-Annual" if interval == "s" else "Monthly"
     year_str = str(list(cpi.date)[-1].year)
 
@@ -297,7 +297,7 @@ def display_cpi(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "cpi",
-        cpi_full,
+        cpi,
     )
     if raw:
         print_rich_table(

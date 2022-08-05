@@ -167,13 +167,15 @@ def get_inflation() -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_cpi(interval: str) -> pd.DataFrame:
+def get_cpi(interval: str = "m", start_year: int = 2010) -> pd.DataFrame:
     """Get Consumer Price Index from Alpha Vantage
 
     Parameters
     ----------
     interval : str
         Interval for data.  Either "m" or "s" for monthly or semiannual
+    start_year : int, optional
+        Start year for plot, by default 2010
 
     Returns
     -------
@@ -205,6 +207,8 @@ def get_cpi(interval: str) -> pd.DataFrame:
     # Premium feature, API plan is not authorized
     elif "Information" in payload:
         console.print(payload["Information"])
+
+    cpi = data[data.date >= f"{start_year}-01-01"]
 
     return data
 
