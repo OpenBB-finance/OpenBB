@@ -211,11 +211,10 @@ def display_inflation(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    inflation = alphavantage_model.get_inflation()
-    if inflation.empty:
+    inf = alphavantage_model.get_inflation(start_year)
+    if inf.empty:
         console.print("Error getting data.  Check API Key")
         return
-    inf = inflation[inflation.date >= f"{start_year}-01-01"]
 
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
@@ -235,7 +234,7 @@ def display_inflation(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "inf",
-        inflation,
+        inf,
     )
     if raw:
         print_rich_table(
@@ -369,7 +368,7 @@ def display_treasury_yield(
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
 def display_unemployment(
-    start_year: int = 2015,
+    start_year: int = 2010,
     raw: bool = False,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -388,13 +387,11 @@ def display_unemployment(
         External axes (1 axis is expected in the list), by default None
     """
 
-    unemp = alphavantage_model.get_unemployment()
+    un = alphavantage_model.get_unemployment(start_year)
 
-    if unemp.empty:
+    if un.empty:
         console.print("Error getting data.  Check API Key")
         return
-
-    un = unemp[unemp.date >= f"{start_year}-01-01"]
 
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
@@ -414,7 +411,7 @@ def display_unemployment(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "unemp",
-        unemp,
+        un,
     )
 
     if raw:
