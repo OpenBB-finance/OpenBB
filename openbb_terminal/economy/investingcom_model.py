@@ -146,8 +146,8 @@ def get_economic_calendar(
     country: str = "all",
     importance: str = "",
     category: str = "",
-    from_date: datetime.date = None,
-    to_date: datetime.date = None,
+    start_date: datetime.date = None,
+    end_date: datetime.date = None,
     limit=100,
 ) -> Tuple[pd.DataFrame, str]:
     """Get economic calendar [Source: Investing.com]
@@ -160,9 +160,9 @@ def get_economic_calendar(
         Importance selected from high, medium, low or all
     category: str
         Event category. List of available categories is accessible through get_ecocal_categories().
-    from_date: datetime.date
+    start_date: datetime.date
         First date to get events.
-    to_date: datetime.date
+    end_date: datetime.date
         Last date to get events.
 
     Returns
@@ -194,18 +194,18 @@ def get_economic_calendar(
     elif importances_list is None:
         importances_list = ["all"]
 
-    if from_date and not to_date:
-        to_date_string = format_date(from_date + datetime.timedelta(days=7))
-        from_date_string = format_date(from_date)
-    elif to_date and not from_date:
-        from_date_string = format_date(to_date + datetime.timedelta(days=-7))
-        to_date_string = format_date(to_date)
-    elif to_date and from_date:
-        from_date_string = format_date(from_date)
-        to_date_string = format_date(to_date)
+    if start_date and not end_date:
+        end_date_string = format_date(start_date + datetime.timedelta(days=7))
+        start_date_string = format_date(start_date)
+    elif end_date and not start_date:
+        start_date_string = format_date(end_date + datetime.timedelta(days=-7))
+        end_date_string = format_date(end_date)
+    elif end_date and start_date:
+        start_date_string = format_date(start_date)
+        end_date_string = format_date(end_date)
     else:
-        from_date_string = None
-        to_date_string = None
+        start_date_string = None
+        end_date_string = None
 
     # Get user time zone in GMT offset format
     user_time_zone = pytz.timezone(helper_funcs.get_user_timezone())
@@ -226,8 +226,8 @@ def get_economic_calendar(
             countries_list,
             importances_list,
             categories_list,
-            from_date_string,
-            to_date_string,
+            start_date_string,
+            end_date_string,
         )
     except Exception:
         data = investpy.news.economic_calendar(
@@ -236,8 +236,8 @@ def get_economic_calendar(
             countries_list,
             importances_list,
             categories_list,
-            from_date_string,
-            to_date_string,
+            start_date_string,
+            end_date_string,
         )
 
     if data.empty:

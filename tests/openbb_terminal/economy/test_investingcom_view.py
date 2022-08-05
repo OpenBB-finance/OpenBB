@@ -25,6 +25,6 @@ def test_display_economic_calendar():
         country="united states",
         importance="high",
         category="Employment",
-        from_date=datetime.date(2022, 7, 7),
-        to_date=datetime.date(2022, 7, 8),
+        start_date=datetime.date(2022, 7, 7),
+        end_date=datetime.date(2022, 7, 8),
     )

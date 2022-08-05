@@ -27,7 +27,7 @@ def test_get_yieldcurve(country):
 
 @pytest.mark.vcr
 @pytest.mark.parametrize(
-    "country, importance, category, from_date, to_date",
+    "country, importance, category, start_date, end_date",
     [
         [
             "united states",
@@ -38,9 +38,9 @@ def test_get_yieldcurve(country):
         ],
     ],
 )
-def test_get_economic_calendar(country, importance, category, from_date, to_date):
+def test_get_economic_calendar(country, importance, category, start_date, end_date):
     result_df, _ = investingcom_model.get_economic_calendar(
-        country, importance, category, from_date, to_date
+        country, importance, category, start_date, end_date
     )
 
     assert isinstance(result_df, pd.DataFrame)

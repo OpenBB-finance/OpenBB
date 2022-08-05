@@ -87,8 +87,8 @@ def display_economic_calendar(
     country: str = "all",
     importance: str = "",
     category: str = "",
-    from_date: datetime.date = None,
-    to_date: datetime.date = None,
+    start_date: datetime.date = None,
+    end_date: datetime.date = None,
     limit=100,
     export: str = "",
 ):
@@ -102,9 +102,9 @@ def display_economic_calendar(
         Importance selected from high, medium, low or all.
     categories: str
         Event category. List of available categories is accessible through get_ecocal_categories().
-    from_date: datetime.date
+    start_date: datetime.date
         First date to get events.
-    to_date: datetime.date
+    end_date: datetime.date
         Last date to get events.
     limit: int
         The maximum number of events to show, default is 100.
@@ -113,7 +113,7 @@ def display_economic_calendar(
     """
 
     df, detail = investingcom_model.get_economic_calendar(
-        country, importance, category, from_date, to_date, limit
+        country, importance, category, start_date, end_date, limit
     )
 
     if not df.empty:

@@ -1103,8 +1103,8 @@ class EconomyController(BaseController):
                 country=ns_parser.country,
                 importance=ns_parser.importance,
                 category=ns_parser.category,
-                from_date=ns_parser.start_date,
-                to_date=ns_parser.end_date,
+                start_Date=ns_parser.start_date,
+                end_date=ns_parser.end_date,
                 limit=ns_parser.limit,
                 export=ns_parser.export,
             )
