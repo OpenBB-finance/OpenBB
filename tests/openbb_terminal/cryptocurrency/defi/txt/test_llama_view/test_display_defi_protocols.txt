@@ -9,4 +9,3 @@
 7  Polygon Bridge & Staking  MATIC           Chain                                                                             Polygon      0.583879      4.134046     -8.565811  10.951 B
 8                   Uniswap    UNI           Dexes                                               Ethereum, Polygon, Arbitrum, Optimism       0.62949          None          None   7.380 B
 9                  Compound   COMP         Lending                                                                            Ethereum      0.529476      0.924896     -7.284813   6.230 B
-
