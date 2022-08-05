@@ -9,4 +9,3 @@
 7                    Autoglyphs  ethereum          512.4K             0         262.3M          0
 8                World Of Women  ethereum           23.6K         26.4K         236.2M     686.5K
 9                         Azuki  ethereum           21.5K         17.5K         215.5M        23M
-

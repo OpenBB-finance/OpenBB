@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - python-requests/2.27.1
+      - python-requests/2.28.1
     method: GET
     uri: https://finnhub.io/api/v1/quote?symbol=AAPL&token=VALIDKEY
   response:
@@ -29,7 +29,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 6f938a4399192007-IND
+      - 72920fcd1c019a05-FRA
       Connection:
       - keep-alive
       Content-Length:
@@ -37,13 +37,13 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Sat, 09 Apr 2022 13:20:28 GMT
+      - Mon, 11 Jul 2022 13:59:48 GMT
       Expect-CT:
       - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
       NEL:
       - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
       Report-To:
-      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=3Oba96QOoCTwrmFycLSecOPGDHicLfG7qtbbsIi7B9JBzrlkb%2BTig174cFtyr8glPX4gXSWs4uKI5AEQ0TQKLH%2FUnika8n5OqhviMcua1GDMCuz%2B6iuY5ZZ764aQ"}],"group":"cf-nel","max_age":604800}'
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=Xiygcp%2Fh0Nm2F6VWe%2BL0S2AnBcxhmK7EXGklzEmpJn2K5rINswco7HZ%2FkA2fr0TnAkah0zGe8%2B%2BdRP3kxr2rkklaPwrIToUtQKNYmRuKkX%2FNun%2BZsmdSKzEZPhET"}],"group":"cf-nel","max_age":604800}'
       Server:
       - cloudflare
       alt-svc:

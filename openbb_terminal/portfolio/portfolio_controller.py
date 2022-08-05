@@ -315,8 +315,6 @@ class PortfolioController(BaseController):
             dest="risk_free_rate",
             help="Set the risk free rate.",
         )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-f")
 
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
 

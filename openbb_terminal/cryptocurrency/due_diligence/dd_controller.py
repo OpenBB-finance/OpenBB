@@ -151,7 +151,7 @@ class DueDiligenceController(CryptoBaseController):
             }
             choices["ps"]["--vs"] = {c: None for c in coinpaprika_view.CURRENCIES}
             choices["news"]["-k"] = {c: None for c in cryptopanic_model.CATEGORIES}
-            choices["news"]["-f"] = {c: None for c in cryptopanic_model.FILTERS}
+            choices["news"]["--filter"] = {c: None for c in cryptopanic_model.FILTERS}
             choices["news"]["-r"] = {c: None for c in cryptopanic_model.REGIONS}
             choices["news"]["-s"] = {c: None for c in cryptopanic_model.SORT_FILTERS}
 
@@ -1645,7 +1645,6 @@ class DueDiligenceController(CryptoBaseController):
         )
 
         parser.add_argument(
-            "-f",
             "--filter",
             dest="filter",
             type=str,
