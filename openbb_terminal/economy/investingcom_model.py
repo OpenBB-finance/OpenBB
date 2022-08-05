@@ -6,6 +6,7 @@ import argparse
 
 import datetime
 import math
+from typing import Tuple
 import pandas as pd
 
 import pytz
@@ -148,7 +149,7 @@ def get_economic_calendar(
     from_date: datetime.date = None,
     to_date: datetime.date = None,
     limit=100,
-) -> pd.DataFrame:
+) -> Tuple[pd.DataFrame, str]:
     """Get economic calendar [Source: Investing.com]
 
     Parameters
@@ -166,8 +167,8 @@ def get_economic_calendar(
 
     Returns
     -------
-    pd.DataFrame
-        Economic calendar.
+    Tuple[pd.DataFrame, str]
+        Economic calendar Dataframe and detail string about country/time zone.
     """
 
     if check_correct_country(country, CALENDAR_COUNTRIES) != country:
