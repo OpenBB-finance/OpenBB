@@ -42,7 +42,7 @@ def display_overview(export: str = ""):
 
 
 @log_start_end(log=logger)
-def display_indices(export: str):
+def display_indices(export: str = ""):
     """US indices. [Source: Wall St. Journal]
 
     Parameters
@@ -68,7 +68,7 @@ def display_indices(export: str):
 
 
 @log_start_end(log=logger)
-def display_futures(export: str):
+def display_futures(export: str = ""):
     """Futures/Commodities. [Source: Wall St. Journal]
 
     Parameters
@@ -97,7 +97,7 @@ def display_futures(export: str):
 
 
 @log_start_end(log=logger)
-def display_usbonds(export: str):
+def display_usbonds(export: str = ""):
     """US bonds. [Source: Wall St. Journal]
 
     Parameters
@@ -123,7 +123,7 @@ def display_usbonds(export: str):
 
 
 @log_start_end(log=logger)
-def display_glbonds(export: str):
+def display_glbonds(export: str = ""):
     """Global bonds. [Source: Wall St. Journal]
 
     Parameters
@@ -149,7 +149,7 @@ def display_glbonds(export: str):
 
 
 @log_start_end(log=logger)
-def display_currencies(export: str):
+def display_currencies(export: str = ""):
     """Display currencies. [Source: Wall St. Journal]
 
     Parameters
