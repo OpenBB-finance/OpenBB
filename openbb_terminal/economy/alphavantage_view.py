@@ -79,7 +79,7 @@ def realtime_performance_sector(
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
 def display_real_gdp(
-    interval: str = "a",
+    interval: str = "q",
     start_year: int = 2010,
     raw: bool = False,
     export: str = "",
@@ -90,7 +90,7 @@ def display_real_gdp(
     Parameters
     ----------
     interval : str
-        Interval for GDP.  Either "a" or "q"
+        Interval for GDP.  Either "a" or "q", by default "q"
     start_year : int, optional
         Start year for plot, by default 2010
     raw : bool, optional
@@ -159,7 +159,6 @@ def display_gdp_capita(
     if gdp.empty:
         console.print("Error getting data.  Check API Key")
         return
-    
 
     # This plot has 1 axis
     if not external_axes:
@@ -275,7 +274,7 @@ def display_cpi(
     if cpi.empty:
         console.print("Error getting data.  Check API Key")
         return
-    
+
     int_string = "Semi-Annual" if interval == "s" else "Monthly"
     year_str = str(list(cpi.date)[-1].year)
 
@@ -308,9 +307,9 @@ def display_cpi(
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
 def display_treasury_yield(
-    interval: str,
-    maturity: str,
-    start_date: str,
+    interval: str = "m",
+    maturity: str = "10y",
+    start_date: str = "2010-01-01",
     raw: bool = False,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -320,11 +319,11 @@ def display_treasury_yield(
     Parameters
     ----------
     interval : str
-        Interval for data.  Can be "d","w","m" for daily, weekly or monthly
+        Interval for data.  Can be "d","w","m" for daily, weekly or monthly, by default "m"
     maturity : str
-        Maturity timeline.  Can be "3mo","5y","10y" or "30y"
+        Maturity timeline.  Can be "3mo","5y","10y" or "30y", by default "10y"
     start_date: str
-        Start date for data.  Should be in YYYY-MM-DD format
+        Start date for data.  Should be in YYYY-MM-DD format, by default "2010-01-01"
     raw : bool, optional
         Flag to display raw data, by default False
     export : str, optional
@@ -333,11 +332,10 @@ def display_treasury_yield(
         External axes (1 axis is expected in the list), by default None
     """
     d_maturity = {"3m": "3month", "5y": "5year", "10y": "10year", "30y": "30year"}
-    yields = alphavantage_model.get_treasury_yield(interval, maturity)
-    if yields.empty:
+    yld = alphavantage_model.get_treasury_yield(interval, maturity, start_date)
+    if yld.empty:
         console.print("Error getting data.  Check API Key")
         return
-    yld = yields[yields.date >= start_date]
 
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
@@ -357,7 +355,7 @@ def display_treasury_yield(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "tyld",
-        yields,
+        yld,
     )
     if raw:
         print_rich_table(

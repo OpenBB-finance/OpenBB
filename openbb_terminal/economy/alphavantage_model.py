@@ -43,13 +43,16 @@ def get_sector_data() -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_real_gdp(interval: str = "a", start_year: int = 2010,) -> pd.DataFrame:
+def get_real_gdp(
+    interval: str = "q",
+    start_year: int = 2010,
+) -> pd.DataFrame:
     """Get annual or quarterly Real GDP for US
 
     Parameters
     ----------
     interval : str, optional
-        Interval for GDP, by default "a" for annual
+        Interval for GDP, by default "a" for annual, by default "q"
     start_year : int, optional
         Start year for plot, by default 2010
     Returns
@@ -214,15 +217,19 @@ def get_cpi(interval: str = "m", start_year: int = 2010) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_treasury_yield(interval: str, maturity: str) -> pd.DataFrame:
+def get_treasury_yield(
+    interval: str = "m", maturity: str = "10y", start_date: str = "2010-01-01"
+) -> pd.DataFrame:
     """Get historical yield for a given maturity
 
     Parameters
     ----------
     interval : str
-        Interval for data.  Can be "d","w","m" for daily, weekly or monthly
+        Interval for data.  Can be "d","w","m" for daily, weekly or monthly, by default "m"
+    start_date: str
+        Start date for data.  Should be in YYYY-MM-DD format, by default "2010-01-01"
     maturity : str
-        Maturity timeline.  Can be "3mo","5y","10y" or "30y"
+        Maturity timeline.  Can be "3mo","5y","10y" or "30y", by default "10y"
 
     Returns
     -------
@@ -258,7 +265,9 @@ def get_treasury_yield(interval: str, maturity: str) -> pd.DataFrame:
     elif "Information" in payload:
         console.print(payload["Information"])
 
-    return data
+    yld = data[data.date >= start_date]
+
+    return yld
 
 
 @log_start_end(log=logger)
