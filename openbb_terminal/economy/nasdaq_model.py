@@ -10,7 +10,7 @@ import pandas as pd
 import requests
 
 from openbb_terminal.config_terminal import API_KEY_QUANDL
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.decorators import log_start_end, check_api_key
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -34,13 +34,27 @@ def check_country_code_type(list_of_codes: str) -> List[str]:
 
 
 @log_start_end(log=logger)
+def get_country_codes() -> List[str]:
+    """Get available country codes for Bigmac index
+
+    Returns
+    -------
+    List[str]
+        List of ISO-3 letter country codes.
+    """
+    file = os.path.join(os.path.dirname(__file__), "NASDAQ_CountryCodes.csv")
+    codes = pd.read_csv(file, index_col=0)
+    return codes
+
+
+@log_start_end(log=logger)
 def get_big_mac_index(country_code: str) -> pd.DataFrame:
     """Gets the Big Mac index calculated by the Economist
 
     Parameters
     ----------
     country_code : str
-        ISO-3 letter country code to retrieve
+        ISO-3 letter country code to retrieve. Codes available through get_country_codes().
 
     Returns
     -------
@@ -70,3 +84,31 @@ def get_big_mac_index(country_code: str) -> pd.DataFrame:
         console.print(r.text)
 
     return df
+
+
+@log_start_end(log=logger)
+def get_big_mac_indices(country_codes: List[str]) -> pd.DataFrame:
+    """Display Big Mac Index for given countries
+
+    Parameters
+    ----------
+    country_codes : List[str]
+        List of country codes (ISO-3 letter country code). Codes available through get_country_codes().
+
+    Returns
+    -------
+    pd.DataFrame
+        Dataframe with Big Mac indices converted to USD equivalent.
+    """
+
+    df_cols = ["Date"]
+    df_cols.extend(country_codes)
+    big_mac = pd.DataFrame(columns=df_cols)
+    for country in country_codes:
+        df1 = get_big_mac_index(country)
+        if not df1.empty:
+            big_mac[country] = df1["dollar_price"]
+            big_mac["Date"] = df1["Date"]
+    big_mac.set_index("Date", inplace=True)
+
+    return big_mac

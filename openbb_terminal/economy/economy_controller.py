@@ -461,11 +461,8 @@ class EconomyController(BaseController):
         )
         if ns_parser:
             if ns_parser.codes:
-                file = os.path.join(
-                    os.path.dirname(__file__), "NASDAQ_CountryCodes.csv"
-                )
                 console.print(
-                    pd.read_csv(file, index_col=0).to_string(index=False), "\n"
+                    nasdaq_model.get_country_codes().to_string(index=False), "\n"
                 )
             else:
                 nasdaq_view.display_big_mac_index(

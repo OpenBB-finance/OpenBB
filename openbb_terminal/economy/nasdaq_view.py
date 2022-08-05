@@ -45,15 +45,7 @@ def display_big_mac_index(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    df_cols = ["Date"]
-    df_cols.extend(country_codes)
-    big_mac = pd.DataFrame(columns=df_cols)
-    for country in country_codes:
-        df1 = nasdaq_model.get_big_mac_index(country)
-        if not df1.empty:
-            big_mac[country] = df1["dollar_price"]
-            big_mac["Date"] = df1["Date"]
-    big_mac.set_index("Date", inplace=True)
+    big_mac = nasdaq_model.get_big_mac_indices(country_codes)
 
     if not big_mac.empty:
         if external_axes is None:
