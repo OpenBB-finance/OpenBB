@@ -262,7 +262,7 @@ def get_economic_calendar(
 
         data.fillna(value="", inplace=True)
         data.columns = data.columns.str.title()
-        if data["Zone"].eq(data["Zone"].iloc[0]).all():
+        if len(countries_list) == 1:
             del data["Zone"]
             detail = f"{country.title()} economic calendar ({time_zone})"
         else:
