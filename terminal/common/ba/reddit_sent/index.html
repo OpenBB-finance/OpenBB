@@ -10,7 +10,7 @@
 
 
     <meta name="description" content="usage: reddit_sent [-s {relevance,hot,top,new,comments}] [-c COMPANY] [--subreddits SUBREDDITS] [-l LIMIT] [-t {hour,day,week,month,year,all}] [-f] [-g] [-h] [--export EXPORT] Determine general Reddit sentiment about a ticker. [Source: Reddit]
-optional arguments: -s {relevance,hot,top,new,comments}, --sort {relevance,hot,top,new,comments} search sorting type -c COMPANY, --company COMPANY explicit name of company to search for, will override ticker symbol --subreddits SUBREDDITS comma-separated list of subreddits to search -l LIMIT, --limit LIMIT how many posts to gather from each subreddit -t {hour,day,week,month,year,all}, --time {hour,day,week,month,year,all} time period to get posts from -- all, year, month, week, or day; defaults to week -f, --full_search enable comprehensive search -g, --graphic display graphic -d, --display Print table of sentiment values -h, --help show this help message --export EXPORT Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg Example:">
+optional arguments: -s {relevance,hot,top,new,comments}, --sort {relevance,hot,top,new,comments} search sorting type -c COMPANY, --company COMPANY explicit name of company to search for, will override ticker symbol --subreddits SUBREDDITS comma-separated list of subreddits to search -l LIMIT, --limit LIMIT how many posts to gather from each subreddit -t {hour,day,week,month,year,all}, --time {hour,day,week,month,year,all} time period to get posts from -- all, year, month, week, or day; defaults to week --full enable comprehensive search -g, --graphic display graphic -d, --display Print table of sentiment values -h, --help show this help message --export EXPORT Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg Example:">
 
 
 
@@ -26050,10 +26050,10 @@ optional arguments: -s {relevance,hot,top,new,comments}, --sort {relevance,hot,t
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Reddit Sent</h1>
-        <pre><code>usage: reddit_sent [-s {relevance,hot,top,new,comments}] [-c COMPANY] [--subreddits SUBREDDITS] [-l LIMIT]
+        <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-txt" data-lang="txt">usage: reddit_sent [-s {relevance,hot,top,new,comments}] [-c COMPANY] [--subreddits SUBREDDITS] [-l LIMIT]
                    [-t {hour,day,week,month,year,all}] [-f] [-g] [-h] [--export EXPORT]
-</code></pre><p>Determine general Reddit sentiment about a ticker. [Source: Reddit]</p>
-<pre><code>optional arguments:
+</code></pre></div><p>Determine general Reddit sentiment about a ticker. [Source: Reddit]</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-txt" data-lang="txt">optional arguments:
   -s {relevance,hot,top,new,comments}, --sort {relevance,hot,top,new,comments}
                         search sorting type
   -c COMPANY, --company COMPANY
@@ -26064,19 +26064,19 @@ optional arguments: -s {relevance,hot,top,new,comments}, --sort {relevance,hot,t
                         how many posts to gather from each subreddit
   -t {hour,day,week,month,year,all}, --time {hour,day,week,month,year,all}
                         time period to get posts from -- all, year, month, week, or day; defaults to week
-  -f, --full_search     enable comprehensive search
+  --full                enable comprehensive search
   -g, --graphic         display graphic
   -d, --display         Print table of sentiment values
   -h, --help            show this help message
   --export EXPORT       Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg
-</code></pre><p>Example:</p>
-<pre><code>reddit_sent -c Google --subreddits tech,stocks -f
+</code></pre></div><p>Example:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-txt" data-lang="txt">reddit_sent -c Google --subreddits tech,stocks --full
 Searching through subreddits for posts.
 100%|█████████████████████████████████████████████████████████████████████████| 2/2 [00:01&lt;00:00,  1.84it/s]
 Analyzing each post...
 100%|███████████████████████████████████████████████████████████████████████| 10/10 [00:04&lt;00:00,  2.07it/s]
 Sentiment Analysis for Google is 0.7552
-</code></pre>
+</code></pre></div>
     </article>
  
 

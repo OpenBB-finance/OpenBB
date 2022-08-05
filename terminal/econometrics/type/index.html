@@ -9,8 +9,8 @@
 
 
 
-    <meta name="description" content="usage: type -n {} -f {int,float,str,bool,category,date} [-h] Show the type of the columns of the dataset and/or change the type of the column
-optional arguments: -n {}, --name {} Provide dataset.column series to change type. (default: None) -f {int,float,str,bool,category,date}, --format {int,float,str,bool,category,date} Set the format for the dataset.column defined. This can be: date, int, float, str, bool or category (default: None) -h, --help show this help message (default: False) Example:
+    <meta name="description" content="usage: type -n {} --format {int,float,str,bool,category,date} [-h] Show the type of the columns of the dataset and/or change the type of the column
+optional arguments: -n {}, --name {} Provide dataset.column series to change type. (default: None) --format {int,float,str,bool,category,date} Set the format for the dataset.column defined. This can be: date, int, float, str, bool or category (default: None) -h, --help show this help message (default: False) Example:
 2022 Feb 28, 15:53 (✨) /econometrics/ $ load wage_panel -a wp 2022 Feb 28, 15:53 (✨) /econometrics/ $ type wp ┏━━━━━━━━━━━━┳━━━━━━━━━┓ ┃ column ┃ dtype ┃ ┡━━━━━━━━━━━━╇━━━━━━━━━┩ │ nr │ int64 │ ├────────────┼─────────┤ │ year │ int64 │ ├────────────┼─────────┤ │ black │ int64 │ ├────────────┼─────────┤ │ exper │ int64 │ ├────────────┼─────────┤ │ hisp │ int64 │ ├────────────┼─────────┤ │ hours │ int64 │ ├────────────┼─────────┤ │ married │ int64 │ ├────────────┼─────────┤ │ educ │ int64 │ ├────────────┼─────────┤ │ union │ int64 │ ├────────────┼─────────┤ │ lwage │ float64 │ ├────────────┼─────────┤ │ expersq │ int64 │ ├────────────┼─────────┤ │ occupation │ int64 │ └────────────┴─────────┘ 2022 Feb 28, 15:54 (✨) /econometrics/ $ type wp.">
 
 
@@ -26043,19 +26043,19 @@ optional arguments: -n {}, --name {} Provide dataset.column series to change typ
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Type</h1>
-        <pre><code>usage: type -n {} -f {int,float,str,bool,category,date} [-h]
-</code></pre><p>Show the type of the columns of the dataset and/or change the type of the column</p>
-<pre><code>optional arguments:
+        <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-txt" data-lang="txt">usage: type -n {} --format {int,float,str,bool,category,date} [-h]
+</code></pre></div><p>Show the type of the columns of the dataset and/or change the type of the column</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-txt" data-lang="txt">optional arguments:
   -n {}, --name {}
                         Provide dataset.column series to change type. (default: None)
-  -f {int,float,str,bool,category,date}, --format {int,float,str,bool,category,date}
+  --format {int,float,str,bool,category,date}
                         Set the format for the dataset.column defined. This can be: date, int, float, str, bool or category (default: None)
   -h, --help            show this help message (default: False)
-</code></pre><p>Example:</p>
-<pre><code>2022 Feb 28, 15:53 (✨) /econometrics/ $ load wage_panel -a wp
+</code></pre></div><p>Example:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-txt" data-lang="txt">2022 Feb 28, 15:53 (✨) /econometrics/ $ load wage_panel -a wp
 
 2022 Feb 28, 15:53 (✨) /econometrics/ $ type
-           wp           
+           wp
 ┏━━━━━━━━━━━━┳━━━━━━━━━┓
 ┃ column     ┃ dtype   ┃
 ┡━━━━━━━━━━━━╇━━━━━━━━━┩
@@ -26083,11 +26083,11 @@ optional arguments: -n {}, --name {} Provide dataset.column series to change typ
 ├────────────┼─────────┤
 │ occupation │ int64   │
 └────────────┴─────────┘
-</code></pre><pre><code>2022 Feb 28, 15:54 (✨) /econometrics/ $ type wp.year -f category
-Update 'wp.year' dataset with type 'category'
+</code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-txt" data-lang="txt">2022 Feb 28, 15:54 (✨) /econometrics/ $ type wp.year --format category
+Update &#39;wp.year&#39; dataset with type &#39;category&#39;
 
 2022 Feb 28, 15:55 (✨) /econometrics/ $ type
-           wp            
+           wp
 ┏━━━━━━━━━━━━┳━━━━━━━━━━┓
 ┃ column     ┃ dtype    ┃
 ┡━━━━━━━━━━━━╇━━━━━━━━━━┩
@@ -26115,7 +26115,7 @@ Update 'wp.year' dataset with type 'category'
 ├────────────┼──────────┤
 │ occupation │ int64    │
 └────────────┴──────────┘
-</code></pre>
+</code></pre></div>
     </article>
  
 

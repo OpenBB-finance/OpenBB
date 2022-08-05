@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content="usage: maxutil [-p HISTORIC_PERIOD] [-s START_PERIOD] [-e END_PERIOD] [-lr] [-f {d,w,m}] [-mn MAX_NAN] [-th THRESHOLD_VALUE] [-mt NAN_FILL_METHOD] [-rm {MV,MAD,MSV,FLPM,SLPM,CVaR,EVaR,WR,ADD,UCI,CDaR,EDaR,MDD}] [-r RISK_FREE] [-ra RISK_AVERSION] [-a SIGNIFICANCE_LEVEL] [-tr TARGET_RETURN] [-tk TARGET_RISK] [-m {hist,ewma1,ewma2}] [-cv {hist,ewma1,ewma2,ledoit,oas,shrunk,gl,jlogo,fixed,spectral,shrink}] [-de SMOOTHING_FACTOR_EWMA] [-v LONG_ALLOCATION] [-vs SHORT_ALLOCATION] [--name NAME] [-h] In financial economics, the risk averse utility function is the most frequently used to describe investor behaviour. In Modern Portfolio Theory (MPT), the quadratic utility function based on variance is used to model investor preferences.">
+    <meta name="description" content="usage: maxutil [-p HISTORIC_PERIOD] [-s START_PERIOD] [-e END_PERIOD] [-lr] [--freq {d,w,m}] [-mn MAX_NAN] [-th THRESHOLD_VALUE] [-mt NAN_FILL_METHOD] [-rm {MV,MAD,MSV,FLPM,SLPM,CVaR,EVaR,WR,ADD,UCI,CDaR,EDaR,MDD}] [-r RISK_FREE] [-ra RISK_AVERSION] [-a SIGNIFICANCE_LEVEL] [-tr TARGET_RETURN] [-tk TARGET_RISK] [-m {hist,ewma1,ewma2}] [-cv {hist,ewma1,ewma2,ledoit,oas,shrunk,gl,jlogo,fixed,spectral,shrink}] [-de SMOOTHING_FACTOR_EWMA] [-v LONG_ALLOCATION] [-vs SHORT_ALLOCATION] [--name NAME] [-h] In financial economics, the risk averse utility function is the most frequently used to describe investor behaviour. In Modern Portfolio Theory (MPT), the quadratic utility function based on variance is used to model investor preferences.">
 
 
 
@@ -26050,7 +26050,7 @@
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Maxutil</h1>
         <pre><code>usage: maxutil [-p HISTORIC_PERIOD] [-s START_PERIOD] [-e END_PERIOD] [-lr]
-               [-f {d,w,m}] [-mn MAX_NAN] [-th THRESHOLD_VALUE]
+               [--freq {d,w,m}] [-mn MAX_NAN] [-th THRESHOLD_VALUE]
                [-mt NAN_FILL_METHOD]
                [-rm {MV,MAD,MSV,FLPM,SLPM,CVaR,EVaR,WR,ADD,UCI,CDaR,EDaR,MDD}]
                [-r RISK_FREE] [-ra RISK_AVERSION] [-a SIGNIFICANCE_LEVEL]
@@ -26077,7 +26077,7 @@
                         MM-DD' format (default: )
   -lr, --log-returns    If use logarithmic or arithmetic returns to calculate
                         returns (default: False)
-  -f {d,w,m}, --freq {d,w,m}
+  --freq {d,w,m}
                         Frequency used to calculate returns. Possible values
                         are: 'd': for daily returns 'w': for weekly returns
                         'm': for monthly returns (default: d)
@@ -26157,7 +26157,7 @@
  [3 Years] Display a maximal risk averse utility function
  portfolio using volatility as risk measure
 
-     Weights      
+     Weights
 ┏━━━━━━┳━━━━━━━━━┓
 ┃      ┃ Value   ┃
 ┡━━━━━━╇━━━━━━━━━┩

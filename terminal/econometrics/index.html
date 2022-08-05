@@ -26126,7 +26126,7 @@ found by using the <a href="https://openbb-finance.github.io/OpenBBTerminal/term
 │ sunspots           │ Yearly sunspots data 1700-2008                            │
 ├────────────────────┼───────────────────────────────────────────────────────────┤
 │ wage_panel         │ Veila and M. Verbeek (1998): Whose Wages Do Unions Raise? │
-└────────────────────┴───────────────────────────────────────────────────────────┘    
+└────────────────────┴───────────────────────────────────────────────────────────┘
 </code></pre><p>As there is a clear difference between time series data, which is 1-dimensional data (e.g. a single company over time)
 and panel data, which is 2-dimensional data (e.g. multiple companies over time) both use-cases are provided.</p>
 <div class="gdoc-page__anchorwrap">
@@ -26502,7 +26502,7 @@ There are a few options within the <code>type</code> command:</p>
 </ul>
 <p>For the panel regressions, it can be beneficial to see time effects from <code>year</code>. Therefore, the type of the <code>year</code> column should be altered to <code>category</code>.
 This can be done with the following command:</p>
-<pre><code>2022 Jun 20, 05:33 (🦋) /econometrics/ $ type wp.year -f category
+<pre><code>2022 Jun 20, 05:33 (🦋) /econometrics/ $ type wp.year --format category
 Update 'wp.year' with type 'category'
 
 2022 Jun 20, 05:40 (🦋) /econometrics/ $ type
@@ -26602,7 +26602,7 @@ that automatically run a set of commands similarly to that of the Stata do-files
 are located where the application is located inside the <code>routines</code> folder.</p>
 <p><img src="https://user-images.githubusercontent.com/46355364/174588513-5c52ea20-548a-4c2b-a4c1-6054e2d71786.png" alt="Econometrics Menu Routine Exe OpenBB Terminal"  /></p>
 <p>This demo file has the following contents:</p>
-<pre><code># Go into the econometrics context
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-txt" data-lang="txt"># Go into the econometrics context
 econometrics
 
 # Load the wage_panel dataset and include an alias
@@ -26612,7 +26612,7 @@ load wage_panel -a wp
 index wp -i nr,year
 
 # Change the type of the year column so it can be included as time effects within the regressions
-type wp.year -f category
+type wp.year --format category
 
 # Perform a Pooled OLS, Random Effects and Fixed Effects estimation
 panel -d wp.lwage -i wp.black,wp.hisp,wp.exper,wp.expersq,wp.married,wp.educ,wp.union,wp.year
@@ -26621,10 +26621,10 @@ panel -d wp.lwage -i wp.expersq,wp.union,wp.married,wp.year -r fe
 
 # Compare the results obtained from these regressions
 compare
-</code></pre><p>Everything after the <code>#</code> <em>on the same line</em> refers to comments and will not be executed. All other commands will be. This
+</code></pre></div><p>Everything after the <code>#</code> <em>on the same line</em> refers to comments and will not be executed. All other commands will be. This
 ultimately leads to a comparison of three models and takes less than a few seconds to execute.
 See below for the comparison result, obtained via the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/econometrics/compare/" target="_blank">compare</a> command:</p>
-<pre><code>022 Jun 20, 06:52 (🦋) /econometrics/ $ compare
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-txt" data-lang="txt">022 Jun 20, 06:52 (🦋) /econometrics/ $ compare
                         Model Comparison
 ===============================================================
                               POLS              RE           FE
@@ -26673,7 +26673,7 @@ wp.year.1987                0.1738          0.1348       0.5952
 ---------------------------------------------------------------
 
 T-stats reported in parentheses
-</code></pre>
+</code></pre></div>
     </article>
  
 

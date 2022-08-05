@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content="usage: ef [-p PERIOD] [-s START] [-e END] [-lr] [-f {d,w,m}] [-mn MAXNAN] [-th THRESHOLD] [-mt METHOD] [-rm {MV,MAD,MSV,FLPM,SLPM,CVaR,EVaR,WR,ADD,UCI,CDaR,EDaR,MDD}] [-r RISK_FREE_RATE] [-a ALPHA] [-v VALUE] [-vs VALUE_SHORT] [-n N_PORTFOLIOS] [-se SEED] [-t] [-h] This function plots random portfolios based on their risk and returns and shows the efficient frontier of selected risk measure.
+    <meta name="description" content="usage: ef [-p PERIOD] [-s START] [-e END] [-lr] [--freq {d,w,m}] [-mn MAXNAN] [-th THRESHOLD] [-mt METHOD] [-rm {MV,MAD,MSV,FLPM,SLPM,CVaR,EVaR,WR,ADD,UCI,CDaR,EDaR,MDD}] [-r RISK_FREE_RATE] [-a ALPHA] [-v VALUE] [-vs VALUE_SHORT] [-n N_PORTFOLIOS] [-se SEED] [-t] [-h] This function plots random portfolios based on their risk and returns and shows the efficient frontier of selected risk measure.
 optional arguments: -p PERIOD, --period PERIOD Period to get yfinance data from (default: 3y) -s START, --start START Start date to get yfinance data from.">
 
 
@@ -26050,7 +26050,7 @@ optional arguments: -p PERIOD, --period PERIOD Period to get yfinance data from 
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Ef</h1>
-        <pre><code>usage: ef [-p PERIOD] [-s START] [-e END] [-lr] [-f {d,w,m}] [-mn MAXNAN]
+        <pre><code>usage: ef [-p PERIOD] [-s START] [-e END] [-lr] [--freq {d,w,m}] [-mn MAXNAN]
           [-th THRESHOLD] [-mt METHOD]
           [-rm {MV,MAD,MSV,FLPM,SLPM,CVaR,EVaR,WR,ADD,UCI,CDaR,EDaR,MDD}]
           [-r RISK_FREE_RATE] [-a ALPHA] [-v VALUE] [-vs VALUE_SHORT]
@@ -26066,7 +26066,7 @@ shows the efficient frontier of selected risk measure.</p>
   -e END, --end END     End date to get yfinance data from (default: )
   -lr, --log-returns    If use logarithmic or arithmetic returns to calculate
                         returns (default: False)
-  -f {d,w,m}, --freq {d,w,m}
+  --freq {d,w,m}
                         Frequency used to calculate returns (default: d)
   -mn MAXNAN, --maxnan MAXNAN
                         Max percentage of nan values accepted per asset to be

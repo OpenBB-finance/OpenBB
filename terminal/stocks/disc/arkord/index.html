@@ -9,8 +9,8 @@
 
 
 
-    <meta name="description" content="usage: arkord [-l LIMIT] [-s {date,volume,open,high,close,low,total,weight,shares} [{date,volume,open,high,close,low,total,weight,shares} ...]] [-a] [-b] [-c] [-f {ARKK,ARKF,ARKW,ARKQ,ARKG,ARKX,}] [-h] [--export {csv,json,xlsx}] Orders by ARK Investment Management LLC - https://ark-funds.com/. [Source: https://cathiesark.com]
-optional arguments: -l LIMIT, --limit LIMIT Limit of stocks to display. (default: 10) -s {date,volume,open,high,close,low,total,weight,shares} [{date,volume,open,high,close,low,total,weight,shares} ...], --sortby {date,volume,open,high,close,low,total,weight,shares} [{date,volume,open,high,close,low,total,weight,shares} ...] Column to sort by (default: ) -a, --ascend Flag to sort in ascending order (default: False) -b, --buy_only Flag to look at buys only (default: False) -c, --sell_only Flag to look at sells only (default: False) -f {ARKK,ARKF,ARKW,ARKQ,ARKG,ARKX,}, --fund {ARKK,ARKF,ARKW,ARKQ,ARKG,ARKX,} Filter by fund (default: ) -h, --help show this help message (default: False) --export {csv,json,xlsx} Export raw data into csv, json, xlsx (default: ) Example:">
+    <meta name="description" content="usage: arkord [-l LIMIT] [-s {date,volume,open,high,close,low,total,weight,shares} [{date,volume,open,high,close,low,total,weight,shares} ...]] [-a] [-b] [-c] [--fund {ARKK,ARKF,ARKW,ARKQ,ARKG,ARKX,}] [-h] [--export {csv,json,xlsx}] Orders by ARK Investment Management LLC - https://ark-funds.com/. [Source: https://cathiesark.com]
+optional arguments: -l LIMIT, --limit LIMIT Limit of stocks to display. (default: 10) -s {date,volume,open,high,close,low,total,weight,shares} [{date,volume,open,high,close,low,total,weight,shares} ...], --sortby {date,volume,open,high,close,low,total,weight,shares} [{date,volume,open,high,close,low,total,weight,shares} ...] Column to sort by (default: ) -a, --ascend Flag to sort in ascending order (default: False) -b, --buy_only Flag to look at buys only (default: False) -c, --sell_only Flag to look at sells only (default: False) --fund {ARKK,ARKF,ARKW,ARKQ,ARKG,ARKX,} Filter by fund (default: ) -h, --help show this help message (default: False) --export {csv,json,xlsx} Export raw data into csv, json, xlsx (default: ) Example:">
 
 
 
@@ -26050,7 +26050,7 @@ optional arguments: -l LIMIT, --limit LIMIT Limit of stocks to display. (default
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Arkord</h1>
-        <pre><code>usage: arkord [-l LIMIT] [-s {date,volume,open,high,close,low,total,weight,shares} [{date,volume,open,high,close,low,total,weight,shares} ...]] [-a] [-b] [-c] [-f {ARKK,ARKF,ARKW,ARKQ,ARKG,ARKX,}] [-h] [--export {csv,json,xlsx}]
+        <pre><code>usage: arkord [-l LIMIT] [-s {date,volume,open,high,close,low,total,weight,shares} [{date,volume,open,high,close,low,total,weight,shares} ...]] [-a] [-b] [-c] [--fund {ARKK,ARKF,ARKW,ARKQ,ARKG,ARKX,}] [-h] [--export {csv,json,xlsx}]
 </code></pre><p>Orders by ARK Investment Management LLC - <a class="gdoc-markdown__link" href="https://ark-funds.com/">https://ark-funds.com/</a>. [Source: https://cathiesark.com]</p>
 <pre><code>optional arguments:
   -l LIMIT, --limit LIMIT
@@ -26060,7 +26060,7 @@ optional arguments: -l LIMIT, --limit LIMIT Limit of stocks to display. (default
   -a, --ascend          Flag to sort in ascending order (default: False)
   -b, --buy_only        Flag to look at buys only (default: False)
   -c, --sell_only       Flag to look at sells only (default: False)
-  -f {ARKK,ARKF,ARKW,ARKQ,ARKG,ARKX,}, --fund {ARKK,ARKF,ARKW,ARKQ,ARKG,ARKX,}
+  --fund {ARKK,ARKF,ARKW,ARKQ,ARKG,ARKX,}
                         Filter by fund (default: )
   -h, --help            show this help message (default: False)
   --export {csv,json,xlsx}
@@ -26093,7 +26093,7 @@ optional arguments: -l LIMIT, --limit LIMIT Limit of stocks to display. (default
 │ 2022-02-15 │ MKFG   │ Buy       │ 1057800 │ 4.55  │ 4.67  │ 4.73  │ 4.54  │ 22131.13   │ ARKX │ 0.0057 │ 4739   │
 └────────────┴────────┴───────────┴─────────┴───────┴───────┴───────┴───────┴────────────┴──────┴────────┴────────┘
 
-2022 Feb 16, 03:50 (✨) /stocks/disc/ $ arkord -b -f ARKK
+2022 Feb 16, 03:50 (✨) /stocks/disc/ $ arkord -b --fund ARKK
 
                                          Orders by ARK Investment Management LLC
 ┏━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━┳━━━━━━━━┳━━━━━━━━━┓

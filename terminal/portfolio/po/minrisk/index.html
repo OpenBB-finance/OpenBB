@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content="usage: minrisk [-p HISTORIC_PERIOD] [-s START_PERIOD] [-e END_PERIOD] [-lr] [-f {d,w,m}] [-mn MAX_NAN] [-th THRESHOLD_VALUE] [-mt NAN_FILL_METHOD] [-rm {MV,MAD,MSV,FLPM,SLPM,CVaR,EVaR,WR,ADD,UCI,CDaR,EDaR,MDD}] [-r RISK_FREE] [-a SIGNIFICANCE_LEVEL] [-tr TARGET_RETURN] [-tk TARGET_RISK] [-m {hist,ewma1,ewma2}] [-cv {hist,ewma1,ewma2,ledoit,oas,shrunk,gl,jlogo,fixed,spectral,shrink}] [-de SMOOTHING_FACTOR_EWMA] [-v LONG_ALLOCATION] [-vs SHORT_ALLOCATION] [--name NAME] [-h] If all investments have the same expected return independent of risk, investors seeking maximum returns for minimum risk should concentrate exclusively on minimizing risk. This is the explicit objective of the minimum variance portfolio.">
+    <meta name="description" content="usage: minrisk [-p HISTORIC_PERIOD] [-s START_PERIOD] [-e END_PERIOD] [-lr] [--freq {d,w,m}] [-mn MAX_NAN] [-th THRESHOLD_VALUE] [-mt NAN_FILL_METHOD] [-rm {MV,MAD,MSV,FLPM,SLPM,CVaR,EVaR,WR,ADD,UCI,CDaR,EDaR,MDD}] [-r RISK_FREE] [-a SIGNIFICANCE_LEVEL] [-tr TARGET_RETURN] [-tk TARGET_RISK] [-m {hist,ewma1,ewma2}] [-cv {hist,ewma1,ewma2,ledoit,oas,shrunk,gl,jlogo,fixed,spectral,shrink}] [-de SMOOTHING_FACTOR_EWMA] [-v LONG_ALLOCATION] [-vs SHORT_ALLOCATION] [--name NAME] [-h] If all investments have the same expected return independent of risk, investors seeking maximum returns for minimum risk should concentrate exclusively on minimizing risk. This is the explicit objective of the minimum variance portfolio.">
 
 
 
@@ -26050,7 +26050,7 @@
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Minrisk</h1>
         <pre><code>usage: minrisk [-p HISTORIC_PERIOD] [-s START_PERIOD] [-e END_PERIOD] [-lr]
-               [-f {d,w,m}] [-mn MAX_NAN] [-th THRESHOLD_VALUE]
+               [--freq {d,w,m}] [-mn MAX_NAN] [-th THRESHOLD_VALUE]
                [-mt NAN_FILL_METHOD]
                [-rm {MV,MAD,MSV,FLPM,SLPM,CVaR,EVaR,WR,ADD,UCI,CDaR,EDaR,MDD}]
                [-r RISK_FREE] [-a SIGNIFICANCE_LEVEL] [-tr TARGET_RETURN]
@@ -26078,7 +26078,7 @@
                         MM-DD' format (default: )
   -lr, --log-returns    If use logarithmic or arithmetic returns to calculate
                         returns (default: False)
-  -f {d,w,m}, --freq {d,w,m}
+  --freq {d,w,m}
                         Frequency used to calculate returns. Possible values
                         are: 'd': for daily returns 'w': for weekly returns
                         'm': for monthly returns (default: d)
@@ -26156,7 +26156,7 @@
  [3 Years] Display a minimum risk portfolio using
 volatility as risk measure
 
-     Weights      
+     Weights
 ┏━━━━━━┳━━━━━━━━━┓
 ┃      ┃ Value   ┃
 ┡━━━━━━╇━━━━━━━━━┩

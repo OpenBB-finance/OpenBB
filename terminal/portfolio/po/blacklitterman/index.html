@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content="usage: blacklitterman [-p PERIOD] [-s START] [-e END] [-lr] [-f {d,w,m}] [-mn MAXNAN] [-th THRESHOLD] [-mt METHOD] [-bm BENCHMARK] [-o {MinRisk,Utility,Sharpe,MaxRet}] [-pv P_VIEWS] [-qv Q_VIEWS] [-r RISK_FREE_RATE] [-ra RISK_AVERSION] [-d DELTA] [-eq] [-op] [-v VALUE] [-vs VALUE_SHORT] [--name NAME] [-h] The Black-Litterman (BL) Model is an analytical tool used by portfolio managers to optimize asset allocation within an investor’s risk tolerance and market views. Global investors, such as pension funds and insurance companies, need to decide how to allocate their investments across different asset classes and countries.">
+    <meta name="description" content="usage: blacklitterman [-p PERIOD] [-s START] [-e END] [-lr] [--freq {d,w,m}] [-mn MAXNAN] [-th THRESHOLD] [-mt METHOD] [-bm BENCHMARK] [-o {MinRisk,Utility,Sharpe,MaxRet}] [-pv P_VIEWS] [-qv Q_VIEWS] [-r RISK_FREE_RATE] [-ra RISK_AVERSION] [-d DELTA] [-eq] [-op] [-v VALUE] [-vs VALUE_SHORT] [--name NAME] [-h] The Black-Litterman (BL) Model is an analytical tool used by portfolio managers to optimize asset allocation within an investor’s risk tolerance and market views. Global investors, such as pension funds and insurance companies, need to decide how to allocate their investments across different asset classes and countries.">
 
 
 
@@ -26049,7 +26049,7 @@
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Blacklitterman</h1>
-        <pre><code>usage: blacklitterman [-p PERIOD] [-s START] [-e END] [-lr] [-f {d,w,m}]
+        <pre><code>usage: blacklitterman [-p PERIOD] [-s START] [-e END] [-lr] [--freq {d,w,m}]
                       [-mn MAXNAN] [-th THRESHOLD] [-mt METHOD]
                       [-bm BENCHMARK] [-o {MinRisk,Utility,Sharpe,MaxRet}]
                       [-pv P_VIEWS] [-qv Q_VIEWS] [-r RISK_FREE_RATE]
@@ -26073,7 +26073,7 @@
                         MM-DD' format (default: )
   -lr, --log-returns    If use logarithmic or arithmetic returns to calculate
                         returns (default: False)
-  -f {d,w,m}, --freq {d,w,m}
+  --freq {d,w,m}
                         Frequency used to calculate returns. Possible values
                         are: 'd': for daily returns 'w': for weekly returns
                         'm': for monthly returns (default: d)
@@ -26133,7 +26133,7 @@
 
  [3 Years] Maximal return/risk ratio portfolio using volatility as risk measure
 
-      Weights      
+      Weights
 ┏━━━━━━┳━━━━━━━━━━┓
 ┃      ┃ Value    ┃
 ┡━━━━━━╇━━━━━━━━━━┩
@@ -26154,7 +26154,7 @@ Sharpe ratio: 1.3209
 
  [3 Years] Black Litterman portfolio
 
-      Weights      
+      Weights
 ┏━━━━━━┳━━━━━━━━━━┓
 ┃      ┃ Value    ┃
 ┡━━━━━━╇━━━━━━━━━━┩

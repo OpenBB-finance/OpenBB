@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content="usage: mktcap [-p HISTORIC_PERIOD] [-s START_PERIOD] [-e END_PERIOD] [-lr] [-f {d,w,m}] [-mn MAX_NAN] [-th THRESHOLD_VALUE] [-mt NAN_FILL_METHOD] [-rm {MV,MAD,MSV,FLPM,SLPM,CVaR,EVaR,WR,ADD,UCI,CDaR,EDaR,MDD}] [-r RISK_FREE] [-a SIGNIFICANCE_LEVEL] [-v LONG_ALLOCATION] [--name NAME] [-h] Returns a portfolio that is weighted based on Market Cap.
+    <meta name="description" content="usage: mktcap [-p HISTORIC_PERIOD] [-s START_PERIOD] [-e END_PERIOD] [-lr] [--freq {d,w,m}] [-mn MAX_NAN] [-th THRESHOLD_VALUE] [-mt NAN_FILL_METHOD] [-rm {MV,MAD,MSV,FLPM,SLPM,CVaR,EVaR,WR,ADD,UCI,CDaR,EDaR,MDD}] [-r RISK_FREE] [-a SIGNIFICANCE_LEVEL] [-v LONG_ALLOCATION] [--name NAME] [-h] Returns a portfolio that is weighted based on Market Cap.
 optional arguments: -p HISTORIC_PERIOD, --period HISTORIC_PERIOD Period to get yfinance data from. Possible frequency strings are: &#39;d&#39;: means days, for example &#39;252d&#39; means 252 days &#39;w&#39;: means weeks, for example &#39;52w&#39; means 52 weeks &#39;mo&#39;: means months, for example &#39;12mo&#39; means 12 months &#39;y&#39;: means years, for example &#39;1y&#39; means 1 year &#39;ytd&#39;: downloads data from beginning of year to today &#39;max&#39;: downloads all data available for each asset (default: 3y) -s START_PERIOD, --start START_PERIOD Start date to get yfinance data from.">
 
 
@@ -26051,7 +26051,7 @@ optional arguments: -p HISTORIC_PERIOD, --period HISTORIC_PERIOD Period to get y
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Mktcap</h1>
         <pre><code>usage: mktcap [-p HISTORIC_PERIOD] [-s START_PERIOD] [-e END_PERIOD] [-lr]
-              [-f {d,w,m}] [-mn MAX_NAN] [-th THRESHOLD_VALUE]
+              [--freq {d,w,m}] [-mn MAX_NAN] [-th THRESHOLD_VALUE]
               [-mt NAN_FILL_METHOD]
               [-rm {MV,MAD,MSV,FLPM,SLPM,CVaR,EVaR,WR,ADD,UCI,CDaR,EDaR,MDD}]
               [-r RISK_FREE] [-a SIGNIFICANCE_LEVEL] [-v LONG_ALLOCATION]
@@ -26075,7 +26075,7 @@ optional arguments: -p HISTORIC_PERIOD, --period HISTORIC_PERIOD Period to get y
                         MM-DD' format (default: )
   -lr, --log-returns    If use logarithmic or arithmetic returns to calculate
                         returns (default: False)
-  -f {d,w,m}, --freq {d,w,m}
+  --freq {d,w,m}
                         Frequency used to calculate returns. Possible values
                         are: 'd': for daily returns 'w': for weekly returns
                         'm': for monthly returns (default: d)
@@ -26124,7 +26124,7 @@ optional arguments: -p HISTORIC_PERIOD, --period HISTORIC_PERIOD Period to get y
 
  [3 Years] Weighted Portfolio based on marketCap
 
-     Weights      
+     Weights
 ┏━━━━━━┳━━━━━━━━━┓
 ┃      ┃ Value   ┃
 ┡━━━━━━╇━━━━━━━━━┩

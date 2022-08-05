@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content="usage: riskparity [-p HISTORIC_PERIOD] [-s START_PERIOD] [-e END_PERIOD] [-lr] [-f {d,w,m}] [-mn MAX_NAN] [-th THRESHOLD_VALUE] [-mt NAN_FILL_METHOD] [-rm {MV,MAD,MSV,FLPM,SLPM,CVaR,EVaR,CDaR,EDaR,UCI}] [-rc RISK_CONTRIBUTION] [-r RISK_FREE] [-a SIGNIFICANCE_LEVEL] [-tr TARGET_RETURN] [-de SMOOTHING_FACTOR_EWMA] [-v LONG_ALLOCATION] [--name NAME] [-h] Both the Minimum Variance and Maximum Diversification portfolios are mean-variance efficient under intuitive assumptions. Minimum Variance is efficient if assets have similar returns while Maximum Diversification is efficient if assets have similar Sharpe ratios. However, both methods have the drawback that they can be quite concentrated in a small number of assets.">
+    <meta name="description" content="usage: riskparity [-p HISTORIC_PERIOD] [-s START_PERIOD] [-e END_PERIOD] [-lr] [--freq {d,w,m}] [-mn MAX_NAN] [-th THRESHOLD_VALUE] [-mt NAN_FILL_METHOD] [-rm {MV,MAD,MSV,FLPM,SLPM,CVaR,EVaR,CDaR,EDaR,UCI}] [-rc RISK_CONTRIBUTION] [-r RISK_FREE] [-a SIGNIFICANCE_LEVEL] [-tr TARGET_RETURN] [-de SMOOTHING_FACTOR_EWMA] [-v LONG_ALLOCATION] [--name NAME] [-h] Both the Minimum Variance and Maximum Diversification portfolios are mean-variance efficient under intuitive assumptions. Minimum Variance is efficient if assets have similar returns while Maximum Diversification is efficient if assets have similar Sharpe ratios. However, both methods have the drawback that they can be quite concentrated in a small number of assets.">
 
 
 
@@ -26050,7 +26050,7 @@
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Riskparity</h1>
         <pre><code>usage: riskparity [-p HISTORIC_PERIOD] [-s START_PERIOD] [-e END_PERIOD] [-lr]
-                  [-f {d,w,m}] [-mn MAX_NAN] [-th THRESHOLD_VALUE]
+                  [--freq {d,w,m}] [-mn MAX_NAN] [-th THRESHOLD_VALUE]
                   [-mt NAN_FILL_METHOD]
                   [-rm {MV,MAD,MSV,FLPM,SLPM,CVaR,EVaR,CDaR,EDaR,UCI}]
                   [-rc RISK_CONTRIBUTION] [-r RISK_FREE]
@@ -26079,7 +26079,7 @@
                         MM-DD' format (default: )
   -lr, --log-returns    If use logarithmic or arithmetic returns to calculate
                         returns (default: False)
-  -f {d,w,m}, --freq {d,w,m}
+  --freq {d,w,m}
                         Frequency used to calculate returns. Possible values
                         are: 'd': for daily returns 'w': for weekly returns
                         'm': for monthly returns (default: d)
@@ -26135,7 +26135,7 @@
  [3 Years] Risk parity portfolio based on risk budgeting approach
 using volatility as risk measure
 
-     Weights      
+     Weights
 ┏━━━━━━┳━━━━━━━━━┓
 ┃      ┃ Value   ┃
 ┡━━━━━━╇━━━━━━━━━┩
