@@ -22,19 +22,19 @@ Install [Hugo](https://gohugo.io/getting-started/installing/).
 
 Go into `website` directory with:
 
-```
+```bash
 cd website
 ```
 
 And run:
 
-```
+```bash
 hugo server -D
 ```
 
 If everything is working well, the following should appear:
 
-```
+```txt
 13:58 $ hugo server -D
 Start building sites …
 hugo v0.87.0+extended darwin/amd64 BuildDate=unknown
@@ -62,7 +62,7 @@ Press Ctrl+C to stop
 
 And you should be able to access your local version at http://localhost:1313/.
 
-This will be important for the addiiton of features to the Hugo Server.
+This will be important for the addition of features to the Hugo Server.
 
 ## Adding Features
 
@@ -70,7 +70,7 @@ This will be important for the addiiton of features to the Hugo Server.
 
 This is the structure that the documentation follows:
 
-```
+```txt
 website/content/_index.md
                /stocks/_index.md
                       /load/_index.md
@@ -112,13 +112,13 @@ Example:
 ---
 
 ```shell
-usage: ipo [-p PAST_DAYS] [-f FUTURE_DAYS]
+usage: ipo [--past PAST_DAYS] [--future FUTURE_DAYS]
 ```
 
 Past and future IPOs. [Source: https://finnhub.io]
 
-- -p : Number of past days to look for IPOs. Default 0.
-- -f : Number of future days to look for IPOs. Default 10.
+- --past : Number of past days to look for IPOs. Default 0.
+- --future : Number of future days to look for IPOs. Default 10.
 
 <IMAGE HERE - Use drag and drop hint mentioned above>
 

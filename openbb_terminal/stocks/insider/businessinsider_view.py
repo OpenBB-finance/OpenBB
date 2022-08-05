@@ -133,7 +133,11 @@ def insider_activity(
 
                 n_stock_price = 0
                 if interval == "1440min":
-                    n_stock_price = stock["Adj Close"][ind_dt]
+                    try:
+                        n_stock_price = stock["Adj Close"][ind_dt]
+                    except KeyError:
+                        stock.index = stock.index.floor("d")
+                        n_stock_price = stock["Adj Close"][ind_dt]
                 else:
                     n_stock_price = stock["Close"][ind_dt]
 

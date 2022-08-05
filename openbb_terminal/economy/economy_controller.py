@@ -1,6 +1,6 @@
 """ Econ Controller """
 __docformat__ = "numpy"
-# pylint:disable=too-many-lines,R1710,R0904,C0415,too-many-branches
+# pylint:disable=too-many-lines,R1710,R0904,C0415,too-many-branches,unnecessary-dict-index-lookup
 
 import argparse
 import logging
@@ -182,16 +182,18 @@ class EconomyController(BaseController):
                 c: None for c in econdb_model.COUNTRY_CODES
             }
 
-            self.choices["ycrv"]["-c"] = {c: None for c in investingcom_model.COUNTRIES}
+            self.choices["ycrv"]["-c"] = {
+                c: None for c in investingcom_model.BOND_COUNTRIES
+            }
             self.choices["ycrv"]["--countries"] = {
-                c: None for c in investingcom_model.COUNTRIES
+                c: None for c in investingcom_model.BOND_COUNTRIES
             }
 
             self.choices["ecocal"]["-c"] = {
-                c: None for c in investingcom_model.COUNTRIES
+                c: None for c in investingcom_model.CALENDAR_COUNTRIES
             }
             self.choices["ecocal"]["--countries"] = {
-                c: None for c in investingcom_model.COUNTRIES
+                c: None for c in investingcom_model.CALENDAR_COUNTRIES
             }
 
             self.choices["ecocal"]["-i"] = {
@@ -875,8 +877,7 @@ class EconomyController(BaseController):
             default=False,
         )
         parser.add_argument(
-            "-f",
-            "--frequency",
+            "--freq",
             type=str,
             dest="frequency",
             choices=econdb_model.TREASURIES["frequencies"],
@@ -1008,11 +1009,23 @@ class EconomyController(BaseController):
             if isinstance(ns_parser.country, list):
                 ns_parser.country = " ".join(ns_parser.country)
 
-            investingcom_model.check_correct_country(ns_parser.country)
-
             if ns_parser.source == "FRED":
-                fred_view.display_yield_curve(ns_parser.date)
+
+                if ns_parser.country == "united states":
+                    fred_view.display_yield_curve(
+                        ns_parser.date,
+                        raw=ns_parser.raw,
+                        export=ns_parser.export,
+                    )
+                else:
+                    console.print("Source FRED is only available for united states.\n")
+
             elif ns_parser.source == "investpy":
+
+                investingcom_model.check_correct_country(
+                    ns_parser.country, investingcom_model.BOND_COUNTRIES
+                )
+
                 investingcom_view.display_yieldcurve(
                     country=ns_parser.country,
                     raw=ns_parser.raw,
@@ -1026,7 +1039,7 @@ class EconomyController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="ecocal",
-            description="Economic calendar.",
+            description="Economic calendar. If no start or end dates, default is the current day.",
         )
         parser.add_argument(
             "-c",
@@ -1034,7 +1047,7 @@ class EconomyController(BaseController):
             action="store",
             dest="country",
             nargs="+",
-            default="united states",
+            default="all",
             help="Display calendar for specific country.",
         )
         parser.add_argument(
@@ -1043,7 +1056,6 @@ class EconomyController(BaseController):
             action="store",
             dest="importances",
             choices=investingcom_model.IMPORTANCES,
-            default="all",
             help="Event importance classified as high, medium, low or all.",
         )
         parser.add_argument(
@@ -1079,7 +1091,7 @@ class EconomyController(BaseController):
             other_args,
             export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
             raw=True,
-            limit=10,
+            limit=100,
         )
 
         if ns_parser:
@@ -1090,7 +1102,9 @@ class EconomyController(BaseController):
             if isinstance(ns_parser.categories, list):
                 ns_parser.categories = " ".join(ns_parser.categories)
 
-            investingcom_model.check_correct_country(ns_parser.country)
+            investingcom_model.check_correct_country(
+                ns_parser.country, investingcom_model.CALENDAR_COUNTRIES
+            )
 
             investingcom_view.display_economic_calendar(
                 countries=ns_parser.country,
@@ -1437,6 +1451,15 @@ class EconomyController(BaseController):
             PredictionTechniquesController,
         )
 
+        data: Dict = {}
+        for source, _ in self.DATASETS.items():
+            if not self.DATASETS[source].empty:
+                if len(self.DATASETS[source].columns) == 1:
+                    data[self.DATASETS[source].columns[0]] = self.DATASETS[source]
+                else:
+                    for col in list(self.DATASETS[source].columns):
+                        data[col] = self.DATASETS[source][col].to_frame()
+
         self.queue = self.load_class(
             PredictionTechniquesController, self.DATASETS, self.queue
         )
@@ -1455,4 +1478,13 @@ class EconomyController(BaseController):
             QaController,
         )
 
-        self.queue = self.load_class(QaController, self.DATASETS, self.queue)
+        data: Dict = {}
+        for source, _ in self.DATASETS.items():
+            if not self.DATASETS[source].empty:
+                if len(self.DATASETS[source].columns) == 1:
+                    data[self.DATASETS[source].columns[0]] = self.DATASETS[source]
+                else:
+                    for col in list(self.DATASETS[source].columns):
+                        data[col] = self.DATASETS[source][col].to_frame()
+
+        self.queue = self.load_class(QaController, data, self.queue)

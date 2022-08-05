@@ -1,5 +1,9 @@
 {
     "stocks": {
+        "news": [
+            "feedparser",
+            "newsapi"
+        ],
         "load": [
             "yf",
             "iex",
@@ -16,34 +20,46 @@
             "income": [
                 "yf",
                 "polygon",
-                "av"
+                "av",
+                "fmp"
             ],
             "balance": [
                 "yf",
                 "polygon",
-                "av"
+                "av",
+                "fmp"
+            ],
+            "cash": [
+                "yf",
+                "polygon",
+                "av",
+                "fmp"
             ]
         },
         "options": {
             "load": [
-                "tradier",
-                "yf"
+                "yf",
+                "tradier"
             ],
             "hist": [
                 "chartexchange",
                 "tradier"
             ],
             "vol": [
-                "tradier",
-                "yf"
+                "yf",
+                "tradier"
             ],
             "voi": [
-                "tradier",
-                "yf"
+                "yf",
+                "tradier"
             ],
             "oi": [
-                "tradier",
-                "yf"
+                "yf",
+                "tradier"
+            ],
+            "chains": [
+                "yf",
+                "tradier"
             ]
         },
         "disc": {

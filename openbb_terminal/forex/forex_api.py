@@ -7,6 +7,7 @@ from openbb_terminal.helper_classes import ModelsNamespace as _models
 
 # Context menus
 from .forex_helper import display_candle as candle
+from .forex_helper import load
 from .av_view import display_quote as quote
 from .technical_analysis import ta_api as ta
 from .oanda import oanda_api as oanda

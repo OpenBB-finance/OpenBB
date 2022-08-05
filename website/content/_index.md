@@ -1,6 +1,6 @@
 ---
 title: Getting Started
-keywords: "getting started, openbb, bots, api, beginner guide, how to use openbb, openbb keys, openbb terminal, openbb"
+keywords: "getting started, openbb, api, beginner guide, how to use openbb, openbb keys, openbb terminal, openbb, terminal"
 excerpt: "This page guides you how to use the OpenBB terminal, developed by OpenBB."
 description: "The OpenBB Documentation provides guidance on how to use the OpenBB Terminal, a free, custom built
 financial terminal that will help you make more informed decisions, faster."
@@ -8,9 +8,9 @@ geekdocCollapseSection: true
 ---
 ## Introduction
 
-OpenBB is a leading open source investment analysis company. We represent millions of investors who want to leverage
-state-of-the-art data science and machine learning technologies to make sense of raw unrefined data. Our mission
-is to make investment research effective, powerful and accessible to everyone.
+OpenBB is a leading open source investment research software platform for accessing and analyzing financial market data.
+We represent millions of investors who want to leverage state-of-the-art data science and machine learning technologies
+to make sense of raw unrefined data. Our mission is to make investment research effective, powerful and accessible to everyone.
 
 **All our products are Free and Open-Source (FOSS).**
 
@@ -30,10 +30,6 @@ is to make investment research effective, powerful and accessible to everyone.
 please continue reading this page and the related pages on each menu (e.g. <a href="terminal/stocks">Stocks</a>
 or <a href="terminal/economy">Economy</a>)</span></b></center>
 
-<center><b><span style="color:white">If you are interested in one of our other products,
-please refer to the <a href="api">OpenBB Python API</a> or the
-<a href="bots">OpenBB Bots</a> pages.</span></b></center>
-
 ---
 
 {{< toc >}}
@@ -51,23 +47,22 @@ of their background - can so easily add features to an investment research platf
 
 ### Why Open Source?
 
-An open source product allows for higher quality, greater reproducibility, lower costs, more transparency,
-and faster go-to-market due to the strong community created. In addition, users can adapt the platform to their
-needs or even build proprietary features on top of our infrastructure - which ultimately can result in a marketplace.
+An open source product allows for higher quality, lower costs, more transparency, and faster go-to-market due to the strong community created. There is no point in re-inventing the wheel for financial theory that has been around for decades, thus users can adapt the platform to their needs or even build proprietary features on top of our infrastructure.
 
 <--->
 
-### Importing and Exporting data
+### Why Free?
 
-The terminal allows for users to import their own proprietary datasets to use on our econometrics menu. In addition, users are allowed to export any type of data to any type of format whether that is raw data in Excel or an image in PNG. This is also ideal for finance content creation.
+We believe that everyone should be able to have the same tooling to do investment research. By leveraging free API tiers, we can allow users to have access to a vast range of information for free. On the other hand, we want users that are willing to subscribe to premium API keys from certain data providers to be able to take advantage of that on OpenBB Terminal - this is where we see a monetization opportunity, a revenue share with data providers for connecting our users to their resources.
+
 
 {{< /columns >}}
 
 {{< columns >}}
 
-### Automatic notebook reports
+### Importing and Exporting data
 
-Create notebook templates (through papermill) which can be run on different tickers. This level of automation allows speeding up the development of your investment thesis and reduce human error.
+The terminal allows for users to import their own proprietary datasets to use on our econometrics menu. In addition, users are allowed to export any type of data to any type of format whether that is raw data in Excel or an image in PNG. This is also ideal for finance content creation.
 
 <--->
 
@@ -95,7 +90,7 @@ or visit our <a href="https://openbb.co/contact" target="_blank">contact page</a
 
 The process starts off by downloading the installer, see below for how to download the most recent release:
 
-1. Go to <a href="https://www.openbb.co/products/terminal#get-started" target="_blank">OpenBB website</a>.
+1. Go to the <a href="https://www.openbb.co/products/terminal#get-started" target="_blank">OpenBB website</a>.
 2. Click on the `Download` button in the Windows Installer section.
 
 When the file is downloaded, use the following steps to run the OpenBB Terminal:
@@ -131,7 +126,7 @@ The first time this takes a bit longer to load, this can take up to a few minute
 
 The process starts off by downloading the installer, see below for how to download the most recent release:
 
-1. Go to <a href="https://www.openbb.co/products/terminal#get-started" target="_blank">OpenBB website</a>.
+1. Go to the <a href="https://www.openbb.co/products/terminal#get-started" target="_blank">OpenBB website</a>.
 2. Click on the `Download` button in the macOS Installer section.
 
 When the DMG file is downloaded, use the following steps to run the OpenBB Terminal:
@@ -273,7 +268,7 @@ decide to change these default values by calling the argument and inputting a di
 
 Whenever you wish to apply an optional argument, you use the related shortcode, e.g. `-s` or `--start`. Then, if there
 is an additional word behind the argument (in this case there is, which is `START`) it implies the argument expects you
-to define a value. Within the documentation you can read that the format must b `YYYY-MM-DD` implying that `2010-01-01`
+to define a value. Within the documentation you can read that the format must be `YYYY-MM-DD` implying that `2010-01-01`
 will be valid. If there is not an additional word behind it, it is enough to write down `load AMZN -p` (which refers to
 the prepost optional argument)
 
@@ -392,9 +387,67 @@ optimization techniques.
 jupyter notebooks.
 - Introduction to Reports <b>(Work in Progress)</b>: create customizable research reports through jupyter notebooks.
 
+## Customizing the terminal
 To adjust the lay-out and settings of the OpenBB Terminal you can access the `settings` menu. This menu allows you to
-tweak how the terminal behaves. For example, you are able to define the coloring, interactive graphs and whether to use
-pretty tables.
+tweak how the terminal behaves. This includes the following:
+- `dt` adds or removes the datetime from the flair (which is next to the emoji).
+- `flair` allows you to change the emoji that is used.
+- `lang` gives the ability to change the terminal language. At this moment, the terminal is only available in English.
+- `export` defines the folder you wish to export data to you acquire from the terminal.
+- `tz` allows you to change the timezone if this is incorrectly displayed for you.
+- `autoscaling` automatically scales plots for you if enabled (when green).
+- `pheight` sets the percentage height of the plot (graphs) displayed (if autoscaling is enabled).
+- `pwidth` sets the percentage width of the plot (graphs) displayed (if autoscaling is enabled).
+- `height` sets the height of the plot (graphs) displayed (if autoscaling is disabled).
+- `width` sets the width of the plot (graphs) displayed (if autoscaling is disabled).
+- `dpi` refers to the resolution that is used for the plot (graphs)
+- `backend` allows you to change the backend that is used for the graphs
+- `monitor` choose which monitors to scale the plot (graphs) to if applicable
+- `source` allows you to select a different source file in which the default data sources are written down
+
+Next to that, to enable or disable certain functionalities of the terminal you can use the `featflags` menu which
+includes the following:
+- `logcollection` whether you wish to enable logging to help the OpenBB team improve functionalities (default is yes).
+- `retryload` whenever you misspell commands, try to use the `load` command with it first (default is no).
+- `tab` whether to use tabulate to print DataFrames, to prettify these DataFrames (default is yes).
+- `cls` whether to clear the command window after each command (default is no).
+- `color` whether to use colors within the terminal (default is yes).
+- `promptkit` whether you wish to enable autocomplete and history (default is yes).
+- `predict` whether you would like to enable prediction features (default is yes).
+- `thoughts` whether to receive a thought of the day (default is no).
+- `reporthtml` whether to open reports as HTML instead of Jupyter Notebooks (default is yes).
+- `exithelp` whether to automatically print the help message when you use `q` (default is yes).
+- `rcontext` whether to remember loaded tickers and similar while switching menus (default is yes).
+- `rich` whether to apply a colorful rich terminal (default is yes).
+- `richpanel` whether to apply a colorful rich terminal panel (default is yes).
+- `ion` whether to enable interactive mode of MATPLOTLIB (default is yes).
+- `watermark` whether to include the watermark of OpenBB Terminal in figures (default is yes).
+- `cmdloc` whether the location of the command is displayed in figures (default is yes).
+- `tbhint` whether usage hints are displayed in the bottom toolbar (default is yes).
+
+Lastly, you can also change the default sources of each command via the `sources` menu. For example, if you would
+like to change the default data provider from the `load` command from the `stocks` menu you can first run the command
+`get` following by `stocks_load`. This returns the following:
+
+```
+2022 Jul 25, 16:52 (🦋) /sources/ $ get stocks_load
+
+Default   : yf
+Available : yf, iex, av, polygon
+```
+
+Then, with `set` you can change the default data provider. For example, we can change the data provider to iex with
+the following:
+
+```
+2022 Jul 25, 16:55 (🦋) /sources/ $ set stocks_load iex
+The data source was specified successfully.
+
+2022 Jul 25, 16:55 (🦋) /sources/ $ get stocks_load
+
+Default   : iex
+Available : iex, yf, av, polygon
+```
 
 ## Obtaining support and/or giving feedback
 

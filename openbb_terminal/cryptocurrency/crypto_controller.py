@@ -109,7 +109,7 @@ class CryptoController(CryptoBaseController):
         )
         mt.add_raw("\n")
         mt.add_cmd("headlines", "FinBrain")
-        mt.add_cmd("chart", "", self.symbol)
+        mt.add_cmd("candle", "", self.symbol)
         mt.add_cmd("prt", "", self.symbol)
         mt.add_raw("\n")
         mt.add_menu("disc")

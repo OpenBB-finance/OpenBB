@@ -53,6 +53,11 @@ def print_goodbye():
         "or even request a feature on [cmds]https://openbb.co/request-a-feature[/cmds]\n"
     )
 
+    console.print(
+        "[bold]Fill in our 2-minute survey so we better understand how we can improve the terminal "
+        "at [cmds]https://openbb.co/survey[/cmds][/bold]\n"
+    )
+
     logger.info("END")
 
 
@@ -105,7 +110,7 @@ def open_openbb_documentation(
     that are considered 'common' by adjusting the path accordingly."""
     if "ta" in path:
         path = "terminal/common/ta/"
-    if "ba" in path:
+    elif "ba" in path:
         path = "terminal/common/ba/"
     elif "qa" in path:
         path = "terminal/common/qa/"
@@ -113,6 +118,9 @@ def open_openbb_documentation(
         path = "terminal/common/pred/"
     elif "keys" in path:
         path = "#accessing-other-sources-of-data-via-api-keys"
+        command = ""
+    elif "settings" in path or "featflags" in path or "sources" in path:
+        path = "#customizing-the-terminal"
         command = ""
     else:
         path = f"terminal/{path}"
@@ -126,10 +134,15 @@ def open_openbb_documentation(
         elif "exe" == command:
             path = "/terminal/scripts/"
             command = ""
+        elif command in ["settings", "featflags", "sources"]:
+            path = "#customizing-the-terminal"
+            command = ""
 
         path += command
 
-    webbrowser.open(f"{url}{path}")
+    full_url = f"{url}{path}".replace("//", "/")
+
+    webbrowser.open(full_url)
     console.print("")
 
 

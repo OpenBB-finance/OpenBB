@@ -19,6 +19,7 @@ Momentum:
     stoch              stochastic oscillator
     fisher             fisher transform
     cg                 centre of gravity
+    clenow             clenow volatility adjusted momentum
 Trend:
     adx                average directional movement index
     aroon              aroon indicator
