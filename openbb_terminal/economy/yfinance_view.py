@@ -13,7 +13,11 @@ import financedatabase as fd
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.economy.yfinance_model import get_index, INDICES
+from openbb_terminal.economy.yfinance_model import (
+    get_indices,
+    get_search_indices,
+    INDICES,
+)
 from openbb_terminal.helper_funcs import (
     plot_autoscale,
     print_rich_table,
@@ -62,15 +66,8 @@ def show_indices(
     ----------
     Plots the Series.
     """
-    indices_data: pd.DataFrame = pd.DataFrame()
 
-    for index in indices:
-        indices_data[index] = get_index(index, interval, start_date, end_date, column)
-
-    if returns:
-        indices_data = indices_data.pct_change().dropna()
-        indices_data = indices_data + 1
-        indices_data = indices_data.cumprod()
+    indices_data = get_indices(indices, interval, start_date, end_date, column, returns)
 
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -149,13 +146,8 @@ def search_indices(keyword: list, limit: int = 10):
     ----------
     Shows a rich table with the available options.
     """
-    keyword_adjusted = " ".join(keyword)
 
-    indices = fd.select_indices()
-
-    queried_indices = pd.DataFrame.from_dict(
-        fd.search_products(indices, keyword_adjusted, "short_name"), orient="index"
-    )
+    keyword_adjusted, queried_indices = get_search_indices(keyword, limit)
 
     print_rich_table(
         queried_indices.iloc[:limit],
