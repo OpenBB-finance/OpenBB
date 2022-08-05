@@ -14,4 +14,3 @@
 12    13        10.0  binance_us           Binance US           United States           2019.0           9934.78404
 13    14        10.0      gemini               Gemini           United States           2014.0           4484.52141
 14    15        10.0     bittrex              Bittrex           United States           2014.0          1984.070201
-

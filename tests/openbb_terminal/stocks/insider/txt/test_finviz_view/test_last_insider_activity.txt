@@ -5,4 +5,3 @@ Mar 07  SVP Powertrain and Energy Eng.             Sale     897  845.39    758,3
 Mar 07         Chief Financial Officer             Sale   2,389  845.39  2,019,639        59,318  Kirkhorn Zachary  Mar 08 07:44 PM
 Mar 05         Chief Financial Officer  Option Exercise   5,623    0.00          0        61,707  Kirkhorn Zachary  Mar 08 07:44 PM
 Mar 05  SVP Powertrain and Energy Eng.  Option Exercise   1,786    0.00          0        21,035  Baglino Andrew D  Mar 08 07:36 PM
-
