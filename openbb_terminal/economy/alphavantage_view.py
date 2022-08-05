@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
 def realtime_performance_sector(
-    raw: bool,
+    raw: bool = False,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -41,26 +41,23 @@ def realtime_performance_sector(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    df_sectors = alphavantage_model.get_sector_data()
+    df_rtp = alphavantage_model.get_sector_data()
 
     # pylint: disable=E1101
-    if df_sectors.empty:
+    if df_rtp.empty:
         return
-
-    # pylint: disable=invalid-sequence-index
-    df_rtp = df_sectors["Rank A: Real-Time Performance"]
-
-    df_rtp = df_rtp.apply(lambda x: x * 100)
 
     if raw:
         print_rich_table(
-            df_rtp.to_frame(),
-            show_index=True,
+            df_rtp,
+            show_index=False,
             headers=["Sector", "Real-Time Performance"],
             title="Real-Time Performance",
         )
 
     else:
+        df_rtp.set_index("Sector", inplace=True)
+        df_rtp = df_rtp.squeeze(axis=1)
         colors = [theme.up_color if x > 0 else theme.down_color for x in df_rtp.values]
         ax = df_rtp.plot(kind="barh", color=colors)
         theme.style_primary_axis(ax)
@@ -75,7 +72,7 @@ def realtime_performance_sector(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "rtps",
-        df_sectors,
+        df_rtp,
     )
 
 

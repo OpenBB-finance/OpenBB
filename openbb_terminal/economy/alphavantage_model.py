@@ -29,7 +29,17 @@ def get_sector_data() -> pd.DataFrame:
     )
     # pylint: disable=unbalanced-tuple-unpacking
     df_sectors, _ = sector_perf.get_sector()
-    return df_sectors
+
+    # pylint: disable=invalid-sequence-index
+    df_rtp = df_sectors["Rank A: Real-Time Performance"]
+
+    df_rtp = df_rtp.apply(lambda x: x * 100)
+
+    df_rtp = df_rtp.to_frame().reset_index()
+
+    df_rtp.columns = ["Sector", "Real-Time Performance"]
+
+    return df_rtp
 
 
 @log_start_end(log=logger)
