@@ -318,7 +318,9 @@ def show_candles(
     instrument : str
         The loaded currency pair
     granularity : str, optional
-        Data granularity
+        The timeframe to get for the candle chart. Seconds: S5, S10, S15, S30
+        Minutes: M1, M2, M4, M5, M10, M15, M30 Hours: H1, H2, H3, H4, H6, H8, H12
+        Day (default): D, Week: W Month: M,
     candlecount : int, optional
         Limit for the number of data points
     additional_charts : Dict[str, bool]
