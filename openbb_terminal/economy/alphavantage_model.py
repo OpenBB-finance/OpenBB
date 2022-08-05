@@ -43,13 +43,15 @@ def get_sector_data() -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_real_gdp(interval: str = "a") -> pd.DataFrame:
+def get_real_gdp(interval: str = "a", start_year: int = 2010,) -> pd.DataFrame:
     """Get annual or quarterly Real GDP for US
 
     Parameters
     ----------
     interval : str, optional
         Interval for GDP, by default "a" for annual
+    start_year : int, optional
+        Start year for plot, by default 2010
     Returns
     -------
     pd.DataFrame
@@ -82,7 +84,9 @@ def get_real_gdp(interval: str = "a") -> pd.DataFrame:
     elif "Information" in payload:
         console.print(payload["Information"])
 
-    return data
+    gdp = data[data.date >= f"{start_year}-01-01"]
+
+    return gdp
 
 
 @log_start_end(log=logger)

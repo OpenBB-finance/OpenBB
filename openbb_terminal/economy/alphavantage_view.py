@@ -79,7 +79,7 @@ def realtime_performance_sector(
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
 def display_real_gdp(
-    interval: str,
+    interval: str = "a",
     start_year: int = 2010,
     raw: bool = False,
     export: str = "",
@@ -100,11 +100,11 @@ def display_real_gdp(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    gdp_full = alphavantage_model.get_real_gdp(interval)
+    gdp = alphavantage_model.get_real_gdp(interval)
 
-    if gdp_full.empty:
+    if gdp.empty:
         return
-    gdp = gdp_full[gdp_full.date >= f"{start_year}-01-01"]
+
     int_string = "Annual" if interval == "a" else "Quarterly"
     year_str = str(start_year) if interval == "a" else str(list(gdp.date)[-1].year)
 
@@ -126,7 +126,7 @@ def display_real_gdp(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "gdp",
-        gdp_full,
+        gdp,
     )
     if raw:
         print_rich_table(
