@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_overview(export: str):
+def display_overview(export: str = ""):
     """Market overview. [Source: Wall St. Journal]
 
     Parameters
@@ -32,8 +32,6 @@ def display_overview(export: str):
         headers=list(df_data.columns),
         title="Market Overview",
     )
-
-    console.print("")
 
     export_data(
         export,
