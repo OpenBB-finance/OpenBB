@@ -1,4 +1,4 @@
-FROM python:3.8-slim-buster
+FROM python:3.9-slim-buster
 
 LABEL org.opencontainers.image.source https://github.com/OpenBB-finance/OpenBBTerminal
 
@@ -36,4 +36,4 @@ WORKDIR /home/python
 
 ENV PATH="/home/python/.local/bin:${PATH}"
 
-RUN pip install "poetry==1.1.12"
+RUN pip install "poetry==1.1.13"
