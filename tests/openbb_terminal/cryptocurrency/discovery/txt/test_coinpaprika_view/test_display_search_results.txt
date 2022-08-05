@@ -9,4 +9,3 @@
 19                           eye-eye-on-ethereum                            eYe on Ethereum  currencies
 28                                 etx-ethereumx                                  EthereumX  currencies
 6                  etlt-ethereum-lightning-token                   Ethereum Lightning Token  currencies
-

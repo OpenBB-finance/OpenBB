@@ -43,6 +43,7 @@ from openbb_terminal.terminal_helper import (
     update_terminal,
     welcome_message,
 )
+from openbb_terminal.helper_funcs import parse_and_split_input
 
 # pylint: disable=too-many-public-methods,import-outside-toplevel,too-many-branches,no-member
 
@@ -107,7 +108,9 @@ class TerminalController(BaseController):
         self.queue: List[str] = list()
 
         if jobs_cmds:
-            self.queue = " ".join(jobs_cmds).split("/")
+            self.queue = parse_and_split_input(
+                an_input=" ".join(jobs_cmds), custom_filters=[]
+            )
 
         self.update_success = False
 
@@ -216,7 +219,7 @@ class TerminalController(BaseController):
                 # Load the file as a JSON document
                 json_doc = json.load(f)
 
-                task = random.choice(list(json_doc.keys()))
+                task = random.choice(list(json_doc.keys()))  # nosec
                 solution = json_doc[task]
 
                 start = time.time()
@@ -226,7 +229,7 @@ class TerminalController(BaseController):
 
                 # When there are multiple paths to same solution
                 if isinstance(solution, List):
-                    if an_input in solution:
+                    if an_input.lower() in [s.lower() for s in solution]:
                         self.queue = an_input.split("/") + ["home"]
                         console.print(
                             f"\n[green]You guessed correctly in {round(time_dif, 2)} seconds![green]\n"
@@ -243,7 +246,7 @@ class TerminalController(BaseController):
 
                 # When there is a single path to the solution
                 else:
-                    if an_input == solution:
+                    if an_input.lower() == solution.lower():
                         self.queue = an_input.split("/") + ["home"]
                         console.print(
                             f"\n[green]You guessed correctly in {round(time_dif, 2)} seconds![green]\n"
@@ -442,7 +445,7 @@ class TerminalController(BaseController):
             if path_dir in ("-i", "--input"):
                 args = [path_routine[1:]] + other_args_processed[idx:]
                 break
-            if path_dir not in ("-p", "--path"):
+            if path_dir not in ("-f", "--file"):
                 path_routine += f"/{path_dir}"
 
         if not args:
@@ -455,8 +458,8 @@ class TerminalController(BaseController):
             description="Execute automated routine script.",
         )
         parser_exe.add_argument(
-            "-p",
-            "--path",
+            "-f",
+            "--file",
             help="The path or .openbb file to run.",
             dest="path",
             default="",
@@ -470,7 +473,7 @@ class TerminalController(BaseController):
             type=lambda s: [str(item) for item in s.split(",")],
         )
         if args and "-" not in args[0][0]:
-            args.insert(0, "-p")
+            args.insert(0, "-f")
         ns_parser_exe = parse_simple_args(parser_exe, args)
         if ns_parser_exe:
             if ns_parser_exe.path:
@@ -508,7 +511,13 @@ class TerminalController(BaseController):
                         insert_start_slash(file_cmds) if file_cmds else file_cmds
                     )
                     cmds_with_params = " ".join(file_cmds)
-                    self.queue = [val for val in cmds_with_params.split("/") if val]
+                    self.queue = [
+                        val
+                        for val in parse_and_split_input(
+                            an_input=cmds_with_params, custom_filters=[]
+                        )
+                        if val
+                    ]
 
                     if "export" in self.queue[0]:
                         export_path = self.queue[0].split(" ")[1]
@@ -923,8 +932,8 @@ if __name__ == "__main__":
         help="Runs the terminal in debug mode.",
     )
     parser.add_argument(
-        "-p",
-        "--path",
+        "-f",
+        "--file",
         help="The path or .openbb file to run.",
         dest="path",
         nargs="+",
@@ -940,7 +949,6 @@ if __name__ == "__main__":
         help="Whether to run in test mode.",
     )
     parser.add_argument(
-        "-f",
         "--filter",
         help="Send a keyword to filter in file name",
         dest="filtert",
@@ -960,7 +968,7 @@ if __name__ == "__main__":
     )
 
     if sys.argv[1:] and "-" not in sys.argv[1][0]:
-        sys.argv.insert(1, "-p")
+        sys.argv.insert(1, "-f")
     ns_parser = parser.parse_args()
     main(
         ns_parser.debug,
