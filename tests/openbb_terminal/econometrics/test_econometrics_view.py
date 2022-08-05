@@ -164,8 +164,8 @@ def test_display_root(df, dataset_name, column_name, fuller_reg, kpss_reg):
 )
 def test_display_granger(time_series_y, time_series_x, lags, confidence_level):
     econometrics_view.display_granger(
-        time_series_y=time_series_y,
-        time_series_x=time_series_x,
+        dependent_series=time_series_y,
+        independent_series=time_series_x,
         lags=lags,
         confidence_level=confidence_level,
     )

@@ -1578,7 +1578,7 @@ class EconometricsController(BaseController):
         if ns_parser:
             if not self.regression["OLS"]["model"]:
                 console.print(
-                    "Please perform an OLS regression before estimating the Breusch-Godfrey statistic.\n"
+                    "Perform an OLS regression before estimating the Breusch-Godfrey statistic.\n"
                 )
             else:
                 openbb_terminal.econometrics.regression_view.display_bgod(
@@ -1605,7 +1605,7 @@ class EconometricsController(BaseController):
         if ns_parser:
             if not self.regression["OLS"]["model"]:
                 console.print(
-                    "Please perform an OLS regression before estimating the Breusch-Pagan statistic.\n"
+                    "Perform an OLS regression before estimating the Breusch-Pagan statistic.\n"
                 )
             else:
                 openbb_terminal.econometrics.regression_view.display_bpag(

@@ -529,7 +529,7 @@ def get_dwat(residual: pd.DataFrame) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_bgod(model: pd.DataFrame, lags: int) -> tuple:
+def get_bgod(model: pd.DataFrame, lags: int = 3) -> tuple:
     """Calculate test statistics for autocorrelation
 
     Parameters
