@@ -1003,7 +1003,7 @@ class DueDiligenceController(CryptoBaseController):
                     currency=ns_parser.vs,
                     top=ns_parser.limit,
                     sortby=ns_parser.sortby,
-                    descend=ns_parser.descend,
+                    ascending=not ns_parser.descend,
                     links=ns_parser.urls,
                     export=ns_parser.export,
                 )
@@ -1059,7 +1059,7 @@ class DueDiligenceController(CryptoBaseController):
                     symbol=self.symbol,
                     top=ns_parser.limit,
                     sortby=ns_parser.sortby,
-                    descend=ns_parser.descend,
+                    ascending=not ns_parser.descend,
                     export=ns_parser.export,
                 )
 
@@ -1125,7 +1125,7 @@ class DueDiligenceController(CryptoBaseController):
                     symbol=self.symbol,
                     top=ns_parser.limit,
                     sortby=ns_parser.sortby,
-                    descend=ns_parser.descend,
+                    ascending=not ns_parser.descend,
                     links=ns_parser.urls,
                     export=ns_parser.export,
                 )
@@ -1182,7 +1182,7 @@ class DueDiligenceController(CryptoBaseController):
                     symbol=self.symbol,
                     top=ns_parser.limit,
                     sortby=ns_parser.sortby,
-                    descend=ns_parser.descend,
+                    ascending=not ns_parser.descend,
                     export=ns_parser.export,
                 )
 
@@ -1357,7 +1357,7 @@ class DueDiligenceController(CryptoBaseController):
 
         if ns_parser:
             messari_view.display_roadmap(
-                descend=ns_parser.descend,
+                ascending=not ns_parser.descend,
                 coin=self.symbol.upper(),
                 limit=ns_parser.limit,
                 export=ns_parser.export,
@@ -1649,7 +1649,7 @@ class DueDiligenceController(CryptoBaseController):
             "--filter",
             dest="filter",
             type=str,
-            help="Filter by kind of news. One from list: rising|hot|bullish|bearish|important|saved|lol",
+            help="Filter by kind of news. From: rising|hot|bullish|bearish|important|saved|lol",
             default=None,
             required=False,
             choices=cryptopanic_model.FILTERS,
@@ -1660,8 +1660,11 @@ class DueDiligenceController(CryptoBaseController):
             "--region",
             dest="region",
             type=str,
-            help="Filter news by regions. Available regions are: en (English), de (Deutsch), nl (Dutch), es (Español), "
-            "fr (Français), it (Italiano), pt (Português), ru (Русский)",
+            help=(
+                "Filter news by regions. Available regions are: en (English), de (Deutsch), nl"
+                " (Dutch), es (Español), fr (Français), it (Italiano), pt (Português), ru "
+                "(Русский)"
+            ),
             default="en",
             choices=cryptopanic_model.REGIONS,
         )
@@ -1689,7 +1692,7 @@ class DueDiligenceController(CryptoBaseController):
             "--urls",
             dest="urls",
             action="store_false",
-            help="Flag to disable urls. If you will use the flag you will hide the column with urls",
+            help="Flag to disable urls. Hides column with URL.",
             default=True,
         )
 
@@ -1703,7 +1706,7 @@ class DueDiligenceController(CryptoBaseController):
                 source=self.source,
                 currency=self.symbol,
                 export=ns_parser.export,
-                descend=ns_parser.descend,
+                ascending=not ns_parser.descend,
                 post_kind=ns_parser.kind,
                 filter_=ns_parser.filter,
                 region=ns_parser.region,

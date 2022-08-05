@@ -155,19 +155,19 @@ def display_btc_rainbow(
 @log_start_end(log=logger)
 @check_api_key(["API_GLASSNODE_KEY"])
 def display_active_addresses(
-    asset: str,
+    symbol: str,
     since: int = 1577836800,
     until: int = 1609459200,
     interval: str = "24h",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
-    """Display active addresses of a certain asset over time
+    """Display active addresses of a certain symbol over time
     [Source: https://glassnode.org]
 
     Parameters
     ----------
-    asset : str
+    symbol : str
         Asset to search active addresses (e.g., BTC)
     since : int
         Initial date timestamp (e.g., 1_614_556_800)
@@ -181,7 +181,7 @@ def display_active_addresses(
         External axes (1 axis is expected in the list), by default None
     """
 
-    df_addresses = get_active_addresses(asset, interval, since, until)
+    df_addresses = get_active_addresses(symbol, interval, since, until)
 
     if df_addresses.empty:
         return
@@ -196,7 +196,7 @@ def display_active_addresses(
 
     ax.plot(df_addresses.index, df_addresses["v"] / 1_000, linewidth=1.5)
 
-    ax.set_title(f"Active {asset} addresses over time")
+    ax.set_title(f"Active {symbol} addresses over time")
     ax.set_ylabel("Addresses [thousands]")
     ax.set_xlim(df_addresses.index[0], df_addresses.index[-1])
 
@@ -216,18 +216,18 @@ def display_active_addresses(
 @log_start_end(log=logger)
 @check_api_key(["API_GLASSNODE_KEY"])
 def display_non_zero_addresses(
-    asset: str,
+    symbol: str,
     since: int = 1577836800,
     until: int = 1609459200,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
-    """Display addresses with non-zero balance of a certain asset
+    """Display addresses with non-zero balance of a certain symbol
     [Source: https://glassnode.org]
 
     Parameters
     ----------
-    asset : str
+    symbol : str
         Asset to search (e.g., BTC)
     since : int
         Initial date timestamp (e.g., 1_577_836_800)
@@ -239,7 +239,7 @@ def display_non_zero_addresses(
         External axes (1 axis is expected in the list), by default None
     """
 
-    df_addresses = get_non_zero_addresses(asset, since, until)
+    df_addresses = get_non_zero_addresses(symbol, since, until)
 
     if df_addresses.empty:
         return
@@ -254,7 +254,7 @@ def display_non_zero_addresses(
 
     ax.plot(df_addresses.index, df_addresses["v"] / 1_000, linewidth=1.5)
 
-    ax.set_title(f"{asset} Addresses with non-zero balances")
+    ax.set_title(f"{symbol} Addresses with non-zero balances")
     ax.set_ylabel("Number of Addresses")
     ax.set_xlim(df_addresses.index[0], df_addresses.index[-1])
 
@@ -274,7 +274,7 @@ def display_non_zero_addresses(
 @log_start_end(log=logger)
 @check_api_key(["API_GLASSNODE_KEY"])
 def display_exchange_net_position_change(
-    asset: str,
+    symbol: str,
     exchange: str = "binance",
     since: int = 1577836800,
     until: int = 1609459200,
@@ -286,7 +286,7 @@ def display_exchange_net_position_change(
 
     Parameters
     ----------
-    asset : str
+    symbol : str
         Asset to search active addresses (e.g., BTC)
     exchange : str
         Exchange to check net position change (possible values are: aggregated, binance,
@@ -302,7 +302,7 @@ def display_exchange_net_position_change(
         External axes (1 axis is expected in the list), by default None
     """
 
-    df_addresses = get_exchange_net_position_change(asset, exchange, since, until)
+    df_addresses = get_exchange_net_position_change(symbol, exchange, since, until)
 
     if df_addresses.empty:
         return
@@ -328,9 +328,9 @@ def display_exchange_net_position_change(
         facecolor=theme.up_color,
     )
 
-    ax.set_ylabel(f"30d change of {asset} supply held in exchange wallets [thousands]")
+    ax.set_ylabel(f"30d change of {symbol} supply held in exchange wallets [thousands]")
     ax.set_title(
-        f"{asset}: Exchange Net Position Change - {'all exchanges' if exchange == 'aggregated' else exchange}"
+        f"{symbol}: Exchange Net Position Change - {'all exchanges' if exchange == 'aggregated' else exchange}"
     )
     ax.set_xlim(df_addresses.index[0], df_addresses.index[-1])
 
@@ -350,7 +350,7 @@ def display_exchange_net_position_change(
 @log_start_end(log=logger)
 @check_api_key(["API_GLASSNODE_KEY"])
 def display_exchange_balances(
-    asset: str,
+    symbol: str,
     exchange: str = "binance",
     since: int = 1577836800,
     until: int = 1609459200,
@@ -363,7 +363,7 @@ def display_exchange_balances(
 
     Parameters
     ----------
-    asset : str
+    symbol : str
         Asset to search active addresses (e.g., BTC)
     exchange : str
         Exchange to check net position change (possible values are: aggregated, binance, bittrex,
@@ -381,7 +381,7 @@ def display_exchange_balances(
         External axes (2 axes are expected in the list), by default None
     """
 
-    df_balance = get_exchange_balances(asset, exchange, since, until)
+    df_balance = get_exchange_balances(symbol, exchange, since, until)
 
     if df_balance.empty:
         return
@@ -401,17 +401,17 @@ def display_exchange_balances(
     else:
         ax1.plot(df_balance.index, df_balance["stacked"] / 1000)
 
-    ax1.set_ylabel(f"{asset} units [{'%' if percentage else 'thousands'}]")
+    ax1.set_ylabel(f"{symbol} units [{'%' if percentage else 'thousands'}]")
     ax1.set_title(
-        f"{asset}: Total Balance in {'all exchanges' if exchange == 'aggregated' else exchange}"
+        f"{symbol}: Total Balance in {'all exchanges' if exchange == 'aggregated' else exchange}"
     )
     ax1.tick_params(axis="x", labelrotation=10)
-    ax1.legend([f"{asset} Unit"], loc="upper right")
+    ax1.legend([f"{symbol} Unit"], loc="upper right")
 
     ax2.grid(visible=False)
     ax2.plot(df_balance.index, df_balance["price"], color="orange")
-    ax2.set_ylabel(f"{asset} price [$]")
-    ax2.legend([f"{asset} Price"], loc="upper left")
+    ax2.set_ylabel(f"{symbol} price [$]")
+    ax2.legend([f"{symbol} Price"], loc="upper left")
 
     if not external_axes:
         theme.visualize_output()
@@ -427,19 +427,19 @@ def display_exchange_balances(
 @log_start_end(log=logger)
 @check_api_key(["API_GLASSNODE_KEY"])
 def display_hashrate(
-    asset: str,
+    symbol: str,
     since: int = int((datetime.now() - timedelta(days=365)).timestamp()),
     until: int = int(datetime.now().timestamp()),
     interval: str = "24h",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
-    """Display dataframe with mean hashrate of btc or eth blockchain and asset price.
+    """Display dataframe with mean hashrate of btc or eth blockchain and symbol price.
     [Source: https://glassnode.org]
 
     Parameters
     ----------
-    asset : str
+    symbol : str
         Blockchain to check mean hashrate (BTC or ETH)
     since : int
         Initial date timestamp (e.g., 1_614_556_800)
@@ -453,7 +453,7 @@ def display_hashrate(
         External axes (2 axes are expected in the list), by default None
     """
 
-    df = get_hashrate(asset, interval, since, until)
+    df = get_hashrate(symbol, interval, since, until)
 
     if df.empty:
         return
@@ -472,15 +472,15 @@ def display_hashrate(
         df.index, df["hashrate"] / 1_000_000_000_000, color=theme.down_color, lw=0.8
     )
     ax1.yaxis.set_major_formatter(ticker.StrMethodFormatter("{x:.0f}T"))
-    ax1.set_ylabel(f"{asset} hashrate (Terahashes/second)")
-    ax1.set_title(f"{asset}: Mean hashrate")
+    ax1.set_ylabel(f"{symbol} hashrate (Terahashes/second)")
+    ax1.set_title(f"{symbol}: Mean hashrate")
     ax1.tick_params(axis="x", labelrotation=10)
 
     ax2.set_xlim(left=df.index[0])
     ax2.grid(visible=False)
     ax2.plot(df.index, df["price"] / 1_000, color=theme.up_color, lw=0.8)
     ax2.yaxis.set_major_formatter(ticker.StrMethodFormatter("${x:.1f}k"))
-    ax2.set_ylabel(f"{asset} price [$]")
+    ax2.set_ylabel(f"{symbol} price [$]")
 
     # Manually construct the chart legend
     lines = [

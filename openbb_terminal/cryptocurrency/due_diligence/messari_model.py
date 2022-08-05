@@ -27,9 +27,14 @@ INTERVALS_TIMESERIES = ["5m", "15m", "30m", "1h", "1d", "1w"]
 
 
 @log_start_end(log=logger)
-def get_available_timeseries() -> pd.DataFrame:
+def get_available_timeseries(only_free: bool = True) -> pd.DataFrame:
     """Returns available messari timeseries
     [Source: https://messari.io/]
+
+    Parameters
+    ----------
+    only_free : bool
+        Display only timeseries available for free
 
     Returns
     -------
@@ -58,6 +63,8 @@ def get_available_timeseries() -> pd.DataFrame:
             )
         df = pd.DataFrame(arr)
         df.set_index("id", inplace=True)
+        if only_free:
+            df = df.drop(df[df["Requires Paid Key"]].index)
         return df
     return pd.DataFrame()
 
@@ -68,14 +75,14 @@ base_url2 = "https://data.messari.io/api/v2/"
 
 @log_start_end(log=logger)
 def get_marketcap_dominance(
-    coin: str, interval: str, start: str, end: str
+    symbol: str, interval: str, start: str, end: str
 ) -> pd.DataFrame:
     """Returns market dominance of a coin over time
     [Source: https://messari.io/]
 
     Parameters
     ----------
-    coin : str
+    symbol : str
         Crypto symbol to check market cap dominance
     start : int
         Initial date like string (e.g., 2021-10-01)
@@ -91,21 +98,21 @@ def get_marketcap_dominance(
     """
 
     df, _ = get_messari_timeseries(
-        coin=coin, end=end, start=start, interval=interval, timeseries_id="mcap.dom"
+        symbol=symbol, end=end, start=start, interval=interval, timeseries_id="mcap.dom"
     )
     return df
 
 
 @log_start_end(log=logger)
 def get_messari_timeseries(
-    coin: str, timeseries_id: str, interval: str, start: str, end: str
+    symbol: str, timeseries_id: str, interval: str, start: str, end: str
 ) -> Tuple[pd.DataFrame, str]:
     """Returns messari timeseries
     [Source: https://messari.io/]
 
     Parameters
     ----------
-    coin : str
+    symbol : str
         Crypto symbol to check messari timeseries
     timeseries_id : str
         Messari timeserie id
@@ -124,7 +131,7 @@ def get_messari_timeseries(
         timeserie title
     """
 
-    url = base_url + f"assets/{coin}/metrics/{timeseries_id}/time-series"
+    url = base_url + f"assets/{symbol}/metrics/{timeseries_id}/time-series"
 
     headers = {"x-messari-api-key": cfg.API_MESSARI_KEY}
 
@@ -145,7 +152,7 @@ def get_messari_timeseries(
         df = pd.DataFrame(data["values"], columns=data["parameters"]["columns"])
 
         if df.empty:
-            console.print(f"No data found for {coin}.\n")
+            console.print(f"No data found for {symbol}.\n")
         else:
             df = df.set_index("timestamp")
             df.index = pd.to_datetime(df.index, unit="ms")
@@ -198,7 +205,7 @@ def get_links(symbol: str) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_roadmap(symbol: str) -> pd.DataFrame:
+def get_roadmap(symbol: str, ascending: bool = True) -> pd.DataFrame:
     """Returns coin roadmap
     [Source: https://messari.io/]
 
@@ -206,6 +213,8 @@ def get_roadmap(symbol: str) -> pd.DataFrame:
     ----------
     symbol : str
         Crypto symbol to check roadmap
+    ascending: bool
+        reverse order
 
     Returns
     -------
@@ -229,6 +238,10 @@ def get_roadmap(symbol: str) -> pd.DataFrame:
         df["date"] = pd.to_datetime(df["date"])
         df.columns = map(str.capitalize, df.columns)
         df = df.dropna(axis=1, how="all")
+        df["Date"] = df["Date"].dt.date
+        show_df = df
+        show_df = show_df.sort_values(by="Date", ascending=ascending)
+        show_df.fillna("Unknown", inplace=True)
     elif r.status_code == 401:
         console.print("[red]Invalid API Key[/red]\n")
     else:

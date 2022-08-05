@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 @check_api_key(["API_SANTIMENT_KEY"])
 def display_github_activity(
-    coin: str,
+    symbol: str,
     start: str = (datetime.now() - timedelta(days=365)).strftime("%Y-%m-%dT%H:%M:%SZ"),
     dev_activity: bool = False,
     end: str = (datetime.now()).strftime("%Y-%m-%dT%H:%M:%SZ"),
@@ -38,7 +38,7 @@ def display_github_activity(
 
     Parameters
     ----------
-    coin : str
+    symbol : str
         Crypto symbol to check github activity
     dev_activity: bool
         Whether to filter only for development activity
@@ -55,7 +55,11 @@ def display_github_activity(
     """
 
     df = get_github_activity(
-        coin=coin, dev_activity=dev_activity, start=start, end=end, interval=interval
+        symbol=symbol,
+        dev_activity=dev_activity,
+        start=start,
+        end=end,
+        interval=interval,
     )
 
     if df.empty:
@@ -71,8 +75,8 @@ def display_github_activity(
 
     ax.plot(df.index, df["value"])
 
-    ax.set_title(f"{coin}'s Github activity over time")
-    ax.set_ylabel(f"{coin}'s Activity count")
+    ax.set_title(f"{symbol}'s Github activity over time")
+    ax.set_ylabel(f"{symbol}'s Activity count")
     ax.set_xlim(df.index[0], df.index[-1])
 
     theme.style_primary_axis(ax)

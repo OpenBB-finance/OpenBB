@@ -43,10 +43,7 @@ def display_grouped_defi_protocols(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    df = llama_model.get_defi_protocols()
-    df = df.sort_values("tvl", ascending=False).head(num)
-
-    df = df.set_index("name")
+    df = llama_model.get_defi_protocols(num)
     chains = df.groupby("chain").size().index.values.tolist()
 
     # This plot has 1 axis

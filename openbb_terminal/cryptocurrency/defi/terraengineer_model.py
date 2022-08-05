@@ -17,7 +17,7 @@ ASSETS = ["ust", "luna", "sdt"]
 
 @log_start_end(log=logger)
 def get_history_asset_from_terra_address(
-    asset: str = "ust", address: str = ""
+    asset: str = "ust", address: str = "terra1tmnqgvg567ypvsvk6rwsga3srp7e3lg6u0elp8"
 ) -> pd.DataFrame:
     """Returns historical data of an asset in a certain terra address
     [Source: https://terra.engineer/]

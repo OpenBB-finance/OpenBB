@@ -7,7 +7,6 @@ from typing import List, Optional
 from matplotlib import pyplot as plt
 import numpy as np
 from openbb_terminal.cryptocurrency.cryptocurrency_helpers import plot_order_book
-from openbb_terminal.cryptocurrency.dataframe_helpers import prettify_column_names
 from openbb_terminal.cryptocurrency.due_diligence import ccxt_model
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 
@@ -68,9 +67,6 @@ def display_trades(exchange: str, coin: str, vs: str, top: int = 10, export: str
         Export dataframe data to csv,json,xlsx file
     """
     df = ccxt_model.get_trades(exchange_id=exchange, coin=coin, vs=vs)
-    df.rename(columns={"datetime": "date"}, inplace=True)
-
-    df.columns = prettify_column_names(df.columns)
     print_rich_table(
         df.head(top),
         headers=list(df.columns),

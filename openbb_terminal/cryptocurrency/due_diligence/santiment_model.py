@@ -12,20 +12,20 @@ from openbb_terminal.cryptocurrency.discovery.pycoingecko_model import read_file
 logger = logging.getLogger(__name__)
 
 
-def get_slug(coin: str) -> str:
+def get_slug(symbol: str) -> str:
     """
     Get Santiment slug mapping and return corresponding slug for a given coin
     """
     df = pd.DataFrame(read_file_data("santiment_slugs.json"))
 
-    slug = df.loc[df["ticker"] == coin.upper()]["slug"].values[0]
+    slug = df.loc[df["ticker"] == symbol.upper()]["slug"].values[0]
 
     return slug
 
 
 @log_start_end(log=logger)
 def get_github_activity(
-    coin: str,
+    symbol: str,
     dev_activity: bool,
     interval: str,
     start: str,
@@ -37,7 +37,7 @@ def get_github_activity(
 
     Parameters
     ----------
-    coin : str
+    symbol : str
         Crypto symbol to check github activity
     dev_activity: bool
         Whether to filter only for development activity
@@ -56,7 +56,7 @@ def get_github_activity(
 
     activity_type = "dev_activity" if dev_activity else "github_activity"
 
-    slug = get_slug(coin)
+    slug = get_slug(symbol)
 
     headers = {
         "Content-Type": "application/graphql",
@@ -79,7 +79,7 @@ def get_github_activity(
             df["datetime"] = pd.to_datetime(df["datetime"])
             df = df.set_index("datetime")
         else:
-            console.print(f"Could not find github activity found for {coin}\n")
+            console.print(f"Could not find github activity found for {symbol}\n")
 
     elif response.status_code == 400:
         if "Apikey" in response.json()["errors"]["details"]:

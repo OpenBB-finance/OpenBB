@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Union
+from typing import Optional
 from pandas.plotting import register_matplotlib_converters
 import openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model as gecko
 from openbb_terminal.cryptocurrency import cryptocurrency_helpers
@@ -18,17 +18,17 @@ register_matplotlib_converters()
 
 @log_start_end(log=logger)
 def display_coin_potential_returns(
-    main_coin: str,
-    vs: Union[str, None] = None,
-    top: Union[int, None] = None,
-    price: Union[int, None] = None,
+    symbol: str,
+    vs: Optional[str] = None,
+    top: Optional[int] = None,
+    price: Optional[int] = None,
     export: str = "",
 ) -> None:
     """Displays potential returns of a certain coin. [Source: CoinGecko]
 
     Parameters
     ----------
-    main_coin   : str
+    symbol   : str
         Coin loaded to check potential returns for (e.g., algorand)
     vs          : str | None
         Coin to compare main_coin with (e.g., bitcoin)
@@ -39,15 +39,7 @@ def display_coin_potential_returns(
     export : str
         Export dataframe data to csv,json,xlsx file
     """
-    df = gecko.get_coin_potential_returns(main_coin, vs, top, price)
-
-    df["Potential Market Cap ($)"] = df.apply(
-        lambda x: f"{int(x['Potential Market Cap ($)']):n}", axis=1
-    )
-
-    df["Current Market Cap ($)"] = df.apply(
-        lambda x: f"{int(x['Current Market Cap ($)']):n}", axis=1
-    )
+    df = gecko.get_coin_potential_returns(symbol, vs, top, price)
 
     print_rich_table(
         df, headers=list(df.columns), show_index=False, title="Potential Coin Returns"

@@ -19,7 +19,7 @@ def display_uni_tokens(
     skip: int = 0,
     limit: int = 20,
     sortby: str = "index",
-    descend: bool = True,
+    ascending: bool = False,
     export: str = "",
 ) -> None:
     """Displays tokens trade-able on Uniswap DEX.
@@ -33,16 +33,14 @@ def display_uni_tokens(
         Number of records to display
     sortby: str
         Key by which to sort data
-    descend: bool
+    ascending: bool
         Flag to sort data descending
     export : str
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = graph_model.get_uni_tokens(skip=skip)
+    df = graph_model.get_uni_tokens(skip=skip, sortby=sortby, ascending=ascending)
     df_data = df.copy()
-
-    df = df.sort_values(by=sortby, ascending=descend)
 
     df[["totalLiquidity", "tradeVolumeUSD"]] = df[
         ["totalLiquidity", "tradeVolumeUSD"]

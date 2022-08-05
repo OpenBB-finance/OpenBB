@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 from typing import Dict
 import ccxt
 import pandas as pd
+from openbb_terminal.cryptocurrency.dataframe_helpers import prettify_column_names
 
 
 def get_exchanges():
@@ -67,4 +68,6 @@ def get_trades(exchange_id: str, coin: str, vs: str) -> pd.DataFrame:
     trades = exchange.fetch_trades(f"{coin.upper()}/{vs.upper()}")
     df = pd.DataFrame(trades, columns=["datetime", "price", "amount", "cost", "side"])
     df["datetime"] = pd.to_datetime(df["datetime"])
+    df.rename(columns={"datetime": "date"}, inplace=True)
+    df.columns = prettify_column_names(df.columns)
     return df

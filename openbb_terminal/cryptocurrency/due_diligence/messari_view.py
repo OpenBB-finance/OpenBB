@@ -68,10 +68,8 @@ def display_messari_timeseries_list(
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = get_available_timeseries()
+    df = get_available_timeseries(only_free)
     if not df.empty:
-        if only_free:
-            df = df.drop(df[df["Requires Paid Key"]].index)
         if query:
             mask = np.column_stack(
                 [
@@ -104,7 +102,7 @@ def display_messari_timeseries_list(
 @log_start_end(log=logger)
 @check_api_key(["API_MESSARI_KEY"])
 def display_messari_timeseries(
-    coin: str,
+    symbol: str,
     timeseries_id: str,
     start: str = (datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d"),
     end: str = datetime.now().strftime("%Y-%m-%d"),
@@ -117,7 +115,7 @@ def display_messari_timeseries(
 
     Parameters
     ----------
-    coin : str
+    symbol : str
         Crypto symbol to check market cap dominance
     timeseries_id: str
         Obtained by api.crypto.dd.get_mt command
@@ -134,7 +132,11 @@ def display_messari_timeseries(
     """
 
     df, title = get_messari_timeseries(
-        coin=coin, timeseries_id=timeseries_id, start=start, end=end, interval=interval
+        symbol=symbol,
+        timeseries_id=timeseries_id,
+        start=start,
+        end=end,
+        interval=interval,
     )
 
     if not df.empty:
@@ -152,7 +154,7 @@ def display_messari_timeseries(
 
         ax.plot(df.index, df[df.columns[0]])
 
-        ax.set_title(f"{coin}'s {title}")
+        ax.set_title(f"{symbol}'s {title}")
         ax.set_ylabel(title)
         ax.set_xlim(df.index[0], df.index[-1])
 
@@ -172,7 +174,7 @@ def display_messari_timeseries(
 @log_start_end(log=logger)
 @check_api_key(["API_MESSARI_KEY"])
 def display_marketcap_dominance(
-    coin: str,
+    symbol: str,
     start: str = (datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d"),
     end: str = datetime.now().strftime("%Y-%m-%d"),
     interval: str = "1d",
@@ -184,7 +186,7 @@ def display_marketcap_dominance(
 
     Parameters
     ----------
-    coin : str
+    symbol : str
         Crypto symbol to check market cap dominance
     start : int
         Initial date like string (e.g., 2021-10-01)
@@ -198,7 +200,7 @@ def display_marketcap_dominance(
         External axes (1 axis is expected in the list), by default None
     """
 
-    df = get_marketcap_dominance(coin=coin, start=start, end=end, interval=interval)
+    df = get_marketcap_dominance(symbol=symbol, start=start, end=end, interval=interval)
 
     if not df.empty:
 
@@ -212,8 +214,8 @@ def display_marketcap_dominance(
 
         ax.plot(df.index, df["marketcap_dominance"])
 
-        ax.set_title(f"{coin}'s Market Cap Dominance over time")
-        ax.set_ylabel(f"{coin} Percentage share")
+        ax.set_title(f"{symbol}'s Market Cap Dominance over time")
+        ax.set_ylabel(f"{symbol} Percentage share")
         ax.set_xlim(df.index[0], df.index[-1])
 
         theme.style_primary_axis(ax)
@@ -231,13 +233,13 @@ def display_marketcap_dominance(
 
 @log_start_end(log=logger)
 @check_api_key(["API_MESSARI_KEY"])
-def display_links(coin: str, export: str = "") -> None:
+def display_links(symbol: str, export: str = "") -> None:
     """Display coin links
     [Source: https://messari.io/]
 
     Parameters
     ----------
-    coin : str
+    symbol : str
         Crypto symbol to check links
     export : str
         Export dataframe data to csv,json,xlsx file
@@ -245,13 +247,13 @@ def display_links(coin: str, export: str = "") -> None:
         External axes (1 axis is expected in the list), by default None
     """
 
-    df = get_links(coin)
+    df = get_links(symbol)
     if not df.empty:
         print_rich_table(
             df,
             headers=list(df.columns),
             show_index=False,
-            title=f"{coin} Links",
+            title=f"{symbol} Links",
         )
 
         export_data(
@@ -267,8 +269,8 @@ def display_links(coin: str, export: str = "") -> None:
 @log_start_end(log=logger)
 @check_api_key(["API_MESSARI_KEY"])
 def display_roadmap(
-    coin: str,
-    descend: bool = False,
+    symbol: str,
+    ascending: bool = True,
     limit: int = 5,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -278,9 +280,9 @@ def display_roadmap(
 
     Parameters
     ----------
-    coin : str
+    symbol : str
         Crypto symbol to check roadmap
-    descend: bool
+    ascending: bool
         reverse order
     limit : int
         number to show
@@ -289,21 +291,17 @@ def display_roadmap(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    df = get_roadmap(coin)
+    df = get_roadmap(symbol, ascending)
 
     if not df.empty:
-        df["Date"] = df["Date"].dt.date
-        show_df = df
-        show_df = show_df.sort_values(by="Date", ascending=descend)
-        show_df.fillna("Unknown", inplace=True)
         print_rich_table(
-            show_df.head(limit),
-            headers=list(show_df.columns),
+            df.head(limit),
+            headers=list(df.columns),
             show_index=False,
-            title=f"{coin} Roadmap",
+            title=f"{symbol} Roadmap",
         )
         df_prices, _ = cryptocurrency_helpers.load_yf_data(
-            symbol=coin,
+            symbol=symbol,
             currency="USD",
             days=4380,
             interval="1d",
@@ -352,7 +350,7 @@ def display_roadmap(
             ax.get_yaxis().set_major_formatter(
                 ticker.FuncFormatter(lambda x, _: lambda_long_number_format(x))
             )
-            ax.set_title(f"{coin.upper()} Price and Roadmap")
+            ax.set_title(f"{symbol.upper()} Price and Roadmap")
             ax.set_ylabel("Price [$]")
             ax.set_xlim(df_prices.index[0], df_prices.index[-1])
             theme.style_primary_axis(ax)
@@ -373,7 +371,7 @@ def display_roadmap(
 @log_start_end(log=logger)
 @check_api_key(["API_MESSARI_KEY"])
 def display_tokenomics(
-    coin: str,
+    symbol: str,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
@@ -382,15 +380,15 @@ def display_tokenomics(
 
     Parameters
     ----------
-    coin : str
+    symbol : str
         Crypto symbol to check tokenomics
     export : str
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
     """
-    coingecko_id = cryptocurrency_helpers.get_coingecko_id(coin)
-    df, circ_df = get_tokenomics(coin, coingecko_id)
+    coingecko_id = cryptocurrency_helpers.get_coingecko_id(symbol)
+    df, circ_df = get_tokenomics(symbol, coingecko_id)
 
     if not df.empty and not circ_df.empty:
         df = df.applymap(lambda x: lambda_long_number_format(x, 2))
@@ -398,7 +396,7 @@ def display_tokenomics(
             df,
             headers=list(df.columns),
             show_index=False,
-            title=f"{coin} Tokenomics",
+            title=f"{symbol} Tokenomics",
         )
         if not external_axes:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
@@ -408,7 +406,7 @@ def display_tokenomics(
         else:
             return
         df_prices, _ = cryptocurrency_helpers.load_yf_data(
-            symbol=coin,
+            symbol=symbol,
             currency="USD",
             days=4380,
             interval="1d",
@@ -428,14 +426,14 @@ def display_tokenomics(
             ax2.get_yaxis().set_major_formatter(
                 ticker.FuncFormatter(lambda x, _: lambda_long_number_format(x))
             )
-            ax2.set_ylabel(f"{coin} price [$]")
+            ax2.set_ylabel(f"{symbol} price [$]")
             theme.style_twin_axis(ax2)
             ax2.yaxis.set_label_position("right")
             ax.legend()
         ax.get_yaxis().set_major_formatter(
             ticker.FuncFormatter(lambda x, _: lambda_long_number_format(x))
         )
-        ax.set_title(f"{coin} circulating supply over time")
+        ax.set_title(f"{symbol} circulating supply over time")
         ax.set_ylabel("Number of tokens")
         ax.set_xlim(merged_df.index[0], merged_df.index[-1])
         theme.style_primary_axis(ax)
@@ -457,7 +455,7 @@ def display_tokenomics(
 @log_start_end(log=logger)
 @check_api_key(["API_MESSARI_KEY"])
 def display_project_info(
-    coin: str,
+    symbol: str,
     export: str = "",
 ) -> None:
     """Display project info
@@ -465,49 +463,26 @@ def display_project_info(
 
     Parameters
     ----------
-    coin : str
+    symbol : str
         Crypto symbol to check project info
     export : str
         Export dataframe data to csv,json,xlsx file
     """
-    (df_info, df_repos, df_audits, df_vulns) = get_project_product_info(coin)
+    (df_info, df_repos, df_audits, df_vulns) = get_project_product_info(symbol)
 
-    if not df_info.empty:
-        print_rich_table(
-            df_info,
-            headers=list(df_info.columns),
-            show_index=False,
-            title=f"{coin} General Info",
-        )
-    else:
-        console.print("\nGeneral info not found\n")
-    if not df_repos.empty:
-        print_rich_table(
-            df_repos,
-            headers=list(df_repos.columns),
-            show_index=False,
-            title=f"{coin} Public Repositories",
-        )
-    else:
-        console.print("\nPublic repositories not found\n")
-    if not df_audits.empty:
-        print_rich_table(
-            df_audits,
-            headers=list(df_audits.columns),
-            show_index=False,
-            title=f"{coin} Audits",
-        )
-    else:
-        console.print("\nAudits not found\n")
-    if not df_vulns.empty:
-        print_rich_table(
-            df_vulns,
-            headers=list(df_vulns.columns),
-            show_index=False,
-            title=f"{coin} Vulnerabilities",
-        )
-    else:
-        console.print("\nVulnerabilities not found\n")
+    for df, title in zip(
+        [df_info, df_repos, df_audits, df_vulns],
+        ["General Info", "Public Repos", "Audits", "Vulnerabilities"],
+    ):
+        if not df.empty:
+            print_rich_table(
+                df,
+                headers=list(df.columns),
+                show_index=False,
+                title=f"{symbol} {title}",
+            )
+        else:
+            console.print(f"\n{title} not found\n")
 
     export_data(
         export,
@@ -520,7 +495,7 @@ def display_project_info(
 @log_start_end(log=logger)
 @check_api_key(["API_MESSARI_KEY"])
 def display_investors(
-    coin: str,
+    symbol: str,
     export: str = "",
 ) -> None:
     """Display coin investors
@@ -528,19 +503,19 @@ def display_investors(
 
     Parameters
     ----------
-    coin : str
+    symbol : str
         Crypto symbol to check coin investors
     export : str
         Export dataframe data to csv,json,xlsx file
     """
-    (df_individuals, df_organizations) = get_investors(coin)
+    (df_individuals, df_organizations) = get_investors(symbol)
     if not df_individuals.empty or not df_organizations.empty:
         if not df_individuals.empty:
             print_rich_table(
                 df_individuals,
                 headers=list(df_individuals.columns),
                 show_index=False,
-                title=f"{coin} Investors - Individuals",
+                title=f"{symbol} Investors - Individuals",
             )
         else:
             console.print("\nIndividual investors not found\n")
@@ -549,7 +524,7 @@ def display_investors(
                 df_organizations,
                 headers=list(df_organizations.columns),
                 show_index=False,
-                title=f"{coin} Investors - Organizations",
+                title=f"{symbol} Investors - Organizations",
             )
         else:
             console.print("\nInvestors - Organizations not found\n")
@@ -566,7 +541,7 @@ def display_investors(
 @log_start_end(log=logger)
 @check_api_key(["API_MESSARI_KEY"])
 def display_team(
-    coin: str,
+    symbol: str,
     export: str = "",
 ) -> None:
     """Display coin team
@@ -574,19 +549,19 @@ def display_team(
 
     Parameters
     ----------
-    coin : str
+    symbol : str
         Crypto symbol to check coin team
     export : str
         Export dataframe data to csv,json,xlsx file
     """
-    (df_individuals, df_organizations) = get_team(coin)
+    (df_individuals, df_organizations) = get_team(symbol)
     if not df_individuals.empty or not df_organizations.empty:
         if not df_individuals.empty:
             print_rich_table(
                 df_individuals,
                 headers=list(df_individuals.columns),
                 show_index=False,
-                title=f"{coin} Team - Individuals",
+                title=f"{symbol} Team - Individuals",
             )
         else:
             console.print("\nIndividual team members not found\n")
@@ -595,7 +570,7 @@ def display_team(
                 df_organizations,
                 headers=list(df_organizations.columns),
                 show_index=False,
-                title=f"{coin} Team - Organizations",
+                title=f"{symbol} Team - Organizations",
             )
         else:
             console.print("\nTeam organizations not found\n")
@@ -612,7 +587,7 @@ def display_team(
 @log_start_end(log=logger)
 @check_api_key(["API_MESSARI_KEY"])
 def display_governance(
-    coin: str,
+    symbol: str,
     export: str = "",
 ) -> None:
     """Display coin governance
@@ -620,12 +595,12 @@ def display_governance(
 
     Parameters
     ----------
-    coin : str
+    symbol : str
         Crypto symbol to check coin governance
     export : str
         Export dataframe data to csv,json,xlsx file
     """
-    (summary, df) = get_governance(coin)
+    (summary, df) = get_governance(symbol)
     if summary:
         summary = prettify_paragraph(summary)
         console.print(summary, "\n")
@@ -634,7 +609,7 @@ def display_governance(
                 df,
                 headers=list(df.columns),
                 show_index=False,
-                title=f"{coin} Governance details",
+                title=f"{symbol} Governance details",
             )
         export_data(
             export,
@@ -643,13 +618,13 @@ def display_governance(
             df,
         )
     else:
-        console.print(f"\n{coin} governance details not found\n")
+        console.print(f"\n{symbol} governance details not found\n")
 
 
 @log_start_end(log=logger)
 @check_api_key(["API_MESSARI_KEY"])
 def display_fundraising(
-    coin: str,
+    symbol: str,
     export: str = "",
 ) -> None:
     """Display coin fundraising
@@ -657,12 +632,12 @@ def display_fundraising(
 
     Parameters
     ----------
-    coin : str
+    symbol : str
         Crypto symbol to check coin fundraising
     export : str
         Export dataframe data to csv,json,xlsx file
     """
-    (summary, df_sales_rounds, df_treasury_accs, df_details) = get_fundraising(coin)
+    (summary, df_sales_rounds, df_treasury_accs, df_details) = get_fundraising(symbol)
     if summary:
         summary = prettify_paragraph(summary)
         console.print(summary, "\n")
@@ -674,7 +649,7 @@ def display_fundraising(
             df_sales_rounds,
             headers=list(df_sales_rounds.columns),
             show_index=False,
-            title=f"{coin} Sales Rounds",
+            title=f"{symbol} Sales Rounds",
         )
     else:
         console.print("\nSales rounds not found\n")
@@ -683,7 +658,7 @@ def display_fundraising(
             df_treasury_accs,
             headers=list(df_treasury_accs.columns),
             show_index=False,
-            title=f"{coin} Treasury Accounts",
+            title=f"{symbol} Treasury Accounts",
         )
     else:
         console.print("\nTreasury accounts not found\n")
@@ -723,7 +698,7 @@ def display_fundraising(
                 startangle=90,
                 colors=theme.get_colors()[1:4],
             )
-            ax.set_title(f"{coin} Fundraising Distribution")
+            ax.set_title(f"{symbol} Fundraising Distribution")
             if obbff.USE_ION:
                 plt.ion()
             plt.show()
@@ -734,7 +709,7 @@ def display_fundraising(
             df_details,
             headers=list(df_details.columns),
             show_index=False,
-            title=f"{coin} Fundraising Details",
+            title=f"{symbol} Fundraising Details",
         )
     else:
         console.print("\nFundraising details not found\n")

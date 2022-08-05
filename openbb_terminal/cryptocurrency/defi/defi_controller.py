@@ -466,11 +466,11 @@ class DefiController(BaseController):
         )
 
         parser.add_argument(
-            "--descend",
-            action="store_false",
-            help="Flag to sort in descending order (lowest first)",
+            "--ascend",
+            action="store_true",
+            help="Flag to sort in ascending order (highest first)",
             dest="descend",
-            default=True,
+            default=False,
         )
 
         ns_parser = self.parse_known_args_and_warn(
@@ -481,7 +481,7 @@ class DefiController(BaseController):
             defipulse_view.display_defipulse(
                 top=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                descend=ns_parser.ascending,
                 export=ns_parser.export,
             )
 
@@ -720,7 +720,7 @@ class DefiController(BaseController):
                 skip=ns_parser.skip,
                 limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascending=not ns_parser.descend,
                 export=ns_parser.export,
             )
 
@@ -1022,7 +1022,7 @@ class DefiController(BaseController):
                 protocol=ns_parser.protocol,
                 top=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                descend=not ns_parser.descend,
                 link=ns_parser.link,
                 export=ns_parser.export,
             )

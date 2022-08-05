@@ -48,6 +48,17 @@ BASE_INFO = [
 ]
 
 
+def format_df(df: pd.DataFrame):
+    df["Potential Market Cap ($)"] = df.apply(
+        lambda x: f"{int(x['Potential Market Cap ($)']):n}", axis=1
+    )
+
+    df["Current Market Cap ($)"] = df.apply(
+        lambda x: f"{int(x['Current Market Cap ($)']):n}", axis=1
+    )
+    return df
+
+
 @log_start_end(log=logger)
 def get_coin_potential_returns(
     main_coin: str,
@@ -116,10 +127,11 @@ def get_coin_potential_returns(
                     market_cap_difference_percentage,
                 ]
             )
-        return pd.DataFrame(
+        df = pd.DataFrame(
             data=diff_arr,
             columns=COLUMNS,
         )
+        return format_df(df)
 
     if vs:  # user passed a coin
         data = client.get_price(
@@ -140,7 +152,7 @@ def get_coin_potential_returns(
             future_price = main_coin_data["usd"] * (
                 1 + market_cap_difference_percentage / 100
             )
-            return pd.DataFrame(
+            df = pd.DataFrame(
                 data=[
                     [
                         main_coin,
@@ -154,6 +166,7 @@ def get_coin_potential_returns(
                 ],
                 columns=COLUMNS,
             )
+            return format_df(df)
 
     if price and price > 0:  # user passed a price
         data = client.get_price(
@@ -175,7 +188,7 @@ def get_coin_potential_returns(
             future_price = main_coin_data["usd"] * (
                 1 + market_cap_difference_percentage / 100
             )
-            return pd.DataFrame(
+            df = pd.DataFrame(
                 data=[
                     [
                         main_coin,
@@ -189,24 +202,25 @@ def get_coin_potential_returns(
                 ],
                 columns=COLUMNS,
             )
+            return format_df(df)
 
     return pd.DataFrame()
 
 
 @log_start_end(log=logger)
-def check_coin(coin_id: str):
+def check_coin(symbol: str):
     coins = read_file_data("coingecko_coins.json")
     for coin in coins:
-        if coin["id"] == coin_id:
+        if coin["id"] == symbol:
             return coin["id"]
-        if coin["symbol"] == coin_id:
+        if coin["symbol"] == symbol:
             return coin["id"]
     return None
 
 
 @log_start_end(log=logger)
 def get_coin_market_chart(
-    coin_id: str = "", vs_currency: str = "usd", days: int = 30, **kwargs: Any
+    symbol: str = "", vs_currency: str = "usd", days: int = 30, **kwargs: Any
 ) -> pd.DataFrame:
     """Get prices for given coin. [Source: CoinGecko]
 
@@ -225,7 +239,7 @@ def get_coin_market_chart(
         Columns: time, price, currency
     """
     client = CoinGeckoAPI()
-    prices = client.get_coin_market_chart_by_id(coin_id, vs_currency, days, **kwargs)
+    prices = client.get_coin_market_chart_by_id(symbol, vs_currency, days, **kwargs)
     prices = prices["prices"]
     df = pd.DataFrame(data=prices, columns=["time", "price"])
     df["time"] = pd.to_datetime(df.time, unit="ms")
