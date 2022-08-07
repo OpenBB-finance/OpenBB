@@ -52,23 +52,18 @@ jobs:
           conda init
           exec zsh -l
       - name: Run Poetry
-        shell: bash -l {0}
         run: poetry install
       - name: Install Pyinstaller
-        shell: bash -l {0}
         run: poetry install -E installer
       - name: Install Prediction Modules
-        shell: bash -l {0}
         run: |
           conda install -c apple tensorflow-deps
           pip install tensorflow-macos
       # Double Checking Version Number
       - name: Check OpenBB Version
-        shell: bash -l {0}
         run: pip list | grep openbb
       # This is basically the same as build4mac.sh
       - name: Build Bundle
-        shell: bash -l {0}
         run: |
           pyinstaller build/pyinstaller/terminal.spec
           osascript build/pyinstaller/setup_icons.applescript
