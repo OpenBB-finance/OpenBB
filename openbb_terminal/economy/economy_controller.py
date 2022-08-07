@@ -203,10 +203,7 @@ class EconomyController(BaseController):
                 c: None for c in investingcom_model.IMPORTANCES
             }
 
-            self.choices["ecocal"]["-cat"] = {
-                c: None for c in investingcom_model.CATEGORIES
-            }
-            self.choices["ecocal"]["--categories"] = {
+            self.choices["ecocal"]["--cat"] = {
                 c: None for c in investingcom_model.CATEGORIES
             }
 
