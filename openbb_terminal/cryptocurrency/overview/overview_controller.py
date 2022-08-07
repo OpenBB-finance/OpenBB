@@ -137,7 +137,7 @@ class OverviewController(BaseController):
             choices["cpinfo"]["-s"] = {c: None for c in coinpaprika_model.INFO_FILTERS}
             choices["cbpairs"]["-s"] = {c: None for c in coinbase_model.PAIRS_FILTERS}
             choices["news"]["-k"] = {c: None for c in cryptopanic_model.CATEGORIES}
-            choices["news"]["-f"] = {c: None for c in cryptopanic_model.FILTERS}
+            choices["news"]["--filter"] = {c: None for c in cryptopanic_model.FILTERS}
             choices["news"]["-r"] = {c: None for c in cryptopanic_model.REGIONS}
             choices["news"]["-s"] = {c: None for c in cryptopanic_model.SORT_FILTERS}
             choices["wfpe"] = {c: None for c in withdrawalfees_model.POSSIBLE_CRYPTOS}
@@ -1159,8 +1159,10 @@ class OverviewController(BaseController):
             prog="cpinfo",
             description="""Show basic coin information for all coins from CoinPaprika API
                 You can display only N number of coins with --limit parameter.
-                You can sort data by rank, name, symbol, price, volume_24h, circulating_supply, total_supply, max_supply,
-                market_cap, beta_value, ath_price --sort parameter and also with --descend flag to sort descending.
+                You can sort data by rank, name, symbol, price, volume_24h, circulating_supply,
+                total_supply, max_supply, market_cap, beta_value, ath_price --sort parameter
+                and also with --descend flag to sort descending.
+
                 Displays:
                     rank, name, symbol, price, volume_24h, circulating_supply,
                     total_supply, max_supply, market_cap, beta_value, ath_price
@@ -1446,7 +1448,6 @@ class OverviewController(BaseController):
         )
 
         parser.add_argument(
-            "-f",
             "--filter",
             dest="filter",
             type=str,
