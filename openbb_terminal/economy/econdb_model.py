@@ -416,12 +416,7 @@ SCALES = {
 }
 
 TREASURIES: Dict = {
-    "frequencies": {
-        "annually": 203,
-        "monthly": 129,
-        "weekly": 21,
-        "daily": 9,
-    },
+    "frequencies": {"annually": 203, "monthly": 129, "weekly": 21, "daily": 9,},
     "instruments": {
         "nominal": {
             "identifier": "TCMNOM",
@@ -451,9 +446,7 @@ TREASURIES: Dict = {
         },
         "average": {
             "identifier": "LTAVG",
-            "maturities": {
-                "Longer than 10-year": "Longer than 10-year",
-            },
+            "maturities": {"Longer than 10-year": "Longer than 10-year",},
         },
         "secondary": {
             "identifier": "TB",
@@ -481,7 +474,7 @@ def get_macro_data(
     Parameters
     ----------
     parameter: str
-        The type of data you wish to acquire
+        The type of data you wish to display
     country : str
        the selected country
     start_date : str
@@ -580,8 +573,8 @@ def get_macro_data(
 
 @log_start_end(log=logger)
 def get_aggregated_macro_data(
-    parameters: list,
-    countries: list,
+    parameters: list = ["CPI"],
+    countries: list = ["United_States"],
     start_date: str = "1900-01-01",
     end_date=datetime.today().date(),
     convert_currency=False,
@@ -591,9 +584,9 @@ def get_aggregated_macro_data(
     Parameters
     ----------
     parameters: list
-        The type of data you wish to acquire
+        The type of data you wish to download.
     countries : list
-       the selected country or countries
+        The selected country or countries.
     start_date : str
         The starting date, format "YEAR-MONTH-DAY", i.e. 2010-12-31.
     end_date : str
@@ -633,7 +626,25 @@ def get_aggregated_macro_data(
         country_data_df[0].values.tolist(), index=country_data_df.index
     ).T
 
-    return country_data_df, units
+    maximum_value = country_data_df.max().max()
+
+    if maximum_value > 1_000_000_000_000:
+        df_rounded = country_data_df / 1_000_000_000_000
+        denomination = " [in Trillions]"
+    elif maximum_value > 1_000_000_000:
+        df_rounded = country_data_df / 1_000_000_000
+        denomination = " [in Billions]"
+    elif maximum_value > 1_000_000:
+        df_rounded = country_data_df / 1_000_000
+        denomination = " [in Millions]"
+    elif maximum_value > 1_000:
+        df_rounded = country_data_df / 1_000
+        denomination = " [in Thousands]"
+    else:
+        df_rounded = country_data_df
+        denomination = ""
+
+    return df_rounded, units, denomination
 
 
 @log_start_end(log=logger)

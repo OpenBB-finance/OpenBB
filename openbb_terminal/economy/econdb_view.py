@@ -25,8 +25,8 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def show_macro_data(
-    parameters: list,
-    countries: list,
+    parameters: list = ["CPI"],
+    countries: list = ["United_States"],
     start_date: str = "1900-01-01",
     end_date=datetime.today().date(),
     convert_currency=False,
@@ -34,14 +34,14 @@ def show_macro_data(
     external_axes: Optional[List[plt.axes]] = None,
     export: str = "",
 ):
-    """Show the received nacro data about a company [Source: EconDB]
+    """Show the received macro data about a company [Source: EconDB]
 
     Parameters
     ----------
     parameters: list
-        The type of data you wish to acquire
+        The type of data you wish to display
     countries : list
-       the selected country or countries
+        The selected country or countries
     start_date : str
         The starting date, format "YEAR-MONTH-DAY", i.e. 2010-12-31.
     end_date : str
@@ -59,7 +59,7 @@ def show_macro_data(
     ----------
     Plots the Series.
     """
-    country_data_df, units = econdb_model.get_aggregated_macro_data(
+    df_rounded, units, denomination = econdb_model.get_aggregated_macro_data(
         parameters, countries, start_date, end_date, convert_currency
     )
 
@@ -67,24 +67,6 @@ def show_macro_data(
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     else:
         ax = external_axes[0]
-
-    maximum_value = country_data_df.max().max()
-
-    if maximum_value > 1_000_000_000_000:
-        df_rounded = country_data_df / 1_000_000_000_000
-        denomination = " [in Trillions]"
-    elif maximum_value > 1_000_000_000:
-        df_rounded = country_data_df / 1_000_000_000
-        denomination = " [in Billions]"
-    elif maximum_value > 1_000_000:
-        df_rounded = country_data_df / 1_000_000
-        denomination = " [in Millions]"
-    elif maximum_value > 1_000:
-        df_rounded = country_data_df / 1_000
-        denomination = " [in Thousands]"
-    else:
-        df_rounded = country_data_df
-        denomination = ""
 
     legend = []
     for column in df_rounded.columns:
@@ -226,10 +208,7 @@ def show_treasuries(
 
     if export:
         export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            "treasuries_data",
-            df,
+            export, os.path.dirname(os.path.abspath(__file__)), "treasuries_data", df,
         )
 
 
