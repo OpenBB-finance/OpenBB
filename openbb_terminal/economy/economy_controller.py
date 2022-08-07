@@ -1059,7 +1059,7 @@ class EconomyController(BaseController):
             help="Event importance classified as high, medium, low or all.",
         )
         parser.add_argument(
-            "--categories",
+            "--cat",
             action="store",
             dest="categories",
             choices=investingcom_model.CATEGORIES,
