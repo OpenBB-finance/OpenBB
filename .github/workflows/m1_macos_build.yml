@@ -130,11 +130,7 @@ jobs:
         run: |
           echo "Deleting Previous Keychain to Clean Instance"
           rm -rf /Users/ec2-user/Library/Keychains/build.keychain-db
-      - name: Clean up Build Artifacts
-        run: |
-          rm -rf build/terminal
-          rm -rf dist
-          rm -rf DMG
+      # Clean up build artifacts
       - name: Notorize DMG
         env:
           NOTARIZE_APPLE_ID: ${{ secrets.NOTARIZE_APPLE_ID }}
@@ -148,7 +144,7 @@ jobs:
       - name: Save Build Artifact DMG
         uses: actions/upload-artifact@v3
         with:
-          name: x86 MacOS DMG Artifact
+          name: M1 MacOS DMG Artifact
           path: OpenBB\ Terminal.dmg
       - name: Convert & Mount DMG
         run: | # Remove the converting disc image at the end
