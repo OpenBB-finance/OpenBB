@@ -64,7 +64,7 @@ class EconomyController(BaseController):
         "industry",
         "bigmac",
         "ycrv",
-        "ecocal",
+        "events",
     ]
 
     CHOICES_MENUS = ["pred", "qa"]
@@ -189,21 +189,21 @@ class EconomyController(BaseController):
                 c: None for c in investingcom_model.BOND_COUNTRIES
             }
 
-            self.choices["ecocal"]["-c"] = {
+            self.choices["events"]["-c"] = {
                 c: None for c in investingcom_model.CALENDAR_COUNTRIES
             }
-            self.choices["ecocal"]["--countries"] = {
+            self.choices["events"]["--countries"] = {
                 c: None for c in investingcom_model.CALENDAR_COUNTRIES
             }
 
-            self.choices["ecocal"]["-i"] = {
+            self.choices["events"]["-i"] = {
                 c: None for c in investingcom_model.IMPORTANCES
             }
-            self.choices["ecocal"]["--importances"] = {
+            self.choices["events"]["--importances"] = {
                 c: None for c in investingcom_model.IMPORTANCES
             }
 
-            self.choices["ecocal"]["--cat"] = {
+            self.choices["events"]["--cat"] = {
                 c: None for c in investingcom_model.CATEGORIES
             }
 
@@ -258,7 +258,7 @@ class EconomyController(BaseController):
         mt.add_cmd("map", "Finviz")
         mt.add_cmd("bigmac", "NASDAQ Datalink")
         mt.add_cmd("ycrv", "Investing.com / FRED")
-        mt.add_cmd("ecocal", "Investing.com")
+        mt.add_cmd("events", "Investing.com")
         mt.add_raw("\n")
         mt.add_cmd("rtps", "Alpha Vantage")
         mt.add_cmd("valuation", "Finviz")
@@ -1030,13 +1030,13 @@ class EconomyController(BaseController):
                 )
 
     @log_start_end(log=logger)
-    def call_ecocal(self, other_args: List[str]):
-        """Process ecocal command"""
+    def call_events(self, other_args: List[str]):
+        """Process events command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="ecocal",
-            description="Economic calendar. If no start or end dates, default is the current day.",
+            prog="events",
+            description="Economic calendar. If no start or end dates, default is the current day high importance events.",
         )
         parser.add_argument(
             "-c",
