@@ -9,13 +9,13 @@
 
 
 
-    <meta name="description" content="usage: ecocal [-c COUNTRY [COUNTRY ...]] [-i {high,medium,low,all}] [-cat {Employment,Credit,Balance,Economic Activity,Central Banks,Bonds,Inflation,Confidence Index} [{Employment,Credit,Balance,Economic Activity,Central Banks,Bonds,Inflation,Confidence Index} ...]] [-s START_DATE] [-e END_DATE] [-h] [--export EXPORT] [--raw] Economic calendar.
+    <meta name="description" content="usage: events [-c COUNTRY [COUNTRY ...]] [-i {high,medium,low,all}] [--cat {employment,credit,balance,economic_activity,central_banks,bonds,inflation,confidence_index}] [-s START_DATE] [-e END_DATE] [-h] [--export EXPORT] [--raw] [-l LIMIT] Economic calendar. If no start or end dates, default is the current day high importance events.
 optional arguments: -c COUNTRY [COUNTRY ...], --country COUNTRY [COUNTRY ...] Display calendar for specific country. (default: united states) -i {high,medium,low,all}, --importances {high,medium,low,all} Event importance classified as high, medium, low or all. (default: all) -cat {employment,credit,balance,economic activity,central banks,bonds,inflation,confidence index} [{employment,credit,balance,economic activity,central banks,bonds,inflation,confidence index} .">
 
 
 
     <title>
-      Ecocal | OpenBB Documentation
+      Events | OpenBB Documentation
     </title>
 
     <link rel="icon" href="/OpenBBTerminal/favicon/favicon-32x32.png" type="image/x-icon">
@@ -101,7 +101,7 @@ optional arguments: -c COUNTRY [COUNTRY ...], --country COUNTRY [COUNTRY ...] Di
 }
 </style>
 
-<link rel="alternate" type="application/rss+xml" href="https://openbb-finance.github.io/OpenBBTerminal/terminal/economy/ecocal/index.xml" title="OpenBB Documentation" />
+<link rel="alternate" type="application/rss+xml" href="https://openbb-finance.github.io/OpenBBTerminal/terminal/economy/events/index.xml" title="OpenBB Documentation" />
 
 
 <!-- Made with Geekdoc theme https://github.com/thegeeklab/hugo-geekdoc --> 
@@ -15548,9 +15548,9 @@ optional arguments: -c COUNTRY [COUNTRY ...], --country COUNTRY [COUNTRY ...] Di
             
             <span class="flex">
                 
-                <a href="/OpenBBTerminal/terminal/economy/ecocal/"
+                <a href="/OpenBBTerminal/terminal/economy/events/"
                     class="gdoc-nav__entry is-active">
-                    ecocal
+                    events
                 </a>
             </span>
             
@@ -26016,7 +26016,7 @@ optional arguments: -c COUNTRY [COUNTRY ...], --country COUNTRY [COUNTRY ...] Di
         
     
     
-        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/' href='/OpenBBTerminal/'><span itemprop='name'>Getting Started</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/terminal/' href='/OpenBBTerminal/terminal/'><span itemprop='name'>Terminal</span></a><meta itemprop='position' content='3' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/terminal/economy/' href='/OpenBBTerminal/terminal/economy/'><span itemprop='name'>Introduction to Economy</span></a><meta itemprop='position' content='4' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>Ecocal</span><meta itemprop='position' content='5' /></li>
+        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/' href='/OpenBBTerminal/'><span itemprop='name'>Getting Started</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/terminal/' href='/OpenBBTerminal/terminal/'><span itemprop='name'>Terminal</span></a><meta itemprop='position' content='3' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/terminal/economy/' href='/OpenBBTerminal/terminal/economy/'><span itemprop='name'>Introduction to Economy</span></a><meta itemprop='position' content='4' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>Events</span><meta itemprop='position' content='5' /></li>
     
 
     
@@ -26032,7 +26032,7 @@ optional arguments: -c COUNTRY [COUNTRY ...], --country COUNTRY [COUNTRY ...] Di
     <div>
         <span class="editpage">
             <svg class="icon gdoc_code" style="color: #C7C7C7;"><use xlink:href="#gdoc_code"></use></svg>
-            <a href="https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/website//content/terminal/economy/ecocal/_index.md" style="color: #C7C7C7;">
+            <a href="https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/website//content/terminal/economy/events/_index.md" style="color: #C7C7C7;">
                 Edit this page
             </a>
         </span>
@@ -26041,11 +26041,10 @@ optional arguments: -c COUNTRY [COUNTRY ...], --country COUNTRY [COUNTRY ...] Di
 </div>
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
-        <h1>Ecocal</h1>
-        <pre><code>usage: ecocal [-c COUNTRY [COUNTRY ...]] [-i {high,medium,low,all}]
-              [-cat {Employment,Credit,Balance,Economic Activity,Central Banks,Bonds,Inflation,Confidence Index} [{Employment,Credit,Balance,Economic Activity,Central Banks,Bonds,Inflation,Confidence Index} ...]]
-              [-s START_DATE] [-e END_DATE] [-h] [--export EXPORT] [--raw]
-</code></pre><p>Economic calendar.</p>
+        <h1>Events</h1>
+        <pre><code>usage: events [-c COUNTRY [COUNTRY ...]] [-i {high,medium,low,all}] [--cat {employment,credit,balance,economic_activity,central_banks,bonds,inflation,confidence_index}]
+              [-s START_DATE] [-e END_DATE] [-h] [--export EXPORT] [--raw] [-l LIMIT]
+</code></pre><p>Economic calendar. If no start or end dates, default is the current day high importance events.</p>
 <pre><code>optional arguments:
   -c COUNTRY [COUNTRY ...], --country COUNTRY [COUNTRY ...]
                         Display calendar for specific country. (default: united states)
@@ -26060,25 +26059,27 @@ optional arguments: -c COUNTRY [COUNTRY ...], --country COUNTRY [COUNTRY ...] Di
   -h, --help            show this help message (default: False)
   --export EXPORT       Export raw data into csv, json, xlsx (default: )
   --raw                 Flag to display raw data (default: False)
+  -l LIMIT, --limit LIMIT
+                        Number of entries to show in data. (default: 100)  
 </code></pre><p>Example:</p>
-<pre><code>2022 Jul 11, 16:55 (🦋) /economy/ $ ecocal -c united states -i medium -cat inflation -s 2022-06-15 -e 2022-07-01
+<pre><code>2022 Aug 08, 09:41 (🦋) /economy/ $ events -c united states -i medium --cat inflation -s 2022-06-15 -e 2022-07-01
 
-                                                  Economic Calendar (GMT +1:00)
-┏━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┓
-┃ date       ┃ time  ┃ zone          ┃ currency ┃ importance ┃ event                             ┃ actual ┃ forecast ┃ previous ┃
-┡━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━┩
-│ 15/06/2022 │ 14:30 │ united states │ USD      │ medium     │ Export Price Index (MoM)  (May)   │ 2.8%   │ 1.3%     │ 0.8%     │
-├────────────┼───────┼───────────────┼──────────┼────────────┼───────────────────────────────────┼────────┼──────────┼──────────┤
-│ 15/06/2022 │ 14:30 │ united states │ USD      │ medium     │ Import Price Index (MoM)  (May)   │ 0.6%   │ 1.1%     │ 0.4%     │
-├────────────┼───────┼───────────────┼──────────┼────────────┼───────────────────────────────────┼────────┼──────────┼──────────┤
-│ 29/06/2022 │ 14:30 │ united states │ USD      │ medium     │ GDP Price Index (QoQ)  (Q1)       │ 8.3%   │ 8.1%     │ 8.1%     │
-├────────────┼───────┼───────────────┼──────────┼────────────┼───────────────────────────────────┼────────┼──────────┼──────────┤
-│ 30/06/2022 │ 14:30 │ united states │ USD      │ medium     │ Core PCE Price Index (YoY)  (May) │ 4.7%   │ 4.8%     │ 4.9%     │
-├────────────┼───────┼───────────────┼──────────┼────────────┼───────────────────────────────────┼────────┼──────────┼──────────┤
-│ 30/06/2022 │ 14:30 │ united states │ USD      │ medium     │ PCE Price index (YoY)  (May)      │ 6.3    │          │ 6.3      │
-├────────────┼───────┼───────────────┼──────────┼────────────┼───────────────────────────────────┼────────┼──────────┼──────────┤
-│ 30/06/2022 │ 14:30 │ united states │ USD      │ medium     │ PCE price index (MoM)  (May)      │ 0.6%   │          │ 0.2%     │
-└────────────┴───────┴───────────────┴──────────┴────────────┴───────────────────────────────────┴────────┴──────────┴──────────┘
+                                   United States economic calendar (GMT +1:00)
+┏━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┓
+┃ Date       ┃ Time  ┃ Currency ┃ Importance ┃ Event                             ┃ Actual ┃ Forecast ┃ Previous ┃
+┡━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━┩
+│ 2022-06-15 │ 14:30 │ USD      │ Medium     │ Export Price Index (MoM)  (May)   │ 2.8%   │ 1.3%     │ 0.8%     │
+├────────────┼───────┼──────────┼────────────┼───────────────────────────────────┼────────┼──────────┼──────────┤
+│ 2022-06-15 │ 14:30 │ USD      │ Medium     │ Import Price Index (MoM)  (May)   │ 0.6%   │ 1.1%     │ 0.4%     │
+├────────────┼───────┼──────────┼────────────┼───────────────────────────────────┼────────┼──────────┼──────────┤
+│ 2022-06-29 │ 14:30 │ USD      │ Medium     │ GDP Price Index (QoQ)  (Q1)       │ 8.3%   │ 8.1%     │ 8.1%     │
+├────────────┼───────┼──────────┼────────────┼───────────────────────────────────┼────────┼──────────┼──────────┤
+│ 2022-06-30 │ 14:30 │ USD      │ Medium     │ Core PCE Price Index (YoY)  (May) │ 4.7%   │ 4.8%     │ 4.9%     │
+├────────────┼───────┼──────────┼────────────┼───────────────────────────────────┼────────┼──────────┼──────────┤
+│ 2022-06-30 │ 14:30 │ USD      │ Medium     │ PCE Price index (YoY)  (May)      │ 6.3    │          │ 6.3      │
+├────────────┼───────┼──────────┼────────────┼───────────────────────────────────┼────────┼──────────┼──────────┤
+│ 2022-06-30 │ 14:30 │ USD      │ Medium     │ PCE price index (MoM)  (May)      │ 0.6%   │          │ 0.2%     │
+└────────────┴───────┴──────────┴────────────┴───────────────────────────────────┴────────┴──────────┴──────────┘
 </code></pre>
     </article>
  
