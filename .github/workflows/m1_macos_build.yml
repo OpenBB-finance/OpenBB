@@ -75,18 +75,62 @@ jobs:
           mkdir DMG
           cp -r build/pyinstaller/macOS_package_assets/* DMG/
           mv dist/OpenBBTerminal DMG/OpenBB\ Terminal/.OpenBB
-          
-          
-      # Create keychain and codesign specific binaires here
-      
-      
+      - name: Creating Keychain
+        env:
+          MACOS_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
+          MACOS_CERTIFICATE_PWD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
+          MACOS_KEYCHAIN_PWD: ${{ secrets.MACOS_KEYCHAIN_PWD }}
+          MACOS_CODESIGN_IDENTITY: ${{ secrets.MACOS_CODESIGN_IDENTITY }}
+        run: | # when pushing to main, make to generate new cert, and utilize secrets to store newpassowrd, and identity
+          echo "Decoding"
+          echo $MACOS_CERTIFICATE | base64 --decode > certificate.p12
+          echo "Creating Keychain"
+          security create-keychain -p $MACOS_KEYCHAIN_PWD build.keychain
+          echo "Setting Default Keychain"
+          security default-keychain -s build.keychain
+          echo "Unlocking Keychain"
+          security unlock-keychain -p $MACOS_KEYCHAIN_PWD build.keychain
+          echo "Importing Keychain"
+          security import certificate.p12 -k build.keychain -P $MACOS_CERTIFICATE_PWD -T /usr/bin/codesign
+          echo "Setting Partition List"
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k $MACOS_KEYCHAIN_PWD build.keychain
+      - name: Codesign Specific Binaries
+        env:
+          MACOS_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
+          MACOS_CERTIFICATE_PWD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
+          MACOS_KEYCHAIN_PWD: ${{ secrets.MACOS_KEYCHAIN_PWD }}
+          MACOS_CODESIGN_IDENTITY: ${{ secrets.MACOS_CODESIGN_IDENTITY }}
+        run: |
+          echo "Code Signing SO Files"
+          /usr/bin/codesign --deep --force --verify --verbose --options runtime -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/*.so
+          /usr/bin/codesign --deep --force --verify --verbose --options runtime -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/*/*.so
+          /usr/bin/codesign --deep --force --verify --verbose --options runtime -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/*/*/*.so
+          /usr/bin/codesign --deep --force --verify --verbose --options runtime -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/*/*/*/*.so
+          /usr/bin/codesign --deep --force --verify --verbose --options runtime -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/*/*/*/*/*.so
+          /usr/bin/codesign --deep --force --verify --verbose --options runtime -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/*/*/*/*/*/*.so
+          echo "Code Signing DYLIB Files"
+          /usr/bin/codesign --deep --force --verify --verbose --options runtime -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/*.dylib
+          /usr/bin/codesign --deep --force --verify --verbose --options runtime -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/sklearn/.dylibs/libomp.dylib
+          echo "Code Sign OpenBB Executable File"
+          /usr/bin/codesign --deep --force --verify --verbose --options runtime -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/OpenBBTerminal
       - name: Create DMG
         run: create-dmg --volname "OpenBB Terminal" --volicon "images/dmg_volume.icns" --background "images/openbb_dmg_background.png" --icon "OpenBB Terminal" 190 250 --window-pos 190 120 --window-size 800 400 --icon-size 100 --text-size 14 --app-drop-link 600 250 --eula LICENSE --format UDZO --no-internet-enable "OpenBB Terminal".dmg DMG
-      
-      
-      # Code sign dmg and delete previous keychain and notarize dmg and staple here
-      
-      
+      - name: Code Sign DMG Installer
+        env:
+          MACOS_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
+          MACOS_CERTIFICATE_PWD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
+          MACOS_KEYCHAIN_PWD: ${{ secrets.MACOS_KEYCHAIN_PWD }}
+          MACOS_CODESIGN_IDENTITY: ${{ secrets.MACOS_CODESIGN_IDENTITY }}
+        run: |
+          echo "Code Signing DMG Installer"
+          /usr/bin/codesign --deep --force --verify --verbose --options runtime -s $MACOS_CODESIGN_IDENTITY OpenBB\ Terminal.dmg
+          echo "Verify Signing"
+          codesign --verify --deep --strict --verbose=2 OpenBB\ Terminal.dmg
+      - name: Deleting Previous Keychain
+        run: |
+          echo "Deleting Previous Keychain to Clean Instance"
+          rm -rf /Users/ec2-user/Library/Keychains/build.keychain-db
+      # Clean up build artifacts and notarize and staple here
       - name: Save Build Artifact DMG
         uses: actions/upload-artifact@v3
         with:
