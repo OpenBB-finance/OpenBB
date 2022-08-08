@@ -417,7 +417,6 @@ def test_call_func_test(
 @pytest.mark.parametrize(
     "func",
     [
-        "call_po",
         "call_ca",
     ],
 )
