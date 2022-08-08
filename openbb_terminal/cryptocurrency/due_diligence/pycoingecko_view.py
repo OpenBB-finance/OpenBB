@@ -20,7 +20,7 @@ register_matplotlib_converters()
 def display_coin_potential_returns(
     to_symbol: str,
     from_symbol: Optional[str] = None,
-    top: Optional[int] = None,
+    limit: Optional[int] = None,
     price: Optional[int] = None,
     export: str = "",
 ) -> None:
@@ -32,14 +32,14 @@ def display_coin_potential_returns(
         Coin loaded to check potential returns for (e.g., algorand)
     from_symbol          : str | None
         Coin to compare main_coin with (e.g., bitcoin)
-    top         : int | None
+    limit         : int | None
         Number of coins with highest market cap to compare main_coin with (e.g., 5)
     price
         Target price of main_coin to check potential returns (e.g., 5)
     export : str
         Export dataframe data to csv,json,xlsx file
     """
-    df = gecko.get_coin_potential_returns(to_symbol, from_symbol, top, price)
+    df = gecko.get_coin_potential_returns(to_symbol, from_symbol, limit, price)
 
     print_rich_table(
         df, headers=list(df.columns), show_index=False, title="Potential Coin Returns"

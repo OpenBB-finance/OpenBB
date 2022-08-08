@@ -50,7 +50,7 @@ def display_order_book(
 
 
 def display_trades(
-    exchange: str, symbol: str, vs: str, top: int = 10, export: str = ""
+    exchange: str, symbol: str, vs: str, limit: int = 10, export: str = ""
 ):
     """Displays trades for a coin in a given exchange
     [Source: https://docs.ccxt.com/en/latest/manual.html]
@@ -63,14 +63,14 @@ def display_trades(
         coin symbol
     vs : str
         currency to compare coin against
-    top : int
+    limit : int
         number of trades to display
     export : str
         Export dataframe data to csv,json,xlsx file
     """
     df = ccxt_model.get_trades(exchange_id=exchange, symbol=symbol, vs=vs)
     print_rich_table(
-        df.head(top),
+        df.head(limit),
         headers=list(df.columns),
         show_index=False,
         title=f"Trades for {exchange.upper()}:{symbol.upper()}/{vs.upper()}",

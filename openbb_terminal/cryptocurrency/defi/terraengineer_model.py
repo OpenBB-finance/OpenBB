@@ -49,7 +49,10 @@ def get_history_asset_from_terra_address(
         raise Exception(f"Status code: {response.status_code}. Reason: {response.text}")
 
     data = response.json()
-    df = pd.DataFrame(data[0]["data"])
-    df["x"] = pd.to_datetime(df["x"])
+    if data[0]["data"]:
+        df = pd.DataFrame(data[0]["data"])
+        df["x"] = pd.to_datetime(df["x"])
+    else:
+        df = pd.DataFrame()
 
     return df

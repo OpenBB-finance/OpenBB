@@ -59,7 +59,7 @@ def display_account_staking_info(
 
 @log_start_end(log=logger)
 def display_validators(
-    top: int = 10, sortby: str = "votingPower", descend: bool = False, export: str = ""
+    top: int = 10, sortby: str = "votingPower", ascending: bool = True, export: str = ""
 ) -> None:
     """Display information about terra validators [Source: https://fcd.terra.dev/swagger]
 
@@ -68,16 +68,16 @@ def display_validators(
     top: int
         Number of records to display
     sortby: str
-        Key by which to sort data
-    descend: bool
+        Key by which to sort data. Choose from:
+        validatorName, tokensAmount, votingPower, commissionRate, status, uptime
+    ascending: bool
         Flag to sort data descending
     export : str
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = terramoney_fcd_model.get_validators()
+    df = terramoney_fcd_model.get_validators(sortby, ascending)
     df_data = df.copy()
-    df = df.sort_values(by=sortby, ascending=descend)
     df["tokensAmount"] = df["tokensAmount"].apply(
         lambda x: lambda_very_long_number_formatter(x)
     )

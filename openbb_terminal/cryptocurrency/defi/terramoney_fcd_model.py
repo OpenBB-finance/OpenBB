@@ -144,8 +144,16 @@ def get_staking_account_info(address: str = "") -> Tuple[pd.DataFrame, str]:
 
 
 @log_start_end(log=logger)
-def get_validators() -> pd.DataFrame:
+def get_validators(sortby: str = "votingPower", ascending: bool = True) -> pd.DataFrame:
     """Get information about terra validators [Source: https://fcd.terra.dev/swagger]
+
+    Parameters
+    -----------
+    sortby: str
+        Key by which to sort data. Choose from:
+        validatorName, tokensAmount, votingPower, commissionRate, status, uptime
+    ascending: bool
+        Flag to sort data descending
 
     Returns
     -------
@@ -172,7 +180,10 @@ def get_validators() -> pd.DataFrame:
             }
         )
 
-    return pd.DataFrame(results).sort_values(by="votingPower")
+    df = pd.DataFrame(results)
+    if not df.empty:
+        df = df.sort_values(by=sortby, ascending=ascending)
+    return df
 
 
 @log_start_end(log=logger)

@@ -35,8 +35,8 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 @check_api_key(["API_GLASSNODE_KEY"])
 def display_btc_rainbow(
-    since: int = int(datetime(2010, 1, 1).timestamp()),
-    until: int = int(datetime.now().timestamp()),
+    start_date: int = int(datetime(2010, 1, 1).timestamp()),
+    end_date: int = int(datetime.now().timestamp()),
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -46,16 +46,16 @@ def display_btc_rainbow(
 
     Parameters
     ----------
-    since : int
+    start_date : int
         Initial date timestamp. Default is initial BTC timestamp: 1_325_376_000
-    until : int
+    end_date : int
         Final date timestamp. Default is current BTC timestamp
     export : str
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    df_data = get_close_price("BTC", since, until)
+    df_data = get_close_price("BTC", start_date, end_date)
 
     if df_data.empty:
         return
@@ -69,7 +69,7 @@ def display_btc_rainbow(
         return
 
     d0 = datetime.strptime("2012-01-01", "%Y-%m-%d")
-    dend = datetime.fromtimestamp(until)
+    dend = datetime.fromtimestamp(end_date)
 
     x = range((df_data.index[0] - d0).days, (dend - d0).days + 1)
 
@@ -156,8 +156,8 @@ def display_btc_rainbow(
 @check_api_key(["API_GLASSNODE_KEY"])
 def display_active_addresses(
     symbol: str,
-    since: int = 1577836800,
-    until: int = 1609459200,
+    start_date: int = 1577836800,
+    end_date: int = 1609459200,
     interval: str = "24h",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -169,9 +169,9 @@ def display_active_addresses(
     ----------
     symbol : str
         Asset to search active addresses (e.g., BTC)
-    since : int
+    start_date : int
         Initial date timestamp (e.g., 1_614_556_800)
-    until : int
+    end_date : int
         End date timestamp (e.g., 1_614_556_800)
     interval : str
         Interval frequency (possible values are: 24h, 1w, 1month)
@@ -181,7 +181,7 @@ def display_active_addresses(
         External axes (1 axis is expected in the list), by default None
     """
 
-    df_addresses = get_active_addresses(symbol, interval, since, until)
+    df_addresses = get_active_addresses(symbol, interval, start_date, end_date)
 
     if df_addresses.empty:
         return
@@ -217,8 +217,8 @@ def display_active_addresses(
 @check_api_key(["API_GLASSNODE_KEY"])
 def display_non_zero_addresses(
     symbol: str,
-    since: int = 1577836800,
-    until: int = 1609459200,
+    start_date: int = 1577836800,
+    end_date: int = 1609459200,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
@@ -229,9 +229,9 @@ def display_non_zero_addresses(
     ----------
     symbol : str
         Asset to search (e.g., BTC)
-    since : int
+    start_date : int
         Initial date timestamp (e.g., 1_577_836_800)
-    until : int
+    end_date : int
         End date timestamp (e.g., 1_609_459_200)
     export : str
         Export dataframe data to csv,json,xlsx file
@@ -239,7 +239,7 @@ def display_non_zero_addresses(
         External axes (1 axis is expected in the list), by default None
     """
 
-    df_addresses = get_non_zero_addresses(symbol, since, until)
+    df_addresses = get_non_zero_addresses(symbol, start_date, end_date)
 
     if df_addresses.empty:
         return
@@ -276,8 +276,8 @@ def display_non_zero_addresses(
 def display_exchange_net_position_change(
     symbol: str,
     exchange: str = "binance",
-    since: int = 1577836800,
-    until: int = 1609459200,
+    start_date: int = 1577836800,
+    end_date: int = 1609459200,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
@@ -292,9 +292,9 @@ def display_exchange_net_position_change(
         Exchange to check net position change (possible values are: aggregated, binance,
         bittrex, coinex, gate.io, gemini, huobi, kucoin, poloniex, bibox, bigone, bitfinex,
         hitbtc, kraken, okex, bithumb, zb.com, cobinhood, bitmex, bitstamp, coinbase, coincheck, luno)
-    since : int
+    start_date : int
         Initial date timestamp (e.g., 1_614_556_800)
-    until : int
+    end_date : int
         End date timestamp (e.g., 1_614_556_800)
     export : str
         Export dataframe data to csv,json,xlsx file
@@ -302,7 +302,9 @@ def display_exchange_net_position_change(
         External axes (1 axis is expected in the list), by default None
     """
 
-    df_addresses = get_exchange_net_position_change(symbol, exchange, since, until)
+    df_addresses = get_exchange_net_position_change(
+        symbol, exchange, start_date, end_date
+    )
 
     if df_addresses.empty:
         return
@@ -352,8 +354,8 @@ def display_exchange_net_position_change(
 def display_exchange_balances(
     symbol: str,
     exchange: str = "binance",
-    since: int = 1577836800,
-    until: int = 1609459200,
+    start_date: int = 1577836800,
+    end_date: int = 1609459200,
     percentage: bool = False,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -369,9 +371,9 @@ def display_exchange_balances(
         Exchange to check net position change (possible values are: aggregated, binance, bittrex,
         coinex, gate.io, gemini, huobi, kucoin, poloniex, bibox, bigone, bitfinex, hitbtc, kraken,
         okex, bithumb, zb.com, cobinhood, bitmex, bitstamp, coinbase, coincheck, luno)
-    since : int
+    start_date : int
         Initial date timestamp (e.g., 1_614_556_800)
-    until : int
+    end_date : int
         End date timestamp (e.g., 1_614_556_800)
     percentage : bool
         Show percentage instead of stacked value.
@@ -381,7 +383,7 @@ def display_exchange_balances(
         External axes (2 axes are expected in the list), by default None
     """
 
-    df_balance = get_exchange_balances(symbol, exchange, since, until)
+    df_balance = get_exchange_balances(symbol, exchange, start_date, end_date)
 
     if df_balance.empty:
         return
@@ -428,8 +430,8 @@ def display_exchange_balances(
 @check_api_key(["API_GLASSNODE_KEY"])
 def display_hashrate(
     symbol: str,
-    since: int = int((datetime.now() - timedelta(days=365)).timestamp()),
-    until: int = int(datetime.now().timestamp()),
+    start_date: int = int((datetime.now() - timedelta(days=365)).timestamp()),
+    end_date: int = int(datetime.now().timestamp()),
     interval: str = "24h",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -441,9 +443,9 @@ def display_hashrate(
     ----------
     symbol : str
         Blockchain to check mean hashrate (BTC or ETH)
-    since : int
+    start_date : int
         Initial date timestamp (e.g., 1_614_556_800)
-    until : int
+    end_date : int
         End date timestamp (e.g., 1_614_556_800)
     interval : str
         Interval frequency (possible values are: 24, 1w, 1month)
@@ -453,7 +455,7 @@ def display_hashrate(
         External axes (2 axes are expected in the list), by default None
     """
 
-    df = get_hashrate(symbol, interval, since, until)
+    df = get_hashrate(symbol, interval, start_date, end_date)
 
     if df.empty:
         return

@@ -87,7 +87,7 @@ def display_coins(
 
 @log_start_end(log=logger)
 def display_gainers(
-    period: str = "1h", top: int = 20, sortby: str = "Market Cap Rank", export: str = ""
+    period: str = "1h", top: int = 20, sortby: str = "market_cap_rank", export: str = ""
 ) -> None:
     """Shows Largest Gainers - coins which gain the most in given period. [Source: CoinGecko]
 
@@ -110,9 +110,9 @@ def display_gainers(
     if not df.empty:
         if sortby in COINS_COLUMNS:
             df = df[
-                (df["Volume [$]"].notna()) & (df["Market Cap"].notna())
+                (df["total_volume"].notna()) & (df["market_cap"].notna())
             ].sort_values(by=sortby, ascending=True)
-        for col in ["Volume [$]", "Market Cap"]:
+        for col in ["total_volume", "market_cap"]:
             if col in df.columns:
                 df[col] = df[col].apply(lambda x: lambda_very_long_number_formatter(x))
         print_rich_table(

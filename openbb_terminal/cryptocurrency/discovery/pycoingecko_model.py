@@ -169,8 +169,8 @@ GAINERS_LOSERS_COLUMNS = [
     "Symbol",
     "Name",
     "Price [$]",
-    "market_cap Cap",
-    "market_cap Cap Rank",
+    "market_cap",
+    "market_cap_rank",
     "total_volume",
 ]
 
@@ -229,7 +229,7 @@ def get_gainers_or_losers(
         inplace=False,
     )
     if sortby in COINS_COLUMNS:
-        df = df[(df["total_volume"].notna()) & (df["market_cap Cap"].notna())]
+        df = df[(df["total_volume"].notna()) & (df["market_cap"].notna())]
         df = df.sort_values(by=sortby, ascending=True)
     return sorted_df
 

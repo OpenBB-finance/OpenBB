@@ -210,7 +210,7 @@ class DefiController(BaseController):
             prog="ayr",
             description="""
                 Displays the 30-day history of the Anchor Yield Reserve.
-                An increasing yield reserve indicates that the return on collateral staked by borrowers in Anchor
+                An increasing yield reserve indicates the return on collateral by borrowers in Anchor
                 is greater than the yield paid to depositors. A decreasing yield reserve means yield paid
                 to depositors is outpacing the staking returns of borrower's collateral.
                 TLDR: Shows the address that contains UST that is paid on anchor interest earn.

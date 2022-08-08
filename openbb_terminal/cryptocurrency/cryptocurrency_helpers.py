@@ -288,15 +288,16 @@ def get_coinpaprika_id(symbol: str):
 
 
 def load(
-    symbol_search: str,
+    symbol: str,
     vs: str = "usd",
     days: int = 365,
 ):
-    """Load crypto currency to perform analysis on CoinGecko is used as source for price and YahooFinance for volume.
+    """Load crypto currency to perform analysis on CoinGecko is used as source for price and
+    YahooFinance for volume.
 
     Parameters
     ----------
-    symbol_search: str
+    symbol: str
         Coin to get
     vs: str
         Quote Currency (usd or eur), by default usd
@@ -308,7 +309,7 @@ def load(
     pd.DataFrame
         Dataframe consisting of price and volume data
     """
-    coingecko_id = get_coingecko_id(symbol_search)
+    coingecko_id = get_coingecko_id(symbol)
     if not coingecko_id:
         return pd.DataFrame()
 
@@ -316,7 +317,7 @@ def load(
 
     start_date = datetime.now() - timedelta(days=days)
     df = yf.download(
-        f"{symbol_search}-{vs}",
+        f"{symbol}-{vs}",
         end=datetime.now(),
         start=start_date,
         progress=False,
@@ -328,7 +329,7 @@ def load(
     df.index.name = "date"
     if not df.empty:
         console.print(
-            f"\nLoading Daily {symbol_search.upper()} crypto "
+            f"\nLoading Daily {symbol.upper()} crypto "
             f"with starting period {start_date.strftime('%Y-%m-%d')} for analysis.",
         )
     return df
@@ -757,13 +758,17 @@ FIND_KEYS = ["id", "symbol", "name"]
 
 
 def find(
-    coin: str, source: str = "cg", key: str = "symbol", top: int = 10, export: str = ""
+    search_term: str,
+    source: str = "cg",
+    key: str = "symbol",
+    limit: int = 10,
+    export: str = "",
 ) -> None:
     """Find similar coin by coin name,symbol or id.
 
-    If you don't remember exact name or id of the Coin at CoinGecko CoinPaprika, Binance or Coinbase
-    you can use this command to display coins with similar name, symbol or id to your search query.
-    Example of usage: coin name is something like "polka". So I can try: find -c polka -k name -t 25
+    If you don't know exact name or id of the Coin at CoinGecko CoinPaprika, Binance or Coinbase
+    you use this command to display coins with similar name, symbol or id to your search query.
+    Example: coin name is something like "polka". So I can try: find -c polka -k name -t 25
     It will search for coin that has similar name to polka and display top 25 matches.
 
         -c, --coin stands for coin - you provide here your search query
@@ -772,14 +777,14 @@ def find(
 
     Parameters
     ----------
-    top: int
-        Number of records to display
-    coin: str
+    search_term: str
         Cryptocurrency
-    key: str
-        Searching key (symbol, id, name)
     source: str
         Data source of coins.  CoinGecko (cg) or CoinPaprika (cp) or Binance (bin), Coinbase (cb)
+    key: str
+        Searching key (symbol, id, name)
+    limit: int
+        Number of records to display
     export : str
         Export dataframe data to csv,json,xlsx file
     """
@@ -788,8 +793,8 @@ def find(
         coins_df = get_coin_list()
         coins_list = coins_df[key].to_list()
         if key in ["symbol", "id"]:
-            coin = coin.lower()
-        sim = difflib.get_close_matches(coin, coins_list, top)
+            coin = search_term.lower()
+        sim = difflib.get_close_matches(coin, coins_list, limit)
         df = pd.Series(sim).to_frame().reset_index()
         df.columns = ["index", key]
         coins_df.drop("index", axis=1, inplace=True)
@@ -803,7 +808,7 @@ def find(
         func_key = keys[key]
         coin = getattr(coin, str(func_key))()
 
-        sim = difflib.get_close_matches(coin, coins_list, top)
+        sim = difflib.get_close_matches(coin, coins_list, limit)
         df = pd.Series(sim).to_frame().reset_index()
         df.columns = ["index", key]
         df = df.merge(coins_df, on=key)
@@ -821,7 +826,7 @@ def find(
         )
         coins_list = coins[key].to_list()
 
-        sim = difflib.get_close_matches(coin, coins_list, top)
+        sim = difflib.get_close_matches(coin, coins_list, limit)
         df = pd.Series(sim).to_frame().reset_index()
         df.columns = ["index", key]
         df = df.merge(coins, on=key)
@@ -837,7 +842,7 @@ def find(
         )
         coins_list = coins[key].to_list()
 
-        sim = difflib.get_close_matches(coin, coins_list, top)
+        sim = difflib.get_close_matches(coin, coins_list, limit)
         df = pd.Series(sim).to_frame().reset_index()
         df.columns = ["index", key]
         df = df.merge(coins, on=key)
@@ -1062,7 +1067,7 @@ def load_yf_data(symbol: str, currency: str, interval: str, days: int):
 
 
 def display_all_coins(
-    source: str, coin: str, top: int, skip: int, show_all: bool, export: str
+    source: str, symbol: str, limit: int, skip: int, show_all: bool, export: str
 ) -> None:
     """Find similar coin by coin name,symbol or id.
     If you don't remember exact name or id of the Coin at CoinGecko, CoinPaprika, Coinbase, Binance
@@ -1073,9 +1078,9 @@ def display_all_coins(
         -t, --top it displays top N number of records.
     Parameters
     ----------
-    top: int
+    limit: int
         Number of records to display
-    coin: str
+    symbol: str
         Cryptocurrency
     source: str
         Data source of coins.  CoinGecko (cg) or CoinPaprika (cp) or Binance (bin), Coinbase (cb)
@@ -1105,7 +1110,7 @@ def display_all_coins(
     elif not source or source not in sources:
         df = prepare_all_coins_df()
         cg_coins_list = df["CoinGecko"].to_list()
-        sim = difflib.get_close_matches(coin.lower(), cg_coins_list, limit, cutoff)
+        sim = difflib.get_close_matches(symbol.lower(), cg_coins_list, limit, cutoff)
         df_matched = pd.Series(sim).to_frame().reset_index()
         df_matched.columns = ["index", "CoinGecko"]
         df = df.merge(df_matched, on="CoinGecko")
@@ -1115,12 +1120,12 @@ def display_all_coins(
 
         if source == "cg":
             coins_df = get_coin_list().drop("index", axis=1)
-            df = _create_closest_match_df(coin.lower(), coins_df, limit, cutoff)
+            df = _create_closest_match_df(symbol.lower(), coins_df, limit, cutoff)
             df = df[["index", "id", "name"]]
 
         elif source == "cp":
             coins_df = get_list_of_coins()
-            df = _create_closest_match_df(coin.lower(), coins_df, limit, cutoff)
+            df = _create_closest_match_df(symbol.lower(), coins_df, limit, cutoff)
             df = df[["index", "id", "name"]]
 
         elif source == "bin":
@@ -1130,7 +1135,7 @@ def display_all_coins(
             coins_df = pd.merge(
                 coins_df_bin, coins_df_gecko[["id", "name"]], how="left", on="id"
             )
-            df = _create_closest_match_df(coin.lower(), coins_df, limit, cutoff)
+            df = _create_closest_match_df(symbol.lower(), coins_df, limit, cutoff)
             df = df[["index", "symbol", "name"]]
             df.columns = ["index", "id", "name"]
 
@@ -1141,7 +1146,7 @@ def display_all_coins(
             coins_df = pd.merge(
                 coins_df_cb, coins_df_gecko[["id", "name"]], how="left", on="id"
             )
-            df = _create_closest_match_df(coin.lower(), coins_df, limit, cutoff)
+            df = _create_closest_match_df(symbol.lower(), coins_df, limit, cutoff)
             df = df[["index", "symbol", "name"]]
             df.columns = ["index", "id", "name"]
 
@@ -1151,7 +1156,7 @@ def display_all_coins(
         console.print("")
 
     try:
-        df = df[skip : skip + top]  # noqa
+        df = df[skip : skip + limit]  # noqa
     except Exception as e:
         logger.exception(str(e))
         console.print(e)

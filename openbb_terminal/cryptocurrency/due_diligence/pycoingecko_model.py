@@ -63,7 +63,7 @@ def format_df(df: pd.DataFrame):
 def get_coin_potential_returns(
     main_coin: str,
     vs: Union[str, None] = None,
-    top: Union[int, None] = None,
+    limit: Union[int, None] = None,
     price: Union[int, None] = None,
 ) -> pd.DataFrame:
     """Fetch data to calculate potential returns of a certain coin. [Source: CoinGecko]
@@ -74,7 +74,7 @@ def get_coin_potential_returns(
         Coin loaded to check potential returns for (e.g., algorand)
     vs          : str | None
         Coin to compare main_coin with (e.g., bitcoin)
-    top         : int | None
+    limit         : int | None
         Number of coins with highest market cap to compare main_coin with (e.g., 5)
     price
         Target price of main_coin to check potential returns (e.g., 5)
@@ -95,7 +95,7 @@ def get_coin_potential_returns(
         "Potential Market Cap ($)",
         "Change (%)",
     ]
-    if top and top > 0:  # user wants to compare with top coins
+    if limit and limit > 0:  # user wants to compare with top coins
         data = client.get_price(
             ids=f"{main_coin}",
             vs_currencies="usd",
@@ -105,7 +105,7 @@ def get_coin_potential_returns(
             include_last_updated_at=False,
         )
         top_coins_data = client.get_coins_markets(
-            vs_currency="usd", per_page=top, order="market_cap_desc"
+            vs_currency="usd", per_page=limit, order="market_cap_desc"
         )
         main_coin_data = data[main_coin]
         diff_arr = []

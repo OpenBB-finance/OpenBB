@@ -359,7 +359,7 @@ class DiscoveryController(BaseController):
             dest="sortby",
             nargs="+",
             help="Sort by given column. Default: Market Cap Rank",
-            default=["Market Cap"],
+            default=["market_cap"],
         )
 
         ns_parser = self.parse_known_args_and_warn(

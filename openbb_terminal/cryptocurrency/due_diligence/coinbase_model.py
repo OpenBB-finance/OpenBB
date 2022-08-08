@@ -73,7 +73,7 @@ def get_order_book(symbol: str) -> Tuple[np.ndarray, np.ndarray, str, dict]:
         dict with raw data
     """
 
-    # TODO: Order with price much higher then current price. E.g current price 200 USD, sell order with 10000 USD
+    # TODO: Order price > current price. E.g current price 200 USD, sell order with 10000 USD
     #  makes chart look very ugly (bad scaling). Think about removing outliers or add log scale ?
 
     product_id = check_validity_of_product(symbol)

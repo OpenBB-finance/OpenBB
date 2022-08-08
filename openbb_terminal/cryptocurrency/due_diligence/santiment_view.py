@@ -25,9 +25,11 @@ logger = logging.getLogger(__name__)
 @check_api_key(["API_SANTIMENT_KEY"])
 def display_github_activity(
     symbol: str,
-    start: str = (datetime.now() - timedelta(days=365)).strftime("%Y-%m-%dT%H:%M:%SZ"),
+    start_date: str = (datetime.now() - timedelta(days=365)).strftime(
+        "%Y-%m-%dT%H:%M:%SZ"
+    ),
     dev_activity: bool = False,
-    end: str = (datetime.now()).strftime("%Y-%m-%dT%H:%M:%SZ"),
+    end_date: str = (datetime.now()).strftime("%Y-%m-%dT%H:%M:%SZ"),
     interval: str = "1d",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -42,9 +44,9 @@ def display_github_activity(
         Crypto symbol to check github activity
     dev_activity: bool
         Whether to filter only for development activity
-    start : int
+    start_date : int
         Initial date like string (e.g., 2021-10-01)
-    end : int
+    end_date : int
         End date like string (e.g., 2021-10-01)
     interval : str
         Interval frequency (some possible values are: 1h, 1d, 1w)
@@ -57,8 +59,8 @@ def display_github_activity(
     df = get_github_activity(
         symbol=symbol,
         dev_activity=dev_activity,
-        start=start,
-        end=end,
+        start_date=start_date,
+        end_date=end_date,
         interval=interval,
     )
 

@@ -28,8 +28,8 @@ def get_github_activity(
     symbol: str,
     dev_activity: bool,
     interval: str,
-    start: str,
-    end: str,
+    start_date: str,
+    end_date: str,
 ) -> pd.DataFrame:
     """Returns  a list of developer activity for a given coin and time interval.
 
@@ -41,9 +41,9 @@ def get_github_activity(
         Crypto symbol to check github activity
     dev_activity: bool
         Whether to filter only for development activity
-    start : int
+    start_date : int
         Initial date like string (e.g., 2021-10-01)
-    end : int
+    end_date : int
         End date like string (e.g., 2021-10-01)
     interval : str
         Interval frequency (e.g., 1d)
@@ -63,8 +63,10 @@ def get_github_activity(
         "Authorization": f"Apikey {cfg.API_SANTIMENT_KEY}",
     }
 
-    # pylint: disable=line-too-long
-    data = f'\n{{ getMetric(metric: "{activity_type}"){{ timeseriesData( slug: "{slug}" from: "{start}" to: "{end}" interval: "{interval}"){{ datetime value }} }} }}'  # noqa: E501
+    data = (
+        f'\n{{ getMetric(metric: "{activity_type}"){{ timeseriesData( slug: "{slug}"'
+        f'from: "{start_date}" to: "{end_date}" interval: "{interval}"){{ datetime value }} }} }}'
+    )
 
     response = requests.post(
         "https://api.santiment.net/graphql", headers=headers, data=data

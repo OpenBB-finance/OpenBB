@@ -29,7 +29,7 @@ def test_get_github_activity(symbol, dev_activity, interval, start, end, recorde
         symbol=symbol,
         dev_activity=dev_activity,
         interval=interval,
-        start=start,
-        end=end,
+        start_date=start,
+        end_date=end,
     )
     recorder.capture(df)

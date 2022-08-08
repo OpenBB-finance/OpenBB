@@ -463,16 +463,16 @@ class CryptoController(CryptoBaseController):
         # TODO: merge find + display_all_coins
         if ns_parser.coin:
             find(
-                coin=ns_parser.coin,
+                search_term=ns_parser.coin,
                 source=ns_parser.source,
                 key=ns_parser.key,
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
             display_all_coins(
-                coin=ns_parser.coin,
+                symbol=ns_parser.coin,
                 source=ns_parser.source,
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 skip=ns_parser.skip,
                 show_all=bool("ALL" in other_args),
                 export=ns_parser.export,

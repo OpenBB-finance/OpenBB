@@ -86,7 +86,7 @@ CURRENCIES = [
 @log_start_end(log=logger)
 def display_twitter(
     symbol: str = "BTC",
-    top: int = 10,
+    limit: int = 10,
     sortby: str = "date",
     ascending: bool = True,
     export: str = "",
@@ -97,7 +97,7 @@ def display_twitter(
     ----------
     symbol: str
         Cryptocurrency symbol (e.g. BTC)
-    top: int
+    limit: int
         Number of records to display
     sortby: str
         Key by which to sort data. Every column name is valid
@@ -119,7 +119,7 @@ def display_twitter(
         return
 
     print_rich_table(
-        df.head(top),
+        df.head(limit),
         headers=list(df.columns),
         show_index=False,
         title="Twitter Timeline",
@@ -136,7 +136,7 @@ def display_twitter(
 @log_start_end(log=logger)
 def display_events(
     symbol: str = "BTC",
-    top: int = 10,
+    limit: int = 10,
     sortby: str = "date",
     ascending: bool = False,
     links: bool = False,
@@ -148,7 +148,7 @@ def display_events(
     ----------
     symbol: str
         Cryptocurrency symbol (e.g. BTC)
-    top: int
+    limit: int
         Number of records to display
     sortby: str
         Key by which to sort data. Every column name is valid
@@ -178,7 +178,7 @@ def display_events(
         df.drop("link", axis=1, inplace=True)
 
     print_rich_table(
-        df.head(top), headers=list(df.columns), show_index=False, title="All Events"
+        df.head(limit), headers=list(df.columns), show_index=False, title="All Events"
     )
 
     export_data(
@@ -192,7 +192,7 @@ def display_events(
 @log_start_end(log=logger)
 def display_exchanges(
     symbol: str = "btc",
-    top: int = 10,
+    limit: int = 10,
     sortby: str = "adjusted_volume_24h_share",
     ascending: bool = True,
     export: str = "",
@@ -203,7 +203,7 @@ def display_exchanges(
     ----------
     symbol: str
         Cryptocurrency symbol (e.g. BTC)
-    top: int
+    limit: int
         Number of records to display
     sortby: str
         Key by which to sort data. Every column name is valid (see for possible values:
@@ -224,7 +224,10 @@ def display_exchanges(
         return
 
     print_rich_table(
-        df.head(top), headers=list(df.columns), show_index=False, title="All Exchanges"
+        df.head(limit),
+        headers=list(df.columns),
+        show_index=False,
+        title="All Exchanges",
     )
 
     export_data(
@@ -237,9 +240,9 @@ def display_exchanges(
 
 @log_start_end(log=logger)
 def display_markets(
-    symbol: str = "BTC",
-    currency: str = "USD",
-    top: int = 20,
+    from_symbol: str = "BTC",
+    to_symbol: str = "USD",
+    limit: int = 20,
     sortby: str = "pct_volume_share",
     ascending: bool = True,
     links: bool = False,
@@ -249,11 +252,11 @@ def display_markets(
 
     Parameters
     ----------
-    symbol: str
+    from_symbol: str
         Cryptocurrency symbol (e.g. BTC)
-    currency: str
+    to_symbol: str
         Quoted currency
-    top: int
+    limit: int
         Number of records to display
     sortby: str
         Key by which to sort data. Every column name is valid (see for possible values:
@@ -267,12 +270,12 @@ def display_markets(
     """
 
     if sortby in ["volume", "price"]:
-        sortby = f"{str(currency).lower()}_{sortby}"
+        sortby = f"{str(to_symbol).lower()}_{sortby}"
 
     # get coinpaprika id using crypto symbol
-    cp_id = cryptocurrency_helpers.get_coinpaprika_id(symbol)
+    cp_id = cryptocurrency_helpers.get_coinpaprika_id(from_symbol)
 
-    df = coinpaprika_model.get_coin_markets_by_id(cp_id, currency, sortby, ascending)
+    df = coinpaprika_model.get_coin_markets_by_id(cp_id, to_symbol, sortby, ascending)
 
     if df.empty:
         console.print("There is no data \n")
@@ -286,7 +289,7 @@ def display_markets(
         df.drop("market_url", axis=1, inplace=True)
 
     print_rich_table(
-        df.head(top), headers=list(df.columns), show_index=False, title="All Markets"
+        df.head(limit), headers=list(df.columns), show_index=False, title="All Markets"
     )
 
     export_data(
@@ -299,26 +302,26 @@ def display_markets(
 
 @log_start_end(log=logger)
 def display_price_supply(
-    symbol: str = "BTC",
-    currency: str = "USD",
+    from_symbol: str = "BTC",
+    to_symbol: str = "USD",
     export: str = "",
 ) -> None:
     """Get ticker information for single coin [Source: CoinPaprika]
 
     Parameters
     ----------
-    symbol: str
+    from_symbol: str
         Cryptocurrency symbol (e.g. BTC)
-    currency: str
+    to_symbol: str
         Quoted currency
     export: str
         Export dataframe data to csv,json,xlsx
 
     """
     # get coinpaprika id using crypto symbol
-    cp_id = cryptocurrency_helpers.get_coinpaprika_id(symbol)
+    cp_id = cryptocurrency_helpers.get_coinpaprika_id(from_symbol)
 
-    df = coinpaprika_model.get_tickers_info_for_coin(cp_id, currency)
+    df = coinpaprika_model.get_tickers_info_for_coin(cp_id, to_symbol)
 
     if df.empty:
         console.print("No data found", "\n")
