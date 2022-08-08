@@ -1091,9 +1091,6 @@ class EconomyController(BaseController):
             if isinstance(ns_parser.country, list):
                 ns_parser.country = " ".join(ns_parser.country)
 
-            if ns_parser.categories:
-                ns_parser.categories = ns_parser.categories.replace("_", " ")
-
             investingcom_model.check_correct_country(
                 ns_parser.country, investingcom_model.CALENDAR_COUNTRIES
             )
