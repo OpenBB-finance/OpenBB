@@ -38,7 +38,7 @@ jobs:
       - run: shopt -s globstar && pyupgrade --py36-plus **/*.py
       - run: safety check
       - run: |
-          pylint terminal.py openbb_terminal bots tests
+          pylint terminal.py openbb_terminal tests
   test:
     name: Base Tests - Ubuntu-latest - Python 3.9
     runs-on: ubuntu-latest
@@ -69,17 +69,17 @@ jobs:
 
       - name: Install dependencies
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-        run: poetry install --no-interaction --no-root -E bots
+        run: poetry install --no-interaction --no-root
 
       - name: Install Package
-        run: poetry install --no-interaction -E bots
+        run: poetry install --no-interaction
 
       - name: Run tests
         env:
           MPLBACKEND: Agg
         run: |
           source $VENV
-          pytest tests/ -m "not bots"
+          pytest tests/
 
       - name: Start Terminal and exit
         run: |
@@ -135,10 +135,10 @@ jobs:
 
       - name: Install dependencies
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-        run: poetry install --no-interaction --no-root -E bots
+        run: poetry install --no-interaction --no-root
 
       - name: Install Package
-        run: poetry install --no-interaction -E bots
+        run: poetry install --no-interaction
 
       - name: List installed packages
         shell: bash -l {0}
@@ -151,7 +151,7 @@ jobs:
           MPLBACKEND: Agg
         run: |
           source $VENV
-          pytest tests/ -m "not bots"
+          pytest tests/
 
       - name: Start Terminal and exit
         run: |
@@ -256,7 +256,7 @@ jobs:
         env:
             MPLBACKEND: Agg
         shell: bash -l {0}
-        run: pytest tests/ -m "not bots and not linux"
+        run: pytest tests/ -m "not linux"
 
       - name: Start Terminal and exit
         shell: bash -l {0}

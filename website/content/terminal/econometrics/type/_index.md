@@ -1,24 +1,25 @@
-```
-usage: type -n {} -f {int,float,str,bool,category,date} [-h]
+```txt
+usage: type -n {} --format {int,float,str,bool,category,date} [-h]
 ```
 
 Show the type of the columns of the dataset and/or change the type of the column
 
-```
+```txt
 optional arguments:
   -n {}, --name {}
                         Provide dataset.column series to change type. (default: None)
-  -f {int,float,str,bool,category,date}, --format {int,float,str,bool,category,date}
+  --format {int,float,str,bool,category,date}
                         Set the format for the dataset.column defined. This can be: date, int, float, str, bool or category (default: None)
   -h, --help            show this help message (default: False)
 ```
 
 Example:
-```
+
+```txt
 2022 Feb 28, 15:53 (✨) /econometrics/ $ load wage_panel -a wp
 
 2022 Feb 28, 15:53 (✨) /econometrics/ $ type
-           wp           
+           wp
 ┏━━━━━━━━━━━━┳━━━━━━━━━┓
 ┃ column     ┃ dtype   ┃
 ┡━━━━━━━━━━━━╇━━━━━━━━━┩
@@ -47,12 +48,13 @@ Example:
 │ occupation │ int64   │
 └────────────┴─────────┘
 ```
-```
-2022 Feb 28, 15:54 (✨) /econometrics/ $ type wp.year -f category
+
+```txt
+2022 Feb 28, 15:54 (✨) /econometrics/ $ type wp.year --format category
 Update 'wp.year' dataset with type 'category'
 
 2022 Feb 28, 15:55 (✨) /econometrics/ $ type
-           wp            
+           wp
 ┏━━━━━━━━━━━━┳━━━━━━━━━━┓
 ┃ column     ┃ dtype    ┃
 ┡━━━━━━━━━━━━╇━━━━━━━━━━┩

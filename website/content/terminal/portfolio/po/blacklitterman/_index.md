@@ -1,5 +1,5 @@
 ```
-usage: blacklitterman [-p PERIOD] [-s START] [-e END] [-lr] [-f {d,w,m}]
+usage: blacklitterman [-p PERIOD] [-s START] [-e END] [-lr] [--freq {d,w,m}]
                       [-mn MAXNAN] [-th THRESHOLD] [-mt METHOD]
                       [-bm BENCHMARK] [-o {MinRisk,Utility,Sharpe,MaxRet}]
                       [-pv P_VIEWS] [-qv Q_VIEWS] [-r RISK_FREE_RATE]
@@ -27,7 +27,7 @@ optional arguments:
                         MM-DD' format (default: )
   -lr, --log-returns    If use logarithmic or arithmetic returns to calculate
                         returns (default: False)
-  -f {d,w,m}, --freq {d,w,m}
+  --freq {d,w,m}
                         Frequency used to calculate returns. Possible values
                         are: 'd': for daily returns 'w': for weekly returns
                         'm': for monthly returns (default: d)
@@ -92,7 +92,7 @@ First we need to build a benchmark portfolio:
 
  [3 Years] Maximal return/risk ratio portfolio using volatility as risk measure
 
-      Weights      
+      Weights
 ┏━━━━━━┳━━━━━━━━━━┓
 ┃      ┃ Value    ┃
 ┡━━━━━━╇━━━━━━━━━━┩
@@ -117,7 +117,7 @@ Then we add our views to the benchmark portfolio:
 
  [3 Years] Black Litterman portfolio
 
-      Weights      
+      Weights
 ┏━━━━━━┳━━━━━━━━━━┓
 ┃      ┃ Value    ┃
 ┡━━━━━━╇━━━━━━━━━━┩

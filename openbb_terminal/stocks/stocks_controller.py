@@ -500,7 +500,6 @@ class StocksController(StockBaseController):
                     num=ns_parser.limit,
                     s_from=ns_parser.n_start_date.strftime("%Y-%m-%d"),
                     show_newest=ns_parser.n_oldest,
-                    articles=",".join(articles),
                 )
 
     @log_start_end(log=logger)
@@ -625,7 +624,9 @@ class StocksController(StockBaseController):
 
         self.queue = self.load_class(
             ca_controller.ComparisonAnalysisController,
-            [self.ticker] if self.ticker else "",
+            [f"{self.ticker}.{self.suffix}" if self.suffix else self.ticker]
+            if self.ticker
+            else "",
             self.queue,
         )
 

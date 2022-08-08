@@ -253,13 +253,6 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [],
             dict(),
         ),
-        (
-            "call_po",
-            [],
-            "po_controller.PortfolioOptimizationController.menu",
-            [],
-            dict(),
-        ),
     ],
 )
 def test_call_func_test(

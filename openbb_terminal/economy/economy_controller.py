@@ -64,7 +64,7 @@ class EconomyController(BaseController):
         "industry",
         "bigmac",
         "ycrv",
-        "ecocal",
+        "events",
     ]
 
     CHOICES_MENUS = ["pred", "qa"]
@@ -182,29 +182,28 @@ class EconomyController(BaseController):
                 c: None for c in econdb_model.COUNTRY_CODES
             }
 
-            self.choices["ycrv"]["-c"] = {c: None for c in investingcom_model.COUNTRIES}
+            self.choices["ycrv"]["-c"] = {
+                c: None for c in investingcom_model.BOND_COUNTRIES
+            }
             self.choices["ycrv"]["--countries"] = {
-                c: None for c in investingcom_model.COUNTRIES
+                c: None for c in investingcom_model.BOND_COUNTRIES
             }
 
-            self.choices["ecocal"]["-c"] = {
-                c: None for c in investingcom_model.COUNTRIES
+            self.choices["events"]["-c"] = {
+                c: None for c in investingcom_model.CALENDAR_COUNTRIES
             }
-            self.choices["ecocal"]["--countries"] = {
-                c: None for c in investingcom_model.COUNTRIES
+            self.choices["events"]["--countries"] = {
+                c: None for c in investingcom_model.CALENDAR_COUNTRIES
             }
 
-            self.choices["ecocal"]["-i"] = {
+            self.choices["events"]["-i"] = {
                 c: None for c in investingcom_model.IMPORTANCES
             }
-            self.choices["ecocal"]["--importances"] = {
+            self.choices["events"]["--importances"] = {
                 c: None for c in investingcom_model.IMPORTANCES
             }
 
-            self.choices["ecocal"]["-cat"] = {
-                c: None for c in investingcom_model.CATEGORIES
-            }
-            self.choices["ecocal"]["--categories"] = {
+            self.choices["events"]["--cat"] = {
                 c: None for c in investingcom_model.CATEGORIES
             }
 
@@ -259,7 +258,7 @@ class EconomyController(BaseController):
         mt.add_cmd("map", "Finviz")
         mt.add_cmd("bigmac", "NASDAQ Datalink")
         mt.add_cmd("ycrv", "Investing.com / FRED")
-        mt.add_cmd("ecocal", "Investing.com")
+        mt.add_cmd("events", "Investing.com")
         mt.add_raw("\n")
         mt.add_cmd("rtps", "Alpha Vantage")
         mt.add_cmd("valuation", "Finviz")
@@ -875,8 +874,7 @@ class EconomyController(BaseController):
             default=False,
         )
         parser.add_argument(
-            "-f",
-            "--frequency",
+            "--freq",
             type=str,
             dest="frequency",
             choices=econdb_model.TREASURIES["frequencies"],
@@ -1021,7 +1019,9 @@ class EconomyController(BaseController):
 
             elif ns_parser.source == "investpy":
 
-                investingcom_model.check_correct_country(ns_parser.country)
+                investingcom_model.check_correct_country(
+                    ns_parser.country, investingcom_model.BOND_COUNTRIES
+                )
 
                 investingcom_view.display_yieldcurve(
                     country=ns_parser.country,
@@ -1030,13 +1030,13 @@ class EconomyController(BaseController):
                 )
 
     @log_start_end(log=logger)
-    def call_ecocal(self, other_args: List[str]):
-        """Process ecocal command"""
+    def call_events(self, other_args: List[str]):
+        """Process events command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="ecocal",
-            description="Economic calendar.",
+            prog="events",
+            description="Economic calendar. If no start or end dates, default is the current day high importance events.",
         )
         parser.add_argument(
             "-c",
@@ -1044,7 +1044,7 @@ class EconomyController(BaseController):
             action="store",
             dest="country",
             nargs="+",
-            default="united states",
+            default="all",
             help="Display calendar for specific country.",
         )
         parser.add_argument(
@@ -1053,16 +1053,13 @@ class EconomyController(BaseController):
             action="store",
             dest="importances",
             choices=investingcom_model.IMPORTANCES,
-            default="all",
             help="Event importance classified as high, medium, low or all.",
         )
         parser.add_argument(
-            "-cat",
-            "--categories",
+            "--cat",
             action="store",
             dest="categories",
             choices=investingcom_model.CATEGORIES,
-            nargs="+",
             default=None,
             help="Event category.",
         )
@@ -1074,7 +1071,6 @@ class EconomyController(BaseController):
             help="The start date of the data (format: YEAR-MONTH-DAY, i.e. 2010-12-31)",
             default=None,
         )
-
         parser.add_argument(
             "-e",
             "--end_date",
@@ -1083,24 +1079,21 @@ class EconomyController(BaseController):
             help="The start date of the data (format: YEAR-MONTH-DAY, i.e. 2010-12-31)",
             default=None,
         )
-
         ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
             raw=True,
-            limit=10,
+            limit=100,
         )
 
         if ns_parser:
-
             if isinstance(ns_parser.country, list):
                 ns_parser.country = " ".join(ns_parser.country)
 
-            if isinstance(ns_parser.categories, list):
-                ns_parser.categories = " ".join(ns_parser.categories)
-
-            investingcom_model.check_correct_country(ns_parser.country)
+            investingcom_model.check_correct_country(
+                ns_parser.country, investingcom_model.CALENDAR_COUNTRIES
+            )
 
             investingcom_view.display_economic_calendar(
                 countries=ns_parser.country,
