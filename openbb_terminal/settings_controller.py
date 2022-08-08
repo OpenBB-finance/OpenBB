@@ -470,15 +470,12 @@ class SettingsController(BaseController):
             description="Select folder where to export data",
         )
         parser.add_argument(
-            "-f",
             "--folder",
             type=str,
             dest="folder",
             help="Folder where to export data. 'default' redirects to OpenBB Terminal 'exports'",
             default="default",
         )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-f")
         ns_parser = parse_simple_args(parser, other_args)
 
         if ns_parser:

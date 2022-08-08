@@ -8,4 +8,3 @@
 6                 Btc Market Cap In Pct     39.437194
 7                 Eth Market Cap In Pct     18.276794
 8             Altcoin Market Cap In Pct     42.286011
-

@@ -5,4 +5,3 @@
 3      Japan 10 Year Government Bond    0.100   0.208       0.000
 4  Australia 10 Year Government Bond    1.000   2.575       0.003
 5      China 10 Year Government Bond    2.890   2.831       0.011
-

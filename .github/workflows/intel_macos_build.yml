@@ -142,6 +142,9 @@ jobs:
           NOTARIZE_APPLE_TEAM_ID: ${{ secrets.NOTARIZE_APPLE_TEAM_ID }}
         run: |
           xcrun notarytool submit OpenBB\ Terminal.dmg --apple-id "$NOTARIZE_APPLE_ID" --password "$NOTARIZE_APPLE_PWD" --team-id "$NOTARIZE_APPLE_TEAM_ID" --wait
+      - name: Staple
+        run: |
+          xcrun stapler staple "OpenBB Terminal.dmg"
       - name: Save Build Artifact DMG
         uses: actions/upload-artifact@v3
         with:

@@ -1,22 +1,22 @@
-```
+```txt
 usage: load [-t TICKER] [-s START] [-e END] [-i {1,5,15,30,60}] [--source {yf,av,iex}] [-p] [-f {Test.csv}] [-m] [-w] [-r {ytd,1y,2y,5y,6m}] [-h]
 ```
 
-Load a symbol to perform analysis using the string above as a template. Optional arguments and their descriptions are listed below. 
+Load a symbol to perform analysis using the string above as a template. Optional arguments and their descriptions are listed below.
 
-The default source is, yFinance (https://pypi.org/project/yfinance/). Alternatively, one may select either AlphaVantage (https://www.alphavantage.co/documentation/) or IEX Cloud (https://iexcloud.io/docs/api/) as the data source for the analysis. Please note that certain analytical features are exclusive to the source. 
+The default source is, yFinance (https://pypi.org/project/yfinance/). Alternatively, one may select either AlphaVantage (https://www.alphavantage.co/documentation/) or IEX Cloud (https://iexcloud.io/docs/api/) as the data source for the analysis. Please note that certain analytical features are exclusive to the source.
 
-To load a symbol from an exchange outside of the NYSE/NASDAQ default, use yFinance as the source and add the corresponding exchange to the end of the symbol. i.e. 'BNS.TO'. 
+To load a symbol from an exchange outside of the NYSE/NASDAQ default, use yFinance as the source and add the corresponding exchange to the end of the symbol. i.e. 'BNS.TO'.
 
-BNS is a dual-listed stock, there are separate options chains and order books for each listing. Opportunities for arbitrage may arise from momentary pricing discrepancies between listings with a dynamic exchange rate as a second order opportunity in ForEx spreads. 
+BNS is a dual-listed stock, there are separate options chains and order books for each listing. Opportunities for arbitrage may arise from momentary pricing discrepancies between listings with a dynamic exchange rate as a second order opportunity in ForEx spreads.
 
 Find the full list of supported exchanges here: https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html
 
-Certain analytical features, such as VWAP, require the ticker to be loaded as intraday using the '-i x' argument. When encountering this error, simply reload the symbol using the interval argument. i.e. 'load -t BNS -s YYYY-MM-DD -i 1 -p' loads one-minute intervals, including Pre/After Market data, using the default source, yFinance. 
+Certain analytical features, such as VWAP, require the ticker to be loaded as intraday using the '-i x' argument. When encountering this error, simply reload the symbol using the interval argument. i.e. 'load -t BNS -s YYYY-MM-DD -i 1 -p' loads one-minute intervals, including Pre/After Market data, using the default source, yFinance.
 
 Certain features, such as the Prediction menu, require the symbol to be loaded as daily and not intraday.
 
-```
+```txt
 optional arguments:
   -t TICKER, --ticker TICKER
                         Stock ticker (default: None)
@@ -38,14 +38,14 @@ optional arguments:
 
 ```
 
-Note that loading monthly and weekly data are limited to yahoo finance, and monthly data has displayed issues where 
+Note that loading monthly and weekly data are limited to yahoo finance, and monthly data has displayed issues where
 older data just downloads as `nan`.
 
 Loading a custom file looks in the folder `custom_imports/stocks` and is currently only designed for csv files.
 
-
 Example:
-```
+
+```txt
 2022 Feb 16, 08:29 (✨) /stocks/ $ load TSLA
 
 Loading Daily TSLA stock with starting period 2019-02-11 for analysis.
