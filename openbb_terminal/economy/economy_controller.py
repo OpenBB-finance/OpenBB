@@ -203,10 +203,7 @@ class EconomyController(BaseController):
                 c: None for c in investingcom_model.IMPORTANCES
             }
 
-            self.choices["ecocal"]["-cat"] = {
-                c: None for c in investingcom_model.CATEGORIES
-            }
-            self.choices["ecocal"]["--categories"] = {
+            self.choices["ecocal"]["--cat"] = {
                 c: None for c in investingcom_model.CATEGORIES
             }
 
@@ -1059,12 +1056,10 @@ class EconomyController(BaseController):
             help="Event importance classified as high, medium, low or all.",
         )
         parser.add_argument(
-            "-cat",
-            "--categories",
+            "--cat",
             action="store",
             dest="categories",
             choices=investingcom_model.CATEGORIES,
-            nargs="+",
             default=None,
             help="Event category.",
         )
@@ -1076,7 +1071,6 @@ class EconomyController(BaseController):
             help="The start date of the data (format: YEAR-MONTH-DAY, i.e. 2010-12-31)",
             default=None,
         )
-
         parser.add_argument(
             "-e",
             "--end_date",
@@ -1085,7 +1079,6 @@ class EconomyController(BaseController):
             help="The start date of the data (format: YEAR-MONTH-DAY, i.e. 2010-12-31)",
             default=None,
         )
-
         ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
@@ -1095,12 +1088,11 @@ class EconomyController(BaseController):
         )
 
         if ns_parser:
-
             if isinstance(ns_parser.country, list):
                 ns_parser.country = " ".join(ns_parser.country)
 
-            if isinstance(ns_parser.categories, list):
-                ns_parser.categories = " ".join(ns_parser.categories)
+            if ns_parser.categories:
+                ns_parser.categories = ns_parser.categories.replace("_", " ")
 
             investingcom_model.check_correct_country(
                 ns_parser.country, investingcom_model.CALENDAR_COUNTRIES
