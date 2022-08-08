@@ -210,6 +210,9 @@ class EconomyController(BaseController):
             self.choices["performance"]["--sortby"] = {
                 c: None for c in self.performance_sort_list
             }
+
+            self.choices["spectrum"]["--g"] = {c: None for c in self.d_GROUPS.keys()}
+
             self.choices["map"]["-p"] = {c: None for c in self.map_period_list}
             self.choices["map"]["--period"] = {c: None for c in self.map_period_list}
             self.choices["map"]["-t"] = {c: None for c in self.map_filter_list}
@@ -1387,6 +1390,7 @@ class EconomyController(BaseController):
             "-g",
             "--group",
             type=str,
+            choices=list(self.d_GROUPS.keys()),
             default="sector",
             nargs="+",
             dest="group",
@@ -1405,10 +1409,6 @@ class EconomyController(BaseController):
                 else ns_parser.group
             )
             finviz_view.display_spectrum(ns_group)
-
-            # # Due to Finviz implementation of Spectrum, we delete the generated spectrum figure
-            # # after saving it and displaying it to the user
-            # os.remove(self.d_GROUPS[group] + ".jpg")
 
     @log_start_end(log=logger)
     def call_pred(self, _):
