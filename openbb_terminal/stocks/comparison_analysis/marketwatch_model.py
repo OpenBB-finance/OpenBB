@@ -195,9 +195,7 @@ def prepare_comparison_financials(
     financials = {}
     for (
         symbol
-    ) in (
-        similar.copy()
-    ):  # We need a copy since we are modifying the original potentially
+    ) in similar:  # We need a copy since we are modifying the original potentially
         results = prepare_df_financials(symbol, statement, quarter)
         if results.empty:
             # If we have an empty result set, don't do further analysis on this symbol and remove it from consideration
