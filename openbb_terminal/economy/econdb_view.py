@@ -144,15 +144,16 @@ def show_treasuries(
     Parameters
     ----------
     instruments: list
-        The type(s) of treasuries, nominal, inflation-adjusted or secondary market.
+        Type(s) of treasuries, nominal, inflation-adjusted or secondary market. 
+        Available options can be accessed through get_treasury_maturities().
     maturities : list
-        The maturities you wish to view.
+        Treasury maturities to display. Available options can be accessed through get_treasury_maturities().
     frequency : str
-        The frequency of the data, this can be daily, weekly, monthly or annually
+        Frequency of the data, this can be daily, weekly, monthly or annually
     start_date : str
-        The starting date, format "YEAR-MONTH-DAY", i.e. 2010-12-31.
+        Starting date, format "YEAR-MONTH-DAY", i.e. 2010-12-31.
     end_date : str
-        The end date, format "YEAR-MONTH-DAY", i.e. 2020-06-05.
+        End date, format "YEAR-MONTH-DAY", i.e. 2020-06-05.
     raw : bool
         Whether to display the raw output.
     external_axes: Optional[List[plt.axes]]
@@ -210,7 +211,7 @@ def show_treasuries(
 
 @log_start_end(log=logger)
 def show_treasury_maturities():
-    """Display treasury maturity options [Source: EconDB]
+    """Get treasury maturity options [Source: EconDB]
 
     Returns
     ----------

@@ -682,15 +682,16 @@ def get_treasuries(
     Parameters
     ----------
     instruments: list
-        The type(s) of treasuries, nominal, inflation-adjusted (long term average) or secondary market.
+        Type(s) of treasuries, nominal, inflation-adjusted (long term average) or secondary market. 
+        Available options can be accessed through get_treasury_maturities().
     maturities : list
-        The maturities you wish to view.
+        Treasury maturities to get. Available options can be accessed through get_treasury_maturities().
     frequency : str
-        The frequency of the data, this can be annually, monthly, weekly or daily.
+        Frequency of the data, this can be annually, monthly, weekly or daily.
     start_date : str
-        The starting date, format "YEAR-MONTH-DAY", i.e. 2010-12-31.
+        Starting date, format "YEAR-MONTH-DAY", i.e. 2010-12-31.
     end_date : str
-        The end date, format "YEAR-MONTH-DAY", i.e. 2020-06-05.
+        End date, format "YEAR-MONTH-DAY", i.e. 2020-06-05.
 
     Returns
     ----------
