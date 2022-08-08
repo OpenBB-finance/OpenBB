@@ -14,9 +14,9 @@ logger = logging.getLogger(__name__)
 COINS_COLUMNS = [
     "Symbol",
     "Name",
-    "Volume [$]",
-    "Market Cap",
-    "Market Cap Rank",
+    "total_volume",
+    "market_cap Cap",
+    "market_cap Cap Rank",
     "7D Change [%]",
     "24H Change [%]",
 ]
@@ -160,9 +160,8 @@ def get_coins(top: int = 250, category: str = "", sortby="Symbol") -> pd.DataFra
             top -= 250
             p += 1
     if sortby in COINS_COLUMNS:
-        df = df[(df["Volume [$]"].notna()) & (df["Market Cap"].notna())].sort_values(
-            by=sortby, ascending=False
-        )
+        df = df[(df["total_volume"].notna()) & (df["market_cap"].notna())]
+        df = df.sort_values(by=sortby.lower(), ascending=False)
     return df.head(top)
 
 
@@ -170,9 +169,9 @@ GAINERS_LOSERS_COLUMNS = [
     "Symbol",
     "Name",
     "Price [$]",
-    "Market Cap",
-    "Market Cap Rank",
-    "Volume [$]",
+    "market_cap Cap",
+    "market_cap Cap Rank",
+    "total_volume",
 ]
 
 
@@ -181,7 +180,7 @@ def get_gainers_or_losers(
     top: int = 20,
     period: str = "1h",
     typ: str = "gainers",
-    sortby: str = "Market Cap Rank",
+    sortby: str = "market_cap",
 ) -> pd.DataFrame:
     """Returns data about top gainers - coins which gain the most in given period and
     top losers - coins that lost the most in given period of time. [Source: CoinGecko]
@@ -230,9 +229,8 @@ def get_gainers_or_losers(
         inplace=False,
     )
     if sortby in COINS_COLUMNS:
-        df = df[(df["Volume [$]"].notna()) & (df["Market Cap"].notna())].sort_values(
-            by=sortby, ascending=True
-        )
+        df = df[(df["total_volume"].notna()) & (df["market_cap Cap"].notna())]
+        df = df.sort_values(by=sortby, ascending=True)
     return sorted_df
 
 
@@ -251,7 +249,7 @@ def get_trending_coins() -> pd.DataFrame:
     client = CoinGeckoAPI()
     data = client.get_search_trending()
     coins = data["coins"]
-    df = pd.DataFrame(columns=["Symbol", "Name", "Market Cap Rank"])
+    df = pd.DataFrame(columns=["Symbol", "Name", "market_cap Cap Rank"])
     for i, coin in enumerate(coins):
         coin = coin["item"]
         df.loc[i] = [coin["id"], coin["name"], coin["market_cap_rank"]]

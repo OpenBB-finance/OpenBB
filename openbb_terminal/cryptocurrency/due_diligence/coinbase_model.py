@@ -33,12 +33,12 @@ def show_available_pairs_for_given_symbol(symbol: str = "ETH") -> Tuple[str, lis
 
 
 @log_start_end(log=logger)
-def get_trading_pair_info(product_id: str) -> pd.DataFrame:
+def get_trading_pair_info(symbol: str) -> pd.DataFrame:
     """Get information about chosen trading pair. [Source: Coinbase]
 
     Parameters
     ----------
-    product_id: str
+    symbol: str
         Trading pair of coins on Coinbase e.g ETH-USDT or UNI-ETH
 
     Returns
@@ -47,7 +47,7 @@ def get_trading_pair_info(product_id: str) -> pd.DataFrame:
         Basic information about given trading pair
     """
 
-    product_id = check_validity_of_product(product_id)
+    product_id = check_validity_of_product(symbol)
     pair = make_coinbase_request(f"/products/{product_id}")
     df = pd.Series(pair).to_frame().reset_index()
     df.columns = ["Metric", "Value"]

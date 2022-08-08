@@ -469,7 +469,7 @@ class DefiController(BaseController):
             "--ascend",
             action="store_true",
             help="Flag to sort in ascending order (highest first)",
-            dest="descend",
+            dest="ascending",
             default=False,
         )
 
@@ -481,7 +481,7 @@ class DefiController(BaseController):
             defipulse_view.display_defipulse(
                 top=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.ascending,
+                ascending=ns_parser.ascending,
                 export=ns_parser.export,
             )
 

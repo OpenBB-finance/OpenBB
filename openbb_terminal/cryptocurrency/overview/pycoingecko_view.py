@@ -563,7 +563,7 @@ def display_products(
         Number of records to display
     sortby: str
         Key by which to sort data
-    descend: bool
+    ascending: bool
         Flag to sort data descending
     export : str
         Export dataframe data to csv,json,xlsx file
@@ -603,7 +603,7 @@ def display_indexes(
         Number of records to display
     sortby: str
         Key by which to sort data
-    descend: bool
+    ascending: bool
         Flag to sort data descending
     export : str
         Export dataframe data to csv,json,xlsx file
@@ -611,8 +611,6 @@ def display_indexes(
 
     df = gecko.get_indexes(sortby=sortby, ascending=ascending)
     if not df.empty:
-        df = df.sort_values(by=sortby, ascending=ascending)
-
         print_rich_table(
             df.head(top),
             headers=list(df.columns),

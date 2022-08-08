@@ -313,19 +313,24 @@ def get_finance_products(sortby: str = "Name", ascending: bool = True) -> pd.Dat
 
 
 @log_start_end(log=logger)
-def get_indexes() -> pd.DataFrame:
+def get_indexes(sortby: str = "Name", ascending: bool = True) -> pd.DataFrame:
     """Get list of crypto indexes from CoinGecko API [Source: CoinGecko]
 
     Returns
     -------
     pandas.DataFrame
         Name, Id, Market, Last, MultiAsset
+    sortby: str
+        Key by which to sort data
+    ascending: bool
+        Flag to sort data descending
     """
 
     client = CoinGeckoAPI()
     df = pd.DataFrame(client.get_indexes(per_page=250))
     df.columns = ["Name", "Id", "Market", "Last", "MultiAsset"]
     create_df_index(df, "Rank")
+    df = df.sort_values(by=sortby, ascending=ascending)
     return df
 
 

@@ -14,4 +14,3 @@
 12     13  United Arab Emirates Dirham    DH  161358.244    fiat
 13     14               Argentine Peso     $  4913217.13    fiat
 14     15            Australian Dollar    A$   58482.226    fiat
-
