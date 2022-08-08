@@ -3,7 +3,6 @@ __docformat__ = "numpy"
 
 import logging
 import os
-import webbrowser
 
 import pandas as pd
 from PIL import Image
@@ -17,23 +16,17 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def map_sp500_view(period: str, map_type: str):
+def display_performance_map(period: str = "1d", filter: str = "sp500"):
     """Opens Finviz map website in a browser. [Source: Finviz]
 
     Parameters
     ----------
     period : str
-        Performance period
-    map_type : str
-        Map filter type
+        Performance period. Available periods are 1d, 1w, 1m, 3m, 6m, 1y.
+    scope : str
+        Map filter. Available map filters are sp500, world, full, etf.
     """
-    # Conversion from period and type, to fit url requirements
-    d_period = {"1d": "", "1w": "w1", "1m": "w4", "3m": "w13", "6m": "w26", "1y": "w52"}
-    d_type = {"sp500": "sec", "world": "geo", "full": "sec_all", "etf": "etf"}
-    # TODO: Try to get this image and output it instead of opening browser
-    url = f"https://finviz.com/map.ashx?t={d_type[map_type]}&st={d_period[period]}"
-    webbrowser.open(url)
-    console.print("")
+    finviz_model.get_performance_map(period, filter)
 
 
 @log_start_end(log=logger)

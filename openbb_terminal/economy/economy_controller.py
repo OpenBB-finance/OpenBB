@@ -421,9 +421,9 @@ class EconomyController(BaseController):
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            finviz_view.map_sp500_view(
+            finviz_view.display_performance_map(
                 period=ns_parser.s_period,
-                map_type=ns_parser.s_type,
+                filter=ns_parser.s_type,
             )
 
     @log_start_end(log=logger)

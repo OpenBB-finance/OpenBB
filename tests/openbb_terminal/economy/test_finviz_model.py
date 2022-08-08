@@ -14,6 +14,19 @@ def vcr_config():
     }
 
 
+@pytest.mark.vcr(record_mode="none")
+def test_get_performance_map(mocker):
+    # MOCK EXPORT_DATA
+    mock_open = mocker.Mock()
+    mocker.patch(
+        target="openbb_terminal.economy.finviz_model.webbrowser.open", new=mock_open
+    )
+
+    finviz_model.get_performance_map(period="1w", filter="sp500")
+
+    mock_open.assert_called_once()
+
+
 @pytest.mark.vcr
 @pytest.mark.parametrize(
     "data_type",

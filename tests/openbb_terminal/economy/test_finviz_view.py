@@ -15,19 +15,6 @@ def vcr_config():
     }
 
 
-@pytest.mark.vcr(record_mode="none")
-def test_map_sp500_view(mocker):
-    # MOCK EXPORT_DATA
-    mock_open = mocker.Mock()
-    mocker.patch(
-        target="openbb_terminal.economy.finviz_view.webbrowser.open", new=mock_open
-    )
-
-    finviz_view.map_sp500_view(period="1w", map_type="sp500")
-
-    mock_open.assert_called_once()
-
-
 @pytest.mark.default_cassette("test_display_performance")
 @pytest.mark.vcr
 @pytest.mark.record_stdout
