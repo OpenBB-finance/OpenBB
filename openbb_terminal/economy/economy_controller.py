@@ -917,7 +917,7 @@ class EconomyController(BaseController):
         )
         if ns_parser:
             if ns_parser.show_maturities:
-                econdb_view.show_treasury_maturities(econdb_model.TREASURIES)
+                econdb_view.show_treasury_maturities()
                 return self.queue
 
             if ns_parser.maturity and ns_parser.type:

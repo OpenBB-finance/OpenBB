@@ -45,4 +45,4 @@ def test_show_treasuries(
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_show_treasury_maturities():
-    econdb_view.show_treasury_maturities(econdb_model.TREASURIES)
+    econdb_view.show_treasury_maturities()

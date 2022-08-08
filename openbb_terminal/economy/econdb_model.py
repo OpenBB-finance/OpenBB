@@ -676,7 +676,7 @@ def get_treasuries(
     frequency: str = "monthly",
     start_date: str = "1900-01-01",
     end_date: str = str(datetime.today().date()),
-) -> Dict[Any, Dict[Any, pd.Series]]:
+) -> pd.DataFrame:
     """Get U.S. Treasury rates [Source: EconDB]
 
     Parameters
@@ -694,7 +694,7 @@ def get_treasuries(
 
     Returns
     ----------
-    treasury_data: dict
+    treasury_data: pd.Dataframe
         Holds data of the selected types and maturities
     """
     treasury_data: Dict[Any, Dict[Any, pd.Series]] = {}
@@ -768,13 +768,8 @@ def get_treasuries(
 
 
 @log_start_end(log=logger)
-def obtain_treasury_maturities(treasuries: Dict) -> pd.DataFrame:
-    """Obtain treasury maturity options [Source: EconDB]
-
-    Parameters
-    ----------
-    treasuries: dict
-        A dictionary containing the options structured {instrument : {maturities: {abbreviation : name}}}
+def get_treasury_maturities() -> pd.DataFrame:
+    """Get treasury maturity options [Source: EconDB]
 
     Returns
     ----------
@@ -784,10 +779,13 @@ def obtain_treasury_maturities(treasuries: Dict) -> pd.DataFrame:
 
     instrument_maturities = {
         instrument: ", ".join(values["maturities"].keys())
-        for instrument, values in treasuries["instruments"].items()
+        for instrument, values in TREASURIES["instruments"].items()
     }
 
     df = pd.DataFrame.from_dict(instrument_maturities, orient="index")
     df.loc["average"] = "Defined by function"
+
+    df.index.name = "Instrument"
+    df.columns = ["Maturities"]
 
     return df

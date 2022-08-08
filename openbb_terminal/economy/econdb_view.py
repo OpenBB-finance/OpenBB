@@ -209,20 +209,15 @@ def show_treasuries(
 
 
 @log_start_end(log=logger)
-def show_treasury_maturities(treasuries: Dict):
-    """Obtain treasury maturity options [Source: EconDB]
-
-    Parameters
-    ----------
-    treasuries: dict
-        A dictionary containing the options structured {instrument : {maturities: {abbreviation : name}}}
+def show_treasury_maturities():
+    """Display treasury maturity options [Source: EconDB]
 
     Returns
     ----------
     A table containing the instruments and maturities.
     """
 
-    instrument_maturities = econdb_model.obtain_treasury_maturities(treasuries)
+    instrument_maturities = econdb_model.get_treasury_maturities()
 
     print_rich_table(
         instrument_maturities,
