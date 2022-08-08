@@ -298,7 +298,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [],
             dict(
                 future_type="Energy",
-                sort_col="ticker",
+                sort_by="ticker",
                 ascending=True,
                 export="csv",
             ),
@@ -315,7 +315,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [],
             dict(
                 future_type="Metals",
-                sort_col="ticker",
+                sort_by="ticker",
                 ascending=True,
                 export="csv",
             ),
@@ -332,7 +332,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [],
             dict(
                 future_type="Meats",
-                sort_col="ticker",
+                sort_by="ticker",
                 ascending=True,
                 export="csv",
             ),
@@ -349,7 +349,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [],
             dict(
                 future_type="Grains",
-                sort_col="ticker",
+                sort_by="ticker",
                 ascending=True,
                 export="csv",
             ),
@@ -366,7 +366,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [],
             dict(
                 future_type="Softs",
-                sort_col="ticker",
+                sort_by="ticker",
                 ascending=True,
                 export="csv",
             ),
@@ -382,8 +382,8 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             "finviz_view.display_valuation",
             [],
             dict(
-                s_group="Sector",
-                sort_col="MarketCap",
+                group="sector",
+                sort_by="MarketCap",
                 ascending=True,
                 export="csv",
             ),
@@ -391,7 +391,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
         (
             "call_performance",
             [
-                "sector",
+                "--g=sector",
                 "--sortby=Name",
                 "-a",
                 "--export=csv",
@@ -399,8 +399,8 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             "finviz_view.display_performance",
             [],
             dict(
-                s_group="Sector",
-                sort_col="Name",
+                group="sector",
+                sort_by="Name",
                 ascending=True,
                 export="csv",
             ),
@@ -408,26 +408,26 @@ def test_call_func_expect_queue(expected_queue, func, queue):
         (
             "call_spectrum",
             [
-                "sector",
+                "--g=sector",
                 "--export=png",
             ],
             "finviz_view.display_spectrum",
             [],
             dict(
-                s_group="Sector",
+                group="sector",
             ),
         ),
         (
             "call_map",
             [
                 "--period=1w",
-                "--type=world",
+                "--filter=world",
             ],
-            "finviz_view.map_sp500_view",
+            "finviz_view.display_performance_map",
             [],
             dict(
                 period="1w",
-                map_type="world",
+                filter="world",
             ),
         ),
         (

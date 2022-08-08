@@ -138,7 +138,7 @@ def test_display_future(mocker, tab):
 
     finviz_view.display_future(
         future_type="Indices",
-        sort_col="ticker",
+        sort_by="ticker",
         ascending=False,
         export="",
     )

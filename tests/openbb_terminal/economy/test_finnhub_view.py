@@ -58,7 +58,7 @@ def test_economy_calendar_events_empty(mocker):
 
     finnhub_view.economy_calendar_events(
         country="MOCK_COUNTRY",
-        num=1,
+        limit=1,
         impact="MOCK_IMPACT",
         export="",
     )
@@ -77,7 +77,7 @@ def test_economy_calendar_events_no_country(mocker):
 
     finnhub_view.economy_calendar_events(
         country="MOCK_COUNTRY",
-        num=1,
+        limit=1,
         impact="MOCK_IMPACT",
         export="",
     )
@@ -96,7 +96,7 @@ def test_economy_calendar_events_no_impact(mocker):
 
     finnhub_view.economy_calendar_events(
         country="AU",
-        num=1,
+        limit=1,
         impact="MOCK_IMPACT",
         export="",
     )
@@ -115,7 +115,7 @@ def test_economy_calendar_events(mocker):
 
     finnhub_view.economy_calendar_events(
         country="AU",
-        num=1,
+        limit=1,
         impact="low",
         export="",
     )
