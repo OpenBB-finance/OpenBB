@@ -127,6 +127,12 @@ def get_performance_data(
         dataframe with performance data
     """
 
+    if group not in GROUPS.keys():
+        console.print(
+            f"[red]Group not found. Check available groups through get_groups().[/red]\n"
+        )
+        return pd.DataFrame()
+
     try:
         group = GROUPS[group]
         df_group = performance.Performance().screener_view(group=group)
@@ -157,14 +163,21 @@ def get_performance_data(
 
 
 @log_start_end(log=logger)
-def get_spectrum_data(group: str):
+def get_spectrum_data(group: str = "sector"):
     """Get group (sectors, industry or country) valuation/performance data. [Source: Finviz]
 
     Parameters
     ----------
     group : str
-       sectors, industry or country
+       Group by category. Available groups can be accessed through get_groups().
     """
+    if group not in GROUPS.keys():
+        console.print(
+            f"[red]Group not found. Check available groups through get_groups().[/red]\n"
+        )
+        return
+
+    group = GROUPS[group]
     spectrum.Spectrum().screener_view(group=group)
 
 

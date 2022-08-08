@@ -110,20 +110,20 @@ def display_performance(
 
 
 @log_start_end(log=logger)
-def display_spectrum(s_group: str, export: str = ""):
+def display_spectrum(group: str = "sector", export: str = ""):
     """Display finviz spectrum in system viewer [Source: Finviz]
 
     Parameters
     ----------
-    s_group: str
-        group between sectors, industry or country
+    group: str
+        Group by category. Available groups can be accessed through get_groups().
     export: str
         Format to export data
     """
-    finviz_model.get_spectrum_data(s_group)
+    finviz_model.get_spectrum_data(group)
     console.print("")
 
-    img = Image.open(s_group + ".jpg")
+    img = Image.open(group + ".jpg")
 
     export_data(
         export,
@@ -132,7 +132,7 @@ def display_spectrum(s_group: str, export: str = ""):
     )
 
     img.show()
-
+    os.remove("Sector.jpg")
 
 @log_start_end(log=logger)
 def display_future(

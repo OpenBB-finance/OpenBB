@@ -1399,16 +1399,16 @@ class EconomyController(BaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
         if ns_parser:
-            group = (
+            ns_group = (
                 " ".join(ns_parser.group)
                 if isinstance(ns_parser.group, list)
                 else ns_parser.group
             )
-            finviz_view.display_spectrum(s_group=self.d_GROUPS[group])
+            finviz_view.display_spectrum(ns_group)
 
-            # Due to Finviz implementation of Spectrum, we delete the generated spectrum figure
-            # after saving it and displaying it to the user
-            os.remove(self.d_GROUPS[group] + ".jpg")
+            # # Due to Finviz implementation of Spectrum, we delete the generated spectrum figure
+            # # after saving it and displaying it to the user
+            # os.remove(self.d_GROUPS[group] + ".jpg")
 
     @log_start_end(log=logger)
     def call_pred(self, _):
