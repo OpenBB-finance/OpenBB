@@ -71,7 +71,7 @@ class EconomyController(BaseController):
 
     wsj_sortby_cols_dict = {c: None for c in ["ticker", "last", "change", "prevClose"]}
     map_period_list = ["1d", "1w", "1m", "3m", "6m", "1y"]
-    map_type_list = ["sp500", "world", "full", "etf"]
+    map_filter_list = ["sp500", "world", "full", "etf"]
     macro_us_interval = [
         "annual",
         "quarter",
@@ -223,9 +223,10 @@ class EconomyController(BaseController):
             self.choices["performance"]["--sortby"] = {
                 c: None for c in self.performance_sort_list
             }
-
             self.choices["map"]["-p"] = {c: None for c in self.map_period_list}
             self.choices["map"]["--period"] = {c: None for c in self.map_period_list}
+            self.choices["map"]["-t"] = {c: None for c in self.map_filter_list}
+            self.choices["map"]["--type"] = {c: None for c in self.map_filter_list}
 
             self.choices["support"] = self.SUPPORT_CHOICES
             self.choices["about"] = self.ABOUT_CHOICES
@@ -416,7 +417,7 @@ class EconomyController(BaseController):
             dest="s_type",
             type=str,
             default="sp500",
-            choices=self.map_type_list,
+            choices=self.map_filter_list,
             help="Map filter type.",
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
