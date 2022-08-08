@@ -1262,17 +1262,26 @@ class FundamentalAnalysisController(StockBaseController):
             default=6,
             help="Number of similar companies to generate ratios for.",
         )
+        parser.add_argument(
+            "-g",
+            "--growth",
+            action="store_true",
+            dest="growth",
+            default=False,
+            help="Whether to replace a linear regression estimate with a growth estimate.",
+        )
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
         if ns_parser:
             dcf = dcf_view.CreateExcelFA(
-                self.ticker,
-                ns_parser.audit,
-                ns_parser.ratios,
-                ns_parser.prediction,
-                ns_parser.similar,
+                ticker=self.ticker,
+                audit=ns_parser.audit,
+                ratios=ns_parser.ratios,
+                len_pred=ns_parser.prediction,
+                max_similars=ns_parser.similar,
+                growth=ns_parser.growth,
             )
             dcf.create_workbook()
 

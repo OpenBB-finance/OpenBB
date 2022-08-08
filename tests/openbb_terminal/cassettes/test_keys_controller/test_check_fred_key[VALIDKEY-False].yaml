@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - python-requests/2.27.1
+      - python-requests/2.28.1
     method: GET
     uri: https://api.stlouisfed.org/fred/series?series_id=GNPCA&api_key=VALIDKEY
   response:
@@ -32,10 +32,7 @@ interactions:
       Content-Type:
       - text/xml; charset=UTF-8
       Date:
-      - Sat, 09 Apr 2022 13:01:28 GMT
-      Set-Cookie:
-      - cookiesession1=678A3E1FC28A68B6BA595AD7027EAAE5;Expires=Sun, 09 Apr 2023 13:01:20
-        GMT;Path=/;HttpOnly
+      - Mon, 11 Jul 2022 13:59:42 GMT
     status:
       code: 400
       message: Bad Request
