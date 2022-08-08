@@ -15,7 +15,7 @@ from .wsj_view import display_currencies as currencies
 from .finviz_view import display_future as future
 
 # The one below is different because map is a python reserved word
-from .finviz_view import map_sp500_view as map_sp500
+from .finviz_view import display_performance_map as map_sp500
 from .finviz_view import display_valuation as valuation
 from .finviz_view import display_performance as performance
 from .finviz_view import display_spectrum as spectrum
