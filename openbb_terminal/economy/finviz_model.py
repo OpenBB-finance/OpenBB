@@ -182,12 +182,23 @@ def get_spectrum_data(group: str = "sector"):
 
 
 @log_start_end(log=logger)
-def get_futures() -> dict:
+def get_futures(    future_type: str = "Indices",
+    sort_by: str = "ticker",
+    ascending: bool = False) -> pd.DataFrame:
     """Get futures data. [Source: Finviz]
 
     Parameters
     ----------
-    futures : dict
+    future_type : str
+        From the following: Indices, Energy, Metals, Meats, Grains, Softs, Bonds, Currencies
+    sort_by : str
+        Column to sort by
+    ascending : bool
+        Flag to sort in ascending order
+
+    Returns
+    ----------
+    pd.Dataframe
        Indices, Energy, Metals, Meats, Grains, Softs, Bonds, Currencies
     """
     source = requests.get(
@@ -216,4 +227,10 @@ def get_futures() -> dict:
         for ticker in future["contracts"]:
             d_futures[future["label"]].append(titles[ticker["ticker"]])
 
-    return d_futures
+    df = pd.DataFrame(d_futures[future_type])
+    df = df.set_index("label")
+    df = df.sort_values(by=sort_by, ascending=ascending)
+
+    df = df[["prevClose", "last", "change"]].fillna("")
+
+    return df

@@ -346,7 +346,7 @@ class EconomyController(BaseController):
         parser.add_argument(
             "-s",
             "--sortby",
-            dest="sort_col",
+            dest="sort_by",
             type=str,
             choices=self.wsj_sortby_cols_dict.keys(),
             default="ticker",
@@ -369,7 +369,7 @@ class EconomyController(BaseController):
         if ns_parser and ns_parser.commodity:
             finviz_view.display_future(
                 future_type=ns_parser.commodity.capitalize(),
-                sort_col=ns_parser.sort_col,
+                sort_by=ns_parser.sort_by,
                 ascending=ns_parser.ascend,
                 export=ns_parser.export,
             )

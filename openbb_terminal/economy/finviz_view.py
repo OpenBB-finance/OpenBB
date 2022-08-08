@@ -138,7 +138,7 @@ def display_spectrum(group: str = "sector", export: str = ""):
 @log_start_end(log=logger)
 def display_future(
     future_type: str = "Indices",
-    sort_col: str = "ticker",
+    sort_by: str = "ticker",
     ascending: bool = False,
     export: str = "",
 ):
@@ -148,23 +148,20 @@ def display_future(
     ----------
     future_type : str
         From the following: Indices, Energy, Metals, Meats, Grains, Softs, Bonds, Currencies
-    sort_col : str
+    sort_by : str
         Column to sort by
     ascending : bool
         Flag to sort in ascending order
     export : str
         Export data to csv,json,xlsx or png,jpg,pdf,svg file
     """
-    d_futures = finviz_model.get_futures()
+    df = finviz_model.get_futures(future_type, sort_by, ascending)
 
-    df = pd.DataFrame(d_futures[future_type])
-    df = df.set_index("label")
-    df = df.sort_values(by=sort_col, ascending=ascending)
     print_rich_table(
-        df[["prevClose", "last", "change"]].fillna(""),
+        df,
         show_index=True,
         headers=["prevClose", "last", "change (%)"],
-        title="Future Table [Source: FinViz]",
+        title="Future Table [Source: FinViz]"
     )
 
     export_data(
