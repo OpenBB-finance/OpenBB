@@ -103,9 +103,9 @@ def show_macro_data(
             ncol=2,
         )
 
-    if raw:
+    df_rounded.columns = ["_".join(column) for column in df_rounded.columns]
 
-        df_rounded.columns = ["_".join(column) for column in df_rounded.columns]
+    if raw:
         
         print_rich_table(
             df_rounded.fillna("-").iloc[-10:],
@@ -175,7 +175,8 @@ def show_treasuries(
         ax = external_axes[0]
 
     for col in treasury_data.columns:
-        ax.plot(treasury_data[col], label=f"{col}")
+        col_label = col.split("_")
+        ax.plot(treasury_data[col], label=f"{col_label[0]} [{col_label[1]}]")
 
     ax.set_title("U.S. Treasuries")
     ax.legend(
