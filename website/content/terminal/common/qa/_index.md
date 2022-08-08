@@ -25,11 +25,11 @@ Enter the menu, through one of the asset classes listed above, by entering `qa` 
 <img width="358" alt="Picking a new target column" src="https://user-images.githubusercontent.com/85772166/183483572-6127eaff-69d2-4d67-8e60-8d7756a043b0.png">
 
 The menu is divided into five categories of functions:
-    -   Statistics
-    -   Plots
-    -   Rolling Metrics
-    -   Risk
-    -   Other
+  - Statistics
+  - Plots
+  - Rolling Metrics
+  - Risk
+  - Other
 
 A summary of exportable statistics is displayed with the command, `summary`. The example here shows $APPL.
 
