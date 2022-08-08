@@ -570,6 +570,28 @@ def get_macro_data(
 
     return df, units
 
+@log_start_end(log=logger)
+def get_macro_parameters() -> Dict[str, Dict[str, str]]:
+    """This function returns the available macro parameters with detail.
+
+    Returns
+    ----------
+    Dict[str, Dict[str, str]]
+        A dictionary with the available macro parameters.
+    """
+    return PARAMETERS
+
+@log_start_end(log=logger)
+def get_macro_countries() -> Dict[str, str]:
+    """This function returns the available countries and respective currencies.
+
+    Returns
+    ----------
+    Dict[str, str]
+        A dictionary with the available countries and respective currencies.
+    """
+    return COUNTRY_CURRENCIES
+
 
 @log_start_end(log=logger)
 def get_aggregated_macro_data(
@@ -584,9 +606,9 @@ def get_aggregated_macro_data(
     Parameters
     ----------
     parameters: list
-        The type of data you wish to download.
+        The type of data you wish to download. Available parameters can be accessed through get_macro_parameters().
     countries : list
-        The selected country or countries.
+        The selected country or countries. Available countries can be accessed through get_macro_countries().
     start_date : str
         The starting date, format "YEAR-MONTH-DAY", i.e. 2010-12-31.
     end_date : str

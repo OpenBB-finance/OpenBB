@@ -39,9 +39,9 @@ def show_macro_data(
     Parameters
     ----------
     parameters: list
-        The type of data you wish to display
+        The type of data you wish to display. Available parameters can be accessed through get_macro_parameters().
     countries : list
-        The selected country or countries
+        The selected country or countries. Available countries can be accessed through get_macro_countries().
     start_date : str
         The starting date, format "YEAR-MONTH-DAY", i.e. 2010-12-31.
     end_date : str
