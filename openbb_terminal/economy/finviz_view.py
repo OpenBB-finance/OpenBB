@@ -123,6 +123,7 @@ def display_spectrum(group: str = "sector", export: str = ""):
     finviz_model.get_spectrum_data(group)
     console.print("")
 
+    group = finviz_model.GROUPS[group]
     img = Image.open(group + ".jpg")
 
     export_data(
@@ -132,7 +133,7 @@ def display_spectrum(group: str = "sector", export: str = ""):
     )
 
     img.show()
-    os.remove("Sector.jpg")
+    os.remove(group + ".jpg")
 
 @log_start_end(log=logger)
 def display_future(
