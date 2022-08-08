@@ -30,100 +30,32 @@ def display_performance_map(period: str = "1d", filter: str = "sp500"):
 
 
 @log_start_end(log=logger)
-def display_performance(
-    s_group: str,
-    sort_col: str = "Name",
-    ascending: bool = True,
-    export: str = "",
-):
-    """View group (sectors, industry or country) performance data. [Source: Finviz]
-
-    Parameters
-    ----------
-    s_group : str
-        group between sectors, industry or country
-    sort_col : str
-        Column to sort by
-    ascending : bool
-        Flag to sort in ascending order
-    export : str
-        Export data to csv,json,xlsx or png,jpg,pdf,svg file
-    """
-    df_group = finviz_model.get_valuation_performance_data(s_group, "performance")
-
-    if df_group.empty:
-        return
-
-    df_group = df_group.rename(
-        columns={
-            "Perf Week": "Week",
-            "Perf Month": "Month",
-            "Perf Quart": "3Month",
-            "Perf Half": "6Month",
-            "Perf Year": "1Year",
-            "Perf YTD": "YTD",
-            "Avg Volume": "AvgVolume",
-            "Rel Volume": "RelVolume",
-        }
-    )
-    df_group["Week"] = df_group["Week"].apply(lambda x: float(x.strip("%")) / 100)
-    df_group = df_group.sort_values(by=sort_col, ascending=ascending)
-    df_group["Volume"] = df_group["Volume"] / 1_000_000
-    df_group["AvgVolume"] = df_group["AvgVolume"] / 1_000_000
-    df_group = df_group.rename(
-        columns={"Volume": "Volume [1M]", "AvgVolume": "AvgVolume [1M]"}
-    )
-    print_rich_table(
-        df_group.fillna(""),
-        show_index=False,
-        headers=df_group.columns,
-        title="Group Performance Data",
-    )
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "performance",
-        df_group,
-    )
-
-
-@log_start_end(log=logger)
 def display_valuation(
-    s_group: str,
-    sort_col: str = "Name",
+    group: str = "sector",
+    sort_by: str = "Name",
     ascending: bool = True,
     export: str = "",
 ):
-    """View group (sectors, industry or country) valuation data. [Source: Finviz]
+    """Display group (sectors, industry or country) valuation data. [Source: Finviz]
 
     Parameters
     ----------
-    s_group : str
-        group between sectors, industry or country
-    sort_col : str
+    group : str
+        Group by category. Available groups can be accessed through get_groups().
+    sort_by : str
         Column to sort by
     ascending : bool
         Flag to sort in ascending order
     export : str
         Export data to csv,json,xlsx or png,jpg,pdf,svg file
     """
-    df_group = finviz_model.get_valuation_performance_data(s_group, "valuation")
+    df_group = finviz_model.get_valuation_data(group, sort_by, ascending)
 
     if df_group.empty:
         return
 
-    df_group["Market Cap"] = df_group["Market Cap"].apply(
-        lambda x: float(x.strip("B")) if x.endswith("B") else float(x.strip("M")) / 1000
-    )
-
-    df_group.columns = [col.replace(" ", "") for col in df_group.columns]
-    df_group = df_group.sort_values(by=sort_col, ascending=ascending)
-    df_group["Volume"] = df_group["Volume"] / 1_000_000
-    df_group = df_group.rename(columns={"Volume": "Volume [1M]"})
-
     print_rich_table(
-        df_group.fillna(""),
+        df_group,
         show_index=False,
         headers=list(df_group.columns),
         title="Group Valuation Data",
@@ -133,6 +65,46 @@ def display_valuation(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "valuation",
+        df_group,
+    )
+
+
+@log_start_end(log=logger)
+def display_performance(
+    group: str = "sector",
+    sort_by: str = "Name",
+    ascending: bool = True,
+    export: str = "",
+):
+    """View group (sectors, industry or country) performance data. [Source: Finviz]
+
+    Parameters
+    ----------
+    group : str
+        Group by category. Available groups can be accessed through get_groups().
+    sort_by : str
+        Column to sort by
+    ascending : bool
+        Flag to sort in ascending order
+    export : str
+        Export data to csv,json,xlsx or png,jpg,pdf,svg file
+    """
+    df_group = finviz_model.get_performance_data(group, sort_by, ascending)
+
+    if df_group.empty:
+        return
+
+    print_rich_table(
+        df_group,
+        show_index=False,
+        headers=df_group.columns,
+        title="Group Performance Data",
+    )
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "performance",
         df_group,
     )
 

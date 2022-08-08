@@ -15,6 +15,24 @@ from openbb_terminal.helper_funcs import get_user_agent
 
 logger = logging.getLogger(__name__)
 
+GROUPS = {
+    "sector": "Sector",
+    "industry": "Industry",
+    "basic_materials": "Industry (Basic Materials)",
+    "communication_services": "Industry (Communication Services)",
+    "consumer_cyclical": "Industry (Consumer Cyclical)",
+    "consumer_defensive": "Industry (Consumer Defensive)",
+    "energy": "Industry (Energy)",
+    "financial": "Industry (Financial)",
+    "healthcare": "Industry (Healthcare)",
+    "industrials": "Industry (Industrials)",
+    "real_Estate": "Industry (Real Estate)",
+    "technology": "Industry (Technology)",
+    "utilities": "Industry (Utilities)",
+    "country": "Country (U.S. listed stocks only)",
+    "capitalization": "Capitalization",
+}
+
 
 @log_start_end(log=logger)
 def get_performance_map(period: str = "1d", filter: str = "sp500"):
@@ -37,15 +55,25 @@ def get_performance_map(period: str = "1d", filter: str = "sp500"):
 
 
 @log_start_end(log=logger)
-def get_valuation_performance_data(group: str, data_type: str) -> pd.DataFrame:
-    """Get group (sectors, industry or country) valuation/performance data. [Source: Finviz]
+def get_groups() -> list:
+    """Get group available"""
+    return list(GROUPS.keys())
+
+
+@log_start_end(log=logger)
+def get_valuation_data(
+    group: str = "sector", sort_by: str = "Name", ascending: bool = True
+) -> pd.DataFrame:
+    """Get group (sectors, industry or country) valuation data. [Source: Finviz]
 
     Parameters
     ----------
     group : str
-       sectors, industry or country
-    data_type : str
-       valuation or performance
+       Group by category. Available groups can be accessed through get_groups().
+    sort_by : str
+        Column to sort by
+    ascending : bool
+        Flag to sort in ascending order
 
     Returns
     ----------
@@ -53,12 +81,76 @@ def get_valuation_performance_data(group: str, data_type: str) -> pd.DataFrame:
         dataframe with valuation/performance data
     """
 
-    try:
-        if data_type == "valuation":
-            return valuation.Valuation().screener_view(group=group)
-        if data_type == "performance":
-            return performance.Performance().screener_view(group=group)
+    if group not in GROUPS.keys():
+        console.print(
+            f"[red]Group not found. Check available groups through get_groups().[/red]\n"
+        )
         return pd.DataFrame()
+
+    try:
+        group = GROUPS[group]
+        df_group = valuation.Valuation().screener_view(group=group)
+        df_group["Market Cap"] = df_group["Market Cap"].apply(
+            lambda x: float(x.strip("B"))
+            if x.endswith("B")
+            else float(x.strip("M")) / 1000
+        )
+        df_group.columns = [col.replace(" ", "") for col in df_group.columns]
+        df_group = df_group.sort_values(by=sort_by, ascending=ascending)
+        df_group["Volume"] = df_group["Volume"] / 1_000_000
+        df_group = df_group.rename(columns={"Volume": "Volume [1M]"})
+        df_group.fillna("", inplace=True)
+        return df_group
+    except IndexError:
+        console.print("Data not found.\n")
+        return pd.DataFrame()
+
+
+@log_start_end(log=logger)
+def get_performance_data(
+    group: str = "sector", sort_by: str = "Name", ascending: bool = True
+) -> pd.DataFrame:
+    """Get group (sectors, industry or country) performance data. [Source: Finviz]
+
+    Parameters
+    ----------
+    group : str
+       Group by category. Available groups can be accessed through get_groups().
+    sort_by : str
+        Column to sort by
+    ascending : bool
+        Flag to sort in ascending order
+
+    Returns
+    ----------
+    pd.DataFrame
+        dataframe with performance data
+    """
+
+    try:
+        group = GROUPS[group]
+        df_group = performance.Performance().screener_view(group=group)
+        df_group = df_group.rename(
+            columns={
+                "Perf Week": "Week",
+                "Perf Month": "Month",
+                "Perf Quart": "3Month",
+                "Perf Half": "6Month",
+                "Perf Year": "1Year",
+                "Perf YTD": "YTD",
+                "Avg Volume": "AvgVolume",
+                "Rel Volume": "RelVolume",
+            }
+        )
+        df_group["Week"] = df_group["Week"].apply(lambda x: float(x.strip("%")) / 100)
+        df_group = df_group.sort_values(by=sort_by, ascending=ascending)
+        df_group["Volume"] = df_group["Volume"] / 1_000_000
+        df_group["AvgVolume"] = df_group["AvgVolume"] / 1_000_000
+        df_group = df_group.rename(
+            columns={"Volume": "Volume [1M]", "AvgVolume": "AvgVolume [1M]"}
+        )
+        df_group.fillna("", inplace=True)
+        return df_group
     except IndexError:
         console.print("Data not found.\n")
         return pd.DataFrame()

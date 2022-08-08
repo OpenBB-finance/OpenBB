@@ -17,6 +17,7 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.economy import (
     alphavantage_view,
     economy_helpers,
+    finviz_model,
     finviz_view,
     nasdaq_model,
     nasdaq_view,
@@ -127,23 +128,7 @@ class EconomyController(BaseController):
         "Change",
         "Volume",
     ]
-    d_GROUPS = {
-        "sector": "Sector",
-        "industry": "Industry",
-        "basic_materials": "Industry (Basic Materials)",
-        "communication_services": "Industry (Communication Services)",
-        "consumer_cyclical": "Industry (Consumer Cyclical)",
-        "consumer_defensive": "Industry (Consumer Defensive)",
-        "energy": "Industry (Energy)",
-        "financial": "Industry (Financial)",
-        "healthcare": "Industry (Healthcare)",
-        "industrials": "Industry (Industrials)",
-        "real_Estate": "Industry (Real Estate)",
-        "technology": "Industry (Technology)",
-        "utilities": "Industry (Utilities)",
-        "country": "Country (U.S. listed stocks only)",
-        "capitalization": "Capitalization",
-    }
+    d_GROUPS = finviz_model.GROUPS
     PATH = "/economy/"
 
     stored_datasets = ""
@@ -210,9 +195,7 @@ class EconomyController(BaseController):
                 c: None for c in investingcom_model.CATEGORIES
             }
 
-            self.choices["valuation"]["--g"] = {
-                c: None for c in self.d_GROUPS.keys()
-            }
+            self.choices["valuation"]["--g"] = {c: None for c in self.d_GROUPS.keys()}
             self.choices["valuation"]["-s"] = {
                 c: None for c in self.valuation_sort_cols
             }
@@ -220,6 +203,7 @@ class EconomyController(BaseController):
                 c: None for c in self.valuation_sort_cols
             }
 
+            self.choices["performance"]["--g"] = {c: None for c in self.d_GROUPS.keys()}
             self.choices["performance"]["-s"] = {
                 c: None for c in self.performance_sort_list
             }
@@ -1291,16 +1275,16 @@ class EconomyController(BaseController):
             "-g",
             "--group",
             type=str,
-            choices=self.d_GROUPS.keys(),
+            choices=list(self.d_GROUPS.keys()),
             default="sector",
             nargs="+",
             dest="group",
-            help="Data group (sector, industry or country)",
+            help="Data group (sectors, industry or country)",
         )
         parser.add_argument(
             "-s",
             "--sortby",
-            dest="sort_col",
+            dest="sort_by",
             type=str,
             choices=self.valuation_sort_cols,
             default="Name",
@@ -1321,14 +1305,14 @@ class EconomyController(BaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            group = (
+            ns_group = (
                 " ".join(ns_parser.group)
                 if isinstance(ns_parser.group, list)
                 else ns_parser.group
             )
             finviz_view.display_valuation(
-                s_group=self.d_GROUPS[group],
-                sort_by=ns_parser.sort_col,
+                group=ns_group,
+                sort_by=ns_parser.sort_by,
                 ascending=ns_parser.ascend,
                 export=ns_parser.export,
             )
@@ -1348,6 +1332,7 @@ class EconomyController(BaseController):
             "-g",
             "--group",
             type=str,
+            choices=list(self.d_GROUPS.keys()),
             default="sector",
             nargs="+",
             dest="group",
@@ -1356,7 +1341,7 @@ class EconomyController(BaseController):
         parser.add_argument(
             "-s",
             "--sortby",
-            dest="sort_col",
+            dest="sort_by",
             choices=self.performance_sort_list,
             default="Name",
             help="Column to sort by",
@@ -1375,14 +1360,14 @@ class EconomyController(BaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            group = (
+            ns_group = (
                 " ".join(ns_parser.group)
                 if isinstance(ns_parser.group, list)
                 else ns_parser.group
             )
             finviz_view.display_performance(
-                s_group=self.d_GROUPS[group],
-                sort_col=ns_parser.sort_col,
+                group=ns_group,
+                sort_by=ns_parser.sort_by,
                 ascending=ns_parser.ascend,
                 export=ns_parser.export,
             )

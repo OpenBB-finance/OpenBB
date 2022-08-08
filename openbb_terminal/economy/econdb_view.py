@@ -106,7 +106,7 @@ def show_macro_data(
     df_rounded.columns = ["_".join(column) for column in df_rounded.columns]
 
     if raw:
-        
+
         print_rich_table(
             df_rounded.fillna("-").iloc[-10:],
             headers=list(df_rounded.columns),
@@ -144,7 +144,7 @@ def show_treasuries(
     Parameters
     ----------
     instruments: list
-        Type(s) of treasuries, nominal, inflation-adjusted or secondary market. 
+        Type(s) of treasuries, nominal, inflation-adjusted or secondary market.
         Available options can be accessed through get_treasury_maturities().
     maturities : list
         Treasury maturities to display. Available options can be accessed through get_treasury_maturities().
@@ -205,7 +205,10 @@ def show_treasuries(
 
     if export:
         export_data(
-            export, os.path.dirname(os.path.abspath(__file__)), "treasuries_data", treasury_data,
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "treasuries_data",
+            treasury_data,
         )
 
 

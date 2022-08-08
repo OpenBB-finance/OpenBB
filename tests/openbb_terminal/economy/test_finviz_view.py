@@ -60,8 +60,24 @@ def test_display_valuation(mocker, tab):
     mocker.patch(target="openbb_terminal.economy.finviz_view.export_data")
 
     finviz_view.display_valuation(
-        s_group="Sector",
-        sort_col="Name",
+        group="Sector",
+        sort_by="Name",
+        ascending=True,
+        export="",
+    )
+
+
+def test_display_performance(mocker, tab):
+    # MOCK OBBFF
+    mocker.patch.object(target=helper_funcs.obbff, attribute="USE_TABULATE_DF", new=tab)
+    mocker.patch.object(target=helper_funcs.obbff, attribute="USE_ION", new=True)
+
+    # MOCK EXPORT_DATA
+    mocker.patch(target="openbb_terminal.economy.finviz_view.export_data")
+
+    finviz_view.display_performance(
+        group="Sector",
+        sort_by="Name",
         ascending=True,
         export="",
     )

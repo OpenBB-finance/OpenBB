@@ -416,7 +416,12 @@ SCALES = {
 }
 
 TREASURIES: Dict = {
-    "frequencies": {"annually": 203, "monthly": 129, "weekly": 21, "daily": 9,},
+    "frequencies": {
+        "annually": 203,
+        "monthly": 129,
+        "weekly": 21,
+        "daily": 9,
+    },
     "instruments": {
         "nominal": {
             "identifier": "TCMNOM",
@@ -446,7 +451,9 @@ TREASURIES: Dict = {
         },
         "average": {
             "identifier": "LTAVG",
-            "maturities": {"Longer than 10-year": "Longer than 10-year",},
+            "maturities": {
+                "Longer than 10-year": "Longer than 10-year",
+            },
         },
         "secondary": {
             "identifier": "TB",
@@ -570,6 +577,7 @@ def get_macro_data(
 
     return df, units
 
+
 @log_start_end(log=logger)
 def get_macro_parameters() -> Dict[str, Dict[str, str]]:
     """This function returns the available macro parameters with detail.
@@ -580,6 +588,7 @@ def get_macro_parameters() -> Dict[str, Dict[str, str]]:
         A dictionary with the available macro parameters.
     """
     return PARAMETERS
+
 
 @log_start_end(log=logger)
 def get_macro_countries() -> Dict[str, str]:
@@ -682,7 +691,7 @@ def get_treasuries(
     Parameters
     ----------
     instruments: list
-        Type(s) of treasuries, nominal, inflation-adjusted (long term average) or secondary market. 
+        Type(s) of treasuries, nominal, inflation-adjusted (long term average) or secondary market.
         Available options can be accessed through get_treasury_maturities().
     maturities : list
         Treasury maturities to get. Available options can be accessed through get_treasury_maturities().

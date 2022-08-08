@@ -28,17 +28,15 @@ def test_get_performance_map(mocker):
 
 
 @pytest.mark.vcr
-@pytest.mark.parametrize(
-    "data_type",
-    [
-        "valuation",
-        "performance",
-    ],
-)
-def test_get_valuation_performance_data(data_type, recorder):
-    result_df = finviz_model.get_valuation_performance_data(
-        group="Sector", data_type=data_type
-    )
+def test_get_valuation_data(recorder):
+    result_df = finviz_model.get_valuation_data(group="sector")
+
+    recorder.capture(result_df)
+
+
+@pytest.mark.vcr
+def test_get_performance_data(recorder):
+    result_df = finviz_model.get_performance_data(group="sector")
 
     recorder.capture(result_df)
 
