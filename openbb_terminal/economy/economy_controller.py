@@ -551,7 +551,7 @@ class EconomyController(BaseController):
             if ns_parser.parameters and ns_parser.countries:
 
                 # Store data
-                (df, units,) = econdb_model.get_aggregated_macro_data(
+                (df, units, _) = econdb_model.get_aggregated_macro_data(
                     parameters=ns_parser.parameters,
                     countries=ns_parser.countries,
                     start_date=ns_parser.start_date,
