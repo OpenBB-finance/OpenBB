@@ -149,7 +149,6 @@ en:
   stocks/options/screen/scr: screen data from this preset
   stocks/options/screen/_screened_tickers: Last screened tickers
   stocks/options/screen/ca: take these to comparison analysis menu
-  stocks/options/screen/po: take these to portoflio optimization menu
   stocks/options/pricing/_ticker: Ticker
   stocks/options/pricing/_expiry: Expiry
   stocks/options/pricing/add: add an expected price to the list
@@ -243,7 +242,6 @@ en:
   stocks/scr/technical: technical (e.g. Beta, SMA50, 52W Low, RSI, Change)
   stocks/scr/_screened_tickers: Last screened tickers
   stocks/scr/ca: take these to comparison analysis menu
-  stocks/scr/po: take these to portfolio optimization menu
   stocks/ins/view: view available presets
   stocks/ins/set: set one of the available presets
   stocks/ins/_preset: Preset
@@ -312,7 +310,6 @@ en:
   stocks/ca/ownership: brief ownership comparison
   stocks/ca/performance: brief performance comparison
   stocks/ca/technical: brief technical comparison
-  stocks/ca/po: portfolio optimization for selected tickers
   stocks/ba/load: load a specific stock ticker for analysis
   stocks/ba/_ticker: Ticker
   stocks/ba/headlines: sentiment from 15+ major news headlines

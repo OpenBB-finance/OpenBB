@@ -71,9 +71,7 @@ class ComparisonAnalysisController(BaseController):
         "technical",
         "tsne",
     ]
-    CHOICES_MENUS = [
-        "po",
-    ]
+    CHOICES_MENUS: List = list()
     PATH = "/stocks/ca/"
 
     def __init__(self, similar: List[str] = None, queue: List[str] = None):
