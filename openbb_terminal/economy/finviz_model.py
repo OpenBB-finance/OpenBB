@@ -182,9 +182,9 @@ def get_spectrum_data(group: str = "sector"):
 
 
 @log_start_end(log=logger)
-def get_futures(    future_type: str = "Indices",
-    sort_by: str = "ticker",
-    ascending: bool = False) -> pd.DataFrame:
+def get_futures(
+    future_type: str = "Indices", sort_by: str = "ticker", ascending: bool = False
+) -> pd.DataFrame:
     """Get futures data. [Source: Finviz]
 
     Parameters
