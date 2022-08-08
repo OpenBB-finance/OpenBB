@@ -1410,6 +1410,10 @@ class EconomyController(BaseController):
             )
             finviz_view.display_spectrum(ns_group)
 
+            # # Due to Finviz implementation of Spectrum, we delete the generated spectrum figure
+            # # after saving it and displaying it to the user
+            os.remove(self.d_GROUPS[ns_group] + ".jpg")
+
     @log_start_end(log=logger)
     def call_pred(self, _):
         """Process pred command"""

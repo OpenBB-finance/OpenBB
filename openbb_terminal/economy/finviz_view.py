@@ -133,7 +133,7 @@ def display_spectrum(group: str = "sector", export: str = ""):
     )
 
     img.show()
-    os.remove(group + ".jpg")
+
 
 @log_start_end(log=logger)
 def display_future(

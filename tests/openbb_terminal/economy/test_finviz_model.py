@@ -49,7 +49,7 @@ def test_get_spectrum_data(mocker):
         target="openbb_terminal.economy.finviz_model.spectrum",
         new=mock_spectrum,
     )
-    finviz_model.get_spectrum_data(group="Sector")
+    finviz_model.get_spectrum_data(group="sector")
 
     mock_spectrum.Spectrum().screener_view.assert_called_with(group="Sector")
 
