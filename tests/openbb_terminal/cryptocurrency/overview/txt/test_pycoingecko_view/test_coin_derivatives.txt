@@ -14,4 +14,3 @@
 12    13              FTX (Derivatives)       ETH-PERP   3221.20       -6.043636     perpetual  0.000972    0.01     -0.007200  3.677087e+09
 13    14               Phemex (Futures)         ADAUSD      1.09       -7.838020     perpetual -0.018270    0.02      0.010000  3.565472e+08
 14    15                          Bybit        BTCUSDT  43915.29       -3.737591     perpetual  0.034581    0.01      0.010000  5.020144e+09
-

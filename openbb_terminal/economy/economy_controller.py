@@ -877,8 +877,7 @@ class EconomyController(BaseController):
             default=False,
         )
         parser.add_argument(
-            "-f",
-            "--frequency",
+            "--freq",
             type=str,
             dest="frequency",
             choices=econdb_model.TREASURIES["frequencies"],

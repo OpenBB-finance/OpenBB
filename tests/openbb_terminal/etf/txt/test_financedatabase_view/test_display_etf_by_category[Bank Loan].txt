@@ -4,4 +4,3 @@ FTSL      First Trust Senior Loan Fund                        First Trust  Bank 
 FLBL  Franklin Liberty Senior Loan ETF     Franklin Templeton Investments  Bank Loan   195.366608
 SNLN    Highland/iBoxx Senior Loan ETF                     Highland Funds  Bank Loan    45.402932
 FLRT    Pacific Global Senior Loan ETF                     Pacific Global  Bank Loan     29.24656
-
