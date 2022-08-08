@@ -8,5 +8,4 @@ Preset: high_IV
 Last screened tickers: 
 
 >   ca                 take these to comparison analysis menu
->   po                 take these to portoflio optimization menu
 

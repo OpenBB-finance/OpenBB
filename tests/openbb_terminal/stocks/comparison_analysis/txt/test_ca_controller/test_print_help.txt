@@ -28,5 +28,3 @@ Similar Companies:
 [unvl]    performance        brief performance comparison[/unvl]                [Finviz]
 [unvl]    technical          brief technical comparison[/unvl]                  [Finviz]
 
-[unvl]>   po                 portfolio optimization for selected tickers[/unvl]
-

@@ -14,5 +14,4 @@ Preset: top_gainers
 Last screened tickers: 
 
 [unvl]>   ca                 take these to comparison analysis menu[/unvl]
-[unvl]>   po                 take these to portfolio optimization menu[/unvl]
 
