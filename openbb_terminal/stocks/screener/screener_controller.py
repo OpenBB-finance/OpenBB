@@ -22,7 +22,6 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.portfolio.portfolio_optimization import po_controller
 from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.stocks.comparison_analysis import ca_controller
 from openbb_terminal.stocks.screener import (
@@ -55,7 +54,6 @@ class ScreenerController(BaseController):
         "ownership",
         "performance",
         "technical",
-        "po",
         "ca",
     ]
 
@@ -140,7 +138,6 @@ class ScreenerController(BaseController):
         mt.add_param("_screened_tickers", ", ".join(self.screen_tickers))
         mt.add_raw("\n")
         mt.add_menu("ca", self.screen_tickers)
-        mt.add_menu("po", self.screen_tickers)
         console.print(text=mt.menu_text, menu="Stocks - Screener")
 
     @log_start_end(log=logger)
@@ -752,18 +749,6 @@ class ScreenerController(BaseController):
                     sort=ns_parser.sort,
                     export=ns_parser.export,
                 )
-
-    @log_start_end(log=logger)
-    def call_po(self, _):
-        """Call the portfolio optimization menu with selected tickers"""
-        if self.screen_tickers:
-            self.queue = po_controller.PortfolioOptimizationController(
-                self.screen_tickers
-            ).menu(custom_path_menu_above="/portfolio/")
-        else:
-            console.print(
-                "Some tickers must be screened first through one of the presets!\n"
-            )
 
     @log_start_end(log=logger)
     def call_ca(self, _):
