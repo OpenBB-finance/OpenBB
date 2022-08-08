@@ -1,5 +1,5 @@
 ```
-usage: clean [-n NAME] [-f {rfill,cfill,rbfill,cbfill,rffill,bffill}] [-d {rdrop,cdrop}] [-l LIMIT] [-h]
+usage: clean [-n NAME] [--fill {rfill,cfill,rbfill,cbfill,rffill,bffill}] [-d {rdrop,cdrop}] [-l LIMIT] [-h]
 ```
 
 Clean a dataset by filling and/or dropping NaN values.
@@ -7,7 +7,7 @@ Clean a dataset by filling and/or dropping NaN values.
 ```
 optional arguments:
   -n NAME, --name NAME  The name of the dataset you want to clean up (default: None)
-  -f {rfill,cfill,rbfill,cbfill,rffill,bffill}, --fill {rfill,cfill,rbfill,cbfill,rffill,bffill}
+  --fill {rfill,cfill,rbfill,cbfill,rffill,bffill}
                         The method of filling NaNs. This has options to fill rows (rfill, rbfill, rffill) or fill columns (cfill, cbfill, cffill). Furthermore, it has the option to forward fill and backward fill (up to --limit) which
                         refer to how many rows/columns can be set equal to the last non-NaN value (default: )
   -d {rdrop,cdrop}, --drop {rdrop,cdrop}
@@ -18,9 +18,10 @@ optional arguments:
 ```
 
 Example:
-```
+
+```txt
 2022 Feb 24, 04:58 (✨) /econometrics/ $ show thesis
-                                                                                thesis                                                                                 
+                                                                                thesis
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━┓
 ┃                                                ┃ current_assets ┃ assets  ┃ debt   ┃ depr_amor ┃ income ┃ current_liabilities ┃ revenue ┃ equity ┃ interest_expense ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━┩
@@ -46,10 +47,10 @@ Example:
 └────────────────────────────────────────────────┴────────────────┴─────────┴────────┴───────────┴────────┴─────────────────────┴─────────┴────────┴──────────────────┘
 ```
 ```
-2022 Feb 24, 04:58 (✨) /econometrics/ $ clean thesis -f rfill
+2022 Feb 24, 04:58 (✨) /econometrics/ $ clean thesis --fill rfill
 
 2022 Feb 24, 04:59 (✨) /econometrics/ $ show thesis
-                                                                                thesis                                                                                 
+                                                                                thesis
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━┓
 ┃                                                ┃ current_assets ┃ assets  ┃ debt   ┃ depr_amor ┃ income ┃ current_liabilities ┃ revenue ┃ equity ┃ interest_expense ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━┩
@@ -78,7 +79,7 @@ Example:
 2022 Feb 24, 04:59 (✨) /econometrics/ $ clean thesis -d rdrop
 
 2022 Feb 24, 05:00 (✨) /econometrics/ $ show thesis
-                                                                                            thesis                                                                                            
+                                                                                            thesis
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┓
 ┃                                                                   ┃ current_assets ┃ assets   ┃ debt     ┃ depr_amor ┃ income ┃ current_liabilities ┃ revenue ┃ equity  ┃ interest_expense ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━━━━━━┩

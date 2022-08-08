@@ -1,13 +1,13 @@
 ```
 usage: relriskparity [-p HISTORIC_PERIOD] [-s START_PERIOD] [-e END_PERIOD]
-                     [-lr] [-f {d,w,m}] [-mn MAX_NAN] [-th THRESHOLD_VALUE]
+                     [-lr] [--freq {d,w,m}] [-mn MAX_NAN] [-th THRESHOLD_VALUE]
                      [-mt NAN_FILL_METHOD] [-ve {A,B,C}]
                      [-rc RISK_CONTRIBUTION] [-pf PENAL_FACTOR]
                      [-tr TARGET_RETURN] [-de SMOOTHING_FACTOR_EWMA]
                      [-v LONG_ALLOCATION] [--name NAME] [-h]
 ```
 
-A relaxed risk parity optimization model controls the balance of risk parity violation against the total portfolio performance. Risk parity has been criticized as being overly conservative and it is improved by re-introducing the asset expected returns into the model and permitting the portfolio to violate the risk parity condition. The paper by Gambeta & Kwon ([source](https://www.mdpi.com/1911-8074/13/10/237/htm)) proposes the incorporation of an explicit target return goal with an intuitive target return approach into a second-order-cone model of a risk parity optimization. When the target return is greater than risk parity return, a violation to risk parity allocations occurs that is controlled using a computational construct to obtain near-risk parity portfolios to retain as much risk parity-like traits as possible. This model is used to demonstrate empirically that higher returns can be achieved than risk parity without the risk contributions deviating dramatically from the risk parity allocations. Furthermore, this study reveals that the relaxed risk parity model exhibits advantageous traits of robustness to expected returns, which should not deter the use of expected returns in risk parity model. 
+A relaxed risk parity optimization model controls the balance of risk parity violation against the total portfolio performance. Risk parity has been criticized as being overly conservative and it is improved by re-introducing the asset expected returns into the model and permitting the portfolio to violate the risk parity condition. The paper by Gambeta & Kwon ([source](https://www.mdpi.com/1911-8074/13/10/237/htm)) proposes the incorporation of an explicit target return goal with an intuitive target return approach into a second-order-cone model of a risk parity optimization. When the target return is greater than risk parity return, a violation to risk parity allocations occurs that is controlled using a computational construct to obtain near-risk parity portfolios to retain as much risk parity-like traits as possible. This model is used to demonstrate empirically that higher returns can be achieved than risk parity without the risk contributions deviating dramatically from the risk parity allocations. Furthermore, this study reveals that the relaxed risk parity model exhibits advantageous traits of robustness to expected returns, which should not deter the use of expected returns in risk parity model.
 
 ```
 optional arguments:
@@ -28,7 +28,7 @@ optional arguments:
                         MM-DD' format (default: )
   -lr, --log-returns    If use logarithmic or arithmetic returns to calculate
                         returns (default: False)
-  -f {d,w,m}, --freq {d,w,m}
+  --freq {d,w,m}
                         Frequency used to calculate returns. Possible values
                         are: 'd': for daily returns 'w': for weekly returns
                         'm': for monthly returns (default: d)
@@ -79,7 +79,7 @@ Example:
 
  [3 Years] Relaxed risk parity portfolio based on least squares approach
 
-     Weights      
+     Weights
 ┏━━━━━━┳━━━━━━━━━┓
 ┃      ┃ Value   ┃
 ┡━━━━━━╇━━━━━━━━━┩
