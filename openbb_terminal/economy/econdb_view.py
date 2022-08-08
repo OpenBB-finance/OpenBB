@@ -103,9 +103,10 @@ def show_macro_data(
             ncol=2,
         )
 
-    df_rounded.columns = ["_".join(column) for column in df_rounded.columns]
-
     if raw:
+
+        df_rounded.columns = ["_".join(column) for column in df_rounded.columns]
+        
         print_rich_table(
             df_rounded.fillna("-").iloc[-10:],
             headers=list(df_rounded.columns),
@@ -129,31 +130,29 @@ def show_macro_data(
 
 @log_start_end(log=logger)
 def show_treasuries(
-    types: list,
-    maturities: list,
-    frequency: str,
-    start_date: str = None,
-    end_date: str = None,
+    instruments: list = ["nominal"],
+    maturities: list = ["10y"],
+    frequency: str = "monthly",
+    start_date: str = "1900-01-01",
+    end_date: str = str(datetime.today().date()),
     raw: bool = False,
     external_axes: Optional[List[plt.axes]] = None,
     export: str = "",
 ):
-    """Obtain U.S. Treasury Rates [Source: EconDB]
+    """Display U.S. Treasury rates [Source: EconDB]
 
     Parameters
     ----------
-    types: list
+    instruments: list
         The type(s) of treasuries, nominal, inflation-adjusted or secondary market.
     maturities : list
-       the maturities you wish to view.
+        The maturities you wish to view.
     frequency : str
         The frequency of the data, this can be daily, weekly, monthly or annually
     start_date : str
         The starting date, format "YEAR-MONTH-DAY", i.e. 2010-12-31.
     end_date : str
         The end date, format "YEAR-MONTH-DAY", i.e. 2020-06-05.
-    store : bool
-        Whether to prevent plotting the data.
     raw : bool
         Whether to display the raw output.
     external_axes: Optional[List[plt.axes]]
@@ -167,7 +166,7 @@ def show_treasuries(
     """
 
     treasury_data = econdb_model.get_treasuries(
-        types, maturities, frequency, start_date, end_date
+        instruments, maturities, frequency, start_date, end_date
     )
 
     if external_axes is None:
@@ -175,9 +174,8 @@ def show_treasuries(
     else:
         ax = external_axes[0]
 
-    for treasury, maturities_data in treasury_data.items():
-        for maturity in maturities_data:
-            ax.plot(maturities_data[maturity], label=f"{treasury} [{maturity}]")
+    for col in treasury_data.columns:
+        ax.plot(treasury_data[col], label=f"{col}")
 
     ax.set_title("U.S. Treasuries")
     ax.legend(
@@ -194,21 +192,18 @@ def show_treasuries(
     if external_axes is None:
         theme.visualize_output()
 
-    df = pd.DataFrame.from_dict(treasury_data, orient="index").stack().to_frame()
-    df = pd.DataFrame(df[0].values.tolist(), index=df.index).T
-    df.columns = ["_".join(column) for column in df.columns]
-
     if raw:
+
         print_rich_table(
-            df.iloc[-10:],
-            headers=list(df.columns),
+            treasury_data.iloc[-10:],
+            headers=list(treasury_data.columns),
             show_index=True,
             title="U.S. Treasuries",
         )
 
     if export:
         export_data(
-            export, os.path.dirname(os.path.abspath(__file__)), "treasuries_data", df,
+            export, os.path.dirname(os.path.abspath(__file__)), "treasuries_data", treasury_data,
         )
 
 

@@ -671,20 +671,20 @@ def get_aggregated_macro_data(
 
 @log_start_end(log=logger)
 def get_treasuries(
-    instruments: list,
-    maturities: list,
+    instruments: list = ["nominal"],
+    maturities: list = ["10y"],
     frequency: str = "monthly",
     start_date: str = "1900-01-01",
-    end_date=datetime.today().date(),
+    end_date: str = str(datetime.today().date()),
 ) -> Dict[Any, Dict[Any, pd.Series]]:
-    """Obtain U.S. Treasury Rates [Source: EconDB]
+    """Get U.S. Treasury rates [Source: EconDB]
 
     Parameters
     ----------
     instruments: list
         The type(s) of treasuries, nominal, inflation-adjusted (long term average) or secondary market.
     maturities : list
-       the maturities you wish to view.
+        The maturities you wish to view.
     frequency : str
         The frequency of the data, this can be annually, monthly, weekly or daily.
     start_date : str
@@ -760,7 +760,11 @@ def get_treasuries(
                             f"No data found for the combination {instrument} and {maturity}."
                         )
 
-    return treasury_data
+    df = pd.DataFrame.from_dict(treasury_data, orient="index").stack().to_frame()
+    df = pd.DataFrame(df[0].values.tolist(), index=df.index).T
+    df.columns = ["_".join(column) for column in df.columns]
+
+    return df
 
 
 @log_start_end(log=logger)

@@ -864,7 +864,7 @@ class EconomyController(BaseController):
             type=str,
             dest="maturity",
             help="The preferred maturity which is dependent on the type of the treasury",
-            default=["1y"],
+            default=["10y"],
         )
         parser.add_argument(
             "--show",
@@ -921,7 +921,7 @@ class EconomyController(BaseController):
                 return self.queue
 
             if ns_parser.maturity and ns_parser.type:
-                treasury_data = econdb_model.get_treasuries(
+                df = econdb_model.get_treasuries(
                     instruments=ns_parser.type,
                     maturities=ns_parser.maturity,
                     frequency=ns_parser.frequency,
@@ -929,17 +929,11 @@ class EconomyController(BaseController):
                     end_date=ns_parser.end_date,
                 )
 
-                df = (
-                    pd.DataFrame.from_dict(treasury_data, orient="index")
-                    .stack()
-                    .to_frame()
-                )
-
                 if not df.empty:
                     self.DATASETS["treasury"] = pd.concat(
                         [
                             self.DATASETS["treasury"],
-                            pd.DataFrame(df[0].values.tolist(), index=df.index).T,
+                            df,
                         ]
                     )
 
@@ -956,7 +950,7 @@ class EconomyController(BaseController):
                     )
 
                     econdb_view.show_treasuries(
-                        types=ns_parser.type,
+                        instruments=ns_parser.type,
                         maturities=ns_parser.maturity,
                         frequency=ns_parser.frequency,
                         start_date=ns_parser.start_date,
