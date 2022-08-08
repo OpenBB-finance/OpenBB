@@ -34,8 +34,8 @@ def test_display_performance(mocker, tab):
     mocker.patch(target="openbb_terminal.economy.finviz_view.export_data")
 
     finviz_view.display_performance(
-        s_group="Sector",
-        sort_col="Name",
+        group="sector",
+        sort_by="Name",
         ascending=True,
         export="",
     )
@@ -60,13 +60,23 @@ def test_display_valuation(mocker, tab):
     mocker.patch(target="openbb_terminal.economy.finviz_view.export_data")
 
     finviz_view.display_valuation(
-        group="Sector",
+        group="sector",
         sort_by="Name",
         ascending=True,
         export="",
     )
 
 
+@pytest.mark.default_cassette("test_display_performance")
+@pytest.mark.vcr
+@pytest.mark.record_stdout
+@pytest.mark.parametrize(
+    "tab",
+    [
+        True,
+        False,
+    ],
+)
 def test_display_performance(mocker, tab):
     # MOCK OBBFF
     mocker.patch.object(target=helper_funcs.obbff, attribute="USE_TABULATE_DF", new=tab)
@@ -76,7 +86,7 @@ def test_display_performance(mocker, tab):
     mocker.patch(target="openbb_terminal.economy.finviz_view.export_data")
 
     finviz_view.display_performance(
-        group="Sector",
+        group="sector",
         sort_by="Name",
         ascending=True,
         export="",
@@ -101,8 +111,8 @@ def test_display_spectrum(mocker):
     )
 
     finviz_view.display_spectrum(
-        s_group="Sector",
-        export="",
+        group="sector",
+        export="jpg",
     )
 
     mock_image.open().show.assert_called_once()
