@@ -110,7 +110,7 @@ Pick `logret` for rate of change to the returns of the asset:
 
 ![Additive Decompose of daily $AAPL data](https://user-images.githubusercontent.com/85772166/183484221-8e65e855-8a18-4bfd-8d49-b44ad50691b1.png)
 
-`skew` shows the asymetric distribution over a specified window (default of 14).
+`skew` shows the asymmetric distribution over a specified window (default of 14).
 
 ![Apple skewness indicator](https://user-images.githubusercontent.com/85772166/183484305-0ca714c4-a138-4c69-aee4-16fcc3aa3ac4.png)
 
