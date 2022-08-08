@@ -130,15 +130,15 @@ class EconomyController(BaseController):
     d_GROUPS = {
         "sector": "Sector",
         "industry": "Industry",
-        "basic materials": "Industry (Basic Materials)",
-        "communication services": "Industry (Communication Services)",
-        "consumer cyclical": "Industry (Consumer Cyclical)",
-        "consumer defensive": "Industry (Consumer Defensive)",
+        "basic_materials": "Industry (Basic Materials)",
+        "communication_services": "Industry (Communication Services)",
+        "consumer_cyclical": "Industry (Consumer Cyclical)",
+        "consumer_defensive": "Industry (Consumer Defensive)",
         "energy": "Industry (Energy)",
         "financial": "Industry (Financial)",
         "healthcare": "Industry (Healthcare)",
         "industrials": "Industry (Industrials)",
-        "real Estate": "Industry (Real Estate)",
+        "real_Estate": "Industry (Real Estate)",
         "technology": "Industry (Technology)",
         "utilities": "Industry (Utilities)",
         "country": "Country (U.S. listed stocks only)",
@@ -210,6 +210,9 @@ class EconomyController(BaseController):
                 c: None for c in investingcom_model.CATEGORIES
             }
 
+            self.choices["valuation"]["--g"] = {
+                c: None for c in self.d_GROUPS.keys()
+            }
             self.choices["valuation"]["-s"] = {
                 c: None for c in self.valuation_sort_cols
             }
@@ -1288,6 +1291,7 @@ class EconomyController(BaseController):
             "-g",
             "--group",
             type=str,
+            choices=self.d_GROUPS.keys(),
             default="sector",
             nargs="+",
             dest="group",
@@ -1324,7 +1328,7 @@ class EconomyController(BaseController):
             )
             finviz_view.display_valuation(
                 s_group=self.d_GROUPS[group],
-                sort_col=ns_parser.sort_col,
+                sort_by=ns_parser.sort_col,
                 ascending=ns_parser.ascend,
                 export=ns_parser.export,
             )
