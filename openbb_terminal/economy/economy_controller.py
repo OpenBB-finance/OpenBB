@@ -1408,7 +1408,7 @@ class EconomyController(BaseController):
                 if isinstance(ns_parser.group, list)
                 else ns_parser.group
             )
-            finviz_view.display_spectrum(ns_group)
+            finviz_view.display_spectrum(group=ns_group)
 
             # # Due to Finviz implementation of Spectrum, we delete the generated spectrum figure
             # # after saving it and displaying it to the user
