@@ -62,7 +62,7 @@ def check_series_id(series_id: str) -> Tuple[bool, Dict]:
 
 
 @log_start_end(log=logger)
-def get_series_notes(search_query: str, limit: int = 10) -> pd.Series:
+def get_series_notes(search_query: str, limit: int = -1) -> pd.Series:
     """Get series notes. [Source: FRED]
     Parameters
     ----------
@@ -106,13 +106,14 @@ def get_series_notes(search_query: str, limit: int = 10) -> pd.Series:
             lambda x: "\n".join(textwrap.wrap(x, width=50)) if isinstance(x, str) else x
         )
 
-        df_fred = df_fred[:limit]
+        if limit != -1:
+            df_fred = df_fred[:limit]
 
     return df_fred
 
 
 @log_start_end(log=logger)
-def get_series_ids(search_query: str, limit: int = 10) -> pd.DataFrame:
+def get_series_ids(search_query: str, limit: int = -1) -> pd.DataFrame:
     """Get Series IDs. [Source: FRED]
     Parameters
     ----------
@@ -143,7 +144,9 @@ def get_series_ids(search_query: str, limit: int = 10) -> pd.DataFrame:
         return [], []
 
     df_series = pd.DataFrame(d_series["seriess"])
-    df_series = df_series.sort_values(by=["popularity"], ascending=False).head(limit)
+    df_series = df_series.sort_values(by=["popularity"], ascending=False)
+    if limit != -1:
+        df_series = df_series.head(limit)
     df_series = df_series[["id", "title"]]
     df_series.set_index("id", inplace=True)
 
@@ -181,36 +184,53 @@ def get_series_data(series_id: str, start: str = None, end: str = None) -> pd.Da
 
 @log_start_end(log=logger)
 def get_aggregated_series_data(
-    d_series: Dict[str, Dict[str, str]], start_date: str = None, end_date: str = None
+    series_ids: List[str], start_date: str = None, end_date: str = None, limit: int = -1
 ) -> pd.DataFrame:
     """Get Series data. [Source: FRED]
     Parameters
     ----------
-    series_id : str
+    series_ids : List[str]
         Series ID to get data from
     start_date : str
         Start date to get data from, format yyyy-mm-dd
     end_date : str
         End data to get from, format yyyy-mm-dd
+    limit: int
+        Number of raw data rows to show
 
     Returns
     ----------
     pd.DataFrame
         Series data
     """
-    series_ids = list(d_series.keys())
+
     data = pd.DataFrame()
+
+    detail = {}
+    for id in series_ids:
+        information = check_series_id(id)
+
+        if "seriess" in information:
+            detail[id] = {
+                "title": information["seriess"][0]["title"],
+                "units": information["seriess"][0]["units_short"],
+            }
 
     for s_id in series_ids:
         data = pd.concat(
             [
                 data,
-                pd.DataFrame(get_series_data(s_id, start_date, end_date), columns=[s_id]),
+                pd.DataFrame(
+                    get_series_data(s_id, start_date, end_date), columns=[s_id]
+                ),
             ],
             axis=1,
         )
 
-    return data
+    if limit != -1:
+        data = data.tail(limit)
+
+    return data, detail
 
 
 @log_start_end(log=logger)

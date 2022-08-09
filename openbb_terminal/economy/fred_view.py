@@ -75,37 +75,37 @@ def notes(search_query: str, limit: int = 10) -> pd.DataFrame:
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
 def display_fred_series(
-    d_series: Dict[str, Dict[str, str]],
+    series_ids: List[str],
     start_date: str,
     end_date: str = "",
+    limit: int = 10,
     raw: bool = False,
     export: str = "",
-    limit: int = 10,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display (multiple) series from https://fred.stlouisfed.org. [Source: FRED]
 
     Parameters
     ----------
-    d_series : str
+    series_ids : List[str]
         FRED Series ID from https://fred.stlouisfed.org. For multiple series use: series1,series2,series3
     start_date : str
         Starting date (YYYY-MM-DD) of data
     end_date : str
         Ending date (YYYY-MM-DD) of data
-    store : bool
-        Whether to prevent plotting the data.
+    limit : int
+        Number of data points to display.
     raw : bool
         Output only raw data
     export : str
         Export data to csv,json,xlsx or png,jpg,pdf,svg file
-    limit: int
-        Number of raw data rows to show
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    series_ids = list(d_series.keys())
-    data = fred_model.get_aggregated_series_data(d_series, start_date, end_date)
+
+    data, detail = fred_model.get_aggregated_series_data(
+        series_ids, start_date, end_date, limit
+    )
 
     if data.empty:
         logger.error("No data")
@@ -122,13 +122,13 @@ def display_fred_series(
 
         if len(series_ids) == 1:
             s_id = series_ids[0]
-            sub_dict: Dict = d_series[s_id]
+            sub_dict: Dict = detail[s_id]
             title = f"{sub_dict['title']} ({sub_dict['units']})"
             ax.plot(
                 data.index, data.iloc[:, 0], label="\n".join(textwrap.wrap(title, 80))
             )
         else:
-            for s_id, sub_dict in d_series.items():
+            for s_id, sub_dict in detail.items():
                 data_to_plot = data[s_id].dropna()
                 exponent = int(np.log10(data_to_plot.max()))
                 data_to_plot /= 10**exponent
@@ -159,7 +159,7 @@ def display_fred_series(
 
         if raw:
             print_rich_table(
-                data.tail(limit),
+                data,
                 headers=list(data.columns),
                 show_index=True,
                 index_name="Date",
