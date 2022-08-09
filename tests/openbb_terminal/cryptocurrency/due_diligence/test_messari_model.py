@@ -26,7 +26,7 @@ def vcr_config():
 )
 def test_get_marketcap_dominance(symbol, interval, start, end, recorder):
     df = messari_model.get_marketcap_dominance(
-        symbol=symbol, interval=interval, start=start, end=end
+        symbol=symbol, interval=interval, start_date=start, end_date=end
     )
     recorder.capture(df)
 
@@ -125,8 +125,8 @@ def test_get_messari_timeseries(symbol, interval, start, end, timeseries_id, rec
     df, _ = messari_model.get_messari_timeseries(
         symbol=symbol,
         interval=interval,
-        start=start,
-        end=end,
+        start_date=start,
+        end_date=end,
         timeseries_id=timeseries_id,
     )
     recorder.capture(df)
