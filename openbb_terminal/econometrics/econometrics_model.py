@@ -6,7 +6,7 @@ __docformat__ = "numpy"
 import logging
 from pathlib import Path
 import warnings
-from typing import Dict, Union, Any, List
+from typing import Dict, Union, Any, List, Optional
 
 import pandas as pd
 from pandas import DataFrame
@@ -24,9 +24,9 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 def load(
     file: str,
-    file_types: List[str],
-    data_files: Dict[Any, Any],
-    data_examples: Dict[Any, Any],
+    file_types: Optional[List[str]] = None,
+    data_files: Optional[Dict[Any, Any]] = None,
+    data_examples: Optional[Dict[Any, Any]] = None,
 ) -> pd.DataFrame:
     """Load custom file into dataframe.
 
@@ -46,6 +46,12 @@ def load(
     pd.DataFrame:
         Dataframe with custom data
     """
+    if file_types is None:
+        file_types = ["xlsx", "csv"]
+    if data_files is None:
+        data_files = {}
+    if data_examples is None:
+        data_examples = {}
     if file in data_examples:
         if file == "wage_panel":
             return wage_panel.load()
@@ -116,7 +122,12 @@ def get_options(
 
 
 @log_start_end(log=logger)
-def clean(dataset: pd.DataFrame, fill: str, drop: str, limit: int) -> pd.DataFrame:
+def clean(
+    dataset: pd.DataFrame,
+    fill: str = "",
+    drop: str = "",
+    limit: Optional[int] = None,
+) -> pd.DataFrame:
     """Clean up NaNs from the dataset
 
     Parameters
@@ -124,9 +135,11 @@ def clean(dataset: pd.DataFrame, fill: str, drop: str, limit: int) -> pd.DataFra
     dataset : pd.DataFrame
         The dataset you wish to clean
     fill : str
-        The method of filling NaNs
+        The method of filling NaNs. Choose from:
+        rfill, cfill, rbfill, cbfill, rffill, cffill
     drop : str
-        The method of dropping NaNs
+        The method of dropping NaNs. Choose from:
+        rdrop, cdrop
     limit : int
         The maximum limit you wish to apply that can be forward or backward filled
 
@@ -135,19 +148,17 @@ def clean(dataset: pd.DataFrame, fill: str, drop: str, limit: int) -> pd.DataFra
     pd.DataFrame:
         Dataframe with cleaned up data
     """
-    if fill:
-        if fill == "rfill":
-            dataset = dataset.fillna(axis="index", value=0)
-        if fill == "cfill":
-            dataset = dataset.fillna(axis="columns", value=0)
-        elif fill == "rbfill":
-            dataset = dataset.fillna(axis="index", method="bfill", limit=limit)
-        elif fill == "cbfill":
-            dataset = dataset.fillna(axis="columns", method="bfill", limit=limit)
-        elif fill == "rffill":
-            dataset = dataset.fillna(axis="index", method="ffill", limit=limit)
-        elif fill == "cffill":
-            dataset = dataset.fillna(axis="columns", method="ffill", limit=limit)
+    fill_dict = {
+        "rfill": lambda x: x.fillna(axis="index", value=0),
+        "cfill": lambda x: x.fillna(axis="columns", value=0),
+        "rbfill": lambda x: x.fillna(axis="index", method="bfill", limit=limit),
+        "cbfill": lambda x: x.fillna(axis="columns", method="bfill", limit=limit),
+        "rffill": lambda x: x.fillna(axis="index", method="ffill", limit=limit),
+        "cffill": lambda x: x.fillna(axis="columns", method="ffill", limit=limit),
+    }
+
+    if fill and fill in fill_dict:
+        dataset = fill_dict[fill](dataset)
 
     if drop:
         if drop == "rdrop":

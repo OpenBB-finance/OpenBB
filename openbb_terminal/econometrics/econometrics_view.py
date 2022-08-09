@@ -4,8 +4,9 @@ __docformat__ = "numpy"
 import logging
 import os
 from itertools import combinations
-from typing import Dict, Any, Optional, List
+from typing import Dict, Optional, List, Union
 
+from matplotlib.units import ConversionError
 import matplotlib.pyplot as plt
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
@@ -22,6 +23,7 @@ from openbb_terminal.helper_funcs import (
 from openbb_terminal.rich_config import console
 from openbb_terminal.econometrics import econometrics_model
 from openbb_terminal.config_terminal import theme
+from openbb_terminal.econometrics.econometrics_helpers import get_ending
 
 logger = logging.getLogger(__name__)
 
@@ -70,7 +72,7 @@ def show_options(
 
 @log_start_end(log=logger)
 def display_plot(
-    data: Dict[str, pd.DataFrame],
+    data: Union[pd.Series, pd.DataFrame, Dict[str, pd.DataFrame]],
     export: str = "",
     external_axes: Optional[List[plt.axes]] = None,
 ):
@@ -78,13 +80,17 @@ def display_plot(
 
     Parameters
     ----------
-    data: Dict[str: pd.DataFrame]
+    data: Union[pd.Series, pd.DataFrame, Dict[str: pd.DataFrame]
         Dictionary with key being dataset.column and dataframes being values
     export: str
         Format to export image
     external_axes:Optional[List[plt.axes]]
         External axes to plot on
     """
+    if isinstance(data, pd.Series):
+        data = {data.name: data}
+    elif isinstance(data, pd.DataFrame):
+        data = {x: data[x] for x in data.columns}
 
     for dataset_col in data:
         if isinstance(data[dataset_col].index, pd.MultiIndex):
@@ -102,15 +108,20 @@ def display_plot(
             ax = external_axes[0]
 
         for dataset_col in data:
-            if isinstance(data[dataset_col], pd.Series):
-                ax.plot(data[dataset_col].index, data[dataset_col].values)
-            elif isinstance(data[dataset_col], pd.DataFrame):
-                ax.plot(data[dataset_col])
+            try:
+                if isinstance(data[dataset_col], pd.Series):
+                    ax.plot(data[dataset_col].index, data[dataset_col].values)
+                elif isinstance(data[dataset_col], pd.DataFrame):
+                    ax.plot(data[dataset_col])
 
-            theme.style_primary_axis(ax)
+            except ConversionError:
+                print(f"Could not convert column: {dataset_col}")
+            except TypeError:
+                print(f"Could not convert column: {dataset_col}")
 
-            if external_axes is None:
-                theme.visualize_output()
+        theme.style_primary_axis(ax)
+        if external_axes is None:
+            theme.visualize_output()
 
         ax.legend(list(data.keys()))
 
@@ -124,8 +135,8 @@ def display_plot(
 @log_start_end(log=logger)
 def display_norm(
     data: pd.Series,
-    dataset: str,
-    column: str,
+    dataset: str = "",
+    column: str = "",
     plot: bool = False,
     export: str = "",
     external_axes: Optional[List[plt.axes]] = None,
@@ -149,17 +160,18 @@ def display_norm(
     """
     if data.dtype not in [int, float]:
         console.print(
-            f"The column type must be numeric. The {column}-{dataset} type is {data.dtype}. "
+            f"The column type must be numeric. The provided column type is {data.dtype}. "
             f"Consider using the command 'type' to change this.\n"
         )
     else:
         results = econometrics_model.get_normality(data)
 
+        ending = get_ending(dataset, column)
         print_rich_table(
             results,
             headers=list(results.columns),
             show_index=True,
-            title=f"Normality test from dataset '{dataset}' of '{column}'",
+            title=f"Normality test{ending}",
         )
 
         if plot:
@@ -170,7 +182,7 @@ def display_norm(
 
             ax.hist(data, bins=100)
 
-            ax.set_title(f"Histogram from dataset '{dataset}' of '{column}'")
+            ax.set_title(f"Histogram{ending}")
 
             theme.style_primary_axis(ax)
 
@@ -191,8 +203,8 @@ def display_norm(
 @log_start_end(log=logger)
 def display_root(
     df: pd.Series,
-    dataset_name: str = "",
-    column_name: str = "",
+    dataset: str = "",
+    column: str = "",
     fuller_reg: str = "c",
     kpss_reg: str = "c",
     export: str = "",
@@ -203,9 +215,9 @@ def display_root(
     ----------
     df : pd.Series
         Series of target variable
-    dataset_name: str
+    dataset: str
         Name of the dataset
-    column_name: str
+    column: str
         Name of the column
     fuller_reg : str
         Type of regression of ADF test. Choose c, ct, ctt, or nc
@@ -216,23 +228,24 @@ def display_root(
     """
     if df.dtype not in [int, float]:
         console.print(
-            f"The column type must be numeric. The {column_name}-{dataset_name} "
+            f"The column type must be numeric. The provided "
             f"type is {df.dtype}. Consider using the command 'type' to change this.\n"
         )
     else:
         results = econometrics_model.get_root(df, fuller_reg, kpss_reg)
 
+        ending = get_ending(dataset, column)
         print_rich_table(
             results,
             headers=list(results.columns),
             show_index=True,
-            title=f"Unitroot from dataset '{dataset_name} of '{column_name}'",
+            title=f"Unitroot {ending}",
         )
 
         export_data(
             export,
             os.path.dirname(os.path.abspath(__file__)),
-            f"{dataset_name}_{column_name}_root",
+            f"{dataset}_{column}_root",
             results,
         )
 
@@ -317,7 +330,7 @@ def display_granger(
 
 @log_start_end(log=logger)
 def display_cointegration_test(
-    datasets: Dict[pd.Series, Any],
+    datasets: Union[pd.DataFrame, Dict[str, pd.Series]],
     significant: bool = False,
     plot: bool = False,
     export: str = "",
@@ -342,7 +355,7 @@ def display_cointegration_test(
 
     Parameters
     ----------
-    datasets: Dict[pd.Series, Any]
+    datasets: Union[pd.DataFrame, Dict[str, pd.Series]]
         All time series to perform co-integration tests on.
     significant: float
         Show only companies that have p-values lower than this percentage
@@ -354,9 +367,14 @@ def display_cointegration_test(
         External axes to plot on
     """
 
+    if isinstance(datasets, pd.DataFrame):
+        new_datasets = {}
+        for column in datasets.columns:
+            new_datasets[column] = datasets[column]
+
     pairs = list(combinations(datasets.keys(), 2))
-    result: Dict[str, list] = dict()
-    z_values: Dict[str, pd.Series] = dict()
+    result: Dict[str, list] = {}
+    z_values: Dict[str, pd.Series] = {}
 
     for x, y in pairs:
         if sum(datasets[y].isnull()) > 0:
@@ -372,18 +390,23 @@ def display_cointegration_test(
         elif not datasets[y].index.equals(datasets[x].index):
             console.print(f"The Series {y} and {x} do not have the same index.")
         else:
-            (
-                c,
-                gamma,
-                alpha,
-                z,
-                adfstat,
-                pvalue,
-            ) = econometrics_model.get_engle_granger_two_step_cointegration_test(
-                datasets[x], datasets[y]
-            )
-            result[f"{x}/{y}"] = [c, gamma, alpha, adfstat, pvalue]
-            z_values[f"{x}/{y}"] = z
+            try:
+                (
+                    c,
+                    gamma,
+                    alpha,
+                    z,
+                    adfstat,
+                    pvalue,
+                ) = econometrics_model.get_engle_granger_two_step_cointegration_test(
+                    datasets[x], datasets[y]
+                )
+                result[f"{x}/{y}"] = [c, gamma, alpha, adfstat, pvalue]
+                z_values[f"{x}/{y}"] = z
+            except ValueError:
+                console.print(
+                    "[red]Error: please only send string and integer columns[/red]\n"
+                )
 
     if result and z_values:
         df = pd.DataFrame.from_dict(

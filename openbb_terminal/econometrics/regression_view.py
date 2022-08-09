@@ -1,7 +1,7 @@
 """Regression View"""
 __docformat__ = "numpy"
 
-from typing import Optional, List, Tuple, Dict, Any
+from typing import Optional, List, Tuple, Dict
 import os
 import logging
 import pandas as pd
@@ -22,10 +22,9 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_panel(
-    regression_type: str,
-    regression_variables: List[Tuple],
     data: Dict[str, pd.DataFrame],
-    datasets: Dict[pd.DataFrame, Any],
+    regression_variables: List[Tuple],
+    regression_type: str = "OLS",
     entity_effects: bool = False,
     time_effects: bool = False,
     export: str = "",
@@ -34,17 +33,15 @@ def display_panel(
 
     Parameters
     ----------
-    regression_type: str
-        The type of regression you wish to execute. Choose from:
-        OLS, POLS, RE, BOLS, FE
+    data : dict
+        A dictionary containing the datasets.
     regression_variables : list
         The regressions variables entered where the first variable is
         the dependent variable.
-    data : dict
-        A dictionary containing the datasets.
-    datasets: dict
-        A dictionary containing the column and dataset names of
         each column/dataset combination.
+    regression_type: str
+        The type of regression you wish to execute. Choose from:
+        OLS, POLS, RE, BOLS, FE
     entity_effects: bool
         Whether to apply Fixed Effects on entities.
     time_effects: bool
@@ -66,7 +63,6 @@ def display_panel(
         regression_type,
         regression_variables,
         data,
-        datasets,
         entity_effects,
         time_effects,
     )

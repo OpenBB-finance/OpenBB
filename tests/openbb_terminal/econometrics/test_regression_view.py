@@ -12,7 +12,7 @@ from openbb_terminal.econometrics import (
 @pytest.mark.vcr()
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
-    "regression_variables, data, datasets, show_regression, lags",
+    "regression_variables, data, show_regression, lags",
     [
         (
             ["TOTEMP-longley", "GNP-longley", "ARMED-longley", "POP-longley"],
@@ -20,12 +20,6 @@ from openbb_terminal.econometrics import (
                 "longley": econometrics_model.load(
                     "longley", ["csv", "xlsx"], {}, {"longley": "longley"}
                 )
-            },
-            {
-                "TOTEMP-longley": {"TOTEMP": None, "longley": None},
-                "GNP-longley": {"GNP": None, "longley": None},
-                "ARMED-longley": {"ARMED": None, "longley": None},
-                "POP-longley": {"POP": None, "longley": None},
             },
             False,
             1,
@@ -37,22 +31,15 @@ from openbb_terminal.econometrics import (
                     "longley", ["csv", "xlsx"], {}, {"longley": "longley"}
                 )
             },
-            {
-                "TOTEMP-longley": {"TOTEMP": None, "longley": None},
-                "GNP-longley": {"GNP": None, "longley": None},
-                "ARMED-longley": {"ARMED": None, "longley": None},
-                "POP-longley": {"POP": None, "longley": None},
-            },
             False,
             2,
         ),
     ],
 )
-def test_display_bgod(regression_variables, data, datasets, show_regression, lags):
+def test_display_bgod(regression_variables, data, show_regression, lags):
     _, _, _, model = regression_model.get_ols(
         regression_variables=regression_variables,
         data=data,
-        datasets=datasets,
         show_regression=show_regression,
     )
 
@@ -62,7 +49,7 @@ def test_display_bgod(regression_variables, data, datasets, show_regression, lag
 @pytest.mark.vcr()
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
-    "regression_variables, data, datasets, show_regression",
+    "regression_variables, data, show_regression",
     [
         (
             ["TOTEMP-longley", "ARMED-longley", "POP-longley"],
@@ -70,12 +57,6 @@ def test_display_bgod(regression_variables, data, datasets, show_regression, lag
                 "longley": econometrics_model.load(
                     "longley", ["csv", "xlsx"], {}, {"longley": "longley"}
                 )
-            },
-            {
-                "TOTEMP-longley": {"TOTEMP": None, "longley": None},
-                "GNP-longley": {"GNP": None, "longley": None},
-                "ARMED-longley": {"ARMED": None, "longley": None},
-                "POP-longley": {"POP": None, "longley": None},
             },
             False,
         ),
@@ -96,11 +77,10 @@ def test_display_bgod(regression_variables, data, datasets, show_regression, lag
         ),
     ],
 )
-def test_display_bpag(regression_variables, data, datasets, show_regression):
+def test_display_bpag(regression_variables, data, show_regression):
     _, _, _, model = regression_model.get_ols(
         regression_variables=regression_variables,
         data=data,
-        datasets=datasets,
         show_regression=show_regression,
     )
 

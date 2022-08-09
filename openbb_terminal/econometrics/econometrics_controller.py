@@ -1212,7 +1212,7 @@ class EconometricsController(BaseController):
             if "," in ns_parser.dependent:
                 console.print(
                     "It appears you have selected multiple variables for the dependent variable. "
-                    "The model only accepts one.\nDid you intend to include these variables as independent "
+                    "Please select one.\nDid you intend to include these variables as independent "
                     f"variables? Use -i {ns_parser.dependent} in this case.\n"
                 )
             elif ns_parser.dependent in self.choices["regressions"]:
@@ -1224,7 +1224,6 @@ class EconometricsController(BaseController):
                 ) = openbb_terminal.econometrics.regression_model.get_ols(
                     [ns_parser.dependent] + ns_parser.independent,
                     self.datasets,
-                    self.choices["regressions"],
                     export=ns_parser.export,
                 )
             else:
@@ -1479,10 +1478,9 @@ class EconometricsController(BaseController):
                             self.regression[regression_name]["independent"],
                             self.regression[regression_name]["model"],
                         ) = openbb_terminal.econometrics.regression_view.display_panel(
-                            regression,
-                            regression_vars,
                             self.datasets,
-                            self.choices["regressions"],
+                            regression_vars,
+                            regression,
                             ns_parser.entity_effects,
                             ns_parser.time_effects,
                         )
@@ -1714,7 +1712,7 @@ class EconometricsController(BaseController):
 
             if ns_parser.ts:
 
-                if len(ns_parser.ts) > 2:
+                if len(ns_parser.ts) > 1:
                     datasets = {}
                     for stock in ns_parser.ts:
                         column, dataset = self.choices["coint"][stock].keys()

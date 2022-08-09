@@ -10,7 +10,7 @@ from openbb_terminal.econometrics import regression_model, econometrics_model
 
 @pytest.mark.vcr()
 @pytest.mark.parametrize(
-    "regression_variables, data, datasets",
+    "regression_variables, data",
     [
         (
             ["TOTEMP-longley", "GNP-longley", "ARMED-longley", "POP-longley"],
@@ -19,22 +19,16 @@ from openbb_terminal.econometrics import regression_model, econometrics_model
                     "longley", ["csv", "xlsx"], {}, {"longley": "longley"}
                 )
             },
-            {
-                "TOTEMP-longley": {"TOTEMP": None, "longley": None},
-                "GNP-longley": {"GNP": None, "longley": None},
-                "ARMED-longley": {"ARMED": None, "longley": None},
-                "POP-longley": {"POP": None, "longley": None},
-            },
         )
     ],
 )
-def test_get_regression_data(recorder, regression_variables, data, datasets):
+def test_get_regression_data(recorder, regression_variables, data):
     (
         regression_df,
         dependent_variable,
         independent_variables,
     ) = regression_model.get_regression_data(
-        regression_variables=regression_variables, data=data, datasets=datasets
+        regression_variables=regression_variables, data=data
     )
 
     recorder.capture(
@@ -44,7 +38,7 @@ def test_get_regression_data(recorder, regression_variables, data, datasets):
 
 @pytest.mark.vcr()
 @pytest.mark.parametrize(
-    "regression_variables, data, datasets, show_regression",
+    "regression_variables, data, show_regression",
     [
         (
             ["TOTEMP-longley", "GNP-longley", "ARMED-longley", "POP-longley"],
@@ -52,12 +46,6 @@ def test_get_regression_data(recorder, regression_variables, data, datasets):
                 "longley": econometrics_model.load(
                     "longley", ["csv", "xlsx"], {}, {"longley": "longley"}
                 )
-            },
-            {
-                "TOTEMP-longley": {"TOTEMP": None, "longley": None},
-                "GNP-longley": {"GNP": None, "longley": None},
-                "ARMED-longley": {"ARMED": None, "longley": None},
-                "POP-longley": {"POP": None, "longley": None},
             },
             True,
         ),
@@ -68,21 +56,14 @@ def test_get_regression_data(recorder, regression_variables, data, datasets):
                     "longley", ["csv", "xlsx"], {}, {"longley": "longley"}
                 )
             },
-            {
-                "TOTEMP-longley": {"TOTEMP": None, "longley": None},
-                "GNP-longley": {"GNP": None, "longley": None},
-                "ARMED-longley": {"ARMED": None, "longley": None},
-                "POP-longley": {"POP": None, "longley": None},
-            },
             False,
         ),
     ],
 )
-def test_get_ols(recorder, regression_variables, data, datasets, show_regression):
+def test_get_ols(recorder, regression_variables, data, show_regression):
     _, _, _, model = regression_model.get_ols(
         regression_variables=regression_variables,
         data=data,
-        datasets=datasets,
         show_regression=show_regression,
     )
 
@@ -93,7 +74,7 @@ def test_get_ols(recorder, regression_variables, data, datasets, show_regression
 
 @pytest.mark.vcr()
 @pytest.mark.parametrize(
-    "regression_variables, data, datasets",
+    "regression_variables, data",
     [
         (
             [
@@ -108,21 +89,13 @@ def test_get_ols(recorder, regression_variables, data, datasets, show_regression
                     "wage_panel", ["csv", "xlsx"], {}, {"wage_panel": "wage_panel"}
                 ).set_index(["nr", "year"])
             },
-            {
-                "educ-wage_panel": {"educ": None, "wage_panel": None},
-                "married-wage_panel": {"married": None, "wage_panel": None},
-                "lwage-wage_panel": {"lwage": None, "wage_panel": None},
-                "hisp-wage_panel": {"hisp": None, "wage_panel": None},
-                "black-wage_panel": {"black": None, "wage_panel": None},
-            },
         )
     ],
 )
-def test_get_pols(recorder, regression_variables, data, datasets):
+def test_get_pols(recorder, regression_variables, data):
     _, _, _, model = regression_model.get_pols(
         regression_variables=regression_variables,
         data=data,
-        datasets=datasets,
     )
 
     result = pd.DataFrame([model.params])
@@ -324,7 +297,7 @@ def test_get_comparison(recorder, regression_variables, data, datasets):
 
 @pytest.mark.vcr()
 @pytest.mark.parametrize(
-    "regression_variables, data, datasets, show_regression",
+    "regression_variables, data, show_regression",
     [
         (
             ["TOTEMP-longley", "GNP-longley", "ARMED-longley", "POP-longley"],
@@ -332,12 +305,6 @@ def test_get_comparison(recorder, regression_variables, data, datasets):
                 "longley": econometrics_model.load(
                     "longley", ["csv", "xlsx"], {}, {"longley": "longley"}
                 )
-            },
-            {
-                "TOTEMP-longley": {"TOTEMP": None, "longley": None},
-                "GNP-longley": {"GNP": None, "longley": None},
-                "ARMED-longley": {"ARMED": None, "longley": None},
-                "POP-longley": {"POP": None, "longley": None},
             },
             True,
         ),
@@ -348,21 +315,14 @@ def test_get_comparison(recorder, regression_variables, data, datasets):
                     "longley", ["csv", "xlsx"], {}, {"longley": "longley"}
                 )
             },
-            {
-                "TOTEMP-longley": {"TOTEMP": None, "longley": None},
-                "GNP-longley": {"GNP": None, "longley": None},
-                "ARMED-longley": {"ARMED": None, "longley": None},
-                "POP-longley": {"POP": None, "longley": None},
-            },
             True,
         ),
     ],
 )
-def test_get_dwat(recorder, regression_variables, data, datasets, show_regression):
+def test_get_dwat(recorder, regression_variables, data, show_regression):
     _, _, _, model = regression_model.get_ols(
         regression_variables=regression_variables,
         data=data,
-        datasets=datasets,
         show_regression=show_regression,
     )
 
@@ -373,7 +333,7 @@ def test_get_dwat(recorder, regression_variables, data, datasets, show_regressio
 
 @pytest.mark.vcr()
 @pytest.mark.parametrize(
-    "regression_variables, data, datasets, show_regression, lags",
+    "regression_variables, data, show_regression, lags",
     [
         (
             ["ARMED-longley", "GNP-longley", "TOTEMP-longley", "POP-longley"],
@@ -381,12 +341,6 @@ def test_get_dwat(recorder, regression_variables, data, datasets, show_regressio
                 "longley": econometrics_model.load(
                     "longley", ["csv", "xlsx"], {}, {"longley": "longley"}
                 )
-            },
-            {
-                "TOTEMP-longley": {"TOTEMP": None, "longley": None},
-                "GNP-longley": {"GNP": None, "longley": None},
-                "ARMED-longley": {"ARMED": None, "longley": None},
-                "POP-longley": {"POP": None, "longley": None},
             },
             True,
             3,
@@ -398,24 +352,15 @@ def test_get_dwat(recorder, regression_variables, data, datasets, show_regressio
                     "longley", ["csv", "xlsx"], {}, {"longley": "longley"}
                 )
             },
-            {
-                "TOTEMP-longley": {"TOTEMP": None, "longley": None},
-                "GNP-longley": {"GNP": None, "longley": None},
-                "ARMED-longley": {"ARMED": None, "longley": None},
-                "POP-longley": {"POP": None, "longley": None},
-            },
             True,
             1,
         ),
     ],
 )
-def test_get_bgod(
-    recorder, regression_variables, data, datasets, show_regression, lags
-):
+def test_get_bgod(recorder, regression_variables, data, show_regression, lags):
     _, _, _, model = regression_model.get_ols(
         regression_variables=regression_variables,
         data=data,
-        datasets=datasets,
         show_regression=show_regression,
     )
 
@@ -428,7 +373,7 @@ def test_get_bgod(
 
 @pytest.mark.vcr()
 @pytest.mark.parametrize(
-    "regression_variables, data, datasets, show_regression",
+    "regression_variables, data, show_regression",
     [
         (
             ["GNP-longley", "TOTEMP-longley", "POP-longley"],
@@ -436,12 +381,6 @@ def test_get_bgod(
                 "longley": econometrics_model.load(
                     "longley", ["csv", "xlsx"], {}, {"longley": "longley"}
                 )
-            },
-            {
-                "TOTEMP-longley": {"TOTEMP": None, "longley": None},
-                "GNP-longley": {"GNP": None, "longley": None},
-                "ARMED-longley": {"ARMED": None, "longley": None},
-                "POP-longley": {"POP": None, "longley": None},
             },
             True,
         ),
@@ -452,21 +391,14 @@ def test_get_bgod(
                     "longley", ["csv", "xlsx"], {}, {"longley": "longley"}
                 )
             },
-            {
-                "TOTEMP-longley": {"TOTEMP": None, "longley": None},
-                "GNP-longley": {"GNP": None, "longley": None},
-                "ARMED-longley": {"ARMED": None, "longley": None},
-                "POP-longley": {"POP": None, "longley": None},
-            },
             True,
         ),
     ],
 )
-def test_get_bpag(recorder, regression_variables, data, datasets, show_regression):
+def test_get_bpag(recorder, regression_variables, data, show_regression):
     _, _, _, model = regression_model.get_ols(
         regression_variables=regression_variables,
         data=data,
-        datasets=datasets,
         show_regression=show_regression,
     )
 
