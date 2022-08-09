@@ -62,7 +62,7 @@ def check_series_id(series_id: str) -> Tuple[bool, Dict]:
 
 
 @log_start_end(log=logger)
-def get_series_notes(search_query: str, limit: int = -1) -> pd.Series:
+def get_series_notes(search_query: str, limit: int = -1) -> pd.DataFrame:
     """Get series notes. [Source: FRED]
     Parameters
     ----------
@@ -72,8 +72,8 @@ def get_series_notes(search_query: str, limit: int = -1) -> pd.Series:
         Maximum number of series notes to display
     Returns
     ----------
-    pd.Series
-        Series of matched series
+    pd.DataFrame
+        DataFrame of matched series
     """
 
     fred.key(cfg.API_FRED_KEY)
