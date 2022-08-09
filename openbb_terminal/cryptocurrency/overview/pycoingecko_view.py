@@ -95,19 +95,20 @@ def display_crypto_heatmap(
         )
         text_sizes = squarify.normalize_sizes(df["market_cap"], 100, 100)
         rects = squarify.squarify(text_sizes, 0, 0, 100, 100)
-        for l, r in zip(df_copy["symbol"], rects):
+        for la, r in zip(df_copy["symbol"], rects):
             x, y, dx, dy = r["x"], r["y"], r["dx"], r["dy"]
             ax.text(
                 x + dx / 2,
                 y + dy / 2,
-                l,
+                la,
                 va="center",
                 ha="center",
                 color="black",
                 size=(
-                    text_sizes[df_copy.index[df_copy["symbol"] == l].tolist()[0]] ** 0.5
-                )
-                * 0.8,
+                    text_sizes[df_copy.index[df_copy["symbol"] == la].tolist()[0]]
+                    ** 0.5
+                    * 0.8
+                ),
             )
         ax.set_title(f"Top {top} Cryptocurrencies {category_str}")
         ax.set_axis_off()
