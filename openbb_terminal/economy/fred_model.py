@@ -112,23 +112,21 @@ def get_series_notes(search_query: str, limit: int = 10) -> pd.Series:
 
 
 @log_start_end(log=logger)
-def get_series_ids(series_term: str, num: int) -> Tuple[List[str], List[str]]:
+def get_series_ids(search_query: str, limit: int = 10) -> pd.DataFrame:
     """Get Series IDs. [Source: FRED]
     Parameters
     ----------
-    series_term : str
-        Search for this series term
-    num : int
+    search_query : str
+        Text query to search on fred series notes database
+    limit : int
         Maximum number of series IDs to output
     Returns
     ----------
-    List[str]
-        List of series IDs
-    List[str]
-        List of series Titles
+    pd.Dataframe
+        Dataframe with series IDs and titles
     """
     fred.key(cfg.API_FRED_KEY)
-    d_series = fred.search(series_term)
+    d_series = fred.search(search_query)
 
     # Cover invalid api and empty search terms
     if "error_message" in d_series:
@@ -145,9 +143,11 @@ def get_series_ids(series_term: str, num: int) -> Tuple[List[str], List[str]]:
         return [], []
 
     df_series = pd.DataFrame(d_series["seriess"])
-    df_series = df_series.sort_values(by=["popularity"], ascending=False).head(num)
+    df_series = df_series.sort_values(by=["popularity"], ascending=False).head(limit)
+    df_series = df_series[["id", "title"]]
+    df_series.set_index("id", inplace=True)
 
-    return df_series["id"].values, df_series["title"].values
+    return df_series
 
 
 @log_start_end(log=logger)
@@ -181,16 +181,16 @@ def get_series_data(series_id: str, start: str = None, end: str = None) -> pd.Da
 
 @log_start_end(log=logger)
 def get_aggregated_series_data(
-    d_series: Dict[str, Dict[str, str]], start: str = None, end: str = None
+    d_series: Dict[str, Dict[str, str]], start_date: str = None, end_date: str = None
 ) -> pd.DataFrame:
     """Get Series data. [Source: FRED]
     Parameters
     ----------
     series_id : str
         Series ID to get data from
-    start : str
+    start_date : str
         Start date to get data from, format yyyy-mm-dd
-    end : str
+    end_date : str
         End data to get from, format yyyy-mm-dd
 
     Returns
@@ -205,7 +205,7 @@ def get_aggregated_series_data(
         data = pd.concat(
             [
                 data,
-                pd.DataFrame(get_series_data(s_id, start, end), columns=[s_id]),
+                pd.DataFrame(get_series_data(s_id, start_date, end_date), columns=[s_id]),
             ],
             axis=1,
         )
