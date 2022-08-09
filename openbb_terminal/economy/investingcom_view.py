@@ -128,6 +128,6 @@ def display_economic_calendar(
         export_data(
             export,
             os.path.dirname(os.path.abspath(__file__)),
-            "ecocal",
+            "events",
             df,
         )

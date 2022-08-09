@@ -25,11 +25,11 @@ CATEGORIES = [
     "employment",
     "credit",
     "balance",
-    "economic activity",
-    "central banks",
+    "economic_activity",
+    "central_banks",
     "bonds",
     "inflation",
-    "confidence index",
+    "confidence_index",
 ]
 IMPORTANCES = ["high", "medium", "low", "all"]
 

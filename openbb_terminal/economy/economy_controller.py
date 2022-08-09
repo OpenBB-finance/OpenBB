@@ -65,7 +65,7 @@ class EconomyController(BaseController):
         "industry",
         "bigmac",
         "ycrv",
-        "ecocal",
+        "events",
     ]
 
     CHOICES_MENUS = ["pred", "qa"]
@@ -174,24 +174,21 @@ class EconomyController(BaseController):
                 c: None for c in investingcom_model.BOND_COUNTRIES
             }
 
-            self.choices["ecocal"]["-c"] = {
+            self.choices["events"]["-c"] = {
                 c: None for c in investingcom_model.CALENDAR_COUNTRIES
             }
-            self.choices["ecocal"]["--country"] = {
+            self.choices["events"]["--countries"] = {
                 c: None for c in investingcom_model.CALENDAR_COUNTRIES
             }
 
-            self.choices["ecocal"]["-i"] = {
+            self.choices["events"]["-i"] = {
                 c: None for c in investingcom_model.IMPORTANCES
             }
-            self.choices["ecocal"]["--importance"] = {
+            self.choices["events"]["--importances"] = {
                 c: None for c in investingcom_model.IMPORTANCES
             }
 
-            self.choices["ecocal"]["-cat"] = {
-                c: None for c in investingcom_model.CATEGORIES
-            }
-            self.choices["ecocal"]["--category"] = {
+            self.choices["events"]["--cat"] = {
                 c: None for c in investingcom_model.CATEGORIES
             }
 
@@ -252,7 +249,7 @@ class EconomyController(BaseController):
         mt.add_cmd("map", "Finviz")
         mt.add_cmd("bigmac", "NASDAQ Datalink")
         mt.add_cmd("ycrv", "Investing.com / FRED")
-        mt.add_cmd("ecocal", "Investing.com")
+        mt.add_cmd("events", "Investing.com")
         mt.add_raw("\n")
         mt.add_cmd("rtps", "Alpha Vantage")
         mt.add_cmd("valuation", "Finviz")
@@ -1014,13 +1011,13 @@ class EconomyController(BaseController):
                 )
 
     @log_start_end(log=logger)
-    def call_ecocal(self, other_args: List[str]):
-        """Process ecocal command"""
+    def call_events(self, other_args: List[str]):
+        """Process events command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="ecocal",
-            description="Economic calendar. If no start or end dates, default is the current day.",
+            prog="events",
+            description="Economic calendar. If no start or end dates, default is the current day high importance events.",
         )
         parser.add_argument(
             "-c",
@@ -1041,11 +1038,10 @@ class EconomyController(BaseController):
         )
         parser.add_argument(
             "-cat",
-            "--category",
+            "--categories",
             action="store",
             dest="category",
             choices=investingcom_model.CATEGORIES,
-            nargs="+",
             default=None,
             help="Event category.",
         )
@@ -1057,7 +1053,6 @@ class EconomyController(BaseController):
             help="The start date of the data (format: YEAR-MONTH-DAY, i.e. 2010-12-31)",
             default=None,
         )
-
         parser.add_argument(
             "-e",
             "--end_date",
@@ -1066,7 +1061,6 @@ class EconomyController(BaseController):
             help="The start date of the data (format: YEAR-MONTH-DAY, i.e. 2010-12-31)",
             default=None,
         )
-
         ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
@@ -1076,12 +1070,12 @@ class EconomyController(BaseController):
         )
 
         if ns_parser:
-
             if isinstance(ns_parser.country, list):
                 ns_parser.country = " ".join(ns_parser.country)
 
-            if isinstance(ns_parser.category, list):
-                ns_parser.category = " ".join(ns_parser.category)
+            investingcom_model.check_correct_country(
+                ns_parser.country, investingcom_model.CALENDAR_COUNTRIES
+            )
 
             investingcom_view.display_economic_calendar(
                 country=ns_parser.country,

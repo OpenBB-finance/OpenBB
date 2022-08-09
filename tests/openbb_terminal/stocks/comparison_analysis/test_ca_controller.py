@@ -532,22 +532,6 @@ def test_func_calling_get_similar_companies(
 
 
 @pytest.mark.vcr(record_mode="none")
-def test_call_po(mocker):
-    similar = ["MOCK_SIMILAR_1", "MOCK_SIMILAR_2"]
-    mock = mocker.Mock(return_value=["MOCK_SIMILAR", "MOCK_USER"])
-    target = "openbb_terminal.portfolio.portfolio_optimization.po_controller.PortfolioOptimizationController.menu"
-    mocker.patch(target=target, new=mock)
-
-    controller = ca_controller.ComparisonAnalysisController(similar=similar)
-    controller.call_po([])
-    mock.assert_called_once()
-
-    controller = ca_controller.ComparisonAnalysisController()
-    controller.call_po([])
-    assert controller.queue == []
-
-
-@pytest.mark.vcr(record_mode="none")
 def test_call_tsne(mocker):
     similar = ["MOCK_SIMILAR"]
     mock = mocker.Mock(return_value=["MOCK_SIMILAR", "MOCK_USER"])
