@@ -76,8 +76,8 @@ def notes(search_query: str, limit: int = 10) -> pd.DataFrame:
 @check_api_key(["API_FRED_KEY"])
 def display_fred_series(
     series_ids: List[str],
-    start_date: str,
-    end_date: str = "",
+    start_date: str = None,
+    end_date: str = None,
     limit: int = 10,
     raw: bool = False,
     export: str = "",
