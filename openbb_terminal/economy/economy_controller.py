@@ -192,7 +192,7 @@ class EconomyController(BaseController):
                 c: None for c in investingcom_model.CATEGORIES
             }
 
-            self.choices["valuation"]["--g"] = {c: None for c in self.d_GROUPS.keys()}
+            self.choices["valuation"]["--g"] = {c: None for c in self.d_GROUPS}
             self.choices["valuation"]["-s"] = {
                 c: None for c in self.valuation_sort_cols
             }
@@ -200,7 +200,7 @@ class EconomyController(BaseController):
                 c: None for c in self.valuation_sort_cols
             }
 
-            self.choices["performance"]["--g"] = {c: None for c in self.d_GROUPS.keys()}
+            self.choices["performance"]["--g"] = {c: None for c in self.d_GROUPS}
             self.choices["performance"]["-s"] = {
                 c: None for c in self.performance_sort_list
             }
@@ -208,7 +208,7 @@ class EconomyController(BaseController):
                 c: None for c in self.performance_sort_list
             }
 
-            self.choices["spectrum"]["--g"] = {c: None for c in self.d_GROUPS.keys()}
+            self.choices["spectrum"]["--g"] = {c: None for c in self.d_GROUPS}
 
             self.choices["map"]["-p"] = {c: None for c in self.map_period_list}
             self.choices["map"]["--period"] = {c: None for c in self.map_period_list}
@@ -411,7 +411,7 @@ class EconomyController(BaseController):
         if ns_parser:
             finviz_view.display_performance_map(
                 period=ns_parser.s_period,
-                filter=ns_parser.s_type,
+                map_filter=ns_parser.s_type,
             )
 
     @log_start_end(log=logger)

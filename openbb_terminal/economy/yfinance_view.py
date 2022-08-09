@@ -148,7 +148,7 @@ def search_indices(keyword: list, limit: int = 10):
     keyword_adjusted, queried_indices = get_search_indices(keyword, limit)
 
     print_rich_table(
-        queried_indices.iloc[:limit],
+        queried_indices,
         show_index=True,
         index_name="ticker",
         headers=queried_indices.columns,

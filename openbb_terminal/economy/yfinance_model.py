@@ -610,4 +610,6 @@ def get_search_indices(keyword: list, limit: int = 10) -> pd.DataFrame:
         fd.search_products(indices, keyword_adjusted, "short_name"), orient="index"
     )
 
+    queried_indices = queried_indices.iloc[:limit]
+
     return keyword_adjusted, queried_indices

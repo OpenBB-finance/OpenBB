@@ -209,8 +209,8 @@ def get_aggregated_series_data(
     data = pd.DataFrame()
 
     detail = {}
-    for id in series_ids:
-        information = check_series_id(id)
+    for ids in series_ids:
+        information = check_series_id(ids)
 
         if "seriess" in information:
             detail[id] = {

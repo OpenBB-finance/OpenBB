@@ -427,7 +427,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [],
             dict(
                 period="1w",
-                filter="world",
+                map_filter="world",
             ),
         ),
         (

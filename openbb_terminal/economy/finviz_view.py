@@ -15,17 +15,17 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_performance_map(period: str = "1d", filter: str = "sp500"):
+def display_performance_map(period: str = "1d", map_filter: str = "sp500"):
     """Opens Finviz map website in a browser. [Source: Finviz]
 
     Parameters
     ----------
     period : str
         Performance period. Available periods are 1d, 1w, 1m, 3m, 6m, 1y.
-    scope : str
+    map_filter : str
         Map filter. Available map filters are sp500, world, full, etf.
     """
-    finviz_model.get_performance_map(period, filter)
+    finviz_model.get_performance_map(period, map_filter)
 
 
 @log_start_end(log=logger)

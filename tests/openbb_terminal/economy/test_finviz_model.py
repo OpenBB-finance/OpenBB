@@ -22,7 +22,7 @@ def test_get_performance_map(mocker):
         target="openbb_terminal.economy.finviz_model.webbrowser.open", new=mock_open
     )
 
-    finviz_model.get_performance_map(period="1w", filter="sp500")
+    finviz_model.get_performance_map(period="1w", map_filter="sp500")
 
     mock_open.assert_called_once()
 

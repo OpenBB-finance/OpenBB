@@ -188,7 +188,7 @@ def get_economic_calendar(
         categories_list = [category.title()]
 
     # Joint default for countries and importances
-    if countries_list == ["all"] and importances_list == []:
+    if countries_list == ["all"] and not importances_list:
         countries_list = CALENDAR_COUNTRIES[:-1]
         importances_list = ["high"]
     elif importances_list is None:
@@ -244,34 +244,34 @@ def get_economic_calendar(
         logger.error("No data")
         console.print("[red]No data.[/red]\n")
         return pd.DataFrame(), ""
+
+    data.drop(columns=data.columns[0], axis=1, inplace=True)
+    data.drop_duplicates(keep="first", inplace=True)
+    data["date"] = data["date"].apply(
+        lambda date: date[-4:] + "-" + date[3:5] + "-" + date[:2]
+    )
+    data.sort_values(by=data.columns[0], inplace=True)
+
+    if importances_list:
+        if importances_list == ["all"]:
+            importances_list = IMPORTANCES
+        data = data[data["importance"].isin(importances_list)]
+
+    if time_zone is None:
+        time_zone = "GMT"
+        console.print("[red]Error on timezone, default was used.[/red]\n")
+
+    data.fillna(value="", inplace=True)
+    data.columns = data.columns.str.title()
+    if len(countries_list) == 1:
+        del data["Zone"]
+        detail = f"{country.title()} economic calendar ({time_zone})"
     else:
-        data.drop(columns=data.columns[0], axis=1, inplace=True)
-        data.drop_duplicates(keep="first", inplace=True)
-        data["date"] = data["date"].apply(
-            lambda date: date[-4:] + "-" + date[3:5] + "-" + date[:2]
-        )
-        data.sort_values(by=data.columns[0], inplace=True)
+        detail = f"Economic Calendar ({time_zone})"
+        data["Zone"] = data["Zone"].str.title()
 
-        if importances_list:
-            if importances_list == ["all"]:
-                importances_list = IMPORTANCES
-            data = data[data["importance"].isin(importances_list)]
+    data["Importance"] = data["Importance"].str.title()
 
-        if time_zone is None:
-            time_zone = "GMT"
-            console.print("[red]Error on timezone, default was used.[/red]\n")
-
-        data.fillna(value="", inplace=True)
-        data.columns = data.columns.str.title()
-        if len(countries_list) == 1:
-            del data["Zone"]
-            detail = f"{country.title()} economic calendar ({time_zone})"
-        else:
-            detail = f"Economic Calendar ({time_zone})"
-            data["Zone"] = data["Zone"].str.title()
-
-        data["Importance"] = data["Importance"].str.title()
-
-        data = data[:limit]
+    data = data[:limit]
 
     return data, detail
