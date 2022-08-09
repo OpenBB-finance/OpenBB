@@ -21,7 +21,6 @@ from openbb_terminal.cryptocurrency.defi import (
     llama_view,
     substack_view,
     terraengineer_model,
-    terraengineer_view,
     terramoney_fcd_model,
     terramoney_fcd_view,
     smartstake_view,
@@ -159,71 +158,6 @@ class DefiController(BaseController):
                 export=ns_parser.export,
                 address=ns_parser.address,
             )
-
-    @log_start_end(log=logger)
-    def call_aterra(self, other_args: List[str]):
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="aterra",
-            description="""
-                Displays the 30-day history of an asset in a certain terra address.
-                [Source: https://terra.engineer/]
-            """,
-        )
-        parser.add_argument(
-            "--asset",
-            dest="asset",
-            type=str,
-            help="Terra asset {ust,luna,sdt} Default: ust",
-            default=terraengineer_model.ASSETS[0],
-            choices=terraengineer_model.ASSETS,
-        )
-        parser.add_argument(
-            "--address",
-            dest="address",
-            type=check_terra_address_format,
-            help="Terra address. Valid terra addresses start with 'terra'",
-            required="-h" not in other_args,
-        )
-
-        if other_args and not other_args[0][0] == "-":
-            other_args.insert(0, "--asset")
-
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-
-        if ns_parser:
-            terraengineer_view.display_terra_asset_history(
-                export=ns_parser.export,
-                address=ns_parser.address,
-                asset=ns_parser.asset,
-            )
-
-    @log_start_end(log=logger)
-    def call_ayr(self, other_args: List[str]):
-        """Process ayr command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="ayr",
-            description="""
-                Displays the 30-day history of the Anchor Yield Reserve.
-                An increasing yield reserve indicates the return on collateral by borrowers in Anchor
-                is greater than the yield paid to depositors. A decreasing yield reserve means yield paid
-                to depositors is outpacing the staking returns of borrower's collateral.
-                TLDR: Shows the address that contains UST that is paid on anchor interest earn.
-                [Source: https://terra.engineer/]
-            """,
-        )
-
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-
-        if ns_parser:
-            terraengineer_view.display_anchor_yield_reserve(export=ns_parser.export)
 
     @log_start_end(log=logger)
     def call_sinfo(self, other_args: List[str]):
