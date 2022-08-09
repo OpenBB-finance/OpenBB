@@ -24,10 +24,10 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def show_macro_data(
-    parameters: list = ["CPI"],
-    countries: list = ["United_States"],
+    parameters: list = None,
+    countries: list = None,
     start_date: str = "1900-01-01",
-    end_date=datetime.today().date(),
+    end_date: str = str(datetime.today().date()),
     convert_currency=False,
     raw: bool = False,
     external_axes: Optional[List[plt.axes]] = None,
@@ -58,6 +58,12 @@ def show_macro_data(
     ----------
     Plots the Series.
     """
+
+    if parameters is None:
+        parameters = ["CPI"]
+    if countries is None:
+        countries = ["United_States"]
+
     df_rounded, units, denomination = econdb_model.get_aggregated_macro_data(
         parameters, countries, start_date, end_date, convert_currency
     )
@@ -129,8 +135,8 @@ def show_macro_data(
 
 @log_start_end(log=logger)
 def show_treasuries(
-    instruments: list = ["nominal"],
-    maturities: list = ["10y"],
+    instruments: list = None,
+    maturities: list = None,
     frequency: str = "monthly",
     start_date: str = "1900-01-01",
     end_date: str = str(datetime.today().date()),
@@ -164,6 +170,11 @@ def show_treasuries(
     ----------
     Plots the Treasury Series.
     """
+
+    if instruments is None:
+        instruments = ["nominal"]
+    if maturities is None:
+        maturities = ["10y"]
 
     treasury_data = econdb_model.get_treasuries(
         instruments, maturities, frequency, start_date, end_date

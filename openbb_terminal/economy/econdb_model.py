@@ -603,8 +603,8 @@ def get_macro_countries() -> Dict[str, str]:
 
 @log_start_end(log=logger)
 def get_aggregated_macro_data(
-    parameters: list = ["CPI"],
-    countries: list = ["United_States"],
+    parameters: list = None,
+    countries: list = None,
     start_date: str = "1900-01-01",
     end_date=datetime.today().date(),
     convert_currency=False,
@@ -631,6 +631,12 @@ def get_aggregated_macro_data(
     Dictionary
         A dictionary containing the units of each country's parameter (e.g. EUR)
     """
+
+    if parameters is None:
+        parameters = ["CPI"]
+    if countries is None:
+        countries = ["United_States"]
+
     country_data: Dict[Any, Dict[Any, pd.Series]] = {}
     units: Dict[Any, Dict[Any, Any]] = {}
 
@@ -679,8 +685,8 @@ def get_aggregated_macro_data(
 
 @log_start_end(log=logger)
 def get_treasuries(
-    instruments: list = ["nominal"],
-    maturities: list = ["10y"],
+    instruments: list = None,
+    maturities: list = None,
     frequency: str = "monthly",
     start_date: str = "1900-01-01",
     end_date: str = str(datetime.today().date()),
@@ -706,6 +712,12 @@ def get_treasuries(
     treasury_data: pd.Dataframe
         Holds data of the selected types and maturities
     """
+
+    if instruments is None:
+        instruments = ["nominal"]
+    if maturities is None:
+        maturities = ["10y"]
+
     treasury_data: Dict[Any, Dict[Any, pd.Series]] = {}
 
     for instrument in instruments:
