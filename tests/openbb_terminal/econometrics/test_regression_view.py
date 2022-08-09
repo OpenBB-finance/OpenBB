@@ -15,7 +15,7 @@ from openbb_terminal.econometrics import (
     "regression_variables, data, show_regression, lags",
     [
         (
-            ["TOTEMP-longley", "GNP-longley", "ARMED-longley", "POP-longley"],
+            ["longley.TOTEMP", "longley.ARMED", "longley.POP", "longley.GNP"],
             {
                 "longley": econometrics_model.load(
                     "longley", ["csv", "xlsx"], {}, {"longley": "longley"}
@@ -25,7 +25,7 @@ from openbb_terminal.econometrics import (
             1,
         ),
         (
-            ["TOTEMP-longley", "GNP-longley", "ARMED-longley", "POP-longley"],
+            ["longley.TOTEMP", "longley.ARMED", "longley.POP", "longley.GNP"],
             {
                 "longley": econometrics_model.load(
                     "longley", ["csv", "xlsx"], {}, {"longley": "longley"}
@@ -52,7 +52,7 @@ def test_display_bgod(regression_variables, data, show_regression, lags):
     "regression_variables, data, show_regression",
     [
         (
-            ["TOTEMP-longley", "ARMED-longley", "POP-longley"],
+            ["longley.TOTEMP", "longley.ARMED", "longley.POP"],
             {
                 "longley": econometrics_model.load(
                     "longley", ["csv", "xlsx"], {}, {"longley": "longley"}
@@ -61,17 +61,11 @@ def test_display_bgod(regression_variables, data, show_regression, lags):
             False,
         ),
         (
-            ["GNP-longley", "ARMED-longley", "POP-longley"],
+            ["longley.GNP", "longley.ARMED", "longley.POP"],
             {
                 "longley": econometrics_model.load(
                     "longley", ["csv", "xlsx"], {}, {"longley": "longley"}
                 )
-            },
-            {
-                "TOTEMP-longley": {"TOTEMP": None, "longley": None},
-                "GNP-longley": {"GNP": None, "longley": None},
-                "ARMED-longley": {"ARMED": None, "longley": None},
-                "POP-longley": {"POP": None, "longley": None},
             },
             False,
         ),
