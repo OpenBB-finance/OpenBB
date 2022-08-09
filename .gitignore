@@ -27,7 +27,6 @@ openbb_terminal/portfolio/portfolios/*
 **/.ipynb_checkpoints
 *.swp
 *.http
-bots/interactive/*.html
 .coverage.*
 !openbb_terminal/custom_reports/*/.ipynb
 

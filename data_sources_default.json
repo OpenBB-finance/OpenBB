@@ -1,5 +1,9 @@
 {
     "stocks": {
+        "news": [
+            "feedparser",
+            "newsapi"
+        ],
         "load": [
             "yf",
             "iex",

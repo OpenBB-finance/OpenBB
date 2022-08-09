@@ -10,4 +10,3 @@
 8   2021-12-01  NASDAQ Global  Capitalworks Emerging Markets Acquisition Corp       20000000.0  10.00     priced  CMCAU        200000000.0
 9   2021-12-01  NASDAQ Global                           TLGY Acquisition Corp       20000000.0  10.00     priced  TLGYU        200000000.0
 10  2021-12-01                                            AP Acquisition Corp                              filed  APCAU        172500000.0
-

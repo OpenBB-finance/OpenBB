@@ -352,7 +352,6 @@ class TechnicalAnalysisController(StockBaseController):
             """,
         )
         parser.add_argument(
-            "-f",
             "--fast",
             action="store",
             dest="n_fast",
@@ -361,7 +360,6 @@ class TechnicalAnalysisController(StockBaseController):
             help="The short period.",
         )
         parser.add_argument(
-            "-s",
             "--slow",
             action="store",
             dest="n_slow",
@@ -900,7 +898,7 @@ class TechnicalAnalysisController(StockBaseController):
             "--period",
             dest="period",
             type=int,
-            help="Days to lookback for retracement",
+            help="Days to look back for retracement",
             default=120,
         )
 

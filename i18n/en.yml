@@ -5,6 +5,7 @@ en:
   survey: fill in our 2-minute survey so we better understand how we can improve the terminal
   update: attempt to update the terminal automatically (GitHub version)
   exe: execute automated routine script
+  news: display news articles based on term and data sources
   settings: tune settings (export folder, timezone, language, plot size)
   featflags: enable and disable feature flags
   sources: select your preferred data sources
@@ -99,12 +100,11 @@ en:
   stocks/CANDLE_raw: Shows raw data instead of chart. If sort is set those are the top ones, otherwise we grab latest data to date
   stocks/CANDLE_trend: Flag to add high and low trends to candle
   stocks/CANDLE_mov_avg: Add moving average in number of days to plot and separate by a comma
-  stocks/news: latest news of the company
+  stocks/NEWS: latest news of the company
   stocks/codes: FIGI, SIK and SIC codes codes
-  stocks/NEWS: Prints latest news about company, including date, title and web link. [News API]
   stocks/NEWS_date: The starting date (format YYYY-MM-DD) to search articles from
   stocks/NEWS_oldest: Show oldest articles first
-  stocks/NEWS_sources: Show news only from the sources specified (e.g bbc yahoo.com)
+  stocks/NEWS_article: Show news only from the sources specified (e.g bbc yahoo.com)
   stocks/th: trading hours,                check open markets
   stocks/options: options menu,                 chains, open interest, greeks, parity
   stocks/disc: discover trending stocks,     map, sectors, high short interest
@@ -150,7 +150,6 @@ en:
   stocks/options/screen/scr: screen data from this preset
   stocks/options/screen/_screened_tickers: Last screened tickers
   stocks/options/screen/ca: take these to comparison analysis menu
-  stocks/options/screen/po: take these to portoflio optimization menu
   stocks/options/pricing/_ticker: Ticker
   stocks/options/pricing/_expiry: Expiry
   stocks/options/pricing/add: add an expected price to the list
@@ -244,7 +243,6 @@ en:
   stocks/scr/technical: technical (e.g. Beta, SMA50, 52W Low, RSI, Change)
   stocks/scr/_screened_tickers: Last screened tickers
   stocks/scr/ca: take these to comparison analysis menu
-  stocks/scr/po: take these to portfolio optimization menu
   stocks/ins/view: view available presets
   stocks/ins/set: set one of the available presets
   stocks/ins/_preset: Preset
@@ -313,7 +311,6 @@ en:
   stocks/ca/ownership: brief ownership comparison
   stocks/ca/performance: brief performance comparison
   stocks/ca/technical: brief technical comparison
-  stocks/ca/po: portfolio optimization for selected tickers
   stocks/ba/load: load a specific stock ticker for analysis
   stocks/ba/_ticker: Ticker
   stocks/ba/headlines: sentiment from 15+ major news headlines
@@ -743,7 +740,7 @@ en:
   economy/index: find and plot any (major) index on the market
   economy/treasury: obtain U.S. treasury rates
   economy/ycrv: show sovereign yield curves
-  economy/ecocal: display economic calendar
+  economy/events: display economic calendar
   economy/plot: plot data from the above commands together
   economy/rtps: real-time performance sectors
   economy/valuation: valuation of sectors, industry, country
@@ -1011,6 +1008,7 @@ en:
   dashboards/chains: options chain analysis
   dashboards/shortdata: finra shortdata analysis
   dashboards/crypto: cryptocurrency exchange rates against USD
+  dashboards/futures: historical futures performance
   reports/_reports_: Select one of the following report
   forecast/_disclaimer_: DISCLAIMER
   forecast/_comp_device: Current Compute Device (CPU or GPU)

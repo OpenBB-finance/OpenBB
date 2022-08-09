@@ -313,24 +313,6 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             ),
         ),
         (
-            "call_news",
-            [
-                "--limit=1",
-                "--date=2022-01-07",
-                "--oldest",
-                "--sources=MOCK_SOURCE_1,MOCK_SOURCE_2",
-            ],
-            "newsapi_view.display_news",
-            [],
-            dict(
-                term="MOCK_TICKER",
-                num=1,
-                s_from="2022-01-07",
-                show_newest=False,
-                sources="MOCK_SOURCE_1,MOCK_SOURCE_2.com",
-            ),
-        ),
-        (
             "call_disc",
             [],
             "StocksController.load_class",
@@ -513,7 +495,6 @@ def test_call_func_no_parser(func, mocker):
     "func",
     [
         "call_candle",
-        "call_news",
         "call_res",
         "call_dd",
         "call_fa",

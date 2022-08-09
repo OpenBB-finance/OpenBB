@@ -31,7 +31,7 @@ and `getfinviz` all provide a similar function. Sources may return different res
 
 ````
 (🦋) /stocks/ca/ $ getfinviz
-[Finviz] Similar Companies: WMT, BIG, BJ, COST, DG, DLTR, OLLI, PSMT, TGT, TUEM 
+[Finviz] Similar Companies: WMT, BIG, BJ, COST, DG, DLTR, OLLI, PSMT, TGT, TUEM
 
 (🦋) /stocks/ca/ $ getpoly
 [Polygon] Similar Companies: WMT, AMZN, COST, EBAY, DLTR, KSS, JCP, TGT, M, DG
@@ -51,7 +51,7 @@ Or, by adjusting the date, it is possible to define a correlation matrix with a 
 
 <a target="_blank" href="https://user-images.githubusercontent.com/46355364/171149853-1a84e9af-7099-4a72-b687-01f2e32d0485.png"><img alt="YTD correlation matrix" src="https://user-images.githubusercontent.com/46355364/171149853-1a84e9af-7099-4a72-b687-01f2e32d0485.png"></a>
 
-The list of similar companies can be compared by a number of fundamental metrics. 
+The list of similar companies can be compared by a number of fundamental metrics.
 
 `valuation` displays earnings and valuation multiples.
 <a target="_blank" href="https://user-images.githubusercontent.com/46355364/171150439-31cbe514-e676-4814-8b4b-a6087e2d417a.png"><img alt="Valuation" src="https://user-images.githubusercontent.com/46355364/171150439-31cbe514-e676-4814-8b4b-a6087e2d417a.png"></a>
@@ -70,8 +70,7 @@ This list of similar companies can be imported directly to the <a href="https://
 The correlation matrix can also be used in other ways, like measuring sectors or asset classes. The chart below is a daily, price-normalized, comparison of S&P, NASDAQ, and BTC futures.
 
 ````
-(🦋) /stocks/ca/ $ add es=f
-[Custom] Similar Companies: ES=F, NQ=F, BTC=F 
+(🦋) /stocks/ca/ $ ticker F
 
 (🦋) /stocks/ca/ $ historical -n
 ````
@@ -81,7 +80,7 @@ This is a chart of the NASDAQ 100 Index, and three different futures contracts t
 
 ````
 (🦋) /stocks/ca/ $ set ^NDX,NQH23.CME,NQZ22.CME,NQ=F
-[Custom] Similar Companies: ^NDX, NQH23.CME, NQZ22.CME, NQ=F 
+[Custom] Similar Companies: ^NDX, NQH23.CME, NQZ22.CME, NQ=F
 
 (🦋) /stocks/ca/ $ historical
 ````
@@ -90,7 +89,7 @@ This is a chart of the NASDAQ 100 Index, and three different futures contracts t
 Compare financial statements of the ten largest US banks.
 ````
 (🦋) /stocks/ca/ $ set C,USB,WFC,JPM,TD,GS,PNC,TFC,BAC,COF
-[Custom] Similar Companies: C, USB, WFC, JPM, TD, COF, PNC, TFC, BAC, GS 
+[Custom] Similar Companies: C, USB, WFC, JPM, TD, COF, PNC, TFC, BAC, GS
 (🦋) /stocks/ca/ $ cashflow
 ````
 <a target="_blank" href="https://user-images.githubusercontent.com/46355364/171151317-5077646d-7488-46ae-9899-515d49f0f114.png"><img alt="Cashflow comparison of the ten largest US banks" src="https://user-images.githubusercontent.com/46355364/171151317-5077646d-7488-46ae-9899-515d49f0f114.png"></a>

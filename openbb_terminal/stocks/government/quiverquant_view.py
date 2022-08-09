@@ -170,12 +170,16 @@ def display_government_buys(
         if "-" in x
         else x.strip("$").replace(",", "")
     )
-    df_gov["lower"] = df_gov[["min", "max", "Transaction"]].apply(
-        lambda x: float(x["min"])
-        if x["Transaction"] == "Purchase"
-        else -float(x["max"]),
-        axis=1,
-    )
+    try:
+        df_gov["lower"] = df_gov[["min", "max", "Transaction"]].apply(
+            lambda x: float(x["min"])
+            if x["Transaction"] == "Purchase"
+            else -float(x["max"]),
+            axis=1,
+        )
+    except ValueError:
+        console.print("[red]No enough data.[/red]\n")
+        return
     df_gov["upper"] = df_gov[["min", "max", "Transaction"]].apply(
         lambda x: float(x["max"])
         if x["Transaction"] == "Purchase"
@@ -266,6 +270,11 @@ def display_government_sells(
     df_gov["Range"] = df_gov["Range"].apply(
         lambda x: "$5,000,001-$5,000,001" if x == ">$5,000,000" else x
     )
+
+    if df_gov.empty:
+        console.print("[red]Not enough data to display[/red]\n")
+        return
+
     df_gov["min"] = df_gov["Range"].apply(
         lambda x: x.split("-")[0]
         .strip("$")
@@ -309,7 +318,10 @@ def display_government_sells(
             .head(n=num)
         )
         print_rich_table(
-            df, headers=["Amount ($1k)"], show_index=True, title="Top Government Trades"
+            df,
+            headers=["Amount ($1k)"],
+            show_index=True,
+            title="Top Government Trades",
         )
 
     # This plot has 1 axis

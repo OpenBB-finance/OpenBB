@@ -18,10 +18,10 @@ from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
     valid_date,
+    parse_and_split_input,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.portfolio.portfolio_optimization import po_controller
 from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.stocks.comparison_analysis import ca_controller
 from openbb_terminal.stocks.screener import (
@@ -54,7 +54,6 @@ class ScreenerController(BaseController):
         "ownership",
         "performance",
         "technical",
-        "po",
         "ca",
     ]
 
@@ -104,6 +103,22 @@ class ScreenerController(BaseController):
             }
             self.completer = NestedCompleter.from_nested_dict(choices)
 
+    def parse_input(self, an_input: str) -> List:
+        """Parse controller input
+
+        Overrides the parent class function to handle github org/repo path convention.
+        See `BaseController.parse_input()` for details.
+        """
+        # Filtering out sorting parameters with forward slashes like P/E
+        sort_filter = r"((\ -s |\ --sort ).*?(P\/E|Fwd P\/E|P\/S|P\/B|P\/C|P\/FCF)*)"
+
+        custom_filters = [sort_filter]
+
+        commands = parse_and_split_input(
+            an_input=an_input, custom_filters=custom_filters
+        )
+        return commands
+
     def print_help(self):
         """Print help"""
         mt = MenuText("stocks/scr/")
@@ -123,7 +138,6 @@ class ScreenerController(BaseController):
         mt.add_param("_screened_tickers", ", ".join(self.screen_tickers))
         mt.add_raw("\n")
         mt.add_menu("ca", self.screen_tickers)
-        mt.add_menu("po", self.screen_tickers)
         console.print(text=mt.menu_text, menu="Stocks - Screener")
 
     @log_start_end(log=logger)
@@ -735,18 +749,6 @@ class ScreenerController(BaseController):
                     sort=ns_parser.sort,
                     export=ns_parser.export,
                 )
-
-    @log_start_end(log=logger)
-    def call_po(self, _):
-        """Call the portfolio optimization menu with selected tickers"""
-        if self.screen_tickers:
-            self.queue = po_controller.PortfolioOptimizationController(
-                self.screen_tickers
-            ).menu(custom_path_menu_above="/portfolio/")
-        else:
-            console.print(
-                "Some tickers must be screened first through one of the presets!\n"
-            )
 
     @log_start_end(log=logger)
     def call_ca(self, _):

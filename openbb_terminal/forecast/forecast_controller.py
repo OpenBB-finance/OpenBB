@@ -651,7 +651,6 @@ class ForecastController(BaseController):
             )
         if forecast_only:
             parser.add_argument(
-                "-f",
                 "--forecast_only",
                 help="Do not plot the hisotorical data without forecasts.",
                 action="store_true",

@@ -57,7 +57,7 @@ repos:
     hooks:
       - id: pylint
         name: pylint
-        entry: pylint bots openbb_terminal terminal.py tests
+        entry: pylint openbb_terminal terminal.py tests
         language: system
         types: [python]
   - repo: https://github.com/Yelp/detect-secrets
@@ -71,4 +71,11 @@ repos:
     rev: v2.32.1
     hooks:
       - id: pyupgrade
-        args: [--py36-plus]
+        args: [--py38-plus]
+  - repo: local
+    hooks:
+      - id: reserved_args
+        name: Check validity of reserved arguments
+        entry: python custom_pre_commit/check_reserved_args.py
+        language: system
+        types: [python]
