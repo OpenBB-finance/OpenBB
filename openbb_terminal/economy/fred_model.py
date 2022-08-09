@@ -234,7 +234,7 @@ def get_aggregated_series_data(
 
 
 @log_start_end(log=logger)
-def get_yield_curve(date: Optional[datetime]) -> Tuple[pd.DataFrame, str]:
+def get_yield_curve(date: Optional[datetime] = None) -> Tuple[pd.DataFrame, datetime]:
     """Gets yield curve data from FRED
 
     Parameters
@@ -294,6 +294,7 @@ def get_yield_curve(date: Optional[datetime]) -> Tuple[pd.DataFrame, str]:
     rates.insert(
         0,
         "Maturity",
-        ["1M", "3M", "6M", "1Y", "2Y", "3Y", "5Y", "7Y", "10Y", "20Y", "30Y"],
+        [1 / 12, 0.25, 0.5, 1, 2, 3, 5, 7, 10, 20, 30],
     )
+
     return rates, date_of_yield

@@ -176,7 +176,7 @@ def display_fred_series(
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
 def display_yield_curve(
-    date: datetime,
+    date: datetime = None,
     external_axes: Optional[List[plt.Axes]] = None,
     raw: bool = False,
     export: str = "",
@@ -193,7 +193,7 @@ def display_yield_curve(
     rates, date_of_yield = fred_model.get_yield_curve(date)
     if rates.empty:
         console.print(
-            f"[red]Yield data not found for {date.strftime('%Y-%m-%d')}[/red].\n"
+            f"[red]Yield data not found for {date.strftime('%Y-%m-%d')}.[/red]\n"
         )
         return
     if external_axes is None:
@@ -203,16 +203,7 @@ def display_yield_curve(
     else:
         return
 
-    tenors = []
-    for i, row in rates.iterrows():
-        t = row["Maturity"][-3:].strip()
-        rates.at[i, "Maturity"] = t
-        if t[-1] == "M":
-            tenors.append(int(t[:-1]) / 12)
-        elif t[-1] == "Y":
-            tenors.append(int(t[:-1]))
-
-    ax.plot(tenors, rates.Rate, "-o")
+    ax.plot(rates["Maturity"], rates["Rate"], "-o")
     ax.set_xlabel("Maturity")
     ax.set_ylabel("Rate (%)")
     theme.style_primary_axis(ax)
