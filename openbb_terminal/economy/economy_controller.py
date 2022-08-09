@@ -645,20 +645,20 @@ class EconomyController(BaseController):
                 return self.queue
 
             if ns_parser.parameter:
-                # series_dict = {}
-                # for series in ns_parser.parameter:
-                #     information = fred_model.check_series_id(series)
+                series_dict = {}
+                for series in ns_parser.parameter:
+                    information = fred_model.check_series_id(series)
 
-                #     if "seriess" in information:
-                #         series_dict[series] = {
-                #             "title": information["seriess"][0]["title"],
-                #             "units": information["seriess"][0]["units_short"],
-                #         }
+                    if "seriess" in information:
+                        series_dict[series] = {
+                            "title": information["seriess"][0]["title"],
+                            "units": information["seriess"][0]["units_short"],
+                        }
 
-                #         self.current_series = {series: series_dict[series]}
+                        self.current_series = {series: series_dict[series]}
 
-                # if not series_dict:
-                #     return self.queue
+                if not series_dict:
+                    return self.queue
 
                 df, detail = fred_model.get_aggregated_series_data(
                     series_ids=ns_parser.parameter,
