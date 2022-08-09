@@ -629,7 +629,7 @@ class EconomyController(BaseController):
             other_args,
             export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
             raw=True,
-            limit=5,
+            limit=100,
         )
         if ns_parser:
             if ns_parser.query:
@@ -645,27 +645,30 @@ class EconomyController(BaseController):
                 return self.queue
 
             if ns_parser.parameter:
-                series_dict = {}
-                for series in ns_parser.parameter:
-                    information = fred_model.check_series_id(series)
+                # series_dict = {}
+                # for series in ns_parser.parameter:
+                #     information = fred_model.check_series_id(series)
 
-                    if "seriess" in information:
-                        series_dict[series] = {
-                            "title": information["seriess"][0]["title"],
-                            "units": information["seriess"][0]["units_short"],
-                        }
+                #     if "seriess" in information:
+                #         series_dict[series] = {
+                #             "title": information["seriess"][0]["title"],
+                #             "units": information["seriess"][0]["units_short"],
+                #         }
 
-                        self.current_series = {series: series_dict[series]}
+                #         self.current_series = {series: series_dict[series]}
 
-                if not series_dict:
-                    return self.queue
+                # if not series_dict:
+                #     return self.queue
 
-                for series_id, data in series_dict.items():
-                    self.FRED_TITLES[series_id] = f"{data['title']} ({data['units']})"
-
-                df = fred_model.get_aggregated_series_data(
-                    series_dict, ns_parser.start_date, ns_parser.end_date
+                df, detail = fred_model.get_aggregated_series_data(
+                    series_ids=ns_parser.parameter,
+                    start_date=ns_parser.start_date,
+                    end_date=ns_parser.end_date,
+                    limit=ns_parser.limit,
                 )
+
+                for series_id, data in detail.items():
+                    self.FRED_TITLES[series_id] = f"{data['title']} ({data['units']})"
 
                 if not df.empty:
                     self.DATASETS["fred"] = pd.concat(
@@ -680,12 +683,12 @@ class EconomyController(BaseController):
                     )
 
                     fred_view.display_fred_series(
-                        d_series=series_dict,
+                        series_ids=ns_parser.parameter,
                         start_date=ns_parser.start_date,
                         end_date=ns_parser.end_date,
+                        limit=ns_parser.limit,
                         raw=ns_parser.raw,
                         export=ns_parser.export,
-                        limit=ns_parser.limit,
                     )
 
                     self.update_runtime_choices()
@@ -1417,51 +1420,55 @@ class EconomyController(BaseController):
     @log_start_end(log=logger)
     def call_pred(self, _):
         """Process pred command"""
-        if not self.DATASETS:
-            console.print(
-                "There is no data stored yet. Please use either the 'macro', 'fred', 'index' and/or "
-                "'treasury' command in combination with the -st argument to be able to plot data.\n"
-            )
-            return
 
         from openbb_terminal.economy.prediction.pred_controller import (
             PredictionTechniquesController,
         )
 
         data: Dict = {}
+        all_datasets_empty = True
         for source, _ in self.DATASETS.items():
             if not self.DATASETS[source].empty:
+                all_datasets_empty = False
                 if len(self.DATASETS[source].columns) == 1:
                     data[self.DATASETS[source].columns[0]] = self.DATASETS[source]
                 else:
                     for col in list(self.DATASETS[source].columns):
                         data[col] = self.DATASETS[source][col].to_frame()
 
-        self.queue = self.load_class(
-            PredictionTechniquesController, self.DATASETS, self.queue
-        )
-
-    @log_start_end(log=logger)
-    def call_qa(self, _):
-        """Process pred command"""
-        if not self.DATASETS:
+        if all_datasets_empty:
             console.print(
                 "There is no data stored yet. Please use either the 'macro', 'fred', 'index' and/or "
                 "'treasury' command in combination with the -st argument to be able to plot data.\n"
             )
             return
 
+        self.queue = self.load_class(PredictionTechniquesController, data, self.queue)
+
+    @log_start_end(log=logger)
+    def call_qa(self, _):
+        """Process pred command"""
+
         from openbb_terminal.economy.quantitative_analysis.qa_controller import (
             QaController,
         )
 
         data: Dict = {}
+        all_datasets_empty = True
         for source, _ in self.DATASETS.items():
             if not self.DATASETS[source].empty:
+                all_datasets_empty = False
                 if len(self.DATASETS[source].columns) == 1:
                     data[self.DATASETS[source].columns[0]] = self.DATASETS[source]
                 else:
                     for col in list(self.DATASETS[source].columns):
                         data[col] = self.DATASETS[source][col].to_frame()
+
+        if all_datasets_empty:
+            console.print(
+                "There is no data stored yet. Please use either the 'macro', 'fred', 'index' and/or "
+                "'treasury' command in combination with the -st argument to be able to plot data.\n"
+            )
+            return
 
         self.queue = self.load_class(QaController, data, self.queue)
