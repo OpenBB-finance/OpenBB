@@ -154,15 +154,15 @@ def get_series_ids(search_query: str, limit: int = -1) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_series_data(series_id: str, start: str = None, end: str = None) -> pd.DataFrame:
+def get_series_data(series_id: str, start_date: str = None, end_date: str = None) -> pd.DataFrame:
     """Get Series data. [Source: FRED]
     Parameters
     ----------
     series_id : str
         Series ID to get data from
-    start : str
+    start_date : str
         Start date to get data from, format yyyy-mm-dd
-    end : str
+    end_date : str
         End data to get from, format yyyy-mm-dd
 
     Returns
@@ -174,7 +174,7 @@ def get_series_data(series_id: str, start: str = None, end: str = None) -> pd.Da
 
     try:
         fredapi_client = Fred(cfg.API_FRED_KEY)
-        df = fredapi_client.get_series(series_id, start, end)
+        df = fredapi_client.get_series(series_id, start_date, end_date)
     # Series does not exist & invalid api keys
     except HTTPError as e:
         console.print(e)
