@@ -6,7 +6,6 @@
 
 import datetime
 import pytest
-from pytz import country_names
 
 # IMPORTATION INTERNAL
 from openbb_terminal.economy import investingcom_view

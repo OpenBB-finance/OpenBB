@@ -6,7 +6,6 @@ import os
 from typing import List, Optional
 
 import matplotlib.pyplot as plt
-import pandas as pd
 
 from openbb_terminal.decorators import check_api_key
 from openbb_terminal.config_terminal import theme

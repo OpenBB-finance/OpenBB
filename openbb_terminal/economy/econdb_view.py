@@ -5,9 +5,8 @@ from datetime import datetime
 import logging
 import os
 from textwrap import fill
-from typing import Optional, List, Dict
+from typing import Optional, List
 
-import pandas as pd
 from matplotlib import pyplot as plt
 
 from openbb_terminal.config_plot import PLOT_DPI

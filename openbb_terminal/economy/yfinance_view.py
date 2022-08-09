@@ -6,9 +6,7 @@ import logging
 import os
 from typing import Optional, List
 
-import pandas as pd
 from matplotlib import pyplot as plt
-import financedatabase as fd
 
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme

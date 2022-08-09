@@ -83,7 +83,7 @@ def get_valuation_data(
 
     if group not in GROUPS.keys():
         console.print(
-            f"[red]Group not found. Check available groups through get_groups().[/red]\n"
+            f"[red]Group {group} not found. Check available groups through get_groups().[/red]\n"
         )
         return pd.DataFrame()
 
@@ -129,7 +129,7 @@ def get_performance_data(
 
     if group not in GROUPS.keys():
         console.print(
-            f"[red]Group not found. Check available groups through get_groups().[/red]\n"
+            f"[red]Group {group} not found. Check available groups through get_groups().[/red]\n"
         )
         return pd.DataFrame()
 
@@ -173,7 +173,7 @@ def get_spectrum_data(group: str = "sector"):
     """
     if group not in GROUPS.keys():
         console.print(
-            f"[red]Group not found. Check available groups through get_groups().[/red]\n"
+            f"[red]Group {group} not found. Check available groups through get_groups().[/red]\n"
         )
         return
 

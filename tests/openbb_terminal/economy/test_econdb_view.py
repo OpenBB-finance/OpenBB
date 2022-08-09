@@ -2,7 +2,7 @@
 import pytest
 
 # IMPORTATION INTERNAL
-from openbb_terminal.economy import econdb_view, econdb_model
+from openbb_terminal.economy import econdb_view
 
 
 @pytest.mark.vcr

@@ -15,32 +15,6 @@ def vcr_config():
     }
 
 
-@pytest.mark.default_cassette("test_display_performance")
-@pytest.mark.vcr
-@pytest.mark.record_stdout
-@pytest.mark.parametrize(
-    "tab",
-    [
-        True,
-        False,
-    ],
-)
-def test_display_performance(mocker, tab):
-    # MOCK OBBFF
-    mocker.patch.object(target=helper_funcs.obbff, attribute="USE_TABULATE_DF", new=tab)
-    mocker.patch.object(target=helper_funcs.obbff, attribute="USE_ION", new=True)
-
-    # MOCK EXPORT_DATA
-    mocker.patch(target="openbb_terminal.economy.finviz_view.export_data")
-
-    finviz_view.display_performance(
-        group="sector",
-        sort_by="Name",
-        ascending=True,
-        export="",
-    )
-
-
 @pytest.mark.default_cassette("test_display_valuation")
 @pytest.mark.vcr
 @pytest.mark.record_stdout

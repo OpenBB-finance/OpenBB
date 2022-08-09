@@ -220,7 +220,7 @@ def get_cpi(interval: str = "m", start_year: int = 2010) -> pd.DataFrame:
 
     cpi = data[data.date >= f"{start_year}-01-01"]
 
-    return data
+    return cpi
 
 
 @log_start_end(log=logger)
