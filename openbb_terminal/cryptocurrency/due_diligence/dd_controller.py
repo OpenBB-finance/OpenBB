@@ -1609,8 +1609,8 @@ class DueDiligenceController(CryptoBaseController):
                     timeseries_id=ns_parser.timeseries,
                     symbol=self.symbol.upper(),
                     interval=ns_parser.interval,
-                    start=ns_parser.start,
-                    end=ns_parser.end,
+                    start_date=ns_parser.start,
+                    end_date=ns_parser.end,
                     export=ns_parser.export,
                 )
 

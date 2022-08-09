@@ -759,7 +759,7 @@ FIND_KEYS = ["id", "symbol", "name"]
 
 
 def find(
-    search_term: str,
+    query: str,
     source: str = "cg",
     key: str = "symbol",
     limit: int = 10,
@@ -778,7 +778,7 @@ def find(
 
     Parameters
     ----------
-    search_term: str
+    query: str
         Cryptocurrency
     source: str
         Data source of coins.  CoinGecko (cg) or CoinPaprika (cp) or Binance (bin), Coinbase (cb)
@@ -794,7 +794,7 @@ def find(
         coins_df = get_coin_list()
         coins_list = coins_df[key].to_list()
         if key in ["symbol", "id"]:
-            coin = search_term.lower()
+            coin = query.lower()
         sim = difflib.get_close_matches(coin, coins_list, limit)
         df = pd.Series(sim).to_frame().reset_index()
         df.columns = ["index", key]

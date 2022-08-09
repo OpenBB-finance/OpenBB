@@ -5,6 +5,7 @@ __docformat__ = "numpy"
 
 import logging
 from typing import Any, Tuple
+from datetime import datetime, timedelta
 import re
 import pandas as pd
 import requests
@@ -75,7 +76,10 @@ base_url2 = "https://data.messari.io/api/v2/"
 
 @log_start_end(log=logger)
 def get_marketcap_dominance(
-    symbol: str, interval: str, start: str, end: str
+    symbol: str,
+    interval: str = "1d",
+    start_date: str = (datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d"),
+    end_date: str = datetime.now().strftime("%Y-%m-%d"),
 ) -> pd.DataFrame:
     """Returns market dominance of a coin over time
     [Source: https://messari.io/]
@@ -84,12 +88,12 @@ def get_marketcap_dominance(
     ----------
     symbol : str
         Crypto symbol to check market cap dominance
-    start : int
-        Initial date like string (e.g., 2021-10-01)
-    end : int
-        End date like string (e.g., 2021-10-01)
     interval : str
-        Interval frequency (e.g., 1d)
+        Interval frequency (possible values are: 5m, 15m, 30m, 1h, 1d, 1w)
+    start_date : int
+        Initial date like string (e.g., 2021-10-01)
+    end_date : int
+        End date like string (e.g., 2021-10-01)
 
     Returns
     -------
@@ -98,14 +102,22 @@ def get_marketcap_dominance(
     """
 
     df, _ = get_messari_timeseries(
-        symbol=symbol, end=end, start=start, interval=interval, timeseries_id="mcap.dom"
+        symbol=symbol,
+        end_date=end_date,
+        start_date=start_date,
+        interval=interval,
+        timeseries_id="mcap.dom",
     )
     return df
 
 
 @log_start_end(log=logger)
 def get_messari_timeseries(
-    symbol: str, timeseries_id: str, interval: str, start: str, end: str
+    symbol: str,
+    timeseries_id: str,
+    interval: str = "1d",
+    start_date: str = (datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d"),
+    end_date: str = datetime.now().strftime("%Y-%m-%d"),
 ) -> Tuple[pd.DataFrame, str]:
     """Returns messari timeseries
     [Source: https://messari.io/]
@@ -116,12 +128,12 @@ def get_messari_timeseries(
         Crypto symbol to check messari timeseries
     timeseries_id : str
         Messari timeserie id
+    interval : str
+        Interval frequency (possible values are: 5m, 15m, 30m, 1h, 1d, 1w)
     start : int
         Initial date like string (e.g., 2021-10-01)
     end : int
         End date like string (e.g., 2021-10-01)
-    interval : str
-        Interval frequency (e.g., 1d)
 
     Returns
     -------
@@ -136,8 +148,8 @@ def get_messari_timeseries(
     headers = {"x-messari-api-key": cfg.API_MESSARI_KEY}
 
     parameters = {
-        "start": start,
-        "end": end,
+        "start": start_date,
+        "end": end_date,
         "interval": interval,
     }
 

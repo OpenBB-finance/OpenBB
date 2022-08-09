@@ -104,8 +104,8 @@ def display_messari_timeseries_list(
 def display_messari_timeseries(
     symbol: str,
     timeseries_id: str,
-    start: str = (datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d"),
-    end: str = datetime.now().strftime("%Y-%m-%d"),
+    start_date: str = (datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d"),
+    end_date: str = datetime.now().strftime("%Y-%m-%d"),
     interval: str = "1d",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -119,9 +119,9 @@ def display_messari_timeseries(
         Crypto symbol to check market cap dominance
     timeseries_id: str
         Obtained by api.crypto.dd.get_mt command
-    start : int
+    start_date : int
         Initial date like string (e.g., 2021-10-01)
-    end : int
+    end_date : int
         End date like string (e.g., 2021-10-01)
     interval : str
         Interval frequency (possible values are: 5m, 15m, 30m, 1h, 1d, 1w)
@@ -134,8 +134,8 @@ def display_messari_timeseries(
     df, title = get_messari_timeseries(
         symbol=symbol,
         timeseries_id=timeseries_id,
-        start=start,
-        end=end,
+        start_date=start_date,
+        end_date=end_date,
         interval=interval,
     )
 
@@ -175,8 +175,8 @@ def display_messari_timeseries(
 @check_api_key(["API_MESSARI_KEY"])
 def display_marketcap_dominance(
     symbol: str,
-    start: str = (datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d"),
-    end: str = datetime.now().strftime("%Y-%m-%d"),
+    start_date: str = (datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d"),
+    end_date: str = datetime.now().strftime("%Y-%m-%d"),
     interval: str = "1d",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -188,9 +188,9 @@ def display_marketcap_dominance(
     ----------
     symbol : str
         Crypto symbol to check market cap dominance
-    start : int
+    start_date : int
         Initial date like string (e.g., 2021-10-01)
-    end : int
+    end_date : int
         End date like string (e.g., 2021-10-01)
     interval : str
         Interval frequency (possible values are: 5m, 15m, 30m, 1h, 1d, 1w)
@@ -200,7 +200,9 @@ def display_marketcap_dominance(
         External axes (1 axis is expected in the list), by default None
     """
 
-    df = get_marketcap_dominance(symbol=symbol, start=start, end=end, interval=interval)
+    df = get_marketcap_dominance(
+        symbol=symbol, start_date=start_date, end_date=end_date, interval=interval
+    )
 
     if not df.empty:
 
