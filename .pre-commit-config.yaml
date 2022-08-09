@@ -79,10 +79,3 @@ repos:
         entry: python custom_pre_commit/check_reserved_args.py
         language: system
         types: [python]
-  - repo: local
-    hooks:
-      - id: pylint
-        name: pylint
-        entry: pylint bots openbb_terminal terminal.py tests
-        language: system
-        types: [python]
