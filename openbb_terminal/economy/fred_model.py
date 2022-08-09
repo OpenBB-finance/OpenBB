@@ -154,7 +154,9 @@ def get_series_ids(search_query: str, limit: int = -1) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_series_data(series_id: str, start_date: str = None, end_date: str = None) -> pd.DataFrame:
+def get_series_data(
+    series_id: str, start_date: str = None, end_date: str = None
+) -> pd.DataFrame:
     """Get Series data. [Source: FRED]
     Parameters
     ----------
