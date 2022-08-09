@@ -634,10 +634,10 @@ class EconomyController(BaseController):
         if ns_parser:
             if ns_parser.query:
                 query = " ".join(ns_parser.query)
-                df_search = fred_model.get_series_notes(query)
+                df_search = fred_model.get_series_notes(search_query=query)
 
                 if not df_search.empty:
-                    fred_view.notes(series_term=query, num=ns_parser.limit)
+                    fred_view.notes(search_query=query, limit=ns_parser.limit)
 
                     self.fred_query = df_search["id"].head(ns_parser.limit)
                     self.update_runtime_choices()

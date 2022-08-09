@@ -34,7 +34,7 @@ def test_output(func, kwargs_dict, recorder):
 @pytest.mark.parametrize(
     "func, kwargs_dict",
     [
-        ("get_series_notes", {"series_term": "finance"}),
+        ("get_series_notes", {"search_query": "finance"}),
         ("get_series_data", {"series_id": "DGS10", "start": "2020-01-01"}),
     ],
 )

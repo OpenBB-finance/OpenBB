@@ -161,7 +161,7 @@ def display_future(
         df,
         show_index=True,
         headers=["prevClose", "last", "change (%)"],
-        title="Future Table [Source: FinViz]"
+        title="Future Table [Source: FinViz]",
     )
 
     export_data(

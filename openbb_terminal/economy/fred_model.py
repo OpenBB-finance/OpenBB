@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 import logging
+import textwrap
 from typing import Dict, List, Tuple, Optional
 from datetime import datetime, timedelta
 from requests import HTTPError
@@ -61,20 +62,22 @@ def check_series_id(series_id: str) -> Tuple[bool, Dict]:
 
 
 @log_start_end(log=logger)
-def get_series_notes(series_term: str) -> pd.DataFrame:
+def get_series_notes(search_query: str, limit: int = 10) -> pd.Series:
     """Get Series notes. [Source: FRED]
     Parameters
     ----------
-    series_term : str
+    search_query : str
         Search for this series term
+    limit : int
+        Maximum number of series notes to display
     Returns
     ----------
-    pd.DataFrame
-        DataFrame of matched series
+    pd.Series
+        Series of matched series
     """
 
     fred.key(cfg.API_FRED_KEY)
-    d_series = fred.search(series_term)
+    d_series = fred.search(search_query)
 
     df_fred = pd.DataFrame()
 
@@ -93,6 +96,17 @@ def get_series_notes(series_term: str) -> pd.DataFrame:
                 console.print("No matches found. \n")
         else:
             console.print("No matches found. \n")
+
+        df_fred["notes"] = df_fred["notes"].apply(
+            lambda x: "\n".join(textwrap.wrap(x, width=100))
+            if isinstance(x, str)
+            else x
+        )
+        df_fred["title"] = df_fred["title"].apply(
+            lambda x: "\n".join(textwrap.wrap(x, width=50)) if isinstance(x, str) else x
+        )
+
+        df_fred = df_fred[:limit]
 
     return df_fred
 

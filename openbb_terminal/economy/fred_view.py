@@ -49,29 +49,24 @@ def format_units(num: int) -> str:
 
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
-def notes(series_term: str, num: int) -> pd.DataFrame:
+def notes(search_query: str, limit: int = 10) -> pd.DataFrame:
     """Print Series notes. [Source: FRED]
 
     Parameters
     ----------
-    series_term : str
+    search_query : str
         Search for these series_term
-    num : int
+    limit : int
         Maximum number of series notes to display
     """
-    df_search = fred_model.get_series_notes(series_term)
+    df_search = fred_model.get_series_notes(search_query, limit)
 
     if df_search.empty:
         return
-    df_search["notes"] = df_search["notes"].apply(
-        lambda x: "\n".join(textwrap.wrap(x, width=100)) if isinstance(x, str) else x
-    )
-    df_search["title"] = df_search["title"].apply(
-        lambda x: "\n".join(textwrap.wrap(x, width=50)) if isinstance(x, str) else x
-    )
+
     print_rich_table(
-        df_search[["id", "title", "notes"]].head(num),
-        title=f"[bold]Search results for {series_term}[/bold]",
+        df_search[["id", "title", "notes"]],
+        title=f"[bold]Search results for {search_query}[/bold]",
         show_index=False,
         headers=["Series ID", "Title", "Description"],
     )
