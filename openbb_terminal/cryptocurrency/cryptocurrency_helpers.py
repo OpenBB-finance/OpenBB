@@ -22,6 +22,7 @@ from openbb_terminal.helper_funcs import (
     plot_autoscale,
     export_data,
     print_rich_table,
+    lambda_long_number_format_y_axis,
     is_valid_axes_count,
 )
 from openbb_terminal.config_plot import PLOT_DPI
@@ -1245,39 +1246,22 @@ def plot_candles(
         "warn_too_much_data": 10000,
     }
 
-    maximum_value = candles_df.max().max()
-
-    if maximum_value > 1_000_000_000_000:
-        df_rounded = candles_df / 1_000_000_000_000
-        denomination = " in Trillions"
-    elif maximum_value > 1_000_000_000:
-        df_rounded = candles_df / 1_000_000_000
-        denomination = " in Billions"
-    elif maximum_value > 1_000_000:
-        df_rounded = candles_df / 1_000_000
-        denomination = " in Millions"
-    elif maximum_value > 1_000:
-        df_rounded = candles_df / 1_000
-        denomination = " in Thousands"
-    else:
-        df_rounded = candles_df
-        denomination = ""
-
     # This plot has 2 axes
     if external_axes is None:
         candle_chart_kwargs["returnfig"] = True
         candle_chart_kwargs["figratio"] = (10, 7)
         candle_chart_kwargs["figscale"] = 1.10
         candle_chart_kwargs["figsize"] = plot_autoscale()
-        fig, _ = mpf.plot(df_rounded, **candle_chart_kwargs)
+        fig, ax = mpf.plot(candles_df, **candle_chart_kwargs)
 
         fig.suptitle(
-            f"\n{title} [{denomination}]",
+            f"\n{title}",
             horizontalalignment="left",
             verticalalignment="top",
             x=0.05,
             y=1,
         )
+        lambda_long_number_format_y_axis(candles_df, "Volume", ax)
         theme.visualize_output(force_tight_layout=False)
     else:
         nr_external_axes = 2 if volume else 1
@@ -1292,9 +1276,7 @@ def plot_candles(
 
         candle_chart_kwargs["ax"] = ax
 
-        console.print(f"Data {denomination}")
-
-        mpf.plot(df_rounded, **candle_chart_kwargs)
+        mpf.plot(candles_df, **candle_chart_kwargs)
 
 
 def plot_order_book(
