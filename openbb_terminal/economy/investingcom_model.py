@@ -36,7 +36,7 @@ IMPORTANCES = ["high", "medium", "low", "all"]
 
 @log_start_end(log=logger)
 def get_ycrv_countries() -> list:
-    """Get avaiable countries for ycrv command.
+    """Get available countries for ycrv command.
 
     Returns:
         list: List of available countries.
@@ -45,8 +45,8 @@ def get_ycrv_countries() -> list:
 
 
 @log_start_end(log=logger)
-def get_ecocal_countries() -> list:
-    """Get avaiable countries for ecocal command.
+def get_events_countries() -> list:
+    """Get available countries for events command.
 
     Returns:
         list: List of available countries.
@@ -55,8 +55,8 @@ def get_ecocal_countries() -> list:
 
 
 @log_start_end(log=logger)
-def get_ecocal_categories() -> list:
-    """Get avaiable event categories for ecocal command.
+def get_events_categories() -> list:
+    """Get available event categories for events command.
 
     Returns:
         list: List of available event categories.
@@ -155,11 +155,11 @@ def get_economic_calendar(
     Parameters
     ----------
     country: str
-        Country selected. List of available countries is accessible through get_ecocal_countries().
+        Country selected. List of available countries is accessible through get_events_countries().
     importance: str
         Importance selected from high, medium, low or all
     category: str
-        Event category. List of available categories is accessible through get_ecocal_categories().
+        Event category. List of available categories is accessible through get_events_categories().
     start_date: datetime.date
         First date to get events.
     end_date: datetime.date

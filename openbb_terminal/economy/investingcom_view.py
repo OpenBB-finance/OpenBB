@@ -97,11 +97,11 @@ def display_economic_calendar(
     Parameters
     ----------
     country: str
-        Country selected. List of available countries is accessible through get_ecocal_countries().
+        Country selected. List of available countries is accessible through get_events_countries().
     importances: str
         Importance selected from high, medium, low or all.
     categories: str
-        Event category. List of available categories is accessible through get_ecocal_categories().
+        Event category. List of available categories is accessible through get_events_categories().
     start_date: datetime.date
         First date to get events.
     end_date: datetime.date
