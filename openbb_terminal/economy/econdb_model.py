@@ -12,7 +12,6 @@ import pandas as pd
 import pandas_datareader.data as web
 import requests
 import yfinance as yf
-from pandas import DataFrame
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
@@ -609,7 +608,7 @@ def get_aggregated_macro_data(
     start_date: str = "1900-01-01",
     end_date=datetime.today().date(),
     convert_currency=False,
-) -> Tuple[DataFrame, Dict[Any, Dict[Any, Any]]]:
+) -> Tuple[Any, Dict[Any, Dict[Any, Any]], str]:
     """This functions groups the data queried from the EconDB database [Source: EconDB]
 
     Parameters

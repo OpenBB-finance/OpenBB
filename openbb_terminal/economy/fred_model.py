@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import textwrap
-from typing import Dict, List, Tuple, Optional
+from typing import Dict, List, Tuple
 from datetime import datetime, timedelta
 from requests import HTTPError
 
@@ -236,12 +236,12 @@ def get_aggregated_series_data(
 
 
 @log_start_end(log=logger)
-def get_yield_curve(date: Optional[datetime] = None) -> Tuple[pd.DataFrame, datetime]:
+def get_yield_curve(date: datetime = None) -> Tuple[pd.DataFrame, str]:
     """Gets yield curve data from FRED
 
     Parameters
     ----------
-    date: Optional[datetime]
+    date: datetime
         Date to get curve for.  If None, gets most recent date
 
     Returns
