@@ -50,12 +50,12 @@ def format_units(num: int) -> str:
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
 def notes(search_query: str, limit: int = 10) -> pd.DataFrame:
-    """Print Series notes. [Source: FRED]
+    """Display series notes. [Source: FRED]
 
     Parameters
     ----------
     search_query : str
-        Search for these series_term
+        Text query to search on fred series notes database
     limit : int
         Maximum number of series notes to display
     """

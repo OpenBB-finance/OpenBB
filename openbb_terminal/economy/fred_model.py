@@ -63,11 +63,11 @@ def check_series_id(series_id: str) -> Tuple[bool, Dict]:
 
 @log_start_end(log=logger)
 def get_series_notes(search_query: str, limit: int = 10) -> pd.Series:
-    """Get Series notes. [Source: FRED]
+    """Get series notes. [Source: FRED]
     Parameters
     ----------
     search_query : str
-        Search for this series term
+        Text query to search on fred series notes database
     limit : int
         Maximum number of series notes to display
     Returns
