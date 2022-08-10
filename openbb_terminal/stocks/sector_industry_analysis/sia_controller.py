@@ -797,25 +797,36 @@ class SectorIndustryAnalysisController(BaseController):
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            try:
-                (
-                    self.stocks_data,
-                    self.tickers,
-                ) = financedatabase_view.display_bars_financials(
-                    self.metric_yf_keys[ns_parser.metric][0],
-                    self.metric_yf_keys[ns_parser.metric][1],
-                    self.country,
-                    self.sector,
-                    self.industry,
-                    self.mktcap,
-                    self.exclude_exchanges,
-                    ns_parser.limit,
-                    ns_parser.export,
-                    ns_parser.raw,
-                    self.stocks_data,
+            if not self.country and not self.sector and not self.industry:
+                console.print(
+                    "[red]Select at least one filter from sector, country or industry.[/red]\n"
                 )
-            except KeyboardInterrupt:
-                pass
+            else:
+                try:
+                    console.print(
+                        "[param]If it takes too long, you can use 'Ctrl + C' to cancel.\n[/param]"
+                    )
+                    (
+                        self.stocks_data,
+                        self.tickers,
+                    ) = financedatabase_view.display_bars_financials(
+                        self.metric_yf_keys[ns_parser.metric][0],
+                        self.metric_yf_keys[ns_parser.metric][1],
+                        self.country,
+                        self.sector,
+                        self.industry,
+                        self.mktcap,
+                        self.exclude_exchanges,
+                        ns_parser.limit,
+                        ns_parser.export,
+                        ns_parser.raw,
+                        self.stocks_data,
+                    )
+                except KeyboardInterrupt:
+                    console.print(
+                        "[param]For a faster search, ensure that you select at least one filter "
+                        "from sector, country or industry.\n[/param]"
+                    )
 
     @log_start_end(log=logger)
     def call_satma(self, other_args: List[str]):
@@ -903,32 +914,43 @@ class SectorIndustryAnalysisController(BaseController):
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, limit=10, raw=True
         )
         if ns_parser:
-            try:
-                if ns_parser.convert_currency != self.currency:
-                    self.stocks_data = {}
-                (
-                    self.stocks_data,
-                    self.tickers,
-                ) = stockanalysis_view.display_plots_financials(
-                    finance_key=ns_parser.metric,
-                    sa_dict=stockanalysis_model.sa_keys,
-                    country=self.country,
-                    sector=self.sector,
-                    industry=self.industry,
-                    period=self.period,
-                    period_length=ns_parser.period,
-                    marketcap=self.mktcap,
-                    convert_currency=ns_parser.convert_currency,
-                    exclude_exchanges=self.exclude_exchanges,
-                    limit=ns_parser.limit,
-                    export=ns_parser.export,
-                    raw=ns_parser.raw,
-                    already_loaded_stocks_data=self.stocks_data,
+            if not self.country and not self.sector and not self.industry:
+                console.print(
+                    "[red]Select at least one filter from sector, country or industry.[/red]\n"
                 )
+            else:
+                try:
+                    console.print(
+                        "[param]If it takes too long, you can use 'Ctrl + C' to cancel.\n[/param]"
+                    )
+                    if ns_parser.convert_currency != self.currency:
+                        self.stocks_data = {}
+                    (
+                        self.stocks_data,
+                        self.tickers,
+                    ) = stockanalysis_view.display_plots_financials(
+                        finance_key=ns_parser.metric,
+                        sa_dict=stockanalysis_model.sa_keys,
+                        country=self.country,
+                        sector=self.sector,
+                        industry=self.industry,
+                        period=self.period,
+                        period_length=ns_parser.period,
+                        marketcap=self.mktcap,
+                        convert_currency=ns_parser.convert_currency,
+                        exclude_exchanges=self.exclude_exchanges,
+                        limit=ns_parser.limit,
+                        export=ns_parser.export,
+                        raw=ns_parser.raw,
+                        already_loaded_stocks_data=self.stocks_data,
+                    )
 
-                self.currency = ns_parser.convert_currency
-            except KeyboardInterrupt:
-                pass
+                    self.currency = ns_parser.convert_currency
+                except KeyboardInterrupt:
+                    console.print(
+                        "[param]For a faster search, ensure that you select at least one filter"
+                        "from sector, country or industry.\n[/param]"
+                    )
 
     @log_start_end(log=logger)
     def call_cps(self, other_args: List[str]):
