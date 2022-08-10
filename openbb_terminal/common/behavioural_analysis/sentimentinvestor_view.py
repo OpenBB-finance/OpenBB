@@ -146,8 +146,8 @@ def display_historical(
 @log_start_end(log=logger)
 @check_api_key(["API_SENTIMENTINVESTOR_TOKEN"])
 def display_trending(
-    start_date: datetime,
-    hour: int,
+    start_date: datetime = datetime.today(),
+    hour: int = 0,
     number: int = 10,
     limit: int = 10,
     export: str = "",
@@ -170,6 +170,10 @@ def display_trending(
     export: str
         Format to export data
     """
+
+    # Force datetime format to be datetime(year, month, day, 0, 0)
+    # 0 hours and minutes to look since day starts 
+    start_date = datetime(start_date.year, start_date.month, start_date.day)
 
     df = sentimentinvestor_model.get_trending(start_date, hour, number)
 

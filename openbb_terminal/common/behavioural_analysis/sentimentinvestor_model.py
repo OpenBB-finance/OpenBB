@@ -117,7 +117,9 @@ def check_supported_ticker(symbol: str) -> bool:
     return result
 
 
-def get_trending(start_date: datetime, hour: int, number: int) -> pd.DataFrame:
+def get_trending(
+    start_date: datetime = datetime.today(), hour: int = 0, number: int = 10
+) -> pd.DataFrame:
     """Get sentiment data on the most talked about tickers
     within the last hour
 
