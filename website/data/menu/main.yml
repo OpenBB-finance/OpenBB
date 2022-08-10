@@ -991,8 +991,8 @@ main:
             ref: "/terminal/economy/yield"
           - name: ycrv
             ref: "/terminal/economy/ycrv"
-          - name: ecocal
-            ref: "/terminal/economy/ecocal"
+          - name: events
+            ref: "/terminal/economy/events"
           - name: plot
             ref: "/terminal/economy/plot"
           - name: rtps

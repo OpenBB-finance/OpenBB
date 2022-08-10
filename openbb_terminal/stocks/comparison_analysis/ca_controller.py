@@ -22,7 +22,6 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.portfolio.portfolio_optimization import po_controller
 from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.stocks.comparison_analysis import (
     finbrain_view,
@@ -72,9 +71,7 @@ class ComparisonAnalysisController(BaseController):
         "technical",
         "tsne",
     ]
-    CHOICES_MENUS = [
-        "po",
-    ]
+    CHOICES_MENUS: List = list()
     PATH = "/stocks/ca/"
 
     def __init__(self, similar: List[str] = None, queue: List[str] = None):
@@ -129,8 +126,6 @@ class ComparisonAnalysisController(BaseController):
         mt.add_cmd("ownership", "Finviz", self.similar and len(self.similar) > 1)
         mt.add_cmd("performance", "Finviz", self.similar and len(self.similar) > 1)
         mt.add_cmd("technical", "Finviz", self.similar and len(self.similar) > 1)
-        mt.add_raw("\n")
-        mt.add_menu("po", self.similar and len(self.similar) > 1)
         console.print(text=mt.menu_text, menu="Stocks - Comparison Analysis")
 
     def custom_reset(self):
@@ -971,15 +966,3 @@ class ComparisonAnalysisController(BaseController):
                 console.print(
                     "Please make sure there are more than 1 similar tickers selected. \n"
                 )
-
-    @log_start_end(log=logger)
-    def call_po(self, _):
-        """Call the portfolio optimization menu with selected tickers"""
-        if self.similar and len(self.similar) > 1:
-            self.queue = po_controller.PortfolioOptimizationController(
-                self.similar, self.queue
-            ).menu(custom_path_menu_above="/portfolio/")
-        else:
-            console.print(
-                "Please make sure there are more than 1 similar tickers selected. \n"
-            )
