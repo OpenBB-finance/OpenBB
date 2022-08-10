@@ -112,4 +112,4 @@ plt.thight_layout()
 plt.show()
 ```
 
-For more examples see the OpenBB jupyter notebook reports. They all use the API to its fullest extent.
+For more examples see the OpenBB jupyter notebook reports. They all use the API to its fullest extent!
