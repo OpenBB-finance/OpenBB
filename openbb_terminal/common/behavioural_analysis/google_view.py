@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 def display_mentions(
     symbol: str,
-    start_date: str,
+    start_date: str = "",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
