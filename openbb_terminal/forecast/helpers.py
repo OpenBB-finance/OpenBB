@@ -440,7 +440,7 @@ def early_stopper(patience: int, monitor: str = "val_loss"):
 
 
 def get_pl_kwargs(
-    patience: int, monitor: str = "val_loss", accelerator: str = "cpu"
+    patience: int = 5, monitor: str = "val_loss", accelerator: str = "cpu"
 ) -> Dict[str, Any]:
     my_stopper = early_stopper(patience, monitor)
     pl_trainer_kwargs = {"callbacks": [my_stopper], "accelerator": accelerator}
