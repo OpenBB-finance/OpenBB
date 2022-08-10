@@ -111,7 +111,7 @@ class DueDiligenceController(StockBaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            finviz_view.analyst(ticker=self.ticker, export=ns_parser.export)
+            finviz_view.analyst(symbol=self.ticker, export=ns_parser.export)
 
     @log_start_end(log=logger)
     def call_pt(self, other_args: List[str]):
@@ -336,11 +336,11 @@ class DueDiligenceController(StockBaseController):
         )
         parser.add_argument(
             "-s",
-            "--show_ticker",
+            "--show_symbol",
             action="store_true",
             default=False,
             help="Flag to show ticker in table",
-            dest="show_ticker",
+            dest="show_symbol",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
@@ -351,6 +351,6 @@ class DueDiligenceController(StockBaseController):
             ark_view.display_ark_trades(
                 symbol=self.ticker,
                 limit=ns_parser.limit,
-                show_symbol=ns_parser.show_ticker,
+                show_symbol=ns_parser.show_symbol,
                 export=ns_parser.export,
             )
