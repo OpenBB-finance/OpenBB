@@ -130,8 +130,8 @@ def display_sentiment(
         temp = twitter_model.load_analyze_tweets(
             symbol,
             n_tweets,
-            start_time=dt_past.strftime(dt_format),
-            end_time=dt_recent.strftime(dt_format),
+            start_date=dt_past.strftime(dt_format),
+            end_date=dt_recent.strftime(dt_format),
         )
 
         if temp.empty:
