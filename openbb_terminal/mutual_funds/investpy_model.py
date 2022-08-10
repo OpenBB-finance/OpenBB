@@ -47,6 +47,11 @@ def get_overview(country: str = "united states", limit: int = 20) -> pd.DataFram
         Country to get overview for
     limit: int
         Number of results to get
+
+    Returns
+    -------
+    pd.DataFrame
+        Dataframe containing overview
     """
     return investpy.funds.get_funds_overview(
         country=country, as_json=False, n_results=limit

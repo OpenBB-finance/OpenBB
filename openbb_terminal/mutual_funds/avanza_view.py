@@ -38,7 +38,7 @@ def display_allocation(fund_name: str, focus: str):
     focus: str
         The focus of the displayed allocation/exposure of the fund
     """
-    # Code mostly taken from: https://github.com/northern-64bit/Portfolio-Report-Generator/tree/main
+    # Taken from: https://github.com/northern-64bit/Portfolio-Report-Generator/tree/main
     fund_data = avanza_model.get_data(fund_name.upper())
     if focus in ["holding", "all"]:
         table_row = []
@@ -95,7 +95,7 @@ def display_info(fund_name: str):
         text = text + f"\t- {manager['name']} since {manager['startDate']}\n"
     text = (
         text
-        + f"from {fund_data['adminCompany']['name']}.\nThe currency of the fund is {fund_data['currency']}"
+        + f"from {fund_data['adminCompany']['name']}.\nFund currency is {fund_data['currency']}"
         f" and it the fund started {fund_data['startDate']}."
     )
     if fund_data["indexFund"]:
