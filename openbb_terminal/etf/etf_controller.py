@@ -400,11 +400,11 @@ class ETFController(BaseController):
                 d_stock = yf.Ticker(self.etf_name).info
 
                 newsapi_view.display_news(
-                    term=d_stock["shortName"].replace(" ", "+")
+                    query=d_stock["shortName"].replace(" ", "+")
                     if "shortName" in d_stock
                     else self.etf_name,
-                    num=ns_parser.limit,
-                    s_from=ns_parser.n_start_date.strftime("%Y-%m-%d"),
+                    limit=ns_parser.limit,
+                    start_date=ns_parser.n_start_date.strftime("%Y-%m-%d"),
                     show_newest=ns_parser.n_oldest,
                     sources=",".join(sources),
                 )

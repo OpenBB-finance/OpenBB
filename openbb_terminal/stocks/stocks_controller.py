@@ -453,11 +453,11 @@ class StocksController(StockBaseController):
             d_stock = yf.Ticker(self.ticker).info
 
             newsapi_view.display_news(
-                term=d_stock["shortName"].replace(" ", "+")
+                query=d_stock["shortName"].replace(" ", "+")
                 if "shortName" in d_stock
                 else self.ticker,
-                num=ns_parser.limit,
-                s_from=ns_parser.n_start_date.strftime("%Y-%m-%d"),
+                limit=ns_parser.limit,
+                start_date=ns_parser.n_start_date.strftime("%Y-%m-%d"),
                 show_newest=ns_parser.n_oldest,
                 sources=",".join(sources),
             )
