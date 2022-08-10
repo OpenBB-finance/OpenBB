@@ -68,6 +68,7 @@ def get_full_option_chain(
     if calls:
         df_list.append(call_df)
         option_factor.append(1)
+    df_list = [x[x["impliedVolatility"] > 0] for x in df_list]
     # Add in greeks to each df
     # Time to expiration:
     dt = (datetime.strptime(expiration, "%Y-%m-%d") - datetime.now()).seconds / (
@@ -93,6 +94,7 @@ def get_full_option_chain(
             ).Theta(),
             axis=1,
         )
+        print(df)
 
     # Create our merged dataframe.  If only puts and/or calls are wanted, no merging needed
     if not put_df.empty and call_df.empty:
@@ -109,6 +111,7 @@ def get_full_option_chain(
             suffixes=["_call", "_put"],
         )
 
+    print(options_df)
     return options_df
 
 
