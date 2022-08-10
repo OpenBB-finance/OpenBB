@@ -18,7 +18,7 @@ def display_search_results(
     category: str = "all",
     top: int = 10,
     sortby: str = "id",
-    descend: bool = False,
+    ascending: bool = True,
     export: str = "",
 ) -> None:
     """Search over CoinPaprika. [Source: CoinPaprika]
@@ -33,8 +33,8 @@ def display_search_results(
         Number of records to display
     sortby: str
         Key to sort data. The table can be sorted by every of its columns. Refer to
-        CoinPaprikas API documentation (see https://api.coinpaprika.com/docs#tag/Tools/paths/~1search/get)
-    descend: bool
+        API documentation (see https://api.coinpaprika.com/docs#tag/Tools/paths/~1search/get)
+    ascending: bool
         Flag to sort data descending
     export : str
         Export dataframe data to csv,json,xlsx file
@@ -43,15 +43,15 @@ def display_search_results(
     if category.lower() == "all":
         category = "currencies,exchanges,icos,people,tags"
 
-    df = paprika.get_search_results(query=query, category=category)
+    df = paprika.get_search_results(
+        query=query, category=category, sortby=sortby, ascending=ascending
+    )
 
     if df.empty:
         console.print(
             f"No results for search query '{query}' in category '{category}'\n"
         )
         return
-
-    df = df.sort_values(by=sortby, ascending=descend)
 
     print_rich_table(
         df.head(top),

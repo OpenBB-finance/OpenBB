@@ -192,23 +192,6 @@ def test_call_func_expect_queue(expected_queue, func, queue):
     "tested_func, other_args, mocked_func, called_args, called_kwargs",
     [
         (
-            "call_aterra",
-            [
-                "ust",
-                "--address=terra1wg2mlrxdmnnkkykgqg4znky86nyrtc45q336yv",  # pragma: allowlist secret
-            ],
-            "terraengineer_view.display_terra_asset_history",
-            [],
-            dict(),
-        ),
-        (
-            "call_ayr",
-            [],
-            "terraengineer_view.display_anchor_yield_reserve",
-            [],
-            dict(),
-        ),
-        (
             "call_sinfo",
             ["terra1wg2mlrxdmnnkkykgqg4znky86nyrtc45q336yv"],
             "terramoney_fcd_view.display_account_staking_info",

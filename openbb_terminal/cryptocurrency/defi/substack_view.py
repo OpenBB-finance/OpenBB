@@ -26,7 +26,6 @@ def display_newsletters(top: int = 10, export: str = "") -> None:
     """
 
     df = substack_model.get_newsletters()
-    df_data = df.copy()
 
     print_rich_table(
         df.head(top),
@@ -35,9 +34,4 @@ def display_newsletters(top: int = 10, export: str = "") -> None:
         title="Substack Newsletters",
     )
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "newsletter",
-        df_data,
-    )
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), "newsletter", df)

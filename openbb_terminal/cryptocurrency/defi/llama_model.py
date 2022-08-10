@@ -28,9 +28,14 @@ LLAMA_FILTERS = [
 
 
 @log_start_end(log=logger)
-def get_defi_protocols() -> pd.DataFrame:
+def get_defi_protocols(num: int = 100) -> pd.DataFrame:
     """Returns information about listed DeFi protocols, their current TVL and changes to it in the last hour/day/week.
     [Source: https://docs.llama.fi/api]
+
+    Parameters
+    ----------
+    num: int
+        The number of dApps to display
 
     Returns
     -------
@@ -63,11 +68,15 @@ def get_defi_protocols() -> pd.DataFrame:
         df["description"] = df["description"].apply(
             lambda x: "\n".join(textwrap.wrap(x, width=70)) if isinstance(x, str) else x
         )
-        return df[columns]
+        df = df[columns]
 
     except Exception as e:
         logger.exception("Wrong response type: %s", str(e))
         raise ValueError("Wrong response type\n") from e
+
+    df = df.sort_values("tvl", ascending=False).head(num)
+    df = df.set_index("name")
+    return df
 
 
 @log_start_end(log=logger)
