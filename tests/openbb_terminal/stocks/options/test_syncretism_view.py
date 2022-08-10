@@ -78,7 +78,7 @@ def test_view_historical_greeks(mocker):
     mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
 
     syncretism_view.view_historical_greeks(
-        ticker="PM",
+        symbol="PM",
         expiry="2022-01-07",
         chain_id="PM220107P00090000",
         strike=90,
