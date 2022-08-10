@@ -94,7 +94,7 @@ def print_and_record_reddit_post(
         "API_REDDIT_PASSWORD",
     ]
 )
-def display_watchlist(limit: int):
+def display_watchlist(limit: int = 5):
     """Print other users watchlist. [Source: Reddit]
 
     Parameters

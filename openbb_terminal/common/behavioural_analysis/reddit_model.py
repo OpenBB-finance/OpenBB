@@ -38,7 +38,7 @@ l_sub_reddits = [
 
 @log_start_end(log=logger)
 def get_watchlists(
-    limit: int,
+    limit: int = 5,
 ) -> Tuple[List[praw.models.reddit.submission.Submission], Dict, int]:
     """Get reddit users watchlists [Source: reddit]
 
