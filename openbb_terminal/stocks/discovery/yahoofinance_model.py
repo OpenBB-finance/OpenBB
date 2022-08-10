@@ -4,23 +4,11 @@ __docformat__ = "numpy"
 import logging
 
 import pandas as pd
-import requests
 
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.stocks.discovery.disc_helpers import get_df
 
 logger = logging.getLogger(__name__)
-
-
-def get_df(url: str) -> pd.DataFrame:
-    headers = {
-        "User-Agent": (
-            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36"
-            "  (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36"
-        )
-    }
-    html = requests.get(url, headers=headers).text
-    dfs = pd.read_html(html)[0]
-    return dfs
 
 
 @log_start_end(log=logger)
@@ -32,7 +20,7 @@ def get_gainers() -> pd.DataFrame:
     pd.DataFrame
         Stock Gainers
     """
-    return get_df("https://finance.yahoo.com/screener/predefined/day_gainers")
+    return get_df("https://finance.yahoo.com/screener/predefined/day_gainers")[0]
 
 
 @log_start_end(log=logger)
@@ -44,7 +32,7 @@ def get_losers() -> pd.DataFrame:
     pd.DataFrame
         Stock Losers
     """
-    return get_df("https://finance.yahoo.com/screener/predefined/day_losers")
+    return get_df("https://finance.yahoo.com/screener/predefined/day_losers")[0]
 
 
 @log_start_end(log=logger)
@@ -59,7 +47,7 @@ def get_ugs() -> pd.DataFrame:
     """
     return get_df(
         "https://finance.yahoo.com/screener/predefined/undervalued_growth_stocks"
-    )
+    )[0]
 
 
 @log_start_end(log=logger)
@@ -73,7 +61,7 @@ def get_gtech() -> pd.DataFrame:
     """
     return get_df(
         "https://finance.yahoo.com/screener/predefined/growth_technology_stocks"
-    )
+    )[0]
 
 
 @log_start_end(log=logger)
@@ -85,7 +73,7 @@ def get_active() -> pd.DataFrame:
     pd.DataFrame
         Most active stocks
     """
-    return get_df("https://finance.yahoo.com/screener/predefined/most_actives")
+    return get_df("https://finance.yahoo.com/screener/predefined/most_actives")[0]
 
 
 @log_start_end(log=logger)
@@ -100,7 +88,7 @@ def get_ulc() -> pd.DataFrame:
     """
     return get_df(
         "https://finance.yahoo.com/screener/predefined/undervalued_large_caps"
-    )
+    )[0]
 
 
 @log_start_end(log=logger)
@@ -113,4 +101,20 @@ def get_asc() -> pd.DataFrame:
     pd.DataFrame
         Most aggressive small cap stocks
     """
-    return get_df("https://finance.yahoo.com/screener/predefined/aggressive_small_caps")
+    return get_df(
+        "https://finance.yahoo.com/screener/predefined/aggressive_small_caps"
+    )[0]
+
+
+@log_start_end(log=logger)
+def get_hotpenny() -> pd.DataFrame:
+    """Get Yahoo Finance hot penny stocks. [Source: Yahoo Finance]
+
+    Returns
+    -------
+    pd.DataFrame
+        Hottest penny stocks
+    """
+    return get_df(
+        "https://finance.yahoo.com/u/yahoo-finance/watchlists/most-active-penny-stocks/"
+    )[1]
