@@ -1396,13 +1396,23 @@ def get_open_insider_data(url: str, has_company_name: bool) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_print_insider_data(type_insider: str, limit: int = 10):
+def get_insider_types() -> Dict:
+    """ Get insider types available for insider data
+
+    Returns:
+        Dict: Dictionary with insider types and respective description
+    """
+    return d_open_insider
+
+
+@log_start_end(log=logger)
+def get_print_insider_data(type_insider: str = "lcb", limit: int = 10):
     """Print insider data
 
     Parameters
     ----------
     type_insider: str
-        Insider type of data
+        Insider type of data. Available types can be accessed through get_insider_types().
     limit: int
         Limit of data rows to display
     """
