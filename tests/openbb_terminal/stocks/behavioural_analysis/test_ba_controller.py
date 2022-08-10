@@ -392,45 +392,6 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             ),
         ),
         (
-            "call_hist",
-            [
-                "--start=2020-12-01",
-                "--end=2020-12-07",
-                "--export=csv",
-                "--number=100",
-                "--raw",
-                "--limit=10",
-            ],
-            "sentimentinvestor_view.display_historical",
-            [],
-            dict(
-                ticker="MOCK_TICKER",
-                start=datetime(2020, 12, 1),
-                end=datetime(2020, 12, 7),
-                number=100,
-                export="csv",
-                raw=True,
-                limit=10,
-            ),
-        ),
-        (
-            "call_trend",
-            [
-                "--start=2020-12-01",
-                "--hour=9",
-                "--export=csv",
-                "--number=20",
-            ],
-            "sentimentinvestor_view.display_trending",
-            [],
-            dict(
-                start=datetime(2020, 12, 1),
-                hour=9,
-                export="csv",
-                number=20,
-            ),
-        ),
-        (
             "call_popular",
             ["--num=1", "--limit=2", "--sub=MOCK_SUB"],
             "reddit_view.display_popular_tickers",
@@ -508,8 +469,6 @@ def test_call_func(
         "call_rise",
         "call_headlines",
         "call_snews",
-        "call_hist",
-        "call_trend",
         "call_popular",
         "call_getdd",
     ],
@@ -535,7 +494,6 @@ def test_call_func_no_parser(func, mocker):
 @pytest.mark.parametrize(
     "func",
     [
-        "call_hist",
         "call_headlines",
         "call_sentiment",
         "call_infer",
