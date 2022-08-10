@@ -934,7 +934,7 @@ def load(
 def display_candle(
     symbol: str,
     data: pd.DataFrame,
-    use_matplotlib: bool,
+    use_matplotlib: bool = True,
     intraday: bool = False,
     add_trend: bool = False,
     ma: Optional[Iterable[int]] = None,
