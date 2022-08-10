@@ -27,11 +27,11 @@ def test_price_target_from_analysts_raw(mocker):
     mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
 
     business_insider_view.price_target_from_analysts(
-        ticker="TSLA",
-        start=None,
+        symbol="TSLA",
+        start_date=None,
         interval=None,
-        stock=None,
-        num=None,
+        data=None,
+        limit=None,
         raw=True,
         export=None,
     )
@@ -49,11 +49,11 @@ def test_price_target_from_analysts_plt(capsys, interval, mocker, start):
     stock = load(symbol=ticker, start_date=start, interval=interval)
 
     business_insider_view.price_target_from_analysts(
-        ticker=ticker,
-        start=start,
+        symbol=ticker,
+        start_date=start,
         interval=interval,
-        stock=stock,
-        num=None,
+        data=stock,
+        limit=None,
         raw=False,
         export=None,
     )
@@ -63,4 +63,4 @@ def test_price_target_from_analysts_plt(capsys, interval, mocker, start):
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_estimates():
-    business_insider_view.estimates(ticker="TSLA", export=None)
+    business_insider_view.estimates(symbol="TSLA", export=None)
