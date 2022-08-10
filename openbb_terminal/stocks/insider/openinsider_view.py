@@ -119,21 +119,22 @@ def print_insider_data(type_insider: str = "lcb", limit: int = 10, export: str =
     """
     df = get_print_insider_data(type_insider, limit)
 
-    print_rich_table(
-        df,
-        headers=[x.title() for x in df.columns],
-        show_index=False,
-        title="Insider Data",
-    )
+    if not df.empty:
+        print_rich_table(
+            df,
+            headers=[x.title() for x in df.columns],
+            show_index=False,
+            title="Insider Data",
+        )
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), type_insider, df)
+        export_data(export, os.path.dirname(os.path.abspath(__file__)), type_insider, df)
 
-    if df.shape[1] == 13:
-        l_chars = [list(chars) for chars in df["X"].values]
-        l_uchars = np.unique(list(itertools.chain(*l_chars)))
+        if df.shape[1] == 13:
+            l_chars = [list(chars) for chars in df["X"].values]
+            l_uchars = np.unique(list(itertools.chain(*l_chars)))
 
-        for char in l_uchars:
-            console.print(d_notes[char])
+            for char in l_uchars:
+                console.print(d_notes[char])
 
 
 @log_start_end(log=logger)

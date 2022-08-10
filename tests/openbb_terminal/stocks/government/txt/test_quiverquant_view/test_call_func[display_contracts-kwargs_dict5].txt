@@ -1,4 +1,4 @@
-         Date                                                                                                                                                                                                                                           Description                                 Agency   Amount
-0  2022-01-26  GSA REGION 7 NATIONAL DEEP ENERGY RETROFIT (NDER5) ENERGY SAVINGS PERFORMANCE CONTRACT (ESPC) FOR THE PERFORMANCE OF THE INVESTMENT GRADE AUDIT (IGA) AT DALLAS, FARMERS BRANCH, AND SHERMAN, TX NEW ORLEANS, BATON ROUGE, HOUMA, AND LAFAYETTE, LA.  GENERAL SERVICES ADMINISTRATION (GSA)      0.0
-1  2021-10-28                                                                                                                                                                                                                  FY22 REQ#14217 AGAINST 140G0120A0010       DEPARTMENT OF THE INTERIOR (DOI)  76000.0
-
+         Date                                                        Description                            Agency      Amount
+0  2022-07-12                    SOLAR PANELS   FY22 REQ# 14453  BPA 140G0120A00  DEPARTMENT OF THE INTERIOR (DOI)     49600.0
+1  2022-05-24                 FULL FACILITY REVITALIZATION B200, FORT TOTTEN, NY       DEPARTMENT OF DEFENSE (DOD)  29056747.0
+2  2022-05-24  AWARD OF AN ENERGY SAVINGS PERFORMANCE CONTRACT (CANNON AFB ESPC)       DEPARTMENT OF DEFENSE (DOD)         0.0

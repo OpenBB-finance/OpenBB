@@ -279,7 +279,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             ],
             dict(
                 gov_type="congress",
-                past_days=5,
+                limit=5,
                 representative="MOCK_TEXT",
                 export="csv",
             ),

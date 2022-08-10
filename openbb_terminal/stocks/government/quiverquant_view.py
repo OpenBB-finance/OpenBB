@@ -449,7 +449,7 @@ def display_contracts(
 @log_start_end(log=logger)
 def display_qtr_contracts(
     analysis: str,
-    limit: int,
+    limit: int = 5,
     raw: bool = False,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -627,7 +627,7 @@ def display_hist_contracts(
 
 @log_start_end(log=logger)
 def display_top_lobbying(
-    limit: int,
+    limit: int = 10,
     raw: bool = False,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -703,7 +703,7 @@ def display_lobbying(symbol: str, limit: int = 10):
         Number of events to show
     """
     df_lobbying = quiverquant_model.get_government_trading(
-        "corporate-lobbying", ticker=symbol
+        "corporate-lobbying", symbol=symbol
     )
 
     if df_lobbying.empty:
