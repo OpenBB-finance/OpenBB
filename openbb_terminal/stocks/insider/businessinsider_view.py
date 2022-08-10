@@ -1,6 +1,7 @@
 """ Business Insider View """
 __docformat__ = "numpy"
 
+from datetime import datetime, timedelta
 import logging
 import os
 from typing import List, Optional
@@ -31,7 +32,7 @@ register_matplotlib_converters()
 def insider_activity(
     data: pd.DataFrame,
     symbol: str,
-    start_date: str,
+    start_date: str = (datetime.now() - timedelta(days=1100)).strftime("%Y-%m-%d"),
     interval: str = "1440min",
     limit: int = 10,
     raw: bool = False,
