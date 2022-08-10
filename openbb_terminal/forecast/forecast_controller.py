@@ -367,7 +367,6 @@ class ForecastController(BaseController):
         target_column: bool = False,
         period: Optional[int] = None,
         n_days: bool = False,
-        forecast_horizon: bool = False,
         seasonal: Optional[str] = None,
         periods: bool = False,
         window: bool = False,
@@ -462,15 +461,6 @@ class ForecastController(BaseController):
                 type=check_greater_than_one,
                 default=5,
                 help="prediction days.",
-            )
-        if forecast_horizon:
-            parser.add_argument(
-                "--forecast-horizon",
-                action="store",
-                dest="forecast_horizon",
-                default=5,
-                type=check_greater_than_one,
-                help="Days/Points to forecast for historical back-testing",
             )
         if seasonal is not None:
             parser.add_argument(
@@ -1679,7 +1669,6 @@ class ForecastController(BaseController):
             target_dataset=True,
             target_column=True,
             n_days=True,
-            forecast_horizon=True,
             seasonal="A",
             periods=True,
             window=True,
@@ -1694,9 +1683,6 @@ class ForecastController(BaseController):
             if not helpers.check_parser_input(ns_parser, self.datasets):
                 return
 
-            if not helpers.check_n_days(ns_parser.n_days, ns_parser.forecast_horizon):
-                return
-
             expo_view.display_expo_forecast(
                 data=self.datasets[ns_parser.target_dataset],
                 ticker_name=ns_parser.target_dataset,
@@ -1707,7 +1693,7 @@ class ForecastController(BaseController):
                 seasonal_periods=ns_parser.seasonal_periods,
                 dampen=ns_parser.dampen,
                 start_window=ns_parser.start_window,
-                forecast_horizon=ns_parser.forecast_horizon,
+                forecast_horizon=ns_parser.n_days,
                 export=ns_parser.export,
                 residuals=ns_parser.residuals,
                 forecast_only=ns_parser.forecast_only,
@@ -1741,7 +1727,6 @@ class ForecastController(BaseController):
             seasonal="M",
             periods=True,
             window=True,
-            forecast_horizon=True,
             residuals=True,
             forecast_only=True,
             start=True,
@@ -1753,9 +1738,6 @@ class ForecastController(BaseController):
             if not helpers.check_parser_input(ns_parser, self.datasets):
                 return
 
-            if not helpers.check_n_days(ns_parser.n_days, ns_parser.forecast_horizon):
-                return
-
             theta_view.display_theta_forecast(
                 data=self.datasets[ns_parser.target_dataset],
                 ticker_name=ns_parser.target_dataset,
@@ -1764,7 +1746,7 @@ class ForecastController(BaseController):
                 seasonal=ns_parser.seasonal,
                 seasonal_periods=ns_parser.seasonal_periods,
                 start_window=ns_parser.start_window,
-                forecast_horizon=ns_parser.forecast_horizon,
+                forecast_horizon=ns_parser.n_days,
                 export=ns_parser.export,
                 residuals=ns_parser.residuals,
                 forecast_only=ns_parser.forecast_only,
@@ -1815,7 +1797,6 @@ class ForecastController(BaseController):
             target_dataset=True,
             n_days=True,
             target_column=True,
-            forecast_horizon=True,
             train_split=True,
             input_chunk_length=True,
             force_reset=True,
@@ -1837,16 +1818,13 @@ class ForecastController(BaseController):
             if not helpers.check_parser_input(ns_parser, self.datasets):
                 return
 
-            if not helpers.check_n_days(ns_parser.n_days, ns_parser.forecast_horizon):
-                return
-
             rnn_view.display_rnn_forecast(
                 data=self.datasets[ns_parser.target_dataset],
                 ticker_name=ns_parser.target_dataset,
                 n_predict=ns_parser.n_days,
                 target_col=ns_parser.target_column,
                 train_split=ns_parser.train_split,
-                forecast_horizon=ns_parser.forecast_horizon,
+                forecast_horizon=ns_parser.n_days,
                 model_type=ns_parser.model_type,
                 hidden_dim=ns_parser.hidden_dim,
                 dropout=ns_parser.dropout,
@@ -1925,7 +1903,6 @@ class ForecastController(BaseController):
             n_days=True,
             target_column=True,
             train_split=True,
-            forecast_horizon=True,
             input_chunk_length=True,
             output_chunk_length=True,
             save_checkpoints=True,
@@ -1947,7 +1924,11 @@ class ForecastController(BaseController):
             if not helpers.check_parser_input(ns_parser, self.datasets):
                 return
 
-            if not helpers.check_n_days(ns_parser.n_days, ns_parser.forecast_horizon):
+            if not helpers.check_n_days(
+                ns_parser.n_days,
+                ns_parser.output_chunk_length,
+                ns_parser.past_covariates,
+            ):
                 return
 
             covariates = helpers.clean_covariates(
@@ -1961,7 +1942,7 @@ class ForecastController(BaseController):
                 target_col=ns_parser.target_column,
                 past_covariates=covariates,
                 train_split=ns_parser.train_split,
-                forecast_horizon=ns_parser.forecast_horizon,
+                forecast_horizon=ns_parser.n_days,
                 input_chunk_length=ns_parser.input_chunk_length,
                 output_chunk_length=ns_parser.output_chunk_length,
                 num_stacks=ns_parser.num_stacks,
@@ -2033,7 +2014,6 @@ class ForecastController(BaseController):
             train_split=True,
             past_covariates=True,
             all_past_covariates=True,
-            forecast_horizon=True,
             save_checkpoints=True,
             force_reset=True,
             model_save_name="tcn_model",
@@ -2055,7 +2035,11 @@ class ForecastController(BaseController):
             if not helpers.check_parser_input(ns_parser, self.datasets):
                 return
 
-            if not helpers.check_n_days(ns_parser.n_days, ns_parser.forecast_horizon):
+            if not helpers.check_n_days(
+                ns_parser.n_days,
+                ns_parser.output_chunk_length,
+                ns_parser.past_covariates,
+            ):
                 return
 
             covariates = helpers.clean_covariates(
@@ -2069,7 +2053,7 @@ class ForecastController(BaseController):
                 target_col=ns_parser.target_column,
                 past_covariates=covariates,
                 train_split=ns_parser.train_split,
-                forecast_horizon=ns_parser.forecast_horizon,
+                forecast_horizon=ns_parser.n_days,
                 input_chunk_length=ns_parser.input_chunk_length,
                 output_chunk_length=ns_parser.output_chunk_length,
                 dropout=ns_parser.dropout,
@@ -2111,7 +2095,6 @@ class ForecastController(BaseController):
             other_args,
             export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
             output_chunk_length=True,
-            forecast_horizon=True,
             train_split=True,
             past_covariates=True,
             all_past_covariates=True,
@@ -2131,7 +2114,11 @@ class ForecastController(BaseController):
             if not helpers.check_parser_input(ns_parser, self.datasets):
                 return
 
-            if not helpers.check_n_days(ns_parser.n_days, ns_parser.forecast_horizon):
+            if not helpers.check_n_days(
+                ns_parser.n_days,
+                ns_parser.output_chunk_length,
+                ns_parser.past_covariates,
+            ):
                 return
 
             covariates = helpers.clean_covariates(
@@ -2145,7 +2132,7 @@ class ForecastController(BaseController):
                 target_col=ns_parser.target_column,
                 past_covariates=covariates,
                 train_split=ns_parser.train_split,
-                forecast_horizon=ns_parser.forecast_horizon,
+                forecast_horizon=ns_parser.n_days,
                 output_chunk_length=ns_parser.output_chunk_length,
                 lags=ns_parser.lags,
                 export=ns_parser.export,
@@ -2177,7 +2164,6 @@ class ForecastController(BaseController):
             export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
             lags=True,
             output_chunk_length=True,
-            forecast_horizon=True,
             train_split=True,
             past_covariates=True,
             all_past_covariates=True,
@@ -2195,7 +2181,11 @@ class ForecastController(BaseController):
             if not helpers.check_parser_input(ns_parser, self.datasets):
                 return
 
-            if not helpers.check_n_days(ns_parser.n_days, ns_parser.forecast_horizon):
+            if not helpers.check_n_days(
+                ns_parser.n_days,
+                ns_parser.output_chunk_length,
+                ns_parser.past_covariates,
+            ):
                 return
 
             covariates = helpers.clean_covariates(
@@ -2209,7 +2199,7 @@ class ForecastController(BaseController):
                 target_col=ns_parser.target_column,
                 past_covariates=covariates,
                 train_split=ns_parser.train_split,
-                forecast_horizon=ns_parser.forecast_horizon,
+                forecast_horizon=ns_parser.n_days,
                 output_chunk_length=ns_parser.output_chunk_length,
                 lags=ns_parser.lags,
                 export=ns_parser.export,
@@ -2258,7 +2248,6 @@ class ForecastController(BaseController):
             input_chunk_length=True,
             output_chunk_length=True,
             model_type=True,
-            forecast_horizon=True,
             train_split=True,
             past_covariates=True,
             all_past_covariates=True,
@@ -2277,7 +2266,11 @@ class ForecastController(BaseController):
             if not helpers.check_parser_input(ns_parser, self.datasets):
                 return
 
-            if not helpers.check_n_days(ns_parser.n_days, ns_parser.forecast_horizon):
+            if not helpers.check_n_days(
+                ns_parser.n_days,
+                ns_parser.output_chunk_length,
+                ns_parser.past_covariates,
+            ):
                 return
 
             covariates = helpers.clean_covariates(
@@ -2291,7 +2284,7 @@ class ForecastController(BaseController):
                 target_col=ns_parser.target_column,
                 past_covariates=covariates,
                 train_split=ns_parser.train_split,
-                forecast_horizon=ns_parser.forecast_horizon,
+                forecast_horizon=ns_parser.n_days,
                 input_chunk_length=ns_parser.input_chunk_length,
                 output_chunk_length=ns_parser.output_chunk_length,
                 model_type=ns_parser.model_type,
@@ -2384,7 +2377,6 @@ class ForecastController(BaseController):
             past_covariates=True,
             all_past_covariates=True,
             train_split=True,
-            forecast_horizon=True,
             input_chunk_length=True,
             output_chunk_length=True,
             dropout=0,
@@ -2403,7 +2395,11 @@ class ForecastController(BaseController):
             if not helpers.check_parser_input(ns_parser, self.datasets):
                 return
 
-            if not helpers.check_n_days(ns_parser.n_days, ns_parser.forecast_horizon):
+            if not helpers.check_n_days(
+                ns_parser.n_days,
+                ns_parser.output_chunk_length,
+                ns_parser.past_covariates,
+            ):
                 return
 
             covariates = helpers.clean_covariates(
@@ -2417,7 +2413,7 @@ class ForecastController(BaseController):
                 target_col=ns_parser.target_column,
                 past_covariates=covariates,
                 train_split=ns_parser.train_split,
-                forecast_horizon=ns_parser.forecast_horizon,
+                forecast_horizon=ns_parser.n_days,
                 input_chunk_length=ns_parser.input_chunk_length,
                 output_chunk_length=ns_parser.output_chunk_length,
                 d_model=ns_parser.d_model,
@@ -2499,7 +2495,6 @@ class ForecastController(BaseController):
             force_reset=True,
             model_save_name="tft_model",
             train_split=True,
-            forecast_horizon=True,
             hidden_size=16,
             batch_size=32,
             n_epochs=True,
@@ -2520,7 +2515,11 @@ class ForecastController(BaseController):
             if not helpers.check_parser_input(ns_parser, self.datasets):
                 return
 
-            if not helpers.check_n_days(ns_parser.n_days, ns_parser.forecast_horizon):
+            if not helpers.check_n_days(
+                ns_parser.n_days,
+                ns_parser.output_chunk_length,
+                ns_parser.past_covariates,
+            ):
                 return
 
             covariates = helpers.clean_covariates(
@@ -2534,7 +2533,7 @@ class ForecastController(BaseController):
                 target_col=ns_parser.target_column,
                 past_covariates=covariates,
                 train_split=ns_parser.train_split,
-                forecast_horizon=ns_parser.forecast_horizon,
+                forecast_horizon=ns_parser.n_days,
                 input_chunk_length=ns_parser.input_chunk_length,
                 output_chunk_length=ns_parser.output_chunk_length,
                 hidden_size=ns_parser.hidden_size,

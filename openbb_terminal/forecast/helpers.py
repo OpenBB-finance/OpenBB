@@ -765,10 +765,12 @@ def clean_data(
     return data
 
 
-def check_n_days(n_days: int, forecast_horizon: int) -> bool:
-    if n_days != forecast_horizon:
+def check_n_days(n_days: int, output_chunk_length: int, past_covariates: bool) -> bool:
+    if not past_covariates:
+        return True
+    if n_days != output_chunk_length:
         text = " is not equivalent to fcast-horizon="
-        console.print(f"[red]n_days={n_days}{text}{forecast_horizon}[/red]")
+        console.print(f"[red]n_days={n_days}{text}{output_chunk_length}[/red]")
         console.print("[red]Please set both to the same value to continue.[/red]")
         return False
     return True

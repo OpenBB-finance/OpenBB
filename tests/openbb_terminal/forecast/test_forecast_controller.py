@@ -91,7 +91,6 @@ def test_fc_parse_known_args_and_warn(mocker):
         target_column=True,
         period=5,
         n_days=True,
-        forecast_horizon=True,
         seasonal="weekly",
         periods=True,
         window=True,
