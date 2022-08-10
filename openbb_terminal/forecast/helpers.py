@@ -8,7 +8,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler, MinMaxScaler, Normalizer
+from sklearn.preprocessing import StandardScaler, MinMaxScaler, MaxAbsScaler, Normalizer
 from sklearn.metrics import (
     mean_absolute_error,
     r2_score,
@@ -567,7 +567,7 @@ def get_series(
         ticker_series = TimeSeries.from_dataframe(**filler_kwargs)
 
     if is_scaler:
-        scaler = Scaler()
+        scaler = Scaler(scaler=MaxAbsScaler())
         scaled_ticker_series = scaler.fit_transform(
             filler.transform(ticker_series)
         ).astype(np.float32)
