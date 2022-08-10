@@ -340,7 +340,7 @@ class ETFController(BaseController):
         if ns_parser:
             stockanalysis_view.view_holdings(
                 symbol=self.etf_name,
-                num_to_show=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -351,7 +351,8 @@ class ETFController(BaseController):
             add_help=False,
             prog="news",
             description="""
-                Prints latest news about ETF, including date, title and web link. [Source: News API]
+                Prints latest news about ETF, including date, title and web link.
+                [Source: News API]
             """,
         )
         parser.add_argument(
