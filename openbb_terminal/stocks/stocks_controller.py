@@ -395,8 +395,8 @@ class StocksController(StockBaseController):
                                 )
 
                     stocks_helper.display_candle(
-                        s_ticker=self.ticker,
-                        df_stock=data,
+                        symbol=self.ticker,
+                        data=data,
                         use_matplotlib=ns_parser.plotly,
                         intraday=self.interval != "1440min",
                         add_trend=ns_parser.trendlines,

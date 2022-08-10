@@ -46,7 +46,7 @@ def test_price_target_from_analysts_plt(capsys, interval, mocker, start):
     mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
 
     ticker = "TSLA"
-    stock = load(ticker=ticker, start=start, interval=interval)
+    stock = load(symbol=ticker, start_date=start, interval=interval)
 
     business_insider_view.price_target_from_analysts(
         ticker=ticker,

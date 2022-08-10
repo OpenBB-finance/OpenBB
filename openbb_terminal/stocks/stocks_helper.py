@@ -615,10 +615,10 @@ def search(
 
 # pylint:disable=too-many-return-statements
 def load(
-    ticker: str,
-    start: datetime = (datetime.now() - timedelta(days=1100)),
+    symbol: str,
+    start_date: datetime = (datetime.now() - timedelta(days=1100)),
     interval: int = 1440,
-    end: datetime = datetime.now(),
+    end_date: datetime = datetime.now(),
     prepost: bool = False,
     source: str = "yf",
     iexrange: str = "ytd",
@@ -651,13 +651,13 @@ def load(
 
     Parameters
     ----------
-    ticker: str
+    symbol: str
         Ticker to get data
-    start: datetime
+    start_date: datetime
         Start date to get data from with
     interval: int
         Interval (in minutes) to get data 1, 5, 15, 30, 60 or 1440
-    end: datetime
+    end_date: datetime
         End date to get data from with
     prepost: bool
         Pre and After hours data
@@ -685,7 +685,7 @@ def load(
                 ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas")
                 # pylint: disable=unbalanced-tuple-unpacking
                 df_stock_candidate, _ = ts.get_daily_adjusted(
-                    symbol=ticker, outputsize="full"
+                    symbol=symbol, outputsize="full"
                 )
             except Exception as e:
                 console.print(e, "")
@@ -714,8 +714,8 @@ def load(
 
             # Slice dataframe from the starting date YYYY-MM-DD selected
             df_stock_candidate = df_stock_candidate[
-                (df_stock_candidate.index >= start.strftime("%Y-%m-%d"))
-                & (df_stock_candidate.index <= end.strftime("%Y-%m-%d"))
+                (df_stock_candidate.index >= start_date.strftime("%Y-%m-%d"))
+                & (df_stock_candidate.index <= end_date.strftime("%Y-%m-%d"))
             ]
 
         # Yahoo Finance Source
@@ -732,14 +732,14 @@ def load(
                 int_string = "Monthly"
 
             # Win10 version of mktime cannot cope with dates before 1970
-            if os.name == "nt" and start < datetime(1970, 1, 1):
-                start = datetime(
+            if os.name == "nt" and start_date < datetime(1970, 1, 1):
+                start_date = datetime(
                     1970, 1, 2
                 )  # 1 day buffer in case of timezone adjustments
 
             # Adding a dropna for weekly and monthly because these include weird NaN columns.
             df_stock_candidate = yf.download(
-                ticker, start=start, end=end, progress=False, interval=int_
+                symbol, start=start_date, end=end_date, progress=False, interval=int_
             ).dropna(axis=0)
 
             # Check that loading a stock was not successful
@@ -756,7 +756,7 @@ def load(
             try:
                 client = pyEX.Client(api_token=cfg.API_IEX_TOKEN, version="v1")
 
-                df_stock_candidate = client.chartDF(ticker, timeframe=iexrange)
+                df_stock_candidate = client.chartDF(symbol, timeframe=iexrange)
 
                 # Check that loading a stock was not successful
                 if df_stock_candidate.empty:
@@ -797,8 +797,8 @@ def load(
 
             request_url = (
                 f"https://api.polygon.io/v2/aggs/ticker/"
-                f"{ticker.upper()}/range/1/{timespan}/"
-                f"{start.strftime('%Y-%m-%d')}/{end.strftime('%Y-%m-%d')}?adjusted=true"
+                f"{symbol.upper()}/range/1/{timespan}/"
+                f"{start_date.strftime('%Y-%m-%d')}/{end_date.strftime('%Y-%m-%d')}?adjusted=true"
                 f"&sort=desc&limit=49999&apiKey={cfg.API_POLYGON_KEY}"
             )
             r = requests.get(request_url)
@@ -847,10 +847,10 @@ def load(
             s_date_start = s_start_dt.strftime("%Y-%m-%d")
 
             df_stock_candidate = yf.download(
-                ticker,
+                symbol,
                 start=s_date_start
-                if s_start_dt > start
-                else start.strftime("%Y-%m-%d"),
+                if s_start_dt > start_date
+                else start_date.strftime("%Y-%m-%d"),
                 progress=False,
                 interval=s_int,
                 prepost=prepost,
@@ -863,17 +863,17 @@ def load(
 
             df_stock_candidate.index = df_stock_candidate.index.tz_localize(None)
 
-            if s_start_dt > start:
+            if s_start_dt > start_date:
                 s_start = pytz.utc.localize(s_start_dt)
             else:
-                s_start = start
+                s_start = start_date
 
             df_stock_candidate.index.name = "date"
 
         elif source == "polygon":
             request_url = (
                 f"https://api.polygon.io/v2/aggs/ticker/"
-                f"{ticker.upper()}/range/{interval}/minute/{start.strftime('%Y-%m-%d')}/{end.strftime('%Y-%m-%d')}"
+                f"{symbol.upper()}/range/{interval}/minute/{start_date.strftime('%Y-%m-%d')}/{end_date.strftime('%Y-%m-%d')}"
                 f"?adjusted=true&sort=desc&limit=49999&apiKey={cfg.API_POLYGON_KEY}"
             )
             r = requests.get(request_url)
@@ -914,17 +914,17 @@ def load(
             df_stock_candidate.index = df_stock_candidate.index.tz_localize(None)
             s_start_dt = df_stock_candidate.index[0]
 
-            if s_start_dt > start:
+            if s_start_dt > start_date:
                 s_start = pytz.utc.localize(s_start_dt)
             else:
-                s_start = start
+                s_start = start_date
             s_interval = f"{interval}min"
         int_string = "Intraday"
 
     s_intraday = (f"Intraday {s_interval}", int_string)[interval == 1440]
 
     console.print(
-        f"\nLoading {s_intraday} {ticker.upper()} stock "
+        f"\nLoading {s_intraday} {symbol.upper()} stock "
         f"with starting period {s_start.strftime('%Y-%m-%d')} for analysis.",
     )
 
@@ -932,8 +932,8 @@ def load(
 
 
 def display_candle(
-    s_ticker: str,
-    df_stock: pd.DataFrame,
+    symbol: str,
+    data: pd.DataFrame,
     use_matplotlib: bool,
     intraday: bool = False,
     add_trend: bool = False,
@@ -945,10 +945,10 @@ def display_candle(
 
     Parameters
     ----------
-    df_stock: pd.DataFrame
-        Stock dataframe
-    s_ticker: str
+    symbol: str
         Ticker name
+    data: pd.DataFrame
+        Stock dataframe
     use_matplotlib: bool
         Flag to use matplotlib instead of interactive plotly chart
     intraday: bool
@@ -965,26 +965,26 @@ def display_candle(
         String to include in title
     """
     if add_trend:
-        if (df_stock.index[1] - df_stock.index[0]).total_seconds() >= 86400:
-            df_stock = find_trendline(df_stock, "OC_High", "high")
-            df_stock = find_trendline(df_stock, "OC_Low", "low")
+        if (data.index[1] - data.index[0]).total_seconds() >= 86400:
+            data = find_trendline(data, "OC_High", "high")
+            data = find_trendline(data, "OC_Low", "low")
 
     if use_matplotlib:
         ap0 = []
         if add_trend:
-            if "OC_High_trend" in df_stock.columns:
+            if "OC_High_trend" in data.columns:
                 ap0.append(
                     mpf.make_addplot(
-                        df_stock["OC_High_trend"],
+                        data["OC_High_trend"],
                         color=cfg.theme.up_color,
                         secondary_y=False,
                     ),
                 )
 
-            if "OC_Low_trend" in df_stock.columns:
+            if "OC_Low_trend" in data.columns:
                 ap0.append(
                     mpf.make_addplot(
-                        df_stock["OC_Low_trend"],
+                        data["OC_Low_trend"],
                         color=cfg.theme.down_color,
                         secondary_y=False,
                     ),
@@ -1014,11 +1014,11 @@ def display_candle(
             candle_chart_kwargs["figscale"] = 1.10
             candle_chart_kwargs["figsize"] = plot_autoscale()
 
-            fig, ax = mpf.plot(df_stock, **candle_chart_kwargs, **kwargs)
-            lambda_long_number_format_y_axis(df_stock, "Volume", ax)
+            fig, ax = mpf.plot(data, **candle_chart_kwargs, **kwargs)
+            lambda_long_number_format_y_axis(data, "Volume", ax)
 
             fig.suptitle(
-                f"{asset_type} {s_ticker}",
+                f"{asset_type} {symbol}",
                 x=0.055,
                 y=0.965,
                 horizontalalignment="left",
@@ -1044,7 +1044,7 @@ def display_candle(
             ax1, ax2 = external_axes
             candle_chart_kwargs["ax"] = ax1
             candle_chart_kwargs["volume"] = ax2
-            mpf.plot(df_stock, **candle_chart_kwargs)
+            mpf.plot(data, **candle_chart_kwargs)
 
     else:
         fig = make_subplots(
@@ -1052,16 +1052,16 @@ def display_candle(
             cols=1,
             shared_xaxes=True,
             vertical_spacing=0.06,
-            subplot_titles=(f"{s_ticker}", "Volume"),
+            subplot_titles=(f"{symbol}", "Volume"),
             row_width=[0.2, 0.7],
         )
         fig.add_trace(
             go.Candlestick(
-                x=df_stock.index,
-                open=df_stock.Open,
-                high=df_stock.High,
-                low=df_stock.Low,
-                close=df_stock.Close,
+                x=data.index,
+                open=data.Open,
+                high=data.High,
+                low=data.Low,
+                close=data.Close,
                 name="OHLC",
             ),
             row=1,
@@ -1078,8 +1078,8 @@ def display_candle(
                 "deepskyblue",
             ]
             for idx, ma_val in enumerate(ma):
-                temp = df_stock["Adj Close"].copy()
-                temp[f"ma{ma_val}"] = df_stock["Adj Close"].rolling(ma_val).mean()
+                temp = data["Adj Close"].copy()
+                temp[f"ma{ma_val}"] = data["Adj Close"].rolling(ma_val).mean()
                 temp = temp.dropna()
                 fig.add_trace(
                     go.Scatter(
@@ -1096,11 +1096,11 @@ def display_candle(
                 )
 
         if add_trend:
-            if "OC_High_trend" in df_stock.columns:
+            if "OC_High_trend" in data.columns:
                 fig.add_trace(
                     go.Scatter(
-                        x=df_stock.index,
-                        y=df_stock["OC_High_trend"],
+                        x=data.index,
+                        y=data["OC_High_trend"],
                         name="High Trend",
                         mode="lines",
                         line=go.scatter.Line(color="green"),
@@ -1108,11 +1108,11 @@ def display_candle(
                     row=1,
                     col=1,
                 )
-            if "OC_Low_trend" in df_stock.columns:
+            if "OC_Low_trend" in data.columns:
                 fig.add_trace(
                     go.Scatter(
-                        x=df_stock.index,
-                        y=df_stock["OC_Low_trend"],
+                        x=data.index,
+                        y=data["OC_Low_trend"],
                         name="Low Trend",
                         mode="lines",
                         line=go.scatter.Line(color="red"),
@@ -1123,12 +1123,12 @@ def display_candle(
 
         colors = [
             "red" if row.Open < row["Adj Close"] else "green"
-            for _, row in df_stock.iterrows()
+            for _, row in data.iterrows()
         ]
         fig.add_trace(
             go.Bar(
-                x=df_stock.index,
-                y=df_stock.Volume,
+                x=data.index,
+                y=data.Volume,
                 name="Volume",
                 marker_color=colors,
             ),
@@ -1197,15 +1197,15 @@ def display_candle(
         fig.show(config=dict({"scrollZoom": True}))
 
 
-def quote(s_ticker: str):
+def quote(symbol: str):
     """Ticker quote
 
     Parameters
     ----------
-    s_ticker : str
+    symbol : str
         Ticker
     """
-    ticker = yf.Ticker(s_ticker)
+    ticker = yf.Ticker(symbol)
 
     try:
         quote_df = pd.DataFrame(
@@ -1251,7 +1251,7 @@ def quote(s_ticker: str):
 
     except KeyError:
         logger.exception("Invalid stock ticker")
-        console.print(f"Invalid stock ticker: {s_ticker}")
+        console.print(f"Invalid stock ticker: {symbol}")
 
 
 def load_ticker(

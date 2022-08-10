@@ -48,8 +48,8 @@ def test_fails_to_deliver(mocker, raw):
         new=mocker.Mock(return_value=df_fails_to_deliver.copy()),
     )
     stock = stocks_helper.load(
-        ticker="TSLA",
-        start=datetime.strptime("2021-12-18", "%Y-%m-%d"),
+        symbol="TSLA",
+        start_date=datetime.strptime("2021-12-18", "%Y-%m-%d"),
     )
 
     sec_view.fails_to_deliver(
