@@ -30,6 +30,7 @@ from openbb_terminal.economy import (
     investingcom_model,
     investingcom_view,
     plot_view,
+    debt_clock_view
 )
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -65,6 +66,7 @@ class EconomyController(BaseController):
         "bigmac",
         "ycrv",
         "events",
+        "cdebt",
     ]
 
     CHOICES_MENUS = ["pred", "qa"]
@@ -259,6 +261,7 @@ class EconomyController(BaseController):
         mt.add_cmd("bigmac", "NASDAQ Datalink")
         mt.add_cmd("ycrv", "Investing.com / FRED")
         mt.add_cmd("events", "Investing.com")
+        mt.add_cmd("cdebt", "USDebtClock.org")
         mt.add_raw("\n")
         mt.add_cmd("rtps", "Alpha Vantage")
         mt.add_cmd("valuation", "Finviz")
@@ -287,8 +290,8 @@ class EconomyController(BaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="overview",
             description="""
-            Provide a market overview of a variety of options. This can be a general overview, indices,
-            bonds and currencies. [Source: Wall St. Journal]
+            Provide a market overview of a variety of options. This can be a general overview,
+            indices, bonds and currencies. [Source: Wall St. Journal]
             """,
         )
 
@@ -1388,6 +1391,26 @@ class EconomyController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
+    def call_cdebt(self, other_args: List[str]):
+        """Process cdebt command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="cdebt",
+            description="""
+                National debt statistics for various countries. [Source: USDebtClock]
+            """,
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            debt_clock_view.display_debt(
+                export=ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
     @log_start_end(log=logger)
     def call_spectrum(self, other_args: List[str]):
         """Process spectrum command"""
