@@ -26,7 +26,7 @@ def screener(similar: List[str], data_type: str = "overview", export: str = ""):
     export : str
         Format to export data
     """
-    df_screen = finviz_compare_model.get_comparison_data(data_type, similar)
+    df_screen = finviz_compare_model.get_comparison_data(similar=similar, data_type=data_type)
 
     if df_screen is None or df_screen.empty:
         console.print("No screened data found.")

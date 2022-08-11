@@ -462,9 +462,6 @@ def plot_volume_open_interest(
 
     options = yfinance_model.get_option_chain(symbol, expiry)
 
-    if options.empty:
-        return
-
     calls = options.calls
     puts = options.puts
     current_price = float(yf.Ticker(symbol).info["regularMarketPrice"])

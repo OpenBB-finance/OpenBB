@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def get_financial_comparisons(
-    all_stocks: List[str], data_type: str, timeframe: str = None, quarter: bool = False
+    all_stocks: List[str], statement: str, timeframe: str = None, quarter: bool = False
 ) -> pd.DataFrame:
     """Get dataframe of income data from marketwatch
 
@@ -25,8 +25,8 @@ def get_financial_comparisons(
     ----------
     all_stocks : List[str]
         List of all stocks to get income for
-    data_type : str
-        Data to get. Can be income, balance or cashflow
+    statement : str
+        Financial statement to get. Can be income, balance or cashflow
     timeframe : str
         Quarterly or annual data or None
     quarter : bool
@@ -43,7 +43,7 @@ def get_financial_comparisons(
         Timeframe not valid
     """
     l_timeframes, ddf_financials = prepare_comparison_financials(
-        all_stocks, data_type, quarter
+        all_stocks, statement, quarter
     )
 
     if timeframe:
@@ -66,7 +66,7 @@ def get_financial_comparisons(
 
 @log_start_end(log=logger)
 def prepare_df_financials(
-    ticker: str, data_type: str, quarter: bool = False
+    ticker: str, statement: str, quarter: bool = False
 ) -> pd.DataFrame:
     """Builds a DataFrame with financial statements for a given company
 
@@ -74,8 +74,8 @@ def prepare_df_financials(
     ----------
     ticker: str
         Company's stock ticker
-    data_type: str
-        Either income, balance or cashflow
+    statement: str
+        Financial statement to get. Can be income, balance or cashflow
     quarter: bool, optional
         Return quarterly financial statements instead of annual, by default False
 
@@ -104,13 +104,13 @@ def prepare_df_financials(
         },
     }
 
-    if data_type not in financial_urls:
-        raise ValueError(f"type {data_type} is not in {financial_urls.keys()}")
+    if statement not in financial_urls:
+        raise ValueError(f"type {statement} is not in {financial_urls.keys()}")
 
     period = "quarter" if quarter else "annual"
     text_soup_financials = BeautifulSoup(
         requests.get(
-            financial_urls[data_type][period].format(ticker),
+            financial_urls[statement][period].format(ticker),
             headers={"User-Agent": get_user_agent()},
         ).text,
         "lxml",
@@ -171,7 +171,7 @@ def prepare_df_financials(
 
 @log_start_end(log=logger)
 def prepare_comparison_financials(
-    similar: List[str], data_type: str, quarter: bool = False
+    similar: List[str], statement: str, quarter: bool = False
 ) -> Tuple[List[str], Dict[str, pd.DataFrame]]:
     """Builds a dictionary of DataFrame with financial statements for list of tickers
 
@@ -179,8 +179,8 @@ def prepare_comparison_financials(
     ----------
     similar : List[str]
         List of similar stock tickers
-    data_type : str
-        Either income, balance or cashflow
+    statement : str
+        Financial statement to get. Can be income, balance or cashflow
     quarter : bool
         Return quarterly financial statements instead of annual, by default False
 
@@ -198,7 +198,7 @@ def prepare_comparison_financials(
     ) in (
         similar.copy()
     ):  # We need a copy since we are modifying the original potentially
-        results = prepare_df_financials(symbol, data_type, quarter)
+        results = prepare_df_financials(symbol, statement, quarter)
         if results.empty:
             # If we have an empty result set, don't do further analysis on this symbol and remove it from consideration
             console.print(

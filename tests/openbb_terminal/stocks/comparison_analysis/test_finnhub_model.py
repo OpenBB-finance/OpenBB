@@ -18,7 +18,7 @@ def vcr_config():
 
 @pytest.mark.vcr
 def test_get_similar_companies(recorder):
-    result_tuple = finnhub_model.get_similar_companies(ticker="TSLA")
+    result_tuple = finnhub_model.get_similar_companies(symbol="TSLA")
 
     recorder.capture(result_tuple)
 
@@ -34,6 +34,6 @@ def test_get_similar_companies_invalid_status(mocker, recorder):
     mock_response = mocker.Mock(**attrs)
 
     mocker.patch(target="requests.get", new=mocker.Mock(return_value=mock_response))
-    result_tuple = finnhub_model.get_similar_companies(ticker="TSLA")
+    result_tuple = finnhub_model.get_similar_companies(symbol="TSLA")
 
     recorder.capture(result_tuple)
