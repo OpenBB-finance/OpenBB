@@ -63,7 +63,6 @@ jobs:
       # Make sure to add Remove-Item C:\Users\Administrator\Desktop\OPENBB-exports -Recurse whenever integration tests get fixed
       - name: Remove Previous Build
         run: |
-          Remove-Item '.\build\nsis\OpenBB Terminal Setup.exe' -Recurse
           Remove-Item .\build\nsis\app\ -Recurse
           Remove-Item .\dist\ -Recurse
           Remove-Item .\build\terminal\ -Recurse
@@ -73,3 +72,4 @@ jobs:
           conda deactivate base
           conda env remove -n obb
           Remove-Item C:\Users\Administrator\miniconda3\envs\obb\ -Recurse
+      # Remove-Item '.\build\nsis\OpenBB Terminal Setup.exe' -Recurse
