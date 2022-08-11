@@ -31,7 +31,9 @@ def test_display_raw(mocker, tab):
     )
 
     # MOCK VISUALIZE_OUTPUT
-    mocker.patch(target="openbb_terminal.stocks.options.chartexchange_view.theme.visualize_output")
+    mocker.patch(
+        target="openbb_terminal.stocks.options.chartexchange_view.theme.visualize_output"
+    )
 
     # MOCK PLOT_CHART
     mocker.patch(target="openbb_terminal.stocks.options.chartexchange_view.plot_chart")
