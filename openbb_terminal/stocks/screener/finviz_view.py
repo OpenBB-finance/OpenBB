@@ -159,7 +159,7 @@ def screener(
             preset_loaded=loaded_preset,
             data_type=data_type,
             limit=10,
-            ascend=ascending,
+            ascending=ascending,
         )
 
     if isinstance(df_screen, pd.DataFrame):
