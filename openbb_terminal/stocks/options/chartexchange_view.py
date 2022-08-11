@@ -27,6 +27,36 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
+def plot_chart(
+    df: pd.DataFrame,
+    candle_chart_kwargs: dict,
+    option_type: str,
+    symbol: str,
+    external_axes: Optional[List[plt.Axes]] = None,
+):
+    if not external_axes:
+        candle_chart_kwargs["returnfig"] = True
+        candle_chart_kwargs["figratio"] = (10, 7)
+        candle_chart_kwargs["figscale"] = 1.10
+        candle_chart_kwargs["figsize"] = plot_autoscale()
+        fig, ax = mpf.plot(df, **candle_chart_kwargs)
+        fig.suptitle(
+            f"Historical quotes for {symbol} {option_type}",
+            x=0.055,
+            y=0.965,
+            horizontalalignment="left",
+        )
+        lambda_long_number_format_y_axis(df, "Volume", ax)
+        theme.visualize_output(force_tight_layout=False)
+        ax[0].legend()
+    elif is_valid_axes_count(external_axes, 1):
+        (ax1,) = external_axes
+        candle_chart_kwargs["ax"] = ax1
+        mpf.plot(df, **candle_chart_kwargs)
+    else:
+        return
+
+@log_start_end(log=logger)
 def display_raw(
     symbol: str,
     date: str,
@@ -78,27 +108,13 @@ def display_raw(
     # This plot has 2 axes
     option_type = "call" if call else "put"
 
-    if not external_axes:
-        candle_chart_kwargs["returnfig"] = True
-        candle_chart_kwargs["figratio"] = (10, 7)
-        candle_chart_kwargs["figscale"] = 1.10
-        candle_chart_kwargs["figsize"] = plot_autoscale()
-        fig, ax = mpf.plot(df, **candle_chart_kwargs)
-        fig.suptitle(
-            f"Historical quotes for {symbol} {option_type}",
-            x=0.055,
-            y=0.965,
-            horizontalalignment="left",
-        )
-        lambda_long_number_format_y_axis(df, "Volume", ax)
-        theme.visualize_output(force_tight_layout=False)
-        ax[0].legend()
-    elif is_valid_axes_count(external_axes, 1):
-        (ax1,) = external_axes
-        candle_chart_kwargs["ax"] = ax1
-        mpf.plot(df, **candle_chart_kwargs)
-    else:
-        return
+    plot_chart(
+        df=df,
+        candle_chart_kwargs=candle_chart_kwargs,
+        option_type=option_type,
+        symbol=symbol,
+        external_axes=external_axes,
+    )
 
     export_data(
         export,
