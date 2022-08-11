@@ -190,6 +190,7 @@ def show_treasuries(
         ax.plot(treasury_data[col], label=f"{col_label[0]} [{col_label[1]}]")
 
     ax.set_title("U.S. Treasuries")
+    ax.set_ylabel("Yield (%)")
     ax.legend(
         bbox_to_anchor=(0, 0.40, 1, -0.52),
         loc="upper right",

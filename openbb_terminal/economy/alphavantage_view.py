@@ -345,7 +345,7 @@ def display_treasury_yield(
 
     ax.plot(yld.date, yld.Yield, marker="o")
     ax.set_title(f"{d_maturity[maturity]} Treasury Yield")
-    ax.set_ylabel("Yield")
+    ax.set_ylabel("Yield (%)")
     theme.style_primary_axis(ax)
     if external_axes is None:
         theme.visualize_output()
@@ -390,7 +390,7 @@ def display_unemployment(
     un = alphavantage_model.get_unemployment(start_year)
 
     if un.empty:
-        console.print("Error getting data.  Check API Key")
+        console.print("Error getting data. Check API Key")
         return
 
     if external_axes is None:
@@ -402,7 +402,7 @@ def display_unemployment(
 
     ax.plot(un.date, un.unemp, marker="o")
     ax.set_title(f"US Unemployment from {start_year}")
-    ax.set_ylabel("US Unemployment  ")
+    ax.set_ylabel("US Unemployment (%)")
     theme.style_primary_axis(ax)
     if external_axes is None:
         theme.visualize_output()
