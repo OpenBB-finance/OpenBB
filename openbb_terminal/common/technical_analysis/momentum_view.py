@@ -288,6 +288,39 @@ def display_rsi(
         df_ta,
     )
 
+@log_start_end(log=logger)
+def display_rsp(
+    s_ticker: str = "",
+):
+    """Display Relative Strength Percentile
+
+    Parameters
+    ----------
+    s_ticker : str
+        Stock ticker
+    """
+    df_stock_p = pd.read_csv('https://raw.githubusercontent.com/soggyomelette/rs-log/main/output/rs_stocks.csv')
+    df_industries_p = pd.read_csv('https://raw.githubusercontent.com/soggyomelette/rs-log/main/output/rs_industries.csv')
+    rsp_stock = df_stock_p[df_stock_p['Ticker'].str.match(s_ticker)]
+    for i in range(len(df_industries_p)):
+        if s_ticker in df_industries_p.iloc[i]["Tickers"]:
+            rsp_industry = df_industries_p.iloc[[i]]
+
+    if rsp_stock.empty or rsp_industry.empty:
+        print('Ticker not found')
+    else:
+        print_rich_table(
+            rsp_stock,
+            headers=list(rsp_stock.columns),
+            show_index=False,
+            title="Relative Strength Percentile of Stock (relative to SPY)",
+        )
+        print_rich_table(
+            rsp_industry,
+            headers=list(df_industries_p.columns),
+            show_index=False,
+            title="Relative Strength Percentile of Industry the ticker is part of",
+        )
 
 @log_start_end(log=logger)
 def display_stoch(

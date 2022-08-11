@@ -62,6 +62,7 @@ class TechnicalAnalysisController(StockBaseController):
         "cci",
         "macd",
         "rsi",
+        "rsp",
         "stoch",
         "fisher",
         "cg",
@@ -133,6 +134,7 @@ class TechnicalAnalysisController(StockBaseController):
         mt.add_cmd("cci")
         mt.add_cmd("macd")
         mt.add_cmd("rsi")
+        mt.add_cmd("rsp")
         mt.add_cmd("stoch")
         mt.add_cmd("fisher")
         mt.add_cmd("cg")
@@ -747,6 +749,30 @@ class TechnicalAnalysisController(StockBaseController):
                 scalar=ns_parser.n_scalar,
                 drift=ns_parser.n_drift,
                 export=ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
+    def call_rsp(self, other_args: List[str]):
+        """Process rsp command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="rsp",
+            description="""
+                IBD Style Relative Strength Percentile Ranking of Stocks (i.e. 0-100 Score).
+                Ranks stocks on the basis of relative strength as calculated by Investor's
+                Business Daily (Yearly performance of stock (most recent quarter is weighted 
+                double) divided by yearly performance of reference index (here, we use SPY)
+                Data taken from https://github.com/skyte/relative-strength
+            """,
+        )
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if ns_parser:
+            momentum_view.display_rsp(
+                s_ticker=self.ticker,
             )
 
     @log_start_end(log=logger)
