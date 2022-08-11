@@ -282,7 +282,7 @@ def display_sp500_comps_tsne(
     List[str]
         List of the 10 closest stocks due to TSNE
     """
-    data = yahoo_finance_model.get_sp500_comps_tsne(symbol, lr)
+    data = yahoo_finance_model.get_sp500_comps_tsne(symbol=symbol, lr=lr)
 
     top_n = data.iloc[1 : (limit + 1)]
     top_n_name = top_n.index.to_list()
