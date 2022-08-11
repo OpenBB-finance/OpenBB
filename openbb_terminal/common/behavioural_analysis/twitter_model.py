@@ -71,7 +71,6 @@ def load_analyze_tweets(
         for tweet in response.json()["data"]:
             row = get_data(tweet)
             tweets.append(row)
-            # df_tweets.append(row, ignore_index=True)
         df_tweets = pd.DataFrame(tweets)
     elif response.status_code == 401:
         console.print("Twitter API Key provided is incorrect\n")
