@@ -304,8 +304,8 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             "stocks_helper.display_candle",
             [],
             dict(
-                s_ticker="MOCK_TICKER",
-                df_stock=EMPTY_DF,
+                symbol="MOCK_TICKER",
+                data=EMPTY_DF,
                 use_matplotlib=False,
                 intraday=False,
                 add_trend=True,
