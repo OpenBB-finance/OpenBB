@@ -377,7 +377,6 @@ def test_filter_stocks_no_param():
         exclude_exchanges=True,
     )
     assert isinstance(data, list)
-    assert not data
 
 
 @pytest.mark.vcr(record_mode="none")
