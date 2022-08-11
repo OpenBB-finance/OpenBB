@@ -69,7 +69,7 @@ def past_ipo(
 @check_api_key(["API_FINNHUB_KEY"])
 def future_ipo(
     num_days_ahead: int = 5,
-    end_date: datetime = None,
+    end_date: Optional[str] = None,
     limit: int = 20,
     export: str = "",
 ):
@@ -89,12 +89,12 @@ def future_ipo(
     today = datetime.now()
 
     if end_date is None:
-        end_date = today + timedelta(days=num_days_ahead)
+        end = (today + timedelta(days=num_days_ahead)).strftime("%Y-%m-%d")
+    else:
+        end = end_date
 
     df_future_ipo = (
-        finnhub_model.get_ipo_calendar(
-            today.strftime("%Y-%m-%d"), end_date.strftime("%Y-%m-%d")
-        )
+        finnhub_model.get_ipo_calendar(today.strftime("%Y-%m-%d"), end)
         .rename(columns={"Date": "Future"})
         .fillna("")
     )
