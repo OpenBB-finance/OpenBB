@@ -375,6 +375,7 @@ def plot_vol(
         External axes (1 axis is expected in the list), by default None
     """
     options = yfinance_model.get_option_chain(symbol, expiry)
+
     calls = options.calls
     puts = options.puts
     current_price = float(yf.Ticker(symbol).info["regularMarketPrice"])
@@ -469,6 +470,10 @@ def plot_volume_open_interest(
     """
 
     options = yfinance_model.get_option_chain(symbol, expiry)
+
+    if options.empty:
+        return
+    
     calls = options.calls
     puts = options.puts
     current_price = float(yf.Ticker(symbol).info["regularMarketPrice"])

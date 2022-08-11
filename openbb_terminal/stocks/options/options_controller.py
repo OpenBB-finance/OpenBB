@@ -836,7 +836,7 @@ class OptionsController(BaseController):
                         )
                     else:
                         yfinance_view.plot_vol(
-                            ticker=self.ticker,
+                            symbol=self.ticker,
                             expiry=self.selected_date,
                             min_sp=ns_parser.min,
                             max_sp=ns_parser.max,
@@ -904,7 +904,7 @@ class OptionsController(BaseController):
                         )
                     else:
                         yfinance_view.plot_volume_open_interest(
-                            ticker=self.ticker,
+                            symbol=self.ticker,
                             expiry=self.selected_date,
                             min_sp=ns_parser.min_sp,
                             max_sp=ns_parser.max_sp,
@@ -1166,7 +1166,7 @@ class OptionsController(BaseController):
             else:
                 opt_type = -1 if ns_parser.put else 1
                 yfinance_view.show_greeks(
-                    ticker=self.ticker,
+                    symbol=self.ticker,
                     div_cont=ns_parser.dividend,
                     expire=self.selected_date,
                     rf=ns_parser.risk_free,
