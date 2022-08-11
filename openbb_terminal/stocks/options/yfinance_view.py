@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import math
+import re
 import os
 from bisect import bisect_left
 from datetime import date, datetime, timedelta
@@ -43,6 +44,29 @@ from openbb_terminal.stocks.options.yfinance_model import (
 
 
 logger = logging.getLogger(__name__)
+
+
+def header_fmt(header: str) -> str:
+    """
+    Formats strings to appear as titles
+
+    Parameters
+    ----------
+    header: str
+        The string to be formatted
+
+    Returns
+    ----------
+    new_header: str
+        The clean string to use as a header
+    """
+
+    words = re.findall("[A-Z][^A-Z]*", header)
+    if words == []:
+        words = [header]
+    new_header = " ".join(words)
+    new_header = new_header.replace("_", " ")
+    return new_header.title()
 
 
 @log_start_end(log=logger)
@@ -141,61 +165,62 @@ def display_chains(
         )
 
     # Put the columns into the order for showing them
-    option_chains = option_chains[
-        [
-            "impliedVolatility_call",
-            "Theta_call",
-            "Gamma_call",
-            "Delta_call",
-            "volume_call",
-            "openInterest_call",
-            "bid_call",
-            "ask_call",
-            "lastPrice_call",
-            "strike",
-            "lastPrice_put",
-            "ask_put",
-            "bid_put",
-            "openInterest_put",
-            "volume_put",
-            "Delta_put",
-            "Gamma_put",
-            "Theta_put",
-            "impliedVolatility_put",
+    if calls_only and puts_only:
+        option_chains = option_chains[
+            [
+                "impliedVolatility_call",
+                "Theta_call",
+                "Gamma_call",
+                "Delta_call",
+                "volume_call",
+                "openInterest_call",
+                "bid_call",
+                "ask_call",
+                "lastPrice_call",
+                "strike",
+                "lastPrice_put",
+                "ask_put",
+                "bid_put",
+                "openInterest_put",
+                "volume_put",
+                "Delta_put",
+                "Gamma_put",
+                "Theta_put",
+                "impliedVolatility_put",
+            ]
         ]
-    ]
 
-    # In order to add color to call/put, the numbers will have to be strings.  So floatfmt will not work in
-    # print_rich_table, so lets format them now.
+        # In order to add color to call/put, the numbers will have to be strings.  So floatfmt will not work in
+        # print_rich_table, so lets format them now.
 
-    float_fmt = [
-        ".3f",
-        ".3f",
-        ".3f",
-        ".3f",
-        ".0f",
-        ".0f",
-        ".2f",
-        ".2f",
-        ".2f",
-        ".2f",
-        ".2f",
-        ".2f",
-        ".2f",
-        ".0f",
-        ".0f",
-        ".3f",
-        ".3f",
-        ".3f",
-        ".3f",
-    ]
-    # pylint: disable=W0640
+        float_fmt = [
+            ".3f",
+            ".3f",
+            ".3f",
+            ".3f",
+            ".0f",
+            ".0f",
+            ".2f",
+            ".2f",
+            ".2f",
+            ".2f",
+            ".2f",
+            ".2f",
+            ".2f",
+            ".0f",
+            ".0f",
+            ".3f",
+            ".3f",
+            ".3f",
+            ".3f",
+        ]
+        # pylint: disable=W0640
 
-    for idx, fmt in enumerate(float_fmt):
-        option_chains.iloc[:, idx] = option_chains.iloc[:, idx].apply(
-            lambda x: str("{:" + fmt + "}").format(float(x)) if x != "-" else x
-        )
-    # pylint: enable=W0640
+        for idx, fmt in enumerate(float_fmt):
+            option_chains.iloc[:, idx] = option_chains.iloc[:, idx].apply(
+                lambda x: str("{:" + fmt + "}").format(float(x)) if x != "-" else x
+            )
+        # pylint: enable=W0640
 
     # Make anything _call green and anything _put red
     for col in option_chains.columns:
@@ -209,27 +234,7 @@ def display_chains(
     print_rich_table(
         option_chains,
         title=f"Yahoo Option Chain (15 min delayed) for {expiry} (Greeks calculated by OpenBB)",
-        headers=[
-            "IV",
-            "Theta",
-            "Gamma",
-            "Delta",
-            "Volume",
-            "OI",
-            "Bid",
-            "Ask",
-            "Last",
-            "Strike",
-            "Last",
-            "Ask",
-            "Bid",
-            "OI",
-            "Volume",
-            "Delta",
-            "Gamma",
-            "Theta",
-            "IV",
-        ],
+        headers=[header_fmt(x) for x in option_chains.columns],
     )
     export_data(
         export,

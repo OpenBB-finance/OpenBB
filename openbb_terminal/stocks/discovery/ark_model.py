@@ -100,6 +100,8 @@ def add_order_total(df_orders: DataFrame) -> DataFrame:
 
     prices = yf.download(tickers, start=start_date, progress=False)
 
+    if prices.empty:
+        return pd.DataFrame()
     for i, candle in enumerate(["Volume", "Open", "Close", "High", "Low", "Total"]):
         df_orders.insert(i + 3, candle.lower(), 0)
 

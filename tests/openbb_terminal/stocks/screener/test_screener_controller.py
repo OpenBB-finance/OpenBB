@@ -379,13 +379,6 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             ),
         ),
         (
-            "call_po",
-            [],
-            "po_controller.PortfolioOptimizationController.menu",
-            [],
-            dict(),
-        ),
-        (
             "call_ca",
             [],
             "ca_controller.ComparisonAnalysisController.menu",
@@ -424,7 +417,6 @@ def test_call_func_test(
 @pytest.mark.parametrize(
     "func",
     [
-        "call_po",
         "call_ca",
     ],
 )
