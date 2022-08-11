@@ -34,8 +34,8 @@ def test_output(func, kwargs_dict, recorder):
 @pytest.mark.parametrize(
     "func, kwargs_dict",
     [
-        ("get_series_notes", {"series_term": "finance"}),
-        ("get_series_data", {"series_id": "DGS10", "start": "2020-01-01"}),
+        ("get_series_notes", {"search_query": "finance"}),
+        ("get_series_data", {"series_id": "DGS10", "start_date": "2020-01-01"}),
     ],
 )
 def test_check_output(func, kwargs_dict, recorder):
@@ -73,7 +73,7 @@ def test_invalid_response_status(func, kwargs_dict, mocker):
 @pytest.mark.vcr
 @pytest.mark.parametrize(
     "func, kwargs_dict",
-    [("get_series_data", {"series_id": "DGS10", "start": "2020-01-01"})],
+    [("get_series_data", {"series_id": "DGS10", "start_date": "2020-01-01"})],
 )
 def test_load_data(func, kwargs_dict, recorder):
     result_df = getattr(fred_model, func)(**kwargs_dict)

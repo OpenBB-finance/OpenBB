@@ -79,7 +79,7 @@ def get_funding_rate(symbol: str) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_open_interest_per_exchange(symbol: str, interval: int) -> pd.DataFrame:
+def get_open_interest_per_exchange(symbol: str, interval: int = 0) -> pd.DataFrame:
     """Returns open interest by exchange for a certain symbol
     [Source: https://coinglass.github.io/API-Reference/]
 
@@ -88,7 +88,7 @@ def get_open_interest_per_exchange(symbol: str, interval: int) -> pd.DataFrame:
     symbol : str
         Crypto Symbol to search open interest futures (e.g., BTC)
     interval : int
-        Interval frequency (e.g., 0)
+        Frequency (possible values are: 0 for ALL, 2 for 1H, 1 for 4H, 4 for 12H), by default 0
 
     Returns
     -------

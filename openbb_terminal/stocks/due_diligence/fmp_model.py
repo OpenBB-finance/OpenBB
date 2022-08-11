@@ -8,6 +8,7 @@ import pandas as pd
 
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -30,6 +31,7 @@ def get_rating(symbol: str) -> pd.DataFrame:
         try:
             df = fa.rating(symbol, cfg.API_KEY_FINANCIALMODELINGPREP)
         except ValueError as e:
+            console.print(f"[red]{e}[/red]\n")
             logger.exception(str(e))
             df = pd.DataFrame()
     else:

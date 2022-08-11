@@ -540,7 +540,6 @@ class TechnicalAnalysisController(CryptoBaseController):
             """,
         )
         parser.add_argument(
-            "-f",
             "--fast",
             action="store",
             dest="n_fast",
@@ -549,7 +548,6 @@ class TechnicalAnalysisController(CryptoBaseController):
             help="The short period.",
         )
         parser.add_argument(
-            "-s",
             "--slow",
             action="store",
             dest="n_slow",
@@ -1129,8 +1127,7 @@ class TechnicalAnalysisController(CryptoBaseController):
             help="uses open value of stock",
         )
         parser.add_argument(
-            "-f",
-            "--fast_length",
+            "--fast",
             action="store",
             dest="n_length_fast",
             type=check_positive,
@@ -1138,8 +1135,7 @@ class TechnicalAnalysisController(CryptoBaseController):
             help="fast length",
         )
         parser.add_argument(
-            "-s",
-            "--slow_length",
+            "--slow",
             action="store",
             dest="n_length_slow",
             type=check_positive,
@@ -1202,7 +1198,7 @@ class TechnicalAnalysisController(CryptoBaseController):
             "--period",
             dest="period",
             type=int,
-            help="Days to lookback for retracement",
+            help="Days to look back for retracement",
             default=120,
         )
         parser.add_argument(

@@ -190,7 +190,10 @@ def display_government_sells(
             .head(n=limit)
         )
         print_rich_table(
-            df, headers=["Amount ($1k)"], show_index=True, title="Top Government Trades"
+            df,
+            headers=["Amount ($1k)"],
+            show_index=True,
+            title="Top Government Trades",
         )
 
     # This plot has 1 axis

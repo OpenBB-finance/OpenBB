@@ -121,7 +121,6 @@ class DiscoveryController(BaseController):
             choices["arkord"]["--sortby"] = {
                 c: None for c in self.arkord_sortby_choices
             }
-            choices["arkord"]["-f"] = {c: None for c in self.arkord_fund_choices}
             choices["arkord"]["--fund"] = {c: None for c in self.arkord_fund_choices}
             choices["cnews"]["-t"] = {c: None for c in self.cnews_type_choices}
             choices["cnews"]["--type"] = {c: None for c in self.cnews_type_choices}
@@ -143,7 +142,7 @@ class DiscoveryController(BaseController):
         mt.add_cmd("ulc", "Yahoo Finance")
         mt.add_cmd("asc", "Yahoo Finance")
         mt.add_cmd("ford", "Fidelity")
-        mt.add_cmd("arkord", "Cathiesark")
+        mt.add_cmd("arkord", "Cathies Ark")
         mt.add_cmd("upcoming", "Seeking Alpha")
         mt.add_cmd("trending", "Seeking Alpha")
         mt.add_cmd("cnews", "Seeking Alpha")
@@ -617,7 +616,6 @@ class DiscoveryController(BaseController):
             default=False,
         )
         parser.add_argument(
-            "-f",
             "--fund",
             type=str,
             default="",
@@ -811,15 +809,7 @@ class DiscoveryController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="hotpenny",
-            description="""
-                This site provides a list of todays most active and hottest penny stocks. While not for everyone, penny
-                stocks can be exciting and rewarding investments in many ways. With penny stocks, you can get more bang
-                for the buck. You can turn a few hundred dollars into thousands, just by getting in on the right penny
-                stock at the right time. Penny stocks are increasing in popularity. More and more investors of all age
-                groups and skill levels are getting involved, and the dollar amounts they are putting into these
-                speculative investments are representing a bigger portion of their portfolios.
-                [Source: www.pennystockflow.com]
-            """,
+            description="Provides top penny stocks from various websites. [Source: Yfinance]",
         )
         parser.add_argument(
             "-l",
@@ -840,6 +830,7 @@ class DiscoveryController(BaseController):
             shortinterest_view.hot_penny_stocks(
                 limit=ns_parser.limit,
                 export=ns_parser.export,
+                source=ns_parser.source,
             )
 
     @log_start_end(log=logger)

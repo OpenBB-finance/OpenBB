@@ -8,8 +8,7 @@ import logging
 import os
 from typing import Dict, List
 
-import hmac
-import hashlib
+import binance
 import dotenv
 import praw
 import pyEX
@@ -26,6 +25,7 @@ from openbb_terminal import feature_flags as obbff
 from openbb_terminal.cryptocurrency.coinbase_helpers import (
     CoinbaseProAuth,
     make_coinbase_request,
+    CoinbaseApiException,
 )
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import parse_simple_args
@@ -59,7 +59,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         "binance",
         "bitquery",
         "si",
-        "cb",
+        "coinbase",
         "walert",
         "glassnode",
         "coinglass",
@@ -68,6 +68,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         "smartstake",
         "github",
         "messari",
+        "santiment",
     ]
     PATH = "/keys/"
     key_dict: Dict = {}
@@ -448,29 +449,28 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
     def check_binance_key(self, show_output: bool = False) -> None:
         """Check Binance key"""
         self.cfg_dict["BINANCE"] = "binance"
-        bn_keys = [cfg.API_BINANCE_KEY, cfg.API_BINANCE_SECRET]
-        if "REPLACE_ME" in bn_keys:
+
+        if "REPLACE_ME" in [cfg.API_BINANCE_KEY, cfg.API_BINANCE_SECRET]:
             logger.info("Binance key not defined")
             self.key_dict["BINANCE"] = "not defined"
+
         else:
-            headers = {"X-MBX-APIKEY": bn_keys[0]}
-            timestamp = 16566804453565
-            msg = f"timestamp={timestamp}"
-            msg_hash = hmac.new(
-                bn_keys[1].encode("utf-8"), msg.encode("utf-8"), hashlib.sha256
-            ).hexdigest()
-            params = {"timestamp": timestamp, "signature": msg_hash}  # type: ignore
-            r = requests.get(
-                "https://api.binance.com/sapi/v1/capital/config/getall",
-                params=params,  # type: ignore
-                headers=headers,
-            )
-            if r.status_code == 200:
-                logger.info("Binance key defined, test passed")
-                self.key_dict["BINANCE"] = "defined, test passed"
-            else:
+            try:
+                client = binance.Client(cfg.API_BINANCE_KEY, cfg.API_BINANCE_SECRET)
+                candles = client.get_klines(
+                    symbol="BTCUSDT", interval=client.KLINE_INTERVAL_1DAY
+                )
+
+                if len(candles) > 0:
+                    logger.info("Binance key defined, test passed")
+                    self.key_dict["BINANCE"] = "defined, test passed"
+                else:
+                    logger.info("Binance key defined, test failed")
+                    self.key_dict["BINANCE"] = "defined, test failed"
+            except Exception:
                 logger.info("Binance key defined, test failed")
                 self.key_dict["BINANCE"] = "defined, test failed"
+
         if show_output:
             console.print(self.key_dict["BINANCE"] + "\n")
 
@@ -532,7 +532,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
 
     def check_coinbase_key(self, show_output: bool = False) -> None:
         """Check Coinbase key"""
-        self.cfg_dict["COINBASE"] = "cb"
+        self.cfg_dict["COINBASE"] = "coinbase"
         if "REPLACE_ME" in [
             cfg.API_COINBASE_KEY,
             cfg.API_COINBASE_SECRET,
@@ -546,7 +546,10 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
                 cfg.API_COINBASE_SECRET,
                 cfg.API_COINBASE_PASS_PHRASE,
             )
-            resp = make_coinbase_request("/accounts", auth=auth)
+            try:
+                resp = make_coinbase_request("/accounts", auth=auth)
+            except CoinbaseApiException:
+                resp = None
             if not resp:
                 logger.warning("Coinbase key defined, test failed")
                 self.key_dict["COINBASE"] = "defined, test unsuccessful"
@@ -736,6 +739,38 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         if show_output:
             console.print(self.key_dict["MESSARI"] + "\n")
 
+    def check_santiment_key(self, show_output: bool = False) -> None:
+        """Check Santiment key"""
+        self.cfg_dict["SANTIMENT"] = "santiment"
+        if cfg.API_SANTIMENT_KEY == "REPLACE_ME":
+            logger.info("santiment key not defined")
+            self.key_dict["SANTIMENT"] = "not defined"
+        else:
+            headers = {
+                "Content-Type": "application/graphql",
+                "Authorization": f"Apikey {cfg.API_SANTIMENT_KEY}",
+            }
+
+            # pylint: disable=line-too-long
+            data = '\n{{ getMetric(metric: "dev_activity"){{ timeseriesData( slug: "ethereum" from: ""2020-02-10T07:00:00Z"" to: "2020-03-10T07:00:00Z" interval: "1w"){{ datetime value }} }} }}'  # noqa: E501
+
+            response = requests.post(
+                "https://api.santiment.net/graphql", headers=headers, data=data
+            )
+            try:
+                if response.status_code == 200:
+                    logger.info("santiment key defined, test passed")
+                    self.key_dict["SANTIMENT"] = "defined, test passed"
+                else:
+                    logger.warning("santiment key defined, test failed")
+                    self.key_dict["SANTIMENT"] = "defined, test failed"
+            except Exception as _:  # noqa: F841
+                logger.exception("santiment key defined, test failed")
+                self.key_dict["SANTIMENT"] = "defined, test failed"
+
+        if show_output:
+            console.print(self.key_dict["SANTIMENT"] + "\n")
+
     def check_keys_status(self) -> None:
         """Check keys status"""
         self.check_av_key()
@@ -765,6 +800,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         self.check_smartstake_key()
         self.check_github_key()
         self.check_messari_key()
+        self.check_santiment_key()
 
     def print_help(self):
         """Print help"""
@@ -1343,9 +1379,10 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             dotenv.set_key(self.env_file, "OPENBB_DG_PASSWORD", ns_parser.password)
             cfg.DG_PASSWORD = ns_parser.password
 
-            os.environ["OPENBB_DG_TOTP_SECRET"] = ns_parser.secret
-            dotenv.set_key(self.env_file, "OPENBB_DG_TOTP_SECRET", ns_parser.secret)
-            cfg.DG_TOTP_SECRET = ns_parser.secret
+            if ns_parser.secret:
+                os.environ["OPENBB_DG_TOTP_SECRET"] = ns_parser.secret
+                dotenv.set_key(self.env_file, "OPENBB_DG_TOTP_SECRET", ns_parser.secret)
+                cfg.DG_TOTP_SECRET = ns_parser.secret
 
             self.check_degiro_key(show_output=True)
 
@@ -1708,6 +1745,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
 
             self.check_ethplorer_key(show_output=True)
 
+    @log_start_end(log=logger)
     def call_smartstake(self, other_args: List[str]):
         """Process smartstake command"""
         parser = argparse.ArgumentParser(
@@ -1776,3 +1814,33 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             dotenv.set_key(self.env_file, "OPENBB_API_MESSARI_KEY", ns_parser.key)
             cfg.API_MESSARI_KEY = ns_parser.key
             self.check_messari_key(show_output=True)
+
+    @log_start_end(log=logger)
+    def call_santiment(self, other_args: List[str]):
+        """Process santiment command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="santiment",
+            description="Set Santiment API key.",
+        )
+        parser.add_argument(
+            "-k",
+            "--key",
+            type=str,
+            dest="key",
+            help="key",
+        )
+        if not other_args:
+            console.print(
+                "For your API Key, visit: https://academy.santiment.net/products-and-plans/create-an-api-key\n"
+            )
+            return
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-k")
+        ns_parser = parse_simple_args(parser, other_args)
+        if ns_parser:
+            os.environ["OPENBB_API_SANTIMENT_KEY"] = ns_parser.key
+            dotenv.set_key(self.env_file, "OPENBB_API_SANTIMENT_KEY", ns_parser.key)
+            cfg.API_SANTIMENT_KEY = ns_parser.key
+            self.check_santiment_key(show_output=True)

@@ -13,6 +13,7 @@ from prompt_toolkit.completion import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.common import newsapi_view
+from openbb_terminal.common import feedparser_view
 from openbb_terminal.common.quantitative_analysis import qa_view
 from openbb_terminal.decorators import log_start_end
 
@@ -20,6 +21,7 @@ from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     export_data,
     valid_date,
+    get_ordered_list_sources,
 )
 from openbb_terminal.helper_classes import AllowArgsWithWhiteSpace
 from openbb_terminal.helper_funcs import choice_check_after_action
@@ -111,6 +113,7 @@ class StocksController(StockBaseController):
                 stock_text = f"{s_intraday} {self.ticker}"
 
         mt = MenuText("stocks/", 80)
+        mt.add_cmd("news", "Feedparser/News API")
         mt.add_cmd("search")
         mt.add_cmd("load")
         mt.add_raw("\n")
@@ -119,7 +122,6 @@ class StocksController(StockBaseController):
         mt.add_raw("\n")
         mt.add_cmd("quote", "", self.ticker)
         mt.add_cmd("candle", "", self.ticker)
-        mt.add_cmd("news", "News API", self.ticker)
         mt.add_cmd("codes", "Polygon", self.ticker)
         mt.add_raw("\n")
         mt.add_menu("th")
@@ -584,7 +586,9 @@ class StocksController(StockBaseController):
 
         self.queue = self.load_class(
             ca_controller.ComparisonAnalysisController,
-            [self.ticker] if self.ticker else "",
+            [f"{self.ticker}.{self.suffix}" if self.suffix else self.ticker]
+            if self.ticker
+            else "",
             self.queue,
         )
 

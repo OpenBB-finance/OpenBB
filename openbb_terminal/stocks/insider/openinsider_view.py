@@ -186,37 +186,42 @@ def print_insider_filter(
         ).head(limit)
 
     if rich_config.USE_COLOR and not links:
-        if not df_insider[df_insider["Trade Type"] == "S - Sale"].empty:
-            df_insider[df_insider["Trade Type"] == "S - Sale"] = df_insider[
-                df_insider["Trade Type"] == "S - Sale"
+        new_df_insider = df_insider.copy()
+        if not new_df_insider[new_df_insider["Trade Type"] == "S - Sale"].empty:
+            new_df_insider[new_df_insider["Trade Type"] == "S - Sale"] = new_df_insider[
+                new_df_insider["Trade Type"] == "S - Sale"
             ].apply(lambda_red_highlight)
-        if not df_insider[df_insider["Trade Type"] == "S - Sale+OE"].empty:
-            df_insider[df_insider["Trade Type"] == "S - Sale+OE"] = df_insider[
-                df_insider["Trade Type"] == "S - Sale+OE"
-            ].apply(lambda_yellow_highlight)
-        if not df_insider[df_insider["Trade Type"] == "F - Tax"].empty:
-            df_insider[df_insider["Trade Type"] == "F - Tax"] = df_insider[
-                df_insider["Trade Type"] == "F - Tax"
+        if not new_df_insider[new_df_insider["Trade Type"] == "S - Sale+OE"].empty:
+            new_df_insider[
+                new_df_insider["Trade Type"] == "S - Sale+OE"
+            ] = new_df_insider[new_df_insider["Trade Type"] == "S - Sale+OE"].apply(
+                lambda_yellow_highlight
+            )
+        if not new_df_insider[new_df_insider["Trade Type"] == "F - Tax"].empty:
+            new_df_insider[new_df_insider["Trade Type"] == "F - Tax"] = new_df_insider[
+                new_df_insider["Trade Type"] == "F - Tax"
             ].apply(lambda_magenta_highlight)
-        if not df_insider[df_insider["Trade Type"] == "P - Purchase"].empty:
-            df_insider[df_insider["Trade Type"] == "P - Purchase"] = df_insider[
-                df_insider["Trade Type"] == "P - Purchase"
-            ].apply(lambda_green_highlight)
+        if not new_df_insider[new_df_insider["Trade Type"] == "P - Purchase"].empty:
+            new_df_insider[
+                new_df_insider["Trade Type"] == "P - Purchase"
+            ] = new_df_insider[new_df_insider["Trade Type"] == "P - Purchase"].apply(
+                lambda_green_highlight
+            )
 
         patch_pandas_text_adjustment()
         pd.set_option("display.max_colwidth", 0)
         pd.set_option("display.max_rows", None)
 
         # needs to be done because table is too large :(
-        df_insider = df_insider.drop(columns=["Filing Date", "Trade Type"])
+        new_df_insider = new_df_insider.drop(columns=["Filing Date", "Trade Type"])
 
     else:
         # needs to be done because table is too large :(
-        df_insider = df_insider.drop(columns=["Filing Date"])
+        new_df_insider = df_insider.drop(columns=["Filing Date"])
 
     print_rich_table(
-        df_insider,
-        headers=[x.title() for x in df_insider.columns],
+        new_df_insider,
+        headers=[x.title() for x in new_df_insider.columns],
         title="Insider filtered",
     )
 

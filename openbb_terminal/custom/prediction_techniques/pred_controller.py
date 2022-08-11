@@ -140,8 +140,6 @@ class PredictionTechniquesController(BaseController):
             type=str,
         )
 
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-f")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             file = Path("custom_imports") / ns_parser.file
@@ -721,6 +719,7 @@ class PredictionTechniquesController(BaseController):
             help="Number of simulations to perform",
             dest="n_sims",
             default=100,
+            type=check_positive,
         )
         parser.add_argument(
             "--dist",
