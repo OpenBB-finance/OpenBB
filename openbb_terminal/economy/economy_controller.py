@@ -30,7 +30,7 @@ from openbb_terminal.economy import (
     investingcom_model,
     investingcom_view,
     plot_view,
-    debt_clock_view
+    debt_clock_view,
 )
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
