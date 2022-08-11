@@ -17,7 +17,7 @@ from openbb_terminal.stocks.comparison_analysis import finviz_compare_model
 )
 def test_get_similar_companies(compare_list, recorder):
     result_tuple = finviz_compare_model.get_similar_companies(
-        ticker="TSLA",
+        symbol="TSLA",
         compare_list=compare_list,
     )
 
