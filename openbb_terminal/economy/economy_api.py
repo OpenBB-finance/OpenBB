@@ -18,6 +18,7 @@ from .finviz_view import display_future as future
 from .finviz_view import display_performance_map as perfmap
 from .finviz_view import display_valuation as valuation
 from .finviz_view import display_performance as performance
+from .finviz_model import get_groups as get_groups
 from .finviz_view import display_spectrum as spectrum
 from .alphavantage_view import realtime_performance_sector as rtps
 from .alphavantage_view import display_real_gdp as gdp
@@ -33,6 +34,8 @@ from .econdb_view import show_treasury_maturities as maturities
 from .yfinance_view import show_indices as index
 from .yfinance_view import search_indices as search_index
 from .investingcom_view import display_yieldcurve as ycrv
+from .investingcom_model import get_ycrv_countries as get_ycrv_countries
+
 
 # Models
 models = _models(os.path.abspath(os.path.dirname(__file__)))
