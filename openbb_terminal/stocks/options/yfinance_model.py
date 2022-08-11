@@ -1,6 +1,7 @@
 """Yfinance options model"""
 __docformat__ = "numpy"
 
+import warnings
 import logging
 from datetime import datetime
 from typing import Any, Dict, List, Tuple
@@ -68,6 +69,7 @@ def get_full_option_chain(
     if calls:
         df_list.append(call_df)
         option_factor.append(1)
+    df_list = [x[x["impliedVolatility"] > 0] for x in df_list]
     # Add in greeks to each df
     # Time to expiration:
     dt = (datetime.strptime(expiration, "%Y-%m-%d") - datetime.now()).seconds / (
@@ -81,29 +83,26 @@ def get_full_option_chain(
             ).Delta(),
             axis=1,
         )
-        df["Gamma"] = df.apply(
-            lambda x: Option(
-                last_price, x.strike, 0.03, 0, dt, x.impliedVolatility, option_type
-            ).Gamma(),
-            axis=1,
-        )
-        df["Theta"] = df.apply(
-            lambda x: Option(
-                last_price, x.strike, 0.03, 0, dt, x.impliedVolatility, option_type
-            ).Theta(),
-            axis=1,
-        )
-
-    # Create our merged dataframe.  If only puts and/or calls are wanted, no merging needed
-    if not put_df.empty and call_df.empty:
-        options_df = put_df.copy()
-    if not call_df.empty and put_df.empty:
-        options_df = call_df.copy()
-    if not put_df.empty and not call_df.empty:
-        # Join these guys on strike.  Do an outer join to get all strikes.
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            df["Gamma"] = df.apply(
+                lambda x: Option(
+                    last_price, x.strike, 0.03, 0, dt, x.impliedVolatility, option_type
+                ).Gamma(),
+                axis=1,
+            )
+            df["Theta"] = df.apply(
+                lambda x: Option(
+                    last_price, x.strike, 0.03, 0, dt, x.impliedVolatility, option_type
+                ).Theta(),
+                axis=1,
+            )
+    if len(df_list) == 1:
+        options_df = df_list[0]
+    if len(df_list) == 2:
         options_df = pd.merge(
-            left=call_df,
-            right=put_df,
+            left=df_list[1],
+            right=df_list[0],
             on="strike",
             how="outer",
             suffixes=["_call", "_put"],
