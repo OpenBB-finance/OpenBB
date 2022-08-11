@@ -15,8 +15,6 @@ jobs:
       # Checkout repository main branch. this allows for the commit hashes to line up
       - name: Checkout
         uses: actions/checkout@v2.4.2
-        with:
-          ref: 'main'
       - name: Git Log
         run: git log
       # Install create-dmg
