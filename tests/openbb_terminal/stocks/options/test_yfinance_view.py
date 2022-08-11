@@ -181,7 +181,7 @@ def test_risk_neutral_vals(mocker):
 
     yfinance_view.risk_neutral_vals(
         symbol="PM",
-        exp="2022-01-07",
+        expiration_date="2022-01-07",
         put=True,
         data=pd.DataFrame(columns=["Price", "Chance"]),
         mini=None,

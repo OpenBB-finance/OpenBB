@@ -852,7 +852,7 @@ def show_parity(
 @log_start_end(log=logger)
 def risk_neutral_vals(
     symbol: str,
-    exp: str,
+    expiration_date: str,
     data: pd.DataFrame,
     put: bool = False,
     mini: float = None,
@@ -865,7 +865,7 @@ def risk_neutral_vals(
     ----------
     symbol: str
         Ticker symbol to get expirations for
-    exp: str
+    expiration_date: str
         Expiration to use for options
     put: bool
         Whether to use puts or calls
@@ -879,11 +879,11 @@ def risk_neutral_vals(
         The risk-free rate for the asset
     """
     if put:
-        chain = get_option_chain(symbol, exp).puts
+        chain = get_option_chain(symbol, expiration_date).puts
     else:
-        chain = get_option_chain(symbol, exp).calls
+        chain = get_option_chain(symbol, expiration_date).calls
 
-    r_date = datetime.strptime(exp, "%Y-%m-%d").date()
+    r_date = datetime.strptime(expiration_date, "%Y-%m-%d").date()
     delta = (r_date - date.today()).days
     vals = []
     if risk is None:
