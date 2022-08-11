@@ -150,7 +150,7 @@ def get_option_chain(symbol: str, expiration: str) -> pd.DataFrame:
     chains: yf.ticker.Options
         Options chain
     """
-    
+
     yf_ticker = yf.Ticker(symbol)
     try:
         chains = yf_ticker.option_chain(expiration)

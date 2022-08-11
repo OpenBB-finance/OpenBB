@@ -172,7 +172,7 @@ def display_trending(
     """
 
     # Force datetime format to be datetime(year, month, day, 0, 0)
-    # 0 hours and minutes to look since day starts 
+    # 0 hours and minutes to look since day starts
     start_date = datetime(start_date.year, start_date.month, start_date.day)
 
     df = sentimentinvestor_model.get_trending(start_date, hour, number)

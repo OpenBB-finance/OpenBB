@@ -455,7 +455,7 @@ def plot_volume_open_interest(
 
     if options.empty:
         return
-    
+
     calls = options.calls
     puts = options.puts
     current_price = float(yf.Ticker(symbol).info["regularMarketPrice"])

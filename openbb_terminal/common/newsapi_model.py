@@ -75,9 +75,4 @@ def get_news(
     else:
         console.print(f"Error in request: {response.json()['message']}", "\n")
 
-
-
-
-
-
     return articles

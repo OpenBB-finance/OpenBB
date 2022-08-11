@@ -56,6 +56,7 @@ def plot_chart(
     else:
         return
 
+
 @log_start_end(log=logger)
 def display_raw(
     symbol: str,

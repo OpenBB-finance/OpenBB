@@ -1397,7 +1397,7 @@ def get_open_insider_data(url: str, has_company_name: bool) -> pd.DataFrame:
 
 @log_start_end(log=logger)
 def get_insider_types() -> Dict:
-    """ Get insider types available for insider data
+    """Get insider types available for insider data
 
     Returns:
         Dict: Dictionary with insider types and respective description
