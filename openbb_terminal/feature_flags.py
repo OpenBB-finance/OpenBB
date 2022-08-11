@@ -56,7 +56,7 @@ USE_CMD_LOCATION_FIGURE = strtobool(os.getenv("OPENBB_USE_CMD_LOCATION_FIGURE", 
 USE_PROMPT_TOOLKIT = strtobool(os.getenv("OPENBB_USE_PROMPT_TOOLKIT", "True"))
 
 # Enable Prediction features
-ENABLE_PREDICT = strtobool(os.getenv("OPENBB_ENABLE_PREDICT", "True"))
+ENABLE_PREDICT = strtobool(os.getenv("OPENBB_ENABLE_PREDICT", "False"))
 
 # Enable plot autoscaling
 USE_PLOT_AUTOSCALING = strtobool(os.getenv("OPENBB_USE_PLOT_AUTOSCALING", "False"))

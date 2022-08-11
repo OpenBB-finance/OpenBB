@@ -56,9 +56,9 @@ jobs:
       - name: Install Pyinstaller
         shell: bash -l {0}
         run: poetry install -E installer
-      - name: Install Prediction Modules
-        shell: bash -l {0}
-        run: conda install -c conda-forge tensorflow
+      #- name: Install Prediction Modules
+      #  shell: bash -l {0}
+      #  run: conda install -c conda-forge tensorflow
       # Double Checking Version Number
       - name: Check OpenBB Version
         shell: bash -l {0}
