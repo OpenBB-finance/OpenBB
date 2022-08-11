@@ -133,7 +133,7 @@ def option_expirations(ticker: str):
 
 
 @log_start_end(log=logger)
-def get_option_chain(ticker: str, expiration: str) -> pd.DataFrame:
+def get_option_chain(ticker: str, expiration: str):
     """Gets option chain from yf for given ticker and expiration
 
     Parameters
