@@ -558,7 +558,7 @@ class DiscoveryController(BaseController):
         )
         if ns_parser:
             fidelity_view.orders_view(
-                num=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -630,7 +630,7 @@ class DiscoveryController(BaseController):
         )
         if ns_parser:
             ark_view.ark_orders_view(
-                num=ns_parser.limit,
+                limit=ns_parser.limit,
                 sort_col=ns_parser.sort_col,
                 ascending=ns_parser.ascend,
                 buys_only=ns_parser.buys_only,
