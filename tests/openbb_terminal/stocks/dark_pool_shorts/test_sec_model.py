@@ -44,10 +44,10 @@ def test_get_fails_to_deliver(mocker, num, recorder):
         new=mocker.Mock(return_value=all_ftds.copy()),
     )
     result_df = sec_model.get_fails_to_deliver(
-        ticker="EURN",
-        start=datetime.strptime("2021-12-01", "%Y-%m-%d"),
-        end=datetime.strptime("2021-12-02", "%Y-%m-%d"),
-        num=num,
+        symbol="EURN",
+        start_date="2021-12-01",
+        end_date="2021-12-02",
+        limit=num,
     )
 
     recorder.capture(result_df)

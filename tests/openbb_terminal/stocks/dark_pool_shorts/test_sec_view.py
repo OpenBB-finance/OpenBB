@@ -53,11 +53,11 @@ def test_fails_to_deliver(mocker, raw):
     )
 
     sec_view.fails_to_deliver(
-        ticker="PM",
-        stock=stock,
-        start=datetime.strptime("2021-12-18", "%Y-%m-%d"),
-        end=datetime.strptime("2021-12-19", "%Y-%m-%d"),
-        num=2,
+        symbol="PM",
+        data=stock,
+        start_date=datetime.strptime("2021-12-18", "%Y-%m-%d"),
+        end_date=datetime.strptime("2021-12-19", "%Y-%m-%d"),
+        limit=2,
         raw=raw,
         export="",
     )
