@@ -29,6 +29,8 @@ from .alphavantage_view import display_treasury_yield as tyld
 from .alphavantage_view import display_unemployment as unemp
 from .nasdaq_view import display_big_mac_index as bigmac
 from .econdb_view import show_macro_data as macro
+from .econdb_model import get_macro_parameters as get_macro_parameters
+from .econdb_model import get_macro_countries as get_macro_countries
 from .econdb_view import show_treasuries as treasury
 from .econdb_view import show_treasury_maturities as maturities
 from .yfinance_view import show_indices as index
