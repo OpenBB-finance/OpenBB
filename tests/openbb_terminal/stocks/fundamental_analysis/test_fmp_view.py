@@ -31,43 +31,43 @@ def test_valinvest_score():
     [
         (
             "display_profile",
-            {"ticker": "PM"},
+            {"symbol": "PM"},
         ),
         (
             "display_quote",
-            {"ticker": "PM"},
+            {"symbol": "PM"},
         ),
         (
             "display_enterprise",
-            {"ticker": "PM", "number": 5, "quarterly": False},
+            {"symbol": "PM", "limit": 5, "quarterly": False},
         ),
         (
             "display_discounted_cash_flow",
-            {"ticker": "PM", "number": 5, "quarterly": False},
+            {"symbol": "PM", "limit": 5, "quarterly": False},
         ),
         (
             "display_income_statement",
-            {"ticker": "PM", "number": 5, "quarterly": False},
+            {"symbol": "PM", "limit": 5, "quarterly": False},
         ),
         (
             "display_balance_sheet",
-            {"ticker": "PM", "number": 5, "quarterly": False},
+            {"symbol": "PM", "limit": 5, "quarterly": False},
         ),
         (
             "display_cash_flow",
-            {"ticker": "PM", "number": 5, "quarterly": False},
+            {"symbol": "PM", "limit": 5, "quarterly": False},
         ),
         (
             "display_key_metrics",
-            {"ticker": "PM", "number": 5, "quarterly": False},
+            {"symbol": "PM", "limit": 5, "quarterly": False},
         ),
         (
             "display_financial_ratios",
-            {"ticker": "PM", "number": 5, "quarterly": False},
+            {"symbol": "PM", "limit": 5, "quarterly": False},
         ),
         (
             "display_financial_statement_growth",
-            {"ticker": "PM", "number": 5, "quarterly": False},
+            {"symbol": "PM", "limit": 5, "quarterly": False},
         ),
     ],
 )

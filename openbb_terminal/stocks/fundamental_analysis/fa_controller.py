@@ -630,7 +630,7 @@ class FundamentalAnalysisController(StockBaseController):
         if not self.suffix:
             if ns_parser:
                 yahoo_finance_view.display_calendar_earnings(
-                    ticker=self.ticker, export=ns_parser.export
+                    symbol=self.ticker, export=ns_parser.export
                 )
         else:
             console.print("Only US tickers are recognized.", "\n")
@@ -706,7 +706,7 @@ class FundamentalAnalysisController(StockBaseController):
         if not self.suffix:
             if ns_parser:
                 yahoo_finance_view.display_dividends(
-                    ticker=self.ticker,
+                    symbol=self.ticker,
                     limit=ns_parser.limit,
                     plot=ns_parser.plot,
                     export=ns_parser.export,
@@ -764,7 +764,7 @@ class FundamentalAnalysisController(StockBaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            av_view.display_key(ticker=self.ticker, export=ns_parser.export)
+            av_view.display_key(symbol=self.ticker, export=ns_parser.export)
 
     @log_start_end(log=logger)
     def call_income(self, other_args: List[str]):
@@ -832,7 +832,7 @@ class FundamentalAnalysisController(StockBaseController):
                 )
             elif ns_parser.source == "polygon":
                 polygon_view.display_fundamentals(
-                    ticker=self.ticker,
+                    symbol=self.ticker,
                     financial="income",
                     limit=ns_parser.limit,
                     quarterly=ns_parser.b_quarter,
@@ -851,7 +851,7 @@ class FundamentalAnalysisController(StockBaseController):
                 )
             elif ns_parser.source == "yf":
                 yahoo_finance_view.display_fundamentals(
-                    ticker=self.ticker,
+                    symbol=self.ticker,
                     financial="financials",
                     ratios=ns_parser.ratios,
                     plot=ns_parser.plot,
@@ -930,7 +930,7 @@ class FundamentalAnalysisController(StockBaseController):
                 )
             elif ns_parser.source == "polygon":
                 polygon_view.display_fundamentals(
-                    ticker=self.ticker,
+                    symbol=self.ticker,
                     financial="balance",
                     limit=ns_parser.limit,
                     quarterly=ns_parser.b_quarter,
@@ -949,7 +949,7 @@ class FundamentalAnalysisController(StockBaseController):
                 )
             elif ns_parser.source == "yf":
                 yahoo_finance_view.display_fundamentals(
-                    ticker=self.ticker,
+                    symbol=self.ticker,
                     financial="balance-sheet",
                     ratios=ns_parser.ratios,
                     plot=ns_parser.plot,
@@ -1043,7 +1043,7 @@ class FundamentalAnalysisController(StockBaseController):
                 )
             elif ns_parser.source == "polygon":
                 polygon_view.display_fundamentals(
-                    ticker=self.ticker,
+                    symbol=self.ticker,
                     financial="cash",
                     limit=ns_parser.limit,
                     quarterly=ns_parser.b_quarter,
@@ -1053,7 +1053,7 @@ class FundamentalAnalysisController(StockBaseController):
                 )
             elif ns_parser.source == "yf":
                 yahoo_finance_view.display_fundamentals(
-                    ticker=self.ticker,
+                    symbol=self.ticker,
                     financial="cash-flow",
                     ratios=ns_parser.ratios,
                     plot=ns_parser.plot,
@@ -1344,7 +1344,7 @@ class FundamentalAnalysisController(StockBaseController):
         )
         if ns_parser:
             market_watch_view.display_sean_seah_warnings(
-                ticker=self.ticker, debug=ns_parser.b_debug
+                symbol=self.ticker, debug=ns_parser.b_debug
             )
 
     @log_start_end(log=logger)

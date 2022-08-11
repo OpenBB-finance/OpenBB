@@ -35,7 +35,7 @@ def vcr_config():
 def test_get_government_trading(gov_type, recorder, ticker):
     result_df = quiverquant_model.get_government_trading(
         gov_type=gov_type,
-        ticker=ticker,
+        symbol=ticker,
     )
     recorder.capture(result_df.head(10))
 
@@ -46,6 +46,6 @@ def test_get_government_trading(gov_type, recorder, ticker):
 def test_analyze_qtr_contracts(analysis, recorder):
     result_df = quiverquant_model.analyze_qtr_contracts(
         analysis=analysis,
-        num=10,
+        limit=10,
     )
     recorder.capture(result_df.head(10))

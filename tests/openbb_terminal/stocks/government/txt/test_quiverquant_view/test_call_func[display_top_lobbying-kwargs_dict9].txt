@@ -1,5 +1,4 @@
         Amount
 Ticker        
-NVEC     5.485
-T        1.850
-
+PFE       67.8
+META      55.7

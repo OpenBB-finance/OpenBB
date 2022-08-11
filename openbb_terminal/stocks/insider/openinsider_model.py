@@ -1422,7 +1422,7 @@ def get_print_insider_data(type_insider: str = "lcb", limit: int = 10):
 
     if not table:
         console.print("No insider information found", "\n")
-        return
+        return pd.DataFrame()
 
     table_rows = table.find_all("tr")
 

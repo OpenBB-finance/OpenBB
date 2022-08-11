@@ -232,7 +232,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "call_mgmt",
             "business_insider_view.display_management",
             ["--export=csv"],
-            {"ticker": "TSLA", "export": "csv"},
+            {"symbol": "TSLA", "export": "csv"},
         ),
         (
             "call_data",
@@ -304,14 +304,14 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "call_key",
             "av_view.display_key",
             ["--export=xlsx"],
-            dict(ticker="TSLA", export="xlsx"),
+            dict(symbol="TSLA", export="xlsx"),
         ),
         (
             "call_income",
             "av_view.display_income_statement",
             ["--source=av", "--export=csv", "--limit=5"],
             dict(
-                ticker="TSLA",
+                symbol="TSLA",
                 limit=5,
                 quarterly=False,
                 ratios=False,
@@ -324,7 +324,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "polygon_view.display_fundamentals",
             ["--source=polygon", "--export=csv", "--limit=5"],
             dict(
-                ticker="TSLA",
+                symbol="TSLA",
                 financial="income",
                 limit=5,
                 quarterly=False,
@@ -338,8 +338,8 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "fmp_view.display_income_statement",
             ["--source=fmp", "--export=csv", "--limit=5"],
             dict(
-                ticker="TSLA",
-                number=5,
+                symbol="TSLA",
+                limit=5,
                 quarterly=False,
                 ratios=False,
                 plot=None,
@@ -351,7 +351,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "yahoo_finance_view.display_fundamentals",
             ["--source=yf", "--export=csv", "--limit=5"],
             dict(
-                ticker="TSLA",
+                symbol="TSLA",
                 financial="financials",
                 ratios=False,
                 plot=None,
@@ -363,7 +363,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "av_view.display_balance_sheet",
             ["--source=av", "--export=csv", "--limit=5"],
             dict(
-                ticker="TSLA",
+                symbol="TSLA",
                 limit=5,
                 quarterly=False,
                 ratios=False,
@@ -376,7 +376,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "polygon_view.display_fundamentals",
             ["--source=polygon", "--export=csv", "--limit=5"],
             dict(
-                ticker="TSLA",
+                symbol="TSLA",
                 financial="balance",
                 limit=5,
                 quarterly=False,
@@ -390,8 +390,8 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "fmp_view.display_balance_sheet",
             ["--source=fmp", "--export=csv", "--limit=5"],
             dict(
-                ticker="TSLA",
-                number=5,
+                symbol="TSLA",
+                limit=5,
                 quarterly=False,
                 ratios=False,
                 plot=None,
@@ -403,7 +403,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "yahoo_finance_view.display_fundamentals",
             ["--source=yf", "--export=csv", "--limit=5"],
             dict(
-                ticker="TSLA",
+                symbol="TSLA",
                 financial="balance-sheet",
                 ratios=False,
                 plot=None,
@@ -415,7 +415,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "av_view.display_cash_flow",
             ["--source=av", "--export=csv", "--limit=5"],
             dict(
-                ticker="TSLA",
+                symbol="TSLA",
                 limit=5,
                 quarterly=False,
                 ratios=False,
@@ -428,8 +428,8 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "fmp_view.display_cash_flow",
             ["--source=fmp", "--export=csv", "--limit=5"],
             dict(
-                ticker="TSLA",
-                number=5,
+                symbol="TSLA",
+                limit=5,
                 quarterly=False,
                 ratios=False,
                 plot=None,
@@ -441,7 +441,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "polygon_view.display_fundamentals",
             ["--source=polygon", "--export=csv", "--limit=5"],
             dict(
-                ticker="TSLA",
+                symbol="TSLA",
                 financial="cash",
                 limit=5,
                 quarterly=False,
@@ -455,7 +455,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "yahoo_finance_view.display_fundamentals",
             ["--source=yf", "--export=csv", "--limit=5"],
             dict(
-                ticker="TSLA",
+                symbol="TSLA",
                 financial="cash-flow",
                 ratios=False,
                 plot=None,
@@ -467,7 +467,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "av_view.display_earnings",
             ["--limit=5", "--quarter", "--export=csv"],
             dict(
-                ticker="TSLA",
+                symbol="TSLA",
                 limit=5,
                 quarterly=True,
                 export="csv",
@@ -478,7 +478,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "av_view.display_fraud",
             ["--export=csv"],
             dict(
-                ticker="TSLA",
+                symbol="TSLA",
                 export="csv",
                 detail=False,
             ),
@@ -493,7 +493,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "call_warnings",
             "market_watch_view.display_sean_seah_warnings",
             ["--debug"],
-            {"ticker": "TSLA", "debug": True},
+            {"symbol": "TSLA", "debug": True},
         ),
     ],
 )

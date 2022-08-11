@@ -115,7 +115,7 @@ def view_screener_output(
 
 @log_start_end(log=logger)
 def view_historical_greeks(
-    ticker: str,
+    symbol: str,
     expiry: str,
     strike: float,
     greek: str = "Delta",
@@ -130,7 +130,7 @@ def view_historical_greeks(
 
     Parameters
     ----------
-    ticker: str
+    symbol: str
         Stock ticker
     expiry: str
         Expiration date
@@ -151,7 +151,7 @@ def view_historical_greeks(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    df = syncretism_model.get_historical_greeks(ticker, expiry, strike, chain_id, put)
+    df = syncretism_model.get_historical_greeks(symbol, expiry, strike, chain_id, put)
 
     if raw:
         print_rich_table(
@@ -169,9 +169,9 @@ def view_historical_greeks(
     ax.set_ylabel(greek)
     ax1 = ax.twinx()
     im2 = ax1.plot(df.index, df.price, label="Stock Price", color=theme.down_color)
-    ax1.set_ylabel(f"{ticker} Price")
+    ax1.set_ylabel(f"{symbol} Price")
     ax.set_title(
-        f"{(greek).capitalize()} historical for {ticker.upper()} {strike} {['Call','Put'][put]}"
+        f"{(greek).capitalize()} historical for {symbol.upper()} {strike} {['Call','Put'][put]}"
     )
     if df.empty:
         console.print("[red]Data from API is not valid.[/red]\n")

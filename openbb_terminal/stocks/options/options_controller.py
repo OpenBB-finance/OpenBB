@@ -489,7 +489,7 @@ class OptionsController(BaseController):
                         )
                     ):
                         syncretism_view.view_historical_greeks(
-                            ticker=self.ticker,
+                            symbol=self.ticker,
                             expiry=self.selected_date,
                             strike=ns_parser.strike,
                             greek=ns_parser.greek,
