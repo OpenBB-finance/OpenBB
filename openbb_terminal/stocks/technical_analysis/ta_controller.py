@@ -763,12 +763,15 @@ class TechnicalAnalysisController(StockBaseController):
                 Ranks stocks on the basis of relative strength as calculated by Investor's
                 Business Daily (Yearly performance of stock (most recent quarter is weighted 
                 double) divided by yearly performance of reference index (here, we use SPY)
+                Export table to view the entire ranking
                 Data taken from https://github.com/skyte/relative-strength
             """,
         )
 
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+            parser,
+            other_args,
+            EXPORT_BOTH_RAW_DATA_AND_FIGURES,
         )
         if ns_parser:
             momentum_view.display_rsp(

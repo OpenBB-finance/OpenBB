@@ -288,9 +288,11 @@ def display_rsi(
         df_ta,
     )
 
+
 @log_start_end(log=logger)
 def display_rsp(
     s_ticker: str = "",
+    export: str = "",
 ):
     """Display Relative Strength Percentile
 
@@ -299,15 +301,19 @@ def display_rsp(
     s_ticker : str
         Stock ticker
     """
-    df_stock_p = pd.read_csv('https://raw.githubusercontent.com/soggyomelette/rs-log/main/output/rs_stocks.csv')
-    df_industries_p = pd.read_csv('https://raw.githubusercontent.com/soggyomelette/rs-log/main/output/rs_industries.csv')
-    rsp_stock = df_stock_p[df_stock_p['Ticker'].str.match(s_ticker)]
+    df_stock_p = pd.read_csv(
+        "https://raw.githubusercontent.com/soggyomelette/rs-log/main/output/rs_stocks.csv"
+    )
+    df_industries_p = pd.read_csv(
+        "https://raw.githubusercontent.com/soggyomelette/rs-log/main/output/rs_industries.csv"
+    )
+    rsp_stock = df_stock_p[df_stock_p["Ticker"].str.match(s_ticker)]
     for i in range(len(df_industries_p)):
         if s_ticker in df_industries_p.iloc[i]["Tickers"]:
             rsp_industry = df_industries_p.iloc[[i]]
 
     if rsp_stock.empty or rsp_industry.empty:
-        print('Ticker not found')
+        print("Ticker not found")
     else:
         print_rich_table(
             rsp_stock,
@@ -321,6 +327,19 @@ def display_rsp(
             show_index=False,
             title="Relative Strength Percentile of Industry the ticker is part of",
         )
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
+            "rsp_stock",
+            rsp_stock,
+        )
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
+            "rsp_industry",
+            rsp_industry,
+        )
+
 
 @log_start_end(log=logger)
 def display_stoch(
