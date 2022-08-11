@@ -746,6 +746,6 @@ class StocksController(StockBaseController):
                 console.print("Use 'load <ticker>' prior to this command!", "\n")
         else:
             console.print(
-                "Predict is disabled. Check ENABLE_PREDICT flag on feature_flags.py",
+                "Predict is disabled. Forecasting coming soon!",
                 "\n",
             )

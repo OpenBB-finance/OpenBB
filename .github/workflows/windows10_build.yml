@@ -32,8 +32,10 @@ jobs:
         run: |
           conda activate obb
           poetry install
-      #- name: Poetry Install Predictions
-      #  run: conda activate obb, poetry install -E prediction
+      - name: Poetry Install Predictions
+        run: |
+          conda activate obb
+          poetry install -E prediction
       - name: Poetry Install Installer
         run: |
           conda activate obb

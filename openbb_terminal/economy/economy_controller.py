@@ -1428,30 +1428,37 @@ class EconomyController(BaseController):
 
     @log_start_end(log=logger)
     def call_pred(self, _):
+
         """Process pred command"""
-        if not self.DATASETS:
-            console.print(
-                "There is no data stored yet. Please use either the 'macro', 'fred', 'index' and/or "
-                "'treasury' command in combination with the -st argument to be able to plot data.\n"
+        if obbff.ENABLE_PREDICT:
+            if not self.DATASETS:
+                console.print(
+                    "There is no data stored yet. Please use either the 'macro', 'fred', 'index' and/or "
+                    "'treasury' command in combination with the -st argument to be able to plot data.\n"
+                )
+                return
+
+            from openbb_terminal.economy.prediction.pred_controller import (
+                PredictionTechniquesController,
             )
-            return
 
-        from openbb_terminal.economy.prediction.pred_controller import (
-            PredictionTechniquesController,
-        )
+            data: Dict = {}
+            for source, _ in self.DATASETS.items():
+                if not self.DATASETS[source].empty:
+                    if len(self.DATASETS[source].columns) == 1:
+                        data[self.DATASETS[source].columns[0]] = self.DATASETS[source]
+                    else:
+                        for col in list(self.DATASETS[source].columns):
+                            data[col] = self.DATASETS[source][col].to_frame()
 
-        data: Dict = {}
-        for source, _ in self.DATASETS.items():
-            if not self.DATASETS[source].empty:
-                if len(self.DATASETS[source].columns) == 1:
-                    data[self.DATASETS[source].columns[0]] = self.DATASETS[source]
-                else:
-                    for col in list(self.DATASETS[source].columns):
-                        data[col] = self.DATASETS[source][col].to_frame()
-
-        self.queue = self.load_class(
-            PredictionTechniquesController, self.DATASETS, self.queue
-        )
+            self.queue = self.load_class(
+                PredictionTechniquesController, self.DATASETS, self.queue
+            )
+        else:
+            console.print(
+                "Predict is disabled. Forecasting coming soon!",
+                "\n",
+            )
 
     @log_start_end(log=logger)
     def call_qa(self, _):
