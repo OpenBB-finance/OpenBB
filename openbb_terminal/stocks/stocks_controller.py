@@ -13,7 +13,6 @@ from prompt_toolkit.completion import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.common import newsapi_view
-from openbb_terminal.common import feedparser_view
 from openbb_terminal.common.quantitative_analysis import qa_view
 from openbb_terminal.decorators import log_start_end
 
@@ -21,7 +20,6 @@ from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     export_data,
     valid_date,
-    get_ordered_list_sources,
 )
 from openbb_terminal.helper_classes import AllowArgsWithWhiteSpace
 from openbb_terminal.helper_funcs import choice_check_after_action

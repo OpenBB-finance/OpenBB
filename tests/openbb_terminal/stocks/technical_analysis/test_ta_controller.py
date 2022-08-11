@@ -1,5 +1,4 @@
 # IMPORTATION STANDARD
-from curses import window
 import os
 from datetime import datetime
 

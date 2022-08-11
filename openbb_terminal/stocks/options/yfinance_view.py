@@ -2,10 +2,10 @@
 __docformat__ = "numpy"
 
 import logging
-import math
 import os
 from bisect import bisect_left
 from datetime import date, datetime, timedelta
+import re
 from typing import Any, Dict, List, Optional
 
 import matplotlib.dates as mdates
@@ -42,6 +42,15 @@ from openbb_terminal.stocks.options.yfinance_model import (
 
 
 logger = logging.getLogger(__name__)
+
+
+def header_fmt(header: str) -> str:
+    words = re.findall("[A-Z][^A-Z]*", header)
+    if words == []:
+        words = [header]
+    new_header = " ".join(words)
+    new_header = new_header.replace("_", " ")
+    return new_header.title()
 
 
 @log_start_end(log=logger)

@@ -873,7 +873,8 @@ def load(
         elif source == "polygon":
             request_url = (
                 f"https://api.polygon.io/v2/aggs/ticker/"
-                f"{symbol.upper()}/range/{interval}/minute/{start_date.strftime('%Y-%m-%d')}/{end_date.strftime('%Y-%m-%d')}"
+                f"{symbol.upper()}/range/{interval}/minute/{start_date.strftime('%Y-%m-%d')}"
+                f"/{end_date.strftime('%Y-%m-%d')}"
                 f"?adjusted=true&sort=desc&limit=49999&apiKey={cfg.API_POLYGON_KEY}"
             )
             r = requests.get(request_url)
