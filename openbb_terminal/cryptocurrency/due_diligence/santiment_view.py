@@ -1,8 +1,8 @@
 import logging
 import os
 from typing import List, Optional
-
 from datetime import datetime, timedelta
+
 from matplotlib import pyplot as plt
 
 from openbb_terminal.config_terminal import theme
@@ -17,6 +17,7 @@ from openbb_terminal.helper_funcs import (
     plot_autoscale,
     is_valid_axes_count,
 )
+
 
 logger = logging.getLogger(__name__)
 
