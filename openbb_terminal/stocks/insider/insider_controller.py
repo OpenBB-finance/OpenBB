@@ -283,7 +283,7 @@ class InsiderController(StockBaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="stats",
-            description="Print open insider filtered data using selected ticker. [Source: OpenInsider]",
+            description="Open insider filtered data using selected ticker. [Source: OpenInsider]",
         )
         parser.add_argument(
             "-l",

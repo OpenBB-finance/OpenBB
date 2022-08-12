@@ -809,15 +809,7 @@ class DiscoveryController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="hotpenny",
-            description="""
-                This site provides a list of todays most active and hottest penny stocks. While not for everyone, penny
-                stocks can be exciting and rewarding investments in many ways. With penny stocks, you can get more bang
-                for the buck. You can turn a few hundred dollars into thousands, just by getting in on the right penny
-                stock at the right time. Penny stocks are increasing in popularity. More and more investors of all age
-                groups and skill levels are getting involved, and the dollar amounts they are putting into these
-                speculative investments are representing a bigger portion of their portfolios.
-                [Source: www.pennystockflow.com]
-            """,
+            description="Provides top penny stocks from various websites. [Source: Yfinance]",
         )
         parser.add_argument(
             "-l",
@@ -838,6 +830,7 @@ class DiscoveryController(BaseController):
             shortinterest_view.hot_penny_stocks(
                 num=ns_parser.limit,
                 export=ns_parser.export,
+                source=ns_parser.source,
             )
 
     @log_start_end(log=logger)
