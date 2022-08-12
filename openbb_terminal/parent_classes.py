@@ -825,7 +825,8 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                         os.path.join("custom_imports", "stocks")
                     ):
                         console.print(
-                            f"[red]{ns_parser.filepath} not found in custom_imports/stocks/ folder[/red].\n"
+                            f"[red]{ns_parser.filepath} not found in custom_imports/stocks/ "
+                            "folder[/red].\n"
                         )
                         return
                 except Exception as e:

@@ -47,6 +47,20 @@ logger = logging.getLogger(__name__)
 
 
 def header_fmt(header: str) -> str:
+    """
+    Formats strings to appear as titles
+
+    Parameters
+    ----------
+    header: str
+        The string to be formatted
+
+    Returns
+    ----------
+    new_header: str
+        The clean string to use as a header
+    """
+
     words = re.findall("[A-Z][^A-Z]*", header)
     if words == []:
         words = [header]

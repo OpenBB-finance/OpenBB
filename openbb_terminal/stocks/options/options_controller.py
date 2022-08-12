@@ -5,7 +5,7 @@ import argparse
 import logging
 import os
 from datetime import datetime, timedelta
-from typing import List
+from typing import List, Any
 
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
@@ -33,6 +33,7 @@ from openbb_terminal.stocks.options import (
     tradier_view,
     yfinance_model,
     yfinance_view,
+    op_helpers,
 )
 
 from openbb_terminal.stocks.options.pricing import pricing_controller
@@ -115,7 +116,9 @@ class OptionsController(BaseController):
         self.ticker = ticker
         self.prices = pd.DataFrame(columns=["Price", "Chance"])
         self.selected_date = ""
-        self.chain = None
+        self.chain: Any = None
+        # Keeps track of initial source of load so we can use correct commands later
+        self.source = ""
 
         if ticker:
             if TRADIER_TOKEN == "REPLACE_ME":  # nosec
@@ -534,8 +537,10 @@ class OptionsController(BaseController):
             self.update_runtime_choices()
 
             if ns_parser.source == "yf":
+                self.source = "yf"
                 self.expiry_dates = yfinance_model.option_expirations(self.ticker)
             else:
+                self.source = "tradier"
                 self.expiry_dates = tradier_model.option_expirations(self.ticker)
             console.print("")
 
@@ -596,9 +601,15 @@ class OptionsController(BaseController):
                     self.update_runtime_choices()
 
                 if self.selected_date:
-                    self.chain = yfinance_model.get_option_chain(
-                        self.ticker, self.selected_date
-                    )
+                    if self.source == "yf":
+                        self.chain = yfinance_model.get_option_chain(
+                            self.ticker, self.selected_date
+                        )
+                    else:
+                        df = tradier_model.get_option_chains(
+                            self.ticker, self.selected_date
+                        )
+                        self.chain = op_helpers.Chain(df)
                     self.update_runtime_choices()
             else:
                 console.print("Please load a ticker using `load <ticker>`.\n")
@@ -743,7 +754,7 @@ class OptionsController(BaseController):
         if ns_parser:
             if self.ticker:
                 if self.selected_date:
-                    if ns_parser.source == "tradier":
+                    if ns_parser.source == "tradier" or self.source == "tradier":
                         if TRADIER_TOKEN != "REPLACE_ME":  # nosec
                             tradier_view.display_chains(
                                 ticker=self.ticker,
@@ -757,7 +768,7 @@ class OptionsController(BaseController):
                             )
                         else:
                             console.print("TRADIER TOKEN not supplied. \n")
-                    if ns_parser.source == "yf":
+                    elif ns_parser.source == "yf":
                         yfinance_view.display_chains(
                             ticker=self.ticker,
                             expiry=self.selected_date,
