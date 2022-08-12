@@ -30,7 +30,7 @@ def display_search(
     country: str = "united states",
     limit: int = 10,
     sortby: str = "",
-    ascending: bool = False,
+    ascend: bool = False,
 ):
     """Display results of searching for Mutual Funds
 
@@ -46,7 +46,7 @@ def display_search(
         Number to show
     sortby: str
         Column to sort by
-    ascending: bool
+    ascend: bool
         Flag to sort in ascending order
     """
     searches = investpy_model.search_funds(by, value)
@@ -61,7 +61,7 @@ def display_search(
         searches = searches.drop(columns=["country", "underlying"])
 
     if sortby:
-        searches = searches.sort_values(by=sortby, ascending=ascending)
+        searches = searches.sort_values(by=sortby, ascending=ascend)
 
     print_rich_table(
         searches.head(limit),

@@ -217,7 +217,7 @@ class FundController(BaseController):
                 country=self.country,
                 limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                ascending=ns_parser.ascending,
+                ascend=ns_parser.ascending,
             )
         return self.queue
 
