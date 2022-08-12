@@ -117,13 +117,13 @@ def get_stocks_data(
     """
     no_data = []
     for symbol in tqdm(stocks):
-        for statement in sa_dict.keys():
-            if finance_key in sa_dict[statement]:
-                if statement not in stocks_data:
-                    stocks_data[statement] = {}
-                used_statement = statement
-                symbol_statement, rounding, currency = create_dataframe(
-                    symbol, statement, period.lower()
+        for item, description in sa_keys.items():
+            if finance_key in description:
+                if item not in stocks_data:
+                    stocks_data[item] = {}
+                used_statement = item
+                symbol_statement, rounding, currency_dcf = create_dataframe(
+                    symbol, item, period.lower()
                 )
 
                 if symbol_statement.empty:
@@ -134,9 +134,9 @@ def get_stocks_data(
                     change_type_dataframes(symbol_statement) * rounding
                 )
 
-                if currency and currency != currency:
+                if currency and currency != currency_dcf:
                     currency_data = yf.download(
-                        f"{currency}{currency}=X",
+                        f"{currency_dcf}{currency}=X",
                         start=f"{symbol_statement_rounded.columns[0]}-01-01",
                         end=f"{symbol_statement_rounded.columns[-1]}-12-31",
                         progress=False,
