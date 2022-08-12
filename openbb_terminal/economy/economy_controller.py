@@ -30,7 +30,7 @@ from openbb_terminal.economy import (
     investingcom_model,
     investingcom_view,
     plot_view,
-    debt_clock_view,
+    commodity_view,
 )
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -39,9 +39,9 @@ from openbb_terminal.helper_funcs import (
     print_rich_table,
     valid_date,
 )
-from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.menu import session
 
 logger = logging.getLogger(__name__)
 
@@ -1406,9 +1406,7 @@ class EconomyController(BaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            debt_clock_view.display_debt(
-                export=ns_parser.export,
-            )
+            commodity_view.display_debt(export=ns_parser.export)
 
     @log_start_end(log=logger)
     @log_start_end(log=logger)
