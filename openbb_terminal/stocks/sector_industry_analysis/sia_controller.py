@@ -890,7 +890,7 @@ class SectorIndustryAnalysisController(BaseController):
         parser.add_argument(
             "-cc",
             "--convert_currency",
-            dest="convert_currency",
+            dest="currency",
             help="Convert the currency of the chosen country to a specified currency. By default, this is set "
             "to USD (US Dollars).",
             default="USD",
@@ -902,7 +902,7 @@ class SectorIndustryAnalysisController(BaseController):
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, limit=10, raw=True
         )
         if ns_parser:
-            if ns_parser.convert_currency != self.currency:
+            if ns_parser.currency != self.currency:
                 self.stocks_data = {}
             (
                 self.stocks_data,
@@ -916,7 +916,7 @@ class SectorIndustryAnalysisController(BaseController):
                 period=self.period,
                 period_length=ns_parser.period,
                 marketcap=self.mktcap,
-                convert_currency=ns_parser.convert_currency,
+                currency=ns_parser.currency,
                 exclude_exchanges=self.exclude_exchanges,
                 limit=ns_parser.limit,
                 export=ns_parser.export,
@@ -924,7 +924,7 @@ class SectorIndustryAnalysisController(BaseController):
                 already_loaded_stocks_data=self.stocks_data,
             )
 
-            self.currency = ns_parser.convert_currency
+            self.currency = ns_parser.currency
 
     @log_start_end(log=logger)
     def call_cps(self, other_args: List[str]):

@@ -40,7 +40,7 @@ def display_plots_financials(
     period_length: int,
     marketcap: str = "",
     exclude_exchanges: bool = True,
-    convert_currency: str = "USD",
+    currency: str = "USD",
     limit: int = 10,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -69,7 +69,7 @@ def display_plots_financials(
         Select stocks based on the market cap.
     exclude_exchanges: bool
         When you wish to include different exchanges use this boolean.
-    convert_currency : str
+    currency : str
         Choose in what currency you wish to convert each company's financial statement. Default is USD (US Dollars).
     limit: int
         Limit amount of companies displayed (default is 10)
@@ -113,7 +113,7 @@ def display_plots_financials(
             sa_dict,
             already_loaded_stocks_data,
             period,
-            convert_currency,
+            currency,
         )
 
     stocks_data_statement = copy.deepcopy(stocks_data[used_statement])
@@ -154,8 +154,8 @@ def display_plots_financials(
 
     maximum_value = df.max().max()
 
-    if convert_currency:
-        denomination = f"[{convert_currency} "
+    if currency:
+        denomination = f"[{currency} "
     else:
         denomination = "["
 
@@ -169,8 +169,8 @@ def display_plots_financials(
         df = df / 1_000
         denomination += "Thousands]"
     else:
-        if convert_currency:
-            denomination = f"[{convert_currency}]"
+        if currency:
+            denomination = f"[{currency}]"
         else:
             denomination = ""
 
