@@ -190,11 +190,11 @@ def get_income_statements(
                 "No data found from Alpha Vantage, looking in Yahoo Finance\n"
             )
             if (
-                yahoo_finance_model.get_financials(symbol, financial="financials")
+                yahoo_finance_model.get_financials(symbol, statement="financials")
                 is not None
             ):
                 return yahoo_finance_model.get_financials(
-                    symbol, financial="financials"
+                    symbol, statement="financials"
                 )
         else:
             statements = response_json
@@ -274,10 +274,10 @@ def get_balance_sheet(
     if not response_json:
         console.print("No data found from Alpha Vantage, looking in Yahoo Finance\n")
         if (
-            yahoo_finance_model.get_financials(symbol, financial="balance-sheet")
+            yahoo_finance_model.get_financials(symbol, statement="balance-sheet")
             is not None
         ):
-            return yahoo_finance_model.get_financials(symbol, financial="balance-sheet")
+            return yahoo_finance_model.get_financials(symbol, statement="balance-sheet")
     else:
         statements = response_json
         df_fa = pd.DataFrame()
@@ -363,10 +363,10 @@ def get_cash_flow(
             )
 
             if (
-                yahoo_finance_model.get_financials(symbol, financial="cash-flow")
+                yahoo_finance_model.get_financials(symbol, statement="cash-flow")
                 is not None
             ):
-                return yahoo_finance_model.get_financials(symbol, financial="cash-flow")
+                return yahoo_finance_model.get_financials(symbol, statement="cash-flow")
         else:
             statements = response_json
             df_fa = pd.DataFrame()

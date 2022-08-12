@@ -163,7 +163,7 @@ class BehaviouralAnalysisController(StockBaseController):
         )
         if ns_parser:
             finnhub_view.display_stock_price_headlines_sentiment(
-                ticker=self.ticker, export=ns_parser.export
+                symbol=self.ticker, export=ns_parser.export
             )
 
     @log_start_end(log=logger)
@@ -350,7 +350,7 @@ class BehaviouralAnalysisController(StockBaseController):
         if ns_parser:
             if self.ticker:
                 reddit_view.display_due_diligence(
-                    ticker=self.ticker,
+                    symbol=self.ticker,
                     limit=ns_parser.limit,
                     n_days=ns_parser.days,
                     show_all_flairs=ns_parser.all,
@@ -1012,5 +1012,5 @@ class BehaviouralAnalysisController(StockBaseController):
                 )
                 return
             cramer_view.display_cramer_ticker(
-                ticker=self.ticker, raw=ns_parser.raw, export=ns_parser.export
+                symbol=self.ticker, raw=ns_parser.raw, export=ns_parser.export
             )

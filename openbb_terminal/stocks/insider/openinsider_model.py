@@ -1372,7 +1372,7 @@ def get_open_insider_data(url: str, has_company_name: bool) -> pd.DataFrame:
         else:
             idx = 0
 
-    d_open_insider = {
+    d_open_insider_filtered = {
         "X": l_X,
         "Filing Date": l_filing_date,
         "Trading Date": l_trading_date,
@@ -1390,9 +1390,9 @@ def get_open_insider_data(url: str, has_company_name: bool) -> pd.DataFrame:
         "Insider Link": l_insider_link,
     }
     if has_company_name:
-        d_open_insider["Company"] = l_company
+        d_open_insider_filtered["Company"] = l_company
 
-    return pd.DataFrame(d_open_insider)
+    return pd.DataFrame(d_open_insider_filtered)
 
 
 @log_start_end(log=logger)

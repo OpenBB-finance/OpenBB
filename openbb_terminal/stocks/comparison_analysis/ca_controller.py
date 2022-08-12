@@ -531,8 +531,8 @@ class ComparisonAnalysisController(BaseController):
         if ns_parser:
             if self.similar and len(self.similar) > 1:
                 yahoo_finance_view.display_historical(
-                    similar_tickers=self.similar,
-                    start=ns_parser.start.strftime("%Y-%m-%d"),
+                    similar=self.similar,
+                    start_date=ns_parser.start.strftime("%Y-%m-%d"),
                     candle_type=ns_parser.type_candle,
                     normalize=ns_parser.normalize,
                     export=ns_parser.export,
@@ -585,8 +585,8 @@ class ComparisonAnalysisController(BaseController):
         if ns_parser:
             if self.similar and len(self.similar) > 1:
                 yahoo_finance_view.display_correlation(
-                    similar_tickers=self.similar,
-                    start=ns_parser.start.strftime("%Y-%m-%d"),
+                    similar=self.similar,
+                    start_date=ns_parser.start.strftime("%Y-%m-%d"),
                     candle_type=ns_parser.type_candle,
                     export=ns_parser.export,
                     display_full_matrix=ns_parser.display_full_matrix,
@@ -661,8 +661,8 @@ class ComparisonAnalysisController(BaseController):
         if ns_parser:
             if self.similar and len(self.similar) > 1:
                 yahoo_finance_view.display_volume(
-                    similar_tickers=self.similar,
-                    start=ns_parser.start.strftime("%Y-%m-%d"),
+                    similar=self.similar,
+                    start_date=ns_parser.start.strftime("%Y-%m-%d"),
                     export=ns_parser.export,
                 )
 

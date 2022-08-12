@@ -377,7 +377,7 @@ def get_cleaned_government_trading(
 
     if df_gov.empty:
         console.print(f"No recent {gov_type} trading data found\n")
-        return
+        return pd.DataFrame()
 
     df_gov["min"] = df_gov["Range"].apply(
         lambda x: x.split("-")[0].strip("$").replace(",", "").strip()

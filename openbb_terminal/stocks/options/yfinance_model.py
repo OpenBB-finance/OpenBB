@@ -292,9 +292,9 @@ def get_closing(symbol: str) -> pd.Series:
 
 
 @log_start_end(log=logger)
-def get_dte(date: str) -> int:
+def get_dte(date_value: str) -> int:
     """Gets days to expiration from yfinance option date"""
-    return (datetime.strptime(date, "%Y-%m-%d") - datetime.now()).days
+    return (datetime.strptime(date_value, "%Y-%m-%d") - datetime.now()).days
 
 
 @log_start_end(log=logger)

@@ -358,7 +358,7 @@ def display_government_trading(
         External axes (1 axis is expected in the list), by default None
     """
     df_gov = quiverquant_model.get_cleaned_government_trading(
-        gov_type, symbol, past_transactions_months
+        symbol=symbol, gov_type=gov_type, past_transactions_months=past_transactions_months
     )
 
     if df_gov.empty:

@@ -833,7 +833,7 @@ class FundamentalAnalysisController(StockBaseController):
             elif ns_parser.source == "polygon":
                 polygon_view.display_fundamentals(
                     symbol=self.ticker,
-                    financial="income",
+                    statement="income",
                     limit=ns_parser.limit,
                     quarterly=ns_parser.b_quarter,
                     ratios=ns_parser.ratios,
@@ -852,7 +852,7 @@ class FundamentalAnalysisController(StockBaseController):
             elif ns_parser.source == "yf":
                 yahoo_finance_view.display_fundamentals(
                     symbol=self.ticker,
-                    financial="financials",
+                    statement="financials",
                     ratios=ns_parser.ratios,
                     plot=ns_parser.plot,
                     export=ns_parser.export,
@@ -931,7 +931,7 @@ class FundamentalAnalysisController(StockBaseController):
             elif ns_parser.source == "polygon":
                 polygon_view.display_fundamentals(
                     symbol=self.ticker,
-                    financial="balance",
+                    statement="balance",
                     limit=ns_parser.limit,
                     quarterly=ns_parser.b_quarter,
                     ratios=ns_parser.ratios,
@@ -950,7 +950,7 @@ class FundamentalAnalysisController(StockBaseController):
             elif ns_parser.source == "yf":
                 yahoo_finance_view.display_fundamentals(
                     symbol=self.ticker,
-                    financial="balance-sheet",
+                    statement="balance-sheet",
                     ratios=ns_parser.ratios,
                     plot=ns_parser.plot,
                     export=ns_parser.export,
@@ -1044,7 +1044,7 @@ class FundamentalAnalysisController(StockBaseController):
             elif ns_parser.source == "polygon":
                 polygon_view.display_fundamentals(
                     symbol=self.ticker,
-                    financial="cash",
+                    statement="cash",
                     limit=ns_parser.limit,
                     quarterly=ns_parser.b_quarter,
                     ratios=ns_parser.ratios,
@@ -1054,7 +1054,7 @@ class FundamentalAnalysisController(StockBaseController):
             elif ns_parser.source == "yf":
                 yahoo_finance_view.display_fundamentals(
                     symbol=self.ticker,
-                    financial="cash-flow",
+                    statement="cash-flow",
                     ratios=ns_parser.ratios,
                     plot=ns_parser.plot,
                     export=ns_parser.export,
@@ -1276,7 +1276,7 @@ class FundamentalAnalysisController(StockBaseController):
 
         if ns_parser:
             dcf = dcf_view.CreateExcelFA(
-                ticker=self.ticker,
+                symbol=self.ticker,
                 audit=ns_parser.audit,
                 ratios=ns_parser.ratios,
                 len_pred=ns_parser.prediction,

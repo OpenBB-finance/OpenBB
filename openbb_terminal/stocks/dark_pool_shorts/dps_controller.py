@@ -334,7 +334,7 @@ class DarkPoolShortsController(StockBaseController):
         if ns_parser:
             if self.ticker:
                 finra_view.darkpool_ats_otc(
-                    ticker=self.ticker,
+                    symbol=self.ticker,
                     export=ns_parser.export,
                 )
             else:
