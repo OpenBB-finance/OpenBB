@@ -21,7 +21,7 @@ def display_news(
     filter_: Optional[str] = None,
     top: int = 25,
     sortby: str = "published_at",
-    ascending: bool = False,
+    ascend: bool = False,
     links: bool = False,
     export: str = "",
 ) -> None:
@@ -41,7 +41,7 @@ def display_news(
         es (Español), fr (Français), it (Italiano), pt (Português), ru (Русский)
     sortby: str
         Key to sort by.
-    ascending: bool
+    ascend: bool
         Sort in ascending order.
     links: bool
         Show urls for news
@@ -55,7 +55,7 @@ def display_news(
         filter_=filter_,
         region=region,
         sortby=sortby,
-        ascending=ascending,
+        ascend=ascend,
     )
     if not df.empty:
         if not links:

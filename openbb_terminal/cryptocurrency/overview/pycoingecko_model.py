@@ -181,7 +181,7 @@ def get_top_crypto_categories(sort_filter: str = SORT_VALUES[0]) -> pd.DataFrame
 # TODO: add string with overview
 @log_start_end(log=logger)
 def get_stable_coins(
-    top: int = 20, sortby: str = "rank", ascending: bool = False
+    top: int = 20, sortby: str = "rank", ascend: bool = False
 ) -> pd.DataFrame:
     """Returns top stable coins [Source: CoinGecko]
 
@@ -191,7 +191,7 @@ def get_stable_coins(
         How many rows to show
     sortby: str
         Key by which to sort data
-    ascending: bool
+    ascend: bool
         Flag to sort data ascending
 
     Returns
@@ -202,19 +202,19 @@ def get_stable_coins(
 
     df = get_coins(top=top, category="stablecoins")
     df = df[COINS_COLUMNS]
-    df = df.sort_values(by=sortby, ascending=ascending)
+    df = df.sort_values(by=sortby, ascending=ascend)
     return df
 
 
 @log_start_end(log=logger)
-def get_exchanges(sortby: str = "name", ascending: bool = False) -> pd.DataFrame:
+def get_exchanges(sortby: str = "name", ascend: bool = False) -> pd.DataFrame:
     """Get list of top exchanges from CoinGecko API [Source: CoinGecko]
 
     Parameters
     ----------
     sortby: str
         Key by which to sort data
-    ascending: bool
+    ascend: bool
         Flag to sort data descending
 
     Returns
@@ -247,21 +247,19 @@ def get_exchanges(sortby: str = "name", ascending: bool = False) -> pd.DataFrame
         "Url",
     ]
     create_df_index(df, "Rank")
-    df = df.sort_values(by=sortby, ascending=ascending)
+    df = df.sort_values(by=sortby, ascending=ascend)
     return df
 
 
 @log_start_end(log=logger)
-def get_financial_platforms(
-    sortby: str = "Name", ascending: bool = True
-) -> pd.DataFrame:
+def get_financial_platforms(sortby: str = "Name", ascend: bool = True) -> pd.DataFrame:
     """Get list of financial platforms from CoinGecko API [Source: CoinGecko]
 
     Parameter
     ----------
     sortby: str
         Key by which to sort data
-    ascending: bool
+    ascend: bool
         Flag to sort data ascending
 
     Returns
@@ -275,19 +273,19 @@ def get_financial_platforms(
     df.drop("facts", axis=1, inplace=True)
     create_df_index(df, "rank")
     df.columns = ["Rank", "Name", "Category", "Centralized", "Url"]
-    df = df.sort_values(by=sortby, ascending=ascending)
+    df = df.sort_values(by=sortby, ascending=ascend)
     return df
 
 
 @log_start_end(log=logger)
-def get_finance_products(sortby: str = "Name", ascending: bool = True) -> pd.DataFrame:
+def get_finance_products(sortby: str = "Name", ascend: bool = True) -> pd.DataFrame:
     """Get list of financial products from CoinGecko API
 
     Parameters
     ----------
     sortby: str
         Key by which to sort data
-    ascending: bool
+    ascend: bool
         Flag to sort data ascending
 
     Returns
@@ -308,12 +306,12 @@ def get_finance_products(sortby: str = "Name", ascending: bool = True) -> pd.Dat
     )
     df.columns = ["Platform", "Identifier", "Supply_Rate", "Borrow_Rate"]
     create_df_index(df, "Rank")
-    df = df.sort_values(by=sortby, ascending=ascending)
+    df = df.sort_values(by=sortby, ascending=ascend)
     return df
 
 
 @log_start_end(log=logger)
-def get_indexes(sortby: str = "Name", ascending: bool = True) -> pd.DataFrame:
+def get_indexes(sortby: str = "Name", ascend: bool = True) -> pd.DataFrame:
     """Get list of crypto indexes from CoinGecko API [Source: CoinGecko]
 
     Returns
@@ -322,7 +320,7 @@ def get_indexes(sortby: str = "Name", ascending: bool = True) -> pd.DataFrame:
         Name, Id, Market, Last, MultiAsset
     sortby: str
         Key by which to sort data
-    ascending: bool
+    ascend: bool
         Flag to sort data descending
     """
 
@@ -330,19 +328,19 @@ def get_indexes(sortby: str = "Name", ascending: bool = True) -> pd.DataFrame:
     df = pd.DataFrame(client.get_indexes(per_page=250))
     df.columns = ["Name", "Id", "Market", "Last", "MultiAsset"]
     create_df_index(df, "Rank")
-    df = df.sort_values(by=sortby, ascending=ascending)
+    df = df.sort_values(by=sortby, ascending=ascend)
     return df
 
 
 @log_start_end(log=logger)
-def get_derivatives(sortby: str = "Rank", ascending: bool = False) -> pd.DataFrame:
+def get_derivatives(sortby: str = "Rank", ascend: bool = False) -> pd.DataFrame:
     """Get list of crypto derivatives from CoinGecko API [Source: CoinGecko]
 
     Parameters
     ----------
     sortby: str
         Key by which to sort data
-    ascending: bool
+    ascend: bool
         Flag to sort data descending
 
     Returns
@@ -378,19 +376,19 @@ def get_derivatives(sortby: str = "Rank", ascending: bool = False) -> pd.DataFra
         "Funding_Rate",
         "Volume_24h",
     ]
-    df = df.sort_values(by=sortby, ascending=ascending)
+    df = df.sort_values(by=sortby, ascending=ascend)
     return df
 
 
 @log_start_end(log=logger)
-def get_exchange_rates(sortby: str = "Name", ascending: bool = False) -> pd.DataFrame:
+def get_exchange_rates(sortby: str = "Name", ascend: bool = False) -> pd.DataFrame:
     """Get list of crypto, fiats, commodity exchange rates from CoinGecko API [Source: CoinGecko]
 
     Parameters
     ----------
     sortby: str
         Key by which to sort data
-    ascending: bool
+    ascend: bool
         Flag to sort data ascending
 
     Returns
@@ -404,7 +402,7 @@ def get_exchange_rates(sortby: str = "Name", ascending: bool = False) -> pd.Data
     df.drop("index", axis=1, inplace=True)
     create_df_index(df, "index")
     df.columns = ["Index", "Name", "Unit", "Value", "Type"]
-    df = df.sort_values(by=sortby, ascending=ascending)
+    df = df.sort_values(by=sortby, ascending=ascend)
     return df
 
 

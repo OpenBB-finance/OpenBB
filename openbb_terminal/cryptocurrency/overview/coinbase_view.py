@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 def display_trading_pairs(
     top: int = 20,
     sortby: str = "quote_increment",
-    ascending: bool = True,
+    ascend: bool = True,
     export: str = "",
 ) -> None:
     """Displays a list of available currency pairs for trading. [Source: Coinbase]
@@ -31,13 +31,13 @@ def display_trading_pairs(
         Top n of pairs
     sortby: str
         Key to sortby data
-    ascending: bool
+    ascend: bool
         Sort ascending flag
     export : str
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = coinbase_model.get_trading_pairs(top, sortby, ascending)
+    df = coinbase_model.get_trading_pairs(top, sortby, ascend)
 
     print_rich_table(
         df,

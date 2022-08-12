@@ -280,7 +280,7 @@ class OverviewController(BaseController):
                 top=ns_parser.limit,
                 export=ns_parser.export,
                 sortby=" ".join(ns_parser.sortby),
-                ascending=not ns_parser.descend,
+                ascend=not ns_parser.descend,
             )
 
     @log_start_end(log=logger)
@@ -657,7 +657,7 @@ class OverviewController(BaseController):
                 top=ns_parser.limit,
                 export=ns_parser.export,
                 sortby=ns_parser.sortby,
-                ascending=not ns_parser.descend,
+                ascend=not ns_parser.descend,
                 pie=ns_parser.pie,
             )
 
@@ -775,7 +775,7 @@ class OverviewController(BaseController):
                 top=ns_parser.limit,
                 export=ns_parser.export,
                 sortby=ns_parser.sortby,
-                ascending=not ns_parser.descend,
+                ascend=not ns_parser.descend,
                 links=ns_parser.urls,
             )
 
@@ -826,7 +826,7 @@ class OverviewController(BaseController):
             pycoingecko_view.display_exchange_rates(
                 sortby=ns_parser.sortby,
                 top=ns_parser.limit,
-                ascending=not ns_parser.descend,
+                ascend=not ns_parser.descend,
                 export=ns_parser.export,
             )
 
@@ -881,7 +881,7 @@ class OverviewController(BaseController):
             pycoingecko_view.display_indexes(
                 top=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                ascending=not ns_parser.descend,
+                ascend=not ns_parser.descend,
                 export=ns_parser.export,
             )
 
@@ -938,7 +938,7 @@ class OverviewController(BaseController):
             pycoingecko_view.display_derivatives(
                 top=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                ascending=not ns_parser.descend,
+                ascend=not ns_parser.descend,
                 export=ns_parser.export,
             )
 
@@ -1066,7 +1066,7 @@ class OverviewController(BaseController):
             coinpaprika_view.display_all_coins_market_info(
                 symbol=ns_parser.vs,
                 top=ns_parser.limit,
-                ascending=not ns_parser.descend,
+                ascend=not ns_parser.descend,
                 export=ns_parser.export,
                 sortby=ns_parser.sortby,
             )
@@ -1146,7 +1146,7 @@ class OverviewController(BaseController):
                 top=ns_parser.limit,
                 export=ns_parser.export,
                 sortby=ns_parser.sortby,
-                ascending=not ns_parser.descend,
+                ascend=not ns_parser.descend,
                 links=ns_parser.urls,
             )
 
@@ -1212,7 +1212,7 @@ class OverviewController(BaseController):
             coinpaprika_view.display_all_coins_info(
                 symbol=ns_parser.vs,
                 top=ns_parser.limit,
-                ascending=not ns_parser.descend,
+                ascend=not ns_parser.descend,
                 sortby=ns_parser.sortby,
                 export=ns_parser.export,
             )
@@ -1277,7 +1277,7 @@ class OverviewController(BaseController):
             coinpaprika_view.display_all_exchanges(
                 symbol=ns_parser.vs,
                 top=ns_parser.limit,
-                ascending=not ns_parser.descend,
+                ascend=not ns_parser.descend,
                 sortby=ns_parser.sortby,
                 export=ns_parser.export,
             )
@@ -1365,7 +1365,7 @@ class OverviewController(BaseController):
             coinpaprika_view.display_contracts(
                 symbol=ns_parser.platform,
                 top=ns_parser.limit,
-                ascending=not ns_parser.descend,
+                ascend=not ns_parser.descend,
                 sortby=ns_parser.sortby,
                 export=ns_parser.export,
             )
@@ -1415,7 +1415,7 @@ class OverviewController(BaseController):
                 top=ns_parser.limit,
                 export=ns_parser.export,
                 sortby=ns_parser.sortby,
-                ascending=not ns_parser.descend,
+                ascend=not ns_parser.descend,
             )
 
     @log_start_end(log=logger)
@@ -1504,7 +1504,7 @@ class OverviewController(BaseController):
                 top=ns_parser.limit,
                 export=ns_parser.export,
                 sortby=ns_parser.sortby,
-                ascending=not ns_parser.descend,
+                ascend=not ns_parser.descend,
                 links=ns_parser.urls,
                 post_kind=ns_parser.kind,
                 filter_=ns_parser.filter,

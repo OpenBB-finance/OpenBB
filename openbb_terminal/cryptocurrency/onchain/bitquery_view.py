@@ -23,7 +23,7 @@ def display_dex_trades(
     top: int = 20,
     days: int = 90,
     sortby: str = "tradeAmount",
-    ascending: bool = True,
+    ascend: bool = True,
     export: str = "",
 ) -> None:
     """Trades on Decentralized Exchanges aggregated by DEX or Month
@@ -39,7 +39,7 @@ def display_dex_trades(
         Number of records to display
     sortby: str
         Key by which to sort data
-    ascending: bool
+    ascend: bool
         Flag to sort data ascending
     days:  int
         Last n days to query data. Maximum 365 (bigger numbers can cause timeouts
@@ -49,12 +49,10 @@ def display_dex_trades(
     """
 
     if kind == "time":
-        df = bitquery_model.get_dex_trades_monthly(
-            trade_amount_currency, days, ascending
-        )
+        df = bitquery_model.get_dex_trades_monthly(trade_amount_currency, days, ascend)
     else:
         df = bitquery_model.get_dex_trades_by_exchange(
-            trade_amount_currency, days, sortby, ascending
+            trade_amount_currency, days, sortby, ascend
         )
 
     if not df.empty:
@@ -86,7 +84,7 @@ def display_daily_volume_for_given_pair(
     vs: str = "USDT",
     top: int = 20,
     sortby: str = "date",
-    ascending: bool = True,
+    ascend: bool = True,
     export: str = "",
 ) -> None:
     """Display daily volume for given pair
@@ -102,7 +100,7 @@ def display_daily_volume_for_given_pair(
         Number of records to display
     sortby: str
         Key by which to sort data
-    ascending: bool
+    ascend: bool
         Flag to sort data ascending
     export : str
         Export dataframe data to csv,json,xlsx file
@@ -118,7 +116,7 @@ def display_daily_volume_for_given_pair(
         vs=vs,
         limit=top,
         sortby=sortby,
-        ascending=ascending,
+        ascend=ascend,
     )
 
     if df.empty:
@@ -152,7 +150,7 @@ def display_dex_volume_for_token(
     trade_amount_currency: str = "USD",
     top: int = 10,
     sortby: str = "tradeAmount",
-    ascending: bool = True,
+    ascend: bool = True,
     export: str = "",
 ) -> None:
     """Display token volume on different Decentralized Exchanges.
@@ -168,7 +166,7 @@ def display_dex_volume_for_token(
         Number of records to display
     sortby: str
         Key by which to sort data
-    ascending: bool
+    ascend: bool
         Flag to sort data ascending
     export : str
         Export dataframe data to csv,json,xlsx file
@@ -182,7 +180,7 @@ def display_dex_volume_for_token(
         symbol=symbol,
         trade_amount_currency=trade_amount_currency,
         sortby=sortby,
-        ascending=ascending,
+        ascend=ascend,
     )
     if not df.empty:
         df_data = df.copy()
@@ -211,7 +209,7 @@ def display_ethereum_unique_senders(
     interval: str = "days",
     limit: int = 10,
     sortby: str = "date",
-    ascending: bool = True,
+    ascend: bool = True,
     export: str = "",
 ) -> None:
     """Display number of unique ethereum addresses which made a transaction in given time interval
@@ -228,7 +226,7 @@ def display_ethereum_unique_senders(
         For better user experience maximum time period in days is equal to 90.
     sortby: str
         Key by which to sort data
-    ascending: bool
+    ascend: bool
         Flag to sort data ascending
     export : str
         Export dataframe data to csv,json,xlsx file
@@ -238,7 +236,7 @@ def display_ethereum_unique_senders(
         Number of unique ethereum addresses which made a transaction in given time interval
     """
 
-    df = bitquery_model.get_ethereum_unique_senders(interval, limit, sortby, ascending)
+    df = bitquery_model.get_ethereum_unique_senders(interval, limit, sortby, ascend)
     if not df.empty:
         df[["uniqueSenders", "transactions", "maximumGasPrice"]] = df[
             ["uniqueSenders", "transactions", "maximumGasPrice"]
@@ -268,7 +266,7 @@ def display_most_traded_pairs(
     days: int = 10,
     top: int = 10,
     sortby: str = "tradeAmount",
-    ascending: bool = True,
+    ascend: bool = True,
     export: str = "",
 ) -> None:
     """Display most traded crypto pairs on given decentralized exchange in chosen time period.
@@ -282,7 +280,7 @@ def display_most_traded_pairs(
         Number of days taken into calculation account.
     sortby: str
         Key by which to sort data
-    ascending: bool
+    ascend: bool
         Flag to sort data ascending
     export : str
         Export dataframe data to csv,json,xlsx file
@@ -293,7 +291,7 @@ def display_most_traded_pairs(
     """
 
     df = bitquery_model.get_most_traded_pairs(
-        exchange=exchange, limit=days, sortby=sortby, ascending=ascending
+        exchange=exchange, limit=days, sortby=sortby, ascend=ascend
     )
     if not df.empty:
         df_data = df.copy()
@@ -323,7 +321,7 @@ def display_spread_for_crypto_pair(
     vs="USDC",
     days: int = 10,
     sortby: str = "date",
-    ascending: bool = True,
+    ascend: bool = True,
     export: str = "",
 ) -> None:
     """Display an average bid and ask prices, average spread for given crypto pair for chosen
@@ -339,7 +337,7 @@ def display_spread_for_crypto_pair(
         Quoted currency.
     sortby: str
         Key by which to sort data
-    ascending: bool
+    ascend: bool
         Flag to sort data ascending
     export : str
         Export dataframe data to csv,json,xlsx file
@@ -351,7 +349,7 @@ def display_spread_for_crypto_pair(
     """
 
     df = bitquery_model.get_spread_for_crypto_pair(
-        symbol=symbol, vs=vs, limit=days, sortby=sortby, ascending=ascending
+        symbol=symbol, vs=vs, limit=days, sortby=sortby, ascend=ascend
     )
     if not df.empty:
 
