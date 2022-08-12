@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_defipulse(
-    top: int = 10, sortby: str = "TVL", ascending: bool = False, export: str = ""
+    top: int = 10, sortby: str = "TVL", ascend: bool = False, export: str = ""
 ) -> None:
     """Displays all DeFi Pulse crypto protocols.
     [Source: https://defipulse.com/]
@@ -25,13 +25,13 @@ def display_defipulse(
     sortby: str
         Key by which to sort data (Possible values are: "Rank", "Name", "Chain", "Sector",
         "TVL", "1 Day (%)"), by default TVL
-    ascending: bool
+    ascend: bool
         Flag to sort data ascending, by default False
     export : str
         Export dataframe data to csv,json,xlsx file, by default False
     """
 
-    df = defipulse_model.get_defipulse_index(sortby, ascending)
+    df = defipulse_model.get_defipulse_index(sortby, ascend)
 
     print_rich_table(
         df.head(top),

@@ -24,17 +24,17 @@ sort_map = {
 
 
 @log_start_end(log=logger)
-def get_cmc_top_n(sortby: str = "CMC_Rank", ascending: bool = True) -> pd.DataFrame:
+def get_cmc_top_n(sortby: str = "CMC_Rank", ascend: bool = True) -> pd.DataFrame:
     """Shows top n coins. [Source: CoinMarketCap]
 
     Parameters
     ----------
-    top: int
-        Number of records to display
     sortby: str
         Key to sort data. The table can be sorted by every of its columns. Refer to
         Coin Market Cap:s API documentation, see:
         https://coinmarketcap.com/api/documentation/v1/#operation/getV1CryptocurrencyListingsLatest
+    ascend: bool
+        Whether to sort ascending or descending
 
     Returns
     -------
@@ -71,5 +71,5 @@ def get_cmc_top_n(sortby: str = "CMC_Rank", ascending: bool = True) -> pd.DataFr
         else:
             console.print(e)
 
-    df = df.sort_values(by=sort_map[sortby], ascending=ascending)
+    df = df.sort_values(by=sort_map[sortby], ascending=ascend)
     return df

@@ -88,7 +88,7 @@ def display_twitter(
     symbol: str = "BTC",
     limit: int = 10,
     sortby: str = "date",
-    ascending: bool = True,
+    ascend: bool = True,
     export: str = "",
 ) -> None:
     """Get twitter timeline for given coin id. Not more than last 50 tweets [Source: CoinPaprika]
@@ -103,7 +103,7 @@ def display_twitter(
         Key by which to sort data. Every column name is valid
         (see for possible values:
         https://api.coinpaprika.com/docs#tag/Coins/paths/~1coins~1%7Bcoin_id%7D~1twitter/get).
-    ascending: bool
+    ascend: bool
         Flag to sort data ascending
     export : str
         Export dataframe data to csv,json,xlsx file
@@ -112,7 +112,7 @@ def display_twitter(
     # get coinpaprika id using crypto symbol
     cp_id = cryptocurrency_helpers.get_coinpaprika_id(symbol)
 
-    df = coinpaprika_model.get_coin_twitter_timeline(cp_id, sortby, ascending)
+    df = coinpaprika_model.get_coin_twitter_timeline(cp_id, sortby, ascend)
 
     if df.empty:
         console.print(f"Couldn't find any tweets for coin {symbol}", "\n")
@@ -138,7 +138,7 @@ def display_events(
     symbol: str = "BTC",
     limit: int = 10,
     sortby: str = "date",
-    ascending: bool = False,
+    ascend: bool = False,
     links: bool = False,
     export: str = "",
 ) -> None:
@@ -154,7 +154,7 @@ def display_events(
         Key by which to sort data. Every column name is valid
         (see for possible values:
         https://api.coinpaprika.com/docs#tag/Coins/paths/~1coins~1%7Bcoin_id%7D~1events/get).
-    ascending: bool
+    ascend: bool
         Flag to sort data ascending
     links: bool
         Flag to display urls
@@ -164,7 +164,7 @@ def display_events(
     # get coinpaprika id using crypto symbol
     cp_id = cryptocurrency_helpers.get_coinpaprika_id(symbol)
 
-    df = coinpaprika_model.get_coin_events_by_id(cp_id, sortby, ascending)
+    df = coinpaprika_model.get_coin_events_by_id(cp_id, sortby, ascend)
 
     if df.empty:
         console.print(f"Couldn't find any events for coin {symbol}\n")
@@ -194,7 +194,7 @@ def display_exchanges(
     symbol: str = "btc",
     limit: int = 10,
     sortby: str = "adjusted_volume_24h_share",
-    ascending: bool = True,
+    ascend: bool = True,
     export: str = "",
 ) -> None:
     """Get all exchanges for given coin id. [Source: CoinPaprika]
@@ -208,7 +208,7 @@ def display_exchanges(
     sortby: str
         Key by which to sort data. Every column name is valid (see for possible values:
         https://api.coinpaprika.com/v1).
-    ascending: bool
+    ascend: bool
         Flag to sort data ascending
     export : str
         Export dataframe data to csv,json,xlsx file
@@ -217,7 +217,7 @@ def display_exchanges(
     # get coinpaprika id using crypto symbol
     cp_id = cryptocurrency_helpers.get_coinpaprika_id(symbol)
 
-    df = coinpaprika_model.get_coin_exchanges_by_id(cp_id, sortby, ascending)
+    df = coinpaprika_model.get_coin_exchanges_by_id(cp_id, sortby, ascend)
 
     if df.empty:
         console.print("No data found", "\n")
@@ -244,7 +244,7 @@ def display_markets(
     to_symbol: str = "USD",
     limit: int = 20,
     sortby: str = "pct_volume_share",
-    ascending: bool = True,
+    ascend: bool = True,
     links: bool = False,
     export: str = "",
 ) -> None:
@@ -261,7 +261,7 @@ def display_markets(
     sortby: str
         Key by which to sort data. Every column name is valid (see for possible values:
         https://api.coinpaprika.com/v1).
-    ascending: bool
+    ascend: bool
         Flag to sort data ascending
     links: bool
         Flag to display urls
@@ -275,7 +275,7 @@ def display_markets(
     # get coinpaprika id using crypto symbol
     cp_id = cryptocurrency_helpers.get_coinpaprika_id(from_symbol)
 
-    df = coinpaprika_model.get_coin_markets_by_id(cp_id, to_symbol, sortby, ascending)
+    df = coinpaprika_model.get_coin_markets_by_id(cp_id, to_symbol, sortby, ascend)
 
     if df.empty:
         console.print("There is no data \n")

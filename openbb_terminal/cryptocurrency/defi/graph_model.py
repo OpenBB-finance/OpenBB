@@ -75,7 +75,7 @@ def query_graph(url: str, query: str) -> dict:
 
 @log_start_end(log=logger)
 def get_uni_tokens(
-    skip: int = 0, limit: int = 100, sortby: str = "index", ascending: bool = False
+    skip: int = 0, limit: int = 100, sortby: str = "index", ascend: bool = False
 ) -> pd.DataFrame:
     """Get list of tokens trade-able on Uniswap DEX. [Source: https://thegraph.com/en/]
 
@@ -87,7 +87,7 @@ def get_uni_tokens(
         Show n number of records.
     sortby: str
         The column to sort by
-    ascending: bool
+    ascend: bool
         Whether to sort in ascending order
 
     Returns
@@ -113,7 +113,7 @@ def get_uni_tokens(
     if not data:
         return pd.DataFrame()
     df = pd.DataFrame(data["tokens"]).reset_index()
-    return df.sort_values(by=sortby, ascending=ascending)
+    return df.sort_values(by=sortby, ascending=ascend)
 
 
 @log_start_end(log=logger)

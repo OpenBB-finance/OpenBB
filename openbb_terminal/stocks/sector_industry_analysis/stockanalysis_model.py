@@ -134,7 +134,7 @@ def get_stocks_data(
                     change_type_dataframes(symbol_statement) * rounding
                 )
 
-                if currency and currency != currency:
+                if currency:
                     currency_data = yf.download(
                         f"{currency}{currency}=X",
                         start=f"{symbol_statement_rounded.columns[0]}-01-01",
@@ -143,7 +143,7 @@ def get_stocks_data(
                     )["Adj Close"]
 
                     for year in symbol_statement_rounded:
-                        # Since fiscal year can differ, I take the median of the currency and not the last value
+                        # Since fiscal years differ, take the median and not the last value
                         # of the year
                         symbol_statement_rounded[year] = (
                             symbol_statement_rounded[year]

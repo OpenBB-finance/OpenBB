@@ -108,7 +108,7 @@ def get_defi_vaults(
     chain: Optional[str] = None,
     protocol: Optional[str] = None,
     kind: Optional[str] = None,
-    ascending: bool = True,
+    ascend: bool = True,
     sortby: str = "apy",
 ) -> pd.DataFrame:
     """Get DeFi Vaults Information. DeFi Vaults are pools of funds with an assigned strategy which main goal is to
@@ -155,7 +155,7 @@ def get_defi_vaults(
         logger.exception(e)
         raise ValueError(f"Invalid Response: {response.text}") from e
 
-    df = df.sort_values(by=sortby, ascending=ascending).fillna("NA")
+    df = df.sort_values(by=sortby, ascending=ascend).fillna("NA")
     df["tvl"] = df["tvl"].apply(lambda x: lambda_long_number_format(x))
     df["apy"] = df["apy"].apply(
         lambda x: f"{str(round(x * 100, 2))} %" if isinstance(x, (int, float)) else x
