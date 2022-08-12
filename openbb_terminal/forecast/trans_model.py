@@ -133,9 +133,7 @@ def get_trans_data(
         optimizer_kwargs={"lr": learning_rate},
         model_name=model_save_name,
         random_state=42,
-        pl_trainer_kwargs=helpers.get_pl_kwargs(
-            patience=5, monitor="val_loss", accelerator="cpu"
-        ),
+        pl_trainer_kwargs=helpers.get_pl_kwargs(accelerator="cpu"),
         force_reset=force_reset,
         save_checkpoints=save_checkpoints,
     )

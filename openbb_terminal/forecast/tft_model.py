@@ -165,9 +165,7 @@ def get_tft_data(
         random_state=42,
         n_epochs=n_epochs,
         batch_size=batch_size,
-        pl_trainer_kwargs=helpers.get_pl_kwargs(
-            patience=5, monitor="val_loss", accelerator="cpu"
-        ),
+        pl_trainer_kwargs=helpers.get_pl_kwargs(accelerator="cpu"),
         likelihood=QuantileRegression(
             quantiles=quantiles
         ),  # QuantileRegression is set per default
