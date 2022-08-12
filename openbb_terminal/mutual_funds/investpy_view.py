@@ -99,25 +99,25 @@ def display_overview(country: str = "united states", limit: int = 10, export: st
 
 
 @log_start_end(log=logger)
-def display_fund_info(fund_name: str, country: str = "united states"):
+def display_fund_info(name: str, country: str = "united states"):
     """Display fund information.  Finds name from symbol first if name is false
 
     Parameters
     ----------
-    fund: str
+    name: str
         Fund name to get info for
     country : str
         Country of fund
     """
     info = (
-        investpy_model.get_fund_info(fund_name, country)
+        investpy_model.get_fund_info(name, country)
         .reset_index(drop=False)
         .applymap(lambda x: np.nan if not x else x)
         .dropna()
     )
     print_rich_table(
         info,
-        title=f"[bold]{fund_name.title()} Information[/bold]",
+        title=f"[bold]{name.title()} Information[/bold]",
         show_index=False,
         headers=["Info", "Value"],
     )
@@ -126,7 +126,7 @@ def display_fund_info(fund_name: str, country: str = "united states"):
 @log_start_end(log=logger)
 def display_historical(
     data: pd.DataFrame,
-    fund: str = "",
+    name: str = "",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -136,7 +136,7 @@ def display_historical(
     ----------
     data: pd.DataFrame
         Dataframe containing historical data
-    fund: str
+    name: str
         Fund symbol or name
     export: str
         Format to export data
@@ -152,7 +152,7 @@ def display_historical(
     ax.set_xlim([data.index[0], data.index[-1]])
     ax.set_xlabel("Date")
     ax.set_ylabel("Close Price")
-    ax.set_title(f"{fund.title()} Price History")
+    ax.set_title(f"{name.title()} Price History")
     theme.style_primary_axis(ax)
     if external_axes is None:
         theme.visualize_output()
