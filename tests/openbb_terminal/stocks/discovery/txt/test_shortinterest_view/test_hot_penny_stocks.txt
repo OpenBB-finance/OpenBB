@@ -1,3 +1,3 @@
-       Price Change      $ Volume     Volume # Trades
-ETHE  $38.48  6.37%  $276,587,944  7,227,943   25,269
-GBTC  $40.69  4.25%  $219,189,815  5,406,771   18,667
+  Symbol                           Company Name  Last Price  Change % Change  Market Time  Volume Avg Vol (3 month) Market Cap
+0   INND  InnerScope Hearing Technologies, Inc.      0.0155    0.00   +4.03%  3:59 PM EDT  59.17M            36.25M     53.57M
+1   TUEM            Tuesday Morning Corporation      0.4400    0.08  +22.22%  4:00 PM EDT  45.33M             2.66M     37.74M

@@ -13,6 +13,7 @@ from typing import List
 from pathlib import Path
 import dotenv
 
+from prompt_toolkit import PromptSession
 from prompt_toolkit.completion import NestedCompleter
 from prompt_toolkit.styles import Style
 from prompt_toolkit.formatted_text import HTML
@@ -224,7 +225,10 @@ class TerminalController(BaseController):
 
                 start = time.time()
                 console.print(f"\n[yellow]{task}[/yellow]\n")
-                an_input = session.prompt("GUESS / $ ")
+                if isinstance(session, PromptSession):
+                    an_input = session.prompt("GUESS / $ ")
+                else:
+                    an_input = ""
                 time_dif = time.time() - start
 
                 # When there are multiple paths to same solution

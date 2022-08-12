@@ -27,7 +27,8 @@ def display_news(
     descend: bool = False,
     export: str = "",
 ) -> None:
-    """Display recent posts from CryptoPanic news aggregator platform. [Source: https://cryptopanic.com/]
+    """Display recent posts from CryptoPanic news aggregator platform.
+    [Source: https://cryptopanic.com/]
 
     Parameters
     ----------
@@ -38,8 +39,8 @@ def display_news(
     filter_: Optional[str]
         Filter by kind of news. One from list: rising|hot|bullish|bearish|important|saved|lol
     region: str
-        Filter news by regions. Available regions are: en (English), de (Deutsch), nl (Dutch), es (Español),
-        fr (Français), it (Italiano), pt (Português), ru (Русский)
+        Filter news by regions. Available regions are: en (English), de (Deutsch), nl (Dutch),
+        es (Español), fr (Français), it (Italiano), pt (Português), ru (Русский)
     descend: bool
         Sort in descending order.
     export : str
