@@ -23,7 +23,8 @@ def vcr_config():
 @pytest.mark.record_stdout
 def test_past_ipo(mocker):
     ipo_df = finnhub_model.get_ipo_calendar(
-        start_date="2021-12-01", end_date="2021-12-02",
+        start_date="2021-12-01",
+        end_date="2021-12-02",
     )
 
     mocker.patch(
@@ -40,7 +41,8 @@ def test_past_ipo(mocker):
 @pytest.mark.record_stdout
 def test_future_ipo(mocker):
     ipo_df = finnhub_model.get_ipo_calendar(
-        start_date="2021-12-01", end_date="2021-12-02",
+        start_date="2021-12-01",
+        end_date="2021-12-02",
     )
 
     mocker.patch(
