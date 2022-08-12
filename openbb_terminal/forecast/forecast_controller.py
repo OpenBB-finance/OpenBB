@@ -628,7 +628,7 @@ class ForecastController(BaseController):
                 action="store",
                 dest="lags",
                 type=check_greater_than_one,
-                default=72,
+                default=14,
                 help="Lagged target values used to predict the next time step.",
             )
         if residuals:

@@ -26,8 +26,8 @@ def get_linear_regression_data(
     past_covariates: str = None,
     train_split: float = 0.85,
     forecast_horizon: int = 5,
-    output_chunk_length: int = 1,
-    lags: Union[int, List[int]] = 72,
+    output_chunk_length: int = 5,
+    lags: Union[int, List[int]] = 14,
     random_state: Optional[int] = None,
 ) -> Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], float, Any]:
     """Perform Linear Regression Forecasting
@@ -89,7 +89,12 @@ def get_linear_regression_data(
 
     with warnings.catch_warnings():
         warnings.simplefilter(action="ignore", category=FutureWarning)
-        lin_reg_model.fit(ticker_series, past_covariate_whole)
+        if past_covariates is not None:
+            lin_reg_model.fit(
+                series=ticker_series, past_covariates=past_covariate_whole
+            )
+        else:
+            lin_reg_model.fit(series=ticker_series)
 
     return helpers.get_prediction(
         "Logistic Regression",
