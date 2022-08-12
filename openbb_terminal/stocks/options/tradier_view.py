@@ -112,7 +112,7 @@ def display_expiry_dates(expiry_dates: list):
 def display_chains(
     symbol: str,
     expiry: str,
-    to_display: List[str] = tradier_model.default_columns,
+    to_display: List[str] = None,
     min_sp: float = -1,
     max_sp: float = -1,
     calls_only: bool = False,
@@ -140,6 +140,9 @@ def display_chains(
     export: str
         Format to  export file
     """
+
+    if to_display is None:
+        to_display = tradier_model.default_columns
 
     chains_df = tradier_model.get_option_chains(symbol, expiry)
     columns = to_display + ["strike", "option_type"]
