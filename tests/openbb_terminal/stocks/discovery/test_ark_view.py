@@ -30,7 +30,6 @@ def test_lambda_direction_color_red_green(val, recorder):
 
 
 @pytest.mark.vcr
-@pytest.mark.record_stdout
 @pytest.mark.parametrize(
     "kwargs_dict, use_color",
     [
