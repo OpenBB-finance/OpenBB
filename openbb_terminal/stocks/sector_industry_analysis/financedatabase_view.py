@@ -374,8 +374,8 @@ def display_companies_per_sector_in_country(
 
 @log_start_end(log=logger)
 def display_companies_per_industry_in_country(
-    country: str,
-    mktcap: str = "",
+    country: str = "United States",
+    mktcap: str = "Large",
     exclude_exchanges: bool = True,
     export: str = "",
     raw: bool = False,
