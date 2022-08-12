@@ -151,7 +151,7 @@ def short_interest_volume(
         External axes (3 axes are expected in the list), by default None
 
     """
-    
+
     df, prices = stockgrid_model.get_short_interest_volume(ticker)
     if df.empty:
         console.print("[red]No data available[/red]\n")
@@ -294,7 +294,7 @@ def net_short_position(
         External axes (2 axes are expected in the list), by default None
 
     """
-    
+
     df = stockgrid_model.get_net_short_position(ticker)
     if df.empty:
         console.print("[red]No data available[/red]\n")
