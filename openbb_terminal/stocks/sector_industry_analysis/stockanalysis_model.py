@@ -118,7 +118,7 @@ def get_stocks_data(
                 if item not in stocks_data:
                     stocks_data[item] = {}
                 used_statement = item
-                symbol_statement, rounding, currency = create_dataframe(
+                symbol_statement, rounding, currency_dcf = create_dataframe(
                     symbol, item, period.lower()
                 )
 
@@ -130,9 +130,9 @@ def get_stocks_data(
                     change_type_dataframes(symbol_statement) * rounding
                 )
 
-                if currency and currency != currency:
+                if currency and currency != currency_dcf:
                     currency_data = yf.download(
-                        f"{currency}{currency}=X",
+                        f"{currency_dcf}{currency}=X",
                         start=f"{symbol_statement_rounded.columns[0]}-01-01",
                         end=f"{symbol_statement_rounded.columns[-1]}-12-31",
                         progress=False,
