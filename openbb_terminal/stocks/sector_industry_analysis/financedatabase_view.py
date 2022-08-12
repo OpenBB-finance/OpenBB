@@ -236,8 +236,8 @@ def display_bars_financials(
 
 @log_start_end(log=logger)
 def display_companies_per_sector_in_country(
-    country: str = "",
-    mktcap: str = "",
+    country: str = "United States",
+    mktcap: str = "Large",
     exclude_exchanges: bool = True,
     export: str = "",
     raw: bool = False,
@@ -524,8 +524,8 @@ def display_companies_per_industry_in_country(
 
 @log_start_end(log=logger)
 def display_companies_per_industry_in_sector(
-    sector: str,
-    mktcap: str = "",
+    sector: str = "Technology",
+    mktcap: str = "Large",
     exclude_exchanges: bool = True,
     export: str = "",
     raw: bool = False,
@@ -674,8 +674,8 @@ def display_companies_per_industry_in_sector(
 
 @log_start_end(log=logger)
 def display_companies_per_country_in_sector(
-    sector: str,
-    mktcap: str = "",
+    sector: str = "Technology",
+    mktcap: str = "Large",
     exclude_exchanges: bool = True,
     export: str = "",
     raw: bool = False,
@@ -688,7 +688,7 @@ def display_companies_per_country_in_sector(
     Parameters
     ----------
     sector: str
-        Select sector to get number of companies by each sector
+        Select sector to get number of companies by each country
     mktcap: str
         Select market cap of companies to consider from Small, Mid and Large
     exclude_exchanges : bool
@@ -818,8 +818,8 @@ def display_companies_per_country_in_sector(
 
 @log_start_end(log=logger)
 def display_companies_per_country_in_industry(
-    industry: str,
-    mktcap: str = "",
+    industry: str = "Internet Content & Information",
+    mktcap: str = "Large",
     exclude_exchanges: bool = True,
     export: str = "",
     raw: bool = False,
@@ -832,7 +832,7 @@ def display_companies_per_country_in_industry(
     Parameters
     ----------
     industry: str
-        Select industry to get number of companies by each industry
+        Select industry to get number of companies by each country
     mktcap: str
         Select market cap of companies to consider from Small, Mid and Large
     exclude_exchanges : bool
