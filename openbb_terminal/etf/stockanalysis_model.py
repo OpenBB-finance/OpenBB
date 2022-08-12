@@ -91,7 +91,10 @@ def get_etf_holdings(symbol: str) -> pd.DataFrame:
     r = requests.get(link, headers={"User-Agent": get_user_agent()})
     try:
         df = pd.read_html(r.content)[0]
-        df = df.set_index("No.")
+        df["Symbol"] = df["Symbol"].fillna("n/a")
+        df = df.set_index("Symbol")
+        df = df[["% Assets", "Shares"]]
+        df = df.rename(columns={"% Assets": "% Of Etf"})
     except ValueError:
         df = pd.DataFrame()
     return df
