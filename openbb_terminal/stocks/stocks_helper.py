@@ -911,7 +911,11 @@ def load(
                 console.print()
                 return pd.DataFrame()
 
-            df_stock_candidate.index = df_stock_candidate.index.tz_localize(None)
+            df_stock_candidate.index = (
+                df_stock_candidate.index.tz_localize(tz="UTC")
+                .tz_convert("US/Eastern")
+                .tz_localize(None)
+            )
             s_start_dt = df_stock_candidate.index[0]
 
             if s_start_dt > start:
@@ -1013,6 +1017,7 @@ def display_candle(
             candle_chart_kwargs["figratio"] = (10, 7)
             candle_chart_kwargs["figscale"] = 1.10
             candle_chart_kwargs["figsize"] = plot_autoscale()
+            candle_chart_kwargs["warn_too_much_data"] = 100_000
 
             fig, ax = mpf.plot(df_stock, **candle_chart_kwargs, **kwargs)
             lambda_long_number_format_y_axis(df_stock, "Volume", ax)
