@@ -283,7 +283,8 @@ class ETFController(BaseController):
                             na_tix_idx.append(str(idx))
 
                     console.print(
-                        f"n/a tickers found at position {','.join(na_tix_idx)}.  Dropping these from holdings.\n"
+                        f"n/a tickers found at position {','.join(na_tix_idx)}. "
+                        " Dropping these from holdings.\n"
                     )
 
                 self.etf_holdings = list(
