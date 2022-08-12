@@ -648,7 +648,13 @@ class ETFController(BaseController):
     @log_start_end(log=logger)
     def call_pred(self, _):
         """Process pred command"""
-        if obbff.ENABLE_PREDICT:
+
+        if obbff.PACKAGED_APPLICATION or not obbff.ENABLE_PREDICT:
+            console.print(
+                "Predict is disabled. Forecasting coming soon!",
+                "\n",
+            )
+        else:
             if self.etf_name:
                 try:
                     from openbb_terminal.etf.prediction_techniques import (
@@ -675,11 +681,6 @@ class ETFController(BaseController):
                     )
             else:
                 console.print("Use 'load <ticker>' prior to this command!", "\n")
-        else:
-            console.print(
-                "Predict is disabled. Forecasting coming soon!",
-                "\n",
-            )
 
     @log_start_end(log=logger)
     def call_ca(self, _):

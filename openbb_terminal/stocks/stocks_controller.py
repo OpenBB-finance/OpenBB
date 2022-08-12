@@ -712,7 +712,12 @@ class StocksController(StockBaseController):
     @log_start_end(log=logger)
     def call_pred(self, _):
         """Process pred command"""
-        if obbff.ENABLE_PREDICT:
+        if obbff.PACKAGED_APPLICATION or not obbff.ENABLE_PREDICT:
+            console.print(
+                "Predict is disabled. Forecasting coming soon!",
+                "\n",
+            )
+        else:
             if self.ticker:
                 if self.interval == "1440min":
                     try:
@@ -744,8 +749,3 @@ class StocksController(StockBaseController):
                     console.print("Load daily data to use this menu!", "\n")
             else:
                 console.print("Use 'load <ticker>' prior to this command!", "\n")
-        else:
-            console.print(
-                "Predict is disabled. Forecasting coming soon!",
-                "\n",
-            )

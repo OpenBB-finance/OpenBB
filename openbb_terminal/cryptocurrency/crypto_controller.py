@@ -342,7 +342,12 @@ class CryptoController(CryptoBaseController):
     @log_start_end(log=logger)
     def call_pred(self, _):
         """Process pred command"""
-        if obbff.ENABLE_PREDICT:
+        if obbff.PACKAGED_APPLICATION or not obbff.ENABLE_PREDICT:
+            console.print(
+                "Predict is disabled. Forecasting coming soon!",
+                "\n",
+            )
+        else:
             if self.symbol:
                 try:
                     from openbb_terminal.cryptocurrency.prediction_techniques import (
@@ -366,11 +371,6 @@ class CryptoController(CryptoBaseController):
                 console.print(
                     "No coin selected. Use 'load' to load the coin you want to look at.\n"
                 )
-        else:
-            console.print(
-                "Predict is disabled. Forecasting coming soon!",
-                "\n",
-            )
 
     @log_start_end(log=logger)
     def call_onchain(self, _):

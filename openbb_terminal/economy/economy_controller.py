@@ -1430,7 +1430,12 @@ class EconomyController(BaseController):
     def call_pred(self, _):
 
         """Process pred command"""
-        if obbff.ENABLE_PREDICT:
+        if obbff.PACKAGED_APPLICATION or not obbff.ENABLE_PREDICT:
+            console.print(
+                "Predict is disabled. Forecasting coming soon!",
+                "\n",
+            )
+        else:
             if not self.DATASETS:
                 console.print(
                     "There is no data stored yet. Please use either the 'macro', 'fred', 'index' and/or "
@@ -1453,11 +1458,6 @@ class EconomyController(BaseController):
 
             self.queue = self.load_class(
                 PredictionTechniquesController, self.DATASETS, self.queue
-            )
-        else:
-            console.print(
-                "Predict is disabled. Forecasting coming soon!",
-                "\n",
             )
 
     @log_start_end(log=logger)
