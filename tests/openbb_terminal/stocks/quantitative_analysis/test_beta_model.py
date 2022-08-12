@@ -14,4 +14,5 @@ def test_beta_model(recorder):
     ref = pd.DataFrame.from_dict({"close": [2, 3, 5, 7, 7, 9, 20, -2, -5, 0]})
 
     result_tuple = beta_model(symbol="TSLA", ref_symbol="XLK", data=stock, ref_data=ref)
-    recorder.capture(result_tuple)
+    result = (result_tuple[0], result_tuple[1], round(result_tuple[2], 8), round(result_tuple[3], 8))
+    recorder.capture(result)
