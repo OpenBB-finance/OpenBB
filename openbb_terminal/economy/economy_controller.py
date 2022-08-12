@@ -1399,14 +1399,14 @@ class EconomyController(BaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="cdebt",
             description="""
-                National debt statistics for various countries. [Source: USDebtClock]
+                National debt statistics for various countries. [Source: Wikipedia]
             """,
         )
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED, limit=20
         )
         if ns_parser:
-            commodity_view.display_debt(export=ns_parser.export)
+            commodity_view.display_debt(export=ns_parser.export, limit=ns_parser.limit)
 
     @log_start_end(log=logger)
     @log_start_end(log=logger)
