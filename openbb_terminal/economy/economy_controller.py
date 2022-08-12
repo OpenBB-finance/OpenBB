@@ -511,7 +511,7 @@ class EconomyController(BaseController):
         )
         parser.add_argument(
             "--convert",
-            dest="convert_currency",
+            dest="currency",
             help="Convert the currency of the chosen country to a specified currency. To find the "
             "currency symbols use '--show countries'",
             default=False,
@@ -544,7 +544,7 @@ class EconomyController(BaseController):
                     countries=ns_parser.countries,
                     start_date=ns_parser.start_date,
                     end_date=ns_parser.end_date,
-                    convert_currency=ns_parser.convert_currency,
+                    currency=ns_parser.currency,
                 )
 
                 if not df.empty:
@@ -570,7 +570,7 @@ class EconomyController(BaseController):
                         countries=ns_parser.countries,
                         start_date=ns_parser.start_date,
                         end_date=ns_parser.end_date,
-                        convert_currency=ns_parser.convert_currency,
+                        currency=ns_parser.currency,
                         raw=ns_parser.raw,
                         export=ns_parser.export,
                     )

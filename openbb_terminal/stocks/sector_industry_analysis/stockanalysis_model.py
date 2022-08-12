@@ -86,7 +86,7 @@ def get_stocks_data(
     finance_key: str,
     stocks_data: dict,
     period: str,
-    convert_currency: str = "USD",
+    currency: str = "USD",
 ):
     """Get stocks data based on a list of stocks and the finance key. The function searches for the correct
      financial statement automatically. [Source: StockAnalysis]
@@ -103,7 +103,7 @@ def get_stocks_data(
         for the first time.
     period : str
         Whether you want annually, quarterly or trailing financial statements.
-    convert_currency : str
+    currency : str
         Choose in what currency you wish to convert each company's financial statement. Default is USD (US Dollars).
 
     Returns
@@ -130,9 +130,9 @@ def get_stocks_data(
                     change_type_dataframes(symbol_statement) * rounding
                 )
 
-                if convert_currency and convert_currency != currency:
+                if currency and currency != currency:
                     currency_data = yf.download(
-                        f"{currency}{convert_currency}=X",
+                        f"{currency}{currency}=X",
                         start=f"{symbol_statement_rounded.columns[0]}-01-01",
                         end=f"{symbol_statement_rounded.columns[-1]}-12-31",
                         progress=False,

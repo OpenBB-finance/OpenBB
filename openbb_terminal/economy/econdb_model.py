@@ -473,7 +473,7 @@ def get_macro_data(
     country: str,
     start_date=pd.to_datetime("1900-01-01"),
     end_date=datetime.today().date(),
-    convert_currency=False,
+    currency: str = "",
 ) -> Tuple[Any, Union[str, Any]]:
     """Query the EconDB database to find specific macro data about a company [Source: EconDB]
 
@@ -487,7 +487,7 @@ def get_macro_data(
         The starting date, format "YEAR-MONTH-DAY", i.e. 2010-12-31.
     end_date : str
         The end date, format "YEAR-MONTH-DAY", i.e. 2020-06-05.
-    convert_currency : str
+    currency : str
         In what currency you wish to convert all values.
 
     Returns
@@ -539,15 +539,15 @@ def get_macro_data(
             df = df.loc[start_date:end_date]
 
         if (
-            convert_currency
-            and country_currency != convert_currency
+            currency
+            and country_currency != currency
             and units in COUNTRY_CURRENCIES.values()
         ):
             if units in COUNTRY_CURRENCIES.values():
-                units = convert_currency
+                units = currency
 
             currency_data = yf.download(
-                f"{country_currency}{convert_currency}=X",
+                f"{country_currency}{currency}=X",
                 start=df.index[0],
                 end=df.index[-1],
                 progress=False,
@@ -607,7 +607,7 @@ def get_aggregated_macro_data(
     countries: list = None,
     start_date: str = "1900-01-01",
     end_date=datetime.today().date(),
-    convert_currency=False,
+    currency: str = "",
 ) -> Tuple[Any, Dict[Any, Dict[Any, Any]], str]:
     """This functions groups the data queried from the EconDB database [Source: EconDB]
 
@@ -621,7 +621,7 @@ def get_aggregated_macro_data(
         The starting date, format "YEAR-MONTH-DAY", i.e. 2010-12-31.
     end_date : str
         The end date, format "YEAR-MONTH-DAY", i.e. 2020-06-05.
-    convert_currency : str
+    currency : str
         In what currency you wish to convert all values.
 
     Returns
@@ -647,9 +647,7 @@ def get_aggregated_macro_data(
             (
                 country_data[country][parameter],
                 units[country][parameter],
-            ) = get_macro_data(
-                parameter, country, start_date, end_date, convert_currency
-            )
+            ) = get_macro_data(parameter, country, start_date, end_date, currency)
 
             if country_data[country][parameter].empty:
                 del country_data[country][parameter]

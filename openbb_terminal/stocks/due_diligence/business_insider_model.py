@@ -49,7 +49,10 @@ def get_price_target_from_analysts(symbol: str) -> pd.DataFrame:
             d_analyst_data = json.loads(s_analyst_data.split(",\n")[0])
             break
 
-    df_analyst_data = pd.DataFrame.from_dict(d_analyst_data["Markers"])  # type: ignore
+    try:
+        df_analyst_data = pd.DataFrame.from_dict(d_analyst_data["Markers"])  # type: ignore
+    except TypeError:
+        return pd.DataFrame()
     df_analyst_data = df_analyst_data[
         ["DateLabel", "Company", "InternalRating", "PriceTarget"]
     ]

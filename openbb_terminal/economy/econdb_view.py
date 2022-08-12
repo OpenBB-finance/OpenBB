@@ -28,7 +28,7 @@ def show_macro_data(
     countries: list = None,
     start_date: str = "1900-01-01",
     end_date: str = str(datetime.today().date()),
-    convert_currency=False,
+    currency: str = "",
     raw: bool = False,
     external_axes: Optional[List[plt.axes]] = None,
     export: str = "",
@@ -45,7 +45,7 @@ def show_macro_data(
         The starting date, format "YEAR-MONTH-DAY", i.e. 2010-12-31.
     end_date : str
         The end date, format "YEAR-MONTH-DAY", i.e. 2020-06-05.
-    convert_currency : str
+    currency : str
         In what currency you wish to convert all values.
     raw : bool
         Whether to display the raw output.
@@ -65,7 +65,7 @@ def show_macro_data(
         countries = ["United_States"]
 
     df_rounded, units, denomination = econdb_model.get_aggregated_macro_data(
-        parameters, countries, start_date, end_date, convert_currency
+        parameters, countries, start_date, end_date, currency
     )
 
     if external_axes is None:
@@ -190,6 +190,7 @@ def show_treasuries(
         ax.plot(treasury_data[col], label=f"{col_label[0]} [{col_label[1]}]")
 
     ax.set_title("U.S. Treasuries")
+    ax.set_ylabel("Yield (%)")
     ax.legend(
         bbox_to_anchor=(0, 0.40, 1, -0.52),
         loc="upper right",

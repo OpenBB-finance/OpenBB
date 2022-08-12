@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 from typing import List, Tuple
+from json import JSONDecodeError
 
 import pandas as pd
 import requests
@@ -123,7 +124,10 @@ def get_short_interest_volume(symbol: str) -> Tuple[pd.DataFrame, List]:
     """
     link = f"https://stockgridapp.herokuapp.com/get_dark_pool_individual_data?ticker={symbol}"
     response = requests.get(link)
-    response_json = response.json()
+    try:
+        response_json = response.json()
+    except JSONDecodeError:
+        return pd.DataFrame(), [None]
 
     df = pd.DataFrame(response_json["individual_short_volume_table"]["data"])
     df["date"] = pd.to_datetime(df["date"])
@@ -148,7 +152,10 @@ def get_net_short_position(symbol: str) -> pd.DataFrame:
     link = f"https://stockgridapp.herokuapp.com/get_dark_pool_individual_data?ticker={symbol}"
     response = requests.get(link)
 
-    df = pd.DataFrame(response.json()["individual_dark_pool_position_data"])
+    try:
+        df = pd.DataFrame(response.json()["individual_dark_pool_position_data"])
+    except JSONDecodeError:
+        return pd.DataFrame()
     df["dates"] = pd.to_datetime(df["dates"])
 
     return df

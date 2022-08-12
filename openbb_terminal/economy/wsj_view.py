@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_overview(export: str = ""):
-    """Market overview. [Source: Wall St. Journal]
+    """Market overview with daily change. [Source: Wall St. Journal]
 
     Parameters
     ----------

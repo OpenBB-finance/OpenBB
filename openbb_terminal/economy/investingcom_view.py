@@ -58,7 +58,7 @@ def display_yieldcurve(
 
         ax.plot(df["Tenor"], df["Current"], "-o")
         ax.set_xlabel("Maturity")
-        ax.set_ylabel("Rate (%)")
+        ax.set_ylabel("Yield (%)")
         theme.style_primary_axis(ax)
         ax.yaxis.set_major_formatter(FormatStrFormatter("%.2f"))
         if external_axes is None:

@@ -34,5 +34,6 @@ from .yfinance_view import show_indices as index
 from .yfinance_view import search_indices as search_index
 from .investingcom_view import display_yieldcurve as ycrv
 
+
 # Models
 models = _models(os.path.abspath(os.path.dirname(__file__)))

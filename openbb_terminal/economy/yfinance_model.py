@@ -544,6 +544,16 @@ def get_index(
 
 
 @log_start_end(log=logger)
+def get_available_indices() -> dict:
+    """Get available indices
+
+    Returns:
+        dict: dictionary with available indices and respective detail
+    """
+    return INDICES
+
+
+@log_start_end(log=logger)
 def get_indices(
     indices: list,
     interval: str = "1d",
@@ -557,7 +567,7 @@ def get_indices(
     Parameters
     ----------
     indices: list
-        A list of indices to get data.
+        A list of indices to get data. Available indices can be accessed through get_available_indices().
     interval: str
         Valid intervals: 1m,2m,5m,15m,30m,60m,90m,1h,1d,5d,1wk,1mo,3mo
         Intraday data cannot extend last 60 days
