@@ -78,7 +78,7 @@ def display_inference(symbol: str, limit: int = 100, export: str = ""):
 def display_sentiment(
     symbol: str,
     n_tweets: int = 15,
-    n_days_past: int = 6,
+    n_days_past: int = 2,
     compare: bool = False,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
