@@ -447,7 +447,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "reddit_view.display_due_diligence",
             [],
             dict(
-                ticker="MOCK_TICKER",
+                symbol="MOCK_TICKER",
                 limit=1,
                 n_days=2,
                 show_all_flairs=True,

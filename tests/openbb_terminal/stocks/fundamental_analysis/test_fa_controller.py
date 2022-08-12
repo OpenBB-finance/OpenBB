@@ -325,7 +325,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             ["--source=polygon", "--export=csv", "--limit=5"],
             dict(
                 symbol="TSLA",
-                financial="income",
+                statement="income",
                 limit=5,
                 quarterly=False,
                 ratios=False,
@@ -352,7 +352,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             ["--source=yf", "--export=csv", "--limit=5"],
             dict(
                 symbol="TSLA",
-                financial="financials",
+                statement="financials",
                 ratios=False,
                 plot=None,
                 export="csv",
@@ -377,7 +377,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             ["--source=polygon", "--export=csv", "--limit=5"],
             dict(
                 symbol="TSLA",
-                financial="balance",
+                statement="balance",
                 limit=5,
                 quarterly=False,
                 ratios=False,
@@ -404,7 +404,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             ["--source=yf", "--export=csv", "--limit=5"],
             dict(
                 symbol="TSLA",
-                financial="balance-sheet",
+                statement="balance-sheet",
                 ratios=False,
                 plot=None,
                 export="csv",
@@ -442,7 +442,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             ["--source=polygon", "--export=csv", "--limit=5"],
             dict(
                 symbol="TSLA",
-                financial="cash",
+                statement="cash",
                 limit=5,
                 quarterly=False,
                 ratios=False,
@@ -456,7 +456,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             ["--source=yf", "--export=csv", "--limit=5"],
             dict(
                 symbol="TSLA",
-                financial="cash-flow",
+                statement="cash-flow",
                 ratios=False,
                 plot=None,
                 export="csv",

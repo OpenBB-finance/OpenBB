@@ -285,10 +285,10 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             "qa_view.display_raw",
             [],
             dict(
-                df=EMPTY_DF,
-                sort="Open",
-                des=False,
-                num=1,
+                data=EMPTY_DF,
+                sortby="Open",
+                descend=False,
+                limit=1,
             ),
         ),
         (

@@ -238,8 +238,8 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 "--export=csv",
             ],
             dict(
-                similar_tickers=["MOCK_SIMILAR_1", "MOCK_SIMILAR_2"],
-                start="2020-12-01",
+                similar=["MOCK_SIMILAR_1", "MOCK_SIMILAR_2"],
+                start_date="2020-12-01",
                 candle_type="h",
                 normalize=False,
                 export="csv",
@@ -253,8 +253,8 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 "--start=2020-12-01",
             ],
             dict(
-                similar_tickers=["MOCK_SIMILAR_1", "MOCK_SIMILAR_2"],
-                start="2020-12-01",
+                similar=["MOCK_SIMILAR_1", "MOCK_SIMILAR_2"],
+                start_date="2020-12-01",
                 candle_type="h",
                 export="",
                 display_full_matrix=False,
@@ -269,8 +269,8 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 "--export=csv",
             ],
             dict(
-                similar_tickers=["MOCK_SIMILAR_1", "MOCK_SIMILAR_2"],
-                start="2020-12-01",
+                similar=["MOCK_SIMILAR_1", "MOCK_SIMILAR_2"],
+                start_date="2020-12-01",
                 export="csv",
             ),
         ),
