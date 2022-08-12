@@ -112,4 +112,5 @@ def get_cramer_ticker(symbol: str) -> pd.DataFrame:
 
     link = "https://raw.githubusercontent.com/jmaslek/InverseCramer/main/AllRecommendations.csv"
     df = pd.read_csv(link, index_col=0)
+    df["Date"] = pd.to_datetime(df["Date"].apply(lambda x: x + "/2022"))
     return df[df.Symbol == symbol].reset_index(drop=True)

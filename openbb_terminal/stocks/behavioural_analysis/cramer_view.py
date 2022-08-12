@@ -75,8 +75,6 @@ def display_cramer_ticker(
         console.print(f"No recommendations found for {symbol}.\n")
         return
 
-    df["Date"] = pd.to_datetime(df["Date"].apply(lambda x: x + "/2022"))
-
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
     elif is_valid_axes_count(external_axes, 1):
