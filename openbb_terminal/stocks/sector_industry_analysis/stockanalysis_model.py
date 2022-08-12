@@ -113,13 +113,13 @@ def get_stocks_data(
     """
     no_data = []
     for symbol in tqdm(stocks):
-        for statement in sa_keys.keys():
-            if finance_key in sa_keys[statement]:
-                if statement not in stocks_data:
-                    stocks_data[statement] = {}
-                used_statement = statement
+        for item, description  in sa_keys.items():
+            if finance_key in description:
+                if item not in stocks_data:
+                    stocks_data[item] = {}
+                used_statement = item
                 symbol_statement, rounding, currency = create_dataframe(
-                    symbol, statement, period.lower()
+                    symbol, item, period.lower()
                 )
 
                 if symbol_statement.empty:
@@ -146,7 +146,7 @@ def get_stocks_data(
                             * currency_data.loc[year].median()
                         )
 
-                stocks_data[statement][symbol] = symbol_statement_rounded
+                stocks_data[item][symbol] = symbol_statement_rounded
 
     if period in ["Quarterly", "Trailing"]:
         for symbol in stocks_data[used_statement]:
