@@ -7,6 +7,8 @@ import os
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.stocks.discovery import shortinterest_model
+from openbb_terminal.stocks.discovery import yahoofinance_model as yf_model
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -41,7 +43,7 @@ def low_float(num: int, export: str):
 
 
 @log_start_end(log=logger)
-def hot_penny_stocks(num: int, export: str):
+def hot_penny_stocks(num: int = 10, export: str = "", source: str = "yf"):
     """Prints top N hot penny stocks from https://www.pennystockflow.com
 
     Parameters
@@ -50,13 +52,22 @@ def hot_penny_stocks(num: int, export: str):
         Number of stocks to display
     export : str
         Export dataframe data to csv,json,xlsx file
+    source : where to get the data from. Choose from:
+    yf (yfinance), or psf (pennystockflow)
     """
-    df_penny_stocks = shortinterest_model.get_today_hot_penny_stocks()
+    if source == "yf":
+        df_penny_stocks = yf_model.get_hotpenny()
+    elif source == "psf":
+        console.print("[red]Data from this source is often not penny stocks[/red]\n")
+        df_penny_stocks = shortinterest_model.get_today_hot_penny_stocks()
+    else:
+        console.print("[red]Invalid source provided[/red]\n")
+        return
 
     print_rich_table(
         df_penny_stocks.head(num),
-        headers=list(df_penny_stocks.columns),
-        show_index=True,
+        headers=list(df_penny_stocks.columns) if source != "psf" else None,
+        show_index=False,
         title="Top Penny Stocks",
     )
 
