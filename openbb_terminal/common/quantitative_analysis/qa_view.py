@@ -838,9 +838,9 @@ def display_unitroot(
 @log_start_end(log=logger)
 def display_raw(
     data: pd.DataFrame,
-    sort: str = "",
-    des: bool = False,
-    num: int = 20,
+    sortby: str = "",
+    descend: bool = False,
+    limit: int = 20,
     export: str = "",
 ) -> None:
     """Return raw stock data
@@ -849,11 +849,11 @@ def display_raw(
     ----------
     data : DataFrame
         DataFrame with historical information
-    sort : str
+    sortby : str
         The column to sort by
-    des : bool
+    descend : bool
         Whether to sort descending
-    num : int
+    limit : int
         Number of rows to show
     export : str
         Export data as CSV, JSON, XLSX
@@ -871,14 +871,14 @@ def display_raw(
     else:
         df1 = data.copy()
 
-    if sort:
+    if sortby:
         df1 = data.sort_values(
-            by=sort if sort != "AdjClose" else "Adj Close", ascending=des
+            by=sortby if sortby != "AdjClose" else "Adj Close", ascending=descend
         )
     df1.index = [x.strftime("%Y-%m-%d") for x in df1.index]
 
     print_rich_table(
-        df1.head(num) if sort else df1.tail(num),
+        df1.head(limit) if sortby else df1.tail(limit),
         headers=[x.title() if x != "" else "Date" for x in df1.columns],
         title="[bold]Raw Data[/bold]",
         show_index=True,

@@ -500,10 +500,10 @@ class ETFController(BaseController):
 
                 if ns_parser.raw:
                     qa_view.display_raw(
-                        df=self.etf_data,
-                        sort=ns_parser.sort,
-                        des=ns_parser.descending,
-                        num=ns_parser.num,
+                        data=self.etf_data,
+                        sortby=ns_parser.sort,
+                        descend=ns_parser.descending,
+                        limit=ns_parser.num,
                     )
 
                 else:

@@ -373,10 +373,10 @@ class StocksController(StockBaseController):
 
                 if ns_parser.raw:
                     qa_view.display_raw(
-                        df=self.stock,
-                        sort=ns_parser.sort,
-                        des=ns_parser.descending,
-                        num=ns_parser.limit,
+                        data=self.stock,
+                        sortby=ns_parser.sort,
+                        descend=ns_parser.descending,
+                        limit=ns_parser.limit,
                     )
 
                 else:

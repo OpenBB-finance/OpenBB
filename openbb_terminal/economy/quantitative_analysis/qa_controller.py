@@ -194,10 +194,10 @@ class QaController(StockBaseController):
         )
         if ns_parser:
             qa_view.display_raw(
-                self.data,
-                num=ns_parser.limit,
-                sort="",
-                des=ns_parser.descend,
+                data=self.data,
+                limit=ns_parser.limit,
+                sortby="",
+                descend=ns_parser.descend,
                 export=ns_parser.export,
             )
 
