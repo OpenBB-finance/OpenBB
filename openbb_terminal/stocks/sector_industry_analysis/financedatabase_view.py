@@ -236,7 +236,7 @@ def display_bars_financials(
 
 @log_start_end(log=logger)
 def display_companies_per_sector_in_country(
-    country: str,
+    country: str = "",
     mktcap: str = "",
     exclude_exchanges: bool = True,
     export: str = "",

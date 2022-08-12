@@ -152,7 +152,7 @@ def short_interest_volume(
 
     """
 
-    df, prices = stockgrid_model.get_short_interest_volume(ticker)
+    df, prices = stockgrid_model.get_short_interest_volume(symbol)
     if df.empty:
         console.print("[red]No data available[/red]\n")
         return
@@ -295,7 +295,7 @@ def net_short_position(
 
     """
 
-    df = stockgrid_model.get_net_short_position(ticker)
+    df = stockgrid_model.get_net_short_position(symbol)
     if df.empty:
         console.print("[red]No data available[/red]\n")
         return
