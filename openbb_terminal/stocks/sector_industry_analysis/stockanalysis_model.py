@@ -113,7 +113,7 @@ def get_stocks_data(
     """
     no_data = []
     for symbol in tqdm(stocks):
-        for item, description  in sa_keys.items():
+        for item, description in sa_keys.items():
             if finance_key in description:
                 if item not in stocks_data:
                     stocks_data[item] = {}
