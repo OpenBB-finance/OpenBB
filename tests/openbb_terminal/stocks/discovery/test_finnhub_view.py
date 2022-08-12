@@ -23,8 +23,7 @@ def vcr_config():
 @pytest.mark.record_stdout
 def test_past_ipo(mocker):
     ipo_df = finnhub_model.get_ipo_calendar(
-        start_date="2021-12-01",
-        end_date="2021-12-02",
+        start_date="2021-12-01", end_date="2021-12-02",
     )
 
     mocker.patch(
@@ -32,15 +31,16 @@ def test_past_ipo(mocker):
         return_value=ipo_df,
     )
 
-    finnhub_view.past_ipo(num_days_behind=2, start_date="2021-12-01", limit=20, export="")
+    finnhub_view.past_ipo(
+        num_days_behind=2, start_date="2021-12-01", limit=20, export=""
+    )
 
 
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_future_ipo(mocker):
     ipo_df = finnhub_model.get_ipo_calendar(
-        start_date="2021-12-01",
-        end_date="2021-12-02",
+        start_date="2021-12-01", end_date="2021-12-02",
     )
 
     mocker.patch(
@@ -48,7 +48,9 @@ def test_future_ipo(mocker):
         return_value=ipo_df,
     )
 
-    finnhub_view.future_ipo(num_days_ahead=2, end_date="2021-12-02", limit=20, export="")
+    finnhub_view.future_ipo(
+        num_days_ahead=2, end_date="2021-12-02", limit=20, export=""
+    )
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -59,7 +61,9 @@ def test_past_ipo_empty_df(mocker):
         return_value=pd.DataFrame(),
     )
 
-    finnhub_view.past_ipo(num_days_behind=2, start_date="2021-12-01", limit=20, export="")
+    finnhub_view.past_ipo(
+        num_days_behind=2, start_date="2021-12-01", limit=20, export=""
+    )
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -70,4 +74,6 @@ def test_future_ipo_empty_df(mocker):
         return_value=pd.DataFrame(),
     )
 
-    finnhub_view.future_ipo(num_days_ahead=2, end_date="2021-12-02", limit=20, export="")
+    finnhub_view.future_ipo(
+        num_days_ahead=2, end_date="2021-12-02", limit=20, export=""
+    )
