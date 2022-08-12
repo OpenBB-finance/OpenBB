@@ -82,7 +82,7 @@ sa_keys = {
 
 @log_start_end(log=logger)
 def get_stocks_data(
-    stocks: list,
+    symbols: list,
     finance_key: str,
     sa_dict: dict,
     stocks_data: dict,
@@ -94,7 +94,7 @@ def get_stocks_data(
 
     Parameters
     ----------
-    stocks: list
+    symbols: list
         A list of tickers that will be used to collect data for.
     finance_key: str
         The finance key used to search within the sa_dict for the correct name of item
@@ -108,22 +108,24 @@ def get_stocks_data(
     period : str
         Whether you want annually, quarterly or trailing financial statements.
     currency : str
-        Choose in what currency you wish to convert each company's financial statement. Default is USD (US Dollars).
+        Choose in what currency you wish to convert each company's financial statement.
+        Default is USD (US Dollars).
 
     Returns
     -------
     dict
         Dictionary of filtered stocks data separated by financial statement
     """
+    del sa_dict
     no_data = []
-    for symbol in tqdm(stocks):
-        for statement in sa_dict.keys():
-            if finance_key in sa_dict[statement]:
-                if statement not in stocks_data:
-                    stocks_data[statement] = {}
-                used_statement = statement
-                symbol_statement, rounding, currency = create_dataframe(
-                    symbol, statement, period.lower()
+    for symbol in tqdm(symbols):
+        for item, description in sa_keys.items():
+            if finance_key in description:
+                if item not in stocks_data:
+                    stocks_data[item] = {}
+                used_statement = item
+                symbol_statement, rounding, currency_dcf = create_dataframe(
+                    symbol, item, period.lower()
                 )
 
                 if symbol_statement.empty:
@@ -134,9 +136,9 @@ def get_stocks_data(
                     change_type_dataframes(symbol_statement) * rounding
                 )
 
-                if currency:
+                if currency and currency != currency_dcf:
                     currency_data = yf.download(
-                        f"{currency}{currency}=X",
+                        f"{currency_dcf}{currency}=X",
                         start=f"{symbol_statement_rounded.columns[0]}-01-01",
                         end=f"{symbol_statement_rounded.columns[-1]}-12-31",
                         progress=False,
@@ -150,7 +152,7 @@ def get_stocks_data(
                             * currency_data.loc[year].median()
                         )
 
-                stocks_data[statement][symbol] = symbol_statement_rounded
+                stocks_data[item][symbol] = symbol_statement_rounded
 
     if period in ["Quarterly", "Trailing"]:
         for symbol in stocks_data[used_statement]:
