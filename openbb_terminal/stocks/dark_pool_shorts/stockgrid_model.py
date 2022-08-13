@@ -103,6 +103,16 @@ def get_short_interest_days_to_cover(sortby: str = "float") -> pd.DataFrame:
         ascending=bool(sortby == "dtc"),
     )
 
+    df["Short Interest"] = df["Short Interest"] / 1_000_000
+    df.head()
+    df.columns = [
+        "Ticker",
+        "Date",
+        "Float Short %",
+        "Days to Cover",
+        "Short Interest [1M]",
+    ]
+
     return df
 
 
@@ -131,6 +141,23 @@ def get_short_interest_volume(symbol: str) -> Tuple[pd.DataFrame, List]:
 
     df = pd.DataFrame(response_json["individual_short_volume_table"]["data"])
     df["date"] = pd.to_datetime(df["date"])
+
+    df = df.sort_values(by="date", ascending=False)
+
+    df["Short Vol. [1M]"] = df["short_volume"] / 1_000_000
+    df["Short Vol. %"] = df["short_volume%"] * 100
+    df["Short Exempt Vol. [1k]"] = df["short_exempt_volume"] / 1_000
+    df["Total Vol. [1M]"] = df["total_volume"] / 1_000_000
+
+    df = df[
+        [
+            "date",
+            "Short Vol. [1M]",
+            "Short Vol. %",
+            "Short Exempt Vol. [1k]",
+            "Total Vol. [1M]",
+        ]
+    ]
 
     return df, response_json["prices"]["prices"]
 

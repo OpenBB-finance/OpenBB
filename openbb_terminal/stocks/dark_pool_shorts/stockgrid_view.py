@@ -102,14 +102,6 @@ def short_interest_days_to_cover(
 
     dp_date = df["Date"].values[0]
     df = df.drop(columns=["Date"])
-    df["Short Interest"] = df["Short Interest"] / 1_000_000
-    df.head()
-    df.columns = [
-        "Ticker",
-        "Float Short %",
-        "Days to Cover",
-        "Short Interest [1M]",
-    ]
 
     # Assuming that the datetime is the same, which from my experiments seems to be the case
     print_rich_table(
@@ -158,23 +150,6 @@ def short_interest_volume(
         return
 
     if raw:
-        df = df.sort_values(by="date", ascending=False)
-
-        df["Short Vol. [1M]"] = df["short_volume"] / 1_000_000
-        df["Short Vol. %"] = df["short_volume%"] * 100
-        df["Short Exempt Vol. [1k]"] = df["short_exempt_volume"] / 1_000
-        df["Total Vol. [1M]"] = df["total_volume"] / 1_000_000
-
-        df = df[
-            [
-                "date",
-                "Short Vol. [1M]",
-                "Short Vol. %",
-                "Short Exempt Vol. [1k]",
-                "Total Vol. [1M]",
-            ]
-        ]
-
         df.date = df.date.dt.date
 
         print_rich_table(
@@ -204,14 +179,14 @@ def short_interest_volume(
 
         ax.bar(
             df["date"],
-            df["total_volume"] / 1_000_000,
+            df["Total Vol. [1M]"],
             width=timedelta(days=1),
             color=theme.up_color,
             label="Total Volume",
         )
         ax.bar(
             df["date"],
-            df["short_volume"] / 1_000_000,
+            df["Short Vol. [1M]"],
             width=timedelta(days=1),
             color=theme.down_color,
             label="Short Volume",
@@ -240,7 +215,7 @@ def short_interest_volume(
 
         ax1.plot(
             df["date"].values,
-            100 * df["short_volume%"],
+            df["Short Vol. %"],
             label="Short Vol. %",
         )
 
@@ -324,7 +299,7 @@ def net_short_position(
 
         ax1.bar(
             df["dates"],
-            df["Net Short Vol. (1k $)"] / 1_000,
+            df["Net Short Vol. (1k $)"],
             color=theme.down_color,
             label="Net Short Vol. (1k $)",
         )
