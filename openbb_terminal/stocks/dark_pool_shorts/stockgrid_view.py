@@ -301,18 +301,6 @@ def net_short_position(
         return
 
     if raw:
-        df = df.sort_values(by="dates", ascending=False)
-
-        df["Net Short Vol. (1k $)"] = df["dollar_net_volume"] / 1_000
-        df["Position (1M $)"] = df["dollar_dp_position"]
-
-        df = df[
-            [
-                "dates",
-                "Net Short Vol. (1k $)",
-                "Position (1M $)",
-            ]
-        ]
 
         df["dates"] = df["dates"].dt.date
 
@@ -336,7 +324,7 @@ def net_short_position(
 
         ax1.bar(
             df["dates"],
-            df["dollar_net_volume"] / 1_000,
+            df["Net Short Vol. (1k $)"] / 1_000,
             color=theme.down_color,
             label="Net Short Vol. (1k $)",
         )
@@ -344,7 +332,7 @@ def net_short_position(
 
         ax2.plot(
             df["dates"].values,
-            df["dollar_dp_position"],
+            df["Position (1M $)"],
             c=theme.up_color,
             label="Position (1M $)",
         )

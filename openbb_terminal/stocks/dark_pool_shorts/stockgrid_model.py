@@ -72,7 +72,7 @@ def get_dark_pool_short_positions(
 
 
 @log_start_end(log=logger)
-def get_short_interest_days_to_cover(sortby: str = "dpp_dollar") -> pd.DataFrame:
+def get_short_interest_days_to_cover(sortby: str = "float") -> pd.DataFrame:
     """Get short interest and days to cover. [Source: Stockgrid]
 
     Parameters
@@ -157,5 +157,18 @@ def get_net_short_position(symbol: str) -> pd.DataFrame:
     except JSONDecodeError:
         return pd.DataFrame()
     df["dates"] = pd.to_datetime(df["dates"])
+
+    df = df.sort_values(by="dates", ascending=False)
+
+    df["Net Short Vol. (1k $)"] = df["dollar_net_volume"] / 1_000
+    df["Position (1M $)"] = df["dollar_dp_position"]
+
+    df = df[
+        [
+            "dates",
+            "Net Short Vol. (1k $)",
+            "Position (1M $)",
+        ]
+    ]
 
     return df
