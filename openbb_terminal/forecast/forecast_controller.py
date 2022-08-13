@@ -324,7 +324,7 @@ class ForecastController(BaseController):
         mt.add_cmd("delta", "", self.files)
         mt.add_cmd("atr", "", self.files)
         mt.add_cmd("signal", "", self.files)
-        mt.add_info("_tsforecast_")
+        mt.add_info("_tsforecasting_")
         mt.add_cmd("knn", "", self.files)
         mt.add_cmd("mc", "", self.files)
         mt.add_cmd("expo", "", self.files)
