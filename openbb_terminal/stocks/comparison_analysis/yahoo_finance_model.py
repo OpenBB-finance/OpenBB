@@ -5,12 +5,14 @@ import logging
 from datetime import datetime, timedelta
 from typing import List
 
+import numpy as np
 import pandas as pd
 import yfinance as yf
 from sklearn.manifold import TSNE
 from sklearn.preprocessing import normalize
 
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -72,8 +74,61 @@ def get_historical(
         shifted = returnable.shift(1)[1:]
         returnable = returnable.div(shifted) - 1
 
-    return returnable
+    df_similar = returnable[similar]
 
+    if np.any(df_similar.isna()):
+        nan_tickers = df_similar.columns[df_similar.isna().sum() >= 1].to_list()
+        console.print(
+            f"NaN values found in: {', '.join(nan_tickers)}.  Backfilling data"
+        )
+        df_similar = df_similar.fillna(method="bfill")
+
+    df_similar = df_similar.dropna(axis=1, how="all")
+
+    return df_similar
+
+@log_start_end(log=logger)
+def get_correlation(
+    similar: List[str],
+    start_date: str = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
+    candle_type: str = "a",
+):
+    """
+    Get historical price correlation. [Source: Yahoo Finance]
+
+    Parameters
+    ----------
+    similar : List[str]
+        List of similar tickers
+    start_date : str, optional
+        Start date of comparison, by default 1 year ago
+    candle_type : str, optional
+        OHLCA column to use for candles or R for returns, by default "a" for Adjusted Close
+    """
+    df_similar = get_historical(similar, start_date, candle_type)
+    
+    correlations = df_similar.corr()
+
+    return correlations, df_similar
+
+@log_start_end(log=logger)
+def get_volume(
+    similar: List[str],
+    start_date: str = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d")
+) -> pd.DataFrame:
+    """Get stock volume. [Source: Yahoo Finance]
+
+    Parameters
+    ----------
+    similar : List[str]
+        List of similar tickers
+    start_date : str, optional
+        Start date of comparison, by default 1 year ago
+    """
+
+    df_similar = get_historical(similar, start_date, "v")
+    df_similar = df_similar[similar]
+    return df_similar
 
 @log_start_end(log=logger)
 def get_1y_sp500() -> pd.DataFrame:

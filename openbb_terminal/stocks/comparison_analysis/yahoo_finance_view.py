@@ -68,14 +68,6 @@ def display_historical(
 
     """
     df_similar = yahoo_finance_model.get_historical(similar, start_date, candle_type)
-    df_similar = df_similar[similar]
-
-    if np.any(df_similar.isna()):
-        nan_tickers = df_similar.columns[df_similar.isna().sum() >= 1].to_list()
-        console.print(
-            f"NaN values found in: {', '.join(nan_tickers)}.  Replacing with zeros."
-        )
-        df_similar = df_similar.fillna(0)
 
     # This puts everything on 0-1 scale for visualizing
     if normalize:
@@ -119,7 +111,7 @@ def display_volume(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Display volume stock prices. [Source: Yahoo Finance]
+    """Display stock volume. [Source: Yahoo Finance]
 
     Parameters
     ----------
@@ -132,8 +124,7 @@ def display_volume(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    df_similar = yahoo_finance_model.get_historical(similar, start_date, "v")
-    df_similar = df_similar[similar]
+    df_similar = yahoo_finance_model.get_volume(similar, start_date)
 
     # This plot has 1 axis
     if not external_axes:
@@ -196,17 +187,7 @@ def display_correlation(
         Format to export correlation prices, by default ""
     """
 
-    df_similar = yahoo_finance_model.get_historical(similar, start_date, candle_type)
-    df_similar = df_similar[similar]
-
-    if np.any(df_similar.isna()):
-        nan_tickers = df_similar.columns[df_similar.isna().sum() >= 1].to_list()
-        console.print(
-            f"NaN values found in: {', '.join(nan_tickers)}.  Backfilling data"
-        )
-        df_similar = df_similar.fillna(method="bfill")
-
-    df_similar = df_similar.dropna(axis=1, how="all")
+    correlations, df_similar = yahoo_finance_model.get_correlation(similar, start_date, candle_type)
 
     mask = None
     if not display_full_matrix:
@@ -221,8 +202,6 @@ def display_correlation(
     else:
         return
 
-    # Print correlations to command line as well
-    correlations = df_similar.corr()
     if raw:
         print_rich_table(
             correlations,
