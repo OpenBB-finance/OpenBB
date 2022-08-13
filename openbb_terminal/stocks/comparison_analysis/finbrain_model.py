@@ -117,3 +117,20 @@ def get_sentiments(symbols: List[str]) -> pd.DataFrame:
         df_sentiment.sort_index(ascending=True, inplace=True)
 
     return df_sentiment
+
+
+@log_start_end(log=logger)
+def get_sentiment_correlation(
+    similar: List[str],
+):
+    """Get correlation sentiments across similar companies. [Source: FinBrain]
+
+    Parameters
+    ----------
+    similar : List[str]
+        Similar companies to compare income with
+    """
+    df_sentiment = get_sentiments(similar)
+    corrs = df_sentiment.corr()
+
+    return corrs, df_sentiment

@@ -136,8 +136,7 @@ def display_sentiment_correlation(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    df_sentiment = finbrain_model.get_sentiments(similar)
-    corrs = df_sentiment.corr()
+    corrs, df_sentiment = finbrain_model.get_sentiment_correlation(similar)
 
     if df_sentiment.empty:
         console.print("No sentiments found.")
