@@ -32,7 +32,7 @@ def lambda_direction_color_red_green(val: str) -> str:
 
 @log_start_end(log=logger)
 def ark_orders_view(
-    limit: int,
+    limit: int = 10,
     sortby: str = "",
     ascending: bool = False,
     buys_only: bool = False,
