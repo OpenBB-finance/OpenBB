@@ -187,7 +187,9 @@ def display_correlation(
         Format to export correlation prices, by default ""
     """
 
-    correlations, df_similar = yahoo_finance_model.get_correlation(similar, start_date, candle_type)
+    correlations, df_similar = yahoo_finance_model.get_correlation(
+        similar, start_date, candle_type
+    )
 
     mask = None
     if not display_full_matrix:

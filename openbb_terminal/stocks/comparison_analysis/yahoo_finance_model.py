@@ -87,6 +87,7 @@ def get_historical(
 
     return df_similar
 
+
 @log_start_end(log=logger)
 def get_correlation(
     similar: List[str],
@@ -106,15 +107,16 @@ def get_correlation(
         OHLCA column to use for candles or R for returns, by default "a" for Adjusted Close
     """
     df_similar = get_historical(similar, start_date, candle_type)
-    
+
     correlations = df_similar.corr()
 
     return correlations, df_similar
 
+
 @log_start_end(log=logger)
 def get_volume(
     similar: List[str],
-    start_date: str = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d")
+    start_date: str = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
 ) -> pd.DataFrame:
     """Get stock volume. [Source: Yahoo Finance]
 
@@ -129,6 +131,7 @@ def get_volume(
     df_similar = get_historical(similar, start_date, "v")
     df_similar = df_similar[similar]
     return df_similar
+
 
 @log_start_end(log=logger)
 def get_1y_sp500() -> pd.DataFrame:

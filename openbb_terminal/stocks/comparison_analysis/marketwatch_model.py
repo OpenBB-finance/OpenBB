@@ -65,6 +65,84 @@ def get_financial_comparisons(
 
 
 @log_start_end(log=logger)
+def get_income_comparison(
+    similar: List[str],
+    timeframe: str,
+    quarter: bool = False,
+):
+    """Get income data. [Source: Marketwatch]
+
+    Parameters
+    ----------
+    similar : List[str]
+        List of tickers to compare
+    timeframe : str
+        Column header to compare
+    quarter : bool, optional
+        Whether to use quarterly statements, by default False
+    export : str, optional
+        Format to export data
+    """
+    df_financials_compared = get_financial_comparisons(
+        similar, "income", timeframe, quarter
+    )
+
+    return df_financials_compared
+
+
+@log_start_end(log=logger)
+def get_balance_comparison(
+    similar: List[str],
+    timeframe: str,
+    quarter: bool = False,
+):
+    """Get balance data. [Source: Marketwatch]
+
+    Parameters
+    ----------
+    similar : List[str]
+        List of tickers to compare
+    timeframe : str
+        Column header to compare
+    quarter : bool, optional
+        Whether to use quarterly statements, by default False
+    export : str, optional
+        Format to export data
+    """
+    df_financials_compared = get_financial_comparisons(
+        similar, "balance", timeframe, quarter
+    )
+
+    return df_financials_compared
+
+
+@log_start_end(log=logger)
+def get_cashflow_comparison(
+    similar: List[str],
+    timeframe: str,
+    quarter: bool = False,
+):
+    """Get cashflow data. [Source: Marketwatch]
+
+    Parameters
+    ----------
+    similar : List[str]
+        List of tickers to compare
+    timeframe : str
+        Column header to compare
+    quarter : bool, optional
+        Whether to use quarterly statements, by default False
+    export : str, optional
+        Format to export data
+    """
+    df_financials_compared = get_financial_comparisons(
+        similar, "cashflow", timeframe, quarter
+    )
+
+    return df_financials_compared
+
+
+@log_start_end(log=logger)
 def prepare_df_financials(
     ticker: str, statement: str, quarter: bool = False
 ) -> pd.DataFrame:
