@@ -1,6 +1,7 @@
 """NASDAQ DataLink View"""
 __docformat__ = "numpy"
 
+from datetime import datetime
 import logging
 import os
 
@@ -48,7 +49,7 @@ def display_top_retail(limit: int = 3, export: str = ""):
 
 @log_start_end(log=logger)
 def display_dividend_calendar(
-    date: str,
+    date: str = datetime.today().strftime("%Y-%m-%d"),
     sortby: str = "Dividend",
     ascending: bool = False,
     limit: int = 10,
