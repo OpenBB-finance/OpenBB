@@ -21,6 +21,7 @@ from openbb_terminal.helper_funcs import (
     plot_autoscale,
     is_valid_axes_count,
 )
+from openbb_terminal.rich_config import console
 
 # pylint: disable=R0913
 
@@ -71,6 +72,12 @@ def display_mc_forecast(
     data = helpers.clean_data(data, start_date, end_date)
     if "date" in data.columns:
         data = data.set_index("date")
+    if not helpers.check_data(data, target_column):
+        console.print(
+            f"[red]Column {target_column} is not in the dataframe."
+            " Change the 'target_column' parameter.[/red]\n"
+        )
+        return
     data = data[target_column]
     predicted_values = mc_model.get_mc_brownian(data, n_future, n_sims, use_log)
     if not time_res or time_res == "1D":

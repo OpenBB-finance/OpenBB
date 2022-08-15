@@ -401,14 +401,16 @@ def past_covs(past_covariates, data, train_split, is_scaler=True):
         # create first covariate to then stack
         console.print(f"[green]Covariate #0: {target_covariates_names[0]}[/green]")
         _, past_covariate_whole = get_series(
-            data, target_col=target_covariates_names[0], is_scaler=is_scaler
+            data, target_column=target_covariates_names[0], is_scaler=is_scaler
         )
 
         if len(target_covariates_names) > 1:
             for i, column in enumerate(target_covariates_names[1:]):
                 console.print(f"[green]Covariate #{i+1}: {column}[/green]")
                 _, _temp_new_covariate = get_series(
-                    data, target_col=target_covariates_names[i + 1], is_scaler=is_scaler
+                    data,
+                    target_column=target_covariates_names[i + 1],
+                    is_scaler=is_scaler,
                 )
 
                 # continually stack covariates based on column names
@@ -540,13 +542,13 @@ def dt_format(x) -> str:
 
 
 def get_series(
-    data, target_col: str = None, is_scaler: bool = True
+    data: pd.DataFrame, target_column: str = None, is_scaler: bool = True
 ) -> Tuple[Optional[Scaler], TimeSeries]:
     filler = MissingValuesFiller()
     filler_kwargs = dict(
         df=data,
         time_col="date",
-        value_cols=[target_col],
+        value_cols=[target_column],
         freq="B",
         fill_missing_dates=True,
     )
@@ -795,3 +797,7 @@ def clean_covariates(parser, dataset: pd.DataFrame) -> Optional[str]:
         return None
     covariates = ",".join(covs_list)
     return covariates
+
+
+def check_data(data: pd.DataFrame, column: str) -> bool:
+    return column in data.columns

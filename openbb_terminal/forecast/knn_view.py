@@ -68,6 +68,12 @@ def display_k_nearest_neighbors(
     data = helpers.clean_data(data, start_date, end_date)
     if "date" in data.columns:
         data = data.set_index("date")
+    if not helpers.check_data(data, target_column):
+        console.print(
+            f"[red]Column {target_column} is not in the dataframe."
+            " Change the 'target_column' parameter.[/red]\n"
+        )
+        return
     data = data[target_column]
     (
         forecast_data_df,

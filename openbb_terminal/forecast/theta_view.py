@@ -71,6 +71,12 @@ def display_theta_forecast(
     """
 
     data = helpers.clean_data(data, start_date, end_date)
+    if not helpers.check_data(data, target_column):
+        console.print(
+            f"[red]Column {target_column} is not in the dataframe."
+            " Change the 'target_column' parameter.[/red]\n"
+        )
+        return
     (
         ticker_series,
         historical_fcast,
