@@ -30,9 +30,9 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 def display_mc_forecast(
     data: Union[pd.DataFrame, pd.Series],
-    target_column: str,
-    n_future: int,
-    n_sims: int,
+    target_column: str = "close",
+    n_future: int = 5,
+    n_sims: int = 100,
     use_log=True,
     fig_title: str = "",
     export: str = "",

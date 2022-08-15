@@ -28,10 +28,10 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 def get_theta_data(
     data: Union[pd.Series, pd.DataFrame],
+    target_column: str = "close",
     seasonal: str = "M",
     seasonal_periods: int = 7,
     n_predict: int = 30,
-    target_col: str = "close",
     start_window: float = 0.85,
     forecast_horizon: int = 5,
 ) -> Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], float, float, Any]:
@@ -45,6 +45,8 @@ def get_theta_data(
     ----------
     data : Union[pd.Series, np.ndarray]
         Input data.
+    target_column (str, optional):
+        Target column to forecast. Defaults to "close".
     seasonal: str
         Seasonal component.  One of [N, A, M]
         Defaults to MULTIPLICATIVE.
@@ -75,7 +77,7 @@ def get_theta_data(
     """
 
     use_scalers = False
-    _, ticker_series = helpers.get_series(data, target_col, is_scaler=use_scalers)
+    _, ticker_series = helpers.get_series(data, target_column, is_scaler=use_scalers)
     train, val = ticker_series.split_before(start_window)
 
     if seasonal == "A":

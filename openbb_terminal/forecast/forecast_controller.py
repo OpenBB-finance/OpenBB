@@ -1,13 +1,11 @@
 """Forecast Controller Module"""
 __docformat__ = "numpy"
 
-# pylint: disable=too-many-lines, too-many-branches, inconsistent-return-statements
-# pylint: disable=too-many-arguments, R0904,R0902,W0707
+# pylint: disable=too-many-lines, too-many-branches, too-many-arguments, R0904,R0902,W0707
 
 import argparse
 import logging
 from itertools import chain
-import os
 from pathlib import Path
 from typing import List, Dict, Any, Optional
 
@@ -32,14 +30,10 @@ from openbb_terminal.helper_funcs import (
     NO_EXPORT,
     EXPORT_ONLY_FIGURES_ALLOWED,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
-    export_data,
     log_and_raise,
     valid_date,
 )
-from openbb_terminal.helper_funcs import (
-    print_rich_table,
-    check_list_values,
-)
+from openbb_terminal.helper_funcs import check_list_values
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console, MenuText
@@ -130,8 +124,9 @@ class ForecastController(BaseController):
     disclaimer = """
     All models are for educational purposes only. The techniques available in this menu are not
     fine tuned or guaranteed to work. Backtesting results is not a guarantee of future accuracy.
-    Investing involves monetary risk that OpenBB does not take a role in. Please research any prediction techniques
-    fully before attempting to use. OpenBB is not liable for any loss or damages."""
+    Investing involves monetary risk that OpenBB does not take a role in. Please research any
+    prediction techniques fully before attempting to use. OpenBB is not liable for any loss or
+    damages."""
 
     PATH = "/forecast/"
 
@@ -786,10 +781,10 @@ class ForecastController(BaseController):
                 df = self.datasets[name]
 
                 if name in self.datasets and self.datasets[name].empty:
-                    return console.print(
+                    console.print(
                         f"[red]No data available for {ns_parser.name}.[/red]\n"
                     )
-                if ns_parser.sortcol:
+                elif ns_parser.sortcol:
                     sort_column = " ".join(ns_parser.sortcol)
                     if sort_column not in self.datasets[name].columns:
                         console.print(
@@ -799,29 +794,7 @@ class ForecastController(BaseController):
                     else:
                         df = df.sort_values(by=sort_column, ascending=ns_parser.ascend)
 
-                # print shape of dataframe
-                console.print(
-                    f"[green]{name} has following shape (rowxcolumn): {df.shape}[/green]"
-                )
-                if len(df.columns) > 10:
-                    console.print(
-                        "[red]Dataframe has more than 10 columns. Please export"
-                        " to see all of the data.[/red]\n"
-                    )
-                    df = df.iloc[:, :10]
-                print_rich_table(
-                    df.head(ns_parser.limit),
-                    headers=list(df.columns),
-                    show_index=True,
-                    title=f"Dataset {name} | Showing {ns_parser.limit} of {len(df)} rows",
-                )
-
-                export_data(
-                    ns_parser.export,
-                    os.path.dirname(os.path.abspath(__file__)),
-                    f"{ns_parser.name}_show",
-                    df.head(ns_parser.limit),
-                )
+                forecast_view.show_df(df, ns_parser.limit, name, ns_parser.export)
 
     @log_start_end(log=logger)
     def call_rename(self, other_args: List[str]):
@@ -870,16 +843,10 @@ class ForecastController(BaseController):
                     f"Not able to find the dataset {dataset}. Please choose one of "
                     f"the following: {', '.join(self.datasets)}"
                 )
-            elif column_old not in self.datasets[dataset]:
-                console.print(
-                    f"Not able to find the column {column_old}. Please choose one of "
-                    f"the following: {', '.join(self.datasets[dataset].columns)}"
-                )
             else:
-                self.datasets[dataset] = self.datasets[dataset].rename(
-                    columns={column_old: column_new}
+                self.datasets[dataset] = forecast_model.rename_column(
+                    self.datasets[dataset], column_old, column_new
                 )
-
             self.update_runtime_choices()
 
         console.print()
@@ -913,19 +880,7 @@ class ForecastController(BaseController):
                 return
 
             df = self.datasets[ns_parser.target_dataset]
-
-            print_rich_table(
-                df.describe(),
-                headers=list(df.describe().columns),
-                show_index=True,
-                title=f"Showing Descriptive Statistics for Dataset {ns_parser.target_dataset}",
-            )
-
-            export_data(
-                ns_parser.export,
-                os.path.dirname(os.path.abspath(__file__)),
-                f"{ns_parser.target_dataset}_show",
-            )
+            forecast_view.describe_df(df, ns_parser.target_dataset, ns_parser.export)
 
     @log_start_end(log=logger)
     def call_plot(self, other_args: List[str]):
@@ -1125,34 +1080,9 @@ class ForecastController(BaseController):
                     )
                     continue
                 for column in columns:
-                    if column not in self.datasets[dataset]:
-                        console.print(
-                            f"Not able to find the column {column}. Please choose one of "
-                            f"the following: {', '.join(self.datasets[dataset].columns)}"
-                        )
-                    else:
-                        if (
-                            "date" in data.columns
-                            and "date" in self.datasets[dataset].columns
-                        ):
-                            selected = self.datasets[dataset][[column, "date"]]
-                            new_cols = [
-                                f"{dataset}_{x}" if x != "date" else "date"
-                                for x in selected
-                            ]
-                            selected.columns = new_cols
-                            data = data.merge(selected, on="date", how="left")
-                        else:
-                            console.print(
-                                "[red]Not all dataframes have a date column so we are combining"
-                                " on index, this may results in data mismatching.[/red]\n"
-                            )
-                            selected = self.datasets[dataset][[column]]
-                            new_cols = [f"{dataset}_{x}" for x in selected]
-                            selected.columns = new_cols
-                            data = data.merge(
-                                selected, left_index=True, right_index=True, how="left"
-                            )
+                    data = forecast_model.combine_dfs(
+                        data, self.datasets[dataset], column, dataset
+                    )
 
             self.datasets[ns_parser.dataset] = data
             self.update_runtime_choices()
@@ -1328,13 +1258,8 @@ class ForecastController(BaseController):
                         f"Not able to find the dataset {dataset}. Please choose one of "
                         f"the following: {', '.join(self.datasets)}"
                     )
-                elif column not in self.datasets[dataset]:
-                    console.print(
-                        f"Not able to find the column {column}. Please choose one of "
-                        f"the following: {', '.join(self.datasets[dataset].columns)}"
-                    )
                 else:
-                    del self.datasets[dataset][column]
+                    forecast_model.delete_column(self.datasets[dataset], column)
 
             self.update_runtime_choices()
         console.print()
@@ -1620,13 +1545,11 @@ class ForecastController(BaseController):
         if not helpers.check_parser_input(ns_parser, self.datasets, "ignore_column"):
             return
 
-        export_data(
-            ns_parser.type,
-            os.path.dirname(os.path.abspath(__file__)),
-            ns_parser.target_dataset,
+        forecast_view.export_df(
             self.datasets[ns_parser.target_dataset],
+            ns_parser.type,
+            ns_parser.target_dataset,
         )
-
         console.print()
 
     # EXPO Model
@@ -1685,9 +1608,9 @@ class ForecastController(BaseController):
 
             expo_view.display_expo_forecast(
                 data=self.datasets[ns_parser.target_dataset],
-                ticker_name=ns_parser.target_dataset,
+                dataset_name=ns_parser.target_dataset,
                 n_predict=ns_parser.n_days,
-                target_col=ns_parser.target_column,
+                target_column=ns_parser.target_column,
                 trend=ns_parser.trend,
                 seasonal=ns_parser.seasonal,
                 seasonal_periods=ns_parser.seasonal_periods,
@@ -1740,9 +1663,9 @@ class ForecastController(BaseController):
 
             theta_view.display_theta_forecast(
                 data=self.datasets[ns_parser.target_dataset],
-                ticker_name=ns_parser.target_dataset,
+                dataset_name=ns_parser.target_dataset,
                 n_predict=ns_parser.n_days,
-                target_col=ns_parser.target_column,
+                target_column=ns_parser.target_column,
                 seasonal=ns_parser.seasonal,
                 seasonal_periods=ns_parser.seasonal_periods,
                 start_window=ns_parser.start_window,
@@ -1820,9 +1743,9 @@ class ForecastController(BaseController):
 
             rnn_view.display_rnn_forecast(
                 data=self.datasets[ns_parser.target_dataset],
-                ticker_name=ns_parser.target_dataset,
+                dataset_name=ns_parser.target_dataset,
                 n_predict=ns_parser.n_days,
-                target_col=ns_parser.target_column,
+                target_column=ns_parser.target_column,
                 train_split=ns_parser.train_split,
                 forecast_horizon=ns_parser.n_days,
                 model_type=ns_parser.model_type,
@@ -1937,9 +1860,9 @@ class ForecastController(BaseController):
 
             nbeats_view.display_nbeats_forecast(
                 data=self.datasets[ns_parser.target_dataset],
-                ticker_name=ns_parser.target_dataset,
+                dataset_name=ns_parser.target_dataset,
                 n_predict=ns_parser.n_days,
-                target_col=ns_parser.target_column,
+                target_column=ns_parser.target_column,
                 past_covariates=covariates,
                 train_split=ns_parser.train_split,
                 forecast_horizon=ns_parser.n_days,
@@ -2048,9 +1971,9 @@ class ForecastController(BaseController):
 
             tcn_view.display_tcn_forecast(
                 data=self.datasets[ns_parser.target_dataset],
-                ticker_name=ns_parser.target_dataset,
+                dataset_name=ns_parser.target_dataset,
                 n_predict=ns_parser.n_days,
-                target_col=ns_parser.target_column,
+                target_column=ns_parser.target_column,
                 past_covariates=covariates,
                 train_split=ns_parser.train_split,
                 forecast_horizon=ns_parser.n_days,
@@ -2127,9 +2050,9 @@ class ForecastController(BaseController):
 
             regr_view.display_regression(
                 data=self.datasets[ns_parser.target_dataset],
-                ticker_name=ns_parser.target_dataset,
+                dataset_name=ns_parser.target_dataset,
                 n_predict=ns_parser.n_days,
-                target_col=ns_parser.target_column,
+                target_column=ns_parser.target_column,
                 past_covariates=covariates,
                 train_split=ns_parser.train_split,
                 forecast_horizon=ns_parser.n_days,
@@ -2194,9 +2117,9 @@ class ForecastController(BaseController):
 
             linregr_view.display_linear_regression(
                 data=self.datasets[ns_parser.target_dataset],
-                ticker_name=ns_parser.target_dataset,
+                dataset_name=ns_parser.target_dataset,
                 n_predict=ns_parser.n_days,
-                target_col=ns_parser.target_column,
+                target_column=ns_parser.target_column,
                 past_covariates=covariates,
                 train_split=ns_parser.train_split,
                 forecast_horizon=ns_parser.n_days,
@@ -2279,9 +2202,9 @@ class ForecastController(BaseController):
 
             brnn_view.display_brnn_forecast(
                 data=self.datasets[ns_parser.target_dataset],
-                ticker_name=ns_parser.target_dataset,
+                dataset_name=ns_parser.target_dataset,
                 n_predict=ns_parser.n_days,
-                target_col=ns_parser.target_column,
+                target_column=ns_parser.target_column,
                 past_covariates=covariates,
                 train_split=ns_parser.train_split,
                 forecast_horizon=ns_parser.n_days,
@@ -2408,9 +2331,9 @@ class ForecastController(BaseController):
 
             trans_view.display_trans_forecast(
                 data=self.datasets[ns_parser.target_dataset],
-                ticker_name=ns_parser.target_dataset,
+                dataset_name=ns_parser.target_dataset,
                 n_predict=ns_parser.n_days,
-                target_col=ns_parser.target_column,
+                target_column=ns_parser.target_column,
                 past_covariates=covariates,
                 train_split=ns_parser.train_split,
                 forecast_horizon=ns_parser.n_days,
@@ -2528,9 +2451,9 @@ class ForecastController(BaseController):
 
             tft_view.display_tft_forecast(
                 data=self.datasets[ns_parser.target_dataset],
-                ticker_name=ns_parser.target_dataset,
+                dataset_name=ns_parser.target_dataset,
                 n_predict=ns_parser.n_days,
-                target_col=ns_parser.target_column,
+                target_column=ns_parser.target_column,
                 past_covariates=covariates,
                 train_split=ns_parser.train_split,
                 forecast_horizon=ns_parser.n_days,

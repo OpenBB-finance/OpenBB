@@ -23,8 +23,8 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 def get_rnn_data(
     data: Union[pd.Series, pd.DataFrame],
+    target_column: str = "close",
     n_predict: int = 5,
-    target_col: str = "close",
     train_split: float = 0.85,
     forecast_horizon: int = 5,
     model_type: str = "LSTM",
@@ -46,7 +46,7 @@ def get_rnn_data(
             Input Data
         n_predict (int, optional):
             Days to predict. Defaults to 5.
-        target_col (str, optional):
+        target_column (str, optional):
             Target column to forecast. Defaults to "close".
         train_split (float, optional):
             Train/val split. Defaults to 0.85.
@@ -93,7 +93,9 @@ def get_rnn_data(
     past_covariates = None
     past_covariate_whole = None
 
-    scaler, ticker_series = helpers.get_series(data, target_col, is_scaler=use_scalers)
+    scaler, ticker_series = helpers.get_series(
+        data, target_column, is_scaler=use_scalers
+    )
     train, val = ticker_series.split_before(train_split)
     valid = helpers.check_data_length(train, val, input_chunk_size, 0)
     if not valid:

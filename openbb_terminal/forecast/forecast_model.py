@@ -1,4 +1,3 @@
-# pylint: disable=no-else-return
 """Forecast Model"""
 __docformat__ = "numpy"
 
@@ -6,7 +5,8 @@ __docformat__ = "numpy"
 
 import logging
 from pathlib import Path
-from typing import Dict, Union, Any
+from typing import Dict, Union, Any, Optional, List
+from itertools import chain
 
 import pandas as pd
 from pandas import DataFrame
@@ -18,9 +18,23 @@ from openbb_terminal.rich_config import console
 logger = logging.getLogger(__name__)
 
 
+default_files = {
+    filepath.name: filepath
+    for file_type in ["csv", "xlsx"]
+    for filepath in chain(
+        Path("exports").rglob(f"*.{file_type}"),
+        Path("custom_imports").rglob(f"*.{file_type}"),
+    )
+    if filepath.is_file()
+}
+
+
 @log_start_end(log=logger)
 def load(
-    file: str, file_types: list, data_files: Dict[Any, Any], add_extension: bool = False
+    file: str,
+    file_types: Optional[List[str]] = None,
+    data_files: Optional[Dict[Any, Any]] = None,
+    add_extension: bool = False,
 ) -> pd.DataFrame:
     """Load custom file into dataframe.
 
@@ -40,27 +54,31 @@ def load(
     pd.DataFrame:
         Dataframe with custom data
     """
+    if file_types is None:
+        file_types = ["csv", "xlsx"]
+    if data_files is None:
+        data_files = default_files
 
     if file in data_files:
-        file = data_files[file]
+        full_file = data_files[file]
 
     if add_extension:
         for ext in ["xlsx", "csv"]:
-            tmp = f"{file}.{ext}"
+            tmp = f"{full_file}.{ext}"
             if tmp in data_files:
-                file = data_files[tmp]
+                full_file = data_files[tmp]
 
     if not Path(file).exists():
-        console.print(f"[red]Cannot find the file {file}[/red]\n")
+        console.print(f"[red]Cannot find the file {full_file}[/red]\n")
 
         return pd.DataFrame()
 
-    file_type = Path(file).suffix
+    file_type = Path(full_file).suffix
 
     if file_type == ".xlsx":
-        data = pd.read_excel(file)
+        data = pd.read_excel(full_file)
     elif file_type == ".csv":
-        data = pd.read_csv(file)
+        data = pd.read_csv(full_file)
     else:
         return console.print(
             f"The file type {file_type} is not supported. Please choose one of the following: "
@@ -112,18 +130,23 @@ def get_options(
 
 
 @log_start_end(log=logger)
-def clean(dataset: pd.DataFrame, fill: str, drop: str, limit: int) -> pd.DataFrame:
+def clean(
+    dataset: pd.DataFrame,
+    fill: Optional[str] = None,
+    drop: Optional[str] = None,
+    limit: Optional[int] = None,
+) -> pd.DataFrame:
     """Clean up NaNs from the dataset
 
     Parameters
     ----------
     dataset : pd.DataFrame
         The dataset you wish to clean
-    fill : str
+    fill : Optional[str]
         The method of filling NaNs
-    drop : str
+    drop : Optional[str]
         The method of dropping NaNs
-    limit : int
+    limit : Optional[int]
         The maximum limit you wish to apply that can be forward or backward filled
 
     Returns
@@ -131,19 +154,23 @@ def clean(dataset: pd.DataFrame, fill: str, drop: str, limit: int) -> pd.DataFra
     pd.DataFrame:
         Dataframe with cleaned up data
     """
+    kwargs = {}
+    if limit:
+        kwargs["limit"] = limit
+
     if fill:
         if fill == "rfill":
             dataset = dataset.fillna(axis="index", value=0)
         if fill == "cfill":
             dataset = dataset.fillna(axis="columns", value=0)
         elif fill == "rbfill":
-            dataset = dataset.fillna(axis="index", method="bfill", limit=limit)
+            dataset = dataset.fillna(axis="index", method="bfill", **kwargs)
         elif fill == "cbfill":
-            dataset = dataset.fillna(axis="columns", method="bfill", limit=limit)
+            dataset = dataset.fillna(axis="columns", method="bfill", **kwargs)
         elif fill == "rffill":
-            dataset = dataset.fillna(axis="index", method="ffill", limit=limit)
+            dataset = dataset.fillna(axis="index", method="ffill", **kwargs)
         elif fill == "cffill":
-            dataset = dataset.fillna(axis="columns", method="ffill", limit=limit)
+            dataset = dataset.fillna(axis="columns", method="ffill", **kwargs)
 
     if drop:
         if drop == "rdrop":
@@ -362,8 +389,7 @@ def add_atr(
 
         return dataset, True
 
-    else:
-        return dataset, False
+    return dataset, False
 
 
 @log_start_end(log=logger)
@@ -396,3 +422,86 @@ def add_signal(dataset: pd.DataFrame) -> pd.DataFrame:
     )
 
     return dataset
+
+
+@log_start_end(log=logger)
+def combine_dfs(
+    df1: pd.DataFrame, df2: pd.DataFrame, column: str, dataset: str = ""
+) -> pd.DataFrame:
+    """Adds the given column of df2 to df1
+
+    Parameters
+    ----------
+    df1: pd.DataFrame
+        The dataframe to add a column to
+    df2: pd.DataFrame
+        The dataframe to lose a column
+    column: str
+        The column to transfer
+    dataset: str
+        A name for df2 (shows in name of new column)
+
+    Returns
+    ----------
+    data: pd.DataFrame
+        The new dataframe
+    """
+    if column not in df2:
+        console.print(
+            f"Not able to find the column {column}. Please choose one of "
+            f"the following: {', '.join(df2.columns)}"
+        )
+        return df1
+
+    if "date" in df1.columns and "date" in df2.columns:
+        selected = df2[[column, "date"]]
+        new_cols = [f"{dataset}_{x}" if x != "date" else "date" for x in selected]
+        selected.columns = new_cols
+        return df1.merge(selected, on="date", how="left")
+
+    console.print(
+        "[red]Not all dataframes have a date column so we are combining"
+        " on index, this may results in data mismatching.[/red]\n"
+    )
+    selected = df2[[column]]
+    new_cols = [f"{dataset}_{x}" for x in selected]
+    selected.columns = new_cols
+    return df1.merge(selected, left_index=True, right_index=True, how="left")
+
+
+@log_start_end(log=logger)
+def delete_column(df: pd.DataFrame, column: str) -> None:
+    if column not in df:
+        console.print(
+            f"Not able to find the column {column}. Please choose one of "
+            f"the following: {', '.join(df.columns)}"
+        )
+    else:
+        del df[column]
+
+
+@log_start_end(log=logger)
+def rename_column(df: pd.DataFrame, old_column: str, new_column: str) -> pd.DataFrame:
+    """Rename a column in a dataframe
+
+    Parameters
+    ----------
+    df: pd.DataFrame
+        The dataframe to have a column renamed
+    old_column: str
+        The column that will have its name changed
+    new_column: str
+        The name to update to
+
+    Returns
+    ----------
+    new_df: pd.DataFrame
+        The dataframe with the renamed column
+    """
+    if old_column not in df:
+        console.print(
+            f"Not able to find the column {old_column}. Please choose one of "
+            f"the following: {', '.join(df.columns)}"
+        )
+        return df
+    return df.rename(columns={old_column: new_column})

@@ -344,7 +344,7 @@ class CryptoController(CryptoBaseController):
                     self.current_df,
                     self.queue,
                 )
-        
+
     @log_start_end(log=logger)
     def call_onchain(self, _):
         """Process onchain command"""

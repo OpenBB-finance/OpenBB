@@ -18,9 +18,9 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 def display_linear_regression(
     data: Union[pd.Series, pd.DataFrame],
-    ticker_name: str,
+    target_column: str = "close",
+    dataset_name: str = "",
     n_predict: int = 5,
-    target_col: str = "close",
     past_covariates: str = None,
     train_split: float = 0.85,
     forecast_horizon: int = 5,
@@ -38,7 +38,7 @@ def display_linear_regression(
     Args:
         data (Union[pd.Series, pd.DataFrame]):
             Input Data
-        ticker_name str
+        dataset_name str
             The name of the ticker to be predicted
         n_predict (int, optional):
             Days to predict. Defaults to 5.
@@ -65,8 +65,8 @@ def display_linear_regression(
         end_date: Optional[datetime]
             The ending date to perform analysis, data after this is trimmed. Defaults to None.
         naive: bool
-            Whether to show the naive baseline. This just assumes the closing price will be the same
-            as the previous day's closing price. Defaults to False.
+            Whether to show the naive baseline. This just assumes the closing price will be the
+            same as the previous day's closing price. Defaults to False.
     """
     data = helpers.clean_data(data, start_date, end_date)
     (
@@ -76,24 +76,24 @@ def display_linear_regression(
         precision,
         _model,
     ) = linregr_model.get_linear_regression_data(
-        data,
-        n_predict,
-        target_col,
-        past_covariates,
-        train_split,
-        forecast_horizon,
-        output_chunk_length,
-        lags,
+        data=data,
+        n_predict=n_predict,
+        target_column=target_column,
+        past_covariates=past_covariates,
+        train_split=train_split,
+        forecast_horizon=forecast_horizon,
+        output_chunk_length=output_chunk_length,
+        lags=lags,
     )
 
     probabilistic = True
     helpers.plot_forecast(
         "LR",
-        target_col,
+        target_column,
         historical_fcast,
         predicted_values,
         ticker_series,
-        ticker_name,
+        dataset_name,
         data,
         n_predict,
         forecast_horizon,

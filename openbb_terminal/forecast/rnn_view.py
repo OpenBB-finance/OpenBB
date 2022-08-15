@@ -18,9 +18,9 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 def display_rnn_forecast(
     data: Union[pd.DataFrame, pd.Series],
-    ticker_name: str,
+    target_column: str = "close",
+    dataset_name: str = "",
     n_predict: int = 5,
-    target_col: str = "close",
     train_split: float = 0.85,
     forecast_horizon: int = 5,
     model_type: str = "LSTM",
@@ -47,11 +47,11 @@ def display_rnn_forecast(
     ----------
         data (Union[pd.Series, pd.DataFrame]):
             Input Data
-        ticker_name str
+        dataset_name str
             The name of the ticker to be predicted
         n_predict (int, optional):
             Days to predict. Defaults to 5.
-        target_col (str, optional):
+        target_column (str, optional):
             Target column to forecast. Defaults to "close".
         train_split (float, optional):
             Train/val split. Defaults to 0.85.
@@ -99,22 +99,22 @@ def display_rnn_forecast(
         precision,
         _model,
     ) = rnn_model.get_rnn_data(
-        data,
-        n_predict,
-        target_col,
-        train_split,
-        forecast_horizon,
-        model_type,
-        hidden_dim,
-        dropout,
-        batch_size,
-        n_epochs,
-        learning_rate,
-        model_save_name,
-        training_length,
-        input_chunk_size,
-        force_reset,
-        save_checkpoints,
+        data=data,
+        n_predict=n_predict,
+        target_column=target_column,
+        train_split=train_split,
+        forecast_horizon=forecast_horizon,
+        model_type=model_type,
+        hidden_dim=hidden_dim,
+        dropout=dropout,
+        batch_size=batch_size,
+        n_epochs=n_epochs,
+        learning_rate=learning_rate,
+        model_save_name=model_save_name,
+        training_length=training_length,
+        input_chunk_size=input_chunk_size,
+        force_reset=force_reset,
+        save_checkpoints=save_checkpoints,
     )
     if ticker_series == []:
         return
@@ -123,11 +123,11 @@ def display_rnn_forecast(
     probabilistic = True
     helpers.plot_forecast(
         "RNN",
-        target_col,
+        target_column,
         historical_fcast,
         predicted_values,
         ticker_series,
-        ticker_name,
+        dataset_name,
         data,
         n_predict,
         forecast_horizon,

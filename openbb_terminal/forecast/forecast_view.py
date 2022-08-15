@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Dict, Optional, List
+from typing import Dict, Optional, List, Union
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -72,7 +72,7 @@ def show_options(
 
 @log_start_end(log=logger)
 def display_plot(
-    data: Dict[str, pd.DataFrame],
+    data: Union[pd.DataFrame, Dict[str, pd.DataFrame]],
     export: str = "",
     external_axes: Optional[List[plt.axes]] = None,
 ):
@@ -86,6 +86,8 @@ def display_plot(
     external_axes:Optional[List[plt.axes]]
         External axes to plot on
     """
+    if isinstance(data, pd.DataFrame):
+        data = {col: data[col] for col in data.columns}
 
     for dataset_col in list(data):
         if isinstance(data[dataset_col].index, pd.MultiIndex):
@@ -103,10 +105,13 @@ def display_plot(
             ax = external_axes[0]
 
         for dataset_col in data:
-            if isinstance(data[dataset_col], pd.Series):
-                ax.plot(data[dataset_col].index, data[dataset_col].values)
-            elif isinstance(data[dataset_col], pd.DataFrame):
-                ax.plot(data[dataset_col])
+            try:
+                if isinstance(data[dataset_col], pd.Series):
+                    ax.plot(data[dataset_col].index, data[dataset_col].values)
+                elif isinstance(data[dataset_col], pd.DataFrame):
+                    ax.plot(data[dataset_col])
+            except TypeError:
+                print(f"Unable to plot column: {dataset_col}")
 
             theme.style_primary_axis(ax)
             if external_axes is None:
@@ -159,13 +164,8 @@ def display_seasonality(
             ax = external_axes[0]
 
         # TODO: Add darts check_seasonality here
-        # TODO: Add default formatting back once my PR makes it into the pip package
         plot_acf(
-            series,
-            m=m,
-            max_lag=max_lag,
-            alpha=alpha,
-            axis=ax,  # default_formatting=False
+            series, m=m, max_lag=max_lag, alpha=alpha, axis=ax, default_formatting=True
         )
 
         theme.style_primary_axis(ax)
@@ -173,11 +173,7 @@ def display_seasonality(
         if external_axes is None:
             theme.visualize_output()
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "plot",
-    )
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), "plot")
 
 
 @log_start_end(log=logger)
@@ -212,8 +208,40 @@ def display_corr(
     if external_axes is None:
         theme.visualize_output()
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "plot",
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), "plot")
+
+
+@log_start_end(log=logger)
+def show_df(df: pd.DataFrame, limit: int = 15, name: str = "", export: str = ""):
+    console.print(f"[green]{name} has following shape (rowxcolumn): {df.shape}[/green]")
+    if len(df.columns) > 10:
+        console.print(
+            "[red]Dataframe has more than 10 columns. Please export"
+            " to see all of the data.[/red]\n"
+        )
+        df = df.iloc[:, :10]
+    print_rich_table(
+        df.head(limit),
+        headers=list(df.columns),
+        show_index=True,
+        title=f"Dataset {name} | Showing {limit} of {len(df)} rows",
     )
+
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), f"{name}_show", df)
+
+
+@log_start_end(log=logger)
+def describe_df(df: pd.DataFrame, name: str = "", export: str = ""):
+    print_rich_table(
+        df.describe(),
+        headers=list(df.describe().columns),
+        show_index=True,
+        title=f"Showing Descriptive Statistics for Dataset {name}",
+    )
+
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), f"{name}_show")
+
+
+@log_start_end(log=logger)
+def export_df(df: pd.DataFrame, export: str, name: str = "") -> None:
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), name, df)

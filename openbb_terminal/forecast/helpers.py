@@ -170,10 +170,8 @@ def plot_data_predictions(
             alpha=0.3,
         )
     # Subtracting 1 day only for daily data.  For now if not daily, then start line on last point
-    if (
-        not time_str
-        or time_str == "1D"
-        and isinstance(forecast_data.index[0], datetime)
+    if (not time_str or time_str == "1D") and isinstance(
+        forecast_data.index[0], datetime
     ):
         ax.axvspan(
             forecast_data.index[0] - timedelta(days=1),

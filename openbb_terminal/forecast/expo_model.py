@@ -32,12 +32,12 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 def get_expo_data(
     data: Union[pd.Series, pd.DataFrame],
+    target_column: str = "close",
     trend: str = "A",
     seasonal: str = "A",
     seasonal_periods: int = 7,
     dampen: str = "F",
     n_predict: int = 30,
-    target_col: str = "close",
     start_window: float = 0.85,
     forecast_horizon: int = 5,
 ) -> Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], Optional[float], Any]:
@@ -52,6 +52,8 @@ def get_expo_data(
     ----------
     data : Union[pd.Series, np.ndarray]
         Input data.
+    target_column (str, optional):
+        Target column to forecast. Defaults to "close".
     trend: str
         Trend component.  One of [N, A, M]
         Defaults to ADDITIVE.
@@ -85,21 +87,21 @@ def get_expo_data(
     """
 
     use_scalers = False
-    _, ticker_series = helpers.get_series(data, target_col, is_scaler=use_scalers)
+    _, ticker_series = helpers.get_series(data, target_column, is_scaler=use_scalers)
 
     if trend == "M":
-        trend = ModelMode.MULTIPLICATIVE
+        trend_model = ModelMode.MULTIPLICATIVE
     elif trend == "N":
-        trend = ModelMode.NONE
+        trend_model = ModelMode.NONE
     else:  # Default
-        trend = ModelMode.ADDITIVE
+        trend_model = ModelMode.ADDITIVE
 
     if seasonal == "M":
-        seasonal = SeasonalityMode.MULTIPLICATIVE
+        seasonal_model = SeasonalityMode.MULTIPLICATIVE
     elif seasonal == "N":
-        seasonal = SeasonalityMode.NONE
+        seasonal_model = SeasonalityMode.NONE
     else:  # Default
-        seasonal = SeasonalityMode.ADDITIVE
+        seasonal_model = SeasonalityMode.ADDITIVE
 
     damped = True
     if dampen == "F":
@@ -107,8 +109,8 @@ def get_expo_data(
 
     # Model Init
     model_es = ExponentialSmoothing(
-        trend=trend,
-        seasonal=seasonal,
+        trend=trend_model,
+        seasonal=seasonal_model,
         seasonal_periods=int(seasonal_periods),
         damped=damped,
         random_state=42,
@@ -124,8 +126,8 @@ def get_expo_data(
 
     # train new model on entire timeseries to provide best current forecast
     best_model = ExponentialSmoothing(
-        trend=trend,
-        seasonal=seasonal,
+        trend=trend_model,
+        seasonal=seasonal_model,
         seasonal_periods=int(seasonal_periods),
         damped=damped,
         random_state=42,

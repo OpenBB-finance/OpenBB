@@ -21,8 +21,8 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 def get_regression_data(
     data: Union[pd.Series, pd.DataFrame],
+    target_column: str = "close",
     n_predict: int = 5,
-    target_col: str = "close",
     past_covariates: str = None,
     train_split: float = 0.85,
     forecast_horizon: int = 5,
@@ -36,7 +36,7 @@ def get_regression_data(
             Input Data
         n_predict (int, optional):
             Days to predict. Defaults to 5.
-        target_col (str, optional):
+        target_column (str, optional):
             Target column to forecast. Defaults to "close".
         train_split (float, optional):
             Train/val split. Defaults to 0.85.
@@ -65,7 +65,9 @@ def get_regression_data(
     use_scalers = False
     probabilistic = False
 
-    scaler, ticker_series = helpers.get_series(data, target_col, is_scaler=use_scalers)
+    scaler, ticker_series = helpers.get_series(
+        data, target_column, is_scaler=use_scalers
+    )
 
     past_covariate_whole, _, _ = helpers.past_covs(
         past_covariates, data, train_split, use_scalers

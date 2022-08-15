@@ -18,9 +18,9 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 def display_brnn_forecast(
     data: Union[pd.Series, pd.DataFrame],
-    ticker_name: str,
+    target_column: str = "close",
+    dataset_name: str = "",
     n_predict: int = 5,
-    target_col: str = "close",
     past_covariates: str = None,
     train_split: float = 0.85,
     forecast_horizon: int = 5,
@@ -49,12 +49,12 @@ def display_brnn_forecast(
     ----------
         data (Union[pd.Series, pd.DataFrame]):
             Input Data
-        ticker_name str
+        target_column (str, optional):
+            Target column to forecast. Defaults to "close".
+        dataset_name str
             The name of the ticker to be predicted
         n_predict (int, optional):
             Days to predict. Defaults to 5.
-        target_col (str, optional):
-            Target column to forecast. Defaults to "close".
         train_split (float, optional):
             Train/val split. Defaults to 0.85.
         past_covariates (str, optional):
@@ -112,7 +112,7 @@ def display_brnn_forecast(
     ) = brnn_model.get_brnn_data(
         data=data,
         n_predict=n_predict,
-        target_col=target_col,
+        target_column=target_column,
         past_covariates=past_covariates,
         train_split=train_split,
         forecast_horizon=forecast_horizon,
@@ -135,11 +135,11 @@ def display_brnn_forecast(
     probabilistic = False
     helpers.plot_forecast(
         "BRNN",
-        target_col,
+        target_column,
         historical_fcast,
         predicted_values,
         ticker_series,
-        ticker_name,
+        dataset_name,
         data,
         n_predict,
         forecast_horizon,

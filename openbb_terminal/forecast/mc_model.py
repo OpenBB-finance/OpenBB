@@ -17,7 +17,10 @@ DISTRIBUTIONS = ["normal", "lognormal"]
 
 @log_start_end(log=logger)
 def get_mc_brownian(
-    data: Union[pd.Series, np.ndarray], n_future: int, n_sims: int, use_log=True
+    data: Union[pd.Series, np.ndarray],
+    n_future: int = 5,
+    n_sims: int = 100,
+    use_log=True,
 ) -> np.ndarray:
     """Performs monte carlo forecasting for brownian motion with drift
 

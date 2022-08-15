@@ -18,8 +18,8 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 def display_expo_forecast(
     data: Union[pd.DataFrame, pd.Series],
-    ticker_name: str,
-    target_col: str = "close",
+    target_column: str = "close",
+    dataset_name: str = "",
     trend: str = "A",
     seasonal: str = "A",
     seasonal_periods: int = 7,
@@ -40,8 +40,10 @@ def display_expo_forecast(
     ----------
     data : Union[pd.Series, np.array]
         Data to forecast
-    ticker_name str
+    dataset_name str
         The name of the ticker to be predicted
+    target_column (str, optional):
+        Target column to forecast. Defaults to "close".
     trend: str
         Trend component.  One of [N, A, M]
         Defaults to ADDITIVE.
@@ -82,24 +84,24 @@ def display_expo_forecast(
         precision,
         _model,
     ) = expo_model.get_expo_data(
-        data,
-        trend,
-        seasonal,
-        seasonal_periods,
-        dampen,
-        n_predict,
-        target_col,
-        start_window,
-        forecast_horizon,
+        data=data,
+        target_column=target_column,
+        trend=trend,
+        seasonal=seasonal,
+        seasonal_periods=seasonal_periods,
+        dampen=dampen,
+        n_predict=n_predict,
+        start_window=start_window,
+        forecast_horizon=forecast_horizon,
     )
     probabilistic = True
     helpers.plot_forecast(
         "PES",
-        target_col,
+        target_column,
         historical_fcast,
         predicted_values,
         ticker_series,
-        ticker_name,
+        dataset_name,
         data,
         n_predict,
         forecast_horizon,

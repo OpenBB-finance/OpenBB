@@ -19,13 +19,13 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 def display_theta_forecast(
     data: Union[pd.DataFrame, pd.Series],
-    ticker_name: str,
-    seasonal: str,
-    seasonal_periods: int,
-    n_predict: int,
-    target_col: str,
-    start_window: float,
-    forecast_horizon: int,
+    target_column: str = "close",
+    dataset_name: str = "",
+    seasonal: str = "M",
+    seasonal_periods: int = 7,
+    n_predict: int = 30,
+    start_window: float = 0.85,
+    forecast_horizon: int = 5,
     export: str = "",
     residuals: bool = False,
     forecast_only: bool = False,
@@ -39,7 +39,9 @@ def display_theta_forecast(
     ----------
     data : Union[pd.Series, np.array]
         Data to forecast
-    ticker_name str
+    target_column (str, optional):
+        Target column to forecast. Defaults to "close".
+    dataset_name str
         The name of the ticker to be predicted
     seasonal: str
         Seasonal component.  One of [N, A, M]
@@ -77,22 +79,22 @@ def display_theta_forecast(
         best_theta,
         _model,
     ) = theta_model.get_theta_data(
-        data,
-        seasonal,
-        seasonal_periods,
-        n_predict,
-        target_col,
-        start_window,
-        forecast_horizon,
+        data=data,
+        seasonal=seasonal,
+        seasonal_periods=seasonal_periods,
+        n_predict=n_predict,
+        target_column=target_column,
+        start_window=start_window,
+        forecast_horizon=forecast_horizon,
     )
     probabilistic = False
     helpers.plot_forecast(
         f"Theta {best_theta:.2f}",
-        target_col,
+        target_column,
         historical_fcast,
         predicted_values,
         ticker_series,
-        ticker_name,
+        dataset_name,
         data,
         n_predict,
         forecast_horizon,

@@ -23,9 +23,9 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_k_nearest_neighbors(
-    ticker: str,
     data: Union[pd.DataFrame, pd.Series],
-    target_column: str,
+    target_column: str = "close",
+    dataset_name: str = "",
     n_neighbors: int = 20,
     n_input_days: int = 14,
     n_predict_days: int = 5,
@@ -40,12 +40,12 @@ def display_k_nearest_neighbors(
 
     Parameters
     ----------
-    ticker : str
-        Stock data
     data : Union[pd.DataFrame, pd.Series]
         Data to use for ML
     target_column: str, optional
         The column to select if a dataframe is sent
+    dataset_name : str
+        Stock data
     n_neighbors : int
         Number of neighbors for knn
     n_input_days : int
@@ -76,11 +76,11 @@ def display_k_nearest_neighbors(
         y_dates_valid,
         scaler,
     ) = knn_model.get_knn_model_data(
-        data,
-        n_input_days,
-        n_predict_days,
-        n_neighbors,
-        test_size,
+        data=data,
+        n_input_days=n_input_days,
+        n_predict_days=n_predict_days,
+        n_neighbors=n_neighbors,
+        test_size=test_size,
         no_shuffle=no_shuffle,
     )
 
@@ -99,7 +99,7 @@ def display_k_nearest_neighbors(
         y_valid=y_valid,
         y_dates_valid=y_dates_valid,
         scaler=scaler,
-        title=f"KNN Model with {n_neighbors} Neighbors on {ticker}",
+        title=f"KNN Model with {n_neighbors} Neighbors on {dataset_name}",
         forecast_data=forecast_data_df,
         n_loops=1,
         time_str=time_res,

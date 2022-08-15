@@ -18,9 +18,9 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 def display_regression(
     data: Union[pd.Series, pd.DataFrame],
-    ticker_name: str,
+    target_column: str = "close",
+    dataset_name: str = "",
     n_predict: int = 5,
-    target_col: str = "close",
     past_covariates: str = None,
     train_split: float = 0.85,
     forecast_horizon: int = 5,
@@ -38,12 +38,12 @@ def display_regression(
     Args:
         data (Union[pd.Series, pd.DataFrame]):
             Input Data
-        ticker_name str
+        target_column (str, optional):
+            Target column to forecast. Defaults to "close".
+        dataset_name str
             The name of the ticker to be predicted
         n_predict (int, optional):
             Days to predict. Defaults to 5.
-        target_col (str, optional):
-            Target column to forecast. Defaults to "close".
         train_split (float, optional):
             Train/val split. Defaults to 0.85.
         past_covariates (str, optional):
@@ -76,23 +76,23 @@ def display_regression(
         precision,
         _model,
     ) = regr_model.get_regression_data(
-        data,
-        n_predict,
-        target_col,
-        past_covariates,
-        train_split,
-        forecast_horizon,
-        output_chunk_length,
-        lags,
+        data=data,
+        n_predict=n_predict,
+        target_column=target_column,
+        past_covariates=past_covariates,
+        train_split=train_split,
+        forecast_horizon=forecast_horizon,
+        output_chunk_length=output_chunk_length,
+        lags=lags,
     )
     probabilistic = False
     helpers.plot_forecast(
         "REGR",
-        target_col,
+        target_column,
         historical_fcast,
         predicted_values,
         ticker_series,
-        ticker_name,
+        dataset_name,
         data,
         n_predict,
         forecast_horizon,

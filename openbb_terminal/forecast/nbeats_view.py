@@ -18,9 +18,9 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 def display_nbeats_forecast(
     data: Union[pd.DataFrame, pd.Series],
-    ticker_name: str,
+    target_column: str = "close",
+    dataset_name: str = "",
     n_predict: int = 5,
-    target_col: str = "close",
     past_covariates: str = None,
     train_split: float = 0.85,
     forecast_horizon: int = 5,
@@ -49,12 +49,12 @@ def display_nbeats_forecast(
     ----------
         data (Union[pd.Series, pd.DataFrame]):
             Input Data
-        ticker_name str
+        target_column (str, optional):
+            Target column to forecast. Defaults to "close".
+        dataset_name str
             The name of the ticker to be predicted
         n_predict (int, optional):
             Days to predict. Defaults to 5.
-        target_col (str, optional):
-            Target column to forecast. Defaults to "close".
         train_split (float, optional):
             Train/val split. Defaults to 0.85.
         past_covariates (str, optional):
@@ -113,24 +113,24 @@ def display_nbeats_forecast(
         precision,
         _model,
     ) = nbeats_model.get_NBEATS_data(
-        data,
-        n_predict,
-        target_col,
-        past_covariates,
-        train_split,
-        forecast_horizon,
-        input_chunk_length,
-        output_chunk_length,
-        num_stacks,
-        num_blocks,
-        num_layers,
-        layer_widths,
-        batch_size,
-        n_epochs,
-        learning_rate,
-        model_save_name,
-        force_reset,
-        save_checkpoints,
+        data=data,
+        n_predict=n_predict,
+        target_column=target_column,
+        past_covariates=past_covariates,
+        train_split=train_split,
+        forecast_horizon=forecast_horizon,
+        input_chunk_length=input_chunk_length,
+        output_chunk_length=output_chunk_length,
+        num_stacks=num_stacks,
+        num_blocks=num_blocks,
+        num_layers=num_layers,
+        layer_widths=layer_widths,
+        batch_size=batch_size,
+        n_epochs=n_epochs,
+        learning_rate=learning_rate,
+        model_save_name=model_save_name,
+        force_reset=force_reset,
+        save_checkpoints=save_checkpoints,
     )
     if ticker_series == []:
         return
@@ -138,11 +138,11 @@ def display_nbeats_forecast(
     probabilistic = False
     helpers.plot_forecast(
         "NBEATS",
-        target_col,
+        target_column,
         historical_fcast,
         predicted_values,
         ticker_series,
-        ticker_name,
+        dataset_name,
         data,
         n_predict,
         forecast_horizon,
