@@ -25,12 +25,8 @@ def display_gainers(limit: int = 5, export: str = "") -> None:
     """
 
     df_gainers = yahoofinance_model.get_gainers()
-    df_gainers.dropna(how="all", axis=1, inplace=True)
-    df_gainers = df_gainers.replace(float("NaN"), "")
 
-    if df_gainers.empty:
-        console.print("No gainers found.")
-    else:
+    if not df_gainers.empty:
         print_rich_table(
             df_gainers.head(limit),
             headers=list(df_gainers.columns),
@@ -59,12 +55,8 @@ def display_losers(limit: int = 5, export: str = "") -> None:
     """
 
     df_losers = yahoofinance_model.get_losers()
-    df_losers.dropna(how="all", axis=1, inplace=True)
-    df_losers = df_losers.replace(float("NaN"), "")
 
-    if df_losers.empty:
-        console.print("No losers found.")
-    else:
+    if not df_losers.empty:
         print_rich_table(
             df_losers.head(limit),
             headers=list(df_losers.columns),
@@ -93,12 +85,7 @@ def display_ugs(limit: int = 5, export: str = "") -> None:
     """
 
     df = yahoofinance_model.get_ugs()
-    df.dropna(how="all", axis=1, inplace=True)
-    df = df.replace(float("NaN"), "")
-
-    if df.empty:
-        console.print("No data found.")
-    else:
+    if not df.empty:
         print_rich_table(
             df.head(limit),
             headers=list(df.columns),
@@ -127,12 +114,8 @@ def display_gtech(limit: int = 5, export: str = "") -> None:
     """
 
     df = yahoofinance_model.get_gtech()
-    df.dropna(how="all", axis=1, inplace=True)
-    df = df.replace(float("NaN"), "")
 
-    if df.empty:
-        console.print("No data found.")
-    else:
+    if not df.empty:
         print_rich_table(
             df.head(limit),
             headers=list(df.columns),
@@ -161,12 +144,8 @@ def display_active(limit: int = 5, export: str = "") -> None:
     """
 
     df = yahoofinance_model.get_active()
-    df.dropna(how="all", axis=1, inplace=True)
-    df = df.replace(float("NaN"), "")
 
-    if df.empty:
-        console.print("No data found.")
-    else:
+    if not df.empty:
         print_rich_table(
             df.head(limit),
             headers=list(df.columns),
@@ -195,12 +174,8 @@ def display_ulc(limit: int = 5, export: str = "") -> None:
     """
 
     df = yahoofinance_model.get_ulc()
-    df.dropna(how="all", axis=1, inplace=True)
-    df = df.replace(float("NaN"), "")
 
-    if df.empty:
-        console.print("No data found.")
-    else:
+    if not df.empty:
         print_rich_table(
             df.head(limit).dropna(),
             headers=list(df.columns),
@@ -229,12 +204,8 @@ def display_asc(limit: int = 5, export: str = "") -> None:
     """
 
     df = yahoofinance_model.get_asc()
-    df.dropna(how="all", axis=1, inplace=True)
-    df = df.replace(float("NaN"), "")
 
-    if df.empty:
-        console.print("No data found.")
-    else:
+    if not df.empty:
         print_rich_table(
             df.head(limit).dropna(),
             headers=list(df.columns),

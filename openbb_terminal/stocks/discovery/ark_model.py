@@ -20,8 +20,28 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def get_ark_orders() -> DataFrame:
+def get_ark_orders(
+    sortby: str = "",
+    ascending: bool = False,
+    buys_only: bool = False,
+    sells_only: bool = False,
+    fund: str = "",
+) -> DataFrame:
+
     """Returns ARK orders in a Dataframe
+
+    Parameters
+    ----------
+    sortby: str
+        Column to sort on
+    ascending: bool
+        Flag to sort in ascending order
+    buys_only: bool
+        Flag to filter on buys only
+    sells_only: bool
+        Flag to sort on sells only
+    fund: str
+        Optional filter by fund
 
     Returns
     -------
@@ -71,6 +91,19 @@ def get_ark_orders() -> DataFrame:
     )
 
     df_orders["date"] = pd.to_datetime(df_orders["date"], format="%Y-%m-%d").dt.date
+
+    if df_orders.empty:
+        console.print("The ARK orders aren't available at the moment.\n")
+        return pd.DataFrame()
+    if fund:
+        df_orders = df_orders[df_orders.fund == fund]
+    if buys_only:
+        df_orders = df_orders[df_orders.direction == "Buy"]
+    if sells_only:
+        df_orders = df_orders[df_orders.direction == "Sell"]
+
+    if sortby:
+        df_orders = df_orders.sort_values(by=sortby, ascending=ascending)
 
     return df_orders
 

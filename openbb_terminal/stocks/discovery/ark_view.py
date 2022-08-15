@@ -59,32 +59,23 @@ def ark_orders_view(
     export: str
         Export dataframe data to csv,json,xlsx file
     """
-    df_orders = ark_model.get_ark_orders()
+    df_orders = ark_model.get_ark_orders(sortby, ascending, buys_only, sells_only, fund)
 
-    if df_orders.empty:
-        console.print("The ARK orders aren't available at the moment.\n")
-        return
-    if fund:
-        df_orders = df_orders[df_orders.fund == fund]
-    if buys_only:
-        df_orders = df_orders[df_orders.direction == "Buy"]
-    if sells_only:
-        df_orders = df_orders[df_orders.direction == "Sell"]
-    df_orders = ark_model.add_order_total(df_orders.head(limit))
+    if not df_orders.empty:
 
-    if sortby:
-        df_orders = df_orders.sort_values(by=sortby, ascending=ascending)
-    if rich_config.USE_COLOR:
-        df_orders["direction"] = df_orders["direction"].apply(
-            lambda_direction_color_red_green
+        df_orders = ark_model.add_order_total(df_orders.head(limit))
+
+        if rich_config.USE_COLOR:
+            df_orders["direction"] = df_orders["direction"].apply(
+                lambda_direction_color_red_green
+            )
+
+        print_rich_table(
+            df_orders,
+            headers=[x.title() for x in df_orders.columns],
+            show_index=False,
+            title="Orders by ARK Investment Management LLC",
         )
-
-    print_rich_table(
-        df_orders,
-        headers=[x.title() for x in df_orders.columns],
-        show_index=False,
-        title="Orders by ARK Investment Management LLC",
-    )
 
     export_data(
         export,
