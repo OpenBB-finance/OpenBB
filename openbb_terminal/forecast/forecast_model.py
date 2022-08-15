@@ -61,6 +61,8 @@ def load(
 
     if file in data_files:
         full_file = data_files[file]
+    else:
+        full_file = file
 
     if add_extension:
         for ext in ["xlsx", "csv"]:
@@ -104,7 +106,8 @@ def get_options(
     Returns
     -------
     option_tables: dict
-        A dictionary with a DataFrame for each option. With dataset_name set, only shows one options table.
+        A dictionary with a DataFrame for each option. With dataset_name set, only shows one
+        options table.
     """
     option_tables = {}
 
