@@ -40,6 +40,7 @@ from openbb_terminal.stocks.technical_analysis import (
     finviz_view,
     tradingview_model,
     tradingview_view,
+    rsp_view,
 )
 
 logger = logging.getLogger(__name__)
@@ -774,7 +775,7 @@ class TechnicalAnalysisController(StockBaseController):
             EXPORT_BOTH_RAW_DATA_AND_FIGURES,
         )
         if ns_parser:
-            momentum_view.display_rsp(
+            rsp_view.display_rsp(
                 s_ticker=self.ticker,
             )
 

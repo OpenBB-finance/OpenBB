@@ -511,6 +511,18 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             ),
         ),
         (
+            "call_rsp",
+            [
+                " --export=csv",
+            ],
+            "rsp_view.display_rsp",
+            [],
+            dict(
+                s_ticker="MOCK_TICKER",
+                export="csv",
+            ),
+        ),
+        (
             "call_stoch",
             [
                 "--fastkperiod=1",
