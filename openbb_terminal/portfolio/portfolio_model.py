@@ -2,7 +2,7 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Dict, Any
+from typing import Dict, Any, Tuple
 
 import numpy as np
 import scipy
@@ -25,24 +25,24 @@ pd.options.mode.chained_assignment = None
 
 
 @log_start_end(log=logger)
-def get_main_text(df: pd.DataFrame) -> str:
-    """Get main performance summary from a dataframe with returns
+def get_main_text(data: pd.DataFrame) -> str:
+    """Get main performance summary from a dataframe with market returns
 
     Parameters
     ----------
-    df : pd.DataFrame
+    data : pd.DataFrame
         Stock holdings and returns with market returns
 
     Returns
     ----------
-    t : str
+    text : str
         The main summary of performance
     """
-    d_debt = np.where(df[("Cash", "Cash")] > 0, 0, 1)
-    bcash = 0 if df[("Cash", "Cash")][0] > 0 else abs(df[("Cash", "Cash")][0])
-    ecash = 0 if df[("Cash", "Cash")][-1] > 0 else abs(df[("Cash", "Cash")][-1])
-    bdte = bcash / (df["holdings"][0] - bcash)
-    edte = ecash / (df["holdings"][-1] - ecash)
+    d_debt = np.where(data[("Cash", "Cash")] > 0, 0, 1)
+    bcash = 0 if data[("Cash", "Cash")][0] > 0 else abs(data[("Cash", "Cash")][0])
+    ecash = 0 if data[("Cash", "Cash")][-1] > 0 else abs(data[("Cash", "Cash")][-1])
+    bdte = bcash / (data["holdings"][0] - bcash)
+    edte = ecash / (data["holdings"][-1] - ecash)
     if sum(d_debt) > 0:
         t_debt = (
             f"Beginning debt to equity was {bdte:.2%} and ending debt to equity was"
@@ -56,11 +56,11 @@ def get_main_text(df: pd.DataFrame) -> str:
             "Margin was not used this year. This reduces this risk of the portfolio."
         )
     text = (
-        f"Your portfolio's performance for the period was {df['return'][-1]:.2%}. This was"
-        f" {'greater' if df['return'][-1] > df[('Market', 'Return')][-1] else 'less'} than"
-        f" the market return of {df[('Market', 'Return')][-1]:.2%}. The variance for the"
-        f" portfolio is {np.var(df['return']):.2%}, while the variance for the market was"
-        f" {np.var(df[('Market', 'Return')]):.2%}. {t_debt} The following report details"
+        f"Your portfolio's performance for the period was {data['return'][-1]:.2%}. This was"
+        f" {'greater' if data['return'][-1] > data[('Market', 'Return')][-1] else 'less'} than"
+        f" the market return of {data[('Market', 'Return')][-1]:.2%}. The variance for the"
+        f" portfolio is {np.var(data['return']):.2%}, while the variance for the market was"
+        f" {np.var(data[('Market', 'Return')]):.2%}. {t_debt} The following report details"
         f" various analytics from the portfolio. Read below to see the moving beta for a"
         f" stock."
     )
@@ -68,31 +68,31 @@ def get_main_text(df: pd.DataFrame) -> str:
 
 
 @log_start_end(log=logger)
-def get_beta_text(df: pd.DataFrame) -> str:
-    """Get beta summary for a dataframe
+def get_beta_text(data: pd.DataFrame) -> str:
+    """Get beta summary for a stock from a dataframe
 
     Parameters
     ----------
-    df : pd.DataFrame
+    data : pd.DataFrame
         The beta history of the stock
 
     Returns
     ----------
-    t : str
+    text : str
         The beta history for a ticker
     """
-    betas = df[list(filter(lambda score: "beta" in score, list(df.columns)))]
+    betas = data[list(filter(lambda score: "beta" in score, list(data.columns)))]
     high = betas.idxmax(axis=1)
     low = betas.idxmin(axis=1)
     text = (
         "Beta is how strongly a portfolio's movements correlate with the market's movements."
         " A stock with a high beta is considered to be riskier. The beginning beta for the period"
-        f" was {portfolio_helper.beta_word(df['total'][0])} at {df['total'][0]:.2f}. This went"
-        f" {'up' if df['total'][-1] > df['total'][0] else 'down'} to"
-        f" {portfolio_helper.beta_word(df['total'][-1])} at {df['total'][-1]:.2f} by the end"
-        f" of the period. The ending beta was pulled {'up' if df['total'][-1] > 1 else 'down'} by"
-        f" {portfolio_helper.clean_name(high[-1] if df['total'][-1] > 1 else low[-1])}, which had"
-        f" an ending beta of {df[high[-1]][-1] if df['total'][-1] > 1 else df[low[-1]][-1]:.2f}."
+        f" was {portfolio_helper.beta_word(data['total'][0])} at {data['total'][0]:.2f}. This went"
+        f" {'up' if data['total'][-1] > data['total'][0] else 'down'} to"
+        f" {portfolio_helper.beta_word(data['total'][-1])} at {data['total'][-1]:.2f} by the end"
+        f" of the period. The ending beta was pulled {'up' if data['total'][-1] > 1 else 'down'} by"
+        f" {portfolio_helper.clean_name(high[-1] if data['total'][-1] > 1 else low[-1])}, which had"
+        f" an ending beta of {data[high[-1]][-1] if data['total'][-1] > 1 else data[low[-1]][-1]:.2f}."
     )
     return text
 
@@ -107,7 +107,7 @@ performance_text = (
 
 
 @log_start_end(log=logger)
-def calculate_drawdown(input_series: pd.Series, is_returns: bool = False) -> pd.Series:
+def calculate_drawdown(data: pd.Series, is_returns: bool = False) -> pd.Series:
     """Calculate the drawdown (MDD) of historical series.  Note that the calculation is done
      on cumulative returns (or prices).  The definition of drawdown is
 
@@ -115,8 +115,8 @@ def calculate_drawdown(input_series: pd.Series, is_returns: bool = False) -> pd.
 
     Parameters
     ----------
-    input_series: pd.DataFrame
-        Dataframe of input values
+    data: pd.Series
+        Series of input values
     is_returns: bool
         Flag to indicate inputs are returns
 
@@ -127,29 +127,29 @@ def calculate_drawdown(input_series: pd.Series, is_returns: bool = False) -> pd.
     -------
     """
     if is_returns:
-        input_series = (1 + input_series).cumprod()
+        data = (1 + data).cumprod()
 
-    rolling_max = input_series.cummax()
-    drawdown = (input_series - rolling_max) / rolling_max
+    rolling_max = data.cummax()
+    drawdown = (data - rolling_max) / rolling_max
 
     return drawdown
 
 
-def cumulative_returns(returns: pd.Series) -> pd.Series:
+def cumulative_returns(data: pd.Series) -> pd.Series:
     """Calculate cumulative returns filtered by period
 
     Parameters
     ----------
-    returns : pd.Series
-        Returns series
+    data : pd.Series
+        Series of portfolio returns
 
     Returns
     ----------
     pd.Series
-        Cumulative returns series
+        Cumulative investment returns series
     -------
     """
-    cumulative_returns = (1 + returns.shift(periods=1, fill_value=0)).cumprod() - 1
+    cumulative_returns = (1 + data.shift(periods=1, fill_value=0)).cumprod() - 1
     return cumulative_returns
 
 
@@ -158,7 +158,7 @@ def get_gaintopain_ratio(
     historical_trade_data: pd.DataFrame,
     benchmark_trades: pd.DataFrame,
     benchmark_returns: pd.DataFrame,
-):
+) -> pd.DataFrame:
     """Gets Pain-to-Gain ratio
 
     Parameters
@@ -166,9 +166,9 @@ def get_gaintopain_ratio(
     historical_trade_data: pd.DataFrame
         Dataframe of historical data for the portfolios trade
     benchmark_trades: pd.DataFrame
-        Dataframe of the benchmarks trades
+        Dataframe of the benchmark's trades
     benchmark_returns: pd.DataFrame
-        Series of benchmark returns
+        Dataframe of benchmark returns
 
     Returns
     -------
@@ -238,9 +238,11 @@ def get_gaintopain_ratio(
 
 @log_start_end(log=logger)
 def get_rolling_beta(
-    returns: pd.Series, benchmark_returns: pd.Series, period: int = 252
-):
-    """Get rolling beta
+    portfolio_returns: pd.Series,
+    benchmark_returns: pd.Series,
+    period: str = "1y",
+) -> pd.DataFrame:
+    """Get rolling beta using portfolio and benchmark returns
 
     Parameters
     ----------
@@ -248,67 +250,74 @@ def get_rolling_beta(
         Series of portfolio returns
     benchmark_returns: pd.Series
         Series of benchmark returns
-    period: float
-        Interval used for rolling values
+    period: string
+        Interval used for rolling values. Possible options: mtd, qtd, ytd, 3m, 6m, 1y, 3y, 5y, 10y
 
     Returns
     -------
     pd.DataFrame
         DataFrame of the portfolio's rolling beta
     """
-    # Rolling beta is defined as Cov(Port,Bench)/var(Bench)
+    print("HERE!")
+    print(period)
+
+    length = portfolio_helper.PERIODS_DAYS[period]
+    print(length)
     covs = (
-        pd.DataFrame({"Portfolio": returns, "Benchmark": benchmark_returns})
+        pd.DataFrame({"Portfolio": portfolio_returns, "Benchmark": benchmark_returns})
         .dropna(axis=0)
-        .rolling(max(1, period))
+        .rolling(max(1, length))
         .cov()
         .unstack()
         .dropna()
     )
+
     rolling_beta = covs["Portfolio"]["Benchmark"] / covs["Benchmark"]["Benchmark"]
 
     return rolling_beta
 
 
 @log_start_end(log=logger)
-def calculate_beta(returns: pd.DataFrame, benchmark_returns: pd.DataFrame):
-    """Calculates the beta
+def calculate_beta(portfolio_returns: pd.Series, benchmark_returns: pd.Series) -> float:
+    """Calculates the beta using portfolio and benchmark return values
 
     Parameters
     ----------
-    returns: pd.DataFrame
+    portfolio_returns: pd.Series
         Series of portfolio returns
-    benchmark_returns: pd.DataFrame
+    benchmark_returns: pd.Series
         Series of benchmark returns
 
     Returns
     -------
     float
-        The beta value
+        The calculated beta value
     """
-    axis_diff = len(returns) - len(benchmark_returns)
+    axis_diff = len(portfolio_returns) - len(benchmark_returns)
     axis_diff_bench = 0
     if axis_diff < 0:
         axis_diff_bench = -axis_diff
         axis_diff = 0
 
-    covariance = np.cov(returns[axis_diff:], benchmark_returns[axis_diff_bench:])[0][1]
-    variance = returns.var()
+    covariance = np.cov(
+        portfolio_returns[axis_diff:], benchmark_returns[axis_diff_bench:]
+    )[0][1]
+    variance = portfolio_returns.var()
 
     return covariance / variance
 
 
 @log_start_end(log=logger)
 def get_tracking_error(
-    returns: pd.DataFrame, benchmark_returns: pd.DataFrame, period: int = 252
-):
-    """Get tracking error
+    portfolio_returns: pd.Series, benchmark_returns: pd.Series, period: int = 252
+) -> Tuple[pd.DataFrame, pd.Series]:
+    """Get tracking error, or active risk, using portfolio and benchmark returns
 
     Parameters
     ----------
-    returns: pd.DataFrame
+    portfolio_returns: pd.Series
         Series of portfolio returns
-    benchmark_returns: pd.DataFrame
+    benchmark_returns: pd.Series
         Series of benchmark returns
     period: int
         Interval used for rolling values
@@ -320,9 +329,9 @@ def get_tracking_error(
     pd.Series
         Series of rolling tracking error
     """
-    diff_returns = returns - benchmark_returns
+    diff_returns = portfolio_returns - benchmark_returns
 
-    trackr_rolling = diff_returns.rolling(period, min_periods=period).std()
+    tracker_rolling = diff_returns.rolling(period, min_periods=period).std()
 
     vals = list()
     for periods in portfolio_helper.PERIODS:
@@ -331,31 +340,32 @@ def get_tracking_error(
             vals.append([round(period_return.std(), 3)])
         else:
             vals.append(["-"])
-    trackr_period_df = pd.DataFrame(
+    tracker_period_df = pd.DataFrame(
         vals, index=portfolio_helper.PERIODS, columns=["Tracking Error"]
     )
 
-    return trackr_period_df, trackr_rolling
+    return tracker_period_df, tracker_rolling
 
 
 @log_start_end(log=logger)
 def get_information_ratio(
-    returns: pd.DataFrame,
+    portfolio_returns: pd.Series,
     historical_trade_data: pd.DataFrame,
     benchmark_trades: pd.DataFrame,
-    benchmark_returns: pd.DataFrame,
-):
-    """
+    benchmark_returns: pd.Series,
+) -> pd.DataFrame:
+    """Calculates information ratio, which measures the active return of an investment
+    compared to the benchmark relative to the volatility of the active return
 
     Parameters
     ----------
-    returns: pd.Series
+    portfolio_returns: pd.Series
         Series of portfolio returns
     historical_trade_data: pd.DataFrame
-        Dataframe of historical data for the portfolios trade
+        Dataframe of historical data for the portfolio's trade
     benchmark_trades: pd.DataFrame
-        Dataframe of the benchmarks trades
-    benchmark_returns: pd.DataFrame
+        Dataframe of the benchmark's trades
+    benchmark_returns: pd.Series
         Series of benchmark returns
 
     Returns
@@ -363,7 +373,7 @@ def get_information_ratio(
     pd.DataFrame
         DataFrame of the information ratio during different time periods
     """
-    tracking_err_df, _ = get_tracking_error(returns, benchmark_returns)
+    tracking_err_df, _ = get_tracking_error(portfolio_returns, benchmark_returns)
     benchmark_trades = benchmark_trades.set_index("Date")
     vals = list()
     for periods in portfolio_helper.PERIODS:
@@ -427,15 +437,15 @@ def get_information_ratio(
 
 @log_start_end(log=logger)
 def get_tail_ratio(
-    returns: pd.DataFrame, benchmark_returns: pd.DataFrame, period: int = 252
-):
+    portfolio_returns: pd.Series, benchmark_returns: pd.Series, period: int = 252
+) -> Tuple[pd.DataFrame, pd.Series, pd.Series]:
     """Returns the portfolios tail ratio
 
     Parameters
     ----------
-    returns: pd.DataFrame
+    portfolio_returns: pd.Series
         Series of portfolio returns
-    benchmark_returns: pd.DataFrame
+    benchmark_returns: pd.Series
         Series of benchmark returns
     period: int
         Interval used for rolling values
@@ -449,7 +459,7 @@ def get_tail_ratio(
     pd.Series
         Series of the benchmarks rolling tail ratio
     """
-    returns_r = returns.rolling(period, min_periods=period)
+    returns_r = portfolio_returns.rolling(period, min_periods=period)
     benchmark_returns_r = benchmark_returns.rolling(period, min_periods=period)
 
     portfolio_tr = returns_r.quantile(0.95) / abs(returns_r.quantile(0.05))
@@ -459,7 +469,7 @@ def get_tail_ratio(
 
     vals = list()
     for periods in portfolio_helper.PERIODS:
-        period_return = portfolio_helper.filter_df_by_period(returns, periods)
+        period_return = portfolio_helper.filter_df_by_period(portfolio_returns, periods)
         period_bench_return = portfolio_helper.filter_df_by_period(
             benchmark_returns, periods
         )
@@ -490,22 +500,22 @@ def get_tail_ratio(
 
 @log_start_end(log=logger)
 def get_common_sense_ratio(
-    returns: pd.DataFrame,
+    portfolio_returns: pd.Series,
     historical_trade_data: pd.DataFrame,
     benchmark_trades: pd.DataFrame,
-    benchmark_returns: pd.DataFrame,
+    benchmark_returns: pd.Series,
 ):
     """Get common sense ratio
 
     Parameters
     ----------
-    returns: pd.DataFrame
+    portfolio_returns: pd.Series
         Series of portfolio returns
     historical_trade_data: pd.DataFrame
         Dataframe of historical data for the portfolios trade
     benchmark_trades: pd.DataFrame
         Dataframe of the benchmarks trades
-    benchmark_returns: pd.DataFrame
+    benchmark_returns: pd.Series
         Series of benchmark returns
 
     Returns
@@ -513,7 +523,7 @@ def get_common_sense_ratio(
     pd.DataFrame
         DataFrame of the portfolios and the benchmarks common sense ratio during different time periods
     """
-    tail_ratio_df, _, _ = get_tail_ratio(returns, benchmark_returns)
+    tail_ratio_df, _, _ = get_tail_ratio(portfolio_returns, benchmark_returns)
     gaintopain_ratio_df = get_gaintopain_ratio(
         historical_trade_data, benchmark_trades, benchmark_returns
     )

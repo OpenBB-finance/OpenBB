@@ -1106,8 +1106,8 @@ def display_rolling_sortino(
 
 @log_start_end(log=logger)
 def display_rolling_beta(
-    benchmark_returns: pd.Series,
     portfolio_returns: pd.Series,
+    benchmark_returns: pd.Series,
     period: str = "1y",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -1136,18 +1136,9 @@ def display_rolling_beta(
             return
         ax = external_axes
 
-    length = portfolio_helper.PERIODS_DAYS[period]
-
-    # Rolling beta is defined as Cov(Port,Bench)/var(Bench)
-    covs = (
-        pd.DataFrame({"Portfolio": portfolio_returns, "Benchmark": benchmark_returns})
-        .dropna(axis=0)
-        .rolling(length)
-        .cov()
-        .unstack()
-        .dropna()
+    rolling_beta = portfolio_model.get_rolling_beta(
+        portfolio_returns, benchmark_returns, period
     )
-    rolling_beta = covs["Portfolio"]["Benchmark"] / covs["Benchmark"]["Benchmark"]
     rolling_beta.plot(ax=ax)
 
     ax.set_title(f"Rolling Beta using {period} window")
