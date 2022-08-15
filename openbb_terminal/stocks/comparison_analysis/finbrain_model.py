@@ -51,6 +51,7 @@ def get_sentiments(symbols: List[str]) -> pd.DataFrame:
     ----------
     symbols : List[str]
         List of tickers to get sentiment
+        Comparable companies can be accessed through getfinfiz()/getfinnhub().
 
     Returns
     -------
@@ -128,7 +129,8 @@ def get_sentiment_correlation(
     Parameters
     ----------
     similar : List[str]
-        Similar companies to compare income with
+        Similar companies to compare income with.
+        Comparable companies can be accessed through getfinfiz()/getfinnhub().
     """
     df_sentiment = get_sentiments(similar)
     corrs = df_sentiment.corr()

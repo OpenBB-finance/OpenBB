@@ -30,7 +30,8 @@ def display_income_comparison(
     Parameters
     ----------
     similar : List[str]
-        List of tickers to compare
+        Similar companies to compare income with.
+        Comparable companies can be accessed through getfinfiz()/getfinnhub().
     timeframe : str
         Column header to compare
     quarter : bool, optional
@@ -82,7 +83,8 @@ def display_balance_comparison(
     Parameters
     ----------
     similar : List[str]
-        Similar companies to compare income with
+        Similar companies to compare income with.
+        Comparable companies can be accessed through getfinfiz()/getfinnhub().
     timeframe : str
         Column header to compare
     quarter : bool, optional
@@ -134,7 +136,8 @@ def display_cashflow_comparison(
     Parameters
     ----------
     similar : List[str]
-        Similar companies to compare income with
+        Similar companies to compare income with.
+        Comparable companies can be accessed through getfinfiz()/getfinnhub().
     timeframe : str
         Column header to compare
     quarter : bool, optional

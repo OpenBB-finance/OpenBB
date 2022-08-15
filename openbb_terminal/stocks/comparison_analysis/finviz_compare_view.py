@@ -20,7 +20,8 @@ def screener(similar: List[str], data_type: str = "overview", export: str = ""):
     Parameters
     ----------
     similar : List[str]
-        Similar companies to compare income with
+        Similar companies to compare income with.
+        Comparable companies can be accessed through getfinfiz()/getfinnhub().
     data_type : str
         Screener to use.  One of {overview, valuation, financial, ownership, performance, technical}
     export : str

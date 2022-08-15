@@ -40,7 +40,8 @@ def display_sentiment_compare(
     Parameters
     ----------
     similar : List[str]
-        Similar companies to compare income with
+        Similar companies to compare income with.
+        Comparable companies can be accessed through getfinfiz()/getfinnhub().
     raw : bool, optional
         Output raw values, by default False
     export : str, optional
@@ -128,7 +129,8 @@ def display_sentiment_correlation(
     Parameters
     ----------
     similar : List[str]
-        Similar companies to compare income with
+        Similar companies to compare income with.
+        Comparable companies can be accessed through getfinfiz()/getfinnhub().
     raw : bool, optional
         Output raw values, by default False
     export : str, optional

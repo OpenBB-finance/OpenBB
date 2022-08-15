@@ -62,7 +62,8 @@ def get_comparison_data(similar: List[str], data_type: str = "overview"):
     Parameters
     ----------
     similar:
-        List of similar companies
+        List of similar companies.
+        Comparable companies can be accessed through getfinfiz()/getfinnhub().
     data_type : str
         Data type between: overview, valuation, financial, ownership, performance, technical
 

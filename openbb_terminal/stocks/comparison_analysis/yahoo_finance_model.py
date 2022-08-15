@@ -37,7 +37,8 @@ def get_historical(
     Parameters
     ----------
     similar: List[str]
-        List of similar tickers
+        List of similar tickers.
+        Comparable companies can be accessed through getfinfiz()/getfinnhub().
     start: str, optional
         Start date of comparison. Defaults to 1 year previously
     candle_type: str, optional
@@ -100,7 +101,8 @@ def get_correlation(
     Parameters
     ----------
     similar : List[str]
-        List of similar tickers
+        List of similar tickers.
+        Comparable companies can be accessed through getfinfiz()/getfinnhub().
     start_date : str, optional
         Start date of comparison, by default 1 year ago
     candle_type : str, optional
@@ -123,7 +125,8 @@ def get_volume(
     Parameters
     ----------
     similar : List[str]
-        List of similar tickers
+        List of similar tickers.
+        Comparable companies can be accessed through getfinfiz()/getfinnhub().
     start_date : str, optional
         Start date of comparison, by default 1 year ago
     """
