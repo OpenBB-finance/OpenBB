@@ -11,7 +11,7 @@ from openbb_terminal.stocks.sector_industry_analysis import stockanalysis_model
 
 @pytest.mark.vcr
 @pytest.mark.parametrize(
-    "stocks, finance_key, period, statement",
+    "symbols, finance_key, period, statement",
     [
         (["AAPL"], "re", "annual", "IS"),
         (["AAPL"], "rec", "quarterly", "BS"),
@@ -35,9 +35,9 @@ from openbb_terminal.stocks.sector_industry_analysis import stockanalysis_model
         ),
     ],
 )
-def test_get_stocks_data(recorder, stocks, finance_key, period, statement):
+def test_get_stocks_data(recorder, symbols, finance_key, period, statement):
     result = stockanalysis_model.get_stocks_data(
-        stocks=stocks,
+        symbols=symbols,
         finance_key=finance_key,
         stocks_data=dict(),
         period=period,

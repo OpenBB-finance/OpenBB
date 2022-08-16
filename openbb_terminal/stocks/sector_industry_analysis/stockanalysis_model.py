@@ -112,10 +112,10 @@ def get_stocks_data(
     dict
         Dictionary of filtered stocks data separated by financial statement
     """
-    del sa_dict
+    
     no_data = []
 
-    for symbol in tqdm(stocks):
+    for symbol in tqdm(symbols):
         for item, description in SA_KEYS.items():
             if finance_key in description:
                 if item not in stocks_data:
