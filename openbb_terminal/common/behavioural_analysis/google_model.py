@@ -46,7 +46,8 @@ def get_regions(symbol: str) -> pd.DataFrame:
     """
     pytrend = TrendReq()
     pytrend.build_payload(kw_list=[symbol])
-    return pytrend.interest_by_region()
+    return pytrend.interest_by_region().sort_values([symbol], ascending=False)
+    
 
 
 @log_start_end(log=logger)

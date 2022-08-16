@@ -184,7 +184,7 @@ def display_regions(
         console.print("")
         return
 
-    df_interest_region = df_interest_region.sort_values([symbol], ascending=False).head(
+    df_interest_region = df_interest_region.head(
         limit
     )
     df = df_interest_region.sort_values([symbol], ascending=True)
