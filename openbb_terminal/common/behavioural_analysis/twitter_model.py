@@ -1,6 +1,7 @@
 """Twitter Model"""
 __docformat__ = "numpy"
 
+from datetime import datetime, timedelta
 import logging
 from typing import Optional
 
@@ -115,5 +116,87 @@ def load_analyze_tweets(
     df_tweets["positive"] = pos
     df_tweets["negative"] = neg
     df_tweets["neutral"] = neu
+
+    return df_tweets
+
+
+@log_start_end(log=logger)
+def get_sentiment(
+    symbol: str,
+    n_tweets: int = 15,
+    n_days_past: int = 2,
+):
+    """Get sentiments from symbol
+
+    Parameters
+    ----------
+    symbol: str
+        Stock ticker symbol to get sentiment for
+    n_tweets: int
+        Number of tweets to get per hour
+    n_days_past: int
+        Number of days to extract tweets for
+    """
+    # Date format string required by twitter
+    dt_format = "%Y-%m-%dT%H:%M:%SZ"
+
+    # Algorithm to extract
+    dt_recent = datetime.utcnow() - timedelta(seconds=20)
+    dt_old = dt_recent - timedelta(days=n_days_past)
+    console.print(
+        f"From {dt_recent.date()} retrieving {n_tweets*24} tweets ({n_tweets} tweets/hour)"
+    )
+
+    df_tweets = pd.DataFrame(
+        columns=[
+            "created_at",
+            "text",
+            "sentiment",
+            "positive",
+            "negative",
+            "neutral",
+        ]
+    )
+    while True:
+        # Iterate until we haven't passed the old number of days
+        if dt_recent < dt_old:
+            break
+        # Update past datetime
+        dt_past = dt_recent - timedelta(minutes=60)
+
+        temp = load_analyze_tweets(
+            symbol,
+            n_tweets,
+            start_date=dt_past.strftime(dt_format),
+            end_date=dt_recent.strftime(dt_format),
+        )
+
+        if temp.empty:
+            return pd.DataFrame()
+
+        df_tweets = pd.concat([df_tweets, temp])
+
+        if dt_past.day < dt_recent.day:
+            console.print(
+                f"From {dt_past.date()} retrieving {n_tweets*24} tweets ({n_tweets} tweets/hour)"
+            )
+
+        # Update recent datetime
+        dt_recent = dt_past
+
+    # Sort tweets per date
+    df_tweets.sort_index(ascending=False, inplace=True)
+    df_tweets["cumulative_compound"] = df_tweets["sentiment"].cumsum()
+    df_tweets["prob_sen"] = 1
+
+    # df_tweets.to_csv(r'notebooks/tweets.csv', index=False)
+    df_tweets.reset_index(inplace=True)
+    df_tweets["Month"] = pd.to_datetime(df_tweets["created_at"]).apply(
+        lambda x: x.month
+    )
+    df_tweets["Day"] = pd.to_datetime(df_tweets["created_at"]).apply(lambda x: x.day)
+    df_tweets["date"] = pd.to_datetime(df_tweets["created_at"])
+    df_tweets = df_tweets.sort_values(by="date")
+    df_tweets["cumulative_compound"] = df_tweets["sentiment"].cumsum()
 
     return df_tweets
