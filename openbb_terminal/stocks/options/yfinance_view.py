@@ -641,9 +641,9 @@ def plot_volume_open_interest(
 def plot_plot(
     symbol: str,
     expiration: str,
-    x: str,
-    y: str,
-    custom: str,
+    x: str = "strike",
+    y: str = "impliedVolatility",
+    custom: str = None,
     put: bool = False,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -763,7 +763,7 @@ def plot_payoff(
 @log_start_end(log=logger)
 def show_parity(
     symbol: str,
-    exp: str,
+    expiry: str,
     put: bool = False,
     ask: bool = False,
     mini: float = None,
@@ -776,7 +776,7 @@ def show_parity(
     ----------
     symbol : str
         Ticker symbol to get expirations for
-    exp : str
+    expiry : str
         Expiration to use for options
     put : bool
         Whether to use puts or calls
@@ -789,7 +789,7 @@ def show_parity(
     export : str
         Export data
     """
-    r_date = datetime.strptime(exp, "%Y-%m-%d").date()
+    r_date = datetime.strptime(expiry, "%Y-%m-%d").date()
     delta = (r_date - date.today()).days
     rate = ((1 + get_rf()) ** (delta / 365)) - 1
     stock = get_price(symbol)
@@ -807,7 +807,7 @@ def show_parity(
 
         next_div = last_div + timedelta(days=91)
         dividends = []
-        while next_div < datetime.strptime(exp, "%Y-%m-%d"):
+        while next_div < datetime.strptime(expiry, "%Y-%m-%d"):
             day_dif = (next_div - datetime.now()).days
             dividends.append((avg_div, day_dif))
             next_div += timedelta(days=91)
@@ -816,7 +816,7 @@ def show_parity(
     else:
         pv_dividend = 0
 
-    chain = get_option_chain(symbol, exp)
+    chain = get_option_chain(symbol, expiry)
     name = "ask" if ask else "lastPrice"
     o_type = "put" if put else "call"
 
@@ -1153,7 +1153,7 @@ def display_vol_surface(
 @log_start_end(log=logger)
 def show_greeks(
     symbol: str,
-    expire: str,
+    expiry: str,
     div_cont: float = 0,
     rf: float = None,
     opt_type: int = 1,
@@ -1170,8 +1170,8 @@ def show_greeks(
         The ticker symbol value of the option
     div_cont: float
         The dividend continuous rate
-    expire: str
-        The date of expiration
+    expiry: str
+        The date of expiration, format "YYYY-MM-DD", i.e. 2010-12-31.
     rf: float
         The risk-free rate
     opt_type: Union[1, -1]
@@ -1185,7 +1185,7 @@ def show_greeks(
     """
 
     df = yfinance_model.get_greeks(
-        symbol, expire, div_cont, rf, opt_type, mini, maxi, show_all
+        symbol, expiry, div_cont, rf, opt_type, mini, maxi, show_all
     )
 
     column_formatting = [

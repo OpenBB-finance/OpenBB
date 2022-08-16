@@ -461,7 +461,7 @@ class QaController(CryptoBaseController):
         )
         if ns_parser:
             rolling_view.display_mean_std(
-                name=self.symbol,
+                symbol=self.symbol,
                 data=self.data,
                 target=self.target,
                 window=ns_parser.n_window,

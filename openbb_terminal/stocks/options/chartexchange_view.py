@@ -60,7 +60,7 @@ def plot_chart(
 @log_start_end(log=logger)
 def display_raw(
     symbol: str,
-    date: str,
+    expiry: str,
     call: bool,
     price: float = 0,
     limit: int = 10,
@@ -73,8 +73,8 @@ def display_raw(
     ----------
     symbol : str
         Ticker symbol for the given option
-    date : str
-        Date of expiration for the option
+    expiry : str
+        The expiry of expiration, format "YYYY-MM-DD", i.e. 2010-12-31.
     call : bool
         Whether the underlying asset should be a call or a put
     price : float
@@ -87,8 +87,8 @@ def display_raw(
         External axes (1 axis is expected in the list), by default None
     """
 
-    df = chartexchange_model.get_option_history(symbol, date, call, price)[::-1]
-    df["Date"] = pd.to_datetime(df["Date"])
+    df = chartexchange_model.get_option_history(symbol, expiry, call, price)[::-1]
+    df["Date"] = pd.to_expirytime(df["Date"])
     df = df.set_index("Date")
 
     candle_chart_kwargs = {
@@ -97,14 +97,14 @@ def display_raw(
         "volume": True,
         "xrotation": theme.xticks_rotation,
         "scale_padding": {"left": 0.3, "right": 1, "top": 0.8, "bottom": 0.8},
-        "update_width_config": {
+        "upexpiry_width_config": {
             "candle_linewidth": 0.6,
             "candle_width": 0.8,
             "volume_linewidth": 0.8,
             "volume_width": 0.8,
         },
         "warn_too_much_data": 10000,
-        "datetime_format": "%Y-%b-%d",
+        "expirytime_format": "%Y-%b-%d",
     }
     # This plot has 2 axes
     option_type = "call" if call else "put"

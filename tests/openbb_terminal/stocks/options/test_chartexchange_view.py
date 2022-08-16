@@ -41,7 +41,7 @@ def test_display_raw(mocker, tab):
     chartexchange_view.display_raw(
         export="",
         symbol="GME",
-        date="2021-02-05",
+        expiry="2021-02-05",
         call=True,
         price=90,
     )

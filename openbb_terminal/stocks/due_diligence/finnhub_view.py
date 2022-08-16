@@ -75,7 +75,7 @@ def plot_rating_over_time(
 @check_api_key(["API_FINNHUB_KEY"])
 def rating_over_time(
     symbol: str,
-    limit: int,
+    limit: int = 10,
     raw: bool = False,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,

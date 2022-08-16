@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_options(
-    limit: int,
+    limit: int = 20,
     sortby: str = "Vol/OI",
     ascending: bool = False,
     calls_only: bool = False,

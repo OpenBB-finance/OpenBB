@@ -334,7 +334,7 @@ def plot_government(
 @log_start_end(log=logger)
 def display_government_trading(
     symbol: str,
-    gov_type: str,
+    gov_type: str = "congress",
     past_transactions_months: int = 6,
     raw: bool = False,
     export: str = "",
@@ -383,8 +383,8 @@ def display_government_trading(
 @log_start_end(log=logger)
 def display_contracts(
     symbol: str,
-    past_transaction_days: int,
-    raw: bool,
+    past_transaction_days: int = 10,
+    raw: bool = False,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):

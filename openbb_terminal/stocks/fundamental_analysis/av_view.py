@@ -362,7 +362,7 @@ def display_cash_flow(
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
 def display_earnings(
-    symbol: str, limit: int, quarterly: bool = False, export: str = ""
+    symbol: str, limit: int = 5, quarterly: bool = False, export: str = ""
 ):
     """Alpha Vantage earnings
 

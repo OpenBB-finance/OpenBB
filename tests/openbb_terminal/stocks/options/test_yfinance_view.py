@@ -159,7 +159,7 @@ def test_show_parity(mocker):
 
     yfinance_view.show_parity(
         symbol="PM",
-        exp="2022-01-07",
+        expiry="2022-01-07",
         put=True,
         ask=True,
         mini=0.0,
@@ -219,7 +219,7 @@ def test_show_binom(mocker):
 @pytest.mark.default_cassette("test_show_greeks")
 @pytest.mark.vcr
 def test_show_greeks():
-    yfinance_view.show_greeks(symbol="AAPL", expire="2022-01-28", div_cont=0)
+    yfinance_view.show_greeks(symbol="AAPL", expiry="2022-01-28", div_cont=0)
 
 
 @pytest.mark.default_cassette("test_display_chains")

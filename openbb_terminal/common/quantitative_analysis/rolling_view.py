@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_mean_std(
-    name: str,
+    symbol: str,
     data: pd.DataFrame,
     target: str,
     window: int = 14,
@@ -36,7 +36,7 @@ def display_mean_std(
 
     Parameters
     ----------
-    name: str
+    symbol: str
         Stock ticker
     data: pd.DataFrame
         Dataframe
@@ -87,7 +87,7 @@ def display_mean_std(
     ax1.plot(
         plot_data.index,
         plot_data[target].values,
-        label=name,
+        label=symbol,
     )
     ax1.plot(
         plot_data.index,
@@ -97,7 +97,7 @@ def display_mean_std(
         "Values",
     )
     ax1.legend(["Real Values", "Rolling Mean"])
-    ax1.set_title(f"Rolling mean and std (window {str(window)}) of {name} {target}")
+    ax1.set_title(f"Rolling mean and std (window {str(window)}) of {symbol} {target}")
     ax1.set_xlim([plot_data.index[0], plot_data.index[-1]])
 
     ax2.plot(

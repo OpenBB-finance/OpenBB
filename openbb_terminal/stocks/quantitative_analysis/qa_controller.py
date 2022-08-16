@@ -504,7 +504,7 @@ class QaController(StockBaseController):
         )
         if ns_parser:
             rolling_view.display_mean_std(
-                name=self.ticker,
+                symbol=self.ticker,
                 data=self.stock,
                 target=self.target,
                 window=ns_parser.n_window,

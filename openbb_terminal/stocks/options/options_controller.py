@@ -1179,7 +1179,7 @@ class OptionsController(BaseController):
                 yfinance_view.show_greeks(
                     symbol=self.ticker,
                     div_cont=ns_parser.dividend,
-                    expire=self.selected_date,
+                    expiry=self.selected_date,
                     rf=ns_parser.risk_free,
                     opt_type=opt_type,
                     mini=ns_parser.min,

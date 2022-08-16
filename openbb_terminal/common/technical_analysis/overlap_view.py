@@ -120,8 +120,8 @@ def view_ma(
 
 @log_start_end(log=logger)
 def view_vwap(
-    symbol: str,
-    data: pd.DataFrame,
+    symbol: str = "",
+    data: pd.DataFrame = None,
     start_date: Optional[datetime] = None,
     end_date: Optional[datetime] = None,
     offset: int = 0,

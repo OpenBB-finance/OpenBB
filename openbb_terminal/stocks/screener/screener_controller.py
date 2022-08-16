@@ -348,7 +348,7 @@ class ScreenerController(BaseController):
                         data_type="overview",
                         limit=ns_parser.limit,
                         ascend=ns_parser.ascend,
-                        sort=ns_parser.sort,
+                        sortby=ns_parser.sort,
                         export=ns_parser.export,
                     )
 
@@ -359,7 +359,7 @@ class ScreenerController(BaseController):
                     data_type="overview",
                     limit=ns_parser.limit,
                     ascend=ns_parser.ascend,
-                    sort=ns_parser.sort,
+                    sortby=ns_parser.sort,
                     export=ns_parser.export,
                 )
 
@@ -425,7 +425,7 @@ class ScreenerController(BaseController):
                         data_type="valuation",
                         limit=ns_parser.limit,
                         ascend=ns_parser.ascend,
-                        sort=ns_parser.sort,
+                        sortby=ns_parser.sort,
                         export=ns_parser.export,
                     )
 
@@ -436,7 +436,7 @@ class ScreenerController(BaseController):
                     data_type="valuation",
                     limit=ns_parser.limit,
                     ascend=ns_parser.ascend,
-                    sort=ns_parser.sort,
+                    sortby=ns_parser.sort,
                     export=ns_parser.export,
                 )
 
@@ -503,7 +503,7 @@ class ScreenerController(BaseController):
                         data_type="financial",
                         limit=ns_parser.limit,
                         ascend=ns_parser.ascend,
-                        sort=ns_parser.sort,
+                        sortby=ns_parser.sort,
                         export=ns_parser.export,
                     )
 
@@ -514,7 +514,7 @@ class ScreenerController(BaseController):
                     data_type="financial",
                     limit=ns_parser.limit,
                     ascend=ns_parser.ascend,
-                    sort=ns_parser.sort,
+                    sortby=ns_parser.sort,
                     export=ns_parser.export,
                 )
 
@@ -581,7 +581,7 @@ class ScreenerController(BaseController):
                         data_type="ownership",
                         limit=ns_parser.limit,
                         ascend=ns_parser.ascend,
-                        sort=ns_parser.sort,
+                        sortby=ns_parser.sort,
                         export=ns_parser.export,
                     )
 
@@ -592,7 +592,7 @@ class ScreenerController(BaseController):
                     data_type="ownership",
                     limit=ns_parser.limit,
                     ascend=ns_parser.ascend,
-                    sort=ns_parser.sort,
+                    sortby=ns_parser.sort,
                     export=ns_parser.export,
                 )
 
@@ -659,7 +659,7 @@ class ScreenerController(BaseController):
                         data_type="performance",
                         limit=ns_parser.limit,
                         ascend=ns_parser.ascend,
-                        sort=ns_parser.sort,
+                        sortby=ns_parser.sort,
                         export=ns_parser.export,
                     )
 
@@ -670,7 +670,7 @@ class ScreenerController(BaseController):
                     data_type="performance",
                     limit=ns_parser.limit,
                     ascend=ns_parser.ascend,
-                    sort=ns_parser.sort,
+                    sortby=ns_parser.sort,
                     export=ns_parser.export,
                 )
 
@@ -737,7 +737,7 @@ class ScreenerController(BaseController):
                         data_type="technical",
                         limit=ns_parser.limit,
                         ascend=ns_parser.ascend,
-                        sort=ns_parser.sort,
+                        sortby=ns_parser.sort,
                         export=ns_parser.export,
                     )
 
@@ -748,7 +748,7 @@ class ScreenerController(BaseController):
                     data_type="technical",
                     limit=ns_parser.limit,
                     ascend=ns_parser.ascend,
-                    sort=ns_parser.sort,
+                    sortby=ns_parser.sort,
                     export=ns_parser.export,
                 )
 
