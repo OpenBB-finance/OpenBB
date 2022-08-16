@@ -1,6 +1,6 @@
 ---
 title: Getting Started
-keywords: "getting started, openbb, bots, api, beginner guide, how to use openbb, openbb keys, openbb terminal, openbb, terminal"
+keywords: "getting started, openbb, api, beginner guide, how to use openbb, openbb keys, openbb terminal, openbb, terminal"
 excerpt: "This page guides you how to use the OpenBB terminal, developed by OpenBB."
 description: "The OpenBB Documentation provides guidance on how to use the OpenBB Terminal, a free, custom built
 financial terminal that will help you make more informed decisions, faster."
@@ -29,10 +29,6 @@ to make sense of raw unrefined data. Our mission is to make investment research 
 <center><b><span style="color:white">If you are interested in the <span style="color:orange">OpenBB Terminal</span>,
 please continue reading this page and the related pages on each menu (e.g. <a href="terminal/stocks">Stocks</a>
 or <a href="terminal/economy">Economy</a>)</span></b></center>
-
-<center><b><span style="color:white">If you are interested in one of our other products,
-please refer to the <a href="api">OpenBB Python API</a> or the
-<a href="bots">OpenBB Bots</a> pages.</span></b></center>
 
 ---
 
@@ -357,7 +353,9 @@ To figure out where you can obtain the API key, you can enter the command (e.g. 
 | ethplorer  | Ethplorer                                | https://github.com/EverexIO/Ethplorer/wiki/Ethplorer-API                           |
 | smartstake | Smartstake                               | https://www.smartstake.io                                                          |
 | github     | GitHub                                   | https://docs.github.com/en/rest/guides/getting-started-with-the-rest-api           |
-| messari    | messari                                  | https://messari.io/api/docs                                                        |
+| messari    | Messari                                  | https://messari.io/api/docs                                                        |
+| cpanic     | Crypto Panic                             | https://cryptopanic.com/developers/api/                                            |
+| santiment  | Santiment                                | https://app.santiment.net/                                                         |
 
 ## Available menus within the OpenBB Terminal
 

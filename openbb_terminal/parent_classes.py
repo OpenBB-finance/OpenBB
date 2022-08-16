@@ -35,6 +35,7 @@ from openbb_terminal.helper_funcs import (
     check_file_type_saved,
     check_positive,
     get_ordered_list_sources,
+    parse_and_split_input,
 )
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.rich_config import console
@@ -101,7 +102,11 @@ class BaseController(metaclass=ABCMeta):
         self.check_path()
         self.path = [x for x in self.PATH.split("/") if x != ""]
 
-        self.queue = queue if (queue and self.PATH != "/") else list()
+        self.queue = (
+            self.parse_input(an_input="/".join(queue))
+            if (queue and self.PATH != "/")
+            else list()
+        )
 
         controller_choices = self.CHOICES_COMMANDS + self.CHOICES_MENUS
         if controller_choices:
@@ -190,6 +195,34 @@ class BaseController(metaclass=ABCMeta):
     def print_help(self) -> None:
         raise NotImplementedError("Must override print_help.")
 
+    def parse_input(self, an_input: str) -> List:
+        """Parse controller input
+
+        Splits the command chain from user input into a list of individual commands
+        while respecting the forward slash in the command arguments.
+
+        In the default scenario only unix-like paths are handles by the parser.
+        Override this function in the controller classes that inherit from this one to
+        resolve edge cases specific to command arguments on those controllers.
+
+        When handling edge cases add additional regular expressions to the list.
+
+        Parameters
+        ----------
+        an_input : str
+            User input string
+
+        Returns
+        -------
+        List
+            Command queue as list
+        """
+        custom_filters: List = []
+        commands = parse_and_split_input(
+            an_input=an_input, custom_filters=custom_filters
+        )
+        return commands
+
     def contains_keys(self, string_to_check: str) -> bool:
         if self.KEYS_MENU in string_to_check or self.KEYS_MENU in self.PATH:
             return True
@@ -227,15 +260,14 @@ class BaseController(metaclass=ABCMeta):
         List[str]
             List of commands in the queue to execute
         """
+        actions = self.parse_input(an_input)
 
         # Empty command
-        if not an_input:
+        if len(actions) == 0:
             pass
-        #    console.print("")
 
         # Navigation slash is being used first split commands
-        elif "/" in an_input:
-            actions = an_input.split("/")
+        elif len(actions) > 1:
 
             # Absolute path is specified
             if not actions[0]:
@@ -754,7 +786,7 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
             "-r",
             "--iexrange",
             dest="iexrange",
-            help="Range for using the iexcloud api.  Note that longer range requires more tokens in account",
+            help="Range for using the iexcloud api.  Longer range requires more tokens in account",
             choices=["ytd", "1y", "2y", "5y", "6m"],
             type=str,
             default="ytd",
@@ -786,14 +818,15 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                 )
             else:
                 # This seems to block the .exe since the folder needs to be manually created
-                # This block basically makes sure that we only look for the file if the -f flag is used
-                # If we add files in the argparse choices, it will fail for the .exe even if no -f is used
+                # This block makes sure that we only look for the file if the -f flag is used
+                # Adding files in the argparse choices, will fail for the .exe even without -f
                 try:
                     if ns_parser.filepath not in os.listdir(
                         os.path.join("custom_imports", "stocks")
                     ):
                         console.print(
-                            f"[red]{ns_parser.filepath} not found in custom_imports/stocks/ folder[/red].\n"
+                            f"[red]{ns_parser.filepath} not found in custom_imports/stocks/ "
+                            "folder[/red].\n"
                         )
                         return
                 except Exception as e:

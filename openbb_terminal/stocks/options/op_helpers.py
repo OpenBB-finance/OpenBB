@@ -129,6 +129,13 @@ opt_chain_cols = {
 }
 
 
+# pylint: disable=R0903
+class Chain:
+    def __init__(self, df: pd.DataFrame):
+        self.calls = df[df["option_type"] == "call"]
+        self.puts = df[df["option_type"] == "put"]
+
+
 class Option:
     def __init__(
         self,
