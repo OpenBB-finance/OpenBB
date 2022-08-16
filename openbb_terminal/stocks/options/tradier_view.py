@@ -1,11 +1,12 @@
 """Tradier options view"""
 __docformat__ = "numpy"
 
+import warnings
 import argparse
 import logging
 import os
 from bisect import bisect_left
-from typing import List, Optional
+from typing import List, Optional, Tuple
 
 import matplotlib.pyplot as plt
 import mplfinance as mpf
@@ -31,6 +32,28 @@ from openbb_terminal import rich_config
 logger = logging.getLogger(__name__)
 
 column_map = {"mid_iv": "iv", "open_interest": "oi", "volume": "vol"}
+warnings.filterwarnings("ignore")
+
+
+def get_strike_bounds(
+    options: pd.DataFrame, current_price: float, min_sp: float, max_sp: float
+) -> Tuple[float, float]:
+    if min_sp == -1:
+        if current_price == 0:
+            min_strike = options["strike"].iat[0]
+        else:
+            min_strike = 0.75 * current_price
+    else:
+        min_strike = min_sp
+
+    if max_sp == -1:
+        if current_price == 0:
+            max_strike = options["strike"].iat[-1]
+        else:
+            max_strike = 1.25 * current_price
+    else:
+        max_strike = max_sp
+    return min_strike, max_strike
 
 
 def lambda_red_highlight(val) -> str:
@@ -145,15 +168,7 @@ def display_chains(
     columns = to_display + ["strike", "option_type"]
     chains_df = chains_df[columns].rename(columns=column_map)
 
-    if min_sp == -1:
-        min_strike = np.percentile(chains_df["strike"], 25)
-    else:
-        min_strike = min_sp
-
-    if max_sp == -1:
-        max_strike = np.percentile(chains_df["strike"], 75)
-    else:
-        max_strike = max_sp
+    min_strike, max_strike = get_strike_bounds(chains_df, 0, min_sp, max_sp)
 
     chains_df = chains_df[chains_df["strike"] >= min_strike]
     chains_df = chains_df[chains_df["strike"] <= max_strike]
@@ -245,15 +260,11 @@ def plot_oi(
     options = tradier_model.get_option_chains(ticker, expiry)
     current_price = tradier_model.last_price(ticker)
 
-    if min_sp == -1:
-        min_strike = 0.75 * current_price
-    else:
-        min_strike = min_sp
+    min_strike, max_strike = get_strike_bounds(options, current_price, min_sp, max_sp)
 
-    if max_sp == -1:
-        max_strike = 1.25 * current_price
-    else:
-        max_strike = max_sp
+    if max_strike == min_strike:
+        console.print("[red]Not enough data for analysis[/red]\n")
+        return
 
     if calls_only and puts_only:
         console.print("Both flags selected, please select one", "\n")
@@ -340,15 +351,7 @@ def plot_vol(
     options = tradier_model.get_option_chains(ticker, expiry)
     current_price = tradier_model.last_price(ticker)
 
-    if min_sp == -1:
-        min_strike = 0.75 * current_price
-    else:
-        min_strike = min_sp
-
-    if max_sp == -1:
-        max_strike = 1.25 * current_price
-    else:
-        max_strike = max_sp
+    min_strike, max_strike = get_strike_bounds(options, current_price, min_sp, max_sp)
 
     if calls_only and puts_only:
         console.print("Both flags selected, please select one", "\n")

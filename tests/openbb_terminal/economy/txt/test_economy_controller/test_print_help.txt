@@ -4,6 +4,7 @@
     bigmac             The Economist Big Mac index                                     [NASDAQ Datalink]
     ycrv               show sovereign yield curves                                     [Investing.com / FRED]
     events             display economic calendar                                       [Investing.com]
+    cdebt              shows debt statistics for various countries                     [USDebtClock.org]
 
     rtps               real-time performance sectors                                   [Alpha Vantage]
     valuation          valuation of sectors, industry, country                         [Finviz]

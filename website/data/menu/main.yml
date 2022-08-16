@@ -1028,6 +1028,8 @@ main:
             ref: "/terminal/economy/macro"
           - name: fred
             ref: "/terminal/economy/fred"
+          - name: cdebt
+            ref: "/terminal/economy/cdebt"
           - name: index
             ref: "/terminal/economy/index"
           - name: treasury
