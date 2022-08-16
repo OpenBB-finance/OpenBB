@@ -48,9 +48,9 @@ def display_messages(symbol: str, limit: int = 30):
     """
     messages = stocktwits_model.get_messages(symbol, limit)
 
-    if len(messages) > 0:
+    if not messages.empty:
         print_rich_table(
-            pd.DataFrame(messages),
+            messages,
             headers=["MESSAGES"],
             show_index=False,
             title="Last Messages on Board",

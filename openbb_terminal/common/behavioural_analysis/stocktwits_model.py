@@ -52,7 +52,7 @@ def get_bullbear(symbol: str) -> Tuple[int, int, int, int]:
 
 
 @log_start_end(log=logger)
-def get_messages(symbol: str, limit: int = 30) -> List[str]:
+def get_messages(symbol: str, limit: int = 30) -> pd.DataFrame:
     """Get last messages for a given ticker [Source: stocktwits]
 
     Parameters
@@ -64,16 +64,18 @@ def get_messages(symbol: str, limit: int = 30) -> List[str]:
 
     Returns
     -------
-    List[str]
-        List of messages
+    pd.DataFrame
+        Dataframe of messages
     """
     result = requests.get(
         f"https://api.stocktwits.com/api/2/streams/symbol/{symbol}.json"
     )
     if result.status_code == 200:
-        return [message["body"] for message in result.json()["messages"][:limit]]
+        return pd.DataFrame(
+            [message["body"] for message in result.json()["messages"][:limit]]
+        )
 
-    return []
+    return pd.DataFrame()
 
 
 @log_start_end(log=logger)
