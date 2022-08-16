@@ -777,6 +777,7 @@ class TechnicalAnalysisController(StockBaseController):
         if ns_parser:
             rsp_view.display_rsp(
                 s_ticker=self.ticker,
+                export = ns_parser.export
             )
 
     @log_start_end(log=logger)
