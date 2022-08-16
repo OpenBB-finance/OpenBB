@@ -90,11 +90,26 @@ def display_crypto_heatmap(
 
         squarify.plot(
             df["market_cap"],
-            label=df_copy["symbol"],
             alpha=0.8,
             color=colors,
-            text_kwargs={"color": "black", "size": 8},
         )
+        text_sizes = squarify.normalize_sizes(df["market_cap"], 100, 100)
+        rects = squarify.squarify(text_sizes, 0, 0, 100, 100)
+        for la, r in zip(df_copy["symbol"], rects):
+            x, y, dx, dy = r["x"], r["y"], r["dx"], r["dy"]
+            ax.text(
+                x + dx / 2,
+                y + dy / 2,
+                la,
+                va="center",
+                ha="center",
+                color="black",
+                size=(
+                    text_sizes[df_copy.index[df_copy["symbol"] == la].tolist()[0]]
+                    ** 0.5
+                    * 0.8
+                ),
+            )
         ax.set_title(f"Top {top} Cryptocurrencies {category_str}")
         ax.set_axis_off()
 
@@ -173,7 +188,7 @@ def display_holdings_overview(
 
 @log_start_end(log=logger)
 def display_exchange_rates(
-    sortby: str = "Name", ascending: bool = False, top: int = 15, export: str = ""
+    sortby: str = "Name", ascend: bool = False, top: int = 15, export: str = ""
 ) -> None:
     """Shows  list of crypto, fiats, commodity exchange rates. [Source: CoinGecko]
 
@@ -183,13 +198,13 @@ def display_exchange_rates(
         Number of records to display
     sortby: str
         Key by which to sort data
-    ascending: bool
+    ascend: bool
         Flag to sort data ascending
     export : str
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = gecko.get_exchange_rates(sortby, ascending)
+    df = gecko.get_exchange_rates(sortby, ascend)
 
     if not df.empty:
         print_rich_table(
@@ -313,7 +328,7 @@ def display_stablecoins(
     top: int = 15,
     export: str = "",
     sortby: str = "rank",
-    ascending: bool = False,
+    ascend: bool = False,
     pie: bool = False,
 ) -> None:
     """Shows stablecoins data [Source: CoinGecko]
@@ -324,7 +339,7 @@ def display_stablecoins(
         Number of records to display
     sortby: str
         Key by which to sort data
-    ascending: bool
+    ascend: bool
         Flag to sort data ascending
     export : str
         Export dataframe data to csv,json,xlsx file
@@ -332,7 +347,7 @@ def display_stablecoins(
         Whether to show a pie chart
     """
 
-    df = gecko.get_stable_coins(top, sortby=sortby, ascending=ascending)
+    df = gecko.get_stable_coins(top, sortby=sortby, ascend=ascend)
 
     if not df.empty:
         total_market_cap = int(df["market_cap"].sum())
@@ -464,7 +479,7 @@ def display_categories(
 @log_start_end(log=logger)
 def display_exchanges(
     sortby: str = "name",
-    ascending: bool = False,
+    ascend: bool = False,
     top: int = 15,
     links: bool = False,
     export: str = "",
@@ -477,7 +492,7 @@ def display_exchanges(
         Number of records to display
     sortby: str
         Key by which to sort data
-    ascending: bool
+    ascend: bool
         Flag to sort data descending
     links: bool
         Flag to display urls
@@ -485,7 +500,7 @@ def display_exchanges(
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = gecko.get_exchanges(sortby, ascending)
+    df = gecko.get_exchanges(sortby, ascend)
 
     if not df.empty:
 
@@ -515,7 +530,7 @@ def display_exchanges(
 
 @log_start_end(log=logger)
 def display_platforms(
-    sortby: str = "Name", ascending: bool = True, top: int = 15, export: str = ""
+    sortby: str = "Name", ascend: bool = True, top: int = 15, export: str = ""
 ) -> None:
     """Shows list of financial platforms. [Source: CoinGecko]
 
@@ -525,13 +540,13 @@ def display_platforms(
         Number of records to display
     sortby: str
         Key by which to sort data
-    ascending: bool
+    ascend: bool
         Flag to sort data ascending
     export : str
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = gecko.get_financial_platforms(sortby, ascending)
+    df = gecko.get_financial_platforms(sortby, ascend)
 
     if not df.empty:
         print_rich_table(
@@ -553,7 +568,7 @@ def display_platforms(
 
 @log_start_end(log=logger)
 def display_products(
-    sortby: str = "Platform", ascending: bool = False, top: int = 15, export: str = ""
+    sortby: str = "Platform", ascend: bool = False, top: int = 15, export: str = ""
 ) -> None:
     """Shows list of financial products. [Source: CoinGecko]
 
@@ -563,13 +578,13 @@ def display_products(
         Number of records to display
     sortby: str
         Key by which to sort data
-    ascending: bool
+    ascend: bool
         Flag to sort data descending
     export : str
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = gecko.get_finance_products(sortby=sortby, ascending=ascending)
+    df = gecko.get_finance_products(sortby=sortby, ascend=ascend)
 
     if not df.empty:
         print_rich_table(
@@ -593,7 +608,7 @@ def display_products(
 
 @log_start_end(log=logger)
 def display_indexes(
-    sortby: str = "Name", ascending: bool = True, top: int = 15, export: str = ""
+    sortby: str = "Name", ascend: bool = True, top: int = 15, export: str = ""
 ) -> None:
     """Shows list of crypto indexes. [Source: CoinGecko]
 
@@ -603,13 +618,13 @@ def display_indexes(
         Number of records to display
     sortby: str
         Key by which to sort data
-    ascending: bool
+    ascend: bool
         Flag to sort data descending
     export : str
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = gecko.get_indexes(sortby=sortby, ascending=ascending)
+    df = gecko.get_indexes(sortby=sortby, ascend=ascend)
     if not df.empty:
         print_rich_table(
             df.head(top),
@@ -632,7 +647,7 @@ def display_indexes(
 
 @log_start_end(log=logger)
 def display_derivatives(
-    sortby: str = "Rank", ascending: bool = False, top: int = 15, export: str = ""
+    sortby: str = "Rank", ascend: bool = False, top: int = 15, export: str = ""
 ) -> None:
     """Shows  list of crypto derivatives. [Source: CoinGecko]
 
@@ -642,13 +657,13 @@ def display_derivatives(
         Number of records to display
     sortby: str
         Key by which to sort data
-    ascending: bool
+    ascend: bool
         Flag to sort data descending
     export : str
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = gecko.get_derivatives(sortby=sortby, ascending=ascending)
+    df = gecko.get_derivatives(sortby=sortby, ascend=ascend)
 
     if not df.empty:
 

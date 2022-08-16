@@ -22,7 +22,7 @@ PAIRS_FILTERS = [
 
 @log_start_end(log=logger)
 def get_trading_pairs(
-    top: int = 50, sortby: str = "quote_increment", ascending: bool = True
+    top: int = 50, sortby: str = "quote_increment", ascend: bool = True
 ) -> pd.DataFrame:
     """Get a list of available currency pairs for trading. [Source: Coinbase]
 
@@ -37,7 +37,7 @@ def get_trading_pairs(
         Top n of pairs
     sortby: str
         Key to sortby data
-    ascending: bool
+    ascend: bool
         Sort descending flag
 
     Returns
@@ -57,5 +57,5 @@ def get_trading_pairs(
     ]
     pairs = make_coinbase_request("/products")
     df = pd.DataFrame(pairs)[columns]
-    df = df.sort_values(by=sortby, ascending=ascending).head(top)
+    df = df.sort_values(by=sortby, ascending=ascend).head(top)
     return df

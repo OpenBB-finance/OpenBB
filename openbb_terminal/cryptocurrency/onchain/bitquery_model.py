@@ -266,7 +266,7 @@ def get_dex_trades_by_exchange(
     trade_amount_currency: str = "USD",
     limit: int = 90,
     sortby: str = "tradeAmount",
-    ascending: bool = True,
+    ascend: bool = True,
 ) -> pd.DataFrame:
     """Get trades on Decentralized Exchanges aggregated by DEX [Source: https://graphql.bitquery.io/]
 
@@ -279,7 +279,7 @@ def get_dex_trades_by_exchange(
         on server side)
     sortby: str
         Key by which to sort data
-    ascending: bool
+    ascend: bool
         Flag to sort data ascending
 
     Returns
@@ -323,14 +323,14 @@ def get_dex_trades_by_exchange(
     df = df[["exchange", "trades", "tradeAmount"]].sort_values(
         by="tradeAmount", ascending=True
     )
-    df = df.sort_values(by=sortby, ascending=ascending)
+    df = df.sort_values(by=sortby, ascending=ascend)
     df.columns = prettify_column_names(df.columns)
     return df
 
 
 @log_start_end(log=logger)
 def get_dex_trades_monthly(
-    trade_amount_currency: str = "USD", limit: int = 90, ascending: bool = True
+    trade_amount_currency: str = "USD", limit: int = 90, ascend: bool = True
 ) -> pd.DataFrame:
     """Get list of trades on Decentralized Exchanges monthly aggregated.
     [Source: https://graphql.bitquery.io/]
@@ -342,7 +342,7 @@ def get_dex_trades_monthly(
     limit:  int
         Last n days to query data. Maximum 365 (bigger numbers can cause timeouts
         on server side)
-    ascending: bool
+    ascend: bool
         Flag to sort data ascending
 
     Returns
@@ -390,7 +390,7 @@ def get_dex_trades_monthly(
     )
     df.rename(columns={"count": "trades"}, inplace=True)
     df = df[["date", "trades", "tradeAmount"]]
-    df = df.sort_values(by="date", ascending=ascending)
+    df = df.sort_values(by="date", ascending=ascend)
     df.columns = prettify_column_names(df.columns)
     return df
 
@@ -401,7 +401,7 @@ def get_daily_dex_volume_for_given_pair(
     symbol: str = "UNI",
     vs: str = "USDT",
     sortby: str = "date",
-    ascending: bool = True,
+    ascend: bool = True,
 ) -> pd.DataFrame:
     """Get daily volume for given pair [Source: https://graphql.bitquery.io/]
 
@@ -415,7 +415,7 @@ def get_daily_dex_volume_for_given_pair(
         Quote currency.
     sortby: str
         Key by which to sort data
-    ascending: bool
+    ascend: bool
         Flag to sort data ascending
 
     Returns
@@ -502,8 +502,8 @@ def get_daily_dex_volume_for_given_pair(
             "tradeAmount",
             "trades",
         ]
-    ].sort_values(by="date", ascending=False)
-    df = df.sort_values(by=sortby, ascending=ascending)
+    ]
+    df = df.sort_values(by=sortby, ascending=ascend)
     df.columns = prettify_column_names(df.columns)
     return df
 
@@ -513,7 +513,7 @@ def get_token_volume_on_dexes(
     symbol: str = "UNI",
     trade_amount_currency: str = "USD",
     sortby: str = "tradeAmount",
-    ascending: bool = True,
+    ascend: bool = True,
 ) -> pd.DataFrame:
     """Get token volume on different Decentralized Exchanges. [Source: https://graphql.bitquery.io/]
 
@@ -525,7 +525,7 @@ def get_token_volume_on_dexes(
         Currency to display trade amount in.
     sortby: str
         Key by which to sort data
-    ascending: bool
+    ascend: bool
         Flag to sort data ascending
 
     Returns
@@ -573,10 +573,8 @@ def get_token_volume_on_dexes(
 
     df = _extract_dex_trades(data)[["exchange.fullName", "tradeAmount", "count"]]
     df.columns = LT_FILTERS
-    df = df[~df["exchange"].str.startswith("<")].sort_values(
-        by="tradeAmount", ascending=False
-    )
-    df = df.sort_values(by=sortby, ascending=ascending)
+    df = df[~df["exchange"].str.startswith("<")]
+    df = df.sort_values(by=sortby, ascending=ascend)
     df.columns = prettify_column_names(df.columns)
     return df
 
@@ -586,7 +584,7 @@ def get_ethereum_unique_senders(
     interval: str = "day",
     limit: int = 90,
     sortby: str = "tradeAmount",
-    ascending: bool = True,
+    ascend: bool = True,
 ) -> pd.DataFrame:
     """Get number of unique ethereum addresses which made a transaction in given time interval.
 
@@ -599,7 +597,7 @@ def get_ethereum_unique_senders(
         Number of records for data query.
     sortby: str
         Key by which to sort data
-    ascending: bool
+    ascend: bool
         Flag to sort data ascending
 
     Returns
@@ -650,7 +648,7 @@ def get_ethereum_unique_senders(
     df = pd.DataFrame(data["ethereum"]["transactions"])
     df["date"] = df["date"].apply(lambda x: x["date"])
     df = df[UEAT_FILTERS]
-    df = df.sort_values(by=sortby, ascending=ascending)
+    df = df.sort_values(by=sortby, ascending=ascend)
     df.columns = prettify_column_names(df.columns)
     return df
 
@@ -661,7 +659,7 @@ def get_most_traded_pairs(
     exchange: str = "Uniswap",
     limit: int = 90,
     sortby: str = "tradeAmount",
-    ascending: bool = True,
+    ascend: bool = True,
 ) -> pd.DataFrame:
     """Get most traded crypto pairs on given decentralized exchange in chosen time period.
     [Source: https://graphql.bitquery.io/]
@@ -676,7 +674,7 @@ def get_most_traded_pairs(
         Number of days taken into calculation account.
     sortby: str
         Key by which to sort data
-    ascending: bool
+    ascend: bool
         Flag to sort data ascending
 
     Returns
@@ -716,7 +714,7 @@ def get_most_traded_pairs(
     df = _extract_dex_trades(data)
     df.columns = ["trades", "tradeAmount", "base", "quoted"]
     df = df[TTCP_FILTERS]
-    df = df.sort_values(by=sortby, ascending=ascending)
+    df = df.sort_values(by=sortby, ascending=ascend)
     df.columns = prettify_column_names(df.columns)
     return df
 
@@ -727,7 +725,7 @@ def get_spread_for_crypto_pair(
     vs: str = "USDT",
     limit: int = 30,
     sortby: str = "tradeAmount",
-    ascending: bool = True,
+    ascend: bool = True,
 ) -> pd.DataFrame:
     """Get an average bid and ask prices, average spread for given crypto pair for chosen time period.
        [Source: https://graphql.bitquery.io/]
@@ -742,7 +740,7 @@ def get_spread_for_crypto_pair(
         Quoted currency.
     sortby: str
         Key by which to sort data
-    ascending: bool
+    ascend: bool
         Flag to sort data ascending
 
     Returns
@@ -809,7 +807,7 @@ def get_spread_for_crypto_pair(
             "averageAskPrice",
         ]
     ]
-    df = df.sort_values(by=sortby, ascending=ascending)
+    df = df.sort_values(by=sortby, ascending=ascend)
     df.columns = prettify_column_names(df.columns)
     return df
 

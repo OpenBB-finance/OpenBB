@@ -1083,8 +1083,8 @@ class PortfolioController(BaseController):
                 self.portfolio_name, self.benchmark_name
             ):
                 portfolio_view.display_rolling_beta(
-                    self.portfolio.benchmark_returns,
                     self.portfolio.returns,
+                    self.portfolio.benchmark_returns,
                     period=ns_parser.period,
                     export=ns_parser.export,
                 )

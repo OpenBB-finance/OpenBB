@@ -415,7 +415,7 @@ class DefiController(BaseController):
             defipulse_view.display_defipulse(
                 top=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                ascending=ns_parser.ascending,
+                ascend=ns_parser.ascending,
                 export=ns_parser.export,
             )
 
@@ -654,7 +654,7 @@ class DefiController(BaseController):
                 skip=ns_parser.skip,
                 limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                ascending=not ns_parser.descend,
+                ascend=not ns_parser.descend,
                 export=ns_parser.export,
             )
 

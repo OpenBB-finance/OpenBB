@@ -59,7 +59,7 @@ def display_account_staking_info(
 
 @log_start_end(log=logger)
 def display_validators(
-    top: int = 10, sortby: str = "votingPower", ascending: bool = True, export: str = ""
+    top: int = 10, sortby: str = "votingPower", ascend: bool = True, export: str = ""
 ) -> None:
     """Display information about terra validators [Source: https://fcd.terra.dev/swagger]
 
@@ -70,13 +70,13 @@ def display_validators(
     sortby: str
         Key by which to sort data. Choose from:
         validatorName, tokensAmount, votingPower, commissionRate, status, uptime
-    ascending: bool
+    ascend: bool
         Flag to sort data descending
     export : str
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = terramoney_fcd_model.get_validators(sortby, ascending)
+    df = terramoney_fcd_model.get_validators(sortby, ascend)
     df_data = df.copy()
     df["tokensAmount"] = df["tokensAmount"].apply(
         lambda x: lambda_very_long_number_formatter(x)
@@ -106,7 +106,7 @@ def display_gov_proposals(
     top: int = 10,
     status: str = "all",
     sortby: str = "id",
-    ascending: bool = True,
+    ascend: bool = True,
     export: str = "",
 ) -> None:
     """Display terra blockchain governance proposals list [Source: https://fcd.terra.dev/swagger]
@@ -119,13 +119,13 @@ def display_gov_proposals(
         status of proposal, one from list: ['Voting','Deposit','Passed','Rejected']
     sortby: str
         Key by which to sort data
-    ascending: bool
-        Flag to sort data ascending
+    ascend: bool
+        Flag to sort data ascend
     export : str
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = terramoney_fcd_model.get_proposals(status, sortby, ascending, top)
+    df = terramoney_fcd_model.get_proposals(status, sortby, ascend, top)
 
     print_rich_table(df, headers=list(df.columns), floatfmt=".2f", show_index=False)
 

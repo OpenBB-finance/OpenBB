@@ -37,7 +37,7 @@ def get_coin(symbol: str = "eth-ethereum") -> dict:
 
 @log_start_end(log=logger)
 def get_coin_twitter_timeline(
-    symbol: str = "eth-ethereum", sortby: str = "date", ascending: bool = True
+    symbol: str = "eth-ethereum", sortby: str = "date", ascend: bool = True
 ) -> pd.DataFrame:
     """Get twitter timeline for given coin id. Not more than last 50 tweets [Source: CoinPaprika]
 
@@ -49,7 +49,7 @@ def get_coin_twitter_timeline(
         Key by which to sort data. Every column name is valid
         (see for possible values:
         https://api.coinpaprika.com/docs#tag/Coins/paths/~1coins~1%7Bcoin_id%7D~1twitter/get).
-    descend: bool
+    ascend: bool
         Flag to sort data descending
     Returns
     -------
@@ -75,7 +75,7 @@ def get_coin_twitter_timeline(
     df["status"] = df["status"].apply(lambda x: x.replace("  ", ""))
     df["date"] = df["date"].apply(lambda x: x.replace("T", "\n"))
     df["date"] = df["date"].apply(lambda x: x.replace("Z", ""))
-    df = df.sort_values(by=sortby, ascending=ascending)
+    df = df.sort_values(by=sortby, ascending=ascend)
     # Remove unicode chars (it breaks pretty tables)
     df["status"] = df["status"].apply(
         lambda text: "".join(i if ord(i) < 128 else "" for i in text)
@@ -85,7 +85,7 @@ def get_coin_twitter_timeline(
 
 @log_start_end(log=logger)
 def get_coin_events_by_id(
-    symbol: str = "eth-ethereum", sortby="date", ascending: bool = False
+    symbol: str = "eth-ethereum", sortby="date", ascend: bool = False
 ) -> pd.DataFrame:
     """Get all events related to given coin like conferences, start date of futures trading etc.
     [Source: CoinPaprika]
@@ -113,7 +113,7 @@ def get_coin_events_by_id(
         Key by which to sort data. Every column name is valid
         (see for possible values:
         https://api.coinpaprika.com/docs#tag/Coins/paths/~1coins~1%7Bcoin_id%7D~1events/get).
-    ascending: bool
+    ascend: bool
         Flag to sort data ascending
     Returns
     -------
@@ -138,7 +138,7 @@ def get_coin_events_by_id(
         data[col] = data[col].apply(
             lambda x: x.replace("Z", "") if isinstance(x, str) else x
         )
-    data = data.sort_values(by=sortby, ascending=ascending)
+    data = data.sort_values(by=sortby, ascending=ascend)
 
     return data
 
@@ -147,7 +147,7 @@ def get_coin_events_by_id(
 def get_coin_exchanges_by_id(
     symbol: str = "eth-ethereum",
     sortby: str = "adjusted_volume_24h_share",
-    ascending: bool = True,
+    ascend: bool = True,
 ) -> pd.DataFrame:
     """Get all exchanges for given coin id. [Source: CoinPaprika]
 
@@ -158,7 +158,7 @@ def get_coin_exchanges_by_id(
     sortby: str
         Key by which to sort data. Every column name is valid (see for possible values:
         https://api.coinpaprika.com/v1).
-    ascending: bool
+    ascend: bool
         Flag to sort data ascending
 
     Returns
@@ -176,7 +176,7 @@ def get_coin_exchanges_by_id(
         df["fiats"] = (
             df["fiats"].copy().apply(lambda x: len([i["symbol"] for i in x if x]))
         )
-    df = df.sort_values(by=sortby, ascending=ascending)
+    df = df.sort_values(by=sortby, ascending=ascend)
     return df
 
 
@@ -185,7 +185,7 @@ def get_coin_markets_by_id(
     symbol: str = "eth-ethereum",
     quotes: str = "USD",
     sortby: str = "pct_volume_share",
-    ascending: bool = True,
+    ascend: bool = True,
 ) -> pd.DataFrame:
     """All markets for given coin and currency [Source: CoinPaprika]
 
@@ -203,7 +203,7 @@ def get_coin_markets_by_id(
     sortby: str
         Key by which to sort data. Every column name is valid (see for possible values:
         https://api.coinpaprika.com/v1).
-    ascending: bool
+    ascend: bool
         Flag to sort data ascending
 
     Returns
@@ -236,7 +236,7 @@ def get_coin_markets_by_id(
         data.append(dct)
 
     df = pd.DataFrame(data)
-    df = df.sort_values(by=sortby, ascending=ascending)
+    df = df.sort_values(by=sortby, ascending=ascend)
     return df
 
 

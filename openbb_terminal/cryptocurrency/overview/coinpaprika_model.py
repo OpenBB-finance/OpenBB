@@ -199,7 +199,7 @@ def _get_coins_info_helper(symbols: str = "USD") -> pd.DataFrame:
 
 @log_start_end(log=logger)
 def get_coins_info(
-    symbols: str = "USD", sortby: str = "rank", ascending: bool = True
+    symbols: str = "USD", sortby: str = "rank", ascend: bool = True
 ) -> pd.DataFrame:  # > format big numbers fix
     """Returns basic coin information for all coins from CoinPaprika API [Source: CoinPaprika]
 
@@ -209,7 +209,7 @@ def get_coins_info(
         Comma separated quotes to return e.g quotes=USD,BTC
     sortby: str
         Key by which to sort data
-    ascending: bool
+    ascend: bool
         Flag to sort data descending
 
     Returns
@@ -233,13 +233,13 @@ def get_coins_info(
         "ath_price",
     ]
     df = _get_coins_info_helper(symbols)[cols]
-    df = df.sort_values(by=sortby, ascending=ascending)
+    df = df.sort_values(by=sortby, ascending=ascend)
     return df
 
 
 @log_start_end(log=logger)
 def get_coins_market_info(
-    symbols: str = "USD", sortby: str = "rank", ascending: bool = True
+    symbols: str = "USD", sortby: str = "rank", ascend: bool = True
 ) -> pd.DataFrame:
     """Returns basic coin information for all coins from CoinPaprika API [Source: CoinPaprika]
 
@@ -249,8 +249,8 @@ def get_coins_market_info(
         Comma separated quotes to return e.g quotes=USD,BTC
     sortby: str
         Key by which to sort data
-    ascending: bool
-        Flag to sort data ascending
+    ascend: bool
+        Flag to sort data ascend
 
     Returns
     -------
@@ -272,13 +272,13 @@ def get_coins_market_info(
         "pct_from_ath",
     ]
     df = _get_coins_info_helper(symbols=symbols)[cols].sort_values(by="rank")
-    df.sort_values(by=sortby, ascending=ascending)
+    df.sort_values(by=sortby, ascending=ascend)
     return df
 
 
 @log_start_end(log=logger)
 def get_list_of_exchanges(
-    symbols: str = "USD", sortby: str = "rank", ascending: bool = True
+    symbols: str = "USD", sortby: str = "rank", ascend: bool = True
 ) -> pd.DataFrame:
     """
     List exchanges from CoinPaprika API [Source: CoinPaprika]
@@ -289,8 +289,8 @@ def get_list_of_exchanges(
         Comma separated quotes to return e.g quotes=USD,BTC
     sortby: str
         Key by which to sort data
-    ascending: bool
-        Flag to sort data ascending
+    ascend: bool
+        Flag to sort data ascend
 
     Returns
     -------
@@ -333,7 +333,7 @@ def get_list_of_exchanges(
         inplace=True,
     )
     df.columns = [x.replace("reported_", "") for x in df.columns]
-    df = df.sort_values(by=sortby, ascending=ascending)
+    df = df.sort_values(by=sortby, ascending=ascend)
     return df
 
 
@@ -342,7 +342,7 @@ def get_exchanges_market(
     exchange_id: str = "binance",
     symbols: str = "USD",
     sortby: str = "pair",
-    ascending: bool = True,
+    ascend: bool = True,
 ) -> pd.DataFrame:
     """List markets by exchange ID [Source: CoinPaprika]
 
@@ -354,7 +354,7 @@ def get_exchanges_market(
         Comma separated quotes to return e.g quotes=USD,BTC
     sortby: str
         Key by which to sort data
-    ascending: bool
+    ascend: bool
         Flag to sort data ascending
 
     Returns
@@ -384,7 +384,7 @@ def get_exchanges_market(
     df = pd.DataFrame(data)
     df["exchange_id"] = exchange_id
     df = df[cols]
-    df = df.sort_values(by=sortby, ascending=ascending)
+    df = df.sort_values(by=sortby, ascending=ascend)
     return df
 
 
@@ -411,7 +411,7 @@ def get_all_contract_platforms() -> pd.DataFrame:
 
 @log_start_end(log=logger)
 def get_contract_platform(
-    platform_id: str = "eth-ethereum", sortby: str = "active", ascending: bool = True
+    platform_id: str = "eth-ethereum", sortby: str = "active", ascend: bool = True
 ) -> pd.DataFrame:
     """Gets all contract addresses for given platform [Source: CoinPaprika]
     Parameters
@@ -420,8 +420,8 @@ def get_contract_platform(
         Blockchain platform like eth-ethereum
     sortby: str
         Key by which to sort data
-    ascending: bool
-        Flag to sort data ascending
+    ascend: bool
+        Flag to sort data ascend
 
     Returns
     -------
@@ -435,5 +435,5 @@ def get_contract_platform(
     )
 
     df = pd.DataFrame(contract_platforms)[["id", "type", "active"]]
-    df = df.sort_values(by=sortby, ascending=ascending)
+    df = df.sort_values(by=sortby, ascending=ascend)
     return df

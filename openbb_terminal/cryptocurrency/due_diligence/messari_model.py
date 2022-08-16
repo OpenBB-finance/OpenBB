@@ -217,7 +217,7 @@ def get_links(symbol: str) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_roadmap(symbol: str, ascending: bool = True) -> pd.DataFrame:
+def get_roadmap(symbol: str, ascend: bool = True) -> pd.DataFrame:
     """Returns coin roadmap
     [Source: https://messari.io/]
 
@@ -225,7 +225,7 @@ def get_roadmap(symbol: str, ascending: bool = True) -> pd.DataFrame:
     ----------
     symbol : str
         Crypto symbol to check roadmap
-    ascending: bool
+    ascend: bool
         reverse order
 
     Returns
@@ -252,7 +252,7 @@ def get_roadmap(symbol: str, ascending: bool = True) -> pd.DataFrame:
         df = df.dropna(axis=1, how="all")
         df["Date"] = df["Date"].dt.date
         show_df = df
-        show_df = show_df.sort_values(by="Date", ascending=ascending)
+        show_df = show_df.sort_values(by="Date", ascending=ascend)
         show_df.fillna("Unknown", inplace=True)
     elif r.status_code == 401:
         console.print("[red]Invalid API Key[/red]\n")

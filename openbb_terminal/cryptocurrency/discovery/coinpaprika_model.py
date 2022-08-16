@@ -29,7 +29,7 @@ def get_search_results(
     category: Optional[Any] = None,
     modifier: Optional[Any] = None,
     sortby: str = "id",
-    ascending: bool = True,
+    ascend: bool = True,
 ) -> pd.DataFrame:
     """Search CoinPaprika. [Source: CoinPaprika]
 
@@ -47,7 +47,7 @@ def get_search_results(
     sortby: str
         Key to sort data. The table can be sorted by every of its columns. Refer to
         API documentation (see https://api.coinpaprika.com/docs#tag/Tools/paths/~1search/get)
-    ascending: bool
+    ascend: bool
         Flag to sort data descending
 
     Returns
@@ -75,5 +75,5 @@ def get_search_results(
                 }
             )
     df = pd.DataFrame(results)
-    df = df.sort_values(by=sortby, ascending=ascending)
+    df = df.sort_values(by=sortby, ascending=ascend)
     return df

@@ -9,6 +9,7 @@ import os
 from typing import Dict, List
 
 import binance
+import oandapyV20.endpoints.pricing
 import dotenv
 import praw
 import pyEX
@@ -19,6 +20,8 @@ from alpha_vantage.timeseries import TimeSeries
 from coinmarketcapapi import CoinMarketCapAPI, CoinMarketCapAPIError
 from prompt_toolkit.completion import NestedCompleter
 from pyEX.common.exception import PyEXception
+from oandapyV20 import API as oanda_API
+from oandapyV20.exceptions import V20Error
 
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal import feature_flags as obbff
@@ -440,8 +443,21 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             logger.info("Oanda key not defined")
             self.key_dict["OANDA"] = "not defined"
         else:
-            logger.info("Oanda key defined, not tested")
-            self.key_dict["OANDA"] = "defined, not tested"
+            client = oanda_API(access_token=cfg.OANDA_TOKEN)
+            account = cfg.OANDA_ACCOUNT
+            try:
+                parameters = {"instruments": "EUR_USD"}
+                request = oandapyV20.endpoints.pricing.PricingInfo(
+                    accountID=account, params=parameters
+                )
+                client.request(request)
+                logger.info("Oanda key defined, test passed")
+                self.key_dict["OANDA"] = "defined, test passed"
+
+            except V20Error as e:
+                logger.exception(str(e))
+                logger.info("Oanda key defined, test failed")
+                self.key_dict["OANDA"] = "defined, test failed"
 
         if show_output:
             console.print(self.key_dict["OANDA"] + "\n")
@@ -1414,7 +1430,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             "--account_type",
             type=str,
             dest="account_type",
-            help="account type",
+            help="account type ('live' or 'practice')",
         )
         if not other_args:
             console.print("For your API Key, visit: https://developer.oanda.com\n")

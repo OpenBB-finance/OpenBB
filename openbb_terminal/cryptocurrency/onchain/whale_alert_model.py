@@ -86,7 +86,7 @@ def get_whales_transactions(
     min_value: int = 800000,
     limit: int = 100,
     sortby: str = "date",
-    ascending: bool = False,
+    ascend: bool = False,
 ) -> pd.DataFrame:
     """Whale Alert's API allows you to retrieve live and historical transaction data from major blockchains.
     Supported blockchain: Bitcoin, Ethereum, Ripple, NEO, EOS, Stellar and Tron. [Source: https://docs.whale-alert.io/]
@@ -99,7 +99,7 @@ def get_whales_transactions(
         Limit of transactions. Max 100
     sortby: str
         Key to sort by.
-    ascending: str
+    ascend: str
         Sort in ascending order.
 
     Returns
@@ -172,5 +172,5 @@ def get_whales_transactions(
             "to_address",
         ]
     ]
-    df = df.sort_values(by=sortby, ascending=ascending)
+    df = df.sort_values(by=sortby, ascending=ascend)
     return df

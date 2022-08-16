@@ -82,7 +82,7 @@ SA_KEYS = {
 
 @log_start_end(log=logger)
 def get_stocks_data(
-    stocks: list,
+    symbols: list,
     finance_key: str,
     stocks_data: dict,
     period: str,
@@ -93,7 +93,7 @@ def get_stocks_data(
 
     Parameters
     ----------
-    stocks: list
+    symbols: list
         A list of tickers that will be used to collect data for.
     finance_key: str
         The finance key used to search within the SA_KEYS for the correct name of item
@@ -104,14 +104,17 @@ def get_stocks_data(
     period : str
         Whether you want annually, quarterly or trailing financial statements.
     currency : str
-        Choose in what currency you wish to convert each company's financial statement. Default is USD (US Dollars).
+        Choose in what currency you wish to convert each company's financial statement.
+        Default is USD (US Dollars).
 
     Returns
     -------
     dict
         Dictionary of filtered stocks data separated by financial statement
     """
+    del sa_dict
     no_data = []
+
     for symbol in tqdm(stocks):
         for item, description in SA_KEYS.items():
             if finance_key in description:
@@ -139,7 +142,7 @@ def get_stocks_data(
                     )["Adj Close"]
 
                     for year in symbol_statement_rounded:
-                        # Since fiscal year can differ, I take the median of the currency and not the last value
+                        # Since fiscal years differ, take the median and not the last value
                         # of the year
                         symbol_statement_rounded[year] = (
                             symbol_statement_rounded[year]

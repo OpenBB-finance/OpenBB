@@ -17,7 +17,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.stocks.options import chartexchange_model
 from openbb_terminal.config_terminal import theme
-
+from openbb_terminal.rich_config import console
 from openbb_terminal.helper_funcs import (
     plot_autoscale,
     lambda_long_number_format_y_axis,
@@ -87,8 +87,11 @@ def display_raw(
         External axes (1 axis is expected in the list), by default None
     """
 
-    df = chartexchange_model.get_option_history(symbol, expiry, call, price)[::-1]
-    df["Date"] = pd.to_expirytime(df["Date"])
+    df = chartexchange_model.get_option_history(ticker, date, call, price)[::-1]
+    if df.empty:
+        console.print("[red]No data found[/red]\n")
+        return
+    df["Date"] = pd.to_datetime(df["Date"])
     df = df.set_index("Date")
 
     candle_chart_kwargs = {

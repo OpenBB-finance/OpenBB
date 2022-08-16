@@ -23,7 +23,7 @@ def display_whales_transactions(
     min_value: int = 800000,
     top: int = 100,
     sortby: str = "date",
-    ascending: bool = False,
+    ascend: bool = False,
     show_address: bool = False,
     export: str = "",
 ) -> None:
@@ -37,7 +37,7 @@ def display_whales_transactions(
         Limit of transactions. Maximum 100
     sortby: str
         Key to sort by.
-    ascending: str
+    ascend: str
         Sort in ascending order.
     show_address: bool
         Flag to show addresses of transactions.
@@ -45,7 +45,7 @@ def display_whales_transactions(
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = whale_alert_model.get_whales_transactions(min_value, sortby, ascending)
+    df = whale_alert_model.get_whales_transactions(min_value, sortby, ascend)
 
     if df.empty:
         console.print("Failed to retrieve data.")

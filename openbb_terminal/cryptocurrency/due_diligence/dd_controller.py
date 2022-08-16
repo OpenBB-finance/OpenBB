@@ -1003,7 +1003,7 @@ class DueDiligenceController(CryptoBaseController):
                     currency=ns_parser.vs,
                     limit=ns_parser.limit,
                     sortby=ns_parser.sortby,
-                    ascending=not ns_parser.descend,
+                    ascend=not ns_parser.descend,
                     links=ns_parser.urls,
                     export=ns_parser.export,
                 )
@@ -1059,7 +1059,7 @@ class DueDiligenceController(CryptoBaseController):
                     symbol=self.symbol,
                     limit=ns_parser.limit,
                     sortby=ns_parser.sortby,
-                    ascending=not ns_parser.descend,
+                    ascend=not ns_parser.descend,
                     export=ns_parser.export,
                 )
 
@@ -1125,7 +1125,7 @@ class DueDiligenceController(CryptoBaseController):
                     symbol=self.symbol,
                     limit=ns_parser.limit,
                     sortby=ns_parser.sortby,
-                    ascending=not ns_parser.descend,
+                    ascend=not ns_parser.descend,
                     links=ns_parser.urls,
                     export=ns_parser.export,
                 )
@@ -1182,7 +1182,7 @@ class DueDiligenceController(CryptoBaseController):
                     symbol=self.symbol,
                     limit=ns_parser.limit,
                     sortby=ns_parser.sortby,
-                    ascending=not ns_parser.descend,
+                    ascend=not ns_parser.descend,
                     export=ns_parser.export,
                 )
 
@@ -1357,7 +1357,7 @@ class DueDiligenceController(CryptoBaseController):
 
         if ns_parser:
             messari_view.display_roadmap(
-                ascending=not ns_parser.descend,
+                ascend=not ns_parser.descend,
                 symbol=self.symbol.upper(),
                 limit=ns_parser.limit,
                 export=ns_parser.export,
@@ -1705,7 +1705,7 @@ class DueDiligenceController(CryptoBaseController):
                 source=self.source,
                 currency=self.symbol,
                 export=ns_parser.export,
-                ascending=not ns_parser.descend,
+                ascend=not ns_parser.descend,
                 post_kind=ns_parser.kind,
                 filter_=ns_parser.filter,
                 region=ns_parser.region,
