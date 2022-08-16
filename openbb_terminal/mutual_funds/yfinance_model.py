@@ -12,12 +12,12 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def get_information(fund: str) -> Dict:
+def get_information(name: str) -> Dict:
     """Get fund information for fund symbol
 
     Parameters
     ----------
-    fund : str
+    name : str
         Symbol of fund
 
     Returns
@@ -25,4 +25,4 @@ def get_information(fund: str) -> Dict:
     dict
         Dictionary containing fund information
     """
-    return yf.Ticker(fund).info
+    return yf.Ticker(name).info
