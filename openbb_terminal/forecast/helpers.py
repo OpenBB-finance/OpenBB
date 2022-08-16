@@ -700,9 +700,12 @@ def plot_residuals(
         )
         my_stopper = early_stopper(5, "val_loss")
         pl_trainer_kwargs = {"callbacks": [my_stopper], "accelerator": "cpu"}
-        model.pl_trainer_kwargs = pl_trainer_kwargs
+        model.trainer_params = pl_trainer_kwargs
         residuals = model.residuals(
-            series=series, forecast_horizon=forecast_horizon, verbose=True
+            series=series,
+            forecast_horizon=forecast_horizon,
+            retrain=False,
+            verbose=True,
         )
         plot_residuals_analysis(residuals=residuals, num_bins=num_bins, fill_nan=True)
 
