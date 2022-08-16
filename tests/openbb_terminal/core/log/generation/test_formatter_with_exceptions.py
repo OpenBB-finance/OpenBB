@@ -1,6 +1,6 @@
 import os
 import pytest
-from openbb_terminal.core.log.generation import formatter_with_exceptions as fwe
+from openbb_terminal.core.log.generation import formatter_with_exceptions
 from openbb_terminal.core.log.generation.settings import AppSettings
 from openbb_terminal.core.config.constants import REPO_DIR
 
@@ -12,7 +12,7 @@ app_settings = AppSettings(
 )
 
 
-formatter = fwe.FormatterWithExceptions(app_settings)
+formatter = formatter_with_exceptions.FormatterWithExceptions(app_settings)
 
 
 @pytest.mark.parametrize("exc, level", [(True, True), (False, "name"), (False, False)])
