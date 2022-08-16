@@ -16,7 +16,7 @@ from openbb_terminal.stocks.fundamental_analysis.dcf_model import create_datafra
 
 logger = logging.getLogger(__name__)
 
-sa_keys = {
+SA_KEYS = {
     "BS": {
         "ce": "Cash & Equivalents",
         "sti": "Short-Term Investments",
@@ -96,7 +96,7 @@ def get_stocks_data(
     stocks: list
         A list of tickers that will be used to collect data for.
     finance_key: str
-        The finance key used to search within the sa_dict for the correct name of item
+        The finance key used to search within the SA_KEYS for the correct name of item
         on the financial statement
     stocks_data : dict
         A dictionary that is empty on initialisation but filled once data is collected
@@ -113,7 +113,7 @@ def get_stocks_data(
     """
     no_data = []
     for symbol in tqdm(stocks):
-        for item, description in sa_keys.items():
+        for item, description in SA_KEYS.items():
             if finance_key in description:
                 if item not in stocks_data:
                     stocks_data[item] = {}
