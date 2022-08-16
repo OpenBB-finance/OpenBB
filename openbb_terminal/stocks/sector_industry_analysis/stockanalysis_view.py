@@ -91,7 +91,7 @@ def display_plots_financials(
 
     used_statement = [
         item
-        for item, description in stockanalysis_model.sa_keys.items()
+        for item, description in stockanalysis_model.SA_KEYS.items()
         if finance_key in description
     ][0]
 
@@ -134,7 +134,7 @@ def display_plots_financials(
                 stocks_data_statement[company].columns[-period_length:]
             ]
 
-    item_name = stockanalysis_model.sa_keys[used_statement][finance_key]
+    item_name = stockanalysis_model.SA_KEYS[used_statement][finance_key]
 
     df = pd.DataFrame(
         np.nan,
