@@ -4,7 +4,6 @@ __docformat__ = "numpy"
 import logging
 import os
 from typing import List, Optional
-from datetime import datetime
 
 import matplotlib.pyplot as plt
 import mplfinance as mpf
@@ -120,23 +119,23 @@ def view_ma(
 
 @log_start_end(log=logger)
 def view_vwap(
+    data: pd.DataFrame,
     symbol: str = "",
-    data: pd.DataFrame = None,
-    start_date: Optional[datetime] = None,
-    end_date: Optional[datetime] = None,
+    start_date: str = None,
+    end_date: str = None,
     offset: int = 0,
     s_interval: str = "",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Plots EMA technical indicator
+    """Plots VWMA technical indicator
 
     Parameters
     ----------
-    symbol : str
-        Ticker
     data : pd.DataFrame
         Dataframe of OHLC prices
+    symbol : str
+        Ticker
     offset : int
         Offset variable
     start_date: datetime
@@ -153,14 +152,17 @@ def view_vwap(
 
     data.index = data.index.tz_localize(None)
 
-    if start_date and end_date:
-        start = start_date.date()
-        end = end_date.date()
+    if start_date is None:
+        start = data.index[0].date()
+        console.print(f"No start date specified. Start date: {start}")
     else:
-        start = end = data.index[-1].date()
-        console.print(
-            f"No Specified date range. load most recent trading data: {start.strftime('%Y-%m-%d')}"
-        )
+        start = start_date
+
+    if end_date is None:
+        end = data.index[-1].date()
+        console.print(f"No end date specified. End date: {end}")
+    else:
+        end = end_date
 
     day_df = data[(start <= data.index.date) & (data.index.date <= end)]
     if len(day_df) == 0:
