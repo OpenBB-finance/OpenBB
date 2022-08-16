@@ -83,3 +83,25 @@ def process_news_headlines_sentiment(
                 last_headline = article["headline"].upper()
 
     return pd.DataFrame(l_compound, index=l_datetime).sort_index()
+
+
+@log_start_end(log=logger)
+def get_headlines_sentiment(
+    symbol: str,
+) -> pd.DataFrame:
+    """Get headlines sentiment using VADER model over time. [Source: Finnhub]
+
+    Parameters
+    ----------
+    symbol : str
+        Ticker of company
+    """
+    start = datetime.now() - timedelta(days=30)
+    articles = get_company_news(
+        symbol.upper(),
+        start_date=start.strftime("%Y-%m-%d"),
+        end_date=datetime.now().strftime("%Y-%m-%d"),
+    )
+    sentiment = process_news_headlines_sentiment(articles)
+
+    return sentiment

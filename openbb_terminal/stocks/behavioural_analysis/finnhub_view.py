@@ -42,13 +42,7 @@ def display_stock_price_headlines_sentiment(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
     """
-    start = datetime.now() - timedelta(days=30)
-    articles = finnhub_model.get_company_news(
-        symbol.upper(),
-        s_start=start.strftime("%Y-%m-%d"),
-        s_end=datetime.now().strftime("%Y-%m-%d"),
-    )
-    sentiment = finnhub_model.process_news_headlines_sentiment(articles)
+    sentiment = finnhub_model.get_headlines_sentiment(symbol)
 
     if not sentiment.empty:
         sentiment_data = [item for sublist in sentiment.values for item in sublist]

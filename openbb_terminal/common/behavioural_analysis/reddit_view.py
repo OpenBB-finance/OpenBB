@@ -141,7 +141,7 @@ def display_watchlist(limit: int = 5):
     ]
 )
 def display_popular_tickers(
-    limit: int = 10, posts_to_look_at: int = 50, subreddits: str = "", export: str = ""
+    limit: int = 10, post_limit: int = 50, subreddits: str = "", export: str = ""
 ):
     """Print latest popular tickers. [Source: Reddit]
 
@@ -149,16 +149,14 @@ def display_popular_tickers(
     ----------
     limit : int
         Number of top tickers to get
-    posts_to_look_at : int
+    post_limit : int
         How many posts to analyze in each subreddit
     subreddits : str, optional
         String of comma separated subreddits.
     export : str
         Format to export dataframe
     """
-    popular_tickers_df = reddit_model.get_popular_tickers(
-        limit, posts_to_look_at, subreddits
-    )
+    popular_tickers_df = reddit_model.get_popular_tickers(limit, post_limit, subreddits)
     if not popular_tickers_df.empty:
         print_rich_table(
             popular_tickers_df,

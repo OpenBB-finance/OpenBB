@@ -302,7 +302,7 @@ class BehaviouralAnalysisController(StockBaseController):
         if ns_parser:
             reddit_view.display_popular_tickers(
                 limit=ns_parser.limit,
-                posts_to_look_at=ns_parser.num,
+                post_limit=ns_parser.num,
                 subreddits=ns_parser.s_subreddit,
             )
 

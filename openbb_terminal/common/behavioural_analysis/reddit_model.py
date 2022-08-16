@@ -136,7 +136,7 @@ def get_watchlists(
 
 @log_start_end(log=logger)
 def get_popular_tickers(
-    limit: int, posts_to_look_at: int, subreddits: str = ""
+    limit: int = 10, post_limit: int = 50, subreddits: str = ""
 ) -> pd.DataFrame:
     """Get popular tickers from list of subreddits [Source: reddit]
 
@@ -144,7 +144,7 @@ def get_popular_tickers(
     ----------
     limit : int
         Number of top tickers to get
-    posts_to_look_at : int
+    post_limit : int
         How many posts to analyze in each subreddit
     subreddits : str, optional
         String of comma separated subreddits.
@@ -190,11 +190,11 @@ def get_popular_tickers(
 
     for s_sub_reddit in sub_reddit_list:
         console.print(
-            f"Search for latest tickers for {posts_to_look_at} '{s_sub_reddit}' posts"
+            f"Search for latest tickers for {post_limit} '{s_sub_reddit}' posts"
         )
         submissions = psaw_api.search_submissions(
             subreddit=s_sub_reddit,
-            limit=posts_to_look_at,
+            limit=post_limit,
             filter=["id"],
         )
 
@@ -295,7 +295,7 @@ def get_popular_tickers(
 
 @log_start_end(log=logger)
 def get_spac_community(
-    limit: int, popular: bool
+    limit: int = 10, popular: bool = False
 ) -> Tuple[List[praw.models.reddit.submission.Submission], Dict]:
     """Get top tickers from r/SPACs [Source: reddit]
 
