@@ -165,7 +165,7 @@ def display_seasonality(
 
         # TODO: Add darts check_seasonality here
         plot_acf(
-            series, m=m, max_lag=max_lag, alpha=alpha, axis=ax, default_formatting=True
+            series, m=m, max_lag=max_lag, alpha=alpha, axis=ax, default_formatting=False
         )
 
         theme.style_primary_axis(ax)
