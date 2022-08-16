@@ -251,18 +251,17 @@ def get_rolling_beta(
     benchmark_returns: pd.Series
         Series of benchmark returns
     period: string
-        Interval used for rolling values. Possible options: mtd, qtd, ytd, 3m, 6m, 1y, 3y, 5y, 10y
+        Interval used for rolling values.
+        Possible options: mtd, qtd, ytd, 1d, 5d, 10d, 1m, 3m, 6m, 1y, 3y, 5y, 10y.
 
     Returns
     -------
     pd.DataFrame
         DataFrame of the portfolio's rolling beta
     """
-    print("HERE!")
-    print(period)
 
     length = portfolio_helper.PERIODS_DAYS[period]
-    print(length)
+
     covs = (
         pd.DataFrame({"Portfolio": portfolio_returns, "Benchmark": benchmark_returns})
         .dropna(axis=0)
@@ -309,7 +308,7 @@ def calculate_beta(portfolio_returns: pd.Series, benchmark_returns: pd.Series) -
 
 @log_start_end(log=logger)
 def get_tracking_error(
-    portfolio_returns: pd.Series, benchmark_returns: pd.Series, period: int = 252
+    portfolio_returns: pd.Series, benchmark_returns: pd.Series, period: str = "1y"
 ) -> Tuple[pd.DataFrame, pd.Series]:
     """Get tracking error, or active risk, using portfolio and benchmark returns
 
@@ -319,8 +318,9 @@ def get_tracking_error(
         Series of portfolio returns
     benchmark_returns: pd.Series
         Series of benchmark returns
-    period: int
-        Interval used for rolling values
+    period: string
+        Interval used for rolling values.
+        Possible options: mtd, qtd, ytd, 1d, 5d, 10d, 1m, 3m, 6m, 1y, 3y, 5y, 10y.
 
     Returns
     -------
@@ -437,7 +437,7 @@ def get_information_ratio(
 
 @log_start_end(log=logger)
 def get_tail_ratio(
-    portfolio_returns: pd.Series, benchmark_returns: pd.Series, period: int = 252
+    portfolio_returns: pd.Series, benchmark_returns: pd.Series, period: str = "1y"
 ) -> Tuple[pd.DataFrame, pd.Series, pd.Series]:
     """Returns the portfolios tail ratio
 
@@ -448,7 +448,8 @@ def get_tail_ratio(
     benchmark_returns: pd.Series
         Series of benchmark returns
     period: int
-        Interval used for rolling values
+        Interval used for rolling values.
+        Possible options: mtd, qtd, ytd, 1d, 5d, 10d, 1m, 3m, 6m, 1y, 3y, 5y, 10y.
 
     Returns
     -------
@@ -504,7 +505,7 @@ def get_common_sense_ratio(
     historical_trade_data: pd.DataFrame,
     benchmark_trades: pd.DataFrame,
     benchmark_returns: pd.Series,
-):
+) -> pd.DataFrame:
     """Get common sense ratio
 
     Parameters
@@ -554,18 +555,18 @@ def get_common_sense_ratio(
 
 @log_start_end(log=logger)
 def get_jensens_alpha(
-    returns: pd.DataFrame,
+    portfolio_returns: pd.Series,
     historical_trade_data: pd.DataFrame,
     benchmark_trades: pd.DataFrame,
-    benchmark_returns: pd.DataFrame,
+    benchmark_returns: pd.Series,
     rf: float = 0,
-    period: int = 252,
-):
+    period: str = "1y",
+) -> Tuple[pd.DataFrame, pd.Series]:
     """Get jensen's alpha
 
     Parameters
     ----------
-    returns: pd.DataFrame
+    portfolio_returns: pd.Series
         Series of portfolio returns
     historical_trade_data: pd.DataFrame
         Dataframe of historical data for the portfolios trade
@@ -575,8 +576,9 @@ def get_jensens_alpha(
         Series of benchmark returns
     rf: float
         Risk free rate
-    period: int
-        Interval used for rolling values
+    period: str
+        Interval used for rolling values.
+        Possible options: mtd, qtd, ytd, 1d, 5d, 10d, 1m, 3m, 6m, 1y, 3y, 5y, 10y.
 
     Returns
     -------
@@ -585,16 +587,17 @@ def get_jensens_alpha(
     pd.Series
         Series of jensens's alpha data
     """
+    length = portfolio_helper.PERIODS_DAYS[period]
     periods_d = portfolio_helper.PERIODS_DAYS
 
-    period_cum_returns = (1.0 + returns).rolling(window=period).agg(
+    period_cum_returns = (1.0 + portfolio_returns).rolling(window=period).agg(
         lambda x: x.prod()
     ) - 1
     period_cum_bench_returns = (1.0 + benchmark_returns).rolling(window=period).agg(
         lambda x: x.prod()
     ) - 1
-    rfr_cum_returns = rf * period / 252
-    beta = get_rolling_beta(returns, benchmark_returns, period)
+    rfr_cum_returns = rf * length / 252
+    beta = get_rolling_beta(portfolio_returns, benchmark_returns, length)
     ja_rolling = period_cum_returns - (
         rfr_cum_returns + beta * (period_cum_bench_returns - rfr_cum_returns)
     )
@@ -602,7 +605,7 @@ def get_jensens_alpha(
     benchmark_trades = benchmark_trades.set_index("Date")
     vals = list()
     for periods in portfolio_helper.PERIODS:
-        period_return = portfolio_helper.filter_df_by_period(returns, periods)
+        period_return = portfolio_helper.filter_df_by_period(portfolio_returns, periods)
         period_bench_return = portfolio_helper.filter_df_by_period(
             benchmark_returns, periods
         )
@@ -658,26 +661,27 @@ def get_jensens_alpha(
 
 @log_start_end(log=logger)
 def get_calmar_ratio(
-    returns: pd.DataFrame,
+    portfolio_returns: pd.Series,
     historical_trade_data: pd.DataFrame,
     benchmark_trades: pd.DataFrame,
-    benchmark_returns: pd.DataFrame,
-    period: int = 756,
-):
+    benchmark_returns: pd.Series,
+    period: str = "3y",
+) -> Tuple[pd.DataFrame, pd.Series]:
     """Get calmar ratio
 
     Parameters
     ----------
-    returns: pd.DataFrame
-        DataFrame of portfolio returns
+    portfolio_returns: pd.Serires
+        Series of portfolio returns
     historical_trade_data: pd.DataFrame
         Dataframe of historical data for the portfolios trade
     benchmark_trades: pd.DataFrame
         Dataframe of the benchmarks trades
     benchmark_returns: pd.DataFrame
-        DataFrame of benchmark returns
+        Series of benchmark returns
     period: int
-        Interval used for rolling values
+        Interval used for rolling values.
+        Possible options: mtd, qtd, ytd, 1d, 5d, 10d, 1m, 3m, 6m, 1y, 3y, 5y, 10y.
 
     Returns
     -------
@@ -687,20 +691,19 @@ def get_calmar_ratio(
         Series of calmar ratio data
     """
     periods_d = portfolio_helper.PERIODS_DAYS
-
-    period_cum_returns = (1.0 + returns).rolling(window=period).agg(
+    period_cum_returns = (1.0 + portfolio_returns).rolling(window=period).agg(
         lambda x: x.prod()
     ) - 1
 
     # Calculate annual return
-    annual_return = period_cum_returns ** (1 / (period / 252)) - 1
+    annual_return = period_cum_returns ** (1 / (int(period) / 252)) - 1
 
-    cr_rolling = annual_return / get_maximum_drawdown(returns)
+    cr_rolling = annual_return / get_maximum_drawdown(portfolio_returns)
 
     benchmark_trades = benchmark_trades.set_index("Date")
     vals = list()
     for periods in portfolio_helper.PERIODS:
-        period_return = portfolio_helper.filter_df_by_period(returns, periods)
+        period_return = portfolio_helper.filter_df_by_period(portfolio_returns, periods)
         period_historical_trade_data = portfolio_helper.filter_df_by_period(
             historical_trade_data, periods
         )
@@ -758,12 +761,14 @@ def get_calmar_ratio(
 
 
 @log_start_end(log=logger)
-def get_kelly_criterion(returns: pd.DataFrame, portfolio_trades: pd.DataFrame):
+def get_kelly_criterion(
+    portfolio_returns: pd.Series, portfolio_trades: pd.DataFrame
+) -> pd.DataFrame:
     """Gets kelly criterion
 
     Parameters
     ----------
-    returns: pd.DataFrame
+    portfolio_returns: pd.Series
         DataFrame of portfolio returns
     portfolio_trades: pd.DataFrame
         DataFrame of the portfolio trades with trade return in %
@@ -778,7 +783,7 @@ def get_kelly_criterion(returns: pd.DataFrame, portfolio_trades: pd.DataFrame):
 
     vals: list = list()
     for period in portfolio_helper.PERIODS:
-        period_return = portfolio_helper.filter_df_by_period(returns, period)
+        period_return = portfolio_helper.filter_df_by_period(portfolio_returns, period)
         period_portfolio_tr = portfolio_helper.filter_df_by_period(
             portfolio_trades, period
         )
@@ -804,7 +809,7 @@ def get_kelly_criterion(returns: pd.DataFrame, portfolio_trades: pd.DataFrame):
 
 
 @log_start_end(log=logger)
-def get_payoff_ratio(portfolio_trades: pd.DataFrame):
+def get_payoff_ratio(portfolio_trades: pd.DataFrame) -> pd.DataFrame:
     """Gets payoff ratio
 
     Parameters
@@ -859,7 +864,7 @@ def get_payoff_ratio(portfolio_trades: pd.DataFrame):
 
 
 @log_start_end(log=logger)
-def get_profit_factor(portfolio_trades: pd.DataFrame):
+def get_profit_factor(portfolio_trades: pd.DataFrame) -> pd.DataFrame:
     """Gets profit factor
 
     Parameters
@@ -1913,31 +1918,34 @@ class PortfolioModel:
         return pf_period_df
 
 
-def rolling_volatility(returns: pd.DataFrame, length: int) -> pd.DataFrame:
+def rolling_volatility(
+    portfolio_returns: pd.Series, period: str = "1yr"
+) -> pd.DataFrame:
     """Get rolling volatility
 
     Parameters
     ----------
-    returns : pd.DataFrame
-        Returns series
-    length : int
-        Rolling window to use
+    portfolio_returns : pd.Series
+        Series of portfolio returns
+    period : int
+        Rolling window size to use
 
     Returns
     -------
     pd.DataFrame
         Rolling volatility DataFrame
     """
-    return returns.rolling(length).std()
+    length = portfolio_helper.PERIODS_DAYS[period]
+    return portfolio_returns.rolling(length).std()
 
 
-def sharpe_ratio(return_series: pd.Series, risk_free_rate: float) -> float:
+def sharpe_ratio(portfolio_returns: pd.Series, risk_free_rate: float) -> float:
     """Get sharpe ratio
 
     Parameters
     ----------
     return_series : pd.Series
-        Returns of the portfolio
+        Series of portfolio returns
     risk_free_rate: float
         Value to use for risk free rate
 
@@ -1946,44 +1954,48 @@ def sharpe_ratio(return_series: pd.Series, risk_free_rate: float) -> float:
     float
         Sharpe ratio
     """
-    mean = return_series.mean() - risk_free_rate
-    sigma = return_series.std()
+    mean = portfolio_returns.mean() - risk_free_rate
+    sigma = portfolio_returns.std()
 
     return mean / sigma
 
 
 def rolling_sharpe(
-    returns: pd.DataFrame, risk_free_rate: float, length: int
+    portfolio_returns: pd.DataFrame, risk_free_rate: float, period: str = "1y"
 ) -> pd.DataFrame:
     """Get rolling sharpe ratio
 
     Parameters
     ----------
-    returns : pd.DataFrame
-        Returns series
+    portfolio_returns : pd.Series
+        Series of portfolio returns
     risk_free_rate : float
         Risk free rate
-    length : int
+    period : str
         Rolling window to use
+        Possible options: mtd, qtd, ytd, 1d, 5d, 10d, 1m, 3m, 6m, 1y, 3y, 5y, 10y
 
     Returns
     -------
     pd.DataFrame
         Rolling sharpe ratio DataFrame
     """
-    rolling_sharpe_df = returns.rolling(length).apply(
+
+    length = portfolio_helper.PERIODS_DAYS[period]
+
+    rolling_sharpe_df = portfolio_returns.rolling(length).apply(
         lambda x: (x.mean() - risk_free_rate) / x.std()
     )
     return rolling_sharpe_df
 
 
-def sortino_ratio(return_series: pd.Series, risk_free_rate: float) -> float:
+def sortino_ratio(portfolio_returns: pd.Series, risk_free_rate: float) -> float:
     """Get sortino ratio
 
     Parameters
     ----------
-    return_series : pd.Series
-        Returns of the portfolio
+    portfolio_returns : pd.Series
+        Series of portfolio returns
     risk_free_rate: float
         Value to use for risk free rate
 
@@ -1992,21 +2004,21 @@ def sortino_ratio(return_series: pd.Series, risk_free_rate: float) -> float:
     float
         Sortino ratio
     """
-    mean = return_series.mean() - risk_free_rate
-    std_neg = return_series[return_series < 0].std()
+    mean = portfolio_returns.mean() - risk_free_rate
+    std_neg = portfolio_returns[portfolio_returns < 0].std()
 
     return mean / std_neg
 
 
 def rolling_sortino(
-    returns: pd.DataFrame, risk_free_rate: float, length: int
+    portfolio_returns: pd.Series, risk_free_rate: float, period: str = "1y"
 ) -> pd.DataFrame:
     """Get rolling sortino ratio
 
     Parameters
     ----------
-    returns : pd.DataFrame
-        Returns series
+    portfolio_returns : pd.Series
+        Series of portfolio returns
     risk_free_rate : float
         Risk free rate
     length : int
@@ -2017,27 +2029,28 @@ def rolling_sortino(
     pd.DataFrame
         Rolling sortino ratio DataFrame
     """
-    rolling_sortino_df = returns.rolling(length).apply(
+    length = portfolio_helper.PERIODS_DAYS[period]
+    rolling_sortino_df = portfolio_returns.rolling(length).apply(
         lambda x: (x.mean() - risk_free_rate) / x[x < 0].std()
     )
 
     return rolling_sortino_df
 
 
-def get_maximum_drawdown(return_series: pd.Series) -> float:
+def get_maximum_drawdown(portfolio_returns: pd.Series) -> float:
     """Get maximum drawdown
 
     Parameters
     ----------
-    return_series : pd.Series
-        Returns of the portfolio
+    portfolio_returns : pd.Series
+        Series of portfolio returns
 
     Returns
     -------
     float
         Maximum drawdown
     """
-    comp_ret = (return_series + 1).cumprod()
+    comp_ret = (portfolio_returns + 1).cumprod()
     peak = comp_ret.expanding(min_periods=1).max()
     dd = (comp_ret / peak) - 1
 

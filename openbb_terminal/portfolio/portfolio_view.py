@@ -955,11 +955,9 @@ def display_rolling_volatility(
             return
         ax = external_axes
 
-    length = portfolio_helper.PERIODS_DAYS[period]
-
-    rolling_volatility = portfolio_model.rolling_volatility(portfolio_returns, length)
+    rolling_volatility = portfolio_model.rolling_volatility(portfolio_returns, period)
     rolling_volatility_bench = portfolio_model.rolling_volatility(
-        benchmark_returns, length
+        benchmark_returns, period
     )
 
     rolling_volatility.plot(ax=ax)
@@ -1015,13 +1013,11 @@ def display_rolling_sharpe(
             return
         ax = external_axes
 
-    length = portfolio_helper.PERIODS_DAYS[period]
-
     rolling_sharpe = portfolio_model.rolling_sharpe(
-        portfolio_returns, risk_free_rate, length
+        portfolio_returns, risk_free_rate, period
     )
     rolling_sharpe_bench = portfolio_model.rolling_sharpe(
-        benchmark_returns, risk_free_rate, length
+        benchmark_returns, risk_free_rate, period
     )
 
     rolling_sharpe.plot(ax=ax)
@@ -1077,13 +1073,11 @@ def display_rolling_sortino(
             return
         ax = external_axes
 
-    length = portfolio_helper.PERIODS_DAYS[period]
-
     rolling_sortino = portfolio_model.rolling_sortino(
-        portfolio_returns, risk_free_rate, length
+        portfolio_returns, risk_free_rate, period
     )
     rolling_sortino_bench = portfolio_model.rolling_sortino(
-        benchmark_returns, risk_free_rate, length
+        benchmark_returns, risk_free_rate, period
     )
 
     rolling_sortino.plot(ax=ax)
