@@ -9,7 +9,8 @@ from openbb_terminal.stocks.technical_analysis import rsp_view
 # pylint: disable=E1101
 
 
-@pytest.mark.record_stdout
+@pytest.mark.vcr(record_mode="none")
+@pytest.mark.record_stdout()
 @pytest.mark.parametrize(
     "ticker",
     [
