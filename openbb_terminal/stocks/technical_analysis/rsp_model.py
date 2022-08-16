@@ -50,4 +50,4 @@ def get_rsp(
             if s_ticker in df_industries_p.iloc[i]["Tickers"]:
                 rsp_industry = df_industries_p.iloc[[i]]
 
-    return (rsp_stock, rsp_industry, df_stock_p, df_industries_p)
+    return (rsp_stock, rsp_industry, df_stock_p, df_industries_p)  # type: ignore
