@@ -88,7 +88,7 @@ def display_raw(
     """
 
     df = chartexchange_model.get_option_history(symbol, expiry, call, price)[::-1]
-    df["Date"] = pd.to_expirytime(df["Date"])
+    df["Date"] = pd.to_datetime(df["Date"])
     df = df.set_index("Date")
 
     candle_chart_kwargs = {
