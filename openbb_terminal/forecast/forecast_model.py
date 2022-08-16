@@ -70,7 +70,7 @@ def load(
             if tmp in data_files:
                 full_file = data_files[tmp]
 
-    if not Path(file).exists():
+    if not Path(full_file).exists():
         console.print(f"[red]Cannot find the file {full_file}[/red]\n")
 
         return pd.DataFrame()
