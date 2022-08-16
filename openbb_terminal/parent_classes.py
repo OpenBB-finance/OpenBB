@@ -786,7 +786,7 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
             "-r",
             "--iexrange",
             dest="iexrange",
-            help="Range for using the iexcloud api.  Note that longer range requires more tokens in account",
+            help="Range for using the iexcloud api.  Longer range requires more tokens in account",
             choices=["ytd", "1y", "2y", "5y", "6m"],
             type=str,
             default="ytd",
@@ -818,14 +818,15 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                 )
             else:
                 # This seems to block the .exe since the folder needs to be manually created
-                # This block basically makes sure that we only look for the file if the -f flag is used
-                # If we add files in the argparse choices, it will fail for the .exe even if no -f is used
+                # This block makes sure that we only look for the file if the -f flag is used
+                # Adding files in the argparse choices, will fail for the .exe even without -f
                 try:
                     if ns_parser.filepath not in os.listdir(
                         os.path.join("custom_imports", "stocks")
                     ):
                         console.print(
-                            f"[red]{ns_parser.filepath} not found in custom_imports/stocks/ folder[/red].\n"
+                            f"[red]{ns_parser.filepath} not found in custom_imports/stocks/ "
+                            "folder[/red].\n"
                         )
                         return
                 except Exception as e:

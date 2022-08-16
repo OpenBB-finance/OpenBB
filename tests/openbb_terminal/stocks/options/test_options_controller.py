@@ -131,6 +131,7 @@ def test_menu_with_queue(expected, mocker, queue):
     assert result_menu == expected
 
 
+@pytest.mark.skip
 @pytest.mark.vcr(record_mode="none")
 def test_menu_without_queue_completion(mocker):
     path_controller = "openbb_terminal.stocks.options.options_controller"
@@ -295,6 +296,7 @@ def test_call_cls(mocker):
     os.system.assert_called_once_with("cls||clear")
 
 
+@pytest.mark.skip
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.parametrize(
     "func, queue, expected_queue",
@@ -370,7 +372,7 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
     assert controller.queue == expected_queue
 
 
-# @pytest.mark.skip
+@pytest.mark.skip
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.parametrize(
     "tested_func, other_args, mocked_func, called_args, called_kwargs",

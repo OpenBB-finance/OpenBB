@@ -64,7 +64,7 @@ class EconomyController(BaseController):
         "industry",
         "bigmac",
         "ycrv",
-        "ecocal",
+        "events",
     ]
 
     CHOICES_MENUS = ["pred", "qa"]
@@ -189,24 +189,21 @@ class EconomyController(BaseController):
                 c: None for c in investingcom_model.BOND_COUNTRIES
             }
 
-            self.choices["ecocal"]["-c"] = {
+            self.choices["events"]["-c"] = {
                 c: None for c in investingcom_model.CALENDAR_COUNTRIES
             }
-            self.choices["ecocal"]["--countries"] = {
+            self.choices["events"]["--countries"] = {
                 c: None for c in investingcom_model.CALENDAR_COUNTRIES
             }
 
-            self.choices["ecocal"]["-i"] = {
+            self.choices["events"]["-i"] = {
                 c: None for c in investingcom_model.IMPORTANCES
             }
-            self.choices["ecocal"]["--importances"] = {
+            self.choices["events"]["--importances"] = {
                 c: None for c in investingcom_model.IMPORTANCES
             }
 
-            self.choices["ecocal"]["-cat"] = {
-                c: None for c in investingcom_model.CATEGORIES
-            }
-            self.choices["ecocal"]["--categories"] = {
+            self.choices["events"]["--cat"] = {
                 c: None for c in investingcom_model.CATEGORIES
             }
 
@@ -261,7 +258,7 @@ class EconomyController(BaseController):
         mt.add_cmd("map", "Finviz")
         mt.add_cmd("bigmac", "NASDAQ Datalink")
         mt.add_cmd("ycrv", "Investing.com / FRED")
-        mt.add_cmd("ecocal", "Investing.com")
+        mt.add_cmd("events", "Investing.com")
         mt.add_raw("\n")
         mt.add_cmd("rtps", "Alpha Vantage")
         mt.add_cmd("valuation", "Finviz")
@@ -1033,13 +1030,13 @@ class EconomyController(BaseController):
                 )
 
     @log_start_end(log=logger)
-    def call_ecocal(self, other_args: List[str]):
-        """Process ecocal command"""
+    def call_events(self, other_args: List[str]):
+        """Process events command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="ecocal",
-            description="Economic calendar. If no start or end dates, default is the current day.",
+            prog="events",
+            description="Economic calendar. If no start or end dates, default is the current day high importance events.",
         )
         parser.add_argument(
             "-c",
@@ -1059,12 +1056,10 @@ class EconomyController(BaseController):
             help="Event importance classified as high, medium, low or all.",
         )
         parser.add_argument(
-            "-cat",
-            "--categories",
+            "--cat",
             action="store",
             dest="categories",
             choices=investingcom_model.CATEGORIES,
-            nargs="+",
             default=None,
             help="Event category.",
         )
@@ -1076,7 +1071,6 @@ class EconomyController(BaseController):
             help="The start date of the data (format: YEAR-MONTH-DAY, i.e. 2010-12-31)",
             default=None,
         )
-
         parser.add_argument(
             "-e",
             "--end_date",
@@ -1085,7 +1079,6 @@ class EconomyController(BaseController):
             help="The start date of the data (format: YEAR-MONTH-DAY, i.e. 2010-12-31)",
             default=None,
         )
-
         ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
@@ -1095,12 +1088,8 @@ class EconomyController(BaseController):
         )
 
         if ns_parser:
-
             if isinstance(ns_parser.country, list):
                 ns_parser.country = " ".join(ns_parser.country)
-
-            if isinstance(ns_parser.categories, list):
-                ns_parser.categories = " ".join(ns_parser.categories)
 
             investingcom_model.check_correct_country(
                 ns_parser.country, investingcom_model.CALENDAR_COUNTRIES
@@ -1439,30 +1428,43 @@ class EconomyController(BaseController):
 
     @log_start_end(log=logger)
     def call_pred(self, _):
+
         """Process pred command"""
-        if not self.DATASETS:
+        # IMPORTANT: 8/11/22 prediction was discontinued on the installer packages
+        # because forecasting in coming out soon.
+        # This if statement disallows installer package users from using 'pred'
+        # even if they turn on the OPENBB_ENABLE_PREDICT feature flag to true
+        # however it does not prevent users who clone the repo from using it
+        # if they have ENABLE_PREDICT set to true.
+        if obbff.PACKAGED_APPLICATION or not obbff.ENABLE_PREDICT:
             console.print(
-                "There is no data stored yet. Please use either the 'macro', 'fred', 'index' and/or "
-                "'treasury' command in combination with the -st argument to be able to plot data.\n"
+                "Predict is disabled. Forecasting coming soon!",
+                "\n",
             )
-            return
+        else:
+            if not self.DATASETS:
+                console.print(
+                    "There is no data stored yet. Please use either the 'macro', 'fred', 'index' and/or "
+                    "'treasury' command in combination with the -st argument to be able to plot data.\n"
+                )
+                return
 
-        from openbb_terminal.economy.prediction.pred_controller import (
-            PredictionTechniquesController,
-        )
+            from openbb_terminal.economy.prediction.pred_controller import (
+                PredictionTechniquesController,
+            )
 
-        data: Dict = {}
-        for source, _ in self.DATASETS.items():
-            if not self.DATASETS[source].empty:
-                if len(self.DATASETS[source].columns) == 1:
-                    data[self.DATASETS[source].columns[0]] = self.DATASETS[source]
-                else:
-                    for col in list(self.DATASETS[source].columns):
-                        data[col] = self.DATASETS[source][col].to_frame()
+            data: Dict = {}
+            for source, _ in self.DATASETS.items():
+                if not self.DATASETS[source].empty:
+                    if len(self.DATASETS[source].columns) == 1:
+                        data[self.DATASETS[source].columns[0]] = self.DATASETS[source]
+                    else:
+                        for col in list(self.DATASETS[source].columns):
+                            data[col] = self.DATASETS[source][col].to_frame()
 
-        self.queue = self.load_class(
-            PredictionTechniquesController, self.DATASETS, self.queue
-        )
+            self.queue = self.load_class(
+                PredictionTechniquesController, self.DATASETS, self.queue
+            )
 
     @log_start_end(log=logger)
     def call_qa(self, _):
