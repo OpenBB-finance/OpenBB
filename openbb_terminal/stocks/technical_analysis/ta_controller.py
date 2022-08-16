@@ -775,10 +775,7 @@ class TechnicalAnalysisController(StockBaseController):
             EXPORT_BOTH_RAW_DATA_AND_FIGURES,
         )
         if ns_parser:
-            rsp_view.display_rsp(
-                s_ticker=self.ticker,
-                export = ns_parser.export
-            )
+            rsp_view.display_rsp(s_ticker=self.ticker, export=ns_parser.export)
 
     @log_start_end(log=logger)
     def call_stoch(self, other_args: List[str]):
