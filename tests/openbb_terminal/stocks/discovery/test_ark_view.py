@@ -35,7 +35,7 @@ def test_lambda_direction_color_red_green(val, recorder):
     [
         ({"limit": 2}, True),
         ({"limit": 2}, False),
-        ({"limit": 2, "sortby": "open"}, False),
+        ({"limit": 2, "sortby": "weight"}, False),
         ({"limit": 2, "buys_only": True}, False),
         ({"limit": 2, "sells_only": True}, False),
         ({"limit": 2, "fund": "ARKK"}, False),
