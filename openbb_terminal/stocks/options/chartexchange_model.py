@@ -43,7 +43,10 @@ def get_option_history(ticker: str, date: str, call: bool, price: str) -> pd.Dat
     data = requests.get(url, headers={"User-Agent": get_user_agent()}).content
     soup = BeautifulSoup(data, "html.parser")
     table = soup.find("div", attrs={"style": "display: table; font-size: 0.9em; "})
-    rows = table.find_all("div", attrs={"style": "display: table-row;"})
+    if table:
+        rows = table.find_all("div", attrs={"style": "display: table-row;"})
+    else:
+        return pd.DataFrame()
     clean_rows = []
 
     if rows:

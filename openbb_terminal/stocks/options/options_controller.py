@@ -545,9 +545,15 @@ class OptionsController(BaseController):
             console.print("")
 
             if self.ticker and self.selected_date:
-                self.chain = yfinance_model.get_option_chain(
-                    self.ticker, self.selected_date
-                )
+                try:
+                    self.chain = yfinance_model.get_option_chain(
+                        self.ticker, self.selected_date
+                    )
+                except ValueError:
+                    console.print(
+                        f"[red]{self.ticker} does not have expiration"
+                        f" {self.selected_date}.[/red]"
+                    )
 
     @log_start_end(log=logger)
     def call_exp(self, other_args: List[str]):
@@ -683,7 +689,6 @@ class OptionsController(BaseController):
                     ns_parser.limit,
                     ns_parser.export,
                 )
-
             elif TRADIER_TOKEN != "REPLACE_ME":  # nosec
                 tradier_view.display_historical(
                     ticker=self.ticker,
@@ -834,7 +839,7 @@ class OptionsController(BaseController):
                     if (
                         ns_parser.source == "tradier"
                         and TRADIER_TOKEN != "REPLACE_ME"  # nosec
-                    ):
+                    ) or self.source == "tradier":
                         tradier_view.plot_vol(
                             ticker=self.ticker,
                             expiry=self.selected_date,
@@ -903,7 +908,7 @@ class OptionsController(BaseController):
                     if (
                         ns_parser.source == "tradier"
                         and TRADIER_TOKEN != "REPLACE_ME"  # nosec
-                    ):
+                    ) or self.source == "tradier":
                         tradier_view.plot_volume_open_interest(
                             ticker=self.ticker,
                             expiry=self.selected_date,
@@ -933,7 +938,8 @@ class OptionsController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="oi",
-            description="Plot open interest.  Open interest represents the number of contracts that exist.",
+            description="""Plot open interest. Open interest represents the number of
+            contracts that exist.""",
         )
         parser.add_argument(
             "-m",
@@ -978,7 +984,7 @@ class OptionsController(BaseController):
                     if (
                         ns_parser.source == "tradier"
                         and TRADIER_TOKEN != "REPLACE_ME"  # nosec
-                    ):
+                    ) or self.source == "tradier":
                         tradier_view.plot_oi(
                             ticker=self.ticker,
                             expiry=self.selected_date,
