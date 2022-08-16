@@ -16,18 +16,23 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def get_historical(ticker: str, start: str, end: str, number: int) -> pd.DataFrame:
-    """Get hour-level sentiment data for the chosen ticker
+def get_historical(
+    symbol: str,
+    start_date: str = (datetime.utcnow() - timedelta(days=7)).strftime("%Y-%m-%d"),
+    end_date: str = datetime.utcnow().strftime("%Y-%m-%d"),
+    number: int = 100,
+) -> pd.DataFrame:
+    """Get hour-level sentiment data for the chosen symbol
 
     Source: [Sentiment Investor]
 
     Parameters
     ----------
-    ticker: str
+    symbol: str
         Ticker to view sentiment data
-    start: str
+    start_date: str
         Initial date like string or unix timestamp (e.g. 12-21-2021)
-    end: str
+    end_date: str
         End date like string or unix timestamp (e.g. 12-21-2021)
     number : int
         Number of results returned by API call
@@ -41,9 +46,9 @@ def get_historical(ticker: str, start: str, end: str, number: int) -> pd.DataFra
 
     payload: Dict[str, Union[int, str]] = {
         "token": cfg.API_SENTIMENTINVESTOR_TOKEN,
-        "symbol": ticker,
-        "start": str(start),
-        "end": str(end),
+        "symbol": symbol,
+        "start": str(start_date),
+        "end": str(end_date),
         "limit": number,
     }
 

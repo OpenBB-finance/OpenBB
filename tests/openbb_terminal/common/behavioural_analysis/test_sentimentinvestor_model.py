@@ -33,11 +33,11 @@ def test_check_supported_ticker(ticker, recorder):
 
 @pytest.mark.vcr
 @pytest.mark.parametrize(
-    "ticker, start, end, number",
+    "symbol, start_date, end_date, limit",
     [("AAPL", "2020-12-1", "2020-12-7", 100)],
 )
-def test_get_historical(ticker, start, end, number, recorder):
-    df = sentimentinvestor_model.get_historical(ticker, start, end, number)
+def test_get_historical(symbol, start_date, end_date, limit, recorder):
+    df = sentimentinvestor_model.get_historical(symbol, start_date, end_date, limit)
     recorder.capture(df)
 
 
