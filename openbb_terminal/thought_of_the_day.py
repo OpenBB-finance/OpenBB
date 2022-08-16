@@ -1,9 +1,10 @@
+from __future__ import annotations
+
 """ Thought of The Day """
 __docformat__ = "numpy"
 
 import random
 import re
-from typing import Dict
 
 import requests
 from bs4 import BeautifulSoup
@@ -15,10 +16,10 @@ from openbb_terminal.rich_config import console
 class ThoughtOfTheDay:
     """ThoughtOfTheDay class"""
 
-    def __init__(self, urls: Dict[str, str] = None):
+    def __init__(self, urls: dict[str, str] = None):
         """Constructor"""
 
-        self.metadata = {}  # type: Dict
+        self.metadata: dict = {}
 
         if urls is None:
             self.urls = {

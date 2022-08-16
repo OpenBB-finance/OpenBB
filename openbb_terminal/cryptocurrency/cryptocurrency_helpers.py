@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 """Cryptocurrency helpers"""
 __docformat__ = "numpy"
 # pylint: disable=C0301,R0911,C0302, W0702
@@ -5,7 +7,7 @@ __docformat__ = "numpy"
 import os
 import json
 from datetime import datetime, timedelta
-from typing import Tuple, Any, Optional, List
+from typing import Any
 import difflib
 import logging
 
@@ -439,7 +441,7 @@ def load_deprecated(
             )
             return None, None, None, None, None, None
 
-    current_coin = ""  # type: Optional[Any]
+    current_coin: Any | None = ""
 
     coins_map_df = prepare_all_coins_df().set_index("Symbol").dropna(thresh=2)
 
@@ -862,7 +864,7 @@ def find(
 
 def load_ta_data(
     coin_map_df: pd.DataFrame, source: str, currency: str, **kwargs: Any
-) -> Tuple[pd.DataFrame, str]:
+) -> tuple[pd.DataFrame, str]:
     """Load data for Technical Analysis
 
     Parameters
@@ -1207,7 +1209,7 @@ def plot_candles(
     volume: bool = True,
     ylabel: str = "",
     title: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: list[plt.Axes] | None = None,
 ) -> None:
     """Plot candle chart from dataframe. [Source: Binance]
 
@@ -1296,7 +1298,7 @@ def plot_order_book(
     bids: np.ndarray,
     asks: np.ndarray,
     coin: str,
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: list[plt.Axes] | None = None,
 ) -> None:
     """
     Plots Bid/Ask. Can be used for Coinbase and Binance
