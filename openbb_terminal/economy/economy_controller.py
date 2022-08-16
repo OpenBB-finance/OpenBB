@@ -1454,42 +1454,35 @@ class EconomyController(BaseController):
                 )
                 return
 
-            from openbb_terminal.economy.prediction.pred_controller import (
-                PredictionTechniquesController,
-            )
-
             data: Dict = {}
+            all_datasets_empty = True
             for source, _ in self.DATASETS.items():
                 if not self.DATASETS[source].empty:
+                    all_datasets_empty = False
                     if len(self.DATASETS[source].columns) == 1:
                         data[self.DATASETS[source].columns[0]] = self.DATASETS[source]
                     else:
                         for col in list(self.DATASETS[source].columns):
                             data[col] = self.DATASETS[source][col].to_frame()
 
+            if all_datasets_empty:
+                console.print(
+                    "There is no data stored yet. Please use either the 'macro', 'fred', 'index' and/or "
+                    "'treasury' command in combination with the -st argument to be able to plot data.\n"
+                )
+                return
+
+            from openbb_terminal.economy.prediction.pred_controller import (
+                PredictionTechniquesController,
+            )
+
             self.queue = self.load_class(
-                PredictionTechniquesController, self.DATASETS, self.queue
+                PredictionTechniquesController, data, self.queue
             )
 
     @log_start_end(log=logger)
     def call_qa(self, _):
         """Process pred command"""
-        if not self.DATASETS:
-            console.print(
-                "There is no data stored yet. Please use either the 'macro', 'fred', 'index' and/or "
-                "'treasury' command in combination with the -st argument to be able to plot data.\n"
-            )
-            return
-
-        self.queue = self.load_class(PredictionTechniquesController, data, self.queue)
-
-    @log_start_end(log=logger)
-    def call_qa(self, _):
-        """Process pred command"""
-
-        from openbb_terminal.economy.quantitative_analysis.qa_controller import (
-            QaController,
-        )
 
         data: Dict = {}
         all_datasets_empty = True
@@ -1508,5 +1501,9 @@ class EconomyController(BaseController):
                 "'treasury' command in combination with the -st argument to be able to plot data.\n"
             )
             return
+
+        from openbb_terminal.economy.quantitative_analysis.qa_controller import (
+            QaController,
+        )
 
         self.queue = self.load_class(QaController, data, self.queue)

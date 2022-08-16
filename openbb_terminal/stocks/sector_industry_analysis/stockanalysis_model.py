@@ -112,7 +112,7 @@ def get_stocks_data(
     dict
         Dictionary of filtered stocks data separated by financial statement
     """
-    
+
     no_data = []
 
     for symbol in tqdm(symbols):
