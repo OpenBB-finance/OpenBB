@@ -762,7 +762,7 @@ class TechnicalAnalysisController(StockBaseController):
             description="""
                 IBD Style Relative Strength Percentile Ranking of Stocks (i.e. 0-100 Score).
                 Ranks stocks on the basis of relative strength as calculated by Investor's
-                Business Daily (Yearly performance of stock (most recent quarter is weighted 
+                Business Daily (Yearly performance of stock (most recent quarter is weighted
                 double) divided by yearly performance of reference index (here, we use SPY)
                 Export table to view the entire ranking
                 Data taken from https://github.com/skyte/relative-strength
