@@ -1,6 +1,7 @@
 """ Comparison Analysis Marketwatch View """
 __docformat__ = "numpy"
 
+from datetime import datetime
 import logging
 import os
 from typing import List
@@ -21,7 +22,7 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 def display_income_comparison(
     similar: List[str],
-    timeframe: str,
+    timeframe: str = str(datetime.today().year - 1),
     quarter: bool = False,
     export: str = "",
 ):
@@ -74,7 +75,7 @@ def display_income_comparison(
 @log_start_end(log=logger)
 def display_balance_comparison(
     similar: List[str],
-    timeframe: str,
+    timeframe: str = str(datetime.today().year - 1),
     quarter: bool = False,
     export: str = "",
 ):
@@ -127,7 +128,7 @@ def display_balance_comparison(
 @log_start_end(log=logger)
 def display_cashflow_comparison(
     similar: List[str],
-    timeframe: str,
+    timeframe: str = str(datetime.today().year - 1),
     quarter: bool = False,
     export: str = "",
 ):

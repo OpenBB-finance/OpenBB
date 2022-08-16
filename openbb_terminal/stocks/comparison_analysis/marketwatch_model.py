@@ -1,6 +1,7 @@
 """ Comparison Analysis Marketwatch Model """
 __docformat__ = "numpy"
 
+from datetime import datetime
 import logging
 from typing import Dict, List, Tuple
 
@@ -67,7 +68,7 @@ def get_financial_comparisons(
 @log_start_end(log=logger)
 def get_income_comparison(
     similar: List[str],
-    timeframe: str,
+    timeframe: str = str(datetime.today().year - 1),
     quarter: bool = False,
 ):
     """Get income data. [Source: Marketwatch]
@@ -94,7 +95,7 @@ def get_income_comparison(
 @log_start_end(log=logger)
 def get_balance_comparison(
     similar: List[str],
-    timeframe: str,
+    timeframe: str = str(datetime.today().year - 1),
     quarter: bool = False,
 ):
     """Get balance data. [Source: Marketwatch]
@@ -121,7 +122,7 @@ def get_balance_comparison(
 @log_start_end(log=logger)
 def get_cashflow_comparison(
     similar: List[str],
-    timeframe: str,
+    timeframe: str = str(datetime.today().year - 1),
     quarter: bool = False,
 ):
     """Get cashflow data. [Source: Marketwatch]
