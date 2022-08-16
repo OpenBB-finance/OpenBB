@@ -1,4 +1,5 @@
 """Cryptocurrency helpers"""
+# pylint: disable=C0302,R0911
 
 from __future__ import annotations
 
@@ -719,7 +720,7 @@ def load_deprecated(
                 if isinstance(coin_map_df, pd.DataFrame)
                 else coin_map_df
             )
-        except:  # noqa: E722
+        except Exception:
             return None, None, None, None, None, None
 
         if should_load_ta_data:
@@ -1190,7 +1191,10 @@ def plot_chart(prices_df: pd.DataFrame, symbol: str = "", currency: str = "") ->
         console.print("There is not data to plot chart\n")
         return
 
-    title = f"{symbol}/{currency} from {prices_df.index[0].strftime('%Y/%m/%d')} to {prices_df.index[-1].strftime('%Y/%m/%d')}"  # noqa: E501
+    title = (
+        f"{symbol}/{currency} from {prices_df.index[0].strftime('%Y/%m/%d')} "
+        f"to {prices_df.index[-1].strftime('%Y/%m/%d')}"
+    )
 
     prices_df["Volume"] = prices_df["Volume"] / 1_000_000
 
