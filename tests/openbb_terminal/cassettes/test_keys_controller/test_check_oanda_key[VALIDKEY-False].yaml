@@ -1,0 +1,48 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer VALIDKEY
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.28.1
+    method: GET
+    uri: https://api-fxpractice.oanda.com/v3/accounts/VALIDKEY/pricing?instruments=EUR_USD
+  response:
+    body:
+      string: '{"errorMessage":"Invalid value specified for ''accountID''"}'
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 7390058acbb372e2-LHR
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '58'
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 11 Aug 2022 09:42:30 GMT
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      RequestID:
+      - '0'
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=NclPqCsHFPbrWGW_ae8HZDkIqeGZcd6Skp.4SXBIh9E-1660210950-0-AaJ7nSTJR3WXmV6prosc8NJakd9qhfM49jb9vOvc3G4Hui/gwf6KVOqaXkMvmniW958kj0RZyOJ7zMOFz4L9KsA=;
+        path=/; expires=Thu, 11-Aug-22 10:12:30 GMT; domain=.api-fxpractice.oanda.com;
+        HttpOnly; Secure; SameSite=None
+      Vary:
+      - Origin, Accept-Encoding
+    status:
+      code: 400
+      message: Bad Request
+version: 1
