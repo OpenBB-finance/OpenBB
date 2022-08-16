@@ -233,7 +233,7 @@ def display_queries(ticker: str, num: int = 5, export: str = ""):
 
 
 @log_start_end(log=logger)
-def display_rise(ticker: str, num: int, export: str = ""):
+def display_rise(ticker: str, num: int = 15, export: str = ""):
     """Print top rising related queries with this stock's query. [Source: Google]
 
     Parameters
@@ -246,13 +246,13 @@ def display_rise(ticker: str, num: int, export: str = ""):
         Format to export data
     """
     df_related_queries = google_model.get_rise(ticker)
-    df = df_related_queries.copy()
-    df_related_queries = df_related_queries.head(num)
 
     print_rich_table(
-        df_related_queries,
+        df_related_queries.head(num),
         headers=list(df_related_queries.columns),
         title=f"Top rising {ticker}'s related queries",
     )
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "rise", df)
+    export_data(
+        export, os.path.dirname(os.path.abspath(__file__)), "rise", df_related_queries
+    )

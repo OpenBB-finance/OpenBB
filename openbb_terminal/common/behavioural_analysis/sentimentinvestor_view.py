@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import logging
 import os
 from typing import Optional, List
-from datetime import datetime
+from datetime import datetime, timedelta
 from matplotlib import pyplot as plt
 from matplotlib.lines import Line2D
 import pandas as pd
@@ -30,8 +30,8 @@ logger = logging.getLogger(__name__)
 @check_api_key(["API_SENTIMENTINVESTOR_TOKEN"])
 def display_historical(
     ticker: str,
-    start: str,
-    end: str,
+    start: str = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
+    end: str = datetime.now().strftime("%Y-%m-%d"),
     export: str = "",
     number: int = 100,
     raw: bool = False,
@@ -144,8 +144,8 @@ def display_historical(
 @log_start_end(log=logger)
 @check_api_key(["API_SENTIMENTINVESTOR_TOKEN"])
 def display_trending(
-    start: datetime,
-    hour: int,
+    start: datetime = datetime.utcnow(),
+    hour: int = 0,
     export: str = "",
     number: int = 10,
     limit: int = 10,
