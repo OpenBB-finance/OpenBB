@@ -113,7 +113,7 @@ def test_fc_parse_known_args_and_warn(mocker):
         residuals=True,
         forecast_only=True,
     )
-    assert mock2.call_count == 29
+    assert mock2.call_count == 28
 
 
 def test_fc_call_load(mocker):

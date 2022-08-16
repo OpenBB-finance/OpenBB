@@ -6,8 +6,7 @@ def test_display_tft_forecast(tsla_csv):
     with pytest.raises(AttributeError):
         expo_view.display_expo_forecast(
             tsla_csv,
-            "TSLA",
-            target_col="close",
+            target_column="close",
             trend="N",
             seasonal="N",
             seasonal_periods=3,

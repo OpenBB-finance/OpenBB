@@ -6,7 +6,6 @@ def test_display_knn_forecast(tsla_csv):
     knn_view.display_k_nearest_neighbors(
         data=tsla_csv,
         target_column="close",
-        ticker="TSLA",
         n_neighbors=3,
         n_input_days=3,
         n_predict_days=3,
