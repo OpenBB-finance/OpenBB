@@ -117,7 +117,7 @@ def test_plot_plot(mocker):
 
     yfinance_view.plot_plot(
         ticker="PM",
-        expiration="2022-01-07",
+        expiry="2022-01-07",
         put=True,
         x="c",
         y="v",
@@ -142,7 +142,7 @@ def test_plot_payoff(mocker):
         options=[],
         underlying=0,
         ticker="PM",
-        expiration="2022-01-07",
+        expiry="2022-01-07",
     )
 
 
@@ -159,7 +159,7 @@ def test_show_parity(mocker):
 
     yfinance_view.show_parity(
         ticker="PM",
-        exp="2022-01-07",
+        expiry="2022-01-07",
         put=True,
         ask=True,
         mini=0.0,
@@ -206,7 +206,7 @@ def test_show_binom(mocker):
 
     yfinance_view.show_binom(
         ticker="PM",
-        expiration="2022-01-07",
+        expiry="2022-01-07",
         strike=90.0,
         put=True,
         europe=False,
@@ -219,7 +219,7 @@ def test_show_binom(mocker):
 @pytest.mark.default_cassette("test_show_greeks")
 @pytest.mark.vcr
 def test_show_greeks():
-    yfinance_view.show_greeks(ticker="AAPL", expire="2022-01-28", div_cont=0)
+    yfinance_view.show_greeks(ticker="AAPL", expiry="2022-01-28", div_cont=0)
 
 
 @pytest.mark.default_cassette("test_display_chains")

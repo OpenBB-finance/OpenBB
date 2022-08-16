@@ -20,14 +20,14 @@ def add_color(value: str) -> str:
 
 
 @log_start_end(log=logger)
-def rating(ticker: str, num: int, export: str):
+def rating(ticker: str, limit: int = 10, export: str = ""):
     """Display ratings for a given ticker. [Source: Financial Modeling Prep]
 
     Parameters
     ----------
     ticker : str
         Stock ticker
-    num : int
+    limit : int
         Number of last days ratings to display
     export : str
         Export dataframe data to csv,json,xlsx file
@@ -47,7 +47,7 @@ def rating(ticker: str, num: int, export: str):
         ]
         l_recoms_show[0] = "Rating"
         print_rich_table(
-            df[l_recoms].head(num),
+            df[l_recoms].head(limit),
             headers=l_recoms_show,
             show_index=True,
             title="Rating",

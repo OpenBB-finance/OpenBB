@@ -77,8 +77,8 @@ def plot_rating_over_time(
 @check_api_key(["API_FINNHUB_KEY"])
 def rating_over_time(
     ticker: str,
-    num: int,
-    raw: bool,
+    limit: int = 10,
+    raw: bool = False,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -88,7 +88,7 @@ def rating_over_time(
     ----------
     ticker : str
         Ticker to get ratings from
-    num : int
+    limit : int
         Number of last months ratings to show
     raw : bool
         Display raw data only
@@ -111,7 +111,7 @@ def rating_over_time(
         df_rot_raw = (
             df_rot[["period", "strongSell", "sell", "hold", "buy", "strongBuy"]]
             .rename(columns=d_cols)
-            .head(num)
+            .head(limit)
         )
         print_rich_table(
             df_rot_raw,
@@ -120,7 +120,7 @@ def rating_over_time(
             title="Monthly Rating",
         )
     else:
-        plot_rating_over_time(df_rot.head(num), ticker, external_axes)
+        plot_rating_over_time(df_rot.head(limit), ticker, external_axes)
 
     export_data(
         export,

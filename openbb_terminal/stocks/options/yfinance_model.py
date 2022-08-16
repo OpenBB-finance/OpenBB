@@ -133,15 +133,15 @@ def option_expirations(ticker: str):
 
 
 @log_start_end(log=logger)
-def get_option_chain(ticker: str, expiration: str):
+def get_option_chain(ticker: str, expiry: str):
     """Gets option chain from yf for given ticker and expiration
 
     Parameters
     ----------
     ticker: str
         Ticker to get options for
-    expiration: str
-        Date to get options for
+    expiry: str
+        Date to get options for. YYYY-MM-DD
 
     Returns
     -------
@@ -149,7 +149,7 @@ def get_option_chain(ticker: str, expiration: str):
         Options chain
     """
     yf_ticker = yf.Ticker(ticker)
-    chains = yf_ticker.option_chain(expiration)
+    chains = yf_ticker.option_chain(expiry)
 
     return chains
 

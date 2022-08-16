@@ -68,7 +68,7 @@ def test_get_option_chain(mocker, recorder):
 
     result_tuple = yfinance_model.get_option_chain(
         ticker="PM",
-        expiration="2022-01-07",
+        expiry="2022-01-07",
     )
     result_tuple = (result_tuple.calls, result_tuple.puts)
 

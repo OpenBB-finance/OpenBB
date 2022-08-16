@@ -30,8 +30,8 @@ logger = logging.getLogger(__name__)
 @check_api_key(["API_SENTIMENTINVESTOR_TOKEN"])
 def display_historical(
     ticker: str,
-    start: str = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
-    end: str = datetime.now().strftime("%Y-%m-%d"),
+    start_date: str = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
+    end_date: str = datetime.now().strftime("%Y-%m-%d"),
     export: str = "",
     number: int = 100,
     raw: bool = False,
@@ -45,9 +45,9 @@ def display_historical(
     ----------
     ticker: str
         Ticker to view sentiment data
-    start: str
+    star_datet: str
         Initial date like string or unix timestamp (e.g. 2021-12-21)
-    end: str
+    end_date: str
         End date like string or unix timestamp (e.g. 2022-01-15)
     number : int
         Number of results returned by API call
@@ -73,7 +73,7 @@ def display_historical(
         )
         return
 
-    df = sentimentinvestor_model.get_historical(ticker, start, end, number)
+    df = sentimentinvestor_model.get_historical(ticker, start_date, end_date, number)
 
     if df.empty:
         return

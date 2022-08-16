@@ -145,10 +145,9 @@ class DueDiligenceController(StockBaseController):
         if ns_parser:
             business_insider_view.price_target_from_analysts(
                 ticker=self.ticker,
-                start=self.start,
-                interval=self.interval,
+                start_date=self.start,
                 stock=self.stock,
-                num=ns_parser.limit,
+                limit=ns_parser.limit,
                 raw=ns_parser.raw,
                 export=ns_parser.export,
             )
@@ -159,7 +158,8 @@ class DueDiligenceController(StockBaseController):
         parser = argparse.ArgumentParser(
             add_help=False,
             prog="est",
-            description="""Yearly estimates and quarter earnings/revenues. [Source: Business Insider]""",
+            description="""Yearly estimates and quarter earnings/revenues.
+            [Source: Business Insider]""",
         )
 
         ns_parser = self.parse_known_args_and_warn(
@@ -206,7 +206,7 @@ class DueDiligenceController(StockBaseController):
         if ns_parser:
             finnhub_view.rating_over_time(
                 ticker=self.ticker,
-                num=ns_parser.limit,
+                limit=ns_parser.limit,
                 raw=ns_parser.raw,
                 export=ns_parser.export,
             )
@@ -242,7 +242,7 @@ class DueDiligenceController(StockBaseController):
         if ns_parser:
             fmp_view.rating(
                 ticker=self.ticker,
-                num=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
 

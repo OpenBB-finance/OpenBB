@@ -346,7 +346,7 @@ class OptionsController(BaseController):
                 )
             else:
                 fdscanner_view.display_options(
-                    num=ns_parser.limit,
+                    limit=ns_parser.limit,
                     sort_column=ns_parser.sortby,
                     export=ns_parser.export,
                     ascending=ns_parser.ascend,
@@ -654,49 +654,48 @@ class OptionsController(BaseController):
             limit=10,
         )
         if ns_parser:
-            if self.ticker:
-                if self.selected_date:
-                    if self.chain and (
-                        (
-                            ns_parser.put
-                            and ns_parser.strike
-                            in [float(strike) for strike in self.chain.puts["strike"]]
-                        )
-                        or (
-                            not ns_parser.put
-                            and ns_parser.strike
-                            in [float(strike) for strike in self.chain.calls["strike"]]
-                        )
-                    ):
-                        if ns_parser.source == "chartexchange":
-                            chartexchange_view.display_raw(
-                                self.ticker,
-                                self.selected_date,
-                                not ns_parser.put,
-                                ns_parser.strike,
-                                ns_parser.limit,
-                                ns_parser.export,
-                            )
-
-                        else:
-                            if TRADIER_TOKEN != "REPLACE_ME":  # nosec
-                                tradier_view.display_historical(
-                                    ticker=self.ticker,
-                                    expiry=self.selected_date,
-                                    strike=ns_parser.strike,
-                                    put=ns_parser.put,
-                                    raw=ns_parser.raw,
-                                    chain_id=ns_parser.chain_id,
-                                    export=ns_parser.export,
-                                )
-                            else:
-                                console.print("TRADIER TOKEN not supplied. \n")
-                    else:
-                        console.print("No correct strike input\n")
-                else:
-                    console.print("No expiry loaded. First use `exp <expiry date>` \n")
-            else:
+            if not self.ticker:
                 console.print("No ticker loaded. First use `load <ticker>`\n")
+                return
+            if not self.selected_date:
+                console.print("No expiry loaded. First use `exp <expiry date>` \n")
+                return
+            if self.chain and (
+                (
+                    ns_parser.put
+                    and ns_parser.strike
+                    in [float(strike) for strike in self.chain.puts["strike"]]
+                )
+                or (
+                    not ns_parser.put
+                    and ns_parser.strike
+                    in [float(strike) for strike in self.chain.calls["strike"]]
+                )
+            ):
+                console.print("No correct strike input\n")
+                return
+            if ns_parser.source == "chartexchange":
+                chartexchange_view.display_raw(
+                    self.ticker,
+                    self.selected_date,
+                    not ns_parser.put,
+                    ns_parser.strike,
+                    ns_parser.limit,
+                    ns_parser.export,
+                )
+
+            elif TRADIER_TOKEN != "REPLACE_ME":  # nosec
+                tradier_view.display_historical(
+                    ticker=self.ticker,
+                    expiry=self.selected_date,
+                    strike=ns_parser.strike,
+                    put=ns_parser.put,
+                    raw=ns_parser.raw,
+                    chain_id=ns_parser.chain_id,
+                    export=ns_parser.export,
+                )
+            else:
+                console.print("TRADIER TOKEN not supplied. \n")
 
     @log_start_end(log=logger)
     def call_chains(self, other_args: List[str]):
@@ -1179,7 +1178,7 @@ class OptionsController(BaseController):
                 yfinance_view.show_greeks(
                     ticker=self.ticker,
                     div_cont=ns_parser.dividend,
-                    expire=self.selected_date,
+                    expiry=self.selected_date,
                     rf=ns_parser.risk_free,
                     opt_type=opt_type,
                     mini=ns_parser.min,

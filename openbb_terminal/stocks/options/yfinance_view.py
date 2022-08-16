@@ -640,11 +640,11 @@ def plot_volume_open_interest(
 @log_start_end(log=logger)
 def plot_plot(
     ticker: str,
-    expiration: str,
-    put: bool,
-    x: str,
-    y: str,
-    custom: str,
+    expiry: str,
+    put: bool = False,
+    x: str = "s",
+    y: str = "iv",
+    custom: str = "",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
@@ -654,16 +654,18 @@ def plot_plot(
     ----------
     ticker: str
         Stock ticker
-    expiration: str
+    expiry: str
         Option expiration
     min_sp: float
         Min strike price
     put: bool
         put option instead of call
     x: str
-        variable to display in x axis
+        variable to display in x axis, choose from:
+        ltd, s, lp, b, a, c, pc, v, oi, iv
     y: str
-        variable to display in y axis
+        variable to display in y axis, choose from:
+        ltd, s, lp, b, a, c, pc, v, oi, iv
     custom: str
         type of plot
     export: str
@@ -690,7 +692,7 @@ def plot_plot(
         x = convert[x]
         y = convert[y]
     varis = op_helpers.opt_chain_cols
-    chain = yfinance_model.get_option_chain(ticker, expiration)
+    chain = yfinance_model.get_option_chain(ticker, expiry)
     values = chain.puts if put else chain.calls
 
     if external_axes is None:
@@ -705,7 +707,7 @@ def plot_plot(
     ax.plot(x_data, y_data, "--bo")
     option = "puts" if put else "calls"
     ax.set_title(
-        f"{varis[y]['label']} vs. {varis[x]['label']} for {ticker} {option} on {expiration}"
+        f"{varis[y]['label']} vs. {varis[x]['label']} for {ticker} {option} on {expiry}"
     )
     ax.set_ylabel(varis[y]["label"])
     ax.set_xlabel(varis[x]["label"])
@@ -732,7 +734,7 @@ def plot_payoff(
     options: List[Dict[Any, Any]],
     underlying: float,
     ticker: str,
-    expiration: str,
+    expiry: str,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Generate a graph showing the option payoff diagram"""
@@ -750,7 +752,7 @@ def plot_payoff(
         ax.plot(x, ya, label="Payoff After Premium")
     else:
         ax.plot(x, yb, label="Payoff")
-    ax.set_title(f"Option Payoff Diagram for {ticker} on {expiration}")
+    ax.set_title(f"Option Payoff Diagram for {ticker} on {expiry}")
     ax.set_ylabel("Profit")
     ax.set_xlabel("Underlying Asset Price at Expiration")
     ax.legend()
@@ -764,7 +766,13 @@ def plot_payoff(
 
 @log_start_end(log=logger)
 def show_parity(
-    ticker: str, exp: str, put: bool, ask: bool, mini: float, maxi: float, export: str
+    ticker: str,
+    expiry: str,
+    put: bool,
+    ask: bool,
+    mini: float,
+    maxi: float,
+    export: str,
 ) -> None:
     """Prints options and whether they are under or over priced [Source: Yahoo Finance]
 
@@ -772,8 +780,8 @@ def show_parity(
     ----------
     ticker : str
         Ticker to get expirations for
-    exp : str
-        Expiration to use for options
+    expiry : str
+        Expiration to use for options. The format is YYYY-MM-DD
     put : bool
         Whether to use puts or calls
     ask : bool
@@ -785,7 +793,7 @@ def show_parity(
     export : str
         Export data
     """
-    r_date = datetime.strptime(exp, "%Y-%m-%d").date()
+    r_date = datetime.strptime(expiry, "%Y-%m-%d").date()
     delta = (r_date - date.today()).days
     rate = ((1 + get_rf()) ** (delta / 365)) - 1
     stock = get_price(ticker)
@@ -803,7 +811,7 @@ def show_parity(
 
         next_div = last_div + timedelta(days=91)
         dividends = []
-        while next_div < datetime.strptime(exp, "%Y-%m-%d"):
+        while next_div < datetime.strptime(expiry, "%Y-%m-%d"):
             day_dif = (next_div - datetime.now()).days
             dividends.append((avg_div, day_dif))
             next_div += timedelta(days=91)
@@ -812,7 +820,7 @@ def show_parity(
     else:
         pv_dividend = 0
 
-    chain = get_option_chain(ticker, exp)
+    chain = get_option_chain(ticker, expiry)
     name = "ask" if ask else "lastPrice"
     o_type = "put" if put else "call"
 
@@ -1044,7 +1052,7 @@ def export_binomial_calcs(
 @log_start_end(log=logger)
 def show_binom(
     ticker: str,
-    expiration: str,
+    expiry: str,
     strike: float,
     put: bool,
     europe: bool,
@@ -1058,7 +1066,7 @@ def show_binom(
     ----------
     ticker : str
         The ticker of the option's underlying asset
-    expiration : str
+    expiry : str
         The expiration for the option
     strike : float
         The strike price for the option
@@ -1086,7 +1094,7 @@ def show_binom(
     )
     delta_t = 1 / 252
     rf = get_rf()
-    exp_date = datetime.strptime(expiration, "%Y-%m-%d").date()
+    exp_date = datetime.strptime(expiry, "%Y-%m-%d").date()
     today = date.today()
     days = (exp_date - today).days
 
@@ -1143,11 +1151,11 @@ def show_binom(
         export_binomial_calcs(up, prob_up, discount, und_vals, opt_vals, days, ticker)
 
     if plot:
-        plot_expected_prices(und_vals, prob_up, ticker, expiration)
+        plot_expected_prices(und_vals, prob_up, ticker, expiry)
 
     option = "put" if put else "call"
     console.print(
-        f"{ticker} {option} at ${strike:.2f} expiring on {expiration} is worth ${opt_vals[0][0]:.2f}\n"
+        f"{ticker} {option} at ${strike:.2f} expiring on {expiry} is worth ${opt_vals[0][0]:.2f}\n"
     )
 
 
@@ -1209,7 +1217,7 @@ def display_vol_surface(
 @log_start_end(log=logger)
 def show_greeks(
     ticker: str,
-    expire: str,
+    expiry: str,
     div_cont: float = 0,
     rf: float = None,
     opt_type: int = 1,
@@ -1226,8 +1234,8 @@ def show_greeks(
         The ticker value of the option
     div_cont : float
         The dividend continuous rate
-    expire : str
-        The date of expiration
+    expiry : str
+        The date of expiration. YYYY-MM-DD
     rf : float
         The risk-free rate
     opt_type : Union[1, -1]
@@ -1241,7 +1249,7 @@ def show_greeks(
     """
 
     s = yfinance_model.get_price(ticker)
-    chains = yfinance_model.get_option_chain(ticker, expire)
+    chains = yfinance_model.get_option_chain(ticker, expiry)
     chain = chains.calls if opt_type == 1 else chains.puts
 
     if mini is None:
@@ -1253,7 +1261,7 @@ def show_greeks(
     chain = chain[chain["strike"] <= maxi]
 
     risk_free = rf if rf is not None else get_rf()
-    expire_dt = datetime.strptime(expire, "%Y-%m-%d")
+    expire_dt = datetime.strptime(expiry, "%Y-%m-%d")
     dif = (expire_dt - datetime.now()).seconds / (60 * 60 * 24)
 
     strikes = []

@@ -66,7 +66,7 @@ def get_spread(df: pd.DataFrame, length: int) -> Tuple[pd.DataFrame, pd.DataFram
 
 @log_start_end(log=logger)
 def get_quantile(
-    df: pd.DataFrame, length: int, quantile_pct: float
+    df: pd.DataFrame, limit: int = 14, quantile_pct: float = 0.5
 ) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """Overlay Median & Quantile
 
@@ -74,7 +74,7 @@ def get_quantile(
     ----------
     df : pd.DataFrame
         Dataframe of targeted data
-    length : int
+    limit : int
         Length of window
     quantile : float
         Quantile to display
@@ -86,10 +86,10 @@ def get_quantile(
     df_quantile : pd.DataFrame
         Dataframe of gievn quantile prices over window
     """
-    df_med = ta.median(close=df, length=length).dropna()
+    df_med = ta.median(close=df, length=limit).dropna()
     df_quantile = ta.quantile(
         df,
-        length=length,
+        length=limit,
         q=quantile_pct,
     ).dropna()
 

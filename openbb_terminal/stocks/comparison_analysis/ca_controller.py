@@ -630,7 +630,7 @@ class ComparisonAnalysisController(BaseController):
         )
         if ns_parser:
             marketwatch_view.display_income_comparison(
-                similar=self.similar,
+                symbols=self.similar,
                 timeframe=ns_parser.s_timeframe,
                 quarter=ns_parser.b_quarter,
             )
@@ -702,7 +702,7 @@ class ComparisonAnalysisController(BaseController):
         )
         if ns_parser:
             marketwatch_view.display_balance_comparison(
-                similar=self.similar,
+                symbols=self.similar,
                 timeframe=ns_parser.s_timeframe,
                 quarter=ns_parser.b_quarter,
             )
@@ -740,7 +740,7 @@ class ComparisonAnalysisController(BaseController):
         )
         if ns_parser:
             marketwatch_view.display_cashflow_comparison(
-                similar=self.similar,
+                symbols=self.similar,
                 timeframe=ns_parser.s_timeframe,
                 quarter=ns_parser.b_quarter,
             )

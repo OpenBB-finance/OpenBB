@@ -25,7 +25,7 @@ from openbb_terminal.helper_funcs import (
     is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
-from openbb_terminal.stocks.options import op_helpers, tradier_model
+from openbb_terminal.stocks.options import op_helpers, tradier_model, yfinance_model
 from openbb_terminal import rich_config
 
 logger = logging.getLogger(__name__)
@@ -86,6 +86,26 @@ def check_valid_option_chains_headers(headers: str) -> List[str]:
             raise argparse.ArgumentTypeError("Invalid option chains header selected!")
 
     return columns
+
+
+@log_start_end(log=logger)
+def display_expirations(ticker: str, source: str = "yf"):
+    """Displays the expirations for a ticker
+
+    Parameters
+    ----------
+    ticker: str
+        The ticker to look up
+    source: str
+        Where to get the data from. Options: yf (yahoo finance) or tr (tradier)
+    """
+    if source == "yf":
+        exps = yfinance_model.option_expirations(ticker)
+    elif source == "tr":
+        exps = tradier_model.option_expirations(ticker)
+    else:
+        raise ValueError("Invalid source. Please select 'yf' or 'tr'")
+    display_expiry_dates(exps)
 
 
 @log_start_end(log=logger)

@@ -29,7 +29,7 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 def display_raw(
     ticker: str,
-    date: str,
+    expiry: str,
     call: bool,
     price: str,
     num: int = 5,
@@ -42,8 +42,8 @@ def display_raw(
     ----------
     ticker : str
         Ticker for the given option
-    date : str
-        Date of expiration for the option
+    expiry : str
+        Date of expiration for the option. Format as YYYY-MM-DD
     call : bool
         Whether the underlying asset should be a call or a put
     price : float
@@ -54,7 +54,7 @@ def display_raw(
         Export data as CSV, JSON, XLSX
     """
 
-    df = chartexchange_model.get_option_history(ticker, date, call, price)[::-1]
+    df = chartexchange_model.get_option_history(ticker, expiry, call, price)[::-1]
     df["Date"] = pd.to_datetime(df["Date"])
     df = df.set_index("Date")
 

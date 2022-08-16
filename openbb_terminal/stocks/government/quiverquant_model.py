@@ -19,7 +19,9 @@ API_QUIVERQUANT_KEY = (
 
 
 @log_start_end(log=logger)
-def get_government_trading(gov_type: str, ticker: str = "") -> pd.DataFrame:
+def get_government_trading(
+    gov_type: str = "congress", ticker: str = ""
+) -> pd.DataFrame:
     """Returns the most recent transactions by members of government
 
     Parameters
