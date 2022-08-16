@@ -1,5 +1,5 @@
 """Cryptocurrency helpers"""
-# pylint: disable=C0302,R0911
+# pylint: disable=too-many-lines,too-many-return-statements
 
 from __future__ import annotations
 
