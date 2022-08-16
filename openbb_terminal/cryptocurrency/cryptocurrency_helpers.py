@@ -1,8 +1,6 @@
-from __future__ import annotations
-
 """Cryptocurrency helpers"""
-__docformat__ = "numpy"
-# pylint: disable=C0301,R0911,C0302, W0702
+
+from __future__ import annotations
 
 import os
 import json
@@ -44,6 +42,8 @@ import openbb_terminal.config_terminal as cfg
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
+
+__docformat__ = "numpy"
 
 INTERVALS = ["1H", "3H", "6H", "1D"]
 

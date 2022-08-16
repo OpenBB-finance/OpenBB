@@ -1,7 +1,6 @@
-from __future__ import annotations
-
 """ Thought of The Day """
-__docformat__ = "numpy"
+
+from __future__ import annotations
 
 import random
 import re
@@ -11,6 +10,8 @@ from bs4 import BeautifulSoup
 
 from openbb_terminal.helper_funcs import get_user_agent
 from openbb_terminal.rich_config import console
+
+__docformat__ = "numpy"
 
 
 class ThoughtOfTheDay:
