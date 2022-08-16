@@ -31,6 +31,7 @@ from openbb_terminal.economy import (
     investingcom_model,
     investingcom_view,
     plot_view,
+    commodity_view,
 )
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -39,9 +40,9 @@ from openbb_terminal.helper_funcs import (
     print_rich_table,
     valid_date,
 )
-from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.menu import session
 
 logger = logging.getLogger(__name__)
 
@@ -66,6 +67,7 @@ class EconomyController(BaseController):
         "bigmac",
         "ycrv",
         "events",
+        "cdebt",
     ]
 
     CHOICES_MENUS = ["pred", "qa"]
@@ -250,6 +252,7 @@ class EconomyController(BaseController):
         mt.add_cmd("bigmac", "NASDAQ Datalink")
         mt.add_cmd("ycrv", "Investing.com / FRED")
         mt.add_cmd("events", "Investing.com")
+        mt.add_cmd("cdebt", "USDebtClock.org")
         mt.add_raw("\n")
         mt.add_cmd("rtps", "Alpha Vantage")
         mt.add_cmd("valuation", "Finviz")
@@ -278,8 +281,8 @@ class EconomyController(BaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="overview",
             description="""
-            Provide a market overview of a variety of options. This can be a general overview, indices,
-            bonds and currencies. [Source: Wall St. Journal]
+            Provide a market overview of a variety of options. This can be a general overview,
+            indices, bonds and currencies. [Source: Wall St. Journal]
             """,
         )
 
@@ -1373,6 +1376,23 @@ class EconomyController(BaseController):
             )
 
     @log_start_end(log=logger)
+    def call_cdebt(self, other_args: List[str]):
+        """Process cdebt command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="cdebt",
+            description="""
+                National debt statistics for various countries. [Source: Wikipedia]
+            """,
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED, limit=20
+        )
+        if ns_parser:
+            commodity_view.display_debt(export=ns_parser.export, limit=ns_parser.limit)
+
+    @log_start_end(log=logger)
     def call_spectrum(self, other_args: List[str]):
         """Process spectrum command"""
         parser = argparse.ArgumentParser(
@@ -1413,24 +1433,48 @@ class EconomyController(BaseController):
 
     @log_start_end(log=logger)
     def call_pred(self, _):
+
         """Process pred command"""
+        # IMPORTANT: 8/11/22 prediction was discontinued on the installer packages
+        # because forecasting in coming out soon.
+        # This if statement disallows installer package users from using 'pred'
+        # even if they turn on the OPENBB_ENABLE_PREDICT feature flag to true
+        # however it does not prevent users who clone the repo from using it
+        # if they have ENABLE_PREDICT set to true.
+        if obbff.PACKAGED_APPLICATION or not obbff.ENABLE_PREDICT:
+            console.print(
+                "Predict is disabled. Forecasting coming soon!",
+                "\n",
+            )
+        else:
+            if not self.DATASETS:
+                console.print(
+                    "There is no data stored yet. Please use either the 'macro', 'fred', 'index' and/or "
+                    "'treasury' command in combination with the -st argument to be able to plot data.\n"
+                )
+                return
 
-        from openbb_terminal.economy.prediction.pred_controller import (
-            PredictionTechniquesController,
-        )
+            from openbb_terminal.economy.prediction.pred_controller import (
+                PredictionTechniquesController,
+            )
 
-        data: Dict = {}
-        all_datasets_empty = True
-        for source, _ in self.DATASETS.items():
-            if not self.DATASETS[source].empty:
-                all_datasets_empty = False
-                if len(self.DATASETS[source].columns) == 1:
-                    data[self.DATASETS[source].columns[0]] = self.DATASETS[source]
-                else:
-                    for col in list(self.DATASETS[source].columns):
-                        data[col] = self.DATASETS[source][col].to_frame()
+            data: Dict = {}
+            for source, _ in self.DATASETS.items():
+                if not self.DATASETS[source].empty:
+                    if len(self.DATASETS[source].columns) == 1:
+                        data[self.DATASETS[source].columns[0]] = self.DATASETS[source]
+                    else:
+                        for col in list(self.DATASETS[source].columns):
+                            data[col] = self.DATASETS[source][col].to_frame()
 
-        if all_datasets_empty:
+            self.queue = self.load_class(
+                PredictionTechniquesController, self.DATASETS, self.queue
+            )
+
+    @log_start_end(log=logger)
+    def call_qa(self, _):
+        """Process pred command"""
+        if not self.DATASETS:
             console.print(
                 "There is no data stored yet. Please use either the 'macro', 'fred', 'index' and/or "
                 "'treasury' command in combination with the -st argument to be able to plot data.\n"

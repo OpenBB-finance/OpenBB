@@ -247,7 +247,10 @@ def last_price(symbol: str):
         },
     )
     if r.status_code == 200:
-        return float(r.json()["quotes"]["quote"]["last"])
+        last = r.json()["quotes"]["quote"]["last"]
+        if last is None:
+            return 0
+        return float(last)
     else:
         console.print("Error getting last price")
         return None

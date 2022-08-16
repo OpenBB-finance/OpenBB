@@ -161,7 +161,7 @@ def get_news(
     source: str = "cp",
     currency: str = None,
     sortby: str = "published_at",
-    ascending: bool = True,
+    ascend: bool = True,
 ) -> pd.DataFrame:
     """Get recent posts from CryptoPanic news aggregator platform. [Source: https://cryptopanic.com/]
 
@@ -178,8 +178,8 @@ def get_news(
         es (Español), fr (Français), it (Italiano), pt (Português), ru (Русский)
     sortby: str
         Key to sort by.
-    ascending: bool
-        Sort in ascending order.
+    ascend: bool
+        Sort in ascend order.
 
     Returns
     -------
@@ -234,9 +234,8 @@ def get_news(
                 if isinstance(x, str)
                 else x
             )
-            df = df.sort_values(by="published_at", ascending=ascending)
             df["published_at"] = pd.to_datetime(df["published_at"]).dt.date
-            df = df.sort_values(by=sortby, ascending=ascending)
+            df = df.sort_values(by=sortby, ascending=ascend)
             return df
         except Exception as e:  # noqa: F841
             logger.exception(str(e))

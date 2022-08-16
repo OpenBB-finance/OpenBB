@@ -194,7 +194,7 @@ def get_token_decimals(address: str) -> Optional[int]:
 
 @log_start_end(log=logger)
 def get_address_info(
-    address: str, sortby: str = "index", ascending: bool = False
+    address: str, sortby: str = "index", ascend: bool = False
 ) -> pd.DataFrame:
     """Get info about tokens on you ethereum blockchain balance. Eth balance, balance of all tokens which
     have name and symbol. [Source: Ethplorer]
@@ -205,7 +205,7 @@ def get_address_info(
         Blockchain balance e.g. 0x3cD751E6b0078Be393132286c442345e5DC49699
     sortby: str
         Key to sort by.
-    ascending: str
+    ascend: str
         Sort in descending order.
 
     Returns
@@ -260,12 +260,12 @@ def get_address_info(
     df = pd.concat([eth_row_df, df], ignore_index=True)
     df = df[df["tokenName"].notna()][cols]
     create_df_index(df, "index")
-    df = df.sort_values(by=sortby, ascending=ascending)
+    df = df.sort_values(by=sortby, ascending=ascend)
     return df
 
 
 @log_start_end(log=logger)
-def get_top_tokens(sortby: str = "rank", ascending: bool = False) -> pd.DataFrame:
+def get_top_tokens(sortby: str = "rank", ascend: bool = False) -> pd.DataFrame:
     """Get top 50 tokens. [Source: Ethplorer]
 
     Returns
@@ -290,13 +290,13 @@ def get_top_tokens(sortby: str = "rank", ascending: bool = False) -> pd.DataFram
     ]
     df["price"] = df["price"].apply(lambda x: x["rate"] if x and "rate" in x else None)
     create_df_index(df, "rank")
-    df = df.sort_values(by=sortby, ascending=ascending)
+    df = df.sort_values(by=sortby, ascending=ascend)
     return df
 
 
 @log_start_end(log=logger)
 def get_top_token_holders(
-    address, sortby: str = "balance", ascending: bool = True
+    address, sortby: str = "balance", ascend: bool = True
 ) -> pd.DataFrame:
     """Get info about top token holders. [Source: Ethplorer]
 
@@ -306,7 +306,7 @@ def get_top_token_holders(
         Token balance e.g. 0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984
     sortby: str
         Key to sort by.
-    ascending: str
+    ascend: str
         Sort in descending order.
 
     Returns
@@ -321,13 +321,13 @@ def get_top_token_holders(
     token_decimals_divider = get_token_decimals(address)
     if token_decimals_divider:
         df["balance"] = df["balance"] / token_decimals_divider
-    df = df.sort_values(by=sortby, ascending=ascending)
+    df = df.sort_values(by=sortby, ascending=ascend)
     return df
 
 
 @log_start_end(log=logger)
 def get_address_history(
-    address, sortby: str = "timestamp", ascending: bool = True
+    address, sortby: str = "timestamp", ascend: bool = True
 ) -> pd.DataFrame:
     """Get information about balance historical transactions. [Source: Ethplorer]
 
@@ -337,7 +337,7 @@ def get_address_history(
         Blockchain balance e.g. 0x3cD751E6b0078Be393132286c442345e5DC49699
     sortby: str
         Key to sort by.
-    ascending: str
+    ascend: str
         Sort in ascending order.
 
     Returns
@@ -365,7 +365,7 @@ def get_address_history(
         return pd.DataFrame(columns=cols)
 
     df = df[cols]
-    df = df.sort_values(by=sortby, ascending=ascending)
+    df = df.sort_values(by=sortby, ascending=ascend)
     return df
 
 
@@ -480,7 +480,7 @@ def get_tx_info(tx_hash) -> pd.DataFrame:
 
 @log_start_end(log=logger)
 def get_token_history(
-    address, sortby: str = "timestamp", ascending: bool = False
+    address, sortby: str = "timestamp", ascend: bool = False
 ) -> pd.DataFrame:
     """Get info about token historical transactions. [Source: Ethplorer]
 
@@ -490,7 +490,7 @@ def get_token_history(
         Token e.g. 0xf3db5fa2c66b7af3eb0c0b782510816cbe4813b8
     sortby: str
         Key to sort by.
-    ascending: str
+    ascend: str
         Sort in descending order.
 
     Returns
@@ -530,7 +530,7 @@ def get_token_history(
     df[["name", "symbol"]] = name, symbol
     df["value"] = df["value"].astype(float) / (10 ** int(decimals))
     df = df[["timestamp", "name", "symbol", "value", "from", "to", "transactionHash"]]
-    df = df.sort_values(by=sortby, ascending=ascending)
+    df = df.sort_values(by=sortby, ascending=ascend)
     return df
 
 
@@ -538,7 +538,7 @@ def get_token_history(
 def get_token_historical_price(
     address,
     sortby: str = "date",
-    ascending: bool = False,
+    ascend: bool = False,
 ) -> pd.DataFrame:
     """Get token historical prices with volume and market cap, and average price. [Source: Ethplorer]
 
@@ -548,7 +548,7 @@ def get_token_historical_price(
         Token e.g. 0xf3db5fa2c66b7af3eb0c0b782510816cbe4813b8
     sortby: str
         Key to sort by.
-    ascending: str
+    ascend: str
         Sort in descending order.
 
     Returns
@@ -575,5 +575,5 @@ def get_token_historical_price(
     df = prices_df[
         ["date", "open", "close", "high", "low", "volumeConverted", "cap", "average"]
     ]
-    df = df.sort_values(by=sortby, ascending=ascending)
+    df = df.sort_values(by=sortby, ascending=ascend)
     return df

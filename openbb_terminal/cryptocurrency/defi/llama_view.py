@@ -94,10 +94,14 @@ def display_grouped_defi_protocols(
 
 @log_start_end(log=logger)
 def display_defi_protocols(
-    top: int, sortby: str, descend: bool, description: bool, export: str = ""
+    top: int,
+    sortby: str,
+    ascend: bool = False,
+    description: bool = False,
+    export: str = "",
 ) -> None:
-    """Display information about listed DeFi protocols, their current TVL and changes to it in the last hour/day/week.
-    [Source: https://docs.llama.fi/api]
+    """Display information about listed DeFi protocols, their current TVL and changes to it in
+    the last hour/day/week. [Source: https://docs.llama.fi/api]
 
     Parameters
     ----------
@@ -105,7 +109,7 @@ def display_defi_protocols(
         Number of records to display
     sortby: str
         Key by which to sort data
-    descend: bool
+    ascend: bool
         Flag to sort data descending
     description: bool
         Flag to display description of protocol
@@ -116,7 +120,7 @@ def display_defi_protocols(
     df = llama_model.get_defi_protocols()
     df_data = df.copy()
 
-    df = df.sort_values(by=sortby, ascending=descend)
+    df = df.sort_values(by=sortby, ascending=ascend)
     df = df.drop(columns="chain")
 
     df["tvl"] = df["tvl"].apply(lambda x: lambda_long_number_format(x))

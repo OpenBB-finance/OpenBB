@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 def display_crypto_hacks(
     top: int = 15,
     sortby: str = "Platform",
-    ascending: bool = False,
+    ascend: bool = False,
     slug: str = "polyntwork-rekt",
     export: str = "",
 ) -> None:
@@ -34,7 +34,7 @@ def display_crypto_hacks(
         Number of hacks to search
     sortby: str
         Key by which to sort data {Platform,Date,Amount [$],Audit,Slug,URL}
-    ascending: bool
+    ascend: bool
         Flag to sort data ascending
     export : str
         Export dataframe data to csv,json,xlsx file
@@ -50,7 +50,7 @@ def display_crypto_hacks(
             text,
         )
     else:
-        df = rekt_model.get_crypto_hacks(sortby, ascending)
+        df = rekt_model.get_crypto_hacks(sortby, ascend)
 
         if df.empty:
             console.print("\nError in rekt request\n")

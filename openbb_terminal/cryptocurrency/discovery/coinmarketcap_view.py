@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 def display_cmc_top_coins(
     top: int = 15,
     sortby: str = "CMC_Rank",
-    ascending: bool = True,
+    ascend: bool = True,
     export: str = "",
 ) -> None:
     """Shows top n coins. [Source: CoinMarketCap]
@@ -31,14 +31,14 @@ def display_cmc_top_coins(
         Key to sort data. The table can be sorted by every of its columns. Refer to
         Coin Market Cap:s API documentation, see:
         https://coinmarketcap.com/api/documentation/v1/#operation/getV1CryptocurrencyListingsLatest
-    ascending: bool
+    ascend: bool
         Flag to sort data ascending
     export : str
         Export dataframe data to csv,json,xlsx file
 
     """
 
-    df = coinmarketcap_model.get_cmc_top_n(sortby, ascending)
+    df = coinmarketcap_model.get_cmc_top_n(sortby, ascend)
 
     if df.empty:
         console.print("No Data Found\n")

@@ -369,7 +369,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "rolling_view.display_mean_std",
             [],
             dict(
-                name=QA_CONTROLLER.ticker,
+                symbol=QA_CONTROLLER.ticker,
                 data=QA_CONTROLLER.stock,
                 target=QA_CONTROLLER.target,
                 window=1,

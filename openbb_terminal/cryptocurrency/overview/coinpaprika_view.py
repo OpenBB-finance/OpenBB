@@ -105,7 +105,7 @@ def display_global_market(export: str = "") -> None:
 def display_all_coins_market_info(
     symbol: str,
     sortby: str = "rank",
-    ascending: bool = True,
+    ascend: bool = True,
     top: int = 15,
     export: str = "",
 ) -> None:
@@ -119,7 +119,7 @@ def display_all_coins_market_info(
         Number of records to display
     sortby: str
         Key by which to sort data
-    ascending: bool
+    ascend: bool
         Flag to sort data ascending
     links: bool
         Flag to display urls
@@ -127,9 +127,7 @@ def display_all_coins_market_info(
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = paprika.get_coins_market_info(
-        symbols=symbol, sortby=sortby, ascending=ascending
-    )
+    df = paprika.get_coins_market_info(symbols=symbol, sortby=sortby, ascend=ascend)
 
     df_data = df.copy()
 
@@ -161,7 +159,7 @@ def display_all_coins_market_info(
 def display_all_coins_info(
     symbol: str,
     sortby: str = "rank",
-    ascending: bool = True,
+    ascend: bool = True,
     top: int = 15,
     export: str = "",
 ) -> None:
@@ -175,7 +173,7 @@ def display_all_coins_info(
         Number of records to display
     sortby: str
         Key by which to sort data
-    ascending: bool
+    ascend: bool
         Flag to sort data descending
     links: bool
         Flag to display urls
@@ -183,7 +181,7 @@ def display_all_coins_info(
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = paprika.get_coins_info(symbols=symbol, sortby=sortby, ascending=ascending)
+    df = paprika.get_coins_info(symbols=symbol, sortby=sortby, ascend=ascend)
 
     df_data = df.copy()
 
@@ -215,7 +213,7 @@ def display_all_coins_info(
 def display_all_exchanges(
     symbol: str,
     sortby: str = "rank",
-    ascending: bool = True,
+    ascend: bool = True,
     top: int = 15,
     export: str = "",
 ) -> None:
@@ -229,7 +227,7 @@ def display_all_exchanges(
         Number of records to display
     sortby: str
         Key by which to sort data
-    ascending: bool
+    ascend: bool
         Flag to sort data ascending
     links: bool
         Flag to display urls
@@ -238,9 +236,7 @@ def display_all_exchanges(
 
     """
 
-    df = paprika.get_list_of_exchanges(
-        symbols=symbol, sortby=sortby, ascending=ascending
-    )
+    df = paprika.get_list_of_exchanges(symbols=symbol, sortby=sortby, ascend=ascend)
 
     df_data = df.copy()
 
@@ -268,7 +264,7 @@ def display_all_exchanges(
 def display_exchange_markets(
     exchange: str = "binance",
     sortby: str = "pair",
-    ascending: bool = True,
+    ascend: bool = True,
     top: int = 15,
     links: bool = False,
     export: str = "",
@@ -283,7 +279,7 @@ def display_exchange_markets(
         Number of records to display
     sortby: str
         Key by which to sort data
-    ascending: bool
+    ascend: bool
         Flag to sort data descending
     links: bool
         Flag to display urls
@@ -292,7 +288,7 @@ def display_exchange_markets(
     """
 
     df = paprika.get_exchanges_market(
-        exchange_id=exchange, sortby=sortby, ascending=ascending
+        exchange_id=exchange, sortby=sortby, ascend=ascend
     )
 
     df_data = df.copy()
@@ -350,7 +346,7 @@ def display_all_platforms(export: str) -> None:
 def display_contracts(
     symbol: str,
     sortby: str = "active",
-    ascending: bool = True,
+    ascend: bool = True,
     top: int = 15,
     export: str = "",
 ) -> None:
@@ -364,13 +360,13 @@ def display_contracts(
         Number of records to display
     sortby: str
         Key by which to sort data
-    ascending: bool
+    ascend: bool
         Flag to sort data ascending
     export : str
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = paprika.get_contract_platform(symbol, sortby, ascending)
+    df = paprika.get_contract_platform(symbol, sortby, ascend)
 
     if df.empty:
         console.print(f"Nothing found for platform: {symbol}", "\n")

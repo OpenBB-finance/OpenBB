@@ -13,6 +13,7 @@ from .financedatabase_view import display_etf_by_name as ln
 from .financedatabase_view import display_etf_by_description as ld
 from .stockanalysis_view import view_overview as overview
 from .stockanalysis_view import view_holdings as holdings
+from .stockanalysis_model import get_etf_holdings as load
 from .yfinance_view import display_etf_weightings as weights
 from .yfinance_view import display_etf_description as summary
 from .technical_analysis import ta_api as ta

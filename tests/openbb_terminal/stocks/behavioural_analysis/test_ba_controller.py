@@ -273,7 +273,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             [],
             dict(
                 limit=10,
-                posts_to_look_at=5,
+                post_limit=5,
                 subreddits="MOCK_SUB",
             ),
         ),
@@ -437,7 +437,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             [],
             dict(
                 limit=2,
-                posts_to_look_at=1,
+                post_limit=1,
                 subreddits="MOCK_SUB",
             ),
         ),

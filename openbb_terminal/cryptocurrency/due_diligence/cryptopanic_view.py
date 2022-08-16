@@ -23,7 +23,7 @@ def display_news(
     source: str = "cp",
     currency: Optional[str] = None,
     limit: int = 25,
-    ascending: bool = True,
+    ascend: bool = True,
     export: str = "",
 ) -> None:
     """Display recent posts from CryptoPanic news aggregator platform.
@@ -40,7 +40,7 @@ def display_news(
     region: str
         Filter news by regions. Available regions are: en (English), de (Deutsch), nl (Dutch),
         es (Español), fr (Français), it (Italiano), pt (Português), ru (Русский)
-    ascending: bool
+    ascend: bool
         Sort in ascending order.
     export : str
         Export dataframe data to csv,json,xlsx file
@@ -53,7 +53,7 @@ def display_news(
         region=region,
         currency=currency,
         source=source,
-        ascending=ascending,
+        ascending=ascend,
     )
 
     if not df.empty:

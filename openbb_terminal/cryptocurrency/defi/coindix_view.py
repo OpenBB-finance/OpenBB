@@ -22,7 +22,7 @@ def display_defi_vaults(
     kind: Optional[str] = None,
     top: int = 10,
     sortby: str = "apy",
-    ascending: bool = True,
+    ascend: bool = True,
     link: bool = False,
     export: str = "",
 ) -> None:
@@ -50,7 +50,7 @@ def display_defi_vaults(
         Number of records to display
     sortby: str
         Key by which to sort data
-    ascending: bool
+    ascend: bool
         Flag to sort data descending
     link: bool
         Flag to show links
@@ -59,7 +59,7 @@ def display_defi_vaults(
     """
 
     df = coindix_model.get_defi_vaults(
-        chain=chain, protocol=protocol, kind=kind, sortby=sortby, ascending=ascending
+        chain=chain, protocol=protocol, kind=kind, sortby=sortby, ascending=ascend
     )
     if df.empty:
         print(

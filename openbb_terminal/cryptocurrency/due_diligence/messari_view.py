@@ -272,7 +272,7 @@ def display_links(symbol: str, export: str = "") -> None:
 @check_api_key(["API_MESSARI_KEY"])
 def display_roadmap(
     symbol: str,
-    ascending: bool = True,
+    ascend: bool = True,
     limit: int = 5,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -284,7 +284,7 @@ def display_roadmap(
     ----------
     symbol : str
         Crypto symbol to check roadmap
-    ascending: bool
+    ascend: bool
         reverse order
     limit : int
         number to show
@@ -293,7 +293,7 @@ def display_roadmap(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    df = get_roadmap(symbol, ascending)
+    df = get_roadmap(symbol, ascend)
 
     if not df.empty:
         print_rich_table(

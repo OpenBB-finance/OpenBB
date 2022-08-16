@@ -144,7 +144,7 @@ def get_staking_account_info(address: str = "") -> Tuple[pd.DataFrame, str]:
 
 
 @log_start_end(log=logger)
-def get_validators(sortby: str = "votingPower", ascending: bool = True) -> pd.DataFrame:
+def get_validators(sortby: str = "votingPower", ascend: bool = True) -> pd.DataFrame:
     """Get information about terra validators [Source: https://fcd.terra.dev/swagger]
 
     Parameters
@@ -152,7 +152,7 @@ def get_validators(sortby: str = "votingPower", ascending: bool = True) -> pd.Da
     sortby: str
         Key by which to sort data. Choose from:
         validatorName, tokensAmount, votingPower, commissionRate, status, uptime
-    ascending: bool
+    ascend: bool
         Flag to sort data descending
 
     Returns
@@ -182,13 +182,13 @@ def get_validators(sortby: str = "votingPower", ascending: bool = True) -> pd.Da
 
     df = pd.DataFrame(results)
     if not df.empty:
-        df = df.sort_values(by=sortby, ascending=ascending)
+        df = df.sort_values(by=sortby, ascending=ascend)
     return df
 
 
 @log_start_end(log=logger)
 def get_proposals(
-    status: str = "", sortby: str = "id", ascending: bool = True, top: int = 10
+    status: str = "", sortby: str = "id", ascend: bool = True, top: int = 10
 ) -> pd.DataFrame:
     """Get terra blockchain governance proposals list [Source: https://fcd.terra.dev/swagger]
 
@@ -198,7 +198,7 @@ def get_proposals(
         status of proposal, one from list: ['Voting','Deposit','Passed','Rejected']
     sortby: str
         Key by which to sort data
-    ascending: bool
+    ascend: bool
         Flag to sort data ascending
     top: int
         Number of records to display
@@ -247,7 +247,7 @@ def get_proposals(
 
     if status.title() in statuses:
         df = df[df["status"] == status.title()]
-    df = df.sort_values(by=sortby, ascending=ascending).head(top)
+    df = df.sort_values(by=sortby, ascending=ascend).head(top)
     df.columns = prettify_column_names(df.columns)
     return df
 

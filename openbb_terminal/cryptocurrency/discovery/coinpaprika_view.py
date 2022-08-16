@@ -18,7 +18,7 @@ def display_search_results(
     category: str = "all",
     top: int = 10,
     sortby: str = "id",
-    ascending: bool = True,
+    ascend: bool = True,
     export: str = "",
 ) -> None:
     """Search over CoinPaprika. [Source: CoinPaprika]
@@ -34,7 +34,7 @@ def display_search_results(
     sortby: str
         Key to sort data. The table can be sorted by every of its columns. Refer to
         API documentation (see https://api.coinpaprika.com/docs#tag/Tools/paths/~1search/get)
-    ascending: bool
+    ascend: bool
         Flag to sort data descending
     export : str
         Export dataframe data to csv,json,xlsx file
@@ -44,7 +44,7 @@ def display_search_results(
         category = "currencies,exchanges,icos,people,tags"
 
     df = paprika.get_search_results(
-        query=query, category=category, sortby=sortby, ascending=ascending
+        query=query, category=category, sortby=sortby, ascending=ascend
     )
 
     if df.empty:
