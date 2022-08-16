@@ -4,11 +4,8 @@ __docformat__ = "numpy"
 
 import logging
 from typing import Any, Tuple, Union, List, Optional
+import warnings
 
-
-# import torch
-# import torch.nn as nn
-# import torch.optim as optim
 import pandas as pd
 
 from darts import TimeSeries
@@ -135,13 +132,15 @@ def get_tcn_data(
     )
 
     # fit model on train series for historical forecasting
-    helpers.fit_model(
-        tcn_model,
-        train,
-        val,
-        past_covariate_train,
-        past_covariate_val,
-    )
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        helpers.fit_model(
+            tcn_model,
+            train,
+            val,
+            past_covariate_train,
+            past_covariate_val,
+        )
     best_model = TCNModel.load_from_checkpoint(model_name=model_save_name, best=True)
 
     # Showing historical backtesting without retraining model (too slow)

@@ -175,13 +175,15 @@ def get_tft_data(
     )
 
     # fit model on train series for historical forecasting
-    helpers.fit_model(
-        tft_model,
-        train,
-        val,
-        past_covariate_train,
-        past_covariate_val,
-    )
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        helpers.fit_model(
+            tft_model,
+            train,
+            val,
+            past_covariate_train,
+            past_covariate_val,
+        )
     best_model = TFTModel.load_from_checkpoint(model_name=model_save_name, best=True)
 
     # Showing historical backtesting without retraining model (too slow)

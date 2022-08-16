@@ -126,7 +126,7 @@ def display_trans_forecast(
     ) = trans_model.get_trans_data(
         data=data,
         n_predict=n_predict,
-        target_col=target_column,
+        target_column=target_column,
         past_covariates=past_covariates,
         train_split=train_split,
         forecast_horizon=forecast_horizon,
