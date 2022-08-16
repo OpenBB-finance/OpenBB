@@ -8,8 +8,20 @@ from openbb_terminal.helper_funcs import export_data, print_rich_table
 logger = logging.getLogger(__name__)
 
 
-def large_numbers(x: float) -> str:
-    return f"{x:,}"
+def format_large_numbers(num: float) -> str:
+    """Converts floats into strings and adds commas to the number
+
+    Parameters
+    ----------
+    num: float
+        The number to convert
+
+    Returns
+    ----------
+    num: str
+        The formatted number
+    """
+    return f"{num:,}"
 
 
 @log_start_end(log=logger)
@@ -22,15 +34,11 @@ def display_debt(export: str = "", limit: int = 20):
         The path to export to
     limit : int
         The number of countries to show
-
-    Returns
-    ----------
-    Shows a table with national debt for various countries.
     """
     debt_df = commodity_model.get_debt()
 
     for col in ["Debt", "Per Capita"]:
-        debt_df[col] = debt_df[col].apply(lambda x: large_numbers(x))
+        debt_df[col] = debt_df[col].apply(lambda x: format_large_numbers(x))
 
     print_rich_table(
         debt_df[:limit],

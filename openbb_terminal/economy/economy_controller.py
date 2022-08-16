@@ -1409,7 +1409,6 @@ class EconomyController(BaseController):
             commodity_view.display_debt(export=ns_parser.export, limit=ns_parser.limit)
 
     @log_start_end(log=logger)
-    @log_start_end(log=logger)
     def call_spectrum(self, other_args: List[str]):
         """Process spectrum command"""
         parser = argparse.ArgumentParser(
