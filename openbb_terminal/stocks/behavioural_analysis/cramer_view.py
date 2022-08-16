@@ -8,7 +8,6 @@ import logging
 import matplotlib.pyplot as plt
 from matplotlib.dates import DateFormatter
 import yfinance
-import pandas as pd
 
 import openbb_terminal.config_plot as cfp
 from openbb_terminal.config_terminal import theme

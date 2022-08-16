@@ -532,7 +532,7 @@ class TechnicalAnalysisController(StockBaseController):
             prog="vwap",
             description="""
                 The Volume Weighted Average Price that measures the average typical price
-                by volume.  It is typically used with intraday charts to identify general direction.
+                by volume. It is typically used with intraday charts to identify general direction.
             """,
         )
         parser.add_argument(

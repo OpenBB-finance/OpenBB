@@ -4,7 +4,6 @@ __docformat__ = "numpy"
 import logging
 import os
 from typing import Optional, List
-from datetime import datetime, timedelta
 
 import matplotlib.pyplot as plt
 import numpy as np

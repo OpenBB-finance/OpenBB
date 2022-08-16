@@ -3,8 +3,6 @@ __docformat__ = "numpy"
 
 import logging
 
-import pandas as pd
-
 from openbb_terminal.common.behavioural_analysis import stocktwits_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import print_rich_table

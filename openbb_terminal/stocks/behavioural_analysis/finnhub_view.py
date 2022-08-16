@@ -4,7 +4,6 @@ __docformat__ = "numpy"
 import logging
 
 import os
-from datetime import datetime, timedelta
 from typing import Optional, List
 import numpy as np
 import pandas as pd
