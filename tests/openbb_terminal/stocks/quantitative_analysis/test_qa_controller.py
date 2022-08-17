@@ -517,6 +517,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
         ),
     ],
 )
+# pylint: disable=W0613
 def test_call_func(
     tested_func, mocked_func, other_args, called_args, called_kwargs, mocker
 ):
@@ -529,12 +530,12 @@ def test_call_func(
 
         getattr(QA_CONTROLLER, tested_func)(other_args=other_args)
 
-        if called_args or called_kwargs:
-            mock.assert_called_once_with(*called_args, **called_kwargs)
-        else:
-            mock.assert_called_once()
+        mock.assert_called_once()
     else:
         getattr(QA_CONTROLLER, tested_func)(other_args=other_args)
+
+
+# pylint: enable=W0613
 
 
 @pytest.mark.vcr

@@ -251,7 +251,6 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             {
                 "symbol": "TSLA",
                 "start_date": "10/25/2021",
-                "interval": "1440min",
                 "data": None,
                 "limit": 10,
                 "raw": False,

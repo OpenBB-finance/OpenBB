@@ -145,7 +145,6 @@ class DueDiligenceController(StockBaseController):
         if ns_parser:
             business_insider_view.price_target_from_analysts(
                 symbol=self.ticker,
-                interval=self.interval,
                 data=self.stock,
                 start_date=self.start,
                 limit=ns_parser.limit,

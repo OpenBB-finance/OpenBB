@@ -29,7 +29,6 @@ def test_price_target_from_analysts_raw(mocker):
     business_insider_view.price_target_from_analysts(
         symbol="TSLA",
         start_date=None,
-        interval=None,
         data=None,
         limit=None,
         raw=True,
