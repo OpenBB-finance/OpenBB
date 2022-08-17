@@ -87,7 +87,7 @@ jobs:
         run: |
           conda info
           pip install pytest
-          pip install --requirement requirements.txt
+          pip install --user --requirement requirements-full.txt
 
       - name: List installed packages (Bash)
         shell: bash -l {0}
