@@ -22,7 +22,7 @@ def test_get_next_earnings(recorder):
 
 @pytest.mark.vcr
 def test_get_trending_list(recorder):
-    trending_list = seeking_alpha_model.get_trending_list(num=2)
+    trending_list = seeking_alpha_model.get_trending_list(limit=2)
     recorder.capture(trending_list)
 
 

@@ -99,7 +99,7 @@ class BacktestingController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             bt_view.display_whatif_scenario(
-                ticker=self.ticker,
+                symbol=self.ticker,
                 num_shares_acquired=ns_parser.num_shares_acquired,
                 date_shares_acquired=ns_parser.date_shares_acquired,
             )
@@ -140,8 +140,8 @@ class BacktestingController(BaseController):
         if ns_parser:
 
             bt_view.display_simple_ema(
-                ticker=self.ticker,
-                df_stock=self.stock,
+                symbol=self.ticker,
+                data=self.stock,
                 ema_length=ns_parser.length,
                 spy_bt=ns_parser.spy,
                 no_bench=ns_parser.no_bench,
@@ -204,8 +204,8 @@ class BacktestingController(BaseController):
                 console.print("Short EMA period is longer than Long EMA period\n")
 
             bt_view.display_ema_cross(
-                ticker=self.ticker,
-                df_stock=self.stock,
+                symbol=self.ticker,
+                data=self.stock,
                 short_ema=ns_parser.short,
                 long_ema=ns_parser.long,
                 spy_bt=ns_parser.spy,
@@ -277,8 +277,8 @@ class BacktestingController(BaseController):
                 console.print("Low RSI value is higher than Low RSI value\n")
 
             bt_view.display_rsi_strategy(
-                ticker=self.ticker,
-                df_stock=self.stock,
+                symbol=self.ticker,
+                data=self.stock,
                 periods=ns_parser.periods,
                 low_rsi=ns_parser.low,
                 high_rsi=ns_parser.high,

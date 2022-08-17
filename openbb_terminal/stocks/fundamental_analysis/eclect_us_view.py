@@ -12,17 +12,17 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_analysis(
-    ticker: str,
+    symbol: str,
 ) -> None:
     """Display analysis of SEC filings based on NLP model. [Source: https://eclect.us]
 
     Parameters
     ----------
-    ticker: str
-        Ticker to do SEC filings analysis from
+    symbol: str
+        Ticker symbol to do SEC filings analysis from
     """
 
-    analysis = eclect_us_model.get_filings_analysis(ticker)
+    analysis = eclect_us_model.get_filings_analysis(symbol)
 
     if analysis:
         console.print(analysis)

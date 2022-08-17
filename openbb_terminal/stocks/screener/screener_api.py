@@ -8,6 +8,7 @@ from openbb_terminal.helper_classes import ModelsNamespace as _models
 # Menu commands
 from .yahoofinance_view import historical
 from .finviz_view import screener as finviz_screener
+from .screener_view import display_presets as view
 
 # Models
 models = _models(os.path.abspath(os.path.dirname(__file__)))

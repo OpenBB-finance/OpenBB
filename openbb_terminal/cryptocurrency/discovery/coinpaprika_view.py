@@ -44,7 +44,7 @@ def display_search_results(
         category = "currencies,exchanges,icos,people,tags"
 
     df = paprika.get_search_results(
-        query=query, category=category, sortby=sortby, ascending=ascend
+        query=query, category=category, sortby=sortby, ascend=ascend
     )
 
     if df.empty:

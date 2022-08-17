@@ -38,13 +38,13 @@ def test_insider_activity(mocker, raw):
     mocker.patch("yfinance.download", side_effect=mock_yf_download)
 
     ticker = "AAPL"
-    stock = stocks_helper.load(ticker=ticker)
+    stock = stocks_helper.load(symbol=ticker)
     businessinsider_view.insider_activity(
-        stock=stock,
-        ticker=ticker,
-        start=None,
+        data=stock,
+        symbol=ticker,
+        start_date=None,
         interval="1440min",
-        num=5,
+        limit=5,
         raw=raw,
         export="",
     )

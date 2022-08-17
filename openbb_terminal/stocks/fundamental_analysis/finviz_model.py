@@ -12,19 +12,19 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def get_data(ticker: str) -> pd.DataFrame:
+def get_data(symbol: str) -> pd.DataFrame:
     """Get fundamental data from finviz
 
     Parameters
     ----------
-    ticker : str
-        Stock ticker
+    symbol : str
+        Stock ticker symbol
 
     Returns
     -------
     pd.DataFrame
         DataFrame of fundamental data
     """
-    d_finviz_stock = finviz.get_stock(ticker)
+    d_finviz_stock = finviz.get_stock(symbol)
     df_fa = pd.DataFrame.from_dict(d_finviz_stock, orient="index", columns=["Values"])
     return df_fa[df_fa.Values != "-"]

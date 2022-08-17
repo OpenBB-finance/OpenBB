@@ -169,7 +169,7 @@ class ScreenerController(BaseController):
             self.screen_tickers = syncretism_view.view_screener_output(
                 preset=ns_parser.preset,
                 presets_path=self.presets_path,
-                n_show=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
 

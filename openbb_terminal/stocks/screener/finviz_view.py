@@ -126,10 +126,10 @@ d_cols_to_sort = {
 @log_start_end(log=logger)
 def screener(
     loaded_preset: str,
-    data_type: str,
+    data_type: str = "overview",
     limit: int = 10,
-    ascend: bool = False,
-    sort: str = "",
+    ascending: bool = False,
+    sortby: str = "",
     export: str = "",
 ) -> List[str]:
     """Screener one of the following: overview, valuation, financial, ownership, performance, technical.
@@ -142,9 +142,9 @@ def screener(
         Data type string between: overview, valuation, financial, ownership, performance, technical
     limit : int
         Limit of stocks to display
-    ascend : bool
+    ascending : bool
         Order of table to ascend or descend
-    sort: str
+    sortby: str
         Column to sort table by
     export : str
         Export dataframe data to csv,json,xlsx file
@@ -159,7 +159,7 @@ def screener(
             preset_loaded=loaded_preset,
             data_type=data_type,
             limit=10,
-            ascend=ascend,
+            ascending=ascending,
         )
 
     if isinstance(df_screen, pd.DataFrame):
@@ -168,27 +168,27 @@ def screener(
 
         df_screen = df_screen.dropna(axis="columns", how="all")
 
-        if sort:
-            if sort in d_cols_to_sort[data_type]:
+        if sortby:
+            if sortby in d_cols_to_sort[data_type]:
                 df_screen = df_screen.sort_values(
-                    by=[sort],
-                    ascending=ascend,
+                    by=[sortby],
+                    ascending=ascending,
                     na_position="last",
                 )
             else:
                 similar_cmd = difflib.get_close_matches(
-                    sort,
+                    sortby,
                     d_cols_to_sort[data_type],
                     n=1,
                     cutoff=0.7,
                 )
                 if similar_cmd:
                     console.print(
-                        f"Replacing '{' '.join(sort)}' by '{similar_cmd[0]}' so table can be sorted."
+                        f"Replacing '{' '.join(sortby)}' by '{similar_cmd[0]}' so table can be sorted."
                     )
                     df_screen = df_screen.sort_values(
                         by=[similar_cmd[0]],
-                        ascending=ascend,
+                        ascending=ascending,
                         na_position="last",
                     )
                 else:

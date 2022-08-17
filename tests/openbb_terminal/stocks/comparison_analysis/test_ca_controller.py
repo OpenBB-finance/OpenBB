@@ -521,8 +521,7 @@ def test_func_calling_get_similar_companies(
     tested_func, mocked_func, other_args, mocker
 ):
     similar = ["MOCK_SIMILAR_" + str(i) for i in range(11)]
-    user = "MOCK_USER"
-    mock = mocker.Mock(return_value=(similar, user))
+    mock = mocker.Mock(return_value=similar)
     target = "openbb_terminal.stocks.comparison_analysis." + mocked_func
     mocker.patch(target=target, new=mock)
 

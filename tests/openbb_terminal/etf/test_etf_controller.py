@@ -280,7 +280,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             ["6"],
             "stockanalysis_view.view_holdings",
             [],
-            dict(symbol="MOCK_ETF_NAME", num_to_show=6, export=""),
+            dict(symbol="MOCK_ETF_NAME", limit=6, export=""),
         ),
         (
             "call_weights",
