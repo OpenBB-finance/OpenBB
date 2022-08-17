@@ -11,8 +11,8 @@ from openbb_terminal.stocks.dark_pool_shorts import stockgrid_view
 @pytest.mark.record_stdout
 def test_dark_pool_short_positions():
     stockgrid_view.dark_pool_short_positions(
-        num=2,
-        sort_field="sv_pct",
+        limit=2,
+        sortby="sv_pct",
         ascending=True,
         export="",
     )
@@ -22,8 +22,8 @@ def test_dark_pool_short_positions():
 @pytest.mark.record_stdout
 def test_short_interest_days_to_cover():
     stockgrid_view.short_interest_days_to_cover(
-        num=2,
-        sort_field="dtc",
+        limit=2,
+        sortby="dtc",
         export="",
     )
 
@@ -39,8 +39,8 @@ def test_short_interest_volume(mocker, raw):
     mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
 
     stockgrid_view.short_interest_volume(
-        ticker="PM",
-        num=2,
+        symbol="PM",
+        limit=2,
         raw=raw,
         export="",
     )
@@ -57,8 +57,8 @@ def test_net_short_position(mocker, raw):
     mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
 
     stockgrid_view.net_short_position(
-        ticker="PM",
-        num=2,
+        symbol="PM",
+        limit=2,
         raw=raw,
         export="",
     )

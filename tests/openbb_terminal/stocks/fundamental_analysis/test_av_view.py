@@ -26,43 +26,43 @@ def vcr_config():
     [
         (
             "display_overview",
-            {"ticker": "TSLA"},
+            {"symbol": "TSLA"},
         ),
         (
             "display_key",
-            {"ticker": "TSLA"},
+            {"symbol": "TSLA"},
         ),
         (
             "display_income_statement",
-            {"ticker": "TSLA", "limit": 5, "quarterly": True},
+            {"symbol": "TSLA", "limit": 5, "quarterly": True},
         ),
         (
             "display_income_statement",
-            {"ticker": "TSLA", "limit": 5, "quarterly": False},
+            {"symbol": "TSLA", "limit": 5, "quarterly": False},
         ),
         (
             "display_balance_sheet",
-            {"ticker": "TSLA", "limit": 5, "quarterly": True},
+            {"symbol": "TSLA", "limit": 5, "quarterly": True},
         ),
         (
             "display_balance_sheet",
-            {"ticker": "TSLA", "limit": 5, "quarterly": False},
+            {"symbol": "TSLA", "limit": 5, "quarterly": False},
         ),
         (
             "display_cash_flow",
-            {"ticker": "TSLA", "limit": 5, "quarterly": True},
+            {"symbol": "TSLA", "limit": 5, "quarterly": True},
         ),
         (
             "display_cash_flow",
-            {"ticker": "TSLA", "limit": 5, "quarterly": False},
+            {"symbol": "TSLA", "limit": 5, "quarterly": False},
         ),
         (
             "display_earnings",
-            {"ticker": "TSLA", "limit": 5, "quarterly": True},
+            {"symbol": "TSLA", "limit": 5, "quarterly": True},
         ),
         (
             "display_earnings",
-            {"ticker": "TSLA", "limit": 5, "quarterly": False},
+            {"symbol": "TSLA", "limit": 5, "quarterly": False},
         ),
     ],
 )
@@ -83,17 +83,17 @@ def test_check_output(func, kwargs_dict, monkeypatch, use_tab):
         (
             "display_overview",
             "get_overview",
-            {"ticker": "TSLA"},
+            {"symbol": "TSLA"},
         ),
         (
             "display_key",
             "get_key_metrics",
-            {"ticker": "TSLA"},
+            {"symbol": "TSLA"},
         ),
         (
             "display_earnings",
             "get_earnings",
-            {"ticker": "TSLA", "limit": 5, "quarterly": False},
+            {"symbol": "TSLA", "limit": 5, "quarterly": False},
         ),
     ],
 )
@@ -118,7 +118,7 @@ def test_display_fraud(mocker, df):
         "openbb_terminal.stocks.fundamental_analysis.av_view.av_model.get_fraud_ratios",
         return_value=(df),
     )
-    av_view.display_fraud(ticker="TSLA")
+    av_view.display_fraud(symbol="TSLA")
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -134,4 +134,4 @@ def test_dupont(mocker, df):
         "openbb_terminal.stocks.fundamental_analysis.av_view.av_model.get_dupont",
         return_value=(df),
     )
-    av_view.display_dupont(ticker="TSLA")
+    av_view.display_dupont(symbol="TSLA")

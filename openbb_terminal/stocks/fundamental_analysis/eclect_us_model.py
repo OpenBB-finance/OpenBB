@@ -15,13 +15,13 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def get_filings_analysis(ticker: str) -> str:
+def get_filings_analysis(symbol: str) -> str:
     """Save time reading SEC filings with the help of machine learning. [Source: https://eclect.us]
 
     Parameters
     ----------
-    ticker: str
-        Ticker to see analysis of filings
+    symbol: str
+        Ticker symbol to see analysis of filings
 
     Returns
     -------
@@ -29,7 +29,7 @@ def get_filings_analysis(ticker: str) -> str:
         Analysis of filings text
     """
 
-    response = requests.get(f"https://api.eclect.us/symbol/{ticker.lower()}?page=1")
+    response = requests.get(f"https://api.eclect.us/symbol/{symbol.lower()}?page=1")
 
     if response.status_code != 200:
         filings_analysis = ""

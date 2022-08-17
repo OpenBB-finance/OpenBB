@@ -34,7 +34,7 @@ def test_get_historical(mocker, recorder):
     mocker.patch("yfinance.download", side_effect=mock_yf_download)
 
     result_df = yahoo_finance_model.get_historical(
-        similar_tickers=["TSLA", "GM"],
+        similar=["TSLA", "GM"],
         start=datetime.strptime("2020-12-21", "%Y-%m-%d"),
         candle_type="o",
     )
@@ -82,7 +82,7 @@ def test_get_sp500_comps_tsne(mocker, recorder):
         side_effect=lambda x: np.full((len(x), 2), 1),
     )
     result_df = yahoo_finance_model.get_sp500_comps_tsne(
-        ticker="TOT.TO",
+        symbol="TOT.TO",
     )
 
     recorder.capture(result_df)

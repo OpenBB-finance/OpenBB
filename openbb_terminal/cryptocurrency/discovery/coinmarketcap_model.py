@@ -14,10 +14,27 @@ logger = logging.getLogger(__name__)
 
 FILTERS = ["Symbol", "CMC_Rank", "LastPrice", "DayPctChange", "MarketCap"]
 
+sort_map = {
+    "Symbol": "Symbol",
+    "CMC_Rank": "CMC_Rank",
+    "LastPrice": "Last Price",
+    "DayPctChange": "1 Day Pct Change",
+    "MarketCap": "Market Cap ($B)",
+}
+
 
 @log_start_end(log=logger)
-def get_cmc_top_n() -> pd.DataFrame:
+def get_cmc_top_n(sortby: str = "CMC_Rank", ascend: bool = True) -> pd.DataFrame:
     """Shows top n coins. [Source: CoinMarketCap]
+
+    Parameters
+    ----------
+    sortby: str
+        Key to sort data. The table can be sorted by every of its columns. Refer to
+        Coin Market Cap:s API documentation, see:
+        https://coinmarketcap.com/api/documentation/v1/#operation/getV1CryptocurrencyListingsLatest
+    ascend: bool
+        Whether to sort ascending or descending
 
     Returns
     -------
@@ -54,4 +71,5 @@ def get_cmc_top_n() -> pd.DataFrame:
         else:
             console.print(e)
 
+    df = df.sort_values(by=sort_map[sortby], ascending=ascend)
     return df

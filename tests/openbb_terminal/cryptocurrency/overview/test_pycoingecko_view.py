@@ -15,7 +15,7 @@ class TestCoinGeckoAPI(TestCase):
     @pytest.mark.vcr()
     def test_coin_holdings_overview(self):
         ov_pycoingecko_view.display_holdings_overview(
-            coin="bitcoin", show_bar=False, export="", top=20
+            symbol="bitcoin", show_bar=False, export="", top=20
         )
 
     @pytest.mark.record_stdout
@@ -30,35 +30,33 @@ class TestCoinGeckoAPI(TestCase):
     @pytest.mark.vcr()
     def test_coin_stablecoins(self):
         ov_pycoingecko_view.display_stablecoins(
-            top=15, export="", sortby="market_cap", pie=False, descend=False
+            top=15, export="", sortby="market_cap", pie=False, ascend=False
         )
 
     @pytest.mark.record_stdout
     @pytest.mark.vcr()
     def test_coin_exchanges(self):
         ov_pycoingecko_view.display_exchanges(
-            top=15, sortby="Rank", descend=True, links=False, export=""
+            top=15, sortby="Rank", ascend=True, links=False, export=""
         )
 
     @pytest.mark.record_stdout
     @pytest.mark.vcr()
     def test_coin_indexes(self):
-        ov_pycoingecko_view.display_indexes(
-            top=15, sortby="Rank", descend=True, export=""
-        )
+        ov_pycoingecko_view.display_indexes(top=15, ascend=True, export="")
 
     @pytest.mark.record_stdout
     @pytest.mark.vcr()
     def test_coin_derivatives(self):
         ov_pycoingecko_view.display_derivatives(
-            top=15, sortby="Rank", descend=True, export=""
+            top=15, sortby="Rank", ascend=True, export=""
         )
 
     @pytest.mark.record_stdout
     @pytest.mark.vcr()
     def test_coin_exchange_rates(self):
         ov_pycoingecko_view.display_exchange_rates(
-            top=15, sortby="Index", descend=True, export=""
+            top=15, sortby="Index", ascend=True, export=""
         )
 
     @pytest.mark.record_stdout

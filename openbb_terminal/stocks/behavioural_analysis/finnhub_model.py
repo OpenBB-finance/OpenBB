@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import List, Dict
 import finnhub
 import pandas as pd
@@ -18,19 +18,19 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def get_company_news(
-    ticker: str,
-    s_start: str,
-    s_end: str,
+    symbol: str,
+    start_date: str = (datetime.now() - timedelta(days=30)).strftime("%Y-%m-%d"),
+    end_date: str = datetime.now().strftime("%Y-%m-%d"),
 ) -> List[Dict]:
     """Get news from a company. [Source: Finnhub]
 
     Parameters
     ----------
-    ticker : str
+    symbol : str
         company ticker to look for news articles
-    s_start: str
+    start_date: str
         date to start searching articles, with format YYYY-MM-DD
-    s_end: str
+    end_date: str
         date to end searching articles, with format YYYY-MM-DD
 
     Returns
@@ -40,7 +40,9 @@ def get_company_news(
     """
     try:
         finnhub_client = finnhub.Client(api_key=cfg.API_FINNHUB_KEY)
-        articles = finnhub_client.company_news(ticker.upper(), _from=s_start, to=s_end)
+        articles = finnhub_client.company_news(
+            symbol.upper(), _from=start_date, to=end_date
+        )
         return articles
 
     except Exception as e:
@@ -81,3 +83,25 @@ def process_news_headlines_sentiment(
                 last_headline = article["headline"].upper()
 
     return pd.DataFrame(l_compound, index=l_datetime).sort_index()
+
+
+@log_start_end(log=logger)
+def get_headlines_sentiment(
+    symbol: str,
+) -> pd.DataFrame:
+    """Get headlines sentiment using VADER model over time. [Source: Finnhub]
+
+    Parameters
+    ----------
+    symbol : str
+        Ticker of company
+    """
+    start = datetime.now() - timedelta(days=30)
+    articles = get_company_news(
+        symbol.upper(),
+        start_date=start.strftime("%Y-%m-%d"),
+        end_date=datetime.now().strftime("%Y-%m-%d"),
+    )
+    sentiment = process_news_headlines_sentiment(articles)
+
+    return sentiment

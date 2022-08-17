@@ -340,7 +340,7 @@ class DiscoveryController(BaseController):
         )
         if ns_parser:
             yahoofinance_view.display_gainers(
-                num_stocks=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -369,7 +369,7 @@ class DiscoveryController(BaseController):
         )
         if ns_parser:
             yahoofinance_view.display_losers(
-                num_stocks=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -401,7 +401,7 @@ class DiscoveryController(BaseController):
         )
         if ns_parser:
             yahoofinance_view.display_ugs(
-                num_stocks=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -431,7 +431,7 @@ class DiscoveryController(BaseController):
         )
         if ns_parser:
             yahoofinance_view.display_gtech(
-                num_stocks=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -462,7 +462,7 @@ class DiscoveryController(BaseController):
         )
         if ns_parser:
             yahoofinance_view.display_active(
-                num_stocks=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -493,7 +493,7 @@ class DiscoveryController(BaseController):
         )
         if ns_parser:
             yahoofinance_view.display_ulc(
-                num_stocks=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -524,7 +524,7 @@ class DiscoveryController(BaseController):
         )
         if ns_parser:
             yahoofinance_view.display_asc(
-                num_stocks=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -558,7 +558,7 @@ class DiscoveryController(BaseController):
         )
         if ns_parser:
             fidelity_view.orders_view(
-                num=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -630,7 +630,7 @@ class DiscoveryController(BaseController):
         )
         if ns_parser:
             ark_view.ark_orders_view(
-                num=ns_parser.limit,
+                limit=ns_parser.limit,
                 sort_col=ns_parser.sort_col,
                 ascending=ns_parser.ascend,
                 buys_only=ns_parser.buys_only,
@@ -675,7 +675,7 @@ class DiscoveryController(BaseController):
         if ns_parser:
             seeking_alpha_view.upcoming_earning_release_dates(
                 num_pages=ns_parser.n_pages,
-                num_earnings=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -723,7 +723,7 @@ class DiscoveryController(BaseController):
         if ns_parser:
             seeking_alpha_view.news(
                 article_id=ns_parser.n_id,
-                num=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -758,7 +758,7 @@ class DiscoveryController(BaseController):
         )
         if ns_parser:
             shortinterest_view.low_float(
-                num=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -798,7 +798,7 @@ class DiscoveryController(BaseController):
         if ns_parser:
             seeking_alpha_view.display_news(
                 news_type=ns_parser.s_type,
-                num=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -828,7 +828,7 @@ class DiscoveryController(BaseController):
         )
         if ns_parser:
             shortinterest_view.hot_penny_stocks(
-                num=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
                 source=ns_parser.source,
             )
@@ -862,5 +862,5 @@ class DiscoveryController(BaseController):
         )
         if ns_parser:
             nasdaq_view.display_top_retail(
-                n_days=ns_parser.limit, export=ns_parser.export
+                limit=ns_parser.limit, export=ns_parser.export
             )

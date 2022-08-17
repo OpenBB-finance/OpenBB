@@ -24,4 +24,4 @@ def filter_table_only(response):
 @pytest.mark.vcr(before_record_response=filter_table_only)
 @pytest.mark.record_stdout
 def test_display_most_shorted():
-    yahoofinance_view.display_most_shorted(num_stocks=2, export="")
+    yahoofinance_view.display_most_shorted(limit=2, export="")

@@ -83,16 +83,16 @@ pytest --markers
 
 ### Skipping a specific test
 
-You can use the decorator `@pytest.skip` as below:
+You can use the decorator `@pytest.mark.skip` as below:
 
 ```python
 import pytest
 
-@pytest.skip
+@pytest.mark.skip
 def test_some_function(mocker):
     pass
 
-@pytest.skip("This time with a comment")
+@pytest.mark.skip(reason="This time with a comment")
 def test_another_function(mocker):
     pass
 ```
