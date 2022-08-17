@@ -5,9 +5,6 @@ import logging
 import os
 from typing import List, Optional
 
-import textwrap
-from datetime import datetime, timedelta
-
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
@@ -33,7 +30,10 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_last_government(
-    gov_type: str, past_days: int = 5, representative: str = "", export: str = ""
+    gov_type: str = "congress",
+    limit: int = 5,
+    representative: str = "",
+    export: str = "",
 ):
     """Display last government trading [Source: quiverquant.com]
 
@@ -41,78 +41,34 @@ def display_last_government(
     ----------
     gov_type: str
         Type of government data between: congress, senate and house
-    past_days: int
+    limit: int
         Number of days to look back
     representative: str
         Specific representative to look at
     export: str
         Format to export data
     """
-    df_gov = quiverquant_model.get_government_trading(gov_type)
+    df_gov = quiverquant_model.get_last_government(gov_type, limit, representative)
 
     if df_gov.empty:
-        console.print(f"No {gov_type} trading data found\n")
-        return
-    console.print(f"\nLast transactions for {gov_type.upper()}\n")
-    df_gov = df_gov.sort_values("TransactionDate", ascending=False)
-
-    df_gov = df_gov[
-        df_gov["TransactionDate"].isin(df_gov["TransactionDate"].unique()[:past_days])
-    ]
-
-    if gov_type == "congress":
-        df_gov = df_gov[
-            [
-                "TransactionDate",
-                "Ticker",
-                "Representative",
-                "Transaction",
-                "Range",
-                "House",
-                "ReportDate",
-            ]
-        ].rename(
-            columns={
-                "TransactionDate": "Transaction Date",
-                "ReportDate": "Report Date",
-            }
-        )
-    else:
-        df_gov = df_gov[
-            [
-                "TransactionDate",
-                "Ticker",
-                "Representative",
-                "Transaction",
-                "Range",
-            ]
-        ].rename(columns={"TransactionDate": "Transaction Date"})
-
-    if representative:
-        df_gov_rep = df_gov[
-            df_gov["Representative"].str.split().str[0] == representative
-        ]
-
-        if df_gov_rep.empty:
+        if representative:
             console.print(
-                f"No representative {representative} found in the past {past_days}"
+                f"No representative {representative} found in the past {limit}"
                 f" days. The following are available: "
                 f"{', '.join(df_gov['Representative'].str.split().str[0].unique())}"
             )
         else:
-            print_rich_table(
-                df_gov_rep,
-                headers=list(df_gov_rep.columns),
-                show_index=False,
-                title="Representative Trading",
-            )
-    else:
-        print_rich_table(
-            df_gov,
-            headers=list(df_gov.columns),
-            show_index=False,
-            title="Representative Trading",
-        )
+            console.print(f"No {gov_type} trading data found\n")
+        return
+
+    console.print(f"\nLast transactions for {gov_type.upper()}\n")
+
+    print_rich_table(
+        df_gov,
+        headers=list(df_gov.columns),
+        show_index=False,
+        title="Representative Trading",
+    )
 
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "lasttrades", df_gov
@@ -121,9 +77,9 @@ def display_last_government(
 
 @log_start_end(log=logger)
 def display_government_buys(
-    gov_type: str,
+    gov_type: str = "congress",
     past_transactions_months: int = 6,
-    num: int = 10,
+    limit: int = 10,
     raw: bool = False,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -136,7 +92,7 @@ def display_government_buys(
         Type of government data between: congress, senate and house
     past_transactions_months: int
         Number of months to get trading for
-    num: int
+    limit: int
         Number of tickers to show
     raw: bool
         Display raw data
@@ -146,55 +102,19 @@ def display_government_buys(
         External axes (1 axis is expected in the list), by default None
 
     """
-    df_gov = quiverquant_model.get_government_trading(gov_type)
+    df_gov = quiverquant_model.get_government_buys(gov_type, past_transactions_months)
 
     if df_gov.empty:
         console.print(f"No {gov_type} trading data found\n")
         return
 
-    df_gov = df_gov.sort_values("TransactionDate", ascending=False)
-    start_date = datetime.now() - timedelta(days=past_transactions_months * 30)
-
-    df_gov["TransactionDate"] = pd.to_datetime(df_gov["TransactionDate"])
-
-    df_gov = df_gov[df_gov["TransactionDate"] > start_date].dropna()
-    # Catch bug where error shown for purchase of >5,000,000
-    df_gov["Range"] = df_gov["Range"].apply(
-        lambda x: "$5,000,001-$5,000,001" if x == ">$5,000,000" else x
-    )
-    df_gov["min"] = df_gov["Range"].apply(
-        lambda x: x.split("-")[0].strip("$").replace(",", "").strip()
-    )
-    df_gov["max"] = df_gov["Range"].apply(
-        lambda x: x.split("-")[1].replace(",", "").strip().strip("$")
-        if "-" in x
-        else x.strip("$").replace(",", "")
-    )
-    try:
-        df_gov["lower"] = df_gov[["min", "max", "Transaction"]].apply(
-            lambda x: float(x["min"])
-            if x["Transaction"] == "Purchase"
-            else -float(x["max"]),
-            axis=1,
-        )
-    except ValueError:
-        console.print("[red]No enough data.[/red]\n")
-        return
-    df_gov["upper"] = df_gov[["min", "max", "Transaction"]].apply(
-        lambda x: float(x["max"])
-        if x["Transaction"] == "Purchase"
-        else -float(x["min"]),
-        axis=1,
-    )
-
-    df_gov = df_gov.sort_values("TransactionDate", ascending=True)
     if raw:
         df = pd.DataFrame(
             df_gov.groupby("Ticker")["upper"]
             .sum()
             .div(1000)
             .sort_values(ascending=False)
-            .head(n=num)
+            .head(n=limit)
         )
         print_rich_table(
             df, headers=["Amount ($1k)"], show_index=True, title="Top Government Buys"
@@ -210,12 +130,12 @@ def display_government_buys(
 
     colors = theme.get_colors()
     df_gov.groupby("Ticker")["upper"].sum().div(1000).sort_values(ascending=False).head(
-        n=num
+        n=limit
     ).plot(kind="bar", rot=0, ax=ax, color=colors)
 
     ax.set_ylabel("Amount [1k $]")
     ax.set_title(
-        f"Top {num} purchased stocks over last {past_transactions_months} "
+        f"Top {limit} purchased stocks over last {past_transactions_months} "
         f"months (upper bound) for {gov_type.upper()}"
     )
     # plt.gcf().axes[0].yaxis.get_major_formatter().set_scientific(False)
@@ -230,14 +150,14 @@ def display_government_buys(
 
 @log_start_end(log=logger)
 def display_government_sells(
-    gov_type: str,
+    gov_type: str = "congress",
     past_transactions_months: int = 6,
-    num: int = 10,
+    limit: int = 10,
     raw: bool = False,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Top buy government trading [Source: quiverquant.com]
+    """Top sell government trading [Source: quiverquant.com]
 
     Parameters
     ----------
@@ -245,7 +165,7 @@ def display_government_sells(
         Type of government data between: congress, senate and house
     past_transactions_months: int
         Number of months to get trading for
-    num: int
+    limit: int
         Number of tickers to show
     raw: bool
         Display raw data
@@ -254,60 +174,12 @@ def display_government_sells(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    df_gov = quiverquant_model.get_government_trading(gov_type)
+    df_gov = quiverquant_model.get_government_sells(gov_type, past_transactions_months)
 
     if df_gov.empty:
         console.print(f"No {gov_type} trading data found\n")
         return
 
-    df_gov = df_gov.sort_values("TransactionDate", ascending=False)
-
-    start_date = datetime.now() - timedelta(days=past_transactions_months * 30)
-
-    df_gov["TransactionDate"] = pd.to_datetime(df_gov["TransactionDate"])
-
-    df_gov = df_gov[df_gov["TransactionDate"] > start_date].dropna()
-    df_gov["Range"] = df_gov["Range"].apply(
-        lambda x: "$5,000,001-$5,000,001" if x == ">$5,000,000" else x
-    )
-
-    if df_gov.empty:
-        console.print("[red]Not enough data to display[/red]\n")
-        return
-
-    df_gov["min"] = df_gov["Range"].apply(
-        lambda x: x.split("-")[0]
-        .strip("$")
-        .replace(",", "")
-        .strip()
-        .replace(">$", "")
-        .strip()
-    )
-    df_gov["max"] = df_gov["Range"].apply(
-        lambda x: x.split("-")[1]
-        .replace(",", "")
-        .strip()
-        .strip("$")
-        .replace(">$", "")
-        .strip()
-        if "-" in x
-        else x.strip("$").replace(",", "").replace(">$", "").strip()
-    )
-
-    df_gov["lower"] = df_gov[["min", "max", "Transaction"]].apply(
-        lambda x: float(x["min"])
-        if x["Transaction"] == "Purchase"
-        else -float(x["max"]),
-        axis=1,
-    )
-    df_gov["upper"] = df_gov[["min", "max", "Transaction"]].apply(
-        lambda x: float(x["max"])
-        if x["Transaction"] == "Purchase"
-        else -float(x["min"]),
-        axis=1,
-    )
-
-    df_gov = df_gov.sort_values("TransactionDate", ascending=True)
     if raw:
         df = pd.DataFrame(
             df_gov.groupby("Ticker")["upper"]
@@ -315,7 +187,7 @@ def display_government_sells(
             .div(1000)
             .sort_values(ascending=True)
             .abs()
-            .head(n=num)
+            .head(n=limit)
         )
         print_rich_table(
             df,
@@ -334,11 +206,11 @@ def display_government_sells(
 
     colors = theme.get_colors()
     df_gov.groupby("Ticker")["upper"].sum().div(1000).sort_values().abs().head(
-        n=num
+        n=limit
     ).plot(kind="bar", rot=0, ax=ax, color=colors)
     ax.set_ylabel("Amount ($1k)")
     ax.set_title(
-        f"{num} most sold stocks over last {past_transactions_months} months"
+        f"{limit} most sold stocks over last {past_transactions_months} months"
         f" (upper bound) for {gov_type}"
     )
 
@@ -353,7 +225,7 @@ def display_government_sells(
 @log_start_end(log=logger)
 def display_last_contracts(
     past_transaction_days: int = 2,
-    num: int = 20,
+    limit: int = 20,
     sum_contracts: bool = False,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -364,7 +236,7 @@ def display_last_contracts(
     ----------
     past_transaction_days: int
         Number of days to look back
-    num: int
+    limit: int
         Number of contracts to show
     sum_contracts: bool
         Flag to show total amount of contracts given out.
@@ -373,28 +245,14 @@ def display_last_contracts(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    df_contracts = quiverquant_model.get_government_trading("contracts")
+    df_contracts, df = quiverquant_model.get_last_contracts(
+        past_transaction_days, limit
+    )
 
     if df_contracts.empty:
         console.print("No government contracts found\n")
         return
 
-    df_contracts.sort_values("Date", ascending=False)
-
-    df_contracts["Date"] = pd.to_datetime(df_contracts["Date"])
-
-    df_contracts.drop_duplicates(inplace=True)
-    df = df_contracts.copy()
-    df_contracts = df_contracts[
-        df_contracts["Date"].isin(df_contracts["Date"].unique()[:past_transaction_days])
-    ]
-
-    df_contracts = df_contracts[["Date", "Ticker", "Amount", "Description", "Agency"]][
-        :num
-    ]
-    df_contracts["Description"] = df_contracts["Description"].apply(
-        lambda x: "\n".join(textwrap.wrap(x, 50))
-    )
     print_rich_table(
         df_contracts,
         headers=list(df_contracts.columns),
@@ -427,7 +285,7 @@ def display_last_contracts(
 @log_start_end(log=logger)
 def plot_government(
     government: pd.DataFrame,
-    ticker: str,
+    symbol: str,
     gov_type: str,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -437,8 +295,8 @@ def plot_government(
     ----------
     government: pd.DataFrame
         Data to plot
-    ticker: str
-        Ticker to plot government trading
+    symbol: str
+        Ticker symbol to plot government trading
     gov_type: str
         Type of government data between: congress, senate and house
     external_axes : Optional[List[plt.Axes]], optional
@@ -464,7 +322,7 @@ def plot_government(
             government["TransactionDate"].values[-1],
         ]
     )
-    ax.set_title(f"{gov_type.capitalize()} trading on {ticker}")
+    ax.set_title(f"{gov_type.capitalize()} trading on {symbol}")
     ax.set_ylabel("Amount ($1k)")
 
     theme.style_primary_axis(ax)
@@ -475,8 +333,8 @@ def plot_government(
 
 @log_start_end(log=logger)
 def display_government_trading(
-    ticker: str,
-    gov_type: str,
+    symbol: str,
+    gov_type: str = "congress",
     past_transactions_months: int = 6,
     raw: bool = False,
     export: str = "",
@@ -486,8 +344,8 @@ def display_government_trading(
 
     Parameters
     ----------
-    ticker: str
-        Ticker to get congress trading data from
+    symbol: str
+        Ticker symbol to get congress trading data from
     gov_type: str
         Type of government data between: congress, senate and house
     past_transactions_months: int
@@ -499,66 +357,34 @@ def display_government_trading(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    df_gov = quiverquant_model.get_government_trading(gov_type, ticker)
+    df_gov = quiverquant_model.get_cleaned_government_trading(
+        symbol=symbol,
+        gov_type=gov_type,
+        past_transactions_months=past_transactions_months,
+    )
 
     if df_gov.empty:
         console.print(f"No {gov_type} trading data found\n")
         return
-
-    df_gov = df_gov.sort_values("TransactionDate", ascending=False)
-
-    start_date = datetime.now() - timedelta(days=past_transactions_months * 30)
-
-    df_gov["TransactionDate"] = pd.to_datetime(df_gov["TransactionDate"])
-
-    df_gov = df_gov[df_gov["TransactionDate"] > start_date]
-
-    if df_gov.empty:
-        console.print(f"No recent {gov_type} trading data found\n")
-        return
-
-    df_gov["min"] = df_gov["Range"].apply(
-        lambda x: x.split("-")[0].strip("$").replace(",", "").strip()
-    )
-    df_gov["max"] = df_gov["Range"].apply(
-        lambda x: x.split("-")[1].replace(",", "").strip().strip("$")
-        if "-" in x
-        else x.strip("$").replace(",", "").split("\n")[0]
-    )
-
-    df_gov["lower"] = df_gov[["min", "max", "Transaction"]].apply(
-        lambda x: int(float(x["min"]))
-        if x["Transaction"] == "Purchase"
-        else -int(float(x["max"])),
-        axis=1,
-    )
-    df_gov["upper"] = df_gov[["min", "max", "Transaction"]].apply(
-        lambda x: int(float(x["max"]))
-        if x["Transaction"] == "Purchase"
-        else -1 * int(float(x["min"])),
-        axis=1,
-    )
-
-    df_gov = df_gov.sort_values("TransactionDate", ascending=True)
 
     if raw:
         print_rich_table(
             df_gov,
             headers=list(df_gov.columns),
             show_index=False,
-            title=f"Government Trading for {ticker.upper()}",
+            title=f"Government Trading for {symbol.upper()}",
         )
     else:
-        plot_government(df_gov, ticker, gov_type, external_axes)
+        plot_government(df_gov, symbol, gov_type, external_axes)
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "gtrades", df_gov)
 
 
 @log_start_end(log=logger)
 def display_contracts(
-    ticker: str,
-    past_transaction_days: int,
-    raw: bool,
+    symbol: str,
+    past_transaction_days: int = 10,
+    raw: bool = False,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -566,7 +392,7 @@ def display_contracts(
 
     Parameters
     ----------
-    ticker: str
+    symbol: str
         Ticker to get congress trading data from
     past_transaction_days: int
         Number of days to get transactions for
@@ -577,7 +403,7 @@ def display_contracts(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    df_contracts = quiverquant_model.get_government_trading("contracts", ticker)
+    df_contracts = quiverquant_model.get_government_trading("contracts", symbol)
 
     if df_contracts.empty:
         console.print("No government contracts found\n")
@@ -596,7 +422,7 @@ def display_contracts(
             df_contracts,
             headers=list(df_contracts.columns),
             show_index=False,
-            title=f"Government Contracts for {ticker.upper()}",
+            title=f"Government Contracts for {symbol.upper()}",
         )
 
     else:
@@ -611,7 +437,7 @@ def display_contracts(
 
         df_contracts.groupby("Date").sum().div(1000).plot(kind="bar", rot=0, ax=ax)
         ax.set_ylabel("Amount ($1k)")
-        ax.set_title(f"Sum of latest government contracts to {ticker}")
+        ax.set_title(f"Sum of latest government contracts to {symbol}")
 
         ax.xaxis.set_major_locator(matplotlib.ticker.MultipleLocator(4))
 
@@ -628,7 +454,7 @@ def display_contracts(
 @log_start_end(log=logger)
 def display_qtr_contracts(
     analysis: str,
-    num: int,
+    limit: int = 5,
     raw: bool = False,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -639,7 +465,7 @@ def display_qtr_contracts(
     ----------
     analysis: str
         Analysis to perform.  Either 'total', 'upmom' 'downmom'
-    num: int
+    limit: int
         Number to show
     raw: bool
         Flag to display raw data
@@ -654,12 +480,12 @@ def display_qtr_contracts(
         console.print("No quarterly government contracts found\n")
         return
 
-    tickers = quiverquant_model.analyze_qtr_contracts(analysis, num)
+    symbols = quiverquant_model.analyze_qtr_contracts(analysis, limit)
     if analysis in ("upmom", "downmom"):
         if raw:
             print_rich_table(
-                pd.DataFrame(tickers.values),
-                headers=["tickers"],
+                pd.DataFrame(symbols.values),
+                headers=["symbols"],
                 show_index=True,
                 title="Quarterly Contracts",
             )
@@ -674,7 +500,7 @@ def display_qtr_contracts(
 
             max_amount = 0
             quarter_ticks = []
-            for symbol in tickers:
+            for symbol in symbols:
                 amounts = (
                     df_contracts[df_contracts["Ticker"] == symbol]
                     .sort_values(by=["Year", "Qtr"])["Amount"]
@@ -705,7 +531,7 @@ def display_qtr_contracts(
             ax.set_xlim([-0.5, max_amount - 0.5])
             ax.set_xticks(np.arange(0, max_amount))
             ax.set_xticklabels(quarter_ticks)
-            ax.legend(tickers)
+            ax.legend(symbols)
             titles = {
                 "upmom": "Highest increasing quarterly Government Contracts",
                 "downmom": "Highest decreasing quarterly Government Contracts",
@@ -718,7 +544,7 @@ def display_qtr_contracts(
 
     elif analysis == "total":
         print_rich_table(
-            tickers, headers=["Total"], title="Quarterly Contracts", show_index=True
+            symbols, headers=["Total"], title="Quarterly Contracts", show_index=True
         )
 
     export_data(
@@ -728,7 +554,7 @@ def display_qtr_contracts(
 
 @log_start_end(log=logger)
 def display_hist_contracts(
-    ticker: str,
+    symbol: str,
     raw: bool = False,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -737,8 +563,8 @@ def display_hist_contracts(
 
     Parameters
     ----------
-    ticker: str
-        Ticker to get congress trading data from
+    symbol: str
+        Ticker symbol to get congress trading data from
     raw: bool
         Flag to display raw data
     export: str
@@ -747,7 +573,7 @@ def display_hist_contracts(
         External axes (1 axis is expected in the list), by default None
     """
     df_contracts = quiverquant_model.get_government_trading(
-        "quarter-contracts", ticker=ticker
+        "quarter-contracts", symbol=symbol
     )
 
     if df_contracts.empty:
@@ -793,7 +619,7 @@ def display_hist_contracts(
         ax.set_xticks(np.arange(0, len(amounts)))
         ax.set_xticklabels(quarter_ticks)
 
-        ax.set_title(f"Historical Quarterly Government Contracts for {ticker.upper()}")
+        ax.set_title(f"Historical Quarterly Government Contracts for {symbol.upper()}")
         ax.set_ylabel("Amount ($1k)")
 
         theme.style_primary_axis(ax)
@@ -806,7 +632,7 @@ def display_hist_contracts(
 
 @log_start_end(log=logger)
 def display_top_lobbying(
-    num: int,
+    limit: int = 10,
     raw: bool = False,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -815,7 +641,7 @@ def display_top_lobbying(
 
     Parameters
     ----------
-    num: int
+    limit: int
         Number of tickers to show
     raw: bool
         Show raw data
@@ -839,7 +665,7 @@ def display_top_lobbying(
 
     if raw:
         print_rich_table(
-            lobbying_by_ticker.head(num),
+            lobbying_by_ticker.head(limit),
             headers=["Amount ($100k)"],
             show_index=True,
             title="Top Lobbying Tickers",
@@ -855,7 +681,7 @@ def display_top_lobbying(
             return
 
         colors = theme.get_colors()
-        lobbying_by_ticker.head(num).plot(kind="bar", ax=ax, color=colors)
+        lobbying_by_ticker.head(limit).plot(kind="bar", ax=ax, color=colors)
         ax.set_xlabel("Ticker")
         ax.set_ylabel("Total Amount ($100k)")
         ax.set_title(f"Corporate Lobbying Spent since {df_lobbying['Date'].min()}")
@@ -871,18 +697,18 @@ def display_top_lobbying(
 
 
 @log_start_end(log=logger)
-def display_lobbying(ticker: str, num: int = 10):
+def display_lobbying(symbol: str, limit: int = 10):
     """Corporate lobbying details
 
     Parameters
     ----------
-    ticker: str
-        Ticker to get corporate lobbying data from
-    num: int
+    symbol: str
+        Ticker symbol to get corporate lobbying data from
+    limit: int
         Number of events to show
     """
     df_lobbying = quiverquant_model.get_government_trading(
-        "corporate-lobbying", ticker=ticker
+        "corporate-lobbying", symbol=symbol
     )
 
     if df_lobbying.empty:
@@ -890,7 +716,7 @@ def display_lobbying(ticker: str, num: int = 10):
         return
 
     for _, row in (
-        df_lobbying.sort_values(by=["Date"], ascending=False).head(num).iterrows()
+        df_lobbying.sort_values(by=["Date"], ascending=False).head(limit).iterrows()
     ):
         amount = (
             "$" + str(int(float(row["Amount"]))) if row["Amount"] is not None else "N/A"

@@ -1,6 +1,7 @@
 """NASDAQ DataLink Model"""
 __docformat__ = "numpy"
 
+from datetime import datetime
 import logging
 
 import pandas as pd
@@ -50,7 +51,7 @@ def get_retail_tickers() -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_dividend_cal(date: str) -> pd.DataFrame:
+def get_dividend_cal(date: str = datetime.today().strftime("%Y-%m-%d")) -> pd.DataFrame:
     """Gets dividend calendar for given date.  Date represents Ex-Dividend Date
 
     Parameters

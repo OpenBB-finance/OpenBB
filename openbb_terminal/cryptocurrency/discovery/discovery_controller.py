@@ -359,7 +359,7 @@ class DiscoveryController(BaseController):
             dest="sortby",
             nargs="+",
             help="Sort by given column. Default: Market Cap Rank",
-            default=["Market Cap"],
+            default=["market_cap"],
         )
 
         ns_parser = self.parse_known_args_and_warn(
@@ -493,7 +493,7 @@ class DiscoveryController(BaseController):
             coinmarketcap_view.display_cmc_top_coins(
                 top=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                descend=not ns_parser.descend,
                 export=ns_parser.export,
             )
 

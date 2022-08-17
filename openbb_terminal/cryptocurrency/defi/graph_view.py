@@ -19,7 +19,7 @@ def display_uni_tokens(
     skip: int = 0,
     limit: int = 20,
     sortby: str = "index",
-    descend: bool = True,
+    ascend: bool = False,
     export: str = "",
 ) -> None:
     """Displays tokens trade-able on Uniswap DEX.
@@ -33,16 +33,14 @@ def display_uni_tokens(
         Number of records to display
     sortby: str
         Key by which to sort data
-    descend: bool
+    ascend: bool
         Flag to sort data descending
     export : str
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = graph_model.get_uni_tokens(skip=skip)
+    df = graph_model.get_uni_tokens(skip=skip, sortby=sortby, ascend=ascend)
     df_data = df.copy()
-
-    df = df.sort_values(by=sortby, ascending=descend)
 
     df[["totalLiquidity", "tradeVolumeUSD"]] = df[
         ["totalLiquidity", "tradeVolumeUSD"]
@@ -158,7 +156,7 @@ def display_recently_added(
 
 @log_start_end(log=logger)
 def display_uni_pools(
-    top: int = 20, sortby: str = "volumeUSD", descend: bool = False, export: str = ""
+    top: int = 20, sortby: str = "volumeUSD", ascend: bool = False, export: str = ""
 ) -> None:
     """Displays uniswap pools by volume.
     [Source: https://thegraph.com/en/]
@@ -170,13 +168,13 @@ def display_uni_pools(
     sortby: str
         Key by which to sort data. The table can be sorted by every of its columns
         (see https://bit.ly/3ORagr1 then press ctrl-enter or execute the query).
-    descend: bool
+    ascend: bool
         Flag to sort data descending
     export : str
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = graph_model.get_uni_pools_by_volume().sort_values(by=sortby, ascending=descend)
+    df = graph_model.get_uni_pools_by_volume().sort_values(by=sortby, ascending=ascend)
     df["volumeUSD"] = df["volumeUSD"].apply(
         lambda x: lambda_very_long_number_formatter(x)
     )

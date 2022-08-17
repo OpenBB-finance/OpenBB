@@ -1,11 +1,19 @@
 
 Last transactions for CONGRESS
 
-   Transaction Date Ticker     Representative Transaction                  Range            House Report Date
-54       2022-07-26   NVDA       Nancy Pelosi        Sale  $1,000,001-$5,000,000  Representatives  2022-07-26
-5        2022-07-25     ET      Mark Dr Green        Sale       $50,001-$100,000  Representatives  2022-08-01
-55       2022-07-20    ECL  Alan S. Lowenthal    Purchase         $1,001-$15,000  Representatives  2022-07-25
-2        2022-07-19    CVX          Ron Estes        Sale         $1,001-$15,000  Representatives  2022-08-01
-56       2022-07-19    ECL  Alan S. Lowenthal    Purchase         $1,001-$15,000  Representatives  2022-07-25
-57       2022-07-19   SPGI  Alan S. Lowenthal    Purchase         $1,001-$15,000  Representatives  2022-07-25
-4        2022-07-18     ET      Mark Dr Green        Sale         $1,001-$15,000  Representatives  2022-08-01
+   Transaction Date Ticker     Representative Transaction             Range            House Report Date
+0        2022-08-03  OZKAP        Steve Cohen    Purchase   $15,001-$50,000  Representatives  2022-08-08
+1        2022-08-03   DURA        Steve Cohen    Purchase   $15,001-$50,000  Representatives  2022-08-08
+2        2022-07-27    PHG    Earl Blumenauer    Purchase    $1,001-$15,000  Representatives  2022-08-08
+3        2022-07-29    MDT  Alan S. Lowenthal        Sale    $1,001-$15,000  Representatives  2022-08-07
+4        2022-08-04    WBD          Bob Gibbs        Sale    $1,001-$15,000  Representatives  2022-08-05
+5        2022-07-14    PBA      Virginia Foxx    Purchase   $15,001-$50,000  Representatives  2022-08-05
+8        2022-08-04    LLY          Bob Gibbs        Sale    $1,001-$15,000  Representatives  2022-08-05
+9        2022-07-14    BTI      Virginia Foxx    Purchase    $1,001-$15,000  Representatives  2022-08-05
+11       2022-07-14    UVV      Virginia Foxx        Sale   $15,001-$50,000  Representatives  2022-08-05
+20       2022-07-29   SCHD        Steve Cohen    Purchase  $50,001-$100,000  Representatives  2022-08-05
+21       2022-08-04     DD          Bob Gibbs        Sale    $1,001-$15,000  Representatives  2022-08-05
+22       2022-07-29     PG      Virginia Foxx    Purchase   $15,001-$50,000  Representatives  2022-08-05
+26       2022-07-29    MOS      Virginia Foxx    Purchase    $1,001-$15,000  Representatives  2022-08-05
+27       2022-07-29    BTI      Virginia Foxx    Purchase    $1,001-$15,000  Representatives  2022-08-05
+33       2022-07-27    FHN        Steve Cohen    Purchase   $15,001-$50,000  Representatives  2022-08-02

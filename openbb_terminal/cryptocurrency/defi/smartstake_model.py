@@ -9,17 +9,19 @@ from openbb_terminal import config_terminal as cfg
 from openbb_terminal.rich_config import console
 
 
-def get_luna_supply_stats(supply_type: str, days: int) -> pd.DataFrame:
+def get_luna_supply_stats(
+    supply_type: str = "lunaSupplyChallengeStats", days: int = 30
+) -> pd.DataFrame:
     """Get supply history of the Terra ecosystem
 
     Source: [Smartstake.io]
 
     Parameters
     ----------
-    days: int
-        Day count to fetch data
     supply_type: str
         Supply type to unpack json
+    days: int
+        Day count to fetch data
 
     Returns
     -------

@@ -38,7 +38,7 @@ def vcr_config():
 def test_call_func(func, mocker):
     # MOCK VISUALIZE_OUTPUT
     mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
-    getattr(yahoo_finance_view, func)(ticker="PM")
+    getattr(yahoo_finance_view, func)(symbol="PM")
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -58,4 +58,4 @@ def test_call_func_empty_df(func, mocker, mocked_func):
         + mocked_func,
         return_value=pd.DataFrame(),
     )
-    getattr(yahoo_finance_view, func)(ticker="PM")
+    getattr(yahoo_finance_view, func)(symbol="PM")

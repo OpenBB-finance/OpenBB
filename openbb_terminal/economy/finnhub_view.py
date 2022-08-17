@@ -12,14 +12,14 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 @check_api_key(["API_FINNHUB_KEY"])
-def economy_calendar_events(country: str, num: int, impact: str, export: str):
+def economy_calendar_events(country: str, limit: int, impact: str, export: str):
     """Output economy calendar impact events. [Source: Finnhub]
 
     Parameters
     ----------
     country : str
         Country from where to get economy calendar impact events
-    num : int
+    limit : int
         Number economy calendar impact events to display
     impact : str
         Impact of the economy event
@@ -50,7 +50,7 @@ def economy_calendar_events(country: str, num: int, impact: str, export: str):
             )
             return
 
-    df_econ_calendar = df_econ_calendar.fillna("").head(n=num)
+    df_econ_calendar = df_econ_calendar.fillna("").head(n=limit)
 
     d_econ_calendar_map = {
         "actual": "Actual release",

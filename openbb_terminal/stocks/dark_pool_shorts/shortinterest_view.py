@@ -13,12 +13,12 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def high_short_interest(num: int, export: str):
+def high_short_interest(limit: int = 10, export: str = ""):
     """Prints top N high shorted interest stocks from https://www.highshortinterest.com
 
     Parameters
     ----------
-    num: int
+    limit: int
         Number of stocks to display
     export : str
         Export dataframe data to csv,json,xlsx file
@@ -29,7 +29,7 @@ def high_short_interest(num: int, export: str):
         console.print("No data available.", "\n")
         return
 
-    df_high_short_interest = df_high_short_interest.iloc[1:].head(n=num)
+    df_high_short_interest = df_high_short_interest.iloc[1:].head(n=limit)
 
     print_rich_table(
         df_high_short_interest,
