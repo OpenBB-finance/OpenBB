@@ -308,7 +308,7 @@ def calculate_beta(portfolio_returns: pd.Series, benchmark_returns: pd.Series) -
 
 @log_start_end(log=logger)
 def get_tracking_error(
-    portfolio_returns: pd.Series, benchmark_returns: pd.Series, period: str = "1y"
+    portfolio_returns: pd.Series, benchmark_returns: pd.Series, window: str = "252d"
 ) -> Tuple[pd.DataFrame, pd.Series]:
     """Get tracking error, or active risk, using portfolio and benchmark returns
 
@@ -318,9 +318,9 @@ def get_tracking_error(
         Series of portfolio returns
     benchmark_returns: pd.Series
         Series of benchmark returns
-    period: string
-        Interval used for rolling values.
-        Possible options: mtd, qtd, ytd, 1d, 5d, 10d, 1m, 3m, 6m, 1y, 3y, 5y, 10y.
+    window: string
+        Interval used for rolling values in days.
+        Examples: 1d, 5d, 10d
 
     Returns
     -------
@@ -331,7 +331,7 @@ def get_tracking_error(
     """
     diff_returns = portfolio_returns - benchmark_returns
 
-    tracker_rolling = diff_returns.rolling(period, min_periods=period).std()
+    tracker_rolling = diff_returns.rolling(window).std()
 
     vals = list()
     for periods in portfolio_helper.PERIODS:
@@ -437,7 +437,7 @@ def get_information_ratio(
 
 @log_start_end(log=logger)
 def get_tail_ratio(
-    portfolio_returns: pd.Series, benchmark_returns: pd.Series, period: str = "1y"
+    portfolio_returns: pd.Series, benchmark_returns: pd.Series, window: str = "252d"
 ) -> Tuple[pd.DataFrame, pd.Series, pd.Series]:
     """Returns the portfolios tail ratio
 
@@ -447,9 +447,9 @@ def get_tail_ratio(
         Series of portfolio returns
     benchmark_returns: pd.Series
         Series of benchmark returns
-    period: int
-        Interval used for rolling values.
-        Possible options: mtd, qtd, ytd, 1d, 5d, 10d, 1m, 3m, 6m, 1y, 3y, 5y, 10y.
+    window: string
+        Interval used for rolling values in days.
+        Examples: 1d, 5d, 10d
 
     Returns
     -------
@@ -460,8 +460,8 @@ def get_tail_ratio(
     pd.Series
         Series of the benchmarks rolling tail ratio
     """
-    returns_r = portfolio_returns.rolling(period, min_periods=period)
-    benchmark_returns_r = benchmark_returns.rolling(period, min_periods=period)
+    returns_r = portfolio_returns.rolling(window)
+    benchmark_returns_r = benchmark_returns.rolling(window)
 
     portfolio_tr = returns_r.quantile(0.95) / abs(returns_r.quantile(0.05))
     benchmark_tr = benchmark_returns_r.quantile(0.95) / abs(
