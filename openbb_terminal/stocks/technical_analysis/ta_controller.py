@@ -769,13 +769,27 @@ class TechnicalAnalysisController(StockBaseController):
             """,
         )
 
+        parser.add_argument(
+            "-t",
+            "--tickers",
+            action="store_true",
+            default=False,
+            dest="disp_tickers",
+            help="Show other tickers in the industry the stock is part of",
+        )
+
         ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             EXPORT_BOTH_RAW_DATA_AND_FIGURES,
         )
+
         if ns_parser:
-            rsp_view.display_rsp(s_ticker=self.ticker, export=ns_parser.export)
+            rsp_view.display_rsp(
+                s_ticker=self.ticker,
+                export=ns_parser.export,
+                tickers_show=ns_parser.disp_tickers,
+            )
 
     @log_start_end(log=logger)
     def call_stoch(self, other_args: List[str]):

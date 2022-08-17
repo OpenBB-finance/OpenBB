@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
+import pandas as pd
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
@@ -18,6 +19,7 @@ logger = logging.getLogger(__name__)
 def display_rsp(
     s_ticker: str = "",
     export: str = "",
+    tickers_show: bool = False,
 ):
     """Display Relative Strength Percentile [Source: https://github.com/skyte/relative-strength]
 
@@ -25,13 +27,18 @@ def display_rsp(
     ----------
     s_ticker : str
         Stock ticker
+    export : str
+        Format of export file
+    tickers_show : bool
+        Boolean to check if tickers in the same industry as the stock should be shown
     """
 
     rsp_stock, rsp_industry, df_stock_p, df_industries_p = rsp_model.get_rsp(s_ticker)
-
     if rsp_stock.empty or rsp_industry.empty:
         print("Ticker not found")
     else:
+        tickers = pd.DataFrame(rsp_industry["Tickers"])
+        del rsp_industry["Tickers"]
         print_rich_table(
             rsp_stock,
             headers=list(rsp_stock.columns),
@@ -40,10 +47,17 @@ def display_rsp(
         )
         print_rich_table(
             rsp_industry,
-            headers=list(df_industries_p.columns),
+            headers=list(rsp_industry.columns),
             show_index=False,
             title="Relative Strength Percentile of Industry the ticker is part of",
         )
+        if tickers_show:
+            print_rich_table(
+                tickers,
+                headers=list(tickers.columns),
+                show_index=False,
+                title="Tickers in same industry as chosen stock",
+            )
         export_data(
             export,
             os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
