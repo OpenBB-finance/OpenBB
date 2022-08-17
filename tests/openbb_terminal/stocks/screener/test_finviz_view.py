@@ -40,8 +40,8 @@ def test_screener(mocker, toggle):
         loaded_preset="top_gainers",
         data_type="overview",
         limit=2,
-        ascend=True,
-        sort="Ticker",
+        ascending=True,
+        sortby="Ticker",
         export="",
     )
 
@@ -65,8 +65,8 @@ def test_screener_no_data(data, mocker):
         loaded_preset="top_gainers",
         data_type="overview",
         limit=2,
-        ascend=True,
-        sort="",
+        ascending=True,
+        sortby="",
         export="",
     )
 
@@ -104,7 +104,7 @@ def test_screener_sort_matches(sort, mocker):
         loaded_preset="top_gainers",
         data_type="overview",
         limit=2,
-        ascend=True,
-        sort=sort,
+        ascending=True,
+        sortby=sort,
         export="",
     )

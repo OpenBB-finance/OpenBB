@@ -219,17 +219,6 @@ six = "*"
 test = ["pytest", "astroid (<=2.5.3)"]
 
 [[package]]
-name = "astunparse"
-version = "1.6.3"
-description = "An AST unparser for Python"
-category = "main"
-optional = true
-python-versions = "*"
-
-[package.dependencies]
-six = ">=1.6.1,<2.0"
-
-[[package]]
 name = "async-generator"
 version = "1.10"
 description = "Async generators and context managers for Python 3.5+"
@@ -413,7 +402,7 @@ dev = ["black (>=20.8b1)", "codecov", "coverage", "cython (>=0.25)", "flake8", "
 
 [[package]]
 name = "ccxt"
-version = "1.92.27"
+version = "1.92.30"
 description = "A JavaScript / Python / PHP cryptocurrency trading library with support for 130+ exchanges"
 category = "main"
 optional = false
@@ -428,8 +417,8 @@ requests = ">=2.18.4"
 yarl = {version = "1.7.2", markers = "python_version >= \"3.5.2\""}
 
 [package.extras]
+doc = ["Sphinx (==4.0)", "mistune (==0.8.4)", "m2r2 (==0.2.7)", "sphinx-rtd-theme (==0.5.2)", "readthedocs-sphinx-search (==0.1.0)"]
 qa = ["flake8 (==3.7.9)"]
-doc = ["readthedocs-sphinx-search (==0.1.0)", "sphinx-rtd-theme (==0.5.2)", "m2r2 (==0.2.7)", "mistune (==0.8.4)", "Sphinx (==4.0)"]
 
 [[package]]
 name = "certifi"
@@ -529,7 +518,7 @@ tests = ["coverage"]
 
 [[package]]
 name = "coverage"
-version = "6.4.3"
+version = "6.4.4"
 description = "Code coverage measurement for Python"
 category = "dev"
 optional = false
@@ -770,7 +759,7 @@ python-versions = ">=3.6"
 
 [[package]]
 name = "exchange-calendars"
-version = "4.1.1"
+version = "4.2"
 description = "Calendars for securities exchanges"
 category = "main"
 optional = false
@@ -920,25 +909,25 @@ pyflakes = ">=2.3.0,<2.4.0"
 
 [[package]]
 name = "fonttools"
-version = "4.35.0"
+version = "4.36.0"
 description = "Tools to manipulate font files"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 
 [package.extras]
-woff = ["brotli (>=1.0.1)", "brotlicffi (>=0.8.0)", "zopfli (>=0.1.4)"]
-unicode = ["unicodedata2 (>=14.0.0)"]
-ufo = ["fs (>=2.2.0,<3)"]
-type1 = ["xattr"]
-symfont = ["sympy"]
-repacker = ["uharfbuzz (>=0.23.0)"]
-plot = ["matplotlib"]
-pathops = ["skia-pathops (>=0.5.0)"]
-lxml = ["lxml (>=4.0,<5)"]
-interpolatable = ["munkres", "scipy"]
+all = ["fs (>=2.2.0,<3)", "lxml (>=4.0,<5)", "zopfli (>=0.1.4)", "lz4 (>=1.7.4.2)", "matplotlib", "sympy", "skia-pathops (>=0.5.0)", "uharfbuzz (>=0.23.0)", "brotlicffi (>=0.8.0)", "scipy", "brotli (>=1.0.1)", "munkres", "unicodedata2 (>=14.0.0)", "xattr"]
 graphite = ["lz4 (>=1.7.4.2)"]
-all = ["xattr", "unicodedata2 (>=14.0.0)", "munkres", "brotli (>=1.0.1)", "scipy", "brotlicffi (>=0.8.0)", "uharfbuzz (>=0.23.0)", "skia-pathops (>=0.5.0)", "sympy", "matplotlib", "lz4 (>=1.7.4.2)", "zopfli (>=0.1.4)", "lxml (>=4.0,<5)", "fs (>=2.2.0,<3)"]
+interpolatable = ["scipy", "munkres"]
+lxml = ["lxml (>=4.0,<5)"]
+pathops = ["skia-pathops (>=0.5.0)"]
+plot = ["matplotlib"]
+repacker = ["uharfbuzz (>=0.23.0)"]
+symfont = ["sympy"]
+type1 = ["xattr"]
+ufo = ["fs (>=2.2.0,<3)"]
+unicode = ["unicodedata2 (>=14.0.0)"]
+woff = ["zopfli (>=0.1.4)", "brotlicffi (>=0.8.0)", "brotli (>=1.0.1)"]
 
 [[package]]
 name = "formulaic"
@@ -1035,52 +1024,6 @@ python-versions = ">=3.7"
 
 [package.dependencies]
 gitdb = ">=4.0.1,<5"
-
-[[package]]
-name = "google-auth"
-version = "2.10.0"
-description = "Google Authentication Library"
-category = "main"
-optional = true
-python-versions = ">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*"
-
-[package.dependencies]
-cachetools = ">=2.0.0,<6.0"
-pyasn1-modules = ">=0.2.1"
-rsa = {version = ">=3.1.4,<5", markers = "python_version >= \"3.6\""}
-six = ">=1.9.0"
-
-[package.extras]
-reauth = ["pyu2f (>=0.1.5)"]
-pyopenssl = ["pyopenssl (>=20.0.0)"]
-enterprise_cert = ["pyopenssl (==22.0.0)", "cryptography (==36.0.2)"]
-aiohttp = ["aiohttp (>=3.6.2,<4.0.0dev)", "requests (>=2.20.0,<3.0.0dev)"]
-
-[[package]]
-name = "google-auth-oauthlib"
-version = "0.4.6"
-description = "Google Authentication Library"
-category = "main"
-optional = true
-python-versions = ">=3.6"
-
-[package.dependencies]
-google-auth = ">=1.0.0"
-requests-oauthlib = ">=0.7.0"
-
-[package.extras]
-tool = ["click (>=6.0.0)"]
-
-[[package]]
-name = "google-pasta"
-version = "0.2.0"
-description = "pasta is an AST-based Python refactoring library"
-category = "main"
-optional = true
-python-versions = "*"
-
-[package.dependencies]
-six = "*"
 
 [[package]]
 name = "grpcio"
@@ -1758,7 +1701,7 @@ setuptools_scm = ">=4,<7"
 
 [[package]]
 name = "matplotlib-inline"
-version = "0.1.3"
+version = "0.1.5"
 description = "Inline Matplotlib backend for Jupyter"
 category = "main"
 optional = false
@@ -4118,20 +4061,6 @@ optional = false
 python-versions = ">=3.7"
 
 [[package]]
-name = "werkzeug"
-version = "2.2.2"
-description = "The comprehensive WSGI web application library."
-category = "main"
-optional = true
-python-versions = ">=3.7"
-
-[package.dependencies]
-MarkupSafe = ">=2.1.1"
-
-[package.extras]
-watchdog = ["watchdog"]
-
-[[package]]
 name = "widgetsnbextension"
 version = "3.6.1"
 description = "IPython HTML widgets for Jupyter"
@@ -4229,7 +4158,7 @@ prediction = ["torch"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8,<3.11"
-content-hash = "4dd614c01be88b94d129e4ac8dd2d4fc81367ca0e61d410e2886d0c8c25327ed"
+content-hash = "7055c716787862af422627f9df2d5404bcb9cca4b171e6463577c3f0e17c04dd"
 
 [metadata.files]
 aiodns = []
@@ -4417,10 +4346,6 @@ astropy = [
     {file = "astropy-5.1.tar.gz", hash = "sha256:1db1b2c7eddfc773ca66fa33bd07b25d5b9c3b5eee2b934e0ca277fa5b1b7b7e"},
 ]
 asttokens = []
-astunparse = [
-    {file = "astunparse-1.6.3-py2.py3-none-any.whl", hash = "sha256:c2652417f2c8b5bb325c885ae329bdf3f86424075c4fd1a128674bc6fba4b8e8"},
-    {file = "astunparse-1.6.3.tar.gz", hash = "sha256:5ad93a8456f0d084c3456d059fd9a92cce667963232cbf763eac3bc5b7940872"},
-]
 async-generator = [
     {file = "async_generator-1.10-py3-none-any.whl", hash = "sha256:01c7bf666359b4967d2cda0000cc2e4af16a0ae098cbffcb8472fb9e8ad6585b"},
     {file = "async_generator-1.10.tar.gz", hash = "sha256:6ebb3d106c12920aaae42ccb6f787ef5eefdcdd166ea3d628fa8476abe712144"},
@@ -5101,10 +5026,7 @@ markupsafe = [
     {file = "MarkupSafe-2.1.1.tar.gz", hash = "sha256:7f91197cc9e48f989d12e4e6fbc46495c446636dfc81b9ccf50bb0ec74b91d4b"},
 ]
 matplotlib = []
-matplotlib-inline = [
-    {file = "matplotlib-inline-0.1.3.tar.gz", hash = "sha256:a04bfba22e0d1395479f866853ec1ee28eea1485c1d69a6faf00dc3e24ff34ee"},
-    {file = "matplotlib_inline-0.1.3-py3-none-any.whl", hash = "sha256:aed605ba3b72462d64d475a21a9296f400a19c4f74a31b59103d2a99ffd5aa5c"},
-]
+matplotlib-inline = []
 mccabe = [
     {file = "mccabe-0.6.1-py2.py3-none-any.whl", hash = "sha256:ab8a6258860da4b6677da4bd2fe5dc2c659cff31b3ee4f7f5d64e79735b80d42"},
     {file = "mccabe-0.6.1.tar.gz", hash = "sha256:dd8d182285a0fe56bace7f45b5e7d1a6ebcbf524e8f3bd87eb0f125271b8831f"},
@@ -5939,7 +5861,6 @@ robin-stocks = [
     {file = "robin_stocks-2.1.0-py3-none-any.whl", hash = "sha256:f746640e08d138fda2e1da42444e2881c3fb1ce43485f332e5079a42b0a78d57"},
     {file = "robin_stocks-2.1.0.tar.gz", hash = "sha256:3d6b1d97ecf3191897d09c9dc430b57c6183a38d4c66a64f9c62a8f015bb0ae9"},
 ]
-rsa = []
 scikit-learn = []
 scipy = [
     {file = "scipy-1.8.1-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:65b77f20202599c51eb2771d11a6b899b97989159b7975e9b5259594f1d35ef4"},

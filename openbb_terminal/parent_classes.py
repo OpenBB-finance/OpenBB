@@ -981,7 +981,7 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
 
         if ns_parser:
             (self.current_df) = cryptocurrency_helpers.load(
-                symbol_search=ns_parser.coin.lower(),
+                symbol=ns_parser.coin.lower(),
                 days=int(ns_parser.days),
                 vs=ns_parser.vs,
             )
@@ -994,6 +994,6 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
                 )
             else:
                 console.print(
-                    f"\n[red]Could not find [bold]{ns_parser.coin}[/bold] in [bold]yfinance[/bold]."
-                    f"Make sure you search for symbol (e.g., btc) and not full name (e.g., bitcoin)[/red]\n"  # noqa: E501
+                    f"\n[red]Couldn't find [bold]{ns_parser.coin}[/bold] in [bold]yfinance[/bold]."
+                    f"Search for symbol (e.g., btc) and not full name (e.g., bitcoin)[/red]\n"
                 )

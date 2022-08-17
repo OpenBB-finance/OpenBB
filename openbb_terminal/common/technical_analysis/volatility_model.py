@@ -15,7 +15,7 @@ MAMODES = ["ema", "sma", "wma", "hma", "zlma"]
 
 @log_start_end(log=logger)
 def bbands(
-    close_values: pd.Series, length: int = 15, n_std: float = 2, mamode: str = "ema"
+    close_values: pd.Series, window: int = 15, n_std: float = 2, mamode: str = "ema"
 ) -> pd.DataFrame:
     """Calculate Bollinger Bands
 
@@ -23,7 +23,7 @@ def bbands(
     ----------
     close_values : pd.DataFrame
         DataFrame of sclose prices
-    length : int
+    window : int
         Length of window to calculate BB
     n_std : float
         Number of standard deviations to show
@@ -38,7 +38,7 @@ def bbands(
     return pd.DataFrame(
         ta.bbands(
             close=close_values,
-            length=length,
+            length=window,
             std=n_std,
             mamode=mamode,
         )
@@ -85,7 +85,7 @@ def kc(
     high_prices: pd.Series,
     low_prices: pd.Series,
     close_prices: pd.Series,
-    length: int = 20,
+    window: int = 20,
     scalar: float = 2,
     mamode: str = "ema",
     offset: int = 0,
@@ -94,14 +94,16 @@ def kc(
 
     Parameters
     ----------
-    high_values : pd.DataFrame
+    high_prices : pd.DataFrame
         High prices
-    low_values : pd.DataFrame
+    low_prices : pd.DataFrame
         Low prices
-    close_values : pd.DataFrame
+    close_prices : pd.DataFrame
         Close prices
-    length : int
+    window : int
         Length of window
+    scalar: float
+        Scalar value
     mamode: str
         Type of filter
     offset : int
@@ -118,7 +120,7 @@ def kc(
             high=high_prices,
             low=low_prices,
             close=close_prices,
-            length=length,
+            length=window,
             scalar=scalar,
             mamode=mamode,
             offset=offset,

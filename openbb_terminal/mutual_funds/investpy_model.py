@@ -47,6 +47,11 @@ def get_overview(country: str = "united states", limit: int = 20) -> pd.DataFram
         Country to get overview for
     limit: int
         Number of results to get
+
+    Returns
+    -------
+    pd.DataFrame
+        Dataframe containing overview
     """
     return investpy.funds.get_funds_overview(
         country=country, as_json=False, n_results=limit
@@ -108,12 +113,12 @@ def get_fund_name_from_symbol(symbol: str) -> Tuple[str, str]:
 
 
 @log_start_end(log=logger)
-def get_fund_info(fund: str, country: str = "united states") -> pd.DataFrame:
+def get_fund_info(name: str, country: str = "united states") -> pd.DataFrame:
     """
 
     Parameters
     ----------
-    fynd: str
+    name: str
         Name of fund (not symbol) to get information
     country: str
         Country of fund
@@ -123,14 +128,14 @@ def get_fund_info(fund: str, country: str = "united states") -> pd.DataFrame:
     pd.DataFrame
         Dataframe of fund information
     """
-    return investpy.funds.get_fund_information(fund, country).T
+    return investpy.funds.get_fund_information(name, country).T
 
 
 @log_start_end(log=logger)
 def get_fund_historical(
-    fund: str,
+    name: str,
     country: str = "united states",
-    name: bool = False,
+    by_name: bool = False,
     start_date: datetime = (datetime.now() - timedelta(days=366)),
     end_date: datetime = datetime.now(),
 ) -> Tuple[pd.DataFrame, str, str, str]:
@@ -138,11 +143,11 @@ def get_fund_historical(
 
     Parameters
     ----------
-    fund: str
+    name: str
         Fund to get data for.  If using fund name, include `name=True`
     country: str
         Country of fund
-    name : bool
+    by_name : bool
         Flag to search by name instead of symbol
     start_date: datetime
         Start date of data in format YYYY-MM-DD
@@ -160,20 +165,20 @@ def get_fund_historical(
     str:
         Country that matches search results
     """
-    if name:
-        fund_name = fund
+    if by_name:
+        fund_name = name
         try:
-            fund_symbol, matching_country = get_fund_symbol_from_name(fund)
+            fund_symbol, matching_country = get_fund_symbol_from_name(name)
         except RuntimeError as e:
             logger.exception(str(e))
-            return pd.DataFrame(), fund, "", country
+            return pd.DataFrame(), name, "", country
     else:
-        fund_symbol = fund
+        fund_symbol = name
         try:
-            fund_name, matching_country = get_fund_name_from_symbol(fund)
+            fund_name, matching_country = get_fund_name_from_symbol(name)
         except RuntimeError as e:
             logger.exception(str(e))
-            return pd.DataFrame(), "", fund, country
+            return pd.DataFrame(), "", name, country
 
     # Note that dates for investpy need to be in the format dd/mm/yyyy
     from_date = start_date.strftime("%d/%m/%Y")

@@ -12,13 +12,13 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def get_mentions(ticker: str) -> pd.DataFrame:
+def get_mentions(symbol: str) -> pd.DataFrame:
     """Get interest over time from google api [Source: google]
 
     Parameters
     ----------
-    ticker : str
-        Stock ticker
+    symbol: str
+        Stock ticker symbol
 
     Returns
     -------
@@ -26,18 +26,18 @@ def get_mentions(ticker: str) -> pd.DataFrame:
         Dataframe of interest over time
     """
     pytrend = TrendReq()
-    pytrend.build_payload(kw_list=[ticker])
+    pytrend.build_payload(kw_list=[symbol])
     return pytrend.interest_over_time()
 
 
 @log_start_end(log=logger)
-def get_regions(ticker: str) -> pd.DataFrame:
+def get_regions(symbol: str) -> pd.DataFrame:
     """Get interest by region from google api [Source: google]
 
     Parameters
     ----------
-    ticker : str
-        Ticker to look at
+    symbol: str
+        Ticker symbol to look at
 
     Returns
     -------
@@ -45,18 +45,18 @@ def get_regions(ticker: str) -> pd.DataFrame:
         Dataframe of interest by region
     """
     pytrend = TrendReq()
-    pytrend.build_payload(kw_list=[ticker])
-    return pytrend.interest_by_region()
+    pytrend.build_payload(kw_list=[symbol])
+    return pytrend.interest_by_region().sort_values([symbol], ascending=False)
 
 
 @log_start_end(log=logger)
-def get_queries(ticker: str) -> pd.DataFrame:
+def get_queries(symbol: str) -> pd.DataFrame:
     """Get related queries from google api [Source: google]
 
     Parameters
     ----------
-    ticker : str
-        Stock ticker to compare
+    symbol: str
+        Stock ticker symbol to compare
 
     Returns
     -------
@@ -64,18 +64,18 @@ def get_queries(ticker: str) -> pd.DataFrame:
         Dataframe of related queries
     """
     pytrend = TrendReq()
-    pytrend.build_payload(kw_list=[ticker])
+    pytrend.build_payload(kw_list=[symbol])
     return pytrend.related_queries()
 
 
 @log_start_end(log=logger)
-def get_rise(ticker: str) -> pd.DataFrame:
+def get_rise(symbol: str) -> pd.DataFrame:
     """Get top rising related queries with this stock's query [Source: google]
 
     Parameters
     ----------
-    ticker : str
-        Stock ticker
+    symbol: str
+        Stock ticker symbol
 
     Returns
     -------
@@ -83,6 +83,6 @@ def get_rise(ticker: str) -> pd.DataFrame:
         Dataframe containing rising related queries
     """
     pytrend = TrendReq()
-    pytrend.build_payload(kw_list=[ticker])
+    pytrend.build_payload(kw_list=[symbol])
     df_related_queries = pytrend.related_queries()
-    return df_related_queries[ticker]["rising"]
+    return df_related_queries[symbol]["rising"]

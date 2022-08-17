@@ -22,11 +22,11 @@ def display_address_info(
     address: str,
     top: int = 15,
     sortby: str = "index",
-    descend: bool = True,
+    ascend: bool = False,
     export: str = "",
 ) -> None:
-    """Display info about tokens for given ethereum blockchain balance e.g. ETH balance, balance of all tokens with
-    name and symbol. [Source: Ethplorer]
+    """Display info about tokens for given ethereum blockchain balance e.g. ETH balance,
+    balance of all tokens with name and symbol. [Source: Ethplorer]
 
     Parameters
     ----------
@@ -36,15 +36,14 @@ def display_address_info(
         Limit of transactions. Maximum 100
     sortby: str
         Key to sort by.
-    descend: str
+    ascend: str
         Sort in descending order.
     export : str
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = ethplorer_model.get_address_info(address)
+    df = ethplorer_model.get_address_info(address, sortby=sortby, ascend=ascend)
     df_data = df.copy()
-    df = df.sort_values(by=sortby, ascending=descend)
     df["balance"] = df["balance"].apply(
         lambda x: lambda_very_long_number_formatter(x)
         if x >= 10000
@@ -71,7 +70,7 @@ def display_address_info(
 def display_top_tokens(
     top: int = 15,
     sortby: str = "rank",
-    descend: bool = True,
+    ascend: bool = True,
     export: str = "",
 ) -> None:
     """Display top ERC20 tokens [Source: Ethplorer]
@@ -82,16 +81,15 @@ def display_top_tokens(
         Limit of transactions. Maximum 100
     sortby: str
         Key to sort by.
-    descend: str
+    ascend: str
         Sort in descending order.
     export : str
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = ethplorer_model.get_top_tokens()
+    df = ethplorer_model.get_top_tokens(sortby, ascend)
     df_data = df.copy()
     df.fillna("", inplace=True)
-    df = df.sort_values(by=sortby, ascending=descend)
     for col in ["txsCount", "transfersCount", "holdersCount"]:
         if col in df.columns:
             df[col] = df[col].apply(lambda x: lambda_very_long_number_formatter(x))
@@ -117,7 +115,7 @@ def display_top_token_holders(
     address: str,
     top: int = 10,
     sortby: str = "balance",
-    descend: bool = False,
+    ascend: bool = True,
     export: str = "",
 ) -> None:
     """Display info about top ERC20 token holders. [Source: Ethplorer]
@@ -130,15 +128,14 @@ def display_top_token_holders(
         Limit of transactions. Maximum 100
     sortby: str
         Key to sort by.
-    descend: str
+    ascend: str
         Sort in descending order.
     export : str
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = ethplorer_model.get_top_token_holders(address)
+    df = ethplorer_model.get_top_token_holders(address, sortby, ascend)
     df_data = df.copy()
-    df = df.sort_values(by=sortby, ascending=descend)
     df["balance"] = df["balance"].apply(lambda x: lambda_very_long_number_formatter(x))
 
     print_rich_table(
@@ -162,7 +159,7 @@ def display_address_history(
     address: str,
     top: int = 10,
     sortby: str = "timestamp",
-    descend: bool = False,
+    ascend: bool = True,
     export: str = "",
 ) -> None:
     """Display information about balance historical transactions. [Source: Ethplorer]
@@ -175,15 +172,14 @@ def display_address_history(
         Limit of transactions. Maximum 100
     sortby: str
         Key to sort by.
-    descend: str
-        Sort in descending order.
+    ascend: str
+        Sort in ascending order.
     export : str
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = ethplorer_model.get_address_history(address)
+    df = ethplorer_model.get_address_history(address, sortby, ascend)
     df_data = df.copy()
-    df = df.sort_values(by=sortby, ascending=descend)
     df["value"] = df["value"].apply(
         lambda x: lambda_very_long_number_formatter(x)
         if x >= 10000
@@ -265,7 +261,6 @@ def display_tx_info(
     """
 
     df = ethplorer_model.get_tx_info(tx_hash)
-    df_data = df.copy()
     print_rich_table(
         df,
         headers=list(df.columns),
@@ -273,12 +268,7 @@ def display_tx_info(
         title="Information About Transactions",
     )
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "tx",
-        df_data,
-    )
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), "tx", df)
 
 
 @log_start_end(log=logger)
@@ -287,8 +277,8 @@ def display_token_history(
     address: str,
     top: int = 10,
     sortby: str = "timestamp",
+    ascend: bool = False,
     hash_: bool = False,
-    descend: bool = False,
     export: str = "",
 ) -> None:
     """Display info about token history. [Source: Ethplorer]
@@ -301,7 +291,7 @@ def display_token_history(
         Limit of transactions. Maximum 100
     sortby: str
         Key to sort by.
-    descend: str
+    ascend: str
         Sort in descending order.
     hash_: bool,
         Flag to show transaction hash.
@@ -309,7 +299,7 @@ def display_token_history(
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = ethplorer_model.get_token_history(address)
+    df = ethplorer_model.get_token_history(address, sortby, ascend)
     df_data = df.copy()
     if df.empty:
         console.print(f"No results found for balance: {address}\n")
@@ -318,7 +308,6 @@ def display_token_history(
     df.loc[:, "value"] = df["value"].apply(
         lambda x: lambda_very_long_number_formatter(x)
     )
-    df = df.sort_values(by=sortby, ascending=descend)
 
     if hash_:
         df.drop(["from", "to"], axis=1, inplace=True)
@@ -346,10 +335,11 @@ def display_token_historical_prices(
     address: str,
     top: int = 30,
     sortby: str = "date",
-    descend: bool = False,
+    ascend: bool = False,
     export: str = "",
 ) -> None:
-    """Display token historical prices with volume and market cap, and average price. [Source: Ethplorer]
+    """Display token historical prices with volume and market cap, and average price.
+    [Source: Ethplorer]
 
     Parameters
     ----------
@@ -359,13 +349,13 @@ def display_token_historical_prices(
         Limit of transactions. Maximum 100
     sortby: str
         Key to sort by.
-    descend: str
+    ascend: str
         Sort in descending order.
     export : str
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = ethplorer_model.get_token_historical_price(address)
+    df = ethplorer_model.get_token_historical_price(address, sortby, ascend)
     df_data = df.copy()
 
     if df.empty:
@@ -376,7 +366,6 @@ def display_token_historical_prices(
         lambda x: lambda_very_long_number_formatter(x)
     )
     df.loc[:, "cap"] = df["cap"].apply(lambda x: lambda_very_long_number_formatter(x))
-    df = df.sort_values(by=sortby, ascending=descend)
 
     print_rich_table(
         df.head(top),
