@@ -59,7 +59,9 @@ d_signals = {
 
 
 @log_start_end(log=logger)
-def get_screener_data(preset_loaded: str, data_type: str, limit: int, ascend: bool):
+def get_screener_data(
+    preset_loaded: str, data_type: str, limit: int = 10, ascending: bool = False
+):
     """Screener Overview
 
     Parameters
@@ -70,7 +72,7 @@ def get_screener_data(preset_loaded: str, data_type: str, limit: int, ascend: bo
         Data type between: overview, valuation, financial, ownership, performance, technical
     limit : int
         Limit of stocks filtered with presets to print
-    ascend : bool
+    ascending : bool
         Ascended order of stocks filtered to print
 
     Returns
@@ -99,9 +101,9 @@ def get_screener_data(preset_loaded: str, data_type: str, limit: int, ascend: bo
 
         try:
             if limit > 0:
-                df_screen = screen.screener_view(limit=limit, ascend=ascend)
+                df_screen = screen.screener_view(limit=limit, ascend=ascending)
             else:
-                df_screen = screen.screener_view(ascend=ascend)
+                df_screen = screen.screener_view(ascend=ascending)
         except IndexError:
             console.print("[red]Invalid data provided by the website[/red]\n")
             return pd.DataFrame()
@@ -145,18 +147,18 @@ def get_screener_data(preset_loaded: str, data_type: str, limit: int, ascend: bo
                 df_screen = screen.screener_view(
                     order=d_general["Order"],
                     limit=limit,
-                    ascend=ascend,
+                    ascend=ascending,
                 )
             else:
                 df_screen = screen.screener_view(
-                    order=d_general["Order"], ascend=ascend
+                    order=d_general["Order"], ascend=ascending
                 )
 
         else:
             if limit > 0:
-                df_screen = screen.screener_view(limit=limit, ascend=ascend)
+                df_screen = screen.screener_view(limit=limit, ascend=ascending)
             else:
-                df_screen = screen.screener_view(ascend=ascend)
+                df_screen = screen.screener_view(ascend=ascending)
 
     return df_screen
 

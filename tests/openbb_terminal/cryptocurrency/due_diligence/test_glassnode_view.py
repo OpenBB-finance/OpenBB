@@ -18,4 +18,4 @@ def vcr_config():
 def test_display_btc_rainbow(mocker):
     # MOCK VISUALIZE_OUTPUT
     mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
-    glassnode_view.display_btc_rainbow(since=1_325_376_000, until=1_641_641_877)
+    glassnode_view.display_btc_rainbow(start_date=1_325_376_000, end_date=1_641_641_877)

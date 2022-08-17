@@ -25,7 +25,11 @@ FILTERS = ["category", "id", "name"]
 
 @log_start_end(log=logger)
 def get_search_results(
-    query: str, category: Optional[Any] = None, modifier: Optional[Any] = None
+    query: str,
+    category: Optional[Any] = None,
+    modifier: Optional[Any] = None,
+    sortby: str = "id",
+    ascend: bool = True,
 ) -> pd.DataFrame:
     """Search CoinPaprika. [Source: CoinPaprika]
 
@@ -40,6 +44,11 @@ def get_search_results(
     modifier: Optional[Any]
         set modifier for search results. Available options: symbol_search -
         search only by symbol (works for currencies only)
+    sortby: str
+        Key to sort data. The table can be sorted by every of its columns. Refer to
+        API documentation (see https://api.coinpaprika.com/docs#tag/Tools/paths/~1search/get)
+    ascend: bool
+        Flag to sort data descending
 
     Returns
     -------
@@ -65,4 +74,6 @@ def get_search_results(
                     "category": item,
                 }
             )
-    return pd.DataFrame(results)
+    df = pd.DataFrame(results)
+    df = df.sort_values(by=sortby, ascending=ascend)
+    return df

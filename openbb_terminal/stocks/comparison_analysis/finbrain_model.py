@@ -44,13 +44,15 @@ def find_smallest_num_data_point(results_list: List[dict]) -> int:
 
 
 @log_start_end(log=logger)
-def get_sentiments(tickers: List[str]) -> pd.DataFrame:
-    """Gets Sentiment analysis from several tickers provided by FinBrain's API
+def get_sentiments(symbols: List[str]) -> pd.DataFrame:
+    """Gets Sentiment analysis from several symbols provided by FinBrain's API
 
     Parameters
     ----------
-    tickers : List[str]
+    symbols : List[str]
         List of tickers to get sentiment
+        Comparable companies can be accessed through
+        finnhub_peers(), finviz_peers(), polygon_peers().
 
     Returns
     -------
@@ -60,9 +62,9 @@ def get_sentiments(tickers: List[str]) -> pd.DataFrame:
 
     df_sentiment = pd.DataFrame()
     dates_sentiment = []
-    tickers_to_remove = list()
+    symbols_to_remove = list()
     results_list = list()
-    for ticker in tickers:
+    for ticker in symbols:
         result = requests.get(f"https://api.finbrain.tech/v0/sentiments/{ticker}")
         # Check status code, if its correct then convert to dict using .json()
         if result.status_code == 200:
@@ -72,7 +74,7 @@ def get_sentiments(tickers: List[str]) -> pd.DataFrame:
             console.print(
                 f"Request error in retrieving {ticker} sentiment from FinBrain API"
             )
-            tickers_to_remove.append(ticker)
+            symbols_to_remove.append(ticker)
 
     # Finds the smallest amount of data points from any of the tickers as to not run
     # into an indexing error when graphing
@@ -80,7 +82,7 @@ def get_sentiments(tickers: List[str]) -> pd.DataFrame:
 
     num = 0
     for result_json in results_list:
-        ticker = tickers[num]
+        ticker = symbols[num]
         # Checks to see if sentiment data in results_json
         if (
             "ticker" in result_json
@@ -105,15 +107,34 @@ def get_sentiments(tickers: List[str]) -> pd.DataFrame:
             console.print(
                 f"Unexpected data format or no data from FinBrain API for {ticker}"
             )
-            tickers_to_remove.append(ticker)
+            symbols_to_remove.append(ticker)
 
         num = num + 1
 
-    for ticker in tickers_to_remove:
-        tickers.remove(ticker)
+    for ticker in symbols_to_remove:
+        symbols.remove(ticker)
 
     if not df_sentiment.empty:
         df_sentiment.index = dates_sentiment
         df_sentiment.sort_index(ascending=True, inplace=True)
 
     return df_sentiment
+
+
+@log_start_end(log=logger)
+def get_sentiment_correlation(
+    similar: List[str],
+):
+    """Get correlation sentiments across similar companies. [Source: FinBrain]
+
+    Parameters
+    ----------
+    similar : List[str]
+        Similar companies to compare income with.
+        Comparable companies can be accessed through
+        finnhub_peers(), finviz_peers(), polygon_peers().
+    """
+    df_sentiment = get_sentiments(similar)
+    corrs = df_sentiment.corr()
+
+    return corrs, df_sentiment

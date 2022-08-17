@@ -25,7 +25,7 @@ def test_get_screener_data(data_type, recorder):
         preset_loaded="top_gainers",
         data_type=data_type,
         limit=2,
-        ascend=True,
+        ascending=True,
     )
 
     recorder.capture(result_df)
@@ -44,7 +44,7 @@ def test_get_screener_data_no_preset_loaded(mocker, recorder):
         preset_loaded="oversold",
         data_type="overview",
         limit=2,
-        ascend=True,
+        ascending=True,
     )
 
     recorder.capture(result_df)
@@ -56,7 +56,7 @@ def test_get_screener_data_no_limit(recorder):
         preset_loaded="oversold",
         data_type="overview",
         limit=-1,
-        ascend=True,
+        ascending=True,
     )
 
     recorder.capture(result_df)

@@ -6,8 +6,6 @@ from openbb_terminal.helper_classes import ModelsNamespace as _models
 # pylint: disable=unused-import
 
 # Menu commands
-from .terraengineer_view import display_terra_asset_history as aterra
-from .terraengineer_view import display_anchor_yield_reserve as ayr
 from .terramoney_fcd_view import display_account_staking_info as sinfo
 from .terramoney_fcd_view import display_validators as validators
 from .terramoney_fcd_view import display_account_growth as gacc
