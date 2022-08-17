@@ -244,13 +244,13 @@ def display_rise(symbol: str, limit: int = 10, export: str = ""):
         Format to export data
     """
     df_related_queries = google_model.get_rise(symbol)
-    df = df_related_queries.copy()
-    df_related_queries = df_related_queries.head(limit)
 
     print_rich_table(
-        df_related_queries,
+        df_related_queries.head(limit),
         headers=list(df_related_queries.columns),
         title=f"Top rising {symbol}'s related queries",
     )
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "rise", df)
+    export_data(
+        export, os.path.dirname(os.path.abspath(__file__)), "rise", df_related_queries
+    )

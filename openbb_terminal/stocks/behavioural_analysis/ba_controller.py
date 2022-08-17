@@ -902,8 +902,8 @@ class BehaviouralAnalysisController(StockBaseController):
             if self.ticker:
                 sentimentinvestor_view.display_historical(
                     symbol=self.ticker,
-                    start_end=ns_parser.start,
-                    end_end=ns_parser.end,
+                    start_date=ns_parser.start,
+                    end_date=ns_parser.end,
                     number=ns_parser.number,
                     export=ns_parser.export,
                     raw=ns_parser.raw,

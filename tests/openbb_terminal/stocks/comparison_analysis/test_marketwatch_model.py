@@ -24,8 +24,8 @@ def vcr_config():
 )
 def test_get_financial_comparisons(quarter, timeframe, recorder):
     result_df = marketwatch_model.get_financial_comparisons(
-        all_stocks=["TSLA", "GM"],
-        statement="income",
+        symbols=["TSLA", "GM"],
+        data="income",
         timeframe=timeframe,
         quarter=quarter,
     )

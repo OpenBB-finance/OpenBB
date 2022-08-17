@@ -21,8 +21,8 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_income_comparison(
-    similar: List[str],
-    timeframe: str = str(datetime.today().year - 1),
+    symbols: List[str],
+    timeframe: str = str(datetime.now().year - 1),
     quarter: bool = False,
     export: str = "",
 ):
@@ -30,18 +30,18 @@ def display_income_comparison(
 
     Parameters
     ----------
-    similar : List[str]
-        Similar companies to compare income with.
-        Comparable companies can be accessed through getfinfiz()/getfinnhub().
+    symbols : List[str]
+        List of tickers to compare. Enter tickers you want to see as shown below:
+        ["TSLA", "AAPL", "NFLX", "BBY"]
     timeframe : str
-        Column header to compare
+        What year to look at
     quarter : bool, optional
         Whether to use quarterly statements, by default False
     export : str, optional
         Format to export data
     """
-    df_financials_compared = marketwatch_model.get_income_comparison(
-        similar, timeframe, quarter
+    df_financials_compared = marketwatch_model.get_financial_comparisons(
+        symbols, "income", timeframe, quarter
     )
 
     if len(df_financials_compared) == 0 or df_financials_compared.empty:
@@ -74,8 +74,8 @@ def display_income_comparison(
 
 @log_start_end(log=logger)
 def display_balance_comparison(
-    similar: List[str],
-    timeframe: str = str(datetime.today().year - 1),
+    symbols: List[str],
+    timeframe: str = str(datetime.now().year - 1),
     quarter: bool = False,
     export: str = "",
 ):
@@ -83,18 +83,18 @@ def display_balance_comparison(
 
     Parameters
     ----------
-    similar : List[str]
-        Similar companies to compare income with.
-        Comparable companies can be accessed through getfinfiz()/getfinnhub().
+    symbols : List[str]
+        List of tickers to compare. Enter tickers you want to see as shown below:
+        ["TSLA", "AAPL", "NFLX", "BBY"]
     timeframe : str
-        Column header to compare
+        What year to look at
     quarter : bool, optional
         Whether to use quarterly statements, by default False
     export : str, optional
         Format to export data
     """
-    df_financials_compared = marketwatch_model.get_balance_comparison(
-        similar, timeframe, quarter
+    df_financials_compared = marketwatch_model.get_financial_comparisons(
+        symbols, "balance", timeframe, quarter
     )
 
     if len(df_financials_compared) == 0 or df_financials_compared.empty:
@@ -127,8 +127,8 @@ def display_balance_comparison(
 
 @log_start_end(log=logger)
 def display_cashflow_comparison(
-    similar: List[str],
-    timeframe: str = str(datetime.today().year - 1),
+    symbols: List[str],
+    timeframe: str = str(datetime.now().year - 1),
     quarter: bool = False,
     export: str = "",
 ):
@@ -136,18 +136,18 @@ def display_cashflow_comparison(
 
     Parameters
     ----------
-    similar : List[str]
-        Similar companies to compare income with.
-        Comparable companies can be accessed through getfinfiz()/getfinnhub().
+    symbols : List[str]
+        List of tickers to compare. Enter tickers you want to see as shown below:
+        ["TSLA", "AAPL", "NFLX", "BBY"]
     timeframe : str
-        Column header to compare
+        What year to look at
     quarter : bool, optional
         Whether to use quarterly statements, by default False
     export : str, optional
         Format to export data
     """
-    df_financials_compared = marketwatch_model.get_cashflow_comparison(
-        similar, timeframe, quarter
+    df_financials_compared = marketwatch_model.get_financial_comparisons(
+        symbols, "cashflow", timeframe, quarter
     )
 
     if len(df_financials_compared) == 0 or df_financials_compared.empty:

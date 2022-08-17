@@ -640,11 +640,11 @@ def plot_volume_open_interest(
 @log_start_end(log=logger)
 def plot_plot(
     symbol: str,
-    expiration: str,
-    x: str = "strike",
-    y: str = "impliedVolatility",
-    custom: str = None,
+    expiry: str,
     put: bool = False,
+    x: str = "s",
+    y: str = "iv",
+    custom: str = "",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
@@ -654,12 +654,14 @@ def plot_plot(
     ----------
     symbol: str
         Stock ticker symbol
-    expiration: str
+    expiry: str
         Option expiration
     x: str
-        variable to display in x axis
+        variable to display in x axis, choose from:
+        ltd, s, lp, b, a, c, pc, v, oi, iv
     y: str
-        variable to display in y axis
+        variable to display in y axis, choose from:
+        ltd, s, lp, b, a, c, pc, v, oi, iv
     custom: str
         type of plot
     put: bool
@@ -688,7 +690,7 @@ def plot_plot(
         x = convert[x]
         y = convert[y]
     varis = op_helpers.opt_chain_cols
-    chain = yfinance_model.get_option_chain(symbol, expiration)
+    chain = yfinance_model.get_option_chain(symbol, expiry)
     values = chain.puts if put else chain.calls
 
     if external_axes is None:
@@ -703,7 +705,7 @@ def plot_plot(
     ax.plot(x_data, y_data, "--bo")
     option = "puts" if put else "calls"
     ax.set_title(
-        f"{varis[y]['label']} vs. {varis[x]['label']} for {symbol} {option} on {expiration}"
+        f"{varis[y]['label']} vs. {varis[x]['label']} for {symbol} {option} on {expiry}"
     )
     ax.set_ylabel(varis[y]["label"])
     ax.set_xlabel(varis[x]["label"])
@@ -730,7 +732,7 @@ def plot_payoff(
     options: List[Dict[Any, Any]],
     underlying: float,
     symbol: str,
-    expiration: str,
+    expiry: str,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Generate a graph showing the option payoff diagram"""
@@ -748,7 +750,7 @@ def plot_payoff(
         ax.plot(x, ya, label="Payoff After Premium")
     else:
         ax.plot(x, yb, label="Payoff")
-    ax.set_title(f"Option Payoff Diagram for {symbol} on {expiration}")
+    ax.set_title(f"Option Payoff Diagram for {symbol} on {expiry}")
     ax.set_ylabel("Profit")
     ax.set_xlabel("Underlying Asset Price at Expiration")
     ax.legend()
@@ -1048,7 +1050,7 @@ def export_binomial_calcs(
 @log_start_end(log=logger)
 def show_binom(
     symbol: str,
-    expiration: str,
+    expiry: str,
     strike: float = 0,
     put: bool = False,
     europe: bool = False,
@@ -1062,7 +1064,7 @@ def show_binom(
     ----------
     symbol : str
         The ticker symbol of the option's underlying asset
-    expiration : str
+    expiry : str
         The expiration for the option
     strike : float
         The strike price for the option
@@ -1078,18 +1080,18 @@ def show_binom(
         The annualized volatility for the underlying asset
     """
     up, prob_up, discount, und_vals, opt_vals, days = yfinance_model.get_binom(
-        symbol, expiration, strike, put, europe, vol
+        symbol, expiry, strike, put, europe, vol
     )
 
     if export:
         export_binomial_calcs(up, prob_up, discount, und_vals, opt_vals, days, symbol)
 
     if plot:
-        plot_expected_prices(und_vals, prob_up, symbol, expiration)
+        plot_expected_prices(und_vals, prob_up, symbol, expiry)
 
     option = "put" if put else "call"
     console.print(
-        f"{symbol} {option} at ${strike:.2f} expiring on {expiration} is worth ${opt_vals[0][0]:.2f}\n"
+        f"{symbol} {option} at ${strike:.2f} expiring on {expiry} is worth ${opt_vals[0][0]:.2f}\n"
     )
 
 

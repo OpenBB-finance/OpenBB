@@ -135,15 +135,15 @@ def option_expirations(symbol: str):
 
 
 @log_start_end(log=logger)
-def get_option_chain(symbol: str, expiration: str) -> pd.DataFrame:
+def get_option_chain(symbol: str, expiry: str):
     """Gets option chain from yf for given ticker and expiration
 
     Parameters
     ----------
     symbol: str
         Ticker symbol to get options for
-    expiration: str
-        Date to get options for
+    expiry: str
+        Date to get options for. YYYY-MM-DD
 
     Returns
     -------
@@ -153,9 +153,9 @@ def get_option_chain(symbol: str, expiration: str) -> pd.DataFrame:
 
     yf_ticker = yf.Ticker(symbol)
     try:
-        chains = yf_ticker.option_chain(expiration)
+        chains = yf_ticker.option_chain(expiry)
     except Exception:
-        console.print(f"[red]Error: Expiration {expiration} cannot be found.[/red]")
+        console.print(f"[red]Error: Expiration {expiry} cannot be found.[/red]")
         chains = pd.DataFrame()
 
     return chains

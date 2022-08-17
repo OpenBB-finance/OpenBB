@@ -100,6 +100,8 @@ def check_supported_ticker(symbol: str) -> bool:
     response = requests.get(
         "https://api.sentimentinvestor.com/v1/supported", params=payload
     )
+    if response.status_code >= 500:
+        return False
     response_json = response.json()
 
     result = False
@@ -159,6 +161,9 @@ def get_trending(
     response = requests.get(
         "https://api.sentimentinvestor.com/v1/trending", params=payload
     )
+    if response.status_code >= 500:
+        return pd.DataFrame()
+
     response_json = response.json()
 
     df = pd.DataFrame()

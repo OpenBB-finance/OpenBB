@@ -117,7 +117,7 @@ def test_plot_plot(mocker):
 
     yfinance_view.plot_plot(
         symbol="PM",
-        expiration="2022-01-07",
+        expiry="2022-01-07",
         put=True,
         x="c",
         y="v",
@@ -142,7 +142,8 @@ def test_plot_payoff(mocker):
         options=[],
         underlying=0,
         symbol="PM",
-        expiration="2022-01-07",
+        ticker="PM",
+        expiry="2022-06-05",
     )
 
 
@@ -206,7 +207,7 @@ def test_show_binom(mocker):
 
     yfinance_view.show_binom(
         symbol="PM",
-        expiration="2022-01-07",
+        expiry="2022-01-07",
         strike=90.0,
         put=True,
         europe=False,

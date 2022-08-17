@@ -150,9 +150,9 @@ def display_hist(
 
 @log_start_end(log=logger)
 def display_cdf(
-    name: str,
     data: pd.DataFrame,
     target: str,
+    symbol: str = "",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -160,12 +160,12 @@ def display_cdf(
 
     Parameters
     ----------
-    name : str
-        Name of dataset
     data : pd.DataFrame
         Dataframe to look at
     target : str
         Data column
+    symbol : str
+        Name of dataset
     export : str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
@@ -188,7 +188,7 @@ def display_cdf(
 
     cdf.plot(ax=ax)
     ax.set_title(
-        f"Cumulative Distribution Function of {name} {target}\nfrom {start.strftime('%Y-%m-%d')}"
+        f"Cumulative Distribution Function of {symbol} {target}\nfrom {start.strftime('%Y-%m-%d')}"
     )
     ax.set_ylabel("Probability")
     ax.set_xlabel(target)
@@ -255,10 +255,10 @@ def display_cdf(
 
 @log_start_end(log=logger)
 def display_bw(
-    name: str,
     data: pd.DataFrame,
     target: str,
-    yearly: bool = False,
+    symbol: str = "",
+    yearly: bool = True,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Show box and whisker plots
@@ -271,6 +271,8 @@ def display_bw(
         Dataframe to look at
     target : str
         Data column to look at
+    symbol : str
+        Name of dataset
     yearly : bool
         Flag to indicate yearly accumulation
     external_axes : Optional[List[plt.Axes]], optional
@@ -315,7 +317,7 @@ def display_bw(
     box_plot.set(
         xlabel=["Monthly", "Yearly"][yearly],
         ylabel=target,
-        title=f"{['Monthly','Yearly'][yearly]} box plot of {name} {target} from {start.strftime('%Y-%m-%d')}",
+        title=f"{['Monthly','Yearly'][yearly]} box plot of {symbol} {target} from {start.strftime('%Y-%m-%d')}",
     )
     l_months = [
         "Jan",
@@ -351,9 +353,9 @@ def display_bw(
 
 @log_start_end(log=logger)
 def display_acf(
-    name: str,
     data: pd.DataFrame,
     target: str,
+    symbol: str = "",
     lags: int = 15,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -367,6 +369,8 @@ def display_acf(
         Dataframe to look at
     target : str
         Data column to look at
+    symbol : str
+        Name of dataset
     lags : int
         Max number of lags to look at
     external_axes : Optional[List[plt.Axes]], optional
@@ -389,26 +393,26 @@ def display_acf(
     else:
         return
 
-    # Diff Auto-correlation function for original time series
+    # Diff Auto - correlation function for original time series
     sm.graphics.tsa.plot_acf(np.diff(np.diff(data.values)), lags=lags, ax=ax1)
-    ax1.set_title(f"{name} Returns Auto-Correlation", fontsize=9)
-    # Diff Partial auto-correlation function for original time series
+    ax1.set_title(f"{symbol} Returns Auto-Correlation", fontsize=9)
+    # Diff Partial auto - correlation function for original time series
     sm.graphics.tsa.plot_pacf(np.diff(np.diff(data.values)), lags=lags, ax=ax2)
     ax2.set_title(
-        f"{name} Returns Partial Auto-Correlation",
+        f"{symbol} Returns Partial Auto-Correlation",
         fontsize=9,
     )
 
     # Diff Diff Auto-correlation function for original time series
     sm.graphics.tsa.plot_acf(np.diff(np.diff(data.values)), lags=lags, ax=ax3)
     ax3.set_title(
-        f"Change in {name} Returns Auto-Correlation",
+        f"Change in {symbol} Returns Auto-Correlation",
         fontsize=9,
     )
     # Diff Diff Partial auto-correlation function for original time series
     sm.graphics.tsa.plot_pacf(np.diff(np.diff(data.values)), lags=lags, ax=ax4)
     ax4.set_title(
-        f"Change in {name} Returns Partial Auto-Correlation",
+        f"Change in {symbol} Returns Partial Auto-Correlation",
         fontsize=9,
     )
 
@@ -431,9 +435,9 @@ def display_acf(
 
 @log_start_end(log=logger)
 def display_qqplot(
-    name: str,
     data: pd.DataFrame,
     target: str,
+    symbol: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Show QQ plot for data against normal quantiles
@@ -446,6 +450,8 @@ def display_qqplot(
         Dataframe
     target : str
         Column in data to look at
+    name : str
+        Stock ticker
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
@@ -474,7 +480,7 @@ def display_qqplot(
     )
     ax.get_lines()[1].set_color(theme.up_color)
 
-    ax.set_title(f"Q-Q plot for {name} {target}")
+    ax.set_title(f"Q-Q plot for {symbol} {target}")
     ax.set_ylabel("Sample quantiles")
     ax.set_xlabel("Theoretical quantiles")
 
@@ -488,8 +494,8 @@ def display_qqplot(
 def display_cusum(
     data: pd.DataFrame,
     target: str,
-    threshold: float,
-    drift: float,
+    threshold: float = 5,
+    drift: float = 2.1,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Cumulative sum algorithm (CUSUM) to detect abrupt changes in data
@@ -511,7 +517,7 @@ def display_cusum(
 
     # The code for this plot was adapted from detecta's sources because at the
     # time of writing this detect_cusum had a bug related to external axes support.
-    # see https://github.com/demotu/detecta/pull/3
+    # see https:  // github.com/demotu/detecta/pull/3
     tap, tan = 0, 0
     ta, tai, taf, _ = detect_cusum(
         x=target_series,
@@ -740,7 +746,7 @@ def display_seasonal(
         )
         theme.visualize_output(force_tight_layout=False)
 
-    # From  # https://otexts.com/fpp2/seasonal-strength.html
+    # From #https:  // otexts.com/fpp2/seasonal-strength.html
     console.print("Time-Series Level is " + str(round(data.mean(), 2)))
 
     Ft = max(0, 1 - np.var(result.resid)) / np.var(result.trend + result.resid)

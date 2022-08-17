@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from datetime import datetime
 from typing import List, Optional
 
 import matplotlib.pyplot as plt
@@ -28,10 +29,9 @@ register_matplotlib_converters()
 
 @log_start_end(log=logger)
 def price_target_from_analysts(
-    symbol: str,
     data: DataFrame,
-    start_date: str,
-    interval: str,
+    symbol: str = "",
+    start_date: str = datetime.now().strftime("%Y-%m-%d"),
     limit: int = 10,
     raw: bool = False,
     export: str = "",
@@ -41,15 +41,13 @@ def price_target_from_analysts(
 
     Parameters
     ----------
-    symbol: str
-        Due diligence ticker symbol
-    start_date: str
-        Start date of the stock data
-    interval: str
-        Stock data interval
     data: DataFrame
         Due diligence stock dataframe
-    limit: int
+    symbol: str
+        Due diligence ticker symbol
+    start_date : str
+        Start date of the stock data
+    limit : int
         Number of latest price targets from analysts to print
     raw: bool
         Display raw data only
@@ -87,13 +85,14 @@ def price_target_from_analysts(
         if start_date:
             df_analyst_data = df_analyst_data[start_date:]  # type: ignore
 
-        if interval == "1440min":
-            ax.plot(data.index, data["Adj Close"].values)
-            legend_price_label = "Adjusted closing price"
-        # Intraday
+        if "Adj Close" in data:
+            plot_column = "Adj Close"
+            legend_price_label = "Adjust Close"
         else:
-            ax.plot(data.index, data["Close"].values)
-            legend_price_label = "Closing price"
+            plot_column = "Close"
+            legend_price_label = "Close"
+
+        ax.plot(data.index, data[plot_column].values)
 
         if start_date:
             ax.plot(df_analyst_data.groupby(by=["Date"]).mean()[start_date:])  # type: ignore

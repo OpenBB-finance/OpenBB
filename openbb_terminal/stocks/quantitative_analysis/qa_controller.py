@@ -335,8 +335,8 @@ class QaController(StockBaseController):
         )
         if ns_parser:
             qa_view.display_cdf(
-                name=self.ticker,
                 data=self.stock,
+                symbol=self.ticker,
                 target=self.target,
                 export=ns_parser.export,
             )
@@ -363,8 +363,8 @@ class QaController(StockBaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             qa_view.display_bw(
-                name=self.ticker,
                 data=self.stock,
+                symbol=self.ticker,
                 target=self.target,
                 yearly=ns_parser.year,
             )
@@ -473,8 +473,8 @@ class QaController(StockBaseController):
                 )
 
             qa_view.display_acf(
-                name=self.ticker,
                 data=self.stock,
+                symbol=self.ticker,
                 target=self.target,
                 lags=ns_parser.lags,
             )
@@ -507,7 +507,7 @@ class QaController(StockBaseController):
                 symbol=self.ticker,
                 data=self.stock,
                 target=self.target,
-                window=ns_parser.n_window,
+                limit=ns_parser.n_window,
                 export=ns_parser.export,
             )
 
@@ -535,10 +535,10 @@ class QaController(StockBaseController):
         )
         if ns_parser:
             rolling_view.display_spread(
-                name=self.ticker,
                 data=self.stock,
+                symbol=self.ticker,
                 target=self.target,
-                window=ns_parser.n_window,
+                limit=ns_parser.n_window,
                 export=ns_parser.export,
             )
 
@@ -583,10 +583,10 @@ class QaController(StockBaseController):
         )
         if ns_parser:
             rolling_view.display_quantile(
-                name=self.ticker,
                 data=self.stock,
+                symbol=self.ticker,
                 target=self.target,
-                window=ns_parser.n_window,
+                limit=ns_parser.n_window,
                 quantile=ns_parser.f_quantile,
                 export=ns_parser.export,
             )
@@ -698,7 +698,7 @@ class QaController(StockBaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             qa_view.display_qqplot(
-                name=self.ticker, data=self.stock, target=self.target
+                symbol=self.ticker, data=self.stock, target=self.target
             )
 
     @log_start_end(log=logger)

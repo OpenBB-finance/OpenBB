@@ -18,18 +18,22 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def get_financial_comparisons(
-    all_stocks: List[str], statement: str, timeframe: str = None, quarter: bool = False
+    symbols: List[str],
+    data: str = "income",
+    timeframe: str = str(datetime.now().year - 1),
+    quarter: bool = False,
 ) -> pd.DataFrame:
     """Get dataframe of income data from marketwatch
 
     Parameters
     ----------
-    all_stocks : List[str]
-        List of all stocks to get income for
-    statement : str
-        Financial statement to get. Can be income, balance or cashflow
+    symbols : List[str]
+        List of tickers to compare. Enter tickers you want to see as shown below:
+        ["TSLA", "AAPL", "NFLX", "BBY"]
+    data : str
+        Data to get. Can be income, balance or cashflow
     timeframe : str
-        Quarterly or annual data or None
+        What year to look at
     quarter : bool
         Flag to use quarterly data.
 
@@ -43,9 +47,7 @@ def get_financial_comparisons(
     ValueError
         Timeframe not valid
     """
-    l_timeframes, ddf_financials = prepare_comparison_financials(
-        all_stocks, statement, quarter
-    )
+    l_timeframes, ddf_financials = prepare_comparison_financials(symbols, data, quarter)
 
     if timeframe:
         if timeframe not in l_timeframes:
@@ -59,10 +61,11 @@ def get_financial_comparisons(
         s_timeframe = l_timeframes[-1]
 
     console.print(
-        f"Other available {('yearly', 'quarterly')[quarter]} timeframes are: {', '.join(l_timeframes)}\n"
+        f"Other available {('yearly', 'quarterly')[quarter]} timeframes are:"
+        f" {', '.join(l_timeframes)}\n"
     )
 
-    return combine_similar_financials(ddf_financials, all_stocks, s_timeframe, quarter)
+    return combine_similar_financials(ddf_financials, symbols, s_timeframe, quarter)
 
 
 @log_start_end(log=logger)

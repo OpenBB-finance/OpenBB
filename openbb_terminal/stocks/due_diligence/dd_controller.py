@@ -148,6 +148,7 @@ class DueDiligenceController(StockBaseController):
                 start_date=self.start,
                 interval=self.interval,
                 data=self.stock,
+                start_date=self.start,
                 limit=ns_parser.limit,
                 raw=ns_parser.raw,
                 export=ns_parser.export,
@@ -159,7 +160,8 @@ class DueDiligenceController(StockBaseController):
         parser = argparse.ArgumentParser(
             add_help=False,
             prog="est",
-            description="""Yearly estimates and quarter earnings/revenues. [Source: Business Insider]""",
+            description="""Yearly estimates and quarter earnings/revenues.
+            [Source: Business Insider]""",
         )
 
         ns_parser = self.parse_known_args_and_warn(

@@ -84,9 +84,9 @@ def rating_over_time(
 
     Parameters
     ----------
-    symbol: str
-        Ticker symbol to get ratings from
-    limit: int
+    ticker : str
+        Ticker to get ratings from
+    limit : int
         Number of last months ratings to show
     raw: bool
         Display raw data only
