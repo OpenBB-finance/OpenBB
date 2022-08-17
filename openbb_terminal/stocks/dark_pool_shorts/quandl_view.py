@@ -98,7 +98,14 @@ def plot_short_interest(
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_QUANDL"])
-def short_interest(ticker: str, nyse: bool, days: int, raw: bool, export: str="", external_axes: Optional[List[plt.Axes]] = None,):
+def short_interest(
+    ticker: str,
+    nyse: bool,
+    days: int,
+    raw: bool,
+    export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
+):
     """Plots the short interest of a stock. This corresponds to the
     number of shares that have been sold short but have not yet been
     covered or closed out. Either NASDAQ or NYSE [Source: Quandl]

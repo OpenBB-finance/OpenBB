@@ -365,4 +365,3 @@ def net_short_position(
         "shortpos",
         df,
     )
-short_interest_volume("BBBY")
