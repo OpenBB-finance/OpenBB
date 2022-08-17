@@ -200,7 +200,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/conda_pkgs_dir
-          key: conda-${{ runner.os }}-v1-${{ matrix.python }}-${{ hashFiles('build/conda/conda-3-9-env.yaml') }}
+          key: conda-${{ runner.os }}-v1-${{ matrix.python }}-${{ hashFiles('build/conda/conda-3-9-env-full.yaml') }}
 
       - name: Setup Miniconda
         uses: conda-incubator/setup-miniconda@v2
@@ -232,7 +232,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ${{ steps.pip-cache.outputs.dir }}
-          key: ${{ runner.os }}-v1-3-9-pip-${{ hashFiles('requirements.txt') }}
+          key: ${{ runner.os }}-v1-3-9-pip-${{ hashFiles('requirements-full.txt') }}
           restore-keys: |
             ${{ runner.os }}-v1-pip-
 
