@@ -142,7 +142,6 @@ def test_plot_payoff(mocker):
         options=[],
         underlying=0,
         symbol="PM",
-        ticker="PM",
         expiry="2022-06-05",
     )
 
