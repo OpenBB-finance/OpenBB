@@ -55,7 +55,8 @@ def display_historical(
     ----------
     similar: List[str]
         List of similar tickers.
-        Comparable companies can be accessed through getfinfiz()/getfinnhub().
+        Comparable companies can be accessed through
+        finnhub_peers(), finviz_peers(), polygon_peers().
     start_date: str, optional
         Start date of comparison, by default 1 year ago
     candle_type: str, optional
@@ -118,7 +119,8 @@ def display_volume(
     ----------
     similar : List[str]
         List of similar tickers.
-        Comparable companies can be accessed through getfinfiz()/getfinnhub().
+        Comparable companies can be accessed through
+        finnhub_peers(), finviz_peers(), polygon_peers().
     start_date : str, optional
         Start date of comparison, by default 1 year ago
     export : str, optional
@@ -175,7 +177,8 @@ def display_correlation(
     ----------
     similar : List[str]
         List of similar tickers.
-        Comparable companies can be accessed through getfinfiz()/getfinnhub().
+        Comparable companies can be accessed through
+        finnhub_peers(), finviz_peers(), polygon_peers().
     start_date : str, optional
         Start date of comparison, by default 1 year ago
     candle_type : str, optional

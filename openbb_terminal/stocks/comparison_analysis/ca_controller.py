@@ -256,9 +256,11 @@ class ComparisonAnalysisController(BaseController):
                 else:
                     compare_list = ["Sector", "Industry", "Country"]
 
-                self.similar, self.user = finviz_compare_model.get_similar_companies(
+                self.similar = finviz_compare_model.get_similar_companies(
                     self.ticker, compare_list
                 )
+
+                self.user = "Finviz"
 
                 if self.ticker.upper() in self.similar:
                     self.similar.remove(self.ticker.upper())
@@ -314,9 +316,11 @@ class ComparisonAnalysisController(BaseController):
 
         if ns_parser:
             if self.ticker:
-                self.similar, self.user = polygon_model.get_similar_companies(
+                self.similar = polygon_model.get_similar_companies(
                     self.ticker, ns_parser.us_only
                 )
+
+                self.user = "Polygon"
 
                 if self.ticker.upper() in self.similar:
                     self.similar.remove(self.ticker.upper())
@@ -363,9 +367,9 @@ class ComparisonAnalysisController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if self.ticker:
-                self.similar, self.user = finnhub_model.get_similar_companies(
-                    self.ticker
-                )
+                self.similar = finnhub_model.get_similar_companies(self.ticker)
+
+                self.user = "Finnhub"
 
                 if self.ticker.upper() in self.similar:
                     self.similar.remove(self.ticker.upper())

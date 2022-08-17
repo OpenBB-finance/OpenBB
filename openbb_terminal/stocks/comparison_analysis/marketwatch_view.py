@@ -33,7 +33,8 @@ def display_income_comparison(
     symbols : List[str]
         List of tickers to compare. Enter tickers you want to see as shown below:
         ["TSLA", "AAPL", "NFLX", "BBY"]
-        You can also get a list of comparable peers with finnhub_peers() or finviz_peers().
+        You can also get a list of comparable peers with
+        finnhub_peers(), finviz_peers(), polygon_peers().
     timeframe : str
         What year to look at
     quarter : bool, optional
@@ -87,7 +88,8 @@ def display_balance_comparison(
     symbols : List[str]
         List of tickers to compare. Enter tickers you want to see as shown below:
         ["TSLA", "AAPL", "NFLX", "BBY"]
-        You can also get a list of comparable peers with finnhub_peers() or finviz_peers().
+        You can also get a list of comparable peers with
+        finnhub_peers(), finviz_peers(), polygon_peers().
     timeframe : str
         What year to look at
     quarter : bool, optional
@@ -141,7 +143,8 @@ def display_cashflow_comparison(
     symbols : List[str]
         List of tickers to compare. Enter tickers you want to see as shown below:
         ["TSLA", "AAPL", "NFLX", "BBY"]
-        You can also get a list of comparable peers with finnhub_peers() or finviz_peers().
+        You can also get a list of comparable peers with
+        finnhub_peers(), finviz_peers(), polygon_peers().
     timeframe : str
         What year to look at
     quarter : bool, optional

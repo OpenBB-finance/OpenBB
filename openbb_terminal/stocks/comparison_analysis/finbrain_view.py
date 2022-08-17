@@ -41,7 +41,8 @@ def display_sentiment_compare(
     ----------
     similar : List[str]
         Similar companies to compare income with.
-        Comparable companies can be accessed through getfinfiz()/getfinnhub().
+        Comparable companies can be accessed through
+        finviz_peers(), finnhub_peers() or polygon_peers().
     raw : bool, optional
         Output raw values, by default False
     export : str, optional
@@ -130,7 +131,8 @@ def display_sentiment_correlation(
     ----------
     similar : List[str]
         Similar companies to compare income with.
-        Comparable companies can be accessed through getfinfiz()/getfinnhub().
+        Comparable companies can be accessed through
+        finviz_peers(), finnhub_peers() or polygon_peers().
     raw : bool, optional
         Output raw values, by default False
     export : str, optional

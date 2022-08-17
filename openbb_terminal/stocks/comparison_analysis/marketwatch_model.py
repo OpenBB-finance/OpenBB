@@ -80,7 +80,8 @@ def get_income_comparison(
     ----------
     similar : List[str]
         List of tickers to compare.
-        Comparable companies can be accessed through getfinfiz()/getfinnhub().
+        Comparable companies can be accessed through
+        finnhub_peers(), finviz_peers(), polygon_peers().
     timeframe : str
         Column header to compare
     quarter : bool, optional
@@ -107,7 +108,8 @@ def get_balance_comparison(
     ----------
     similar : List[str]
         List of tickers to compare.
-        Comparable companies can be accessed through getfinfiz()/getfinnhub().
+        Comparable companies can be accessed through
+        finnhub_peers(), finviz_peers(), polygon_peers().
     timeframe : str
         Column header to compare
     quarter : bool, optional
@@ -134,7 +136,8 @@ def get_cashflow_comparison(
     ----------
     similar : List[str]
         List of tickers to compare.
-        Comparable companies can be accessed through getfinfiz()/getfinnhub().
+        Comparable companies can be accessed through
+        finnhub_peers(), finviz_peers(), polygon_peers().
     timeframe : str
         Column header to compare
     quarter : bool, optional
