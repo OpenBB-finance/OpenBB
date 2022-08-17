@@ -50,7 +50,6 @@ def test_price_target_from_analysts_plt(capsys, interval, mocker, start):
     business_insider_view.price_target_from_analysts(
         symbol=ticker,
         start_date=start,
-        interval=interval,
         data=stock,
         limit=None,
         raw=False,

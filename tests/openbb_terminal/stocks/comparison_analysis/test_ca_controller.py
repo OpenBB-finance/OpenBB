@@ -282,7 +282,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 "--timeframe=MOCK_TIMEFRAME",
             ],
             dict(
-                similar=["MOCK_SIMILAR_1", "MOCK_SIMILAR_2"],
+                symbols=["MOCK_SIMILAR_1", "MOCK_SIMILAR_2"],
                 timeframe="MOCK_TIMEFRAME",
                 quarter=True,
             ),
@@ -296,7 +296,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 "--export=csv",
             ],
             dict(
-                similar=["MOCK_SIMILAR_1", "MOCK_SIMILAR_2"],
+                symbols=["MOCK_SIMILAR_1", "MOCK_SIMILAR_2"],
                 timeframe="MOCK_TIMEFRAME",
                 quarter=True,
             ),
@@ -310,7 +310,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 "--export=csv",
             ],
             dict(
-                similar=["MOCK_SIMILAR_1", "MOCK_SIMILAR_2"],
+                symbols=["MOCK_SIMILAR_1", "MOCK_SIMILAR_2"],
                 timeframe="MOCK_TIMEFRAME",
                 quarter=True,
             ),

@@ -405,8 +405,8 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             [],
             dict(
                 symbol="MOCK_TICKER",
-                start_end=datetime(2020, 12, 1),
-                end_end=datetime(2020, 12, 7),
+                start_date=datetime(2020, 12, 1),
+                end_date=datetime(2020, 12, 7),
                 number=100,
                 export="csv",
                 raw=True,
