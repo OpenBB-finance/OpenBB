@@ -237,7 +237,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             ["--limit=2"],
             "reddit_view.display_watchlist",
             [],
-            dict(num=2),
+            dict(limit=2),
         ),
         (
             "call_spac",
@@ -272,8 +272,8 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "reddit_view.display_popular_tickers",
             [],
             dict(
-                n_top=10,
-                posts_to_look_at=5,
+                limit=10,
+                post_limit=5,
                 subreddits="MOCK_SUB",
             ),
         ),
@@ -283,7 +283,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "stocktwits_view.display_bullbear",
             [],
             dict(
-                ticker="MOCK_TICKER",
+                symbol="MOCK_TICKER",
             ),
         ),
         (
@@ -292,7 +292,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "stocktwits_view.display_messages",
             [],
             dict(
-                ticker="MOCK_TICKER",
+                symbol="MOCK_TICKER",
                 limit=2,
             ),
         ),
@@ -319,8 +319,8 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "twitter_view.display_inference",
             [],
             dict(
-                ticker="MOCK_TICKER",
-                num=20,
+                symbol="MOCK_TICKER",
+                limit=20,
             ),
         ),
         (
@@ -329,7 +329,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "twitter_view.display_sentiment",
             [],
             dict(
-                ticker="MOCK_TICKER",
+                symbol="MOCK_TICKER",
                 n_tweets=20,
                 n_days_past=2,
                 compare=True,
@@ -342,8 +342,8 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "google_view.display_mentions",
             [],
             dict(
-                ticker="MOCK_TICKER",
-                start=datetime.strptime("2020-12-01", "%Y-%m-%d"),
+                symbol="MOCK_TICKER",
+                start_date=datetime.strptime("2020-12-01", "%Y-%m-%d"),
                 export="csv",
             ),
         ),
@@ -353,8 +353,8 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "google_view.display_regions",
             [],
             dict(
-                ticker="MOCK_TICKER",
-                num=5,
+                symbol="MOCK_TICKER",
+                limit=5,
                 export="csv",
             ),
         ),
@@ -364,8 +364,8 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "google_view.display_queries",
             [],
             dict(
-                ticker="MOCK_TICKER",
-                num=5,
+                symbol="MOCK_TICKER",
+                limit=5,
                 export="csv",
             ),
         ),
@@ -375,8 +375,8 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "google_view.display_rise",
             [],
             dict(
-                ticker="MOCK_TICKER",
-                num=5,
+                symbol="MOCK_TICKER",
+                limit=5,
                 export="csv",
             ),
         ),
@@ -386,7 +386,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "finbrain_view.display_sentiment_analysis",
             [],
             dict(
-                ticker="MOCK_TICKER",
+                symbol="MOCK_TICKER",
                 raw=True,
                 export="csv",
             ),
@@ -404,9 +404,9 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "sentimentinvestor_view.display_historical",
             [],
             dict(
-                ticker="MOCK_TICKER",
-                start=datetime(2020, 12, 1),
-                end=datetime(2020, 12, 7),
+                symbol="MOCK_TICKER",
+                start_date=datetime(2020, 12, 1),
+                end_date=datetime(2020, 12, 7),
                 number=100,
                 export="csv",
                 raw=True,
@@ -424,7 +424,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "sentimentinvestor_view.display_trending",
             [],
             dict(
-                start=datetime(2020, 12, 1),
+                start_date=datetime(2020, 12, 1),
                 hour=9,
                 export="csv",
                 number=20,
@@ -436,8 +436,8 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "reddit_view.display_popular_tickers",
             [],
             dict(
-                n_top=2,
-                posts_to_look_at=1,
+                limit=2,
+                post_limit=1,
                 subreddits="MOCK_SUB",
             ),
         ),
@@ -447,7 +447,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "reddit_view.display_due_diligence",
             [],
             dict(
-                ticker="MOCK_TICKER",
+                symbol="MOCK_TICKER",
                 limit=1,
                 n_days=2,
                 show_all_flairs=True,

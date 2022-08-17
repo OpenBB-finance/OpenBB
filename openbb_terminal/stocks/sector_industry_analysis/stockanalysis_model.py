@@ -16,7 +16,7 @@ from openbb_terminal.stocks.fundamental_analysis.dcf_model import create_datafra
 
 logger = logging.getLogger(__name__)
 
-sa_keys = {
+SA_KEYS = {
     "BS": {
         "ce": "Cash & Equivalents",
         "sti": "Short-Term Investments",
@@ -84,7 +84,6 @@ sa_keys = {
 def get_stocks_data(
     symbols: list,
     finance_key: str,
-    sa_dict: dict,
     stocks_data: dict,
     period: str,
     currency: str = "USD",
@@ -97,11 +96,8 @@ def get_stocks_data(
     symbols: list
         A list of tickers that will be used to collect data for.
     finance_key: str
-        The finance key used to search within the sa_dict for the correct name of item
+        The finance key used to search within the SA_KEYS for the correct name of item
         on the financial statement
-    sa_dict: dict
-        A dictionary that includes BS, IS and CF, the abbreviations and names of items
-        on the financial statements. I.e: {"BS": {"ce": "Cash & Equivalents"}}
     stocks_data : dict
         A dictionary that is empty on initialisation but filled once data is collected
         for the first time.
@@ -116,10 +112,11 @@ def get_stocks_data(
     dict
         Dictionary of filtered stocks data separated by financial statement
     """
-    del sa_dict
+
     no_data = []
+
     for symbol in tqdm(symbols):
-        for item, description in sa_keys.items():
+        for item, description in SA_KEYS.items():
             if finance_key in description:
                 if item not in stocks_data:
                     stocks_data[item] = {}
@@ -204,21 +201,21 @@ def match_length_dataframes(dataframes: Dict[pd.DataFrame, Any]):
     return dataframes
 
 
-def change_type_dataframes(dataframe) -> pd.DataFrame:
+def change_type_dataframes(data: pd.DataFrame) -> pd.DataFrame:
     """
     Adjusts comma-seperated strings to floats
 
     Parameters
     ----------
-    dataframe : pd.DataFrame
+    data : pd.DataFrame
         DataFrame with comma-seperated strings
 
     Returns
     -------
-    dataframe : pd.DataFrame
+    pd.DataFrame
         Adjusted DataFrame
     """
-    dataframe = dataframe.apply(
+    dataframe = data.apply(
         lambda x: x.astype(str).str.replace(",", "").astype(float), axis=1
     )
 

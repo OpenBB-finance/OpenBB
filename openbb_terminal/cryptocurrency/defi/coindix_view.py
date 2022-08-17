@@ -59,7 +59,7 @@ def display_defi_vaults(
     """
 
     df = coindix_model.get_defi_vaults(
-        chain=chain, protocol=protocol, kind=kind, sortby=sortby, ascending=ascend
+        chain=chain, protocol=protocol, kind=kind, sortby=sortby, ascend=ascend
     )
     if df.empty:
         print(

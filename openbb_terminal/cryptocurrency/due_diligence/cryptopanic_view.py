@@ -53,7 +53,7 @@ def display_news(
         region=region,
         currency=currency,
         source=source,
-        ascending=ascend,
+        ascend=ascend,
     )
 
     if not df.empty:

@@ -113,10 +113,10 @@ def test_display_short_by_exchange(mocker, toggle):
         new=mocker.Mock(return_value=df_get_short_data_by_exchange.copy()),
     )
     nyse_view.display_short_by_exchange(
-        ticker="TSLA",
+        symbol="TSLA",
         raw=toggle,
-        sort="",
-        asc=toggle,
+        sortby="",
+        ascending=toggle,
         mpl=toggle,
         export="",
     )

@@ -14,9 +14,24 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def get_similar_companies(ticker: str) -> Tuple[List[str], str]:
+def get_similar_companies(symbol: str) -> Tuple[List[str], str]:
+    """Get similar companies from Finhub
+
+    Parameters
+    ----------
+    symbol : str
+        Ticker to find comparisons for
+
+    Returns
+    -------
+    List[str]
+        List of similar companies
+    str
+        String containing data source
+    """
+
     response = requests.get(
-        f"https://finnhub.io/api/v1/stock/peers?symbol={ticker}&token={cfg.API_FINNHUB_KEY}"
+        f"https://finnhub.io/api/v1/stock/peers?symbol={symbol}&token={cfg.API_FINNHUB_KEY}"
     )
 
     similar = []

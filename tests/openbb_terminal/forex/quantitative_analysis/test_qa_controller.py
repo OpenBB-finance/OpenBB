@@ -309,11 +309,12 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "call_raw",
             ["--limit=1", "--descend", "--export=csv"],
             "qa_view.display_raw",
-            [QA_CONTROLLER.data[QA_CONTROLLER.target]],
+            [],
             dict(
-                num=1,
-                sort="",
-                des=True,
+                data=QA_CONTROLLER.data[QA_CONTROLLER.target],
+                limit=1,
+                sortby="",
+                descend=True,
                 export="csv",
             ),
         ),
@@ -323,7 +324,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "qa_view.display_summary",
             [],
             dict(
-                df=QA_CONTROLLER.data,
+                data=QA_CONTROLLER.data,
                 export="csv",
             ),
         ),
@@ -334,7 +335,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             [],
             dict(
                 name=QA_CONTROLLER.ticker,
-                df=QA_CONTROLLER.data,
+                data=QA_CONTROLLER.data,
                 target=QA_CONTROLLER.target,
                 bins=1,
             ),
@@ -346,7 +347,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             [],
             dict(
                 name=QA_CONTROLLER.ticker,
-                df=QA_CONTROLLER.data,
+                data=QA_CONTROLLER.data,
                 target=QA_CONTROLLER.target,
                 export="csv",
             ),
@@ -358,7 +359,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             [],
             dict(
                 name=QA_CONTROLLER.ticker,
-                df=QA_CONTROLLER.data,
+                data=QA_CONTROLLER.data,
                 target=QA_CONTROLLER.target,
                 yearly=True,
             ),
@@ -369,8 +370,8 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "rolling_view.display_mean_std",
             [],
             dict(
-                name=QA_CONTROLLER.ticker,
-                df=QA_CONTROLLER.data,
+                symbol=QA_CONTROLLER.ticker,
+                data=QA_CONTROLLER.data,
                 target=QA_CONTROLLER.target,
                 window=1,
                 export="csv",
@@ -383,7 +384,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             [],
             dict(
                 name=QA_CONTROLLER.ticker,
-                df=QA_CONTROLLER.data,
+                data=QA_CONTROLLER.data,
                 target=QA_CONTROLLER.target,
                 multiplicative=True,
                 export="csv",
@@ -395,7 +396,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "qa_view.display_cusum",
             [],
             dict(
-                df=QA_CONTROLLER.data,
+                data=QA_CONTROLLER.data,
                 target=QA_CONTROLLER.target,
                 threshold=1,
                 drift=2,
@@ -408,7 +409,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             [],
             dict(
                 name=QA_CONTROLLER.ticker,
-                df=QA_CONTROLLER.data,
+                data=QA_CONTROLLER.data,
                 target=QA_CONTROLLER.target,
                 lags=1,
             ),
@@ -420,7 +421,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             [],
             dict(
                 name=QA_CONTROLLER.ticker,
-                df=QA_CONTROLLER.data,
+                data=QA_CONTROLLER.data,
                 target=QA_CONTROLLER.target,
                 window=1,
                 export="csv",
@@ -433,7 +434,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             [],
             dict(
                 name=QA_CONTROLLER.ticker,
-                df=QA_CONTROLLER.data,
+                data=QA_CONTROLLER.data,
                 target=QA_CONTROLLER.target,
                 window=1,
                 quantile=0.1,
@@ -447,7 +448,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             [],
             dict(
                 name=QA_CONTROLLER.ticker,
-                df=QA_CONTROLLER.data,
+                data=QA_CONTROLLER.data,
                 target=QA_CONTROLLER.target,
                 window=1,
                 export="csv",
@@ -460,7 +461,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             [],
             dict(
                 name=QA_CONTROLLER.ticker,
-                df=QA_CONTROLLER.data,
+                data=QA_CONTROLLER.data,
                 target=QA_CONTROLLER.target,
                 window=1,
                 export="csv",
@@ -472,7 +473,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "qa_view.display_normality",
             [],
             dict(
-                df=QA_CONTROLLER.data,
+                data=QA_CONTROLLER.data,
                 target=QA_CONTROLLER.target,
                 export="csv",
             ),
@@ -484,7 +485,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             [],
             dict(
                 name=QA_CONTROLLER.ticker,
-                df=QA_CONTROLLER.data,
+                data=QA_CONTROLLER.data,
                 target=QA_CONTROLLER.target,
             ),
         ),
@@ -494,7 +495,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "qa_view.display_unitroot",
             [],
             dict(
-                df=QA_CONTROLLER.data,
+                data=QA_CONTROLLER.data,
                 target=QA_CONTROLLER.target,
                 fuller_reg="ctt",
                 kpss_reg="ct",

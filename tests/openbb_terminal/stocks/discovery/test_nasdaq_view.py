@@ -25,7 +25,7 @@ def test_display_top_retail(mocker, use_tab):
         target=helper_funcs.obbff, attribute="USE_TABULATE_DF", new=use_tab
     )
 
-    nasdaq_view.display_top_retail(n_days=3, export="")
+    nasdaq_view.display_top_retail(limit=3, export="")
 
 
 @pytest.mark.default_cassette("test_display_dividend_calendar")

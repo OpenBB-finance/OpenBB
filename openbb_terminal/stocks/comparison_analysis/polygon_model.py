@@ -14,23 +14,25 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def get_similar_companies(ticker: str, us_only: bool) -> Tuple[List[str], str]:
+def get_similar_companies(symbol: str, us_only: bool = False) -> Tuple[List[str], str]:
     """Get similar companies from Polygon
 
     Parameters
     ----------
-    ticker : str
+    symbol: str
         Ticker to get similar companies of
+    us_only: bool
+        Only stocks from the US stock exchanges
 
     Returns
     -------
-    List[str] :
+    List[str]:
         List of similar tickers
-    str :
+    str:
         String indicating data source
     """
     result = requests.get(
-        f"https://api.polygon.io/v1/meta/symbols/{ticker.upper()}/company?&apiKey={cfg.API_POLYGON_KEY}"
+        f"https://api.polygon.io/v1/meta/symbols/{symbol.upper()}/company?&apiKey={cfg.API_POLYGON_KEY}"
     )
 
     similar = []

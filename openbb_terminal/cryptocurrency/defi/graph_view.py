@@ -39,7 +39,7 @@ def display_uni_tokens(
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = graph_model.get_uni_tokens(skip=skip, sortby=sortby, ascending=ascend)
+    df = graph_model.get_uni_tokens(skip=skip, sortby=sortby, ascend=ascend)
     df_data = df.copy()
 
     df[["totalLiquidity", "tradeVolumeUSD"]] = df[

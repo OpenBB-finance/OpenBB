@@ -15,14 +15,14 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def get_short_interest(ticker: str, nyse: bool) -> pd.DataFrame:
+def get_short_interest(symbol: str, nyse: bool = False) -> pd.DataFrame:
     """Plots the short interest of a stock. This corresponds to the
     number of shares that have been sold short but have not yet been
     covered or closed out. Either NASDAQ or NYSE [Source: Quandl]
 
     Parameters
     ----------
-    ticker : str
+    symbol : str
         ticker to get short interest from
     nyse : bool
         data from NYSE if true, otherwise NASDAQ
@@ -39,13 +39,13 @@ def get_short_interest(ticker: str, nyse: bool) -> pd.DataFrame:
     try:
 
         if nyse:
-            df = quandl.get(f"FINRA/FNYX_{ticker}")
+            df = quandl.get(f"FINRA/FNYX_{symbol}")
         else:
-            df = quandl.get(f"FINRA/FNSQ_{ticker}")
+            df = quandl.get(f"FINRA/FNSQ_{symbol}")
 
     except AuthenticationError:
         console.print("[red]Invalid API Key[/red]\n")
-    # Catch invalid ticker
+    # Catch invalid symbol
     except Exception as e:
         console.print(e)
 

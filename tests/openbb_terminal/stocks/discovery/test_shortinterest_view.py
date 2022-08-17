@@ -17,10 +17,10 @@ def vcr_config():
 @pytest.mark.vcr()
 @pytest.mark.record_stdout
 def test_low_float():
-    shortinterest_view.low_float(num=2, export="")
+    shortinterest_view.low_float(limit=2, export="")
 
 
 @pytest.mark.vcr()
 @pytest.mark.record_stdout
 def test_hot_penny_stocks():
-    shortinterest_view.hot_penny_stocks(num=2, export="")
+    shortinterest_view.hot_penny_stocks(limit=2, export="")

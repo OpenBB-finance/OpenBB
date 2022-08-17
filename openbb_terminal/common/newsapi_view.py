@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 
+from datetime import datetime, timedelta
 import pandas as pd
 
 from openbb_terminal.decorators import check_api_key
@@ -16,9 +17,9 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 @check_api_key(["API_NEWS_TOKEN"])
 def display_news(
-    term: str,
-    s_from: str,
-    num: int = 3,
+    query: str,
+    start_date: str = (datetime.now() - timedelta(days=7)).strftime("%Y-%m-%d"),
+    limit: int = 3,
     show_newest: bool = True,
     sources: str = "",
 ):
@@ -26,18 +27,18 @@ def display_news(
 
     Parameters
     ----------
-    term : str
+    query : str
         term to search on the news articles
-    s_from: str
+    start_date: str
         date to start searching articles from formatted YYYY-MM-DD
-    num : int
+    limit : int
         number of articles to display
     show_newest: bool
         flag to show newest articles first
     sources: str
         sources to exclusively show news from
     """
-    articles = newsapi_model.get_news(term, s_from, show_newest, sources)
+    articles = newsapi_model.get_news(query, start_date, show_newest, sources)
 
     if articles:
         for idx, article in enumerate(articles):
@@ -53,5 +54,5 @@ def display_news(
             )
             print_rich_table(table, title=article["title"])
 
-            if idx >= num - 1:
+            if idx >= limit - 1:
                 break
