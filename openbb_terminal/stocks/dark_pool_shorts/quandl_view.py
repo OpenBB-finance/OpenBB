@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 import logging
 import os
 from typing import List, Optional
+from datetime import timedelta
 
 import matplotlib.ticker
 import pandas as pd
@@ -21,6 +22,7 @@ from openbb_terminal.helper_funcs import (
     is_valid_axes_count,
 )
 from openbb_terminal.stocks.dark_pool_shorts import quandl_model
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -96,7 +98,7 @@ def plot_short_interest(
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_QUANDL"])
-def short_interest(ticker: str, nyse: bool, days: int, raw: bool, export: str):
+def short_interest(ticker: str, nyse: bool, days: int, raw: bool, export: str="", external_axes: Optional[List[plt.Axes]] = None,):
     """Plots the short interest of a stock. This corresponds to the
     number of shares that have been sold short but have not yet been
     covered or closed out. Either NASDAQ or NYSE [Source: Quandl]
@@ -147,6 +149,74 @@ def short_interest(ticker: str, nyse: bool, days: int, raw: bool, export: str):
             show_index=True,
             title="Short Interest of Stock",
         )
+    else:
+        # This plot has 2 axes
+        if not external_axes:
+            _, axes = plt.subplots(
+                2,
+                1,
+                sharex=True,
+                figsize=plot_autoscale(),
+                dpi=PLOT_DPI,
+                gridspec_kw={"height_ratios": [2, 1]},
+            )
+            (ax, ax1) = axes
+        elif is_valid_axes_count(external_axes, 2):
+            (ax, ax1) = external_axes
+        else:
+            return
+
+        ax.bar(
+            df_short_interest.index,
+            df_short_interest["Total Volume"] / 1_000_000,
+            width=timedelta(days=1),
+            color=theme.up_color,
+            label="Total Volume",
+        )
+        ax.bar(
+            df_short_interest.index,
+            df_short_interest["Short Volume"] / 1_000_000,
+            width=timedelta(days=1),
+            color=theme.down_color,
+            label="Short Volume",
+        )
+
+        ax.set_ylabel("Volume [1M]")
+
+        lines, labels = ax.get_legend_handles_labels()
+        ax.legend(lines, labels, loc="upper left")
+
+        ax.set_xlim(
+            df_short_interest.index.values[max(0, len(df_short_interest) - days)],
+            df_short_interest.index.values[len(df_short_interest) - 1],
+        )
+
+        ax.ticklabel_format(style="plain", axis="y")
+        ax.set_title(f"Short Volume Interest with time for {ticker}")
+
+        ax1.plot(
+            df_short_interest.index.values,
+            df_short_interest["% of Volume Shorted"],
+            label="Short Vol. %",
+        )
+
+        ax1.set_xlim(
+            df_short_interest.index.values[max(0, len(df_short_interest) - days)],
+            df_short_interest.index.values[len(df_short_interest) - 1],
+        )
+        ax1.set_ylabel("Short Vol. %")
+
+        lines, labels = ax1.get_legend_handles_labels()
+        ax1.legend(lines, labels, loc="upper left")
+        ax1.set_ylim([0, 100])
+
+        theme.style_primary_axis(ax)
+        theme.style_primary_axis(ax1)
+
+        if not external_axes:
+            theme.visualize_output()
+
+    console.print("")
 
     export_data(
         export,

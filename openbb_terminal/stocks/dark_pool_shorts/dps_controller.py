@@ -443,7 +443,7 @@ class DarkPoolShortsController(StockBaseController):
         parser = argparse.ArgumentParser(
             prog="psi",
             add_help=False,
-            description="Shows price vs short interest volume. [Source: Quandl/Stockgrid]",
+            description="Shows price vs short interest volume (Only volume with Quandl) [Source: Quandl/Stockgrid]",
         )
         parser.add_argument(
             "--nyse",
