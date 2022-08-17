@@ -58,6 +58,8 @@ def print_goodbye():
         "at [cmds]https://openbb.co/survey[/cmds][/bold]\n"
     )
 
+    console.print("Heard about our[param] discord bot[/param] yet? Check it out here https://openbb.co/products/bot \n")
+
     logger.info("END")
 
 
