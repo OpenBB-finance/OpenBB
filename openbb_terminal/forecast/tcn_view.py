@@ -10,7 +10,6 @@ import pandas as pd
 from openbb_terminal.forecast import tcn_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forecast import helpers
-from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 # pylint: disable=too-many-arguments
@@ -104,11 +103,10 @@ def display_tcn_forecast(
 
     data = helpers.clean_data(data, start_date, end_date)
     if not helpers.check_data(data, target_column):
-        console.print(
-            f"[red]Column {target_column} is not in the dataframe."
-            " Change the 'target_column' parameter.[/red]\n"
-        )
         return
+    output_chunk_length = helpers.check_output(
+        output_chunk_length, n_predict, bool(past_covariates)
+    )
     (
         ticker_series,
         historical_fcast,

@@ -766,17 +766,6 @@ def clean_data(
     return data
 
 
-def check_n_days(n_days: int, output_chunk_length: int, past_covariates: bool) -> bool:
-    if not past_covariates:
-        return True
-    if n_days != output_chunk_length:
-        text = " is not equivalent to fcast-horizon="
-        console.print(f"[red]n_days={n_days}{text}{output_chunk_length}[/red]")
-        console.print("[red]Please set both to the same value to continue.[/red]")
-        return False
-    return True
-
-
 def clean_covariates(parser, dataset: pd.DataFrame) -> Optional[str]:
     forecast_column: str = parser.target_column
     if parser.all_past_covariates:
@@ -801,4 +790,24 @@ def clean_covariates(parser, dataset: pd.DataFrame) -> Optional[str]:
 
 
 def check_data(data: pd.DataFrame, column: str) -> bool:
-    return column in data.columns
+    if column not in data.columns:
+        console.print(
+            f"[red]Column {column} is not in the dataframe."
+            " Change the 'target_column' parameter.[/red]\n"
+        )
+        return False
+    return True
+
+
+def check_output(
+    output_chunk_length: int, n_predict: int, past_covariates: bool
+) -> int:
+    if past_covariates:
+        if output_chunk_length != n_predict:
+            console.print(
+                "[red]Warning: when using past covariates n_predict must equal"
+                f" output_chunk_length. We have changed your output_chunk_length to {n_predict}"
+                " to match your n_predict"
+            )
+        return n_predict
+    return output_chunk_length

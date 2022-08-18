@@ -1847,13 +1847,6 @@ class ForecastController(BaseController):
             if not helpers.check_parser_input(ns_parser, self.datasets):
                 return
 
-            if not helpers.check_n_days(
-                ns_parser.n_days,
-                ns_parser.output_chunk_length,
-                ns_parser.past_covariates,
-            ):
-                return
-
             covariates = helpers.clean_covariates(
                 ns_parser, self.datasets[ns_parser.target_dataset]
             )
@@ -1958,13 +1951,6 @@ class ForecastController(BaseController):
             if not helpers.check_parser_input(ns_parser, self.datasets):
                 return
 
-            if not helpers.check_n_days(
-                ns_parser.n_days,
-                ns_parser.output_chunk_length,
-                ns_parser.past_covariates,
-            ):
-                return
-
             covariates = helpers.clean_covariates(
                 ns_parser, self.datasets[ns_parser.target_dataset]
             )
@@ -2037,13 +2023,6 @@ class ForecastController(BaseController):
             if not helpers.check_parser_input(ns_parser, self.datasets):
                 return
 
-            if not helpers.check_n_days(
-                ns_parser.n_days,
-                ns_parser.output_chunk_length,
-                ns_parser.past_covariates,
-            ):
-                return
-
             covariates = helpers.clean_covariates(
                 ns_parser, self.datasets[ns_parser.target_dataset]
             )
@@ -2102,13 +2081,6 @@ class ForecastController(BaseController):
 
         if ns_parser:
             if not helpers.check_parser_input(ns_parser, self.datasets):
-                return
-
-            if not helpers.check_n_days(
-                ns_parser.n_days,
-                ns_parser.output_chunk_length,
-                ns_parser.past_covariates,
-            ):
                 return
 
             covariates = helpers.clean_covariates(
@@ -2187,13 +2159,6 @@ class ForecastController(BaseController):
 
         if ns_parser:
             if not helpers.check_parser_input(ns_parser, self.datasets):
-                return
-
-            if not helpers.check_n_days(
-                ns_parser.n_days,
-                ns_parser.output_chunk_length,
-                ns_parser.past_covariates,
-            ):
                 return
 
             covariates = helpers.clean_covariates(
@@ -2318,13 +2283,6 @@ class ForecastController(BaseController):
             if not helpers.check_parser_input(ns_parser, self.datasets):
                 return
 
-            if not helpers.check_n_days(
-                ns_parser.n_days,
-                ns_parser.output_chunk_length,
-                ns_parser.past_covariates,
-            ):
-                return
-
             covariates = helpers.clean_covariates(
                 ns_parser, self.datasets[ns_parser.target_dataset]
             )
@@ -2436,13 +2394,6 @@ class ForecastController(BaseController):
 
         if ns_parser:
             if not helpers.check_parser_input(ns_parser, self.datasets):
-                return
-
-            if not helpers.check_n_days(
-                ns_parser.n_days,
-                ns_parser.output_chunk_length,
-                ns_parser.past_covariates,
-            ):
                 return
 
             covariates = helpers.clean_covariates(
