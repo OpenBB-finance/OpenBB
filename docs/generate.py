@@ -63,13 +63,25 @@ def all_functions() -> List[Tuple[str, str, Callable[..., Any]]]:
             full_path = item_path.split(".")
             module_path = ".".join(full_path[:-1])
             module = importlib.import_module(module_path)
-            function = getattr(module, full_path[-1])
-            func_list.append((key, sub_key, function))
+            target_function = getattr(module, full_path[-1])
+            func_list.append((key, sub_key, target_function))
     return func_list
+
+
+def generate_documentation(
+    base: str, ending: str, function_type: str, func: Callable[..., Any]
+):
+    for end in ending.split("."):
+        base += f"/{end}"
+        if not os.path.isdir(base):
+            os.mkdir(base)
+    with open(f"{base}/_index.md", "w") as f:
+        f.write(f"# {ending} {signature(func)}\n\n")
+        f.write(str(func.__doc__))
 
 
 if __name__ == "__main__":
     folder_path = os.path.realpath("./website/content/api")
-    print(folder_path)
     funcs = all_functions()
-    func = funcs[0]
+    path, func_type, function = funcs[0]
+    generate_documentation(folder_path, path, func_type, function)
