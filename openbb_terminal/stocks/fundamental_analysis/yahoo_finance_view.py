@@ -186,7 +186,7 @@ def display_calendar_earnings(symbol: str, export: str = ""):
     export: str
         Format to export data
     """
-    df_calendar = yahoo_finance_model.get_calendar_earnings(symbol).T
+    df_calendar = yahoo_finance_model.get_calendar_earnings(symbol)
     if df_calendar.empty:
         console.print("No calendar events found.\n")
         return
@@ -461,7 +461,7 @@ def display_fundamentals(
         else:
             df_rounded = fundamentals_plot_data
             denomination = ""
-
+        
         if rows_plot == 1:
             fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
             df_rounded[plot[0].replace("_", " ")].plot()

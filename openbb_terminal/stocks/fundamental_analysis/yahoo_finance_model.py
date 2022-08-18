@@ -195,7 +195,7 @@ def get_calendar_earnings(symbol: str) -> pd.DataFrame:
         lambda x: lambda_long_number_format(x)
     )
 
-    return df_calendar
+    return df_calendar.T
 
 
 @log_start_end(log=logger)
