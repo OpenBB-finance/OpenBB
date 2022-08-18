@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def print_options_data(symbol: str, export: str = ""):
+def print_options_data(symbol: str = "PM", export: str = ""):
     """Scrapes Barchart.com for the options information
 
     Parameters
