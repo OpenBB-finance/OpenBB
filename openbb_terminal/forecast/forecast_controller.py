@@ -2527,8 +2527,8 @@ class ForecastController(BaseController):
             data = self.datasets[ns_parser.target_dataset]
             if ns_parser:
                 knn_view.display_k_nearest_neighbors(
-                    ticker=ns_parser.target_dataset,
                     data=data,
+                    dataset_name=ns_parser.target_dataset,
                     target_column=ns_parser.target_column,
                     n_neighbors=ns_parser.n_neighbors,
                     n_input_days=ns_parser.input_chunk_length,
