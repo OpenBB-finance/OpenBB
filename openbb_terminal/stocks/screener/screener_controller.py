@@ -2,7 +2,6 @@
 __docformat__ = "numpy"
 
 import argparse
-import configparser
 import datetime
 import logging
 import os
@@ -28,11 +27,10 @@ from openbb_terminal.stocks.screener import (
     finviz_model,
     finviz_view,
     yahoofinance_view,
+    screener_view,
 )
 
 logger = logging.getLogger(__name__)
-
-presets_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
 
 # pylint: disable=E1121
 
@@ -59,7 +57,7 @@ class ScreenerController(BaseController):
 
     preset_choices = [
         preset.split(".")[0]
-        for preset in os.listdir(presets_path)
+        for preset in os.listdir(screener_view.presets_path)
         if preset[-4:] == ".ini"
     ]
 
@@ -162,44 +160,8 @@ class ScreenerController(BaseController):
             other_args.insert(0, "-p")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            if ns_parser.preset:
-                preset_filter = configparser.RawConfigParser()
-                preset_filter.optionxform = str  # type: ignore
-                preset_filter.read(presets_path + ns_parser.preset + ".ini")
-
-                filters_headers = ["General", "Descriptive", "Fundamental", "Technical"]
-
-                console.print("")
-                for filter_header in filters_headers:
-                    console.print(f" - {filter_header} -")
-                    d_filters = {**preset_filter[filter_header]}
-                    d_filters = {k: v for k, v in d_filters.items() if v}
-                    if d_filters:
-                        max_len = len(max(d_filters, key=len))
-                        for key, value in d_filters.items():
-                            console.print(f"{key}{(max_len-len(key))*' '}: {value}")
-                    console.print("")
-
-            else:
-                console.print("\nCustom Presets:")
-                for preset in self.preset_choices:
-                    with open(
-                        presets_path + preset + ".ini",
-                        encoding="utf8",
-                    ) as f:
-                        description = ""
-                        for line in f:
-                            if line.strip() == "[General]":
-                                break
-                            description += line.strip()
-                    console.print(
-                        f"   {preset}{(50-len(preset)) * ' '}{description.split('Description: ')[1].replace('#', '')}"
-                    )
-
-                console.print("\nDefault Presets:")
-                for signame, sigdesc in finviz_model.d_signals_desc.items():
-                    console.print(f"   {signame}{(50-len(signame)) * ' '}{sigdesc}")
-                console.print("")
+            screener_view.display_presets(ns_parser.preset)
+            console.print("")
 
     @log_start_end(log=logger)
     def call_set(self, other_args: List[str]):
@@ -256,7 +218,9 @@ class ScreenerController(BaseController):
             "-s",
             "--start",
             type=valid_date,
-            default=datetime.datetime.now() - datetime.timedelta(days=6 * 30),
+            default=(
+                datetime.datetime.now() - datetime.timedelta(days=6 * 30)
+            ).strftime("%Y-%m-%d"),
             dest="start",
             help="The starting date (format YYYY-MM-DD) of the historical price to plot",
         )
@@ -346,7 +310,7 @@ class ScreenerController(BaseController):
                         data_type="overview",
                         limit=ns_parser.limit,
                         ascend=ns_parser.ascend,
-                        sort=ns_parser.sort,
+                        sortby=ns_parser.sort,
                         export=ns_parser.export,
                     )
 
@@ -357,7 +321,7 @@ class ScreenerController(BaseController):
                     data_type="overview",
                     limit=ns_parser.limit,
                     ascend=ns_parser.ascend,
-                    sort=ns_parser.sort,
+                    sortby=ns_parser.sort,
                     export=ns_parser.export,
                 )
 
@@ -423,7 +387,7 @@ class ScreenerController(BaseController):
                         data_type="valuation",
                         limit=ns_parser.limit,
                         ascend=ns_parser.ascend,
-                        sort=ns_parser.sort,
+                        sortby=ns_parser.sort,
                         export=ns_parser.export,
                     )
 
@@ -434,7 +398,7 @@ class ScreenerController(BaseController):
                     data_type="valuation",
                     limit=ns_parser.limit,
                     ascend=ns_parser.ascend,
-                    sort=ns_parser.sort,
+                    sortby=ns_parser.sort,
                     export=ns_parser.export,
                 )
 
@@ -501,7 +465,7 @@ class ScreenerController(BaseController):
                         data_type="financial",
                         limit=ns_parser.limit,
                         ascend=ns_parser.ascend,
-                        sort=ns_parser.sort,
+                        sortby=ns_parser.sort,
                         export=ns_parser.export,
                     )
 
@@ -512,7 +476,7 @@ class ScreenerController(BaseController):
                     data_type="financial",
                     limit=ns_parser.limit,
                     ascend=ns_parser.ascend,
-                    sort=ns_parser.sort,
+                    sortby=ns_parser.sort,
                     export=ns_parser.export,
                 )
 
@@ -579,7 +543,7 @@ class ScreenerController(BaseController):
                         data_type="ownership",
                         limit=ns_parser.limit,
                         ascend=ns_parser.ascend,
-                        sort=ns_parser.sort,
+                        sortby=ns_parser.sort,
                         export=ns_parser.export,
                     )
 
@@ -590,7 +554,7 @@ class ScreenerController(BaseController):
                     data_type="ownership",
                     limit=ns_parser.limit,
                     ascend=ns_parser.ascend,
-                    sort=ns_parser.sort,
+                    sortby=ns_parser.sort,
                     export=ns_parser.export,
                 )
 
@@ -657,7 +621,7 @@ class ScreenerController(BaseController):
                         data_type="performance",
                         limit=ns_parser.limit,
                         ascend=ns_parser.ascend,
-                        sort=ns_parser.sort,
+                        sortby=ns_parser.sort,
                         export=ns_parser.export,
                     )
 
@@ -668,7 +632,7 @@ class ScreenerController(BaseController):
                     data_type="performance",
                     limit=ns_parser.limit,
                     ascend=ns_parser.ascend,
-                    sort=ns_parser.sort,
+                    sortby=ns_parser.sort,
                     export=ns_parser.export,
                 )
 
@@ -735,7 +699,7 @@ class ScreenerController(BaseController):
                         data_type="technical",
                         limit=ns_parser.limit,
                         ascend=ns_parser.ascend,
-                        sort=ns_parser.sort,
+                        sortby=ns_parser.sort,
                         export=ns_parser.export,
                     )
 
@@ -746,7 +710,7 @@ class ScreenerController(BaseController):
                     data_type="technical",
                     limit=ns_parser.limit,
                     ascend=ns_parser.ascend,
-                    sort=ns_parser.sort,
+                    sortby=ns_parser.sort,
                     export=ns_parser.export,
                 )
 

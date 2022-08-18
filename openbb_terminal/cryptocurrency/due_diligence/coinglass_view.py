@@ -63,7 +63,7 @@ def display_open_interest(symbol: str, interval: int = 0, export: str = "") -> N
     symbol : str
         Crypto symbol to search open interest (e.g., BTC)
     interval : int
-        Interval frequency (possible values are: 0 for ALL, 2 for 1H, 1 for 4H, 4 for 12H), by default 0
+        Frequency (possible values are: 0 for ALL, 2 for 1H, 1 for 4H, 4 for 12H), by default 0
     export : str
         Export dataframe data to csv,json,xlsx file"""
     df = get_open_interest_per_exchange(symbol, interval)
@@ -89,9 +89,9 @@ def display_open_interest(symbol: str, interval: int = 0, export: str = "") -> N
 @log_start_end(log=logger)
 def plot_data(
     df: pd.DataFrame,
-    symbol: str,
-    title: str,
-    ylabel: str,
+    symbol: str = "",
+    title: str = "",
+    ylabel: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
 
@@ -119,12 +119,15 @@ def plot_data(
         ticker.FuncFormatter(lambda x, _: lambda_long_number_format(x))
     )
     ax1.legend(df_without_price.columns, fontsize="x-small", ncol=2)
-    ax1.set_title(title)
-    ax1.set_ylabel(ylabel)
+    if title:
+        ax1.set_title(title)
+    if ylabel:
+        ax1.set_ylabel(ylabel)
 
     ax2.plot(df_price.index, df_price)
-    ax2.legend([f"{symbol} price"])
-    ax2.set_ylabel(f"{symbol} Price [$]")
+    if symbol:
+        ax2.legend([f"{symbol} price"])
+        ax2.set_ylabel(f"{symbol} Price [$]")
     ax2.set_xlim([df_price.index[0], df_price.index[-1]])
     ax2.set_ylim(bottom=0.0)
 

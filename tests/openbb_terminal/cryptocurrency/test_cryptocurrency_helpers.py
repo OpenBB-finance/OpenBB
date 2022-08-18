@@ -59,7 +59,7 @@ def test_create_closet_match_df(recorder):
     ],
 )
 def test_load_none(coin, vs):
-    df = load(symbol_search=coin, vs=vs)
+    df = load(symbol=coin, vs=vs)
     assert df is not None
 
 

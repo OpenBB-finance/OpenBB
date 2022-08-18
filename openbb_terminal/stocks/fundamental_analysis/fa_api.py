@@ -25,7 +25,6 @@ from .av_view import display_cash_flow as cash
 from .av_view import display_earnings as earnings
 from .av_view import display_fraud as fraud
 from .dcf_view import CreateExcelFA as dcf
-from .market_watch_view import display_sean_seah_warnings as warnings
 
 # Models
 models = _models(os.path.abspath(os.path.dirname(__file__)))

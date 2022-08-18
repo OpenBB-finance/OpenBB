@@ -33,7 +33,7 @@ def test_option_expirations_no_dates(mocker):
         return_value=(),
     )
 
-    yfinance_model.option_expirations(ticker="PM")
+    yfinance_model.option_expirations(symbol="PM")
 
 
 @pytest.mark.vcr
@@ -48,7 +48,7 @@ def test_get_full_option_chain(mocker, recorder):
     mocker.patch("yfinance.download", side_effect=mock_yf_download)
 
     result_df = yfinance_model.get_full_option_chain(
-        ticker="AAPL",
+        symbol="AAPL",
         expiration="2022-07-29",
     )
 
@@ -67,8 +67,8 @@ def test_get_option_chain(mocker, recorder):
     mocker.patch("yfinance.download", side_effect=mock_yf_download)
 
     result_tuple = yfinance_model.get_option_chain(
-        ticker="PM",
-        expiration="2022-01-07",
+        symbol="PM",
+        expiry="2022-01-07",
     )
     result_tuple = (result_tuple.calls, result_tuple.puts)
 
@@ -103,6 +103,6 @@ def test_call_func(func, mocker, recorder):
         return_value=1,
     )
 
-    result = getattr(yfinance_model, func)(ticker="PM")
+    result = getattr(yfinance_model, func)(symbol="PM")
 
     recorder.capture(result)

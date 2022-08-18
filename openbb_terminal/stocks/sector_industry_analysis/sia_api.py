@@ -6,9 +6,9 @@ from openbb_terminal.helper_classes import ModelsNamespace as _models
 # pylint: disable=unused-import
 
 # Menu commands
-from .financedatabase_model import get_industries as industry
-from .financedatabase_model import get_sectors as sector
-from .financedatabase_model import get_countries as country
+from .financedatabase_model import get_industries as industries
+from .financedatabase_model import get_sectors as sectors
+from .financedatabase_model import get_countries as countries
 from .financedatabase_view import display_bars_financials as metric
 from .financedatabase_view import display_companies_per_sector_in_country as cps
 from .financedatabase_view import display_companies_per_industry_in_country as cpic

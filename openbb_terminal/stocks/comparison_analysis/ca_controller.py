@@ -30,7 +30,6 @@ from openbb_terminal.stocks.comparison_analysis import (
     finviz_compare_view,
     marketwatch_view,
     polygon_model,
-    yahoo_finance_model,
     yahoo_finance_view,
 )
 
@@ -204,11 +203,11 @@ class ComparisonAnalysisController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if self.ticker:
-                self.similar = yahoo_finance_model.get_sp500_comps_tsne(
+                self.similar = yahoo_finance_view.display_sp500_comps_tsne(
                     self.ticker,
                     lr=ns_parser.lr,
                     no_plot=ns_parser.no_plot,
-                    num_tickers=ns_parser.limit,
+                    limit=ns_parser.limit,
                 )
 
                 self.similar = [self.ticker] + self.similar
@@ -218,7 +217,8 @@ class ComparisonAnalysisController(BaseController):
 
             else:
                 console.print(
-                    "You need to 'set' a ticker to get similar companies from first!"
+                    "You need to 'set' a ticker to get similar companies from first! This is "
+                    "for example done by running 'ticker gme'"
                 )
 
     @log_start_end(log=logger)
@@ -256,9 +256,11 @@ class ComparisonAnalysisController(BaseController):
                 else:
                     compare_list = ["Sector", "Industry", "Country"]
 
-                self.similar, self.user = finviz_compare_model.get_similar_companies(
+                self.similar = finviz_compare_model.get_similar_companies(
                     self.ticker, compare_list
                 )
+
+                self.user = "Finviz"
 
                 if self.ticker.upper() in self.similar:
                     self.similar.remove(self.ticker.upper())
@@ -314,9 +316,11 @@ class ComparisonAnalysisController(BaseController):
 
         if ns_parser:
             if self.ticker:
-                self.similar, self.user = polygon_model.get_similar_companies(
+                self.similar = polygon_model.get_similar_companies(
                     self.ticker, ns_parser.us_only
                 )
+
+                self.user = "Polygon"
 
                 if self.ticker.upper() in self.similar:
                     self.similar.remove(self.ticker.upper())
@@ -363,9 +367,9 @@ class ComparisonAnalysisController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if self.ticker:
-                self.similar, self.user = finnhub_model.get_similar_companies(
-                    self.ticker
-                )
+                self.similar = finnhub_model.get_similar_companies(self.ticker)
+
+                self.user = "Finnhub"
 
                 if self.ticker.upper() in self.similar:
                     self.similar.remove(self.ticker.upper())
@@ -531,8 +535,8 @@ class ComparisonAnalysisController(BaseController):
         if ns_parser:
             if self.similar and len(self.similar) > 1:
                 yahoo_finance_view.display_historical(
-                    similar_tickers=self.similar,
-                    start=ns_parser.start.strftime("%Y-%m-%d"),
+                    similar=self.similar,
+                    start_date=ns_parser.start.strftime("%Y-%m-%d"),
                     candle_type=ns_parser.type_candle,
                     normalize=ns_parser.normalize,
                     export=ns_parser.export,
@@ -585,8 +589,8 @@ class ComparisonAnalysisController(BaseController):
         if ns_parser:
             if self.similar and len(self.similar) > 1:
                 yahoo_finance_view.display_correlation(
-                    similar_tickers=self.similar,
-                    start=ns_parser.start.strftime("%Y-%m-%d"),
+                    similar=self.similar,
+                    start_date=ns_parser.start.strftime("%Y-%m-%d"),
                     candle_type=ns_parser.type_candle,
                     export=ns_parser.export,
                     display_full_matrix=ns_parser.display_full_matrix,
@@ -630,7 +634,7 @@ class ComparisonAnalysisController(BaseController):
         )
         if ns_parser:
             marketwatch_view.display_income_comparison(
-                similar=self.similar,
+                symbols=self.similar,
                 timeframe=ns_parser.s_timeframe,
                 quarter=ns_parser.b_quarter,
             )
@@ -661,8 +665,8 @@ class ComparisonAnalysisController(BaseController):
         if ns_parser:
             if self.similar and len(self.similar) > 1:
                 yahoo_finance_view.display_volume(
-                    similar_tickers=self.similar,
-                    start=ns_parser.start.strftime("%Y-%m-%d"),
+                    similar=self.similar,
+                    start_date=ns_parser.start.strftime("%Y-%m-%d"),
                     export=ns_parser.export,
                 )
 
@@ -702,7 +706,7 @@ class ComparisonAnalysisController(BaseController):
         )
         if ns_parser:
             marketwatch_view.display_balance_comparison(
-                similar=self.similar,
+                symbols=self.similar,
                 timeframe=ns_parser.s_timeframe,
                 quarter=ns_parser.b_quarter,
             )
@@ -740,7 +744,7 @@ class ComparisonAnalysisController(BaseController):
         )
         if ns_parser:
             marketwatch_view.display_cashflow_comparison(
-                similar=self.similar,
+                symbols=self.similar,
                 timeframe=ns_parser.s_timeframe,
                 quarter=ns_parser.b_quarter,
             )

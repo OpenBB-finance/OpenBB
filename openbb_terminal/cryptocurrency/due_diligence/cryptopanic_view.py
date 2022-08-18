@@ -4,7 +4,6 @@ __docformat__ = "numpy"
 import logging
 import os
 from typing import Optional
-import pandas as pd
 
 from openbb_terminal.cryptocurrency.overview import cryptopanic_model
 from openbb_terminal.decorators import log_start_end
@@ -23,8 +22,8 @@ def display_news(
     filter_: Optional[str] = None,
     source: str = "cp",
     currency: Optional[str] = None,
-    top: int = 25,
-    descend: bool = False,
+    limit: int = 25,
+    ascend: bool = True,
     export: str = "",
 ) -> None:
     """Display recent posts from CryptoPanic news aggregator platform.
@@ -32,7 +31,7 @@ def display_news(
 
     Parameters
     ----------
-    top: int
+    limit: int
         number of news to display
     post_kind: str
         Filter by category of news. Available values: news or media.
@@ -41,30 +40,29 @@ def display_news(
     region: str
         Filter news by regions. Available regions are: en (English), de (Deutsch), nl (Dutch),
         es (Español), fr (Français), it (Italiano), pt (Português), ru (Русский)
-    descend: bool
-        Sort in descending order.
+    ascend: bool
+        Sort in ascending order.
     export : str
         Export dataframe data to csv,json,xlsx file
     """
 
     df = cryptopanic_model.get_news(
-        limit=top,
+        limit=limit,
         post_kind=post_kind,
         filter_=filter_,
         region=region,
         currency=currency,
         source=source,
+        ascend=ascend,
     )
 
     if not df.empty:
-        df = df.sort_values(by="published_at", ascending=descend)
-        df["published_at"] = pd.to_datetime(df["published_at"]).dt.date
         df.drop(["negative_votes", "positive_votes", "domain"], axis=1, inplace=True)
 
         df.columns = prettify_column_names(df.columns)
 
         print_rich_table(
-            df.head(top),
+            df.head(limit),
             headers=list(df.columns),
             show_index=False,
             title="Most Recent News",

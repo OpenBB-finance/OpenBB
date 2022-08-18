@@ -264,7 +264,7 @@ CRYPTOS = [
 
 
 @log_start_end(log=logger)
-def get_rates(rate_type: str) -> pd.DataFrame:
+def get_rates(rate_type: str = "borrow") -> pd.DataFrame:
     """Returns crypto {borrow,supply} interest rates for cryptocurrencies across several platforms
     [Source: https://loanscan.io/]
 

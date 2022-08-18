@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_nft_today_drops(num: int, export: str):
+def display_nft_today_drops(num: int = 5, export: str = ""):
     """Display NFT today drops. [Source: nftcalendar.io]
 
     Parameters
@@ -43,7 +43,7 @@ def display_nft_today_drops(num: int, export: str):
 
 
 @log_start_end(log=logger)
-def display_nft_upcoming_drops(num: int, export: str):
+def display_nft_upcoming_drops(num: int = 5, export: str = ""):
     """Display NFT upcoming drops. [Source: nftcalendar.io]
 
     Parameters
@@ -73,7 +73,7 @@ def display_nft_upcoming_drops(num: int, export: str):
 
 
 @log_start_end(log=logger)
-def display_nft_ongoing_drops(num: int, export: str):
+def display_nft_ongoing_drops(num: int = 5, export: str = ""):
     """Display NFT ongoing drops. [Source: nftcalendar.io]
 
     Parameters
@@ -103,7 +103,7 @@ def display_nft_ongoing_drops(num: int, export: str):
 
 
 @log_start_end(log=logger)
-def display_nft_newest_drops(num: int, export: str):
+def display_nft_newest_drops(num: int = 5, export: str = ""):
     """Display NFT newest drops. [Source: nftcalendar.io]
 
     Parameters

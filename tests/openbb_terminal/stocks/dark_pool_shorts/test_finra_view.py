@@ -17,7 +17,7 @@ def test_plot_dark_pools(mocker):
     mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
 
     finra_view.darkpool_ats_otc(
-        ticker="RIVN",
+        symbol="RIVN",
         export="",
     )
 
@@ -39,7 +39,7 @@ def test_darkpool_otc(mocker):
 
     finra_view.darkpool_otc(
         num=2,
-        promising=2,
+        limit=2,
         tier="T1",
         export="",
     )
