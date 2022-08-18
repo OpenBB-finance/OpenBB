@@ -237,7 +237,7 @@ class PredictionTechniquesController(CryptoBaseController):
                 trend=ns_parser.trend,
                 seasonal=ns_parser.seasonal,
                 seasonal_periods=ns_parser.seasonal_periods,
-                s_end_date=ns_parser.s_end_date,
+                end_date=ns_parser.s_end_date,
                 export=ns_parser.export,
                 time_res=self.resolution,
             )

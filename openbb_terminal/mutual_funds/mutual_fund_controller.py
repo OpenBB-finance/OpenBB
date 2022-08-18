@@ -319,8 +319,8 @@ class FundController(BaseController):
                 self.fund_symbol,
                 self.country,
             ) = investpy_model.get_fund_historical(
-                fund=parsed_fund,
-                name=ns_parser.name,
+                name=parsed_fund,
+                by_name=ns_parser.name,
                 country=self.country,
                 start_date=ns_parser.start,
                 end_date=ns_parser.end,
