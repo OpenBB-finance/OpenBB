@@ -11,6 +11,4 @@ from .forex import forex_api as forex
 from .mutual_funds import mutual_fund_api as funds
 from .portfolio import portfolio_api as portfolio
 from .reports import widget_helpers as widgets
-
-
 from .config_terminal import theme
