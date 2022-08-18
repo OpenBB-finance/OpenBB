@@ -99,7 +99,7 @@ def get_covid_ov(
     data = pd.concat([cases, deaths], axis=1)
     data.columns = ["Cases", "Deaths"]
     data.index = [x.strftime("%Y-%m-%d") for x in data.index]
-    return data.head(limit)
+    return data.tail(limit)
 
 
 @log_start_end(log=logger)
@@ -136,7 +136,7 @@ def get_covid_stat(
 
 @log_start_end(log=logger)
 def get_case_slopes(
-    days_back: 30,
+    days_back: int = 30,
     limit: int = 50,
     threshold: int = 10000,
     ascend: bool = False,
@@ -179,5 +179,7 @@ def get_case_slopes(
     )
     hist_slope = pd.DataFrame(hist["Slope"])
     if ascend:
-        hist_slope.sort_values(by="Slope", ascending=ascend)
+        hist_slope.sort_values(by="Slope", ascending=ascend, inplace=True)
+    else:
+        hist_slope.sort_values(by="Slope", ascending=ascend, inplace=True)
     return hist_slope.head(limit)

@@ -175,7 +175,7 @@ def display_covid_stat(
     raw: bool = False,
     limit: int = 10,
     export: str = "",
-    plot: bool = "",
+    plot: bool = True,
 ) -> None:
     """Show historical cases and deaths by country
 
