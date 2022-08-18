@@ -81,8 +81,10 @@ def get_fails_to_deliver(
         Fail to deliver data
     """
     ftds_data = pd.DataFrame()
-    start = datetime.strptime(start_date, "%Y-%m-%d")
-    end = datetime.strptime(end_date, "%Y-%m-%d")
+
+    # Sorry whoever reads this a few years from now
+    start = start_date
+    end = end_date
 
     # Filter by number of last FTD
     if limit > 0:

@@ -1533,7 +1533,7 @@ def show_quick_performance(stock_df: pd.DataFrame, ticker: str):
             str(round(np.mean(volumes[-12:-2]) / 1_000_000, 2)) + " M"
         )
 
-    df["Last Price"] = str(round(closes[-1],2))
+    df["Last Price"] = str(round(closes[-1], 2))
     print_rich_table(
         df, show_index=False, headers=df.columns, title=f"{ticker.upper()} Performance"
     )
