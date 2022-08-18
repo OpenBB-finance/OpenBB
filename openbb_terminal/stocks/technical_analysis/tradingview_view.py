@@ -48,6 +48,6 @@ def print_recommendation(
     print_rich_table(
         recom,
         headers=list(recom.columns),
-        title="Ticker Recomendation",
+        title="Ticker Recommendation",
         show_index=True,
     )

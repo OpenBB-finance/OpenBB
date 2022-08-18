@@ -570,7 +570,7 @@ def get_wsb_community(
 def get_due_dilligence(
     ticker: str, limit: int = 5, n_days: int = 3, show_all_flairs: bool = False
 ) -> List[praw.models.reddit.submission.Submission]:
-    """Gets due dilligence posts from list of subreddits [Source: reddit]
+    """Gets due diligence posts from list of subreddits [Source: reddit]
 
     Parameters
     ----------
