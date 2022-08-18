@@ -496,9 +496,7 @@ def get_spac(
 
 
 @log_start_end(log=logger)
-def get_wsb_community(
-    limit: int = 10, new: bool = False
-) -> List[praw.models.reddit.submission.Submission]:
+def get_wsb_community(limit: int = 10, new: bool = False) -> pd.DataFrame:
     """Get wsb posts [Source: reddit]
 
     Parameters
@@ -510,8 +508,8 @@ def get_wsb_community(
 
     Returns
     -------
-    List[praw.models.reddit.submission.Submission]
-        List of reddit submissions
+    pd.DataFrame
+        Dataframe of reddit submissions
     """
     # See https://github.com/praw-dev/praw/issues/1016 regarding praw arguments
     praw_api = praw.Reddit(
@@ -537,16 +535,25 @@ def get_wsb_community(
         praw_api.user.me()
     except (Exception, ResponseException):
         console.print("[red]Wrong Reddit API keys[/red]\n")
-        return []
+        return pd.DataFrame()
 
     if new:
         submissions = praw_api.subreddit("wallstreetbets").new(limit=limit)
     else:
         submissions = praw_api.subreddit("wallstreetbets").hot(limit=limit)
 
-    subs = []
-
-    console.print(submissions)
+    columns = [
+        "Date",
+        "Subreddit",
+        "Flair",
+        "Title",
+        "Score",
+        "# Comments",
+        "Upvote %",
+        "Awards",
+        "Link",
+    ]
+    subs = pd.DataFrame(columns=columns)
 
     try:
         for submission in submissions:
@@ -555,7 +562,29 @@ def get_wsb_community(
             # that there is a description and it's not just an image, that the flair is
             # meaningful, and that we aren't re-considering same author's watchlist
             if not submission.removed_by_category:
-                subs.append(submission)
+                s_datetime = datetime.utcfromtimestamp(submission.created_utc).strftime(
+                    "%Y-%m-%d %H:%M:%S"
+                )
+                s_link = f"https://old.reddit.com{submission.permalink}"
+                s_all_awards = "".join(
+                    f"{award['count']} {award['name']}\n"
+                    for award in submission.all_awardings
+                )
+
+                s_all_awards = s_all_awards[:-2]
+
+                data = [
+                    s_datetime,
+                    submission.subreddit,
+                    submission.link_flair_text,
+                    submission.title,
+                    submission.score,
+                    submission.num_comments,
+                    f"{round(100 * submission.upvote_ratio)}%",
+                    s_all_awards,
+                    s_link,
+                ]
+                subs.loc[len(subs)] = data
     except ResponseException as e:
         logger.exception("Invalid response: %s", str(e))
 

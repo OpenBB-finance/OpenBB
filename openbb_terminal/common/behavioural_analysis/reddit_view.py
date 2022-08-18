@@ -295,9 +295,28 @@ def display_wsb_community(limit: int = 10, new: bool = False):
         Flag to sort by new instead of hot, by default False
     """
     subs = reddit_model.get_wsb_community(limit, new)
-    if subs:
-        for sub in subs:
-            print_and_record_reddit_post({}, sub)
+    if not subs.empty:
+        for sub in subs.iterrows():
+            sub_list = list(sub[1])
+            date = sub_list[0]
+            title = sub_list[3]
+            link = sub_list[-1]
+            console.print(f"{date} - {title}")
+            console.print(f"{link}")
+            columns = [
+                "Subreddit",
+                "Flair",
+                "Score",
+                "# Comments",
+                "Upvote %",
+                "Awards",
+            ]
+            print_rich_table(
+                pd.DataFrame(sub[1][columns]).T,
+                headers=columns,
+                show_index=False,
+                title="Reddit Submission",
+            )
 
 
 @log_start_end(log=logger)
