@@ -356,7 +356,7 @@ Potential errors
                 )
                 return self.queue
             investpy_view.display_historical(
-                self.data, fund=self.fund_name, export=ns_parser.export
+                self.data, name=self.fund_name, export=ns_parser.export
             )
         return self.queue
 

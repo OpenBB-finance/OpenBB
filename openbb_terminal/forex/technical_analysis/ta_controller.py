@@ -760,7 +760,7 @@ class TechnicalAnalysisController(StockBaseController):
             volatility_view.display_bbands(
                 symbol=self.ticker,
                 data=self.data,
-                length=ns_parser.n_length,
+                window=ns_parser.n_length,
                 n_std=ns_parser.n_std,
                 mamode=ns_parser.s_mamode,
                 export=ns_parser.export,
