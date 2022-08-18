@@ -71,8 +71,12 @@ def get_tradingview_recommendation(
                 interval=an_interval,
             )
             d_recommendation = stock_recommendation.get_analysis().summary
-            df_recommendation = df_recommendation.append(
-                d_recommendation, ignore_index=True
+            df_recommendation = pd.concat(
+                [
+                    pd.DataFrame.from_dict(d_recommendation, orient="index").T,
+                    df_recommendation,
+                ],
+                axis=0,
             )
             index_recommendation.append(INTERVALS[an_interval])
         df_recommendation.index = index_recommendation
