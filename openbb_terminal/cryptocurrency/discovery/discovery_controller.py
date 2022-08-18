@@ -571,7 +571,7 @@ class DiscoveryController(BaseController):
             coinpaprika_view.display_search_results(
                 top=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 export=ns_parser.export,
                 query=" ".join(ns_parser.query),
                 category=ns_parser.category,
