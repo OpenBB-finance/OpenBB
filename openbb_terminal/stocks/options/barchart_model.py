@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def get_options_info(symbol: str) -> pd.DataFrame:
+def get_options_info(symbol: str = "PM") -> pd.DataFrame:
     """Scrape barchart for options info
 
     Parameters

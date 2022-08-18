@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_put_call_ratio(
-    symbol: str,
+    symbol: str = "PM",
     window: int = 30,
     start_date: str = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
     export: str = "",
