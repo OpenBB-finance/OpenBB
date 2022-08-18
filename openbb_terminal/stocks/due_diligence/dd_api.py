@@ -7,6 +7,7 @@ from openbb_terminal.helper_classes import ModelsNamespace as _models
 
 # Menu commands
 from .finviz_view import analyst
+from .finviz_view import news
 from .business_insider_view import price_target_from_analysts as pt
 from .business_insider_view import estimates as est
 from .finnhub_view import rating_over_time as rot
