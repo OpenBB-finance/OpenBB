@@ -631,7 +631,7 @@ class DiscoveryController(BaseController):
         if ns_parser:
             ark_view.ark_orders_view(
                 limit=ns_parser.limit,
-                sort_col=ns_parser.sort_col,
+                sortby=ns_parser.sort_col,
                 ascending=ns_parser.ascend,
                 buys_only=ns_parser.buys_only,
                 sells_only=ns_parser.sells_only,
