@@ -368,8 +368,12 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             dict(
                 symbol="MOCK_TICKER",
                 data=empty_df,
-                start_date=datetime.strptime("2020-12-01", "%Y-%m-%d").strftime("%Y-%m-%d"),
-                end_date=datetime.strptime("2020-12-02", "%Y-%m-%d").strftime("%Y-%m-%d"),
+                start_date=datetime.strptime("2020-12-01", "%Y-%m-%d").strftime(
+                    "%Y-%m-%d"
+                ),
+                end_date=datetime.strptime("2020-12-02", "%Y-%m-%d").strftime(
+                    "%Y-%m-%d"
+                ),
                 limit=1,
                 raw=True,
                 export="csv",
