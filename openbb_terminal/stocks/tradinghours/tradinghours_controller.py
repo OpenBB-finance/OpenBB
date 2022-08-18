@@ -65,7 +65,7 @@ class TradingHoursController(BaseController):
                 else:
                     self.symbol_market_open = False
             else:
-                console.print(f"The ticker {ticker} was not find in the database.")
+                console.print(f"The ticker {ticker} was not found in the database.")
 
         self.source = "yf"
         self.data = pd.DataFrame()
