@@ -1,5 +1,6 @@
 import json
 import logging
+from datetime import datetime
 
 import pandas as pd
 import requests
@@ -173,18 +174,21 @@ INTERVALS_ACTIVE_ADDRESSES = ["24h", "1w", "1month"]
 
 @log_start_end(log=logger)
 def get_close_price(
-    asset: str, since: int, until: int, print_errors: bool = True
+    symbol: str,
+    start_date: int = int(datetime(2010, 1, 1).timestamp()),
+    end_date: int = int(datetime.now().timestamp()),
+    print_errors: bool = True,
 ) -> pd.DataFrame:
     """Returns the price of a cryptocurrency
     [Source: https://glassnode.com]
 
     Parameters
     ----------
-    asset : str
+    symbol : str
         Crypto to check close price (BTC or ETH)
-    since : int
+    start_date : int
         Initial date timestamp (e.g., 1_614_556_800)
-    until : int
+    end_date : int
         End date timestamp (e.g., 1_641_227_783_561)
     print_errors: bool
         Flag to print errors. Default: True
@@ -199,10 +203,10 @@ def get_close_price(
 
     parameters = {
         "api_key": cfg.API_GLASSNODE_KEY,
-        "a": asset,
+        "a": symbol,
         "i": "24h",
-        "s": str(since),
-        "u": str(until),
+        "s": str(start_date),
+        "u": str(end_date),
     }
 
     r = requests.get(url, params=parameters)
@@ -214,7 +218,7 @@ def get_close_price(
 
         if df.empty:
             if print_errors:
-                console.print(f"No data found for {asset} price.\n")
+                console.print(f"No data found for {symbol} price.\n")
         else:
             df = df.set_index("t")
             df.index = pd.to_datetime(df.index, unit="s")
@@ -230,17 +234,21 @@ def get_close_price(
 
 
 @log_start_end(log=logger)
-def get_non_zero_addresses(asset: str, since: int, until: int) -> pd.DataFrame:
-    """Returns addresses with non-zero balance of a certain asset
+def get_non_zero_addresses(
+    symbol: str,
+    start_date: int = int(datetime(2010, 1, 1).timestamp()),
+    end_date: int = int(datetime.now().timestamp()),
+) -> pd.DataFrame:
+    """Returns addresses with non-zero balance of a certain symbol
     [Source: https://glassnode.com]
 
     Parameters
     ----------
-    asset : str
+    symbol : str
         Asset to search (e.g., BTC)
-    since : int
+    start_date : int
         Initial date timestamp (e.g., 1_577_836_800)
-    until : int
+    end_date : int
         End date timestamp (e.g., 1_609_459_200)
 
     Returns
@@ -253,10 +261,10 @@ def get_non_zero_addresses(asset: str, since: int, until: int) -> pd.DataFrame:
 
     parameters = {
         "api_key": cfg.API_GLASSNODE_KEY,
-        "a": asset,
+        "a": symbol,
         "i": "24h",
-        "s": str(since),
-        "u": str(until),
+        "s": str(start_date),
+        "u": str(end_date),
     }
 
     r = requests.get(url, params=parameters)
@@ -267,7 +275,7 @@ def get_non_zero_addresses(asset: str, since: int, until: int) -> pd.DataFrame:
         df = pd.DataFrame(json.loads(r.text))
 
         if df.empty:
-            console.print(f"No data found for {asset}'s non-zero addresses.\n")
+            console.print(f"No data found for {symbol}'s non-zero addresses.\n")
         else:
             df["t"] = pd.to_datetime(df["t"], unit="s")
             df = df.set_index("t")
@@ -282,18 +290,21 @@ def get_non_zero_addresses(asset: str, since: int, until: int) -> pd.DataFrame:
 
 @log_start_end(log=logger)
 def get_active_addresses(
-    asset: str, interval: str, since: int, until: int
+    symbol: str,
+    interval: str = "24h",
+    start_date: int = int(datetime(2010, 1, 1).timestamp()),
+    end_date: int = int(datetime.now().timestamp()),
 ) -> pd.DataFrame:
-    """Returns active addresses of a certain asset
+    """Returns active addresses of a certain symbol
     [Source: https://glassnode.com]
 
     Parameters
     ----------
-    asset : str
+    symbol : str
         Asset to search active addresses (e.g., BTC)
-    since : int
+    start_date : int
         Initial date timestamp (e.g., 1_614_556_800)
-    until : int
+    end_date : int
         End date timestamp (e.g., 1_614_556_800)
     interval : str
         Interval frequency (e.g., 24h)
@@ -308,10 +319,10 @@ def get_active_addresses(
 
     parameters = {
         "api_key": cfg.API_GLASSNODE_KEY,
-        "a": asset,
+        "a": symbol,
         "i": interval,
-        "s": str(since),
-        "u": str(until),
+        "s": str(start_date),
+        "u": str(end_date),
     }
 
     r = requests.get(url, params=parameters)
@@ -321,7 +332,7 @@ def get_active_addresses(
         df = pd.DataFrame(json.loads(r.text))
 
         if df.empty:
-            console.print(f"No data found for {asset}'s active addresses.\n")
+            console.print(f"No data found for {symbol}'s active addresses.\n")
         else:
             df["t"] = pd.to_datetime(df["t"], unit="s")
             df = df.set_index("t")
@@ -335,17 +346,22 @@ def get_active_addresses(
 
 
 @log_start_end(log=logger)
-def get_hashrate(asset: str, interval: str, since: int, until: int) -> pd.DataFrame:
-    """Returns dataframe with mean hashrate of btc or eth blockchain and asset price
+def get_hashrate(
+    symbol: str,
+    interval: str = "24h",
+    start_date: int = int(datetime(2010, 1, 1).timestamp()),
+    end_date: int = int(datetime.now().timestamp()),
+) -> pd.DataFrame:
+    """Returns dataframe with mean hashrate of btc or eth blockchain and symbol price
     [Source: https://glassnode.com]
 
     Parameters
     ----------
-    asset : str
+    symbol : str
         Blockchain to check hashrate (BTC or ETH)
-    since : int
+    start_date : int
         Initial date timestamp (e.g., 1_614_556_800)
-    until : int
+    end_date : int
         End date timestamp (e.g., 1_614_556_800)
     interval : str
         Interval frequency (e.g., 24h)
@@ -353,7 +369,7 @@ def get_hashrate(asset: str, interval: str, since: int, until: int) -> pd.DataFr
     Returns
     -------
     pd.DataFrame
-        mean hashrate and asset price over time
+        mean hashrate and symbol price over time
     """
 
     url = api_url + "mining/hash_rate_mean"
@@ -361,10 +377,10 @@ def get_hashrate(asset: str, interval: str, since: int, until: int) -> pd.DataFr
 
     parameters = {
         "api_key": cfg.API_GLASSNODE_KEY,
-        "a": asset,
+        "a": symbol,
         "i": interval,
-        "s": str(since),
-        "u": str(until),
+        "s": str(start_date),
+        "u": str(end_date),
     }
 
     df = pd.DataFrame()
@@ -377,7 +393,7 @@ def get_hashrate(asset: str, interval: str, since: int, until: int) -> pd.DataFr
         df2 = pd.DataFrame(json.loads(r2.text))
 
         if df.empty or df2.empty:
-            console.print(f"No data found for {asset}'s hashrate or price.\n")
+            console.print(f"No data found for {symbol}'s hashrate or price.\n")
         else:
             df = df.set_index("t")
             df.index = pd.to_datetime(df.index, unit="s")
@@ -392,33 +408,36 @@ def get_hashrate(asset: str, interval: str, since: int, until: int) -> pd.DataFr
             console.print(f"Error getting hashrate: {r.text}")
 
         if r2.status_code != 200:
-            console.print(f"Error getting {asset} price: {r2.text}")
+            console.print(f"Error getting {symbol} price: {r2.text}")
 
     return df
 
 
 @log_start_end(log=logger)
 def get_exchange_balances(
-    asset: str, exchange: str, since: int, until: int
+    symbol: str,
+    exchange: str = "binance",
+    start_date: int = int(datetime(2010, 1, 1).timestamp()),
+    end_date: int = int(datetime.now().timestamp()),
 ) -> pd.DataFrame:
     """Returns the total amount of coins held on exchange addresses in units and percentage.
     [Source: https://glassnode.com]
 
     Parameters
     ----------
-    asset : str
+    symbol : str
         Asset to search active addresses (e.g., BTC)
     exchange : str
         Exchange to check net position change (e.g., binance)
-    since : int
+    start_date : int
         Initial date timestamp (e.g., 1_614_556_800)
-    until : int
+    end_date : int
         End date timestamp (e.g., 1_614_556_800)
 
     Returns
     -------
     pd.DataFrame
-        total amount of coins in units/percentage and asset price over time
+        total amount of coins in units/percentage and symbol price over time
     """
 
     url = api_url + "distribution/balance_exchanges"
@@ -427,11 +446,11 @@ def get_exchange_balances(
 
     parameters = {
         "api_key": cfg.API_GLASSNODE_KEY,
-        "a": asset,
+        "a": symbol,
         "i": "24h",
         "e": exchange,
-        "s": str(since),
-        "u": str(until),
+        "s": str(start_date),
+        "u": str(end_date),
     }
     df = pd.DataFrame()
 
@@ -454,41 +473,44 @@ def get_exchange_balances(
         df.rename(columns={"v": "stacked"}, inplace=True)
 
         if df.empty or df2.empty or df3.empty:
-            console.print(f"No data found for {asset}'s exchange balance or price.\n")
+            console.print(f"No data found for {symbol}'s exchange balance or price.\n")
 
     elif r.status_code == 401 or r2.status_code == 401 or r3.status_code == 401:
         console.print("[red]Invalid API Key[/red]\n")
     else:
         if r.status_code != 200:
-            console.print(f"Error getting {asset}'s exchange balance: {r.text}")
+            console.print(f"Error getting {symbol}'s exchange balance: {r.text}")
 
         if r2.status_code != 200:
             console.print(
-                f"Error getting {asset}'s exchange balance relatives: {r2.text}"
+                f"Error getting {symbol}'s exchange balance relatives: {r2.text}"
             )
 
         if r3.status_code != 200:
-            console.print(f"Error getting {asset} price: {r3.text}")
+            console.print(f"Error getting {symbol} price: {r3.text}")
 
     return df
 
 
 @log_start_end(log=logger)
 def get_exchange_net_position_change(
-    asset: str, exchange: str, since: int, until: int
+    symbol: str,
+    exchange: str = "binance",
+    start_date: int = int(datetime(2010, 1, 1).timestamp()),
+    end_date: int = int(datetime.now().timestamp()),
 ) -> pd.DataFrame:
-    """Returns 30d change of the supply held in exchange wallets of a certain asset.
+    """Returns 30d change of the supply held in exchange wallets of a certain symbol.
     [Source: https://glassnode.com]
 
     Parameters
     ----------
-    asset : str
+    symbol : str
         Asset symbol to search supply (e.g., BTC)
     exchange : str
         Exchange to check net position change (e.g., binance)
-    since : int
+    start_date : int
         Initial date timestamp (e.g., 1_614_556_800)
-    until : int
+    end_date : int
         End date timestamp (e.g., 1_614_556_800)
 
     Returns
@@ -501,11 +523,11 @@ def get_exchange_net_position_change(
 
     parameters = {
         "api_key": cfg.API_GLASSNODE_KEY,
-        "a": asset,
+        "a": symbol,
         "i": "24h",
         "e": exchange,
-        "s": str(since),
-        "u": str(until),
+        "s": str(start_date),
+        "u": str(end_date),
     }
 
     r = requests.get(url, params=parameters)
@@ -515,7 +537,7 @@ def get_exchange_net_position_change(
         df = pd.DataFrame(json.loads(r.text))
 
         if df.empty:
-            console.print(f"No data found for {asset}'s net position change.\n")
+            console.print(f"No data found for {symbol}'s net position change.\n")
         else:
             df["t"] = pd.to_datetime(df["t"], unit="s")
             df = df.set_index("t")

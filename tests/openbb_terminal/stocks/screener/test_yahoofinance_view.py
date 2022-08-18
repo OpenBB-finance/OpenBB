@@ -1,11 +1,10 @@
 # IMPORTATION STANDARD
-from datetime import datetime
 
 # IMPORTATION THIRDPARTY
 import pytest
 
 # IMPORTATION INTERNAL
-from openbb_terminal.stocks.screener import yahoofinance_view
+from openbb_terminal.stocks.screener import yahoofinance_model, yahoofinance_view
 
 
 @pytest.fixture(scope="module")
@@ -23,14 +22,14 @@ def vcr_config():
 @pytest.mark.record_stdout
 def test_historical(mocker):
     # FORCE SINGLE THREADING
-    yf_download = yahoofinance_view.yf.download
+    yf_download = yahoofinance_model.yf.download
 
     def mock_yf_download(*args, **kwargs):
         kwargs["threads"] = False
         return yf_download(*args, **kwargs)
 
     mocker.patch(
-        "openbb_terminal.stocks.screener.yahoofinance_view.yf.download",
+        "openbb_terminal.stocks.screener.yahoofinance_model.yf.download",
         side_effect=mock_yf_download,
     )
 
@@ -55,7 +54,7 @@ def test_historical(mocker):
     yahoofinance_view.historical(
         preset_loaded="top_gainers",
         limit=2,
-        start=datetime.strptime("2022-01-03", "%Y-%m-%d"),
+        start_date="2022-01-03",
         type_candle="a",
         normalize=True,
         export="",
@@ -66,14 +65,14 @@ def test_historical(mocker):
 @pytest.mark.record_stdout
 def test_historical_no_d_signals(mocker):
     # FORCE SINGLE THREADING
-    yf_download = yahoofinance_view.yf.download
+    yf_download = yahoofinance_model.yf.download
 
     def mock_yf_download(*args, **kwargs):
         kwargs["threads"] = False
         return yf_download(*args, **kwargs)
 
     mocker.patch(
-        "openbb_terminal.stocks.screener.yahoofinance_view.yf.download",
+        "openbb_terminal.stocks.screener.yahoofinance_model.yf.download",
         side_effect=mock_yf_download,
     )
 
@@ -97,7 +96,7 @@ def test_historical_no_d_signals(mocker):
 
     # MOCK D_SIGNALS
     mocker.patch.object(
-        target=yahoofinance_view.finviz_model,
+        target=yahoofinance_model.finviz_model,
         attribute="d_signals",
         new=[],
     )
@@ -105,7 +104,7 @@ def test_historical_no_d_signals(mocker):
     yahoofinance_view.historical(
         preset_loaded="oversold",
         limit=2,
-        start=datetime.strptime("2022-01-03", "%Y-%m-%d"),
+        start_date="2022-01-03",
         type_candle="a",
         normalize=True,
         export="",

@@ -227,8 +227,8 @@ class PredictionTechniquesController(BaseController):
                     )
 
             ets_view.display_exponential_smoothing(
-                ticker=self.current_id,
-                values=self.data,
+                dataset=self.current_id,
+                data=self.data,
                 n_predict=ns_parser.n_days,
                 trend=ns_parser.trend,
                 seasonal=ns_parser.seasonal,
@@ -325,7 +325,7 @@ class PredictionTechniquesController(BaseController):
                 return
             try:
                 knn_view.display_k_nearest_neighbors(
-                    ticker=self.current_id,
+                    dataset=self.current_id,
                     data=self.data,
                     n_neighbors=ns_parser.n_neighbors,
                     n_input_days=ns_parser.n_inputs,
@@ -444,7 +444,7 @@ class PredictionTechniquesController(BaseController):
                     n_input=ns_parser.n_inputs,
                     n_predict=ns_parser.n_days,
                     n_jumps=ns_parser.n_jumps,
-                    s_end_date=ns_parser.s_end_date,
+                    end_date=ns_parser.s_end_date,
                     export=ns_parser.export,
                     time_res=self.resolution,
                 )
@@ -555,7 +555,7 @@ class PredictionTechniquesController(BaseController):
                 seasonal=ns_parser.b_seasonal,
                 ic=ns_parser.s_ic,
                 results=ns_parser.b_results,
-                s_end_date=ns_parser.s_end_date,
+                end_date=ns_parser.s_end_date,
                 export=ns_parser.export,
                 time_res=self.resolution,
             )

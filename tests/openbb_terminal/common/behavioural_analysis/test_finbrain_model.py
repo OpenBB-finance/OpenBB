@@ -9,5 +9,5 @@ from openbb_terminal.common.behavioural_analysis import finbrain_model
 
 @pytest.mark.vcr
 def test_get_sentiment(recorder):
-    df = finbrain_model.get_sentiment(ticker="PM")
+    df = finbrain_model.get_sentiment(symbol="PM")
     recorder.capture(df)

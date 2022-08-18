@@ -29,17 +29,32 @@ def get_sector_data() -> pd.DataFrame:
     )
     # pylint: disable=unbalanced-tuple-unpacking
     df_sectors, _ = sector_perf.get_sector()
-    return df_sectors
+
+    # pylint: disable=invalid-sequence-index
+    df_rtp = df_sectors["Rank A: Real-Time Performance"]
+
+    df_rtp = df_rtp.apply(lambda x: x * 100)
+
+    df_rtp = df_rtp.to_frame().reset_index()
+
+    df_rtp.columns = ["Sector", "Real-Time Performance"]
+
+    return df_rtp
 
 
 @log_start_end(log=logger)
-def get_real_gdp(interval: str = "a") -> pd.DataFrame:
+def get_real_gdp(
+    interval: str = "q",
+    start_year: int = 2010,
+) -> pd.DataFrame:
     """Get annual or quarterly Real GDP for US
 
     Parameters
     ----------
     interval : str, optional
-        Interval for GDP, by default "a" for annual
+        Interval for GDP, by default "a" for annual, by default "q"
+    start_year : int, optional
+        Start year for plot, by default 2010
     Returns
     -------
     pd.DataFrame
@@ -72,12 +87,19 @@ def get_real_gdp(interval: str = "a") -> pd.DataFrame:
     elif "Information" in payload:
         console.print(payload["Information"])
 
-    return data
+    gdp = data[data.date >= f"{start_year}-01-01"]
+
+    return gdp
 
 
 @log_start_end(log=logger)
-def get_gdp_capita() -> pd.DataFrame:
+def get_gdp_capita(start_year: int = 2010) -> pd.DataFrame:
     """Real GDP per Capita for United States
+
+    Parameters
+    ----------
+    start_year : int, optional
+        Start year for plot, by default 2010
 
     Returns
     -------
@@ -107,12 +129,19 @@ def get_gdp_capita() -> pd.DataFrame:
     elif "Information" in payload:
         console.print(payload["Information"])
 
-    return data
+    gdp = data[data.date >= f"{start_year}-01-01"]
+
+    return gdp
 
 
 @log_start_end(log=logger)
-def get_inflation() -> pd.DataFrame:
+def get_inflation(start_year: int = 2010) -> pd.DataFrame:
     """Get historical Inflation for United States from AlphaVantage
+
+    Parameters
+    ----------
+    start_year : int, optional
+        Start year for plot, by default 2010
 
     Returns
     -------
@@ -142,17 +171,21 @@ def get_inflation() -> pd.DataFrame:
     elif "Information" in payload:
         console.print(payload["Information"])
 
-    return data
+    inf = data[data.date >= f"{start_year}-01-01"]
+
+    return inf
 
 
 @log_start_end(log=logger)
-def get_cpi(interval: str) -> pd.DataFrame:
+def get_cpi(interval: str = "m", start_year: int = 2010) -> pd.DataFrame:
     """Get Consumer Price Index from Alpha Vantage
 
     Parameters
     ----------
     interval : str
         Interval for data.  Either "m" or "s" for monthly or semiannual
+    start_year : int, optional
+        Start year for plot, by default 2010
 
     Returns
     -------
@@ -185,19 +218,25 @@ def get_cpi(interval: str) -> pd.DataFrame:
     elif "Information" in payload:
         console.print(payload["Information"])
 
-    return data
+    cpi = data[data.date >= f"{start_year}-01-01"]
+
+    return cpi
 
 
 @log_start_end(log=logger)
-def get_treasury_yield(interval: str, maturity: str) -> pd.DataFrame:
+def get_treasury_yield(
+    interval: str = "m", maturity: str = "10y", start_date: str = "2010-01-01"
+) -> pd.DataFrame:
     """Get historical yield for a given maturity
 
     Parameters
     ----------
     interval : str
-        Interval for data.  Can be "d","w","m" for daily, weekly or monthly
+        Interval for data.  Can be "d","w","m" for daily, weekly or monthly, by default "m"
+    start_date: str
+        Start date for data.  Should be in YYYY-MM-DD format, by default "2010-01-01"
     maturity : str
-        Maturity timeline.  Can be "3mo","5y","10y" or "30y"
+        Maturity timeline.  Can be "3mo","5y","10y" or "30y", by default "10y"
 
     Returns
     -------
@@ -233,12 +272,19 @@ def get_treasury_yield(interval: str, maturity: str) -> pd.DataFrame:
     elif "Information" in payload:
         console.print(payload["Information"])
 
-    return data
+    yld = data[data.date >= start_date]
+
+    return yld
 
 
 @log_start_end(log=logger)
-def get_unemployment() -> pd.DataFrame:
+def get_unemployment(start_year: int = 2010) -> pd.DataFrame:
     """Get historical unemployment for United States
+
+    Parameters
+    ----------
+    start_year : int, optional
+        Start year for plot, by default 2010
 
     Returns
     -------
@@ -269,4 +315,6 @@ def get_unemployment() -> pd.DataFrame:
     elif "Information" in payload:
         console.print(payload["Information"])
 
-    return data
+    un = data[data.date >= f"{start_year}-01-01"]
+
+    return un

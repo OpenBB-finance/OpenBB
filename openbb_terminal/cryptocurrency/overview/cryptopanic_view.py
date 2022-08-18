@@ -21,11 +21,12 @@ def display_news(
     filter_: Optional[str] = None,
     top: int = 25,
     sortby: str = "published_at",
-    descend: bool = False,
+    ascend: bool = False,
     links: bool = False,
     export: str = "",
 ) -> None:
-    """Display recent posts from CryptoPanic news aggregator platform. [Source: https://cryptopanic.com/]
+    """Display recent posts from CryptoPanic news aggregator platform.
+    [Source: https://cryptopanic.com/]
 
     Parameters
     ----------
@@ -36,12 +37,12 @@ def display_news(
     filter_: Optional[str]
         Filter by kind of news. One from list: rising|hot|bullish|bearish|important|saved|lol
     region: str
-        Filter news by regions. Available regions are: en (English), de (Deutsch), nl (Dutch), es (Español),
-        fr (Français), it (Italiano), pt (Português), ru (Русский)
+        Filter news by regions. Available regions are: en (English), de (Deutsch), nl (Dutch),
+        es (Español), fr (Français), it (Italiano), pt (Português), ru (Русский)
     sortby: str
         Key to sort by.
-    descend: bool
-        Sort in descending order.
+    ascend: bool
+        Sort in ascending order.
     links: bool
         Show urls for news
     export : str
@@ -49,10 +50,14 @@ def display_news(
     """
 
     df = cryptopanic_model.get_news(
-        limit=top, post_kind=post_kind, filter_=filter_, region=region
+        limit=top,
+        post_kind=post_kind,
+        filter_=filter_,
+        region=region,
+        sortby=sortby,
+        ascend=ascend,
     )
     if not df.empty:
-        df = df.sort_values(by=sortby, ascending=descend)
         if not links:
             df.drop("link", axis=1, inplace=True)
         else:

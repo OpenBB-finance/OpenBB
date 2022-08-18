@@ -27,11 +27,11 @@ register_matplotlib_converters()
 
 @log_start_end(log=logger)
 def display_adx(
-    ohlc: pd.DataFrame,
-    length: int = 14,
+    data: pd.DataFrame,
+    window: int = 14,
     scalar: int = 100,
     drift: int = 1,
-    s_ticker: str = "",
+    symbol: str = "",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -39,15 +39,15 @@ def display_adx(
 
     Parameters
     ----------
-    ohlc : pd.DataFrame
+    data : pd.DataFrame
         Dataframe with OHLC price data
-    length : int
+    window : int
         Length of window
     scalar : int
         Scalar variable
     drift : int
         Drift variable
-    s_ticker : str
+    symbol : str
         Ticker
     export : str
         Format to export data
@@ -55,14 +55,14 @@ def display_adx(
         External axes (2 axes are expected in the list), by default None
     """
     df_ta = trend_indicators_model.adx(
-        high_values=ohlc["High"],
-        low_values=ohlc["Low"],
-        close_values=ohlc["Adj Close"],
-        length=length,
+        high_values=data["High"],
+        low_values=data["Low"],
+        close_values=data["Adj Close"],
+        window=window,
         scalar=scalar,
         drift=drift,
     )
-    plot_data = pd.merge(ohlc, df_ta, how="outer", left_index=True, right_index=True)
+    plot_data = pd.merge(data, df_ta, how="outer", left_index=True, right_index=True)
     plot_data = reindex_dates(plot_data)
 
     # This plot has 2 axes
@@ -77,7 +77,7 @@ def display_adx(
         return
 
     ax1.plot(plot_data.index, plot_data["Close"].values)
-    ax1.set_title(f"Average Directional Movement Index (ADX) on {s_ticker}")
+    ax1.set_title(f"Average Directional Movement Index (ADX) on {symbol}")
     ax1.set_xlim(plot_data.index[0], plot_data.index[-1])
     ax1.set_ylabel("Price")
     theme.style_primary_axis(
@@ -120,10 +120,10 @@ def display_adx(
 
 @log_start_end(log=logger)
 def display_aroon(
-    ohlc: pd.DataFrame,
-    length: int = 25,
+    data: pd.DataFrame,
+    window: int = 25,
     scalar: int = 100,
-    s_ticker: str = "",
+    symbol: str = "",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -131,26 +131,26 @@ def display_aroon(
 
     Parameters
     ----------
-    ohlc : pd.DataFrame
+    data: pd.DataFrame
         Dataframe with OHLC price data
-    length:int
+    window: int
         Length of window
-    s_ticker : str
+    symbol: str
         Ticker
-    scalar : int
+    scalar: int
         Scalar variable
     export: str
         Format to export data
-    external_axes : Optional[List[plt.Axes]], optional
+    external_axes: Optional[List[plt.Axes]], optional
         External axes (3 axes are expected in the list), by default None
     """
     df_ta = trend_indicators_model.aroon(
-        high_values=ohlc["High"],
-        low_values=ohlc["Low"],
-        length=length,
+        high_values=data["High"],
+        low_values=data["Low"],
+        window=window,
         scalar=scalar,
     )
-    plot_data = pd.merge(ohlc, df_ta, how="outer", left_index=True, right_index=True)
+    plot_data = pd.merge(data, df_ta, how="outer", left_index=True, right_index=True)
     plot_data = reindex_dates(plot_data)
 
     # This plot has 3 axes
@@ -165,7 +165,7 @@ def display_aroon(
         return
 
     ax1.plot(plot_data.index, plot_data["Adj Close"].values)
-    ax1.set_title(f"Aroon on {s_ticker}")
+    ax1.set_title(f"Aroon on {symbol}")
     ax1.set_xlim(plot_data.index[0], plot_data.index[-1])
     ax1.set_ylabel("Price")
     theme.style_primary_axis(
