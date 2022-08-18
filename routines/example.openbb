@@ -4,7 +4,7 @@ stocks
 # Load Palantir Technologies (PLTR)
 load pltr
 
-# Enter the Due Dilligence (dd) menu
+# Enter the Due Diligence (dd) menu
 dd
 
 # Show price targets, both the chart and the table
