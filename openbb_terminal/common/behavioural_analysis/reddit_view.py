@@ -85,6 +85,39 @@ def print_and_record_reddit_post(
 
 
 @log_start_end(log=logger)
+def print_reddit_post(sub: tuple):
+    """Prints reddit submission
+
+    Parameters
+    ----------
+    sub : tuple
+        Row from submissions dataframe
+    """
+
+    sub_list = list(sub[1])
+    date = sub_list[0]
+    title = sub_list[3]
+    link = sub_list[-1]
+    console.print(f"{date} - {title}")
+    console.print(f"{link}")
+    columns = [
+        "Subreddit",
+        "Flair",
+        "Score",
+        "# Comments",
+        "Upvote %",
+        "Awards",
+    ]
+
+    print_rich_table(
+        pd.DataFrame(sub[1][columns]).T,
+        headers=columns,
+        show_index=False,
+        title="Reddit Submission",
+    )
+
+
+@log_start_end(log=logger)
 @check_api_key(
     [
         "API_REDDIT_CLIENT_ID",
@@ -196,9 +229,9 @@ def display_spac_community(limit: int = 10, popular: bool = False):
         Search by popular instead of new
     """
     subs, d_watchlist_tickers = reddit_model.get_spac_community(limit, popular)
-    if subs:
-        for sub in subs:
-            print_and_record_reddit_post({}, sub)
+    if not subs.empty:
+        for sub in subs.iterrows():
+            print_reddit_post(sub)
 
         if d_watchlist_tickers:
             lt_watchlist_sorted = sorted(
@@ -246,9 +279,9 @@ def display_spac(limit: int = 5):
     """
     warnings.filterwarnings("ignore")  # To avoid printing the warning
     subs, d_watchlist_tickers, n_flair_posts_found = reddit_model.get_spac(limit)
-    if subs:
-        for sub in subs:
-            print_and_record_reddit_post({}, sub)
+    if not subs.empty:
+        for sub in subs.iterrows():
+            print_reddit_post(sub)
 
         if n_flair_posts_found > 0:
             lt_watchlist_sorted = sorted(
@@ -297,26 +330,7 @@ def display_wsb_community(limit: int = 10, new: bool = False):
     subs = reddit_model.get_wsb_community(limit, new)
     if not subs.empty:
         for sub in subs.iterrows():
-            sub_list = list(sub[1])
-            date = sub_list[0]
-            title = sub_list[3]
-            link = sub_list[-1]
-            console.print(f"{date} - {title}")
-            console.print(f"{link}")
-            columns = [
-                "Subreddit",
-                "Flair",
-                "Score",
-                "# Comments",
-                "Upvote %",
-                "Awards",
-            ]
-            print_rich_table(
-                pd.DataFrame(sub[1][columns]).T,
-                headers=columns,
-                show_index=False,
-                title="Reddit Submission",
-            )
+            print_reddit_post(sub)
 
 
 @log_start_end(log=logger)
@@ -346,11 +360,11 @@ def display_due_diligence(
         Search through all flairs (apart from Yolo and Meme)
     """
     subs = reddit_model.get_due_dilligence(symbol, limit, n_days, show_all_flairs)
-    if subs:
-        for sub in subs:
-            print_and_record_reddit_post({}, sub)
-        if not subs:
-            console.print(f"No DD posts found for {symbol}\n")
+    if not subs.empty:
+        for sub in subs.iterrows():
+            print_reddit_post(sub)
+    else:
+        console.print(f"No DD posts found for {symbol}\n")
 
 
 @log_start_end(log=logger)

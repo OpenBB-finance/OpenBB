@@ -296,7 +296,7 @@ def get_popular_tickers(
 @log_start_end(log=logger)
 def get_spac_community(
     limit: int = 10, popular: bool = False
-) -> Tuple[List[praw.models.reddit.submission.Submission], Dict]:
+) -> Tuple[pd.DataFrame, Dict]:
     """Get top tickers from r/SPACs [Source: reddit]
 
     Parameters
@@ -308,8 +308,8 @@ def get_spac_community(
 
     Returns
     -------
-    List[praw.models.reddit.submission.Submission]:
-        List of reddit submission
+    pd.DataFrame:
+        Dataframe of reddit submission
     Dict:
         Dictionary of tickers and number of mentions
     """
@@ -336,7 +336,7 @@ def get_spac_community(
         praw_api.user.me()
     except (Exception, ResponseException):
         console.print("[red]Wrong Reddit API keys[/red]\n")
-        return [], {}
+        return pd.DataFrame(), {}
 
     d_watchlist_tickers: Dict = {}
     l_watchlist_author = []
@@ -346,7 +346,18 @@ def get_spac_community(
     else:
         submissions = praw_api.subreddit("SPACs").new(limit=limit)
 
-    subs = []
+    columns = [
+        "Date",
+        "Subreddit",
+        "Flair",
+        "Title",
+        "Score",
+        "# Comments",
+        "Upvote %",
+        "Awards",
+        "Link",
+    ]
+    subs = pd.DataFrame(columns=columns)
 
     try:
         for sub in submissions:
@@ -370,7 +381,29 @@ def get_spac_community(
                 if l_tickers_found:
                     # Add another author's name to the parsed watchlists
                     l_watchlist_author.append(submission.author.name)
-                    subs.append(submission)
+                    s_datetime = datetime.utcfromtimestamp(
+                        submission.created_utc
+                    ).strftime("%Y-%m-%d %H:%M:%S")
+                    s_link = f"https://old.reddit.com{submission.permalink}"
+                    s_all_awards = "".join(
+                        f"{award['count']} {award['name']}\n"
+                        for award in submission.all_awardings
+                    )
+
+                    s_all_awards = s_all_awards[:-2]
+
+                    data = [
+                        s_datetime,
+                        submission.subreddit,
+                        submission.link_flair_text,
+                        submission.title,
+                        submission.score,
+                        submission.num_comments,
+                        f"{round(100 * submission.upvote_ratio)}%",
+                        s_all_awards,
+                        s_link,
+                    ]
+                    subs.loc[len(subs)] = data
                     # Lookup stock tickers within a watchlist
                     for key in l_tickers_found:
                         if key in d_watchlist_tickers:
@@ -394,7 +427,7 @@ def get_spac_community(
 @log_start_end(log=logger)
 def get_spac(
     limit: int = 5,
-) -> Tuple[List[praw.models.reddit.submission.Submission], Dict, int]:
+) -> Tuple[pd.DataFrame, Dict, int]:
     """Get posts containing SPAC from top subreddits [Source: reddit]
 
     Parameters
@@ -404,8 +437,8 @@ def get_spac(
 
     Returns
     -------
-    List[praw.models.reddit.submission.Submission] :
-        List of reddit submissions
+    pd.DataFrame :
+        Dataframe of reddit submissions
     Dict :
         Dictionary of tickers and counts
     int :
@@ -434,11 +467,22 @@ def get_spac(
         praw_api.user.me()
     except (Exception, ResponseException):
         console.print("[red]Wrong Reddit API keys[/red]\n")
-        return [], {}, 0
+        return pd.DataFrame(), {}, 0
 
     d_watchlist_tickers: Dict = {}
     l_watchlist_author = []
-    subs = []
+    columns = [
+        "Date",
+        "Subreddit",
+        "Flair",
+        "Title",
+        "Score",
+        "# Comments",
+        "Upvote %",
+        "Awards",
+        "Link",
+    ]
+    subs = pd.DataFrame(columns=columns)
     psaw_api = PushshiftAPI()
     submissions = psaw_api.search_submissions(
         subreddit=l_sub_reddits,
@@ -463,7 +507,31 @@ def get_spac(
                 and submission.author.name not in l_watchlist_author
             ):
                 l_tickers_found = find_tickers(submission)
-                subs.append(submission)
+
+                s_datetime = datetime.utcfromtimestamp(submission.created_utc).strftime(
+                    "%Y-%m-%d %H:%M:%S"
+                )
+                s_link = f"https://old.reddit.com{submission.permalink}"
+                s_all_awards = "".join(
+                    f"{award['count']} {award['name']}\n"
+                    for award in submission.all_awardings
+                )
+
+                s_all_awards = s_all_awards[:-2]
+
+                data = [
+                    s_datetime,
+                    submission.subreddit,
+                    submission.link_flair_text,
+                    submission.title,
+                    submission.score,
+                    submission.num_comments,
+                    f"{round(100 * submission.upvote_ratio)}%",
+                    s_all_awards,
+                    s_link,
+                ]
+                subs.loc[len(subs)] = data
+
                 if l_tickers_found:
                     # Add another author's name to the parsed watchlists
                     l_watchlist_author.append(submission.author.name)
@@ -598,7 +666,7 @@ def get_wsb_community(limit: int = 10, new: bool = False) -> pd.DataFrame:
 @log_start_end(log=logger)
 def get_due_dilligence(
     ticker: str, limit: int = 5, n_days: int = 3, show_all_flairs: bool = False
-) -> List[praw.models.reddit.submission.Submission]:
+) -> pd.DataFrame:
     """Gets due diligence posts from list of subreddits [Source: reddit]
 
     Parameters
@@ -614,8 +682,8 @@ def get_due_dilligence(
 
     Returns
     -------
-    List[praw.models.reddit.submission.Submission]
-        List of submissions
+    pd.DataFrame
+        Dataframe of submissions
     """
     praw_api = praw.Reddit(
         client_id=cfg.API_REDDIT_CLIENT_ID,
@@ -640,7 +708,7 @@ def get_due_dilligence(
         praw_api.user.me()
     except (Exception, ResponseException):
         console.print("[red]Wrong Reddit API keys[/red]\n")
-        return []
+        return pd.DataFrame()
 
     psaw_api = PushshiftAPI()
 
@@ -673,7 +741,18 @@ def get_due_dilligence(
         after=int(n_ts_after), subreddit=l_sub_reddits_dd, q=ticker, filter=["id"]
     )
     n_flair_posts_found = 0
-    subs = []
+    columns = [
+        "Date",
+        "Subreddit",
+        "Flair",
+        "Title",
+        "Score",
+        "# Comments",
+        "Upvote %",
+        "Awards",
+        "Link",
+    ]
+    subs = pd.DataFrame(columns=columns)
 
     try:
         for submission in submissions:
@@ -689,7 +768,29 @@ def get_due_dilligence(
                     submission.link_flair_text not in ["Yolo", "Meme"],
                 )[show_all_flairs]:
 
-                    subs.append(submission)
+                    s_datetime = datetime.utcfromtimestamp(
+                        submission.created_utc
+                    ).strftime("%Y-%m-%d %H:%M:%S")
+                    s_link = f"https://old.reddit.com{submission.permalink}"
+                    s_all_awards = "".join(
+                        f"{award['count']} {award['name']}\n"
+                        for award in submission.all_awardings
+                    )
+
+                    s_all_awards = s_all_awards[:-2]
+
+                    data = [
+                        s_datetime,
+                        submission.subreddit,
+                        submission.link_flair_text,
+                        submission.title,
+                        submission.score,
+                        submission.num_comments,
+                        f"{round(100 * submission.upvote_ratio)}%",
+                        s_all_awards,
+                        s_link,
+                    ]
+                    subs.loc[len(subs)] = data
                     # Increment count of valid posts found
                     n_flair_posts_found += 1
 
