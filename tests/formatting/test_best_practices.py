@@ -14,6 +14,14 @@ bad_params = {
     "ascending": "ascend",
     "num": "limit",
     "sort_by": "sortby",
+    "start": "start_date",
+    "end": "end_date",
+    "df": "data",
+    "x": "independent_series",
+    "y": "dependent_series",
+    "expire": "expiry",
+    "exp": "expiry",
+    "expiration": "expiry",
 }
 
 
