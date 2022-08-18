@@ -461,7 +461,7 @@ def display_fundamentals(
         else:
             df_rounded = fundamentals_plot_data
             denomination = ""
-        
+
         if rows_plot == 1:
             fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
             df_rounded[plot[0].replace("_", " ")].plot()
