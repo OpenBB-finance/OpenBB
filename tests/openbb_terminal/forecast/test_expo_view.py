@@ -2,6 +2,7 @@ import pytest
 from openbb_terminal.forecast import expo_view
 
 
+@pytest.mark.prediction
 def test_display_tft_forecast(tsla_csv):
     with pytest.raises(AttributeError):
         expo_view.display_expo_forecast(

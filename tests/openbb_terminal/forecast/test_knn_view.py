@@ -1,6 +1,8 @@
+import pytest
 from openbb_terminal.forecast import knn_view
 
 
+@pytest.mark.prediction
 def test_display_knn_forecast(tsla_csv):
     tsla_csv = tsla_csv.set_index("date")
     knn_view.display_k_nearest_neighbors(

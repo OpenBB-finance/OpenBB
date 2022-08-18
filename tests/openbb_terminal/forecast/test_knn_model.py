@@ -1,6 +1,8 @@
+import pytest
 from openbb_terminal.forecast import knn_model
 
 
+@pytest.mark.prediction
 def test_get_knn_model(tsla_csv):
     df = tsla_csv.set_index("date")
     knn_model.get_knn_model_data(
