@@ -384,7 +384,7 @@ There are a few things that still don't work, and you can see what works and wha
     poetry install
     ```
 
-11. Ready to rock on a Raspbery Pi!
+11. Ready to rock on a Raspberry Pi!
 
     ```bash
     python terminal.py
