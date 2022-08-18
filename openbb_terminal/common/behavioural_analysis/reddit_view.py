@@ -11,7 +11,6 @@ import finviz
 import matplotlib.pyplot as plt
 import pandas as pd
 import praw
-from tqdm import tqdm
 import seaborn as sns
 
 from openbb_terminal.common.behavioural_analysis import reddit_model
@@ -414,29 +413,13 @@ def display_reddit_sent(
         If supplied, expect 1 external axis
     """
 
-    posts = reddit_model.get_posts_about(symbol, limit, sortby, time_frame, subreddits)
-    post_data = []
-    polarity_scores = []
+    df, polarity_scores, avg_polarity = reddit_model.get_posts_about(
+        symbol, limit, sortby, time_frame, full_search, subreddits
+    )
 
-    if not posts:
+    if df.empty:
         console.print(f"No posts for {symbol} found")
         return
-
-    console.print("Analyzing each post...")
-    for p in tqdm(posts):
-        texts = [p.title, p.selftext]
-        if full_search:
-            tlcs = reddit_model.get_comments(p)
-            texts.extend(tlcs)
-        preprocessed_text = reddit_model.clean_reddit_text(texts)
-        sentiment = reddit_model.get_sentiment(preprocessed_text)
-        polarity_scores.append(sentiment)
-        post_data.append([p.title, sentiment])
-
-    avg_polarity = sum(polarity_scores) / len(polarity_scores)
-
-    columns = ["Title", "Polarity Score"]
-    df = pd.DataFrame(post_data, columns=columns)
 
     if display:
         print_rich_table(df=df)

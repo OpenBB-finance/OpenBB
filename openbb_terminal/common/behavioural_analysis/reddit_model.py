@@ -814,8 +814,9 @@ def get_posts_about(
     limit: int = 100,
     sortby: str = "relevance",
     time_frame: str = "week",
+    full_search: bool = True,
     subreddits: str = "all",
-) -> List[praw.models.reddit.submission.Submission]:
+) -> Tuple[pd.DataFrame, List, float]:
     """Finds posts related to a specific search term in Reddit
 
     Parameters
@@ -830,13 +831,17 @@ def get_posts_about(
     time_frame: str
         Relative time of post
         Possibilities: "hour", "day", "week", "month", "year", "all"
+    full_search: bool
+        Enable comprehensive search for ticker
     subreddits: str
         Comma-separated list of subreddits
 
     Returns
     -------
-    List[praw.models.reddit.submission.Submission]
-        List of submissions related to the search term
+    Tuple[pd.DataFrame, List, float]:
+        Dataframe of submissions related to the search term,
+        List of polarity scores,
+        Average polarity score
     """
     praw_api = praw.Reddit(
         client_id=cfg.API_REDDIT_CLIENT_ID,
@@ -861,7 +866,7 @@ def get_posts_about(
         praw_api.user.me()
     except (Exception, ResponseException):
         console.print("[red]Wrong Reddit API keys[/red]\n")
-        return []
+        return pd.DataFrame()
 
     subreddits_l = subreddits.split(",")
 
@@ -889,7 +894,26 @@ def get_posts_about(
             ):
                 post_ids.add(sub.id)
                 posts.append(sub)
-    return posts
+
+    polarity_scores = []
+    post_data = []
+    console.print("Analyzing each post...")
+    for p in tqdm(posts):
+        texts = [p.title, p.selftext]
+        if full_search:
+            tlcs = get_comments(p)
+            texts.extend(tlcs)
+        preprocessed_text = clean_reddit_text(texts)
+        sentiment = get_sentiment(preprocessed_text)
+        polarity_scores.append(sentiment)
+        post_data.append([p.title, sentiment])
+
+    avg_polarity = sum(polarity_scores) / len(polarity_scores)
+
+    columns = ["Title", "Polarity Score"]
+    df = pd.DataFrame(post_data, columns=columns)
+
+    return df, polarity_scores, avg_polarity
 
 
 @log_start_end(log=logger)
