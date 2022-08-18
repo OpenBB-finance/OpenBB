@@ -13,7 +13,9 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_apy(apr: float, compounding_times: int, narrative: bool, export: str):
+def display_apy(
+    apr: float, compounding_times: int, narrative: bool = False, export: str = ""
+):
     """Displays APY value converted from APR
 
     Parameters
@@ -56,7 +58,7 @@ def display_il(
     price_changeB: int,
     proportion: int,
     initial_pool_value: int,
-    narrative: bool,
+    narrative: bool = False,
     export: str = "",
 ):
     """Displays Impermanent Loss in a custom liquidity pool

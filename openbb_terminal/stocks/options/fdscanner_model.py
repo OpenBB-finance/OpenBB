@@ -15,12 +15,12 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def unusual_options(num: int):
+def unusual_options(limit: int = 100):
     """Get unusual option activity from fdscanner.com
 
     Parameters
     ----------
-    num: int
+    limit: int
         Number to show
 
     Returns
@@ -30,7 +30,7 @@ def unusual_options(num: int):
     last_updated: pd.Timestamp
         Timestamp indicated when data was updated from website
     """
-    pages = np.arange(0, num // 20 + 1)
+    pages = np.arange(0, limit // 20 + 1)
     data_list = []
     for page_num in pages:
 

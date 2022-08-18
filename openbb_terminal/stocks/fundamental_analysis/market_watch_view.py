@@ -253,20 +253,20 @@ def cash(other_args: List[str], ticker: str):
 
 
 @log_start_end(log=logger)
-def display_sean_seah_warnings(ticker: str, debug: bool = False):
+def display_sean_seah_warnings(symbol: str, debug: bool = False):
     """Display Sean Seah warnings
 
     Parameters
     ----------
     other_args : List[str]
         argparse other args
-    ticker : str
+    symbol : str
         Stock ticker
     """
-    financials, warnings, debugged_warnings = mwm.get_sean_seah_warnings(ticker, debug)
+    financials, warnings, debugged_warnings = mwm.get_sean_seah_warnings(symbol, debug)
 
     if financials.empty:
-        console.print(f"No financials found for {ticker}\n")
+        console.print(f"No financials found for {symbol}\n")
         return
 
     print_rich_table(

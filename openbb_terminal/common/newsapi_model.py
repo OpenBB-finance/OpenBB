@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 
+from datetime import datetime, timedelta
 from typing import Dict
 import requests
 from openbb_terminal import config_terminal as cfg
@@ -14,8 +15,8 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def get_news(
-    term: str,
-    s_from: str,
+    query: str,
+    start_date: str = (datetime.now() - timedelta(days=7)).strftime("%Y-%m-%d"),
     show_newest: bool = True,
     sources: str = "",
 ) -> Dict:
@@ -23,9 +24,9 @@ def get_news(
 
     Parameters
     ----------
-    term : str
+    query : str
         term to search on the news articles
-    s_from: str
+    start_date: str
         date to start searching articles from formatted YYYY-MM-DD
     show_newest: bool
         flag to show newest articles first
@@ -38,7 +39,7 @@ def get_news(
         term to search on the news articles
     """
     link = (
-        f"https://newsapi.org/v2/everything?q={term}&from={s_from}&sortBy=publishedAt&language=en"
+        f"https://newsapi.org/v2/everything?q={query}&from={start_date}&sortBy=publishedAt&language=en"
         f"&apiKey={cfg.API_NEWS_TOKEN}"
     )
 
@@ -53,7 +54,7 @@ def get_news(
     if response.status_code == 200:
         response_json = response.json()
         console.print(
-            f"{response_json['totalResults']} news articles for {term} were found since {s_from}\n"
+            f"{response_json['totalResults']} news articles for {query} were found since {start_date}\n"
         )
 
         if show_newest:

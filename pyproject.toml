@@ -1,7 +1,7 @@
 # https://python-poetry.org/docs/dependency-specification/
 [tool.poetry]
 name = "OpenBBTerminal"
-version = "1.6.0"
+version = "1.7.0"
 description = ""
 authors = ["Didier Rodrigues Lopes"]
 packages = [
@@ -12,8 +12,8 @@ packages = [
 openbb = 'terminal:terminal'
 
 [tool.poetry.dependencies]
+python = "^3.8,<3.11"
 scipy = "1.8.1"
-python = "^3.8,<3.10"
 iso8601 = "^0.1.14"
 FundamentalAnalysis = "^0.2.6"
 requests = "^2.25.1"

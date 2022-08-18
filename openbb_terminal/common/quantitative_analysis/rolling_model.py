@@ -13,52 +13,58 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def get_rolling_avg(df: pd.DataFrame, length: int) -> Tuple[pd.DataFrame, pd.DataFrame]:
+def get_rolling_avg(
+    data: pd.DataFrame, window: int = 14
+) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """Return rolling mean and standard deviation
 
     Parameters
     ----------
-    df_stock : pd.DataFrame
+    data: pd.DataFrame
         Dataframe of target data
-    length : int
+    window: int
         Length of rolling window
 
     Returns
     -------
-    pd.DataFrame :
+    pd.DataFrame:
         Dataframe of rolling mean
-    pd.DataFrame :
+    pd.DataFrame:
         Dataframe of rolling standard deviation
     """
-    rolling_mean = df.rolling(length, center=True, min_periods=1).mean()
-    rolling_std = df.rolling(length, center=True, min_periods=1).std()
+    rolling_mean = data.rolling(window, center=True, min_periods=1).mean()
+    rolling_std = data.rolling(window, center=True, min_periods=1).std()
 
     return pd.DataFrame(rolling_mean), pd.DataFrame(rolling_std)
 
 
 @log_start_end(log=logger)
-def get_spread(df: pd.DataFrame, length: int) -> Tuple[pd.DataFrame, pd.DataFrame]:
+def get_spread(
+    data: pd.DataFrame, window: int = 14
+) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """Standard Deviation and Variance
 
     Parameters
     ----------
-    df_stock : pd.DataFrame
+    data: pd.DataFrame
         DataFrame of targeted data
+    window: int
+        Length of window
 
     Returns
     -------
-    df_sd : pd.DataFrame
+    df_sd: pd.DataFrame
         Dataframe of rolling standard deviation
-    df_var : pd.DataFrame
+    df_var: pd.DataFrame
         Dataframe of rolling standard deviation
     """
     df_sd = ta.stdev(
-        close=df,
-        length=length,
+        close=data,
+        length=window,
     ).dropna()
     df_var = ta.variance(
-        close=df,
-        length=length,
+        close=data,
+        length=window,
     ).dropna()
 
     return pd.DataFrame(df_sd), pd.DataFrame(df_var)
@@ -66,17 +72,17 @@ def get_spread(df: pd.DataFrame, length: int) -> Tuple[pd.DataFrame, pd.DataFram
 
 @log_start_end(log=logger)
 def get_quantile(
-    df: pd.DataFrame, length: int, quantile_pct: float
+    data: pd.DataFrame, limit: int = 14, quantile_pct: float = 0.5
 ) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """Overlay Median & Quantile
 
     Parameters
     ----------
-    df : pd.DataFrame
+    data: pd.DataFrame
         Dataframe of targeted data
-    length : int
+    limit : int
         Length of window
-    quantile : float
+    quantile_pct: float
         Quantile to display
 
     Returns
@@ -86,10 +92,10 @@ def get_quantile(
     df_quantile : pd.DataFrame
         Dataframe of gievn quantile prices over window
     """
-    df_med = ta.median(close=df, length=length).dropna()
+    df_med = ta.median(close=data, length=limit).dropna()
     df_quantile = ta.quantile(
-        df,
-        length=length,
+        data,
+        length=limit,
         q=quantile_pct,
     ).dropna()
 
@@ -97,34 +103,34 @@ def get_quantile(
 
 
 @log_start_end(log=logger)
-def get_skew(df: pd.DataFrame, length: int) -> pd.DataFrame:
+def get_skew(data: pd.DataFrame, window: int = 14) -> pd.DataFrame:
     """Skewness Indicator
 
     Parameters
     ----------
-    df_stock : pd.DataFrame
+    data: pd.DataFrame
         Dataframe of targeted data
-    length : int
+    window : int
         Length of window
 
     Returns
     -------
-    df_skew : pd.DataFrame
+    data_skew : pd.DataFrame
         Dataframe of rolling skew
     """
-    df_skew = ta.skew(close=df, length=length).dropna()
+    df_skew = ta.skew(close=data, length=window).dropna()
     return df_skew
 
 
 @log_start_end(log=logger)
-def get_kurtosis(df: pd.DataFrame, length: int) -> pd.DataFrame:
+def get_kurtosis(data: pd.DataFrame, window: int = 14) -> pd.DataFrame:
     """Kurtosis Indicator
 
     Parameters
     ----------
-    df_stock : pd.DataFrame
+    data: pd.DataFrame
         Dataframe of targeted data
-    length : int
+    window: int
         Length of window
 
     Returns
@@ -132,5 +138,5 @@ def get_kurtosis(df: pd.DataFrame, length: int) -> pd.DataFrame:
     df_kurt : pd.DataFrame
         Dataframe of rolling kurtosis
     """
-    df_kurt = ta.kurtosis(close=df, length=length).dropna()
+    df_kurt = ta.kurtosis(close=data, length=window).dropna()
     return df_kurt

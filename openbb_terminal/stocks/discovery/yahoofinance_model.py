@@ -4,23 +4,12 @@ __docformat__ = "numpy"
 import logging
 
 import pandas as pd
-import requests
 
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.stocks.discovery.disc_helpers import get_df
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
-
-
-def get_df(url: str) -> pd.DataFrame:
-    headers = {
-        "User-Agent": (
-            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36"
-            "  (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36"
-        )
-    }
-    html = requests.get(url, headers=headers).text
-    dfs = pd.read_html(html)[0]
-    return dfs
 
 
 @log_start_end(log=logger)
@@ -32,7 +21,14 @@ def get_gainers() -> pd.DataFrame:
     pd.DataFrame
         Stock Gainers
     """
-    return get_df("https://finance.yahoo.com/screener/predefined/day_gainers")
+
+    df_gainers = get_df("https://finance.yahoo.com/screener/predefined/day_gainers")[0]
+    df_gainers.dropna(how="all", axis=1, inplace=True)
+    df_gainers = df_gainers.replace(float("NaN"), "")
+    if df_gainers.empty:
+        console.print("No gainers found.")
+
+    return df_gainers
 
 
 @log_start_end(log=logger)
@@ -44,7 +40,14 @@ def get_losers() -> pd.DataFrame:
     pd.DataFrame
         Stock Losers
     """
-    return get_df("https://finance.yahoo.com/screener/predefined/day_losers")
+
+    df_losers = get_df("https://finance.yahoo.com/screener/predefined/day_losers")[0]
+    df_losers.dropna(how="all", axis=1, inplace=True)
+    df_losers = df_losers.replace(float("NaN"), "")
+
+    if df_losers.empty:
+        console.print("No losers found.")
+    return df_losers
 
 
 @log_start_end(log=logger)
@@ -57,9 +60,16 @@ def get_ugs() -> pd.DataFrame:
     pd.DataFrame
         Undervalued stocks
     """
-    return get_df(
+
+    df = get_df(
         "https://finance.yahoo.com/screener/predefined/undervalued_growth_stocks"
-    )
+    )[0]
+    df.dropna(how="all", axis=1, inplace=True)
+    df = df.replace(float("NaN"), "")
+
+    if df.empty:
+        console.print("No data found.")
+    return df
 
 
 @log_start_end(log=logger)
@@ -71,9 +81,16 @@ def get_gtech() -> pd.DataFrame:
     pd.DataFrame
         Growth technology stocks
     """
-    return get_df(
+
+    df = get_df(
         "https://finance.yahoo.com/screener/predefined/growth_technology_stocks"
-    )
+    )[0]
+    df.dropna(how="all", axis=1, inplace=True)
+    df = df.replace(float("NaN"), "")
+
+    if df.empty:
+        console.print("No data found.")
+    return df
 
 
 @log_start_end(log=logger)
@@ -85,7 +102,14 @@ def get_active() -> pd.DataFrame:
     pd.DataFrame
         Most active stocks
     """
-    return get_df("https://finance.yahoo.com/screener/predefined/most_actives")
+
+    df = get_df("https://finance.yahoo.com/screener/predefined/most_actives")[0]
+    df.dropna(how="all", axis=1, inplace=True)
+    df = df.replace(float("NaN"), "")
+
+    if df.empty:
+        console.print("No data found.")
+    return df
 
 
 @log_start_end(log=logger)
@@ -98,9 +122,16 @@ def get_ulc() -> pd.DataFrame:
     pd.DataFrame
         Most undervalued large cap stocks
     """
-    return get_df(
-        "https://finance.yahoo.com/screener/predefined/undervalued_large_caps"
-    )
+
+    df = get_df("https://finance.yahoo.com/screener/predefined/undervalued_large_caps")[
+        0
+    ]
+    df.dropna(how="all", axis=1, inplace=True)
+    df = df.replace(float("NaN"), "")
+
+    if df.empty:
+        console.print("No data found.")
+    return df
 
 
 @log_start_end(log=logger)
@@ -113,4 +144,27 @@ def get_asc() -> pd.DataFrame:
     pd.DataFrame
         Most aggressive small cap stocks
     """
-    return get_df("https://finance.yahoo.com/screener/predefined/aggressive_small_caps")
+
+    df = get_df("https://finance.yahoo.com/screener/predefined/aggressive_small_caps")[
+        0
+    ]
+    df.dropna(how="all", axis=1, inplace=True)
+    df = df.replace(float("NaN"), "")
+
+    if df.empty:
+        console.print("No data found.")
+    return df
+
+
+@log_start_end(log=logger)
+def get_hotpenny() -> pd.DataFrame:
+    """Get Yahoo Finance hot penny stocks. [Source: Yahoo Finance]
+
+    Returns
+    -------
+    pd.DataFrame
+        Hottest penny stocks
+    """
+    return get_df(
+        "https://finance.yahoo.com/u/yahoo-finance/watchlists/most-active-penny-stocks/"
+    )[1]

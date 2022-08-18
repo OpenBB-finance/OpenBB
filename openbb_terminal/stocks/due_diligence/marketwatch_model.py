@@ -17,13 +17,13 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def get_sec_filings(ticker: str) -> pd.DataFrame:
+def get_sec_filings(symbol: str) -> pd.DataFrame:
     """Get SEC filings for a given stock ticker. [Source: Market Watch]
 
     Parameters
     ----------
-    ticker : str
-        Stock ticker
+    symbol : str
+        Stock ticker symbol
 
     Returns
     -------
@@ -34,7 +34,7 @@ def get_sec_filings(ticker: str) -> pd.DataFrame:
     pd.set_option("display.max_colwidth", None)
 
     url_financials = (
-        f"https://www.marketwatch.com/investing/stock/{ticker}/financials/secfilings"
+        f"https://www.marketwatch.com/investing/stock/{symbol}/financials/secfilings"
     )
 
     text_soup_financials = BeautifulSoup(

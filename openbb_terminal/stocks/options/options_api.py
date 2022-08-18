@@ -19,6 +19,7 @@ from .yfinance_view import plot_vol as vol_yf
 from .tradier_view import plot_volume_open_interest as voi_tr
 from .yfinance_view import plot_volume_open_interest as voi_yf
 from .tradier_view import plot_oi as oi_tr
+from .tradier_view import display_expirations as exp
 from .yfinance_view import plot_oi as oi_yf
 from .yfinance_view import plot_plot as plot
 from .yfinance_view import show_parity as parity

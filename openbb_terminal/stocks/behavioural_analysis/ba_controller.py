@@ -141,7 +141,7 @@ class BehaviouralAnalysisController(StockBaseController):
             other_args.insert(0, "-l")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            reddit_view.display_watchlist(num=ns_parser.limit)
+            reddit_view.display_watchlist(limit=ns_parser.limit)
 
     @log_start_end(log=logger)
     def call_snews(self, other_args: List[str]):
@@ -157,7 +157,7 @@ class BehaviouralAnalysisController(StockBaseController):
         )
         if ns_parser:
             finnhub_view.display_stock_price_headlines_sentiment(
-                ticker=self.ticker, export=ns_parser.export
+                symbol=self.ticker, export=ns_parser.export
             )
 
     @log_start_end(log=logger)
@@ -295,8 +295,8 @@ class BehaviouralAnalysisController(StockBaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             reddit_view.display_popular_tickers(
-                n_top=ns_parser.limit,
-                posts_to_look_at=ns_parser.num,
+                limit=ns_parser.limit,
+                post_limit=ns_parser.num,
                 subreddits=ns_parser.s_subreddit,
             )
 
@@ -344,7 +344,7 @@ class BehaviouralAnalysisController(StockBaseController):
         if ns_parser:
             if self.ticker:
                 reddit_view.display_due_diligence(
-                    ticker=self.ticker,
+                    symbol=self.ticker,
                     limit=ns_parser.limit,
                     n_days=ns_parser.days,
                     show_all_flairs=ns_parser.all,
@@ -436,8 +436,8 @@ class BehaviouralAnalysisController(StockBaseController):
             ticker = ns_parser.company if ns_parser.company else self.ticker
             if self.ticker:
                 reddit_view.display_reddit_sent(
-                    ticker=ticker,
-                    sort=ns_parser.sort,
+                    symbol=ticker,
+                    sortby=ns_parser.sort,
                     limit=ns_parser.limit,
                     graphic=ns_parser.graphic,
                     time_frame=ns_parser.time,
@@ -464,7 +464,7 @@ class BehaviouralAnalysisController(StockBaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if self.ticker:
-                stocktwits_view.display_bullbear(ticker=self.ticker)
+                stocktwits_view.display_bullbear(symbol=self.ticker)
             else:
                 console.print("No ticker loaded. Please load using 'load <ticker>'\n")
 
@@ -492,7 +492,7 @@ class BehaviouralAnalysisController(StockBaseController):
         if ns_parser:
             if self.ticker:
                 stocktwits_view.display_messages(
-                    ticker=self.ticker, limit=ns_parser.limit
+                    symbol=self.ticker, limit=ns_parser.limit
                 )
             else:
                 console.print("No ticker loaded. Please load using 'load <ticker>'\n")
@@ -574,7 +574,9 @@ class BehaviouralAnalysisController(StockBaseController):
         if ns_parser:
             if self.ticker:
                 google_view.display_mentions(
-                    ticker=self.ticker, start=ns_parser.start, export=ns_parser.export
+                    symbol=self.ticker,
+                    start_date=ns_parser.start,
+                    export=ns_parser.export,
                 )
             else:
                 console.print("No ticker loaded. Please load using 'load <ticker>'\n")
@@ -605,7 +607,7 @@ class BehaviouralAnalysisController(StockBaseController):
         if ns_parser:
             if self.ticker:
                 google_view.display_regions(
-                    ticker=self.ticker, num=ns_parser.limit, export=ns_parser.export
+                    symbol=self.ticker, limit=ns_parser.limit, export=ns_parser.export
                 )
             else:
                 console.print("No ticker loaded. Please load using 'load <ticker>'\n")
@@ -653,8 +655,8 @@ class BehaviouralAnalysisController(StockBaseController):
 
                     if not df_stock.empty:
                         google_view.display_correlation_interest(
-                            ticker=self.ticker,
-                            df_data=df_stock,
+                            symbol=self.ticker,
+                            data=df_stock,
                             words=ns_parser.words,
                             export=ns_parser.export,
                         )
@@ -697,7 +699,7 @@ class BehaviouralAnalysisController(StockBaseController):
         if ns_parser:
             if self.ticker:
                 google_view.display_queries(
-                    ticker=self.ticker, num=ns_parser.limit, export=ns_parser.export
+                    symbol=self.ticker, limit=ns_parser.limit, export=ns_parser.export
                 )
             else:
                 console.print("No ticker loaded. Please load using 'load <ticker>'\n")
@@ -728,7 +730,7 @@ class BehaviouralAnalysisController(StockBaseController):
         if ns_parser:
             if self.ticker:
                 google_view.display_rise(
-                    ticker=self.ticker, num=ns_parser.limit, export=ns_parser.export
+                    symbol=self.ticker, limit=ns_parser.limit, export=ns_parser.export
                 )
             else:
                 console.print("No ticker loaded. Please load using 'load <ticker>'\n")
@@ -762,7 +764,9 @@ class BehaviouralAnalysisController(StockBaseController):
         )
         if ns_parser:
             if self.ticker:
-                twitter_view.display_inference(ticker=self.ticker, num=ns_parser.limit)
+                twitter_view.display_inference(
+                    symbol=self.ticker, limit=ns_parser.limit
+                )
             else:
                 console.print("No ticker loaded. Please load using 'load <ticker>'\n")
 
@@ -814,7 +818,7 @@ class BehaviouralAnalysisController(StockBaseController):
         if ns_parser:
             if self.ticker:
                 twitter_view.display_sentiment(
-                    ticker=self.ticker,
+                    symbol=self.ticker,
                     n_tweets=ns_parser.limit,
                     n_days_past=ns_parser.n_days_past,
                     compare=ns_parser.compare,
@@ -843,12 +847,11 @@ class BehaviouralAnalysisController(StockBaseController):
         if ns_parser:
             if self.ticker:
                 finbrain_view.display_sentiment_analysis(
-                    ticker=self.ticker, raw=ns_parser.raw, export=ns_parser.export
+                    symbol=self.ticker, raw=ns_parser.raw, export=ns_parser.export
                 )
             else:
                 console.print("No ticker loaded. Please load using 'load <ticker>'\n")
-
-    @log_start_end(log=logger)
+           
     def call_jcdr(self, other_args: List[str]):
         """Process jcdr command"""
         parser = argparse.ArgumentParser(
@@ -900,5 +903,5 @@ class BehaviouralAnalysisController(StockBaseController):
                 )
                 return
             cramer_view.display_cramer_ticker(
-                ticker=self.ticker, raw=ns_parser.raw, export=ns_parser.export
+                symbol=self.ticker, raw=ns_parser.raw, export=ns_parser.export
             )

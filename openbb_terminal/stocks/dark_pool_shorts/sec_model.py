@@ -2,7 +2,7 @@
 __docformat__ = "numpy"
 
 import logging
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import pandas as pd
 import requests
@@ -24,6 +24,11 @@ def catching_diff_url_formats(ftd_urls: list) -> list:
     ----------
     ftd_urls : list
         list of urls of sec data
+
+    Returns
+    ----------
+    list
+        list of ftd urls
     """
     feb_mar_apr_catch = ["202002", "202003", "202004"]
     for i, ftd_url in enumerate(ftd_urls):
@@ -52,28 +57,35 @@ def catching_diff_url_formats(ftd_urls: list) -> list:
 
 @log_start_end(log=logger)
 def get_fails_to_deliver(
-    ticker: str,
-    start: datetime,
-    end: datetime,
-    num: int,
-):
+    symbol: str,
+    start_date: str = (datetime.now() - timedelta(days=60)).strftime("%Y-%m-%d"),
+    end_date: str = datetime.now().strftime("%Y-%m-%d"),
+    limit: int = 0,
+) -> pd.DataFrame:
     """Display fails-to-deliver data for a given ticker. [Source: SEC]
 
     Parameters
     ----------
-    ticker : str
+    symbol : str
         Stock ticker
-    start : datetime
-        Start of data
-    end : datetime
-        End of data
-    num : int
+    start_date : str
+        Start of data, in YYYY-MM-DD format
+    end_date : str
+        End of data, in YYYY-MM-DD format
+    limit : int
         Number of latest fails-to-deliver being printed
+
+    Returns
+    ----------
+    pd.DataFrame
+        Fail to deliver data
     """
     ftds_data = pd.DataFrame()
+    start = datetime.strptime(start_date, "%Y-%m-%d")
+    end = datetime.strptime(end_date, "%Y-%m-%d")
 
     # Filter by number of last FTD
-    if num > 0:
+    if limit > 0:
         url_ftds = "https://www.sec.gov/data/foiadocsfailsdatahtm"
         text_soup_ftds = BeautifulSoup(
             requests.get(url_ftds, headers={"User-Agent": get_user_agent()}).text,
@@ -84,7 +96,7 @@ def get_fails_to_deliver(
         links = table.findAll("a")
         link_idx = 0
 
-        while len(ftds_data) < num:
+        while len(ftds_data) < limit:
             if link_idx > len(links):
                 break
             link = links[link_idx]
@@ -99,7 +111,7 @@ def get_fails_to_deliver(
                 dtype={"QUANTITY (FAILS)": "int"},
                 encoding="iso8859",
             )
-            tmp_ftds = all_ftds[all_ftds["SYMBOL"] == ticker]
+            tmp_ftds = all_ftds[all_ftds["SYMBOL"] == symbol]
             del tmp_ftds["PRICE"]
             del tmp_ftds["SYMBOL"]
             # merge the data from this archive
@@ -107,7 +119,7 @@ def get_fails_to_deliver(
             link_idx += 1
 
         # clip away extra rows
-        ftds_data = ftds_data.sort_values("SETTLEMENT DATE")[-num:]
+        ftds_data = ftds_data.sort_values("SETTLEMENT DATE")[-limit:]
 
         ftds_data["SETTLEMENT DATE"] = ftds_data["SETTLEMENT DATE"].apply(
             lambda x: datetime.strptime(str(x), "%Y%m%d")
@@ -160,7 +172,7 @@ def get_fails_to_deliver(
                 dtype={"QUANTITY (FAILS)": "Int64"},
                 encoding="iso8859",
             )
-            tmp_ftds = all_ftds[all_ftds["SYMBOL"] == ticker]
+            tmp_ftds = all_ftds[all_ftds["SYMBOL"] == symbol]
             del tmp_ftds["PRICE"]
             del tmp_ftds["SYMBOL"]
             # merge the data from this archive

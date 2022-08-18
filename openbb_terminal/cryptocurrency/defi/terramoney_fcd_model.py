@@ -144,8 +144,16 @@ def get_staking_account_info(address: str = "") -> Tuple[pd.DataFrame, str]:
 
 
 @log_start_end(log=logger)
-def get_validators() -> pd.DataFrame:
+def get_validators(sortby: str = "votingPower", ascend: bool = True) -> pd.DataFrame:
     """Get information about terra validators [Source: https://fcd.terra.dev/swagger]
+
+    Parameters
+    -----------
+    sortby: str
+        Key by which to sort data. Choose from:
+        validatorName, tokensAmount, votingPower, commissionRate, status, uptime
+    ascend: bool
+        Flag to sort data descending
 
     Returns
     -------
@@ -172,17 +180,28 @@ def get_validators() -> pd.DataFrame:
             }
         )
 
-    return pd.DataFrame(results).sort_values(by="votingPower")
+    df = pd.DataFrame(results)
+    if not df.empty:
+        df = df.sort_values(by=sortby, ascending=ascend)
+    return df
 
 
 @log_start_end(log=logger)
-def get_proposals(status: str = "") -> pd.DataFrame:
+def get_proposals(
+    status: str = "", sortby: str = "id", ascend: bool = True, top: int = 10
+) -> pd.DataFrame:
     """Get terra blockchain governance proposals list [Source: https://fcd.terra.dev/swagger]
 
     Parameters
     ----------
     status: str
         status of proposal, one from list: ['Voting','Deposit','Passed','Rejected']
+    sortby: str
+        Key by which to sort data
+    ascend: bool
+        Flag to sort data ascending
+    top: int
+        Number of records to display
 
     Returns
     -------
@@ -228,6 +247,8 @@ def get_proposals(status: str = "") -> pd.DataFrame:
 
     if status.title() in statuses:
         df = df[df["status"] == status.title()]
+    df = df.sort_values(by=sortby, ascending=ascend).head(top)
+    df.columns = prettify_column_names(df.columns)
     return df
 
 
@@ -255,8 +276,13 @@ def get_account_growth(cumulative: bool = True) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_staking_ratio_history():
+def get_staking_ratio_history(top: int = 200):
     """Get terra blockchain staking ratio history [Source: https://fcd.terra.dev/swagger]
+
+    Parameters
+    ----------
+    top: int
+        The number of ratios to show
 
     Returns
     -------
@@ -268,12 +294,20 @@ def get_staking_ratio_history():
     df = pd.DataFrame(response)
     df["date"] = df["datetime"].apply(lambda x: datetime.fromtimestamp(x / 1000).date())
     df["stakingRatio"] = df["stakingRatio"].apply(lambda x: round(float(x) * 100, 2))
-    return df[["date", "stakingRatio"]]
+    df = df[["date", "stakingRatio"]]
+    df = df.sort_values("date", ascending=False).head(top)
+    df = df.set_index("date")
+    return df
 
 
 @log_start_end(log=logger)
-def get_staking_returns_history():
+def get_staking_returns_history(top: int = 200):
     """Get terra blockchain staking returns history [Source: https://fcd.terra.dev/v1]
+
+    Parameters
+    ----------
+    top: int
+        The number of returns to show
 
     Returns
     -------
@@ -287,4 +321,8 @@ def get_staking_returns_history():
     df["annualizedReturn"] = df["annualizedReturn"].apply(
         lambda x: round(float(x) * 100, 2)
     )
-    return df[["date", "annualizedReturn"]]
+    df = df[["date", "annualizedReturn"]]
+    df = df.sort_values("date", ascending=False).head(top)
+    df = df.set_index("date")
+
+    return df

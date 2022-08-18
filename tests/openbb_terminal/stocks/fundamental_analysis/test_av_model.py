@@ -21,9 +21,9 @@ def vcr_config():
 @pytest.mark.parametrize(
     "func, kwargs_dict",
     [
-        ("get_overview", {"ticker": "TSLA"}),
-        ("get_key_metrics", {"ticker": "TSLA"}),
-        ("get_earnings", {"ticker": "TSLA", "quarterly": True}),
+        ("get_overview", {"symbol": "TSLA"}),
+        ("get_key_metrics", {"symbol": "TSLA"}),
+        ("get_earnings", {"symbol": "TSLA", "quarterly": True}),
     ],
 )
 def test_invalid_response_status(func, kwargs_dict, mocker):
@@ -46,16 +46,16 @@ def test_invalid_response_status(func, kwargs_dict, mocker):
 @pytest.mark.parametrize(
     "func, kwargs_dict",
     [
-        ("get_overview", {"ticker": "TSLA"}),
-        ("get_key_metrics", {"ticker": "TSLA"}),
-        ("get_earnings", {"ticker": "TSLA", "quarterly": True}),
-        ("get_earnings", {"ticker": "TSLA", "quarterly": False}),
-        ("get_income_statements", {"ticker": "TSLA", "number": 5, "quarterly": True}),
-        ("get_income_statements", {"ticker": "TSLA", "number": 5, "quarterly": False}),
-        ("get_balance_sheet", {"ticker": "TSLA", "number": 5, "quarterly": True}),
-        ("get_balance_sheet", {"ticker": "TSLA", "number": 5, "quarterly": False}),
-        ("get_cash_flow", {"ticker": "TSLA", "number": 5, "quarterly": True}),
-        ("get_cash_flow", {"ticker": "TSLA", "number": 5, "quarterly": False}),
+        ("get_overview", {"symbol": "TSLA"}),
+        ("get_key_metrics", {"symbol": "TSLA"}),
+        ("get_earnings", {"symbol": "TSLA", "quarterly": True}),
+        ("get_earnings", {"symbol": "TSLA", "quarterly": False}),
+        ("get_income_statements", {"symbol": "TSLA", "limit": 5, "quarterly": True}),
+        ("get_income_statements", {"symbol": "TSLA", "limit": 5, "quarterly": False}),
+        ("get_balance_sheet", {"symbol": "TSLA", "limit": 5, "quarterly": True}),
+        ("get_balance_sheet", {"symbol": "TSLA", "limit": 5, "quarterly": False}),
+        ("get_cash_flow", {"symbol": "TSLA", "limit": 5, "quarterly": True}),
+        ("get_cash_flow", {"symbol": "TSLA", "limit": 5, "quarterly": False}),
     ],
 )
 def test_check_output(func, kwargs_dict, recorder):
@@ -65,13 +65,13 @@ def test_check_output(func, kwargs_dict, recorder):
 
 @pytest.mark.vcr
 def test_get_fraud_ratios(recorder):
-    result_df = av_model.get_fraud_ratios(ticker="TSLA")
+    result_df = av_model.get_fraud_ratios(symbol="TSLA")
 
     recorder.capture(result_df)
 
 
 @pytest.mark.vcr
 def test_get_dupont(recorder):
-    result_df = av_model.get_dupont(ticker="TSLA")
+    result_df = av_model.get_dupont(symbol="TSLA")
 
     recorder.capture(result_df)
