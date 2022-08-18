@@ -167,7 +167,10 @@ def get_unitroot(
     # Wrap this in catch_warnings to prevent
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
-        res2 = kpss(data, regression=kpss_reg, nlags="auto")
+        try:
+            res2 = kpss(data, regression=kpss_reg, nlags="auto")
+        except ValueError:
+            return pd.DataFrame()
     vals2 = [res2[0], res2[1], res2[2], "", ""]
     data["KPSS"] = vals2
     return data
