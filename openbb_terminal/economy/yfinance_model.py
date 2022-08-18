@@ -63,7 +63,7 @@ INDICES = {
     "se_omx30": {"name": "OMX Stockholm 30 Index (SEK)", "ticker": "^OMX"},
     "se_omxspi": {"name": "OMX Stockholm All Share PI (SEK)", "ticker": "^OMXSPI"},
     "se_benchmark": {"name": "OMX Stockholm Benchmark GI (SEK)", "ticker": "^OMXSBGI"},
-    "dk_benchmark": {"name": "OMX Copenhagen Benchamrk GI (DKK)", "ticker": "^OMXCBGI"},
+    "dk_benchmark": {"name": "OMX Copenhagen Benchmark GI (DKK)", "ticker": "^OMXCBGI"},
     "dk_omxc25": {"name": "OMX Copenhagen 25 Index (DKK)", "ticker": "^OMXC25"},
     "fi_omxh25": {"name": "OMX Helsinki 25 (EUR)", "ticker": "^OMXH25"},
     "de_dax40": {"name": "DAX Performance Index (EUR)", "ticker": "^GDAXI"},
