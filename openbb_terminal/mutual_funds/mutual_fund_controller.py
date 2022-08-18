@@ -175,7 +175,6 @@ class FundController(BaseController):
             help="Field to search by",
         )
         parser.add_argument(
-            "-f",
             "--fund",
             help="Fund string to search for",
             dest="fund",
@@ -208,7 +207,7 @@ class FundController(BaseController):
             default=False,
         )
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-f")
+            other_args.insert(0, "--fund")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             search_string = " ".join(ns_parser.fund)
@@ -218,7 +217,7 @@ class FundController(BaseController):
                 country=self.country,
                 limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                ascending=ns_parser.ascending,
+                ascend=ns_parser.ascending,
             )
         return self.queue
 
@@ -277,7 +276,6 @@ class FundController(BaseController):
             description="Get historical data.",
         )
         parser.add_argument(
-            "-f",
             "--fund",
             help="Fund string to search for",
             dest="fund",
@@ -311,7 +309,7 @@ class FundController(BaseController):
             help="The ending date (format YYYY-MM-DD) of the fund",
         )
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-f")
+            other_args.insert(0, "--fund")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             parsed_fund = " ".join(ns_parser.fund)
@@ -438,7 +436,6 @@ Potential errors
             description="Show allocation of a swedish fund.",
         )
         parser.add_argument(
-            "-f",
             "--focus",
             dest="focus",
             type=str,

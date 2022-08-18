@@ -304,7 +304,18 @@ class ForexController(BaseController):
     @log_start_end(log=logger)
     def call_pred(self, _):
         """Process pred command"""
-        if obbff.ENABLE_PREDICT:
+        # IMPORTANT: 8/11/22 prediction was discontinued on the installer packages
+        # because forecasting in coming out soon.
+        # This if statement disallows installer package users from using 'pred'
+        # even if they turn on the OPENBB_ENABLE_PREDICT feature flag to true
+        # however it does not prevent users who clone the repo from using it
+        # if they have ENABLE_PREDICT set to true.
+        if obbff.PACKAGED_APPLICATION or not obbff.ENABLE_PREDICT:
+            console.print(
+                "Predict is disabled. Forecasting coming soon!",
+                "\n",
+            )
+        else:
             if self.from_symbol and self.to_symbol:
                 if self.data.empty:
                     console.print(
@@ -332,11 +343,6 @@ class ForexController(BaseController):
                         )
             else:
                 console.print("No pair selected.\n")
-        else:
-            console.print(
-                "Predict is disabled. Check ENABLE_PREDICT flag on feature_flags.py",
-                "\n",
-            )
 
     @log_start_end(log=logger)
     def call_qa(self, _):

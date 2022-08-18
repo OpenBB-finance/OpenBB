@@ -315,8 +315,6 @@ class PortfolioController(BaseController):
             dest="risk_free_rate",
             help="Set the risk free rate.",
         )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-f")
 
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
@@ -1085,8 +1083,8 @@ class PortfolioController(BaseController):
                 self.portfolio_name, self.benchmark_name
             ):
                 portfolio_view.display_rolling_beta(
-                    self.portfolio.benchmark_returns,
                     self.portfolio.returns,
+                    self.portfolio.benchmark_returns,
                     period=ns_parser.period,
                     export=ns_parser.export,
                 )

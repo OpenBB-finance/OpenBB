@@ -19,12 +19,12 @@ def vcr_config():
 
 @pytest.mark.vcr
 def test_get_financial_comparisons(recorder):
-    result_tuple = polygon_model.get_similar_companies(
-        ticker="TSLA",
+    result = polygon_model.get_similar_companies(
+        symbol="TSLA",
         us_only=True,
     )
 
-    recorder.capture(result_tuple)
+    recorder.capture(result)
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -34,9 +34,9 @@ def test_get_similar_companies_invalid_status(mocker, recorder):
     # pylint: disable=protected-access
     mock_response._content = b"""{"error":"MOCK_ERROR"}"""
     mocker.patch(target="requests.get", new=mocker.Mock(return_value=mock_response))
-    result_tuple = polygon_model.get_similar_companies(
-        ticker="TSLA",
+    result = polygon_model.get_similar_companies(
+        symbol="TSLA",
         us_only=True,
     )
 
-    recorder.capture(result_tuple)
+    recorder.capture(result)

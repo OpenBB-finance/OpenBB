@@ -26,12 +26,12 @@ CURRENCY_LIST = get_currency_list()
 
 
 @log_start_end(log=logger)
-def check_valid_forex_currency(fx_symbol: str) -> str:
+def check_valid_forex_currency(symbol: str) -> str:
     """Check if given symbol is supported on alphavantage.
 
     Parameters
     ----------
-    fx_symbol : str
+    symbol : str
         Symbol to check
 
     Returns
@@ -44,11 +44,11 @@ def check_valid_forex_currency(fx_symbol: str) -> str:
     argparse.ArgumentTypeError
         Symbol not valid on alphavantage
     """
-    if fx_symbol.upper() in CURRENCY_LIST:
-        return fx_symbol.upper()
+    if symbol.upper() in CURRENCY_LIST:
+        return symbol.upper()
 
     raise argparse.ArgumentTypeError(
-        f"{fx_symbol.upper()} not found in alphavantage supported currency codes. "
+        f"{symbol.upper()} not found in alphavantage supported currency codes. "
     )
 
 

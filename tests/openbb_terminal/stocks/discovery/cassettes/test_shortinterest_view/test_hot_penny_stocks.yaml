@@ -56,91 +56,83 @@ interactions:
         width=\"60\" class=\"tblhdr\">Ticker</td><td width=\"70\" class=\"tblhdr\">Price</td><td
         width=\"70\" class=\"tblhdr\">Change</td><td width=\"100\" class=\"tblhdr\">$
         Volume</td><td width=\"100\" class=\"tblhdr\">Volume</td><td width=\"70\"
-        class=\"tblhdr\"># Trades</td></tr><tr><td align=\"center\"><a href=\"https://www.otcmarkets.com/stock/ETHE/quote\"
-        target=\"_blank\">ETHE</a></td>\n<td align=\"right\">$38.48</td>\n<td align=\"right\">6.37%</td>\n<td
-        align=\"right\">$276,587,944</td>\n<td align=\"right\">7,227,943</td>\n<td
-        align=\"right\">25,269</td>\n</tr>\n<tr><td class=\"tdi\" align=\"center\"><a
-        href=\"https://www.otcmarkets.com/stock/GBTC/quote\" target=\"_blank\">GBTC</a></td>\n<td
-        class=\"tdi\" align=\"right\">$40.69</td>\n<td class=\"tdi\" align=\"right\">4.25%</td>\n<td
-        class=\"tdi\" align=\"right\">$219,189,815</td>\n<td class=\"tdi\" align=\"right\">5,406,771</td>\n<td
-        class=\"tdi\" align=\"right\">18,667</td>\n</tr>\n<tr><td align=\"center\"><a
+        class=\"tblhdr\"># Trades</td></tr><tr><td align=\"center\"><a href=\"https://www.otcmarkets.com/stock/SNYNF/quote\"
+        target=\"_blank\">SNYNF</a></td>\n<td align=\"right\">$86.48</td>\n<td align=\"right\">-3.72%</td>\n<td
+        align=\"right\">$147,676,357</td>\n<td align=\"right\">1,751,233</td>\n<td
+        align=\"right\">22</td>\n</tr>\n<tr><td class=\"tdi\" align=\"center\"><a
         href=\"https://www.otcmarkets.com/stock/TCEHY/quote\" target=\"_blank\">TCEHY</a></td>\n<td
-        align=\"right\">$63.11</td>\n<td align=\"right\">-0.41%</td>\n<td align=\"right\">$297,568,678</td>\n<td
-        align=\"right\">4,724,663</td>\n<td align=\"right\">10,560</td>\n</tr>\n<tr><td
-        class=\"tdi\" align=\"center\"><a href=\"https://www.otcmarkets.com/stock/SHLDQ/quote\"
-        target=\"_blank\">SHLDQ</a></td>\n<td class=\"tdi\" align=\"right\">$0.41</td>\n<td
-        class=\"tdi\" align=\"right\">72.31%</td>\n<td class=\"tdi\" align=\"right\">$10,181,872</td>\n<td
-        class=\"tdi\" align=\"right\">20,647,709</td>\n<td class=\"tdi\" align=\"right\">8,367</td>\n</tr>\n<tr><td
-        align=\"center\"><a href=\"https://www.otcmarkets.com/stock/GDLC/quote\" target=\"_blank\">GDLC</a></td>\n<td
-        align=\"right\">$45.50</td>\n<td align=\"right\">-21.77%</td>\n<td align=\"right\">$41,767,827</td>\n<td
-        align=\"right\">842,169</td>\n<td align=\"right\">5,893</td>\n</tr>\n<tr><td
-        class=\"tdi\" align=\"center\"><a href=\"https://www.otcmarkets.com/stock/SWRM/quote\"
-        target=\"_blank\">SWRM</a></td>\n<td class=\"tdi\" align=\"right\">$0.011</td>\n<td
-        class=\"tdi\" align=\"right\">-20.00%</td>\n<td class=\"tdi\" align=\"right\">$3,844,012</td>\n<td
-        class=\"tdi\" align=\"right\">238,621,981</td>\n<td class=\"tdi\" align=\"right\">5,106</td>\n</tr>\n<tr><td
-        align=\"center\"><a href=\"https://www.otcmarkets.com/stock/SRUUF/quote\"
-        target=\"_blank\">SRUUF</a></td>\n<td align=\"right\">$11.02</td>\n<td align=\"right\">6.18%</td>\n<td
-        align=\"right\">$24,462,516</td>\n<td align=\"right\">2,222,233</td>\n<td
-        align=\"right\">4,819</td>\n</tr>\n<tr><td class=\"tdi\" align=\"center\"><a
-        href=\"https://www.otcmarkets.com/stock/HMBL/quote\" target=\"_blank\">HMBL</a></td>\n<td
-        class=\"tdi\" align=\"right\">$0.94</td>\n<td class=\"tdi\" align=\"right\">10.72%</td>\n<td
-        class=\"tdi\" align=\"right\">$5,104,108</td>\n<td class=\"tdi\" align=\"right\">5,658,841</td>\n<td
-        class=\"tdi\" align=\"right\">3,757</td>\n</tr>\n<tr><td align=\"center\"><a
-        href=\"https://www.otcmarkets.com/stock/MTRT/quote\" target=\"_blank\">MTRT</a></td>\n<td
-        align=\"right\">$3.49</td>\n<td align=\"right\">36.86%</td>\n<td align=\"right\">$6,385,568</td>\n<td
-        align=\"right\">1,687,460</td>\n<td align=\"right\">3,741</td>\n</tr>\n<tr><td
-        class=\"tdi\" align=\"center\"><a href=\"https://www.otcmarkets.com/stock/LTCN/quote\"
-        target=\"_blank\">LTCN</a></td>\n<td class=\"tdi\" align=\"right\">$21.55</td>\n<td
-        class=\"tdi\" align=\"right\">32.39%</td>\n<td class=\"tdi\" align=\"right\">$18,131,111</td>\n<td
-        class=\"tdi\" align=\"right\">918,903</td>\n<td class=\"tdi\" align=\"right\">3,697</td>\n</tr>\n<tr><td
+        class=\"tdi\" align=\"right\">$39.05</td>\n<td class=\"tdi\" align=\"right\">2.10%</td>\n<td
+        class=\"tdi\" align=\"right\">$84,176,523</td>\n<td class=\"tdi\" align=\"right\">2,135,644</td>\n<td
+        class=\"tdi\" align=\"right\">5,838</td>\n</tr>\n<tr><td align=\"center\"><a
+        href=\"https://www.otcmarkets.com/stock/ETHE/quote\" target=\"_blank\">ETHE</a></td>\n<td
+        align=\"right\">$14.53</td>\n<td align=\"right\">6.67%</td>\n<td align=\"right\">$53,242,696</td>\n<td
+        align=\"right\">3,635,125</td>\n<td align=\"right\">9,863</td>\n</tr>\n<tr><td
+        class=\"tdi\" align=\"center\"><a href=\"https://www.otcmarkets.com/stock/GBTC/quote\"
+        target=\"_blank\">GBTC</a></td>\n<td class=\"tdi\" align=\"right\">$15.44</td>\n<td
+        class=\"tdi\" align=\"right\">3.18%</td>\n<td class=\"tdi\" align=\"right\">$44,146,928</td>\n<td
+        class=\"tdi\" align=\"right\">2,818,362</td>\n<td class=\"tdi\" align=\"right\">8,435</td>\n</tr>\n<tr><td
+        align=\"center\"><a href=\"https://www.otcmarkets.com/stock/VWDRY/quote\"
+        target=\"_blank\">VWDRY</a></td>\n<td align=\"right\">$9.16</td>\n<td align=\"right\">1.79%</td>\n<td
+        align=\"right\">$35,094,944</td>\n<td align=\"right\">3,837,580</td>\n<td
+        align=\"right\">369</td>\n</tr>\n<tr><td class=\"tdi\" align=\"center\"><a
+        href=\"https://www.otcmarkets.com/stock/DIDIY/quote\" target=\"_blank\">DIDIY</a></td>\n<td
+        class=\"tdi\" align=\"right\">$3.05</td>\n<td class=\"tdi\" align=\"right\">1.67%</td>\n<td
+        class=\"tdi\" align=\"right\">$18,760,298</td>\n<td class=\"tdi\" align=\"right\">6,007,584</td>\n<td
+        class=\"tdi\" align=\"right\">3,073</td>\n</tr>\n<tr><td align=\"center\"><a
+        href=\"https://www.otcmarkets.com/stock/RHHBY/quote\" target=\"_blank\">RHHBY</a></td>\n<td
+        align=\"right\">$41.27</td>\n<td align=\"right\">-1.95%</td>\n<td align=\"right\">$17,393,012</td>\n<td
+        align=\"right\">418,883</td>\n<td align=\"right\">1,032</td>\n</tr>\n<tr><td
+        class=\"tdi\" align=\"center\"><a href=\"https://www.otcmarkets.com/stock/PPRUY/quote\"
+        target=\"_blank\">PPRUY</a></td>\n<td class=\"tdi\" align=\"right\">$57.61</td>\n<td
+        class=\"tdi\" align=\"right\">0.94%</td>\n<td class=\"tdi\" align=\"right\">$14,806,738</td>\n<td
+        class=\"tdi\" align=\"right\">256,668</td>\n<td class=\"tdi\" align=\"right\">233</td>\n</tr>\n<tr><td
+        align=\"center\"><a href=\"https://www.otcmarkets.com/stock/LVMUY/quote\"
+        target=\"_blank\">LVMUY</a></td>\n<td align=\"right\">$142.96</td>\n<td align=\"right\">0.46%</td>\n<td
+        align=\"right\">$13,992,077</td>\n<td align=\"right\">97,563</td>\n<td align=\"right\">716</td>\n</tr>\n<tr><td
+        class=\"tdi\" align=\"center\"><a href=\"https://www.otcmarkets.com/stock/LKNCY/quote\"
+        target=\"_blank\">LKNCY</a></td>\n<td class=\"tdi\" align=\"right\">$15.01</td>\n<td
+        class=\"tdi\" align=\"right\">0.33%</td>\n<td class=\"tdi\" align=\"right\">$13,536,663</td>\n<td
+        class=\"tdi\" align=\"right\">883,407</td>\n<td class=\"tdi\" align=\"right\">1,812</td>\n</tr>\n<tr><td
         colspan=\"6\" align=\"center\"><script type=\"text/javascript\"><!--\ngoogle_ad_client
         = \"ca-pub-1641527371507802\";\n/* Financial2 */\ngoogle_ad_slot = \"2389743805\";\ngoogle_ad_width
         = 468;\ngoogle_ad_height = 60;\n//-->\n</script>\n<script type=\"text/javascript\"\nsrc=\"https://pagead2.googlesyndication.com/pagead/show_ads.js\">\n</script></td></tr>\n<tr><td
-        class=\"tdi\" align=\"center\"><a href=\"https://www.otcmarkets.com/stock/CYAP/quote\"
-        target=\"_blank\">CYAP</a></td>\n<td class=\"tdi\" align=\"right\">$0.011</td>\n<td
-        class=\"tdi\" align=\"right\">57.75%</td>\n<td class=\"tdi\" align=\"right\">$2,131,920</td>\n<td
-        class=\"tdi\" align=\"right\">148,355,521</td>\n<td class=\"tdi\" align=\"right\">2,996</td>\n</tr>\n<tr><td
-        align=\"center\"><a href=\"https://www.otcmarkets.com/stock/TGGI/quote\" target=\"_blank\">TGGI</a></td>\n<td
-        align=\"right\">$0.007</td>\n<td align=\"right\">44.12%</td>\n<td align=\"right\">$3,618,655</td>\n<td
-        align=\"right\">546,622,085</td>\n<td align=\"right\">2,556</td>\n</tr>\n<tr><td
-        class=\"tdi\" align=\"center\"><a href=\"https://www.otcmarkets.com/stock/FDVRF/quote\"
-        target=\"_blank\">FDVRF</a></td>\n<td class=\"tdi\" align=\"right\">$1.94</td>\n<td
-        class=\"tdi\" align=\"right\">-30.77%</td>\n<td class=\"tdi\" align=\"right\">$2,716,956</td>\n<td
-        class=\"tdi\" align=\"right\">1,343,349</td>\n<td class=\"tdi\" align=\"right\">2,464</td>\n</tr>\n<tr><td
-        align=\"center\"><a href=\"https://www.otcmarkets.com/stock/RYCEY/quote\"
-        target=\"_blank\">RYCEY</a></td>\n<td align=\"right\">$1.51</td>\n<td align=\"right\">-1.95%</td>\n<td
-        align=\"right\">$3,155,417</td>\n<td align=\"right\">2,080,885</td>\n<td align=\"right\">2,433</td>\n</tr>\n<tr><td
-        class=\"tdi\" align=\"center\"><a href=\"https://www.otcmarkets.com/stock/HCMC/quote\"
-        target=\"_blank\">HCMC</a></td>\n<td class=\"tdi\" align=\"right\">$0.001</td>\n<td
-        class=\"tdi\" align=\"right\">0.00%</td>\n<td class=\"tdi\" align=\"right\">$869,596</td>\n<td
-        class=\"tdi\" align=\"right\">1,340,027,959</td>\n<td class=\"tdi\" align=\"right\">2,309</td>\n</tr>\n<tr><td
-        align=\"center\"><a href=\"https://www.otcmarkets.com/stock/LCLP/quote\" target=\"_blank\">LCLP</a></td>\n<td
-        align=\"right\">$0.038</td>\n<td align=\"right\">20.63%</td>\n<td align=\"right\">$4,351,496</td>\n<td
-        align=\"right\">123,914,681</td>\n<td align=\"right\">2,308</td>\n</tr>\n<tr><td
-        class=\"tdi\" align=\"center\"><a href=\"https://www.otcmarkets.com/stock/RGBP/quote\"
-        target=\"_blank\">RGBP</a></td>\n<td class=\"tdi\" align=\"right\">$0.042</td>\n<td
-        class=\"tdi\" align=\"right\">1.08%</td>\n<td class=\"tdi\" align=\"right\">$3,431,529</td>\n<td
-        class=\"tdi\" align=\"right\">83,373,256</td>\n<td class=\"tdi\" align=\"right\">2,301</td>\n</tr>\n<tr><td
-        align=\"center\"><a href=\"https://www.otcmarkets.com/stock/VWAGY/quote\"
-        target=\"_blank\">VWAGY</a></td>\n<td align=\"right\">$34.18</td>\n<td align=\"right\">-2.06%</td>\n<td
-        align=\"right\">$10,209,424</td>\n<td align=\"right\">297,814</td>\n<td align=\"right\">2,275</td>\n</tr>\n<tr><td
-        class=\"tdi\" align=\"center\"><a href=\"https://www.otcmarkets.com/stock/CURLF/quote\"
-        target=\"_blank\">CURLF</a></td>\n<td class=\"tdi\" align=\"right\">$12.09</td>\n<td
-        class=\"tdi\" align=\"right\">2.25%</td>\n<td class=\"tdi\" align=\"right\">$6,519,370</td>\n<td
-        class=\"tdi\" align=\"right\">544,929</td>\n<td class=\"tdi\" align=\"right\">2,107</td>\n</tr>\n</table>\n<p
-        style=\"text-align:center;font-size:10px;\">Data as of Friday, September 3,
-        2021 at 3:55pm EST</p>\n<br>\n<tr><td align=\"center\">\n<script type=\"text/javascript\"><!--\ngoogle_ad_client
+        class=\"tdi\" align=\"center\"><a href=\"https://www.otcmarkets.com/stock/IFNNY/quote\"
+        target=\"_blank\">IFNNY</a></td>\n<td class=\"tdi\" align=\"right\">$28.26</td>\n<td
+        class=\"tdi\" align=\"right\">0.68%</td>\n<td class=\"tdi\" align=\"right\">$11,217,856</td>\n<td
+        class=\"tdi\" align=\"right\">396,098</td>\n<td class=\"tdi\" align=\"right\">300</td>\n</tr>\n<tr><td
+        align=\"center\"><a href=\"https://www.otcmarkets.com/stock/MTUAY/quote\"
+        target=\"_blank\">MTUAY</a></td>\n<td align=\"right\">$99.80</td>\n<td align=\"right\">1.61%</td>\n<td
+        align=\"right\">$11,001,723</td>\n<td align=\"right\">110,513</td>\n<td align=\"right\">138</td>\n</tr>\n<tr><td
+        class=\"tdi\" align=\"center\"><a href=\"https://www.otcmarkets.com/stock/SIEGY/quote\"
+        target=\"_blank\">SIEGY</a></td>\n<td class=\"tdi\" align=\"right\">$56.72</td>\n<td
+        class=\"tdi\" align=\"right\">0.62%</td>\n<td class=\"tdi\" align=\"right\">$10,728,335</td>\n<td
+        class=\"tdi\" align=\"right\">189,096</td>\n<td class=\"tdi\" align=\"right\">542</td>\n</tr>\n<tr><td
+        align=\"center\"><a href=\"https://www.otcmarkets.com/stock/KHOLY/quote\"
+        target=\"_blank\">KHOLY</a></td>\n<td align=\"right\">$11.50</td>\n<td align=\"right\">1.63%</td>\n<td
+        align=\"right\">$9,930,259</td>\n<td align=\"right\">869,321</td>\n<td align=\"right\">3</td>\n</tr>\n<tr><td
+        class=\"tdi\" align=\"center\"><a href=\"https://www.otcmarkets.com/stock/NSRGY/quote\"
+        target=\"_blank\">NSRGY</a></td>\n<td class=\"tdi\" align=\"right\">$122.53</td>\n<td
+        class=\"tdi\" align=\"right\">0.98%</td>\n<td class=\"tdi\" align=\"right\">$9,814,725</td>\n<td
+        class=\"tdi\" align=\"right\">80,164</td>\n<td class=\"tdi\" align=\"right\">720</td>\n</tr>\n<tr><td
+        align=\"center\"><a href=\"https://www.otcmarkets.com/stock/AAGIY/quote\"
+        target=\"_blank\">AAGIY</a></td>\n<td align=\"right\">$39.03</td>\n<td align=\"right\">0.22%</td>\n<td
+        align=\"right\">$9,064,351</td>\n<td align=\"right\">231,439</td>\n<td align=\"right\">642</td>\n</tr>\n<tr><td
+        class=\"tdi\" align=\"center\"><a href=\"https://www.otcmarkets.com/stock/IMBBY/quote\"
+        target=\"_blank\">IMBBY</a></td>\n<td class=\"tdi\" align=\"right\">$23.16</td>\n<td
+        class=\"tdi\" align=\"right\">0.90%</td>\n<td class=\"tdi\" align=\"right\">$8,004,907</td>\n<td
+        class=\"tdi\" align=\"right\">345,530</td>\n<td class=\"tdi\" align=\"right\">233</td>\n</tr>\n<tr><td
+        align=\"center\"><a href=\"https://www.otcmarkets.com/stock/IMCDY/quote\"
+        target=\"_blank\">IMCDY</a></td>\n<td align=\"right\">$78.38</td>\n<td align=\"right\">0.56%</td>\n<td
+        align=\"right\">$7,895,608</td>\n<td align=\"right\">100,425</td>\n<td align=\"right\">48</td>\n</tr>\n<tr><td
+        class=\"tdi\" align=\"center\"><a href=\"https://www.otcmarkets.com/stock/LGGNY/quote\"
+        target=\"_blank\">LGGNY</a></td>\n<td class=\"tdi\" align=\"right\">$17.26</td>\n<td
+        class=\"tdi\" align=\"right\">-1.03%</td>\n<td class=\"tdi\" align=\"right\">$7,644,845</td>\n<td
+        class=\"tdi\" align=\"right\">439,961</td>\n<td class=\"tdi\" align=\"right\">68</td>\n</tr>\n</table>\n<p
+        style=\"text-align:center;font-size:10px;\">Data as of Thursday, August 11,
+        2022 at 7:30am EST</p>\n<br>\n<tr><td align=\"center\">\n<script type=\"text/javascript\"><!--\ngoogle_ad_client
         = \"pub-1641527371507802\";\n/* Financial */\ngoogle_ad_slot = \"4718314016\";\ngoogle_ad_width
-        = 728;\ngoogle_ad_height = 90;\n//-->\n</script>\n<script type=\"text/javascript\"\nsrc=\"https://pagead2.googlesyndication.com/pagead/show_ads.js\">\n</script>\n</td>\n</tr>\n</table>\n
-        \                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 <div
-        id=\"3a6286bf\" class=\"angular-collapse-div partners-collapse-inside\" style=\"position:
-        fixed; right: -1145px; top: -852px; overflow: hidden; width: 316px; visibility:
-        hidden;\"><h2>xxx videos</h2>  <ul class=\"85e25f40-menu\"> <li class=\"0de19-1a73\">
-        <a href=\"https://xvideosrei.com/videos/brasileiro/\">xvideos brasileiro</a></li>
-        <li class=\"11f84af3f-cf09\"> <a href=\"https://www.porno16.com/videos/porno-carioca/\">porno
-        carioca videos</a></li> <li class=\"74630-1bb7\"> <a href=\"https://cinepornogratis.com/videos/porno-casero/\">
-        videos porno caseros</a></li> <li class=\"520d8c-91\"> <a href=\"https://filmesporno.xxx/videos/porno-amador/\">video
-        porno amador</a></li>  </ul></div><p style=\"text-align: center\"><a href=\"https://tinyurl.com/TradeOfTheWeek\"
+        = 728;\ngoogle_ad_height = 90;\n//-->\n</script>\n<script type=\"text/javascript\"\nsrc=\"https://pagead2.googlesyndication.com/pagead/show_ads.js\">\n</script>\n</td>\n</tr>\n</table>\n\n<p
+        style=\"text-align: center\"><a href=\"https://tinyurl.com/TradeOfTheWeek\"
         target=_blank><img src=\"/TradeIdeasTOW.gif\" border=\\\"0\\\"></a></p>\n\n<script
         type=\"text/javascript\">\n\n  var _gaq = _gaq || [];\n  _gaq.push(['_setAccount',
         'UA-6503566-9']);\n  _gaq.push(['_trackPageview']);\n\n  (function() {\n    var
@@ -154,7 +146,7 @@ interactions:
       Content-Type:
       - text/html; charset=UTF-8
       Date:
-      - Fri, 10 Dec 2021 09:16:17 GMT
+      - Thu, 11 Aug 2022 16:48:55 GMT
       Keep-Alive:
       - timeout=5, max=100
       Server:

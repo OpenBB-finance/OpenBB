@@ -17,6 +17,7 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.economy import (
     alphavantage_view,
     economy_helpers,
+    finviz_model,
     finviz_view,
     nasdaq_model,
     nasdaq_view,
@@ -30,6 +31,7 @@ from openbb_terminal.economy import (
     investingcom_model,
     investingcom_view,
     plot_view,
+    commodity_view,
 )
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -38,9 +40,9 @@ from openbb_terminal.helper_funcs import (
     print_rich_table,
     valid_date,
 )
-from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.menu import session
 
 logger = logging.getLogger(__name__)
 
@@ -64,14 +66,15 @@ class EconomyController(BaseController):
         "industry",
         "bigmac",
         "ycrv",
-        "ecocal",
+        "events",
+        "cdebt",
     ]
 
     CHOICES_MENUS = ["pred", "qa"]
 
     wsj_sortby_cols_dict = {c: None for c in ["ticker", "last", "change", "prevClose"]}
     map_period_list = ["1d", "1w", "1m", "3m", "6m", "1y"]
-    map_type_list = ["sp500", "world", "full", "etf"]
+    map_filter_list = ["sp500", "world", "full", "etf"]
     macro_us_interval = [
         "annual",
         "quarter",
@@ -127,23 +130,7 @@ class EconomyController(BaseController):
         "Change",
         "Volume",
     ]
-    d_GROUPS = {
-        "sector": "Sector",
-        "industry": "Industry",
-        "basic materials": "Industry (Basic Materials)",
-        "communication services": "Industry (Communication Services)",
-        "consumer cyclical": "Industry (Consumer Cyclical)",
-        "consumer defensive": "Industry (Consumer Defensive)",
-        "energy": "Industry (Energy)",
-        "financial": "Industry (Financial)",
-        "healthcare": "Industry (Healthcare)",
-        "industrials": "Industry (Industrials)",
-        "real Estate": "Industry (Real Estate)",
-        "technology": "Industry (Technology)",
-        "utilities": "Industry (Utilities)",
-        "country": "Country (U.S. listed stocks only)",
-        "capitalization": "Capitalization",
-    }
+    d_GROUPS = finviz_model.GROUPS
     PATH = "/economy/"
 
     stored_datasets = ""
@@ -182,32 +169,32 @@ class EconomyController(BaseController):
                 c: None for c in econdb_model.COUNTRY_CODES
             }
 
-            self.choices["ycrv"]["-c"] = {c: None for c in investingcom_model.COUNTRIES}
+            self.choices["ycrv"]["-c"] = {
+                c: None for c in investingcom_model.BOND_COUNTRIES
+            }
             self.choices["ycrv"]["--countries"] = {
-                c: None for c in investingcom_model.COUNTRIES
+                c: None for c in investingcom_model.BOND_COUNTRIES
             }
 
-            self.choices["ecocal"]["-c"] = {
-                c: None for c in investingcom_model.COUNTRIES
+            self.choices["events"]["-c"] = {
+                c: None for c in investingcom_model.CALENDAR_COUNTRIES
             }
-            self.choices["ecocal"]["--countries"] = {
-                c: None for c in investingcom_model.COUNTRIES
+            self.choices["events"]["--countries"] = {
+                c: None for c in investingcom_model.CALENDAR_COUNTRIES
             }
 
-            self.choices["ecocal"]["-i"] = {
+            self.choices["events"]["-i"] = {
                 c: None for c in investingcom_model.IMPORTANCES
             }
-            self.choices["ecocal"]["--importances"] = {
+            self.choices["events"]["--importances"] = {
                 c: None for c in investingcom_model.IMPORTANCES
             }
 
-            self.choices["ecocal"]["-cat"] = {
-                c: None for c in investingcom_model.CATEGORIES
-            }
-            self.choices["ecocal"]["--categories"] = {
+            self.choices["events"]["--cat"] = {
                 c: None for c in investingcom_model.CATEGORIES
             }
 
+            self.choices["valuation"]["--g"] = {c: None for c in self.d_GROUPS}
             self.choices["valuation"]["-s"] = {
                 c: None for c in self.valuation_sort_cols
             }
@@ -215,6 +202,7 @@ class EconomyController(BaseController):
                 c: None for c in self.valuation_sort_cols
             }
 
+            self.choices["performance"]["--g"] = {c: None for c in self.d_GROUPS}
             self.choices["performance"]["-s"] = {
                 c: None for c in self.performance_sort_list
             }
@@ -222,8 +210,12 @@ class EconomyController(BaseController):
                 c: None for c in self.performance_sort_list
             }
 
+            self.choices["spectrum"]["--g"] = {c: None for c in self.d_GROUPS}
+
             self.choices["map"]["-p"] = {c: None for c in self.map_period_list}
             self.choices["map"]["--period"] = {c: None for c in self.map_period_list}
+            self.choices["map"]["-t"] = {c: None for c in self.map_filter_list}
+            self.choices["map"]["--type"] = {c: None for c in self.map_filter_list}
 
             self.choices["support"] = self.SUPPORT_CHOICES
             self.choices["about"] = self.ABOUT_CHOICES
@@ -259,7 +251,8 @@ class EconomyController(BaseController):
         mt.add_cmd("map", "Finviz")
         mt.add_cmd("bigmac", "NASDAQ Datalink")
         mt.add_cmd("ycrv", "Investing.com / FRED")
-        mt.add_cmd("ecocal", "Investing.com")
+        mt.add_cmd("events", "Investing.com")
+        mt.add_cmd("cdebt", "USDebtClock.org")
         mt.add_raw("\n")
         mt.add_cmd("rtps", "Alpha Vantage")
         mt.add_cmd("valuation", "Finviz")
@@ -288,8 +281,8 @@ class EconomyController(BaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="overview",
             description="""
-            Provide a market overview of a variety of options. This can be a general overview, indices,
-            bonds and currencies. [Source: Wall St. Journal]
+            Provide a market overview of a variety of options. This can be a general overview,
+            indices, bonds and currencies. [Source: Wall St. Journal]
             """,
         )
 
@@ -353,7 +346,7 @@ class EconomyController(BaseController):
         parser.add_argument(
             "-s",
             "--sortby",
-            dest="sort_col",
+            dest="sort_by",
             type=str,
             choices=self.wsj_sortby_cols_dict.keys(),
             default="ticker",
@@ -376,7 +369,7 @@ class EconomyController(BaseController):
         if ns_parser and ns_parser.commodity:
             finviz_view.display_future(
                 future_type=ns_parser.commodity.capitalize(),
-                sort_col=ns_parser.sort_col,
+                sort_by=ns_parser.sort_by,
                 ascending=ns_parser.ascend,
                 export=ns_parser.export,
             )
@@ -414,14 +407,14 @@ class EconomyController(BaseController):
             dest="s_type",
             type=str,
             default="sp500",
-            choices=self.map_type_list,
+            choices=self.map_filter_list,
             help="Map filter type.",
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            finviz_view.map_sp500_view(
+            finviz_view.display_performance_map(
                 period=ns_parser.s_period,
-                map_type=ns_parser.s_type,
+                map_filter=ns_parser.s_type,
             )
 
     @log_start_end(log=logger)
@@ -459,11 +452,8 @@ class EconomyController(BaseController):
         )
         if ns_parser:
             if ns_parser.codes:
-                file = os.path.join(
-                    os.path.dirname(__file__), "NASDAQ_CountryCodes.csv"
-                )
                 console.print(
-                    pd.read_csv(file, index_col=0).to_string(index=False), "\n"
+                    nasdaq_model.get_country_codes().to_string(index=False), "\n"
                 )
             else:
                 nasdaq_view.display_big_mac_index(
@@ -524,7 +514,7 @@ class EconomyController(BaseController):
         )
         parser.add_argument(
             "--convert",
-            dest="convert_currency",
+            dest="currency",
             help="Convert the currency of the chosen country to a specified currency. To find the "
             "currency symbols use '--show countries'",
             default=False,
@@ -552,12 +542,12 @@ class EconomyController(BaseController):
             if ns_parser.parameters and ns_parser.countries:
 
                 # Store data
-                (df, units,) = econdb_model.get_aggregated_macro_data(
+                (df, units, _) = econdb_model.get_aggregated_macro_data(
                     parameters=ns_parser.parameters,
                     countries=ns_parser.countries,
                     start_date=ns_parser.start_date,
                     end_date=ns_parser.end_date,
-                    convert_currency=ns_parser.convert_currency,
+                    currency=ns_parser.currency,
                 )
 
                 if not df.empty:
@@ -583,7 +573,7 @@ class EconomyController(BaseController):
                         countries=ns_parser.countries,
                         start_date=ns_parser.start_date,
                         end_date=ns_parser.end_date,
-                        convert_currency=ns_parser.convert_currency,
+                        currency=ns_parser.currency,
                         raw=ns_parser.raw,
                         export=ns_parser.export,
                     )
@@ -639,15 +629,15 @@ class EconomyController(BaseController):
             other_args,
             export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
             raw=True,
-            limit=5,
+            limit=100,
         )
         if ns_parser:
             if ns_parser.query:
                 query = " ".join(ns_parser.query)
-                df_search = fred_model.get_series_notes(query)
+                df_search = fred_model.get_series_notes(search_query=query)
 
                 if not df_search.empty:
-                    fred_view.notes(series_term=query, num=ns_parser.limit)
+                    fred_view.notes(search_query=query, limit=ns_parser.limit)
 
                     self.fred_query = df_search["id"].head(ns_parser.limit)
                     self.update_runtime_choices()
@@ -670,12 +660,15 @@ class EconomyController(BaseController):
                 if not series_dict:
                     return self.queue
 
-                for series_id, data in series_dict.items():
-                    self.FRED_TITLES[series_id] = f"{data['title']} ({data['units']})"
-
-                df = fred_model.get_aggregated_series_data(
-                    series_dict, ns_parser.start_date, ns_parser.end_date
+                df, detail = fred_model.get_aggregated_series_data(
+                    series_ids=ns_parser.parameter,
+                    start_date=ns_parser.start_date,
+                    end_date=ns_parser.end_date,
+                    limit=ns_parser.limit,
                 )
+
+                for series_id, data in detail.items():
+                    self.FRED_TITLES[series_id] = f"{data['title']} ({data['units']})"
 
                 if not df.empty:
                     self.DATASETS["fred"] = pd.concat(
@@ -690,12 +683,12 @@ class EconomyController(BaseController):
                     )
 
                     fred_view.display_fred_series(
-                        d_series=series_dict,
+                        series_ids=ns_parser.parameter,
                         start_date=ns_parser.start_date,
                         end_date=ns_parser.end_date,
+                        limit=ns_parser.limit,
                         raw=ns_parser.raw,
                         export=ns_parser.export,
-                        limit=ns_parser.limit,
                     )
 
                     self.update_runtime_choices()
@@ -865,7 +858,7 @@ class EconomyController(BaseController):
             type=str,
             dest="maturity",
             help="The preferred maturity which is dependent on the type of the treasury",
-            default=["1y"],
+            default=["10y"],
         )
         parser.add_argument(
             "--show",
@@ -875,8 +868,7 @@ class EconomyController(BaseController):
             default=False,
         )
         parser.add_argument(
-            "-f",
-            "--frequency",
+            "--freq",
             type=str,
             dest="frequency",
             choices=econdb_model.TREASURIES["frequencies"],
@@ -919,11 +911,11 @@ class EconomyController(BaseController):
         )
         if ns_parser:
             if ns_parser.show_maturities:
-                econdb_view.show_treasury_maturities(econdb_model.TREASURIES)
+                econdb_view.show_treasury_maturities()
                 return self.queue
 
             if ns_parser.maturity and ns_parser.type:
-                treasury_data = econdb_model.get_treasuries(
+                df = econdb_model.get_treasuries(
                     instruments=ns_parser.type,
                     maturities=ns_parser.maturity,
                     frequency=ns_parser.frequency,
@@ -931,17 +923,11 @@ class EconomyController(BaseController):
                     end_date=ns_parser.end_date,
                 )
 
-                df = (
-                    pd.DataFrame.from_dict(treasury_data, orient="index")
-                    .stack()
-                    .to_frame()
-                )
-
                 if not df.empty:
                     self.DATASETS["treasury"] = pd.concat(
                         [
                             self.DATASETS["treasury"],
-                            pd.DataFrame(df[0].values.tolist(), index=df.index).T,
+                            df,
                         ]
                     )
 
@@ -958,7 +944,7 @@ class EconomyController(BaseController):
                     )
 
                     econdb_view.show_treasuries(
-                        types=ns_parser.type,
+                        instruments=ns_parser.type,
                         maturities=ns_parser.maturity,
                         frequency=ns_parser.frequency,
                         start_date=ns_parser.start_date,
@@ -1021,8 +1007,6 @@ class EconomyController(BaseController):
 
             elif ns_parser.source == "investpy":
 
-                investingcom_model.check_correct_country(ns_parser.country)
-
                 investingcom_view.display_yieldcurve(
                     country=ns_parser.country,
                     raw=ns_parser.raw,
@@ -1030,13 +1014,13 @@ class EconomyController(BaseController):
                 )
 
     @log_start_end(log=logger)
-    def call_ecocal(self, other_args: List[str]):
-        """Process ecocal command"""
+    def call_events(self, other_args: List[str]):
+        """Process events command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="ecocal",
-            description="Economic calendar.",
+            prog="events",
+            description="Economic calendar. If no start or end dates, default is the current day high importance events.",
         )
         parser.add_argument(
             "-c",
@@ -1044,25 +1028,23 @@ class EconomyController(BaseController):
             action="store",
             dest="country",
             nargs="+",
-            default="united states",
+            default="all",
             help="Display calendar for specific country.",
         )
         parser.add_argument(
             "-i",
-            "--importances",
+            "--importance",
             action="store",
-            dest="importances",
+            dest="importance",
             choices=investingcom_model.IMPORTANCES,
-            default="all",
             help="Event importance classified as high, medium, low or all.",
         )
         parser.add_argument(
             "-cat",
             "--categories",
             action="store",
-            dest="categories",
+            dest="category",
             choices=investingcom_model.CATEGORIES,
-            nargs="+",
             default=None,
             help="Event category.",
         )
@@ -1074,7 +1056,6 @@ class EconomyController(BaseController):
             help="The start date of the data (format: YEAR-MONTH-DAY, i.e. 2010-12-31)",
             default=None,
         )
-
         parser.add_argument(
             "-e",
             "--end_date",
@@ -1083,31 +1064,28 @@ class EconomyController(BaseController):
             help="The start date of the data (format: YEAR-MONTH-DAY, i.e. 2010-12-31)",
             default=None,
         )
-
         ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
             raw=True,
-            limit=10,
+            limit=100,
         )
 
         if ns_parser:
-
             if isinstance(ns_parser.country, list):
                 ns_parser.country = " ".join(ns_parser.country)
 
-            if isinstance(ns_parser.categories, list):
-                ns_parser.categories = " ".join(ns_parser.categories)
-
-            investingcom_model.check_correct_country(ns_parser.country)
+            investingcom_model.check_correct_country(
+                ns_parser.country, investingcom_model.CALENDAR_COUNTRIES
+            )
 
             investingcom_view.display_economic_calendar(
-                countries=ns_parser.country,
-                importances=ns_parser.importances,
-                categories=ns_parser.categories,
-                from_date=ns_parser.start_date,
-                to_date=ns_parser.end_date,
+                country=ns_parser.country,
+                importance=ns_parser.importance,
+                category=ns_parser.category,
+                start_date=ns_parser.start_date,
+                end_date=ns_parser.end_date,
                 limit=ns_parser.limit,
                 export=ns_parser.export,
             )
@@ -1300,15 +1278,16 @@ class EconomyController(BaseController):
             "-g",
             "--group",
             type=str,
+            choices=list(self.d_GROUPS.keys()),
             default="sector",
             nargs="+",
             dest="group",
-            help="Data group (sector, industry or country)",
+            help="Data group (sectors, industry or country)",
         )
         parser.add_argument(
             "-s",
             "--sortby",
-            dest="sort_col",
+            dest="sort_by",
             type=str,
             choices=self.valuation_sort_cols,
             default="Name",
@@ -1329,14 +1308,14 @@ class EconomyController(BaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            group = (
+            ns_group = (
                 " ".join(ns_parser.group)
                 if isinstance(ns_parser.group, list)
                 else ns_parser.group
             )
             finviz_view.display_valuation(
-                s_group=self.d_GROUPS[group],
-                sort_col=ns_parser.sort_col,
+                group=ns_group,
+                sort_by=ns_parser.sort_by,
                 ascending=ns_parser.ascend,
                 export=ns_parser.export,
             )
@@ -1356,6 +1335,7 @@ class EconomyController(BaseController):
             "-g",
             "--group",
             type=str,
+            choices=list(self.d_GROUPS.keys()),
             default="sector",
             nargs="+",
             dest="group",
@@ -1364,7 +1344,7 @@ class EconomyController(BaseController):
         parser.add_argument(
             "-s",
             "--sortby",
-            dest="sort_col",
+            dest="sort_by",
             choices=self.performance_sort_list,
             default="Name",
             help="Column to sort by",
@@ -1383,17 +1363,34 @@ class EconomyController(BaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            group = (
+            ns_group = (
                 " ".join(ns_parser.group)
                 if isinstance(ns_parser.group, list)
                 else ns_parser.group
             )
             finviz_view.display_performance(
-                s_group=self.d_GROUPS[group],
-                sort_col=ns_parser.sort_col,
+                group=ns_group,
+                sort_by=ns_parser.sort_by,
                 ascending=ns_parser.ascend,
                 export=ns_parser.export,
             )
+
+    @log_start_end(log=logger)
+    def call_cdebt(self, other_args: List[str]):
+        """Process cdebt command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="cdebt",
+            description="""
+                National debt statistics for various countries. [Source: Wikipedia]
+            """,
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED, limit=20
+        )
+        if ns_parser:
+            commodity_view.display_debt(export=ns_parser.export, limit=ns_parser.limit)
 
     @log_start_end(log=logger)
     def call_spectrum(self, other_args: List[str]):
@@ -1410,6 +1407,7 @@ class EconomyController(BaseController):
             "-g",
             "--group",
             type=str,
+            choices=list(self.d_GROUPS.keys()),
             default="sector",
             nargs="+",
             dest="group",
@@ -1422,48 +1420,82 @@ class EconomyController(BaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
         if ns_parser:
-            group = (
+            ns_group = (
                 " ".join(ns_parser.group)
                 if isinstance(ns_parser.group, list)
                 else ns_parser.group
             )
-            finviz_view.display_spectrum(s_group=self.d_GROUPS[group])
+            finviz_view.display_spectrum(group=ns_group)
 
-            # Due to Finviz implementation of Spectrum, we delete the generated spectrum figure
-            # after saving it and displaying it to the user
-            os.remove(self.d_GROUPS[group] + ".jpg")
+            # # Due to Finviz implementation of Spectrum, we delete the generated spectrum figure
+            # # after saving it and displaying it to the user
+            os.remove(self.d_GROUPS[ns_group] + ".jpg")
 
     @log_start_end(log=logger)
     def call_pred(self, _):
-        """Process pred command"""
-        if not self.DATASETS:
-            console.print(
-                "There is no data stored yet. Please use either the 'macro', 'fred', 'index' and/or "
-                "'treasury' command in combination with the -st argument to be able to plot data.\n"
-            )
-            return
 
-        from openbb_terminal.economy.prediction.pred_controller import (
-            PredictionTechniquesController,
-        )
+        """Process pred command"""
+        # IMPORTANT: 8/11/22 prediction was discontinued on the installer packages
+        # because forecasting in coming out soon.
+        # This if statement disallows installer package users from using 'pred'
+        # even if they turn on the OPENBB_ENABLE_PREDICT feature flag to true
+        # however it does not prevent users who clone the repo from using it
+        # if they have ENABLE_PREDICT set to true.
+        if obbff.PACKAGED_APPLICATION or not obbff.ENABLE_PREDICT:
+            console.print(
+                "Predict is disabled. Forecasting coming soon!",
+                "\n",
+            )
+        else:
+            if not self.DATASETS:
+                console.print(
+                    "There is no data stored yet. Please use either the 'macro', 'fred', 'index' and/or "
+                    "'treasury' command in combination with the -st argument to be able to plot data.\n"
+                )
+                return
+
+            data: Dict = {}
+            all_datasets_empty = True
+            for source, _ in self.DATASETS.items():
+                if not self.DATASETS[source].empty:
+                    all_datasets_empty = False
+                    if len(self.DATASETS[source].columns) == 1:
+                        data[self.DATASETS[source].columns[0]] = self.DATASETS[source]
+                    else:
+                        for col in list(self.DATASETS[source].columns):
+                            data[col] = self.DATASETS[source][col].to_frame()
+
+            if all_datasets_empty:
+                console.print(
+                    "There is no data stored yet. Please use either the 'macro', 'fred', 'index' and/or "
+                    "'treasury' command in combination with the -st argument to be able to plot data.\n"
+                )
+                return
+
+            from openbb_terminal.economy.prediction.pred_controller import (
+                PredictionTechniquesController,
+            )
+
+            self.queue = self.load_class(
+                PredictionTechniquesController, data, self.queue
+            )
+
+    @log_start_end(log=logger)
+    def call_qa(self, _):
+        """Process pred command"""
 
         data: Dict = {}
+        all_datasets_empty = True
         for source, _ in self.DATASETS.items():
             if not self.DATASETS[source].empty:
+                all_datasets_empty = False
                 if len(self.DATASETS[source].columns) == 1:
                     data[self.DATASETS[source].columns[0]] = self.DATASETS[source]
                 else:
                     for col in list(self.DATASETS[source].columns):
                         data[col] = self.DATASETS[source][col].to_frame()
 
-        self.queue = self.load_class(
-            PredictionTechniquesController, self.DATASETS, self.queue
-        )
-
-    @log_start_end(log=logger)
-    def call_qa(self, _):
-        """Process pred command"""
-        if not self.DATASETS:
+        if all_datasets_empty:
             console.print(
                 "There is no data stored yet. Please use either the 'macro', 'fred', 'index' and/or "
                 "'treasury' command in combination with the -st argument to be able to plot data.\n"
@@ -1473,14 +1505,5 @@ class EconomyController(BaseController):
         from openbb_terminal.economy.quantitative_analysis.qa_controller import (
             QaController,
         )
-
-        data: Dict = {}
-        for source, _ in self.DATASETS.items():
-            if not self.DATASETS[source].empty:
-                if len(self.DATASETS[source].columns) == 1:
-                    data[self.DATASETS[source].columns[0]] = self.DATASETS[source]
-                else:
-                    for col in list(self.DATASETS[source].columns):
-                        data[col] = self.DATASETS[source][col].to_frame()
 
         self.queue = self.load_class(QaController, data, self.queue)

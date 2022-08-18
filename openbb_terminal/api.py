@@ -1,4 +1,5 @@
 """OpenBB Terminal API."""
+# pylint: disable=C0302,W0611
 from inspect import signature, Parameter
 import types
 import functools
@@ -8,9 +9,7 @@ from typing import Optional, Callable
 from openbb_terminal.helper_classes import TerminalStyle  # noqa: F401
 from .reports import widget_helpers as widgets  # noqa: F401
 
-"""
-THIS IS SOME EXAMPLE OF USAGE FOR USING IT DIRECTLY IN JUPYTER NOTEBOOK
-"""
+# THIS IS SOME EXAMPLE OF USAGE FOR USING IT DIRECTLY IN JUPYTER NOTEBOOK
 functions = {
     "alt.covid.case_slopes": {
         "model": "openbb_terminal.alternative.covid.covid_model.get_case_slopes"
@@ -510,7 +509,6 @@ functions = {
     "crypto.due_diligence.slug": {
         "model": "openbb_terminal.cryptocurrency.due_diligence.santiment_model.get_slug"
     },
-
     "crypto.nft.nft_drops": {
         "model": "openbb_terminal.cryptocurrency.nft.nftcalendar_model.get_nft_drops"
     },
@@ -684,9 +682,7 @@ functions = {
         "model": "openbb_terminal.forex.forex_helper.load",
         "view": "openbb_terminal.forex.forex_helper.display_candle",
     },
-    "forex.load": {
-        "model": "openbb_terminal.forex.forex_helper.load"
-    },
+    "forex.load": {"model": "openbb_terminal.forex.forex_helper.load"},
     "forex.oanda.account_summary_request": {
         "model": "openbb_terminal.forex.oanda.oanda_model.account_summary_request"
     },
@@ -726,9 +722,7 @@ functions = {
     "forex.oanda.positionbook_plot_data_request": {
         "model": "openbb_terminal.forex.oanda.oanda_model.positionbook_plot_data_request"
     },
-    "forex.quote": {
-        "model": "openbb_terminal.forex.av_model.get_quote"
-    },
+    "forex.quote": {"model": "openbb_terminal.forex.av_model.get_quote"},
     "forex.forward_rates": {
         "model": "openbb_terminal.forex.fxempire_model.get_forward_rates"
     },
@@ -1497,7 +1491,7 @@ def change_docstring(api_callable, model: Callable, view=None):
             + view.__doc__
         )
         api_callable.__name__ = model.__name__.replace("get_", "")
-        parameters = [param for param in signature(view).parameters.values()]
+        parameters = list(signature(view).parameters.values())
         chart_parameter = [
             Parameter(
                 "chart", Parameter.POSITIONAL_OR_KEYWORD, annotation=bool, default=False
@@ -1525,7 +1519,8 @@ class FunctionFactory:
         model: Callable
             The original model function from the terminal
         view: Callable
-            The original view function from the terminal, this shall be set to None if the function has no charting
+            The original view function from the terminal, this shall be set to None if the
+            function has no charting
         """
         self.model_only = False
         if view is None:
@@ -1552,9 +1547,8 @@ class FunctionFactory:
         if kwargs["chart"] and (not self.model_only):
             kwargs.pop("chart")
             return self.view(*args, **kwargs)
-        else:
-            kwargs.pop("chart")
-            return self.model(*args, **kwargs)
+        kwargs.pop("chart")
+        return self.model(*args, **kwargs)
 
 
 class MenuFiller:
@@ -1573,12 +1567,12 @@ class MenuFiller:
 class Loader:
     """The Loader class"""
 
-    def __init__(self, functions: dict):
+    def __init__(self, funcs: dict):
         print(
             "WARNING! Breaking changes incoming! Especially avoid using kwargs, since some of them will change.\n"
             "You can try <link> branch with the latest changes."
         )
-        self.__function_map = self.build_function_map(functions=functions)
+        self.__function_map = self.build_function_map(funcs=funcs)
         self.load_menus()
 
     def __call__(self):
@@ -1659,15 +1653,11 @@ class Loader:
 
         try:
             spec = importlib.util.find_spec(module_path)
+            del spec
         except ModuleNotFoundError:
-            spec = None
-
-        if spec is None:
             return None
-        else:
-            module = importlib.import_module(module_path)
 
-            return module
+        return importlib.import_module(module_path)
 
     @classmethod
     def get_function(cls, function_path: str) -> Callable:
@@ -1691,12 +1681,12 @@ class Loader:
         return getattr(module, function_name)
 
     @classmethod
-    def build_function_map(cls, functions: dict) -> dict:
+    def build_function_map(cls, funcs: dict) -> dict:
         """Builds dictionary with FunctionFactory instances as items
 
         Parameters
         ----------
-        functions: dict
+        funcs: dict
             Dictionary which has string path of view and model functions as keys. The items is dictionary with
             the view and model function as items of the respectivee "view" and "model" keys
 
@@ -1707,9 +1697,9 @@ class Loader:
         """
         function_map = {}
 
-        for virtual_path in functions.keys():
-            model_path = functions[virtual_path].get("model")
-            view_path = functions[virtual_path].get("view")
+        for virtual_path in funcs.keys():
+            model_path = funcs[virtual_path].get("model")
+            view_path = funcs[virtual_path].get("view")
 
             if model_path:
                 model_function = cls.get_function(function_path=model_path)
@@ -1741,4 +1731,4 @@ class Loader:
         return function_map
 
 
-openbb = Loader(functions=functions)
+openbb = Loader(funcs=functions)

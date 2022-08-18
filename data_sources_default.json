@@ -1,5 +1,9 @@
 {
     "stocks": {
+        "news": [
+            "feedparser",
+            "newsapi"
+        ],
         "load": [
             "yf",
             "iex",
@@ -64,6 +68,10 @@
                 "av",
                 "iex",
                 "polygon"
+            ],
+            "hotpenny": [
+                "yf",
+                "psf"
             ]
         },
         "sia": {

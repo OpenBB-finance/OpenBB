@@ -111,6 +111,7 @@ class StocksController(StockBaseController):
                 stock_text = f"{s_intraday} {self.ticker}"
 
         mt = MenuText("stocks/", 80)
+        mt.add_cmd("news", "Feedparser/News API")
         mt.add_cmd("search")
         mt.add_cmd("load")
         mt.add_raw("\n")
@@ -119,7 +120,6 @@ class StocksController(StockBaseController):
         mt.add_raw("\n")
         mt.add_cmd("quote", "", self.ticker)
         mt.add_cmd("candle", "", self.ticker)
-        mt.add_cmd("news", "News API", self.ticker)
         mt.add_cmd("codes", "Polygon", self.ticker)
         mt.add_raw("\n")
         mt.add_menu("th")
@@ -373,10 +373,10 @@ class StocksController(StockBaseController):
 
                 if ns_parser.raw:
                     qa_view.display_raw(
-                        df=self.stock,
-                        sort=ns_parser.sort,
-                        des=ns_parser.descending,
-                        num=ns_parser.limit,
+                        data=self.stock,
+                        sortby=ns_parser.sort,
+                        descend=ns_parser.descending,
+                        limit=ns_parser.limit,
                     )
 
                 else:
@@ -395,8 +395,8 @@ class StocksController(StockBaseController):
                                 )
 
                     stocks_helper.display_candle(
-                        s_ticker=self.ticker,
-                        df_stock=data,
+                        symbol=self.ticker,
+                        data=data,
                         use_matplotlib=ns_parser.plotly,
                         intraday=self.interval != "1440min",
                         add_trend=ns_parser.trendlines,
@@ -453,11 +453,11 @@ class StocksController(StockBaseController):
             d_stock = yf.Ticker(self.ticker).info
 
             newsapi_view.display_news(
-                term=d_stock["shortName"].replace(" ", "+")
+                query=d_stock["shortName"].replace(" ", "+")
                 if "shortName" in d_stock
                 else self.ticker,
-                num=ns_parser.limit,
-                s_from=ns_parser.n_start_date.strftime("%Y-%m-%d"),
+                limit=ns_parser.limit,
+                start_date=ns_parser.n_start_date.strftime("%Y-%m-%d"),
                 show_newest=ns_parser.n_oldest,
                 sources=",".join(sources),
             )
@@ -584,7 +584,9 @@ class StocksController(StockBaseController):
 
         self.queue = self.load_class(
             ca_controller.ComparisonAnalysisController,
-            [self.ticker] if self.ticker else "",
+            [f"{self.ticker}.{self.suffix}" if self.suffix else self.ticker]
+            if self.ticker
+            else "",
             self.queue,
         )
 
@@ -670,7 +672,18 @@ class StocksController(StockBaseController):
     @log_start_end(log=logger)
     def call_pred(self, _):
         """Process pred command"""
-        if obbff.ENABLE_PREDICT:
+        # IMPORTANT: 8/11/22 prediction was discontinued on the installer packages
+        # because forecasting in coming out soon.
+        # This if statement disallows installer package users from using 'pred'
+        # even if they turn on the OPENBB_ENABLE_PREDICT feature flag to true
+        # however it does not prevent users who clone the repo from using it
+        # if they have ENABLE_PREDICT set to true.
+        if obbff.PACKAGED_APPLICATION or not obbff.ENABLE_PREDICT:
+            console.print(
+                "Predict is disabled. Forecasting coming soon!",
+                "\n",
+            )
+        else:
             if self.ticker:
                 if self.interval == "1440min":
                     try:
@@ -702,8 +715,3 @@ class StocksController(StockBaseController):
                     console.print("Load daily data to use this menu!", "\n")
             else:
                 console.print("Use 'load <ticker>' prior to this command!", "\n")
-        else:
-            console.print(
-                "Predict is disabled. Check ENABLE_PREDICT flag on feature_flags.py",
-                "\n",
-            )
