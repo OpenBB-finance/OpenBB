@@ -31,7 +31,7 @@ register_matplotlib_converters()
 @log_start_end(log=logger)
 def view_ma(
     data: pd.Series,
-    length: List[int] = None,
+    window: List[int] = None,
     offset: int = 0,
     ma_type: str = "EMA",
     symbol: str = "",
@@ -44,7 +44,7 @@ def view_ma(
     ----------
     data: pd.Series
         Series of prices
-    length: List[int]
+    window: List[int]
         Length of EMA window
     offset: int
         Offset variable
@@ -61,10 +61,10 @@ def view_ma(
     price_df = pd.DataFrame(data)
 
     l_legend = [symbol]
-    if not length:
-        length = [20, 50]
+    if not window:
+        window = [20, 50]
 
-    for win in length:
+    for win in window:
         if ma_type == "EMA":
             df_ta = overlap_model.ema(data, win, offset)
             l_legend.append(f"EMA {win}")
@@ -112,7 +112,7 @@ def view_ma(
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
-        f"{ma_type.lower()}{'_'.join([str(win) for win in length])}",
+        f"{ma_type.lower()}{'_'.join([str(win) for win in window])}",
         price_df,
     )
 

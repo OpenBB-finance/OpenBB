@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 def display_bbands(
     data: pd.DataFrame,
     symbol: str = "",
-    limit: int = 15,
+    window: int = 15,
     n_std: float = 2,
     mamode: str = "sma",
     export: str = "",
@@ -40,7 +40,7 @@ def display_bbands(
         Dataframe of ohlc prices
     symbol : str
         Ticker symbol
-    limit : int
+    window : int
         Length of window to calculate BB
     n_std : float
         Number of standard deviations to show
@@ -51,7 +51,7 @@ def display_bbands(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    df_ta = volatility_model.bbands(data["Adj Close"], limit, n_std, mamode)
+    df_ta = volatility_model.bbands(data["Adj Close"], window, n_std, mamode)
     plot_data = pd.merge(data, df_ta, how="outer", left_index=True, right_index=True)
     plot_data = reindex_dates(plot_data)
 
@@ -188,7 +188,7 @@ def display_donchian(
 @log_start_end(log=logger)
 def view_kc(
     data: pd.DataFrame,
-    limit: int = 20,
+    window: int = 20,
     scalar: float = 2,
     mamode: str = "ema",
     offset: int = 0,
@@ -203,7 +203,7 @@ def view_kc(
 
     data: pd.DataFrame
         Dataframe of ohlc prices
-    limit: int
+    window: int
         Length of window
     scalar: float
         Scalar value
@@ -222,7 +222,7 @@ def view_kc(
         data["High"],
         data["Low"],
         data["Adj Close"],
-        limit,
+        window,
         scalar,
         mamode,
         offset,
