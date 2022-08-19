@@ -199,7 +199,7 @@ class DiscoveryController(BaseController):
                 return
             nasdaq_view.display_dividend_calendar(
                 ns_parser.date.strftime("%Y-%m-%d"),
-                sort_col=sort_col,
+                sortby=sort_col,
                 ascending=ns_parser.ascend,
                 limit=ns_parser.limit,
                 export=ns_parser.export,
@@ -631,7 +631,7 @@ class DiscoveryController(BaseController):
         if ns_parser:
             ark_view.ark_orders_view(
                 limit=ns_parser.limit,
-                sort_col=ns_parser.sort_col,
+                sortby=ns_parser.sort_col,
                 ascending=ns_parser.ascend,
                 buys_only=ns_parser.buys_only,
                 sells_only=ns_parser.sells_only,

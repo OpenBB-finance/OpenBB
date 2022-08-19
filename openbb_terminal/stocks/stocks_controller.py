@@ -168,6 +168,7 @@ class StocksController(StockBaseController):
             dest="query",
             type=str.lower,
             default="",
+            nargs="+",
             help=translate("stocks/SEARCH_query"),
         )
         parser.add_argument(
@@ -215,7 +216,7 @@ class StocksController(StockBaseController):
         )
         if ns_parser:
             stocks_helper.search(
-                query=ns_parser.query,
+                query=" ".join(ns_parser.query),
                 country=ns_parser.country,
                 sector=ns_parser.sector,
                 industry=ns_parser.industry,
