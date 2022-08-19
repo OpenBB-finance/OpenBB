@@ -1,6 +1,9 @@
 """Nasdaq Model"""
 __docformat__ = "numpy"
 
+from typing import Tuple,List
+
+from datetime import datetime
 import requests
 import pandas as pd
 
@@ -37,3 +40,23 @@ def get_full_chain(symbol: str) -> pd.DataFrame:
 
     console.print(f"[red]{symbol} Option Chain not found.[/red]\n")
     return pd.DataFrame()
+
+def get_expirations(symbol:str) -> List[str]:
+    """Get available expirations
+
+    Parameters
+    ----------
+    symbol
+
+    Returns
+    -------
+    List[str]
+        List of expiration dates
+    """
+    df = get_full_chain(symbol)
+    if df.empty:
+        return []
+    # get everything that is not an empty string
+    exps = [exp for exp in list(df.expirygroup.unique()) if exp]
+    #Convert 'January 11, 1993' into '1993-01-11'
+    return [datetime.strptime(exp, "%B %d, %Y").strftime("%Y-%m-%d") for exp in exps]
