@@ -21,8 +21,8 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 def get_knn_model_data(
     data: Union[pd.Series, pd.DataFrame],
-    n_input_days: int = 14,
-    n_predict_days: int = 5,
+    input_chunk_length: int = 14,
+    n_predict: int = 5,
     n_neighbors: int = 20,
     test_size: float = 0.15,
     start_date: Optional[datetime] = None,
@@ -35,9 +35,9 @@ def get_knn_model_data(
     ----------
     data : Union[pd.Series, pd.DataFrame]
         Data to fit
-    n_input_days : int
+    input_chunk_length : int
         Length of input series
-    n_predict_days : int
+    n_predict: int
         Number of days to predict
     n_neighbors : int
         Number of neighbors for nn
@@ -77,13 +77,13 @@ def get_knn_model_data(
         scaler,
         is_error,
     ) = prepare_scale_train_valid_test(
-        data, n_input_days, n_predict_days, test_size, start_date, end_date, no_shuffle
+        data, input_chunk_length, n_predict, test_size, start_date, end_date, no_shuffle
     )
     if is_error:
         return pd.DataFrame(), np.array(0), np.array(0), np.array(0), None
 
     future_dates = get_next_stock_market_days(
-        dates_forecast_input[-1], n_next_days=n_predict_days
+        dates_forecast_input[-1], n_next_days=n_predict
     )
     console.print(
         f"Training on {X_train.shape[0]} sequences of length {X_train.shape[1]}.  Using {X_valid.shape[0]} sequences "

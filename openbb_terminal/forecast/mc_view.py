@@ -31,7 +31,7 @@ logger = logging.getLogger(__name__)
 def display_mc_forecast(
     data: Union[pd.DataFrame, pd.Series],
     target_column: str = "close",
-    n_future: int = 5,
+    n_predict: int = 5,
     n_sims: int = 100,
     use_log=True,
     fig_title: str = "",
@@ -49,7 +49,7 @@ def display_mc_forecast(
         Data to forecast
     target_column: str, optional
         The column to select if a dataframe is sent
-    n_future : int
+    n_predict : int
         Number of days to forecast
     n_sims : int
         Number of simulations to run
@@ -74,11 +74,11 @@ def display_mc_forecast(
     if not helpers.check_data(data, target_column):
         return
     data = data[target_column]
-    predicted_values = mc_model.get_mc_brownian(data, n_future, n_sims, use_log)
+    predicted_values = mc_model.get_mc_brownian(data, n_predict, n_sims, use_log)
     if not time_res or time_res == "1D":
-        future_index = get_next_stock_market_days(data.index[-1], n_next_days=n_future)  # type: ignore
+        future_index = get_next_stock_market_days(data.index[-1], n_next_days=n_predict)  # type: ignore
     else:
-        future_index = pd.date_range(data.index[-1], periods=n_future + 1, freq=time_res)[1:]  # type: ignore
+        future_index = pd.date_range(data.index[-1], periods=n_predict + 1, freq=time_res)[1:]  # type: ignore
 
     # This plot has 2 axes
     if external_axes is None:
@@ -101,7 +101,7 @@ def display_mc_forecast(
     ax2.axvline(
         x=data.values[-1], color=theme.down_color, label="Last Value", linestyle="-"
     )
-    ax2.set_title(f"Distribution of final values after {n_future} steps.")
+    ax2.set_title(f"Distribution of final values after {n_predict} steps.")
     ax2.set_xlim(np.min(predicted_values[-1, :]), np.max(predicted_values[-1, :]))
     ax2.legend()
 

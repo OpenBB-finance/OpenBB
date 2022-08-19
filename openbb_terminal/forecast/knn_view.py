@@ -27,8 +27,8 @@ def display_k_nearest_neighbors(
     target_column: str = "close",
     dataset_name: str = "",
     n_neighbors: int = 20,
-    n_input_days: int = 14,
-    n_predict_days: int = 5,
+    input_chunk_length: int = 14,
+    n_predict: int = 5,
     test_size: float = 0.15,
     start_date: Optional[datetime] = None,
     end_date: Optional[datetime] = None,
@@ -48,9 +48,9 @@ def display_k_nearest_neighbors(
         Stock data
     n_neighbors : int
         Number of neighbors for knn
-    n_input_days : int
+    input_chunk_length : int
         Length of input sequences
-    n_predict_days : int
+    n_predict: int
         Number of days to predict
     test_size : float
         Fraction of data for testing
@@ -79,8 +79,8 @@ def display_k_nearest_neighbors(
         scaler,
     ) = knn_model.get_knn_model_data(
         data=data,
-        n_input_days=n_input_days,
-        n_predict_days=n_predict_days,
+        input_chunk_length=input_chunk_length,
+        n_predict=n_predict,
         n_neighbors=n_neighbors,
         test_size=test_size,
         no_shuffle=no_shuffle,
@@ -92,7 +92,7 @@ def display_k_nearest_neighbors(
 
     if time_res:
         forecast_data_df.index = pd.date_range(
-            data.index[-1], periods=n_predict_days + 1, freq=time_res
+            data.index[-1], periods=n_predict + 1, freq=time_res
         )[1:]
     print_pretty_prediction(forecast_data_df[0], data.values[-1])
     plot_data_predictions(

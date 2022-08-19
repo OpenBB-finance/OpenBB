@@ -18,7 +18,7 @@ DISTRIBUTIONS = ["normal", "lognormal"]
 @log_start_end(log=logger)
 def get_mc_brownian(
     data: Union[pd.Series, np.ndarray],
-    n_future: int = 5,
+    n_predict: int = 5,
     n_sims: int = 100,
     use_log=True,
 ) -> np.ndarray:
@@ -28,7 +28,7 @@ def get_mc_brownian(
     ----------
     data : Union[pd.Series, np.ndarray]
         Input data.
-    n_future : int
+    n_predict : int
         Number of future steps
     n_sims : int
         Number of simulations to run
@@ -38,7 +38,7 @@ def get_mc_brownian(
     Returns
     -------
     np.ndarray
-        Array of predictions.  Has shape (n_future, n_sims)
+        Array of predictions.  Has shape (n_predict, n_sims)
     """
 
     changes = data.pct_change().dropna()  # type: ignore
@@ -51,12 +51,12 @@ def get_mc_brownian(
     dist_drift = dist_mean - 0.5 * dist_var
     dist_std = np.sqrt(dist_var)
 
-    random_steps = norm.ppf(np.random.rand(n_future, n_sims))
+    random_steps = norm.ppf(np.random.rand(n_predict, n_sims))
     predicted_change = np.exp(dist_drift + dist_std * random_steps)
     possible_paths = np.zeros_like(predicted_change)
     possible_paths[0] = data.values[-1]  # type: ignore
 
-    for t in range(1, n_future):
+    for t in range(1, n_predict):
         possible_paths[t] = possible_paths[t - 1] * predicted_change[t]
 
     return possible_paths
