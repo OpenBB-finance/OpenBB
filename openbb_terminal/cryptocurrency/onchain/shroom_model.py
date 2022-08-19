@@ -65,6 +65,35 @@ def get_query_results(token):
 
 
 @log_start_end(log=logger)
+def get_dapp_stats(
+    platform: str = "curve",
+):  # platform can be uniswap-v3,uniswap-v2,sushiswap,curve
+    sql = f"""select
+      date_trunc('week', s.block_timestamp) as date,
+      sum(t.fee_usd) as fee,
+      count(distinct(s.from_address)) as n_users,
+      count(distinct(s.amount_usd)) as volume
+    from ethereum.dex_swaps s
+    join ethereum.transactions t
+      on s.tx_id = t.tx_id
+    where platform = '{platform}'
+    group by date
+    order by date desc
+    """
+    query = create_query(sql)
+    token = query.get("token")
+    data = get_query_results(token)
+
+    df = pd.DataFrame(
+        data["results"], columns=["timeframe", "fees", "n_users", "volume"]
+    )
+    df["timeframe"] = pd.to_datetime(df["timeframe"])
+    df.set_index("timeframe", inplace=True)
+
+    return df
+
+
+@log_start_end(log=logger)
 def get_daily_transactions(symbols: List[str]) -> pd.DataFrame:
     """Get daily transactions for certain symbols in ethereum blockchain
     [Source: https://sdk.flipsidecrypto.xyz/shroomdk]
@@ -79,30 +108,30 @@ def get_daily_transactions(symbols: List[str]) -> pd.DataFrame:
     pd.DataFrame
         DataFrame with transactions for each symbol
     """
-
+    extra_sql = ""
+    for symbol in symbols:
+        extra_sql += (
+            f"sum(case when symbol = '{symbol}' then amount_usd end) as {symbol},"
+        )
+    extra_sql = extra_sql[:-1]
     sql = f"""
     select
     date_trunc('day', block_timestamp) as timeframe,
-    sum(case when symbol = 'DAI' then amount_usd end) as DAI,
-    sum(case when symbol = 'USDT' then amount_usd end) as USDT ,
-    sum(case when symbol = 'BUSD' then amount_usd end) as BUSD,
-    sum(case when symbol = 'USDC' then amount_usd end) as USDC
+    {extra_sql}
     from  ethereum.udm_events
-    where 
+    where
     block_timestamp >= '2020-06-01'
     -- and amount0_usd > '0'
     group by 1
-    order by 1 desc
+    order by timeframe desc
     """
 
     query = create_query(sql)
     token = query.get("token")
     data = get_query_results(token)
 
-    df = pd.DataFrame(
-        data["results"], columns=["timeframe", "DAI", "USDT", "BUSD", "USDC"]
-    )
+    df = pd.DataFrame(data["results"], columns=["timeframe"] + symbols)
     df["timeframe"] = pd.to_datetime(df["timeframe"])
     df.set_index("timeframe", inplace=True)
 
-    return df.iloc[::-1]
+    return df
