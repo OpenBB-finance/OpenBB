@@ -390,8 +390,8 @@ class DarkPoolShortsController(StockBaseController):
                 sec_view.fails_to_deliver(
                     symbol=self.ticker,
                     data=self.stock,
-                    start_date=ns_parser.start,
-                    end_date=ns_parser.end,
+                    start_date=ns_parser.start.strftime("%Y-%m-%d"),
+                    end_date=ns_parser.end.strftime("%Y-%m-%d"),
                     limit=ns_parser.n_num,
                     raw=ns_parser.raw,
                     export=ns_parser.export,
