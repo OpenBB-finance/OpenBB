@@ -245,17 +245,14 @@ def display_last_contracts(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    df_contracts, df = quiverquant_model.get_last_contracts(
-        past_transaction_days, limit
-    )
+    df = quiverquant_model.get_last_contracts(past_transaction_days)
 
-    if df_contracts.empty:
-        console.print("No government contracts found\n")
+    if df.empty:
         return
 
     print_rich_table(
-        df_contracts,
-        headers=list(df_contracts.columns),
+        df[:limit],
+        headers=list(df.columns),
         show_index=False,
         title="Last Government Contracts",
     )
@@ -403,19 +400,10 @@ def display_contracts(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    df_contracts = quiverquant_model.get_government_trading("contracts", symbol)
+    df_contracts = quiverquant_model.get_contracts(symbol)
 
     if df_contracts.empty:
-        console.print("No government contracts found\n")
         return
-
-    df_contracts["Date"] = pd.to_datetime(df_contracts["Date"]).dt.date
-
-    df_contracts = df_contracts[
-        df_contracts["Date"].isin(df_contracts["Date"].unique()[:past_transaction_days])
-    ]
-
-    df_contracts.drop_duplicates(inplace=True)
 
     if raw:
         print_rich_table(
@@ -453,7 +441,7 @@ def display_contracts(
 
 @log_start_end(log=logger)
 def display_qtr_contracts(
-    analysis: str,
+    analysis: str = "total",
     limit: int = 5,
     raw: bool = False,
     export: str = "",
@@ -474,13 +462,12 @@ def display_qtr_contracts(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    df_contracts = quiverquant_model.get_government_trading("quarter-contracts")
 
-    if df_contracts.empty:
-        console.print("No quarterly government contracts found\n")
+    symbols = quiverquant_model.get_qtr_contracts(analysis, limit)
+
+    if symbols.empty:
         return
 
-    symbols = quiverquant_model.analyze_qtr_contracts(analysis, limit)
     if analysis in ("upmom", "downmom"):
         if raw:
             print_rich_table(
@@ -500,6 +487,7 @@ def display_qtr_contracts(
 
             max_amount = 0
             quarter_ticks = []
+            df_contracts = quiverquant_model.get_government_trading("quarter-contracts")
             for symbol in symbols:
                 amounts = (
                     df_contracts[df_contracts["Ticker"] == symbol]
@@ -548,7 +536,7 @@ def display_qtr_contracts(
         )
 
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), "qtrcontracts", df_contracts
+        export, os.path.dirname(os.path.abspath(__file__)), "qtrcontracts", symbols
     )
 
 
@@ -572,22 +560,10 @@ def display_hist_contracts(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    df_contracts = quiverquant_model.get_government_trading(
-        "quarter-contracts", symbol=symbol
-    )
+    df_contracts = quiverquant_model.get_hist_contracts(symbol)
 
     if df_contracts.empty:
-        console.print("No quarterly government contracts found\n")
         return
-
-    amounts = df_contracts.sort_values(by=["Year", "Qtr"])["Amount"].values
-
-    qtr = df_contracts.sort_values(by=["Year", "Qtr"])["Qtr"].values
-    year = df_contracts.sort_values(by=["Year", "Qtr"])["Year"].values
-
-    quarter_ticks = [
-        f"{quarter[0]}" if quarter[1] == 1 else "" for quarter in zip(year, qtr)
-    ]
 
     if raw:
         print_rich_table(
@@ -597,6 +573,14 @@ def display_hist_contracts(
         )
 
     else:
+        amounts = df_contracts.sort_values(by=["Year", "Qtr"])["Amount"].values
+
+        qtr = df_contracts.sort_values(by=["Year", "Qtr"])["Qtr"].values
+        year = df_contracts.sort_values(by=["Year", "Qtr"])["Year"].values
+
+        quarter_ticks = [
+            f"{quarter[0]}" if quarter[1] == 1 else "" for quarter in zip(year, qtr)
+        ]
 
         # This plot has 1 axis
         if not external_axes:
@@ -651,10 +635,9 @@ def display_top_lobbying(
         External axes (1 axis is expected in the list), by default None
 
     """
-    df_lobbying = quiverquant_model.get_government_trading("corporate-lobbying")
+    df_lobbying = quiverquant_model.get_top_lobbying()
 
     if df_lobbying.empty:
-        console.print("No corporate lobbying found\n")
         return
 
     df_lobbying["Amount"] = df_lobbying.Amount.astype(float).fillna(0) / 100_000
@@ -707,12 +690,9 @@ def display_lobbying(symbol: str, limit: int = 10):
     limit: int
         Number of events to show
     """
-    df_lobbying = quiverquant_model.get_government_trading(
-        "corporate-lobbying", symbol=symbol
-    )
+    df_lobbying = quiverquant_model.get_lobbying(symbol)
 
     if df_lobbying.empty:
-        console.print("No corporate lobbying found\n")
         return
 
     for _, row in (
