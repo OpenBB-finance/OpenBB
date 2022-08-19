@@ -35,6 +35,7 @@ from openbb_terminal.stocks.options import (
     yfinance_view,
     op_helpers,
     nasdaq_model,
+    nasdaq_view,
 )
 
 from openbb_terminal.stocks.options.pricing import pricing_controller
@@ -1004,7 +1005,7 @@ class OptionsController(BaseController):
                             puts_only=ns_parser.puts,
                             export=ns_parser.export,
                         )
-                    else:
+                    elif ns_parser.source == "yf":
                         yfinance_view.plot_oi(
                             symbol=self.ticker,
                             expiry=self.selected_date,
@@ -1012,6 +1013,14 @@ class OptionsController(BaseController):
                             max_sp=ns_parser.max,
                             calls_only=ns_parser.calls,
                             puts_only=ns_parser.puts,
+                            export=ns_parser.export,
+                        )
+                    elif ns_parser.source == "nasdaq":
+                        nasdaq_view.display_oi(
+                            self.ticker,
+                            expiration=self.selected_date,
+                            min_sp=ns_parser.min,
+                            max_sp=ns_parser.max,
                             export=ns_parser.export,
                         )
                 else:

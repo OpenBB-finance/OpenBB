@@ -151,3 +151,33 @@ def get_chain_given_expiration(symbol: str, expiration: str) -> pd.DataFrame:
 
     console.print(f"[red]{symbol} Option Chain not found.[/red]\n")
     return pd.DataFrame()
+
+
+def get_last_price(symbol: str) -> float:
+    """Get the last price from nasdaq
+
+    Parameters
+    ----------
+    symbol: str
+        Symbol to get quote for
+
+    Returns
+    -------
+    float
+        Last price
+    """
+    for asset in ["stocks", "index", "etf"]:
+        url = f"https://api.nasdaq.com/api/quote/{symbol}/info?assetclass={asset}"
+        response_json = requests.get(
+            url,
+            headers={
+                "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)"
+                " AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.6 Safari/605.1.15"
+            },
+        ).json()
+        if response_json["status"]["rCode"] == 200:
+            return float(
+                response_json["data"]["primaryData"]["lastSalePrice"].strip("$")
+            )
+    console.print(f"[red]Last price for {symbol} not found[/red]\n")
+    return np.nan
