@@ -370,7 +370,7 @@ class EconomyController(BaseController):
             finviz_view.display_future(
                 future_type=ns_parser.commodity.capitalize(),
                 sortby=ns_parser.sortby,
-                ascending=ns_parser.ascend,
+                ascend=ns_parser.ascend,
                 export=ns_parser.export,
             )
         elif ns_parser:
@@ -1316,7 +1316,7 @@ class EconomyController(BaseController):
             finviz_view.display_valuation(
                 group=ns_group,
                 sortby=ns_parser.sortby,
-                ascending=ns_parser.ascend,
+                ascend=ns_parser.ascend,
                 export=ns_parser.export,
             )
 
@@ -1371,7 +1371,7 @@ class EconomyController(BaseController):
             finviz_view.display_performance(
                 group=ns_group,
                 sortby=ns_parser.sortby,
-                ascending=ns_parser.ascend,
+                ascend=ns_parser.ascend,
                 export=ns_parser.export,
             )
 

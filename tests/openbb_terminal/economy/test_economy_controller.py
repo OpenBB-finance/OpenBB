@@ -299,7 +299,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             dict(
                 future_type="Energy",
                 sortby="ticker",
-                ascending=True,
+                ascend=True,
                 export="csv",
             ),
         ),
@@ -316,7 +316,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             dict(
                 future_type="Metals",
                 sortby="ticker",
-                ascending=True,
+                ascend=True,
                 export="csv",
             ),
         ),
@@ -333,7 +333,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             dict(
                 future_type="Meats",
                 sortby="ticker",
-                ascending=True,
+                ascend=True,
                 export="csv",
             ),
         ),
@@ -350,7 +350,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             dict(
                 future_type="Grains",
                 sortby="ticker",
-                ascending=True,
+                ascend=True,
                 export="csv",
             ),
         ),
@@ -367,7 +367,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             dict(
                 future_type="Softs",
                 sortby="ticker",
-                ascending=True,
+                ascend=True,
                 export="csv",
             ),
         ),
@@ -384,7 +384,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             dict(
                 group="sector",
                 sortby="MarketCap",
-                ascending=True,
+                ascend=True,
                 export="csv",
             ),
         ),
@@ -401,7 +401,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             dict(
                 group="sector",
                 sortby="Name",
-                ascending=True,
+                ascend=True,
                 export="csv",
             ),
         ),

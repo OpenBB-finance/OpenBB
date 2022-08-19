@@ -32,7 +32,7 @@ def display_performance_map(period: str = "1d", map_filter: str = "sp500"):
 def display_valuation(
     group: str = "sector",
     sortby: str = "Name",
-    ascending: bool = True,
+    ascend: bool = True,
     export: str = "",
 ):
     """Display group (sectors, industry or country) valuation data. [Source: Finviz]
@@ -43,12 +43,12 @@ def display_valuation(
         Group by category. Available groups can be accessed through get_groups().
     sortby : str
         Column to sort by
-    ascending : bool
+    ascend : bool
         Flag to sort in ascending order
     export : str
         Export data to csv,json,xlsx or png,jpg,pdf,svg file
     """
-    df_group = finviz_model.get_valuation_data(group, sortby, ascending)
+    df_group = finviz_model.get_valuation_data(group, sortby, ascend)
 
     if df_group.empty:
         return
@@ -72,7 +72,7 @@ def display_valuation(
 def display_performance(
     group: str = "sector",
     sortby: str = "Name",
-    ascending: bool = True,
+    ascend: bool = True,
     export: str = "",
 ):
     """View group (sectors, industry or country) performance data. [Source: Finviz]
@@ -83,12 +83,12 @@ def display_performance(
         Group by category. Available groups can be accessed through get_groups().
     sortby : str
         Column to sort by
-    ascending : bool
+    ascend : bool
         Flag to sort in ascending order
     export : str
         Export data to csv,json,xlsx or png,jpg,pdf,svg file
     """
-    df_group = finviz_model.get_performance_data(group, sortby, ascending)
+    df_group = finviz_model.get_performance_data(group, sortby, ascend)
 
     if df_group.empty:
         return
@@ -138,7 +138,7 @@ def display_spectrum(group: str = "sector", export: str = ""):
 def display_future(
     future_type: str = "Indices",
     sortby: str = "ticker",
-    ascending: bool = False,
+    ascend: bool = False,
     export: str = "",
 ):
     """Display table of a particular future type. [Source: Finviz]
@@ -149,12 +149,12 @@ def display_future(
         From the following: Indices, Energy, Metals, Meats, Grains, Softs, Bonds, Currencies
     sortby : str
         Column to sort by
-    ascending : bool
+    ascend : bool
         Flag to sort in ascending order
     export : str
         Export data to csv,json,xlsx or png,jpg,pdf,svg file
     """
-    df = finviz_model.get_futures(future_type, sortby, ascending)
+    df = finviz_model.get_futures(future_type, sortby, ascend)
 
     print_rich_table(
         df,

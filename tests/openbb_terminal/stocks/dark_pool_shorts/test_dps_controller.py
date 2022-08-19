@@ -291,7 +291,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             dict(
                 limit=1,
                 sortby="sv",
-                ascending=True,
+                ascend=True,
                 export="csv",
             ),
         ),

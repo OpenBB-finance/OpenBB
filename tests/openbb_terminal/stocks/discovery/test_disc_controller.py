@@ -207,7 +207,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             {
                 "limit": 5,
                 "sortby": ["date"],
-                "ascending": False,
+                "ascend": False,
                 "buys_only": False,
                 "sells_only": False,
                 "fund": "ARKK",

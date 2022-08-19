@@ -36,7 +36,7 @@ def test_display_valuation(mocker, tab):
     finviz_view.display_valuation(
         group="sector",
         sortby="Name",
-        ascending=True,
+        ascend=True,
         export="",
     )
 
@@ -62,7 +62,7 @@ def test_display_performance(mocker, tab):
     finviz_view.display_performance(
         group="sector",
         sortby="Name",
-        ascending=True,
+        ascend=True,
         export="",
     )
 
@@ -113,6 +113,6 @@ def test_display_future(mocker, tab):
     finviz_view.display_future(
         future_type="Indices",
         sortby="ticker",
-        ascending=False,
+        ascend=False,
         export="",
     )

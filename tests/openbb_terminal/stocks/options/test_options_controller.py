@@ -445,7 +445,7 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
                 limit=1,
                 sortby=["Vol"],
                 export="csv",
-                ascending=True,
+                ascend=True,
                 calls_only=False,
                 puts_only=True,
             ),
