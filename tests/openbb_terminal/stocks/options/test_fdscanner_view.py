@@ -42,7 +42,7 @@ def test_display_options(mocker, toggle):
         limit=5,
         sortby=["Vol"],
         export="csv",
-        ascending=True,
+        ascend=True,
         calls_only=toggle,
         puts_only=not toggle,
     )

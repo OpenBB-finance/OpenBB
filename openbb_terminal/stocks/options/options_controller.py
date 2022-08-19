@@ -349,7 +349,7 @@ class OptionsController(BaseController):
                     limit=ns_parser.limit,
                     sortby=ns_parser.sortby,
                     export=ns_parser.export,
-                    ascending=ns_parser.ascend,
+                    ascend=ns_parser.ascend,
                     calls_only=ns_parser.calls_only,
                     puts_only=ns_parser.puts_only,
                 )

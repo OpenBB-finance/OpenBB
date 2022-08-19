@@ -346,7 +346,7 @@ class EconomyController(BaseController):
         parser.add_argument(
             "-s",
             "--sortby",
-            dest="sort_by",
+            dest="sortby",
             type=str,
             choices=self.wsj_sortby_cols_dict.keys(),
             default="ticker",
@@ -369,8 +369,8 @@ class EconomyController(BaseController):
         if ns_parser and ns_parser.commodity:
             finviz_view.display_future(
                 future_type=ns_parser.commodity.capitalize(),
-                sort_by=ns_parser.sort_by,
-                ascending=ns_parser.ascend,
+                sortby=ns_parser.sortby,
+                ascend=ns_parser.ascend,
                 export=ns_parser.export,
             )
         elif ns_parser:
@@ -1287,7 +1287,7 @@ class EconomyController(BaseController):
         parser.add_argument(
             "-s",
             "--sortby",
-            dest="sort_by",
+            dest="sortby",
             type=str,
             choices=self.valuation_sort_cols,
             default="Name",
@@ -1315,8 +1315,8 @@ class EconomyController(BaseController):
             )
             finviz_view.display_valuation(
                 group=ns_group,
-                sort_by=ns_parser.sort_by,
-                ascending=ns_parser.ascend,
+                sortby=ns_parser.sortby,
+                ascend=ns_parser.ascend,
                 export=ns_parser.export,
             )
 
@@ -1344,7 +1344,7 @@ class EconomyController(BaseController):
         parser.add_argument(
             "-s",
             "--sortby",
-            dest="sort_by",
+            dest="sortby",
             choices=self.performance_sort_list,
             default="Name",
             help="Column to sort by",
@@ -1370,8 +1370,8 @@ class EconomyController(BaseController):
             )
             finviz_view.display_performance(
                 group=ns_group,
-                sort_by=ns_parser.sort_by,
-                ascending=ns_parser.ascend,
+                sortby=ns_parser.sortby,
+                ascend=ns_parser.ascend,
                 export=ns_parser.export,
             )
 

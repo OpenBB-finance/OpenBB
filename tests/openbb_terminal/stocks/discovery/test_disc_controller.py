@@ -206,8 +206,8 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             ["--limit=5", "--sortby=date", "--fund=ARKK", "--export=csv"],
             {
                 "limit": 5,
-                "sort_col": ["date"],
-                "ascending": False,
+                "sortby": ["date"],
+                "ascend": False,
                 "buys_only": False,
                 "sells_only": False,
                 "fund": "ARKK",
