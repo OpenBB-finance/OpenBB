@@ -33,6 +33,7 @@ class DashboardsController(BaseController):
         "shortdata",
         "crypto",
         "futures",
+        "forecast",
     ]
     PATH = "/dashboards/"
 
@@ -58,6 +59,7 @@ class DashboardsController(BaseController):
         mt.add_cmd("shortdata")
         mt.add_cmd("crypto")
         mt.add_cmd("futures")
+        mt.add_cmd("forecast")
         console.print(text=mt.menu_text, menu="Dashboards")
 
     @log_start_end(log=logger)
@@ -94,6 +96,11 @@ class DashboardsController(BaseController):
     def call_futures(self, other_args: List[str]):
         """Process futures command"""
         create_call(other_args, "futures", "")
+
+    @log_start_end(log=logger)
+    def call_forecast(self, other_args: List[str]):
+        """Process forecast command"""
+        create_call(other_args, "forecast", "")
 
 
 def create_call(other_args: List[str], name: str, filename: str = None) -> None:
