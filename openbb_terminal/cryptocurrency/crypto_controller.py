@@ -104,9 +104,7 @@ class CryptoController(CryptoBaseController):
         mt.add_cmd("find")
         mt.add_raw("\n")
         mt.add_param("_symbol", self.symbol.upper())
-        mt.add_param(
-            "_source", "CoinGecko (Price), YahooFinance (Volume)" if self.symbol else ""
-        )
+        mt.add_param("_source", self.source if self.symbol and self.source else "")
         mt.add_raw("\n")
         mt.add_cmd("headlines", "FinBrain")
         mt.add_cmd("candle", "", self.symbol)

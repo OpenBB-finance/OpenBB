@@ -891,6 +891,7 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
         self.price_str = ""
         self.resolution = "1D"
         self.TRY_RELOAD = True
+        self.exchanges = cryptocurrency_helpers.get_exchanges_ohlc()
 
     def call_load(self, other_args):
         """Process load command"""
@@ -911,20 +912,57 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
         )
 
         parser.add_argument(
-            "-d",
-            "--days",
-            default="365",
-            dest="days",
-            help="Data up to number of days ago",
-            choices=["1", "7", "14", "30", "90", "180", "365"],
+            "-s",
+            "--start",
+            type=valid_date,
+            default=(datetime.now() - timedelta(days=1100)).strftime("%Y-%m-%d"),
+            dest="start",
+            help="The starting date (format YYYY-MM-DD) of the crypto",
+        )
+
+        parser.add_argument(
+            "--exchange",
+            help="Exchange to search",
+            dest="exchange",
+            type=str,
+            default="binance",
+            choices=self.exchanges,
+        )
+
+        parser.add_argument(
+            "-e",
+            "--end",
+            type=valid_date,
+            default=datetime.now().strftime("%Y-%m-%d"),
+            dest="end",
+            help="The ending date (format YYYY-MM-DD) of the crypto",
         )
         parser.add_argument(
+            "-i",
+            "--interval",
+            action="store",
+            dest="interval",
+            type=int,
+            default=1440,
+            choices=[1, 5, 15, 30, 60, 240, 1440, 10080, 43200],
+            help="The interval of the crypto",
+        )
+
+        parser.add_argument(
             "--vs",
-            help="Quote currency (what to view coin vs)",
+            help="Quote currency (what to view coin vs). e.g., usdc, usdt, ... if source is ccxt, usd, eur, ... otherwise",  # noqa
             dest="vs",
-            default="usd",
+            default="usdt",
             type=str,
-            choices=["usd", "eur"],
+        )
+
+        parser.add_argument(
+            "--source",
+            action="store",
+            dest="source",
+            choices=["ccxt", "yf", "cg"],
+            default="ccxt",
+            help="Data source to select from",
         )
 
         if other_args and "-" not in other_args[0][0]:
@@ -933,20 +971,26 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
         ns_parser = parse_simple_args(parser, other_args)
 
         if ns_parser:
+            if ns_parser.source in ("yf", "cg"):
+                if ns_parser.vs == "usdt":
+                    ns_parser.vs = "usd"
             (self.current_df) = cryptocurrency_helpers.load(
                 symbol=ns_parser.coin.lower(),
-                days=int(ns_parser.days),
-                vs=ns_parser.vs,
+                vs_currency=ns_parser.vs,
+                end_date=ns_parser.end,
+                start_date=ns_parser.start,
+                interval=ns_parser.interval,
+                source=ns_parser.source,
             )
             if not self.current_df.empty:
-                self.current_interval = "1day"
+                self.source = ns_parser.source
+                self.current_interval = ns_parser.interval
                 self.current_currency = ns_parser.vs
                 self.symbol = ns_parser.coin.lower()
                 cryptocurrency_helpers.show_quick_performance(
-                    self.current_df, self.symbol, self.current_currency
-                )
-            else:
-                console.print(
-                    f"\n[red]Couldn't find [bold]{ns_parser.coin}[/bold] in [bold]yfinance[/bold]."
-                    f"Search for symbol (e.g., btc) and not full name (e.g., bitcoin)[/red]\n"
+                    self.current_df,
+                    self.symbol,
+                    self.current_currency,
+                    ns_parser.source,
+                    ns_parser.exchange,
                 )

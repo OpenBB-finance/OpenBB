@@ -11,6 +11,7 @@ import logging
 
 import pandas as pd
 import numpy as np
+import ccxt
 from binance.client import Client
 import matplotlib.pyplot as plt
 import yfinance as yf
@@ -45,6 +46,17 @@ from openbb_terminal.rich_config import console
 logger = logging.getLogger(__name__)
 
 INTERVALS = ["1H", "3H", "6H", "1D"]
+
+CCXT_INTERVAL_MAP = {
+    "1": "1m",
+    "15": "15m",
+    "30": "30m",
+    "60": "1h",
+    "240": "4h",
+    "1440": "1d",
+    "10080": "1w",
+    "43200": "1M",
+}
 
 SOURCES_INTERVALS = {
     "bin": [
@@ -290,8 +302,12 @@ def get_coinpaprika_id(symbol: str):
 
 def load(
     symbol: str,
-    vs: str = "usd",
-    days: int = 365,
+    start_date: datetime = (datetime.now() - timedelta(days=1100)),
+    interval: int = 1440,  # 1, 15, 30, 60, 240, 1440, 10080, 43200
+    exchange: str = "binance",
+    vs_currency: str = "usdt",
+    end_date: datetime = datetime.now(),
+    source: str = "ccxt",
 ):
     """Load crypto currency to perform analysis on CoinGecko is used as source for price and
     YahooFinance for volume.
@@ -310,33 +326,57 @@ def load(
     pd.DataFrame
         Dataframe consisting of price and volume data
     """
-    coingecko_id = get_coingecko_id(symbol)
-    if not coingecko_id:
-        return pd.DataFrame()
+    df = pd.DataFrame()
+    if source == "ccxt":
+        pair = f"{symbol.upper()}/{vs_currency.upper()}"
+        try:
+            df = fetch_ccxt_ohlc(
+                exchange,
+                3,
+                pair,
+                CCXT_INTERVAL_MAP[str(interval)],
+                int(datetime.timestamp(start_date)) * 1000,
+                1000,
+            )
+        except:  # noqa: E722
+            console.print(f"Pair {pair} not found on {exchange}\n")
+            return df
+    elif source == "cg":
+        delta = datetime.now() - start_date
+        days = delta.days
+        if days > 365:
+            console.print("Coingecko free tier only allows a max of 365\n")
+            days = 365
+        coingecko_id = get_coingecko_id(symbol)
+        if not coingecko_id:
+            console.print(f"{symbol} not found in Coingecko\n")
+            return df
+        df = pycoingecko_model.get_ohlc(coingecko_id, vs_currency, days)
+        df["Volume"] = 0
 
-    df = pycoingecko_model.get_ohlc(coingecko_id, vs, days)
+    elif source == "yf":
+        df = yf.download(
+            f"{symbol}-{vs_currency}",
+            end=end_date,
+            start=start_date,
+            progress=False,
+            interval="1d",
+        ).sort_index(ascending=True)
 
-    start_date = datetime.now() - timedelta(days=days)
-    df = yf.download(
-        f"{symbol}-{vs}",
-        end=datetime.now(),
-        start=start_date,
-        progress=False,
-        interval="1d",
-    ).sort_index(ascending=True)
-
-    if df.empty:
-        return pd.DataFrame()
-    df.index.name = "date"
-    if not df.empty:
-        console.print(
-            f"\nLoading Daily {symbol.upper()} crypto "
-            f"with starting period {start_date.strftime('%Y-%m-%d')} for analysis.",
-        )
+        if df.empty:
+            console.print(f"Pair {symbol}-{vs_currency} not found in yahoo finance\n")
+            return pd.DataFrame()
+        df.index.name = "date"
     return df
 
 
-def show_quick_performance(crypto_df: pd.DataFrame, symbol: str, current_currency: str):
+def show_quick_performance(
+    crypto_df: pd.DataFrame,
+    symbol: str,
+    current_currency: str,
+    source: str,
+    exchange: str,
+):
     """Show quick performance stats of crypto prices. Daily prices expected"""
     closes = crypto_df["Close"]
     volumes = crypto_df["Volume"] if "Volume" in crypto_df else pd.DataFrame()
@@ -392,8 +432,12 @@ def show_quick_performance(crypto_df: pd.DataFrame, symbol: str, current_currenc
         )
 
     console.print()
+    exchange_str = f"in {exchange.capitalize()}" if source == "ccxt" else ""
     print_rich_table(
-        df, show_index=False, headers=df.columns, title=f"{symbol.upper()} Performance"
+        df,
+        show_index=False,
+        headers=df.columns,
+        title=f"{symbol.upper()}/{current_currency.upper()} Performance {exchange_str}",
     )
     console.print()
 
@@ -1330,3 +1374,60 @@ def check_cg_id(symbol: str):
         print(f"\n{symbol} not found on CoinGecko")
         return ""
     return symbol
+
+
+def fetch_ccxt_ohlc(exchange_id, max_retries, symbol, timeframe, since, limit):
+    exchange = getattr(ccxt, exchange_id)(
+        {
+            "enableRateLimit": True,  # required by the Manual
+        }
+    )
+    if isinstance(since, str):
+        since = exchange.parse8601(since)
+    ohlcv = scrape_ohlcv(exchange, max_retries, symbol, timeframe, since, limit)
+    df = pd.DataFrame(ohlcv, columns=["date", "Open", "High", "Low", "Close", "Volume"])
+    df["date"] = pd.to_datetime(df.date, unit="ms")
+    df.set_index("date", inplace=True)
+    return df
+
+
+def retry_fetch_ohlcv(exchange, max_retries, symbol, timeframe, since, limit):
+    num_retries = 0
+    try:
+        num_retries += 1
+        ohlcv = exchange.fetch_ohlcv(symbol, timeframe, since, limit)
+        return ohlcv
+    except Exception:
+        if num_retries > max_retries:
+            raise
+        else:
+            return []
+
+
+def scrape_ohlcv(exchange, max_retries, symbol, timeframe, since, limit):
+    timeframe_duration_in_seconds = exchange.parse_timeframe(timeframe)
+    timeframe_duration_in_ms = timeframe_duration_in_seconds * 1000
+    timedelta_ = limit * timeframe_duration_in_ms
+    now = exchange.milliseconds()
+    all_ohlcv = []
+    fetch_since = since
+    while fetch_since < now:
+        ohlcv = retry_fetch_ohlcv(
+            exchange, max_retries, symbol, timeframe, fetch_since, limit
+        )
+        fetch_since = (ohlcv[-1][0] + 1) if len(ohlcv) else (fetch_since + timedelta_)
+        all_ohlcv = all_ohlcv + ohlcv
+    return exchange.filter_by_since_limit(all_ohlcv, since, None, key=0)
+
+
+def get_exchanges_ohlc():
+    arr = []
+    for exchange in ccxt.exchanges:
+        exchange_ccxt = getattr(ccxt, exchange)(
+            {
+                "enableRateLimit": True,
+            }
+        )
+        if exchange_ccxt.has["fetchOHLCV"]:
+            arr.append(exchange)
+    return arr
