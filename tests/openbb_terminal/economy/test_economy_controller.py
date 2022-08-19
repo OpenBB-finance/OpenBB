@@ -298,7 +298,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [],
             dict(
                 future_type="Energy",
-                sort_by="ticker",
+                sortby="ticker",
                 ascending=True,
                 export="csv",
             ),
@@ -315,7 +315,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [],
             dict(
                 future_type="Metals",
-                sort_by="ticker",
+                sortby="ticker",
                 ascending=True,
                 export="csv",
             ),
@@ -332,7 +332,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [],
             dict(
                 future_type="Meats",
-                sort_by="ticker",
+                sortby="ticker",
                 ascending=True,
                 export="csv",
             ),
@@ -349,7 +349,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [],
             dict(
                 future_type="Grains",
-                sort_by="ticker",
+                sortby="ticker",
                 ascending=True,
                 export="csv",
             ),
@@ -366,7 +366,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [],
             dict(
                 future_type="Softs",
-                sort_by="ticker",
+                sortby="ticker",
                 ascending=True,
                 export="csv",
             ),
@@ -383,7 +383,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [],
             dict(
                 group="sector",
-                sort_by="MarketCap",
+                sortby="MarketCap",
                 ascending=True,
                 export="csv",
             ),
@@ -400,7 +400,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [],
             dict(
                 group="sector",
-                sort_by="Name",
+                sortby="Name",
                 ascending=True,
                 export="csv",
             ),
