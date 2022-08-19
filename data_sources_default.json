@@ -48,11 +48,13 @@
             ],
             "vol": [
                 "yf",
-                "tradier"
+                "tradier",
+                "nasdaq"
             ],
             "voi": [
                 "yf",
-                "tradier"
+                "tradier",
+                "nasdaq"
             ],
             "oi": [
                 "yf",

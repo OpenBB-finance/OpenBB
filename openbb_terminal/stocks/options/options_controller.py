@@ -860,7 +860,7 @@ class OptionsController(BaseController):
                             puts_only=ns_parser.puts,
                             export=ns_parser.export,
                         )
-                    else:
+                    elif ns_parser.source == "yf":
                         yfinance_view.plot_vol(
                             symbol=self.ticker,
                             expiry=self.selected_date,
@@ -870,6 +870,16 @@ class OptionsController(BaseController):
                             puts_only=ns_parser.puts,
                             export=ns_parser.export,
                         )
+                    elif ns_parser.source == "nasdaq":
+                        nasdaq_view.display_volume(
+                            symbol=self.ticker,
+                            expiration=self.selected_date,
+                            min_sp=ns_parser.min,
+                            max_sp=ns_parser.max,
+                            export=ns_parser.export,
+                        )
+                    else:
+                        return
                 else:
                     console.print("No expiry loaded. First use `exp {expiry date}`\n")
             else:

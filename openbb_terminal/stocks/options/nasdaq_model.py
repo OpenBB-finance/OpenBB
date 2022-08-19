@@ -177,7 +177,9 @@ def get_last_price(symbol: str) -> float:
         ).json()
         if response_json["status"]["rCode"] == 200:
             return float(
-                response_json["data"]["primaryData"]["lastSalePrice"].strip("$")
+                response_json["data"]["primaryData"]["lastSalePrice"]
+                .strip("$")
+                .replace(",", "")
             )
     console.print(f"[red]Last price for {symbol} not found[/red]\n")
     return np.nan
