@@ -132,7 +132,7 @@ def display_repo_summary(repo: str, export: str = "") -> None:
     repo : str
             Repository to display summary. Format: org/repo, e.g., openbb-finance/openbbterminal
     export : str
-    Export dataframe data to csv,json,xlsx file
+        Export dataframe data to csv,json,xlsx file
     """
     df = github_model.get_repo_summary(repo)
     if not df.empty:

@@ -1,4 +1,4 @@
-from typing import List, Callable, Any, Tuple
+from typing import List, Callable, Any, Tuple, Dict, Optional
 from inspect import signature
 import importlib
 import os
@@ -68,20 +68,66 @@ def all_functions() -> List[Tuple[str, str, Callable[..., Any]]]:
     return func_list
 
 
+def groupby(orig_list: List[Any], index: int) -> Dict[Any, Any]:
+    """Groups a list of iterable by the index provided
+
+    Parameters
+    ----------
+    orig_list: List[Any]
+        A list of iterables
+    index: int
+        The index to groupby
+
+    Returns
+    ----------
+    grouped: Dict[Any, Any]
+        Group information where keys are the groupby item and values are the iterables
+    """
+    grouped: Dict[Any, Any] = {}
+    for item in orig_list:
+        if item[index] in grouped:
+            grouped[item[index]].append(item)
+        else:
+            grouped[item[index]] = [item]
+    return grouped
+
+
 def generate_documentation(
-    base: str, ending: str, function_type: str, func: Callable[..., Any]
+    base: str, key: str, value: List[Tuple[str, str, Callable[..., Any]]]
 ):
-    for end in ending.split("."):
+    models = list(filter(lambda x: x[1] == "model", value))
+    views = list(filter(lambda x: x[1] == "view", value))
+    if models:
+        model: Optional[Tuple[str, str, Callable[..., Any]]] = models[0]
+    else:
+        model = None
+    if views:
+        view: Optional[Tuple[str, str, Callable[..., Any]]] = views[0]
+    else:
+        view = None
+    for end in key.split("."):
         base += f"/{end}"
         if not os.path.isdir(base):
             os.mkdir(base)
     with open(f"{base}/_index.md", "w") as f:
-        f.write(f"# {ending} {signature(func)}\n\n")
-        f.write(str(func.__doc__))
+        f.write(f"# {key}\n\n")
+        if view:
+            f.write("To specify a view add `chart=True` as the last parameter\n\n")
+        if model:
+            f.write(f"## Model {signature(model[2])}\n\n")
+            m_docs = str(model[2].__doc__)[:-5]
+            f.write(f"{m_docs}\n")
+        if view:
+            if model:
+                f.write("\n")
+            v_docs = str(view[2].__doc__)[:-5]
+            f.write(f"## View {signature(view[2])}\n\n")
+            f.write(f"{v_docs}\n")
 
 
 if __name__ == "__main__":
     folder_path = os.path.realpath("./website/content/api")
     funcs = all_functions()
-    path, func_type, function = funcs[0]
-    generate_documentation(folder_path, path, func_type, function)
+    grouped_funcs = groupby(funcs, 0)
+    for k, v in grouped_funcs.items():
+        generate_documentation(folder_path, k, v)
