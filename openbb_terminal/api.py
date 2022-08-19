@@ -35,22 +35,20 @@ functions = {
     "alt.oss.github_data": {
         "model": "openbb_terminal.alternative.oss.github_model.get_github_data"
     },
-    "alt.oss.repo_summary": {
+    "alt.oss.summary": {
         "model": "openbb_terminal.alternative.oss.github_model.get_repo_summary",
         "view": "openbb_terminal.alternative.oss.github_view.display_repo_summary",
     },
-    "alt.oss.stars_history": {
-        "model": "openbb_terminal.alternative.oss.github_model.get_stars_history"
+    "alt.oss.history": {
+        "model": "openbb_terminal.alternative.oss.github_model.get_stars_history",
+        "view": "openbb_terminal.alternative.oss.github_view.display_star_history",
     },
-    "alt.oss.top_repos": {
+    "alt.oss.top": {
         "model": "openbb_terminal.alternative.oss.github_model.get_top_repos",
         "view": "openbb_terminal.alternative.oss.github_view.display_top_repos",
     },
-    "alt.oss.search_repos": {
+    "alt.oss.search": {
         "model": "openbb_terminal.alternative.oss.github_model.search_repos"
-    },
-    "alt.oss.star_history": {
-        "view": "openbb_terminal.alternative.oss.github_view.display_star_history"
     },
     "alt.oss._make_request": {
         "model": "openbb_terminal.alternative.oss.runa_model._make_request"
@@ -61,7 +59,7 @@ functions = {
     "alt.oss.startups": {
         "model": "openbb_terminal.alternative.oss.runa_model.get_startups"
     },
-    "alt.oss.rossindex": {
+    "alt.oss.ross": {
         "view": "openbb_terminal.alternative.oss.runa_view.display_rossindex"
     },
     "stocks.ba.headlines": {
@@ -83,34 +81,31 @@ functions = {
         "model": "openbb_terminal.common.behavioural_analysis.google_model.get_rise"
     },
     "stocks.ba.getdd": {
-        "model": "openbb_terminal.common.behavioural_analysis.reddit_model.get_due_dilligence",
-        "view": "openbb_terminal.common.behavioural_analysis.reddit_view.display_due_diligence",
+        "model": "openbb_terminal.common.behavioural_analysis.reddit_model.get_due_dilligence"
     },
     "stocks.ba.popular": {
         "model": "openbb_terminal.common.behavioural_analysis.reddit_model.get_popular_tickers",
         "view": "openbb_terminal.common.behavioural_analysis.reddit_view.display_popular_tickers",
     },
-    "common.ba.posts_about": {
-        "model": "openbb_terminal.common.behavioural_analysis.reddit_model.get_posts_about"
+    "stocks.ba.reddit_sent": {
+        "model": "openbb_terminal.common.behavioural_analysis.reddit_model.get_posts_about",
+        "view": "openbb_terminal.common.behavioural_analysis.reddit_view.display_reddit_sent",
     },
-    "common.ba.sentiment": {
+    "stocks.ba.text_sent": {
         "model": "openbb_terminal.common.behavioural_analysis.reddit_model.get_sentiment"
     },
     "stocks.ba.spac": {
-        "model": "openbb_terminal.common.behavioural_analysis.reddit_model.get_spac",
-        "view": "openbb_terminal.common.behavioural_analysis.reddit_view.display_spac",
+        "model": "openbb_terminal.common.behavioural_analysis.reddit_model.get_spac"
     },
     "stocks.ba.spac_c": {
-        "model": "openbb_terminal.common.behavioural_analysis.reddit_model.get_spac_community",
-        "view": "openbb_terminal.common.behavioural_analysis.reddit_view.display_spac_community",
+        "model": "openbb_terminal.common.behavioural_analysis.reddit_model.get_spac_community"
     },
     "stocks.ba.watchlist": {
         "model": "openbb_terminal.common.behavioural_analysis.reddit_model.get_watchlists",
         "view": "openbb_terminal.common.behavioural_analysis.reddit_view.display_watchlist",
     },
     "stocks.ba.wsb": {
-        "model": "openbb_terminal.common.behavioural_analysis.reddit_model.get_wsb_community",
-        "view": "openbb_terminal.common.behavioural_analysis.reddit_view.display_wsb_community",
+        "model": "openbb_terminal.common.behavioural_analysis.reddit_model.get_wsb_community"
     },
     "stocks.ba.hist": {
         "model": "openbb_terminal.common.behavioural_analysis.sentimentinvestor_model.get_historical",
@@ -128,8 +123,7 @@ functions = {
         "view": "openbb_terminal.common.behavioural_analysis.stocktwits_view.display_messages",
     },
     "stocks.ba.stalker": {
-        "model": "openbb_terminal.common.behavioural_analysis.stocktwits_model.get_stalker",
-        "view": "openbb_terminal.common.behavioural_analysis.stocktwits_view.display_stalker",
+        "model": "openbb_terminal.common.behavioural_analysis.stocktwits_model.get_stalker"
     },
     "stocks.ba.trending": {
         "model": "openbb_terminal.common.behavioural_analysis.stocktwits_model.get_trending"
@@ -311,47 +305,33 @@ functions = {
     "stocks.qa.spread": {
         "view": "openbb_terminal.common.quantitative_analysis.rolling_view.display_spread"
     },
-    "common.ta.calculate_fib_levels": {
-        "model": "openbb_terminal.common.technical_analysis.custom_indicators_model.calculate_fib_levels"
-    },
-    "forex.ta.fib": {
-        "view": "openbb_terminal.common.technical_analysis.custom_indicators_view.fibonacci_retracement"
+    "common.ta.fib": {
+        "model": "openbb_terminal.common.technical_analysis.custom_indicators_model.calculate_fib_levels",
+        "view": "openbb_terminal.common.technical_analysis.custom_indicators_view.fibonacci_retracement",
     },
     "common.ta.cci": {
-        "model": "openbb_terminal.common.technical_analysis.momentum_model.cci"
+        "model": "openbb_terminal.common.technical_analysis.momentum_model.cci",
+        "view": "openbb_terminal.common.technical_analysis.momentum_view.display_cci",
     },
     "common.ta.cg": {
-        "model": "openbb_terminal.common.technical_analysis.momentum_model.cg"
+        "model": "openbb_terminal.common.technical_analysis.momentum_model.cg",
+        "view": "openbb_terminal.common.technical_analysis.momentum_view.display_cg",
     },
     "common.ta.fisher": {
-        "model": "openbb_terminal.common.technical_analysis.momentum_model.fisher"
+        "model": "openbb_terminal.common.technical_analysis.momentum_model.fisher",
+        "view": "openbb_terminal.common.technical_analysis.momentum_view.display_fisher",
     },
     "common.ta.macd": {
-        "model": "openbb_terminal.common.technical_analysis.momentum_model.macd"
+        "model": "openbb_terminal.common.technical_analysis.momentum_model.macd",
+        "view": "openbb_terminal.common.technical_analysis.momentum_view.display_macd",
     },
     "common.ta.rsi": {
-        "model": "openbb_terminal.common.technical_analysis.momentum_model.rsi"
+        "model": "openbb_terminal.common.technical_analysis.momentum_model.rsi",
+        "view": "openbb_terminal.common.technical_analysis.momentum_view.display_rsi",
     },
     "common.ta.stoch": {
-        "model": "openbb_terminal.common.technical_analysis.momentum_model.stoch"
-    },
-    "forex.ta.cci": {
-        "view": "openbb_terminal.common.technical_analysis.momentum_view.display_cci"
-    },
-    "forex.ta.cg": {
-        "view": "openbb_terminal.common.technical_analysis.momentum_view.display_cg"
-    },
-    "forex.ta.fisher": {
-        "view": "openbb_terminal.common.technical_analysis.momentum_view.display_fisher"
-    },
-    "forex.ta.macd": {
-        "view": "openbb_terminal.common.technical_analysis.momentum_view.display_macd"
-    },
-    "forex.ta.rsi": {
-        "view": "openbb_terminal.common.technical_analysis.momentum_view.display_rsi"
-    },
-    "forex.ta.stoch": {
-        "view": "openbb_terminal.common.technical_analysis.momentum_view.display_stoch"
+        "model": "openbb_terminal.common.technical_analysis.momentum_model.stoch",
+        "view": "openbb_terminal.common.technical_analysis.momentum_view.display_stoch",
     },
     "common.ta.ema": {
         "model": "openbb_terminal.common.technical_analysis.overlap_model.ema"
@@ -363,7 +343,8 @@ functions = {
         "model": "openbb_terminal.common.technical_analysis.overlap_model.sma"
     },
     "common.ta.vwap": {
-        "model": "openbb_terminal.common.technical_analysis.overlap_model.vwap"
+        "model": "openbb_terminal.common.technical_analysis.overlap_model.vwap",
+        "view": "openbb_terminal.common.technical_analysis.overlap_view.view_vwap",
     },
     "common.ta.wma": {
         "model": "openbb_terminal.common.technical_analysis.overlap_model.wma"
@@ -371,59 +352,40 @@ functions = {
     "common.ta.zlma": {
         "model": "openbb_terminal.common.technical_analysis.overlap_model.zlma"
     },
-    "forex.ta.ma": {
+    "common.ta.ma": {
         "view": "openbb_terminal.common.technical_analysis.overlap_view.view_ma"
     },
-    "stocks.ta.vwap": {
-        "view": "openbb_terminal.common.technical_analysis.overlap_view.view_vwap"
-    },
     "common.ta.adx": {
-        "model": "openbb_terminal.common.technical_analysis.trend_indicators_model.adx"
+        "model": "openbb_terminal.common.technical_analysis.trend_indicators_model.adx",
+        "view": "openbb_terminal.common.technical_analysis.trend_indicators_view.display_adx",
     },
     "common.ta.aroon": {
-        "model": "openbb_terminal.common.technical_analysis.trend_indicators_model.aroon"
-    },
-    "forex.ta.adx": {
-        "view": "openbb_terminal.common.technical_analysis.trend_indicators_view.display_adx"
-    },
-    "forex.ta.aroon": {
-        "view": "openbb_terminal.common.technical_analysis.trend_indicators_view.display_aroon"
+        "model": "openbb_terminal.common.technical_analysis.trend_indicators_model.aroon",
+        "view": "openbb_terminal.common.technical_analysis.trend_indicators_view.display_aroon",
     },
     "common.ta.bbands": {
-        "model": "openbb_terminal.common.technical_analysis.volatility_model.bbands"
+        "model": "openbb_terminal.common.technical_analysis.volatility_model.bbands",
+        "view": "openbb_terminal.common.technical_analysis.volatility_view.display_bbands",
     },
     "common.ta.donchian": {
-        "model": "openbb_terminal.common.technical_analysis.volatility_model.donchian"
+        "model": "openbb_terminal.common.technical_analysis.volatility_model.donchian",
+        "view": "openbb_terminal.common.technical_analysis.volatility_view.display_donchian",
     },
     "common.ta.kc": {
-        "model": "openbb_terminal.common.technical_analysis.volatility_model.kc"
-    },
-    "forex.ta.bbands": {
-        "view": "openbb_terminal.common.technical_analysis.volatility_view.display_bbands"
-    },
-    "forex.ta.donchian": {
-        "view": "openbb_terminal.common.technical_analysis.volatility_view.display_donchian"
-    },
-    "stocks.ta.kc": {
-        "view": "openbb_terminal.common.technical_analysis.volatility_view.view_kc"
+        "model": "openbb_terminal.common.technical_analysis.volatility_model.kc",
+        "view": "openbb_terminal.common.technical_analysis.volatility_view.view_kc",
     },
     "common.ta.ad": {
-        "model": "openbb_terminal.common.technical_analysis.volume_model.ad"
+        "model": "openbb_terminal.common.technical_analysis.volume_model.ad",
+        "view": "openbb_terminal.common.technical_analysis.volume_view.display_ad",
     },
     "common.ta.adosc": {
-        "model": "openbb_terminal.common.technical_analysis.volume_model.adosc"
+        "model": "openbb_terminal.common.technical_analysis.volume_model.adosc",
+        "view": "openbb_terminal.common.technical_analysis.volume_view.display_adosc",
     },
     "common.ta.obv": {
-        "model": "openbb_terminal.common.technical_analysis.volume_model.obv"
-    },
-    "stocks.ta.ad": {
-        "view": "openbb_terminal.common.technical_analysis.volume_view.display_ad"
-    },
-    "stocks.ta.adosc": {
-        "view": "openbb_terminal.common.technical_analysis.volume_view.display_adosc"
-    },
-    "stocks.ta.obv": {
-        "view": "openbb_terminal.common.technical_analysis.volume_view.display_obv"
+        "model": "openbb_terminal.common.technical_analysis.volume_model.obv",
+        "view": "openbb_terminal.common.technical_analysis.volume_view.display_obv",
     },
     "crypto.defi._prepare_params": {
         "model": "openbb_terminal.cryptocurrency.defi.coindix_model._prepare_params"
@@ -1332,10 +1294,13 @@ functions = {
     "economy.get_macro_countries": {
         "model": "openbb_terminal.economy.econdb_model.get_macro_countries"
     },
+    "economy.treasury": {
+        "model": "openbb_terminal.economy.econdb_model.get_treasuries",
+        "view": "openbb_terminal.economy.econdb_view.show_treasuries",
+    },
     "economy.maturities": {
         "model": "openbb_terminal.economy.econdb_model.get_treasury_maturities"
     },
-    "economy.treasury": {"view": "openbb_terminal.economy.econdb_view.show_treasuries"},
     "economy.future": {"model": "openbb_terminal.economy.finviz_model.get_futures"},
     "economy.spectrum": {
         "model": "openbb_terminal.economy.finviz_model.get_spectrum_data",
@@ -1889,122 +1854,65 @@ functions = {
         "model": "openbb_terminal.stocks.discovery.yahoofinance_model.get_ulc"
     },
     "stocks.dd.arktrades": {
-        "model": "openbb_terminal.stocks.due_diligence.ark_model.get_ark_trades_by_ticker",
-        "view": "openbb_terminal.stocks.due_diligence.ark_view.display_ark_trades",
+        "model": "openbb_terminal.stocks.due_diligence.ark_model.get_ark_trades_by_ticker"
     },
     "stocks.dd.est": {
-        "model": "openbb_terminal.stocks.due_diligence.business_insider_model.get_estimates",
-        "view": "openbb_terminal.stocks.due_diligence.business_insider_view.estimates",
+        "model": "openbb_terminal.stocks.due_diligence.business_insider_model.get_estimates"
     },
     "stocks.dd.pt": {
         "model": "openbb_terminal.stocks.due_diligence.business_insider_model.get_price_target_from_analysts",
         "view": "openbb_terminal.stocks.due_diligence.business_insider_view.price_target_from_analysts",
     },
     "stocks.dd.customer": {
-        "model": "openbb_terminal.stocks.due_diligence.csimarket_model.get_customers",
-        "view": "openbb_terminal.stocks.due_diligence.csimarket_view.customers",
+        "model": "openbb_terminal.stocks.due_diligence.csimarket_model.get_customers"
     },
     "stocks.dd.supplier": {
-        "model": "openbb_terminal.stocks.due_diligence.csimarket_model.get_suppliers",
-        "view": "openbb_terminal.stocks.due_diligence.csimarket_view.suppliers",
+        "model": "openbb_terminal.stocks.due_diligence.csimarket_model.get_suppliers"
     },
     "stocks.dd.rot": {
         "model": "openbb_terminal.stocks.due_diligence.finnhub_model.get_rating_over_time",
         "view": "openbb_terminal.stocks.due_diligence.finnhub_view.rating_over_time",
     },
-    "stocks.dd.plot_rating_over_time": {
-        "view": "openbb_terminal.stocks.due_diligence.finnhub_view.plot_rating_over_time"
-    },
     "stocks.dd.analyst": {
-        "model": "openbb_terminal.stocks.due_diligence.finviz_model.get_analyst_data",
-        "view": "openbb_terminal.stocks.due_diligence.finviz_view.analyst",
+        "model": "openbb_terminal.stocks.due_diligence.finviz_model.get_analyst_data"
     },
     "stocks.dd.news": {
-        "model": "openbb_terminal.stocks.due_diligence.finviz_model.get_news",
-        "view": "openbb_terminal.stocks.due_diligence.finviz_view.news",
-    },
-    "stocks.dd.lambda_category_color_red_green": {
-        "view": "openbb_terminal.stocks.due_diligence.finviz_view.lambda_category_color_red_green"
+        "model": "openbb_terminal.stocks.due_diligence.finviz_model.get_news"
     },
     "stocks.dd.rating": {
-        "model": "openbb_terminal.stocks.due_diligence.fmp_model.get_rating",
-        "view": "openbb_terminal.stocks.due_diligence.fmp_view.rating",
+        "model": "openbb_terminal.stocks.due_diligence.fmp_model.get_rating"
     },
     "stocks.dd.sec": {
         "model": "openbb_terminal.stocks.due_diligence.marketwatch_model.get_sec_filings",
         "view": "openbb_terminal.stocks.due_diligence.marketwatch_view.sec_filings",
     },
-    "stocks.fa.color_mscore": {
-        "model": "openbb_terminal.stocks.fundamental_analysis.av_model.color_mscore"
-    },
-    "stocks.fa.color_zscore_mckee": {
-        "model": "openbb_terminal.stocks.fundamental_analysis.av_model.color_zscore_mckee"
-    },
-    "stocks.fa.df_values": {
-        "model": "openbb_terminal.stocks.fundamental_analysis.av_model.df_values"
-    },
-    "stocks.fa.balance_sheet": {
+    "stocks.fa.av_balance": {
         "model": "openbb_terminal.stocks.fundamental_analysis.av_model.get_balance_sheet"
     },
-    "stocks.fa.cash_flow": {
-        "model": "openbb_terminal.stocks.fundamental_analysis.av_model.get_cash_flow"
+    "stocks.fa.av_cash": {
+        "model": "openbb_terminal.stocks.fundamental_analysis.av_model.get_cash_flow",
+        "view": "openbb_terminal.stocks.fundamental_analysis.av_view.display_cash_flow",
     },
     "stocks.fa.dupont": {
-        "model": "openbb_terminal.stocks.fundamental_analysis.av_model.get_dupont",
-        "view": "openbb_terminal.stocks.fundamental_analysis.av_view.display_dupont",
+        "model": "openbb_terminal.stocks.fundamental_analysis.av_model.get_dupont"
     },
     "stocks.fa.earnings": {
-        "model": "openbb_terminal.stocks.fundamental_analysis.av_model.get_earnings",
-        "view": "openbb_terminal.stocks.fundamental_analysis.av_view.display_earnings",
-    },
-    "stocks.fa.fraud_ratios": {
-        "model": "openbb_terminal.stocks.fundamental_analysis.av_model.get_fraud_ratios"
-    },
-    "stocks.fa.income_statements": {
-        "model": "openbb_terminal.stocks.fundamental_analysis.av_model.get_income_statements"
-    },
-    "stocks.fa.key_metrics": {
-        "model": "openbb_terminal.stocks.fundamental_analysis.av_model.get_key_metrics"
-    },
-    "stocks.fa.overview": {
-        "model": "openbb_terminal.stocks.fundamental_analysis.av_model.get_overview",
-        "view": "openbb_terminal.stocks.fundamental_analysis.av_view.display_overview",
-    },
-    "stocks.fa.replace_df": {
-        "model": "openbb_terminal.stocks.fundamental_analysis.av_model.replace_df"
-    },
-    "stocks.fa.balance": {
-        "view": "openbb_terminal.stocks.fundamental_analysis.market_watch_view.balance"
-    },
-    "stocks.fa.cash": {
-        "view": "openbb_terminal.stocks.fundamental_analysis.market_watch_view.cash"
+        "model": "openbb_terminal.stocks.fundamental_analysis.av_model.get_earnings"
     },
     "stocks.fa.fraud": {
-        "view": "openbb_terminal.stocks.fundamental_analysis.av_view.display_fraud"
+        "model": "openbb_terminal.stocks.fundamental_analysis.av_model.get_fraud_ratios"
     },
-    "stocks.fa.income": {
-        "view": "openbb_terminal.stocks.fundamental_analysis.market_watch_view.income"
+    "stocks.fa.av_income": {
+        "model": "openbb_terminal.stocks.fundamental_analysis.av_model.get_income_statements"
     },
-    "stocks.fa.key": {
-        "view": "openbb_terminal.stocks.fundamental_analysis.av_view.display_key"
+    "stocks.fa.av_metrics": {
+        "model": "openbb_terminal.stocks.fundamental_analysis.av_model.get_key_metrics"
     },
-    "stocks.fa.management": {
-        "model": "openbb_terminal.stocks.fundamental_analysis.business_insider_model.get_management"
+    "stocks.fa.av_overview": {
+        "model": "openbb_terminal.stocks.fundamental_analysis.av_model.get_overview"
     },
     "stocks.fa.mgmt": {
-        "view": "openbb_terminal.stocks.fundamental_analysis.business_insider_view.display_management"
-    },
-    "stocks.fa.clean_dataframes": {
-        "model": "openbb_terminal.stocks.fundamental_analysis.dcf_model.clean_dataframes"
-    },
-    "stocks.fa.create_dataframe": {
-        "model": "openbb_terminal.stocks.fundamental_analysis.dcf_model.create_dataframe"
-    },
-    "stocks.fa.frac": {
-        "model": "openbb_terminal.stocks.fundamental_analysis.dcf_model.frac"
-    },
-    "stocks.fa.generate_path": {
-        "model": "openbb_terminal.stocks.fundamental_analysis.dcf_model.generate_path"
+        "model": "openbb_terminal.stocks.fundamental_analysis.business_insider_model.get_management"
     },
     "stocks.fa.fama_coe": {
         "model": "openbb_terminal.stocks.fundamental_analysis.dcf_model.get_fama_coe"
@@ -2018,303 +1926,158 @@ functions = {
     "stocks.fa.similar_dfs": {
         "model": "openbb_terminal.stocks.fundamental_analysis.dcf_model.get_similar_dfs"
     },
-    "stocks.fa.value": {
-        "model": "openbb_terminal.stocks.fundamental_analysis.dcf_model.get_value"
-    },
-    "stocks.fa.insert_row": {
-        "model": "openbb_terminal.stocks.fundamental_analysis.dcf_model.insert_row"
-    },
-    "stocks.fa.others_in_sector": {
-        "model": "openbb_terminal.stocks.fundamental_analysis.dcf_model.others_in_sector"
-    },
-    "stocks.fa.set_cell": {
-        "model": "openbb_terminal.stocks.fundamental_analysis.dcf_model.set_cell"
-    },
-    "stocks.fa.string_float": {
-        "model": "openbb_terminal.stocks.fundamental_analysis.dcf_model.string_float"
-    },
-    "stocks.fa.filings_analysis": {
+    "stocks.fa.analysis": {
         "model": "openbb_terminal.stocks.fundamental_analysis.eclect_us_model.get_filings_analysis"
     },
-    "stocks.fa.analysis": {
-        "view": "openbb_terminal.stocks.fundamental_analysis.eclect_us_view.display_analysis"
+    "stocks.fa.fmp_balance": {
+        "model": "openbb_terminal.stocks.fundamental_analysis.fmp_model.get_balance"
     },
-    "stocks.fa.financial_modeling_prep.clean_metrics_df": {
-        "model": "openbb_terminal.stocks.fundamental_analysis.financial_modeling_prep.fmp_model.clean_metrics_df"
+    "stocks.fa.fmp_cash": {
+        "model": "openbb_terminal.stocks.fundamental_analysis.fmp_model.get_cash"
     },
-    "stocks.fa.financial_modeling_prep.balance": {
-        "model": "openbb_terminal.stocks.fundamental_analysis.financial_modeling_prep.fmp_model.get_balance"
+    "stocks.fa.dcf": {
+        "model": "openbb_terminal.stocks.fundamental_analysis.fmp_model.get_dcf"
     },
-    "stocks.fa.financial_modeling_prep.cash": {
-        "model": "openbb_terminal.stocks.fundamental_analysis.financial_modeling_prep.fmp_model.get_cash"
+    "stocks.fa.enterprise": {
+        "model": "openbb_terminal.stocks.fundamental_analysis.fmp_model.get_enterprise"
     },
-    "stocks.fa.financial_modeling_prep.dcf": {
-        "model": "openbb_terminal.stocks.fundamental_analysis.financial_modeling_prep.fmp_model.get_dcf"
+    "stocks.fa.growth": {
+        "model": "openbb_terminal.stocks.fundamental_analysis.fmp_model.get_financial_growth"
     },
-    "stocks.fa.financial_modeling_prep.enterprise": {
-        "model": "openbb_terminal.stocks.fundamental_analysis.financial_modeling_prep.fmp_view.display_enterprise"
+    "stocks.fa.fmp_income": {
+        "model": "openbb_terminal.stocks.fundamental_analysis.fmp_model.get_income"
     },
-    "stocks.fa.financial_modeling_prep.financial_growth": {
-        "model": "openbb_terminal.stocks.fundamental_analysis.financial_modeling_prep.fmp_model.get_financial_growth"
+    "stocks.fa.fmp_metrics": {
+        "model": "openbb_terminal.stocks.fundamental_analysis.fmp_model.get_key_metrics"
     },
-    "stocks.fa.financial_modeling_prep.income": {
-        "model": "openbb_terminal.stocks.fundamental_analysis.financial_modeling_prep.fmp_model.get_income"
+    "stocks.fa.fmp_ratios": {
+        "model": "openbb_terminal.stocks.fundamental_analysis.fmp_model.get_key_ratios"
     },
-    "stocks.fa.financial_modeling_prep.key_metrics": {
-        "model": "openbb_terminal.stocks.fundamental_analysis.financial_modeling_prep.fmp_view.display_key_metrics"
+    "stocks.fa.profile": {
+        "model": "openbb_terminal.stocks.fundamental_analysis.fmp_model.get_profile"
     },
-    "stocks.fa.financial_modeling_prep.key_ratios": {
-        "model": "openbb_terminal.stocks.fundamental_analysis.financial_modeling_prep.fmp_model.get_key_ratios"
+    "stocks.fa.quote": {
+        "model": "openbb_terminal.stocks.fundamental_analysis.fmp_model.get_quote"
     },
-    "stocks.fa.financial_modeling_prep.profile": {
-        "model": "openbb_terminal.stocks.fundamental_analysis.financial_modeling_prep.fmp_view.display_profile"
-    },
-    "stocks.fa.financial_modeling_prep.quote": {
-        "model": "openbb_terminal.stocks.fundamental_analysis.financial_modeling_prep.fmp_view.display_quote"
-    },
-    "stocks.fa.financial_modeling_prep.score": {
-        "model": "openbb_terminal.stocks.fundamental_analysis.financial_modeling_prep.fmp_model.get_score"
-    },
-    "stocks.fa.financial_modeling_prep.balance_sheet": {
-        "model": "openbb_terminal.stocks.fundamental_analysis.financial_modeling_prep.fmp_view.display_balance_sheet"
-    },
-    "stocks.fa.financial_modeling_prep.cash_flow": {
-        "model": "openbb_terminal.stocks.fundamental_analysis.financial_modeling_prep.fmp_view.display_cash_flow"
-    },
-    "stocks.fa.financial_modeling_prep.discounted_cash_flow": {
-        "model": "openbb_terminal.stocks.fundamental_analysis.financial_modeling_prep.fmp_view.display_discounted_cash_flow"
-    },
-    "stocks.fa.financial_modeling_prep.financial_ratios": {
-        "model": "openbb_terminal.stocks.fundamental_analysis.financial_modeling_prep.fmp_view.display_financial_ratios"
-    },
-    "stocks.fa.financial_modeling_prep.financial_statement_growth": {
-        "model": "openbb_terminal.stocks.fundamental_analysis.financial_modeling_prep.fmp_view.display_financial_statement_growth"
-    },
-    "stocks.fa.financial_modeling_prep.income_statement": {
-        "model": "openbb_terminal.stocks.fundamental_analysis.financial_modeling_prep.fmp_view.display_income_statement"
-    },
-    "stocks.fa.financial_modeling_prep.valinvest_score": {
-        "model": "openbb_terminal.stocks.fundamental_analysis.financial_modeling_prep.fmp_view.valinvest_score"
+    "stocks.fa.score": {
+        "model": "openbb_terminal.stocks.fundamental_analysis.fmp_model.get_score"
     },
     "stocks.fa.data": {
-        "model": "openbb_terminal.stocks.fundamental_analysis.finviz_model.get_data",
-        "view": "openbb_terminal.stocks.fundamental_analysis.finviz_view.display_screen_data",
+        "model": "openbb_terminal.stocks.fundamental_analysis.finviz_model.get_data"
     },
-    "stocks.fa.sean_seah_warnings": {
-        "model": "openbb_terminal.stocks.fundamental_analysis.market_watch_model.get_sean_seah_warnings"
+    "stocks.fa.poly_financials": {
+        "model": "openbb_terminal.stocks.fundamental_analysis.polygon_model.get_financials",
+        "view": "openbb_terminal.stocks.fundamental_analysis.polygon_view.display_fundamentals",
     },
-    "stocks.fa.prepare_df_financials": {
-        "model": "openbb_terminal.stocks.fundamental_analysis.market_watch_model.prepare_df_financials"
-    },
-    "stocks.fa.warnings": {
-        "view": "openbb_terminal.stocks.fundamental_analysis.market_watch_view.display_sean_seah_warnings"
-    },
-    "stocks.fa.financials": {
-        "model": "openbb_terminal.stocks.fundamental_analysis.yahoo_finance_model.get_financials"
-    },
-    "stocks.fa.fundamentals": {
-        "view": "openbb_terminal.stocks.fundamental_analysis.yahoo_finance_view.display_fundamentals"
-    },
-    "stocks.fa.calendar_earnings": {
+    "stocks.fa.cal": {
         "model": "openbb_terminal.stocks.fundamental_analysis.yahoo_finance_model.get_calendar_earnings"
     },
-    "stocks.fa.dividends": {
+    "stocks.fa.divs": {
         "model": "openbb_terminal.stocks.fundamental_analysis.yahoo_finance_model.get_dividends"
     },
+    "stocks.fa.yf_financials": {
+        "model": "openbb_terminal.stocks.fundamental_analysis.yahoo_finance_model.get_financials",
+        "view": "openbb_terminal.stocks.fundamental_analysis.yahoo_finance_view.display_fundamentals",
+    },
     "stocks.fa.hq": {
-        "model": "openbb_terminal.stocks.fundamental_analysis.yahoo_finance_model.get_hq",
-        "view": "openbb_terminal.stocks.fundamental_analysis.yahoo_finance_view.open_headquarters_map",
+        "model": "openbb_terminal.stocks.fundamental_analysis.yahoo_finance_model.get_hq"
     },
     "stocks.fa.info": {
-        "model": "openbb_terminal.stocks.fundamental_analysis.yahoo_finance_model.get_info",
-        "view": "openbb_terminal.stocks.fundamental_analysis.yahoo_finance_view.display_info",
+        "model": "openbb_terminal.stocks.fundamental_analysis.yahoo_finance_model.get_info"
     },
     "stocks.fa.mktcap": {
         "model": "openbb_terminal.stocks.fundamental_analysis.yahoo_finance_model.get_mktcap",
         "view": "openbb_terminal.stocks.fundamental_analysis.yahoo_finance_view.display_mktcap",
     },
-    "stocks.fa.shareholders": {
+    "stocks.fa.shrs": {
         "model": "openbb_terminal.stocks.fundamental_analysis.yahoo_finance_model.get_shareholders"
     },
     "stocks.fa.splits": {
         "model": "openbb_terminal.stocks.fundamental_analysis.yahoo_finance_model.get_splits",
         "view": "openbb_terminal.stocks.fundamental_analysis.yahoo_finance_view.display_splits",
     },
-    "stocks.fa.sustainability": {
+    "stocks.fa.sust": {
         "model": "openbb_terminal.stocks.fundamental_analysis.yahoo_finance_model.get_sustainability"
     },
     "stocks.fa.website": {
         "model": "openbb_terminal.stocks.fundamental_analysis.yahoo_finance_model.get_website"
     },
-    "stocks.fa.cal": {
-        "view": "openbb_terminal.stocks.fundamental_analysis.yahoo_finance_view.display_calendar_earnings"
-    },
-    "stocks.fa.divs": {
-        "view": "openbb_terminal.stocks.fundamental_analysis.yahoo_finance_view.display_dividends"
-    },
-    "stocks.fa.shrs": {
-        "view": "openbb_terminal.stocks.fundamental_analysis.yahoo_finance_view.display_shareholders"
-    },
-    "stocks.fa.sust": {
-        "view": "openbb_terminal.stocks.fundamental_analysis.yahoo_finance_view.display_sustainability"
-    },
-    "stocks.fa.web": {
-        "view": "openbb_terminal.stocks.fundamental_analysis.yahoo_finance_view.open_web"
-    },
-    "stocks.fa.yield_curve": {
-        "model": "openbb_terminal.stocks.fundamental_analysis.yield_curve_model.get_yield_curve"
-    },
-    "stocks.fa.yield_curve_year": {
-        "model": "openbb_terminal.stocks.fundamental_analysis.yield_curve_model.get_yield_curve_year"
-    },
-    "stocks.gov.analyze_qtr_contracts": {
-        "model": "openbb_terminal.stocks.government.quiverquant_model.analyze_qtr_contracts"
+    "stocks.gov.qtrcontracts": {
+        "model": "openbb_terminal.stocks.government.quiverquant_model.get_qtr_contracts",
+        "view": "openbb_terminal.stocks.government.quiverquant_view.display_qtr_contracts",
     },
     "stocks.gov.government_trading": {
         "model": "openbb_terminal.stocks.government.quiverquant_model.get_government_trading"
     },
     "stocks.gov.contracts": {
-        "view": "openbb_terminal.stocks.government.quiverquant_view.display_contracts"
+        "model": "openbb_terminal.stocks.government.quiverquant_model.get_contracts",
+        "view": "openbb_terminal.stocks.government.quiverquant_view.display_contracts",
     },
     "stocks.gov.topbuys": {
-        "view": "openbb_terminal.stocks.government.quiverquant_view.display_government_buys"
+        "model": "openbb_terminal.stocks.government.quiverquant_model.get_government_buys",
+        "view": "openbb_terminal.stocks.government.quiverquant_view.display_government_buys",
     },
     "stocks.gov.topsells": {
-        "view": "openbb_terminal.stocks.government.quiverquant_view.display_government_sells"
+        "model": "openbb_terminal.stocks.government.quiverquant_model.get_government_sells",
+        "view": "openbb_terminal.stocks.government.quiverquant_view.display_government_sells",
     },
     "stocks.gov.gtrades": {
-        "view": "openbb_terminal.stocks.government.quiverquant_view.display_government_trading"
+        "model": "openbb_terminal.stocks.government.quiverquant_model.get_cleaned_government_trading",
+        "view": "openbb_terminal.stocks.government.quiverquant_view.display_government_trading",
     },
     "stocks.gov.histcont": {
-        "view": "openbb_terminal.stocks.government.quiverquant_view.display_hist_contracts"
+        "model": "openbb_terminal.stocks.government.quiverquant_model.get_hist_contracts",
+        "view": "openbb_terminal.stocks.government.quiverquant_view.display_hist_contracts",
     },
     "stocks.gov.lastcontracts": {
-        "view": "openbb_terminal.stocks.government.quiverquant_view.display_last_contracts"
+        "model": "openbb_terminal.stocks.government.quiverquant_model.get_last_contracts",
+        "view": "openbb_terminal.stocks.government.quiverquant_view.display_last_contracts",
     },
     "stocks.gov.lasttrades": {
-        "view": "openbb_terminal.stocks.government.quiverquant_view.display_last_government"
+        "model": "openbb_terminal.stocks.government.quiverquant_model.get_last_government"
     },
     "stocks.gov.lobbying": {
-        "view": "openbb_terminal.stocks.government.quiverquant_view.display_lobbying"
-    },
-    "stocks.gov.qtrcontracts": {
-        "view": "openbb_terminal.stocks.government.quiverquant_view.display_qtr_contracts"
+        "model": "openbb_terminal.stocks.government.quiverquant_model.get_lobbying"
     },
     "stocks.gov.toplobbying": {
-        "view": "openbb_terminal.stocks.government.quiverquant_view.display_top_lobbying"
-    },
-    "stocks.gov.plot_government": {
-        "view": "openbb_terminal.stocks.government.quiverquant_view.plot_government"
-    },
-    "stocks.ins.insider_activity": {
-        "model": "openbb_terminal.stocks.insider.businessinsider_model.get_insider_activity"
+        "model": "openbb_terminal.stocks.government.quiverquant_model.get_top_lobbying",
+        "view": "openbb_terminal.stocks.government.quiverquant_view.display_top_lobbying",
     },
     "stocks.ins.act": {
-        "view": "openbb_terminal.stocks.insider.businessinsider_view.insider_activity"
+        "model": "openbb_terminal.stocks.insider.businessinsider_model.get_insider_activity",
+        "view": "openbb_terminal.stocks.insider.businessinsider_view.insider_activity",
     },
     "stocks.ins.lins": {
         "model": "openbb_terminal.stocks.insider.finviz_model.get_last_insider_activity",
         "view": "openbb_terminal.stocks.insider.finviz_view.last_insider_activity",
     },
-    "stocks.ins.check_boolean_list": {
-        "model": "openbb_terminal.stocks.insider.openinsider_model.check_boolean_list"
-    },
-    "stocks.ins.check_dates": {
-        "model": "openbb_terminal.stocks.insider.openinsider_model.check_dates"
-    },
-    "stocks.ins.check_in_list": {
-        "model": "openbb_terminal.stocks.insider.openinsider_model.check_in_list"
-    },
-    "stocks.ins.check_int_in_list": {
-        "model": "openbb_terminal.stocks.insider.openinsider_model.check_int_in_list"
-    },
-    "stocks.ins.check_open_insider_company_totals": {
-        "model": "openbb_terminal.stocks.insider.openinsider_model.check_open_insider_company_totals"
-    },
-    "stocks.ins.check_open_insider_date": {
-        "model": "openbb_terminal.stocks.insider.openinsider_model.check_open_insider_date"
-    },
-    "stocks.ins.check_open_insider_general": {
-        "model": "openbb_terminal.stocks.insider.openinsider_model.check_open_insider_general"
-    },
-    "stocks.ins.check_open_insider_industry": {
-        "model": "openbb_terminal.stocks.insider.openinsider_model.check_open_insider_industry"
-    },
-    "stocks.ins.check_open_insider_insider_title": {
-        "model": "openbb_terminal.stocks.insider.openinsider_model.check_open_insider_insider_title"
-    },
-    "stocks.ins.check_open_insider_others": {
-        "model": "openbb_terminal.stocks.insider.openinsider_model.check_open_insider_others"
-    },
-    "stocks.ins.check_open_insider_screener": {
-        "model": "openbb_terminal.stocks.insider.openinsider_model.check_open_insider_screener"
-    },
-    "stocks.ins.check_open_insider_transaction_filing": {
-        "model": "openbb_terminal.stocks.insider.openinsider_model.check_open_insider_transaction_filing"
-    },
-    "stocks.ins.check_valid_multiple": {
-        "model": "openbb_terminal.stocks.insider.openinsider_model.check_valid_multiple"
-    },
-    "stocks.ins.check_valid_range": {
-        "model": "openbb_terminal.stocks.insider.openinsider_model.check_valid_range"
-    },
-    "stocks.ins.open_insider_data": {
-        "model": "openbb_terminal.stocks.insider.openinsider_model.get_open_insider_data"
-    },
-    "stocks.ins.open_insider_link": {
-        "model": "openbb_terminal.stocks.insider.openinsider_model.get_open_insider_link"
-    },
-    "stocks.ins.lambda_green_highlight": {
-        "view": "openbb_terminal.stocks.insider.openinsider_view.lambda_green_highlight"
-    },
-    "stocks.ins.lambda_magenta_highlight": {
-        "view": "openbb_terminal.stocks.insider.openinsider_view.lambda_magenta_highlight"
-    },
-    "stocks.ins.lambda_red_highlight": {
-        "view": "openbb_terminal.stocks.insider.openinsider_view.lambda_red_highlight"
-    },
-    "stocks.ins.lambda_yellow_highlight": {
-        "view": "openbb_terminal.stocks.insider.openinsider_view.lambda_yellow_highlight"
-    },
     "stocks.ins.print_insider_data": {
-        "view": "openbb_terminal.stocks.insider.openinsider_view.print_insider_data"
-    },
-    "stocks.ins.print_insider_filter": {
-        "view": "openbb_terminal.stocks.insider.openinsider_view.print_insider_filter"
-    },
-    "stocks.options.put_call_ratio": {
-        "model": "openbb_terminal.stocks.options.alphaquery_model.get_put_call_ratio"
+        "model": "openbb_terminal.stocks.insider.openinsider_model.get_print_insider_data",
+        "view": "openbb_terminal.stocks.insider.openinsider_view.print_insider_data",
     },
     "stocks.options.pcr": {
-        "view": "openbb_terminal.stocks.options.alphaquery_view.display_put_call_ratio"
-    },
-    "stocks.options.options_info": {
-        "model": "openbb_terminal.stocks.options.barchart_model.get_options_info"
+        "model": "openbb_terminal.stocks.options.alphaquery_model.get_put_call_ratio",
+        "view": "openbb_terminal.stocks.options.alphaquery_view.display_put_call_ratio",
     },
     "stocks.options.info": {
-        "view": "openbb_terminal.stocks.options.barchart_view.print_options_data",
         "model": "openbb_terminal.stocks.options.yfinance_model.get_info",
-    },
-    "stocks.options.pnl_calculator": {
-        "model": "openbb_terminal.stocks.options.calculator_model.pnl_calculator"
+        "view": "openbb_terminal.stocks.options.barchart_view.print_options_data",
     },
     "stocks.options.calc": {
-        "view": "openbb_terminal.stocks.options.calculator_view.view_calculator"
-    },
-    "stocks.options.option_history": {
-        "model": "openbb_terminal.stocks.options.chartexchange_model.get_option_history"
+        "model": "openbb_terminal.stocks.options.calculator_model.pnl_calculator",
+        "view": "openbb_terminal.stocks.options.calculator_view.view_calculator",
     },
     "stocks.options.hist_ce": {
-        "view": "openbb_terminal.stocks.options.chartexchange_view.display_raw"
-    },
-    "stocks.options.unusual_options": {
-        "model": "openbb_terminal.stocks.options.fdscanner_model.unusual_options"
+        "model": "openbb_terminal.stocks.options.chartexchange_model.get_option_history",
+        "view": "openbb_terminal.stocks.options.chartexchange_view.display_raw",
     },
     "stocks.options.unu": {
-        "view": "openbb_terminal.stocks.options.fdscanner_view.display_options"
+        "model": "openbb_terminal.stocks.options.fdscanner_model.unusual_options",
+        "view": "openbb_terminal.stocks.options.fdscanner_view.display_options",
     },
     "stocks.options.hedge.add_hedge_option": {
-        "model": "openbb_terminal.stocks.options.hedge.hedge_model.add_hedge_option"
+        "model": "openbb_terminal.stocks.options.hedge.hedge_model.add_hedge_option",
+        "view": "openbb_terminal.stocks.options.hedge.hedge_view.add_and_show_greeks",
     },
     "stocks.options.hedge.calc_delta": {
         "model": "openbb_terminal.stocks.options.hedge.hedge_model.calc_delta"
@@ -2323,22 +2086,18 @@ functions = {
         "model": "openbb_terminal.stocks.options.hedge.hedge_model.calc_gamma"
     },
     "stocks.options.hedge.calc_hedge": {
-        "model": "openbb_terminal.stocks.options.hedge.hedge_model.calc_hedge"
+        "model": "openbb_terminal.stocks.options.hedge.hedge_model.calc_hedge",
+        "view": "openbb_terminal.stocks.options.hedge.hedge_view.show_calculated_hedge",
     },
     "stocks.options.hedge.calc_vega": {
         "model": "openbb_terminal.stocks.options.hedge.hedge_model.calc_vega"
     },
-    "stocks.options.hedge.add_and_show_greeks": {
-        "view": "openbb_terminal.stocks.options.hedge.hedge_view.add_and_show_greeks"
-    },
-    "stocks.options.hedge.show_calculated_hedge": {
-        "view": "openbb_terminal.stocks.options.hedge.hedge_view.show_calculated_hedge"
-    },
     "stocks.options.screen.check_presets": {
         "model": "openbb_terminal.stocks.options.screen.syncretism_model.check_presets"
     },
-    "stocks.options.screen.historical_greeks": {
-        "model": "openbb_terminal.stocks.options.screen.syncretism_model.get_historical_greeks"
+    "stocks.options.grhist": {
+        "model": "openbb_terminal.stocks.options.screen.syncretism_model.get_historical_greeks",
+        "view": "openbb_terminal.stocks.options.screen.syncretism_view.view_historical_greeks",
     },
     "stocks.options.screen.screener_output": {
         "model": "openbb_terminal.stocks.options.screen.syncretism_model.get_screener_output"
@@ -2346,17 +2105,15 @@ functions = {
     "stocks.options.screen.view_available_presets": {
         "view": "openbb_terminal.stocks.options.screen.syncretism_view.view_available_presets"
     },
-    "stocks.options.grhist": {
-        "view": "openbb_terminal.stocks.options.screen.syncretism_view.view_historical_greeks"
-    },
     "stocks.options.screen.view_screener_output": {
         "view": "openbb_terminal.stocks.options.screen.syncretism_view.view_screener_output"
     },
     "stocks.options.historical_options": {
         "model": "openbb_terminal.stocks.options.tradier_model.get_historical_options"
     },
-    "stocks.options.option_chains": {
-        "model": "openbb_terminal.stocks.options.tradier_model.get_option_chains"
+    "stocks.options.chains": {
+        "model": "openbb_terminal.stocks.options.tradier_model.get_option_chains",
+        "view": "openbb_terminal.stocks.options.tradier_view.display_chains",
     },
     "stocks.options.last_price": {
         "model": "openbb_terminal.stocks.options.tradier_model.last_price"
@@ -2369,9 +2126,6 @@ functions = {
     },
     "stocks.options.check_valid_option_chains_headers": {
         "view": "openbb_terminal.stocks.options.tradier_view.check_valid_option_chains_headers"
-    },
-    "stocks.options.chains": {
-        "view": "openbb_terminal.stocks.options.tradier_view.display_chains"
     },
     "stocks.options.expiry_dates": {
         "view": "openbb_terminal.stocks.options.tradier_view.display_expiry_dates"
@@ -2406,8 +2160,9 @@ functions = {
     "stocks.options.dte": {
         "model": "openbb_terminal.stocks.options.yfinance_model.get_dte"
     },
-    "stocks.options.iv_surface": {
-        "model": "openbb_terminal.stocks.options.yfinance_model.get_iv_surface"
+    "stocks.options.vsurf": {
+        "model": "openbb_terminal.stocks.options.yfinance_model.get_iv_surface",
+        "view": "openbb_terminal.stocks.options.yfinance_view.display_vol_surface",
     },
     "stocks.options.option_chain": {
         "model": "openbb_terminal.stocks.options.yfinance_model.get_option_chain"
@@ -2421,20 +2176,8 @@ functions = {
     "stocks.options.y_values": {
         "model": "openbb_terminal.stocks.options.yfinance_model.get_y_values"
     },
-    "stocks.options.vsurf": {
-        "view": "openbb_terminal.stocks.options.yfinance_view.display_vol_surface"
-    },
-    "stocks.options.export_binom": {
-        "view": "openbb_terminal.stocks.options.yfinance_view.export_binomial_calcs"
-    },
-    "stocks.options.expected_prices": {
-        "view": "openbb_terminal.stocks.options.yfinance_view.plot_expected_prices"
-    },
     "stocks.options.oi_yf": {
         "view": "openbb_terminal.stocks.options.yfinance_view.plot_oi"
-    },
-    "stocks.options.payoff": {
-        "view": "openbb_terminal.stocks.options.yfinance_view.plot_payoff"
     },
     "stocks.options.plot": {
         "view": "openbb_terminal.stocks.options.yfinance_view.plot_plot"
@@ -2445,9 +2188,6 @@ functions = {
     "stocks.options.voi_yf": {
         "view": "openbb_terminal.stocks.options.yfinance_view.plot_volume_open_interest"
     },
-    "stocks.options.risk_neutral": {
-        "view": "openbb_terminal.stocks.options.yfinance_view.risk_neutral_vals"
-    },
     "stocks.options.binom": {
         "view": "openbb_terminal.stocks.options.yfinance_view.show_binom"
     },
@@ -2457,13 +2197,13 @@ functions = {
     "stocks.options.parity": {
         "view": "openbb_terminal.stocks.options.yfinance_view.show_parity"
     },
-    "stocks.quantitative_analysis.capm_information": {
+    "stocks.qa.capm_information": {
         "model": "openbb_terminal.stocks.quantitative_analysis.factors_model.capm_information"
     },
-    "stocks.quantitative_analysis.fama_raw": {
+    "stocks.qa.fama_raw": {
         "model": "openbb_terminal.stocks.quantitative_analysis.factors_model.get_fama_raw"
     },
-    "stocks.quantitative_analysis.historical_5": {
+    "stocks.qa.historical_5": {
         "model": "openbb_terminal.stocks.quantitative_analysis.factors_model.get_historical_5"
     },
     "stocks.qa.capm": {
@@ -2518,12 +2258,6 @@ functions = {
     },
     "stocks.sia.metric": {
         "view": "openbb_terminal.stocks.sector_industry_analysis.financedatabase_view.display_bars_financials"
-    },
-    "stocks.sia.change_type_dataframes": {
-        "model": "openbb_terminal.stocks.sector_industry_analysis.stockanalysis_model.change_type_dataframes"
-    },
-    "stocks.sia.match_length_dataframes": {
-        "model": "openbb_terminal.stocks.sector_industry_analysis.stockanalysis_model.match_length_dataframes"
     },
     "stocks.sia.financials": {
         "view": "openbb_terminal.stocks.sector_industry_analysis.stockanalysis_view.display_plots_financials"
