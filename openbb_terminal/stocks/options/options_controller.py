@@ -34,6 +34,7 @@ from openbb_terminal.stocks.options import (
     yfinance_model,
     yfinance_view,
     op_helpers,
+    nasdaq_model,
 )
 
 from openbb_terminal.stocks.options.pricing import pricing_controller
@@ -539,6 +540,9 @@ class OptionsController(BaseController):
             if ns_parser.source == "yf":
                 self.source = "yf"
                 self.expiry_dates = yfinance_model.option_expirations(self.ticker)
+            elif ns_parser.source == "nasdaq":
+                self.source = "nasdaq"
+                self.expiry_dates = nasdaq_model.get_expirations(self.ticker)
             else:
                 self.source = "tradier"
                 self.expiry_dates = tradier_model.option_expirations(self.ticker)
@@ -611,6 +615,11 @@ class OptionsController(BaseController):
                         self.chain = yfinance_model.get_option_chain(
                             self.ticker, self.selected_date
                         )
+                    elif self.source == "nasdaq":
+                        df = nasdaq_model.get_chain_given_expiration(
+                            self.ticker, self.selected_date
+                        )
+                        self.chain = op_helpers.Chain(df, self.source)
                     else:
                         df = tradier_model.get_option_chains(
                             self.ticker, self.selected_date

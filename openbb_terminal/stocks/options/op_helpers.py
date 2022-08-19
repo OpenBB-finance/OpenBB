@@ -131,9 +131,23 @@ opt_chain_cols = {
 
 # pylint: disable=R0903
 class Chain:
-    def __init__(self, df: pd.DataFrame):
-        self.calls = df[df["option_type"] == "call"]
-        self.puts = df[df["option_type"] == "put"]
+    def __init__(self, df: pd.DataFrame, source: str = "tradier"):
+        if source == "tradier":
+            self.calls = df[df["option_type"] == "call"]
+            self.puts = df[df["option_type"] == "put"]
+        elif source == "nasdaq":
+            # These guys have different column names
+            call_columns = ["expiryDate", "strike"] + [
+                col for col in df.columns if col.startswith("c_")
+            ]
+            put_columns = ["expiryDate", "strike"] + [
+                col for col in df.columns if col.startswith("p_")
+            ]
+            self.calls = df[call_columns]
+            self.puts = df[put_columns]
+        else:
+            self.calls = None
+            self.puts = None
 
 
 class Option:

@@ -39,7 +39,8 @@
         "options": {
             "load": [
                 "yf",
-                "tradier"
+                "tradier",
+                "nasdaq"
             ],
             "hist": [
                 "chartexchange",
@@ -55,11 +56,13 @@
             ],
             "oi": [
                 "yf",
-                "tradier"
+                "tradier",
+                "nasdaq"
             ],
             "chains": [
                 "yf",
-                "tradier"
+                "tradier",
+                "nasdaq"
             ]
         },
         "disc": {

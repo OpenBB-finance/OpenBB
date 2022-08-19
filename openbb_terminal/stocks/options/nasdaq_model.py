@@ -28,7 +28,7 @@ def get_full_chain(symbol: str) -> pd.DataFrame:
     for asset in ["stocks", "index", "etf"]:
         url = (
             f"https://api.nasdaq.com/api/quote/{symbol}/option-chain?assetclass={asset}&"
-            "fromdate=2010-09-09&todate=2030-09-09&excode=oprac&callput=callput&money=at&type=all"
+            "fromdate=2010-09-09&todate=2030-09-09&excode=oprac&callput=callput&money=all&type=all"
         )
         # I have had issues with nasdaq requests, and this user agent seems to work in US and EU
         response_json = requests.get(
@@ -112,7 +112,7 @@ def get_chain_given_expiration(symbol: str, expiration: str) -> pd.DataFrame:
     for asset in ["stocks", "index", "etf"]:
         url = (
             f"https://api.nasdaq.com/api/quote/{symbol}/option-chain?assetclass={asset}&"
-            f"fromdate={expiration}&todate={expiration}&excode=oprac&callput=callput&money=at&type=all"
+            f"fromdate={expiration}&todate={expiration}&excode=oprac&callput=callput&money=all&type=all"
         )
 
         response_json = requests.get(
