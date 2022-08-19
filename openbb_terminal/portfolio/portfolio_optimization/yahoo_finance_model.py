@@ -330,6 +330,7 @@ def process_returns(
 
     # Interpolate nan values
     stock_returns = stock_prices.copy()
+    stock_returns = stock_returns.set_index(pd.DatetimeIndex(stock_returns.index))
     stock_returns.interpolate(method=method, axis=0, inplace=True)
 
     # Select stocks with low number of nans
