@@ -615,7 +615,7 @@ class QaController(CryptoBaseController):
         )
         if ns_parser:
             rolling_view.display_kurtosis(
-                name=self.symbol,
+                symbol=self.symbol,
                 data=self.data,
                 target=self.target,
                 window=ns_parser.n_window,

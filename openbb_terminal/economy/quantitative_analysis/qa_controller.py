@@ -622,7 +622,7 @@ class QaController(StockBaseController):
         )
         if ns_parser:
             rolling_view.display_kurtosis(
-                name="",
+                symbol="",
                 data=self.current_source_dataframe,
                 target=self.current_id,
                 window=ns_parser.n_window,

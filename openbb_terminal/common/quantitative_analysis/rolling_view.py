@@ -31,7 +31,7 @@ def display_mean_std(
     limit: int = 14,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
-):
+) -> None:
     """View rolling spread
 
     Parameters
@@ -251,7 +251,7 @@ def display_quantile(
     quantile: float = 0.5,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
-):
+) -> None:
     """View rolling quantile
 
     Parameters
@@ -346,7 +346,7 @@ def display_skew(
     window: int = 14,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
-):
+) -> None:
     """View rolling skew
 
     Parameters
@@ -424,7 +424,7 @@ def display_skew(
 
 @log_start_end(log=logger)
 def display_kurtosis(
-    name: str,
+    symbol: str,
     data: pd.DataFrame,
     target: str,
     window: int = 14,
@@ -435,7 +435,7 @@ def display_kurtosis(
 
     Parameters
     ----------
-    name: str
+    symbol: str
         Ticker
     data: pd.DataFrame
         Dataframe of stock prices
@@ -475,7 +475,7 @@ def display_kurtosis(
     else:
         return
 
-    ax1.set_title(f"{name} {target} Kurtosis Indicator (window {str(window)})")
+    ax1.set_title(f"{symbol} {target} Kurtosis Indicator (window {str(window)})")
     ax1.plot(plot_data.index, plot_data[target].values)
     ax1.set_xlim(plot_data.index[0], plot_data.index[-1])
     ax1.set_ylabel(f"{target}")

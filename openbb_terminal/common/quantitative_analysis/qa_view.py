@@ -51,7 +51,7 @@ def lambda_color_red(val: Any) -> str:
 
 
 @log_start_end(log=logger)
-def display_summary(data: pd.DataFrame, export: str = ""):
+def display_summary(data: pd.DataFrame, export: str = "") -> None:
     """Show summary statistics
 
     Parameters
@@ -86,7 +86,7 @@ def display_hist(
     target: str,
     bins: int = 15,
     external_axes: Optional[List[plt.Axes]] = None,
-):
+) -> None:
     """Generate of histogram of data
 
     Parameters
@@ -260,7 +260,7 @@ def display_bw(
     symbol: str = "",
     yearly: bool = True,
     external_axes: Optional[List[plt.Axes]] = None,
-):
+) -> None:
     """Show box and whisker plots
 
     Parameters
@@ -358,7 +358,7 @@ def display_acf(
     symbol: str = "",
     lags: int = 15,
     external_axes: Optional[List[plt.Axes]] = None,
-):
+) -> None:
     """Show Auto and Partial Auto Correlation of returns and change in returns
 
     Parameters
@@ -439,7 +439,7 @@ def display_qqplot(
     target: str,
     symbol: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
-):
+) -> None:
     """Show QQ plot for data against normal quantiles
 
     Parameters
@@ -626,7 +626,7 @@ def display_seasonal(
     multiplicative: bool = False,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
-):
+) -> None:
     """Display seasonal decomposition data
 
     Parameters
@@ -767,7 +767,7 @@ def display_seasonal(
 
 
 @log_start_end(log=logger)
-def display_normality(data: pd.DataFrame, target: str, export: str = ""):
+def display_normality(data: pd.DataFrame, target: str, export: str = "") -> None:
     """View normality statistics
 
     Parameters
@@ -902,7 +902,7 @@ def display_line(
     markers_scatter: Optional[List[datetime]] = None,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
-):
+) -> None:
     """Display line plot of data
 
     Parameters
@@ -1011,7 +1011,7 @@ def display_var(
     percentile: float = 0.999,
     data_range: int = 0,
     portfolio: bool = False,
-):
+) -> None:
     """Displays VaR of dataframe
 
     Parameters
@@ -1079,7 +1079,7 @@ def display_es(
     distribution: str = "normal",
     percentile: float = 0.999,
     portfolio: bool = False,
-):
+) -> None:
     """Displays expected shortfall
 
     Parameters
@@ -1133,7 +1133,7 @@ def display_es(
     )
 
 
-def display_sharpe(data: pd.DataFrame, rfr: float = 0, window: float = 252):
+def display_sharpe(data: pd.DataFrame, rfr: float = 0, window: float = 252) -> None:
     """Calculates the sharpe ratio
     Parameters
     ----------
@@ -1159,7 +1159,7 @@ def display_sharpe(data: pd.DataFrame, rfr: float = 0, window: float = 252):
 
 def display_sortino(
     data: pd.DataFrame, target_return: float, window: float, adjusted: bool
-):
+) -> None:
     """Displays the sortino ratio
     Parameters
     ----------
@@ -1191,7 +1191,7 @@ def display_sortino(
 
 def display_omega(
     data: pd.DataFrame, threshold_start: float = 0, threshold_end: float = 1.5
-):
+) -> None:
     """Displays the omega ratio
     Parameters
     ----------

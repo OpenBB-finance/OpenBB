@@ -29,6 +29,11 @@ def get_summary(data: pd.DataFrame) -> pd.DataFrame:
     ----------
     data : pd.DataFrame
         Dataframe to get summary statistics for
+
+    Returns
+    -------
+    summary : pd.DataFrame
+        Summary statistics
     """
 
     df_stats = data.describe(percentiles=[0.1, 0.25, 0.5, 0.75, 0.9])
@@ -178,7 +183,7 @@ def get_unitroot(
 
 def calculate_adjusted_var(
     kurtosis: float, skew: float, ndp: float, std: float, mean: float
-):
+) -> float:
     """Calculates VaR, which is adjusted for skew and kurtosis (Cornish-Fischer-Expansion)
 
     Parameters
@@ -225,7 +230,7 @@ def get_var(
     student_t: bool = False,
     percentile: Union[int, float] = 0.999,
     portfolio: bool = False,
-):
+) -> Tuple[List, List]:
     """Gets value at risk for specified stock dataframe
 
     Parameters
@@ -480,7 +485,7 @@ def get_es(
     return es_list, hist_es_list
 
 
-def get_sharpe(data: pd.DataFrame, rfr: float = 0, window: float = 252):
+def get_sharpe(data: pd.DataFrame, rfr: float = 0, window: float = 252) -> float:
     """Calculates the sharpe ratio
     Parameters
     ----------
@@ -490,6 +495,11 @@ def get_sharpe(data: pd.DataFrame, rfr: float = 0, window: float = 252):
         risk free rate
     window: float
         length of the rolling window
+
+    Returns
+    -------
+    sharpe: float
+        sharpe ratio
     """
     data_return = data.pct_change().rolling(window).sum() * 100
     std = data.rolling(window).std() / np.sqrt(252) * 100
@@ -504,7 +514,7 @@ def get_sortino(
     target_return: float = 0,
     window: float = 252,
     adjusted: bool = False,
-):
+) -> float:
     """Calculates the sortino ratio
     Parameters
     ----------
@@ -516,6 +526,11 @@ def get_sortino(
         length of the rolling window
     adjusted: bool
         adjust the sortino ratio
+
+    Returns
+    -------
+    sortino: float
+        sortino ratio
     """
     data = data * 100
 
@@ -537,7 +552,7 @@ def get_sortino(
     return sortino_ratio
 
 
-def get_omega(data: pd.DataFrame, threshold: float = 0):
+def get_omega(data: pd.DataFrame, threshold: float = 0) -> float:
     """Calculates the omega ratio
     Parameters
     ----------
@@ -545,6 +560,11 @@ def get_omega(data: pd.DataFrame, threshold: float = 0):
         selected dataframe
     threshold: float
         target return threshold
+
+    Returns
+    -------
+    omega_ratio: float
+        omega ratio
     """
     # Omega ratio; for more information and explanation see:
     # https://en.wikipedia.org/wiki/Omega_ratio
