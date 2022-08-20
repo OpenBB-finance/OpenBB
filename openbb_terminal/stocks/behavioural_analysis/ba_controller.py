@@ -851,7 +851,7 @@ class BehaviouralAnalysisController(StockBaseController):
                 )
             else:
                 console.print("No ticker loaded. Please load using 'load <ticker>'\n")
-           
+
     def call_jcdr(self, other_args: List[str]):
         """Process jcdr command"""
         parser = argparse.ArgumentParser(
