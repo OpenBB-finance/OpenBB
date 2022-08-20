@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def get_cost_to_borrow(symbol: str) -> pd.DataFrame:
-    """Get stocks with highest cost to borrow [Source: Stocksera]
+    """Get cost to borrow of stocks [Source: Stocksera]
 
     Parameters
     ----------

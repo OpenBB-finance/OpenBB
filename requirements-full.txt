@@ -278,6 +278,7 @@ sseclient==0.0.27
 stack-data==0.4.0; python_full_version >= "3.6.2" and python_version >= "3.8"
 statsmodels==0.13.2; python_version >= "3.7"
 stevedore==4.0.0; python_version >= "3.8"
+stocksera==0.1.21
 tabulate==0.8.10; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0"
 temporal-cache==0.1.4
 tenacity==8.0.1; python_version >= "3.7"
