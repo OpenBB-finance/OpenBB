@@ -21,7 +21,7 @@ def vcr_config():
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_display_analysis():
-    eclect_us_view.display_analysis(ticker="AAPL")
+    eclect_us_view.display_analysis(symbol="AAPL")
 
 
 @pytest.mark.vcr
@@ -31,4 +31,4 @@ def test_display_analysis_invalid(mocker):
         target="openbb_terminal.stocks.fundamental_analysis.eclect_us_view.eclect_us_model.get_filings_analysis",
         return_value="",
     )
-    eclect_us_view.display_analysis(ticker="AAPL")
+    eclect_us_view.display_analysis(symbol="AAPL")

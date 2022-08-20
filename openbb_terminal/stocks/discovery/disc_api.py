@@ -23,6 +23,7 @@ from .shortinterest_view import low_float as lowfloat
 from .seeking_alpha_view import display_news as cnews
 from .shortinterest_view import hot_penny_stocks as hotpenny
 from .nasdaq_view import display_top_retail as rtat
+from .nasdaq_view import display_dividend_calendar as dividends
 
 # Models
 models = _models(os.path.abspath(os.path.dirname(__file__)))

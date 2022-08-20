@@ -32,7 +32,7 @@ jobs:
       - run: pip install types-pytz types-requests types-termcolor types-tabulate types-PyYAML types-python-dateutil types-setuptools types-six
       - run: bandit -x ./tests -r . || true
       - run: black --diff --check .
-      - run: codespell --ignore-words-list=zlot,ba,buil,coo,ether,hist,hsi,mape,navagation,operatio,pres,ser,yeld,shold,ist,varian,datas,ake,creat,vie,hel --quiet-level=2 --skip=./tests,.git,*.css,*.csv,*.html,*.ini,*.ipynb,*.js,*.json,*.lock,*.scss,*.txt,*.yaml,./build/pyinstaller
+      - run: codespell --ignore-words-list=commun,ro,zar,zlot,ba,buil,coo,ether,hist,hsi,mape,navagation,operatio,pres,ser,yeld,shold,ist,varian,datas,ake,creat,vie,hel --quiet-level=2 --skip=./tests,.git,*.css,*.csv,*.html,*.ini,*.ipynb,*.js,*.json,*.lock,*.scss,*.txt,*.yaml,./build/pyinstaller
       - run: flake8 . --count --ignore=E203,W503 --max-line-length=122 --show-source --statistics --exclude ./build/pyinstaller
       - run: mypy --ignore-missing-imports --exclude="/setup\.py$" .
       - run: shopt -s globstar && pyupgrade --py38-plus **/*.py
@@ -200,7 +200,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/conda_pkgs_dir
-          key: conda-${{ runner.os }}-v1-${{ matrix.python }}-${{ hashFiles('build/conda/conda-3-9-env.yaml') }}
+          key: conda-${{ runner.os }}-v1-${{ matrix.python }}-${{ hashFiles('build/conda/conda-3-9-env-full.yaml') }}
 
       - name: Setup Miniconda
         uses: conda-incubator/setup-miniconda@v2
@@ -232,7 +232,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ${{ steps.pip-cache.outputs.dir }}
-          key: ${{ runner.os }}-v1-3-9-pip-${{ hashFiles('requirements.txt') }}
+          key: ${{ runner.os }}-v1-3-9-pip-${{ hashFiles('requirements-full.txt') }}
           restore-keys: |
             ${{ runner.os }}-v1-pip-
 

@@ -131,9 +131,9 @@ class SectorIndustryAnalysisController(BaseController):
     }
 
     vis_choices = (
-        list(stockanalysis_model.sa_keys["BS"].keys())
-        + list(stockanalysis_model.sa_keys["CF"].keys())
-        + list(stockanalysis_model.sa_keys["IS"].keys())
+        list(stockanalysis_model.SA_KEYS["BS"].keys())
+        + list(stockanalysis_model.SA_KEYS["CF"].keys())
+        + list(stockanalysis_model.SA_KEYS["IS"].keys())
     )
 
     mktcap_choices = [
@@ -853,11 +853,11 @@ class SectorIndustryAnalysisController(BaseController):
                 console.print(f"{ns_parser.statement} is not a valid option.")
 
             help_text += f"\n{statement_string[ns_parser.statement]}\n"
-            for k, v in stockanalysis_model.sa_keys[ns_parser.statement].items():
+            for k, v in stockanalysis_model.SA_KEYS[ns_parser.statement].items():
                 help_text += f"  {k} {(10 - len(k)) * ' '} {v} \n"
 
         else:
-            for statement, statement_value in stockanalysis_model.sa_keys.items():
+            for statement, statement_value in stockanalysis_model.SA_KEYS.items():
                 help_text += f"\n{statement_string[statement]}\n"
                 for k, v in statement_value.items():
                     help_text += f"  {k} {(10 - len(k)) * ' '} {v} \n"
@@ -892,7 +892,7 @@ class SectorIndustryAnalysisController(BaseController):
         parser.add_argument(
             "-cc",
             "--convert_currency",
-            dest="convert_currency",
+            dest="currency",
             help="Convert the currency of the chosen country to a specified currency. By default, this is set "
             "to USD (US Dollars).",
             default="USD",

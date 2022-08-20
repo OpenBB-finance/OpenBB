@@ -37,12 +37,13 @@ def test_get_macro_data(parameter, country, start_date, end_date, convert_curren
 def test_get_aggregated_macro_data(
     parameters, countries, start_date, end_date, convert_currency
 ):
-    result_df, units = econdb_model.get_aggregated_macro_data(
+    result_df, units, denomination = econdb_model.get_aggregated_macro_data(
         parameters, countries, start_date, end_date, convert_currency
     )
 
     assert isinstance(result_df, pd.DataFrame)
     assert isinstance(units, dict)
+    assert isinstance(denomination, str)
     assert not result_df.empty
 
 
@@ -66,7 +67,7 @@ def test_get_treasuries(
 
 
 @pytest.mark.vcr
-def test_obtain_treasury_maturities(recorder):
-    result_df = econdb_model.obtain_treasury_maturities(econdb_model.TREASURIES)
+def test_get_treasury_maturities(recorder):
+    result_df = econdb_model.get_treasury_maturities()
 
     recorder.capture(result_df)

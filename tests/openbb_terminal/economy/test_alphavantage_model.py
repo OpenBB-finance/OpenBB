@@ -14,7 +14,7 @@ def vcr_config():
 
 
 @pytest.mark.vcr
-def test_get_screener_data(recorder):
+def test_get_sector_data(recorder):
     result_df = alphavantage_model.get_sector_data()
 
     recorder.capture(result_df)

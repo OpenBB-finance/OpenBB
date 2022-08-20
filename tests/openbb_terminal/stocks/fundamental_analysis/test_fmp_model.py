@@ -22,7 +22,7 @@ def vcr_config():
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_get_score():
-    result = fmp_model.get_score(ticker="PM")
+    result = fmp_model.get_score(symbol="PM")
     if result:
         assert isinstance(result, np.number)
 
@@ -33,43 +33,43 @@ def test_get_score():
     [
         (
             "get_profile",
-            {"ticker": "PM"},
+            {"symbol": "PM"},
         ),
         (
             "get_quote",
-            {"ticker": "PM"},
+            {"symbol": "PM"},
         ),
         (
             "get_enterprise",
-            {"ticker": "PM", "number": 5, "quarterly": False},
+            {"symbol": "PM", "limit": 5, "quarterly": False},
         ),
         (
             "get_dcf",
-            {"ticker": "PM", "number": 5, "quarterly": False},
+            {"symbol": "PM", "limit": 5, "quarterly": False},
         ),
         (
             "get_income",
-            {"ticker": "PM", "number": 5, "quarterly": False},
+            {"symbol": "PM", "limit": 5, "quarterly": False},
         ),
         (
             "get_balance",
-            {"ticker": "PM", "number": 5, "quarterly": False},
+            {"symbol": "PM", "limit": 5, "quarterly": False},
         ),
         (
             "get_cash",
-            {"ticker": "PM", "number": 5, "quarterly": False},
+            {"symbol": "PM", "limit": 5, "quarterly": False},
         ),
         (
             "get_key_metrics",
-            {"ticker": "PM", "number": 5, "quarterly": False},
+            {"symbol": "PM", "limit": 5, "quarterly": False},
         ),
         (
             "get_key_ratios",
-            {"ticker": "PM", "number": 5, "quarterly": False},
+            {"symbol": "PM", "limit": 5, "quarterly": False},
         ),
         (
             "get_financial_growth",
-            {"ticker": "PM", "number": 5, "quarterly": False},
+            {"symbol": "PM", "limit": 5, "quarterly": False},
         ),
     ],
 )

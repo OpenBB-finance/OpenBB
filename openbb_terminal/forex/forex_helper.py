@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import List, Optional, Dict, Iterable
 import os
 import argparse
@@ -65,22 +65,42 @@ INTERVAL_MAPS: Dict = {
 
 logger = logging.getLogger(__name__)
 
+last_year = datetime.now() - timedelta(days=365)
+
 
 @log_start_end(log=logger)
 def load(
     to_symbol: str,
     from_symbol: str,
-    resolution: str,
-    interval: str,
-    start_date: str,
+    resolution: str = "d",
+    interval: str = "1day",
+    start_date: str = last_year.strftime("%Y-%m-%d"),
     source: str = "yf",
 ):
+    """Loads forex for two given symbols
+
+    Parameters
+    ----------
+    to_symbol : str
+        The from currency symbol. Ex: USD, EUR, GBP, YEN
+    from_symbol: str
+        The from currency symbol. Ex: USD, EUR, GBP, YEN
+    resolution: str
+        The resolution for the data
+    interval: str
+        What interval to get data for
+    start_date: str
+        When to begin loading in data
+    source: str
+        Where to get data from
+    """
     if source in ["yf", "av"]:
         interval_map = INTERVAL_MAPS[source]
 
         if interval not in interval_map.keys():
             console.print(
-                f"Interval not supported by {FOREX_SOURCES[source]}. Need to be one of the following options",
+                f"Interval not supported by {FOREX_SOURCES[source]}."
+                " Need to be one of the following options",
                 interval_map.keys(),
             )
             return pd.DataFrame()
@@ -163,8 +183,8 @@ def check_valid_yf_forex_currency(fx_symbol: str) -> str:
 @log_start_end(log=logger)
 def display_candle(
     data: pd.DataFrame,
-    to_symbol: str,
-    from_symbol: str,
+    to_symbol: str = "",
+    from_symbol: str = "",
     ma: Optional[Iterable[int]] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -204,12 +224,13 @@ def display_candle(
         candle_chart_kwargs["figscale"] = 1.10
         candle_chart_kwargs["figsize"] = plot_autoscale()
         fig, ax = mpf.plot(data, **candle_chart_kwargs)
-        fig.suptitle(
-            f"{from_symbol}/{to_symbol}",
-            x=0.055,
-            y=0.965,
-            horizontalalignment="left",
-        )
+        if from_symbol and to_symbol:
+            fig.suptitle(
+                f"{from_symbol}/{to_symbol}",
+                x=0.055,
+                y=0.965,
+                horizontalalignment="left",
+            )
         if ma:
             # Manually construct the chart legend
             colors = []

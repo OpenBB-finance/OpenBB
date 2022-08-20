@@ -20,6 +20,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.rich_config import console
 
+
 logger = logging.getLogger(__name__)
 
 

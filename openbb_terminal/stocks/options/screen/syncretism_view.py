@@ -24,7 +24,12 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def view_available_presets(preset: str, presets_path: str):
+def view_available_presets(
+    preset: str = "high_IV",
+    presets_path: str = os.path.join(
+        os.path.abspath(os.path.dirname(__file__)), "..", "presets/"
+    ),
+):
     """View available presets.
 
     Parameters
@@ -58,7 +63,12 @@ def view_available_presets(preset: str, presets_path: str):
 
 @log_start_end(log=logger)
 def view_screener_output(
-    preset: str, presets_path: str, n_show: int, export: str
+    preset: str = "high_IV",
+    presets_path: str = os.path.join(
+        os.path.abspath(os.path.dirname(__file__)), "..", "presets/"
+    ),
+    limit: int = 20,
+    export: str = "",
 ) -> List:
     """Print the output of screener
 
@@ -68,7 +78,7 @@ def view_screener_output(
         Preset file to screen for
     presets_path: str
         Path to preset folder
-    n_show: int
+    limit: int
         Number of randomly sorted rows to display
     export: str
         Format for export file
@@ -90,8 +100,8 @@ def view_screener_output(
         df_res,
     )
 
-    if n_show > 0:
-        df_res = df_res.head(n_show)
+    if limit > 0:
+        df_res = df_res.head(limit)
 
     print_rich_table(
         df_res, headers=list(df_res.columns), show_index=False, title="Screener Output"
@@ -105,14 +115,14 @@ def view_screener_output(
 
 @log_start_end(log=logger)
 def view_historical_greeks(
-    ticker: str,
+    symbol: str,
     expiry: str,
     strike: float,
-    greek: str,
-    chain_id: str,
-    put: bool,
-    raw: bool,
-    n_show: int,
+    greek: str = "Delta",
+    chain_id: str = "",
+    put: bool = False,
+    raw: bool = False,
+    limit: int = 20,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -120,7 +130,7 @@ def view_historical_greeks(
 
     Parameters
     ----------
-    ticker: str
+    symbol: str
         Stock ticker
     expiry: str
         Expiration date
@@ -134,18 +144,18 @@ def view_historical_greeks(
         Is this a put option?
     raw: bool
         Print to console
-    n_show: int
+    limit: int
         Number of rows to show in raw
     export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    df = syncretism_model.get_historical_greeks(ticker, expiry, chain_id, strike, put)
+    df = syncretism_model.get_historical_greeks(symbol, expiry, strike, chain_id, put)
 
     if raw:
         print_rich_table(
-            df.tail(n_show), headers=list(df.columns), title="Historical Greeks"
+            df.tail(limit), headers=list(df.columns), title="Historical Greeks"
         )
 
     if not external_axes:
@@ -159,9 +169,9 @@ def view_historical_greeks(
     ax.set_ylabel(greek)
     ax1 = ax.twinx()
     im2 = ax1.plot(df.index, df.price, label="Stock Price", color=theme.down_color)
-    ax1.set_ylabel(f"{ticker} Price")
+    ax1.set_ylabel(f"{symbol} Price")
     ax.set_title(
-        f"{(greek).capitalize()} historical for {ticker.upper()} {strike} {['Call','Put'][put]}"
+        f"{(greek).capitalize()} historical for {symbol.upper()} {strike} {['Call','Put'][put]}"
     )
     if df.empty:
         console.print("[red]Data from API is not valid.[/red]\n")

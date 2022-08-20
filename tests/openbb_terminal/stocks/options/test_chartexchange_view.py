@@ -31,12 +31,17 @@ def test_display_raw(mocker, tab):
     )
 
     # MOCK VISUALIZE_OUTPUT
-    mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
+    mocker.patch(
+        target="openbb_terminal.stocks.options.chartexchange_view.theme.visualize_output"
+    )
+
+    # MOCK PLOT_CHART
+    mocker.patch(target="openbb_terminal.stocks.options.chartexchange_view.plot_chart")
 
     chartexchange_view.display_raw(
         export="",
-        ticker="GME",
-        date="2021-02-05",
+        symbol="GME",
+        expiry="2021-02-05",
         call=True,
-        price="90",
+        price=90,
     )

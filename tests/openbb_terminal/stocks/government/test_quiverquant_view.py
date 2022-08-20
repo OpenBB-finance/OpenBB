@@ -38,31 +38,31 @@ def vcr_config():
         ),
         (
             "display_government_trading",
-            dict(ticker="AMRC", gov_type="congress"),
+            dict(symbol="AMRC", gov_type="congress"),
         ),
         (
             "display_contracts",
-            dict(ticker="AMRC", past_transaction_days=2, raw=True),
+            dict(symbol="AMRC", past_transaction_days=2, raw=True),
         ),
         (
             "display_qtr_contracts",
-            dict(analysis="upmom", num=2),
+            dict(analysis="upmom", limit=2),
         ),
         (
             "display_qtr_contracts",
-            dict(analysis="total", num=2),
+            dict(analysis="total", limit=2),
         ),
         (
             "display_hist_contracts",
-            dict(ticker="SSTK"),
+            dict(symbol="SSTK"),
         ),
         (
             "display_top_lobbying",
-            dict(num=2, raw=True),
+            dict(limit=2, raw=True),
         ),
         (
             "display_lobbying",
-            dict(ticker="HBI"),
+            dict(symbol="HBI"),
         ),
     ],
 )
@@ -95,27 +95,27 @@ def test_call_func(func, kwargs_dict, mocker):
         ),
         (
             "display_government_trading",
-            dict(ticker="MOCK_TEXT", gov_type="MOCK_TEXT"),
+            dict(symbol="MOCK_TEXT", gov_type="MOCK_TEXT"),
         ),
         (
             "display_contracts",
-            dict(ticker="MOCK_TEXT", past_transaction_days=2, raw=True),
+            dict(symbol="MOCK_TEXT", past_transaction_days=2, raw=True),
         ),
         (
             "display_qtr_contracts",
-            dict(analysis="MOCK_TEXT", num=2),
+            dict(analysis="MOCK_TEXT", limit=2),
         ),
         (
             "display_hist_contracts",
-            dict(ticker="MOCK_TEXT"),
+            dict(symbol="MOCK_TEXT"),
         ),
         (
             "display_top_lobbying",
-            dict(num=2, raw=True),
+            dict(limit=2, raw=True),
         ),
         (
             "display_lobbying",
-            dict(ticker="MOCK_TEXT", num=2),
+            dict(symbol="MOCK_TEXT", limit=2),
         ),
     ],
 )

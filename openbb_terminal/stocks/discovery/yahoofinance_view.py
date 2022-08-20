@@ -6,33 +6,28 @@ import os
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
-from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.discovery import yahoofinance_model
 
 logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_gainers(num_stocks: int, export: str) -> None:
+def display_gainers(limit: int = 5, export: str = "") -> None:
     """Display gainers. [Source: Yahoo Finance]
 
     Parameters
     ----------
-    num_stocks: int
+    limit: int
         Number of stocks to display
     export : str
         Export dataframe data to csv,json,xlsx file
     """
 
     df_gainers = yahoofinance_model.get_gainers()
-    df_gainers.dropna(how="all", axis=1, inplace=True)
-    df_gainers = df_gainers.replace(float("NaN"), "")
 
-    if df_gainers.empty:
-        console.print("No gainers found.")
-    else:
+    if not df_gainers.empty:
         print_rich_table(
-            df_gainers.head(num_stocks),
+            df_gainers.head(limit),
             headers=list(df_gainers.columns),
             show_index=False,
             title="Gainers",
@@ -47,26 +42,22 @@ def display_gainers(num_stocks: int, export: str) -> None:
 
 
 @log_start_end(log=logger)
-def display_losers(num_stocks: int, export: str) -> None:
+def display_losers(limit: int = 5, export: str = "") -> None:
     """Display losers. [Source: Yahoo Finance]
 
     Parameters
     ----------
-    num_stocks: int
+    limit: int
         Number of stocks to display
     export : str
         Export dataframe data to csv,json,xlsx file
     """
 
     df_losers = yahoofinance_model.get_losers()
-    df_losers.dropna(how="all", axis=1, inplace=True)
-    df_losers = df_losers.replace(float("NaN"), "")
 
-    if df_losers.empty:
-        console.print("No losers found.")
-    else:
+    if not df_losers.empty:
         print_rich_table(
-            df_losers.head(num_stocks),
+            df_losers.head(limit),
             headers=list(df_losers.columns),
             show_index=False,
             title="Display Losers",
@@ -81,26 +72,21 @@ def display_losers(num_stocks: int, export: str) -> None:
 
 
 @log_start_end(log=logger)
-def display_ugs(num_stocks: int, export: str) -> None:
+def display_ugs(limit: int = 5, export: str = "") -> None:
     """Display most undervalued growth stock. [Source: Yahoo Finance]
 
     Parameters
     ----------
-    num_stocks: int
+    limit: int
         Number of stocks to display
     export : str
         Export dataframe data to csv,json,xlsx file
     """
 
     df = yahoofinance_model.get_ugs()
-    df.dropna(how="all", axis=1, inplace=True)
-    df = df.replace(float("NaN"), "")
-
-    if df.empty:
-        console.print("No data found.")
-    else:
+    if not df.empty:
         print_rich_table(
-            df.head(num_stocks),
+            df.head(limit),
             headers=list(df.columns),
             show_index=False,
             title="Undervalued Growth Stocks",
@@ -115,26 +101,22 @@ def display_ugs(num_stocks: int, export: str) -> None:
 
 
 @log_start_end(log=logger)
-def display_gtech(num_stocks: int, export: str) -> None:
+def display_gtech(limit: int = 5, export: str = "") -> None:
     """Display growth technology stocks. [Source: Yahoo Finance]
 
     Parameters
     ----------
-    num_stocks: int
+    limit: int
         Number of stocks to display
     export : str
         Export dataframe data to csv,json,xlsx file
     """
 
     df = yahoofinance_model.get_gtech()
-    df.dropna(how="all", axis=1, inplace=True)
-    df = df.replace(float("NaN"), "")
 
-    if df.empty:
-        console.print("No data found.")
-    else:
+    if not df.empty:
         print_rich_table(
-            df.head(num_stocks),
+            df.head(limit),
             headers=list(df.columns),
             show_index=False,
             title="Growth Tech Stocks",
@@ -149,26 +131,22 @@ def display_gtech(num_stocks: int, export: str) -> None:
 
 
 @log_start_end(log=logger)
-def display_active(num_stocks: int, export: str) -> None:
+def display_active(limit: int = 5, export: str = "") -> None:
     """Display most active stocks. [Source: Yahoo Finance]
 
     Parameters
     ----------
-    num_stocks: int
+    limit: int
         Number of stocks to display
     export : str
         Export dataframe data to csv,json,xlsx file
     """
 
     df = yahoofinance_model.get_active()
-    df.dropna(how="all", axis=1, inplace=True)
-    df = df.replace(float("NaN"), "")
 
-    if df.empty:
-        console.print("No data found.")
-    else:
+    if not df.empty:
         print_rich_table(
-            df.head(num_stocks),
+            df.head(limit),
             headers=list(df.columns),
             show_index=False,
             title="Most Active Stocks",
@@ -183,26 +161,22 @@ def display_active(num_stocks: int, export: str) -> None:
 
 
 @log_start_end(log=logger)
-def display_ulc(num_stocks: int, export: str) -> None:
+def display_ulc(limit: int = 5, export: str = "") -> None:
     """Display potentially undervalued large cap stocks. [Source: Yahoo Finance]
 
     Parameters
     ----------
-    num_stocks: int
+    limit: int
         Number of stocks to display
     export : str
         Export dataframe data to csv,json,xlsx file
     """
 
     df = yahoofinance_model.get_ulc()
-    df.dropna(how="all", axis=1, inplace=True)
-    df = df.replace(float("NaN"), "")
 
-    if df.empty:
-        console.print("No data found.")
-    else:
+    if not df.empty:
         print_rich_table(
-            df.head(num_stocks).dropna(),
+            df.head(limit).dropna(),
             headers=list(df.columns),
             show_index=False,
             title="Undervalued Large Cap Stocks",
@@ -217,26 +191,22 @@ def display_ulc(num_stocks: int, export: str) -> None:
 
 
 @log_start_end(log=logger)
-def display_asc(num_stocks: int, export: str) -> None:
+def display_asc(limit: int = 5, export: str = "") -> None:
     """Display small cap stocks with earnings growth rates better than 25%. [Source: Yahoo Finance]
 
     Parameters
     ----------
-    num_stocks: int
+    limit: int
         Number of stocks to display
     export : str
         Export dataframe data to csv,json,xlsx file
     """
 
     df = yahoofinance_model.get_asc()
-    df.dropna(how="all", axis=1, inplace=True)
-    df = df.replace(float("NaN"), "")
 
-    if df.empty:
-        console.print("No data found.")
-    else:
+    if not df.empty:
         print_rich_table(
-            df.head(num_stocks).dropna(),
+            df.head(limit).dropna(),
             headers=list(df.columns),
             show_index=False,
             title="High Growth Small Caps",
