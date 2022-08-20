@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def capm_view(symbol: str = "PM") -> None:
+def capm_view(symbol: str) -> None:
     """Displays information for the CAPM model.
 
     Parameters

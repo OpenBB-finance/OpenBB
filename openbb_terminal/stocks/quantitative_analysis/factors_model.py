@@ -55,7 +55,7 @@ def get_fama_raw() -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_historical_5(symbol: str = "PM") -> pd.DataFrame:
+def get_historical_5(symbol: str) -> pd.DataFrame:
     """Get 5 year monthly historical performance for a ticker with dividends filtered
 
     Parameters
@@ -77,7 +77,7 @@ def get_historical_5(symbol: str = "PM") -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def capm_information(symbol: str = "PM") -> Tuple[float, float]:
+def capm_information(symbol: str) -> Tuple[float, float]:
     """Provides information that relates to the CAPM model
 
     Parameters
