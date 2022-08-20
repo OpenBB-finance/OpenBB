@@ -21,10 +21,10 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAA/5WQTwuCQBTEv8ucV1AXIr0J0akgsJvIYvoIaV1lXaGQ/e6t0R9KL/FOM/yYx8yI
-        qjDuTpIQjw+BOMuQJIcdGEI/WHt+5HEfOftxuceDubtaZBcTgvCVsE+3x3nCl8v/YKMl9/ktZyhb
-        OTSqdz1HqKJxxWHq8kLaoebWTTo1ulZnWPYmOtKCVCXcQvThNpOyuWVoaFrO4XQ1ohx032pRV4jV
-        IKW1d+5psDJnAQAA
+        H4sIAAAAAAAA/22QwQqDMBBE/2XPEYxCaXMTSk8tFNqbSLC6B2mMEiO0hPx7Vw9aMeQ0bycz7Dqo
+        S0vvpRCEmwWIPIfb4/IEBknMjxFPopRDwbY0PkVpvKeHIE2DCYs3y+7Xfds/Xds2NJiwtgUSCgZV
+        p8ZWD7SnA122tDjYpnqjIav99rPGjwXPlnmPRqKuJd0HV9d5Ur7wDFqc7kZ2+ier0QydkU0NQo9K
+        ef8DySf53mUBAAA=
     headers:
       Access-Control-Allow-Credentials:
       - 'true'
@@ -51,9 +51,9 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Mon, 11 Jul 2022 13:59:41 GMT
+      - Fri, 19 Aug 2022 12:34:45 GMT
       ETag:
-      - W/"d7cab2696c63f665357d438af9d4794f"
+      - W/"3ade0c7e6c161de7ebf518f20481e4bc"
       Location:
       - https://data.nasdaq.com/api/v3/datatables/ZACKS/FC
       Pragma:
@@ -63,10 +63,10 @@ interactions:
       Server:
       - openresty
       Set-Cookie:
-      - visid_incap_2170999=XYTdfzl3TxiGxZQDJFn37cwszGIAAAAAQUIPAAAAAACM4P8OZCBOsNk81YgC9+nB;
-        expires=Tue, 11 Jul 2023 06:29:33 GMT; HttpOnly; path=/; Domain=.nasdaq.com
-      - nlbi_2170999=8qeqDB6yjQAcWyiqKj7S7QAAAAARnw/RJP7BbQlLvrn7NHzA; path=/; Domain=.nasdaq.com
-      - incap_ses_1347_2170999=+nmpLw9pTgAjXfd034GxEs0szGIAAAAA0T0xG6G/4En4aSaOld6PzQ==;
+      - visid_incap_2170999=xZKa9mdpS96rI4s4nuRzdsCC/2IAAAAAQUIPAAAAAAD696xX+vXYLbyFf70OvZ0e;
+        expires=Sat, 19 Aug 2023 07:41:42 GMT; HttpOnly; path=/; Domain=.nasdaq.com
+      - nlbi_2170999=YXc5Fc3Zu37CEz10Kj7S7QAAAAAFdNUd8p+Fif3ziTQmFn0x; path=/; Domain=.nasdaq.com
+      - incap_ses_7232_2170999=FQA0JTwhbUAIq6hgFTpdZGWD/2IAAAAASwZWk6YlsliGoj+GC1ZK+Q==;
         path=/; Domain=.nasdaq.com
       Strict-Transport-Security:
       - max-age=31536000; includeSubDomains; preload
@@ -79,16 +79,16 @@ interactions:
       X-Frame-Options:
       - SAMEORIGIN
       X-Iinfo:
-      - 12-148479148-148479221 NNYN CT(1 5 0) RT(1657547980507 474) q(0 0 0 0) r(1
+      - 11-46100870-46100874 NNYN CT(24 20 0) RT(1660912485459 43) q(0 0 0 0) r(1
         1) U2
       X-RateLimit-Limit:
       - '50'
       X-RateLimit-Remaining:
-      - '30'
+      - '31'
       X-Request-Id:
-      - 687c754e-6a87-488a-ba95-d043a0c24965
+      - fc436b4a-2e26-46ed-9989-0feee4717826
       X-Runtime:
-      - '0.081889'
+      - '0.070282'
       X-XSS-Protection:
       - 1; mode=block
     status:
