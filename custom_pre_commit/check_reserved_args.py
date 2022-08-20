@@ -24,7 +24,7 @@ def process_file(file_path: str, exp: str):
         Regular expression to find all reserved args
     """
     errors_found = 0
-    with open(file_path) as f:
+    with open(file_path, encoding="utf8") as f:
         code = f.read()
     match = re.search(pattern=exp, string=code)
     if match:
