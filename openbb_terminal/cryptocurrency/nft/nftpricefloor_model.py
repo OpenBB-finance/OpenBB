@@ -44,6 +44,8 @@ def get_floor_price(slug) -> pd.DataFrame:
 
     Parameters
     -------
+    slug: str
+        nft collection slug
 
     Returns
     -------

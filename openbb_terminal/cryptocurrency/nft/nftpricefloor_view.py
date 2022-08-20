@@ -27,7 +27,7 @@ def display_collections(num: int = 5, export: str = ""):
     Parameters
     ----------
     num: int
-        Number of NFT drops to display
+        Number of NFT collections to display
     export : str
         Export dataframe data to csv,json,xlsx file
     """
@@ -73,10 +73,16 @@ def display_floor_price(
 
     Parameters
     ----------
-    num: int
-        Number of NFT drops to display
-    export : str
-        Export dataframe data to csv,json,xlsx file
+    slug: str
+        NFT collection slug
+    raw: bool
+        Flag to display raw data
+    limit: int
+        Number of raw data to show
+    export: str
+        Format to export data
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (2 axes are expected in the list), by default None
     """
     df = nftpricefloor_model.get_floor_price(slug)
     if df.empty:
@@ -90,30 +96,29 @@ def display_floor_price(
                 show_index=True,
                 title=f"{slug} Floor Price",
             )
-        else:
-            # This plot has 1 axis
-            if external_axes is None:
-                _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-            elif is_valid_axes_count(external_axes, 1):
-                (ax,) = external_axes
-            ax.bar(df.index, df["sales"], color=theme.get_colors()[1])
-            ax.set_xlim(
-                df.index[0],
-                df.index[-1],
-            )
+        # This plot has 1 axis
+        if external_axes is None:
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        elif is_valid_axes_count(external_axes, 1):
+            (ax,) = external_axes
+        ax.bar(df.index, df["sales"], color=theme.get_colors()[1])
+        ax.set_xlim(
+            df.index[0],
+            df.index[-1],
+        )
 
-            ax2 = ax.twinx()
-            ax2.plot(df["dataPriceFloorETH"])
-            ax2.set_ylabel("Sales", labelpad=20)
-            ax2.set_zorder(ax2.get_zorder() + 1)
-            ax.patch.set_visible(False)
-            ax2.yaxis.set_label_position("left")
-            ax.set_ylabel("Floor Price [ETH]", labelpad=30)
-            ax.set_title(f"{slug} Floor Price")
-            theme.style_primary_axis(ax)
+        ax2 = ax.twinx()
+        ax2.plot(df["dataPriceFloorETH"])
+        ax2.set_ylabel("Sales", labelpad=20)
+        ax2.set_zorder(ax2.get_zorder() + 1)
+        ax.patch.set_visible(False)
+        ax2.yaxis.set_label_position("left")
+        ax.set_ylabel("Floor Price [ETH]", labelpad=30)
+        ax.set_title(f"{slug} Floor Price")
+        theme.style_primary_axis(ax)
 
-            if external_axes is None:
-                theme.visualize_output()
+        if external_axes is None:
+            theme.visualize_output()
 
         export_data(
             export,

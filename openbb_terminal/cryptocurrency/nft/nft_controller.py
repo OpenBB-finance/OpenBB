@@ -59,8 +59,8 @@ class NFTController(BaseController):
         mt.add_cmd("ongoing", "Nftcalendar")
         mt.add_cmd("newest", "Nftcalendar")
         mt.add_cmd("stats", "Opensea")
-        mt.add_cmd("collections", "NFT Price Floor")
         mt.add_cmd("fp", "NFT Price Floor")
+        mt.add_cmd("collections", "NFT Price Floor")
         console.print(text=mt.menu_text, menu="Cryptocurrency - Non Fungible Token")
 
     @log_start_end(log=logger)
@@ -80,7 +80,7 @@ class NFTController(BaseController):
             "-s",
             "--slug",
             type=str,
-            help="NFT floor price collection slug (e.g., mutant-ape-yacht-club)",
+            help="NFT floor price collection slug (e.g., bored-ape-yacht-club)",
             dest="slug",
             required="-h" not in other_args,
         )

@@ -226,6 +226,20 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [],
             dict(),
         ),
+        (
+            "call_collections",
+            [],
+            "nftpricefloor_view.display_collections",
+            [],
+            dict(),
+        ),
+        (
+            "call_fp",
+            ["bored-ape-yacht-club"],
+            "nftpricefloor_view.display_floor_price",
+            [],
+            dict(),
+        ),
     ],
 )
 def test_call_func(
