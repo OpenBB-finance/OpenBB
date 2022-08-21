@@ -16,8 +16,30 @@
 <link rel="stylesheet" href="{{ index .Site.Data.assets "custom.css" | relURL }}" media="all">
 
 <style>
+.container {
+  max-width: 97rem;
+}
+
+.gdoc-brand__img {
+  width: 160px;
+  height: 16px;
+  display: block !important;
+}
+
+.gdoc-nav__list {
+  margin-left: 8px;
+}
+
+.gdoc-toc a, .gdoc-toc a:visited {
+  color: white;
+}
+
+.gdoc-search:active, .gdoc-search:focus-within {
+  border: 1px solid #FFFFFF !important;
+}
+
 ._btn {
-    text-decoration: none !important;
+  text-decoration: none !important;
   display: inline-flex;
   width: 100%;
   align-items: center;
@@ -37,13 +59,14 @@
   transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
   background-color: #eaeaeaff;
   color: #2a2a2aff !important;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
 }
 
-@media (min-width: 768px) {
+@media (max-width: 768px) {
   ._btn {
-    width: -webkit-fit-content;
-    width: -moz-fit-content;
-    width: fit-content;
+    display: none;
   }
 }
 

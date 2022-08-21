@@ -12,7 +12,9 @@ OpenBB is a leading open source investment research software platform for access
 We represent millions of investors who want to leverage state-of-the-art data science and machine learning technologies
 to make sense of raw unrefined data. Our mission is to make investment research effective, powerful and accessible to everyone.
 
-**All our products are Free and Open-Source (FOSS).**
+---
+
+## All our products are Free and Open-Source (FOSS).
 
 <!-- markdownlint-capture -->
 <!-- markdownlint-disable MD033 -->
@@ -26,9 +28,9 @@ to make sense of raw unrefined data. Our mission is to make investment research 
 <!-- markdownlint-restore -->
 
 ---
-<center><b><span style="color:white">If you are interested in the <span style="color:orange">OpenBB Terminal</span>,
+If you are interested in the <span style="color:orange">OpenBB Terminal</span>,
 please continue reading this page and the related pages on each menu (e.g. <a href="terminal/stocks">Stocks</a>
-or <a href="terminal/economy">Economy</a>)</span></b></center>
+or <a href="terminal/economy">Economy</a>)
 
 ---
 

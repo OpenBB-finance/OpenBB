@@ -1,4 +1,4 @@
-<header style="background-color: #000">
+<header style="background-image: linear-gradient(to right, #062d5d, #000000)">
   <div class="container flex align-center justify-between">
     {{ if .MenuEnabled }}
     <label for="menu-control" class="gdoc-nav__control">
@@ -12,7 +12,6 @@
       <span class="gdoc-brand flex align-center">
         <img class="gdoc-brand__img" src="{{ (default "brand.svg"
         .Root.Site.Params.GeekdocLogo) | relURL }}" alt="">
-        <span class="gdoc-brand__title">{{ .Root.Site.Title }}</span>
       </span>
     </a>
 
