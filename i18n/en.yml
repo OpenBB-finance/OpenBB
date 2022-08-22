@@ -419,6 +419,7 @@ en:
   stocks/ta/cci: commodity channel index
   stocks/ta/macd: moving average convergence/divergence
   stocks/ta/rsi: relative strength index
+  stocks/ta/rsp: relative strength percentile
   stocks/ta/stoch: stochastic oscillator
   stocks/ta/fisher: fisher transform
   stocks/ta/cg: centre of gravity
