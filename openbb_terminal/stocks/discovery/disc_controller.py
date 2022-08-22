@@ -198,8 +198,8 @@ class DiscoveryController(BaseController):
                 console.print(f"{sort_col} not a valid selection for sorting.\n")
                 return
             nasdaq_view.display_dividend_calendar(
-                ns_parser.date.strftime("%Y-%m-%d"),
-                sort_col=sort_col,
+                date=ns_parser.date.strftime("%Y-%m-%d"),
+                sortby=sort_col,
                 ascend=ns_parser.ascend,
                 limit=ns_parser.limit,
                 export=ns_parser.export,
