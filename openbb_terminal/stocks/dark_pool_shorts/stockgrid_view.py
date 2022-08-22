@@ -297,6 +297,7 @@ def net_short_position(
         else:
             return
 
+        df = df.sort_values(by=["dates"])
         ax1.bar(
             df["dates"],
             df["Net Short Vol. (1k $)"],
