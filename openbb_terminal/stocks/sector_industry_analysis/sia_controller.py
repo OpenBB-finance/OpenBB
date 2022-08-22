@@ -901,8 +901,8 @@ class SectorIndustryAnalysisController(BaseController):
             type=check_positive,
         )
         parser.add_argument(
-            "-cc",
-            "--convert_currency",
+            "-c",
+            "--currency",
             dest="currency",
             help="Convert the currency of the chosen country to a specified currency. By default, this is set "
             "to USD (US Dollars).",
@@ -923,21 +923,20 @@ class SectorIndustryAnalysisController(BaseController):
                     console.print(
                         "[param]If it takes too long, you can use 'Ctrl + C' to cancel.\n[/param]"
                     )
-                    if ns_parser.convert_currency != self.currency:
+                    if ns_parser.currency != self.currency:
                         self.stocks_data = {}
                     (
                         self.stocks_data,
                         self.tickers,
                     ) = stockanalysis_view.display_plots_financials(
                         finance_key=ns_parser.metric,
-                        sa_dict=stockanalysis_model.sa_keys,
                         country=self.country,
                         sector=self.sector,
                         industry=self.industry,
                         period=self.period,
                         period_length=ns_parser.period,
                         marketcap=self.mktcap,
-                        convert_currency=ns_parser.convert_currency,
+                        currency=ns_parser.currency,
                         exclude_exchanges=self.exclude_exchanges,
                         limit=ns_parser.limit,
                         export=ns_parser.export,
@@ -945,7 +944,7 @@ class SectorIndustryAnalysisController(BaseController):
                         already_loaded_stocks_data=self.stocks_data,
                     )
 
-                    self.currency = ns_parser.convert_currency
+                    self.currency = ns_parser.currency
                 except KeyboardInterrupt:
                     console.print(
                         "[param]For a faster search, ensure that you select at least one filter"
