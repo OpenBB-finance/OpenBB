@@ -13,6 +13,7 @@ from openbb_terminal.helper_funcs import (
     export_data,
     plot_autoscale,
     is_valid_axes_count,
+    print_rich_table,
 )
 
 logger = logging.getLogger(__name__)
@@ -24,6 +25,7 @@ def display_oi(
     expiration: str,
     min_sp: float = -1,
     max_sp: float = -1,
+    raw: bool = False,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -39,6 +41,8 @@ def display_oi(
         Min strike to consider
     max_sp: float
         Max strike to consider
+    raw: bool
+        Flag to display raw data
     export: str
         Format to export file
     external_axes : Optional[List[plt.Axes]], optional
@@ -95,6 +99,15 @@ def display_oi(
     if external_axes is None:
         theme.visualize_output()
 
+    if raw:
+        to_print = option_chain[["c_Openinterest", "strike", "p_Openinterest"]]
+
+        print_rich_table(
+            to_print[(to_print.strike < max_strike) & (to_print.strike > min_strike)],
+            headers=to_print.columns,
+            title=f"Open Interest for {symbol} expiring on {expiration}.",
+        )
+
 
 @log_start_end(log=logger)
 def display_volume(
@@ -102,6 +115,7 @@ def display_volume(
     expiration: str,
     min_sp: float = -1,
     max_sp: float = -1,
+    raw: bool = False,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -117,6 +131,8 @@ def display_volume(
         Min strike to consider
     max_sp: float
         Max strike to consider
+    raw:bool
+        Flag to display raw data
     export: str
         Format to export file
     external_axes : Optional[List[plt.Axes]], optional
@@ -172,3 +188,12 @@ def display_volume(
     theme.style_primary_axis(ax)
     if external_axes is None:
         theme.visualize_output()
+
+    if raw:
+        to_print = option_chain[["c_Volume", "strike", "p_Volume"]]
+
+        print_rich_table(
+            to_print[(to_print.strike < max_strike) & (to_print.strike > min_strike)],
+            headers=to_print.columns,
+            title=f"Volume for {symbol} expiring on {expiration}.",
+        )

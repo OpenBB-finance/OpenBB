@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 from typing import Tuple, List
+import logging
 
 from datetime import datetime
 import requests
@@ -9,8 +10,12 @@ import pandas as pd
 import numpy as np
 
 from openbb_terminal.rich_config import console
+from openbb_terminal.decorators import log_start_end
+
+logger = logging.getLogger(__name__)
 
 
+@log_start_end(log=logger)
 def get_full_chain(symbol: str) -> pd.DataFrame:
     """Get the full option chain for symbol over all expirations
 
@@ -74,6 +79,7 @@ def get_full_chain(symbol: str) -> pd.DataFrame:
     return pd.DataFrame()
 
 
+@log_start_end(log=logger)
 def get_expirations(symbol: str) -> List[str]:
     """Get available expirations
 
@@ -95,6 +101,7 @@ def get_expirations(symbol: str) -> List[str]:
     return [datetime.strptime(exp, "%B %d, %Y").strftime("%Y-%m-%d") for exp in exps]
 
 
+@log_start_end(log=logger)
 def get_chain_given_expiration(symbol: str, expiration: str) -> pd.DataFrame:
     """Get option chain for symbol at a given expiration
 
@@ -153,6 +160,7 @@ def get_chain_given_expiration(symbol: str, expiration: str) -> pd.DataFrame:
     return pd.DataFrame()
 
 
+@log_start_end(log=logger)
 def get_last_price(symbol: str) -> float:
     """Get the last price from nasdaq
 
@@ -183,3 +191,38 @@ def get_last_price(symbol: str) -> float:
             )
     console.print(f"[red]Last price for {symbol} not found[/red]\n")
     return np.nan
+
+
+@log_start_end(log=logger)
+def get_option_greeks(symbol: str, expiration: str) -> pd.DataFrame:
+    """Get option greeks from nasdaq
+
+    Parameters
+    ----------
+    symbol: str
+        Symbol to get
+    expiration: str
+        Option expiration
+
+    Returns
+    -------
+    pd.DataFrame
+        Dataframe with option greeks
+    """
+    for asset in ["stocks", "index", "etf"]:
+        url_greeks = f"https://api.nasdaq.com/api/quote/{symbol}/option-chain/greeks?assetclass={asset}&date={expiration}"
+        response_json = requests.get(
+            url_greeks,
+            headers={
+                "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)"
+                " AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.6 Safari/605.1.15"
+            },
+        ).json()
+        if response_json["status"]["rCode"] == 200:
+
+            greeks = pd.DataFrame(response_json["data"]["table"]["rows"])
+            greeks = greeks.drop(columns="url")
+            return greeks
+
+    console.print(f"[red]Greeks not found for {symbol} on {expiration}[/red].")
+    return pd.DataFrame()

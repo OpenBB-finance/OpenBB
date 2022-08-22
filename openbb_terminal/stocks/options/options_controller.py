@@ -842,7 +842,8 @@ class OptionsController(BaseController):
         ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
-            EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+            export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+            raw=True,
         )
         if ns_parser:
             if self.ticker:
@@ -877,6 +878,7 @@ class OptionsController(BaseController):
                             min_sp=ns_parser.min,
                             max_sp=ns_parser.max,
                             export=ns_parser.export,
+                            raw=ns_parser.raw,
                         )
                     else:
                         return
@@ -997,7 +999,8 @@ class OptionsController(BaseController):
         ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
-            EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+            raw=True,
+            export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
         )
         if ns_parser:
             if self.ticker:
@@ -1032,6 +1035,7 @@ class OptionsController(BaseController):
                             min_sp=ns_parser.min,
                             max_sp=ns_parser.max,
                             export=ns_parser.export,
+                            raw=ns_parser.raw,
                         )
                 else:
                     console.print("No expiry loaded. First use `exp {expiry date}`\n")
@@ -1193,7 +1197,8 @@ class OptionsController(BaseController):
             help="Maximum strike price to show.",
         )
         parser.add_argument(
-            "-a" "--all",
+            "-a",
+            "--all",
             dest="all",
             action="store_true",
             default=False,
@@ -1209,17 +1214,20 @@ class OptionsController(BaseController):
             elif not self.selected_date:
                 console.print("No expiry loaded. First use `exp {expiry date}`\n")
             else:
-                opt_type = -1 if ns_parser.put else 1
-                yfinance_view.show_greeks(
-                    symbol=self.ticker,
-                    div_cont=ns_parser.dividend,
-                    expiry=self.selected_date,
-                    rf=ns_parser.risk_free,
-                    opt_type=opt_type,
-                    mini=ns_parser.min,
-                    maxi=ns_parser.max,
-                    show_all=ns_parser.all,
-                )
+                if ns_parser.source == "yf":
+                    opt_type = -1 if ns_parser.put else 1
+                    yfinance_view.show_greeks(
+                        symbol=self.ticker,
+                        div_cont=ns_parser.dividend,
+                        expiry=self.selected_date,
+                        rf=ns_parser.risk_free,
+                        opt_type=opt_type,
+                        mini=ns_parser.min,
+                        maxi=ns_parser.max,
+                        show_all=ns_parser.all,
+                    )
+                elif ns_parser.source == "nasdaq":
+                    nasdaq_view.display_greeks(self.ticker, self.selected_date)
 
     @log_start_end(log=logger)
     def call_parity(self, other_args: List[str]):
