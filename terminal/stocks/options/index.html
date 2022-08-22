@@ -26095,14 +26095,14 @@
 <p>At the time of writing, OpenBB is able to provide coverage only for US-listed equity and ETF options. While not officially supported, some additional markets and index options may be accessible with yFinance as the source. Coverage will be added as the product grows to incorporate more community contributions but, for now, it is safe to generalize equity options as referring to US-listed companies on a major exchange and are priced in $USD.<br></br>
 By default, the Terminal loads a ticker using <a href="https://developer.tradier.com/" target="_blank">Tradier</a> as the source. It&rsquo;s not perfect but the price is right. Sign up for a free developer account and then enter that token using the <a href="https://openbb-finance.github.io/OpenBBTerminal/#accessing-other-sources-of-data-via-api-keys" target="_blank"><code>keys</code></a> function. Alternatively, there is a choice to use yFinance data sets by attaching the argument as shown below. Help dialogues are displayed for any command by adding <code>-h</code> to the string. It is worth noting that this load command is different than the load command elsewhere.</p>
 <pre><code>(🦋) /stocks/options/ $ load -h
-usage: load [-t TICKER] [-s {tr,yf}] [-h]
+usage: load [-t TICKER] [--source {tradier,yf}] [-h]
 
 Load a ticker into option menu
 
 optional arguments:
   -t TICKER, --ticker TICKER
                         Stock ticker (default: None)
-  -s {tr,yf}, --source {tr,yf}
+  --source  {tradier ,yf}    Tradier or Yahoo Finance (default: tr)
                         Source to get option expirations from (default: None)
   -h, --help            show this help message (default: False)
 </code></pre><p>Having the working foundation of knowledge will make most commands, as pictured above, somewhat intuitive. <code>-h</code> is attachable to any command to print the help dialogue in the Terminal. Refer to the <a href="https://openbb-finance.github.io/OpenBBTerminal/" target="_blank">user documentation</a> for details on any individual feature. Browse the commands on the left side of the page to read about any particular command.</p>
@@ -26112,7 +26112,7 @@ optional arguments:
 
 (🦋) /stocks/options/ $ exp
 
-   Available expiry dates   
+   Available expiry dates
 ┏━━━━━━━━━━━━┳━━━━━━━━━━━━┓
 ┃ Identifier ┃ Date       ┃
 ┡━━━━━━━━━━━━╇━━━━━━━━━━━━┩
@@ -26156,13 +26156,13 @@ optional arguments:
 └────────────┴────────────┘
 </code></pre><p>Choose an expiration date with the corresponding Identifier value on the left.</p>
 <pre><code>(🦋) /stocks/options/ $ exp 16
-Expiration set to 2023-09-15 
+Expiration set to 2023-09-15
 </code></pre><p>Setting the chain for analysis will change the text colour at the bottom of the Options menu. These commands require loaded data.</p>
 <p><img src="https://user-images.githubusercontent.com/85772166/172724623-dbb16566-5dfa-482c-a67e-948e01444ca8.png" alt="The Options menu with a loaded ticker and expiration date"  /></p>
 <p>The <code>info</code> command displays a table of notable statistics.</p>
 <pre><code>(🦋) /stocks/options/ $ info
 
-                Options Information                
+                Options Information
 ┏━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃ Info                  ┃ Value                   ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━┩

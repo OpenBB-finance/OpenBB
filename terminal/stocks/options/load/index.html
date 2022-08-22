@@ -9,8 +9,8 @@
 
 
 
-    <meta name="description" content="usage: load [-t TICKER] [-s {tr,yf}] [-h] Load a ticker into the Options menu
-optional arguments: -t TICKER, --ticker TICKER Stock ticker (default: None) -s {tr,yf}, --source {tr,yf} Source to get option expirations from (default: None) -h, --help show this help message (default: False) Example:
+    <meta name="description" content="usage: load [-t TICKER] [--source {tradier,yf}] [-h] Load a ticker into the Options menu
+optional arguments: -t TICKER, --ticker TICKER Stock ticker (default: None) --source {tradier ,yf} Tradier or Yahoo Finance (default: tradier) Source to get option expirations from (default: None) -h, --help show this help message (default: False) Example:
 2022 Feb 16, 09:13 (✨) /stocks/options/ $ load TSLA 2022 Feb 16, 09:13 (✨) /stocks/options/ $ ? ╭────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── Stocks - Options ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮ │ │ │ unu show unusual options activity [Fdscanner.">
 
 
@@ -26082,12 +26082,12 @@ optional arguments: -t TICKER, --ticker TICKER Stock ticker (default: None) -s {
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Load</h1>
-        <pre><code>usage: load [-t TICKER] [-s {tr,yf}] [-h]
+        <pre><code>usage: load [-t TICKER] [--source {tradier,yf}] [-h]
 </code></pre><p>Load a ticker into the Options menu</p>
 <pre><code>optional arguments:
   -t TICKER, --ticker TICKER
                         Stock ticker (default: None)
-  -s {tr,yf}, --source {tr,yf}
+  --source  {tradier ,yf}    Tradier or Yahoo Finance (default: tradier)
                         Source to get option expirations from (default: None)
   -h, --help            show this help message (default: False)
 </code></pre><p>Example:</p>
