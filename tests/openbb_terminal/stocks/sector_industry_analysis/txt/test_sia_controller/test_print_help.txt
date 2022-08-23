@@ -8,19 +8,19 @@
     exchange           revert exclude international exchanges flag
     period             set period between annual, quarterly or trailing                [StockAnalysis]
 
-Industry          : Financial Data & Stock Exchanges
-Sector            : Financial Services
-Country           : United States
-Market Cap        : Large
+Industry          : 
+Sector            : 
+Country           : 
+Market Cap        : 
 Exclude Exchanges : True
 Period            : Annual
 
 Statistics:
-    cps                companies per Sector based on Country (and Market Cap)
-    cpic               companies per Industry based on Country (and Market Cap)
-    cpis               companies per Industry based on Sector (and Market Cap)
-    cpcs               companies per Country based on Sector (and Market Cap)
-    cpci               companies per Country based on Industry (and Market Cap)
+[unvl]    cps                companies per Sector based on Country (and Market Cap)[/unvl]
+[unvl]    cpic               companies per Industry based on Country (and Market Cap)[/unvl]
+[unvl]    cpis               companies per Industry based on Sector (and Market Cap)[/unvl]
+[unvl]    cpcs               companies per Country based on Sector (and Market Cap)[/unvl]
+[unvl]    cpci               companies per Country based on Industry (and Market Cap)[/unvl]
 
 Financials - loaded data (fast mode):
     sama               see all metrics available                                       [Yahoo Finance]
@@ -30,5 +30,4 @@ Financials - loaded data (fast mode):
 
 Returned tickers: 
 [unvl]>   ca                 take these to comparison analysis menu[/unvl]
-
 

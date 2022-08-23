@@ -67,7 +67,7 @@ class EconomyController(BaseController):
         "bigmac",
         "ycrv",
         "events",
-        "cdebt",
+        "edebt",
     ]
 
     CHOICES_MENUS = [
@@ -254,7 +254,7 @@ class EconomyController(BaseController):
         mt.add_cmd("bigmac", "NASDAQ Datalink")
         mt.add_cmd("ycrv", "Investing.com / FRED")
         mt.add_cmd("events", "Investing.com")
-        mt.add_cmd("cdebt", "USDebtClock.org")
+        mt.add_cmd("edebt", "Wikipedia")
         mt.add_raw("\n")
         mt.add_cmd("rtps", "Alpha Vantage")
         mt.add_cmd("valuation", "Finviz")
@@ -1377,12 +1377,12 @@ class EconomyController(BaseController):
             )
 
     @log_start_end(log=logger)
-    def call_cdebt(self, other_args: List[str]):
-        """Process cdebt command"""
+    def call_edebt(self, other_args: List[str]):
+        """Process edebt command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="cdebt",
+            prog="edebt",
             description="""
                 National debt statistics for various countries. [Source: Wikipedia]
             """,

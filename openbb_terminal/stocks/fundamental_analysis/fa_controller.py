@@ -546,7 +546,7 @@ class FundamentalAnalysisController(StockBaseController):
         )
         if ns_parser:
             yahoo_finance_view.display_mktcap(
-                self.ticker, start=ns_parser.start, export=ns_parser.export
+                self.ticker, start_date=ns_parser.start, export=ns_parser.export
             )
 
     @log_start_end(log=logger)

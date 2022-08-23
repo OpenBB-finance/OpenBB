@@ -172,7 +172,7 @@ class TechnicalAnalysisController(StockBaseController):
                 ma_type="EMA",
                 symbol=self.ticker,
                 series=self.data["Close"],
-                length=ns_parser.n_length,
+                window=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
             )
@@ -225,7 +225,7 @@ class TechnicalAnalysisController(StockBaseController):
                 ma_type="SMA",
                 symbol=self.ticker,
                 series=self.data["Close"],
-                length=ns_parser.n_length,
+                window=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
             )
@@ -279,7 +279,7 @@ class TechnicalAnalysisController(StockBaseController):
                 ma_type="ZLMA",
                 symbol=self.ticker,
                 series=self.data["Close"],
-                length=ns_parser.n_length,
+                window=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
             )
@@ -760,7 +760,7 @@ class TechnicalAnalysisController(StockBaseController):
             volatility_view.display_bbands(
                 symbol=self.ticker,
                 data=self.data,
-                length=ns_parser.n_length,
+                window=ns_parser.n_length,
                 n_std=ns_parser.n_std,
                 mamode=ns_parser.s_mamode,
                 export=ns_parser.export,
