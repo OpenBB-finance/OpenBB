@@ -193,7 +193,7 @@ def get_last_price(symbol: str) -> float:
     return np.nan
 
 
-# Ugh this doesnt get the full chain
+# Ugh this doesn't get the full chain
 # TODO: apply CRR binomial tree to backtrack IV for greeks
 @log_start_end(log=logger)
 def get_option_greeks(symbol: str, expiration: str) -> pd.DataFrame:
