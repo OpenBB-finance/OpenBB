@@ -1491,6 +1491,28 @@ functions = {
         "model": "openbb_terminal.stocks.tradinghours.bursa_model.get_bursa",
         "view": "openbb_terminal.stocks.tradinghours.bursa_view.display_exchange",
     },
+    "stocks.load": {"model": "openbb_terminal.stocks.stocks_helper.load"},
+    "stocks.process_candle": {
+        "model": "openbb_terminal.stocks.stocks_helper.process_candle"
+    },
+    "stocks.search": {"model": "openbb_terminal.stocks.stocks_helper.search"},
+    "stocks.quote": {"model": "openbb_terminal.stocks.stocks_helper.quote"},
+    "stocks.candle": {"model": "openbb_terminal.stocks.stocks_helper.display_candle"},
+    "crypto.load": {
+        "model": "openbb_terminal.cryptocurrency.cryptocurrency_helpers.load"
+    },
+    "crypto.find": {
+        "model": "openbb_terminal.cryptocurrency.cryptocurrency_helpers.find"
+    },
+    "crypto.chart": {
+        "model": "openbb_terminal.cryptocurrency.cryptocurrency_helpers.plot_chart"
+    },
+    "crypto.candles": {
+        "model": "openbb_terminal.cryptocurrency.cryptocurrency_helpers.plot_candles"
+    },
+    "etf.candle": {"model": "openbb_terminal.stocks.stocks_helper.display_candle"},
+    "forex.candle": {"model": "openbb_terminal.stocks.stocks_helper.display_candle"},
+    "forex.load": {"model": "openbb_terminal.forex.forex_helper.load"},
 }
 
 
