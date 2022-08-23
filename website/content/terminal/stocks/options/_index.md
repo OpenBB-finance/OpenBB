@@ -16,7 +16,7 @@ At the bottom of the menu, and near the top, there are items prefaced with `>`. 
 
   - `screen` is a dedicated options screener that uses `.ini` files from the local installation folder `/OpenBBTerminal/openbb_terminal/stocks/options/presets/`. Refer to the Options Screener Guide <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/options/screen/" target="_blank">here</a>.
 
-  - `pricing` is another method for calculating options prices. See the guide for this submenu <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/options/pricing/" target="_blank">here</a>. 
+  - `pricing` is another method for calculating options prices. See the guide for this submenu <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/options/pricing/" target="_blank">here</a>.
 
   - `hedge` is a group of features for calculating a delta-neutral position. The guide for this submenu is located <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/options/hedge/" target="_blank">here</a>.
 
@@ -29,17 +29,17 @@ Navigate to the menu by typing `options`, from the `Stocks` menu, and then press
 <h3>Market Coverage and Data Sources</h3>
 
 At the time of writing, OpenBB is able to provide coverage only for US-listed equity and ETF options. While not officially supported, some additional markets and index options may be accessible with yFinance as the source. Coverage will be added as the product grows to incorporate more community contributions but, for now, it is safe to generalize equity options as referring to US-listed companies on a major exchange and are priced in $USD.<br></br>
-By default, the Terminal loads a ticker using <a href="https://developer.tradier.com/" target="_blank">Tradier</a> as the source. It's not perfect but the price is right. Sign up for a free developer account and then enter that token using the <a href="https://openbb-finance.github.io/OpenBBTerminal/#accessing-other-sources-of-data-via-api-keys" target="_blank">`keys`</a> function. Alternatively, there is a choice to use yFinance data sets by attaching the argument as shown below. Help dialogues are displayed for any command by adding `-h` to the string. It is worth noting that this load command is different than the load command elsewhere. 
+By default, the Terminal loads a ticker using <a href="https://developer.tradier.com/" target="_blank">Tradier</a> as the source. It's not perfect but the price is right. Sign up for a free developer account and then enter that token using the <a href="https://openbb-finance.github.io/OpenBBTerminal/#accessing-other-sources-of-data-via-api-keys" target="_blank">`keys`</a> function. Alternatively, there is a choice to use yFinance data sets by attaching the argument as shown below. Help dialogues are displayed for any command by adding `-h` to the string. It is worth noting that this load command is different than the load command elsewhere.
 ````
 (🦋) /stocks/options/ $ load -h
-usage: load [-t TICKER] [-s {tr,yf}] [-h]
+usage: load [-t TICKER] [--source {tradier,yf}] [-h]
 
 Load a ticker into option menu
 
 optional arguments:
   -t TICKER, --ticker TICKER
                         Stock ticker (default: None)
-  -s {tr,yf}, --source {tr,yf}
+  --source  {tradier ,yf}    Tradier or Yahoo Finance (default: tr)
                         Source to get option expirations from (default: None)
   -h, --help            show this help message (default: False)
 ````
@@ -54,7 +54,7 @@ To begin, a ticker must be loaded with an expiration date selected. Enter these 
 
 (🦋) /stocks/options/ $ exp
 
-   Available expiry dates   
+   Available expiry dates
 ┏━━━━━━━━━━━━┳━━━━━━━━━━━━┓
 ┃ Identifier ┃ Date       ┃
 ┡━━━━━━━━━━━━╇━━━━━━━━━━━━┩
@@ -101,7 +101,7 @@ Choose an expiration date with the corresponding Identifier value on the left.
 
 ````
 (🦋) /stocks/options/ $ exp 16
-Expiration set to 2023-09-15 
+Expiration set to 2023-09-15
 ````
 Setting the chain for analysis will change the text colour at the bottom of the Options menu. These commands require loaded data.
 
@@ -111,7 +111,7 @@ The `info` command displays a table of notable statistics.
 ````
 (🦋) /stocks/options/ $ info
 
-                Options Information                
+                Options Information
 ┏━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃ Info                  ┃ Value                   ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━┩
