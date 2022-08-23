@@ -1548,7 +1548,7 @@ def show_codes_polygon(ticker: str):
         Stock ticker
     """
     link = f"https://api.polygon.io/v3/reference/tickers/{ticker.upper()}?apiKey={cfg.API_POLYGON_KEY}"
-    if cfg.API_POLYGON_KEY == 'REPLACE_ME':
+    if cfg.API_POLYGON_KEY == "REPLACE_ME":
         console.print("[red]Polygon API key missing[/red]\n")
         return
     r = requests.get(link)
