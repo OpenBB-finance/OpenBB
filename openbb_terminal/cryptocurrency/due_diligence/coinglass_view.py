@@ -1,5 +1,6 @@
 import logging
 import os
+from turtle import color
 from typing import List, Optional
 
 import pandas as pd
@@ -103,7 +104,7 @@ def display_liquidations(symbol: str, export: str = "") -> None:
     if df.empty:
         return
 
-    plot_data(
+    plot_data_bar(
         df,
         symbol,
         f"Total liquidations for {symbol}",
@@ -146,6 +147,66 @@ def plot_data(
         df_without_price.index,
         df_without_price.transpose().to_numpy(),
         labels=df_without_price.columns.tolist(),
+    )
+
+    ax1.get_yaxis().set_major_formatter(
+        ticker.FuncFormatter(lambda x, _: lambda_long_number_format(x))
+    )
+    ax1.legend(df_without_price.columns, fontsize="x-small", ncol=2)
+    if title:
+        ax1.set_title(title)
+    if ylabel:
+        ax1.set_ylabel(ylabel)
+
+    ax2.plot(df_price.index, df_price)
+    if symbol:
+        ax2.legend([f"{symbol} price"])
+        ax2.set_ylabel(f"{symbol} Price [$]")
+    ax2.set_xlim([df_price.index[0], df_price.index[-1]])
+    ax2.set_ylim(bottom=0.0)
+
+    theme.style_primary_axis(ax1)
+    theme.style_primary_axis(ax2)
+
+    if not external_axes:
+        theme.visualize_output()
+
+
+@log_start_end(log=logger)
+def plot_data_bar(
+    df: pd.DataFrame,
+    symbol: str = "",
+    title: str = "",
+    ylabel: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
+):
+
+    # This plot has 2 axes
+    if not external_axes:
+        _, axes = plt.subplots(
+            2, 1, sharex=True, figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI
+        )
+        (ax1, ax2) = axes
+    elif is_valid_axes_count(external_axes, 2):
+        (ax1, ax2) = external_axes
+    else:
+        return
+
+    df_price = df[["price"]].copy()
+    df_without_price = df.drop("price", axis=1)
+
+    df_without_price['Shorts'] = -df_without_price['Shorts']
+    ax1.bar(
+        df_without_price.index,
+        df_without_price['Longs'],
+        label="Longs",
+        color=theme.up_color
+    )
+    ax1.bar(
+        df_without_price.index,
+        df_without_price['Shorts'],
+        label="Shorts",
+        color=theme.down
     )
 
     ax1.get_yaxis().set_major_formatter(
