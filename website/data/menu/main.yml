@@ -500,6 +500,8 @@ main:
                 ref: "/terminal/common/ta/macd"
               - name: rsi
                 ref: "/terminal/common/ta/rsi"
+              - name: rsp
+                ref: "/terminal/common/ta/rsp"
               - name: stoch
                 ref: "/terminal/common/ta/stoch"
               - name: fisher
