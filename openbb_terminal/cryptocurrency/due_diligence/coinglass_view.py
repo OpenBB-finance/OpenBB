@@ -9,6 +9,7 @@ from matplotlib import ticker
 from openbb_terminal.config_terminal import theme
 from openbb_terminal import config_plot as cfgPlot
 from openbb_terminal.cryptocurrency.due_diligence.coinglass_model import (
+    get_liquidations,
     get_funding_rate,
     get_open_interest_per_exchange,
 )
@@ -82,6 +83,38 @@ def display_open_interest(symbol: str, interval: int = 0, export: str = "") -> N
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "oi",
+        df,
+    )
+
+
+@log_start_end(log=logger)
+@check_api_key(["API_COINGLASS_KEY"])
+def display_liquidations(symbol: str, export: str = "") -> None:
+    """Displays liquidation per day data for a certain cryptocurrency
+    [Source: https://coinglass.github.io/API-Reference/#liquidation-chart]
+
+    Parameters
+    ----------
+    symbol : str
+        Crypto symbol to search open interest (e.g., BTC)
+    export : str
+        Export dataframe data to csv,json,xlsx file"""
+    df = get_liquidations(symbol)
+    if df.empty:
+        return
+
+    plot_data(
+        df,
+        symbol,
+        f"Total liquidations for {symbol}",
+        "Liquidations value [$M]",
+    )
+    console.print("")
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "liquidations",
         df,
     )
 
