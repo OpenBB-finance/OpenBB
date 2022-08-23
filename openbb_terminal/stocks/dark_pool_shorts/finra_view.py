@@ -39,6 +39,9 @@ def darkpool_ats_otc(
         External axes (2 axes are expected in the list), by default None
     """
     ats, otc = finra_model.getTickerFINRAdata(symbol)
+    if ats.empty:
+        console.print("[red]Could not get data[/red]\n")
+        return
 
     if ats.empty and otc.empty:
         console.print("No ticker data found!")

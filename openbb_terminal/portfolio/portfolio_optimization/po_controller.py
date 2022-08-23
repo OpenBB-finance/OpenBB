@@ -4012,7 +4012,13 @@ class PortfolioOptimizationController(BaseController):
             if len(ns_parser.download) > 0:
                 file = os.path.abspath(
                     os.path.join(
-                        self.DEFAULT_ALLOCATION_PATH, "..", "views", ns_parser.download
+                        self.DEFAULT_ALLOCATION_PATH,
+                        "..",
+                        "..",
+                        "exports",
+                        "portfolio",
+                        "views",
+                        ns_parser.download,
                     )
                 )
                 excel_model.excel_bl_views(file=file, stocks=self.tickers, n=1)
