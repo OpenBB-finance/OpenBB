@@ -314,7 +314,7 @@ def load(
     if not coingecko_id:
         return pd.DataFrame()
 
-    #df = pycoingecko_model.get_ohlc(coingecko_id, vs, days)
+    # df = pycoingecko_model.get_ohlc(coingecko_id, vs, days)
 
     start_date = datetime.now() - timedelta(days=days)
     df = yf.download(
