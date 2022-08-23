@@ -1,7 +1,8 @@
 """Parent Classes"""
 __docformat__ = "numpy"
 
-# pylint: disable= C0301
+# pylint: disable= C0301,C0302,R0902
+
 
 from abc import ABCMeta, abstractmethod
 import argparse
@@ -884,12 +885,14 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
         super().__init__(queue)
 
         self.symbol = ""
+        self.vs = ""
         self.current_df = pd.DataFrame()
         self.current_currency = ""
         self.source = ""
         self.current_interval = ""
         self.exchange = ""
         self.price_str = ""
+        self.interval = ""
         self.resolution = "1D"
         self.TRY_RELOAD = True
         self.exchanges = cryptocurrency_helpers.get_exchanges_ohlc()
@@ -900,8 +903,11 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="load",
-            description="Load crypto currency to perform analysis on."
-            "CoinGecko is used as source for price and YahooFinance for volume.",
+            description="""Load crypto currency to perform analysis on.
+            Yahoo Finance is used as default source.
+            Other sources can be used such as 'ccxt' or 'cg' with --source.
+            If you select 'ccxt', you can then select any exchange with --exchange.
+            You can also select a specific interval with --interval.""",
         )
         parser.add_argument(
             "-c",
@@ -943,9 +949,9 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
             "--interval",
             action="store",
             dest="interval",
-            type=int,
-            default=1440,
-            choices=[1, 5, 15, 30, 60, 240, 1440, 10080, 43200],
+            type=str,
+            default="1440",
+            choices=["1", "5", "15", "30", "60", "240", "1440", "10080", "43200"],
             help="The interval of the crypto",
         )
 
@@ -984,6 +990,7 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
                 source=ns_parser.source,
             )
             if not self.current_df.empty:
+                self.vs = ns_parser.vs
                 self.exchange = ns_parser.exchange
                 self.source = ns_parser.source
                 self.current_interval = ns_parser.interval
@@ -995,4 +1002,5 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
                     self.current_currency,
                     ns_parser.source,
                     ns_parser.exchange,
+                    self.current_interval,
                 )
