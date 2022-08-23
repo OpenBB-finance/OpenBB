@@ -107,7 +107,7 @@ def get_financials(
                 cash_flows = cash_flows[["value"]]
                 cash_flows.columns = [single_thing["filing_date"]]
 
-                first = False
+            first = False
         else:
             values = pd.DataFrame(
                 pd.DataFrame.from_dict(
