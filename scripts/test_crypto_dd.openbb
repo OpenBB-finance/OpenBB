@@ -1,6 +1,7 @@
 crypto
 load btc
 dd
+liquidations
 fundrate
 oi
 nonzero
