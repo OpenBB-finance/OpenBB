@@ -183,10 +183,10 @@ class OptionsController(BaseController):
         mt.add_raw("\n")
         mt.add_cmd("pcr", "AlphaQuery", self.ticker and self.selected_date)
         mt.add_cmd("info", "Barchart", self.ticker and self.selected_date)
-        mt.add_cmd("chains", "Tradier", self.ticker and self.selected_date)
-        mt.add_cmd("oi", "Tradier/YFinance", self.ticker and self.selected_date)
-        mt.add_cmd("vol", "Tradier/YFinance", self.ticker and self.selected_date)
-        mt.add_cmd("voi", "Tradier/YFinance", self.ticker and self.selected_date)
+        mt.add_cmd("chains", "Tradier/NASDAQ/Yfinance", self.ticker and self.selected_date)
+        mt.add_cmd("oi", "Tradier/YFinance/NASDAQ", self.ticker and self.selected_date)
+        mt.add_cmd("vol", "Tradier/YFinance/NASDAQ", self.ticker and self.selected_date)
+        mt.add_cmd("voi", "Tradier/YFinance/NASDAQ", self.ticker and self.selected_date)
         mt.add_cmd("hist", "Tradier", self.ticker and self.selected_date)
         mt.add_cmd("vsurf", "Yfinance", self.ticker and self.selected_date)
         mt.add_cmd("grhist", "Syncretism", self.ticker and self.selected_date)
@@ -784,7 +784,7 @@ class OptionsController(BaseController):
                     elif ns_parser.source == "yf":
                         yfinance_view.display_chains(
                             symbol=self.ticker,
-                            expiry=self.selected_date,
+                            expiration=self.selected_date,
                             min_sp=ns_parser.min_sp,
                             max_sp=ns_parser.max_sp,
                             calls_only=ns_parser.calls,
@@ -868,7 +868,7 @@ class OptionsController(BaseController):
                     elif ns_parser.source == "yf":
                         yfinance_view.plot_vol(
                             symbol=self.ticker,
-                            expiry=self.selected_date,
+                            expiration=self.selected_date,
                             min_sp=ns_parser.min,
                             max_sp=ns_parser.max,
                             calls_only=ns_parser.calls,
@@ -945,7 +945,7 @@ class OptionsController(BaseController):
                     elif ns_parser.source == "yf":
                         yfinance_view.plot_volume_open_interest(
                             symbol=self.ticker,
-                            expiry=self.selected_date,
+                            expiration=self.selected_date,
                             min_sp=ns_parser.min_sp,
                             max_sp=ns_parser.max_sp,
                             min_vol=ns_parser.min_vol,
@@ -1034,7 +1034,7 @@ class OptionsController(BaseController):
                     elif ns_parser.source == "yf":
                         yfinance_view.plot_oi(
                             symbol=self.ticker,
-                            expiry=self.selected_date,
+                            expiration=self.selected_date,
                             min_sp=ns_parser.min,
                             max_sp=ns_parser.max,
                             calls_only=ns_parser.calls,
@@ -1232,7 +1232,7 @@ class OptionsController(BaseController):
                     yfinance_view.show_greeks(
                         symbol=self.ticker,
                         div_cont=ns_parser.dividend,
-                        expiry=self.selected_date,
+                        expiration=self.selected_date,
                         rf=ns_parser.risk_free,
                         opt_type=opt_type,
                         mini=ns_parser.min,
