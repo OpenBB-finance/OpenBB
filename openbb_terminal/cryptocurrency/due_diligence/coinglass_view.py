@@ -1,6 +1,5 @@
 import logging
 import os
-from turtle import color
 from typing import List, Optional
 
 import pandas as pd
@@ -195,18 +194,20 @@ def plot_data_bar(
     df_price = df[["price"]].copy()
     df_without_price = df.drop("price", axis=1)
 
-    df_without_price['Shorts'] = -df_without_price['Shorts']
+    df_without_price["Shorts"] = df_without_price["Shorts"] * -1
+
     ax1.bar(
         df_without_price.index,
-        df_without_price['Longs'],
-        label="Longs",
-        color=theme.up_color
-    )
-    ax1.bar(
-        df_without_price.index,
-        df_without_price['Shorts'],
+        df_without_price["Shorts"],
         label="Shorts",
-        color=theme.down
+        color=theme.down_color,
+    )
+
+    ax1.bar(
+        df_without_price.index,
+        df_without_price["Longs"],
+        label="Longs",
+        color=theme.up_color,
     )
 
     ax1.get_yaxis().set_major_formatter(
