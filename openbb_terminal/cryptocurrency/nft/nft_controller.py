@@ -2,6 +2,8 @@ import argparse
 import logging
 from typing import List
 
+# flake8: noqa
+
 from prompt_toolkit.completion import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
@@ -142,11 +144,27 @@ class NFTController(BaseController):
             prog="collections",
             description="NFT Collections [Source: https://nftpricefloor.com/]",
         )
+        parser.add_argument(
+            "--fp",
+            dest="fp",
+            action="store_true",
+            default=False,
+            help="Flag to display floor price over time for top collections",
+        )
+        parser.add_argument(
+            "--sales",
+            dest="sales",
+            action="store_true",
+            default=False,
+            help="Flag to display sales over time for top collections",
+        )
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED, limit=5
         )
         if ns_parser:
             nftpricefloor_view.display_collections(
+                show_sales=ns_parser.sales,
+                show_fp=ns_parser.fp,
                 num=ns_parser.limit,
                 export=ns_parser.export,
             )
