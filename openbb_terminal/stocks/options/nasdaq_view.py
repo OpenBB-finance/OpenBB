@@ -3,18 +3,20 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Optional, List
+from typing import List, Optional
+
 import matplotlib.pyplot as plt
-from openbb_terminal.stocks.options import nasdaq_model
-from openbb_terminal.config_terminal import theme
+
 import openbb_terminal.config_plot as cfp
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
-    plot_autoscale,
     is_valid_axes_count,
+    plot_autoscale,
     print_rich_table,
 )
+from openbb_terminal.stocks.options import nasdaq_model
 
 logger = logging.getLogger(__name__)
 

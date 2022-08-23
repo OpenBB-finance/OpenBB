@@ -1,8 +1,9 @@
 """Option helper functions"""
 __docformat__ = "numpy"
 
-from math import log, e
+from math import e, log
 from typing import Union
+
 import numpy as np
 import pandas as pd
 from scipy.stats import norm

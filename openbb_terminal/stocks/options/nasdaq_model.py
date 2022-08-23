@@ -1,16 +1,16 @@
 """Nasdaq Model"""
 __docformat__ = "numpy"
 
-from typing import Tuple, List
 import logging
-
 from datetime import datetime
-import requests
-import pandas as pd
-import numpy as np
+from typing import List, Tuple
 
-from openbb_terminal.rich_config import console
+import numpy as np
+import pandas as pd
+import requests
+
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -193,6 +193,8 @@ def get_last_price(symbol: str) -> float:
     return np.nan
 
 
+# Ugh this doesnt get the full chain
+# TODO: apply CRR binomial tree to backtrack IV for greeks
 @log_start_end(log=logger)
 def get_option_greeks(symbol: str, expiration: str) -> pd.DataFrame:
     """Get option greeks from nasdaq

@@ -3,9 +3,9 @@ __docformat__ = "numpy"
 
 import logging
 import os
+import re
 from bisect import bisect_left
 from datetime import date, datetime, timedelta
-import re
 from typing import Any, Dict, List, Optional
 
 import matplotlib.dates as mdates
@@ -18,17 +18,17 @@ import yfinance as yf
 from openpyxl import Workbook
 from scipy.stats import binom
 
-from openbb_terminal.config_terminal import theme
-from openbb_terminal.config_plot import PLOT_DPI
 import openbb_terminal.config_plot as cfp
+from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     excel_columns,
     export_data,
     get_rf,
+    is_valid_axes_count,
     plot_autoscale,
     print_rich_table,
-    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.options import op_helpers, yfinance_model

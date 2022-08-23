@@ -5,7 +5,7 @@ import argparse
 import logging
 import os
 from datetime import datetime, timedelta
-from typing import List, Any
+from typing import Any, List
 
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
@@ -17,8 +17,8 @@ from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_FIGURES_ALLOWED,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
-    valid_date,
     get_ordered_list_sources,
+    valid_date,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
@@ -29,19 +29,17 @@ from openbb_terminal.stocks.options import (
     calculator_view,
     chartexchange_view,
     fdscanner_view,
+    nasdaq_model,
+    nasdaq_view,
+    op_helpers,
     tradier_model,
     tradier_view,
     yfinance_model,
     yfinance_view,
-    op_helpers,
-    nasdaq_model,
-    nasdaq_view,
 )
-
-from openbb_terminal.stocks.options.pricing import pricing_controller
 from openbb_terminal.stocks.options.hedge import hedge_controller
+from openbb_terminal.stocks.options.pricing import pricing_controller
 from openbb_terminal.stocks.options.screen import screener_controller, syncretism_view
-
 
 # pylint: disable=R1710,C0302,R0916
 
