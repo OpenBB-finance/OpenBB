@@ -42,10 +42,10 @@ time_factor = {
 
 @log_start_end(log=logger)
 def get_equal_weights(
-    stocks: List[str],
-    period: str = "3y",
-    start: str = "",
-    end: str = "",
+    symbols: List[str],
+    interval: str = "3y",
+    start_date: str = "",
+    end_date: str = "",
     log_returns: bool = False,
     freq: str = "D",
     maxnan: float = 0.05,
@@ -53,18 +53,18 @@ def get_equal_weights(
     method: str = "time",
     value: float = 1.0,
 ) -> Tuple:
-    """Equally weighted portfolio, where weight = 1/# of stocks
+    """Equally weighted portfolio, where weight = 1/# of symbols
 
     Parameters
     ----------
-    stocks : List[str]
+    symbols : List[str]
         List of portfolio stocks
-    period : str, optional
-        Period to get stock data, by default "3mo"
-    start: str, optional
-        If not using period, start date string (YYYY-MM-DD)
-    end: str, optional
-        If not using period, end date string (YYYY-MM-DD). If empty use last
+    interval : str, optional
+        interval to get stock data, by default "3mo"
+    start_date: str, optional
+        If not using interval, start date string (YYYY-MM-DD)
+    end_date: str, optional
+        If not using interval, end date string (YYYY-MM-DD). If empty use last
         weekday.
     log_returns: bool, optional
         If True calculate log returns, else arithmetic returns. Default value
@@ -93,7 +93,9 @@ def get_equal_weights(
         Dictionary of weights where keys are the tickers
     """
 
-    stock_prices = yahoo_finance_model.process_stocks(stocks, period, start, end)
+    stock_prices = yahoo_finance_model.process_stocks(
+        symbols, interval, start_date, end_date
+    )
     stock_returns = yahoo_finance_model.process_returns(
         stock_prices,
         log_returns=log_returns,
@@ -103,17 +105,17 @@ def get_equal_weights(
         method=method,
     )
 
-    weights = {stock: value * round(1 / len(stocks), 5) for stock in stocks}
+    weights = {stock: value * round(1 / len(symbols), 5) for stock in symbols}
 
     return weights, stock_returns
 
 
 @log_start_end(log=logger)
 def get_property_weights(
-    stocks: List[str],
-    period: str = "3y",
-    start: str = "",
-    end: str = "",
+    symbols: List[str],
+    interval: str = "3y",
+    start_date: str = "",
+    end_date: str = "",
     log_returns: bool = False,
     freq: str = "D",
     maxnan: float = 0.05,
@@ -126,14 +128,14 @@ def get_property_weights(
 
     Parameters
     ----------
-    stocks : List[str]
+    symbols : List[str]
         List of portfolio stocks
-    period : str, optional
-        Period to get stock data, by default "3mo"
-    start: str, optional
-        If not using period, start date string (YYYY-MM-DD)
-    end: str, optional
-        If not using period, end date string (YYYY-MM-DD). If empty use last
+    interval : str, optional
+        interval to get stock data, by default "3mo"
+    start_date: str, optional
+        If not using interval, start date string (YYYY-MM-DD)
+    end_date: str, optional
+        If not using interval, end date string (YYYY-MM-DD). If empty use last
         weekday.
     log_returns: bool, optional
         If True calculate log returns, else arithmetic returns. Default value
@@ -164,7 +166,9 @@ def get_property_weights(
         Dictionary of portfolio weights or allocations
     """
 
-    stock_prices = yahoo_finance_model.process_stocks(stocks, period, start, end)
+    stock_prices = yahoo_finance_model.process_stocks(
+        symbols, interval, start_date, end_date
+    )
     stock_returns = yahoo_finance_model.process_returns(
         stock_prices,
         log_returns=log_returns,
@@ -176,7 +180,7 @@ def get_property_weights(
 
     prop = {}
     prop_sum = 0
-    for stock in stocks:
+    for stock in symbols:
         stock_prop = yf.Ticker(stock).info[s_property]
         if stock_prop is None:
             stock_prop = 0
@@ -194,10 +198,10 @@ def get_property_weights(
 
 @log_start_end(log=logger)
 def get_mean_risk_portfolio(
-    stocks: List[str],
-    period: str = "3y",
-    start: str = "",
-    end: str = "",
+    symbols: List[str],
+    interval: str = "3y",
+    start_date: str = "",
+    end_date: str = "",
     log_returns: bool = False,
     freq: str = "D",
     maxnan: float = 0.05,
@@ -220,14 +224,14 @@ def get_mean_risk_portfolio(
 
     Parameters
     ----------
-    stocks : List[str]
+    symbols : List[str]
         List of portfolio stocks
-    period : str, optional
-        Period to get stock data, by default "3mo"
-    start: str, optional
-        If not using period, start date string (YYYY-MM-DD)
-    end: str, optional
-        If not using period, end date string (YYYY-MM-DD). If empty use last
+    interval : str, optional
+        interval to get stock data, by default "3mo"
+    start_date: str, optional
+        If not using interval, start date string (YYYY-MM-DD)
+    end_date: str, optional
+        If not using interval, end date string (YYYY-MM-DD). If empty use last
         weekday.
     log_returns: bool, optional
         If True calculate log returns, else arithmetic returns. Default value
@@ -327,7 +331,9 @@ def get_mean_risk_portfolio(
     Tuple
         Dictionary of portfolio weights and DataFrame of stock returns
     """
-    stock_prices = yahoo_finance_model.process_stocks(stocks, period, start, end)
+    stock_prices = yahoo_finance_model.process_stocks(
+        symbols, interval, start_date, end_date
+    )
     stock_returns = yahoo_finance_model.process_returns(
         stock_prices,
         log_returns=log_returns,
@@ -389,10 +395,10 @@ def get_mean_risk_portfolio(
 
 @log_start_end(log=logger)
 def get_max_diversification_portfolio(
-    stocks: List[str],
-    period: str = "3y",
-    start: str = "",
-    end: str = "",
+    symbols: List[str],
+    interval: str = "3y",
+    start_date: str = "",
+    end_date: str = "",
     log_returns: bool = False,
     freq: str = "D",
     maxnan: float = 0.05,
@@ -407,14 +413,14 @@ def get_max_diversification_portfolio(
 
     Parameters
     ----------
-    stocks : List[str]
+    symbols : List[str]
         List of portfolio stocks
-    period : str, optional
-        Period to get stock data, by default "3mo"
-    start: str
-        If not using period, start date string (YYYY-MM-DD)
-    end: str
-        If not using period, end date string (YYYY-MM-DD). If empty use last
+    interval : str, optional
+        interval to get stock data, by default "3mo"
+    start_date: str
+        If not using interval, start date string (YYYY-MM-DD)
+    end_date: str
+        If not using interval, end date string (YYYY-MM-DD). If empty use last
         weekday.
     log_returns: bool
         If True calculate log returns, else arithmetic returns. Default value
@@ -465,7 +471,9 @@ def get_max_diversification_portfolio(
     Tuple
         Dictionary of portfolio weights and DataFrame of stock returns
     """
-    stock_prices = yahoo_finance_model.process_stocks(stocks, period, start, end)
+    stock_prices = yahoo_finance_model.process_stocks(
+        symbols, interval, start_date, end_date
+    )
     stock_returns = yahoo_finance_model.process_returns(
         stock_prices,
         log_returns=log_returns,
@@ -503,10 +511,10 @@ def get_max_diversification_portfolio(
 
 @log_start_end(log=logger)
 def get_max_decorrelation_portfolio(
-    stocks: List[str],
-    period: str = "3y",
-    start: str = "",
-    end: str = "",
+    symbols: List[str],
+    interval: str = "3y",
+    start_date: str = "",
+    end_date: str = "",
     log_returns: bool = False,
     freq: str = "D",
     maxnan: float = 0.05,
@@ -521,14 +529,14 @@ def get_max_decorrelation_portfolio(
 
     Parameters
     ----------
-    stocks : List[str]
+    symbols : List[str]
         List of portfolio stocks
-    period : str, optional
-        Period to get stock data, by default "3mo"
-    start: str
-        If not using period, start date string (YYYY-MM-DD)
-    end: str
-        If not using period, end date string (YYYY-MM-DD). If empty use last
+    interval : str, optional
+        interval to get stock data, by default "3mo"
+    start_date: str
+        If not using interval, start date string (YYYY-MM-DD)
+    end_date: str
+        If not using interval, end date string (YYYY-MM-DD). If empty use last
         weekday.
     log_returns: bool
         If True calculate log returns, else arithmetic returns. Default value
@@ -579,7 +587,9 @@ def get_max_decorrelation_portfolio(
     Tuple
         Dictionary of portfolio weights and DataFrame of stock returns
     """
-    stock_prices = yahoo_finance_model.process_stocks(stocks, period, start, end)
+    stock_prices = yahoo_finance_model.process_stocks(
+        symbols, interval, start_date, end_date
+    )
     stock_returns = yahoo_finance_model.process_returns(
         stock_prices,
         log_returns=log_returns,
@@ -619,13 +629,13 @@ def get_max_decorrelation_portfolio(
 
 @log_start_end(log=logger)
 def get_black_litterman_portfolio(
-    stocks: List[str],
+    symbols: List[str],
     benchmark: Dict,
     p_views: List,
     q_views: List,
-    period: str = "3y",
-    start: str = "",
-    end: str = "",
+    interval: str = "3y",
+    start_date: str = "",
+    end_date: str = "",
     log_returns: bool = False,
     freq: str = "D",
     maxnan: float = 0.05,
@@ -644,7 +654,7 @@ def get_black_litterman_portfolio(
 
     Parameters
     ----------
-    stocks : List[str]
+    symbols : List[str]
         List of portfolio stocks
     benchmark : Dict
         Dict of portfolio weights
@@ -653,12 +663,12 @@ def get_black_litterman_portfolio(
         Default value to None.
     q_views: List
         Matrix Q of expected returns of views. Default value is None.
-    period : str, optional
-        Period to get stock data, by default "3mo"
-    start: str
-        If not using period, start date string (YYYY-MM-DD)
-    end: str
-        If not using period, end date string (YYYY-MM-DD). If empty use last
+    interval : str, optional
+        interval to get stock data, by default "3mo"
+    start_date: str
+        If not using interval, start date string (YYYY-MM-DD)
+    end_date: str
+        If not using interval, end date string (YYYY-MM-DD). If empty use last
         weekday.
     log_returns: bool
         If True calculate log returns, else arithmetic returns. Default value
@@ -712,7 +722,9 @@ def get_black_litterman_portfolio(
     Tuple
         Dictionary of portfolio weights and DataFrame of stock returns
     """
-    stock_prices = yahoo_finance_model.process_stocks(stocks, period, start, end)
+    stock_prices = yahoo_finance_model.process_stocks(
+        symbols, interval, start_date, end_date
+    )
     stock_returns = yahoo_finance_model.process_returns(
         stock_prices,
         log_returns=log_returns,
@@ -725,10 +737,10 @@ def get_black_litterman_portfolio(
     # By theory default benchmark is market capitalization portfolio
     if benchmark is None:
         benchmark, _ = get_property_weights(
-            stocks=stocks,
-            period=period,
-            start=start,
-            end=end,
+            symbols=symbols,
+            interval=interval,
+            start_date=start_date,
+            end_date=end_date,
             log_returns=log_returns,
             freq=freq,
             maxnan=maxnan,
@@ -790,10 +802,10 @@ def get_black_litterman_portfolio(
 
 @log_start_end(log=logger)
 def get_risk_parity_portfolio(
-    stocks: List[str],
-    period: str = "3y",
-    start: str = "",
-    end: str = "",
+    symbols: List[str],
+    interval: str = "3y",
+    start_date: str = "",
+    end_date: str = "",
     log_returns: bool = False,
     freq: str = "D",
     maxnan: float = 0.05,
@@ -813,14 +825,14 @@ def get_risk_parity_portfolio(
 
     Parameters
     ----------
-    stocks : List[str]
+    symbols : List[str]
         List of portfolio stocks
-    period : str, optional
-        Period to get stock data, by default "3mo"
-    start: str, optional
-        If not using period, start date string (YYYY-MM-DD)
-    end: str, optional
-        If not using period, end date string (YYYY-MM-DD). If empty use last
+    interval : str, optional
+        interval to get stock data, by default "3mo"
+    start_date: str, optional
+        If not using interval, start date string (YYYY-MM-DD)
+    end_date: str, optional
+        If not using interval, end date string (YYYY-MM-DD). If empty use last
         weekday.
     log_returns: bool, optional
         If True calculate log returns, else arithmetic returns. Default value
@@ -904,7 +916,9 @@ def get_risk_parity_portfolio(
     Tuple
         Dictionary of portfolio weights and DataFrame of stock returns
     """
-    stock_prices = yahoo_finance_model.process_stocks(stocks, period, start, end)
+    stock_prices = yahoo_finance_model.process_stocks(
+        symbols, interval, start_date, end_date
+    )
     stock_returns = yahoo_finance_model.process_returns(
         stock_prices,
         log_returns=log_returns,
@@ -950,10 +964,10 @@ def get_risk_parity_portfolio(
 
 @log_start_end(log=logger)
 def get_rel_risk_parity_portfolio(
-    stocks: List[str],
-    period: str = "3y",
-    start: str = "",
-    end: str = "",
+    symbols: List[str],
+    interval: str = "3y",
+    start_date: str = "",
+    end_date: str = "",
     log_returns: bool = False,
     freq: str = "D",
     maxnan: float = 0.05,
@@ -972,14 +986,14 @@ def get_rel_risk_parity_portfolio(
 
     Parameters
     ----------
-    stocks : List[str]
+    symbols : List[str]
         List of portfolio stocks
-    period : str, optional
-        Period to get stock data, by default "3mo"
-    start: str, optional
-        If not using period, start date string (YYYY-MM-DD)
-    end: str, optional
-        If not using period, end date string (YYYY-MM-DD). If empty use last
+    interval : str, optional
+        interval to get stock data, by default "3mo"
+    start_date: str, optional
+        If not using interval, start date string (YYYY-MM-DD)
+    end_date: str, optional
+        If not using interval, end date string (YYYY-MM-DD). If empty use last
         weekday.
     log_returns: bool, optional
         If True calculate log returns, else arithmetic returns. Default value
@@ -1054,7 +1068,9 @@ def get_rel_risk_parity_portfolio(
     Tuple
         Dictionary of portfolio weights and DataFrame of stock returns
     """
-    stock_prices = yahoo_finance_model.process_stocks(stocks, period, start, end)
+    stock_prices = yahoo_finance_model.process_stocks(
+        symbols, interval, start_date, end_date
+    )
     stock_returns = yahoo_finance_model.process_returns(
         stock_prices,
         log_returns=log_returns,
@@ -1098,10 +1114,10 @@ def get_rel_risk_parity_portfolio(
 
 @log_start_end(log=logger)
 def get_hcp_portfolio(
-    stocks: List[str],
-    period: str = "3y",
-    start: str = "",
-    end: str = "",
+    symbols: List[str],
+    interval: str = "3y",
+    start_date: str = "",
+    end_date: str = "",
     log_returns: bool = False,
     freq: str = "D",
     maxnan: float = 0.05,
@@ -1131,14 +1147,14 @@ def get_hcp_portfolio(
 
     Parameters
     ----------
-    stocks : List[str]
+    symbols : List[str]
         List of portfolio stocks
-    period : str, optional
-        Period to get stock data, by default "3mo"
-    start: str, optional
-        If not using period, start date string (YYYY-MM-DD)
-    end: str, optional
-        If not using period, end date string (YYYY-MM-DD). If empty use last
+    interval : str, optional
+        interval to get stock data, by default "3mo"
+    start_date: str, optional
+        If not using interval, start date string (YYYY-MM-DD)
+    end_date: str, optional
+        If not using interval, end date string (YYYY-MM-DD). If empty use last
         weekday.
     log_returns: bool, optional
         If True calculate log returns, else arithmetic returns. Default value
@@ -1309,7 +1325,9 @@ def get_hcp_portfolio(
     Tuple
         Dictionary of portfolio weights and DataFrame of stock returns
     """
-    stock_prices = yahoo_finance_model.process_stocks(stocks, period, start, end)
+    stock_prices = yahoo_finance_model.process_stocks(
+        symbols, interval, start_date, end_date
+    )
     stock_returns = yahoo_finance_model.process_returns(
         stock_prices,
         log_returns=log_returns,
@@ -1362,8 +1380,8 @@ def get_hcp_portfolio(
 def black_litterman(
     stock_returns: pd.DataFrame,
     benchmark,
-    p_views,
-    q_views,
+    p_views=None,
+    q_views=None,
     delta=None,
     risk_free_rate: float = 0,
     equilibrium: bool = True,
@@ -1400,7 +1418,7 @@ def black_litterman(
         Black-Litterman model estimates of expected returns,
         covariance matrix and portfolio weights.
     """
-    stocks = stock_returns.columns.tolist()
+    symbols = stock_returns.columns.tolist()
     benchmark = pd.Series(benchmark).to_numpy().reshape(-1, 1)
 
     mu = stock_returns.mean().to_numpy().reshape(-1, 1)
@@ -1443,16 +1461,16 @@ def black_litterman(
     cov = S + M
     weights = np.linalg.inv(delta * cov) @ PI
 
-    mu = pd.DataFrame(mu, index=stocks).to_dict()
-    cov = pd.DataFrame(cov, index=stocks, columns=stocks).to_dict()
-    weights = pd.DataFrame(weights, index=stocks).to_dict()
+    mu = pd.DataFrame(mu, index=symbols).to_dict()
+    cov = pd.DataFrame(cov, index=symbols, columns=symbols).to_dict()
+    weights = pd.DataFrame(weights, index=symbols).to_dict()
 
     return mu, cov, weights
 
 
 @log_start_end(log=logger)
 def generate_random_portfolios(
-    stocks: List[str],
+    symbols: List[str],
     n_portfolios: int = 100,
     seed: int = 123,
     value: float = 1.0,
@@ -1461,7 +1479,7 @@ def generate_random_portfolios(
 
     Parameters
     ----------
-    stocks : List[str]
+    symbols : List[str]
         List of portfolio stocks
     n_portfolios: int, optional
         "Number of portfolios to simulate. The default value is 100.
@@ -1470,7 +1488,7 @@ def generate_random_portfolios(
     value : float, optional
         Amount of money to allocate. The default is 1.
     """
-    assets = stocks.copy()
+    assets = symbols.copy()
 
     # Generate random portfolios
     n_samples = int(n_portfolios / 3)

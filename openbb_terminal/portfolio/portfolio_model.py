@@ -240,7 +240,7 @@ def get_gaintopain_ratio(
 def get_rolling_beta(
     portfolio_returns: pd.Series,
     benchmark_returns: pd.Series,
-    period: str = "1y",
+    interval: str = "1y",
 ) -> pd.DataFrame:
     """Get rolling beta using portfolio and benchmark returns
 
@@ -250,7 +250,7 @@ def get_rolling_beta(
         Series of portfolio returns
     benchmark_returns: pd.Series
         Series of benchmark returns
-    period: string
+    interval: string
         Interval used for rolling values.
         Possible options: mtd, qtd, ytd, 1d, 5d, 10d, 1m, 3m, 6m, 1y, 3y, 5y, 10y.
 
@@ -260,7 +260,7 @@ def get_rolling_beta(
         DataFrame of the portfolio's rolling beta
     """
 
-    length = portfolio_helper.PERIODS_DAYS[period]
+    length = portfolio_helper.PERIODS_DAYS[interval]
 
     covs = (
         pd.DataFrame({"Portfolio": portfolio_returns, "Benchmark": benchmark_returns})
@@ -1539,23 +1539,23 @@ class PortfolioModel:
         )
 
     @log_start_end(log=logger)
-    def get_stats(self, period: str = "all") -> pd.DataFrame:
-        """Class method that retrieves stats for portfolio and benchmark selected based on a certain period
+    def get_stats(self, interval: str = "all") -> pd.DataFrame:
+        """Class method that retrieves stats for portfolio and benchmark selected based on a certain interval
 
         Returns
         -------
         pd.DataFrame
-            DataFrame with overall stats for portfolio and benchmark for a certain periods
-        period : str
-            Period to consider. Choices are: mtd, qtd, ytd, 3m, 6m, 1y, 3y, 5y, 10y, all
+            DataFrame with overall stats for portfolio and benchmark for a certain period
+        interval : str
+            interval to consider. Choices are: mtd, qtd, ytd, 3m, 6m, 1y, 3y, 5y, 10y, all
         """
         df = (
-            portfolio_helper.filter_df_by_period(self.returns, period)
+            portfolio_helper.filter_df_by_period(self.returns, interval)
             .describe()
             .to_frame()
             .join(
                 portfolio_helper.filter_df_by_period(
-                    self.benchmark_returns, period
+                    self.benchmark_returns, interval
                 ).describe()
             )
         )
@@ -1724,12 +1724,12 @@ class PortfolioModel:
         return gtp_period_df
 
     @log_start_end(log=logger)
-    def get_rolling_beta(self, period: int = 252):
+    def get_rolling_beta(self, window: int = 252):
         """Get rolling beta
 
         Parameters
         ----------
-        period: int
+        window: int
             Interval used for rolling values
 
         Returns
@@ -1737,28 +1737,28 @@ class PortfolioModel:
         pd.DataFrame
             DataFrame of the portfolio's rolling beta
         """
-        rolling_beta = get_rolling_beta(self.returns, self.benchmark_returns, period)
+        rolling_beta = get_rolling_beta(self.returns, self.benchmark_returns, window)
 
         return rolling_beta
 
     @log_start_end(log=logger)
-    def get_tracking_error(self, period: int = 252):
+    def get_tracking_error(self, window: int = 252):
         """Get tracking error
 
         Parameters
         ----------
-        period: int
+        window: int
             Interval used for rolling values
 
         Returns
         -------
         pd.DataFrame
-            DataFrame of tracking errors during different time periods
+            DataFrame of tracking errors during different time windows
         pd.Series
             Series of rolling tracking error
         """
         trackr_period_df, trackr_rolling = get_tracking_error(
-            self.returns, self.benchmark_returns, period
+            self.returns, self.benchmark_returns, window
         )
 
         return trackr_period_df, trackr_rolling
@@ -1782,25 +1782,25 @@ class PortfolioModel:
         return ir_period_df
 
     @log_start_end(log=logger)
-    def get_tail_ratio(self, period: int = 252):
+    def get_tail_ratio(self, window: int = 252):
         """Get tail ratio
 
         Parameters
         ----------
-        period: int
+        window: int
             Interval used for rolling values
 
         Returns
         -------
         pd.DataFrame
-            DataFrame of the portfolios and the benchmarks tail ratio during different time periods
+            DataFrame of the portfolios and the benchmarks tail ratio during different time windows
         pd.Series
             Series of the portfolios rolling tail ratio
         pd.Series
             Series of the benchmarks rolling tail ratio
         """
         tailr_period_df, portfolio_tr, benchmark_tr = get_tail_ratio(
-            self.returns, self.benchmark_returns, period
+            self.returns, self.benchmark_returns, window
         )
 
         return tailr_period_df, portfolio_tr, benchmark_tr
@@ -1824,12 +1824,12 @@ class PortfolioModel:
         return csr_period_df
 
     @log_start_end(log=logger)
-    def get_jensens_alpha(self, rf: float = 0, period: int = 252):
+    def get_jensens_alpha(self, rf: float = 0, window: int = 252):
         """Get jensen's alpha
 
         Parameters
         ----------
-        period: int
+        window: int
             Interval used for rolling values
         rf: float
             Risk free rate
@@ -1837,7 +1837,7 @@ class PortfolioModel:
         Returns
         -------
         pd.DataFrame
-            DataFrame of jensens's alpha during different time periods
+            DataFrame of jensens's alpha during different time windows
         pd.Series
             Series of jensens's alpha data
         """
@@ -1847,13 +1847,13 @@ class PortfolioModel:
             self.benchmark_trades,
             self.benchmark_returns,
             rf,
-            period,
+            window,
         )
 
         return ja_period_df, ja_rolling
 
     @log_start_end(log=logger)
-    def get_calmar_ratio(self, period: int = 756):
+    def get_calmar_ratio(self, window: int = 756):
         """Get calmar ratio
 
         Parameters
@@ -1873,7 +1873,7 @@ class PortfolioModel:
             self.historical_trade_data,
             self.benchmark_trades,
             self.benchmark_returns,
-            period,
+            window,
         )
 
         return cr_period_df, cr_rolling
