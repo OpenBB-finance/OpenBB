@@ -888,6 +888,7 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
         self.current_currency = ""
         self.source = ""
         self.current_interval = ""
+        self.exchange = ""
         self.price_str = ""
         self.resolution = "1D"
         self.TRY_RELOAD = True
@@ -961,7 +962,7 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
             action="store",
             dest="source",
             choices=["ccxt", "yf", "cg"],
-            default="ccxt",
+            default="yf",
             help="Data source to select from",
         )
 
@@ -983,6 +984,7 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
                 source=ns_parser.source,
             )
             if not self.current_df.empty:
+                self.exchange = ns_parser.exchange
                 self.source = ns_parser.source
                 self.current_interval = ns_parser.interval
                 self.current_currency = ns_parser.vs

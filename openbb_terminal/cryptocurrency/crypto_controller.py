@@ -209,6 +209,8 @@ class CryptoController(CryptoBaseController):
                 return
 
             plot_chart(
+                exchange=self.exchange,
+                source=self.source,
                 symbol=self.symbol,
                 currency=self.current_currency,
                 prices_df=self.current_df,

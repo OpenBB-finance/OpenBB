@@ -352,7 +352,17 @@ def load(
             console.print(f"{symbol} not found in Coingecko\n")
             return df
         df = pycoingecko_model.get_ohlc(coingecko_id, vs_currency, days)
-        df["Volume"] = 0
+        df_coin = yf.download(
+            f"{symbol}-{vs_currency}",
+            end=datetime.now(),
+            start=start_date,
+            progress=False,
+            interval="1d",
+        ).sort_index(ascending=False)
+
+        if not df_coin.empty:
+            df = pd.merge(df, df_coin[::-1][["Volume"]], left_index=True, right_index=True)
+        df.index.name = "date"
 
     elif source == "yf":
         df = yf.download(
@@ -1221,7 +1231,7 @@ def display_all_coins(
     )
 
 
-def plot_chart(prices_df: pd.DataFrame, symbol: str = "", currency: str = "") -> None:
+def plot_chart(prices_df: pd.DataFrame, symbol: str = "", currency: str = "", source: str = "", exchange: str ="") -> None:
     """Load data for Technical Analysis
 
     Parameters
@@ -1238,15 +1248,18 @@ def plot_chart(prices_df: pd.DataFrame, symbol: str = "", currency: str = "") ->
         console.print("There is not data to plot chart\n")
         return
 
-    title = f"{symbol}/{currency} from {prices_df.index[0].strftime('%Y/%m/%d')} to {prices_df.index[-1].strftime('%Y/%m/%d')}"  # noqa: E501
+    exchange_str = f"/{exchange}" if source == "ccxt" else ""
+    title = f"{source}{exchange_str} - {symbol.upper()}/{currency.upper()} from {prices_df.index[0].strftime('%Y/%m/%d')} to {prices_df.index[-1].strftime('%Y/%m/%d')}"  # noqa: E501
 
-    prices_df["Volume"] = prices_df["Volume"] / 1_000_000
+    volume_mean = prices_df["Volume"].mean()
+    if volume_mean > 1_000_000:
+        prices_df["Volume"] = prices_df["Volume"] / 1_000_000
 
     plot_candles(
         candles_df=prices_df,
         title=title,
         volume=True,
-        ylabel="Volume [1M]",
+        ylabel="Volume [1M]" if volume_mean > 1_000_000 else "Volume",
     )
 
     console.print("")
