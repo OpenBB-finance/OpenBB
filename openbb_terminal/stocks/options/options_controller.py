@@ -1241,8 +1241,6 @@ class OptionsController(BaseController):
                         maxi=ns_parser.max,
                         show_all=ns_parser.all,
                     )
-                elif ns_parser.source == "nasdaq":
-                    nasdaq_view.display_greeks(self.ticker, self.selected_date)
 
     @log_start_end(log=logger)
     def call_parity(self, other_args: List[str]):
