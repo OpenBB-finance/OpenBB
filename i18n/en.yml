@@ -419,6 +419,7 @@ en:
   stocks/ta/cci: commodity channel index
   stocks/ta/macd: moving average convergence/divergence
   stocks/ta/rsi: relative strength index
+  stocks/ta/rsp: relative strength percentile
   stocks/ta/stoch: stochastic oscillator
   stocks/ta/fisher: fisher transform
   stocks/ta/cg: centre of gravity
@@ -784,7 +785,7 @@ en:
   economy/treasury: obtain U.S. treasury rates
   economy/ycrv: show sovereign yield curves
   economy/events: display economic calendar
-  economy/cdebt: shows debt statistics for various countries
+  economy/edebt: shows external debt statistics for various countries
   economy/plot: plot data from the above commands together
   economy/rtps: real-time performance sectors
   economy/valuation: valuation of sectors, industry, country
