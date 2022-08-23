@@ -28,7 +28,7 @@ def vcr_config():
 )
 def test_get_historical_greeks(put, recorder):
     result_df = syncretism_model.get_historical_greeks(
-        ticker="PM",
+        symbol="PM",
         expiry="2022-01-07",
         chain_id="",
         strike=90,
@@ -44,7 +44,7 @@ def test_get_historical_greeks_invalid_status(mocker):
     mocker.patch(target="requests.get", new=mocker.Mock(return_value=mock_response))
 
     result_df = syncretism_model.get_historical_greeks(
-        ticker="PM",
+        symbol="PM",
         expiry="2022-01-07",
         chain_id="PM220107P00090000",
         strike=90,

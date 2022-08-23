@@ -5,7 +5,7 @@ usage: fraud [-h] [-d] [-e] [--export {csv,json,xlsx}]
 ```
 optional arguments:
   -e, --explanation     whether to show the description for the metrics (default: false)
-  -d, --detail		show detials on the calculation of mscore
+  -d, --detail		show details on the calculation of mscore
   -h, --help            show this help message
   --export {csv,json,xlsx}
                         Export raw data into csv, json, xlsx

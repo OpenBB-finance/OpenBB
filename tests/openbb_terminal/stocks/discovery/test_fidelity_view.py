@@ -48,4 +48,4 @@ def test_orders_view(mocker, use_color):
     mocker.patch.object(
         target=fidelity_view.rich_config, attribute="USE_COLOR", new=use_color
     )
-    fidelity_view.orders_view(num=1, export="")
+    fidelity_view.orders_view(limit=1, export="")

@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_overall_withdrawal_fees(top: int, export: str = "") -> None:
+def display_overall_withdrawal_fees(top: int = 15, export: str = "") -> None:
     """Top coins withdrawal fees
     [Source: https://withdrawalfees.com/]
 
@@ -50,7 +50,7 @@ def display_overall_withdrawal_fees(top: int, export: str = "") -> None:
 
 
 @log_start_end(log=logger)
-def display_overall_exchange_withdrawal_fees(export: str) -> None:
+def display_overall_exchange_withdrawal_fees(export: str = "") -> None:
     """Exchange withdrawal fees
     [Source: https://withdrawalfees.com/]
 

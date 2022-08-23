@@ -215,8 +215,8 @@ class PricingController(BaseController):
                         yfinance_view.risk_neutral_vals(
                             self.ticker,
                             self.selected_date,
-                            ns_parser.put,
                             self.prices,
+                            ns_parser.put,
                             ns_parser.mini,
                             ns_parser.maxi,
                             ns_parser.risk,

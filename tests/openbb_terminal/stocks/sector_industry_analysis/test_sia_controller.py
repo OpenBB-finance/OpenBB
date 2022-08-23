@@ -76,7 +76,7 @@ def test_menu_with_queue(expected, mocker, queue):
     assert result_menu == expected
 
 
-@pytest.mark.vcr(record_mode="none")
+@pytest.mark.vcr
 def test_menu_without_queue_completion(mocker):
     path_controller = "openbb_terminal.stocks.sector_industry_analysis.sia_controller"
 
@@ -333,8 +333,8 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             ],
             "financedatabase_view.display_companies_per_sector_in_country",
             [
-                "United States",
-                "Large",
+                "MOCK_COUNTRY",
+                "",
                 True,
                 "csv",
                 True,
@@ -353,8 +353,8 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             ],
             "financedatabase_view.display_companies_per_industry_in_country",
             [
-                "United States",
-                "Large",
+                "MOCK_COUNTRY",
+                "",
                 True,
                 "csv",
                 True,
@@ -373,8 +373,8 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             ],
             "financedatabase_view.display_companies_per_industry_in_sector",
             [
-                "Financial Services",
-                "Large",
+                "MOCK_SECTOR",
+                "",
                 True,
                 "csv",
                 True,
@@ -393,8 +393,8 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             ],
             "financedatabase_view.display_companies_per_country_in_sector",
             [
-                "Financial Services",
-                "Large",
+                "MOCK_SECTOR",
+                "",
                 True,
                 "csv",
                 True,
@@ -413,8 +413,8 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             ],
             "financedatabase_view.display_companies_per_country_in_industry",
             [
-                "Financial Data & Stock Exchanges",
-                "Large",
+                "MOCK_INDUSTRY",
+                "",
                 True,
                 "csv",
                 True,
@@ -450,8 +450,12 @@ def test_call_func(
         )
 
         controller = sia_controller.SectorIndustryAnalysisController(
-            ticker=None, queue=None
+            ticker=None,
+            queue=None,
         )
+        controller.country = "MOCK_COUNTRY"
+        controller.sector = "MOCK_SECTOR"
+        controller.industry = "MOCK_INDUSTRY"
         getattr(controller, tested_func)(other_args)
 
         if called_args or called_kwargs:
@@ -460,8 +464,12 @@ def test_call_func(
             mock.assert_called_once()
     else:
         controller = sia_controller.SectorIndustryAnalysisController(
-            ticker=None, queue=None
+            ticker=None,
+            queue=None,
         )
+        controller.country = "MOCK_COUNTRY"
+        controller.sector = "MOCK_SECTOR"
+        controller.industry = "MOCK_INDUSTRY"
         getattr(controller, tested_func)(other_args)
 
 

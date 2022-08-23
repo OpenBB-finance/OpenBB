@@ -14,4 +14,4 @@ def test_view(mocker):
     # MOCK VISUALIZE_OUTPUT
     mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
 
-    finviz_view.view(ticker="PM")
+    finviz_view.view(symbol="PM")

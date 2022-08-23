@@ -12,12 +12,12 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def get_suppliers(ticker: str) -> str:
+def get_suppliers(symbol: str) -> str:
     """Get suppliers from ticker provided. [Source: CSIMarket]
 
     Parameters
     ----------
-    ticker: str
+    symbol: str
         Ticker to select suppliers from
 
     Returns
@@ -28,7 +28,7 @@ def get_suppliers(ticker: str) -> str:
     # TODO: This link has a lot more data that we can display
     # TODO: We could at least sort the tickers based on market cap
     url_supply_chain = (
-        f"https://csimarket.com/stocks/competitionNO3.php?supply&code={ticker.upper()}"
+        f"https://csimarket.com/stocks/competitionNO3.php?supply&code={symbol.upper()}"
     )
     text_supplier_chain = BeautifulSoup(requests.get(url_supply_chain).text, "lxml")
 
@@ -44,12 +44,12 @@ def get_suppliers(ticker: str) -> str:
 
 
 @log_start_end(log=logger)
-def get_customers(ticker: str) -> str:
+def get_customers(symbol: str) -> str:
     """Print customers from ticker provided
 
     Parameters
     ----------
-    ticker: str
+    symbol: str
         Ticker to select customers from
 
     Returns
@@ -60,7 +60,7 @@ def get_customers(ticker: str) -> str:
     # TODO: This link has a lot more data that we can display
     # TODO: We could at least sort the tickers based on market cap
     url_customer_chain = (
-        f"https://csimarket.com/stocks/custexNO.php?markets&code={ticker.upper()}"
+        f"https://csimarket.com/stocks/custexNO.php?markets&code={symbol.upper()}"
     )
     text_customer_chain = BeautifulSoup(requests.get(url_customer_chain).text, "lxml")
 

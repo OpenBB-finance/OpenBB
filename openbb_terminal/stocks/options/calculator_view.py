@@ -15,10 +15,10 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def view_calculator(
-    strike: float,
-    premium: float,
-    put: bool,
-    sell: bool,
+    strike: float = 10,
+    premium: float = 1,
+    put: bool = False,
+    sell: bool = False,
     external_axes: Optional[List[plt.Axes]] = None,
     **kwargs: Dict[str, int],
 ):

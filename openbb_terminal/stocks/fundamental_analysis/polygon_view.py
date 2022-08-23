@@ -22,8 +22,8 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 @check_api_key(["API_POLYGON_KEY"])
 def display_fundamentals(
-    ticker: str,
-    financial: str,
+    symbol: str,
+    statement: str,
     limit: int = 10,
     quarterly: bool = False,
     ratios: bool = False,
@@ -34,9 +34,9 @@ def display_fundamentals(
 
     Parameters
     ----------
-    ticker: str
-        Stock ticker
-    financial:str
+    symbol: str
+        Stock ticker symbol
+    statement:str
         Either balance or income
     limit: int
         Number of results to show, by default 10
@@ -49,12 +49,12 @@ def display_fundamentals(
     export: str
         Format to export data
     """
-    fundamentals = polygon_model.get_financials(ticker, financial, quarterly, ratios)
+    fundamentals = polygon_model.get_financials(symbol, statement, quarterly, ratios)
     title_str = {
         "balance": "Balance Sheet",
         "income": "Income Statement",
         "cash": "Cash Flows",
-    }[financial]
+    }[statement]
 
     if fundamentals.empty:
         return
@@ -96,9 +96,9 @@ def display_fundamentals(
             fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
             df_rounded[plot[0].replace("_", "")].plot()
             title = (
-                f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {ticker.upper()}"
+                f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {symbol.upper()}"
                 if ratios
-                else f"{plot[0].replace('_', ' ')} of {ticker.upper()} {denomination}"
+                else f"{plot[0].replace('_', ' ')} of {symbol.upper()} {denomination}"
             )
             plt.title(title)
             theme.style_primary_axis(ax)
@@ -121,11 +121,11 @@ def display_fundamentals(
         print_rich_table(
             fundamentals.applymap(lambda x: "-" if x == "nan" else x),
             show_index=True,
-            title=f"{ticker} {title_str}"
+            title=f"{symbol} {title_str}"
             if not ratios
-            else f"{'QoQ' if quarterly else 'YoY'} Change of {ticker} {title_str}",
+            else f"{'QoQ' if quarterly else 'YoY'} Change of {symbol} {title_str}",
         )
 
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), financial, fundamentals
+        export, os.path.dirname(os.path.abspath(__file__)), statement, fundamentals
     )
