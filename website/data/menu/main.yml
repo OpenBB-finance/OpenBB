@@ -756,6 +756,8 @@ main:
                 ref: "/terminal/crypto/dd/fundrate"
               - name: oi
                 ref: "/terminal/crypto/dd/oi"
+              - name: liquidations
+                ref: "/terminal/crypto/dd/liquidations"
               - name: ob
                 ref: "/terminal/crypto/dd/ob"
               - name: info
