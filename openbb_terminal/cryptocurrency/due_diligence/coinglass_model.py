@@ -55,7 +55,7 @@ def get_liquidations(symbol: str) -> pd.DataFrame:
                 df = pd.DataFrame(
                     data={
                         "date": time_new,
-                        "Price": data["priceList"],
+                        "price": data["priceList"],
                         "Shorts": data["sellList"],
                         "Longs": data["buyList"],
                     }

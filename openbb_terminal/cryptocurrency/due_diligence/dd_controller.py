@@ -552,7 +552,7 @@ class DueDiligenceController(CryptoBaseController):
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="oi",
+            prog="liquidations",
             description="""
                 Displays liquidations data for the loaded crypto asset
                 [Source: https://coinglass.github.io/API-Reference/#liquidation-chart]
