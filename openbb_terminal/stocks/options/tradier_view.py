@@ -1,10 +1,10 @@
 """Tradier options view"""
 __docformat__ = "numpy"
 
-import warnings
 import argparse
 import logging
 import os
+import warnings
 from bisect import bisect_left
 from typing import List, Optional, Tuple
 
@@ -14,20 +14,20 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 
-from openbb_terminal.config_terminal import theme
 from openbb_terminal import config_plot as cfp
+from openbb_terminal import rich_config
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
+    lambda_long_number_format_y_axis,
     patch_pandas_text_adjustment,
     plot_autoscale,
     print_rich_table,
-    lambda_long_number_format_y_axis,
-    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.options import op_helpers, tradier_model, yfinance_model
-from openbb_terminal import rich_config
 
 logger = logging.getLogger(__name__)
 
