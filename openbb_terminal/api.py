@@ -1,17 +1,16 @@
 """OpenBB Terminal API."""
 # flake8: noqa
 # pylint: disable=unused-import
-from .stocks import stocks_api as stocks
-from .alternative import alt_api as alt
-from .cryptocurrency import crypto_api as crypto
-from .economy import economy_api as economy
-from .econometrics import econometrics_api as econometrics
-from .etf import etf_api as etf
-from .forex import forex_api as forex
-from .mutual_funds import mutual_fund_api as funds
-from .portfolio import portfolio_api as portfolio
-from .reports import widget_helpers as widgets
-from .config_terminal import theme
+
+# pylint: disable=C0302,W0611
+from inspect import signature, Parameter
+import types
+import functools
+import importlib
+from typing import Optional, Callable
+
+from openbb_terminal.helper_classes import TerminalStyle  # noqa: F401
+from .reports import widget_helpers as widgets  # noqa: F401
 
 functions = {
     "alt.covid.slopes": {
@@ -56,11 +55,9 @@ functions = {
     "alt.oss._retry_session": {
         "model": "openbb_terminal.alternative.oss.runa_model._retry_session"
     },
-    "alt.oss.startups": {
-        "model": "openbb_terminal.alternative.oss.runa_model.get_startups"
-    },
     "alt.oss.ross": {
-        "view": "openbb_terminal.alternative.oss.runa_view.display_rossindex"
+        "model": "openbb_terminal.alternative.oss.runa_model.get_startups",
+        "view": "openbb_terminal.alternative.oss.runa_view.display_rossindex",
     },
     "stocks.ba.headlines": {
         "model": "openbb_terminal.common.behavioural_analysis.finbrain_model.get_sentiment",
@@ -115,8 +112,9 @@ functions = {
         "model": "openbb_terminal.common.behavioural_analysis.sentimentinvestor_model.get_trending",
         "view": "openbb_terminal.common.behavioural_analysis.sentimentinvestor_view.display_trending",
     },
-    "common.ba.bullbear": {
-        "model": "openbb_terminal.common.behavioural_analysis.stocktwits_model.get_bullbear"
+    "stocks.ba.bullbear": {
+        "model": "openbb_terminal.common.behavioural_analysis.stocktwits_model.get_bullbear",
+        "view": "openbb_terminal.common.behavioural_analysis.stocktwits_view.display_bullbear",
     },
     "stocks.ba.messages": {
         "model": "openbb_terminal.common.behavioural_analysis.stocktwits_model.get_messages",
@@ -128,9 +126,6 @@ functions = {
     "stocks.ba.trending": {
         "model": "openbb_terminal.common.behavioural_analysis.stocktwits_model.get_trending"
     },
-    "stocks.ba.bullbear": {
-        "view": "openbb_terminal.common.behavioural_analysis.stocktwits_view.display_bullbear"
-    },
     "stocks.ba.infer": {
         "model": "openbb_terminal.common.behavioural_analysis.twitter_model.load_analyze_tweets",
         "view": "openbb_terminal.common.behavioural_analysis.twitter_view.display_inference",
@@ -139,67 +134,9 @@ functions = {
         "model": "openbb_terminal.common.behavioural_analysis.twitter_model.get_sentiment",
         "view": "openbb_terminal.common.behavioural_analysis.twitter_view.display_sentiment",
     },
-    "etf.get_news": {"model": "openbb_terminal.common.newsapi_model.get_news"},
-    "etf.display_news": {"view": "openbb_terminal.common.newsapi_view.display_news"},
-    "common.pred.arima_model": {
-        "model": "openbb_terminal.common.prediction_techniques.arima_model.get_arima_model"
-    },
-    "stocks.pred.arima": {
-        "view": "openbb_terminal.common.prediction_techniques.arima_view.display_arima"
-    },
-    "common.pred.exponential_smoothing_model": {
-        "model": "openbb_terminal.common.prediction_techniques.ets_model.get_exponential_smoothing_model"
-    },
-    "stocks.pred.ets": {
-        "view": "openbb_terminal.common.prediction_techniques.ets_view.display_exponential_smoothing"
-    },
-    "common.pred.knn_model_data": {
-        "model": "openbb_terminal.common.prediction_techniques.knn_model.get_knn_model_data"
-    },
-    "stocks.pred.knn": {
-        "view": "openbb_terminal.common.prediction_techniques.knn_view.display_k_nearest_neighbors"
-    },
-    "common.pred.mc_brownian": {
-        "model": "openbb_terminal.common.prediction_techniques.mc_model.get_mc_brownian"
-    },
-    "stocks.pred.mc": {
-        "view": "openbb_terminal.common.prediction_techniques.mc_view.display_mc_forecast"
-    },
-    "common.pred.build_neural_network_model": {
-        "model": "openbb_terminal.common.prediction_techniques.neural_networks_model.build_neural_network_model"
-    },
-    "common.pred.conv1d_model": {
-        "model": "openbb_terminal.common.prediction_techniques.neural_networks_model.conv1d_model"
-    },
-    "common.pred.lstm_model": {
-        "model": "openbb_terminal.common.prediction_techniques.neural_networks_model.lstm_model"
-    },
-    "common.pred.mlp_model": {
-        "model": "openbb_terminal.common.prediction_techniques.neural_networks_model.mlp_model"
-    },
-    "common.pred.rnn_model": {
-        "model": "openbb_terminal.common.prediction_techniques.neural_networks_model.rnn_model"
-    },
-    "stocks.pred.conv1d": {
-        "view": "openbb_terminal.common.prediction_techniques.neural_networks_view.display_conv1d"
-    },
-    "stocks.pred.lstm": {
-        "view": "openbb_terminal.common.prediction_techniques.neural_networks_view.display_lstm"
-    },
-    "stocks.pred.mlp": {
-        "view": "openbb_terminal.common.prediction_techniques.neural_networks_view.display_mlp"
-    },
-    "stocks.pred.rnn": {
-        "view": "openbb_terminal.common.prediction_techniques.neural_networks_view.display_rnn"
-    },
-    "common.pred.regression_model": {
-        "model": "openbb_terminal.common.prediction_techniques.regression_model.get_regression_model"
-    },
-    "common.pred.split_train": {
-        "model": "openbb_terminal.common.prediction_techniques.regression_model.split_train"
-    },
-    "stocks.pred.regression": {
-        "view": "openbb_terminal.common.prediction_techniques.regression_view.display_regression"
+    "etf.news": {
+        "model": "openbb_terminal.common.newsapi_model.get_news",
+        "view": "openbb_terminal.common.newsapi_view.display_news",
     },
     "common.qa.calculate_adjusted_var": {
         "model": "openbb_terminal.common.quantitative_analysis.qa_model.calculate_adjusted_var"
@@ -209,13 +146,14 @@ functions = {
         "view": "openbb_terminal.common.quantitative_analysis.qa_view.display_es",
     },
     "common.qa.normality": {
-        "model": "openbb_terminal.common.quantitative_analysis.qa_model.get_normality"
+        "model": "openbb_terminal.common.quantitative_analysis.qa_model.get_normality",
+        "view": "openbb_terminal.common.quantitative_analysis.qa_view.display_normality",
     },
     "common.qa.omega": {
         "model": "openbb_terminal.common.quantitative_analysis.qa_model.get_omega",
         "view": "openbb_terminal.common.quantitative_analysis.qa_view.display_omega",
     },
-    "common.qa.seasonal_decomposition": {
+    "common.qa.decompose": {
         "model": "openbb_terminal.common.quantitative_analysis.qa_model.get_seasonal_decomposition"
     },
     "common.qa.sharpe": {
@@ -227,83 +165,36 @@ functions = {
         "view": "openbb_terminal.common.quantitative_analysis.qa_view.display_sortino",
     },
     "common.qa.summary": {
-        "model": "openbb_terminal.common.quantitative_analysis.qa_model.get_summary"
+        "model": "openbb_terminal.common.quantitative_analysis.qa_model.get_summary",
+        "view": "openbb_terminal.common.quantitative_analysis.qa_view.display_summary",
     },
     "common.qa.unitroot": {
-        "model": "openbb_terminal.common.quantitative_analysis.qa_model.get_unitroot"
+        "model": "openbb_terminal.common.quantitative_analysis.qa_model.get_unitroot",
+        "view": "openbb_terminal.common.quantitative_analysis.qa_view.display_unitroot",
     },
     "common.qa.var": {
         "model": "openbb_terminal.common.quantitative_analysis.qa_model.get_var",
         "view": "openbb_terminal.common.quantitative_analysis.qa_view.display_var",
     },
-    "stocks.qa.acf": {
-        "view": "openbb_terminal.common.quantitative_analysis.qa_view.display_acf"
-    },
-    "stocks.qa.bw": {
-        "view": "openbb_terminal.common.quantitative_analysis.qa_view.display_bw"
-    },
-    "stocks.qa.cdf": {
-        "view": "openbb_terminal.common.quantitative_analysis.qa_view.display_cdf"
-    },
-    "stocks.qa.cusum": {
-        "view": "openbb_terminal.common.quantitative_analysis.qa_view.display_cusum"
-    },
-    "stocks.qa.hist": {
-        "view": "openbb_terminal.common.quantitative_analysis.qa_view.display_hist"
-    },
-    "stocks.qa.line": {
-        "view": "openbb_terminal.common.quantitative_analysis.qa_view.display_line"
-    },
-    "stocks.qa.normality": {
-        "view": "openbb_terminal.common.quantitative_analysis.qa_view.display_normality"
-    },
-    "stocks.qa.qqplot": {
-        "view": "openbb_terminal.common.quantitative_analysis.qa_view.display_qqplot"
-    },
-    "stocks.qa.raw": {
-        "view": "openbb_terminal.common.quantitative_analysis.qa_view.display_raw"
-    },
-    "stocks.qa.decompose": {
-        "view": "openbb_terminal.common.quantitative_analysis.qa_view.display_seasonal"
-    },
-    "stocks.qa.summary": {
-        "view": "openbb_terminal.common.quantitative_analysis.qa_view.display_summary"
-    },
-    "stocks.qa.unitroot": {
-        "view": "openbb_terminal.common.quantitative_analysis.qa_view.display_unitroot"
-    },
-    "common.qa.lambda_color_red": {
-        "view": "openbb_terminal.common.quantitative_analysis.qa_view.lambda_color_red"
-    },
     "common.qa.kurtosis": {
-        "model": "openbb_terminal.common.quantitative_analysis.rolling_model.get_kurtosis"
+        "model": "openbb_terminal.common.quantitative_analysis.rolling_model.get_kurtosis",
+        "view": "openbb_terminal.common.quantitative_analysis.rolling_view.display_kurtosis",
     },
     "common.qa.quantile": {
-        "model": "openbb_terminal.common.quantitative_analysis.rolling_model.get_quantile"
+        "model": "openbb_terminal.common.quantitative_analysis.rolling_model.get_quantile",
+        "view": "openbb_terminal.common.quantitative_analysis.rolling_view.display_quantile",
     },
-    "common.qa.rolling_avg": {
-        "model": "openbb_terminal.common.quantitative_analysis.rolling_model.get_rolling_avg"
+    "common.qa.rolling": {
+        "model": "openbb_terminal.common.quantitative_analysis.rolling_model.get_rolling_avg",
+        "view": "openbb_terminal.common.quantitative_analysis.rolling_view.display_mean_std",
     },
     "common.qa.skew": {
-        "model": "openbb_terminal.common.quantitative_analysis.rolling_model.get_skew"
+        "model": "openbb_terminal.common.quantitative_analysis.rolling_model.get_skew",
+        "view": "openbb_terminal.common.quantitative_analysis.rolling_view.display_skew",
     },
     "common.qa.spread": {
-        "model": "openbb_terminal.common.quantitative_analysis.rolling_model.get_spread"
-    },
-    "stocks.qa.kurtosis": {
-        "view": "openbb_terminal.common.quantitative_analysis.rolling_view.display_kurtosis"
-    },
-    "stocks.qa.rolling": {
-        "view": "openbb_terminal.common.quantitative_analysis.rolling_view.display_mean_std"
-    },
-    "stocks.qa.quantile": {
-        "view": "openbb_terminal.common.quantitative_analysis.rolling_view.display_quantile"
-    },
-    "stocks.qa.skew": {
-        "view": "openbb_terminal.common.quantitative_analysis.rolling_view.display_skew"
-    },
-    "stocks.qa.spread": {
-        "view": "openbb_terminal.common.quantitative_analysis.rolling_view.display_spread"
+        "model": "openbb_terminal.common.quantitative_analysis.rolling_model.get_spread",
+        "view": "openbb_terminal.common.quantitative_analysis.rolling_view.display_spread",
     },
     "common.ta.fib": {
         "model": "openbb_terminal.common.technical_analysis.custom_indicators_model.calculate_fib_levels",
@@ -352,9 +243,6 @@ functions = {
     "common.ta.zlma": {
         "model": "openbb_terminal.common.technical_analysis.overlap_model.zlma"
     },
-    "common.ta.ma": {
-        "view": "openbb_terminal.common.technical_analysis.overlap_view.view_ma"
-    },
     "common.ta.adx": {
         "model": "openbb_terminal.common.technical_analysis.trend_indicators_model.adx",
         "view": "openbb_terminal.common.technical_analysis.trend_indicators_view.display_adx",
@@ -387,154 +275,93 @@ functions = {
         "model": "openbb_terminal.common.technical_analysis.volume_model.obv",
         "view": "openbb_terminal.common.technical_analysis.volume_view.display_obv",
     },
-    "crypto.defi._prepare_params": {
-        "model": "openbb_terminal.cryptocurrency.defi.coindix_model._prepare_params"
-    },
-    "crypto.defi.defi_vaults": {
-        "model": "openbb_terminal.cryptocurrency.defi.coindix_model.get_defi_vaults"
-    },
     "crypto.defi.vaults": {
-        "view": "openbb_terminal.cryptocurrency.defi.coindix_view.display_defi_vaults"
+        "model": "openbb_terminal.cryptocurrency.defi.coindix_model.get_defi_vaults",
+        "view": "openbb_terminal.cryptocurrency.defi.coindix_view.display_defi_vaults",
     },
     "crypto.defi.anchor_data": {
-        "model": "openbb_terminal.cryptocurrency.defi.defipulse_model.get_defipulse_index",
+        "model": "openbb_terminal.cryptocurrency.defi.cryptosaurio_model.get_anchor_data",
         "view": "openbb_terminal.cryptocurrency.defi.cryptosaurio_view.display_anchor_data",
     },
     "crypto.defi.dpi": {
-        "view": "openbb_terminal.cryptocurrency.defi.defipulse_view.display_defipulse"
-    },
-    "crypto.defi.last_uni_swaps": {
-        "model": "openbb_terminal.cryptocurrency.defi.graph_model.get_last_uni_swaps"
-    },
-    "crypto.defi.uni_pools_by_volume": {
-        "model": "openbb_terminal.cryptocurrency.defi.graph_model.get_uni_pools_by_volume"
-    },
-    "crypto.defi.uni_tokens": {
-        "model": "openbb_terminal.cryptocurrency.defi.graph_model.get_uni_tokens"
-    },
-    "crypto.defi.uniswap_pool_recently_added": {
-        "model": "openbb_terminal.cryptocurrency.defi.graph_model.get_uniswap_pool_recently_added"
-    },
-    "crypto.defi.uniswap_stats": {
-        "model": "openbb_terminal.cryptocurrency.defi.graph_model.get_uniswap_stats"
-    },
-    "crypto.defi.query_graph": {
-        "model": "openbb_terminal.cryptocurrency.defi.graph_model.query_graph"
+        "model": "openbb_terminal.cryptocurrency.defi.defipulse_model.get_defipulse_index",
+        "view": "openbb_terminal.cryptocurrency.defi.defipulse_view.display_defipulse",
     },
     "crypto.defi.swaps": {
-        "view": "openbb_terminal.cryptocurrency.defi.graph_view.display_last_uni_swaps"
-    },
-    "crypto.defi.pairs": {
-        "view": "openbb_terminal.cryptocurrency.defi.graph_view.display_recently_added"
+        "model": "openbb_terminal.cryptocurrency.defi.graph_model.get_last_uni_swaps",
+        "view": "openbb_terminal.cryptocurrency.defi.graph_view.display_last_uni_swaps",
     },
     "crypto.defi.pools": {
-        "view": "openbb_terminal.cryptocurrency.defi.graph_view.display_uni_pools"
-    },
-    "crypto.defi.stats": {
-        "view": "openbb_terminal.cryptocurrency.defi.graph_view.display_uni_stats"
+        "model": "openbb_terminal.cryptocurrency.defi.graph_model.get_uni_pools_by_volume",
+        "view": "openbb_terminal.cryptocurrency.defi.graph_view.display_uni_pools",
     },
     "crypto.defi.tokens": {
-        "view": "openbb_terminal.cryptocurrency.defi.graph_view.display_uni_tokens"
+        "model": "openbb_terminal.cryptocurrency.defi.graph_model.get_uni_tokens",
+        "view": "openbb_terminal.cryptocurrency.defi.graph_view.display_uni_tokens",
     },
-    "crypto.defi.defi_protocol": {
-        "model": "openbb_terminal.cryptocurrency.defi.llama_model.get_defi_protocol"
+    "crypto.defi.pairs": {
+        "model": "openbb_terminal.cryptocurrency.defi.graph_model.get_uniswap_pool_recently_added",
+        "view": "openbb_terminal.cryptocurrency.defi.graph_view.display_recently_added",
     },
-    "crypto.defi.defi_protocols": {
-        "model": "openbb_terminal.cryptocurrency.defi.llama_model.get_defi_protocols"
-    },
-    "crypto.defi.defi_tvl": {
-        "model": "openbb_terminal.cryptocurrency.defi.llama_model.get_defi_tvl"
-    },
-    "crypto.defi.ldapps": {
-        "view": "openbb_terminal.cryptocurrency.defi.llama_view.display_defi_protocols"
-    },
-    "crypto.defi.stvl": {
-        "view": "openbb_terminal.cryptocurrency.defi.llama_view.display_defi_tvl"
-    },
-    "crypto.defi.gdapps": {
-        "view": "openbb_terminal.cryptocurrency.defi.llama_view.display_grouped_defi_protocols"
+    "crypto.defi.stats": {
+        "model": "openbb_terminal.cryptocurrency.defi.graph_model.get_uniswap_stats",
+        "view": "openbb_terminal.cryptocurrency.defi.graph_view.display_uni_stats",
     },
     "crypto.defi.dtvl": {
-        "view": "openbb_terminal.cryptocurrency.defi.llama_view.display_historical_tvl"
+        "model": "openbb_terminal.cryptocurrency.defi.llama_model.get_defi_protocol",
+        "view": "openbb_terminal.cryptocurrency.defi.llama_view.display_historical_tvl",
     },
-    "crypto.defi.luna_supply_stats": {
-        "model": "openbb_terminal.cryptocurrency.defi.smartstake_model.get_luna_supply_stats"
+    "crypto.defi.ldapps": {
+        "model": "openbb_terminal.cryptocurrency.defi.llama_model.get_defi_protocols",
+        "view": "openbb_terminal.cryptocurrency.defi.llama_view.display_defi_protocols",
     },
-    "crypto.defi.luna_circ_supply_change": {
-        "view": "openbb_terminal.cryptocurrency.defi.smartstake_view.display_luna_circ_supply_change"
+    "crypto.defi.stvl": {
+        "model": "openbb_terminal.cryptocurrency.defi.llama_model.get_defi_tvl",
+        "view": "openbb_terminal.cryptocurrency.defi.llama_view.display_defi_tvl",
+    },
+    "crypto.defi.luna_supply": {
+        "model": "openbb_terminal.cryptocurrency.defi.smartstake_model.get_luna_supply_stats",
+        "view": "openbb_terminal.cryptocurrency.defi.smartstake_view.display_luna_circ_supply_change",
     },
     "crypto.defi.newsletters": {
-        "model": "openbb_terminal.cryptocurrency.defi.substack_model.get_newsletters"
-    },
-    "crypto.defi.scrape_substack": {
-        "model": "openbb_terminal.cryptocurrency.defi.substack_model.scrape_substack"
-    },
-    "crypto.defi.newsletter": {
-        "view": "openbb_terminal.cryptocurrency.defi.substack_view.display_newsletters"
-    },
-    "crypto.defi.history_asset_from_terra_address": {
-        "model": "openbb_terminal.cryptocurrency.defi.terraengineer_model.get_history_asset_from_terra_address"
-    },
-    "crypto.defi.ayr": {
-        "view": "openbb_terminal.cryptocurrency.defi.terraengineer_view.display_anchor_yield_reserve"
+        "model": "openbb_terminal.cryptocurrency.defi.substack_model.get_newsletters",
+        "view": "openbb_terminal.cryptocurrency.defi.substack_view.display_newsletters",
     },
     "crypto.defi.aterra": {
-        "view": "openbb_terminal.cryptocurrency.defi.terraengineer_view.display_terra_asset_history"
+        "model": "openbb_terminal.cryptocurrency.defi.terraengineer_model.get_history_asset_from_terra_address",
+        "view": "openbb_terminal.cryptocurrency.defi.terraengineer_view.display_terra_asset_history",
     },
-    "crypto.defi._adjust_delegation_info": {
-        "model": "openbb_terminal.cryptocurrency.defi.terramoney_fcd_model._adjust_delegation_info"
+    "crypto.defi.gacc": {
+        "model": "openbb_terminal.cryptocurrency.defi.terramoney_fcd_model.get_account_growth",
+        "view": "openbb_terminal.cryptocurrency.defi.terramoney_fcd_view.display_account_growth",
     },
-    "crypto.defi._make_request": {
-        "model": "openbb_terminal.cryptocurrency.defi.terramoney_fcd_model._make_request"
+    "crypto.defi.gov_proposals": {
+        "model": "openbb_terminal.cryptocurrency.defi.terramoney_fcd_model.get_proposals",
+        "view": "openbb_terminal.cryptocurrency.defi.terramoney_fcd_view.display_gov_proposals",
     },
-    "crypto.defi.account_growth": {
-        "model": "openbb_terminal.cryptocurrency.defi.terramoney_fcd_model.get_account_growth"
+    "crypto.defi.sinfo": {
+        "model": "openbb_terminal.cryptocurrency.defi.terramoney_fcd_model.get_staking_account_info",
+        "view": "openbb_terminal.cryptocurrency.defi.terramoney_fcd_view.display_account_staking_info",
     },
-    "crypto.defi.proposals": {
-        "model": "openbb_terminal.cryptocurrency.defi.terramoney_fcd_model.get_proposals"
+    "crypto.defi.sratio": {
+        "model": "openbb_terminal.cryptocurrency.defi.terramoney_fcd_model.get_staking_ratio_history",
+        "view": "openbb_terminal.cryptocurrency.defi.terramoney_fcd_view.display_staking_ratio_history",
     },
-    "crypto.defi.staking_account_info": {
-        "model": "openbb_terminal.cryptocurrency.defi.terramoney_fcd_model.get_staking_account_info"
-    },
-    "crypto.defi.staking_ratio_history": {
-        "model": "openbb_terminal.cryptocurrency.defi.terramoney_fcd_model.get_staking_ratio_history"
-    },
-    "crypto.defi.staking_returns_history": {
-        "model": "openbb_terminal.cryptocurrency.defi.terramoney_fcd_model.get_staking_returns_history"
+    "crypto.defi.sreturn": {
+        "model": "openbb_terminal.cryptocurrency.defi.terramoney_fcd_model.get_staking_returns_history",
+        "view": "openbb_terminal.cryptocurrency.defi.terramoney_fcd_view.display_staking_returns_history",
     },
     "crypto.defi.validators": {
         "model": "openbb_terminal.cryptocurrency.defi.terramoney_fcd_model.get_validators",
         "view": "openbb_terminal.cryptocurrency.defi.terramoney_fcd_view.display_validators",
     },
-    "crypto.defi.gacc": {
-        "view": "openbb_terminal.cryptocurrency.defi.terramoney_fcd_view.display_account_growth"
-    },
-    "crypto.defi.sinfo": {
-        "view": "openbb_terminal.cryptocurrency.defi.terramoney_fcd_view.display_account_staking_info"
-    },
-    "crypto.defi.gov_proposals": {
-        "view": "openbb_terminal.cryptocurrency.defi.terramoney_fcd_view.display_gov_proposals"
-    },
-    "crypto.defi.sratio": {
-        "view": "openbb_terminal.cryptocurrency.defi.terramoney_fcd_view.display_staking_ratio_history"
-    },
-    "crypto.defi.sreturn": {
-        "view": "openbb_terminal.cryptocurrency.defi.terramoney_fcd_view.display_staking_returns_history"
-    },
-    "crypto.disc.cmc_top_n": {
-        "model": "openbb_terminal.cryptocurrency.discovery.coinmarketcap_model.get_cmc_top_n"
-    },
     "crypto.disc.cmctop": {
-        "view": "openbb_terminal.cryptocurrency.discovery.coinmarketcap_view.display_cmc_top_coins"
-    },
-    "crypto.disc.search_results": {
-        "model": "openbb_terminal.cryptocurrency.discovery.coinpaprika_model.get_search_results"
+        "model": "openbb_terminal.cryptocurrency.discovery.coinmarketcap_model.get_cmc_top_n",
+        "view": "openbb_terminal.cryptocurrency.discovery.coinmarketcap_view.display_cmc_top_coins",
     },
     "crypto.disc.cpsearch": {
-        "view": "openbb_terminal.cryptocurrency.discovery.coinpaprika_view.display_search_results"
-    },
-    "crypto.disc._make_request": {
-        "model": "openbb_terminal.cryptocurrency.discovery.dappradar_model._make_request"
+        "model": "openbb_terminal.cryptocurrency.discovery.coinpaprika_model.get_search_results",
+        "view": "openbb_terminal.cryptocurrency.discovery.coinpaprika_view.display_search_results",
     },
     "crypto.disc.top_dapps": {
         "model": "openbb_terminal.cryptocurrency.discovery.dappradar_model.get_top_dapps",
@@ -568,25 +395,11 @@ functions = {
     "crypto.disc.gainers_or_losers": {
         "model": "openbb_terminal.cryptocurrency.discovery.pycoingecko_model.get_gainers_or_losers"
     },
-    "crypto.disc.mapping_matrix_for_exchange": {
-        "model": "openbb_terminal.cryptocurrency.discovery.pycoingecko_model.get_mapping_matrix_for_exchange"
-    },
-    "crypto.disc.trending_coins": {
-        "model": "openbb_terminal.cryptocurrency.discovery.pycoingecko_model.get_trending_coins"
-    },
-    "crypto.disc.read_file_data": {
-        "model": "openbb_terminal.cryptocurrency.discovery.pycoingecko_model.read_file_data"
-    },
-    "crypto.disc.cggainers": {
-        "view": "openbb_terminal.cryptocurrency.discovery.pycoingecko_view.display_gainers"
-    },
-    "crypto.disc.cglosers": {
-        "view": "openbb_terminal.cryptocurrency.discovery.pycoingecko_view.display_losers"
-    },
     "crypto.disc.trending": {
-        "view": "openbb_terminal.cryptocurrency.discovery.pycoingecko_view.display_trending"
+        "model": "openbb_terminal.cryptocurrency.discovery.pycoingecko_model.get_trending_coins",
+        "view": "openbb_terminal.cryptocurrency.discovery.pycoingecko_view.display_trending",
     },
-    "crypto.dd._trading_pairs": {
+    "crypto.dd.trading_pairs": {
         "model": "openbb_terminal.cryptocurrency.due_diligence.binance_model._get_trading_pairs"
     },
     "crypto.dd.check_valid_binance_str": {
@@ -601,12 +414,6 @@ functions = {
     "crypto.dd.show_available_pairs_for_given_symbol": {
         "model": "openbb_terminal.cryptocurrency.due_diligence.coinbase_model.show_available_pairs_for_given_symbol"
     },
-    "crypto.dd.balance": {
-        "view": "openbb_terminal.cryptocurrency.due_diligence.binance_view.display_balance"
-    },
-    "crypto.dd.book": {
-        "view": "openbb_terminal.cryptocurrency.due_diligence.binance_view.display_order_book"
-    },
     "crypto.dd.exchanges": {
         "model": "openbb_terminal.cryptocurrency.due_diligence.ccxt_model.get_exchanges"
     },
@@ -614,11 +421,13 @@ functions = {
         "model": "openbb_terminal.cryptocurrency.due_diligence.coinbase_model.get_candles",
         "view": "openbb_terminal.cryptocurrency.due_diligence.coinbase_view.display_candles",
     },
-    "crypto.dd.order_book": {
-        "model": "openbb_terminal.cryptocurrency.due_diligence.coinbase_model.get_order_book"
+    "crypto.dd.cbbook": {
+        "model": "openbb_terminal.cryptocurrency.due_diligence.coinbase_model.get_order_book",
+        "view": "openbb_terminal.cryptocurrency.due_diligence.coinbase_view.display_order_book",
     },
-    "crypto.dd.product_stats": {
-        "model": "openbb_terminal.cryptocurrency.due_diligence.coinbase_model.get_product_stats"
+    "crypto.dd.stats": {
+        "model": "openbb_terminal.cryptocurrency.due_diligence.coinbase_model.get_product_stats",
+        "view": "openbb_terminal.cryptocurrency.due_diligence.coinbase_view.display_stats",
     },
     "crypto.dd.trades": {
         "model": "openbb_terminal.cryptocurrency.due_diligence.coinbase_model.get_trades",
@@ -627,269 +436,160 @@ functions = {
     "crypto.dd.trading_pair_info": {
         "model": "openbb_terminal.cryptocurrency.due_diligence.coinbase_model.get_trading_pair_info"
     },
-    "crypto.dd.cbbook": {
-        "view": "openbb_terminal.cryptocurrency.due_diligence.coinbase_view.display_order_book"
-    },
-    "crypto.dd.stats": {
-        "view": "openbb_terminal.cryptocurrency.due_diligence.coinbase_view.display_stats"
-    },
-    "crypto.dd.open_interest_per_exchange": {
-        "model": "openbb_terminal.cryptocurrency.due_diligence.coinglass_model.get_open_interest_per_exchange"
-    },
     "crypto.dd.oi": {
-        "view": "openbb_terminal.cryptocurrency.due_diligence.coinglass_view.display_open_interest"
+        "model": "openbb_terminal.cryptocurrency.due_diligence.coinglass_model.get_open_interest_per_exchange",
+        "view": "openbb_terminal.cryptocurrency.due_diligence.coinglass_view.display_open_interest",
     },
-    "crypto.dd.plot_data": {
-        "view": "openbb_terminal.cryptocurrency.due_diligence.coinglass_view.plot_data"
-    },
-    "crypto.dd.basic_coin_info": {
-        "model": "openbb_terminal.cryptocurrency.due_diligence.coinpaprika_model.basic_coin_info"
+    "crypto.dd.basic": {
+        "model": "openbb_terminal.cryptocurrency.due_diligence.coinpaprika_model.basic_coin_info",
+        "view": "openbb_terminal.cryptocurrency.due_diligence.coinpaprika_view.display_basic",
     },
     "crypto.dd.coin": {
         "model": "openbb_terminal.cryptocurrency.due_diligence.coinpaprika_model.get_coin"
     },
-    "crypto.dd.coin_events_by_id": {
-        "model": "openbb_terminal.cryptocurrency.due_diligence.coinpaprika_model.get_coin_events_by_id"
+    "crypto.dd.events": {
+        "model": "openbb_terminal.cryptocurrency.due_diligence.coinpaprika_model.get_coin_events_by_id",
+        "view": "openbb_terminal.cryptocurrency.due_diligence.coinpaprika_view.display_events",
     },
-    "crypto.dd.coin_exchanges_by_id": {
-        "model": "openbb_terminal.cryptocurrency.due_diligence.coinpaprika_model.get_coin_exchanges_by_id"
+    "crypto.dd.ex": {
+        "model": "openbb_terminal.cryptocurrency.due_diligence.coinpaprika_model.get_coin_exchanges_by_id",
+        "view": "openbb_terminal.cryptocurrency.due_diligence.coinpaprika_view.display_exchanges",
     },
-    "crypto.dd.coin_markets_by_id": {
-        "model": "openbb_terminal.cryptocurrency.due_diligence.coinpaprika_model.get_coin_markets_by_id"
+    "crypto.dd.mkt": {
+        "model": "openbb_terminal.cryptocurrency.due_diligence.coinpaprika_model.get_coin_markets_by_id",
+        "view": "openbb_terminal.cryptocurrency.due_diligence.coinpaprika_view.display_markets",
     },
-    "crypto.dd.coin_twitter_timeline": {
-        "model": "openbb_terminal.cryptocurrency.due_diligence.coinpaprika_model.get_coin_twitter_timeline"
+    "crypto.dd.twitter": {
+        "model": "openbb_terminal.cryptocurrency.due_diligence.coinpaprika_model.get_coin_twitter_timeline",
+        "view": "openbb_terminal.cryptocurrency.due_diligence.coinpaprika_view.display_twitter",
     },
     "crypto.dd.ohlc_historical": {
         "model": "openbb_terminal.cryptocurrency.due_diligence.coinpaprika_model.get_ohlc_historical"
     },
-    "crypto.dd.tickers_info_for_coin": {
-        "model": "openbb_terminal.cryptocurrency.due_diligence.coinpaprika_model.get_tickers_info_for_coin"
-    },
-    "crypto.dd.validate_coin": {
-        "model": "openbb_terminal.cryptocurrency.due_diligence.coinpaprika_model.validate_coin"
-    },
-    "crypto.dd.basic": {
-        "view": "openbb_terminal.cryptocurrency.due_diligence.coinpaprika_view.display_basic"
-    },
-    "crypto.dd.events": {
-        "view": "openbb_terminal.cryptocurrency.due_diligence.coinpaprika_view.display_events"
-    },
-    "crypto.dd.ex": {
-        "view": "openbb_terminal.cryptocurrency.due_diligence.coinpaprika_view.display_exchanges"
-    },
-    "crypto.dd.mkt": {
-        "view": "openbb_terminal.cryptocurrency.due_diligence.coinpaprika_view.display_markets"
-    },
     "crypto.dd.ps": {
-        "view": "openbb_terminal.cryptocurrency.due_diligence.coinpaprika_view.display_price_supply"
-    },
-    "crypto.dd.twitter": {
-        "view": "openbb_terminal.cryptocurrency.due_diligence.coinpaprika_view.display_twitter"
+        "model": "openbb_terminal.cryptocurrency.due_diligence.coinpaprika_model.get_tickers_info_for_coin",
+        "view": "openbb_terminal.cryptocurrency.due_diligence.coinpaprika_view.display_price_supply",
     },
     "crypto.dd.news": {
-        "view": "openbb_terminal.cryptocurrency.due_diligence.cryptopanic_view.display_news"
+        "model": "openbb_terminal.cryptocurrency.overview.cryptopanic_model.get_news",
+        "view": "openbb_terminal.cryptocurrency.due_diligence.cryptopanic_view.display_news",
     },
-    "crypto.headlines": {
-        "view": "openbb_terminal.cryptocurrency.due_diligence.finbrain_crypto_view.display_crypto_sentiment_analysis"
-    },
-    "crypto.dd.active_addresses": {
-        "model": "openbb_terminal.cryptocurrency.due_diligence.glassnode_model.get_active_addresses"
-    },
-    "crypto.dd.close_price": {
-        "model": "openbb_terminal.cryptocurrency.due_diligence.glassnode_model.get_close_price"
-    },
-    "crypto.dd.exchange_balances": {
-        "model": "openbb_terminal.cryptocurrency.due_diligence.glassnode_model.get_exchange_balances"
-    },
-    "crypto.dd.exchange_net_position_change": {
-        "model": "openbb_terminal.cryptocurrency.due_diligence.glassnode_model.get_exchange_net_position_change"
-    },
-    "crypto.dd.hashrate": {
-        "model": "openbb_terminal.cryptocurrency.due_diligence.glassnode_model.get_hashrate"
-    },
-    "crypto.dd.non_zero_addresses": {
-        "model": "openbb_terminal.cryptocurrency.due_diligence.glassnode_model.get_non_zero_addresses"
+    "crypto.dd.headlines": {
+        "model": "openbb_terminal.common.behavioural_analysis.finbrain_model.get_sentiment",
+        "view": "openbb_terminal.cryptocurrency.due_diligence.finbrain_crypto_view.display_crypto_sentiment_analysis",
     },
     "crypto.dd.active": {
-        "view": "openbb_terminal.cryptocurrency.due_diligence.glassnode_view.display_active_addresses"
+        "model": "openbb_terminal.cryptocurrency.due_diligence.glassnode_model.get_active_addresses",
+        "view": "openbb_terminal.cryptocurrency.due_diligence.glassnode_view.display_active_addresses",
     },
     "crypto.dd.btcrb": {
-        "view": "openbb_terminal.cryptocurrency.due_diligence.glassnode_view.display_btc_rainbow"
+        "model": "openbb_terminal.cryptocurrency.due_diligence.glassnode_model.get_close_price",
+        "view": "openbb_terminal.cryptocurrency.due_diligence.glassnode_view.display_btc_rainbow",
     },
     "crypto.dd.eb": {
-        "view": "openbb_terminal.cryptocurrency.due_diligence.glassnode_view.display_exchange_balances"
+        "model": "openbb_terminal.cryptocurrency.due_diligence.glassnode_model.get_exchange_balances",
+        "view": "openbb_terminal.cryptocurrency.due_diligence.glassnode_view.display_exchange_balances",
     },
     "crypto.dd.change": {
-        "view": "openbb_terminal.cryptocurrency.due_diligence.glassnode_view.display_exchange_net_position_change"
+        "model": "openbb_terminal.cryptocurrency.due_diligence.glassnode_model.get_exchange_net_position_change",
+        "view": "openbb_terminal.cryptocurrency.due_diligence.glassnode_view.display_exchange_net_position_change",
     },
     "crypto.dd.hr": {
-        "view": "openbb_terminal.cryptocurrency.due_diligence.glassnode_view.display_hashrate"
+        "model": "openbb_terminal.cryptocurrency.due_diligence.glassnode_model.get_hashrate",
+        "view": "openbb_terminal.cryptocurrency.due_diligence.glassnode_view.display_hashrate",
     },
     "crypto.dd.nonzero": {
-        "view": "openbb_terminal.cryptocurrency.due_diligence.glassnode_view.display_non_zero_addresses"
+        "model": "openbb_terminal.cryptocurrency.due_diligence.glassnode_model.get_non_zero_addresses",
+        "view": "openbb_terminal.cryptocurrency.due_diligence.glassnode_view.display_non_zero_addresses",
     },
-    "crypto.dd.format_addresses": {
-        "model": "openbb_terminal.cryptocurrency.due_diligence.messari_model.format_addresses"
+    "crypto.dd.get_mt": {
+        "model": "openbb_terminal.cryptocurrency.due_diligence.messari_model.get_available_timeseries",
+        "view": "openbb_terminal.cryptocurrency.due_diligence.messari_view.display_messari_timeseries_list",
     },
-    "crypto.dd.available_timeseries": {
-        "model": "openbb_terminal.cryptocurrency.due_diligence.messari_model.get_available_timeseries"
+    "crypto.dd.fr": {
+        "model": "openbb_terminal.cryptocurrency.due_diligence.messari_model.get_fundraising",
+        "view": "openbb_terminal.cryptocurrency.due_diligence.messari_view.display_fundraising",
     },
-    "crypto.dd.fundraising": {
-        "model": "openbb_terminal.cryptocurrency.due_diligence.messari_model.get_fundraising"
+    "crypto.dd.gov": {
+        "model": "openbb_terminal.cryptocurrency.due_diligence.messari_model.get_governance",
+        "view": "openbb_terminal.cryptocurrency.due_diligence.messari_view.display_governance",
     },
-    "crypto.dd.governance": {
-        "model": "openbb_terminal.cryptocurrency.due_diligence.messari_model.get_governance"
-    },
-    "crypto.dd.investors": {
-        "model": "openbb_terminal.cryptocurrency.due_diligence.messari_model.get_investors"
+    "crypto.dd.inv": {
+        "model": "openbb_terminal.cryptocurrency.due_diligence.messari_model.get_investors",
+        "view": "openbb_terminal.cryptocurrency.due_diligence.messari_view.display_investors",
     },
     "crypto.dd.links": {
         "model": "openbb_terminal.cryptocurrency.due_diligence.messari_model.get_links",
         "view": "openbb_terminal.cryptocurrency.due_diligence.messari_view.display_links",
     },
-    "crypto.dd.marketcap_dominance": {
-        "model": "openbb_terminal.cryptocurrency.due_diligence.messari_model.get_marketcap_dominance"
+    "crypto.dd.mcapdom": {
+        "model": "openbb_terminal.cryptocurrency.due_diligence.messari_model.get_marketcap_dominance",
+        "view": "openbb_terminal.cryptocurrency.due_diligence.messari_view.display_marketcap_dominance",
     },
-    "crypto.dd.messari_timeseries": {
-        "model": "openbb_terminal.cryptocurrency.due_diligence.messari_model.get_messari_timeseries"
+    "crypto.dd.mt": {
+        "model": "openbb_terminal.cryptocurrency.due_diligence.messari_model.get_messari_timeseries",
+        "view": "openbb_terminal.cryptocurrency.due_diligence.messari_view.display_messari_timeseries",
     },
-    "crypto.dd.project_product_info": {
-        "model": "openbb_terminal.cryptocurrency.due_diligence.messari_model.get_project_product_info"
+    "crypto.dd.pi": {
+        "model": "openbb_terminal.cryptocurrency.due_diligence.messari_model.get_project_product_info",
+        "view": "openbb_terminal.cryptocurrency.due_diligence.messari_view.display_project_info",
     },
-    "crypto.dd.roadmap": {
-        "model": "openbb_terminal.cryptocurrency.due_diligence.messari_model.get_roadmap"
+    "crypto.dd.rm": {
+        "model": "openbb_terminal.cryptocurrency.due_diligence.messari_model.get_roadmap",
+        "view": "openbb_terminal.cryptocurrency.due_diligence.messari_view.display_roadmap",
     },
     "crypto.dd.team": {
         "model": "openbb_terminal.cryptocurrency.due_diligence.messari_model.get_team",
         "view": "openbb_terminal.cryptocurrency.due_diligence.messari_view.display_team",
     },
-    "crypto.dd.tokenomics": {
-        "model": "openbb_terminal.cryptocurrency.due_diligence.messari_model.get_tokenomics"
-    },
-    "crypto.dd.fr": {
-        "view": "openbb_terminal.cryptocurrency.due_diligence.messari_view.display_fundraising"
-    },
-    "crypto.dd.gov": {
-        "view": "openbb_terminal.cryptocurrency.due_diligence.messari_view.display_governance"
-    },
-    "crypto.dd.inv": {
-        "view": "openbb_terminal.cryptocurrency.due_diligence.messari_view.display_investors"
-    },
-    "crypto.dd.mcapdom": {
-        "view": "openbb_terminal.cryptocurrency.due_diligence.messari_view.display_marketcap_dominance"
-    },
-    "crypto.dd.mt": {
-        "view": "openbb_terminal.cryptocurrency.due_diligence.messari_view.display_messari_timeseries"
-    },
-    "crypto.dd.get_mt": {
-        "view": "openbb_terminal.cryptocurrency.due_diligence.messari_view.display_messari_timeseries_list"
-    },
-    "crypto.dd.pi": {
-        "view": "openbb_terminal.cryptocurrency.due_diligence.messari_view.display_project_info"
-    },
-    "crypto.dd.rm": {
-        "view": "openbb_terminal.cryptocurrency.due_diligence.messari_view.display_roadmap"
-    },
     "crypto.dd.tk": {
-        "view": "openbb_terminal.cryptocurrency.due_diligence.messari_view.display_tokenomics"
-    },
-    "crypto.dd.check_coin": {
-        "model": "openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model.check_coin"
+        "model": "openbb_terminal.cryptocurrency.due_diligence.messari_model.get_tokenomics",
+        "view": "openbb_terminal.cryptocurrency.due_diligence.messari_view.display_tokenomics",
     },
     "crypto.dd.coin_market_chart": {
         "model": "openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model.get_coin_market_chart"
     },
-    "crypto.dd.coin_potential_returns": {
+    "crypto.dd.pr": {
         "model": "openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model.get_coin_potential_returns",
         "view": "openbb_terminal.cryptocurrency.due_diligence.pycoingecko_view.display_coin_potential_returns",
     },
-    "crypto.dd.coin_tokenomics": {
+    "crypto.dd.tokenomics": {
         "model": "openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model.get_coin_tokenomics"
     },
     "crypto.dd.ohlc": {
         "model": "openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model.get_ohlc"
     },
-    "crypto.dd.ath": {
-        "view": "openbb_terminal.cryptocurrency.due_diligence.pycoingecko_view.display_ath"
-    },
-    "crypto.dd.atl": {
-        "view": "openbb_terminal.cryptocurrency.due_diligence.pycoingecko_view.display_atl"
-    },
-    "crypto.dd.bc": {
-        "view": "openbb_terminal.cryptocurrency.due_diligence.pycoingecko_view.display_bc"
-    },
-    "crypto.dd.dev": {
-        "view": "openbb_terminal.cryptocurrency.due_diligence.pycoingecko_view.display_dev"
-    },
-    "crypto.dd.info": {
-        "view": "openbb_terminal.cryptocurrency.due_diligence.pycoingecko_view.display_info"
-    },
-    "crypto.dd.market": {
-        "view": "openbb_terminal.cryptocurrency.due_diligence.pycoingecko_view.display_market"
-    },
-    "crypto.dd.score": {
-        "view": "openbb_terminal.cryptocurrency.due_diligence.pycoingecko_view.display_score"
-    },
-    "crypto.dd.social": {
-        "view": "openbb_terminal.cryptocurrency.due_diligence.pycoingecko_view.display_social"
-    },
-    "crypto.dd.web": {
-        "view": "openbb_terminal.cryptocurrency.due_diligence.pycoingecko_view.display_web"
-    },
-    "crypto.dd.github_activity": {
-        "model": "openbb_terminal.cryptocurrency.due_diligence.santiment_model.get_github_activity"
-    },
-    "crypto.dd.slug": {
-        "model": "openbb_terminal.cryptocurrency.due_diligence.santiment_model.get_slug"
-    },
     "crypto.dd.gh": {
-        "view": "openbb_terminal.cryptocurrency.due_diligence.santiment_view.display_github_activity"
-    },
-    "crypto.nft.nft_drops": {
-        "model": "openbb_terminal.cryptocurrency.nft.nftcalendar_model.get_nft_drops"
-    },
-    "crypto.nft.nft_newest_drops": {
-        "model": "openbb_terminal.cryptocurrency.nft.nftcalendar_model.get_nft_newest_drops"
-    },
-    "crypto.nft.nft_ongoing_drops": {
-        "model": "openbb_terminal.cryptocurrency.nft.nftcalendar_model.get_nft_ongoing_drops"
-    },
-    "crypto.nft.nft_today_drops": {
-        "model": "openbb_terminal.cryptocurrency.nft.nftcalendar_model.get_nft_today_drops"
-    },
-    "crypto.nft.nft_upcoming_drops": {
-        "model": "openbb_terminal.cryptocurrency.nft.nftcalendar_model.get_nft_upcoming_drops"
+        "model": "openbb_terminal.cryptocurrency.due_diligence.santiment_model.get_github_activity",
+        "view": "openbb_terminal.cryptocurrency.due_diligence.santiment_view.display_github_activity",
     },
     "crypto.nft.newest": {
-        "view": "openbb_terminal.cryptocurrency.nft.nftcalendar_view.display_nft_newest_drops"
+        "model": "openbb_terminal.cryptocurrency.nft.nftcalendar_model.get_nft_newest_drops",
+        "view": "openbb_terminal.cryptocurrency.nft.nftcalendar_view.display_nft_newest_drops",
     },
     "crypto.nft.ongoing": {
-        "view": "openbb_terminal.cryptocurrency.nft.nftcalendar_view.display_nft_ongoing_drops"
+        "model": "openbb_terminal.cryptocurrency.nft.nftcalendar_model.get_nft_ongoing_drops",
+        "view": "openbb_terminal.cryptocurrency.nft.nftcalendar_view.display_nft_ongoing_drops",
     },
     "crypto.nft.today": {
-        "view": "openbb_terminal.cryptocurrency.nft.nftcalendar_view.display_nft_today_drops"
+        "model": "openbb_terminal.cryptocurrency.nft.nftcalendar_model.get_nft_today_drops",
+        "view": "openbb_terminal.cryptocurrency.nft.nftcalendar_view.display_nft_today_drops",
     },
     "crypto.nft.upcoming": {
-        "view": "openbb_terminal.cryptocurrency.nft.nftcalendar_view.display_nft_upcoming_drops"
-    },
-    "crypto.nft.collection_stats": {
-        "model": "openbb_terminal.cryptocurrency.nft.opensea_model.get_collection_stats"
+        "model": "openbb_terminal.cryptocurrency.nft.nftcalendar_model.get_nft_upcoming_drops",
+        "view": "openbb_terminal.cryptocurrency.nft.nftcalendar_view.display_nft_upcoming_drops",
     },
     "crypto.nft.stats": {
-        "view": "openbb_terminal.cryptocurrency.nft.opensea_view.display_collection_stats"
+        "model": "openbb_terminal.cryptocurrency.nft.opensea_model.get_collection_stats",
+        "view": "openbb_terminal.cryptocurrency.nft.opensea_view.display_collection_stats",
     },
-    "crypto.onchain._extract_dex_trades": {
-        "model": "openbb_terminal.cryptocurrency.onchain.bitquery_model._extract_dex_trades"
+    "crypto.onchain.dvcp": {
+        "model": "openbb_terminal.cryptocurrency.onchain.bitquery_model.get_daily_dex_volume_for_given_pair",
+        "view": "openbb_terminal.cryptocurrency.onchain.bitquery_view.display_daily_volume_for_given_pair",
     },
-    "crypto.onchain.find_token_address": {
-        "model": "openbb_terminal.cryptocurrency.onchain.bitquery_model.find_token_address"
-    },
-    "crypto.onchain.daily_dex_volume_for_given_pair": {
-        "model": "openbb_terminal.cryptocurrency.onchain.bitquery_model.get_daily_dex_volume_for_given_pair"
-    },
-    "crypto.onchain.dex_trades_by_exchange": {
-        "model": "openbb_terminal.cryptocurrency.onchain.bitquery_model.get_dex_trades_by_exchange"
+    "crypto.onchain.lt": {
+        "model": "openbb_terminal.cryptocurrency.onchain.bitquery_model.get_dex_trades_by_exchange",
+        "view": "openbb_terminal.cryptocurrency.onchain.bitquery_view.display_dex_trades",
     },
     "crypto.onchain.dex_trades_monthly": {
         "model": "openbb_terminal.cryptocurrency.onchain.bitquery_model.get_dex_trades_monthly"
@@ -897,282 +597,173 @@ functions = {
     "crypto.onchain.erc20_tokens": {
         "model": "openbb_terminal.cryptocurrency.onchain.bitquery_model.get_erc20_tokens"
     },
-    "crypto.onchain.ethereum_unique_senders": {
-        "model": "openbb_terminal.cryptocurrency.onchain.bitquery_model.get_ethereum_unique_senders"
+    "crypto.onchain.ueat": {
+        "model": "openbb_terminal.cryptocurrency.onchain.bitquery_model.get_ethereum_unique_senders",
+        "view": "openbb_terminal.cryptocurrency.onchain.bitquery_view.display_ethereum_unique_senders",
     },
-    "crypto.onchain.most_traded_pairs": {
-        "model": "openbb_terminal.cryptocurrency.onchain.bitquery_model.get_most_traded_pairs"
+    "crypto.onchain.ttcp": {
+        "model": "openbb_terminal.cryptocurrency.onchain.bitquery_model.get_most_traded_pairs",
+        "view": "openbb_terminal.cryptocurrency.onchain.bitquery_view.display_most_traded_pairs",
     },
-    "crypto.onchain.spread_for_crypto_pair": {
-        "model": "openbb_terminal.cryptocurrency.onchain.bitquery_model.get_spread_for_crypto_pair"
+    "crypto.onchain.baas": {
+        "model": "openbb_terminal.cryptocurrency.onchain.bitquery_model.get_spread_for_crypto_pair",
+        "view": "openbb_terminal.cryptocurrency.onchain.bitquery_view.display_spread_for_crypto_pair",
     },
-    "crypto.onchain.token_volume_on_dexes": {
-        "model": "openbb_terminal.cryptocurrency.onchain.bitquery_model.get_token_volume_on_dexes"
+    "crypto.onchain.tv": {
+        "model": "openbb_terminal.cryptocurrency.onchain.bitquery_model.get_token_volume_on_dexes",
+        "view": "openbb_terminal.cryptocurrency.onchain.bitquery_view.display_dex_volume_for_token",
     },
     "crypto.onchain.query_graph": {
         "model": "openbb_terminal.cryptocurrency.onchain.bitquery_model.query_graph"
     },
-    "crypto.onchain.dvcp": {
-        "view": "openbb_terminal.cryptocurrency.onchain.bitquery_view.display_daily_volume_for_given_pair"
-    },
-    "crypto.onchain.lt": {
-        "view": "openbb_terminal.cryptocurrency.onchain.bitquery_view.display_dex_trades"
-    },
-    "crypto.onchain.tv": {
-        "view": "openbb_terminal.cryptocurrency.onchain.bitquery_view.display_dex_volume_for_token"
-    },
-    "crypto.onchain.ueat": {
-        "view": "openbb_terminal.cryptocurrency.onchain.bitquery_view.display_ethereum_unique_senders"
-    },
-    "crypto.onchain.ttcp": {
-        "view": "openbb_terminal.cryptocurrency.onchain.bitquery_view.display_most_traded_pairs"
-    },
-    "crypto.onchain.baas": {
-        "view": "openbb_terminal.cryptocurrency.onchain.bitquery_view.display_spread_for_crypto_pair"
-    },
-    "crypto.onchain._make_request": {
-        "model": "openbb_terminal.cryptocurrency.onchain.blockchain_model._make_request"
-    },
-    "crypto.onchain.btc_circulating_supply": {
+    "crypto.onchain.btc_supply": {
         "model": "openbb_terminal.cryptocurrency.onchain.blockchain_model.get_btc_circulating_supply",
         "view": "openbb_terminal.cryptocurrency.onchain.blockchain_view.display_btc_circulating_supply",
     },
-    "crypto.onchain.btc_confirmed_transactions": {
+    "crypto.onchain.btc_transac": {
         "model": "openbb_terminal.cryptocurrency.onchain.blockchain_model.get_btc_confirmed_transactions",
         "view": "openbb_terminal.cryptocurrency.onchain.blockchain_view.display_btc_confirmed_transactions",
     },
-    "crypto.onchain.gwei_fees": {
-        "model": "openbb_terminal.cryptocurrency.onchain.ethgasstation_model.get_gwei_fees"
-    },
     "crypto.onchain.gwei": {
-        "view": "openbb_terminal.cryptocurrency.onchain.ethgasstation_view.display_gwei_fees"
+        "model": "openbb_terminal.cryptocurrency.onchain.ethgasstation_model.get_gwei_fees",
+        "view": "openbb_terminal.cryptocurrency.onchain.ethgasstation_view.display_gwei_fees",
     },
-    "crypto.onchain.enrich_social_media": {
-        "model": "openbb_terminal.cryptocurrency.onchain.ethplorer_model.enrich_social_media"
+    "crypto.onchain.hist": {
+        "model": "openbb_terminal.cryptocurrency.onchain.ethplorer_model.get_address_history",
+        "view": "openbb_terminal.cryptocurrency.onchain.ethplorer_view.display_address_history",
     },
-    "crypto.onchain.address_history": {
-        "model": "openbb_terminal.cryptocurrency.onchain.ethplorer_model.get_address_history"
-    },
-    "crypto.onchain.address_info": {
-        "model": "openbb_terminal.cryptocurrency.onchain.ethplorer_model.get_address_info"
+    "crypto.onchain.balance": {
+        "model": "openbb_terminal.cryptocurrency.onchain.ethplorer_model.get_address_info",
+        "view": "openbb_terminal.cryptocurrency.onchain.ethplorer_view.display_address_info",
     },
     "crypto.onchain.token_decimals": {
         "model": "openbb_terminal.cryptocurrency.onchain.ethplorer_model.get_token_decimals"
     },
-    "crypto.onchain.token_historical_price": {
-        "model": "openbb_terminal.cryptocurrency.onchain.ethplorer_model.get_token_historical_price"
-    },
-    "crypto.onchain.token_history": {
-        "model": "openbb_terminal.cryptocurrency.onchain.ethplorer_model.get_token_history"
-    },
-    "crypto.onchain.token_info": {
-        "model": "openbb_terminal.cryptocurrency.onchain.ethplorer_model.get_token_info"
-    },
-    "crypto.onchain.top_token_holders": {
-        "model": "openbb_terminal.cryptocurrency.onchain.ethplorer_model.get_top_token_holders"
-    },
-    "crypto.onchain.top_tokens": {
-        "model": "openbb_terminal.cryptocurrency.onchain.ethplorer_model.get_top_tokens"
-    },
-    "crypto.onchain.tx_info": {
-        "model": "openbb_terminal.cryptocurrency.onchain.ethplorer_model.get_tx_info"
-    },
-    "crypto.onchain.make_request": {
-        "model": "openbb_terminal.cryptocurrency.onchain.whale_alert_model.make_request"
-    },
-    "crypto.onchain.split_cols_with_dot": {
-        "model": "openbb_terminal.cryptocurrency.onchain.ethplorer_model.split_cols_with_dot"
-    },
-    "crypto.onchain.hist": {
-        "view": "openbb_terminal.cryptocurrency.onchain.ethplorer_view.display_address_history"
-    },
-    "crypto.onchain.balance": {
-        "view": "openbb_terminal.cryptocurrency.onchain.ethplorer_view.display_address_info"
-    },
     "crypto.onchain.prices": {
-        "view": "openbb_terminal.cryptocurrency.onchain.ethplorer_view.display_token_historical_prices"
+        "model": "openbb_terminal.cryptocurrency.onchain.ethplorer_model.get_token_historical_price",
+        "view": "openbb_terminal.cryptocurrency.onchain.ethplorer_view.display_token_historical_prices",
     },
     "crypto.onchain.th": {
-        "view": "openbb_terminal.cryptocurrency.onchain.ethplorer_view.display_token_history"
+        "model": "openbb_terminal.cryptocurrency.onchain.ethplorer_model.get_token_history",
+        "view": "openbb_terminal.cryptocurrency.onchain.ethplorer_view.display_token_history",
     },
     "crypto.onchain.info": {
-        "view": "openbb_terminal.cryptocurrency.onchain.ethplorer_view.display_token_info"
+        "model": "openbb_terminal.cryptocurrency.onchain.ethplorer_model.get_token_info",
+        "view": "openbb_terminal.cryptocurrency.onchain.ethplorer_view.display_token_info",
     },
     "crypto.onchain.holders": {
-        "view": "openbb_terminal.cryptocurrency.onchain.ethplorer_view.display_top_token_holders"
+        "model": "openbb_terminal.cryptocurrency.onchain.ethplorer_model.get_top_token_holders",
+        "view": "openbb_terminal.cryptocurrency.onchain.ethplorer_view.display_top_token_holders",
     },
     "crypto.onchain.top": {
-        "view": "openbb_terminal.cryptocurrency.onchain.ethplorer_view.display_top_tokens"
+        "model": "openbb_terminal.cryptocurrency.onchain.ethplorer_model.get_top_tokens",
+        "view": "openbb_terminal.cryptocurrency.onchain.ethplorer_view.display_top_tokens",
     },
     "crypto.onchain.tx": {
-        "view": "openbb_terminal.cryptocurrency.onchain.ethplorer_view.display_tx_info"
-    },
-    "crypto.onchain.whales_transactions": {
-        "model": "openbb_terminal.cryptocurrency.onchain.whale_alert_model.get_whales_transactions"
+        "model": "openbb_terminal.cryptocurrency.onchain.ethplorer_model.get_tx_info",
+        "view": "openbb_terminal.cryptocurrency.onchain.ethplorer_view.display_tx_info",
     },
     "crypto.onchain.whales": {
-        "view": "openbb_terminal.cryptocurrency.onchain.whale_alert_view.display_whales_transactions"
-    },
-    "crypto.ov.altcoin_index": {
-        "model": "openbb_terminal.cryptocurrency.overview.blockchaincenter_model.get_altcoin_index"
+        "model": "openbb_terminal.cryptocurrency.onchain.whale_alert_model.get_whales_transactions",
+        "view": "openbb_terminal.cryptocurrency.onchain.whale_alert_view.display_whales_transactions",
     },
     "crypto.ov.altindex": {
-        "view": "openbb_terminal.cryptocurrency.overview.blockchaincenter_view.display_altcoin_index"
-    },
-    "crypto.ov.trading_pairs": {
-        "model": "openbb_terminal.cryptocurrency.overview.coinbase_model.get_trading_pairs"
+        "model": "openbb_terminal.cryptocurrency.overview.blockchaincenter_model.get_altcoin_index",
+        "view": "openbb_terminal.cryptocurrency.overview.blockchaincenter_view.display_altcoin_index",
     },
     "crypto.ov.cbpairs": {
-        "view": "openbb_terminal.cryptocurrency.overview.coinbase_view.display_trading_pairs"
+        "model": "openbb_terminal.cryptocurrency.overview.coinbase_model.get_trading_pairs",
+        "view": "openbb_terminal.cryptocurrency.overview.coinbase_view.display_trading_pairs",
     },
-    "crypto.ov._get_coins_info_helper": {
-        "model": "openbb_terminal.cryptocurrency.overview.coinpaprika_model._get_coins_info_helper"
+    "crypto.ov.cpplatforms": {
+        "model": "openbb_terminal.cryptocurrency.overview.coinpaprika_model.get_all_contract_platforms",
+        "view": "openbb_terminal.cryptocurrency.overview.coinpaprika_view.display_all_platforms",
     },
-    "crypto.ov.all_contract_platforms": {
-        "model": "openbb_terminal.cryptocurrency.overview.coinpaprika_model.get_all_contract_platforms"
+    "crypto.ov.cpinfo": {
+        "model": "openbb_terminal.cryptocurrency.overview.coinpaprika_model.get_coins_info",
+        "view": "openbb_terminal.cryptocurrency.overview.coinpaprika_view.display_all_coins_info",
     },
-    "crypto.ov.coins_info": {
-        "model": "openbb_terminal.cryptocurrency.overview.coinpaprika_model.get_coins_info"
+    "crypto.ov.cpmarkets": {
+        "model": "openbb_terminal.cryptocurrency.overview.coinpaprika_model.get_coins_market_info",
+        "view": "openbb_terminal.cryptocurrency.overview.coinpaprika_view.display_all_coins_market_info",
     },
-    "crypto.ov.coins_market_info": {
-        "model": "openbb_terminal.cryptocurrency.overview.coinpaprika_model.get_coins_market_info"
+    "crypto.ov.cpcontracts": {
+        "model": "openbb_terminal.cryptocurrency.overview.coinpaprika_model.get_contract_platform",
+        "view": "openbb_terminal.cryptocurrency.overview.coinpaprika_view.display_contracts",
     },
-    "crypto.ov.contract_platform": {
-        "model": "openbb_terminal.cryptocurrency.overview.coinpaprika_model.get_contract_platform"
+    "crypto.ov.cpexmarkets": {
+        "model": "openbb_terminal.cryptocurrency.overview.coinpaprika_model.get_exchanges_market",
+        "view": "openbb_terminal.cryptocurrency.overview.coinpaprika_view.display_exchange_markets",
     },
-    "crypto.ov.exchanges_market": {
-        "model": "openbb_terminal.cryptocurrency.overview.coinpaprika_model.get_exchanges_market"
-    },
-    "crypto.ov.global_market": {
-        "model": "openbb_terminal.cryptocurrency.overview.coinpaprika_model.get_global_market"
+    "crypto.ov.cpglobal": {
+        "model": "openbb_terminal.cryptocurrency.overview.coinpaprika_model.get_global_market",
+        "view": "openbb_terminal.cryptocurrency.overview.coinpaprika_view.display_global_market",
     },
     "crypto.ov.list_of_coins": {
         "model": "openbb_terminal.cryptocurrency.overview.coinpaprika_model.get_list_of_coins"
     },
-    "crypto.ov.list_of_exchanges": {
-        "model": "openbb_terminal.cryptocurrency.overview.coinpaprika_model.get_list_of_exchanges"
-    },
-    "crypto.ov.cpinfo": {
-        "view": "openbb_terminal.cryptocurrency.overview.coinpaprika_view.display_all_coins_info"
-    },
-    "crypto.ov.cpmarkets": {
-        "view": "openbb_terminal.cryptocurrency.overview.coinpaprika_view.display_all_coins_market_info"
-    },
     "crypto.ov.cpexchanges": {
-        "view": "openbb_terminal.cryptocurrency.overview.coinpaprika_view.display_all_exchanges"
-    },
-    "crypto.ov.cpplatforms": {
-        "view": "openbb_terminal.cryptocurrency.overview.coinpaprika_view.display_all_platforms"
-    },
-    "crypto.ov.cpcontracts": {
-        "view": "openbb_terminal.cryptocurrency.overview.coinpaprika_view.display_contracts"
-    },
-    "crypto.ov.cpexmarkets": {
-        "view": "openbb_terminal.cryptocurrency.overview.coinpaprika_view.display_exchange_markets"
-    },
-    "crypto.ov.cpglobal": {
-        "view": "openbb_terminal.cryptocurrency.overview.coinpaprika_view.display_global_market"
-    },
-    "crypto.ov._parse_post": {
-        "model": "openbb_terminal.cryptocurrency.overview.cryptopanic_model._parse_post"
+        "model": "openbb_terminal.cryptocurrency.overview.coinpaprika_model.get_list_of_exchanges",
+        "view": "openbb_terminal.cryptocurrency.overview.coinpaprika_view.display_all_exchanges",
     },
     "crypto.ov.news": {
         "model": "openbb_terminal.cryptocurrency.overview.cryptopanic_model.get_news",
         "view": "openbb_terminal.cryptocurrency.overview.cryptopanic_view.display_news",
     },
-    "crypto.ov.make_request": {
-        "model": "openbb_terminal.cryptocurrency.overview.cryptopanic_model.make_request"
-    },
-    "crypto.ov.check_valid_coin": {
-        "model": "openbb_terminal.cryptocurrency.overview.loanscan_model.check_valid_coin"
-    },
-    "crypto.ov.check_valid_platform": {
-        "model": "openbb_terminal.cryptocurrency.overview.loanscan_model.check_valid_platform"
-    },
-    "crypto.ov.rates": {
-        "model": "openbb_terminal.cryptocurrency.overview.loanscan_model.get_rates"
-    },
     "crypto.ov.cr": {
-        "view": "openbb_terminal.cryptocurrency.overview.loanscan_view.display_crypto_rates"
+        "model": "openbb_terminal.cryptocurrency.overview.loanscan_model.get_rates",
+        "view": "openbb_terminal.cryptocurrency.overview.loanscan_view.display_crypto_rates",
     },
-    "crypto.ov.derivatives": {
-        "model": "openbb_terminal.cryptocurrency.overview.pycoingecko_model.get_derivatives"
+    "crypto.ov.cgderivatives": {
+        "model": "openbb_terminal.cryptocurrency.overview.pycoingecko_model.get_derivatives",
+        "view": "openbb_terminal.cryptocurrency.overview.pycoingecko_view.display_derivatives",
     },
-    "crypto.ov.exchange_rates": {
-        "model": "openbb_terminal.cryptocurrency.overview.pycoingecko_model.get_exchange_rates"
+    "crypto.ov.cgexrates": {
+        "model": "openbb_terminal.cryptocurrency.overview.pycoingecko_model.get_exchange_rates",
+        "view": "openbb_terminal.cryptocurrency.overview.pycoingecko_view.display_exchange_rates",
     },
     "crypto.ov.exchanges": {
         "model": "openbb_terminal.cryptocurrency.overview.pycoingecko_model.get_exchanges",
         "view": "openbb_terminal.cryptocurrency.overview.pycoingecko_view.display_exchanges",
     },
-    "crypto.ov.finance_products": {
-        "model": "openbb_terminal.cryptocurrency.overview.pycoingecko_model.get_finance_products"
+    "crypto.ov.cgproducts": {
+        "model": "openbb_terminal.cryptocurrency.overview.pycoingecko_model.get_finance_products",
+        "view": "openbb_terminal.cryptocurrency.overview.pycoingecko_view.display_products",
     },
-    "crypto.ov.financial_platforms": {
-        "model": "openbb_terminal.cryptocurrency.overview.pycoingecko_model.get_financial_platforms"
+    "crypto.ov.platforms": {
+        "model": "openbb_terminal.cryptocurrency.overview.pycoingecko_model.get_financial_platforms",
+        "view": "openbb_terminal.cryptocurrency.overview.pycoingecko_view.display_platforms",
     },
-    "crypto.ov.global_defi_info": {
-        "model": "openbb_terminal.cryptocurrency.overview.pycoingecko_model.get_global_defi_info"
+    "crypto.ov.cgdefi": {
+        "model": "openbb_terminal.cryptocurrency.overview.pycoingecko_model.get_global_defi_info",
+        "view": "openbb_terminal.cryptocurrency.overview.pycoingecko_view.display_global_defi_info",
     },
     "crypto.ov.global_info": {
         "model": "openbb_terminal.cryptocurrency.overview.pycoingecko_model.get_global_info"
     },
-    "crypto.ov.global_markets_info": {
-        "model": "openbb_terminal.cryptocurrency.overview.pycoingecko_model.get_global_markets_info"
-    },
-    "crypto.ov.holdings_overview": {
-        "model": "openbb_terminal.cryptocurrency.overview.pycoingecko_model.get_holdings_overview"
-    },
-    "crypto.ov.indexes": {
-        "model": "openbb_terminal.cryptocurrency.overview.pycoingecko_model.get_indexes"
-    },
-    "crypto.ov.stable_coins": {
-        "model": "openbb_terminal.cryptocurrency.overview.pycoingecko_model.get_stable_coins"
-    },
-    "crypto.ov.top_crypto_categories": {
-        "model": "openbb_terminal.cryptocurrency.overview.pycoingecko_model.get_top_crypto_categories"
-    },
-    "crypto.ov.lambda_coin_formatter": {
-        "model": "openbb_terminal.cryptocurrency.overview.pycoingecko_model.lambda_coin_formatter"
-    },
-    "crypto.ov.cgcategories": {
-        "view": "openbb_terminal.cryptocurrency.overview.pycoingecko_view.display_categories"
-    },
-    "crypto.ov.crypto_heatmap": {
-        "view": "openbb_terminal.cryptocurrency.overview.pycoingecko_view.display_crypto_heatmap"
-    },
-    "crypto.ov.cgderivatives": {
-        "view": "openbb_terminal.cryptocurrency.overview.pycoingecko_view.display_derivatives"
-    },
-    "crypto.ov.cgexrates": {
-        "view": "openbb_terminal.cryptocurrency.overview.pycoingecko_view.display_exchange_rates"
-    },
-    "crypto.ov.cgdefi": {
-        "view": "openbb_terminal.cryptocurrency.overview.pycoingecko_view.display_global_defi_info"
-    },
     "crypto.ov.cgglobal": {
-        "view": "openbb_terminal.cryptocurrency.overview.pycoingecko_view.display_global_market_info"
+        "model": "openbb_terminal.cryptocurrency.overview.pycoingecko_model.get_global_markets_info",
+        "view": "openbb_terminal.cryptocurrency.overview.pycoingecko_view.display_global_market_info",
     },
     "crypto.ov.cghold": {
-        "view": "openbb_terminal.cryptocurrency.overview.pycoingecko_view.display_holdings_overview"
+        "model": "openbb_terminal.cryptocurrency.overview.pycoingecko_model.get_holdings_overview",
+        "view": "openbb_terminal.cryptocurrency.overview.pycoingecko_view.display_holdings_overview",
     },
     "crypto.ov.cgindexes": {
-        "view": "openbb_terminal.cryptocurrency.overview.pycoingecko_view.display_indexes"
-    },
-    "crypto.ov.platforms": {
-        "view": "openbb_terminal.cryptocurrency.overview.pycoingecko_view.display_platforms"
-    },
-    "crypto.ov.cgproducts": {
-        "view": "openbb_terminal.cryptocurrency.overview.pycoingecko_view.display_products"
+        "model": "openbb_terminal.cryptocurrency.overview.pycoingecko_model.get_indexes",
+        "view": "openbb_terminal.cryptocurrency.overview.pycoingecko_view.display_indexes",
     },
     "crypto.ov.cgstables": {
-        "view": "openbb_terminal.cryptocurrency.overview.pycoingecko_view.display_stablecoins"
+        "model": "openbb_terminal.cryptocurrency.overview.pycoingecko_model.get_stable_coins",
+        "view": "openbb_terminal.cryptocurrency.overview.pycoingecko_view.display_stablecoins",
     },
-    "crypto.ov._make_request": {
-        "model": "openbb_terminal.cryptocurrency.overview.rekt_model._make_request"
+    "crypto.ov.cgcategories": {
+        "model": "openbb_terminal.cryptocurrency.overview.pycoingecko_model.get_top_crypto_categories",
+        "view": "openbb_terminal.cryptocurrency.overview.pycoingecko_view.display_categories",
     },
-    "crypto.ov._retry_session": {
-        "model": "openbb_terminal.cryptocurrency.overview.rekt_model._retry_session"
+    "crypto.ov.cghm": {
+        "model": "openbb_terminal.cryptocurrency.discovery.pycoingecko_model.get_coins",
+        "view": "openbb_terminal.cryptocurrency.overview.pycoingecko_view.display_crypto_heatmap",
     },
     "crypto.ov.crypto_hack": {
         "model": "openbb_terminal.cryptocurrency.overview.rekt_model.get_crypto_hack"
@@ -1184,77 +775,25 @@ functions = {
         "model": "openbb_terminal.cryptocurrency.overview.rekt_model.get_crypto_hacks",
         "view": "openbb_terminal.cryptocurrency.overview.rekt_view.display_crypto_hacks",
     },
-    "crypto.ov.crypto_withdrawal_fees": {
-        "model": "openbb_terminal.cryptocurrency.overview.withdrawalfees_model.get_crypto_withdrawal_fees"
-    },
-    "crypto.ov.overall_exchange_withdrawal_fees": {
-        "model": "openbb_terminal.cryptocurrency.overview.withdrawalfees_model.get_overall_exchange_withdrawal_fees"
-    },
-    "crypto.ov.overall_withdrawal_fees": {
-        "model": "openbb_terminal.cryptocurrency.overview.withdrawalfees_model.get_overall_withdrawal_fees"
-    },
     "crypto.ov.wfpe": {
-        "view": "openbb_terminal.cryptocurrency.overview.withdrawalfees_view.display_crypto_withdrawal_fees"
+        "model": "openbb_terminal.cryptocurrency.overview.withdrawalfees_model.get_crypto_withdrawal_fees",
+        "view": "openbb_terminal.cryptocurrency.overview.withdrawalfees_view.display_crypto_withdrawal_fees",
     },
     "crypto.ov.ewf": {
-        "view": "openbb_terminal.cryptocurrency.overview.withdrawalfees_view.display_overall_exchange_withdrawal_fees"
+        "model": "openbb_terminal.cryptocurrency.overview.withdrawalfees_model.get_overall_exchange_withdrawal_fees",
+        "view": "openbb_terminal.cryptocurrency.overview.withdrawalfees_view.display_overall_exchange_withdrawal_fees",
     },
     "crypto.ov.wf": {
-        "view": "openbb_terminal.cryptocurrency.overview.withdrawalfees_view.display_overall_withdrawal_fees"
-    },
-    "crypto.tools.calculate_apy": {
-        "model": "openbb_terminal.cryptocurrency.tools.tools_model.calculate_apy"
-    },
-    "crypto.tools.calculate_il": {
-        "model": "openbb_terminal.cryptocurrency.tools.tools_model.calculate_il"
+        "model": "openbb_terminal.cryptocurrency.overview.withdrawalfees_model.get_overall_withdrawal_fees",
+        "view": "openbb_terminal.cryptocurrency.overview.withdrawalfees_view.display_overall_withdrawal_fees",
     },
     "crypto.tools.apy": {
-        "view": "openbb_terminal.cryptocurrency.tools.tools_view.display_apy"
+        "model": "openbb_terminal.cryptocurrency.tools.tools_model.calculate_apy",
+        "view": "openbb_terminal.cryptocurrency.tools.tools_view.display_apy",
     },
     "crypto.tools.il": {
-        "view": "openbb_terminal.cryptocurrency.tools.tools_view.display_il"
-    },
-    "econometrics.clean": {
-        "model": "openbb_terminal.econometrics.econometrics_model.clean"
-    },
-    "econometrics.load": {
-        "model": "openbb_terminal.econometrics.econometrics_model.load"
-    },
-    "econometrics.coint": {
-        "view": "openbb_terminal.econometrics.econometrics_view.display_cointegration_test"
-    },
-    "econometrics.granger": {
-        "view": "openbb_terminal.econometrics.econometrics_view.display_granger"
-    },
-    "econometrics.norm": {
-        "view": "openbb_terminal.econometrics.econometrics_view.display_norm"
-    },
-    "econometrics.plot": {
-        "view": "openbb_terminal.econometrics.econometrics_view.display_plot"
-    },
-    "econometrics.root": {
-        "view": "openbb_terminal.econometrics.econometrics_view.display_root"
-    },
-    "econometrics.options": {
-        "view": "openbb_terminal.econometrics.econometrics_view.show_options"
-    },
-    "econometrics.compare": {
-        "model": "openbb_terminal.econometrics.regression_model.get_comparison"
-    },
-    "econometrics.ols": {
-        "model": "openbb_terminal.econometrics.regression_model.get_ols"
-    },
-    "econometrics.bgod": {
-        "view": "openbb_terminal.econometrics.regression_view.display_bgod"
-    },
-    "econometrics.bpag": {
-        "view": "openbb_terminal.econometrics.regression_view.display_bpag"
-    },
-    "econometrics.dwat": {
-        "view": "openbb_terminal.econometrics.regression_view.display_dwat"
-    },
-    "econometrics.panel": {
-        "view": "openbb_terminal.econometrics.regression_view.display_panel"
+        "model": "openbb_terminal.cryptocurrency.tools.tools_model.calculate_il",
+        "view": "openbb_terminal.cryptocurrency.tools.tools_view.display_il",
     },
     "economy.cpi": {
         "model": "openbb_terminal.economy.alphavantage_model.get_cpi",
@@ -1356,332 +895,57 @@ functions = {
     "economy.search_index": {
         "model": "openbb_terminal.economy.yfinance_model.get_search_indices"
     },
-    "etf.disc.etf_movers": {
-        "model": "openbb_terminal.etf.discovery.wsj_model.etf_movers"
+    "etf.disc.mover": {
+        "model": "openbb_terminal.etf.discovery.wsj_model.etf_movers",
+        "view": "openbb_terminal.etf.discovery.wsj_view.show_top_mover",
     },
-    "etf.disc.mover": {"view": "openbb_terminal.etf.discovery.wsj_view.show_top_mover"},
     "etf.etf_by_category": {
-        "view": "openbb_terminal.etf.financedatabase_view.display_etf_by_category"
+        "model": "openbb_terminal.etf.financedatabase_model.get_etfs_by_category",
+        "view": "openbb_terminal.etf.financedatabase_view.display_etf_by_category",
     },
     "etf.ld": {
-        "view": "openbb_terminal.etf.financedatabase_view.display_etf_by_description"
+        "model": "openbb_terminal.etf.financedatabase_model.get_etfs_by_description",
+        "view": "openbb_terminal.etf.financedatabase_view.display_etf_by_description",
     },
-    "etf.ln": {"view": "openbb_terminal.etf.financedatabase_view.display_etf_by_name"},
+    "etf.ln": {
+        "model": "openbb_terminal.etf.financedatabase_model.get_etfs_by_name",
+        "view": "openbb_terminal.etf.financedatabase_view.display_etf_by_name",
+    },
     "etf.scr.screen": {
         "model": "openbb_terminal.etf.screener.screener_model.etf_screener",
         "view": "openbb_terminal.etf.screener.screener_view.view_screener",
     },
+    "etf.holdings": {
+        "model": "openbb_terminal.etf.stockanalysis_model.get_etf_holdings",
+        "view": "openbb_terminal.etf.stockanalysis_view.view_holdings",
+    },
+    "etf.overview": {
+        "model": "openbb_terminal.etf.stockanalysis_model.get_etf_overview",
+        "view": "openbb_terminal.etf.stockanalysis_view.view_overview",
+    },
     "etf.etf_by_name": {
-        "view": "openbb_terminal.etf.stockanalysis_view.display_etf_by_name"
+        "model": "openbb_terminal.etf.stockanalysis_model.get_etfs_by_name",
+        "view": "openbb_terminal.etf.stockanalysis_view.display_etf_by_name",
     },
-    "etf.holdings": {"view": "openbb_terminal.etf.stockanalysis_view.view_holdings"},
-    "etf.overview": {"view": "openbb_terminal.etf.stockanalysis_view.view_overview"},
+    "etf.weights": {
+        "model": "openbb_terminal.etf.yfinance_model.get_etf_sector_weightings",
+        "view": "openbb_terminal.etf.yfinance_view.display_etf_weightings",
+    },
     "etf.summary": {
-        "view": "openbb_terminal.etf.yfinance_view.display_etf_description"
-    },
-    "etf.weights": {"view": "openbb_terminal.etf.yfinance_view.display_etf_weightings"},
-    "forex.quote": {"view": "openbb_terminal.forex.av_view.display_quote"},
-    "forex.oanda.fwd": {
-        "view": "openbb_terminal.forex.fxempire_view.display_forward_rates"
-    },
-    "forex.oanda.account_summary_request": {
-        "model": "openbb_terminal.forex.oanda.oanda_model.account_summary_request"
-    },
-    "forex.oanda.cancel_pending_order_request": {
-        "model": "openbb_terminal.forex.oanda.oanda_model.cancel_pending_order_request"
-    },
-    "forex.oanda.close_trades_request": {
-        "model": "openbb_terminal.forex.oanda.oanda_model.close_trades_request"
-    },
-    "forex.oanda.create_order_request": {
-        "model": "openbb_terminal.forex.oanda.oanda_model.create_order_request"
-    },
-    "forex.oanda.fx_price_request": {
-        "model": "openbb_terminal.forex.oanda.oanda_model.fx_price_request"
-    },
-    "forex.oanda.calendar_request": {
-        "model": "openbb_terminal.forex.oanda.oanda_model.get_calendar_request"
-    },
-    "forex.oanda.candles_dataframe": {
-        "model": "openbb_terminal.forex.oanda.oanda_model.get_candles_dataframe"
-    },
-    "forex.oanda.open_positions_request": {
-        "model": "openbb_terminal.forex.oanda.oanda_model.open_positions_request"
-    },
-    "forex.oanda.open_trades_request": {
-        "model": "openbb_terminal.forex.oanda.oanda_model.open_trades_request"
-    },
-    "forex.oanda.order_history_request": {
-        "model": "openbb_terminal.forex.oanda.oanda_model.order_history_request"
-    },
-    "forex.oanda.orderbook_plot_data_request": {
-        "model": "openbb_terminal.forex.oanda.oanda_model.orderbook_plot_data_request"
-    },
-    "forex.oanda.pending_orders_request": {
-        "model": "openbb_terminal.forex.oanda.oanda_model.pending_orders_request"
-    },
-    "forex.oanda.positionbook_plot_data_request": {
-        "model": "openbb_terminal.forex.oanda.oanda_model.positionbook_plot_data_request"
-    },
-    "forex.oanda.add_plots": {
-        "view": "openbb_terminal.forex.oanda.oanda_view.add_plots"
-    },
-    "forex.oanda.book_plot": {
-        "view": "openbb_terminal.forex.oanda.oanda_view.book_plot"
-    },
-    "forex.oanda.calendar": {"view": "openbb_terminal.forex.oanda.oanda_view.calendar"},
-    "forex.oanda.cancel": {
-        "view": "openbb_terminal.forex.oanda.oanda_view.cancel_pending_order"
-    },
-    "forex.oanda.closetrade": {
-        "view": "openbb_terminal.forex.oanda.oanda_view.close_trade"
-    },
-    "forex.oanda.order": {
-        "view": "openbb_terminal.forex.oanda.oanda_view.create_order"
-    },
-    "forex.oanda.summary": {
-        "view": "openbb_terminal.forex.oanda.oanda_view.get_account_summary"
-    },
-    "forex.oanda.price": {
-        "view": "openbb_terminal.forex.oanda.oanda_view.get_fx_price"
-    },
-    "forex.oanda.positions": {
-        "view": "openbb_terminal.forex.oanda.oanda_view.get_open_positions"
-    },
-    "forex.oanda.trades": {
-        "view": "openbb_terminal.forex.oanda.oanda_view.get_open_trades"
-    },
-    "forex.oanda.orderbook": {
-        "view": "openbb_terminal.forex.oanda.oanda_view.get_order_book"
-    },
-    "forex.oanda.pending": {
-        "view": "openbb_terminal.forex.oanda.oanda_view.get_pending_orders"
-    },
-    "forex.oanda.positionbook": {
-        "view": "openbb_terminal.forex.oanda.oanda_view.get_position_book"
-    },
-    "forex.oanda.listorder": {
-        "view": "openbb_terminal.forex.oanda.oanda_view.list_orders"
-    },
-    "forex.oanda.candles": {
-        "view": "openbb_terminal.forex.oanda.oanda_view.show_candles"
+        "model": "openbb_terminal.etf.yfinance_model.get_etf_summary_description",
+        "view": "openbb_terminal.etf.yfinance_view.display_etf_description",
     },
     "funds.info": {
-        "view": "openbb_terminal.mutual_funds.investpy_view.display_fund_info"
-    },
-    "funds.plot": {
-        "view": "openbb_terminal.mutual_funds.investpy_view.display_historical"
+        "model": "openbb_terminal.mutual_funds.investpy_model.get_fund_info",
+        "view": "openbb_terminal.mutual_funds.investpy_view.display_fund_info",
     },
     "funds.overview": {
-        "view": "openbb_terminal.mutual_funds.investpy_view.display_overview"
+        "model": "openbb_terminal.mutual_funds.investpy_model.get_overview",
+        "view": "openbb_terminal.mutual_funds.investpy_view.display_overview",
     },
     "funds.search": {
-        "view": "openbb_terminal.mutual_funds.investpy_view.display_search"
-    },
-    "funds.equity": {
-        "view": "openbb_terminal.mutual_funds.yfinance_view.display_equity"
-    },
-    "funds.sector": {
-        "view": "openbb_terminal.mutual_funds.yfinance_view.display_sector"
-    },
-    "portfolio.bro.ally.ally_positions_to_df": {
-        "model": "openbb_terminal.portfolio.brokers.ally.ally_model.ally_positions_to_df"
-    },
-    "portfolio.bro.ally.stock_quote": {
-        "model": "openbb_terminal.portfolio.brokers.ally.ally_model.get_stock_quote"
-    },
-    "portfolio.bro.ally.top_movers": {
-        "model": "openbb_terminal.portfolio.brokers.ally.ally_model.get_top_movers"
-    },
-    "portfolio.bro.ally.balances": {
-        "view": "openbb_terminal.portfolio.brokers.ally.ally_view.display_balances"
-    },
-    "portfolio.bro.ally.history": {
-        "view": "openbb_terminal.portfolio.brokers.ally.ally_view.display_history"
-    },
-    "portfolio.bro.ally.holdings": {
-        "view": "openbb_terminal.portfolio.brokers.ally.ally_view.display_holdings"
-    },
-    "portfolio.bro.ally.quote": {
-        "view": "openbb_terminal.portfolio.brokers.ally.ally_view.display_stock_quote"
-    },
-    "portfolio.bro.ally.movers": {
-        "view": "openbb_terminal.portfolio.brokers.ally.ally_view.display_top_lists"
-    },
-    "portfolio.bro.coinbase.account_history": {
-        "model": "openbb_terminal.portfolio.brokers.coinbase.coinbase_model.get_account_history"
-    },
-    "portfolio.bro.coinbase.accounts": {
-        "model": "openbb_terminal.portfolio.brokers.coinbase.coinbase_model.get_accounts"
-    },
-    "portfolio.bro.coinbase.deposits": {
-        "model": "openbb_terminal.portfolio.brokers.coinbase.coinbase_model.get_deposits"
-    },
-    "portfolio.bro.cb.account": {
-        "view": "openbb_terminal.portfolio.brokers.coinbase.coinbase_view.display_account"
-    },
-    "portfolio.bro.cb.deposits": {
-        "view": "openbb_terminal.portfolio.brokers.coinbase.coinbase_view.display_deposits"
-    },
-    "portfolio.bro.cb.history": {
-        "view": "openbb_terminal.portfolio.brokers.coinbase.coinbase_view.display_history"
-    },
-    "portfolio.bro.cb.orders": {
-        "view": "openbb_terminal.portfolio.brokers.coinbase.coinbase_view.display_orders"
-    },
-    "portfolio.bro.robinhood.historical": {
-        "model": "openbb_terminal.portfolio.brokers.robinhood.robinhood_model.get_historical"
-    },
-    "portfolio.bro.robinhood.rh_positions_to_df": {
-        "model": "openbb_terminal.portfolio.brokers.robinhood.robinhood_model.rh_positions_to_df"
-    },
-    "portfolio.bro.rh.historical": {
-        "view": "openbb_terminal.portfolio.brokers.robinhood.robinhood_view.display_historical"
-    },
-    "portfolio.bro.rh.holdings": {
-        "view": "openbb_terminal.portfolio.brokers.robinhood.robinhood_view.display_holdings"
-    },
-    "portfolio.pa.load_portfolio": {
-        "model": "openbb_terminal.portfolio.portfolio_analysis.portfolio_model.load_portfolio"
-    },
-    "portfolio.pa.group": {
-        "view": "openbb_terminal.portfolio.portfolio_analysis.portfolio_view.display_group_holdings"
-    },
-    "portfolio.pa.country": {
-        "model": "openbb_terminal.portfolio.portfolio_analysis.yfinance_model.get_country"
-    },
-    "portfolio.po.excel_bl_views": {
-        "model": "openbb_terminal.portfolio.portfolio_optimization.excel_model.excel_bl_views"
-    },
-    "portfolio.po.load_allocation": {
-        "model": "openbb_terminal.portfolio.portfolio_optimization.excel_model.load_allocation"
-    },
-    "portfolio.po.load_bl_views": {
-        "model": "openbb_terminal.portfolio.portfolio_optimization.excel_model.load_bl_views"
-    },
-    "portfolio.po.load_configuration": {
-        "model": "openbb_terminal.portfolio.portfolio_optimization.excel_model.load_configuration"
-    },
-    "portfolio.po.black_litterman": {
-        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.black_litterman",
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_black_litterman",
-    },
-    "portfolio.po.generate_random_portfolios": {
-        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.generate_random_portfolios"
-    },
-    "portfolio.po.black_litterman_portfolio": {
-        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_black_litterman_portfolio"
-    },
-    "portfolio.po.equal_weights": {
-        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_equal_weights"
-    },
-    "portfolio.po.hcp_portfolio": {
-        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_hcp_portfolio"
-    },
-    "portfolio.po.max_decorrelation_portfolio": {
-        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_max_decorrelation_portfolio"
-    },
-    "portfolio.po.max_diversification_portfolio": {
-        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_max_diversification_portfolio"
-    },
-    "portfolio.po.mean_risk_portfolio": {
-        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_mean_risk_portfolio"
-    },
-    "portfolio.po.property_weights": {
-        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_property_weights"
-    },
-    "portfolio.po.rel_risk_parity_portfolio": {
-        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_rel_risk_parity_portfolio"
-    },
-    "portfolio.po.risk_parity_portfolio": {
-        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_risk_parity_portfolio"
-    },
-    "portfolio.po.additional_plots": {
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.additional_plots"
-    },
-    "portfolio.po.d_period": {
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.d_period"
-    },
-    "portfolio.po.categories": {
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_categories"
-    },
-    "portfolio.po.categories_sa": {
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_categories_sa"
-    },
-    "portfolio.po.ef": {
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_ef"
-    },
-    "portfolio.po.equal": {
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_equal_weight"
-    },
-    "portfolio.po.hcp": {
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_hcp"
-    },
-    "portfolio.po.herc": {
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_herc"
-    },
-    "portfolio.po.hrp": {
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_hrp"
-    },
-    "portfolio.po.max_decorr": {
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_max_decorr"
-    },
-    "portfolio.po.max_div": {
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_max_div"
-    },
-    "portfolio.po.max_ret": {
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_max_ret"
-    },
-    "portfolio.po.max_sharpe": {
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_max_sharpe"
-    },
-    "portfolio.po.max_util": {
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_max_util"
-    },
-    "portfolio.po.mean_risk": {
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_mean_risk"
-    },
-    "portfolio.po.min_risk": {
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_min_risk"
-    },
-    "portfolio.po.nco": {
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_nco"
-    },
-    "portfolio.po.weighting": {
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_property_weighting"
-    },
-    "portfolio.po.rel_risk_parity": {
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_rel_risk_parity"
-    },
-    "portfolio.po.risk_parity": {
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_risk_parity"
-    },
-    "portfolio.po.weights": {
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_weights"
-    },
-    "portfolio.po.weights_sa": {
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_weights_sa"
-    },
-    "portfolio.po.my_autopct": {
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.my_autopct"
-    },
-    "portfolio.po.pie_chart_weights": {
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.pie_chart_weights"
-    },
-    "portfolio.po.portfolio_performance": {
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.portfolio_performance"
-    },
-    "portfolio.po.parameters.load_file": {
-        "view": "openbb_terminal.portfolio.portfolio_optimization.parameters.params_view.load_file"
-    },
-    "portfolio.po.parameters.show_arguments": {
-        "view": "openbb_terminal.portfolio.portfolio_optimization.parameters.params_view.show_arguments"
-    },
-    "portfolio.po.process_returns": {
-        "model": "openbb_terminal.portfolio.portfolio_optimization.yahoo_finance_model.process_returns"
-    },
-    "portfolio.po.process_stocks": {
-        "model": "openbb_terminal.portfolio.portfolio_optimization.yahoo_finance_model.process_stocks"
+        "model": "openbb_terminal.mutual_funds.investpy_model.search_funds",
+        "view": "openbb_terminal.mutual_funds.investpy_view.display_search",
     },
     "stocks.bt.ema_cross": {
         "model": "openbb_terminal.stocks.backtesting.bt_model.ema_cross_strategy",
@@ -1694,9 +958,6 @@ functions = {
     "stocks.bt.rsi": {
         "model": "openbb_terminal.stocks.backtesting.bt_model.rsi_strategy",
         "view": "openbb_terminal.stocks.backtesting.bt_view.display_rsi_strategy",
-    },
-    "stocks.bt.whatif": {
-        "view": "openbb_terminal.stocks.backtesting.bt_view.display_whatif_scenario"
     },
     "stocks.ba.cramer": {
         "model": "openbb_terminal.stocks.behavioural_analysis.cramer_model.get_cramer_daily"
@@ -2063,10 +1324,6 @@ functions = {
         "model": "openbb_terminal.stocks.options.yfinance_model.get_info",
         "view": "openbb_terminal.stocks.options.barchart_view.print_options_data",
     },
-    "stocks.options.calc": {
-        "model": "openbb_terminal.stocks.options.calculator_model.pnl_calculator",
-        "view": "openbb_terminal.stocks.options.calculator_view.view_calculator",
-    },
     "stocks.options.hist_ce": {
         "model": "openbb_terminal.stocks.options.chartexchange_model.get_option_history",
         "view": "openbb_terminal.stocks.options.chartexchange_view.display_raw",
@@ -2100,16 +1357,12 @@ functions = {
         "view": "openbb_terminal.stocks.options.screen.syncretism_view.view_historical_greeks",
     },
     "stocks.options.screen.screener_output": {
-        "model": "openbb_terminal.stocks.options.screen.syncretism_model.get_screener_output"
+        "model": "openbb_terminal.stocks.options.screen.syncretism_model.get_screener_output",
+        "view": "openbb_terminal.stocks.options.screen.syncretism_view.view_screener_output",
     },
-    "stocks.options.screen.view_available_presets": {
-        "view": "openbb_terminal.stocks.options.screen.syncretism_view.view_available_presets"
-    },
-    "stocks.options.screen.view_screener_output": {
-        "view": "openbb_terminal.stocks.options.screen.syncretism_view.view_screener_output"
-    },
-    "stocks.options.historical_options": {
-        "model": "openbb_terminal.stocks.options.tradier_model.get_historical_options"
+    "stocks.options.hist_tr": {
+        "model": "openbb_terminal.stocks.options.tradier_model.get_historical_options",
+        "view": "openbb_terminal.stocks.options.tradier_view.display_historical",
     },
     "stocks.options.chains": {
         "model": "openbb_terminal.stocks.options.tradier_model.get_option_chains",
@@ -2123,30 +1376,6 @@ functions = {
     },
     "stocks.options.process_chains": {
         "model": "openbb_terminal.stocks.options.tradier_model.process_chains"
-    },
-    "stocks.options.check_valid_option_chains_headers": {
-        "view": "openbb_terminal.stocks.options.tradier_view.check_valid_option_chains_headers"
-    },
-    "stocks.options.expiry_dates": {
-        "view": "openbb_terminal.stocks.options.tradier_view.display_expiry_dates"
-    },
-    "stocks.options.hist_tr": {
-        "view": "openbb_terminal.stocks.options.tradier_view.display_historical"
-    },
-    "stocks.options.green": {
-        "view": "openbb_terminal.stocks.options.tradier_view.lambda_green_highlight"
-    },
-    "stocks.options.red": {
-        "view": "openbb_terminal.stocks.options.tradier_view.lambda_red_highlight"
-    },
-    "stocks.options.oi_tr": {
-        "view": "openbb_terminal.stocks.options.tradier_view.plot_oi"
-    },
-    "stocks.options.vol_tr": {
-        "view": "openbb_terminal.stocks.options.tradier_view.plot_vol"
-    },
-    "stocks.options.voi_tr": {
-        "view": "openbb_terminal.stocks.options.tradier_view.plot_volume_open_interest"
     },
     "stocks.options.generate_data": {
         "model": "openbb_terminal.stocks.options.yfinance_model.generate_data"
@@ -2176,27 +1405,6 @@ functions = {
     "stocks.options.y_values": {
         "model": "openbb_terminal.stocks.options.yfinance_model.get_y_values"
     },
-    "stocks.options.oi_yf": {
-        "view": "openbb_terminal.stocks.options.yfinance_view.plot_oi"
-    },
-    "stocks.options.plot": {
-        "view": "openbb_terminal.stocks.options.yfinance_view.plot_plot"
-    },
-    "stocks.options.vol_yf": {
-        "view": "openbb_terminal.stocks.options.yfinance_view.plot_vol"
-    },
-    "stocks.options.voi_yf": {
-        "view": "openbb_terminal.stocks.options.yfinance_view.plot_volume_open_interest"
-    },
-    "stocks.options.binom": {
-        "view": "openbb_terminal.stocks.options.yfinance_view.show_binom"
-    },
-    "stocks.options.greeks": {
-        "view": "openbb_terminal.stocks.options.yfinance_view.show_greeks"
-    },
-    "stocks.options.parity": {
-        "view": "openbb_terminal.stocks.options.yfinance_view.show_parity"
-    },
     "stocks.qa.capm_information": {
         "model": "openbb_terminal.stocks.quantitative_analysis.factors_model.capm_information"
     },
@@ -2206,17 +1414,13 @@ functions = {
     "stocks.qa.historical_5": {
         "model": "openbb_terminal.stocks.quantitative_analysis.factors_model.get_historical_5"
     },
-    "stocks.qa.capm": {
-        "view": "openbb_terminal.stocks.quantitative_analysis.factors_view.capm_view"
-    },
     "stocks.screener.screener_data": {
-        "model": "openbb_terminal.stocks.screener.finviz_model.get_screener_data"
-    },
-    "stocks.screener.finviz_screener": {
-        "view": "openbb_terminal.stocks.screener.finviz_view.screener"
+        "model": "openbb_terminal.stocks.screener.finviz_model.get_screener_data",
+        "view": "openbb_terminal.stocks.screener.finviz_view.screener",
     },
     "stocks.screener.historical": {
-        "view": "openbb_terminal.stocks.screener.yahoofinance_view.historical"
+        "model": "openbb_terminal.stocks.screener.yahoofinance_model.historical",
+        "view": "openbb_terminal.stocks.screener.yahoofinance_view.historical",
     },
     "stocks.sia.filter_stocks": {
         "model": "openbb_terminal.stocks.sector_industry_analysis.financedatabase_model.filter_stocks"
@@ -2256,46 +1460,334 @@ functions = {
     "stocks.sia.stocks_data": {
         "model": "openbb_terminal.stocks.sector_industry_analysis.stockanalysis_model.get_stocks_data"
     },
-    "stocks.sia.metric": {
-        "view": "openbb_terminal.stocks.sector_industry_analysis.financedatabase_view.display_bars_financials"
-    },
-    "stocks.sia.financials": {
-        "view": "openbb_terminal.stocks.sector_industry_analysis.stockanalysis_view.display_plots_financials"
-    },
     "stocks.ta.summary": {
         "model": "openbb_terminal.stocks.technical_analysis.finbrain_model.get_technical_summary_report",
         "view": "openbb_terminal.stocks.technical_analysis.finbrain_view.technical_summary_report",
     },
-    "stocks.ta.pattern": {
-        "model": "openbb_terminal.stocks.technical_analysis.finnhub_model.get_pattern_recognition",
-        "view": "openbb_terminal.stocks.technical_analysis.finnhub_view.plot_pattern_recognition",
-    },
-    "stocks.ta.finviz_image": {
-        "model": "openbb_terminal.stocks.technical_analysis.finviz_model.get_finviz_image"
-    },
     "stocks.ta.view": {
-        "view": "openbb_terminal.stocks.technical_analysis.finviz_view.view"
+        "model": "openbb_terminal.stocks.technical_analysis.finviz_model.get_finviz_image",
+        "view": "openbb_terminal.stocks.technical_analysis.finviz_view.view",
     },
     "stocks.ta.recom": {
         "model": "openbb_terminal.stocks.technical_analysis.tradingview_model.get_tradingview_recommendation",
         "view": "openbb_terminal.stocks.technical_analysis.tradingview_view.print_recommendation",
     },
-    "stocks.tradinghours.check_if_open": {
+    "stocks.th.check_if_open": {
         "model": "openbb_terminal.stocks.tradinghours.bursa_model.check_if_open"
     },
-    "stocks.tradinghours.bursa": {
-        "model": "openbb_terminal.stocks.tradinghours.bursa_model.get_bursa"
-    },
     "stocks.th.all": {
-        "view": "openbb_terminal.stocks.tradinghours.bursa_view.display_all"
+        "model": "openbb_terminal.stocks.tradinghours.bursa_model.get_all",
+        "view": "openbb_terminal.stocks.tradinghours.bursa_view.display_all",
     },
     "stocks.th.closed": {
-        "view": "openbb_terminal.stocks.tradinghours.bursa_view.display_closed"
-    },
-    "stocks.th.exchange": {
-        "view": "openbb_terminal.stocks.tradinghours.bursa_view.display_exchange"
+        "model": "openbb_terminal.stocks.tradinghours.bursa_model.get_closed",
+        "view": "openbb_terminal.stocks.tradinghours.bursa_view.display_closed",
     },
     "stocks.th.open": {
-        "view": "openbb_terminal.stocks.tradinghours.bursa_view.display_open"
+        "model": "openbb_terminal.stocks.tradinghours.bursa_model.get_open",
+        "view": "openbb_terminal.stocks.tradinghours.bursa_view.display_open",
+    },
+    "stocks.th.exchange": {
+        "model": "openbb_terminal.stocks.tradinghours.bursa_model.get_bursa",
+        "view": "openbb_terminal.stocks.tradinghours.bursa_view.display_exchange",
     },
 }
+
+
+"""
+api = Loader(functions=functions)
+api.stocks.get_news()
+api.economy.bigmac(chart=True)
+api.economy.bigmac(chart=False)
+
+
+TO USE THE API DIRECTLY JUST IMPORT IT:
+from openbb_terminal.api import openbb (or: from openbb_terminal.api import openbb as api)
+"""
+
+
+def copy_func(f) -> Callable:
+    """Copies the contents and attributes of the entered function. Based on https://stackoverflow.com/a/13503277
+    Parameters
+    ----------
+    f: Callable
+        Function to be copied
+    Returns
+    -------
+    g: Callable
+        New function
+    """
+    g = types.FunctionType(
+        f.__code__,
+        f.__globals__,
+        name=f.__name__,
+        argdefs=f.__defaults__,
+        closure=f.__closure__,
+    )
+    g = functools.update_wrapper(g, f)
+    g.__kwdefaults__ = f.__kwdefaults__
+    return g
+
+
+def change_docstring(api_callable, model: Callable, view=None):
+    """Changes docstring of the entered api_callable
+    Parameters
+    ----------
+    api_callable: Callable
+        Function whose docstring shall be changed
+    model: Callable
+        model function with docstring
+    view: Callable
+        view function with docstring, can also be None if no docstring from it shall be added
+    Returns
+    -------
+    Callable
+        api_callable with changed docstring
+    """
+    if view is not None:
+        index = view.__doc__.find("Parameters")
+        all_parameters = (
+            "\nAPI function, use the chart kwarg for getting the view model and it's plot. "
+            "See every parmater below:\n\n\t"
+            + view.__doc__[index:]
+            + """chart: bool
+    If the view and its chart shall be used"""
+        )
+        api_callable.__doc__ = (
+            all_parameters
+            + "\n\nModel doc:\n"
+            + model.__doc__
+            + "\n\nView doc:\n"
+            + view.__doc__
+        )
+        api_callable.__name__ = model.__name__.replace("get_", "")
+        parameters = list(signature(view).parameters.values())
+        chart_parameter = [
+            Parameter(
+                "chart", Parameter.POSITIONAL_OR_KEYWORD, annotation=bool, default=False
+            )
+        ]
+        api_callable.__signature__ = signature(view).replace(
+            parameters=parameters + chart_parameter
+        )
+    else:
+        api_callable.__doc__ = model.__doc__
+        api_callable.__name__ = model.__name__
+        api_callable.__signature__ = signature(model)
+
+    return api_callable
+
+
+class FunctionFactory:
+    """The API Function Factory, which creates the callable instance"""
+
+    def __init__(self, model: Callable, view: Optional[Callable] = None):
+        """Initialises the FunctionFactory instance
+        Parameters
+        ----------
+        model: Callable
+            The original model function from the terminal
+        view: Callable
+            The original view function from the terminal, this shall be set to None if the
+            function has no charting
+        """
+        self.model_only = False
+        if view is None:
+            self.model_only = True
+            self.model = copy_func(model)
+        else:
+            self.model = copy_func(model)
+            self.view = copy_func(view)
+
+    def api_callable(self, *args, **kwargs):
+        """This returns the result of the command from the view or the model function based on the chart parameter
+        Parameters
+        ----------
+        args
+        kwargs
+        Returns
+        -------
+        Result from the view or model
+        """
+        if "chart" not in kwargs:
+            kwargs["chart"] = False
+        if kwargs["chart"] and (not self.model_only):
+            kwargs.pop("chart")
+            return self.view(*args, **kwargs)
+        kwargs.pop("chart")
+        return self.model(*args, **kwargs)
+
+
+class MenuFiller:
+    """Creates a filler callable for the menus"""
+
+    def __init__(self, function: Callable):
+        self.__function = function
+
+    def __call__(self, *args, **kwargs):
+        print(self.__function(*args, **kwargs))
+
+    def __repr__(self):
+        return self.__function()
+
+
+class Loader:
+    """The Loader class"""
+
+    def __init__(self, funcs: dict):
+        print(
+            "WARNING! Breaking changes incoming! Especially avoid using kwargs, since some of them will change.\n"
+            "You can try <link> branch with the latest changes."
+        )
+        self.__function_map = self.build_function_map(funcs=funcs)
+        self.load_menus()
+
+    def __call__(self):
+        """Prints help message"""
+        print(self.__repr__())
+
+    def __repr__(self):
+        return """This is the API of the OpenBB Terminal.
+        Use the API to get data directly into your jupyter notebook or directly use it in your application.
+        ...
+        For more information see the official documentation at: https://openbb-finance.github.io/OpenBBTerminal/api/
+        """
+
+    # TODO: Add settings
+    def settings(self):
+        pass
+
+    def load_menus(self):
+        """Creates the API structure (see openbb.stocks.command) by setting attributes and saving the functions"""
+
+        def menu_message(menu: str, function_map: dict):
+            """Creates a callable function, which prints a menus help message
+            Parameters
+            ----------
+            menu: str
+                Menu for which the help message is generated
+            function_map: dict
+                Dictionary with the functions and their virtual paths
+            Returns
+            -------
+            Callable:
+                Function which prints help message
+            """
+            filtered_dict = {k: v for (k, v) in function_map.items() if menu in k}
+
+            def f():
+                string = menu.upper() + " Menu\n\nThe api commands of the the menu:"
+                for command in filtered_dict:
+                    string += "\n\t<openbb>." + command
+                return string
+
+            return f
+
+        function_map = self.__function_map
+        for virtual_path, function in function_map.items():
+            virtual_path_split = virtual_path.split(".")
+            last_virtual_path = virtual_path_split[-1]
+
+            previous_menu = self
+            for menu in virtual_path_split[:-1]:
+                if not hasattr(previous_menu, menu):
+                    next_menu = MenuFiller(function=menu_message(menu, function_map))
+                    previous_menu.__setattr__(menu, next_menu)
+                    previous_menu = previous_menu.__getattribute__(menu)
+                else:
+                    previous_menu = previous_menu.__getattribute__(menu)
+            previous_menu.__setattr__(last_virtual_path, function)
+
+    @staticmethod
+    def __load_module(module_path: str) -> Optional[types.ModuleType]:
+        """Load a module from a path.
+        Parameters
+        ----------
+        module_path: str
+            Module"s path.
+        Returns
+        -------
+        Optional[ModuleType]:
+            Loaded module or None.
+        """
+
+        try:
+            spec = importlib.util.find_spec(module_path)
+            del spec
+        except ModuleNotFoundError:
+            return None
+
+        return importlib.import_module(module_path)
+
+    @classmethod
+    def get_function(cls, function_path: str) -> Callable:
+        """Get function from string path
+        Parameters
+        ----------
+        cls
+            Class
+        function_path: str
+            Function path from repository base root
+        Returns
+        -------
+        Callable
+            Function
+        """
+        module_path, function_name = function_path.rsplit(sep=".", maxsplit=1)
+        module = cls.__load_module(module_path=module_path)
+
+        return getattr(module, function_name)
+
+    @classmethod
+    def build_function_map(cls, funcs: dict) -> dict:
+        """Builds dictionary with FunctionFactory instances as items
+        Parameters
+        ----------
+        funcs: dict
+            Dictionary which has string path of view and model functions as keys. The items is dictionary with
+            the view and model function as items of the respectivee "view" and "model" keys
+        Returns
+        -------
+        dict
+            Dictionary with FunctionFactory instances as items and string path as keys
+        """
+        function_map = {}
+
+        for virtual_path in funcs.keys():
+            model_path = funcs[virtual_path].get("model")
+            view_path = funcs[virtual_path].get("view")
+
+            if model_path:
+                model_function = cls.get_function(function_path=model_path)
+            else:
+                model_function = None
+
+            if view_path:
+                view_function = cls.get_function(function_path=view_path)
+            else:
+                view_function = None
+
+            if model_function is not None:
+                try:
+                    function_factory = FunctionFactory(
+                        model=model_function, view=view_function
+                    )
+                    function_with_doc = change_docstring(
+                        types.FunctionType(function_factory.api_callable.__code__, {}),
+                        model_function,
+                        view_function,
+                    )
+                    function_map[virtual_path] = types.MethodType(
+                        function_with_doc, function_factory
+                    )
+                except:
+                    print(model_function)
+            elif view_function is not None:
+                raise Exception(
+                    f"View function without model function : {view_function}"
+                )
+
+        return function_map
+
+
+openbb = Loader(funcs=functions)

@@ -13,33 +13,35 @@ Use your best judgment, and feel free to propose changes to this document in a p
 
 [Development Process](#development-process)
 
-- [How Can I Contribute?](#how-can-i-contribute)
-  - [Community](#community)
-  - [Retail Trader](#retail-trader)
-  - [Software Developer](#software-developer)
-- [Development Process](#development-process)
-  - [Select Feature](#select-feature)
-- [Understand Code Structure](#understand-code-structure)
-- [Follow Coding Guidelines](#follow-coding-guidelines)
-  - [Model](#model)
-    - [View](#view)
-  - [Controller](#controller)
-- [Remember Coding Style](#remember-coding-style)
-  - [Naming Convention](#naming-convention)
-  - [Docstrings](#docstrings)
-  - [Linters](#linters)
-- [Write Code and Commit](#write-code-and-commit)
-  - [Pre Commit Hooks](#pre-commit-hooks)
-  - [Coding](#coding)
-  - [Git Process](#git-process)
-- [Add a Test](#add-a-test)
-  - [Pytest](#pytest)
-  - [Coverage](#coverage)
-  - [VCR](#vcr)
-- [Add Documentation](#add-documentation)
-- [Add support for a new language](#add-support-for-a-new-language)
-- [Open a Pull Request](#open-a-pull-request)
-- [Review Process](#review-process)
+- [CONTRIBUTING](#contributing)
+  - [How Can I Contribute?](#how-can-i-contribute)
+    - [Community](#community)
+    - [Retail Trader](#retail-trader)
+    - [Software Developer](#software-developer)
+  - [Development Process](#development-process)
+    - [Select Feature](#select-feature)
+  - [Understand Code Structure](#understand-code-structure)
+  - [Follow Coding Guidelines](#follow-coding-guidelines)
+    - [Model](#model)
+      - [View](#view)
+    - [Controller](#controller)
+    - [API](#api)
+  - [Remember Coding Style](#remember-coding-style)
+    - [Naming Convention](#naming-convention)
+    - [Docstrings](#docstrings)
+    - [Linters](#linters)
+  - [Write Code and Commit](#write-code-and-commit)
+    - [Pre Commit Hooks](#pre-commit-hooks)
+    - [Coding](#coding)
+    - [Git Process](#git-process)
+  - [Add a Test](#add-a-test)
+    - [Pytest](#pytest)
+    - [Coverage](#coverage)
+    - [VCR](#vcr)
+  - [Add Documentation](#add-documentation)
+  - [Add support for a new language](#add-support-for-a-new-language)
+  - [Open a Pull Request](#open-a-pull-request)
+  - [Review Process](#review-process)
 
 ## How Can I Contribute?
 
@@ -372,6 +374,47 @@ def call_shorted(self, other_args: List[str]):
         )
 
 ```
+### API
+
+In order to add a command to the API, follow these steps:
+
+1. Go to the `api.py` file and scroll to the `functions` dictionary, it should look like this:
+
+    ```python
+    functions = {
+        "stocks.get_news": {
+            "model": "openbb_terminal.common.newsapi_model.get_news",
+        },
+        "stocks.load": {
+            "model": "openbb_terminal.stocks.stocks_helper.load",
+        },
+        "stocks.candle": {
+            "model": "openbb_terminal.stocks.stocks_helper.load",
+            "view": "openbb_terminal.stocks.stocks_helper.display_candle",
+        },
+    
+    ...
+    ```
+2. Add a new key to the dictionary, which corresponds to the way the added command shall be accessed from the api.
+This is called the `virtual path`. In this case it should be `stocks.dps.shorted`.
+3. Now it is time to add the value to the key. This key shall be another dictionary with a `model` key and possibly a
+`view` key.
+   1. The model keys value should be the path from project root to the new commands model function as a string. This
+   case it is `openbb_terminal.stocks.dark_pool_shorts.yahoofinance_model.get_most_shorted`.
+   2. If and **only if** the view function of the command **displays a chart**, then the `view` key and its value is
+   the view functions path from the project root as a string. In this example the view function of the only prints a
+   table and thus this step can be ignored.
+4. Done!!! The final new dictionary looks like this after the added example:
+    ```python
+    functions = {
+        ...
+    
+        "stocks.dps.shorted": {
+            "model": "openbb_terminal.stocks.dark_pool_shorts.yahoofinance_model.get_most_shorted",
+        },
+    
+        ...
+    ```
 
 ## Remember Coding Style
 
