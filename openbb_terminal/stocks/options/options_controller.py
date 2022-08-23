@@ -793,6 +793,12 @@ class OptionsController(BaseController):
                             puts_only=ns_parser.puts,
                             export=ns_parser.export,
                         )
+                    elif ns_parser.source == "nasdaq":
+                        nasdaq_view.display_chains(
+                            symbol=self.ticker,
+                            expiration=self.selected_date,
+                            export=ns_parser.export,
+                        )
                 else:
                     console.print("No expiry loaded. First use `exp {expiry date}`\n")
             else:

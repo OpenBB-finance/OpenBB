@@ -305,3 +305,27 @@ def display_volume_and_oi(
     theme.style_primary_axis(ax)
     if external_axes is None:
         theme.visualize_output()
+
+
+@log_start_end(log=logger)
+def display_chains(symbol: str, expiration: str, export: str = ""):
+    """Display option chain for given expiration
+
+    Parameters
+    ----------
+    symbol: str
+        Ticker symbol
+    expiration: str
+        Expiry date for options
+    export: str
+        Format to export data
+    """
+    option_chain = nasdaq_model.get_chain_given_expiration(symbol, expiration)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "chain_nasdaq",
+        option_chain,
+    )
+
+    print_rich_table(option_chain, headers=option_chain.columns)
