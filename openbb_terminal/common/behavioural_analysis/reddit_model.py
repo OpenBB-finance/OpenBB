@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 import logging
 from datetime import datetime, timedelta
 from typing import Dict, List, Tuple
+import warnings
 
 import finviz
 import pandas as pd
@@ -190,7 +191,10 @@ def get_popular_tickers(
 
     for s_sub_reddit in sub_reddit_list:
         console.print(
-            f"Search for latest tickers for {post_limit} '{s_sub_reddit}' posts"
+            f"Searching for latest tickers for {post_limit} '{s_sub_reddit}' posts"
+        )
+        warnings.filterwarnings(
+            "ignore", message=".*Not all PushShift shards are active.*"
         )
         submissions = psaw_api.search_submissions(
             subreddit=s_sub_reddit,
@@ -204,30 +208,31 @@ def get_popular_tickers(
                 # Get more information about post using PRAW api
                 submission = praw_api.submission(id=submission.id)
 
-                # Ensure that the post hasn't been removed by moderator in the meanwhile,
-                # that there is a description and it's not just an image, that the flair is
-                # meaningful, and that we aren't re-considering same author's content
-                if (
-                    not submission.removed_by_category
-                    and (submission.selftext or submission.title)
-                    and submission.author.name not in l_watchlist_author
-                ):
-                    l_tickers_found = find_tickers(submission)
+                if submission is not None:
+                    # Ensure that the post hasn't been removed by moderator in the meanwhile,
+                    # that there is a description and it's not just an image, that the flair is
+                    # meaningful, and that we aren't re-considering same author's content
+                    if (
+                        not submission.removed_by_category
+                        and (submission.selftext or submission.title)
+                        and submission.author.name not in l_watchlist_author
+                    ):
+                        l_tickers_found = find_tickers(submission)
 
-                    if l_tickers_found:
-                        n_tickers += len(l_tickers_found)
+                        if l_tickers_found:
+                            n_tickers += len(l_tickers_found)
 
-                        # Add another author's name to the parsed watchlists
-                        l_watchlist_author.append(submission.author.name)
+                            # Add another author's name to the parsed watchlists
+                            l_watchlist_author.append(submission.author.name)
 
-                        # Lookup stock tickers within a watchlist
-                        for key in l_tickers_found:
-                            if key in d_watchlist_tickers:
-                                # Increment stock ticker found
-                                d_watchlist_tickers[key] += 1
-                            else:
-                                # Initialize stock ticker found
-                                d_watchlist_tickers[key] = 1
+                            # Lookup stock tickers within a watchlist
+                            for key in l_tickers_found:
+                                if key in d_watchlist_tickers:
+                                    # Increment stock ticker found
+                                    d_watchlist_tickers[key] += 1
+                                else:
+                                    # Initialize stock ticker found
+                                    d_watchlist_tickers[key] = 1
 
             except ResponseException as e:
                 logger.exception("Invalid response: %s", str(e))
@@ -275,7 +280,7 @@ def get_popular_tickers(
             except Exception as e:
                 logger.exception(str(e))
                 console.print(e, "\n")
-                return
+                return pd.DataFrame()
 
         popular_tickers_df = pd.DataFrame(
             popular_tickers,

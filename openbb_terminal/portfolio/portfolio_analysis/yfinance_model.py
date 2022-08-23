@@ -13,9 +13,9 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def get_country(ticker):
+def get_country(symbol):
     country = "NA"
-    data = yf.utils.get_json(f"https://finance.yahoo.com/quote/{ticker}")
+    data = yf.utils.get_json(f"https://finance.yahoo.com/quote/{symbol}")
 
     if "summaryProfile" in data:
         country = data["summaryProfile"]["country"]

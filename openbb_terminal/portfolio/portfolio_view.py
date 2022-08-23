@@ -160,9 +160,9 @@ def display_assets_allocation(
 
 @log_start_end(log=logger)
 def display_category_allocation(
-    category: str,
     portfolio_allocation: pd.DataFrame,
     benchmark_allocation: pd.DataFrame,
+    category: str = "sectors",
     limit: int = 10,
     include_separate_tables: bool = False,
 ):
@@ -170,12 +170,12 @@ def display_category_allocation(
 
     Parameters
     ----------
-    category: str
-        Whether you want to show sectors, countries or regions
     portfolio_allocation: pd.DataFrame
         The allocation to the set category of the portfolio
     benchmark_allocation: pd.DataFrame
         The allocation to the set category of the benchmark
+    category: str
+        Whether you want to show sectors, countries or regions
     limit: int
         The amount of assets you wish to show, by default this is set to 10.
     include_separate_tables: bool
@@ -239,7 +239,7 @@ def display_category_allocation(
 def display_performance_vs_benchmark(
     portfolio_trades: pd.DataFrame,
     benchmark_trades: pd.DataFrame,
-    period: str,
+    interval: str = "1y",
     show_all_trades: bool = False,
 ):
     """Display portfolio performance vs the benchmark
@@ -250,17 +250,17 @@ def display_performance_vs_benchmark(
         Object containing trades made within the portfolio.
     benchmark_trades: pd.DataFrame
         Object containing trades made within the benchmark.
-    period : str
-        Period to consider performance. From: mtd, qtd, ytd, 3m, 6m, 1y, 3y, 5y, 10y, all
+    interval : str
+        interval to consider performance. From: mtd, qtd, ytd, 3m, 6m, 1y, 3y, 5y, 10y, all
     show_all_trades: bool
         Whether to also show all trades made and their performance (default is False)
     """
 
     portfolio_trades.index = pd.to_datetime(portfolio_trades["Date"].values)
-    portfolio_trades = portfolio_helper.filter_df_by_period(portfolio_trades, period)
+    portfolio_trades = portfolio_helper.filter_df_by_period(portfolio_trades, interval)
 
     benchmark_trades.index = pd.to_datetime(benchmark_trades["Date"].values)
-    benchmark_trades = portfolio_helper.filter_df_by_period(benchmark_trades, period)
+    benchmark_trades = portfolio_helper.filter_df_by_period(benchmark_trades, interval)
 
     if show_all_trades:
         # Combine DataFrames
@@ -283,7 +283,7 @@ def display_performance_vs_benchmark(
 
         print_rich_table(
             combined,
-            title=f"Portfolio vs. Benchmark - Individual Trades in period: {period}",
+            title=f"Portfolio vs. Benchmark - Individual Trades in period: {interval}",
             headers=list(combined.columns),
             show_index=False,
             floatfmt=[".2f", ".2f", ".2f", ".2%", ".2f", ".2%", ".2%"],
@@ -344,7 +344,7 @@ def display_performance_vs_benchmark(
         )
         print_rich_table(
             totals.replace(0, "-"),
-            title=f"Portfolio vs. Benchmark - Totals in period: {period}",
+            title=f"Portfolio vs. Benchmark - Totals in period: {interval}",
             headers=list(totals.columns),
             show_index=True,
         )
@@ -354,7 +354,7 @@ def display_performance_vs_benchmark(
 def display_yearly_returns(
     portfolio_returns: pd.Series,
     benchmark_returns: pd.Series,
-    period: str = "all",
+    interval: str = "all",
     raw: bool = False,
     export: str = "",
     external_axes: Optional[plt.Axes] = None,
@@ -367,8 +367,8 @@ def display_yearly_returns(
         Returns of the portfolio
     benchmark_returns : pd.Series
         Returns of the benchmark
-    period : str
-        Period to compare cumulative returns and benchmark
+    interval : str
+        interval to compare cumulative returns and benchmark
     raw : False
         Display raw data from cumulative return
     export : str
@@ -376,8 +376,12 @@ def display_yearly_returns(
     external_axes: plt.Axes
         Optional axes to display plot on
     """
-    portfolio_returns = portfolio_helper.filter_df_by_period(portfolio_returns, period)
-    benchmark_returns = portfolio_helper.filter_df_by_period(benchmark_returns, period)
+    portfolio_returns = portfolio_helper.filter_df_by_period(
+        portfolio_returns, interval
+    )
+    benchmark_returns = portfolio_helper.filter_df_by_period(
+        benchmark_returns, interval
+    )
 
     creturns_year_idx = list()
     creturns_year_val = list()
@@ -440,7 +444,7 @@ def display_yearly_returns(
 
         ax.legend(loc="upper left")
         ax.set_ylabel("Yearly Returns [%]")
-        ax.set_title(f"Yearly Returns [%] in period {period}")
+        ax.set_title(f"Yearly Returns [%] in period {interval}")
         theme.style_primary_axis(ax)
 
         if not external_axes:
@@ -458,7 +462,7 @@ def display_yearly_returns(
 def display_monthly_returns(
     portfolio_returns: pd.Series,
     benchmark_returns: pd.Series,
-    period: str = "all",
+    interval: str = "all",
     raw: bool = False,
     show_vals: bool = False,
     export: str = "",
@@ -472,8 +476,8 @@ def display_monthly_returns(
         Returns of the portfolio
     benchmark_returns : pd.Series
         Returns of the benchmark
-    period : str
-        Period to compare cumulative returns and benchmark
+    interval : str
+        interval to compare cumulative returns and benchmark
     raw : False
         Display raw data from cumulative return
     show_vals : False
@@ -483,8 +487,12 @@ def display_monthly_returns(
     external_axes: plt.Axes
         Optional axes to display plot on
     """
-    portfolio_returns = portfolio_helper.filter_df_by_period(portfolio_returns, period)
-    benchmark_returns = portfolio_helper.filter_df_by_period(benchmark_returns, period)
+    portfolio_returns = portfolio_helper.filter_df_by_period(
+        portfolio_returns, interval
+    )
+    benchmark_returns = portfolio_helper.filter_df_by_period(
+        benchmark_returns, interval
+    )
 
     creturns_month_val = list()
     breturns_month_val = list()
@@ -580,7 +588,7 @@ def display_monthly_returns(
         else:
             ax = external_axes
 
-        ax[0].set_title(f"Portfolio in period {period}")
+        ax[0].set_title(f"Portfolio in period {interval}")
         sns.heatmap(
             monthly_returns,
             cmap="bwr_r",
@@ -594,7 +602,7 @@ def display_monthly_returns(
         )
         theme.style_primary_axis(ax[0])
 
-        ax[1].set_title(f"Benchmark in period {period}")
+        ax[1].set_title(f"Benchmark in period {interval}")
         sns.heatmap(
             bench_monthly_returns,
             cmap="bwr_r",
@@ -622,7 +630,7 @@ def display_monthly_returns(
 def display_daily_returns(
     portfolio_returns: pd.Series,
     benchmark_returns: pd.Series,
-    period: str = "all",
+    interval: str = "all",
     raw: bool = False,
     limit: int = 10,
     export: str = "",
@@ -636,8 +644,8 @@ def display_daily_returns(
         Returns of the portfolio
     benchmark_returns : pd.Series
         Returns of the benchmark
-    period : str
-        Period to compare cumulative returns and benchmark
+    interval : str
+        interval to compare cumulative returns and benchmark
     raw : False
         Display raw data from cumulative return
     limit : int
@@ -647,8 +655,12 @@ def display_daily_returns(
     external_axes: plt.Axes
         Optional axes to display plot on
     """
-    portfolio_returns = portfolio_helper.filter_df_by_period(portfolio_returns, period)
-    benchmark_returns = portfolio_helper.filter_df_by_period(benchmark_returns, period)
+    portfolio_returns = portfolio_helper.filter_df_by_period(
+        portfolio_returns, interval
+    )
+    benchmark_returns = portfolio_helper.filter_df_by_period(
+        benchmark_returns, interval
+    )
 
     if raw:
         last_returns = portfolio_returns.to_frame()
@@ -668,11 +680,11 @@ def display_daily_returns(
         else:
             ax = external_axes
 
-        ax[0].set_title(f"Portfolio in period {period}")
+        ax[0].set_title(f"Portfolio in period {interval}")
         ax[0].plot(portfolio_returns.index, portfolio_returns, label="Portfolio")
         ax[0].set_ylabel("Returns [%]")
         theme.style_primary_axis(ax[0])
-        ax[1].set_title(f"Benchmark in period {period}")
+        ax[1].set_title(f"Benchmark in period {interval}")
         ax[1].plot(benchmark_returns.index, benchmark_returns, label="Benchmark")
         ax[1].set_ylabel("Returns [%]")
         theme.style_primary_axis(ax[1])
@@ -692,7 +704,7 @@ def display_daily_returns(
 def display_distribution_returns(
     portfolio_returns: pd.Series,
     benchmark_returns: pd.Series,
-    period: str = "all",
+    interval: str = "all",
     raw: bool = False,
     export: str = "",
     external_axes: Optional[plt.Axes] = None,
@@ -705,8 +717,8 @@ def display_distribution_returns(
         Returns of the portfolio
     benchmark_returns : pd.Series
         Returns of the benchmark
-    period : str
-        Period to compare cumulative returns and benchmark
+    interval : str
+        interval to compare cumulative returns and benchmark
     raw : False
         Display raw data from cumulative return
     export : str
@@ -714,15 +726,19 @@ def display_distribution_returns(
     external_axes: plt.Axes
         Optional axes to display plot on
     """
-    portfolio_returns = portfolio_helper.filter_df_by_period(portfolio_returns, period)
-    benchmark_returns = portfolio_helper.filter_df_by_period(benchmark_returns, period)
+    portfolio_returns = portfolio_helper.filter_df_by_period(
+        portfolio_returns, interval
+    )
+    benchmark_returns = portfolio_helper.filter_df_by_period(
+        benchmark_returns, interval
+    )
 
     stats = portfolio_returns.describe().to_frame().join(benchmark_returns.describe())
 
     if raw:
         print_rich_table(
             stats,
-            title=f"Stats for Portfolio and Benchmark in period {period}",
+            title=f"Stats for Portfolio and Benchmark in period {interval}",
             show_index=True,
             headers=["Portfolio", "Benchmark"],
         )
@@ -927,7 +943,7 @@ def display_holdings_percentage(
 def display_rolling_volatility(
     benchmark_returns: pd.Series,
     portfolio_returns: pd.Series,
-    period: str = "1y",
+    interval: str = "1y",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -939,8 +955,8 @@ def display_rolling_volatility(
         Returns of the portfolio
     benchmark_returns : pd.Series
         Returns of the benchmark
-    period: str
-        Period for window to consider
+    interval: str
+        interval for window to consider
     export: str
         Export to file
     external_axes: Optional[List[plt.Axes]]
@@ -955,14 +971,14 @@ def display_rolling_volatility(
             return
         ax = external_axes
 
-    rolling_volatility = portfolio_model.rolling_volatility(portfolio_returns, period)
+    rolling_volatility = portfolio_model.rolling_volatility(portfolio_returns, interval)
     rolling_volatility_bench = portfolio_model.rolling_volatility(
-        benchmark_returns, period
+        benchmark_returns, interval
     )
 
     rolling_volatility.plot(ax=ax)
     rolling_volatility_bench.plot(ax=ax)
-    ax.set_title(f"Rolling Volatility using {period} window")
+    ax.set_title(f"Rolling Volatility using {interval} window")
     ax.set_xlabel("Date")
     ax.legend(["Portfolio", "Benchmark"], loc="upper left")
     ax.set_xlim(rolling_volatility.index[0], rolling_volatility.index[-1])
@@ -982,7 +998,7 @@ def display_rolling_volatility(
 def display_rolling_sharpe(
     benchmark_returns: pd.Series,
     portfolio_returns: pd.Series,
-    period: str = "1y",
+    interval: str = "1y",
     risk_free_rate: float = 0,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -995,8 +1011,8 @@ def display_rolling_sharpe(
         Returns of the portfolio
     benchmark_returns : pd.Series
         Returns of the benchmark
-    period: str
-        Period for window to consider
+    interval: str
+        interval for window to consider
     risk_free_rate: float
         Value to use for risk free rate in sharpe/other calculations
     export: str
@@ -1014,15 +1030,15 @@ def display_rolling_sharpe(
         ax = external_axes
 
     rolling_sharpe = portfolio_model.rolling_sharpe(
-        portfolio_returns, risk_free_rate, period
+        portfolio_returns, risk_free_rate, interval
     )
     rolling_sharpe_bench = portfolio_model.rolling_sharpe(
-        benchmark_returns, risk_free_rate, period
+        benchmark_returns, risk_free_rate, interval
     )
 
     rolling_sharpe.plot(ax=ax)
     rolling_sharpe_bench.plot(ax=ax)
-    ax.set_title(f"Rolling Sharpe using {period} window")
+    ax.set_title(f"Rolling Sharpe using {interval} window")
     ax.set_xlabel("Date")
     ax.legend(["Portfolio", "Benchmark"], loc="upper left")
     ax.set_xlim(rolling_sharpe.index[0], rolling_sharpe.index[-1])
@@ -1042,7 +1058,7 @@ def display_rolling_sharpe(
 def display_rolling_sortino(
     benchmark_returns: pd.Series,
     portfolio_returns: pd.Series,
-    period: str = "1y",
+    interval: str = "1y",
     risk_free_rate: float = 0,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -1055,8 +1071,8 @@ def display_rolling_sortino(
         Returns of the portfolio
     benchmark_returns : pd.Series
         Returns of the benchmark
-    period: str
-        Period for window to consider
+    interval: str
+        interval for window to consider
     risk_free_rate: float
         Value to use for risk free rate in sharpe/other calculations
     export: str
@@ -1074,15 +1090,15 @@ def display_rolling_sortino(
         ax = external_axes
 
     rolling_sortino = portfolio_model.rolling_sortino(
-        portfolio_returns, risk_free_rate, period
+        portfolio_returns, risk_free_rate, interval
     )
     rolling_sortino_bench = portfolio_model.rolling_sortino(
-        benchmark_returns, risk_free_rate, period
+        benchmark_returns, risk_free_rate, interval
     )
 
     rolling_sortino.plot(ax=ax)
     rolling_sortino_bench.plot(ax=ax)
-    ax.set_title(f"Rolling Sortino using {period} window")
+    ax.set_title(f"Rolling Sortino using {interval} window")
     ax.set_xlabel("Date")
     ax.legend(["Portfolio", "Benchmark"], loc="upper left")
     ax.set_xlim(rolling_sortino.index[0], rolling_sortino.index[-1])
@@ -1102,7 +1118,7 @@ def display_rolling_sortino(
 def display_rolling_beta(
     portfolio_returns: pd.Series,
     benchmark_returns: pd.Series,
-    period: str = "1y",
+    interval: str = "1y",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -1114,8 +1130,8 @@ def display_rolling_beta(
         Returns of the portfolio
     benchmark_returns : pd.Series
         Returns of the benchmark
-    period: str
-        Period for window to consider
+    interval: str
+        interval for window to consider
     export: str
         Export to file
     external_axes: Optional[List[plt.Axes]]
@@ -1131,11 +1147,11 @@ def display_rolling_beta(
         ax = external_axes
 
     rolling_beta = portfolio_model.get_rolling_beta(
-        portfolio_returns, benchmark_returns, period
+        portfolio_returns, benchmark_returns, interval
     )
     rolling_beta.plot(ax=ax)
 
-    ax.set_title(f"Rolling Beta using {period} window")
+    ax.set_title(f"Rolling Beta using {interval} window")
     ax.set_xlabel("Date")
     ax.hlines(
         [1],
@@ -1160,7 +1176,7 @@ def display_rolling_beta(
 
 @log_start_end(log=logger)
 def display_maximum_drawdown(
-    holdings: pd.Series,
+    data: pd.Series,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -1168,23 +1184,23 @@ def display_maximum_drawdown(
 
     Parameters
     ----------
-    holdings: pd.DataFrame
+    data: pd.DataFrame
         Dataframe of holdings vs time
     export: str
         Format to export data
     external_axes: plt.Axes
         Optional axes to display plot on
     """
-    drawdown = portfolio_model.calculate_drawdown(holdings)
+    drawdown = portfolio_model.calculate_drawdown(data)
     if external_axes is None:
         _, ax = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI, sharex=True)
     else:
         ax = external_axes
 
-    ax[0].plot(holdings.index, holdings)
+    ax[0].plot(data.index, data)
     ax[0].set_title("Holdings")
-    ax[1].plot(holdings.index, drawdown)
-    ax[1].fill_between(holdings.index, np.asarray(drawdown), alpha=0.4)
+    ax[1].plot(data.index, drawdown)
+    ax[1].fill_between(data.index, np.asarray(drawdown), alpha=0.4)
     ax[1].set_title("Portfolio Drawdown")
 
     theme.style_primary_axis(ax[1])
@@ -1281,7 +1297,7 @@ def display_kurtosis(
 @log_start_end(log=logger)
 def display_stats(
     portfolio: portfolio_model.PortfolioModel,
-    period: str = "all",
+    interval: str = "all",
     export: str = "",
 ):
     """Display stats
@@ -1290,14 +1306,14 @@ def display_stats(
     ----------
     portfolio: Portfolio
         Portfolio object with trades loaded
-    period : str
-        Period to consider. Choices are: mtd, qtd, ytd, 3m, 6m, 1y, 3y, 5y, 10y, all
+    interval : str
+        interval to consider. Choices are: mtd, qtd, ytd, 3m, 6m, 1y, 3y, 5y, 10y, all
     export : str
         Export data format
     """
     print_rich_table(
-        portfolio.get_stats(period),
-        title=f"Stats for Portfolio and Benchmark in period {period}",
+        portfolio.get_stats(interval),
+        title=f"Stats for Portfolio and Benchmark in period {interval}",
         show_index=True,
         floatfmt=".3f",
     )
@@ -1313,7 +1329,7 @@ def display_volatility(
     portfolio: portfolio_model.PortfolioModel,
     export: str = "",
 ):
-    """Display volatility for multiple periods
+    """Display volatility for multiple intervals
 
     Parameters
     ----------
@@ -1337,10 +1353,10 @@ def display_volatility(
 @log_start_end(log=logger)
 def display_sharpe_ratio(
     portfolio: portfolio_model.PortfolioModel,
-    risk_free_rate: float,
+    risk_free_rate: float = 0,
     export: str = "",
 ):
-    """Display sharpe ratio for multiple periods
+    """Display sharpe ratio for multiple intervals
 
     Parameters
     ----------
@@ -1369,10 +1385,10 @@ def display_sharpe_ratio(
 @log_start_end(log=logger)
 def display_sortino_ratio(
     portfolio: portfolio_model.PortfolioModel,
-    risk_free_rate: float,
+    risk_free_rate: float = 0,
     export: str = "",
 ):
-    """Display sortino ratio for multiple periods
+    """Display sortino ratio for multiple intervals
 
     Parameters
     ----------
@@ -1403,7 +1419,7 @@ def display_maximum_drawdown_ratio(
     portfolio: portfolio_model.PortfolioModel,
     export: str = "",
 ):
-    """Display maximum drawdown for multiple periods
+    """Display maximum drawdown for multiple intervals
 
     Parameters
     ----------
@@ -1429,7 +1445,7 @@ def display_gaintopain_ratio(
     portfolio: portfolio_model.PortfolioModel,
     export: str = "",
 ):
-    """Display gain-to-pain ratio for multiple periods
+    """Display gain-to-pain ratio for multiple intervals
 
     Parameters
     ----------
@@ -1458,7 +1474,7 @@ def display_tracking_error(
     portfolio: portfolio_model.PortfolioModel,
     export: str = "",
 ):
-    """Display tracking error for multiple periods
+    """Display tracking error for multiple intervals
 
     Parameters
     ----------
@@ -1484,7 +1500,7 @@ def display_information_ratio(
     portfolio: portfolio_model.PortfolioModel,
     export: str = "",
 ):
-    """Display information ratio for multiple periods
+    """Display information ratio for multiple intervals
 
     Parameters
     ----------
@@ -1513,7 +1529,7 @@ def display_tail_ratio(
     portfolio: portfolio_model.PortfolioModel,
     export: str = "",
 ):
-    """Display tail ratio for multiple periods
+    """Display tail ratio for multiple intervals
 
     Parameters
     ----------
@@ -1539,7 +1555,7 @@ def display_common_sense_ratio(
     portfolio: portfolio_model.PortfolioModel,
     export: str = "",
 ):
-    """Display common sense ratio for multiple periods
+    """Display common sense ratio for multiple intervals
 
     Parameters
     ----------
@@ -1566,21 +1582,21 @@ def display_common_sense_ratio(
 @log_start_end(log=logger)
 def display_jensens_alpha(
     portfolio: portfolio_model.PortfolioModel,
-    rf: float = 0,
+    risk_free_rate: float = 0,
     export: str = "",
 ):
-    """Display jensens alpha for multiple periods
+    """Display jensens alpha for multiple intervals
 
     Parameters
     ----------
     portfolio: Portfolio
         Portfolio object with returns and benchmark loaded
-    rf: float
+    risk_free_rate: float
             Risk free rate
     export : str
         Export data format
     """
-    df, _ = portfolio.get_jensens_alpha(rf=rf)
+    df, _ = portfolio.get_jensens_alpha(rf=risk_free_rate)
     print_rich_table(
         df,
         title="Portfolio's jensen's alpha",
@@ -1597,7 +1613,7 @@ def display_calmar_ratio(
     portfolio: portfolio_model.PortfolioModel,
     export: str = "",
 ):
-    """Display calmar ratio for multiple periods
+    """Display calmar ratio for multiple intervals
 
     Parameters
     ----------
@@ -1623,7 +1639,7 @@ def display_kelly_criterion(
     portfolio: portfolio_model.PortfolioModel,
     export: str = "",
 ):
-    """Display kelly criterion for multiple periods
+    """Display kelly criterion for multiple intervals
 
     Parameters
     ----------
@@ -1648,7 +1664,7 @@ def display_payoff_ratio(
     portfolio: portfolio_model.PortfolioModel,
     export: str = "",
 ):
-    """Display payoff ratio for multiple periods
+    """Display payoff ratio for multiple intervals
 
     Parameters
     ----------
@@ -1673,7 +1689,7 @@ def display_profit_factor(
     portfolio: portfolio_model.PortfolioModel,
     export: str = "",
 ):
-    """Display profit factor for multiple periods
+    """Display profit factor for multiple intervals
 
     Parameters
     ----------
@@ -1698,7 +1714,7 @@ def display_profit_factor(
 def display_summary_portfolio_benchmark(
     portfolio_returns: pd.Series,
     benchmark_returns: pd.Series,
-    period: str = "all",
+    interval: str = "all",
     risk_free_rate: float = 0,
     export: str = "",
 ):
@@ -1710,15 +1726,19 @@ def display_summary_portfolio_benchmark(
         Returns of the portfolio
     benchmark_returns : pd.Series
         Returns of the benchmark
-    period : str
-        Period to compare cumulative returns and benchmark
+    interval : str
+        interval to compare cumulative returns and benchmark
     risk_free_rate : float
         Risk free rate for calculations
     export : str
         Export certain type of data
     """
-    portfolio_returns = portfolio_helper.filter_df_by_period(portfolio_returns, period)
-    benchmark_returns = portfolio_helper.filter_df_by_period(benchmark_returns, period)
+    portfolio_returns = portfolio_helper.filter_df_by_period(
+        portfolio_returns, interval
+    )
+    benchmark_returns = portfolio_helper.filter_df_by_period(
+        benchmark_returns, interval
+    )
 
     metrics = {
         "Volatility": [portfolio_returns.std(), benchmark_returns.std()],
@@ -1755,7 +1775,7 @@ def display_summary_portfolio_benchmark(
 
     print_rich_table(
         summary,
-        title=f"Summary of Portfolio vs Benchmark for {period} period",
+        title=f"Summary of Portfolio vs Benchmark for {interval} period",
         show_index=True,
         headers=summary.columns,
     )

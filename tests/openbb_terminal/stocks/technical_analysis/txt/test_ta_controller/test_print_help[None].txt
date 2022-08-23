@@ -16,6 +16,7 @@ Momentum:
     cci                commodity channel index
     macd               moving average convergence/divergence
     rsi                relative strength index
+    rsp                relative strength percentile
     stoch              stochastic oscillator
     fisher             fisher transform
     cg                 centre of gravity
