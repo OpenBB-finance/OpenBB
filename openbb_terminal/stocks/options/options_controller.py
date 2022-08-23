@@ -183,7 +183,9 @@ class OptionsController(BaseController):
         mt.add_raw("\n")
         mt.add_cmd("pcr", "AlphaQuery", self.ticker and self.selected_date)
         mt.add_cmd("info", "Barchart", self.ticker and self.selected_date)
-        mt.add_cmd("chains", "Tradier/NASDAQ/Yfinance", self.ticker and self.selected_date)
+        mt.add_cmd(
+            "chains", "Tradier/NASDAQ/Yfinance", self.ticker and self.selected_date
+        )
         mt.add_cmd("oi", "Tradier/YFinance/NASDAQ", self.ticker and self.selected_date)
         mt.add_cmd("vol", "Tradier/YFinance/NASDAQ", self.ticker and self.selected_date)
         mt.add_cmd("voi", "Tradier/YFinance/NASDAQ", self.ticker and self.selected_date)
