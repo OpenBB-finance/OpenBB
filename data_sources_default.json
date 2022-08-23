@@ -65,6 +65,9 @@
                 "yf",
                 "tradier",
                 "nasdaq"
+            ],
+            "greeks": [
+                "yf"
             ]
         },
         "disc": {

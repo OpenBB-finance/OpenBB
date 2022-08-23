@@ -921,9 +921,7 @@ class OptionsController(BaseController):
             help="maximum strike price to consider in the plot.",
         )
         ns_parser = self.parse_known_args_and_warn(
-            parser,
-            other_args,
-            EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, raw=True
         )
         if ns_parser:
             if self.ticker:
@@ -940,7 +938,7 @@ class OptionsController(BaseController):
                             min_vol=ns_parser.min_vol,
                             export=ns_parser.export,
                         )
-                    else:
+                    elif ns_parser.source == "yf":
                         yfinance_view.plot_volume_open_interest(
                             symbol=self.ticker,
                             expiry=self.selected_date,
@@ -949,6 +947,17 @@ class OptionsController(BaseController):
                             min_vol=ns_parser.min_vol,
                             export=ns_parser.export,
                         )
+                    elif ns_parser.source == "nasdaq":
+                        nasdaq_view.display_volume_and_oi(
+                            symbol=self.ticker,
+                            expiration=self.selected_date,
+                            min_sp=ns_parser.min_sp,
+                            max_sp=ns_parser.max_sp,
+                            raw=ns_parser.raw,
+                            export=ns_parser.export,
+                        )
+                    else:
+                        pass
                 else:
                     console.print("No expiry loaded. First use `exp {expiry date}`\n")
             else:
