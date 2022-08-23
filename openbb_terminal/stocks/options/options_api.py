@@ -1,4 +1,9 @@
 """Options API."""
+
+# flake8: noqa
+# pylint: disable=unused-import
+
+
 import os
 
 from openbb_terminal.helper_classes import ModelsNamespace as _models
