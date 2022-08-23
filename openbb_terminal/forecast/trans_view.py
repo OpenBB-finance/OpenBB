@@ -6,10 +6,25 @@ from typing import Union, Optional
 from datetime import datetime
 
 import pandas as pd
+from contextlib import contextmanager
+import sys, os
 
-from openbb_terminal.forecast import trans_model
-from openbb_terminal.decorators import log_start_end
-from openbb_terminal.forecast import helpers
+
+@contextmanager
+def suppress_stdout():
+    with open(os.devnull, "w") as devnull:
+        old_stdout = sys.stdout
+        sys.stdout = devnull
+        try:
+            yield
+        finally:
+            sys.stdout = old_stdout
+
+
+with suppress_stdout():
+    from openbb_terminal.forecast import trans_model
+    from openbb_terminal.decorators import log_start_end
+    from openbb_terminal.forecast import helpers
 
 logger = logging.getLogger(__name__)
 # pylint: disable=too-many-arguments
