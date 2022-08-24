@@ -935,6 +935,66 @@ functions = {
         "model": "openbb_terminal.etf.yfinance_model.get_etf_summary_description",
         "view": "openbb_terminal.etf.yfinance_view.display_etf_description",
     },
+    "forex.quote": {
+        "model": "openbb_terminal.forex.av_model.get_quote",
+        "view": "openbb_terminal.forex.av_view.display_quote",
+    },
+    "forex.oanda.fwd": {
+        "model": "openbb_terminal.forex.fxempire_model.get_forward_rates",
+        "view": "openbb_terminal.forex.fxempire_view.display_forward_rates",
+    },
+    "forex.oanda.summary": {
+        "model": "openbb_terminal.forex.oanda.oanda_model.account_summary_request",
+        "view": "openbb_terminal.forex.oanda.oanda_view.get_account_summary",
+    },
+    "forex.oanda.cancel": {
+        "model": "openbb_terminal.forex.oanda.oanda_model.cancel_pending_order_request",
+        "view": "openbb_terminal.forex.oanda.oanda_view.cancel_pending_order",
+    },
+    "forex.oanda.close": {
+        "model": "openbb_terminal.forex.oanda.oanda_model.close_trades_request",
+        "view": "openbb_terminal.forex.oanda.oanda_view.close_trade",
+    },
+    "forex.oanda.order": {
+        "model": "openbb_terminal.forex.oanda.oanda_model.create_order_request",
+        "view": "openbb_terminal.forex.oanda.oanda_view.create_order",
+    },
+    "forex.oanda.price": {
+        "model": "openbb_terminal.forex.oanda.oanda_model.fx_price_request",
+        "view": "openbb_terminal.forex.oanda.oanda_view.get_fx_price",
+    },
+    "forex.oanda.calendar": {
+        "model": "openbb_terminal.forex.oanda.oanda_model.get_calendar_request",
+        "view": "openbb_terminal.forex.oanda.oanda_view.calendar",
+    },
+    "forex.oanda.candles": {
+        "model": "openbb_terminal.forex.oanda.oanda_model.get_candles_dataframe",
+        "view": "openbb_terminal.forex.oanda.oanda_view.show_candles",
+    },
+    "forex.oanda.openpositions": {
+        "model": "openbb_terminal.forex.oanda.oanda_model.open_positions_request",
+        "view": "openbb_terminal.forex.oanda.oanda_view.get_open_positions",
+    },
+    "forex.oanda.opentrades": {
+        "model": "openbb_terminal.forex.oanda.oanda_model.open_trades_request",
+        "view": "openbb_terminal.forex.oanda.oanda_view.get_open_trades",
+    },
+    "forex.oanda.listorders": {
+        "model": "openbb_terminal.forex.oanda.oanda_model.order_history_request",
+        "view": "openbb_terminal.forex.oanda.oanda_view.list_orders",
+    },
+    "forex.oanda.orderbook": {
+        "model": "openbb_terminal.forex.oanda.oanda_model.orderbook_plot_data_request",
+        "view": "openbb_terminal.forex.oanda.oanda_view.get_order_book",
+    },
+    "forex.oanda.pending": {
+        "model": "openbb_terminal.forex.oanda.oanda_model.pending_orders_request",
+        "view": "openbb_terminal.forex.oanda.oanda_view.get_pending_orders",
+    },
+    "forex.oanda.positionbook": {
+        "model": "openbb_terminal.forex.oanda.oanda_model.positionbook_plot_data_request",
+        "view": "openbb_terminal.forex.oanda.oanda_view.get_position_book",
+    },
     "funds.info": {
         "model": "openbb_terminal.mutual_funds.investpy_model.get_fund_info",
         "view": "openbb_terminal.mutual_funds.investpy_view.display_fund_info",
@@ -1653,6 +1713,19 @@ class MenuFiller:
         return self.__function()
 
 
+class MainMenu:
+    def __call__(self):
+        """Prints help message"""
+        print(self.__repr__())
+
+    def __repr__(self):
+        return """This is the API of the OpenBB Terminal.
+        Use the API to get data directly into your jupyter notebook or directly use it in your application.
+        ...
+        For more information see the official documentation at: https://openbb-finance.github.io/OpenBBTerminal/api/
+        """
+
+
 class Loader:
     """The Loader class"""
 
@@ -1706,11 +1779,14 @@ class Loader:
             return f
 
         function_map = self.__function_map
+        main_menu = MenuFiller(function=menu_message("openbb", function_map))
+
         for virtual_path, function in function_map.items():
             virtual_path_split = virtual_path.split(".")
             last_virtual_path = virtual_path_split[-1]
 
-            previous_menu = self
+            previous_menu = main_menu
+
             for menu in virtual_path_split[:-1]:
                 if not hasattr(previous_menu, menu):
                     next_menu = MenuFiller(function=menu_message(menu, function_map))
@@ -1719,6 +1795,8 @@ class Loader:
                 else:
                     previous_menu = previous_menu.__getattribute__(menu)
             previous_menu.__setattr__(last_virtual_path, function)
+
+        self.openbb = main_menu
 
     @staticmethod
     def __load_module(module_path: str) -> Optional[types.ModuleType]:
@@ -1790,20 +1868,20 @@ class Loader:
                 view_function = None
 
             if model_function is not None:
-                try:
-                    function_factory = FunctionFactory(
-                        model=model_function, view=view_function
-                    )
-                    function_with_doc = change_docstring(
-                        types.FunctionType(function_factory.api_callable.__code__, {}),
-                        model_function,
-                        view_function,
-                    )
-                    function_map[virtual_path] = types.MethodType(
-                        function_with_doc, function_factory
-                    )
-                except:
-                    print(model_function)
+                # try:
+                function_factory = FunctionFactory(
+                    model=model_function, view=view_function
+                )
+                function_with_doc = change_docstring(
+                    types.FunctionType(function_factory.api_callable.__code__, {}),
+                    model_function,
+                    view_function,
+                )
+                function_map[virtual_path] = types.MethodType(
+                    function_with_doc, function_factory
+                )
+                # except:
+                #     print(model_function)
             elif view_function is not None:
                 raise Exception(
                     f"View function without model function : {view_function}"
@@ -1812,4 +1890,4 @@ class Loader:
         return function_map
 
 
-openbb = Loader(funcs=functions)
+openbb = Loader(funcs=functions).openbb
