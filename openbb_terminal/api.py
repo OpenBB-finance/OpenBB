@@ -935,6 +935,12 @@ functions = {
         "model": "openbb_terminal.etf.yfinance_model.get_etf_summary_description",
         "view": "openbb_terminal.etf.yfinance_view.display_etf_description",
     },
+    "forex.get_currency_list": {
+        "model": "openbb_terminal.forex.av_model.get_currency_list",
+    },
+    "forex.hist": {
+        "model": "openbb_terminal.forex.av_model.get_historical",
+    },
     "forex.quote": {
         "model": "openbb_terminal.forex.av_model.get_quote",
         "view": "openbb_terminal.forex.av_view.display_quote",
