@@ -108,7 +108,6 @@ def get_trans_data(
     scaler, ticker_series = helpers.get_series(
         data, target_column, is_scaler=use_scalers
     )
-    print("1")
     train, val = ticker_series.split_before(train_split)
     valid = helpers.check_data_length(
         train, val, input_chunk_length, output_chunk_length
@@ -122,7 +121,6 @@ def get_trans_data(
         past_covariate_val,
     ) = helpers.past_covs(past_covariates, data, train_split, use_scalers)
 
-    print("1234")
     brnn_model = TransformerModel(
         input_chunk_length=input_chunk_length,
         output_chunk_length=output_chunk_length,
