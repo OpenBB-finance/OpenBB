@@ -1,12 +1,12 @@
 ```
-usage: desc [-n {OPTIONS}] [-h] [--export {csv,json,xlsx}]
+usage: desc [-n {}] [-h] [--export {csv,json,xlsx}]
 ```
 
 Show the descriptive statistics of a dataset.
 
 ```
 optional arguments:
-  -d {OPTIONS}, --target-dataset {TSLA}
+  -d {}, --target-dataset {}
                         The name of the dataset you want to select (default: None)
   -h, --help            show this help message (default: False)
   --export EXPORT       Export raw data into csv, json, xlsx (default: )

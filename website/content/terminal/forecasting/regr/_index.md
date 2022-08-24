@@ -1,29 +1,33 @@
 ```
-usage: regr [--past-covariates PAST_COVARIATES] [-d {GME}] [-c TARGET_COLUMN] [-n N_DAYS] [--forecast-horizon FORECAST_HORIZON] [-t TRAIN_SPLIT] [-o OUTPUT_CHUNK_LENGTH] [--lags LAGS] [--residuals] [-f] [-h] [--export EXPORT]
+usage: regr [--past-covariates PAST_COVARIATES] [--all-past-covariates] [--naive] [-d {}] [-c TARGET_COLUMN] [-n N_DAYS]
+            [-t TRAIN_SPLIT] [-o OUTPUT_CHUNK_LENGTH] [--end S_END_DATE] [--start S_START_DATE] [--lags LAGS]
+            [--residuals] [--forecast-only] [-h] [--export EXPORT]
 ```
 
 Perform a regression forecast.
 
 ```
 optional arguments:
-
   --past-covariates PAST_COVARIATES
                         Past covariates(columns/features) in same dataset. Comma separated. (default: None)
-  -d {GME}, --target-dataset {GME}
+  --all-past-covariates
+                        Adds all rows as past covariates except for date and the target column. (default: False)
+  --naive               Show the naive baseline for a model. (default: False)
+  -d {}, --target-dataset {}
                         The name of the dataset you want to select (default: None)
   -c TARGET_COLUMN, --target-column TARGET_COLUMN
                         The name of the specific column you want to use (default: close)
   -n N_DAYS, --n-days N_DAYS
                         prediction days. (default: 5)
-  --forecast-horizon FORECAST_HORIZON
-                        Days/Points to forecast for historical back-testing (default: 5)
   -t TRAIN_SPLIT, --train-split TRAIN_SPLIT
                         Start point for rolling training and forecast window. 0.0-1.0 (default: 0.85)
   -o OUTPUT_CHUNK_LENGTH, --output-chunk-length OUTPUT_CHUNK_LENGTH
                         The length of the forecast of the model. (default: 5)
-  --lags LAGS           Lagged target values used to predict the next time step. (default: 72)
+  --end S_END_DATE      The end date (format YYYY-MM-DD) to select for testing (default: None)
+  --start S_START_DATE  The start date (format YYYY-MM-DD) to select for testing (default: None)
+  --lags LAGS           Lagged target values used to predict the next time step. (default: 14)
   --residuals           Show the residuals for the model. (default: False)
-  -f, --forecast_only   Do not plot the hisotorical data without forecasts. (default: False)
+  --forecast-only       Do not plot the hisotorical data without forecasts. (default: False)
   -h, --help            show this help message (default: False)
   --export EXPORT       Export figure into png, jpg, pdf, svg (default: )
 

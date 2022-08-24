@@ -1,21 +1,23 @@
 ```
-usage: mc [--dist {normal,lognormal}] [-d {AAPL,GME}] [-c TARGET_COLUMN] [-n N_DAYS] [--n-epochs N_EPOCHS] [-h] [--export EXPORT]
+usage: mc [--dist {normal,lognormal}] [-d {}] [-c TARGET_COLUMN] [-n N_DAYS] [--n-epochs N_EPOCHS] [--end S_END_DATE]
+          [--start S_START_DATE] [-h] [--export EXPORT]
 ```
 
 Perform Monte Carlo forecasting
 
 ```
 optional arguments:
-
   --dist {normal,lognormal}
                         Whether to model returns or log returns (default: lognormal)
-  -d {GME}, --target-dataset {GME}
+  -d {}, --target-dataset {}
                         The name of the dataset you want to select (default: None)
   -c TARGET_COLUMN, --target-column TARGET_COLUMN
                         The name of the specific column you want to use (default: close)
   -n N_DAYS, --n-days N_DAYS
                         prediction days. (default: 5)
-  --n-epochs N_EPOCHS   Number of epochs over which to train the model. (default: 100)
+  --n-epochs N_EPOCHS   Number of epochs over which to train the model. (default: 300)
+  --end S_END_DATE      The end date (format YYYY-MM-DD) to select for testing (default: None)
+  --start S_START_DATE  The start date (format YYYY-MM-DD) to select for testing (default: None)
   -h, --help            show this help message (default: False)
   --export EXPORT       Export figure into png, jpg, pdf, svg (default: )
 

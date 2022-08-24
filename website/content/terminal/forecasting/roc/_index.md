@@ -1,12 +1,12 @@
 ```
-usage: roc [-d {OPTIONS}] [-c TARGET_COLUMN] [--period PERIOD] [-h]
+usage: roc [-d {}] [-c TARGET_COLUMN] [--period PERIOD] [-h]
 ```
 
 Add rate of change to dataset based on specific column.
 
 ```
 optional arguments:
-  -d {TSLA}, --target-dataset {TSLA}
+  -d {}, --target-dataset {}
                         The name of the dataset you want to select (default: None)
   -c TARGET_COLUMN, --target-column TARGET_COLUMN
                         The name of the specific column you want to use (default: close)

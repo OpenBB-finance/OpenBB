@@ -1,12 +1,12 @@
 ```
-uusage: sto [-d {OPTIONS}] [--period PERIOD] [-h] [-l LIMIT]
+usage: sto [-d {}] [--period PERIOD] [-h] [-l LIMIT]
 ```
 
 Add in Stochastic Oscillator %K and %D
 
 ```
 optional arguments:
-  -d {f,TSLA}, --target-dataset {f,TSLA}
+  -d {}, --target-dataset {}
                         The name of the dataset you want to select (default: None)
   --period PERIOD       The period to use (default: 10)
   -h, --help            show this help message (default: False)

@@ -1,12 +1,12 @@
 ```
-usage: combine [--dataset {TSLA}] [-c COLUMNS] [-h]
+usage: combine [--dataset {}] [-c COLUMNS] [-h]
 ```
 
 The columns you want to add to a dataset. The first argument is the dataset to add columns in, the remaining could be: <datasetX.column2>,<datasetY.column3>
 
 ```
 optional arguments:
-  --dataset {TSLA}      Dataset to add columns to (default: None)
+  --dataset {}      Dataset to add columns to (default: None)
   -c COLUMNS, --columns COLUMNS
                         The columns we want to add <dataset.column>,<datasetb.column2> (default: None)
   -h, --help            show this help message (default: False)

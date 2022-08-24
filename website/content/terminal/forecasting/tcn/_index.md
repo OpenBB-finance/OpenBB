@@ -1,14 +1,16 @@
 ```
-usage: tcn [--num-filters NUM_FILTERS] [--weight-norm WEIGHT_NORM] [--dilation-base DILATION_BASE] [--past-covariates PAST_COVARIATES] [-d {GME}] [-c TARGET_COLUMN] [-n N_DAYS] [--forecast-horizon FORECAST_HORIZON] [-t TRAIN_SPLIT]
-           [-i INPUT_CHUNK_LENGTH] [-o OUTPUT_CHUNK_LENGTH] [--force-reset FORCE_RESET] [--save-checkpoints SAVE_CHECKPOINTS] [--model-save-name MODEL_SAVE_NAME] [--n-epochs N_EPOCHS] [--dropout DROPOUT] [--batch-size BATCH_SIZE]
-           [--learning-rate LEARNING_RATE] [--residuals] [-f] [-h] [--export EXPORT]
+usage: tcn [--num-filters NUM_FILTERS] [--weight-norm WEIGHT_NORM] [--dilation-base DILATION_BASE]
+           [--past-covariates PAST_COVARIATES] [--all-past-covariates] [--naive] [-d {}] [-c TARGET_COLUMN] [-n N_DAYS]
+           [-t TRAIN_SPLIT] [-i INPUT_CHUNK_LENGTH] [-o OUTPUT_CHUNK_LENGTH] [--force-reset FORCE_RESET]
+           [--save-checkpoints SAVE_CHECKPOINTS] [--model-save-name MODEL_SAVE_NAME] [--n-epochs N_EPOCHS]
+           [--dropout DROPOUT] [--batch-size BATCH_SIZE] [--end S_END_DATE] [--start S_START_DATE]
+           [--learning-rate LEARNING_RATE] [--residuals] [--forecast-only] [-h] [--export EXPORT]
 ```
 
 Perform TCN forecast.
 
 ```
 optional arguments:
-
   --num-filters NUM_FILTERS
                         The number of filters in a convolutional layer of the TCN (default: 3)
   --weight-norm WEIGHT_NORM
@@ -17,14 +19,15 @@ optional arguments:
                         The base of the exponent that will determine the dilation on every level. (default: 2)
   --past-covariates PAST_COVARIATES
                         Past covariates(columns/features) in same dataset. Comma separated. (default: None)
-  -d {GME}, --target-dataset {GME}
+  --all-past-covariates
+                        Adds all rows as past covariates except for date and the target column. (default: False)
+  --naive               Show the naive baseline for a model. (default: False)
+  -d {}, --target-dataset {}
                         The name of the dataset you want to select (default: None)
   -c TARGET_COLUMN, --target-column TARGET_COLUMN
                         The name of the specific column you want to use (default: close)
   -n N_DAYS, --n-days N_DAYS
                         prediction days. (default: 5)
-  --forecast-horizon FORECAST_HORIZON
-                        Days/Points to forecast for historical back-testing (default: 5)
   -t TRAIN_SPLIT, --train-split TRAIN_SPLIT
                         Start point for rolling training and forecast window. 0.0-1.0 (default: 0.85)
   -i INPUT_CHUNK_LENGTH, --input-chunk-length INPUT_CHUNK_LENGTH
@@ -32,19 +35,22 @@ optional arguments:
   -o OUTPUT_CHUNK_LENGTH, --output-chunk-length OUTPUT_CHUNK_LENGTH
                         The length of the forecast of the model. (default: 5)
   --force-reset FORCE_RESET
-                        If set to True, any previously-existing model with the same name will be reset (all checkpoints will be discarded). (default: True)
+                        If set to True, any previously-existing model with the same name will be reset (all checkpoints
+                        will be discarded). (default: True)
   --save-checkpoints SAVE_CHECKPOINTS
                         Whether to automatically save the untrained model and checkpoints. (default: True)
   --model-save-name MODEL_SAVE_NAME
                         Name of the model to save. (default: tcn_model)
-  --n-epochs N_EPOCHS   Number of epochs over which to train the model. (default: 100)
+  --n-epochs N_EPOCHS   Number of epochs over which to train the model. (default: 300)
   --dropout DROPOUT     Fraction of neurons afected by Dropout. (default: 0.1)
   --batch-size BATCH_SIZE
                         Number of time series (input and output) used in each training pass (default: 32)
+  --end S_END_DATE      The end date (format YYYY-MM-DD) to select for testing (default: None)
+  --start S_START_DATE  The start date (format YYYY-MM-DD) to select for testing (default: None)
   --learning-rate LEARNING_RATE
                         Learning rate during training. (default: 0.001)
   --residuals           Show the residuals for the model. (default: False)
-  -f, --forecast_only   Do not plot the hisotorical data without forecasts. (default: False)
+  --forecast-only       Do not plot the hisotorical data without forecasts. (default: False)
   -h, --help            show this help message (default: False)
   --export EXPORT       Export figure into png, jpg, pdf, svg (default: )
 

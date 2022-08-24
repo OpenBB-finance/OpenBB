@@ -1,5 +1,5 @@
 ```
-usage: desc [-n {OPTIONS}] [-h] [--export {csv,json,xlsx}]
+usage: corr [-d {}] [-h] [--export EXPORT]
 ```
 
 Plot correlation coefficients of a dataset.

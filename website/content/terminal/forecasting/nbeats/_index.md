@@ -1,14 +1,13 @@
 ```
-usage: nbeats [--num_stacks NUM_STACKS] [--num_blocks NUM_BLOCKS] [--num_layers NUM_LAYERS] [--layer_widths LAYER_WIDTHS] [--past-covariates PAST_COVARIATES] [-d {GME}] [-c TARGET_COLUMN] [-n N_DAYS] [--forecast-horizon FORECAST_HORIZON]
+usage: nbeats [--num_stacks NUM_STACKS] [--num_blocks NUM_BLOCKS] [--num_layers NUM_LAYERS] [--layer_widths LAYER_WIDTHS] [--past-covariates PAST_COVARIATES] [--all-past-covariates] [--naive] [-d {}] [-c TARGET_COLUMN] [-n N_DAYS]
               [-t TRAIN_SPLIT] [-i INPUT_CHUNK_LENGTH] [-o OUTPUT_CHUNK_LENGTH] [--force-reset FORCE_RESET] [--save-checkpoints SAVE_CHECKPOINTS] [--model-save-name MODEL_SAVE_NAME] [--n-epochs N_EPOCHS] [--batch-size BATCH_SIZE]
-              [--learning-rate LEARNING_RATE] [--residuals] [-f] [-h] [--export EXPORT]
+              [--end S_END_DATE] [--start S_START_DATE] [--learning-rate LEARNING_RATE] [--residuals] [--forecast-only] [-h] [--export EXPORT]
 ```
 
 Perform NBEATS forecast (Neural Bayesian Estimation of Time Series).
 
 ```
 optional arguments:
-
   --num_stacks NUM_STACKS
                         The number of stacks that make up the whole model. (default: 10)
   --num_blocks NUM_BLOCKS
@@ -19,14 +18,15 @@ optional arguments:
                         Determines the number of neurons that make up each fully connected layer in each block of every stack (default: 512)
   --past-covariates PAST_COVARIATES
                         Past covariates(columns/features) in same dataset. Comma separated. (default: None)
-  -d {GME}, --target-dataset {GME}
+  --all-past-covariates
+                        Adds all rows as past covariates except for date and the target column. (default: False)
+  --naive               Show the naive baseline for a model. (default: False)
+  -d {}, --target-dataset {}
                         The name of the dataset you want to select (default: None)
   -c TARGET_COLUMN, --target-column TARGET_COLUMN
                         The name of the specific column you want to use (default: close)
   -n N_DAYS, --n-days N_DAYS
                         prediction days. (default: 5)
-  --forecast-horizon FORECAST_HORIZON
-                        Days/Points to forecast for historical back-testing (default: 5)
   -t TRAIN_SPLIT, --train-split TRAIN_SPLIT
                         Start point for rolling training and forecast window. 0.0-1.0 (default: 0.85)
   -i INPUT_CHUNK_LENGTH, --input-chunk-length INPUT_CHUNK_LENGTH
@@ -39,13 +39,15 @@ optional arguments:
                         Whether to automatically save the untrained model and checkpoints. (default: True)
   --model-save-name MODEL_SAVE_NAME
                         Name of the model to save. (default: nbeats_model)
-  --n-epochs N_EPOCHS   Number of epochs over which to train the model. (default: 100)
+  --n-epochs N_EPOCHS   Number of epochs over which to train the model. (default: 300)
   --batch-size BATCH_SIZE
                         Number of time series (input and output) used in each training pass (default: 800)
+  --end S_END_DATE      The end date (format YYYY-MM-DD) to select for testing (default: None)
+  --start S_START_DATE  The start date (format YYYY-MM-DD) to select for testing (default: None)
   --learning-rate LEARNING_RATE
                         Learning rate during training. (default: 0.001)
   --residuals           Show the residuals for the model. (default: False)
-  -f, --forecast_only   Do not plot the hisotorical data without forecasts. (default: False)
+  --forecast-only       Do not plot the hisotorical data without forecasts. (default: False)
   -h, --help            show this help message (default: False)
   --export EXPORT       Export figure into png, jpg, pdf, svg (default: )
 

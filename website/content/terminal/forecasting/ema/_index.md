@@ -1,12 +1,12 @@
 ```
-usage: ema [-d {OPTIONS}] [-c TARGET_COLUMN] [--period PERIOD] [-h]
+usage: ema [-d {}] [-c TARGET_COLUMN] [--period PERIOD] [-h]
 ```
 
 Add exponential moving average to dataset based on specific column.
 
 ```
 optional arguments:
-  -d {f}, --target-dataset {f}
+  -d {}, --target-dataset {}
                         The name of the dataset you want to select (default: None)
   -c TARGET_COLUMN, --target-column TARGET_COLUMN
                         The name of the specific column you want to use (default: close)

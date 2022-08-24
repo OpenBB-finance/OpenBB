@@ -1,5 +1,5 @@
 ```
-usage: export [-t {csv,xlsx}] [-d {OPTIONS}] [-h]
+usage: export [-t {csv,xlsx}] [-d {}] [-h]
 ```
 
 Export dataset to Excel
@@ -8,7 +8,7 @@ Export dataset to Excel
 optional arguments:
   -t {csv,xlsx}, --type {csv,xlsx}
                         The file type you wish to export to (default: xlsx)
-  -d {aapl}, --target-dataset {aapl}
+  -d {}, --target-dataset {}
                         The name of the dataset you want to select (default: None)
   -h, --help            show this help message (default: False)
 

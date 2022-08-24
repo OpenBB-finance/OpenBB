@@ -1,12 +1,12 @@
 ```
-usage: delta [-d {OPTIONS}] [-c TARGET_COLUMN] [-h]
+usage: delta [-d {}] [-c TARGET_COLUMN] [-h]
 ```
 
 Add %Change (Delta) to dataset based on specific column.
 
 ```
 optional arguments:
-  -d {OPTIONS}, --target-dataset {OPTIONS}
+  -d {}, --target-dataset {}
                         The name of the dataset you want to select (default: None)
   -c TARGET_COLUMN, --target-column TARGET_COLUMN
                         The name of the specific column you want to use (default: close)
