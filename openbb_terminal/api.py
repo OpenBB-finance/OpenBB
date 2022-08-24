@@ -1785,7 +1785,7 @@ class Loader:
             return f
 
         function_map = self.__function_map
-        main_menu = MenuFiller(function=menu_message("openbb", function_map))
+        main_menu = MainMenu()
 
         for virtual_path, function in function_map.items():
             virtual_path_split = virtual_path.split(".")
