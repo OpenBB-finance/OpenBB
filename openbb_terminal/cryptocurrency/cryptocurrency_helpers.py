@@ -11,6 +11,7 @@ import logging
 
 import pandas as pd
 import numpy as np
+import ccxt
 from binance.client import Client
 import matplotlib.pyplot as plt
 import yfinance as yf
@@ -45,6 +46,17 @@ from openbb_terminal.rich_config import console
 logger = logging.getLogger(__name__)
 
 INTERVALS = ["1H", "3H", "6H", "1D"]
+
+CCXT_INTERVAL_MAP = {
+    "1": "1m",
+    "15": "15m",
+    "30": "30m",
+    "60": "1h",
+    "240": "4h",
+    "1440": "1d",
+    "10080": "1w",
+    "43200": "1M",
+}
 
 SOURCES_INTERVALS = {
     "bin": [
@@ -290,8 +302,12 @@ def get_coinpaprika_id(symbol: str):
 
 def load(
     symbol: str,
-    vs: str = "usd",
-    days: int = 365,
+    start_date: datetime = (datetime.now() - timedelta(days=1100)),
+    interval: str = "1440",  # 1, 15, 30, 60, 240, 1440, 10080, 43200
+    exchange: str = "binance",
+    vs_currency: str = "usdt",
+    end_date: datetime = datetime.now(),
+    source: str = "ccxt",
 ):
     """Load crypto currency to perform analysis on CoinGecko is used as source for price and
     YahooFinance for volume.
@@ -310,43 +326,110 @@ def load(
     pd.DataFrame
         Dataframe consisting of price and volume data
     """
-    coingecko_id = get_coingecko_id(symbol)
-    if not coingecko_id:
-        return pd.DataFrame()
+    df = pd.DataFrame()
+    if source == "ccxt":
+        pair = f"{symbol.upper()}/{vs_currency.upper()}"
+        try:
+            df = fetch_ccxt_ohlc(
+                exchange,
+                3,
+                pair,
+                CCXT_INTERVAL_MAP[interval],
+                int(datetime.timestamp(start_date)) * 1000,
+                1000,
+            )
+            if df.empty:
+                console.print(f"\nPair {pair} not found in {exchange}\n")
+                return pd.DataFrame()
+        except:  # noqa: E722
+            console.print(f"\nPair {pair} not found on {exchange}\n")
+            return df
+    elif source == "cg":
+        delta = datetime.now() - start_date
+        days = delta.days
+        if days > 365:
+            console.print("Coingecko free tier only allows a max of 365 days\n")
+            days = 365
+        coingecko_id = get_coingecko_id(symbol)
+        if not coingecko_id:
+            console.print(f"{symbol} not found in Coingecko\n")
+            return df
+        df = pycoingecko_model.get_ohlc(coingecko_id, vs_currency, days)
+        df_coin = yf.download(
+            f"{symbol}-{vs_currency}",
+            end=datetime.now(),
+            start=start_date,
+            progress=False,
+            interval="1d",
+        ).sort_index(ascending=False)
 
-    df = pycoingecko_model.get_ohlc(coingecko_id, vs, days)
+        if not df_coin.empty:
+            df = pd.merge(
+                df, df_coin[::-1][["Volume"]], left_index=True, right_index=True
+            )
+        df.index.name = "date"
 
-    start_date = datetime.now() - timedelta(days=days)
-    df = yf.download(
-        f"{symbol}-{vs}",
-        end=datetime.now(),
-        start=start_date,
-        progress=False,
-        interval="1d",
-    ).sort_index(ascending=True)
+    elif source == "yf":
+        pair = f"{symbol}-{vs_currency}"
+        if int(interval) >= 1440:
+            YF_INTERVAL_MAP = {
+                "1440": "1d",
+                "10080": "1wk",
+                "43200": "1mo",
+            }
+            df = yf.download(
+                pair,
+                end=end_date,
+                start=start_date,
+                progress=False,
+                interval=YF_INTERVAL_MAP[interval],
+            ).sort_index(ascending=True)
+        else:
+            s_int = str(interval) + "m"
+            d_granularity = {"1m": 6, "5m": 59, "15m": 59, "30m": 59, "60m": 729}
+            s_start_dt = datetime.utcnow() - timedelta(days=d_granularity[s_int])
+            s_date_start = s_start_dt.strftime("%Y-%m-%d")
+            df = yf.download(
+                pair,
+                start=s_date_start
+                if s_start_dt > start_date
+                else start_date.strftime("%Y-%m-%d"),
+                progress=False,
+                interval=s_int,
+            )
 
-    if df.empty:
-        return pd.DataFrame()
-    df.index.name = "date"
-    if not df.empty:
-        console.print(
-            f"\nLoading Daily {symbol.upper()} crypto "
-            f"with starting period {start_date.strftime('%Y-%m-%d')} for analysis.",
-        )
+        open_sum = df["Open"].sum()
+        if open_sum == 0:
+            console.print(f"\nPair {pair} has invalid data on Yahoo Finance\n")
+            return pd.DataFrame()
+
+        if df.empty:
+            console.print(f"\nPair {pair} not found in Yahoo Finance\n")
+            return pd.DataFrame()
+        df.index.name = "date"
     return df
 
 
-def show_quick_performance(crypto_df: pd.DataFrame, symbol: str, current_currency: str):
+def show_quick_performance(
+    crypto_df: pd.DataFrame,
+    symbol: str,
+    current_currency: str,
+    source: str,
+    exchange: str,
+    interval: str,
+):
     """Show quick performance stats of crypto prices. Daily prices expected"""
     closes = crypto_df["Close"]
     volumes = crypto_df["Volume"] if "Volume" in crypto_df else pd.DataFrame()
 
-    perfs = {
-        "1D": 100 * closes.pct_change(2)[-1],
-        "7D": 100 * closes.pct_change(7)[-1],
-        "1M": 100 * closes.pct_change(30)[-1],
-        "1Y": 100 * closes.pct_change(365)[-1],
-    }
+    perfs = {}
+    if interval == "1440":
+        perfs = {
+            "1D": 100 * closes.pct_change(2)[-1],
+            "7D": 100 * closes.pct_change(7)[-1],
+            "1M": 100 * closes.pct_change(30)[-1],
+            "1Y": 100 * closes.pct_change(365)[-1],
+        }
     first_day_current_year = str(datetime.now().date().replace(month=1, day=1))
     if first_day_current_year in closes.index:
         closes_ytd = closes[closes.index > first_day_current_year]
@@ -368,32 +451,39 @@ def show_quick_performance(crypto_df: pd.DataFrame, symbol: str, current_currenc
     if len(volumes) > 7:
         df["Volume (7D avg)"] = lambda_long_number_format(np.mean(volumes[-9:-2]), 2)
 
-    df.insert(0, f"Price ({current_currency.upper()})", closes[-1])
+    df.insert(0, f"\nPrice ({current_currency.upper()})", closes[-1])
     # df.insert(
     #    len(df.columns),
     #    f"Market Cap ({current_currency.upper()})",
     #    lambda_long_number_format(int(crypto_df["Market Cap"][-1])),
     # )
 
-    coingecko_id = get_coingecko_id(symbol)
+    try:
+        coingecko_id = get_coingecko_id(symbol)
 
-    coin_data_cg = pycoingecko_model.get_coin_tokenomics(coingecko_id)
-    if not coin_data_cg.empty:
-        df.insert(
-            len(df.columns),
-            "Circulating Supply",
-            lambda_long_number_format(
-                int(
-                    coin_data_cg.loc[coin_data_cg["Metric"] == "Circulating Supply"][
-                        "Value"
-                    ]
-                )
-            ),
-        )
+        coin_data_cg = pycoingecko_model.get_coin_tokenomics(coingecko_id)
+        if not coin_data_cg.empty:
+            df.insert(
+                len(df.columns),
+                "Circulating Supply",
+                lambda_long_number_format(
+                    int(
+                        coin_data_cg.loc[
+                            coin_data_cg["Metric"] == "Circulating Supply"
+                        ]["Value"]
+                    )
+                ),
+            )
+    except:  # noqa: E722
+        pass
 
     console.print()
+    exchange_str = f"in {exchange.capitalize()}" if source == "ccxt" else ""
     print_rich_table(
-        df, show_index=False, headers=df.columns, title=f"{symbol.upper()} Performance"
+        df,
+        show_index=False,
+        headers=df.columns,
+        title=f"{symbol.upper()}/{current_currency.upper()} Performance {exchange_str}",
     )
     console.print()
 
@@ -1177,7 +1267,14 @@ def display_all_coins(
     )
 
 
-def plot_chart(prices_df: pd.DataFrame, symbol: str = "", currency: str = "") -> None:
+def plot_chart(
+    prices_df: pd.DataFrame,
+    symbol: str = "",
+    currency: str = "",
+    source: str = "",
+    exchange: str = "",
+    interval: str = "",
+) -> None:
     """Load data for Technical Analysis
 
     Parameters
@@ -1194,15 +1291,18 @@ def plot_chart(prices_df: pd.DataFrame, symbol: str = "", currency: str = "") ->
         console.print("There is not data to plot chart\n")
         return
 
-    title = f"{symbol}/{currency} from {prices_df.index[0].strftime('%Y/%m/%d')} to {prices_df.index[-1].strftime('%Y/%m/%d')}"  # noqa: E501
+    exchange_str = f"/{exchange}" if source == "ccxt" else ""
+    title = f"{source}{exchange_str} - {symbol.upper()}/{currency.upper()} from {prices_df.index[0].strftime('%Y/%m/%d')} to {prices_df.index[-1].strftime('%Y/%m/%d')} - {interval}m"  # noqa: E501
 
-    prices_df["Volume"] = prices_df["Volume"] / 1_000_000
+    volume_mean = prices_df["Volume"].mean()
+    if volume_mean > 1_000_000:
+        prices_df["Volume"] = prices_df["Volume"] / 1_000_000
 
     plot_candles(
         candles_df=prices_df,
         title=title,
         volume=True,
-        ylabel="Volume [1M]",
+        ylabel="Volume [1M]" if volume_mean > 1_000_000 else "Volume",
     )
 
     console.print("")
@@ -1330,3 +1430,59 @@ def check_cg_id(symbol: str):
         print(f"\n{symbol} not found on CoinGecko")
         return ""
     return symbol
+
+
+def fetch_ccxt_ohlc(exchange_id, max_retries, symbol, timeframe, since, limit):
+    exchange = getattr(ccxt, exchange_id)(
+        {
+            "enableRateLimit": True,  # required by the Manual
+        }
+    )
+    if isinstance(since, str):
+        since = exchange.parse8601(since)
+    ohlcv = get_ohlcv(exchange, max_retries, symbol, timeframe, since, limit)
+    df = pd.DataFrame(ohlcv, columns=["date", "Open", "High", "Low", "Close", "Volume"])
+    df["date"] = pd.to_datetime(df.date, unit="ms")
+    df.set_index("date", inplace=True)
+    return df
+
+
+def retry_fetch_ohlcv(exchange, max_retries, symbol, timeframe, since, limit):
+    num_retries = 0
+    try:
+        num_retries += 1
+        ohlcv = exchange.fetch_ohlcv(symbol, timeframe, since, limit)
+        return ohlcv
+    except Exception:
+        if num_retries > max_retries:
+            raise
+        return []
+
+
+def get_ohlcv(exchange, max_retries, symbol, timeframe, since, limit):
+    timeframe_duration_in_seconds = exchange.parse_timeframe(timeframe)
+    timeframe_duration_in_ms = timeframe_duration_in_seconds * 1000
+    timedelta_ = limit * timeframe_duration_in_ms
+    now = exchange.milliseconds()
+    all_ohlcv = []
+    fetch_since = since
+    while fetch_since < now:
+        ohlcv = retry_fetch_ohlcv(
+            exchange, max_retries, symbol, timeframe, fetch_since, limit
+        )
+        fetch_since = (ohlcv[-1][0] + 1) if len(ohlcv) else (fetch_since + timedelta_)
+        all_ohlcv = all_ohlcv + ohlcv
+    return exchange.filter_by_since_limit(all_ohlcv, since, None, key=0)
+
+
+def get_exchanges_ohlc():
+    arr = []
+    for exchange in ccxt.exchanges:
+        exchange_ccxt = getattr(ccxt, exchange)(
+            {
+                "enableRateLimit": True,
+            }
+        )
+        if exchange_ccxt.has["fetchOHLCV"]:
+            arr.append(exchange)
+    return arr
