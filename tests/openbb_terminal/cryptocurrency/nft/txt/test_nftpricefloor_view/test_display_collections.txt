@@ -1,0 +1,6 @@
+                    slug                     name  floorPriceETH  totalSupply  countOnSale blockchain
+0   bored-ape-yacht-club     Bored Ape Yacht Club          66.90        10000          752   ethereum
+1            cryptopunks              CryptoPunks          66.45        10000         1149   ethereum
+2  mutant-ape-yacht-club    Mutant Ape Yacht Club          12.00        19423          984   ethereum
+3              otherdeed  Otherdeed for Otherside           1.53       100000         3792   ethereum
+4        proof-moonbirds                Moonbirds          12.65        10000          134   ethereum
