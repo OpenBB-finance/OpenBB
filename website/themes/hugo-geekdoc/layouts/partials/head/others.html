@@ -148,6 +148,12 @@ h1 {
   letter-spacing: 0.1em;
 }
 
+@media (max-width: 500px) {
+  ._hide-on-mobile {
+    display: none;
+  }
+}
+
 </style>
 
 {{ with .OutputFormats.Get "rss" -}}
