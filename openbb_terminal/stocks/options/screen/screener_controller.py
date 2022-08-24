@@ -10,13 +10,10 @@ from prompt_toolkit.completion import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import (
-    EXPORT_ONLY_RAW_DATA_ALLOWED,
-    check_positive,
-)
+from openbb_terminal.helper_funcs import EXPORT_ONLY_RAW_DATA_ALLOWED, check_positive
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import MenuText, console
 from openbb_terminal.stocks.comparison_analysis import ca_controller
 from openbb_terminal.stocks.options.screen import syncretism_view
 
@@ -169,7 +166,7 @@ class ScreenerController(BaseController):
             self.screen_tickers = syncretism_view.view_screener_output(
                 preset=ns_parser.preset,
                 presets_path=self.presets_path,
-                n_show=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
 

@@ -500,6 +500,8 @@ main:
                 ref: "/terminal/common/ta/macd"
               - name: rsi
                 ref: "/terminal/common/ta/rsi"
+              - name: rsp
+                ref: "/terminal/common/ta/rsp"
               - name: stoch
                 ref: "/terminal/common/ta/stoch"
               - name: fisher
@@ -756,6 +758,8 @@ main:
                 ref: "/terminal/crypto/dd/fundrate"
               - name: oi
                 ref: "/terminal/crypto/dd/oi"
+              - name: liquidations
+                ref: "/terminal/crypto/dd/liquidations"
               - name: ob
                 ref: "/terminal/crypto/dd/ob"
               - name: info
@@ -983,6 +987,8 @@ main:
             ref: "/terminal/economy/macro"
           - name: fred
             ref: "/terminal/economy/fred"
+          - name: edebt
+            ref: "/terminal/economy/edebt"
           - name: index
             ref: "/terminal/economy/index"
           - name: treasury

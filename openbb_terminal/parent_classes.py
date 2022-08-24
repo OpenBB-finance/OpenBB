@@ -1,7 +1,8 @@
 """Parent Classes"""
 __docformat__ = "numpy"
 
-# pylint: disable= C0301
+# pylint: disable= C0301,C0302,R0902
+
 
 from abc import ABCMeta, abstractmethod
 import argparse
@@ -884,13 +885,17 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
         super().__init__(queue)
 
         self.symbol = ""
+        self.vs = ""
         self.current_df = pd.DataFrame()
         self.current_currency = ""
         self.source = ""
         self.current_interval = ""
+        self.exchange = ""
         self.price_str = ""
+        self.interval = ""
         self.resolution = "1D"
         self.TRY_RELOAD = True
+        self.exchanges = cryptocurrency_helpers.get_exchanges_ohlc()
 
     def call_load(self, other_args):
         """Process load command"""
@@ -898,8 +903,11 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="load",
-            description="Load crypto currency to perform analysis on."
-            "CoinGecko is used as source for price and YahooFinance for volume.",
+            description="""Load crypto currency to perform analysis on.
+            Yahoo Finance is used as default source.
+            Other sources can be used such as 'ccxt' or 'cg' with --source.
+            If you select 'ccxt', you can then select any exchange with --exchange.
+            You can also select a specific interval with --interval.""",
         )
         parser.add_argument(
             "-c",
@@ -911,20 +919,57 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
         )
 
         parser.add_argument(
-            "-d",
-            "--days",
-            default="365",
-            dest="days",
-            help="Data up to number of days ago",
-            choices=["1", "7", "14", "30", "90", "180", "365"],
+            "-s",
+            "--start",
+            type=valid_date,
+            default=(datetime.now() - timedelta(days=1100)).strftime("%Y-%m-%d"),
+            dest="start",
+            help="The starting date (format YYYY-MM-DD) of the crypto",
+        )
+
+        parser.add_argument(
+            "--exchange",
+            help="Exchange to search",
+            dest="exchange",
+            type=str,
+            default="binance",
+            choices=self.exchanges,
+        )
+
+        parser.add_argument(
+            "-e",
+            "--end",
+            type=valid_date,
+            default=datetime.now().strftime("%Y-%m-%d"),
+            dest="end",
+            help="The ending date (format YYYY-MM-DD) of the crypto",
         )
         parser.add_argument(
-            "--vs",
-            help="Quote currency (what to view coin vs)",
-            dest="vs",
-            default="usd",
+            "-i",
+            "--interval",
+            action="store",
+            dest="interval",
             type=str,
-            choices=["usd", "eur"],
+            default="1440",
+            choices=["1", "5", "15", "30", "60", "240", "1440", "10080", "43200"],
+            help="The interval of the crypto",
+        )
+
+        parser.add_argument(
+            "--vs",
+            help="Quote currency (what to view coin vs). e.g., usdc, usdt, ... if source is ccxt, usd, eur, ... otherwise",  # noqa
+            dest="vs",
+            default="usdt",
+            type=str,
+        )
+
+        parser.add_argument(
+            "--source",
+            action="store",
+            dest="source",
+            choices=["ccxt", "yf", "cg"],
+            default="yf",
+            help="Data source to select from",
         )
 
         if other_args and "-" not in other_args[0][0]:
@@ -933,20 +978,29 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
         ns_parser = parse_simple_args(parser, other_args)
 
         if ns_parser:
+            if ns_parser.source in ("yf", "cg"):
+                if ns_parser.vs == "usdt":
+                    ns_parser.vs = "usd"
             (self.current_df) = cryptocurrency_helpers.load(
-                symbol_search=ns_parser.coin.lower(),
-                days=int(ns_parser.days),
-                vs=ns_parser.vs,
+                symbol=ns_parser.coin.lower(),
+                vs_currency=ns_parser.vs,
+                end_date=ns_parser.end,
+                start_date=ns_parser.start,
+                interval=ns_parser.interval,
+                source=ns_parser.source,
             )
             if not self.current_df.empty:
-                self.current_interval = "1day"
+                self.vs = ns_parser.vs
+                self.exchange = ns_parser.exchange
+                self.source = ns_parser.source
+                self.current_interval = ns_parser.interval
                 self.current_currency = ns_parser.vs
                 self.symbol = ns_parser.coin.lower()
                 cryptocurrency_helpers.show_quick_performance(
-                    self.current_df, self.symbol, self.current_currency
-                )
-            else:
-                console.print(
-                    f"\n[red]Could not find [bold]{ns_parser.coin}[/bold] in [bold]yfinance[/bold]."
-                    f"Make sure you search for symbol (e.g., btc) and not full name (e.g., bitcoin)[/red]\n"  # noqa: E501
+                    self.current_df,
+                    self.symbol,
+                    self.current_currency,
+                    ns_parser.source,
+                    ns_parser.exchange,
+                    self.current_interval,
                 )

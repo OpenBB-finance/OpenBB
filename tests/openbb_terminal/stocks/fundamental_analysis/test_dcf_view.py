@@ -38,7 +38,7 @@ def test_create_xls():
 
 @pytest.mark.vcr
 def test_create_workbook(mocker):
-    excel = dcf_view.CreateExcelFA(ticker="AAPL", audit=False)
+    excel = dcf_view.CreateExcelFA(symbol="AAPL", audit=False)
 
     # MOCK GENERATE_PATH
     attrs = {

@@ -2,9 +2,8 @@
 __docformat__ = "numpy"
 
 import logging
-import math
-import re
 import os
+import re
 from bisect import bisect_left
 from datetime import date, datetime, timedelta
 from typing import Any, Dict, List, Optional
@@ -19,21 +18,20 @@ import yfinance as yf
 from openpyxl import Workbook
 from scipy.stats import binom
 
-from openbb_terminal.config_terminal import theme
-from openbb_terminal.config_plot import PLOT_DPI
 import openbb_terminal.config_plot as cfp
+from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     excel_columns,
     export_data,
     get_rf,
+    is_valid_axes_count,
     plot_autoscale,
     print_rich_table,
-    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.options import op_helpers, yfinance_model
-from openbb_terminal.stocks.options.op_helpers import Option
 from openbb_terminal.stocks.options.yfinance_model import (
     generate_data,
     get_option_chain,
@@ -71,8 +69,8 @@ def header_fmt(header: str) -> str:
 
 @log_start_end(log=logger)
 def display_chains(
-    ticker: str,
-    expiry: str,
+    symbol: str,
+    expiration: str,
     min_sp: float = 0.0,
     max_sp: float = np.inf,
     calls_only: bool = False,
@@ -83,9 +81,9 @@ def display_chains(
 
     Parameters
     ----------
-    ticker: str
-        Stock ticker
-    expiry: str
+    symbol: str
+        Stock ticker symbol
+    expiration: str
         Expiration for option chain
     min_sp: float
         Min strike
@@ -110,7 +108,7 @@ def display_chains(
         put_bool = True
 
     option_chains = yfinance_model.get_full_option_chain(
-        ticker=ticker, expiration=expiry, calls=call_bool, puts=put_bool
+        symbol=symbol, expiration=expiration, calls=call_bool, puts=put_bool
     ).fillna("-")
     if option_chains.empty:
         console.print("[red]Option chains not found.[/red]")
@@ -233,7 +231,7 @@ def display_chains(
 
     print_rich_table(
         option_chains,
-        title=f"Yahoo Option Chain (15 min delayed) for {expiry} (Greeks calculated by OpenBB)",
+        title=f"Yahoo Option Chain (15 min delayed) for {expiration} (Greeks calculated by OpenBB)",
         headers=[header_fmt(x) for x in option_chains.columns],
     )
     export_data(
@@ -246,12 +244,12 @@ def display_chains(
 
 @log_start_end(log=logger)
 def plot_oi(
-    ticker: str,
-    expiry: str,
-    min_sp: float,
-    max_sp: float,
-    calls_only: bool,
-    puts_only: bool,
+    symbol: str,
+    expiration: str,
+    min_sp: float = -1,
+    max_sp: float = -1,
+    calls_only: bool = False,
+    puts_only: bool = False,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -259,10 +257,10 @@ def plot_oi(
 
     Parameters
     ----------
-    ticker: str
-        Ticker
-    expiry: str
-        Expiry date for options
+    symbol: str
+        Ticker symbol
+    expiration: str
+        expiration date for options
     min_sp: float
         Min strike to consider
     max_sp: float
@@ -276,7 +274,7 @@ def plot_oi(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    options = yfinance_model.get_option_chain(ticker, expiry)
+    options = yfinance_model.get_option_chain(symbol, expiration)
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
@@ -285,7 +283,7 @@ def plot_oi(
     )
     calls = options.calls
     puts = options.puts
-    current_price = float(yf.Ticker(ticker).info["regularMarketPrice"])
+    current_price = float(yf.Ticker(symbol).info["regularMarketPrice"])
 
     if min_sp == -1:
         min_strike = 0.75 * current_price
@@ -341,7 +339,7 @@ def plot_oi(
     ax.set_ylabel("Open Interest [1k] ")
     ax.set_xlim(min_strike, max_strike)
     ax.legend()
-    ax.set_title(f"Open Interest for {ticker.upper()} expiring {expiry}")
+    ax.set_title(f"Open Interest for {symbol.upper()} expiring {expiration}")
 
     theme.style_primary_axis(ax)
 
@@ -351,12 +349,12 @@ def plot_oi(
 
 @log_start_end(log=logger)
 def plot_vol(
-    ticker: str,
-    expiry: str,
-    min_sp: float,
-    max_sp: float,
-    calls_only: bool,
-    puts_only: bool,
+    symbol: str,
+    expiration: str,
+    min_sp: float = -1,
+    max_sp: float = -1,
+    calls_only: bool = False,
+    puts_only: bool = False,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -364,10 +362,10 @@ def plot_vol(
 
     Parameters
     ----------
-    ticker: str
-        Ticker
-    expiry: str
-        Expiry date for options
+    symbol: str
+        Ticker symbol
+    expiration: str
+        expiration date for options
     min_sp: float
         Min strike to consider
     max_sp: float
@@ -381,10 +379,11 @@ def plot_vol(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    options = yfinance_model.get_option_chain(ticker, expiry)
+    options = yfinance_model.get_option_chain(symbol, expiration)
+
     calls = options.calls
     puts = options.puts
-    current_price = float(yf.Ticker(ticker).info["regularMarketPrice"])
+    current_price = float(yf.Ticker(symbol).info["regularMarketPrice"])
 
     if min_sp == -1:
         min_strike = 0.75 * current_price
@@ -432,7 +431,7 @@ def plot_vol(
     ax.set_ylabel("Volume [1k] ")
     ax.set_xlim(min_strike, max_strike)
     ax.legend()
-    ax.set_title(f"Volume for {ticker.upper()} expiring {expiry}")
+    ax.set_title(f"Volume for {symbol.upper()} expiring {expiration}")
     theme.style_primary_axis(ax)
 
     if external_axes is None:
@@ -447,11 +446,11 @@ def plot_vol(
 
 @log_start_end(log=logger)
 def plot_volume_open_interest(
-    ticker: str,
-    expiry: str,
-    min_sp: float,
-    max_sp: float,
-    min_vol: float,
+    symbol: str,
+    expiration: str,
+    min_sp: float = -1,
+    max_sp: float = -1,
+    min_vol: float = -1,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -459,9 +458,9 @@ def plot_volume_open_interest(
 
     Parameters
     ----------
-    ticker: str
-        Stock ticker
-    expiry: str
+    symbol: str
+        Stock ticker symbol
+    expiration: str
         Option expiration
     min_sp: float
         Min strike price
@@ -475,10 +474,11 @@ def plot_volume_open_interest(
         External axes (1 axis is expected in the list), by default None
     """
 
-    options = yfinance_model.get_option_chain(ticker, expiry)
+    options = yfinance_model.get_option_chain(symbol, expiration)
+
     calls = options.calls
     puts = options.puts
-    current_price = float(yf.Ticker(ticker).info["regularMarketPrice"])
+    current_price = float(yf.Ticker(symbol).info["regularMarketPrice"])
 
     # Process Calls Data
     df_calls = calls.pivot_table(
@@ -604,7 +604,7 @@ def plot_volume_open_interest(
     g.set_xticklabels(xlabels)
 
     ax.set_title(
-        f"{ticker} volumes for {expiry} \n(open interest displayed only during market hours)",
+        f"{symbol} volumes for {expiration} \n(open interest displayed only during market hours)",
     )
     ax.invert_yaxis()
 
@@ -639,12 +639,12 @@ def plot_volume_open_interest(
 
 @log_start_end(log=logger)
 def plot_plot(
-    ticker: str,
+    symbol: str,
     expiration: str,
-    put: bool,
-    x: str,
-    y: str,
-    custom: str,
+    put: bool = False,
+    x: str = "s",
+    y: str = "iv",
+    custom: str = "",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
@@ -652,20 +652,20 @@ def plot_plot(
 
     Parameters
     ----------
-    ticker: str
-        Stock ticker
+    symbol: str
+        Stock ticker symbol
     expiration: str
         Option expiration
-    min_sp: float
-        Min strike price
-    put: bool
-        put option instead of call
     x: str
-        variable to display in x axis
+        variable to display in x axis, choose from:
+        ltd, s, lp, b, a, c, pc, v, oi, iv
     y: str
-        variable to display in y axis
+        variable to display in y axis, choose from:
+        ltd, s, lp, b, a, c, pc, v, oi, iv
     custom: str
         type of plot
+    put: bool
+        put option instead of call
     export: str
         type of data to export
     external_axes : Optional[List[plt.Axes]], optional
@@ -690,7 +690,7 @@ def plot_plot(
         x = convert[x]
         y = convert[y]
     varis = op_helpers.opt_chain_cols
-    chain = yfinance_model.get_option_chain(ticker, expiration)
+    chain = yfinance_model.get_option_chain(symbol, expiration)
     values = chain.puts if put else chain.calls
 
     if external_axes is None:
@@ -705,7 +705,7 @@ def plot_plot(
     ax.plot(x_data, y_data, "--bo")
     option = "puts" if put else "calls"
     ax.set_title(
-        f"{varis[y]['label']} vs. {varis[x]['label']} for {ticker} {option} on {expiration}"
+        f"{varis[y]['label']} vs. {varis[x]['label']} for {symbol} {option} on {expiration}"
     )
     ax.set_ylabel(varis[y]["label"])
     ax.set_xlabel(varis[x]["label"])
@@ -731,7 +731,7 @@ def plot_payoff(
     current_price: float,
     options: List[Dict[Any, Any]],
     underlying: float,
-    ticker: str,
+    symbol: str,
     expiration: str,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
@@ -750,7 +750,7 @@ def plot_payoff(
         ax.plot(x, ya, label="Payoff After Premium")
     else:
         ax.plot(x, yb, label="Payoff")
-    ax.set_title(f"Option Payoff Diagram for {ticker} on {expiration}")
+    ax.set_title(f"Option Payoff Diagram for {symbol} on {expiration}")
     ax.set_ylabel("Profit")
     ax.set_xlabel("Underlying Asset Price at Expiration")
     ax.legend()
@@ -764,15 +764,21 @@ def plot_payoff(
 
 @log_start_end(log=logger)
 def show_parity(
-    ticker: str, exp: str, put: bool, ask: bool, mini: float, maxi: float, export: str
+    symbol: str,
+    expiration: str,
+    put: bool = False,
+    ask: bool = False,
+    mini: float = None,
+    maxi: float = None,
+    export: str = "",
 ) -> None:
     """Prints options and whether they are under or over priced [Source: Yahoo Finance]
 
     Parameters
     ----------
-    ticker : str
-        Ticker to get expirations for
-    exp : str
+    symbol : str
+        Ticker symbol to get expirations for
+    expiration : str
         Expiration to use for options
     put : bool
         Whether to use puts or calls
@@ -785,12 +791,12 @@ def show_parity(
     export : str
         Export data
     """
-    r_date = datetime.strptime(exp, "%Y-%m-%d").date()
+    r_date = datetime.strptime(expiration, "%Y-%m-%d").date()
     delta = (r_date - date.today()).days
     rate = ((1 + get_rf()) ** (delta / 365)) - 1
-    stock = get_price(ticker)
+    stock = get_price(symbol)
 
-    div_info = yfinance_model.get_dividend(ticker)
+    div_info = yfinance_model.get_dividend(symbol)
     div_dts = div_info.index.values.tolist()
 
     if div_dts:
@@ -803,7 +809,7 @@ def show_parity(
 
         next_div = last_div + timedelta(days=91)
         dividends = []
-        while next_div < datetime.strptime(exp, "%Y-%m-%d"):
+        while next_div < datetime.strptime(expiration, "%Y-%m-%d"):
             day_dif = (next_div - datetime.now()).days
             dividends.append((avg_div, day_dif))
             next_div += timedelta(days=91)
@@ -812,7 +818,7 @@ def show_parity(
     else:
         pv_dividend = 0
 
-    chain = get_option_chain(ticker, exp)
+    chain = get_option_chain(symbol, expiration)
     name = "ask" if ask else "lastPrice"
     o_type = "put" if put else "call"
 
@@ -867,39 +873,39 @@ def show_parity(
 
 @log_start_end(log=logger)
 def risk_neutral_vals(
-    ticker: str,
-    exp: str,
-    put: bool,
-    df: pd.DataFrame,
-    mini: float,
-    maxi: float,
-    risk: float,
+    symbol: str,
+    expiration_date: str,
+    data: pd.DataFrame,
+    put: bool = False,
+    mini: float = None,
+    maxi: float = None,
+    risk: float = None,
 ) -> None:
     """Prints current options prices and risk neutral values [Source: Yahoo Finance]
 
     Parameters
     ----------
-    ticker : str
-        Ticker to get expirations for
-    exp : str
+    symbol: str
+        Ticker symbol to get expirations for
+    expiration_date: str
         Expiration to use for options
-    put : bool
+    put: bool
         Whether to use puts or calls
-    df : pd.DataFrame
+    data: pd.DataFrame
         Estimates for stocks prices and probabilities
-    mini : float
+    mini: float
         Minimum strike price to show
-    maxi : float
+    maxi: float
         Maximum strike price to show
-    risk : float
+    risk: float
         The risk-free rate for the asset
     """
     if put:
-        chain = get_option_chain(ticker, exp).puts
+        chain = get_option_chain(symbol, expiration_date).puts
     else:
-        chain = get_option_chain(ticker, exp).calls
+        chain = get_option_chain(symbol, expiration_date).calls
 
-    r_date = datetime.strptime(exp, "%Y-%m-%d").date()
+    r_date = datetime.strptime(expiration_date, "%Y-%m-%d").date()
     delta = (r_date - date.today()).days
     vals = []
     if risk is None:
@@ -909,7 +915,7 @@ def risk_neutral_vals(
             [
                 row["strike"],
                 row["lastPrice"],
-                op_helpers.rn_payoff(row["strike"], df, put, delta, risk),
+                op_helpers.rn_payoff(row["strike"], data, put, delta, risk),
             ]
         )
     new_df = pd.DataFrame(vals, columns=["Strike", "Last Price", "Value"], dtype=float)
@@ -935,7 +941,7 @@ def risk_neutral_vals(
 def plot_expected_prices(
     und_vals: List[List[float]],
     p: float,
-    ticker: str,
+    symbol: str,
     expiration: str,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
@@ -947,8 +953,8 @@ def plot_expected_prices(
         The expected underlying values at the expiration date
     p : float
         The probability of the stock price moving upward each round
-    ticker : str
-        The ticker of the option's underlying asset
+    symbol : str
+        The ticker symbol of the option's underlying asset
     expiration : str
         The expiration for the option
     external_axes : Optional[List[plt.Axes]], optional
@@ -964,7 +970,7 @@ def plot_expected_prices(
     else:
         return
 
-    ax.set_title(f"Probabilities for ending prices of {ticker} on {expiration}")
+    ax.set_title(f"Probabilities for ending prices of {symbol} on {expiration}")
     ax.xaxis.set_major_formatter("${x:1.2f}")
     ax.yaxis.set_major_formatter(mtick.PercentFormatter())
     ax.plot(und_vals[-1], probs)
@@ -982,7 +988,7 @@ def export_binomial_calcs(
     und_vals: List[List[float]],
     opt_vals: List[List[float]],
     days: int,
-    ticker: str,
+    symbol: str,
 ) -> None:
     """Create an excel spreadsheet with binomial tables for underlying asset value and option value
 
@@ -1000,8 +1006,8 @@ def export_binomial_calcs(
         The values for the option at each step
     days : int
         The number of days until the option expires
-    ticker : str
-        The ticker for the company
+    symbol : str
+        The ticker symbol for the company
     """
 
     opts = excel_columns()
@@ -1033,31 +1039,31 @@ def export_binomial_calcs(
         "exports",
         "stocks",
         "options",
-        f"{ticker} {datetime.now()}.xlsx",
+        f"{symbol} {datetime.now()}.xlsx",
     )
     wb.save(trypath)
     console.print(
-        f"Analysis ran for {ticker}\nPlease look in {trypath} for the file.\n"
+        f"Analysis ran for {symbol}\nPlease look in {trypath} for the file.\n"
     )
 
 
 @log_start_end(log=logger)
 def show_binom(
-    ticker: str,
+    symbol: str,
     expiration: str,
-    strike: float,
-    put: bool,
-    europe: bool,
-    export: bool,
-    plot: bool,
-    vol: float,
+    strike: float = 0,
+    put: bool = False,
+    europe: bool = False,
+    export: str = "",
+    plot: bool = False,
+    vol: float = None,
 ) -> None:
     """Get binomial pricing for option
 
     Parameters
     ----------
-    ticker : str
-        The ticker of the option's underlying asset
+    symbol : str
+        The ticker symbol of the option's underlying asset
     expiration : str
         The expiration for the option
     strike : float
@@ -1066,94 +1072,32 @@ def show_binom(
         Value a put instead of a call
     europe : bool
         Value a European option instead of an American option
-    export : bool
+    export : str
         Export the options data to an excel spreadsheet
     plot : bool
         Show a graph of expected ending prices
     vol : float
         The annualized volatility for the underlying asset
     """
-    # Base variables to calculate values
-    info = yfinance_model.get_info(ticker)
-    price = info["regularMarketPrice"]
-    if vol is None:
-        closings = yfinance_model.get_closing(ticker)
-        vol = (closings / closings.shift()).std() * (252**0.5)
-    div_yield = (
-        info["trailingAnnualDividendYield"]
-        if info["trailingAnnualDividendYield"] is not None
-        else 0
+    up, prob_up, discount, und_vals, opt_vals, days = yfinance_model.get_binom(
+        symbol, expiration, strike, put, europe, vol
     )
-    delta_t = 1 / 252
-    rf = get_rf()
-    exp_date = datetime.strptime(expiration, "%Y-%m-%d").date()
-    today = date.today()
-    days = (exp_date - today).days
-
-    # Binomial pricing specific variables
-    up = math.exp(vol * (delta_t**0.5))
-    down = 1 / up
-    prob_up = (math.exp((rf - div_yield) * delta_t) - down) / (up - down)
-    prob_down = 1 - prob_up
-    discount = math.exp(delta_t * rf)
-
-    und_vals: List[List[float]] = [[price]]
-
-    # Binomial tree for underlying values
-    for i in range(days):
-        cur_date = today + timedelta(days=i + 1)
-        if cur_date.weekday() < 5:
-            last = und_vals[-1]
-            new = [x * up for x in last]
-            new.append(last[-1] * down)
-            und_vals.append(new)
-
-    # Binomial tree for option values
-    if put:
-        opt_vals = [[max(strike - x, 0) for x in und_vals[-1]]]
-    else:
-        opt_vals = [[max(x - strike, 0) for x in und_vals[-1]]]
-
-    j = 2
-    while len(opt_vals[0]) > 1:
-        new_vals = []
-        for i in range(len(opt_vals[0]) - 1):
-            if europe:
-                value = (
-                    opt_vals[0][i] * prob_up + opt_vals[0][i + 1] * prob_down
-                ) / discount
-            else:
-                if put:
-                    value = max(
-                        (opt_vals[0][i] * prob_up + opt_vals[0][i + 1] * prob_down)
-                        / discount,
-                        strike - und_vals[-j][i],
-                    )
-                else:
-                    value = max(
-                        (opt_vals[0][i] * prob_up + opt_vals[0][i + 1] * prob_down)
-                        / discount,
-                        und_vals[-j][i] - strike,
-                    )
-            new_vals.append(value)
-        opt_vals.insert(0, new_vals)
-        j += 1
 
     if export:
-        export_binomial_calcs(up, prob_up, discount, und_vals, opt_vals, days, ticker)
+        export_binomial_calcs(up, prob_up, discount, und_vals, opt_vals, days, symbol)
 
     if plot:
-        plot_expected_prices(und_vals, prob_up, ticker, expiration)
+        plot_expected_prices(und_vals, prob_up, symbol, expiration)
 
     option = "put" if put else "call"
     console.print(
-        f"{ticker} {option} at ${strike:.2f} expiring on {expiration} is worth ${opt_vals[0][0]:.2f}\n"
+        f"{symbol} {option} at ${strike:.2f} expiring on {expiration} is worth ${opt_vals[0][0]:.2f}\n"
     )
 
 
 @log_start_end(log=logger)
 def display_vol_surface(
-    ticker: str,
+    symbol: str,
     export: str = "",
     z: str = "IV",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -1162,16 +1106,18 @@ def display_vol_surface(
 
     Parameters
     ----------
-    ticker : str
-        Ticker to get surface for
+    symbol : str
+        Ticker symbol to get surface for
     export : str
         Format to export data
     z : str
         The variable for the Z axis
+    external_axes: Optional[List[plt.Axes]]
+        External axes (1 axis is expected in the list), by default None
     """
-    data = yfinance_model.get_iv_surface(ticker)
+    data = yfinance_model.get_iv_surface(symbol)
     if data.empty:
-        console.print(f"No options data found for {ticker}.\n")
+        console.print(f"No options data found for {symbol}.\n")
         return
     X = data.dte
     Y = data.strike
@@ -1195,7 +1141,7 @@ def display_vol_surface(
     ax.set_zlabel(z)
 
     if external_axes is None:
-        fig.suptitle(f"{label} Surface for {ticker.upper()}")
+        fig.suptitle(f"{label} Surface for {symbol.upper()}")
         theme.visualize_output(force_tight_layout=False)
 
     export_data(
@@ -1208,8 +1154,8 @@ def display_vol_surface(
 
 @log_start_end(log=logger)
 def show_greeks(
-    ticker: str,
-    expire: str,
+    symbol: str,
+    expiration: str,
     div_cont: float = 0,
     rf: float = None,
     opt_type: int = 1,
@@ -1222,70 +1168,28 @@ def show_greeks(
 
     Parameters
     ----------
-    ticker : str
-        The ticker value of the option
-    div_cont : float
+    symbol: str
+        The ticker symbol value of the option
+    div_cont: float
         The dividend continuous rate
-    expire : str
-        The date of expiration
-    rf : float
+    expiration: str
+        The date of expiration, format "YYYY-MM-DD", i.e. 2010-12-31.
+    rf: float
         The risk-free rate
-    opt_type : Union[1, -1]
+    opt_type: Union[1, -1]
         The option type 1 is for call and -1 is for put
-    mini : float
+    mini: float
         The minimum strike price to include in the table
-    maxi : float
+    maxi: float
         The maximum strike price to include in the table
-    all : bool
+    show_all: bool
         Whether to show all greeks
     """
 
-    s = yfinance_model.get_price(ticker)
-    chains = yfinance_model.get_option_chain(ticker, expire)
-    chain = chains.calls if opt_type == 1 else chains.puts
+    df = yfinance_model.get_greeks(
+        symbol, expiration, div_cont, rf, opt_type, mini, maxi, show_all
+    )
 
-    if mini is None:
-        mini = chain.strike.quantile(0.25)
-    if maxi is None:
-        maxi = chain.strike.quantile(0.75)
-
-    chain = chain[chain["strike"] >= mini]
-    chain = chain[chain["strike"] <= maxi]
-
-    risk_free = rf if rf is not None else get_rf()
-    expire_dt = datetime.strptime(expire, "%Y-%m-%d")
-    dif = (expire_dt - datetime.now()).seconds / (60 * 60 * 24)
-
-    strikes = []
-    for _, row in chain.iterrows():
-        vol = row["impliedVolatility"]
-        opt = Option(s, row["strike"], risk_free, div_cont, dif, vol, opt_type)
-        result = [
-            row["strike"],
-            row["impliedVolatility"],
-            opt.Delta(),
-            opt.Gamma(),
-            opt.Vega(),
-            opt.Theta(),
-        ]
-        if show_all:
-            result += [
-                opt.Rho(),
-                opt.Phi(),
-                opt.Charm(),
-                opt.Vanna(0.01),
-                opt.Vomma(0.01),
-            ]
-        strikes.append(result)
-
-    columns = [
-        "Strike",
-        "Implied Vol",
-        "Delta",
-        "Gamma",
-        "Vega",
-        "Theta",
-    ]
     column_formatting = [
         ".1f",
         ".4f",
@@ -1294,11 +1198,11 @@ def show_greeks(
         ".6f",
         ".6f",
     ]
+
     if show_all:
         additional_columns = ["Rho", "Phi", "Charm", "Vanna", "Vomma"]
-        columns += additional_columns
         column_formatting += [".6f"] * len(additional_columns)
-    df = pd.DataFrame(strikes, columns=columns)
+
     print_rich_table(
         df,
         headers=list(df.columns),

@@ -34,7 +34,8 @@ def get_countries(industry: str = "", sector: str = ""):
         return fd.show_options("equities", industry=True)[industry]["Countries"]
     if sector:
         return fd.show_options("equities", sector=sector)["Countries"]
-    return fd.show_options("equities", "countries")
+
+    return [count for count in fd.show_options("equities", "countries") if count]
 
 
 @log_start_end(log=logger)
@@ -59,7 +60,7 @@ def get_sectors(industry: str = "", country: str = ""):
     if country:
         return fd.show_options("equities", country=country)["Sectors"]
 
-    return fd.show_options("equities", "sectors")
+    return [sect for sect in fd.show_options("equities", "sectors") if sect]
 
 
 @log_start_end(log=logger)
@@ -87,7 +88,7 @@ def get_industries(country: str = "", sector: str = ""):
     if sector:
         return fd.show_options("equities", sector=sector)["Industries"]
 
-    return fd.show_options("equities", "industries")
+    return [ind for ind in fd.show_options("equities", "industries") if ind]
 
 
 @log_start_end(log=logger)
@@ -104,9 +105,9 @@ def get_marketcap():
 
 @log_start_end(log=logger)
 def filter_stocks(
-    country: str,
-    sector: str,
-    industry: str,
+    country: str = None,
+    sector: str = None,
+    industry: str = None,
     marketcap: str = "",
     exclude_exchanges: bool = True,
 ):
@@ -116,11 +117,11 @@ def filter_stocks(
     ----------
     country: str
         Search by country to find stocks matching the criteria.
-    sector : str
+    sector: str
         Search by sector to find stocks matching the criteria.
-    industry : str
+    industry: str
         Search by industry to find stocks matching the criteria.
-    marketcap : str
+    marketcap: str
         Select stocks based on the market cap.
     exclude_exchanges: bool
         When you wish to include different exchanges use this boolean.
@@ -179,7 +180,9 @@ def filter_stocks(
                         exclude_exchanges=exclude_exchanges,
                     )
                 else:  # no industry
-                    data = {}
+                    data = fd.select_equities(
+                        exclude_exchanges=exclude_exchanges,
+                    )
 
         if marketcap:
             data = fd.search_products(data, query=marketcap, search="market_cap")
@@ -193,9 +196,9 @@ def filter_stocks(
 
 @log_start_end(log=logger)
 def get_stocks_data(
-    country: str,
-    sector: str,
-    industry: str,
+    country: str = None,
+    sector: str = None,
+    industry: str = None,
     marketcap: str = "",
     exclude_exchanges: bool = True,
 ):
@@ -205,11 +208,11 @@ def get_stocks_data(
     ----------
     country: str
         Search by country to find stocks matching the criteria.
-    sector : str
+    sector: str
         Search by sector to find stocks matching the criteria.
-    industry : str
+    industry: str
         Search by industry to find stocks matching the criteria.
-    marketcap : str
+    marketcap: str
         Select stocks based on the market cap.
     exclude_exchanges: bool
         When you wish to include different exchanges use this boolean.

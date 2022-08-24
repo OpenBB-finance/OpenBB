@@ -55,20 +55,20 @@ def get_fama_raw() -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_historical_5(ticker: str):
+def get_historical_5(symbol: str):
     """Get 5 year monthly historical performance for a ticker with dividends filtered
 
     Parameters
     ----------
-    ticker : str
-        A ticker in string form
+    symbol : str
+        A ticker symbol in string form
 
     Returns
     ----------
     data : pd.DataFrame
         A dataframe with historical information
     """
-    tick = yf.Ticker(ticker)
+    tick = yf.Ticker(symbol)
     df = tick.history(period="5y", interval="1mo")
     df = df[df.index.to_series().apply(lambda x: x.day == 1)]
     df = df.drop(["Dividends", "Stock Splits"], axis=1)
@@ -77,23 +77,23 @@ def get_historical_5(ticker: str):
 
 
 @log_start_end(log=logger)
-def capm_information(ticker) -> Tuple[float, float]:
+def capm_information(symbol: str) -> Tuple[float, float]:
     """Provides information that relates to the CAPM model
 
     Parameters
     ----------
-    ticker : str
-        A ticker in string form
+    symbol : str
+        A ticker symbol in string form
 
     Returns
-    ----------
+    -------
     beta : float
         The beta for a stock
     sys : float
         The systematic risk for a stock
     """
     df_f = get_fama_raw()
-    df_h = get_historical_5(ticker)
+    df_h = get_historical_5(symbol)
     df = df_h.join(df_f)
     df = df.dropna()
     df["Monthly Return"] = df["Close"].pct_change()

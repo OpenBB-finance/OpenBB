@@ -84,9 +84,12 @@ class CryptoController(CryptoBaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
-            choices["load"]["-d"] = {
-                c: {} for c in ["1", "7", "14", "30", "90", "180", "365"]
+            choices["load"]["-i"] = {
+                c: {}
+                for c in ["1", "5", "15", "30", "60", "240", "1440", "10080", "43200"]
             }
+            choices["load"]["--exchange"] = {c: {} for c in self.exchanges}
+            choices["load"]["--source"] = {c: {} for c in ["ccxt", "yf", "cg"]}
             choices["load"]["--vs"] = {c: {} for c in ["usd", "eur"]}
             choices["find"]["-k"] = {c: {} for c in FIND_KEYS}
             choices["headlines"] = {c: {} for c in finbrain_crypto_view.COINS}
@@ -103,10 +106,15 @@ class CryptoController(CryptoBaseController):
         mt.add_cmd("load")
         mt.add_cmd("find")
         mt.add_raw("\n")
-        mt.add_param("_symbol", self.symbol.upper())
         mt.add_param(
-            "_source", "CoinGecko (Price), YahooFinance (Volume)" if self.symbol else ""
+            "_symbol", f"{self.symbol.upper()}/{self.vs.upper()}" if self.symbol else ""
         )
+        if self.source == "ccxt":
+            mt.add_param(
+                "_exchange", self.exchange if self.symbol and self.exchange else ""
+            )
+        mt.add_param("_source", self.source if self.symbol and self.source else "")
+        mt.add_param("_interval", self.current_interval)
         mt.add_raw("\n")
         mt.add_cmd("headlines", "FinBrain")
         mt.add_cmd("candle", "", self.symbol)
@@ -211,9 +219,12 @@ class CryptoController(CryptoBaseController):
                 return
 
             plot_chart(
+                exchange=self.exchange,
+                source=self.source,
                 symbol=self.symbol,
                 currency=self.current_currency,
                 prices_df=self.current_df,
+                interval=self.current_interval,
             )
 
     @log_start_end(log=logger)
@@ -301,7 +312,7 @@ class CryptoController(CryptoBaseController):
 
         if ns_parser:
             finbrain_crypto_view.display_crypto_sentiment_analysis(
-                coin=ns_parser.coin, export=ns_parser.export
+                symbol=ns_parser.coin, export=ns_parser.export
             )
 
     @log_start_end(log=logger)
@@ -469,16 +480,16 @@ class CryptoController(CryptoBaseController):
         # TODO: merge find + display_all_coins
         if ns_parser.coin:
             find(
-                coin=ns_parser.coin,
+                query=ns_parser.coin,
                 source=ns_parser.source,
                 key=ns_parser.key,
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
             display_all_coins(
-                coin=ns_parser.coin,
+                symbol=ns_parser.coin,
                 source=ns_parser.source,
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 skip=ns_parser.skip,
                 show_all=bool("ALL" in other_args),
                 export=ns_parser.export,

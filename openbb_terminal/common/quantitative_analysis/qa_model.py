@@ -22,16 +22,16 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def get_summary(df: pd.DataFrame) -> pd.DataFrame:
+def get_summary(data: pd.DataFrame) -> pd.DataFrame:
     """Print summary statistics
 
     Parameters
     ----------
-    df : pd.DataFrame
+    data : pd.DataFrame
         Dataframe to get summary statistics for
     """
 
-    df_stats = df.describe(percentiles=[0.1, 0.25, 0.5, 0.75, 0.9])
+    df_stats = data.describe(percentiles=[0.1, 0.25, 0.5, 0.75, 0.9])
     df_stats.loc["var"] = df_stats.loc["std"] ** 2
 
     return df_stats
@@ -39,13 +39,13 @@ def get_summary(df: pd.DataFrame) -> pd.DataFrame:
 
 @log_start_end(log=logger)
 def get_seasonal_decomposition(
-    df: pd.DataFrame, multiplicative: bool
+    data: pd.DataFrame, multiplicative: bool = False
 ) -> Tuple[Any, pd.DataFrame, pd.DataFrame]:
     """Perform seasonal decomposition
 
     Parameters
     ----------
-    df_stock : pd.DataFrame
+    data : pd.DataFrame
         Dataframe of targeted data
     multiplicative : bool
         Boolean to indicate multiplication instead of addition
@@ -66,7 +66,7 @@ def get_seasonal_decomposition(
 
     model = ["additive", "multiplicative"][multiplicative]
 
-    result = seasonal_decompose(df, model=model, period=seasonal_periods)
+    result = seasonal_decompose(data, model=model, period=seasonal_periods)
     cycle, trend = sm.tsa.filters.hpfilter(
         result.trend[result.trend.notna().values], lamb=lamb
     )
@@ -83,7 +83,7 @@ def get_normality(data: pd.DataFrame) -> pd.DataFrame:
 
     Parameters
     ----------
-    df : pd.DataFrame
+    data : pd.DataFrame
         Dataframe of targeted data
 
     Returns
@@ -129,17 +129,19 @@ def get_normality(data: pd.DataFrame) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_unitroot(df: pd.DataFrame, fuller_reg: str, kpss_reg: str) -> pd.DataFrame:
+def get_unitroot(
+    data: pd.DataFrame, fuller_reg: str = "c", kpss_reg: str = "c"
+) -> pd.DataFrame:
     """Calculate test statistics for unit roots
 
     Parameters
     ----------
-    df : pd.DataFrame
+    data : pd.DataFrame
         DataFrame of target variable
     fuller_reg : str
-        Type of regression of ADF test
+        Type of regression of ADF test. Can be ‘c’,’ct’,’ctt’,’nc’ 'c' - Constant and t - trend order
     kpss_reg : str
-        Type of regression for KPSS test
+        Type of regression for KPSS test.  Can be ‘c’,’ct'
 
     Returns
     -------
@@ -149,10 +151,10 @@ def get_unitroot(df: pd.DataFrame, fuller_reg: str, kpss_reg: str) -> pd.DataFra
     # The Augmented Dickey-Fuller test
     # Used to test for a unit root in a univariate process in the presence of serial correlation.
     try:
-        result = adfuller(df, regression=fuller_reg)
+        result = adfuller(data, regression=fuller_reg)
     except MissingDataError:
-        df = df.dropna(axis=0)
-        result = adfuller(df, regression=fuller_reg)
+        data = data.dropna(axis=0)
+        result = adfuller(data, regression=fuller_reg)
     cols = ["Test Statistic", "P-Value", "NLags", "Nobs", "ICBest"]
     vals = [result[0], result[1], result[2], result[3], result[5]]
     data = pd.DataFrame(data=vals, index=cols, columns=["ADF"])
@@ -165,7 +167,10 @@ def get_unitroot(df: pd.DataFrame, fuller_reg: str, kpss_reg: str) -> pd.DataFra
     # Wrap this in catch_warnings to prevent
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
-        res2 = kpss(df, regression=kpss_reg, nlags="auto")
+        try:
+            res2 = kpss(data, regression=kpss_reg, nlags="auto")
+        except ValueError:
+            return pd.DataFrame()
     vals2 = [res2[0], res2[1], res2[2], "", ""]
     data["KPSS"] = vals2
     return data
@@ -215,20 +220,20 @@ def calculate_adjusted_var(
 
 def get_var(
     data: pd.DataFrame,
-    use_mean: bool,
-    adjusted_var: bool,
-    student_t: bool,
-    percentile: Union[int, float],
-    portfolio: bool,
+    use_mean: bool = False,
+    adjusted_var: bool = False,
+    student_t: bool = False,
+    percentile: Union[int, float] = 0.999,
+    portfolio: bool = False,
 ):
     """Gets value at risk for specified stock dataframe
 
     Parameters
     ----------
     data: pd.DataFrame
-        Dataframe of a stock/portfolio
+        Data dataframe
     use_mean: bool
-        If one should use the stocks mean for calculation
+        If one should use the data mean for calculation
     adjusted_var: bool
         If one should return VaR adjusted for skew and kurtosis
     student_t: bool
@@ -323,19 +328,19 @@ def get_var(
 
 def get_es(
     data: pd.DataFrame,
-    use_mean: bool,
-    distribution: str,
-    percentile: Union[float, int],
-    portfolio: bool,
+    use_mean: bool = False,
+    distribution: str = "normal",
+    percentile: Union[float, int] = 0.999,
+    portfolio: bool = False,
 ) -> Tuple[List[float], List[float]]:
     """Gets Expected Shortfall for specified stock dataframe
 
     Parameters
     ----------
     data: pd.DataFrame
-        Dataframe of a stock
+        Data dataframe
     use_mean: bool
-        If one should use the stocks mean for calculation
+        If one should use the data mean for calculation
     distribution: str
         Type of distribution, options: laplace, student_t, normal
     percentile: Union[float,int]
