@@ -8,26 +8,10 @@ from typing import Any, Tuple, Union, List, Optional
 
 import pandas as pd
 
-from contextlib import contextmanager
-import sys, os
-
-
-@contextmanager
-def suppress_stdout():
-    with open(os.devnull, "w") as devnull:
-        old_stdout = sys.stdout
-        sys.stdout = devnull
-        try:
-            yield
-        finally:
-            sys.stdout = old_stdout
-
-
-with suppress_stdout():
-    from darts import TimeSeries
-    from darts.models import TransformerModel
-    from openbb_terminal.decorators import log_start_end
-    from openbb_terminal.forecast import helpers
+from darts import TimeSeries
+from darts.models import TransformerModel
+from openbb_terminal.decorators import log_start_end
+from openbb_terminal.forecast import helpers
 
 logger = logging.getLogger(__name__)
 
