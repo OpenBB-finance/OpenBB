@@ -298,7 +298,11 @@ def get_rates(rate_type: str = "borrow") -> pd.DataFrame:
     df = pd.DataFrame(cryptos, columns=sorted(cryptos.keys()))
     for platform in PLATFORMS:
         if platform.lower() not in df.index:
-            df = df.append(pd.Series(name=platform.lower()))
+            df = pd.concat(
+                [df, pd.Series(name=platform.lower(), dtype="object")],
+                axis=0,
+                join="outer",
+            )
     return df
 
 

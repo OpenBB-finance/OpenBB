@@ -12,3 +12,7 @@ optional arguments:
   --export {csv,json,xlsx}
                         Export raw data into csv, json, xlsx (default: )
 ```
+
+Example:
+
+![fp command](https://user-images.githubusercontent.com/43375532/186253073-e50643be-391f-4aa4-949b-946b2d000f38.png)

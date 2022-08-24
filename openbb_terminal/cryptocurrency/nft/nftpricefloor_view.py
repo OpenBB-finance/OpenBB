@@ -1,10 +1,13 @@
 """ NFT Price Floor View """
 __docformat__ = "numpy"
 
+# flake8: noqa
+
 import logging
 import os
 from typing import List, Optional
 from matplotlib import pyplot as plt
+from openbb_terminal import config_terminal as cfg
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.cryptocurrency.nft import nftpricefloor_model
@@ -21,11 +24,15 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_collections(num: int = 5, export: str = ""):
+def display_collections(
+    show_fp: bool = False, show_sales: bool = False, num: int = 5, export: str = ""
+):
     """Display NFT collections. [Source: https://nftpricefloor.com/]
 
     Parameters
     ----------
+    show_fp : bool
+        Show NFT Price Floor for top collections
     num: int
         Number of NFT collections to display
     export : str
@@ -46,6 +53,23 @@ def display_collections(num: int = 5, export: str = ""):
                 "blockchain",
             ]
         ]
+        if show_fp or show_sales:
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+            for collection in df["slug"].head(num).values:
+                df_collection = nftpricefloor_model.get_floor_price(collection)
+                if not df_collection.empty:
+                    values = (
+                        df_collection["dataPriceFloorETH"]
+                        if show_fp
+                        else df_collection["sales"]
+                    )
+                    ax.plot(df_collection.index, values, label=collection)
+            ax.set_ylabel("Floor Price [ETH]" if show_fp else "Sales")
+            cfg.theme.style_primary_axis(ax)
+            ax.legend()
+            ax.set_title("Collections Floor Price" if show_fp else "Collections Sales")
+            cfg.theme.visualize_output()
+
         print_rich_table(
             df.head(num),
             headers=list(df.columns),
@@ -101,24 +125,26 @@ def display_floor_price(
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
         elif is_valid_axes_count(external_axes, 1):
             (ax,) = external_axes
-        ax.bar(df.index, df["sales"], color=theme.get_colors()[1])
+        ax.bar(df.index, df["sales"], color=theme.down_color, label="Sales")
         ax.set_xlim(
             df.index[0],
             df.index[-1],
         )
 
         ax2 = ax.twinx()
-        ax2.plot(df["dataPriceFloorETH"])
+        ax2.plot(df["dataPriceFloorETH"], color=theme.up_color, label="Floor Price")
         ax2.set_ylabel("Sales", labelpad=20)
         ax2.set_zorder(ax2.get_zorder() + 1)
         ax.patch.set_visible(False)
         ax2.yaxis.set_label_position("left")
         ax.set_ylabel("Floor Price [ETH]", labelpad=30)
         ax.set_title(f"{slug} Floor Price")
-        theme.style_primary_axis(ax)
+        ax.legend(loc="upper left")
+        ax2.legend(loc="upper right")
+        cfg.theme.style_primary_axis(ax)
 
         if external_axes is None:
-            theme.visualize_output()
+            cfg.theme.visualize_output()
 
         export_data(
             export,

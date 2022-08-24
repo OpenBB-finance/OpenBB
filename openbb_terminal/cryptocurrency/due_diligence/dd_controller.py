@@ -56,7 +56,16 @@ def check_cg_id(symbol: str):
 class DueDiligenceController(CryptoBaseController):
     """Due Diligence Controller class"""
 
-    CHOICES_COMMANDS = ["load", "fundrate", "oi", "active", "change", "nonzero", "eb"]
+    CHOICES_COMMANDS = [
+        "load",
+        "fundrate",
+        "oi",
+        "liquidations",
+        "active",
+        "change",
+        "nonzero",
+        "eb",
+    ]
 
     SPECIFIC_CHOICES = {
         "cp": [
@@ -187,6 +196,7 @@ class DueDiligenceController(CryptoBaseController):
         mt.add_cmd("ex", "CoinPaprika")
         mt.add_cmd("oi", "Coinglass")
         mt.add_cmd("fundrate", "Coinglass")
+        mt.add_cmd("liquidations", "Coinglass")
         mt.add_cmd("eb", "Glassnode")
         mt.add_cmd("trades", "CCXT")
         mt.add_cmd("ob", "CCXT")
@@ -532,6 +542,30 @@ class DueDiligenceController(CryptoBaseController):
             coinglass_view.display_open_interest(
                 symbol=self.symbol.upper(),
                 interval=ns_parser.interval,
+                export=ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
+    def call_liquidations(self, other_args):
+        """Process liquidations command"""
+        assert isinstance(self.symbol, str)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="liquidations",
+            description="""
+                Displays liquidations data for the loaded crypto asset
+                [Source: https://coinglass.github.io/API-Reference/#liquidation-chart]
+            """,
+        )
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+
+        if ns_parser:
+            coinglass_view.display_liquidations(
+                symbol=self.symbol.upper(),
                 export=ns_parser.export,
             )
 

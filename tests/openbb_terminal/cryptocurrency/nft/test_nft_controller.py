@@ -281,9 +281,9 @@ def test_call_func(
 ):
     path_controller = "openbb_terminal.cryptocurrency.nft.nft_controller"
 
-    # MOCK GET_COLLECTION_SLUGS
     mocker.patch(
         target=f"{path_controller}.nftpricefloor_model.get_collection_slugs",
+        return_value=True,
     )
 
     if mocked_func:

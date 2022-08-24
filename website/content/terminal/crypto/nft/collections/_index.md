@@ -30,3 +30,7 @@ Example:
 │ proof-moonbirds       │ Moonbirds               │ 13.25         │ 10000       │ 145         │ ethereum   │
 └───────────────────────┴─────────────────────────┴───────────────┴─────────────┴─────────────┴────────────┘
 ```
+
+Example with `--fp`:
+
+![collections fp command](https://user-images.githubusercontent.com/40023817/186201697-ff15dd9c-3b09-4c3a-b498-e98a876f1338.png)
