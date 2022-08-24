@@ -487,7 +487,9 @@ en:
   crypto/load: load a specific cryptocurrency for analysis
   crypto/find: find coins
   crypto/_symbol: Coin
+  crypto/_interval: Interval (min)
   crypto/_source: Source
+  crypto/_exchange: Exchange
   crypto/headlines: crypto sentiment from 15+ major news headlines
   crypto/candle: view a candle chart for a specific cryptocurrency
   crypto/prt: potential returns tool - check how much upside if ETH reaches BTC market cap
