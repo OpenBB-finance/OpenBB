@@ -9,8 +9,9 @@
 
 
 
-    <meta name="description" content="usage: load [-c COIN] [-d {1,7,14,30,90,180,365}] [--vs {usd,eur}] [-h] Load crypto currency to perform analysis on CoinGecko is used as source for price and YahooFinance for volume.
-optional arguments: -c COIN, --coin COIN Coin to get. Must be coin symbol (e.g., btc, eth) (default: None) -d {1,7,14,30,90,180,365}, --days {1,7,14,30,90,180,365} Data up to number of days ago (default: 365) --vs {usd,eur} Quote currency (what to view coin vs) (default: usd) -h, --help show this help message (default: False) ">
+    <meta name="description" content="usage: load [-c COIN] [-s START] [--exchange EXCHANGE] [-e END] [-i {1,5,15,30,60,240,1440,10080,43200}] [--vs VS] [--source {ccxt,yf,cg}] [-h]
+Load crypto currency to perform analysis on. Yahoo Finance is used as default source. Other sources can be used such as &lsquo;ccxt&rsquo; or &lsquo;cg&rsquo; with &ndash;source. If you select &lsquo;ccxt&rsquo;, you can then select any exchange with &ndash;exchange. You can also select a specific interval with &ndash;interval.
+optional arguments: -c COIN, --coin COIN Coin to get.">
 
 
 
@@ -26135,13 +26136,23 @@ optional arguments: -c COIN, --coin COIN Coin to get. Must be coin symbol (e.g.,
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Load</h1>
-        <pre><code>usage: load [-c COIN] [-d {1,7,14,30,90,180,365}] [--vs {usd,eur}] [-h]
-</code></pre><p>Load crypto currency to perform analysis on CoinGecko is used as source for price and YahooFinance for volume.</p>
+        <p><code>usage: load [-c COIN] [-s START] [--exchange EXCHANGE] [-e END] [-i {1,5,15,30,60,240,1440,10080,43200}] [--vs VS] [--source {ccxt,yf,cg}] [-h]</code></p>
+<p>Load crypto currency to perform analysis on. Yahoo Finance is used as default source. Other sources can be used such as &lsquo;ccxt&rsquo;
+or &lsquo;cg&rsquo; with &ndash;source. If you select &lsquo;ccxt&rsquo;, you can then select any exchange with &ndash;exchange. You can also select a specific
+interval with &ndash;interval.</p>
 <pre><code>optional arguments:
   -c COIN, --coin COIN  Coin to get. Must be coin symbol (e.g., btc, eth) (default: None)
-  -d {1,7,14,30,90,180,365}, --days {1,7,14,30,90,180,365}
-                        Data up to number of days ago (default: 365)
-  --vs {usd,eur}        Quote currency (what to view coin vs) (default: usd)
+  -s START, --start START
+                        The starting date (format YYYY-MM-DD) of the crypto (default: 2019-08-19)
+  --exchange {aax,ascendex,bequant,bibox,bigone,binance,binancecoinm,binanceus,binanceusdm,bit2c,bitbank,bitbay,bitcoincom,bitfinex,bitfinex2,bitflyer,bitforex,bitget,bithumb,bitmart,bitmex,bitopro,bitpanda,bitrue,bitso,bitstamp,bitstamp1,bittrex,bitvavo,bkex,bl3p,btcalpha,btcbox,btcex,btcmarkets,btctradeua,btcturk,buda,bw,bybit,bytetrade,cdax,cex,coinbaseprime,coinbasepro,coincheck,coinex,coinfalcon,coinmate,coinone,coinspot,crex24,cryptocom,currencycom,delta,deribit,digifinex,eqonex,exmo,flowbtc,fmfwio,ftx,ftxus,gate,gateio,gemini,hitbtc,hitbtc3,hollaex,huobi,huobijp,huobipro,idex,independentreserve,indodax,itbit,kraken,kucoin,kucoinfutures,kuna,latoken,lbank,lbank2,liquid,luno,lykke,mercado,mexc,mexc3,ndax,novadax,oceanex,okcoin,okex,okex5,okx,paymium,phemex,poloniex,probit,qtrade,ripio,stex,therock,tidebit,tidex,timex,tokocrypto,upbit,wavesexchange,whitebit,woo,xena,yobit,zaif,zb,zipmex,zonda}
+                        Exchange to search (default: binance)
+  -e END, --end END     The ending date (format YYYY-MM-DD) of the crypto (default: 2022-08-23)
+  -i {1,5,15,30,60,240,1440,10080,43200}, --interval {1,5,15,30,60,240,1440,10080,43200}
+                        The interval of the crypto (default: 1440)
+  --vs VS               Quote currency (what to view coin vs). e.g., usdc, usdt, ... if source is ccxt, usd, eur, ... otherwise
+                        (default: usdt)
+  --source {ccxt,yf,cg}
+                        Data source to select from (default: yf)
   -h, --help            show this help message (default: False)
 </code></pre>
     </article>
