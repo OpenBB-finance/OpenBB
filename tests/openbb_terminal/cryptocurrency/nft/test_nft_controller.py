@@ -283,7 +283,6 @@ def test_call_func(
 
     mocker.patch(
         target=f"{path_controller}.nftpricefloor_model.get_collection_slugs",
-        return_value=True,
     )
 
     if mocked_func:
