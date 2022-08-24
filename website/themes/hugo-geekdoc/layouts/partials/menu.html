@@ -2,7 +2,7 @@
   {{ partial "search" . }}
 
   <section class="gdoc-nav--main">
-    <div style="font-weight: bold; color: #5A5A5A">NAVIGATION</div>
+    <div style="font-weight: bold; color: #5a5a5a">NAVIGATION</div>
     {{ if .Site.Params.GeekdocMenuBundle }} {{ partial "menu-bundle" (dict
     "current" . "source" .Site.Data.menu.main.main) }} {{ else }} {{ partial
     "menu-filetree" . }} {{ end }}
@@ -10,7 +10,7 @@
 
   <section class="gdoc-nav--more">
     {{ if .Site.Data.menu.more.more }}
-    <div style="font-weight: bold; color: #5A5A5A">MORE</div>
+    <div style="font-weight: bold; color: #5a5a5a">MORE</div>
     {{ partial "menu-bundle" (dict "current" . "source"
     .Site.Data.menu.more.more) }} {{ end }}
   </section>

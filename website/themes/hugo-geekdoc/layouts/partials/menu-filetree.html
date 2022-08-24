@@ -24,7 +24,7 @@
             {{ end }}
             {{ if or .Content .Params.GeekdocFlatSection }}
                 <span class="flex">
-                    <a href="{{ .RelPermalink }}" class="gdoc-nav__entry {{ if eq $current . }}is-active{{ end }}">
+                    <a href="{{ .RelPermalink }}" class="gdoc-nav__entry {{ if eq $current . }}is-active{{ end }}" style="text-decoration: underline !important;">
                         {{ partial "title" . }}
                     </a>
                 </span>

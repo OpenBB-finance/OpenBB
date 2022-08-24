@@ -1,4 +1,11 @@
-<header style="background-image: linear-gradient(to right, #062d5d, #000000)">
+<header
+  style="
+    display: flex;
+    align-items: center;
+    height: 80px;
+    background-image: linear-gradient(to right, #062d5d, #000000);
+  "
+>
   <div class="container flex align-center justify-between">
     {{ if .MenuEnabled }}
     <label for="menu-control" class="gdoc-nav__control">
@@ -24,7 +31,7 @@
       <a
         style="font-size: 14px; margin-right: 20px"
         href="https://openbb.co/"
-        class="navlink"
+        class="navlink _hide-on-mobile"
         target="_blank"
         rel="noopener noreferrer"
         >Go to main website</a
