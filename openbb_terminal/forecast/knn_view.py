@@ -94,7 +94,6 @@ def display_k_nearest_neighbors(
         forecast_data_df.index = pd.date_range(
             data.index[-1], periods=n_predict + 1, freq=time_res
         )[1:]
-    print_pretty_prediction(forecast_data_df[0], data.values[-1])
     plot_data_predictions(
         data=data,
         preds=preds,
@@ -107,4 +106,5 @@ def display_k_nearest_neighbors(
         time_str=time_res,
         external_axes=external_axes,
     )
+    print_pretty_prediction(forecast_data_df[0], data.values[-1])
     console.print("")

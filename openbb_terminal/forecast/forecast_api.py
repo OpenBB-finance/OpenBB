@@ -17,6 +17,8 @@ from .forecast_view import display_seasonality as season
 from .forecast_model import delete_column as delete
 from .forecast_model import rename_column as rename
 from .forecast_view import export_df as export
+from .forecast_model import add_signal as signal
+from .forecast_model import add_atr as atr
 from .forecast_model import add_ema as ema
 from .forecast_model import add_sto as sto
 from .forecast_model import add_rsi as rsi
