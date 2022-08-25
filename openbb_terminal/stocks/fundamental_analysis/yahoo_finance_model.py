@@ -423,4 +423,5 @@ def get_financials(symbol: str, statement: str, ratios: bool = False) -> pd.Data
             df.iloc[i] = df_fa_pc.iloc[j]
             j += 1
 
-    return df.dropna(how="all")
+    df = df.dropna(how="all")
+    return df
