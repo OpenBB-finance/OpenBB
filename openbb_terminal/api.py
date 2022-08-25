@@ -138,6 +138,9 @@ functions = {
         "model": "openbb_terminal.common.newsapi_model.get_news",
         "view": "openbb_terminal.common.newsapi_view.display_news",
     },
+    "common.qa.bw": {
+        "model": "openbb_terminal.common.quantitative_analysis.qa_view.display_bw"
+    },
     "common.qa.calculate_adjusted_var": {
         "model": "openbb_terminal.common.quantitative_analysis.qa_model.calculate_adjusted_var"
     },
