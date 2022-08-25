@@ -66,6 +66,7 @@ def get_query_results(token):
 
 DAPP_STATS_PLATFORM_CHOICES = ["uniswap-v3", "uniswap-v2", "sushiswap", "curve"]
 
+
 @log_start_end(log=logger)
 def get_dapp_stats(
     platform: str = "curve",
@@ -80,7 +81,7 @@ def get_dapp_stats(
       on s.tx_id = t.tx_id
     where platform = '{platform}'
     group by date
-    order by date desc
+    order by date asc 
     """
     query = create_query(sql)
     token = query.get("token")

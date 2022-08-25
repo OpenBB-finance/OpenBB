@@ -26,6 +26,7 @@ from openbb_terminal.cryptocurrency.onchain import (
     ethgasstation_view,
     ethplorer_model,
     ethplorer_view,
+    shroom_model,
     shroom_view,
     whale_alert_model,
     whale_alert_view,
@@ -98,6 +99,7 @@ class OnchainController(BaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
+            choices["ds"] = {c: None for c in shroom_model.DAPP_STATS_PLATFORM_CHOICES}
             choices["whales"]["-s"] = {c: None for c in whale_alert_model.FILTERS}
             choices["hr"] = {c: None for c in GLASSNODE_SUPPORTED_HASHRATE_ASSETS}
             choices["hr"]["-c"] = {c: None for c in GLASSNODE_SUPPORTED_HASHRATE_ASSETS}
@@ -180,12 +182,26 @@ class OnchainController(BaseController):
             """,
         )
 
+        parser.add_argument(
+            "-p",
+            "--platform",
+            dest="platform",
+            type=str,
+            help="Ethereum platform to check fees/number of users over time",
+            default="curve",
+            choices=shroom_model.DAPP_STATS_PLATFORM_CHOICES,
+        )
+
+        if other_args and not other_args[0][0] == "-":
+            other_args.insert(0, "-p")
+
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
 
         if ns_parser:
             shroom_view.display_dapp_stats(
+                platform=ns_parser.platform,
                 export=ns_parser.export,
             )
 
