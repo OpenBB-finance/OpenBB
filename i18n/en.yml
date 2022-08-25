@@ -487,7 +487,9 @@ en:
   crypto/load: load a specific cryptocurrency for analysis
   crypto/find: find coins
   crypto/_symbol: Coin
+  crypto/_interval: Interval (min)
   crypto/_source: Source
+  crypto/_exchange: Exchange
   crypto/headlines: crypto sentiment from 15+ major news headlines
   crypto/candle: view a candle chart for a specific cryptocurrency
   crypto/prt: potential returns tool - check how much upside if ETH reaches BTC market cap
@@ -584,11 +586,13 @@ en:
   crypto/defi/anchor: anchor earnings data
   crypto/tools/aprtoapy: convert apr to apy
   crypto/tools/li: calculate impermanent loss
+  crypto/nft/fp: collection sales/floor price
+  crypto/nft/collections: top ethereum collections
   crypto/nft/today: today's NFT drops
   crypto/nft/upcoming: upcoming NFT drops
   crypto/nft/ongoing: Ongoing NFT drops
   crypto/nft/newest: Recently NFTs added
-  crypto/nft/stats: check open sea collection stats
+  crypto/nft/stats: collection stats
   crypto/dd/_overview_: Overview
   crypto/dd/_market_: Market
   crypto/dd/_metrics_: Metrics
