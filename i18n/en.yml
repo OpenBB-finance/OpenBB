@@ -1049,8 +1049,6 @@ en:
   forecast/signal: Add Price Signal (short vs. long term)
   forecast/_tsforecasting_: TimeSeries Forecasting
   forecast/arima: Arima (Non-darts)
-  forecast/knn: KNN (Non-darts)
-  forecast/mc: Monte Carlo Simulation (Non-darts)
   forecast/expo: Probabilistic Exponential Smoothing
   forecast/theta: Theta Method
   forecast/linregr: Probabilistic Linear Regression

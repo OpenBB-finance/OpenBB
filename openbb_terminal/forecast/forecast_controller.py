@@ -50,7 +50,6 @@ from openbb_terminal.forecast import (
     rnn_view,
     brnn_view,
     tft_view,
-    knn_view,
     helpers,
     trans_view,
 )
@@ -103,7 +102,6 @@ class ForecastController(BaseController):
         "linregr",
         "trans",
         "tft",
-        "knn",
         "season",
     ]
     pandas_plot_choices = [
@@ -246,7 +244,6 @@ class ForecastController(BaseController):
                 "linregr",
                 "trans",
                 "tft",
-                "knn",
                 "season",
             ]:
                 self.choices[feature] = {c: None for c in self.files}
@@ -316,7 +313,6 @@ class ForecastController(BaseController):
         mt.add_cmd("atr", "", self.files)
         mt.add_cmd("signal", "", self.files)
         mt.add_info("_tsforecasting_")
-        mt.add_cmd("knn", "", self.files)
         mt.add_cmd("expo", "", self.files)
         mt.add_cmd("theta", "", self.files)
         mt.add_cmd("linregr", "", self.files)
@@ -2422,64 +2418,3 @@ class ForecastController(BaseController):
                 end_date=ns_parser.s_end_date,
                 naive=ns_parser.naive,
             )
-
-    # Below this is ports to the old pred menu
-    def call_knn(self, other_args: List[str]):
-        """Process knn command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="knn",
-            description="""
-                K nearest neighbors is a simple algorithm that stores all
-                available cases and predict the numerical target based on a similarity measure
-                (e.g. distance functions).
-            """,
-        )
-        parser.add_argument(
-            "--neighbors",
-            action="store",
-            dest="n_neighbors",
-            type=check_positive,
-            default=20,
-            help="number of neighbors to use on the algorithm.",
-        )
-        parser.add_argument(
-            "--no_shuffle",
-            action="store_false",
-            dest="no_shuffle",
-            default=True,
-            help="Specify if shuffling validation inputs.",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "--target-dataset")
-        ns_parser = self.parse_known_args_and_warn(
-            parser,
-            other_args,
-            EXPORT_ONLY_FIGURES_ALLOWED,
-            n_jumps=True,
-            n_days=True,
-            input_chunk_length=True,
-            train_split=True,
-            target_dataset=True,
-            target_column=True,
-            start=True,
-            end=True,
-        )
-        if ns_parser:
-            if not helpers.check_parser_input(ns_parser, self.datasets):
-                return
-            data = self.datasets[ns_parser.target_dataset]
-            if ns_parser:
-                knn_view.display_k_nearest_neighbors(
-                    data=data,
-                    dataset_name=ns_parser.target_dataset,
-                    target_column=ns_parser.target_column,
-                    n_neighbors=ns_parser.n_neighbors,
-                    input_chunk_length=ns_parser.input_chunk_length,
-                    n_predict=ns_parser.n_days,
-                    test_size=1 - ns_parser.train_split,
-                    no_shuffle=ns_parser.no_shuffle,
-                    start_date=ns_parser.s_start_date,
-                    end_date=ns_parser.s_end_date,
-                )

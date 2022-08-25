@@ -28,14 +28,10 @@ main:
             ref: "terminal/forecast/expo"
           - name: export
             ref: "terminal/forecast/export"
-          - name: knn
-            ref: "terminal/forecast/knn"
           - name: linregr
             ref: "terminal/forecast/linregr"
           - name: load
             ref: "terminal/forecast/load"
-          - name: mc
-            ref: "terminal/forecast/mc"
           - name: mom
             ref: "terminal/forecast/mom"
           - name: nbeats

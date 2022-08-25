@@ -418,63 +418,9 @@ def test_models(mocker, opt, func):
         "brnn",
         "trans",
         "tft",
-        "knn",
-        "mc",
     ],
 )
 def test_models_bad(opt):
     cont = fc.ForecastController()
     cont.datasets = {"data": df}
     getattr(cont, f"call_{opt}")(["data"])
-
-
-def test_call_knn(mocker):
-    mocker.patch(base + "knn_view.display_k_nearest_neighbors")
-    mocker.patch(base + "helpers.check_parser_input", return_value=True)
-    mock = mocker.MagicMock()
-    mock.target_dataset = "data"
-    mocker.patch(
-        base + "ForecastController.parse_known_args_and_warn", return_value=mock
-    )
-    cont = fc.ForecastController()
-    cont.datasets = {"data": df}
-    cont.call_knn(["data"])
-
-
-def test_call_knn_key_error(mocker):
-    mocker.patch(base + "knn_view.display_k_nearest_neighbors")
-    mocker.patch(base + "helpers.check_parser_input", return_value=True)
-    mock = mocker.MagicMock()
-    mock.target_dataset = "data"
-    mocker.patch(
-        base + "ForecastController.parse_known_args_and_warn", return_value=mock
-    )
-    cont = fc.ForecastController()
-    cont.datasets = {"data": pd.DataFrame()}
-    cont.call_knn(["data"])
-
-
-def test_call_mc(mocker):
-    mocker.patch(base + "mc_view.display_mc_forecast")
-    mocker.patch(base + "helpers.check_parser_input", return_value=True)
-    mock = mocker.MagicMock()
-    mock.target_dataset = "data"
-    mocker.patch(
-        base + "ForecastController.parse_known_args_and_warn", return_value=mock
-    )
-    cont = fc.ForecastController()
-    cont.datasets = {"data": df}
-    cont.call_mc(["data"])
-
-
-def test_call_mc_key_error(mocker):
-    mocker.patch(base + "mc_view.display_mc_forecast")
-    mocker.patch(base + "helpers.check_parser_input", return_value=True)
-    mock = mocker.MagicMock()
-    mock.target_dataset = "data"
-    mocker.patch(
-        base + "ForecastController.parse_known_args_and_warn", return_value=mock
-    )
-    cont = fc.ForecastController()
-    cont.datasets = {"data": pd.DataFrame()}
-    cont.call_mc(["data"])
