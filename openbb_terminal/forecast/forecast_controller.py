@@ -53,8 +53,6 @@ from openbb_terminal.forecast import (
     knn_view,
     helpers,
     trans_view,
-    mc_model,
-    mc_view,
 )
 
 logger = logging.getLogger(__name__)
@@ -106,7 +104,6 @@ class ForecastController(BaseController):
         "trans",
         "tft",
         "knn",
-        "mc",
         "season",
     ]
     pandas_plot_choices = [
@@ -250,7 +247,6 @@ class ForecastController(BaseController):
                 "trans",
                 "tft",
                 "knn",
-                "mc",
                 "season",
             ]:
                 self.choices[feature] = {c: None for c in self.files}
@@ -321,7 +317,6 @@ class ForecastController(BaseController):
         mt.add_cmd("signal", "", self.files)
         mt.add_info("_tsforecasting_")
         mt.add_cmd("knn", "", self.files)
-        mt.add_cmd("mc", "", self.files)
         mt.add_cmd("expo", "", self.files)
         mt.add_cmd("theta", "", self.files)
         mt.add_cmd("linregr", "", self.files)
@@ -2488,50 +2483,3 @@ class ForecastController(BaseController):
                     start_date=ns_parser.s_start_date,
                     end_date=ns_parser.s_end_date,
                 )
-
-    @log_start_end(log=logger)
-    def call_mc(self, other_args: List[str]):
-        """Process mc command"""
-        parser = argparse.ArgumentParser(
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            add_help=False,
-            prog="mc",
-            description="""
-                Perform Monte Carlo forecasting
-            """,
-        )
-        parser.add_argument(
-            "--dist",
-            choices=mc_model.DISTRIBUTIONS,
-            default="lognormal",
-            dest="dist",
-            help="Whether to model returns or log returns",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "--target-dataset")
-        ns_parser = self.parse_known_args_and_warn(
-            parser,
-            other_args,
-            export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
-            n_days=True,
-            target_dataset=True,
-            target_column=True,
-            n_epochs=True,
-            start=True,
-            end=True,
-        )
-        if ns_parser:
-            if not helpers.check_parser_input(ns_parser, self.datasets):
-                return
-            data = self.datasets[ns_parser.target_dataset]
-
-            mc_view.display_mc_forecast(
-                data=data,
-                target_column=ns_parser.target_column,
-                n_predict=ns_parser.n_days,
-                n_sims=ns_parser.n_epochs,
-                use_log=ns_parser.dist == "lognormal",
-                export=ns_parser.export,
-                start_date=ns_parser.s_start_date,
-                end_date=ns_parser.s_end_date,
-            )
