@@ -67,6 +67,14 @@ def get_query_results(token):
 DAPP_STATS_PLATFORM_CHOICES = ["uniswap-v3", "uniswap-v2", "sushiswap", "curve"]
 
 
+def get_shroom_data(sql: str):
+    """Get shroom data"""
+    query = create_query(sql)
+    token = query["token"]
+    data = get_query_results(token)
+    return data
+
+
 @log_start_end(log=logger)
 def get_dapp_stats(
     platform: str = "curve",
@@ -83,9 +91,7 @@ def get_dapp_stats(
     group by date
     order by date asc 
     """
-    query = create_query(sql)
-    token = query.get("token")
-    data = get_query_results(token)
+    data = get_shroom_data(sql)
 
     df = pd.DataFrame(
         data["results"], columns=["timeframe", "fees", "n_users", "volume"]
@@ -129,9 +135,7 @@ def get_daily_transactions(symbols: List[str]) -> pd.DataFrame:
     order by timeframe desc
     """
 
-    query = create_query(sql)
-    token = query.get("token")
-    data = get_query_results(token)
+    data = get_shroom_data(sql)
 
     df = pd.DataFrame(data["results"], columns=["timeframe"] + symbols)
     df["timeframe"] = pd.to_datetime(df["timeframe"])
