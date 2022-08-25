@@ -229,9 +229,6 @@ def get_aggregated_series_data(
             axis=1,
         )
 
-    if limit != -1:
-        data = data.tail(limit)
-
     return data, detail
 
 
