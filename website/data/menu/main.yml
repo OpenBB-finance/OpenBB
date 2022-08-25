@@ -803,6 +803,8 @@ main:
                 ref: "/terminal/crypto/dd/fundrate"
               - name: oi
                 ref: "/terminal/crypto/dd/oi"
+              - name: liquidations
+                ref: "/terminal/crypto/dd/liquidations"
               - name: ob
                 ref: "/terminal/crypto/dd/ob"
               - name: info
@@ -913,6 +915,10 @@ main:
           - name: nft
             ref: "/terminal/crypto/nft"
             sub:
+              - name: collections
+                ref: "/terminal/crypto/nft/collections"
+              - name: fp
+                ref: "/terminal/crypto/nft/fp"
               - name: today
                 ref: "/terminal/crypto/nft/today"
               - name: upcoming
