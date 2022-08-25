@@ -98,6 +98,27 @@ def get_defi_protocol(protocol: str) -> pd.DataFrame:
     df = df.set_index("date")
     return df
 
+@log_start_end(log=logger)
+def get_grouped_defi_protocols(
+    limit: int = 50,
+) -> pd.DataFrame:
+    """Display top dApps (in terms of TVL) grouped by chain.
+    [Source: https://docs.llama.fi/api]
+
+    Parameters
+    ----------
+    num: int
+        Number of top dApps to display
+    
+    Returns
+    -------
+    pd.DataFrame
+        Information about DeFi protocols grouped by chain
+    """
+    df = get_defi_protocols(limit)
+    return df.groupby("chain").size().index.values.tolist()
+
+    
 
 @log_start_end(log=logger)
 def get_defi_tvl() -> pd.DataFrame:

@@ -29,7 +29,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_grouped_defi_protocols(
-    num: int = 50, export: str = "", external_axes: Optional[List[plt.Axes]] = None
+    limit: int = 50, export: str = "", external_axes: Optional[List[plt.Axes]] = None
 ) -> None:
     """Display top dApps (in terms of TVL) grouped by chain.
     [Source: https://docs.llama.fi/api]
@@ -43,8 +43,9 @@ def display_grouped_defi_protocols(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    df = llama_model.get_defi_protocols(num)
-    chains = df.groupby("chain").size().index.values.tolist()
+    
+    df = llama_model.get_defi_protocols(limit)
+    chains = llama_model.get_grouped_defi_protocols(limit)
 
     # This plot has 1 axis
     if not external_axes:
@@ -72,7 +73,7 @@ def display_grouped_defi_protocols(
         ticker.FuncFormatter(lambda x, _: lambda_long_number_format(x))
     )
 
-    ax.set_title(f"Top {num} dApp TVL grouped by chain")
+    ax.set_title(f"Top {limit} dApp TVL grouped by chain")
     cfg.theme.style_primary_axis(ax)
     ax.tick_params(axis="y", labelsize=8)
 
@@ -88,7 +89,7 @@ def display_grouped_defi_protocols(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "gdapps",
-        df,
+        chains,
     )
 
 
