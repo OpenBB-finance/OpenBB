@@ -213,7 +213,7 @@ def get_aggregated_series_data(
         information = check_series_id(ids)
 
         if "seriess" in information:
-            detail[id] = {
+            detail[ids] = {
                 "title": information["seriess"][0]["title"],
                 "units": information["seriess"][0]["units_short"],
             }
