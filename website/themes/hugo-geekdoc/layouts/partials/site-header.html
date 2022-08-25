@@ -1,4 +1,5 @@
 <header
+  class="header"
   style="
     display: flex;
     align-items: center;
@@ -6,7 +7,7 @@
     background-image: linear-gradient(to right, #062d5d, #000000);
   "
 >
-  <div class="container flex align-center justify-between">
+  <div class="flex align-center justify-between" style="width: 100%">
     {{ if .MenuEnabled }}
     <label for="menu-control" class="gdoc-nav__control">
       <svg class="icon gdoc_menu"><use xlink:href="#gdoc_menu"></use></svg>
@@ -16,13 +17,16 @@
     </label>
     {{ end }}
     <a
+      target="_blank"
+      rel="noreferrer noopener"
       style="margin-left: 10px"
       class="gdoc-header__link"
-      href="{{ .Root.Site.BaseURL }}"
+      href="https://openbb.co"
     >
       <span class="gdoc-brand flex align-center">
         <img class="gdoc-brand__img" src="{{ (default "brand.svg"
-        .Root.Site.Params.GeekdocLogo) | relURL }}" alt="">
+        .Root.Site.Params.GeekdocLogo) | relURL }}" alt="" style="all: unset
+        !important;">
       </span>
     </a>
 
@@ -37,7 +41,7 @@
         >Go to main website</a
       >
       <a
-        style="font-size: 14px"
+        style="font-size: 14px; height: 40px"
         href="https://openbb.co/products/terminal"
         class="_btn"
         target="_blank"

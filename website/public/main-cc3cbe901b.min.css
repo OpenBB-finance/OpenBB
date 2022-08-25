@@ -1980,8 +1980,8 @@ img {
 .gdoc-search__entry.is-active,
 .gdoc-search__entry:hover {
   text-decoration: underline;
-  -webkit-text-decoration-style: dashed !important;
-  text-decoration-style: dashed !important;
+  -webkit-text-decoration-style: underline !important;
+  text-decoration-style: underline !important;
 }
 .gdoc-nav__entry:visited,
 .gdoc-search__entry:visited {
