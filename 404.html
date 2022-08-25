@@ -10,8 +10,6 @@
 
 
 
-    <meta name="description" content="OpenBB Documentation">
-
 
 
     <title>Lost? Don't worry</title>
@@ -20,8 +18,9 @@
 
     <script src="/OpenBBTerminal/js/darkmode-ce906ea916.min.js"></script>
 
-<link rel="preload" as="font" href="/OpenBBTerminal/fonts/Metropolis.woff2" type="font/woff2" crossorigin="anonymous">
-<link rel="preload" as="font" href="/OpenBBTerminal/fonts/LiberationSans.woff2" type="font/woff2" crossorigin="anonymous">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
 
 <link rel="preload" href="/OpenBBTerminal/main-5e7fc0c942.min.css" as="style">
 <link rel="stylesheet" href="/OpenBBTerminal/main-5e7fc0c942.min.css" media="all">
@@ -36,8 +35,35 @@
 <link rel="stylesheet" href="/OpenBBTerminal/custom.css" media="all">
 
 <style>
+
+body {
+  font-family: 'Fira Code', sans-serif !important;
+}
+
+.container {
+  max-width: 97rem;
+}
+
+.gdoc-brand__img {
+  width: 160px;
+  height: 16px;
+  display: block !important;
+}
+
+.gdoc-nav__list {
+  margin-left: 8px;
+}
+
+.gdoc-toc a, .gdoc-toc a:visited {
+  color: white;
+}
+
+.gdoc-search:active, .gdoc-search:focus-within {
+  border: 1px solid #FFFFFF !important;
+}
+
 ._btn {
-    text-decoration: none !important;
+  text-decoration: none !important;
   display: inline-flex;
   width: 100%;
   align-items: center;
@@ -57,13 +83,14 @@
   transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
   background-color: #eaeaeaff;
   color: #2a2a2aff !important;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
 }
 
-@media (min-width: 768px) {
+@media (max-width: 768px) {
   ._btn {
-    width: -webkit-fit-content;
-    width: -moz-fit-content;
-    width: fit-content;
+    display: none;
   }
 }
 
@@ -98,6 +125,86 @@
   background-color: #c8c8c8ff;
   color: #808080ff;
 }
+
+.navlink {
+  transition-property: color, background-color, border-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-text-decoration-color, -webkit-backdrop-filter;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-text-decoration-color, -webkit-backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+  transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  box-sizing: border-box;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: #a2a2a2ff !important;
+}
+
+.navlink:hover {
+  color: #ffffffff !important;
+  text-decoration: none !important;
+}
+
+.navlink:focus {
+  border-radius: 4px;
+  border-color: #ffffffff;
+  color: #ffffffff;
+}
+
+.navlink:active {
+  color: #ffffffff;
+}
+
+.navlink:disabled {
+  cursor: not-allowed;
+  --tw-text-opacity: 1;
+  color: rgb(88 88 88 / var(--tw-text-opacity));
+}
+
+h1 {
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  font-size:20px;
+}
+
+h2 {
+  font-size: 18px;
+}
+
+h3 {
+  font-size: 16px;
+}
+
+p {
+  color: #EAEAEA !important;
+}
+
+@media (max-width: 500px) {
+  ._hide-on-mobile {
+    display: none;
+  }
+}
+
+code, img {
+  background-color: #404040 !important;
+  color: white !important;
+  border-radius: .375rem !important;
+  border: 1px solid #5a5a5a !important;
+}
+.header {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    border-bottom: 1px solid #474747;
+}
+
+@media (min-width: 640px){
+.header {
+    padding-left: 16px;
+    padding-right: 16px;
+}
+}
+
+
 </style>
 
 
@@ -121,21 +228,52 @@
 
 
     <div class="wrapper">
-        <header style="background-color: #000">
-  <div class="container flex align-center justify-between">
+        <header
+  class="header"
+  style="
+    display: flex;
+    align-items: center;
+    height: 80px;
+    background-image: linear-gradient(to right, #062d5d, #000000);
+  "
+>
+  <div class="flex align-center justify-between" style="width: 100%">
     
-    <a class="gdoc-header__link" href="https://openbb-finance.github.io/OpenBBTerminal">
+    <a
+      target="_blank"
+      rel="noreferrer noopener"
+      style="margin-left: 10px"
+      class="gdoc-header__link"
+      href="https://openbb.co"
+    >
       <span class="gdoc-brand flex align-center">
-        <img class="gdoc-brand__img" src="/OpenBBTerminal/openbb_logo.png" alt="">
-        <span class="gdoc-brand__title">OpenBB Documentation</span>
+        <img class="gdoc-brand__img" src="/OpenBBTerminal/openbb_logo.svg" alt="" style="all: unset
+        !important;">
       </span>
     </a>
 
     <span id="gdoc-dark-mode"> </span>
-    <a href="https://openbb.co/products/terminal" class="_btn" target="_blank" rel="noopener noreferrer"
-      >Install the OpenBB Terminal</a>
+    <div>
+      <a
+        style="font-size: 14px; margin-right: 20px"
+        href="https://openbb.co/"
+        class="navlink _hide-on-mobile"
+        target="_blank"
+        rel="noopener noreferrer"
+        >Go to main website</a
+      >
+      <a
+        style="font-size: 14px; height: 40px"
+        href="https://openbb.co/products/terminal"
+        class="_btn"
+        target="_blank"
+        rel="noopener noreferrer"
+        >Install the OpenBB Terminal</a
+      >
+    </div>
   </div>
 </header>
+
 
         <main class="gdoc-error flex-even">
             <div class="flex align-center justify-center">
@@ -153,7 +291,7 @@
             </div>
         </main>
 
-        <footer class="gdoc-footer" style="background-color: #151515">
+        <footer class="gdoc-footer" style="background-color: #070707">
   <div class="container flex">
     <div class="flex flex-wrap">
       <span class="gdoc-footer__item gdoc-footer__item--row">
@@ -161,12 +299,12 @@
         <a
           href="https://gohugo.io/"
           class="gdoc-footer__link"
-          style="color: #21cd9b"
+          style="color: white"
           >Hugo</a
         >
         and
         <svg class="icon gdoc_heart">
-          <use xlink:href="#gdoc_heart" fill="#21cd9b"></use>
+          <use xlink:href="#gdoc_heart" fill="white"></use>
         </svg>
       </span>
        
@@ -181,9 +319,9 @@
           style="text-decoration: none"
         >
           <svg class="icon gdoc_keyborad_arrow_up">
-            <use xlink:href="#gdoc_keyborad_arrow_up" fill="#21cd9b"></use>
+            <use xlink:href="#gdoc_keyborad_arrow_up" fill="white"></use>
           </svg>
-          <span class="hidden-mobile" style="color: #21cd9b">Back to top</span>
+          <span class="hidden-mobile" style="color: white">Back to top</span>
         </a>
       </span>
     </div>

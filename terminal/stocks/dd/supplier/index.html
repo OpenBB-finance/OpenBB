@@ -15,14 +15,15 @@ optional arguments: --export {csv,json,xlsx} Export dataframe data to csv,json,x
 
 
     <title>
-      Supplier | OpenBB Documentation
+      Supplier | 
     </title>
 
     <link rel="icon" href="/OpenBBTerminal/favicon/favicon-32x32.png" type="image/x-icon">
  <script src="/OpenBBTerminal/js/darkmode-ce906ea916.min.js"></script>
 
-<link rel="preload" as="font" href="/OpenBBTerminal/fonts/Metropolis.woff2" type="font/woff2" crossorigin="anonymous">
-<link rel="preload" as="font" href="/OpenBBTerminal/fonts/LiberationSans.woff2" type="font/woff2" crossorigin="anonymous">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
 
 <link rel="preload" href="/OpenBBTerminal/main-5e7fc0c942.min.css" as="style">
 <link rel="stylesheet" href="/OpenBBTerminal/main-5e7fc0c942.min.css" media="all">
@@ -37,8 +38,35 @@ optional arguments: --export {csv,json,xlsx} Export dataframe data to csv,json,x
 <link rel="stylesheet" href="/OpenBBTerminal/custom.css" media="all">
 
 <style>
+
+body {
+  font-family: 'Fira Code', sans-serif !important;
+}
+
+.container {
+  max-width: 97rem;
+}
+
+.gdoc-brand__img {
+  width: 160px;
+  height: 16px;
+  display: block !important;
+}
+
+.gdoc-nav__list {
+  margin-left: 8px;
+}
+
+.gdoc-toc a, .gdoc-toc a:visited {
+  color: white;
+}
+
+.gdoc-search:active, .gdoc-search:focus-within {
+  border: 1px solid #FFFFFF !important;
+}
+
 ._btn {
-    text-decoration: none !important;
+  text-decoration: none !important;
   display: inline-flex;
   width: 100%;
   align-items: center;
@@ -58,13 +86,14 @@ optional arguments: --export {csv,json,xlsx} Export dataframe data to csv,json,x
   transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
   background-color: #eaeaeaff;
   color: #2a2a2aff !important;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
 }
 
-@media (min-width: 768px) {
+@media (max-width: 768px) {
   ._btn {
-    width: -webkit-fit-content;
-    width: -moz-fit-content;
-    width: fit-content;
+    display: none;
   }
 }
 
@@ -99,9 +128,89 @@ optional arguments: --export {csv,json,xlsx} Export dataframe data to csv,json,x
   background-color: #c8c8c8ff;
   color: #808080ff;
 }
+
+.navlink {
+  transition-property: color, background-color, border-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-text-decoration-color, -webkit-backdrop-filter;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-text-decoration-color, -webkit-backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+  transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  box-sizing: border-box;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: #a2a2a2ff !important;
+}
+
+.navlink:hover {
+  color: #ffffffff !important;
+  text-decoration: none !important;
+}
+
+.navlink:focus {
+  border-radius: 4px;
+  border-color: #ffffffff;
+  color: #ffffffff;
+}
+
+.navlink:active {
+  color: #ffffffff;
+}
+
+.navlink:disabled {
+  cursor: not-allowed;
+  --tw-text-opacity: 1;
+  color: rgb(88 88 88 / var(--tw-text-opacity));
+}
+
+h1 {
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  font-size:20px;
+}
+
+h2 {
+  font-size: 18px;
+}
+
+h3 {
+  font-size: 16px;
+}
+
+p {
+  color: #EAEAEA !important;
+}
+
+@media (max-width: 500px) {
+  ._hide-on-mobile {
+    display: none;
+  }
+}
+
+code, img {
+  background-color: #404040 !important;
+  color: white !important;
+  border-radius: .375rem !important;
+  border: 1px solid #5a5a5a !important;
+}
+.header {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    border-bottom: 1px solid #474747;
+}
+
+@media (min-width: 640px){
+.header {
+    padding-left: 16px;
+    padding-right: 16px;
+}
+}
+
+
 </style>
 
-<link rel="alternate" type="application/rss+xml" href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/dd/supplier/index.xml" title="OpenBB Documentation" />
+<link rel="alternate" type="application/rss+xml" href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/dd/supplier/index.xml" title="" />
 
 
 <!-- Made with Geekdoc theme https://github.com/thegeeklab/hugo-geekdoc --> 
@@ -127,8 +236,16 @@ optional arguments: --export {csv,json,xlsx} Export dataframe data to csv,json,x
       class=""
     >
       <input type="checkbox" class="hidden" id="menu-control" />
-       <header style="background-color: #000">
-  <div class="container flex align-center justify-between">
+       <header
+  class="header"
+  style="
+    display: flex;
+    align-items: center;
+    height: 80px;
+    background-image: linear-gradient(to right, #062d5d, #000000);
+  "
+>
+  <div class="flex align-center justify-between" style="width: 100%">
     
     <label for="menu-control" class="gdoc-nav__control">
       <svg class="icon gdoc_menu"><use xlink:href="#gdoc_menu"></use></svg>
@@ -137,43 +254,74 @@ optional arguments: --export {csv,json,xlsx} Export dataframe data to csv,json,x
       </svg>
     </label>
     
-    <a class="gdoc-header__link" href="https://openbb-finance.github.io/OpenBBTerminal">
+    <a
+      target="_blank"
+      rel="noreferrer noopener"
+      style="margin-left: 10px"
+      class="gdoc-header__link"
+      href="https://openbb.co"
+    >
       <span class="gdoc-brand flex align-center">
-        <img class="gdoc-brand__img" src="/OpenBBTerminal/openbb_logo.png" alt="">
-        <span class="gdoc-brand__title">OpenBB Documentation</span>
+        <img class="gdoc-brand__img" src="/OpenBBTerminal/openbb_logo.svg" alt="" style="all: unset
+        !important;">
       </span>
     </a>
 
     <span id="gdoc-dark-mode"> </span>
-    <a href="https://openbb.co/products/terminal" class="_btn" target="_blank" rel="noopener noreferrer"
-      >Install the OpenBB Terminal</a>
+    <div>
+      <a
+        style="font-size: 14px; margin-right: 20px"
+        href="https://openbb.co/"
+        class="navlink _hide-on-mobile"
+        target="_blank"
+        rel="noopener noreferrer"
+        >Go to main website</a
+      >
+      <a
+        style="font-size: 14px; height: 40px"
+        href="https://openbb.co/products/terminal"
+        class="_btn"
+        target="_blank"
+        rel="noopener noreferrer"
+        >Install the OpenBB Terminal</a
+      >
+    </div>
   </div>
 </header>
 
+
       <main class="flex flex-even">
         
-        <aside class="gdoc-nav" style="background-color: #151515">
-          <nav style="background-color: #151515; padding-left: 20px">
+        <aside class="gdoc-nav" style="background-color: #070707">
+          <nav
+  style="
+    background-color: #070707;
+    padding-left: 20px;
+    border-right: 1px solid #474747;
+  "
+>
   
 <div
   class="gdoc-search"
   style="
-    background: #373737;
-    border-radius: 8px;
+    border: 1px solid #5a5a5a;
+    background: #070707;
+    border-radius: 4px;
     padding: 0.5rem;
     padding-left: 2rem;
     padding-right: 2rem;
     margin-top: 30px;
     margin-bottom: 30px;
-    height: 33px;
+    height: 37.9px;
+    color: white;
   "
 >
   <svg class="icon gdoc_search"><use xlink:href="#gdoc_search"></use></svg>
   <input
     type="text"
     id="gdoc-search-input"
-    style="all: unset"
-    placeholder="Search..."
+    style="all: unset; margin-top: 2px"
+    placeholder="Search"
     aria-label="Search"
     maxlength="64"
   />
@@ -181,14 +329,18 @@ optional arguments: --export {csv,json,xlsx} Export dataframe data to csv,json,x
   <ul
     id="gdoc-search-results"
     class="gdoc-search__list"
-    style="background-color: #373737; border-radius: 8px"
+    style="
+      background-color: #070707;
+      border-radius: 4px;
+      border: 1px solid #ffffff;
+    "
   ></ul>
 </div>
 
 
 
   <section class="gdoc-nav--main">
-    <h2 style="font-weight: bold">NAVIGATION</h2>
+    <div style="font-weight: bold; color: #5a5a5a">NAVIGATION</div>
      
 
 
@@ -25945,7 +26097,7 @@ optional arguments: --export {csv,json,xlsx} Export dataframe data to csv,json,x
 
   <section class="gdoc-nav--more">
     
-    <h2 style="font-weight: bold">MORE</h2>
+    <div style="font-weight: bold; color: #5a5a5a">MORE</div>
     
 
 
@@ -25971,8 +26123,39 @@ optional arguments: --export {csv,json,xlsx} Export dataframe data to csv,json,x
 
             
             <span class="flex">
+                <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+                <a href="https://openbb.co"
+                    class="gdoc-nav__entry ">
+                    Go to main website
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
                 <svg class="icon gdoc_download"><use xlink:href="#gdoc_download"></use></svg>
-                <a href="https://www.openbb.co/products/terminal"
+                <a href="https://openbb.co/products/terminal"
                     class="gdoc-nav__entry ">
                     Install the Terminal
                 </a>
@@ -26003,7 +26186,7 @@ optional arguments: --export {csv,json,xlsx} Export dataframe data to csv,json,x
             
             <span class="flex">
                 <svg class="icon gdoc_bookmark"><use xlink:href="#gdoc_bookmark"></use></svg>
-                <a href="https://www.openbb.co/survey"
+                <a href="https://openbb.co/survey"
                     class="gdoc-nav__entry ">
                     Fill in the Survey
                 </a>
@@ -26125,7 +26308,7 @@ optional arguments: --export {csv,json,xlsx} Export dataframe data to csv,json,x
           style="
             padding-right: 20px;
             padding-left: 20px;
-            background-color: #1e1e1e;
+            background-color: #131313;
           "
         >
           
@@ -26139,7 +26322,7 @@ optional arguments: --export {csv,json,xlsx} Export dataframe data to csv,json,x
 
 
 
-<div style="background: #151515;border-radius: 8px; margin-top: 29px;" class="gdoc-page__header flex flex-wrap
+<div style="background: #070707;border: 1px solid #404040;border-radius: 4px; margin-top: 29px;" class="gdoc-page__header flex flex-wrap
      justify-between 
     
     " itemprop="breadcrumb">
@@ -26177,7 +26360,7 @@ optional arguments: --export {csv,json,xlsx} Export dataframe data to csv,json,x
         
     
     
-        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/' href='/OpenBBTerminal/'><span itemprop='name'>Getting Started</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/terminal/' href='/OpenBBTerminal/terminal/'><span itemprop='name'>Terminal</span></a><meta itemprop='position' content='3' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/terminal/stocks/' href='/OpenBBTerminal/terminal/stocks/'><span itemprop='name'>Introduction to Stocks</span></a><meta itemprop='position' content='4' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/terminal/stocks/dd/' href='/OpenBBTerminal/terminal/stocks/dd/'><span itemprop='name'>Introduction to the Due Diligence Menu</span></a><meta itemprop='position' content='5' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>Supplier</span><meta itemprop='position' content='6' /></li>
+        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/' href='/OpenBBTerminal/'><span itemprop='name'>OpenBB Terminal Documentation</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/terminal/' href='/OpenBBTerminal/terminal/'><span itemprop='name'>Terminal</span></a><meta itemprop='position' content='3' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/terminal/stocks/' href='/OpenBBTerminal/terminal/stocks/'><span itemprop='name'>Introduction to Stocks</span></a><meta itemprop='position' content='4' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/terminal/stocks/dd/' href='/OpenBBTerminal/terminal/stocks/dd/'><span itemprop='name'>Introduction to the Due Diligence Menu</span></a><meta itemprop='position' content='5' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>Supplier</span><meta itemprop='position' content='6' /></li>
     
 
     
@@ -41877,7 +42060,7 @@ optional arguments: --export {csv,json,xlsx} Export dataframe data to csv,json,x
         </div>
       </main>
 
-      <footer class="gdoc-footer" style="background-color: #151515">
+      <footer class="gdoc-footer" style="background-color: #070707">
   <div class="container flex">
     <div class="flex flex-wrap">
       <span class="gdoc-footer__item gdoc-footer__item--row">
@@ -41885,12 +42068,12 @@ optional arguments: --export {csv,json,xlsx} Export dataframe data to csv,json,x
         <a
           href="https://gohugo.io/"
           class="gdoc-footer__link"
-          style="color: #21cd9b"
+          style="color: white"
           >Hugo</a
         >
         and
         <svg class="icon gdoc_heart">
-          <use xlink:href="#gdoc_heart" fill="#21cd9b"></use>
+          <use xlink:href="#gdoc_heart" fill="white"></use>
         </svg>
       </span>
        
@@ -41905,9 +42088,9 @@ optional arguments: --export {csv,json,xlsx} Export dataframe data to csv,json,x
           style="text-decoration: none"
         >
           <svg class="icon gdoc_keyborad_arrow_up">
-            <use xlink:href="#gdoc_keyborad_arrow_up" fill="#21cd9b"></use>
+            <use xlink:href="#gdoc_keyborad_arrow_up" fill="white"></use>
           </svg>
-          <span class="hidden-mobile" style="color: #21cd9b">Back to top</span>
+          <span class="hidden-mobile" style="color: white">Back to top</span>
         </a>
       </span>
     </div>
