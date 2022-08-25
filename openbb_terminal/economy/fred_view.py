@@ -159,7 +159,7 @@ def display_fred_series(
 
         if raw:
             print_rich_table(
-                data,
+                data.tail(limit),
                 headers=list(data.columns),
                 show_index=True,
                 index_name="Date",
