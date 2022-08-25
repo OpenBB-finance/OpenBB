@@ -1,4 +1,9 @@
-from openbb_terminal.forecast import knn_model
+import pytest
+
+try:
+    from openbb_terminal.forecast import knn_model
+except ImportError:
+    pytest.skip(allow_module_level=True)
 
 
 def test_get_knn_model(tsla_csv):

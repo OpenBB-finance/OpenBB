@@ -3,7 +3,11 @@ import argparse
 import pandas as pd
 import pytest
 from prompt_toolkit.completion import NestedCompleter
-from openbb_terminal.forecast import forecast_controller as fc
+
+try:
+    from openbb_terminal.forecast import forecast_controller as fc
+except ImportError:
+    pytest.skip(allow_module_level=True)
 
 # pylint: disable=E1121
 base = "openbb_terminal.forecast.forecast_controller."

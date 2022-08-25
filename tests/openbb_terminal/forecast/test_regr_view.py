@@ -1,4 +1,9 @@
-from openbb_terminal.forecast import regr_view
+import pytest
+
+try:
+    from openbb_terminal.forecast import regr_view
+except ImportError:
+    pytest.skip(allow_module_level=True)
 
 
 def test_display_regr_forecast(tsla_csv, mocker):

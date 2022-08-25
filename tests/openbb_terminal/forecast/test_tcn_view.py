@@ -1,4 +1,9 @@
-from openbb_terminal.forecast import tcn_view
+import pytest
+
+try:
+    from openbb_terminal.forecast import tcn_view
+except ImportError:
+    pytest.skip(allow_module_level=True)
 
 
 def test_display_tcn_forecast(tsla_csv, mocker):

@@ -1,5 +1,9 @@
 import pytest
-from openbb_terminal.forecast import expo_view
+
+try:
+    from openbb_terminal.forecast import expo_view
+except ImportError:
+    pytest.skip(allow_module_level=True)
 
 
 def test_display_tft_forecast(tsla_csv):

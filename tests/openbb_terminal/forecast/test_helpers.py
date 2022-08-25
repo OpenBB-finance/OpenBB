@@ -1,5 +1,10 @@
 import numpy as np
-from openbb_terminal.forecast import helpers
+import pytest
+
+try:
+    from openbb_terminal.forecast import helpers
+except ImportError:
+    pytest.skip(allow_module_level=True)
 
 
 def test_mean_absolute_percentage_error():

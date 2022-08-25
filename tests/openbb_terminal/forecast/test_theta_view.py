@@ -1,4 +1,9 @@
-from openbb_terminal.forecast import theta_view
+import pytest
+
+try:
+    from openbb_terminal.forecast import theta_view
+except ImportError:
+    pytest.skip(allow_module_level=True)
 
 
 def test_display_theta_forecast(tsla_csv):

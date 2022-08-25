@@ -1,5 +1,9 @@
 import pytest
-from openbb_terminal.forecast import mc_view
+
+try:
+    from openbb_terminal.forecast import mc_view
+except ImportError:
+    pytest.skip(allow_module_level=True)
 
 base = "openbb_terminal.forecast.mc_view."
 

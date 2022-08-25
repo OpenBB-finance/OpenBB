@@ -1,6 +1,10 @@
 import pandas as pd
-from openbb_terminal.forecast import forecast_view as fv
+import pytest
 
+try:
+    from openbb_terminal.forecast import forecast_view as fv
+except ImportError:
+    pytest.skip(allow_module_level=True)
 base = "openbb_terminal.forecast.forecast_view."
 
 
