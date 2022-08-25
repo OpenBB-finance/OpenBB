@@ -623,6 +623,7 @@ def display_monthly_returns(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "mret",
+        monthly_returns,
     )
 
 
@@ -1210,6 +1211,7 @@ def display_maximum_drawdown(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "maxdd",
+        drawdown,
     )
 
 
@@ -1237,6 +1239,7 @@ def display_rsquare(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "rsquare",
+        portfolio.get_r2_score()
     )
 
 
@@ -1596,7 +1599,7 @@ def display_jensens_alpha(
     export : str
         Export data format
     """
-    df, _ = portfolio.get_jensens_alpha(rf=risk_free_rate)
+    df, _ = portfolio.get_jensens_alpha(risk_free_rate=risk_free_rate)
     print_rich_table(
         df,
         title="Portfolio's jensen's alpha",

@@ -559,7 +559,7 @@ def get_jensens_alpha(
     historical_trade_data: pd.DataFrame,
     benchmark_trades: pd.DataFrame,
     benchmark_returns: pd.Series,
-    rf: float = 0,
+    risk_free_rate: float = 0,
     window: str = "1y",
 ) -> Tuple[pd.DataFrame, pd.Series]:
     """Get jensen's alpha
@@ -574,7 +574,7 @@ def get_jensens_alpha(
         Dataframe of the benchmarks trades
     benchmark_returns: pd.Series
         Series of benchmark returns
-    rf: float
+    risk_free_rate: float
         Risk free rate
     window: str
         Interval used for rolling values.
@@ -596,7 +596,7 @@ def get_jensens_alpha(
     period_cum_bench_returns = (1.0 + benchmark_returns).rolling(window=window).agg(
         lambda x: x.prod()
     ) - 1
-    rfr_cum_returns = rf * length / 252
+    rfr_cum_returns = risk_free_rate * length / 252
     beta = get_rolling_beta(portfolio_returns, benchmark_returns, length)
     ja_rolling = period_cum_returns - (
         rfr_cum_returns + beta * (period_cum_bench_returns - rfr_cum_returns)
@@ -636,7 +636,7 @@ def get_jensens_alpha(
                 period_bench_total_return = (
                     (1 + period_bench_return).cumprod() - 1
                 ).iloc[-1]
-            rfr_cum_returns = rf * periods_d[periods] / 252
+            rfr_cum_returns = risk_free_rate * periods_d[periods] / 252
             vals.append(
                 [
                     round(
@@ -1824,14 +1824,14 @@ class PortfolioModel:
         return csr_period_df
 
     @log_start_end(log=logger)
-    def get_jensens_alpha(self, rf: float = 0, window: int = 252):
+    def get_jensens_alpha(self, risk_free_rate: float = 0, window: int = 252):
         """Get jensen's alpha
 
         Parameters
         ----------
         window: int
             Interval used for rolling values
-        rf: float
+        risk_free_rate: float
             Risk free rate
 
         Returns
@@ -1846,7 +1846,7 @@ class PortfolioModel:
             self.historical_trade_data,
             self.benchmark_trades,
             self.benchmark_returns,
-            rf,
+            risk_free_rate,
             window,
         )
 
