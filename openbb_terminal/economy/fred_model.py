@@ -186,7 +186,7 @@ def get_series_data(
 
 @log_start_end(log=logger)
 def get_aggregated_series_data(
-    series_ids: List[str], start_date: str = None, end_date: str = None, limit: int = -1
+    series_ids: List[str], start_date: str = None, end_date: str = None
 ) -> pd.DataFrame:
     """Get Series data. [Source: FRED]
     Parameters
@@ -197,8 +197,6 @@ def get_aggregated_series_data(
         Start date to get data from, format yyyy-mm-dd
     end_date : str
         End data to get from, format yyyy-mm-dd
-    limit: int
-        Number of raw data rows to show
 
     Returns
     ----------
