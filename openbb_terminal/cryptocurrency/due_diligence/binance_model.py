@@ -12,6 +12,7 @@ from binance.exceptions import BinanceAPIException
 
 import openbb_terminal.config_terminal as cfg
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -127,3 +128,74 @@ def show_available_pairs_for_given_symbol(
         if k == symbol_upper:
             return k, v
     return None, []
+
+
+@log_start_end(log=logger)
+def get_order_book(
+    from_symbol: str,
+    limit: int = 100,
+    to_symbol: str = "USDT",
+) -> pd.DataFrame:
+    """Get order book for currency. [Source: Binance]
+
+    Parameters
+    ----------
+
+    from_symbol: str
+        Cryptocurrency symbol
+    limit: int
+        Limit parameter. Adjusts the weight
+    to_symbol: str
+        Quote currency (what to view coin vs)
+
+    Returns
+    -------
+
+    pd.DataFrame
+        Dataframe containing orderbook
+    """
+    pair = from_symbol + to_symbol
+
+    client = Client(cfg.API_BINANCE_KEY, cfg.API_BINANCE_SECRET)
+
+    try:
+        market_book = client.get_order_book(symbol=pair, limit=limit)
+    except BinanceAPIException:
+        console.print(f"{to_symbol} is not a valid binance symbol")
+    return pd.DataFrame(market_book)
+
+
+@log_start_end(log=logger)
+def get_balance(
+    from_symbol: str,
+    to_symbol: str = "USDT",
+) -> pd.DataFrame:
+    """Get account holdings for asset. [Source: Binance]
+
+    Parameters
+    ----------
+    from_symbol: str
+        Cryptocurrency
+    to_symbol: str
+        Cryptocurrency
+
+    Returns
+    -------
+    pd.DataFrame
+        Dataframe with account holdings for an asset
+    """
+    client = Client(cfg.API_BINANCE_KEY, cfg.API_BINANCE_SECRET)
+
+    pair = from_symbol + to_symbol
+    current_balance = client.get_asset_balance(asset=pair)
+    if current_balance is None:
+        console.print("Check loaded coin\n")
+        return
+
+    amounts = [float(current_balance["free"]), float(current_balance["locked"])]
+    df = pd.DataFrame(amounts).apply(lambda x: str(float(x)))
+    df.columns = ["Amount"]
+    df.index = ["Free", "Locked"]
+    df["Percent"] = df.div(df.sum(axis=0), axis=1).round(3)
+
+    return df
