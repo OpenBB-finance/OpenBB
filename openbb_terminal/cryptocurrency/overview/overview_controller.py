@@ -316,8 +316,8 @@ class OverviewController(BaseController):
         )
         if ns_parser:
             display_btc_rainbow(
-                since=int(ns_parser.since.timestamp()),
-                until=int(ns_parser.until.timestamp()),
+                start_date=int(ns_parser.since.timestamp()),
+                end_date=int(ns_parser.until.timestamp()),
                 export=ns_parser.export,
             )
 

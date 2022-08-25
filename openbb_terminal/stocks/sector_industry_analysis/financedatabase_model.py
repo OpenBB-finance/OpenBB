@@ -34,7 +34,8 @@ def get_countries(industry: str = "", sector: str = ""):
         return fd.show_options("equities", industry=True)[industry]["Countries"]
     if sector:
         return fd.show_options("equities", sector=sector)["Countries"]
-    return fd.show_options("equities", "countries")
+
+    return [count for count in fd.show_options("equities", "countries") if count]
 
 
 @log_start_end(log=logger)
@@ -59,7 +60,7 @@ def get_sectors(industry: str = "", country: str = ""):
     if country:
         return fd.show_options("equities", country=country)["Sectors"]
 
-    return fd.show_options("equities", "sectors")
+    return [sect for sect in fd.show_options("equities", "sectors") if sect]
 
 
 @log_start_end(log=logger)
@@ -87,7 +88,7 @@ def get_industries(country: str = "", sector: str = ""):
     if sector:
         return fd.show_options("equities", sector=sector)["Industries"]
 
-    return fd.show_options("equities", "industries")
+    return [ind for ind in fd.show_options("equities", "industries") if ind]
 
 
 @log_start_end(log=logger)
