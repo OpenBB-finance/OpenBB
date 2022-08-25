@@ -171,7 +171,7 @@ class TechnicalAnalysisController(StockBaseController):
             overlap_view.view_ma(
                 ma_type="EMA",
                 symbol=self.ticker,
-                series=self.data["Close"],
+                data=self.data["Close"],
                 window=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,

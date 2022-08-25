@@ -5,9 +5,7 @@ import logging
 
 import pandas as pd
 
-from openbb_terminal.helper_funcs import (
-    print_rich_table,
-)
+from openbb_terminal.helper_funcs import print_rich_table
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.options.hedge import hedge_model
 

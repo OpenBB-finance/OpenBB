@@ -1646,7 +1646,7 @@ functions = {
         "model": "openbb_terminal.cryptocurrency.cryptocurrency_helpers.plot_candles"
     },
     "etf.candle": {"model": "openbb_terminal.stocks.stocks_helper.display_candle"},
-    "forex.candle": {"model": "openbb_terminal.stocks.stocks_helper.display_candle"},
+    "forex.candle": {"model": "openbb_terminal.forex.forex_helper.display_candle"},
     "forex.load": {"model": "openbb_terminal.forex.forex_helper.load"},
 }
 
