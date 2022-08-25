@@ -98,6 +98,7 @@ def get_defi_protocol(protocol: str) -> pd.DataFrame:
     df = df.set_index("date")
     return df
 
+
 @log_start_end(log=logger)
 def get_grouped_defi_protocols(
     limit: int = 50,
@@ -109,7 +110,7 @@ def get_grouped_defi_protocols(
     ----------
     num: int
         Number of top dApps to display
-    
+
     Returns
     -------
     pd.DataFrame
@@ -118,7 +119,6 @@ def get_grouped_defi_protocols(
     df = get_defi_protocols(limit)
     return df.groupby("chain").size().index.values.tolist()
 
-    
 
 @log_start_end(log=logger)
 def get_defi_tvl() -> pd.DataFrame:

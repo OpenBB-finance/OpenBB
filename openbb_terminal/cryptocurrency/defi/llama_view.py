@@ -43,7 +43,7 @@ def display_grouped_defi_protocols(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    
+
     df = llama_model.get_defi_protocols(limit)
     chains = llama_model.get_grouped_defi_protocols(limit)
 
