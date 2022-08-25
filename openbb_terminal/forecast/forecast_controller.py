@@ -1126,7 +1126,6 @@ class ForecastController(BaseController):
             target_dataset=True,
             limit=5,
         )
-        print(ns_parser)
         if ns_parser:
             # check proper file name is provided
             if not ns_parser.target_dataset:
