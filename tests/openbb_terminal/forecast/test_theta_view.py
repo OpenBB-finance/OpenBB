@@ -1,8 +1,6 @@
-import pytest
 from openbb_terminal.forecast import theta_view
 
 
-@pytest.mark.prediction
 def test_display_theta_forecast(tsla_csv):
     theta_view.display_theta_forecast(
         data=tsla_csv,

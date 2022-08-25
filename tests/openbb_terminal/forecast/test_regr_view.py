@@ -1,8 +1,6 @@
-import pytest
 from openbb_terminal.forecast import regr_view
 
 
-@pytest.mark.prediction
 def test_display_regr_forecast(tsla_csv, mocker):
     mock = mocker.patch("openbb_terminal.forecast.trans_view.helpers.plot_residuals")
     regr_view.display_regression(tsla_csv, residuals=True)

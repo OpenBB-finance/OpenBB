@@ -1,5 +1,6 @@
 import os
 import pytest
+from _pytest.nodes import Node
 import pandas as pd
 
 
@@ -30,3 +31,8 @@ def test_model(model, data, *args, **kwargs):
         predict_list = predict.quantile_df()
         predict_list = predict_list[predict_list.columns[0]].tolist()
     return predict_list, MAPE
+
+
+def pytest_runtest_setup(item: Node):
+    if not item.config.getoption("--prediction"):
+        pytest.skip(msg="Runs only with option : --prediction")

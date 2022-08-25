@@ -1,8 +1,6 @@
-import pytest
 from openbb_terminal.forecast import trans_view
 
 
-@pytest.mark.prediction
 def test_display_trans_forecast(tsla_csv, mocker):
     mock = mocker.patch("openbb_terminal.forecast.trans_view.helpers.plot_residuals")
     trans_view.display_trans_forecast(
