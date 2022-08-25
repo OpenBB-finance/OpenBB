@@ -64,10 +64,12 @@ def get_query_results(token):
     return data
 
 
+DAPP_STATS_PLATFORM_CHOICES = ["uniswap-v3", "uniswap-v2", "sushiswap", "curve"]
+
 @log_start_end(log=logger)
 def get_dapp_stats(
     platform: str = "curve",
-):  # platform can be uniswap-v3,uniswap-v2,sushiswap,curve
+):
     sql = f"""select
       date_trunc('week', s.block_timestamp) as date,
       sum(t.fee_usd) as fee,
