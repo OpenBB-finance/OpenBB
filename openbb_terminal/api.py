@@ -795,6 +795,72 @@ functions = {
         "model": "openbb_terminal.cryptocurrency.tools.tools_model.calculate_il",
         "view": "openbb_terminal.cryptocurrency.tools.tools_view.display_il",
     },
+    "econometrics.clean": {
+        "model": "openbb_terminal.econometrics.econometrics_model.clean"
+    },
+    "econometrics.coint": {
+        "model": "openbb_terminal.econometrics.econometrics_model.get_engle_granger_two_step_cointegration_test",
+        "view": "openbb_terminal.econometrics.econometrics_view.display_cointegration_test",
+    },
+    "econometrics.granger": {
+        "model": "openbb_terminal.econometrics.econometrics_model.get_granger_causality",
+        "view": "openbb_terminal.econometrics.econometrics_view.display_granger",
+    },
+    "econometrics.norm": {
+        "model": "openbb_terminal.econometrics.econometrics_model.get_normality",
+        "view": "openbb_terminal.econometrics.econometrics_view.display_norm",
+    },
+    "econometrics.options": {
+        "model": "openbb_terminal.econometrics.econometrics_model.get_options",
+        "view": "openbb_terminal.econometrics.econometrics_view.show_options",
+    },
+    "econometrics.root": {
+        "model": "openbb_terminal.econometrics.econometrics_model.get_root",
+        "view": "openbb_terminal.econometrics.econometrics_view.display_root",
+    },
+    "econometrics.load": {
+        "model": "openbb_terminal.econometrics.econometrics_model.load"
+    },
+    "econometrics.bgod": {
+        "model": "openbb_terminal.econometrics.regression_model.get_bgod",
+        "view": "openbb_terminal.econometrics.regression_view.display_bgod",
+    },
+    "econometrics.bols": {
+        "model": "openbb_terminal.econometrics.regression_model.get_bols"
+    },
+    "econometrics.bpag": {
+        "model": "openbb_terminal.econometrics.regression_model.get_bpag",
+        "view": "openbb_terminal.econometrics.regression_view.display_bpag",
+    },
+    "econometrics.comparison": {
+        "model": "openbb_terminal.econometrics.regression_model.get_comparison"
+    },
+    "econometrics.dwat": {
+        "model": "openbb_terminal.econometrics.regression_model.get_dwat",
+        "view": "openbb_terminal.econometrics.regression_view.display_dwat",
+    },
+    "econometrics.fdols": {
+        "model": "openbb_terminal.econometrics.regression_model.get_fdols"
+    },
+    "econometrics.fe": {
+        "model": "openbb_terminal.econometrics.regression_model.get_fe"
+    },
+    "econometrics.ols": {
+        "model": "openbb_terminal.econometrics.regression_model.get_ols"
+    },
+    "econometrics.pols": {
+        "model": "openbb_terminal.econometrics.regression_model.get_pols"
+    },
+    "econometrics.re": {
+        "model": "openbb_terminal.econometrics.regression_model.get_re"
+    },
+    "econometrics.get_regression_data": {
+        "model": "openbb_terminal.econometrics.regression_model.get_regression_data"
+    },
+    "econometrics.panel": {
+        "model": "openbb_terminal.econometrics.regression_model.get_regressions_results",
+        "view": "openbb_terminal.econometrics.regression_view.display_panel",
+    },
     "economy.cpi": {
         "model": "openbb_terminal.economy.alphavantage_model.get_cpi",
         "view": "openbb_terminal.economy.alphavantage_view.display_cpi",
