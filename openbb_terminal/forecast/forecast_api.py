@@ -25,7 +25,6 @@ from .forecast_model import add_rsi as rsi
 from .forecast_model import add_roc as roc
 from .forecast_model import add_momentum as mom
 from .forecast_model import add_delta as delta
-from .mc_view import display_mc_forecast as mc
 from .expo_view import display_expo_forecast as expo
 from .theta_view import display_theta_forecast as theta
 from .linregr_view import display_linear_regression as linregr
