@@ -1141,7 +1141,7 @@ class PortfolioModel:
                         # Display progress
                         console.print(".", end="")
 
-    def load_benchmark(self, ticker: str = "SPY", full_shares: bool = False):
+    def load_benchmark(self, symbol: str = "SPY", full_shares: bool = False):
         """Adds benchmark dataframe
 
         Args:
@@ -1149,12 +1149,12 @@ class PortfolioModel:
             full_shares (bool): whether to mimic the portfolio trades exactly (partial shares) or round down the
             quantity to the nearest number.
         """
-        self.benchmark_ticker = ticker
+        self.benchmark_ticker = symbol
         self.benchmark_historical_prices = yf.download(
-            ticker, start=self.inception_date, threads=False, progress=False
+            symbol, start=self.inception_date, threads=False, progress=False
         )["Adj Close"]
         self.benchmark_returns = self.benchmark_historical_prices.pct_change().dropna()
-        self.benchmark_info = yf.Ticker(ticker).info
+        self.benchmark_info = yf.Ticker(symbol).info
         self.mimic_trades_for_benchmark(full_shares)
 
     def mimic_trades_for_benchmark(self, full_shares: bool = False):
