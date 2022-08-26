@@ -6,6 +6,7 @@ __docformat__ = "numpy"
 import argparse
 import logging
 import os
+from pathlib import Path
 from typing import Dict, List
 
 import binance
@@ -76,9 +77,13 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
     PATH = "/keys/"
     key_dict: Dict = {}
     cfg_dict: Dict = {}
+    default_env = str(Path.home()) + "/OpenBB.env"
 
     def __init__(
-        self, queue: List[str] = None, menu_usage: bool = True, env_file: str = ".env"
+        self,
+        queue: List[str] = None,
+        menu_usage: bool = True,
+        env_file: str = default_env,
     ):
         """Constructor"""
         super().__init__(queue)

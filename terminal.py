@@ -10,7 +10,6 @@ import platform
 import sys
 import webbrowser
 from typing import List
-from pathlib import Path
 import dotenv
 
 from prompt_toolkit import PromptSession
@@ -49,8 +48,6 @@ from openbb_terminal.helper_funcs import parse_and_split_input
 # pylint: disable=too-many-public-methods,import-outside-toplevel,too-many-branches,no-member
 
 logger = logging.getLogger(__name__)
-
-env_file = str(ENV_FILE)
 
 
 class TerminalController(BaseController):
@@ -315,7 +312,7 @@ class TerminalController(BaseController):
         """Process keys command"""
         from openbb_terminal.keys_controller import KeysController
 
-        self.queue = self.load_class(KeysController, self.queue, env_file)
+        self.queue = self.load_class(KeysController, self.queue, ENV_FILE)
 
     def call_settings(self, _):
         """Process settings command"""
@@ -597,14 +594,7 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
         t_controller.print_help()
         check_for_updates()
 
-    env_files = [f for f in os.listdir() if f.endswith(".env")]
-    if env_files:
-        global env_file
-        env_file = env_files[0]
-        dotenv.load_dotenv(env_file)
-    else:
-        # create env file
-        Path(".env")
+    dotenv.load_dotenv(ENV_FILE)
 
     while ret_code:
         if obbff.ENABLE_QUICK_EXIT:
