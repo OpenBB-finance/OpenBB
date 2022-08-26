@@ -1239,7 +1239,7 @@ def display_rsquare(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "rsquare",
-        portfolio.get_r2_score()
+        portfolio.get_r2_score(),
     )
 
 

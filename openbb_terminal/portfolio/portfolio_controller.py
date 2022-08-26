@@ -466,25 +466,25 @@ class PortfolioController(BaseController):
                     )
                 elif ns_parser.agg == "sectors":
                     portfolio_view.display_category_allocation(
-                        ns_parser.agg,
                         self.portfolio.portfolio_sectors_allocation,
                         self.portfolio.benchmark_sectors_allocation,
+                        ns_parser.agg,
                         ns_parser.limit,
                         ns_parser.tables,
                     )
                 elif ns_parser.agg == "countries":
                     portfolio_view.display_category_allocation(
-                        ns_parser.agg,
                         self.portfolio.portfolio_country_allocation,
                         self.portfolio.benchmark_country_allocation,
+                        ns_parser.agg,
                         ns_parser.limit,
                         ns_parser.tables,
                     )
                 elif ns_parser.agg == "regions":
                     portfolio_view.display_category_allocation(
-                        ns_parser.agg,
                         self.portfolio.portfolio_regional_allocation,
                         self.portfolio.benchmark_regional_allocation,
+                        ns_parser.agg,
                         ns_parser.limit,
                         ns_parser.tables,
                     )
