@@ -1203,7 +1203,7 @@ def display_candle(
         fig.show(config=dict({"scrollZoom": True}))
 
 
-def quote(symbol: str):
+def quote(symbol: str) -> pd.DataFrame:
     """Ticker quote
 
     Parameters
@@ -1254,6 +1254,7 @@ def quote(symbol: str):
         quote_data = transpose(quote_df)
 
         print_rich_table(quote_data, title="Ticker Quote", show_index=True)
+        return quote_data
 
     except KeyError:
         logger.exception("Invalid stock ticker")
