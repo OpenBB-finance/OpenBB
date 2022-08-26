@@ -6,7 +6,7 @@ PE Ratio         28.59
 Shares Out      21.60M
 Dividend (ttm)   $0.61
 Dividend Yield   1.10%
-Volume          18,245
+Volume          25,255
 Open             64.31
 Previous Close   55.95
 52-Week Low      56.88
