@@ -320,6 +320,8 @@ main:
                 ref: "/terminal/stocks/res/newsfilter"
               - name: stockanalysis
                 ref: "/terminal/stocks/res/stockanalysis"
+              - name: bullrun
+                ref: "/terminal/stocks/res/bullrun"
           - name: due diligence
             ref: "/terminal/stocks/dd"
             sub:
