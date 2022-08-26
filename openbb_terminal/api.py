@@ -142,7 +142,8 @@ functions = {
         "model": "openbb_terminal.common.feedparser_model.get_news",
     },
     "common.qa.bw": {
-        "model": "openbb_terminal.common.quantitative_analysis.qa_view.display_bw"
+        "model": "openbb_terminal.common.quantitative_analysis.qa_view.display_bw",
+        "view": "openbb_terminal.common.quantitative_analysis.qa_view.display_bw",
     },
     "common.qa.calculate_adjusted_var": {
         "model": "openbb_terminal.common.quantitative_analysis.qa_model.calculate_adjusted_var"
@@ -229,6 +230,10 @@ functions = {
     "common.ta.stoch": {
         "model": "openbb_terminal.common.technical_analysis.momentum_model.stoch",
         "view": "openbb_terminal.common.technical_analysis.momentum_view.display_stoch",
+    },
+    "common.ta.ma": {
+        "model": "openbb_terminal.common.technical_analysis.overlap_view.view_ma",
+        "view": "openbb_terminal.common.technical_analysis.overlap_view.view_ma",
     },
     "common.ta.ema": {
         "model": "openbb_terminal.common.technical_analysis.overlap_model.ema"

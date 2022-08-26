@@ -201,7 +201,7 @@ def get_stocks_data(
     industry: str = "Internet Content & Information",
     marketcap: str = "Mega Cap",
     exclude_exchanges: bool = True,
-):
+) -> dict:
     """Get stocks data based on country, sector, industry, market cap and exclude exchanges. [Source: Finance Database]
 
     Parameters
