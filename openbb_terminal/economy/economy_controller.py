@@ -1079,12 +1079,22 @@ class EconomyController(BaseController):
                 ns_parser.country, investingcom_model.CALENDAR_COUNTRIES
             )
 
+            if ns_parser.start_date:
+                start_date = ns_parser.start_date.strftime("%Y-%m-%d")
+            else:
+                start_date = None
+
+            if ns_parser.end_date:
+                end_date = ns_parser.end_date.strftime("%Y-%m-%d")
+            else:
+                end_date = None
+
             investingcom_view.display_economic_calendar(
                 country=ns_parser.country,
                 importance=ns_parser.importance,
                 category=ns_parser.category,
-                start_date=ns_parser.start_date,
-                end_date=ns_parser.end_date,
+                start_date=start_date,
+                end_date=end_date,
                 limit=ns_parser.limit,
                 export=ns_parser.export,
             )

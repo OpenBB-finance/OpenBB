@@ -87,8 +87,8 @@ def display_economic_calendar(
     country: str = "all",
     importance: str = "",
     category: str = "",
-    start_date: datetime.date = None,
-    end_date: datetime.date = None,
+    start_date: str = "",
+    end_date: str = "",
     limit=100,
     export: str = "",
 ):
