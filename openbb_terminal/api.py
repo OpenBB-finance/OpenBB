@@ -11,6 +11,8 @@ from typing import Optional, Callable
 
 from openbb_terminal.helper_classes import TerminalStyle  # noqa: F401
 from .reports import widget_helpers as widgets  # noqa: F401
+from .portfolio.portfolio_model import PortfolioModel as Portfolio
+from .cryptocurrency.due_diligence.pycoingecko_model import Coin
 
 functions = {
     "alt.covid.slopes": {
@@ -1091,6 +1093,157 @@ functions = {
         "model": "openbb_terminal.mutual_funds.investpy_model.search_funds",
         "view": "openbb_terminal.mutual_funds.investpy_view.display_search",
     },
+    "portfolio.bro.ally.balances": {
+        "model": "openbb_terminal.portfolio.brokers.ally.ally_model.get_balances",
+        "view": "openbb_terminal.portfolio.brokers.ally.ally_view.display_balances",
+    },
+    "portfolio.bro.ally.history": {
+        "model": "openbb_terminal.portfolio.brokers.ally.ally_model.get_history",
+        "view": "openbb_terminal.portfolio.brokers.ally.ally_view.display_history",
+    },
+    "portfolio.bro.ally.holdings": {
+        "model": "openbb_terminal.portfolio.brokers.ally.ally_model.get_holdings",
+        "view": "openbb_terminal.portfolio.brokers.ally.ally_view.display_holdings",
+    },
+    "portfolio.bro.ally.quote": {
+        "model": "openbb_terminal.portfolio.brokers.ally.ally_model.get_stock_quote",
+        "view": "openbb_terminal.portfolio.brokers.ally.ally_view.display_stock_quote",
+    },
+    "portfolio.bro.ally.top": {
+        "model": "openbb_terminal.portfolio.brokers.ally.ally_model.get_top_movers",
+        "view": "openbb_terminal.portfolio.brokers.ally.ally_view.display_top_lists",
+    },
+    "portfolio.bro.coinbase.history": {
+        "model": "openbb_terminal.portfolio.brokers.coinbase.coinbase_model.get_account_history",
+        "view": "openbb_terminal.portfolio.brokers.coinbase.coinbase_view.display_history",
+    },
+    "portfolio.bro.coinbase.account": {
+        "model": "openbb_terminal.portfolio.brokers.coinbase.coinbase_model.get_accounts",
+        "view": "openbb_terminal.portfolio.brokers.coinbase.coinbase_view.display_account",
+    },
+    "portfolio.bro.coinbase.deposits": {
+        "model": "openbb_terminal.portfolio.brokers.coinbase.coinbase_model.get_deposits",
+        "view": "openbb_terminal.portfolio.brokers.coinbase.coinbase_view.display_deposits",
+    },
+    "portfolio.bro.coinbase.orders": {
+        "model": "openbb_terminal.portfolio.brokers.coinbase.coinbase_model.get_orders",
+        "view": "openbb_terminal.portfolio.brokers.coinbase.coinbase_view.display_orders",
+    },
+    "portfolio.bro.rh.historical": {
+        "model": "openbb_terminal.portfolio.brokers.robinhood.robinhood_model.get_historical",
+        "view": "openbb_terminal.portfolio.brokers.robinhood.robinhood_view.display_historical",
+    },
+    "portfolio.bro.rh.holdings": {
+        "model": "openbb_terminal.portfolio.brokers.robinhood.robinhood_model.get_holdings",
+        "view": "openbb_terminal.portfolio.brokers.robinhood.robinhood_view.display_holdings",
+    },
+    "portfolio.calculate_drawdown": {
+        "model": "openbb_terminal.portfolio.portfolio_model.calculate_drawdown"
+    },
+    "portfolio.calmar_ratio": {
+        "model": "openbb_terminal.portfolio.portfolio_model.get_calmar_ratio",
+        "view": "openbb_terminal.portfolio.portfolio_view.display_calmar_ratio",
+    },
+    "portfolio.cs_ratio": {
+        "model": "openbb_terminal.portfolio.portfolio_model.get_common_sense_ratio",
+        "view": "openbb_terminal.portfolio.portfolio_view.display_common_sense_ratio",
+    },
+    "portfolio.gtp_ratio": {
+        "model": "openbb_terminal.portfolio.portfolio_model.get_gaintopain_ratio",
+        "view": "openbb_terminal.portfolio.portfolio_view.display_gaintopain_ratio",
+    },
+    "portfolio.info_ratio": {
+        "model": "openbb_terminal.portfolio.portfolio_model.get_information_ratio",
+        "view": "openbb_terminal.portfolio.portfolio_view.display_information_ratio",
+    },
+    "portfolio.jen_alpha": {
+        "model": "openbb_terminal.portfolio.portfolio_model.get_jensens_alpha",
+        "view": "openbb_terminal.portfolio.portfolio_view.display_jensens_alpha",
+    },
+    "portfolio.kelly_crit": {
+        "model": "openbb_terminal.portfolio.portfolio_model.get_kelly_criterion",
+        "view": "openbb_terminal.portfolio.portfolio_view.display_kelly_criterion",
+    },
+    "portfolio.max_drawdown_ratio": {
+        "model": "openbb_terminal.portfolio.portfolio_model.get_maximum_drawdown",
+        "view": "openbb_terminal.portfolio.portfolio_view.display_maximum_drawdown_ratio",
+    },
+    "portfolio.payoff_ratio": {
+        "model": "openbb_terminal.portfolio.portfolio_model.get_payoff_ratio",
+        "view": "openbb_terminal.portfolio.portfolio_view.display_payoff_ratio",
+    },
+    "portfolio.prof_factor": {
+        "model": "openbb_terminal.portfolio.portfolio_model.get_profit_factor",
+        "view": "openbb_terminal.portfolio.portfolio_view.display_profit_factor",
+    },
+    "portfolio.roll_beta": {
+        "model": "openbb_terminal.portfolio.portfolio_model.get_rolling_beta",
+        "view": "openbb_terminal.portfolio.portfolio_view.display_rolling_beta",
+    },
+    "portfolio.tail_ratio": {
+        "model": "openbb_terminal.portfolio.portfolio_model.get_tail_ratio",
+        "view": "openbb_terminal.portfolio.portfolio_view.display_tail_ratio",
+    },
+    "portfolio.tracking_error": {
+        "model": "openbb_terminal.portfolio.portfolio_model.get_tracking_error",
+        "view": "openbb_terminal.portfolio.portfolio_view.display_tracking_error",
+    },
+    "portfolio.roll_sharpe": {
+        "model": "openbb_terminal.portfolio.portfolio_model.rolling_sharpe",
+        "view": "openbb_terminal.portfolio.portfolio_view.display_rolling_sharpe",
+    },
+    "portfolio.roll_sortino": {
+        "model": "openbb_terminal.portfolio.portfolio_model.rolling_sortino",
+        "view": "openbb_terminal.portfolio.portfolio_view.display_rolling_sortino",
+    },
+    "portfolio.roll_volatility": {
+        "model": "openbb_terminal.portfolio.portfolio_model.rolling_volatility",
+        "view": "openbb_terminal.portfolio.portfolio_view.display_rolling_volatility",
+    },
+    "portfolio.sharpe_ratio": {
+        "model": "openbb_terminal.portfolio.portfolio_model.sharpe_ratio",
+        "view": "openbb_terminal.portfolio.portfolio_view.display_sharpe_ratio",
+    },
+    "portfolio.sortino_ratio": {
+        "model": "openbb_terminal.portfolio.portfolio_model.sortino_ratio",
+        "view": "openbb_terminal.portfolio.portfolio_view.display_sortino_ratio",
+    },
+    "portfolio.po.bl": {
+        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_black_litterman_portfolio",
+        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_black_litterman",
+    },
+    "portfolio.po.equal": {
+        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_equal_weights",
+        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_equal_weight",
+    },
+    "portfolio.po.hcp": {
+        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_hcp_portfolio",
+        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_hcp",
+    },
+    "portfolio.po.max_decorr": {
+        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_max_decorrelation_portfolio",
+        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_max_decorr",
+    },
+    "portfolio.po.max_div": {
+        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_max_diversification_portfolio",
+        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_max_div",
+    },
+    "portfolio.po.mean_risk": {
+        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_mean_risk_portfolio",
+        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_mean_risk",
+    },
+    "portfolio.po.property_weights": {
+        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_property_weights",
+        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_property_weighting",
+    },
+    "portfolio.po.rel_risk": {
+        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_rel_risk_parity_portfolio",
+        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_rel_risk_parity",
+    },
+    "portfolio.po.risk": {
+        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_risk_parity_portfolio",
+        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_risk_parity",
+    },
     "stocks.bt.ema_cross": {
         "model": "openbb_terminal.stocks.backtesting.bt_model.ema_cross_strategy",
         "view": "openbb_terminal.stocks.backtesting.bt_view.display_ema_cross",
@@ -1711,7 +1864,7 @@ def change_docstring(api_callable, model: Callable, view=None):
     Callable
         api_callable with changed docstring
     """
-    if view is not None:
+    if view.__doc__ is not None:
         index = view.__doc__.find("Parameters")
         all_parameters = (
             "\nAPI function, use the chart kwarg for getting the view model and it's plot. "
@@ -1953,7 +2106,6 @@ class Loader:
                 view_function = None
 
             if model_function is not None:
-                # try:
                 function_factory = FunctionFactory(
                     model=model_function, view=view_function
                 )
@@ -1965,8 +2117,7 @@ class Loader:
                 function_map[virtual_path] = types.MethodType(
                     function_with_doc, function_factory
                 )
-                # except:
-                #     print(model_function)
+
             elif view_function is not None:
                 raise Exception(
                     f"View function without model function : {view_function}"
