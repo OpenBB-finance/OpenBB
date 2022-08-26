@@ -1,15 +1,15 @@
-                   ARKQ       ARKF
-Assets           $1.26B     $1.03B
-NAV              $58.22     $19.76
-Expense Ratio     0.75%      0.75%
-PE Ratio          28.59      43.05
-Shares Out       21.60M     52.30M
-Dividend (ttm)    $0.61        n/a
-Dividend Yield    1.13%        n/a
-Volume          108,090  1,014,758
-Open              64.31      17.96
-Previous Close    56.08      18.47
-52-Week Low       56.88      14.64
-52-Week High      90.28      55.28
-Beta               1.32       1.48
-Holdings             38         32
+                  ARKQ      ARKF
+Assets          $1.19B  $962.66M
+NAV             $54.92    $18.41
+Expense Ratio    0.75%     0.75%
+PE Ratio         28.59     43.05
+Shares Out      21.60M    52.30M
+Dividend (ttm)   $0.61       n/a
+Dividend Yield   1.10%       n/a
+Volume          18,245    33,555
+Open             64.31     18.61
+Previous Close   55.95     18.91
+52-Week Low      56.88     14.64
+52-Week High     90.28     55.28
+Beta              1.32      1.48
+Holdings            38        32

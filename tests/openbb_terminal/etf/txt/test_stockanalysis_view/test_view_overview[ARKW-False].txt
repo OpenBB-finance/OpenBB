@@ -1,15 +1,15 @@
-                   ARKW
-Assets           $1.59B
-NAV              $59.63
-Expense Ratio     0.83%
-PE Ratio          50.48
-Shares Out       26.60M
-Dividend (ttm)    $3.12
-Dividend Yield    5.75%
-Volume          850,975
-Open              54.65
-Previous Close    56.01
-52-Week Low       45.10
-52-Week High     162.04
-Beta               1.56
-Holdings             32
+                  ARKW
+Assets          $1.44B
+NAV             $54.23
+Expense Ratio    0.83%
+PE Ratio         50.48
+Shares Out      26.60M
+Dividend (ttm)   $3.12
+Dividend Yield   5.61%
+Volume          49,664
+Open             54.97
+Previous Close   55.55
+52-Week Low      45.10
+52-Week High    162.04
+Beta              1.56
+Holdings            32
