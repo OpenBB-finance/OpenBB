@@ -28,7 +28,7 @@ def display_mean_std(
     data: pd.DataFrame,
     target: str,
     symbol: str = "",
-    limit: int = 14,
+    window: int = 14,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
@@ -42,7 +42,7 @@ def display_mean_std(
         Column in data to look at
     symbol : str
         Stock ticker
-    limit : int
+    window : int
         Length of window
     export: str
         Format to export data
@@ -50,7 +50,7 @@ def display_mean_std(
         External axes (2 axes are expected in the list), by default None
     """
     data = data[target]
-    rolling_mean, rolling_std = rolling_model.get_rolling_avg(data, limit)
+    rolling_mean, rolling_std = rolling_model.get_rolling_avg(data, window)
     plot_data = pd.merge(
         data,
         rolling_mean,
@@ -97,7 +97,7 @@ def display_mean_std(
         "Values",
     )
     ax1.legend(["Real Values", "Rolling Mean"])
-    ax1.set_title(f"Rolling mean and std (window {str(limit)}) of {symbol} {target}")
+    ax1.set_title(f"Rolling mean and std (window {str(window)}) of {symbol} {target}")
     ax1.set_xlim([plot_data.index[0], plot_data.index[-1]])
 
     ax2.plot(
@@ -137,7 +137,7 @@ def display_spread(
     data: pd.DataFrame,
     target: str,
     symbol: str = "",
-    limit: int = 14,
+    window: int = 14,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -153,7 +153,7 @@ def display_spread(
         Column in data to look at
     symbol : str
         Stock ticker
-    limit : int
+    window : int
         Length of window
     export: str
         Format to export data
@@ -161,7 +161,7 @@ def display_spread(
         External axes (3 axes are expected in the list), by default None
     """
     data = data[target]
-    df_sd, df_var = rolling_model.get_spread(data, limit)
+    df_sd, df_var = rolling_model.get_spread(data, window)
 
     plot_data = pd.merge(
         data,
@@ -202,15 +202,15 @@ def display_spread(
     ax1.set_title(f"Spread of {symbol} {target}")
 
     ax2.plot(
-        plot_data[f"STDEV_{limit}"].index,
-        plot_data[f"STDEV_{limit}"].values,
+        plot_data[f"STDEV_{window}"].index,
+        plot_data[f"STDEV_{window}"].values,
         label="Stdev",
     )
     ax2.set_ylabel("Stdev")
 
     ax3.plot(
-        plot_data[f"VAR_{limit}"].index,
-        plot_data[f"VAR_{limit}"].values,
+        plot_data[f"VAR_{window}"].index,
+        plot_data[f"VAR_{window}"].values,
         label="Variance",
     )
     ax3.set_ylabel("Variance")
@@ -247,7 +247,7 @@ def display_quantile(
     data: pd.DataFrame,
     target: str,
     symbol: str = "",
-    limit: int = 14,
+    window: int = 14,
     quantile: float = 0.5,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -262,7 +262,7 @@ def display_quantile(
         Column in data to look at
     symbol : str
         Stock ticker
-    limit : int
+    window : int
         Length of window
     quantile: float
         Quantile to get
@@ -272,7 +272,7 @@ def display_quantile(
         External axes (1 axis is expected in the list), by default None
     """
     data = data[target]
-    df_med, df_quantile = rolling_model.get_quantile(data, limit, quantile)
+    df_med, df_quantile = rolling_model.get_quantile(data, window, quantile)
 
     plot_data = pd.merge(
         data,
@@ -307,12 +307,12 @@ def display_quantile(
     ax.plot(plot_data.index, plot_data[target].values, label=target)
     ax.plot(
         plot_data.index,
-        plot_data[f"MEDIAN_{limit}"].values,
-        label=f"Median w={limit}",
+        plot_data[f"MEDIAN_{window}"].values,
+        label=f"Median w={window}",
     )
     ax.plot(
         plot_data.index,
-        plot_data[f"QTL_{limit}_{quantile}"].values,
+        plot_data[f"QTL_{window}_{quantile}"].values,
         label=f"Quantile q={quantile}",
         linestyle="--",
     )

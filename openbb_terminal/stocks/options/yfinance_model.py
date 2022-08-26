@@ -1,19 +1,19 @@
 """Yfinance options model"""
 __docformat__ = "numpy"
 
-import warnings
 import logging
 import math
-from datetime import datetime, date, timedelta
+import warnings
+from datetime import date, datetime, timedelta
 from typing import Any, Dict, List, Tuple
 
 import pandas as pd
 import yfinance as yf
 
-from openbb_terminal.stocks.options.op_helpers import Option
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import get_rf
 from openbb_terminal.rich_config import console
+from openbb_terminal.stocks.options.op_helpers import Option
 
 logger = logging.getLogger(__name__)
 

@@ -171,7 +171,7 @@ class TechnicalAnalysisController(StockBaseController):
             overlap_view.view_ma(
                 ma_type="EMA",
                 symbol=self.ticker,
-                series=self.data["Close"],
+                data=self.data["Close"],
                 window=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
@@ -224,7 +224,7 @@ class TechnicalAnalysisController(StockBaseController):
             overlap_view.view_ma(
                 ma_type="SMA",
                 symbol=self.ticker,
-                series=self.data["Close"],
+                data=self.data["Close"],
                 window=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
@@ -278,7 +278,7 @@ class TechnicalAnalysisController(StockBaseController):
             overlap_view.view_ma(
                 ma_type="ZLMA",
                 symbol=self.ticker,
-                series=self.data["Close"],
+                data=self.data["Close"],
                 window=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
@@ -327,7 +327,7 @@ class TechnicalAnalysisController(StockBaseController):
             momentum_view.display_cci(
                 symbol=self.ticker,
                 data=self.data,
-                length=ns_parser.n_length,
+                window=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
                 export=ns_parser.export,
             )
@@ -540,7 +540,7 @@ class TechnicalAnalysisController(StockBaseController):
             momentum_view.display_fisher(
                 symbol=self.ticker,
                 data=self.data,
-                length=ns_parser.n_length,
+                window=ns_parser.n_length,
                 export=ns_parser.export,
             )
 
@@ -579,7 +579,7 @@ class TechnicalAnalysisController(StockBaseController):
             momentum_view.display_cg(
                 symbol=self.ticker,
                 series=self.data["Adj Close"],
-                length=ns_parser.n_length,
+                window=ns_parser.n_length,
                 export=ns_parser.export,
             )
 
@@ -634,7 +634,7 @@ class TechnicalAnalysisController(StockBaseController):
             trend_indicators_view.display_adx(
                 symbol=self.ticker,
                 data=self.data,
-                length=ns_parser.n_length,
+                window=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
                 drift=ns_parser.n_drift,
                 export=ns_parser.export,
@@ -698,7 +698,7 @@ class TechnicalAnalysisController(StockBaseController):
             trend_indicators_view.display_aroon(
                 symbol=self.ticker,
                 data=self.data,
-                length=ns_parser.n_length,
+                window=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
                 export=ns_parser.export,
             )
@@ -925,7 +925,7 @@ class TechnicalAnalysisController(StockBaseController):
             custom_indicators_view.fibonacci_retracement(
                 symbol=self.ticker,
                 data=self.data,
-                period=ns_parser.period,
+                limit=ns_parser.period,
                 start_date=ns_parser.start,
                 end_date=ns_parser.end,
                 export=ns_parser.export,
