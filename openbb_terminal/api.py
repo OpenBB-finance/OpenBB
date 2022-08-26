@@ -333,6 +333,10 @@ functions = {
         "model": "openbb_terminal.cryptocurrency.defi.llama_model.get_defi_tvl",
         "view": "openbb_terminal.cryptocurrency.defi.llama_view.display_defi_tvl",
     },
+    "crypto.defi.gdapps": {
+        "model": "openbb_terminal.cryptocurrency.defi.llama_model.get_grouped_defi_protocols",
+        "view": "openbb_terminal.cryptocurrency.defi.llama_view.display_grouped_defi_protocols",
+    },
     "crypto.defi.luna_supply": {
         "model": "openbb_terminal.cryptocurrency.defi.smartstake_model.get_luna_supply_stats",
         "view": "openbb_terminal.cryptocurrency.defi.smartstake_view.display_luna_circ_supply_change",
@@ -344,6 +348,10 @@ functions = {
     "crypto.defi.aterra": {
         "model": "openbb_terminal.cryptocurrency.defi.terraengineer_model.get_history_asset_from_terra_address",
         "view": "openbb_terminal.cryptocurrency.defi.terraengineer_view.display_terra_asset_history",
+    },
+    "crypto.defi.ayr": {
+        "model": "openbb_terminal.cryptocurrency.defi.terraengineer_model.get_anchor_yield_reserve",
+        "view": "openbb_terminal.cryptocurrency.defi.terraengineer_view.display_anchor_yield_reserve",
     },
     "crypto.defi.gacc": {
         "model": "openbb_terminal.cryptocurrency.defi.terramoney_fcd_model.get_account_growth",
@@ -409,6 +417,14 @@ functions = {
     "crypto.disc.gainers_or_losers": {
         "model": "openbb_terminal.cryptocurrency.discovery.pycoingecko_model.get_gainers_or_losers"
     },
+    "crypto.disc.gainers": {
+        "model": "openbb_terminal.cryptocurrency.discovery.pycoingecko_model.get_gainers",
+        "view": "openbb_terminal.cryptocurrency.discovery.pycoingecko_view.display_gainers",
+    },
+    "crypto.disc.losers": {
+        "model": "openbb_terminal.cryptocurrency.discovery.pycoingecko_model.get_losers",
+        "view": "openbb_terminal.cryptocurrency.discovery.pycoingecko_view.display_losers",
+    },
     "crypto.disc.trending": {
         "model": "openbb_terminal.cryptocurrency.discovery.pycoingecko_model.get_trending_coins",
         "view": "openbb_terminal.cryptocurrency.discovery.pycoingecko_view.display_trending",
@@ -424,6 +440,14 @@ functions = {
     },
     "crypto.dd.binance_available_quotes_for_each_coin": {
         "model": "openbb_terminal.cryptocurrency.due_diligence.binance_model.get_binance_available_quotes_for_each_coin"
+    },
+    "crypto.dd.balance": {
+        "model": "openbb_terminal.cryptocurrency.due_diligence.binance_view.get_balance",
+        "view": "openbb_terminal.cryptocurrency.due_diligence.binance_view.display_balance",
+    },
+    "crypto.dd.book": {
+        "model": "openbb_terminal.cryptocurrency.due_diligence.binance_view.get_order_book",
+        "view": "openbb_terminal.cryptocurrency.due_diligence.binance_view.display_order_book",
     },
     "crypto.dd.show_available_pairs_for_given_symbol": {
         "model": "openbb_terminal.cryptocurrency.due_diligence.coinbase_model.show_available_pairs_for_given_symbol"
@@ -569,9 +593,6 @@ functions = {
     },
     "crypto.dd.tokenomics": {
         "model": "openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model.get_coin_tokenomics"
-    },
-    "crypto.dd.ohlc": {
-        "model": "openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model.get_ohlc"
     },
     "crypto.dd.gh": {
         "model": "openbb_terminal.cryptocurrency.due_diligence.santiment_model.get_github_activity",
