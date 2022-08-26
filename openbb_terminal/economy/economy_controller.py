@@ -664,7 +664,6 @@ class EconomyController(BaseController):
                     series_ids=ns_parser.parameter,
                     start_date=ns_parser.start_date,
                     end_date=ns_parser.end_date,
-                    limit=ns_parser.limit,
                 )
 
                 for series_id, data in detail.items():
