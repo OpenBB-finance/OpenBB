@@ -138,7 +138,9 @@ functions = {
         "model": "openbb_terminal.common.newsapi_model.get_news",
         "view": "openbb_terminal.common.newsapi_view.display_news",
     },
-    "common.news": {"model": "openbb_terminal.common.feedparser_model.get_news"},
+    "common.news": {
+        "model": "openbb_terminal.common.feedparser_model.get_news",
+    },
     "common.qa.bw": {
         "model": "openbb_terminal.common.quantitative_analysis.qa_view.display_bw",
         "view": "openbb_terminal.common.quantitative_analysis.qa_view.display_bw",
@@ -228,6 +230,10 @@ functions = {
     "common.ta.stoch": {
         "model": "openbb_terminal.common.technical_analysis.momentum_model.stoch",
         "view": "openbb_terminal.common.technical_analysis.momentum_view.display_stoch",
+    },
+    "common.ta.ma": {
+        "model": "openbb_terminal.common.technical_analysis.overlap_view.view_ma",
+        "view": "openbb_terminal.common.technical_analysis.overlap_view.view_ma",
     },
     "common.ta.ema": {
         "model": "openbb_terminal.common.technical_analysis.overlap_model.ema"
@@ -324,10 +330,6 @@ functions = {
         "model": "openbb_terminal.cryptocurrency.defi.llama_model.get_defi_tvl",
         "view": "openbb_terminal.cryptocurrency.defi.llama_view.display_defi_tvl",
     },
-    "crypto.defi.gdapps": {
-        "model": "openbb_terminal.cryptocurrency.defi.llama_model.get_grouped_defi_protocols",
-        "view": "openbb_terminal.cryptocurrency.defi.llama_view.display_grouped_defi_protocols",
-    },
     "crypto.defi.luna_supply": {
         "model": "openbb_terminal.cryptocurrency.defi.smartstake_model.get_luna_supply_stats",
         "view": "openbb_terminal.cryptocurrency.defi.smartstake_view.display_luna_circ_supply_change",
@@ -339,10 +341,6 @@ functions = {
     "crypto.defi.aterra": {
         "model": "openbb_terminal.cryptocurrency.defi.terraengineer_model.get_history_asset_from_terra_address",
         "view": "openbb_terminal.cryptocurrency.defi.terraengineer_view.display_terra_asset_history",
-    },
-    "crypto.defi.ayr": {
-        "model": "openbb_terminal.cryptocurrency.defi.terraengineer_view.get_anchor_yield_reserve",
-        "view": "openbb_terminal.cryptocurrency.defi.terraengineer_view.display_anchor_yield_reserve",
     },
     "crypto.defi.gacc": {
         "model": "openbb_terminal.cryptocurrency.defi.terramoney_fcd_model.get_account_growth",
@@ -408,14 +406,6 @@ functions = {
     "crypto.disc.gainers_or_losers": {
         "model": "openbb_terminal.cryptocurrency.discovery.pycoingecko_model.get_gainers_or_losers"
     },
-    "crypto.disc.gainers": {
-        "model": "openbb_terminal.cryptocurrency.discovery.pycoingecko_model.get_gainers",
-        "view": "openbb_terminal.cryptocurrency.discovery.pycoingecko_view.display_gainers",
-    },
-    "crypto.disc.losers": {
-        "model": "openbb_terminal.cryptocurrency.discovery.pycoingecko_model.get_losers",
-        "view": "openbb_terminal.cryptocurrency.discovery.pycoingecko_view.display_losers",
-    },
     "crypto.disc.trending": {
         "model": "openbb_terminal.cryptocurrency.discovery.pycoingecko_model.get_trending_coins",
         "view": "openbb_terminal.cryptocurrency.discovery.pycoingecko_view.display_trending",
@@ -431,14 +421,6 @@ functions = {
     },
     "crypto.dd.binance_available_quotes_for_each_coin": {
         "model": "openbb_terminal.cryptocurrency.due_diligence.binance_model.get_binance_available_quotes_for_each_coin"
-    },
-    "crypto.dd.balance": {
-        "model": "openbb_terminal.cryptocurrency.due_diligence.binance_view.get_balance",
-        "view": "openbb_terminal.cryptocurrency.due_diligence.binance_view.display_balance",
-    },
-    "crypto.dd.book": {
-        "model": "openbb_terminal.cryptocurrency.due_diligence.binance_view.get_order_book",
-        "view": "openbb_terminal.cryptocurrency.due_diligence.binance_view.display_order_book",
     },
     "crypto.dd.show_available_pairs_for_given_symbol": {
         "model": "openbb_terminal.cryptocurrency.due_diligence.coinbase_model.show_available_pairs_for_given_symbol"
@@ -585,59 +567,8 @@ functions = {
     "crypto.dd.tokenomics": {
         "model": "openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model.get_coin_tokenomics"
     },
-    "crypto.dd.coin_list": {
-        "model": "openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model.Coin.coin_list"
-    },
-    "crypto.dd.coin_links": {
-        "model": "openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model.Coin._get_links"
-    },
-    "crypto.dd.coin_repos": {
-        "model": "openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model.Coin.get_repositories"
-    },
-    "crypto.dd.dev": {
-        "model": "openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model.Coin.get_developers_data",
-        "view": "openbb_terminal.cryptocurrency.due_diligence.pycoingecko_view.display_dev",
-    },
-    "crypto.dd.bc": {
-        "model": "openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model.Coin.get_blockchain_explorers",
-        "view": "openbb_terminal.cryptocurrency.due_diligence.pycoingecko_view.display_bc",
-    },
-    "crypto.dd.social": {
-        "model": "openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model.Coin.get_social_media",
-        "view": "openbb_terminal.cryptocurrency.due_diligence.pycoingecko_view.display_social",
-    },
-    "crypto.dd.web": {
-        "model": "openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model.Coin.get_websites",
-        "view": "openbb_terminal.cryptocurrency.due_diligence.pycoingecko_view.display_web",
-    },
-    "crypto.dd.categories": {
-        "model": "openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model.Coin.get_categories"
-    },
-    "crypto.dd.info": {
-        "model": "openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model.Coin.get_base_info",
-        "view": "openbb_terminal.cryptocurrency.due_diligence.pycoingecko_view.display_info",
-    },
-    "crypto.dd.market": {
-        "model": "openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model.Coin.get_market_data",
-        "view": "openbb_terminal.cryptocurrency.due_diligence.pycoingecko_view.display_market",
-    },
-    "crypto.dd.ath": {
-        "model": "openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model.Coin.get_all_time_high",
-        "view": "openbb_terminal.cryptocurrency.due_diligence.pycoingecko_view.display_ath",
-    },
-    "crypto.dd.atl": {
-        "model": "openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model.Coin.get_all_time_low",
-        "view": "openbb_terminal.cryptocurrency.due_diligence.pycoingecko_view.display_atl",
-    },
-    "crypto.dd.score": {
-        "model": "openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model.Coin.get_scores",
-        "view": "openbb_terminal.cryptocurrency.due_diligence.pycoingecko_view.display_score",
-    },
-    "crypto.dd.coinchart": {
-        "model": "openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model.Coin.get_coin_market_chart"
-    },
     "crypto.dd.ohlc": {
-        "model": "openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model.Coin.get_ohlc"
+        "model": "openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model.get_ohlc"
     },
     "crypto.dd.gh": {
         "model": "openbb_terminal.cryptocurrency.due_diligence.santiment_model.get_github_activity",
@@ -1082,9 +1013,11 @@ functions = {
         "view": "openbb_terminal.etf.yfinance_view.display_etf_description",
     },
     "forex.get_currency_list": {
-        "model": "openbb_terminal.forex.av_model.get_currency_list"
+        "model": "openbb_terminal.forex.av_model.get_currency_list",
     },
-    "forex.hist": {"model": "openbb_terminal.forex.av_model.get_historical"},
+    "forex.hist": {
+        "model": "openbb_terminal.forex.av_model.get_historical",
+    },
     "forex.quote": {
         "model": "openbb_terminal.forex.av_model.get_quote",
         "view": "openbb_terminal.forex.av_view.display_quote",
@@ -1156,263 +1089,6 @@ functions = {
     "funds.search": {
         "model": "openbb_terminal.mutual_funds.investpy_model.search_funds",
         "view": "openbb_terminal.mutual_funds.investpy_view.display_search",
-    },
-    "portfolio.bro.ally.balances": {
-        "model": "openbb_terminal.portfolio.brokers.ally.ally_model.get_balances",
-        "view": "openbb_terminal.portfolio.brokers.ally.ally_view.display_balances",
-    },
-    "portfolio.bro.ally.history": {
-        "model": "openbb_terminal.portfolio.brokers.ally.ally_model.get_history",
-        "view": "openbb_terminal.portfolio.brokers.ally.ally_view.display_history",
-    },
-    "portfolio.bro.ally.holdings": {
-        "model": "openbb_terminal.portfolio.brokers.ally.ally_model.get_holdings",
-        "view": "openbb_terminal.portfolio.brokers.ally.ally_view.display_holdings",
-    },
-    "portfolio.bro.ally.quote": {
-        "model": "openbb_terminal.portfolio.brokers.ally.ally_model.get_stock_quote",
-        "view": "openbb_terminal.portfolio.brokers.ally.ally_view.display_stock_quote",
-    },
-    "portfolio.bro.ally.top": {
-        "model": "openbb_terminal.portfolio.brokers.ally.ally_model.get_top_movers",
-        "view": "openbb_terminal.portfolio.brokers.ally.ally_view.display_top_lists",
-    },
-    "portfolio.bro.coinbase.history": {
-        "model": "openbb_terminal.portfolio.brokers.coinbase.coinbase_model.get_account_history",
-        "view": "openbb_terminal.portfolio.brokers.coinbase.coinbase_view.display_history",
-    },
-    "portfolio.bro.coinbase.account": {
-        "model": "openbb_terminal.portfolio.brokers.coinbase.coinbase_model.get_accounts",
-        "view": "openbb_terminal.portfolio.brokers.coinbase.coinbase_view.display_account",
-    },
-    "portfolio.bro.coinbase.deposits": {
-        "model": "openbb_terminal.portfolio.brokers.coinbase.coinbase_model.get_deposits",
-        "view": "openbb_terminal.portfolio.brokers.coinbase.coinbase_view.display_deposits",
-    },
-    "portfolio.bro.coinbase.orders": {
-        "model": "openbb_terminal.portfolio.brokers.coinbase.coinbase_model.get_orders",
-        "view": "openbb_terminal.portfolio.brokers.coinbase.coinbase_view.display_orders",
-    },
-    "portfolio.bro.rh.historical": {
-        "model": "openbb_terminal.portfolio.brokers.robinhood.robinhood_model.get_historical",
-        "view": "openbb_terminal.portfolio.brokers.robinhood.robinhood_view.display_historical",
-    },
-    "portfolio.bro.rh.holdings": {
-        "model": "openbb_terminal.portfolio.brokers.robinhood.robinhood_model.get_holdings",
-        "view": "openbb_terminal.portfolio.brokers.robinhood.robinhood_view.display_holdings",
-    },
-    "portfolio.pa.group_holdings": {
-        "view": "openbb_terminal.portfolio.portfolio_analysis.portfolio_view.display_group_holdings"
-    },
-    "portfolio.max_drawdown": {
-        "model": "openbb_terminal.portfolio.portfolio_model.calculate_drawdown",
-        "view": "openbb_terminal.portfolio.portfolio_view.display_maximum_drawdown",
-    },
-    "portfolio.roll_sharpe": {
-        "model": "openbb_terminal.portfolio.portfolio_model.rolling_sharpe",
-        "view": "openbb_terminal.portfolio.portfolio_view.display_rolling_sharpe",
-    },
-    "portfolio.roll_sortino": {
-        "model": "openbb_terminal.portfolio.portfolio_model.rolling_sortino",
-        "view": "openbb_terminal.portfolio.portfolio_view.display_rolling_sortino",
-    },
-    "portfolio.roll_volatility": {
-        "model": "openbb_terminal.portfolio.portfolio_model.rolling_volatility",
-        "view": "openbb_terminal.portfolio.portfolio_view.display_rolling_volatility",
-    },
-    "portfolio.orderbook": {
-        "model": "openbb_terminal.portfolio.portfolio_model.PortfolioModel.get_orderbook",
-        "view": "openbb_terminal.portfolio.portfolio_view.display_orderbook",
-    },
-    "portfolio.readorderbook": {
-        "model": "openbb_terminal.portfolio.portfolio_model.PortfolioModel.read_orderbook"
-    },
-    "portfolio.load_bench": {
-        "model": "openbb_terminal.portfolio.portfolio_model.PortfolioModel.load_benchmark"
-    },
-    "portfolio.r2": {
-        "model": "openbb_terminal.portfolio.portfolio_model.PortfolioModel.get_r2_score",
-        "view": "openbb_terminal.portfolio.portfolio_view.display_rsquare",
-    },
-    "portfolio.skewness": {
-        "model": "openbb_terminal.portfolio.portfolio_model.PortfolioModel.get_skewness",
-        "view": "openbb_terminal.portfolio.portfolio_view.display_skewness",
-    },
-    "portfolio.kurtosis": {
-        "model": "openbb_terminal.portfolio.portfolio_model.PortfolioModel.get_kurtosis",
-        "view": "openbb_terminal.portfolio.portfolio_view.display_kurtosis",
-    },
-    "portfolio.stats": {
-        "model": "openbb_terminal.portfolio.portfolio_model.PortfolioModel.get_stats",
-        "view": "openbb_terminal.portfolio.portfolio_view.display_stats",
-    },
-    "portfolio.volatility": {
-        "model": "openbb_terminal.portfolio.portfolio_model.PortfolioModel.get_volatility",
-        "view": "openbb_terminal.portfolio.portfolio_view.display_volatility",
-    },
-    "portfolio.sharpe_ratio": {
-        "model": "openbb_terminal.portfolio.portfolio_model.PortfolioModel.get_sharpe_ratio",
-        "view": "openbb_terminal.portfolio.portfolio_view.display_sharpe_ratio",
-    },
-    "portfolio.sortino_ratio": {
-        "model": "openbb_terminal.portfolio.portfolio_model.PortfolioModel.get_sortino_ratio",
-        "view": "openbb_terminal.portfolio.portfolio_view.display_sortino_ratio",
-    },
-    "portfolio.max_drawdown_ratio": {
-        "model": "openbb_terminal.portfolio.portfolio_model.PortfolioModel.get_maximum_drawdown_ratio",
-        "view": "openbb_terminal.portfolio.portfolio_view.display_maximum_drawdown_ratio",
-    },
-    "portfolio.gtp_ratio": {
-        "model": "openbb_terminal.portfolio.portfolio_model.PortfolioModel.get_gaintopain_ratio",
-        "view": "openbb_terminal.portfolio.portfolio_view.display_gaintopain_ratio",
-    },
-    "portfolio.roll_beta": {
-        "model": "openbb_terminal.portfolio.portfolio_model.PortfolioModel.get_rolling_beta",
-        "view": "openbb_terminal.portfolio.portfolio_view.display_rolling_beta",
-    },
-    "portfolio.tracking_error": {
-        "model": "openbb_terminal.portfolio.portfolio_model.PortfolioModel.get_tracking_error",
-        "view": "openbb_terminal.portfolio.portfolio_view.display_tracking_error",
-    },
-    "portfolio.info_ratio": {
-        "model": "openbb_terminal.portfolio.portfolio_model.PortfolioModel.get_information_ratio",
-        "view": "openbb_terminal.portfolio.portfolio_view.display_information_ratio",
-    },
-    "portfolio.tail_ratio": {
-        "model": "openbb_terminal.portfolio.portfolio_model.PortfolioModel.get_tail_ratio",
-        "view": "openbb_terminal.portfolio.portfolio_view.display_tail_ratio",
-    },
-    "portfolio.cs_ratio": {
-        "model": "openbb_terminal.portfolio.portfolio_model.PortfolioModel.get_common_sense_ratio",
-        "view": "openbb_terminal.portfolio.portfolio_view.display_common_sense_ratio",
-    },
-    "portfolio.jen_alpha": {
-        "model": "openbb_terminal.portfolio.portfolio_model.PortfolioModel.get_jensens_alpha",
-        "view": "openbb_terminal.portfolio.portfolio_view.display_jensens_alpha",
-    },
-    "portfolio.calmar_ratio": {
-        "model": "openbb_terminal.portfolio.portfolio_model.PortfolioModel.get_calmar_ratio",
-        "view": "openbb_terminal.portfolio.portfolio_view.display_calmar_ratio",
-    },
-    "portfolio.kelly_crit": {
-        "model": "openbb_terminal.portfolio.portfolio_model.PortfolioModel.get_kelly_criterion",
-        "view": "openbb_terminal.portfolio.portfolio_view.display_kelly_criterion",
-    },
-    "portfolio.payoff_ratio": {
-        "model": "openbb_terminal.portfolio.portfolio_model.PortfolioModel.get_payoff_ratio",
-        "view": "openbb_terminal.portfolio.portfolio_view.display_payoff_ratio",
-    },
-    "portfolio.prof_factor": {
-        "model": "openbb_terminal.portfolio.portfolio_model.PortfolioModel.get_profit_factor",
-        "view": "openbb_terminal.portfolio.portfolio_view.display_profit_factor",
-    },
-    "portfolio.po.bl": {
-        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_black_litterman_portfolio",
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_black_litterman",
-    },
-    "portfolio.po.equal": {
-        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_equal_weights",
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_equal_weight",
-    },
-    "portfolio.po.hcp": {
-        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_hcp_portfolio",
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_hcp",
-    },
-    "portfolio.po.max_decorr": {
-        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_max_decorrelation_portfolio",
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_max_decorr",
-    },
-    "portfolio.po.max_div": {
-        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_max_diversification_portfolio",
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_max_div",
-    },
-    "portfolio.po.mean_risk": {
-        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_mean_risk_portfolio",
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_mean_risk",
-    },
-    "portfolio.po.property_weights": {
-        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_property_weights",
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_property_weighting",
-    },
-    "portfolio.po.rel_risk": {
-        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_rel_risk_parity_portfolio",
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_rel_risk_parity",
-    },
-    "portfolio.po.risk": {
-        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_risk_parity_portfolio",
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_risk_parity",
-    },
-    "portfolio.po.categories": {
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_categories"
-    },
-    "portfolio.po.categories_sa": {
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_categories_sa"
-    },
-    "portfolio.po.ef": {
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_ef"
-    },
-    "portfolio.po.herc": {
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_herc"
-    },
-    "portfolio.po.hrp": {
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_hrp"
-    },
-    "portfolio.po.max_ret": {
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_max_ret"
-    },
-    "portfolio.po.max_sharpe": {
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_max_sharpe"
-    },
-    "portfolio.po.max_util": {
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_max_util"
-    },
-    "portfolio.po.min_risk": {
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_min_risk"
-    },
-    "portfolio.nco": {
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_nco"
-    },
-    "portfolio.po.weights": {
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_weights"
-    },
-    "portfolio.po.weigths_sa": {
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_weights_sa"
-    },
-    "portfolio.po.perf": {
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.portfolio_performance"
-    },
-    "portfolio.assets_alloc": {
-        "view": "openbb_terminal.portfolio.portfolio_view.display_assets_allocation"
-    },
-    "portfolio.category_alloc": {
-        "view": "openbb_terminal.portfolio.portfolio_view.display_category_allocation"
-    },
-    "portfolio.daily_returns": {
-        "view": "openbb_terminal.portfolio.portfolio_view.display_daily_returns"
-    },
-    "portfolio.dist_returns": {
-        "view": "openbb_terminal.portfolio.portfolio_view.display_distribution_returns"
-    },
-    "portfolio.hold_pct": {
-        "view": "openbb_terminal.portfolio.portfolio_view.display_holdings_percentage"
-    },
-    "portfolio.hold_val": {
-        "view": "openbb_terminal.portfolio.portfolio_view.display_holdings_value"
-    },
-    "portfolio.monthly_ret": {
-        "view": "openbb_terminal.portfolio.portfolio_view.display_monthly_returns"
-    },
-    "portfolio.perf": {
-        "view": "openbb_terminal.portfolio.portfolio_view.display_performance_vs_benchmark"
-    },
-    "portfolio.summary": {
-        "view": "openbb_terminal.portfolio.portfolio_view.display_summary_portfolio_benchmark"
-    },
-    "portfolio.yearly_ret": {
-        "view": "openbb_terminal.portfolio.portfolio_view.display_yearly_returns"
-    },
-    "portfolio.load_info": {
-        "view": "openbb_terminal.portfolio.portfolio_view.load_info"
     },
     "stocks.bt.ema_cross": {
         "model": "openbb_terminal.stocks.backtesting.bt_model.ema_cross_strategy",
@@ -1946,10 +1622,6 @@ functions = {
         "model": "openbb_terminal.stocks.tradinghours.bursa_model.get_all",
         "view": "openbb_terminal.stocks.tradinghours.bursa_view.display_all",
     },
-    "stocks.th.exchange": {
-        "model": "openbb_terminal.stocks.tradinghours.bursa_model.get_bursa",
-        "view": "openbb_terminal.stocks.tradinghours.bursa_view.display_exchange",
-    },
     "stocks.th.closed": {
         "model": "openbb_terminal.stocks.tradinghours.bursa_model.get_closed",
         "view": "openbb_terminal.stocks.tradinghours.bursa_view.display_closed",
@@ -1957,6 +1629,10 @@ functions = {
     "stocks.th.open": {
         "model": "openbb_terminal.stocks.tradinghours.bursa_model.get_open",
         "view": "openbb_terminal.stocks.tradinghours.bursa_view.display_open",
+    },
+    "stocks.th.exchange": {
+        "model": "openbb_terminal.stocks.tradinghours.bursa_model.get_bursa",
+        "view": "openbb_terminal.stocks.tradinghours.bursa_view.display_exchange",
     },
     "stocks.load": {"model": "openbb_terminal.stocks.stocks_helper.load"},
     "stocks.process_candle": {
