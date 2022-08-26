@@ -440,7 +440,8 @@ def display_fundamentals(
         fundamentals_plot_data = fundamentals_plot_data.replace(",", "", regex=True)
         fundamentals_plot_data = fundamentals_plot_data.replace("-", "-1")
         fundamentals_plot_data = fundamentals_plot_data.astype(float)
-        fundamentals_plot_data = fundamentals_plot_data.drop(["ttm"])
+        if "ttm" in list(fundamentals_plot_data.index):
+            fundamentals_plot_data = fundamentals_plot_data.drop(["ttm"])
         fundamentals_plot_data = fundamentals_plot_data.sort_index()
 
         if not ratios:
