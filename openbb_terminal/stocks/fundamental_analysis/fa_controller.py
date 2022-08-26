@@ -819,8 +819,10 @@ class FundamentalAnalysisController(StockBaseController):
         if ns_parser:
             # TODO: Switch to actually getting data
             if ns_parser.source == "yf" and ns_parser.b_quarter:
-                text = "Quarterly data currently unavailable for yfinance"
-                console.print(f"[red]{text}, showing yearly.[/red]\n")
+                console.print(
+                    "[red]Quarterly data currently unavailable for yfinance"
+                    ", showing yearly.[/red]\n"
+                )
             if ns_parser.source == "av":
                 av_view.display_income_statement(
                     symbol=self.ticker,
