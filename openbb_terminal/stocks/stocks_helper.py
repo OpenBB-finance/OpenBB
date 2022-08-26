@@ -938,12 +938,20 @@ def load(
 
 def display_candle(
     symbol: str,
-    data: pd.DataFrame,
+    data: pd.DataFrame = None,
     use_matplotlib: bool = True,
     intraday: bool = False,
     add_trend: bool = False,
     ma: Optional[Iterable[int]] = None,
-    asset_type: str = "Stock",
+    asset_type: str = "",
+    start_date: datetime = (datetime.now() - timedelta(days=1100)),
+    interval: int = 1440,
+    end_date: datetime = datetime.now(),
+    prepost: bool = False,
+    source: str = "yf",
+    iexrange: str = "ytd",
+    weekly: bool = False,
+    monthly: bool = False,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Shows candle plot of loaded ticker. [Source: Yahoo Finance, IEX Cloud or Alpha Vantage]
@@ -968,7 +976,37 @@ def display_candle(
         External axes (2 axes are expected in the list), by default None
     asset_type_: str
         String to include in title
+    start_date: datetime
+        Start date to get data from with
+    interval: int
+        Interval (in minutes) to get data 1, 5, 15, 30, 60 or 1440
+    end_date: datetime
+        End date to get data from with
+    prepost: bool
+        Pre and After hours data
+    source: str
+        Source of data extracted
+    iexrange: str
+        Timeframe to get IEX data.
+    weekly: bool
+        Flag to get weekly data
+    monthly: bool
+        Flag to get monthly data
     """
+
+    if data is None:
+        data = load(
+            symbol,
+            start_date,
+            interval,
+            end_date,
+            prepost,
+            source,
+            iexrange,
+            weekly,
+            monthly,
+        )
+
     if add_trend:
         if (data.index[1] - data.index[0]).total_seconds() >= 86400:
             data = find_trendline(data, "OC_High", "high")
