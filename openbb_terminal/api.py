@@ -1636,6 +1636,7 @@ functions = {
         "view": "openbb_terminal.stocks.tradinghours.bursa_view.display_exchange",
     },
     "stocks.load": {"model": "openbb_terminal.stocks.stocks_helper.load"},
+    "etf.load": {"model": "openbb_terminal.stocks.stocks_helper.load"},
     "stocks.process_candle": {
         "model": "openbb_terminal.stocks.stocks_helper.process_candle"
     },
