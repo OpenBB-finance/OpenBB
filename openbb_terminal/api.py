@@ -140,6 +140,7 @@ functions = {
     },
     "common.news": {
         "model": "openbb_terminal.common.feedparser_model.get_news",
+        "view": "openbb_terminal.common.feedparser_view.display_news",
     },
     "common.qa.bw": {
         "model": "openbb_terminal.common.quantitative_analysis.qa_view.display_bw",
