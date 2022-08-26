@@ -6,7 +6,7 @@ import pandas as pd
 
 
 def get_news(
-    term: str,
+    term: str = "",
     sources: str = "bloomberg.com",
 ) -> pd.DataFrame:
     """Get news for a given term and source. [Source: Feedparser]
