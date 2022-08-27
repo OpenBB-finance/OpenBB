@@ -232,7 +232,6 @@ INDICES = {
     "tw_twii": {"name": "TSEC Weighted Index (TWD)", "ticker": "^TWII"},
     "tw_tpai": {"name": "TSEC Paper and Pulp Subindex (TWD)", "ticker": "^TPAI"},
     "hk_hsi": {"name": "Hang Seng Index (HKD)", "ticker": "^HSI"},
-    "hk_hko": {"name": "NYSE ARCA Hong Kong Options Index (USD)", "ticker": "^HKO"},
     "hk_utilities": {
         "name": "Hang Seng Utilities Sector Index (HKD)",
         "ticker": "^HSNU",
