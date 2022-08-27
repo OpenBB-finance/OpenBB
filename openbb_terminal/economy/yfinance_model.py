@@ -133,7 +133,7 @@ INDICES = {
         "name": "S&P/ASX 20 Index (AUD)",
         "ticker": "^ATLI",
     },
-        "au_asx50": {
+    "au_asx50": {
         "name": "S&P/ASX 50 Index (AUD)",
         "ticker": "^AFLI",
     },
@@ -182,11 +182,20 @@ INDICES = {
         "name": "S&P/ASX 200 Health Care Sector Index (AUD)",
         "ticker": "^AXHJ",
     },
-    "au_financials": {"name": "S&P/ASX 200 Financials Sector Index (AUD)", "ticker": "^AXFJ"},
+    "au_financials": {
+        "name": "S&P/ASX 200 Financials Sector Index (AUD)",
+        "ticker": "^AXFJ",
+    },
     "au_reit": {"name": "S&P/ASX 200 A-REIT Industry Index (AUD)", "ticker": "^AXPJ"},
-    "au_tech": {"name": "S&P/ASX 200 Info Tech Sector Index (AUD)","ticker": "^AXIJ"},
-    "au_communications": {"name": "S&P/ASX 200 Communications Sector Index (AUD)", "ticker": "^AXTJ"},
-    "au_utilities": {"name": "S&P/ASX 200 Utilities Sector Index (AUD)", "ticker": "^AXUJ"},
+    "au_tech": {"name": "S&P/ASX 200 Info Tech Sector Index (AUD)", "ticker": "^AXIJ"},
+    "au_communications": {
+        "name": "S&P/ASX 200 Communications Sector Index (AUD)",
+        "ticker": "^AXTJ",
+    },
+    "au_utilities": {
+        "name": "S&P/ASX 200 Utilities Sector Index (AUD)",
+        "ticker": "^AXUJ",
+    },
     "nz50": {"name": "S&P New Zealand 50 Index (NZD)", "ticker": "^nz50"},
     "nz_small": {"name": "S&P/NZX Small Cap Index (NZD)", "ticker": "^NZSC"},
     "kr_kospi": {"name": "KOSPI Composite Index (KRW)", "ticker": "^KS11"},
@@ -224,13 +233,25 @@ INDICES = {
     "tw_tpai": {"name": "TSEC Paper and Pulp Subindex (TWD)", "ticker": "^TPAI"},
     "hk_hsi": {"name": "Hang Seng Index (HKD)", "ticker": "^HSI"},
     "hk_hko": {"name": "NYSE ARCA Hong Kong Options Index (USD)", "ticker": "^HKO"},
-    "hk_utilities": {"name": "Hang Seng Utilities Sector Index (HKD)", "ticker": "^HSNU"},
-    "hk_china": {"name": "Hang Seng China-Affiliated Corporations Index (HKD)", "ticker": "^HSCC"},
+    "hk_utilities": {
+        "name": "Hang Seng Utilities Sector Index (HKD)",
+        "ticker": "^HSNU",
+    },
+    "hk_china": {
+        "name": "Hang Seng China-Affiliated Corporations Index (HKD)",
+        "ticker": "^HSCC",
+    },
     "hk_finance": {"name": "Hang Seng Finance Sector Index (HKD)", "ticker": "^HSNF"},
-    "hk_properties": {"name": "Hang Seng Properties Sector Index (HKD)", "ticker": "^HSNP"},
+    "hk_properties": {
+        "name": "Hang Seng Properties Sector Index (HKD)",
+        "ticker": "^HSNP",
+    },
     "hk_hko": {"name": "NYSE ARCA Hong Kong Options Index (USD)", "ticker": "^HKO"},
     "id_jkse": {"name": "Jakarta Composite Index (IDR)", "ticker": "^JKSE"},
-    "id_lq45": {"name": "Indonesia Stock Exchange LQ45 Index (IDR)", "ticker": "^JKLQ45"},
+    "id_lq45": {
+        "name": "Indonesia Stock Exchange LQ45 Index (IDR)",
+        "ticker": "^JKLQ45",
+    },
     "my_klci": {"name": "FTSE Kuala Lumpur Composite Index (MYR)", "ticker": "^KLSE"},
     "ph_psei": {"name": "Philippine Stock Exchange Index (PHP)", "ticker": "PSEI.PS"},
     "sg_sti": {"name": "STI Singapore Index (SGD)", "ticker": "^STI"},
