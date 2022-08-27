@@ -462,7 +462,7 @@ class QaController(CryptoBaseController):
             help="Window length",
         )
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWEDw
         )
         if ns_parser:
             rolling_view.display_mean_std(
