@@ -499,15 +499,39 @@ class TerminalController(BaseController):
                         for raw_line in raw_lines
                         if raw_line.strip("\n")
                     ]
-                    if ns_parser_exe.routine_args:
-                        lines = list()
-                        for rawline in raw_lines:
-                            templine = rawline
-                            for i, arg in enumerate(ns_parser_exe.routine_args):
-                                templine = templine.replace(f"$ARGV[{i}]", arg)
+
+                    lines = list()
+                    for rawline in raw_lines:
+                        templine = rawline
+
+                        # Check if dynamic parameter exists in script
+                        if "$ARGV" in rawline:
+                            # Check if user has provided inputs through -i or --input
+                            if ns_parser_exe.routine_args:
+                                for i, arg in enumerate(ns_parser_exe.routine_args):
+                                    # Check what is the location of the ARGV to be replaced
+                                    if f"$ARGV[{i}]" in templine:
+                                        templine = templine.replace(f"$ARGV[{i}]", arg)
+
+                                # Check if all ARGV have been removed, otherwise means that there are less inputs
+                                # when running the script than the script expects
+                                if "$ARGV" in templine:
+                                    console.print(
+                                        "[red]Not enough inputs were provided to fill in dynamic variables. "
+                                        "E.g. --input VAR1,VAR2,VAR3[/red]\n"
+                                    )
+                                    return
+
+                                lines.append(templine)
+                            # The script expects a parameter that the user has not provided
+                            else:
+                                console.print(
+                                    "[red]The script expects parameters, "
+                                    "run the script again with --input defined.[/red]\n"
+                                )
+                                return
+                        else:
                             lines.append(templine)
-                    else:
-                        lines = raw_lines
 
                     simulate_argv = f"/{'/'.join([line.rstrip() for line in lines])}"
                     file_cmds = simulate_argv.replace("//", "/home/").split()
