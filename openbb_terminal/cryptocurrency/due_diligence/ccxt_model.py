@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 from typing import Dict
 import ccxt
 import pandas as pd
+from openbb_terminal.cryptocurrency.dataframe_helpers import prettify_column_names
 
 
 def get_exchanges():
@@ -21,7 +22,7 @@ def get_exchanges():
     return ccxt.exchanges
 
 
-def get_orderbook(exchange_id: str, coin: str, vs: str) -> Dict:
+def get_orderbook(exchange_id: str, symbol: str, vs: str) -> Dict:
     """Returns orderbook for a coin in a given exchange
     [Source: https://docs.ccxt.com/en/latest/manual.html]
 
@@ -29,7 +30,7 @@ def get_orderbook(exchange_id: str, coin: str, vs: str) -> Dict:
     ----------
     exchange_id : str
         exchange id
-    coin : str
+    symbol : str
         coin symbol
     vs : str
         currency to compare coin against
@@ -40,11 +41,11 @@ def get_orderbook(exchange_id: str, coin: str, vs: str) -> Dict:
     """
     exchange_class = getattr(ccxt, exchange_id)
     exchange = exchange_class()
-    ob = exchange.fetch_order_book(f"{coin.upper()}/{vs.upper()}")
+    ob = exchange.fetch_order_book(f"{symbol.upper()}/{vs.upper()}")
     return ob
 
 
-def get_trades(exchange_id: str, coin: str, vs: str) -> pd.DataFrame:
+def get_trades(exchange_id: str, symbol: str, vs: str) -> pd.DataFrame:
     """Returns trades for a coin in a given exchange
     [Source: https://docs.ccxt.com/en/latest/manual.html]
 
@@ -52,7 +53,7 @@ def get_trades(exchange_id: str, coin: str, vs: str) -> pd.DataFrame:
     ----------
     exchange_id : str
         exchange id
-    coin : str
+    symbol : str
         coin symbol
     vs : str
         currency to compare coin against
@@ -64,7 +65,9 @@ def get_trades(exchange_id: str, coin: str, vs: str) -> pd.DataFrame:
     """
     exchange_class = getattr(ccxt, exchange_id)
     exchange = exchange_class()
-    trades = exchange.fetch_trades(f"{coin.upper()}/{vs.upper()}")
+    trades = exchange.fetch_trades(f"{symbol.upper()}/{vs.upper()}")
     df = pd.DataFrame(trades, columns=["datetime", "price", "amount", "cost", "side"])
     df["datetime"] = pd.to_datetime(df["datetime"])
+    df.rename(columns={"datetime": "date"}, inplace=True)
+    df.columns = prettify_column_names(df.columns)
     return df

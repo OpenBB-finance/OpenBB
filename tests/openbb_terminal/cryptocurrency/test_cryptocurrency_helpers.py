@@ -59,7 +59,7 @@ def test_create_closet_match_df(recorder):
     ],
 )
 def test_load_none(coin, vs):
-    df = load(symbol_search=coin, vs=vs)
+    df = load(symbol=coin, vs_currency=vs)
     assert df is not None
 
 
@@ -77,7 +77,7 @@ def fixture_get_bitcoin(mocker):
     ) as f:
         sample_return = json.load(f)
     mock_load.return_value = sample_return
-    df = load("BTC", vs="usd")
+    df = load("BTC", vs_currency="usd", source="yf")
     return df
 
 

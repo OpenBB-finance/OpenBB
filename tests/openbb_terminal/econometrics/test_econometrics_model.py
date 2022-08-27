@@ -281,7 +281,7 @@ def test_get_root(recorder, df, fuller_reg, kpss_reg):
 )
 def test_get_granger_causality(recorder, time_series_y, time_series_x, lags):
     result = econometrics_model.get_granger_causality(
-        time_series_y=time_series_y, time_series_x=time_series_x, lags=lags
+        dependent_series=time_series_y, independent_series=time_series_x, lags=lags
     )
 
     # The first item is taken since the second item contains Statsmodels
@@ -317,7 +317,9 @@ def test_get_engle_granger_two_step_cointegration_test(recorder, y, x):
         z,
         adfstat,
         pvalue,
-    ) = econometrics_model.get_engle_granger_two_step_cointegration_test(y=y, x=x)
+    ) = econometrics_model.get_engle_granger_two_step_cointegration_test(
+        dependent_series=y, independent_series=x
+    )
 
     result = pd.DataFrame([c, gamma, alpha, adfstat, pvalue])
 

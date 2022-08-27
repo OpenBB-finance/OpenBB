@@ -25,6 +25,7 @@ from statsmodels.stats.stattools import durbin_watson
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data
 from openbb_terminal.rich_config import console
+from openbb_terminal.econometrics.econometrics_helpers import get_datasets
 
 logger = logging.getLogger(__name__)
 
@@ -33,7 +34,6 @@ def get_regressions_results(
     regression_type: str,
     regression_variables: List[Tuple],
     data: Dict[str, pd.DataFrame],
-    datasets: Dict[pd.DataFrame, Any],
     entity_effects: bool = False,
     time_effects: bool = False,
 ) -> Tuple[DataFrame, Any, List[Any], Any]:
@@ -48,9 +48,6 @@ def get_regressions_results(
         the dependent variable.
     data : dict
         A dictionary containing the datasets.
-    datasets: dict
-        A dictionary containing the column and dataset names of
-        each column/dataset combination.
     entity_effects: bool
         Whether to apply Fixed Effects on entities.
     time_effects: bool
@@ -61,20 +58,16 @@ def get_regressions_results(
     The dataset used, the dependent variable, the independent variable and
     the regression model.
     """
-    if regression_type == "OLS":
-        return get_ols(regression_variables, data, datasets, False)
-    if regression_type == "POLS":
-        return get_pols(regression_variables, data, datasets)
-    if regression_type == "RE":
-        return get_re(regression_variables, data, datasets)
-    if regression_type == "BOLS":
-        return get_bols(regression_variables, data, datasets)
-    if regression_type == "FE":
-        return get_fe(
-            regression_variables, data, datasets, entity_effects, time_effects
-        )
-    if regression_type == "FDOLS":
-        return get_fdols(regression_variables, data, datasets)
+    regressions = {
+        "OLS": lambda: get_ols(regression_variables, data, False),
+        "POLS": lambda: get_pols(regression_variables, data),
+        "RE": lambda: get_re(regression_variables, data),
+        "BOLS": lambda: get_bols(regression_variables, data),
+        "FE": lambda: get_fe(regression_variables, data, entity_effects, time_effects),
+        "FDOLS": lambda: get_fdols(regression_variables, data),
+    }
+    if regression_type in regressions:
+        return regressions[regression_type]()
 
     return console.print(f"{regression_type} is not an option.")
 
@@ -82,7 +75,6 @@ def get_regressions_results(
 def get_regression_data(
     regression_variables: List[tuple],
     data: Dict[str, pd.DataFrame],
-    datasets: Dict[pd.DataFrame, Any],
     regression_type: str = "",
 ) -> Tuple[DataFrame, Any, List[Any]]:
     """This function creates a DataFrame with the required regression data as
@@ -95,9 +87,6 @@ def get_regression_data(
         the dependent variable.
     data : dict
         A dictionary containing the datasets.
-    datasets: dict
-        A dictionary containing the column and dataset names of
-        each column/dataset combination.
     regression_type: str
         The type of regression that is executed.
 
@@ -107,6 +96,7 @@ def get_regression_data(
     the OLS model.
     """
 
+    datasets = get_datasets(data)
     regression = {}
     independent_variables = []
     dependent_variable = None
@@ -146,7 +136,6 @@ def get_regression_data(
 def get_ols(
     regression_variables: List[Tuple],
     data: Dict[str, pd.DataFrame],
-    datasets: Dict[pd.DataFrame, Any],
     show_regression: bool = True,
     export: str = "",
 ) -> Tuple[DataFrame, Any, List[Any], Any]:
@@ -159,9 +148,6 @@ def get_ols(
         the dependent variable.
     data : dict
         A dictionary containing the datasets.
-    datasets: dict
-        A dictionary containing the column and dataset names of
-        each column/dataset combination.
     show_regression: bool
         Whether to show the regression results table.
     export: str
@@ -172,9 +158,8 @@ def get_ols(
     The dataset used, the dependent variable, the independent variable and
     the OLS model.
     """
-
     regression_df, dependent_variable, independent_variables = get_regression_data(
-        regression_variables, data, datasets, "OLS"
+        regression_variables, data, "OLS"
     )
 
     if regression_df.empty:
@@ -213,7 +198,6 @@ def get_ols(
 def get_pols(
     regression_variables: List[Tuple],
     data: Dict[str, pd.DataFrame],
-    datasets: Dict[pd.DataFrame, Any],
 ) -> Tuple[DataFrame, Any, List[Any], Any]:
     """PooledOLS is just plain OLS that understands that various panel data structures.
     It is useful as a base model. [Source: LinearModels]
@@ -225,9 +209,6 @@ def get_pols(
         the dependent variable.
     data : dict
         A dictionary containing the datasets.
-    datasets: dict
-        A dictionary containing the column and dataset names of
-        each column/dataset combination.
 
     Returns
     -------
@@ -236,7 +217,7 @@ def get_pols(
     """
 
     regression_df, dependent_variable, independent_variables = get_regression_data(
-        regression_variables, data, datasets, "POLS"
+        regression_variables, data, "POLS"
     )
 
     if regression_df.empty:
@@ -259,7 +240,6 @@ def get_pols(
 def get_re(
     regression_variables: List[Tuple],
     data: Dict[str, pd.DataFrame],
-    datasets: Dict[pd.DataFrame, Any],
 ) -> Tuple[DataFrame, Any, List[Any], Any]:
     """The random effects model is virtually identical to the pooled OLS model except that is accounts for the
     structure of the model and so is more efficient. Random effects uses a quasi-demeaning strategy which
@@ -272,9 +252,6 @@ def get_re(
         the dependent variable.
     data : dict
         A dictionary containing the datasets.
-    datasets: dict
-        A dictionary containing the column and dataset names of
-        each column/dataset combination.
 
     Returns
     -------
@@ -283,7 +260,7 @@ def get_re(
     """
 
     regression_df, dependent_variable, independent_variables = get_regression_data(
-        regression_variables, data, datasets, "RE"
+        regression_variables, data, "RE"
     )
 
     if regression_df.empty:
@@ -306,7 +283,6 @@ def get_re(
 def get_bols(
     regression_variables: List[Tuple],
     data: Dict[str, pd.DataFrame],
-    datasets: Dict[pd.DataFrame, Any],
 ) -> Tuple[DataFrame, Any, List[Any], Any]:
     """The between estimator is an alternative, usually less efficient estimator, can can be used to
      estimate model parameters. It is particular simple since it first computes the time averages of
@@ -319,9 +295,6 @@ def get_bols(
         the dependent variable.
     data : dict
         A dictionary containing the datasets.
-    datasets: dict
-        A dictionary containing the column and dataset names of
-        each column/dataset combination.
 
     Returns
     -------
@@ -330,7 +303,7 @@ def get_bols(
     """
 
     regression_df, dependent_variable, independent_variables = get_regression_data(
-        regression_variables, data, datasets, "BOLS"
+        regression_variables, data, "BOLS"
     )
 
     if regression_df.empty:
@@ -353,7 +326,6 @@ def get_bols(
 def get_fe(
     regression_variables: List[Tuple],
     data: Dict[str, pd.DataFrame],
-    datasets: Dict[pd.DataFrame, Any],
     entity_effects: bool = False,
     time_effects: bool = False,
 ) -> Tuple[DataFrame, Any, List[Any], Any]:
@@ -368,9 +340,6 @@ def get_fe(
         the dependent variable.
     data : dict
         A dictionary containing the datasets.
-    datasets: dict
-        A dictionary containing the column and dataset names of
-        each column/dataset combination.
     entity_effects : bool
         Whether to include entity effects
     time_effects : bool
@@ -383,7 +352,7 @@ def get_fe(
     """
 
     regression_df, dependent_variable, independent_variables = get_regression_data(
-        regression_variables, data, datasets, "FE"
+        regression_variables, data, "FE"
     )
 
     if regression_df.empty:
@@ -411,7 +380,6 @@ def get_fe(
 def get_fdols(
     regression_variables: List[Tuple],
     data: Dict[str, pd.DataFrame],
-    datasets: Dict[pd.DataFrame, Any],
 ) -> Tuple[DataFrame, Any, List[Any], Any]:
     """First differencing is an alternative to using fixed effects when there might be correlation.
     When using first differences, time-invariant variables must be excluded. Additionally,
@@ -426,9 +394,6 @@ def get_fdols(
         the dependent variable.
     data : dict
         A dictionary containing the datasets.
-    datasets: dict
-        A dictionary containing the column and dataset names of
-        each column/dataset combination.
 
     Returns
     -------
@@ -437,7 +402,7 @@ def get_fdols(
     """
 
     regression_df, dependent_variable, independent_variables = get_regression_data(
-        regression_variables, data, datasets, "FDOLS"
+        regression_variables, data, "FDOLS"
     )
 
     if regression_df.empty:
@@ -529,7 +494,7 @@ def get_dwat(residual: pd.DataFrame) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_bgod(model: pd.DataFrame, lags: int) -> tuple:
+def get_bgod(model: pd.DataFrame, lags: int = 3) -> tuple:
     """Calculate test statistics for autocorrelation
 
     Parameters

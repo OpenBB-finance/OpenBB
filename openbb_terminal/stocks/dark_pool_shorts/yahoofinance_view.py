@@ -13,17 +13,17 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_most_shorted(num_stocks: int, export: str):
+def display_most_shorted(limit: int = 10, export: str = ""):
     """Display most shorted stocks screener. [Source: Yahoo Finance]
 
     Parameters
     ----------
-    num_stocks: int
+    limit: int
         Number of stocks to display
     export : str
         Export dataframe data to csv,json,xlsx file
     """
-    df = yahoofinance_model.get_most_shorted().head(num_stocks)
+    df = yahoofinance_model.get_most_shorted().head(limit)
     df.dropna(how="all", axis=1, inplace=True)
     df = df.replace(float("NaN"), "")
 

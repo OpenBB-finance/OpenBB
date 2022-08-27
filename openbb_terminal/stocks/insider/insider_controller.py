@@ -270,7 +270,7 @@ class InsiderController(StockBaseController):
         if ns_parser:
             openinsider_view.print_insider_filter(
                 preset_loaded=self.preset,
-                ticker="",
+                symbol="",
                 limit=ns_parser.limit,
                 links=ns_parser.urls,
                 export=ns_parser.export,
@@ -283,7 +283,7 @@ class InsiderController(StockBaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="stats",
-            description="Print open insider filtered data using selected ticker. [Source: OpenInsider]",
+            description="Open insider filtered data using selected ticker. [Source: OpenInsider]",
         )
         parser.add_argument(
             "-l",
@@ -311,7 +311,7 @@ class InsiderController(StockBaseController):
             if self.ticker:
                 openinsider_view.print_insider_filter(
                     preset_loaded="",
-                    ticker=self.ticker,
+                    symbol=self.ticker,
                     limit=ns_parser.limit,
                     links=ns_parser.urls,
                     export=ns_parser.export,
@@ -911,11 +911,11 @@ class InsiderController(StockBaseController):
         if ns_parser:
             if self.ticker:
                 businessinsider_view.insider_activity(
-                    stock=self.stock,
-                    ticker=self.ticker,
-                    start=self.start,
+                    data=self.stock,
+                    symbol=self.ticker,
+                    start_date=self.start,
                     interval=self.interval,
-                    num=ns_parser.limit,
+                    limit=ns_parser.limit,
                     raw=ns_parser.raw,
                     export=ns_parser.export,
                 )
@@ -950,8 +950,8 @@ class InsiderController(StockBaseController):
         if ns_parser:
             if self.ticker:
                 finviz_view.last_insider_activity(
-                    ticker=self.ticker,
-                    num=ns_parser.limit,
+                    symbol=self.ticker,
+                    limit=ns_parser.limit,
                     export=ns_parser.export,
                 )
             else:

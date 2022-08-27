@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def get_defipulse_index() -> pd.DataFrame:
+def get_defipulse_index(sortby: str = "TVL", ascend: bool = False) -> pd.DataFrame:
     """Scrapes data from DeFi Pulse with all DeFi Pulse crypto protocols.
     [Source: https://defipulse.com/]
 
@@ -48,5 +48,6 @@ def get_defipulse_index() -> pd.DataFrame:
         ],
     )
     df["Rank"] = df.index
+    df = df.sort_values(by=sortby, ascending=ascend)
 
     return df

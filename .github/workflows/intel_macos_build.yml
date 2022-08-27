@@ -15,8 +15,6 @@ jobs:
       # Checkout repository main branch. this allows for the commit hashes to line up
       - name: Checkout
         uses: actions/checkout@v2.4.2
-        with:
-          ref: 'main'
       - name: Git Log
         run: git log
       # Install create-dmg
@@ -162,7 +160,7 @@ jobs:
             ls
             cp -R OpenBB\ Terminal ~/Desktop
       - name: Unmount DMG
-        run: hdiutil detach /dev/disk3s2
+        run: hdiutil detach /dev/disk4
       - name: Run Integration Tests
         run: /Users/ec2-user/Desktop/OpenBB\ Terminal/.OpenBB/OpenBBTerminal /Users/ec2-user/actions-runner/_work/OpenBBTerminal/OpenBBTerminal/scripts/*.openbb -t
       - name: Remove OpenBB Folder

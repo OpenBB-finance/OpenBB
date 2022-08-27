@@ -9,7 +9,7 @@ import pandas as pd
 import requests
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import get_user_agent
+from openbb_terminal.helper_funcs import get_user_agent, lambda_long_number_format
 
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -108,6 +108,8 @@ def get_defi_vaults(
     chain: Optional[str] = None,
     protocol: Optional[str] = None,
     kind: Optional[str] = None,
+    ascend: bool = True,
+    sortby: str = "apy",
 ) -> pd.DataFrame:
     """Get DeFi Vaults Information. DeFi Vaults are pools of funds with an assigned strategy which main goal is to
     maximize returns of its crypto assets. [Source: https://coindix.com/]
@@ -148,7 +150,16 @@ def get_defi_vaults(
         data = response.json()["data"]
         if len(data) == 0:
             return pd.DataFrame()
-        return pd.DataFrame(data)[VAULTS_FILTERS]
+        df = pd.DataFrame(data)[VAULTS_FILTERS]
     except Exception as e:
         logger.exception(e)
         raise ValueError(f"Invalid Response: {response.text}") from e
+
+    df = df.sort_values(by=sortby, ascending=ascend).fillna("NA")
+    df["tvl"] = df["tvl"].apply(lambda x: lambda_long_number_format(x))
+    df["apy"] = df["apy"].apply(
+        lambda x: f"{str(round(x * 100, 2))} %" if isinstance(x, (int, float)) else x
+    )
+    df.columns = [x.title() for x in df.columns]
+    df.rename(columns={"Apy": "APY (%)", "Tvl": "TVL ($)"}, inplace=True)
+    return df
