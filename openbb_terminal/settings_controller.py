@@ -476,6 +476,8 @@ class SettingsController(BaseController):
             help="Folder where to export data. 'default' redirects to OpenBB Terminal 'exports'",
             default="default",
         )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "--folder")
         ns_parser = parse_simple_args(parser, other_args)
 
         if ns_parser:
@@ -488,6 +490,8 @@ class SettingsController(BaseController):
 
                 export_path += "/".join([ns_parser.folder] + self.queue)
                 self.queue = []
+
+                export_path = export_path.replace("'", "").replace('"', "")
 
                 base_path = os.path.dirname(os.path.abspath(__file__))
                 default_path = os.path.join(base_path, "exports")
