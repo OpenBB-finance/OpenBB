@@ -519,6 +519,8 @@ class EconomyController(BaseController):
             "currency symbols use '--show countries'",
             default=False,
         )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-p")
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED, raw=True
         )
