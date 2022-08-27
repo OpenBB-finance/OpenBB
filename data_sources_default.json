@@ -39,7 +39,8 @@
         "options": {
             "load": [
                 "yf",
-                "tradier"
+                "tradier",
+                "nasdaq"
             ],
             "hist": [
                 "chartexchange",
@@ -47,19 +48,26 @@
             ],
             "vol": [
                 "yf",
-                "tradier"
+                "tradier",
+                "nasdaq"
             ],
             "voi": [
                 "yf",
-                "tradier"
+                "tradier",
+                "nasdaq"
             ],
             "oi": [
                 "yf",
-                "tradier"
+                "tradier",
+                "nasdaq"
             ],
             "chains": [
                 "yf",
-                "tradier"
+                "tradier",
+                "nasdaq"
+            ],
+            "greeks": [
+                "yf"
             ]
         },
         "disc": {

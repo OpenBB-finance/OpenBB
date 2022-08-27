@@ -1533,7 +1533,7 @@ def show_quick_performance(stock_df: pd.DataFrame, ticker: str):
             str(round(np.mean(volumes[-12:-2]) / 1_000_000, 2)) + " M"
         )
 
-    df["Last Price"] = closes[-1]
+    df["Last Price"] = str(round(closes[-1], 2))
     print_rich_table(
         df, show_index=False, headers=df.columns, title=f"{ticker.upper()} Performance"
     )
@@ -1548,6 +1548,9 @@ def show_codes_polygon(ticker: str):
         Stock ticker
     """
     link = f"https://api.polygon.io/v3/reference/tickers/{ticker.upper()}?apiKey={cfg.API_POLYGON_KEY}"
+    if cfg.API_POLYGON_KEY == "REPLACE_ME":
+        console.print("[red]Polygon API key missing[/red]\n")
+        return
     r = requests.get(link)
     if r.status_code != 200:
         console.print("[red]Error in polygon request[/red]\n")

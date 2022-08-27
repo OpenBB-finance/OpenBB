@@ -1,11 +1,15 @@
 ---
 more:
+  - name: "Go to main website"
+    ref: "https://openbb.co"
+    external: true
+    icon: "gdoc_link"
   - name: "Install the Terminal"
-    ref: "https://www.openbb.co/products/terminal"
+    ref: "https://openbb.co/products/terminal"
     external: true
     icon: "gdoc_download"
   - name: "Fill in the Survey"
-    ref: "https://www.openbb.co/survey"
+    ref: "https://openbb.co/survey"
     external: true
     icon: "gdoc_bookmark"
   - name: "View Source"
