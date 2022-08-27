@@ -23,9 +23,9 @@ def display_price(symbol: str) -> None:
         while True:
             price, confidence, previous_price = asyncio.run(get_price(symbol))
             console.print(
-                f"\n{symbol} = {'[red]' if previous_price >= price else '[green]'}"
+                f"{symbol} = {'[red]' if previous_price >= price else '[green]'}"
                 f"{price}{'[/red]' if previous_price >= price else '[/green]'} ± {confidence}",
                 end="\r",
             )
     except KeyboardInterrupt:
-        print(f"\nStopped watching {symbol} price and confidence interval\n")
+        print(f"\n\nStopped watching {symbol} price and confidence interval\n")
