@@ -746,23 +746,18 @@ def display_distribution_returns(
         xs = kdeline.get_xdata()
         ys = kdeline.get_ydata()
         height = np.interp(mean, xs, ys)
-        ax.vlines(mean, 0, height, color='yellow', ls=':')
-        
+        ax.vlines(mean, 0, height, color="yellow", ls=":")
+
         ax = sns.kdeplot(benchmark_returns.values, label="benchmark")
         kdeline = ax.lines[1]
         mean = benchmark_returns.values.mean()
         xs = kdeline.get_xdata()
         ys = kdeline.get_ydata()
         height = np.interp(mean, xs, ys)
-        ax.vlines(mean, 0, height, color='orange', ls=':')
+        ax.vlines(mean, 0, height, color="orange", ls=":")
 
         theme.style_primary_axis(ax)
         ax.legend()
-
-        portfolio = pd.DataFrame(portfolio_returns.values)
-        benchmark = pd.DataFrame(benchmark_returns.values)
-        df = pd.concat([portfolio, benchmark], axis=1)
-        ax.text(0.2, 0.5, str(df.describe()), color="white")
 
         if not external_axes:
             theme.visualize_output()
