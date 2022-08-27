@@ -152,22 +152,21 @@ clients and I do not provide personalized investment advice for fees or commissi
 Trading in financial instruments involves high risks including the risk of losing some, or all, of your investment
 amount, and may not be suitable for all investors. Before deciding to trade in a financial instrument you should be fully
 informed of the risks and costs associated with trading the financial markets, carefully consider your investment
-objectives, level of experience, and risk appetite, and seek professional advice where needed. The data contained in GST
-is not necessarily accurate. GST and any provider of the data contained in this website will not accept liability for
+objectives, level of experience, and risk appetite, and seek professional advice where needed. The data contained in the OpenBB terminal
+is not necessarily accurate. OpenBB and any provider of the data contained in this website will not accept liability for
 any loss or damage as a result of your trading, or your reliance on the information displayed.
 
 ## Contacts
 
-[Didier Rodrigues Lopes](https://www.linkedin.com/in/didier-lopes/) - dro.lopes@campus.fct.unl.pt
+If you have any questions about the terminal or anything OpenBB, feel free to email us at support@openbb.co
 
-[Artem Veremy](https://www.linkedin.com/in/veremey/) - artem@veremey.net
-
-[James Maslek](https://www.linkedin.com/in/james-maslek-b6810186/) - jmaslek11@gmail.com
+If you want to say hi, or are interested in partnering with us, feel free to reach us at hello@openbb.co
 
 Feel free to share loss porn, memes or any questions at:
 
 - Discord: <https://discord.gg/Up2QGbMKHY>
 - Twitter: [@openbb_finance](https://twitter.com/openbb_finance)
+- Reddit: <https://reddit.com/r/openbb>
 
 ### Contributors
 
