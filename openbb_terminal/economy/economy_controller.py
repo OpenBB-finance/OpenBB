@@ -489,7 +489,7 @@ class EconomyController(BaseController):
             dest="countries",
             help="The country or countries you wish to show data for",
             default=["United_States"],
-        ),
+        )
         parser.add_argument(
             "-t",
             "--transform",
