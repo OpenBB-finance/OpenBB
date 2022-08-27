@@ -38,13 +38,13 @@ warnings.filterwarnings("ignore")
 
 @log_start_end(log=logger)
 def display_exponential_smoothing(
-    ticker: str,
-    values: Union[pd.DataFrame, pd.Series],
+    dataset: str,
+    data: Union[pd.DataFrame, pd.Series],
     n_predict: int,
     trend: str = "N",
     seasonal: str = "N",
     seasonal_periods: int = 7,
-    s_end_date: str = "",
+    end_date: str = "",
     export: str = "",
     time_res: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -53,9 +53,9 @@ def display_exponential_smoothing(
 
     Parameters
     ----------
-    ticker : str
+    dataset : str
         Dataset being smoothed
-    values : Union[pd.DataFrame, pd.Series]
+    data : Union[pd.DataFrame, pd.Series]
         Raw data
     n_predict : int
         Days to predict
@@ -65,7 +65,7 @@ def display_exponential_smoothing(
         Seasonal variable, by default "N"
     seasonal_periods : int, optional
         Number of seasonal periods, by default 5
-    s_end_date : str, optional
+    end_date : str, optional
         End date for backtesting, by default ""
     export : str, optional
         Format to export data, by default ""
@@ -74,14 +74,14 @@ def display_exponential_smoothing(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    if s_end_date:
+    if end_date:
         if not time_res:
             future_index = get_next_stock_market_days(
-                last_stock_day=s_end_date, n_next_days=n_predict
+                last_stock_day=end_date, n_next_days=n_predict
             )
         else:
             future_index = pd.date_range(
-                s_end_date, periods=n_predict + 1, freq=time_res
+                end_date, periods=n_predict + 1, freq=time_res
             )[1:]
 
         if future_index[-1] > datetime.datetime.now():
@@ -91,12 +91,12 @@ def display_exponential_smoothing(
             )
             return
 
-        df_future = values[future_index[0] : future_index[-1]]  # noqa: E203
-        values = values[:s_end_date]  # type: ignore
+        df_future = data[future_index[0] : future_index[-1]]  # noqa: E203
+        data = data[:end_date]  # type: ignore
 
     # Get ETS model
     model, title, forecast = ets_model.get_exponential_smoothing_model(
-        values, trend, seasonal, seasonal_periods, n_predict
+        data, trend, seasonal, seasonal_periods, n_predict
     )
 
     if not forecast:
@@ -109,12 +109,12 @@ def display_exponential_smoothing(
 
     if not time_res:
         l_pred_days = get_next_stock_market_days(
-            last_stock_day=values.index[-1],
+            last_stock_day=data.index[-1],
             n_next_days=n_predict,
         )
     else:
         l_pred_days = pd.date_range(
-            values.index[-1], periods=n_predict + 1, freq=time_res
+            data.index[-1], periods=n_predict + 1, freq=time_res
         )[1:]
 
     df_pred = pd.Series(forecast, index=l_pred_days, name="Price")
@@ -135,52 +135,52 @@ def display_exponential_smoothing(
     if external_axes is None:
         _, ax1 = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
-    elif s_end_date and not is_valid_axes_count(
+    elif end_date and not is_valid_axes_count(
         external_axes,
         3,
-        prefix_text="If there is s_end_date",
+        prefix_text="If there is end_date",
         suffix_text="when backtesting",
     ):
         return
-    elif not s_end_date and not is_valid_axes_count(
+    elif not end_date and not is_valid_axes_count(
         external_axes,
         1,
-        prefix_text="If there is no s_end_date",
+        prefix_text="If there is no end_date",
         suffix_text="when backtesting",
     ):
         return
     else:
         ax1 = external_axes[0]
 
-    ax1.plot(values.index, values.values)
+    ax1.plot(data.index, data.values)
 
     # BACKTESTING
-    if s_end_date:
-        ax1.set_title(f"BACKTESTING: {title} on {ticker}", fontsize=12)
+    if end_date:
+        ax1.set_title(f"BACKTESTING: {title} on {dataset}", fontsize=12)
     else:
-        ax1.set_title(f"{title} on {ticker}", fontsize=12)
+        ax1.set_title(f"{title} on {dataset}", fontsize=12)
 
     ax1.set_xlim(
-        values.index[0],
+        data.index[0],
         get_next_stock_market_days(df_pred.index[-1], 1)[-1],
     )
     ax1.set_ylabel("Value")
     ax1.plot(
-        [values.index[-1], df_pred.index[0]],
-        [values.values[-1], df_pred.values[0]],
+        [data.index[-1], df_pred.index[0]],
+        [data.values[-1], df_pred.values[0]],
         color=theme.down_color,
         linestyle="--",
     )
     ax1.plot(df_pred.index, df_pred, color=theme.down_color)
     ax1.axvspan(
-        values.index[-1],
+        data.index[-1],
         df_pred.index[-1],
         facecolor=theme.down_color,
         alpha=0.2,
     )
     _, _, ymin, ymax = plt.axis()
     ax1.vlines(
-        values.index[-1],
+        data.index[-1],
         ymin,
         ymax,
         linestyle="--",
@@ -188,7 +188,7 @@ def display_exponential_smoothing(
     )
 
     # BACKTESTING
-    if s_end_date:
+    if end_date:
         ax1.plot(
             df_future.index,
             df_future,
@@ -196,9 +196,9 @@ def display_exponential_smoothing(
             linestyle="--",
         )
         ax1.plot(
-            [values.index[-1], df_future.index[0]],
+            [data.index[-1], df_future.index[0]],
             [
-                values.values[-1],
+                data.values[-1],
                 df_future.values[0],
             ],
             color=theme.up_color,
@@ -211,7 +211,7 @@ def display_exponential_smoothing(
         theme.visualize_output()
 
     # BACKTESTING
-    if s_end_date:
+    if end_date:
         # This plot has 3 axes
         if external_axes is None:
             _, axes = plt.subplots(
@@ -236,9 +236,9 @@ def display_exponential_smoothing(
             color=theme.up_color,
         )
         ax2.plot(
-            [values.index[-1], df_future.index[0]],
+            [data.index[-1], df_future.index[0]],
             [
-                values.values[-1],
+                data.values[-1],
                 df_future.values[0],
             ],
             color=theme.up_color,
@@ -246,13 +246,13 @@ def display_exponential_smoothing(
         )
         ax2.scatter(df_pred.index, df_pred)
         ax2.plot(
-            [values.index[-1], df_pred.index[0]],
-            [values.values[-1], df_pred.values[0]],
+            [data.index[-1], df_pred.index[0]],
+            [data.values[-1], df_pred.values[0]],
             linestyle="--",
         )
         ax2.set_title("BACKTESTING: Values")
         ax2.set_xlim(
-            values.index[-1],
+            data.index[-1],
             df_pred.index[-1] + datetime.timedelta(days=1),
         )
         ax2.set_ylabel("Value")
@@ -272,7 +272,7 @@ def display_exponential_smoothing(
         )
         ax3.set_title("BACKTESTING: % Error")
         ax3.plot(
-            [values.index[-1], df_future.index[0]],
+            [data.index[-1], df_future.index[0]],
             [
                 0,
                 100 * (df_pred.values[0] - df_future.values[0]) / df_future.values[0],
@@ -281,7 +281,7 @@ def display_exponential_smoothing(
             color=theme.down_color,
         )
         ax3.set_xlim(
-            values.index[-1],
+            data.index[-1],
             df_pred.index[-1] + datetime.timedelta(days=1),
         )
         ax3.set_ylabel("Prediction Error (%)")
@@ -313,5 +313,5 @@ def display_exponential_smoothing(
 
     else:
         # Print prediction data
-        print_pretty_prediction(df_pred, values.values[-1])
+        print_pretty_prediction(df_pred, data.values[-1])
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "ets")

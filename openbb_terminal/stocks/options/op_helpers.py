@@ -1,8 +1,9 @@
 """Option helper functions"""
 __docformat__ = "numpy"
 
-from math import log, e
+from math import e, log
 from typing import Union
+
 import numpy as np
 import pandas as pd
 from scipy.stats import norm
@@ -127,6 +128,27 @@ opt_chain_cols = {
     "openInterest": {"format": "", "label": "Open Interest"},
     "impliedVolatility": {"format": "{x:.2f}", "label": "Implied Volatility"},
 }
+
+
+# pylint: disable=R0903
+class Chain:
+    def __init__(self, df: pd.DataFrame, source: str = "tradier"):
+        if source == "tradier":
+            self.calls = df[df["option_type"] == "call"]
+            self.puts = df[df["option_type"] == "put"]
+        elif source == "nasdaq":
+            # These guys have different column names
+            call_columns = ["expiryDate", "strike"] + [
+                col for col in df.columns if col.startswith("c_")
+            ]
+            put_columns = ["expiryDate", "strike"] + [
+                col for col in df.columns if col.startswith("p_")
+            ]
+            self.calls = df[call_columns]
+            self.puts = df[put_columns]
+        else:
+            self.calls = None
+            self.puts = None
 
 
 class Option:

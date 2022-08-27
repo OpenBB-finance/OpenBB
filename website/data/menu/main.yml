@@ -320,6 +320,8 @@ main:
                 ref: "/terminal/stocks/res/newsfilter"
               - name: stockanalysis
                 ref: "/terminal/stocks/res/stockanalysis"
+              - name: bullrun
+                ref: "/terminal/stocks/res/bullrun"
           - name: due diligence
             ref: "/terminal/stocks/dd"
             sub:
@@ -344,8 +346,8 @@ main:
           - name: comparison analysis
             ref: "/terminal/stocks/ca"
             sub:
-              - name: add
-                ref: "/terminal/stocks/ca/add"
+              - name: ticker
+                ref: "/terminal/stocks/ca/ticker"
               - name: tsne
                 ref: "/terminal/stocks/ca/tsne"
               - name: getpoly
@@ -426,6 +428,8 @@ main:
                 ref: "/terminal/stocks/options/vsurf"
               - name: portfolio optimization
                 ref: "/terminal/portfolio/po"
+              # - name: portfolio analysis
+              #   ref: "/terminal/portfolio/pa/group"
               - name: parity
                 ref: "/terminal/stocks/options/parity"
               - name: binom
@@ -498,6 +502,8 @@ main:
                 ref: "/terminal/common/ta/macd"
               - name: rsi
                 ref: "/terminal/common/ta/rsi"
+              - name: rsp
+                ref: "/terminal/common/ta/rsp"
               - name: stoch
                 ref: "/terminal/common/ta/stoch"
               - name: fisher
@@ -754,6 +760,8 @@ main:
                 ref: "/terminal/crypto/dd/fundrate"
               - name: oi
                 ref: "/terminal/crypto/dd/oi"
+              - name: liquidations
+                ref: "/terminal/crypto/dd/liquidations"
               - name: ob
                 ref: "/terminal/crypto/dd/ob"
               - name: info
@@ -864,6 +872,10 @@ main:
           - name: nft
             ref: "/terminal/crypto/nft"
             sub:
+              - name: collections
+                ref: "/terminal/crypto/nft/collections"
+              - name: fp
+                ref: "/terminal/crypto/nft/fp"
               - name: today
                 ref: "/terminal/crypto/nft/today"
               - name: upcoming
@@ -981,6 +993,8 @@ main:
             ref: "/terminal/economy/macro"
           - name: fred
             ref: "/terminal/economy/fred"
+          - name: edebt
+            ref: "/terminal/economy/edebt"
           - name: index
             ref: "/terminal/economy/index"
           - name: treasury
@@ -989,8 +1003,8 @@ main:
             ref: "/terminal/economy/yield"
           - name: ycrv
             ref: "/terminal/economy/ycrv"
-          - name: ecocal
-            ref: "/terminal/economy/ecocal"
+          - name: events
+            ref: "/terminal/economy/events"
           - name: plot
             ref: "/terminal/economy/plot"
           - name: rtps
@@ -1231,6 +1245,33 @@ main:
                     ref: "/terminal/portfolio/bro/coinbase/history"
                   - name: orders
                     ref: "/terminal/portfolio/bro/coinbase/orders"
+              - name: degiro
+                ref: "/terminal/portfolio/bro/degiro"
+                sub:
+                  - name: login
+                    ref: "/terminal/portfolio/bro/degiro/login"
+                  - name: logout
+                    ref: "/terminal/portfolio/bro/degiro/logout"
+                  - name: hold
+                    ref: "/terminal/portfolio/bro/degiro/hold"
+                  - name: lookup
+                    ref: "/terminal/portfolio/bro/degiro/lookup"
+                  - name: create
+                    ref: "/terminal/portfolio/bro/degiro/create"
+                  - name: update
+                    ref: "/terminal/portfolio/bro/degiro/update"
+                  - name: cancel
+                    ref: "/terminal/portfolio/bro/degiro/cancel"
+                  - name: pending
+                    ref: "/terminal/portfolio/bro/degiro/pending"
+                  - name: companynews
+                    ref: "/terminal/portfolio/bro/degiro/companynews"
+                  - name: lastnews
+                    ref: "/terminal/portfolio/bro/degiro/lastnews"
+                  - name: topnews
+                    ref: "/terminal/portfolio/bro/degiro/topnews"
+                  - name: paexport
+                    ref: "/terminal/portfolio/bro/degiro/paexport"
               - name: robinhood
                 ref: "/terminal/portfolio/bro/robinhood"
                 sub:
@@ -1650,245 +1691,3 @@ main:
             ref: "/terminal/scripts/exe"
   - name: "OpenBB Python API"
     ref: "/api"
-  - name: "OpenBB Bots"
-    ref: "/bots"
-    sub:
-      - name: "Discord"
-        ref: "/bots/discord"
-        sub:
-          - name: "Price"
-            ref: "/bots/discord/price"
-            sub:
-              - name: "candle"
-                ref: "/bots/discord/price/candle"
-              - name: "quote"
-                ref: "/bots/discord/price/quote"
-              - name: "btc"
-                ref: "/bots/discord/price/btc"
-              - name: "eth"
-                ref: "/bots/discord/price/eth"
-              - name: "sol"
-                ref: "/bots/discord/price/sol"
-          - name: "Options"
-            ref: "/bots/discord/options"
-            sub:
-              - name: "Unusual Options"
-                ref: "/bots/discord/options/unu"
-              - name: "Information"
-                ref: "/bots/discord/options/info"
-              - name: "Volatility Surface"
-                ref: "/bots/discord/options/vsurf"
-              - name: "Open Interest"
-                ref: "/bots/discord/options/oi"
-              - name: "Volume"
-                ref: "/bots/discord/options/vol"
-              - name: "Smile"
-                ref: "/bots/discord/options/smile"
-              - name: "Overview"
-                ref: "/bots/discord/options/overview"
-              - name: "Historical"
-                ref: "/bots/discord/options/hist"
-              - name: "Greeks"
-                ref: "/bots/discord/options/grhist"
-              - name: "Chains"
-                ref: "/bots/discord/options/chain"
-          - name: "Technical Analysis"
-            ref: "/bots/discord/ta"
-            sub:
-              - name: "Summary"
-                ref: "/bots/discord/ta/summary"
-              - name: "View"
-                ref: "/bots/discord/ta/view"
-              - name: "Recommendation"
-                ref: "/bots/discord/ta/recom"
-              - name: "On-Balance Volume"
-                ref: "/bots/discord/ta/obv"
-              - name: "Fibonacci"
-                ref: "/bots/discord/ta/fib"
-              - name: "Advance/Decline Line"
-                ref: "/bots/discord/ta/ad"
-              - name: "Center of Gravity"
-                ref: "/bots/discord/ta/cg"
-              - name: "Fisher"
-                ref: "/bots/discord/ta/fisher"
-              - name: "Commodity Channel Index"
-                ref: "/bots/discord/ta/cci"
-              - name: "Moving Averages"
-                ref: "/bots/discord/ta/ma"
-              - name: "Aroon Indicator"
-                ref: "/bots/discord/ta/aroon"
-              - name: "Accumulation/Distribution Oscillator"
-                ref: "/bots/discord/ta/adosc"
-              - name: "Moving Average Convergence Divergence"
-                ref: "/bots/discord/ta/macd"
-              - name: "Keltner Channel"
-                ref: "/bots/discord/ta/kc"
-              - name: "Average Directional Index"
-                ref: "/bots/discord/ta/adx"
-              - name: "Relative Strength Index"
-                ref: "/bots/discord/ta/rsi"
-              - name: "Stochastic Oscillator"
-                ref: "/bots/discord/ta/stoch"
-              - name: "Bollinger Bands"
-                ref: "/bots/discord/ta/bbands"
-              - name: "Donchian Channels"
-                ref: "/bots/discord/ta/donchian"
-          - name: "Stocks Screener"
-            ref: "/bots/discord/screener"
-            sub:
-              - name: "Default Presets"
-                ref: "/bots/discord/screener/presets_default"
-              - name: "Custom Presets"
-                ref: "/bots/discord/screener/presets_custom"
-              - name: "Overview"
-                ref: "/bots/discord/screener/overview"
-              - name: "Technical"
-                ref: "/bots/discord/screener/technical"
-              - name: "Valuation"
-                ref: "/bots/discord/screener/valuation"
-              - name: "Financial"
-                ref: "/bots/discord/screener/financial"
-              - name: "Ownership"
-                ref: "/bots/discord/screener/ownership"
-              - name: "Performance"
-                ref: "/bots/discord/screener/performance"
-          - name: "Due Diligence"
-            ref: "/bots/discord/dd"
-            sub:
-              - name: "Earnings Estimates"
-                ref: "/bots/discord/dd/est"
-              - name: "SEC Filings"
-                ref: "/bots/discord/dd/sec"
-              - name: "Analyst Ratings"
-                ref: "/bots/discord/dd/analyst"
-              - name: "Company Suppliers"
-                ref: "/bots/discord/dd/supplier"
-              - name: "Company Customers"
-                ref: "/bots/discord/dd/customer"
-              - name: "ARK Portfolio"
-                ref: "/bots/discord/dd/arktrades"
-              - name: "Price Target vs Price"
-                ref: "/bots/discord/dd/pt"
-              - name: "Borrowed"
-                ref: "/bots/discord/dd/borrowed"
-          - name: "Dark Pool & Shorts"
-            ref: "/bots/discord/dps"
-            sub:
-              - name: "High & Short Interest"
-                ref: "/bots/discord/dps/hsi"
-              - name: "Most Shorted"
-                ref: "/bots/discord/dps/shorted"
-              - name: "Price vs Short Interest"
-                ref: "/bots/discord/dps/psi"
-              - name: "Short vs Position"
-                ref: "/bots/discord/dps/spos"
-              - name: "Dark Pools vs OTC"
-                ref: "/bots/discord/dps/dpotc"
-              - name: "Short Position"
-                ref: "/bots/discord/dps/pos"
-              - name: "Short Interest & Days to Cover"
-                ref: "/bots/discord/dps/sidtc"
-              - name: "Failure-to-deliver"
-                ref: "/bots/discord/dps/ftd"
-          - name: "Government Contracts"
-            ref: "/bots/discord/gov"
-            sub:
-              - name: "Top Lobbying"
-                ref: "/bots/discord/gov/toplobbying"
-              - name: "Last Contracts"
-                ref: "/bots/discord/gov/lastcontracts"
-              - name: "Quarterly Contracts"
-                ref: "/bots/discord/gov/qtrcontracts"
-              - name: "Last Trades"
-                ref: "/bots/discord/gov/lasttrades"
-              - name: "Top Buys"
-                ref: "/bots/discord/gov/topbuys"
-              - name: "Top Sells"
-                ref: "/bots/discord/gov/topsells"
-              - name: "Historical (ticker)"
-                ref: "/bots/discord/gov/histcont"
-              - name: "Lobbying (ticker)"
-                ref: "/bots/discord/gov/lobbying"
-              - name: "Contracts (ticker)"
-                ref: "/bots/discord/gov/contracts"
-              - name: "Trades (ticker)"
-                ref: "/bots/discord/gov/gtrades"
-          - name: "Economy"
-            ref: "/bots/discord/econ"
-            sub:
-              - name: "Softs"
-                ref: "/bots/discord/econ/softs"
-              - name: "Meats"
-                ref: "/bots/discord/econ/meats"
-              - name: "Energy"
-                ref: "/bots/discord/econ/energy"
-              - name: "Metals"
-                ref: "/bots/discord/econ/metals"
-              - name: "Grains"
-                ref: "/bots/discord/econ/grains"
-              - name: "Futures"
-                ref: "/bots/discord/econ/futures"
-              - name: "US Bonds"
-                ref: "/bots/discord/econ/usbonds"
-              - name: "Global Bonds"
-                ref: "/bots/discord/econ/glbonds"
-              - name: "Indices"
-                ref: "/bots/discord/econ/indices"
-              - name: "Overview"
-                ref: "/bots/discord/econ/overview"
-              - name: "Consumer Price Index"
-                ref: "/bots/discord/econ/cpi"
-              - name: "Currencies"
-                ref: "/bots/discord/econ/currencies"
-              - name: "Valuation"
-                ref: "/bots/discord/econ/valuation"
-              - name: "Performance"
-                ref: "/bots/discord/econ/performance"
-              - name: "Repo"
-                ref: "/bots/discord/econ/repo"
-          - name: "ETF"
-            ref: "/bots/discord/etf"
-            sub:
-              - name: "Top Movers"
-                ref: "/bots/discord/etf/disc-tops"
-              - name: "Holdings by Ticker"
-                ref: "/bots/discord/etf/holdings_by_ticker"
-              - name: "ETF holdings"
-                ref: "/bots/discord/etf/holdings_by_etf"
-          - name: "Sector & Industry Analysis"
-            ref: "/bots/discord/sia"
-            sub:
-              - name: "Metrics"
-                ref: "/bots/discord/sia/metrics"
-              - name: "Companies per Sector"
-                ref: "/bots/discord/sia/cps"
-              - name: "Companies per Industry"
-                ref: "/bots/discord/sia/cpic"
-          - name: "Stocks Discovery"
-            ref: "/bots/discord/disc"
-            sub:
-              - name: "Fidelity Order Flow"
-                ref: "/bots/discord/disc/fidelity"
-              - name: "Undervalued Growth Stocks"
-                ref: "/bots/discord/disc/ugs"
-              - name: "Top Movers"
-                ref: "/bots/discord/disc/tops"
-          - name: "Miscellaneous"
-            ref: "/bots/discord/misc"
-            sub:
-              - name: "Futures"
-                ref: "/bots/discord/misc/futures"
-              - name: "Earnings Dates"
-                ref: "/bots/discord/misc/earnings"
-              - name: "Insider Trading"
-                ref: "/bots/discord/misc/ins-last"
-              - name: "Moon"
-                ref: "/bots/discord/misc/moon"
-              - name: "Megashill"
-                ref: "/bots/discord/misc/megashill"
-      - name: "Telegram"
-        ref: "/bots/telegram"
-      - name: "Slack"
-        ref: "/bots/slack"
-      - name: "GroupMe"
-        ref: "/bots/groupme"

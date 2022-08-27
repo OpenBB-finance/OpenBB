@@ -16,13 +16,13 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def get_option_history(ticker: str, date: str, call: bool, price: str) -> pd.DataFrame:
+def get_option_history(symbol: str, date: str, call: bool, price: str) -> pd.DataFrame:
     """Historic prices for a specific option [chartexchange]
 
     Parameters
     ----------
-    ticker : str
-        Ticker to get historical data from
+    symbol : str
+        Ticker symbol to get historical data from
     date : str
         Date as a string YYYYMMDD
     call : bool
@@ -36,14 +36,17 @@ def get_option_history(ticker: str, date: str, call: bool, price: str) -> pd.Dat
         Historic information for an option
     """
     url = (
-        f"https://chartexchange.com/symbol/opra-{ticker.lower()}{date.replace('-', '')}"
+        f"https://chartexchange.com/symbol/opra-{symbol.lower()}{date.replace('-', '')}"
     )
     url += f"{'c' if call else 'p'}{float(price):g}/historical/"
 
     data = requests.get(url, headers={"User-Agent": get_user_agent()}).content
     soup = BeautifulSoup(data, "html.parser")
     table = soup.find("div", attrs={"style": "display: table; font-size: 0.9em; "})
-    rows = table.find_all("div", attrs={"style": "display: table-row;"})
+    if table:
+        rows = table.find_all("div", attrs={"style": "display: table-row;"})
+    else:
+        return pd.DataFrame()
     clean_rows = []
 
     if rows:

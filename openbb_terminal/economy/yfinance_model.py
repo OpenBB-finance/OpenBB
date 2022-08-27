@@ -5,6 +5,7 @@ import logging
 
 import pandas as pd
 import yfinance as yf
+import financedatabase as fd
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
@@ -62,7 +63,7 @@ INDICES = {
     "se_omx30": {"name": "OMX Stockholm 30 Index (SEK)", "ticker": "^OMX"},
     "se_omxspi": {"name": "OMX Stockholm All Share PI (SEK)", "ticker": "^OMXSPI"},
     "se_benchmark": {"name": "OMX Stockholm Benchmark GI (SEK)", "ticker": "^OMXSBGI"},
-    "dk_benchmark": {"name": "OMX Copenhagen Benchamrk GI (DKK)", "ticker": "^OMXCBGI"},
+    "dk_benchmark": {"name": "OMX Copenhagen Benchmark GI (DKK)", "ticker": "^OMXCBGI"},
     "dk_omxc25": {"name": "OMX Copenhagen 25 Index (DKK)", "ticker": "^OMXC25"},
     "fi_omxh25": {"name": "OMX Helsinki 25 (EUR)", "ticker": "^OMXH25"},
     "de_dax40": {"name": "DAX Performance Index (EUR)", "ticker": "^GDAXI"},
@@ -540,3 +541,85 @@ def get_index(
         return pd.Series(dtype="float64")
 
     return index_data[column]
+
+
+@log_start_end(log=logger)
+def get_available_indices() -> dict:
+    """Get available indices
+
+    Returns:
+        dict: dictionary with available indices and respective detail
+    """
+    return INDICES
+
+
+@log_start_end(log=logger)
+def get_indices(
+    indices: list,
+    interval: str = "1d",
+    start_date: int = None,
+    end_date: int = None,
+    column: str = "Adj Close",
+    returns: bool = False,
+) -> pd.DataFrame:
+
+    """Get data on selected indices over time [Source: Yahoo Finance]
+    Parameters
+    ----------
+    indices: list
+        A list of indices to get data. Available indices can be accessed through get_available_indices().
+    interval: str
+        Valid intervals: 1m,2m,5m,15m,30m,60m,90m,1h,1d,5d,1wk,1mo,3mo
+        Intraday data cannot extend last 60 days
+    start_date : str
+        The starting date, format "YEAR-MONTH-DAY", i.e. 2010-12-31.
+    end_date : str
+        The end date, format "YEAR-MONTH-DAY", i.e. 2020-06-05.
+    column : str
+        Which column to load in, by default this is the Adjusted Close.
+    returns: bool
+        Flag to show cumulative returns on index
+    Returns
+    ----------
+    pd.Dataframe
+        Dataframe with historical data on selected indices.
+    """
+
+    indices_data: pd.DataFrame = pd.DataFrame()
+
+    for index in indices:
+        indices_data[index] = get_index(index, interval, start_date, end_date, column)
+
+    if returns:
+        indices_data = indices_data.pct_change().dropna()
+        indices_data = indices_data + 1
+        indices_data = indices_data.cumprod()
+
+    return indices_data
+
+
+@log_start_end(log=logger)
+def get_search_indices(keyword: list, limit: int = 10) -> pd.DataFrame:
+    """Search indices by keyword. [Source: FinanceDatabase]
+    Parameters
+    ----------
+    keyword: list
+        The keyword you wish to search for. This can include spaces.
+    limit: int
+        The amount of views you want to show, by default this is set to 10.
+    Returns
+    ----------
+    pd.Dataframe
+        Dataframe with the available options.
+    """
+    keyword_adjusted = " ".join(keyword)
+
+    indices = fd.select_indices()
+
+    queried_indices = pd.DataFrame.from_dict(
+        fd.search_products(indices, keyword_adjusted, "short_name"), orient="index"
+    )
+
+    queried_indices = queried_indices.iloc[:limit]
+
+    return keyword_adjusted, queried_indices

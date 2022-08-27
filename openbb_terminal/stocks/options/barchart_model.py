@@ -14,20 +14,20 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def get_options_info(ticker: str) -> pd.DataFrame:
+def get_options_info(symbol: str) -> pd.DataFrame:
     """Scrape barchart for options info
 
     Parameters
     ----------
-    ticker: str
-        Stock ticker
+    symbol: str
+        Stock ticker symbol
 
     Returns
     -------
     df: pd.DataFrame
         Dataframe of information
     """
-    page = f"https://www.barchart.com/stocks/quotes/{ticker}/overview"
+    page = f"https://www.barchart.com/stocks/quotes/{symbol}/overview"
 
     r = requests.get(page, headers={"User-Agent": get_user_agent()})
     soup = BeautifulSoup(r.text, "html.parser")

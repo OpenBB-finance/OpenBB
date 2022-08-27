@@ -1,0 +1,63 @@
+interactions:
+- request:
+    body: '
+
+      { getMetric(metric: "dev_activity"){ timeseriesData( slug: "ethereum" from:
+      ""2020-02-10T07:00:00Z"" to: "2020-03-10T07:00:00Z" interval: "1w"){ datetime
+      value } } }'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Apikey VALIDKEY
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '166'
+      Content-Type:
+      - application/graphql
+      User-Agent:
+      - python-requests/2.28.1
+    method: POST
+    uri: https://api.santiment.net/graphql
+  response:
+    body:
+      string: '{"errors":{"details":"Apikey ''VALIDKEY'' is malformed - it must have
+        two string parts separated by underscore"}}'
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 7349016d4ecf32bf-CDG
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '111'
+      Date:
+      - Tue, 02 Aug 2022 18:51:33 GMT
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      NEL:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=5Hdkrh%2FvVOltAojpKA7r6Afsa2JjGSXyvWFs2ZmO8sYg5JUe1KQnsrQMienw2Q2t0xuh%2Bz75OaywGgZ6jw9babwGyRjJrEYZ9AiqdDuuQRHq038JYIvzsKSkw3NERNV48378THuo6mlqNg%2BzPKhf"}],"group":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      access-control-allow-credentials:
+      - 'true'
+      access-control-allow-headers:
+      - DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization,X-SharedAccess-Authorization
+      access-control-allow-methods:
+      - GET, POST, OPTIONS
+      set-cookie:
+      - INGRESSCOOKIE=1659466294.415.6206.552324; Path=/.+; Secure; HttpOnly
+      x-request-id:
+      - 324628ad84b63697bb8472f70ad3cd73
+    status:
+      code: 400
+      message: Bad Request
+version: 1

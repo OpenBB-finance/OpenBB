@@ -42,7 +42,11 @@ default_columns = [
 
 @log_start_end(log=logger)
 def get_historical_options(
-    ticker: str, expiry: str, strike: float, put: bool, chain_id: Optional[str]
+    symbol: str,
+    expiry: str,
+    strike: float = 0,
+    put: bool = False,
+    chain_id: Optional[str] = None,
 ) -> pd.DataFrame:
     """
     Gets historical option pricing.  This inputs either ticker, expiration, strike or the OCC chain ID and processes
@@ -50,10 +54,12 @@ def get_historical_options(
 
     Parameters
     ----------
-    ticker: str
-        Stock ticker
+    symbol: str
+        Stock ticker symbol
     expiry: str
         Option expiration date
+    strike: int
+        Option strike price
     put: bool
         Is this a put option?
     chain_id: Optional[str]
@@ -66,7 +72,7 @@ def get_historical_options(
     """
     if not chain_id:
         op_type = ["call", "put"][put]
-        chain = get_option_chains(ticker, expiry)
+        chain = get_option_chains(symbol, expiry)
 
         try:
             symbol = chain[(chain.strike == strike) & (chain.option_type == op_type)][
@@ -108,13 +114,13 @@ def get_historical_options(
 
 
 @log_start_end(log=logger)
-def option_expirations(ticker: str) -> List[str]:
+def option_expirations(symbol: str) -> List[str]:
     """Get available expiration dates for given ticker
 
     Parameters
     ----------
-    ticker: str
-        Ticker to get expirations for
+    symbol: str
+        Ticker symbol to get expirations for
 
     Returns
     -------
@@ -123,7 +129,7 @@ def option_expirations(ticker: str) -> List[str]:
     """
     r = requests.get(
         "https://sandbox.tradier.com/v1/markets/options/expirations",
-        params={"symbol": ticker, "includeAllRoots": "true", "strikes": "false"},
+        params={"symbol": symbol, "includeAllRoots": "true", "strikes": "false"},
         headers={
             "Authorization": f"Bearer {cfg.TRADIER_TOKEN}",
             "Accept": "application/json",
@@ -219,13 +225,13 @@ def process_chains(response: requests.models.Response) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def last_price(ticker: str):
+def last_price(symbol: str):
     """Makes api request for last price
 
     Parameters
     ----------
-    ticker: str
-        Ticker
+    symbol: str
+        Ticker symbol
 
     Returns
     -------
@@ -234,14 +240,17 @@ def last_price(ticker: str):
     """
     r = requests.get(
         "https://sandbox.tradier.com/v1/markets/quotes",
-        params={"symbols": ticker, "includeAllRoots": "true", "strikes": "false"},
+        params={"symbols": symbol, "includeAllRoots": "true", "strikes": "false"},
         headers={
             "Authorization": f"Bearer {cfg.TRADIER_TOKEN}",
             "Accept": "application/json",
         },
     )
     if r.status_code == 200:
-        return float(r.json()["quotes"]["quote"]["last"])
+        last = r.json()["quotes"]["quote"]["last"]
+        if last is None:
+            return 0
+        return float(last)
     else:
         console.print("Error getting last price")
         return None

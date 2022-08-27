@@ -21,19 +21,19 @@ def vcr_config():
     [
         (
             "get_financials",
-            {"ticker": "AAPL", "financial": "balance", "quarterly": True},
+            {"symbol": "AAPL", "statement": "balance", "quarterly": True},
         ),
         (
             "get_financials",
-            {"ticker": "AAPL", "financial": "balance", "quarterly": False},
+            {"symbol": "AAPL", "statement": "balance", "quarterly": False},
         ),
         (
             "get_financials",
-            {"ticker": "AAPL", "financial": "income", "quarterly": True},
+            {"symbol": "AAPL", "statement": "income", "quarterly": True},
         ),
         (
             "get_financials",
-            {"ticker": "AAPL", "financial": "income", "quarterly": False},
+            {"symbol": "AAPL", "statement": "income", "quarterly": False},
         ),
     ],
 )

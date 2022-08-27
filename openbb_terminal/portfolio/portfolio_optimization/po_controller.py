@@ -344,7 +344,6 @@ class PortfolioOptimizationController(BaseController):
             for fn in models:
                 self.choices[fn]["-p"] = {c: None for c in self.PERIOD_CHOICES}
                 self.choices[fn]["--period"] = {c: None for c in self.PERIOD_CHOICES}
-                self.choices[fn]["-f"] = {c: None for c in self.FREQ_CHOICES}
                 self.choices[fn]["--freq"] = {c: None for c in self.FREQ_CHOICES}
                 self.choices[fn]["-mt"] = {c: None for c in self.METHOD_CHOICES}
                 self.choices[fn]["--method"] = {c: None for c in self.METHOD_CHOICES}
@@ -506,8 +505,6 @@ class PortfolioOptimizationController(BaseController):
             help="Parameter file to be used",
         )
 
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-f")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
@@ -652,8 +649,6 @@ class PortfolioOptimizationController(BaseController):
             dest="file",
             help="Allocation file to be used",
         )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-f")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
@@ -740,7 +735,6 @@ class PortfolioOptimizationController(BaseController):
             help="If use logarithmic or arithmetic returns to calculate returns",
         )
         parser.add_argument(
-            "-f",
             "--freq",
             default=self.params["return_frequency"]
             if "return_frequency" in self.params
@@ -1017,7 +1011,6 @@ class PortfolioOptimizationController(BaseController):
             help="If use logarithmic or arithmetic returns to calculate returns",
         )
         parser.add_argument(
-            "-f",
             "--freq",
             default=self.params["return_frequency"]
             if "return_frequency" in self.params
@@ -1213,7 +1206,6 @@ class PortfolioOptimizationController(BaseController):
             help="If use logarithmic or arithmetic returns to calculate returns",
         )
         parser.add_argument(
-            "-f",
             "--freq",
             default=self.params["return_frequency"]
             if "return_frequency" in self.params
@@ -1410,7 +1402,6 @@ class PortfolioOptimizationController(BaseController):
             help="If use logarithmic or arithmetic returns to calculate returns",
         )
         parser.add_argument(
-            "-f",
             "--freq",
             default=self.params["return_frequency"]
             if "return_frequency" in self.params
@@ -1607,7 +1598,6 @@ class PortfolioOptimizationController(BaseController):
             help="If use logarithmic or arithmetic returns to calculate returns",
         )
         parser.add_argument(
-            "-f",
             "--freq",
             default=self.params["return_frequency"]
             if "return_frequency" in self.params
@@ -1813,7 +1803,6 @@ class PortfolioOptimizationController(BaseController):
             help="If use logarithmic or arithmetic returns to calculate returns",
         )
         parser.add_argument(
-            "-f",
             "--freq",
             default=self.params["return_frequency"]
             if "return_frequency" in self.params
@@ -2170,7 +2159,6 @@ class PortfolioOptimizationController(BaseController):
             help="If use logarithmic or arithmetic returns to calculate returns",
         )
         parser.add_argument(
-            "-f",
             "--freq",
             default=self.params["return_frequency"]
             if "return_frequency" in self.params
@@ -2525,7 +2513,6 @@ class PortfolioOptimizationController(BaseController):
             help="If use logarithmic or arithmetic returns to calculate returns",
         )
         parser.add_argument(
-            "-f",
             "--freq",
             default=self.params["return_frequency"]
             if "return_frequency" in self.params
@@ -2894,7 +2881,6 @@ class PortfolioOptimizationController(BaseController):
             help="If use logarithmic or arithmetic returns to calculate returns",
         )
         parser.add_argument(
-            "-f",
             "--freq",
             default=self.params["return_frequency"]
             if "return_frequency" in self.params
@@ -3251,7 +3237,6 @@ class PortfolioOptimizationController(BaseController):
             help="If use logarithmic or arithmetic returns to calculate returns",
         )
         parser.add_argument(
-            "-f",
             "--freq",
             default=self.params["return_frequency"]
             if "return_frequency" in self.params
@@ -3525,7 +3510,6 @@ class PortfolioOptimizationController(BaseController):
             help="If use logarithmic or arithmetic returns to calculate returns",
         )
         parser.add_argument(
-            "-f",
             "--freq",
             default=self.params["return_frequency"]
             if "return_frequency" in self.params
@@ -3799,7 +3783,6 @@ class PortfolioOptimizationController(BaseController):
             help="If use logarithmic or arithmetic returns to calculate returns",
         )
         parser.add_argument(
-            "-f",
             "--freq",
             default=self.params["return_frequency"]
             if "return_frequency" in self.params
@@ -4029,7 +4012,13 @@ class PortfolioOptimizationController(BaseController):
             if len(ns_parser.download) > 0:
                 file = os.path.abspath(
                     os.path.join(
-                        self.DEFAULT_ALLOCATION_PATH, "..", "views", ns_parser.download
+                        self.DEFAULT_ALLOCATION_PATH,
+                        "..",
+                        "..",
+                        "exports",
+                        "portfolio",
+                        "views",
+                        ns_parser.download,
                     )
                 )
                 excel_model.excel_bl_views(file=file, stocks=self.tickers, n=1)
@@ -4200,7 +4189,6 @@ class PortfolioOptimizationController(BaseController):
             help="If use logarithmic or arithmetic returns to calculate returns",
         )
         parser.add_argument(
-            "-f",
             "--freq",
             default=self.params["return_frequency"]
             if "return_frequency" in self.params
@@ -4436,7 +4424,6 @@ class PortfolioOptimizationController(BaseController):
             help="If use logarithmic or arithmetic returns to calculate returns",
         )
         parser.add_argument(
-            "-f",
             "--freq",
             default=self.params["return_frequency"]
             if "return_frequency" in self.params
@@ -4744,7 +4731,6 @@ class PortfolioOptimizationController(BaseController):
             help="If use logarithmic or arithmetic returns to calculate returns",
         )
         parser.add_argument(
-            "-f",
             "--freq",
             default=self.params["return_frequency"]
             if "return_frequency" in self.params
@@ -5031,7 +5017,6 @@ class PortfolioOptimizationController(BaseController):
             help="If use logarithmic or arithmetic returns to calculate returns",
         )
         parser.add_argument(
-            "-f",
             "--freq",
             default=self.params["return_frequency"]
             if "return_frequency" in self.params
@@ -5484,7 +5469,6 @@ class PortfolioOptimizationController(BaseController):
             help="If use logarithmic or arithmetic returns to calculate returns",
         )
         parser.add_argument(
-            "-f",
             "--freq",
             default=self.params["return_frequency"]
             if "return_frequency" in self.params
@@ -5935,7 +5919,6 @@ class PortfolioOptimizationController(BaseController):
             help="If use logarithmic or arithmetic returns to calculate returns",
         )
         parser.add_argument(
-            "-f",
             "--freq",
             default=self.params["return_frequency"]
             if "return_frequency" in self.params

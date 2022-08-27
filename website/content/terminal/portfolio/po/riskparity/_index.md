@@ -1,6 +1,6 @@
 ```
 usage: riskparity [-p HISTORIC_PERIOD] [-s START_PERIOD] [-e END_PERIOD] [-lr]
-                  [-f {d,w,m}] [-mn MAX_NAN] [-th THRESHOLD_VALUE]
+                  [--freq {d,w,m}] [-mn MAX_NAN] [-th THRESHOLD_VALUE]
                   [-mt NAN_FILL_METHOD]
                   [-rm {MV,MAD,MSV,FLPM,SLPM,CVaR,EVaR,CDaR,EDaR,UCI}]
                   [-rc RISK_CONTRIBUTION] [-r RISK_FREE]
@@ -36,7 +36,7 @@ optional arguments:
                         MM-DD' format (default: )
   -lr, --log-returns    If use logarithmic or arithmetic returns to calculate
                         returns (default: False)
-  -f {d,w,m}, --freq {d,w,m}
+  --freq {d,w,m}
                         Frequency used to calculate returns. Possible values
                         are: 'd': for daily returns 'w': for weekly returns
                         'm': for monthly returns (default: d)
@@ -95,7 +95,7 @@ Example:
  [3 Years] Risk parity portfolio based on risk budgeting approach
 using volatility as risk measure
 
-     Weights      
+     Weights
 ┏━━━━━━┳━━━━━━━━━┓
 ┃      ┃ Value   ┃
 ┡━━━━━━╇━━━━━━━━━┩

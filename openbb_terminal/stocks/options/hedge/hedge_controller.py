@@ -11,19 +11,13 @@ from prompt_toolkit.completion import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import (
-    check_non_negative,
-    print_rich_table,
-)
+from openbb_terminal.helper_funcs import check_non_negative, print_rich_table
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import MenuText, console
 from openbb_terminal.stocks.options.hedge import hedge_view
 from openbb_terminal.stocks.options.hedge.hedge_model import add_hedge_option
-from openbb_terminal.stocks.options.yfinance_model import (
-    get_option_chain,
-    get_price,
-)
+from openbb_terminal.stocks.options.yfinance_model import get_option_chain, get_price
 from openbb_terminal.stocks.options.yfinance_view import plot_payoff
 
 # pylint: disable=R0902

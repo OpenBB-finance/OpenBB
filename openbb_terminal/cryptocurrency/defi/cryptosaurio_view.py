@@ -38,7 +38,7 @@ def display_anchor_data(
     address : str
         Terra address. Valid terra addresses start with 'terra'
     show_transactions : bool
-        Flag to show history of transactions in Anchor protocol for address specified. Default False
+        Flag to show history of transactions in Anchor protocol for address. Default False
     export : str
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
@@ -54,9 +54,7 @@ def display_anchor_data(
         (ax,) = external_axes
     else:
         return
-    print("")
-    console.print(stats_str)
-    print("")
+    console.print(f"\n{stats_str}\n")
 
     if show_transactions:
         print_rich_table(

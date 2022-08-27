@@ -20,7 +20,7 @@ def cci(
     high_vals: pd.Series,
     low_vals: pd.Series,
     close_vals: pd.Series,
-    length: int = 14,
+    window: int = 14,
     scalar: float = 0.0015,
 ) -> pd.DataFrame:
     """Commodity channel index
@@ -33,7 +33,7 @@ def cci(
         Low values
     close-values: pd.Series
         Close values
-    length: int
+    window: int
         Length of window
     scalar: float
         Scalar variable
@@ -48,7 +48,7 @@ def cci(
             high=high_vals,
             low=low_vals,
             close=close_vals,
-            length=length,
+            length=window,
             scalar=scalar,
         ).dropna()
     )
@@ -85,7 +85,7 @@ def macd(
 
 @log_start_end(log=logger)
 def rsi(
-    values: pd.Series, length: int = 14, scalar: float = 100, drift: int = 1
+    values: pd.Series, window: int = 14, scalar: float = 100, drift: int = 1
 ) -> pd.DataFrame:
     """Relative strength index
 
@@ -93,7 +93,7 @@ def rsi(
     ----------
     values: pd.Series
         Dataframe of prices
-    length: int
+    window: int
         Length of window
     scalar: float
         Scalar variable
@@ -106,7 +106,7 @@ def rsi(
         Dataframe of technical indicator
     """
     return pd.DataFrame(
-        ta.rsi(values, length=length, scalar=scalar, drift=drift).dropna()
+        ta.rsi(values, length=window, scalar=scalar, drift=drift).dropna()
     )
 
 
@@ -153,7 +153,7 @@ def stoch(
 
 
 @log_start_end(log=logger)
-def fisher(high_vals: pd.Series, low_vals: pd.Series, length: int = 14) -> pd.DataFrame:
+def fisher(high_vals: pd.Series, low_vals: pd.Series, window: int = 14) -> pd.DataFrame:
     """Fisher Transform
 
     Parameters
@@ -162,7 +162,7 @@ def fisher(high_vals: pd.Series, low_vals: pd.Series, length: int = 14) -> pd.Da
         High values
     low_vals: pd.Series
         Low values
-    length: int
+    window: int
         Length for indicator window
     Returns
     ----------
@@ -170,39 +170,39 @@ def fisher(high_vals: pd.Series, low_vals: pd.Series, length: int = 14) -> pd.Da
         Dataframe of technical indicator
     """
     # Daily
-    return pd.DataFrame(ta.fisher(high=high_vals, low=low_vals, length=length).dropna())
+    return pd.DataFrame(ta.fisher(high=high_vals, low=low_vals, length=window).dropna())
 
 
 @log_start_end(log=logger)
-def cg(values: pd.Series, length: int) -> pd.DataFrame:
+def cg(values: pd.Series, window: int) -> pd.DataFrame:
     """Center of gravity
 
     Parameters
     ----------
     values: pd.DataFrame
         Data to use with close being titled values
-    length: int
+    window: int
         Length for indicator window
     Returns
     ----------
     d.DataFrame
         Dataframe of technical indicator
     """
-    return pd.DataFrame(ta.cg(close=values, length=length).dropna())
+    return pd.DataFrame(ta.cg(close=values, length=window).dropna())
 
 
 @log_start_end(log=logger)
 def clenow_momentum(
-    values: pd.Series, length: int = 90
+    values: pd.Series, window: int = 90
 ) -> Tuple[float, float, pd.Series]:
     """Gets the Clenow Volatility Adjusted Momentum.  this is defined as the regression coefficient on log prices
     multiplied by the R^2 value of the regression
 
     Parameters
     ----------
-    values:pd.Series
+    values: pd.Series
         Values to perform regression for
-    length: int
+    window: int
         Length of lookback period
 
     Returns
@@ -214,13 +214,13 @@ def clenow_momentum(
     pd.Series:
         Values for best fit line
     """
-    if len(values) < length:
+    if len(values) < window:
         console.print(
-            f"[red]Calculation asks for at least last {length} days of data[/red]"
+            f"[red]Calculation asks for at least last {window} days of data[/red]"
         )
         return np.nan, np.nan, pd.Series()
 
-    values = values[-length:]
+    values = values[-window:]
 
     y = np.log(values)
     X = np.arange(len(y)).reshape(-1, 1)

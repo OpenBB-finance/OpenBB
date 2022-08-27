@@ -147,7 +147,8 @@ class PortfolioController(BaseController):
         }
 
         choices: dict = {c: {} for c in self.controller_choices}
-        choices["load"] = {c: None for c in self.DATA_HOLDINGS_FILES}
+        choices["load"]["-f"] = {c: None for c in self.DATA_HOLDINGS_FILES}
+        choices["load"]["--file"] = {c: None for c in self.DATA_HOLDINGS_FILES}
         choices["bench"] = {c: None for c in portfolio_helper.BENCHMARK_LIST}
         choices["alloc"] = {c: None for c in self.AGGREGATION_METRICS}
         choices["metric"] = {c: None for c in self.VALID_METRICS}
@@ -315,8 +316,6 @@ class PortfolioController(BaseController):
             dest="risk_free_rate",
             help="Set the risk free rate.",
         )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-f")
 
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
@@ -1085,8 +1084,8 @@ class PortfolioController(BaseController):
                 self.portfolio_name, self.benchmark_name
             ):
                 portfolio_view.display_rolling_beta(
-                    self.portfolio.benchmark_returns,
                     self.portfolio.returns,
+                    self.portfolio.benchmark_returns,
                     period=ns_parser.period,
                     export=ns_parser.export,
                 )
