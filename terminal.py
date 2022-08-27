@@ -46,7 +46,7 @@ from openbb_terminal.terminal_helper import (
 )
 from openbb_terminal.helper_funcs import parse_and_split_input
 
-# pylint: disable=too-many-public-methods,import-outside-toplevel,too-many-branches,no-member
+# pylint: disable=too-many-public-methods,import-outside-toplevel,too-many-branches,no-member,C0302
 
 logger = logging.getLogger(__name__)
 
