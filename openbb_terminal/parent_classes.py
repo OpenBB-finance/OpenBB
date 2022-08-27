@@ -42,6 +42,7 @@ from openbb_terminal.config_terminal import theme
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.terminal_helper import open_openbb_documentation
+from openbb_terminal.core.config import constants
 from openbb_terminal.cryptocurrency import cryptocurrency_helpers
 
 logger = logging.getLogger(__name__)
@@ -823,10 +824,11 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                 # Adding files in the argparse choices, will fail for the .exe even without -f
                 try:
                     if ns_parser.filepath not in os.listdir(
-                        os.path.join("custom_imports", "stocks")
+                        os.path.join(str(constants.CUSTOM_IMPORTS), "stocks")
                     ):
                         console.print(
-                            f"[red]{ns_parser.filepath} not found in custom_imports/stocks/ "
+                            f"[red]{ns_parser.filepath} not found in"
+                            f" {constants.CUSTOM_IMPORTS}/stocks/ "
                             "folder[/red].\n"
                         )
                         return
@@ -836,7 +838,8 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
 
                 df_stock_candidate = stocks_helper.load_custom(
                     os.path.join(
-                        os.path.join("custom_imports", "stocks"), ns_parser.filepath
+                        os.path.join(str(constants.CUSTOM_IMPORTS), "stocks"),
+                        ns_parser.filepath,
                     )
                 )
                 if df_stock_candidate.empty:

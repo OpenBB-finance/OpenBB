@@ -16,6 +16,7 @@ if not ENV_FILE.is_file():
 
 folders = [
     "custom_imports",
+    "custom_imports/stocks"
     "exports",
     "routines",
     "stored",
@@ -38,3 +39,6 @@ for folder in folders:
     full_folder = str(FILE_DIR) + "/" + folder
     if not os.path.exists(full_folder):
         os.mkdir(full_folder)
+
+
+CUSTOM_IMPORTS = Path(str(FILE_DIR) + "/custom_imports")
