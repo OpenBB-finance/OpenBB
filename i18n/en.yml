@@ -485,6 +485,7 @@ en:
   stocks/pred/mc: Monte-Carlo simulations
   crypto/load: load a specific cryptocurrency for analysis
   crypto/find: find coins
+  crypto/price: real-time price and interval of confidence
   crypto/_symbol: Coin
   crypto/_source: Source
   crypto/headlines: crypto sentiment from 15+ major news headlines

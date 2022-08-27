@@ -27,7 +27,6 @@ from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
-    log_and_raise,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import CryptoBaseController
@@ -105,7 +104,7 @@ class CryptoController(CryptoBaseController):
         mt = MenuText("crypto/")
         mt.add_cmd("load")
         mt.add_cmd("find")
-        mt.add_cmd("price")
+        mt.add_cmd("price", "Pyth")
         mt.add_raw("\n")
         mt.add_param("_symbol", self.symbol.upper())
         mt.add_param(
@@ -196,13 +195,11 @@ class CryptoController(CryptoBaseController):
     @log_start_end(log=logger)
     def call_price(self, other_args):
         """Process price command"""
-
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="price",
-            description="""Display chart for loaded coin. You can specify currency vs which you want
-            to show chart and also number of days to get data for.""",
+            description="""Display price and interval of confidence in real-time. [Source: Pyth]""",
         )
         parser.add_argument(
             "-s",
@@ -212,25 +209,20 @@ class CryptoController(CryptoBaseController):
             dest="symbol",
             help="Symbol of coin to load data for, ~100 symbols are available",
         )
-
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-s")
 
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
-            if len(self.queue) == 0:
-                log_and_raise(
-                    argparse.ArgumentTypeError(
-                        f"{ns_parser.repo} is not a valid repo. Valid repo: org/repo"
-                    )
+
+            if ns_parser.symbol in pyth_model.ASSETS.keys():
+                console.print(
+                    "[param]If it takes too long, you can use 'Ctrl + C' to cancel.\n[/param]"
                 )
-            symbol = ns_parser.symbol + "/" + self.queue[0]
-            if symbol in pyth_model.ASSETS.keys():
-                pyth_view.display_price(symbol, export=ns_parser.export)
-                self.queue = self.queue[1:]
+                pyth_view.display_price(ns_parser.symbol)
+            else:
+                console.print("[red]The symbol selected does not exist.[/red]\n")
 
     @log_start_end(log=logger)
     def call_candle(self, other_args):
