@@ -155,14 +155,14 @@ class DarkPoolShortsController(StockBaseController):
         )
 
         if ns_parser:
-            if ns_parser.source == "stocksera":
-                stocksera_view.cost_to_borrow(
-                    self.ticker, limit=ns_parser.number, raw=ns_parser.raw
-                )
-            else:
+            if ns_parser.source == "ibkr":
                 ibkr_view.display_cost_to_borrow(
                     limit=ns_parser.number,
                     export=ns_parser.export,
+                )
+            else:
+                stocksera_view.cost_to_borrow(
+                    self.ticker, limit=ns_parser.number, raw=ns_parser.raw
                 )
 
     @log_start_end(log=logger)

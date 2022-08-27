@@ -3,6 +3,7 @@
 
 Coin: 
 Source: 
+Interval (min): 
 
     headlines          crypto sentiment from 15+ major news headlines                  [FinBrain]
 [unvl]    candle             view a candle chart for a specific cryptocurrency[/unvl]

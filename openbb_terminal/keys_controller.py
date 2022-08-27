@@ -15,6 +15,7 @@ import praw
 import pyEX
 import quandl
 import requests
+import stocksera
 from prawcore.exceptions import ResponseException
 from alpha_vantage.timeseries import TimeSeries
 from coinmarketcapapi import CoinMarketCapAPI, CoinMarketCapAPIError
@@ -72,6 +73,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         "github",
         "messari",
         "santiment",
+        "stocksera",
     ]
     PATH = "/keys/"
     key_dict: Dict = {}
@@ -787,6 +789,27 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         if show_output:
             console.print(self.key_dict["SANTIMENT"] + "\n")
 
+    def check_stocksera_key(self, show_output: bool = False) -> None:
+        """Check Stocksera key"""
+        self.cfg_dict["STOCKSERA"] = "stocksera"
+        if cfg.API_STOCKSERA_KEY == "REPLACE_ME":
+            logger.info("Stocksera key not defined")
+            self.key_dict["STOCKSERA"] = "not defined"
+        else:
+
+            client = stocksera.Client(api_key=cfg.API_STOCKSERA_KEY)
+
+            try:
+                client.borrowed_shares(ticker="AAPL")
+                logger.info("Stocksera key defined, test passed")
+                self.key_dict["STOCKSERA"] = "defined, test passed"
+            except Exception as _:  # noqa: F841
+                logger.warning("Stocksera key defined, test failed")
+                self.key_dict["STOCKSERA"] = "defined, test failed"
+
+        if show_output:
+            console.print(self.key_dict["STOCKSERA"] + "\n")
+
     def check_keys_status(self) -> None:
         """Check keys status"""
         self.check_av_key()
@@ -817,6 +840,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         self.check_github_key()
         self.check_messari_key()
         self.check_santiment_key()
+        self.check_stocksera_key()
 
     def print_help(self):
         """Print help"""
@@ -1860,3 +1884,33 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             dotenv.set_key(self.env_file, "OPENBB_API_SANTIMENT_KEY", ns_parser.key)
             cfg.API_SANTIMENT_KEY = ns_parser.key
             self.check_santiment_key(show_output=True)
+
+    @log_start_end(log=logger)
+    def call_stocksera(self, other_args: List[str]):
+        """Process stocksera command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="stocksera",
+            description="Set Stocksera API key.",
+        )
+        parser.add_argument(
+            "-k",
+            "--key",
+            type=str,
+            dest="key",
+            help="key",
+        )
+        if not other_args:
+            console.print(
+                "For your API Key, visit: https://stocksera.pythonanywhere.com/accounts/developers\n"
+            )
+            return
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-k")
+        ns_parser = parse_simple_args(parser, other_args)
+        if ns_parser:
+            os.environ["OPENBB_API_STOCKSERA_KEY"] = ns_parser.key
+            dotenv.set_key(self.env_file, "OPENBB_API_STOCKSERA_KEY", ns_parser.key)
+            cfg.API_STOCKSERA_KEY = ns_parser.key
+            self.check_stocksera_key(show_output=True)
