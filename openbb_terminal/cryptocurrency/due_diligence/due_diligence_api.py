@@ -46,6 +46,10 @@ from .messari_view import display_investors as inv
 from .messari_view import display_team as team
 from .messari_view import display_governance as gov
 from .messari_view import display_fundraising as fr
+from .tokenterminal_view import (
+    display_fundamental_metric_from_project_over_time as funot,
+    display_description as desc,
+)
 
 
 # Models

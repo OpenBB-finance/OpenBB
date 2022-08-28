@@ -152,7 +152,7 @@ def get_fundamental_metrics(
                 val = project[metric + "_" + timeline]
             else:
                 val = project[metric]
-            if isinstance(val, float) or isinstance(val, int):
+            if isinstance(val, (float, int)):
                 if project["symbol"]:
                     metric_values[f"{project['name']} ({project['symbol']})"] = float(
                         val

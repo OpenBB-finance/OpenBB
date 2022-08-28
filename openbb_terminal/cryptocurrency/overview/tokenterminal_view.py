@@ -1,4 +1,4 @@
-"""Blockchain Center View"""
+"""Token Terminal View"""
 import logging
 import os
 from typing import List, Optional

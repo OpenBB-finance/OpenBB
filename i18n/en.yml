@@ -605,7 +605,7 @@ en:
   crypto/dd/load: load a specific cryptocurrency for analysis
   crypto/dd/_symbol: Coin
   crypto/dd/_source: Source
-  crypto/dd/info: basic information about loaded coin
+  crypto/dd/info: information about loaded coin
   crypto/dd/market: market stats about loaded coin
   crypto/dd/ath: all time high related stats for loaded coin
   crypto/dd/atl: all time low related stats for loaded coin
@@ -614,6 +614,7 @@ en:
   crypto/dd/score: different kind of scores for loaded coin, e.g developer score, sentiment score
   crypto/dd/dev: github, bitbucket coin development statistics
   crypto/dd/bc: links to blockchain explorers for loaded coin
+  crypto/dd/desc: description on project - why, how, what
   crypto/dd/active: active addresses
   crypto/dd/nonzero: addresses with non-zero balances
   crypto/dd/change: 30d change of supply held on exchange wallets
@@ -643,6 +644,7 @@ en:
   crypto/dd/links: links e.g. whitepaper, github, twitter, youtube, reddit, telegram
   crypto/dd/gh: github activity over time
   crypto/dd/news: loaded coin's most recent news
+  crypto/dd/funot: fundamental metric over time
   crypto/ta/_ticker: Coin loaded
   crypto/ta/tv: open interactive chart on
   crypto/ta/_overlap_: Overlap
