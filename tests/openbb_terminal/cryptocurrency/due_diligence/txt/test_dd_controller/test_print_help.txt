@@ -4,7 +4,7 @@ Coin: None
 Source: cg
 
 Overview:
-    info               basic information about loaded coin                                                 [CoinGecko]
+    info               information about loaded coin                                                       [CoinGecko]
     basic              basic information about loaded coin                                                 [CoinPaprika]
     ath                all time high related stats for loaded coin                                         [CoinGecko]
     atl                all time low related stats for loaded coin                                          [CoinGecko]
@@ -13,6 +13,7 @@ Overview:
     gov                governance details                                                                  [Messari]
     stats              coin stats                                                                          [Coinbase]
     bc                 links to blockchain explorers for loaded coin                                       [CoinGecko]
+    desc               description on project - why, how, what                                             [TokenTerminal]
 Market:
     market             market stats about loaded coin                                                      [CoinGecko]
     mkt                all markets for loaded coin                                                         [CoinPaprika]
@@ -31,6 +32,7 @@ Metrics:
     change             30d change of supply held on exchange wallets                                       [Glassnode]
     ps                 price and supply related metrics for loaded coin                                    [CoinPaprika]
     mt                 messari timeseries e.g. twitter followers, circ supply, etc                         [Messari]
+    funot              fundamental metric over time                                                        [TokenTerminal]
 Contributors and Investors:
     team               contributors (individuals and organizations)                                        [Messari]
     inv                investors (individuals and organizations)                                           [Messari]
