@@ -1015,31 +1015,25 @@ class PortfolioModel:
         try:
             console.print(" Preprocessing orderbook: ", end="")
 
-            # Populate fields Sector, Industry and Country
-            if not (
-                {"Sector", "Industry", "Country", "Region", "Fees", "Premium"}.issubset(
-                    set(self.__orderbook.columns)
-                )
-            ):
-                # if fields not in the orderbook add missing
-                if "Sector" not in self.__orderbook.columns:
-                    self.__orderbook["Sector"] = np.nan
-                if "Industry" not in self.__orderbook.columns:
-                    self.__orderbook["Industry"] = np.nan
-                if "Country" not in self.__orderbook.columns:
-                    self.__orderbook["Country"] = np.nan
-                if "Region" not in self.__orderbook.columns:
-                    self.__orderbook["Region"] = np.nan
-                if "Fees" not in self.__orderbook.columns:
-                    self.__orderbook["Fees"] = np.nan
-                if "Premium" not in self.__orderbook.columns:
-                    self.__orderbook["Premium"] = np.nan
+            # if optional fields not in the orderbook add missing
+            optional_fields = [
+                "Sector",
+                "Industry",
+                "Country",
+                "Region",
+                "Fees",
+                "Premium",
+            ]
+            if not set(optional_fields).issubset(set(self.__orderbook.columns)):
+                for field in optional_fields:
+                    if field not in self.__orderbook.columns:
+                        self.__orderbook[field] = np.nan
 
-                self.load_company_data()
-            elif (
+            # if optional fields for stock data has missing datapoints, fill them
+            if (
                 self.__orderbook.loc[
                     self.__orderbook["Type"] == "STOCK",
-                    ["Sector", "Industry", "Country", "Region", "Fees", "Premium"],
+                    optional_fields,
                 ]
                 .isnull()
                 .values.any()
@@ -1112,8 +1106,7 @@ class PortfolioModel:
             self.inception_date = self.__orderbook["Date"][0]
             console.print(".", end="")
 
-        except Exception as e:
-            console.print(e)
+        except Exception:
             console.print("\nCould not preprocess orderbook.")
 
     def load_company_data(self):
