@@ -2178,6 +2178,11 @@ def display_ef(
         ax = external_axes[0]
 
     frontier = pd.concat([frontier, random_weights], axis=1)
+    # to delete stocks with corrupted data
+    frontier.drop(
+        frontier.tail(len(random_weights.index) - len(stock_returns.columns)).index,
+        inplace=True,
+    )
     ax = rp.plot_frontier(
         w_frontier=frontier,
         mu=mu,
