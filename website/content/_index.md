@@ -397,7 +397,7 @@ tweak how the terminal behaves. This includes the following:
 - `dt` adds or removes the datetime from the flair (which is next to the emoji).
 - `flair` allows you to change the emoji that is used.
 - `lang` gives the ability to change the terminal language. At this moment, the terminal is only available in English.
-- `export` defines the folder you wish to export data to you acquire from the terminal.
+- `export` defines the folder you wish to export data you acquire from the terminal. Use quotes for custom locations.
 - `tz` allows you to change the timezone if this is incorrectly displayed for you.
 - `autoscaling` automatically scales plots for you if enabled (when green).
 - `pheight` sets the percentage height of the plot (graphs) displayed (if autoscaling is enabled).
