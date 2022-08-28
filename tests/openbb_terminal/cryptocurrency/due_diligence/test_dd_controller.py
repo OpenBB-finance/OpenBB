@@ -449,6 +449,20 @@ def test_call_func_expect_queue(expected_queue, func, queue, mocker):
             [],
             dict(),
         ),
+        (
+            "call_funot",
+            [],
+            "tokenterminal_view.display_fundamental_metric_from_project_over_time",
+            [],
+            dict(),
+        ),
+        (
+            "call_desc",
+            [],
+            "tokenterminal_view.display_description",
+            [],
+            dict(),
+        ),
     ],
 )
 def test_call_func(
