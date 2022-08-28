@@ -747,6 +747,8 @@ main:
                 ref: "/terminal/crypto/ov/wfpe"
               - name: altindex
                 ref: "/terminal/crypto/ov/altindex"
+              - name: fun
+                ref: "/terminal/crypto/ov/fun"
           - name: due diligence
             ref: "/terminal/crypto/dd"
             sub:
@@ -826,6 +828,10 @@ main:
                 ref: "/terminal/crypto/dd/news"
               - name: gh
                 ref: "/terminal/crypto/dd/gh"
+              - name: funot
+                ref: "/terminal/crypto/dd/funot"
+              - name: desc
+                ref: "/terminal/crypto/dd/desc"
           - name: onchain
             ref: "/terminal/crypto/onchain"
             sub:
