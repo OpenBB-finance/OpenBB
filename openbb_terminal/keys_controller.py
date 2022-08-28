@@ -22,6 +22,7 @@ from prompt_toolkit.completion import NestedCompleter
 from pyEX.common.exception import PyEXception
 from oandapyV20 import API as oanda_API
 from oandapyV20.exceptions import V20Error
+from tokenterminal import TokenTerminal
 
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal import feature_flags as obbff
@@ -72,6 +73,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         "github",
         "messari",
         "santiment",
+        "tokenterminal",
     ]
     PATH = "/keys/"
     key_dict: Dict = {}
@@ -787,6 +789,24 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         if show_output:
             console.print(self.key_dict["SANTIMENT"] + "\n")
 
+    def check_token_terminal_key(self, show_output: bool = False) -> None:
+        """Check Token Terminal key"""
+        self.cfg_dict["TOKEN_TERMINAL"] = "tokenterminal"
+        if cfg.API_TOKEN_TERMINAL_KEY == "REPLACE_ME":
+            logger.info("token terminal key not defined")
+            self.key_dict["TOKEN_TERMINAL"] = "not defined"
+        else:
+            token_terminal = TokenTerminal(key=cfg.API_TOKEN_TERMINAL_KEY)
+            if "message" in token_terminal.get_all_projects():
+                logger.warning("token terminal key defined, test failed")
+                self.key_dict["TOKEN_TERMINAL"] = "defined, test failed"
+            else:
+                logger.info("token terminal key defined, test passed")
+                self.key_dict["TOKEN_TERMINAL"] = "defined, test passed"
+
+        if show_output:
+            console.print(self.key_dict["TOKEN_TERMINAL"] + "\n")
+
     def check_keys_status(self) -> None:
         """Check keys status"""
         self.check_av_key()
@@ -817,6 +837,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         self.check_github_key()
         self.check_messari_key()
         self.check_santiment_key()
+        self.check_token_terminal_key()
 
     def print_help(self):
         """Print help"""
@@ -1860,3 +1881,33 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             dotenv.set_key(self.env_file, "OPENBB_API_SANTIMENT_KEY", ns_parser.key)
             cfg.API_SANTIMENT_KEY = ns_parser.key
             self.check_santiment_key(show_output=True)
+
+    @log_start_end(log=logger)
+    def call_tokenterminal(self, other_args: List[str]):
+        """Process tokenterminal command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="tokenterminal",
+            description="Set tokenterminal API key.",
+        )
+        parser.add_argument(
+            "-k",
+            "--key",
+            type=str,
+            dest="key",
+            help="key",
+        )
+        if not other_args:
+            console.print("For your API Key, visit: https://tokenterminal.com\n")
+            return
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-k")
+        ns_parser = parse_simple_args(parser, other_args)
+        if ns_parser:
+            os.environ["OPENBB_API_TOKEN_TERMINAL_KEY"] = ns_parser.key
+            dotenv.set_key(
+                self.env_file, "OPENBB_API_TOKEN_TERMINAL_KEY", ns_parser.key
+            )
+            cfg.API_TOKEN_TERMINAL_KEY = ns_parser.key
+            self.check_token_terminal_key(show_output=True)
