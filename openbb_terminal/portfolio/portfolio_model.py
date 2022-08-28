@@ -1014,6 +1014,39 @@ class PortfolioModel:
 
         try:
             console.print(" Preprocessing orderbook: ", end="")
+
+            # Populate fields Sector, Industry and Country
+            if not (
+                {"Sector", "Industry", "Country", "Region", "Fees", "Premium"}.issubset(
+                    set(self.__orderbook.columns)
+                )
+            ):
+                # if fields not in the orderbook add missing
+                if "Sector" not in self.__orderbook.columns:
+                    self.__orderbook["Sector"] = np.nan
+                if "Industry" not in self.__orderbook.columns:
+                    self.__orderbook["Industry"] = np.nan
+                if "Country" not in self.__orderbook.columns:
+                    self.__orderbook["Country"] = np.nan
+                if "Region" not in self.__orderbook.columns:
+                    self.__orderbook["Region"] = np.nan
+                if "Fees" not in self.__orderbook.columns:
+                    self.__orderbook["Fees"] = np.nan
+                if "Premium" not in self.__orderbook.columns:
+                    self.__orderbook["Premium"] = np.nan
+
+                self.load_company_data()
+            elif (
+                self.__orderbook.loc[
+                    self.__orderbook["Type"] == "STOCK",
+                    ["Sector", "Industry", "Country", "Region", "Fees", "Premium"],
+                ]
+                .isnull()
+                .values.any()
+            ):
+                # if any fields is empty for Stocks (overwrites any info there)
+                self.load_company_data()
+
             # Convert Date to datetime
             self.__orderbook["Date"] = pd.to_datetime(self.__orderbook["Date"])
             console.print(".", end="")
@@ -1079,35 +1112,8 @@ class PortfolioModel:
             self.inception_date = self.__orderbook["Date"][0]
             console.print(".", end="")
 
-            # Populate fields Sector, Industry and Country
-            if not (
-                {"Sector", "Industry", "Country", "Region"}.issubset(
-                    set(self.__orderbook.columns)
-                )
-            ):
-                # if fields not in the orderbook add missing
-                if "Sector" not in self.__orderbook.columns:
-                    self.__orderbook["Sector"] = np.nan
-                if "Industry" not in self.__orderbook.columns:
-                    self.__orderbook["Industry"] = np.nan
-                if "Country" not in self.__orderbook.columns:
-                    self.__orderbook["Country"] = np.nan
-                if "Region" not in self.__orderbook.columns:
-                    self.__orderbook["Region"] = np.nan
-
-                self.load_company_data()
-            elif (
-                self.__orderbook.loc[
-                    self.__orderbook["Type"] == "STOCK",
-                    ["Sector", "Industry", "Country", "Region"],
-                ]
-                .isnull()
-                .values.any()
-            ):
-                # if any fields is empty for Stocks (overwrites any info there)
-                self.load_company_data()
-
-        except Exception:
+        except Exception as e:
+            console.print(e)
             console.print("\nCould not preprocess orderbook.")
 
     def load_company_data(self):
