@@ -493,7 +493,7 @@ class SettingsController(BaseController):
 
                 export_path = export_path.replace("'", "").replace('"', "")
 
-                base_path = os.path.dirname(os.path.abspath(__file__))
+                base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
                 default_path = os.path.join(base_path, "exports")
 
                 success_export = False
