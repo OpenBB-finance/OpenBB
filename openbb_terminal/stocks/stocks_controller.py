@@ -12,7 +12,7 @@ import yfinance as yf
 from prompt_toolkit.completion import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
-from openbb_terminal.common import newsapi_view
+from openbb_terminal.common import feedparser_view, newsapi_view
 from openbb_terminal.common.quantitative_analysis import qa_view
 from openbb_terminal.decorators import log_start_end
 
@@ -110,8 +110,7 @@ class StocksController(StockBaseController):
             else:
                 stock_text = f"{s_intraday} {self.ticker}"
 
-        mt = MenuText("stocks/", 80)
-        mt.add_cmd("news", "Feedparser/News API")
+        mt = MenuText("stocks/", 100)
         mt.add_cmd("search")
         mt.add_cmd("load")
         mt.add_raw("\n")
@@ -121,6 +120,7 @@ class StocksController(StockBaseController):
         mt.add_cmd("quote", "", self.ticker)
         mt.add_cmd("candle", "", self.ticker)
         mt.add_cmd("codes", "Polygon", self.ticker)
+        mt.add_cmd("news", "Feedparser / NewsApi", self.ticker)
         mt.add_raw("\n")
         mt.add_menu("th")
         mt.add_menu("options")
@@ -409,13 +409,10 @@ class StocksController(StockBaseController):
     @log_start_end(log=logger)
     def call_news(self, other_args: List[str]):
         """Process news command"""
-        if not self.ticker:
-            console.print("Use 'load <ticker>' prior to this command!", "\n")
-            return
         parser = argparse.ArgumentParser(
             add_help=False,
             prog="news",
-            description=translate("stocks/NEWS"),
+            description=translate("stocks/news"),
         )
         parser.add_argument(
             "-d",
@@ -444,24 +441,44 @@ class StocksController(StockBaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
-        ns_parser = self.parse_known_args_and_warn(parser, other_args, limit=3)
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED, limit=3
+        )
         if ns_parser:
-            sources = ns_parser.sources
-            for idx, source in enumerate(sources):
-                if source.find(".") == -1:
-                    sources[idx] += ".com"
+            if not self.ticker:
+                console.print("Use 'load <ticker>' prior to this command!", "\n")
+                return
 
-            d_stock = yf.Ticker(self.ticker).info
+            if ns_parser.source == "newsapi":
+                sources = ns_parser.sources
+                for idx, source in enumerate(sources):
+                    if source.find(".") == -1:
+                        sources[idx] += ".com"
 
-            newsapi_view.display_news(
-                query=d_stock["shortName"].replace(" ", "+")
-                if "shortName" in d_stock
-                else self.ticker,
-                limit=ns_parser.limit,
-                start_date=ns_parser.n_start_date.strftime("%Y-%m-%d"),
-                show_newest=ns_parser.n_oldest,
-                sources=",".join(sources),
-            )
+                d_stock = yf.Ticker(self.ticker).info
+
+                newsapi_view.display_news(
+                    query=d_stock["shortName"].replace(" ", "+")
+                    if "shortName" in d_stock
+                    else self.ticker,
+                    limit=ns_parser.limit,
+                    start_date=ns_parser.n_start_date.strftime("%Y-%m-%d"),
+                    show_newest=ns_parser.n_oldest,
+                    sources=",".join(sources),
+                )
+
+            elif ns_parser.source == "feedparser":
+
+                d_stock = yf.Ticker(self.ticker).info
+
+                feedparser_view.display_news(
+                    term=d_stock["shortName"].replace(" ", "+")
+                    if "shortName" in d_stock
+                    else self.ticker,
+                    sources=" ".join(ns_parser.sources),
+                    limit=ns_parser.limit,
+                    export=ns_parser.export,
+                )
 
     @log_start_end(log=logger)
     def call_disc(self, _):
