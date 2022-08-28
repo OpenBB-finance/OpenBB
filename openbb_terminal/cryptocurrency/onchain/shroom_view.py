@@ -9,7 +9,7 @@ from matplotlib import pyplot as plt
 
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.config_terminal import theme
-from .shroom_model import get_daily_transactions, get_dapp_stats
+from .shroom_model import get_daily_transactions, get_dapp_stats, get_total_value_locked
 from openbb_terminal.decorators import check_api_key
 from openbb_terminal import config_plot as cfgPlot
 from openbb_terminal.decorators import log_start_end
@@ -128,5 +128,77 @@ def display_dapp_stats(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "ds",
+        df,
+    )
+
+
+def display_total_value_locked(
+    user_address: str,
+    address_name: str,
+    symbol: str = "USDC",
+    interval: int = 1,
+    export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
+) -> None:
+
+    """
+    Get total value locked for a certain address
+    TVL measures the total amount of a token that is locked in a contract.
+    [Source: https://sdk.flipsidecrypto.xyz/shroomdk]
+
+    Parameters
+    ----------
+    user_address : str
+        Address of the user
+    address_name : str
+        Name of the address
+    symbol : str
+        Symbol of the token
+    interval : int
+        Interval of months
+    export : str
+        Export dataframe data to csv,json,xlsx file
+
+    """
+
+    # example user_address : 0xa5407eae9ba41422680e2e00537571bcc53efbfd
+    # example addres_name : makerdao gem join usdc
+
+    df = get_total_value_locked(
+        user_address=user_address,
+        address_name=address_name,
+        symbol=symbol,
+        interval=interval,
+    )
+
+    if df.empty:
+        console.print("No data found.", "\n")
+        return
+
+    # This plot has 1 axis
+    if not external_axes:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
+    elif is_valid_axes_count(external_axes, 1):
+        (ax,) = external_axes
+    else:
+        return
+
+    # ax.plot(df.index, df["amount_usd"], label="", lw=0.5)
+    ax.bar(df.index, df["amount_usd"], color=theme.down_color, label="amount_usd")
+    ax.set_title("Total value locked Ethereum ERC20")
+    ax.set_ylabel("Ammount [USD M]")
+    ax.set_xlabel("Date")
+    ax.set_xlim(df.index[0], df.index[-1])
+    ax.legend()
+
+    theme.style_primary_axis(ax)
+
+    if not external_axes:
+        theme.visualize_output()
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "tvl",
         df,
     )

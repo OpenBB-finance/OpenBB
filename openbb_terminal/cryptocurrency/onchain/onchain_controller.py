@@ -86,6 +86,7 @@ class OnchainController(BaseController):
         "btcct",
         "dt",
         "ds",
+        "tvl",
     ]
 
     PATH = "/crypto/onchain/"
@@ -154,6 +155,7 @@ class OnchainController(BaseController):
         mt.add_cmd("baas", "BitQuery")
         mt.add_cmd("dt", "Shroom")
         mt.add_cmd("ds", "Shroom")
+        mt.add_cmd("tvl", "Shroom")
         mt.add_raw("\n")
         mt.add_param("_address", self.address or "")
         mt.add_param("_type", self.address_type or "")
@@ -169,6 +171,67 @@ class OnchainController(BaseController):
         mt.add_cmd("prices", "Ethplorer", self.address_type == "token")
         mt.add_cmd("tx", "Ethplorer", self.address_type == "tx")
         console.print(text=mt.menu_text, menu="Cryptocurrency - Onchain")
+
+    @log_start_end(log=logger)
+    def call_tvl(self, other_args: List[str]):
+        """Process tvl command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="tvl",
+            description="""
+                Total value locked (TVL) metric - Ethereum ERC20
+                [Source:https://docs.flipsidecrypto.com/]
+                useraddress OR addressname must be provided
+            """,
+        )
+
+        parser.add_argument(
+            "-u",
+            "--useraddress",
+            dest="useraddress",
+            type=str,
+            help="User address we'd like to take a balance reading of against the contract",
+        )
+
+        parser.add_argument(
+            "-a",
+            "--addressname",
+            dest="addressname",
+            type=str,
+            help="Address name corresponding to the user address",
+        )
+
+        parser.add_argument(
+            "-s",
+            "--symbol",
+            dest="symbol",
+            type=str,
+            help="Contract symbol",
+            default="USDC",
+        )
+
+        parser.add_argument(
+            "-i",
+            "--interval",
+            dest="interval",
+            type=int,
+            help="Interval in months",
+            default="1",
+        )
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+
+        if ns_parser:
+            shroom_view.display_total_value_locked(
+                user_address=ns_parser.useraddress,
+                address_name=ns_parser.addressname,
+                interval=ns_parser.interval,
+                symbol=ns_parser.symbol,
+                export=ns_parser.export,
+            )
 
     @log_start_end(log=logger)
     def call_ds(self, other_args: List[str]):

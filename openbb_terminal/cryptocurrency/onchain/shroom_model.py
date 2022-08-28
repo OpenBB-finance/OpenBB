@@ -89,7 +89,7 @@ def get_dapp_stats(
       on s.tx_id = t.tx_id
     where platform = '{platform}'
     group by date
-    order by date asc 
+    order by date asc
     """
     data = get_shroom_data(sql)
 
@@ -140,5 +140,67 @@ def get_daily_transactions(symbols: List[str]) -> pd.DataFrame:
     df = pd.DataFrame(data["results"], columns=["timeframe"] + symbols)
     df["timeframe"] = pd.to_datetime(df["timeframe"])
     df.set_index("timeframe", inplace=True)
+
+    return df
+
+
+def get_total_value_locked(
+    user_address: str,
+    address_name: str,
+    symbol: str = "USDC",
+    interval: int = 1,
+) -> pd.DataFrame:
+
+    """
+    Get total value locked for a user/name address and symbol
+    TVL measures the total amount of a token that is locked in a contract.
+    [Source: https://sdk.flipsidecrypto.xyz/shroomdk]
+
+    Parameters
+    ----------
+    user_address : str
+        User address
+    address_name : str
+        Name of the address
+    symbol : str
+        Symbol of the token
+    interval : int
+        Interval in months
+
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame with total value locked
+    """
+
+    if not (user_address or address_name):
+        raise Exception(f"No user address or address name provided")
+
+    extra_sql = (
+        f"user_address = '{user_address}' and"
+        if user_address
+        else f"address_name = '{address_name}' and"
+    )
+
+    sql = f"""
+    SELECT
+        date_trunc('day', balance_date) as metric_date,
+        symbol,
+        amount_usd/1000000 as amount_usd
+    FROM
+        ethereum.erc20_balances
+    WHERE
+        {extra_sql}
+        symbol = '{symbol}' AND
+        balance_date >= getdate() - interval '{interval} month'
+    ORDER BY
+	    metric_date asc
+    """
+
+    data = get_shroom_data(sql)
+
+    df = pd.DataFrame(data["results"], columns=["metric_date", "symbol", "amount_usd"])
+    df["metric_date"] = pd.to_datetime(df["metric_date"])
+    df.set_index("metric_date", inplace=True)
 
     return df
