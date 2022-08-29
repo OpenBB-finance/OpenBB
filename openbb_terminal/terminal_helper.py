@@ -50,8 +50,8 @@ def print_goodbye():
     )
 
     console.print(
-        "We are always eager to welcome new contributors and are looking for\n"
-        "   - [param]Lead UI/UX Designer[/param] - https://jobs.lever.co/openbb/5c14ef29-13a3-43df-a01c-4d9a2028023f\n"
+        "We are always eager to welcome new contributors and you can find our open jobs here:\n"
+        "[cmds]https://www.openbb.co/company/careers#open-roles[/cmds]\n"
     )
 
     console.print(
@@ -67,7 +67,7 @@ def print_goodbye():
     )
 
     console.print(
-        "In the meantime access investment research from your chatting platform using the [param]OpenBB Bot[/param]\n"
+        "[param]In the meantime access investment research from your chatting platform using the OpenBB Bot[/param]\n"
         "Try it today, for FREE: [cmds]https://openbb.co/products/bot[/cmds]\n"
     )
     logger.info("END")
