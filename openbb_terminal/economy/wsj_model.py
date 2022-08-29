@@ -119,6 +119,8 @@ def top_commodities() -> pd.DataFrame:
         {" ": name, "Price": last_price, "Chg": net_change, "%Chg": percent_change}
     )
 
+    commodities[commodities.columns[0]] = commodities[commodities.columns[0]].str.replace("Futures", "")
+
     return commodities
 
 
