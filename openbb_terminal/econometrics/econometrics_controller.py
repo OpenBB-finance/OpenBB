@@ -243,6 +243,7 @@ class EconometricsController(BaseController):
 
     def print_help(self):
         """Print help"""
+        print(obbff.EXPORT_FOLDER_PATH)
         mt = MenuText("econometrics/")
         mt.add_param(
             "_data_loc",

@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 import i18n
 
 # IMPORTATION INTERNAL
-from openbb_terminal.core.config.constants import ENV_FILE
+from openbb_terminal.core.config.constants import ENV_FILE, folder_paths
 
 # pylint: disable=no-member
 
@@ -89,7 +89,9 @@ ENABLE_CHECK_API = strtobool(os.getenv("OPENBB_ENABLE_CHECK_API", "True"))
 LOG_COLLECTION = bool(strtobool(os.getenv("OPENBB_LOG_COLLECTION", "True")))
 
 # Provide export folder path. If empty that means default.
-EXPORT_FOLDER_PATH = str(os.getenv("OPENBB_EXPORT_FOLDER_PATH", ""))
+EXPORT_FOLDER_PATH = str(
+    os.getenv("OPENBB_EXPORT_FOLDER_PATH", str(folder_paths["exports"]))
+)
 
 # Set a flag if the application is running from a packaged bundle
 PACKAGED_APPLICATION = strtobool(os.getenv("OPENBB_PACKAGED_APPLICATION", "False"))
