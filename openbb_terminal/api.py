@@ -1688,6 +1688,10 @@ functions = {
         "model": "openbb_terminal.stocks.options.tradier_model.get_option_chains",
         "view": "openbb_terminal.stocks.options.tradier_view.display_chains",
     },
+    "stocks.options.chains_yf": {
+        "model": "openbb_terminal.stocks.options.yfinance_model.get_full_option_chain",
+        "view": "openbb_terminal.stocks.options.yfinance_view.display_chains",
+    },
     "stocks.options.last_price": {
         "model": "openbb_terminal.stocks.options.tradier_model.last_price"
     },
@@ -1716,6 +1720,10 @@ functions = {
     "stocks.options.vol_yf": {
         "model": "openbb_terminal.stocks.options.yfinance_model.get_vol",
         "view": "openbb_terminal.stocks.options.yfinance_view.plot_vol",
+    },
+    "stocks.options.voi_yf": {
+        "model": "openbb_terminal.stocks.options.yfinance_model.get_volume_open_interest",
+        "view": "openbb_terminal.stocks.options.yfinance_view.plot_volume_open_interest",
     },
     "stocks.options.option_chain": {
         "model": "openbb_terminal.stocks.options.yfinance_model.get_option_chain"

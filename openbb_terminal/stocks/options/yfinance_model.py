@@ -9,6 +9,7 @@ from typing import Any, Dict, List, Tuple
 
 import pandas as pd
 import yfinance as yf
+import numpy as np
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import get_rf
@@ -21,7 +22,7 @@ logger = logging.getLogger(__name__)
 # pylint: disable=W0640
 @log_start_end(log=logger)
 def get_full_option_chain(
-    symbol: str, expiration: str, calls: bool = True, puts: bool = True
+    symbol: str, expiration: str, min_sp:float = -1, max_sp:float = -1, calls: bool = True, puts: bool = True
 ) -> pd.DataFrame:
     """Get full option chains with calculated greeks
 
@@ -109,7 +110,20 @@ def get_full_option_chain(
             how="outer",
             suffixes=["_call", "_put"],
         )
+        # If min/max strike aren't provided, just get the middle 50% of strikes
+    if min_sp == -1:
+        min_strike = np.percentile(options_df["strike"], 25)
+    else:
+        min_strike = min_sp
 
+    if max_sp == -1:
+        max_strike = np.percentile(options_df["strike"], 75)
+    else:
+        max_strike = max_sp
+
+    options_df = options_df[
+        (options_df.strike >= min_strike) & (options_df.strike <= max_strike)
+    ]
     return options_df
 
 
@@ -514,7 +528,7 @@ def get_greeks(
 def get_vol(
     symbol: str,
     expiration: str,
-):
+) -> pd.DataFrame:
     """Plot volume
 
     Parameters
@@ -526,7 +540,24 @@ def get_vol(
     """
     options = get_option_chain(symbol, expiration)
 
-    calls = options.calls
-    puts = options.puts
+    return options
 
-    return calls, puts
+@log_start_end(log=logger)
+def get_volume_open_interest(
+    symbol: str,
+    expiration: str,
+) -> pd.DataFrame:
+    """Plot volume and open interest
+
+    Parameters
+    ----------
+    symbol: str
+        Stock ticker symbol
+    expiration: str
+        Option expiration
+    """
+    options = get_option_chain(symbol, expiration)
+
+    return options
+
+
