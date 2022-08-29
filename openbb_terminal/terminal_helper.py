@@ -45,7 +45,7 @@ def print_goodbye():
     # "...when offered a flight to the moon, nobody asks about what seat."
 
     console.print(
-        "[param]OpenBB Terminal is the result of a strong community building an "
+        "[param]The OpenBB Terminal is the result of a strong community building an "
         "investment research platform for everyone, anywhere.[/param]\n"
     )
 
