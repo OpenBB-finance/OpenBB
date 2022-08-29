@@ -116,7 +116,7 @@ def get_yieldcurve(country: str) -> pd.DataFrame:
 
     data = data.replace(float("NaN"), "")
 
-    data["Change"] = (data["Current"]-data["Previous"])*100
+    data["Change"] = (data["Current"] - data["Previous"]) * 100
 
     for i, row in data.iterrows():
         t = row["Tenor"][-3:].strip()
