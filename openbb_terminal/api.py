@@ -1713,6 +1713,10 @@ functions = {
         "model": "openbb_terminal.stocks.options.yfinance_model.get_iv_surface",
         "view": "openbb_terminal.stocks.options.yfinance_view.display_vol_surface",
     },
+    "stocks.options.vol_yf": {
+        "model": "openbb_terminal.stocks.options.yfinance_model.get_vol",
+        "view": "openbb_terminal.stocks.options.yfinance_view.plot_vol",
+    },
     "stocks.options.option_chain": {
         "model": "openbb_terminal.stocks.options.yfinance_model.get_option_chain"
     },

@@ -1,4 +1,5 @@
 # Demonstration of the Fundamental Analysis features, with a user-defined ticker.
+# This can be done on the home menu through 'exe fa_demo.openbb -i AAPL'
 
 # Enter stocks menu, load $ARGV[0], enter the Fundamental Analysis submenu and show a quote and overview statistics.
 stocks

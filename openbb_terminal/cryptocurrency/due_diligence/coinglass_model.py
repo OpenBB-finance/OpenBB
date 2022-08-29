@@ -56,8 +56,8 @@ def get_liquidations(symbol: str) -> pd.DataFrame:
                     data={
                         "date": time_new,
                         "price": data["priceList"],
-                        "Shorts": data["sellList"],
-                        "Longs": data["buyList"],
+                        "Shorts": data["buyList"],
+                        "Longs": data["sellList"],
                     }
                 )
                 df = df.set_index("date")
