@@ -9,6 +9,7 @@ from typing import Union, List, Dict, Optional
 import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib import font_manager, ticker
+from openbb_terminal.core.config.constants import folder_paths
 
 
 class LineAnnotateDrawer:
@@ -96,9 +97,7 @@ class TerminalStyle:
     styles as python dictionaries.
     """
 
-    _STYLES_FOLDER = os.path.abspath(
-        os.path.join(os.path.dirname(__file__), "..", "styles")
-    )
+    _STYLES_FOLDER = folder_paths["styles"]
     DEFAULT_STYLES_LOCATION = os.path.join(_STYLES_FOLDER, "default")
     USER_STYLES_LOCATION = os.path.join(_STYLES_FOLDER, "user")
 
