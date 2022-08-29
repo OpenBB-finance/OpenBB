@@ -29,7 +29,7 @@ def get_heatmap_data(timeframe: str) -> pd.DataFrame:
     pd.DataFrame
         Dataframe of tickers, changes and sectors
     """
-    if timeframe not in timeframe_map.keys():
+    if timeframe not in timeframe_map:
         console.print(f"[red]{timeframe} is an invalid timeframe[/red]")
         return pd.DataFrame()
     r = requests.get(

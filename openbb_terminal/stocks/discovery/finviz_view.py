@@ -29,8 +29,8 @@ def display_heatmap(timeframe: str, export: str = ""):
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "arkord",
-        df_orders,
+        "heatmap",
+        dfs,
     )
     color_bin = [-1, -0.02, -0.01, -0.00001, 0.00001, 0.01, 0.02, 1]
     dfs["colors"] = pd.cut(

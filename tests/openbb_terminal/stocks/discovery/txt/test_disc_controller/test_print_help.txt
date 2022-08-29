@@ -16,4 +16,5 @@
     hotpenny           today's hot penny stocks                                        [Shortinterest]
     rtat               top 10 retail traded stocks per day                             [NASDAQ Data Link]
     divcal             dividend calendar for selected date                             [NASDAQ Data Link]
+    heatmap            heatmap of SP500 tickers                                        [Finviz]
 
