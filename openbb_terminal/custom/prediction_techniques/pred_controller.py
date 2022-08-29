@@ -34,6 +34,7 @@ from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks import stocks_helper
+from openbb_terminal.core.config.constants import folder_paths
 
 logger = logging.getLogger(__name__)
 
@@ -65,7 +66,9 @@ class PredictionTechniquesController(BaseController):
     ):
         """Constructor"""
         super().__init__(queue)
-        self.DATA_FILES = [file.name for file in Path("custom_imports").iterdir()]
+        self.DATA_FILES = [
+            file.name for file in Path(folder_paths["custom_imports"]).iterdir()
+        ]
 
         self.df = custom_df
         self.ticker = file
@@ -142,7 +145,7 @@ class PredictionTechniquesController(BaseController):
 
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            file = Path("custom_imports") / ns_parser.file
+            file = Path(folder_paths["custom_imports"]) / ns_parser.file
             self.df = custom_model.load(file)
             self.df.columns = self.df.columns.map(lambda x: x.lower())
             for col in self.df.columns:
