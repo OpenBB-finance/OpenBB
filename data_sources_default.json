@@ -208,6 +208,10 @@
             "yf",
             "av",
             "polygon"
+        ],
+        "quote": [
+            "yf",
+            "av"
         ]
     }
 }
