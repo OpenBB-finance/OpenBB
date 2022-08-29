@@ -123,6 +123,8 @@ def top_commodities() -> pd.DataFrame:
         commodities.columns[0]
     ].str.replace("Futures", "")
 
+    commodities["%Chg"] = pd.to_numeric(commodities["%Chg"], downcast="float")
+
     return commodities
 
 
