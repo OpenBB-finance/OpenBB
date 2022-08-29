@@ -1,4 +1,5 @@
 # IMPORTATION STANDARD
+from typing import List
 import os
 
 # IMPORTATION THIRDPARTY
@@ -14,7 +15,7 @@ from openbb_terminal.cryptocurrency.due_diligence import dd_controller
 
 MESSARI_TIMESERIES_DF = pd.DataFrame()
 
-TOKENTERMINAL_PROJECTS = list()
+TOKENTERMINAL_PROJECTS: List[str] = list()
 
 COIN_MAP_DF = pd.Series(
     data={
