@@ -730,25 +730,34 @@ def display_distribution_returns(
     else:
         if external_axes is None:
             _, ax = plt.subplots(
-                1,
-                2,
                 figsize=plot_autoscale(),
                 dpi=PLOT_DPI,
             )
         else:
             ax = external_axes
 
-        ax[0].set_title("Portfolio distribution")
-        sns.kdeplot(portfolio_returns.values, ax=ax[0])
-        ax[0].set_ylabel("Density")
-        ax[0].set_xlabel("Daily return [%]")
-        theme.style_primary_axis(ax[0])
+        ax.set_title("Returns distribution")
+        ax.set_ylabel("Density")
+        ax.set_xlabel("Daily return [%]")
 
-        ax[1].set_title("Benchmark distribution")
-        sns.kdeplot(benchmark_returns.values, ax=ax[1])
-        ax[1].set_ylabel("Density")
-        ax[1].set_xlabel("Daily return [%]")
-        theme.style_primary_axis(ax[1])
+        ax = sns.kdeplot(portfolio_returns.values, label="portfolio")
+        kdeline = ax.lines[0]
+        mean = portfolio_returns.values.mean()
+        xs = kdeline.get_xdata()
+        ys = kdeline.get_ydata()
+        height = np.interp(mean, xs, ys)
+        ax.vlines(mean, 0, height, color="yellow", ls=":")
+
+        ax = sns.kdeplot(benchmark_returns.values, label="benchmark")
+        kdeline = ax.lines[1]
+        mean = benchmark_returns.values.mean()
+        xs = kdeline.get_xdata()
+        ys = kdeline.get_ydata()
+        height = np.interp(mean, xs, ys)
+        ax.vlines(mean, 0, height, color="orange", ls=":")
+
+        theme.style_primary_axis(ax)
+        ax.legend()
 
         if not external_axes:
             theme.visualize_output()
