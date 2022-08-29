@@ -14,6 +14,8 @@ from openbb_terminal.cryptocurrency.due_diligence import dd_controller
 
 MESSARI_TIMESERIES_DF = pd.DataFrame()
 
+TOKENTERMINAL_PROJECTS = list()
+
 COIN_MAP_DF = pd.Series(
     data={
         "CoinGecko": "bitcoin",
@@ -110,6 +112,12 @@ def test_menu_without_queue_completion(mocker):
     mocker.patch(
         target=f"{path_controller}.messari_model.get_available_timeseries",
         return_value=MESSARI_TIMESERIES_DF,
+    )
+
+    # MOCK TOKEN TERMINAL get_project_ids
+    mocker.patch(
+        target=f"{path_controller}.tokenterminal_model.get_project_ids",
+        return_value=TOKENTERMINAL_PROJECTS,
     )
 
     result_menu = dd_controller.DueDiligenceController(queue=None).menu()
