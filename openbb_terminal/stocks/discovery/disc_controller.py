@@ -344,7 +344,8 @@ class DiscoveryController(BaseController):
         )
         if ns_parser:
             yahoofinance_view.display_gainers(
-                limit=ns_parser.limit, export=ns_parser.export,
+                limit=ns_parser.limit,
+                export=ns_parser.export,
             )
 
     @log_start_end(log=logger)
@@ -372,7 +373,8 @@ class DiscoveryController(BaseController):
         )
         if ns_parser:
             yahoofinance_view.display_losers(
-                limit=ns_parser.limit, export=ns_parser.export,
+                limit=ns_parser.limit,
+                export=ns_parser.export,
             )
 
     @log_start_end(log=logger)
@@ -403,7 +405,8 @@ class DiscoveryController(BaseController):
         )
         if ns_parser:
             yahoofinance_view.display_ugs(
-                limit=ns_parser.limit, export=ns_parser.export,
+                limit=ns_parser.limit,
+                export=ns_parser.export,
             )
 
     @log_start_end(log=logger)
@@ -432,7 +435,8 @@ class DiscoveryController(BaseController):
         )
         if ns_parser:
             yahoofinance_view.display_gtech(
-                limit=ns_parser.limit, export=ns_parser.export,
+                limit=ns_parser.limit,
+                export=ns_parser.export,
             )
 
     @log_start_end(log=logger)
@@ -462,7 +466,8 @@ class DiscoveryController(BaseController):
         )
         if ns_parser:
             yahoofinance_view.display_active(
-                limit=ns_parser.limit, export=ns_parser.export,
+                limit=ns_parser.limit,
+                export=ns_parser.export,
             )
 
     @log_start_end(log=logger)
@@ -492,7 +497,8 @@ class DiscoveryController(BaseController):
         )
         if ns_parser:
             yahoofinance_view.display_ulc(
-                limit=ns_parser.limit, export=ns_parser.export,
+                limit=ns_parser.limit,
+                export=ns_parser.export,
             )
 
     @log_start_end(log=logger)
@@ -522,7 +528,8 @@ class DiscoveryController(BaseController):
         )
         if ns_parser:
             yahoofinance_view.display_asc(
-                limit=ns_parser.limit, export=ns_parser.export,
+                limit=ns_parser.limit,
+                export=ns_parser.export,
             )
 
     @log_start_end(log=logger)
@@ -555,7 +562,8 @@ class DiscoveryController(BaseController):
         )
         if ns_parser:
             fidelity_view.orders_view(
-                limit=ns_parser.limit, export=ns_parser.export,
+                limit=ns_parser.limit,
+                export=ns_parser.export,
             )
 
     @log_start_end(log=logger)
@@ -754,7 +762,8 @@ class DiscoveryController(BaseController):
         )
         if ns_parser:
             shortinterest_view.low_float(
-                limit=ns_parser.limit, export=ns_parser.export,
+                limit=ns_parser.limit,
+                export=ns_parser.export,
             )
 
     @log_start_end(log=logger)
@@ -823,7 +832,9 @@ class DiscoveryController(BaseController):
         )
         if ns_parser:
             shortinterest_view.hot_penny_stocks(
-                limit=ns_parser.limit, export=ns_parser.export, source=ns_parser.source,
+                limit=ns_parser.limit,
+                export=ns_parser.export,
+                source=ns_parser.source,
             )
 
     @log_start_end(log=logger)

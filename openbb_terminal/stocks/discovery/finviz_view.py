@@ -27,7 +27,10 @@ def display_heatmap(timeframe: str, export: str = ""):
     if dfs.empty:
         return
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), "arkord", df_orders,
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "arkord",
+        df_orders,
     )
     color_bin = [-1, -0.02, -0.01, -0.00001, 0.00001, 0.01, 0.02, 1]
     dfs["colors"] = pd.cut(
@@ -76,7 +79,11 @@ def display_heatmap(timeframe: str, export: str = ""):
     ].texttemplate = (
         "<br> <br> <b>%{label}<br>    %{customdata[0]:.2f}% <br> <br> <br><br><b>"
     )
-    fig.data[0].insidetextfont = dict(family="Arial Black", size=50, color="white",)
+    fig.data[0].insidetextfont = dict(
+        family="Arial Black",
+        size=50,
+        color="white",
+    )
 
     fig.update_traces(
         textinfo="label+text+value",
@@ -94,7 +101,11 @@ def display_heatmap(timeframe: str, export: str = ""):
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
         hovermode=False,
-        font=dict(family="Arial Black", size=20, color="white",),
+        font=dict(
+            family="Arial Black",
+            size=20,
+            color="white",
+        ),
     )
 
     fig.show()
