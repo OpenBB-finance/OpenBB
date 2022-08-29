@@ -100,10 +100,12 @@ class DashboardsController(BaseController):
     @log_start_end(log=logger)
     def call_forecast(self, other_args: List[str]):
         """Process forecast command"""
-        create_call(other_args, "forecast", "")
+        create_call(other_args, "forecast", "", streamlit=True)
 
 
-def create_call(other_args: List[str], name: str, filename: str = None) -> None:
+def create_call(
+    other_args: List[str], name: str, filename: str = None, streamlit: bool = False
+) -> None:
     filename = filename if filename else name
 
     parser = argparse.ArgumentParser(
@@ -136,13 +138,25 @@ def create_call(other_args: List[str], name: str, filename: str = None) -> None:
         dest="dark",
         help="Whether to show voila in dark mode",
     )
-
+    if streamlit:
+        parser.add_argument(
+            "-s",
+            "--streamlit",
+            action="store_true",
+            default=False,
+            dest="streamlit",
+            help="Whether to show in streamlit",
+        )
     ns_parser = parse_simple_args(parser, other_args)
 
     if ns_parser:
-        cmd = "jupyter-lab" if ns_parser.jupyter else "voila"
+        if ns_parser.streamlit:
+            cmd = "streamlit run"
+        else:
+            cmd = "jupyter-lab" if ns_parser.jupyter else "voila"
+        ending = "py" if ns_parser.streamlit else "ipynb"
         file = os.path.join(
-            os.path.abspath(os.path.dirname(__file__)), f"{filename}.ipynb"
+            os.path.abspath(os.path.dirname(__file__)), f"{filename}.{ending}"
         )
         if not ns_parser.input:
             console.print(
