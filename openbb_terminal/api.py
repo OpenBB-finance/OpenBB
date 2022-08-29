@@ -995,6 +995,9 @@ functions = {
         "model": "openbb_terminal.economy.yfinance_model.get_indices",
         "view": "openbb_terminal.economy.yfinance_view.show_indices",
     },
+    "economy.available_indices": {
+        "model": "openbb_terminal.economy.yfinance_model.get_available_indices"
+    },
     "economy.search_index": {
         "model": "openbb_terminal.economy.yfinance_model.get_search_indices"
     },
