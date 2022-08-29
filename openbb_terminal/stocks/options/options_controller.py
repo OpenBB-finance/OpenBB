@@ -1137,7 +1137,7 @@ class OptionsController(BaseController):
 
     @log_start_end(log=logger)
     def call_vsurf(self, other_args: List[str]):
-        """Process vol command"""
+        """Process vsurf command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,

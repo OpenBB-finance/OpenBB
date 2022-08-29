@@ -379,10 +379,7 @@ def plot_vol(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    options = yfinance_model.get_option_chain(symbol, expiration)
-
-    calls = options.calls
-    puts = options.puts
+    calls, puts = yfinance_model.get_vol(symbol, expiration)
     current_price = float(yf.Ticker(symbol).info["regularMarketPrice"])
 
     if min_sp == -1:
@@ -433,14 +430,14 @@ def plot_vol(
     ax.legend()
     ax.set_title(f"Volume for {symbol.upper()} expiring {expiration}")
     theme.style_primary_axis(ax)
-
+    print(calls)
     if external_axes is None:
         theme.visualize_output()
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "vol_yf",
-        options,
+        pd.DataFrame({"Calls": calls, "Puts": puts}),
     )
 
 
