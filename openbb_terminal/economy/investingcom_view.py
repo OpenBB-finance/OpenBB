@@ -47,22 +47,33 @@ def display_yieldcurve(
 
     if not df.empty:
         if external_axes is None:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+            _, (ax1, ax2) = plt.subplots(nrows=2, ncols=1, figsize=plot_autoscale(), dpi=PLOT_DPI, gridspec_kw={'height_ratios': [2, 1]})
 
         else:
-            if len(external_axes) != 1:
+            if len(external_axes) != 2:
                 logger.error("Expected list of 3 axis items")
                 console.print("[red]Expected list of 3 axis items.\n[/red]")
                 return
-            (ax,) = external_axes
+            (ax1, ax2) = external_axes
 
-        ax.plot(df["Tenor"], df["Current"], "-o")
-        ax.set_xlabel("Maturity")
-        ax.set_ylabel("Yield (%)")
-        theme.style_primary_axis(ax)
-        ax.yaxis.set_major_formatter(FormatStrFormatter("%.2f"))
+        ax1.plot(df["Tenor"], df["Previous"], linestyle='--', marker='o', label="Previous", zorder=5)
+        ax1.plot(df["Tenor"], df["Current"], "-o", label="Current")   
+        ax1.set_xlabel("Maturity")
+        ax1.set_ylabel("Yield (%)")
+        theme.style_primary_axis(ax1)
+        ax1.yaxis.set_label_position("left")
+        ax1.yaxis.set_ticks_position("left")
+        ax1.yaxis.set_major_formatter(FormatStrFormatter("%.2f"))
+
+        colors = [theme.up_color if x > 0 else theme.down_color for x in df["Change"].values]
+        ax2.bar(df["Tenor"], df["Change"], width=1, color=colors)
+        ax2.set_ylabel("Change (bps)")
+        theme.style_primary_axis(ax2)
+        ax2.yaxis.set_label_position("left")
+        ax2.yaxis.set_ticks_position("left")
+
         if external_axes is None:
-            ax.set_title(f"Yield Curve for {country.title()} ")
+            ax1.set_title(f"Yield Curve for {country.title()} ")
             theme.visualize_output()
 
         if raw:
