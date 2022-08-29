@@ -121,6 +121,13 @@ issues.
    or `diamondhands`, we recommend something simple and intuitive like `obb`. This is because this name will be used
    from now onwards.
 
+   Please note, the following setup has been confirmed to work for all OS (including M1) with the standard
+   miniconda distribution.
+
+   `https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh`
+
+   If you are using a different distribution, you will need to install it manually before proceeding.
+
    ```bash
    conda env create -n obb --file build/conda/conda-3-9-env.yaml
    ```
