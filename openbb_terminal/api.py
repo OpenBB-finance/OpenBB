@@ -940,7 +940,7 @@ functions = {
         "model": "openbb_terminal.economy.econdb_model.get_treasuries",
         "view": "openbb_terminal.economy.econdb_view.show_treasuries",
     },
-    "economy.maturities": {
+    "economy.treasury_maturities": {
         "model": "openbb_terminal.economy.econdb_model.get_treasury_maturities"
     },
     "economy.future": {"model": "openbb_terminal.economy.finviz_model.get_futures"},
