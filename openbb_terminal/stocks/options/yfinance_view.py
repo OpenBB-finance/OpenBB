@@ -37,6 +37,7 @@ from openbb_terminal.stocks.options.yfinance_model import (
     get_option_chain,
     get_price,
 )
+from openbb_terminal.core.config.constants import folder_paths
 
 # pylint: disable=C0302
 
@@ -1034,12 +1035,8 @@ def export_binomial_calcs(
         for j, _ in enumerate(opt_vals[i]):
             ws[f"{opts[i]}{j+8+days}"] = opt_vals[i][j]
 
-    trypath = os.path.join(
-        os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..")),
-        "exports",
-        "stocks",
-        "options",
-        f"{symbol} {datetime.now()}.xlsx",
+    trypath = (
+        f"{folder_paths['custom_imports/stocks/options']}{symbol}_{datetime.now()}.xlsx"
     )
     wb.save(trypath)
     console.print(

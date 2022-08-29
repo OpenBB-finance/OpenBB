@@ -17,6 +17,7 @@ if not ENV_FILE.is_file():
 folders = [
     "custom_imports",
     "custom_imports/stocks",
+    "custom_imports/stocks/options",
     "exports",
     "routines",
     "stored",

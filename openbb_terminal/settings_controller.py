@@ -27,6 +27,7 @@ from openbb_terminal.helper_funcs import (
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.core.config.constants import folder_paths
 
 # pylint: disable=too-many-lines,no-member,too-many-public-methods,C0302
 # pylint:disable=import-outside-toplevel
@@ -490,7 +491,7 @@ class SettingsController(BaseController):
                 self.queue = []
 
                 base_path = os.path.dirname(os.path.abspath(__file__))
-                default_path = os.path.join(base_path, "exports")
+                default_path = folder_paths["exports"]
 
                 success_export = False
                 while not success_export:
@@ -501,7 +502,8 @@ class SettingsController(BaseController):
                         set_export_folder(self.env_file, path_folder="")
                         success_export = True
                     else:
-                        # If the path selected does not start from the user root, give relative location from root
+                        # If the path selected does not start from the user root,
+                        # give relative location from root
                         if export_path[0] == "~":
                             export_path = export_path.replace(
                                 "~", os.path.expanduser("~")
