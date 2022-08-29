@@ -35,6 +35,7 @@ from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.econometrics import econometrics_model, econometrics_view
+from openbb_terminal.core.config.constants import folder_paths
 
 logger = logging.getLogger(__name__)
 
@@ -160,7 +161,7 @@ class EconometricsController(BaseController):
             for file_type in self.file_types
             for filepath in chain(
                 Path(obbff.EXPORT_FOLDER_PATH).rglob(f"*.{file_type}"),
-                Path("custom_imports").rglob(f"*.{file_type}"),
+                Path(folder_paths["custom_imports"]).rglob(f"*.{file_type}"),
             )
             if filepath.is_file()
         }
@@ -247,7 +248,7 @@ class EconometricsController(BaseController):
         mt = MenuText("econometrics/")
         mt.add_param(
             "_data_loc",
-            f"\n\t{obbff.EXPORT_FOLDER_PATH}\n\t{Path('custom_imports').resolve()}",
+            f"\n\t{obbff.EXPORT_FOLDER_PATH}\n\t{folder_paths['custom_imports']}",
         )
         mt.add_raw("\n")
         mt.add_cmd("load")
