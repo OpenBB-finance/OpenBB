@@ -770,6 +770,9 @@ def load(
             if monthly:
                 int_ = "m"
                 int_string = "Monthly"
+            else:
+                int_ = "d"
+                int_string = "Daily"
 
             try:
                 client = EodHistoricalData(cfg.API_EODHD_TOKEN)

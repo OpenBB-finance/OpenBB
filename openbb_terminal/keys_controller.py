@@ -1713,6 +1713,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             other_args.insert(0, "-k")
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
+            print(type(ns_parser.key))
             os.environ["OPENBB_API_COINGLASS_KEY"] = ns_parser.key
             dotenv.set_key(self.env_file, "OPENBB_API_COINGLASS_KEY", ns_parser.key)
             cfg.API_COINGLASS_KEY = ns_parser.key
@@ -1871,6 +1872,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             console.print(
                 "For your API Key, visit: https://eodhistoricaldata.com/r/?ref=869U7F4J\n"
             )
+            return
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-k")
         ns_parser = parse_simple_args(parser, other_args)
