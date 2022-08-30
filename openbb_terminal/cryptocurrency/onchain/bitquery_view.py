@@ -61,7 +61,10 @@ def display_dex_trades(
     if not df.empty:
         df_data = df.copy()
 
-        df[["tradeAmount", "trades"]] = df[["tradeAmount", "trades"]].applymap(
+        column_names = ["tradeAmount", "trades"]
+        column_names = prettify_column_names(column_names)
+
+        df[column_names] = df[column_names].applymap(
             lambda x: lambda_very_long_number_formatter(x)
         )
 
@@ -306,7 +309,11 @@ def display_most_traded_pairs(
     )
     if not df.empty:
         df_data = df.copy()
-        df[["tradeAmount", "trades"]] = df[["tradeAmount", "trades"]].applymap(
+
+        column_names = ["tradeAmount", "trades"]
+        column_names = prettify_column_names(column_names)
+
+        df[column_names] = df[column_names].applymap(
             lambda x: lambda_very_long_number_formatter(x)
         )
 
