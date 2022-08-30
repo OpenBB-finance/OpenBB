@@ -241,7 +241,10 @@ class TerminalStyle:
         self.down_color = self.mpf_style["marketcolors"]["volume"]["down"]
         self.up_color = self.mpf_style["marketcolors"]["volume"]["up"]
         self.line_width = plt.rcParams["lines.linewidth"]
-        self.volume_bar_width = self.mpl_rcparams["volume_bar_width"]
+        try:
+            self.volume_bar_width = self.mpl_rcparams["volume_bar_width"]
+        except:
+            pass
 
     def get_colors(self, reverse: bool = False) -> List:
         """Get hex color sequence from the stylesheet."""

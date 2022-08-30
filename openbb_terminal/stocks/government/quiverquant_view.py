@@ -400,7 +400,7 @@ def display_contracts(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    df_contracts = quiverquant_model.get_contracts(symbol)
+    df_contracts = quiverquant_model.get_contracts(symbol, past_transaction_days)
 
     if df_contracts.empty:
         return
@@ -690,14 +690,12 @@ def display_lobbying(symbol: str, limit: int = 10):
     limit: int
         Number of events to show
     """
-    df_lobbying = quiverquant_model.get_lobbying(symbol)
+    df_lobbying = quiverquant_model.get_lobbying(symbol, limit)
 
     if df_lobbying.empty:
         return
 
-    for _, row in (
-        df_lobbying.sort_values(by=["Date"], ascending=False).head(limit).iterrows()
-    ):
+    for _, row in df_lobbying.iterrows():
         amount = (
             "$" + str(int(float(row["Amount"]))) if row["Amount"] is not None else "N/A"
         )

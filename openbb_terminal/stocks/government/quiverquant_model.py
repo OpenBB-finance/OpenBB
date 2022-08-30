@@ -528,7 +528,7 @@ def get_qtr_contracts(analysis: str = "total", limit: int = 5) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_lobbying(symbol: str) -> pd.DataFrame:
+def get_lobbying(symbol: str, limit: int = 10) -> pd.DataFrame:
     """Corporate lobbying details
 
     Parameters
@@ -549,4 +549,6 @@ def get_lobbying(symbol: str) -> pd.DataFrame:
         console.print("No corporate lobbying found\n")
         return pd.DataFrame()
 
-    return df_lobbying
+    df_lobbying.sort_values(by=["Date"], ascending=False)
+
+    return df_lobbying.head(limit)
