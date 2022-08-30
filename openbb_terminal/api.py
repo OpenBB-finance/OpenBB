@@ -1838,7 +1838,8 @@ functions = {
         "model": "openbb_terminal.cryptocurrency.cryptocurrency_helpers.find"
     },
     "crypto.chart": {
-        "model": "openbb_terminal.cryptocurrency.cryptocurrency_helpers.plot_chart"
+        "model": "openbb_terminal.cryptocurrency.cryptocurrency_helpers.plot_chart",
+        "view": "openbb_terminal.cryptocurrency.cryptocurrency_helpers.plot_chart",
     },
     "crypto.candles": {
         "model": "openbb_terminal.cryptocurrency.cryptocurrency_helpers.plot_candles"
