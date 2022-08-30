@@ -1025,6 +1025,9 @@ functions = {
         "model": "openbb_terminal.etf.stockanalysis_model.get_etf_holdings",
         "view": "openbb_terminal.etf.stockanalysis_view.view_holdings",
     },
+    "etf.symbols": {
+        "model": "openbb_terminal.etf.stockanalysis_model.get_all_names_symbols"
+    },
     "etf.overview": {
         "model": "openbb_terminal.etf.stockanalysis_model.get_etf_overview",
         "view": "openbb_terminal.etf.stockanalysis_view.view_overview",
