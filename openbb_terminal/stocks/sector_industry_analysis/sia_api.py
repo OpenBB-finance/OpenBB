@@ -15,7 +15,6 @@ from .financedatabase_view import display_companies_per_industry_in_country as c
 from .financedatabase_view import display_companies_per_industry_in_sector as cpis
 from .financedatabase_view import display_companies_per_country_in_sector as cpcs
 from .financedatabase_view import display_companies_per_country_in_industry as cpci
-from .stockanalysis_view import display_plots_financials as financials
 
 # Models
 models = _models(os.path.abspath(os.path.dirname(__file__)))

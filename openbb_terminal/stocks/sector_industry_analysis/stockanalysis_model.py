@@ -82,10 +82,10 @@ SA_KEYS = {
 
 @log_start_end(log=logger)
 def get_stocks_data(
-    symbols: list = ["FB", "TSLA", "MSFT"],
-    finance_key: str = "ncf",
-    stocks_data: dict = dict(),
-    period: str = "annual",
+    symbols: list,
+    finance_key: str,
+    stocks_data: dict,
+    period: str,
     currency: str = "USD",
 ):
     """Get stocks data based on a list of stocks and the finance key. The function searches for the correct

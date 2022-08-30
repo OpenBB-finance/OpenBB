@@ -31,12 +31,12 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_plots_financials(
-    finance_key: str = "re",
-    country: str = "United States",
-    sector: str = "Communication Services",
-    industry: str = "Internet Content & Information",
-    period: str = "annual",
-    period_length: int = 12,
+    finance_key: str,
+    country: str,
+    sector: str,
+    industry: str,
+    period: str,
+    period_length: int,
     marketcap: str = "",
     exclude_exchanges: bool = True,
     currency: str = "USD",
