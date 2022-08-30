@@ -930,10 +930,10 @@ functions = {
         "model": "openbb_terminal.economy.econdb_model.get_aggregated_macro_data",
         "view": "openbb_terminal.economy.econdb_view.show_macro_data",
     },
-    "economy.get_macro_parameters": {
+    "economy.macro_parameters": {
         "model": "openbb_terminal.economy.econdb_model.get_macro_parameters"
     },
-    "economy.get_macro_countries": {
+    "economy.macro_countries": {
         "model": "openbb_terminal.economy.econdb_model.get_macro_countries"
     },
     "economy.treasury": {
@@ -994,6 +994,9 @@ functions = {
     "economy.index": {
         "model": "openbb_terminal.economy.yfinance_model.get_indices",
         "view": "openbb_terminal.economy.yfinance_view.show_indices",
+    },
+    "economy.available_indices": {
+        "model": "openbb_terminal.economy.yfinance_model.get_available_indices"
     },
     "economy.search_index": {
         "model": "openbb_terminal.economy.yfinance_model.get_search_indices"
