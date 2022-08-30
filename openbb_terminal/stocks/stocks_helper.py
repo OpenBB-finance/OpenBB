@@ -483,49 +483,6 @@ def load(
 
             df_stock_candidate.sort_index(ascending=True, inplace=True)
 
-        # Polygon source
-        elif source == "polygon":
-
-            request_url = (
-                f"https://api.polygon.io/v2/aggs/ticker/"
-                f"{ticker.upper()}/range/1/day/{start.strftime('%Y-%m-%d')}/{end.strftime('%Y-%m-%d')}?adjusted=true"
-                f"&sort=desc&limit=49999&apiKey={cfg.API_POLYGON_KEY}"
-            )
-            r = requests.get(request_url)
-            if r.status_code != 200:
-                console.print("[red]Error in polygon request[/red]")
-                return pd.DataFrame()
-
-            r_json = r.json()
-            if "results" not in r_json.keys():
-                console.print("[red]No results found in polygon reply.[/red]")
-                return pd.DataFrame()
-
-            df_stock_candidate = pd.DataFrame(r_json["results"])
-
-            df_stock_candidate = df_stock_candidate.rename(
-                columns={
-                    "o": "Open",
-                    "c": "Adj Close",
-                    "h": "High",
-                    "l": "Low",
-                    "t": "date",
-                    "v": "Volume",
-                    "n": "Transactions",
-                }
-            )
-            df_stock_candidate["date"] = pd.to_datetime(
-                df_stock_candidate.date, unit="ms"
-            )
-            # TODO: Clean up Close vs Adj Close throughout
-            df_stock_candidate["Close"] = df_stock_candidate["Adj Close"]
-            df_stock_candidate = df_stock_candidate.sort_values(by="date")
-            df_stock_candidate = df_stock_candidate.set_index("date")
-
-        s_start = df_stock_candidate.index[0]
-        s_interval = f"{interval}min"
-        int_string = "Daily" if interval == 1440 else "Intraday"
-
     else:
 
         if source == "yf":
@@ -1065,7 +1022,7 @@ def find_trendline(
 
 
 def additional_info_about_ticker(ticker: str) -> str:
-    """Information about trading the ticker such as exchange, currency, timezone and market status
+    """Additional information about trading the ticker such as exchange, currency, timezone and market status
 
     Parameters
     ----------
@@ -1084,6 +1041,7 @@ def additional_info_about_ticker(ticker: str) -> str:
             ticker = ticker.rstrip(".US")
             ticker = ticker.rstrip(".us")
         ticker_info = yf.Ticker(ticker).info
+        # outside US exchange
         # outside US exchange
         if "." in ticker:
             extra_info += "\n[param]Datetime: [/param]"

@@ -1,12 +1,13 @@
 {
   "stocks": {
-    "load": "yf",
+    "load": "eodhd",
     "dps": {
       "psi": "quandl"
     },
     "fa": {
-      "income": "av",
-      "balance": "av"
+      "income": "yf",
+      "balance": "yf",
+      "cash": "yf"
     },
     "options": {
       "load": "yf",
