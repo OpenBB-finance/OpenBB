@@ -1868,7 +1868,9 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             help="key",
         )
         if not other_args:
-            console.print("For your API Key, visit: https://eodhistoricaldata.com/r/?ref=869U7F4J\n")
+            console.print(
+                "For your API Key, visit: https://eodhistoricaldata.com/r/?ref=869U7F4J\n"
+            )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-k")
         ns_parser = parse_simple_args(parser, other_args)

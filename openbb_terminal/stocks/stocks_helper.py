@@ -761,15 +761,14 @@ def load(
 
         # End of Day Historical Data  Source
         elif source == "eodhd":
+            df_stock_candidate = pd.DataFrame()
 
-            int_ = "d"
-            daily = "Daily"
             if weekly:
                 int_ = "w"
-                weekly = "Weekly"
+                int_string = "Weekly"
             if monthly:
                 int_ = "m"
-                monthly = "Monthly"
+                int_string = "Monthly"
 
             try:
                 client = EodHistoricalData(cfg.API_EODHD_TOKEN)
@@ -794,10 +793,10 @@ def load(
                     console.print(
                         "Get your Key here: https://eodhistoricaldata.com/r/?ref=869U7F4J\n"
                     )
-                    return
+                    return df_stock_candidate
                 else:
                     console.print(e, "\n")
-                    return
+                    return df_stock_candidate
 
             df_stock_candidate = pd.DataFrame(resp).dropna(axis=0)
 
