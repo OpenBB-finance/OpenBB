@@ -406,6 +406,15 @@ PARAMETERS = {
     },
 }
 
+TRANSFORM = {
+    "": "No transformation",
+    "TPOP": "total percentage change on period",
+    "TOYA": "total percentage since 1 year ago",
+    "TUSD": "level USD",
+    "TPGP": "Percentage of GDP",
+    "TNOR": "Start = 100",
+}
+
 SCALES = {
     "Thousands": 1_000,
     "Millions": 1_000_000,
@@ -471,6 +480,7 @@ TREASURIES: Dict = {
 def get_macro_data(
     parameter: str,
     country: str,
+    transform: str = "",
     start_date=pd.to_datetime("1900-01-01"),
     end_date=datetime.today().date(),
     currency: str = "",
@@ -483,6 +493,14 @@ def get_macro_data(
         The type of data you wish to display
     country : str
        the selected country
+    transform : str
+        select data transformation from:
+            '' - no transformation
+            'TPOP' - total percentage change on period,
+            'TOYA' - total percentage since 1 year ago,
+            'TUSD' - level USD,
+            'TPGP' - Percentage of GDP,
+            'TNOR' - Start = 100
     start_date : str
         The starting date, format "YEAR-MONTH-DAY", i.e. 2010-12-31.
     end_date : str
@@ -507,14 +525,19 @@ def get_macro_data(
     if parameter not in PARAMETERS:
         console.print(f"The parameter {parameter} is not an option for {country}.")
         return pd.Series(dtype=float), ""
+    if transform not in TRANSFORM:
+        console.print(f"The transform {transform} is not a valid option.")
+        return pd.Series(dtype=float), ""
 
     country_code = COUNTRY_CODES[country]
     country_currency = COUNTRY_CURRENCIES[country]
 
     try:
-        r = requests.get(
-            f"https://www.econdb.com/series/context/?tickers={parameter}{country_code}"
-        )
+        code = f"{parameter}{country_code}"
+        if transform:
+            code += f"~{transform}"
+
+        r = requests.get(f"https://www.econdb.com/series/context/?tickers={code}")
         res_json = r.json()
         if res_json:
             data = res_json[0]
@@ -522,11 +545,13 @@ def get_macro_data(
             units = data["td"]["units"]
 
             df = pd.DataFrame(data["dataarray"])
-            df = (
-                df.set_index(pd.to_datetime(df["date"]))[f"{parameter}{country_code}"]
-                * SCALES[scale]
-            )
+
+            df = df.set_index(pd.to_datetime(df["date"]))[code] * SCALES[scale]
             df = df.sort_index().dropna()
+
+            # Since a percentage is done through differences, the first value is NaN
+            if transform in ["TPOP", "TOYA"]:
+                df = df.iloc[1:]
 
         if not res_json or df.empty:
             console.print(
@@ -556,7 +581,7 @@ def get_macro_data(
             merged_df = pd.merge_asof(
                 df, currency_data, left_index=True, right_index=True
             )
-            df = merged_df[f"{parameter}{country_code}"] * merged_df["Adj Close"]
+            df = merged_df[code] * merged_df["Adj Close"]
 
             if pd.isna(df).any():
                 df_old_oldest, df_old_newest = df.index[0].date(), df.index[-1].date()
@@ -575,6 +600,18 @@ def get_macro_data(
         )
 
     return df, units
+
+
+@log_start_end(log=logger)
+def get_macro_transform() -> Dict[str, str]:
+    """This function returns the available macro transform with detail.
+
+    Returns
+    ----------
+    Dict[str]
+        A dictionary with the available macro transforms.
+    """
+    return TRANSFORM
 
 
 @log_start_end(log=logger)
@@ -605,6 +642,7 @@ def get_macro_countries() -> Dict[str, str]:
 def get_aggregated_macro_data(
     parameters: list = None,
     countries: list = None,
+    transform: str = "",
     start_date: str = "1900-01-01",
     end_date=datetime.today().date(),
     currency: str = "",
@@ -617,6 +655,8 @@ def get_aggregated_macro_data(
         The type of data you wish to download. Available parameters can be accessed through get_macro_parameters().
     countries : list
         The selected country or countries. Available countries can be accessed through get_macro_countries().
+    transform : str
+        The selected transform. Available transforms can be accessed through get_macro_transform().
     start_date : str
         The starting date, format "YEAR-MONTH-DAY", i.e. 2010-12-31.
     end_date : str
@@ -647,7 +687,9 @@ def get_aggregated_macro_data(
             (
                 country_data[country][parameter],
                 units[country][parameter],
-            ) = get_macro_data(parameter, country, start_date, end_date, currency)
+            ) = get_macro_data(
+                parameter, country, transform, start_date, end_date, currency
+            )
 
             if country_data[country][parameter].empty:
                 del country_data[country][parameter]

@@ -320,6 +320,8 @@ main:
                 ref: "/terminal/stocks/res/newsfilter"
               - name: stockanalysis
                 ref: "/terminal/stocks/res/stockanalysis"
+              - name: bullrun
+                ref: "/terminal/stocks/res/bullrun"
           - name: due diligence
             ref: "/terminal/stocks/dd"
             sub:
@@ -870,6 +872,10 @@ main:
           - name: nft
             ref: "/terminal/crypto/nft"
             sub:
+              - name: collections
+                ref: "/terminal/crypto/nft/collections"
+              - name: fp
+                ref: "/terminal/crypto/nft/fp"
               - name: today
                 ref: "/terminal/crypto/nft/today"
               - name: upcoming
@@ -1239,6 +1245,33 @@ main:
                     ref: "/terminal/portfolio/bro/coinbase/history"
                   - name: orders
                     ref: "/terminal/portfolio/bro/coinbase/orders"
+              - name: degiro
+                ref: "/terminal/portfolio/bro/degiro"
+                sub:
+                  - name: login
+                    ref: "/terminal/portfolio/bro/degiro/login"
+                  - name: logout
+                    ref: "/terminal/portfolio/bro/degiro/logout"
+                  - name: hold
+                    ref: "/terminal/portfolio/bro/degiro/hold"
+                  - name: lookup
+                    ref: "/terminal/portfolio/bro/degiro/lookup"
+                  - name: create
+                    ref: "/terminal/portfolio/bro/degiro/create"
+                  - name: update
+                    ref: "/terminal/portfolio/bro/degiro/update"
+                  - name: cancel
+                    ref: "/terminal/portfolio/bro/degiro/cancel"
+                  - name: pending
+                    ref: "/terminal/portfolio/bro/degiro/pending"
+                  - name: companynews
+                    ref: "/terminal/portfolio/bro/degiro/companynews"
+                  - name: lastnews
+                    ref: "/terminal/portfolio/bro/degiro/lastnews"
+                  - name: topnews
+                    ref: "/terminal/portfolio/bro/degiro/topnews"
+                  - name: paexport
+                    ref: "/terminal/portfolio/bro/degiro/paexport"
               - name: robinhood
                 ref: "/terminal/portfolio/bro/robinhood"
                 sub:

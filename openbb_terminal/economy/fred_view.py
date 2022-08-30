@@ -104,7 +104,7 @@ def display_fred_series(
     """
 
     data, detail = fred_model.get_aggregated_series_data(
-        series_ids, start_date, end_date, limit
+        series_ids, start_date, end_date
     )
 
     if data.empty:
@@ -159,7 +159,7 @@ def display_fred_series(
 
         if raw:
             print_rich_table(
-                data,
+                data.tail(limit),
                 headers=list(data.columns),
                 show_index=True,
                 index_name="Date",

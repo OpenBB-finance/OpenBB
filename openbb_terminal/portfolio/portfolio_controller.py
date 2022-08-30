@@ -147,7 +147,8 @@ class PortfolioController(BaseController):
         }
 
         choices: dict = {c: {} for c in self.controller_choices}
-        choices["load"] = {c: None for c in self.DATA_HOLDINGS_FILES}
+        choices["load"]["-f"] = {c: None for c in self.DATA_HOLDINGS_FILES}
+        choices["load"]["--file"] = {c: None for c in self.DATA_HOLDINGS_FILES}
         choices["bench"] = {c: None for c in portfolio_helper.BENCHMARK_LIST}
         choices["alloc"] = {c: None for c in self.AGGREGATION_METRICS}
         choices["metric"] = {c: None for c in self.VALID_METRICS}
