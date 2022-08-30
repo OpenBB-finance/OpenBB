@@ -763,22 +763,22 @@ def load(
         elif source == "eodhd":
 
             int_ = "d"
-            int_string = "Daily"
+            daily = "Daily"
             if weekly:
                 int_ = "w"
-                int_string = "Weekly"
+                weekly = "Weekly"
             if monthly:
                 int_ = "m"
-                int_string = "Monthly"
+                monthly = "Monthly"
 
             try:
                 client = EodHistoricalData(cfg.API_EODHD_TOKEN)
 
                 resp = client.get_prices_eod(
-                    ticker,
+                    symbol,
                     period=int_,
-                    from_=start,
-                    to=end,
+                    from_=start_date,
+                    to=end_date,
                 )
             except Exception as e:
 
