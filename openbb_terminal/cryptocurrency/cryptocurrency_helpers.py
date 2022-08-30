@@ -1274,6 +1274,7 @@ def plot_chart(
     source: str = "",
     exchange: str = "",
     interval: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Load data for Technical Analysis
 
@@ -1303,6 +1304,7 @@ def plot_chart(
         title=title,
         volume=True,
         ylabel="Volume [1M]" if volume_mean > 1_000_000 else "Volume",
+        external_axes=external_axes,
     )
 
     console.print("")

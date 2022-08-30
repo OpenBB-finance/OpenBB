@@ -94,4 +94,6 @@ def get_news(
             if idx >= limit - 1:
                 break
 
+    tables.columns = tables.columns.str.title()
+
     return tables
