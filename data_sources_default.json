@@ -1,15 +1,4 @@
 {
-<<<<<<< HEAD
-  "stocks": {
-    "load": "eodhd",
-    "dps": {
-      "psi": "quandl"
-    },
-    "fa": {
-      "income": "yf",
-      "balance": "yf",
-      "cash": "yf"
-=======
     "stocks": {
         "news": [
             "feedparser",
@@ -202,7 +191,6 @@
             "cb",
             "yf"
         ]
->>>>>>> 4be99cfad216bbcaed15d1d663191cfec4e905bf
     },
     "economy": {
         "ycrv": [
