@@ -48,6 +48,10 @@ detecta==0.0.5; python_version >= "3.6"
 dnspython==2.2.1; python_version >= "3.6" and python_version < "4.0"
 ecos==2.0.10; python_version >= "3.8" and python_version < "3.11"
 entrypoints==0.4; python_full_version >= "3.7.0" and python_version >= "3.7"
+<<<<<<< HEAD
+eod==0.2.1
+=======
+>>>>>>> 4be99cfad216bbcaed15d1d663191cfec4e905bf
 et-xmlfile==1.1.0; python_version >= "3.6"
 exchange-calendars==4.2; python_version >= "3.8" and python_version < "4.0" and python_full_version >= "3.7.0"
 executing==1.0.0; python_full_version >= "3.6.2" and python_version >= "3.8"
@@ -253,6 +257,53 @@ wrapt==1.14.1; python_full_version >= "3.7.1" and python_full_version < "4.0.0" 
 wsproto==1.2.0; python_version >= "3.7" and python_version < "4.0" and python_full_version >= "3.7.0"
 xlsxwriter==3.0.3; python_version >= "3.7"
 yarl==1.7.2; python_version >= "3.6"
+<<<<<<< HEAD
+yfinance~=0.1.72
+zipp==3.8.0; python_version < "3.10" and python_version >= "3.7"
+=======
 yfinance==0.1.74
 zipp==3.8.1; python_version < "3.10" and python_version >= "3.7"
+>>>>>>> 4be99cfad216bbcaed15d1d663191cfec4e905bf
 zope.interface==5.4.0; python_version >= "3.5" and python_full_version < "3.0.0" or python_full_version >= "3.5.0" and python_version >= "3.5"
+
+pandas~=1.4.2
+beautifulsoup4~=4.11.1
+selenium~=4.3.0
+python-dotenv~=0.19.2
+plotly~=5.9.0
+numpy~=1.21.2
+requests~=2.28.1
+scipy~=1.8.1
+datetime~=4.4
+finvizfinance~=0.14.3
+matplotlib~=3.5.2
+pillow~=9.1.1
+pytz~=2022.1
+pytest~=6.2.5
+pyyaml~=6.0
+bt~=0.2.9
+openpyxl~=3.0.10
+setuptools~=61.2.0
+seaborn~=0.11.2
+praw~=7.6.0
+tqdm~=4.64.0
+prawcore~=2.3.0
+psaw~=0.0.12
+scikit-learn~=1.1.1
+python-dateutil~=2.8.2
+statsmodels~=0.13.2
+pmdarima~=1.8.5
+detecta~=0.0.5
+pymongo~=3.11.0
+quandl~=3.7.0
+valinvest~=0.0.2
+rapidfuzz~=1.9.1
+investpy~=1.0.8
+jinja2~=3.0.3
+papermill~=2.3.4
+reportlab~=3.6.10
+urllib3~=1.26.9
+linearmodels~=4.27
+regex~=2022.3.2
+rich~=10.16.2
+holidays~=0.11.3.1
