@@ -72,7 +72,6 @@
     <li><a href="#license">License</a></li>
     <li><a href="#disclaimer">Disclaimer</a></li>
     <li><a href="#contacts">Contacts</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
 
@@ -164,32 +163,20 @@ If you want to say hi, or are interested in partnering with us, feel free to rea
 
 Feel free to share loss porn, memes or any questions at:
 
-- Discord: <https://discord.gg/Up2QGbMKHY>
 - Twitter: [@openbb_finance](https://twitter.com/openbb_finance)
-- Reddit: <https://reddit.com/r/openbb>
+- Discord: <openbb.co/discord>
+- Reddit: <openbb.co/reddit>
 
 ### Contributors
 
 <a href="https://github.com/OpenBB-finance/OpenBBTerminal/graphs/contributors">
-   <img src="https://contributors-img.web.app/image?repo=OpenBB-finance/OpenBBTerminal" height="276"/>
+   <img src="https://contributors-img.web.app/image?repo=OpenBB-finance/OpenBBTerminal" width="500"/>
 </a>
 
 ## Star History
 
 [![Star History Chart](https://api.star-history.com/svg?repos=openbb-finance/OpenBBTerminal&type=Date)](https://star-history.com/#openbb-finance/OpenBBTerminal&Date)
 
-## Acknowledgments
-
-- [VICE article - Gamestonk Terminal Is a DIY, Meme Stock Version of Bloomberg Terminal](https://www.vice.com/en/article/qjp9vp/gamestonk-terminal-is-a-diy-meme-stock-version-of-bloomberg-terminal)
-- [Daily Fintech article - Never underestimate Bloomberg, but here are 5 reasons why the Gamestonk Terminal is a contender](https://dailyfintech.com/2021/02/25/never-underestimate-bloomberg-but-here-are-5-reasons-why-the-gamestonk-terminal-is-a-contender/)
-- [HackerNews - Show HN: Can’t afford Bloomberg Terminal? No prob, I built the next best thing](https://news.ycombinator.com/item?id=26258773)
-- [Reddit r/algotrading - Gamestonk Terminal: The next best thing after Bloomberg Terminal.](https://www.reddit.com/r/algotrading/comments/m4uvza/gamestonk_terminal_the_next_best_thing_after/)
-- [Reddit r/Python - Gamestonk Terminal: The equivalent to an open-source python Bloomberg Terminal.](https://www.reddit.com/r/Python/comments/m515yk/gamestonk_terminal_the_equivalent_to_an/)
-- [Reddit r/Superstonk - Move over Bloomberg Terminal, here comes Gamestonk Terminal](https://www.reddit.com/r/Superstonk/comments/mx2cjh/move_over_bloomberg_terminal_here_comes_gamestonk/)
-- [Spotlight: Didier Lopes. Creator of Gamestonk Terminal](https://deepsource.io/spotlight/didier-lopes/)
-- [Reddit r/Superstonk - Gamestonk Terminal - We are very much alive](https://www.reddit.com/r/Superstonk/comments/o502i8/gamestonk_terminal_we_are_very_much_alive/)
-- [Medium- Gamestonk Terminal. Can't Stop, Won't Stop](https://dro-lopes.medium.com/gamestonk-terminal-cant-stop-won-t-stop-e635662d6f2e)
-- [Gamestonk Terminal: UX/UI >> Features](https://dro-lopes.medium.com/gamestonk-terminal-ux-features-f9754b484919)
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
