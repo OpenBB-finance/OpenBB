@@ -164,13 +164,13 @@ If you want to say hi, or are interested in partnering with us, feel free to rea
 Feel free to share loss porn, memes or any questions at:
 
 - Twitter: [@openbb_finance](https://twitter.com/openbb_finance)
-- Discord: <openbb.co/discord>
-- Reddit: <openbb.co/reddit>
+- Discord: [openbb.co/discord](https://openbb.co/discord)
+- Reddit: [openbb.co/reddit](https://openbb.co/reddit)
 
 ### Contributors
 
 <a href="https://github.com/OpenBB-finance/OpenBBTerminal/graphs/contributors">
-   <img src="https://contributors-img.web.app/image?repo=OpenBB-finance/OpenBBTerminal" width="500"/>
+   <img src="https://contributors-img.web.app/image?repo=OpenBB-finance/OpenBBTerminal" width="1000"/>
 </a>
 
 ## Star History
