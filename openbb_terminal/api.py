@@ -1317,10 +1317,11 @@ functions = {
         "model": "openbb_terminal.stocks.comparison_analysis.marketwatch_model.get_cashflow_comparison"
     },
     "stocks.ca.income": {
-        "model": "openbb_terminal.stocks.comparison_analysis.marketwatch_model.get_income_comparison"
+        "model": "openbb_terminal.stocks.comparison_analysis.marketwatch_model.get_income_comparison",
+        "view": "openbb_terminal.stocks.comparison_analysis.marketwatch_view.display_income_comparison",
     },
     "stocks.ca.polygon_peers": {
-        "model": "openbb_terminal.stocks.comparison_analysis.polygon_model.get_similar_companies"
+        "model": "openbb_terminal.stocks.comparison_analysis.polygon_model.get_similar_companies",
     },
     "stocks.ca.hist": {
         "model": "openbb_terminal.stocks.comparison_analysis.yahoo_finance_model.get_historical",
