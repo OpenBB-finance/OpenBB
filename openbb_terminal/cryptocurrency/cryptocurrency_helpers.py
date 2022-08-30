@@ -1276,7 +1276,7 @@ def plot_chart(
     currency: str = "",
     source: str = "",
     exchange: str = "",
-    _interval: str = "",
+    interval: str = "",  # pylint: disable=unused-argument
 ) -> None:
     """Load data for Technical Analysis
 
