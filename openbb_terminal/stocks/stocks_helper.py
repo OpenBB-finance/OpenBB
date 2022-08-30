@@ -787,8 +787,10 @@ def load(
                     console.print(
                         "Get your Key here: https://eodhistoricaldata.com/r/?ref=869U7F4J\n"
                     )
-                elif "401 Client Error: Unauthorized for url:"  in str(e):
-                    console.print("[red]Unauthorized API Key for eodhistoricaldata [/red]")
+                elif "401 Client Error: Unauthorized for url:" in str(e):
+                    console.print(
+                        "[red]Unauthorized API Key for eodhistoricaldata [/red]"
+                    )
                     console.print(
                         "Get your Key here: https://eodhistoricaldata.com/r/?ref=869U7F4J\n"
                     )
