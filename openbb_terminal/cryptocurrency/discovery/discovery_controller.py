@@ -84,6 +84,7 @@ class DiscoveryController(BaseController):
             }
 
             choices["support"] = self.SUPPORT_CHOICES
+            choices["about"] = self.ABOUT_CHOICES
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -358,7 +359,7 @@ class DiscoveryController(BaseController):
             dest="sortby",
             nargs="+",
             help="Sort by given column. Default: Market Cap Rank",
-            default=["Market Cap"],
+            default=["market_cap"],
         )
 
         ns_parser = self.parse_known_args_and_warn(
@@ -434,13 +435,14 @@ class DiscoveryController(BaseController):
             prog="cgtrending",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            description="""Discover trending coins.
-                Use --limit parameter to display only N number of records,
+            description="""Discover trending coins (Top-7) on CoinGecko in the last 24 hours
             """,
         )
 
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser,
+            other_args,
+            EXPORT_ONLY_RAW_DATA_ALLOWED,
         )
         if ns_parser:
             pycoingecko_view.display_trending(
@@ -491,7 +493,7 @@ class DiscoveryController(BaseController):
             coinmarketcap_view.display_cmc_top_coins(
                 top=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                descend=not ns_parser.descend,
                 export=ns_parser.export,
             )
 
@@ -569,7 +571,7 @@ class DiscoveryController(BaseController):
             coinpaprika_view.display_search_results(
                 top=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 export=ns_parser.export,
                 query=" ".join(ns_parser.query),
                 category=ns_parser.category,

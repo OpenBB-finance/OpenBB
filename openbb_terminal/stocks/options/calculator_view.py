@@ -1,12 +1,12 @@
 import logging
-from typing import Dict, Optional, List
+from typing import Dict, List, Optional
 
 from matplotlib import pyplot as plt
 
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import plot_autoscale, is_valid_axes_count
+from openbb_terminal.helper_funcs import is_valid_axes_count, plot_autoscale
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.options import calculator_model
 
@@ -15,10 +15,10 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def view_calculator(
-    strike: float,
-    premium: float,
-    put: bool,
-    sell: bool,
+    strike: float = 10,
+    premium: float = 1,
+    put: bool = False,
+    sell: bool = False,
     external_axes: Optional[List[plt.Axes]] = None,
     **kwargs: Dict[str, int],
 ):

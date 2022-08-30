@@ -30,7 +30,7 @@ def test_capm_information(mocker, recorder):
 
     mocker.patch("yfinance.download", side_effect=mock_yf_download)
 
-    result_tuple = factors_model.capm_information(ticker="PM")
+    result_tuple = factors_model.capm_information(symbol="PM")
 
     result_tuple_rounded = [round(number, 4) for number in result_tuple]
     recorder.capture(result_tuple_rounded)

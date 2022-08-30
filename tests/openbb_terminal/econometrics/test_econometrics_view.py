@@ -27,6 +27,7 @@ def test_show_options(datasets, dataset_name):
     econometrics_view.show_options(datasets=datasets, dataset_name=dataset_name)
 
 
+@pytest.mark.skip
 @pytest.mark.vcr()
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
@@ -117,8 +118,8 @@ def test_display_norm(data, dataset, column, plot):
 def test_display_root(df, dataset_name, column_name, fuller_reg, kpss_reg):
     econometrics_view.display_root(
         df=df,
-        dataset_name=dataset_name,
-        column_name=column_name,
+        dataset=dataset_name,
+        column=column_name,
         fuller_reg=fuller_reg,
         kpss_reg=kpss_reg,
     )
@@ -163,8 +164,8 @@ def test_display_root(df, dataset_name, column_name, fuller_reg, kpss_reg):
 )
 def test_display_granger(time_series_y, time_series_x, lags, confidence_level):
     econometrics_view.display_granger(
-        time_series_y=time_series_y,
-        time_series_x=time_series_x,
+        dependent_series=time_series_y,
+        independent_series=time_series_x,
         lags=lags,
         confidence_level=confidence_level,
     )

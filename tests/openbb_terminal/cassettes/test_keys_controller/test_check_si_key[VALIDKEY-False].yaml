@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - python-requests/2.27.1
+      - python-requests/2.28.1
     method: GET
     uri: https://api.sentimentinvestor.com/v1/trending?token=VALIDKEY
   response:
@@ -23,7 +23,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Sat, 09 Apr 2022 13:55:07 GMT
+      - Mon, 11 Jul 2022 13:59:54 GMT
       Etag:
       - W/"21-Obpk/qH/cxSMkfn074GB3iqvKjY"
       X-Powered-By:

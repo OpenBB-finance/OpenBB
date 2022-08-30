@@ -1,0 +1,4 @@
+         Date   Time Currency Importance                     Event Actual Forecast Previous
+0  2022-07-08  08:30      USD       High   Nonfarm Payrolls  (Jun)   372K     268K     384K
+1  2022-07-08  08:30      USD       High  Unemployment Rate  (Jun)   3.6%     3.6%     3.6%
+2  2022-07-14  08:30      USD       High    Initial Jobless Claims            240K     235K

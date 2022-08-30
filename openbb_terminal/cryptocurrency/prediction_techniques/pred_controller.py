@@ -84,6 +84,7 @@ class PredictionTechniquesController(CryptoBaseController):
             choices["mc"]["--dist"] = {c: {} for c in mc_model.DISTRIBUTIONS}
 
             choices["support"] = self.SUPPORT_CHOICES
+            choices["about"] = self.ABOUT_CHOICES
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -230,13 +231,13 @@ class PredictionTechniquesController(CryptoBaseController):
                     )
 
             ets_view.display_exponential_smoothing(
-                ticker=self.coin,
-                values=self.data[self.target],
+                dataset=self.coin,
+                data=self.data[self.target],
                 n_predict=ns_parser.n_days,
                 trend=ns_parser.trend,
                 seasonal=ns_parser.seasonal,
                 seasonal_periods=ns_parser.seasonal_periods,
-                s_end_date=ns_parser.s_end_date,
+                end_date=ns_parser.s_end_date,
                 export=ns_parser.export,
                 time_res=self.resolution,
             )
@@ -319,7 +320,7 @@ class PredictionTechniquesController(CryptoBaseController):
         )
         if ns_parser:
             knn_view.display_k_nearest_neighbors(
-                ticker=self.coin,
+                dataset=self.coin,
                 data=self.data[self.target],
                 n_neighbors=ns_parser.n_neighbors,
                 n_input_days=ns_parser.n_inputs,
@@ -424,7 +425,7 @@ class PredictionTechniquesController(CryptoBaseController):
                 n_input=ns_parser.n_inputs,
                 n_predict=ns_parser.n_days,
                 n_jumps=ns_parser.n_jumps,
-                s_end_date=ns_parser.s_end_date,
+                end_date=ns_parser.s_end_date,
                 export=ns_parser.export,
                 time_res=self.resolution,
             )
@@ -530,7 +531,7 @@ class PredictionTechniquesController(CryptoBaseController):
                 seasonal=ns_parser.b_seasonal,
                 ic=ns_parser.s_ic,
                 results=ns_parser.b_results,
-                s_end_date=ns_parser.s_end_date,
+                end_date=ns_parser.s_end_date,
                 export=ns_parser.export,
                 time_res=self.resolution,
             )

@@ -15,16 +15,20 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def get_financials(
-    ticker: str, financial: str, quarterly: bool = False
+    symbol: str, statement: str, quarterly: bool = False, ratios: bool = False
 ) -> pd.DataFrame:
-    """Get ticker financials from polygon
+    """Get ticker financial statements from polygon
 
     Parameters
     ----------
-    ticker: str
-        Stock ticker
+    symbol: str
+        Stock ticker symbol
+    statement: str
+        Financial statement data to retrieve, can be balance, income or cash
     quarterly:bool
-        Flag to get quarterly reports
+        Flag to get quarterly reports, by default False
+    ratios: bool
+        Shows percentage change, by default False
 
     Returns
     -------
@@ -34,18 +38,18 @@ def get_financials(
     # Note the filing date is over 30 years so will always get as many as allowed
     json_request = requests.get(
         "https://api.polygon.io/vX/reference/financials?"
-        f"ticker={ticker}"
+        f"ticker={symbol}"
         f"&timeframe={['annual','quarterly'][quarterly]}"
         "&limit=100"
         "&filing_date.gte=1980-01-01"
         f"&apiKey={cfg.API_POLYGON_KEY}"
     ).json()
 
-    if financial == "cash" and quarterly:
+    if statement == "cash" and quarterly:
         console.print(
             "[red]Quarterly information not available for statement of cash flows[/red]\n"
         )
-    if financial not in ["balance", "income", "cash"]:
+    if statement not in ["balance", "income", "cash"]:
         console.print("financial must be 'balance' or 'income'.\n")
         return pd.DataFrame()
 
@@ -103,7 +107,7 @@ def get_financials(
                 cash_flows = cash_flows[["value"]]
                 cash_flows.columns = [single_thing["filing_date"]]
 
-                first = False
+            first = False
         else:
             values = pd.DataFrame(
                 pd.DataFrame.from_dict(
@@ -118,8 +122,8 @@ def get_financials(
                     single_thing["financials"]["income_statement"], orient="index"
                 ).value
             )
+            values.columns = [single_thing["filing_date"]]
             income_statements = pd.concat([income_statements, values], axis=1)
-
             if not quarterly:
                 values = pd.DataFrame(
                     pd.DataFrame.from_dict(
@@ -128,10 +132,30 @@ def get_financials(
                     ).value
                 )
                 cash_flows = pd.concat([cash_flows, values], axis=1)
-    if financial == "balance":
-        return balance_sheets
-    if financial == "income":
-        return income_statements
-    if financial == "cash":
-        return cash_flows
-    return pd.DataFrame()
+    if statement == "balance":
+        df_fa = balance_sheets
+    elif statement == "income":
+        df_fa = income_statements
+    elif statement == "cash":
+        df_fa = cash_flows
+    else:
+        return pd.DataFrame()
+
+    if ratios:
+        types = df_fa.copy().applymap(lambda x: isinstance(x, (float, int)))
+        types = types.all(axis=1)
+
+        # For rows with complete data
+        valid = []
+        i = 0
+        for row in types:
+            if row:
+                valid.append(i)
+            i += 1
+        df_fa_pc = df_fa.iloc[valid].pct_change(axis="columns", periods=-1).fillna(0)
+        j = 0
+        for i in valid:
+            df_fa.iloc[i] = df_fa_pc.iloc[j]
+            j += 1
+
+    return df_fa

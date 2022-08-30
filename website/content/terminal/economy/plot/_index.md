@@ -2,9 +2,7 @@
 usage: plot [-y1 YAXIS1 [YAXIS1 ...]] [-y2 YAXIS2 [YAXIS2 ...]] [-h] [--export {csv,json,xlsx}] [--raw] [-l LIMIT]
 ```
 
-This command can plot any data on two y-axes obtained from the macro, fred, index and treasury commands. To be able to use this data, use the -st argument available within these commands. For example 'macro -p GDP -c Germany
-Netherlands -st' will store the data for usage in this command. Therefore, it allows you to plot different time series in one graph. You can use the 'options' command to show the required arguments to be entered. The example above
-could be plotted the following way: 'plot -y1 Germany_GDP -y2 Netherlands_GDP' or 'plot -y1 Germany_GDP Netherlands_GDP'
+This command can plot any data on two y-axes obtained from the macro, fred, index and treasury commands. To be able to use this data, just load the available series from the previous commands. For example 'macro -p GDP -c Germany Netherlands' will store the data for usage in this command. Therefore, it allows you to plot different time series in one graph. The example above could be plotted the following way: 'plot --y1 Germany_GDP --y2 Netherlands_GDP' or 'plot --y1 Germany_GDP Netherlands_GDP'
 
 ```
 optional arguments:

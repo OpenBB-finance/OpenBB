@@ -3,9 +3,10 @@
 
 Coin: 
 Source: 
+Interval (min): 
 
     headlines          crypto sentiment from 15+ major news headlines                  [FinBrain]
-[unvl]    chart              view a candle chart for a specific cryptocurrency[/unvl]
+[unvl]    candle             view a candle chart for a specific cryptocurrency[/unvl]
 [unvl]    prt                potential returns tool - check how much upside if ETH reaches BTC market cap[/unvl]
 
 >   disc               discover trending cryptocurrencies,     top gainers, losers, top sentiment

@@ -16,9 +16,11 @@ Momentum:
     cci                commodity channel index
     macd               moving average convergence/divergence
     rsi                relative strength index
+    rsp                relative strength percentile
     stoch              stochastic oscillator
     fisher             fisher transform
     cg                 centre of gravity
+    clenow             clenow volatility adjusted momentum
 Trend:
     adx                average directional movement index
     aroon              aroon indicator

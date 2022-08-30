@@ -86,6 +86,7 @@ class FundController(BaseController):
             choices["search"]["--sortby"] = {c: None for c in self.search_cols}
 
             choices["support"] = self.SUPPORT_CHOICES
+            choices["about"] = self.ABOUT_CHOICES
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -174,7 +175,6 @@ class FundController(BaseController):
             help="Field to search by",
         )
         parser.add_argument(
-            "-f",
             "--fund",
             help="Fund string to search for",
             dest="fund",
@@ -207,7 +207,7 @@ class FundController(BaseController):
             default=False,
         )
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-f")
+            other_args.insert(0, "--fund")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             search_string = " ".join(ns_parser.fund)
@@ -217,7 +217,7 @@ class FundController(BaseController):
                 country=self.country,
                 limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                ascending=ns_parser.ascending,
+                ascend=ns_parser.ascending,
             )
         return self.queue
 
@@ -276,7 +276,6 @@ class FundController(BaseController):
             description="Get historical data.",
         )
         parser.add_argument(
-            "-f",
             "--fund",
             help="Fund string to search for",
             dest="fund",
@@ -310,7 +309,7 @@ class FundController(BaseController):
             help="The ending date (format YYYY-MM-DD) of the fund",
         )
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-f")
+            other_args.insert(0, "--fund")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             parsed_fund = " ".join(ns_parser.fund)
@@ -320,8 +319,8 @@ class FundController(BaseController):
                 self.fund_symbol,
                 self.country,
             ) = investpy_model.get_fund_historical(
-                fund=parsed_fund,
-                name=ns_parser.name,
+                name=parsed_fund,
+                by_name=ns_parser.name,
                 country=self.country,
                 start_date=ns_parser.start,
                 end_date=ns_parser.end,
@@ -357,7 +356,7 @@ Potential errors
                 )
                 return self.queue
             investpy_view.display_historical(
-                self.data, fund=self.fund_name, export=ns_parser.export
+                self.data, name=self.fund_name, export=ns_parser.export
             )
         return self.queue
 
@@ -437,7 +436,6 @@ Potential errors
             description="Show allocation of a swedish fund.",
         )
         parser.add_argument(
-            "-f",
             "--focus",
             dest="focus",
             type=str,

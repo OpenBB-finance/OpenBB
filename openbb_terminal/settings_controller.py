@@ -50,7 +50,8 @@ class SettingsController(BaseController):
         "lang",
         "tz",
         "export",
-        "preferred_data_source_file",
+        "source",
+        "flair",
     ]
     PATH = "/settings/"
 
@@ -79,6 +80,7 @@ class SettingsController(BaseController):
         mt.add_info("_info_")
         mt.add_raw("\n")
         mt.add_setting("dt", obbff.USE_DATETIME)
+        mt.add_cmd("flair")
         mt.add_raw("\n")
         mt.add_param("_flair", get_flair())
         mt.add_raw("\n")
@@ -125,9 +127,9 @@ class SettingsController(BaseController):
         mt.add_raw("\n")
         mt.add_param("_monitor", cfg_plot.MONITOR)
         mt.add_raw("\n")
-        mt.add_cmd("preferred_data_source_file")
+        mt.add_cmd("source")
         mt.add_raw("\n")
-        mt.add_param("_preferred_data_source_file", obbff.PREFERRED_DATA_SOURCE_FILE)
+        mt.add_param("_data_source", obbff.PREFERRED_DATA_SOURCE_FILE)
         mt.add_raw("\n")
 
         console.print(text=mt.menu_text, menu="Settings")
@@ -140,13 +142,12 @@ class SettingsController(BaseController):
         console.print("")
 
     @log_start_end(log=logger)
-    def call_preferred_data_source_file(self, other_args: List[str]):
-        """Process preferred data source file command"""
-
+    def call_source(self, other_args: List[str]):
+        """Process source command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="preferred_data_source_file",
+            prog="source",
             description="Preferred data source file.",
         )
         parser.add_argument(
@@ -206,11 +207,12 @@ class SettingsController(BaseController):
             type=int,
             dest="value",
             help="value",
+            required="-h" not in other_args,
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-v")
         ns_parser = parse_simple_args(parser, other_args)
-        if ns_parser:
+        if ns_parser and ns_parser.value:
             set_key(obbff.ENV_FILE, "OPENBB_PLOT_DPI", str(ns_parser.value))
             cfg_plot.PLOT_DPI = ns_parser.value
             console.print("")
@@ -230,6 +232,7 @@ class SettingsController(BaseController):
             type=int,
             dest="value",
             help="value",
+            required="-h" not in other_args,
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-v")
@@ -254,6 +257,7 @@ class SettingsController(BaseController):
             type=int,
             dest="value",
             help="value",
+            required="-h" not in other_args,
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-v")
@@ -401,6 +405,7 @@ class SettingsController(BaseController):
                 )
             console.print("")
 
+    @log_start_end(log=logger)
     def call_tz(self, other_args: List[str]):
         """Process tz command"""
         parser = argparse.ArgumentParser(
@@ -426,6 +431,36 @@ class SettingsController(BaseController):
             if ns_parser.timezone:
                 replace_user_timezone(ns_parser.timezone.replace("_", "/", 1))
 
+    @log_start_end(log=logger)
+    def call_flair(self, other_args: List[str]):
+        """Process flair command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="flair",
+            description="set the flair emoji to be used",
+        )
+        parser.add_argument(
+            "-e",
+            "--emoji",
+            type=str,
+            dest="emoji",
+            help="flair emoji to be used",
+            nargs="+",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-e")
+        ns_parser = parse_simple_args(parser, other_args)
+        if ns_parser:
+            if not ns_parser.emoji:
+                ns_parser.emoji = ""
+            else:
+                ns_parser.emoji = " ".join(ns_parser.emoji)
+            set_key(obbff.ENV_FILE, "OPENBB_USE_FLAIR", str(ns_parser.emoji))
+            obbff.USE_FLAIR = ns_parser.emoji
+            console.print("")
+
+    @log_start_end(log=logger)
     def call_export(self, other_args: List[str]):
         """Process export command"""
         parser = argparse.ArgumentParser(
@@ -435,7 +470,6 @@ class SettingsController(BaseController):
             description="Select folder where to export data",
         )
         parser.add_argument(
-            "-f",
             "--folder",
             type=str,
             dest="folder",
@@ -443,7 +477,7 @@ class SettingsController(BaseController):
             default="default",
         )
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-f")
+            other_args.insert(0, "--folder")
         ns_parser = parse_simple_args(parser, other_args)
 
         if ns_parser:
@@ -457,7 +491,9 @@ class SettingsController(BaseController):
                 export_path += "/".join([ns_parser.folder] + self.queue)
                 self.queue = []
 
-                base_path = os.path.dirname(os.path.abspath(__file__))
+                export_path = export_path.replace("'", "").replace('"', "")
+
+                base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
                 default_path = os.path.join(base_path, "exports")
 
                 success_export = False

@@ -9,7 +9,7 @@ The ETF menu enables you to lookup any ETF (<a href="https://openbb-finance.gith
 obtain an <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/etf/overview/" target="_blank">overview</a>,
 <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/etf/holdings/" target="_blank">holdings</a>,
 <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/etf/weights/" target="_blank">weights</a> and 
-<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/etf/news/" target="_blank">news</a> about the chosen ETF. Furthermore, sub-menus reside in this menu that can be used to <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/comparison_analysis/" target="_blank">compare companies</a> within the ETF, discover gainers and losers within <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/etf/disc/" target="_blank">discovery</a> and apply advanced <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/common/technical_analysis/" target="_blank">technical indicators</a> and <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/common/prediction_techniques/" target="_blank">prediction techniques</a>. Lastly,
+<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/etf/news/" target="_blank">news</a> about the chosen ETF. Furthermore, sub-menus reside in this menu that can be used to <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/comparison_analysis/" target="_blank">compare companies</a> within the ETF, discover gainers and losers within <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/etf/disc/" target="_blank">discovery</a> and apply advanced <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/common/ta/" target="_blank">technical indicators</a> and <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/common/prediction_techniques/" target="_blank">prediction techniques</a>. Lastly,
 it also has the option to export multiple ETFs to Excel with <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/etf/pir/" target="_blank">pir</a>.
 
 
@@ -93,8 +93,8 @@ The ETF menu has a few sub-menus available to delve further into a specific ETF 
 - <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/comparison_analysis/" target="_blank">Introduction to Comparison Analysis</a>: have the ability to compare companies within the ETF based on, among other things, correlation, financial statements, sentiment, valuations and performance.
 - <a href="disc" target="_blank">Introduction to ETF Discovery</a>: discover trending ETF based on their returns (gainers and decliners) as well as activity.
 - <a href="scr" target="_blank">Introduction to ETF Screener</a>: provides the ability to screen companies within the ETF based on a preset as well as the ability to screen by category.
-- <a href="/OpenBBTerminal/terminal/common/technical_analysis" target="_blank">Introduction to Technical Analysis</a>: analysis the chosen ETF's historical data extensively with moving averages and momentum, trend, volatility and volume indicators.
-- <a href="/OpenBBTerminal/terminal/common/prediction_techniques" target="_blank">Introduction to Prediction Techniques</a>: apply advanced AI and Machine Learning models to form prediction of future ETF prices including Recurrent Neural Network (RNN),
+- <a href="/OpenBBTerminal/terminal/common/ta" target="_blank">Introduction to Technical Analysis</a>: analysis the chosen ETF's historical data extensively with moving averages and momentum, trend, volatility and volume indicators.
+- <a href="/OpenBBTerminal/terminal/common/pred" target="_blank">Introduction to Prediction Techniques</a>: apply advanced AI and Machine Learning models to form prediction of future ETF prices including Recurrent Neural Network (RNN),
 Autoregressive Integrated Moving Average (ARIMA) and Monte Carlo forecasting.
 
 ## Examples

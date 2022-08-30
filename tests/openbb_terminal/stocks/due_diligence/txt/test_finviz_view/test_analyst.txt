@@ -5,4 +5,3 @@ date
 2021-10-21  [yellow]Reiterated[/yellow]      Wells Fargo  Equal Weight        660.0      860.0
 2021-10-21  [yellow]Reiterated[/yellow]          Wedbush    Outperform       1000.0     1100.0
 2021-10-21  [yellow]Reiterated[/yellow]  Robert W. Baird    Outperform        764.0      888.0
-

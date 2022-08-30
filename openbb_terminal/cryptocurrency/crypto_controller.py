@@ -84,15 +84,19 @@ class CryptoController(CryptoBaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
-            choices["load"]["-d"] = {
-                c: {} for c in ["1", "7", "14", "30", "90", "180", "365"]
+            choices["load"]["-i"] = {
+                c: {}
+                for c in ["1", "5", "15", "30", "60", "240", "1440", "10080", "43200"]
             }
+            choices["load"]["--exchange"] = {c: {} for c in self.exchanges}
+            choices["load"]["--source"] = {c: {} for c in ["ccxt", "yf", "cg"]}
             choices["load"]["--vs"] = {c: {} for c in ["usd", "eur"]}
             choices["find"]["-k"] = {c: {} for c in FIND_KEYS}
             choices["headlines"] = {c: {} for c in finbrain_crypto_view.COINS}
             # choices["prt"]["--vs"] = {c: {} for c in coingecko_coin_ids} # list is huge. makes typing buggy
 
             choices["support"] = self.SUPPORT_CHOICES
+            choices["about"] = self.ABOUT_CHOICES
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -102,13 +106,18 @@ class CryptoController(CryptoBaseController):
         mt.add_cmd("load")
         mt.add_cmd("find")
         mt.add_raw("\n")
-        mt.add_param("_symbol", self.symbol.upper())
         mt.add_param(
-            "_source", "CoinGecko (Price), YahooFinance (Volume)" if self.symbol else ""
+            "_symbol", f"{self.symbol.upper()}/{self.vs.upper()}" if self.symbol else ""
         )
+        if self.source == "ccxt":
+            mt.add_param(
+                "_exchange", self.exchange if self.symbol and self.exchange else ""
+            )
+        mt.add_param("_source", self.source if self.symbol and self.source else "")
+        mt.add_param("_interval", self.current_interval)
         mt.add_raw("\n")
         mt.add_cmd("headlines", "FinBrain")
-        mt.add_cmd("chart", "", self.symbol)
+        mt.add_cmd("candle", "", self.symbol)
         mt.add_cmd("prt", "", self.symbol)
         mt.add_raw("\n")
         mt.add_menu("disc")
@@ -210,9 +219,12 @@ class CryptoController(CryptoBaseController):
                 return
 
             plot_chart(
+                exchange=self.exchange,
+                source=self.source,
                 symbol=self.symbol,
                 currency=self.current_currency,
                 prices_df=self.current_df,
+                interval=self.current_interval,
             )
 
     @log_start_end(log=logger)
@@ -300,7 +312,7 @@ class CryptoController(CryptoBaseController):
 
         if ns_parser:
             finbrain_crypto_view.display_crypto_sentiment_analysis(
-                coin=ns_parser.coin, export=ns_parser.export
+                symbol=ns_parser.coin, export=ns_parser.export
             )
 
     @log_start_end(log=logger)
@@ -328,7 +340,7 @@ class CryptoController(CryptoBaseController):
                 qa_controller,
             )
 
-            if self.current_interval != "1day":
+            if self.current_interval != "1440":
                 console.print("Only interval `1day` is possible for now.\n")
             else:
                 self.queue = self.load_class(
@@ -341,14 +353,25 @@ class CryptoController(CryptoBaseController):
     @log_start_end(log=logger)
     def call_pred(self, _):
         """Process pred command"""
-        if obbff.ENABLE_PREDICT:
+        # IMPORTANT: 8/11/22 prediction was discontinued on the installer packages
+        # because forecasting in coming out soon.
+        # This if statement disallows installer package users from using 'pred'
+        # even if they turn on the OPENBB_ENABLE_PREDICT feature flag to true
+        # however it does not prevent users who clone the repo from using it
+        # if they have ENABLE_PREDICT set to true.
+        if obbff.PACKAGED_APPLICATION or not obbff.ENABLE_PREDICT:
+            console.print(
+                "Predict is disabled. Forecasting coming soon!",
+                "\n",
+            )
+        else:
             if self.symbol:
                 try:
                     from openbb_terminal.cryptocurrency.prediction_techniques import (
                         pred_controller,
                     )
 
-                    if self.current_interval != "1day":
+                    if self.current_interval != "1440":
                         console.print("Only interval `1day` is possible for now.\n")
                     else:
                         self.queue = self.load_class(
@@ -365,11 +388,6 @@ class CryptoController(CryptoBaseController):
                 console.print(
                     "No coin selected. Use 'load' to load the coin you want to look at.\n"
                 )
-        else:
-            console.print(
-                "Predict is disabled. Check ENABLE_PREDICT flag on feature_flags.py",
-                "\n",
-            )
 
     @log_start_end(log=logger)
     def call_onchain(self, _):
@@ -458,21 +476,20 @@ class CryptoController(CryptoBaseController):
             parser,
             other_args,
             EXPORT_ONLY_RAW_DATA_ALLOWED,
-            sources=CRYPTO_SOURCES.keys(),
         )
         # TODO: merge find + display_all_coins
         if ns_parser.coin:
             find(
-                coin=ns_parser.coin,
+                query=ns_parser.coin,
                 source=ns_parser.source,
                 key=ns_parser.key,
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
             display_all_coins(
-                coin=ns_parser.coin,
+                symbol=ns_parser.coin,
                 source=ns_parser.source,
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 skip=ns_parser.skip,
                 show_all=bool("ALL" in other_args),
                 export=ns_parser.export,

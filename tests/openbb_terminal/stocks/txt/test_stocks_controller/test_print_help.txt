@@ -3,17 +3,14 @@
 
 Stock: 
 
-Datetime: 
-Timezone: 
-Exchange: 
-Market: 
-Currency: 
 Company: 
+Exchange: 
+Currency: 
 
 [unvl]    quote              view the current price for a specific stock ticker[/unvl]
 [unvl]    candle             view a candle chart for a specific stock ticker[/unvl]
-[unvl]    news               latest news of the company[/unvl]                  [News API]
-[unvl]    codes              FIGI, SIK and SIC codes codes[/unvl]               [Polygon]
+[unvl]    codes              FIGI, SIK and SIC codes codes[/unvl]                                   [Polygon]
+[unvl]    news               latest news of the company[/unvl]                                      [Feedparser / NewsApi]
 
 >   th                 trading hours,                check open markets
 >   options            options menu,                 chains, open interest, greeks, parity

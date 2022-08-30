@@ -29,7 +29,7 @@ def test_display_sentiment_analysis(color, mocker):
     mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
 
     finbrain_view.display_sentiment_analysis(
-        ticker="AAPL",
+        symbol="AAPL",
         export="",
     )
 
@@ -54,6 +54,6 @@ def test_display_sentiment_analysis_empty_df(mocker):
     )
 
     finbrain_view.display_sentiment_analysis(
-        ticker="AAPL",
+        symbol="AAPL",
         export="",
     )

@@ -131,9 +131,9 @@ class SectorIndustryAnalysisController(BaseController):
     }
 
     vis_choices = (
-        list(stockanalysis_model.sa_keys["BS"].keys())
-        + list(stockanalysis_model.sa_keys["CF"].keys())
-        + list(stockanalysis_model.sa_keys["IS"].keys())
+        list(stockanalysis_model.SA_KEYS["BS"].keys())
+        + list(stockanalysis_model.SA_KEYS["CF"].keys())
+        + list(stockanalysis_model.SA_KEYS["IS"].keys())
     )
 
     mktcap_choices = [
@@ -169,10 +169,10 @@ class SectorIndustryAnalysisController(BaseController):
         """Constructor"""
         super().__init__(queue)
 
-        self.country = "United States"
-        self.sector = "Financial Services"
-        self.industry = "Financial Data & Stock Exchanges"
-        self.mktcap = "Large"
+        self.country = ""
+        self.sector = ""
+        self.industry = ""
+        self.mktcap = ""
         self.exclude_exchanges = True
         self.period = "Annual"
 
@@ -238,9 +238,12 @@ class SectorIndustryAnalysisController(BaseController):
             choices["clear"] = {c: None for c in self.clear_choices}
             choices["metric"] = {c: None for c in self.metric_choices}
             choices["support"] = self.SUPPORT_CHOICES
+            choices["about"] = self.ABOUT_CHOICES
             # This menu contains dynamic choices that may change during runtime
             self.choices = choices
             self.completer = NestedCompleter.from_nested_dict(choices)
+
+            self.update_runtime_choices()
 
     def update_runtime_choices(self):
         """Update runtime choices"""
@@ -303,7 +306,6 @@ class SectorIndustryAnalysisController(BaseController):
         mt.add_raw("\n")
         mt.add_param("_returned_tickers", ", ".join(self.tickers))
         mt.add_menu("ca", self.tickers)
-        mt.add_raw("\n")
         console.print(text=mt.menu_text, menu="Stocks - Sector and Industry Analysis")
 
     def custom_reset(self):
@@ -795,22 +797,36 @@ class SectorIndustryAnalysisController(BaseController):
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            (
-                self.stocks_data,
-                self.tickers,
-            ) = financedatabase_view.display_bars_financials(
-                self.metric_yf_keys[ns_parser.metric][0],
-                self.metric_yf_keys[ns_parser.metric][1],
-                self.country,
-                self.sector,
-                self.industry,
-                self.mktcap,
-                self.exclude_exchanges,
-                ns_parser.limit,
-                ns_parser.export,
-                ns_parser.raw,
-                self.stocks_data,
-            )
+            if not self.country and not self.sector and not self.industry:
+                console.print(
+                    "[red]Select at least one filter from sector, country or industry.[/red]\n"
+                )
+            else:
+                try:
+                    console.print(
+                        "[param]If it takes too long, you can use 'Ctrl + C' to cancel.\n[/param]"
+                    )
+                    (
+                        self.stocks_data,
+                        self.tickers,
+                    ) = financedatabase_view.display_bars_financials(
+                        self.metric_yf_keys[ns_parser.metric][0],
+                        self.metric_yf_keys[ns_parser.metric][1],
+                        self.country,
+                        self.sector,
+                        self.industry,
+                        self.mktcap,
+                        self.exclude_exchanges,
+                        ns_parser.limit,
+                        ns_parser.export,
+                        ns_parser.raw,
+                        self.stocks_data,
+                    )
+                except KeyboardInterrupt:
+                    console.print(
+                        "[param]For a faster search, ensure that you select at least one filter "
+                        "from sector, country or industry.\n[/param]"
+                    )
 
     @log_start_end(log=logger)
     def call_satma(self, other_args: List[str]):
@@ -848,11 +864,11 @@ class SectorIndustryAnalysisController(BaseController):
                 console.print(f"{ns_parser.statement} is not a valid option.")
 
             help_text += f"\n{statement_string[ns_parser.statement]}\n"
-            for k, v in stockanalysis_model.sa_keys[ns_parser.statement].items():
+            for k, v in stockanalysis_model.SA_KEYS[ns_parser.statement].items():
                 help_text += f"  {k} {(10 - len(k)) * ' '} {v} \n"
 
         else:
-            for statement, statement_value in stockanalysis_model.sa_keys.items():
+            for statement, statement_value in stockanalysis_model.SA_KEYS.items():
                 help_text += f"\n{statement_string[statement]}\n"
                 for k, v in statement_value.items():
                     help_text += f"  {k} {(10 - len(k)) * ' '} {v} \n"
@@ -876,7 +892,6 @@ class SectorIndustryAnalysisController(BaseController):
             help="Metric to visualize",
             choices=self.vis_choices,
         )
-
         parser.add_argument(
             "-p",
             "--period",
@@ -885,45 +900,56 @@ class SectorIndustryAnalysisController(BaseController):
             help="Limit number of periods to display",
             type=check_positive,
         )
-
         parser.add_argument(
-            "-cc",
-            "--convert_currency",
-            dest="convert_currency",
+            "-c",
+            "--currency",
+            dest="currency",
             help="Convert the currency of the chosen country to a specified currency. By default, this is set "
             "to USD (US Dollars).",
             default="USD",
         )
-
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-m")
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, limit=10, raw=True
         )
         if ns_parser:
-            if ns_parser.convert_currency != self.currency:
-                self.stocks_data = {}
-            (
-                self.stocks_data,
-                self.tickers,
-            ) = stockanalysis_view.display_plots_financials(
-                finance_key=ns_parser.metric,
-                sa_dict=stockanalysis_model.sa_keys,
-                country=self.country,
-                sector=self.sector,
-                industry=self.industry,
-                period=self.period,
-                period_length=ns_parser.period,
-                marketcap=self.mktcap,
-                convert_currency=ns_parser.convert_currency,
-                exclude_exchanges=self.exclude_exchanges,
-                limit=ns_parser.limit,
-                export=ns_parser.export,
-                raw=ns_parser.raw,
-                already_loaded_stocks_data=self.stocks_data,
-            )
+            if not self.country and not self.sector and not self.industry:
+                console.print(
+                    "[red]Select at least one filter from sector, country or industry.[/red]\n"
+                )
+            else:
+                try:
+                    console.print(
+                        "[param]If it takes too long, you can use 'Ctrl + C' to cancel.\n[/param]"
+                    )
+                    if ns_parser.currency != self.currency:
+                        self.stocks_data = {}
+                    (
+                        self.stocks_data,
+                        self.tickers,
+                    ) = stockanalysis_view.display_plots_financials(
+                        finance_key=ns_parser.metric,
+                        country=self.country,
+                        sector=self.sector,
+                        industry=self.industry,
+                        period=self.period,
+                        period_length=ns_parser.period,
+                        marketcap=self.mktcap,
+                        currency=ns_parser.currency,
+                        exclude_exchanges=self.exclude_exchanges,
+                        limit=ns_parser.limit,
+                        export=ns_parser.export,
+                        raw=ns_parser.raw,
+                        already_loaded_stocks_data=self.stocks_data,
+                    )
 
-            self.currency = ns_parser.convert_currency
+                    self.currency = ns_parser.currency
+                except KeyboardInterrupt:
+                    console.print(
+                        "[param]For a faster search, ensure that you select at least one filter"
+                        "from sector, country or industry.\n[/param]"
+                    )
 
     @log_start_end(log=logger)
     def call_cps(self, other_args: List[str]):

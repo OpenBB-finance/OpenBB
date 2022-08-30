@@ -20,5 +20,5 @@ def vcr_config():
 )
 def test_display_fundamentals(financial, quarterly):
     polygon_view.display_fundamentals(
-        ticker="AAPL", financial=financial, limit=2, quarterly=quarterly, export=""
+        symbol="AAPL", statement=financial, limit=2, quarterly=quarterly, export=""
     )

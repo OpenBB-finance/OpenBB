@@ -2,7 +2,8 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Dict, List, Tuple, Optional
+import textwrap
+from typing import Dict, List, Tuple
 from datetime import datetime, timedelta
 from requests import HTTPError
 
@@ -61,12 +62,14 @@ def check_series_id(series_id: str) -> Tuple[bool, Dict]:
 
 
 @log_start_end(log=logger)
-def get_series_notes(series_term: str) -> pd.DataFrame:
-    """Get Series notes. [Source: FRED]
+def get_series_notes(search_query: str, limit: int = -1) -> pd.DataFrame:
+    """Get series notes. [Source: FRED]
     Parameters
     ----------
-    series_term : str
-        Search for this series term
+    search_query : str
+        Text query to search on fred series notes database
+    limit : int
+        Maximum number of series notes to display
     Returns
     ----------
     pd.DataFrame
@@ -74,7 +77,7 @@ def get_series_notes(series_term: str) -> pd.DataFrame:
     """
 
     fred.key(cfg.API_FRED_KEY)
-    d_series = fred.search(series_term)
+    d_series = fred.search(search_query)
 
     df_fred = pd.DataFrame()
 
@@ -94,27 +97,37 @@ def get_series_notes(series_term: str) -> pd.DataFrame:
         else:
             console.print("No matches found. \n")
 
+        df_fred["notes"] = df_fred["notes"].apply(
+            lambda x: "\n".join(textwrap.wrap(x, width=100))
+            if isinstance(x, str)
+            else x
+        )
+        df_fred["title"] = df_fred["title"].apply(
+            lambda x: "\n".join(textwrap.wrap(x, width=50)) if isinstance(x, str) else x
+        )
+
+        if limit != -1:
+            df_fred = df_fred[:limit]
+
     return df_fred
 
 
 @log_start_end(log=logger)
-def get_series_ids(series_term: str, num: int) -> Tuple[List[str], List[str]]:
+def get_series_ids(search_query: str, limit: int = -1) -> pd.DataFrame:
     """Get Series IDs. [Source: FRED]
     Parameters
     ----------
-    series_term : str
-        Search for this series term
-    num : int
+    search_query : str
+        Text query to search on fred series notes database
+    limit : int
         Maximum number of series IDs to output
     Returns
     ----------
-    List[str]
-        List of series IDs
-    List[str]
-        List of series Titles
+    pd.Dataframe
+        Dataframe with series IDs and titles
     """
     fred.key(cfg.API_FRED_KEY)
-    d_series = fred.search(series_term)
+    d_series = fred.search(search_query)
 
     # Cover invalid api and empty search terms
     if "error_message" in d_series:
@@ -131,21 +144,27 @@ def get_series_ids(series_term: str, num: int) -> Tuple[List[str], List[str]]:
         return [], []
 
     df_series = pd.DataFrame(d_series["seriess"])
-    df_series = df_series.sort_values(by=["popularity"], ascending=False).head(num)
+    df_series = df_series.sort_values(by=["popularity"], ascending=False)
+    if limit != -1:
+        df_series = df_series.head(limit)
+    df_series = df_series[["id", "title"]]
+    df_series.set_index("id", inplace=True)
 
-    return df_series["id"].values, df_series["title"].values
+    return df_series
 
 
 @log_start_end(log=logger)
-def get_series_data(series_id: str, start: str = None, end: str = None) -> pd.DataFrame:
+def get_series_data(
+    series_id: str, start_date: str = None, end_date: str = None
+) -> pd.DataFrame:
     """Get Series data. [Source: FRED]
     Parameters
     ----------
     series_id : str
         Series ID to get data from
-    start : str
+    start_date : str
         Start date to get data from, format yyyy-mm-dd
-    end : str
+    end_date : str
         End data to get from, format yyyy-mm-dd
 
     Returns
@@ -157,7 +176,7 @@ def get_series_data(series_id: str, start: str = None, end: str = None) -> pd.Da
 
     try:
         fredapi_client = Fred(cfg.API_FRED_KEY)
-        df = fredapi_client.get_series(series_id, start, end)
+        df = fredapi_client.get_series(series_id, start_date, end_date)
     # Series does not exist & invalid api keys
     except HTTPError as e:
         console.print(e)
@@ -167,16 +186,16 @@ def get_series_data(series_id: str, start: str = None, end: str = None) -> pd.Da
 
 @log_start_end(log=logger)
 def get_aggregated_series_data(
-    d_series: Dict[str, Dict[str, str]], start: str = None, end: str = None
+    series_ids: List[str], start_date: str = None, end_date: str = None
 ) -> pd.DataFrame:
     """Get Series data. [Source: FRED]
     Parameters
     ----------
-    series_id : str
+    series_ids : List[str]
         Series ID to get data from
-    start : str
+    start_date : str
         Start date to get data from, format yyyy-mm-dd
-    end : str
+    end_date : str
         End data to get from, format yyyy-mm-dd
 
     Returns
@@ -184,28 +203,40 @@ def get_aggregated_series_data(
     pd.DataFrame
         Series data
     """
-    series_ids = list(d_series.keys())
+
     data = pd.DataFrame()
+
+    detail = {}
+    for ids in series_ids:
+        information = check_series_id(ids)
+
+        if "seriess" in information:
+            detail[ids] = {
+                "title": information["seriess"][0]["title"],
+                "units": information["seriess"][0]["units_short"],
+            }
 
     for s_id in series_ids:
         data = pd.concat(
             [
                 data,
-                pd.DataFrame(get_series_data(s_id, start, end), columns=[s_id]),
+                pd.DataFrame(
+                    get_series_data(s_id, start_date, end_date), columns=[s_id]
+                ),
             ],
             axis=1,
         )
 
-    return data
+    return data, detail
 
 
 @log_start_end(log=logger)
-def get_yield_curve(date: Optional[datetime]) -> Tuple[pd.DataFrame, str]:
+def get_yield_curve(date: datetime = None) -> Tuple[pd.DataFrame, str]:
     """Gets yield curve data from FRED
 
     Parameters
     ----------
-    date: Optional[datetime]
+    date: datetime
         Date to get curve for.  If None, gets most recent date
 
     Returns
@@ -257,5 +288,10 @@ def get_yield_curve(date: Optional[datetime]) -> Tuple[pd.DataFrame, str]:
             return pd.DataFrame(), date.strftime("%Y-%m-%d")
         rates = pd.DataFrame(series.values.T, columns=["Rate"])
 
-    rates["Maturity"] = [1 / 12, 1 / 4, 1 / 2, 1, 2, 3, 5, 7, 10, 20, 30]
+    rates.insert(
+        0,
+        "Maturity",
+        [1 / 12, 0.25, 0.5, 1, 2, 3, 5, 7, 10, 20, 30],
+    )
+
     return rates, date_of_yield

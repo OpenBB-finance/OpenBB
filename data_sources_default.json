@@ -1,32 +1,218 @@
 {
-  "stocks": {
-    "load": "yf",
-    "dps": {
-      "psi": "quandl"
+    "stocks": {
+        "news": [
+            "feedparser",
+            "newsapi"
+        ],
+        "load": [
+            "yf",
+            "iex",
+            "av",
+            "polygon",
+            "eodhd"
+        ],
+        "dps": {
+            "psi": [
+                "stockgrid",
+                "quandl"
+            ]
+        },
+        "fa": {
+            "income": [
+                "yf",
+                "polygon",
+                "av",
+                "fmp"
+            ],
+            "balance": [
+                "yf",
+                "polygon",
+                "av",
+                "fmp"
+            ],
+            "cash": [
+                "yf",
+                "polygon",
+                "av",
+                "fmp"
+            ]
+        },
+        "options": {
+            "load": [
+                "yf",
+                "tradier",
+                "nasdaq"
+            ],
+            "hist": [
+                "chartexchange",
+                "tradier"
+            ],
+            "vol": [
+                "yf",
+                "tradier",
+                "nasdaq"
+            ],
+            "voi": [
+                "yf",
+                "tradier",
+                "nasdaq"
+            ],
+            "oi": [
+                "yf",
+                "tradier",
+                "nasdaq"
+            ],
+            "chains": [
+                "yf",
+                "tradier",
+                "nasdaq"
+            ],
+            "greeks": [
+                "yf"
+            ]
+        },
+        "disc": {
+            "load": [
+                "yf",
+                "av",
+                "iex",
+                "polygon"
+            ],
+            "hotpenny": [
+                "yf",
+                "psf"
+            ]
+        },
+        "sia": {
+            "load": [
+                "yf",
+                "av",
+                "iex",
+                "polygon"
+            ]
+        },
+        "scr": {
+            "load": [
+                "yf",
+                "av",
+                "iex",
+                "polygon"
+            ]
+        },
+        "ins": {
+            "load": [
+                "yf",
+                "av",
+                "iex",
+                "polygon"
+            ]
+        },
+        "gov": {
+            "load": [
+                "yf",
+                "av",
+                "iex",
+                "polygon"
+            ]
+        },
+        "ba": {
+            "load": [
+                "yf",
+                "av",
+                "iex",
+                "polygon"
+            ]
+        },
+        "ca": {
+            "load": [
+                "yf",
+                "av",
+                "iex",
+                "polygon"
+            ]
+        },
+        "res": {
+            "load": [
+                "yf",
+                "av",
+                "iex",
+                "polygon"
+            ]
+        },
+        "dd": {
+            "load": [
+                "yf",
+                "av",
+                "iex",
+                "polygon"
+            ]
+        },
+        "bt": {
+            "load": [
+                "yf",
+                "av",
+                "iex",
+                "polygon"
+            ]
+        },
+        "ta": {
+            "load": [
+                "yf",
+                "av",
+                "iex",
+                "polygon"
+            ]
+        },
+        "qa": {
+            "load": [
+                "yf",
+                "av",
+                "iex",
+                "polygon"
+            ]
+        },
+        "pred": {
+            "load": [
+                "yf",
+                "av",
+                "iex",
+                "polygon"
+            ]
+        }
     },
-    "fa": {
-      "income": "av",
-      "balance": "av"
+    "crypto": {
+        "load": [
+            "cg"
+        ],
+        "find": [
+            "cg",
+            "cp",
+            "bin",
+            "cb",
+            "yf"
+        ]
     },
-    "options": {
-      "load": "yf",
-      "hist": "chartexchange",
-      "vol": "tradier",
-      "voi": "tradier",
-      "oi": "tradier"
+    "economy": {
+        "ycrv": [
+            "investpy",
+            "FRED"
+        ]
+    },
+    "etf": {
+        "ln": [
+            "sa",
+            "fd"
+        ]
+    },
+    "forex": {
+        "load": [
+            "yf",
+            "av",
+            "polygon"
+        ],
+        "quote": [
+            "yf",
+            "av"
+        ]
     }
-  },
-  "crypto": {
-    "load": "cg",
-    "find": "cg"
-  },
-  "economy": {
-    "ycrv": "investpy"
-  },
-  "etf": {
-    "ln": "fd"
-  },
-  "forex": {
-    "load": "yf"
-  }
 }

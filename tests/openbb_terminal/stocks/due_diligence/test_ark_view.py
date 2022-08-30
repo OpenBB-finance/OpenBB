@@ -24,14 +24,14 @@ def vcr_config():
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.record_stdout
 def test_display_ark_trades_invalid_ticker():
-    ark_view.display_ark_trades(ticker="INVALID_TICKER")
+    ark_view.display_ark_trades(symbol="INVALID_TICKER")
 
 
 @pytest.mark.default_cassette("test_display_ark_trades_TSLA")
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.record_stdout
 def test_display_ark_trades_default():
-    ark_view.display_ark_trades(ticker="TSLA")
+    ark_view.display_ark_trades(symbol="TSLA")
 
 
 @pytest.mark.default_cassette("test_display_ark_trades_TSLA")
@@ -43,7 +43,7 @@ def test_display_ark_trades_no_tab(mocker):
         new=False,
     )
 
-    ark_view.display_ark_trades(ticker="TSLA")
+    ark_view.display_ark_trades(symbol="TSLA")
 
 
 @pytest.mark.default_cassette("test_display_ark_trades_TSLA")
@@ -51,7 +51,7 @@ def test_display_ark_trades_no_tab(mocker):
 def test_display_ark_trades_export(capsys, mocker):
     ark_view.export_data = mocker.Mock()
 
-    ark_view.display_ark_trades(ticker="TSLA", export="csv")
+    ark_view.display_ark_trades(symbol="TSLA", export="csv")
 
     capsys.readouterr()
 
