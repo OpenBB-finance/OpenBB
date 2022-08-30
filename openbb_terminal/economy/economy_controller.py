@@ -492,11 +492,18 @@ class EconomyController(BaseController):
             default=["United_States"],
         )
         parser.add_argument(
+            "-t",
+            "--transform",
+            dest="transform",
+            help="The transformation to apply to the data",
+            default="",
+        )
+        parser.add_argument(
             "--show",
             dest="show",
             help="Show parameters and what they represent using 'parameters'"
             " or countries and their currencies using 'countries'",
-            choices=["parameters", "countries"],
+            choices=["parameters", "countries", "transform"],
             default=None,
         )
         parser.add_argument(
@@ -538,6 +545,12 @@ class EconomyController(BaseController):
                         show_index=False,
                         headers=["Country", "Currency"],
                     )
+                elif ns_parser.show == "transform":
+                    print_rich_table(
+                        pd.DataFrame(econdb_model.TRANSFORM.items()),
+                        show_index=False,
+                        headers=["Code", "Transform"],
+                    )
                 return self.queue
 
             if ns_parser.parameters and ns_parser.countries:
@@ -546,6 +559,7 @@ class EconomyController(BaseController):
                 (df, units, _) = econdb_model.get_aggregated_macro_data(
                     parameters=ns_parser.parameters,
                     countries=ns_parser.countries,
+                    transform=ns_parser.transform,
                     start_date=ns_parser.start_date,
                     end_date=ns_parser.end_date,
                     currency=ns_parser.currency,
@@ -553,6 +567,9 @@ class EconomyController(BaseController):
 
                 if not df.empty:
                     df.columns = ["_".join(column) for column in df.columns]
+
+                    if ns_parser.transform:
+                        df.columns = [df.columns[0] + f"_{ns_parser.transform}"]
 
                     self.DATASETS["macro"] = pd.concat([self.DATASETS["macro"], df])
 
@@ -572,6 +589,7 @@ class EconomyController(BaseController):
                     econdb_view.show_macro_data(
                         parameters=ns_parser.parameters,
                         countries=ns_parser.countries,
+                        transform=ns_parser.transform,
                         start_date=ns_parser.start_date,
                         end_date=ns_parser.end_date,
                         currency=ns_parser.currency,
@@ -665,7 +683,6 @@ class EconomyController(BaseController):
                     series_ids=ns_parser.parameter,
                     start_date=ns_parser.start_date,
                     end_date=ns_parser.end_date,
-                    limit=ns_parser.limit,
                 )
 
                 for series_id, data in detail.items():
@@ -1146,7 +1163,17 @@ class EconomyController(BaseController):
                             if variable in data.columns:
                                 if key == "macro":
                                     split = variable.split("_")
-                                    if len(split) == 2:
+                                    transform = ""
+                                    if (
+                                        len(split) == 3
+                                        and split[2] in econdb_model.TRANSFORM
+                                    ):
+                                        (
+                                            country,
+                                            parameter_abbreviation,
+                                            transform,
+                                        ) = split
+                                    elif len(split) == 2:
                                         country, parameter_abbreviation = split
                                     else:
                                         country = f"{split[0]} {split[1]}"
@@ -1158,8 +1185,14 @@ class EconomyController(BaseController):
                                     units = self.UNITS[country.replace(" ", "_")][
                                         parameter_abbreviation
                                     ]
+                                    if transform:
+                                        transformtype = (
+                                            f" ({econdb_model.TRANSFORM[transform]}) "
+                                        )
+                                    else:
+                                        transformtype = " "
                                     dataset_yaxis1[
-                                        f"{country} [{parameter}, Units: {units}]"
+                                        f"{country}{transformtype}[{parameter}, Units: {units}]"
                                     ] = data[variable]
                                 elif key == "fred":
                                     dataset_yaxis1[self.FRED_TITLES[variable]] = data[
@@ -1182,8 +1215,8 @@ class EconomyController(BaseController):
                                 break
                     if dataset_yaxis1.empty:
                         return console.print(
-                            f"Not able to find any data for the --y1 argument. The currently available "
-                            f"options are: {', '.join(self.choices['plot']['--y1'])}"
+                            f"[/red]Not able to find any data for the --y1 argument. The currently available "
+                            f"options are: {', '.join(self.choices['plot']['--y1'])}[/red]\n"
                         )
 
                 if ns_parser.yaxis2:
@@ -1192,7 +1225,17 @@ class EconomyController(BaseController):
                             if variable in data.columns:
                                 if key == "macro":
                                     split = variable.split("_")
-                                    if len(split) == 2:
+                                    transform = ""
+                                    if (
+                                        len(split) == 3
+                                        and split[2] in econdb_model.TRANSFORM
+                                    ):
+                                        (
+                                            country,
+                                            parameter_abbreviation,
+                                            transform,
+                                        ) = split
+                                    elif len(split) == 2:
                                         country, parameter_abbreviation = split
                                     else:
                                         country = f"{split[0]} {split[1]}"
@@ -1204,8 +1247,14 @@ class EconomyController(BaseController):
                                     units = self.UNITS[country.replace(" ", "_")][
                                         parameter_abbreviation
                                     ]
+                                    if transform:
+                                        transformtype = (
+                                            f" ({econdb_model.TRANSFORM[transform]}) "
+                                        )
+                                    else:
+                                        transformtype = " "
                                     dataset_yaxis2[
-                                        f"{country} [{parameter}, Units: {units}]"
+                                        f"{country}{transformtype}[{parameter}, Units: {units}]"
                                     ] = data[variable]
                                 elif key == "fred":
                                     dataset_yaxis2[self.FRED_TITLES[variable]] = data[
@@ -1228,8 +1277,8 @@ class EconomyController(BaseController):
                                 break
                     if dataset_yaxis2.empty:
                         return console.print(
-                            f"Not able to find any data for the --y2 argument. The currently available "
-                            f"options are: {', '.join(self.choices['plot']['--y2'])}"
+                            f"[/red]Not able to find any data for the --y2 argument. The currently available "
+                            f"options are: {', '.join(self.choices['plot']['--y2'])}[/red]\n"
                         )
 
                 if ns_parser.yaxis1 or ns_parser.yaxis2:

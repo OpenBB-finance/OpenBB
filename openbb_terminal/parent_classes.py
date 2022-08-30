@@ -104,7 +104,6 @@ class BaseController(metaclass=ABCMeta):
         """
         self.check_path()
         self.path = [x for x in self.PATH.split("/") if x != ""]
-
         self.queue = (
             self.parse_input(an_input="/".join(queue))
             if (queue and self.PATH != "/")
@@ -694,6 +693,10 @@ class BaseController(metaclass=ABCMeta):
                     an_input = "exit"
 
             try:
+                # Allow user to go back to root
+                if an_input == "/":
+                    an_input = "home"
+
                 # Process the input command
                 print(an_input)
                 self.queue = self.switch(an_input)

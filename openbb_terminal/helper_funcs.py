@@ -135,6 +135,13 @@ def parse_and_split_input(an_input: str, custom_filters: List) -> List[str]:
     List[str]
         Command queue as list
     """
+    # Make sure that the user can go back to the root when doing "/"
+    if an_input:
+        if an_input == "/":
+            an_input = "home"
+        elif an_input[0] == "/":
+            an_input = "home" + an_input
+
     # everything from ` -f ` to the next known extension
     file_flag = r"(\ -f |\ --file )"
     up_to = r".*?"
@@ -176,7 +183,6 @@ def parse_and_split_input(an_input: str, custom_filters: List) -> List[str]:
         if len(matching_placeholders) > 0:
             for tag in matching_placeholders:
                 commands[command_num] = command.replace(tag, placeholders[tag])
-
     return commands
 
 

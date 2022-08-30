@@ -100,7 +100,7 @@ en:
   stocks/CANDLE_raw: Shows raw data instead of chart. If sort is set those are the top ones, otherwise we grab latest data to date
   stocks/CANDLE_trend: Flag to add high and low trends to candle
   stocks/CANDLE_mov_avg: Add moving average in number of days to plot and separate by a comma
-  stocks/NEWS: latest news of the company
+  stocks/news: latest news of the company
   stocks/codes: FIGI, SIK and SIC codes codes
   stocks/NEWS_date: The starting date (format YYYY-MM-DD) to search articles from
   stocks/NEWS_oldest: Show oldest articles first
@@ -376,6 +376,7 @@ en:
   stocks/res/marketwatch: www.marketwatch.com
   stocks/res/fool: www.fool.com
   stocks/res/businessinsider: www.markets.businessinsider.com
+  stocks/res/bullrun: www.bullrun.com.br
   stocks/res/fmp: www.financialmodelingprep.com
   stocks/res/fidelity: www.eresearch.fidelity.com
   stocks/res/tradingview: www.tradingview.com
