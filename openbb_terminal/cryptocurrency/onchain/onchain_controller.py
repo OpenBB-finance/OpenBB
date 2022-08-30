@@ -307,8 +307,8 @@ class OnchainController(BaseController):
             display_hashrate(
                 symbol=ns_parser.coin,
                 interval=ns_parser.interval,
-                since=int(datetime.timestamp(ns_parser.since)),
-                until=int(datetime.timestamp(ns_parser.until)),
+                start_date=int(datetime.timestamp(ns_parser.since)),
+                end_date=int(datetime.timestamp(ns_parser.until)),
                 export=ns_parser.export,
             )
 
