@@ -7,6 +7,9 @@ import os
 from openbb_terminal.cryptocurrency.dataframe_helpers import (
     lambda_very_long_number_formatter,
 )
+from openbb_terminal.cryptocurrency.dataframe_helpers import (
+    prettify_column_names,
+)
 from openbb_terminal.cryptocurrency.onchain import bitquery_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
@@ -238,9 +241,13 @@ def display_ethereum_unique_senders(
 
     df = bitquery_model.get_ethereum_unique_senders(interval, limit, sortby, ascend)
     if not df.empty:
-        df[["uniqueSenders", "transactions", "maximumGasPrice"]] = df[
-            ["uniqueSenders", "transactions", "maximumGasPrice"]
-        ].applymap(lambda x: lambda_very_long_number_formatter(x))
+
+        column_names = ["uniqueSenders", "transactions", "maximumGasPrice"]
+        column_names = prettify_column_names(column_names)
+
+        df[column_names] = df[column_names].applymap(
+            lambda x: lambda_very_long_number_formatter(x)
+        )
 
         df_data = df.copy()
 
