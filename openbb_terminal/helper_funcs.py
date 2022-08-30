@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import argparse
 import logging
 from pathlib import Path
-from typing import List, Tuple, Union, Optional
+from typing import List, Tuple, Union, Optional, Dict
 from datetime import datetime, timedelta, date as d
 import types
 from collections.abc import Iterable
@@ -115,6 +115,76 @@ def check_path(path: str) -> str:
     return ""
 
 
+def parse_and_split_input(an_input: str, custom_filters: List) -> List[str]:
+    """Filter and split the input queue
+
+    Uses regex to filters command arguments that have forward slashes so that it doesn't
+    break the execution of the command queue.
+    Currently handles unix paths and sorting settings for screener menus.
+
+    Parameters
+    ----------
+    an_input : str
+        User input as string
+    custom_filters : List
+        Additional regular expressions to match
+
+    Returns
+    -------
+    List[str]
+        Command queue as list
+    """
+    # Make sure that the user can go back to the root when doing "/"
+    if an_input:
+        if an_input == "/":
+            an_input = "home"
+        elif an_input[0] == "/":
+            an_input = "home" + an_input
+
+    # everything from ` -f ` to the next known extension
+    file_flag = r"(\ -f |\ --file )"
+    up_to = r".*?"
+    known_extensions = r"(\.xlsx|.csv|.xls|.tsv|.json|.yaml|.ini|.openbb)"
+    unix_path_arg_exp = f"({file_flag}{up_to}{known_extensions})"
+
+    # Add custom expressions to handle edge cases of individual controllers
+    custom_filter = ""
+    for exp in custom_filters:
+        if exp is not None:
+            custom_filter += f"|{exp}"
+            del exp
+
+    slash_filter_exp = f"({unix_path_arg_exp}){custom_filter}"
+
+    filter_input = True
+    placeholders: Dict[str, str] = {}
+    while filter_input:
+        match = re.search(pattern=slash_filter_exp, string=an_input)
+        if match is not None:
+            placeholder = f"{{placeholder{len(placeholders)+1}}}"
+            placeholders[placeholder] = an_input[
+                match.span()[0] : match.span()[1]  # noqa:E203
+            ]
+            an_input = (
+                an_input[: match.span()[0]]
+                + placeholder
+                + an_input[match.span()[1] :]  # noqa:E203
+            )
+        else:
+            filter_input = False
+
+    commands = an_input.split("/")
+
+    for command_num, command in enumerate(commands):
+        if command == commands[command_num] == commands[-1] == "":
+            return list(filter(None, commands))
+        matching_placeholders = [tag for tag in placeholders if tag in command]
+        if len(matching_placeholders) > 0:
+            for tag in matching_placeholders:
+                commands[command_num] = command.replace(tag, placeholders[tag])
+    return commands
+
+
 def log_and_raise(error: Union[argparse.ArgumentTypeError, ValueError]) -> None:
     logger.error(str(error))
     raise error
@@ -146,6 +216,7 @@ def print_rich_table(
     index_name: str = "",
     headers: Union[List[str], pd.Index] = None,
     floatfmt: Union[str, List[str]] = ".2f",
+    show_header: bool = True,
 ):
     """Prepare a table from df in rich
 
@@ -163,10 +234,12 @@ def print_rich_table(
         Titles for columns
     floatfmt: Union[str, List[str]]
         Float number formatting specs as string or list of strings. Defaults to ".2f"
+    show_header: bool
+        Whether to show the header row.
     """
 
     if obbff.USE_TABULATE_DF:
-        table = Table(title=title, show_lines=True)
+        table = Table(title=title, show_lines=True, show_header=show_header)
 
         if show_index:
             table.add_column(index_name)
@@ -198,7 +271,7 @@ def print_rich_table(
             row = [str(idx)] if show_index else []
             row += [
                 str(x)
-                if not isinstance(x, float)
+                if not isinstance(x, float) or not isinstance(x, np.float64)
                 else (
                     f"{x:{floatfmt[idx]}}"
                     if isinstance(floatfmt, list)
@@ -517,7 +590,7 @@ def plot_view_stock(df: pd.DataFrame, symbol: str, interval: str):
     ax[1].set_xlim(df.index[0], df.index[-1])
     ax[1].yaxis.tick_right()
     ax[1].yaxis.set_label_position("right")
-    ax[1].set_ylabel("Volume (1M)")
+    ax[1].set_ylabel("Volume [1M]")
     ax[1].grid(axis="y", color="gainsboro", linestyle="-", linewidth=0.5)
     ax[1].spines["top"].set_visible(False)
     ax[1].spines["left"].set_visible(False)
@@ -775,16 +848,16 @@ def get_data(tweet):
     return {"created_at": s_datetime, "text": s_text}
 
 
-def clean_tweet(tweet: str, s_ticker: str) -> str:
+def clean_tweet(tweet: str, symbol: str) -> str:
     """Cleans tweets to be fed to sentiment model"""
     whitespace = re.compile(r"\s+")
     web_address = re.compile(r"(?i)http(s):\/\/[a-z0-9.~_\-\/]+")
-    ticker = re.compile(rf"(?i)@{s_ticker}(?=\b)")
+    ticker = re.compile(rf"(?i)@{symbol}(?=\b)")
     user = re.compile(r"(?i)@[a-z0-9_]+")
 
     tweet = whitespace.sub(" ", tweet)
     tweet = web_address.sub("", tweet)
-    tweet = ticker.sub(s_ticker, tweet)
+    tweet = ticker.sub(symbol, tweet)
     tweet = user.sub("", tweet)
 
     return tweet
@@ -950,8 +1023,8 @@ def get_flair() -> str:
     """Get a flair icon"""
     flairs = {
         ":openbb": "(🦋)",
-        ":rocket": "(🚀🚀)",
-        ":diamond": "(💎💎)",
+        ":rocket": "(🚀)",
+        ":diamond": "(💎)",
         ":stars": "(✨)",
         ":baseball": "(⚾)",
         ":boat": "(⛵)",
@@ -1566,7 +1639,7 @@ def check_list_values(valid_values: List[str]):
     return check_list_values_from_valid_values_list
 
 
-def get_preferred_source(command_path: str):
+def get_ordered_list_sources(command_path: str):
     """
     Returns the preferred source for the given command. If a value is not available for the specific
     command, returns the most specific source, eventually returning the overall default source.
@@ -1614,11 +1687,8 @@ def get_preferred_source(command_path: str):
                                 return json_doc[context]["load"]
 
                     # We didn't find the next level, so flag that that command default source is missing
-                    # We decided to have these mentioned explicitly
-                    console.print(
-                        f"[red]'data_sources_default.json' file does not contain {command_path}[/red]"
-                    )
-                    return None
+                    # Which means that there aren't more than 1 source and therefore no selection is necessary
+                    return []
 
                 # Go one level deeper into the path
                 path_objects = path_objects[1:]

@@ -1,5 +1,4 @@
 import pytest
-from openbb_terminal.cryptocurrency.coinbase_helpers import CoinbaseApiException
 
 from openbb_terminal.keys_controller import KeysController
 
@@ -55,6 +54,8 @@ class MockCFG:
         self.API_ETHPLORER_KEY = kwargs.get("ETHPLOR", None)
         self.API_SMARTSTAKE_TOKEN = kwargs.get("SMARTSTAKE", None)
         self.API_SMARTSTAKE_KEY = kwargs.get("SMARTSTAKE", None)
+        self.API_SANTIMENT_KEY = kwargs.get("SANTIMENT", None)
+        self.API_MESSARI_KEY = kwargs.get("MESSARI", None)
 
 
 @pytest.mark.vcr
@@ -198,11 +199,7 @@ def test_check_si_key(key, output, mocker):
 @pytest.mark.parametrize("key, output", [("REPLACE_ME", True), ("VALIDKEY", False)])
 def test_check_coinbase_key(key, output, mocker):
     mocker.patch("openbb_terminal.keys_controller.cfg", MockCFG(COINBASE=key))
-    if key == "REPLACE_ME":
-        controller.check_coinbase_key(output)
-    else:
-        with pytest.raises(CoinbaseApiException):
-            controller.check_coinbase_key(output)
+    controller.check_coinbase_key(output)
 
 
 @pytest.mark.vcr
@@ -245,6 +242,20 @@ def test_check_ethplorer_key(key, output, mocker):
 def test_check_smartstake_key(key, output, mocker):
     mocker.patch("openbb_terminal.keys_controller.cfg", MockCFG(SMARTSTAKE=key))
     controller.check_smartstake_key(output)
+
+
+@pytest.mark.vcr
+@pytest.mark.parametrize("key, output", [("REPLACE_ME", True), ("VALIDKEY", False)])
+def test_check_santiment_key(key, output, mocker):
+    mocker.patch("openbb_terminal.keys_controller.cfg", MockCFG(SANTIMENT=key))
+    controller.check_santiment_key(output)
+
+
+@pytest.mark.vcr
+@pytest.mark.parametrize("key, output", [("REPLACE_ME", True), ("VALIDKEY", False)])
+def test_check_messari_key(key, output, mocker):
+    mocker.patch("openbb_terminal.keys_controller.cfg", MockCFG(MESSARI=key))
+    controller.check_messari_key(output)
 
 
 def test_print_help(mocker):
@@ -352,11 +363,7 @@ def test_call_si(other):
 
 @pytest.mark.parametrize("other", [[], ["-k", "1234", "-s", "4567", "-p" "890"]])
 def test_call_coinbase(other):
-    if not other:
-        controller.call_coinbase(other)
-    else:
-        with pytest.raises(CoinbaseApiException):
-            controller.call_coinbase(other)
+    controller.call_coinbase(other)
 
 
 @pytest.mark.parametrize("other", [[], ["-k", "1234"], ["1234"]])
@@ -387,3 +394,13 @@ def test_call_ethplorer(other):
 @pytest.mark.parametrize("other", [[], ["-k", "1234", "-t", "456"]])
 def test_call_smartstake(other):
     controller.call_smartstake(other)
+
+
+@pytest.mark.parametrize("other", [[], ["-k", "1234"], ["1234"]])
+def test_call_santiment(other):
+    controller.call_santiment(other)
+
+
+@pytest.mark.parametrize("other", [[], ["-k", "1234", "-t", "456"]])
+def test_call_messari(other):
+    controller.call_messari(other)

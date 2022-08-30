@@ -1,17 +1,16 @@
-    Rank                         Name      Id                 Market       Last MultiAsset
-0      1       CoinFLEX (Futures) DFN     DFN     CoinFLEX (Futures)        NaN       None
-1      2       Perpetual Protocol ZIL     ZIL     Perpetual Protocol   0.110000       None
-2      3         Bibox (Futures) LINK    LINK        Bibox (Futures)   0.110000       None
-3      4      CME Bitcoin Futures BTC     BTC              CME Group   0.110000      False
-4      5          Bibox (Futures) XRP     XRP        Bibox (Futures)   0.110000       None
-5      6          Bibox (Futures) AXS     AXS        Bibox (Futures)   0.110000       None
-6      7              ZBG Futures BSV     BSV            ZBG Futures   0.110000       None
-7      8  MEXC Global (Futures) ATLAS   ATLAS  MEXC Global (Futures)   4.543600       None
-8      9    CoinFLEX (Futures) BCHABC  BCHABC     CoinFLEX (Futures)   0.000000       None
-9     10               Prime XBT USDC    USDC              Prime XBT   0.000000       None
-10    11          Bibox (Futures) ETC     ETC        Bibox (Futures)   0.000000       None
-11    12              MyCoinStory SUN     SUN                    MCS  13.407576       None
-12    13                Prime XBT UNI     UNI              Prime XBT  13.407576      False
-13    14          Bibox (Futures) BSV     BSV        Bibox (Futures)  13.407576       None
-14    15         Bibox (Futures) DASH    DASH        Bibox (Futures)  13.407576       None
-
+     Rank         Name          Id                    Market          Last MultiAsset
+123   124   .BAAVET30M   BAAVET30M                    BitMEX    325.890000       None
+78     79       .BAVAX       BAVAX                    BitMEX     86.544000       None
+125   126    .BAXST30M    BAXST30M                    BitMEX    138.840000       None
+81     82    .BETHT30M    BETHT30M                    BitMEX   3218.977000       None
+132   133  .BMATICT30M  BMATICT30M                    BitMEX      1.909500       None
+139   140    .BSOLT30M    BSOLT30M                    BitMEX    205.217000       None
+59     60    .BSRMT30M    BSRMT30M                    BitMEX      7.583000       None
+153   154  .BSUSHIT30M  BSUSHIT30M                    BitMEX     12.475000       None
+142   143       .BTRXT       BTRXT                    BitMEX      0.101120      False
+97     98    .BVETT30M    BVETT30M                    BitMEX      0.137290       None
+61     62        .BXBT        BXBT            KuCoin Futures  43920.640000      False
+55     56        .BXBT        BXBT  Delta Exchange (Futures)   9088.680000      False
+158   159       .BXLMT       BXLMT                    BitMEX      0.366270      False
+105   106    .BXLMT30M    BXLMT30M                    BitMEX      0.370640       None
+143   144  .BXRPXBT30M  BXRPXBT30M                    BitMEX      0.000018      False

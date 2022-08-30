@@ -2,9 +2,14 @@
 __docformat__ = "numpy"
 
 from datetime import datetime
+import os
+from pathlib import Path
+import csv
 from dateutil.relativedelta import relativedelta
 import yfinance as yf
 import pandas as pd
+
+from openbb_terminal.rich_config import console
 
 # pylint: disable=too-many-return-statements
 
@@ -113,7 +118,131 @@ BENCHMARK_LIST = {
 
 PERIODS = ["mtd", "qtd", "ytd", "3m", "6m", "1y", "3y", "5y", "10y", "all"]
 
+REGIONS = {
+    "Afghanistan": "Middle East",
+    "Anguilla": "North America",
+    "Argentina": "Latin America",
+    "Australia": "Asia",
+    "Austria": "Europe",
+    "Azerbaijan": "Europe",
+    "Bahamas": "North America",
+    "Bangladesh": "Asia",
+    "Barbados": "North America",
+    "Belgium": "Europe",
+    "Belize": "North America",
+    "Bermuda": "North America",
+    "Botswana": "Africa",
+    "Brazil": "Latin America",
+    "British Virgin Islands": "North America",
+    "Cambodia": "Asia",
+    "Canada": "North America",
+    "Cayman Islands": "North America",
+    "Chile": "Latin America",
+    "China": "Asia",
+    "Colombia": "Latin America",
+    "Costa Rica": "North America",
+    "Cyprus": "Europe",
+    "Czech Republic": "Europe",
+    "Denmark": "Europe",
+    "Dominican Republic": "North America",
+    "Egypt": "Middle East",
+    "Estonia": "Europe",
+    "Falkland Islands": "Latin America",
+    "Finland": "Europe",
+    "France": "Europe",
+    "French Guiana": "Europe",
+    "Gabon": "Africa",
+    "Georgia": "Europe",
+    "Germany": "Europe",
+    "Ghana": "Africa",
+    "Gibraltar": "Europe",
+    "Greece": "Europe",
+    "Greenland": "North America",
+    "Guernsey": "Europe",
+    "Hong Kong": "Asia",
+    "Hungary": "Europe",
+    "Iceland": "Europe",
+    "India": "Asia",
+    "Indonesia": "Asia",
+    "Ireland": "Europe",
+    "Isle of Man": "Europe",
+    "Israel": "Middle East",
+    "Italy": "Europe",
+    "Ivory Coast": "Africa",
+    "Japan": "Asia",
+    "Jersey": "Europe",
+    "Jordan": "Middle East",
+    "Kazakhstan": "Asia",
+    "Kyrgyzstan": "Asia",
+    "Latvia": "Europe",
+    "Liechtenstein": "Europe",
+    "Lithuania": "Europe",
+    "Luxembourg": "Europe",
+    "Macau": "Asia",
+    "Macedonia": "Europe",
+    "Malaysia": "Asia",
+    "Malta": "Europe",
+    "Mauritius": "Africa",
+    "Mexico": "Latin America",
+    "Monaco": "Europe",
+    "Mongolia": "Asia",
+    "Montenegro": "Europe",
+    "Morocco": "Africa",
+    "Mozambique": "Africa",
+    "Myanmar": "Asia",
+    "Namibia": "Africa",
+    "Netherlands": "Europe",
+    "Netherlands Antilles": "Europe",
+    "New Zealand": "Asia",
+    "Nigeria": "Africa",
+    "Norway": "Europe",
+    "Panama": "North America",
+    "Papua New Guinea": "Asia",
+    "Peru": "Latin America",
+    "Philippines": "Asia",
+    "Poland": "Europe",
+    "Portugal": "Europe",
+    "Qatar": "Middle East",
+    "Reunion": "Africa",
+    "Romania": "Europe",
+    "Russia": "Asia",
+    "Saudi Arabia": "Middle East",
+    "Senegal": "Africa",
+    "Singapore": "Asia",
+    "Slovakia": "Europe",
+    "Slovenia": "Europe",
+    "South Africa": "Africa",
+    "South Korea": "Asia",
+    "Spain": "Europe",
+    "Suriname": "Latin America",
+    "Sweden": "Europe",
+    "Switzerland": "Europe",
+    "Taiwan": "Asia",
+    "Tanzania": "Africa",
+    "Thailand": "Asia",
+    "Turkey": "Middle East",
+    "Ukraine": "Europe",
+    "United Arab Emirates": "Middle East",
+    "United Kingdom": "Europe",
+    "United States": "North America",
+    "Uruguay": "Latin America",
+    "Vietnam": "Asia",
+    "Zambia": "Africa",
+}
+
+now = datetime.now()
 PERIODS_DAYS = {
+    "mtd": (now - datetime(now.year, now.month, 1)).days,
+    "qtd": (
+        now
+        - datetime(
+            now.year,
+            1 if now.month < 4 else 4 if now.month < 7 else 7 if now.month < 7 else 10,
+            1,
+        )
+    ).days,
+    "ytd": (now - datetime(now.year, 1, 1)).days,
+    "all": 0,
     "3m": 3 * 21,
     "6m": 6 * 21,
     "1y": 12 * 21,
@@ -121,6 +250,10 @@ PERIODS_DAYS = {
     "5y": 5 * 12 * 21,
     "10y": 10 * 12 * 21,
 }
+
+DEFAULT_HOLDINGS_PATH = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), "..", "..", "portfolio", "holdings")
+)
 
 
 def is_ticker(ticker: str) -> bool:
@@ -140,6 +273,7 @@ def is_ticker(ticker: str) -> bool:
     return "previousClose" in item.info
 
 
+# TODO: Is this being used anywhere?
 def beta_word(beta: float) -> str:
     """Describe a beta
 
@@ -194,7 +328,7 @@ def filter_df_by_period(df: pd.DataFrame, period: str = "all") -> pd.DataFrame:
 
     Returns
     ----------
-    str
+    pd.DataFrame
         A cleaned value
     """
     if period == "mtd":
@@ -232,61 +366,84 @@ def filter_df_by_period(df: pd.DataFrame, period: str = "all") -> pd.DataFrame:
     return df
 
 
-def sharpe_ratio(return_series: pd.Series, risk_free_rate: float) -> float:
-    """Get sharpe ratio
+def make_equal_length(df1: pd.DataFrame, df2: pd.DataFrame):
+    """Filter dataframe by selected period
 
-    Parameters
-    ----------
-    return_series : pd.Series
-        Returns of the portfolio
-    risk_free_rate: float
-        Value to use for risk free rate
+     Parameters
+     ----------
+     df1: pd.DataFrame
+         The first DataFrame that needs to be compared.
+     df2: pd.DataFrame
+         The second DataFrame that needs to be compared.
 
-    Returns
-    -------
-    float
-        Sharpe ratio
+     Returns
+     ----------
+    df1 and df2
+         Both DataFrames returned
     """
-    mean = return_series.mean() - risk_free_rate
-    sigma = return_series.std()
+    # Match the DataFrames so they share a similar length
+    if len(df1.index) > len(df2.index):
+        df1 = df1.loc[df2.index]
+    elif len(df2.index) > len(df1.index):
+        df2 = df2.loc[df1.index]
 
-    return mean / sigma
-
-
-def sortino_ratio(return_series: pd.Series, risk_free_rate: float) -> float:
-    """Get sortino ratio
-
-    Parameters
-    ----------
-    return_series : pd.Series
-        Returns of the portfolio
-    risk_free_rate: float
-        Value to use for risk free rate
-
-    Returns
-    -------
-    float
-        Sortino ratio
-    """
-    mean = return_series.mean() - risk_free_rate
-    std_neg = return_series[return_series < 0].std()
-    return mean / std_neg
+    return df1, df2
 
 
-def get_maximum_drawdown(return_series: pd.Series) -> float:
-    """Get maximum drawdown
+def get_region_from_country(country: str) -> str:
+    return REGIONS[country]
 
-    Parameters
-    ----------
-    return_series : pd.Series
-        Returns of the portfolio
 
-    Returns
-    -------
-    float
-        maximum drawdown
-    """
-    comp_ret = (return_series + 1).cumprod()
-    peak = comp_ret.expanding(min_periods=1).max()
-    dd = (comp_ret / peak) - 1
-    return dd.min()
+def get_info_update_file(ticker: str, file_path: Path, writemode: str) -> list:
+
+    # Pull ticker info from yf
+    yf_ticker_info = yf.Ticker(ticker).info
+
+    if "sector" in yf_ticker_info.keys():
+        # Ticker has valid sector
+        # Replace the dash to UTF-8 readable
+        ticker_info_list = [
+            yf_ticker_info["sector"],
+            yf_ticker_info["industry"].replace("—", "-"),
+            yf_ticker_info["country"],
+            get_region_from_country(yf_ticker_info["country"]),
+        ]
+
+        with open(file_path, writemode, newline="") as f:
+            writer = csv.writer(f)
+
+            if writemode == "a":
+                # file already has data, so just append
+                writer.writerow([ticker] + ticker_info_list)
+            else:
+                # file did not exist or as empty, so write headers first
+                writer.writerow(["Ticker", "Sector", "Industry", "Country", "Region"])
+                writer.writerow([ticker] + ticker_info_list)
+            f.close()
+        return ticker_info_list
+    # Ticker does not have a valid sector
+    console.print(f"F:{ticker}", end="")
+    return ["", "", "", ""]
+
+
+def get_info_from_ticker(ticker: str) -> list:
+
+    filename = "tickers_info.csv"
+
+    file_path = Path(str(DEFAULT_HOLDINGS_PATH), filename)
+
+    if file_path.is_file() and os.stat(file_path).st_size > 0:
+        # file exists and is not empty, so append if necessary
+        ticker_info_df = pd.read_csv(file_path)
+        df_row = ticker_info_df.loc[ticker_info_df["Ticker"] == ticker]
+
+        if len(df_row) > 0:
+            # ticker is in file, just return it
+            ticker_info_list = list(df_row.iloc[0].drop("Ticker"))
+            return ticker_info_list
+        # ticker is not in file, go get it
+        ticker_info_list = get_info_update_file(ticker, file_path, "a")
+        return ticker_info_list
+    # file does not exist or is empty, so write it
+    ticker_info_list = get_info_update_file(ticker, file_path, "w")
+    return ticker_info_list

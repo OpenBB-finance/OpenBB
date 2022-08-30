@@ -1,0 +1,191 @@
+interactions:
+- request:
+    body: dateFrom=2022-07-08&dateTo=2022-07-15&timeZone=9&timeFilter=timeOnly&currentTab=custom&submitFilters=1&limit_from=0&country%5B%5D=5&category%5B%5D=_employment&importance%5B%5D=3
+    headers:
+      Accept:
+      - text/html
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '177'
+      Content-Type:
+      - application/x-www-form-urlencoded
+      User-Agent:
+      - Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/534.10 (KHTML,
+        like Gecko) Chrome/7.0.540.0 Safari/534.10
+      X-Requested-With:
+      - XMLHttpRequest
+    method: POST
+    uri: https://www.investing.com/economic-calendar/Service/getCalendarFilteredData
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA+xXbW/bNhD+K8QBG1pAmhW/xLbmGGiSuU2LtUHjbMCmwaClk8OGIjXylFQr+t8H
+        Uo4t102bAN2HAfUXW3e857k73T2SP0DGiUMMEzJT5j8TyliqpS25OkpgnABLJbf2KAG6wlNeJ8BE
+        trk6OBwMu71RP4oSmM6MyHgdsJeVrNkoYN2o250kHco8tPvVkEzINBh4g4re6tuzbNEf9Aajfovt
+        nQ29OxSEBUuA+asFJzKLs9OjBLrdYQLM5b8+mHFCEgU6X9TtJp1omHSiEYtGcS+KfYatEtc0uTCW
+        mMScmItl72zovhNgjARJB5bA1ENsS9mF8MG55KuTyjClfze8TGA6cR3cYFwqQZixC+KEtlVlijPJ
+        V5Y1/sXG78sSxWpxjfUmfOOe/qiWtvx5knQcyZRdXpx+MTnC9/S6KphF5YpTtElzk+ALsbpiv2nJ
+        SUhBNfvlfYkpYbafy7KSsucKFBuSleH1rJLyuJJS2KuzVCt3IOmIb3vqSzX6GWgVdCJFes1IsxuB
+        t6zQBplQuWZasdda5dwU7JzXRkvpGjrh7Mpg7u52B1OtdCHSMOUSVcZN0lFNRFiuI8Jm+IibFdJR
+        Aoul5Op6M2CfEjD25GWlnk6SDr9L/55SllpmjKfElpKn1zOt1oWFzX6EPKWKy1aZd+voTz3z3s0u
+        bcfks1y568kuvDOl3BLbgZ2trVvg7uHo1X2wpcGbVvq7BM4pdGV38M/Xxi3+7vIkMO2No1d3494m
+        3qfnEg25NRbqnZ/gsLJoQm8OU62IC4XGFdgMtuIFsqME9oeirS0+2ZbiWOJU2RAVX0p0vq26MNZk
+        3xKyUlY2FKlWzKdxjFI+N7w+l5VlK1RzreVclEwrlC65OxLSWpIo3TAb5ITsmYv+xBty6SbQu5iw
+        bnjEDTYr06jDzrh9XYXH0WNUuOd09bsKf1fhR6vwpcKilLr2nXjLCb8uw1UrJDScMGzG7z4d3qP4
+        RkI8jh4uxG6dHinE4+ghQuyBez8d/vB4IR5HDxBij78vxA3hfyjEn5mLPSVuqc7/XIkhgFJkFuI/
+        of2gjCGA9v2K4a8AnGrkhhcIsaqkDNzLO86MLiD2WhtGwzAaQWOf65b1YOB4uOGFhfgDpLpSZGpH
+        OnDAKSdc6caw2HbfuURRakNcpeicvbs0/tAKIYYxPDYJFzwTktBA7C/eKFmv7f9ohWfZGlbnuUW6
+        wBTi8KDfj6IAhG0iMYOYTIUB5P76uCLSyssyxPBGQQBSFIIghijoRlEL/qQyBhXNhWsiRKP4YNjy
+        zrQpuAt78vzXOQv7cRQ9hQAM/l2hpVNXkEvfnyKXxd4j7mAY9wfwMQCjb+1CVQXE3QCk21lHsrCp
+        LhHi7d+mAJZCZQubupeOxRVXmXStybm06G+ZxVNO/Lh27TJz/6cLPv4LAAD//wMAULjITrgNAAA=
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 7278c233fd365d3f-LIS
+      Cache-Control:
+      - no-store, no-cache, must-revalidate
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Security-Policy:
+      - upgrade-insecure-requests; block-all-mixed-content
+      Content-Security-Policy-Report-Only:
+      - 'default-src https: data: wss: ''unsafe-inline'' ''unsafe-eval''; form-action
+        https:; report-uri https://rbmeuulvihtwm2eltjhwimi2.httpschecker.net/report'
+      Content-Type:
+      - text/html; charset=UTF-8
+      Cross-Origin-Embedder-Policy:
+      - unsafe-none
+      Cross-Origin-Opener-Policy:
+      - cross-origin
+      Cross-Origin-Resource-Policy:
+      - cross-origin
+      Date:
+      - Fri, 08 Jul 2022 12:17:45 GMT
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Expires:
+      - Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - ses_id=deleted; expires=Thu, 01-Jan-1970 00:00:01 GMT; Max-Age=0; path=/;
+        domain=.investing.com
+      - upa=deleted; expires=Thu, 01-Jan-1970 00:00:01 GMT; Max-Age=0; path=/; domain=www.investing.com
+      - PHPSESSID=qssftr2kvvc1ie9o6j9mn6m5hs; path=/
+      - udid=8513da6fcdbf5a3808953aadd46670ca; Max-Age=31536000; domain=investing.com;
+        Path=/
+      - smd=8513da6fcdbf5a3808953aadd46670ca-1657282665; Max-Age=1800; domain=investing.com;
+        Path=/
+      - firstUdid=1; Max-Age=2; domain=investing.com; Path=/
+      - __cf_bm=3sQ_1TV9lUVK3UvZDl7zSfwYG2tLusWqgC1Cw8KjY0o-1657282665-0-ATdvzgz6vKrRDB4dcMVt0fPu0Cv+D7PwqY43uVwTjRjqOFfcpayUcXAGxV9JiFxBo1FuT5ScVcL6B3ajnLHCmaU=;
+        path=/; expires=Fri, 08-Jul-22 12:47:45 GMT; domain=.investing.com; HttpOnly;
+        Secure; SameSite=None
+      - __cflb=02DiuGRugds2TUWHMkjZrtd2P76fwcs2j8wRjFrgP6j6t; SameSite=None; Secure;
+        path=/; expires=Sat, 09-Jul-22 11:17:45 GMT; HttpOnly
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding,User-Agent
+      alt-svc:
+      - h3=":443"; ma=86400, h3-29=":443"; ma=86400
+    status:
+      code: 200
+      message: OK
+- request:
+    body: dateFrom=2022-07-08&dateTo=2022-07-15&timeZone=9&timeFilter=timeOnly&currentTab=custom&submitFilters=1&limit_from=1&country%5B%5D=5&category%5B%5D=_employment&importance%5B%5D=3
+    headers:
+      Accept:
+      - text/html
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '177'
+      Content-Type:
+      - application/x-www-form-urlencoded
+      User-Agent:
+      - Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/534.10 (KHTML,
+        like Gecko) Chrome/7.0.540.0 Safari/534.10
+      X-Requested-With:
+      - XMLHttpRequest
+    method: POST
+    uri: https://www.investing.com/economic-calendar/Service/getCalendarFilteredData
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA5RRTW8TMRD9K6t3AslRnJAoqZX2UEIQB6hEcqJbrYw9S1byR7BnQUvV/468CVWu
+        zG3ezLz3ZuYZVrOGQnWJDae76io2bCsTXT7pcFvjpkZlnM75tkaIXyn3jnNlKDClGndfYvXhFwXO
+        1d4cyfaO7Kaesn1lLNmZHwKnzmaoxycB7jy1SXuCCr1zopiiXYoeCnM5n0/kaiLXOOOHeIXOloVI
+        J+0z1DNM7AOnAeoRSzwJGM30I56BhvzJxcFT4FLq/Ckm1sFQKb7Dxca3GAgKN/hfE2V41zmmBDUm
+        D8ENF/xPDPTJXmhj22biPRmoyWyxkFKgy+dJslCcehJox/y+Z45hz5qLp4cAAdf5jkdtKeZSXgm8
+        71OiwIeunBFyrWarq+ouJq/L4JuPnw/VZKGkfAuBRD97yrwtK5UFxi4uPsbt6qlc1VO5rkY6tVji
+        RSDF37kJvf/3LKczN0WnySaeXn/4vQu2ySZF55qjDtaVy7TaZRo/lmmrWd8P5VrpcKStHvDyFwAA
+        //8DALyPeSCPAgAA
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 7278c235991494fb-LIS
+      Cache-Control:
+      - no-store, no-cache, must-revalidate
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Security-Policy:
+      - upgrade-insecure-requests; block-all-mixed-content
+      Content-Security-Policy-Report-Only:
+      - 'default-src https: data: wss: ''unsafe-inline'' ''unsafe-eval''; form-action
+        https:; report-uri https://rbmeuulvihtwm2eltjhwimi2.httpschecker.net/report'
+      Content-Type:
+      - text/html; charset=UTF-8
+      Cross-Origin-Embedder-Policy:
+      - unsafe-none
+      Cross-Origin-Opener-Policy:
+      - cross-origin
+      Cross-Origin-Resource-Policy:
+      - cross-origin
+      Date:
+      - Fri, 08 Jul 2022 12:17:45 GMT
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Expires:
+      - Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - ses_id=deleted; expires=Thu, 01-Jan-1970 00:00:01 GMT; Max-Age=0; path=/;
+        domain=.investing.com
+      - upa=deleted; expires=Thu, 01-Jan-1970 00:00:01 GMT; Max-Age=0; path=/; domain=www.investing.com
+      - PHPSESSID=bhtv5t0sf6t015mmstoivtrtp1; path=/
+      - udid=5565c5819efd0748c259577e8086bd16; Max-Age=31536000; domain=investing.com;
+        Path=/
+      - smd=5565c5819efd0748c259577e8086bd16-1657282665; Max-Age=1800; domain=investing.com;
+        Path=/
+      - firstUdid=1; Max-Age=2; domain=investing.com; Path=/
+      - __cf_bm=izZD3gHIJrnsfyzsFD8Ud148LjWOotk5noGivN3oJUc-1657282665-0-AZWEx9RkHkzyv/v+agrLk43eCY+XKqAHFF+yHEnrzUp6hLZCnwr5jzRR1SmfI2FQLK6qX36vsEI/+J9UT+omNUM=;
+        path=/; expires=Fri, 08-Jul-22 12:47:45 GMT; domain=.investing.com; HttpOnly;
+        Secure; SameSite=None
+      - __cflb=02DiuGRugds2TUWHMkimMbdK71gXQtrni87ei2NpM2sLg; SameSite=None; Secure;
+        path=/; expires=Sat, 09-Jul-22 11:17:45 GMT; HttpOnly
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding,User-Agent
+      alt-svc:
+      - h3=":443"; ma=86400, h3-29=":443"; ma=86400
+    status:
+      code: 200
+      message: OK
+version: 1

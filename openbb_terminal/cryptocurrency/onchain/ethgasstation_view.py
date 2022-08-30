@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_gwei_fees(export: str) -> None:
+def display_gwei_fees(export: str = "") -> None:
     """Current gwei fees
     [Source: https://ethgasstation.info]
 

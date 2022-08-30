@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import configparser
 import logging
+import os
 from typing import Tuple
 
 import pandas as pd
@@ -33,20 +34,20 @@ accepted_orders = [
 
 @log_start_end(log=logger)
 def get_historical_greeks(
-    ticker: str, expiry: str, chain_id: str, strike: float, put: bool
+    symbol: str, expiry: str, strike: float, chain_id: str = "", put: bool = False
 ) -> pd.DataFrame:
     """Get histoical option greeks
 
     Parameters
     ----------
-    ticker: str
-        Stock ticker
+    symbol: str
+        Stock ticker symbol
     expiry: str
         Option expiration date
-    chain_id: str
-        OCC option symbol.  Overwrites other inputs
     strike: float
         Strike price to look for
+    chain_id: str
+        OCC option symbol.  Overwrites other inputs
     put: bool
         Is this a put option?
 
@@ -56,7 +57,7 @@ def get_historical_greeks(
         Dataframe containing historical greeks
     """
     if not chain_id:
-        options = yfinance_model.get_option_chain(ticker, expiry)
+        options = yfinance_model.get_option_chain(symbol, expiry)
 
         if put:
             options = options.puts
@@ -112,7 +113,12 @@ def get_historical_greeks(
 
 
 @log_start_end(log=logger)
-def get_screener_output(preset: str, presets_path: str) -> Tuple[pd.DataFrame, str]:
+def get_screener_output(
+    preset: str = "high_IV",
+    presets_path: str = os.path.join(
+        os.path.abspath(os.path.dirname(__file__)), "..", "presets/"
+    ),
+) -> Tuple[pd.DataFrame, str]:
     """Screen options based on preset filters
 
     Parameters
@@ -300,13 +306,13 @@ def check_presets(preset_dict: dict) -> str:
                 error += f"{key} : {value},  Should be [true/false]\n"
 
         elif key == "tickers":
-            for ticker in value.split(","):
+            for symbol in value.split(","):
                 try:
-                    if yf.Ticker(eval(ticker)).info["regularMarketPrice"] is None:
-                        error += f"{key} : {ticker} not found on yfinance"
+                    if yf.Ticker(eval(symbol)).info["regularMarketPrice"] is None:
+                        error += f"{key} : {symbol} not found on yfinance"
 
                 except NameError:
-                    error += f"{key} : {value}, {ticker} failed"
+                    error += f"{key} : {value}, {symbol} failed"
 
         elif key == "limit":
             try:

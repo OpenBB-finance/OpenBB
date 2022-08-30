@@ -41,7 +41,7 @@ def test_screener(mocker, toggle):
         data_type="overview",
         limit=2,
         ascend=True,
-        sort="Ticker",
+        sortby="Ticker",
         export="",
     )
 
@@ -66,7 +66,7 @@ def test_screener_no_data(data, mocker):
         data_type="overview",
         limit=2,
         ascend=True,
-        sort="",
+        sortby="",
         export="",
     )
 
@@ -105,6 +105,6 @@ def test_screener_sort_matches(sort, mocker):
         data_type="overview",
         limit=2,
         ascend=True,
-        sort=sort,
+        sortby=sort,
         export="",
     )

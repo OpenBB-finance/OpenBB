@@ -2,7 +2,7 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import List, Tuple
+from typing import List
 
 import requests
 
@@ -14,17 +14,28 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def get_similar_companies(ticker: str) -> Tuple[List[str], str]:
+def get_similar_companies(symbol: str) -> List[str]:
+    """Get similar companies from Finhub
+
+    Parameters
+    ----------
+    symbol : str
+        Ticker to find comparisons for
+
+    Returns
+    -------
+    List[str]
+        List of similar companies
+    """
+
     response = requests.get(
-        f"https://finnhub.io/api/v1/stock/peers?symbol={ticker}&token={cfg.API_FINNHUB_KEY}"
+        f"https://finnhub.io/api/v1/stock/peers?symbol={symbol}&token={cfg.API_FINNHUB_KEY}"
     )
 
     similar = []
-    user = "Error"
 
     if response.status_code == 200:
         similar = response.json()
-        user = "Finnhub"
 
         if not similar:
             console.print("Similar companies not found.")
@@ -35,4 +46,4 @@ def get_similar_companies(ticker: str) -> Tuple[List[str], str]:
     else:
         console.print(f"Error in request: {response.json()['error']}", "\n")
 
-    return similar, user
+    return similar

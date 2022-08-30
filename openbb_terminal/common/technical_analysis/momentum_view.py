@@ -19,6 +19,7 @@ from openbb_terminal.helper_funcs import (
     plot_autoscale,
     reindex_dates,
     is_valid_axes_count,
+    print_rich_table,
 )
 
 logger = logging.getLogger(__name__)
@@ -28,10 +29,10 @@ register_matplotlib_converters()
 
 @log_start_end(log=logger)
 def display_cci(
-    ohlc: pd.DataFrame,
-    length: int = 14,
+    data: pd.DataFrame,
+    window: int = 14,
     scalar: float = 0.0015,
-    s_ticker: str = "",
+    symbol: str = "",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -40,13 +41,13 @@ def display_cci(
     Parameters
     ----------
 
-    ohlc : pd.DataFrame
+    data : pd.DataFrame
         Dataframe of OHLC
-    length : int
+    window : int
         Length of window
     scalar : float
         Scalar variable
-    s_ticker : str
+    symbol : str
         Stock ticker
     export : str
         Format to export data
@@ -54,9 +55,9 @@ def display_cci(
         External axes (2 axes are expected in the list), by default None
     """
     df_ta = momentum_model.cci(
-        ohlc["High"], ohlc["Low"], ohlc["Adj Close"], length, scalar
+        data["High"], data["Low"], data["Adj Close"], window, scalar
     )
-    plot_data = pd.merge(ohlc, df_ta, how="outer", left_index=True, right_index=True)
+    plot_data = pd.merge(data, df_ta, how="outer", left_index=True, right_index=True)
     plot_data = reindex_dates(plot_data)
 
     # This plot has 2 axes
@@ -70,7 +71,7 @@ def display_cci(
     else:
         return
 
-    ax1.set_title(f"{s_ticker} CCI")
+    ax1.set_title(f"{symbol} CCI")
     ax1.plot(
         plot_data.index,
         plot_data["Adj Close"].values,
@@ -122,7 +123,7 @@ def display_macd(
     n_fast: int = 12,
     n_slow: int = 26,
     n_signal: int = 9,
-    s_ticker: str = "",
+    symbol: str = "",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -138,7 +139,7 @@ def display_macd(
         Slow period
     n_signal : int
         Signal period
-    s_ticker : str
+    symbol : str
         Stock ticker
     export : str
         Format to export data
@@ -160,7 +161,7 @@ def display_macd(
     else:
         return
 
-    ax1.set_title(f"{s_ticker} MACD")
+    ax1.set_title(f"{symbol} MACD")
     ax1.plot(plot_data.index, plot_data.iloc[:, 1].values)
     ax1.set_xlim(plot_data.index[0], plot_data.index[-1])
     ax1.set_ylabel("Share Price ($)")
@@ -206,10 +207,10 @@ def display_macd(
 @log_start_end(log=logger)
 def display_rsi(
     series: pd.Series,
-    length: int = 14,
+    window: int = 14,
     scalar: float = 100.0,
     drift: int = 1,
-    s_ticker: str = "",
+    symbol: str = "",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -219,20 +220,20 @@ def display_rsi(
     ----------
     series : pd.Series
         Values to input
-    length : int
+    window : int
         Length of window
     scalar : float
         Scalar variable
     drift : int
         Drift variable
-    s_ticker : str
+    symbol : str
         Stock ticker
     export : str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
     """
-    df_ta = momentum_model.rsi(series, length, scalar, drift)
+    df_ta = momentum_model.rsi(series, window, scalar, drift)
 
     # This plot has 2 axes
     if external_axes is None:
@@ -249,7 +250,7 @@ def display_rsi(
     plot_data = reindex_dates(plot_data)
 
     ax1.plot(plot_data.index, plot_data.iloc[:, 1].values)
-    ax1.set_title(f"{s_ticker} RSI{length}")
+    ax1.set_title(f"{symbol} RSI{window}")
     ax1.set_xlim(plot_data.index[0], plot_data.index[-1])
     ax1.set_ylabel("Share Price ($)")
     theme.style_primary_axis(
@@ -290,11 +291,11 @@ def display_rsi(
 
 @log_start_end(log=logger)
 def display_stoch(
-    ohlc: pd.DataFrame,
+    data: pd.DataFrame,
     fastkperiod: int = 14,
     slowdperiod: int = 3,
     slowkperiod: int = 3,
-    s_ticker: str = "",
+    symbol: str = "",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
@@ -302,25 +303,25 @@ def display_stoch(
 
     Parameters
     ----------
-    ohlc : pd.DataFrame
-        Dataframe of prices
+    data : pd.DataFrame
+        Dataframe of OHLC prices
     fastkperiod : int
         Fast k period
     slowdperiod : int
         Slow d period
     slowkperiod : int
         Slow k period
-    s_ticker : str
-        Stock ticker
+    symbol : str
+        Stock ticker symbol
     export : str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (3 axes are expected in the list), by default None
     """
     df_ta = momentum_model.stoch(
-        ohlc["High"],
-        ohlc["Low"],
-        ohlc["Adj Close"],
+        data["High"],
+        data["Low"],
+        data["Adj Close"],
         fastkperiod,
         slowdperiod,
         slowkperiod,
@@ -337,12 +338,12 @@ def display_stoch(
     else:
         return
 
-    plot_data = pd.merge(ohlc, df_ta, how="outer", left_index=True, right_index=True)
+    plot_data = pd.merge(data, df_ta, how="outer", left_index=True, right_index=True)
     plot_data = reindex_dates(plot_data)
 
     ax1.plot(plot_data.index, plot_data["Adj Close"].values)
 
-    ax1.set_title(f"Stochastic Relative Strength Index (STOCH RSI) on {s_ticker}")
+    ax1.set_title(f"Stochastic Relative Strength Index (STOCH RSI) on {symbol}")
     ax1.set_xlim(plot_data.index[0], plot_data.index[-1])
     ax1.set_ylabel("Share Price ($)")
     theme.style_primary_axis(
@@ -384,9 +385,9 @@ def display_stoch(
 
 @log_start_end(log=logger)
 def display_fisher(
-    ohlc: pd.DataFrame,
-    length: int = 14,
-    s_ticker: str = "",
+    data: pd.DataFrame,
+    window: int = 14,
+    symbol: str = "",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -394,19 +395,19 @@ def display_fisher(
 
     Parameters
     ----------
-    ohlc : pd.DataFrame
-        Dataframe of prices
-    length : int
+    data : pd.DataFrame
+        Dataframe of OHLC prices
+    window : int
         Length of window
-    s_ticker : str
+    symbol : str
         Ticker string
     export : str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (3 axes are expected in the list), by default None
     """
-    df_ta = momentum_model.fisher(ohlc["High"], ohlc["Low"], length)
-    plot_data = pd.merge(ohlc, df_ta, how="outer", left_index=True, right_index=True)
+    df_ta = momentum_model.fisher(data["High"], data["Low"], window)
+    plot_data = pd.merge(data, df_ta, how="outer", left_index=True, right_index=True)
     plot_data = reindex_dates(plot_data)
 
     # This plot has 3 axes
@@ -421,7 +422,7 @@ def display_fisher(
     else:
         return
 
-    ax1.set_title(f"{s_ticker} Fisher Transform")
+    ax1.set_title(f"{symbol} Fisher Transform")
     ax1.plot(plot_data.index, plot_data["Adj Close"].values)
     ax1.set_xlim(plot_data.index[0], plot_data.index[-1])
     ax1.set_ylabel("Price")
@@ -473,8 +474,8 @@ def display_fisher(
 @log_start_end(log=logger)
 def display_cg(
     series: pd.Series,
-    length: int = 14,
-    s_ticker: str = "",
+    window: int = 14,
+    symbol: str = "",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -484,16 +485,16 @@ def display_cg(
     ----------
     series : pd.Series
         Series of values
-    length : int
+    window : int
         Length of window
-    s_ticker : str
+    symbol : str
         Stock ticker
     export : str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
     """
-    df_ta = momentum_model.cg(series, length)
+    df_ta = momentum_model.cg(series, window)
     plot_data = pd.merge(series, df_ta, how="outer", left_index=True, right_index=True)
     plot_data = reindex_dates(plot_data)
 
@@ -508,7 +509,7 @@ def display_cg(
     else:
         return
 
-    ax1.set_title(f"{s_ticker} Centre of Gravity")
+    ax1.set_title(f"{symbol} Centre of Gravity")
     ax1.plot(plot_data.index, plot_data[series.name].values)
     ax1.set_xlim(plot_data.index[0], plot_data.index[-1])
     ax1.set_ylabel("Share Price ($)")
@@ -538,4 +539,74 @@ def display_cg(
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "cg",
         df_ta,
+    )
+
+
+@log_start_end(log=logger)
+def display_clenow_momentum(
+    series: pd.Series,
+    window: int = 90,
+    export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
+):
+    """Display clenow momentum
+
+    Parameters
+    ----------
+    series : pd.Series
+        Series of values
+    window : int
+        Length of window
+    export : str
+        Format to export data
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (2 axes are expected in the list), by default None
+
+    Returns
+    -------
+
+    """
+    r2, coef, fit_data = momentum_model.clenow_momentum(series, window)
+
+    df = pd.DataFrame.from_dict(
+        {
+            "R^2": f"{r2:.5f}",
+            "Fit Coef": f"{coef:.5f}",
+            "Factor": f"{coef * r2:.5f}",
+        },
+        orient="index",
+    )
+    print_rich_table(
+        df,
+        show_index=True,
+        headers=[""],
+        title="Clenow Exponential Regression Factor",
+        show_header=False,
+    )
+
+    # This plot has 2 axes
+    if external_axes is None:
+        _, ax1 = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+
+    elif is_valid_axes_count(external_axes, 1):
+        ax1 = external_axes
+    else:
+        return
+
+    ax1.plot(series.index, np.log(series.values))
+    ax1.plot(series.index[-window:], fit_data, linewidth=2)
+
+    ax1.set_title("Clenow Momentum Exponential Regression")
+    ax1.set_xlim(series.index[0], series.index[-1])
+    ax1.set_ylabel("Log Price")
+    theme.style_primary_axis(
+        ax1,
+    )
+    if external_axes is None:
+        theme.visualize_output()
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
+        "clenow",
     )

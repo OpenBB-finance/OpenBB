@@ -20,7 +20,7 @@ def test_display_defi_vaults(mocker):
         kind=None,
         top=None,
         sortby="apy",
-        descend=False,
+        ascend=False,
         link=True,
         export="",
     )
@@ -41,7 +41,7 @@ def test_display_defi_vaults_empty_df(mocker):
         kind=None,
         top=None,
         sortby="apy",
-        descend=False,
+        ascend=False,
         link=True,
         export="",
     )

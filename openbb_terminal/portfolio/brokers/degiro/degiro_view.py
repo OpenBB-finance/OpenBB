@@ -6,7 +6,6 @@ from argparse import Namespace
 import pandas as pd
 from degiro_connector.core.helpers import pb_handler
 from degiro_connector.trading.models.trading_pb2 import (
-    Credentials,
     LatestNews,
     NewsByCompany,
     Order,
@@ -19,6 +18,9 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.decorators import check_api_key
 
 # IMPORTATION INTERNAL
+from openbb_terminal.helper_funcs import (
+    print_rich_table,
+)
 from openbb_terminal.portfolio.brokers.degiro.degiro_model import DegiroModel
 from openbb_terminal.rich_config import console, MenuText
 
@@ -68,6 +70,7 @@ class DegiroView:
         mt.add_cmd("companynews")
         mt.add_cmd("lastnews")
         mt.add_cmd("topnews")
+        mt.add_cmd("paexport")
         console.print(text=mt.menu_text, menu="Portfolio - Brokers - Degiro")
 
     @log_start_end(log=logger)
@@ -306,13 +309,14 @@ class DegiroView:
 
     @log_start_end(log=logger)
     @check_api_key(["DG_USERNAME", "DG_PASSWORD"])
-    def login(self):
+    def login(self, otp: int = None):
         # GET ATTRIBUTES
         degiro_model = self.__degiro_model
-        default_credentials = degiro_model.login_default_credentials()
+        credentials = degiro_model.login_default_credentials()
 
-        credentials = Credentials()
-        credentials.CopyFrom(default_credentials)
+        if otp is not None:
+            credentials.one_time_password = otp
+
         degiro_model.login()
 
         DegiroView.__login_display_success()
@@ -489,3 +493,27 @@ class DegiroView:
     @log_start_end(log=logger)
     def __update_display_success():
         console.print("`Order` updated .")
+
+    @log_start_end(log=logger)
+    def transactions_export(self, ns_parser: Namespace):
+        degiro_model = self.__degiro_model
+
+        portfolio_df = degiro_model.get_transactions_export(
+            start=ns_parser.start.date(),
+            end=ns_parser.end.date(),
+            currency=ns_parser.currency,
+        )
+
+        if portfolio_df is not None:
+
+            print_rich_table(
+                df=portfolio_df,
+                headers=list(portfolio_df.columns),
+                show_index=True,
+                title="Degiro Transactions",
+            )
+
+            degiro_model.export_data(portfolio_df, ns_parser.export)
+
+        else:
+            console.print("Error while fetching or processing Transactions.")

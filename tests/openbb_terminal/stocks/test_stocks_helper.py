@@ -70,10 +70,10 @@ def test_load(interval, recorder, source):
     end = datetime.strptime("2021-12-02", "%Y-%m-%d")
     prepost = False
     result_df = stocks_helper.load(
-        ticker=ticker,
-        start=start,
+        symbol=ticker,
+        start_date=start,
         interval=interval,
-        end=end,
+        end_date=end,
         prepost=prepost,
         source=source,
     )
@@ -91,10 +91,10 @@ def test_load_week_or_month(recorder, weekly, monthly):
     end = datetime.strptime("2021-12-02", "%Y-%m-%d")
     prepost = False
     result_df = stocks_helper.load(
-        ticker=ticker,
-        start=start,
+        symbol=ticker,
+        start_date=start,
         interval=1440,
-        end=end,
+        end_date=end,
         prepost=prepost,
         source="yf",
         weekly=weekly,
@@ -153,10 +153,10 @@ def test_display_candle(mocker, use_matplotlib):
     prepost = False
     source = "yf"
     df_stock = stocks_helper.load(
-        ticker=ticker,
-        start=start,
+        symbol=ticker,
+        start_date=start,
         interval=interval,
-        end=end,
+        end_date=end,
         prepost=prepost,
         source=source,
     )
@@ -168,8 +168,8 @@ def test_display_candle(mocker, use_matplotlib):
     s_ticker = "GME"
     intraday = False
     stocks_helper.display_candle(
-        s_ticker=s_ticker,
-        df_stock=df_stock,
+        symbol=s_ticker,
+        data=df_stock,
         use_matplotlib=use_matplotlib,
         intraday=intraday,
     )

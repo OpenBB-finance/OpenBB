@@ -13,20 +13,20 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def get_finviz_image(ticker: str) -> bytes:
+def get_finviz_image(symbol: str) -> bytes:
     """Get finviz image for given ticker
 
     Parameters
     ----------
-    ticker : str
-        ticker
+    symbol: str
+        Ticker symbol
 
     Returns
     -------
     bytes
         Image in byte format
     """
-    stock = finvizfinance(ticker)
+    stock = finvizfinance(symbol)
     image_url = stock.ticker_charts(urlonly=True)
 
     r = requests.get(image_url, stream=True, headers=headers, timeout=5)

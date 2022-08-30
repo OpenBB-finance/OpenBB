@@ -16,7 +16,7 @@ from openbb_terminal.stocks.fundamental_analysis.dcf_model import create_datafra
 
 logger = logging.getLogger(__name__)
 
-sa_keys = {
+SA_KEYS = {
     "BS": {
         "ce": "Cash & Equivalents",
         "sti": "Short-Term Investments",
@@ -82,48 +82,47 @@ sa_keys = {
 
 @log_start_end(log=logger)
 def get_stocks_data(
-    stocks: list,
+    symbols: list,
     finance_key: str,
-    sa_dict: dict,
     stocks_data: dict,
     period: str,
-    convert_currency: str = "USD",
+    currency: str = "USD",
 ):
     """Get stocks data based on a list of stocks and the finance key. The function searches for the correct
      financial statement automatically. [Source: StockAnalysis]
 
     Parameters
     ----------
-    stocks: list
+    symbols: list
         A list of tickers that will be used to collect data for.
     finance_key: str
-        The finance key used to search within the sa_dict for the correct name of item
+        The finance key used to search within the SA_KEYS for the correct name of item
         on the financial statement
-    sa_dict: dict
-        A dictionary that includes BS, IS and CF, the abbreviations and names of items
-        on the financial statements. I.e: {"BS": {"ce": "Cash & Equivalents"}}
     stocks_data : dict
         A dictionary that is empty on initialisation but filled once data is collected
         for the first time.
     period : str
         Whether you want annually, quarterly or trailing financial statements.
-    convert_currency : str
-        Choose in what currency you wish to convert each company's financial statement. Default is USD (US Dollars).
+    currency : str
+        Choose in what currency you wish to convert each company's financial statement.
+        Default is USD (US Dollars).
 
     Returns
     -------
     dict
         Dictionary of filtered stocks data separated by financial statement
     """
+
     no_data = []
-    for symbol in tqdm(stocks):
-        for statement in sa_dict.keys():
-            if finance_key in sa_dict[statement]:
-                if statement not in stocks_data:
-                    stocks_data[statement] = {}
-                used_statement = statement
-                symbol_statement, rounding, currency = create_dataframe(
-                    symbol, statement, period.lower()
+
+    for symbol in tqdm(symbols):
+        for item, description in SA_KEYS.items():
+            if finance_key in description:
+                if item not in stocks_data:
+                    stocks_data[item] = {}
+                used_statement = item
+                symbol_statement, rounding, currency_dcf = create_dataframe(
+                    symbol, item, period.lower()
                 )
 
                 if symbol_statement.empty:
@@ -134,23 +133,23 @@ def get_stocks_data(
                     change_type_dataframes(symbol_statement) * rounding
                 )
 
-                if convert_currency and convert_currency != currency:
+                if currency and currency != currency_dcf:
                     currency_data = yf.download(
-                        f"{currency}{convert_currency}=X",
+                        f"{currency_dcf}{currency}=X",
                         start=f"{symbol_statement_rounded.columns[0]}-01-01",
                         end=f"{symbol_statement_rounded.columns[-1]}-12-31",
                         progress=False,
                     )["Adj Close"]
 
                     for year in symbol_statement_rounded:
-                        # Since fiscal year can differ, I take the median of the currency and not the last value
+                        # Since fiscal years differ, take the median and not the last value
                         # of the year
                         symbol_statement_rounded[year] = (
                             symbol_statement_rounded[year]
                             * currency_data.loc[year].median()
                         )
 
-                stocks_data[statement][symbol] = symbol_statement_rounded
+                stocks_data[item][symbol] = symbol_statement_rounded
 
     if period in ["Quarterly", "Trailing"]:
         for symbol in stocks_data[used_statement]:
@@ -202,20 +201,22 @@ def match_length_dataframes(dataframes: Dict[pd.DataFrame, Any]):
     return dataframes
 
 
-def change_type_dataframes(dataframe) -> pd.DataFrame:
+def change_type_dataframes(data: pd.DataFrame) -> pd.DataFrame:
     """
     Adjusts comma-seperated strings to floats
 
     Parameters
     ----------
-    dataframe : pd.DataFrame
+    data : pd.DataFrame
         DataFrame with comma-seperated strings
 
     Returns
     -------
-    dataframe : pd.DataFrame
+    pd.DataFrame
         Adjusted DataFrame
     """
-    dataframe = dataframe.apply(lambda x: x.str.replace(",", "").astype(float), axis=1)
+    dataframe = data.apply(
+        lambda x: x.astype(str).str.replace(",", "").astype(float), axis=1
+    )
 
     return dataframe

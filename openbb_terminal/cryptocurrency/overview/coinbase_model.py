@@ -21,13 +21,24 @@ PAIRS_FILTERS = [
 
 
 @log_start_end(log=logger)
-def get_trading_pairs() -> pd.DataFrame:
+def get_trading_pairs(
+    top: int = 50, sortby: str = "quote_increment", ascend: bool = True
+) -> pd.DataFrame:
     """Get a list of available currency pairs for trading. [Source: Coinbase]
 
     base_min_size - min order size
     base_max_size - max order size
     min_market_funds -  min funds allowed in a market order.
     max_market_funds - max funds allowed in a market order.
+
+    Parameters
+    ----------
+    top: int
+        Top n of pairs
+    sortby: str
+        Key to sortby data
+    ascend: bool
+        Sort descending flag
 
     Returns
     -------
@@ -40,10 +51,11 @@ def get_trading_pairs() -> pd.DataFrame:
         "display_name",
         "base_currency",
         "quote_currency",
-        "base_min_size",
-        "base_max_size",
+        "quote_increment",
+        "base_increment",
         "min_market_funds",
-        "max_market_funds",
     ]
     pairs = make_coinbase_request("/products")
-    return pd.DataFrame(pairs)[columns]
+    df = pd.DataFrame(pairs)[columns]
+    df = df.sort_values(by=sortby, ascending=ascend).head(top)
+    return df

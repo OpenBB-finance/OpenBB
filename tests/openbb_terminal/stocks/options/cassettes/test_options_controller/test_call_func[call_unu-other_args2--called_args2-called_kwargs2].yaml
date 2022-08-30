@@ -1,0 +1,44 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer YI1c1OVI16Dd8CyLSh53zkGep9IS
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://sandbox.tradier.com/v1/markets/options/chains?expiration=2022-01-07&greeks=true&symbol=MOCK_TICKER
+  response:
+    body:
+      string: '{"options":null}'
+    headers:
+      Access-Control-Allow-Headers:
+      - accept, authorization
+      Access-Control-Allow-Methods:
+      - GET, PUT, POST, DELETE
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '16'
+      Content-Type:
+      - application/json;charset=UTF-8
+      Date:
+      - Thu, 11 Aug 2022 01:29:16 GMT
+      X-Ratelimit-Allowed:
+      - '200'
+      X-Ratelimit-Available:
+      - '199'
+      X-Ratelimit-Expiry:
+      - '1660181400000'
+      X-Ratelimit-Used:
+      - '1'
+    status:
+      code: 200
+      message: OK
+version: 1

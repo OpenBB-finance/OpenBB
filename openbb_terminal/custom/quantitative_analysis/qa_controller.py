@@ -79,6 +79,7 @@ class QaController(BaseController):
             self.choices = choices
 
             choices["support"] = self.SUPPORT_CHOICES
+            choices["about"] = self.ABOUT_CHOICES
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -146,8 +147,6 @@ class QaController(BaseController):
             type=str,
         )
 
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-f")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             file = Path("custom_imports") / ns_parser.file
@@ -220,10 +219,10 @@ class QaController(BaseController):
         )
         if ns_parser:
             qa_view.display_raw(
-                self.df[self.target],
-                num=ns_parser.limit,
-                sort="",
-                des=ns_parser.descend,
+                data=self.df[self.target],
+                limit=ns_parser.limit,
+                sortby="",
+                descend=ns_parser.descend,
                 export=ns_parser.export,
             )
 
@@ -242,7 +241,7 @@ class QaController(BaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            qa_view.display_summary(df=self.df, export=ns_parser.export)
+            qa_view.display_summary(data=self.df, export=ns_parser.export)
 
     @log_start_end(log=logger)
     def call_line(self, other_args: List[str]):
@@ -314,7 +313,7 @@ class QaController(BaseController):
         if ns_parser:
             qa_view.display_hist(
                 name=self.ticker,
-                df=self.df,
+                data=self.df,
                 target=self.target,
                 bins=ns_parser.n_bins,
             )
@@ -336,7 +335,7 @@ class QaController(BaseController):
         if ns_parser:
             qa_view.display_cdf(
                 name=self.ticker,
-                df=self.df,
+                data=self.df,
                 target=self.target,
                 export=ns_parser.export,
             )
@@ -364,7 +363,7 @@ class QaController(BaseController):
         if ns_parser:
             qa_view.display_bw(
                 name=self.ticker,
-                df=self.df,
+                data=self.df,
                 target=self.target,
                 yearly=ns_parser.year,
             )
@@ -396,7 +395,7 @@ class QaController(BaseController):
         if ns_parser:
             qa_view.display_seasonal(
                 name=self.ticker,
-                df=self.df,
+                data=self.df,
                 target=self.target,
                 multiplicative=ns_parser.multiplicative,
                 export=ns_parser.export,
@@ -438,7 +437,7 @@ class QaController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             qa_view.display_cusum(
-                df=self.df,
+                data=self.df,
                 target=self.target,
                 threshold=ns_parser.threshold,
                 drift=ns_parser.drift,
@@ -467,7 +466,7 @@ class QaController(BaseController):
         if ns_parser:
             qa_view.display_acf(
                 name=self.ticker,
-                df=self.df,
+                data=self.df,
                 target=self.target,
                 lags=ns_parser.lags,
             )
@@ -497,8 +496,8 @@ class QaController(BaseController):
         )
         if ns_parser:
             rolling_view.display_mean_std(
-                name=self.ticker,
-                df=self.df,
+                symbol=self.ticker,
+                data=self.df,
                 target=self.target,
                 window=ns_parser.n_window,
                 export=ns_parser.export,
@@ -529,7 +528,7 @@ class QaController(BaseController):
         if ns_parser:
             rolling_view.display_spread(
                 name=self.ticker,
-                df=self.df,
+                data=self.df,
                 target=self.target,
                 window=ns_parser.n_window,
                 export=ns_parser.export,
@@ -577,7 +576,7 @@ class QaController(BaseController):
         if ns_parser:
             rolling_view.display_quantile(
                 name=self.ticker,
-                df=self.df,
+                data=self.df,
                 target=self.target,
                 window=ns_parser.n_window,
                 quantile=ns_parser.f_quantile,
@@ -615,7 +614,7 @@ class QaController(BaseController):
         if ns_parser:
             rolling_view.display_skew(
                 name=self.ticker,
-                df=self.df,
+                data=self.df,
                 target=self.target,
                 window=ns_parser.n_length,
                 export=ns_parser.export,
@@ -652,7 +651,7 @@ class QaController(BaseController):
         if ns_parser:
             rolling_view.display_kurtosis(
                 name=self.ticker,
-                df=self.df,
+                data=self.df,
                 target=self.target,
                 window=ns_parser.n_length,
                 export=ns_parser.export,
@@ -674,7 +673,7 @@ class QaController(BaseController):
         )
         if ns_parser:
             qa_view.display_normality(
-                df=self.df, target=self.target, export=ns_parser.export
+                data=self.df, target=self.target, export=ns_parser.export
             )
 
     @log_start_end(log=logger)
@@ -690,7 +689,7 @@ class QaController(BaseController):
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            qa_view.display_qqplot(name=self.ticker, df=self.df, target=self.target)
+            qa_view.display_qqplot(name=self.ticker, data=self.df, target=self.target)
 
     @log_start_end(log=logger)
     def call_unitroot(self, other_args: List[str]):
@@ -726,7 +725,7 @@ class QaController(BaseController):
         )
         if ns_parser:
             qa_view.display_unitroot(
-                df=self.df,
+                data=self.df,
                 target=self.target,
                 fuller_reg=ns_parser.fuller_reg,
                 kpss_reg=ns_parser.kpss_reg,

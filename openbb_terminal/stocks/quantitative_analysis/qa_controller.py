@@ -23,7 +23,10 @@ from openbb_terminal.helper_funcs import (
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
 from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.stocks.quantitative_analysis.beta_view import beta_view
 from openbb_terminal.stocks.quantitative_analysis.factors_view import capm_view
+
+# pylint: disable=C0302
 
 logger = logging.getLogger(__name__)
 
@@ -54,6 +57,7 @@ class QaController(StockBaseController):
         "goodness",
         "unitroot",
         "capm",
+        "beta",
         "var",
         "es",
         "sh",
@@ -146,6 +150,7 @@ class QaController(StockBaseController):
         mt.add_cmd("decompose")
         mt.add_cmd("cusum")
         mt.add_cmd("capm")
+        mt.add_cmd("beta")
         console.print(text=mt.menu_text, menu="Stocks - Quantitative Analysis")
 
     def custom_reset(self):
@@ -215,10 +220,10 @@ class QaController(StockBaseController):
         )
         if ns_parser:
             qa_view.display_raw(
-                self.stock[self.target],
-                num=ns_parser.limit,
-                sort="",
-                des=ns_parser.descend,
+                data=self.stock[self.target],
+                limit=ns_parser.limit,
+                sortby="",
+                descend=ns_parser.descend,
                 export=ns_parser.export,
             )
 
@@ -237,7 +242,7 @@ class QaController(StockBaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            qa_view.display_summary(df=self.stock, export=ns_parser.export)
+            qa_view.display_summary(data=self.stock, export=ns_parser.export)
 
     @log_start_end(log=logger)
     def call_line(self, other_args: List[str]):
@@ -309,7 +314,7 @@ class QaController(StockBaseController):
         if ns_parser:
             qa_view.display_hist(
                 name=self.ticker,
-                df=self.stock,
+                data=self.stock,
                 target=self.target,
                 bins=ns_parser.n_bins,
             )
@@ -330,8 +335,8 @@ class QaController(StockBaseController):
         )
         if ns_parser:
             qa_view.display_cdf(
-                name=self.ticker,
-                df=self.stock,
+                data=self.stock,
+                symbol=self.ticker,
                 target=self.target,
                 export=ns_parser.export,
             )
@@ -358,8 +363,8 @@ class QaController(StockBaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             qa_view.display_bw(
-                name=self.ticker,
-                df=self.stock,
+                data=self.stock,
+                symbol=self.ticker,
                 target=self.target,
                 yearly=ns_parser.year,
             )
@@ -391,7 +396,7 @@ class QaController(StockBaseController):
         if ns_parser:
             qa_view.display_seasonal(
                 name=self.ticker,
-                df=self.stock,
+                data=self.stock,
                 target=self.target,
                 multiplicative=ns_parser.multiplicative,
                 export=ns_parser.export,
@@ -435,7 +440,7 @@ class QaController(StockBaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             qa_view.display_cusum(
-                df=self.stock,
+                data=self.stock,
                 target=self.target,
                 threshold=ns_parser.threshold,
                 drift=ns_parser.drift,
@@ -468,8 +473,8 @@ class QaController(StockBaseController):
                 )
 
             qa_view.display_acf(
-                name=self.ticker,
-                df=self.stock,
+                data=self.stock,
+                symbol=self.ticker,
                 target=self.target,
                 lags=ns_parser.lags,
             )
@@ -499,10 +504,10 @@ class QaController(StockBaseController):
         )
         if ns_parser:
             rolling_view.display_mean_std(
-                name=self.ticker,
-                df=self.stock,
+                symbol=self.ticker,
+                data=self.stock,
                 target=self.target,
-                window=ns_parser.n_window,
+                limit=ns_parser.n_window,
                 export=ns_parser.export,
             )
 
@@ -530,10 +535,10 @@ class QaController(StockBaseController):
         )
         if ns_parser:
             rolling_view.display_spread(
-                name=self.ticker,
-                df=self.stock,
+                data=self.stock,
+                symbol=self.ticker,
                 target=self.target,
-                window=ns_parser.n_window,
+                limit=ns_parser.n_window,
                 export=ns_parser.export,
             )
 
@@ -578,10 +583,10 @@ class QaController(StockBaseController):
         )
         if ns_parser:
             rolling_view.display_quantile(
-                name=self.ticker,
-                df=self.stock,
+                data=self.stock,
+                symbol=self.ticker,
                 target=self.target,
-                window=ns_parser.n_window,
+                limit=ns_parser.n_window,
                 quantile=ns_parser.f_quantile,
                 export=ns_parser.export,
             )
@@ -617,7 +622,7 @@ class QaController(StockBaseController):
         if ns_parser:
             rolling_view.display_skew(
                 name=self.ticker,
-                df=self.stock,
+                data=self.stock,
                 target=self.target,
                 window=ns_parser.n_window,
                 export=ns_parser.export,
@@ -654,7 +659,7 @@ class QaController(StockBaseController):
         if ns_parser:
             rolling_view.display_kurtosis(
                 name=self.ticker,
-                df=self.stock,
+                data=self.stock,
                 target=self.target,
                 window=ns_parser.n_window,
                 export=ns_parser.export,
@@ -676,7 +681,7 @@ class QaController(StockBaseController):
         )
         if ns_parser:
             qa_view.display_normality(
-                df=self.stock, target=self.target, export=ns_parser.export
+                data=self.stock, target=self.target, export=ns_parser.export
             )
 
     @log_start_end(log=logger)
@@ -692,7 +697,9 @@ class QaController(StockBaseController):
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            qa_view.display_qqplot(name=self.ticker, df=self.stock, target=self.target)
+            qa_view.display_qqplot(
+                symbol=self.ticker, data=self.stock, target=self.target
+            )
 
     @log_start_end(log=logger)
     def call_unitroot(self, other_args: List[str]):
@@ -728,7 +735,7 @@ class QaController(StockBaseController):
         )
         if ns_parser:
             qa_view.display_unitroot(
-                df=self.stock,
+                data=self.stock,
                 target=self.target,
                 fuller_reg=ns_parser.fuller_reg,
                 kpss_reg=ns_parser.kpss_reg,
@@ -749,6 +756,34 @@ class QaController(StockBaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             capm_view(self.ticker)
+
+    @log_start_end(log=logger)
+    def call_beta(self, other_args: List[str]):
+        """Call the beta command on loaded ticker"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="beta",
+            description="""
+                Displays a scatter plot demonstrating the beta of two stocks or ETFs.
+            """,
+        )
+        parser.add_argument(
+            "-r",
+            "--ref",
+            action="store",
+            dest="ref",
+            type=str,
+            default="SPY",
+            help="""
+                Reference ticker used for beta calculation.
+            """,
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            beta_view(self.ticker, ns_parser.ref, data=self.stock)
 
     @log_start_end(log=logger)
     def call_var(self, other_args: List[str]):
@@ -800,6 +835,18 @@ class QaController(StockBaseController):
                 Percentile used for VaR calculations, for example input 99.9 equals a 99.9 Percent VaR
             """,
         )
+        parser.add_argument(
+            "-d",
+            "--datarange",
+            action="store",
+            dest="data_range",
+            type=int,
+            default=0,
+            help="""
+                Number of rows you want to use VaR over,
+                ex: if you are using days, 30 would show VaR for the last 30 TRADING days
+            """,
+        )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if ns_parser.adjusted and ns_parser.student_t:
@@ -812,6 +859,7 @@ class QaController(StockBaseController):
                     ns_parser.adjusted,
                     ns_parser.student_t,
                     ns_parser.percentile / 100,
+                    ns_parser.data_range,
                     False,
                 )
 

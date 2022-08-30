@@ -38,7 +38,7 @@ from openbb_terminal.econometrics import econometrics_model, econometrics_view
 
 logger = logging.getLogger(__name__)
 
-# pylint: disable=R0902
+# pylint: disable=R0902,C0302
 
 
 class EconometricsController(BaseController):
@@ -167,7 +167,7 @@ class EconometricsController(BaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
-            choices["load"] = {c: None for c in self.DATA_FILES.keys()}
+            choices["load"]["-f"] = {c: None for c in self.DATA_FILES.keys()}
             choices["show"] = {c: None for c in self.files}
 
             for feature in ["export", "show", "desc", "clear", "index"]:
@@ -181,13 +181,13 @@ class EconometricsController(BaseController):
                 "root",
                 "granger",
                 "coint",
-                "regressions",
             ]:
                 choices[feature] = dict()
 
             self.choices = choices
 
             choices["support"] = self.SUPPORT_CHOICES
+            choices["about"] = self.ABOUT_CHOICES
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -285,7 +285,7 @@ class EconometricsController(BaseController):
     def custom_reset(self):
         """Class specific component of reset command"""
         if self.files:
-            load_files = [f"load {file}" for file in self.files]
+            load_files = [f"load -f {file}" for file in self.files]
             return ["econometrics"] + load_files
         return []
 
@@ -301,7 +301,8 @@ class EconometricsController(BaseController):
         parser.add_argument(
             "-f",
             "--file",
-            help="File to load data in (can be custom import, may have been exported before or can be from Statsmodels)",
+            help="File to load data in (can be custom import, "
+            "may have been exported before or can be from Statsmodels)",
             type=str,
         )
         parser.add_argument(
@@ -321,8 +322,6 @@ class EconometricsController(BaseController):
             dest="examples",
         )
 
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-f")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
@@ -651,20 +650,24 @@ class EconometricsController(BaseController):
                     df,
                 )
             else:
-                df = self.datasets[ns_parser.name].describe()
-                print_rich_table(
-                    df,
-                    headers=self.datasets[ns_parser.name].columns,
-                    show_index=True,
-                    title=f"Statistics for dataset: '{ns_parser.name}'",
-                )
+                df = self.datasets[ns_parser.name]
+                if not df.empty:
+                    df = df.describe()
+                    print_rich_table(
+                        df,
+                        headers=self.datasets[ns_parser.name].columns,
+                        show_index=True,
+                        title=f"Statistics for dataset: '{ns_parser.name}'",
+                    )
 
-                export_data(
-                    ns_parser.export,
-                    os.path.dirname(os.path.abspath(__file__)),
-                    f"{ns_parser.name}_desc",
-                    df,
-                )
+                    export_data(
+                        ns_parser.export,
+                        os.path.dirname(os.path.abspath(__file__)),
+                        f"{ns_parser.name}_desc",
+                        df,
+                    )
+                else:
+                    console.print("Empty dataset")
 
     @log_start_end(log=logger)
     def call_type(self, other_args: List[str]):
@@ -684,7 +687,6 @@ class EconometricsController(BaseController):
             choices=self.choices["type"],
         )
         parser.add_argument(
-            "-f",
             "--format",
             type=str,
             choices=self.DATA_TYPES,
@@ -829,9 +831,10 @@ class EconometricsController(BaseController):
                     if len(columns) > 1 and dataset[columns[0]].isnull().any():
                         null_values = dataset[dataset[columns[0]].isnull()]
                         console.print(
-                            f"The column '{columns[0]}' contains {len(null_values)} NaN values. As multiple columns are "
-                            f"provided, it is assumed this column represents entities (i), the NaN values are "
-                            f"forward filled. Remove the -a argument to disable this."
+                            f"The column '{columns[0]}' contains {len(null_values)} NaN "
+                            "values. As multiple columns are provided, it is assumed this "
+                            "column represents entities (i), the NaN values are forward "
+                            "filled. Remove the -a argument to disable this."
                         )
                         dataset[columns[0]] = dataset[columns[0]].fillna(method="ffill")
                     if dataset[columns[-1]].isnull().any():
@@ -875,7 +878,6 @@ class EconometricsController(BaseController):
             choices=list(self.datasets.keys()),
         )
         parser.add_argument(
-            "-f",
             "--fill",
             help="The method of filling NaNs. This has options to fill rows (rfill, rbfill, rffill) or fill "
             "columns (cfill, cbfill, cffill). Furthermore, it has the option to forward fill and backward fill "
@@ -1025,7 +1027,7 @@ class EconometricsController(BaseController):
             "-d",
             "--delete",
             help="The columns you want to delete from a dataset. Use format: <dataset.column> or"
-            " multiple with <dataset.column>,<datasetb.column2>",
+            " multiple with <dataset.column>,<dataset.column2>",
             dest="delete",
             type=check_list_values(self.choices["delete"]),
         )
@@ -1073,7 +1075,7 @@ class EconometricsController(BaseController):
         parser.add_argument(
             "-c",
             "--columns",
-            help="The columns we want to add <dataset.column>,<datasetb.column2>",
+            help="The columns we want to add <dataset.column>,<dataset.column2>",
             dest="columns",
             type=check_list_values(self.choices["delete"]),
         )
@@ -1210,7 +1212,7 @@ class EconometricsController(BaseController):
             if "," in ns_parser.dependent:
                 console.print(
                     "It appears you have selected multiple variables for the dependent variable. "
-                    "The model only accepts one.\nDid you intend to include these variables as independent "
+                    "Please select one.\nDid you intend to include these variables as independent "
                     f"variables? Use -i {ns_parser.dependent} in this case.\n"
                 )
             elif ns_parser.dependent in self.choices["regressions"]:
@@ -1222,7 +1224,6 @@ class EconometricsController(BaseController):
                 ) = openbb_terminal.econometrics.regression_model.get_ols(
                     [ns_parser.dependent] + ns_parser.independent,
                     self.datasets,
-                    self.choices["regressions"],
                     export=ns_parser.export,
                 )
             else:
@@ -1477,10 +1478,9 @@ class EconometricsController(BaseController):
                             self.regression[regression_name]["independent"],
                             self.regression[regression_name]["model"],
                         ) = openbb_terminal.econometrics.regression_view.display_panel(
-                            regression,
-                            regression_vars,
                             self.datasets,
-                            self.choices["regressions"],
+                            regression_vars,
+                            regression,
                             ns_parser.entity_effects,
                             ns_parser.time_effects,
                         )
@@ -1578,7 +1578,7 @@ class EconometricsController(BaseController):
         if ns_parser:
             if not self.regression["OLS"]["model"]:
                 console.print(
-                    "Please perform an OLS regression before estimating the Breusch-Godfrey statistic.\n"
+                    "Perform an OLS regression before estimating the Breusch-Godfrey statistic.\n"
                 )
             else:
                 openbb_terminal.econometrics.regression_view.display_bgod(
@@ -1605,7 +1605,7 @@ class EconometricsController(BaseController):
         if ns_parser:
             if not self.regression["OLS"]["model"]:
                 console.print(
-                    "Please perform an OLS regression before estimating the Breusch-Pagan statistic.\n"
+                    "Perform an OLS regression before estimating the Breusch-Pagan statistic.\n"
                 )
             else:
                 openbb_terminal.econometrics.regression_view.display_bpag(
@@ -1712,7 +1712,7 @@ class EconometricsController(BaseController):
 
             if ns_parser.ts:
 
-                if len(ns_parser.ts) > 2:
+                if len(ns_parser.ts) > 1:
                     datasets = {}
                     for stock in ns_parser.ts:
                         column, dataset = self.choices["coint"][stock].keys()

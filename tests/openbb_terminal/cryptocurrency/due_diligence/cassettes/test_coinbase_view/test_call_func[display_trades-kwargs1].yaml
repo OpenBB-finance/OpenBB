@@ -290,7 +290,7 @@ interactions:
       User-Agent:
       - python-requests/2.27.1
     method: GET
-    uri: https://api.pro.coinbase.com/products/ETH-USDT/trades?limit=1000
+    uri: https://api.pro.coinbase.com/products/ETH-USDT/trades?limit=20
   response:
     body:
       string: !!binary |

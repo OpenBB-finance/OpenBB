@@ -129,6 +129,7 @@ class OnchainController(BaseController):
             choices["baas"]["-s"] = {c: None for c in bitquery_model.BAAS_FILTERS}
 
             choices["support"] = self.SUPPORT_CHOICES
+            choices["about"] = self.ABOUT_CHOICES
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -282,7 +283,7 @@ class OnchainController(BaseController):
             "--since",
             dest="since",
             type=valid_date,
-            help="Initial date. Default: 2020-01-01",
+            help=f"Initial date. Default: {(datetime.now() - timedelta(days=365)).strftime('%Y-%m-%d')}",
             default=(datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d"),
         )
 
@@ -291,7 +292,7 @@ class OnchainController(BaseController):
             "--until",
             dest="until",
             type=valid_date,
-            help="Final date. Default: 2021-01-01",
+            help=f"Final date. Default: {(datetime.now()).strftime('%Y-%m-%d')}",
             default=(datetime.now()).strftime("%Y-%m-%d"),
         )
 
@@ -304,10 +305,10 @@ class OnchainController(BaseController):
 
         if ns_parser:
             display_hashrate(
-                asset=ns_parser.coin,
+                symbol=ns_parser.coin,
                 interval=ns_parser.interval,
-                since=int(datetime.timestamp(ns_parser.since)),
-                until=int(datetime.timestamp(ns_parser.until)),
+                start_date=int(datetime.timestamp(ns_parser.since)),
+                end_date=int(datetime.timestamp(ns_parser.until)),
                 export=ns_parser.export,
             )
 
@@ -397,7 +398,7 @@ class OnchainController(BaseController):
                 min_value=ns_parser.min,
                 top=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 show_address=ns_parser.address,
                 export=ns_parser.export,
             )
@@ -526,7 +527,7 @@ class OnchainController(BaseController):
             ethplorer_view.display_address_info(
                 top=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 address=self.address,
                 export=ns_parser.export,
             )
@@ -582,7 +583,7 @@ class OnchainController(BaseController):
             ethplorer_view.display_address_history(
                 top=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 address=self.address,
                 export=ns_parser.export,
             )
@@ -637,7 +638,7 @@ class OnchainController(BaseController):
             ethplorer_view.display_top_token_holders(
                 top=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 address=self.address,
                 export=ns_parser.export,
             )
@@ -692,7 +693,7 @@ class OnchainController(BaseController):
             ethplorer_view.display_top_tokens(
                 top=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 export=ns_parser.export,
             )
 
@@ -788,7 +789,7 @@ class OnchainController(BaseController):
                 top=ns_parser.limit,
                 hash_=ns_parser.hash,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 address=self.address,
                 export=ns_parser.export,
             )
@@ -869,7 +870,7 @@ class OnchainController(BaseController):
             ethplorer_view.display_token_historical_prices(
                 top=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 address=self.address,
                 export=ns_parser.export,
             )
@@ -956,7 +957,7 @@ class OnchainController(BaseController):
                 top=ns_parser.limit,
                 days=ns_parser.days,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 export=ns_parser.export,
             )
 
@@ -1035,7 +1036,7 @@ class OnchainController(BaseController):
                 vs=ns_parser.vs,
                 top=ns_parser.days,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 export=ns_parser.export,
             )
 
@@ -1106,11 +1107,11 @@ class OnchainController(BaseController):
 
         if ns_parser:
             bitquery_view.display_dex_volume_for_token(
-                token=ns_parser.coin,
+                symbol=ns_parser.coin,
                 trade_amount_currency=ns_parser.vs,
                 top=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 export=ns_parser.export,
             )
 
@@ -1176,7 +1177,7 @@ class OnchainController(BaseController):
                 interval=ns_parser.interval,
                 limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 export=ns_parser.export,
             )
 
@@ -1285,7 +1286,7 @@ class OnchainController(BaseController):
                 top=ns_parser.limit,
                 exchange=exchange,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 export=ns_parser.export,
             )
 
@@ -1356,7 +1357,7 @@ class OnchainController(BaseController):
                         vs=ns_parser.vs,
                         days=ns_parser.days,
                         sortby=ns_parser.sortby,
-                        descend=ns_parser.descend,
+                        ascend=not ns_parser.descend,
                         export=ns_parser.export,
                     )
 
@@ -1379,7 +1380,7 @@ class OnchainController(BaseController):
                             vs=ns_parser.vs,
                             days=ns_parser.days,
                             sortby=ns_parser.sortby,
-                            descend=ns_parser.descend,
+                            ascend=not ns_parser.descend,
                             export=ns_parser.export,
                         )
                     else:

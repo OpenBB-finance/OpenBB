@@ -84,6 +84,7 @@ class PredictionTechniquesController(BaseController):
             self.choices = choices
 
             choices["support"] = self.SUPPORT_CHOICES
+            choices["about"] = self.ABOUT_CHOICES
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -139,8 +140,6 @@ class PredictionTechniquesController(BaseController):
             type=str,
         )
 
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-f")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             file = Path("custom_imports") / ns_parser.file
@@ -274,13 +273,13 @@ class PredictionTechniquesController(BaseController):
                     )
 
             ets_view.display_exponential_smoothing(
-                ticker=self.ticker,
-                values=self.df[self.target],
+                dataset=self.ticker,
+                data=self.df[self.target],
                 n_predict=ns_parser.n_days,
                 trend=ns_parser.trend,
                 seasonal=ns_parser.seasonal,
                 seasonal_periods=ns_parser.seasonal_periods,
-                s_end_date=ns_parser.s_end_date,
+                end_date=ns_parser.s_end_date,
                 export=ns_parser.export,
             )
 
@@ -362,7 +361,7 @@ class PredictionTechniquesController(BaseController):
         )
         if ns_parser:
             knn_view.display_k_nearest_neighbors(
-                ticker=self.ticker,
+                dataset=self.ticker,
                 data=self.df[self.target],
                 n_neighbors=ns_parser.n_neighbors,
                 n_input_days=ns_parser.n_inputs,
@@ -466,7 +465,7 @@ class PredictionTechniquesController(BaseController):
                 n_input=ns_parser.n_inputs,
                 n_predict=ns_parser.n_days,
                 n_jumps=ns_parser.n_jumps,
-                s_end_date=ns_parser.s_end_date,
+                end_date=ns_parser.s_end_date,
                 export=ns_parser.export,
             )
 
@@ -572,7 +571,7 @@ class PredictionTechniquesController(BaseController):
                 seasonal=ns_parser.b_seasonal,
                 ic=ns_parser.s_ic,
                 results=ns_parser.b_results,
-                s_end_date=ns_parser.s_end_date,
+                end_date=ns_parser.s_end_date,
                 export=ns_parser.export,
             )
 
@@ -720,6 +719,7 @@ class PredictionTechniquesController(BaseController):
             help="Number of simulations to perform",
             dest="n_sims",
             default=100,
+            type=check_positive,
         )
         parser.add_argument(
             "--dist",

@@ -118,7 +118,7 @@ class DarkPoolShortsController(StockBaseController):
         )
         if ns_parser:
             yahoofinance_view.display_most_shorted(
-                num_stocks=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -180,7 +180,7 @@ class DarkPoolShortsController(StockBaseController):
         )
         if ns_parser:
             shortinterest_view.high_short_interest(
-                num=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -255,9 +255,9 @@ class DarkPoolShortsController(StockBaseController):
         parser.add_argument(
             "-s",
             "--sort",
-            help="Field for which to sort by, where 'sv': Short Vol. (1M), "
-            "'sv_pct': Short Vol. %%, 'nsv': Net Short Vol. (1M), "
-            "'nsv_dollar': Net Short Vol. ($100M), 'dpp': DP Position (1M), "
+            help="Field for which to sort by, where 'sv': Short Vol. [1M], "
+            "'sv_pct': Short Vol. %%, 'nsv': Net Short Vol. [1M], "
+            "'nsv_dollar': Net Short Vol. ($100M), 'dpp': DP Position [1M], "
             "'dpp_dollar': DP Position ($1B)",
             choices=["sv", "sv_pct", "nsv", "nsv_dollar", "dpp", "dpp_dollar"],
             default="dpp_dollar",
@@ -276,8 +276,8 @@ class DarkPoolShortsController(StockBaseController):
         )
         if ns_parser:
             stockgrid_view.dark_pool_short_positions(
-                num=ns_parser.limit,
-                sort_field=ns_parser.sort_field,
+                limit=ns_parser.limit,
+                sortby=ns_parser.sort_field,
                 ascending=ns_parser.ascending,
                 export=ns_parser.export,
             )
@@ -314,8 +314,8 @@ class DarkPoolShortsController(StockBaseController):
         )
         if ns_parser:
             stockgrid_view.short_interest_days_to_cover(
-                num=ns_parser.limit,
-                sort_field=ns_parser.sort_field,
+                limit=ns_parser.limit,
+                sortby=ns_parser.sort_field,
                 export=ns_parser.export,
             )
 
@@ -334,7 +334,7 @@ class DarkPoolShortsController(StockBaseController):
         if ns_parser:
             if self.ticker:
                 finra_view.darkpool_ats_otc(
-                    ticker=self.ticker,
+                    symbol=self.ticker,
                     export=ns_parser.export,
                 )
             else:
@@ -388,11 +388,11 @@ class DarkPoolShortsController(StockBaseController):
         if ns_parser:
             if self.ticker:
                 sec_view.fails_to_deliver(
-                    ticker=self.ticker,
-                    stock=self.stock,
-                    start=ns_parser.start,
-                    end=ns_parser.end,
-                    num=ns_parser.n_num,
+                    symbol=self.ticker,
+                    data=self.stock,
+                    start_date=ns_parser.start.strftime("%Y-%m-%d"),
+                    end_date=ns_parser.end.strftime("%Y-%m-%d"),
+                    limit=ns_parser.n_num,
                     raw=ns_parser.raw,
                     export=ns_parser.export,
                 )
@@ -429,8 +429,8 @@ class DarkPoolShortsController(StockBaseController):
         if ns_parser:
             if self.ticker:
                 stockgrid_view.net_short_position(
-                    ticker=self.ticker,
-                    num=ns_parser.num,
+                    symbol=self.ticker,
+                    limit=ns_parser.num,
                     raw=ns_parser.raw,
                     export=ns_parser.export,
                 )
@@ -458,22 +458,21 @@ class DarkPoolShortsController(StockBaseController):
             EXPORT_BOTH_RAW_DATA_AND_FIGURES,
             raw=True,
             limit=10 if "-r" in other_args else 120,
-            sources=["quandl", "stockgrid"],
         )
         if ns_parser:
             if self.ticker:
                 if ns_parser.source == "quandl":
                     quandl_view.short_interest(
-                        ticker=self.ticker,
+                        symbol=self.ticker,
                         nyse=ns_parser.b_nyse,
-                        days=ns_parser.limit,
+                        limit=ns_parser.limit,
                         raw=ns_parser.raw,
                         export=ns_parser.export,
                     )
                 else:
                     stockgrid_view.short_interest_volume(
-                        ticker=self.ticker,
-                        num=ns_parser.limit,
+                        symbol=self.ticker,
+                        limit=ns_parser.limit,
                         raw=ns_parser.raw,
                         export=ns_parser.export,
                     )

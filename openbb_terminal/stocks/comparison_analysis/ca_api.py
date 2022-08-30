@@ -15,8 +15,9 @@ from .marketwatch_view import display_cashflow_comparison as cashflow
 from .finbrain_view import display_sentiment_compare as sentiment
 from .finbrain_view import display_sentiment_correlation as scorr
 from .finviz_compare_view import screener
-from .finviz_compare_model import get_similar_companies as getfinviz
-from .finnhub_model import get_similar_companies as getfinnhub
+from .finviz_compare_model import get_similar_companies as finviz_peers
+from .finnhub_model import get_similar_companies as finnhub_peers
+from .polygon_model import get_similar_companies as polygon_peers
 
 
 # Models

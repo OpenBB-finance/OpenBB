@@ -1,4 +1,6 @@
 import logging
+from datetime import datetime, timedelta
+from typing import Optional
 
 import pandas as pd
 import requests
@@ -11,15 +13,18 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def get_ipo_calendar(from_date: str, to_date: str) -> pd.DataFrame:
+def get_ipo_calendar(
+    start_date: str = (datetime.now() - timedelta(days=5)).strftime("%Y-%m-%d"),
+    end_date: str = datetime.now().strftime("%Y-%m-%d"),
+) -> pd.DataFrame:
     """Get IPO calendar
 
     Parameters
     ----------
-    from_date : str
-        from date (%Y-%m-%d) to get IPO calendar
-    to_date : str
-        to date (%Y-%m-%d) to get IPO calendar
+    start_date : str
+        start date (%Y-%m-%d) to get IPO calendar
+    end_date : str
+        end date (%Y-%m-%d) to get IPO calendar
 
     Returns
     -------
@@ -27,7 +32,7 @@ def get_ipo_calendar(from_date: str, to_date: str) -> pd.DataFrame:
         Get dataframe with economic calendar events
     """
     response = requests.get(
-        f"https://finnhub.io/api/v1/calendar/ipo?from={from_date}&to={to_date}&token={cfg.API_FINNHUB_KEY}"
+        f"https://finnhub.io/api/v1/calendar/ipo?from={start_date}&to={end_date}&token={cfg.API_FINNHUB_KEY}"
     )
 
     df = pd.DataFrame()
@@ -55,3 +60,73 @@ def get_ipo_calendar(from_date: str, to_date: str) -> pd.DataFrame:
         console.print(f"Error in request: {response.json()['error']}", "\n")
 
     return df
+
+
+@log_start_end(log=logger)
+def get_past_ipo(
+    num_days_behind: int = 5,
+    start_date: Optional[str] = None,
+):
+    """Past IPOs dates. [Source: Finnhub]
+
+    Parameters
+    ----------
+    num_days_behind: int
+        Number of days to look behind for IPOs dates
+    start_date: str
+        The starting date (format YYYY-MM-DD) to look for IPOs
+    """
+    today = datetime.now()
+
+    if start_date is None:
+        start = (today - timedelta(days=num_days_behind)).strftime("%Y-%m-%d")
+    else:
+        start = start_date
+
+    df_past_ipo = (
+        get_ipo_calendar(start, today.strftime("%Y-%m-%d"))
+        .rename(columns={"Date": "Past"})
+        .fillna("")
+    )
+
+    if df_past_ipo.empty:
+        console.print(f"No IPOs found since the last {num_days_behind} days")
+    else:
+        df_past_ipo = df_past_ipo.sort_values("Past", ascending=False)
+
+    return df_past_ipo
+
+
+@log_start_end(log=logger)
+def get_future_ipo(
+    num_days_ahead: int = 5,
+    end_date: Optional[str] = None,
+):
+    """Future IPOs dates. [Source: Finnhub]
+
+    Parameters
+    ----------
+    num_days_ahead: int
+        Number of days to look ahead for IPOs dates
+    end_date: datetime
+        The end date (format YYYY-MM-DD) to look for IPOs from today onwards
+    """
+    today = datetime.now()
+
+    if end_date is None:
+        end = (today + timedelta(days=num_days_ahead)).strftime("%Y-%m-%d")
+    else:
+        end = end_date
+
+    df_future_ipo = (
+        get_ipo_calendar(today.strftime("%Y-%m-%d"), end)
+        .rename(columns={"Date": "Future"})
+        .fillna("")
+    )
+
+    if df_future_ipo.empty:
+        console.print(f"No IPOs found for the next {num_days_ahead} days")
+    else:
+        df_future_ipo = df_future_ipo.sort_values("Future", ascending=False)
+
+    return df_future_ipo

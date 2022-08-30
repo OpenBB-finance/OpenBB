@@ -15,17 +15,16 @@ It aims to provide necessary information in order to:
 
 Writing tests that are easy to run will help the person modifying the code to do so quick and with more confidence. Having tests available also decreases the chances that bugs will make it into production and break other parts of the code.
 
-
 To do that we need `unit tests` to be :
 
 - fast to write
 - fast to run
 
-**FAST TO WRITE**
+**FAST TO WRITE.**
 
 The `unit tests` is used for testing a single functionality for its correctness of input and the corresponding output. Unit tests are about ensuring that low-level implementation details are rock solid.
 
-**FAST TO RUN**
+**FAST TO RUN.**
 
 Tests can be slow at times, due to the need to connect with external services. This can be sending a HTTP request or connecting to a database. We can speed this up by using mocks. In case this is not possible, make sure to `marked` it as `slow`
 
@@ -84,16 +83,16 @@ pytest --markers
 
 ### Skipping a specific test
 
-You can use the decorator `@pytest.skip` as below:
+You can use the decorator `@pytest.mark.skip` as below:
 
 ```python
 import pytest
 
-@pytest.skip
+@pytest.mark.skip
 def test_some_function(mocker):
     pass
 
-@pytest.skip("This time with a comment")
+@pytest.mark.skip(reason="This time with a comment")
 def test_another_function(mocker):
     pass
 ```
@@ -551,7 +550,6 @@ After updating the `pyproject.toml` you will have to export the `requirements` f
 ```bash
 poetry export -f requirements.txt  -o requirements.txt --without-hashes --dev
 poetry export -f requirements.txt  -o requirements-full.txt --extras prediction --without-hashes --dev
-poetry export -f requirements.txt  -o bots/requirements.txt --extras bots --without-hashes --dev
 ```
 
 # 4. Maintain `unit tests`

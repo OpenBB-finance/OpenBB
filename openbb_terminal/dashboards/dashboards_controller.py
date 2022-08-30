@@ -32,6 +32,7 @@ class DashboardsController(BaseController):
         "chains",
         "shortdata",
         "crypto",
+        "futures",
     ]
     PATH = "/dashboards/"
 
@@ -43,6 +44,7 @@ class DashboardsController(BaseController):
             choices: dict = {c: {} for c in self.controller_choices}
 
             choices["support"] = self.SUPPORT_CHOICES
+            choices["about"] = self.ABOUT_CHOICES
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -55,6 +57,7 @@ class DashboardsController(BaseController):
         mt.add_cmd("chains")
         mt.add_cmd("shortdata")
         mt.add_cmd("crypto")
+        mt.add_cmd("futures")
         console.print(text=mt.menu_text, menu="Dashboards")
 
     @log_start_end(log=logger)
@@ -86,6 +89,11 @@ class DashboardsController(BaseController):
     def call_crypto(self, other_args: List[str]):
         """Process crypto command"""
         create_call(other_args, "crypto", "")
+
+    @log_start_end(log=logger)
+    def call_futures(self, other_args: List[str]):
+        """Process futures command"""
+        create_call(other_args, "futures", "")
 
 
 def create_call(other_args: List[str], name: str, filename: str = None) -> None:
