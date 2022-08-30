@@ -1107,7 +1107,7 @@ class OnchainController(BaseController):
 
         if ns_parser:
             bitquery_view.display_dex_volume_for_token(
-                token=ns_parser.coin,
+                symbol=ns_parser.coin,
                 trade_amount_currency=ns_parser.vs,
                 top=ns_parser.limit,
                 sortby=ns_parser.sortby,
