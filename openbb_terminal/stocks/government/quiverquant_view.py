@@ -695,9 +695,7 @@ def display_lobbying(symbol: str, limit: int = 10):
     if df_lobbying.empty:
         return
 
-    for _, row in (
-        df_lobbying.iterrows()
-    ):
+    for _, row in df_lobbying.iterrows():
         amount = (
             "$" + str(int(float(row["Amount"]))) if row["Amount"] is not None else "N/A"
         )

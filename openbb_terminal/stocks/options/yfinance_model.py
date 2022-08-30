@@ -22,7 +22,12 @@ logger = logging.getLogger(__name__)
 # pylint: disable=W0640
 @log_start_end(log=logger)
 def get_full_option_chain(
-    symbol: str, expiration: str, min_sp:float = -1, max_sp:float = -1, calls: bool = True, puts: bool = True
+    symbol: str,
+    expiration: str,
+    min_sp: float = -1,
+    max_sp: float = -1,
+    calls: bool = True,
+    puts: bool = True,
 ) -> pd.DataFrame:
     """Get full option chains with calculated greeks
 
@@ -542,6 +547,7 @@ def get_vol(
 
     return options
 
+
 @log_start_end(log=logger)
 def get_volume_open_interest(
     symbol: str,
@@ -559,5 +565,3 @@ def get_volume_open_interest(
     options = get_option_chain(symbol, expiration)
 
     return options
-
-

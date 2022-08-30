@@ -550,5 +550,5 @@ def get_lobbying(symbol: str, limit: int = 10) -> pd.DataFrame:
         return pd.DataFrame()
 
     df_lobbying.sort_values(by=["Date"], ascending=False)
-    
+
     return df_lobbying.head(limit)

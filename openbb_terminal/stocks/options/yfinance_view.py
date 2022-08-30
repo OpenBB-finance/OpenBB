@@ -108,7 +108,12 @@ def display_chains(
         put_bool = True
 
     option_chains = yfinance_model.get_full_option_chain(
-        symbol=symbol, expiration=expiration, calls=call_bool, puts=put_bool, min_sp = min_sp, max_sp= max_sp
+        symbol=symbol,
+        expiration=expiration,
+        calls=call_bool,
+        puts=put_bool,
+        min_sp=min_sp,
+        max_sp=max_sp,
     ).fillna("-")
     if option_chains.empty:
         console.print("[red]Option chains not found.[/red]")
@@ -501,12 +506,11 @@ def plot_volume_open_interest(
         min_vol_puts = np.percentile(df_puts["oi+v"], volume_percentile_threshold)
 
         df_calls = df_calls[df_calls["oi+v"] > min_vol_calls]
-        df_calls = df_calls[df_calls["strike"] > 0.75*current_price]
-        df_calls = df_calls[df_calls["strike"] < 1.25*current_price]
+        df_calls = df_calls[df_calls["strike"] > 0.75 * current_price]
+        df_calls = df_calls[df_calls["strike"] < 1.25 * current_price]
         df_puts = df_puts[df_puts["oi+v"] < min_vol_puts]
-        df_puts = df_puts[df_puts["strike"] > 0.75*current_price]
-        df_puts = df_puts[df_puts["strike"] < 1.25*current_price]
-
+        df_puts = df_puts[df_puts["strike"] > 0.75 * current_price]
+        df_puts = df_puts[df_puts["strike"] < 1.25 * current_price]
 
     else:
         if min_vol > -1:

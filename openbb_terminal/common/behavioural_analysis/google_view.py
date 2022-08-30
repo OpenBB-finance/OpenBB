@@ -216,14 +216,19 @@ def display_queries(symbol: str, limit: int = 5, export: str = ""):
     """
 
     df_related_queries = google_model.get_queries(symbol, limit)
-    
+
     print_rich_table(
         df_related_queries,
         headers=list(df_related_queries.columns),
         title=f"Top {symbol}'s related queries",
     )
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "queries", df_related_queries)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "queries",
+        df_related_queries,
+    )
 
 
 @log_start_end(log=logger)

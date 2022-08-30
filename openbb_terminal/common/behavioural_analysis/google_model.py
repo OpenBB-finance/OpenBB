@@ -50,7 +50,7 @@ def get_regions(symbol: str) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_queries(symbol: str, limit: int=10) -> pd.DataFrame:
+def get_queries(symbol: str, limit: int = 10) -> pd.DataFrame:
     """Get related queries from google api [Source: google]
 
     Parameters

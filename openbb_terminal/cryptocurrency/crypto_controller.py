@@ -339,13 +339,13 @@ class CryptoController(CryptoBaseController):
             from openbb_terminal.cryptocurrency.quantitative_analysis import (
                 qa_controller,
             )
+
             self.queue = self.load_class(
                 qa_controller.QaController,
                 self.symbol,
                 self.current_df,
                 self.queue,
             )
-
 
     @log_start_end(log=logger)
     def call_pred(self, _):
