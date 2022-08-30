@@ -36,6 +36,7 @@ from openbb_terminal.rich_config import console
 logger = logging.getLogger(__name__)
 
 # pylint: disable=no-member,too-many-branches,C0302,R0913
+# pylint: disable=R0915
 
 INTERVALS = [1, 5, 15, 30, 60]
 SOURCES = ["yf", "av", "iex", "eodhd"]
