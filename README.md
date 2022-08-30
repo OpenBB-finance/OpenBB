@@ -167,7 +167,6 @@ Feel free to share loss porn, memes or any questions at:
 - Discord: [openbb.co/discord](https://openbb.co/discord)
 - Reddit: [openbb.co/reddit](https://openbb.co/reddit)
 
-
 ## Star History
 
 [![Star History Chart](https://api.star-history.com/svg?repos=openbb-finance/OpenBBTerminal&type=Date)](https://star-history.com/#openbb-finance/OpenBBTerminal&Date)
