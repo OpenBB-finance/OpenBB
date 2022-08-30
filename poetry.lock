@@ -224,11 +224,7 @@ python-versions = "*"
 six = "*"
 
 [package.extras]
-<<<<<<< HEAD
-test = ["astroid (<=2.5.3)", "pytest"]
-=======
 test = ["pytest", "astroid (<=2.5.3)"]
->>>>>>> 4be99cfad216bbcaed15d1d663191cfec4e905bf
 
 [[package]]
 name = "astunparse"
