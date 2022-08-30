@@ -344,7 +344,7 @@ def load(
             if df.empty:
                 console.print(f"\nPair {pair} not found in {exchange}\n")
                 return pd.DataFrame()
-        except:  # noqa: E722
+        except Exception:
             console.print(f"\nPair {pair} not found on {exchange}\n")
             return df
     elif source == "cg":
@@ -477,7 +477,7 @@ def show_quick_performance(
                     )
                 ),
             )
-    except:  # noqa: E722
+    except Exception:
         pass
 
     console.print()
@@ -1276,7 +1276,7 @@ def plot_chart(
     currency: str = "",
     source: str = "",
     exchange: str = "",
-    interval: str = "",
+    _interval: str = "",
 ) -> None:
     """Load data for Technical Analysis
 
