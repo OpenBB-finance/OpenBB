@@ -930,10 +930,10 @@ functions = {
         "model": "openbb_terminal.economy.econdb_model.get_aggregated_macro_data",
         "view": "openbb_terminal.economy.econdb_view.show_macro_data",
     },
-    "economy.get_macro_parameters": {
+    "economy.macro_parameters": {
         "model": "openbb_terminal.economy.econdb_model.get_macro_parameters"
     },
-    "economy.get_macro_countries": {
+    "economy.macro_countries": {
         "model": "openbb_terminal.economy.econdb_model.get_macro_countries"
     },
     "economy.treasury": {
