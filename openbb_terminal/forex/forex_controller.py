@@ -12,7 +12,7 @@ from prompt_toolkit.completion import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.forex import av_view, forex_helper, fxempire_view
+from openbb_terminal.forex import forex_helper, fxempire_view, av_view
 from openbb_terminal.forex.forex_helper import FOREX_SOURCES, SOURCES_INTERVALS
 from openbb_terminal.helper_funcs import (
     valid_date,
@@ -72,7 +72,7 @@ class ForexController(BaseController):
         mt.add_param("_ticker", self.fx_pair)
         mt.add_param("_source", FOREX_SOURCES[self.source])
         mt.add_raw("\n")
-        mt.add_cmd("quote", "AlphaVantage", self.fx_pair)
+        mt.add_cmd("quote", "Yahoo Finance/AlphaVantage", self.fx_pair)
         mt.add_cmd("load", "", self.fx_pair)
         mt.add_cmd("candle", "", self.fx_pair)
         mt.add_cmd("fwd", "FXEmpire", self.fx_pair)
@@ -115,7 +115,7 @@ class ForexController(BaseController):
             "--resolution",
             choices=["i", "d", "w", "m"],
             default="d",
-            help="[Alphavantage only] Resolution of data.  Can be intraday, daily, weekly or monthly",
+            help="[Alphavantage only] Resolution of data. Can be intraday, daily, weekly or monthly",
             dest="resolution",
         )
         parser.add_argument(
@@ -130,7 +130,7 @@ class ForexController(BaseController):
         )
         parser.add_argument(
             "-s",
-            "--start_date",
+            "--start",
             default=(datetime.now() - timedelta(days=365)),
             type=valid_date,
             help="Start date of data.",
@@ -168,11 +168,9 @@ class ForexController(BaseController):
 
                 if self.data.empty:
                     console.print(
-                        "\n[red]"
-                        + "No historical data loaded.\n"
-                        + f"Make sure you have appropriate access for the '{ns_parser.source}' data source "
-                        + f"and that '{ns_parser.source}' supports the requested range."
-                        + "[/red]\n"
+                        "\n[red]No historical data loaded.\n\n"
+                        f"Make sure you have appropriate access for the '{ns_parser.source}' data source "
+                        f"and that '{ns_parser.source}' supports the requested range.[/red]\n"
                     )
                 else:
                     self.data.index.name = "date"
@@ -236,11 +234,33 @@ class ForexController(BaseController):
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            if self.to_symbol and self.from_symbol:
-                av_view.display_quote(self.to_symbol, self.from_symbol)
-            else:
-                logger.error("No forex pair loaded.")
-                console.print("[red]Make sure a forex pair is loaded.[/red]\n")
+            if ns_parser.source == "yf":
+                if self.to_symbol and self.from_symbol:
+                    self.data = forex_helper.load(
+                        to_symbol=self.to_symbol,
+                        from_symbol=self.from_symbol,
+                        resolution="i",
+                        interval="1min",
+                        start_date=(datetime.now() - timedelta(days=5)).strftime(
+                            "%Y-%m-%d"
+                        ),
+                        source="yf",
+                    )
+                    console.print(f"\nQuote for {self.from_symbol}/{self.to_symbol}\n")
+                    console.print(
+                        f"Last refreshed : {self.data.index[-1].strftime('%Y-%m-%d %H:%M:%S')}"
+                    )
+                    console.print(f"Last value     : {self.data['Adj Close'][-1]}\n")
+                else:
+                    logger.error("No forex pair loaded.")
+                    console.print("[red]Make sure a forex pair is loaded.[/red]\n")
+
+            elif ns_parser.source == "av":
+                if self.to_symbol and self.from_symbol:
+                    av_view.display_quote(self.to_symbol, self.from_symbol)
+                else:
+                    logger.error("No forex pair loaded.")
+                    console.print("[red]Make sure a forex pair is loaded.[/red]\n")
 
     @log_start_end(log=logger)
     def call_fwd(self, other_args: List[str]):
