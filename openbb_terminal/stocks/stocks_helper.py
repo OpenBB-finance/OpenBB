@@ -35,9 +35,10 @@ from openbb_terminal.rich_config import console
 logger = logging.getLogger(__name__)
 
 # pylint: disable=no-member,too-many-branches,C0302,R0913
+# pylint: disable=R0915
 
 INTERVALS = [1, 5, 15, 30, 60]
-SOURCES = ["yf", "av", "iex"]
+SOURCES = ["yf", "av", "iex", "eodhd"]
 
 market_coverage_suffix = {
     "USA": ["CBT", "CME", "NYB", "CMX", "NYM", "US", ""],
@@ -626,14 +627,21 @@ def load(
     monthly: bool = False,
 ):
     """
-    Load a symbol to perform analysis using the string above as a template. Optional arguments and their
-    descriptions are listed above. The default source is, yFinance (https://pypi.org/project/yfinance/).
-    Alternatively, one may select either AlphaVantage (https://www.alphavantage.co/documentation/)
-    or IEX Cloud (https://iexcloud.io/docs/api/) as the data source for the analysis.
-    Please note that certain analytical features are exclusive to the source.
+    Load a symbol to perform analysis using the string above as a template.
+
+    Optional arguments and their descriptions are listed above.
+
+    The default source is, yFinance (https://pypi.org/project/yfinance/).
+    Other sources:
+            -   AlphaVantage (https://www.alphavantage.co/documentation/)
+            -   IEX Cloud (https://iexcloud.io/docs/api/)
+            -   Eod Historical Data (https://eodhistoricaldata.com/financial-apis/)
+
+    Please note that certain analytical features are exclusive to the specific source.
 
     To load a symbol from an exchange outside of the NYSE/NASDAQ default, use yFinance as the source and
-    add the corresponding exchange to the end of the symbol. i.e. ‘BNS.TO’.
+    add the corresponding exchange to the end of the symbol. i.e. ‘BNS.TO’.  Note this may be possible with
+    other paid sources check their docs.
 
     BNS is a dual-listed stock, there are separate options chains and order books for each listing.
     Opportunities for arbitrage may arise from momentary pricing discrepancies between listings
@@ -748,6 +756,70 @@ def load(
                 return pd.DataFrame()
 
             df_stock_candidate.index.name = "date"
+
+        # TODO: eodhd start ###########################
+
+        # End of Day Historical Data  Source
+        elif source == "eodhd":
+            df_stock_candidate = pd.DataFrame()
+
+            if weekly:
+                int_ = "w"
+                int_string = "Weekly"
+            elif monthly:
+                int_ = "m"
+                int_string = "Monthly"
+            else:
+                int_ = "d"
+                int_string = "Daily"
+
+            request_url = (
+                f"https://eodhistoricaldata.com/api/eod/"
+                f"{symbol.upper()}?"
+                f"{start_date.strftime('%Y-%m-%d')}&"
+                f"to={end_date.strftime('%Y-%m-%d')}&"
+                f"period={int_}&"
+                f"api_token={cfg.API_EODHD_TOKEN}&"
+                f"fmt=json&"
+                f"order=d"
+            )
+
+            r = requests.get(request_url)
+            if r.status_code != 200:
+                console.print("[red]Invalid API Key for eodhistoricaldata [/red]")
+                console.print(
+                    "Get your Key here: https://eodhistoricaldata.com/r/?ref=869U7F4J\n"
+                )
+                return pd.DataFrame()
+
+            r_json = r.json()
+
+            df_stock_candidate = pd.DataFrame(r_json).dropna(axis=0)
+
+            # Check that loading a stock was not successful
+            if df_stock_candidate.empty:
+                console.print("No data found from End Of Day Historical Data.\n")
+                return df_stock_candidate
+
+            df_stock_candidate = df_stock_candidate[
+                ["date", "open", "high", "low", "close", "adjusted_close", "volume"]
+            ]
+
+            df_stock_candidate = df_stock_candidate.rename(
+                columns={
+                    "date": "Date",
+                    "close": "Close",
+                    "high": "High",
+                    "low": "Low",
+                    "open": "Open",
+                    "adjusted_close": "Adj Close",
+                    "volume": "Volume",
+                }
+            )
+            df_stock_candidate["Date"] = pd.to_datetime(df_stock_candidate.Date)
+            df_stock_candidate.set_index("Date", inplace=True)
+            df_stock_candidate.sort_index(ascending=True, inplace=True)
+        # TODO:  ###########################
 
         # IEX Cloud Source
         elif source == "iex":
@@ -1382,12 +1454,10 @@ def find_trendline(
 
 def additional_info_about_ticker(ticker: str) -> str:
     """Information about trading the ticker such as exchange, currency, timezone and market status
-
     Parameters
     ----------
     ticker : str
         The stock ticker to extract if stock market is open or not
-
     Returns
     -------
     str

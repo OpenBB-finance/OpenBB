@@ -798,10 +798,7 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
 
-        ns_parser = self.parse_known_args_and_warn(
-            parser,
-            other_args,
-        )
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
             if ns_parser.weekly and ns_parser.monthly:
@@ -863,6 +860,8 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                     self.suffix = ""
 
                 if ns_parser.source == "iex":
+                    self.start = self.stock.index[0].to_pydatetime()
+                elif ns_parser.source == "eodhd":
                     self.start = self.stock.index[0].to_pydatetime()
                 else:
                     self.start = ns_parser.start
