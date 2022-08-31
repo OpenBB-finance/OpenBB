@@ -81,7 +81,7 @@ def display_summary(data: pd.DataFrame, export: str = ""):
 
 @log_start_end(log=logger)
 def display_hist(
-    name: str,
+    symbol: str,
     data: pd.DataFrame,
     target: str,
     bins: int = 15,
@@ -91,7 +91,7 @@ def display_hist(
 
     Parameters
     ----------
-    name : str
+    symbol : str
         Name of dataset
     data : pd.DataFrame
         Dataframe to look at
@@ -128,9 +128,9 @@ def display_hist(
 
     if isinstance(data.index[0], datetime):
         start = data.index[0]
-        ax.set_title(f"Histogram of {name} {target} from {start.strftime('%Y-%m-%d')}")
+        ax.set_title(f"Histogram of {symbol} {target} from {start.strftime('%Y-%m-%d')}")
     else:
-        ax.set_title(f"Histogram of {name} {target}")
+        ax.set_title(f"Histogram of {symbol} {target}")
 
     ax.set_xlabel("Value")
     theme.style_primary_axis(ax)
@@ -265,14 +265,12 @@ def display_bw(
 
     Parameters
     ----------
-    name : str
+    symbol : str
         Name of dataset
     data : pd.DataFrame
         Dataframe to look at
     target : str
         Data column to look at
-    symbol : str
-        Name of dataset
     yearly : bool
         Flag to indicate yearly accumulation
     external_axes : Optional[List[plt.Axes]], optional
@@ -363,8 +361,6 @@ def display_acf(
 
     Parameters
     ----------
-    name : str
-        Name of dataset
     data : pd.DataFrame
         Dataframe to look at
     target : str
@@ -444,13 +440,11 @@ def display_qqplot(
 
     Parameters
     ----------
-    name : str
-        Stock ticker
     data : pd.DataFrame
         Dataframe
     target : str
         Column in data to look at
-    name : str
+    symbol : str
         Stock ticker
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
@@ -620,7 +614,7 @@ def display_cusum(
 
 @log_start_end(log=logger)
 def display_seasonal(
-    name: str,
+    symbol: str,
     data: pd.DataFrame,
     target: str,
     multiplicative: bool = False,
@@ -631,7 +625,7 @@ def display_seasonal(
 
     Parameters
     ----------
-    name : str
+    symbol : str
         Name of dataset
     data : pd.DataFrame
         DataFrame
@@ -706,7 +700,7 @@ def display_seasonal(
 
     colors = iter(theme.get_colors())
 
-    ax1.set_title(f"{name} (Time-Series) {target} seasonal decomposition")
+    ax1.set_title(f"{symbol} (Time-Series) {target} seasonal decomposition")
     ax1.plot(
         plot_data.index, plot_data[target].values, color=next(colors), label="Values"
     )
@@ -1004,7 +998,7 @@ def display_line(
 
 def display_var(
     data: pd.DataFrame,
-    name: str = "",
+    symbol: str = "",
     use_mean: bool = False,
     adjusted_var: bool = False,
     student_t: bool = False,
@@ -1020,7 +1014,7 @@ def display_var(
         Data dataframe
     use_mean: bool
         if one should use the data mean return
-    name: str
+    symbol: str
         name of the data
     adjusted_var: bool
         if one should have VaR adjusted for skew and kurtosis (Cornish-Fisher-Expansion)
@@ -1055,8 +1049,8 @@ def display_var(
         str_var_label = "VaR:"
         str_title = ""
 
-    if name != "":
-        name += " "
+    if symbol != "":
+        symbol += " "
 
     data_dictionary = {str_var_label: var_list, str_hist_label: hist_var_list}
     data = pd.DataFrame(
@@ -1067,14 +1061,14 @@ def display_var(
         data,
         show_index=True,
         headers=list(data.columns),
-        title=f"[bold]{name}{str_title}Value at Risk[/bold]",
+        title=f"[bold]{symbol}{str_title}Value at Risk[/bold]",
         floatfmt=".4f",
     )
 
 
 def display_es(
     data: pd.DataFrame,
-    name: str = "",
+    symbol: str = "",
     use_mean: bool = False,
     distribution: str = "normal",
     percentile: float = 0.999,
@@ -1088,7 +1082,7 @@ def display_es(
         Data dataframe
     use_mean:
         if one should use the data mean return
-    name: str
+    symbol: str
         name of the data
     distribution: str
         choose distribution to use: logistic, laplace, normal
@@ -1116,8 +1110,8 @@ def display_es(
         str_es_label = "ES:"
         str_title = ""
 
-    if name != "":
-        name += " "
+    if symbol != "":
+        symbol += " "
 
     data_dictionary = {str_es_label: es_list, str_hist_label: hist_es_list}
     data = pd.DataFrame(
@@ -1128,7 +1122,7 @@ def display_es(
         data,
         show_index=True,
         headers=list(data.columns),
-        title=f"[bold]{name}{str_title}Expected Shortfall[/bold]",
+        title=f"[bold]{symbol}{str_title}Expected Shortfall[/bold]",
         floatfmt=".4f",
     )
 

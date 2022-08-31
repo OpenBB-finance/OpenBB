@@ -272,7 +272,7 @@ class QaController(CryptoBaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             qa_view.display_hist(
-                name=self.symbol,
+                symbol=self.symbol,
                 data=self.data,
                 target=self.target,
                 bins=ns_parser.n_bins,
@@ -294,7 +294,7 @@ class QaController(CryptoBaseController):
         )
         if ns_parser:
             qa_view.display_cdf(
-                name=self.symbol,
+                symbol=self.symbol,
                 data=self.data,
                 target=self.target,
                 export=ns_parser.export,
@@ -322,7 +322,7 @@ class QaController(CryptoBaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             qa_view.display_bw(
-                name=self.symbol,
+                symbol=self.symbol,
                 data=self.data,
                 target=self.target,
                 yearly=ns_parser.year,
@@ -354,7 +354,7 @@ class QaController(CryptoBaseController):
         )
         if ns_parser:
             qa_view.display_seasonal(
-                name=self.symbol,
+                symbol=self.symbol,
                 data=self.data,
                 target=self.target,
                 multiplicative=ns_parser.multiplicative,
@@ -430,7 +430,7 @@ class QaController(CryptoBaseController):
                 )
 
             qa_view.display_acf(
-                name=self.symbol,
+                symbol=self.symbol,
                 data=self.data,
                 target=self.target,
                 lags=ns_parser.lags,
@@ -492,7 +492,7 @@ class QaController(CryptoBaseController):
         )
         if ns_parser:
             rolling_view.display_spread(
-                name=self.symbol,
+                symbol=self.symbol,
                 data=self.data,
                 target=self.target,
                 window=ns_parser.n_window,
@@ -540,7 +540,7 @@ class QaController(CryptoBaseController):
         )
         if ns_parser:
             rolling_view.display_quantile(
-                name=self.symbol,
+                symbol=self.symbol,
                 data=self.data,
                 target=self.target,
                 window=ns_parser.n_window,
@@ -578,7 +578,7 @@ class QaController(CryptoBaseController):
         )
         if ns_parser:
             rolling_view.display_skew(
-                name=self.symbol,
+                symbol=self.symbol,
                 data=self.data,
                 target=self.target,
                 window=ns_parser.n_window,
@@ -615,7 +615,7 @@ class QaController(CryptoBaseController):
         )
         if ns_parser:
             rolling_view.display_kurtosis(
-                name=self.symbol,
+                symbol=self.symbol,
                 data=self.data,
                 target=self.target,
                 window=ns_parser.n_window,
@@ -654,7 +654,7 @@ class QaController(CryptoBaseController):
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            qa_view.display_qqplot(name=self.symbol, data=self.data, target=self.target)
+            qa_view.display_qqplot(symbol=self.symbol, data=self.data, target=self.target)
 
     @log_start_end(log=logger)
     def call_unitroot(self, other_args: List[str]):
