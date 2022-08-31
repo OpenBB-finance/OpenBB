@@ -2,6 +2,7 @@
 import os
 import uuid
 from pathlib import Path
+from openbb_terminal.core.config.constants import FILE_DIR
 
 # IMPORTATION THIRDPARTY
 
@@ -12,9 +13,7 @@ from pathlib import Path
 def get_log_dir() -> Path:
     """Retrieve application's log directory."""
 
-    file_path = Path(__file__)
-    log_dir = file_path.parent.parent.parent.parent.absolute().joinpath("logs")
-
+    log_dir = FILE_DIR.joinpath("/logs")
     if not os.path.isdir(log_dir.absolute()):
         os.mkdir(log_dir.absolute())
 
