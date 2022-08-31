@@ -767,43 +767,36 @@ def load(
             if weekly:
                 int_ = "w"
                 int_string = "Weekly"
-            if monthly:
+            elif monthly:
                 int_ = "m"
                 int_string = "Monthly"
             else:
                 int_ = "d"
                 int_string = "Daily"
 
-            try:
-                client = EodHistoricalData(cfg.API_EODHD_TOKEN)
+            request_url = (
+                f"https://eodhistoricaldata.com/api/eod/"
+                f"{symbol.upper()}?"
+                f"{start_date.strftime('%Y-%m-%d')}&"
+                f"to={end_date.strftime('%Y-%m-%d')}&"
+                f"period={int_}&"
+                f"api_token={cfg.API_EODHD_TOKEN}&"
+                f"fmt=json&"
+                f"order=d"
+            )
 
-                resp = client.get_prices_eod(
-                    symbol,
-                    period=int_,
-                    from_=start_date,
-                    to=end_date,
+            r = requests.get(request_url)
+            if r.status_code != 200:
+                console.print("[red]Invalid API Key for eodhistoricaldata [/red]")
+                console.print(
+                    "Get your Key here: https://eodhistoricaldata.com/r/?ref=869U7F4J\n"
                 )
-            except Exception as e:
+                return pd.DataFrame()
 
-                if "403 Client Error: Forbidden for url:" in str(e):
-                    console.print("[red]Invalid API Key for eodhistoricaldata [/red]")
-                    console.print(
-                        "Get your Key here: https://eodhistoricaldata.com/r/?ref=869U7F4J\n"
-                    )
-                elif "401 Client Error: Unauthorized for url:" in str(e):
-                    console.print(
-                        "[red]Unauthorized API Key for eodhistoricaldata [/red]"
-                    )
-                    console.print(
-                        "Get your Key here: https://eodhistoricaldata.com/r/?ref=869U7F4J\n"
-                    )
-                    return df_stock_candidate
-                else:
-                    console.print(e, "\n")
-                    return df_stock_candidate
+            r_json = r.json()
 
-            df_stock_candidate = pd.DataFrame(resp).dropna(axis=0)
-
+            df_stock_candidate = pd.DataFrame(r_json).dropna(axis=0)
+            console.print(int_)
             # Check that loading a stock was not successful
             if df_stock_candidate.empty:
                 console.print("No data found from End Of Day Historical Data.\n")
