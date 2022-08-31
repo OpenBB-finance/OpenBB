@@ -128,7 +128,9 @@ def display_hist(
 
     if isinstance(data.index[0], datetime):
         start = data.index[0]
-        ax.set_title(f"Histogram of {symbol} {target} from {start.strftime('%Y-%m-%d')}")
+        ax.set_title(
+            f"Histogram of {symbol} {target} from {start.strftime('%Y-%m-%d')}"
+        )
     else:
         ax.set_title(f"Histogram of {symbol} {target}")
 

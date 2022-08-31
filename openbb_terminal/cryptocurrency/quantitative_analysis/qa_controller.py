@@ -654,7 +654,9 @@ class QaController(CryptoBaseController):
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            qa_view.display_qqplot(symbol=self.symbol, data=self.data, target=self.target)
+            qa_view.display_qqplot(
+                symbol=self.symbol, data=self.data, target=self.target
+            )
 
     @log_start_end(log=logger)
     def call_unitroot(self, other_args: List[str]):
