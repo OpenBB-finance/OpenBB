@@ -30,7 +30,7 @@ def get_collections() -> pd.DataFrame:
     pd.DataFrame
         nft collections
     """
-    res = requests.get(f"{API_URL}/nfts")
+    res = requests.get(f"{API_URL}/projects")
     if res.status_code == 200:
         data = res.json()
         df = pd.DataFrame(data)
@@ -52,7 +52,7 @@ def get_floor_price(slug) -> pd.DataFrame:
     pd.DataFrame
         nft collections
     """
-    res = requests.get(f"{API_URL}/nft/{slug}/chart/pricefloor?interval=all")
+    res = requests.get(f"{API_URL}/projects/{slug}/charts/all")
     if res.status_code == 200:
         data = res.json()
         df = pd.DataFrame(
