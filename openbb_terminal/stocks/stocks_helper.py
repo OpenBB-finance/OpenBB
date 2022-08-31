@@ -18,7 +18,6 @@ import pytz
 import requests
 
 import yfinance as yf
-from eod import EodHistoricalData
 from alpha_vantage.timeseries import TimeSeries
 from numpy.core.fromnumeric import transpose
 from plotly.subplots import make_subplots
@@ -796,7 +795,7 @@ def load(
             r_json = r.json()
 
             df_stock_candidate = pd.DataFrame(r_json).dropna(axis=0)
-            console.print(int_)
+
             # Check that loading a stock was not successful
             if df_stock_candidate.empty:
                 console.print("No data found from End Of Day Historical Data.\n")
