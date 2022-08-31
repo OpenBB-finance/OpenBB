@@ -368,7 +368,7 @@ class CryptoController(CryptoBaseController):
                         pred_controller,
                     )
 
-                    if self.current_interval != "1day":
+                    if self.current_interval != "1440":
                         console.print("Only interval `1day` is possible for now.\n")
                     else:
                         self.queue = self.load_class(
