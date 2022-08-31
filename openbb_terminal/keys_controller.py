@@ -71,6 +71,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         "ethplorer",
         "smartstake",
         "github",
+        "eodhd",
         "messari",
         "santiment",
         "tokenterminal",
@@ -757,6 +758,24 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         if show_output:
             console.print(self.key_dict["MESSARI"] + "\n")
 
+    def check_eodhd_key(self, show_output: bool = False) -> None:
+        """Check End of Day Historical Data key"""
+        self.cfg_dict["EODHD"] = "eodhd"
+        if cfg.API_EODHD_TOKEN == "REPLACE_ME":  # nosec
+            logger.info("End of Day Historical Data key not defined")
+            self.key_dict["EODHD"] = "not defined"
+        else:
+            try:
+                pyEX.Client(api_token=cfg.API_EODHD_TOKEN, version="v1")
+                logger.info("End of Day Historical Data key defined, test passed")
+                self.key_dict["EODHD"] = "defined, test passed"
+            except PyEXception:
+                logger.exception("End of Day Historical Data key defined, test failed")
+                self.key_dict["EODHD"] = "defined, test failed"
+
+        if show_output:
+            console.print(self.key_dict["EODHD"] + "\n")
+
     def check_santiment_key(self, show_output: bool = False) -> None:
         """Check Santiment key"""
         self.cfg_dict["SANTIMENT"] = "santiment"
@@ -836,6 +855,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         self.check_smartstake_key()
         self.check_github_key()
         self.check_messari_key()
+        self.check_eodhd_key()
         self.check_santiment_key()
         self.check_token_terminal_key()
 
@@ -1714,6 +1734,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             other_args.insert(0, "-k")
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
+            print(type(ns_parser.key))
             os.environ["OPENBB_API_COINGLASS_KEY"] = ns_parser.key
             dotenv.set_key(self.env_file, "OPENBB_API_COINGLASS_KEY", ns_parser.key)
             cfg.API_COINGLASS_KEY = ns_parser.key
@@ -1853,6 +1874,35 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             self.check_messari_key(show_output=True)
 
     @log_start_end(log=logger)
+    def call_eodhd(self, other_args: List[str]):
+        """Process eodhd command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="eodhd",
+            description="Set End of Day Historical Data API key.",
+        )
+        parser.add_argument(
+            "-k",
+            "--key",
+            type=str,
+            dest="key",
+            help="key",
+        )
+        if not other_args:
+            console.print(
+                "For your API Key, visit: https://eodhistoricaldata.com/r/?ref=869U7F4J\n"
+            )
+            return
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-k")
+        ns_parser = parse_simple_args(parser, other_args)
+        if ns_parser:
+            os.environ["API_EODHD_TOKEN"] = ns_parser.key
+            dotenv.set_key(self.env_file, "API_EODHD_TOKEN", ns_parser.key)
+            cfg.API_EODHD_TOKEN = ns_parser.key
+            self.check_eodhd_key(show_output=True)
+
     def call_santiment(self, other_args: List[str]):
         """Process santiment command"""
         parser = argparse.ArgumentParser(
@@ -1870,7 +1920,8 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         )
         if not other_args:
             console.print(
-                "For your API Key, visit: https://academy.santiment.net/products-and-plans/create-an-api-key\n"
+                "For your API Key, visit: "
+                "https://academy.santiment.net/products-and-plans/create-an-api-key\n"
             )
             return
         if other_args and "-" not in other_args[0][0]:
