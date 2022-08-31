@@ -14,9 +14,9 @@ if env_files:
 
 # Terminal UX section
 theme = _TerminalStyle(
-    os.getenv("OPENBB_MPLSTYLE") or "boring",
-    os.getenv("OPENBB_MPFSTYLE") or "boring",
-    os.getenv("OPENBB_RICHSTYLE") or "boring",
+    os.getenv("OPENBB_MPLSTYLE") or "light",
+    os.getenv("OPENBB_MPFSTYLE") or "light",
+    os.getenv("OPENBB_RICHSTYLE") or "light",
 )
 
 # Set to True to see full stack traces for debugging/error reporting
