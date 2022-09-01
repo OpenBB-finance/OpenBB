@@ -1806,8 +1806,8 @@ class DueDiligenceController(CryptoBaseController):
         parser.add_argument(
             "-p",
             "--project",
-            default=self.symbol,
             choices=tokenterminal_model.get_project_ids(),
+            required=True,
             dest="project",
             help="Choose project of interest",
         )
@@ -1817,7 +1817,8 @@ class DueDiligenceController(CryptoBaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            tokenterminal_view.display_description(
-                project=ns_parser.project,
-                export=ns_parser.export,
-            )
+            if ns_parser.project in tokenterminal_model.get_project_ids():
+                tokenterminal_view.display_description(
+                    project=ns_parser.project,
+                    export=ns_parser.export,
+                )

@@ -90,12 +90,19 @@ def display_fundamental_metrics(
         else:
             return
 
+        num = max(metric_series[:limit].values)
+        magnitude = 0
+        while abs(num) >= 1000:
+            magnitude += 1
+            num /= 1000.0
+
         ax.bar(
             metric_series[:limit].index,
             metric_series[:limit].values
-            if max(metric_series[:limit].values) < 10000
-            else metric_series[:limit].values / 1e6,
+            if magnitude == 0
+            else metric_series[:limit].values / (1000.0**magnitude),
         )
+
         if category:
             ax.set_xlabel(category)
         else:
@@ -104,7 +111,7 @@ def display_fundamental_metrics(
             if max(metric_series[:limit].values) < 10000:
                 labeltouse = "[$]"
             else:
-                labeltouse = "[1M $]"
+                labeltouse = f"[1{' KMBTP'[magnitude]} $]"
             ax.set_ylabel(f"{metric.replace('_', ' ').capitalize()} {labeltouse}")
         ax.set_title(f"{metric.replace('_', ' ').capitalize()} from past {timeline}")
         plt.xticks(rotation=45)

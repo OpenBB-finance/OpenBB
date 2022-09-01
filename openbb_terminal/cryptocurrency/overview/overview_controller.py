@@ -239,7 +239,7 @@ class OverviewController(BaseController):
         parser.add_argument(
             "-m",
             "--metric",
-            default="",
+            required=True,
             choices=tokenterminal_model.METRICS,
             dest="metric",
             help="Choose metric of interest",
@@ -330,7 +330,6 @@ class OverviewController(BaseController):
             dest="descend",
             default=False,
         )
-
         parser.add_argument(
             "-s",
             "--slug",
