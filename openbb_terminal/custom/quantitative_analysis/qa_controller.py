@@ -312,7 +312,7 @@ class QaController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             qa_view.display_hist(
-                name=self.ticker,
+                symbol=self.ticker,
                 data=self.df,
                 target=self.target,
                 bins=ns_parser.n_bins,
@@ -334,7 +334,7 @@ class QaController(BaseController):
         )
         if ns_parser:
             qa_view.display_cdf(
-                name=self.ticker,
+                symbol=self.ticker,
                 data=self.df,
                 target=self.target,
                 export=ns_parser.export,
@@ -362,7 +362,7 @@ class QaController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             qa_view.display_bw(
-                name=self.ticker,
+                symbol=self.ticker,
                 data=self.df,
                 target=self.target,
                 yearly=ns_parser.year,
@@ -394,7 +394,7 @@ class QaController(BaseController):
         )
         if ns_parser:
             qa_view.display_seasonal(
-                name=self.ticker,
+                symbol=self.ticker,
                 data=self.df,
                 target=self.target,
                 multiplicative=ns_parser.multiplicative,
@@ -465,7 +465,7 @@ class QaController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             qa_view.display_acf(
-                name=self.ticker,
+                symbol=self.ticker,
                 data=self.df,
                 target=self.target,
                 lags=ns_parser.lags,
@@ -527,7 +527,7 @@ class QaController(BaseController):
         )
         if ns_parser:
             rolling_view.display_spread(
-                name=self.ticker,
+                symbol=self.ticker,
                 data=self.df,
                 target=self.target,
                 window=ns_parser.n_window,
@@ -575,7 +575,7 @@ class QaController(BaseController):
         )
         if ns_parser:
             rolling_view.display_quantile(
-                name=self.ticker,
+                symbol=self.ticker,
                 data=self.df,
                 target=self.target,
                 window=ns_parser.n_window,
@@ -613,7 +613,7 @@ class QaController(BaseController):
         )
         if ns_parser:
             rolling_view.display_skew(
-                name=self.ticker,
+                symbol=self.ticker,
                 data=self.df,
                 target=self.target,
                 window=ns_parser.n_length,
@@ -650,7 +650,7 @@ class QaController(BaseController):
         )
         if ns_parser:
             rolling_view.display_kurtosis(
-                name=self.ticker,
+                symbol=self.ticker,
                 data=self.df,
                 target=self.target,
                 window=ns_parser.n_length,
@@ -689,7 +689,7 @@ class QaController(BaseController):
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            qa_view.display_qqplot(name=self.ticker, data=self.df, target=self.target)
+            qa_view.display_qqplot(symbol=self.ticker, data=self.df, target=self.target)
 
     @log_start_end(log=logger)
     def call_unitroot(self, other_args: List[str]):
