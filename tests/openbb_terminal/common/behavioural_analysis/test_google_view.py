@@ -56,6 +56,7 @@ def get_queries_response():
 
     return resp
 
+
 @pytest.mark.default_cassette("test_google_view")
 @pytest.mark.vcr
 @pytest.mark.parametrize(
