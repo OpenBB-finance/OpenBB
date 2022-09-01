@@ -13,7 +13,7 @@ from openbb_terminal.core.config.constants import FILE_DIR
 def get_log_dir() -> Path:
     """Retrieve application's log directory."""
 
-    log_dir = FILE_DIR.joinpath("/logs")
+    log_dir = FILE_DIR.joinpath("logs")
     if not os.path.isdir(log_dir.absolute()):
         os.mkdir(log_dir.absolute())
 
