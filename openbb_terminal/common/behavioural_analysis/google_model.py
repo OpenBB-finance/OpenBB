@@ -50,7 +50,7 @@ def get_regions(symbol: str) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_queries(symbol: str) -> pd.DataFrame:
+def get_queries(symbol: str) -> dict:
     """Get related queries from google api [Source: google]
 
     Parameters
@@ -60,8 +60,8 @@ def get_queries(symbol: str) -> pd.DataFrame:
 
     Returns
     -------
-    pd.DataFrame
-        Dataframe of related queries
+    dict : {'top': pd.DataFrame or None, 'rising': pd.DataFrame or None}
+
     """
     pytrend = TrendReq()
     pytrend.build_payload(kw_list=[symbol])
