@@ -170,3 +170,6 @@ API_GITHUB_KEY = os.getenv("OPENBB_API_GITHUB_KEY") or "REPLACE_ME"
 
 # https://academy.santiment.net/products-and-plans/create-an-api-key/
 API_SANTIMENT_KEY = os.getenv("OPENBB_API_SANTIMENT_KEY") or "REPLACE_ME"
+
+# https://eodhistoricaldata.com/r/?ref=869U7F4J
+API_EODHD_TOKEN = os.getenv("OPENBB_API_EODHD_KEY") or "REPLACE_ME"

@@ -28,7 +28,7 @@ def display_mean_std(
     data: pd.DataFrame,
     target: str,
     symbol: str = "",
-    limit: int = 14,
+    window: int = 14,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -42,15 +42,15 @@ def display_mean_std(
         Column in data to look at
     symbol : str
         Stock ticker
-    limit : int
-        Length of window
+    window : int
+        Window length
     export: str
         Format to export data
     external_axes: Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
     """
     data = data[target]
-    rolling_mean, rolling_std = rolling_model.get_rolling_avg(data, limit)
+    rolling_mean, rolling_std = rolling_model.get_rolling_avg(data, window)
     plot_data = pd.merge(
         data,
         rolling_mean,
@@ -97,7 +97,7 @@ def display_mean_std(
         "Values",
     )
     ax1.legend(["Real Values", "Rolling Mean"])
-    ax1.set_title(f"Rolling mean and std (window {str(limit)}) of {symbol} {target}")
+    ax1.set_title(f"Rolling mean and std (window {str(window)}) of {symbol} {target}")
     ax1.set_xlim([plot_data.index[0], plot_data.index[-1]])
 
     ax2.plot(
