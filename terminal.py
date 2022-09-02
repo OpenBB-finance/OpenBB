@@ -85,7 +85,6 @@ class TerminalController(BaseController):
         for file in os.listdir(folder_paths["routines"])
         if file.endswith(".openbb")
     }
-    print(ROUTINE_CHOICES)
 
     GUESS_TOTAL_TRIES = 0
     GUESS_NUMBER_TRIES_LEFT = 0
