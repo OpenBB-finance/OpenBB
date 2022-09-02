@@ -19,7 +19,12 @@ from prompt_toolkit.styles import Style
 from prompt_toolkit.formatted_text import HTML
 
 from openbb_terminal.common import feedparser_view
-from openbb_terminal.core.config.constants import REPO_DIR, ENV_FILE_DIR, USER_HOME, ENV_FILE_DEFAULT
+from openbb_terminal.core.config.constants import (
+    REPO_DIR,
+    ENV_FILE_DIR,
+    USER_HOME,
+    ENV_FILE_DEFAULT,
+)
 from openbb_terminal.core.log.generation.path_tracking_file_handler import (
     PathTrackingFileHandler,
 )
@@ -614,10 +619,20 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
         t_controller.print_help()
         check_for_updates()
 
-    #Load from .openbb_terminal
-    env_files = [os.path.join(ENV_FILE_DIR, Path(f)) for f in os.listdir(ENV_FILE_DIR) if f.endswith(".env")]
-    #load from gitclone
-    env_files.extend([os.path.join(REPO_DIR, Path(f)) for f in os.listdir(REPO_DIR) if f.endswith(".env")])
+    # Load from .openbb_terminal
+    env_files = [
+        os.path.join(ENV_FILE_DIR, Path(f))
+        for f in os.listdir(ENV_FILE_DIR)
+        if f.endswith(".env")
+    ]
+    # load from gitclone
+    env_files.extend(
+        [
+            os.path.join(REPO_DIR, Path(f))
+            for f in os.listdir(REPO_DIR)
+            if f.endswith(".env")
+        ]
+    )
     if env_files:
         for envf in env_files:
             dotenv.load_dotenv(envf, override=True)
