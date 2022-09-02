@@ -119,7 +119,7 @@ def display_fund_info(name: str, country: str = "united states"):
     # redact inception date if it appears castable to a float
     try:
         float(info[0].loc[info["index"] == "Inception Date"].values[0])
-        info.loc[info["index"] == "Inception Date", 0] = np.nan
+        info.loc[info["index"] == "Inception Date", 0] = "-"
     except ValueError:
         pass
 
