@@ -6,7 +6,6 @@ __docformat__ = "numpy"
 import argparse
 import logging
 import os
-from pathlib import Path
 from typing import Dict, List
 
 import binance
@@ -26,6 +25,7 @@ from oandapyV20.exceptions import V20Error
 
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.core.config.constants import ENV_FILE
 from openbb_terminal.cryptocurrency.coinbase_helpers import (
     CoinbaseProAuth,
     make_coinbase_request,
@@ -77,7 +77,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
     PATH = "/keys/"
     key_dict: Dict = {}
     cfg_dict: Dict = {}
-    default_env = str(Path.home()) + "/OpenBB.env"
+    default_env = str(ENV_FILE)
 
     def __init__(
         self,

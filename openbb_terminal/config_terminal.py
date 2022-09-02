@@ -1,19 +1,19 @@
 # IMPORTATION STANDARD
 import os
-from pathlib import Path
 from distutils.util import strtobool
 
 # IMPORTATION THIRDPARTY
 import dotenv
 
 # IMPORTATION INTERNAL
+from openbb_terminal.core.config.constants import ENV_FILE_DIR
 from .helper_classes import TerminalStyle as _TerminalStyle
 
-base_path = str(Path.home()) + "/OpenBB"
-if not os.path.exists(base_path):
-    os.mkdir(base_path)
 
-env_files = [f for f in os.listdir(base_path) if f.endswith(".env")]
+if not os.path.exists(ENV_FILE_DIR):
+    os.mkdir(ENV_FILE_DIR)
+
+env_files = [f for f in os.listdir(ENV_FILE_DIR) if f.endswith(".env")]
 if env_files:
     dotenv.load_dotenv(env_files[0])
 
