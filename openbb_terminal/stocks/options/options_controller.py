@@ -40,6 +40,7 @@ from openbb_terminal.stocks.options import (
 from openbb_terminal.stocks.options.hedge import hedge_controller
 from openbb_terminal.stocks.options.pricing import pricing_controller
 from openbb_terminal.stocks.options.screen import screener_controller, syncretism_view
+from openbb_terminal.core.config.constants import folder_paths
 
 # pylint: disable=R1710,C0302,R0916
 
@@ -79,7 +80,7 @@ class OptionsController(BaseController):
         "hedge",
     ]
 
-    PRESET_PATH = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
+    PRESET_PATH = folder_paths["presets/stocks/options"]
 
     presets = [f.split(".")[0] for f in os.listdir(PRESET_PATH) if f.endswith(".ini")]
 

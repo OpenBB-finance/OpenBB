@@ -37,9 +37,9 @@ folders = [
     "presets",
     "presets/stocks",
     "presets/stocks/options",
+    "presets/stocks/insider",
     "presets/etf",
-    "presets/etf/screen",
-    "presets/insider",
+    "presets/etf/screener",
 ]
 folder_paths = {}
 
@@ -63,6 +63,20 @@ for int_path in internal_paths:
     internal_routines = REPO_DIR / os.path.join(*int_path.split("/"))
     for file in os.listdir(internal_routines):
         new_path = os.path.join(folder_paths[int_path], file)
+        if not Path(new_path).is_file():
+            old_path = os.path.join(internal_routines, file)
+            shutil.copyfile(old_path, new_path)
+
+# Do path in terminal first and desired path second
+internal_paths_dif = [
+    ["openbb_terminal/stocks/options/presets", "presets/stocks/options"],
+    ["openbb_terminal/stocks/insider/presets", "presets/stocks/insider"],
+    ["openbb_terminal/etf/screener/presets", "presets/etf/screener"],
+]
+for int_path_dif in internal_paths_dif:
+    internal_routines = REPO_DIR / os.path.join(*int_path_dif[0].split("/"))
+    for file in os.listdir(internal_routines):
+        new_path = os.path.join(folder_paths[int_path_dif[1]], file)
         if not Path(new_path).is_file():
             old_path = os.path.join(internal_routines, file)
             shutil.copyfile(old_path, new_path)

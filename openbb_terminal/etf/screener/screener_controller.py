@@ -21,10 +21,11 @@ from openbb_terminal.helper_funcs import (
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.core.config.constants import folder_paths
 
 logger = logging.getLogger(__name__)
 
-presets_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
+presets_path = folder_paths["presets/etf/screener"]
 
 
 class ScreenerController(BaseController):
@@ -119,7 +120,9 @@ class ScreenerController(BaseController):
             if ns_parser.preset:
                 preset_filter = configparser.RawConfigParser()
                 preset_filter.optionxform = str  # type: ignore
-                preset_filter.read(presets_path + ns_parser.preset + ".ini")
+                preset_filter.read(
+                    os.path.join(presets_path, f"{ns_parser.preset}.ini")
+                )
 
                 headers = [
                     "Price",
@@ -138,6 +141,7 @@ class ScreenerController(BaseController):
                 ]
 
                 console.print("")
+                print(preset_filter)
                 for filter_header in headers:
                     console.print(f" - {filter_header} -")
                     d_filters = {**preset_filter[filter_header]}
@@ -152,8 +156,7 @@ class ScreenerController(BaseController):
                 console.print("\nPresets:")
                 for preset in self.preset_choices:
                     with open(
-                        presets_path + preset + ".ini",
-                        encoding="utf8",
+                        os.path.join(presets_path, f"{preset}.ini"), encoding="utf8"
                     ) as f:
                         description = ""
                         for line in f:

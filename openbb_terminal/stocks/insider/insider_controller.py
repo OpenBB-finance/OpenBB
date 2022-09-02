@@ -24,10 +24,11 @@ from openbb_terminal.stocks.insider import (
     finviz_view,
     openinsider_view,
 )
+from openbb_terminal.core.config.constants import folder_paths
 
 logger = logging.getLogger(__name__)
 
-presets_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
+presets_path = folder_paths["presets/stocks/insider"]
 
 # pylint: disable=,inconsistent-return-statements
 
@@ -197,7 +198,7 @@ class InsiderController(StockBaseController):
             else:
                 for preset in self.preset_choices:
                     with open(
-                        presets_path + preset + ".ini",
+                        os.path.join(presets_path, f"{preset}.ini"),
                         encoding="utf8",
                     ) as f:
                         description = ""
