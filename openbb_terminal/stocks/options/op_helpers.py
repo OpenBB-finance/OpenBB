@@ -168,8 +168,6 @@ class Option:
 
         Parameters
         ----------
-        type : int
-            Option type, 1 for call and -1 for a put
         s : float
             The underlying asset price
         k : float
@@ -182,6 +180,8 @@ class Option:
             The number of days until expiration
         vol : float
             The underlying volatility for an option
+        opt_type : int
+            put == -1; call == +1
         """
         self.Type = int(opt_type)
         self.price = float(s)
