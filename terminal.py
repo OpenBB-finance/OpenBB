@@ -44,6 +44,7 @@ from openbb_terminal.terminal_helper import (
     welcome_message,
 )
 from openbb_terminal.helper_funcs import parse_and_split_input
+from openbb_terminal.core.config.constants import folder_paths
 
 # pylint: disable=too-many-public-methods,import-outside-toplevel,too-many-branches,no-member,C0302
 
@@ -81,9 +82,7 @@ class TerminalController(BaseController):
     PATH = "/"
     ROUTINE_CHOICES = {
         file: None
-        for file in os.listdir(
-            os.path.join(os.path.abspath(os.path.dirname(__file__)), "routines")
-        )
+        for file in os.listdir(folder_paths["routines"])
         if file.endswith(".openbb")
     }
 
@@ -479,11 +478,7 @@ class TerminalController(BaseController):
         if ns_parser_exe:
             if ns_parser_exe.path:
                 if ns_parser_exe.path in self.ROUTINE_CHOICES:
-                    path = os.path.join(
-                        os.path.abspath(os.path.dirname(__file__)),
-                        "routines",
-                        ns_parser_exe.path,
-                    )
+                    path = os.path.join(folder_paths["routines"], ns_parser_exe.path)
                 else:
                     path = ns_parser_exe.path
 
@@ -791,8 +786,11 @@ def run_scripts(
     verbose : bool
         Whether to run tests in verbose mode
     routines_args : List[str]
-        One or multiple inputs to be replaced in the routine and separated by commas. E.g. GME,AMC,BTC-USD
+        One or multiple inputs to be replaced in the routine and separated by commas.
+        E.g. GME,AMC,BTC-USD
     """
+    if "/" not in path:
+        path = folder_paths["routines"] + "/" + path
     if os.path.isfile(path):
         with open(path) as fp:
             raw_lines = [x for x in fp if (not is_reset(x)) and ("#" not in x) and x]
