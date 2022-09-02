@@ -36,7 +36,7 @@ import numpy as np
 from openbb_terminal.rich_config import console
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal import config_plot as cfgPlot
-from openbb_terminal.core.config.constants import USER_HOME
+from openbb_terminal.core.config.constants import USER_HOME, folder_paths
 
 logger = logging.getLogger(__name__)
 
@@ -1271,9 +1271,7 @@ def compose_export_path(func_name: str, dir_path: str) -> Tuple[str, str]:
         full_path_dir = str(obbff.EXPORT_FOLDER_PATH)
     else:
         if obbff.PACKAGED_APPLICATION:
-            full_path_dir = os.path.join(
-                USER_HOME.as_posix(), "Desktop", "OPENBB-exports"
-            )
+            full_path_dir = folder_paths["exports"]
 
             if not os.path.isdir(full_path_dir):
                 try:
@@ -1285,7 +1283,7 @@ def compose_export_path(func_name: str, dir_path: str) -> Tuple[str, str]:
                     full_path_dir = dir_path.replace("openbb_terminal", "exports")
         else:
             default_filename = f"{func_name}_{now.strftime('%Y%m%d_%H%M%S')}"
-            full_path_dir = dir_path.replace("openbb_terminal", "exports")
+            full_path_dir = folder_paths["exports"]
     return full_path_dir, default_filename
 
 
