@@ -15,7 +15,8 @@ if not os.path.exists(ENV_FILE_DIR):
 
 ENV_FILE = ENV_FILE_DIR.joinpath(".env")
 if not ENV_FILE.is_file():
-    open(str(ENV_FILE), "w")
+    with open(str(ENV_FILE), "w"):
+        pass
 
 folders = [
     "custom_imports",
