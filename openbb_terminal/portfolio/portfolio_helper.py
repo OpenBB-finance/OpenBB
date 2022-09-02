@@ -10,6 +10,7 @@ import yfinance as yf
 import pandas as pd
 
 from openbb_terminal.rich_config import console
+from openbb_terminal.core.config.constants import folder_paths
 
 # pylint: disable=too-many-return-statements
 
@@ -251,9 +252,7 @@ PERIODS_DAYS = {
     "10y": 10 * 12 * 21,
 }
 
-DEFAULT_HOLDINGS_PATH = os.path.abspath(
-    os.path.join(os.path.dirname(__file__), "..", "..", "portfolio", "holdings")
-)
+DEFAULT_HOLDINGS_PATH = folder_paths["portfolio/holdings"]
 
 
 def is_ticker(ticker: str) -> bool:

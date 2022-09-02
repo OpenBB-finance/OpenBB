@@ -27,12 +27,13 @@ from openbb_terminal.portfolio import portfolio_helper
 from openbb_terminal.portfolio.portfolio_optimization import po_controller
 from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.common.quantitative_analysis import qa_view
+from openbb_terminal.core.config.constants import folder_paths
 
 # pylint: disable=R1710,E1101,C0415,W0212,too-many-function-args,C0302,too-many-instance-attributes
 
 logger = logging.getLogger(__name__)
 
-portfolios_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "portfolios")
+portfolios_path = folder_paths["portfolio/portfolios"]
 
 
 class PortfolioController(BaseController):
