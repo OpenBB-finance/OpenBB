@@ -70,7 +70,7 @@ class WordCompleter(Completer):
     def get_completions(
         self,
         document: Document,
-        complete_event: CompleteEvent,
+        _complete_event: CompleteEvent,
     ) -> Iterable[Completion]:
         # Get list of words.
         words = self.words
