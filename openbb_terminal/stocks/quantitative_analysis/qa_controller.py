@@ -313,7 +313,7 @@ class QaController(StockBaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             qa_view.display_hist(
-                name=self.ticker,
+                symbol=self.ticker,
                 data=self.stock,
                 target=self.target,
                 bins=ns_parser.n_bins,
@@ -395,7 +395,7 @@ class QaController(StockBaseController):
         )
         if ns_parser:
             qa_view.display_seasonal(
-                name=self.ticker,
+                symbol=self.ticker,
                 data=self.stock,
                 target=self.target,
                 multiplicative=ns_parser.multiplicative,
@@ -586,7 +586,7 @@ class QaController(StockBaseController):
                 data=self.stock,
                 symbol=self.ticker,
                 target=self.target,
-                limit=ns_parser.n_window,
+                window=ns_parser.n_window,
                 quantile=ns_parser.f_quantile,
                 export=ns_parser.export,
             )
@@ -621,7 +621,7 @@ class QaController(StockBaseController):
         )
         if ns_parser:
             rolling_view.display_skew(
-                name=self.ticker,
+                symbol=self.ticker,
                 data=self.stock,
                 target=self.target,
                 window=ns_parser.n_window,
@@ -658,7 +658,7 @@ class QaController(StockBaseController):
         )
         if ns_parser:
             rolling_view.display_kurtosis(
-                name=self.ticker,
+                symbol=self.ticker,
                 data=self.stock,
                 target=self.target,
                 window=ns_parser.n_window,
