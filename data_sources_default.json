@@ -8,7 +8,8 @@
             "yf",
             "iex",
             "av",
-            "polygon"
+            "polygon",
+            "eodhd"
         ],
         "dps": {
             "psi": [
@@ -208,6 +209,10 @@
             "yf",
             "av",
             "polygon"
+        ],
+        "quote": [
+            "yf",
+            "av"
         ]
     }
 }

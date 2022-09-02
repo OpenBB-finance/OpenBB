@@ -1165,14 +1165,19 @@ class PortfolioModel:
         # Set current price of benchmark
         self.benchmark_trades["Last price"] = self.benchmark_historical_prices[-1]
         self.benchmark_trades[["Benchmark Quantity", "Trade price"]] = float(0)
-
         # Iterate over orderbook to replicate trades on benchmark
         for index, trade in self.__orderbook.iterrows():
             # Select date to search (if not in historical prices, get closest value)
             if trade["Date"] not in self.benchmark_historical_prices.index:
-                date = self.benchmark_historical_prices.index.searchsorted(
+                found_date = self.benchmark_historical_prices.index.searchsorted(
                     trade["Date"]
                 )
+                # Fix error if trade was today and there are no historical price data rows
+                if self.benchmark_historical_prices.index.isin([found_date]).any():
+                    date = found_date
+                else:
+                    # If no historical price data, use last row
+                    date = self.benchmark_historical_prices.index[-1]
             else:
                 date = trade["Date"]
 
