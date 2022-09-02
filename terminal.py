@@ -11,6 +11,7 @@ import sys
 import webbrowser
 from typing import List
 import dotenv
+from pathlib import Path
 
 from prompt_toolkit import PromptSession
 from prompt_toolkit.completion import NestedCompleter
@@ -614,9 +615,9 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
         check_for_updates()
 
     #Load from .openbb_terminal
-    env_files = [f for f in os.listdir(ENV_FILE_DIR) if f.endswith(".env")]
+    env_files = [os.path.join(ENV_FILE_DIR, Path(f)) for f in os.listdir(ENV_FILE_DIR) if f.endswith(".env")]
     #load from gitclone
-    env_files.extend([f for f in os.listdir(REPO_DIR) if f.endswith(".env")])
+    env_files.extend([os.path.join(REPO_DIR, Path(f)) for f in os.listdir(REPO_DIR) if f.endswith(".env")])
     if env_files:
         for envf in env_files:
             dotenv.load_dotenv(envf, override=True)
