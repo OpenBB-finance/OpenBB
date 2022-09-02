@@ -1,5 +1,6 @@
 # IMPORTATION STANDARD
 import os
+import shutil
 from pathlib import Path
 
 REPO_DIR = Path(__file__).parent.parent.parent.parent
@@ -49,3 +50,11 @@ for folder in folders:
 
 
 CUSTOM_IMPORTS = Path(str(USER_DATA_DIR) + "/custom_imports")
+
+# Copy routines files to new path
+internal_routines = REPO_DIR / "routines"
+for file in os.listdir(internal_routines):
+    new_path = os.path.join(folder_paths["routines"], file)
+    if not Path(new_path).is_file():
+        old_path = os.path.join(internal_routines, file)
+        shutil.copyfile(old_path, new_path)
