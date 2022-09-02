@@ -1,6 +1,7 @@
 # IMPORTATION STANDARD
 import os
 from distutils.util import strtobool
+from pathlib import Path
 
 # IMPORTATION THIRDPARTY
 import dotenv
@@ -14,9 +15,9 @@ if not os.path.exists(ENV_FILE_DIR):
     os.mkdir(ENV_FILE_DIR)
 
 #Load from .openbb_terminal
-env_files = [f for f in os.listdir(ENV_FILE_DIR) if f.endswith(".env")]
+env_files = [os.path.join(ENV_FILE_DIR, Path(f)) for f in os.listdir(ENV_FILE_DIR) if f.endswith(".env")]
 #load from gitclone
-env_files.extend([f for f in os.listdir(REPO_DIR) if f.endswith(".env")])
+env_files.extend([os.path.join(REPO_DIR, Path(f)) for f in os.listdir(REPO_DIR) if f.endswith(".env")])
 if env_files:
     for envf in env_files:
         dotenv.load_dotenv(envf, override=True)

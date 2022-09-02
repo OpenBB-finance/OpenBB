@@ -1056,6 +1056,8 @@ def get_flair() -> str:
         if str(obbff.USE_FLAIR) in flairs
         else str(obbff.USE_FLAIR)
     )
+
+    set_default_timezone()
     if obbff.USE_DATETIME and get_user_timezone_or_invalid() != "INVALID":
         dtime = datetime.now(pytz.timezone(get_user_timezone())).strftime(
             "%Y %b %d, %H:%M"
@@ -1068,6 +1070,15 @@ def get_flair() -> str:
         return f"{dtime} {flair}"
 
     return flair
+
+
+def set_default_timezone() -> None:
+    """Sets a default (America/New_York) timezone if one doesn't exist"""
+
+    dotenv.load_dotenv(ENV_FILE_DEFAULT)
+    user_tz = os.getenv("TIMEZONE")
+    if not user_tz:
+        dotenv.set_key(ENV_FILE_DEFAULT, "TIMEZONE", "America/New_York")
 
 
 def is_timezone_valid(user_tz: str) -> bool:
