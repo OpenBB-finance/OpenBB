@@ -18,7 +18,7 @@ from prompt_toolkit.styles import Style
 from prompt_toolkit.formatted_text import HTML
 
 from openbb_terminal.common import feedparser_view
-from openbb_terminal.core.config.constants import REPO_DIR, ENV_FILE, USER_HOME
+from openbb_terminal.core.config.constants import REPO_DIR, ENV_FILE_DIR, USER_HOME, ENV_FILE_DEFAULT
 from openbb_terminal.core.log.generation.path_tracking_file_handler import (
     PathTrackingFileHandler,
 )
@@ -312,7 +312,7 @@ class TerminalController(BaseController):
         """Process keys command"""
         from openbb_terminal.keys_controller import KeysController
 
-        self.queue = self.load_class(KeysController, self.queue, ENV_FILE)
+        self.queue = self.load_class(KeysController, self.queue, ENV_FILE_DEFAULT)
 
     def call_settings(self, _):
         """Process settings command"""
@@ -618,7 +618,13 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
         t_controller.print_help()
         check_for_updates()
 
-    dotenv.load_dotenv(ENV_FILE)
+    #Load from .openbb_terminal
+    env_files = [f for f in os.listdir(ENV_FILE_DIR) if f.endswith(".env")]
+    #load from gitclone
+    env_files.extend([f for f in os.listdir(REPO_DIR) if f.endswith(".env")])
+    if env_files:
+        for envf in env_files:
+            dotenv.load_dotenv(envf, override=True)
 
     while ret_code:
         if obbff.ENABLE_QUICK_EXIT:

@@ -16,6 +16,7 @@ from prompt_toolkit.completion import NestedCompleter
 # IMPORTATION INTERNAL
 from openbb_terminal import config_plot as cfg_plot
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.core.config.constants import ENV_FILE_DEFAULT
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     get_flair,
@@ -139,7 +140,7 @@ class SettingsController(BaseController):
     def call_dt(self, _):
         """Process dt command"""
         obbff.USE_DATETIME = not obbff.USE_DATETIME
-        set_key(obbff.ENV_FILE, "OPENBB_USE_DATETIME", str(obbff.USE_DATETIME))
+        set_key(ENV_FILE_DEFAULT, "OPENBB_USE_DATETIME", str(obbff.USE_DATETIME))
         console.print("")
 
     @log_start_end(log=logger)
@@ -176,7 +177,7 @@ class SettingsController(BaseController):
                 console.print(e)
             obbff.PREFERRED_DATA_SOURCE_FILE = ns_parser.value
             set_key(
-                obbff.ENV_FILE,
+                ENV_FILE_DEFAULT,
                 "OPENBB_PREFERRED_DATA_SOURCE_FILE",
                 str(ns_parser.value),
             )
@@ -187,7 +188,7 @@ class SettingsController(BaseController):
         """Process autoscaling command"""
         obbff.USE_PLOT_AUTOSCALING = not obbff.USE_PLOT_AUTOSCALING
         set_key(
-            obbff.ENV_FILE,
+            ENV_FILE_DEFAULT,
             "OPENBB_USE_PLOT_AUTOSCALING",
             str(obbff.USE_PLOT_AUTOSCALING),
         )
@@ -214,7 +215,7 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser and ns_parser.value:
-            set_key(obbff.ENV_FILE, "OPENBB_PLOT_DPI", str(ns_parser.value))
+            set_key(ENV_FILE_DEFAULT, "OPENBB_PLOT_DPI", str(ns_parser.value))
             cfg_plot.PLOT_DPI = ns_parser.value
             console.print("")
 
@@ -239,7 +240,7 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
-            set_key(obbff.ENV_FILE, "OPENBB_PLOT_HEIGHT", str(ns_parser.value))
+            set_key(ENV_FILE_DEFAULT, "OPENBB_PLOT_HEIGHT", str(ns_parser.value))
             cfg_plot.PLOT_HEIGHT = ns_parser.value
             console.print("")
 
@@ -264,7 +265,7 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
-            set_key(obbff.ENV_FILE, "OPENBB_PLOT_WIDTH", str(ns_parser.value))
+            set_key(ENV_FILE_DEFAULT, "OPENBB_PLOT_WIDTH", str(ns_parser.value))
             cfg_plot.PLOT_WIDTH = ns_parser.value
             console.print("")
 
@@ -289,7 +290,7 @@ class SettingsController(BaseController):
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             set_key(
-                obbff.ENV_FILE,
+                ENV_FILE_DEFAULT,
                 "OPENBB_PLOT_HEIGHT_PERCENTAGE",
                 str(ns_parser.value),
             )
@@ -317,7 +318,7 @@ class SettingsController(BaseController):
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             set_key(
-                obbff.ENV_FILE,
+                ENV_FILE_DEFAULT,
                 "OPENBB_PLOT_WIDTH_PERCENTAGE",
                 str(ns_parser.value),
             )
@@ -344,7 +345,7 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
-            set_key(obbff.ENV_FILE, "OPENBB_MONITOR", str(ns_parser.value))
+            set_key(ENV_FILE_DEFAULT, "OPENBB_MONITOR", str(ns_parser.value))
             cfg_plot.MONITOR = ns_parser.value
             console.print("")
 
@@ -368,7 +369,7 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
-            set_key(obbff.ENV_FILE, "OPENBB_BACKEND", str(ns_parser.value))
+            set_key(ENV_FILE_DEFAULT, "OPENBB_BACKEND", str(ns_parser.value))
             if ns_parser.value == "None":
                 cfg_plot.BACKEND = None  # type: ignore
             else:
@@ -398,7 +399,7 @@ class SettingsController(BaseController):
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             if ns_parser.value:
-                set_key(obbff.ENV_FILE, "OPENBB_USE_LANGUAGE", str(ns_parser.value))
+                set_key(ENV_FILE_DEFAULT, "OPENBB_USE_LANGUAGE", str(ns_parser.value))
                 obbff.USE_LANGUAGE = ns_parser.value
             else:
                 console.print(
@@ -457,7 +458,7 @@ class SettingsController(BaseController):
                 ns_parser.emoji = ""
             else:
                 ns_parser.emoji = " ".join(ns_parser.emoji)
-            set_key(obbff.ENV_FILE, "OPENBB_USE_FLAIR", str(ns_parser.emoji))
+            set_key(ENV_FILE_DEFAULT, "OPENBB_USE_FLAIR", str(ns_parser.emoji))
             obbff.USE_FLAIR = ns_parser.emoji
             console.print("")
 

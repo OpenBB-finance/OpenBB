@@ -6,16 +6,20 @@ from distutils.util import strtobool
 import dotenv
 
 # IMPORTATION INTERNAL
-from openbb_terminal.core.config.constants import ENV_FILE_DIR
+from openbb_terminal.core.config.constants import ENV_FILE_DIR, REPO_DIR
 from .helper_classes import TerminalStyle as _TerminalStyle
 
 
 if not os.path.exists(ENV_FILE_DIR):
     os.mkdir(ENV_FILE_DIR)
 
+#Load from .openbb_terminal
 env_files = [f for f in os.listdir(ENV_FILE_DIR) if f.endswith(".env")]
+#load from gitclone
+env_files.extend([f for f in os.listdir(REPO_DIR) if f.endswith(".env")])
 if env_files:
-    dotenv.load_dotenv(env_files[0])
+    for envf in env_files:
+        dotenv.load_dotenv(envf, override=True)
 
 # Terminal UX section
 theme = _TerminalStyle(
