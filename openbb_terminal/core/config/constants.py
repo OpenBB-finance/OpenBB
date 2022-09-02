@@ -30,9 +30,10 @@ folders = [
     "settings",
     "settings/styles",
     "portfolio",
-    "portfolio/holdings/",
+    "portfolio/holdings",
     "portfolio/optimization",
     "portfolio/allocation",
+    "portfolio/portfolios",
     "presets",
     "presets/stocks",
     "presets/stocks/options",
@@ -51,10 +52,17 @@ for folder in folders:
 
 CUSTOM_IMPORTS = Path(str(USER_DATA_DIR) + "/custom_imports")
 
-# Copy routines files to new path
-internal_routines = REPO_DIR / "routines"
-for file in os.listdir(internal_routines):
-    new_path = os.path.join(folder_paths["routines"], file)
-    if not Path(new_path).is_file():
-        old_path = os.path.join(internal_routines, file)
-        shutil.copyfile(old_path, new_path)
+# Copy folder contents from files to new path
+internal_paths = [
+    "routines",
+    "portfolio/allocation",
+    "portfolio/holdings",
+    "portfolio/optimization",
+]
+for int_path in internal_paths:
+    internal_routines = REPO_DIR / os.path.join(*int_path.split("/"))
+    for file in os.listdir(internal_routines):
+        new_path = os.path.join(folder_paths[int_path], file)
+        if not Path(new_path).is_file():
+            old_path = os.path.join(internal_routines, file)
+            shutil.copyfile(old_path, new_path)
