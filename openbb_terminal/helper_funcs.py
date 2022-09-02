@@ -1280,7 +1280,7 @@ def compose_export_path(func_name: str, dir_path: str) -> Tuple[str, str]:
                     console.print(
                         f"[red]Couldn't create a folder in {full_path_dir}. Exporting failed.[/red]"
                     )
-                    full_path_dir = dir_path.replace("openbb_terminal", "exports")
+                    full_path_dir = folder_paths["exports"]
         else:
             default_filename = f"{func_name}_{now.strftime('%Y%m%d_%H%M%S')}"
             full_path_dir = folder_paths["exports"]
