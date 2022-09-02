@@ -36,7 +36,11 @@ import numpy as np
 from openbb_terminal.rich_config import console
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal import config_plot as cfgPlot
-from openbb_terminal.core.config.constants import ENV_FILE_DEFAULT, USER_HOME, folder_paths
+from openbb_terminal.core.config.constants import (
+    ENV_FILE_DEFAULT,
+    USER_HOME,
+    folder_paths,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -1120,7 +1124,7 @@ def replace_user_timezone(user_tz: str) -> None:
     user_tz: str
         User timezone to set
     """
-    
+
     if is_timezone_valid(user_tz):
         dotenv.set_key(ENV_FILE_DEFAULT, "TIMEZONE", user_tz)
         console.print("Timezone successfully updated", "\n")
