@@ -36,7 +36,7 @@ import numpy as np
 from openbb_terminal.rich_config import console
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal import config_plot as cfgPlot
-from openbb_terminal.core.config.constants import USER_HOME, folder_paths
+from openbb_terminal.core.config.constants import USER_HOME, folder_paths, USER_DATA_DIR
 
 logger = logging.getLogger(__name__)
 
@@ -1090,10 +1090,7 @@ def get_user_timezone() -> str:
     str
         user timezone based on timezone.openbb file
     """
-    filename = os.path.join(
-        os.path.dirname(os.path.abspath(__file__)),
-        "timezone.openbb",
-    )
+    filename = os.path.join(USER_DATA_DIR, "timezone.openbb")
     if os.path.isfile(filename):
         with open(filename) as f:
             return f.read()
@@ -1122,21 +1119,15 @@ def replace_user_timezone(user_tz: str) -> None:
     user_tz: str
         User timezone to set
     """
-    filename = os.path.join(
-        os.path.dirname(os.path.abspath(__file__)),
-        "timezone.openbb",
-    )
-    if os.path.isfile(filename):
-        with open(filename, "w") as f:
-            if is_timezone_valid(user_tz):
-                if f.write(user_tz):
-                    console.print("Timezone successfully updated", "\n")
-                else:
-                    console.print("Timezone not set successfully", "\n")
+    filename = os.path.join(USER_DATA_DIR, "timezone.openbb")
+    with open(filename, "w") as f:
+        if is_timezone_valid(user_tz):
+            if f.write(user_tz):
+                console.print("Timezone successfully updated", "\n")
             else:
-                console.print("Timezone selected is not valid", "\n")
-    else:
-        console.print("timezone.openbb file does not exist", "\n")
+                console.print("Timezone not set successfully", "\n")
+        else:
+            console.print("Timezone selected is not valid", "\n")
 
 
 def str_to_bool(value) -> bool:
