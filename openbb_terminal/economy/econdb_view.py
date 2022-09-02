@@ -26,6 +26,7 @@ logger = logging.getLogger(__name__)
 def show_macro_data(
     parameters: list = None,
     countries: list = None,
+    transform: str = "",
     start_date: str = "1900-01-01",
     end_date: str = str(datetime.today().date()),
     currency: str = "",
@@ -41,6 +42,14 @@ def show_macro_data(
         The type of data you wish to display. Available parameters can be accessed through get_macro_parameters().
     countries : list
         The selected country or countries. Available countries can be accessed through get_macro_countries().
+    transform : str
+        select data transformation from:
+            '' - no transformation
+            'TPOP' - total percentage change on period,
+            'TOYA' - total percentage since 1 year ago,
+            'TUSD' - level USD,
+            'TPGP' - Percentage of GDP,
+            'TNOR' - Start = 100
     start_date : str
         The starting date, format "YEAR-MONTH-DAY", i.e. 2010-12-31.
     end_date : str
@@ -65,7 +74,7 @@ def show_macro_data(
         countries = ["United_States"]
 
     df_rounded, units, denomination = econdb_model.get_aggregated_macro_data(
-        parameters, countries, start_date, end_date, currency
+        parameters, countries, transform, start_date, end_date, currency
     )
 
     if external_axes is None:

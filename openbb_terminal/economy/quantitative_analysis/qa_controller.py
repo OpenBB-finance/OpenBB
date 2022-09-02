@@ -289,7 +289,7 @@ class QaController(StockBaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             qa_view.display_hist(
-                name="",
+                symbol="",
                 data=self.current_source_dataframe,
                 target=self.current_id,
                 bins=ns_parser.n_bins,
@@ -311,7 +311,7 @@ class QaController(StockBaseController):
         )
         if ns_parser:
             qa_view.display_cdf(
-                name="",
+                symbol="",
                 data=self.current_source_dataframe,
                 target=self.current_id,
                 export=ns_parser.export,
@@ -339,7 +339,7 @@ class QaController(StockBaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             qa_view.display_bw(
-                name="",
+                symbol="",
                 data=self.current_source_dataframe,
                 target=self.current_id,
                 yearly=ns_parser.year,
@@ -371,7 +371,7 @@ class QaController(StockBaseController):
         )
         if ns_parser:
             qa_view.display_seasonal(
-                name="",
+                symbol="",
                 data=self.current_source_dataframe,
                 target=self.current_id,
                 multiplicative=ns_parser.multiplicative,
@@ -437,7 +437,7 @@ class QaController(StockBaseController):
         if ns_parser:
 
             qa_view.display_acf(
-                name="",
+                symbol="",
                 data=self.current_source_dataframe,
                 target=self.current_id,
                 lags=ns_parser.lags,
@@ -499,7 +499,7 @@ class QaController(StockBaseController):
         )
         if ns_parser:
             rolling_view.display_spread(
-                name="",
+                symbol="",
                 data=self.current_source_dataframe,
                 target=self.current_id,
                 window=ns_parser.n_window,
@@ -547,7 +547,7 @@ class QaController(StockBaseController):
         )
         if ns_parser:
             rolling_view.display_quantile(
-                name="",
+                symbol="",
                 data=self.current_source_dataframe,
                 target=self.current_id,
                 window=ns_parser.n_window,
@@ -585,7 +585,7 @@ class QaController(StockBaseController):
         )
         if ns_parser:
             rolling_view.display_skew(
-                name="",
+                symbol="",
                 data=self.current_source_dataframe,
                 target=self.current_id,
                 window=ns_parser.n_window,
@@ -622,7 +622,7 @@ class QaController(StockBaseController):
         )
         if ns_parser:
             rolling_view.display_kurtosis(
-                name="",
+                symbol="",
                 data=self.current_source_dataframe,
                 target=self.current_id,
                 window=ns_parser.n_window,
@@ -664,7 +664,7 @@ class QaController(StockBaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             qa_view.display_qqplot(
-                name="", data=self.current_source_dataframe, target=self.current_id
+                symbol="", data=self.current_source_dataframe, target=self.current_id
             )
 
     @log_start_end(log=logger)

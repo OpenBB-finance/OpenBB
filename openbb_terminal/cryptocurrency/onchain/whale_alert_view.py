@@ -45,7 +45,11 @@ def display_whales_transactions(
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = whale_alert_model.get_whales_transactions(min_value, sortby, ascend)
+    df = whale_alert_model.get_whales_transactions(
+        min_value=min_value,
+        sortby=sortby,
+        ascend=ascend,
+    )
 
     if df.empty:
         console.print("Failed to retrieve data.")
