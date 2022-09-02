@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 import i18n
 
 # IMPORTATION INTERNAL
-from openbb_terminal.core.config.constants import ENV_FILE, folder_paths
+from openbb_terminal.core.config.constants import ENV_FILE_DIR, folder_paths, REPO_DIR
 
 # pylint: disable=no-member
 
@@ -22,8 +22,13 @@ i18n.load_path.append(i18n_dict_location)
 i18n.set("locale", "en")
 i18n.set("filename_format", "{locale}.{format}")
 
-if ENV_FILE.is_file():
-    load_dotenv(dotenv_path=ENV_FILE, override=True)
+#Load from .openbb_terminal
+env_files = [f for f in os.listdir(ENV_FILE_DIR) if f.endswith(".env")]
+#load from gitclone
+env_files.extend([f for f in os.listdir(REPO_DIR) if f.endswith(".env")])
+if env_files:
+    for envf in env_files:
+        load_dotenv(envf, override=True)
 
 # Retry unknown commands with `load`
 RETRY_WITH_LOAD = strtobool(os.getenv("OPENBB_RETRY_WITH_LOAD", "False"))

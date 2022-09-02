@@ -11,6 +11,7 @@ from prompt_toolkit.completion import NestedCompleter
 
 # IMPORTATION INTERNAL
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.core.config.constants import ENV_FILE_DEFAULT
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
@@ -83,20 +84,20 @@ class FeatureFlagsController(BaseController):
     def call_logcollection(self, _):
         """Process logcollection command"""
         obbff.LOG_COLLECTION = not obbff.LOG_COLLECTION
-        set_key(obbff.ENV_FILE, "OPENBB_LOG_COLLECTION", str(obbff.LOG_COLLECTION))
+        set_key(ENV_FILE_DEFAULT, "OPENBB_LOG_COLLECTION", str(obbff.LOG_COLLECTION))
         console.print("")
 
     def call_retryload(self, _):
         """Process retryload command"""
         obbff.RETRY_WITH_LOAD = not obbff.RETRY_WITH_LOAD
-        set_key(obbff.ENV_FILE, "OPENBB_RETRY_WITH_LOAD", str(obbff.RETRY_WITH_LOAD))
+        set_key(ENV_FILE_DEFAULT, "OPENBB_RETRY_WITH_LOAD", str(obbff.RETRY_WITH_LOAD))
         console.print("")
 
     @log_start_end(log=logger)
     def call_tab(self, _):
         """Process tab command"""
         obbff.USE_TABULATE_DF = not obbff.USE_TABULATE_DF
-        set_key(obbff.ENV_FILE, "OPENBB_USE_TABULATE_DF", str(obbff.USE_TABULATE_DF))
+        set_key(ENV_FILE_DEFAULT, "OPENBB_USE_TABULATE_DF", str(obbff.USE_TABULATE_DF))
         console.print("")
 
     @log_start_end(log=logger)
@@ -104,7 +105,7 @@ class FeatureFlagsController(BaseController):
         """Process cls command"""
         obbff.USE_CLEAR_AFTER_CMD = not obbff.USE_CLEAR_AFTER_CMD
         set_key(
-            obbff.ENV_FILE,
+            ENV_FILE_DEFAULT,
             "OPENBB_USE_CLEAR_AFTER_CMD",
             str(obbff.USE_CLEAR_AFTER_CMD),
         )
@@ -114,7 +115,7 @@ class FeatureFlagsController(BaseController):
     def call_color(self, _):
         """Process color command"""
         obbff.USE_COLOR = not obbff.USE_COLOR
-        set_key(obbff.ENV_FILE, "OPENBB_USE_COLOR", str(obbff.USE_COLOR))
+        set_key(ENV_FILE_DEFAULT, "OPENBB_USE_COLOR", str(obbff.USE_COLOR))
         console.print("")
 
     @log_start_end(log=logger)
@@ -122,7 +123,7 @@ class FeatureFlagsController(BaseController):
         """Process promptkit command"""
         obbff.USE_PROMPT_TOOLKIT = not obbff.USE_PROMPT_TOOLKIT
         set_key(
-            obbff.ENV_FILE,
+            ENV_FILE_DEFAULT,
             "OPENBB_USE_PROMPT_TOOLKIT",
             str(obbff.USE_PROMPT_TOOLKIT),
         )
@@ -132,7 +133,7 @@ class FeatureFlagsController(BaseController):
     def call_predict(self, _):
         """Process predict command"""
         obbff.ENABLE_PREDICT = not obbff.ENABLE_PREDICT
-        set_key(obbff.ENV_FILE, "OPENBB_ENABLE_PREDICT", str(obbff.ENABLE_PREDICT))
+        set_key(ENV_FILE_DEFAULT, "OPENBB_ENABLE_PREDICT", str(obbff.ENABLE_PREDICT))
         console.print("")
 
     @log_start_end(log=logger)
@@ -140,7 +141,7 @@ class FeatureFlagsController(BaseController):
         """Process thoughts command"""
         obbff.ENABLE_THOUGHTS_DAY = not obbff.ENABLE_THOUGHTS_DAY
         set_key(
-            obbff.ENV_FILE,
+            ENV_FILE_DEFAULT,
             "OPENBB_ENABLE_THOUGHTS_DAY",
             str(obbff.ENABLE_THOUGHTS_DAY),
         )
@@ -151,7 +152,7 @@ class FeatureFlagsController(BaseController):
         """Process reporthtml command"""
         obbff.OPEN_REPORT_AS_HTML = not obbff.OPEN_REPORT_AS_HTML
         set_key(
-            obbff.ENV_FILE,
+            ENV_FILE_DEFAULT,
             "OPENBB_OPEN_REPORT_AS_HTML",
             str(obbff.OPEN_REPORT_AS_HTML),
         )
@@ -162,7 +163,7 @@ class FeatureFlagsController(BaseController):
         """Process exithelp command"""
         obbff.ENABLE_EXIT_AUTO_HELP = not obbff.ENABLE_EXIT_AUTO_HELP
         set_key(
-            obbff.ENV_FILE,
+            ENV_FILE_DEFAULT,
             "OPENBB_ENABLE_EXIT_AUTO_HELP",
             str(obbff.ENABLE_EXIT_AUTO_HELP),
         )
@@ -173,7 +174,7 @@ class FeatureFlagsController(BaseController):
         """Process rcontext command"""
         obbff.REMEMBER_CONTEXTS = not obbff.REMEMBER_CONTEXTS
         set_key(
-            obbff.ENV_FILE,
+            ENV_FILE_DEFAULT,
             "OPENBB_REMEMBER_CONTEXTS",
             str(obbff.REMEMBER_CONTEXTS),
         )
@@ -183,14 +184,14 @@ class FeatureFlagsController(BaseController):
     def call_dt(self, _):
         """Process dt command"""
         obbff.USE_DATETIME = not obbff.USE_DATETIME
-        set_key(obbff.ENV_FILE, "OPENBB_USE_DATETIME", str(obbff.USE_DATETIME))
+        set_key(ENV_FILE_DEFAULT, "OPENBB_USE_DATETIME", str(obbff.USE_DATETIME))
         console.print("")
 
     @log_start_end(log=logger)
     def call_rich(self, _):
         """Process rich command"""
         obbff.ENABLE_RICH = not obbff.ENABLE_RICH
-        set_key(obbff.ENV_FILE, "OPENBB_ENABLE_RICH", str(obbff.ENABLE_RICH))
+        set_key(ENV_FILE_DEFAULT, "OPENBB_ENABLE_RICH", str(obbff.ENABLE_RICH))
         console.print("")
 
     @log_start_end(log=logger)
@@ -198,7 +199,7 @@ class FeatureFlagsController(BaseController):
         """Process richpanel command"""
         obbff.ENABLE_RICH_PANEL = not obbff.ENABLE_RICH_PANEL
         set_key(
-            obbff.ENV_FILE,
+            ENV_FILE_DEFAULT,
             "OPENBB_ENABLE_RICH_PANEL",
             str(obbff.ENABLE_RICH_PANEL),
         )
@@ -208,14 +209,14 @@ class FeatureFlagsController(BaseController):
     def call_ion(self, _):
         """Process ion command"""
         obbff.USE_ION = not obbff.USE_ION
-        set_key(obbff.ENV_FILE, "OPENBB_USE_ION", str(obbff.USE_ION))
+        set_key(ENV_FILE_DEFAULT, "OPENBB_USE_ION", str(obbff.USE_ION))
         console.print("")
 
     @log_start_end(log=logger)
     def call_watermark(self, _):
         """Process watermark command"""
         obbff.USE_WATERMARK = not obbff.USE_WATERMARK
-        set_key(obbff.ENV_FILE, "OPENBB_USE_WATERMARK", str(obbff.USE_WATERMARK))
+        set_key(ENV_FILE_DEFAULT, "OPENBB_USE_WATERMARK", str(obbff.USE_WATERMARK))
         console.print("")
 
     @log_start_end(log=logger)
@@ -223,7 +224,7 @@ class FeatureFlagsController(BaseController):
         """Process cmdloc command"""
         obbff.USE_CMD_LOCATION_FIGURE = not obbff.USE_CMD_LOCATION_FIGURE
         set_key(
-            obbff.ENV_FILE,
+            ENV_FILE_DEFAULT,
             "OPENBB_USE_CMD_LOCATION_FIGURE",
             str(obbff.USE_CMD_LOCATION_FIGURE),
         )
@@ -236,7 +237,7 @@ class FeatureFlagsController(BaseController):
             console.print("Will take effect when running terminal next.")
         obbff.TOOLBAR_HINT = not obbff.TOOLBAR_HINT
         set_key(
-            obbff.ENV_FILE,
+            ENV_FILE_DEFAULT,
             "OPENBB_TOOLBAR_HINT",
             str(obbff.TOOLBAR_HINT),
         )

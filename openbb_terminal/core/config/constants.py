@@ -14,9 +14,9 @@ ENV_FILE_DIR = Path(str(Path.home()) + "/.openbb_terminal")
 if not os.path.exists(ENV_FILE_DIR):
     os.mkdir(ENV_FILE_DIR)
 
-ENV_FILE = ENV_FILE_DIR.joinpath(".env")
-if not ENV_FILE.is_file():
-    with open(str(ENV_FILE), "w"):
+ENV_FILE_DEFAULT = ENV_FILE_DIR.joinpath(".env")
+if not ENV_FILE_DEFAULT.is_file():
+    with open(str(ENV_FILE_DEFAULT), "w"):
         pass
 
 folders = [
