@@ -9,7 +9,8 @@ from datetime import date
 from typing import List, Dict, Any
 
 import pandas as pd
-from prompt_toolkit.completion import NestedCompleter
+
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
 from openbb_terminal.decorators import check_api_key
 from openbb_terminal import feature_flags as obbff
@@ -160,11 +161,11 @@ class EconomyController(BaseController):
 
             self.choices["index"] = {c: None for c in yfinance_model.INDICES}
 
-            self.choices["macro"]["-p"] = {c: None for c in econdb_model.PARAMETERS}
+            # self.choices["macro"]["-p"] = {c: None for c in econdb_model.PARAMETERS}
             self.choices["macro"]["--parameter"] = {
                 c: None for c in econdb_model.PARAMETERS
             }
-            self.choices["macro"]["-c"] = {c: None for c in econdb_model.COUNTRY_CODES}
+            # self.choices["macro"]["-c"] = {c: None for c in econdb_model.COUNTRY_CODES}
             self.choices["macro"]["--countries"] = {
                 c: None for c in econdb_model.COUNTRY_CODES
             }
