@@ -22,9 +22,11 @@
                 "yf",
                 "polygon",
                 "av",
-                "fmp"
+                "fmp",
+                "eodhd"
             ],
             "balance": [
+                "eodhd",
                 "yf",
                 "polygon",
                 "av",
@@ -34,7 +36,8 @@
                 "yf",
                 "polygon",
                 "av",
-                "fmp"
+                "fmp",
+                "eodhd"
             ]
         },
         "options": {

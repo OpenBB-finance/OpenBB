@@ -31,6 +31,7 @@ from openbb_terminal.stocks.fundamental_analysis import (
     yahoo_finance_view,
     polygon_view,
     fmp_view,
+    eodhd_view,
 )
 
 # pylint: disable=inconsistent-return-statements,C0302,R0904
@@ -114,6 +115,7 @@ class FundamentalAnalysisController(StockBaseController):
             choices["cash"]["-p"] = {
                 c: {} for c in stocks_helper.CASH_PLOT[self.default_cash]
             }
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
@@ -146,7 +148,10 @@ class FundamentalAnalysisController(StockBaseController):
         mt.add_cmd("web", "Yahoo Finance", not self.suffix)
         mt.add_cmd("hq", "Yahoo Finance", not self.suffix)
         mt.add_cmd("income", "Alpha Vantage / Polygon / Yahoo Finance / FMP")
-        mt.add_cmd("balance", "Alpha Vantage / Polygon / Yahoo Finance / FMP")
+        mt.add_cmd(
+            "balance",
+            "Alpha Vantage / Polygon / Yahoo Finance / FMP / EOD Historical Data",
+        )
         mt.add_cmd("overview", "Alpha Vantage")
         mt.add_cmd("key", "Alpha Vantage")
         mt.add_cmd("cash", "Alpha Vantage / Yahoo Finance / FMP")
@@ -950,9 +955,20 @@ class FundamentalAnalysisController(StockBaseController):
                     export=ns_parser.export,
                 )
             elif ns_parser.source == "yf":
+                console.print("Source is Yahoo Finance!")
                 yahoo_finance_view.display_fundamentals(
                     symbol=self.ticker,
                     statement="balance-sheet",
+                    ratios=ns_parser.ratios,
+                    plot=ns_parser.plot,
+                    export=ns_parser.export,
+                )
+            elif ns_parser.source == "eodhd":
+                console.print("Source is EOD Historical Data!")
+                eodhd_view.display_fundamentals(
+                    symbol=self.ticker,
+                    statement="Balance_Sheet",
+                    quarterly=ns_parser.b_quarter,
                     ratios=ns_parser.ratios,
                     plot=ns_parser.plot,
                     export=ns_parser.export,
@@ -1057,6 +1073,16 @@ class FundamentalAnalysisController(StockBaseController):
                 yahoo_finance_view.display_fundamentals(
                     symbol=self.ticker,
                     statement="cash-flow",
+                    ratios=ns_parser.ratios,
+                    plot=ns_parser.plot,
+                    export=ns_parser.export,
+                )
+            elif ns_parser.source == "eodhd":
+                console.print(" I am here!!!")
+                eodhd_view.display_fundamentals(
+                    symbol=self.ticker,
+                    statement="Balance_Sheet",
+                    quarterly=ns_parser.b_quarter,
                     ratios=ns_parser.ratios,
                     plot=ns_parser.plot,
                     export=ns_parser.export,
