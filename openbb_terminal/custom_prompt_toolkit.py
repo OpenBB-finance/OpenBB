@@ -304,6 +304,11 @@ class NestedCompleter(Completer):
                             if k not in flags_processed
                         }
 
+            # The user has delete part of the first command and we need to reset options
+            elif len(text) > 0:
+                self.options = original_options
+                flags_processed = list()
+
             if (
                 cmd
                 and cmd in self.options.keys()
