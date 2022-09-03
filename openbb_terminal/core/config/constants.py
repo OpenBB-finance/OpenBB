@@ -38,6 +38,7 @@ folders = [
     "presets/stocks",
     "presets/stocks/options",
     "presets/stocks/insider",
+    "presets/stocks/screener",
     "presets/etf",
     "presets/etf/screener",
 ]
@@ -72,6 +73,7 @@ internal_paths_dif = [
     ["openbb_terminal/stocks/options/presets", "presets/stocks/options"],
     ["openbb_terminal/stocks/insider/presets", "presets/stocks/insider"],
     ["openbb_terminal/etf/screener/presets", "presets/etf/screener"],
+    ["openbb_terminal/stocks/screener/presets", "presets/stocks/screener"],
 ]
 for int_path_dif in internal_paths_dif:
     internal_routines = REPO_DIR / os.path.join(*int_path_dif[0].split("/"))

@@ -2,13 +2,14 @@
 __docformat__ = "numpy"
 
 import os
-from os import path
 import configparser
 
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.screener import finviz_model
+from openbb_terminal.core.config.constants import folder_paths
 
-presets_path = path.join(path.abspath(path.dirname(__file__)), "presets/")
+presets_path = folder_paths["presets/stocks/screener"]
+# presets_path = path.join(path.abspath(path.dirname(__file__)), "presets/")
 
 preset_choices = [
     preset.split(".")[0] for preset in os.listdir(presets_path) if preset[-4:] == ".ini"
@@ -38,7 +39,7 @@ def display_presets(preset: str = ""):
         console.print("\nCustom Presets:")
         for item in preset_choices:
             with open(
-                presets_path + item + ".ini",
+                os.path.join(presets_path, f"{item}.ini"),
                 encoding="utf8",
             ) as f:
                 description = ""
