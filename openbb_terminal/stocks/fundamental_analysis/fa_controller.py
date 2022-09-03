@@ -864,6 +864,16 @@ class FundamentalAnalysisController(StockBaseController):
                     plot=ns_parser.plot,
                     export=ns_parser.export,
                 )
+            elif ns_parser.source == "eodhd":
+                console.print("Source is EOD Historical Data!")
+                eodhd_view.display_fundamentals(
+                    symbol=self.ticker,
+                    statement="Income_Statement",
+                    quarterly=ns_parser.b_quarter,
+                    ratios=ns_parser.ratios,
+                    plot=ns_parser.plot,
+                    export=ns_parser.export,
+                )
 
     @log_start_end(log=logger)
     def call_balance(self, other_args: List[str]):
@@ -1078,10 +1088,10 @@ class FundamentalAnalysisController(StockBaseController):
                     export=ns_parser.export,
                 )
             elif ns_parser.source == "eodhd":
-                console.print(" I am here!!!")
+                console.print("Source is EOD Historical Data!")
                 eodhd_view.display_fundamentals(
                     symbol=self.ticker,
-                    statement="Balance_Sheet",
+                    statement="Cash_Flow",
                     quarterly=ns_parser.b_quarter,
                     ratios=ns_parser.ratios,
                     plot=ns_parser.plot,

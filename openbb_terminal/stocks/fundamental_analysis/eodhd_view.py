@@ -51,40 +51,40 @@ def display_fundamentals(
     """
     fundamentals = eodhd_model.get_financials(symbol, statement, quarterly, ratios)
     title_str = {
-        "balance": "Balance Sheet",
-        "income": "Income Statement",
-        "cash": "Cash Flows",
+        "Balance_Sheet": "Balance Sheet",
+        "Income_Statement": "Income Statement",
+        "Cash_Flow": "Cash Flows",
     }[statement]
 
     if fundamentals.empty:
         return
 
-    fundamentals = fundamentals.iloc[:, :limit]
-    fundamentals = fundamentals[fundamentals.columns[::-1]]
-
     if plot:
-        fundamentals_plot_data = fundamentals.copy().fillna(-1)
         rows_plot = len(plot)
-        fundamentals_plot_data = fundamentals_plot_data.transpose()
+        fundamentals = fundamentals.iloc[:, :limit]
+        fundamentals_plot_data = fundamentals.transpose().fillna(-1)
         fundamentals_plot_data.columns = fundamentals_plot_data.columns.str.lower()
-        fundamentals_plot_data.columns = [
-            x.replace("_", "") for x in list(fundamentals_plot_data.columns)
-        ]
+        fundamentals_plot_data = fundamentals_plot_data.replace(",", "", regex=True)
+        fundamentals_plot_data = fundamentals_plot_data.replace("-", "-1")
+        fundamentals_plot_data = fundamentals_plot_data.astype(float)
+        if "ttm" in list(fundamentals_plot_data.index):
+            fundamentals_plot_data = fundamentals_plot_data.drop(["ttm"])
+        fundamentals_plot_data = fundamentals_plot_data.sort_index()
 
         if not ratios:
             maximum_value = fundamentals_plot_data.max().max()
             if maximum_value > 1_000_000_000_000:
                 df_rounded = fundamentals_plot_data / 1_000_000_000_000
-                denomination = " in Trillions"
+                denomination = "in Trillions"
             elif maximum_value > 1_000_000_000:
                 df_rounded = fundamentals_plot_data / 1_000_000_000
-                denomination = " in Billions"
+                denomination = "in Billions"
             elif maximum_value > 1_000_000:
                 df_rounded = fundamentals_plot_data / 1_000_000
-                denomination = " in Millions"
+                denomination = "in Millions"
             elif maximum_value > 1_000:
                 df_rounded = fundamentals_plot_data / 1_000
-                denomination = " in Thousands"
+                denomination = "in Thousands"
             else:
                 df_rounded = fundamentals_plot_data
                 denomination = ""
@@ -94,11 +94,11 @@ def display_fundamentals(
 
         if rows_plot == 1:
             fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-            df_rounded[plot[0].replace("_", "")].plot()
+            ax.bar(df_rounded.index, df_rounded[plot[0].replace("_", " ")])
             title = (
-                f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {symbol.upper()}"
+                f"{plot[0].replace('_', ' ').capitalize()} QoQ Growth of {symbol.upper()}"
                 if ratios
-                else f"{plot[0].replace('_', ' ')} of {symbol.upper()} {denomination}"
+                else f"{plot[0].replace('_', ' ').capitalize()} of {symbol.upper()} {denomination}"
             )
             plt.title(title)
             theme.style_primary_axis(ax)
@@ -106,7 +106,9 @@ def display_fundamentals(
         else:
             fig, axes = plt.subplots(rows_plot)
             for i in range(rows_plot):
-                axes[i].plot(df_rounded[plot[i].replace("_", "")])
+                axes[i].bar(
+                    df_rounded.index, df_rounded[plot[i].replace("_", " ")], width=0.5
+                )
                 axes[i].set_title(f"{plot[i].replace('_', ' ')} {denomination}")
             theme.style_primary_axis(axes[0])
             fig.autofmt_xdate()
@@ -119,13 +121,10 @@ def display_fundamentals(
         # Readable numbers
         fundamentals = fundamentals.applymap(lambda_long_number_format).fillna("-")
         print_rich_table(
-            fundamentals.applymap(lambda x: "-" if x == "nan" else x),
+            fundamentals.iloc[:, :limit].applymap(lambda x: "-" if x == "nan" else x),
             show_index=True,
-            title=f"{symbol} {title_str}"
-            if not ratios
-            else f"{'QoQ' if quarterly else 'YoY'} Change of {symbol} {title_str}",
+            title=f"{symbol} {title_str}",
         )
-
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), statement, fundamentals
     )
