@@ -62,30 +62,11 @@ def get_financials(
     df_financials.drop("currency_symbol", inplace=True)
 
     df_financials = df_financials.fillna(value=np.nan)
-
-    if ratios:
-        df_financials = df_financials.iloc[:, :4]
-        df_financials = df_financials.replace(",", "", regex=True)
-        df_financials = df_financials.replace("-", "0")
-        df_financials = df_financials.astype(float)
-        types = df_financials.copy().applymap(lambda x: isinstance(x, (float, int)))
-        types = types.all(axis=1)
-
-        # For rows with complete data
-        valid = []
-        i = 0
-        for row in types:
-            if row:
-                valid.append(i)
-            i += 1
-        df_fa_pc = (
-            df_financials.iloc[valid].pct_change(axis="columns", periods=-1).fillna(0)
-        )
-        j = 0
-        for i in valid:
-            df_financials.iloc[i] = df_fa_pc.iloc[j]
-            j += 1
-
     df_financials = df_financials.dropna(how="all")
 
+    if ratios:
+        df_financials = df_financials.iloc[:, :5]
+        df_financials = df_financials.replace("-", "0")
+        df_financials = df_financials.astype(float)
+        df_financials = df_financials.pct_change(axis="columns", periods=-1).fillna(0)
     return df_financials

@@ -59,9 +59,11 @@ def display_fundamentals(
     if fundamentals.empty:
         return
 
+    if ratios or plot:
+        fundamentals = fundamentals.iloc[:, :limit]
+
     if plot:
         rows_plot = len(plot)
-        fundamentals = fundamentals.iloc[:, :limit]
         fundamentals_plot_data = fundamentals.transpose().fillna(-1)
         fundamentals_plot_data.columns = fundamentals_plot_data.columns.str.lower()
         fundamentals_plot_data = fundamentals_plot_data.replace(",", "", regex=True)
