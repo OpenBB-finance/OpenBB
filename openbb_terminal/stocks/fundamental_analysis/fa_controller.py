@@ -147,14 +147,17 @@ class FundamentalAnalysisController(StockBaseController):
         mt.add_cmd("splits", "Yahoo Finance", not self.suffix)
         mt.add_cmd("web", "Yahoo Finance", not self.suffix)
         mt.add_cmd("hq", "Yahoo Finance", not self.suffix)
-        mt.add_cmd("income", "Alpha Vantage / Polygon / Yahoo Finance / FMP")
+        mt.add_cmd(
+            "income",
+            "Alpha Vantage / Polygon / Yahoo Finance / FMP / EOD Historical Data",
+        )
         mt.add_cmd(
             "balance",
             "Alpha Vantage / Polygon / Yahoo Finance / FMP / EOD Historical Data",
         )
         mt.add_cmd("overview", "Alpha Vantage")
         mt.add_cmd("key", "Alpha Vantage")
-        mt.add_cmd("cash", "Alpha Vantage / Yahoo Finance / FMP")
+        mt.add_cmd("cash", "Alpha Vantage / Yahoo Finance / FMP / EOD Historical Data")
         mt.add_cmd("earnings", "Alpha Vantage")
         mt.add_cmd("fraud", "Alpha Vantage")
         mt.add_cmd("dupont", "Alpha Vantage")
