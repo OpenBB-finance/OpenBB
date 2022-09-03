@@ -35,6 +35,10 @@
                 "polygon",
                 "av",
                 "fmp"
+            ],
+            "earnings": [
+                "yf",
+                "av"
             ]
         },
         "options": {
