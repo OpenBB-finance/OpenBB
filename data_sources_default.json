@@ -402,37 +402,261 @@
     },
     "crypto": {
         "load": [
-            "cg"
+            "YahooFinance",
+            "CoinGecko",
+            "CCXT"
         ],
         "find": [
-            "cg",
-            "cp",
-            "bin",
-            "cb",
+            "CoinGecko",
+            "CoinPaprika",
+            "Binance",
+            "Coinbase",
             "yf"
-        ]
-    },
-    "economy": {
-        "ycrv": [
-            "investpy",
-            "FRED"
-        ]
+        ],
+        "headlines": ["FinBrain"],
+        "prt": ["CoinGecko"],
+        "disc": {
+            "cgtop": ["CoinGecko"],
+            "cgtrending": ["CoinGecko"],
+            "cggainers": ["CoinGecko"],
+            "cglosers": ["CoinGecko"],
+            "cpsearch": ["CoinPaprika"],
+            "cmctop": ["CoinMarketCap"],
+            "drnft": ["DappRadar"],
+            "drgames": ["DappRadar"],
+            "drdapps": ["DappRadar"],
+            "drdex": ["DappRadar"]
+        },
+        "ov": {
+            "cgglobal": ["CoinGecko"],
+            "cgdefi": ["CoinGecko"],
+            "cgstables": ["CoinGecko"],
+            "cgexchanges": ["CoinGecko"],
+            "cgexrates": ["CoinGecko"],
+            "cgindexes": ["CoinGecko"],
+            "cgderivatives": ["CoinGecko"],
+            "cgcategories": ["CoinGecko"],
+            "cghold": ["CoinGecko"],
+            "hm": ["CoinGecko"],
+            "cpglobal": ["CoinPaprika"],
+            "cpinfo": ["CoinPaprika"],
+            "cpmarkets": ["CoinPaprika"],
+            "cpexchanges": ["CoinPaprika"],
+            "cpexmarkets": ["CoinPaprika"],
+            "cpplatforms": ["CoinPaprika"],
+            "cpcontracts": ["CoinPaprika"],
+            "cbpairs": ["Coinbase"],
+            "news": ["CryptoPanic"],
+            "wf": ["WithdrawalFees"],
+            "ewf": ["WithdrawalFees"],
+            "wfpe": ["WithdrawalFees"],
+            "altindex": ["BlockchainCenter"],
+            "btcrb": ["BlockchainCenter"],
+            "ch": ["Rekt"],
+            "cr": ["LoanScan"]
+        },
+        "onchain": {
+            "hr": ["Glassnode"],
+            "btccp": ["Blockchain"],
+            "btcct": ["Blockchain"],
+            "gwei": ["ETH Gas Stations"],
+            "whales": ["Whale Alert"],
+            "lt": ["BitQuery"],
+            "dvcp": ["BitQuery"],
+            "tv": ["BitQuery"],
+            "ueat": ["BitQuery"],
+            "ttcp": ["BitQuery"],
+            "baas": ["BitQuery"],
+            "address": ["Ethplorer"],
+            "top": ["Ethplorer"],
+            "balance": ["Ethplorer"],
+            "hist": ["Ethplorer"],
+            "info": ["Ethplorer"],
+            "holders": ["Ethplorer"],
+            "th": ["Ethplorer"],
+            "prices": ["Ethplorer"],
+            "tx": ["Ethplorer"]
+        },
+        "defi": {
+            "newsletter": ["Substack"],
+            "dpi": ["DeFiPulse"],
+            "vaults": ["Coindix"],
+            "tokens": ["TheGraph"],
+            "stats": ["TheGraph"],
+            "pairs": ["TheGraph"],
+            "pools": ["TheGraph"],
+            "swaps": ["TheGraph"],
+            "ldapps": ["DeFiLlama"],
+            "gdapps": ["DeFiLlama"],
+            "stvl": ["DeFiLlama"],
+            "dtvl": ["DeFiLlama"],
+            "aterra": ["TerraEngineer"],
+            "ayr": ["TerraEngineer"],
+            "sinfo": ["TerraFCD"],
+            "validators": ["TerraFCD"],
+            "gacc": ["TerraFCD"],
+            "sreturn": ["TerraFCD"],
+            "lcsc": ["Smartstake"],
+            "anchor": ["CryptoSaurio"]
+        },
+        "tools": {
+            "aprtoapy": [],
+            "il": []
+        },
+        "nft": {
+            "today": ["NFTCalendar"],
+            "upcoming": ["NFTCalendar"],
+            "ongoing": ["NFTCalendar"],
+            "newest": ["NFTCalendar"],
+            "stats": ["OpenSea"],
+            "fp": ["NFTPriceFloor"],
+            "collections": ["NFTPriceFloor"]
+        },
+        "dd": {
+            "load": [
+                "YahooFinance",
+                "CoinGecko",
+                "CCXT"
+            ],
+            "info": ["CoinGecko"],
+            "ath": ["CoinGecko"],
+            "atl": ["CoinGecko"],
+            "web": ["CoinGecko"],
+            "bc": ["CoinGecko"],
+            "pi": ["Messari"],
+            "gov": ["Messari"],
+            "basic": ["CoinPaprika"],
+            "stats": ["Coinbase"],
+            "market": ["CoinGecko"],
+            "mkt": ["CoinPaprika"],
+            "ex": ["CoinPaprika"],
+            "balance": ["Binance"],
+            "oi": ["Coinglass"],
+            "fundrate": ["Coinglass"],
+            "liquidations": ["Coinglass"],
+            "eb": ["Coinglass"],
+            "trades": ["CCXT"],
+            "ob": ["CCXT"],
+            "active": ["Glassnode"],
+            "nonzero": ["Glassnode"],
+            "change": ["Glassnode"],
+            "ps": ["CoinPaprika"],
+            "mcapdom": ["Messari"],
+            "mt": ["Messari"],
+            "team": ["Messari"],
+            "inv": ["Messari"],
+            "tk": ["Messari"],
+            "fr": ["Messari"],
+            "rm": ["Messari"],
+            "events": ["CoinPaprika"],
+            "news": ["CryptoPanic"],
+            "links": ["Messari"],
+            "twitter": ["CoinPaprika"],
+            "social": ["CoinGecko"],
+            "score": ["CoinGecko"],
+            "dev": ["CoinGecko"],
+            "gh": ["Santiment"]
+        },
+        "ta": {
+            "load": [
+                "YahooFinance",
+                "CoinGecko",
+                "CCXT"
+            ],
+            "tv": ["TradingView"]
+        },
+        "qa": {
+            "load": [
+                "YahooFinance",
+                "CoinGecko",
+                "CCXT"
+            ]
+        },
+        "pred": {
+            "load": [
+                "YahooFinance",
+                "CoinGecko",
+                "CCXT"
+            ]
+        }
     },
     "etf": {
         "ln": [
-            "sa",
-            "fd"
-        ]
+            "StockAnalysis",
+            "FinanceDatabase"
+        ],
+        "ld": ["FinanceDatabase"],
+        "load": ["YahooFinance"],
+        "overview": ["StockAnalysis"],
+        "holdings": ["StockAnalysis"],
+        "weights": ["YahooFinance"],
+        "summary": ["YahooFinance"],
+        "news": ["NewsApi"],
+        "pir": ["ThePassiveInvestor"],
+        "compare": ["StockAnalysis"],
+        "disc": {
+            "gainers": ["WallStreetJournal"],
+            "decliners": ["WallStreetJournal"],
+            "active": ["WallStreetJournal"]
+        },
+        "screen": {
+            "screen": ["StockAnalysis"],
+            "sbc": ["FinanceDatabase"]
+        }
+    },
+    "economy": {
+        "overview": ["WallStreetJournal"],
+        "futures": ["WallStreetJournal", "Finviz"],
+        "map": ["Finviz"],
+        "bigmac": ["Nasdaq"],
+        "ycrv": [
+            "Investing",
+            "FRED"
+        ],
+        "events": ["Investing"],
+        "edebt": ["Wikipedia"],
+        "rtps": ["AlphaVantage"],
+        "valuation": ["Finviz"],
+        "performance": ["Finviz"],
+        "spectrum": ["Finviz"],
+        "macro": ["EconDB"],
+        "treasury": ["EconDB"],
+        "fred": ["FRED"],
+        "index": ["YahooFinance"]
     },
     "forex": {
         "load": [
-            "yf",
-            "av",
-            "polygon"
+            "YahooFinance",
+            "AlphaVantage",
+            "Polygon",
+            "Oanda"
         ],
         "quote": [
-            "yf",
-            "av"
+            "YahooFinance",
+            "AlphaVantage"
+        ],
+        "fwd": [
+            "FXEmpire"
         ]
+    },
+    "funds": {
+        "country": ["Investing"],
+        "overview": ["Investing"],
+        "search": ["Investing"],
+        "load": ["Investing"],
+        "info": ["Investing"],
+        "plot": ["Investing"],
+        "sector": ["YahooFinance"],
+        "equity": ["YahooFinance"],
+        "al_swe": ["Avanza"],
+        "info_swe": ["Avanza"]
+    },
+    "alternative": {
+        "oss": {
+            "rossidx": ["RunaCapital"],
+            "rs": ["GitHub"],
+            "sh": ["GitHub"],
+            "tr": ["GitHub"]
+        }
     }
 }

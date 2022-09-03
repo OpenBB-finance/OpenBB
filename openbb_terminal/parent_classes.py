@@ -54,10 +54,10 @@ controllers: Dict[str, Any] = {}
 
 CRYPTO_SOURCES = {
     "bin": "Binance",
-    "cg": "CoinGecko",
+    "CoinGecko": "CoinGecko",
     "cp": "CoinPaprika",
     "cb": "Coinbase",
-    "yf": "YahooFinance",
+    "YahooFinance": "YahooFinance",
 }
 
 SUPPORT_TYPE = ["bug", "suggestion", "question", "generic"]
@@ -965,22 +965,13 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
             type=str,
         )
 
-        parser.add_argument(
-            "--source",
-            action="store",
-            dest="source",
-            choices=["ccxt", "yf", "cg"],
-            default="yf",
-            help="Data source to select from",
-        )
-
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-c")
 
-        ns_parser = parse_simple_args(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
-            if ns_parser.source in ("yf", "cg"):
+            if ns_parser.source in ("YahooFinance", "CoinGecko"):
                 if ns_parser.vs == "usdt":
                     ns_parser.vs = "usd"
             (self.current_df) = cryptocurrency_helpers.load(

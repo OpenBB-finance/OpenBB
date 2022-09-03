@@ -1024,7 +1024,7 @@ class EconomyController(BaseController):
                 else:
                     console.print("Source FRED is only available for united states.\n")
 
-            elif ns_parser.source == "investpy":
+            elif ns_parser.source == "Investing":
 
                 investingcom_view.display_yieldcurve(
                     country=ns_parser.country,

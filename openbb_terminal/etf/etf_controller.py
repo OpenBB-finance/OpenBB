@@ -148,18 +148,18 @@ class ETFController(BaseController):
         ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
-            limit=5,
             export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
+            limit=5,
         )
         if ns_parser:
             name_to_search = " ".join(ns_parser.name)
-            if ns_parser.source == "fd":
+            if ns_parser.source == "FinanceDatabase":
                 financedatabase_view.display_etf_by_name(
                     name=name_to_search,
                     limit=ns_parser.limit,
                     export=ns_parser.export,
                 )
-            elif ns_parser.source == "sa":
+            elif ns_parser.source == "StockAnalysis":
                 stockanalysis_view.display_etf_by_name(
                     name=name_to_search,
                     limit=ns_parser.limit,

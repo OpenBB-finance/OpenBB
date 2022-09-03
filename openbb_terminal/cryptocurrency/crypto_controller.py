@@ -38,11 +38,11 @@ from openbb_terminal.rich_config import console, MenuText
 logger = logging.getLogger(__name__)
 
 CRYPTO_SOURCES = {
-    "bin": "Binance",
-    "cg": "CoinGecko",
-    "cp": "CoinPaprika",
-    "cb": "Coinbase",
-    "yf": "YahooFinance",
+    "Binance": "Binance",
+    "CoingGecko": "CoinGecko",
+    "CoinPaprika": "CoinPaprika",
+    "Coinbase": "Coinbase",
+    "YahooFinance": "YahooFinance",
 }
 
 
@@ -71,9 +71,9 @@ class CryptoController(CryptoBaseController):
     ]
 
     DD_VIEWS_MAPPING = {
-        "cg": pycoingecko_view,
-        "cp": coinpaprika_view,
-        "bin": binance_view,
+        "CoingGecko": pycoingecko_view,
+        "CoinPaprika": coinpaprika_view,
+        "Binance": binance_view,
     }
     PATH = "/crypto/"
     FILE_PATH = os.path.join(os.path.dirname(__file__), "README.md")
@@ -89,7 +89,9 @@ class CryptoController(CryptoBaseController):
                 for c in ["1", "5", "15", "30", "60", "240", "1440", "10080", "43200"]
             }
             choices["load"]["--exchange"] = {c: {} for c in self.exchanges}
-            choices["load"]["--source"] = {c: {} for c in ["ccxt", "yf", "cg"]}
+            choices["load"]["--source"] = {
+                c: {} for c in ["CCXT", "YahooFinance", "CoingGecko"]
+            }
             choices["load"]["--vs"] = {c: {} for c in ["usd", "eur"]}
             choices["find"]["-k"] = {c: {} for c in FIND_KEYS}
             choices["headlines"] = {c: {} for c in finbrain_crypto_view.COINS}
@@ -109,7 +111,7 @@ class CryptoController(CryptoBaseController):
         mt.add_param(
             "_symbol", f"{self.symbol.upper()}/{self.vs.upper()}" if self.symbol else ""
         )
-        if self.source == "ccxt":
+        if self.source == "CCXT":
             mt.add_param(
                 "_exchange", self.exchange if self.symbol and self.exchange else ""
             )
@@ -292,7 +294,6 @@ class CryptoController(CryptoBaseController):
             prog="headlines",
             description="""Display sentiment analysis from FinBrain for chosen Cryptocurrencies""",
         )
-
         parser.add_argument(
             "-c",
             "--coin",
@@ -302,10 +303,8 @@ class CryptoController(CryptoBaseController):
             help="Symbol of coin to load data for, ~100 symbols are available",
             choices=finbrain_crypto_view.COINS,
         )
-
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-c")
-
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
@@ -432,7 +431,6 @@ class CryptoController(CryptoBaseController):
             uniswap on CoinPaprika then use: coins uniswap --source cp --limit 10
             """,
         )
-
         parser.add_argument(
             "-c",
             "--coin",
@@ -441,7 +439,6 @@ class CryptoController(CryptoBaseController):
             required="-h" not in other_args,
             type=str,
         )
-
         parser.add_argument(
             "-k",
             "--key",
@@ -451,7 +448,6 @@ class CryptoController(CryptoBaseController):
             choices=FIND_KEYS,
             default="symbol",
         )
-
         parser.add_argument(
             "-l",
             "--limit",
@@ -468,7 +464,6 @@ class CryptoController(CryptoBaseController):
             help="Skip n of records",
             type=check_positive,
         )
-
         if other_args and not other_args[0][0] == "-":
             other_args.insert(0, "-c")
 
