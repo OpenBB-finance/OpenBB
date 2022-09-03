@@ -14,10 +14,20 @@ from .helper_classes import TerminalStyle as _TerminalStyle
 if not os.path.exists(ENV_FILE_DIR):
     os.mkdir(ENV_FILE_DIR)
 
-#Load from .openbb_terminal
-env_files = [os.path.join(ENV_FILE_DIR, Path(f)) for f in os.listdir(ENV_FILE_DIR) if f.endswith(".env")]
-#load from gitclone
-env_files.extend([os.path.join(REPO_DIR, Path(f)) for f in os.listdir(REPO_DIR) if f.endswith(".env")])
+# Load from .openbb_terminal
+env_files = [
+    os.path.join(ENV_FILE_DIR, Path(f))
+    for f in os.listdir(ENV_FILE_DIR)
+    if f.endswith(".env")
+]
+# load from gitclone
+env_files.extend(
+    [
+        os.path.join(REPO_DIR, Path(f))
+        for f in os.listdir(REPO_DIR)
+        if f.endswith(".env")
+    ]
+)
 if env_files:
     for envf in env_files:
         dotenv.load_dotenv(envf, override=True)

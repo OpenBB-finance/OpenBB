@@ -23,10 +23,20 @@ i18n.load_path.append(i18n_dict_location)
 i18n.set("locale", "en")
 i18n.set("filename_format", "{locale}.{format}")
 
-#Load from .openbb_terminal
-env_files = [os.path.join(ENV_FILE_DIR, Path(f)) for f in os.listdir(ENV_FILE_DIR) if f.endswith(".env")]
-#load from gitclone
-env_files.extend([os.path.join(REPO_DIR, Path(f)) for f in os.listdir(REPO_DIR) if f.endswith(".env")])
+# Load from .openbb_terminal
+env_files = [
+    os.path.join(ENV_FILE_DIR, Path(f))
+    for f in os.listdir(ENV_FILE_DIR)
+    if f.endswith(".env")
+]
+# load from gitclone
+env_files.extend(
+    [
+        os.path.join(REPO_DIR, Path(f))
+        for f in os.listdir(REPO_DIR)
+        if f.endswith(".env")
+    ]
+)
 if env_files:
     for envf in env_files:
         load_dotenv(envf, override=True)
