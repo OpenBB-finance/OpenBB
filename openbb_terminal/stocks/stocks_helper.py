@@ -38,7 +38,7 @@ logger = logging.getLogger(__name__)
 # pylint: disable=R0915
 
 INTERVALS = [1, 5, 15, 30, 60]
-SOURCES = ["yf", "av", "iex", "eodhd"]
+SOURCES = ["YahooFinance", "AlphaVantage", "iex", "eodhd"]
 
 market_coverage_suffix = {
     "USA": ["CBT", "CME", "NYB", "CMX", "NYM", "US", ""],
@@ -93,7 +93,7 @@ market_coverage_suffix = {
 }
 
 INCOME_PLOT = {
-    "av": [
+    "AlphaVantage": [
         "reported_currency",
         "gross_profit",
         "total_revenue",
@@ -120,7 +120,7 @@ INCOME_PLOT = {
         "ebitda",
         "net_income",
     ],
-    "polygon": [
+    "Polygon": [
         "cost_of_revenue",
         "diluted_earnings_per_share",
         "costs_and_expenses",
@@ -144,7 +144,7 @@ INCOME_PLOT = {
         "interest_expense_operating",
         "income_loss_before_equity_method_investments",
     ],
-    "yf": [
+    "YahooFinance": [
         "total_revenue",
         "cost_of_revenue",
         "gross_profit",
@@ -165,7 +165,7 @@ INCOME_PLOT = {
         "diluted_average_shares",
         "ebitda",
     ],
-    "fmp": [
+    "FinancialModelingPrep": [
         "reported_currency",
         "cik",
         "filling_date",
@@ -205,7 +205,7 @@ INCOME_PLOT = {
     ],
 }
 BALANCE_PLOT = {
-    "av": [
+    "AlphaVantage": [
         "reported_currency",
         "total_assets",
         "total_current_assets",
@@ -244,7 +244,7 @@ BALANCE_PLOT = {
         "common_stock",
         "common_stock_shares_outstanding",
     ],
-    "polygon": [
+    "Polygon": [
         "equity_attributable_to_non_controlling_interest",
         "liabilities",
         "non_current_assets",
@@ -258,7 +258,7 @@ BALANCE_PLOT = {
         "other_than_fixed_non_current_assets",
         "liabilities_and_equity",
     ],
-    "yf": [
+    "YahooFinance": [
         "cash_and_cash_equivalents",
         "other_short-term_investments",
         "total_cash",
@@ -290,7 +290,7 @@ BALANCE_PLOT = {
         "total_stockholders'_equity",
         "total_liabilities_and_stockholders'_equity",
     ],
-    "fmp": [
+    "FinancialModelingPrep": [
         "reported_currency",
         "cik",
         "filling_date",
@@ -346,7 +346,7 @@ BALANCE_PLOT = {
     ],
 }
 CASH_PLOT = {
-    "av": [
+    "AlphaVantage": [
         "reported_currency",
         "operating_cash_flow",
         "payments_for_operating_activities",
@@ -376,7 +376,7 @@ CASH_PLOT = {
         "change_in_exchange_rate",
         "net_income",
     ],
-    "polygon": [
+    "Polygon": [
         "net_cash_flow_from_financing_activities_continuing",
         "net_cash_flow_continuing",
         "net_cash_flow_from_investing_activities",
@@ -386,7 +386,7 @@ CASH_PLOT = {
         "net_cash_flow_from_operating_activities_continuing",
         "net_cash_flow_from_investing_activities_continuing",
     ],
-    "yf": [
+    "YahooFinance": [
         "net_income",
         "depreciation_&_amortisation",
         "deferred_income_taxes",
@@ -417,7 +417,7 @@ CASH_PLOT = {
         "capital_expenditure",
         "free_cash_flow",
     ],
-    "fmp": [
+    "FinancialModelingPrep": [
         "reported_currency",
         "cik",
         "filling_date",
@@ -621,7 +621,7 @@ def load(
     interval: int = 1440,
     end_date: datetime = datetime.now(),
     prepost: bool = False,
-    source: str = "yf",
+    source: str = "YahooFinance",
     iexrange: str = "ytd",
     weekly: bool = False,
     monthly: bool = False,
@@ -688,7 +688,7 @@ def load(
     if interval == 1440:
 
         # Alpha Vantage Source
-        if source == "av":
+        if source == "AlphaVantage":
             try:
                 ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas")
                 # pylint: disable=unbalanced-tuple-unpacking
@@ -727,7 +727,7 @@ def load(
             ]
 
         # Yahoo Finance Source
-        elif source == "yf":
+        elif source == "YahooFinance":
 
             # TODO: Better handling of interval with week/month
             int_ = "1d"
@@ -757,10 +757,8 @@ def load(
 
             df_stock_candidate.index.name = "date"
 
-        # TODO: eodhd start ###########################
-
         # End of Day Historical Data  Source
-        elif source == "eodhd":
+        elif source == "EODHD":
             df_stock_candidate = pd.DataFrame()
 
             if weekly:
@@ -819,10 +817,9 @@ def load(
             df_stock_candidate["Date"] = pd.to_datetime(df_stock_candidate.Date)
             df_stock_candidate.set_index("Date", inplace=True)
             df_stock_candidate.sort_index(ascending=True, inplace=True)
-        # TODO:  ###########################
 
         # IEX Cloud Source
-        elif source == "iex":
+        elif source == "IEXCloud":
             df_stock_candidate = pd.DataFrame()
 
             try:
@@ -860,7 +857,7 @@ def load(
             df_stock_candidate.sort_index(ascending=True, inplace=True)
 
         # Polygon source
-        elif source == "polygon":
+        elif source == "Polygon":
 
             # Polygon allows: day, minute, hour, day, week, month, quarter, year
             timespan = "day"
@@ -910,7 +907,7 @@ def load(
 
     else:
 
-        if source == "yf":
+        if source == "YahooFinance":
             s_int = str(interval) + "m"
             s_interval = s_int + "in"
             d_granularity = {"1m": 6, "5m": 59, "15m": 59, "30m": 59, "60m": 729}
@@ -942,7 +939,7 @@ def load(
 
             df_stock_candidate.index.name = "date"
 
-        elif source == "polygon":
+        elif source == "Polygon":
             request_url = (
                 f"https://api.polygon.io/v2/aggs/ticker/"
                 f"{symbol.upper()}/range/{interval}/minute/{start_date.strftime('%Y-%m-%d')}"

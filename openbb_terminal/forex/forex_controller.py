@@ -17,11 +17,15 @@ from openbb_terminal.forex.forex_helper import FOREX_SOURCES, SOURCES_INTERVALS
 from openbb_terminal.helper_funcs import (
     valid_date,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
-    get_ordered_list_sources,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText, translate
+from openbb_terminal.rich_config import (
+    console,
+    MenuText,
+    translate,
+    get_ordered_list_sources,
+)
 from openbb_terminal.decorators import check_api_key
 from openbb_terminal.forex.forex_helper import parse_forex_symbol
 

@@ -449,7 +449,7 @@ class StocksController(StockBaseController):
                 console.print("Use 'load <ticker>' prior to this command!", "\n")
                 return
 
-            if ns_parser.source == "newsapi":
+            if ns_parser.source == "NewsAPI":
                 sources = ns_parser.sources
                 for idx, source in enumerate(sources):
                     if source.find(".") == -1:
@@ -467,7 +467,7 @@ class StocksController(StockBaseController):
                     sources=",".join(sources),
                 )
 
-            elif ns_parser.source == "feedparser":
+            elif ns_parser.source == "Feedparser":
 
                 d_stock = yf.Ticker(self.ticker).info
 

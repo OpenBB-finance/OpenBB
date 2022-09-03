@@ -15,11 +15,10 @@ from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
     valid_date,
-    get_ordered_list_sources,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import console, MenuText, get_ordered_list_sources
 from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.stocks.fundamental_analysis import (
     av_view,
@@ -123,19 +122,22 @@ class FundamentalAnalysisController(StockBaseController):
         mt.add_raw("\n")
         mt.add_param("_ticker", self.ticker.upper())
         mt.add_raw("\n")
+        mt.add_cmd("income", "Alpha Vantage / Polygon / Yahoo Finance / FMP")
+        mt.add_cmd("balance", "Alpha Vantage / Polygon / Yahoo Finance / FMP")
+        mt.add_cmd("cash", "Alpha Vantage / Yahoo Finance / FMP")
         mt.add_cmd("data", "Finviz")
         mt.add_cmd("mgmt", "Business Insider")
         mt.add_cmd("analysis", "Elect")
-        mt.add_cmd("score", "FMP")
-        mt.add_cmd("profile", "FMP")
-        mt.add_cmd("quote", "FMP")
-        mt.add_cmd("enterprise", "FMP")
-        mt.add_cmd("metrics", "FMP")
-        mt.add_cmd("ratios", "FMP")
-        mt.add_cmd("growth", "FMP")
+        mt.add_cmd("score", "FinancialModelingPrep")
+        mt.add_cmd("profile", "FinancialModelingPrep")
+        mt.add_cmd("quote", "FinancialModelingPrep")
+        mt.add_cmd("enterprise", "FinancialModelingPrep")
+        mt.add_cmd("metrics", "FinancialModelingPrep")
+        mt.add_cmd("ratios", "FinancialModelingPrep")
+        mt.add_cmd("growth", "FinancialModelingPrep")
         mt.add_cmd("warnings", "Market Watch")
         mt.add_cmd("dcf", "Stockanalysis")
-        mt.add_cmd("dcfc", "FMP")
+        mt.add_cmd("dcfc", "FinancialModelingPrep")
         mt.add_cmd("info", "Yahoo Finance")
         mt.add_cmd("mktcap", "Yahoo Finance")
         mt.add_cmd("shrs", "Yahoo Finance", not self.suffix)
@@ -145,11 +147,8 @@ class FundamentalAnalysisController(StockBaseController):
         mt.add_cmd("splits", "Yahoo Finance", not self.suffix)
         mt.add_cmd("web", "Yahoo Finance", not self.suffix)
         mt.add_cmd("hq", "Yahoo Finance", not self.suffix)
-        mt.add_cmd("income", "Alpha Vantage / Polygon / Yahoo Finance / FMP")
-        mt.add_cmd("balance", "Alpha Vantage / Polygon / Yahoo Finance / FMP")
         mt.add_cmd("overview", "Alpha Vantage")
         mt.add_cmd("key", "Alpha Vantage")
-        mt.add_cmd("cash", "Alpha Vantage / Yahoo Finance / FMP")
         mt.add_cmd("earnings", "Alpha Vantage")
         mt.add_cmd("fraud", "Alpha Vantage")
         mt.add_cmd("dupont", "Alpha Vantage")
@@ -818,12 +817,12 @@ class FundamentalAnalysisController(StockBaseController):
         )
         if ns_parser:
             # TODO: Switch to actually getting data
-            if ns_parser.source == "yf" and ns_parser.b_quarter:
+            if ns_parser.source == "YahooFinance" and ns_parser.b_quarter:
                 console.print(
                     "[red]Quarterly data currently unavailable for yfinance"
                     ", showing yearly.[/red]\n"
                 )
-            if ns_parser.source == "av":
+            if ns_parser.source == "AlphaVantage":
                 av_view.display_income_statement(
                     symbol=self.ticker,
                     limit=ns_parser.limit,
@@ -832,7 +831,7 @@ class FundamentalAnalysisController(StockBaseController):
                     plot=ns_parser.plot,
                     export=ns_parser.export,
                 )
-            elif ns_parser.source == "polygon":
+            elif ns_parser.source == "Polygon":
                 polygon_view.display_fundamentals(
                     symbol=self.ticker,
                     statement="income",
@@ -842,7 +841,7 @@ class FundamentalAnalysisController(StockBaseController):
                     plot=ns_parser.plot,
                     export=ns_parser.export,
                 )
-            elif ns_parser.source == "fmp":
+            elif ns_parser.source == "FinancialModelingPrep":
                 fmp_view.display_income_statement(
                     symbol=self.ticker,
                     limit=ns_parser.limit,
@@ -851,7 +850,7 @@ class FundamentalAnalysisController(StockBaseController):
                     plot=ns_parser.plot,
                     export=ns_parser.export,
                 )
-            elif ns_parser.source == "yf":
+            elif ns_parser.source == "YahooFinance":
                 yahoo_finance_view.display_fundamentals(
                     symbol=self.ticker,
                     statement="financials",
@@ -918,10 +917,10 @@ class FundamentalAnalysisController(StockBaseController):
         )
         if ns_parser:
             # TODO: Switch to actually getting data
-            if ns_parser.source == "yf" and ns_parser.b_quarter:
+            if ns_parser.source == "YahooFinance" and ns_parser.b_quarter:
                 text = "Quarterly data currently unavailable for yfinance"
                 console.print(f"[red]{text}, showing yearly.[/red]\n")
-            if ns_parser.source == "av":
+            if ns_parser.source == "AlphaVantage":
                 av_view.display_balance_sheet(
                     symbol=self.ticker,
                     limit=ns_parser.limit,
@@ -930,7 +929,7 @@ class FundamentalAnalysisController(StockBaseController):
                     plot=ns_parser.plot,
                     export=ns_parser.export,
                 )
-            elif ns_parser.source == "polygon":
+            elif ns_parser.source == "Polygon":
                 polygon_view.display_fundamentals(
                     symbol=self.ticker,
                     statement="balance",
@@ -940,7 +939,7 @@ class FundamentalAnalysisController(StockBaseController):
                     plot=ns_parser.plot,
                     export=ns_parser.export,
                 )
-            elif ns_parser.source == "fmp":
+            elif ns_parser.source == "FinancialModelingPrep":
                 fmp_view.display_balance_sheet(
                     symbol=self.ticker,
                     limit=ns_parser.limit,
@@ -949,7 +948,7 @@ class FundamentalAnalysisController(StockBaseController):
                     plot=ns_parser.plot,
                     export=ns_parser.export,
                 )
-            elif ns_parser.source == "yf":
+            elif ns_parser.source == "YahooFinance":
                 yahoo_finance_view.display_fundamentals(
                     symbol=self.ticker,
                     statement="balance-sheet",
@@ -1022,10 +1021,10 @@ class FundamentalAnalysisController(StockBaseController):
         )
         if ns_parser:
             # TODO: Switch to actually getting data
-            if ns_parser.source == "yf" and ns_parser.b_quarter:
+            if ns_parser.source == "YahooFinance" and ns_parser.b_quarter:
                 text = "Quarterly data currently unavailable for yfinance"
                 console.print(f"[red]{text}, showing yearly.[/red]\n")
-            if ns_parser.source == "av":
+            if ns_parser.source == "AlphaVantage":
                 av_view.display_cash_flow(
                     symbol=self.ticker,
                     limit=ns_parser.limit,
@@ -1034,7 +1033,7 @@ class FundamentalAnalysisController(StockBaseController):
                     plot=ns_parser.plot,
                     export=ns_parser.export,
                 )
-            elif ns_parser.source == "fmp":
+            elif ns_parser.source == "FinancialModelingPrep":
                 fmp_view.display_cash_flow(
                     symbol=self.ticker,
                     limit=ns_parser.limit,
@@ -1043,7 +1042,7 @@ class FundamentalAnalysisController(StockBaseController):
                     plot=ns_parser.plot,
                     export=ns_parser.export,
                 )
-            elif ns_parser.source == "polygon":
+            elif ns_parser.source == "Polygon":
                 polygon_view.display_fundamentals(
                     symbol=self.ticker,
                     statement="cash",
@@ -1053,7 +1052,7 @@ class FundamentalAnalysisController(StockBaseController):
                     plot=ns_parser.plot,
                     export=ns_parser.export,
                 )
-            elif ns_parser.source == "yf":
+            elif ns_parser.source == "YahooFinance":
                 yahoo_finance_view.display_fundamentals(
                     symbol=self.ticker,
                     statement="cash-flow",

@@ -35,11 +35,10 @@ from openbb_terminal.helper_funcs import (
     support_message,
     check_file_type_saved,
     check_positive,
-    get_ordered_list_sources,
     parse_and_split_input,
 )
 from openbb_terminal.config_terminal import theme
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, get_ordered_list_sources
 from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.terminal_helper import open_openbb_documentation
 from openbb_terminal.cryptocurrency import cryptocurrency_helpers
@@ -534,7 +533,8 @@ class BaseController(metaclass=ABCMeta):
                 type=check_positive,
             )
         sources = get_ordered_list_sources(f"{self.PATH}{parser.prog}")
-        if sources:
+        # Allow to change source if there is more than one
+        if len(sources) > 1:
             parser.add_argument(
                 "--source",
                 action="store",
@@ -859,9 +859,9 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                     self.ticker = ns_parser.ticker.upper()
                     self.suffix = ""
 
-                if ns_parser.source == "iex":
+                if ns_parser.source == "IEXCloud":
                     self.start = self.stock.index[0].to_pydatetime()
-                elif ns_parser.source == "eodhd":
+                elif ns_parser.source == "EODHD":
                     self.start = self.stock.index[0].to_pydatetime()
                 else:
                     self.start = ns_parser.start

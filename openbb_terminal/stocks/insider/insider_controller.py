@@ -127,6 +127,7 @@ class InsiderController(StockBaseController):
         mt.add_cmd("blis", "Open Insider")
         mt.add_cmd("blos", "Open Insider")
         mt.add_cmd("blcs", "Open Insider")
+        mt.add_raw("\n")
         mt.add_info("_top_insiders")
         mt.add_cmd("topt", "Open Insider")
         mt.add_cmd("toppw", "Open Insider")
