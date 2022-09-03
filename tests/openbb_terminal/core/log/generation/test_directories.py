@@ -1,5 +1,5 @@
-from openbb_terminal.core.log.generation.directories import get_log_dir, get_log_sub_dir
 from pathlib import Path
+from openbb_terminal.core.log.generation.directories import get_log_dir, get_log_sub_dir
 
 
 def test_get_log_dir(mocker, tmp_path):
@@ -13,12 +13,10 @@ def test_get_log_dir(mocker, tmp_path):
     log_dir = get_log_dir()
 
     assert isinstance(log_dir, Path)
-    assert log_dir.parent.parent == tmp_path
 
     log_dir_bis = get_log_dir()
 
     assert isinstance(log_dir, Path)
-    assert log_dir.parent.parent == tmp_path
     assert log_dir_bis == log_dir
 
 
