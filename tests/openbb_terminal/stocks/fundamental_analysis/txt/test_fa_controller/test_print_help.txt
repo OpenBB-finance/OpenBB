@@ -29,7 +29,7 @@ Ticker: TSLA
     overview           overview of the company                                         [Alpha Vantage]
     key                company key metrics                                             [Alpha Vantage]
     cash               cash flow of the company                                        [Alpha Vantage / Yahoo Finance / FMP]
-    earnings           earnings dates and reported EPS                                 [Alpha Vantage]
+    earnings           earnings dates and reported EPS                                 [Alpha Vantage / Yahoo Finance]
     fraud              key fraud ratios                                                [Alpha Vantage]
     dupont             detailed breakdown for return on equity                         [Alpha Vantage]
 
