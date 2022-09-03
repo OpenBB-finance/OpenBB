@@ -188,7 +188,7 @@ class EconomyController(BaseController):
                 "--codes": {},
             }
             self.choices["ycrv"] = {
-                "--countries": {c: None for c in investingcom_model.BOND_COUNTRIES},
+                "--country": {c: None for c in investingcom_model.BOND_COUNTRIES},
                 "--date": None,
                 "--raw": {},
                 "--source": {
