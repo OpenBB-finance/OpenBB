@@ -99,7 +99,6 @@ class EconomyController(BaseController):
         "unemp",
     ]
     overview_options = ["indices", "usbonds", "glbonds", "currencies"]
-    futures_options = ["energy", "metals", "meats", "grains", "softs"]
     tyld_maturity = ["3m", "5y", "10y", "30y"]
     valuation_sort_cols = [
         "Name",
@@ -131,6 +130,23 @@ class EconomyController(BaseController):
         "Change",
         "Volume",
     ]
+    index_interval = [
+        "1m",
+        "2m",
+        "5m",
+        "15m",
+        "30m",
+        "60m",
+        "90m",
+        "1h",
+        "1d",
+        "5d",
+        "1wk",
+        "1mo",
+        "3mo",
+    ]
+    futures_commodities = ["energy", "metals", "meats", "grains", "softs"]
+    macro_show = ["parameters", "countries", "transform"]
     d_GROUPS = finviz_model.GROUPS
     PATH = "/economy/"
 
@@ -155,68 +171,97 @@ class EconomyController(BaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             self.choices: dict = {c: {} for c in self.controller_choices}
-            self.choices["overview"] = {c: None for c in self.overview_options}
-
-            self.choices["futures"] = {c: None for c in self.futures_options}
-
-            self.choices["index"] = {c: None for c in yfinance_model.INDICES}
-
-            # self.choices["macro"]["-p"] = {c: None for c in econdb_model.PARAMETERS}
-            self.choices["macro"]["--parameter"] = {
-                c: None for c in econdb_model.PARAMETERS
+            self.choices["overview"] = {
+                "--type": {c: None for c in self.overview_options}
             }
-            # self.choices["macro"]["-c"] = {c: None for c in econdb_model.COUNTRY_CODES}
-            self.choices["macro"]["--countries"] = {
-                c: None for c in econdb_model.COUNTRY_CODES
+            self.choices["futures"] = {
+                "--commodity": {c: None for c in self.futures_commodities},
+                "--sortby": {c: None for c in self.wsj_sortby_cols_dict.keys()},
+                "--ascend": {},
             }
-
-            self.choices["ycrv"]["-c"] = {
-                c: None for c in investingcom_model.BOND_COUNTRIES
+            self.choices["map"] = {
+                "--period": {c: None for c in self.map_period_list},
+                "--type": {c: None for c in self.map_filter_list},
             }
-            self.choices["ycrv"]["--countries"] = {
-                c: None for c in investingcom_model.BOND_COUNTRIES
+            self.choices["bigmac"] = {
+                "--countries": {c: None for c in nasdaq_model.get_country_codes()},
+                "--codes": {},
             }
-
-            self.choices["events"]["-c"] = {
-                c: None for c in investingcom_model.CALENDAR_COUNTRIES
+            self.choices["ycrv"] = {
+                "--countries": {c: None for c in investingcom_model.BOND_COUNTRIES},
+                "--date": None,
+                "--raw": {},
+                "--source": {
+                    "investpy": None,
+                    "FRED": None,
+                },
             }
-            self.choices["events"]["--countries"] = {
-                c: None for c in investingcom_model.CALENDAR_COUNTRIES
+            self.choices["events"] = {
+                "--countries": {c: None for c in investingcom_model.CALENDAR_COUNTRIES},
+                "--importance": {c: None for c in investingcom_model.IMPORTANCES},
+                "--categories": {c: None for c in investingcom_model.CATEGORIES},
+                "--start": None,
+                "--end": None,
+                "--limit": None,
+                "--raw": {},
             }
-
-            self.choices["events"]["-i"] = {
-                c: None for c in investingcom_model.IMPORTANCES
+            self.choices["edebt"] = {
+                "--limit": None,
             }
-            self.choices["events"]["--importances"] = {
-                c: None for c in investingcom_model.IMPORTANCES
+            self.choices["rtps"] = {
+                "--raw": None,
             }
-
-            self.choices["events"]["--cat"] = {
-                c: None for c in investingcom_model.CATEGORIES
+            self.choices["valuation"] = {
+                "--group": {c: None for c in self.d_GROUPS},
+                "--sortby": {c: None for c in self.valuation_sort_cols},
+                "--ascend": {},
             }
-
-            self.choices["valuation"]["--g"] = {c: None for c in self.d_GROUPS}
-            self.choices["valuation"]["-s"] = {
-                c: None for c in self.valuation_sort_cols
+            self.choices["performance"] = {
+                "--group": {c: None for c in self.d_GROUPS},
+                "--sortby": {c: None for c in self.performance_sort_list},
+                "--ascend": {},
             }
-            self.choices["valuation"]["--sortby"] = {
-                c: None for c in self.valuation_sort_cols
+            self.choices["spectrum"] = {
+                "--group": {c: None for c in self.d_GROUPS},
             }
-
-            self.choices["performance"]["--g"] = {c: None for c in self.d_GROUPS}
-            self.choices["performance"]["-s"] = {
-                c: None for c in self.performance_sort_list
+            self.choices["macro"] = {
+                "--parameters": {c: None for c in econdb_model.PARAMETERS},
+                "--countries": {c: None for c in econdb_model.COUNTRY_CODES},
+                "--transform": {c: None for c in econdb_model.TRANSFORM},
+                "--convert": {c: None for c in econdb_model.COUNTRY_CURRENCIES},
+                "--show": {c: None for c in self.macro_show},
+                "--start": None,
+                "--end": None,
+                "--raw": {},
             }
-            self.choices["performance"]["--sortby"] = {
-                c: None for c in self.performance_sort_list
+            self.choices["treasury"] = {
+                "--maturity": None,
+                "--freq": {c: None for c in econdb_model.TREASURIES["frequencies"]},
+                "--type": {c: None for c in econdb_model.TREASURIES["instruments"]},
+                "--show": {c: None for c in self.macro_show},
+                "--start": None,
+                "--end": None,
+                "--limit": None,
+                "--raw": {},
             }
-
-            self.choices["spectrum"]["--g"] = {c: None for c in self.d_GROUPS}
-
-            self.choices["map"]["-p"] = {c: None for c in self.map_period_list}
-            self.choices["map"]["--period"] = {c: None for c in self.map_period_list}
-            self.choices["map"]["-t"] = {c: None for c in self.map_filter_list}
-            self.choices["map"]["--type"] = {c: None for c in self.map_filter_list}
+            self.choices["fred"] = {
+                "--parameter": {c: None for c in self.fred_query},
+                "--start": None,
+                "--end": None,
+                "--query": None,
+                "--raw": {},
+            }
+            self.choices["index"] = {
+                "--indices": {c: None for c in yfinance_model.INDICES},
+                "--interval": {c: None for c in self.index_interval},
+                "--show": {},
+                "--start": None,
+                "--end": None,
+                "--query": None,
+                "--limit": None,
+                "--returns": None,
+                "--raw": {},
+            }
 
             self.choices["support"] = self.SUPPORT_CHOICES
             self.choices["about"] = self.ABOUT_CHOICES
@@ -226,7 +271,7 @@ class EconomyController(BaseController):
     def update_runtime_choices(self):
         if session and obbff.USE_PROMPT_TOOLKIT:
             if not self.fred_query.empty:
-                self.choices["fred"] = {c: None for c in self.fred_query}
+                self.choices["fred"]["--parameter"] = {c: None for c in self.fred_query}
             if self.DATASETS:
                 options = [
                     option
@@ -340,7 +385,7 @@ class EconomyController(BaseController):
             dest="commodity",
             help="Obtain commodity futures from FinViz",
             type=str,
-            choices=["energy", "metals", "meats", "grains", "softs"],
+            choices=self.futures_commodities,
             default="",
         )
 
@@ -354,7 +399,7 @@ class EconomyController(BaseController):
         )
         parser.add_argument(
             "-a",
-            "-ascend",
+            "--ascend",
             dest="ascend",
             help="Flag to sort in ascending order",
             action="store_true",
@@ -503,7 +548,7 @@ class EconomyController(BaseController):
             dest="show",
             help="Show parameters and what they represent using 'parameters'"
             " or countries and their currencies using 'countries'",
-            choices=["parameters", "countries", "transform"],
+            choices=self.macro_show,
             default=None,
         )
         parser.add_argument(
@@ -744,21 +789,7 @@ class EconomyController(BaseController):
             dest="interval",
             help="The preferred interval data is shown at. This can be 1m, 2m, 5m, 15m, 30m, 60m, 90m, 1h, "
             "1d, 5d, 1wk, 1mo or 3mo",
-            choices=[
-                "1m",
-                "2m",
-                "5m",
-                "15m",
-                "30m",
-                "60m",
-                "90m",
-                "1h",
-                "1d",
-                "5d",
-                "1wk",
-                "1mo",
-                "3mo",
-            ],
+            choices=self.index_interval,
             default="1d",
         )
         parser.add_argument(
@@ -1068,7 +1099,7 @@ class EconomyController(BaseController):
         )
         parser.add_argument(
             "-s",
-            "--start_date",
+            "--start",
             dest="start_date",
             type=valid_date,
             help="The start date of the data (format: YEAR-MONTH-DAY, i.e. 2010-12-31)",
@@ -1076,7 +1107,7 @@ class EconomyController(BaseController):
         )
         parser.add_argument(
             "-e",
-            "--end_date",
+            "--end",
             dest="end_date",
             type=valid_date,
             help="The start date of the data (format: YEAR-MONTH-DAY, i.e. 2010-12-31)",
@@ -1102,8 +1133,8 @@ class EconomyController(BaseController):
                 country=ns_parser.country,
                 importance=ns_parser.importance,
                 category=ns_parser.category,
-                start_date=ns_parser.start_date,
-                end_date=ns_parser.end_date,
+                start_date=ns_parser.start,
+                end_date=ns_parser.end,
                 limit=ns_parser.limit,
                 export=ns_parser.export,
             )
