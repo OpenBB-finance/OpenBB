@@ -313,13 +313,13 @@ class EconomyController(BaseController):
         if session and obbff.USE_PROMPT_TOOLKIT:
             if not self.fred_query.empty:
                 self.choices["fred"]["--parameter"] = {c: None for c in self.fred_query}
+
             if self.DATASETS:
                 options = [
                     option
                     for _, values in self.DATASETS.items()
                     for option in values.keys()
                 ]
-
                 for argument in [
                     "--y1",
                     "--y2",
@@ -327,7 +327,6 @@ class EconomyController(BaseController):
                     self.choices["plot"][argument] = {
                         option: None for option in options
                     }
-
         self.completer = NestedCompleter.from_nested_dict(self.choices)
 
     def print_help(self):
