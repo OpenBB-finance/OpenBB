@@ -211,23 +211,34 @@ def display_queries(symbol: str, limit: int = 5, export: str = ""):
         Ticker symbol
     limit: int
         Number of regions to show
-    export: str
+    export: {"csv","json","xlsx","png","jpg","pdf","svg"}
         Format to export data
+
+    Returns
+    -------
+        None
     """
 
-    df_related_queries = google_model.get_queries(symbol)
-    df = df_related_queries.copy()
-    df_related_queries = df_related_queries[symbol]["top"].head(limit)
-    df_related_queries["value"] = df_related_queries["value"].apply(
-        lambda x: str(x) + "%"
-    )
+    # Retrieve a dict with top and rising queries
+    dict_related_queries = google_model.get_queries(symbol)
+
+    # Select the DataFrame "top" from the dict
+    df_top_queries = dict_related_queries[symbol]["top"].head(limit).copy()
+    df_export = (
+        df_top_queries.copy()
+    )  # export the raw values, prior to string manipulation
+
+    # convert to strings and add %
+    df_top_queries["value"] = df_top_queries["value"].apply(lambda x: str(x) + "%")
     print_rich_table(
-        df_related_queries,
-        headers=list(df_related_queries.columns),
+        df_top_queries,
+        headers=list(df_top_queries.columns),
         title=f"Top {symbol}'s related queries",
     )
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "queries", df)
+    export_data(
+        export, os.path.dirname(os.path.abspath(__file__)), "queries", df_export
+    )
 
 
 @log_start_end(log=logger)

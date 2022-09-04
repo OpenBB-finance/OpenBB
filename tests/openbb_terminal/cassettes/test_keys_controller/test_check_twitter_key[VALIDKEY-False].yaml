@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - python-requests/2.28.1
+      - python-requests/2.27.1
       authorization:
       - Bearer VALIDKEY
     method: GET
@@ -26,13 +26,13 @@ interactions:
       content-type:
       - application/problem+json
       date:
-      - Mon, 11 Jul 2022 13:59:49 GMT
+      - Sun, 04 Sep 2022 00:08:33 GMT
       server:
-      - tsa_o
+      - tsa_f
       x-connection-hash:
-      - 4ccfde9a490318a5446cd4d4497d2ce1cdb3db4467bcfdc4bb7d98ad9d88747a
+      - 5cc798a0bd73adae70be98e118015c3d5be07d92c5ca9b6a32804308cfbfc737
       x-response-time:
-      - '106'
+      - '99'
     status:
       code: 401
       message: Unauthorized
