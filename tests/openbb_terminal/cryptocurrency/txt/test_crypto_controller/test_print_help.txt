@@ -1,5 +1,5 @@
     load               load a specific cryptocurrency for analysis                     [YahooFinance, CoinGecko, CCXT]
-    find               find coins                                                      [CoinGecko, CoinPaprika, Binance, Coinbase, yf]
+    find               find coins                                                      [CoinGecko, CoinPaprika, Binance, Coinbase, YahooFinance]
 
 Coin: 
 Source: 
