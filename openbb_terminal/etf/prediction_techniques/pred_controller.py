@@ -167,14 +167,6 @@ class PredictionTechniquesController(BaseController):
             help="Intraday stock minutes",
         )
         parser.add_argument(
-            "--source",
-            action="store",
-            dest="source",
-            choices=stocks_helper.SOURCES,
-            default="yf",
-            help="Source of historical data.",
-        )
-        parser.add_argument(
             "-p",
             "--prepost",
             action="store_true",

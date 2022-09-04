@@ -2,9 +2,9 @@ interactions:
 - request:
     body: '
 
-      { getMetric(metric: "dev_activity"){ timeseriesData( slug: "ethereum" from:
-      ""2020-02-10T07:00:00Z"" to: "2020-03-10T07:00:00Z" interval: "1w"){ datetime
-      value } } }'
+      {{ getMetric(metric: "dev_activity"){{ timeseriesData( slug: "ethereum" from:
+      ""2020-02-10T07:00:00Z"" to: "2020-03-10T07:00:00Z" interval: "1w"){{ datetime
+      value }} }} }}'
     headers:
       Accept:
       - '*/*'
@@ -15,11 +15,11 @@ interactions:
       Connection:
       - keep-alive
       Content-Length:
-      - '166'
+      - '172'
       Content-Type:
       - application/graphql
       User-Agent:
-      - python-requests/2.28.1
+      - python-requests/2.27.1
     method: POST
     uri: https://api.santiment.net/graphql
   response:
@@ -30,7 +30,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 7349016d4ecf32bf-CDG
+      - 74527de378147423-LHR
       Cache-Control:
       - max-age=0, private, must-revalidate
       Connection:
@@ -38,13 +38,11 @@ interactions:
       Content-Length:
       - '111'
       Date:
-      - Tue, 02 Aug 2022 18:51:33 GMT
-      Expect-CT:
-      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      - Sun, 04 Sep 2022 00:08:37 GMT
       NEL:
       - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
       Report-To:
-      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=5Hdkrh%2FvVOltAojpKA7r6Afsa2JjGSXyvWFs2ZmO8sYg5JUe1KQnsrQMienw2Q2t0xuh%2Bz75OaywGgZ6jw9babwGyRjJrEYZ9AiqdDuuQRHq038JYIvzsKSkw3NERNV48378THuo6mlqNg%2BzPKhf"}],"group":"cf-nel","max_age":604800}'
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=7z8GwG0I%2BVMspPZLUJ8tnWYlOok%2FshdAp85atLCKoq7zV8Ehj7fituGkjEgT8NHj3csBYYdjQaWplRigo5d7F4kRZg%2F8dnuIbEpKw%2Bu0FQKNW1YgapOJWlhXR5%2Bl%2FxAb2yN29TsQE997LXem7vmE"}],"group":"cf-nel","max_age":604800}'
       Server:
       - cloudflare
       access-control-allow-credentials:
@@ -54,9 +52,9 @@ interactions:
       access-control-allow-methods:
       - GET, POST, OPTIONS
       set-cookie:
-      - INGRESSCOOKIE=1659466294.415.6206.552324; Path=/.+; Secure; HttpOnly
+      - INGRESSCOOKIE=1662250118.741.8307.705756; Path=/.+; Secure; HttpOnly
       x-request-id:
-      - 324628ad84b63697bb8472f70ad3cd73
+      - bdf17a2a869adb4987e95ef5a45d8b3e
     status:
       code: 400
       message: Bad Request
