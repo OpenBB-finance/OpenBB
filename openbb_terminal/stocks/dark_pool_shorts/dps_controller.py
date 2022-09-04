@@ -461,7 +461,7 @@ class DarkPoolShortsController(StockBaseController):
         )
         if ns_parser:
             if self.ticker:
-                if ns_parser.source == "quandl":
+                if ns_parser.source == "Quandl":
                     quandl_view.short_interest(
                         symbol=self.ticker,
                         nyse=ns_parser.b_nyse,

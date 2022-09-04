@@ -56,12 +56,12 @@ def test_search(mocker, use_tab):
 @pytest.mark.parametrize(
     "interval, source",
     [
-        (1440, "av"),
-        (1440, "iex"),
-        (1440, "yf"),
-        (60, "yf"),
-        (1440, "polygon"),
-        (60, "polygon"),
+        (1440, "AlphaVantage"),
+        (1440, "IEXCloud"),
+        (1440, "YahooFinance"),
+        (60, "YahooFinance"),
+        (1440, "Polygon"),
+        (60, "Polygon"),
     ],
 )
 def test_load(interval, recorder, source):
@@ -96,7 +96,7 @@ def test_load_week_or_month(recorder, weekly, monthly):
         interval=1440,
         end_date=end,
         prepost=prepost,
-        source="yf",
+        source="YahooFinance",
         weekly=weekly,
         monthly=monthly,
     )
@@ -151,7 +151,7 @@ def test_display_candle(mocker, use_matplotlib):
     interval = 1440
     end = datetime.strptime("2020-12-08", "%Y-%m-%d")
     prepost = False
-    source = "yf"
+    source = "YahooFinance"
     df_stock = stocks_helper.load(
         symbol=ticker,
         start_date=start,

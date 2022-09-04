@@ -107,7 +107,7 @@
             "trending": ["SeekingAlpha"],
             "cnews": ["SeekingAlpha"],
             "lowfloat": ["Fidelity"],
-            "hotpenny": ["Shortinterest"],
+            "hotpenny": ["YahooFinance", "Shortinterest"],
             "rtat": ["Nasdaq"],
             "divcal": ["Nasdaq"]
         },
@@ -411,7 +411,7 @@
             "CoinPaprika",
             "Binance",
             "Coinbase",
-            "yf"
+            "YahooFinance"
         ],
         "headlines": ["FinBrain"],
         "prt": ["CoinGecko"],

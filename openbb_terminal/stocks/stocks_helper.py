@@ -38,7 +38,7 @@ logger = logging.getLogger(__name__)
 # pylint: disable=R0915
 
 INTERVALS = [1, 5, 15, 30, 60]
-SOURCES = ["YahooFinance", "AlphaVantage", "iex", "eodhd"]
+SOURCES = ["YahooFinance", "AlphaVantage", "IEXCloud", "EODHD"]
 
 market_coverage_suffix = {
     "USA": ["CBT", "CME", "NYB", "CMX", "NYM", "US", ""],
