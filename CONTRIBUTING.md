@@ -5,20 +5,8 @@ First off, thanks for taking the time to contribute (or at least read the Contri
 The following is a set of guidelines for contributing to OpenBB Terminal. These are mostly guidelines, not rules.
 Use your best judgment, and feel free to propose changes to this document in a pull request.
 
-[How Can I Contribute?](#how-can-i-contribute)
 
-- [Community](#community)
-- [Retail Trader](#retail-trader)
-- [Software Developer](#software-developer)
-
-[Development Process](#development-process)
-
-- [How Can I Contribute?](#how-can-i-contribute)
-  - [Community](#community)
-  - [Retail Trader](#retail-trader)
-  - [Software Developer](#software-developer)
-- [Development Process](#development-process)
-  - [Select Feature](#select-feature)
+- [Select Feature](#select-feature)
 - [Understand Code Structure](#understand-code-structure)
 - [Follow Coding Guidelines](#follow-coding-guidelines)
   - [Model](#model)
@@ -41,54 +29,11 @@ Use your best judgment, and feel free to propose changes to this document in a p
 - [Open a Pull Request](#open-a-pull-request)
 - [Review Process](#review-process)
 
-## How Can I Contribute?
+## Select Feature
 
-### Community
-
-Increase OpenBB Terminal reach:
-
-- Star the repo.
-- Pass the word to your friends/family.
-- Create content (e.g. youtube videos) using OpenBB Terminal.
-- Share your terminal graphs and interpretations with other Reddit users ([example](https://www.reddit.com/r/amcstock/comments/of6g83/dark_pool_guy_here_to_kick_off_the_shortened_week/)).
-- Join our discord and interact with other users.
-
-### Retail Trader
-
-If you are the typical retail trader that uses the terminal on a daily basis, there are a lot of ways you can con contribute:
-
-- Test Terminal's features.
-- Report bugs or even sketch new feature ideas (we have a large dev community since we're open source, hence there's a
-  lot we can do).
-- Improve our documentation or even features by suggesting enhancements.
-- Search for more APIs that we can add to our terminal.
-- Search websites that we can scrape useful data for free.
-- Contact interesting people in our behalf towards partnerships which will provide our user base with more data.
-- Reach out to developers/mathematicians/data scientists/finance people to help us build the #1 Retail Trader terminal.
-
-### Software Developer
-
-For a 1h coding session where the (old) architecture of the repo is explained while a new feature is added, check [here](https://www.youtube.com/watch?v=9BMI9cleTTg).
-
-The fact that this is an Open Source project makes the possibilities of contributing pretty much unlimited. In here you
-should consider what you want to gain out of this experience of contributing, some examples we've seen since the
-repository is live:
-
-- Machine Learning engineers working on our prediction models
-- Data Scientists improving our algorithms to make sense out of the data
-- Mathematicians exploring our residual analysis menu
-- Finance students evaluating a DCF spreadsheet from terminal's data
-- DevOps engineers making the repository more robust and ensuring good practices
-
-## Development Process
-
-### Select Feature
-
-- Pick a feature you want to implement or a bug.
-- If out are out of ideas, look into our [issues](https://github.com/OpenBB-finance/OpenBBTerminal/issues) or
-  search for [`# TODO`](https://www.tickgit.com/browse?repo=github.com/OpenBB-finance/OpenBBTerminal&branch=main) in
-  our repository.
-- Feel free to discuss what you'll be working on via discord <https://discord.gg/Up2QGbMKHY>, to avoid duplicate work.
+- Pick a feature you want to implement or a bug you want to fix from [our issues](https://github.com/OpenBB-finance/OpenBBTerminal/issues).
+- Feel free to discuss what you'll be working on either directly on [the issue](https://github.com/OpenBB-finance/OpenBBTerminal/issues) or on [our Discord](www.openbb.co/discord).
+  - This ensures someone from the team can help you and there isn't duplicated work.
 
 ## Understand Code Structure
 
@@ -106,23 +51,23 @@ If there are sub-categories, the layout will be: `/<context>/<category>/<sub-cat
 
 ```text
 openbb_terminal/stocks/stocks_controller.py
-                         /stocks_helper.py
-                         /due_diligence/dd_controller.py
-                                       /marketwatch_view.py
-                                       /marketwatch_model.py
-                                       /finviz_view.py
-                                       /finviz_model.py
-                         /technical_analysis/ta_controller.py
-                                            /tradingview_view.py
-                                            /tradingview_model.py
-                  /common/technical_analysis/overlap_view.py
-                                            /overlap_model.py
-                  /crypto/crypto_controller.py
-                         /crypto_helper.py
-                         /due_diligence/dd_controller.py
-                                       /binance_view.py
-                                       /binance_model.py
-                         /technical_analysis/ta_controller.py
+                      /stocks_helper.py
+                      /due_diligence/dd_controller.py
+                                    /marketwatch_view.py
+                                    /marketwatch_model.py
+                                    /finviz_view.py
+                                    /finviz_model.py
+                      /technical_analysis/ta_controller.py
+                                         /tradingview_view.py
+                                         /tradingview_model.py
+                /common/technical_analysis/overlap_view.py
+                                          /overlap_model.py
+                /crypto/crypto_controller.py
+                       /crypto_helper.py
+                       /due_diligence/dd_controller.py
+                                     /binance_view.py
+                                     /binance_model.py
+                       /technical_analysis/ta_controller.py
 
 ```
 
@@ -131,7 +76,7 @@ With:
 | **Context** | **Category**          | **File**               | **Description**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 | :---------- | :-------------------- | :--------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `stocks/`   |                       | `stocks_controller.py` | Manages **stocks** _context_ from a user perspective, i.e. routing _commands_ and arguments to output data, or, more importantly, redirecting to the selected _category_.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| `stocks/`   |                       | `stocks_helper.py`     | Helper to `stocks_controller.py`. This file is meant to implement `commands` needed by `stocks_controller.py`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| `stocks/`   |                       | `stocks_helper.py`     | Helper to `stocks` menu. This file is meant to hold generic purpose  `stocks` functionalities.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 | `stocks/`   | `due_diligence/`      | `dd_controller.py`     | Manages **due_diligence** _category_ from **stocks** _context_ from a user perspective, i.e. routing _commands_ and arguments to output data.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 | `stocks/`   | `due_diligence/`      | `marketwatch_view.py`  | This file contains functions that rely on **Market Watch** data. These functions represent _commands_ that belong to **due_diligence** _category_ from **stocks** _context_. These functions are called by `dd_controller.py` using the arguments given by the user and will output either a string, table or plot.                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | `stocks/`   | `due_diligence/`      | `marketwatch_model.py` | This file contains functions that rely on **Market Watch** data. These functions represent _commands_ that belong to **due_diligence** _category_ from **stocks** _context_. These functions are called by `marketwatch_view.py` and will return data to be processed in either a string, dictionary or dataframe format.                                                                                                                                                                                                                                                                                                                                                                                                                             |
@@ -140,7 +85,7 @@ With:
 | `stocks/`   | `technical_analysis/` | `ta_controller.py`     | Manages **technical_analysis** _category_ from **stocks** _context_ from a user perspective, i.e. routing _commands_ and arguments to output data.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 | `stocks/`   | `technical_analysis/` | `tradingview_view.py`  | This file contains functions that rely on **TradingView** data. These functions represent _commands_ that belong to **technical_analysis** _category_ from **stocks** _context_. These functions are called by `ta_controller.py` using the arguments given by the user and will output either a string, table or plot.                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | `stocks/`   | `technical_analysis/` | `tradingview_model.py` | This file contains functions that rely on **TradingView** data. These functions represent _commands_ that belong to **technical_analysis** _category_ from **stocks** _context_. These functions are called by `tradingview_view.py` and will return data to be processed in either a string, dictionary or dataframe format.                                                                                                                                                                                                                                                                                                                                                                                                                         |
-| `common/`   | `technical_analysis/` | `overlap_view.py`      | This file contains functions that rely on **overlap** data. In this case **overlap** is not a data source, but the type of technical analysis performed. These functions represent _commands_ that belong to **technical_analysis** _category_ from **MULTIPLE** _contexts_. These functions are called by `ta_controller.py`, from **MULTIPLE** _contexts_, using the arguments given by the user and will output either a string, table or plot. Due to the fact that this file is **common** to multiple _contexts_ the functions need to be generic enough to accommodate for this. E.g. if we are proving a dataframe to these functions, we should make sure that `stocks/ta_controller.py` and `crypto/ta_controller` use the same formatting. |
+| `common/`   | `technical_analysis/` | `overlap_view.py`      | This file contains functions that rely on **overlap** data. In this case **overlap** is not a data source, but the type of technical analysis performed. These functions represent _commands_ that belong to **technical_analysis** _category_ from **MULTIPLE** _contexts_. These functions are called by `ta_controller.py`, from **MULTIPLE** _contexts_, using the arguments given by the user and will output either a string, table or plot. Due to the fact that this file is **common** to multiple _contexts_ the functions need to be generic enough to accommodate for this. E.g. if we are providing a dataframe to these functions, we should make sure that `stocks/ta_controller.py` and `crypto/ta_controller` use the same formatting. |
 | `common/`   | `technical_analysis/` | `overlap_model.py`     | This file contains functions that rely on **overlap** data. In this case **overlap** is not a data source, but the type of technical analysis performed. These functions represent _commands_ that belong to **technical_analysis** _category_ from **MULTIPLE** _contexts_. These functions are called by `overlap_view.py`, and will return data to be processed in either a string, dictionary or dataframe format. Due to the fact that this file is **common** to multiple _contexts_ the functions need to be generic enough to accommodate for this. E.g. if we are getting the sentiment of an instrument, we should ensure that these functions accept both a "GME" or a "BTC", for `stocks` and `crypto`, respectively.                     |
 
 ## Follow Coding Guidelines
