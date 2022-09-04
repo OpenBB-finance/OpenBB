@@ -32,3 +32,4 @@ Ticker: TSLA
     earnings           earnings dates and reported EPS                                 [YahooFinance, AlphaVantage]
     fraud              key fraud ratios                                                [AlphaVantage]
     dupont             detailed breakdown for return on equity                         [AlphaVantage]
+
