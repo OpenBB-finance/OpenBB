@@ -175,7 +175,7 @@ class OptionsController(BaseController):
         mt.add_menu("screen")
         mt.add_raw("\n")
         mt.add_cmd("load")
-        mt.add_cmd("exp", "", self.ticker)
+        mt.add_cmd("exp", self.ticker)
         mt.add_raw("\n")
         mt.add_param("_ticker", self.ticker or "")
         mt.add_param("_expiry", self.selected_date or "")
