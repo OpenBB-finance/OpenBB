@@ -586,7 +586,7 @@ en:
   crypto/defi/lcsc: Luna circulating supply changes
   crypto/defi/anchor: anchor earnings data
   crypto/tools/aprtoapy: convert apr to apy
-  crypto/tools/li: calculate impermanent loss
+  crypto/tools/il: calculate impermanent loss
   crypto/nft/fp: collection sales/floor price
   crypto/nft/collections: top ethereum collections
   crypto/nft/today: today's NFT drops

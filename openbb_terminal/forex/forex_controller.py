@@ -17,11 +17,15 @@ from openbb_terminal.forex.forex_helper import FOREX_SOURCES, SOURCES_INTERVALS
 from openbb_terminal.helper_funcs import (
     valid_date,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
-    get_ordered_list_sources,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText, translate
+from openbb_terminal.rich_config import (
+    console,
+    MenuText,
+    translate,
+    get_ordered_list_sources,
+)
 from openbb_terminal.decorators import check_api_key
 from openbb_terminal.forex.forex_helper import parse_forex_symbol
 
@@ -40,7 +44,7 @@ class ForexController(BaseController):
     """Forex Controller class."""
 
     CHOICES_COMMANDS = ["load", "quote", "candle", "resources", "fwd"]
-    CHOICES_MENUS = ["ta", "qa", "oanda", "pred"]
+    CHOICES_MENUS = ["ta", "qa", "Oanda", "pred"]
     PATH = "/forex/"
     FILE_PATH = os.path.join(os.path.dirname(__file__), "README.md")
 
@@ -72,10 +76,10 @@ class ForexController(BaseController):
         mt.add_param("_ticker", self.fx_pair)
         mt.add_param("_source", FOREX_SOURCES[self.source])
         mt.add_raw("\n")
-        mt.add_cmd("quote", "Yahoo Finance/AlphaVantage", self.fx_pair)
-        mt.add_cmd("load", "", self.fx_pair)
-        mt.add_cmd("candle", "", self.fx_pair)
-        mt.add_cmd("fwd", "FXEmpire", self.fx_pair)
+        mt.add_cmd("quote", self.fx_pair)
+        mt.add_cmd("load", self.fx_pair)
+        mt.add_cmd("candle", self.fx_pair)
+        mt.add_cmd("fwd", self.fx_pair)
         mt.add_raw("\n")
         mt.add_menu("ta", self.fx_pair)
         mt.add_menu("qa", self.fx_pair)
@@ -121,7 +125,7 @@ class ForexController(BaseController):
         parser.add_argument(
             "-i",
             "--interval",
-            choices=SOURCES_INTERVALS["yf"],
+            choices=SOURCES_INTERVALS["YahooFinance"],
             default="1day",
             help="""Interval of intraday data. Options:
             [YahooFinance] 1min, 2min, 5min, 15min, 30min, 60min, 90min, 1hour, 1day, 5day, 1week, 1month, 3month.
@@ -234,7 +238,7 @@ class ForexController(BaseController):
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            if ns_parser.source == "yf":
+            if ns_parser.source == "YahooFinance":
                 if self.to_symbol and self.from_symbol:
                     self.data = forex_helper.load(
                         to_symbol=self.to_symbol,
@@ -244,7 +248,7 @@ class ForexController(BaseController):
                         start_date=(datetime.now() - timedelta(days=5)).strftime(
                             "%Y-%m-%d"
                         ),
-                        source="yf",
+                        source="YahooFinance",
                     )
                     console.print(f"\nQuote for {self.from_symbol}/{self.to_symbol}\n")
                     console.print(
@@ -255,7 +259,7 @@ class ForexController(BaseController):
                     logger.error("No forex pair loaded.")
                     console.print("[red]Make sure a forex pair is loaded.[/red]\n")
 
-            elif ns_parser.source == "av":
+            elif ns_parser.source == "AlphaVantage":
                 if self.to_symbol and self.from_symbol:
                     av_view.display_quote(self.to_symbol, self.from_symbol)
                 else:

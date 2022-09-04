@@ -11,12 +11,12 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - python-requests/2.28.1
+      - python-requests/2.27.1
     method: GET
     uri: https://sandbox-api.coinmarketcap.com/v1/cryptocurrency/map
   response:
     body:
-      string: "{\n    \"status\": {\n        \"timestamp\": \"2022-07-11T13:59:48.863Z\",\n
+      string: "{\n    \"status\": {\n        \"timestamp\": \"2022-09-04T00:08:32.797Z\",\n
         \       \"error_code\": 1002,\n        \"error_message\": \"API key missing.\",\n
         \       \"elapsed\": 0,\n        \"credit_count\": 0\n    }\n}"
     headers:
@@ -29,7 +29,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Mon, 11 Jul 2022 13:59:48 GMT
+      - Sun, 04 Sep 2022 00:08:32 GMT
       Referrer-Policy:
       - origin-when-cross-origin
       Server:
@@ -39,13 +39,13 @@ interactions:
       Vary:
       - origin
       Via:
-      - 1.1 7da8d24daaa6257fb28a90cd4a3bbe5c.cloudfront.net (CloudFront)
+      - 1.1 d32d70ba49809b2292cca689969507a0.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - DtePIdn60Z_8Ygbcr3McQ5XPW-dbPJ1IkkQ1fNwcNMy81tAHHv23DQ==
+      - RLBLtwDF6f39sThlLz-muzL1Owi5fGiN6G0SHUfXFinwZRKC0159bA==
       X-Amz-Cf-Pop:
-      - BUD50-C1
+      - LHR50-P1
       X-Cache:
-      - Miss from cloudfront
+      - Error from cloudfront
       X-Content-Type-Options:
       - nosniff
       X-Envoy-Decorator-Operation:

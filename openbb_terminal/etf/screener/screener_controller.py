@@ -89,9 +89,9 @@ class ScreenerController(BaseController):
         mt.add_raw("\n")
         mt.add_param("_preset", self.preset)
         mt.add_raw("\n")
-        mt.add_cmd("screen", "StockAnalysis")
+        mt.add_cmd("screen")
         mt.add_raw("\n")
-        mt.add_cmd("sbc", "FinanceDatabase")
+        mt.add_cmd("sbc")
         console.print(text=mt.menu_text, menu="ETF - Screener")
 
     @log_start_end(log=logger)
