@@ -483,7 +483,7 @@ class DiscoveryController(BaseController):
             action="store_false",
             help="Flag to sort in descending order (lowest first)",
             dest="descend",
-            default=True,
+            default=False,
         )
 
         ns_parser = self.parse_known_args_and_warn(
@@ -493,7 +493,7 @@ class DiscoveryController(BaseController):
             coinmarketcap_view.display_cmc_top_coins(
                 top=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                descend=not ns_parser.descend,
+                ascend=not ns_parser.descend,
                 export=ns_parser.export,
             )
 
