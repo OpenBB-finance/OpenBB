@@ -465,7 +465,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
         (
             "call_earnings",
             "av_view.display_earnings",
-            ["--limit=5", "--quarter", "--export=csv"],
+            ["--limit=5", "--quarter", "--export=csv", "--source=av"],
             dict(
                 symbol="TSLA",
                 limit=5,
