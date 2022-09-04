@@ -18,8 +18,9 @@ from prompt_toolkit.formatted_text import AnyFormattedText
 
 NestedDict = Mapping[str, Union[Any, Set[str], None, Completer]]
 
-# pylint: disable=too-many-arguments,global-statement,too-many-branches
+# pylint: disable=too-many-arguments,global-statement,too-many-branches,global-variable-not-assigned
 
+complementary: List = list()
 flags_processed: List = list()
 original_options: Dict = dict()
 
@@ -166,6 +167,7 @@ class NestedCompleter(Completer):
 
         Values in this data structure can be a completers as well.
         """
+        global complementary
         options: Dict[str, Any] = {}
         for key, value in data.items():
             if isinstance(value, Completer):
@@ -174,9 +176,17 @@ class NestedCompleter(Completer):
                 options[key] = cls.from_nested_dict(value)
             elif isinstance(value, set):
                 options[key] = cls.from_nested_dict({item: None for item in value})
+            elif isinstance(key, str) and isinstance(value, str):
+                complementary.append([key, value])
             else:
                 assert value is None
                 options[key] = None
+
+        for items in complementary:
+            if items[0] in options:
+                options[items[1]] = options[items[0]]
+            elif items[1] in options:
+                options[items[0]] = options[items[1]]
 
         return cls(options)
 
@@ -185,12 +195,12 @@ class NestedCompleter(Completer):
     ) -> Iterable[Completion]:
         # Split document.
         global flags_processed
+        global complementary
 
         cmd = ""
         text = document.text_before_cursor.lstrip()
         if " " in text:
             cmd = text.split(" ")[0]
-            # text = text[len(cmd)+1:]
         if "-" in text:
             if text.rfind("--") == -1:
                 unprocessed_text = "-" + text.split("-")[-1]
@@ -202,6 +212,34 @@ class NestedCompleter(Completer):
             unprocessed_text = text
         stripped_len = len(document.text_before_cursor) - len(text)
 
+        # Check if there are multiple flags for the same command
+        if complementary:
+            for same_flags in complementary:
+                if (
+                    same_flags[0] in flags_processed
+                    and same_flags[1] not in flags_processed
+                ) or (
+                    same_flags[1] in flags_processed
+                    and same_flags[0] not in flags_processed
+                ):
+                    if same_flags[0] in flags_processed:
+                        flags_processed.append(same_flags[1])
+                    elif same_flags[1] in flags_processed:
+                        flags_processed.append(same_flags[0])
+
+                    if cmd:
+                        self.options = {
+                            k: original_options.get(cmd).options[k]  # type: ignore
+                            for k in original_options.get(cmd).options.keys()  # type: ignore
+                            if k not in flags_processed
+                        }
+                    else:
+                        self.options = {
+                            k: original_options[k]
+                            for k in original_options.keys()
+                            if k not in flags_processed
+                        }
+
         # If there is a space, check for the first term, and use a subcompleter.
         if " " in unprocessed_text:
             first_term = unprocessed_text.split()[0]
@@ -211,6 +249,21 @@ class NestedCompleter(Completer):
                 flags_processed = [
                     flag for flag in flags_processed if flag != first_term
                 ]
+
+                if complementary:
+                    for same_flags in complementary:
+                        if (
+                            same_flags[0] in flags_processed
+                            and same_flags[1] not in flags_processed
+                        ) or (
+                            same_flags[1] in flags_processed
+                            and same_flags[0] not in flags_processed
+                        ):
+                            if same_flags[0] in flags_processed:
+                                flags_processed.remove(same_flags[0])
+                            elif same_flags[1] in flags_processed:
+                                flags_processed.remove(same_flags[1])
+
                 if cmd:
                     self.options = {
                         k: original_options.get(cmd).options[k]  # type: ignore
@@ -265,6 +318,21 @@ class NestedCompleter(Completer):
                 # In case the users inputs a single boolean flag
                 elif not completer.options:  # type: ignore
                     flags_processed.append(first_term)
+
+                    if complementary:
+                        for same_flags in complementary:
+                            if (
+                                same_flags[0] in flags_processed
+                                and same_flags[1] not in flags_processed
+                            ) or (
+                                same_flags[1] in flags_processed
+                                and same_flags[0] not in flags_processed
+                            ):
+                                if same_flags[0] in flags_processed:
+                                    flags_processed.append(same_flags[1])
+                                elif same_flags[1] in flags_processed:
+                                    flags_processed.append(same_flags[0])
+
                     if cmd:
                         self.options = {
                             k: original_options.get(cmd).options[k]  # type: ignore
@@ -289,6 +357,21 @@ class NestedCompleter(Completer):
                 actual_flags_processed = [
                     flag for flag in flags_processed if flag in text
                 ]
+
+                if complementary:
+                    for same_flags in complementary:
+                        if (
+                            same_flags[0] in actual_flags_processed
+                            and same_flags[1] not in actual_flags_processed
+                        ) or (
+                            same_flags[1] in actual_flags_processed
+                            and same_flags[0] not in actual_flags_processed
+                        ):
+                            if same_flags[0] in actual_flags_processed:
+                                actual_flags_processed.append(same_flags[1])
+                            elif same_flags[1] in actual_flags_processed:
+                                actual_flags_processed.append(same_flags[0])
+
                 if len(actual_flags_processed) < len(flags_processed):
                     flags_processed = actual_flags_processed
                     if cmd:
@@ -304,15 +387,6 @@ class NestedCompleter(Completer):
                             if k not in flags_processed
                         }
 
-            # The user has delete part of the first command and we need to reset options
-            elif (
-                len(text) > 0
-                and flags_processed
-                and len(self.options) != len(original_options)
-            ):
-                self.options = original_options
-                flags_processed = list()
-
             if (
                 cmd
                 and cmd in self.options.keys()
@@ -327,7 +401,15 @@ class NestedCompleter(Completer):
                     list(self.options.get(cmd).options.keys()),  # type: ignore
                     ignore_case=self.ignore_case,
                 )
+            elif bool([val for val in self.options.keys() if text in val]):
+                completer = WordCompleter(
+                    list(self.options.keys()), ignore_case=self.ignore_case
+                )
             else:
+                # The user has delete part of the first command and we need to reset options
+                if bool([val for val in original_options.keys() if text in val]):
+                    self.options = original_options
+                    flags_processed = list()
                 completer = WordCompleter(
                     list(self.options.keys()), ignore_case=self.ignore_case
                 )

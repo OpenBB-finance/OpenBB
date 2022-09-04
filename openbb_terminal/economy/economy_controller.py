@@ -64,7 +64,6 @@ class EconomyController(BaseController):
         "spectrum",
         "map",
         "rtps",
-        "industry",
         "bigmac",
         "ycrv",
         "events",
@@ -172,24 +171,33 @@ class EconomyController(BaseController):
         if session and obbff.USE_PROMPT_TOOLKIT:
             self.choices: dict = {c: {} for c in self.controller_choices}
             self.choices["overview"] = {
-                "--type": {c: None for c in self.overview_options}
+                "--type": {c: None for c in self.overview_options},
+                "-t": "--type",
             }
             self.choices["futures"] = {
                 "--commodity": {c: None for c in self.futures_commodities},
+                "-c": "--commodity",
                 "--sortby": {c: None for c in self.wsj_sortby_cols_dict.keys()},
+                "-s": "--sortby",
                 "--ascend": {},
+                "-a": "--ascend",
             }
             self.choices["map"] = {
                 "--period": {c: None for c in self.map_period_list},
+                "-p": "--period",
                 "--type": {c: None for c in self.map_filter_list},
+                "-t": "--type",
             }
             self.choices["bigmac"] = {
                 "--countries": {c: None for c in nasdaq_model.get_country_codes()},
+                "-c": "--countries",
                 "--codes": {},
             }
             self.choices["ycrv"] = {
                 "--country": {c: None for c in investingcom_model.BOND_COUNTRIES},
+                "-c": "--country",
                 "--date": None,
+                "-d": "--date",
                 "--raw": {},
                 "--source": {
                     "investpy": None,
@@ -197,11 +205,15 @@ class EconomyController(BaseController):
                 },
             }
             self.choices["events"] = {
-                "--countries": {c: None for c in investingcom_model.CALENDAR_COUNTRIES},
+                "--country": {c: None for c in investingcom_model.CALENDAR_COUNTRIES},
+                "-c": "--country",
                 "--importance": {c: None for c in investingcom_model.IMPORTANCES},
+                "-i": "--importance",
                 "--categories": {c: None for c in investingcom_model.CATEGORIES},
                 "--start": None,
+                "-s": "--start",
                 "--end": None,
+                "-e": "--end",
                 "--limit": None,
                 "--raw": {},
             }
@@ -213,54 +225,83 @@ class EconomyController(BaseController):
             }
             self.choices["valuation"] = {
                 "--group": {c: None for c in self.d_GROUPS},
+                "-g": "--group",
                 "--sortby": {c: None for c in self.valuation_sort_cols},
+                "-s": "--sortby",
                 "--ascend": {},
+                "-a": "--ascend",
             }
             self.choices["performance"] = {
                 "--group": {c: None for c in self.d_GROUPS},
+                "-g": "--group",
                 "--sortby": {c: None for c in self.performance_sort_list},
+                "-s": "--sortby",
                 "--ascend": {},
+                "-a": "--ascend",
             }
             self.choices["spectrum"] = {
                 "--group": {c: None for c in self.d_GROUPS},
+                "-g": "--group",
             }
             self.choices["macro"] = {
                 "--parameters": {c: None for c in econdb_model.PARAMETERS},
+                "-p": "--parameters",
                 "--countries": {c: None for c in econdb_model.COUNTRY_CODES},
+                "-c": "--countries",
                 "--transform": {c: None for c in econdb_model.TRANSFORM},
+                "-t": "--transform",
                 "--convert": {c: None for c in econdb_model.COUNTRY_CURRENCIES},
                 "--show": {c: None for c in self.macro_show},
                 "--start": None,
+                "-s": "--start",
                 "--end": None,
+                "-e": "--end",
                 "--raw": {},
             }
             self.choices["treasury"] = {
                 "--maturity": None,
+                "-m": "--maturity",
                 "--freq": {c: None for c in econdb_model.TREASURIES["frequencies"]},
                 "--type": {c: None for c in econdb_model.TREASURIES["instruments"]},
+                "-t": "--type",
                 "--show": {c: None for c in self.macro_show},
                 "--start": None,
+                "-s": "--start",
                 "--end": None,
+                "-e": "--end",
                 "--limit": None,
                 "--raw": {},
             }
             self.choices["fred"] = {
                 "--parameter": {c: None for c in self.fred_query},
+                "-p": "--parameter",
                 "--start": None,
+                "-s": "--start",
                 "--end": None,
+                "-e": "--end",
                 "--query": None,
+                "-q": "--query",
                 "--raw": {},
             }
             self.choices["index"] = {
                 "--indices": {c: None for c in yfinance_model.INDICES},
+                "-i": "--indices",
                 "--interval": {c: None for c in self.index_interval},
                 "--show": {},
                 "--start": None,
+                "-s": "--start",
                 "--end": None,
+                "-e": "--end",
                 "--query": None,
+                "-q": "--query",
                 "--limit": None,
                 "--returns": None,
+                "-r": "--returns",
                 "--raw": {},
+            }
+            self.choices["plot"] = {
+                "--y1": None,
+                "--y2": None,
             }
 
             self.choices["support"] = self.SUPPORT_CHOICES
@@ -1091,7 +1132,6 @@ class EconomyController(BaseController):
             help="Event importance classified as high, medium, low or all.",
         )
         parser.add_argument(
-            "-cat",
             "--categories",
             action="store",
             dest="category",
