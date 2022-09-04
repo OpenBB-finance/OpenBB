@@ -60,10 +60,10 @@ class OSSController(BaseController):
     def print_help(self):
         """Print help"""
         mt = MenuText("alternative/oss/", 80)
-        mt.add_cmd("rossidx", "Runa")
-        mt.add_cmd("rs", "GitHub")
-        mt.add_cmd("sh", "GitHub")
-        mt.add_cmd("tr", "GitHub")
+        mt.add_cmd("rossidx")
+        mt.add_cmd("rs")
+        mt.add_cmd("sh")
+        mt.add_cmd("tr")
         console.print(text=mt.menu_text, menu="Alternative - Open Source")
 
     @log_start_end(log=logger)

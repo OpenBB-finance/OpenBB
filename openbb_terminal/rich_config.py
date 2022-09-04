@@ -178,15 +178,13 @@ class MenuText:
             space = ""
         self.menu_text += f"[param]{parameter_translated}{space}:[/param] {value}\n"
 
-    def add_cmd(self, key_command: str, source: str = "", condition: bool = True):
+    def add_cmd(self, key_command: str, condition: bool = True):
         """Append command text (after translation from key) to a menu
 
         Parameters
         ----------
         key_command : str
             key command to be executed by user. It is also used as a key to get description of command.
-        source : str
-            source associated with the command
         condition : bool
             condition in which command is available to user. I.e. displays command and description.
             If condition is false, the command line is greyed out.
@@ -205,15 +203,6 @@ class MenuText:
             else:
                 space = " "
             cmd += f"{space}[src][{', '.join(sources)}][/src]"
-
-        """
-        if source:
-            if self.col_src > len(cmd):
-                space = (self.col_src - len(cmd)) * " "
-            else:
-                space = " "
-            cmd += f"{space}[src][{source}][/src]"
-        """
 
         self.menu_text += cmd + "\n"
 
