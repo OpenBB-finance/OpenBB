@@ -37,6 +37,7 @@ from openbb_terminal.helper_funcs import (
     check_positive,
     get_ordered_list_sources,
     parse_and_split_input,
+    search_wikipedia,
 )
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.rich_config import console
@@ -79,6 +80,7 @@ class BaseController(metaclass=ABCMeta):
         "r",
         "reset",
         "support",
+        "wiki",
     ]
 
     CHOICES_COMMANDS: List[str] = []
@@ -461,6 +463,38 @@ class BaseController(metaclass=ABCMeta):
                 message=" ".join(ns_parser.msg),
                 path=self.PATH,
             )
+
+    @log_start_end(log=logger)
+    def call_wiki(self, other_args: List[str]) -> None:
+        """Process wiki command"""
+
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="wiki",
+            description="Search Wikipedia",
+        )
+
+        parser.add_argument(
+            "--expression",
+            "-e",
+            action="store",
+            nargs="+",
+            dest="expression",
+            required=True,
+            default="",
+            help="Expression to search for",
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-e")
+
+        ns_parser = parse_simple_args(parser, other_args)
+
+        if ns_parser:
+            if ns_parser.expression:
+                expression = " ".join(ns_parser.expression)
+                search_wikipedia(expression)
 
     def parse_known_args_and_warn(
         self,

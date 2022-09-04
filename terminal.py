@@ -147,6 +147,8 @@ class TerminalController(BaseController):
         mt.add_menu("portfolio")
         mt.add_menu("dashboards")
         mt.add_menu("reports")
+        mt.add_raw("\n")
+        mt.add_cmd("wiki")
         console.print(text=mt.menu_text, menu="Home")
 
     def call_news(self, other_args: List[str]) -> None:

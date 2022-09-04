@@ -1703,3 +1703,40 @@ def get_ordered_list_sources(command_path: str):
         )
         console.print(f"[red]{e}[/red]")
         return None
+
+
+def search_wikipedia(expression: str) -> None:
+    """
+    Search wikipedia for a given expression"
+    Parameters
+    ----------
+    expression: str
+        Expression to search for
+    """
+
+    url = f"https://en.wikipedia.org/api/rest_v1/page/summary/{expression}"
+
+    response = requests.request("GET", url, headers={}, data={})
+    status = response.status_code
+    response = response.text
+    response = json.loads(response)
+
+    if status == 200:
+        response = {
+            "title": response["title"],
+            "url": f"[blue]{response['content_urls']['desktop']['page']}[/blue]",
+            "summary": response["extract"],
+        }
+    else:
+        response = {
+            "title": "[red]Not Found[/red]",
+        }
+
+    df = pd.json_normalize(response)
+
+    print_rich_table(
+        df,
+        headers=list(df.columns),
+        show_index=False,
+        title=f"Wikipedia results for {expression}",
+    )
