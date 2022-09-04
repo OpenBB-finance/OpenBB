@@ -58,10 +58,7 @@ def calculate_max_pain(chain: pd.DataFrame) -> Union[int, float]:
         console.print("Incorrect columns.  Unable to parse max pain")
         return np.nan
 
-    loss = []
-    for price_at_exp in strikes:
-        loss.append(get_loss_at_strike(price_at_exp, chain))
-
+    loss = [get_loss_at_strike(price_at_exp, chain) for price_at_exp in strikes]
     chain["loss"] = loss
     max_pain = chain["loss"].idxmin()
 

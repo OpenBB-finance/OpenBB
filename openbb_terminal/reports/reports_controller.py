@@ -208,10 +208,7 @@ class ReportController(BaseController):
                 report_output_name,
             )
 
-            d_report_params = {}
-            for idx, args in enumerate(params):
-                d_report_params[args] = other_args[idx]
-
+            d_report_params = {args: other_args[idx] for idx, args in enumerate(params)}
             d_report_params["report_name"] = notebook_output
 
             result = pm.execute_notebook(

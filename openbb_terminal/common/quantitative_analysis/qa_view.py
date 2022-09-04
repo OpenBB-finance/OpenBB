@@ -1199,10 +1199,7 @@ def display_omega(
         annualized target return threshold end of plotted threshold range
     """
     threshold = np.linspace(threshold_start, threshold_end, 50)
-    omega_list = []
-
-    for i in threshold:
-        omega_list.append(qa_model.get_omega(data, i))
+    omega_list = [qa_model.get_omega(data, i) for i in threshold]
 
     # Plotting
     fig, ax = plt.subplots()

@@ -24,10 +24,12 @@ def check_country_code_type(list_of_codes: str) -> List[str]:
             "Code"
         ]
     )
-    valid_codes = []
-    for code in list_of_codes.split(","):
-        if code.upper() in nasdaq_codes:
-            valid_codes.append(code.upper())
+    valid_codes = [
+        code.upper()
+        for code in list_of_codes.split(",")
+        if code.upper() in nasdaq_codes
+    ]
+
     if valid_codes:
         return valid_codes
     raise argparse.ArgumentTypeError("No valid codes provided.")

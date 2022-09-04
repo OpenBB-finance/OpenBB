@@ -61,9 +61,7 @@ def get_next_earnings(limit: int = 10) -> DataFrame:
         )
 
         for stock_rows in text_soup_earnings.findAll("tr", {"data-exchange": "NASDAQ"}):
-            stocks = []
-            for a_stock in stock_rows.contents[:3]:
-                stocks.append(a_stock.text)
+            stocks = [a_stock.text for a_stock in stock_rows.contents[:3]]
             earnings.append(stocks)
 
         url_next_earnings = (

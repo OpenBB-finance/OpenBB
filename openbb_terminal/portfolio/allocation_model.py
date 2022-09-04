@@ -73,9 +73,10 @@ def obtain_sector_allocation(benchmark_info: Dict, portfolio_trades: pd.DataFram
     )
 
     # Prettify sector allocations of benchmark to align with Portfolio Excel
-    prettified = []
-    for sector in benchmark_sectors_allocation.index:
-        prettified.append(sector.replace("_", " ").title())
+    prettified = [
+        sector.replace("_", " ").title()
+        for sector in benchmark_sectors_allocation.index
+    ]
 
     benchmark_sectors_allocation.index = prettified
 

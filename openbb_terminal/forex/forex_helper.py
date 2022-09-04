@@ -233,10 +233,7 @@ def display_candle(
             )
         if ma:
             # Manually construct the chart legend
-            colors = []
-
-            for i, _ in enumerate(ma):
-                colors.append(theme.get_colors()[i])
+            colors = [theme.get_colors()[i] for i, _ in enumerate(ma)]
 
             lines = [Line2D([0], [0], color=c) for c in colors]
             labels = ["MA " + str(label) for label in ma]

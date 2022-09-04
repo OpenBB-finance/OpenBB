@@ -368,10 +368,7 @@ def display_cointegration_test(
     """
 
     if isinstance(datasets, pd.DataFrame):
-        new_datasets = {}
-        for column in datasets.columns:
-            new_datasets[column] = datasets[column]
-
+        new_datasets = {column: datasets[column] for column in datasets.columns}
     pairs = list(combinations(datasets.keys(), 2))
     result: Dict[str, list] = {}
     z_values: Dict[str, pd.Series] = {}
