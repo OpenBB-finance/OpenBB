@@ -336,7 +336,10 @@
             "hq": ["YahooFinance"],
             "overview": ["AlphaVantage"],
             "key": ["AlphaVantage"],
-            "earnings": ["AlphaVantage"],
+            "earnings": [
+                "YahooFinance",
+                "AlphaVantage"
+            ],
             "fraud": ["AlphaVantage"],
             "dupont": ["AlphaVantage"]
         },

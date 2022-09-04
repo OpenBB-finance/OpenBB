@@ -29,7 +29,6 @@ Ticker: TSLA
     hq                 open HQ location of the company                                 [YahooFinance]
     overview           overview of the company                                         [AlphaVantage]
     key                company key metrics                                             [AlphaVantage]
-    earnings           earnings dates and reported EPS                                 [AlphaVantage]
+    earnings           earnings dates and reported EPS                                 [YahooFinance, AlphaVantage]
     fraud              key fraud ratios                                                [AlphaVantage]
     dupont             detailed breakdown for return on equity                         [AlphaVantage]
-
