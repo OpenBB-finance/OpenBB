@@ -9,12 +9,12 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - python-requests/2.27.1
+      - python-requests/2.28.1
     method: GET
     uri: https://api.polygon.io/v2/aggs/ticker/GME/range/1/day/2021-12-01/2021-12-02?adjusted=true&apiKey=MOCK_API_KEY2&limit=49999&sort=desc
   response:
     body:
-      string: '{"status":"ERROR","request_id":"bc657d2adae88c0cfbae7997e324f1ff","error":"Unknown
+      string: '{"status":"ERROR","request_id":"2ba6dfeed10449a2bc8147b09d1069b1","error":"Unknown
         API Key"}'
     headers:
       Connection:
@@ -24,13 +24,13 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Sun, 04 Sep 2022 00:53:42 GMT
+      - Sun, 04 Sep 2022 11:15:35 GMT
       Server:
       - nginx/1.19.2
       Strict-Transport-Security:
       - max-age=15724800; includeSubDomains
       X-Request-Id:
-      - bc657d2adae88c0cfbae7997e324f1ff
+      - 2ba6dfeed10449a2bc8147b09d1069b1
     status:
       code: 401
       message: Unauthorized

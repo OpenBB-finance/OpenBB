@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - python-requests/2.27.1
+      - python-requests/2.28.1
     method: GET
     uri: https://www.alphavantage.co/query?apikey=MOCK_API_KEY&datatype=json&function=TIME_SERIES_DAILY_ADJUSTED&outputsize=full&symbol=GME
   response:
@@ -25,7 +25,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 7452bfe3c851dd78-LHR
+      - 74564ed76f5623c7-ZRH
       Connection:
       - keep-alive
       Content-Encoding:
@@ -33,7 +33,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Sun, 04 Sep 2022 00:53:41 GMT
+      - Sun, 04 Sep 2022 11:15:33 GMT
       Server:
       - cloudflare
       Transfer-Encoding:
