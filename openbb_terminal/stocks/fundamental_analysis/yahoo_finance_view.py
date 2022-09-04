@@ -501,3 +501,32 @@ def display_fundamentals(
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), statement, fundamentals
     )
+
+
+@log_start_end(log=logger)
+def display_earnings(symbol: str, limit: int, export: str):
+    """
+
+    Parameters
+    ----------
+    symbol
+    limit
+    export
+
+    Returns
+    -------
+
+    """
+    earnings = yahoo_finance_model.get_earnings_history(symbol)
+    if not earnings:
+        console.print("")
+        return
+    earnings = earnings.drop(columns={"Symbol", "Company"})
+    print_rich_table(
+        earnings.head(limit),
+        headers=earnings.columns,
+        title=f"Historical Earnings for {symbol}",
+    )
+    export_data(
+        export, os.path.dirname(os.path.abspath(__file__)), "earnings_yf", earnings
+    )

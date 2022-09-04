@@ -150,7 +150,7 @@ class FundamentalAnalysisController(StockBaseController):
         mt.add_cmd("overview", "Alpha Vantage")
         mt.add_cmd("key", "Alpha Vantage")
         mt.add_cmd("cash", "Alpha Vantage / Yahoo Finance / FMP")
-        mt.add_cmd("earnings", "Alpha Vantage")
+        mt.add_cmd("earnings", "Alpha Vantage / Yahoo Finance")
         mt.add_cmd("fraud", "Alpha Vantage")
         mt.add_cmd("dupont", "Alpha Vantage")
         console.print(text=mt.menu_text, menu="Stocks - Fundamental Analysis")
@@ -1097,12 +1097,19 @@ class FundamentalAnalysisController(StockBaseController):
             EXPORT_ONLY_RAW_DATA_ALLOWED,
         )
         if ns_parser:
-            av_view.display_earnings(
-                symbol=self.ticker,
-                limit=ns_parser.limit,
-                quarterly=ns_parser.b_quarter,
-                export=ns_parser.export,
-            )
+            if ns_parser.source == "av":
+                av_view.display_earnings(
+                    symbol=self.ticker,
+                    limit=ns_parser.limit,
+                    quarterly=ns_parser.b_quarter,
+                    export=ns_parser.export,
+                )
+            elif ns_parser.source == "yf":
+                yahoo_finance_view.display_earnings(
+                    symbol=self.ticker, limit=ns_parser.limit, export=ns_parser.export
+                )
+            else:
+                pass
 
     @log_start_end(log=logger)
     def call_fraud(self, other_args: List[str]):
