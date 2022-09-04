@@ -60,8 +60,8 @@ def test_search(mocker, use_tab):
         (1440, "IEXCloud"),
         (1440, "YahooFinance"),
         (60, "YahooFinance"),
-        (1440, "Polygon"),
-        (60, "Polygon"),
+        # (1440, "Polygon"),
+        # (60, "Polygon"),
     ],
 )
 def test_load(interval, recorder, source):
