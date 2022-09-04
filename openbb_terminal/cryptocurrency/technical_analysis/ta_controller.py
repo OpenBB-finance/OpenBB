@@ -99,7 +99,7 @@ class TechnicalAnalysisController(CryptoBaseController):
         mt = MenuText("crypto/ta/", 90)
         mt.add_param("_ticker", crypto_str)
         mt.add_raw("\n")
-        mt.add_cmd("tv", "TradingView")
+        mt.add_cmd("tv")
         mt.add_raw("\n")
         mt.add_info("_overlap_")
         mt.add_cmd("ema")

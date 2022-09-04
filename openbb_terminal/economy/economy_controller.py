@@ -333,24 +333,24 @@ class EconomyController(BaseController):
     def print_help(self):
         """Print help"""
         mt = MenuText("economy/")
-        mt.add_cmd("overview", "Wall St. Journal")
-        mt.add_cmd("futures", "Wall St. Journal / Finviz")
-        mt.add_cmd("map", "Finviz")
-        mt.add_cmd("bigmac", "NASDAQ Datalink")
-        mt.add_cmd("ycrv", "Investing.com / FRED")
-        mt.add_cmd("events", "Investing.com")
-        mt.add_cmd("edebt", "Wikipedia")
+        mt.add_cmd("overview")
+        mt.add_cmd("futures")
+        mt.add_cmd("map")
+        mt.add_cmd("bigmac")
+        mt.add_cmd("ycrv")
+        mt.add_cmd("events")
+        mt.add_cmd("edebt")
         mt.add_raw("\n")
-        mt.add_cmd("rtps", "Alpha Vantage")
-        mt.add_cmd("valuation", "Finviz")
-        mt.add_cmd("performance", "Finviz")
-        mt.add_cmd("spectrum", "Finviz")
+        mt.add_cmd("rtps")
+        mt.add_cmd("valuation")
+        mt.add_cmd("performance")
+        mt.add_cmd("spectrum")
         mt.add_raw("\n")
         mt.add_info("_database_")
-        mt.add_cmd("macro", "EconDB")
-        mt.add_cmd("treasury", "EconDB")
-        mt.add_cmd("fred", "FRED")
-        mt.add_cmd("index", "Yahoo Finance")
+        mt.add_cmd("macro")
+        mt.add_cmd("treasury")
+        mt.add_cmd("fred")
+        mt.add_cmd("index")
         mt.add_raw("\n")
         mt.add_param("_stored", self.stored_datasets)
         mt.add_raw("\n")
@@ -1097,7 +1097,7 @@ class EconomyController(BaseController):
                 else:
                     console.print("Source FRED is only available for united states.\n")
 
-            elif ns_parser.source == "investpy":
+            elif ns_parser.source == "Investing":
 
                 investingcom_view.display_yieldcurve(
                     country=ns_parser.country,
