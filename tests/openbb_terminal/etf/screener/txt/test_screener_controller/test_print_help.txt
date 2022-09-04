@@ -3,7 +3,7 @@
 
 Preset: etf_config
 
-    screen             screen ETF using preset selected  [StockAnalysis]
+    screen             screen ETF using preset selected
 
-    sbc                screen by category                [FinanceDatabase]
+    sbc                screen by category
 
