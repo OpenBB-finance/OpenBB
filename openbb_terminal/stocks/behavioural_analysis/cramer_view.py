@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 import os
 from typing import Optional, List
 import logging
+from datetime import datetime
 
 import matplotlib.pyplot as plt
 from matplotlib.dates import DateFormatter
@@ -42,6 +43,13 @@ def display_cramer_daily(inverse: bool = True, export: str = ""):
         return
     date = recs.Date[0]
     recs = recs.drop(columns=["Date"])
+
+    if datetime.today().strftime("%m-%d") != datetime.strptime(
+        date.replace("/", "-"), "%m-%d"
+    ):
+        console.print(
+            "\n[yellow]Warning[/yellow]: We've noticed the data is not being updated, and we're investigating on finding a replacement."
+        )
 
     print_rich_table(recs, title=f"Jim Cramer Recommendations for {date}")
 
