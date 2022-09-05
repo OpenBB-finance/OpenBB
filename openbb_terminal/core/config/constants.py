@@ -55,6 +55,7 @@ CUSTOM_IMPORTS = Path(folder_paths["custom_imports"])
 
 # Copy folder contents from files to new path
 # Do path in terminal first and desired path second
+# Add a backup folder or ask y/n to delete
 internal_paths = [
     ["routines", "routines"],
     ["portfolio/allocation", "portfolio/allocation"],
