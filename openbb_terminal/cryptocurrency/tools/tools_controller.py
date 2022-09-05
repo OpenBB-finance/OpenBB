@@ -63,18 +63,16 @@ class ToolsController(BaseController):
             Users can provide percentages increases for two tokens (and their weight in the liquidity pool)
             and verify the impermanent loss that can occur.""",
         )
-
         parser.add_argument(
-            "-pcA",
+            "-a",
             "--priceChangeA",
             dest="priceChangeA",
             type=check_non_negative_float,
             help="Token A price change in percentage",
             default=0,
         )
-
         parser.add_argument(
-            "-pcB",
+            "-b",
             "--priceChangeB",
             dest="priceChangeB",
             type=check_non_negative_float,
@@ -99,7 +97,6 @@ class ToolsController(BaseController):
             help="Initial amount of dollars that user provides to liquidity pool",
             default=1000,
         )
-
         parser.add_argument(
             "-n",
             "--narrative",
@@ -108,9 +105,8 @@ class ToolsController(BaseController):
             help="Flag to show narrative instead of dataframe",
             default=False,
         )
-
         if other_args and not other_args[0][0] == "-":
-            other_args.insert(0, "-pcA")
+            other_args.insert(0, "-a")
 
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -139,7 +135,6 @@ class ToolsController(BaseController):
                       can be defined with -c argument.
                   """,
         )
-
         parser.add_argument(
             "--apr",
             dest="apr",
@@ -147,7 +142,6 @@ class ToolsController(BaseController):
             help="APR value in percentage to convert",
             default=100,
         )
-
         parser.add_argument(
             "-c",
             "--compounding",

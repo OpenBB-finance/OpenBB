@@ -1,9 +1,9 @@
-    view               view available presets (or one in particular)
+    view               view available presets (or one in particular)                   [Syncretism]
     set                set one of the available presets
 
 Preset: high_IV
 
-    scr                screen data from this preset
+    scr                screen data from this preset                                    [Syncretism]
 
 Last screened tickers: 
 

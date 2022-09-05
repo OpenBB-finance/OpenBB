@@ -9,26 +9,20 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - python-requests/2.28.1
+      - python-requests/2.27.1
     method: GET
     uri: https://api.sentimentinvestor.com/v1/trending?token=VALIDKEY
   response:
     body:
-      string: '{"error":"Authorization error 3"}'
+      string: Service Unavailable
     headers:
-      Access-Control-Allow-Origin:
-      - '*'
       Content-Length:
-      - '33'
+      - '19'
       Content-Type:
-      - application/json; charset=utf-8
+      - text/plain; charset=utf-8
       Date:
-      - Mon, 11 Jul 2022 13:59:54 GMT
-      Etag:
-      - W/"21-Obpk/qH/cxSMkfn074GB3iqvKjY"
-      X-Powered-By:
-      - Express
+      - Sun, 04 Sep 2022 00:08:34 GMT
     status:
-      code: 200
-      message: OK
+      code: 503
+      message: Service Unavailable
 version: 1

@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - python-requests/2.28.1
+      - python-requests/2.27.1
     method: GET
     uri: https://prod.smartstakeapi.com/listData?app=TERRA&type=history&dayCount=30&key=VALIDKEY&token=VALIDKEY
   response:
@@ -19,7 +19,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 729210182c2668c1-BUD
+      - 74527de04853dd3b-LHR
       Connection:
       - keep-alive
       Content-Length:
@@ -27,13 +27,11 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Mon, 11 Jul 2022 14:00:00 GMT
-      Expect-CT:
-      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      - Sun, 04 Sep 2022 00:08:37 GMT
       NEL:
       - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
       Report-To:
-      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=kMU1UZsZ%2BpBKYn%2B5QcxTAOVvW0F0RFFcg5koaZRMz2ag3TOgoFD9MfS5Y7yx7dqw%2FQMfagq5GJTpE1XDgfTTipfdtyN4U7gUn5hcq04%2Fnq2GP3jV9oGFL5dzKQINciMPQWgIILEjW08%3D"}],"group":"cf-nel","max_age":604800}'
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=qzh%2ByXrJNcDaixN4H5uQKzzwU%2BraO58lvpNUj4dHg8fvBx0yD4n2jpWHoY0Qsq4cHUSXrKxRpe64EkseXLSOZ4OaSOuQfFPGTQbFftcSkO5fkT5Kgs0YosVKx5hqNV9Kwsjt%2FywNHdiagtwGZm9Vi9hseMA%3D"}],"group":"cf-nel","max_age":604800}'
       Server:
       - cloudflare
       access-control-allow-credentials:
@@ -41,11 +39,11 @@ interactions:
       access-control-allow-origin:
       - '*'
       x-amz-apigw-id:
-      - VGvzGEC5IAMF0QA=
+      - X6Hk4EAaoAMFx_g=
       x-amzn-requestid:
-      - 90325c06-e4a2-486a-aad4-aab2edf98ad2
+      - 3ddd6c9b-f776-4fd6-83de-c17c36c5e9c3
       x-amzn-trace-id:
-      - Root=1-62cc2ce0-651a49d709e124bb24133457;Sampled=0
+      - Root=1-6313ec85-76ab29d9008811fb560e52dc;Sampled=0
     status:
       code: 200
       message: OK
