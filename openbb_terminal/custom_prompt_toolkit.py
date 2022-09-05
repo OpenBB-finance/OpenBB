@@ -136,6 +136,7 @@ class NestedCompleter(Completer):
         self.original_options = options
         self.options = options
         self.ignore_case = ignore_case
+        self.complementary = list()
 
     def __repr__(self) -> str:
         return f"NestedCompleter({self.options!r}, ignore_case={self.ignore_case!r})"
@@ -165,7 +166,6 @@ class NestedCompleter(Completer):
 
         Values in this data structure can be a completers as well.
         """
-        cls.complementary = list()
         options: Dict[str, Any] = {}
         for key, value in data.items():
             if isinstance(value, Completer):
@@ -175,7 +175,7 @@ class NestedCompleter(Completer):
             elif isinstance(value, set):
                 options[key] = cls.from_nested_dict({item: None for item in value})
             elif isinstance(key, str) and isinstance(value, str):
-                cls.complementary.append([key, value])
+                options[key] = options[value]
             else:
                 assert value is None
                 options[key] = None

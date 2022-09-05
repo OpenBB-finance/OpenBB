@@ -5,6 +5,7 @@ __docformat__ = "numpy"
 import argparse
 import logging
 import os
+import itertools
 from datetime import date
 from typing import List, Dict, Any
 
@@ -189,7 +190,9 @@ class EconomyController(BaseController):
                 "-t": "--type",
             }
             self.choices["bigmac"] = {
-                "--countries": {c: None for c in nasdaq_model.get_country_codes()},
+                "--countries": {
+                    c: None for c in nasdaq_model.get_country_codes()["Code"].values
+                },
                 "-c": "--countries",
                 "--codes": {},
             }
@@ -320,12 +323,21 @@ class EconomyController(BaseController):
                     for _, values in self.DATASETS.items()
                     for option in values.keys()
                 ]
+
+                # help users to select multiple timeseries for one axis
+                economicdata = list()
+                for L in [1, 2]:
+                    for subset in itertools.combinations(options, L):
+                        economicdata.append(" ".join(subset))
+                        if len(subset) > 1:
+                            economicdata.append(" ".join(subset[::-1]))
+
                 for argument in [
                     "--y1",
                     "--y2",
                 ]:
                     self.choices["plot"][argument] = {
-                        option: None for option in options
+                        option: None for option in economicdata
                     }
         self.completer = NestedCompleter.from_nested_dict(self.choices)
 
@@ -1174,7 +1186,7 @@ class EconomyController(BaseController):
                 country=ns_parser.country,
                 importance=ns_parser.importance,
                 category=ns_parser.category,
-                start_date=ns_parser.start,
+                start_date=ns_parser.start_date,
                 end_date=ns_parser.end,
                 limit=ns_parser.limit,
                 export=ns_parser.export,
@@ -1286,8 +1298,8 @@ class EconomyController(BaseController):
                                     dataset_yaxis1[variable] = data[variable]
                                 break
                     if dataset_yaxis1.empty:
-                        return console.print(
-                            f"[/red]Not able to find any data for the --y1 argument. The currently available "
+                        console.print(
+                            f"[red]Not able to find any data for the --y1 argument. The currently available "
                             f"options are: {', '.join(self.choices['plot']['--y1'])}[/red]\n"
                         )
 
@@ -1348,8 +1360,8 @@ class EconomyController(BaseController):
                                     dataset_yaxis2[variable] = data[variable]
                                 break
                     if dataset_yaxis2.empty:
-                        return console.print(
-                            f"[/red]Not able to find any data for the --y2 argument. The currently available "
+                        console.print(
+                            f"[red]Not able to find any data for the --y2 argument. The currently available "
                             f"options are: {', '.join(self.choices['plot']['--y2'])}[/red]\n"
                         )
 
