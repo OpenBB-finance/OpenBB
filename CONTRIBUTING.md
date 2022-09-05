@@ -771,7 +771,85 @@ speeds up the time it takes to run tests. To use VCRPY add **@pytest.mark.vcr** 
 
 ## Add Documentation
 
-See [Hugo Server instructions](/website/README.md).
+To check whether documentation is added correctly follow [Hugo Server instructions](/website/README.md).
+
+This is the structure that the documentation follows:
+
+```txt
+website/content/_index.md
+               /stocks/_index.md
+                      /load/_index.md
+                      /candle/_index.md
+                      /discovery/_index.md
+                                /ipo/_index.md
+                                    /...
+                                /...
+                      /...
+               /cryptocurrency/_index.md
+                              /chart/_index.md
+                              /defi/_index.md
+                                   /borrow/_index.md
+                                   /...
+                              /...
+               /...
+               /common/_index.md
+                      /technical_analysis/_index.md
+                                         /ema/_index.md
+                                         /...
+                      /...
+```
+
+Note that the `common` folder holds features that are common across contexts, e.g. `technical analysis` can be performed on both `stocks` or `crytpo`.
+
+
+To add a new command, there are two main actions that need to be done:
+
+1. Create a directory with the name of the command and a `_index.md` file within. Examples:
+
+   - When adding `ipo`, since this command belongs to context `stocks` and category `discovery`, we added a `ipo` folder with a `_index.md` file within to `website/content/stocks/discovery`.
+
+   - When adding `candle`, since this command belongs to context `stocks`, we added a `candle` folder with a `_index.md` file within to `website/content/stocks/`.
+
+2. The `_index.md` file should have the output of the `command -h` followed by a screenshot example of what the user can expect. Note that you can now drag and drop the images while editing the readme file on the remote web version of your PR branch. Github will create a link for it with format (https://user-images.githubusercontent.com/***/***.file_format).
+
+Example:
+
+---
+
+```shell
+usage: ipo [--past PAST_DAYS] [--future FUTURE_DAYS]
+```
+
+Past and future IPOs. [Source: https://finnhub.io]
+
+- --past : Number of past days to look for IPOs. Default 0.
+- --future : Number of future days to look for IPOs. Default 10.
+
+<IMAGE HERE - Use drag and drop hint mentioned above>
+
+---
+
+3. Update the Navigation bar to match the content you've added. This is done by adding 2 lines of code to `website/data/menu/`, i.e. a `name` and a `ref`. Example:
+
+```
+---
+main:
+  - name: stocks
+    ref: "/stocks"
+    sub:
+      - name: load
+        ref: "/stocks/load"
+      - name: candle
+        ref: "/stocks/candle"
+      - name: discovery
+        ref: "/stocks/discovery"
+        sub:
+          - name: ipo
+            ref: "/stocks/discovery/ipo"
+          - name: map
+            ref: "/stocks/discovery/map"
+```
+
 
 ## Open a Pull Request
 
