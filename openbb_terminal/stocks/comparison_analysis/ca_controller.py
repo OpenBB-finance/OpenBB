@@ -735,7 +735,8 @@ class ComparisonAnalysisController(BaseController):
             dest="s_timeframe",
             type=str,
             default=None,
-            help="Specify yearly/quarterly timeframe. Default is last.",
+            help="Specify year/quarter of the cashflow statement to be retrieved. The format for year is YYYY and for "
+            "quarter is DD-MMM-YYY (for example, 30-Sep-2021). Default is last year/quarter.",
         )
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
