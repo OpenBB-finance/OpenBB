@@ -313,9 +313,9 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "call_psi",
             "quandl_view.short_interest",
             [
-                "quandl",
+                "MOCK_TICKER",
                 "--nyse",
-                "--source=quandl",
+                "--source=Quandl",
                 "--limit=1",
                 "--raw",
                 "--export=csv",
@@ -333,7 +333,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "stockgrid_view.short_interest_volume",
             [
                 "--limit=1",
-                "--source=stockgrid",
+                "--source=Stockgrid",
                 "--raw",
                 "--export=csv",
             ],

@@ -77,7 +77,7 @@ def get_full_option_chain(
     if calls:
         df_list.append(call_df)
         option_factor.append(1)
-    df_list = [x[x["impliedVolatility"] > 0] for x in df_list]
+    df_list = [x[x["impliedVolatility"] > 0].copy() for x in df_list]
     # Add in greeks to each df
     # Time to expiration:
     dt = (datetime.strptime(expiration, "%Y-%m-%d") - datetime.now()).seconds / (

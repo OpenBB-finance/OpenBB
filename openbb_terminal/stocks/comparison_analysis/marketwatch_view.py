@@ -146,7 +146,7 @@ def display_cashflow_comparison(
         You can also get a list of comparable peers with
         finnhub_peers(), finviz_peers(), polygon_peers().
     timeframe : str
-        What year to look at
+        What year/quarter to look at
     quarter : bool, optional
         Whether to use quarterly statements, by default False
     export : str, optional

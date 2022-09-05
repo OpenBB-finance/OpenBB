@@ -443,7 +443,7 @@ class TechnicalAnalysisController(StockBaseController):
             momentum_view.display_rsi(
                 symbol=self.ticker,
                 series=self.data["Adj Close"],
-                length=ns_parser.n_length,
+                window=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
                 drift=ns_parser.n_drift,
                 export=ns_parser.export,

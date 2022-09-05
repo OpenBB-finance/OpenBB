@@ -661,7 +661,7 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
                 "--max=2",
                 "--calls",
                 "--puts",
-                "--source=yf",
+                "--source=YahooFinance",
                 "--export=csv",
             ],
             "yfinance_view.plot_vol",
@@ -706,7 +706,7 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
                 "--minv=1",
                 "--min=2",
                 "--max=3",
-                "--source=yf",
+                "--source=YahooFinance",
                 "--export=csv",
             ],
             "yfinance_view.plot_volume_open_interest",
@@ -749,7 +749,7 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
                 "--max=2",
                 "--calls",
                 "--puts",
-                "--source=yf",
+                "--source=YahooFinance",
                 "--export=csv",
             ],
             "yfinance_view.plot_oi",
@@ -998,7 +998,7 @@ def test_call_func_no_selected_date(func, mocker):
     "other_args",
     [
         ["TSLA"],
-        ["TSLA", "--source=yf"],
+        ["TSLA", "--source=YahooFinance"],
     ],
 )
 def test_call_load(mocker, other_args):

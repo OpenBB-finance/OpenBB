@@ -91,16 +91,16 @@ class DiscoveryController(BaseController):
     def print_help(self):
         """Print help"""
         mt = MenuText("crypto/disc/")
-        mt.add_cmd("cgtop", "CoinGecko")
-        mt.add_cmd("cgtrending", "CoinGecko")
-        mt.add_cmd("cggainers", "CoinGecko")
-        mt.add_cmd("cglosers", "CoinGecko")
-        mt.add_cmd("cpsearch", "CoinPaprika")
-        mt.add_cmd("cmctop", "CoinMarketCap")
-        mt.add_cmd("drnft", "DappRadar")
-        mt.add_cmd("drgames", "DappRadar")
-        mt.add_cmd("drdapps", "DappRadar")
-        mt.add_cmd("drdex", "DappRadar")
+        mt.add_cmd("cgtop")
+        mt.add_cmd("cgtrending")
+        mt.add_cmd("cggainers")
+        mt.add_cmd("cglosers")
+        mt.add_cmd("cpsearch")
+        mt.add_cmd("cmctop")
+        mt.add_cmd("drnft")
+        mt.add_cmd("drgames")
+        mt.add_cmd("drdapps")
+        mt.add_cmd("drdex")
         console.print(text=mt.menu_text, menu="Cryptocurrency - Discovery")
 
     @log_start_end(log=logger)
@@ -483,7 +483,7 @@ class DiscoveryController(BaseController):
             action="store_false",
             help="Flag to sort in descending order (lowest first)",
             dest="descend",
-            default=True,
+            default=False,
         )
 
         ns_parser = self.parse_known_args_and_warn(
@@ -493,7 +493,7 @@ class DiscoveryController(BaseController):
             coinmarketcap_view.display_cmc_top_coins(
                 top=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                descend=not ns_parser.descend,
+                ascend=not ns_parser.descend,
                 export=ns_parser.export,
             )
 

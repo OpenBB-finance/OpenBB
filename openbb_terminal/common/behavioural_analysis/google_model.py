@@ -62,8 +62,8 @@ def get_queries(symbol: str, limit: int = 10) -> pd.DataFrame:
 
     Returns
     -------
-    pd.DataFrame
-        Dataframe of related queries
+    dict : {'top': pd.DataFrame or None, 'rising': pd.DataFrame or None}
+
     """
     pytrend = TrendReq()
     pytrend.build_payload(kw_list=[symbol])

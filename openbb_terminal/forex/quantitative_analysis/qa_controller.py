@@ -277,7 +277,7 @@ class QaController(CryptoBaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             qa_view.display_hist(
-                name=self.ticker,
+                symbol=self.ticker,
                 data=self.data,
                 target=self.target,
                 bins=ns_parser.n_bins,
@@ -359,7 +359,7 @@ class QaController(CryptoBaseController):
         )
         if ns_parser:
             qa_view.display_seasonal(
-                name=self.ticker,
+                symbol=self.ticker,
                 data=self.data,
                 target=self.target,
                 multiplicative=ns_parser.multiplicative,
@@ -583,7 +583,7 @@ class QaController(CryptoBaseController):
         )
         if ns_parser:
             rolling_view.display_skew(
-                name=self.ticker,
+                symbol=self.ticker,
                 data=self.data,
                 target=self.target,
                 window=ns_parser.n_window,

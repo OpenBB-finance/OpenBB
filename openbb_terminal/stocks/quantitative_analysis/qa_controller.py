@@ -66,7 +66,7 @@ class QaController(StockBaseController):
     ]
 
     stock_interval = [1, 5, 15, 30, 60]
-    stock_sources = ["yf", "av", "iex"]
+    stock_sources = ["YahooFinance", "AlphaVantage", "IEXCloud"]
     distributions = ["laplace", "student_t", "logistic", "normal"]
     PATH = "/stocks/qa/"
 
@@ -313,7 +313,7 @@ class QaController(StockBaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             qa_view.display_hist(
-                name=self.ticker,
+                symbol=self.ticker,
                 data=self.stock,
                 target=self.target,
                 bins=ns_parser.n_bins,
@@ -395,7 +395,7 @@ class QaController(StockBaseController):
         )
         if ns_parser:
             qa_view.display_seasonal(
-                name=self.ticker,
+                symbol=self.ticker,
                 data=self.stock,
                 target=self.target,
                 multiplicative=ns_parser.multiplicative,
@@ -621,7 +621,7 @@ class QaController(StockBaseController):
         )
         if ns_parser:
             rolling_view.display_skew(
-                name=self.ticker,
+                symbol=self.ticker,
                 data=self.stock,
                 target=self.target,
                 window=ns_parser.n_window,

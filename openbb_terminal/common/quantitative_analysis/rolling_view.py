@@ -32,7 +32,7 @@ def display_mean_std(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
-    """View rolling spread
+    """View mean std deviation
 
     Parameters
     ----------
@@ -340,7 +340,7 @@ def display_quantile(
 
 @log_start_end(log=logger)
 def display_skew(
-    name: str,
+    symbol: str,
     data: pd.DataFrame,
     target: str,
     window: int = 14,
@@ -351,7 +351,7 @@ def display_skew(
 
     Parameters
     ----------
-    name: str
+    symbol: str
         Stock ticker
     data: pd.DataFrame
         Dataframe
@@ -391,7 +391,7 @@ def display_skew(
     else:
         return
 
-    ax1.set_title(f"{name} Skewness Indicator")
+    ax1.set_title(f"{symbol} Skewness Indicator")
     ax1.plot(plot_data.index, plot_data[target].values)
     ax1.set_xlim(plot_data.index[0], plot_data.index[-1])
     ax1.set_ylabel(f"{target}")

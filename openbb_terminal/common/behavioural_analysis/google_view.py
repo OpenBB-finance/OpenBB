@@ -210,11 +210,16 @@ def display_queries(symbol: str, limit: int = 5, export: str = ""):
     symbol : str
         Ticker symbol
     limit: int
-        Number of queries to show
+        Number of regions to show
     export: str
+    export: str {"csv","json","xlsx","png","jpg","pdf","svg"}
         Format to export data
-    """
 
+    Returns
+    -------
+        None
+    """
+    # Retrieve a dict with top and rising queries
     df_related_queries = google_model.get_queries(symbol, limit)
 
     print_rich_table(

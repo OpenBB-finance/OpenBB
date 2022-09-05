@@ -425,3 +425,21 @@ def get_financials(symbol: str, statement: str, ratios: bool = False) -> pd.Data
 
     df = df.dropna(how="all")
     return df
+
+
+@log_start_end(log=logger)
+def get_earnings_history(symbol: str) -> pd.DataFrame:
+    """Get earning reports
+
+    Parameters
+    ----------
+    symbol: str
+        Symbol to get earnings for
+
+    Returns
+    -------
+    pd.DataFrame
+        Dataframe of historical earnings if present
+    """
+    earnings = yf.Ticker(symbol).earnings_history
+    return earnings
