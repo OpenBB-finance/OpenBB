@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - python-requests/2.28.1
+      - python-requests/2.27.1
     method: GET
     uri: https://api.ethplorer.io/getTokenInfo/0x1f9840a85d5af5bf1d1762f925bdaddc4201f984?apiKey=VALIDKEY
   response:
@@ -25,7 +25,7 @@ interactions:
       Content-Type:
       - text/html
       Date:
-      - Mon, 11 Jul 2022 13:59:59 GMT
+      - Sun, 04 Sep 2022 00:08:37 GMT
       ETag:
       - '"5e85ab36-30"'
     status:

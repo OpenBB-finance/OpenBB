@@ -145,9 +145,9 @@ class ParametersController(BaseController):
         mt.add_raw("\n")
         mt.add_param("_model", self.current_model or "")
         mt.add_raw("\n")
-        mt.add_cmd("clear", condition=self.current_file)
-        mt.add_cmd("set", condition=self.current_file)
-        mt.add_cmd("arg", condition=self.current_file)
+        mt.add_cmd("clear", self.current_file)
+        mt.add_cmd("set", self.current_file)
+        mt.add_cmd("arg", self.current_file)
         if self.current_file:
             mt.add_raw("\n")
             mt.add_info("_parameters_")

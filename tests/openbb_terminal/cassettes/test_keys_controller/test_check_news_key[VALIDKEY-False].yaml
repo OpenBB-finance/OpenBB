@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - python-requests/2.28.1
+      - python-requests/2.27.1
     method: GET
     uri: https://newsapi.org/v2/everything?q=keyword&apiKey=VALIDKEY
   response:
@@ -21,7 +21,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 73d2ecdfdcee868d-ORD
+      - 74527dbc5b6674d1-LHR
       Cache-Control:
       - no-cache
       Connection:
@@ -31,9 +31,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Fri, 19 Aug 2022 12:34:46 GMT
-      Expect-CT:
-      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      - Sun, 04 Sep 2022 00:08:31 GMT
       Expires:
       - '-1'
       NEL:
@@ -41,7 +39,7 @@ interactions:
       Pragma:
       - no-cache
       Report-To:
-      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=x0x8c%2FtT5FjEcnPmsU0D3jSg%2BdgcIHCj5g4tgnC%2BZ7vzorzPc7tJbX5r4%2BuJ1mtd53hiT3IHgcnNhbk9ndg9eFLjYGAE3jEXOalVqs0l05qS3oB978w73eCdun%2Ff"}],"group":"cf-nel","max_age":604800}'
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=a2M9I6e2x6%2BTegtmAqjkma9Pc9getMUoKItNC%2FsR1lq6BYTJhZbLYX%2FUR%2BWspWorI5ralZNG6tOv0VB49O21f0574to3qBF1vDUcK%2Fu2UpUxZ6wKaQZ5XP%2FcBRvN"}],"group":"cf-nel","max_age":604800}'
       Server:
       - cloudflare
       X-Cached-Result:
