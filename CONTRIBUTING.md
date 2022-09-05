@@ -9,13 +9,24 @@ Use your best judgment, and feel free to propose changes to this document in a p
 - [Select Feature](#select-feature)
 - [Understand Code Structure](#understand-code-structure)
 - [Follow Coding Guidelines](#follow-coding-guidelines)
+  - [API keys](#api-keys)
   - [Model](#model)
-    - [View](#view)
+  - [View](#view)
   - [Controller](#controller)
+  - [API wrapper](#api-wrapper)
+- [Important functions and classes](#important-functions-and-classes)
+  - [Parser](#parser)
+  - [Default Data Sources](#default-data-sources)
+  - [Export Data](#export-data)
+  - [Queue and pipeline](#queue-and-pipeline)
+  - [Auto Completer](#auto-completer)
+  - [Logging](#logging)
+  - [Internationalization](#internationalization)
 - [Remember Coding Style](#remember-coding-style)
   - [Naming Convention](#naming-convention)
   - [Docstrings](#docstrings)
   - [Linters](#linters)
+  - [Command names](#command-names)
 - [Write Code and Commit](#write-code-and-commit)
   - [Pre Commit Hooks](#pre-commit-hooks)
   - [Coding](#coding)
@@ -52,23 +63,28 @@ If there are sub-categories, the layout will be: `/<context>/<category>/<sub-cat
 ```text
 openbb_terminal/stocks/stocks_controller.py
                       /stocks_helper.py
+                      /stocks_api.py
                       /due_diligence/dd_controller.py
+                                    /dd_api.py
                                     /marketwatch_view.py
                                     /marketwatch_model.py
                                     /finviz_view.py
                                     /finviz_model.py
                       /technical_analysis/ta_controller.py
+                                         /ta_api.py
                                          /tradingview_view.py
                                          /tradingview_model.py
                 /common/technical_analysis/overlap_view.py
                                           /overlap_model.py
                 /crypto/crypto_controller.py
                        /crypto_helper.py
+                       /crypto_api.py
                        /due_diligence/dd_controller.py
+                                     /dd_api.py
                                      /binance_view.py
                                      /binance_model.py
                        /technical_analysis/ta_controller.py
-
+                                          /ta_api.py
 ```
 
 With:
@@ -97,6 +113,83 @@ Process to add a new command. `shorted` command from category `dark_pool_shorts`
 example. Since this command uses data from Yahoo Finance, a `yahoofinance_view.py` and a `yahoofinance_model.py` files
 will be implemented.
 
+### API Keys
+
+#### Creating API key
+
+OpenBB Terminal currently has over 100 different data sources. Most of these require an API key that allows access to some free tier features from the data provider, but also paid ones.
+
+When a new API data source is added to the platform, it must be added through [config_terminal.py](/openbb_terminal/config_terminal.py). E.g.
+```
+# https://messari.io/
+API_MESSARI_KEY = os.getenv("OPENBB_API_MESSARI_KEY") or "REPLACE_ME"
+```
+Note that a `OPENBB_` is added so that the user knows that that environment variable is used by our terminal.
+
+#### Setting and checking API key
+
+One of the first steps once adding a new data source that requires an API key is to add that key to our [keys_controller.py](/openbb_terminal/keys_controller.py). This menu allows the user to set API keys and check their validity.
+
+The following code allows to check the validity of the IEX Cloud API key.
+```
+def check_iex_key(self, show_output: bool = False) -> None:
+    """Check IEX Cloud key"""
+    self.cfg_dict["IEXCLOUD"] = "iex"
+    if cfg.API_IEX_TOKEN == "REPLACE_ME":  # nosec
+        logger.info("IEX Cloud key not defined")
+        self.key_dict["IEXCLOUD"] = "not defined"
+    else:
+        try:
+            pyEX.Client(api_token=cfg.API_IEX_TOKEN, version="v1")
+            logger.info("IEX Cloud key defined, test passed")
+            self.key_dict["IEXCLOUD"] = "defined, test passed"
+        except PyEXception:
+            logger.exception("IEX Cloud key defined, test failed")
+            self.key_dict["IEXCLOUD"] = "defined, test failed"
+
+    if show_output:
+        console.print(self.key_dict["IEXCLOUD"] + "\n")
+```
+
+Note that there are usually 3 states:
+
+- **defined, test passed**: The user has set their API key and it is valid.
+- **defined, test failed**: The user has set their API key but it is not valid.
+- **not defined**: The user has not defined any API key.
+
+Note: Sometimes the user may have the correct API key but still not have access to a feature from that data source, and that may be because such feature required an API key of a higher level.
+
+A function can then be created with the following format to allow the user to change its environment key directly from the terminal.
+```
+@log_start_end(log=logger)
+def call_iex(self, other_args: List[str]):
+    """Process iex command"""
+    parser = argparse.ArgumentParser(
+        add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        prog="iex",
+        description="Set IEX Cloud API key.",
+    )
+    parser.add_argument(
+        "-k",
+        "--key",
+        type=str,
+        dest="key",
+        help="key",
+    )
+    if not other_args:
+        console.print("For your API Key, visit: https://iexcloud.io\n")
+        return
+    if other_args and "-" not in other_args[0][0]:
+        other_args.insert(0, "-k")
+    ns_parser = parse_simple_args(parser, other_args)
+    if ns_parser:
+        os.environ["OPENBB_API_IEX_KEY"] = ns_parser.key
+        dotenv.set_key(self.env_file, "OPENBB_API_IEX_KEY", ns_parser.key)
+        cfg.API_IEX_TOKEN = ns_parser.key
+        self.check_iex_key(show_output=True)
+```
+
 ### Model
 
 1. Create a file with the source of data as the name followed by `_model` if it doesn't exist, e.g. `yahoofinance_model`
@@ -106,9 +199,7 @@ will be implemented.
 5. In that function:
    1. Use typing hints
    2. Write a descriptive description where at the end the source is specified
-   3. Obtain the data and return it. Sometimes the model can contain a more complex logic to it, if the scraping is not
-      straightforward. If the data is returned directly by an API, we still want to wrap it around a model function to
-      keep consistency across codebase and be more future proof.
+   3. Utilizing a third party API, get and return the data.
 
 ```python
 """ Yahoo Finance Model """
@@ -138,7 +229,7 @@ Note:
 1. As explained before, it is possible that this file needs to be created under `common/` directory rather than
    `stocks/`, which means that when that happens this function should be done in a generic way, i.e. not mentioning stocks
    or a specific context.
-2. If the model require an API key or some sort of secrets, make sure to handle the error and output relevant message.
+2. If the model require an API key, make sure to handle the error and output relevant message.
 
 In the example below, you can see that we explicitly handle 4 important error types:
 
@@ -180,12 +271,11 @@ def get_economy_calendar_events() -> pd.DataFrame:
     return df
 ```
 
-#### View
+### View
 
 1. Create a file with the source of data as the name followed by `_view` if it doesn't exist, e.g. `yahoofinance_view`
 2. Add the documentation header
-3. Do the necessary imports to display the data. One of these is the `_model` associated with this `_view`. I.e. from
-   same data source.
+3. Do the necessary imports to display the data. One of these is the `_model` associated with this `_view`. I.e. from same data source.
 4. Define a function starting with `display_`
 5. In this function:
    - Use typing hints
@@ -195,9 +285,7 @@ def get_economy_calendar_events() -> pd.DataFrame:
    - Do not degrade the main data dataframe coming from model if there's an export flag. This is so that the export can
      have all the data rather than the short amount of information we may show to the user. Thus, in order to do so
      `df_data = df.copy()` can be useful as if you change `df_data`, `df` remains intact.
-   - Always add a new line at the end, this allows for an additional line between 2 commands and makes it easier for the
-     user to visualize what is happening.
-6. If the source requires an API Key or some sort of tokens, add `check_api_key` decorator on that specific view. This will throw a warning if users forget to set their Keys or Tokens
+6. If the source requires an API Key or some sort of tokens, add `check_api_key` decorator on that specific view. This will throw a warning if users forget to set their API Keys
 7. Finally, call `export_data` where the variables are export variable, current filename, command name, and dataframe.
 
 ```python
@@ -260,10 +348,10 @@ function shares the data output with.
         mt = MenuText("stocks/dps/")
         mt.add_cmd("load")
         mt.add_raw("\n")
-        mt.add_cmd("shorted", "Yahoo Finance")
+        mt.add_cmd("shorted")
    ```
 
-4. If there is a condition to display or not the command, this is something that can be leveraged through this `add_cmd` method, e.g. `mt.add_cmd("shorted", "Yahoo Finance", self.ticker_is_loaded)`.
+4. If there is a condition to display or not the command, this is something that can be leveraged through this `add_cmd` method, e.g. `mt.add_cmd("shorted", self.ticker_is_loaded)`.
 
 5. Add command description to file `i18n/en.yml`. Use the path and command name as key, e.g. `stocks/dps/shorted` and the value as description. Please fill in other languages if this is something that you know.
 
@@ -271,12 +359,15 @@ function shares the data output with.
    - This method must start defining a parser with arguments `add_help=False` and
      `formatter_class=argparse.ArgumentDefaultsHelpFormatter`. In addition `prog` must have the same name as the command,
      and `description` should be self-explanatory ending with a mention of the data source.
-   - Add parser arguments after defining parser. One important argument to add is the export capability. All commands
-     should be able to export data.
-   - Initialize a try-catch block. This is so that if there is an issue the terminal doesn't crash and the user can
-     keep using it.
+   - Add parser arguments after defining parser. One important argument to add is the export capability. All commands should be able to export data.
    - If there is a single or even a main argument, a block of code must be used to insert a fake argument on the list of
      args provided by the user. This makes the terminal usage being faster.
+
+      ```
+      if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+      ```
+
    - Parse known args from list of arguments and values provided by the user.
    - Call the function contained in a `_view.py` file with the arguments parsed by argparse.
 
@@ -320,6 +411,68 @@ def call_shorted(self, other_args: List[str]):
         )
 
 ```
+
+### API Wrapper
+
+TO BE ADDED
+
+
+## Important functions and classes
+
+### Parser
+
+Explain that there are some keywords:
+limit, export, raw
+
+## Default Data Sources
+
+Talk about that ordering being important and that all functions that rely on data source must have file being identified there
+
+### Export Data
+
+Explain what the export data functionality does and how it can export more than 1 type of data.
+Mention export folder.
+
+### Queue and pipeline
+
+Explain that all the commands pass through the parent class.
+Multiple commands attached.
+
+### Auto Completer
+
+Mention the custom auto-completer being created.
+
+### Logging
+
+Logging capability.
+
+### Internationalization
+
+In order to add support for a new language, the best approach is to:
+
+1. Copy-paste `i18n/en.yml`
+2. Rename that file to a short version of language you are translating to, e.g. `i18n/pt.yml` for portuguese
+3. Then just update the text on the right. E.g.
+
+```text
+  stocks/NEWS: latest news of the company
+```
+
+becomes
+
+```text
+  stocks/NEWS: mais recentes notícias da empresa
+```
+
+Note: To speed up translation, the team developed a [script](/i18n/help_translation.ipynb) that uses Google translator API to help translating the entire `en.yml` document to the language of choice. Then the output still needs to be reviewed, but this can be an useful bootstrap.
+
+This is the convention in use for creating a new key/value pair:
+
+- `stocks/search` - Under `stocks` context, short command `search` description on the `help menu`
+- `stocks/SEARCH` - Under `stocks` context, long command `search` description, when `search -h`
+- `stocks/SEARCH_query` - Under `stocks` context, `query` description when inquiring about `search` command with `search -h`
+- `stocks/_ticker` - Under `stocks` context, `_ticker` is used as a key of a parameter, and the displayed parameter description is given as value
+- `crypto/dd/_tokenomics_` - Under `crypto` context and under `dd` menu, `_tokenomics_` is used as a key of an additional information, and the displayed information is given as value
 
 ## Remember Coding Style
 
@@ -373,6 +526,14 @@ The following linters are used by our codebase:
 | safety       | checks security vulnerabilities   |
 | pylint       | bug and quality checker           |
 | markdownlint | markdown linter                   |
+
+### Command names
+
+* The command name should be as short as possible.
+* The command name should allow the user to know what the command refers to without needing to read description. (e.g. `earn`)
+
+    - If this is not possible, then the command name should be an abbreviation of what the functionality corresponds to (e.g. `ycrv` for `yield curve`)
+* The command name **should not** have the data source explicit
 
 ## Write Code and Commit
 
@@ -443,34 +604,6 @@ speeds up the time it takes to run tests. To use VCRPY add **@pytest.mark.vcr** 
 
 - **Low-level documentation**:
   - See [Hugo Server instructions](/website/README.md).
-
-## Add support for a new language
-
-In order to add support for a new language, the best approach is to:
-
-1. Copy-paste `i18n/en.yml`
-2. Rename that file to a short version of language you are translating to, e.g. `i18n/pt.yml` for portuguese
-3. Then just update the text on the right. E.g.
-
-```text
-  stocks/NEWS: latest news of the company
-```
-
-becomes
-
-```text
-  stocks/NEWS: mais recentes notícias da empresa
-```
-
-Note: To speed up translation, one may use google translator to translate the entire `en.yml` document to the language of choice. But then the keys need to remain the same and the strings will likely need to be reviewed.
-
-This is the convention in use for creating a new key/value pair:
-
-- `stocks/search` - Under `stocks` context, short command `search` description on the `help menu`
-- `stocks/SEARCH` - Under `stocks` context, long command `search` description, when `search -h`
-- `stocks/SEARCH_query` - Under `stocks` context, `query` description when inquiring about `search` command with `search -h`
-- `stocks/_ticker` - Under `stocks` context, `_ticker` is used as a key of a parameter, and the displayed parameter description is given as value
-- `crypto/dd/_tokenomics_` - Under `crypto` context and under `dd` menu, `_tokenomics_` is used as a key of an additional information, and the displayed information is given as value
 
 ## Open a Pull Request
 
