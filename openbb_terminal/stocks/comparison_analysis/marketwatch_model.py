@@ -33,7 +33,7 @@ def get_financial_comparisons(
     data : str
         Data to get. Can be income, balance or cashflow
     timeframe : str
-        What year to look at
+        What year/quarter to look at
     quarter : bool
         Flag to use quarterly data.
 
@@ -50,7 +50,9 @@ def get_financial_comparisons(
     l_timeframes, ddf_financials = prepare_comparison_financials(symbols, data, quarter)
 
     if timeframe:
-        if timeframe not in l_timeframes:
+        if (timeframe == str(datetime.now().year - 1)) and quarter:
+            timeframe = l_timeframes[-1]
+        elif timeframe not in l_timeframes:
             raise ValueError(
                 f"Timeframe selected should be one of {', '.join(l_timeframes)}"
             )
@@ -195,64 +197,67 @@ def prepare_df_financials(
     if statement not in financial_urls:
         raise ValueError(f"type {statement} is not in {financial_urls.keys()}")
 
-    period = "quarter" if quarter else "annual"
-    text_soup_financials = BeautifulSoup(
-        requests.get(
-            financial_urls[statement][period].format(ticker),
-            headers={"User-Agent": get_user_agent()},
-        ).text,
-        "lxml",
-    )
-
-    # Define financials columns
-    a_financials_header = [
-        financials_header.text.strip("\n").split("\n")[0]
-        for financials_header in text_soup_financials.findAll(
-            "th", {"class": "overflow__heading"}
-        )
-    ]
-
-    s_header_end_trend = ("5-year trend", "5- qtr trend")[quarter]
-    if s_header_end_trend in a_financials_header:
-        df_financials = pd.DataFrame(
-            columns=a_financials_header[
-                0 : a_financials_header.index(s_header_end_trend)
-            ]
-        )
-    else:
-        # We don't have the data we need for whatever reason, so return an empty DataFrame
-        return pd.DataFrame()
-
-    find_table = text_soup_financials.findAll(
-        "div", {"class": "element element--table table--fixed financials"}
-    )
-
-    if not find_table:
-        return df_financials
-
-    financials_rows = find_table[0].findAll(
-        "tr", {"class": ["table__row is-highlighted", "table__row"]}
-    )
-
-    for a_row in financials_rows:
-        constructed_row = []
-        financial_columns = a_row.findAll(
-            "td", {"class": ["overflow__cell", "overflow__cell fixed--column"]}
+    try:
+        period = "quarter" if quarter else "annual"
+        text_soup_financials = BeautifulSoup(
+            requests.get(
+                financial_urls[statement][period].format(ticker),
+                headers={"User-Agent": get_user_agent()},
+            ).text,
+            "lxml",
         )
 
-        if not financial_columns:
-            continue
+        # Define financials columns
+        a_financials_header = [
+            financials_header.text.strip("\n").split("\n")[0]
+            for financials_header in text_soup_financials.findAll(
+                "th", {"class": "overflow__heading"}
+            )
+        ]
 
-        for a_column in financial_columns:
-            column_to_text = a_column.text.strip()
-            if "\n" in column_to_text:
-                column_to_text = column_to_text.split("\n")[0]
+        s_header_end_trend = ("5-year trend", "5- qtr trend")[quarter]
+        if s_header_end_trend in a_financials_header:
+            df_financials = pd.DataFrame(
+                columns=a_financials_header[
+                    0 : a_financials_header.index(s_header_end_trend)
+                ]
+            )
+        else:
+            # We don't have the data we need for whatever reason, so return an empty DataFrame
+            return pd.DataFrame()
 
-            if column_to_text == "":
+        find_table = text_soup_financials.findAll(
+            "div", {"class": "element element--table table--fixed financials"}
+        )
+
+        if not find_table:
+            return df_financials
+
+        financials_rows = find_table[0].findAll(
+            "tr", {"class": ["table__row is-highlighted", "table__row"]}
+        )
+
+        for a_row in financials_rows:
+            constructed_row = []
+            financial_columns = a_row.findAll(
+                "td", {"class": ["overflow__cell", "overflow__cell fixed--column"]}
+            )
+
+            if not financial_columns:
                 continue
-            constructed_row.append(column_to_text)
 
-        df_financials.loc[len(df_financials)] = constructed_row
+            for a_column in financial_columns:
+                column_to_text = a_column.text.strip()
+                if "\n" in column_to_text:
+                    column_to_text = column_to_text.split("\n")[0]
+
+                if column_to_text == "":
+                    continue
+                constructed_row.append(column_to_text)
+
+            df_financials.loc[len(df_financials)] = constructed_row
+    except Exception:
+        df_financials = pd.DataFrame()
 
     return df_financials
 

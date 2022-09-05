@@ -249,14 +249,14 @@ def test_call_func_expect_queue(expected_queue, func, queue):
     [
         (
             "call_ln",
-            ["oil", "-l=5", "--source=fd"],
+            ["oil", "-l=5", "--source=FinanceDatabase"],
             "financedatabase_view.display_etf_by_name",
             [],
             dict(name="oil", limit=5, export=""),
         ),
         (
             "call_ln",
-            ["oil", "-l=5", "--source=sa"],
+            ["oil", "-l=5", "--source=StockAnalysis"],
             "stockanalysis_view.display_etf_by_name",
             [],
             dict(name="oil", limit=5, export=""),

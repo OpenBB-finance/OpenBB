@@ -327,7 +327,7 @@ class TechnicalAnalysisController(StockBaseController):
             momentum_view.display_cci(
                 symbol=self.ticker,
                 data=self.data,
-                length=ns_parser.n_length,
+                window=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
                 export=ns_parser.export,
             )
@@ -443,7 +443,7 @@ class TechnicalAnalysisController(StockBaseController):
             momentum_view.display_rsi(
                 symbol=self.ticker,
                 series=self.data["Adj Close"],
-                length=ns_parser.n_length,
+                window=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
                 drift=ns_parser.n_drift,
                 export=ns_parser.export,
@@ -540,7 +540,7 @@ class TechnicalAnalysisController(StockBaseController):
             momentum_view.display_fisher(
                 symbol=self.ticker,
                 data=self.data,
-                length=ns_parser.n_length,
+                window=ns_parser.n_length,
                 export=ns_parser.export,
             )
 
@@ -579,7 +579,7 @@ class TechnicalAnalysisController(StockBaseController):
             momentum_view.display_cg(
                 symbol=self.ticker,
                 series=self.data["Adj Close"],
-                length=ns_parser.n_length,
+                window=ns_parser.n_length,
                 export=ns_parser.export,
             )
 
@@ -634,7 +634,7 @@ class TechnicalAnalysisController(StockBaseController):
             trend_indicators_view.display_adx(
                 symbol=self.ticker,
                 data=self.data,
-                length=ns_parser.n_length,
+                window=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
                 drift=ns_parser.n_drift,
                 export=ns_parser.export,
@@ -698,7 +698,7 @@ class TechnicalAnalysisController(StockBaseController):
             trend_indicators_view.display_aroon(
                 symbol=self.ticker,
                 data=self.data,
-                length=ns_parser.n_length,
+                window=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
                 export=ns_parser.export,
             )
