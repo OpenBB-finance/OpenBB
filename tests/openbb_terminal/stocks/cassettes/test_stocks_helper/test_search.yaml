@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - python-requests/2.27.1
+      - python-requests/2.28.1
     method: GET
     uri: https://raw.githubusercontent.com/JerBouma/FinanceDatabase/master/Database/Equities/Countries/Portugal/Portugal.json
   response:
@@ -362,11 +362,11 @@ interactions:
       Content-Type:
       - text/plain; charset=utf-8
       Date:
-      - Sat, 02 Apr 2022 21:07:45 GMT
+      - Sun, 04 Sep 2022 11:15:33 GMT
       ETag:
       - W/"0d90a2df79d87b54885674b99702c5bb68266eefcd3e02a0e71b059f4371a9d3"
       Expires:
-      - Sat, 02 Apr 2022 21:12:45 GMT
+      - Sun, 04 Sep 2022 11:20:33 GMT
       Source-Age:
       - '0'
       Strict-Transport-Security:
@@ -382,15 +382,15 @@ interactions:
       X-Content-Type-Options:
       - nosniff
       X-Fastly-Request-ID:
-      - e734f0bfef3fb6f77e0f8eb46947e9485e77c33a
+      - 60a0dd2d3fc362e1c06657da388c6b4f21a4b2ab
       X-Frame-Options:
       - deny
       X-GitHub-Request-Id:
-      - 090C:D2B5:18213B2:192F901:6248BB17
+      - 5A18:D112:8B8742:95E4C5:631488D5
       X-Served-By:
-      - cache-lhr7343-LHR
+      - cache-fra19157-FRA
       X-Timer:
-      - S1648933665.255128,VS0,VE1
+      - S1662290134.595092,VS0,VE1
       X-XSS-Protection:
       - 1; mode=block
     status:

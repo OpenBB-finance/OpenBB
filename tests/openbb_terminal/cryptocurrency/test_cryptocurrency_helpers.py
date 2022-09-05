@@ -77,7 +77,7 @@ def fixture_get_bitcoin(mocker):
     ) as f:
         sample_return = json.load(f)
     mock_load.return_value = sample_return
-    df = load("BTC", vs_currency="usd", source="yf")
+    df = load("BTC", vs_currency="usd", source="YahooFinance")
     return df
 
 

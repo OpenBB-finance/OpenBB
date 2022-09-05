@@ -9,12 +9,12 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - python-requests/2.28.1
+      - python-requests/2.27.1
     method: GET
     uri: https://api.polygon.io/v2/aggs/ticker/AAPL/range/1/day/2020-06-01/2020-06-17?apiKey=VALIDKEY
   response:
     body:
-      string: '{"status":"ERROR","request_id":"65f32f5c7c73a466e75728dd9d1bb16f","error":"Unknown
+      string: '{"status":"ERROR","request_id":"6175bb45e8182f2ffc989b3dd6435cbb","error":"Unknown
         API Key"}'
     headers:
       Connection:
@@ -24,13 +24,13 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Fri, 19 Aug 2022 12:34:45 GMT
+      - Sun, 04 Sep 2022 00:08:31 GMT
       Server:
       - nginx/1.19.2
       Strict-Transport-Security:
       - max-age=15724800; includeSubDomains
       X-Request-Id:
-      - 65f32f5c7c73a466e75728dd9d1bb16f
+      - 6175bb45e8182f2ffc989b3dd6435cbb
     status:
       code: 401
       message: Unauthorized
