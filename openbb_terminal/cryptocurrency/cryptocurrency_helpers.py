@@ -1,11 +1,12 @@
 """Cryptocurrency helpers"""
-__docformat__ = "numpy"
-# pylint: disable=C0301,R0911,C0302, W0702
+# pylint: disable=too-many-lines,too-many-return-statements
+
+from __future__ import annotations
 
 import os
 import json
 from datetime import datetime, timedelta
-from typing import Tuple, Any, Optional, List
+from typing import Any
 import difflib
 import logging
 
@@ -44,6 +45,8 @@ import openbb_terminal.config_terminal as cfg
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
+
+__docformat__ = "numpy"
 
 INTERVALS = ["1H", "3H", "6H", "1D"]
 
@@ -341,7 +344,7 @@ def load(
             if df.empty:
                 console.print(f"\nPair {pair} not found in {exchange}\n")
                 return pd.DataFrame()
-        except:  # noqa: E722
+        except Exception:
             console.print(f"\nPair {pair} not found on {exchange}\n")
             return df
     elif source == "CoinGecko":
@@ -474,7 +477,7 @@ def show_quick_performance(
                     )
                 ),
             )
-    except:  # noqa: E722
+    except Exception:
         pass
 
     console.print()
@@ -531,7 +534,7 @@ def load_deprecated(
             )
             return None, None, None, None, None, None
 
-    current_coin = ""  # type: Optional[Any]
+    current_coin: Any | None = ""
 
     coins_map_df = prepare_all_coins_df().set_index("Symbol").dropna(thresh=2)
 
@@ -809,7 +812,7 @@ def load_deprecated(
                 if isinstance(coin_map_df, pd.DataFrame)
                 else coin_map_df
             )
-        except:  # noqa: E722
+        except Exception:
             return None, None, None, None, None, None
 
         if should_load_ta_data:
@@ -958,7 +961,7 @@ def find(
 
 def load_ta_data(
     coin_map_df: pd.DataFrame, source: str, currency: str, **kwargs: Any
-) -> Tuple[pd.DataFrame, str]:
+) -> tuple[pd.DataFrame, str]:
     """Load data for Technical Analysis
 
     Parameters
@@ -1273,7 +1276,7 @@ def plot_chart(
     currency: str = "",
     source: str = "",
     exchange: str = "",
-    interval: str = "",
+    interval: str = "",  # pylint: disable=unused-argument
 ) -> None:
     """Load data for Technical Analysis
 
@@ -1292,7 +1295,10 @@ def plot_chart(
         return
 
     exchange_str = f"/{exchange}" if source == "ccxt" else ""
-    title = f"{source}{exchange_str} - {symbol.upper()}/{currency.upper()} from {prices_df.index[0].strftime('%Y/%m/%d')} to {prices_df.index[-1].strftime('%Y/%m/%d')} - {interval}m"  # noqa: E501
+    title = (
+        f"{source}{exchange_str} - {symbol.upper()}/{currency.upper()} from {prices_df.index[0].strftime('%Y/%m/%d')} "
+        f"to {prices_df.index[-1].strftime('%Y/%m/%d')}"
+    )
 
     volume_mean = prices_df["Volume"].mean()
     if volume_mean > 1_000_000:
@@ -1313,7 +1319,7 @@ def plot_candles(
     volume: bool = True,
     ylabel: str = "",
     title: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: list[plt.Axes] | None = None,
 ) -> None:
     """Plot candle chart from dataframe. [Source: Binance]
 
@@ -1383,7 +1389,7 @@ def plot_order_book(
     bids: np.ndarray,
     asks: np.ndarray,
     coin: str,
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: list[plt.Axes] | None = None,
 ) -> None:
     """
     Plots Bid/Ask. Can be used for Coinbase and Binance
