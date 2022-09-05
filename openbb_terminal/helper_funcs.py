@@ -1717,11 +1717,9 @@ def search_wikipedia(expression: str) -> None:
     url = f"https://en.wikipedia.org/api/rest_v1/page/summary/{expression}"
 
     response = requests.request("GET", url, headers={}, data={})
-    status = response.status_code
-    response = response.text
-    response = json.loads(response)
 
-    if status == 200:
+    if response.status_code == 200:
+        response = json.loads(response.text)
         response = {
             "title": response["title"],
             "url": f"[blue]{response['content_urls']['desktop']['page']}[/blue]",

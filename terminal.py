@@ -123,6 +123,7 @@ class TerminalController(BaseController):
         mt.add_cmd("support")
         mt.add_cmd("survey")
         mt.add_cmd("update")
+        mt.add_cmd("wiki")
         mt.add_raw("\n")
         mt.add_info("_configure_")
         mt.add_menu("keys")
@@ -148,7 +149,6 @@ class TerminalController(BaseController):
         mt.add_menu("dashboards")
         mt.add_menu("reports")
         mt.add_raw("\n")
-        mt.add_cmd("wiki")
         console.print(text=mt.menu_text, menu="Home")
 
     def call_news(self, other_args: List[str]) -> None:
