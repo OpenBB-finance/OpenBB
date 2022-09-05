@@ -380,36 +380,21 @@ def call_shorted(self, other_args: List[str]):
             prog="shorted",
             description="Print up to 25 top ticker most shorted. [Source: Yahoo Finance]",
         )
-        parser.add_argument(
-            "-n",
-            "--num",
-            action="store",
-            dest="num",
-            type=check_int_range(1, 25),
-            default=5,
-            help="Number of the most shorted stocks to retrieve.",
-        )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
-        )
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-n")
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "-l")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        yahoofinance_view.display_most_shorted(
-            num_stocks=ns_parser.num,
-            export=ns_parser.export,
+        ns_parser = parse_known_args_and_warn(
+            parser,
+            other_args, 
+            limit=10, 
+            export=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
+        
+        if ns_parser:
+          yahoofinance_view.display_most_shorted(
+              num_stocks=ns_parser.num,
+              export=ns_parser.export,
+          )
 ```
 
 If a new menu is being added the code looks like this:
@@ -554,14 +539,27 @@ The default location is the `exports` folder and the data will be stored with th
 
 ### Queue and pipeline
 
-Explain that all the commands pass through the parent class.
-Multiple commands attached.
+The variable `self.queue` contains a list of all actions to be run on the platform. That is the reason why this variable is always passed as an argument to a new controller class and received back.
 
 ```
   self.queue = self.load_class(
       DarkPoolShortsController, self.ticker, self.start, self.stock, self.queue
   )
 ```
+
+Example:
+
+If a user is in the root of the terminal and runs:
+```
+$ stocks/load AAPL/dps/psi -l 90
+```
+The queue created becomes:
+`self.queue = ["stocks", "load AAPL", "dps", "psi -l 90"]`
+
+And the user goes into the `stocks` menu and runs `load AAPL`. Then the queue is updated to
+`self.queue = ["dps", "psi -l 90"]`
+
+At that point the user goes into the `dps` menu and runs the command `psi` with the argument `-l 90` therefore displaying price vs short interest of the past 90 days.
 
 ### Auto Completer
 
