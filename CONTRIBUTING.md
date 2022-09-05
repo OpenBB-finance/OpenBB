@@ -412,6 +412,28 @@ def call_shorted(self, other_args: List[str]):
 
 ```
 
+If a new menu is being added the code looks like this:
+
+```
+@log_start_end(log=logger)
+def call_dps(self, _):
+    """Process dps command"""
+    from openbb_terminal.stocks.dark_pool_shorts.dps_controller import (
+        DarkPoolShortsController,
+    )
+
+    self.queue = self.load_class(
+        DarkPoolShortsController, self.ticker, self.start, self.stock, self.queue
+    )
+```
+
+The **import only occurs inside this menu call**, this is so that the loading time only happens here and not at the terminal startup. This is to avoid slow loading times for users that are not interested in `stocks/dps` menu.
+
+In addition, note the `self.load_class` which allows to not create a new DarkPoolShortsController instance but re-load the previous created one. Unless the arguments `self.ticker, self.start, self.stock` have changed since. 
+
+The `self.queue` list of commands is passed around as it contains the commands that the terminal must perform.
+
+
 ### API Wrapper
 
 TO BE ADDED
@@ -534,6 +556,12 @@ The default location is the `exports` folder and the data will be stored with th
 
 Explain that all the commands pass through the parent class.
 Multiple commands attached.
+
+```
+  self.queue = self.load_class(
+      DarkPoolShortsController, self.ticker, self.start, self.stock, self.queue
+  )
+```
 
 ### Auto Completer
 
