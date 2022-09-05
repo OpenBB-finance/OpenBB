@@ -309,7 +309,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
         (
             "call_income",
             "av_view.display_income_statement",
-            ["--source=av", "--export=csv", "--limit=5"],
+            ["--source=AlphaVantage", "--export=csv", "--limit=5"],
             dict(
                 symbol="TSLA",
                 limit=5,
@@ -322,7 +322,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
         (
             "call_income",
             "polygon_view.display_fundamentals",
-            ["--source=polygon", "--export=csv", "--limit=5"],
+            ["--source=Polygon", "--export=csv", "--limit=5"],
             dict(
                 symbol="TSLA",
                 statement="income",
@@ -336,7 +336,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
         (
             "call_income",
             "fmp_view.display_income_statement",
-            ["--source=fmp", "--export=csv", "--limit=5"],
+            ["--source=FinancialModelingPrep", "--export=csv", "--limit=5"],
             dict(
                 symbol="TSLA",
                 limit=5,
@@ -349,7 +349,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
         (
             "call_income",
             "yahoo_finance_view.display_fundamentals",
-            ["--source=yf", "--export=csv", "--limit=5"],
+            ["--source=YahooFinance", "--export=csv", "--limit=5"],
             dict(
                 symbol="TSLA",
                 statement="financials",
@@ -361,7 +361,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
         (
             "call_balance",
             "av_view.display_balance_sheet",
-            ["--source=av", "--export=csv", "--limit=5"],
+            ["--source=AlphaVantage", "--export=csv", "--limit=5"],
             dict(
                 symbol="TSLA",
                 limit=5,
@@ -374,7 +374,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
         (
             "call_balance",
             "polygon_view.display_fundamentals",
-            ["--source=polygon", "--export=csv", "--limit=5"],
+            ["--source=Polygon", "--export=csv", "--limit=5"],
             dict(
                 symbol="TSLA",
                 statement="balance",
@@ -388,7 +388,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
         (
             "call_balance",
             "fmp_view.display_balance_sheet",
-            ["--source=fmp", "--export=csv", "--limit=5"],
+            ["--source=FinancialModelingPrep", "--export=csv", "--limit=5"],
             dict(
                 symbol="TSLA",
                 limit=5,
@@ -401,7 +401,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
         (
             "call_balance",
             "yahoo_finance_view.display_fundamentals",
-            ["--source=yf", "--export=csv", "--limit=5"],
+            ["--source=YahooFinance", "--export=csv", "--limit=5"],
             dict(
                 symbol="TSLA",
                 statement="balance-sheet",
@@ -413,7 +413,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
         (
             "call_cash",
             "av_view.display_cash_flow",
-            ["--source=av", "--export=csv", "--limit=5"],
+            ["--source=AlphaVantage", "--export=csv", "--limit=5"],
             dict(
                 symbol="TSLA",
                 limit=5,
@@ -426,7 +426,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
         (
             "call_cash",
             "fmp_view.display_cash_flow",
-            ["--source=fmp", "--export=csv", "--limit=5"],
+            ["--source=FinancialModelingPrep", "--export=csv", "--limit=5"],
             dict(
                 symbol="TSLA",
                 limit=5,
@@ -439,7 +439,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
         (
             "call_cash",
             "polygon_view.display_fundamentals",
-            ["--source=polygon", "--export=csv", "--limit=5"],
+            ["--source=Polygon", "--export=csv", "--limit=5"],
             dict(
                 symbol="TSLA",
                 statement="cash",
@@ -453,7 +453,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
         (
             "call_cash",
             "yahoo_finance_view.display_fundamentals",
-            ["--source=yf", "--export=csv", "--limit=5"],
+            ["--source=YahooFinance", "--export=csv", "--limit=5"],
             dict(
                 symbol="TSLA",
                 statement="cash-flow",
@@ -465,7 +465,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
         (
             "call_earnings",
             "av_view.display_earnings",
-            ["--limit=5", "--quarter", "--export=csv"],
+            ["--limit=5", "--quarter", "--export=csv", "--source=AlphaVantage"],
             dict(
                 symbol="TSLA",
                 limit=5,

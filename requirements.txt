@@ -48,6 +48,7 @@ detecta==0.0.5; python_version >= "3.6"
 dnspython==2.2.1; python_version >= "3.6" and python_version < "4.0"
 ecos==2.0.10; python_version >= "3.8" and python_version < "3.11"
 entrypoints==0.4; python_full_version >= "3.7.0" and python_version >= "3.7"
+eod==0.2.1
 et-xmlfile==1.1.0; python_version >= "3.6"
 exchange-calendars==4.2; python_version >= "3.8" and python_version < "4.0" and python_full_version >= "3.7.0"
 executing==1.0.0; python_full_version >= "3.6.2" and python_version >= "3.8"

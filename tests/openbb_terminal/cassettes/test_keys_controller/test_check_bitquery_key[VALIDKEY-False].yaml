@@ -14,7 +14,7 @@ interactions:
       Content-Type:
       - application/json
       User-Agent:
-      - python-requests/2.28.1
+      - python-requests/2.27.1
       x-api-key:
       - VALIDKEY
     method: POST
@@ -37,7 +37,7 @@ interactions:
       Content-Type:
       - text/html
       Date:
-      - Mon, 11 Jul 2022 13:59:53 GMT
+      - Sun, 04 Sep 2022 00:08:34 GMT
       Server:
       - nginx
     status:

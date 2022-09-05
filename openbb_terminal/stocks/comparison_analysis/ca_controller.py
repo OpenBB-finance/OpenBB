@@ -98,10 +98,10 @@ class ComparisonAnalysisController(BaseController):
         mt.add_raw("\n")
         mt.add_param("_ticker", self.ticker)
         mt.add_raw("\n")
-        mt.add_cmd("tsne", "", self.ticker)
-        mt.add_cmd("getpoly", "Polygon", self.ticker)
-        mt.add_cmd("getfinnhub", "Finnhub", self.ticker)
-        mt.add_cmd("getfinviz", "Finviz", self.ticker)
+        mt.add_cmd("tsne", self.ticker)
+        mt.add_cmd("getpoly", self.ticker)
+        mt.add_cmd("getfinnhub", self.ticker)
+        mt.add_cmd("getfinviz", self.ticker)
         mt.add_raw("\n")
         mt.add_cmd("set")
         mt.add_cmd("add")
@@ -109,22 +109,20 @@ class ComparisonAnalysisController(BaseController):
         mt.add_raw("\n")
         mt.add_param("_similar", ", ".join(self.similar))
         mt.add_raw("\n")
-        mt.add_cmd(
-            "historical", "Yahoo Finance", self.similar and len(self.similar) > 1
-        )
-        mt.add_cmd("hcorr", "Yahoo Finance", self.similar and len(self.similar) > 1)
-        mt.add_cmd("volume", "Yahoo Finance", self.similar and len(self.similar) > 1)
-        mt.add_cmd("income", "Market Watch", self.similar and len(self.similar) > 1)
-        mt.add_cmd("balance", "Market Watch", self.similar and len(self.similar) > 1)
-        mt.add_cmd("cashflow", "Market Watch", self.similar and len(self.similar) > 1)
-        mt.add_cmd("sentiment", "FinBrain", self.similar and len(self.similar) > 1)
-        mt.add_cmd("scorr", "FinBrain", self.similar and len(self.similar) > 1)
-        mt.add_cmd("overview", "Finviz", self.similar and len(self.similar) > 1)
-        mt.add_cmd("valuation", "Finviz", self.similar and len(self.similar) > 1)
-        mt.add_cmd("financial", "Finviz", self.similar and len(self.similar) > 1)
-        mt.add_cmd("ownership", "Finviz", self.similar and len(self.similar) > 1)
-        mt.add_cmd("performance", "Finviz", self.similar and len(self.similar) > 1)
-        mt.add_cmd("technical", "Finviz", self.similar and len(self.similar) > 1)
+        mt.add_cmd("historical", self.similar and len(self.similar) > 1)
+        mt.add_cmd("hcorr", self.similar and len(self.similar) > 1)
+        mt.add_cmd("volume", self.similar and len(self.similar) > 1)
+        mt.add_cmd("income", self.similar and len(self.similar) > 1)
+        mt.add_cmd("balance", self.similar and len(self.similar) > 1)
+        mt.add_cmd("cashflow", self.similar and len(self.similar) > 1)
+        mt.add_cmd("sentiment", self.similar and len(self.similar) > 1)
+        mt.add_cmd("scorr", self.similar and len(self.similar) > 1)
+        mt.add_cmd("overview", self.similar and len(self.similar) > 1)
+        mt.add_cmd("valuation", self.similar and len(self.similar) > 1)
+        mt.add_cmd("financial", self.similar and len(self.similar) > 1)
+        mt.add_cmd("ownership", self.similar and len(self.similar) > 1)
+        mt.add_cmd("performance", self.similar and len(self.similar) > 1)
+        mt.add_cmd("technical", self.similar and len(self.similar) > 1)
         console.print(text=mt.menu_text, menu="Stocks - Comparison Analysis")
 
     def custom_reset(self):
@@ -737,7 +735,8 @@ class ComparisonAnalysisController(BaseController):
             dest="s_timeframe",
             type=str,
             default=None,
-            help="Specify yearly/quarterly timeframe. Default is last.",
+            help="Specify year/quarter of the cashflow statement to be retrieved. The format for year is YYYY and for "
+            "quarter is DD-MMM-YYY (for example, 30-Sep-2021). Default is last year/quarter.",
         )
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED

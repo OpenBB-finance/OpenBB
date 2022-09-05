@@ -297,7 +297,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 "--start=2021-12-01",
                 "--end=2021-12-02",
                 "--interval=1",
-                "--source=yf",
+                "--source=YahooFinance",
                 "--prepost",
             ],
             "stocks_helper.load",
@@ -307,7 +307,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 1,
                 datetime.strptime("2021-12-02", "%Y-%m-%d"),
                 True,
-                "yf",
+                "YahooFinance",
             ],
             {"weekly": False, "monthly": False},
         ),
@@ -794,6 +794,6 @@ def test_call_load(mocker):
         "TSLA",
         "--start=2021-12-17",
         "--end=2021-12-18",
-        "--source=yf",
+        "--source=YahooFinance",
     ]
     controller.call_load(other_args=other_args)

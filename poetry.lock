@@ -2836,7 +2836,7 @@ hook_testing = ["pytest (>=2.7.3)", "execnet (>=1.5.0)", "psutil"]
 
 [[package]]
 name = "pyinstaller-hooks-contrib"
-version = "2022.10"
+version = "2022.9
 description = "Community maintained hooks for PyInstaller"
 category = "main"
 optional = true
