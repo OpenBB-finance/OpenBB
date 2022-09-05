@@ -6,10 +6,7 @@ env:
   OPENBB_USE_PROMPT_TOOLKIT: false
   PIP_DEFAULT_TIMEOUT: 100
   PYTHONNOUSERSITE: 1
-on:
-  push:
-    branch:
-      - m1_macos_first_build_system
+on: workflow_dispatch
 jobs:
   Build:
     name: M1 MacOS Build
@@ -104,5 +101,5 @@ jobs:
         run: /Users/ec2-user/Desktop/OpenBB\ Terminal/.OpenBB/OpenBBTerminal /Users/ec2-user/actions-runner/_work/OpenBBTerminal/OpenBBTerminal/scripts/*.openbb -t
       - name: Remove OpenBB Folder
         run: rm -rf /Users/ec2-user/Desktop/OpenBB\ Terminal
-      #- name: Remove OpenBB Exports Folder
-      #  run: rm -rf ~/Desktop/OPENBB-exports
+      - name: Remove OpenBB Exports Folder
+        run: rm -rf ~/Desktop/OPENBB-exports
