@@ -146,7 +146,7 @@ jobs:
       - name: Save Build Artifact DMG
         uses: actions/upload-artifact@v3
         with:
-          name: x86_64 MacOS DMG Artifact
+          name: Intel MacOS DMG Artifact
           path: OpenBB\ Terminal.dmg
       - name: Convert & Mount DMG
         run: | # Remove the converting disc image at the end
