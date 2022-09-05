@@ -860,7 +860,7 @@ class FundamentalAnalysisController(StockBaseController):
                     plot=ns_parser.plot,
                     export=ns_parser.export,
                 )
-            elif ns_parser.source == "eodhd":
+            elif ns_parser.source == "EODHD":
                 console.print("Source is EOD Historical Data!")
                 eodhd_view.display_fundamentals(
                     symbol=self.ticker,
@@ -968,7 +968,7 @@ class FundamentalAnalysisController(StockBaseController):
                     plot=ns_parser.plot,
                     export=ns_parser.export,
                 )
-            elif ns_parser.source == "eodhd":
+            elif ns_parser.source == "EODHD":
                 console.print("Source is EOD Historical Data!")
                 eodhd_view.display_fundamentals(
                     symbol=self.ticker,
@@ -1082,7 +1082,7 @@ class FundamentalAnalysisController(StockBaseController):
                     plot=ns_parser.plot,
                     export=ns_parser.export,
                 )
-            elif ns_parser.source == "eodhd":
+            elif ns_parser.source == "EODHD":
                 console.print("Source is EOD Historical Data!")
                 eodhd_view.display_fundamentals(
                     symbol=self.ticker,
