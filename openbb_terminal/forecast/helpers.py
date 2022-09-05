@@ -31,7 +31,9 @@ from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal import rich_config
 
 logger = logging.getLogger(__name__)
-logger = logging.getLogger("pytorch_lightning").setLevel(logging.CRITICAL) # No needed for now
+logger = logging.getLogger("pytorch_lightning").setLevel(
+    logging.CRITICAL
+)  # No needed for now
 
 
 def mean_absolute_percentage_error(y_true: np.ndarray, y_pred: np.ndarray) -> np.number:
@@ -616,7 +618,7 @@ def get_prediction(
     forecast_horizon,
     n_predict: int,
 ):
-    if not "Regression":
+    if not model_name == "Regression":
         # need to create a new pytorch trainer for historical backtesting to remove progress bar
         best_model.trainer = None
         best_model.trainer_params["enable_progress_bar"] = False
