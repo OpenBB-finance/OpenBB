@@ -451,5 +451,4 @@ def get_currency(symbol) -> str:
     ticker_info = yf.Ticker(symbol).info
     if "financialCurrency" in ticker_info:
         return ticker_info["financialCurrency"]
-    else:
-        return "Not Specified"
+    return "Not Specified"
