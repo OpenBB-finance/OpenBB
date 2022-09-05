@@ -561,13 +561,66 @@ And the user goes into the `stocks` menu and runs `load AAPL`. Then the queue is
 
 At that point the user goes into the `dps` menu and runs the command `psi` with the argument `-l 90` therefore displaying price vs short interest of the past 90 days.
 
+
 ### Auto Completer
 
-Mention the custom auto-completer being created.
+In order to help users with a powerful autocomplete, we have implemented our own (which can be found [here](/openbb_terminal/custom_prompt_toolkit.py)).
+
+This **STATIC** list of options is meant to be defined on the `__init__` method of a class as follows.
+
+```
+if session and obbff.USE_PROMPT_TOOLKIT:
+  self.choices: dict = {c: {} for c in self.controller_choices}
+  self.choices["overview"] = {
+     "--type": {c: None for c in self.overview_options},
+     "-t": "--type",
+  }
+  self.choices["futures"] = {
+     "--commodity": {c: None for c in self.futures_commodities},
+     "-c": "--commodity",
+     "--sortby": {c: None for c in self.wsj_sortby_cols_dict.keys()},
+     "-s": "--sortby",
+     "--ascend": {},
+     "-a": "--ascend",
+  }
+  self.choices["map"] = {
+     "--period": {c: None for c in self.map_period_list},
+     "-p": "--period",
+     "--type": {c: None for c in self.map_filter_list},
+     "-t": "--type",
+  }
+  self.completer = NestedCompleter.from_nested_dict(self.choices)
+```
+
+Important things to note:
+* `self.choices: dict = {c: {} for c in self.controller_choices}`: this allows users to have autocomplete on the command that they are allowed to select in each menu
+* `self.choices["overview"]`: this corresponds to the list of choices that the user is allowed to select after specifying `$ overview `
+* `"--commodity": {c: None for c in self.futures_commodities}`: this allows the user to select several commodity values after `--commodity` flag
+* `"-c": "--commodity"`: this is interpreted as `-c` having the same effect as `--commodity`
+* `"--ascend": {}`: corresponds to a boolean flag (does not expect any value after)
+* `"--start": None`: corresponds to a flag where the values allowed are not easily discrete due to vast range
+* `self.completer = NestedCompleter.from_nested_dict(self.choices)`: from the choices create our custom completer
+
+In case the user is interested in a **DYNAMIC** list of options which changes based on user's state, then a class method must be defined.
+
+The example below shows the `update_runtime_choices` method being defined in the options controller.
+```
+def update_runtime_choices(self):
+    """Update runtime choices"""
+    if self.expiry_dates and session and obbff.USE_PROMPT_TOOLKIT:
+        self.choices["exp"] = {str(c): {} for c in range(len(self.expiry_dates))}
+        self.choices["exp"]["-d"] = {c: {} for c in self.expiry_dates + [""]}
+
+        self.completer = NestedCompleter.from_nested_dict(self.choices)
+```
+
+This method should only be called when the user's state changes leads to the auto-complete not being accurate. 
+
+In this case, this method is called as soon as the user successfully loads a new ticker since the options expiry dates vary based on the ticker. Note that the completer is recreated from it.
 
 ### Logging
 
-Logging capability.
+TO BE ADDED
 
 ### Internationalization
 
@@ -596,6 +649,8 @@ This is the convention in use for creating a new key/value pair:
 - `stocks/SEARCH_query` - Under `stocks` context, `query` description when inquiring about `search` command with `search -h`
 - `stocks/_ticker` - Under `stocks` context, `_ticker` is used as a key of a parameter, and the displayed parameter description is given as value
 - `crypto/dd/_tokenomics_` - Under `crypto` context and under `dd` menu, `_tokenomics_` is used as a key of an additional information, and the displayed information is given as value
+
+TO BE ADDED - WORK IN PROGRESS
 
 
 ## Remember Coding Style
