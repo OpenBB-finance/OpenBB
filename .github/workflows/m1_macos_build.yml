@@ -75,18 +75,20 @@ jobs:
           mkdir DMG
           cp -r build/pyinstaller/macOS_package_assets/* DMG/
           mv dist/OpenBBTerminal DMG/OpenBB\ Terminal/.OpenBB
-          
       - name: Create DMG
         run: create-dmg --volname "OpenBB Terminal" --volicon "images/dmg_volume.icns" --background "images/openbb_dmg_background.png" --icon "OpenBB Terminal" 190 250 --window-pos 190 120 --window-size 800 400 --icon-size 100 --text-size 14 --app-drop-link 600 250 --eula LICENSE --format UDZO --no-internet-enable "OpenBB Terminal".dmg DMG
-
-      # Clean up build artifacts and notarize and staple here
+      - name: Clean up Build Artifacts
+        run: |
+          rm -rf build/terminal
+          rm -rf dist
+          rm -rf DMG
       - name: Save Build Artifact DMG
         uses: actions/upload-artifact@v3
         with:
           name: M1 MacOS DMG Artifact
           path: OpenBB\ Terminal.dmg
       - name: Convert & Mount DMG
-        run: | # Remove the converting disc image at the end
+        run: | 
           hdiutil convert OpenBB\ Terminal.dmg -format UDTO -o openbbterminal.cdr
           hdiutil attach openbbterminal.cdr
           rm -rf openbbterminal.cdr
