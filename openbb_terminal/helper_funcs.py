@@ -1109,8 +1109,7 @@ def get_user_timezone() -> str:
     user_tz = os.getenv("TIMEZONE")
     if user_tz:
         return user_tz
-    else:
-        return ""
+    return ""
 
 
 def get_user_timezone_or_invalid() -> str:

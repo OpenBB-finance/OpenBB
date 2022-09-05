@@ -10,9 +10,9 @@ import platform
 import sys
 import webbrowser
 from typing import List
-import dotenv
 from pathlib import Path
 
+import dotenv
 from prompt_toolkit import PromptSession
 from prompt_toolkit.completion import NestedCompleter
 from prompt_toolkit.styles import Style
