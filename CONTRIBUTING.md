@@ -451,7 +451,51 @@ Worthy methods to mention are:
 
 ## Default Data Sources
 
-Talk about that ordering being important and that all functions that rely on data source must have file being identified there
+The document [data_sources_default.json](/data_sources_default.json) contains all data sources that the terminal has access to and specifies the data source utilized by default for each command.
+
+The convention is as follows:
+```
+{
+    "stocks": {
+        "search": ["FinanceDatabase"],
+        "quote": ["YahooFinance"],
+        "candle": [],
+        "load": [
+            "YahooFinance",
+            "IEXCloud",
+            "AlphaVantage",
+            "Polygon",
+            "EODHD"
+        ],
+        "options": {
+            "unu": ["FDScanner"],
+            "calc": [],
+            "screen": {
+                "view": ["Syncretism"],
+                "set": [],
+                "scr": ["Syncretism"]
+            },
+             "load": [
+                "YahooFinance",
+                "Tradier",
+                "Nasdaq"
+            ],
+            "exp": [
+                "YahooFinance",
+                "Tradier",
+                "Nasdaq"
+            ],
+            ...
+```
+
+The way to interpret this file is by following the path to a data source, e.g.
+* `stocks/search` relies on `FinanceDatabase`
+* `stocks/candle` does not rely on any data source. This means that it relies on data that has been loaded before.
+* `stocks/load` relies on `YahooFinance, `IEXCloud`, `AlphaVantage`, `Polygon` or `EODHD`.
+  * **The order is important as the first data source is the one utilized by default.** 
+* `stoks/options/unu` relies on `FDScanner`.
+* `stocks/options/exp` relies on `YahooFinance` by default but `Tradier` and `Nasdaq` sources are allowed.
+
 
 ### Export Data
 
