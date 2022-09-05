@@ -66,7 +66,7 @@ class QaController(StockBaseController):
     ]
 
     stock_interval = [1, 5, 15, 30, 60]
-    stock_sources = ["yf", "av", "iex"]
+    stock_sources = ["YahooFinance", "AlphaVantage", "IEXCloud"]
     distributions = ["laplace", "student_t", "logistic", "normal"]
     PATH = "/stocks/qa/"
 
