@@ -92,9 +92,9 @@ class ETFController(BaseController):
     def print_help(self):
         """Print help"""
         mt = MenuText("etf/")
-        mt.add_cmd("ln", "FinanceDatabase / StockAnalysis")
-        mt.add_cmd("ld", "FinanceDatabase")
-        mt.add_cmd("load", "Yahoo Finance")
+        mt.add_cmd("ln")
+        mt.add_cmd("ld")
+        mt.add_cmd("load")
         mt.add_raw("\n")
         mt.add_param("_symbol", self.etf_name)
         mt.add_param("_major_holdings", ", ".join(self.etf_holdings))
@@ -103,15 +103,15 @@ class ETFController(BaseController):
         mt.add_menu("disc")
         mt.add_menu("scr")
         mt.add_raw("\n")
-        mt.add_cmd("overview", "StockAnalysis", self.etf_name)
-        mt.add_cmd("holdings", "StockAnalysis", self.etf_name)
-        mt.add_cmd("weights", "Yahoo Finance", self.etf_name)
-        mt.add_cmd("summary", "Yahoo Finance", self.etf_name)
-        mt.add_cmd("news", "News API", self.etf_name)
-        mt.add_cmd("candle", "", self.etf_name)
+        mt.add_cmd("overview", self.etf_name)
+        mt.add_cmd("holdings", self.etf_name)
+        mt.add_cmd("weights", self.etf_name)
+        mt.add_cmd("summary", self.etf_name)
+        mt.add_cmd("news", self.etf_name)
+        mt.add_cmd("candle", self.etf_name)
         mt.add_raw("\n")
-        mt.add_cmd("pir", "PassiveInvestor", self.etf_name)
-        mt.add_cmd("compare", "StockAnalysis", self.etf_name)
+        mt.add_cmd("pir", self.etf_name)
+        mt.add_cmd("compare", self.etf_name)
         mt.add_raw("\n")
         mt.add_menu("ta", self.etf_name)
         mt.add_menu("pred", self.etf_name)
@@ -148,18 +148,18 @@ class ETFController(BaseController):
         ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
-            limit=5,
             export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
+            limit=5,
         )
         if ns_parser:
             name_to_search = " ".join(ns_parser.name)
-            if ns_parser.source == "fd":
+            if ns_parser.source == "FinanceDatabase":
                 financedatabase_view.display_etf_by_name(
                     name=name_to_search,
                     limit=ns_parser.limit,
                     export=ns_parser.export,
                 )
-            elif ns_parser.source == "sa":
+            elif ns_parser.source == "StockAnalysis":
                 stockanalysis_view.display_etf_by_name(
                     name=name_to_search,
                     limit=ns_parser.limit,

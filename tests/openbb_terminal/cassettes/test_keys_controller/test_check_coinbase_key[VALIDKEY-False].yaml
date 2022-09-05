@@ -12,15 +12,15 @@ interactions:
       - VALIDKEY
       CB-ACCESS-SIGN:
       - !!binary |
-        akd6NzRTSzZWS3VZVCtrbUVzMDJna1UwcEM4dDdlVjBhTEpnUFNvc3JtWT0=
+        SnQxZjl0ZFl1dHliZnlqSmhXa0Z2UFJLb2JaWlNqMmRVVUJzOEExRkVCYz0=
       CB-ACCESS-TIMESTAMP:
-      - '1657547994.540818'
+      - '1662250114.933942'
       Connection:
       - keep-alive
       Content-Type:
       - application/json
       User-Agent:
-      - python-requests/2.28.1
+      - python-requests/2.27.1
     method: GET
     uri: https://api.pro.coinbase.com/accounts
   response:
@@ -40,7 +40,7 @@ interactions:
       CF-Cache-Status:
       - MISS
       CF-RAY:
-      - 72920ff86de9bba9-FRA
+      - 74527dd319b97427-LHR
       Cache-Control:
       - no-store
       Connection:
@@ -50,11 +50,9 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Mon, 11 Jul 2022 13:59:55 GMT
+      - Sun, 04 Sep 2022 00:08:35 GMT
       Etag:
       - W/"1d-mmRSeO9uba2rhQtGfy4YjixIkt4"
-      Expect-CT:
-      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
       Server:
       - cloudflare
       Strict-Transport-Security:
