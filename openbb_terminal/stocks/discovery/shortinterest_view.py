@@ -43,7 +43,7 @@ def low_float(limit: int = 5, export: str = ""):
 
 
 @log_start_end(log=logger)
-def hot_penny_stocks(limit: int = 10, export: str = "", source: str = "yf"):
+def hot_penny_stocks(limit: int = 10, export: str = "", source: str = "YahooFinance"):
     """Prints top N hot penny stocks from https://www.pennystockflow.com
     Parameters
     ----------
@@ -52,11 +52,11 @@ def hot_penny_stocks(limit: int = 10, export: str = "", source: str = "yf"):
     export : str
         Export dataframe data to csv,json,xlsx file
     source : where to get the data from. Choose from:
-    yf (yfinance), or psf (pennystockflow)
+    YahooFinance or Shortinterest
     """
-    if source == "yf":
+    if source == "YahooFinance":
         df_penny_stocks = yahoofinance_model.get_hotpenny()
-    elif source == "psf":
+    elif source == "Shortinterest":
         console.print("[red]Data from this source is often not penny stocks[/red]\n")
         df_penny_stocks = shortinterest_model.get_today_hot_penny_stocks()
     else:
@@ -65,7 +65,7 @@ def hot_penny_stocks(limit: int = 10, export: str = "", source: str = "yf"):
 
     print_rich_table(
         df_penny_stocks.head(limit),
-        headers=list(df_penny_stocks.columns) if source != "psf" else None,
+        headers=list(df_penny_stocks.columns) if source != "Shortinterest" else None,
         show_index=False,
         title="Top Penny Stocks",
     )

@@ -67,7 +67,7 @@ class TradingHoursController(BaseController):
             else:
                 console.print(f"The ticker {ticker} was not found in the database.")
 
-        self.source = "yf"
+        self.source = "YahooFinance"
         self.data = pd.DataFrame()
         self.timezone = get_user_timezone_or_invalid()
 

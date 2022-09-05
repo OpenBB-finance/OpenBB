@@ -1,4 +1,4 @@
-    load               load a specific stock ticker for analysis
+    load               load a specific stock ticker for analysis                       [YahooFinance, IEXCloud, AlphaVantage, Polygon, EODHD]
 
 Ticker: TSLA
 
@@ -24,4 +24,3 @@ Ticker: TSLA
     rise               top rising related queries with stock                           [Google]
     jcdr               Jim Cramer's daily recommendations                              [Jim Cramer]
     jctr               Jim Cramer's recommendations by ticker                          [Jim Cramer]
-
