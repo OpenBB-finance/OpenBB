@@ -771,18 +771,7 @@ speeds up the time it takes to run tests. To use VCRPY add **@pytest.mark.vcr** 
 
 ## Add Documentation
 
-- **High-level documentation**:
-  - Add a row to the table on the README of the corresponding context/folder.
-  - E.g. if you are adding `pipo` feature to `discovery` menu under `stocks` context, you need to go into the corresponding
-    [README](https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/openbb_terminal/stocks/discovery/README.md)
-    and add a new row to the table, like:
-
-| Command | Description | Source                        |
-| ------- | ----------- | ----------------------------- |
-| `pipo`  | past IPOs   | [Finnhub](https://finnhub.io) |
-
-- **Low-level documentation**:
-  - See [Hugo Server instructions](/website/README.md).
+See [Hugo Server instructions](/website/README.md).
 
 ## Open a Pull Request
 
@@ -790,9 +779,7 @@ Once you're happy with what you have, push your branch to remote. E.g. `git push
 
 A user may create a **Draft Pull Request** when he/she wants to discuss implementation with the team.
 
-As reviewers, you should select: @DidierRLopes and @jmaslek.
-
-A label **must** be selected from the following types:
+The team will then assign your PR one of the following labels:
 
 | Label name     | Description                         | Example                                        |
 | -------------- | ----------------------------------- | ---------------------------------------------- |
