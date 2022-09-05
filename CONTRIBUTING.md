@@ -499,8 +499,36 @@ The way to interpret this file is by following the path to a data source, e.g.
 
 ### Export Data
 
-Explain what the export data functionality does and how it can export more than 1 type of data.
-Mention export folder.
+In the `_view.py` files it is common having at the end of each function `export_data` being called. This tipycally looks like:
+```
+    export_data(
+        export, 
+        os.path.dirname(os.path.abspath(__file__)),
+        "contracts",
+        df_contracts
+    )
+```
+
+Let's go into each of these arguments:
+* `export` corresponds to the type of file we are exporting. 
+  * If the user doesn't has anything selected, then this function doesn't do anything.
+  * The user can export multiple files and even name the files.
+  * The allowed type of files `json,csv,xlsx` for raw data and `jpg,png,svg` for figures depends on the `export_allowed` variable defined in `parse_known_args_and_warn`.
+* `os.path.dirname(os.path.abspath(__file__))` corresponds to the directory path
+  * This is important when `export folder` selected is the default because the data gets stored based on where it is called. 
+  * If this is called from a `common` folder, we can use `os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks")` insteaad
+* `"contracts"` corresponds to the name of the exported file (+ unique datetime) if the user doesn't provide one
+* `df_contracts` corresponds to the dataframe with data. Although we don't call this function with the figure reference, because it is open, we can use `plt.savefig` to achieve that.
+
+If `export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES` in `parse_known_args_and_warn`, valid examples are:
+* `cmd --export csv`
+* `cmd --export csv,png,jpg`
+* `cmd --export mydata.csv`
+* `cmd --export mydata.txt,alsomydata.csv,alsoalsomydata.png`
+
+Note that these files are saved on a location based on the environment variable: `EXPORT_FOLDER_PATH`. Wich can be set in `settings/export`.
+
+The default location is the `exports` folder and the data will be stored with the same organization of the terminal. But, if the user specifies the name of the file, then that will be dropped onto the folder as is with the datetime attached.
 
 ### Queue and pipeline
 
