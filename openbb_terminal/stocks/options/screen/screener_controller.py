@@ -16,6 +16,7 @@ from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import MenuText, console
 from openbb_terminal.stocks.comparison_analysis import ca_controller
 from openbb_terminal.stocks.options.screen import syncretism_view
+from openbb_terminal.core.config.constants import folder_paths
 
 # pylint: disable=E1121
 
@@ -31,9 +32,7 @@ class ScreenerController(BaseController):
         "ca",
     ]
 
-    presets_path = os.path.join(
-        os.path.abspath(os.path.dirname(__file__)), "..", "presets/"
-    )
+    presets_path = folder_paths["presets/stocks/options"]
     preset_choices = [
         f.split(".")[0] for f in os.listdir(presets_path) if f.endswith(".ini")
     ]
