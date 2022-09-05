@@ -15,7 +15,7 @@ Use your best judgment, and feel free to propose changes to this document in a p
   - [Controller](#controller)
   - [API wrapper](#api-wrapper)
 - [Important functions and classes](#important-functions-and-classes)
-  - [Parser](#parser)
+  - [Base controller class](#base-controller-class)
   - [Default Data Sources](#default-data-sources)
   - [Export Data](#export-data)
   - [Queue and pipeline](#queue-and-pipeline)
@@ -419,10 +419,26 @@ TO BE ADDED
 
 ## Important functions and classes
 
-### Parser
+### Base controller cllass
 
-Explain that there are some keywords:
-limit, export, raw
+This `BaseController` class is inherited by all controllers on the terminal.
+
+This class contains both important variables and methods that are common across all terminal controllers.
+
+* **CHOICES_COMMON**: List of common commands across all controllers
+    * `cls`: clear screen
+    * `home`: go back to the main root
+    * `about`: allows to open our documentation directly on the menu or command
+    * `h`, `?` and `help`: display the help menu the user is in
+    * `q`, `quit` and `..`: go back to one menu above
+    * `exit`: exit the platform
+    * `r` and `reset`: reset the platform (reading code and settings again but going into the same state)
+    * `support`: create a support request ticket
+
+custom reset
+
+parser
+
 
 ## Default Data Sources
 
@@ -473,6 +489,7 @@ This is the convention in use for creating a new key/value pair:
 - `stocks/SEARCH_query` - Under `stocks` context, `query` description when inquiring about `search` command with `search -h`
 - `stocks/_ticker` - Under `stocks` context, `_ticker` is used as a key of a parameter, and the displayed parameter description is given as value
 - `crypto/dd/_tokenomics_` - Under `crypto` context and under `dd` menu, `_tokenomics_` is used as a key of an additional information, and the displayed information is given as value
+
 
 ## Remember Coding Style
 
