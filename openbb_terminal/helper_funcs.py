@@ -1653,18 +1653,18 @@ def search_wikipedia(expression: str) -> None:
     response = requests.request("GET", url, headers={}, data={})
 
     if response.status_code == 200:
-        response = json.loads(response.text)
-        response = {
-            "title": response["title"],
-            "url": f"[blue]{response['content_urls']['desktop']['page']}[/blue]",
-            "summary": response["extract"],
+        response_json = json.loads(response.text)
+        res = {
+            "title": response_json["title"],
+            "url": f"[blue]{response_json['content_urls']['desktop']['page']}[/blue]",
+            "summary": response_json["extract"],
         }
     else:
-        response = {
+        res = {
             "title": "[red]Not Found[/red]",
         }
 
-    df = pd.json_normalize(response)
+    df = pd.json_normalize(res)
 
     print_rich_table(
         df,
