@@ -108,20 +108,17 @@ class HedgeController(BaseController):
         mt.add_param("_underlying", self.underlying_asset_position)
         mt.add_raw("\n")
         mt.add_cmd("list")
-        mt.add_cmd("add", "", "Delta" in self.greeks["Portfolio"])
+        mt.add_cmd("add", "Delta" in self.greeks["Portfolio"])
         mt.add_cmd(
             "rmv",
-            "",
             "Delta" in self.greeks["Option A"] or "Delta" in self.greeks["Option B"],
         )
         mt.add_cmd(
             "sop",
-            "",
             "Delta" in self.greeks["Option A"] or "Delta" in self.greeks["Option B"],
         )
         mt.add_cmd(
             "plot",
-            "",
             "Delta" in self.greeks["Option A"] or "Delta" in self.greeks["Option B"],
         )
         console.print(text=mt.menu_text, menu="Stocks - Options - Hedge")

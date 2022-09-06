@@ -35,11 +35,11 @@ from openbb_terminal.helper_funcs import (
     support_message,
     check_file_type_saved,
     check_positive,
-    get_ordered_list_sources,
     parse_and_split_input,
+    search_wikipedia,
 )
 from openbb_terminal.config_terminal import theme
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, get_ordered_list_sources
 from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.terminal_helper import open_openbb_documentation
 from openbb_terminal.cryptocurrency import cryptocurrency_helpers
@@ -55,10 +55,10 @@ controllers: Dict[str, Any] = {}
 
 CRYPTO_SOURCES = {
     "bin": "Binance",
-    "cg": "CoinGecko",
+    "CoinGecko": "CoinGecko",
     "cp": "CoinPaprika",
     "cb": "Coinbase",
-    "yf": "YahooFinance",
+    "YahooFinance": "YahooFinance",
 }
 
 SUPPORT_TYPE = ["bug", "suggestion", "question", "generic"]
@@ -79,6 +79,7 @@ class BaseController(metaclass=ABCMeta):
         "r",
         "reset",
         "support",
+        "wiki",
     ]
 
     CHOICES_COMMANDS: List[str] = []
@@ -462,6 +463,38 @@ class BaseController(metaclass=ABCMeta):
                 path=self.PATH,
             )
 
+    @log_start_end(log=logger)
+    def call_wiki(self, other_args: List[str]) -> None:
+        """Process wiki command"""
+
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="wiki",
+            description="Search Wikipedia",
+        )
+
+        parser.add_argument(
+            "--expression",
+            "-e",
+            action="store",
+            nargs="+",
+            dest="expression",
+            required=True,
+            default="",
+            help="Expression to search for",
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-e")
+
+        ns_parser = parse_simple_args(parser, other_args)
+
+        if ns_parser:
+            if ns_parser.expression:
+                expression = " ".join(ns_parser.expression)
+                search_wikipedia(expression)
+
     def parse_known_args_and_warn(
         self,
         parser: argparse.ArgumentParser,
@@ -534,7 +567,8 @@ class BaseController(metaclass=ABCMeta):
                 type=check_positive,
             )
         sources = get_ordered_list_sources(f"{self.PATH}{parser.prog}")
-        if sources:
+        # Allow to change source if there is more than one
+        if len(sources) > 1:
             parser.add_argument(
                 "--source",
                 action="store",
@@ -859,9 +893,9 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                     self.ticker = ns_parser.ticker.upper()
                     self.suffix = ""
 
-                if ns_parser.source == "iex":
+                if ns_parser.source == "IEXCloud":
                     self.start = self.stock.index[0].to_pydatetime()
-                elif ns_parser.source == "eodhd":
+                elif ns_parser.source == "EODHD":
                     self.start = self.stock.index[0].to_pydatetime()
                 else:
                     self.start = ns_parser.start
@@ -965,22 +999,13 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
             type=str,
         )
 
-        parser.add_argument(
-            "--source",
-            action="store",
-            dest="source",
-            choices=["ccxt", "yf", "cg"],
-            default="yf",
-            help="Data source to select from",
-        )
-
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-c")
 
-        ns_parser = parse_simple_args(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
-            if ns_parser.source in ("yf", "cg"):
+            if ns_parser.source in ("YahooFinance", "CoinGecko"):
                 if ns_parser.vs == "usdt":
                     ns_parser.vs = "usd"
             (self.current_df) = cryptocurrency_helpers.load(

@@ -117,10 +117,10 @@ class StocksController(StockBaseController):
         mt.add_param("_ticker", stock_text)
         mt.add_raw(self.add_info)
         mt.add_raw("\n")
-        mt.add_cmd("quote", "", self.ticker)
-        mt.add_cmd("candle", "", self.ticker)
-        mt.add_cmd("codes", "Polygon", self.ticker)
-        mt.add_cmd("news", "Feedparser / NewsApi", self.ticker)
+        mt.add_cmd("quote", self.ticker)
+        mt.add_cmd("candle", self.ticker)
+        mt.add_cmd("codes", self.ticker)
+        mt.add_cmd("news", self.ticker)
         mt.add_raw("\n")
         mt.add_menu("th")
         mt.add_menu("options")
@@ -449,7 +449,7 @@ class StocksController(StockBaseController):
                 console.print("Use 'load <ticker>' prior to this command!", "\n")
                 return
 
-            if ns_parser.source == "newsapi":
+            if ns_parser.source == "NewsAPI":
                 sources = ns_parser.sources
                 for idx, source in enumerate(sources):
                     if source.find(".") == -1:
@@ -467,7 +467,7 @@ class StocksController(StockBaseController):
                     sources=",".join(sources),
                 )
 
-            elif ns_parser.source == "feedparser":
+            elif ns_parser.source == "Feedparser":
 
                 d_stock = yf.Ticker(self.ticker).info
 
