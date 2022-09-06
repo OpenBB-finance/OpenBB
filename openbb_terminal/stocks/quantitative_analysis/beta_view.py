@@ -2,12 +2,14 @@
 __docformat__ = "numpy"
 
 import logging
+import os
 
 import matplotlib.pyplot as plt
 import pandas as pd
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.quantitative_analysis.beta_model import beta_model
+from openbb_terminal.helper_funcs import export_data
 
 logger = logging.getLogger(__name__)
 
@@ -18,6 +20,7 @@ def beta_view(
     ref_symbol: str,
     data: pd.DataFrame = None,
     ref_data: pd.DataFrame = None,
+    export: str = "",
 ) -> None:
     """Display the beta scatterplot + linear regression.
 
@@ -52,3 +55,14 @@ def beta_view(
     ax.text(0.9, 0.1, beta_text, horizontalalignment="right", transform=ax.transAxes)
     fig.show()
     console.print()
+
+    df = pd.DataFrame(
+        {"sr": sr, "rr": rr, "beta (constant)": beta, "alpha (constant)": alpha}
+    )
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "beta",
+        df,
+    )
