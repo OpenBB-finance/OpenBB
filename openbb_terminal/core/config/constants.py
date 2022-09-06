@@ -16,7 +16,7 @@ if not ENV_FILE_DEFAULT.is_file():
 dotenv.load_dotenv(ENV_FILE_DEFAULT)
 # check if there is a predefined user data folder
 if os.getenv("USER_DATA_FOLDER"):
-    USER_DATA_DIR = Path.home() / os.getenv("USER_DATA_FOLDER")
+    USER_DATA_DIR = Path.home() / os.getenv("USER_DATA_FOLDER") # type: ignore
 else:
     dotenv.set_key(ENV_FILE_DEFAULT, "USER_DATA_FOLDER", "OpenBBUserData")
     USER_DATA_DIR = Path.home() / "OpenBBUserData"
