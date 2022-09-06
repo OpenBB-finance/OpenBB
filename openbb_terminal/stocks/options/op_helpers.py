@@ -4,11 +4,38 @@ __docformat__ = "numpy"
 from math import e, log
 from typing import Union
 
+from datetime import datetime, timedelta
 import numpy as np
 import pandas as pd
 from scipy.stats import norm
 
 from openbb_terminal.rich_config import console
+
+
+def get_dte_from_expiration(date: str) -> float:
+    """
+    Converts a date to total days until the option would expire.
+    This assumes that the date is in the form %B %d, %Y such as January 11, 2023
+    This calculates time from 'now' to 4 PM the date of expiration
+    This is particularly a helper for nasdaq results.
+
+    Parameters
+    ----------
+    date: str
+        Date in format %B %d, %Y
+
+    Returns
+    -------
+    float
+        Days to expiration as a decimal
+    """
+    # Get the date as a datetime and add 16 hours (4PM)
+    expiration_time = datetime.strptime(date, "%B %d, %Y") + timedelta(hours=16)
+    # Find total seconds from now
+    time_to_now = (expiration_time - datetime.now()).total_seconds()
+    # Convert to days
+    time_to_now /= 60 * 60 * 24
+    return time_to_now
 
 
 def get_loss_at_strike(strike: float, chain: pd.DataFrame) -> float:
