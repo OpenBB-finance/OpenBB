@@ -16,7 +16,7 @@ if not ENV_FILE_DEFAULT.is_file():
 dotenv.load_dotenv(ENV_FILE_DEFAULT)
 # check if there is a predefined user data folder
 if os.getenv("USER_DATA_FOLDER"):
-    USER_DATA_DIR = Path.home() / os.getenv("USER_DATA_FOLDER") # type: ignore
+    USER_DATA_DIR = Path.home() / os.getenv("USER_DATA_FOLDER")  # type: ignore
 else:
     dotenv.set_key(ENV_FILE_DEFAULT, "USER_DATA_FOLDER", "OpenBBUserData")
     USER_DATA_DIR = Path.home() / "OpenBBUserData"
@@ -27,3 +27,13 @@ ENV_FILE_REPO = REPO_DIR.joinpath(".env")
 if not ENV_FILE_REPO.is_file():
     with open(str(ENV_FILE_REPO), "w"):
         pass
+
+folders = ["settings", "settings/styles"]
+
+folder_paths = {}
+
+for folder in folders:
+    full_folder = str(USER_DATA_DIR) + "/" + folder
+    if not os.path.exists(full_folder):
+        os.mkdir(full_folder)
+    folder_paths[folder] = full_folder
