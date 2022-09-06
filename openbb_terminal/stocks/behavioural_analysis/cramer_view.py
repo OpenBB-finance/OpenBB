@@ -48,7 +48,10 @@ def display_cramer_daily(inverse: bool = True, export: str = ""):
         date.replace("/", "-"), "%m-%d"
     ):
         console.print(
-            "\n[yellow]Warning[/yellow]: We noticed Jim Crammer recommendation data has not been updated for a while, and we're investigating on finding a replacement."
+            """
+        \n[yellow]Warning[/yellow]: We noticed Jim Crammer recommendation data has not been updated for a while, \
+and we're investigating on finding a replacement.
+        """,
         )
 
     print_rich_table(recs, title=f"Jim Cramer Recommendations for {date}")
