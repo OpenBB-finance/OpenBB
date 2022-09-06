@@ -80,7 +80,10 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
     cfg_dict: Dict = {}
 
     def __init__(
-        self, queue: List[str] = None, menu_usage: bool = True, env_file: str = str(ENV_FILE_DEFAULT),
+        self,
+        queue: List[str] = None,
+        menu_usage: bool = True,
+        env_file: str = str(ENV_FILE_DEFAULT),
     ):
         """Constructor"""
         super().__init__(queue)

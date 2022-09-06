@@ -83,20 +83,26 @@ class FeatureFlagsController(BaseController):
     def call_logcollection(self, _):
         """Process logcollection command"""
         obbff.LOG_COLLECTION = not obbff.LOG_COLLECTION
-        set_key(obbff.ENV_FILE_DEFAULT, "OPENBB_LOG_COLLECTION", str(obbff.LOG_COLLECTION))
+        set_key(
+            obbff.ENV_FILE_DEFAULT, "OPENBB_LOG_COLLECTION", str(obbff.LOG_COLLECTION)
+        )
         console.print("")
 
     def call_retryload(self, _):
         """Process retryload command"""
         obbff.RETRY_WITH_LOAD = not obbff.RETRY_WITH_LOAD
-        set_key(obbff.ENV_FILE_DEFAULT, "OPENBB_RETRY_WITH_LOAD", str(obbff.RETRY_WITH_LOAD))
+        set_key(
+            obbff.ENV_FILE_DEFAULT, "OPENBB_RETRY_WITH_LOAD", str(obbff.RETRY_WITH_LOAD)
+        )
         console.print("")
 
     @log_start_end(log=logger)
     def call_tab(self, _):
         """Process tab command"""
         obbff.USE_TABULATE_DF = not obbff.USE_TABULATE_DF
-        set_key(obbff.ENV_FILE_DEFAULT, "OPENBB_USE_TABULATE_DF", str(obbff.USE_TABULATE_DF))
+        set_key(
+            obbff.ENV_FILE_DEFAULT, "OPENBB_USE_TABULATE_DF", str(obbff.USE_TABULATE_DF)
+        )
         console.print("")
 
     @log_start_end(log=logger)
@@ -132,7 +138,9 @@ class FeatureFlagsController(BaseController):
     def call_predict(self, _):
         """Process predict command"""
         obbff.ENABLE_PREDICT = not obbff.ENABLE_PREDICT
-        set_key(obbff.ENV_FILE_DEFAULT, "OPENBB_ENABLE_PREDICT", str(obbff.ENABLE_PREDICT))
+        set_key(
+            obbff.ENV_FILE_DEFAULT, "OPENBB_ENABLE_PREDICT", str(obbff.ENABLE_PREDICT)
+        )
         console.print("")
 
     @log_start_end(log=logger)
@@ -215,7 +223,9 @@ class FeatureFlagsController(BaseController):
     def call_watermark(self, _):
         """Process watermark command"""
         obbff.USE_WATERMARK = not obbff.USE_WATERMARK
-        set_key(obbff.ENV_FILE_DEFAULT, "OPENBB_USE_WATERMARK", str(obbff.USE_WATERMARK))
+        set_key(
+            obbff.ENV_FILE_DEFAULT, "OPENBB_USE_WATERMARK", str(obbff.USE_WATERMARK)
+        )
         console.print("")
 
     @log_start_end(log=logger)

@@ -398,7 +398,9 @@ class SettingsController(BaseController):
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             if ns_parser.value:
-                set_key(obbff.ENV_FILE_DEFAULT, "OPENBB_USE_LANGUAGE", str(ns_parser.value))
+                set_key(
+                    obbff.ENV_FILE_DEFAULT, "OPENBB_USE_LANGUAGE", str(ns_parser.value)
+                )
                 obbff.USE_LANGUAGE = ns_parser.value
             else:
                 console.print(

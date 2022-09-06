@@ -18,7 +18,12 @@ from prompt_toolkit.styles import Style
 from prompt_toolkit.formatted_text import HTML
 
 from openbb_terminal.common import feedparser_view
-from openbb_terminal.core.config.constants import REPO_DIR, ENV_FILE_DEFAULT, ENV_FILE_REPO, USER_HOME
+from openbb_terminal.core.config.constants import (
+    REPO_DIR,
+    ENV_FILE_DEFAULT,
+    ENV_FILE_REPO,
+    USER_HOME,
+)
 from openbb_terminal.core.log.generation.path_tracking_file_handler import (
     PathTrackingFileHandler,
 )
