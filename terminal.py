@@ -10,7 +10,6 @@ import platform
 import sys
 import webbrowser
 from typing import List
-from pathlib import Path
 import dotenv
 
 from prompt_toolkit import PromptSession
@@ -19,7 +18,7 @@ from prompt_toolkit.styles import Style
 from prompt_toolkit.formatted_text import HTML
 
 from openbb_terminal.common import feedparser_view
-from openbb_terminal.core.config.constants import REPO_DIR, ENV_FILE, USER_HOME
+from openbb_terminal.core.config.constants import REPO_DIR, ENV_FILE_DEFAULT, ENV_FILE_REPO, USER_HOME
 from openbb_terminal.core.log.generation.path_tracking_file_handler import (
     PathTrackingFileHandler,
 )
@@ -50,7 +49,7 @@ from openbb_terminal.helper_funcs import parse_and_split_input
 
 logger = logging.getLogger(__name__)
 
-env_file = str(ENV_FILE)
+env_file = str(ENV_FILE_DEFAULT)
 
 
 class TerminalController(BaseController):
@@ -321,7 +320,7 @@ class TerminalController(BaseController):
         """Process settings command"""
         from openbb_terminal.settings_controller import SettingsController
 
-        self.queue = self.load_class(SettingsController, self.queue)
+        self.queue = self.load_class(SettingsController, self.queue, env_file)
 
     def call_featflags(self, _):
         """Process feature flags command"""
@@ -621,14 +620,8 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
         t_controller.print_help()
         check_for_updates()
 
-    env_files = [f for f in os.listdir() if f.endswith(".env")]
-    if env_files:
-        global env_file
-        env_file = env_files[0]
-        dotenv.load_dotenv(env_file)
-    else:
-        # create env file
-        Path(".env")
+    dotenv.load_dotenv(ENV_FILE_DEFAULT)
+    dotenv.load_dotenv(ENV_FILE_REPO, override=True)
 
     while ret_code:
         if obbff.ENABLE_QUICK_EXIT:

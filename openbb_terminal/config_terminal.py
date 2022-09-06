@@ -5,12 +5,13 @@ from distutils.util import strtobool
 # IMPORTATION THIRDPARTY
 import dotenv
 
+from openbb_terminal.core.config.constants import ENV_FILE_DEFAULT, ENV_FILE_REPO
+
 # IMPORTATION INTERNAL
 from .helper_classes import TerminalStyle as _TerminalStyle
 
-env_files = [f for f in os.listdir() if f.endswith(".env")]
-if env_files:
-    dotenv.load_dotenv(env_files[0])
+dotenv.load_dotenv(ENV_FILE_DEFAULT)
+dotenv.load_dotenv(ENV_FILE_REPO, override=True)
 
 # Terminal UX section
 theme = _TerminalStyle(
