@@ -175,7 +175,8 @@ class Handler:
                         [hist_fcast, tick_series, pred_vals], axis=1, join="outer"
                     )
                     if not final.empty:
-                        st.write(pred_vals)
+                        # Styled write() with sig figs
+                        st.write(pred_vals.style.format({"Prediction Values": "{:.2f}"}))
                         st.line_chart(final)
 
                     else:

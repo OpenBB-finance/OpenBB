@@ -618,7 +618,8 @@ def get_prediction(
     forecast_horizon,
     n_predict: int,
 ):
-    if not model_name == "Regression":
+    print(f"Predicting {model_name} for {n_predict} days")
+    if model_name not in ["Regression", "Logistic Regression"]:
         # need to create a new pytorch trainer for historical backtesting to remove progress bar
         best_model.trainer = None
         best_model.trainer_params["enable_progress_bar"] = False
