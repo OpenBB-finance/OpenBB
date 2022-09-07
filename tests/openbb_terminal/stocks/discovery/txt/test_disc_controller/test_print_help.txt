@@ -13,11 +13,8 @@
     trending           trending news                                                   [SeekingAlpha]
     cnews              customized news (buybacks, ipos, spacs, healthcare, politics)   [SeekingAlpha]
     lowfloat           low float stocks under 10M shares float                         [Fidelity]
-    hotpenny           today's hot penny stocks                                        [Shortinterest]
-    rtat               top 10 retail traded stocks per day                             [NASDAQ Data Link]
-    divcal             dividend calendar for selected date                             [NASDAQ Data Link]
     hotpenny           today's hot penny stocks                                        [YahooFinance, Shortinterest]
     rtat               top 10 retail traded stocks per day                             [Nasdaq]
     divcal             dividend calendar for selected date                             [Nasdaq]
-    heatmap            heatmap of SP500 tickers                                        [Finviz]
+    heatmap            heatmap of SP500 tickers
 
