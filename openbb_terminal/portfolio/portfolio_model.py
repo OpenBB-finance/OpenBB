@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 import logging
+import math
 from typing import Dict, Any, Tuple
 import datetime
 
@@ -1024,9 +1025,10 @@ class PortfolioModel:
         # 6. Determining the investment/divestment value
         # 7. Reformat crypto tickers to yfinance format (e.g. BTC -> BTC-USD)
         # 8. Create tickers dictionary with structure {'Type': [Ticker]}
-        # 9. Create list with tickers except cash
-        # 10. Save orderbook inception date
-        # 11. Populate fields Sector, Industry and Country
+        # 9. Create isin dictionary with structure {'Ticker': 'ISIN'}
+        # 10. Create list with tickers except cash
+        # 11. Save orderbook inception date
+        # 12. Populate fields Sector, Industry and Country
 
         try:
             console.print(" Preprocessing orderbook: ", end="")
@@ -1039,6 +1041,7 @@ class PortfolioModel:
                 "Region",
                 "Fees",
                 "Premium",
+                "ISIN",
             ]
             if not set(optional_fields).issubset(set(self.__orderbook.columns)):
                 for field in optional_fields:
@@ -1114,15 +1117,29 @@ class PortfolioModel:
                 )
             console.print(".", end="")
 
-            # 9. Create list with tickers except cash
+            # 9. Create isin dictionary with structure {'Ticker': 'ISIN'}
+            self.isins = (
+                self.__orderbook.loc[self.__orderbook["Type"].isin(["STOCK", "ETF"])][
+                    ["ISIN", "Ticker"]
+                ]
+                .set_index("Ticker")
+                .T.to_dict("records")[0]
+            )
+
+            for key, val in self.isins.items():
+                if math.isnan(val):
+                    self.isins[key] = key
+            self.inv_isins = {v: k for k, v in self.isins.items()}
+
+            # 10. Create list with tickers except cash
             self.tickers_list = list(set(self.__orderbook["Ticker"]))
             console.print(".", end="")
 
-            # 10. Save orderbook inception date
+            # 11. Save orderbook inception date
             self.inception_date = self.__orderbook["Date"][0]
             console.print(".", end="")
 
-            # Populate fields Sector, Industry and Country
+            # 12. Populate fields Sector, Industry and Country
             if not (
                 {"Sector", "Industry", "Country", "Region"}.issubset(
                     set(self.__orderbook.columns)
@@ -1419,6 +1436,10 @@ class PortfolioModel:
 
         for ticker_type, data in self.tickers.items():
             if ticker_type in ["STOCK", "ETF", "CRYPTO"]:
+                if ticker_type in ["STOCK", "ETF"]:
+                    # map ticker to respective isin if provided by user
+                    data = list(self.isins.values())
+
                 # Download yfinance data
                 price_data = yf.download(
                     data, start=self.inception_date, progress=False
@@ -1428,6 +1449,13 @@ class PortfolioModel:
                 if len(data) == 1:
                     price_data = pd.DataFrame(price_data)
                     price_data.columns = data
+
+                # Rename columns to original tickers for STOCK and ETF
+                if ticker_type in ["STOCK", "ETF"]:
+                    for col in price_data.columns:
+                        price_data = price_data.rename(
+                            columns={col: self.inv_isins[col]}
+                        )
 
                 # Add to historical_prices dataframe
                 self.portfolio_historical_prices = pd.concat(
