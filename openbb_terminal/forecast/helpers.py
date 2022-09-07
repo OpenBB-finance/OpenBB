@@ -31,7 +31,9 @@ from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal import rich_config
 
 logger = logging.getLogger(__name__)
-logger = logging.getLogger("pytorch_lightning").setLevel(logging.CRITICAL) # No needed for now
+logger = logging.getLogger("pytorch_lightning").setLevel(
+    logging.CRITICAL
+)  # No needed for now
 
 
 def mean_absolute_percentage_error(y_true: np.ndarray, y_pred: np.ndarray) -> np.number:
@@ -616,7 +618,7 @@ def get_prediction(
     forecast_horizon,
     n_predict: int,
 ):
-    if not "Regression":
+    if not model_name == "Regression":
         # need to create a new pytorch trainer for historical backtesting to remove progress bar
         best_model.trainer = None
         best_model.trainer_params["enable_progress_bar"] = False
@@ -762,6 +764,15 @@ def clean_data(
     end_date: Optional[datetime],
 ) -> Union[pd.DataFrame, pd.Series]:
     if isinstance(data, pd.Series):
+        # TODO this is temporary
+        # check dataframe for any inf or nan values
+        if data.isnull().values.any() or data.isin([np.inf, -np.inf]).any():
+            console.print(
+                "[red]The data contains inf or nan values. They will be removed.[/red]\n"
+            )
+            # drop any rows with inf values
+            data = data.replace([np.inf, -np.inf], np.nan)
+            data = data.dropna()
         col = data.name
         columns = ["date", col]
         data = pd.DataFrame(data).reset_index()

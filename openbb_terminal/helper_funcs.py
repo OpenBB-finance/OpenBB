@@ -238,7 +238,6 @@ def print_rich_table(
     show_header: bool
         Whether to show the header row.
     """
-
     if obbff.USE_TABULATE_DF:
         table = Table(title=title, show_lines=True, show_header=show_header)
 
@@ -269,6 +268,9 @@ def print_rich_table(
             floatfmt = [floatfmt for _ in range(len(df.columns))]
 
         for idx, values in zip(df.index.tolist(), df.values.tolist()):
+            # remove hour/min/sec from timestamp index - Format: YYYY-MM-DD # make better
+            if isinstance(idx, pd.Timestamp):
+                idx = idx.date()
             row = [str(idx)] if show_index else []
             row += [
                 str(x)
