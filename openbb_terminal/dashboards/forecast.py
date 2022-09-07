@@ -1,3 +1,4 @@
+from unittest.mock import patch
 from datetime import timedelta, datetime
 from typing import Callable, Any
 from inspect import signature
@@ -5,21 +6,21 @@ import streamlit as st
 import pandas as pd
 import yfinance as yf
 from openbb_terminal import api
-from openbb_terminal.forecast import expo_model
 from openbb_terminal.forecast import helpers
+from openbb_terminal.rich_config import console
 
 
 model_opts = {
-    "expo": api.forecast.models.expo.get_expo_data,
-    "theta": api.forecast.models.theta.get_theta_data,
-    "linregr": api.forecast.models.linregr.get_linear_regression_data,
-    "regr": api.forecast.models.regr.get_regression_data,
-    "rnn": api.forecast.models.rnn.get_rnn_data,
-    "brnn": api.forecast.models.brnn.get_brnn_data,
-    "nbeats": api.forecast.models.nbeats.get_NBEATS_data,
-    "tcn": api.forecast.models.tcn.get_tcn_data,
-    "trans": api.forecast.models.trans.get_trans_data,
-    "tft": api.forecast.models.tft.get_tft_data,
+    "expo": api.forecast.models.expo.get_expo_data,  # type: ignore
+    "theta": api.forecast.models.theta.get_theta_data,  # type: ignore
+    "linregr": api.forecast.models.linregr.get_linear_regression_data,  # type: ignore
+    "regr": api.forecast.models.regr.get_regression_data,  # type: ignore
+    "rnn": api.forecast.models.rnn.get_rnn_data,  # type: ignore
+    "brnn": api.forecast.models.brnn.get_brnn_data,  # type: ignore
+    "nbeats": api.forecast.models.nbeats.get_NBEATS_data,  # type: ignore
+    "tcn": api.forecast.models.tcn.get_tcn_data,  # type: ignore
+    "trans": api.forecast.models.trans.get_trans_data,  # type: ignore
+    "tft": api.forecast.models.tft.get_tft_data,  # type: ignore
 }
 
 feat_engs = {
@@ -64,13 +65,57 @@ def has_parameter(func: Callable[..., Any], parameter: str) -> bool:
     return parameter in parameters
 
 
-class Chart:
+def load_state(name: str, default: Any):
+    if name not in st.session_state:
+        st.session_state[name] = default
+
+
+@st.cache(suppress_st_warning=True)
+def run_forecast(data: pd.DataFrame, model: str, target_column: str):
+    if helpers.check_data(data, target_column):
+
+        (
+            ticker_series,
+            historical_fcast,
+            predicted_values,
+            precision,
+            _model,
+        ) = model_opts["expo"](
+            data=data,
+            target_column=target_column,
+            trend="A",
+            seasonal="A",
+            seasonal_periods=7,
+            dampen="F",
+            n_predict=30,
+            start_window=0.85,
+            forecast_horizon=5,
+        )
+        predicted_values = predicted_values.quantile_df()[f"{target_column}_0.5"].tail(
+            5
+        )
+        return pd.DataFrame(predicted_values)
+    return None
+
+
+class Handler:
     def __init__(self):
-        self.last_tickers = ""
-        self.last_interval = "1d"
-        self.df = pd.DataFrame()
-        self.infos = {}
-        self.widget_options: dict[str, Any] = {}
+        load_state("last_tickers", "")
+        load_state("last_intervals", "1d")
+        load_state("df", pd.DataFrame())
+        default_opts = {
+            key: [] for key in ["target_widget", "column_widget", "past_covs_widget"]
+        }
+        load_state("widget_options", default_opts)
+
+        # Define widgets:
+        self.ticker: str = None
+        self.start_date: str = None
+        self.end_date: str = None
+        self.past_covs_widget: str = None
+        self.target_widget: str = None
+        self.target_interval: str = None
+        self.model_widget: str = None
 
     def handle_changes(
         self,
@@ -85,129 +130,121 @@ class Chart:
         forecast_only,
     ):
         if tickers:
-            if tickers != self.last_tickers or interval != self.last_interval:
+            forecast_model = model_opts[model]
+            contains_covariates = has_parameter(forecast_model, "past_covariates")
+
+            start_n = datetime(start.year, start.month, start.day)
+            end_n = datetime(end.year, end.month, end.day)
+            if interval in ["1d", "5d", "1wk", "1mo", "3mo"]:
+                result = st.session_state["df"].loc[
+                    (st.session_state["df"]["date"] >= start_n)
+                    & (st.session_state["df"]["date"] <= end_n)
+                ]
+            else:
+                result = st.session_state["df"]
+            if not target_column:
+                target_column = st.session_state["df"].columns[0]
+            kwargs = {}
+            if contains_covariates and past_covariates != "":
+                kwargs["past_covariates"] = ",".join(past_covariates)
+            if has_parameter(forecast_model, "naive"):
+                kwargs["naive"] = naive
+            if has_parameter(forecast_model, "forecast_only"):
+                kwargs["forecast_only"] = forecast_only
+            with patch.object(console, "print", st.write):
+                if helpers.check_data(result, target_column):
+                    # use_model = expo_model.get_expo_data
+                    final_df = helpers.clean_data(result, None, None)
+                    predicted_values = run_forecast(final_df, model, target_column)
+                    if predicted_values is not None:
+                        st.write(predicted_values)
+                        # draw predicted_values on line graph
+                        st.line_chart(predicted_values)
+
+                    else:
+                        st.write("There was an error with the data")
+
+    def handle_eng(self, target, feature):
+        self.feature_target = target
+        self.feature_model = feat_engs[feature]
+
+    def on_ticker_change(self):
+        tickers = st.session_state.ticker
+        if tickers:
+            interval = st.session_state.interval
+            start = st.session_state.start
+            end = st.session_state.end
+            if (
+                tickers != st.session_state["last_tickers"]
+                or interval != st.session_state["last_interval"]
+            ):
                 if interval in ["1d", "5d", "1wk", "1mo", "3mo"]:
-                    self.df = yf.download(
+                    df = yf.download(
                         tickers, period="max", interval=interval, progress=False
                     )
                 else:
                     end_date = end + timedelta(days=1)
-                    self.df = yf.download(
+                    df = yf.download(
                         tickers,
                         start=start,
                         end=end_date,
                         interval=interval,
                         progress=False,
                     )
-                self.df = format_df(self.df)
-                self.last_tickers = tickers
-                self.last_interval = interval
-            forecast_model = model_opts[model]
-            contains_covariates = has_parameter(forecast_model, "past_covariates")
-
-            # Update Inputs
-            if list(self.widget_options["target_widget"]) != [
-                x for x in self.df.columns if x != "date"
-            ]:
-                self.widget_options["target_widget"] = [
-                    x for x in self.df.columns if x != "date"
-                ]
-                self.create_widgets()
-                return
-            if list(self.widget_options["past_covs_widget"]) != [
-                x for x in self.df.columns if x != "date"
-            ]:
-                self.widget_options["past_covs_widget"] = [
-                    x for x in self.df.columns if x != "date"
-                ]
-                # past_covs_widget.disabled = not contains_covariates
-                self.create_widgets()
-                return
-            if self.widget_options["past_covs_widget"] == contains_covariates:
-                self.widget_options["past_covs_widget"] = not contains_covariates
-            self.widget_options["column_widget"] = [
-                x for x in self.df.columns if x != "date"
-            ]
-
-            start_n = datetime(start.year, start.month, start.day)
-            end_n = datetime(end.year, end.month, end.day)
-            calcs = self.df
-            if interval in ["1d", "5d", "1wk", "1mo", "3mo"]:
-                result = calcs.loc[
-                    (calcs["date"] >= start_n) & (calcs["date"] <= end_n)
-                ]
-            else:
-                result = calcs
-            if not target_column:
-                target_column = self.df.columns[0]
-            kwargs = {}
-            if contains_covariates and past_covariates != ():
-                kwargs["past_covariates"] = ",".join(past_covariates)
-            if has_parameter(forecast_model, "naive"):
-                kwargs["naive"] = naive
-            if has_parameter(forecast_model, "forecast_only"):
-                kwargs["forecast_only"] = forecast_only
-            # df = handler.result.dropna()
-            if helpers.check_data(result, target_column):
-                (
-                    ticker_series,
-                    historical_fcast,
-                    predicted_values,
-                    precision,
-                    _model,
-                ) = expo_model.get_expo_data(
-                    data=result,
-                    target_column=target_column,
-                    trend="A",
-                    seasonal="A",
-                    seasonal_periods=7,
-                    dampen="F",
-                    n_predict=30,
-                    start_window=0.85,
-                    forecast_horizon=5,
-                    **kwargs,
-                )
-                predicted_values = predicted_values.quantile_df()[
-                    f"{target_column}_0.5"
-                ].tail(5)
-            if predicted_values is not None:
-                st.write(predicted_values)
-                # draw predicted_values on line graph
-                st.line_chart(predicted_values)
-
-            else:
-                st.write("There was an error with the data")
-
-    def handle_eng(self, target, feature):
-        self.feature_target = target
-        self.feature_model = feat_engs[feature]
-
-    def create_widgets(self):
-        st.title("Forecast")
-        col1, col2, col3 = st.columns([1, 1, 1])
-        with col1:
-            self.ticker = st.text_input("Ticker", "AAPL")
-        with col2:
-            self.start_date = st.date_input("Start date", pd.to_datetime("2020-01-01"))
-        with col3:
-            self.end_date = st.date_input("End date", pd.to_datetime("2020-12-01"))
-        self.past_covs_widget = st.multiselect("Past Covariates", options=[])
-        self.target_widget = st.selectbox("Target", [])
+                df = df.dropna()
+                st.session_state["df"] = format_df(df)
+                st.session_state["last_tickers"] = tickers
+                st.session_state["last_interval"] = interval
+        st.session_state["widget_options"]["target_widget"] = [
+            x for x in st.session_state["df"] if x != "date"
+        ]
+        st.session_state["widget_options"]["past_covs_widget"] = [
+            x for x in st.session_state["df"] if x != "date"
+        ]
+        st.session_state["widget_options"]["column_widget"] = [
+            x for x in st.session_state["df"] if x != "date"
+        ]
 
     def run(self):
-        self.create_widgets()
+        st.title("Forecast")
+        r1c1, r1c2, r1c3, r1c4 = st.columns([2, 1, 1, 1])
+        r2c1, r2c2, r2c3 = st.columns([1, 1, 1])
+        with r1c1:
+            self.ticker = st.text_input(
+                "Ticker", "", key="ticker", on_change=self.on_ticker_change
+            )
+        with r1c2:
+            self.start_date = st.date_input(
+                "Start date", pd.to_datetime("2020-01-01"), key="start"
+            )
+        with r1c3:
+            self.end_date = st.date_input(
+                "End date", pd.to_datetime("2020-12-01"), key="end"
+            )
+        with r1c4:
+            self.target_interval = st.selectbox(
+                "Interval", index=8, key="interval", options=interval_opts
+            )
+        with r2c1:
+            self.past_covs_widget = st.multiselect(
+                "Past Covariates",
+                options=st.session_state["widget_options"]["past_covs_widget"],
+            )
+        with r2c2:
+            self.target_widget = st.selectbox(
+                "Target", options=st.session_state["widget_options"]["target_widget"]
+            )
+        with r2c3:
+            self.model_widget = st.selectbox("Model", options=list(model_opts))
         if st.button("Get forecast"):
-            interval = "1d"
-            tickers = "AAPL"
-            target_column = "Close"
-            handler.handle_changes(
+            self.handle_changes(
                 [],
-                self.start_date,
-                self.end_date,
-                interval,
-                tickers=tickers,
-                target_column=target_column,
-                model="expo",
+                start=self.start_date,
+                end=self.end_date,
+                interval=self.target_interval,
+                tickers=self.ticker,
+                target_column=self.target_widget,
+                model=self.model_widget,
                 naive=False,
                 forecast_only=False,
             )
@@ -216,15 +253,16 @@ class Chart:
             # create df with 5 next business days from a start date
             # next_business_days = pd.date_range(start=end_date, periods=5, freq="B")
 
+        """
         if st.button("Add Column"):
             kwargs = {}
             if has_parameter(handler.feature_model, "target_column"):
                 kwargs["target_column"] = handler.feature_target
             handler.df = handler.feature_model(handler.df, **kwargs)
-            self.widget_options["past_covs_widget"]= handler.df.columns
+            st.session_state["widget_options"]["past_covs_widget"] = handler.df.columns
+        """
 
 
 if __name__ == "__main__":
-    handler = Chart()
-    # select time range
+    handler = Handler()
     handler.run()
