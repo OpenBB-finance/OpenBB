@@ -15,6 +15,7 @@ import sys
 from difflib import SequenceMatcher
 import webbrowser
 import urllib.parse
+import json
 
 import pytz
 import pandas as pd
@@ -1636,3 +1637,38 @@ def check_list_values(valid_values: List[str]):
 
     # Return function handle to checking function
     return check_list_values_from_valid_values_list
+
+
+def search_wikipedia(expression: str) -> None:
+    """
+    Search wikipedia for a given expression"
+    Parameters
+    ----------
+    expression: str
+        Expression to search for
+    """
+
+    url = f"https://en.wikipedia.org/api/rest_v1/page/summary/{expression}"
+
+    response = requests.request("GET", url, headers={}, data={})
+
+    if response.status_code == 200:
+        response_json = json.loads(response.text)
+        res = {
+            "title": response_json["title"],
+            "url": f"[blue]{response_json['content_urls']['desktop']['page']}[/blue]",
+            "summary": response_json["extract"],
+        }
+    else:
+        res = {
+            "title": "[red]Not Found[/red]",
+        }
+
+    df = pd.json_normalize(res)
+
+    print_rich_table(
+        df,
+        headers=list(df.columns),
+        show_index=False,
+        title=f"Wikipedia results for {expression}",
+    )
