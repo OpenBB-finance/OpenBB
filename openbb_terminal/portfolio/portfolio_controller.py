@@ -410,9 +410,7 @@ class PortfolioController(BaseController):
                     self.portfolio.returns, self.portfolio.benchmark_returns
                 )
 
-                console.print(
-                    f"[bold]Benchmark:[/bold] {self.benchmark_name}"
-                )
+                console.print(f"[bold]Benchmark:[/bold] {self.benchmark_name}")
             else:
                 console.print("[red]Please first load orderbook using 'load'[/red]\n")
             console.print()

@@ -29,20 +29,21 @@ def get_assets_allocation(benchmark_info: Dict, portfolio_trades: pd.DataFrame):
         Dictionary with the portfolio's asset allocations
     """
     benchmark_assets_allocation = pd.DataFrame(benchmark_info["holdings"])
-    benchmark_assets_allocation.rename(columns = {"symbol":"Symbol", "holdingPercent":"Benchmark"}, inplace = True)
+    benchmark_assets_allocation.rename(
+        columns={"symbol": "Symbol", "holdingPercent": "Benchmark"}, inplace=True
+    )
     benchmark_assets_allocation.drop(columns=["holdingName"], inplace=True)
 
     portfolio_assets_allocation = (
-        (
-            portfolio_trades[portfolio_trades["Type"] != "CASH"]
-            .groupby(by="Ticker")
-            .agg({"Portfolio Value": "sum"})
-            .div(portfolio_trades["Portfolio Value"].sum())
-        )
-        .sort_values(by="Portfolio Value", ascending=False)
-    )
+        portfolio_trades[portfolio_trades["Type"] != "CASH"]
+        .groupby(by="Ticker")
+        .agg({"Portfolio Value": "sum"})
+        .div(portfolio_trades["Portfolio Value"].sum())
+    ).sort_values(by="Portfolio Value", ascending=False)
     portfolio_assets_allocation.reset_index(inplace=True)
-    portfolio_assets_allocation.rename(columns = {"Ticker":"Symbol", "Portfolio Value":"Portfolio"}, inplace = True) 
+    portfolio_assets_allocation.rename(
+        columns={"Ticker": "Symbol", "Portfolio Value": "Portfolio"}, inplace=True
+    )
     portfolio_assets_allocation.fillna(0, inplace=True)
 
     return benchmark_assets_allocation, portfolio_assets_allocation
@@ -95,7 +96,7 @@ def get_sector_allocation(benchmark_info: Dict, portfolio_trades: pd.DataFrame):
     )
 
     # Aggregate sector value for ETFs
-    # Start by getting value by ticker
+    # Start by getting value by isin/ticker
     console.print(" Loading ETF sector data: ", end="")
     etf_ticker_value = (
         portfolio_trades[portfolio_trades["Type"].isin(["ETF"])]
