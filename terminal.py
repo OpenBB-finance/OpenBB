@@ -18,6 +18,7 @@ from prompt_toolkit.styles import Style
 from prompt_toolkit.formatted_text import HTML
 
 from openbb_terminal.common import feedparser_view
+from openbb_terminal.core.config.make_paths import create_paths
 from openbb_terminal.core.config.paths import (
     REPO_DIRECTORY,
     USER_ENV_FILE,
@@ -55,6 +56,7 @@ from openbb_terminal.helper_funcs import parse_and_split_input
 logger = logging.getLogger(__name__)
 
 env_file = str(USER_ENV_FILE)
+create_paths()
 
 
 class TerminalController(BaseController):
