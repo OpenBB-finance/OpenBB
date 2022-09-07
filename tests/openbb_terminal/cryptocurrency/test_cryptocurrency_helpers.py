@@ -7,7 +7,6 @@ from pycoingecko import CoinGeckoAPI
 from openbb_terminal.cryptocurrency.cryptocurrency_helpers import (
     read_data_file,
     _load_coin_map,
-    plot_chart,
     load,
     load_coins_list,
     _create_closest_match_df,
@@ -60,7 +59,7 @@ def test_create_closet_match_df(recorder):
     ],
 )
 def test_load_none(coin, vs):
-    df = load(symbol_search=coin, vs=vs)
+    df = load(symbol=coin, vs_currency=vs)
     assert df is not None
 
 
@@ -78,7 +77,7 @@ def fixture_get_bitcoin(mocker):
     ) as f:
         sample_return = json.load(f)
     mock_load.return_value = sample_return
-    df = load("BTC", vs="usd")
+    df = load("BTC", vs_currency="usd", source="YahooFinance")
     return df
 
 
@@ -91,17 +90,3 @@ def test_get_coins():
     test_coins = ["bitcoin", "ethereum", "dogecoin"]
     for test in test_coins:
         assert test in bitcoin_list
-
-
-@pytest.mark.vcr
-@pytest.mark.record_stdout
-def test_coin_chart(get_bitcoin):
-    # pylint: disable=unused-argument
-    df = get_bitcoin
-    # coin_map_df = prepare_all_coins_df().set_index("Symbol").loc[symbol.upper()].iloc[0]
-
-    plot_chart(
-        symbol="btc",
-        prices_df=df,
-        currency="usd",
-    )

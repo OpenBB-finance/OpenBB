@@ -1,52 +1,24 @@
-```
-usage: load [-c COIN] [--source {cp,cg,bin,cb}] [-s START] [--vs VS] [-i INTERVAL] [-h]
-```
+`usage: load [-c COIN] [-s START]
+            [--exchange EXCHANGE]
+            [-e END] [-i {1,5,15,30,60,240,1440,10080,43200}] [--vs VS] [--source {ccxt,yf,cg}] [-h]`
 
-Load crypto currency to perform analysis on. Available data sources are CoinGecko, CoinPaprika, Binance, Coinbase. By default main source used for analysis is CoinGecko (cg). To change it use --source flag.
+Load crypto currency to perform analysis on. Yahoo Finance is used as default source. Other sources can be used such as 'ccxt'
+or 'cg' with --source. If you select 'ccxt', you can then select any exchange with --exchange. You can also select a specific
+interval with --interval.
 
 ```
 optional arguments:
-  -c COIN, --coin COIN  Coin to get (default: None)
-  --source {cp,cg,bin,cb}
-                        Source of data (default: cg)
+  -c COIN, --coin COIN  Coin to get. Must be coin symbol (e.g., btc, eth) (default: None)
   -s START, --start START
-                        The starting date (format YYYY-MM-DD) of the crypto (default: 2021-02-14)
-  --vs VS               Quote currency (what to view coin vs) (default: usd)
-  -i INTERVAL, --interval INTERVAL
-                        Interval to get data (Only available on binance/coinbase) (default: 1day)
+                        The starting date (format YYYY-MM-DD) of the crypto (default: 2019-08-19)
+  --exchange {aax,ascendex,bequant,bibox,bigone,binance,binancecoinm,binanceus,binanceusdm,bit2c,bitbank,bitbay,bitcoincom,bitfinex,bitfinex2,bitflyer,bitforex,bitget,bithumb,bitmart,bitmex,bitopro,bitpanda,bitrue,bitso,bitstamp,bitstamp1,bittrex,bitvavo,bkex,bl3p,btcalpha,btcbox,btcex,btcmarkets,btctradeua,btcturk,buda,bw,bybit,bytetrade,cdax,cex,coinbaseprime,coinbasepro,coincheck,coinex,coinfalcon,coinmate,coinone,coinspot,crex24,cryptocom,currencycom,delta,deribit,digifinex,eqonex,exmo,flowbtc,fmfwio,ftx,ftxus,gate,gateio,gemini,hitbtc,hitbtc3,hollaex,huobi,huobijp,huobipro,idex,independentreserve,indodax,itbit,kraken,kucoin,kucoinfutures,kuna,latoken,lbank,lbank2,liquid,luno,lykke,mercado,mexc,mexc3,ndax,novadax,oceanex,okcoin,okex,okex5,okx,paymium,phemex,poloniex,probit,qtrade,ripio,stex,therock,tidebit,tidex,timex,tokocrypto,upbit,wavesexchange,whitebit,woo,xena,yobit,zaif,zb,zipmex,zonda}
+                        Exchange to search (default: binance)
+  -e END, --end END     The ending date (format YYYY-MM-DD) of the crypto (default: 2022-08-23)
+  -i {1,5,15,30,60,240,1440,10080,43200}, --interval {1,5,15,30,60,240,1440,10080,43200}
+                        The interval of the crypto (default: 1440)
+  --vs VS               Quote currency (what to view coin vs). e.g., usdc, usdt, ... if source is ccxt, usd, eur, ... otherwise
+                        (default: usdt)
+  --source {ccxt,yf,cg}
+                        Data source to select from (default: yf)
   -h, --help            show this help message (default: False)
-```
-
-All the sources share the arguments specified above but `--interval` and `--vs` differ from source to source.
-
-For CoinPaprika and CoinGecko are similar:
-
-```
-  --vs VS              The currency to look the loaded coin against. Both USD and BTC are supported. Default: `USD`
-  -i/--interval        Interval to look data for. These two sources only support daily data. Default: `1day`
-```
-
-For Coinbase:
-
-```
-  --vs VS              The currency to look the loaded coin against. Depends on the crypto loaded. Default: `USDT`
-  -i/--interval        Interval to look data for. Default is `1day` but support all of the following: ['1min', '5min', '15min', '1hour', '6hour', '24hour', '1day']
-```
-
-For Binance:
-
-```
-  --vs VS             The currency to look the loaded coin against. Depends on the crypto loaded. Default: `USDT`
-  -i/--interval       Interval to look data for. Default is `1day` but support all of the following: ['1day', '3day', '1hour', '2hour', '4hour', '6hour', '8hour', '12hour', '1week', '1min', '3min', '5min', '15min', '30min', '1month']
-```
-
-An example:
-```
-2022 Feb 15, 05:51 (✨) /crypto/ $ load BTC
-
-Loaded bitcoin against usd from CoinGecko source
-
-Current Price: 44225.18 USD
-Performance in interval (1day): 4.68%
-Performance since 2021-02-14: -9.02%
 ```

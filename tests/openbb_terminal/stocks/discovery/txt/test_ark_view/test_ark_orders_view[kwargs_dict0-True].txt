@@ -1,5 +1,4 @@
 
-         date ticker           direction  volume       open      close       high        low         total  fund  weight  shares
-0  2021-12-09   VCYT  [green]Buy[/green]  458689  41.669998  39.419998  41.900002  39.380001  1.965521e+06  ARKK  0.0113   49861
-1  2021-12-09    QSI  [green]Buy[/green]  528256   6.650000   6.240000   6.760000   6.220000  2.492755e+05  ARKG  0.0045   39948
-
+         date ticker           direction   volume   open  close       high        low         total  fund  weight  shares
+0  2022-08-09   TDOC  [green]Buy[/green]  5444500  38.02  35.41  38.119999  34.830002  4.622775e+05  ARKW   0.028   13055
+1  2022-08-09   SGFY     [red]Sell[/red]  2781300  21.90  22.50  22.870001  21.860001  9.657742e+06  ARKK  0.0947  429233

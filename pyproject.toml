@@ -1,7 +1,7 @@
 # https://python-poetry.org/docs/dependency-specification/
 [tool.poetry]
 name = "OpenBBTerminal"
-version = "1.6.0"
+version = "1.7.0"
 description = ""
 authors = ["Didier Rodrigues Lopes"]
 packages = [
@@ -12,7 +12,8 @@ packages = [
 openbb = 'terminal:terminal'
 
 [tool.poetry.dependencies]
-python = "^3.8,<3.10"
+python = "^3.8,<3.11"
+scipy = "1.8.1"
 iso8601 = "^0.1.14"
 FundamentalAnalysis = "^0.2.6"
 requests = "^2.25.1"
@@ -85,27 +86,17 @@ black = "^22.1"
 ipywidgets = "^7.7.0"
 Jinja2 = "^3.0.3"
 Riskfolio-Lib = "^3.1.1"
-pyimgur = {version = "^0.6.0", optional = true}
-libclang = {version = ">=12.0.0", optional = true}
+ccxt = "^1.91.60"
+html5lib = "^1.1"
+feedparser = "^6.0.10"
 tensorflow = {version = "^2.8.2", optional = true}
-fastapi = {version = "^0.73.0", optional = true}
-uvicorn = {version = "^0.17.1", optional = true}
-disnake = {version = "^2.3.0", optional = true}
-PyNaCl = {version = "^1.5.0", optional = true}
-pyTelegramBotAPI = {version = "^4.4.0", optional = true}
-slack-bolt = {version = "^1.11.6", optional = true}
-undetected-chromedriver = {version = "^3.1.5", optional = true}
+tensorflow-macos = {version = "^2.9.2", optional = true}
+tensorflow-metal = {version = "^0.5.0", optional = true}
 pyinstaller = {version = "^4.10", optional = true}
-boto3 = {version = "^1.21.14", optional = true}
-natsort = {version = "^8.1.0", optional = true}
 jupyterlab-code-formatter = {version = "^1.4.10", optional = true}
 jupyterlab-lsp = {version = "^3.10.1", optional = true}
 jedi-language-server = {version = "^0.35.1", optional = true}
-kaleido = {version = "<=0.2.1", optional = true}
-html5lib = "^1.1"
-tensorflow-macos = {version = "^2.9.2", optional = true}
-tensorflow-metal = {version = "^0.5.0", optional = true}
-
+charset-normalizer = "2.1.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"
@@ -135,7 +126,6 @@ types-six = "^1.16.12"
 [tool.poetry.extras]
 prediction = ["tensorflow", "u8darts"]
 prediction-m1-mac = ["tensorflow-macos", "tensorflow-metal"]
-bots = ["boto3", "pyimgur", "fastapi", "uvicorn", "disnake", "PyNaCl", "pyTelegramBotAPI", "slack-bolt", "undetected-chromedriver", "natsort", "kaleido"]
 jupyterlab = ["jupyterlab-code-formatter", "jupyterlab-lsp", "jedi-language-server"]
 installer = ["pyinstaller"]
 

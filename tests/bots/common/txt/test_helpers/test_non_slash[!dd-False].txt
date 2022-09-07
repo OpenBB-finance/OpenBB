@@ -1,9 +1,0 @@
-Valid commands: 
-/dd_analyst
- /dd_arktrades
- /dd_borrowed
- /dd_customer
- /dd_est
- /dd_pt
- /dd_sec
- /dd_supplier

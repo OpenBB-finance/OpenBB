@@ -37,11 +37,15 @@ def log_start_end(func=None, log=None):
                 repr(a) for a in args if isinstance(a, (pd.DataFrame, pd.Series)) or a
             ]
 
-            if len(args) == 2 and (
-                "__main__.TerminalController" in args_passed_in_function[0]
-                or (
-                    "openbb_terminal." in args_passed_in_function[0]
-                    and "_controller" in args_passed_in_function[0]
+            if (
+                len(args) == 2
+                and args_passed_in_function
+                and (
+                    "__main__.TerminalController" in args_passed_in_function[0]
+                    or (
+                        "openbb_terminal." in args_passed_in_function[0]
+                        and "_controller" in args_passed_in_function[0]
+                    )
                 )
             ):
                 logging_name = args_passed_in_function[0].split()[0][1:]

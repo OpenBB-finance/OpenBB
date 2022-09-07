@@ -9,6 +9,9 @@ from openbb_terminal.stocks.comparison_analysis import finviz_compare_view
 from openbb_terminal import helper_funcs
 
 
+@pytest.mark.skip(
+    reason="Column 'Market Cap' of output has exponential notation format in Windows contrary to Ubuntu."
+)
 @pytest.mark.default_cassette("test_screener")
 @pytest.mark.vcr
 @pytest.mark.record_stdout
@@ -25,7 +28,7 @@ def test_screener(mocker, tab):
     )
 
 
-@pytest.mark.vcr(record_mode="none")
+@pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_screener_empty(mocker):
     target = "openbb_terminal.stocks.comparison_analysis.finviz_compare_model.get_comparison_data"

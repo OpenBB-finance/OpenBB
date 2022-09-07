@@ -179,10 +179,10 @@ class QaController(CryptoBaseController):
         )
         if ns_parser:
             qa_view.display_raw(
-                self.data[self.target],
-                num=ns_parser.limit,
-                sort="",
-                des=ns_parser.descend,
+                data=self.data[self.target],
+                limit=ns_parser.limit,
+                sortby="",
+                descend=ns_parser.descend,
                 export=ns_parser.export,
             )
 
@@ -201,7 +201,7 @@ class QaController(CryptoBaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            qa_view.display_summary(df=self.data, export=ns_parser.export)
+            qa_view.display_summary(data=self.data, export=ns_parser.export)
 
     @log_start_end(log=logger)
     def call_line(self, other_args: List[str]):
@@ -272,8 +272,8 @@ class QaController(CryptoBaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             qa_view.display_hist(
-                name=self.symbol,
-                df=self.data,
+                symbol=self.symbol,
+                data=self.data,
                 target=self.target,
                 bins=ns_parser.n_bins,
             )
@@ -294,8 +294,8 @@ class QaController(CryptoBaseController):
         )
         if ns_parser:
             qa_view.display_cdf(
-                name=self.symbol,
-                df=self.data,
+                symbol=self.symbol,
+                data=self.data,
                 target=self.target,
                 export=ns_parser.export,
             )
@@ -322,8 +322,8 @@ class QaController(CryptoBaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             qa_view.display_bw(
-                name=self.symbol,
-                df=self.data,
+                symbol=self.symbol,
+                data=self.data,
                 target=self.target,
                 yearly=ns_parser.year,
             )
@@ -354,8 +354,8 @@ class QaController(CryptoBaseController):
         )
         if ns_parser:
             qa_view.display_seasonal(
-                name=self.symbol,
-                df=self.data,
+                symbol=self.symbol,
+                data=self.data,
                 target=self.target,
                 multiplicative=ns_parser.multiplicative,
                 export=ns_parser.export,
@@ -397,7 +397,7 @@ class QaController(CryptoBaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             qa_view.display_cusum(
-                df=self.data,
+                data=self.data,
                 target=self.target,
                 threshold=ns_parser.threshold,
                 drift=ns_parser.drift,
@@ -430,8 +430,8 @@ class QaController(CryptoBaseController):
                 )
 
             qa_view.display_acf(
-                name=self.symbol,
-                df=self.data,
+                symbol=self.symbol,
+                data=self.data,
                 target=self.target,
                 lags=ns_parser.lags,
             )
@@ -461,8 +461,8 @@ class QaController(CryptoBaseController):
         )
         if ns_parser:
             rolling_view.display_mean_std(
-                name=self.symbol,
-                df=self.data,
+                symbol=self.symbol,
+                data=self.data,
                 target=self.target,
                 window=ns_parser.n_window,
                 export=ns_parser.export,
@@ -492,8 +492,8 @@ class QaController(CryptoBaseController):
         )
         if ns_parser:
             rolling_view.display_spread(
-                name=self.symbol,
-                df=self.data,
+                symbol=self.symbol,
+                data=self.data,
                 target=self.target,
                 window=ns_parser.n_window,
                 export=ns_parser.export,
@@ -540,8 +540,8 @@ class QaController(CryptoBaseController):
         )
         if ns_parser:
             rolling_view.display_quantile(
-                name=self.symbol,
-                df=self.data,
+                symbol=self.symbol,
+                data=self.data,
                 target=self.target,
                 window=ns_parser.n_window,
                 quantile=ns_parser.f_quantile,
@@ -578,8 +578,8 @@ class QaController(CryptoBaseController):
         )
         if ns_parser:
             rolling_view.display_skew(
-                name=self.symbol,
-                df=self.data,
+                symbol=self.symbol,
+                data=self.data,
                 target=self.target,
                 window=ns_parser.n_window,
                 export=ns_parser.export,
@@ -615,8 +615,8 @@ class QaController(CryptoBaseController):
         )
         if ns_parser:
             rolling_view.display_kurtosis(
-                name=self.symbol,
-                df=self.data,
+                symbol=self.symbol,
+                data=self.data,
                 target=self.target,
                 window=ns_parser.n_window,
                 export=ns_parser.export,
@@ -638,7 +638,7 @@ class QaController(CryptoBaseController):
         )
         if ns_parser:
             qa_view.display_normality(
-                df=self.data, target=self.target, export=ns_parser.export
+                data=self.data, target=self.target, export=ns_parser.export
             )
 
     @log_start_end(log=logger)
@@ -654,7 +654,9 @@ class QaController(CryptoBaseController):
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            qa_view.display_qqplot(name=self.symbol, df=self.data, target=self.target)
+            qa_view.display_qqplot(
+                symbol=self.symbol, data=self.data, target=self.target
+            )
 
     @log_start_end(log=logger)
     def call_unitroot(self, other_args: List[str]):
@@ -690,7 +692,7 @@ class QaController(CryptoBaseController):
         )
         if ns_parser:
             qa_view.display_unitroot(
-                df=self.data,
+                data=self.data,
                 target=self.target,
                 fuller_reg=ns_parser.fuller_reg,
                 kpss_reg=ns_parser.kpss_reg,

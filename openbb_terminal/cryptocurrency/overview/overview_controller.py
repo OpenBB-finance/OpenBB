@@ -137,7 +137,7 @@ class OverviewController(BaseController):
             choices["cpinfo"]["-s"] = {c: None for c in coinpaprika_model.INFO_FILTERS}
             choices["cbpairs"]["-s"] = {c: None for c in coinbase_model.PAIRS_FILTERS}
             choices["news"]["-k"] = {c: None for c in cryptopanic_model.CATEGORIES}
-            choices["news"]["-f"] = {c: None for c in cryptopanic_model.FILTERS}
+            choices["news"]["--filter"] = {c: None for c in cryptopanic_model.FILTERS}
             choices["news"]["-r"] = {c: None for c in cryptopanic_model.REGIONS}
             choices["news"]["-s"] = {c: None for c in cryptopanic_model.SORT_FILTERS}
             choices["wfpe"] = {c: None for c in withdrawalfees_model.POSSIBLE_CRYPTOS}
@@ -150,32 +150,32 @@ class OverviewController(BaseController):
     def print_help(self):
         """Print help"""
         mt = MenuText("crypto/ov/", 105)
-        mt.add_cmd("cgglobal", "CoinGecko")
-        mt.add_cmd("cgdefi", "CoinGecko")
-        mt.add_cmd("cgstables", "CoinGecko")
-        mt.add_cmd("cgexchanges", "CoinGecko")
-        mt.add_cmd("cgexrates", "CoinGecko")
-        mt.add_cmd("cgindexes", "CoinGecko")
-        mt.add_cmd("cgderivatives", "CoinGecko")
-        mt.add_cmd("cgcategories", "CoinGecko")
-        mt.add_cmd("cghold", "CoinGecko")
-        mt.add_cmd("hm", "CoinGecko")
-        mt.add_cmd("cpglobal", "CoinPaprika")
-        mt.add_cmd("cpinfo", "CoinPaprika")
-        mt.add_cmd("cpmarkets", "CoinPaprika")
-        mt.add_cmd("cpexchanges", "CoinPaprika")
-        mt.add_cmd("cpexmarkets", "CoinPaprika")
-        mt.add_cmd("cpplatforms", "CoinPaprika")
-        mt.add_cmd("cpcontracts", "CoinPaprika")
-        mt.add_cmd("cbpairs", "Coinbase")
-        mt.add_cmd("news", "CryptoPanic")
-        mt.add_cmd("wf", "WithdrawalFees")
-        mt.add_cmd("ewf", "WithdrawalFees")
-        mt.add_cmd("wfpe", "WithdrawalFees")
-        mt.add_cmd("altindex", "BlockchainCenter")
-        mt.add_cmd("btcrb", "BlockchainCenter")
-        mt.add_cmd("ch", "Rekt")
-        mt.add_cmd("cr", "LoanScan")
+        mt.add_cmd("cgglobal")
+        mt.add_cmd("cgdefi")
+        mt.add_cmd("cgstables")
+        mt.add_cmd("cgexchanges")
+        mt.add_cmd("cgexrates")
+        mt.add_cmd("cgindexes")
+        mt.add_cmd("cgderivatives")
+        mt.add_cmd("cgcategories")
+        mt.add_cmd("cghold")
+        mt.add_cmd("hm")
+        mt.add_cmd("cpglobal")
+        mt.add_cmd("cpinfo")
+        mt.add_cmd("cpmarkets")
+        mt.add_cmd("cpexchanges")
+        mt.add_cmd("cpexmarkets")
+        mt.add_cmd("cpplatforms")
+        mt.add_cmd("cpcontracts")
+        mt.add_cmd("cbpairs")
+        mt.add_cmd("news")
+        mt.add_cmd("wf")
+        mt.add_cmd("ewf")
+        mt.add_cmd("wfpe")
+        mt.add_cmd("altindex")
+        mt.add_cmd("btcrb")
+        mt.add_cmd("ch")
+        mt.add_cmd("cr")
         console.print(text=mt.menu_text, menu="Cryptocurrency - Overview")
 
     @log_start_end(log=logger)
@@ -185,7 +185,7 @@ class OverviewController(BaseController):
             prog="hm",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            description="""Display cryptocurrencies heatmap [Source: https://coingecko.com]
+            description="""Display cryptocurrencies heatmap with daily percentage change [Source: https://coingecko.com]
             Accepts --category or -c to display only coins of a certain category
             (default no category to display all coins ranked by market cap).
             You can look on only top N number of records with --limit.
@@ -280,7 +280,7 @@ class OverviewController(BaseController):
                 top=ns_parser.limit,
                 export=ns_parser.export,
                 sortby=" ".join(ns_parser.sortby),
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
             )
 
     @log_start_end(log=logger)
@@ -316,8 +316,8 @@ class OverviewController(BaseController):
         )
         if ns_parser:
             display_btc_rainbow(
-                since=int(ns_parser.since.timestamp()),
-                until=int(ns_parser.until.timestamp()),
+                start_date=int(ns_parser.since.timestamp()),
+                end_date=int(ns_parser.until.timestamp()),
                 export=ns_parser.export,
             )
 
@@ -543,7 +543,7 @@ class OverviewController(BaseController):
         )
         if ns_parser:
             pycoingecko_view.display_holdings_overview(
-                coin=ns_parser.coin,
+                symbol=ns_parser.coin,
                 export=ns_parser.export,
                 show_bar=ns_parser.bar,
                 top=ns_parser.limit,
@@ -657,7 +657,7 @@ class OverviewController(BaseController):
                 top=ns_parser.limit,
                 export=ns_parser.export,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 pie=ns_parser.pie,
             )
 
@@ -711,7 +711,7 @@ class OverviewController(BaseController):
         if ns_parser:
             loanscan_view.display_crypto_rates(
                 rate_type=ns_parser.type,
-                cryptos=ns_parser.cryptos,
+                symbols=ns_parser.cryptos,
                 platforms=ns_parser.platforms,
                 limit=ns_parser.limit,
                 export=ns_parser.export,
@@ -775,7 +775,7 @@ class OverviewController(BaseController):
                 top=ns_parser.limit,
                 export=ns_parser.export,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 links=ns_parser.urls,
             )
 
@@ -826,7 +826,7 @@ class OverviewController(BaseController):
             pycoingecko_view.display_exchange_rates(
                 sortby=ns_parser.sortby,
                 top=ns_parser.limit,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 export=ns_parser.export,
             )
 
@@ -881,7 +881,7 @@ class OverviewController(BaseController):
             pycoingecko_view.display_indexes(
                 top=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 export=ns_parser.export,
             )
 
@@ -938,7 +938,7 @@ class OverviewController(BaseController):
             pycoingecko_view.display_derivatives(
                 top=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 export=ns_parser.export,
             )
 
@@ -1064,9 +1064,9 @@ class OverviewController(BaseController):
         )
         if ns_parser:
             coinpaprika_view.display_all_coins_market_info(
-                currency=ns_parser.vs,
+                symbol=ns_parser.vs,
                 top=ns_parser.limit,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 export=ns_parser.export,
                 sortby=ns_parser.sortby,
             )
@@ -1146,7 +1146,7 @@ class OverviewController(BaseController):
                 top=ns_parser.limit,
                 export=ns_parser.export,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 links=ns_parser.urls,
             )
 
@@ -1159,8 +1159,10 @@ class OverviewController(BaseController):
             prog="cpinfo",
             description="""Show basic coin information for all coins from CoinPaprika API
                 You can display only N number of coins with --limit parameter.
-                You can sort data by rank, name, symbol, price, volume_24h, circulating_supply, total_supply, max_supply,
-                market_cap, beta_value, ath_price --sort parameter and also with --descend flag to sort descending.
+                You can sort data by rank, name, symbol, price, volume_24h, circulating_supply,
+                total_supply, max_supply, market_cap, beta_value, ath_price --sort parameter
+                and also with --descend flag to sort descending.
+
                 Displays:
                     rank, name, symbol, price, volume_24h, circulating_supply,
                     total_supply, max_supply, market_cap, beta_value, ath_price
@@ -1208,9 +1210,9 @@ class OverviewController(BaseController):
         )
         if ns_parser:
             coinpaprika_view.display_all_coins_info(
-                currency=ns_parser.vs,
+                symbol=ns_parser.vs,
                 top=ns_parser.limit,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 sortby=ns_parser.sortby,
                 export=ns_parser.export,
             )
@@ -1273,9 +1275,9 @@ class OverviewController(BaseController):
         )
         if ns_parser:
             coinpaprika_view.display_all_exchanges(
-                currency=ns_parser.vs,
+                symbol=ns_parser.vs,
                 top=ns_parser.limit,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 sortby=ns_parser.sortby,
                 export=ns_parser.export,
             )
@@ -1361,9 +1363,9 @@ class OverviewController(BaseController):
         )
         if ns_parser:
             coinpaprika_view.display_contracts(
-                platform=ns_parser.platform,
+                symbol=ns_parser.platform,
                 top=ns_parser.limit,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 sortby=ns_parser.sortby,
                 export=ns_parser.export,
             )
@@ -1413,7 +1415,7 @@ class OverviewController(BaseController):
                 top=ns_parser.limit,
                 export=ns_parser.export,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
             )
 
     @log_start_end(log=logger)
@@ -1446,7 +1448,6 @@ class OverviewController(BaseController):
         )
 
         parser.add_argument(
-            "-f",
             "--filter",
             dest="filter",
             type=str,
@@ -1490,7 +1491,7 @@ class OverviewController(BaseController):
             "--urls",
             dest="urls",
             action="store_true",
-            help="Flag to show urls. If you will use that flag you will additional column with urls",
+            help="Flag to show urls column.",
             default=False,
         )
 
@@ -1503,7 +1504,7 @@ class OverviewController(BaseController):
                 top=ns_parser.limit,
                 export=ns_parser.export,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 links=ns_parser.urls,
                 post_kind=ns_parser.kind,
                 filter_=ns_parser.filter,

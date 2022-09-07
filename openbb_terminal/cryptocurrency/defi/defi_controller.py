@@ -21,7 +21,6 @@ from openbb_terminal.cryptocurrency.defi import (
     llama_view,
     substack_view,
     terraengineer_model,
-    terraengineer_view,
     terramoney_fcd_model,
     terramoney_fcd_view,
     smartstake_view,
@@ -97,26 +96,26 @@ class DefiController(BaseController):
     def print_help(self):
         """Print help"""
         mt = MenuText("crypto/defi/")
-        mt.add_cmd("newsletter", "Substack")
-        mt.add_cmd("dpi", "Defipulse")
-        mt.add_cmd("vaults", "Coindix")
-        mt.add_cmd("tokens", "The Graph")
-        mt.add_cmd("stats", "The Graph")
-        mt.add_cmd("pairs", "The Graph")
-        mt.add_cmd("pools", "The Graph")
-        mt.add_cmd("swaps", "The Graph")
-        mt.add_cmd("ldapps", "Defi Llama")
-        mt.add_cmd("gdapps", "Defi Llama")
-        mt.add_cmd("stvl", "Defi Llama")
-        mt.add_cmd("dtvl", "Defi Llama")
-        mt.add_cmd("aterra", "Terra Engineer")
-        mt.add_cmd("ayr", "Terra Engineer")
-        mt.add_cmd("sinfo", "Terra FCD")
-        mt.add_cmd("validators", "Terra FCD")
-        mt.add_cmd("gacc", "Terra FCD")
-        mt.add_cmd("sreturn", "Terra FCD")
-        mt.add_cmd("lcsc", "Smartstake")
-        mt.add_cmd("anchor", "CryptoSaurio")
+        mt.add_cmd("newsletter")
+        mt.add_cmd("dpi")
+        mt.add_cmd("vaults")
+        mt.add_cmd("tokens")
+        mt.add_cmd("stats")
+        mt.add_cmd("pairs")
+        mt.add_cmd("pools")
+        mt.add_cmd("swaps")
+        mt.add_cmd("ldapps")
+        mt.add_cmd("gdapps")
+        mt.add_cmd("stvl")
+        mt.add_cmd("dtvl")
+        mt.add_cmd("aterra")
+        mt.add_cmd("ayr")
+        mt.add_cmd("sinfo")
+        mt.add_cmd("validators")
+        mt.add_cmd("gacc")
+        mt.add_cmd("sreturn")
+        mt.add_cmd("lcsc")
+        mt.add_cmd("anchor")
         console.print(text=mt.menu_text, menu="Cryptocurrency - Decentralized Finance")
 
     @log_start_end(log=logger)
@@ -159,71 +158,6 @@ class DefiController(BaseController):
                 export=ns_parser.export,
                 address=ns_parser.address,
             )
-
-    @log_start_end(log=logger)
-    def call_aterra(self, other_args: List[str]):
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="aterra",
-            description="""
-                Displays the 30-day history of an asset in a certain terra address.
-                [Source: https://terra.engineer/]
-            """,
-        )
-        parser.add_argument(
-            "--asset",
-            dest="asset",
-            type=str,
-            help="Terra asset {ust,luna,sdt} Default: ust",
-            default=terraengineer_model.ASSETS[0],
-            choices=terraengineer_model.ASSETS,
-        )
-        parser.add_argument(
-            "--address",
-            dest="address",
-            type=check_terra_address_format,
-            help="Terra address. Valid terra addresses start with 'terra'",
-            required="-h" not in other_args,
-        )
-
-        if other_args and not other_args[0][0] == "-":
-            other_args.insert(0, "--asset")
-
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-
-        if ns_parser:
-            terraengineer_view.display_terra_asset_history(
-                export=ns_parser.export,
-                address=ns_parser.address,
-                asset=ns_parser.asset,
-            )
-
-    @log_start_end(log=logger)
-    def call_ayr(self, other_args: List[str]):
-        """Process ayr command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="ayr",
-            description="""
-                Displays the 30-day history of the Anchor Yield Reserve.
-                An increasing yield reserve indicates that the return on collateral staked by borrowers in Anchor
-                is greater than the yield paid to depositors. A decreasing yield reserve means yield paid
-                to depositors is outpacing the staking returns of borrower's collateral.
-                TLDR: Shows the address that contains UST that is paid on anchor interest earn.
-                [Source: https://terra.engineer/]
-            """,
-        )
-
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-
-        if ns_parser:
-            terraengineer_view.display_anchor_yield_reserve(export=ns_parser.export)
 
     @log_start_end(log=logger)
     def call_sinfo(self, other_args: List[str]):
@@ -466,11 +400,11 @@ class DefiController(BaseController):
         )
 
         parser.add_argument(
-            "--descend",
-            action="store_false",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
-            default=True,
+            "--ascend",
+            action="store_true",
+            help="Flag to sort in ascending order (highest first)",
+            dest="ascending",
+            default=False,
         )
 
         ns_parser = self.parse_known_args_and_warn(
@@ -481,7 +415,7 @@ class DefiController(BaseController):
             defipulse_view.display_defipulse(
                 top=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=ns_parser.ascending,
                 export=ns_parser.export,
             )
 
@@ -720,7 +654,7 @@ class DefiController(BaseController):
                 skip=ns_parser.skip,
                 limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 export=ns_parser.export,
             )
 
@@ -1022,7 +956,7 @@ class DefiController(BaseController):
                 protocol=ns_parser.protocol,
                 top=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                descend=not ns_parser.descend,
                 link=ns_parser.link,
                 export=ns_parser.export,
             )

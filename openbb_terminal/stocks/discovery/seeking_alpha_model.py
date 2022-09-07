@@ -38,12 +38,12 @@ def get_earnings_html(url_next_earnings: str) -> str:
 
 
 @log_start_end(log=logger)
-def get_next_earnings(pages: int) -> DataFrame:
+def get_next_earnings(limit: int = 10) -> DataFrame:
     """Returns a DataFrame with upcoming earnings
 
     Parameters
     ----------
-    pages : int
+    limit : int
         Number of pages
 
     Returns
@@ -54,7 +54,7 @@ def get_next_earnings(pages: int) -> DataFrame:
     earnings = []
     url_next_earnings = "https://seekingalpha.com/earnings/earnings-calendar"
 
-    for idx in range(0, pages):
+    for idx in range(0, limit):
         text_soup_earnings = BeautifulSoup(
             get_earnings_html(url_next_earnings),
             "lxml",
@@ -79,7 +79,7 @@ def get_next_earnings(pages: int) -> DataFrame:
 
 @log_start_end(log=logger)
 def get_articles_html(url_articles: str) -> str:
-    """Wraps HTTP requests.get for testibility
+    """Wraps HTTP requests.get for testability
 
     Parameters
     ----------
@@ -99,12 +99,12 @@ def get_articles_html(url_articles: str) -> str:
 
 
 @log_start_end(log=logger)
-def get_trending_list(num: int) -> list:
+def get_trending_list(limit: int = 5) -> list:
     """Returns a list of trending articles
 
     Parameters
     ----------
-    pages : int
+    limit: int
         Number of articles
 
     Returns
@@ -135,7 +135,7 @@ def get_trending_list(num: int) -> list:
                 }
             )
 
-    return articles[:num]
+    return articles[:limit]
 
 
 @log_start_end(log=logger)

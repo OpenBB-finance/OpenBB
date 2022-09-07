@@ -15,22 +15,22 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def last_insider_activity(ticker: str, num: int = 10, export: str = ""):
+def last_insider_activity(symbol: str, limit: int = 10, export: str = ""):
     """Display insider activity for a given stock ticker. [Source: Finviz]
 
     Parameters
     ----------
-    ticker : str
-        Stock ticker
-    num : int
+    symbol : str
+        Stock ticker symbol
+    limit : int
         Number of latest insider activity to display
     export : str
         Export dataframe data to csv,json,xlsx file
     """
-    d_finviz_insider = finviz_model.get_last_insider_activity(ticker)
+    d_finviz_insider = finviz_model.get_last_insider_activity(symbol)
     df = pd.DataFrame.from_dict(d_finviz_insider)
     if df.empty:
-        console.print(f"[red]No insider information found for {ticker}.\n[/red]")
+        console.print(f"[red]No insider information found for {symbol}.\n[/red]")
         return
     df.set_index("Date", inplace=True)
     df = df[
@@ -47,7 +47,7 @@ def last_insider_activity(ticker: str, num: int = 10, export: str = ""):
     ]
 
     print_rich_table(
-        df.head(num),
+        df.head(limit),
         headers=list(df.columns),
         show_index=True,
         title="Insider Activity",

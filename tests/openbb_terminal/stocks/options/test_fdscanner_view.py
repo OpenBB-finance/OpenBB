@@ -39,8 +39,8 @@ def test_display_options(mocker, toggle):
     )
 
     fdscanner_view.display_options(
-        num=5,
-        sort_column=["Vol"],
+        limit=5,
+        sortby=["Vol"],
         export="csv",
         ascending=True,
         calls_only=toggle,

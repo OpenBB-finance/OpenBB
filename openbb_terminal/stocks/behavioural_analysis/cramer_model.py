@@ -96,12 +96,12 @@ def get_cramer_daily(inverse: bool = True) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_cramer_ticker(ticker: str) -> pd.DataFrame:
+def get_cramer_ticker(symbol: str) -> pd.DataFrame:
     """Get cramer recommendations from beginning of year for given ticker
 
     Parameters
     ----------
-    ticker: str
+    symbol: str
         Ticker to get recommendations for
 
     Returns
@@ -112,4 +112,5 @@ def get_cramer_ticker(ticker: str) -> pd.DataFrame:
 
     link = "https://raw.githubusercontent.com/jmaslek/InverseCramer/main/AllRecommendations.csv"
     df = pd.read_csv(link, index_col=0)
-    return df[df.Symbol == ticker].reset_index(drop=True)
+    df["Date"] = pd.to_datetime(df["Date"].apply(lambda x: x + "/2022"))
+    return df[df.Symbol == symbol].reset_index(drop=True)

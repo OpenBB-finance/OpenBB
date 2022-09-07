@@ -136,31 +136,31 @@ class OnchainController(BaseController):
     def print_help(self):
         """Print help"""
         mt = MenuText("crypto/onchain/")
-        mt.add_cmd("hr", "Glassnode")
-        mt.add_cmd("btccp", "Blockchain")
-        mt.add_cmd("btcct", "Blockchain")
-        mt.add_cmd("gwei", "ETH Gas Stations")
-        mt.add_cmd("whales", "Whale Alert")
-        mt.add_cmd("lt", "BitQuery")
-        mt.add_cmd("dvcp", "BitQuery")
-        mt.add_cmd("tv", "BitQuery")
-        mt.add_cmd("ueat", "BitQuery")
-        mt.add_cmd("ttcp", "BitQuery")
-        mt.add_cmd("baas", "BitQuery")
+        mt.add_cmd("hr")
+        mt.add_cmd("btccp")
+        mt.add_cmd("btcct")
+        mt.add_cmd("gwei")
+        mt.add_cmd("whales")
+        mt.add_cmd("lt")
+        mt.add_cmd("dvcp")
+        mt.add_cmd("tv")
+        mt.add_cmd("ueat")
+        mt.add_cmd("ttcp")
+        mt.add_cmd("baas")
         mt.add_raw("\n")
         mt.add_param("_address", self.address or "")
         mt.add_param("_type", self.address_type or "")
         mt.add_raw("\n")
         mt.add_info("_ethereum_")
-        mt.add_cmd("address", "Ethplorer")
-        mt.add_cmd("top", "Ethplorer")
-        mt.add_cmd("balance", "Ethplorer", self.address_type == "account")
-        mt.add_cmd("hist", "Ethplorer", self.address_type == "account")
-        mt.add_cmd("info", "Ethplorer", self.address_type == "token")
-        mt.add_cmd("holders", "Ethplorer", self.address_type == "token")
-        mt.add_cmd("th", "Ethplorer", self.address_type == "token")
-        mt.add_cmd("prices", "Ethplorer", self.address_type == "token")
-        mt.add_cmd("tx", "Ethplorer", self.address_type == "tx")
+        mt.add_cmd("address")
+        mt.add_cmd("top")
+        mt.add_cmd("balance", self.address_type == "account")
+        mt.add_cmd("hist", self.address_type == "account")
+        mt.add_cmd("info", self.address_type == "token")
+        mt.add_cmd("holders", self.address_type == "token")
+        mt.add_cmd("th", self.address_type == "token")
+        mt.add_cmd("prices", self.address_type == "token")
+        mt.add_cmd("tx", self.address_type == "tx")
         console.print(text=mt.menu_text, menu="Cryptocurrency - Onchain")
 
     @log_start_end(log=logger)
@@ -305,10 +305,10 @@ class OnchainController(BaseController):
 
         if ns_parser:
             display_hashrate(
-                asset=ns_parser.coin,
+                symbol=ns_parser.coin,
                 interval=ns_parser.interval,
-                since=int(datetime.timestamp(ns_parser.since)),
-                until=int(datetime.timestamp(ns_parser.until)),
+                start_date=int(datetime.timestamp(ns_parser.since)),
+                end_date=int(datetime.timestamp(ns_parser.until)),
                 export=ns_parser.export,
             )
 
@@ -398,7 +398,7 @@ class OnchainController(BaseController):
                 min_value=ns_parser.min,
                 top=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 show_address=ns_parser.address,
                 export=ns_parser.export,
             )
@@ -527,7 +527,7 @@ class OnchainController(BaseController):
             ethplorer_view.display_address_info(
                 top=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 address=self.address,
                 export=ns_parser.export,
             )
@@ -583,7 +583,7 @@ class OnchainController(BaseController):
             ethplorer_view.display_address_history(
                 top=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 address=self.address,
                 export=ns_parser.export,
             )
@@ -638,7 +638,7 @@ class OnchainController(BaseController):
             ethplorer_view.display_top_token_holders(
                 top=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 address=self.address,
                 export=ns_parser.export,
             )
@@ -693,7 +693,7 @@ class OnchainController(BaseController):
             ethplorer_view.display_top_tokens(
                 top=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 export=ns_parser.export,
             )
 
@@ -789,7 +789,7 @@ class OnchainController(BaseController):
                 top=ns_parser.limit,
                 hash_=ns_parser.hash,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 address=self.address,
                 export=ns_parser.export,
             )
@@ -870,7 +870,7 @@ class OnchainController(BaseController):
             ethplorer_view.display_token_historical_prices(
                 top=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 address=self.address,
                 export=ns_parser.export,
             )
@@ -957,7 +957,7 @@ class OnchainController(BaseController):
                 top=ns_parser.limit,
                 days=ns_parser.days,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 export=ns_parser.export,
             )
 
@@ -1036,7 +1036,7 @@ class OnchainController(BaseController):
                 vs=ns_parser.vs,
                 top=ns_parser.days,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 export=ns_parser.export,
             )
 
@@ -1107,11 +1107,11 @@ class OnchainController(BaseController):
 
         if ns_parser:
             bitquery_view.display_dex_volume_for_token(
-                token=ns_parser.coin,
+                symbol=ns_parser.coin,
                 trade_amount_currency=ns_parser.vs,
                 top=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 export=ns_parser.export,
             )
 
@@ -1177,7 +1177,7 @@ class OnchainController(BaseController):
                 interval=ns_parser.interval,
                 limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 export=ns_parser.export,
             )
 
@@ -1286,7 +1286,7 @@ class OnchainController(BaseController):
                 top=ns_parser.limit,
                 exchange=exchange,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 export=ns_parser.export,
             )
 
@@ -1357,7 +1357,7 @@ class OnchainController(BaseController):
                         vs=ns_parser.vs,
                         days=ns_parser.days,
                         sortby=ns_parser.sortby,
-                        descend=ns_parser.descend,
+                        ascend=not ns_parser.descend,
                         export=ns_parser.export,
                     )
 
@@ -1380,7 +1380,7 @@ class OnchainController(BaseController):
                             vs=ns_parser.vs,
                             days=ns_parser.days,
                             sortby=ns_parser.sortby,
-                            descend=ns_parser.descend,
+                            ascend=not ns_parser.descend,
                             export=ns_parser.export,
                         )
                     else:

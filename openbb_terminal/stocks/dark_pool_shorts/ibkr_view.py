@@ -13,17 +13,17 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_cost_to_borrow(num_stocks: int, export: str):
+def display_cost_to_borrow(limit: int = 20, export: str = ""):
     """Display stocks with highest cost to borrow. [Source: Interactive Broker]
 
     Parameters
     ----------
-    num_stocks: int
+    limit: int
         Number of stocks to display
     export : str
         Export dataframe data to csv,json,xlsx file
     """
-    df = ibkr_model.get_cost_to_borrow().head(num_stocks)
+    df = ibkr_model.get_cost_to_borrow().head(limit)
 
     if df.empty:
         console.print("No data found.")

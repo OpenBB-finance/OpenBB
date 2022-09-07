@@ -730,25 +730,34 @@ def display_distribution_returns(
     else:
         if external_axes is None:
             _, ax = plt.subplots(
-                1,
-                2,
                 figsize=plot_autoscale(),
                 dpi=PLOT_DPI,
             )
         else:
             ax = external_axes
 
-        ax[0].set_title("Portfolio distribution")
-        sns.kdeplot(portfolio_returns.values, ax=ax[0])
-        ax[0].set_ylabel("Density")
-        ax[0].set_xlabel("Daily return [%]")
-        theme.style_primary_axis(ax[0])
+        ax.set_title("Returns distribution")
+        ax.set_ylabel("Density")
+        ax.set_xlabel("Daily return [%]")
 
-        ax[1].set_title("Benchmark distribution")
-        sns.kdeplot(benchmark_returns.values, ax=ax[1])
-        ax[1].set_ylabel("Density")
-        ax[1].set_xlabel("Daily return [%]")
-        theme.style_primary_axis(ax[1])
+        ax = sns.kdeplot(portfolio_returns.values, label="portfolio")
+        kdeline = ax.lines[0]
+        mean = portfolio_returns.values.mean()
+        xs = kdeline.get_xdata()
+        ys = kdeline.get_ydata()
+        height = np.interp(mean, xs, ys)
+        ax.vlines(mean, 0, height, color="yellow", ls=":")
+
+        ax = sns.kdeplot(benchmark_returns.values, label="benchmark")
+        kdeline = ax.lines[1]
+        mean = benchmark_returns.values.mean()
+        xs = kdeline.get_xdata()
+        ys = kdeline.get_ydata()
+        height = np.interp(mean, xs, ys)
+        ax.vlines(mean, 0, height, color="orange", ls=":")
+
+        theme.style_primary_axis(ax)
+        ax.legend()
 
         if not external_axes:
             theme.visualize_output()
@@ -955,11 +964,9 @@ def display_rolling_volatility(
             return
         ax = external_axes
 
-    length = portfolio_helper.PERIODS_DAYS[period]
-
-    rolling_volatility = portfolio_model.rolling_volatility(portfolio_returns, length)
+    rolling_volatility = portfolio_model.rolling_volatility(portfolio_returns, period)
     rolling_volatility_bench = portfolio_model.rolling_volatility(
-        benchmark_returns, length
+        benchmark_returns, period
     )
 
     rolling_volatility.plot(ax=ax)
@@ -1015,13 +1022,11 @@ def display_rolling_sharpe(
             return
         ax = external_axes
 
-    length = portfolio_helper.PERIODS_DAYS[period]
-
     rolling_sharpe = portfolio_model.rolling_sharpe(
-        portfolio_returns, risk_free_rate, length
+        portfolio_returns, risk_free_rate, period
     )
     rolling_sharpe_bench = portfolio_model.rolling_sharpe(
-        benchmark_returns, risk_free_rate, length
+        benchmark_returns, risk_free_rate, period
     )
 
     rolling_sharpe.plot(ax=ax)
@@ -1077,13 +1082,11 @@ def display_rolling_sortino(
             return
         ax = external_axes
 
-    length = portfolio_helper.PERIODS_DAYS[period]
-
     rolling_sortino = portfolio_model.rolling_sortino(
-        portfolio_returns, risk_free_rate, length
+        portfolio_returns, risk_free_rate, period
     )
     rolling_sortino_bench = portfolio_model.rolling_sortino(
-        benchmark_returns, risk_free_rate, length
+        benchmark_returns, risk_free_rate, period
     )
 
     rolling_sortino.plot(ax=ax)
@@ -1106,8 +1109,8 @@ def display_rolling_sortino(
 
 @log_start_end(log=logger)
 def display_rolling_beta(
-    benchmark_returns: pd.Series,
     portfolio_returns: pd.Series,
+    benchmark_returns: pd.Series,
     period: str = "1y",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -1136,18 +1139,9 @@ def display_rolling_beta(
             return
         ax = external_axes
 
-    length = portfolio_helper.PERIODS_DAYS[period]
-
-    # Rolling beta is defined as Cov(Port,Bench)/var(Bench)
-    covs = (
-        pd.DataFrame({"Portfolio": portfolio_returns, "Benchmark": benchmark_returns})
-        .dropna(axis=0)
-        .rolling(length)
-        .cov()
-        .unstack()
-        .dropna()
+    rolling_beta = portfolio_model.get_rolling_beta(
+        portfolio_returns, benchmark_returns, period
     )
-    rolling_beta = covs["Portfolio"]["Benchmark"] / covs["Benchmark"]["Benchmark"]
     rolling_beta.plot(ax=ax)
 
     ax.set_title(f"Rolling Beta using {period} window")
@@ -1508,7 +1502,7 @@ def display_information_ratio(
     export : str
         Export data format
     """
-    df, _ = portfolio.get_information_ratio()
+    df = portfolio.get_information_ratio()
     print_rich_table(
         df,
         title="Information ratio for portfolio",
@@ -1766,6 +1760,7 @@ def display_summary_portfolio_benchmark(
     summary = pd.DataFrame(
         metrics.values(), index=metrics.keys(), columns=["Portfolio", "Benchmark"]
     )
+    summary["Difference"] = summary["Portfolio"] - summary["Benchmark"]
 
     print_rich_table(
         summary,
