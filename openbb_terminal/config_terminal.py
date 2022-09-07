@@ -5,7 +5,7 @@ from distutils.util import strtobool
 # IMPORTATION THIRDPARTY
 import dotenv
 
-from openbb_terminal.core.config.constants import ENV_FILE_DEFAULT, ENV_FILE_REPO
+from openbb_terminal.core.config.paths import ENV_FILE_DEFAULT, ENV_FILE_REPO
 
 # IMPORTATION INTERNAL
 from .helper_classes import TerminalStyle as _TerminalStyle

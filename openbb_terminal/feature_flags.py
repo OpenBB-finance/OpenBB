@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 import i18n
 
 # IMPORTATION INTERNAL
-from openbb_terminal.core.config.constants import ENV_FILE_DEFAULT, ENV_FILE_REPO
+from openbb_terminal.core.config.paths import ENV_FILE_DEFAULT, ENV_FILE_REPO
 
 # pylint: disable=no-member
 
