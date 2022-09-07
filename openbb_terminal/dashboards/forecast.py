@@ -74,23 +74,27 @@ def load_state(name: str, default: Any):
 def run_forecast(data: pd.DataFrame, model: str, target_column: str):
     if helpers.check_data(data, target_column):
 
+        """
         (
             ticker_series,
             historical_fcast,
             predicted_values,
             precision,
             _model,
-        ) = model_opts["expo"](
+        )
+        """
+        response = model_opts["theta"](
             data=data,
             target_column=target_column,
-            trend="A",
-            seasonal="A",
-            seasonal_periods=7,
-            dampen="F",
-            n_predict=30,
-            start_window=0.85,
-            forecast_horizon=5,
+            # trend="A",
+            # seasonal="A",
+            # seasonal_periods=7,
+            # dampen="F",
+            # n_predict=30,
+            # start_window=0.85,
+            # forecast_horizon=5,
         )
+        print(response)
         predicted_values = predicted_values.quantile_df()[f"{target_column}_0.5"].tail(
             5
         )
