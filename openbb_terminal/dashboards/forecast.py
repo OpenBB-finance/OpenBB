@@ -176,7 +176,9 @@ class Handler:
                     )
                     if not final.empty:
                         # Styled write() with sig figs
-                        st.write(pred_vals.style.format({"Prediction Values": "{:.2f}"}))
+                        st.write(
+                            pred_vals.style.format({"Prediction Values": "{:.2f}"})
+                        )
                         st.line_chart(final)
 
                     else:
@@ -224,9 +226,17 @@ class Handler:
         ]
 
     def run(self):
-        st.title("Forecast")
+        r0c1, r0c2 = st.columns([4, 1])
         r1c1, r1c2, r1c3, r1c4 = st.columns([2, 1, 1, 1])
         r2c1, r2c2, r2c3 = st.columns([1, 1, 1])
+
+        with r0c1:
+            st.title("Forecast")
+        with r0c2:
+            st.image(
+                "https://wp-api.zipmex.com/wp-content/uploads/2022/05/FS0apkragAAnItM-min-842x1024.jpeg",
+                width=100,
+            )
         with r1c1:
             self.ticker = st.text_input(
                 "Ticker", "", key="ticker", on_change=self.on_ticker_change
