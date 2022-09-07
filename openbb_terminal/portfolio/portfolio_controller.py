@@ -346,7 +346,9 @@ class PortfolioController(BaseController):
             console.print(
                 f"[bold]Risk Free Rate:[/bold] {self.portfolio.risk_free_rate}"
             )
-            console.print()
+
+            # Load benchmark
+            self.call_bench(["-b", "SPDR S&P 500 ETF Trust (SPY)"])
 
     @log_start_end(log=logger)
     def call_show(self, _):
@@ -382,7 +384,6 @@ class PortfolioController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-b")
-
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         if ns_parser and self.portfolio is not None:
@@ -410,7 +411,7 @@ class PortfolioController(BaseController):
                 )
 
                 console.print(
-                    f"[bold]\nBenchmark:[/bold] {self.benchmark_name} ({benchmark_ticker})"
+                    f"[bold]Benchmark:[/bold] {self.benchmark_name}"
                 )
             else:
                 console.print("[red]Please first load orderbook using 'load'[/red]\n")
