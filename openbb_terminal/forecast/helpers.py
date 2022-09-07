@@ -764,16 +764,16 @@ def clean_data(
     start_date: Optional[datetime],
     end_date: Optional[datetime],
 ) -> Union[pd.DataFrame, pd.Series]:
+    # TODO this is temporary
+    # check dataframe for any inf or nan values
+    if data.isnull().values.any() or data.isin([np.inf, -np.inf]).any():
+        console.print(
+            "[red]The data contains inf or nan values. They will be removed.[/red]\n"
+        )
+        # drop any rows with inf values
+        data = data.replace([np.inf, -np.inf], np.nan)
+        data = data.dropna()
     if isinstance(data, pd.Series):
-        # TODO this is temporary
-        # check dataframe for any inf or nan values
-        if data.isnull().values.any() or data.isin([np.inf, -np.inf]).any():
-            console.print(
-                "[red]The data contains inf or nan values. They will be removed.[/red]\n"
-            )
-            # drop any rows with inf values
-            data = data.replace([np.inf, -np.inf], np.nan)
-            data = data.dropna()
         col = data.name
         columns = ["date", col]
         data = pd.DataFrame(data).reset_index()
