@@ -9,4 +9,4 @@ SETTINGS_DIRECTORY = HOME_DIRECTORY / ".openbb_terminal"
 ENV_FILE_REPOSITORY = HOME_DIRECTORY / ".env"
 USER_ENV_FILE = SETTINGS_DIRECTORY / ".env"
 
-USER_DATA_DIRECTORY = HOME_DIRECTORY / user_dir.get_user_dir()
+USER_DATA_DIRECTORY = HOME_DIRECTORY / user_dir.get_user_dir()  # type: ignore
