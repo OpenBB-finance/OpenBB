@@ -1126,9 +1126,11 @@ class PortfolioModel:
                 .T.to_dict("records")[0]
             )
 
+            # If ISIN not provided, the ticker is mapped as ISIN
             for key, val in self.isins.items():
                 if math.isnan(val):
                     self.isins[key] = key
+            # Inverse isin dictionary with structure {'ISIN': 'Ticker'}
             self.inv_isins = {v: k for k, v in self.isins.items()}
 
             # 10. Create list with tickers except cash
@@ -1191,14 +1193,14 @@ class PortfolioModel:
                         .isnull()
                         .values.any()
                     ):
-                        # Get ticker info in list ["Sector", "Industry", "Country", "Region"]
-                        ticker_info_list = portfolio_helper.get_info_from_ticker(ticker)
+                        # Get ticker info in list ["Sector", "Industry", "Country", "Region"] from isin/ticker
+                        info_list = portfolio_helper.get_info_from_ticker(self.isins[ticker])
 
                         # Replace fields in orderbook
                         self.__orderbook.loc[
                             self.__orderbook.Ticker == ticker,
                             ["Sector", "Industry", "Country", "Region"],
-                        ] = ticker_info_list
+                        ] = info_list
 
                         # Display progress
                         console.print(".", end="")
@@ -1214,13 +1216,13 @@ class PortfolioModel:
                         .values.any()
                     ):
                         # Get ticker info in list ["Sector", "Industry", "Country", "Region"]
-                        ticker_info_list = ["Crypto", "Crypto", "Crypto", "Crypto"]
+                        info_list = ["Crypto", "Crypto", "Crypto", "Crypto"]
 
                         # Replace fields in orderbook
                         self.__orderbook.loc[
                             self.__orderbook.Ticker == ticker,
                             ["Sector", "Industry", "Country", "Region"],
-                        ] = ticker_info_list
+                        ] = info_list
 
                         # Display progress
                         console.print(".", end="")
@@ -1236,13 +1238,13 @@ class PortfolioModel:
                         .values.any()
                     ):
                         # Get ticker info in list ["Sector", "Industry", "Country", "Region"]
-                        ticker_info_list = ["-", "-", "-", "-"]
+                        info_list = ["-", "-", "-", "-"]
 
                         # Replace fields in orderbook
                         self.__orderbook.loc[
                             self.__orderbook.Ticker == ticker,
                             ["Sector", "Industry", "Country", "Region"],
-                        ] = ticker_info_list
+                        ] = info_list
 
                         # Display progress
                         console.print(".", end="")
