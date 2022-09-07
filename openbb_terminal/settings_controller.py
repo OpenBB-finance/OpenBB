@@ -16,7 +16,7 @@ from prompt_toolkit.completion import NestedCompleter
 # IMPORTATION INTERNAL
 from openbb_terminal import config_plot as cfg_plot
 from openbb_terminal import feature_flags as obbff
-from openbb_terminal.core.config.constants import ENV_FILE_DEFAULT
+from openbb_terminal.core.config.paths import ENV_FILE_DEFAULT
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     get_flair,

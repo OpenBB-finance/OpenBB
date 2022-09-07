@@ -2,7 +2,7 @@ import os
 import pytest
 from openbb_terminal.core.log.generation import formatter_with_exceptions
 from openbb_terminal.core.log.generation.settings import AppSettings
-from openbb_terminal.core.config.constants import REPO_DIR
+from openbb_terminal.core.config.paths import REPO_DIR
 
 app_settings = AppSettings(
     commit_hash="MOCK_COMMIT_HASH",

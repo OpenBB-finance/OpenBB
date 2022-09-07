@@ -6,7 +6,7 @@ import re
 # IMPORTATION THIRDPARTY
 
 # IMPORTATION INTERNAL
-from openbb_terminal.core.config.constants import REPO_DIR
+from openbb_terminal.core.config.paths import REPO_DIR
 from openbb_terminal.core.log.generation.settings import AppSettings
 
 

@@ -32,11 +32,12 @@ import requests
 from screeninfo import get_monitors
 import yfinance as yf
 import numpy as np
+from openbb_terminal.core.config.paths import USER_ENV_FILE
 
 from openbb_terminal.rich_config import console
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal import config_plot as cfgPlot
-from openbb_terminal.core.config.constants import USER_HOME
+from openbb_terminal.core.config.paths import USER_HOME
 
 logger = logging.getLogger(__name__)
 
@@ -1672,3 +1673,18 @@ def search_wikipedia(expression: str) -> None:
         show_index=False,
         title=f"Wikipedia results for {expression}",
     )
+
+
+def get_user_dir() -> str:
+    """
+    Gets name of user data directory from .env file.
+    If none found, sets it to "OpenBBUserData"
+    """
+
+    dotenv.load_dotenv(USER_ENV_FILE)
+    # check if there is a predefined user data folder
+    if os.getenv("USER_DATA_FOLDER"):
+        return os.getenv("USER_DATA_FOLDER")
+    else:
+        dotenv.set_key(USER_ENV_FILE, "USER_DATA_FOLDER", "OpenBBUserData")
+        return "OpenBBUserData"

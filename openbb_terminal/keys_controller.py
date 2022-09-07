@@ -25,7 +25,7 @@ from oandapyV20.exceptions import V20Error
 
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal import feature_flags as obbff
-from openbb_terminal.core.config.constants import ENV_FILE_DEFAULT
+from openbb_terminal.core.config.paths import ENV_FILE_DEFAULT
 from openbb_terminal.cryptocurrency.coinbase_helpers import (
     CoinbaseProAuth,
     make_coinbase_request,
