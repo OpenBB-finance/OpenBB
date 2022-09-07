@@ -766,7 +766,7 @@ def clean_data(
 ) -> Union[pd.DataFrame, pd.Series]:
     # TODO this is temporary
     # check dataframe for any inf or nan values
-    if data.isnull().values.any() or data.isin([np.inf, -np.inf]).any():
+    if data.isnull().values.any().any() or data.isin([np.inf, -np.inf]).any().any():
         console.print(
             "[red]The data contains inf or nan values. They will be removed.[/red]\n"
         )
