@@ -101,8 +101,12 @@ def run_forecast(data: pd.DataFrame, model: str, target_column: str):
             ].tail(5)
         else:
             predicted_values = predicted_values.pd_dataframe()[target_column].tail(5)
-        return pd.DataFrame(predicted_values)
-    return None
+        return (
+            historical_fcast.pd_dataframe(),
+            ticker_series.pd_dataframe(),
+            pd.DataFrame(predicted_values),
+        )
+    return pd.DataFrame(), pd.DataFrame(), pd.DataFrame()
 
 
 class Handler:
@@ -160,13 +164,19 @@ class Handler:
                 kwargs["forecast_only"] = forecast_only
             with patch.object(console, "print", st.write):
                 if helpers.check_data(result, target_column):
-                    # use_model = expo_model.get_expo_data
                     final_df = helpers.clean_data(result, None, None)
-                    predicted_values = run_forecast(final_df, model, target_column)
-                    if predicted_values is not None:
-                        st.write(predicted_values)
-                        # draw predicted_values on line graph
-                        st.line_chart(predicted_values)
+                    hist_fcast, tick_series, pred_vals = run_forecast(
+                        final_df, model, target_column
+                    )
+                    hist_fcast.columns = ["Historical Forecast"]
+                    tick_series.columns = ["Past Prices"]
+                    pred_vals.columns = ["Prediction Values"]
+                    final = pd.concat(
+                        [hist_fcast, tick_series, pred_vals], axis=1, join="outer"
+                    )
+                    if not final.empty:
+                        st.write(pred_vals)
+                        st.line_chart(final)
 
                     else:
                         st.write("There was an error with the data")
