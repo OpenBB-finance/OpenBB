@@ -106,11 +106,13 @@ def display_assets_allocation(
     benchmark_allocation = benchmark_allocation.iloc[:limit]
     portfolio_allocation = portfolio_allocation.iloc[:limit]
 
-    combined = pd.merge(portfolio_allocation, benchmark_allocation, on="Symbol")
+    combined = pd.merge(portfolio_allocation, benchmark_allocation, on="Symbol", how="left")
     combined["Difference"] = combined["Portfolio"] - combined["Benchmark"]
+    combined = combined.replace(np.nan, "-")
+    combined = combined.replace(0, "-")
 
     print_rich_table(
-        combined.replace(0, "-"),
+        combined,
         headers=list(combined.columns),
         title=f"Portfolio vs. Benchmark - Top {len(combined) if len(combined) < limit else limit} Assets Allocation",
         floatfmt=["", ".2%", ".2%", ".2%"],
