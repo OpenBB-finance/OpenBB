@@ -76,12 +76,10 @@ def get_theta_data(
         Theta Model
     """
 
-    print("-----------------1--------------------")
     use_scalers = False
     _, ticker_series = helpers.get_series(data, target_column, is_scaler=use_scalers)
     train, val = ticker_series.split_before(start_window)
 
-    print("-----------------2--------------------")
     if seasonal == "A":
         seasonal = SeasonalityMode.ADDITIVE
     elif seasonal == "N":
@@ -89,7 +87,6 @@ def get_theta_data(
     else:  # Default
         seasonal = SeasonalityMode.MULTIPLICATIVE
 
-    print("-----------------3--------------------")
     thetas = np.linspace(-10, 10, 50)
     best_mape = float("inf")
     best_theta = 0
@@ -106,14 +103,12 @@ def get_theta_data(
             best_mape = res
             best_theta = theta
 
-    print("-----------------4--------------------")
     best_theta_model = Theta(
         best_theta,
         season_mode=seasonal,
         seasonality_period=seasonal_periods,
     )
 
-    print("-----------------5--------------------")
     # Training model based on historical backtesting
     historical_fcast_theta = best_theta_model.historical_forecasts(
         ticker_series,
@@ -122,25 +117,20 @@ def get_theta_data(
         verbose=True,
     )
 
-    print("-----------------5--------------------")
     best_theta_model_final = Theta(
         best_theta,
         season_mode=seasonal,
         seasonality_period=seasonal_periods,
     )
 
-    print("-----------------6--------------------")
     # fit model on entire series for final prediction
     best_theta_model_final.fit(ticker_series)
     prediction = best_theta_model_final.predict(int(n_predict))
-    print("-----------------6.5--------------------")
     precision = mape(
         actual_series=ticker_series, pred_series=historical_fcast_theta
     )  # mape = mean average precision error
     console.print(f"Theta Model obtains MAPE: {precision:.2f}% \n")
-    print("-----------------7--------------------")
 
-    print(ticker_series)
     return (
         ticker_series,
         historical_fcast_theta,

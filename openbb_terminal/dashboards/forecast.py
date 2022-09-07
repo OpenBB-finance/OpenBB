@@ -74,29 +74,33 @@ def load_state(name: str, default: Any):
 def run_forecast(data: pd.DataFrame, model: str, target_column: str):
     if helpers.check_data(data, target_column):
 
-        response = model_opts["theta"](
+        response = model_opts[model](
             data=data,
             target_column=target_column,
-            # trend="A",
-            # seasonal="A",
-            # seasonal_periods=7,
-            # dampen="F",
-            # n_predict=30,
-            # start_window=0.85,
-            # forecast_horizon=5,
         )
-        for i, item in enumerate(response):
-            print(f"{i}: {item}")
-        (
-            ticker_series,
-            historical_fcast,
-            predicted_values,
-            precision,
-            _model,
-        ) = response
-        predicted_values = predicted_values.quantile_df()[f"{target_column}_0.5"].tail(
-            5
-        )
+        if model == "theta":
+            (
+                ticker_series,
+                historical_fcast,
+                predicted_values,
+                precision,
+                _,
+                _model,
+            ) = response
+        else:
+            (
+                ticker_series,
+                historical_fcast,
+                predicted_values,
+                precision,
+                _model,
+            ) = response
+        if model in ["expo", "linregr", "rnn", "tft"]:
+            predicted_values = predicted_values.quantile_df()[
+                f"{target_column}_0.5"
+            ].tail(5)
+        else:
+            predicted_values = predicted_values.pd_dataframe()[target_column].tail(5)
         return pd.DataFrame(predicted_values)
     return None
 
@@ -240,17 +244,20 @@ class Handler:
         with r2c3:
             self.model_widget = st.selectbox("Model", options=list(model_opts))
         if st.button("Get forecast"):
-            self.handle_changes(
-                [],
-                start=self.start_date,
-                end=self.end_date,
-                interval=self.target_interval,
-                tickers=self.ticker,
-                target_column=self.target_widget,
-                model=self.model_widget,
-                naive=False,
-                forecast_only=False,
-            )
+            if self.ticker:
+                self.handle_changes(
+                    [],
+                    start=self.start_date,
+                    end=self.end_date,
+                    interval=self.target_interval,
+                    tickers=self.ticker,
+                    target_column=self.target_widget,
+                    model=self.model_widget,
+                    naive=False,
+                    forecast_only=False,
+                )
+            else:
+                st.write("Please select a ticker")
 
             # TODO need to new add in business days and merge to make new DF before plotting
             # create df with 5 next business days from a start date
