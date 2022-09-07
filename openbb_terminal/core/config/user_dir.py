@@ -16,8 +16,6 @@ def get_user_dir() -> Optional[str]:
         # check if there is a predefined user data folder
         if os.getenv("USER_DATA_FOLDER"):
             return os.getenv("USER_DATA_FOLDER")
-        else:
-            dotenv.set_key(paths.USER_ENV_FILE, "USER_DATA_FOLDER", "OpenBBUserData")
-            return "OpenBBUserData"
-    else:
+        dotenv.set_key(paths.USER_ENV_FILE, "USER_DATA_FOLDER", "OpenBBUserData")
         return "OpenBBUserData"
+    return "OpenBBUserData"
