@@ -1559,7 +1559,7 @@ class PortfolioModel:
             (
                 self.benchmark_assets_allocation,
                 self.portfolio_assets_allocation,
-            ) = allocation_model.obtain_assets_allocation(
+            ) = allocation_model.get_assets_allocation(
                 self.benchmark_info, self.portfolio_trades
             )
         elif category == "sector":
@@ -1567,7 +1567,7 @@ class PortfolioModel:
             (
                 self.benchmark_sectors_allocation,
                 self.portfolio_sectors_allocation,
-            ) = allocation_model.obtain_sector_allocation(
+            ) = allocation_model.get_sector_allocation(
                 self.benchmark_info, self.portfolio_trades
             )
         elif category in ("country", "region"):

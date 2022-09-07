@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def obtain_assets_allocation(benchmark_info: Dict, portfolio_trades: pd.DataFrame):
+def get_assets_allocation(benchmark_info: Dict, portfolio_trades: pd.DataFrame):
     """Obtain the assets allocation of the benchmark and portfolio [Source: Yahoo Finance]
 
     Parameters
@@ -29,6 +29,9 @@ def obtain_assets_allocation(benchmark_info: Dict, portfolio_trades: pd.DataFram
         Dictionary with the portfolio's asset allocations
     """
     benchmark_assets_allocation = pd.DataFrame(benchmark_info["holdings"])
+    benchmark_assets_allocation.rename(columns = {"symbol":"Symbol", "holdingPercent":"Benchmark"}, inplace = True)
+    benchmark_assets_allocation.drop(columns=["holdingName"], inplace=True)
+
     portfolio_assets_allocation = (
         (
             portfolio_trades[portfolio_trades["Type"] != "CASH"]
@@ -36,17 +39,17 @@ def obtain_assets_allocation(benchmark_info: Dict, portfolio_trades: pd.DataFram
             .agg({"Portfolio Value": "sum"})
             .div(portfolio_trades["Portfolio Value"].sum())
         )
-        .squeeze(axis=1)
-        .sort_values(ascending=False)
+        .sort_values(by="Portfolio Value", ascending=False)
     )
-
+    portfolio_assets_allocation.reset_index(inplace=True)
+    portfolio_assets_allocation.rename(columns = {"Ticker":"Symbol", "Portfolio Value":"Portfolio"}, inplace = True) 
     portfolio_assets_allocation.fillna(0, inplace=True)
 
     return benchmark_assets_allocation, portfolio_assets_allocation
 
 
 @log_start_end(log=logger)
-def obtain_sector_allocation(benchmark_info: Dict, portfolio_trades: pd.DataFrame):
+def get_sector_allocation(benchmark_info: Dict, portfolio_trades: pd.DataFrame):
     """Obtain the sector allocation of the benchmark and portfolio [Source: Yahoo Finance]
 
     Parameters

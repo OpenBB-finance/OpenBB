@@ -106,54 +106,32 @@ def display_assets_allocation(
     benchmark_allocation = benchmark_allocation.iloc[:limit]
     portfolio_allocation = portfolio_allocation.iloc[:limit]
 
-    combined = pd.DataFrame()
-
-    for ticker, allocation in portfolio_allocation.items():
-        if ticker in benchmark_allocation["symbol"].values:
-            benchmark_allocation_value = float(
-                benchmark_allocation[benchmark_allocation["symbol"] == ticker][
-                    "holdingPercent"
-                ]
-            )
-        else:
-            benchmark_allocation_value = 0
-
-        combined = combined.append(
-            [
-                [
-                    ticker,
-                    allocation,
-                    benchmark_allocation_value,
-                    allocation - benchmark_allocation_value,
-                ]
-            ]
-        )
-
-    combined.columns = ["Symbol", "Portfolio", "Benchmark", "Difference"]
+    combined = pd.merge(portfolio_allocation, benchmark_allocation, on="Symbol")
+    combined["Difference"] = combined["Portfolio"] - combined["Benchmark"]
 
     print_rich_table(
         combined.replace(0, "-"),
         headers=list(combined.columns),
         title=f"Portfolio vs. Benchmark - Top {len(combined) if len(combined) < limit else limit} Assets Allocation",
-        floatfmt=[".2f", ".2%", ".2%", ".2%"],
+        floatfmt=["", ".2%", ".2%", ".2%"],
         show_index=False,
     )
 
     if include_separate_tables:
         print_rich_table(
-            pd.DataFrame(portfolio_allocation),
-            headers=list(["Allocation"]),
+            portfolio_allocation,
+            headers=list(portfolio_allocation.columns),
             title=f"Portfolio - Top {len(portfolio_allocation) if len(benchmark_allocation) < limit else limit} "
             f"Assets Allocation",
-            floatfmt=[".2%"],
-            show_index=True,
+            floatfmt=[".2%", ".2%"],
+            show_index=False,
         )
         print_rich_table(
             benchmark_allocation,
-            headers=list(["Symbol", "Name", "Allocation"]),
+            headers=list(benchmark_allocation.columns),
             title=f"Benchmark - Top {len(benchmark_allocation) if len(benchmark_allocation) < limit else limit} "
             f"Assets Allocation",
-            floatfmt=[".2f", ".2f", ".2%"],
+            floatfmt=[".2%", ".2%"],
             show_index=False,
         )
 
