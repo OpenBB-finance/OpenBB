@@ -1,8 +1,7 @@
 """Portfolio Model"""
 __docformat__ = "numpy"
 
-import logging
-import math
+import logging 
 from typing import Dict, Any, Tuple
 import datetime
 
@@ -953,7 +952,7 @@ class PortfolioModel:
         # Portfolio
         self.tickers_list = None
         self.tickers: Dict[Any, Any] = {}
-        self.inception_date = datetime.date(1900, 1, 1)
+        self.inception_date = datetime.date(1970, 1, 1)
         self.historical_trade_data = pd.DataFrame()
         self.returns = pd.DataFrame()
         self.itemized_value = pd.DataFrame()
@@ -1060,7 +1059,7 @@ class PortfolioModel:
                 # if any fields is empty for Stocks (overwrites any info there)
                 self.load_company_data()
 
-            # Convert Date to datetime
+            # 1. Convert Date to datetime
             self.__orderbook["Date"] = pd.to_datetime(self.__orderbook["Date"])
             console.print(".", end="")
 
@@ -1128,7 +1127,7 @@ class PortfolioModel:
 
             # If ISIN not provided, the ticker is mapped as ISIN
             for key, val in self.isins.items():
-                if math.isnan(val):
+                if pd.isna(val):
                     self.isins[key] = key
             # Inverse isin dictionary with structure {'ISIN': 'Ticker'}
             self.inv_isins = {v: k for k, v in self.isins.items()}
