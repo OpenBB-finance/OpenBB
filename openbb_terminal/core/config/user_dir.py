@@ -1,9 +1,11 @@
 import os
+from typing import Optional
 import dotenv
+
 from . import paths
 
 
-def get_user_dir() -> str:
+def get_user_dir() -> Optional[str]:
     """
     Gets name of user data directory from .env file.
     If none found, sets it to "OpenBBUserData"
