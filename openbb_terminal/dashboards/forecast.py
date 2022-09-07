@@ -264,6 +264,8 @@ class Handler:
             )
         with r2c3:
             self.model_widget = st.selectbox("Model", options=list(model_opts))
+
+        st.markdown("""---""")
         if st.button("Get forecast"):
             if self.ticker:
                 self.handle_changes(
