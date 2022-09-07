@@ -74,15 +74,6 @@ def load_state(name: str, default: Any):
 def run_forecast(data: pd.DataFrame, model: str, target_column: str):
     if helpers.check_data(data, target_column):
 
-        """
-        (
-            ticker_series,
-            historical_fcast,
-            predicted_values,
-            precision,
-            _model,
-        )
-        """
         response = model_opts["theta"](
             data=data,
             target_column=target_column,
@@ -94,7 +85,15 @@ def run_forecast(data: pd.DataFrame, model: str, target_column: str):
             # start_window=0.85,
             # forecast_horizon=5,
         )
-        print(response)
+        for i, item in enumerate(response):
+            print(f"{i}: {item}")
+        (
+            ticker_series,
+            historical_fcast,
+            predicted_values,
+            precision,
+            _model,
+        ) = response
         predicted_values = predicted_values.quantile_df()[f"{target_column}_0.5"].tail(
             5
         )
