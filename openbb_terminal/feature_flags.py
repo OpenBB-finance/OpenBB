@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 import i18n
 
 # IMPORTATION INTERNAL
-from openbb_terminal.core.config.paths import ENV_FILE_DEFAULT, ENV_FILE_REPO
+from openbb_terminal.core.config.paths import USER_ENV_FILE, ENV_FILE_REPOSITORY
 
 # pylint: disable=no-member
 
@@ -22,8 +22,8 @@ i18n.load_path.append(i18n_dict_location)
 i18n.set("locale", "en")
 i18n.set("filename_format", "{locale}.{format}")
 
-load_dotenv(ENV_FILE_DEFAULT)
-load_dotenv(ENV_FILE_REPO, override=True)
+load_dotenv(USER_ENV_FILE)
+load_dotenv(ENV_FILE_REPOSITORY, override=True)
 
 # Retry unknown commands with `load`
 RETRY_WITH_LOAD = strtobool(os.getenv("OPENBB_RETRY_WITH_LOAD", "False"))
