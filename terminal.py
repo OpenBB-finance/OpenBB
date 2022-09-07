@@ -557,7 +557,9 @@ class TerminalController(BaseController):
                         export_path = self.queue[0].split(" ")[1]
                         # If the path selected does not start from the user root, give relative location from root
                         if export_path[0] == "~":
-                            export_path = export_path.replace("~", HOME_DIRECTORY.as_posix())
+                            export_path = export_path.replace(
+                                "~", HOME_DIRECTORY.as_posix()
+                            )
                         elif export_path[0] != "/":
                             export_path = os.path.join(
                                 os.path.dirname(os.path.abspath(__file__)), export_path
