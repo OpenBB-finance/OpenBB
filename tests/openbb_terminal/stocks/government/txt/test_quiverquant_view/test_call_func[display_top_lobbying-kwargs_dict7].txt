@@ -1,0 +1,4 @@
+        Amount
+Ticker        
+PFE       67.8
+META      56.2

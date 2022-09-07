@@ -13,6 +13,7 @@ from typing import List
 from pathlib import Path
 import dotenv
 
+from prompt_toolkit import PromptSession
 from prompt_toolkit.completion import NestedCompleter
 from prompt_toolkit.styles import Style
 from prompt_toolkit.formatted_text import HTML
@@ -43,8 +44,9 @@ from openbb_terminal.terminal_helper import (
     update_terminal,
     welcome_message,
 )
+from openbb_terminal.helper_funcs import parse_and_split_input
 
-# pylint: disable=too-many-public-methods,import-outside-toplevel,too-many-branches,no-member
+# pylint: disable=too-many-public-methods,import-outside-toplevel,too-many-branches,no-member,C0302
 
 logger = logging.getLogger(__name__)
 
@@ -107,7 +109,9 @@ class TerminalController(BaseController):
         self.queue: List[str] = list()
 
         if jobs_cmds:
-            self.queue = " ".join(jobs_cmds).split("/")
+            self.queue = parse_and_split_input(
+                an_input=" ".join(jobs_cmds), custom_filters=[]
+            )
 
         self.update_success = False
 
@@ -119,6 +123,7 @@ class TerminalController(BaseController):
         mt.add_cmd("support")
         mt.add_cmd("survey")
         mt.add_cmd("update")
+        mt.add_cmd("wiki")
         mt.add_raw("\n")
         mt.add_info("_configure_")
         mt.add_menu("keys")
@@ -143,6 +148,7 @@ class TerminalController(BaseController):
         mt.add_menu("portfolio")
         mt.add_menu("dashboards")
         mt.add_menu("reports")
+        mt.add_raw("\n")
         console.print(text=mt.menu_text, menu="Home")
 
     def call_news(self, other_args: List[str]) -> None:
@@ -216,17 +222,20 @@ class TerminalController(BaseController):
                 # Load the file as a JSON document
                 json_doc = json.load(f)
 
-                task = random.choice(list(json_doc.keys()))
+                task = random.choice(list(json_doc.keys()))  # nosec
                 solution = json_doc[task]
 
                 start = time.time()
                 console.print(f"\n[yellow]{task}[/yellow]\n")
-                an_input = session.prompt("GUESS / $ ")
+                if isinstance(session, PromptSession):
+                    an_input = session.prompt("GUESS / $ ")
+                else:
+                    an_input = ""
                 time_dif = time.time() - start
 
                 # When there are multiple paths to same solution
                 if isinstance(solution, List):
-                    if an_input in solution:
+                    if an_input.lower() in [s.lower() for s in solution]:
                         self.queue = an_input.split("/") + ["home"]
                         console.print(
                             f"\n[green]You guessed correctly in {round(time_dif, 2)} seconds![green]\n"
@@ -243,7 +252,7 @@ class TerminalController(BaseController):
 
                 # When there is a single path to the solution
                 else:
-                    if an_input == solution:
+                    if an_input.lower() == solution.lower():
                         self.queue = an_input.split("/") + ["home"]
                         console.print(
                             f"\n[green]You guessed correctly in {round(time_dif, 2)} seconds![green]\n"
@@ -442,7 +451,7 @@ class TerminalController(BaseController):
             if path_dir in ("-i", "--input"):
                 args = [path_routine[1:]] + other_args_processed[idx:]
                 break
-            if path_dir not in ("-p", "--path"):
+            if path_dir not in ("-f", "--file"):
                 path_routine += f"/{path_dir}"
 
         if not args:
@@ -455,8 +464,8 @@ class TerminalController(BaseController):
             description="Execute automated routine script.",
         )
         parser_exe.add_argument(
-            "-p",
-            "--path",
+            "-f",
+            "--file",
             help="The path or .openbb file to run.",
             dest="path",
             default="",
@@ -470,7 +479,7 @@ class TerminalController(BaseController):
             type=lambda s: [str(item) for item in s.split(",")],
         )
         if args and "-" not in args[0][0]:
-            args.insert(0, "-p")
+            args.insert(0, "-f")
         ns_parser_exe = parse_simple_args(parser_exe, args)
         if ns_parser_exe:
             if ns_parser_exe.path:
@@ -492,15 +501,39 @@ class TerminalController(BaseController):
                         for raw_line in raw_lines
                         if raw_line.strip("\n")
                     ]
-                    if ns_parser_exe.routine_args:
-                        lines = list()
-                        for rawline in raw_lines:
-                            templine = rawline
-                            for i, arg in enumerate(ns_parser_exe.routine_args):
-                                templine = templine.replace(f"$ARGV[{i}]", arg)
+
+                    lines = list()
+                    for rawline in raw_lines:
+                        templine = rawline
+
+                        # Check if dynamic parameter exists in script
+                        if "$ARGV" in rawline:
+                            # Check if user has provided inputs through -i or --input
+                            if ns_parser_exe.routine_args:
+                                for i, arg in enumerate(ns_parser_exe.routine_args):
+                                    # Check what is the location of the ARGV to be replaced
+                                    if f"$ARGV[{i}]" in templine:
+                                        templine = templine.replace(f"$ARGV[{i}]", arg)
+
+                                # Check if all ARGV have been removed, otherwise means that there are less inputs
+                                # when running the script than the script expects
+                                if "$ARGV" in templine:
+                                    console.print(
+                                        "[red]Not enough inputs were provided to fill in dynamic variables. "
+                                        "E.g. --input VAR1,VAR2,VAR3[/red]\n"
+                                    )
+                                    return
+
+                                lines.append(templine)
+                            # The script expects a parameter that the user has not provided
+                            else:
+                                console.print(
+                                    "[red]The script expects parameters, "
+                                    "run the script again with --input defined.[/red]\n"
+                                )
+                                return
+                        else:
                             lines.append(templine)
-                    else:
-                        lines = raw_lines
 
                     simulate_argv = f"/{'/'.join([line.rstrip() for line in lines])}"
                     file_cmds = simulate_argv.replace("//", "/home/").split()
@@ -508,7 +541,13 @@ class TerminalController(BaseController):
                         insert_start_slash(file_cmds) if file_cmds else file_cmds
                     )
                     cmds_with_params = " ".join(file_cmds)
-                    self.queue = [val for val in cmds_with_params.split("/") if val]
+                    self.queue = [
+                        val
+                        for val in parse_and_split_input(
+                            an_input=cmds_with_params, custom_filters=[]
+                        )
+                        if val
+                    ]
 
                     if "export" in self.queue[0]:
                         export_path = self.queue[0].split(" ")[1]
@@ -923,8 +962,8 @@ if __name__ == "__main__":
         help="Runs the terminal in debug mode.",
     )
     parser.add_argument(
-        "-p",
-        "--path",
+        "-f",
+        "--file",
         help="The path or .openbb file to run.",
         dest="path",
         nargs="+",
@@ -940,7 +979,6 @@ if __name__ == "__main__":
         help="Whether to run in test mode.",
     )
     parser.add_argument(
-        "-f",
         "--filter",
         help="Send a keyword to filter in file name",
         dest="filtert",
@@ -960,7 +998,7 @@ if __name__ == "__main__":
     )
 
     if sys.argv[1:] and "-" not in sys.argv[1][0]:
-        sys.argv.insert(1, "-p")
+        sys.argv.insert(1, "-f")
     ns_parser = parser.parse_args()
     main(
         ns_parser.debug,

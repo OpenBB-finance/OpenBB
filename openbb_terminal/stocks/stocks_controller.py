@@ -12,8 +12,7 @@ import yfinance as yf
 from prompt_toolkit.completion import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
-from openbb_terminal.common import newsapi_view
-from openbb_terminal.common import feedparser_view
+from openbb_terminal.common import feedparser_view, newsapi_view
 from openbb_terminal.common.quantitative_analysis import qa_view
 from openbb_terminal.decorators import log_start_end
 
@@ -21,7 +20,6 @@ from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     export_data,
     valid_date,
-    get_ordered_list_sources,
 )
 from openbb_terminal.helper_classes import AllowArgsWithWhiteSpace
 from openbb_terminal.helper_funcs import choice_check_after_action
@@ -112,17 +110,17 @@ class StocksController(StockBaseController):
             else:
                 stock_text = f"{s_intraday} {self.ticker}"
 
-        mt = MenuText("stocks/", 80)
-        mt.add_cmd("news", "Feedparser/News API")
+        mt = MenuText("stocks/", 100)
         mt.add_cmd("search")
         mt.add_cmd("load")
         mt.add_raw("\n")
         mt.add_param("_ticker", stock_text)
         mt.add_raw(self.add_info)
         mt.add_raw("\n")
-        mt.add_cmd("quote", "", self.ticker)
-        mt.add_cmd("candle", "", self.ticker)
-        mt.add_cmd("codes", "Polygon", self.ticker)
+        mt.add_cmd("quote", self.ticker)
+        mt.add_cmd("candle", self.ticker)
+        mt.add_cmd("codes", self.ticker)
+        mt.add_cmd("news", self.ticker)
         mt.add_raw("\n")
         mt.add_menu("th")
         mt.add_menu("options")
@@ -170,6 +168,7 @@ class StocksController(StockBaseController):
             dest="query",
             type=str.lower,
             default="",
+            nargs="+",
             help=translate("stocks/SEARCH_query"),
         )
         parser.add_argument(
@@ -217,7 +216,7 @@ class StocksController(StockBaseController):
         )
         if ns_parser:
             stocks_helper.search(
-                query=ns_parser.query,
+                query=" ".join(ns_parser.query),
                 country=ns_parser.country,
                 sector=ns_parser.sector,
                 industry=ns_parser.industry,
@@ -375,10 +374,10 @@ class StocksController(StockBaseController):
 
                 if ns_parser.raw:
                     qa_view.display_raw(
-                        df=self.stock,
-                        sort=ns_parser.sort,
-                        des=ns_parser.descending,
-                        num=ns_parser.limit,
+                        data=self.stock,
+                        sortby=ns_parser.sort,
+                        descend=ns_parser.descending,
+                        limit=ns_parser.limit,
                     )
 
                 else:
@@ -397,8 +396,8 @@ class StocksController(StockBaseController):
                                 )
 
                     stocks_helper.display_candle(
-                        s_ticker=self.ticker,
-                        df_stock=data,
+                        symbol=self.ticker,
+                        data=data,
                         use_matplotlib=ns_parser.plotly,
                         intraday=self.interval != "1440min",
                         add_trend=ns_parser.trendlines,
@@ -413,94 +412,72 @@ class StocksController(StockBaseController):
         parser = argparse.ArgumentParser(
             add_help=False,
             prog="news",
-            description=translate("stocks/NEWS"),
+            description=translate("stocks/news"),
         )
-
-        sources = get_ordered_list_sources("/stocks/news")
-
-        # source is feedparser
-        if sources[0] == "feedparser":
-            parser.add_argument(
-                "--article",
-                dest="article",
-                default="bloomberg",
-                nargs="+",
-                help=translate("stocks/NEWS_article"),
-            )
-        # source is News API
-        else:
-            parser.add_argument(
-                "-d",
-                "--date",
-                action="store",
-                dest="n_start_date",
-                type=valid_date,
-                default=datetime.now() - timedelta(days=7),
-                help=translate("stocks/NEWS_date"),
-            )
-            parser.add_argument(
-                "-o",
-                "--oldest",
-                action="store_false",
-                dest="n_oldest",
-                default=True,
-                help=translate("stocks/NEWS_oldest"),
-            )
-            parser.add_argument(
-                "--article",
-                dest="article",
-                default="bloomberg",
-                nargs="+",
-                help=translate("stocks/NEWS_article"),
-            )
+        parser.add_argument(
+            "-d",
+            "--date",
+            action="store",
+            dest="n_start_date",
+            type=valid_date,
+            default=datetime.now() - timedelta(days=7),
+            help=translate("stocks/NEWS_date"),
+        )
+        parser.add_argument(
+            "-o",
+            "--oldest",
+            action="store_false",
+            dest="n_oldest",
+            default=True,
+            help=translate("stocks/NEWS_oldest"),
+        )
+        parser.add_argument(
+            "-s",
+            "--sources",
+            dest="sources",
+            default=[],
+            nargs="+",
+            help=translate("stocks/NEWS_sources"),
+        )
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "--article")
+            other_args.insert(0, "-l")
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED, limit=5
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED, limit=3
         )
         if ns_parser:
-            if ns_parser.source == "feedparser":
+            if not self.ticker:
+                console.print("Use 'load <ticker>' prior to this command!", "\n")
+                return
 
-                if self.ticker:
-                    d_stock = yf.Ticker(self.ticker).info
-
-                    term = (
-                        d_stock["shortName"].replace(" ", "%20")
-                        if "shortName" in d_stock
-                        else self.ticker
-                    )
-
-                    feedparser_view.display_news(
-                        term,
-                        " ".join(ns_parser.article),
-                        ns_parser.limit,
-                        ns_parser.export,
-                    )
-
-                else:
-                    feedparser_view.display_news(
-                        "",
-                        " ".join(ns_parser.article),
-                        ns_parser.limit,
-                        ns_parser.export,
-                    )
-
-            else:
-                articles = ns_parser.article
-                for idx, article in enumerate(articles):
-                    if article.find(".") == -1:
-                        articles[idx] += ".com"
+            if ns_parser.source == "NewsAPI":
+                sources = ns_parser.sources
+                for idx, source in enumerate(sources):
+                    if source.find(".") == -1:
+                        sources[idx] += ".com"
 
                 d_stock = yf.Ticker(self.ticker).info
 
                 newsapi_view.display_news(
+                    query=d_stock["shortName"].replace(" ", "+")
+                    if "shortName" in d_stock
+                    else self.ticker,
+                    limit=ns_parser.limit,
+                    start_date=ns_parser.n_start_date.strftime("%Y-%m-%d"),
+                    show_newest=ns_parser.n_oldest,
+                    sources=",".join(sources),
+                )
+
+            elif ns_parser.source == "Feedparser":
+
+                d_stock = yf.Ticker(self.ticker).info
+
+                feedparser_view.display_news(
                     term=d_stock["shortName"].replace(" ", "+")
                     if "shortName" in d_stock
                     else self.ticker,
-                    num=ns_parser.limit,
-                    s_from=ns_parser.n_start_date.strftime("%Y-%m-%d"),
-                    show_newest=ns_parser.n_oldest,
-                    articles=",".join(articles),
+                    sources=" ".join(ns_parser.sources),
+                    limit=ns_parser.limit,
+                    export=ns_parser.export,
                 )
 
     @log_start_end(log=logger)
@@ -625,7 +602,9 @@ class StocksController(StockBaseController):
 
         self.queue = self.load_class(
             ca_controller.ComparisonAnalysisController,
-            [self.ticker] if self.ticker else "",
+            [f"{self.ticker}.{self.suffix}" if self.suffix else self.ticker]
+            if self.ticker
+            else "",
             self.queue,
         )
 
@@ -711,7 +690,18 @@ class StocksController(StockBaseController):
     @log_start_end(log=logger)
     def call_pred(self, _):
         """Process pred command"""
-        if obbff.ENABLE_PREDICT:
+        # IMPORTANT: 8/11/22 prediction was discontinued on the installer packages
+        # because forecasting in coming out soon.
+        # This if statement disallows installer package users from using 'pred'
+        # even if they turn on the OPENBB_ENABLE_PREDICT feature flag to true
+        # however it does not prevent users who clone the repo from using it
+        # if they have ENABLE_PREDICT set to true.
+        if obbff.PACKAGED_APPLICATION or not obbff.ENABLE_PREDICT:
+            console.print(
+                "Predict is disabled. Forecasting coming soon!",
+                "\n",
+            )
+        else:
             if self.ticker:
                 if self.interval == "1440min":
                     try:
@@ -743,8 +733,3 @@ class StocksController(StockBaseController):
                     console.print("Load daily data to use this menu!", "\n")
             else:
                 console.print("Use 'load <ticker>' prior to this command!", "\n")
-        else:
-            console.print(
-                "Predict is disabled. Check ENABLE_PREDICT flag on feature_flags.py",
-                "\n",
-            )

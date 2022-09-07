@@ -145,9 +145,9 @@ class ParametersController(BaseController):
         mt.add_raw("\n")
         mt.add_param("_model", self.current_model or "")
         mt.add_raw("\n")
-        mt.add_cmd("clear", condition=self.current_file)
-        mt.add_cmd("set", condition=self.current_file)
-        mt.add_cmd("arg", condition=self.current_file)
+        mt.add_cmd("clear", self.current_file)
+        mt.add_cmd("set", self.current_file)
+        mt.add_cmd("arg", self.current_file)
         if self.current_file:
             mt.add_raw("\n")
             mt.add_info("_parameters_")
@@ -203,8 +203,6 @@ class ParametersController(BaseController):
             help="Parameter file to be used",
         )
 
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-f")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
@@ -236,8 +234,7 @@ class ParametersController(BaseController):
             dest="file",
             help="Filename to be saved",
         )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-f")
+
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if ns_parser.file.endswith(".ini"):

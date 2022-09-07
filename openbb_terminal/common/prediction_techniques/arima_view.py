@@ -47,7 +47,7 @@ def display_arima(
     seasonal: bool,
     ic: str,
     results: bool,
-    s_end_date: str = "",
+    end_date: str = "",
     export: str = "",
     time_res: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -70,7 +70,7 @@ def display_arima(
         Information Criteria for model evaluation
     results : bool
         Flag to display model summary
-    s_end_date : str, optional
+    end_date : str, optional
         Specified end date for backtesting comparisons
     export : str, optional
         Format to export image
@@ -82,14 +82,14 @@ def display_arima(
 
     if arima_order:
         t_order = tuple(int(ord) for ord in arima_order.split(","))
-    if s_end_date:
+    if end_date:
         if not time_res:
             future_index = get_next_stock_market_days(
-                last_stock_day=s_end_date, n_next_days=n_predict
+                last_stock_day=end_date, n_next_days=n_predict
             )
         else:
             future_index = pd.date_range(
-                s_end_date, periods=n_predict + 1, freq=time_res
+                end_date, periods=n_predict + 1, freq=time_res
             )[1:]
 
         if future_index[-1] > datetime.datetime.now():
@@ -99,7 +99,7 @@ def display_arima(
             return
 
         df_future = values[future_index[0] : future_index[-1]]  # noqa: E203
-        values = values[:s_end_date]  # type: ignore
+        values = values[:end_date]  # type: ignore
 
     l_predictions, model = arima_model.get_arima_model(
         values, arima_order, n_predict, seasonal, ic
@@ -125,17 +125,17 @@ def display_arima(
     # This plot has 1 axis
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif s_end_date and not is_valid_axes_count(
+    elif end_date and not is_valid_axes_count(
         external_axes,
         3,
-        prefix_text="If there is s_end_date",
+        prefix_text="If there is end_date",
         suffix_text="when backtesting",
     ):
         return
-    elif not s_end_date and not is_valid_axes_count(
+    elif not end_date and not is_valid_axes_count(
         external_axes,
         1,
-        prefix_text="If there is no s_end_date",
+        prefix_text="If there is no end_date",
         suffix_text="when backtesting",
     ):
         return
@@ -148,7 +148,7 @@ def display_arima(
 
     if arima_order:
         # BACKTESTING
-        if s_end_date:
+        if end_date:
             ax.set_title(
                 f"BACKTESTING: ARIMA {str(t_order)} on {dataset} - {n_predict} step prediction"
             )
@@ -158,7 +158,7 @@ def display_arima(
             )
     else:
         # BACKTESTING
-        if s_end_date:
+        if end_date:
             ax.set_title(
                 f"BACKTESTING: ARIMA {model.order} on {dataset} - {n_predict} step prediction"
             )
@@ -178,7 +178,7 @@ def display_arima(
     ax.vlines(values.index[-1], ymin, ymax, linestyle="--")
 
     # BACKTESTING
-    if s_end_date:
+    if end_date:
         ax.plot(
             df_future.index,
             df_future,
@@ -201,7 +201,7 @@ def display_arima(
         theme.visualize_output()
 
     # BACKTESTING
-    if s_end_date:
+    if end_date:
         # This plot has 3 axes
         if external_axes is None:
             _, axes = plt.subplots(

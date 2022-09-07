@@ -45,19 +45,31 @@ def print_goodbye():
     # "...when offered a flight to the moon, nobody asks about what seat."
 
     console.print(
-        "OpenBB Terminal is the result of a strong community building an "
-        "[param]investment research platform for everyone.[/param]\n\n"
-        "Join us on [cmds]https://openbb.co/discord[/cmds], "
-        "show your appreciation on [cmds]https://twitter.com/openbb_finance[/cmds],\n"
-        "ask support on [cmds]https://openbb.co/support[/cmds], "
-        "or even request a feature on [cmds]https://openbb.co/request-a-feature[/cmds]\n"
+        "[param]The OpenBB Terminal is the result of a strong community building an "
+        "investment research platform for everyone, anywhere.[/param]\n"
     )
 
     console.print(
-        "[bold]Fill in our 2-minute survey so we better understand how we can improve the terminal "
+        "We are always eager to welcome new contributors and you can find our open jobs here:\n"
+        "[cmds]https://www.openbb.co/company/careers#open-roles[/cmds]\n"
+    )
+
+    console.print(
+        "Join us           : [cmds]https://openbb.co/discord[/cmds]\n"
+        "Follow us         : [cmds]https://twitter.com/openbb_finance[/cmds]\n"
+        "Ask support       : [cmds]https://openbb.co/support[/cmds]\n"
+        "Request a feature : [cmds]https://openbb.co/request-a-feature[/cmds]\n"
+    )
+
+    console.print(
+        "[bold]Fill in our 2-minute survey so we better understand how we can improve the OpenBB Terminal "
         "at [cmds]https://openbb.co/survey[/cmds][/bold]\n"
     )
 
+    console.print(
+        "[param]In the meantime access investment research from your chatting platform using the OpenBB Bot[/param]\n"
+        "Try it today, for FREE: [cmds]https://openbb.co/products/bot[/cmds]\n"
+    )
     logger.info("END")
 
 

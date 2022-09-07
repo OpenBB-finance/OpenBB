@@ -15,17 +15,30 @@ def vcr_config():
     }
 
 
-@pytest.mark.vcr(record_mode="none")
-def test_map_sp500_view(mocker):
+@pytest.mark.default_cassette("test_display_valuation")
+@pytest.mark.vcr
+@pytest.mark.record_stdout
+@pytest.mark.parametrize(
+    "tab",
+    [
+        True,
+        False,
+    ],
+)
+def test_display_valuation(mocker, tab):
+    # MOCK OBBFF
+    mocker.patch.object(target=helper_funcs.obbff, attribute="USE_TABULATE_DF", new=tab)
+    mocker.patch.object(target=helper_funcs.obbff, attribute="USE_ION", new=True)
+
     # MOCK EXPORT_DATA
-    mock_open = mocker.Mock()
-    mocker.patch(
-        target="openbb_terminal.economy.finviz_view.webbrowser.open", new=mock_open
+    mocker.patch(target="openbb_terminal.economy.finviz_view.export_data")
+
+    finviz_view.display_valuation(
+        group="sector",
+        sort_by="Name",
+        ascending=True,
+        export="",
     )
-
-    finviz_view.map_sp500_view(period="1w", map_type="sp500")
-
-    mock_open.assert_called_once()
 
 
 @pytest.mark.default_cassette("test_display_performance")
@@ -47,34 +60,8 @@ def test_display_performance(mocker, tab):
     mocker.patch(target="openbb_terminal.economy.finviz_view.export_data")
 
     finviz_view.display_performance(
-        s_group="Sector",
-        sort_col="Name",
-        ascending=True,
-        export="",
-    )
-
-
-@pytest.mark.default_cassette("test_display_valuation")
-@pytest.mark.vcr
-@pytest.mark.record_stdout
-@pytest.mark.parametrize(
-    "tab",
-    [
-        True,
-        False,
-    ],
-)
-def test_display_valuation(mocker, tab):
-    # MOCK OBBFF
-    mocker.patch.object(target=helper_funcs.obbff, attribute="USE_TABULATE_DF", new=tab)
-    mocker.patch.object(target=helper_funcs.obbff, attribute="USE_ION", new=True)
-
-    # MOCK EXPORT_DATA
-    mocker.patch(target="openbb_terminal.economy.finviz_view.export_data")
-
-    finviz_view.display_valuation(
-        s_group="Sector",
-        sort_col="Name",
+        group="sector",
+        sort_by="Name",
         ascending=True,
         export="",
     )
@@ -98,8 +85,8 @@ def test_display_spectrum(mocker):
     )
 
     finviz_view.display_spectrum(
-        s_group="Sector",
-        export="",
+        group="sector",
+        export="jpg",
     )
 
     mock_image.open().show.assert_called_once()
@@ -125,7 +112,7 @@ def test_display_future(mocker, tab):
 
     finviz_view.display_future(
         future_type="Indices",
-        sort_col="ticker",
+        sort_by="ticker",
         ascending=False,
         export="",
     )

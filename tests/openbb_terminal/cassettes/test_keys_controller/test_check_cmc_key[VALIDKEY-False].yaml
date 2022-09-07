@@ -18,14 +18,10 @@ interactions:
     uri: https://pro-api.coinmarketcap.com/v1/cryptocurrency/map
   response:
     body:
-      string: "{\n    \"status\": {\n        \"timestamp\": \"2022-04-09T13:01:28.940Z\",\n
+      string: "{\n    \"status\": {\n        \"timestamp\": \"2022-09-04T00:08:32.119Z\",\n
         \       \"error_code\": 1001,\n        \"error_message\": \"This API Key is
         invalid.\",\n        \"elapsed\": 0,\n        \"credit_count\": 0\n    }\n}"
     headers:
-      CF-Cache-Status:
-      - DYNAMIC
-      CF-RAY:
-      - 6f936e7f1e572007-IND
       Cache-Control:
       - no-cache
       Connection:
@@ -35,23 +31,21 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Sat, 09 Apr 2022 13:01:28 GMT
-      Expect-CT:
-      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      - Sun, 04 Sep 2022 00:08:32 GMT
       Referrer-Policy:
       - origin-when-cross-origin
       Server:
-      - cloudflare
+      - Tengine
       Strict-Transport-Security:
       - max-age=31536000; includeSubdomains
       Vary:
       - origin
       Via:
-      - 1.1 c6aa039b46ee567794869d726acc308a.cloudfront.net (CloudFront)
+      - 1.1 6ee1ff35a93d86a6b935b6d59393098c.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - 4ZVc87fyN46mMSLRXxKtPhYItIUOmrHQ6k8YkwO5uG7q4YSq5SxqLA==
+      - 12o7pfFUJctvN5ZwaZCKpCnhkNLfjo1Vko2fuTVw5i-E5k033wGIfA==
       X-Amz-Cf-Pop:
-      - ORD56-P1
+      - LHR62-C4
       X-Cache:
       - Error from cloudfront
       X-Content-Type-Options:
@@ -59,7 +53,7 @@ interactions:
       X-Envoy-Decorator-Operation:
       - coinmarketcap-pro-apis.cmc-api.svc.cluster.local:80/*
       X-Envoy-Upstream-Service-Time:
-      - '4'
+      - '2'
       X-Frame-Options:
       - SAMEORIGIN
       X-Traefik-Route:

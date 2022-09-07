@@ -1,5 +1,5 @@
 ```
-usage: ef [-p PERIOD] [-s START] [-e END] [-lr] [-f {d,w,m}] [-mn MAXNAN]
+usage: ef [-p PERIOD] [-s START] [-e END] [-lr] [--freq {d,w,m}] [-mn MAXNAN]
           [-th THRESHOLD] [-mt METHOD]
           [-rm {MV,MAD,MSV,FLPM,SLPM,CVaR,EVaR,WR,ADD,UCI,CDaR,EDaR,MDD}]
           [-r RISK_FREE_RATE] [-a ALPHA] [-v VALUE] [-vs VALUE_SHORT]
@@ -19,7 +19,7 @@ optional arguments:
   -e END, --end END     End date to get yfinance data from (default: )
   -lr, --log-returns    If use logarithmic or arithmetic returns to calculate
                         returns (default: False)
-  -f {d,w,m}, --freq {d,w,m}
+  --freq {d,w,m}
                         Frequency used to calculate returns (default: d)
   -mn MAXNAN, --maxnan MAXNAN
                         Max percentage of nan values accepted per asset to be
@@ -59,4 +59,3 @@ Example:
 2022 Apr 05, 15:03 (🦋) /portfolio/po/ $ ef
 ```
 ![Frontier](https://user-images.githubusercontent.com/61527316/161860003-e8b8ae93-ce8c-4e06-bad2-59c100f09325.png)
-

@@ -194,10 +194,10 @@ class QaController(StockBaseController):
         )
         if ns_parser:
             qa_view.display_raw(
-                self.data,
-                num=ns_parser.limit,
-                sort="",
-                des=ns_parser.descend,
+                data=self.data,
+                limit=ns_parser.limit,
+                sortby="",
+                descend=ns_parser.descend,
                 export=ns_parser.export,
             )
 
@@ -217,7 +217,7 @@ class QaController(StockBaseController):
         )
         if ns_parser:
             qa_view.display_summary(
-                df=self.current_source_dataframe, export=ns_parser.export
+                data=self.current_source_dataframe, export=ns_parser.export
             )
 
     @log_start_end(log=logger)
@@ -289,8 +289,8 @@ class QaController(StockBaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             qa_view.display_hist(
-                name="",
-                df=self.current_source_dataframe,
+                symbol="",
+                data=self.current_source_dataframe,
                 target=self.current_id,
                 bins=ns_parser.n_bins,
             )
@@ -311,8 +311,8 @@ class QaController(StockBaseController):
         )
         if ns_parser:
             qa_view.display_cdf(
-                name="",
-                df=self.current_source_dataframe,
+                symbol="",
+                data=self.current_source_dataframe,
                 target=self.current_id,
                 export=ns_parser.export,
             )
@@ -339,8 +339,8 @@ class QaController(StockBaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             qa_view.display_bw(
-                name="",
-                df=self.current_source_dataframe,
+                symbol="",
+                data=self.current_source_dataframe,
                 target=self.current_id,
                 yearly=ns_parser.year,
             )
@@ -371,8 +371,8 @@ class QaController(StockBaseController):
         )
         if ns_parser:
             qa_view.display_seasonal(
-                name="",
-                df=self.current_source_dataframe,
+                symbol="",
+                data=self.current_source_dataframe,
                 target=self.current_id,
                 multiplicative=ns_parser.multiplicative,
                 export=ns_parser.export,
@@ -408,7 +408,7 @@ class QaController(StockBaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             qa_view.display_cusum(
-                df=self.current_source_dataframe,
+                data=self.current_source_dataframe,
                 target=self.current_id,
                 threshold=ns_parser.threshold,
                 drift=ns_parser.drift,
@@ -437,8 +437,8 @@ class QaController(StockBaseController):
         if ns_parser:
 
             qa_view.display_acf(
-                name="",
-                df=self.current_source_dataframe,
+                symbol="",
+                data=self.current_source_dataframe,
                 target=self.current_id,
                 lags=ns_parser.lags,
             )
@@ -468,8 +468,8 @@ class QaController(StockBaseController):
         )
         if ns_parser:
             rolling_view.display_mean_std(
-                name="",
-                df=self.current_source_dataframe,
+                symbol="",
+                data=self.current_source_dataframe,
                 target=self.current_id,
                 window=ns_parser.n_window,
                 export=ns_parser.export,
@@ -499,8 +499,8 @@ class QaController(StockBaseController):
         )
         if ns_parser:
             rolling_view.display_spread(
-                name="",
-                df=self.current_source_dataframe,
+                symbol="",
+                data=self.current_source_dataframe,
                 target=self.current_id,
                 window=ns_parser.n_window,
                 export=ns_parser.export,
@@ -547,8 +547,8 @@ class QaController(StockBaseController):
         )
         if ns_parser:
             rolling_view.display_quantile(
-                name="",
-                df=self.current_source_dataframe,
+                symbol="",
+                data=self.current_source_dataframe,
                 target=self.current_id,
                 window=ns_parser.n_window,
                 quantile=ns_parser.f_quantile,
@@ -585,8 +585,8 @@ class QaController(StockBaseController):
         )
         if ns_parser:
             rolling_view.display_skew(
-                name="",
-                df=self.current_source_dataframe,
+                symbol="",
+                data=self.current_source_dataframe,
                 target=self.current_id,
                 window=ns_parser.n_window,
                 export=ns_parser.export,
@@ -622,8 +622,8 @@ class QaController(StockBaseController):
         )
         if ns_parser:
             rolling_view.display_kurtosis(
-                name="",
-                df=self.current_source_dataframe,
+                symbol="",
+                data=self.current_source_dataframe,
                 target=self.current_id,
                 window=ns_parser.n_window,
                 export=ns_parser.export,
@@ -645,7 +645,7 @@ class QaController(StockBaseController):
         )
         if ns_parser:
             qa_view.display_normality(
-                df=self.current_source_dataframe,
+                data=self.current_source_dataframe,
                 target=self.current_id,
                 export=ns_parser.export,
             )
@@ -664,7 +664,7 @@ class QaController(StockBaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             qa_view.display_qqplot(
-                name="", df=self.current_source_dataframe, target=self.current_id
+                symbol="", data=self.current_source_dataframe, target=self.current_id
             )
 
     @log_start_end(log=logger)
@@ -701,7 +701,7 @@ class QaController(StockBaseController):
         )
         if ns_parser:
             qa_view.display_unitroot(
-                df=self.current_source_dataframe,
+                data=self.current_source_dataframe,
                 target=self.current_id,
                 fuller_reg=ns_parser.fuller_reg,
                 kpss_reg=ns_parser.kpss_reg,

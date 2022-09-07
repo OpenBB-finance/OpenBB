@@ -12,9 +12,9 @@ interactions:
       - VALIDKEY
       CB-ACCESS-SIGN:
       - !!binary |
-        eHJUY1E3MWJiUHBrZ3BMNVltcFpTOUhuM2x3Q1JMWnZ4eEIvN3Z4QldTbz0=
+        SnQxZjl0ZFl1dHliZnlqSmhXa0Z2UFJLb2JaWlNqMmRVVUJzOEExRkVCYz0=
       CB-ACCESS-TIMESTAMP:
-      - '1649512507.4303648'
+      - '1662250114.933942'
       Connection:
       - keep-alive
       Content-Type:
@@ -40,7 +40,7 @@ interactions:
       CF-Cache-Status:
       - MISS
       CF-RAY:
-      - 6f93bd13db5b1fef-IND
+      - 74527dd319b97427-LHR
       Cache-Control:
       - no-store
       Connection:
@@ -50,11 +50,9 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Sat, 09 Apr 2022 13:55:07 GMT
+      - Sun, 04 Sep 2022 00:08:35 GMT
       Etag:
       - W/"1d-mmRSeO9uba2rhQtGfy4YjixIkt4"
-      Expect-CT:
-      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
       Server:
       - cloudflare
       Strict-Transport-Security:

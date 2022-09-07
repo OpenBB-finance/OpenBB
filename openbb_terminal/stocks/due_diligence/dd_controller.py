@@ -78,15 +78,15 @@ class DueDiligenceController(StockBaseController):
         mt.add_raw("\n")
         mt.add_param("_ticker", self.ticker.upper())
         mt.add_raw("\n")
-        mt.add_cmd("analyst", "Finviz")
-        mt.add_cmd("rating", "FMP")
-        mt.add_cmd("rot", "Finnhub")
-        mt.add_cmd("pt", "Business Insider")
-        mt.add_cmd("est", "Business Insider")
-        mt.add_cmd("sec", "Market Watch")
-        mt.add_cmd("supplier", "Csimarket")
-        mt.add_cmd("customer", "Csimarket")
-        mt.add_cmd("arktrades", "Cathiesark")
+        mt.add_cmd("analyst")
+        mt.add_cmd("rating")
+        mt.add_cmd("rot")
+        mt.add_cmd("pt")
+        mt.add_cmd("est")
+        mt.add_cmd("sec")
+        mt.add_cmd("supplier")
+        mt.add_cmd("customer")
+        mt.add_cmd("arktrades")
         console.print(text=mt.menu_text, menu="Stocks - Due Diligence")
 
     def custom_reset(self) -> List[str]:
@@ -111,7 +111,7 @@ class DueDiligenceController(StockBaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            finviz_view.analyst(ticker=self.ticker, export=ns_parser.export)
+            finviz_view.analyst(symbol=self.ticker, export=ns_parser.export)
 
     @log_start_end(log=logger)
     def call_pt(self, other_args: List[str]):
@@ -144,11 +144,10 @@ class DueDiligenceController(StockBaseController):
         )
         if ns_parser:
             business_insider_view.price_target_from_analysts(
-                ticker=self.ticker,
-                start=self.start,
-                interval=self.interval,
-                stock=self.stock,
-                num=ns_parser.limit,
+                symbol=self.ticker,
+                data=self.stock,
+                start_date=self.start,
+                limit=ns_parser.limit,
                 raw=ns_parser.raw,
                 export=ns_parser.export,
             )
@@ -159,7 +158,8 @@ class DueDiligenceController(StockBaseController):
         parser = argparse.ArgumentParser(
             add_help=False,
             prog="est",
-            description="""Yearly estimates and quarter earnings/revenues. [Source: Business Insider]""",
+            description="""Yearly estimates and quarter earnings/revenues.
+            [Source: Business Insider]""",
         )
 
         ns_parser = self.parse_known_args_and_warn(
@@ -167,7 +167,7 @@ class DueDiligenceController(StockBaseController):
         )
         if ns_parser:
             business_insider_view.estimates(
-                ticker=self.ticker,
+                symbol=self.ticker,
                 export=ns_parser.export,
             )
 
@@ -205,8 +205,8 @@ class DueDiligenceController(StockBaseController):
         )
         if ns_parser:
             finnhub_view.rating_over_time(
-                ticker=self.ticker,
-                num=ns_parser.limit,
+                symbol=self.ticker,
+                limit=ns_parser.limit,
                 raw=ns_parser.raw,
                 export=ns_parser.export,
             )
@@ -241,8 +241,8 @@ class DueDiligenceController(StockBaseController):
         )
         if ns_parser:
             fmp_view.rating(
-                ticker=self.ticker,
-                num=ns_parser.limit,
+                symbol=self.ticker,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -275,8 +275,8 @@ class DueDiligenceController(StockBaseController):
         )
         if ns_parser:
             marketwatch_view.sec_filings(
-                ticker=self.ticker,
-                num=ns_parser.limit,
+                symbol=self.ticker,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -294,7 +294,7 @@ class DueDiligenceController(StockBaseController):
         )
         if ns_parser:
             csimarket_view.suppliers(
-                ticker=self.ticker,
+                symbol=self.ticker,
                 export=ns_parser.export,
             )
 
@@ -312,7 +312,7 @@ class DueDiligenceController(StockBaseController):
         )
         if ns_parser:
             csimarket_view.customers(
-                ticker=self.ticker,
+                symbol=self.ticker,
                 export=ns_parser.export,
             )
 
@@ -336,11 +336,11 @@ class DueDiligenceController(StockBaseController):
         )
         parser.add_argument(
             "-s",
-            "--show_ticker",
+            "--show_symbol",
             action="store_true",
             default=False,
             help="Flag to show ticker in table",
-            dest="show_ticker",
+            dest="show_symbol",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
@@ -349,8 +349,8 @@ class DueDiligenceController(StockBaseController):
         )
         if ns_parser:
             ark_view.display_ark_trades(
-                ticker=self.ticker,
-                num=ns_parser.limit,
+                symbol=self.ticker,
+                limit=ns_parser.limit,
+                show_symbol=ns_parser.show_symbol,
                 export=ns_parser.export,
-                show_ticker=ns_parser.show_ticker,
             )

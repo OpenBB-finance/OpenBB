@@ -76,7 +76,7 @@ def test_get_short_data_by_exchange(mocker, recorder):
         new=mock_client,
     )
     result_df = nyse_model.get_short_data_by_exchange(
-        ticker="TSLA",
+        symbol="TSLA",
     )
 
     recorder.capture(result_df)

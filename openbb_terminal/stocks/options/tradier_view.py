@@ -4,8 +4,9 @@ __docformat__ = "numpy"
 import argparse
 import logging
 import os
+import warnings
 from bisect import bisect_left
-from typing import List, Optional
+from typing import List, Optional, Tuple
 
 import matplotlib.pyplot as plt
 import mplfinance as mpf
@@ -13,24 +14,46 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 
-from openbb_terminal.config_terminal import theme
 from openbb_terminal import config_plot as cfp
+from openbb_terminal import rich_config
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
+    lambda_long_number_format_y_axis,
     patch_pandas_text_adjustment,
     plot_autoscale,
     print_rich_table,
-    lambda_long_number_format_y_axis,
-    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
-from openbb_terminal.stocks.options import op_helpers, tradier_model
-from openbb_terminal import rich_config
+from openbb_terminal.stocks.options import op_helpers, tradier_model, yfinance_model
 
 logger = logging.getLogger(__name__)
 
 column_map = {"mid_iv": "iv", "open_interest": "oi", "volume": "vol"}
+warnings.filterwarnings("ignore")
+
+
+def get_strike_bounds(
+    options: pd.DataFrame, current_price: float, min_sp: float, max_sp: float
+) -> Tuple[float, float]:
+    if min_sp == -1:
+        if current_price == 0:
+            min_strike = options["strike"].iat[0]
+        else:
+            min_strike = 0.75 * current_price
+    else:
+        min_strike = min_sp
+
+    if max_sp == -1:
+        if current_price == 0:
+            max_strike = options["strike"].iat[-1]
+        else:
+            max_strike = 1.25 * current_price
+    else:
+        max_strike = max_sp
+    return min_strike, max_strike
 
 
 def lambda_red_highlight(val) -> str:
@@ -89,6 +112,26 @@ def check_valid_option_chains_headers(headers: str) -> List[str]:
 
 
 @log_start_end(log=logger)
+def display_expirations(ticker: str, source: str = "YahooFinance"):
+    """Displays the expirations for a ticker
+
+    Parameters
+    ----------
+    ticker: str
+        The ticker to look up
+    source: str
+        Where to get the data from. Options: yf (yahoo finance) or tr (tradier)
+    """
+    if source == "YahooFinance":
+        exps = yfinance_model.option_expirations(ticker)
+    elif source == "Tradier":
+        exps = tradier_model.option_expirations(ticker)
+    else:
+        raise ValueError("Invalid source. Please select 'yf' or 'tr'")
+    display_expiry_dates(exps)
+
+
+@log_start_end(log=logger)
 def display_expiry_dates(expiry_dates: list):
     """Display expiry dates
 
@@ -110,21 +153,21 @@ def display_expiry_dates(expiry_dates: list):
 
 @log_start_end(log=logger)
 def display_chains(
-    ticker: str,
+    symbol: str,
     expiry: str,
-    to_display: List[str],
-    min_sp: float,
-    max_sp: float,
-    calls_only: bool,
-    puts_only: bool,
+    to_display: List[str] = None,
+    min_sp: float = -1,
+    max_sp: float = -1,
+    calls_only: bool = False,
+    puts_only: bool = False,
     export: str = "",
 ):
     """Display option chain
 
     Parameters
     ----------
-    ticker: str
-        Stock ticker
+    symbol: str
+        Stock ticker symbol
     expiry: str
         Expiration date of option
     to_display: List[str]
@@ -141,19 +184,14 @@ def display_chains(
         Format to  export file
     """
 
-    chains_df = tradier_model.get_option_chains(ticker, expiry)
+    if to_display is None:
+        to_display = tradier_model.default_columns
+
+    chains_df = tradier_model.get_option_chains(symbol, expiry)
     columns = to_display + ["strike", "option_type"]
     chains_df = chains_df[columns].rename(columns=column_map)
 
-    if min_sp == -1:
-        min_strike = np.percentile(chains_df["strike"], 25)
-    else:
-        min_strike = min_sp
-
-    if max_sp == -1:
-        max_strike = np.percentile(chains_df["strike"], 75)
-    else:
-        max_strike = max_sp
+    min_strike, max_strike = get_strike_bounds(chains_df, 0, min_sp, max_sp)
 
     chains_df = chains_df[chains_df["strike"] >= min_strike]
     chains_df = chains_df[chains_df["strike"] <= max_strike]
@@ -211,12 +249,12 @@ def display_chains(
 
 @log_start_end(log=logger)
 def plot_oi(
-    ticker: str,
+    symbol: str,
     expiry: str,
-    min_sp: float,
-    max_sp: float,
-    calls_only: bool,
-    puts_only: bool,
+    min_sp: float = -1,
+    max_sp: float = -1,
+    calls_only: bool = False,
+    puts_only: bool = False,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -224,8 +262,8 @@ def plot_oi(
 
     Parameters
     ----------
-    ticker: str
-        Ticker
+    symbol: str
+        Ticker symbol
     expiry: str
         Expiry date for options
     min_sp: float
@@ -242,18 +280,14 @@ def plot_oi(
         External axes (1 axis is expected in the list), by default None
     """
 
-    options = tradier_model.get_option_chains(ticker, expiry)
-    current_price = tradier_model.last_price(ticker)
+    options = tradier_model.get_option_chains(symbol, expiry)
+    current_price = tradier_model.last_price(symbol)
 
-    if min_sp == -1:
-        min_strike = 0.75 * current_price
-    else:
-        min_strike = min_sp
+    min_strike, max_strike = get_strike_bounds(options, current_price, min_sp, max_sp)
 
-    if max_sp == -1:
-        max_strike = 1.25 * current_price
-    else:
-        max_strike = max_sp
+    if max_strike == min_strike:
+        console.print("[red]Not enough data for analysis[/red]\n")
+        return
 
     if calls_only and puts_only:
         console.print("Both flags selected, please select one", "\n")
@@ -289,7 +323,7 @@ def plot_oi(
     ax.set_xlabel("Strike Price")
     ax.set_ylabel("Open Interest [1k] ")
     ax.set_xlim(min_strike, max_strike)
-    ax.set_title(f"Open Interest for {ticker.upper()} expiring {expiry}")
+    ax.set_title(f"Open Interest for {symbol.upper()} expiring {expiry}")
 
     theme.style_primary_axis(ax)
 
@@ -306,12 +340,12 @@ def plot_oi(
 
 @log_start_end(log=logger)
 def plot_vol(
-    ticker: str,
+    symbol: str,
     expiry: str,
-    min_sp: float,
-    max_sp: float,
-    calls_only: bool,
-    puts_only: bool,
+    min_sp: float = 1,
+    max_sp: float = -1,
+    calls_only: bool = False,
+    puts_only: bool = False,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -319,8 +353,8 @@ def plot_vol(
 
     Parameters
     ----------
-    ticker: str
-        Ticker
+    symbol: str
+        Ticker symbol
     expiry: str
         Expiry date for options
     min_sp: float
@@ -337,18 +371,10 @@ def plot_vol(
         External axes (1 axis is expected in the list), by default None
     """
 
-    options = tradier_model.get_option_chains(ticker, expiry)
-    current_price = tradier_model.last_price(ticker)
+    options = tradier_model.get_option_chains(symbol, expiry)
+    current_price = tradier_model.last_price(symbol)
 
-    if min_sp == -1:
-        min_strike = 0.75 * current_price
-    else:
-        min_strike = min_sp
-
-    if max_sp == -1:
-        max_strike = 1.25 * current_price
-    else:
-        max_strike = max_sp
+    min_strike, max_strike = get_strike_bounds(options, current_price, min_sp, max_sp)
 
     if calls_only and puts_only:
         console.print("Both flags selected, please select one", "\n")
@@ -389,7 +415,7 @@ def plot_vol(
     ax.set_xlabel("Strike Price")
     ax.set_ylabel("Volume [1k] ")
     ax.set_xlim(min_strike, max_strike)
-    ax.set_title(f"Volume for {ticker.upper()} expiring {expiry}")
+    ax.set_title(f"Volume for {symbol.upper()} expiring {expiry}")
 
     theme.style_primary_axis(ax)
 
@@ -407,11 +433,11 @@ def plot_vol(
 
 @log_start_end(log=logger)
 def plot_volume_open_interest(
-    ticker: str,
+    symbol: str,
     expiry: str,
-    min_sp: float,
-    max_sp: float,
-    min_vol: float,
+    min_sp: float = -1,
+    max_sp: float = -1,
+    min_vol: float = -1,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -419,8 +445,8 @@ def plot_volume_open_interest(
 
     Parameters
     ----------
-    ticker: str
-        Stock ticker
+    symbol: str
+        Stock ticker symbol
     expiry: str
         Option expiration
     min_sp: float
@@ -434,8 +460,8 @@ def plot_volume_open_interest(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    current_price = tradier_model.last_price(ticker)
-    options = tradier_model.get_option_chains(ticker, expiry)
+    current_price = tradier_model.last_price(symbol)
+    options = tradier_model.get_option_chains(symbol, expiry)
 
     calls = options[options.option_type == "call"][
         ["strike", "volume", "open_interest"]
@@ -564,7 +590,7 @@ def plot_volume_open_interest(
     g.set_xticklabels(xlabels)
 
     ax.set_title(
-        f"{ticker} volumes for {expiry}\n(open interest displayed only during market hours)"
+        f"{symbol} volumes for {expiry}\n(open interest displayed only during market hours)"
     )
     ax.invert_yaxis()
 
@@ -600,12 +626,12 @@ def plot_volume_open_interest(
 
 @log_start_end(log=logger)
 def display_historical(
-    ticker: str,
+    symbol: str,
     expiry: str,
-    strike: float,
-    put: bool,
-    raw: bool,
-    chain_id: str,
+    strike: float = 0,
+    put: bool = False,
+    raw: bool = False,
+    chain_id: str = None,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -613,8 +639,8 @@ def display_historical(
 
     Parameters
     ----------
-    ticker: str
-        Stock ticker
+    symbol: str
+        Stock ticker symbol
     expiry: str
         Expiry date of option
     strike: float
@@ -632,7 +658,7 @@ def display_historical(
     """
 
     df_hist = tradier_model.get_historical_options(
-        ticker, expiry, strike, put, chain_id
+        symbol, expiry, strike, put, chain_id
     )
 
     if raw:

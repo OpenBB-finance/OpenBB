@@ -470,7 +470,6 @@ class SettingsController(BaseController):
             description="Select folder where to export data",
         )
         parser.add_argument(
-            "-f",
             "--folder",
             type=str,
             dest="folder",
@@ -478,7 +477,7 @@ class SettingsController(BaseController):
             default="default",
         )
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-f")
+            other_args.insert(0, "--folder")
         ns_parser = parse_simple_args(parser, other_args)
 
         if ns_parser:
@@ -492,7 +491,9 @@ class SettingsController(BaseController):
                 export_path += "/".join([ns_parser.folder] + self.queue)
                 self.queue = []
 
-                base_path = os.path.dirname(os.path.abspath(__file__))
+                export_path = export_path.replace("'", "").replace('"', "")
+
+                base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
                 default_path = os.path.join(base_path, "exports")
 
                 success_export = False

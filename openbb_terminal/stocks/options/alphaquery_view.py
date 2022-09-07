@@ -1,20 +1,20 @@
 """AlphaQuery View"""
 __docforma__ = "numpy"
 
-from typing import Optional, List
 import logging
 import os
 from datetime import datetime, timedelta
+from typing import List, Optional
 
 import matplotlib.pyplot as plt
 
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
-    plot_autoscale,
     is_valid_axes_count,
+    plot_autoscale,
 )
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.options import alphaquery_model
@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_put_call_ratio(
-    ticker: str,
+    symbol: str,
     window: int = 30,
     start_date: str = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
     export: str = "",
@@ -34,8 +34,8 @@ def display_put_call_ratio(
 
     Parameters
     ----------
-    ticker : str
-        Stock ticker
+    symbol : str
+        Stock ticker symbol
     window : int, optional
         Window length to look at, by default 30
     start_date : str, optional
@@ -45,7 +45,7 @@ def display_put_call_ratio(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    pcr = alphaquery_model.get_put_call_ratio(ticker, window, start_date)
+    pcr = alphaquery_model.get_put_call_ratio(symbol, window, start_date)
     if pcr.empty:
         console.print("No data found.\n")
         return
@@ -58,7 +58,7 @@ def display_put_call_ratio(
         return
 
     ax.plot(pcr.index, pcr.values)
-    ax.set_title(f"Put Call Ratio for {ticker.upper()}")
+    ax.set_title(f"Put Call Ratio for {symbol.upper()}")
     theme.style_primary_axis(ax)
 
     if not external_axes:

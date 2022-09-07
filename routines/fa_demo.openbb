@@ -1,18 +1,19 @@
-# Demonstration of the Fundamental Analysis features, using Coca-Cola. No arguments are required to run this routine.
+# Demonstration of the Fundamental Analysis features, with a user-defined ticker.
+# This can be done on the home menu through 'exe fa_demo.openbb -i AAPL'
 
-# Enter stocks menu, load KO, enter the Fundamental Analysis submenu.
+# Enter stocks menu, load $ARGV[0], enter the Fundamental Analysis submenu and show a quote and overview statistics.
 stocks
-load ko
+load $ARGV[0]
 fa
+quote
+overview
+mgmt
 
 # NLP analysis of SEC filings
 analysis
 
 # Table of the corporate executives with links to their recent trading activity.
 mgmt
-
-# Sean Seah Warnings
-warnings
 
 # Major shareholders
 shrs
@@ -22,25 +23,25 @@ sust
 
 # Performance ratios
 key
-fmp
-ratios
-growth
-..
+enterprise -l 10
+ratios -l 10
+growth -l 10
+metrics -l 10
 
 # Financial Statements
-income --source polygon
-income -q -l 8 --source polygon
-balance --source polygon
-balance -q -l 8 --source polygon
-cash
-cash -q -l 8
+income --source Polygon
+income -q -l 8 --source Polygon
+balance --source Polygon
+balance -q -l 8 --source Polygon
+cash -l 8 --source FinancialModelingPrep
 data
 
 # Charts
-dupont
 divs -p
 splits
-mktcap -s 1962-01-01
+mktcap -s 1900-01-01
+
 
 # Discount Cash Flow
+dcfc -l 10
 dcf
