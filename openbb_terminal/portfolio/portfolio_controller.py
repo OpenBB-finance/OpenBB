@@ -345,11 +345,15 @@ class PortfolioController(BaseController):
             # Load benchmark
             self.call_bench(["-b", "SPDR S&P 500 ETF Trust (SPY)"])
 
-            console.print(f"\n[bold][param]Portfolio:[/param][/bold] {self.portfolio_name}")
+            console.print(
+                f"\n[bold][param]Portfolio:[/param][/bold] {self.portfolio_name}"
+            )
             console.print(
                 f"[bold][param]Risk Free Rate:[/param][/bold] {self.portfolio.risk_free_rate}"
             )
-            console.print(f"[bold][param]Benchmark:[/param][/bold] {self.benchmark_name}\n")
+            console.print(
+                f"[bold][param]Benchmark:[/param][/bold] {self.benchmark_name}\n"
+            )
 
     @log_start_end(log=logger)
     def call_show(self, other_args: List[str]):
@@ -366,7 +370,12 @@ class PortfolioController(BaseController):
             export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
             limit=10,
         )
-        portfolio_view.display_orderbook(self.portfolio, show_index=False, limit=ns_parser.limit, export=ns_parser.export,)
+        portfolio_view.display_orderbook(
+            self.portfolio,
+            show_index=False,
+            limit=ns_parser.limit,
+            export=ns_parser.export,
+        )
 
     @log_start_end(log=logger)
     def call_bench(self, other_args: List[str]):

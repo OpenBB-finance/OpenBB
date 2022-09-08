@@ -996,7 +996,23 @@ class PortfolioModel:
         Returns:
             pd.DataFrame: formatted transactions
         """
-        df = self.__orderbook[["Date", "Type", "Ticker", "Side", "Price", "Quantity", "Fees", "Investment", "Currency", "Sector", "Industry", "Country", "Region"]]
+        df = self.__orderbook[
+            [
+                "Date",
+                "Type",
+                "Ticker",
+                "Side",
+                "Price",
+                "Quantity",
+                "Fees",
+                "Investment",
+                "Currency",
+                "Sector",
+                "Industry",
+                "Country",
+                "Region",
+            ]
+        ]
         df = df.replace(np.nan, "-")
         df["Date"] = df["Date"].dt.strftime("%Y-%m-%d")
         df.sort_values(by="Date", ascending=False, inplace=True)
@@ -1125,9 +1141,12 @@ class PortfolioModel:
             self.__orderbook["yf_Ticker"] = self.__orderbook["ISIN"].apply(
                 lambda x: yf.utils.get_ticker_by_isin(x) if not pd.isna(x) else np.nan
             )
-            
+
             empty_tickers = list(
-                self.__orderbook[(self.__orderbook["yf_Ticker"] == "") | (self.__orderbook["yf_Ticker"].isna())]["Ticker"].unique()
+                self.__orderbook[
+                    (self.__orderbook["yf_Ticker"] == "")
+                    | (self.__orderbook["yf_Ticker"].isna())
+                ]["Ticker"].unique()
             )
 
             # If ticker from isin is empty it is not valid in yfinance, so check if user provided ticker is supported
@@ -1135,19 +1154,28 @@ class PortfolioModel:
             for item in empty_tickers:
                 with contextlib.redirect_stdout(None):
                     # Supress yfinance failed download message if occurs
-                    valid_ticker = not(yf.download(item, start=datetime.datetime.now(), progress=False).empty)
+                    valid_ticker = not (
+                        yf.download(
+                            item, start=datetime.datetime.now(), progress=False
+                        ).empty
+                    )
                     if valid_ticker:
                         # Invalid ISIN but valid ticker
-                        self.__orderbook.loc[self.__orderbook['Ticker'] == item, 'yf_Ticker'] = np.nan
+                        self.__orderbook.loc[
+                            self.__orderbook["Ticker"] == item, "yf_Ticker"
+                        ] = np.nan
                     else:
-                        self.__orderbook.loc[self.__orderbook['Ticker'] == item, 'yf_Ticker'] = ""
+                        self.__orderbook.loc[
+                            self.__orderbook["Ticker"] == item, "yf_Ticker"
+                        ] = ""
                         removed_tickers.append(item)
 
             # Merge reformated tickers into Ticker
-            self.__orderbook["Ticker"] = self.__orderbook["yf_Ticker"].fillna(self.__orderbook["Ticker"])
+            self.__orderbook["Ticker"] = self.__orderbook["yf_Ticker"].fillna(
+                self.__orderbook["Ticker"]
+            )
 
             console.print(".", end="")
-            
 
             # 10. Remove unsupported ISINs that came out empty
             self.__orderbook.drop(
@@ -1166,7 +1194,7 @@ class PortfolioModel:
                 )
             console.print(".", end="")
 
-            # 12. Create isin dictionary 
+            # 12. Create isin dictionary
             # isin dictionary with structure {'Ticker': 'ISIN'}
             self.isins = (
                 self.__orderbook.loc[self.__orderbook["Type"].isin(["STOCK", "ETF"])][
@@ -1224,7 +1252,7 @@ class PortfolioModel:
             # Warn user of removed ISINs
             if removed_tickers:
                 console.print(
-                    f"\n\n[red]The following tickers are not supported and were removed: {removed_tickers}.\nManually edit the 'Ticker' field with the proper Yahoo Finance suffix or provide a valid ISIN.\n Suffix info on 'Yahoo Finance market coverage': https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html\nE.g. IWDA -> IWDA.AS[/red]"
+                    f"\n\n[red]The following tickers are not supported and were removed: {removed_tickers}.\nManually edit the 'Ticker' field with the proper Yahoo Finance suffix or provide a valid ISIN.\nSuffix info on 'Yahoo Finance market coverage': https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html\nE.g. IWDA -> IWDA.AS[/red]"
                 )
         except Exception:
             console.print("\nCould not preprocess orderbook.")
