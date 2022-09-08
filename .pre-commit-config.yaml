@@ -32,7 +32,7 @@ repos:
       - id: flake8
         entry: flake8 --ignore=E203,W503 --max-line-length=122 --exclude ./build/pyinstaller/*
   - repo: https://github.com/codespell-project/codespell
-    rev: v2.2.0
+    rev: v2.2.1
     hooks:
       - id: codespell
         entry: codespell
