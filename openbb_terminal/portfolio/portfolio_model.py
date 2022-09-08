@@ -1166,8 +1166,7 @@ class PortfolioModel:
                 .values.any()
             ):
                 # if any fields is empty for Stocks (overwrites any info there)
-                self.load_company_data()
-
+                self.load_company_data
         except Exception:
             console.print("\nCould not preprocess orderbook.")
 
