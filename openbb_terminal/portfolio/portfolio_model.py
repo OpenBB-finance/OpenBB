@@ -1043,21 +1043,19 @@ class PortfolioModel:
 
         # Preprocessing steps:
         # 0. If optional fields not in the orderbook add missing
-        # 1. If optional fields for stock data has missing datapoints, fill them
-        # 2. Convert Date to datetime
-        # 3. Sort orderbook by date
-        # 4. Capitalize Ticker and Type [of instrument...]
-        # 5. Translate side: ["deposit", "buy"] -> 1 and ["withdrawal", "sell"] -> -1
-        # 6. Convert quantity to signed integer
-        # 7. Determining the investment/divestment value
-        # 8. Reformat crypto tickers to yfinance format (e.g. BTC -> BTC-USD)
-        # 9. Reformat STOCK/ETF tickers to yfinance format if ISIN provided
-        # 10. Remove unsupported ISINs that came out empty
-        # 11. Create tickers dictionary with structure {'Type': [Ticker]}
-        # 12. Create isin dictionary
-        # 13. Create list with tickers except cash
-        # 14. Save orderbook inception date
-        # 15. Populate fields Sector, Industry and Country
+        # 1. Convert Date to datetime
+        # 2. Sort orderbook by date
+        # 3. Capitalize Ticker and Type [of instrument...]
+        # 4. Translate side: ["deposit", "buy"] -> 1 and ["withdrawal", "sell"] -> -1
+        # 5. Convert quantity to signed integer
+        # 6. Determining the investment/divestment value
+        # 7. Reformat crypto tickers to yfinance format (e.g. BTC -> BTC-USD)
+        # 8. Reformat STOCK/ETF tickers to yfinance format if ISIN provided
+        # 9. Remove unsupported ISINs that came out empty
+        # 10. Create tickers dictionary with structure {'Type': [Ticker]}
+        # 11. Create list with tickers except cash
+        # 12. Save orderbook inception date
+        # 13. Populate fields Sector, Industry and Country
 
         try:
             console.print(" Preprocessing orderbook: ", end="")
@@ -1077,19 +1075,7 @@ class PortfolioModel:
                     if field not in self.__orderbook.columns:
                         self.__orderbook[field] = np.nan
 
-            # 1. If optional fields for stock data has missing datapoints, fill them
-            if (
-                self.__orderbook.loc[
-                    self.__orderbook["Type"] == "STOCK",
-                    optional_fields,
-                ]
-                .isnull()
-                .values.any()
-            ):
-                # if any fields is empty for Stocks (overwrites any info there)
-                self.load_company_data()
-
-            # 2. Convert Date to datetime
+            # 1. Convert Date to datetime
             self.__orderbook["Date"] = pd.to_datetime(self.__orderbook["Date"])
             console.print(".", end="")
 
@@ -1097,14 +1083,14 @@ class PortfolioModel:
             self.__orderbook = self.__orderbook.sort_values(by="Date")
             console.print(".", end="")
 
-            # 4. Capitalize Ticker and Type [of instrument...]
+            # 3. Capitalize Ticker and Type [of instrument...]
             self.__orderbook["Ticker"] = self.__orderbook["Ticker"].map(
                 lambda x: x.upper()
             )
             self.__orderbook["Type"] = self.__orderbook["Type"].map(lambda x: x.upper())
             console.print(".", end="")
 
-            # 5. Translate side: ["deposit", "buy"] -> 1 and ["withdrawal", "sell"] -> -1
+            # 4. Translate side: ["deposit", "buy"] -> 1 and ["withdrawal", "sell"] -> -1
             self.__orderbook["Signal"] = self.__orderbook["Side"].map(
                 lambda x: 1
                 if x.lower() in ["deposit", "buy"]
@@ -1112,20 +1098,20 @@ class PortfolioModel:
             )
             console.print(".", end="")
 
-            # 6. Convert quantity to signed integer
+            # 5. Convert quantity to signed integer
             self.__orderbook["Quantity"] = (
                 abs(self.__orderbook["Quantity"]) * self.__orderbook["Signal"]
             )
             console.print(".", end="")
 
-            # 7. Determining the investment/divestment value
+            # 6. Determining the investment/divestment value
             self.__orderbook["Investment"] = (
                 self.__orderbook["Quantity"] * self.__orderbook["Price"]
                 + self.__orderbook["Fees"]
             )
             console.print(".", end="")
 
-            # 8. Reformat crypto tickers to yfinance format (e.g. BTC -> BTC-USD)
+            # 7. Reformat crypto tickers to yfinance format (e.g. BTC -> BTC-USD)
             crypto_trades = self.__orderbook[self.__orderbook.Type == "CRYPTO"]
             self.__orderbook.loc[(self.__orderbook.Type == "CRYPTO"), "Ticker"] = [
                 f"{crypto}-{currency}"
@@ -1135,7 +1121,7 @@ class PortfolioModel:
             ]
             console.print(".", end="")
 
-            # # 9. Reformat STOCK/ETF tickers to yfinance format if ISIN provided.
+            # 8. Reformat STOCK/ETF tickers to yfinance format if ISIN provided.
 
             # If isin not valid ticker is empty
             self.__orderbook["yf_Ticker"] = self.__orderbook["ISIN"].apply(
@@ -1177,13 +1163,13 @@ class PortfolioModel:
 
             console.print(".", end="")
 
-            # 10. Remove unsupported ISINs that came out empty
+            # 9. Remove unsupported ISINs that came out empty
             self.__orderbook.drop(
                 self.__orderbook[self.__orderbook["Ticker"] == ""].index, inplace=True
             )
             console.print(".", end="")
 
-            # 11. Create tickers dictionary with structure {'Type': [Ticker]}
+            # 10. Create tickers dictionary with structure {'Type': [Ticker]}
             for ticker_type in set(self.__orderbook["Type"]):
                 self.tickers[ticker_type] = list(
                     set(
@@ -1194,59 +1180,25 @@ class PortfolioModel:
                 )
             console.print(".", end="")
 
-            # 12. Create isin dictionary
-            # isin dictionary with structure {'Ticker': 'ISIN'}
-            self.isins = (
-                self.__orderbook.loc[self.__orderbook["Type"].isin(["STOCK", "ETF"])][
-                    ["ISIN", "Ticker"]
-                ]
-                .set_index("Ticker")
-                .T.to_dict("records")[0]
-            )
-
-            # If ISIN not provided, the ticker is mapped as ISIN
-            for key, val in self.isins.items():
-                if pd.isna(val):
-                    self.isins[key] = key
-            # Inverse isin dictionary with structure {'ISIN': 'Ticker'}
-            self.inv_isins = {v: k for k, v in self.isins.items()}
-            console.print(".", end="")
-
-            # 13. Create list with tickers except cash
+            # 11. Create list with tickers except cash
             self.tickers_list = list(set(self.__orderbook["Ticker"]))
             console.print(".", end="")
 
-            # 14. Save orderbook inception date
+            # 12. Save orderbook inception date
             self.inception_date = self.__orderbook["Date"][0]
             console.print(".", end="")
 
-            # 15. Populate fields Sector, Industry and Country
-            if not (
-                {"Sector", "Industry", "Country", "Region"}.issubset(
-                    set(self.__orderbook.columns)
-                )
-            ):
-                # if fields not in the orderbook add missing
-                if "Sector" not in self.__orderbook.columns:
-                    self.__orderbook["Sector"] = np.nan
-                if "Industry" not in self.__orderbook.columns:
-                    self.__orderbook["Industry"] = np.nan
-                if "Country" not in self.__orderbook.columns:
-                    self.__orderbook["Country"] = np.nan
-                if "Region" not in self.__orderbook.columns:
-                    self.__orderbook["Region"] = np.nan
-
-                self.load_company_data()
-            elif (
+            # 13. Populate fields Sector, Industry and Country
+            if (
                 self.__orderbook.loc[
                     self.__orderbook["Type"] == "STOCK",
-                    ["Sector", "Industry", "Country", "Region"],
+                    optional_fields,
                 ]
                 .isnull()
                 .values.any()
             ):
                 # if any fields is empty for Stocks (overwrites any info there)
-                self.load_company_data
+                self.load_company_data()
             console.print(".", end="")
 
             # Warn user of removed ISINs
@@ -1279,9 +1231,7 @@ class PortfolioModel:
                         .values.any()
                     ):
                         # Get ticker info in list ["Sector", "Industry", "Country", "Region"] from isin/ticker
-                        info_list = portfolio_helper.get_info_from_ticker(
-                            self.isins[ticker]
-                        )
+                        info_list = portfolio_helper.get_info_from_ticker(ticker)
 
                         # Replace fields in orderbook
                         self.__orderbook.loc[
@@ -1682,7 +1632,7 @@ class PortfolioModel:
             (
                 self.portfolio_region_allocation,
                 self.portfolio_country_allocation,
-            ) = allocation_model.obtain_portfolio_region_country_allocation(
+            ) = allocation_model.get_portfolio_region_country_allocation(
                 self.portfolio_trades
             )
 
