@@ -67,6 +67,9 @@ def get_sector_allocation(benchmark_info: Dict, portfolio_trades: pd.DataFrame):
     country_allocation: dict
         Dictionary with country allocations
     """
+
+    console.print(" Loading sector data: ", end="")
+
     benchmark_sectors_allocation = (
         pd.DataFrame.from_dict(
             data={
@@ -97,7 +100,6 @@ def get_sector_allocation(benchmark_info: Dict, portfolio_trades: pd.DataFrame):
 
     # Aggregate sector value for ETFs
     # Start by getting value by isin/ticker
-    console.print(" Loading ETF sector data: ", end="")
     etf_ticker_value = (
         portfolio_trades[portfolio_trades["Type"].isin(["ETF"])]
         .groupby(by="Ticker")
@@ -270,7 +272,7 @@ def get_region_country_allocation(
 
 
 @log_start_end(log=logger)
-def obtain_portfolio_region_country_allocation(portfolio_trades: pd.DataFrame):
+def get_portfolio_region_country_allocation(portfolio_trades: pd.DataFrame):
     """Obtain the regional and country allocation of the portfolio.
 
     Parameters
@@ -286,21 +288,28 @@ def obtain_portfolio_region_country_allocation(portfolio_trades: pd.DataFrame):
         Dictionary with country allocations
     """
 
+    console.print(" Loading country/region data: ", end="")
+
     # Define portfolio regional allocation
-    portfolio_region_allocation = (
-        portfolio_trades[portfolio_trades["Type"].isin(["STOCK", "CRYPTO"])]
-        .groupby(by="Region")
-        .agg({"Portfolio Value": "sum"})
-    )
+    if not portfolio_trades["Region"].isnull().any():
+        portfolio_region_allocation = (
+            portfolio_trades[portfolio_trades["Type"].isin(["STOCK", "CRYPTO"])]
+            .groupby(by="Region")
+            .agg({"Portfolio Value": "sum"})
+        )
+    else:
+        portfolio_region_allocation = pd.DataFrame()
 
     # Define portfolio country allocation
-    portfolio_country_allocation = (
-        portfolio_trades[portfolio_trades["Type"].isin(["STOCK", "CRYPTO"])]
-        .groupby(by="Country")
-        .agg({"Portfolio Value": "sum"})
-    )
+    if not portfolio_trades["Country"].isnull().any():
+        portfolio_country_allocation = (
+            portfolio_trades[portfolio_trades["Type"].isin(["STOCK", "CRYPTO"])]
+            .groupby(by="Country")
+            .agg({"Portfolio Value": "sum"})
+        )
+    else:
+        portfolio_country_allocation = pd.DataFrame()
 
-    console.print(" Loading ETF country/region data: ", end="")
     # Aggregate sector value for ETFs
     # Start by getting value by ticker
     etf_ticker_value = (
