@@ -65,7 +65,7 @@ In order to load a CSV do the following:
 
 
 @log_start_end(log=logger)
-def display_orderbook(portfolio=None, show_index=False):
+def display_orderbook(portfolio=None, show_index=False, limit: int = 10, export: str = "",):
     """Display portfolio orderbook
 
     Parameters
@@ -74,14 +74,25 @@ def display_orderbook(portfolio=None, show_index=False):
         Instance of Portfolio class
     show_index: bool
         Defaults to False.
+    limit: int
+        Number of rows to display
+    export : str
+        Export certain type of data
     """
 
     if portfolio.empty:
         logger.warning("No orderbook loaded")
         console.print("[red]No orderbook loaded.[/red]\n")
     else:
-        print_rich_table(portfolio.get_orderbook(), show_index)
+        df = portfolio.get_orderbook()
+        print_rich_table(df[:limit], show_index)
 
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "transactions",
+        df,
+    )
 
 @log_start_end(log=logger)
 def display_assets_allocation(

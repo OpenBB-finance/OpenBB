@@ -990,12 +990,20 @@ class PortfolioModel:
         self.empty = False
 
     def get_orderbook(self):
-        return self.__orderbook
+        """Get formatted transactions
+
+        Returns:
+            pd.DataFrame: formatted transactions
+        """
+        df = self.__orderbook[["Date", "Type", "Ticker", "Side", "Price", "Quantity", "Fees", "Investment", "Currency", "Sector", "Industry", "Country", "Region"]]
+        df = df.replace(np.nan, "-")
+        df["Date"] = df["Date"].dt.strftime("%Y-%m-%d")
+        return df
 
     @staticmethod
     @log_start_end(log=logger)
     def read_orderbook(path: str) -> pd.DataFrame:
-        """Class method to read orderbook from file
+        """Static method to read orderbook from file
 
         Parameters
         ----------
@@ -1016,23 +1024,27 @@ class PortfolioModel:
         """Method to preprocess, format and compute auxiliary fields"""
 
         # Preprocessing steps:
-        # 1. Convert Date to datetime
-        # 2. Sort orderbook by date
-        # 3. Capitalize Ticker and Type [of instrument...]
-        # 4. Translate side: ["deposit", "buy"] -> 1 and ["withdrawal", "sell"] -> -1
-        # 5. Convert quantity to signed integer
-        # 6. Determining the investment/divestment value
-        # 7. Reformat crypto tickers to yfinance format (e.g. BTC -> BTC-USD)
-        # 8. Create tickers dictionary with structure {'Type': [Ticker]}
-        # 9. Create isin dictionary with structure {'Ticker': 'ISIN'}
-        # 10. Create list with tickers except cash
-        # 11. Save orderbook inception date
-        # 12. Populate fields Sector, Industry and Country
+        # 0. If optional fields not in the orderbook add missing
+        # 1. If optional fields for stock data has missing datapoints, fill them
+        # 2. Convert Date to datetime
+        # 3. Sort orderbook by date
+        # 4. Capitalize Ticker and Type [of instrument...]
+        # 5. Translate side: ["deposit", "buy"] -> 1 and ["withdrawal", "sell"] -> -1
+        # 6. Convert quantity to signed integer
+        # 7. Determining the investment/divestment value
+        # 8. Reformat crypto tickers to yfinance format (e.g. BTC -> BTC-USD)
+        # 9. Reformat STOCK/ETF tickers to yfinance format if ISIN provided
+        # 10. Remove unsupported ISINs that came out empty
+        # 11. Create tickers dictionary with structure {'Type': [Ticker]}
+        # 12. Create isin dictionary
+        # 13. Create list with tickers except cash
+        # 14. Save orderbook inception date
+        # 15. Populate fields Sector, Industry and Country
 
         try:
             console.print(" Preprocessing orderbook: ", end="")
 
-            # if optional fields not in the orderbook add missing
+            # 0. If optional fields not in the orderbook add missing
             optional_fields = [
                 "Sector",
                 "Industry",
@@ -1047,7 +1059,7 @@ class PortfolioModel:
                     if field not in self.__orderbook.columns:
                         self.__orderbook[field] = np.nan
 
-            # if optional fields for stock data has missing datapoints, fill them
+            # 1. If optional fields for stock data has missing datapoints, fill them
             if (
                 self.__orderbook.loc[
                     self.__orderbook["Type"] == "STOCK",
@@ -1059,43 +1071,43 @@ class PortfolioModel:
                 # if any fields is empty for Stocks (overwrites any info there)
                 self.load_company_data()
 
-            # 1. Convert Date to datetime
+            # 2. Convert Date to datetime
             self.__orderbook["Date"] = pd.to_datetime(self.__orderbook["Date"])
             console.print(".", end="")
 
-            # 2. Sort orderbook by date
+            # 3. Sort orderbook by date
             self.__orderbook = self.__orderbook.sort_values(by="Date")
             console.print(".", end="")
 
-            # 3. Capitalize Ticker and Type [of instrument...]
+            # 4. Capitalize Ticker and Type [of instrument...]
             self.__orderbook["Ticker"] = self.__orderbook["Ticker"].map(
                 lambda x: x.upper()
             )
             self.__orderbook["Type"] = self.__orderbook["Type"].map(lambda x: x.upper())
             console.print(".", end="")
 
-            # 4. Translate side: ["deposit", "buy"] -> 1 and ["withdrawal", "sell"] -> -1
-            self.__orderbook["Side"] = self.__orderbook["Side"].map(
+            # 5. Translate side: ["deposit", "buy"] -> 1 and ["withdrawal", "sell"] -> -1
+            self.__orderbook["Signal"] = self.__orderbook["Side"].map(
                 lambda x: 1
                 if x.lower() in ["deposit", "buy"]
                 else (-1 if x.lower() in ["withdrawal", "sell"] else 0)
             )
             console.print(".", end="")
 
-            # 5. Convert quantity to signed integer
+            # 6. Convert quantity to signed integer
             self.__orderbook["Quantity"] = (
-                abs(self.__orderbook["Quantity"]) * self.__orderbook["Side"]
+                abs(self.__orderbook["Quantity"]) * self.__orderbook["Signal"]
             )
             console.print(".", end="")
 
-            # 6. Determining the investment/divestment value
+            # 7. Determining the investment/divestment value
             self.__orderbook["Investment"] = (
                 self.__orderbook["Quantity"] * self.__orderbook["Price"]
-                - self.__orderbook["Fees"]
+                + self.__orderbook["Fees"]
             )
             console.print(".", end="")
 
-            # 7. Reformat crypto tickers to yfinance format (e.g. BTC -> BTC-USD)
+            # 8. Reformat crypto tickers to yfinance format (e.g. BTC -> BTC-USD)
             crypto_trades = self.__orderbook[self.__orderbook.Type == "CRYPTO"]
             self.__orderbook.loc[(self.__orderbook.Type == "CRYPTO"), "Ticker"] = [
                 f"{crypto}-{currency}"
@@ -1105,20 +1117,23 @@ class PortfolioModel:
             ]
             console.print(".", end="")
 
-            # . Reformat STOCK/ETF tickers to yfinance format if ISIN provided
+            # 9. Reformat STOCK/ETF tickers to yfinance format if ISIN provided
             tmp = self.__orderbook["ISIN"].apply(
                 lambda x: yf.utils.get_ticker_by_isin(x) if not pd.isna(x) else np.nan
             )
             self.__orderbook["Ticker"] = tmp.fillna(self.__orderbook["Ticker"])
-            # Remove unsupported ISINs that came out empty
+            console.print(".", end="")
+
+            # 10. Remove unsupported ISINs that came out empty
             removed_isins = list(
                 self.__orderbook[self.__orderbook["Ticker"] == ""]["ISIN"].unique()
             )
             self.__orderbook.drop(
                 self.__orderbook[self.__orderbook["Ticker"] == ""].index, inplace=True
             )
+            console.print(".", end="")
 
-            # 8. Create tickers dictionary with structure {'Type': [Ticker]}
+            # 11. Create tickers dictionary with structure {'Type': [Ticker]}
             for ticker_type in set(self.__orderbook["Type"]):
                 self.tickers[ticker_type] = list(
                     set(
@@ -1129,7 +1144,8 @@ class PortfolioModel:
                 )
             console.print(".", end="")
 
-            # 9. Create isin dictionary with structure {'Ticker': 'ISIN'}
+            # 12. Create isin dictionary 
+            # isin dictionary with structure {'Ticker': 'ISIN'}
             self.isins = (
                 self.__orderbook.loc[self.__orderbook["Type"].isin(["STOCK", "ETF"])][
                     ["ISIN", "Ticker"]
@@ -1146,15 +1162,15 @@ class PortfolioModel:
             self.inv_isins = {v: k for k, v in self.isins.items()}
             console.print(".", end="")
 
-            # 10. Create list with tickers except cash
+            # 13. Create list with tickers except cash
             self.tickers_list = list(set(self.__orderbook["Ticker"]))
             console.print(".", end="")
 
-            # 11. Save orderbook inception date
+            # 14. Save orderbook inception date
             self.inception_date = self.__orderbook["Date"][0]
             console.print(".", end="")
 
-            # 12. Populate fields Sector, Industry and Country
+            # 15. Populate fields Sector, Industry and Country
             if not (
                 {"Sector", "Industry", "Country", "Region"}.issubset(
                     set(self.__orderbook.columns)
@@ -1181,11 +1197,12 @@ class PortfolioModel:
             ):
                 # if any fields is empty for Stocks (overwrites any info there)
                 self.load_company_data
+            console.print(".", end="")
 
-            # Warn of removed ISINs
+            # Warn user of removed ISINs
             if removed_isins:
                 console.print(
-                    f"\n\n[red]The following ISINs are not supported and were removed: {removed_isins}.\nManually edit the 'Ticker' field in file to Yahoo Finance market coverage convention.\nE.g. IWDA -> IWDA.AS[/red]"
+                    f"\n\n[red]The following ISINs are not supported and were removed: {removed_isins}.\nManually edit the 'Ticker' field in the file to follow Yahoo Finance market coverage convention or provide a valid ISIN.\nE.g. IWDA -> IWDA.AS[/red]"
                 )
         except Exception:
             console.print("\nCould not preprocess orderbook.")
@@ -1283,7 +1300,7 @@ class PortfolioModel:
 
         """
 
-        console.print("\n      Loading benchmark: ", end="")
+        console.print("\n       Loading benchmark: ", end="")
 
         self.benchmark_ticker = ticker
 
@@ -1310,7 +1327,7 @@ class PortfolioModel:
         self.benchmark_info = yf.Ticker(ticker).info
 
         # Display progress
-        console.print(".", end="")
+        console.print(".")
 
     @log_start_end(log=logger)
     def mimic_trades_for_benchmark(self, full_shares: bool = False):
@@ -1582,8 +1599,6 @@ class PortfolioModel:
         console.print(".", end="")
 
         self.historical_trade_data = trade_data
-
-        console.print("\n")
 
     @log_start_end(log=logger)
     def calculate_reserves(self):

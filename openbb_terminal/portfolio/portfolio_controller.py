@@ -342,18 +342,31 @@ class PortfolioController(BaseController):
             # Add in the Risk-free rate
             self.portfolio.set_risk_free_rate(ns_parser.risk_free_rate)
 
-            console.print(f"\n[bold]Portfolio:[/bold] {self.portfolio_name}")
-            console.print(
-                f"[bold]Risk Free Rate:[/bold] {self.portfolio.risk_free_rate}"
-            )
-
             # Load benchmark
             self.call_bench(["-b", "SPDR S&P 500 ETF Trust (SPY)"])
 
+            console.print(f"\n[bold][param]Portfolio:[/param][/bold] {self.portfolio_name}")
+            console.print(
+                f"[bold][param]Risk Free Rate:[/param][/bold] {self.portfolio.risk_free_rate}"
+            )
+            console.print(f"[bold][param]Benchmark:[/param][/bold] {self.benchmark_name}\n")
+
     @log_start_end(log=logger)
-    def call_show(self, _):
+    def call_show(self, other_args: List[str]):
         """Process show command"""
-        portfolio_view.display_orderbook(self.portfolio, show_index=False)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="show",
+            description="Show transactions table",
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+            limit=10,
+        )
+        portfolio_view.display_orderbook(self.portfolio, show_index=False, limit=ns_parser.limit, export=ns_parser.export,)
 
     @log_start_end(log=logger)
     def call_bench(self, other_args: List[str]):
@@ -410,7 +423,6 @@ class PortfolioController(BaseController):
                     self.portfolio.returns, self.portfolio.benchmark_returns
                 )
 
-                console.print(f"\n[bold]Benchmark:[/bold] {self.benchmark_name}")
             else:
                 console.print("[red]Please first load orderbook using 'load'[/red]\n")
             console.print()
