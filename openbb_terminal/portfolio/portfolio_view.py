@@ -184,6 +184,15 @@ def display_category_allocation(
     include_separate_tables: bool
         Whether to include separate asset allocation tables
     """
+
+    if benchmark_allocation.empty:
+        console.print(f"[red]Benchmark data for {category} is empty.\n[/red]")
+        return
+
+    if portfolio_allocation.empty:
+        console.print(f"[red]Portfolio data for {category} is empty.\n[/red]")
+        return
+
     benchmark_allocation = benchmark_allocation.iloc[:limit]
     portfolio_allocation = portfolio_allocation.iloc[:limit]
 
