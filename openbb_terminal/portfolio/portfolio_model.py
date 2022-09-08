@@ -1208,7 +1208,8 @@ class PortfolioModel:
                 console.print(
                     f"\n\n[red]The following tickers are not supported and were removed: {removed_tickers}."
                     f"\nManually edit the 'Ticker' field with the proper Yahoo Finance suffix or provide a valid ISIN."
-                    f"\nSuffix info on 'Yahoo Finance market coverage': https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html"
+                    f"\nSuffix info on 'Yahoo Finance market coverage':"
+                    " https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html"
                     f"\nE.g. IWDA -> IWDA.AS[/red]"
                 )
         except Exception:
