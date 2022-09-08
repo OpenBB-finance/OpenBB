@@ -96,12 +96,12 @@ def display_orderbook(
             title=f"Last {limit if limit < len(df) else len(df)} transactions",
         )
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "transactions",
-        df.set_index("Date"),
-    )
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "transactions",
+            df.set_index("Date"),
+        )
 
 
 @log_start_end(log=logger)
