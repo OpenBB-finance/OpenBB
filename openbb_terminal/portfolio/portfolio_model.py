@@ -1,7 +1,7 @@
 """Portfolio Model"""
 __docformat__ = "numpy"
 
-import logging 
+import logging
 from typing import Dict, Any, Tuple
 import datetime
 
@@ -1192,7 +1192,9 @@ class PortfolioModel:
                         .values.any()
                     ):
                         # Get ticker info in list ["Sector", "Industry", "Country", "Region"] from isin/ticker
-                        info_list = portfolio_helper.get_info_from_ticker(self.isins[ticker])
+                        info_list = portfolio_helper.get_info_from_ticker(
+                            self.isins[ticker]
+                        )
 
                         # Replace fields in orderbook
                         self.__orderbook.loc[

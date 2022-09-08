@@ -106,7 +106,9 @@ def display_assets_allocation(
     benchmark_allocation = benchmark_allocation.iloc[:limit]
     portfolio_allocation = portfolio_allocation.iloc[:limit]
 
-    combined = pd.merge(portfolio_allocation, benchmark_allocation, on="Symbol", how="left")
+    combined = pd.merge(
+        portfolio_allocation, benchmark_allocation, on="Symbol", how="left"
+    )
     combined["Difference"] = combined["Portfolio"] - combined["Benchmark"]
     combined = combined.replace(np.nan, "-")
     combined = combined.replace(0, "-")
