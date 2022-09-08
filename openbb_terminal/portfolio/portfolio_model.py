@@ -1,6 +1,7 @@
 """Portfolio Model"""
 __docformat__ = "numpy"
 
+import contextlib
 import logging
 from typing import Dict, Any, Tuple
 import datetime
@@ -998,6 +999,7 @@ class PortfolioModel:
         df = self.__orderbook[["Date", "Type", "Ticker", "Side", "Price", "Quantity", "Fees", "Investment", "Currency", "Sector", "Industry", "Country", "Region"]]
         df = df.replace(np.nan, "-")
         df["Date"] = df["Date"].dt.strftime("%Y-%m-%d")
+        df.sort_values(by="Date", ascending=False, inplace=True)
         return df
 
     @staticmethod
@@ -1117,17 +1119,37 @@ class PortfolioModel:
             ]
             console.print(".", end="")
 
-            # 9. Reformat STOCK/ETF tickers to yfinance format if ISIN provided
-            tmp = self.__orderbook["ISIN"].apply(
+            # # 9. Reformat STOCK/ETF tickers to yfinance format if ISIN provided.
+
+            # If isin not valid ticker is empty
+            self.__orderbook["yf_Ticker"] = self.__orderbook["ISIN"].apply(
                 lambda x: yf.utils.get_ticker_by_isin(x) if not pd.isna(x) else np.nan
             )
-            self.__orderbook["Ticker"] = tmp.fillna(self.__orderbook["Ticker"])
+            
+            empty_tickers = list(
+                self.__orderbook[(self.__orderbook["yf_Ticker"] == "") | (self.__orderbook["yf_Ticker"].isna())]["Ticker"].unique()
+            )
+
+            # If ticker from isin is empty it is not valid in yfinance, so check if user provided ticker is supported
+            removed_tickers = []
+            for item in empty_tickers:
+                with contextlib.redirect_stdout(None):
+                    # Supress yfinance failed download message if occurs
+                    valid_ticker = not(yf.download(item, start=datetime.datetime.now(), progress=False).empty)
+                    if valid_ticker:
+                        # Invalid ISIN but valid ticker
+                        self.__orderbook.loc[self.__orderbook['Ticker'] == item, 'yf_Ticker'] = np.nan
+                    else:
+                        self.__orderbook.loc[self.__orderbook['Ticker'] == item, 'yf_Ticker'] = ""
+                        removed_tickers.append(item)
+
+            # Merge reformated tickers into Ticker
+            self.__orderbook["Ticker"] = self.__orderbook["yf_Ticker"].fillna(self.__orderbook["Ticker"])
+
             console.print(".", end="")
+            
 
             # 10. Remove unsupported ISINs that came out empty
-            removed_isins = list(
-                self.__orderbook[self.__orderbook["Ticker"] == ""]["ISIN"].unique()
-            )
             self.__orderbook.drop(
                 self.__orderbook[self.__orderbook["Ticker"] == ""].index, inplace=True
             )
@@ -1200,9 +1222,9 @@ class PortfolioModel:
             console.print(".", end="")
 
             # Warn user of removed ISINs
-            if removed_isins:
+            if removed_tickers:
                 console.print(
-                    f"\n\n[red]The following ISINs are not supported and were removed: {removed_isins}.\nManually edit the 'Ticker' field in the file to follow Yahoo Finance market coverage convention or provide a valid ISIN.\nE.g. IWDA -> IWDA.AS[/red]"
+                    f"\n\n[red]The following tickers are not supported and were removed: {removed_tickers}.\nManually edit the 'Ticker' field with the proper Yahoo Finance suffix or provide a valid ISIN.\n Suffix info on 'Yahoo Finance market coverage': https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html\nE.g. IWDA -> IWDA.AS[/red]"
                 )
         except Exception:
             console.print("\nCould not preprocess orderbook.")
@@ -1481,10 +1503,6 @@ class PortfolioModel:
 
         for ticker_type, data in self.tickers.items():
             if ticker_type in ["STOCK", "ETF", "CRYPTO"]:
-                if ticker_type in ["STOCK", "ETF"]:
-                    # map ticker to respective isin if provided by user
-                    data = list(self.isins.values())
-
                 # Download yfinance data
                 price_data = yf.download(
                     data, start=self.inception_date, progress=False
@@ -1494,13 +1512,6 @@ class PortfolioModel:
                 if len(data) == 1:
                     price_data = pd.DataFrame(price_data)
                     price_data.columns = data
-
-                # Rename columns to original tickers for STOCK and ETF
-                if ticker_type in ["STOCK", "ETF"]:
-                    for col in price_data.columns:
-                        price_data = price_data.rename(
-                            columns={col: self.inv_isins[col]}
-                        )
 
                 # Add to historical_prices dataframe
                 self.portfolio_historical_prices = pd.concat(

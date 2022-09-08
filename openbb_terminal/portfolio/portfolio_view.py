@@ -85,13 +85,13 @@ def display_orderbook(portfolio=None, show_index=False, limit: int = 10, export:
         console.print("[red]No orderbook loaded.[/red]\n")
     else:
         df = portfolio.get_orderbook()
-        print_rich_table(df[:limit], show_index)
+        print_rich_table(df=df[:limit], show_index=show_index, title=f"Last {limit} transactions")
 
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "transactions",
-        df,
+        df.set_index("Date"),
     )
 
 @log_start_end(log=logger)
