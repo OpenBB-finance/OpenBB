@@ -1139,7 +1139,7 @@ class PortfolioModel:
             removed_tickers = []
             for item in empty_tickers:
                 with contextlib.redirect_stdout(None):
-                    # Supress yfinance failed download message if occurs
+                    # Suppress yfinance failed download message if occurs
                     valid_ticker = not (
                         yf.download(
                             item, start=datetime.datetime.now(), progress=False
