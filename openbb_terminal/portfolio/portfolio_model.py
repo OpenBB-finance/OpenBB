@@ -1105,6 +1105,10 @@ class PortfolioModel:
             ]
             console.print(".", end="")
 
+            # Reformat STOCK/ETF tickers to yfinance format if ISIN provided
+            tmp = self.__orderbook["ISIN"].apply(lambda x: yf.utils.get_ticker_by_isin(x) if not pd.isna(x) else np.nan)
+            self.__orderbook['Ticker'] = tmp.fillna(self.__orderbook['Ticker'])
+
             # 8. Create tickers dictionary with structure {'Type': [Ticker]}
             for ticker_type in set(self.__orderbook["Type"]):
                 self.tickers[ticker_type] = list(
@@ -1131,6 +1135,7 @@ class PortfolioModel:
                     self.isins[key] = key
             # Inverse isin dictionary with structure {'ISIN': 'Ticker'}
             self.inv_isins = {v: k for k, v in self.isins.items()}
+            console.print(".", end="")
 
             # 10. Create list with tickers except cash
             self.tickers_list = list(set(self.__orderbook["Ticker"]))
