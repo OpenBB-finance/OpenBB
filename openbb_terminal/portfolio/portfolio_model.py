@@ -1105,9 +1105,13 @@ class PortfolioModel:
             ]
             console.print(".", end="")
 
-            # Reformat STOCK/ETF tickers to yfinance format if ISIN provided
+            # . Reformat STOCK/ETF tickers to yfinance format if ISIN provided
             tmp = self.__orderbook["ISIN"].apply(lambda x: yf.utils.get_ticker_by_isin(x) if not pd.isna(x) else np.nan)
             self.__orderbook['Ticker'] = tmp.fillna(self.__orderbook['Ticker'])
+            # Remove unsupported ISINs that came out empty
+            removed_isins = list(self.__orderbook[self.__orderbook["Ticker"]==""]["ISIN"].unique())
+            self.__orderbook.drop(self.__orderbook[self.__orderbook["Ticker"]==""].index, inplace=True)
+            
 
             # 8. Create tickers dictionary with structure {'Type': [Ticker]}
             for ticker_type in set(self.__orderbook["Type"]):
@@ -1172,6 +1176,10 @@ class PortfolioModel:
             ):
                 # if any fields is empty for Stocks (overwrites any info there)
                 self.load_company_data
+            
+            # Warn of removed ISINs
+            if removed_isins:
+                console.print(f"The following ISINs are not supported and were removed: {removed_isins}")
         except Exception:
             console.print("\nCould not preprocess orderbook.")
 
