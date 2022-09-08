@@ -1106,12 +1106,17 @@ class PortfolioModel:
             console.print(".", end="")
 
             # . Reformat STOCK/ETF tickers to yfinance format if ISIN provided
-            tmp = self.__orderbook["ISIN"].apply(lambda x: yf.utils.get_ticker_by_isin(x) if not pd.isna(x) else np.nan)
-            self.__orderbook['Ticker'] = tmp.fillna(self.__orderbook['Ticker'])
+            tmp = self.__orderbook["ISIN"].apply(
+                lambda x: yf.utils.get_ticker_by_isin(x) if not pd.isna(x) else np.nan
+            )
+            self.__orderbook["Ticker"] = tmp.fillna(self.__orderbook["Ticker"])
             # Remove unsupported ISINs that came out empty
-            removed_isins = list(self.__orderbook[self.__orderbook["Ticker"]==""]["ISIN"].unique())
-            self.__orderbook.drop(self.__orderbook[self.__orderbook["Ticker"]==""].index, inplace=True)
-            
+            removed_isins = list(
+                self.__orderbook[self.__orderbook["Ticker"] == ""]["ISIN"].unique()
+            )
+            self.__orderbook.drop(
+                self.__orderbook[self.__orderbook["Ticker"] == ""].index, inplace=True
+            )
 
             # 8. Create tickers dictionary with structure {'Type': [Ticker]}
             for ticker_type in set(self.__orderbook["Type"]):
@@ -1176,10 +1181,12 @@ class PortfolioModel:
             ):
                 # if any fields is empty for Stocks (overwrites any info there)
                 self.load_company_data
-            
+
             # Warn of removed ISINs
             if removed_isins:
-                console.print(f"The following ISINs are not supported and were removed: {removed_isins}")
+                console.print(
+                    f"\n\n[red]The following ISINs are not supported and were removed: {removed_isins}.\nManually edit the 'Ticker' field in file to Yahoo Finance market coverage convention.\nE.g. IWDA -> IWDA.AS[/red]"
+                )
         except Exception:
             console.print("\nCould not preprocess orderbook.")
 
@@ -1275,6 +1282,9 @@ class PortfolioModel:
             quantity to the nearest number.
 
         """
+
+        console.print("\n      Loading benchmark: ", end="")
+
         self.benchmark_ticker = ticker
 
         self.benchmark_historical_prices = yf.download(
@@ -1298,6 +1308,9 @@ class PortfolioModel:
 
         self.benchmark_returns = self.benchmark_historical_prices.pct_change().dropna()
         self.benchmark_info = yf.Ticker(ticker).info
+
+        # Display progress
+        console.print(".", end="")
 
     @log_start_end(log=logger)
     def mimic_trades_for_benchmark(self, full_shares: bool = False):
@@ -1488,22 +1501,14 @@ class PortfolioModel:
     def populate_historical_trade_data(self):
         """Create a new dataframe to store historical prices by ticker"""
 
-        trade_data = self.__orderbook.pivot(
+        trade_data = self.__orderbook.pivot_table(
             index="Date",
-            columns="Ticker",
+            columns=["Ticker"],
             values=[
-                "Type",
-                "Sector",
-                "Industry",
-                "Country",
-                "Price",
                 "Quantity",
-                "Fees",
-                "Premium",
                 "Investment",
-                "Side",
-                "Currency",
             ],
+            aggfunc={"Quantity": np.sum, "Investment": np.sum},
         )
 
         # Make historical prices columns a multi-index. This helps the merging.
