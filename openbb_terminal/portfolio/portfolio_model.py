@@ -1532,10 +1532,13 @@ class PortfolioModel:
         trade_data = pd.merge(
             trade_data,
             self.portfolio_historical_prices,
-            how="right",
+            how="outer",
             left_index=True,
             right_index=True,
-        ).fillna(0)
+        )
+
+        trade_data["Close"] = trade_data["Close"].fillna(method="ffill")
+        trade_data.fillna(0, inplace=True)
 
         # Accumulate quantity held by trade date
         trade_data["Quantity"] = trade_data["Quantity"].cumsum()
