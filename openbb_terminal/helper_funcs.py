@@ -269,8 +269,6 @@ def print_rich_table(
 
         for idx, values in zip(df.index.tolist(), df.values.tolist()):
             # remove hour/min/sec from timestamp index - Format: YYYY-MM-DD # make better
-            if isinstance(idx, pd.Timestamp):
-                idx = idx.date()
             row = [str(idx)] if show_index else []
             row += [
                 str(x)

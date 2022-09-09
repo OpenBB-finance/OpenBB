@@ -2,7 +2,7 @@
 import os
 import argparse
 from typing import Dict, Any, Union, Optional, List, Tuple
-from datetime import timedelta, datetime
+from datetime import timedelta, datetime, time
 import logging
 import pandas as pd
 import numpy as np
@@ -382,6 +382,8 @@ def print_pretty_prediction(df_pred: pd.DataFrame, last_price: float):
         df_pred["pred"] = df_pred["pred"].apply(
             lambda x: lambda_price_prediction_color(x)
         )
+    if check_dates(df_pred.index.to_series()):
+        df_pred.index = df_pred.index.date
         print_rich_table(
             df_pred,
             show_index=True,
@@ -833,3 +835,11 @@ def check_output(
             )
         return n_predict
     return output_chunk_length
+
+
+def check_dates(s: pd.Series) -> bool:
+    """Checks whether all hours, minutes, seconds and milliseconds are 0""" ""
+    for _, value in s.items():
+        if value.time() != time(0, 0, 0, 0):
+            return False
+    return True

@@ -1,5 +1,5 @@
-from unittest.mock import patch
 from datetime import timedelta, datetime, date
+from unittest.mock import patch
 from typing import Callable, Any
 from inspect import signature
 import streamlit as st
@@ -190,8 +190,9 @@ class Handler:
                     final = pd.concat(
                         [hist_fcast, tick_series, pred_vals], axis=1, join="outer"
                     )
-                    final.to_csv("final.csv")
                     if not final.empty:
+                        if helpers.check_dates(pred_vals.index.to_series()):
+                            pred_vals.index = pred_vals.index.date
                         rowc1, rowc2 = st.columns([4, 1])
                         # Styled write() with sig figs
                         with rowc2:
