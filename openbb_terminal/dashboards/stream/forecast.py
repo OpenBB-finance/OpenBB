@@ -66,8 +66,6 @@ def special_st(text: str):
         st.write(text)
 
 
-# TODO: we need to find a new way to print MAPE
-@st.cache(suppress_st_warning=True)
 def run_forecast(
     data: pd.DataFrame, model: str, target_column: str, past_covariates: str
 ):
