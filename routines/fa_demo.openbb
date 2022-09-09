@@ -29,11 +29,11 @@ growth -l 10
 metrics -l 10
 
 # Financial Statements
-income --source polygon
-income -q -l 8 --source polygon
-balance --source polygon
-balance -q -l 8 --source polygon
-cash -l 8 --source fmp
+income --source Polygon
+income -q -l 8 --source Polygon
+balance --source Polygon
+balance -q -l 8 --source Polygon
+cash -l 8 --source FinancialModelingPrep
 data
 
 # Charts

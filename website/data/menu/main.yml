@@ -121,8 +121,8 @@ main:
                 ref: "/terminal/stocks/disc/rtat"
               - name: divcal
                 ref: "/terminal/stocks/disc/divcal"
-              - name: cramer
-                ref: "/terminal/stocks/disc/cramer"
+              - name: heatmap
+                ref: "/terminal/stocks/disc/heatmap"
           - name: Sector and Industry Analysis (SIA)
             ref: "/terminal/stocks/sia"
             sub:

@@ -1,7 +1,7 @@
 # https://python-poetry.org/docs/dependency-specification/
 [tool.poetry]
 name = "OpenBBTerminal"
-version = "1.7.0"
+version = "1.8.0"
 description = ""
 authors = ["Didier Rodrigues Lopes"]
 packages = [
@@ -96,6 +96,7 @@ jedi-language-server = {version = "^0.35.1", optional = true}
 kaleido = {version = "<=0.2.1", optional = true}
 torch = {version = "1.11.0", optional = true}
 streamlit = "^1.12.2"
+charset-normalizer = "2.1.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"

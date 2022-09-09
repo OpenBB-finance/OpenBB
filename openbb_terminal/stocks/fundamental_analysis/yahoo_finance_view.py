@@ -433,6 +433,9 @@ def display_fundamentals(
     if fundamentals.empty:
         # The empty data frame error handling done in model
         return
+
+    symbol_currency = yahoo_finance_model.get_currency(symbol)
+
     if plot:
         rows_plot = len(plot)
         fundamentals_plot_data = fundamentals.transpose().fillna(-1)
@@ -496,8 +499,37 @@ def display_fundamentals(
         print_rich_table(
             fundamentals.iloc[:, :limit].applymap(lambda x: "-" if x == "nan" else x),
             show_index=True,
-            title=f"{symbol} {title_str}",
+            title=f"{symbol} {title_str} Currency: {symbol_currency}",
         )
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), statement, fundamentals
+    )
+
+
+@log_start_end(log=logger)
+def display_earnings(symbol: str, limit: int, export: str):
+    """
+
+    Parameters
+    ----------
+    symbol
+    limit
+    export
+
+    Returns
+    -------
+
+    """
+    earnings = yahoo_finance_model.get_earnings_history(symbol)
+    if not earnings:
+        console.print("")
+        return
+    earnings = earnings.drop(columns={"Symbol", "Company"})
+    print_rich_table(
+        earnings.head(limit),
+        headers=earnings.columns,
+        title=f"Historical Earnings for {symbol}",
+    )
+    export_data(
+        export, os.path.dirname(os.path.abspath(__file__)), "earnings_yf", earnings
     )

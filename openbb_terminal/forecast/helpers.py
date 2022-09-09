@@ -31,9 +31,7 @@ from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal import rich_config
 
 logger = logging.getLogger(__name__)
-logger = logging.getLogger("pytorch_lightning").setLevel(
-    logging.CRITICAL
-)  # No needed for now
+logging.getLogger("pytorch_lightning").setLevel(logging.CRITICAL)  # No needed for now
 
 
 def mean_absolute_percentage_error(y_true: np.ndarray, y_pred: np.ndarray) -> np.number:

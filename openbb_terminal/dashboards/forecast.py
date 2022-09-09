@@ -11,7 +11,7 @@ from openbb_terminal.rich_config import console
 
 st.set_page_config(layout="wide")
 
-
+# pylint: disable=E1101
 model_opts = {
     "expo": api.forecast.models.expo.get_expo_data,  # type: ignore
     "theta": api.forecast.models.theta.get_theta_data,  # type: ignore
@@ -24,6 +24,7 @@ model_opts = {
     "trans": api.forecast.models.trans.get_trans_data,  # type: ignore
     "tft": api.forecast.models.tft.get_tft_data,  # type: ignore
 }
+# pylint: enable=E1101
 
 feat_engs = {
     "ema": api.forecast.ema,
@@ -98,6 +99,7 @@ def run_forecast(data: pd.DataFrame, model: str, target_column: str):
                 precision,
                 _model,
             ) = response
+        del precision
         if model in ["expo", "linregr", "rnn", "tft"]:
             predicted_values = predicted_values.quantile_df()[f"{target_column}_0.5"]
         else:
@@ -128,7 +130,10 @@ class Handler:
         self.target_widget: str = None
         self.target_interval: str = None
         self.model_widget: str = None
+        self.feature_target = None
+        self.feature_model = None
 
+    # pylint: disable=R0913
     def handle_changes(
         self,
         past_covariates: list[str],
@@ -286,14 +291,12 @@ class Handler:
             # create df with 5 next business days from a start date
             # next_business_days = pd.date_range(start=end_date, periods=5, freq="B")
 
-        """
-        if st.button("Add Column"):
-            kwargs = {}
-            if has_parameter(handler.feature_model, "target_column"):
-                kwargs["target_column"] = handler.feature_target
-            handler.df = handler.feature_model(handler.df, **kwargs)
-            st.session_state["widget_options"]["past_covs_widget"] = handler.df.columns
-        """
+        # if st.button("Add Column"):
+        # kwargs = {}
+        # if has_parameter(handler.feature_model, "target_column"):
+        # kwargs["target_column"] = handler.feature_target
+        # handler.df = handler.feature_model(handler.df, **kwargs)
+        # st.session_state["widget_options"]["past_covs_widget"] = handler.df.columns
 
 
 if __name__ == "__main__":

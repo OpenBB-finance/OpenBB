@@ -29,6 +29,7 @@ from openbb_terminal.stocks.discovery import (
     seeking_alpha_view,
     shortinterest_view,
     yahoofinance_view,
+    finviz_view,
 )
 
 # pylint:disable=C0302
@@ -59,6 +60,7 @@ class DiscoveryController(BaseController):
         "cnews",
         "rtat",
         "divcal",
+        "heatmap",
     ]
 
     arkord_sortby_choices = [
@@ -110,6 +112,7 @@ class DiscoveryController(BaseController):
         "Annual Dividend",
         "Announcement Date",
     ]
+    heatmap_timeframes = ["day", "week", "month", "3month", "6month", "year", "ytd"]
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
@@ -126,7 +129,7 @@ class DiscoveryController(BaseController):
             choices["cnews"]["--type"] = {c: None for c in self.cnews_type_choices}
             choices["divcal"]["-s"] = {c: None for c in self.dividend_columns}
             choices["divcal"]["--sort"] = {c: None for c in self.dividend_columns}
-
+            choices["heatmap"]["-t"] = {c: None for c in self.heatmap_timeframes}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
@@ -150,6 +153,7 @@ class DiscoveryController(BaseController):
         mt.add_cmd("hotpenny", "Shortinterest")
         mt.add_cmd("rtat", "NASDAQ Data Link")
         mt.add_cmd("divcal", "NASDAQ Data Link")
+        mt.add_cmd("heatmap", "Finviz")
         console.print(text=mt.menu_text, menu="Stocks - Discovery")
 
     # TODO Add flag for adding last price to the following table
@@ -835,7 +839,7 @@ class DiscoveryController(BaseController):
 
     @log_start_end(log=logger)
     def call_rtat(self, other_args: List[str]):
-        """Process fds command"""
+        """Process rtat command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -864,3 +868,28 @@ class DiscoveryController(BaseController):
             nasdaq_view.display_top_retail(
                 limit=ns_parser.limit, export=ns_parser.export
             )
+
+    @log_start_end(log=logger)
+    def call_heatmap(self, other_args: List[str]):
+        """Process heatmap command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="heatmap",
+            description="""
+                    Get the SP 500 heatmap from finviz and display in interactive treemap
+                """,
+        )
+        parser.add_argument(
+            "-t",
+            "--timeframe",
+            default="day",
+            choices=self.heatmap_timeframes,
+            help="Timeframe to get heatmap data for",
+            dest="timeframe",
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            finviz_view.display_heatmap(ns_parser.timeframe, ns_parser.export)

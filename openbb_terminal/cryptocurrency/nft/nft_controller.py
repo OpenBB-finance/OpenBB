@@ -56,13 +56,13 @@ class NFTController(BaseController):
     def print_help(self):
         """Print help"""
         mt = MenuText("crypto/nft/", 70)
-        mt.add_cmd("today", "Nftcalendar")
-        mt.add_cmd("upcoming", "Nftcalendar")
-        mt.add_cmd("ongoing", "Nftcalendar")
-        mt.add_cmd("newest", "Nftcalendar")
-        mt.add_cmd("stats", "Opensea")
-        mt.add_cmd("fp", "NFT Price Floor")
-        mt.add_cmd("collections", "NFT Price Floor")
+        mt.add_cmd("today")
+        mt.add_cmd("upcoming")
+        mt.add_cmd("ongoing")
+        mt.add_cmd("newest")
+        mt.add_cmd("stats")
+        mt.add_cmd("fp")
+        mt.add_cmd("collections")
         console.print(text=mt.menu_text, menu="Cryptocurrency - Non Fungible Token")
 
     @log_start_end(log=logger)

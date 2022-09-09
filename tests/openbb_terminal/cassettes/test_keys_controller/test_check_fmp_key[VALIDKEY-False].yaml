@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - python-requests/2.28.1
+      - python-requests/2.27.1
     method: GET
     uri: https://financialmodelingprep.com/api/v3/profile/AAPL?apikey=VALIDKEY
   response:
@@ -32,7 +32,7 @@ interactions:
       Content-Type:
       - application/json;charset=UTF-8
       Date:
-      - Fri, 19 Aug 2022 12:34:45 GMT
+      - Sun, 04 Sep 2022 00:08:30 GMT
       Server:
       - nginx/1.14.0 (Ubuntu)
     status:
