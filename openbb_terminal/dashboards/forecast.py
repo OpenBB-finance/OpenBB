@@ -1,5 +1,5 @@
 from unittest.mock import patch
-from datetime import timedelta, datetime
+from datetime import timedelta, datetime, date
 from typing import Callable, Any
 from inspect import signature
 import streamlit as st
@@ -8,6 +8,8 @@ import yfinance as yf
 from openbb_terminal import api
 from openbb_terminal.forecast import helpers
 from openbb_terminal.rich_config import console
+
+st.set_page_config(layout="wide")
 
 
 model_opts = {
@@ -77,6 +79,7 @@ def run_forecast(data: pd.DataFrame, model: str, target_column: str):
         response = model_opts[model](
             data=data,
             target_column=target_column,
+            n_predict=5,
         )
         if model == "theta":
             (
@@ -96,11 +99,9 @@ def run_forecast(data: pd.DataFrame, model: str, target_column: str):
                 _model,
             ) = response
         if model in ["expo", "linregr", "rnn", "tft"]:
-            predicted_values = predicted_values.quantile_df()[
-                f"{target_column}_0.5"
-            ].tail(5)
+            predicted_values = predicted_values.quantile_df()[f"{target_column}_0.5"]
         else:
-            predicted_values = predicted_values.pd_dataframe()[target_column].tail(5)
+            predicted_values = predicted_values.pd_dataframe()[target_column]
         return (
             historical_fcast.pd_dataframe(),
             ticker_series.pd_dataframe(),
@@ -174,6 +175,7 @@ class Handler:
                     final = pd.concat(
                         [hist_fcast, tick_series, pred_vals], axis=1, join="outer"
                     )
+                    final.to_csv("final.csv")
                     if not final.empty:
                         st.write(pred_vals)
                         st.line_chart(final)
@@ -232,12 +234,10 @@ class Handler:
             )
         with r1c2:
             self.start_date = st.date_input(
-                "Start date", pd.to_datetime("2020-01-01"), key="start"
+                "Start date", date.today() - timedelta(weeks=104), key="start"
             )
         with r1c3:
-            self.end_date = st.date_input(
-                "End date", pd.to_datetime("2020-12-01"), key="end"
-            )
+            self.end_date = st.date_input("End date", date.today(), key="end")
         with r1c4:
             self.target_interval = st.selectbox(
                 "Interval", index=8, key="interval", options=interval_opts
