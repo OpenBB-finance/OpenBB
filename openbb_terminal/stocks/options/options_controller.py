@@ -150,7 +150,7 @@ class OptionsController(BaseController):
         if self.expiry_dates and session and obbff.USE_PROMPT_TOOLKIT:
             self.choices["exp"] = {str(c): {} for c in range(len(self.expiry_dates))}
             self.choices["exp"]["-d"] = {c: {} for c in self.expiry_dates + [""]}
-            if self.chain:
+            if self.chain and self.source != "Nasdaq":
                 self.choices["hist"] = {
                     str(c): {}
                     for c in self.chain.puts["strike"] + self.chain.calls["strike"]

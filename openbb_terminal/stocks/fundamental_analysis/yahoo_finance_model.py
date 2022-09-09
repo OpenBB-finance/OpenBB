@@ -443,3 +443,12 @@ def get_earnings_history(symbol: str) -> pd.DataFrame:
     """
     earnings = yf.Ticker(symbol).earnings_history
     return earnings
+
+
+@log_start_end(log=logger)
+def get_currency(symbol) -> str:
+    """Quick helper to get currency for financial statements"""
+    ticker_info = yf.Ticker(symbol).info
+    if "financialCurrency" in ticker_info:
+        return ticker_info["financialCurrency"]
+    return "Not Specified"

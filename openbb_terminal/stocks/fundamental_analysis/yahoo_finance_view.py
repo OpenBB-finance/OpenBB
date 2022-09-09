@@ -433,6 +433,9 @@ def display_fundamentals(
     if fundamentals.empty:
         # The empty data frame error handling done in model
         return
+
+    symbol_currency = yahoo_finance_model.get_currency(symbol)
+
     if plot:
         rows_plot = len(plot)
         fundamentals_plot_data = fundamentals.transpose().fillna(-1)
@@ -496,7 +499,7 @@ def display_fundamentals(
         print_rich_table(
             fundamentals.iloc[:, :limit].applymap(lambda x: "-" if x == "nan" else x),
             show_index=True,
-            title=f"{symbol} {title_str}",
+            title=f"{symbol} {title_str} Currency: {symbol_currency}",
         )
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), statement, fundamentals
