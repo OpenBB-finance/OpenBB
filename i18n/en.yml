@@ -1014,6 +1014,7 @@ en:
   portfolio/po/params/_parameters_: Parameters
   dashboards/stocks: historic stock information
   dashboards/forecast: forecasting for timeseries datasets
+  dashboards/forecasting: forecasting for timeseries datasets
   dashboards/correlation: stock correlations
   dashboards/vsurf: options volatility surface
   dashboards/chains: options chain analysis

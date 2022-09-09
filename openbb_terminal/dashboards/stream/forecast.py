@@ -73,14 +73,33 @@ def load_state(name: str, default: Any):
         st.session_state[name] = default
 
 
-@st.cache(suppress_st_warning=True)
-def run_forecast(data: pd.DataFrame, model: str, target_column: str):
-    if helpers.check_data(data, target_column):
+def special_st(text: str):
+    if "[green]" not in text:
+        st.write(text)
 
-        response = model_opts[model](
+
+# TODO: we need to find a new way to print MAPE
+@st.cache(suppress_st_warning=True)
+def run_forecast(
+    data: pd.DataFrame, model: str, target_column: str, past_covariates: str
+):
+    if helpers.check_data(data, target_column):
+        # TODO: let the user choose their own n_predict
+        n_predict = 5
+        kwargs: dict[str, Any] = {}
+        forecast_model = model_opts[model]
+        contains_covariates = has_parameter(forecast_model, "past_covariates")
+        if contains_covariates and past_covariates != []:
+            kwargs["past_covariates"] = ",".join(past_covariates)
+        if has_parameter(forecast_model, "output_chunk_length"):
+            kwargs["output_chunk_length"] = n_predict
+
+        # n_predict and output_chunk_length must be the same if there are past covariates
+        response = forecast_model(
             data=data,
             target_column=target_column,
-            n_predict=5,
+            n_predict=n_predict,
+            **kwargs,
         )
         if model == "theta":
             (
@@ -146,10 +165,8 @@ class Handler:
         naive,
         forecast_only,
     ):
+        del naive, forecast_only
         if tickers and target_column:
-            forecast_model = model_opts[model]
-            contains_covariates = has_parameter(forecast_model, "past_covariates")
-
             start_n = datetime(start.year, start.month, start.day)
             end_n = datetime(end.year, end.month, end.day)
             if interval in ["1d", "5d", "1wk", "1mo", "3mo"]:
@@ -161,18 +178,11 @@ class Handler:
                 result = st.session_state["df"]
             if not target_column:
                 target_column = st.session_state["df"].columns[0]
-            kwargs = {}
-            if contains_covariates and past_covariates != "":
-                kwargs["past_covariates"] = ",".join(past_covariates)
-            if has_parameter(forecast_model, "naive"):
-                kwargs["naive"] = naive
-            if has_parameter(forecast_model, "forecast_only"):
-                kwargs["forecast_only"] = forecast_only
-            with patch.object(console, "print", st.write):
+            with patch.object(console, "print", special_st):
                 if helpers.check_data(result, target_column):
                     final_df = helpers.clean_data(result, None, None)
                     hist_fcast, tick_series, pred_vals = run_forecast(
-                        final_df, model, target_column
+                        final_df, model, target_column, past_covariates
                     )
                     hist_fcast.columns = ["Historical Forecast"]
                     tick_series.columns = ["Past Prices"]
@@ -262,6 +272,7 @@ class Handler:
                 "Interval", index=8, key="interval", options=interval_opts
             )
         with r2c1:
+            # TODO: disable this if the current model does not allow for it
             self.past_covs_widget = st.multiselect(
                 "Past Covariates",
                 options=st.session_state["widget_options"]["past_covs_widget"],
@@ -277,7 +288,7 @@ class Handler:
         if st.button("Get forecast"):
             if self.ticker:
                 self.handle_changes(
-                    [],
+                    past_covariates=self.past_covs_widget,
                     start=self.start_date,
                     end=self.end_date,
                     interval=self.target_interval,
