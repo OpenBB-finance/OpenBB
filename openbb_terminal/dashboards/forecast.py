@@ -146,7 +146,7 @@ class Handler:
         naive,
         forecast_only,
     ):
-        if tickers:
+        if tickers and target_column:
             forecast_model = model_opts[model]
             contains_covariates = has_parameter(forecast_model, "past_covariates")
 
@@ -182,11 +182,14 @@ class Handler:
                     )
                     final.to_csv("final.csv")
                     if not final.empty:
+                        rowc1, rowc2 = st.columns([4, 1])
                         # Styled write() with sig figs
-                        st.write(
-                            pred_vals.style.format({"Prediction Values": "{:.2f}"})
-                        )
-                        st.line_chart(final)
+                        with rowc2:
+                            st.write(
+                                pred_vals.style.format({"Prediction Values": "{:.2f}"})
+                            )
+                        with rowc1:
+                            st.line_chart(final)
 
                     else:
                         st.write("There was an error with the data")
