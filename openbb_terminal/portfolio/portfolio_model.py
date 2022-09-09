@@ -1953,6 +1953,28 @@ class PortfolioModel:
 
         return pf_period_df
 
+def get_holdings_value(portfolio: PortfolioModel, sum_assets: bool = False,):
+    """Get holdings of assets (absolute value)
+
+    Parameters
+    ----------
+    portfolio: Portfolio
+        Portfolio object with trades loaded
+    sum_assets: bool
+        Sum assets over time    
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of holdings
+    """
+    all_holdings = portfolio.historical_trade_data["End Value"][portfolio.tickers_list]
+    
+    all_holdings["Total Value"] = all_holdings.sum(axis=1)
+    # No need to account for time since this is daily data
+    all_holdings.index = all_holdings.index.date
+
+    return all_holdings
 
 def rolling_volatility(
     portfolio_returns: pd.Series, window: str = "1y"

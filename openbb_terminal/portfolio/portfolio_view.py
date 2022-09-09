@@ -814,20 +814,15 @@ def display_holdings_value(
         Optional axes to display plot on
     """
 
-    all_holdings = portfolio.historical_trade_data["End Value"][portfolio.tickers_list]
+    all_holdings = portfolio_model.get_holdings_value(portfolio, sum_assets)
 
     if raw:
-        all_holdings["Total Value"] = all_holdings.sum(axis=1)
-        # No need to account for time since this is daily data
-        all_holdings.index = all_holdings.index.date
-
         print_rich_table(
             all_holdings.tail(limit),
             title="Holdings of assets (absolute value)",
             headers=all_holdings.columns,
             show_index=True,
         )
-
     else:
         if external_axes is None:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
