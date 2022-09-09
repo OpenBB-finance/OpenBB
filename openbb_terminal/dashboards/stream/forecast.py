@@ -69,11 +69,14 @@ def special_st(text: str):
 # TODO: we need to find a new way to print MAPE
 @st.cache(suppress_st_warning=True)
 def run_forecast(
-    data: pd.DataFrame, model: str, target_column: str, past_covariates: str
+    data: pd.DataFrame,
+    model: str,
+    target_column: str,
+    past_covariates: str,
+    n_predict: int,
 ):
     if helpers.check_data(data, target_column):
         # TODO: let the user choose their own n_predict
-        n_predict = 5
         kwargs: dict[str, Any] = {}
         forecast_model = model_opts[model]
         contains_covariates = has_parameter(forecast_model, "past_covariates")
@@ -129,16 +132,8 @@ class Handler:
         }
         load_state("widget_options", default_opts)
 
-        # Define widgets:
-        self.ticker: str = None
-        self.start_date: str = None
-        self.end_date: str = None
-        self.past_covs_widget: str = None
-        self.target_widget: str = None
-        self.target_interval: str = None
-        self.model_widget: str = None
-        self.feature_target = None
         self.feature_model = None
+        self.feature_target = None
 
     # pylint: disable=R0913
     def handle_changes(
@@ -150,6 +145,7 @@ class Handler:
         tickers,
         target_column,
         model,
+        n_predict,
         naive,
         forecast_only,
     ):
@@ -170,7 +166,7 @@ class Handler:
                 if helpers.check_data(result, target_column):
                     final_df = helpers.clean_data(result, None, None)
                     hist_fcast, tick_series, pred_vals = run_forecast(
-                        final_df, model, target_column, past_covariates
+                        final_df, model, target_column, past_covariates, n_predict
                     )
                     hist_fcast.columns = ["Historical Forecast"]
                     tick_series.columns = ["Past Prices"]
@@ -236,7 +232,7 @@ class Handler:
 
     def run(self):
         r0c1, r0c2 = st.columns([4, 1])
-        r1c1, r1c2, r1c3, r1c4 = st.columns([2, 1, 1, 1])
+        r1c1, r1c2, r1c3, r1c4, r1c5 = st.columns([2, 1, 1, 1, 1])
         r2c1, r2c2, r2c3 = st.columns([1, 1, 1])
 
         with r0c1:
@@ -247,43 +243,48 @@ class Handler:
                 width=100,
             )
         with r1c1:
-            self.ticker = st.text_input(
+            ticker = st.text_input(
                 "Ticker", "", key="ticker", on_change=self.on_ticker_change
             )
         with r1c2:
-            self.start_date = st.date_input(
+            start_date = st.date_input(
                 "Start date", date.today() - timedelta(weeks=104), key="start"
             )
         with r1c3:
-            self.end_date = st.date_input("End date", date.today(), key="end")
+            end_date = st.date_input("End date", date.today(), key="end")
         with r1c4:
-            self.target_interval = st.selectbox(
+            target_interval = st.selectbox(
                 "Interval", index=0, key="interval", options=interval_opts
+            )
+        with r1c5:
+            n_predict = st.selectbox(
+                "Interval", index=4, key="n_predict", options=list(range(1, 31))
             )
         with r2c1:
             # TODO: disable this if the current model does not allow for it
-            self.past_covs_widget = st.multiselect(
+            past_covs_widget = st.multiselect(
                 "Past Covariates",
                 options=st.session_state["widget_options"]["past_covs_widget"],
             )
         with r2c2:
-            self.target_widget = st.selectbox(
+            target_widget = st.selectbox(
                 "Target", options=st.session_state["widget_options"]["target_widget"]
             )
         with r2c3:
-            self.model_widget = st.selectbox("Model", options=list(model_opts))
+            model_widget = st.selectbox("Model", options=list(model_opts))
 
         st.markdown("""---""")
         if st.button("Get forecast"):
-            if self.ticker:
+            if ticker:
                 self.handle_changes(
-                    past_covariates=self.past_covs_widget,
-                    start=self.start_date,
-                    end=self.end_date,
-                    interval=self.target_interval,
-                    tickers=self.ticker,
-                    target_column=self.target_widget,
-                    model=self.model_widget,
+                    past_covariates=past_covs_widget,
+                    start=start_date,
+                    end=end_date,
+                    interval=target_interval,
+                    tickers=ticker,
+                    target_column=target_widget,
+                    model=model_widget,
+                    n_predict=n_predict,
                     naive=False,
                     forecast_only=False,
                 )
