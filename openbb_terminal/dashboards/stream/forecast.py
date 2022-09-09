@@ -70,7 +70,7 @@ def run_forecast(
     data: pd.DataFrame,
     model: str,
     target_column: str,
-    past_covariates: str,
+    past_covariates: list[str],
     n_predict: int,
 ):
     if helpers.check_data(data, target_column):
