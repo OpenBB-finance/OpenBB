@@ -70,7 +70,6 @@ def display_yieldcurve(
             label="Previous",
         )
         ax1.plot(df["Tenor"], df["Current"], "-o", label="Current")
-        ax1.set_xlabel("Maturity")
         ax1.set_ylabel("Yield (%)")
         theme.style_primary_axis(ax1)
         ax1.yaxis.set_label_position("left")
@@ -87,12 +86,13 @@ def display_yieldcurve(
         ]
         ax2.bar(df["Tenor"], df["Change"], width=1, color=colors)
         ax2.set_ylabel("Change (bps)")
+        ax2.set_xlabel("Maturity (years)")
         theme.style_primary_axis(ax2)
         ax2.yaxis.set_label_position("left")
         ax2.yaxis.set_ticks_position("left")
 
         if external_axes is None:
-            ax1.set_title(f"Yield Curve for {country.title()} ")
+            ax1.set_title(f"Yield Curve - {country.title()} ")
             theme.visualize_output()
 
         if raw:

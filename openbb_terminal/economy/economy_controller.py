@@ -172,7 +172,7 @@ class EconomyController(BaseController):
             self.choices["ycrv"]["-c"] = {
                 c: None for c in investingcom_model.BOND_COUNTRIES
             }
-            self.choices["ycrv"]["--countries"] = {
+            self.choices["ycrv"]["--country"] = {
                 c: None for c in investingcom_model.BOND_COUNTRIES
             }
 
