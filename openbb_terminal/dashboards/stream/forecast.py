@@ -258,7 +258,7 @@ class Handler:
             )
         with r1c5:
             n_predict = st.selectbox(
-                "Interval", index=4, key="n_predict", options=list(range(1, 31))
+                "Prediction Days", index=4, key="n_predict", options=list(range(2, 31))
             )
         with r2c1:
             # TODO: disable this if the current model does not allow for it
