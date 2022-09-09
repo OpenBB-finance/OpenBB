@@ -1187,37 +1187,32 @@ class PortfolioModel:
 
         # Set current price of benchmark
         self.benchmark_trades["Last price"] = self.benchmark_historical_prices[-1]
-        self.benchmark_trades[["Benchmark Quantity", "Trade price"]] = float(0)
-        # Iterate over orderbook to replicate trades on benchmark
-        for index, trade in self.__orderbook.iterrows():
-            # Select date to search (if not in historical prices, get closest value)
-            if trade["Date"] not in self.benchmark_historical_prices.index:
-                found_date = self.benchmark_historical_prices.index.searchsorted(
-                    trade["Date"]
-                )
-                # Fix error if trade was today and there are no historical price data rows
-                if self.benchmark_historical_prices.index.isin([found_date]).any():
-                    date = found_date
-                else:
-                    # If no historical price data, use last row
-                    date = self.benchmark_historical_prices.index[-1]
-            else:
-                date = trade["Date"]
 
-            # Populate benchmark orderbook trades
-            self.benchmark_trades["Trade price"][
-                index
-            ] = self.benchmark_historical_prices[date]
+        # Map historical prices into trades
+        self.benchmark_trades[["Benchmark Quantity"]] = float(0)
+        benchmark_historical_prices = pd.DataFrame(self.benchmark_historical_prices)
+        benchmark_historical_prices.columns.values[0] = "Trade price"
+        self.benchmark_trades = self.benchmark_trades.set_index("Date")
+        self.benchmark_trades.index = pd.to_datetime(self.benchmark_trades.index)
+        self.benchmark_trades = self.benchmark_trades.merge(
+            benchmark_historical_prices, how="left", left_index=True, right_index=True
+        )
+        self.benchmark_trades = self.benchmark_trades.reset_index()
+        self.benchmark_trades["Trade price"] = self.benchmark_trades[
+            "Trade price"
+        ].fillna(method="ffill")
 
-            # Whether full shares are desired (thus no partial shares).
-            if full_shares:
-                self.benchmark_trades["Benchmark Quantity"][index] = np.floor(
-                    trade["Investment"] / self.benchmark_trades["Trade price"][index]
-                )
-            else:
-                self.benchmark_trades["Benchmark Quantity"][index] = (
-                    trade["Investment"] / self.benchmark_trades["Trade price"][index]
-                )
+        # Calculate benchmark investment quantity
+        if full_shares:
+            self.benchmark_trades["Benchmark Quantity"] = np.floor(
+                self.benchmark_trades["Investment"]
+                / self.benchmark_trades["Trade price"]
+            )
+        else:
+            self.benchmark_trades["Benchmark Quantity"] = (
+                self.benchmark_trades["Investment"]
+                / self.benchmark_trades["Trade price"]
+            )
 
         self.benchmark_trades["Benchmark Investment"] = (
             self.benchmark_trades["Trade price"]
