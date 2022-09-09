@@ -81,12 +81,14 @@ def run_forecast(
             kwargs["output_chunk_length"] = n_predict
 
         # n_predict and output_chunk_length must be the same if there are past covariates
-        response = forecast_model(
-            data=data,
-            target_column=target_column,
-            n_predict=n_predict,
-            **kwargs,
-        )
+        # run a spinner while we wait for the model to run
+        with st.spinner("Running model..."):
+            response = forecast_model(
+                data=data,
+                target_column=target_column,
+                n_predict=n_predict,
+                **kwargs,
+            )
         if model == "theta":
             (
                 ticker_series,
