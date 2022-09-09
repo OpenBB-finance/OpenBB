@@ -507,9 +507,9 @@ class PortfolioController(BaseController):
                     if self.portfolio.portfolio_region_allocation.empty:
                         self.portfolio.calculate_allocations("region")
                     portfolio_view.display_category_allocation(
-                        ns_parser.agg,
                         self.portfolio.portfolio_region_allocation,
                         self.portfolio.benchmark_region_allocation,
+                        ns_parser.agg,
                         ns_parser.limit,
                         ns_parser.tables,
                     )
