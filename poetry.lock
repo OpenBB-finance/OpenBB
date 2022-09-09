@@ -4277,7 +4277,7 @@ prediction = ["torch"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8,<3.11, !=3.9.7"
-content-hash = "bbafa82b4a14e3659df8a2b8a45ee127c7e3ec75b7f2406b83707192ae5ed282"
+content-hash = "0ff7ffcac99afca0a807b562bf78ce78130e5baeb8f810dbd47c96bc7afb8f76"
 
 [metadata.files]
 aiodns = []
