@@ -618,7 +618,8 @@ def get_prediction(
     forecast_horizon,
     n_predict: int,
 ):
-    if not model_name == "Regression":
+    print(f"Predicting {model_name} for {n_predict} days")
+    if model_name not in ["Regression", "Logistic Regression"]:
         # need to create a new pytorch trainer for historical backtesting to remove progress bar
         best_model.trainer = None
         best_model.trainer_params["enable_progress_bar"] = False
@@ -763,16 +764,16 @@ def clean_data(
     start_date: Optional[datetime],
     end_date: Optional[datetime],
 ) -> Union[pd.DataFrame, pd.Series]:
+    # TODO this is temporary
+    # check dataframe for any inf or nan values
+    if data.isnull().values.any().any() or data.isin([np.inf, -np.inf]).any().any():
+        console.print(
+            "[red]The data contains inf or nan values. They will be removed.[/red]\n"
+        )
+        # drop any rows with inf values
+        data = data.replace([np.inf, -np.inf], np.nan)
+        data = data.dropna()
     if isinstance(data, pd.Series):
-        # TODO this is temporary
-        # check dataframe for any inf or nan values
-        if data.isnull().values.any() or data.isin([np.inf, -np.inf]).any():
-            console.print(
-                "[red]The data contains inf or nan values. They will be removed.[/red]\n"
-            )
-            # drop any rows with inf values
-            data = data.replace([np.inf, -np.inf], np.nan)
-            data = data.dropna()
         col = data.name
         columns = ["date", col]
         data = pd.DataFrame(data).reset_index()
