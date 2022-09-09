@@ -258,7 +258,7 @@ class Handler:
             self.end_date = st.date_input("End date", date.today(), key="end")
         with r1c4:
             self.target_interval = st.selectbox(
-                "Interval", index=8, key="interval", options=interval_opts
+                "Interval", index=0, key="interval", options=interval_opts
             )
         with r2c1:
             # TODO: disable this if the current model does not allow for it
