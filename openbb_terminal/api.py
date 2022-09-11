@@ -1188,6 +1188,10 @@ functions = {
         "model": "openbb_terminal.portfolio.portfolio_model.get_holdings_value",
         "view": "openbb_terminal.portfolio.portfolio_view.display_holdings_value",
     },
+    "portfolio.holdp": {
+        "model": "openbb_terminal.portfolio.portfolio_model.get_holdings_percentage",
+        "view": "openbb_terminal.portfolio.portfolio_view.display_holdings_percentage",
+    },
     "portfolio.info_ratio": {
         "model": "openbb_terminal.portfolio.portfolio_model.get_information_ratio",
         "view": "openbb_terminal.portfolio.portfolio_view.display_information_ratio",

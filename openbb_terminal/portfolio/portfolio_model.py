@@ -2143,14 +2143,12 @@ def get_performance_vs_benchmark(
     interval: str = "all",
     show_all_trades: bool = False,) -> pd.DataFrame:
 
-    """Display portfolio performance vs the benchmark
+    """Get portfolio performance vs the benchmark
 
     Parameters
     ----------
-    portfolio_trades: pd.DataFrame
-        Object containing trades made within the portfolio.
-    benchmark_trades: pd.DataFrame
-        Object containing trades made within the benchmark.
+    portfolio: Portfolio
+        Portfolio object with trades loaded
     interval : str
         interval to consider performance. From: mtd, qtd, ytd, 3m, 6m, 1y, 3y, 5y, 10y, all
     show_all_trades: bool
@@ -2243,6 +2241,27 @@ def get_performance_vs_benchmark(
         )
 
         return totals.replace(0, "-")
+
+
+def get_holdings_percentage(
+    portfolio: PortfolioModel,
+):
+    """Get holdings of assets (in percentage)
+
+    Parameters
+    ----------
+    portfolio: Portfolio
+        Portfolio object with trades loaded
+    """
+
+    all_holdings = portfolio.historical_trade_data["End Value"][portfolio.tickers_list]
+
+    all_holdings = all_holdings.divide(all_holdings.sum(axis=1), axis=0) * 100
+
+    # order it a bit more in terms of magnitude
+    all_holdings = all_holdings[all_holdings.sum().sort_values(ascending=False).index]
+
+    return all_holdings
 
 
 def rolling_volatility(

@@ -823,12 +823,7 @@ def display_holdings_percentage(
         Optional axes to display plot on
     """
 
-    all_holdings = portfolio.historical_trade_data["End Value"][portfolio.tickers_list]
-
-    all_holdings = all_holdings.divide(all_holdings.sum(axis=1), axis=0) * 100
-
-    # order it a bit more in terms of magnitude
-    all_holdings = all_holdings[all_holdings.sum().sort_values(ascending=False).index]
+    all_holdings = portfolio_model.get_holdings_percentage(portfolio)
 
     if raw:
         # No need to account for time since this is daily data
