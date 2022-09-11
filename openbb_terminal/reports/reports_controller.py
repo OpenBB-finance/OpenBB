@@ -79,6 +79,8 @@ class ReportController(BaseController):
                 for param in literal_eval(params.strip('source": '))
                 if param[0] not in ["#", "\n"]
             ]
+        else:
+            l_params = []
         d_params[report_to_run] = l_params
 
         # On the menu of choices add the parameters necessary for each template report

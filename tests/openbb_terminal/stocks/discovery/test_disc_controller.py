@@ -263,8 +263,8 @@ def test_call_func_expect_queue(expected_queue, queue, func):
         (
             "call_hotpenny",
             "shortinterest_view.hot_penny_stocks",
-            ["--limit=5", "--export=csv"],
-            {"limit": 5, "export": "csv", "source": "yf"},
+            ["--limit=5", "--export=csv", "--source=YahooFinance"],
+            {"limit": 5, "export": "csv", "source": "YahooFinance"},
         ),
         (
             "call_losers",
