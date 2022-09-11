@@ -1183,7 +1183,6 @@ functions = {
     },
     "portfolio.perf": {
         "model": "openbb_terminal.portfolio.portfolio_model.get_performance_vs_benchmark",
-        "view": "openbb_terminal.portfolio.portfolio_view.display_performance_vs_benchmark",
     },
     "portfolio.holdv": {
         "model": "openbb_terminal.portfolio.portfolio_model.get_holdings_value",
