@@ -826,7 +826,7 @@ def display_holdings_value(
         Optional axes to display plot on
     """
 
-    all_holdings = portfolio_model.get_holdings_value(portfolio, sum_assets)
+    all_holdings = portfolio_model.get_holdings_value(portfolio)
 
     if raw:
         print_rich_table(

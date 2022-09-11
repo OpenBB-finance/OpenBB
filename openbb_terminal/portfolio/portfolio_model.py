@@ -2116,15 +2116,13 @@ class PortfolioModel:
 
         return pf_period_df
 
-def get_holdings_value(portfolio: PortfolioModel, sum_assets: bool = False,):
+def get_holdings_value(portfolio: PortfolioModel):
     """Get holdings of assets (absolute value)
 
     Parameters
     ----------
     portfolio: Portfolio
-        Portfolio object with trades loaded
-    sum_assets: bool
-        Sum assets over time    
+        Portfolio object with trades loaded 
     
     Returns
     -------
