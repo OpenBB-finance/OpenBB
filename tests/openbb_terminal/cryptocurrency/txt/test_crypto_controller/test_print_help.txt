@@ -1,12 +1,13 @@
-    load               load a specific cryptocurrency for analysis
-    find               find coins
+    load               load a specific cryptocurrency for analysis                     [YahooFinance, CoinGecko, CCXT]
+    find               find coins                                                      [CoinGecko, CoinPaprika, Binance, Coinbase, YahooFinance]
 
 Coin: 
 Source: 
+Interval (min): 
 
     headlines          crypto sentiment from 15+ major news headlines                  [FinBrain]
 [unvl]    candle             view a candle chart for a specific cryptocurrency[/unvl]
-[unvl]    prt                potential returns tool - check how much upside if ETH reaches BTC market cap[/unvl]
+[unvl]    prt                potential returns tool - check how much upside if ETH reaches BTC market cap[/unvl] [CoinGecko]
 
 >   disc               discover trending cryptocurrencies,     top gainers, losers, top sentiment
 >   ov                 overview of the cryptocurrencies,       market cap, DeFi, latest news, top exchanges, stables

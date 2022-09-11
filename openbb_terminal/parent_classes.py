@@ -1,7 +1,8 @@
 """Parent Classes"""
 __docformat__ = "numpy"
 
-# pylint: disable= C0301
+# pylint: disable= C0301,C0302,R0902
+
 
 from abc import ABCMeta, abstractmethod
 import argparse
@@ -34,11 +35,11 @@ from openbb_terminal.helper_funcs import (
     support_message,
     check_file_type_saved,
     check_positive,
-    get_ordered_list_sources,
     parse_and_split_input,
+    search_wikipedia,
 )
 from openbb_terminal.config_terminal import theme
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, get_ordered_list_sources
 from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.terminal_helper import open_openbb_documentation
 from openbb_terminal.cryptocurrency import cryptocurrency_helpers
@@ -54,10 +55,10 @@ controllers: Dict[str, Any] = {}
 
 CRYPTO_SOURCES = {
     "bin": "Binance",
-    "cg": "CoinGecko",
+    "CoinGecko": "CoinGecko",
     "cp": "CoinPaprika",
     "cb": "Coinbase",
-    "yf": "YahooFinance",
+    "YahooFinance": "YahooFinance",
 }
 
 SUPPORT_TYPE = ["bug", "suggestion", "question", "generic"]
@@ -78,6 +79,7 @@ class BaseController(metaclass=ABCMeta):
         "r",
         "reset",
         "support",
+        "wiki",
     ]
 
     CHOICES_COMMANDS: List[str] = []
@@ -101,7 +103,6 @@ class BaseController(metaclass=ABCMeta):
         """
         self.check_path()
         self.path = [x for x in self.PATH.split("/") if x != ""]
-
         self.queue = (
             self.parse_input(an_input="/".join(queue))
             if (queue and self.PATH != "/")
@@ -462,6 +463,38 @@ class BaseController(metaclass=ABCMeta):
                 path=self.PATH,
             )
 
+    @log_start_end(log=logger)
+    def call_wiki(self, other_args: List[str]) -> None:
+        """Process wiki command"""
+
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="wiki",
+            description="Search Wikipedia",
+        )
+
+        parser.add_argument(
+            "--expression",
+            "-e",
+            action="store",
+            nargs="+",
+            dest="expression",
+            required=True,
+            default="",
+            help="Expression to search for",
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-e")
+
+        ns_parser = parse_simple_args(parser, other_args)
+
+        if ns_parser:
+            if ns_parser.expression:
+                expression = " ".join(ns_parser.expression)
+                search_wikipedia(expression)
+
     def parse_known_args_and_warn(
         self,
         parser: argparse.ArgumentParser,
@@ -534,7 +567,8 @@ class BaseController(metaclass=ABCMeta):
                 type=check_positive,
             )
         sources = get_ordered_list_sources(f"{self.PATH}{parser.prog}")
-        if sources:
+        # Allow to change source if there is more than one
+        if len(sources) > 1:
             parser.add_argument(
                 "--source",
                 action="store",
@@ -647,6 +681,10 @@ class BaseController(metaclass=ABCMeta):
                     an_input = "exit"
 
             try:
+                # Allow user to go back to root
+                if an_input == "/":
+                    an_input = "home"
+
                 # Process the input command
                 self.queue = self.switch(an_input)
 
@@ -794,10 +832,7 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
 
-        ns_parser = self.parse_known_args_and_warn(
-            parser,
-            other_args,
-        )
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
             if ns_parser.weekly and ns_parser.monthly:
@@ -858,7 +893,9 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                     self.ticker = ns_parser.ticker.upper()
                     self.suffix = ""
 
-                if ns_parser.source == "iex":
+                if ns_parser.source == "IEXCloud":
+                    self.start = self.stock.index[0].to_pydatetime()
+                elif ns_parser.source == "EODHD":
                     self.start = self.stock.index[0].to_pydatetime()
                 else:
                     self.start = ns_parser.start
@@ -884,13 +921,17 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
         super().__init__(queue)
 
         self.symbol = ""
+        self.vs = ""
         self.current_df = pd.DataFrame()
         self.current_currency = ""
         self.source = ""
         self.current_interval = ""
+        self.exchange = ""
         self.price_str = ""
+        self.interval = ""
         self.resolution = "1D"
         self.TRY_RELOAD = True
+        self.exchanges = cryptocurrency_helpers.get_exchanges_ohlc()
 
     def call_load(self, other_args):
         """Process load command"""
@@ -898,8 +939,11 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="load",
-            description="Load crypto currency to perform analysis on."
-            "CoinGecko is used as source for price and YahooFinance for volume.",
+            description="""Load crypto currency to perform analysis on.
+            Yahoo Finance is used as default source.
+            Other sources can be used such as 'ccxt' or 'cg' with --source.
+            If you select 'ccxt', you can then select any exchange with --exchange.
+            You can also select a specific interval with --interval.""",
         )
         parser.add_argument(
             "-c",
@@ -911,42 +955,79 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
         )
 
         parser.add_argument(
-            "-d",
-            "--days",
-            default="365",
-            dest="days",
-            help="Data up to number of days ago",
-            choices=["1", "7", "14", "30", "90", "180", "365"],
+            "-s",
+            "--start",
+            type=valid_date,
+            default=(datetime.now() - timedelta(days=1100)).strftime("%Y-%m-%d"),
+            dest="start",
+            help="The starting date (format YYYY-MM-DD) of the crypto",
+        )
+
+        parser.add_argument(
+            "--exchange",
+            help="Exchange to search",
+            dest="exchange",
+            type=str,
+            default="binance",
+            choices=self.exchanges,
+        )
+
+        parser.add_argument(
+            "-e",
+            "--end",
+            type=valid_date,
+            default=datetime.now().strftime("%Y-%m-%d"),
+            dest="end",
+            help="The ending date (format YYYY-MM-DD) of the crypto",
         )
         parser.add_argument(
-            "--vs",
-            help="Quote currency (what to view coin vs)",
-            dest="vs",
-            default="usd",
+            "-i",
+            "--interval",
+            action="store",
+            dest="interval",
             type=str,
-            choices=["usd", "eur"],
+            default="1440",
+            choices=["1", "5", "15", "30", "60", "240", "1440", "10080", "43200"],
+            help="The interval of the crypto",
+        )
+
+        parser.add_argument(
+            "--vs",
+            help="Quote currency (what to view coin vs). e.g., usdc, usdt, ... if source is ccxt, usd, eur, ... otherwise",  # noqa
+            dest="vs",
+            default="usdt",
+            type=str,
         )
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-c")
 
-        ns_parser = parse_simple_args(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
+            if ns_parser.source in ("YahooFinance", "CoinGecko"):
+                if ns_parser.vs == "usdt":
+                    ns_parser.vs = "usd"
             (self.current_df) = cryptocurrency_helpers.load(
                 symbol=ns_parser.coin.lower(),
-                days=int(ns_parser.days),
-                vs=ns_parser.vs,
+                vs_currency=ns_parser.vs,
+                end_date=ns_parser.end,
+                start_date=ns_parser.start,
+                interval=ns_parser.interval,
+                source=ns_parser.source,
             )
             if not self.current_df.empty:
-                self.current_interval = "1day"
+                self.vs = ns_parser.vs
+                self.exchange = ns_parser.exchange
+                self.source = ns_parser.source
+                self.current_interval = ns_parser.interval
                 self.current_currency = ns_parser.vs
                 self.symbol = ns_parser.coin.lower()
                 cryptocurrency_helpers.show_quick_performance(
-                    self.current_df, self.symbol, self.current_currency
-                )
-            else:
-                console.print(
-                    f"\n[red]Couldn't find [bold]{ns_parser.coin}[/bold] in [bold]yfinance[/bold]."
-                    f"Search for symbol (e.g., btc) and not full name (e.g., bitcoin)[/red]\n"
+                    self.current_df,
+                    self.symbol,
+                    self.current_currency,
+                    ns_parser.source,
+                    ns_parser.exchange,
+                    self.current_interval,
                 )

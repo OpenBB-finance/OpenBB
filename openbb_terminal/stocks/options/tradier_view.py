@@ -1,10 +1,10 @@
 """Tradier options view"""
 __docformat__ = "numpy"
 
-import warnings
 import argparse
 import logging
 import os
+import warnings
 from bisect import bisect_left
 from typing import List, Optional, Tuple
 
@@ -14,20 +14,20 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 
-from openbb_terminal.config_terminal import theme
 from openbb_terminal import config_plot as cfp
+from openbb_terminal import rich_config
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
+    lambda_long_number_format_y_axis,
     patch_pandas_text_adjustment,
     plot_autoscale,
     print_rich_table,
-    lambda_long_number_format_y_axis,
-    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.options import op_helpers, tradier_model, yfinance_model
-from openbb_terminal import rich_config
 
 logger = logging.getLogger(__name__)
 
@@ -112,7 +112,7 @@ def check_valid_option_chains_headers(headers: str) -> List[str]:
 
 
 @log_start_end(log=logger)
-def display_expirations(ticker: str, source: str = "yf"):
+def display_expirations(ticker: str, source: str = "YahooFinance"):
     """Displays the expirations for a ticker
 
     Parameters
@@ -122,9 +122,9 @@ def display_expirations(ticker: str, source: str = "yf"):
     source: str
         Where to get the data from. Options: yf (yahoo finance) or tr (tradier)
     """
-    if source == "yf":
+    if source == "YahooFinance":
         exps = yfinance_model.option_expirations(ticker)
-    elif source == "tr":
+    elif source == "Tradier":
         exps = tradier_model.option_expirations(ticker)
     else:
         raise ValueError("Invalid source. Please select 'yf' or 'tr'")

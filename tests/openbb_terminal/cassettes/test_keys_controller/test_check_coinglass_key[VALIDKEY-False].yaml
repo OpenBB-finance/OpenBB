@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - python-requests/2.28.1
+      - python-requests/2.27.1
       coinglassSecret:
       - VALIDKEY
     method: GET
@@ -37,7 +37,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Mon, 11 Jul 2022 13:59:58 GMT
+      - Sun, 04 Sep 2022 00:08:36 GMT
       Server:
       - nginx
       Transfer-Encoding:

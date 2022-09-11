@@ -320,8 +320,8 @@ def get_tokenomics(symbol: str, coingecko_id: str) -> Tuple[pd.DataFrame, pd.Dat
             symbol=symbol,
             timeseries_id="sply.circ",
             interval="1d",
-            start="",
-            end="",
+            start_date="",
+            end_date="",
         )
     elif r.status_code == 401:
         console.print("[red]Invalid API Key[/red]\n")

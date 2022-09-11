@@ -100,24 +100,24 @@ class FundController(BaseController):
         else:
             fund_string = ""
         mt = MenuText("funds/")
-        mt.add_cmd("country", "Investing.com")
+        mt.add_cmd("country")
         mt.add_raw("\n")
         mt.add_param("_country", self.country.title())
         mt.add_raw("\n")
-        mt.add_cmd("overview", "Investing.com")
-        mt.add_cmd("search", "Investing.com")
-        mt.add_cmd("load", "Investing.com")
+        mt.add_cmd("overview")
+        mt.add_cmd("search")
+        mt.add_cmd("load")
         mt.add_raw("\n")
         mt.add_param("_fund", fund_string)
         mt.add_raw("\n")
-        mt.add_cmd("info", "Investing.com", self.fund_symbol)
-        mt.add_cmd("plot", "Investing.com", self.fund_symbol)
+        mt.add_cmd("info", self.fund_symbol)
+        mt.add_cmd("plot", self.fund_symbol)
         if self.country == "united states":
-            mt.add_cmd("sector", "Yahoo Finance", self.fund_symbol)
-            mt.add_cmd("equity", "Yahoo Finance", self.fund_symbol)
+            mt.add_cmd("sector", self.fund_symbol)
+            mt.add_cmd("equity", self.fund_symbol)
         if self.country == "sweden":
-            mt.add_cmd("al_swe", "Avanza", self.fund_symbol)
-            mt.add_cmd("info_swe", "Avanza", self.fund_symbol)
+            mt.add_cmd("al_swe", self.fund_symbol)
+            mt.add_cmd("info_swe", self.fund_symbol)
         console.print(text=mt.menu_text, menu="Mutual Funds")
 
     def custom_reset(self):

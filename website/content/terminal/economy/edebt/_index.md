@@ -1,5 +1,5 @@
 ```
-usage: cdebt [-h] [--export EXPORT] [-l LIMIT]
+usage: edebt [-h] [--export EXPORT] [-l LIMIT]
 ```
 National debt statistics for various countries. [Source: Wikipedia]
 
@@ -10,15 +10,15 @@ optional arguments:
   -l LIMIT, --limit LIMIT
                         Number of entries to show in data. (default: 20)
 
-For more information and examples, use 'about cdebt' to access the related guide.
+For more information and examples, use 'about edebt' to access the related guide.
 ```
 
 Sample usage:
 
 ```
-2022 Aug 12, 16:51 (🦋) /economy/ $ cdebt
+2022 Aug 12, 16:51 (🦋) /economy/ $ edebt
 
-                    National Debt (USD)
+                    External Debt (USD)
 ┏━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┓
 ┃    ┃ Country        ┃ Debt                 ┃ Per Capita ┃
 ┡━━━━╇━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━┩

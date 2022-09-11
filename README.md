@@ -72,7 +72,6 @@
     <li><a href="#license">License</a></li>
     <li><a href="#disclaimer">Disclaimer</a></li>
     <li><a href="#contacts">Contacts</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
 
@@ -152,45 +151,31 @@ clients and I do not provide personalized investment advice for fees or commissi
 Trading in financial instruments involves high risks including the risk of losing some, or all, of your investment
 amount, and may not be suitable for all investors. Before deciding to trade in a financial instrument you should be fully
 informed of the risks and costs associated with trading the financial markets, carefully consider your investment
-objectives, level of experience, and risk appetite, and seek professional advice where needed. The data contained in GST
-is not necessarily accurate. GST and any provider of the data contained in this website will not accept liability for
+objectives, level of experience, and risk appetite, and seek professional advice where needed. The data contained in the OpenBB terminal
+is not necessarily accurate. OpenBB and any provider of the data contained in this website will not accept liability for
 any loss or damage as a result of your trading, or your reliance on the information displayed.
 
 ## Contacts
 
-[Didier Rodrigues Lopes](https://www.linkedin.com/in/didier-lopes/) - dro.lopes@campus.fct.unl.pt
+If you have any questions about the terminal or anything OpenBB, feel free to email us at support@openbb.co
 
-[Artem Veremy](https://www.linkedin.com/in/veremey/) - artem@veremey.net
-
-[James Maslek](https://www.linkedin.com/in/james-maslek-b6810186/) - jmaslek11@gmail.com
+If you want to say hi, or are interested in partnering with us, feel free to reach us at hello@openbb.co
 
 Feel free to share loss porn, memes or any questions at:
 
-- Discord: <https://discord.gg/Up2QGbMKHY>
 - Twitter: [@openbb_finance](https://twitter.com/openbb_finance)
-
-### Contributors
-
-<a href="https://github.com/OpenBB-finance/OpenBBTerminal/graphs/contributors">
-   <img src="https://contributors-img.web.app/image?repo=OpenBB-finance/OpenBBTerminal" height="276"/>
-</a>
+- Discord: [openbb.co/discord](https://openbb.co/discord)
+- Reddit: [openbb.co/reddit](https://openbb.co/reddit)
 
 ## Star History
 
 [![Star History Chart](https://api.star-history.com/svg?repos=openbb-finance/OpenBBTerminal&type=Date)](https://star-history.com/#openbb-finance/OpenBBTerminal&Date)
 
-## Acknowledgments
+## Contributors
 
-- [VICE article - Gamestonk Terminal Is a DIY, Meme Stock Version of Bloomberg Terminal](https://www.vice.com/en/article/qjp9vp/gamestonk-terminal-is-a-diy-meme-stock-version-of-bloomberg-terminal)
-- [Daily Fintech article - Never underestimate Bloomberg, but here are 5 reasons why the Gamestonk Terminal is a contender](https://dailyfintech.com/2021/02/25/never-underestimate-bloomberg-but-here-are-5-reasons-why-the-gamestonk-terminal-is-a-contender/)
-- [HackerNews - Show HN: Can’t afford Bloomberg Terminal? No prob, I built the next best thing](https://news.ycombinator.com/item?id=26258773)
-- [Reddit r/algotrading - Gamestonk Terminal: The next best thing after Bloomberg Terminal.](https://www.reddit.com/r/algotrading/comments/m4uvza/gamestonk_terminal_the_next_best_thing_after/)
-- [Reddit r/Python - Gamestonk Terminal: The equivalent to an open-source python Bloomberg Terminal.](https://www.reddit.com/r/Python/comments/m515yk/gamestonk_terminal_the_equivalent_to_an/)
-- [Reddit r/Superstonk - Move over Bloomberg Terminal, here comes Gamestonk Terminal](https://www.reddit.com/r/Superstonk/comments/mx2cjh/move_over_bloomberg_terminal_here_comes_gamestonk/)
-- [Spotlight: Didier Lopes. Creator of Gamestonk Terminal](https://deepsource.io/spotlight/didier-lopes/)
-- [Reddit r/Superstonk - Gamestonk Terminal - We are very much alive](https://www.reddit.com/r/Superstonk/comments/o502i8/gamestonk_terminal_we_are_very_much_alive/)
-- [Medium- Gamestonk Terminal. Can't Stop, Won't Stop](https://dro-lopes.medium.com/gamestonk-terminal-cant-stop-won-t-stop-e635662d6f2e)
-- [Gamestonk Terminal: UX/UI >> Features](https://dro-lopes.medium.com/gamestonk-terminal-ux-features-f9754b484919)
+<a href="https://github.com/OpenBB-finance/OpenBBTerminal/graphs/contributors">
+   <img src="https://contributors-img.web.app/image?repo=OpenBB-finance/OpenBBTerminal" width="800"/>
+</a>
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->

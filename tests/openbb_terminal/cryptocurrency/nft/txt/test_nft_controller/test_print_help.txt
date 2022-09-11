@@ -1,6 +1,8 @@
-    today              today's NFT drops                 [Nftcalendar]
-    upcoming           upcoming NFT drops                [Nftcalendar]
-    ongoing            Ongoing NFT drops                 [Nftcalendar]
-    newest             Recently NFTs added               [Nftcalendar]
-    stats              check open sea collection stats   [Opensea]
+    today              today's NFT drops                 [NFTCalendar]
+    upcoming           upcoming NFT drops                [NFTCalendar]
+    ongoing            Ongoing NFT drops                 [NFTCalendar]
+    newest             Recently NFTs added               [NFTCalendar]
+    stats              collection stats                  [OpenSea]
+    fp                 collection sales/floor price      [NFTPriceFloor]
+    collections        top ethereum collections          [NFTPriceFloor]
 

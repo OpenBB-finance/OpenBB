@@ -65,7 +65,12 @@ In order to load a CSV do the following:
 
 
 @log_start_end(log=logger)
-def display_orderbook(portfolio=None, show_index=False):
+def display_orderbook(
+    portfolio=None,
+    show_index=False,
+    limit: int = 10,
+    export: str = "",
+):
     """Display portfolio orderbook
 
     Parameters
@@ -74,13 +79,29 @@ def display_orderbook(portfolio=None, show_index=False):
         Instance of Portfolio class
     show_index: bool
         Defaults to False.
+    limit: int
+        Number of rows to display
+    export : str
+        Export certain type of data
     """
 
     if portfolio.empty:
         logger.warning("No orderbook loaded")
         console.print("[red]No orderbook loaded.[/red]\n")
     else:
-        print_rich_table(portfolio.get_orderbook(), show_index)
+        df = portfolio.get_orderbook()
+        print_rich_table(
+            df=df[:limit],
+            show_index=show_index,
+            title=f"Last {limit if limit < len(df) else len(df)} transactions",
+        )
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "transactions",
+            df.set_index("Date"),
+        )
 
 
 @log_start_end(log=logger)
@@ -106,54 +127,36 @@ def display_assets_allocation(
     benchmark_allocation = benchmark_allocation.iloc[:limit]
     portfolio_allocation = portfolio_allocation.iloc[:limit]
 
-    combined = pd.DataFrame()
-
-    for ticker, allocation in portfolio_allocation.items():
-        if ticker in benchmark_allocation["symbol"].values:
-            benchmark_allocation_value = float(
-                benchmark_allocation[benchmark_allocation["symbol"] == ticker][
-                    "holdingPercent"
-                ]
-            )
-        else:
-            benchmark_allocation_value = 0
-
-        combined = combined.append(
-            [
-                [
-                    ticker,
-                    allocation,
-                    benchmark_allocation_value,
-                    allocation - benchmark_allocation_value,
-                ]
-            ]
-        )
-
-    combined.columns = ["Symbol", "Portfolio", "Benchmark", "Difference"]
+    combined = pd.merge(
+        portfolio_allocation, benchmark_allocation, on="Symbol", how="left"
+    )
+    combined["Difference"] = combined["Portfolio"] - combined["Benchmark"]
+    combined = combined.replace(np.nan, "-")
+    combined = combined.replace(0, "-")
 
     print_rich_table(
-        combined.replace(0, "-"),
+        combined,
         headers=list(combined.columns),
         title=f"Portfolio vs. Benchmark - Top {len(combined) if len(combined) < limit else limit} Assets Allocation",
-        floatfmt=[".2f", ".2%", ".2%", ".2%"],
+        floatfmt=["", ".2%", ".2%", ".2%"],
         show_index=False,
     )
 
     if include_separate_tables:
         print_rich_table(
-            pd.DataFrame(portfolio_allocation),
-            headers=list(["Allocation"]),
+            portfolio_allocation,
+            headers=list(portfolio_allocation.columns),
             title=f"Portfolio - Top {len(portfolio_allocation) if len(benchmark_allocation) < limit else limit} "
             f"Assets Allocation",
-            floatfmt=[".2%"],
-            show_index=True,
+            floatfmt=[".2%", ".2%"],
+            show_index=False,
         )
         print_rich_table(
             benchmark_allocation,
-            headers=list(["Symbol", "Name", "Allocation"]),
+            headers=list(benchmark_allocation.columns),
             title=f"Benchmark - Top {len(benchmark_allocation) if len(benchmark_allocation) < limit else limit} "
             f"Assets Allocation",
-            floatfmt=[".2f", ".2f", ".2%"],
+            floatfmt=[".2%", ".2%"],
             show_index=False,
         )
 
@@ -181,6 +184,15 @@ def display_category_allocation(
     include_separate_tables: bool
         Whether to include separate asset allocation tables
     """
+
+    if benchmark_allocation.empty:
+        console.print(f"[red]Benchmark data for {category} is empty.\n[/red]")
+        return
+
+    if portfolio_allocation.empty:
+        console.print(f"[red]Portfolio data for {category} is empty.\n[/red]")
+        return
+
     benchmark_allocation = benchmark_allocation.iloc[:limit]
     portfolio_allocation = portfolio_allocation.iloc[:limit]
 
@@ -730,25 +742,34 @@ def display_distribution_returns(
     else:
         if external_axes is None:
             _, ax = plt.subplots(
-                1,
-                2,
                 figsize=plot_autoscale(),
                 dpi=PLOT_DPI,
             )
         else:
             ax = external_axes
 
-        ax[0].set_title("Portfolio distribution")
-        sns.kdeplot(portfolio_returns.values, ax=ax[0])
-        ax[0].set_ylabel("Density")
-        ax[0].set_xlabel("Daily return [%]")
-        theme.style_primary_axis(ax[0])
+        ax.set_title("Returns distribution")
+        ax.set_ylabel("Density")
+        ax.set_xlabel("Daily return [%]")
 
-        ax[1].set_title("Benchmark distribution")
-        sns.kdeplot(benchmark_returns.values, ax=ax[1])
-        ax[1].set_ylabel("Density")
-        ax[1].set_xlabel("Daily return [%]")
-        theme.style_primary_axis(ax[1])
+        ax = sns.kdeplot(portfolio_returns.values, label="portfolio")
+        kdeline = ax.lines[0]
+        mean = portfolio_returns.values.mean()
+        xs = kdeline.get_xdata()
+        ys = kdeline.get_ydata()
+        height = np.interp(mean, xs, ys)
+        ax.vlines(mean, 0, height, color="yellow", ls=":")
+
+        ax = sns.kdeplot(benchmark_returns.values, label="benchmark")
+        kdeline = ax.lines[1]
+        mean = benchmark_returns.values.mean()
+        xs = kdeline.get_xdata()
+        ys = kdeline.get_ydata()
+        height = np.interp(mean, xs, ys)
+        ax.vlines(mean, 0, height, color="orange", ls=":")
+
+        theme.style_primary_axis(ax)
+        ax.legend()
 
         if not external_axes:
             theme.visualize_output()

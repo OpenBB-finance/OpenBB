@@ -423,4 +423,32 @@ def get_financials(symbol: str, statement: str, ratios: bool = False) -> pd.Data
             df.iloc[i] = df_fa_pc.iloc[j]
             j += 1
 
-    return df.dropna(how="all")
+    df = df.dropna(how="all")
+    return df
+
+
+@log_start_end(log=logger)
+def get_earnings_history(symbol: str) -> pd.DataFrame:
+    """Get earning reports
+
+    Parameters
+    ----------
+    symbol: str
+        Symbol to get earnings for
+
+    Returns
+    -------
+    pd.DataFrame
+        Dataframe of historical earnings if present
+    """
+    earnings = yf.Ticker(symbol).earnings_history
+    return earnings
+
+
+@log_start_end(log=logger)
+def get_currency(symbol) -> str:
+    """Quick helper to get currency for financial statements"""
+    ticker_info = yf.Ticker(symbol).info
+    if "financialCurrency" in ticker_info:
+        return ticker_info["financialCurrency"]
+    return "Not Specified"

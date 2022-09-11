@@ -10,6 +10,7 @@ en:
   featflags: enable and disable feature flags
   sources: select your preferred data sources
   keys: set API keys and check their validity
+  wiki: search for an expression in Wikipedia (https://www.wikipedia.org/)
   _configure_: Configure your own terminal
   _main_menu_: Main menu
   keys/_keys_: This menu allows you to set your own API keys. Type 'about' for more information
@@ -99,7 +100,7 @@ en:
   stocks/CANDLE_raw: Shows raw data instead of chart. If sort is set those are the top ones, otherwise we grab latest data to date
   stocks/CANDLE_trend: Flag to add high and low trends to candle
   stocks/CANDLE_mov_avg: Add moving average in number of days to plot and separate by a comma
-  stocks/NEWS: latest news of the company
+  stocks/news: latest news of the company
   stocks/codes: FIGI, SIK and SIC codes codes
   stocks/NEWS_date: The starting date (format YYYY-MM-DD) to search articles from
   stocks/NEWS_oldest: Show oldest articles first
@@ -190,6 +191,7 @@ en:
   stocks/disc/hotpenny: today's hot penny stocks
   stocks/disc/rtat: top 10 retail traded stocks per day
   stocks/disc/divcal: dividend calendar for selected date
+  stocks/disc/heatmap: heatmap of SP500 tickers
   stocks/sia/load: load a specific ticker and all it's corresponding parameters
   stocks/sia/clear: clear all or one of industry, sector, country and market cap parameters
   stocks/sia/industry: see existing industries, or set industry if arg specified
@@ -375,6 +377,7 @@ en:
   stocks/res/marketwatch: www.marketwatch.com
   stocks/res/fool: www.fool.com
   stocks/res/businessinsider: www.markets.businessinsider.com
+  stocks/res/bullrun: www.bullrun.com.br
   stocks/res/fmp: www.financialmodelingprep.com
   stocks/res/fidelity: www.eresearch.fidelity.com
   stocks/res/tradingview: www.tradingview.com
@@ -419,6 +422,7 @@ en:
   stocks/ta/cci: commodity channel index
   stocks/ta/macd: moving average convergence/divergence
   stocks/ta/rsi: relative strength index
+  stocks/ta/rsp: relative strength percentile
   stocks/ta/stoch: stochastic oscillator
   stocks/ta/fisher: fisher transform
   stocks/ta/cg: centre of gravity
@@ -486,7 +490,9 @@ en:
   crypto/load: load a specific cryptocurrency for analysis
   crypto/find: find coins
   crypto/_symbol: Coin
+  crypto/_interval: Interval (min)
   crypto/_source: Source
+  crypto/_exchange: Exchange
   crypto/headlines: crypto sentiment from 15+ major news headlines
   crypto/candle: view a candle chart for a specific cryptocurrency
   crypto/prt: potential returns tool - check how much upside if ETH reaches BTC market cap
@@ -582,12 +588,14 @@ en:
   crypto/defi/lcsc: Luna circulating supply changes
   crypto/defi/anchor: anchor earnings data
   crypto/tools/aprtoapy: convert apr to apy
-  crypto/tools/li: calculate impermanent loss
+  crypto/tools/il: calculate impermanent loss
+  crypto/nft/fp: collection sales/floor price
+  crypto/nft/collections: top ethereum collections
   crypto/nft/today: today's NFT drops
   crypto/nft/upcoming: upcoming NFT drops
   crypto/nft/ongoing: Ongoing NFT drops
   crypto/nft/newest: Recently NFTs added
-  crypto/nft/stats: check open sea collection stats
+  crypto/nft/stats: collection stats
   crypto/dd/_overview_: Overview
   crypto/dd/_market_: Market
   crypto/dd/_metrics_: Metrics
@@ -613,6 +621,7 @@ en:
   crypto/dd/eb: total balance held on exchanges (in percentage and units)
   crypto/dd/oi: open interest per exchange
   crypto/dd/fundrate: funding rate per exchange
+  crypto/dd/liquidations: daily liquidation stats for loaded coin
   crypto/dd/basic: basic information about loaded coin
   crypto/dd/ps: price and supply related metrics for loaded coin
   crypto/dd/mkt: all markets for loaded coin
@@ -783,7 +792,7 @@ en:
   economy/treasury: obtain U.S. treasury rates
   economy/ycrv: show sovereign yield curves
   economy/events: display economic calendar
-  economy/cdebt: shows debt statistics for various countries
+  economy/edebt: shows external debt statistics for various countries
   economy/plot: plot data from the above commands together
   economy/rtps: real-time performance sectors
   economy/valuation: valuation of sectors, industry, country

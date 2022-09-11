@@ -46,7 +46,7 @@ from openbb_terminal.terminal_helper import (
 )
 from openbb_terminal.helper_funcs import parse_and_split_input
 
-# pylint: disable=too-many-public-methods,import-outside-toplevel,too-many-branches,no-member
+# pylint: disable=too-many-public-methods,import-outside-toplevel,too-many-branches,no-member,C0302
 
 logger = logging.getLogger(__name__)
 
@@ -123,6 +123,7 @@ class TerminalController(BaseController):
         mt.add_cmd("support")
         mt.add_cmd("survey")
         mt.add_cmd("update")
+        mt.add_cmd("wiki")
         mt.add_raw("\n")
         mt.add_info("_configure_")
         mt.add_menu("keys")
@@ -147,6 +148,7 @@ class TerminalController(BaseController):
         mt.add_menu("portfolio")
         mt.add_menu("dashboards")
         mt.add_menu("reports")
+        mt.add_raw("\n")
         console.print(text=mt.menu_text, menu="Home")
 
     def call_news(self, other_args: List[str]) -> None:
@@ -499,15 +501,39 @@ class TerminalController(BaseController):
                         for raw_line in raw_lines
                         if raw_line.strip("\n")
                     ]
-                    if ns_parser_exe.routine_args:
-                        lines = list()
-                        for rawline in raw_lines:
-                            templine = rawline
-                            for i, arg in enumerate(ns_parser_exe.routine_args):
-                                templine = templine.replace(f"$ARGV[{i}]", arg)
+
+                    lines = list()
+                    for rawline in raw_lines:
+                        templine = rawline
+
+                        # Check if dynamic parameter exists in script
+                        if "$ARGV" in rawline:
+                            # Check if user has provided inputs through -i or --input
+                            if ns_parser_exe.routine_args:
+                                for i, arg in enumerate(ns_parser_exe.routine_args):
+                                    # Check what is the location of the ARGV to be replaced
+                                    if f"$ARGV[{i}]" in templine:
+                                        templine = templine.replace(f"$ARGV[{i}]", arg)
+
+                                # Check if all ARGV have been removed, otherwise means that there are less inputs
+                                # when running the script than the script expects
+                                if "$ARGV" in templine:
+                                    console.print(
+                                        "[red]Not enough inputs were provided to fill in dynamic variables. "
+                                        "E.g. --input VAR1,VAR2,VAR3[/red]\n"
+                                    )
+                                    return
+
+                                lines.append(templine)
+                            # The script expects a parameter that the user has not provided
+                            else:
+                                console.print(
+                                    "[red]The script expects parameters, "
+                                    "run the script again with --input defined.[/red]\n"
+                                )
+                                return
+                        else:
                             lines.append(templine)
-                    else:
-                        lines = raw_lines
 
                     simulate_argv = f"/{'/'.join([line.rstrip() for line in lines])}"
                     file_cmds = simulate_argv.replace("//", "/home/").split()
