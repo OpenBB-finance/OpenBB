@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import contextlib
 import logging
+from re import S
 from typing import Dict, Any, Tuple
 import datetime
 
@@ -2116,7 +2117,7 @@ class PortfolioModel:
 
         return pf_period_df
 
-def get_holdings_value(portfolio: PortfolioModel):
+def get_holdings_value(portfolio: PortfolioModel) -> pd.DataFrame:
     """Get holdings of assets (absolute value)
 
     Parameters
@@ -2136,6 +2137,113 @@ def get_holdings_value(portfolio: PortfolioModel):
     all_holdings.index = all_holdings.index.date
 
     return all_holdings
+
+def get_performance_vs_benchmark(
+    portfolio: PortfolioModel,
+    interval: str = "all",
+    show_all_trades: bool = False,) -> pd.DataFrame:
+
+    """Display portfolio performance vs the benchmark
+
+    Parameters
+    ----------
+    portfolio_trades: pd.DataFrame
+        Object containing trades made within the portfolio.
+    benchmark_trades: pd.DataFrame
+        Object containing trades made within the benchmark.
+    interval : str
+        interval to consider performance. From: mtd, qtd, ytd, 3m, 6m, 1y, 3y, 5y, 10y, all
+    show_all_trades: bool
+        Whether to also show all trades made and their performance (default is False)
+    """
+
+    portfolio_trades = portfolio.portfolio_trades
+    benchmark_trades = portfolio.benchmark_trades
+
+    portfolio_trades.index = pd.to_datetime(portfolio_trades["Date"].values)
+    portfolio_trades = portfolio_helper.filter_df_by_period(portfolio_trades, interval)
+
+    benchmark_trades.index = pd.to_datetime(benchmark_trades["Date"].values)
+    benchmark_trades = portfolio_helper.filter_df_by_period(benchmark_trades, interval)
+
+    if show_all_trades:
+        # Combine DataFrames
+        combined = pd.concat(
+            [
+                portfolio_trades[
+                    ["Date", "Ticker", "Portfolio Value", "% Portfolio Return"]
+                ],
+                benchmark_trades[["Benchmark Value", "Benchmark % Return"]],
+            ],
+            axis=1,
+        )
+
+        # Calculate alpha
+        combined["Alpha"] = (
+            combined["% Portfolio Return"] - combined["Benchmark % Return"]
+        )
+
+        combined["Date"] = pd.to_datetime(combined["Date"]).dt.date
+
+        return combined
+    else:
+        
+        # Calculate total value and return
+        total_investment_difference = (
+            portfolio_trades["Portfolio Investment"].sum()
+            - benchmark_trades["Benchmark Investment"].sum()
+        )
+        total_value_difference = (
+            portfolio_trades["Portfolio Value"].sum()
+            - benchmark_trades["Benchmark Value"].sum()
+        )
+        total_portfolio_return = (
+            portfolio_trades["Portfolio Value"].sum()
+            / portfolio_trades["Portfolio Investment"].sum()
+        ) - 1
+        total_benchmark_return = (
+            benchmark_trades["Benchmark Value"].sum()
+            / benchmark_trades["Benchmark Investment"].sum()
+        ) - 1
+        total_abs_return_difference = (
+            portfolio_trades["Portfolio Value"].sum()
+            - portfolio_trades["Portfolio Investment"].sum()
+        ) - (
+            benchmark_trades["Benchmark Value"].sum()
+            - benchmark_trades["Benchmark Investment"].sum()
+        )
+
+        totals = pd.DataFrame.from_dict(
+            {
+                "Total Investment": [
+                    portfolio_trades["Portfolio Investment"].sum(),
+                    benchmark_trades["Benchmark Investment"].sum(),
+                    total_investment_difference,
+                ],
+                "Total Value": [
+                    portfolio_trades["Portfolio Value"].sum(),
+                    benchmark_trades["Benchmark Value"].sum(),
+                    total_value_difference,
+                ],
+                "Total % Return": [
+                    f"{total_portfolio_return:.2%}",
+                    f"{total_benchmark_return:.2%}",
+                    f"{total_portfolio_return - total_benchmark_return:.2%}",
+                ],
+                "Total Abs Return": [
+                    portfolio_trades["Portfolio Value"].sum()
+                    - portfolio_trades["Portfolio Investment"].sum(),
+                    benchmark_trades["Benchmark Value"].sum()
+                    - benchmark_trades["Benchmark Investment"].sum(),
+                    total_abs_return_difference,
+                ],
+            },
+            orient="index",
+            columns=["Portfolio", "Benchmark", "Difference"],
+        )
+
+        return totals.replace(0, "-")
+
 
 def rolling_volatility(
     portfolio_returns: pd.Series, window: str = "1y"

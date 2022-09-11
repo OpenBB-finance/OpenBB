@@ -558,8 +558,7 @@ class PortfolioController(BaseController):
             ):
 
                 portfolio_view.display_performance_vs_benchmark(
-                    self.portfolio.portfolio_trades,
-                    self.portfolio.benchmark_trades,
+                    self.portfolio,
                     ns_parser.period,
                     ns_parser.show_trades,
                 )

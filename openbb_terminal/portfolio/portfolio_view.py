@@ -249,9 +249,8 @@ def display_category_allocation(
 
 @log_start_end(log=logger)
 def display_performance_vs_benchmark(
-    portfolio_trades: pd.DataFrame,
-    benchmark_trades: pd.DataFrame,
-    interval: str = "1y",
+    portfolio: portfolio_model.PortfolioModel,
+    interval: str = "all",
     show_all_trades: bool = False,
 ):
     """Display portfolio performance vs the benchmark
@@ -268,96 +267,21 @@ def display_performance_vs_benchmark(
         Whether to also show all trades made and their performance (default is False)
     """
 
-    portfolio_trades.index = pd.to_datetime(portfolio_trades["Date"].values)
-    portfolio_trades = portfolio_helper.filter_df_by_period(portfolio_trades, interval)
-
-    benchmark_trades.index = pd.to_datetime(benchmark_trades["Date"].values)
-    benchmark_trades = portfolio_helper.filter_df_by_period(benchmark_trades, interval)
+    df = portfolio_model.get_performance_vs_benchmark(portfolio, interval, show_all_trades)
 
     if show_all_trades:
-        # Combine DataFrames
-        combined = pd.concat(
-            [
-                portfolio_trades[
-                    ["Date", "Ticker", "Portfolio Value", "% Portfolio Return"]
-                ],
-                benchmark_trades[["Benchmark Value", "Benchmark % Return"]],
-            ],
-            axis=1,
-        )
-
-        # Calculate alpha
-        combined["Alpha"] = (
-            combined["% Portfolio Return"] - combined["Benchmark % Return"]
-        )
-
-        combined["Date"] = pd.to_datetime(combined["Date"]).dt.date
-
         print_rich_table(
-            combined,
+            df,
             title=f"Portfolio vs. Benchmark - Individual Trades in period: {interval}",
-            headers=list(combined.columns),
+            headers=list(df.columns),
             show_index=False,
             floatfmt=[".2f", ".2f", ".2f", ".2%", ".2f", ".2%", ".2%"],
         )
     else:
-        # Calculate total value and return
-        total_investment_difference = (
-            portfolio_trades["Portfolio Investment"].sum()
-            - benchmark_trades["Benchmark Investment"].sum()
-        )
-        total_value_difference = (
-            portfolio_trades["Portfolio Value"].sum()
-            - benchmark_trades["Benchmark Value"].sum()
-        )
-        total_portfolio_return = (
-            portfolio_trades["Portfolio Value"].sum()
-            / portfolio_trades["Portfolio Investment"].sum()
-        ) - 1
-        total_benchmark_return = (
-            benchmark_trades["Benchmark Value"].sum()
-            / benchmark_trades["Benchmark Investment"].sum()
-        ) - 1
-        total_abs_return_difference = (
-            portfolio_trades["Portfolio Value"].sum()
-            - portfolio_trades["Portfolio Investment"].sum()
-        ) - (
-            benchmark_trades["Benchmark Value"].sum()
-            - benchmark_trades["Benchmark Investment"].sum()
-        )
-
-        totals = pd.DataFrame.from_dict(
-            {
-                "Total Investment": [
-                    portfolio_trades["Portfolio Investment"].sum(),
-                    benchmark_trades["Benchmark Investment"].sum(),
-                    total_investment_difference,
-                ],
-                "Total Value": [
-                    portfolio_trades["Portfolio Value"].sum(),
-                    benchmark_trades["Benchmark Value"].sum(),
-                    total_value_difference,
-                ],
-                "Total % Return": [
-                    f"{total_portfolio_return:.2%}",
-                    f"{total_benchmark_return:.2%}",
-                    f"{total_portfolio_return - total_benchmark_return:.2%}",
-                ],
-                "Total Abs Return": [
-                    portfolio_trades["Portfolio Value"].sum()
-                    - portfolio_trades["Portfolio Investment"].sum(),
-                    benchmark_trades["Benchmark Value"].sum()
-                    - benchmark_trades["Benchmark Investment"].sum(),
-                    total_abs_return_difference,
-                ],
-            },
-            orient="index",
-            columns=["Portfolio", "Benchmark", "Difference"],
-        )
         print_rich_table(
-            totals.replace(0, "-"),
+            df,
             title=f"Portfolio vs. Benchmark - Totals in period: {interval}",
-            headers=list(totals.columns),
+            headers=list(df.columns),
             show_index=True,
         )
 
