@@ -1177,15 +1177,12 @@ def display_omega(
     threshold_end: float
         annualized target return threshold end of plotted threshold range
     """
-    threshold = np.linspace(threshold_start, threshold_end, 50)
-    omega_list = []
 
-    for i in threshold:
-        omega_list.append(qa_model.get_omega(data, i))
+    df = qa_model.get_omega(data, threshold_start, threshold_end)
 
     # Plotting
     fig, ax = plt.subplots()
-    ax.plot(threshold, omega_list)
+    ax.plot(df["threshold"], df["omega"])
     ax.set_title(f"Omega Curve - over last {len(data)}'s period")
     ax.set_ylabel("Omega Ratio")
     ax.set_xlabel("Threshold (%)")
