@@ -447,3 +447,156 @@ def get_info_from_ticker(ticker: str) -> list:
     # file does not exist or is empty, so write it
     ticker_info_list = get_info_update_file(ticker, file_path, "w")
     return ticker_info_list
+
+
+def rolling_volatility(
+    portfolio_returns: pd.Series, window: str = "1y"
+) -> pd.DataFrame:
+    """Get rolling volatility
+
+    Parameters
+    ----------
+    portfolio_returns : pd.Series
+        Series of portfolio returns
+    window : str
+        Rolling window size to use
+
+    Returns
+    -------
+    pd.DataFrame
+        Rolling volatility DataFrame
+    """
+    length = PERIODS_DAYS[window]
+    return portfolio_returns.rolling(length).std()
+
+def sharpe_ratio(portfolio_returns: pd.Series, risk_free_rate: float) -> float:
+    """Get sharpe ratio
+
+    Parameters
+    ----------
+    return_series : pd.Series
+        Series of portfolio returns
+    risk_free_rate: float
+        Value to use for risk free rate
+
+    Returns
+    -------
+    float
+        Sharpe ratio
+    """
+    mean = portfolio_returns.mean() - risk_free_rate
+    sigma = portfolio_returns.std()
+
+    return mean / sigma
+
+def rolling_sharpe(
+    portfolio_returns: pd.DataFrame, risk_free_rate: float, window: str = "1y"
+) -> pd.DataFrame:
+    """Get rolling sharpe ratio
+
+    Parameters
+    ----------
+    portfolio_returns : pd.Series
+        Series of portfolio returns
+    risk_free_rate : float
+        Risk free rate
+    window : str
+        Rolling window to use
+        Possible options: mtd, qtd, ytd, 1d, 5d, 10d, 1m, 3m, 6m, 1y, 3y, 5y, 10y
+
+    Returns
+    -------
+    pd.DataFrame
+        Rolling sharpe ratio DataFrame
+    """
+
+    length = PERIODS_DAYS[window]
+
+    rolling_sharpe_df = portfolio_returns.rolling(length).apply(
+        lambda x: (x.mean() - risk_free_rate) / x.std()
+    )
+    return rolling_sharpe_df
+
+def sortino_ratio(portfolio_returns: pd.Series, risk_free_rate: float) -> float:
+    """Get sortino ratio
+
+    Parameters
+    ----------
+    portfolio_returns : pd.Series
+        Series of portfolio returns
+    risk_free_rate: float
+        Value to use for risk free rate
+
+    Returns
+    -------
+    float
+        Sortino ratio
+    """
+    mean = portfolio_returns.mean() - risk_free_rate
+    std_neg = portfolio_returns[portfolio_returns < 0].std()
+
+    return mean / std_neg
+
+def rolling_sortino(
+    portfolio_returns: pd.Series, risk_free_rate: float, window: str = "1y"
+) -> pd.DataFrame:
+    """Get rolling sortino ratio
+
+    Parameters
+    ----------
+    portfolio_returns : pd.Series
+        Series of portfolio returns
+    risk_free_rate : float
+        Risk free rate
+    window : str
+        Rolling window to use
+
+    Returns
+    -------
+    pd.DataFrame
+        Rolling sortino ratio DataFrame
+    """
+    length = PERIODS_DAYS[window]
+    rolling_sortino_df = portfolio_returns.rolling(length).apply(
+        lambda x: (x.mean() - risk_free_rate) / x[x < 0].std()
+    )
+
+    return rolling_sortino_df
+
+def rolling_beta(
+    portfolio_returns: pd.Series,
+    benchmark_returns: pd.Series,
+    window: str = "1y",
+) -> pd.DataFrame:
+    """Get rolling beta using portfolio and benchmark returns
+
+    Parameters
+    ----------
+    returns: pd.Series
+        Series of portfolio returns
+    benchmark_returns: pd.Series
+        Series of benchmark returns
+    window: string
+        Interval used for rolling values.
+        Possible options: mtd, qtd, ytd, 1d, 5d, 10d, 1m, 3m, 6m, 1y, 3y, 5y, 10y.
+
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of the portfolio's rolling beta
+    """
+
+    length = PERIODS_DAYS[window]
+
+    covs = (
+        pd.DataFrame({"Portfolio": portfolio_returns, "Benchmark": benchmark_returns})
+        .dropna(axis=0)
+        .rolling(max(1, length))
+        .cov()
+        .unstack()
+        .dropna()
+    )
+
+    rolling_beta = covs["Portfolio"]["Benchmark"] / covs["Benchmark"]["Benchmark"]
+
+    return rolling_beta
