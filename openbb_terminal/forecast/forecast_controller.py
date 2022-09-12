@@ -475,6 +475,7 @@ class ForecastController(BaseController):
                 action="store",
                 dest="start_window",
                 default=0.85,
+                type=check_positive_float,
                 help="Start point for rolling training and forecast window. 0.0-1.0",
             )
         if train_split:
