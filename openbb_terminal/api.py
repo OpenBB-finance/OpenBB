@@ -1122,62 +1122,6 @@ functions = {
         "model": "openbb_terminal.mutual_funds.investpy_model.search_funds",
         "view": "openbb_terminal.mutual_funds.investpy_view.display_search",
     },
-    "portfolio.bro.ally.balances": {
-        "model": "openbb_terminal.portfolio.brokers.ally.ally_model.get_balances",
-        "view": "openbb_terminal.portfolio.brokers.ally.ally_view.display_balances",
-    },
-    "portfolio.bro.ally.history": {
-        "model": "openbb_terminal.portfolio.brokers.ally.ally_model.get_history",
-        "view": "openbb_terminal.portfolio.brokers.ally.ally_view.display_history",
-    },
-    "portfolio.bro.ally.holdings": {
-        "model": "openbb_terminal.portfolio.brokers.ally.ally_model.get_holdings",
-        "view": "openbb_terminal.portfolio.brokers.ally.ally_view.display_holdings",
-    },
-    "portfolio.bro.ally.quote": {
-        "model": "openbb_terminal.portfolio.brokers.ally.ally_model.get_stock_quote",
-        "view": "openbb_terminal.portfolio.brokers.ally.ally_view.display_stock_quote",
-    },
-    "portfolio.bro.ally.top": {
-        "model": "openbb_terminal.portfolio.brokers.ally.ally_model.get_top_movers",
-        "view": "openbb_terminal.portfolio.brokers.ally.ally_view.display_top_lists",
-    },
-    "portfolio.bro.coinbase.history": {
-        "model": "openbb_terminal.portfolio.brokers.coinbase.coinbase_model.get_account_history",
-        "view": "openbb_terminal.portfolio.brokers.coinbase.coinbase_view.display_history",
-    },
-    "portfolio.bro.coinbase.account": {
-        "model": "openbb_terminal.portfolio.brokers.coinbase.coinbase_model.get_accounts",
-        "view": "openbb_terminal.portfolio.brokers.coinbase.coinbase_view.display_account",
-    },
-    "portfolio.bro.coinbase.deposits": {
-        "model": "openbb_terminal.portfolio.brokers.coinbase.coinbase_model.get_deposits",
-        "view": "openbb_terminal.portfolio.brokers.coinbase.coinbase_view.display_deposits",
-    },
-    "portfolio.bro.coinbase.orders": {
-        "model": "openbb_terminal.portfolio.brokers.coinbase.coinbase_model.get_orders",
-        "view": "openbb_terminal.portfolio.brokers.coinbase.coinbase_view.display_orders",
-    },
-    "portfolio.bro.rh.historical": {
-        "model": "openbb_terminal.portfolio.brokers.robinhood.robinhood_model.get_historical",
-        "view": "openbb_terminal.portfolio.brokers.robinhood.robinhood_view.display_historical",
-    },
-    "portfolio.bro.rh.holdings": {
-        "model": "openbb_terminal.portfolio.brokers.robinhood.robinhood_model.get_holdings",
-        "view": "openbb_terminal.portfolio.brokers.robinhood.robinhood_view.display_holdings",
-    },
-    "portfolio.calmar_ratio": {
-        "model": "openbb_terminal.portfolio.portfolio_model.get_calmar_ratio",
-        "view": "openbb_terminal.portfolio.portfolio_view.display_calmar_ratio",
-    },
-    "portfolio.cs_ratio": {
-        "model": "openbb_terminal.portfolio.portfolio_model.get_common_sense_ratio",
-        "view": "openbb_terminal.portfolio.portfolio_view.display_common_sense_ratio",
-    },
-    "portfolio.gtp_ratio": {
-        "model": "openbb_terminal.portfolio.portfolio_model.get_gaintopain_ratio",
-        "view": "openbb_terminal.portfolio.portfolio_view.display_gaintopain_ratio",
-    },
     "portfolio.holdv": {
         "model": "openbb_terminal.portfolio.portfolio_model.get_holdings_value",
         "view": "openbb_terminal.portfolio.portfolio_view.display_holdings_value",
@@ -1226,8 +1170,8 @@ functions = {
         "model": "openbb_terminal.portfolio.portfolio_model.get_rolling_beta",
         "view": "openbb_terminal.portfolio.portfolio_view.display_rolling_beta",
     },
-    "portfolio.perf": {
-        "model": "openbb_terminal.portfolio.portfolio_model.get_performance_vs_benchmark",
+    "portfolio.summary": {
+        "model": "openbb_terminal.portfolio.portfolio_model.get_summary",
     },
     "portfolio.skew": {
         "model": "openbb_terminal.portfolio.portfolio_model.get_skewness",
@@ -1280,6 +1224,9 @@ functions = {
     "portfolio.profitfactor": {
         "model": "openbb_terminal.portfolio.portfolio_model.get_profit_factor",
     },
+    "portfolio.perf": {
+        "model": "openbb_terminal.portfolio.portfolio_model.get_performance_vs_benchmark",
+    },
     "portfolio.var": {
         "model": "openbb_terminal.portfolio.portfolio_model.get_var",
     },
@@ -1289,45 +1236,6 @@ functions = {
     "portfolio.om": {
         "model": "openbb_terminal.portfolio.portfolio_model.get_omega",
         "view": "openbb_terminal.portfolio.portfolio_view.display_omega",
-    },
-    "portfolio.summary": {
-        "model": "openbb_terminal.portfolio.portfolio_model.get_summary",
-    },
-    "portfolio.po.bl": {
-        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_black_litterman_portfolio",
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_black_litterman",
-    },
-    "portfolio.po.equal": {
-        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_equal_weights",
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_equal_weight",
-    },
-    "portfolio.po.hcp": {
-        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_hcp_portfolio",
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_hcp",
-    },
-    "portfolio.po.max_decorr": {
-        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_max_decorrelation_portfolio",
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_max_decorr",
-    },
-    "portfolio.po.max_div": {
-        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_max_diversification_portfolio",
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_max_div",
-    },
-    "portfolio.po.mean_risk": {
-        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_mean_risk_portfolio",
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_mean_risk",
-    },
-    "portfolio.po.property_weights": {
-        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_property_weights",
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_property_weighting",
-    },
-    "portfolio.po.rel_risk": {
-        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_rel_risk_parity_portfolio",
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_rel_risk_parity",
-    },
-    "portfolio.po.risk": {
-        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_risk_parity_portfolio",
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_risk_parity",
     },
     "stocks.bt.ema_cross": {
         "model": "openbb_terminal.stocks.backtesting.bt_model.ema_cross_strategy",
