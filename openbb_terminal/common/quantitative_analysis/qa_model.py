@@ -618,6 +618,7 @@ def get_omega_ratio(data: pd.DataFrame, threshold: float = 0) -> float:
 
     return omega_ratio
 
+
 def get_omega(
     data: pd.DataFrame, threshold_start: float = 0, threshold_end: float = 1.5
 ) -> pd.DataFrame:
@@ -632,7 +633,7 @@ def get_omega(
         annualized target return threshold end of plotted threshold range
     """
     threshold = np.linspace(threshold_start, threshold_end, 50)
-    df = pd.DataFrame(threshold, columns =["threshold"])
+    df = pd.DataFrame(threshold, columns=["threshold"])
 
     omega_list = []
     for i in threshold:

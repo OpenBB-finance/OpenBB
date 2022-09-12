@@ -1452,6 +1452,7 @@ def get_rolling_beta(
 
     return df
 
+
 @log_start_end(log=logger)
 def get_performance_vs_benchmark(
     portfolio: PortfolioModel,
@@ -1558,6 +1559,7 @@ def get_performance_vs_benchmark(
 
         return totals.replace(0, "-")
 
+
 @log_start_end(log=logger)
 def get_var(
     portfolio: PortfolioModel,
@@ -1591,6 +1593,7 @@ def get_var(
         portfolio=True,
     )
 
+
 @log_start_end(log=logger)
 def get_es(
     portfolio: PortfolioModel,
@@ -1620,11 +1623,10 @@ def get_es(
         portfolio=True,
     )
 
+
 @log_start_end(log=logger)
 def get_omega(
-        portfolio: PortfolioModel,
-        threshold_start: float = 0, 
-        threshold_end: float = 1.5
+    portfolio: PortfolioModel, threshold_start: float = 0, threshold_end: float = 1.5
 ):
     """Get omega ratio
 
@@ -1641,8 +1643,9 @@ def get_omega(
     return qa_model.get_omega(
         data=portfolio.returns,
         threshold_start=threshold_start,
-        threshold_end=threshold_end
+        threshold_end=threshold_end,
     )
+
 
 def get_summary(
     portfolio: PortfolioModel,
@@ -1661,9 +1664,7 @@ def get_summary(
         Risk free rate for calculations
     """
 
-    portfolio_returns = portfolio_helper.filter_df_by_period(
-        portfolio.returns, window
-    )
+    portfolio_returns = portfolio_helper.filter_df_by_period(portfolio.returns, window)
     benchmark_returns = portfolio_helper.filter_df_by_period(
         portfolio.benchmark_returns, window
     )
@@ -1702,6 +1703,33 @@ def get_summary(
     summary["Difference"] = summary["Portfolio"] - summary["Benchmark"]
 
     return summary
+
+
+@log_start_end(log=logger)
+def get_daily_returns(
+    portfolio: PortfolioModel,
+    window: str = "all",
+):
+    """Get daily returns
+
+    Parameters
+    ----------
+    portfolio: Portfolio
+        Portfolio object with trades loaded
+    window : str
+        interval to compare cumulative returns and benchmark
+    """
+    portfolio_returns = portfolio_helper.filter_df_by_period(portfolio.returns, window)
+    benchmark_returns = portfolio_helper.filter_df_by_period(
+        portfolio.benchmark_returns, window
+    )
+
+    df = portfolio_returns.to_frame()
+    df = df.join(benchmark_returns)
+    df.index = df.index.date
+    df.columns = ["portfolio", "benchmark"]
+
+    return df
 
 
 # Old code

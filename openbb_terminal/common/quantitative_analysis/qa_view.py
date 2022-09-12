@@ -1083,9 +1083,7 @@ def display_es(
     portfolio: bool
         If the data is a portfolio
     """
-    df = qa_model.get_es(
-        data, use_mean, distribution, percentile, portfolio
-    )
+    df = qa_model.get_es(data, use_mean, distribution, percentile, portfolio)
 
     if distribution == "laplace":
         str_title = "Laplace "

@@ -568,9 +568,8 @@ def display_monthly_returns(
 
 @log_start_end(log=logger)
 def display_daily_returns(
-    portfolio_returns: pd.Series,
-    benchmark_returns: pd.Series,
-    interval: str = "all",
+    portfolio: portfolio_model.PortfolioModel,
+    window: str = "all",
     raw: bool = False,
     limit: int = 10,
     export: str = "",
@@ -580,11 +579,9 @@ def display_daily_returns(
 
     Parameters
     ----------
-    portfolio_returns : pd.Series
-        Returns of the portfolio
-    benchmark_returns : pd.Series
-        Returns of the benchmark
-    interval : str
+    portfolio: Portfolio
+        Portfolio object with trades loaded
+    window : str
         interval to compare cumulative returns and benchmark
     raw : False
         Display raw data from cumulative return
@@ -595,19 +592,12 @@ def display_daily_returns(
     external_axes: plt.Axes
         Optional axes to display plot on
     """
-    portfolio_returns = portfolio_helper.filter_df_by_period(
-        portfolio_returns, interval
-    )
-    benchmark_returns = portfolio_helper.filter_df_by_period(
-        benchmark_returns, interval
-    )
+    
+    df = portfolio_model.get_daily_returns(portfolio, window)
 
     if raw:
-        last_returns = portfolio_returns.to_frame()
-        last_returns = last_returns.join(benchmark_returns)
-        last_returns.index = last_returns.index.date
         print_rich_table(
-            last_returns.tail(limit),
+            df.tail(limit),
             title="Portfolio and Benchmark daily returns",
             headers=["Portfolio [%]", "Benchmark [%]"],
             show_index=True,
@@ -620,12 +610,12 @@ def display_daily_returns(
         else:
             ax = external_axes
 
-        ax[0].set_title(f"Portfolio in period {interval}")
-        ax[0].plot(portfolio_returns.index, portfolio_returns, label="Portfolio")
+        ax[0].set_title(f"Portfolio in period {window}")
+        ax[0].plot(df.index, df["portfolio"], label="Portfolio")
         ax[0].set_ylabel("Returns [%]")
         theme.style_primary_axis(ax[0])
-        ax[1].set_title(f"Benchmark in period {interval}")
-        ax[1].plot(benchmark_returns.index, benchmark_returns, label="Benchmark")
+        ax[1].set_title(f"Benchmark in period {window}")
+        ax[1].plot(df.index, df["benchmark"], label="Benchmark")
         ax[1].set_ylabel("Returns [%]")
         theme.style_primary_axis(ax[1])
 
@@ -636,7 +626,7 @@ def display_daily_returns(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "dret",
-        portfolio_returns.to_frame().join(benchmark_returns),
+        df,
     )
 
 
@@ -1701,12 +1691,13 @@ def display_var(
         portfolio=True,
     )
 
+
 @log_start_end(log=logger)
 def display_es(
-        portfolio: portfolio_model.PortfolioModel,
-        use_mean: bool = False,
-        distribution: str = "normal",
-        percentile: float = 0.999,
+    portfolio: portfolio_model.PortfolioModel,
+    use_mean: bool = False,
+    distribution: str = "normal",
+    percentile: float = 0.999,
 ):
     """Displays expected shortfall
 
@@ -1729,11 +1720,12 @@ def display_es(
         portfolio=True,
     )
 
+
 @log_start_end(log=logger)
 def display_omega(
-        portfolio: portfolio_model.PortfolioModel,
-        threshold_start: float = 0, 
-        threshold_end: float = 1.5
+    portfolio: portfolio_model.PortfolioModel,
+    threshold_start: float = 0,
+    threshold_end: float = 1.5,
 ):
     """Display omega ratio
 
@@ -1752,5 +1744,5 @@ def display_omega(
     qa_view.display_omega(
         data=portfolio.returns,
         threshold_start=threshold_start,
-        threshold_end=threshold_end
+        threshold_end=threshold_end,
     )
