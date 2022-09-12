@@ -7,7 +7,7 @@ financial terminal that will help you make more informed decisions, faster."
 geekdocCollapseSection: true
 ---
 
-## Introduction
+**Introduction**
 
 OpenBB is a leading open source investment research software platform for accessing and analyzing financial market data.
 We represent millions of investors who want to leverage state-of-the-art data science and machine learning technologies
@@ -15,7 +15,7 @@ to make sense of raw unrefined data. Our mission is to make investment research 
 
 ---
 
-## The OpenBB Terminal is Free and Open-Source (FOSS)
+**The OpenBB Terminal is Free and Open-Source (FOSS)**
 
 <!-- markdownlint-capture -->
 <!-- markdownlint-disable MD033 -->
