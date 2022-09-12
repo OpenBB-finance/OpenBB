@@ -10,6 +10,7 @@ import re
 import os
 import difflib
 import logging
+import json
 
 from typing import Union, List, Dict, Any
 from datetime import datetime, timedelta
@@ -242,13 +243,14 @@ class BaseController(metaclass=ABCMeta):
         self, known_cmd: str, other_args_str: str, the_input: str
     ) -> None:
         if not self.contains_keys(the_input):
-            logger.info(
-                "CMD: {'path': '%s', 'known_cmd': '%s', 'other_args': '%s', 'input': '%s'}",
-                self.PATH,
-                known_cmd,
-                other_args_str,
-                the_input,
-            )
+            cmd = {
+                "path": self.PATH,
+                "known_cmd": known_cmd,
+                "other_args": other_args_str,
+                "input": the_input,
+            }
+            logger.info("CMD: %s", json.dumps(cmd))
+
         if the_input not in self.KEYS_MENU:
             self.log_queue()
 
