@@ -1,24 +1,22 @@
-                  Company Symbol   Price  LastPrice  Change (%) Recommendation InverseCramer
-0               Allbirds    BIRD    6.33       6.01       -5.32           Sell           Buy
-1                 Bumble    BMBL   18.08      23.52       23.13           Sell           Buy
-2          Campbell Soup     CPB   45.55      43.26       -5.29            Buy          Sell
-3   Dicks Sporting Goods     DKS  109.71     109.46       -0.23            Buy          Sell
-4               DocuSign    DOCU  101.38      99.02       -2.38           Sell           Buy
-5           Devon Energy     DVN   59.57      58.94       -1.07            Buy          Sell
-6                   eBay    EBAY   55.66      52.89       -5.24           Sell           Buy
-7       Freeport-McMoRan     FCX   50.11      46.94       -6.75            Buy          Sell
-8                 Kohl's     KSS   58.77      54.30       -8.23            Buy          Sell
-9                 Macy's       M   24.80      24.31       -2.02            Buy          Sell
-10               MongoDB     MDB  306.11     329.13        6.99           Sell           Buy
-11            On Holding    ONON   21.97      22.09        0.54           Sell           Buy
-12     Progress Software    PRGS   44.28      43.48       -1.84           Sell           Buy
-13          The RealReal    REAL    7.39       6.91       -6.95           Sell           Buy
-14                Rivian    RIVN   47.39      44.07       -7.53           Sell           Buy
-15            Stitch Fix    SFIX   11.17      10.34       -8.03           Sell           Buy
-16       Virgin Galactic    SPCE    7.84       7.86        0.25           Sell           Buy
-17                Splunk    SPLK  129.06     129.56        0.39            Buy          Sell
-18                  AT&T       T   23.87      23.43       -1.88           Sell           Buy
-19                  Trex    TREX   74.68      73.60       -1.47           Sell           Buy
-20        Hostess Brands    TWNK   22.22      21.26       -4.52            Buy          Sell
-21           Ulta Beauty    ULTA  366.76     371.38        1.24            Buy          Sell
-22             Wheels Up      UP    3.13       3.52       11.08            Buy          Sell
+
+        
+[yellow]Warning[/yellow]: We noticed Jim Crammer recommendation data has not been updated for a while, and we're investigating on finding a replacement.
+        
+                      Company Symbol   Price  LastPrice  Change (%) Recommendation InverseCramer
+0          Applied Materials    AMAT   97.42      91.24       -6.77            Buy          Sell
+1    AMN Healthcare Services     AMN  103.32     101.03       -2.27            Buy          Sell
+2                    Alibaba    BABA  108.03      91.80      -17.68           Sell           Buy
+3                 Dutch Bros    BROS   34.17      34.95        2.23            Buy          Sell
+4                Chargepoint    CHPT   13.36      14.50        7.86           Sell           Buy
+5           Cleveland-Cliffs     CLF   18.05      16.81       -7.38           Sell           Buy
+6                 Ford Motor       F   12.27      15.16       19.06            Buy          Sell
+7                  Eli Lilly     LLY  292.99     301.33        2.77            Buy          Sell
+8             Meta Platforms    META  169.35     160.32       -5.63            Buy          Sell
+9   Medical Properties Trust     MPW   14.99      14.32       -4.68            Buy          Sell
+10                     Nucor     NUE  116.46     130.78       10.95            Buy          Sell
+11            Planet Fitness    PLNT   64.42      65.81        2.11            Buy          Sell
+12                  Prothena    PRTA   23.68      26.91       12.00           Sell           Buy
+13         SoFi Technologies    SOFI    5.94       5.74       -3.48            Buy          Sell
+14             Toll Brothers     TOL   44.38      43.81       -1.30            Buy          Sell
+15     Woodside Energy Group     WDS   22.11      23.02        3.95            Buy          Sell
+16                 Whirlpool     WHR  155.52     153.69       -1.19            Buy          Sell

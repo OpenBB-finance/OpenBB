@@ -65,7 +65,12 @@ In order to load a CSV do the following:
 
 
 @log_start_end(log=logger)
-def display_orderbook(portfolio=None, show_index=False):
+def display_orderbook(
+    portfolio=None,
+    show_index=False,
+    limit: int = 10,
+    export: str = "",
+):
     """Display portfolio orderbook
 
     Parameters
@@ -74,13 +79,29 @@ def display_orderbook(portfolio=None, show_index=False):
         Instance of Portfolio class
     show_index: bool
         Defaults to False.
+    limit: int
+        Number of rows to display
+    export : str
+        Export certain type of data
     """
 
     if portfolio.empty:
         logger.warning("No orderbook loaded")
         console.print("[red]No orderbook loaded.[/red]\n")
     else:
-        print_rich_table(portfolio.get_orderbook(), show_index)
+        df = portfolio.get_orderbook()
+        print_rich_table(
+            df=df[:limit],
+            show_index=show_index,
+            title=f"Last {limit if limit < len(df) else len(df)} transactions",
+        )
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "transactions",
+            df.set_index("Date"),
+        )
 
 
 @log_start_end(log=logger)
@@ -106,54 +127,36 @@ def display_assets_allocation(
     benchmark_allocation = benchmark_allocation.iloc[:limit]
     portfolio_allocation = portfolio_allocation.iloc[:limit]
 
-    combined = pd.DataFrame()
-
-    for ticker, allocation in portfolio_allocation.items():
-        if ticker in benchmark_allocation["symbol"].values:
-            benchmark_allocation_value = float(
-                benchmark_allocation[benchmark_allocation["symbol"] == ticker][
-                    "holdingPercent"
-                ]
-            )
-        else:
-            benchmark_allocation_value = 0
-
-        combined = combined.append(
-            [
-                [
-                    ticker,
-                    allocation,
-                    benchmark_allocation_value,
-                    allocation - benchmark_allocation_value,
-                ]
-            ]
-        )
-
-    combined.columns = ["Symbol", "Portfolio", "Benchmark", "Difference"]
+    combined = pd.merge(
+        portfolio_allocation, benchmark_allocation, on="Symbol", how="left"
+    )
+    combined["Difference"] = combined["Portfolio"] - combined["Benchmark"]
+    combined = combined.replace(np.nan, "-")
+    combined = combined.replace(0, "-")
 
     print_rich_table(
-        combined.replace(0, "-"),
+        combined,
         headers=list(combined.columns),
         title=f"Portfolio vs. Benchmark - Top {len(combined) if len(combined) < limit else limit} Assets Allocation",
-        floatfmt=[".2f", ".2%", ".2%", ".2%"],
+        floatfmt=["", ".2%", ".2%", ".2%"],
         show_index=False,
     )
 
     if include_separate_tables:
         print_rich_table(
-            pd.DataFrame(portfolio_allocation),
-            headers=list(["Allocation"]),
+            portfolio_allocation,
+            headers=list(portfolio_allocation.columns),
             title=f"Portfolio - Top {len(portfolio_allocation) if len(benchmark_allocation) < limit else limit} "
             f"Assets Allocation",
-            floatfmt=[".2%"],
-            show_index=True,
+            floatfmt=[".2%", ".2%"],
+            show_index=False,
         )
         print_rich_table(
             benchmark_allocation,
-            headers=list(["Symbol", "Name", "Allocation"]),
+            headers=list(benchmark_allocation.columns),
             title=f"Benchmark - Top {len(benchmark_allocation) if len(benchmark_allocation) < limit else limit} "
             f"Assets Allocation",
-            floatfmt=[".2f", ".2f", ".2%"],
+            floatfmt=[".2%", ".2%"],
             show_index=False,
         )
 
@@ -181,6 +184,15 @@ def display_category_allocation(
     include_separate_tables: bool
         Whether to include separate asset allocation tables
     """
+
+    if benchmark_allocation.empty:
+        console.print(f"[red]Benchmark data for {category} is empty.\n[/red]")
+        return
+
+    if portfolio_allocation.empty:
+        console.print(f"[red]Portfolio data for {category} is empty.\n[/red]")
+        return
+
     benchmark_allocation = benchmark_allocation.iloc[:limit]
     portfolio_allocation = portfolio_allocation.iloc[:limit]
 
@@ -237,9 +249,8 @@ def display_category_allocation(
 
 @log_start_end(log=logger)
 def display_performance_vs_benchmark(
-    portfolio_trades: pd.DataFrame,
-    benchmark_trades: pd.DataFrame,
-    interval: str = "1y",
+    portfolio: portfolio_model.PortfolioModel,
+    interval: str = "all",
     show_all_trades: bool = False,
 ):
     """Display portfolio performance vs the benchmark
@@ -256,96 +267,21 @@ def display_performance_vs_benchmark(
         Whether to also show all trades made and their performance (default is False)
     """
 
-    portfolio_trades.index = pd.to_datetime(portfolio_trades["Date"].values)
-    portfolio_trades = portfolio_helper.filter_df_by_period(portfolio_trades, interval)
-
-    benchmark_trades.index = pd.to_datetime(benchmark_trades["Date"].values)
-    benchmark_trades = portfolio_helper.filter_df_by_period(benchmark_trades, interval)
+    df = portfolio_model.get_performance_vs_benchmark(portfolio, interval, show_all_trades)
 
     if show_all_trades:
-        # Combine DataFrames
-        combined = pd.concat(
-            [
-                portfolio_trades[
-                    ["Date", "Ticker", "Portfolio Value", "% Portfolio Return"]
-                ],
-                benchmark_trades[["Benchmark Value", "Benchmark % Return"]],
-            ],
-            axis=1,
-        )
-
-        # Calculate alpha
-        combined["Alpha"] = (
-            combined["% Portfolio Return"] - combined["Benchmark % Return"]
-        )
-
-        combined["Date"] = pd.to_datetime(combined["Date"]).dt.date
-
         print_rich_table(
-            combined,
+            df,
             title=f"Portfolio vs. Benchmark - Individual Trades in period: {interval}",
-            headers=list(combined.columns),
+            headers=list(df.columns),
             show_index=False,
             floatfmt=[".2f", ".2f", ".2f", ".2%", ".2f", ".2%", ".2%"],
         )
     else:
-        # Calculate total value and return
-        total_investment_difference = (
-            portfolio_trades["Portfolio Investment"].sum()
-            - benchmark_trades["Benchmark Investment"].sum()
-        )
-        total_value_difference = (
-            portfolio_trades["Portfolio Value"].sum()
-            - benchmark_trades["Benchmark Value"].sum()
-        )
-        total_portfolio_return = (
-            portfolio_trades["Portfolio Value"].sum()
-            / portfolio_trades["Portfolio Investment"].sum()
-        ) - 1
-        total_benchmark_return = (
-            benchmark_trades["Benchmark Value"].sum()
-            / benchmark_trades["Benchmark Investment"].sum()
-        ) - 1
-        total_abs_return_difference = (
-            portfolio_trades["Portfolio Value"].sum()
-            - portfolio_trades["Portfolio Investment"].sum()
-        ) - (
-            benchmark_trades["Benchmark Value"].sum()
-            - benchmark_trades["Benchmark Investment"].sum()
-        )
-
-        totals = pd.DataFrame.from_dict(
-            {
-                "Total Investment": [
-                    portfolio_trades["Portfolio Investment"].sum(),
-                    benchmark_trades["Benchmark Investment"].sum(),
-                    total_investment_difference,
-                ],
-                "Total Value": [
-                    portfolio_trades["Portfolio Value"].sum(),
-                    benchmark_trades["Benchmark Value"].sum(),
-                    total_value_difference,
-                ],
-                "Total % Return": [
-                    f"{total_portfolio_return:.2%}",
-                    f"{total_benchmark_return:.2%}",
-                    f"{total_portfolio_return - total_benchmark_return:.2%}",
-                ],
-                "Total Abs Return": [
-                    portfolio_trades["Portfolio Value"].sum()
-                    - portfolio_trades["Portfolio Investment"].sum(),
-                    benchmark_trades["Benchmark Value"].sum()
-                    - benchmark_trades["Benchmark Investment"].sum(),
-                    total_abs_return_difference,
-                ],
-            },
-            orient="index",
-            columns=["Portfolio", "Benchmark", "Difference"],
-        )
         print_rich_table(
-            totals.replace(0, "-"),
+            df,
             title=f"Portfolio vs. Benchmark - Totals in period: {interval}",
-            headers=list(totals.columns),
+            headers=list(df.columns),
             show_index=True,
         )
 
@@ -814,20 +750,15 @@ def display_holdings_value(
         Optional axes to display plot on
     """
 
-    all_holdings = portfolio.historical_trade_data["End Value"][portfolio.tickers_list]
+    all_holdings = portfolio_model.get_holdings_value(portfolio)
 
     if raw:
-        all_holdings["Total Value"] = all_holdings.sum(axis=1)
-        # No need to account for time since this is daily data
-        all_holdings.index = all_holdings.index.date
-
         print_rich_table(
             all_holdings.tail(limit),
             title="Holdings of assets (absolute value)",
             headers=all_holdings.columns,
             show_index=True,
         )
-
     else:
         if external_axes is None:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
