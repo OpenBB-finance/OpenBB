@@ -17,8 +17,8 @@ from prompt_toolkit.completion import NestedCompleter
 from prompt_toolkit.styles import Style
 from prompt_toolkit.formatted_text import HTML
 
-from openbb_terminal.common import feedparser_view
 from openbb_terminal.core.config.make_paths import create_paths
+from openbb_terminal.common import feedparser_view
 from openbb_terminal.core.config.paths import (
     REPO_DIRECTORY,
     USER_ENV_FILE,
