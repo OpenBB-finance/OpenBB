@@ -889,8 +889,7 @@ class PortfolioController(BaseController):
                 self.portfolio_name, self.benchmark_name
             ):
                 portfolio_view.display_monthly_returns(
-                    self.portfolio.returns,
-                    self.portfolio.benchmark_returns,
+                    self.portfolio,
                     ns_parser.period,
                     ns_parser.raw,
                     ns_parser.show_vals,
@@ -930,8 +929,7 @@ class PortfolioController(BaseController):
                 self.portfolio_name, self.benchmark_name
             ):
                 portfolio_view.display_daily_returns(
-                    self.portfolio.returns,
-                    self.portfolio.benchmark_returns,
+                    self.portfolio,
                     ns_parser.period,
                     ns_parser.raw,
                     ns_parser.limit,

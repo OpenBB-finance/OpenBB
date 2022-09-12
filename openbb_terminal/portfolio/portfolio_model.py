@@ -1470,6 +1470,10 @@ def get_performance_vs_benchmark(
         interval to consider performance. From: mtd, qtd, ytd, 3m, 6m, 1y, 3y, 5y, 10y, all
     show_all_trades: bool
         Whether to also show all trades made and their performance (default is False)
+    Returns
+    -------
+    pd.DataFrame
+
     """
 
     portfolio_trades = portfolio.portfolio_trades
@@ -1567,7 +1571,7 @@ def get_var(
     adjusted_var: bool = False,
     student_t: bool = False,
     percentile: float = 0.999,
-):
+) -> pd.DataFrame:
 
     """Get portfolio VaR
 
@@ -1583,6 +1587,10 @@ def get_var(
         If one should use the student-t distribution
     percentile: int
         var percentile
+    Returns
+    -------
+    pd.DataFrame
+
     """
     return qa_model.get_var(
         data=portfolio.returns,
@@ -1600,7 +1608,7 @@ def get_es(
     use_mean: bool = False,
     distribution: str = "normal",
     percentile: float = 0.999,
-):
+) -> pd.DataFrame:
     """Get portfolio expected shortfall
 
     Parameters
@@ -1613,6 +1621,10 @@ def get_es(
         choose distribution to use: logistic, laplace, normal
     percentile: int
         es percentile
+    Returns
+    -------
+    pd.DataFrame
+
     """
 
     return qa_model.get_es(
@@ -1627,7 +1639,7 @@ def get_es(
 @log_start_end(log=logger)
 def get_omega(
     portfolio: PortfolioModel, threshold_start: float = 0, threshold_end: float = 1.5
-):
+) -> pd.DataFrame:
     """Get omega ratio
 
     Parameters
@@ -1638,6 +1650,10 @@ def get_omega(
         annualized target return threshold start of plotted threshold range
     threshold_end: float
         annualized target return threshold end of plotted threshold range
+    Returns
+    -------
+    pd.DataFrame
+
     """
 
     return qa_model.get_omega(
@@ -1651,7 +1667,7 @@ def get_summary(
     portfolio: PortfolioModel,
     window: str = "all",
     risk_free_rate: float = 0,
-):
+) -> pd.DataFrame:
     """Get summary portfolio and benchmark returns
 
     Parameters
@@ -1662,6 +1678,10 @@ def get_summary(
         interval to compare cumulative returns and benchmark
     risk_free_rate : float
         Risk free rate for calculations
+    Returns
+    -------
+    pd.DataFrame
+
     """
 
     portfolio_returns = portfolio_helper.filter_df_by_period(portfolio.returns, window)
@@ -1704,12 +1724,107 @@ def get_summary(
 
     return summary
 
+@log_start_end(log=logger)
+def get_monthly_returns(
+    portfolio: PortfolioModel,
+    window: str = "all",
+) -> pd.DataFrame:
+    """Get monthly returns
+
+    Parameters
+    ----------
+    portfolio: Portfolio
+        Portfolio object with trades loaded
+    window : str
+        interval to compare cumulative returns and benchmark
+    Returns
+    -------
+    pd.DataFrame
+
+    """
+    portfolio_returns = portfolio_helper.filter_df_by_period(
+        portfolio.returns, window
+    )
+    benchmark_returns = portfolio_helper.filter_df_by_period(
+        portfolio.benchmark_returns, window
+    )
+
+    creturns_month_val = list()
+    breturns_month_val = list()
+
+    for year in sorted(list(set(portfolio_returns.index.year))):
+        creturns_year = portfolio_returns[portfolio_returns.index.year == year]
+        creturns_val = list()
+        for i in range(1, 13):
+            creturns_year_month = creturns_year[creturns_year.index.month == i]
+            creturns_year_month_val = 100 * cumulative_returns(
+                creturns_year_month
+            )
+
+            if creturns_year_month.empty:
+                creturns_val.append(0)
+            else:
+                creturns_val.append(creturns_year_month_val.values[-1])
+        creturns_month_val.append(creturns_val)
+
+        breturns_year = benchmark_returns[benchmark_returns.index.year == year]
+        breturns_val = list()
+        for i in range(1, 13):
+            breturns_year_month = breturns_year[breturns_year.index.month == i]
+            breturns_year_month_val = 100 * cumulative_returns(
+                breturns_year_month
+            )
+
+            if breturns_year_month.empty:
+                breturns_val.append(0)
+            else:
+                breturns_val.append(breturns_year_month_val.values[-1])
+        breturns_month_val.append(breturns_val)
+
+    monthly_returns = pd.DataFrame(
+        creturns_month_val,
+        index=sorted(list(set(portfolio_returns.index.year))),
+        columns=[
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sep",
+            "Oct",
+            "Nov",
+            "Dec",
+        ],
+    )
+    bench_monthly_returns = pd.DataFrame(
+        breturns_month_val,
+        index=sorted(list(set(benchmark_returns.index.year))),
+        columns=[
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sep",
+            "Oct",
+            "Nov",
+            "Dec",
+        ],
+    )
+
+    return monthly_returns, bench_monthly_returns
 
 @log_start_end(log=logger)
 def get_daily_returns(
     portfolio: PortfolioModel,
     window: str = "all",
-):
+) -> pd.DataFrame:
     """Get daily returns
 
     Parameters
@@ -1718,6 +1833,10 @@ def get_daily_returns(
         Portfolio object with trades loaded
     window : str
         interval to compare cumulative returns and benchmark
+    Returns
+    -------
+    pd.DataFrame
+
     """
     portfolio_returns = portfolio_helper.filter_df_by_period(portfolio.returns, window)
     benchmark_returns = portfolio_helper.filter_df_by_period(

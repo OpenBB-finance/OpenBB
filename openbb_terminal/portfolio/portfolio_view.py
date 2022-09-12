@@ -399,9 +399,8 @@ def display_yearly_returns(
 
 @log_start_end(log=logger)
 def display_monthly_returns(
-    portfolio_returns: pd.Series,
-    benchmark_returns: pd.Series,
-    interval: str = "all",
+    portfolio: portfolio_model.PortfolioModel,
+    window: str = "all",
     raw: bool = False,
     show_vals: bool = False,
     export: str = "",
@@ -411,11 +410,9 @@ def display_monthly_returns(
 
     Parameters
     ----------
-    portfolio_returns : pd.Series
-        Returns of the portfolio
-    benchmark_returns : pd.Series
-        Returns of the benchmark
-    interval : str
+    portfolio: Portfolio
+        Portfolio object with trades loaded
+    window : str
         interval to compare cumulative returns and benchmark
     raw : False
         Display raw data from cumulative return
@@ -426,93 +423,20 @@ def display_monthly_returns(
     external_axes: plt.Axes
         Optional axes to display plot on
     """
-    portfolio_returns = portfolio_helper.filter_df_by_period(
-        portfolio_returns, interval
-    )
-    benchmark_returns = portfolio_helper.filter_df_by_period(
-        benchmark_returns, interval
-    )
-
-    creturns_month_val = list()
-    breturns_month_val = list()
-
-    for year in sorted(list(set(portfolio_returns.index.year))):
-        creturns_year = portfolio_returns[portfolio_returns.index.year == year]
-        creturns_val = list()
-        for i in range(1, 13):
-            creturns_year_month = creturns_year[creturns_year.index.month == i]
-            creturns_year_month_val = 100 * portfolio_model.cumulative_returns(
-                creturns_year_month
-            )
-
-            if creturns_year_month.empty:
-                creturns_val.append(0)
-            else:
-                creturns_val.append(creturns_year_month_val.values[-1])
-        creturns_month_val.append(creturns_val)
-
-        breturns_year = benchmark_returns[benchmark_returns.index.year == year]
-        breturns_val = list()
-        for i in range(1, 13):
-            breturns_year_month = breturns_year[breturns_year.index.month == i]
-            breturns_year_month_val = 100 * portfolio_model.cumulative_returns(
-                breturns_year_month
-            )
-
-            if breturns_year_month.empty:
-                breturns_val.append(0)
-            else:
-                breturns_val.append(breturns_year_month_val.values[-1])
-        breturns_month_val.append(breturns_val)
-
-    monthly_returns = pd.DataFrame(
-        creturns_month_val,
-        index=sorted(list(set(portfolio_returns.index.year))),
-        columns=[
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dec",
-        ],
-    )
-    bench_monthly_returns = pd.DataFrame(
-        breturns_month_val,
-        index=sorted(list(set(benchmark_returns.index.year))),
-        columns=[
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dec",
-        ],
-    )
+    
+    portfolio_returns, benchmark_returns = portfolio_model.get_monthly_returns(portfolio, window)
 
     if raw:
         print_rich_table(
-            monthly_returns,
-            title="Portfolio monthly returns",
-            headers=monthly_returns.columns,
+            portfolio_returns,
+            title="Monthly returns",
+            headers=df.columns,
             show_index=True,
         )
         print_rich_table(
-            bench_monthly_returns,
-            title="Benchmark monthly returns",
-            headers=bench_monthly_returns.columns,
+            benchmark_returns,
+            title="Monthly returns",
+            headers=df.columns,
             show_index=True,
         )
 
@@ -527,30 +451,30 @@ def display_monthly_returns(
         else:
             ax = external_axes
 
-        ax[0].set_title(f"Portfolio in period {interval}")
+        ax[0].set_title(f"Portfolio in period {window}")
         sns.heatmap(
-            monthly_returns,
+            portfolio_returns,
             cmap="bwr_r",
-            vmax=max(monthly_returns.max().max(), bench_monthly_returns.max().max()),
-            vmin=min(monthly_returns.min().min(), bench_monthly_returns.min().min()),
+            vmax=max(portfolio_returns.max().max(), benchmark_returns.max().max()),
+            vmin=min(portfolio_returns.min().min(), benchmark_returns.min().min()),
             center=0,
             annot=show_vals,
             fmt=".1f",
-            mask=monthly_returns.applymap(lambda x: x == 0),
+            mask=portfolio_returns.applymap(lambda x: x == 0),
             ax=ax[0],
         )
         theme.style_primary_axis(ax[0])
 
-        ax[1].set_title(f"Benchmark in period {interval}")
+        ax[1].set_title(f"Benchmark in period {window}")
         sns.heatmap(
-            bench_monthly_returns,
+            portfolio_returns,
             cmap="bwr_r",
-            vmax=max(monthly_returns.max().max(), bench_monthly_returns.max().max()),
-            vmin=min(monthly_returns.min().min(), bench_monthly_returns.min().min()),
+            vmax=max(portfolio_returns.max().max(), benchmark_returns.max().max()),
+            vmin=min(portfolio_returns.min().min(), benchmark_returns.min().min()),
             center=0,
             annot=show_vals,
             fmt=".1f",
-            mask=bench_monthly_returns.applymap(lambda x: x == 0),
+            mask=benchmark_returns.applymap(lambda x: x == 0),
             ax=ax[1],
         )
         theme.style_primary_axis(ax[1])
@@ -562,7 +486,7 @@ def display_monthly_returns(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "mret",
-        monthly_returns,
+        portfolio_returns,
     )
 
 
