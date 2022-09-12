@@ -639,9 +639,8 @@ def display_daily_returns(
 
 @log_start_end(log=logger)
 def display_distribution_returns(
-    portfolio_returns: pd.Series,
-    benchmark_returns: pd.Series,
-    interval: str = "all",
+    portfolio: portfolio_model.PortfolioModel,
+    window: str = "all",
     raw: bool = False,
     export: str = "",
     external_axes: Optional[plt.Axes] = None,
@@ -663,19 +662,17 @@ def display_distribution_returns(
     external_axes: plt.Axes
         Optional axes to display plot on
     """
-    portfolio_returns = portfolio_helper.filter_df_by_period(
-        portfolio_returns, interval
-    )
-    benchmark_returns = portfolio_helper.filter_df_by_period(
-        benchmark_returns, interval
-    )
 
-    stats = portfolio_returns.describe().to_frame().join(benchmark_returns.describe())
+    df = portfolio_model.get_distribution_returns(portfolio, window)
+    df_portfolio = df["portfolio"]
+    df_benchmark = df["benchmark"]
+
+    stats = df.describe()
 
     if raw:
         print_rich_table(
             stats,
-            title=f"Stats for Portfolio and Benchmark in period {interval}",
+            title=f"Stats for Portfolio and Benchmark in period {window}",
             show_index=True,
             headers=["Portfolio", "Benchmark"],
         )
@@ -693,17 +690,17 @@ def display_distribution_returns(
         ax.set_ylabel("Density")
         ax.set_xlabel("Daily return [%]")
 
-        ax = sns.kdeplot(portfolio_returns.values, label="portfolio")
+        ax = sns.kdeplot(df_portfolio.values, label="portfolio")
         kdeline = ax.lines[0]
-        mean = portfolio_returns.values.mean()
+        mean = df_portfolio.values.mean()
         xs = kdeline.get_xdata()
         ys = kdeline.get_ydata()
         height = np.interp(mean, xs, ys)
         ax.vlines(mean, 0, height, color="yellow", ls=":")
 
-        ax = sns.kdeplot(benchmark_returns.values, label="benchmark")
+        ax = sns.kdeplot(df_benchmark.values, label="benchmark")
         kdeline = ax.lines[1]
-        mean = benchmark_returns.values.mean()
+        mean = df_benchmark.values.mean()
         xs = kdeline.get_xdata()
         ys = kdeline.get_ydata()
         height = np.interp(mean, xs, ys)
@@ -1098,7 +1095,7 @@ def display_rolling_beta(
 
 @log_start_end(log=logger)
 def display_maximum_drawdown(
-    data: pd.Series,
+    portfolio: portfolio_model.PortfolioModel,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -1106,23 +1103,23 @@ def display_maximum_drawdown(
 
     Parameters
     ----------
-    data: pd.DataFrame
-        Dataframe of holdings vs time
+    portfolio : PortfolioModel
+        Portfolio object
     export: str
         Format to export data
     external_axes: plt.Axes
         Optional axes to display plot on
     """
-    drawdown = portfolio_model.calculate_drawdown(data)
+    holdings, drawdown = portfolio_model.get_maximum_drawdown(portfolio)
     if external_axes is None:
         _, ax = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI, sharex=True)
     else:
         ax = external_axes
 
-    ax[0].plot(data.index, data)
+    ax[0].plot(holdings.index, holdings)
     ax[0].set_title("Holdings")
-    ax[1].plot(data.index, drawdown)
-    ax[1].fill_between(data.index, np.asarray(drawdown), alpha=0.4)
+    ax[1].plot(holdings.index, drawdown)
+    ax[1].fill_between(holdings.index, np.asarray(drawdown), alpha=0.4)
     ax[1].set_title("Portfolio Drawdown")
 
     theme.style_primary_axis(ax[1])

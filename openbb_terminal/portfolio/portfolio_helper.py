@@ -600,3 +600,22 @@ def rolling_beta(
     rolling_beta = covs["Portfolio"]["Benchmark"] / covs["Benchmark"]["Benchmark"]
 
     return rolling_beta
+
+def maximum_drawdown(portfolio_returns: pd.Series) -> float:
+    """Get maximum drawdown
+
+    Parameters
+    ----------
+    portfolio_returns : pd.Series
+        Series of portfolio returns
+
+    Returns
+    -------
+    float
+        Maximum drawdown
+    """
+    comp_ret = (portfolio_returns + 1).cumprod()
+    peak = comp_ret.expanding(min_periods=1).max()
+    dd = (comp_ret / peak) - 1
+
+    return dd.min()    

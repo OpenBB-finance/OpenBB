@@ -1166,9 +1166,6 @@ functions = {
         "model": "openbb_terminal.portfolio.brokers.robinhood.robinhood_model.get_holdings",
         "view": "openbb_terminal.portfolio.brokers.robinhood.robinhood_view.display_holdings",
     },
-    "portfolio.calculate_drawdown": {
-        "model": "openbb_terminal.portfolio.portfolio_model.calculate_drawdown"
-    },
     "portfolio.calmar_ratio": {
         "model": "openbb_terminal.portfolio.portfolio_model.get_calmar_ratio",
         "view": "openbb_terminal.portfolio.portfolio_view.display_calmar_ratio",
@@ -1216,10 +1213,6 @@ functions = {
         "model": "openbb_terminal.portfolio.portfolio_model.get_profit_factor",
         "view": "openbb_terminal.portfolio.portfolio_view.display_profit_factor",
     },
-    "portfolio.roll_beta": {
-        "model": "openbb_terminal.portfolio.portfolio_model.get_rolling_beta",
-        "view": "openbb_terminal.portfolio.portfolio_view.display_rolling_beta",
-    },
     "portfolio.tail_ratio": {
         "model": "openbb_terminal.portfolio.portfolio_model.get_tail_ratio",
         "view": "openbb_terminal.portfolio.portfolio_view.display_tail_ratio",
@@ -1227,6 +1220,14 @@ functions = {
     "portfolio.tracking_error": {
         "model": "openbb_terminal.portfolio.portfolio_model.get_tracking_error",
         "view": "openbb_terminal.portfolio.portfolio_view.display_tracking_error",
+    },
+    "portfolio.distr": {
+        "model": "openbb_terminal.portfolio.portfolio_model.get_distribution_returns",
+        "view": "openbb_terminal.portfolio.portfolio_view.display_distribution_returns",
+    },    
+    "portfolio.maxdd": {
+        "model": "openbb_terminal.portfolio.portfolio_model.get_maximum_drawdown",
+        "view": "openbb_terminal.portfolio.portfolio_view.display_maximum_drawdown",
     },
     "portfolio.rvol": {
         "model": "openbb_terminal.portfolio.portfolio_model.get_rolling_volatility",

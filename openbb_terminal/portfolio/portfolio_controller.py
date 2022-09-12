@@ -958,7 +958,7 @@ class PortfolioController(BaseController):
             if check_portfolio_benchmark_defined(
                 self.portfolio_name, self.benchmark_name
             ):
-                portfolio_view.display_maximum_drawdown(self.portfolio.portfolio_value)
+                portfolio_view.display_maximum_drawdown(self.portfolio)
 
     @log_start_end(log=logger)
     def call_rvol(self, other_args: List[str]):
@@ -1237,8 +1237,7 @@ class PortfolioController(BaseController):
                 self.portfolio_name, self.benchmark_name
             ):
                 portfolio_view.display_distribution_returns(
-                    self.portfolio.returns,
-                    self.portfolio.benchmark_returns,
+                    self.portfolio,
                     ns_parser.period,
                     ns_parser.raw,
                     ns_parser.export,
