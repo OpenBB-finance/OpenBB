@@ -1031,38 +1031,28 @@ def display_var(
     """
 
     if data_range > 0:
-        var_list, hist_var_list = qa_model.get_var(
+        df = qa_model.get_var(
             data[-data_range:], use_mean, adjusted_var, student_t, percentile, portfolio
         )
     else:
-        var_list, hist_var_list = qa_model.get_var(
+        df = qa_model.get_var(
             data, use_mean, adjusted_var, student_t, percentile, portfolio
         )
 
-    str_hist_label = "Historical VaR:"
-
     if adjusted_var:
-        str_var_label = "Adjusted VaR:"
         str_title = "Adjusted "
     elif student_t:
-        str_var_label = "Student-t VaR"
         str_title = "Student-t "
     else:
-        str_var_label = "VaR:"
         str_title = ""
 
     if symbol != "":
         symbol += " "
 
-    data_dictionary = {str_var_label: var_list, str_hist_label: hist_var_list}
-    data = pd.DataFrame(
-        data_dictionary, index=["90.0%", "95.0%", "99.0%", f"{percentile*100}%"]
-    )
-
     print_rich_table(
-        data,
+        df,
         show_index=True,
-        headers=list(data.columns),
+        headers=list(df.columns),
         title=f"[bold]{symbol}{str_title}Value at Risk[/bold]",
         floatfmt=".4f",
     )

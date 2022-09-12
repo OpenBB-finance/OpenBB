@@ -328,7 +328,22 @@ def get_var(
 
     var_list = [var_90, var_95, var_99, var_custom]
     hist_var_list = [hist_var_90, hist_var_95, hist_var_99, hist_var_custom]
-    return var_list, hist_var_list
+
+    str_hist_label = "Historical VaR:"
+
+    if adjusted_var:
+        str_var_label = "Adjusted VaR:"
+    elif student_t:
+        str_var_label = "Student-t VaR"
+    else:
+        str_var_label = "VaR:"
+
+    data_dictionary = {str_var_label: var_list, str_hist_label: hist_var_list}
+    df = pd.DataFrame(
+        data_dictionary, index=["90.0%", "95.0%", "99.0%", f"{percentile*100}%"]
+    )
+
+    return df
 
 
 def get_es(
