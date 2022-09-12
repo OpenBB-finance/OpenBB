@@ -1277,9 +1277,8 @@ class PortfolioController(BaseController):
             if check_portfolio_benchmark_defined(
                 self.portfolio_name, self.benchmark_name
             ):
-                portfolio_view.display_summary_portfolio_benchmark(
-                    self.portfolio.returns,
-                    self.portfolio.benchmark_returns,
+                portfolio_view.display_summary(
+                    self.portfolio,
                     ns_parser.period,
                     ns_parser.risk_free_rate,
                     ns_parser.export,

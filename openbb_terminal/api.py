@@ -1255,6 +1255,9 @@ functions = {
         "model": "openbb_terminal.portfolio.portfolio_model.get_omega",
         "view": "openbb_terminal.portfolio.portfolio_view.display_omega",
     },
+    "portfolio.summary": {
+        "model": "openbb_terminal.portfolio.portfolio_model.get_summary",
+    },    
     "portfolio.po.bl": {
         "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_black_litterman_portfolio",
         "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_black_litterman",

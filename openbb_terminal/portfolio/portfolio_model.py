@@ -1644,7 +1644,64 @@ def get_omega(
         threshold_end=threshold_end
     )
 
+def get_summary(
+    portfolio: PortfolioModel,
+    window: str = "all",
+    risk_free_rate: float = 0,
+):
+    """Get summary portfolio and benchmark returns
 
+    Parameters
+    ----------
+    portfolio: Portfolio
+        Portfolio object with trades loaded
+    window : str
+        interval to compare cumulative returns and benchmark
+    risk_free_rate : float
+        Risk free rate for calculations
+    """
+
+    portfolio_returns = portfolio_helper.filter_df_by_period(
+        portfolio.returns, window
+    )
+    benchmark_returns = portfolio_helper.filter_df_by_period(
+        portfolio.benchmark_returns, window
+    )
+
+    metrics = {
+        "Volatility": [portfolio_returns.std(), benchmark_returns.std()],
+        "Skew": [
+            scipy.stats.skew(portfolio_returns),
+            scipy.stats.skew(benchmark_returns),
+        ],
+        "Kurtosis": [
+            scipy.stats.kurtosis(portfolio_returns),
+            scipy.stats.kurtosis(benchmark_returns),
+        ],
+        "Maximum Drawdowwn": [
+            portfolio_helper.maximum_drawdown(portfolio_returns),
+            portfolio_helper.maximum_drawdown(benchmark_returns),
+        ],
+        "Sharpe ratio": [
+            portfolio_helper.sharpe_ratio(portfolio_returns, risk_free_rate),
+            portfolio_helper.sharpe_ratio(benchmark_returns, risk_free_rate),
+        ],
+        "Sortino ratio": [
+            portfolio_helper.sortino_ratio(portfolio_returns, risk_free_rate),
+            portfolio_helper.sortino_ratio(benchmark_returns, risk_free_rate),
+        ],
+        "R2 Score": [
+            r2_score(portfolio_returns, benchmark_returns),
+            r2_score(portfolio_returns, benchmark_returns),
+        ],
+    }
+
+    summary = pd.DataFrame(
+        metrics.values(), index=metrics.keys(), columns=["Portfolio", "Benchmark"]
+    )
+    summary["Difference"] = summary["Portfolio"] - summary["Benchmark"]
+
+    return summary
 
 
 # Old code

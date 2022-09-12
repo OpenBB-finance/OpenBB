@@ -1633,10 +1633,9 @@ def display_profit_factor(
 
 
 @log_start_end(log=logger)
-def display_summary_portfolio_benchmark(
-    portfolio_returns: pd.Series,
-    benchmark_returns: pd.Series,
-    interval: str = "all",
+def display_summary(
+    portfolio: portfolio_model.PortfolioModel,
+    window: str = "all",
     risk_free_rate: float = 0,
     export: str = "",
 ):
@@ -1644,60 +1643,20 @@ def display_summary_portfolio_benchmark(
 
     Parameters
     ----------
-    portfolio_returns : pd.Series
-        Returns of the portfolio
-    benchmark_returns : pd.Series
-        Returns of the benchmark
-    interval : str
+    portfolio: Portfolio
+        Portfolio object with trades loaded
+    window : str
         interval to compare cumulative returns and benchmark
     risk_free_rate : float
         Risk free rate for calculations
     export : str
         Export certain type of data
     """
-    portfolio_returns = portfolio_helper.filter_df_by_period(
-        portfolio_returns, interval
-    )
-    benchmark_returns = portfolio_helper.filter_df_by_period(
-        benchmark_returns, interval
-    )
-
-    metrics = {
-        "Volatility": [portfolio_returns.std(), benchmark_returns.std()],
-        "Skew": [
-            scipy.stats.skew(portfolio_returns),
-            scipy.stats.skew(benchmark_returns),
-        ],
-        "Kurtosis": [
-            scipy.stats.kurtosis(portfolio_returns),
-            scipy.stats.kurtosis(benchmark_returns),
-        ],
-        "Maximum Drawdowwn": [
-            portfolio_model.get_maximum_drawdown(portfolio_returns),
-            portfolio_model.get_maximum_drawdown(benchmark_returns),
-        ],
-        "Sharpe ratio": [
-            portfolio_model.sharpe_ratio(portfolio_returns, risk_free_rate),
-            portfolio_model.sharpe_ratio(benchmark_returns, risk_free_rate),
-        ],
-        "Sortino ratio": [
-            portfolio_model.sortino_ratio(portfolio_returns, risk_free_rate),
-            portfolio_model.sortino_ratio(benchmark_returns, risk_free_rate),
-        ],
-        "R2 Score": [
-            r2_score(portfolio_returns, benchmark_returns),
-            r2_score(portfolio_returns, benchmark_returns),
-        ],
-    }
-
-    summary = pd.DataFrame(
-        metrics.values(), index=metrics.keys(), columns=["Portfolio", "Benchmark"]
-    )
-    summary["Difference"] = summary["Portfolio"] - summary["Benchmark"]
+    summary = portfolio_model.get_summary(portfolio, window, risk_free_rate)
 
     print_rich_table(
         summary,
-        title=f"Summary of Portfolio vs Benchmark for {interval} period",
+        title=f"Summary of Portfolio vs Benchmark for {window} period",
         show_index=True,
         headers=summary.columns,
     )
