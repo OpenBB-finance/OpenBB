@@ -1186,13 +1186,17 @@ functions = {
         "model": "openbb_terminal.portfolio.portfolio_model.get_holdings_percentage",
         "view": "openbb_terminal.portfolio.portfolio_view.display_holdings_percentage",
     },
-    "portfolio.dret": {
-        "model": "openbb_terminal.portfolio.portfolio_model.get_daily_returns",
-        "view": "openbb_terminal.portfolio.portfolio_view.display_daily_returns",
+    "portfolio.yret": {
+        "model": "openbb_terminal.portfolio.portfolio_model.get_yearly_returns",
+        "view": "openbb_terminal.portfolio.portfolio_view.display_yearly_returns",
     },
     "portfolio.mret": {
         "model": "openbb_terminal.portfolio.portfolio_model.get_monthly_returns",
         "view": "openbb_terminal.portfolio.portfolio_view.display_monthly_returns",
+    },
+    "portfolio.dret": {
+        "model": "openbb_terminal.portfolio.portfolio_model.get_daily_returns",
+        "view": "openbb_terminal.portfolio.portfolio_view.display_daily_returns",
     },
     "portfolio.max_drawdown_ratio": {
         "model": "openbb_terminal.portfolio.portfolio_model.get_maximum_drawdown",

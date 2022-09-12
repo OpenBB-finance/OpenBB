@@ -1725,6 +1725,58 @@ def get_summary(
     return summary
 
 @log_start_end(log=logger)
+def get_yearly_returns(
+    portfolio: PortfolioModel,
+    window: str = "all",
+):
+    """Get yearly returns
+
+    Parameters
+    ----------
+    portfolio: Portfolio
+        Portfolio object with trades loaded
+    window : str
+        interval to compare cumulative returns and benchmark
+    """
+    portfolio_returns = portfolio_helper.filter_df_by_period(
+        portfolio.returns, window
+    )
+    benchmark_returns = portfolio_helper.filter_df_by_period(
+        portfolio.benchmark_returns, window
+    )
+
+    creturns_year_idx = list()
+    creturns_year_val = list()
+    breturns_year_idx = list()
+    breturns_year_val = list()
+
+    for year in sorted(set(portfolio_returns.index.year)):
+        creturns_year = portfolio_returns[portfolio_returns.index.year == year]
+        cumulative_returns = 100 * portfolio_helper.cumulative_returns(creturns_year)
+        creturns_year_val.append(cumulative_returns.values[-1])
+
+        breturns_year = benchmark_returns[benchmark_returns.index.year == year]
+        benchmark_c_returns = 100 * portfolio_helper.cumulative_returns(breturns_year)
+        breturns_year_val.append(benchmark_c_returns.values[-1])
+
+    df = pd.DataFrame(
+        {
+            "Portfolio": pd.Series(
+                creturns_year_val, index=list(set(portfolio_returns.index.year))
+            ),
+            "Benchmark": pd.Series(
+                breturns_year_val, index=list(set(portfolio_returns.index.year))
+            ),
+            "Difference": pd.Series(
+                np.array(creturns_year_val) - np.array(breturns_year_val),
+                index=list(set(portfolio_returns.index.year)),
+            ),
+        }
+    )
+
+    return df
+
+@log_start_end(log=logger)
 def get_monthly_returns(
     portfolio: PortfolioModel,
     window: str = "all",
@@ -1757,7 +1809,7 @@ def get_monthly_returns(
         creturns_val = list()
         for i in range(1, 13):
             creturns_year_month = creturns_year[creturns_year.index.month == i]
-            creturns_year_month_val = 100 * cumulative_returns(
+            creturns_year_month_val = 100 * portfolio_helper.cumulative_returns(
                 creturns_year_month
             )
 
@@ -1771,7 +1823,7 @@ def get_monthly_returns(
         breturns_val = list()
         for i in range(1, 13):
             breturns_year_month = breturns_year[breturns_year.index.month == i]
-            breturns_year_month_val = 100 * cumulative_returns(
+            breturns_year_month_val = 100 * portfolio_helper.cumulative_returns(
                 breturns_year_month
             )
 
@@ -1852,24 +1904,6 @@ def get_daily_returns(
 
 
 # Old code
-def cumulative_returns(data: pd.Series) -> pd.Series:
-    """Calculate cumulative returns filtered by period
-
-    Parameters
-    ----------
-    data : pd.Series
-        Series of portfolio returns
-
-    Returns
-    ----------
-    pd.Series
-        Cumulative investment returns series
-    -------
-    """
-    cumulative_returns = (1 + data.shift(periods=1, fill_value=0)).cumprod() - 1
-    return cumulative_returns
-
-
 @log_start_end(log=logger)
 def get_gaintopain_ratio(
     historical_trade_data: pd.DataFrame,

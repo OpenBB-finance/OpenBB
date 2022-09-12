@@ -291,9 +291,8 @@ def display_performance_vs_benchmark(
 
 @log_start_end(log=logger)
 def display_yearly_returns(
-    portfolio_returns: pd.Series,
-    benchmark_returns: pd.Series,
-    interval: str = "all",
+    portfolio: portfolio_model.PortfolioModel,
+    window: str = "all",
     raw: bool = False,
     export: str = "",
     external_axes: Optional[plt.Axes] = None,
@@ -302,11 +301,9 @@ def display_yearly_returns(
 
     Parameters
     ----------
-    portfolio_returns : pd.Series
-        Returns of the portfolio
-    benchmark_returns : pd.Series
-        Returns of the benchmark
-    interval : str
+    portfolio: Portfolio
+        Portfolio object with trades loaded
+    window : str
         interval to compare cumulative returns and benchmark
     raw : False
         Display raw data from cumulative return
@@ -315,48 +312,12 @@ def display_yearly_returns(
     external_axes: plt.Axes
         Optional axes to display plot on
     """
-    portfolio_returns = portfolio_helper.filter_df_by_period(
-        portfolio_returns, interval
-    )
-    benchmark_returns = portfolio_helper.filter_df_by_period(
-        benchmark_returns, interval
-    )
 
-    creturns_year_idx = list()
-    creturns_year_val = list()
-    breturns_year_idx = list()
-    breturns_year_val = list()
-
-    for year in sorted(set(portfolio_returns.index.year)):
-        creturns_year = portfolio_returns[portfolio_returns.index.year == year]
-        cumulative_returns = 100 * portfolio_model.cumulative_returns(creturns_year)
-
-        creturns_year_idx.append(datetime.strptime(f"{year}-04-15", "%Y-%m-%d"))
-        creturns_year_val.append(cumulative_returns.values[-1])
-
-        breturns_year = benchmark_returns[benchmark_returns.index.year == year]
-        benchmark_c_returns = 100 * portfolio_model.cumulative_returns(breturns_year)
-
-        breturns_year_idx.append(datetime.strptime(f"{year}-08-15", "%Y-%m-%d"))
-        breturns_year_val.append(benchmark_c_returns.values[-1])
+    df = portfolio_model.get_yearly_returns(portfolio, window)
 
     if raw:
-        yreturns = pd.DataFrame(
-            {
-                "Portfolio [%]": pd.Series(
-                    creturns_year_val, index=list(set(portfolio_returns.index.year))
-                ),
-                "Benchmark [%]": pd.Series(
-                    breturns_year_val, index=list(set(portfolio_returns.index.year))
-                ),
-                "Difference [%]": pd.Series(
-                    np.array(creturns_year_val) - np.array(breturns_year_val),
-                    index=list(set(portfolio_returns.index.year)),
-                ),
-            }
-        )
         print_rich_table(
-            yreturns.sort_index(),
+            df,
             title="Yearly Portfolio and Benchmark returns",
             headers=["Portfolio [%]", "Benchmark [%]", "Difference [%]"],
             show_index=True,
@@ -368,22 +329,29 @@ def display_yearly_returns(
         else:
             ax = external_axes
 
+        creturns_year_idx = list()
+        breturns_year_idx = list()
+
+        for year in df.index.values:
+            creturns_year_idx.append(datetime.strptime(f"{year}-04-15", "%Y-%m-%d"))
+            breturns_year_idx.append(datetime.strptime(f"{year}-08-15", "%Y-%m-%d"))
+
         ax.bar(
             creturns_year_idx,
-            creturns_year_val,
+            df["Portfolio"],
             width=100,
             label="Portfolio",
         )
         ax.bar(
             breturns_year_idx,
-            breturns_year_val,
+            df["Benchmark"],
             width=100,
             label="Benchmark",
         )
 
         ax.legend(loc="upper left")
         ax.set_ylabel("Yearly Returns [%]")
-        ax.set_title(f"Yearly Returns [%] in period {interval}")
+        ax.set_title(f"Yearly Returns [%] in period {window}")
         theme.style_primary_axis(ax)
 
         if not external_axes:
@@ -393,7 +361,7 @@ def display_yearly_returns(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "yret",
-        cumulative_returns.to_frame().join(benchmark_c_returns),
+        df,
     )
 
 

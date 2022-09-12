@@ -625,3 +625,20 @@ def maximum_drawdown(portfolio_returns: pd.Series) -> float:
     dd = (comp_ret / peak) - 1
 
     return dd.min()
+
+def cumulative_returns(data: pd.Series) -> pd.Series:
+    """Calculate cumulative returns filtered by period
+
+    Parameters
+    ----------
+    data : pd.Series
+        Series of portfolio returns
+
+    Returns
+    ----------
+    pd.Series
+        Cumulative investment returns series
+    -------
+    """
+    cumulative_returns = (1 + data.shift(periods=1, fill_value=0)).cumprod() - 1
+    return cumulative_returns
