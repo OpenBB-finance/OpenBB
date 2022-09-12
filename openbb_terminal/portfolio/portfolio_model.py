@@ -14,6 +14,7 @@ import yfinance as yf
 from sklearn.metrics import r2_score
 from pycoingecko import CoinGeckoAPI
 from openbb_terminal import portfolio
+from openbb_terminal.common.quantitative_analysis import qa_model
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.portfolio import portfolio_helper, allocation_model
@@ -26,6 +27,8 @@ logger = logging.getLogger(__name__)
 cg = CoinGeckoAPI()
 
 pd.options.mode.chained_assignment = None
+
+
 class PortfolioModel:
     """
     Class for portfolio analysis in OpenBB
@@ -1224,6 +1227,7 @@ class PortfolioModel:
 
         return pf_period_df
 
+
 # API functions
 def get_holdings_value(portfolio: PortfolioModel) -> pd.DataFrame:
     """Get holdings of assets (absolute value)
@@ -1245,6 +1249,208 @@ def get_holdings_value(portfolio: PortfolioModel) -> pd.DataFrame:
     all_holdings.index = all_holdings.index.date
 
     return all_holdings
+
+
+def get_holdings_percentage(
+    portfolio: PortfolioModel,
+):
+    """Get holdings of assets (in percentage)
+
+    Parameters
+    ----------
+    portfolio: Portfolio
+        Portfolio object with trades loaded
+    """
+
+    all_holdings = portfolio.historical_trade_data["End Value"][portfolio.tickers_list]
+
+    all_holdings = all_holdings.divide(all_holdings.sum(axis=1), axis=0) * 100
+
+    # order it a bit more in terms of magnitude
+    all_holdings = all_holdings[all_holdings.sum().sort_values(ascending=False).index]
+
+    return all_holdings
+
+
+@log_start_end(log=logger)
+def get_maximum_drawdown(
+    portfolio: PortfolioModel, is_returns: bool = False
+) -> pd.Series:
+    """Calculate the drawdown (MDD) of historical series.  Note that the calculation is done
+     on cumulative returns (or prices).  The definition of drawdown is
+
+     DD = (current value - rolling maximum) / rolling maximum
+
+    Parameters
+    ----------
+    data: pd.Series
+        Series of input values
+    is_returns: bool
+        Flag to indicate inputs are returns
+
+    Returns
+    ----------
+    pd.Series
+        Holdings series
+    pd.Series
+        Drawdown series
+    -------
+    """
+    holdings = portfolio.portfolio_value
+    if is_returns:
+        holdings = (1 + holdings).cumprod()
+
+    rolling_max = holdings.cummax()
+    drawdown = (holdings - rolling_max) / rolling_max
+
+    return holdings, drawdown
+
+
+def get_distribution_returns(
+    portfolio: PortfolioModel,
+    window: str = "all",
+):
+    """Display daily returns
+
+    Parameters
+    ----------
+    portfolio: Portfolio
+        Portfolio object with trades loaded
+    window : str
+        interval to compare cumulative returns and benchmark
+    """
+    portfolio_returns = portfolio_helper.filter_df_by_period(portfolio.returns, window)
+    benchmark_returns = portfolio_helper.filter_df_by_period(
+        portfolio.benchmark_returns, window
+    )
+
+    df = pd.DataFrame(portfolio_returns).join(pd.DataFrame(benchmark_returns))
+    df.columns.values[0] = "portfolio"
+    df.columns.values[1] = "benchmark"
+
+    return df
+
+
+def get_rolling_volatility(
+    portfolio: PortfolioModel, window: str = "1y"
+) -> pd.DataFrame:
+    """Get rolling volatility
+
+    Parameters
+    ----------
+    portfolio: Portfolio
+        Portfolio object with trades loaded
+    window : str
+        Rolling window size to use
+        Possible options: mtd, qtd, ytd, 1d, 5d, 10d, 1m, 3m, 6m, 1y, 3y, 5y, 10y
+    """
+
+    portfolio_rvol = portfolio_helper.rolling_volatility(portfolio.returns, window)
+    benchmark_rvol = portfolio_helper.rolling_volatility(
+        portfolio.benchmark_returns, window
+    )
+    df = pd.DataFrame(portfolio_rvol).join(pd.DataFrame(benchmark_rvol))
+    df.columns.values[0] = "portfolio"
+    df.columns.values[1] = "benchmark"
+
+    return df
+
+
+def get_rolling_sharpe(
+    portfolio: pd.DataFrame, risk_free_rate: float = 0, window: str = "1y"
+) -> pd.DataFrame:
+    """Get rolling sharpe ratio
+
+    Parameters
+    ----------
+    portfolio_returns : pd.Series
+        Series of portfolio returns
+    risk_free_rate : float
+        Risk free rate
+    window : str
+        Rolling window to use
+        Possible options: mtd, qtd, ytd, 1d, 5d, 10d, 1m, 3m, 6m, 1y, 3y, 5y, 10y
+
+    Returns
+    -------
+    pd.DataFrame
+        Rolling sharpe ratio DataFrame
+    """
+
+    portfolio_rsharpe = portfolio_helper.rolling_sharpe(
+        portfolio.returns, risk_free_rate, window
+    )
+    benchmark_rsharpe = portfolio_helper.rolling_sharpe(
+        portfolio.benchmark_returns, risk_free_rate, window
+    )
+    df = pd.DataFrame(portfolio_rsharpe).join(pd.DataFrame(benchmark_rsharpe))
+    df.columns.values[0] = "portfolio"
+    df.columns.values[1] = "benchmark"
+
+    return df
+
+
+def get_rolling_sortino(
+    portfolio: PortfolioModel,
+    window: str = "1y",
+    risk_free_rate: float = 0,
+) -> pd.DataFrame:
+    """Get rolling sortino
+
+    Parameters
+    ----------
+    portfolio : PortfolioModel
+        Portfolio object
+    window: str
+        interval for window to consider
+        Possible options: mtd, qtd, ytd, 1d, 5d, 10d, 1m, 3m, 6m, 1y, 3y, 5y, 10y
+    risk_free_rate: float
+        Value to use for risk free rate in sharpe/other calculations
+    Returns
+    -------
+    pd.DataFrame
+        Rolling sortino ratio DataFrame
+    """
+
+    portfolio_rsharpe = portfolio_helper.rolling_sortino(
+        portfolio.returns, risk_free_rate, window
+    )
+    benchmark_rsharpe = portfolio_helper.rolling_sortino(
+        portfolio.benchmark_returns, risk_free_rate, window
+    )
+    df = pd.DataFrame(portfolio_rsharpe).join(pd.DataFrame(benchmark_rsharpe))
+    df.columns.values[0] = "portfolio"
+    df.columns.values[1] = "benchmark"
+
+    return df
+
+
+@log_start_end(log=logger)
+def get_rolling_beta(
+    portfolio: PortfolioModel,
+    window: str = "1y",
+) -> pd.DataFrame:
+    """Get rolling beta using portfolio and benchmark returns
+
+    Parameters
+    ----------
+    portfolio : PortfolioModel
+        Portfolio object
+    window: string
+        Interval used for rolling values.
+        Possible options: mtd, qtd, ytd, 1d, 5d, 10d, 1m, 3m, 6m, 1y, 3y, 5y, 10y.
+
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of the portfolio's rolling beta
+    """
+
+    df = portfolio_helper.rolling_beta(
+        portfolio.returns, portfolio.benchmark_returns, window
+    )
+
+    return df
 
 
 def get_performance_vs_benchmark(
@@ -1352,184 +1558,38 @@ def get_performance_vs_benchmark(
 
         return totals.replace(0, "-")
 
-def get_holdings_percentage(
+
+def get_var(
     portfolio: PortfolioModel,
+    use_mean: bool = False,
+    adjusted_var: bool = False,
+    student_t: bool = False,
+    percentile: float = 0.999,
 ):
-    """Get holdings of assets (in percentage)
+
+    """Displays portfolio VaR
 
     Parameters
     ----------
     portfolio: Portfolio
         Portfolio object with trades loaded
+    use_mean: bool
+        if one should use the data mean return
+    adjusted_var: bool
+        if one should have VaR adjusted for skew and kurtosis (Cornish-Fisher-Expansion)
+    student_t: bool
+        If one should use the student-t distribution
+    percentile: int
+        var percentile
     """
-
-    all_holdings = portfolio.historical_trade_data["End Value"][portfolio.tickers_list]
-
-    all_holdings = all_holdings.divide(all_holdings.sum(axis=1), axis=0) * 100
-
-    # order it a bit more in terms of magnitude
-    all_holdings = all_holdings[all_holdings.sum().sort_values(ascending=False).index]
-
-    return all_holdings
-
-@log_start_end(log=logger)
-def get_maximum_drawdown(portfolio: PortfolioModel, is_returns: bool = False) -> pd.Series:
-    """Calculate the drawdown (MDD) of historical series.  Note that the calculation is done
-     on cumulative returns (or prices).  The definition of drawdown is
-
-     DD = (current value - rolling maximum) / rolling maximum
-
-    Parameters
-    ----------
-    data: pd.Series
-        Series of input values
-    is_returns: bool
-        Flag to indicate inputs are returns
-
-    Returns
-    ----------
-    pd.Series
-        Holdings series
-    pd.Series
-        Drawdown series
-    -------
-    """
-    holdings = portfolio.portfolio_value
-    if is_returns:
-        holdings = (1 + holdings).cumprod()
-
-    rolling_max = holdings.cummax()
-    drawdown = (holdings - rolling_max) / rolling_max
-
-    return holdings, drawdown
-
-def get_distribution_returns(
-    portfolio: PortfolioModel,
-    window: str = "all",
-):
-    """Display daily returns
-
-    Parameters
-    ----------
-    portfolio: Portfolio
-        Portfolio object with trades loaded
-    window : str
-        interval to compare cumulative returns and benchmark
-    """
-    portfolio_returns = portfolio_helper.filter_df_by_period(portfolio.returns, window)
-    benchmark_returns = portfolio_helper.filter_df_by_period(portfolio.benchmark_returns, window)
-
-    df = pd.DataFrame(portfolio_returns).join(pd.DataFrame(benchmark_returns))
-    df.columns.values[0] = "portfolio"
-    df.columns.values[1] = "benchmark"
-
-    return df
-
-def get_rolling_volatility(
-    portfolio: PortfolioModel, window: str = "1y"
-) -> pd.DataFrame:
-    """Get rolling volatility
-
-    Parameters
-    ----------
-    portfolio: Portfolio
-        Portfolio object with trades loaded
-    window : str
-        Rolling window size to use
-        Possible options: mtd, qtd, ytd, 1d, 5d, 10d, 1m, 3m, 6m, 1y, 3y, 5y, 10y
-    """
-     
-    portfolio_rvol = portfolio_helper.rolling_volatility(portfolio.returns, window)
-    benchmark_rvol = portfolio_helper.rolling_volatility(portfolio.benchmark_returns, window)
-    df = pd.DataFrame(portfolio_rvol).join(pd.DataFrame(benchmark_rvol))
-    df.columns.values[0] = "portfolio"
-    df.columns.values[1] = "benchmark"
-
-    return df
-
-def get_rolling_sharpe(
-    portfolio: pd.DataFrame, risk_free_rate: float = 0, window: str = "1y"
-) -> pd.DataFrame:
-    """Get rolling sharpe ratio
-
-    Parameters
-    ----------
-    portfolio_returns : pd.Series
-        Series of portfolio returns
-    risk_free_rate : float
-        Risk free rate
-    window : str
-        Rolling window to use
-        Possible options: mtd, qtd, ytd, 1d, 5d, 10d, 1m, 3m, 6m, 1y, 3y, 5y, 10y
-
-    Returns
-    -------
-    pd.DataFrame
-        Rolling sharpe ratio DataFrame
-    """
-
-    portfolio_rsharpe = portfolio_helper.rolling_sharpe(portfolio.returns, risk_free_rate, window)
-    benchmark_rsharpe = portfolio_helper.rolling_sharpe(portfolio.benchmark_returns, risk_free_rate, window)
-    df = pd.DataFrame(portfolio_rsharpe).join(pd.DataFrame(benchmark_rsharpe))
-    df.columns.values[0] = "portfolio"
-    df.columns.values[1] = "benchmark"
-
-    return df 
-
-def get_rolling_sortino(    
-    portfolio: PortfolioModel,
-    window: str = "1y",
-    risk_free_rate: float = 0,
-) -> pd.DataFrame:
-    """Get rolling sortino
-
-    Parameters
-    ----------
-    portfolio : PortfolioModel
-        Portfolio object
-    window: str
-        interval for window to consider
-        Possible options: mtd, qtd, ytd, 1d, 5d, 10d, 1m, 3m, 6m, 1y, 3y, 5y, 10y
-    risk_free_rate: float
-        Value to use for risk free rate in sharpe/other calculations
-    Returns
-    -------
-    pd.DataFrame
-        Rolling sortino ratio DataFrame
-    """
-
-    portfolio_rsharpe = portfolio_helper.rolling_sortino(portfolio.returns, risk_free_rate, window)
-    benchmark_rsharpe = portfolio_helper.rolling_sortino(portfolio.benchmark_returns, risk_free_rate, window)
-    df = pd.DataFrame(portfolio_rsharpe).join(pd.DataFrame(benchmark_rsharpe))
-    df.columns.values[0] = "portfolio"
-    df.columns.values[1] = "benchmark"
-
-    return df 
-
-@log_start_end(log=logger)
-def get_rolling_beta(
-    portfolio: PortfolioModel,
-    window: str = "1y",
-) -> pd.DataFrame:
-    """Get rolling beta using portfolio and benchmark returns
-
-    Parameters
-    ----------
-    portfolio : PortfolioModel
-        Portfolio object
-    window: string
-        Interval used for rolling values.
-        Possible options: mtd, qtd, ytd, 1d, 5d, 10d, 1m, 3m, 6m, 1y, 3y, 5y, 10y.
-
-    Returns
-    -------
-    pd.DataFrame
-        DataFrame of the portfolio's rolling beta
-    """
-
-    df = portfolio_helper.rolling_beta(portfolio.returns, portfolio.benchmark_returns, window)
-
-    return df
+    return qa_model.get_var(
+        data=portfolio.returns,
+        use_mean=use_mean,
+        adjusted_var=adjusted_var,
+        student_t=student_t,
+        percentile=percentile / 100,
+        portfolio=True,
+    )
 
 
 # Old code

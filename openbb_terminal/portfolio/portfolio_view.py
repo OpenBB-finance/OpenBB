@@ -13,6 +13,7 @@ from matplotlib import pyplot as plt
 import seaborn as sns
 from sklearn.metrics import r2_score
 
+from openbb_terminal.common.quantitative_analysis import qa_view
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.portfolio import (
@@ -1067,9 +1068,7 @@ def display_rolling_beta(
         ax = external_axes
 
     metric = "beta"
-    rolling_beta = portfolio_model.get_rolling_beta(
-        portfolio, window
-    )
+    rolling_beta = portfolio_model.get_rolling_beta(portfolio, window)
     rolling_beta.plot(ax=ax)
 
     ax.set_title(f"Rolling {metric.title()} using {window} window")
@@ -1707,4 +1706,38 @@ def display_summary_portfolio_benchmark(
         os.path.dirname(os.path.abspath(__file__)),
         "summary",
         summary,
+    )
+
+
+@log_start_end(log=logger)
+def display_var(
+    portfolio: portfolio_model.PortfolioModel,
+    use_mean: bool = False,
+    adjusted_var: bool = False,
+    student_t: bool = False,
+    percentile: float = 0.999,
+):
+    """Display portfolio VaR
+
+    Parameters
+    ----------
+    portfolio: Portfolio
+        Portfolio object with trades loaded
+    use_mean: bool
+        if one should use the data mean return
+    adjusted_var: bool
+        if one should have VaR adjusted for skew and kurtosis (Cornish-Fisher-Expansion)
+    student_t: bool
+        If one should use the student-t distribution
+    percentile: int
+        var percentile
+    """
+    qa_view.display_var(
+        data=portfolio.returns,
+        symbol="Portfolio",
+        use_mean=use_mean,
+        adjusted_var=adjusted_var,
+        student_t=student_t,
+        percentile=percentile / 100,
+        portfolio=True,
     )

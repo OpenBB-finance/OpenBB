@@ -695,14 +695,12 @@ class PortfolioController(BaseController):
                         "Select either the adjusted or the student_t parameter.\n"
                     )
                 else:
-                    qa_view.display_var(
-                        self.portfolio.returns,
-                        "Portfolio",
-                        ns_parser.use_mean,
-                        ns_parser.adjusted,
-                        ns_parser.student_t,
-                        ns_parser.percentile / 100,
-                        True,
+                    portfolio_view.display_var(
+                        portfolio=self.portfolio,
+                        use_mean=ns_parser.use_mean,
+                        adjusted_var=ns_parser.adjusted,
+                        student_t=ns_parser.student_t,
+                        percentile=ns_parser.percentile,
                     )
             else:
                 console.print(

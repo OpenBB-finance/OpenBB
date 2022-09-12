@@ -469,6 +469,7 @@ def rolling_volatility(
     length = PERIODS_DAYS[window]
     return portfolio_returns.rolling(length).std()
 
+
 def sharpe_ratio(portfolio_returns: pd.Series, risk_free_rate: float) -> float:
     """Get sharpe ratio
 
@@ -488,6 +489,7 @@ def sharpe_ratio(portfolio_returns: pd.Series, risk_free_rate: float) -> float:
     sigma = portfolio_returns.std()
 
     return mean / sigma
+
 
 def rolling_sharpe(
     portfolio_returns: pd.DataFrame, risk_free_rate: float, window: str = "1y"
@@ -517,6 +519,7 @@ def rolling_sharpe(
     )
     return rolling_sharpe_df
 
+
 def sortino_ratio(portfolio_returns: pd.Series, risk_free_rate: float) -> float:
     """Get sortino ratio
 
@@ -536,6 +539,7 @@ def sortino_ratio(portfolio_returns: pd.Series, risk_free_rate: float) -> float:
     std_neg = portfolio_returns[portfolio_returns < 0].std()
 
     return mean / std_neg
+
 
 def rolling_sortino(
     portfolio_returns: pd.Series, risk_free_rate: float, window: str = "1y"
@@ -562,6 +566,7 @@ def rolling_sortino(
     )
 
     return rolling_sortino_df
+
 
 def rolling_beta(
     portfolio_returns: pd.Series,
@@ -601,6 +606,7 @@ def rolling_beta(
 
     return rolling_beta
 
+
 def maximum_drawdown(portfolio_returns: pd.Series) -> float:
     """Get maximum drawdown
 
@@ -618,4 +624,4 @@ def maximum_drawdown(portfolio_returns: pd.Series) -> float:
     peak = comp_ret.expanding(min_periods=1).max()
     dd = (comp_ret / peak) - 1
 
-    return dd.min()    
+    return dd.min()

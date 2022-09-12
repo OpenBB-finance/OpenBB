@@ -1178,9 +1178,6 @@ functions = {
         "model": "openbb_terminal.portfolio.portfolio_model.get_gaintopain_ratio",
         "view": "openbb_terminal.portfolio.portfolio_view.display_gaintopain_ratio",
     },
-    "portfolio.perf": {
-        "model": "openbb_terminal.portfolio.portfolio_model.get_performance_vs_benchmark",
-    },
     "portfolio.holdv": {
         "model": "openbb_terminal.portfolio.portfolio_model.get_holdings_value",
         "view": "openbb_terminal.portfolio.portfolio_view.display_holdings_value",
@@ -1189,42 +1186,14 @@ functions = {
         "model": "openbb_terminal.portfolio.portfolio_model.get_holdings_percentage",
         "view": "openbb_terminal.portfolio.portfolio_view.display_holdings_percentage",
     },
-    "portfolio.info_ratio": {
-        "model": "openbb_terminal.portfolio.portfolio_model.get_information_ratio",
-        "view": "openbb_terminal.portfolio.portfolio_view.display_information_ratio",
-    },
-    "portfolio.jen_alpha": {
-        "model": "openbb_terminal.portfolio.portfolio_model.get_jensens_alpha",
-        "view": "openbb_terminal.portfolio.portfolio_view.display_jensens_alpha",
-    },
-    "portfolio.kelly_crit": {
-        "model": "openbb_terminal.portfolio.portfolio_model.get_kelly_criterion",
-        "view": "openbb_terminal.portfolio.portfolio_view.display_kelly_criterion",
-    },
     "portfolio.max_drawdown_ratio": {
         "model": "openbb_terminal.portfolio.portfolio_model.get_maximum_drawdown",
         "view": "openbb_terminal.portfolio.portfolio_view.display_maximum_drawdown_ratio",
     },
-    "portfolio.payoff_ratio": {
-        "model": "openbb_terminal.portfolio.portfolio_model.get_payoff_ratio",
-        "view": "openbb_terminal.portfolio.portfolio_view.display_payoff_ratio",
-    },
-    "portfolio.prof_factor": {
-        "model": "openbb_terminal.portfolio.portfolio_model.get_profit_factor",
-        "view": "openbb_terminal.portfolio.portfolio_view.display_profit_factor",
-    },
-    "portfolio.tail_ratio": {
-        "model": "openbb_terminal.portfolio.portfolio_model.get_tail_ratio",
-        "view": "openbb_terminal.portfolio.portfolio_view.display_tail_ratio",
-    },
-    "portfolio.tracking_error": {
-        "model": "openbb_terminal.portfolio.portfolio_model.get_tracking_error",
-        "view": "openbb_terminal.portfolio.portfolio_view.display_tracking_error",
-    },
     "portfolio.distr": {
         "model": "openbb_terminal.portfolio.portfolio_model.get_distribution_returns",
         "view": "openbb_terminal.portfolio.portfolio_view.display_distribution_returns",
-    },    
+    },
     "portfolio.maxdd": {
         "model": "openbb_terminal.portfolio.portfolio_model.get_maximum_drawdown",
         "view": "openbb_terminal.portfolio.portfolio_view.display_maximum_drawdown",
@@ -1244,6 +1213,40 @@ functions = {
     "portfolio.rbeta": {
         "model": "openbb_terminal.portfolio.portfolio_model.get_rolling_beta",
         "view": "openbb_terminal.portfolio.portfolio_view.display_rolling_beta",
+    },
+    "portfolio.perf": {
+        "model": "openbb_terminal.portfolio.portfolio_model.get_performance_vs_benchmark",
+    },
+    "portfolio.payoff_ratio": {
+        "model": "openbb_terminal.portfolio.portfolio_model.get_payoff_ratio",
+        "view": "openbb_terminal.portfolio.portfolio_view.display_payoff_ratio",
+    },
+    "portfolio.prof_factor": {
+        "model": "openbb_terminal.portfolio.portfolio_model.get_profit_factor",
+        "view": "openbb_terminal.portfolio.portfolio_view.display_profit_factor",
+    },
+    "portfolio.tail_ratio": {
+        "model": "openbb_terminal.portfolio.portfolio_model.get_tail_ratio",
+        "view": "openbb_terminal.portfolio.portfolio_view.display_tail_ratio",
+    },
+    "portfolio.tracking_error": {
+        "model": "openbb_terminal.portfolio.portfolio_model.get_tracking_error",
+        "view": "openbb_terminal.portfolio.portfolio_view.display_tracking_error",
+    },
+    "portfolio.info_ratio": {
+        "model": "openbb_terminal.portfolio.portfolio_model.get_information_ratio",
+        "view": "openbb_terminal.portfolio.portfolio_view.display_information_ratio",
+    },
+    "portfolio.jen_alpha": {
+        "model": "openbb_terminal.portfolio.portfolio_model.get_jensens_alpha",
+        "view": "openbb_terminal.portfolio.portfolio_view.display_jensens_alpha",
+    },
+    "portfolio.kelly_crit": {
+        "model": "openbb_terminal.portfolio.portfolio_model.get_kelly_criterion",
+        "view": "openbb_terminal.portfolio.portfolio_view.display_kelly_criterion",
+    },
+    "portfolio.var": {
+        "model": "openbb_terminal.portfolio.portfolio_model.get_var",
     },
     "portfolio.po.bl": {
         "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_black_litterman_portfolio",
