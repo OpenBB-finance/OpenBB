@@ -267,7 +267,9 @@ def display_performance_vs_benchmark(
         Whether to also show all trades made and their performance (default is False)
     """
 
-    df = portfolio_model.get_performance_vs_benchmark(portfolio, interval, show_all_trades)
+    df = portfolio_model.get_performance_vs_benchmark(
+        portfolio, interval, show_all_trades
+    )
 
     if show_all_trades:
         print_rich_table(

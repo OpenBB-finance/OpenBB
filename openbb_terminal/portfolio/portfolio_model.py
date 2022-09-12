@@ -1231,25 +1231,27 @@ def get_holdings_value(portfolio: PortfolioModel) -> pd.DataFrame:
     Parameters
     ----------
     portfolio: Portfolio
-        Portfolio object with trades loaded 
-    
+        Portfolio object with trades loaded
+
     Returns
     -------
     pd.DataFrame
         DataFrame of holdings
     """
     all_holdings = portfolio.historical_trade_data["End Value"][portfolio.tickers_list]
-    
+
     all_holdings["Total Value"] = all_holdings.sum(axis=1)
     # No need to account for time since this is daily data
     all_holdings.index = all_holdings.index.date
 
     return all_holdings
 
+
 def get_performance_vs_benchmark(
     portfolio: PortfolioModel,
     interval: str = "all",
-    show_all_trades: bool = False,) -> pd.DataFrame:
+    show_all_trades: bool = False,
+) -> pd.DataFrame:
 
     """Get portfolio performance vs the benchmark
 
@@ -1293,7 +1295,7 @@ def get_performance_vs_benchmark(
 
         return combined
     else:
-        
+
         # Calculate total value and return
         total_investment_difference = (
             portfolio_trades["Portfolio Investment"].sum()
