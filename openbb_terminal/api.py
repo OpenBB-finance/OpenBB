@@ -1228,25 +1228,21 @@ functions = {
         "model": "openbb_terminal.portfolio.portfolio_model.get_tracking_error",
         "view": "openbb_terminal.portfolio.portfolio_view.display_tracking_error",
     },
-    "portfolio.roll_sharpe": {
-        "model": "openbb_terminal.portfolio.portfolio_model.rolling_sharpe",
-        "view": "openbb_terminal.portfolio.portfolio_view.display_rolling_sharpe",
-    },
-    "portfolio.roll_sortino": {
-        "model": "openbb_terminal.portfolio.portfolio_model.rolling_sortino",
-        "view": "openbb_terminal.portfolio.portfolio_view.display_rolling_sortino",
-    },
-    "portfolio.roll_volatility": {
-        "model": "openbb_terminal.portfolio.portfolio_model.rolling_volatility",
+    "portfolio.rvol": {
+        "model": "openbb_terminal.portfolio.portfolio_model.get_rolling_volatility",
         "view": "openbb_terminal.portfolio.portfolio_view.display_rolling_volatility",
     },
-    "portfolio.sharpe_ratio": {
-        "model": "openbb_terminal.portfolio.portfolio_model.sharpe_ratio",
-        "view": "openbb_terminal.portfolio.portfolio_view.display_sharpe_ratio",
+    "portfolio.rsharpe": {
+        "model": "openbb_terminal.portfolio.portfolio_model.get_rolling_sharpe",
+        "view": "openbb_terminal.portfolio.portfolio_view.display_rolling_sharpe",
     },
-    "portfolio.sortino_ratio": {
-        "model": "openbb_terminal.portfolio.portfolio_model.sortino_ratio",
-        "view": "openbb_terminal.portfolio.portfolio_view.display_sortino_ratio",
+    "portfolio.rsortino": {
+        "model": "openbb_terminal.portfolio.portfolio_model.get_rolling_sortino",
+        "view": "openbb_terminal.portfolio.portfolio_view.display_rolling_sortino",
+    },
+    "portfolio.rbeta": {
+        "model": "openbb_terminal.portfolio.portfolio_model.get_rolling_beta",
+        "view": "openbb_terminal.portfolio.portfolio_view.display_rolling_beta",
     },
     "portfolio.po.bl": {
         "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_black_litterman_portfolio",

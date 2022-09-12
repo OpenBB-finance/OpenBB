@@ -877,9 +877,8 @@ def display_holdings_percentage(
 
 @log_start_end(log=logger)
 def display_rolling_volatility(
-    benchmark_returns: pd.Series,
-    portfolio_returns: pd.Series,
-    interval: str = "1y",
+    portfolio: portfolio_model.PortfolioModel,
+    window: str = "1y",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -887,10 +886,8 @@ def display_rolling_volatility(
 
     Parameters
     ----------
-    portfolio_returns : pd.Series
-        Returns of the portfolio
-    benchmark_returns : pd.Series
-        Returns of the benchmark
+    portfolio : PortfolioModel
+        Portfolio object
     interval: str
         interval for window to consider
     export: str
@@ -898,6 +895,7 @@ def display_rolling_volatility(
     external_axes: Optional[List[plt.Axes]]
         Optional axes to display plot on
     """
+
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     else:
@@ -907,17 +905,17 @@ def display_rolling_volatility(
             return
         ax = external_axes
 
-    rolling_volatility = portfolio_model.rolling_volatility(portfolio_returns, interval)
-    rolling_volatility_bench = portfolio_model.rolling_volatility(
-        benchmark_returns, interval
-    )
+    metric = "volatility"
+    df = portfolio_model.get_rolling_volatility(portfolio, window)
+    df_portfolio = df["portfolio"]
+    df_benchmark = df["benchmark"]
 
-    rolling_volatility.plot(ax=ax)
-    rolling_volatility_bench.plot(ax=ax)
-    ax.set_title(f"Rolling Volatility using {interval} window")
+    df_portfolio.plot(ax=ax)
+    df_benchmark.plot(ax=ax)
+    ax.set_title(f"Rolling {metric.title()} using {window} window")
     ax.set_xlabel("Date")
     ax.legend(["Portfolio", "Benchmark"], loc="upper left")
-    ax.set_xlim(rolling_volatility.index[0], rolling_volatility.index[-1])
+    ax.set_xlim(df_portfolio.index[0], df_portfolio.index[-1])
 
     if external_axes is None:
         theme.visualize_output()
@@ -925,16 +923,15 @@ def display_rolling_volatility(
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "rvol",
-        rolling_volatility.to_frame().join(rolling_volatility_bench),
+        metric,
+        df_portfolio.to_frame().join(df_benchmark),
     )
 
 
 @log_start_end(log=logger)
 def display_rolling_sharpe(
-    benchmark_returns: pd.Series,
-    portfolio_returns: pd.Series,
-    interval: str = "1y",
+    portfolio: portfolio_model.PortfolioModel,
+    window: str = "1y",
     risk_free_rate: float = 0,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -943,11 +940,9 @@ def display_rolling_sharpe(
 
     Parameters
     ----------
-    portfolio_returns : pd.Series
-        Returns of the portfolio
-    benchmark_returns : pd.Series
-        Returns of the benchmark
-    interval: str
+    portfolio : PortfolioModel
+        Portfolio object
+    window: str
         interval for window to consider
     risk_free_rate: float
         Value to use for risk free rate in sharpe/other calculations
@@ -965,19 +960,17 @@ def display_rolling_sharpe(
             return
         ax = external_axes
 
-    rolling_sharpe = portfolio_model.rolling_sharpe(
-        portfolio_returns, risk_free_rate, interval
-    )
-    rolling_sharpe_bench = portfolio_model.rolling_sharpe(
-        benchmark_returns, risk_free_rate, interval
-    )
+    metric = "sharpe"
+    df = portfolio_model.get_rolling_sharpe(portfolio, risk_free_rate, window)
+    df_portfolio = df["portfolio"]
+    df_benchmark = df["benchmark"]
 
-    rolling_sharpe.plot(ax=ax)
-    rolling_sharpe_bench.plot(ax=ax)
-    ax.set_title(f"Rolling Sharpe using {interval} window")
+    df_portfolio.plot(ax=ax)
+    df_benchmark.plot(ax=ax)
+    ax.set_title(f"Rolling {metric.title()} using {window} window")
     ax.set_xlabel("Date")
     ax.legend(["Portfolio", "Benchmark"], loc="upper left")
-    ax.set_xlim(rolling_sharpe.index[0], rolling_sharpe.index[-1])
+    ax.set_xlim(df_portfolio.index[0], df_portfolio.index[-1])
 
     if external_axes is None:
         theme.visualize_output()
@@ -985,16 +978,15 @@ def display_rolling_sharpe(
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "rsharpe",
-        rolling_sharpe.to_frame().join(rolling_sharpe_bench),
+        metric,
+        df_portfolio.to_frame().join(df_benchmark),
     )
 
 
 @log_start_end(log=logger)
 def display_rolling_sortino(
-    benchmark_returns: pd.Series,
-    portfolio_returns: pd.Series,
-    interval: str = "1y",
+    portfolio: portfolio_model.PortfolioModel,
+    window: str = "1y",
     risk_free_rate: float = 0,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -1003,11 +995,9 @@ def display_rolling_sortino(
 
     Parameters
     ----------
-    portfolio_returns : pd.Series
-        Returns of the portfolio
-    benchmark_returns : pd.Series
-        Returns of the benchmark
-    interval: str
+    portfolio : PortfolioModel
+        Portfolio object
+    window: str
         interval for window to consider
     risk_free_rate: float
         Value to use for risk free rate in sharpe/other calculations
@@ -1025,19 +1015,17 @@ def display_rolling_sortino(
             return
         ax = external_axes
 
-    rolling_sortino = portfolio_model.rolling_sortino(
-        portfolio_returns, risk_free_rate, interval
-    )
-    rolling_sortino_bench = portfolio_model.rolling_sortino(
-        benchmark_returns, risk_free_rate, interval
-    )
+    metric = "sortino"
+    df = portfolio_model.get_rolling_sharpe(portfolio, risk_free_rate, window)
+    df_portfolio = df["portfolio"]
+    df_benchmark = df["benchmark"]
 
-    rolling_sortino.plot(ax=ax)
-    rolling_sortino_bench.plot(ax=ax)
-    ax.set_title(f"Rolling Sortino using {interval} window")
+    df_portfolio.plot(ax=ax)
+    df_benchmark.plot(ax=ax)
+    ax.set_title(f"Rolling {metric.title()} using {window} window")
     ax.set_xlabel("Date")
     ax.legend(["Portfolio", "Benchmark"], loc="upper left")
-    ax.set_xlim(rolling_sortino.index[0], rolling_sortino.index[-1])
+    ax.set_xlim(df_portfolio.index[0], df_portfolio.index[-1])
 
     if external_axes is None:
         theme.visualize_output()
@@ -1045,16 +1033,15 @@ def display_rolling_sortino(
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "rsortino",
-        rolling_sortino.to_frame().join(rolling_sortino_bench),
+        metric,
+        df_portfolio.to_frame().join(df_benchmark),
     )
 
 
 @log_start_end(log=logger)
 def display_rolling_beta(
-    portfolio_returns: pd.Series,
-    benchmark_returns: pd.Series,
-    interval: str = "1y",
+    portfolio: portfolio_model.PortfolioModel,
+    window: str = "1y",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -1062,11 +1049,9 @@ def display_rolling_beta(
 
     Parameters
     ----------
-    portfolio_returns : pd.Series
-        Returns of the portfolio
-    benchmark_returns : pd.Series
-        Returns of the benchmark
-    interval: str
+    portfolio : PortfolioModel
+        Portfolio object
+    window: str
         interval for window to consider
     export: str
         Export to file
@@ -1082,12 +1067,13 @@ def display_rolling_beta(
             return
         ax = external_axes
 
+    metric = "beta"
     rolling_beta = portfolio_model.get_rolling_beta(
-        portfolio_returns, benchmark_returns, interval
+        portfolio, window
     )
     rolling_beta.plot(ax=ax)
 
-    ax.set_title(f"Rolling Beta using {interval} window")
+    ax.set_title(f"Rolling {metric.title()} using {window} window")
     ax.set_xlabel("Date")
     ax.hlines(
         [1],
@@ -1105,7 +1091,7 @@ def display_rolling_beta(
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "rbeta",
+        metric,
         rolling_beta,
     )
 
