@@ -1452,7 +1452,7 @@ def get_rolling_beta(
 
     return df
 
-
+@log_start_end(log=logger)
 def get_performance_vs_benchmark(
     portfolio: PortfolioModel,
     interval: str = "all",
@@ -1558,7 +1558,7 @@ def get_performance_vs_benchmark(
 
         return totals.replace(0, "-")
 
-
+@log_start_end(log=logger)
 def get_var(
     portfolio: PortfolioModel,
     use_mean: bool = False,
@@ -1567,7 +1567,7 @@ def get_var(
     percentile: float = 0.999,
 ):
 
-    """Displays portfolio VaR
+    """Get portfolio VaR
 
     Parameters
     ----------
@@ -1591,6 +1591,34 @@ def get_var(
         portfolio=True,
     )
 
+@log_start_end(log=logger)
+def get_es(
+    portfolio: PortfolioModel,
+    use_mean: bool = False,
+    distribution: str = "normal",
+    percentile: float = 0.999,
+):
+    """Displays expected shortfall
+
+    Parameters
+    ----------
+    portfolio: Portfolio
+        Portfolio object with trades loaded
+    use_mean:
+        if one should use the data mean return
+    distribution: str
+        choose distribution to use: logistic, laplace, normal
+    percentile: int
+        es percentile
+    """
+    
+    return qa_model.get_es(
+        data=portfolio.returns,
+        use_mean=use_mean,
+        distribution=distribution,
+        percentile=percentile / 100,
+        portfolio=True,
+    )
 
 # Old code
 def cumulative_returns(data: pd.Series) -> pd.Series:

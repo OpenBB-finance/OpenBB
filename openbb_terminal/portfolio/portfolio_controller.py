@@ -730,7 +730,7 @@ class PortfolioController(BaseController):
             "-d",
             "--dist",
             "--distributions",
-            dest="distributions",
+            dest="distribution",
             type=str,
             choices=self.VALID_DISTRIBUTIONS,
             default="normal",
@@ -752,13 +752,11 @@ class PortfolioController(BaseController):
 
         if ns_parser and self.portfolio is not None:
             if self.portfolio_name:
-                qa_view.display_es(
-                    self.portfolio.returns,
-                    "Portfolio",
-                    ns_parser.use_mean,
-                    ns_parser.distributions,
-                    ns_parser.percentile / 100,
-                    True,
+                portfolio_view.display_es(
+                    portfolio=self.portfolio,
+                    use_mean=ns_parser.use_mean,
+                    distribution=ns_parser.distribution,
+                    percentile=ns_parser.percentile / 100,
                 )
             else:
                 console.print(

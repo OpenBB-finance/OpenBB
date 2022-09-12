@@ -1741,3 +1741,33 @@ def display_var(
         percentile=percentile / 100,
         portfolio=True,
     )
+
+@log_start_end(log=logger)
+def display_es(
+        portfolio: portfolio_model.PortfolioModel,
+        use_mean: bool = False,
+        distribution: str = "normal",
+        percentile: float = 0.999,
+):
+    """Displays expected shortfall
+
+    Parameters
+    ----------
+    portfolio: Portfolio
+        Portfolio object with trades loaded
+    use_mean:
+        if one should use the data mean return
+    distribution: str
+        choose distribution to use: logistic, laplace, normal
+    percentile: int
+        es percentile
+    """
+
+    qa_view.display_es(
+        data=portfolio.returns,
+        symbol="Portfolio",
+        use_mean=use_mean,
+        distribution=distribution,
+        percentile=percentile / 100,
+        portfolio=True,
+    )
