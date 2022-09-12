@@ -25,6 +25,7 @@ from oandapyV20.exceptions import V20Error
 
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.core.config.paths import USER_ENV_FILE
 from openbb_terminal.cryptocurrency.coinbase_helpers import (
     CoinbaseProAuth,
     make_coinbase_request,
@@ -79,7 +80,10 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
     cfg_dict: Dict = {}
 
     def __init__(
-        self, queue: List[str] = None, menu_usage: bool = True, env_file: str = ".env"
+        self,
+        queue: List[str] = None,
+        menu_usage: bool = True,
+        env_file: str = str(USER_ENV_FILE),
     ):
         """Constructor"""
         super().__init__(queue)
