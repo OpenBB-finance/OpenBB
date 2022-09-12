@@ -1587,7 +1587,7 @@ def get_var(
         use_mean=use_mean,
         adjusted_var=adjusted_var,
         student_t=student_t,
-        percentile=percentile / 100,
+        percentile=percentile,
         portfolio=True,
     )
 
@@ -1611,12 +1611,12 @@ def get_es(
     percentile: int
         es percentile
     """
-    
+
     return qa_model.get_es(
         data=portfolio.returns,
         use_mean=use_mean,
         distribution=distribution,
-        percentile=percentile / 100,
+        percentile=percentile,
         portfolio=True,
     )
 

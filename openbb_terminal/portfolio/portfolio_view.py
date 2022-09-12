@@ -1738,7 +1738,7 @@ def display_var(
         use_mean=use_mean,
         adjusted_var=adjusted_var,
         student_t=student_t,
-        percentile=percentile / 100,
+        percentile=percentile,
         portfolio=True,
     )
 
@@ -1768,6 +1768,6 @@ def display_es(
         symbol="Portfolio",
         use_mean=use_mean,
         distribution=distribution,
-        percentile=percentile / 100,
+        percentile=percentile,
         portfolio=True,
     )
