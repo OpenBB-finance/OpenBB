@@ -66,7 +66,7 @@ Once data is loaded in, begin with `Exploration`.
 
 Let's begin by using one of the datasets we loaded in previously : `AAPL`
 
-We will be forecasting `5 Buisness days` ahead for the remaider of these workflows unless specified. 
+We will be forecasting `5 Business days` ahead for the remaider of these workflows unless specified. 
 
 Note: All models automatically perform Historical backtesting on the test split before providing a prediction.
 
@@ -102,7 +102,7 @@ Note: `MAPE` = mean average precision error.
 └───────┴────────┴────────┴────────┴────────┴───────────┴──────────────┘
 ```
 
-Let's use a simple **Probablistic Exponential Smoothing Model** to predict the close price. Keep in mind all models are perform automatic histoical backtesting before providing future forecasts. 
+Let's use a simple **Probabilistic Exponential Smoothing Model** to predict the close price. Keep in mind all models are perform automatic histoical backtesting before providing future forecasts. 
 
 Note: All models forecaste `close` by default.
 
@@ -137,7 +137,7 @@ That looks great, but we might want to see it a little more up close. Lets set t
 
 We can also play with some models that are bit more advanced. As we go down the list, models begin to become larger in parameter size and complexity. This will play a key role later on when we want to train models with `past_covariates` (aka. external factors).
 
-This time lets test with a **Recurrent Neural Network** which by default uses an `LSTM` backbone. We can also choose to test out a `GRU` backbone to experiment. Let's do both and see if we can improve our acccuracy and reduce the overall MAPE. 
+This time lets test with a **Recurrent Neural Network** which by default uses an `LSTM` backbone. We can also choose to test out a `GRU` backbone to experiment. Let's do both and see if we can improve our accuracy and reduce the overall MAPE. 
 
 ```
 (🦋) /forecast/ $ rnn AAPL --forecast-only
