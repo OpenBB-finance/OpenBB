@@ -1248,6 +1248,9 @@ functions = {
     "portfolio.var": {
         "model": "openbb_terminal.portfolio.portfolio_model.get_var",
     },
+    "portfolio.es": {
+        "model": "openbb_terminal.portfolio.portfolio_model.get_es",
+    },
     "portfolio.po.bl": {
         "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_black_litterman_portfolio",
         "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_black_litterman",
