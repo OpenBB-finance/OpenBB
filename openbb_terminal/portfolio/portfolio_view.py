@@ -1030,8 +1030,11 @@ def display_rsquare(
     export : str
         Export data format
     """
+
+    df = portfolio_model.get_r2_score(portfolio)
+
     print_rich_table(
-        portfolio.get_r2_score(),
+        df,
         title="R-Square Score between Portfolio and Benchmark",
         headers=["R-Square Score"],
         show_index=True,
@@ -1058,8 +1061,11 @@ def display_skewness(
     export : str
         Export data format
     """
+
+    df = portfolio_model.get_skewness(portfolio)
+
     print_rich_table(
-        portfolio.get_skewness(),
+        df,
         title="Skewness for Portfolio and Benchmark",
         show_index=True,
         floatfmt=".3f",
@@ -1085,8 +1091,11 @@ def display_kurtosis(
     export : str
         Export data format
     """
+
+    df = portfolio_model.get_kurtosis(portfolio)
+
     print_rich_table(
-        portfolio.get_kurtosis(),
+        df,
         title="Kurtosis for Portfolio and Benchmark",
         show_index=True,
         floatfmt=".3f",
@@ -1101,7 +1110,7 @@ def display_kurtosis(
 @log_start_end(log=logger)
 def display_stats(
     portfolio: portfolio_model.PortfolioModel,
-    interval: str = "all",
+    window: str = "all",
     export: str = "",
 ):
     """Display stats
@@ -1110,14 +1119,17 @@ def display_stats(
     ----------
     portfolio: Portfolio
         Portfolio object with trades loaded
-    interval : str
+    window : str
         interval to consider. Choices are: mtd, qtd, ytd, 3m, 6m, 1y, 3y, 5y, 10y, all
     export : str
         Export data format
     """
+
+    df = portfolio_model.get_stats(portfolio, window)
+
     print_rich_table(
-        portfolio.get_stats(interval),
-        title=f"Stats for Portfolio and Benchmark in period {interval}",
+        df,
+        title=f"Stats for Portfolio and Benchmark in period {window}",
         show_index=True,
         floatfmt=".3f",
     )
@@ -1142,7 +1154,7 @@ def display_volatility(
     export : str
         Export data format
     """
-    df = portfolio.get_volatility()
+    df = portfolio_model.get_volatility(portfolio)
     print_rich_table(
         df,
         title="Volatility for Portfolio and Benchmark",
@@ -1171,7 +1183,7 @@ def display_sharpe_ratio(
     export : str
         Export data format
     """
-    df = portfolio.get_sharpe_ratio(risk_free_rate)
+    df = portfolio_model.get_sharpe_ratio(portfolio, risk_free_rate)
     print_rich_table(
         df,
         title="Sharpe ratio for Portfolio and Benchmark",
@@ -1203,7 +1215,7 @@ def display_sortino_ratio(
     export : str
         Export data format
     """
-    df = portfolio.get_sortino_ratio(risk_free_rate)
+    df = portfolio_model.get_sortino_ratio(portfolio, risk_free_rate)
     print_rich_table(
         df,
         title="Sortino ratio for Portfolio and Benchmark",
@@ -1232,7 +1244,7 @@ def display_maximum_drawdown_ratio(
     export : str
         Export data format
     """
-    df = portfolio.get_maximum_drawdown_ratio()
+    df = portfolio_model.get_maximum_drawdown_ratio(portfolio)
     print_rich_table(
         df,
         title="Maximum drawdown for Portfolio and Benchmark",
@@ -1258,7 +1270,7 @@ def display_gaintopain_ratio(
     export : str
         Export data format
     """
-    df = portfolio.get_gaintopain_ratio()
+    df = portfolio_model.get_gaintopain_ratio(portfolio)
     print_rich_table(
         df,
         title="Gain-to-pain ratio for portfolio and benchmark",
@@ -1287,7 +1299,7 @@ def display_tracking_error(
     export : str
         Export data format
     """
-    df, _ = portfolio.get_tracking_error()
+    df, _ = portfolio_model.get_tracking_error(portfolio)
     print_rich_table(
         df,
         title="Benchmark Tracking Error",
@@ -1313,7 +1325,7 @@ def display_information_ratio(
     export : str
         Export data format
     """
-    df = portfolio.get_information_ratio()
+    df = portfolio_model.get_information_ratio(portfolio)
     print_rich_table(
         df,
         title="Information ratio for portfolio",
@@ -1339,10 +1351,12 @@ def display_tail_ratio(
     ----------
     portfolio: Portfolio
         Portfolio object with returns and benchmark loaded
+    window: str
+        interval for window to consider
     export : str
         Export data format
     """
-    df, _, _ = portfolio.get_tail_ratio()
+    df, _, _ = portfolio_model.get_tail_ratio(portfolio)
     print_rich_table(
         df,
         title="Tail ratio for portfolio and benchmark",
@@ -1368,7 +1382,7 @@ def display_common_sense_ratio(
     export : str
         Export data format
     """
-    df = portfolio.get_common_sense_ratio()
+    df = portfolio_model.get_common_sense_ratio(portfolio)
     print_rich_table(
         df,
         title="Common sense ratio for portfolio and benchmark",
@@ -1400,7 +1414,7 @@ def display_jensens_alpha(
     export : str
         Export data format
     """
-    df, _ = portfolio.get_jensens_alpha(risk_free_rate=risk_free_rate)
+    df, _ = portfolio_model.get_jensens_alpha(portfolio, risk_free_rate)
     print_rich_table(
         df,
         title="Portfolio's jensen's alpha",
@@ -1426,7 +1440,7 @@ def display_calmar_ratio(
     export : str
         Export data format
     """
-    df, _ = portfolio.get_calmar_ratio()
+    df, _ = portfolio_model.get_calmar_ratio(portfolio)
     print_rich_table(
         df,
         title="Calmar ratio for portfolio and benchmark",
@@ -1452,7 +1466,7 @@ def display_kelly_criterion(
     export : str
         Export data format
     """
-    df = portfolio.get_kelly_criterion()
+    df = portfolio_model.get_kelly_criterion(portfolio)
     print_rich_table(
         df,
         title="Kelly criterion of the portfolio",
@@ -1477,7 +1491,7 @@ def display_payoff_ratio(
     export : str
         Export data format
     """
-    df = portfolio.get_payoff_ratio()
+    df = portfolio_model.get_payoff_ratio(portfolio)
     print_rich_table(
         df,
         title="Portfolio's payoff ratio",
@@ -1502,7 +1516,7 @@ def display_profit_factor(
     export : str
         Export data format
     """
-    df = portfolio.get_profit_factor()
+    df = portfolio_model.get_profit_factor(portfolio)
     print_rich_table(
         df,
         title="Portfolio's profit factor",
