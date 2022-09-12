@@ -70,6 +70,8 @@ hidden_imports = [
     "frozendict",
     "textwrap3",
     "pyEX",
+    "tensorflow",
+    "feedparser",
 ]
 
 analysis_kwargs = dict(

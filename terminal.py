@@ -10,7 +10,6 @@ import platform
 import sys
 import webbrowser
 from typing import List
-from pathlib import Path
 import dotenv
 
 import pandas as pd
@@ -21,7 +20,13 @@ from prompt_toolkit.styles import Style
 from prompt_toolkit.formatted_text import HTML
 
 from openbb_terminal.common import feedparser_view
-from openbb_terminal.core.config.constants import REPO_DIR, ENV_FILE, USER_HOME
+from openbb_terminal.core.config.make_paths import create_paths
+from openbb_terminal.core.config.paths import (
+    REPO_DIRECTORY,
+    USER_ENV_FILE,
+    ENV_FILE_REPOSITORY,
+    HOME_DIRECTORY,
+)
 from openbb_terminal.core.log.generation.path_tracking_file_handler import (
     PathTrackingFileHandler,
 )
@@ -52,7 +57,8 @@ from openbb_terminal.helper_funcs import parse_and_split_input
 
 logger = logging.getLogger(__name__)
 
-env_file = str(ENV_FILE)
+env_file = str(USER_ENV_FILE)
+create_paths()
 
 
 class TerminalController(BaseController):
@@ -327,7 +333,7 @@ class TerminalController(BaseController):
         """Process settings command"""
         from openbb_terminal.settings_controller import SettingsController
 
-        self.queue = self.load_class(SettingsController, self.queue)
+        self.queue = self.load_class(SettingsController, self.queue, env_file)
 
     def call_featflags(self, _):
         """Process feature flags command"""
@@ -565,7 +571,9 @@ class TerminalController(BaseController):
                         export_path = self.queue[0].split(" ")[1]
                         # If the path selected does not start from the user root, give relative location from root
                         if export_path[0] == "~":
-                            export_path = export_path.replace("~", USER_HOME.as_posix())
+                            export_path = export_path.replace(
+                                "~", HOME_DIRECTORY.as_posix()
+                            )
                         elif export_path[0] != "/":
                             export_path = os.path.join(
                                 os.path.dirname(os.path.abspath(__file__)), export_path
@@ -612,7 +620,7 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
     if export_path:
         # If the path does not start from the user root, give relative location from terminal root
         if export_path[0] == "~":
-            export_path = export_path.replace("~", USER_HOME.as_posix())
+            export_path = export_path.replace("~", HOME_DIRECTORY.as_posix())
         elif export_path[0] != "/":
             export_path = os.path.join(
                 os.path.dirname(os.path.abspath(__file__)), export_path
@@ -636,14 +644,8 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
         t_controller.print_help()
         check_for_updates()
 
-    env_files = [f for f in os.listdir() if f.endswith(".env")]
-    if env_files:
-        global env_file
-        env_file = env_files[0]
-        dotenv.load_dotenv(env_file)
-    else:
-        # create env file
-        Path(".env")
+    dotenv.load_dotenv(USER_ENV_FILE)
+    dotenv.load_dotenv(ENV_FILE_REPOSITORY, override=True)
 
     while ret_code:
         if obbff.ENABLE_QUICK_EXIT:
@@ -918,7 +920,7 @@ def main(
         console.print("[green]OpenBB Terminal Integrated Tests:\n[/green]")
         for file in test_files:
             file = file.replace("//", "/")
-            repo_path_position = file.rfind(REPO_DIR.name)
+            repo_path_position = file.rfind(REPO_DIRECTORY.name)
             if repo_path_position >= 0:
                 file_name = file[repo_path_position:].replace("\\", "/")
             else:
@@ -936,7 +938,7 @@ def main(
         if fails:
             console.print("\n[red]Failures:[/red]\n")
             for key, value in fails.items():
-                repo_path_position = key.rfind(REPO_DIR.name)
+                repo_path_position = key.rfind(REPO_DIRECTORY.name)
                 if repo_path_position >= 0:
                     file_name = key[repo_path_position:].replace("\\", "/")
                 else:
