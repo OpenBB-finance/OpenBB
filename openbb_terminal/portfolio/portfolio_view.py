@@ -1755,12 +1755,10 @@ def display_es(
     ----------
     portfolio: Portfolio
         Portfolio object with trades loaded
-    use_mean:
-        if one should use the data mean return
-    distribution: str
-        choose distribution to use: logistic, laplace, normal
-    percentile: int
-        es percentile
+    threshold_start: float
+        annualized target return threshold start of plotted threshold range
+    threshold_end: float
+        annualized target return threshold end of plotted threshold range
     """
 
     qa_view.display_es(
@@ -1770,4 +1768,30 @@ def display_es(
         distribution=distribution,
         percentile=percentile,
         portfolio=True,
+    )
+
+@log_start_end(log=logger)
+def display_omega(
+        portfolio: portfolio_model.PortfolioModel,
+        threshold_start: float = 0, 
+        threshold_end: float = 1.5
+):
+    """Display omega ratio
+
+    Parameters
+    ----------
+    portfolio: Portfolio
+        Portfolio object with trades loaded
+    use_mean:
+        if one should use the data mean return
+    distribution: str
+        choose distribution to use: logistic, laplace, normal
+    percentile: int
+        es percentile
+    """
+
+    qa_view.display_omega(
+        data=portfolio.returns,
+        threshold_start=threshold_start,
+        threshold_end=threshold_end
     )

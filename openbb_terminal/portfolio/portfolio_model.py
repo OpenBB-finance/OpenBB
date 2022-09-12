@@ -1598,7 +1598,7 @@ def get_es(
     distribution: str = "normal",
     percentile: float = 0.999,
 ):
-    """Displays expected shortfall
+    """Get portfolio expected shortfall
 
     Parameters
     ----------
@@ -1619,6 +1619,33 @@ def get_es(
         percentile=percentile,
         portfolio=True,
     )
+
+@log_start_end(log=logger)
+def get_omega(
+        portfolio: PortfolioModel,
+        threshold_start: float = 0, 
+        threshold_end: float = 1.5
+):
+    """Get omega ratio
+
+    Parameters
+    ----------
+    portfolio: Portfolio
+        Portfolio object with trades loaded
+    threshold_start: float
+        annualized target return threshold start of plotted threshold range
+    threshold_end: float
+        annualized target return threshold end of plotted threshold range
+    """
+
+    return qa_model.get_omega(
+        data=portfolio.returns,
+        threshold_start=threshold_start,
+        threshold_end=threshold_end
+    )
+
+
+
 
 # Old code
 def cumulative_returns(data: pd.Series) -> pd.Series:
