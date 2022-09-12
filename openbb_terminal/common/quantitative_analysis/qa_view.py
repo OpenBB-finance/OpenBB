@@ -1083,37 +1083,26 @@ def display_es(
     portfolio: bool
         If the data is a portfolio
     """
-    es_list, hist_es_list = qa_model.get_es(
+    df = qa_model.get_es(
         data, use_mean, distribution, percentile, portfolio
     )
 
-    str_hist_label = "Historical ES:"
-
     if distribution == "laplace":
-        str_es_label = "Laplace ES:"
         str_title = "Laplace "
     elif distribution == "student_t":
-        str_es_label = "Student-t ES"
         str_title = "Student-t "
     elif distribution == "logistic":
-        str_es_label = "Logistic ES"
         str_title = "Logistic "
     else:
-        str_es_label = "ES:"
         str_title = ""
 
     if symbol != "":
         symbol += " "
 
-    data_dictionary = {str_es_label: es_list, str_hist_label: hist_es_list}
-    data = pd.DataFrame(
-        data_dictionary, index=["90.0%", "95.0%", "99.0%", f"{percentile*100}%"]
-    )
-
     print_rich_table(
-        data,
+        df,
         show_index=True,
-        headers=list(data.columns),
+        headers=list(df.columns),
         title=f"[bold]{symbol}{str_title}Expected Shortfall[/bold]",
         floatfmt=".4f",
     )

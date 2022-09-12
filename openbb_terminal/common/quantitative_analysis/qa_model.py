@@ -230,7 +230,7 @@ def get_var(
     student_t: bool = False,
     percentile: Union[int, float] = 0.999,
     portfolio: bool = False,
-) -> Tuple[List, List]:
+) -> pd.DataFrame:
     """Gets value at risk for specified stock dataframe
 
     Parameters
@@ -329,14 +329,14 @@ def get_var(
     var_list = [var_90, var_95, var_99, var_custom]
     hist_var_list = [hist_var_90, hist_var_95, hist_var_99, hist_var_custom]
 
-    str_hist_label = "Historical VaR:"
+    str_hist_label = "Historical VaR"
 
     if adjusted_var:
-        str_var_label = "Adjusted VaR:"
+        str_var_label = "Adjusted VaR"
     elif student_t:
         str_var_label = "Student-t VaR"
     else:
-        str_var_label = "VaR:"
+        str_var_label = "VaR"
 
     data_dictionary = {str_var_label: var_list, str_hist_label: hist_var_list}
     df = pd.DataFrame(
@@ -352,7 +352,7 @@ def get_es(
     distribution: str = "normal",
     percentile: Union[float, int] = 0.999,
     portfolio: bool = False,
-) -> Tuple[List[float], List[float]]:
+) -> pd.DataFrame:
     """Gets Expected Shortfall for specified stock dataframe
 
     Parameters
@@ -489,7 +489,10 @@ def get_es(
         es_custom = std * -stats.norm.pdf(percentile_custom) / (1 - percentile) + mean
 
     # Historical Expected Shortfall
-    _, hist_var_list = get_var(data, use_mean, False, False, percentile, portfolio)
+    df = get_var(data, use_mean, False, False, percentile, portfolio)
+
+    hist_var_list = list(df["Historical VaR"].values)
+
     hist_es_90 = data_return[data_return <= hist_var_list[0]].mean()
     hist_es_95 = data_return[data_return <= hist_var_list[1]].mean()
     hist_es_99 = data_return[data_return <= hist_var_list[2]].mean()
@@ -497,7 +500,24 @@ def get_es(
 
     es_list = [es_90, es_95, es_99, es_custom]
     hist_es_list = [hist_es_90, hist_es_95, hist_es_99, hist_es_custom]
-    return es_list, hist_es_list
+
+    str_hist_label = "Historical ES"
+
+    if distribution == "laplace":
+        str_es_label = "Laplace ES"
+    elif distribution == "student_t":
+        str_es_label = "Student-t ES"
+    elif distribution == "logistic":
+        str_es_label = "Logistic ES"
+    else:
+        str_es_label = "ES"
+
+    data_dictionary = {str_es_label: es_list, str_hist_label: hist_es_list}
+    df = pd.DataFrame(
+        data_dictionary, index=["90.0%", "95.0%", "99.0%", f"{percentile*100}%"]
+    )
+
+    return df
 
 
 def get_sharpe(data: pd.DataFrame, rfr: float = 0, window: float = 252) -> float:
