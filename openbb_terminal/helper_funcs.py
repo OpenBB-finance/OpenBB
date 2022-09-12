@@ -36,10 +36,7 @@ import numpy as np
 from openbb_terminal.rich_config import console
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal import config_plot as cfgPlot
-from openbb_terminal.core.config.constants import (
-    ENV_FILE_DEFAULT,
-    USER_HOME,
-)
+from openbb_terminal.core.config.paths import HOME_DIRECTORY, USER_ENV_FILE
 
 logger = logging.getLogger(__name__)
 
@@ -106,7 +103,7 @@ def check_path(path: str) -> str:
     if not path:
         return ""
     if path[0] == "~":
-        path = path.replace("~", USER_HOME.as_posix())
+        path = path.replace("~", HOME_DIRECTORY.as_posix())
     # Return string of path if such relative path exists
     if os.path.isfile(path):
         return path
@@ -274,7 +271,7 @@ def print_rich_table(
             row = [str(idx)] if show_index else []
             row += [
                 str(x)
-                if not isinstance(x, float) or not isinstance(x, np.float64)
+                if not isinstance(x, float) and not isinstance(x, np.float64)
                 else (
                     f"{x:{floatfmt[idx]}}"
                     if isinstance(floatfmt, list)
@@ -1074,10 +1071,10 @@ def get_flair() -> str:
 def set_default_timezone() -> None:
     """Sets a default (America/New_York) timezone if one doesn't exist"""
 
-    dotenv.load_dotenv(ENV_FILE_DEFAULT)
+    dotenv.load_dotenv(USER_ENV_FILE)
     user_tz = os.getenv("TIMEZONE")
     if not user_tz:
-        dotenv.set_key(ENV_FILE_DEFAULT, "TIMEZONE", "America/New_York")
+        dotenv.set_key(USER_ENV_FILE, "TIMEZONE", "America/New_York")
 
 
 def is_timezone_valid(user_tz: str) -> bool:
@@ -1104,7 +1101,7 @@ def get_user_timezone() -> str:
     str
         user timezone based on timezone.openbb file
     """
-    dotenv.load_dotenv(ENV_FILE_DEFAULT)
+    dotenv.load_dotenv(USER_ENV_FILE)
     user_tz = os.getenv("TIMEZONE")
     if user_tz:
         return user_tz
@@ -1134,7 +1131,7 @@ def replace_user_timezone(user_tz: str) -> None:
         User timezone to set
     """
     if is_timezone_valid(user_tz):
-        dotenv.set_key(ENV_FILE_DEFAULT, "TIMEZONE", user_tz)
+        dotenv.set_key(USER_ENV_FILE, "TIMEZONE", user_tz)
         console.print("Timezone successfully updated", "\n")
     else:
         console.print("timezone.openbb file does not exist", "\n")
@@ -1274,7 +1271,7 @@ def compose_export_path(func_name: str, dir_path: str) -> Tuple[str, str]:
     else:
         if obbff.PACKAGED_APPLICATION:
             full_path_dir = os.path.join(
-                USER_HOME.as_posix(), "Desktop", "OPENBB-exports"
+                HOME_DIRECTORY.as_posix(), "Desktop", "OPENBB-exports"
             )
 
             if not os.path.isdir(full_path_dir):
