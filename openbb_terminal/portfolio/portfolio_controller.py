@@ -988,9 +988,8 @@ class PortfolioController(BaseController):
                 self.portfolio_name, self.benchmark_name
             ):
                 portfolio_view.display_rolling_volatility(
-                    self.portfolio.benchmark_returns,
-                    self.portfolio.returns,
-                    interval=ns_parser.period,
+                    self.portfolio,
+                    window=ns_parser.period,
                     export=ns_parser.export,
                 )
 
@@ -1030,9 +1029,8 @@ class PortfolioController(BaseController):
                 self.portfolio_name, self.benchmark_name
             ):
                 portfolio_view.display_rolling_sharpe(
-                    self.portfolio.benchmark_returns,
-                    self.portfolio.returns,
-                    interval=ns_parser.period,
+                    self.portfolio,
+                    window=ns_parser.period,
                     risk_free_rate=ns_parser.risk_free_rate,
                     export=ns_parser.export,
                 )
@@ -1075,7 +1073,7 @@ class PortfolioController(BaseController):
                 portfolio_view.display_rolling_sortino(
                     self.portfolio.benchmark_returns,
                     self.portfolio.returns,
-                    interval=ns_parser.period,
+                    window=ns_parser.period,
                     risk_free_rate=ns_parser.risk_free_rate,
                     export=ns_parser.export,
                 )
@@ -1108,9 +1106,8 @@ class PortfolioController(BaseController):
                 self.portfolio_name, self.benchmark_name
             ):
                 portfolio_view.display_rolling_beta(
-                    self.portfolio.returns,
-                    self.portfolio.benchmark_returns,
-                    interval=ns_parser.period,
+                    self.portfolio,
+                    window=ns_parser.period,
                     export=ns_parser.export,
                 )
 
