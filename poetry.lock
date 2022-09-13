@@ -295,6 +295,14 @@ optional = false
 python-versions = "*"
 
 [[package]]
+name = "backoff"
+version = "2.1.2"
+description = "Function decoration for backoff and retry"
+category = "main"
+optional = false
+python-versions = ">=3.7,<4.0"
+
+[[package]]
 name = "backports.zoneinfo"
 version = "0.2.1"
 description = "Backport of the standard library zoneinfo module"
@@ -323,6 +331,17 @@ stevedore = ">=1.20.0"
 test = ["coverage (>=4.5.4)", "fixtures (>=3.0.0)", "flake8 (>=4.0.0)", "stestr (>=2.5.0)", "testscenarios (>=0.5.0)", "testtools (>=2.3.0)", "toml", "beautifulsoup4 (>=4.8.0)", "pylint (==1.9.4)"]
 toml = ["toml"]
 yaml = ["pyyaml"]
+
+[[package]]
+name = "base58"
+version = "2.1.1"
+description = "Base58 and Base58Check implementation."
+category = "main"
+optional = false
+python-versions = ">=3.5"
+
+[package.extras]
+tests = ["pytest-flake8", "pytest-cov", "pytest-benchmark", "pytest (>=4.6)", "PyHamcrest (>=2.0.2)", "mypy"]
 
 [[package]]
 name = "beartype"
@@ -925,7 +944,7 @@ requests = "*"
 name = "flake8"
 version = "3.9.2"
 description = "the modular source code checker: pep8 pyflakes and co"
-category = "dev"
+category = "main"
 optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,>=2.7"
 
@@ -1755,6 +1774,21 @@ setuptools-scm = ">=6.4.2,<7.0.0"
 statsmodels = ">=0.11"
 
 [[package]]
+name = "loguru"
+version = "0.6.0"
+description = "Python logging made (stupidly) simple"
+category = "main"
+optional = false
+python-versions = ">=3.5"
+
+[package.dependencies]
+colorama = {version = ">=0.3.4", markers = "sys_platform == \"win32\""}
+win32-setctime = {version = ">=1.0.0", markers = "sys_platform == \"win32\""}
+
+[package.extras]
+dev = ["sphinx-rtd-theme (>=0.4.3)", "sphinx-autobuild (>=0.7.1)", "Sphinx (>=4.1.1)", "isort (>=5.1.1)", "black (>=19.10b0)", "pytest-cov (>=2.7.1)", "pytest (>=4.6.2)", "tox (>=3.9.0)", "flake8 (>=3.7.7)", "docutils (==0.16)", "colorama (>=0.3.4)"]
+
+[[package]]
 name = "lxml"
 version = "4.9.1"
 description = "Powerful and Pythonic XML processing library combining libxml2/libxslt with the ElementTree API."
@@ -1854,7 +1888,7 @@ traitlets = "*"
 name = "mccabe"
 version = "0.6.1"
 description = "McCabe checker, plugin for flake8"
-category = "dev"
+category = "main"
 optional = false
 python-versions = "*"
 
@@ -2685,7 +2719,7 @@ idna = ["idna (>=2.1)"]
 name = "pycodestyle"
 version = "2.7.0"
 description = "Python style guide checker"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
@@ -2767,7 +2801,7 @@ studies = ["TA-Lib (>=0.4.17)"]
 name = "pyflakes"
 version = "2.3.1"
 description = "passive checker of Python programs"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
@@ -3039,6 +3073,27 @@ python-versions = ">=3.5"
 attrs = "*"
 pytest = ">=3.5.0"
 vcrpy = ">=2.0.1"
+
+[[package]]
+name = "pythclient"
+version = "0.1.2"
+description = "A library to retrieve Pyth account structures off the Solana blockchain."
+category = "main"
+optional = false
+python-versions = ">=3.7.0"
+
+[package.dependencies]
+aiodns = "*"
+aiohttp = ">=3.7.4"
+backoff = "*"
+base58 = "*"
+dnspython = "*"
+flake8 = "*"
+loguru = "*"
+typing-extensions = "*"
+
+[package.extras]
+testing = ["pytest-asyncio", "pytest-mock", "pytest-socket", "pytest-cov", "pytest", "mock", "typing-extensions", "loguru", "flake8", "dnspython", "base58", "backoff", "aiohttp (>=3.7.4)", "aiodns"]
 
 [[package]]
 name = "python-binance"
@@ -4385,6 +4440,17 @@ python-versions = "*"
 notebook = ">=4.4.1"
 
 [[package]]
+name = "win32-setctime"
+version = "1.1.0"
+description = "A small Python utility to set file creation time on Windows"
+category = "main"
+optional = false
+python-versions = ">=3.5"
+
+[package.extras]
+dev = ["black (>=19.3b0)", "pytest (>=4.6.2)"]
+
+[[package]]
 name = "wrapt"
 version = "1.14.1"
 description = "Module for decorators, wrappers and monkey patching."
@@ -4472,7 +4538,7 @@ prediction-m1-mac = ["tensorflow-macos", "tensorflow-metal"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8,<3.11"
-content-hash = "cccfcf96f7fceedde763fab06ba4e888468999b1cb0b9d096f528771d35303df"
+content-hash = "b4cd579bd22c4271bbc57b8a7bdb4f66ae0041c38de0b482fecbaaf11e3ca077"
 
 [metadata.files]
 absl-py = []
@@ -4662,6 +4728,7 @@ backcall = [
     {file = "backcall-0.2.0-py2.py3-none-any.whl", hash = "sha256:fbbce6a29f263178a1f7915c1940bde0ec2b2a967566fe1c65c1dfb7422bd255"},
     {file = "backcall-0.2.0.tar.gz", hash = "sha256:5cbdbf27be5e7cfadb448baf0aa95508f91f2bbc6c6437cd9cd06e2a4c215e1e"},
 ]
+backoff = []
 "backports.zoneinfo" = [
     {file = "backports.zoneinfo-0.2.1-cp36-cp36m-macosx_10_14_x86_64.whl", hash = "sha256:da6013fd84a690242c310d77ddb8441a559e9cb3d3d59ebac9aca1a57b2e18bc"},
     {file = "backports.zoneinfo-0.2.1-cp36-cp36m-manylinux1_i686.whl", hash = "sha256:89a48c0d158a3cc3f654da4c2de1ceba85263fafb861b98b59040a5086259722"},
@@ -4684,6 +4751,7 @@ bandit = [
     {file = "bandit-1.7.4-py3-none-any.whl", hash = "sha256:412d3f259dab4077d0e7f0c11f50f650cc7d10db905d98f6520a95a18049658a"},
     {file = "bandit-1.7.4.tar.gz", hash = "sha256:2d63a8c573417bae338962d4b9b06fbc6080f74ecd955a092849e1e65c717bd2"},
 ]
+base58 = []
 beartype = [
     {file = "beartype-0.7.1-py3-none-any.whl", hash = "sha256:2bdd7da07c017c82380162d67d3331a48c6b608d8e1c65508f6951e8c7afce8f"},
     {file = "beartype-0.7.1.tar.gz", hash = "sha256:0ea3b0b7983e4bdabb47ad299a4ba11cc48beaedabaf89752eea27cb6152e5c1"},
@@ -5060,6 +5128,7 @@ lazy-object-proxy = [
 ]
 libclang = []
 linearmodels = []
+loguru = []
 lxml = []
 macholib = [
     {file = "macholib-1.16-py2.py3-none-any.whl", hash = "sha256:5a0742b587e6e57bfade1ab90651d4877185bf66fd4a176a488116de36878229"},
@@ -5617,6 +5686,7 @@ pytest-cov = [
 ]
 pytest-mock = []
 pytest-recording = []
+pythclient = []
 python-binance = [
     {file = "python-binance-1.0.16.tar.gz", hash = "sha256:3796bfa0124d376cf9ad42f03168d7630de56f936613eb39d05a4b82e1b1f1eb"},
     {file = "python_binance-1.0.16-py2.py3-none-any.whl", hash = "sha256:a56ffc8b2c61d1283d02f8cb9011adbd19a9ebc8d903823552f8f6e1e549f28f"},
@@ -6198,6 +6268,7 @@ websockets = [
 ]
 werkzeug = []
 widgetsnbextension = []
+win32-setctime = []
 wrapt = [
     {file = "wrapt-1.14.1-cp27-cp27m-macosx_10_9_x86_64.whl", hash = "sha256:1b376b3f4896e7930f1f772ac4b064ac12598d1c38d04907e696cc4d794b43d3"},
     {file = "wrapt-1.14.1-cp27-cp27m-manylinux1_i686.whl", hash = "sha256:903500616422a40a98a5a3c4ff4ed9d0066f3b4c951fa286018ecdf0750194ef"},
