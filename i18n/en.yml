@@ -191,6 +191,7 @@ en:
   stocks/disc/hotpenny: today's hot penny stocks
   stocks/disc/rtat: top 10 retail traded stocks per day
   stocks/disc/divcal: dividend calendar for selected date
+  stocks/disc/heatmap: heatmap of SP500 tickers
   stocks/sia/load: load a specific ticker and all it's corresponding parameters
   stocks/sia/clear: clear all or one of industry, sector, country and market cap parameters
   stocks/sia/industry: see existing industries, or set industry if arg specified
