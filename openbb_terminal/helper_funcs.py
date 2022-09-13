@@ -36,7 +36,7 @@ import numpy as np
 from openbb_terminal.rich_config import console
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal import config_plot as cfgPlot
-from openbb_terminal.core.config.constants import USER_HOME
+from openbb_terminal.core.config.paths import HOME_DIRECTORY
 
 logger = logging.getLogger(__name__)
 
@@ -103,7 +103,7 @@ def check_path(path: str) -> str:
     if not path:
         return ""
     if path[0] == "~":
-        path = path.replace("~", USER_HOME.as_posix())
+        path = path.replace("~", HOME_DIRECTORY.as_posix())
     # Return string of path if such relative path exists
     if os.path.isfile(path):
         return path
@@ -1274,7 +1274,7 @@ def compose_export_path(func_name: str, dir_path: str) -> Tuple[str, str]:
     else:
         if obbff.PACKAGED_APPLICATION:
             full_path_dir = os.path.join(
-                USER_HOME.as_posix(), "Desktop", "OPENBB-exports"
+                HOME_DIRECTORY.as_posix(), "Desktop", "OPENBB-exports"
             )
 
             if not os.path.isdir(full_path_dir):
