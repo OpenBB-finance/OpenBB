@@ -71,6 +71,7 @@ hidden_imports = [
     "textwrap3",
     "pyEX",
     "tensorflow",
+    "feedparser",
 ]
 
 analysis_kwargs = dict(

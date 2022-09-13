@@ -1,5 +1,6 @@
 baseURL = "https://openbb-finance.github.io/OpenBBTerminal"
 theme = "hugo-geekdoc"
+title = "OpenBB Terminal Documentation"
 
 # Required to get well formatted code blocks
 pygmentsUseClasses = true
